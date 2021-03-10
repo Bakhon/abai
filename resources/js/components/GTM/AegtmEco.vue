@@ -9,7 +9,7 @@
                                 Доходы от дополнительной добычи нефти
                             </div>
                             <div class="gtm-dark p-1 pl-2">
-                                <gtm-bar-chart :chartdata="{labels: barLabels, datasets: firstBarData}" :options="barOptions" :height="360"></gtm-bar-chart>
+                                <gtm-bar-chart :chartdata="{labels: barLabels, datasets: firstBarData}" :options="barOptions" :height="350"></gtm-bar-chart>
                             </div>
                         </div>
                     </div>
@@ -19,7 +19,7 @@
                                 Свободные денежные потоки (FCF) 2020г
                             </div>
                             <div class="gtm-dark p-1 pl-2">
-                                <gtm-bar-chart :chartdata="{labels: barLabels, datasets: secondBarData}" :options="barOptions" :height="360"></gtm-bar-chart>
+                                <gtm-bar-chart :chartdata="{labels: barLabels, datasets: secondBarData}" :options="barOptions" :height="350"></gtm-bar-chart>
                             </div>
                         </div>
                     </div>
@@ -31,7 +31,7 @@
                                 Расходы на ГТМ
                             </div>
                             <div class="gtm-dark p-1 pl-2">
-                                <gtm-bar-chart :chartdata="{labels: barLabels, datasets: thirdBarData}" :options="barOptions" :height="360"></gtm-bar-chart>
+                                <gtm-bar-chart :chartdata="{labels: barLabels, datasets: thirdBarData}" :options="barOptions" :height="350"></gtm-bar-chart>
                             </div>
                         </div>
                     </div>
@@ -41,7 +41,7 @@
                                 Бурение скважин за 9 месяцев  2020г
                             </div>
                             <div class="gtm-dark p-1 pl-2 mh-370">
-                                <line-chart :height="360"></line-chart>
+                                <line-chart :height="350"></line-chart>
                             </div>
                         </div>
                     </div>
@@ -63,16 +63,22 @@
                     </div>
                 </div>
                 <div class="mt-2 row m-0">
-                    <div class="col-5 calendar-filter-block d-flex align-items-center">
-                        01.08.2018
-                        <img class="calendar-icon" src="/img/GTM/calendar_icon.svg">
+                    <div class="col-5 p-0">
+                        <div class="calendar-filter-block d-flex align-items-center">
+                            01.08.2018
+                            <img class="calendar-icon" src="/img/GTM/calendar_icon.svg">
+                        </div>
                     </div>
-                    <div class="col-5 ml-1 calendar-filter-block d-flex align-items-center">
-                        01.08.2018
-                        <img class="calendar-icon" src="/img/GTM/calendar_icon.svg">
+                    <div class="col-5 p-0">
+                        <div class="ml-1 calendar-filter-block d-flex align-items-center">
+                            01.08.2018
+                            <img class="calendar-icon" src="/img/GTM/calendar_icon.svg">
+                        </div>
                     </div>
-                    <div class="col-1 ml-1 p-1 pt-2 calendar-filter-block text-center">
-                        <img src="/img/GTM/gear.svg">
+                    <div class="col-1 p-0">
+                        <div class="ml-1 calendar-filter-block d-flex align-items-center">
+                            <img class="gear-icon m-auto" src="/img/GTM/gear.svg">
+                        </div>
                     </div>
                 </div>
                 <div class="gtm-dark mt-2">
@@ -96,7 +102,7 @@
                         <input class="search-input w-75" type="text" placeholder="Поиск по скважине">
                         <button class="search-button pl-2 pr-2">Поиск</button>
                     </div>
-                    <div class="gtm-dark text-white pl-2" style="min-height: 160px;">
+                    <div class="gtm-dark text-white pl-2" style="min-height: 140px;">
                         Все скважины
                     </div>
                 </div>

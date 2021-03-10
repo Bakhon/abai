@@ -19,7 +19,37 @@
                                 Сопоставление плановых и фактических дебитов нефти новых скважин
                             </div>
                             <div class="gtm-dark p-1 pl-2">
-                                <img src="/img/GTM/demo_img_table.png" height="370">
+                                <table class="table text-center text-white podbor-middle-table">
+                                    <thead>
+                                    <tr>
+                                        <th class="align-middle" rowspan="2">№ скв.</th>
+                                        <th colspan="2">Кол-во</th>
+                                        <th colspan="2">Ср. дебит</th>
+                                        <th colspan="2">Доп.добыча, тыс.т</th>
+                                        <th class="align-middle" rowspan="2">% усп.</th>
+                                    </tr>
+                                    <tr>
+                                        <th>план</th>
+                                        <th>факт</th>
+                                        <th>план</th>
+                                        <th>факт</th>
+                                        <th>план</th>
+                                        <th>факт</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr v-for="statisticsItem in statistics">
+                                        <td>{{ statisticsItem[0] }}</td>
+                                        <td>{{ statisticsItem[1] }}</td>
+                                        <td>{{ statisticsItem[2] }}</td>
+                                        <td>{{ statisticsItem[3] }}</td>
+                                        <td>{{ statisticsItem[4] }}</td>
+                                        <td>{{ statisticsItem[5] }}</td>
+                                        <td>{{ statisticsItem[6] }}</td>
+                                        <td>{{ statisticsItem[7] }}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
@@ -42,7 +72,7 @@
                             </div>
                             <div class="gtm-dark p-1 pl-2">
 <!--                                <pie-chart :height="360"></pie-chart>-->
-                                <img src="/img/GTM/demo_img_circle.png" height="370">
+                                <img class="demo-img" src="/img/GTM/demo_img_circle.png" height="350">
                             </div>
                         </div>
                     </div>
@@ -64,16 +94,22 @@
                     </div>
                 </div>
                 <div class="mt-2 row m-0">
-                    <div class="col-5 calendar-filter-block d-flex align-items-center">
-                        01.08.2018
-                        <img class="calendar-icon" src="/img/GTM/calendar_icon.svg">
+                    <div class="col-5 p-0">
+                        <div class="calendar-filter-block d-flex align-items-center">
+                            01.08.2018
+                            <img class="calendar-icon" src="/img/GTM/calendar_icon.svg">
+                        </div>
                     </div>
-                    <div class="col-5 ml-1 calendar-filter-block d-flex align-items-center">
-                        01.08.2018
-                        <img class="calendar-icon" src="/img/GTM/calendar_icon.svg">
+                    <div class="col-5 p-0">
+                        <div class="ml-1 calendar-filter-block d-flex align-items-center">
+                            01.08.2018
+                            <img class="calendar-icon" src="/img/GTM/calendar_icon.svg">
+                        </div>
                     </div>
-                    <div class="col-1 ml-1 p-1 pt-2 calendar-filter-block text-center">
-                        <img src="/img/GTM/gear.svg">
+                    <div class="col-1 p-0">
+                        <div class="ml-1 calendar-filter-block d-flex align-items-center">
+                            <img class="gear-icon m-auto" src="/img/GTM/gear.svg">
+                        </div>
                     </div>
                 </div>
                 <div class="gtm-dark mt-2">
@@ -97,7 +133,7 @@
                         <input class="search-input w-75" type="text" placeholder="Поиск по скважине">
                         <button class="search-button pl-2 pr-2">Поиск</button>
                     </div>
-                    <div class="gtm-dark text-white pl-2" style="min-height: 184px;">
+                    <div class="gtm-dark text-white pl-2" style="min-height: 156px;">
                         Все скважины
                     </div>
                 </div>
@@ -276,6 +312,19 @@ export default {
                 ['', '', ''],
                 ['', 'Аскар', ''],
                 ['', 'Каламкас', ''],
+            ],
+            statistics: [
+                [4320, 7.9, 5.53, 70, 4320, 7.9, 5.53, 70],
+                [4320, 7.9, 5.53, 70, 4320, 7.9, 5.53, 70],
+                [4320, 7.9, 5.53, 70, 4320, 7.9, 5.53, 70],
+                [4320, 7.9, 5.53, 70, 4320, 7.9, 5.53, 70],
+                [4320, 7.9, 5.53, 70, 4320, 7.9, 5.53, 70],
+                [4320, 7.9, 5.53, 70, 4320, 7.9, 5.53, 70],
+                [4320, 7.9, 5.53, 70, 4320, 7.9, 5.53, 70],
+                [4320, 7.9, 5.53, 70, 4320, 7.9, 5.53, 70],
+                [4320, 7.9, 5.53, 70, 4320, 7.9, 5.53, 70],
+                [4320, 7.9, 5.53, 70, 4320, 7.9, 5.53, 70],
+                [4320, 7.9, 5.53, 70, 4320, 7.9, 5.53, 70],
             ],
         };
     }
