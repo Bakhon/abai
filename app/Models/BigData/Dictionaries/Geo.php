@@ -3,20 +3,56 @@
 namespace App\Models\BigData\Dictionaries;
 
 use App\Models\TBDModel;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Cache;
 
 class Geo extends TBDModel
 {
-    protected $table = 'dict.geo';
+    protected $table = 'tbdi.geo';
 
     public function parent()
     {
-        $result = DB::connection($this->connection)
-            ->table('dict.geo_parent')
-            ->select('parent')
-            ->where('geo_id', $this->id)
-            ->first();
+        return $this->belongsTo(Geo::class, 'parent_id', 'id');
+    }
 
-        return $result ? Geo::find($result->parent) : null;
+    public function children()
+    {
+        return $this->hasMany(Geo::class, 'parent_id', 'id');
+    }
+
+
+    public function ancestors()
+    {
+        $result = collect();
+
+        $item = $this;
+
+        while (true) {
+            $parent = $item->parent;
+            if (empty($parent)) {
+                break;
+            }
+
+            $result->push($parent);
+            $item = $parent;
+        }
+
+        return $result;
+    }
+
+
+    public function descendants()
+    {
+        if (Cache::has('bd_geo_children_' . $this->id)) {
+            return Cache::get('bd_geo_children_' . $this->id);
+        }
+        $result = $this->children;
+        $this->children->each(
+            function ($child) use (&$result) {
+                $result->merge($child->descendants());
+                $result->merge($child->descendants());
+            }
+        );
+        Cache::put('bd_geo_children_' . $this->id, $result);
+        return $result;
     }
 }

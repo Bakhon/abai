@@ -140,7 +140,7 @@ class EcoRefsScFaController extends Controller
         $reqDay = $request->reqd;
         $reqecn = $request->reqecn;
         $param=$request->param;
-
+        $liq=$request->liq;
         $org = $request->org;
         $equipIdRequest = $request->equip;
         $scorfa = $request->scfa;
@@ -168,6 +168,7 @@ class EcoRefsScFaController extends Controller
         array_push($periodc,"2021-11-01");
         array_push($periodc,"2021-12-01");
 
+        
 
         $result2=[];
 
@@ -280,6 +281,7 @@ class EcoRefsScFaController extends Controller
                     if($reqDay>=365){
                         $prsResult[$item->company_id] = 365 / ($reqDay);
                     }else{
+                        
                         $prsResult[$item->company_id] = 365 / ($reqDay + $avgprsday->avg_prs);
                     }
                 } else {
@@ -317,8 +319,8 @@ class EcoRefsScFaController extends Controller
 
 
 
-            $ecnParam = 95.343 * pow($qZhidkosti,-0.607);
-            $shgnParam = 108.29 * pow($qZhidkosti,-0.743);
+            $ecnParam = 95.343 * pow($liq,-0.607);
+            $shgnParam = 108.29 * pow($liq,-0.743);
 
             foreach($emppersExp as $item){
                 $exportsResults[$item->route_id] = $empper * $item->emp_per;
@@ -332,10 +334,10 @@ class EcoRefsScFaController extends Controller
             foreach($equipRas as $item){
                 $electCost = EcoRefsPrepElectPrsBrigCost::where('company_id', '=', $item->company_id)->first();
                 if($item->equip_id == 1){
-                    $zatrElectResults[$item->equip_id] = $workday * $qZhidkosti * $shgnParam * $electCost->elect_cost;
+                    $zatrElectResults[$item->equip_id] = $workday * $liq * $shgnParam * $electCost->elect_cost;
                 }
                 else{
-                    $zatrElectResults[$item->equip_id] = $workday  * $qZhidkosti * $ecnParam * $electCost->elect_cost;
+                    $zatrElectResults[$item->equip_id] = $workday  * $liq * $ecnParam * $electCost->elect_cost;
                 }
             }
 
@@ -439,7 +441,6 @@ class EcoRefsScFaController extends Controller
             $emppersIns = EcoRefsEmpPer::whereIn('direction_id',$inside)->where('company_id',$org)->where('date',$element)->get();
             $discontIns = EcoRefsDiscontCoefBar::whereIn('direction_id',$inside)->where('company_id',$org)->where('date',$element)->get();
 
-
             $insideResults = [];
             $insideDiscontResults = [];
             $insideNdpiResults = [];
@@ -488,7 +489,6 @@ class EcoRefsScFaController extends Controller
             if($equipIdRequest == 1){
                 $srokSluzhby = EcoRefsServiceTime::where('equip_id', '=', $equipIdRequest)->where('company_id', '=', $org)->first();
                 $equipCost = EcoRefsRentEquipElectServCost::where('equip_id', '=', $equipIdRequest)->where('company_id', '=', $org)->first();
-
                 if($srokSluzhby->avg_serv_life > $serviceTime){
                     $amortizaciyaResult = $equipCost->equip_cost / $srokSluzhby->avg_serv_life;
                 }
@@ -559,8 +559,8 @@ class EcoRefsScFaController extends Controller
             $godovoiChistPryb=$godovoiChistPryb+array_sum($chistayaPribyl);
             $godovoiKvl=$godovoiKvl+$buyCostResult;
             $godovoiSvobPot=$godovoiSvobPot+array_sum($svobodDenPotok);
-            $godovoiShgnParam=$godovoiShgnParam+$shgnParam*$qZhidkosti*$workday;
-            $godovoiEcnParam=$godovoiEcnParam+$ecnParam*$qZhidkosti*$workday;
+            $godovoiShgnParam=$godovoiShgnParam+$shgnParam*$liq*$workday;
+            $godovoiEcnParam=$godovoiEcnParam+$ecnParam*$liq*$workday;
 
             $nakoplSvobPotok=$nakoplSvobPotok+array_sum($svobodDenPotok);
             $discSvobPotok=$discSvobPotok+$nakoplSvobPotok;
@@ -609,8 +609,8 @@ class EcoRefsScFaController extends Controller
                 'buyCostResult' => $buyCostResult,
                 'svobodDenPotok' => $svobodDenPotok,
                 'npv'=>$npv,
-                'shgnParam'=>$shgnParam*$qZhidkosti*$workday,
-                'ecnParam'=>$ecnParam*$qZhidkosti*$workday,
+                'shgnParam'=>$shgnParam*$liq*$workday,
+                'ecnParam'=>$ecnParam*$liq*$workday,
             ];
 
             array_push($result2,$vdata2);

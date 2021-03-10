@@ -37,7 +37,7 @@ class CustomValidator
     public function isValidCoordinates($coord, $fieldId)
     {
         $pointInPolygon = (bool)DB::connection('tbd')
-            ->table('dict.geo')
+            ->table('tbdi.geo')
             ->whereRaw("'$coord' <@ allot_mining")
             ->where('id', $fieldId)
             ->count();
