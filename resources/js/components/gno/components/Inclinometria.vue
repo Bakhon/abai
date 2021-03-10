@@ -113,28 +113,21 @@
           <div class="col-6" style="float: left; text-align: left; color: white; font-weight: bold;">Выбор глубины спуска насоса Нсп 
             <input style="width: 100px;" v-model="hPumpFromIncl" @change="updateHpump" type="text" onfocus="this.value=''" class="input-box-gno-incl podbor"/>
             </div>
-          <!-- <div class="col-6" style="float: left; text-align: left; color: white; height: 25px;">
-            Нсп 800м
-          </div> -->
           <button type="button col-6" class="old_well_button_incl" @click="onClickHpump">Применить выбранную Нсп</button>
         </div>
         <div class="col-12" style="padding-bottom: 10px;">
           <div class="col-12"  style="font-size: 14px; text-align: left; color: white;">
             <b>Максимальный темп набора кривизны</b> в месте установки насоса 
             <input style="width: 60px;" v-model="dls1" :disabled="dls1=='-'" type="text" onfocus="this.value=''" class="input-box-gno-incl podbor"/> в интервале глубины спуска 
-            <input style="width: 60px;" v-model="dls2" :disabled="dls2=='-'" type="text" onfocus="this.value=''" class="input-box-gno-incl podbor" />          
+            <input style="width: 60px;" v-model="dls2" :disabled="dls2=='-'" type="text" onfocus="this.value=''" class="input-box-gno-incl podbor" />     
+        
             </div> 
         </div>
-        <!-- <div class="col-12" style="padding-bottom: 10px;">
-          <div class="col-12"  style="font-size: 14px; text-align: left; color: white;">
-            в месте установки насоса 0.3гр/10м в интервале глубины спуска 0.5 гр/10м
-          </div> 
-        </div> -->
         <div class="col-12" style="padding-bottom: 10px;">
           <div class="col-12" style="font-size: 14px; text-align: left; color: white; float: left;">
             <b>Максимальный зенитный угол</b> в месте установки насоса
             <input v-model="zu1" :disabled="zu1=='-'" style="width: 60px;" type="text" onfocus="this.value=''" class="input-box-gno-incl podbor"/> в интервале глубины спуска 
-            <input v-model="zu2" :disabled="zu2=='-'" style="width: 60px;" type="text" onfocus="this.value=''" class="input-box-gno-incl podbor" />
+            <input v-model="zu2" :disabled="zu2=='-'" style="width: 60px;" type="text" onfocus="this.value=''" class="input-box-gno-incl podbor" />  
             </div>
         </div>
 
@@ -310,7 +303,7 @@ export default {
             z: [this.pointZ],
             marker: {
               size:10,
-              color: 'white',
+              color: '#AFCFEA',
             }
           }
           ],
@@ -423,7 +416,6 @@ export default {
     margin-top: 7px;
     margin-left: 10px;
     line-height: 14px;
-    /* vertical-align: middle; */
 }
 
 .old_well_button_incl:hover {
@@ -448,8 +440,6 @@ export default {
     padding-right: 5px;
     padding-left: 5px;
 }
-
-
 .square-incl {
     background: #494AA5;
     border: 1px solid #272953;
@@ -463,17 +453,11 @@ export default {
     padding-right: 5px;
     padding-left: 5px;
 }
-
 .square-incl:focus {
     background: #5657c7;
 }
-
 .input-box-gno-incl:disabled {
     color: #928f8f;
     background: #353e70;
 }
-
-/* .square-incl.podbor {
-    width: 100px;
-} */
 </style>
