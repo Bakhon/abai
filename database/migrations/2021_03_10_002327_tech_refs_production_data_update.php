@@ -14,7 +14,7 @@ class TechRefsProductionDataUpdate extends Migration
     public function up()
     {
         Schema::table('tech_refs_production_data', function (Blueprint $table) {
-            $table->string('comment');
+            $table->string('comment')->nullable();
             $table->unique(['well_id', 'date'], 'well_date');
         });
     }

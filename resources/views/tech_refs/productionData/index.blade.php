@@ -31,6 +31,7 @@
                             <th>Добыча жидкости тыс.т:</th>
                             <th>Отработанные дни:</th>
                             <th>ПРС:</th>
+                            <th>Комментарий:</th>
                             <th>Добавлено: дата / автор:</th>
                             <th>Изменение: дата / автор:</th>
                             <th width="220px">{{__('app.action')}}</th>
@@ -46,6 +47,7 @@
                                 <td>{{ $item->liquid }}</td>
                                 <td>{{ $item->days_worked }}</td>
                                 <td>{{ $item->prs }}</td>
+                                <td>{{ $item->comment }}</td>
                                 <td>{{ $item->created_at }} / {{ optional($item->author)->name  }}</td>
                                 <td>@if ($item->editor)
                                     {{ $item->updated_at }} / {{ optional($item->editor)->name  }}

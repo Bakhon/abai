@@ -14,6 +14,7 @@ class TechRefsProductionData extends Model
         'liquid',
         'days_worked',
         'prs',
+        'comment',
         'author_id',
         'editor_id'
     ];

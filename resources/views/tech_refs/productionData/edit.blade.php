@@ -80,6 +80,9 @@
                                         <strong>ПРС:</strong>
                                         <input type="text" name="prs" class="form-control" placeholder=""
                                                value="{{$techRefsProductionData->prs}}">
+                                        <strong>Комментарий:</strong>
+                                        <input type="text" name="comment" class="form-control" placeholder=""
+                                               value="{{$techRefsProductionData->comment }}">
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12 text-center">
