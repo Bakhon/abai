@@ -344,10 +344,6 @@
 
                   <div class="Table" align="center" x:publishsource="Excel">
                     <inclinometria @update-hpump="onChangeButtonHpump($event)" :buttonHpump="buttonHpump" :wellNumber="wellNumber" :wellIncl="wellIncl" :is-loading.sync="isLoading">
-<<<<<<< HEAD
-                    <!-- @updateHpumpProp="eventChild" -->
-=======
->>>>>>> 775fd73a79f434c89a7a3f400f219cd1ad58ea40
                     </inclinometria>
                   </div>
                 </div>
@@ -2472,7 +2468,6 @@ export default {
       this.hPumpValue = this.$store.getters.getHpump
       console.log(this.hPumpValue, 'vuex hpump');
       this.postCurveData();      
->>>>>>> 775fd73a79f434c89a7a3f400f219cd1ad58ea40
     },
     closeEconomicModal() {
       this.$modal.hide('tablePGNO')
