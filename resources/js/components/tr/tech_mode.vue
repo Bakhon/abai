@@ -588,6 +588,8 @@
                       <el-table-column
                         prop="name"
                         label=""
+                        v-for="(row, row_index) in wells" 
+                        :key="row_index"
                       >
                       </el-table-column>
                     </el-table-column>
