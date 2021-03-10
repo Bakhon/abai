@@ -15,10 +15,9 @@ class TechRefsCompanyController extends Controller
 
     public function index(): View
     {
-        $techRefsCompany = TechRefsCompany::latest()->paginate(5);
+        $techRefsCompany = TechRefsCompany::latest()->paginate(12);
 
-        return view('tech_refs.company.index',compact('techRefsCompany'))
-            ->with('i', (request()->input('page', 1) - 1) * 5);
+        return view('tech_refs.company.index',compact('techRefsCompany'));
     }
 
     public function create(): View

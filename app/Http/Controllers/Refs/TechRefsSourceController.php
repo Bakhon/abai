@@ -15,10 +15,9 @@ class TechRefsSourceController extends Controller
 
     public function index(): View
     {
-        $techRefsSource = TechRefsSource::latest()->paginate(5);
+        $techRefsSource = TechRefsSource::latest()->paginate(12);
 
-        return view('tech_refs.source.index',compact('techRefsSource'))
-            ->with('i', (request()->input('page', 1) - 1) * 5);
+        return view('tech_refs.source.index',compact('techRefsSource'));
     }
 
     public function create(): View

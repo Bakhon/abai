@@ -16,10 +16,9 @@ class TechRefsNgduController extends Controller
 
     public function index(): View
     {
-        $techRefsNgdu = TechRefsNgdu::latest()->paginate(5);
+        $techRefsNgdu = TechRefsNgdu::latest()->paginate(12);
 
-        return view('tech_refs.ngdu.index',compact('techRefsNgdu'))
-            ->with('i', (request()->input('page', 1) - 1) * 5);
+        return view('tech_refs.ngdu.index',compact('techRefsNgdu'));
     }
 
     public function create(): View

@@ -15,10 +15,9 @@ class TechRefsBknsController extends Controller
 
     public function index(): View
     {
-        $techRefsBkns = TechRefsBkns::latest()->paginate(5);
+        $techRefsBkns = TechRefsBkns::latest()->paginate(12);
 
-        return view('tech_refs.bkns.index',compact('techRefsBkns'))
-            ->with('i', (request()->input('page', 1) - 1) * 5);
+        return view('tech_refs.bkns.index',compact('techRefsBkns'));
     }
 
     public function create(): View

@@ -16,10 +16,9 @@ class TechRefsProductionDataController extends Controller
 
     public function index(): View
     {
-        $techRefsProductionData = TechRefsProductionData::latest()->paginate(5);
+        $techRefsProductionData = TechRefsProductionData::latest()->paginate(12);
 
-        return view('tech_refs.productionData.index',compact('techRefsProductionData'))
-            ->with('i', (request()->input('page', 1) - 1) * 5);
+        return view('tech_refs.productionData.index',compact('techRefsProductionData'));
     }
 
     public function create(): View
