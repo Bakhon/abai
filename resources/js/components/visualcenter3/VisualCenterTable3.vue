@@ -15,7 +15,7 @@
                             <div class="number col-8 col-md-6 col-lg-8">
                               {{ formatDigitToThousand(oil_factDay) }}
                             </div>
-                            <div class="unit-vc col-12 col-md-5 col-lg-4">{{ thousand }} тонн</div>
+                            <div class="unit-vc col-12 col-md-5 col-lg-4">{{ thousand }}{{ trans('visualcenter.tonWithSpace') }}</div>
                           </div>
                           <div class="additional-header txt1 col-6 col-md-12">
                             {{ trans("visualcenter.getoil") }}
@@ -74,7 +74,7 @@
                             <div class="number col-8 col-md-7 col-lg-8">
                               {{ formatDigitToThousand(oil_dlv_factDay) }}
                             </div>
-                            <div class="unit-vc col-12 col-md-5 col-lg-4">{{ thousand }} тонн</div>
+                            <div class="unit-vc col-12 col-md-5 col-lg-4">{{ thousand }}{{ trans('visualcenter.tonWithSpace') }}</div>
                           </div>
                           <div class="additional-header txt1 col-6 col-md-12">
                             {{ trans("visualcenter.oildlv") }}
@@ -142,7 +142,7 @@
                               {{ formatDigitToThousand(gas_factDay) }}
                             </div>
                             <div class="unit-vc col-12 col-md-5 col-lg-4">
-                              {{ thousand }} м³
+                              {{ thousand }}{{ trans('visualcenter.meterCubicWithSpace') }}
                             </div>
                           </div>
                           <div class="additional-header txt1 col-6 col-md-12">
@@ -1337,7 +1337,7 @@
                       >
                         <td
                           @click="innerWellsSelectedRow = item.code"
-                          class="row-name_width cursor-pointer"
+                          class="row-name_width_40 cursor-pointer"
                           :class="{
                             tdStyle: index % 2 === 0,
                             selected: innerWellsSelectedRow === item.code,
@@ -1495,7 +1495,7 @@
                       >
                         <td
                           @click="innerWells2SelectedRow = item.code"
-                          class="row-name_width cursor-pointer"
+                          class="row-name_width_40 cursor-pointer"
                           :class="{
                             tdStyle: index % 2 === 0,
                             selected: innerWells2SelectedRow === item.code,
@@ -1652,7 +1652,7 @@
                       >
                         <td
                           @click="otmSelectedRow = item.code"
-                          class="row-name_width cursor-pointer"
+                          class="row-name_width_40 cursor-pointer"
                           :class="{
                             tdStyle: index % 2 === 0,
                             selected: otmSelectedRow === item.code,
@@ -1827,7 +1827,7 @@
                       >
                         <td
                           @click="chemistrySelectedRow = item.code"
-                          class="row-name_width cursor-pointer"
+                          class="row-name_width_40 cursor-pointer"
                           :class="{
                             tdStyle: index % 2 === 0,
                             selected: chemistrySelectedRow === item.code,
@@ -2394,7 +2394,7 @@
   }
 }
 
-.row-name_width {
+.row-name_width_40 {
     width: 40%;
   }
   .width-20 {
@@ -2613,7 +2613,7 @@
         min-width: 5.3em !important;
       }
     }
-    .row-name_width {
+    .row-name_width_40 {
       width: 80%;
     }
   }

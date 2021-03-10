@@ -852,10 +852,11 @@ export default {
             let previousPrice = 0.00;
             let self = this;
             _.forEach(data, function (item) {
-                let changeValue = parseFloat((item['value'] - previousPrice) / previousPrice * 100).toFixed(2);
+                let currentPrice = parseFloat(item['value']);
+                let changeValue = ((currentPrice - previousPrice) / previousPrice * 100).toFixed(2);
                 self.pushRatesData(item, changeValue, ratesData);
                 self.pushRatesChart(item, ratesData);
-                previousPrice = parseFloat(item['value']);
+                previousPrice = currentPrice;
             });
             return ratesData;
         },
