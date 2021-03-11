@@ -19,7 +19,7 @@ class RepTtValueImport implements ToCollection, ToModel, WithStartRow
     */
     public function collection(Collection $collection)
     {
-        //
+
     }
 
 

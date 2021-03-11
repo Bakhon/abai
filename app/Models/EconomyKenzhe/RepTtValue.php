@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class RepTtValue extends Model
 {
-    //
     protected $table = 'rep_tt_values';
 
     protected $fillable = ['rep_id', 'company_id', 'date', 'value', 'company', 'rep_tt'];

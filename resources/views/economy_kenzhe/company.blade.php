@@ -6,7 +6,7 @@
                                 <table class="table table-hover">
                                         @foreach($stats as $stat)
                                                 <tr>
-                                                        <td style="color: white">{{$stat->rept->title}}</td>
+                                                        <td style="color: white">{{$stat->rept->name}}</td>
                                                         <td style="color: white">{{$stat->value}}</td>
                                                 </tr>
                                         @endforeach

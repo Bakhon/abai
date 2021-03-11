@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class SbhCompany extends Model
 {
-    //
     protected $fillable = [
         'num',
         'title'

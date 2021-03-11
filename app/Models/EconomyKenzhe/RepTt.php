@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class RepTt extends Model
 {
-    //
     protected $fillable = [
         'parent_id',
         'num',
