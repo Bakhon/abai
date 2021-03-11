@@ -3567,11 +3567,12 @@ export default {
     onPrsButtonClick() {
       this.$modal.show('modal-prs')
       let krsTable = [];
-      let uriPrsKrs = "http://172.20.103.187:7575/api/nno/history/"+ this.field + "/" + this.wellNumber + "/";
+      let uriPrsKrs = "http://172.20.103.187:7574/api/nno/history/"+ this.field + "/" + this.wellNumber + "/";
       this.axios.get(uriPrsKrs).then((response) => {
         let krs = response['data']['krs']
-        this.numberRepairs = response['data']['prs']['prs']
-        this.numberNNO = response['data']['prs']['nno'].toFixed(0)
+        let nno = JSON.parse(response['data']['prs']['nno'])
+        this.numberRepairs = nno['prs']
+        this.numberNNO = nno['NNO'].toFixed(0)
         this.krsTable = JSON.parse(krs)["data"]
         console.log(this.krsTable);
     })
