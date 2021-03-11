@@ -21,7 +21,7 @@ data: function(){
         font: {color: "white"},
         plot_bgcolor: "#20274e",
         paper_bgcolor: "#20274e",
-        height: 340,
+        height: 450,
         title: 'История ПРС',
         barmode: 'group',
         },
