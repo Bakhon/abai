@@ -352,12 +352,12 @@ class EcoRefsScFaController extends Controller
             $rentCostResult = 0;
 
             if($equipIdRequest == 1){
-                $buyCost = EcoRefsRentEquipElectServCost::where('equip_id', '=', $equipIdRequest)->first();
+                $buyCost = EcoRefsRentEquipElectServCost::where('equip_id', '=', $equipIdRequest)->where('company_id',$org)->where('date',$element)->first();
                 $rentCostResult = 0;
             }
             else{
-                $buyCost = EcoRefsRentEquipElectServCost::where('equip_id', '=', $equipIdRequest)->first();
-                $rentCostResult = $buyCost->rent_cost * $workday/30;
+                $buyCost = EcoRefsRentEquipElectServCost::where('equip_id', '=', $equipIdRequest)->where('company_id',$org)->where('date',$element)->first();
+                $rentCostResult = $buyCost->rent_cost;
             }
 
 
@@ -365,11 +365,11 @@ class EcoRefsScFaController extends Controller
 
             if($pokupka==0){
                 if($equipIdRequest == 1){
-                    $buyCost = EcoRefsRentEquipElectServCost::where('equip_id', '=', $equipIdRequest)->where('company_id',$org)->first();
+                    $buyCost = EcoRefsRentEquipElectServCost::where('equip_id', '=', $equipIdRequest)->where('company_id',$org)->where('date',$element)->first();
                     $buyCostResult = $buyCost->equip_cost;
                 }
                 else{
-                    $buyCost = EcoRefsRentEquipElectServCost::where('equip_id', '=', $equipIdRequest)->where('company_id',$org)->first();
+                    $buyCost = EcoRefsRentEquipElectServCost::where('equip_id', '=', $equipIdRequest)->where('company_id',$org)->where('date',$element)->first();
                     $buyCostResult = 0;
                 }
                 $pokupka=1;
@@ -379,7 +379,7 @@ class EcoRefsScFaController extends Controller
 
             // TO DO
             foreach($exportsResults as $key => $value){
-                $tarifTnExp = EcoRefsTarifyTn::where('route_id',$key)->where('company_id',$org)->get();
+                $tarifTnExp = EcoRefsTarifyTn::where('route_id',$key)->where('company_id',$org)->where('date',$element)->get();
                 $tarifTnItemValue = 0;
                 foreach($tarifTnExp as $row){
                     if ($row->exc_id == 1){
@@ -466,7 +466,7 @@ class EcoRefsScFaController extends Controller
             // Rabota s TOTALAMI
 
             foreach($insideResults as $key => $value){
-                $tarifTnIns = EcoRefsTarifyTn::where('route_id','=',$key)->where('company_id',$org)->get();
+                $tarifTnIns = EcoRefsTarifyTn::where('route_id','=',$key)->where('company_id',$org)->where('date',$element)->get();
                 $tarifTnItemValue = 0;
                 foreach($tarifTnIns as $row){
                     if ($row->exc_id == 1){
