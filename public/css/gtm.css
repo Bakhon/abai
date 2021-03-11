@@ -397,6 +397,7 @@
 
     .main-menu-font {
         font-size: 1rem;
+        line-height: 1.5rem;
     }
 
     .gtm-map-img {
@@ -502,10 +503,12 @@
 @media screen and (max-width : 1400px) {
     .main-category {
         font-size: 1rem;
+        padding: 1rem 0.5rem;
     }
 
     .main-menu-font {
         font-size: 0.8rem;
+        line-height: 1rem;
     }
 
     .gtm-map-img {
@@ -534,6 +537,15 @@
     }
 
     .near-wells-table-item {
+        font-size: 0.6rem;
+    }
+
+    .menu-item-bg img {
+        width: 36px;
+        height: 36px;
+    }
+
+    .tree-main-ul {
         font-size: 0.6rem;
     }
 }
@@ -590,11 +602,30 @@
     .near-wells-table-item {
         font-size: 0.5rem;
     }
+
+    .tree-main-ul {
+        font-size: 0.5rem;
+    }
 }
 
 @media screen and (max-width : 991px) {
     .gtm-menu {
         display: none !important;
+    }
+
+    .menu-item-bg img {
+        width: 24px;
+        height: 24px;
+    }
+
+    .main-category {
+        font-size: 0.6rem;
+        padding: 0.8rem 0.3rem;
+    }
+
+    .main-menu-font {
+        font-size: 0.6rem;
+        line-height: 1rem;
     }
 }
 
