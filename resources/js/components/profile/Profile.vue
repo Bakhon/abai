@@ -1,8 +1,9 @@
 <template>
   <div class="user-profile">
     <div class="user-profile__top">
+      <button class="bkgEditButton">Обложка профиля</button>
       <div class="user-profile__top-avatar">
-        <img :src="user.profile.thumb || 'img/level1/icon_user.svg'">
+        <img :src="user.profile.thumb || '/img/level1/icon_user.svg'">
       </div>
       <p class="user-profile__top-welcome">{{ trans('profile.welcome') }}, <b>{{ user.username }}!</b></p>
       <ul class="user-profile__top-menu">
@@ -22,6 +23,9 @@
     <div class="user-profile__bottom">
       <div class="user-profile__tab">
         <template v-if="activeTab === 'profile'">
+          <div class="container-fluid defaultPadding">
+            <div class="row">
+              <div class="col-sm-6 defaultPadding">
           <div class="user-profile__tab-block">
             <p class="user-profile__tab-block-title">{{ trans('profile.main_info') }}</p>
             <div class="user-profile__tab-field-row">
@@ -44,6 +48,8 @@
               <profile-field :field="fields.boss" :value="user.profile.boss"></profile-field>
             </div>
           </div>
+              </div>
+          <div class="col-sm-6 defaultPadding">
           <div class="user-profile__tab-block">
             <p class="user-profile__tab-block-title">{{ trans('profile.contact_info') }}</p>
             <div class="user-profile__tab-field-row">
@@ -58,19 +64,27 @@
               <profile-field :field="fields.phone_work" :value="user.profile.phone_work"></profile-field>
             </div>
           </div>
+          </div>
+            </div>
+          </div>
         </template>
+
         <template v-else-if="activeTab === 'notifications'">
-
+            <notifications-profile></notifications-profile>
         </template>
+
         <template v-else-if="activeTab === 'access'">
-
+            <access-profile></access-profile>
         </template>
+
         <template v-else-if="activeTab === 'history'">
-
+            <history-profile :logs="logs"></history-profile>
         </template>
+
         <template v-else-if="activeTab === 'settings'">
-
+            <settings-profile :user="user"></settings-profile>
         </template>
+
       </div>
     </div>
   </div>
@@ -78,6 +92,10 @@
 
 <script>
 import ProfileField from './Field'
+import SettingsProfile from './tabs/Settings'
+import HistoryProfile from './tabs/History'
+import AccessProfile from './tabs/Access'
+import NotificationsProfile from './tabs/Notifications'
 import params from '../../json/profile.json'
 
 export default {
@@ -86,15 +104,24 @@ export default {
     user: {
       type: Object,
       required: true
-    }
+    },
+    logs: {
+      type: Array,
+      required: true
+    },
   },
   components: {
-    ProfileField
+    ProfileField,
+    SettingsProfile,
+    HistoryProfile,
+    AccessProfile,
+    NotificationsProfile
   },
   data() {
     return {
       fields: params.fields,
       tabs: params.tabs,
+      icons: params.icons,
       activeTab: 'profile'
     }
   },

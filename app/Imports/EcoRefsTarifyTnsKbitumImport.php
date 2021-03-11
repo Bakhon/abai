@@ -43,7 +43,6 @@ class EcoRefsTarifyTnsKbitumImport implements ToModel
             "route_tn_id" => 0,
             "date" => $row[2],
             "tn_rate" => round($row[54], 2),
-            "extent" => 0,
         ]);
     }
 }

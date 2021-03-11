@@ -159,6 +159,7 @@ Route::group(
                 Route::post('/import_eco', 'VisCenter\ImportForms\DZOcalcController@import')->name('import_e');
 
                 Route::get('/import_excel', 'VisCenter\ImportForms\DZOdailyController@importExcel');
+                Route::resource('/dzodaily', 'VisCenter\ImportForms\DZOdailyCrudController');
 
                 Route::post('/import', 'VisCenter\ImportForms\DZOdailyController@import')->name('import');
 
@@ -170,12 +171,16 @@ Route::group(
 
                 Route::get('anticrisis', 'AntiCrisisController@index')->name('anticrisis');
 
-                //economy module 
+
+                //economy module
                 Route::get('/module_economy', 'EconomyKenzhe\MainController@index');
                 Route::get('/module_economy/company/{id}/{date}', 'EconomyKenzhe\MainController@company')->name('company');
                 Route::get('/module_economy/companies', 'EconomyKenzhe\MainController@companies');
                 Route::match(['get','post'],'/import_sbh', 'EconomyKenzhe\MainController@importSubholdingCompanies')->name('import_sbh');
                 Route::match(['get','post'],'/import_rep', 'EconomyKenzhe\MainController@importRepTt')->name('import_rep');
+
+                Route::get('/paegtm', 'GTM\GTMController@index')->name('gtm');
+
             }
         );
         Auth::routes(

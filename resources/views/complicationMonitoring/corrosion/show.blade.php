@@ -36,7 +36,7 @@
                         <td>{{$corrosion->cdng->name}}</td>
                     </tr>
                     <tr>
-                        <td>{{ trans('monitoring.gu') }}</td>
+                        <td>{{ trans('monitoring.gu.gu') }}</td>
                         <td>{{$corrosion->gu->name}}</td>
                     </tr>
                     <tr>

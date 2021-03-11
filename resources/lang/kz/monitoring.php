@@ -14,7 +14,6 @@ return array (
   'action_substance_of_h2s' => 'Күкіртсутектің нақты мөлшері',
   'actual_corrosion_speed' => 'Нақты коррозия жылдамдығы',
   'actual_inhibitor_level' => 'Коррозия ингибиторын нақты айдау',
-  'gu' => 'ТҚ',
   'units' => 
   array (
     'p_kon' => 'P соңғы.',
@@ -153,8 +152,6 @@ return array (
   'field' => 'Кенорын',
   'ngdu' => 'МжГӨБ',
   'cdng' => 'МжГӨЦ',
-  'zu' => 'ӨҚ',
-  'well' => 'Ұңғы',
   'history' => 
   array (
     'title' => 'Түзетулер енгізу барысы',
@@ -249,4 +246,16 @@ return array (
   ),
   'module_name' => 'Асқынулар мониторингі',
   'close' => 'Жабу',
+  'zu' => 
+  array (
+    'zu' => 'ӨҚ',
+  ),
+  'gu' => 
+  array (
+    'gu' => 'ТҚ',
+  ),
+  'well' => 
+  array (
+    'well' => 'Ұңғы',
+  ),
 );

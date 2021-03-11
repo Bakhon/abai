@@ -577,25 +577,211 @@
         </div>
 
         <div class="table-outer">
-          <div class="table-inner" style="background: black !important;">
-                            <el-table
-                                :data="tableData"
-                                style="width: 100%; background: black">
-                                <el-table-column
-                                    prop="date"
-                                    label="Date"
-                                    width="180">
-                                </el-table-column>
-                                <el-table-column
-                                    prop="name"
-                                    label="Name"
-                                    width="180">
-                                </el-table-column>
-                                <el-table-column
-                                    prop="address"
-                                    label="Address">
-                                </el-table-column>
-                            </el-table>
+          <div class="table-inner abat_tr">
+                  <el-table
+                    :data="tableData"
+                    style="width: 100%"
+                    
+                    row-class-name="abba">>
+                    <el-table-column
+                      :label="`${this.trans('tr.tr1')}`">
+                      <el-table-column
+                        prop="name"
+                        label=""
+                        v-for="(row, row_index) in wells" 
+                        :key="row_index"
+                      >
+                      </el-table-column>
+                    </el-table-column>
+
+                    <el-table-column
+                      prop="date"
+                      :label="`${this.trans('tr.tr2')}`">
+                      <el-table-column
+                        prop="name"
+                        label=""
+                      >
+                      </el-table-column>
+                    </el-table-column>
+                    <el-table-column
+                      prop="date"
+                      :label="`${this.trans('tr.tr3')}`">
+                      <el-table-column
+                        prop="name"
+                        label=""
+                      >
+                      </el-table-column>
+                    </el-table-column>
+                    <el-table-column
+                      prop="date"
+                      :label="`${this.trans('tr.tr4')}`">
+                      <el-table-column
+                        prop="name"
+                        label=""
+                      >
+                      </el-table-column>
+                    </el-table-column>
+                    <el-table-column
+                      prop="date"
+                      :label="`${this.trans('tr.tr5')}`">
+                      <el-table-column
+                        prop="name"
+                        label=""
+                      >
+                      </el-table-column>
+                    </el-table-column>
+                    <el-table-column
+                      prop="date"
+                      :label="`${this.trans('tr.tr6')}`">
+                      <el-table-column
+                        prop="name"
+                        label=""
+                      >
+                      </el-table-column>
+                    </el-table-column>
+
+                    <el-table-column
+                      prop="date"
+                      :label="`${this.trans('tr.tr7')}`">
+                      <el-table-column
+                        prop="name"
+                        label=""
+                      >
+                      </el-table-column>
+                    </el-table-column>
+                    <el-table-column
+                      prop="date"
+                      :label="`${this.trans('tr.tr8')}`">
+                      <el-table-column
+                        prop="name"
+                        label=""
+                      >
+                      </el-table-column>
+                    </el-table-column>
+                    <el-table-column
+                      prop="date"
+                      :label="`${this.trans('tr.tr9')}`">
+                      <el-table-column
+                        prop="name"
+                        label=""
+                      >
+                      </el-table-column>
+                    </el-table-column>
+                    <el-table-column
+                      prop="date"
+                      :label="`${this.trans('tr.tr10')}`">
+                      <el-table-column
+                        prop="name"
+                        label=""
+                      >
+                      </el-table-column>
+                    </el-table-column>
+                    <el-table-column
+                      prop="date"
+                      :label="`${this.trans('tr.tr11')}`">
+                      <el-table-column
+                        prop="name"
+                        label=""
+                      >
+                      </el-table-column>
+                    </el-table-column>
+                    <el-table-column
+                      prop="date"
+                      :label="`${this.trans('tr.tr12')}`">
+                      <el-table-column
+                        prop="name"
+                        label=""
+                      >
+                      </el-table-column>
+                    </el-table-column>
+                    <el-table-column
+                      prop="date"
+                      :label="`${this.trans('tr.tr13')}`">
+                      <el-table-column
+                        prop="name"
+                        label=""
+                      >
+                      </el-table-column>
+                    </el-table-column>
+                    <el-table-column
+                      prop="date"
+                      :label="`${this.trans('tr.tr14')}`">
+                      <el-table-column
+                        prop="name"
+                        label=""
+                      >
+                      </el-table-column>
+                    </el-table-column>
+                    <el-table-column
+                      prop="date"
+                      :label="`${this.trans('tr.tr15')}`">
+                      <el-table-column
+                        prop="name"
+                        label=""
+                      >
+                      </el-table-column>
+                    </el-table-column>
+                    <el-table-column
+                      prop="date"
+                      :label="`${this.trans('tr.tr16')}`">
+                      <el-table-column
+                        prop="name"
+                        label=""
+                      >
+                      </el-table-column>
+                    </el-table-column>
+
+
+
+
+
+                    <el-table-column :label="`${this.trans('tr.tr17')}`">
+                      <el-table-column
+                        prop="name"
+                        :label="`${this.trans('tr.tr20')}`"
+                        >
+                        <el-table-column
+                          prop="state"
+                          label=""
+                          >
+                        </el-table-column>
+                      </el-table-column>
+                      <el-table-column :label="`${this.trans('tr.tr20')}`">
+                        <el-table-column
+                          prop="state"
+                          label=""
+                          >
+                        </el-table-column>
+                        <el-table-column
+                          prop="city"
+                          label="City"
+                          width="120">
+                        </el-table-column>
+                        <el-table-column
+                          prop="address"
+                          label="Address"
+                          width="300">
+                        </el-table-column>
+                        <el-table-column
+                          prop="zip"
+                          label="Zip"
+                          width="120">
+                        </el-table-column>
+                      </el-table-column>
+                    </el-table-column>
+                    
+                  </el-table>
+                  <div class="ui-pagination">
+                    <el-pagination
+                      small
+                      round
+                      @current-change="$emit('handleCurrentChange')"
+                      :current-page.sync="currentPage"
+                      :page-size="pageSize"
+                      :total="totalItems"
+                      layout="prev, pager, next, jumper">
+                    </el-pagination>
+                  </div>
             <!-- <TrFullTable :wells="wells" :edit="edit" @onSort="sortBy" v-show="show_second"/> -->
             
           </div>
@@ -839,9 +1025,54 @@ export default {
       checkers: false,
       checkersec: false,
       tableData: [{
-        date: '2016-05-03',
-        name: 'row_index',
-        address: ''
+          date: '',
+          name: '',
+          state: '',
+          city: ' ',
+          address: '',
+          zip: ''
+        }, {
+          date: '',
+          name: '',
+          state: '',
+          city: '',
+          address: '',
+          zip: ''
+        }, {
+          date: '',
+          name: '',
+          state: '',
+          city: '',
+          address: '',
+          zip: ''
+        }, {
+          date: '',
+          name: '',
+          state: '',
+          city: '',
+          address: '',
+          zip: ''
+        }, {
+          date: '',
+          name: '',
+          state: '',
+          city: '',
+          address: '',
+          zip: ''
+        }, {
+          date: '',
+          name: '',
+          state: '',
+          city: '',
+          address: '',
+          zip: ''
+        }, {
+          date: '',
+          name: '',
+          state: '',
+          city: '',
+          address: '',
+          zip: ''
         }]
         
     };
@@ -1587,4 +1818,16 @@ table::-webkit-scrollbar-corner {
 .select_mod.select_mod.select_mod.select_mod {
      background: #334296; 
 }
+.abat_tr {
+  background: #334296 !important;
+}
+.abba {
+  background: #334296 !important;
+  color: white;
+}
+.ui-pagination {
+  margin: 16px 0;
+  text-align: center;
+}
+
 </style>
