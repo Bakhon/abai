@@ -361,7 +361,7 @@ class EcoRefsScFaController extends Controller
             }
 
  
-            
+
             $buyCostResult = 0;
 
             if($pokupka==0){
@@ -380,7 +380,7 @@ class EcoRefsScFaController extends Controller
 
             // TO DO
             foreach($exportsResults as $key => $value){
-                $tarifTnExp = EcoRefsTarifyTn::where('route_id',$key)->where('company_id',$org)->where('date',$element)->get();
+                $tarifTnExp = EcoRefsTarifyTn::where('route_id',$key)->where('company_id',$org)->get();
                 $tarifTnItemValue = 0;
                 foreach($tarifTnExp as $row){
                     if ($row->exc_id == 1){
@@ -467,7 +467,7 @@ class EcoRefsScFaController extends Controller
             // Rabota s TOTALAMI
 
             foreach($insideResults as $key => $value){
-                $tarifTnIns = EcoRefsTarifyTn::where('route_id','=',$key)->where('company_id',$org)->where('date',$element)->get();
+                $tarifTnIns = EcoRefsTarifyTn::where('route_id','=',$key)->where('company_id',$org)->get();
                 $tarifTnItemValue = 0;
                 foreach($tarifTnIns as $row){
                     if ($row->exc_id == 1){
