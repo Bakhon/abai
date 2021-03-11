@@ -252,4 +252,7 @@ return array (
   'exploitationFond' => 'Эксплуатационный фонд',
   'tonWithSpace' => ' тонн',
   'meterCubicWithSpace' => ' м³',
+  'saveButton' => 'Сохранить',
+  'errors' => 'Ошибки',
+  'validateButton' => 'Провести проверку данных',
 );
