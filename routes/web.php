@@ -112,6 +112,7 @@ Route::group(
                 Route::resource('ecorefsrenttax', 'EcoRefsRentTaxController');
                 Route::resource('ecorefsavgmarketprice', 'EcoRefsAvgMarketPriceController');
                 Route::resource('ecorefsdiscontcoefbar', 'EcoRefsDiscontCoefBarController');
+                Route::resource('ecorefscost', 'EcoRefsCostController');
                 Route::resource('ecorefsbranchid', 'EcoRefsBrachIdController');
                 Route::resource('ecorefsrentequipelectservcost', 'EcoRefsRentEquipElectServCostController');
                 Route::resource('ecorefsservicetime', 'EcoRefsServiceTimeController');
@@ -122,7 +123,7 @@ Route::group(
                 Route::post('/getkormass', 'ComplicationMonitoring\OmgNGDUController@getKormass');
                 Route::resource('ecorefsempper', 'Refs\EcoRefsEmpPerController');
                 Route::resource('ecorefsscfa', 'Refs\EcoRefsScFaController');
-                Route::get('ecorefslist', 'Refs\EcoRefsScFaController@refsList');
+                Route::get('ecorefslist', 'Refs\EcoRefsScFaController@refsList')->name('eco_refs_list');
                 Route::get('nnoeco', 'Refs\EcoRefsScFaController@nnoeco');
                 Route::resource('ecorefsexc', 'EcoRefsExcController');
                 Route::resource('antiecoone', 'AntiCrisis\AntiEcoOneController');
@@ -158,6 +159,7 @@ Route::group(
                 Route::post('/import_eco', 'VisCenter\ImportForms\DZOcalcController@import')->name('import_e');
 
                 Route::get('/import_excel', 'VisCenter\ImportForms\DZOdailyController@importExcel');
+                Route::resource('/dzodaily', 'VisCenter\ImportForms\DZOdailyCrudController');
 
                 Route::post('/import', 'VisCenter\ImportForms\DZOdailyController@import')->name('import');
 
@@ -168,6 +170,8 @@ Route::group(
                 Route::get('profile', 'UserController@profile')->name('profile');
 
                 Route::get('anticrisis', 'AntiCrisisController@index')->name('anticrisis');
+
+                Route::get('/paegtm', 'GTM\GTMController@index')->name('gtm');
             }
         );
         Auth::routes(

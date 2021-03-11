@@ -24,7 +24,7 @@
       </div>
     </div>
     <div class="col-xs-12 col-sm-4 col-md-4">
-      <label>{{ trans('monitoring.gu') }}</label>
+      <label>{{ trans('monitoring.gu.gu') }}</label>
       <div class="form-label-group">
         <select class="form-control" v-model="gu" @change="checkDublicate">
           <option v-if="type && type === 'create'" value="all">{{ trans('monitoring.all_gus') }}</option>

@@ -36,6 +36,5 @@ class TrController extends Controller
     public function tech_mode()
     {
         return view('tech_mode.tech_mode');
-    }   
-
+    }
 }

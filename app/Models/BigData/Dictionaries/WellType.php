@@ -6,5 +6,5 @@ use App\Models\TBDModel;
 
 class WellType extends TBDModel
 {
-    protected $table = 'dict.well_type';
+    protected $table = 'tbdi.well_vid';
 }

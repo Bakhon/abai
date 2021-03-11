@@ -22,7 +22,7 @@ abstract class BaseForm
         $this->validator = app()->make(\App\Services\BigData\CustomValidator::class);
     }
 
-    abstract public function submit(): \Illuminate\Database\Eloquent\Model;
+    abstract public function submit(): array;
 
     protected function params(): array
     {
@@ -33,7 +33,7 @@ abstract class BaseForm
         return json_decode(file_get_contents($jsonFile), true);
     }
 
-    public function send(): \Illuminate\Database\Eloquent\Model
+    public function send(): array
     {
         $this->validate();
         return $this->submit();
@@ -80,6 +80,9 @@ abstract class BaseForm
         $rules = [];
 
         foreach ($this->getFields() as $field) {
+            if (empty($field['validation'])) {
+                continue;
+            }
             $rules[$field['code']] = $field['validation'];
         }
 
@@ -97,7 +100,7 @@ abstract class BaseForm
         return $attributes;
     }
 
-    private function getFields(): \Illuminate\Support\Collection
+    protected function getFields(): \Illuminate\Support\Collection
     {
         $fields = collect();
 
