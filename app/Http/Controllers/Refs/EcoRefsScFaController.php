@@ -352,12 +352,12 @@ class EcoRefsScFaController extends Controller
             $rentCostResult = 0;
 
             if($equipIdRequest == 1){
-                $buyCost = EcoRefsRentEquipElectServCost::where('equip_id', '=', $equipIdRequest)->where('company_id',$org)->where('date',$element)->first();
+                $buyCost = EcoRefsRentEquipElectServCost::where('equip_id', '=', $equipIdRequest)->first();
                 $rentCostResult = 0;
             }
             else{
-                $buyCost = EcoRefsRentEquipElectServCost::where('equip_id', '=', $equipIdRequest)->where('company_id',$org)->where('date',$element)->first();
-                $rentCostResult = $buyCost->rent_cost;
+                $buyCost = EcoRefsRentEquipElectServCost::where('equip_id', '=', $equipIdRequest)->first();
+                $rentCostResult = $buyCost->rent_cost ;
             }
 
 
@@ -365,11 +365,11 @@ class EcoRefsScFaController extends Controller
 
             if($pokupka==0){
                 if($equipIdRequest == 1){
-                    $buyCost = EcoRefsRentEquipElectServCost::where('equip_id', '=', $equipIdRequest)->where('company_id',$org)->where('date',$element)->first();
+                    $buyCost = EcoRefsRentEquipElectServCost::where('equip_id', '=', $equipIdRequest)->where('company_id',$org)->first();
                     $buyCostResult = $buyCost->equip_cost;
                 }
                 else{
-                    $buyCost = EcoRefsRentEquipElectServCost::where('equip_id', '=', $equipIdRequest)->where('company_id',$org)->where('date',$element)->first();
+                    $buyCost = EcoRefsRentEquipElectServCost::where('equip_id', '=', $equipIdRequest)->where('company_id',$org)->first();
                     $buyCostResult = 0;
                 }
                 $pokupka=1;
