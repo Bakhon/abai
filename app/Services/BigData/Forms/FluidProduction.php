@@ -9,7 +9,6 @@ use App\Models\BigData\Well;
 use App\Services\BigData\DictionaryService;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\Response;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
@@ -17,23 +16,11 @@ class FluidProduction extends TableForm
 {
     protected $configurationFileName = 'fluid_production';
 
-    public function submit(): array
-    {
-    }
-
-    public function saveSingleField(string $field)
-    {
-        $this->validateSingleField($field);
-        $this->saveSingleFieldInDB($field);
-
-        return response()->json([], Response::HTTP_NO_CONTENT);
-    }
-
-    public function getRows()
+    public function getRows(array $params = [])
     {
         $geo = Geo::find($this->request->get('geo'));
 
-        $wells = Well::query()
+        $wellsQuery = Well::query()
             ->with('geo')
             ->select('id', 'uwi')
             ->orderBy('uwi')
@@ -45,8 +32,13 @@ class FluidProduction extends TableForm
                         ->whereDate('tbdi.geo.dbeg', '<=', $this->request->get('date'))
                         ->whereDate('tbdi.geo.dend', '>=', $this->request->get('date'));
                 }
-            )
-            ->get();
+            );
+
+        if (isset($params['filter']['row_id'])) {
+            $wellsQuery->where('id', $params['filter']['row_id']);
+        }
+
+        $wells = $wellsQuery->get();
 
         $rowData = [];
 
@@ -223,7 +215,7 @@ class FluidProduction extends TableForm
         return Carbon::parse($date)->diffInDays(Carbon::parse($this->request->get('date'))) === 0;
     }
 
-    private function saveSingleFieldInDB(string $field)
+    protected function saveSingleFieldInDB(string $field): void
     {
         $column = $this->getFieldByCode($field);
 

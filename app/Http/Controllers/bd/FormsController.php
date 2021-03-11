@@ -5,6 +5,7 @@ namespace App\Http\Controllers\bd;
 use App\Http\Controllers\Controller;
 use App\Models\BigData\Dictionaries\Geo;
 use App\Services\BigData\Forms\BaseForm;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class FormsController extends Controller
@@ -71,12 +72,10 @@ class FormsController extends Controller
         return $form->getRows();
     }
 
-    private function getForm(string $formName): BaseForm
+    public function getHistory(string $formName, Request $request)
     {
-        if (empty(config("bigdata_forms.{$formName}"))) {
-            abort(404);
-        }
-        return app()->make(config("bigdata_forms.{$formName}"));
+        $form = $this->getForm($formName);
+        return $form->getHistory($request->get('id'), Carbon::parse($request->get('date')));
     }
 
     public function getWellPrefix(Request $request)
@@ -96,5 +95,13 @@ class FormsController extends Controller
         }
 
         return ['prefix' => $prefix];
+    }
+
+    private function getForm(string $formName): BaseForm
+    {
+        if (empty(config("bigdata_forms.{$formName}"))) {
+            abort(404);
+        }
+        return app()->make(config("bigdata_forms.{$formName}"));
     }
 }
