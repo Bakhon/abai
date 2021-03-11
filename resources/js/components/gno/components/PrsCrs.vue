@@ -13,15 +13,20 @@ props: ["wellNumber", "field", "wellIncl"],
 data: function(){
     return {
         data: [],
+        // annotations: [],
         chart: null,
         months: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь','Июль','Август','Сентябрь', 'Октябрь','Ноябрь','Декабрь'],
         prs: [],
         layout: {
-          yaxis: { rangemode:'tozero', autorange:true, tickformat: ',d'},
+          annotations: this.annotations,
+          showlegend: false,
+          yaxis: {rangemode:'tozero', 
+                  autorange:true, 
+                  tickformat: ',d'},
         font: {color: "white"},
         plot_bgcolor: "#20274e",
         paper_bgcolor: "#20274e",
-        height: 340,
+        height: 400,
         title: 'История ПРС',
         barmode: 'group',
         },
@@ -29,22 +34,36 @@ data: function(){
 },
 mounted() {
     var wi = this.wellIncl.split('_');
-    let uri = "http://172.20.103.187:7575/api/nno/history/"  + wi[0] + "/" + wi[1] + "/";
+    let uri = "http://172.20.103.187:7574/api/nno/history/"  + wi[0] + "/" + wi[1] + "/";
     this.$emit('update:isLoading', true);
     this.axios.get(uri).then((response) => {
-    this.prs = response['data']['prs']
-    // this.months = response['months']
-    console.log(this.prs['keys'])
-    // this.data = [{
-    // type: 'bar',
-    // x: ["2015-01-01", "2015-02-01", "2015-03-01", "2015-04-01", "2015-05-01", "2015-06-01", "2015-07-01", "2015-08-01", "2015-09-01", "2015-10-01", "2015-11-01", "2015-12-01"],
-    // y: [1.5, 2.3, 3.5, 1.2, 0.4, 3.1, 1.5, 2.3, 3.5, 1.2, 0.4, 3.1,],
-    // }]
-
-    for(let key of this.prs["keys"]){
-      console.log(this.prs["data"][key])
-      this.data.push({x: this.months, y: this.prs["data"][key], name: key, type: 'bar'})
+    this.prs = response['data']['prs']['data']
+    for(let key of Object.keys(this.prs)){
+      console.log(key)
+      console.log(this.prs[key])
+      this.data.push({x: [key], y: this.prs[key]['nno-size'], name: this.prs[key]['text'], type: 'bar'})
+      // this.annotations.push({x: key, y: this.prs[key]['nno-size']+1, text: this.prs[key]['text'], showarrow: false, font: {size: 10}})
     }
+    this.layout= {
+        // annotations: this.annotations,
+        showlegend: true,
+
+        yaxis: {rangemode:'tozero', 
+                range: [0, 3], 
+                tickformat: ',d'},
+        font: {color: "white"},
+        plot_bgcolor: "#20274e",
+        paper_bgcolor: "#20274e",
+        height: 340,
+        title: 'История ПРС',
+        // barmode: 'group',
+        bargap: 4
+        }
+
+    // for(let key of this.prs["keys"]){
+    //   console.log(this.prs["data"][key])
+    //   this.data.push({x: this.months, y: this.prs["data"][key], name: key, type: 'bar'})
+    // }
   }).catch()
   
   .finally(() => {
