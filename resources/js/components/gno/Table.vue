@@ -559,7 +559,7 @@
                 </div>
               </modal>
 
-              <modal class="" name="modal-prs" :width="1150" :height="470" :adaptive="true">
+              <modal class="" name="modal-prs" :width="1400" :height="600" :adaptive="true">
                 <div class="modal-bign modal-bign-container">
                   <div class="modal-bign-header">
                     <div class="modal-bign-title">
@@ -575,14 +575,14 @@
 	                  	<div class="col-12">
 		                   	<div class="row">
 				                  
-                          <div class="col-6">
+                          <div class="col-8">
                             <h6 style="text-align: center;">{{trans('pgno.prichini_prs')}}</h6>
 			                      <prs-crs :wellNumber="wellNumber" :wellIncl="wellIncl" :field="field" :is-loading.sync="isLoading"></prs-crs>
                             <h6>{{trans('pgno.kolichestvo_remontov')}}: {{numberRepairs}}</h6>
                             <h6>ННО: {{numberNNO + ' сут'}}</h6>
                         	</div>
   
-                          <div class="col-6">
+                          <div class="col-4">
                             <h6 style="text-align: center;">{{trans('pgno.info_po_krs')}}</h6>
 				                     <div class="table-fix no-gutter">
                               <perfect-scrollbar>
@@ -2427,7 +2427,6 @@ export default {
       let uri = "http://172.20.103.187:7575/api/pgno/"+ this.field + "/" + this.wellNumber + "/download";
       this.axios.post(uri, jsonData,{responseType: "blob"}).then((response) => {
         fileDownload(response.data, "ПГНО_" + this.field + "_" + this.wellNumber + ".xlsx")
-        console.log("downloaded")
       }
       )
     },
@@ -2444,7 +2443,6 @@ export default {
       this.buttonHpump = this.$store.getters.getHpumpButton
       this.$modal.hide('modalIncl')
       this.hPumpValue = this.$store.getters.getHpump
-      console.log(this.hPumpValue, 'vuex hpump');
       this.postCurveData();      
     },
     closeEconomicModal() {
@@ -2966,7 +2964,6 @@ export default {
 
     onGetHpumpSet(data) {
       closeModal('modalIncl')
-      console.log(data);
     },
 
     getWellNumber(wellnumber) {
@@ -3571,10 +3568,10 @@ export default {
       let uriPrsKrs = "http://172.20.103.187:7575/api/nno/history/"+ this.field + "/" + this.wellNumber + "/";
       this.axios.get(uriPrsKrs).then((response) => {
         let krs = response['data']['krs']
-        this.numberRepairs = response['data']['prs']['prs']
-        this.numberNNO = response['data']['prs']['nno'].toFixed(0)
+        let nno = JSON.parse(response['data']['prs']['nno'])
+        this.numberRepairs = nno['prs']
+        this.numberNNO = nno['NNO'].toFixed(0)
         this.krsTable = JSON.parse(krs)["data"]
-        console.log(this.krsTable);
     })
     },
 
