@@ -7,6 +7,11 @@
                 Вернуться в справочник</a>
         </div>
     </div>
+
+    <div class="col p-4" id="app">
+        <production-data-index></production-data-index>
+    </div>
+
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card">

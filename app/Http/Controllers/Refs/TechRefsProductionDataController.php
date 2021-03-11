@@ -4,11 +4,14 @@ namespace App\Http\Controllers\Refs;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Refs\TechProductionDataRequest;
+use App\Http\Resources\TechRefsResource;
 use App\Models\Refs\TechRefsProductionData;
 use App\Models\Refs\TechRefsGu;
 use App\Models\Refs\TechRefsSource;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
+use PHPUnit\Util\Json;
 
 
 class TechRefsProductionDataController extends Controller
@@ -20,6 +23,14 @@ class TechRefsProductionDataController extends Controller
 
         return view('tech_refs.productionData.index',compact('techRefsProductionData'))
             ->with('i', (request()->input('page', 1) - 1) * 5);
+    }
+
+    public function tech_refs_data_json(): JsonResponse
+    {
+        return response()->json([
+            'tech_refs' => TechRefsResource::collection(TechRefsProductionData::all())
+        ]);
+
     }
 
     public function create(): View
