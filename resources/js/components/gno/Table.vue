@@ -559,7 +559,7 @@
                 </div>
               </modal>
 
-              <modal class="" name="modal-prs" :width="1150" :height="470" :adaptive="true">
+              <modal class="" name="modal-prs" :width="1400" :height="600" :adaptive="true">
                 <div class="modal-bign modal-bign-container">
                   <div class="modal-bign-header">
                     <div class="modal-bign-title">
@@ -575,14 +575,14 @@
 	                  	<div class="col-12">
 		                   	<div class="row">
 				                  
-                          <div class="col-6">
+                          <div class="col-8">
                             <h6 style="text-align: center;">{{trans('pgno.prichini_prs')}}</h6>
 			                      <prs-crs :wellNumber="wellNumber" :wellIncl="wellIncl" :field="field" :is-loading.sync="isLoading"></prs-crs>
                             <h6>{{trans('pgno.kolichestvo_remontov')}}: {{numberRepairs}}</h6>
                             <h6>ННО: {{numberNNO + ' сут'}}</h6>
                         	</div>
   
-                          <div class="col-6">
+                          <div class="col-4">
                             <h6 style="text-align: center;">{{trans('pgno.info_po_krs')}}</h6>
 				                     <div class="table-fix no-gutter">
                               <perfect-scrollbar>
@@ -2444,7 +2444,6 @@ export default {
       this.buttonHpump = this.$store.getters.getHpumpButton
       this.$modal.hide('modalIncl')
       this.hPumpValue = this.$store.getters.getHpump
-      console.log(this.hPumpValue, 'vuex hpump');
       this.postCurveData();      
     },
     closeEconomicModal() {
