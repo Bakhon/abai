@@ -608,6 +608,9 @@ td.small-td {
     .big-area {
         height: 80%;
     }
+    .vert-line {
+        margin-left: 8%;
+    }
 }
 
 .end2 {
@@ -751,15 +754,12 @@ li.center-li {
 
 .first-td-header {
     margin-left: 10%;
-}
-
-.second-td-header {
-    float: left;
+    width: 100%;
 }
 
 .vert-line {
     background: url(/img/visualcenter3/line.png) no-repeat;
-    margin-left: 3%;
+
     position: absolute;
     width: 1px;
     height: 15vh;
