@@ -16,10 +16,9 @@ class TechRefsFieldController extends Controller
 
     public function index(): View
     {
-        $techRefsField = TechRefsField::latest()->paginate(5);
+        $techRefsField = TechRefsField::latest()->paginate(12);
 
-        return view('tech_refs.field.index',compact('techRefsField'))
-            ->with('i', (request()->input('page', 1) - 1) * 5);
+        return view('tech_refs.field.index',compact('techRefsField'));
     }
 
     public function create(): View

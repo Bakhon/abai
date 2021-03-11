@@ -16,10 +16,9 @@ class TechRefsCdngController extends Controller
 
     public function index(): View
     {
-        $techRefsCdng = TechRefsCdng::latest()->paginate(5);
+        $techRefsCdng = TechRefsCdng::latest()->paginate(12);
 
-        return view('tech_refs.cdng.index',compact('techRefsCdng'))
-            ->with('i', (request()->input('page', 1) - 1) * 5);
+        return view('tech_refs.cdng.index',compact('techRefsCdng'));
     }
 
     public function create(): View

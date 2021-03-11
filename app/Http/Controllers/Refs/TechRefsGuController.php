@@ -16,10 +16,9 @@ class TechRefsGuController extends Controller
 
     public function index(): View
     {
-        $techRefsGu = TechRefsGu::latest()->paginate(5);
+        $techRefsGu = TechRefsGu::latest()->paginate(12);
 
-        return view('tech_refs.gu.index',compact('techRefsGu'))
-            ->with('i', (request()->input('page', 1) - 1) * 5);
+        return view('tech_refs.gu.index',compact('techRefsGu'));
     }
 
     public function create(): View
