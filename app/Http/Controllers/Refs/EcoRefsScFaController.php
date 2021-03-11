@@ -360,7 +360,8 @@ class EcoRefsScFaController extends Controller
                 $rentCostResult = $buyCost->rent_cost ;
             }
 
-
+ 
+            
             $buyCostResult = 0;
 
             if($pokupka==0){
