@@ -2427,7 +2427,6 @@ export default {
       let uri = "http://172.20.103.187:7575/api/pgno/"+ this.field + "/" + this.wellNumber + "/download";
       this.axios.post(uri, jsonData,{responseType: "blob"}).then((response) => {
         fileDownload(response.data, "ПГНО_" + this.field + "_" + this.wellNumber + ".xlsx")
-        console.log("downloaded")
       }
       )
     },
@@ -2965,7 +2964,6 @@ export default {
 
     onGetHpumpSet(data) {
       closeModal('modalIncl')
-      console.log(data);
     },
 
     getWellNumber(wellnumber) {
@@ -3574,7 +3572,6 @@ export default {
         this.numberRepairs = nno['prs']
         this.numberNNO = nno['NNO'].toFixed(0)
         this.krsTable = JSON.parse(krs)["data"]
-        console.log(this.krsTable);
     })
     },
 

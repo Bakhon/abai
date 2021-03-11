@@ -36,9 +36,7 @@ mounted() {
     this.axios.get(uri).then((response) => {
     this.prs = response['data']['prs']['data']
     for(let key of Object.keys(this.prs)){
-      console.log(key)
-      console.log(this.prs[key])
-      console.log(this.prs[key]['nno_size'])
+
       var nno_days = this.prs[key]['nno_size']
 
       this.data.push({x: [key], 
