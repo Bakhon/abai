@@ -350,6 +350,8 @@ export default {
                 isOperating: this.trans("visualcenter.summaryOperatingAssets"),
                 isNonOperating: this.trans("visualcenter.summaryNonOperatingAssets"),
                 isAllAssets: this.trans("visualcenter.summaryAssets"),
+                opecRestriction: this.trans("visualcenter.opek"),
+                kmgParticipation: this.trans("visualcenter.dolyaUchast"),
             },
             kmgParticipationPercent: {
                 'АО "Каражанбасмунай"': 0.5,
@@ -425,10 +427,26 @@ export default {
             ],
             isMainMenuItemChanged: false,
             opecFieldNameForChart: '',
+            injectionWellsOptions: [
+                {ticker: 'all', name: this.trans("visualcenter.allCompany")},
+                {ticker: 'ОМГ', name: this.trans("visualcenter.omg")},
+                {ticker: 'ММГ', name: this.trans("visualcenter.mmg")},
+                {ticker: 'КГМ', name: this.trans("visualcenter.kgm")},
+                {ticker: 'КОА', name: this.trans("visualcenter.koa")},
+                {ticker: 'КГМ', name: this.trans("visualcenter.kgm")},
+                {ticker: 'КБМ', name: this.trans("visualcenter.kbm")},
+                {ticker: 'ЭМГ', name: this.trans("visualcenter.emg")},
+            ],
+            oilRatesWidgetData: {
+                changePercent: 0,
+                index: ''
+            },
         };
     },
     methods: {
         switchCategory(planFieldName,factFieldName,metricName,categoryName,parentButton,childButton) {
+            this.chartSecondaryName = categoryName;
+            this.dzoCompaniesAssets['assetTitle'] = this.trans("visualcenter.summaryAssets");
             this.planFieldName = planFieldName;
             this.factFieldName = factFieldName;
             this.metricName = metricName;
@@ -487,19 +505,31 @@ export default {
             });
         },
 
+        selectMultipleDzoCompanies(type) {
+            this.selectCompany('all');
+            this.dzoCompaniesAssets['isAllAssets'] = false;
+            this.disableDzoCompaniesVisibility();
+            this.switchDzoCompaniesVisibility(type,'type');
+            this.calculateDzoCompaniesSummary();
+        },
+
         selectDzoCompany(companyTicker) {
             this.selectCompany(companyTicker);
             this.dzoCompaniesAssets['isAllAssets'] = false;
             this.buttonDzoDropdown = this.highlightedButton;
-            _.map(this.dzoCompanies, function (company) {
-                if (company.ticker === companyTicker) {
+            this.switchDzoCompaniesVisibility(companyTicker,'ticker');
+            this.isMultipleDzoCompaniesSelected = this.dzoCompanySummary.length > 1;
+            this.calculateDzoCompaniesSummary();
+        },
+
+        switchDzoCompaniesVisibility(condition,type) {
+            _.map(this.dzoCompanies, function(company) {
+                if (company[type] === condition) {
                     company.selected = !company.selected;
                 }
             });
             let selectedCompanies = this.dzoCompanies.filter(row => row.selected === true).map(row => row.ticker);
             this.dzoCompanySummary = this.bigTable.filter(row => selectedCompanies.includes(row.dzoMonth));
-            this.isMultipleDzoCompaniesSelected = this.dzoCompanySummary.length > 1;
-            this.calculateDzoCompaniesSummary();
         },
 
         getDzoColumnsClass(rowIndex, columnName) {
@@ -548,7 +578,7 @@ export default {
 
         selectCompany(com) {
             this.company = com;
-            this.updateProductionData(this.planFieldName, this.factFieldName, this.chartHeadName, this.metricName, this.nameLeftChart);
+            this.updateProductionData(this.planFieldName, this.factFieldName, this.chartHeadName, this.metricName, this.chartSecondaryName);
         },
         changeTable(change) {
             this.company = "all";
@@ -592,14 +622,19 @@ export default {
                 this.Table7 = "display:block";
                 this.tableHover7 = buttonHover2;
 
+                let periodStart = moment().startOf('month').format();
+                let periodEnd = moment().subtract(1, "days").endOf('day').format();
+                if (periodStart > periodEnd) {
+                    periodStart = this.getPreviousWorkday();
+                }
                 this.range = {
-                    start: this.ISODateString(new Date('2020-08-01T06:00:00+06:00')),
-                    end: this.ISODateString(new Date('2020-08-31T06:00:00+06:00')),
+                    start: periodStart,
+                    end: periodEnd,
                     formatInput: true,
                 };
                 this.changeDate();
             }
-            this.updateProductionData(this.planFieldName, this.factFieldName, this.chartHeadName, this.metricName, this.nameLeftChart);
+            this.updateProductionData(this.planFieldName, this.factFieldName, this.chartHeadName, this.metricName, this.chartSecondaryName);
         },
 
         switchMainMenu(parentButton, childButton) {
@@ -725,6 +760,8 @@ export default {
             this.dzoCompaniesAssets[type] = true;
             this.dzoCompaniesAssets['isAllAssets'] = false;
             this.dzoCompaniesAssets['assetTitle'] = this.assetTitleMapping[type];
+
+
             if (type === "opecRestriction") {
                 this.isOpecFilterActive = !this.isOpecFilterActive;
             } else if (type === 'kmgParticipation') {
@@ -732,10 +769,9 @@ export default {
                 this.isKmgParticipationFilterActive = !this.isKmgParticipationFilterActive;
             } else {
                 this.dzoCompaniesAssets = _.cloneDeep(this.dzoCompaniesAssetsInitial);
-                _.map(this.dzoCompanies, function (company) {
-                    company.selected = false;
-                });
+                this.dzoCompaniesAssets[type] = true;
                 this.selectedDzoCompanies = this.getSelectedDzoCompanies(type);
+                this.selectMultipleDzoCompanies(type);
             }
         },
 
@@ -816,10 +852,11 @@ export default {
             let previousPrice = 0.00;
             let self = this;
             _.forEach(data, function (item) {
-                let changeValue = parseFloat(((item['value'] - previousPrice) / item['value']) * 100).toFixed(2);
+                let currentPrice = parseFloat(item['value']);
+                let changeValue = ((currentPrice - previousPrice) / previousPrice * 100).toFixed(2);
                 self.pushRatesData(item, changeValue, ratesData);
                 self.pushRatesChart(item, ratesData);
-                previousPrice = parseFloat(item['value']);
+                previousPrice = currentPrice;
             });
             return ratesData;
         },
@@ -870,6 +907,7 @@ export default {
         setOilPlacements(ratesData) {
             this.oilRatesData = ratesData;
             this.setDailyOilPriceChange(this.prices['oil']['current'], this.prices['oil']['previous']);
+
             if (this.period === 0) {
                 this.oilPeriod = this.defaultOilPeriod;
             }
@@ -914,7 +952,7 @@ export default {
             this.$modal.show(bign);
         },
         displaynumbers: function (event) {
-            return this.updateProductionData(this.planFieldName, this.factFieldName, this.chartHeadName, this.metricName, this.nameLeftChart);
+            return this.updateProductionData(this.planFieldName, this.factFieldName, this.chartHeadName, this.metricName, this.chartSecondaryName);
         },
 
         getDiffProcentLastBigN(a, b) {
@@ -1234,6 +1272,7 @@ export default {
             this.chartHeadName = chartHeadName;
             this.metricName = metricName;
             this.chartSecondaryName = chartSecondaryName;
+
             let oilProductionFieldsNames = ['oil_plan','oil_opek_plan'];
             if (oilProductionFieldsNames.includes(this.planFieldName)) {
                 this.changeOilProductionFilters();
@@ -1299,9 +1338,9 @@ export default {
             );
 
             this.WellsDataAll = this.WellsData(dataWithMay);
-            this.injectionWells = this.getSummaryWells(dataWithMay,this.wellStockIdleButtons.isInjectionIdleButtonActive,this.injectionFonds)
+            this.injectionWells = this.getSummaryWells(dataWithMay,this.wellStockIdleButtons.isInjectionIdleButtonActive,'injectionFonds')
             this.innerWellsChartData = this.getSummaryInjectionWellsForChart(dataWithMay);
-            this.productionWells = this.getSummaryWells(dataWithMay, this.wellStockIdleButtons.isProductionIdleButtonActive,this.productionFonds);
+            this.productionWells = this.getSummaryWells(dataWithMay, this.wellStockIdleButtons.isProductionIdleButtonActive,'productionFonds');
             this.innerWells2ChartData = this.getSummaryProductionWellsForChart(dataWithMay);
             this.otmData = this.getOtmData(dataWithMay)
             this.otmChartData = this.getOtmChartData(dataWithMay)
@@ -1355,7 +1394,7 @@ export default {
             if ((summForTables['0']['productionFactForMonth'] + summForTables['0']['productionPlanForMonth']) === 0) {
                 this.noData = "Данных нет";
                 this.company = "all";
-                this.updateProductionData(planFieldName, factFieldName, chartHeadName, metricName, chartSecondaryName, this.chartSecondaryName);
+                this.updateProductionData(planFieldName, factFieldName, chartHeadName, metricName, chartSecondaryName);
             } else {
                 this.noData = "";
             }
@@ -1421,9 +1460,9 @@ export default {
             let productionPlanAndFactMonth = this.getProductionPlanAndFactForMonth(dataWithMay, planFieldName, factFieldName);
 
             this.WellsDataAll = this.WellsData(dataWithMay);
-            this.injectionWells = this.getSummaryWells(dataWithMay,this.wellStockIdleButtons.isInjectionIdleButtonActive,_.cloneDeep(this.injectionFonds));
+            this.injectionWells = this.getSummaryWells(dataWithMay,this.wellStockIdleButtons.isInjectionIdleButtonActive,'injectionFonds');
             this.innerWellsChartData = this.getSummaryInjectionWellsForChart(dataWithMay);
-            this.productionWells = this.getSummaryWells(dataWithMay, this.wellStockIdleButtons.isProductionIdleButtonActive,_.cloneDeep(this.productionFonds));
+            this.productionWells = this.getSummaryWells(dataWithMay, this.wellStockIdleButtons.isProductionIdleButtonActive,'productionFonds');
             this.innerWells2ChartData = this.getSummaryProductionWellsForChart(dataWithMay);
             this.otmData = this.getOtmData(dataWithMay)
             this.otmChartData = this.getOtmChartData(dataWithMay)
@@ -1881,7 +1920,6 @@ export default {
                 ]);
             });
 
-
             let productionPlanAndFactMonthWells = _(dataWithMay)
                 .groupBy("data")
                 .map((__time, id) => ({
@@ -1987,6 +2025,7 @@ export default {
             let oldDate = new Date(this.range.end).toLocaleDateString();
             this.timeSelect = nowDate;
             this.timeSelectOld = oldDate;
+
             this.updateProductionData(this.planFieldName, this.factFieldName, this.chartHeadName, this.metricName, this.chartSecondaryName);
             this.getCurrencyNow(new Date().toLocaleDateString());
             this.getAccidentTotal();
@@ -2060,8 +2099,9 @@ export default {
             this.updateProductionData(this.planFieldName, this.factFieldName, this.chartHeadName, this.metricName, this.chartSecondaryName);
         },
 
-        getSummaryWells(inputData, isIdleActive, fonds) {
+        getSummaryWells(inputData, isIdleActive, fondsName) {
             let self = this;
+            let fonds = _.cloneDeep(this[fondsName]);
             let productionPlanAndFactMonthWells = _(inputData)
                 .groupBy("data")
                 .map((__time, id) => (this.$_getSummaryFonds(fonds,__time,id)))
@@ -2084,6 +2124,7 @@ export default {
                     }
                 );
             });
+
             return productionFondsSummary;
         },
 
