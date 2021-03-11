@@ -357,10 +357,10 @@ class EcoRefsScFaController extends Controller
             }
             else{
                 $buyCost = EcoRefsRentEquipElectServCost::where('equip_id', '=', $equipIdRequest)->first();
-                $rentCostResult = $buyCost->rent_cost ;
+                $rentCostResult = $buyCost->rent_cost;
             }
 
- 
+
 
             $buyCostResult = 0;
 
