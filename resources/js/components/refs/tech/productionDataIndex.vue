@@ -1,20 +1,19 @@
 <template>
-  <div class="container-fluid">
-
+  <div class="container-fluid economic-wrap">
     <cat-loader v-show="loading"/>
-
     <div class="row justify-content-between">
-      <modal name="tech_refs_list" :width="1150" :height="400" :adaptive="true">
-        <div class="modal-bign">
-          <vue-table-dynamic
-              :params="params"
-              ref="table"
-          >
-          </vue-table-dynamic>
-        </div>
-      </modal>
+      <vue-table-dynamic
+          :params="params"
+          ref="table"
+      >
+        <template v-slot:column-11="{ props }">
+          <a v-bind:href="props.cellData">Редактировать</a>
+        </template>
+        <template v-slot:column-12="{ props }">
+          <a v-bind:href="props.cellData">Удалить</a>
+        </template>
+      </vue-table-dynamic>
     </div>
-
   </div>
 </template>
 
@@ -26,33 +25,31 @@ import CatLoader from '../../ui-kit/CatLoader'
 Vue.use(VModal, {dynamicDefault: {draggable: true, resizable: true}});
 
 export default {
-  name: "productionDataIndex",
+  name: "tech-data-component",
   components: {
     VueTableDynamic,
     CatLoader
   },
   data: function () {
     return {
-      tech_data: [],
       params: {
-        data: [
-        ],
+        data: [],
         enableSearch: true,
         header: 'row',
         border: true,
         stripe: true,
         pagination: true,
-        pageSize: 10,
-        pageSizes: [10, 20, 50],
-        height: 300
+        sort: [2, 3],
+        pageSize: 12,
+        pageSizes: [12, 24, 48],
       },
       loading: false
     }
   },
   beforeCreate: function () {
-    this.axios.get('/ru/tech_data_list/').then(({data}) => {
-      this.tech_data = data.tech_data
-
+    this.axios.get(this.localeUrl('/tech_data_list')).then(({data}) => {
+      // console.log(data.tech_data);
+      this.params.data = data.tech_data
     })
   },
 };

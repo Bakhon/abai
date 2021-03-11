@@ -9,7 +9,7 @@
     </div>
 
     <div class="col p-4" id="app">
-        <production-data-index></production-data-index>
+        <tech-data-component></tech-data-component>
     </div>
 
     <div class="row justify-content-center">
