@@ -6,22 +6,12 @@ use App\Models\EconomyKenzhe\RepTt;
 use App\Models\EconomyKenzhe\RepTtValue;
 use App\Models\EconomyKenzhe\SbhCompany;
 use Carbon\Carbon;
-use Illuminate\Support\Collection;
-use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithStartRow;
 
 
-class RepTtValueImport implements ToCollection, ToModel, WithStartRow
+class RepTtValueImport implements ToModel, WithStartRow
 {
-    /**
-    * @param Collection $collection
-    */
-    public function collection(Collection $collection)
-    {
-
-    }
-
 
     /**
      * @param array $row

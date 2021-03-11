@@ -1,44 +1,44 @@
 @extends('layouts.app')
 @section('content')
     <h3 align="center">Импорт REP TT значении из Excel в базу данных MySQL</h3>
-<br />
+    <br/>
     @if(count($errors) > 0)
-    <div class="alert alert-danger">
-        Upload Validation Error<br><br>
-        <ul>
-        @foreach($errors->all() as $error)
-        <li>{{ $error }}</li>
-        @endforeach
-        </ul>
-    </div>
+        <div class="alert alert-danger">
+            Upload Validation Error<br><br>
+            <ul>
+                @foreach($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
     @endif
 
     @if($message = Session::get('success'))
-    <div class="alert alert-success alert-block">
-        <button type="button" class="close" data-dismiss="alert">×</button>
-        <strong>{{ $message }}</strong>
-    </div>
+        <div class="alert alert-success alert-block">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            <strong>{{ $message }}</strong>
+        </div>
     @endif
 
     <form method="post" enctype="multipart/form-data" action="{{ route('import_rep') }}">
-    {{ csrf_field() }}
-    <div class="form-group">
-        <table class="table">
-            <tr>
-            <td width="40%" align="right"><label style="color: white;">Выберите Excel файл</label></td>
-            <td width="30">
-            <input type="file" name="select_file" />
-            </td>
-            <td width="30%" align="left">
-            <input type="submit" name="upload" class="btn btn-primary" value="Загрузить">
-            </td>
-            </tr>
-            <tr>
-            <td width="40%" align="right"></td>
-            <td width="30"><span class="text-muted">.xls, .xslx</span></td>
-            <td width="30%" align="left"></td>
-            </tr>
-        </table>
-    </div>
+        {{ csrf_field() }}
+        <div class="form-group">
+            <table class="table">
+                <tr>
+                    <td width="40%" align="right"><label style="color: white;">Выберите Excel файл</label></td>
+                    <td width="30">
+                        <input type="file" name="select_file"/>
+                    </td>
+                    <td width="30%" align="left">
+                        <input type="submit" name="upload" class="btn btn-primary" value="Загрузить">
+                    </td>
+                </tr>
+                <tr>
+                    <td width="40%" align="right"></td>
+                    <td width="30"><span class="text-muted">.xls, .xslx</span></td>
+                    <td width="30%" align="left"></td>
+                </tr>
+            </table>
+        </div>
     </form>
 @endsection

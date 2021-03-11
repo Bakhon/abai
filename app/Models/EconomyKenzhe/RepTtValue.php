@@ -10,11 +10,13 @@ class RepTtValue extends Model
 
     protected $fillable = ['rep_id', 'company_id', 'date', 'value', 'company', 'rep_tt'];
 
-    public function company(){
+    public function company()
+    {
         return $this->belongsTo(RepTt::class, 'company_id', 'id');
     }
 
-    public function rept(){
+    public function rept()
+    {
         return $this->belongsTo(RepTt::class, 'rep_id', 'id');
     }
 
