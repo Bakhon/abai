@@ -5,6 +5,7 @@ import DatePicker from "v-calendar/lib/components/date-picker.umd";
 import {isString} from "lodash";
 import dzoCompaniesInitial from './dzo_companies_initial.json';
 import mainMenuConfiguration from './main_menu_configuration.json';
+import {dzoMapState, dzoMapActions} from '@store/helpers';
 
 Vue.component("calendar", Calendar);
 Vue.component("date-picker", DatePicker);
@@ -441,19 +442,15 @@ export default {
                 changePercent: 0,
                 index: ''
             },
-            dzoYearlyPlan: [],
         };
     },
     methods: {
-        getDzoYearlyPlan() {
-            let uri = this.localeUrl("/get-dzo-yearly-plan");
+        ...dzoMapActions([
+            'getYearlyPlan'
+        ]),
 
-            this.axios.get(uri).then((response) => {
-                let data = response.data;
-                if (data) {
-                    this.dzoYearlyPlan = data;
-                }
-            });
+        async getDzoYearlyPlan() {
+            await this.getYearlyPlan();
         },
 
         switchCategory(planFieldName,factFieldName,metricName,categoryName,parentButton,childButton) {
@@ -2427,7 +2424,7 @@ export default {
         },
 
         getFilteredDzoYearlyPlan() {
-            let dzoYearlyPlanData = _.cloneDeep(this.dzoYearlyPlan);
+            let dzoYearlyPlanData = _.cloneDeep(this.yearlyPlan);
             let filteredPlanData = dzoYearlyPlanData.filter(row => this.selectedDzoCompanies.includes(row.dzo));
             if (filteredPlanData.length === 0) {
                 filteredPlanData = dzoYearlyPlanData;
@@ -2635,6 +2632,9 @@ export default {
         },
     },
     computed: {
+        ...dzoMapState([
+            'yearlyPlan'
+        ]),
         exactDateSelected() {
             return ((this.factFieldName === 'oil_fact' || this.factFieldName === 'oil_div_fact') && this.oneDate === 1);
         },
