@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class PodborGTMPermissionsSeeder extends Seeder
+class PaeGTMPermissionsSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -13,7 +13,7 @@ class PodborGTMPermissionsSeeder extends Seeder
     {
         \Spatie\Permission\Models\Permission::create(
             [
-                'name' => 'podborGtm view main',
+                'name' => 'paegtm view main',
       //          'guard' => 'web'
             ]
         );

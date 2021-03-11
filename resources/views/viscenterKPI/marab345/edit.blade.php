@@ -73,25 +73,25 @@
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
                                         <strong>Дата:</strong>
-                                        <input type="date" name="date" value={{$row->date}} class="form-control">
+                                        <input type="date" name="date" value="{{$row->date}}" class="form-control">
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
                                         <strong>Фактические затраты на себестоимость добычи нефти (себестоимость за минусом износа и амортизации, налогов и резервов):</strong>
-                                        <input type="integer" name="fact_zatraty_na_sebestoimost_dobychi_nefti" value={{$row->fact_zatraty_na_sebestoimost_dobychi_nefti}} class="form-control" placeholder="Пример: 7.2">
+                                        <input type="integer" name="fact_zatraty_na_sebestoimost_dobychi_nefti" value="{{$row->fact_zatraty_na_sebestoimost_dobychi_nefti}}" class="form-control" placeholder="Пример: 7.2">
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
                                         <strong>Фактические затраты капитального вложения:</strong>
-                                        <input type="integer" name="fact_zatraty_kapitalnogo_vlozhenia" value={{$row->fact_zatraty_kapitalnogo_vlozhenia}} class="form-control" placeholder="Пример: 7.2">
+                                        <input type="integer" name="fact_zatraty_kapitalnogo_vlozhenia" value="{{$row->fact_zatraty_kapitalnogo_vlozhenia}}" class="form-control" placeholder="Пример: 7.2">
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
                                         <strong>Операционные и капитальные затраты крупных проектов:</strong>
-                                        <input type="integer" name="opearacionnyie_kapitalnyie_zatraty_krupnyh_proektov" value={{$row->opearacionnyie_kapitalnyie_zatraty_krupnyh_proektov}} class="form-control" placeholder="Пример: 7.2">
+                                        <input type="integer" name="opearacionnyie_kapitalnyie_zatraty_krupnyh_proektov" value="{{$row->opearacionnyie_kapitalnyie_zatraty_krupnyh_proektov}}" class="form-control" placeholder="Пример: 7.2">
                                     </div>
                                 </div>
                                 
