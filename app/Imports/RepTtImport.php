@@ -2,7 +2,7 @@
 
 namespace App\Imports;
 
-use App\Models\VisCenter\ImportForms\RepTt;
+use App\Models\EconomyKenzhe\RepTt;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use DB;
@@ -18,7 +18,7 @@ class RepTtImport implements ToModel
     {
         return new RepTt([
             'num' => $row[0],
-            'title' => $row[1],
+            'name' => $row[1],
         ]);
     }
 }

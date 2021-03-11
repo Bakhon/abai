@@ -9,7 +9,7 @@
 <body>
 <br />
     <div class="container">
-    <h3 align="center">Импорт суточных данных из Excel в базу данных MySQL</h3>
+    <h3 align="center">Импорт REP TT значении из Excel в базу данных MySQL</h3>
 <br />
     @if(count($errors) > 0)
     <div class="alert alert-danger">
@@ -53,27 +53,27 @@
     </form>
 
     <br />
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <h3 class="panel-title">Оперативная информация по ДЗО для АО "НК  'КазМунайГаз'"</h3>
-        </div>
-        <div class="panel-body">
-            <div class="table-responsive">
-            <table class="table table-bordered table-striped">
-                <tr>
-                <th>№</th>
-                <th>Наименование</th>
-                </tr>
-                @foreach($data as $row)
-                    <tr>
-                    <td>{{ $row->num }}</td>
-                    <td>{{ $row->title }}</td>
-                    </tr>
-                @endforeach
-                </table>
-            </div>
-        </div>
-    </div>
+    {{--<div class="panel panel-default">--}}
+        {{--<div class="panel-heading">--}}
+            {{--<h3 class="panel-title">Оперативная информация по ДЗО для АО "НК  'КазМунайГаз'"</h3>--}}
+        {{--</div>--}}
+        {{--<div class="panel-body">--}}
+            {{--<div class="table-responsive">--}}
+            {{--<table class="table table-bordered table-striped">--}}
+                {{--<tr>--}}
+                {{--<th>№</th>--}}
+                {{--<th>Наименование</th>--}}
+                {{--</tr>--}}
+                {{--@foreach($data as $row)--}}
+                    {{--<tr>--}}
+                    {{--<td>{{ $row->num }}</td>--}}
+                    {{--<td>{{ $row->name }}</td>--}}
+                    {{--</tr>--}}
+                {{--@endforeach--}}
+                {{--</table>--}}
+            {{--</div>--}}
+        {{--</div>--}}
+    {{--</div>--}}
 </div>
 </body>
 </html>

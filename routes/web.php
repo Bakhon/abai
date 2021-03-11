@@ -171,10 +171,11 @@ Route::group(
                 Route::get('anticrisis', 'AntiCrisisController@index')->name('anticrisis');
 
                 //economy module 
-                Route::get('/module_economy', 'Economy\MainController@index');
-                Route::get('/module_economy/companies', 'Economy\MainController@companies');
-                Route::match(['get','post'],'/import_sbh', 'Economy\MainController@importSubholdingCompanies')->name('import_sbh');
-                Route::match(['get','post'],'/import_rep', 'Economy\MainController@importRepTt')->name('import_rep');
+                Route::get('/module_economy', 'EconomyKenzhe\MainController@index');
+                Route::get('/module_economy/company/{id}/{date}', 'EconomyKenzhe\MainController@company')->name('company');
+                Route::get('/module_economy/companies', 'EconomyKenzhe\MainController@companies');
+                Route::match(['get','post'],'/import_sbh', 'EconomyKenzhe\MainController@importSubholdingCompanies')->name('import_sbh');
+                Route::match(['get','post'],'/import_rep', 'EconomyKenzhe\MainController@importRepTt')->name('import_rep');
             }
         );
         Auth::routes(

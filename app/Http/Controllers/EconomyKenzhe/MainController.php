@@ -1,9 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Economy;
-use App\Models\VisCenter\ImportForms\RepTt;
-use App\Models\VisCenter\ImportForms\SbhCompany;
+namespace App\Http\Controllers\EconomyKenzhe;
+use App\Imports\RepTtValueImport;
+use App\Models\BigData\Dictionaries\Company;
+use App\Models\EconomyKenzhe\RepTt;
+use App\Models\EconomyKenzhe\SbhCompany;
 use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use DB;
 use App\Imports\SbhCompanyImport;
@@ -17,10 +20,8 @@ class MainController extends Controller
         $rep_tt = RepTt::where('parent_id', 0)->with('childRepts')->get()->toArray();
 
         $rep_tt = json_encode($rep_tt);
-        // $rept = RepTt::whereTitle('Доходы, связанные с прекращаемой деятельностью')->first();
-        // $rept->parent_id = 18;
-        // $rept->save();
-        return view('economy.reptt')->with(compact('rep_tt'));
+
+        return view('economy_kenzhe.reptt')->with(compact('rep_tt'));
     }
 
     public function companies()
@@ -29,28 +30,34 @@ class MainController extends Controller
         
         $rep_tt = json_encode($rep_tt); 
 
-        return view('economy.reptt')->with(compact('rep_tt'));
+        return view('economy_kenzhe.reptt')->with(compact('rep_tt'));
     }
 
     public function importSubholdingCompanies(Request $request){
         if($request->isMethod('GET')){
             $data = DB::table('subholding_companies')->orderBy('created_at','desc')->paginate(50);
-            return view('economy.import_sbh', compact('data'));
+            return view('economy_kenzhe.import_sbh', compact('data'));
         }elseif($request->isMethod('POST')){
-            
-            // Excel::import(new SbhCompanyImport, $request->select_file);
-            // return back()->with('success', 'Загрузка прошла успешно.');
+             Excel::import(new SbhCompanyImport, $request->select_file);
+             return back()->with('success', 'Загрузка прошла успешно.');
         }
     }
 
     public function importRepTt(Request $request){
         if($request->isMethod('GET')){
             $data = DB::table('rep_tt')->orderBy('created_at','desc')->paginate(50);
-            return view('economy.import_rep', compact('data'));
+            return view('economy_kenzhe.import_rep', compact('data'));
         }elseif($request->isMethod('POST')){
-            Excel::import(new RepTtImport, $request->select_file);
+            Excel::import(new RepTtValueImport(), $request->select_file);
         return back()->with('success', 'Загрузка прошла успешно.');
         }
+    }
+
+    public function company($id, $date){
+        $date = date('Y-m-d', strtotime('01-'.$date));
+        $company = SbhCompany::find($id);
+        $stats = $company->statsBydate($date)->get();
+        return view('economy_kenzhe.company')->with(compact('company','stats'));
     }
 
 }

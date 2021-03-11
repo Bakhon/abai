@@ -1,27 +1,29 @@
 <?php
 
-namespace App\Models\VisCenter\ImportForms;
+namespace App\Models\EconomyKenzhe;
 
 use Illuminate\Database\Eloquent\Model;
 
-class SbhCompany extends Model
+class RepTt extends Model
 {
     //
     protected $fillable = [
+        'parent_id',
         'num',
         'title'
     ];
 
-    protected $table = 'subholding_companies';
+    protected $table = 'rep_tt';
 
     public function repts(){
-        return $this->hasMany(SbhCompany::class, 'parent_id')->with('childRepts');
+        return $this->hasMany(RepTt::class, 'parent_id')->with('childRepts');
     }
 
     public function childRepts(){
-        return $this->hasMany(SbhCompany::class, 'parent_id')->with('repts');
+        return $this->hasMany(RepTt::class, 'parent_id')->with('repts');
     }
 
+    
     public function toArray(){
         $array = parent::toArray();
         $camelArray = array();
@@ -35,5 +37,4 @@ class SbhCompany extends Model
         }
         return $camelArray;
     }
-
 }
