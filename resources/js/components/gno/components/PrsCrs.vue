@@ -31,7 +31,7 @@ data: function(){
 },
 mounted() {
     var wi = this.wellIncl.split('_');
-    let uri = "http://172.20.103.187:7574/api/nno/history/"  + wi[0] + "/" + wi[1] + "/";
+    let uri = "http://172.20.103.187:7575/api/nno/history/"  + wi[0] + "/" + wi[1] + "/";
     this.$emit('update:isLoading', true);
     this.axios.get(uri).then((response) => {
     this.prs = response['data']['prs']['data']
