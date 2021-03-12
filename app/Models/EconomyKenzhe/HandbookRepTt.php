@@ -14,14 +14,14 @@ class HandbookRepTt extends Model
 
     protected $table = 'rep_tt';
 
-    public function handbookItems()
+    public function children()
     {
         return $this->hasMany(HandbookRepTt::class, 'parent_id')->with('childHandbookItems');
     }
 
     public function childHandbookItems()
     {
-        return $this->hasMany(HandbookRepTt::class, 'parent_id')->with('handbookItems');
+        return $this->hasMany(HandbookRepTt::class, 'parent_id')->with('children');
     }
 
 
@@ -31,11 +31,10 @@ class HandbookRepTt extends Model
         $camelArray = array();
         foreach ($array as $name => $value) {
             if ($name == 'child_handbook_items') {
-                $camelArray['handbook_items'] = $value;
+                $camelArray['children'] = $value;
             } else {
                 $camelArray[$name] = $value;
             }
-
         }
         return $camelArray;
     }
