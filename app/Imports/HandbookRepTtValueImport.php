@@ -2,15 +2,15 @@
 
 namespace App\Imports;
 
-use App\Models\EconomyKenzhe\RepTt;
-use App\Models\EconomyKenzhe\RepTtValue;
-use App\Models\EconomyKenzhe\SbhCompany;
+use App\Models\EconomyKenzhe\HandbookRepTt;
+use App\Models\EconomyKenzhe\HandbookRepTtValue;
+use App\Models\EconomyKenzhe\SubholdingCompany;
 use Carbon\Carbon;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithStartRow;
 
 
-class RepTtValueImport implements ToModel, WithStartRow
+class HandbookRepTtValueImport implements ToModel, WithStartRow
 {
 
     /**
@@ -21,11 +21,11 @@ class RepTtValueImport implements ToModel, WithStartRow
     public function model(array $row)
     {
         if($row[3] && $row[4] && $row[11]){
-            $company = SbhCompany::whereNum($row[4])->first();
-            $repTt = RepTt::whereNum($row[3])->first();
+            $company = SubholdingCompany::whereNum($row[4])->first();
+            $repTt = HandbookRepTt::whereNum($row[3])->first();
             $date = Carbon::createFromFormat('Y.m.d', $row[11].'.01');
             if($company and $repTt){
-                return new RepTtValue([
+                return new HandbookRepTtValue([
                     'company_id'=> $company->id,
                     'rep_id'=> $repTt->id,
                     'value'=>$row[13],

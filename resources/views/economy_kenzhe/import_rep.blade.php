@@ -1,10 +1,9 @@
 @extends('layouts.app')
 @section('content')
-    <h3 align="center">Импорт REP TT значении из Excel в базу данных MySQL</h3>
+    <h3 align="center">{{trans('economy_kenzhe.import_reptt')}}</h3>
     <br/>
     @if(count($errors) > 0)
         <div class="alert alert-danger">
-            Upload Validation Error<br><br>
             <ul>
                 @foreach($errors->all() as $error)
                     <li>{{ $error }}</li>
@@ -25,7 +24,7 @@
         <div class="form-group">
             <table class="table">
                 <tr>
-                    <td width="40%" align="right"><label style="color: white;">Выберите Excel файл</label></td>
+                    <td width="40%" align="right"><label style="color: white;">{{trans('economy_kenzhe.chose_file')}}</label></td>
                     <td width="30">
                         <input type="file" name="select_file"/>
                     </td>

@@ -13,39 +13,38 @@ class SubholdingCompany extends Model
 
     protected $table = 'subholding_companies';
 
-    public function child()
+    public function subCompanies()
     {
-        return $this->hasMany(SubholdingCompany::class, 'parent_id')->with('child_companies');
+        return $this->hasMany(SubholdingCompany::class, 'parent_id')->with('childCompanies');
     }
 
-    public function child_companies()
+    public function childCompanies()
     {
-        return $this->hasMany(SubholdingCompany::class, 'parent_id')->with('child');
+        return $this->hasMany(SubholdingCompany::class, 'parent_id')->with('subCompanies');
     }
 
     public function stats()
     {
-        return $this->hasMany(RepTtValue::class, 'company_id');
+        return $this->hasMany(HandbookRepTtValue::class, 'company_id');
     }
 
     public function statsByDate($date = '')
     {
-        return $this->hasMany(RepTtValue::class, 'company_id')->where('date', '=', $date);
+        return $this->hasMany(HandbookRepTtValue::class, 'company_id')->where('date', '=', $date);
     }
 
     public function toArray()
     {
         $array = parent::toArray();
-        $camelArray = array();
+        $renameArrayKeys = array();
         foreach ($array as $name => $value) {
             if ($name == 'child_companies') {
-                $camelArray['companies'] = $value;
+                $renameArrayKeys['sub_companies'] = $value;
             } else {
-                $camelArray[$name] = $value;
+                $renameArrayKeys[$name] = $value;
             }
-
         }
-        return $camelArray;
+        return $renameArrayKeys;
     }
 
 }

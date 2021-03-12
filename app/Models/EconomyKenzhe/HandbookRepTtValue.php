@@ -4,7 +4,7 @@ namespace App\Models\EconomyKenzhe;
 
 use Illuminate\Database\Eloquent\Model;
 
-class RepTtValue extends Model
+class HandbookRepTtValue extends Model
 {
     protected $table = 'rep_tt_values';
 
@@ -12,12 +12,12 @@ class RepTtValue extends Model
 
     public function company()
     {
-        return $this->belongsTo(RepTt::class, 'company_id', 'id');
+        return $this->belongsTo(SubholdingCompany::class, 'company_id', 'id');
     }
 
     public function rept()
     {
-        return $this->belongsTo(RepTt::class, 'rep_id', 'id');
+        return $this->belongsTo(HandbookRepTt::class, 'rep_id', 'id');
     }
 
 }

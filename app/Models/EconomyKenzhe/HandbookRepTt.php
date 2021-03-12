@@ -4,7 +4,7 @@ namespace App\Models\EconomyKenzhe;
 
 use Illuminate\Database\Eloquent\Model;
 
-class RepTt extends Model
+class HandbookRepTt extends Model
 {
     protected $fillable = [
         'parent_id',
@@ -14,14 +14,14 @@ class RepTt extends Model
 
     protected $table = 'rep_tt';
 
-    public function repts()
+    public function handbookItems()
     {
-        return $this->hasMany(RepTt::class, 'parent_id')->with('childRepts');
+        return $this->hasMany(HandbookRepTt::class, 'parent_id')->with('childHandbookItems');
     }
 
-    public function childRepts()
+    public function childHandbookItems()
     {
-        return $this->hasMany(RepTt::class, 'parent_id')->with('repts');
+        return $this->hasMany(HandbookRepTt::class, 'parent_id')->with('handbookItems');
     }
 
 
@@ -30,8 +30,8 @@ class RepTt extends Model
         $array = parent::toArray();
         $camelArray = array();
         foreach ($array as $name => $value) {
-            if ($name == 'child_repts') {
-                $camelArray['repts'] = $value;
+            if ($name == 'child_handbook_items') {
+                $camelArray['handbook_items'] = $value;
             } else {
                 $camelArray[$name] = $value;
             }
