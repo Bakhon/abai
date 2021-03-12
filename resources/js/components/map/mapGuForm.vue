@@ -36,6 +36,14 @@
           required
       ></b-form-input>
     </b-form-group>
+
+    <b-form-group :label="trans('monitoring.elevation')" label-for="coord-z">
+      <b-form-input
+          id="coord-z"
+          v-model="gu.elevation"
+          required
+      ></b-form-input>
+    </b-form-group>
   </div>
 </template>
 

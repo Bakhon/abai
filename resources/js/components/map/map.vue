@@ -127,6 +127,7 @@ export default {
       },
       firstCentered: false,
       layers: [],
+      pipes: [],
     };
   },
   created() {
@@ -134,11 +135,10 @@ export default {
   },
   computed: {
     ...guMapState([
-      'pipes',
+      // 'pipes',
       'zuPoints',
       'wellPoints',
       'guPoints',
-      'guCenters',
       'guPointsIndexes',
       'mapCenter'
     ]),
@@ -167,6 +167,70 @@ export default {
       'deleteWell',
       'deletePipe'
     ]),
+    async initMap() {
+      this.pipes = await this.getPipes(this.gu);
+
+      this.viewState = {
+        latitude: this.mapCenter.latitude,
+        longitude: this.mapCenter.longitude,
+        zoom: 11,
+        bearing: 0,
+        pitch: 30
+      };
+
+      let map = this.map = new mapboxgl.Map({
+        container: 'map',
+        style: this.mapStyle,
+        interactive: false,
+        center: [this.viewState.longitude, this.viewState.latitude],
+        zoom: this.viewState.zoom,
+        bearing: this.viewState.bearing,
+        pitch: this.viewState.pitch,
+        accessToken: this.mapBoxToken
+      });
+
+      this.map.on('click', (e) => {
+        this.mapClickHandle(e);
+      });
+
+      map.on('contextmenu', (e) => {
+        this.handleContextmenu(e);
+      });
+
+      this.prepareLayers();
+
+      let deck = this.deck = new Deck({
+        gl: map.painter.context.gl,
+        initialViewState: this.viewState,
+        controller: true,
+        onViewStateChange: ({viewState}) => {
+          this.map.jumpTo({
+            center: [viewState.longitude, viewState.latitude],
+            zoom: viewState.zoom,
+            bearing: viewState.bearing,
+            pitch: viewState.pitch
+          });
+        },
+        onHover: ({object}) => (this.isHovering = Boolean(object)),
+        getCursor: ({isDragging}) => (isDragging ? 'grabbing' : (this.isHovering ? 'pointer' : 'grab')),
+        getTooltip: ({object}) => object && object.name,
+        layers: this.layers,
+      });
+
+      // wait for map to be ready
+      this.map.on('load', () => {
+
+        // add to mapbox
+        this.layersIds.forEach((layerId) => {
+          this.map.addLayer(new MapboxLayer({id: layerId, deck}));
+        })
+
+        // update the layers
+        this.deck.setProps({
+          layers: this.layers
+        });
+      });
+    },
     handleContextmenu(event) {
       this.clickedObject = null;
       this.$refs.contextMenu.showMenu(event);
@@ -185,9 +249,9 @@ export default {
       if (option.editMode == 'pipe') {
         this.pipeObject = {
           id: null,
-          type: option.mapObject.type == 'zu' ? 'GuZu' : 'ZuWell',
+          between_points: option.mapObject.type == 'zu' ? 'zu-gu' : 'well-zu',
           name: '',
-          coordinates: [],
+          coords: [],
         };
 
         if (option.mapObject.type == 'zu') {
@@ -228,6 +292,7 @@ export default {
       this[method](option);
     },
     colorToRGBArray(color) {
+
       if (!color) {
         return [255, 255, 255, 0];
       }
@@ -313,7 +378,10 @@ export default {
         },
         getIcon: d => 'marker',
         sizeScale: type == 'gu' ? 30 : 20,
-        getPosition: (d) => [parseFloat(d.lon), parseFloat(d.lat)],
+        getPosition: (d) => [
+          parseFloat(d.lon.replace(',', '.')),
+          parseFloat(d.lat.replace(',', '.'))
+        ],
         sizeUnits: 'meters',
         getSize: d => 2,
         onClick: (info) => {
@@ -331,8 +399,14 @@ export default {
         widthScale: 2,
         widthMinPixels: 1,
         autoHighlight: true,
-        getPath: d => d.coordinates,
-        getColor: d => this.colorToRGBArray(d.color),
+        getPath: d => {
+          let path_coords = [];
+          d.coords.forEach(coord => {
+            path_coords.push([coord.lon, coord.lat]);
+          });
+          return path_coords;
+        },
+        getColor: d => this.colorToRGBArray(JSON.parse(d.color)),
         getWidth: d => 3,
         onClick: (info) => {
           info.type = 'pipe';
@@ -498,7 +572,6 @@ export default {
       }
     },
     async removePipe() {
-      this.pipeObject.type = typeof this.pipeObject.well_id !== 'undefined' && this.pipeObject.well_id ? 'ZuWell' : 'GuZu';
       let result = await this.deletePipe(this.pipeObject);
 
       if (result == 'success') {
@@ -605,70 +678,6 @@ export default {
         pitch: 30
       });
     },
-    async initMap() {
-      await this.getPipes(this.gu);
-
-      this.viewState = {
-        latitude: this.mapCenter.latitude,
-        longitude: this.mapCenter.longitude,
-        zoom: 11,
-        bearing: 0,
-        pitch: 30
-      };
-
-      let map = this.map = new mapboxgl.Map({
-        container: 'map',
-        style: this.mapStyle,
-        interactive: false,
-        center: [this.viewState.longitude, this.viewState.latitude],
-        zoom: this.viewState.zoom,
-        bearing: this.viewState.bearing,
-        pitch: this.viewState.pitch,
-        accessToken: this.mapBoxToken
-      });
-
-      this.map.on('click', (e) => {
-        this.mapClickHandle(e);
-      });
-
-      map.on('contextmenu', (e) => {
-        this.handleContextmenu(e);
-      });
-
-      this.prepareLayers();
-
-      let deck = this.deck = new Deck({
-        gl: map.painter.context.gl,
-        initialViewState: this.viewState,
-        controller: true,
-        onViewStateChange: ({viewState}) => {
-          this.map.jumpTo({
-            center: [viewState.longitude, viewState.latitude],
-            zoom: viewState.zoom,
-            bearing: viewState.bearing,
-            pitch: viewState.pitch
-          });
-        },
-        onHover: ({object}) => (this.isHovering = Boolean(object)),
-        getCursor: ({isDragging}) => (isDragging ? 'grabbing' : (this.isHovering ? 'pointer' : 'grab')),
-        getTooltip: ({object}) => object && object.name,
-        layers: this.layers,
-      });
-
-      // wait for map to be ready
-      this.map.on('load', () => {
-
-        // add to mapbox
-        this.layersIds.forEach((layerId) => {
-          this.map.addLayer(new MapboxLayer({id: layerId, deck}));
-        })
-
-        // update the layers
-        this.deck.setProps({
-          layers: this.layers
-        });
-      });
-    },
     mapClickHandle(e) {
       if (this.editMode && this.editMode != 'pipe') {
         this.objectData.lon = e.lngLat.lng;
@@ -676,7 +685,13 @@ export default {
 
         this.$bvModal.show('object-modal');
       } else if (this.editMode == 'pipe' && this.pipeObject) {
-        this.pipeObject.coordinates.push([e.lngLat.lng, e.lngLat.lat]);
+        this.pipeObject.coords.push({
+          lat: e.lngLat.lat,
+          lon: e.lngLat.lng,
+          elevation: 0,
+          h_distance: 0,
+          m_distance: 0
+        });
         this.renderPipe();
       }
     },
@@ -686,7 +701,14 @@ export default {
       if (this.editMode == 'pipe') {
         //pipe end point
         if ((info.type == 'zu' || info.type == 'gu') && this.pipeObject) {
-          this.pipeObject.coordinates.push(info.coordinate);
+
+          this.pipeObject.coords.push({
+            lat: info.coordinate[1],
+            lon: info.coordinate[0],
+            elevation: 0,
+            h_distance: 0,
+            m_distance: 0
+          });
 
           if (info.type == 'gu') {
             this.pipeObject.gu_id = info.object.id;

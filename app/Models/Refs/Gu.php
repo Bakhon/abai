@@ -2,10 +2,7 @@
 
 namespace App\Models\Refs;
 
-use App\Models\Traits\WithHistory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Refs\Zu;
-use App\Models\Refs\Well;
 use App\Models\ComplicationMonitoring\OmgCA;
 use App\Models\ComplicationMonitoring\OmgNGDU;
 use App\Models\ComplicationMonitoring\WaterMeasurement;
@@ -18,10 +15,12 @@ use App\Models\Pipes\ZuWellPipe;
 
 class Gu extends Model
 {
-    use WithHistory;
-
     protected $localKey = 'id';
     protected $guarded = ['id'];
+    protected $hidden = [
+        'created_at',
+        'updated_at'
+    ];
 
     public function cdng()
     {
@@ -46,6 +45,11 @@ class Gu extends Model
     public function omgngdu()
     {
         return $this->hasMany(OmgNGDU::class);
+    }
+
+    public function omgngdulast()
+    {
+        return $this->hasMany(OmgNGDU::class)->orderBy('date', 'desc');
     }
 
     public function watermeasurement()

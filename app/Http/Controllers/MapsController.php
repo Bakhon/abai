@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ComplicationMonitoring\PipeType;
+use App\Models\Pipes\MapPipe;
+use App\Models\Pipes\PipeCoord;
 use Illuminate\Http\Request;
 use App\Models\Pipes\GuZuPipe;
 use App\Services\MapService;
@@ -13,7 +16,9 @@ use App\Models\Refs\Well;
 use App\Services\DruidService;
 use App\Http\Resources\GuZuPipeResource;
 use App\Http\Resources\ZuWellPipeResource;
-use App\Models\ComplicationMonitoring\PipeType;
+
+use App\Imports\GuWellsImport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class MapsController extends Controller
 {
@@ -39,12 +44,9 @@ class MapsController extends Controller
         return view('maps.gu_map', compact('cdngs', 'gus'));
     }
 
-    public function guPipes(Request $request, DruidService $druidService): array
-    {
+    public function getMapCenter (){
         $coordinates = [];
-        $zuPipes = $this->getGuPipesWithCoords($coordinates);
-
-        $wellPipes = $this->getZuWellPipesWithCoords($coordinates);
+        $this->getPipesWithCoords($coordinates);
 
         foreach ($coordinates as $guId => $coords) {
             $guCenters[$guId] = !empty($coords) ? $this->mapService->calculateCenterOfCoordinates($coords) : null;
@@ -52,10 +54,25 @@ class MapsController extends Controller
 
         $center = $this->mapService->calculateCenterOfCoordinates($guCenters);
 
-        $wellPoints = $this->getWellPointsWithInfo($druidService);
+        return $center;
+    }
+
+    public function guPipes(Request $request, DruidService $druidService): array
+    {
+        $pipes = MapPipe::with('coords', 'pipeType')->get();
+
+        $center = [52.854602599069, 43.426262258809];
+
+        $wellPoints = Well::query()
+            ->whereHas('zu.gu')
+            ->whereHas('ngdu')
+            ->whereNotNull('wells.lat')
+            ->whereNotNull('wells.lon')
+            ->get();
 
         $zuPoints = Zu::query()
             ->whereHas('gu')
+            ->whereHas('ngdu')
             ->whereNotNull('lat')
             ->whereNotNull('lon')
             ->get();
@@ -68,14 +85,44 @@ class MapsController extends Controller
         $pipeTypes = PipeType::all();
 
         return [
-            'pipes' => $wellPipes->merge($zuPipes),
+            'pipes' => $pipes,
             'wellPoints' => $wellPoints,
             'zuPoints' => $zuPoints,
             'guPoints' => $guPoints,
-            'guCenters' => $guCenters,
             'center' => $center,
             'pipeTypes' => $pipeTypes,
         ];
+    }
+
+    private function getPipesWithCoords(array &$coordinates): \Illuminate\Database\Eloquent\Collection
+    {
+        $map_pipes = MapPipe::with('coords', 'pipeType')->get();
+        $coords = [];
+
+        $map_pipes->map(
+            function ($map_pipe) use (&$coordinates, &$coords) {
+                $map_pipe->coords->map(
+                    function ($coord) use (&$coordinates, &$map_pipe, &$coords) {
+                        $coords[] = [$coord->lon, $coord->lat];
+
+                        return $coord;
+                    }
+                );
+
+                if (!isset($coordinates[$map_pipe->gu_id])) {
+                    $coordinates[$map_pipe->gu_id] = [];
+                }
+
+                $coordinates[$map_pipe->gu_id] = array_merge(
+                    $coordinates[$map_pipe->gu_id],
+                    $coords
+                );
+
+                return $map_pipe;
+            }
+        );
+
+        return $map_pipes;
     }
 
     private function getWellOilInfo(DruidService $druidService): array
@@ -170,13 +217,19 @@ class MapsController extends Controller
     public function storePipe(Request $request): \Symfony\Component\HttpFoundation\Response
     {
         $pipe_input = $request->input('pipe');
-        $pipe = $pipe_input['type'] == 'GuZu' ? new GuZuPipe : new ZuWellPipe;
-
+        $pipe = new MapPipe;
         $pipe->fill($pipe_input);
-        $pipe->coordinates = $this->switchCoords($pipe_input['coordinates']);
         $pipe->save();
 
-        $pipe = $pipe_input['type'] == 'GuZu' ? new GuZuPipeResource($pipe) : new ZuWellPipeResource($pipe);
+        foreach ($pipe_input['coords'] as $coord) {
+            $pipe_coord = new PipeCoord;
+            $pipe_coord->fill($coord);
+            $pipe_coord->map_pipe_id = $pipe->id;
+            $pipe_coord->save();
+        }
+
+        $pipe = MapPipe::with('coords', 'pipeType')->find($pipe->id);
+        $pipe->color = $this->mapService->getPipeColor($pipe->between_points);
 
         return response()->json(
             [
@@ -231,22 +284,21 @@ class MapsController extends Controller
         );
     }
 
-    public function updatePipe(Request $request, int $id): \Symfony\Component\HttpFoundation\Response
+    public function updatePipe(Request $request, MapPipe $pipe): \Symfony\Component\HttpFoundation\Response
     {
         $pipe_input = $request->input('pipe');
-        $type = isset($pipe_input['well_id']) && $pipe_input['well_id'] ? 'ZuWell' : 'GuZu';
-
-        if ($type == 'ZuWell') {
-            $pipe = ZuWellPipe::find($id);
-        } else {
-            $pipe = GuZuPipe::find($id);
-        }
-
         $pipe->fill($pipe_input);
-        $pipe->coordinates = $this->switchCoords($pipe_input['coordinates']);
         $pipe->save();
 
-        $pipe = $type == 'GuZu' ? new GuZuPipeResource($pipe) : new ZuWellPipeResource($pipe);
+        foreach ($pipe_input['coords'] as $coord) {
+            $pipe_coord = PipeCoord::find($coord['id']);
+            $pipe_coord->fill($coord);
+            $pipe_coord->save();
+        }
+
+        $pipe = MapPipe::with('coords', 'pipeType')->find($pipe->id);
+
+        $pipe->color = $this->mapService->getPipeColor($pipe->between_points);
 
         return response()->json(
             [
@@ -289,85 +341,15 @@ class MapsController extends Controller
         );
     }
 
-    public function deletePipe(int $id, string $type): \Symfony\Component\HttpFoundation\Response
+    public function deletePipe(MapPipe $pipe): \Symfony\Component\HttpFoundation\Response
     {
-        if ($type == 'ZuWell') {
-            $pipe = ZuWellPipe::find($id);
-        } else {
-            $pipe = GuZuPipe::find($id);
-        }
-
+        PipeCoord::where('map_pipe_id', $pipe->id)->delete();
         $pipe->delete();
 
         return response()->json(
             [
                 'status' => config('response.status.success'),
             ]
-        );
-    }
-
-    private function getGuPipesWithCoords(array &$coordinates): \Illuminate\Database\Eloquent\Collection
-    {
-        return GuZuPipe::with('pipeType')
-            ->whereHas('gu')
-            ->get()
-            ->map(
-                function ($pipe) use (&$coordinates) {
-                    if (!isset($coordinates[$pipe->gu_id])) {
-                        $coordinates[$pipe->gu_id] = [];
-                    }
-
-                    $coords = $this->switchCoords($pipe->coordinates);
-
-                    $coordinates[$pipe->gu_id] = array_merge(
-                        $coordinates[$pipe->gu_id],
-                        $coords
-                    );
-
-                    $pipe->coordinates = $coords;
-                    $pipe->color = [255, 0, 0];
-                    $pipe->name = (string)$pipe->id;
-                    return $pipe;
-                }
-            );
-    }
-
-    private function getZuWellPipesWithCoords(array &$coordinates): \Illuminate\Database\Eloquent\Collection
-    {
-        return ZuWellPipe::with('pipeType')
-            ->whereHas('gu')
-            ->get()
-            ->map(
-                function ($pipe) use (&$coordinates) {
-                    if (!isset($coordinates[$pipe->gu_id])) {
-                        $coordinates[$pipe->gu_id] = [];
-                    }
-
-                    $coords = $this->switchCoords($pipe->coordinates);
-
-                    $coordinates[$pipe->gu_id] = array_merge(
-                        $coordinates[$pipe->gu_id],
-                        $coords
-                    );
-
-                    $pipe->coordinates = $coords;
-                    $pipe->color = [0, 255, 0];
-                    $pipe->name = (string)$pipe->id;
-                    return $pipe;
-                }
-            );
-    }
-
-    private function switchCoords($coords)
-    {
-        return array_map(
-            function ($coord) {
-                return [
-                    round($coord[1], 8),
-                    round($coord[0], 8),
-                ];
-            },
-            $coords
         );
     }
 }

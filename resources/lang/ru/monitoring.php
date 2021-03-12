@@ -284,4 +284,5 @@ return array (
   'well_vinit' => 'Cкважину',
   'longitude' => 'Долгота',
   'latitude' => 'Широта',
+  'elevation' => 'Высота',
 );

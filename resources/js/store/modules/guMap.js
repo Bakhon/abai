@@ -4,20 +4,15 @@ const guMap = {
     namespaced: true,
 
     state: {
-        pipes: [],
         zuPoints: [],
         wellPoints: [],
         guPoints: [],
-        guCenters: [],
         guPointsIndexes: [],
         pipeTypes: [],
         mapCenter: {},
     },
 
     mutations: {
-        SET_PIPES(state, payload) {
-            state.pipes = payload;
-        },
         SET_ZU_POINTS(state, payload) {
             state.zuPoints = payload;
         },
@@ -26,9 +21,6 @@ const guMap = {
         },
         SET_GU_POINTS(state, payload) {
             state.guPoints = payload;
-        },
-        SET_GU_CENTERS(state, payload) {
-            state.guCenters = payload;
         },
         SET_GU_POINT_INDEX(state, payload) {
             state.guPointsIndexes[payload.index] = payload.id;
@@ -83,8 +75,7 @@ const guMap = {
 
     actions: {
         async getPipes({dispatch, commit}, gu) {
-            await axios.get(this._vm.localeUrl("/gu-map/pipes"), {params: {gu: gu}}).then((response) => {
-                commit('SET_PIPES', response.data.pipes);
+            return await axios.get(this._vm.localeUrl("/gu-map/pipes"), {params: {gu: gu}}).then((response) => {
                 commit('SET_ZU_POINTS', response.data.zuPoints);
                 commit('SET_WELL_POINTS', response.data.wellPoints);
                 commit('SET_GU_POINTS', response.data.guPoints);
@@ -95,6 +86,7 @@ const guMap = {
                     longitude: response.data.center[0]
                 });
                 dispatch('indexingGuPoints');
+                return response.data.pipes;
             })
         },
 
@@ -235,8 +227,8 @@ const guMap = {
                 }
             });
         },
-        deletePipe({state, commit}, pipe) {
-            return axios.delete(this._vm.localeUrl("/gu-map/pipe/" + pipe.id + '/' + pipe.type))
+        deletePipe ({state, commit}, pipe) {
+            return axios.delete(this._vm.localeUrl("/gu-map/pipe/" + pipe.id ))
                 .then((response) => {
                     if (response.data.status == 'success') {
                         commit('DELETE_PIPE', pipe.index);
