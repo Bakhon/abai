@@ -928,9 +928,11 @@ export default {
         getDiffProcentLastP(a, b, c) {
             if (c) {
                 if (a > b) {
-                    return 'Снижение'
+                    return this.trans("visualcenter.decrease")
+                    // 'Снижение'
                 } else if (a < b) {
-                    return 'Рост'
+                    return this.trans("visualcenter.rise")
+                    // 'Рост'
                 }
                 ;
             } else {

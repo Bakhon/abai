@@ -49,7 +49,20 @@ export default {
             "name": "ru",
             "options": {
               "months": ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"],
-              "shortMonths": ["Янв", "Фев", "Мар", "Апр", "Май", "Июнь", "Июль", "Авг", "Сент", "Окт", "Нояб", "Дек"],
+              "shortMonths": [
+                this.trans("visualcenter.jan"), 
+                this.trans("visualcenter.feb"),// "Фев", 
+                this.trans("visualcenter.mar"),// "Мар", 
+                this.trans("visualcenter.apr"),// "Апр", 
+                this.trans("visualcenter.may"),// "Май", 
+                this.trans("visualcenter.june"),// "Июнь", 
+                this.trans("visualcenter.july"),// "Июль", 
+                this.trans("visualcenter.aug"),// "Авг", 
+                this.trans("visualcenfter.sept"),// "Сент",
+                this.trans("visualcenter.oct"),//  "Окт", 
+                this.trans("visualcenter.nov"),//  "Нояб", 
+                this.trans("visualcenter.dec")//  "Дек"
+                 ],
               "days": ["Воскресенье", "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"],
               "shortDays": ["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"],
             }

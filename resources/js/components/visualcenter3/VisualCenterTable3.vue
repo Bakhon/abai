@@ -1999,7 +1999,7 @@
                   </table>
                 </div>
                 <div class="col-sm-5">
-                <div  class="name-chart-left">Объём хим. реагента, тонны</div>
+                <div  class="name-chart-left">{{trans("visualcenter.chemVolume")}}</div>
                   <visual-center3-wells
                     v-if="chemistryDataForChart"
                     :chartData="chemistryDataForChart"
