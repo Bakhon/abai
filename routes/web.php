@@ -172,7 +172,7 @@ Route::group(
                 Route::get('anticrisis', 'AntiCrisisController@index')->name('anticrisis');
 
 
-                //economy module
+                
                 Route::get('/module_economy', 'EconomyKenzhe\MainController@index');
                 Route::get('/module_economy/company/{id}/{date}', 'EconomyKenzhe\MainController@company')->name('company');
                 Route::get('/module_economy/companies', 'EconomyKenzhe\MainController@companies');
