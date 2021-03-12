@@ -11,7 +11,7 @@ class CrudListResource extends JsonResource
 
     protected function getLinks(...$actions)
     {
-        $routeParentName = $this->index_routeParentName ?? $this->modelName;
+        $routeParentName = $this->routeParentName ?? $this->modelName;
 
         $links = [];
         if ((empty($actions) || in_array('read', $actions)) && auth()->user()->can('monitoring read ' . $this->modelName)) {
