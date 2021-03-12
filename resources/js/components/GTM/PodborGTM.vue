@@ -71,15 +71,15 @@
                 </div>
             </div>
             <div class="col-lg-2 p-0 pl-2 pr-1">
-                <div class="position-absolute tree-setting-block d-flex">
+                <div class="position-absolute tree-setting-block d-flex z-index-1">
                     <keep-alive>
-                        <component v-bind:is="treeSettingComponent" class="gtm-dark mt-2 h-100"></component>
+                        <component v-bind:is="treeSettingComponent" class="gtm-dark h-100"></component>
                     </keep-alive>
                     <keep-alive>
-                        <component v-bind:is="treeChildrenComponent" class="gtm-dark mt-2 ml-2 h-100" @node-click="nodeClick"></component>
+                        <component v-bind:is="treeChildrenComponent" class="gtm-dark ml-2 h-100" @node-click="nodeClick"></component>
                     </keep-alive>
                 </div>
-                <div class="gtm-dark pb-3">
+                <div class="gtm-dark pb-3 position-relative z-index-1">
                     <div class="block-header text-center">
                         Поиск потенциала
                     </div>
@@ -228,14 +228,12 @@ export default {
             },
             treeSettingHeader: '',
             treeSettingBody: '',
-            treeSettingComponent: null,
-            treeChildrenComponent: null,
         };
     },
     methods: {
         nodeClick (data) {
             this.$_setTreeChildrenComponent(data);
-            this.treeSettingComponent = {
+            this.$store.commit('changeTreeSettingComponent', {
                 name: 'gtm-tree-setting',
                 data: function () {
                     return {
@@ -245,19 +243,20 @@ export default {
                     }
                 },
                 template: '<div><div class="block-header text-center">'+ data.node.name + '</div><gtm-tree :treeData="treeData"></gtm-tree></div>',
-            };
+            });
         },
         $_setTreeChildrenComponent(data) {
             let node = data.node;
+            this.$store.commit('changeIsShadowBlockShow',true);
             if (node.ioi_finder_model === undefined) {
                 if (data.hideIoiMenu) {
-                    this.treeChildrenComponent = null
+                    this.$store.commit('changeTreeChildrenComponent',null);
                     return;
                 } else {
                     return;
                 }
             }
-            this.treeChildrenComponent = {
+            this.$store.commit('changeTreeChildrenComponent', {
                 name: 'gtm-tree-setting',
                 data: function () {
                     return {
@@ -272,8 +271,16 @@ export default {
                         this.$emit('node-click', {node: data.node, hideIoiMenu: false});
                     }
                 }
-            };
+            });
         }
+    },
+    computed: {
+        treeChildrenComponent() {
+            return this.$store.state.treeChildrenComponent;
+        },
+        treeSettingComponent() {
+            return this.$store.state.treeSettingComponent;
+        },
     },
 }
 </script>
