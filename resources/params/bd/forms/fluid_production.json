@@ -1,45 +1,226 @@
 {
   "type": "table",
-  "fields": [
+  "columns": [
     {
-      "code": "org",
-      "type": "dict_tree",
-      "title": "Оргструктура",
-      "validation": "required|exists:tbd.dict.org,id",
-      "dict": "orgs",
-      "callbacks": {
-        "filterGeoByDZO": "geo"
-      }
-    },
-    {
-      "code": "geo",
-      "type": "dict_tree",
-      "title": "Геоструктура",
-      "validation": "required|exists:tbd.dict.geo,id",
-      "dict": "geos",
-      "callbacks": {
-        "setWellPrefix": "name"
-      }
-    },
-    {
-      "code": "name",
-      "type": "text",
       "title": "Номер скважины",
-      "validation": "required|max:255",
-      "prefix": ""
+      "code": "uwi",
+      "type": "link",
+      "isEditable": false
     },
     {
-      "code": "date_create",
-      "type": "date",
-      "title": "Дата создания проекта",
-      "validation": "required|date"
+      "title": "Совместные скважины",
+      "code": "other_uwi",
+      "type": "text",
+      "isEditable": false
     },
     {
-      "code": "category",
-      "type": "dict",
-      "title": "Категория скважины",
-      "validation": "required|exists:tbd.prod.well_category,id",
-      "dict": "well_categories"
+      "title": "Отработанное время",
+      "code": "worktime",
+      "type": "text",
+      "isEditable": false
+    },
+    {
+      "title": "Способ эксплуатации",
+      "code": "exp_type",
+      "table": "tbdi.well_expl",
+      "column": "name",
+      "type": "text",
+      "isEditable": false
+    },
+    {
+      "title": "Отвод",
+      "code": "lease",
+      "table": "tbdi.well_tech",
+      "column": "tap",
+      "type": "integer",
+      "isEditable": false
+    },
+    {
+      "title": "Геоструктура",
+      "code": "geo",
+      "type": "text",
+      "isEditable": false
+    },
+    {
+      "title": "Дебит жидк. по тех.режиму, м³/сут",
+      "code": "debit_fluid_tech",
+      "table": "tbdi.tech_mode_well",
+      "column": "liquid",
+      "type": "float",
+      "isEditable": false
+    },
+    {
+      "title": "Дебит нефти по тех. режиму, тн.",
+      "code": "debit_oil_tech",
+      "table": "tbdi.tech_mode_well",
+      "column": "oil",
+      "type": "float",
+      "isEditable": false
+    },
+    {
+      "title": "Обводн. по тех.режиму, %",
+      "code": "bsw_tech",
+      "table": "tbdi.tech_mode_well",
+      "column": "bsw",
+      "type": "float",
+      "isEditable": false
+    },
+    {
+      "title": "Добыча жидкости, м3",
+      "code": "liquid_val",
+      "type": "float",
+      "isEditable": false
+    },
+    {
+      "title": "Добыча нефти, тн",
+      "code": "oil_val",
+      "type": "float",
+      "isEditable": false
+    },
+    {
+      "title": "Дебит жидк., м³/сут",
+      "code": "liquid_debit",
+      "table": "tbdi.liquid_prod",
+      "column": "liquid_val",
+      "type": "float",
+      "isEditable": true,
+      "validation": "numeric|gt:0"
+    },
+    {
+      "title": "Отметка",
+      "code": "mark",
+      "type": "text",
+      "isEditable": false
+    },
+    {
+      "title": "Жидк. с телеметрии, м³/сут",
+      "code": "note",
+      "type": "float",
+      "isEditable": false
+    },
+    {
+      "title": "Тек. обводненность, %",
+      "code": "bsw",
+      "table": "tbdi.bsw_prod",
+      "column": "bsw_val",
+      "type": "float",
+      "isEditable": true,
+      "validation": "numeric|gte:0|lte:100"
+    },
+    {
+      "title": "Дебит нефти",
+      "code": "oil_debit",
+      "type": "float",
+      "isEditable": false
+    },
+    {
+      "title": "Мех. примеси, %",
+      "code": "contamination",
+      "type": "float",
+      "isEditable": false
+    },
+    {
+      "title": "Диаметр штуцера, мм",
+      "code": "contamination",
+      "type": "float",
+      "isEditable": false
+    },
+    {
+      "title": "Рбуфф.",
+      "code": "p_buf",
+      "table": "tbdic.meas_log_cut",
+      "column": "p_buf",
+      "type": "float",
+      "isEditable": true,
+      "validation": "numeric|gt:0"
+    },
+    {
+      "title": "Рзатр",
+      "code": "p_zatr",
+      "table": "tbdic.meas_log_cut",
+      "column": "p_zatr",
+      "type": "float",
+      "isEditable": true,
+      "validation": "numeric|gt:0"
+    },
+    {
+      "title": "Рбуфф. до штуцера",
+      "code": "p_buf_b",
+      "table": "tbdic.meas_log_cut",
+      "column": "p_buf_b",
+      "type": "float",
+      "isEditable": true,
+      "validation": "numeric|gt:0"
+    },
+    {
+      "title": "Рбуфф. после штуцера",
+      "code": "p_buf_a",
+      "table": "tbdic.meas_log_cut",
+      "column": "p_buf_a",
+      "type": "float",
+      "isEditable": true,
+      "validation": "numeric|gt:0"
+    },
+    {
+      "title": "Об./мин",
+      "code": "cycle_per_minute",
+      "type": "float",
+      "isEditable": false
+    },
+    {
+      "title": "Длина хода, м",
+      "code": "length_stroke",
+      "type": "float",
+      "isEditable": false
+    },
+    {
+      "title": "Число качаний",
+      "code": "reciprotating_speed",
+      "type": "float",
+      "isEditable": false
+    },
+    {
+      "title": "Причина простоя",
+      "code": "downtime_reason",
+      "type": "text",
+      "isEditable": false
+    },
+    {
+      "title": "Газовый фактор, м³/т",
+      "code": "gas_factor",
+      "table": "tbdic.meas_log_cut",
+      "column": "gas_factor",
+      "type": "float",
+      "isEditable": false,
+      "validation": "numeric|gt:0"
+    },
+    {
+      "title": "Добыча газа, м³",
+      "code": "gas_output",
+      "type": "float",
+      "isEditable": false
+    },
+    {
+      "title": "Примечание",
+      "code": "note",
+      "table": "tbdic.meas_log_cut",
+      "column": "note",
+      "type": "text",
+      "isEditable": false
+    },
+    {
+      "title": "Причина снижения дебита",
+      "code": "prod_decline_reason",
+      "table": "tbdic.meas_log_cut",
+      "column": "prod_decline_reason",
+      "type": "text",
+      "isEditable": false
+    },
+    {
+      "title": "Замеры по скважине за последний месяц",
+      "code": "measure_last_month",
+      "type": "text",
+      "isEditable": false
     }
   ]
 }

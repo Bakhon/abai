@@ -77,12 +77,12 @@ class MapsController extends Controller
             ->whereNotNull('lon')
             ->get();
 
-//        $guPoints = Gu::with('omgngdu_last:id,daily_fluid_production,daily_oil_production,bsw,pump_discharge_pressure,heater_output_pressure,editable')
-
         $guPoints = Gu::query()
             ->whereNotNull('lat')
             ->whereNotNull('lon')
             ->get();
+
+        $pipeTypes = PipeType::all();
 
         return [
             'pipes' => $pipes,
@@ -90,6 +90,7 @@ class MapsController extends Controller
             'zuPoints' => $zuPoints,
             'guPoints' => $guPoints,
             'center' => $center,
+            'pipeTypes' => $pipeTypes,
         ];
     }
 
