@@ -95,6 +95,11 @@ class FluidProduction extends TableForm
                         'id' => $item->id,
                         'name' => $item->uwi,
                         'href' => '#'
+                    ],
+                    'density_oil' => [
+                        'id' => null,
+                        'value' => floatval($item->geo->first()->density_oil),
+                        'date' => null
                     ]
                 ];
 
@@ -102,43 +107,85 @@ class FluidProduction extends TableForm
                 $result = array_merge($result, $measurementFields);
 
                 foreach ($this->getFields() as $field) {
-                    if (!empty($field['table'])) {
-                        switch ($field['table']) {
-                            case 'tbdic.meas_log_cut':
-                                continue;
-                            default:
-                                $result[$field['code']] = $this->getFieldByDates(
-                                    $field,
-                                    $rowData[$field['table']],
-                                    $item
-                                );
-                        }
-                    } else {
-                        switch ($field['code']) {
-                            case 'geo':
-
-                                $ancestors = $item->geo->first()->ancestors()
-                                    ->reverse()
-                                    ->pluck('name')
-                                    ->toArray();
-
-                                $ancestors[] = $item->geo->first()->name;
-
-                                $result[$field['code']] = [
-                                    'id' => null,
-                                    'value' => implode(' / ', $ancestors),
-                                    'date' => null
-                                ];
-                                break;
-                        }
+                    $fieldValue = $this->getFieldValue($field, $rowData, $item);
+                    if (!empty($fieldValue)) {
+                        $result[$field['code']] = $fieldValue;
                     }
                 }
-
                 return $result;
             }
         );
 
         return $wells->toArray();
+    }
+
+    /**
+     * @param $field
+     * @param $collection
+     * @param $item
+     * @param array $result
+     * @return array
+     */
+    public function getFieldValue($field, $rowData, $item): ?array
+    {
+        switch ($field['code']) {
+            case 'worktime':
+
+                $fieldInfo = $this->getFieldByDates(
+                    $field,
+                    $rowData[$field['table']],
+                    $item
+                );
+
+                $value = 0;
+                if ($fieldInfo['value'] !== null) {
+                    $value = in_array($fieldInfo['value'], Well::WELL_ACTIVE_STATUSES) ? 1 : 0;
+                }
+
+                return [
+                    'value' => $value
+                ];
+
+            case 'other_uwi':
+
+                return $this->getOtherUwis($item);
+
+            case 'geo':
+
+                $ancestors = $item->geo->first()->ancestors()
+                    ->reverse()
+                    ->pluck('name')
+                    ->toArray();
+
+                $ancestors[] = $item->geo->first()->name;
+
+                return [
+                    'value' => implode(' / ', $ancestors),
+                    'date' => null
+                ];
+
+                continue;
+        }
+
+        if ($field['type'] === 'calc') {
+            return [
+                'value' => null
+            ];
+        }
+
+        if (!empty($field['table'])) {
+            switch ($field['table']) {
+                case 'tbdic.meas_log_cut':
+                    return null;
+                default:
+                    return $this->getFieldByDates(
+                        $field,
+                        $rowData[$field['table']],
+                        $item
+                    );
+            }
+        }
+        return null;
     }
 
     protected function getFilterTree(): array
@@ -175,9 +222,14 @@ class FluidProduction extends TableForm
                 }
                 $result[$field] = [
                     'id' => $measurement->id,
-                    'value' => $measurement->{$field},
-                    'date' => !$this->isCurrentDay($measurement->dbeg) ? $measurement->dbeg : null
+                    'value' => null
                 ];
+                if ($this->isCurrentDay($measurement->dbeg)) {
+                    $result[$field]['value'] = $measurement->{$field};
+                } else {
+                    $result[$field]['old_value'] = $measurement->{$field};
+                    $result[$field]['date'] = $measurement->dbeg;
+                }
             }
         }
 
@@ -185,8 +237,7 @@ class FluidProduction extends TableForm
             if (!isset($result[$field])) {
                 $result[$field] = [
                     'id' => null,
-                    'value' => null,
-                    'date' => null
+                    'value' => null
                 ];
             }
         }
@@ -211,11 +262,19 @@ class FluidProduction extends TableForm
                 break;
         }
 
-        return [
+        $result = [
             'id' => $row->id,
-            'value' => $value,
-            'date' => !$this->isCurrentDay($row->dbeg) ? $row->dbeg : null
+            'value' => null,
         ];
+
+        if ($this->isCurrentDay($row->dbeg)) {
+            $result['value'] = $value;
+        } else {
+            $result['old_value'] = $value;
+            $result['date'] = $row->dbeg;
+        }
+
+        return $result;
     }
 
     private function isCurrentDay(string $date)
@@ -263,5 +322,23 @@ class FluidProduction extends TableForm
                 Carbon::parse($date)->toDateTimeString()
             )
             ->first();
+    }
+
+    private function getOtherUwis($item)
+    {
+        $uwi = DB::connection('tbd')
+            ->table('tbdi.well as w')
+            ->selectRaw('w.id,w.uwi,array_agg(b.uwi) as other_uwi')
+            ->leftJoin('tbdic.joint_wells as j', 'w.id', '=', DB::raw("any(j.well_id_arr)"))
+            ->leftJoin('tbdi.well as b', 'b.id', '=', DB::raw('any(array_remove(j.well_id_arr, w.id))'))
+            ->where('w.id', $item->id)
+            ->groupBy('w.id', 'w.uwi')
+            ->first();
+
+        return [
+            'id' => null,
+            'value' => $uwi->other_uwi === '{NULL}' ? null : str_replace(['{', '}'], '', $uwi->other_uwi),
+            'date' => null
+        ];
     }
 }

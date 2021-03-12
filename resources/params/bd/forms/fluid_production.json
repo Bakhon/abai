@@ -16,6 +16,8 @@
     {
       "title": "Отработанное время",
       "code": "worktime",
+      "table": "tbdi.well_status",
+      "column": "well_status_type_id",
       "type": "text",
       "isEditable": false
     },
@@ -68,13 +70,15 @@
     {
       "title": "Добыча жидкости, м3",
       "code": "liquid_val",
-      "type": "float",
+      "type": "calc",
+      "formula": "$liquid_debit$ * $worktime$",
       "isEditable": false
     },
     {
       "title": "Добыча нефти, тн",
       "code": "oil_val",
-      "type": "float",
+      "type": "calc",
+      "formula": "$oil_debit$ * $worktime$",
       "isEditable": false
     },
     {
@@ -110,7 +114,8 @@
     {
       "title": "Дебит нефти",
       "code": "oil_debit",
-      "type": "float",
+      "type": "calc",
+      "formula": "$liquid_debit$ * (1 - $bsw_tech$/100) * $density_oil$",
       "isEditable": false
     },
     {
@@ -191,13 +196,13 @@
       "table": "tbdic.meas_log_cut",
       "column": "gas_factor",
       "type": "float",
-      "isEditable": false,
+      "isEditable": true,
       "validation": "numeric|gt:0"
     },
     {
       "title": "Добыча газа, м³",
       "code": "gas_output",
-      "type": "float",
+      "type": "text",
       "isEditable": false
     },
     {
@@ -206,7 +211,7 @@
       "table": "tbdic.meas_log_cut",
       "column": "note",
       "type": "text",
-      "isEditable": false
+      "isEditable": true
     },
     {
       "title": "Причина снижения дебита",
@@ -214,12 +219,18 @@
       "table": "tbdic.meas_log_cut",
       "column": "prod_decline_reason",
       "type": "text",
-      "isEditable": false
+      "isEditable": true
     },
     {
       "title": "Замеры по скважине за последний месяц",
       "code": "measure_last_month",
       "type": "text",
+      "isEditable": false
+    },
+    {
+      "title": "Плотность нефти",
+      "code": "density_oil",
+      "type": "hidden",
       "isEditable": false
     }
   ]
