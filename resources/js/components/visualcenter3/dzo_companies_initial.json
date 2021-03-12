@@ -3,84 +3,84 @@
     "companyName": "visualcenter.emg",
     "selected": false,
     "ticker":"ЭМГ",
-    "type": "nonOperating"
+    "type": "isNonOperating"
   },
   {
     "companyName": "visualcenter.pki",
     "selected": false,
     "ticker":"ПКИ",
-    "type": "operating"
+    "type": "isOperating"
   },
   {
     "companyName": "visualcenter.omg",
     "selected": false,
     "ticker":"ОМГ",
-    "type": "nonOperating"
+    "type": "isNonOperating"
   },
   {
     "companyName": "visualcenter.kbm",
     "selected": false,
     "ticker":"КБМ",
-    "type": "nonOperating"
+    "type": "isNonOperating"
   },
   {
     "companyName": "visualcenter.kgm",
     "selected": false,
     "ticker":"КГМ",
-    "type": "nonOperating"
+    "type": "isNonOperating"
   },
   {
     "companyName": "visualcenter.pkk",
     "selected": false,
     "ticker":"ПКК",
-    "type": "operating"
+    "type": "isOperating"
   },
   {
     "companyName": "visualcenter.tp",
     "selected": false,
     "ticker":"ТП",
-    "type": "operating"
+    "type": "isOperating"
   },
   {
     "companyName": "visualcenter.tsho",
     "selected": false,
     "ticker":"ТШО",
-    "type": "operating"
+    "type": "isOperating"
   },
   {
     "companyName": "visualcenter.mmg",
     "selected": false,
     "ticker":"ММГ",
-    "type": "nonOperating"
+    "type": "isNonOperating"
   },
   {
     "companyName": "visualcenter.koa",
     "selected": false,
     "ticker":"КОА",
-    "type": "nonOperating"
+    "type": "isNonOperating"
   },
   {
     "companyName": "visualcenter.ktm",
     "selected": false,
     "ticker":"КТМ",
-    "type": "nonOperating"
+    "type": "isNonOperating"
   },
   {
     "companyName": "visualcenter.kpo",
     "selected": false,
     "ticker":"КПО",
-    "type": "operating"
+    "type": "isOperating"
   },
   {
     "companyName": "visualcenter.nko",
     "selected": false,
     "ticker":"НКО",
-    "type": "operating"
+    "type": "isOperating"
   },
   {
     "companyName": "visualcenter.uo",
     "selected": false,
     "ticker":"УО",
-    "type": "nonOperating"
+    "type": "isNonOperating"
   }
 ]
