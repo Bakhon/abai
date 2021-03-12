@@ -1,5 +1,15 @@
 <template>
   <div>
+    <b-col cols="12" sm="4">
+      <b-form-group :label="trans('monitoring.pipe.name')" label-for="pipe_name">
+        <b-form-input
+            id="pipe_name"
+            v-model="pipe.name"
+            required
+        ></b-form-input>
+      </b-form-group>
+    </b-col>
+
     <b-form-group
         :label="trans('monitoring.gu.gu')"
         label-for="gu"
@@ -27,26 +37,58 @@
     </h5>
 
     <b-collapse  id="coordsVisible">
-      <b-row v-for="(coord, index) in pipe.coordinates" :key="index">
-        <b-col cols="12" sm="6">
+      <b-row v-for="(coord, index) in pipe.coords" :key="index">
+        <h6 class="w-100 px-3 mb-2">Точка {{ index }}</h6>
+        <b-col cols="12" sm="4">
           <b-form-group :label="trans('monitoring.latitude')" :label-for="'coord-x'+index">
             <b-form-input
                 :id="'coord-x'+index"
-                v-model="pipe.coordinates[index][1]"
+                v-model="pipe.coords[index].lat"
                 required
             ></b-form-input>
           </b-form-group>
         </b-col>
-        <b-col cols="12" sm="6">
+
+        <b-col cols="12" sm="4">
           <b-form-group :label="trans('monitoring.longitude')" :label-for="'coord-y'+index">
             <b-form-input
                 :id="'coord-y'+index"
-                v-model="pipe.coordinates[index][0]"
+                v-model="pipe.coords[index].lon"
                 required
             ></b-form-input>
           </b-form-group>
         </b-col>
-        <hr class="mb-2" />
+
+        <b-col cols="12" sm="4">
+          <b-form-group :label="trans('monitoring.elevation')" :label-for="'coord-z'+index">
+            <b-form-input
+                :id="'coord-z'+index"
+                v-model="pipe.coords[index].elevation"
+                required
+            ></b-form-input>
+          </b-form-group>
+        </b-col>
+
+        <b-col cols="12" sm="6">
+          <b-form-group :label="trans('monitoring.h_distance')" :label-for="'coord-z'+index">
+            <b-form-input
+                :id="'coord-h-distance'+index"
+                v-model="pipe.coords[index].h_distance"
+                required
+            ></b-form-input>
+          </b-form-group>
+        </b-col>
+
+        <b-col cols="12" sm="6">
+          <b-form-group :label="trans('monitoring.m_distance')" :label-for="'coord-z'+index">
+            <b-form-input
+                :id="'coord-m-distance'+index"
+                v-model="pipe.coords[index].m_distance"
+                required
+            ></b-form-input>
+          </b-form-group>
+        </b-col>
+        <hr class="mb-2 mt-0" />
       </b-row>
     </b-collapse>
   </div>
@@ -113,5 +155,10 @@ export default {
     -ms-transform: rotate(180deg);
     transform: rotate(180deg);
   }
+}
+
+.collapse hr {
+  width: 100%;
+  border-top: 1px solid rgba(255, 255, 255, 1);
 }
 </style>

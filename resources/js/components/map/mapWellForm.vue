@@ -6,7 +6,7 @@
     >
       <b-form-input
           id="well-name"
-          v-model="well.origName"
+          v-model="well.name"
           required
       ></b-form-input>
     </b-form-group>
@@ -33,6 +33,14 @@
       <b-form-input
           id="coord-x"
           v-model="well.lon"
+          required
+      ></b-form-input>
+    </b-form-group>
+
+    <b-form-group :label="trans('monitoring.elevation')" label-for="coord-z">
+      <b-form-input
+          id="coord-z"
+          v-model="well.elevation"
           required
       ></b-form-input>
     </b-form-group>

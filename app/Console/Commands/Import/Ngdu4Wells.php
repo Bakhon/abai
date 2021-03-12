@@ -2,25 +2,25 @@
 
 namespace App\Console\Commands\Import;
 
+use App\Imports\Ngdu4WellsImport;
 use Illuminate\Console\Command;
-use App\Imports\GuWellsImport;
 use Maatwebsite\Excel\Facades\Excel;
 
-class Wells extends Command
+class Ngdu4Wells extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'import:wells {path}';
+    protected $signature = 'import:Ngdu4Wells {path}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Import coordinates of wells in GUs';
+    protected $description = 'Import coordinates of wells in GUs from NGDU-4';
 
     /**
      * Create a new command instance.
@@ -37,11 +37,11 @@ class Wells extends Command
      *
      * @return mixed
      */
-    public function handle(): void
+    public function handle()
     {
         $this->output->title('Starting import');
         try {
-            Excel::import(new GuWellsImport($this), base_path($this->argument('path')));
+            Excel::import(new Ngdu4WellsImport($this), base_path($this->argument('path')));
         } catch (\Exception $er) {
             if ($er->getMessage() == 'Stop import') {
                 $this->output->success('Import successful');
