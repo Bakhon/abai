@@ -3,700 +3,408 @@
     "column1": "",
     "column2": "Нефть, тонн",
     "column3": "Конденсат, тонн",
-    "column4": "Газ, тыс. метр куб",
-    "column1Class": "title",
-    "column2Class": "title",
-    "column3Class": "title",
-    "column4Class": "title"
+    "column4": "Газ, тыс. метр куб"
   },
   {
     "column1": "Добыча",
     "column2": "",
     "column3": "",
-    "column4": "",
-    "column1Class": "main-header",
-    "column2Class": "",
-    "column3Class": "",
-    "column4Class": ""
+    "column4": ""
   },
   {
     "column1": "Сдача",
     "column2": "",
     "column3": "",
-    "column4": "",
-    "column1Class": "main-header",
-    "column2Class": "",
-    "column3Class": "",
-    "column4Class": ""
+    "column4": ""
   },
   {
     "column1": "",
     "column2": "Закачка  воды, куб.м",
     "column3": "",
-    "column4": "",
-    "column1Class": "title",
-    "column2Class": "title",
-    "column3Class": "",
-    "column4Class": ""
+    "column4": ""
   },
   {
     "column1": "Общая закачка",
     "column2": "",
     "column3": "",
-    "column4": "",
-    "column1Class": "main-header",
-    "column2Class": "",
-    "column3Class": "",
-    "column4Class": ""
+    "column4": ""
   },
   {
     "column1": "Пар",
     "column2": "",
     "column3": "",
-    "column4": "",
-    "column1Class": "main-header",
-    "column2Class": "",
-    "column3Class": "",
-    "column4Class": ""
+    "column4": ""
   },
   {
     "column1": "",
     "column2": "Товарный остаток",
     "column3": "",
-    "column4": "",
-    "column1Class": "title",
-    "column2Class": "title",
-    "column3Class": "",
-    "column4Class": ""
+    "column4": ""
   },
   {
     "column1": "На сегодня",
     "column2": "",
     "column3": "",
-    "column4": "",
-    "column1Class": "main-header",
-    "column2Class": "",
-    "column3Class": "",
-    "column4Class": ""
+    "column4": ""
   },
   {
     "column1": "За предыдущие сутки",
     "column2": "",
     "column3": "",
-    "column4": "",
-    "column1Class": "main-header",
-    "column2Class": "",
-    "column3Class": "",
-    "column4Class": ""
+    "column4": ""
   },
   {
     "column1": "",
     "column2": "ОТМ",
     "column3": "",
-    "column4": "",
-    "column1Class": "title",
-    "column2Class": "title",
-    "column3Class": "",
-    "column4Class": ""
+    "column4": ""
   },
   {
     "column1": "Проходка,метр",
     "column2": "",
     "column3": "",
-    "column4": "",
-    "column1Class": "main-header",
-    "column2Class": "",
-    "column3Class": "",
-    "column4Class": ""
+    "column4": ""
   },
   {
     "column1": "КРС отм",
     "column2": "",
     "column3": "",
-    "column4": "",
-    "column1Class": "main-header",
-    "column2Class": "",
-    "column3Class": "",
-    "column4Class": ""
+    "column4": ""
   },
   {
     "column1": "ПРС отм",
     "column2": "",
     "column3": "",
-    "column4": "",
-    "column1Class": "main-header",
-    "column2Class": "",
-    "column3Class": "",
-    "column4Class": ""
+    "column4": ""
   },
   {
     "column1": "ЕЖЕМЕСЯЧНО",
     "column2": "ХИМИЗАЦИЯ",
     "column3": "",
-    "column4": "",
-    "column1Class": "title",
-    "column2Class": "title",
-    "column3Class": "",
-    "column4Class": ""
+    "column4": ""
   },
   {
     "column1": "ДИЭМУЛЬГАТОР",
     "column2": "",
     "column3": "",
-    "column4": "",
-    "column1Class": "main-header",
-    "column2Class": "",
-    "column3Class": "",
-    "column4Class": ""
+    "column4": ""
   },
   {
     "column1": "БАКТЕРИЦИД",
     "column2": "",
     "column3": "",
-    "column4": "",
-    "column1Class": "main-header",
-    "column2Class": "",
-    "column3Class": "",
-    "column4Class": ""
+    "column4": ""
   },
   {
     "column1": "ИНГИБИТОР КОРРОЗИИ",
     "column2": "",
     "column3": "",
-    "column4": "",
-    "column1Class": "main-header",
-    "column2Class": "",
-    "column3Class": "",
-    "column4Class": ""
+    "column4": ""
   },
   {
     "column1": "ИНГИБИТОР СОЛЕОТЛОЖЕНИЯ",
     "column2": "",
     "column3": "",
-    "column4": "",
-    "column1Class": "main-header",
-    "column2Class": "",
-    "column3Class": "",
-    "column4Class": ""
+    "column4": ""
   },
   {
     "column1": "",
     "column2": "ПРИЧИНЫ ПРОСТОЯ",
     "column3": "ДОБ./НАГН. СКВ",
-    "column4": "",
-    "column1Class": "title",
-    "column2Class": "title",
-    "column3Class": "title",
-    "column4Class": "title"
+    "column4": ""
   },
   {
     "column1": "",
     "column2": "Простой добывающих скважин",
     "column3": "",
-    "column4": "Простой нагнетательных скважин",
-    "column1Class": "sub-title",
-    "column2Class": "sub-title",
-    "column3Class": "sub-title",
-    "column4Class": "sub-title"
+    "column4": "Простой нагнетательных скважин"
   },
   {
     "column1": "",
     "column2": "Кол-во скважин",
     "column3": "Потеря нефти",
-    "column4": "Кол-во скважин",
-    "column1Class": "sub-title",
-    "column2Class": "sub-title",
-    "column3Class": "sub-title",
-    "column4Class": "sub-title"
+    "column4": "Кол-во скважин"
   },
   {
     "column1": "1. В ПРС",
     "column2": "",
     "column3": "",
-    "column4": "",
-    "column1Class": "main-header",
-    "column2Class": "",
-    "column3Class": "",
-    "column4Class": ""
+    "column4": ""
   },
   {
     "column1": "2. Ожидание ПРС",
     "column2": "",
     "column3": "",
-    "column4": "",
-    "column1Class": "main-header",
-    "column2Class": "",
-    "column3Class": "",
-    "column4Class": ""
+    "column4": ""
   },
   {
     "column1": "3. Ожидание КРС",
     "column2": "",
     "column3": "",
-    "column4": "",
-    "column1Class": "main-header",
-    "column2Class": "",
-    "column3Class": "",
-    "column4Class": ""
+    "column4": ""
   },
   {
     "column1": "4. В КРС",
     "column2": "",
     "column3": "",
-    "column4": "",
-    "column1Class": "main-header",
-    "column2Class": "",
-    "column3Class": "",
-    "column4Class": ""
+    "column4": ""
   },
   {
     "column1": "5. Исследование скважин",
     "column2": "",
     "column3": "",
-    "column4": "",
-    "column1Class": "main-header",
-    "column2Class": "",
-    "column3Class": "",
-    "column4Class": ""
+    "column4": ""
   },
   {
     "column1": "6. Прочие",
     "column2": "",
     "column3": "",
-    "column4": "",
-    "column1Class": "main-header",
-    "column2Class": "",
-    "column3Class": "",
-    "column4Class": ""
+    "column4": ""
   },
   {
     "column1": "6.1 Затоваривание ЦППН/ДНС",
     "column2": "",
     "column3": "",
-    "column4": "",
-    "column1Class": "main-header",
-    "column2Class": "",
-    "column3Class": "",
-    "column4Class": ""
+    "column4": ""
   },
   {
     "column1": "6.2 Порыв в/л,замена в/л",
     "column2": "",
     "column3": "",
-    "column4": "",
-    "column1Class": "main-header",
-    "column2Class": "",
-    "column3Class": "",
-    "column4Class": ""
+    "column4": ""
   },
   {
     "column1": "6.3 По эл.части.",
     "column2": "",
     "column3": "",
-    "column4": "",
-    "column1Class": "main-header",
-    "column2Class": "",
-    "column3Class": "",
-    "column4Class": ""
+    "column4": ""
   },
   {
     "column1": "6.4 Ремонт наземного оборудования",
     "column2": "",
     "column3": "",
-    "column4": "",
-    "column1Class": "main-header",
-    "column2Class": "",
-    "column3Class": "",
-    "column4Class": ""
+    "column4": ""
   },
   {
     "column1": "6.5 Периодические",
     "column2": "",
     "column3": "",
-    "column4": "",
-    "column1Class": "main-header",
-    "column2Class": "",
-    "column3Class": "",
-    "column4Class": ""
+    "column4": ""
   },
   {
     "column1": "6.6 Ограничение по добыче",
     "column2": "",
     "column3": "",
-    "column4": "",
-    "column1Class": "main-header",
-    "column2Class": "",
-    "column3Class": "",
-    "column4Class": ""
+    "column4": ""
   },
   {
     "column1": "6.7 Обработки скважин (ВУВЭ, ЭКВ, ВУС и т.д.)",
     "column2": "",
     "column3": "",
-    "column4": "",
-    "column1Class": "main-header",
-    "column2Class": "",
-    "column3Class": "",
-    "column4Class": ""
+    "column4": ""
   },
   {
     "column1": "6.8 Высокообводненные",
     "column2": "",
     "column3": "",
-    "column4": "",
-    "column1Class": "main-header",
-    "column2Class": "",
-    "column3Class": "",
-    "column4Class": ""
+    "column4": ""
   },
   {
     "column1": "6.9 Ограничение закачки из-за ограничения добычи нефти",
     "column2": "",
     "column3": "",
-    "column4": "",
-    "column1Class": "main-header",
-    "column2Class": "",
-    "column3Class": "",
-    "column4Class": ""
+    "column4": ""
   },
   {
-    "column1": "6.10 Ремонт наземного оборудования",
+    "column1": "6.10 Выравнивание профиля приемистости",
     "column2": "",
     "column3": "",
-    "column4": "",
-    "column1Class": "main-header",
-    "column2Class": "",
-    "column3Class": "",
-    "column4Class": ""
+    "column4": ""
   },
   {
-    "column1": "6.11 Порыв в/л,замена в/л",
+    "column1": "6.11 Промывка забоя (коилтюбинг)",
     "column2": "",
     "column3": "",
-    "column4": "",
-    "column1Class": "main-header",
-    "column2Class": "",
-    "column3Class": "",
-    "column4Class": ""
-  },
-  {
-    "column1": "6.12 Выравнивание профиля приемистости",
-    "column2": "",
-    "column3": "",
-    "column4": "",
-    "column1Class": "main-header",
-    "column2Class": "",
-    "column3Class": "",
-    "column4Class": ""
-  },
-  {
-    "column1": "6.13 Промывка забоя (коилтюбинг)",
-    "column2": "",
-    "column3": "",
-    "column4": "",
-    "column1Class": "main-header",
-    "column2Class": "",
-    "column3Class": "",
-    "column4Class": ""
+    "column4": ""
   },
   {
     "column1": "ВСЕГО прост.скв./потери нефти/тонн",
     "column2": "",
     "column3": "",
-    "column4": "",
-    "column1Class": "table-footer-format",
-    "column2Class": "table-footer-format",
-    "column3Class": "table-footer-format",
-    "column4Class": "table-footer-format"
+    "column4": ""
   },
   {
     "column1": "",
     "column2": "СОСТОЯНИЕ ФОНДА",
     "column3": "(ДИНАМИКА ФОНДА СКВАЖИН)",
-    "column4": "",
-    "column1Class": "title",
-    "column2Class": "title",
-    "column3Class": "title",
-    "column4Class": "title"
+    "column4": ""
   },
   {
     "column1": "",
     "column2": "НЕФТЕДОБЫВАЮЩИЙ ФОНД ",
     "column3": "НАГНЕТАТЕЛЬНЫЙ ФОНД",
-    "column4": "",
-    "column1Class": "sub-title",
-    "column2Class": "sub-title",
-    "column3Class": "sub-title",
-    "column4Class": "sub-title"
+    "column4": ""
   },
   {
     "column1": "ЭКСПЛ.",
     "column2": "",
     "column3": "",
-    "column4": "",
-    "column1Class": "main-header",
-    "column2Class": "",
-    "column3Class": "",
-    "column4Class": ""
+    "column4": ""
   },
   {
     "column1": "ДЕЙСТВ.",
     "column2": "",
     "column3": "",
-    "column4": "",
-    "column1Class": "main-header",
-    "column2Class": "",
-    "column3Class": "",
-    "column4Class": ""
+    "column4": ""
   },
   {
     "column1": "ПРОСТОЙ",
     "column2": "",
     "column3": "",
-    "column4": "",
-    "column1Class": "main-header",
-    "column2Class": "",
-    "column3Class": "",
-    "column4Class": ""
+    "column4": ""
   },
   {
     "column1": "В РАБОТЕ",
     "column2": "",
     "column3": "",
-    "column4": "",
-    "column1Class": "main-header",
-    "column2Class": "",
-    "column3Class": "",
-    "column4Class": ""
+    "column4": ""
   },
   {
     "column1": "Б/Д",
     "column2": "",
     "column3": "",
-    "column4": "",
-    "column1Class": "main-header",
-    "column2Class": "",
-    "column3Class": "",
-    "column4Class": ""
+    "column4": ""
   },
   {
     "column1": "ОСВОЕНИЕ",
     "column2": "",
     "column3": "",
-    "column4": "",
-    "column1Class": "main-header",
-    "column2Class": "",
-    "column3Class": "",
-    "column4Class": ""
+    "column4": ""
   },
   {
     "column1": "ОФЛС",
     "column2": "",
     "column3": "",
-    "column4": "",
-    "column1Class": "main-header",
-    "column2Class": "",
-    "column3Class": "",
-    "column4Class": ""
+    "column4": ""
   },
   {
     "column1": "НРС",
     "column2": "",
     "column3": "",
-    "column4": "",
-    "column1Class": "main-header",
-    "column2Class": "",
-    "column3Class": "",
-    "column4Class": ""
+    "column4": ""
   },
   {
     "column1": "КОНСЕРВАЦИЯ",
     "column2": "",
     "column3": "",
-    "column4": "",
-    "column1Class": "main-header",
-    "column2Class": "",
-    "column3Class": "",
-    "column4Class": ""
+    "column4": ""
   },
   {
     "column1": "Причины отклонения/снижения добычи нефти:",
     "column2": "",
     "column3": "",
-    "column4": "",
-    "column1Class": "title",
-    "column2Class": "title",
-    "column3Class": "",
-    "column4Class": ""
+    "column4": ""
   },
   {
     "column1": "ОПЕК+",
     "column2": "",
     "column3": "",
-    "column4": "",
-    "column1Class": "main-header",
-    "column2Class": "",
-    "column3Class": "",
-    "column4Class": ""
+    "column4": ""
   },
   {
     "column1": "Порывы трубопроводов/выкидных линий",
     "column2": "",
     "column3": "",
-    "column4": "",
-    "column1Class": "main-header",
-    "column2Class": "",
-    "column3Class": "",
-    "column4Class": ""
+    "column4": ""
   },
   {
     "column1": "Посадка/отключение ЭЭ",
     "column2": "",
     "column3": "",
-    "column4": "",
-    "column1Class": "main-header",
-    "column2Class": "",
-    "column3Class": "",
-    "column4Class": ""
+    "column4": ""
   },
   {
     "column1": "Авария в системе сбор и подготовки нефти",
     "column2": "",
     "column3": "",
-    "column4": "",
-    "column1Class": "main-header",
-    "column2Class": "",
-    "column3Class": "",
-    "column4Class": ""
+    "column4": ""
   },
   {
     "column1": "Ограничение КТО",
     "column2": "",
     "column3": "",
-    "column4": "",
-    "column1Class": "main-header",
-    "column2Class": "",
-    "column3Class": "",
-    "column4Class": ""
+    "column4": ""
   },
   {
     "column1": "Ограничение по газу",
     "column2": "",
     "column3": "",
-    "column4": "",
-    "column1Class": "main-header",
-    "column2Class": "",
-    "column3Class": "",
-    "column4Class": ""
+    "column4": ""
   },
   {
     "column1": "",
     "column2": "",
     "column3": "",
-    "column4": "",
-    "column1Class": "",
-    "column2Class": "",
-    "column3Class": "",
-    "column4Class": ""
+    "column4": ""
   },
   {
     "column1": "",
     "column2": "",
     "column3": "",
-    "column4": "",
-    "column1Class": "",
-    "column2Class": "",
-    "column3Class": "",
-    "column4Class": ""
+    "column4": ""
   },
   {
     "column1": "",
     "column2": "",
     "column3": "",
-    "column4": "",
-    "column1Class": "",
-    "column2Class": "",
-    "column3Class": "",
-    "column4Class": ""
+    "column4": ""
   },
   {
     "column1": "",
     "column2": "",
     "column3": "",
-    "column4": "",
-    "column1Class": "",
-    "column2Class": "",
-    "column3Class": "",
-    "column4Class": ""
+    "column4": ""
   },
   {
     "column1": "",
     "column2": "",
     "column3": "",
-    "column4": "",
-    "column1Class": "",
-    "column2Class": "",
-    "column3Class": "",
-    "column4Class": ""
+    "column4": ""
   },
   {
     "column1": "",
     "column2": "",
     "column3": "",
-    "column4": "",
-    "column1Class": "",
-    "column2Class": "",
-    "column3Class": "",
-    "column4Class": ""
+    "column4": ""
   },
   {
     "column1": "",
     "column2": "",
     "column3": "",
-    "column4": "",
-    "column1Class": "",
-    "column2Class": "",
-    "column3Class": "",
-    "column4Class": ""
+    "column4": ""
   },
   {
     "column1": "",
     "column2": "",
     "column3": "",
-    "column4": "",
-    "column1Class": "",
-    "column2Class": "",
-    "column3Class": "",
-    "column4Class": ""
+    "column4": ""
   },
   {
     "column1": "",
     "column2": "",
     "column3": "",
-    "column4": "",
-    "column1Class": "",
-    "column2Class": "",
-    "column3Class": "",
-    "column4Class": ""
+    "column4": ""
   },
   {
     "column1": "",
     "column2": "",
     "column3": "",
-    "column4": "",
-    "column1Class": "",
-    "column2Class": "",
-    "column3Class": "",
-    "column4Class": ""
+    "column4": ""
   },
   {
     "column1": "",
     "column2": "",
     "column3": "",
-    "column4": "",
-    "column1Class": "",
-    "column2Class": "",
-    "column3Class": "",
-    "column4Class": ""
+    "column4": ""
   }
 ]

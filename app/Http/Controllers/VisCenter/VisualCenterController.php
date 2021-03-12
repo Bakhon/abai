@@ -14,6 +14,7 @@ use App\Models\VisCenter\ImportForms\DZOdaily as ImportFormsDZOdaily;
 use App\Models\VisCenter\ImportForms\DZOyear as ImportFormsDZOyear;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Models\DzoPlan;
 
 class VisualCenterController extends Controller
 {
@@ -86,6 +87,13 @@ class VisualCenterController extends Controller
           ->toArray();
       return response()->json($oilRatesData);
     }
+
+    public function getDzoMonthlyPlans() {
+          $dzoMonthlyPlans = dzoPlan::query()
+              ->get()
+              ->toArray();
+          return response()->json($dzoMonthlyPlans);
+        }
 
     public function getCurrency(Request $request)
     {

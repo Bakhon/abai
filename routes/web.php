@@ -71,6 +71,7 @@ Route::group(
                 Route::get("/getcurrencyperiod", "VisCenter\VisualCenterController@getCurrencyPeriod");
                 Route::get("/get-usd-rates", "VisCenter\VisualCenterController@getUsdRates");
                 Route::get("/get-oil-rates", "VisCenter\VisualCenterController@getOilRates");
+                Route::get("/get-dzo-monthly-plans", "VisCenter\VisualCenterController@getDzoMonthlyPlans");
                 Route::get('/podborgno', 'gno\GNOController@index')->name('gno');
                 Route::get('/production', 'DruidController@production')->name('production');
                 Route::get('/gtmscor', 'DruidController@gtmscor')->name('gtmscor');

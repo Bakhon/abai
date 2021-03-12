@@ -13,12 +13,18 @@
         </div>
         <div class="ml-3 col-3 helpers">
             <div
-                    :class="[!isDataExist ? 'button-disabled' : '','button']"
+                    :class="[!isDataExist ? 'button-disabled' : '','button col-12']"
                     @click="handleValidate()"
             >
                 {{trans('visualcenter.validateButton')}}
             </div>
-            <div :class="[isDataValid ? 'error-list_disabled' : '','col-12']">
+            <div
+                    :class="[!isDataReady ? 'button-disabled' : '','button col-12 mt-5']"
+                    @click="processSummary()"
+            >
+                {{trans('visualcenter.saveButton')}}
+            </div>
+            <div :class="[isDataValid ? 'error-list_disabled' : '','col-12 error-list']">
                 <ul>{{trans('visualcenter.errors')}}:</ul>
                 <li v-for="error in errorsList">
                     <span>{{error}}</span>
@@ -31,6 +37,9 @@
 <script>
     import VGrid from "@revolist/vue-datagrid";
     import initialRowsKMG from './importForm/initial_rows_data_kmg.json';
+    import cellsMappingKGM from './importForm/cells_mapping_kgm.json';
+    import moment from "moment";
+
 
     export default {
         data: function () {
@@ -84,7 +93,8 @@
                 rows: _.cloneDeep(initialRowsKMG),
                 isDataExist: false,
                 isDataValid: true,
-                rowsCount: 59,
+                isDataReady: false,
+                rowsCount: 57,
                 errorsList: [],
                 possibleErrors : {
                     incorrectDocumentFormat: 'Неверный формат Excel документа',
@@ -95,6 +105,13 @@
                     two: [0,1],
                     one: 0
                 },
+                dzoPlans: [],
+                selectedDzo: {
+                  name: 'КГМ',
+                  plans: [],
+                },
+                currentMonthNumber: moment().format('M'),
+                kgmCellsMapping: _.cloneDeep(cellsMappingKGM),
             };
         },
         created: function() {
@@ -109,7 +126,28 @@
             document.addEventListener('readystatechange', readyHandler);
             readyHandler();
         },
+        async mounted() {
+            this.dzoPlans = await this.getDzoMonthlyPlans();
+            this.selectedDzo.plans = this.getSelectedDzoPlans();
+        },
         methods: {
+            getSelectedDzoPlans() {
+                let self = this;
+                  return _.filter(this.dzoPlans, function(row) {
+                      let rowMonthNumber = moment(row.date).format('M');
+                      return (rowMonthNumber === self.currentMonthNumber && row.dzo === self.selectedDzo.name);
+                  });
+            },
+
+            async getDzoMonthlyPlans() {
+                let uri = this.localeUrl("/get-dzo-monthly-plans");
+                const response = await axios.get(uri);
+                if (response.status === 200) {
+                    return response.data;
+                }
+                return [];
+            },
+
             handleValidate() {
                 const grid = document.querySelector('revo-grid');
                 let self = this;
@@ -120,6 +158,10 @@
                     .catch(function(error) {
                         console.error(error);
                     })
+            },
+            processSummary() {
+                const grid = document.querySelector('revo-grid');
+                console.log(this.rows);
             },
             deleteEmptyRows(dataSource) {
                 let self = this;
@@ -138,6 +180,7 @@
                     return;
                 }
                 this.isDataValid = true;
+                this.isDataReady = true;
             },
             isRowForDelete(row,sourceLength) {
                 return this.isRowHeader(row) || this.isRowEmpty(row);
@@ -191,49 +234,25 @@
                         self.selectClassForCell(rowIndex,this.columnsCountForHighlight.four,'title');
                     } else if ([19,20].includes(rowIndex)) {
                         self.selectClassForCell(rowIndex,this.columnsCountForHighlight.four,'sub-title');
-                    } else if ([21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39].includes(rowIndex)) {
+                    } else if ([21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37].includes(rowIndex)) {
                         self.selectClassForCell(rowIndex,this.columnsCountForHighlight.one,'main-header');
+                    } else if (rowIndex === 38) {
+                        self.selectClassForCell(rowIndex,this.columnsCountForHighlight.four,'table-footer-format');
+                    } else if (rowIndex === 39) {
+                        self.selectClassForCell(rowIndex,this.columnsCountForHighlight.three,'title');
                     } else if (rowIndex === 40) {
-                        self.selectClassForCell(rowIndex,this.columnsCountForHighlight.three,'table-footer-format');
-                    } else if (rowIndex === 41) {
-                        self.selectClassForCell(rowIndex,this.columnsCountForHighlight.three,'title');
-                    } else if (rowIndex === 42) {
                         self.selectClassForCell(rowIndex,this.columnsCountForHighlight.three,'sub-title');
-                    } else if ([43,44,45,46,47,48,49,50,51].includes(rowIndex)) {
+                    } else if ([41,42,43,44,45,46,47,48,49].includes(rowIndex)) {
                         self.selectClassForCell(rowIndex,this.columnsCountForHighlight.one,'main-header');
-                    } else if (rowIndex === 52) {
+                    } else if (rowIndex === 50) {
                         self.selectClassForCell(rowIndex,this.columnsCountForHighlight.three,'title');
-                    } else if ([53,54,55,56,57,58].includes(rowIndex)) {
+                    } else if ([51,52,53,54,55,56].includes(rowIndex)) {
                         self.selectClassForCell(rowIndex,this.columnsCountForHighlight.one,'main-header');
                     }
                 }
             },
             setClassToElement(el,className) {
                 el.addClass(className);
-            },
-            createInitialRows() {
-                let self = this;
-                _.forEach(this.rows, function(row) {
-                    self.getRowData(row);
-                });
-            },
-            getRowData(inputRow) {
-                let row = [];
-                _.forEach(this.columns, function (column) {
-                    let initialObject = {};
-                    initialObject[column.prop] = "";
-                    //console.log('column ' + JSON.stringify(column));
-                   // console.log(inputRow);
-                    // cellProperties: ({prop, model, data, column}) => {
-                    //     return {
-                    //         class: {
-                    //             'bank': true
-                    //         }
-                    //     }
-                    // };
-                    //row.push(initialObject);
-                })
-                return row;
             },
             afterEdit(e) {
                 //console.log(e);
@@ -246,12 +265,16 @@
 </script>
 
 <style>
+    .error-list {
+        margin-top: 80%;
+    }
     .error-list_disabled {
         display: none;
     }
     .helpers {
         display: flex;
         flex-wrap: wrap;
+        display: inline-block;
     }
     ul {
         color: red;
@@ -263,7 +286,7 @@
         display: none;
     }
     revo-grid {
-        height: 750px;
+        height: 782px;
     }
 
     .table-form {
