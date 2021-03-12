@@ -137,7 +137,6 @@ export default {
       'updateForm'
     ]),
     filterForm(item, isSelected) {
-      console.log(item.data)
       if (isSelected) {
         if (item.data.type === 'org') return false
         this.tech = item.data.id
