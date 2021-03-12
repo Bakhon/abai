@@ -43,7 +43,7 @@
               v-on:nodeSelect="filterForm"
           ></b-tree-view>
         </div>
-        <form ref="form" class="bd-main-block__form scrollable" style="width: 100%">
+        <form ref="form" class="bd-main-block__form scrollable">
           <div class="table-page">
             <p v-if="!geo" class="table__message">{{ trans('bd.select_dzo') }}</p>
             <p v-else-if="rows.length === 0" class="table__message">{{ trans('bd.nothing_found') }}</p>

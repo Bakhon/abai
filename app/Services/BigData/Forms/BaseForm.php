@@ -7,6 +7,7 @@ namespace App\Services\BigData\Forms;
 use App\Http\Resources\BigData\HistoryResource;
 use App\Models\BigData\Infrastructure\History;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
 
 abstract class BaseForm
 {
@@ -24,7 +25,7 @@ abstract class BaseForm
         $this->validator = app()->make(\App\Services\BigData\CustomValidator::class);
     }
 
-    public function getHistory(int $id, \DateTimeInterface $date)
+    public function getHistory(int $id, \DateTimeInterface $date): JsonResource
     {
         $history = History::query()
             ->where('row_id', $id)

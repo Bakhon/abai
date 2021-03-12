@@ -7,6 +7,7 @@ use App\Models\BigData\Dictionaries\Geo;
 use App\Services\BigData\Forms\BaseForm;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
 
 class FormsController extends Controller
 {
@@ -18,7 +19,7 @@ class FormsController extends Controller
         $this->file = storage_path() . '/mobile_form.json';
     }
 
-    public function getMobileFormValues()
+    public function getMobileFormValues(): array
     {
         if (!\Illuminate\Support\Facades\File::exists($this->file)) {
             $values = [
@@ -35,7 +36,7 @@ class FormsController extends Controller
         return json_decode(\Illuminate\Support\Facades\File::get($this->file), 1);
     }
 
-    public function saveMobileForm(Request $request)
+    public function saveMobileForm(Request $request): void
     {
         $values = $this->getMobileFormValues();
         $values[$request->get('code')] = $request->get('value');
@@ -48,19 +49,19 @@ class FormsController extends Controller
         return $form->getFormatedParams();
     }
 
-    public function validateField(string $formName, string $field)
+    public function validateField(string $formName, string $field): void
     {
         $form = $this->getForm($formName);
         $form->validateSingleField($field);
     }
 
-    public function saveField(string $formName, string $field)
+    public function saveField(string $formName, string $field): void
     {
         $form = $this->getForm($formName);
         $form->saveSingleField($field);
     }
 
-    public function submit(string $formName)
+    public function submit(string $formName): array
     {
         $form = $this->getForm($formName);
         return $form->send();
@@ -72,13 +73,13 @@ class FormsController extends Controller
         return $form->getRows();
     }
 
-    public function getHistory(string $formName, Request $request)
+    public function getHistory(string $formName, Request $request): JsonResource
     {
         $form = $this->getForm($formName);
         return $form->getHistory($request->get('id'), Carbon::parse($request->get('date')));
     }
 
-    public function getWellPrefix(Request $request)
+    public function getWellPrefix(Request $request): array
     {
         $prefix = '';
         $geo = Geo::find($request->get('geo'));
