@@ -118,24 +118,8 @@ class FluidProduction extends TableForm
                         switch ($field['code']) {
                             case 'geo':
 
-                                if (Cache::has('bd_geo_breadcrumb_' . $item->geo->first()->id)) {
-                                    $breadcrumbs = Cache::get('bd_geo_breadcrumb_' . $item->geo->first()->id);
-                                } else {
-                                    $geo = $item->geo->first();
-                                    $ancestors = $geo->ancestors()
-                                        ->reverse()
-                                        ->pluck('name')
-                                        ->toArray();
-
-                                    $ancestors[] = $geo->name;
-                                    $breadcrumbs = implode(' / ', $ancestors);
-                                    Cache::put('bd_geo_breadcrumb_' . $geo->id, $breadcrumbs, now()->addMonth());
-                                }
-
                                 $result[$field['code']] = [
-                                    'id' => null,
-                                    'value' => $breadcrumbs,
-                                    'date' => null
+                                    'value' => $this->getGeoBreadcrumbs($item->geo->first())
                                 ];
                                 break;
                         }
@@ -147,6 +131,24 @@ class FluidProduction extends TableForm
         );
 
         return $wells->toArray();
+    }
+
+    public function getGeoBreadcrumbs($geo)
+    {
+        if (Cache::has('bd_geo_breadcrumb_' . $geo->id)) {
+            return Cache::get('bd_geo_breadcrumb_' . $geo->id);
+        }
+
+        $ancestors = $geo->ancestors()
+            ->reverse()
+            ->pluck('name')
+            ->toArray();
+
+        $ancestors[] = $geo->name;
+        $breadcrumbs = implode(' / ', $ancestors);
+        Cache::put('bd_geo_breadcrumb_' . $geo->id, $breadcrumbs, now()->addMonth());
+
+        return $breadcrumbs;
     }
 
     protected function getFilterTree(): array
@@ -303,21 +305,22 @@ class FluidProduction extends TableForm
     {
         $orgData = [];
         if (Cache::has('bd_org_with_wells')) {
-            $orgData = Cache::get('bd_org_with_wells');
-        } else {
-            $orgs = Org::with('wells', 'type')
-                ->get();
-            foreach ($orgs as $org) {
-                $orgData[$org->id] = [
-                    'id' => $org->id,
-                    'name' => $org->name,
-                    'wells' => $org->wells->pluck('id')->toArray(),
-                    'type' => 'org',
-                    'parent_id' => $org->parent_id
-                ];
-            }
-            Cache::put('bd_org_with_wells', $orgData, now()->addDay());
+            return Cache::get('bd_org_with_wells');
         }
+
+        $orgs = Org::with('wells', 'type')
+            ->get();
+        foreach ($orgs as $org) {
+            $orgData[$org->id] = [
+                'id' => $org->id,
+                'name' => $org->name,
+                'wells' => $org->wells->pluck('id')->toArray(),
+                'type' => 'org',
+                'parent_id' => $org->parent_id
+            ];
+        }
+        Cache::put('bd_org_with_wells', $orgData, now()->addDay());
+
         return $orgData;
     }
 
@@ -326,54 +329,58 @@ class FluidProduction extends TableForm
         $techData = [];
         if (Cache::has('bd_tech_with_wells_' . $this->request->get('date'))) {
             $techData = Cache::get('bd_tech_with_wells_' . $this->request->get('date'));
-        } else {
-            $techs = Tech::query()
-                ->with('wells', 'type')
-                ->where('dbeg', '<=', Carbon::parse($this->request->get('date')))
-                ->where('dend', '>=', Carbon::parse($this->request->get('date')))
-                ->get();
-            foreach ($techs as $tech) {
-                $techData[$tech->id] = [
-                    'id' => $tech->id,
-                    'name' => $tech->name,
-                    'wells' => $tech->wells->pluck('id')->toArray(),
-                    'type' => 'tech',
-                    'parent_id' => $tech->parent_id
-                ];
-            }
-
-            usort(
-                $techData,
-                function ($a, $b) {
-                    return $a['parent_id'] < $b['parent_id'] ? 1 : -1;
-                }
-            );
-
-            foreach ($techData as $tech) {
-                if (!empty($tech['parent_id']) && !empty($techData[$tech['parent_id']])) {
-                    $techData[$tech['parent_id']]['wells'] = array_unique(
-                        array_merge(
-                            $techData[$tech['parent_id']]['wells'],
-                            $tech['wells']
-                        )
-                    );
-                }
-            }
-            Cache::put('bd_tech_with_wells_' . $this->request->get('date'), $techData, now()->addDay());
+            return $this->generateTree($techData);
         }
+
+        $techs = Tech::query()
+            ->with('wells', 'type')
+            ->where('dbeg', '<=', Carbon::parse($this->request->get('date')))
+            ->where('dend', '>=', Carbon::parse($this->request->get('date')))
+            ->get();
+        foreach ($techs as $tech) {
+            $techData[$tech->id] = [
+                'id' => $tech->id,
+                'name' => $tech->name,
+                'wells' => $tech->wells->pluck('id')->toArray(),
+                'type' => 'tech',
+                'parent_id' => $tech->parent_id
+            ];
+        }
+
+        usort(
+            $techData,
+            function ($a, $b) {
+                return $a['parent_id'] < $b['parent_id'] ? 1 : -1;
+            }
+        );
+
+        foreach ($techData as $tech) {
+            if (!empty($tech['parent_id']) && !empty($techData[$tech['parent_id']])) {
+                $techData[$tech['parent_id']]['wells'] = array_unique(
+                    array_merge(
+                        $techData[$tech['parent_id']]['wells'],
+                        $tech['wells']
+                    )
+                );
+            }
+        }
+        Cache::put('bd_tech_with_wells_' . $this->request->get('date'), $techData, now()->addDay());
+
         return $this->generateTree($techData);
     }
 
     private function combineOrgWithTechData($orgData, $techData)
     {
         foreach ($orgData as &$org) {
-            if (!empty($org['wells'])) {
-                foreach ($techData as $keyTech => $tech) {
-                    if (count(array_intersect($org['wells'], $tech['wells'])) > 0) {
-                        $org['children'][] = $tech;
-                        unset($techData[$keyTech]);
-                        break;
-                    }
+            if (empty($org['wells'])) {
+                continue;
+            }
+
+            foreach ($techData as $keyTech => $tech) {
+                if (count(array_intersect($org['wells'], $tech['wells'])) > 0) {
+                    $org['children'][] = $tech;
+                    unset($techData[$keyTech]);
+                    break;
                 }
             }
         }
