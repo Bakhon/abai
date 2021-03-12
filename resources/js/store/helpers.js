@@ -38,4 +38,16 @@ export const bdFormActions = arrNames => ({
     ]),
 });
 
+export const dzoMapState = arrNames => ({
+    ...mapState('dzoMap', [
+        ...arrNames,
+    ]),
+});
+
+export const dzoMapActions = arrNames => ({
+    ...mapActions('dzoMap', [
+        ...arrNames,
+    ]),
+});
+
 // End Map

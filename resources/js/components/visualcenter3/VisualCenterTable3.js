@@ -5,6 +5,7 @@ import DatePicker from "v-calendar/lib/components/date-picker.umd";
 import {isString} from "lodash";
 import dzoCompaniesInitial from './dzo_companies_initial.json';
 import mainMenuConfiguration from './main_menu_configuration.json';
+import {dzoMapState, dzoMapActions} from '@store/helpers';
 
 Vue.component("calendar", Calendar);
 Vue.component("date-picker", DatePicker);
@@ -444,6 +445,14 @@ export default {
         };
     },
     methods: {
+        ...dzoMapActions([
+            'getYearlyPlan'
+        ]),
+
+        async getDzoYearlyPlan() {
+            await this.getYearlyPlan();
+        },
+
         switchCategory(planFieldName,factFieldName,metricName,categoryName,parentButton,childButton) {
             this.chartSecondaryName = categoryName;
             this.dzoCompaniesAssets['assetTitle'] = this.trans("visualcenter.summaryAssets");
@@ -467,7 +476,7 @@ export default {
             this.selectCompany('all');
             this.isMultipleDzoCompaniesSelected = true;
             this.dzoCompaniesAssets = _.cloneDeep(this.dzoCompaniesAssetsInitial);
-
+            this.selectedDzoCompanies = this.getAllDzoCompanies();
             this.buttonDzoDropdown = "";
             _.map(this.dzoCompanies, function (company) {
                 company.selected = true;
@@ -515,6 +524,7 @@ export default {
 
         selectDzoCompany(companyTicker) {
             this.selectCompany(companyTicker);
+            this.selectedDzoCompanies = [companyTicker];
             this.dzoCompaniesAssets['isAllAssets'] = false;
             this.buttonDzoDropdown = this.highlightedButton;
             this.switchDzoCompaniesVisibility(companyTicker,'ticker');
@@ -773,6 +783,10 @@ export default {
                 this.selectedDzoCompanies = this.getSelectedDzoCompanies(type);
                 this.selectMultipleDzoCompanies(type);
             }
+        },
+
+        getAllDzoCompanies() {
+            return _.cloneDeep(dzoCompaniesInitial).map(company => company.ticker);
         },
 
         getSelectedDzoCompanies(type) {
@@ -2376,19 +2390,54 @@ export default {
                 summary = data;
             }
 
-            let productionPlan = this.planFieldName;
-            let productionFact = this.factFieldName;
-
-            return _(summary)
+            let summaryForChart = _(summary)
                 .groupBy("__time")
                 .map((__time, id) => ({
                     time: id,
                     dzo: 'dzo',
-                    productionFactForChart: _.round(_.sumBy(__time, productionFact), 0),
-                    productionPlanForChart: _.round(_.sumBy(__time, productionPlan), 0),
+                    productionFactForChart: _.round(_.sumBy(__time, this.factFieldName), 0),
+                    productionPlanForChart: _.round(_.sumBy(__time, this.planFieldName), 0),
                     productionPlanForChart2: _.round(_.sumBy(__time, this.opecFieldNameForChart), 0),
                 }))
                 .value();
+
+            let summaryFact = this.getDzoFactSummary(summaryForChart);
+            let dailyPlan = this.getDzoDailyPlan(summaryFact);
+
+            _.forEach(summaryForChart, function (row) {
+                _.set(row, 'dailyPlan', parseInt(dailyPlan));
+            });
+
+            return summaryForChart;
+        },
+
+        getDzoDailyPlan(summaryFact) {
+            let filteredDzoYearlyPlan = this.getFilteredDzoYearlyPlan();
+            let dzoYearlyPlanSum = _.sumBy(filteredDzoYearlyPlan,this.planFieldName);
+            let dzoPlanFactDifference = dzoYearlyPlanSum - summaryFact;
+            let daysCountInYear = this.getDaysCountInYear();
+            return dzoPlanFactDifference / daysCountInYear;
+        },
+
+        getDzoFactSummary(summaryData) {
+            return _.sumBy(summaryData, 'productionFactForChart');
+        },
+
+        getFilteredDzoYearlyPlan() {
+            let dzoYearlyPlanData = _.cloneDeep(this.yearlyPlan);
+            let filteredPlanData = dzoYearlyPlanData.filter(row => this.selectedDzoCompanies.includes(row.dzo));
+            if (filteredPlanData.length === 0) {
+                filteredPlanData = dzoYearlyPlanData;
+            }
+
+          return filteredPlanData;
+        },
+
+        getDaysCountInYear() {
+            let currentDate = new Date(this.timestampToday);
+            let yearEnd = moment().endOf("year");
+
+            return yearEnd.diff(currentDate, 'days')
         },
 
         getQuarter(d) {
@@ -2573,6 +2622,8 @@ export default {
         this.buttonDailyTab = "button-daily-tab";
         this.getAccidentTotal();
         this.mainMenuButtonElementOptions = _.cloneDeep(mainMenuConfiguration);
+        this.getDzoYearlyPlan();
+        this.selectedDzoCompanies = this.getAllDzoCompanies();
     },
     watch: {
         bigTable: function () {
@@ -2581,6 +2632,9 @@ export default {
         },
     },
     computed: {
+        ...dzoMapState([
+            'yearlyPlan'
+        ]),
         exactDateSelected() {
             return ((this.factFieldName === 'oil_fact' || this.factFieldName === 'oil_div_fact') && this.oneDate === 1);
         },
