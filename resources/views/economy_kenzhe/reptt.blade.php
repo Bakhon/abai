@@ -1,4 +1,4 @@
 @extends('layouts.app')
 @section('content')
-        <reptt :reptt="{{$rep_tt}}"></reptt>
+    <reptt :reptt="{{$handbookItems}}"></reptt>
 @endsection

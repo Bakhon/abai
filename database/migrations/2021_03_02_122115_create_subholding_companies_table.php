@@ -16,7 +16,7 @@ class CreateSubholdingCompaniesTable extends Migration
         Schema::create('subholding_companies', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('num');
-            $table->string('title');
+            $table->string('name');
             $table->integer('level')->default(0);
             $table->integer('parent_id')->default(0);          
             $table->timestamps();
