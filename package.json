@@ -31,6 +31,7 @@
         "@deck.gl/mapbox": "^8.4.5",
         "@fortawesome/fontawesome-free": "^5.15.2",
         "@handsontable/vue": "^5.1.0",
+        "@revolist/vue-datagrid": "^2.9.9",
         "@riophae/vue-treeselect": "^0.4.0",
         "apexcharts": "^3.25.0",
         "bootstrap-select": "^1.13.18",

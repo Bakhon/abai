@@ -71,6 +71,7 @@ Route::group(
                 Route::get("/getcurrencyperiod", "VisCenter\VisualCenterController@getCurrencyPeriod");
                 Route::get("/get-usd-rates", "VisCenter\VisualCenterController@getUsdRates");
                 Route::get("/get-oil-rates", "VisCenter\VisualCenterController@getOilRates");
+                Route::get('/get-dzo-yearly-plan', 'VisCenter\VisualCenterController@getDzoYearlyPlan');
                 Route::get('/podborgno', 'gno\GNOController@index')->name('gno');
                 Route::get('/production', 'DruidController@production')->name('production');
                 Route::get('/gtmscor', 'DruidController@gtmscor')->name('gtmscor');
@@ -159,6 +160,7 @@ Route::group(
                 Route::post('/import_eco', 'VisCenter\ImportForms\DZOcalcController@import')->name('import_e');
 
                 Route::get('/import_excel', 'VisCenter\ImportForms\DZOdailyController@importExcel');
+                Route::resource('/dzodaily', 'VisCenter\ImportForms\DZOdailyCrudController');
 
                 Route::post('/import', 'VisCenter\ImportForms\DZOdailyController@import')->name('import');
 

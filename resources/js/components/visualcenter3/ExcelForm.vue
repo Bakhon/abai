@@ -66,14 +66,11 @@ export default {
         cells: function (row, col, prop) {
           var cellProperties = {};
 
-          if (row === 4) {
-            cellProperties.readOnly = false;
-          }
-
           if (col > 0) {
             if (row === 4) {
               cellProperties.type = "numeric";
               cellProperties.allowEmpty = false;
+              cellProperties.readOnly = false;
             }
           }
 
@@ -86,14 +83,17 @@ export default {
     changeData: function () {
       this.oil_plan = this.data[4][2];
       this.oil_fact = this.data[4][3];
-      if (this.oil_plan * 2 < this.oil_fact) {
+      if (
+        (this.oil_plan * 2 < this.oil_fact) |
+        (this.oil_plan / 2 > this.oil_fact)
+      ) {
         this.$refs.myTable.hotInstance.setCellMeta(
           4,
           3,
           "className",
-          "bg-danger text-white"
-        ); 
-        this.$refs.myTable.hotInstance.render(); 
+          "bg-danger"
+        );
+        this.$refs.myTable.hotInstance.render();
       } else {
         this.$refs.myTable.hotInstance.setCellMeta(
           4,
@@ -102,8 +102,7 @@ export default {
           "first-class"
         );
         this.$refs.myTable.hotInstance.render();
-        alert("Ошибок нет")
-
+        alert("Ошибок нет");
       }
     },
   },
