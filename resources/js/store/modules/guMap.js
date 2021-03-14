@@ -10,6 +10,8 @@ const guMap = {
         guPointsIndexes: [],
         pipeTypes: [],
         mapCenter: {},
+        ngdus: [],
+        cdngs: [],
     },
 
     mutations: {
@@ -31,6 +33,12 @@ const guMap = {
         SET_PIPE_TYPES(state, value) {
             state.pipeTypes = value;
         },
+        SET_NGDUS(state, value){
+            state.ngdus = value;
+        },
+        SET_CDNGS(state, value){
+            state.cdngs = value;
+        },
         ADD_GU_POINT(state, guPoint) {
             state.guPoints.push(guPoint);
         },
@@ -40,9 +48,9 @@ const guMap = {
         ADD_ZU_POINT(state, zuPoint) {
             state.zuPoints.push(zuPoint);
         },
-        ADD_PIPE(state, pipe) {
-            state.pipes.push(pipe);
-        },
+        // ADD_PIPE(state, pipe) {
+        //     state.pipes.push(pipe);
+        // },
         ADD_GU_POINT_INDEX(state, id) {
             state.guPointsIndexes.push(id);
         },
@@ -55,9 +63,9 @@ const guMap = {
         UPDATE_WELL_POINT(state, payload) {
             Vue.set(state.wellPoints, [payload.index], payload.well)
         },
-        UPDATE_PIPE_POINT(state, payload) {
-            Vue.set(state.pipes, [payload.index], payload.pipe)
-        },
+        // UPDATE_PIPE_POINT(state, payload) {
+        //     Vue.set(state.pipes, [payload.index], payload.pipe)
+        // },
         DELETE_GU(state, index) {
             state.guPoints.splice(index, 1);
         },
@@ -67,20 +75,21 @@ const guMap = {
         DELETE_WELL(state, index) {
             state.wellPoints.splice(index, 1);
         },
-        DELETE_PIPE(state, index) {
-            state.pipes.splice(index, 1);
-        },
+        // DELETE_PIPE(state, index) {
+        //     state.pipes.splice(index, 1);
+        // },
 
     },
 
     actions: {
-        async getPipes({dispatch, commit}, gu) {
-            return await axios.get(this._vm.localeUrl("/gu-map/pipes"), {params: {gu: gu}}).then((response) => {
+        async getMapData({dispatch, commit}, gu) {
+            return await axios.get(this._vm.localeUrl("/gu-map/mapdata"), {params: {gu: gu}}).then((response) => {
                 commit('SET_ZU_POINTS', response.data.zuPoints);
                 commit('SET_WELL_POINTS', response.data.wellPoints);
                 commit('SET_GU_POINTS', response.data.guPoints);
-                commit('SET_GU_CENTERS', response.data.guCenters);
                 commit('SET_PIPE_TYPES', response.data.pipeTypes);
+                commit('SET_NGDUS', response.data.ngdus);
+                commit('SET_CDNGS', response.data.cdngs);
                 commit('SET_MAP_CENTER', {
                     latitude: response.data.center[1],
                     longitude: response.data.center[0]
@@ -130,16 +139,16 @@ const guMap = {
             });
         },
 
-        storePipe({state, commit}, newPipe) {
-            return axios.post(this._vm.localeUrl("/gu-map/pipe"), {pipe: newPipe}).then((response) => {
-                if (response.data.status == 'success') {
-                    commit('ADD_PIPE', response.data.pipe);
-                    return response.data.pipe;
-                } else {
-                    console.log('error save Pipe in DB');
-                }
-            });
-        },
+        // storePipe({state, commit}, newPipe) {
+        //     return axios.post(this._vm.localeUrl("/gu-map/pipe"), {pipe: newPipe}).then((response) => {
+        //         if (response.data.status == 'success') {
+        //             commit('ADD_PIPE', response.data.pipe);
+        //             return response.data.pipe;
+        //         } else {
+        //             console.log('error save Pipe in DB');
+        //         }
+        //     });
+        // },
 
         updateGu({state, commit}, gu) {
             return axios.put(this._vm.localeUrl("/gu-map/gu/" + gu.id), {gu: gu}).then((response) => {
@@ -183,19 +192,19 @@ const guMap = {
             });
         },
 
-        updatePipe({state, commit}, pipe) {
-            return axios.put(this._vm.localeUrl("/gu-map/pipe/" + pipe.id), {pipe: pipe}).then((response) => {
-                if (response.data.status == 'success') {
-                    let pipeIndex = state.pipes.findIndex((pipeItem) => {
-                        return pipeItem.id == pipe.id;
-                    });
-                    commit('UPDATE_PIPE_POINT', {pipe: response.data.pipe, index: pipeIndex});
-                    return response.data.pipe;
-                } else {
-                    console.log('error update Pipe in DB');
-                }
-            });
-        },
+        // updatePipe({state, commit}, pipe) {
+        //     return axios.put(this._vm.localeUrl("/gu-map/pipe/" + pipe.id), {pipe: pipe}).then((response) => {
+        //         if (response.data.status == 'success') {
+        //             let pipeIndex = state.pipes.findIndex((pipeItem) => {
+        //                 return pipeItem.id == pipe.id;
+        //             });
+        //             commit('UPDATE_PIPE_POINT', {pipe: response.data.pipe, index: pipeIndex});
+        //             return response.data.pipe;
+        //         } else {
+        //             console.log('error update Pipe in DB');
+        //         }
+        //     });
+        // },
 
         deleteGu({state, commit}, gu) {
             return axios.delete(this._vm.localeUrl("/gu-map/gu/" + gu.id)).then((response) => {
@@ -227,17 +236,18 @@ const guMap = {
                 }
             });
         },
-        deletePipe ({state, commit}, pipe) {
-            return axios.delete(this._vm.localeUrl("/gu-map/pipe/" + pipe.id ))
-                .then((response) => {
-                    if (response.data.status == 'success') {
-                        commit('DELETE_PIPE', pipe.index);
-                        return response.data.status
-                    } else {
-                        console.log('error in delete Pipe');
-                    }
-                });
-        }
+
+        // deletePipe ({state, commit}, pipe) {
+        //     return axios.delete(this._vm.localeUrl("/gu-map/pipe/" + pipe.id ))
+        //         .then((response) => {
+        //             if (response.data.status == 'success') {
+        //                 commit('DELETE_PIPE', pipe.index);
+        //                 return response.data.status
+        //             } else {
+        //                 console.log('error in delete Pipe');
+        //             }
+        //         });
+        // }
     },
 
     getters: {},

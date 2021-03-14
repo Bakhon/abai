@@ -95,7 +95,7 @@ Route::group(
                 Route::resource('corrosioncrud','ComplicationMonitoring\CorrosionController');
 
                 Route::get('/gu-map', 'MapsController@guMap')->name('maps.gu');
-                Route::get('/gu-map/pipes', 'MapsController@guPipes')->name('maps.gu_pipes');
+                Route::get('/gu-map/mapdata', 'MapsController@mapData')->name('maps.gu_pipes');
 
                 Route::post('/gu-map/gu', 'MapsController@storeGu')->name('maps.store_gu');
                 Route::post('/gu-map/zu', 'MapsController@storeZu')->name('maps.store_zu');

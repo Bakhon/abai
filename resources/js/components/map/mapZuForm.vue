@@ -12,6 +12,16 @@
     </b-form-group>
 
     <b-form-group
+        :label="trans('monitoring.ngdu')"
+        label-for="ngdus">
+      <b-form-select
+          id="ngdus"
+          v-model="zu.ngdu_id"
+          :options="ngduOptions"
+      ></b-form-select>
+    </b-form-group>
+
+    <b-form-group
         :label="trans('monitoring.gu.gu')"
         label-for="gus">
       <b-form-select
@@ -48,6 +58,8 @@
 </template>
 
 <script>
+import {guMapState} from '@store/helpers';
+
 export default {
   name: "mapZuForm",
   props: {
@@ -55,15 +67,15 @@ export default {
       type: Object,
       required: true,
     },
-    gus: {
-      type: Array,
-      required: true,
-    }
   },
   computed: {
+    ...guMapState([
+      'guPoints',
+      'ngdus',
+    ]),
     guOptions: function () {
       let options = [];
-      this.gus.forEach((item) => {
+      this.guPoints.forEach((item) => {
         options.push(
             { value: item.id, text: item.name }
         );
@@ -71,11 +83,16 @@ export default {
 
       return options;
     },
-    test () {
-      console.log('trans', this.trans());
-      console.log(this.trans('monitoring.gu.gu'));
-      return this.trans('monitoring.gu.gu');
-    }
+    ngduOptions: function () {
+      let options = [];
+      this.ngdus.forEach((item) => {
+        options.push(
+            { value: item.id, text: item.name }
+        );
+      });
+
+      return options;
+    },
   },
 }
 </script>

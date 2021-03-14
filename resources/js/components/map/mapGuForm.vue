@@ -44,10 +44,34 @@
           required
       ></b-form-input>
     </b-form-group>
+
+    <h5>{{ trans('monitoring.gu.params') }}</h5>
+    <div class="params_block">
+      <p>{{ trans('monitoring.gu.fields.date') }}: {{ guParams.date }}</p>
+      <p>{{ trans('monitoring.gu.fields.daily_fluid_production') }}: {{ guParams.daily_fluid_production + ' ' + trans('measurements.tonn') }}</p>
+      <p>{{ trans('monitoring.gu.fields.daily_oil_production') }}: {{ guParams.daily_oil_production + ' ' + trans('measurements.tonn') }}</p>
+      <p>{{ trans('monitoring.gu.fields.daily_water_production') }}: {{ guParams.daily_water_production + ' ' + trans('measurements.tonn') }}</p>
+      <p>{{ trans('monitoring.gu.fields.bsw') }}: {{ guParams.bsw + trans('measurements.percent')}}</p>
+      <p>{{ trans('monitoring.gu.fields.pump_discharge_pressure') }}: {{ guParams.pump_discharge_pressure + ' ' + trans('measurements.pressure_bar') }}</p>
+      <p>{{ trans('monitoring.gu.fields.heater_output_pressure') }}: {{ guParams.heater_output_pressure + ' ' + trans('measurements.pressure_bar') }}</p>
+
+    </div>
   </div>
 </template>
 
 <script>
+import {guMapState} from '@store/helpers';
+
+const blankGuParams = {
+  daily_fluid_production: 'N/A ',
+  daily_oil_production: 'N/A ',
+  heater_output_pressure: 'N/A ',
+  pump_discharge_pressure: 'N/A ',
+  daily_water_production: 'N/A ',
+  bsw: 'N/A ',
+  date: 'N/A'
+};
+
 export default {
   name: "mapGuForm",
   props: {
@@ -55,12 +79,12 @@ export default {
       type: Object,
       required: true,
     },
-    cdngs: {
-      type: Array,
-      required: true,
-    }
   },
   computed: {
+    ...guMapState([
+      'guPoints',
+      'cdngs'
+    ]),
     cdngOptions: function () {
       let options = [];
       this.cdngs.forEach((item) => {
@@ -71,10 +95,28 @@ export default {
 
       return options;
     },
+    guParams () {
+      if (!this.gu.omgngdu[0]) {
+        return blankGuParams;
+      }
+
+      let daily_water_production = (this.gu.omgngdu[0].daily_fluid_production * this.gu.omgngdu[0].bsw)/100;
+      return {
+        daily_fluid_production: this.gu.omgngdu[0].daily_fluid_production,
+        daily_oil_production: this.gu.omgngdu[0].daily_oil_production,
+        heater_output_pressure: this.gu.omgngdu[0].heater_output_pressure,
+        pump_discharge_pressure: this.gu.omgngdu[0].pump_discharge_pressure,
+        bsw: this.gu.omgngdu[0].bsw,
+        daily_water_production: daily_water_production,
+        date: this.gu.omgngdu[0].date
+      }
+    }
   },
 }
 </script>
 
-<style scoped>
-
+<style scoped lang="scss">
+.params_block {
+  color: white;
+}
 </style>
