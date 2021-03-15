@@ -39,7 +39,7 @@
             :contextMenuItems="[]"
             :data="filterTree"
             :renameNodeOnDblClick="false"
-            nodeLabelProp="label"
+            nodeLabelProp="name"
             v-on:nodeSelect="filterForm"
         ></b-tree-view>
       </div>
@@ -271,10 +271,6 @@ export default {
     height: calc(100vh - 430px);
     min-height: 500px;
     padding: 10px;
-
-    &-history {
-      width: 100%;
-    }
   }
 
   &__tree {
