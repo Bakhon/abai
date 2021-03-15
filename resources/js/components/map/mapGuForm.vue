@@ -96,19 +96,20 @@ export default {
       return options;
     },
     guParams () {
-      if (!this.gu.omgngdu[0]) {
+      let omgngdu = this.gu.omgngdu[0];
+      if (!omgngdu) {
         return blankGuParams;
       }
 
-      let daily_water_production = (this.gu.omgngdu[0].daily_fluid_production * this.gu.omgngdu[0].bsw)/100;
+      let daily_water_production = (omgngdu.daily_fluid_production * omgngdu.bsw)/100;
       return {
-        daily_fluid_production: this.gu.omgngdu[0].daily_fluid_production,
-        daily_oil_production: this.gu.omgngdu[0].daily_oil_production,
-        heater_output_pressure: this.gu.omgngdu[0].heater_output_pressure,
-        pump_discharge_pressure: this.gu.omgngdu[0].pump_discharge_pressure,
-        bsw: this.gu.omgngdu[0].bsw,
+        daily_fluid_production: omgngdu.daily_fluid_production,
+        daily_oil_production: omgngdu.daily_oil_production,
+        heater_output_pressure: omgngdu.heater_output_pressure,
+        pump_discharge_pressure: omgngdu.pump_discharge_pressure,
+        bsw: omgngdu.bsw,
         daily_water_production: daily_water_production,
-        date: this.gu.omgngdu[0].date
+        date: omgngdu.date
       }
     }
   },

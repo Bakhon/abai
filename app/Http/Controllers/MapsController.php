@@ -91,6 +91,7 @@ class MapsController extends Controller
         )
             ->whereNotNull('lat')
             ->whereNotNull('lon')
+            ->orderByRaw('lpad(name, 10, 0) asc')
             ->get();
 
         $pipeTypes = PipeType::all();
