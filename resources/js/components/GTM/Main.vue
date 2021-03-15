@@ -16,31 +16,10 @@
     </div>
 </template>
 <script>
-import Vuex from 'vuex'
-
-Vue.use(Vuex)
-const store = new Vuex.Store({
-    state: {
-        isShadowBlockShow: false,
-        treeChildrenComponent: Object,
-        treeSettingComponent: Object,
-    },
-    mutations: {
-        changeIsShadowBlockShow (state, value) {
-            this.state.isShadowBlockShow = value;
-        },
-        changeTreeSettingComponent (state, value) {
-            this.state.treeSettingComponent = value;
-        },
-        changeTreeChildrenComponent (state, value) {
-            this.state.treeChildrenComponent = value;
-        },
-    }
-});
 
 export default {
-    store,
     data: function () {
+        this.$store.commit('changeIsShadowBlockShow',false);
         return {
             mainContent: null,
             menuType: 'big',
@@ -51,8 +30,7 @@ export default {
         menuClick (data) {
             this.mainContent = data;
             this.parentType = data.parentType;
-            this.menuType = 'small';
-        },
+            this.menuType = 'small';},
         closeTree () {
             this.$store.commit('changeIsShadowBlockShow',false);
             this.$store.commit('changeTreeSettingComponent',null);
@@ -61,7 +39,7 @@ export default {
     },
     computed: {
         isShadowBlockShow() {
-            return store.state.isShadowBlockShow;
+            return this.$store.state.isShadowBlockShow;
         },
     },
 }
