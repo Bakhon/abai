@@ -32,48 +32,48 @@
         </big-data-history>
       </div>
       <template v-else>
-        <div class="bd-main-block__tree scrollable">
-          <b-tree-view
-              v-if="filterTree.length"
-              :contextMenu="false"
-              :contextMenuItems="[]"
-              :data="filterTree"
-              :renameNodeOnDblClick="false"
-              nodeLabelProp="label"
-              v-on:nodeSelect="filterForm"
-          ></b-tree-view>
-        </div>
-        <form ref="form" class="bd-main-block__form scrollable">
-          <div class="table-page">
-            <p v-if="!geo" class="table__message">{{ trans('bd.select_dzo') }}</p>
-            <p v-else-if="rows.length === 0" class="table__message">{{ trans('bd.nothing_found') }}</p>
-            <div v-else class="table-wrap scrollable">
-              <table v-if="rows.length" class="table">
-                <thead>
-                <tr>
-                  <th v-for="column in formParams.columns">
-                    {{ column.title }}
-                  </th>
-                  <th></th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr v-for="(row, rowIndex) in rows">
-                  <td
-                      v-for="column in formParams.columns"
-                      :class="{'editable': column.isEditable}"
-                      @dblclick="editCell(row, column)"
-                  >
-                    <a v-if="column.type === 'link'" :href="row[column.code].href">{{ row[column.code].name }}</a>
-                    <template v-else-if="['text', 'integer', 'float'].indexOf(column.type) > -1">
-                      <div v-if="isCellEdited(row, column)" class="input-wrap">
-                        <input v-model="row[column.code].value" class="form-control" type="text">
-                        <button type="button" @click.prevent="saveCell(row, column)">OK</button>
-                        <span v-if="errors[column.code]" class="error">{{ showError(errors[column.code]) }}</span>
-                      </div>
-                      <template v-else>
-                        <span class="value">{{ row[column.code] ? row[column.code].value : '' }}</span>
-                        <span v-if="row[column.code] && row[column.code].date" class="date">
+      <div class="bd-main-block__tree scrollable">
+        <b-tree-view
+            v-if="filterTree.length"
+            :contextMenu="false"
+            :contextMenuItems="[]"
+            :data="filterTree"
+            :renameNodeOnDblClick="false"
+            nodeLabelProp="label"
+            v-on:nodeSelect="filterForm"
+        ></b-tree-view>
+      </div>
+      <form ref="form" class="bd-main-block__form scrollable" style="width: 100%">
+        <div class="table-page">
+          <p v-if="!tech" class="table__message">{{ trans('bd.select_dzo') }}</p>
+          <p v-else-if="rows.length === 0" class="table__message">{{ trans('bd.nothing_found') }}</p>
+          <div v-else class="table-wrap scrollable">
+            <table v-if="rows.length" class="table">
+              <thead>
+              <tr>
+                <th v-for="column in formParams.columns">
+                  {{ column.title }}
+                </th>
+                <th></th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr v-for="(row, rowIndex) in rows">
+                <td
+                    v-for="column in formParams.columns"
+                    :class="{'editable': column.isEditable}"
+                    @dblclick="editCell(row, column)"
+                >
+                  <a v-if="column.type === 'link'" :href="row[column.code].href">{{ row[column.code].name }}</a>
+                  <template v-else-if="['text', 'integer', 'float'].indexOf(column.type) > -1">
+                    <div v-if="isCellEdited(row, column)" class="input-wrap">
+                      <input v-model="row[column.code].value" class="form-control" type="text">
+                      <button type="button" @click.prevent="saveCell(row, column)">OK</button>
+                      <span v-if="errors[column.code]" class="error">{{ showError(errors[column.code]) }}</span>
+                    </div>
+                    <template v-else>
+                      <span class="value">{{ row[column.code] ? row[column.code].value : '' }}</span>
+                      <span v-if="row[column.code] && row[column.code].date" class="date">
                         {{ row[column.code].date | moment().format('YYYY-MM-DD') }}
                       </span>
                       </template>
@@ -122,7 +122,7 @@ export default {
       activeTab: 0,
       date: moment().toISOString(),
       filterTree: [],
-      geo: null,
+      tech: null,
       currentPage: 1,
       rows: [],
       columns: [],
@@ -159,19 +159,20 @@ export default {
     ]),
     filterForm(item, isSelected) {
       if (isSelected) {
-        this.geo = item.data.id
+        if (item.data.type === 'org') return false
+        this.tech = item.data.id
         this.updateRows()
       }
     },
     updateRows() {
 
-      if (!this.date || !this.geo) return
+      if (!this.date || !this.tech) return
 
       this.isloading = true
       this.axios.get(this.localeUrl(`/bigdata/form/${this.params.code}/rows`), {
         params: {
           date: this.date,
-          geo: this.geo
+          tech: this.tech
         }
       })
           .then(({data}) => {

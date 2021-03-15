@@ -34,10 +34,9 @@ class EcoRefsScFaController extends Controller
      */
     public function index()
     {
-        $ecorefsscfa = EcoRefsScFa::latest()->paginate(5);
+        $ecorefsscfa = EcoRefsScFa::latest()->paginate(12);
 
-        return view('ecorefsscfa.index',compact('ecorefsscfa'))
-            ->with('i', (request()->input('page', 1) - 1) * 5);
+        return view('ecorefsscfa.index',compact('ecorefsscfa'));
     }
 
     /**
@@ -357,8 +356,9 @@ class EcoRefsScFaController extends Controller
             }
             else{
                 $buyCost = EcoRefsRentEquipElectServCost::where('equip_id', '=', $equipIdRequest)->first();
-                $rentCostResult = $buyCost->rent_cost * $workday/30;
+                $rentCostResult = $buyCost->rent_cost;
             }
+
 
 
             $buyCostResult = 0;

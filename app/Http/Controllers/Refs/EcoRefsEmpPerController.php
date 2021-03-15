@@ -20,10 +20,9 @@ class EcoRefsEmpPerController extends Controller
      */
     public function index()
     {
-        $ecorefsempper = EcoRefsEmpPer::latest()->with('scfa')->with('company')->with('direction')->with('route')->paginate(5);
+        $ecorefsempper = EcoRefsEmpPer::latest()->with('scfa')->with('company')->with('direction')->with('route')->paginate(12);
 
-        return view('ecorefsempper.index',compact('ecorefsempper'))
-            ->with('i', (request()->input('page', 1) - 1) * 5);
+        return view('ecorefsempper.index',compact('ecorefsempper'));
 }
 
     /**
