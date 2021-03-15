@@ -181,6 +181,21 @@ export default {
       })
     },
     calculateCellValue(cellColumn, cellRow, rowIndex) {
+
+      let formula = this.fillFormulaWithValues(cellColumn, cellRow)
+
+      let value = null
+      if (formula.indexOf('$') === -1) {
+        value = eval(formula)
+      }
+
+      this.$set(this.rows[rowIndex], cellColumn.code, {
+        value: value
+      })
+
+      return value
+    },
+    fillFormulaWithValues(cellColumn, cellRow) {
       let formula = cellColumn.formula
       this.formParams.columns.forEach(column => {
 
@@ -201,17 +216,7 @@ export default {
         }
 
       })
-
-      let value = null
-      if (formula.indexOf('$') === -1) {
-        value = eval(formula)
-      }
-
-      this.$set(this.rows[rowIndex], cellColumn.code, {
-        value: value
-      })
-
-      return value
+      return formula
     },
     editCell(row, column) {
       this.editableCell.row = row

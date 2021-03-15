@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace App\Services\BigData\Forms;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\File;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 abstract class BaseForm
 {
@@ -27,10 +30,12 @@ abstract class BaseForm
     protected function params(): array
     {
         $jsonFile = base_path($this->configurationPath) . "/{$this->configurationFileName}.json";
-        if (!\Illuminate\Support\Facades\File::exists($jsonFile)) {
-            throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException();
+        if (!File::exists($jsonFile)) {
+            throw new NotFoundHttpException();
         }
-        return json_decode(file_get_contents($jsonFile), true);
+        $params = json_decode(file_get_contents($jsonFile), true);
+
+        return $this->localizeParams($params);
     }
 
     public function send(): array
@@ -100,7 +105,7 @@ abstract class BaseForm
         return $attributes;
     }
 
-    protected function getFields(): \Illuminate\Support\Collection
+    protected function getFields(): Collection
     {
         $fields = collect();
 
@@ -113,5 +118,21 @@ abstract class BaseForm
         }
 
         return $fields;
+    }
+
+    private function localizeParams(array $params): array
+    {
+        foreach ($params as $key => &$param) {
+            if (is_array($param)) {
+                $param = $this->localizeParams($param);
+            }
+            if ($key === 'title') {
+                $transKey = "bd.forms.{$this->configurationFileName}.{$param}";
+                if ($transKey !== trans($transKey)) {
+                    $param = trans($transKey);
+                }
+            }
+        }
+        return $params;
     }
 }
