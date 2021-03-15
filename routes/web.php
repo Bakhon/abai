@@ -125,6 +125,7 @@ Route::group(
                 Route::resource('ecorefsscfa', 'Refs\EcoRefsScFaController');
                 Route::get('ecorefslist', 'Refs\EcoRefsScFaController@refsList')->name('eco_refs_list');
 
+<<<<<<< HEAD
                 Route::get('techrefslist', 'Refs\TechRefsListController@refsList')->name('tech_refs_list');
                 Route::resource('techrefssource', 'Refs\TechRefsSourceController');
                 Route::resource('techrefscompany', 'Refs\TechRefsCompanyController');
@@ -137,6 +138,17 @@ Route::group(
                 Route::get('tech_data_list', 'Refs\TechRefsProductionDataController@tech_refs_data_json');
                 Route::get('refs/upload_excel', 'Refs\TechRefsListController@uploadExcel')->name('tech_refs_upload');
                 Route::post('refs/import_excel', 'Refs\TechRefsListController@importExcel')->name('tech_refs_import');
+=======
+                Route::get('tech_data_list', 'Refs\TechnicalDataController@refsList')->name('tech_data_list');
+                Route::resource('tech_struct_source', 'Refs\TechnicalStructureSourceController');
+                Route::resource('tech_struct_company', 'Refs\TechnicalStructureCompanyController');
+                Route::resource('tech_struct_field', 'Refs\TechnicalStructureFieldController');
+                Route::resource('tech_struct_ngdu', 'Refs\TechnicalStructureNgduController');
+                Route::resource('tech_struct_cdng', 'Refs\TechnicalStructureCdngController');
+                Route::resource('tech_struct_gu', 'Refs\TechnicalStructureGuController');
+                Route::resource('tech_struct_bkns', 'Refs\TechnicalStructureBknsController');
+                Route::resource('tech_data_forecast', 'Refs\TechnicalDataForecastController');
+>>>>>>> origin/development/ib50/tech_refs_list
 
                 Route::get('nnoeco', 'Refs\EcoRefsScFaController@nnoeco');
                 Route::resource('ecorefsexc', 'EcoRefsExcController');
