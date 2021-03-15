@@ -265,4 +265,14 @@ return array (
   'tonWithSpace' => ' тонн',
   'meterCubicWithSpace' => ' м³',
   'requiredDailyPlan' => 'Необходимый ср/сут уровень',
+  'dzoRegions' => 
+  array (
+    'aturay' => 'Атырауская область',
+    'actubinsk' => 'Актюбинская область',
+    'kuzulord' => 'Кызылординская область',
+    'mangistau' => 'Мангистауская область',
+    'west' => 'Западно – Казахстанская область',
+    'zhambul' => 'Жамбылская область',
+  ),
+  'summaryByRegion' => 'Итого по активам области:',
 );
