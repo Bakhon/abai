@@ -201,7 +201,20 @@ export default {
         },
         onHover: ({object}) => (this.isHovering = Boolean(object)),
         getCursor: ({isDragging}) => (isDragging ? 'grabbing' : (this.isHovering ? 'pointer' : 'grab')),
-        getTooltip: ({object}) => object && object.name,
+        getTooltip: ({object}) => {
+          if (object) {
+            if (object.cdng_id && object.omgngdu[0]) {
+              let guParams = object.omgngdu[0];
+              guParams.daily_water_production = (guParams.daily_fluid_production * guParams.bsw) / 100;
+              guParams.name = object.name;
+
+              return {
+                html: this.getGuTooltipHtml(guParams)
+              }
+            }
+          }
+          return object && object.name
+        },
         layers: this.layers,
       });
 
@@ -218,6 +231,18 @@ export default {
           layers: this.layers
         });
       });
+    },
+    getGuTooltipHtml (guParams){
+      return '<div class="params_block">' +
+          '<p>' + guParams.name + '</p>' +
+          '<p>' + this.trans('monitoring.gu.fields.date') + ': ' + guParams.date + '</p>' +
+          '<p>' + this.trans('monitoring.gu.fields.daily_fluid_production') + ': ' + guParams.daily_fluid_production + ' ' + this.trans('measurements.m3/day') + '</p>' +
+          '<p>' + this.trans('monitoring.gu.fields.daily_oil_production') + ': ' + guParams.daily_oil_production + ' ' + this.trans('measurements.m3/day') + '</p>' +
+          '<p>' + this.trans('monitoring.gu.fields.daily_water_production') + ': ' + guParams.daily_water_production + ' ' + this.trans('measurements.m3/day') + '</p>' +
+          '<p>' + this.trans('monitoring.gu.fields.bsw') + ': ' + guParams.bsw + this.trans('measurements.percent') + '</p>' +
+          '<p>' + this.trans('monitoring.gu.fields.pump_discharge_pressure') + ': ' + guParams.pump_discharge_pressure + ' ' + this.trans('measurements.pressure_bar') + '</p>' +
+          '<p>' + this.trans('monitoring.gu.fields.heater_output_temperature') + ': ' + guParams.heater_output_pressure + ' ' + this.trans('measurements.celsius') + '</p>' +
+          '</div>';
     },
     prepareLayers() {
       let pipesLayer = this.createPipeLayer('path-layer', this.pipes);
@@ -694,8 +719,12 @@ export default {
         cancelTitle: this.trans('app.cancel'),
       })
           .then(value => {
-            let method = 'remove' + this.editMode.charAt(0).toUpperCase() + this.editMode.slice(1);
-            this[method]();
+            if (value) {
+              let method = 'remove' + this.editMode.charAt(0).toUpperCase() + this.editMode.slice(1);
+              this[method]();
+            } else {
+              this.resetForm();
+            }
           })
           .catch(err => {
             // An error occurred

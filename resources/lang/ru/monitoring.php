@@ -291,6 +291,7 @@ return array (
       'pump_discharge_pressure' => 'Выходное давление',
       'heater_output_pressure' => 'Давление сепаратора',
       'date' => 'Дата',
+      'heater_output_temperature' => 'Температура печи',
     ),
   ),
   'zu' => 
