@@ -350,7 +350,7 @@ class FluidProduction extends TableForm
         usort(
             $techData,
             function ($a, $b) {
-                return $a['parent_id'] < $b['parent_id'] ? 1 : -1;
+                return $a['parent_id'] > $b['parent_id'] ? 1 : -1;
             }
         );
 
@@ -365,7 +365,6 @@ class FluidProduction extends TableForm
             }
         }
         Cache::put('bd_tech_with_wells_' . $this->request->get('date'), $techData, now()->addDay());
-
         return $this->generateTree($techData);
     }
 
