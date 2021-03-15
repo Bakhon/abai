@@ -96,7 +96,7 @@
                 rowsCount: 57,
                 errorsList: [],
                 possibleErrors : {
-                    incorrectDocumentFormat: this.trans("visualcenter.importFormErrorList-incorrectDocumentFormat"),
+                    incorrectDocumentFormat: this.trans("visualcenter.importForm.errorList.incorrectDocumentFormat"),
                 },
                 columnsCountForHighlight: {
                     four: [0,1,2,3],
