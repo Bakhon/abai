@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\Refs;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Refs\TechProductionDataRequest;
+use App\Http\Requests\Refs\TechnicalForecastDataRequest;
+use App\Http\Resources\TechnicalForecastResource;
 use App\Models\Refs\TechnicalDataForecast;
 use App\Models\Refs\TechnicalStructureGu;
 use App\Models\Refs\TechnicalStructureSource;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 
 
@@ -18,8 +20,43 @@ class TechnicalDataForecastController extends Controller
     public function index(): View
     {
         $technicalDataForecast = TechnicalDataForecast::latest()->paginate(12);
-
         return view('technical_forecast.production_data.index',compact('technicalDataForecast'));
+    }
+
+    public function tech_data_json(): JsonResponse
+    {
+        $tech_data = TechnicalForecastResource::collection(TechnicalDataForecast::all());
+
+        $tech_data_array = [];
+        $column_names = ['Источник данных', 'ГУ', 'Скважина', 'Месяц-Год', 'Добыча нефти тыс.т',
+            'Добыча жидкости тыс.т', 'Отработанные дни', 'ПРС', 'Комментарий', 'Добавлено: дата / автор',
+            'Изменение: дата / автор', 'Редактировать', 'Удалить'];
+        array_push($tech_data_array, $column_names);
+
+        foreach ($tech_data as $item) {
+            $well = [];
+
+            $edit_url = route("tech_data_forecast.edit", $item->id);
+
+            array_push($well, $item['source_id']);
+            array_push($well, $item['gu_id']);
+
+            array_push($well, $item['well_id']);
+            array_push($well, date('m-Y', strtotime($item['date'])));
+            array_push($well, $item['oil']);
+            array_push($well, $item['liquid']);
+            array_push($well, $item['days_worked']);
+            array_push($well, $item['prs']);
+            array_push($well, $item['comment']);
+            array_push($well, "{$item['created_at']} {$item['author_id']}");
+            array_push($well, "{$item['updated_at']} {$item['editor_id']}");
+            array_push($well, $edit_url);
+            array_push($tech_data_array, $well);
+        }
+
+        return response()->json([
+            'tech_data' => $tech_data_array
+        ]);
     }
 
     public function create(): View
@@ -29,7 +66,7 @@ class TechnicalDataForecastController extends Controller
         return view('technical_forecast.production_data.create', compact('source', 'gu'));
     }
 
-    public function store(TechProductionDataRequest $request): RedirectResponse
+    public function store(TechnicalForecastDataRequest $request): RedirectResponse
     {
         $dataArray = $request->all();
         $dataArray['author_id'] = auth()->user()->id;
@@ -47,7 +84,7 @@ class TechnicalDataForecastController extends Controller
             compact('source', 'technicalDataForecast', 'gu'));
     }
 
-    public function update(TechProductionDataRequest $request, int $id): RedirectResponse
+    public function update(TechnicalForecastDataRequest $request, int $id): RedirectResponse
     {
         $technicalDataForecast=TechnicalDataForecast::find($id);
         $dataArray = $request->all();
