@@ -3,14 +3,21 @@ import moment from "moment";
 import Calendar from "v-calendar/lib/components/calendar.umd";
 import DatePicker from "v-calendar/lib/components/date-picker.umd";
 import {isString} from "lodash";
-import dzoCompaniesInitial from './dzo_companies_initial.json';
+
 import mainMenuConfiguration from './main_menu_configuration.json';
 import {dzoMapState, dzoMapActions} from '@store/helpers';
+
+import mainMenu from './visualcenter3/mainMenu';
+import dzoCompanies from './visualcenter3/dzoCompanies';
+import helpers from './visualcenter3/helpers';
+import otm from './visualcenter3/otm';
+import chemistry from './visualcenter3/chemistry';
+import oilRates from './visualcenter3/oilRates';
+import usdRates from './visualcenter3/usdRates';
 
 Vue.component("calendar", Calendar);
 Vue.component("date-picker", DatePicker);
 import Vue from "vue";
-
 
 
 
@@ -53,18 +60,7 @@ export default {
             personalFact: '',
             covidPercent: '',
             covid: '',
-            usdRatesData: {
-                for_chart: [],
-                for_table: []
-            },
-            oilRatesData: {
-                for_chart: [],
-                for_table: []
-            },
-            chartSecondaryName: this.trans('visualcenter.getoil'),
-            // 'Добыча нефти',
             oilChartHeadName: this.trans('visualcenter.getoildynamic'),
-            // 'Динамика добычи нефти',
             injectionWells: [
                 {name: "ЭФ", value: 603, value2: 101},
                 {name: "ДФ", value: 98, value2: 56},
@@ -79,12 +75,6 @@ export default {
             innerWells2ChartData: [],
             innerWellsSelectedRow: 'fond_nagnetat_ef',
             innerWellsChartData: [],
-            otmData: [],
-            otmSelectedRow: 'otm_iz_burenia_skv_fact',
-            otmChartData: [],
-            chemistryData: [],
-            chemistrySelectedRow: 'chem_prod_zakacka_demulg_fact',
-            chemistryChartData: [],
             prod_wells_work: 0,
             prod_wells_idle: 0,
             inj_wells_idle: 0,
@@ -160,10 +150,6 @@ export default {
             index: "",
             widthProgress: "90",
             DMY: this.trans("visualcenter.day"),
-            planFieldName: "oil_plan",
-            factFieldName: "oil_fact",
-            chartHeadName: this.trans("visualcenter.getoil"),
-            metricName: this.trans("visualcenter.chemistryMetricTon"),
             tables: "",
             showTable2: "Yes",
             displayChart: "display: none;",
@@ -301,7 +287,6 @@ export default {
             test: [""],
             series: ["", ""],
             display: "none",
-            company: "all",
             factYearSumm: "",
             planYearSumm: "",
             planMonthSumm: "",
@@ -321,33 +306,10 @@ export default {
                 monthly: ['companyName', 'monthlyPlan', 'plan', 'fact', 'difference', 'percent'],
                 yearly: ['companyName', 'yearlyPlan', 'plan', 'fact', 'difference', 'percent'],
             },
-            dzoCompanies: dzoCompaniesInitial,
             buttonDzoDropdown: "",
-            dzoCompanySummary: this.bigTable,
-            dzoCompaniesSummaryInitial: {
-                plan: 0,
-                periodPlan: 0,
-                fact: 0,
-                difference: 0,
-                percent: 0,
-            },
-            dzoCompaniesSummary: {},
             isDzoCompaniesListSelectorOpened: false,
             isMultipleDzoCompaniesSelected: true,
             dzoCompaniesSummaryForChart: {},
-            mainMenuButtonHighlighted: "color: #fff;background: #237deb;font-weight:bold;",
-            mainMenuButtonElementOptions: {},
-            categoryMenuPreviousParent: '',
-            dzoCompaniesAssetsInitial: {
-                isAllAssets: true,
-                isOperating: false,
-                isNonOperating: false,
-                isOpecRestriction: false,
-                isRegion: false,
-                assetTitle: this.trans("visualcenter.summaryAssets"),
-            },
-            dzoCompaniesAssets: {},
-            selectedDzoCompanies: [],
             assetTitleMapping: {
                 isOperating: this.trans("visualcenter.summaryOperatingAssets"),
                 isNonOperating: this.trans("visualcenter.summaryNonOperatingAssets"),
@@ -368,8 +330,6 @@ export default {
                 "«Карачаганак Петролеум Оперейтинг б.в.»": 0.1,
                 "«Норт Каспиан Оперейтинг Компани н.в.»": 0.1688
             },
-            isOpecFilterActive: false,
-            isKmgParticipationFilterActive: false,
             wellStockIdleButtons: {
                 isProductionIdleButtonActive: false,
                 isInjectionIdleButtonActive: false,
@@ -428,7 +388,6 @@ export default {
                 'fond_nagnetat_well_survey',
                 'fond_nagnetat_others'
             ],
-            isMainMenuItemChanged: false,
             opecFieldNameForChart: '',
             injectionWellsOptions: [
                 {ticker: 'all', name: this.trans("visualcenter.allCompany")},
@@ -440,36 +399,11 @@ export default {
                 {ticker: 'КБМ', name: this.trans("visualcenter.kbm")},
                 {ticker: 'ЭМГ', name: this.trans("visualcenter.emg")},
             ],
-            oilRatesWidgetData: {
-                changePercent: 0,
-                index: ''
-            },
-            dzoRegionsMapping: {
-                aturay: {
-                    isActive: false,
-                    translationName: this.trans("visualcenter.dzoRegions.aturay"),
-                },
-                actubinsk: {
-                    isActive: false,
-                    translationName: this.trans("visualcenter.dzoRegions.actubinsk"),
-                },
-                kuzulord: {
-                    isActive: false,
-                    translationName: this.trans("visualcenter.dzoRegions.kuzulord"),
-                },
-                mangistau: {
-                    isActive: false,
-                    translationName: this.trans("visualcenter.dzoRegions.mangistau"),
-                },
-                west: {
-                    isActive: false,
-                    translationName: this.trans("visualcenter.dzoRegions.west"),
-                },
-                zhambul: {
-                    isActive: false,
-                    translationName: this.trans("visualcenter.dzoRegions.zhambul"),
-                },
-            },
+            chartHeadName: this.trans("visualcenter.getoil"),
+            chartSecondaryName: this.trans('visualcenter.getoil'),
+            planFieldName: "oil_plan",
+            factFieldName: "oil_fact",
+            metricName: this.trans("visualcenter.chemistryMetricTon"),
         };
     },
     methods: {
@@ -481,104 +415,10 @@ export default {
             await this.getYearlyPlan();
         },
 
-        switchCategory(planFieldName,factFieldName,metricName,categoryName,parentButton,childButton) {
-            this.chartSecondaryName = categoryName;
-            this.dzoCompaniesAssets['assetTitle'] = this.trans("visualcenter.summaryAssets");
-            this.planFieldName = planFieldName;
-            this.factFieldName = factFieldName;
-            this.metricName = metricName;
-            if (parentButton && childButton) {
-                this.switchMainMenu(parentButton,childButton);
-                this.changeAssets(childButton);
-            } else {
-                this.isMainMenuItemChanged = true;
-            }
-            this.changeDate();
-        },
-
-        selectAllDzoCompanies() {
-            this.selectDzoCompanies();
-        },
-
-        selectDzoCompanies() {
-            this.selectCompany('all');
-            this.isMultipleDzoCompaniesSelected = true;
-            this.dzoCompaniesAssets = _.cloneDeep(this.dzoCompaniesAssetsInitial);
-            this.disableDzoRegions();
-            this.selectedDzoCompanies = this.getAllDzoCompanies();
-            this.buttonDzoDropdown = "";
-            _.map(this.dzoCompanies, function (company) {
-                company.selected = true;
-            });
-            this.dzoCompanySummary = this.bigTable;
-            this.calculateDzoCompaniesSummary();
-        },
-
-        calculateDzoCompaniesSummary() {
-            let summary = _.cloneDeep(this.dzoCompaniesSummaryInitial);
-            _.map(this.dzoCompanySummary, function (company) {
-                summary.plan = parseInt(summary.plan) + parseInt(company.planMonth);
-                summary.fact = parseInt(summary.fact) + parseInt(company.factMonth);
-                summary.periodPlan = parseInt(summary.periodPlan) + parseInt(company.periodPlan);
-            });
-            summary.difference = this.formatDigitToThousand(
-                summary.plan - summary.fact);
-            summary.percent = new Intl.NumberFormat("ru-RU")
-                .format(((summary.plan - summary.fact) /
-                    summary.fact * 100).toFixed(1));
-            summary.plan = this.formatDigitToThousand(summary.plan);
-            summary.fact = this.formatDigitToThousand(summary.fact);
-            summary.periodPlan = this.formatDigitToThousand(summary.periodPlan);
-            this.dzoCompaniesSummary = summary;
-        },
-
         disableDzoRegions() {
           _.forEach(this.dzoRegionsMapping, function(region) {
               _.set(region, 'isActive', false);
           });
-        },
-
-        selectOneDzoCompany(companyTicker) {
-            this.disableDzoCompaniesVisibility();
-            this.selectDzoCompany(companyTicker);
-        },
-
-        disableDzoCompaniesVisibility() {
-            _.forEach(this.dzoCompanies, function (dzo) {
-                _.set(dzo, 'selected', false);
-            });
-        },
-
-        selectMultipleDzoCompanies(type,category,regionName) {
-            this.selectCompany('all');
-            this.dzoCompaniesAssets['isAllAssets'] = false;
-            this.disableDzoCompaniesVisibility();
-            this.switchDzoCompaniesVisibility(type,category,regionName);
-            this.calculateDzoCompaniesSummary();
-        },
-
-        selectDzoCompany(companyTicker) {
-            this.disableDzoRegions();
-            this.selectCompany(companyTicker);
-            this.selectedDzoCompanies = [companyTicker];
-            this.dzoCompaniesAssets['isAllAssets'] = false;
-            this.buttonDzoDropdown = this.highlightedButton;
-            this.switchDzoCompaniesVisibility(companyTicker,'ticker');
-            this.isMultipleDzoCompaniesSelected = this.dzoCompanySummary.length > 1;
-            this.calculateDzoCompaniesSummary();
-        },
-
-        switchDzoCompaniesVisibility(condition,type,regionName) {
-            if (regionName) {
-                condition = regionName;
-            }
-            _.map(this.dzoCompanies, function(company) {
-                if (company[type] === condition) {
-                    company.selected = !company.selected;
-                }
-            });
-            let selectedCompanies = this.dzoCompanies.filter(row => row.selected === true).map(row => row.ticker);
-            this.dzoCompanySummary = this.bigTable.filter(row => selectedCompanies.includes(row.dzoMonth));
         },
 
         getDzoColumnsClass(rowIndex, columnName) {
@@ -625,10 +465,6 @@ export default {
             }
         },
 
-        selectCompany(com) {
-            this.company = com;
-            this.updateProductionData(this.planFieldName, this.factFieldName, this.chartHeadName, this.metricName, this.chartSecondaryName);
-        },
         changeTable(change) {
             this.company = "all";
             this.Table1 = "display:none";
@@ -686,46 +522,6 @@ export default {
             this.updateProductionData(this.planFieldName, this.factFieldName, this.chartHeadName, this.metricName, this.chartSecondaryName);
         },
 
-        switchMainMenu(parentButton, childButton) {
-            let self = this;
-            this.isMainMenuItemChanged = false;
-            let currentFilterOptions = this.mainMenuButtonElementOptions[parentButton].childItems[childButton];
-            if (this.categoryMenuPreviousParent !== parentButton) {
-                _.forEach(Object.keys(this.mainMenuButtonElementOptions), function (button) {
-                    self.disableMainMenuFlags(self.mainMenuButtonElementOptions[button]);
-                });
-            }
-            this.categoryMenuPreviousParent = parentButton;
-            this.switchButtonOptions(currentFilterOptions);
-        },
-
-        disableMainMenuFlags(menuCategory) {
-            if (!menuCategory.childItems) {
-                return;
-            }
-            _.forEach(Object.keys(menuCategory.childItems), function (childButton) {
-                menuCategory.childItems[childButton]['flag'] = 'flagOff';
-                menuCategory.childItems[childButton]['button'] = '';
-            });
-        },
-
-        switchButtonOptions(elementOptions) {
-            let enabledFlag = 'flagOn';
-            let disabledFlag = 'flagOff'
-            let highlightedButton = this.mainMenuButtonHighlighted;
-            let normalButton = '';
-            if (elementOptions.buttonClass !== highlightedButton) {
-                elementOptions.buttonClass = highlightedButton;
-            } else {
-                elementOptions.buttonClass = normalButton;
-            }
-            if (elementOptions.flag !== enabledFlag) {
-                elementOptions.flag = enabledFlag;
-            } else {
-                elementOptions.flag = disabledFlag;
-            }
-        },
-
         getMainMenuButtonFlag(parentButton, childButton) {
             if (!this.mainMenuButtonElementOptions[parentButton]) {
                 return this.flagOff;
@@ -736,19 +532,6 @@ export default {
 
         dayClicked() {
             this.changeMenu2('4');
-        },
-
-        ISODateString(d) {
-            function pad(n) {
-                return n < 10 ? '0' + n : n
-            }
-
-            return d.getUTCFullYear() + '-'
-                + pad(d.getUTCMonth() + 1) + '-'
-                + pad(d.getUTCDate()) + 'T'
-                + pad(d.getUTCHours()) + ':'
-                + pad(d.getUTCMinutes()) + ':'
-                + pad(d.getUTCSeconds()) + '+06:00'
         },
 
         changeMenu2(change) {
@@ -803,39 +586,6 @@ export default {
             } else {
                 this.buttonPeriodTab = "";
             }
-        },
-
-        changeAssets(type,category,regionName) {
-            this.dzoCompaniesAssets[type] = true;
-            this.dzoCompaniesAssets['isAllAssets'] = false;
-            this.dzoCompaniesAssets['assetTitle'] = this.assetTitleMapping[type];
-
-            if (type === "opecRestriction") {
-                this.isOpecFilterActive = !this.isOpecFilterActive;
-            } else if (type === 'kmgParticipation') {
-                this.chartSecondaryName = this.trans("visualcenter.dolyaUchast");
-                this.isKmgParticipationFilterActive = !this.isKmgParticipationFilterActive;
-            } else {
-                if (regionName) {
-                    this.dzoRegionsMapping[regionName].isActive = true;
-                }
-                this.dzoCompaniesAssets = _.cloneDeep(this.dzoCompaniesAssetsInitial);
-                this.dzoCompaniesAssets[type] = true;
-                this.selectedDzoCompanies = this.getSelectedDzoCompanies(type,category,regionName);
-                this.selectMultipleDzoCompanies(type,category,regionName);
-            }
-        },
-
-        getAllDzoCompanies() {
-            return _.cloneDeep(dzoCompaniesInitial).map(company => company.ticker);
-        },
-
-        getSelectedDzoCompanies(type, category, regionName) {
-            if (regionName) {
-                category = regionName;
-            }
-            type = type.toLowerCase().replace('is','');
-            return _.cloneDeep(dzoCompaniesInitial).filter(company => company[type] === category).map(company => company.ticker);
         },
 
         periodSelect() {
@@ -955,40 +705,6 @@ export default {
             this.prices[type][pricesKey] = value;
         },
 
-        setDailyOilPriceChange(currentPrice, previousPrice) {
-            if (currentPrice > previousPrice) {
-                this.dailyOilPriceChange = 'UP';
-            } else {
-                this.dailyOilPriceChange = 'DOWN';
-            }
-        },
-
-        setOilPlacements(ratesData) {
-            this.oilRatesData = ratesData;
-            this.setDailyOilPriceChange(this.prices['oil']['current'], this.prices['oil']['previous']);
-
-            if (this.period === 0) {
-                this.oilPeriod = this.defaultOilPeriod;
-            }
-            this.oilRatesData.for_chart = this.oilRatesDataChartForCurrentPeriod();
-        },
-
-        setUsdPlacements(ratesData) {
-            this.usdRatesData = ratesData;
-            if (this.period === 0) {
-                this.usdPeriod = this.defaultOilPeriod;
-            }
-            this.usdRatesData.for_chart = this.usdRatesDataChartForCurrentPeriod();
-        },
-
-        oilRatesDataChartForCurrentPeriod() {
-            return this.oilRatesData.for_chart.slice(this.oilPeriod * -1);
-        },
-
-        usdRatesDataChartForCurrentPeriod() {
-            return this.usdRatesData.for_chart.slice(this.usdPeriod * -1);
-        },
-
         updatePrices(period) {
             this.updateCurrentUsdPrices(period);
             this.updateCurrentOilPrices(period);
@@ -1000,46 +716,6 @@ export default {
             let uri = this.localeUrl("/get-usd-rates");
             this.setDataAndChart(uri, 'usd');
             this.isPricesChartLoading = false;
-        },
-
-        //currency and oil up
-        pushBign(bign) {
-            switch (bign) {
-                case "bign1":
-                    break;
-            }
-            this.$modal.show(bign);
-        },
-        displaynumbers: function (event) {
-            return this.updateProductionData(this.planFieldName, this.factFieldName, this.chartHeadName, this.metricName, this.chartSecondaryName);
-        },
-
-        getDiffProcentLastBigN(a, b) {
-            if (a != '') {
-                return ((a / b) * 100).toFixed(2);
-            } else {
-                return 0
-            }
-        },
-
-        getDiffProcentLastP(a, b, c) {
-            if (c) {
-                if (a > b) {
-                    return 'Снижение'
-                } else if (a < b) {
-                    return 'Рост'
-                }
-                ;
-            } else {
-                if (b == 0) {
-                    return 0
-                } else if (a == 0) {
-                    return 0
-                }
-                {
-                    if (a != '') return ((b / a - 1) * 100).toFixed(2)
-                }
-            }
         },
 
         getColor2(i) {
@@ -1065,10 +741,6 @@ export default {
             localStorage.setItem("selectedPeriod", this.selectedPeriod);
             return menuDMY;
         },
-        pad(n) {
-            return n < 10 ? "0" + n : n;
-        },
-
 
         getProductionOilandGas(data) {
             if (data) {
@@ -1902,21 +1574,6 @@ export default {
             );
         },
 
-        setColorToMainMenuButtons(productionPlan) {
-            let self = this;
-            _.forEach(Object.keys(this.mainMenuButtonElementOptions), function (button) {
-                self[button] = self.getButtonClassForMainMenu(productionPlan, button);
-            });
-        },
-
-        getButtonClassForMainMenu(productionPlan, buttonType) {
-            if (this.mainMenuButtonElementOptions[buttonType].tags.includes(productionPlan)) {
-                return this.highlightedButton;
-            } else {
-                return "";
-            }
-        },
-
         clearNullAccidentCases() {
             _.forEach(this.bigTable, function (item) {
                 if (item.accident && typeof (item.accident) !== 'number') {
@@ -2233,179 +1890,9 @@ export default {
             return result;
         },
 
-        getOtmData(arr) {
-            let otmData = _(arr)
-                .groupBy("data")
-                .map((__time, id) => ({
-                    __time: id,
-                    otm_iz_burenia_skv_plan: _.round(_.sumBy(__time, 'otm_iz_burenia_skv_plan'), 0),
-                    otm_iz_burenia_skv_fact: _.round(_.sumBy(__time, 'otm_iz_burenia_skv_fact'), 0),
-                    otm_burenie_prohodka_plan: _.round(_.sumBy(__time, 'otm_burenie_prohodka_plan'), 0),
-                    otm_burenie_prohodka_fact: _.round(_.sumBy(__time, 'otm_burenie_prohodka_fact'), 0),
-                    otm_krs_skv_plan: _.round(_.sumBy(__time, 'otm_krs_skv_plan'), 0),
-                    otm_krs_skv_fact: _.round(_.sumBy(__time, 'otm_krs_skv_fact'), 0),
-                    otm_prs_skv_plan: _.round(_.sumBy(__time, 'otm_prs_skv_plan'), 0),
-                    otm_prs_skv_fact: _.round(_.sumBy(__time, 'otm_prs_skv_fact'), 0),
-                }))
-                .value();
-
-            let result = [];
-
-            result.push(
-                {
-                    name:
-                    // 'Скважин из бурения',
-                        this.trans("visualcenter.otm_iz_burenia_skv_fact"),
-                    code: 'otm_iz_burenia_skv_fact',
-                    plan: otmData[0]['otm_iz_burenia_skv_plan'],
-                    fact: otmData[0]['otm_iz_burenia_skv_fact'],
-                    metricSystem: this.trans("visualcenter.otmMetricSystemWells"),
-                },
-                {
-                    name:
-                    // 'Бурение проходка',
-                        this.trans("visualcenter.otm_burenie_prohodka_fact"),
-                    code: 'otm_burenie_prohodka_fact',
-                    plan: otmData[0]['otm_burenie_prohodka_plan'],
-                    fact: otmData[0]['otm_burenie_prohodka_fact'],
-                    metricSystem: this.trans("visualcenter.otmMetricSystemMeter"),
-                },
-                {
-                    name:
-                    // 'КРС',
-                        this.trans("visualcenter.otm_krs_skv_fact"),
-                    code: 'otm_krs_skv_fact',
-                    plan: otmData[0]['otm_krs_skv_plan'],
-                    fact: otmData[0]['otm_krs_skv_fact'],
-                    metricSystem: this.trans("visualcenter.otmMetricSystemWells"),
-                },
-                {
-                    name:
-                    // 'ПРС',
-                        this.trans("visualcenter.otm_prs_skv_fact"),
-                    code: 'otm_prs_skv_fact',
-                    plan: otmData[0]['otm_prs_skv_plan'],
-                    fact: otmData[0]['otm_prs_skv_fact'],
-                    metricSystem: this.trans("visualcenter.otmMetricSystemWells"),
-                },
-            )
-
-            return result
-        },
-
-        getOtmChartData(arr) {
-            let otmData
-            otmData = _.groupBy(arr, item => {
-                return moment(parseInt(item.__time)).format("YYYY-MM-DD")//.format('D')
-            })
-
-            let result = {}
-
-            if (typeof otmData !== 'undefined') {
-                for (let i in otmData) {
-                    result[i] = {
-                        otm_iz_burenia_skv_fact: _.round(_.sumBy(otmData[i], 'otm_iz_burenia_skv_fact'), 0),
-                        otm_burenie_prohodka_fact: _.round(_.sumBy(otmData[i], 'otm_burenie_prohodka_fact'), 0),
-                        otm_krs_skv_fact: _.round(_.sumBy(otmData[i], 'otm_krs_skv_fact'), 0),
-                        otm_prs_skv_fact: _.round(_.sumBy(otmData[i], 'otm_prs_skv_fact'), 0),
-                    }
-                }
-            }
-
-
-            return result
-        },
-        getChemistryData(arr) {
-            let chemistryData = _(arr)
-                .groupBy("data")
-                .map((__time, id) => ({
-                    __time: id,
-                    chem_prod_zakacka_demulg_plan: _.round(_.sumBy(__time, 'chem_prod_zakacka_demulg_plan'), 0),
-                    chem_prod_zakacka_demulg_fact: _.round(_.sumBy(__time, 'chem_prod_zakacka_demulg_fact'), 0),
-                    chem_prod_zakacka_bakteracid_plan: _.round(_.sumBy(__time, 'chem_prod_zakacka_bakteracid_plan'), 0),
-                    chem_prod_zakacka_bakteracid_fact: _.round(_.sumBy(__time, 'chem_prod_zakacka_bakteracid_fact'), 0),
-                    chem_prod_zakacka_ingibator_korrozin_plan: _.round(_.sumBy(__time, 'chem_prod_zakacka_ingibator_korrozin_plan'), 0),
-                    chem_prod_zakacka_ingibator_korrozin_fact: _.round(_.sumBy(__time, 'chem_prod_zakacka_ingibator_korrozin_fact'), 0),
-                    chem_prod_zakacka_ingibator_soleotloj_plan: _.round(_.sumBy(__time, 'chem_prod_zakacka_ingibator_soleotloj_plan'), 0),
-                    chem_prod_zakacka_ingibator_soleotloj_fact: _.round(_.sumBy(__time, 'chem_prod_zakacka_ingibator_soleotloj_fact'), 0),
-                }))
-                .value();
-
-            let result = [];
-
-            result.push(
-                {
-                    name:
-                    // 'Деэмульгатор',
-                        this.trans("visualcenter.chem_prod_zakacka_demulg_fact"),
-                    code: 'chem_prod_zakacka_demulg_fact',
-                    plan: chemistryData[0]['chem_prod_zakacka_demulg_plan'],
-                    fact: chemistryData[0]['chem_prod_zakacka_demulg_fact'],
-                    metricSystem: this.trans("visualcenter.chemistryMetricTon"),
-                },
-                {
-                    name:
-                    // 'Бактерицид',
-                        this.trans("visualcenter.chem_prod_zakacka_bakteracid_fact"),
-                    code: 'chem_prod_zakacka_bakteracid_fact',
-                    plan: chemistryData[0]['chem_prod_zakacka_bakteracid_plan'],
-                    fact: chemistryData[0]['chem_prod_zakacka_bakteracid_fact'],
-                    metricSystem: this.trans("visualcenter.chemistryMetricTon"),
-                },
-                {
-                    name:
-                    // 'Ингибитор коррозии',
-                        this.trans("visualcenter.chem_prod_zakacka_ingibator_korrozin_fact"),
-                    code: 'chem_prod_zakacka_ingibator_korrozin_fact',
-                    plan: chemistryData[0]['chem_prod_zakacka_ingibator_korrozin_plan'],
-                    fact: chemistryData[0]['chem_prod_zakacka_ingibator_korrozin_fact'],
-                    metricSystem: this.trans("visualcenter.chemistryMetricTon"),
-                },
-                {
-                    name:
-                    // 'Ингибитор солеотложения',
-                        this.trans("visualcenter.chem_prod_zakacka_ingibator_soleotloj_fact"),
-                    code: 'chem_prod_zakacka_ingibator_soleotloj_fact',
-                    plan: chemistryData[0]['chem_prod_zakacka_ingibator_soleotloj_plan'],
-                    fact: chemistryData[0]['chem_prod_zakacka_ingibator_soleotloj_fact'],
-                    metricSystem: this.trans("visualcenter.chemistryMetricTon"),
-                },
-            )
-
-            return result
-        },
-        getChemistryChartData(arr) {
-            let chemistryData = _.groupBy(arr, item => {
-                return moment(parseInt(item.__time)).format("YYYY-MM-DD")//.format('D')
-            })
-
-            let result = {}
-
-            if (typeof chemistryData !== 'undefined') {
-                for (let i in chemistryData) {
-                    result[i] = {
-                        chem_prod_zakacka_demulg_fact: _.round(_.sumBy(chemistryData[i], 'chem_prod_zakacka_demulg_fact'), 0),
-                        chem_prod_zakacka_bakteracid_fact: _.round(_.sumBy(chemistryData[i], 'chem_prod_zakacka_bakteracid_fact'), 0),
-                        chem_prod_zakacka_ingibator_korrozin_fact: _.round(_.sumBy(chemistryData[i], 'chem_prod_zakacka_ingibator_korrozin_fact'), 0),
-                        chem_prod_zakacka_ingibator_soleotloj_fact: _.round(_.sumBy(chemistryData[i], 'chem_prod_zakacka_ingibator_soleotloj_fact'), 0),
-                    }
-                }
-            }
-
-            return result
-        },
-
         innerWellsProdMetOnChange($event) {
             this.company = $event.target.value;
             this.updateProductionData(this.planFieldName, this.factFieldName, this.chartHeadName, this.metricName, this.chartSecondaryName);
-        },
-
-
-        getNameDzoFull: function (dzo) {
-            if (typeof this.NameDzoFull[dzo] !== 'undefined') {
-                return this.NameDzoFull[dzo]
-            }
-            return dzo;
         },
 
         getStaff() {
@@ -2488,17 +1975,6 @@ export default {
           return filteredPlanData;
         },
 
-        getDaysCountInYear() {
-            let currentDate = new Date(this.timestampToday);
-            let yearEnd = moment().endOf("year");
-
-            return yearEnd.diff(currentDate, 'days')
-        },
-
-        getQuarter(d) {
-            return [parseInt(d.getMonth() / 3) + 1, d.getFullYear()];
-        },
-
         getAccidentTotal() {
             let year = new Date(this.range.end).getFullYear();
             let uri = this.localeUrl("/visualcenter3GetDataAccident?") + "year=" + year + " ";
@@ -2549,15 +2025,6 @@ export default {
                 }
             });
         },
-        getPreviousWorkday(){
-            let workday = moment();
-            let day = workday.day();
-            let diff = 1;
-            if (day === 0 || day === 1){
-                diff = day + 2;
-            }
-            return workday.subtract(diff, 'days').format();
-        },
 
         getOpecMonth(data) {
 
@@ -2596,49 +2063,8 @@ export default {
 
             return SummFromRange;
         },
-
-        formatVisTableNumber3(a, b) {
-            if (a && b) {
-                return new Intl.NumberFormat("ru-RU").format(Math.abs(((a - b) / b) * 100).toFixed(1))
-            } else {
-                return 0
-            }
-        },
-
-
-        getFormattedNumber(num) {
-            return (new Intl.NumberFormat("ru-RU").format(Math.round(num)))
-        },
-
-        formatDigitToThousand(num) {
-            if (num == null) {
-                return 0;
-            }
-            if (this.quantityRange < 2) {
-                this.thousand = '';
-                return new Intl.NumberFormat("ru-RU").format(Math.round(num));
-            } else {
-                this.thousand = this.trans("visualcenter.thousand");
-                if (num >= 1000) {
-                    num = (num / 1000).toFixed(0)
-                } else if (num >= 100) {
-                    num = Math.round((num / 1000) * 10) / 10
-                } else if (num >= 10) {
-                    num = Math.round((num / 1000) * 100) / 100
-                } else if (num > 0) {
-                    num = 0.01
-                } else {
-                    num = 0;
-                }
-                return new Intl.NumberFormat("ru-RU").format(num)
-            }
-        }
     },
-
-    created() {
-
-    },
-
+    mixins: [mainMenu,dzoCompanies,helpers,otm,chemistry,oilRates,usdRates],
     async mounted() {
         this.dzoCompaniesAssets = _.cloneDeep(this.dzoCompaniesAssetsInitial);
         this.getOpecDataForYear();
@@ -2694,71 +2120,6 @@ export default {
             return ((this.factFieldName === 'oil_fact' || this.factFieldName === 'oil_div_fact') && this.oneDate === 1);
         },
 
-        periodSelectFunc() {
-            let DMY = [
-                // "Неделя",
-                this.trans("visualcenter.week"),
-                // "Месяц",
-                this.trans("visualcenter.Month"),
-                // "Квартал",
-                this.trans("visualcenter.Quarter"),
-                // "Год",
-                this.trans("visualcenter.Year"),
-                // "Всё"
-                this.trans("visualcenter.All")
-            ];
-            let DMY_titles = [
-                // "За последние 7 дней",
-                this.trans("visualcenter.kurs7day"),
-                // "За последний месяц",
-                this.trans("visualcenter.kurslastmonth"),
-                // "За последние 3 месяца",
-                this.trans("visualcenter.kurs3month"),
-                // "За последний год",
-                this.trans("visualcenter.kurslastyear"),
-                // "За всё время"
-                this.trans("visualcenter.kursalltime"),
-            ];
-
-            let menuDMY = [];
-            let id = 0;
-
-            for (let i = 0; i <= 4; i++) {
-                let a = {
-                    index: i,
-                    id: i,
-                    active_oil: false,
-                    active_usd: false,
-                };
-
-                a.DMY = DMY[i];
-                a.DMY_title = DMY_titles[i];
-                menuDMY.push(a);
-
-                if (this.period === i) {
-                    a.active = true;
-                    this.DMY = menuDMY[i]["DMY"];
-                }
-            }
-
-            return menuDMY;
-        },
-        usdRatesDataTableForCurrentPeriod() {
-            this.sortUsdRatesDataForTable;
-            return this.usdRatesData.for_table.slice(0, this.usdPeriod);
-        },
-
-        sortUsdRatesDataForTable() {
-            this.usdRatesData.for_table.sort((a, b) => {
-                return moment(b.date_string, 'DD.MM.YYYY') - moment(a.date_string, 'DD.MM.YYYY');
-            });
-        },
-
-        oilRatesDataTableForCurrentPeriod() {
-            this.sortOilRatesDataForTable;
-            return this.oilRatesData.for_table.slice(0, this.oilPeriod);
-        },
-
         innerWellsNagDataForChart() {
             let series = []
             let labels = []
@@ -2772,7 +2133,6 @@ export default {
             }
         },
 
-
         innerWellsProd2DataForChart() {
             let series = []
             let labels = []
@@ -2784,37 +2144,6 @@ export default {
                 series: series,
                 labels: labels
             }
-        },
-
-
-        otmDataForChart() {
-            let series = []
-            let labels = []
-            for (let i in this.otmChartData) {
-                series.push(this.otmSelectedRow ? this.otmChartData[i][this.otmSelectedRow] : this.otmChartData[i]['otm_iz_burenia_skv_fact'])
-                labels.push(i)
-            }
-            return {
-                series: series,
-                labels: labels
-            }
-        },
-        chemistryDataForChart() {
-            let series = []
-            let labels = []
-            for (let i in this.chemistryChartData) {
-                series.push(this.chemistrySelectedRow ? this.chemistryChartData[i][this.chemistrySelectedRow] : this.chemistryChartData[i]['chem_prod_zakacka_demulg_fact'])
-                labels.push(i)
-            }
-            return {
-                series: series,
-                labels: labels
-            }
-        },
-        sortOilRatesDataForTable() {
-            this.oilRatesData.for_table.sort((a, b) => {
-                return moment(b.date_string, 'DD.MM.YYYY') - moment(a.date_string, 'DD.MM.YYYY');
-            });
         },
     },
 };
