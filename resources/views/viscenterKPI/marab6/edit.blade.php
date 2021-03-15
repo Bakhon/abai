@@ -44,20 +44,20 @@
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
                                         <strong>Целевые даты для исполнения:</strong>
-                                        <input type="date" name="aim_dates" value={{$row->aim_dates}} class="form-control">
+                                        <input type="date" name="aim_dates" value="{{$row->aim_dates}}" class="form-control">
                                     </div>
                                 </div>
 
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
                                         <strong>Остаток дней для исполнения:</strong>
-                                        <input type="integer" name="remained_days" value={{$row->remained_days}} class="form-control" placeholder="Пример: 7">
+                                        <input type="integer" name="remained_days" value="{{$row->remained_days}}" class="form-control" placeholder="Пример: 7">
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
                                         <strong>Ожидаемая вероятность иполнения ответственным:</strong>
-                                        <input type="float" name="completion_probability" value={{$row->completion_probability}} class="form-control" placeholder="Пример: 0.5">
+                                        <input type="float" name="completion_probability" value="{{$row->completion_probability}}" class="form-control" placeholder="Пример: 0.5">
                                     </div>
                                 </div>
                                 

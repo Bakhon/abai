@@ -149,7 +149,7 @@ return [
         | Supported handlers: null|db
         |
         */
-        'handler' => 'db',
+        'handler' => 'null',
     ],
 
     'cache' => [
@@ -198,7 +198,7 @@ return [
         |
         */
         'illuminate' => [
-            'store' => null,
+            'store' => 'array',
         ],
     ],
 

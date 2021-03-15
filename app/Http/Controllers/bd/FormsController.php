@@ -53,10 +53,22 @@ class FormsController extends Controller
         $form->validateSingleField($field);
     }
 
+    public function saveField(string $formName, string $field)
+    {
+        $form = $this->getForm($formName);
+        $form->saveSingleField($field);
+    }
+
     public function submit(string $formName)
     {
         $form = $this->getForm($formName);
         return $form->send();
+    }
+
+    public function getRows(string $formName): array
+    {
+        $form = $this->getForm($formName);
+        return $form->getRows();
     }
 
     private function getForm(string $formName): BaseForm

@@ -40,8 +40,7 @@ class DiscontCoefBarSamaraImport implements ToModel
             "date" => $row[2],
             "barr_coef" => round($row[6], 2),
             "discont" => round($row[38], 2),
-            "oil_cost" => round($row[18], 2),
-            "macro" => 0,
+            "macro" => round($row[18], 2),
         ]);
     }
 }

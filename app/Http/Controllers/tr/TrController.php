@@ -37,5 +37,4 @@ class TrController extends Controller
     {
         return view('tech_mode.tech_mode');
     }
-
 }

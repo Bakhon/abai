@@ -245,6 +245,7 @@ return array (
   'otmMetricSystem' => 'м.',
   'isOperating' => 'Операционные активы',
   'isNonOperating' => 'Не операционные активы',
+  'totalAllactives' => 'Итого по всем активам:',
   'productionChemicalization' => 'Химизация производства',
   'otmColumnTitle' => 'Организационно-технические мероприятия',
   'wellsNumber' => 'Кол-во скважин',
@@ -270,5 +271,6 @@ return array (
     'errorList' => [
         'incorrectDocumentFormat' =>  'Неверный формат Excel документа',
     ]
-  ]
+  ],
+  'requiredDailyPlan' => 'Необходимый ср/сут уровень',
 );

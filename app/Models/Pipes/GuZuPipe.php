@@ -3,6 +3,9 @@
 namespace App\Models\Pipes;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Refs\Zu;
+use App\Models\Refs\Gu;
+use App\Models\ComplicationMonitoring\PipeType;
 
 class GuZuPipe extends Model
 {
@@ -13,11 +16,16 @@ class GuZuPipe extends Model
 
     public function zu()
     {
-        return $this->belongsTo(\App\Models\Refs\Zu::class);
+        return $this->belongsTo(Zu::class);
     }
 
     public function gu()
     {
-        return $this->belongsTo(\App\Models\Refs\Gu::class);
+        return $this->belongsTo(Gu::class);
+    }
+
+    public function pipeType()
+    {
+        return $this->belongsTo(PipeType::class);
     }
 }

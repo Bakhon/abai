@@ -135,7 +135,7 @@
               <table class="table table-bordered economicModalTable">
                 <tbody>
                 <tr>
-                  <td colspan="2"><h5>{{ trans('monitoring.gu') }}, {{ trans('monitoring.point') }} А</h5></td>
+                  <td colspan="2"><h5>{{ trans('monitoring.gu.gu') }}, {{ trans('monitoring.point') }} А</h5></td>
                 </tr>
                 <tr>
                   <td>{{ trans('monitoring.pressure') }}</td>
@@ -196,7 +196,7 @@
               <table class="table table-bordered economicModalTable">
                 <tbody>
                 <tr>
-                  <td colspan="2"><h5>{{ trans('monitoring.gu') }}, {{ trans('monitoring.point') }} A</h5></td>
+                  <td colspan="2"><h5>{{ trans('monitoring.gu.gu') }}, {{ trans('monitoring.point') }} A</h5></td>
                 </tr>
                 <tr>
                   <td>{{ trans('monitoring.fact_common_corrosion_speed') }} ({{ trans('monitoring.test_coupons') }}),
@@ -264,7 +264,7 @@
               <table class="table table-bordered economicModalTable">
                 <tbody>
                 <tr>
-                  <td colspan="2"><h5>{{ trans('monitoring.gu') }}, {{ trans('monitoring.point') }} A</h5></td>
+                  <td colspan="2"><h5>{{ trans('monitoring.gu.gu') }}, {{ trans('monitoring.point') }} A</h5></td>
                 </tr>
                 <tr>
                   <td>{{ trans('monitoring.recommended_dosage') }}</td>
@@ -384,7 +384,7 @@
             </div>
 
             <div class="block-gu">
-              <span>{{ trans('monitoring.gu') }}</span>
+              <span>{{ trans('monitoring.gu.gu') }}</span>
               <select
                   name="gu_id"
                   v-model="gu"

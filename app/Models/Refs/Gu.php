@@ -2,15 +2,25 @@
 
 namespace App\Models\Refs;
 
-use App\Models\Traits\WithHistory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\ComplicationMonitoring\OmgCA;
+use App\Models\ComplicationMonitoring\OmgNGDU;
+use App\Models\ComplicationMonitoring\WaterMeasurement;
+use App\Models\ComplicationMonitoring\OilGas;
+use App\Models\ComplicationMonitoring\Corrosion;
+use App\Models\ComplicationMonitoring\OmgUHE;
+use App\Models\ComplicationMonitoring\Pipe;
+use App\Models\Pipes\GuZuPipe;
+use App\Models\Pipes\ZuWellPipe;
 
 class Gu extends Model
 {
-    use WithHistory;
-
     protected $localKey = 'id';
     protected $guarded = ['id'];
+    protected $hidden = [
+        'created_at',
+        'updated_at'
+    ];
 
     public function cdng()
     {
@@ -19,56 +29,61 @@ class Gu extends Model
 
     public function zus()
     {
-        return $this->hasMany(\App\Models\Refs\Zu::class);
+        return $this->hasMany(Zu::class);
     }
 
     public function wells()
     {
-        return $this->hasManyThrough(\App\Models\Refs\Well::class, \App\Models\Refs\Zu::class);
+        return $this->hasManyThrough(Well::class, Zu::class);
     }
 
     public function omgca()
     {
-        return $this->hasMany(\App\Models\ComplicationMonitoring\OmgCA::class);
+        return $this->hasMany(OmgCA::class);
     }
 
     public function omgngdu()
     {
-        return $this->hasMany(\App\Models\ComplicationMonitoring\OmgNGDU::class);
+        return $this->hasMany(OmgNGDU::class);
+    }
+
+    public function omgngdulast()
+    {
+        return $this->hasMany(OmgNGDU::class)->orderBy('date', 'desc');
     }
 
     public function watermeasurement()
     {
-        return $this->hasMany(\App\Models\ComplicationMonitoring\WaterMeasurement::class);
+        return $this->hasMany(WaterMeasurement::class);
     }
 
     public function oilgas()
     {
-        return $this->hasMany(\App\Models\ComplicationMonitoring\OilGas::class);
+        return $this->hasMany(OilGas::class);
     }
 
     public function corrosion()
     {
-        return $this->hasMany(\App\Models\ComplicationMonitoring\Corrosion::class);
+        return $this->hasMany(Corrosion::class);
     }
 
     public function omguhe()
     {
-        return $this->hasMany(\App\Models\ComplicationMonitoring\OmgUHE::class);
+        return $this->hasMany(OmgUHE::class);
     }
 
     public function pipe()
     {
-        return $this->hasMany(\App\Models\ComplicationMonitoring\Pipe::class);
+        return $this->hasMany(Pipe::class);
     }
 
     public function zuPipes()
     {
-        return $this->hasMany(\App\Models\Pipes\GuZuPipe::class);
+        return $this->hasMany(GuZuPipe::class);
     }
 
     public function wellPipes()
     {
-        return $this->hasMany(\App\Models\Pipes\ZuWellPipe::class);
+        return $this->hasMany(ZuWellPipe::class);
     }
 }

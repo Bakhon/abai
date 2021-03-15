@@ -40,8 +40,7 @@ class DiscontCoefBarKbitumImport implements ToModel
             "date" => $row[2],
             "barr_coef" => round($row[12], 2),
             "discont" => round($row[44], 2),
-            "oil_cost" => round($row[24], 2),
-            "macro" => 0,
+            "macro" => round($row[24], 2),
         ]);
     }
 }
