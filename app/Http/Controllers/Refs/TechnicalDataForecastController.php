@@ -38,8 +38,8 @@ class TechnicalDataForecastController extends Controller
 
             $edit_url = route("tech_data_forecast.edit", $item->id);
 
-            array_push($well, $item['source_id']);
-            array_push($well, $item['gu_id']);
+            array_push($well, $item->source->name);
+            array_push($well, $item->gu->name);
 
             array_push($well, $item['well_id']);
             array_push($well, date('m-Y', strtotime($item['date'])));
@@ -48,8 +48,12 @@ class TechnicalDataForecastController extends Controller
             array_push($well, $item['days_worked']);
             array_push($well, $item['prs']);
             array_push($well, $item['comment']);
-            array_push($well, "{$item['created_at']} {$item['author_id']}");
-            array_push($well, "{$item['updated_at']} {$item['editor_id']}");
+            array_push($well, "{$item['created_at']} {$item->author->name}");
+            if ($item->editor) {
+                array_push($well, "{$item['updated_at']} {$item->editor->name}");
+            } else {
+                array_push($well, "");
+            }
             array_push($well, $item['log_id']);
             array_push($well, $edit_url);
             array_push($tech_data_array, $well);
