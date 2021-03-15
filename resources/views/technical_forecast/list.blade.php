@@ -5,6 +5,8 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="list-group">
+                    <a href="{{ route('tech_refs_upload') }}" class="list-group-item list-group-item-action">
+                        Импорт данных </a>
                     <a href="{{ route('tech_struct_source.index') }}" class="list-group-item list-group-item-action">
                         Источники данных </a>
                     <a href="{{ route('tech_struct_bkns.index') }}" class="list-group-item list-group-item-action">
@@ -21,6 +23,8 @@
                         ГУ</a>
                     <a href="{{ route('tech_data_forecast.index') }}" class="list-group-item list-group-item-action">
                         Нефть / Жидкость / Отработанные дни / ПРС</a>
+                    <a href="{{ route('tech_data_log.index') }}" class="list-group-item list-group-item-action">
+                        Удалить ошибочные загруженные файлы</a>
                 </div>
             </div>
         </div>

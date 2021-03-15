@@ -77,7 +77,7 @@ Vue.component('vertical-indicators', require('./components/visualcenter3/Vertica
 Vue.component('vc-upstream-table', require('./components/visualcenter3/UpstreamTable.vue').default);
 Vue.component('visual-center-menu', require('./components/visualcenter/VisualCenterMenu.vue').default);
 
-Vue.component('tech-data-component', require('./components/refs/tech/productionDataIndex.vue').default);
+Vue.component('tech-data-component', require('./components/technical_forecast/productionDataIndex.vue').default);
 
 Vue.component('economic-component', require('./components/Economic/main.vue').default);
 Vue.component('chart1-component', require('./components/Economic/chart1.vue').default);

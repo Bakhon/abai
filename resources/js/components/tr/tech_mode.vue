@@ -1446,7 +1446,7 @@ export default {
     saveadd() {
       console.log(this.$refs.editTable);
       Vue.prototype.$notifySuccess (`Скважина ${this.lonelywell[0].rus_wellname} сохранена`);
-      //this.$refs.saveTable
+      //this.$technical_forecast.saveTable
       let output = {}
       console.log(this.$refs.editTable[0].children);
       console.log(this.$refs.editTable[0].children[0].children[0].dataset.key);

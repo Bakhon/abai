@@ -1,16 +1,13 @@
 <template>
   <div class="container-fluid economic-wrap">
-    <cat-loader v-show="loading"/>
+<!--    <cat-loader v-show="loading"/>-->
     <div class="row justify-content-between">
       <vue-table-dynamic
           :params="params"
           ref="table"
       >
-        <template v-slot:column-11="{ props }">
-          <a v-bind:href="props.cellData">Редактировать</a>
-        </template>
         <template v-slot:column-12="{ props }">
-          <a v-bind:href="props.cellData">Удалить</a>
+          <a v-bind:href="props.cellData">Редактировать</a>
         </template>
       </vue-table-dynamic>
     </div>
@@ -20,7 +17,7 @@
 <script>
 import VModal from 'vue-js-modal'
 import VueTableDynamic from 'vue-table-dynamic'
-import CatLoader from '../../ui-kit/CatLoader'
+// import CatLoader from '../../ui-kit/CatLoader'
 
 Vue.use(VModal, {dynamicDefault: {draggable: true, resizable: true}});
 
@@ -28,7 +25,7 @@ export default {
   name: "tech-data-component",
   components: {
     VueTableDynamic,
-    CatLoader
+    // CatLoader
   },
   data: function () {
     return {
@@ -48,7 +45,7 @@ export default {
   },
   beforeCreate: function () {
     this.axios.get(this.localeUrl('/tech_data_json')).then(({data}) => {
-      // console.log(data.tech_data);
+      console.log(data.tech_data);
       this.params.data = data.tech_data
     })
   },

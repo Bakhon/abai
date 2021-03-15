@@ -16,7 +16,8 @@ class TechnicalDataForecast extends Model
         'prs',
         'comment',
         'author_id',
-        'editor_id'
+        'editor_id',
+        'log_id'
     ];
 
     public function source()
@@ -37,5 +38,10 @@ class TechnicalDataForecast extends Model
     public function gu()
     {
         return $this->belongsTo('App\Models\Refs\TechnicalStructureGu', 'gu_id');
+    }
+
+    public function log()
+    {
+        return $this->belongsTo('App\Models\Refs\TechnicalDataLog', 'log_id');
     }
 }

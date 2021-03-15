@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class TechRefsProductionDataUpdate extends Migration
+class UpdateTechnicalDataForecasts extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,15 @@ class TechRefsProductionDataUpdate extends Migration
      */
     public function up()
     {
-        Schema::table('tech_refs_production_data', function (Blueprint $table) {
+        Schema::table('technical_data_forecasts', function (Blueprint $table) {
             $table->string('comment')->nullable();
+            $table->unsignedBigInteger('log_id')->nullable();
             $table->unique(['well_id', 'date'], 'well_date');
+
+            $table->foreign('log_id')
+                ->references('id')
+                ->on('technical_uploaded_log')
+                ->onDelete('set null');
         });
     }
 
@@ -26,9 +32,10 @@ class TechRefsProductionDataUpdate extends Migration
      */
     public function down()
     {
-        Schema::table('tech_refs_production_data', function (Blueprint $table) {
+        Schema::table('technical_data_forecasts', function (Blueprint $table) {
             $table->dropUnique('well_date');
             $table->dropColumn(['comment']);
+            $table->dropColumn(['log_id']);
         });
     }
 }

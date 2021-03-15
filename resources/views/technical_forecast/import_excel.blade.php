@@ -3,7 +3,7 @@
 @section('content')
     <div class="container">
         <div class="row justify-content-center">
-            <a href="{{ route('tech_refs_list') }}" class="btn btn-info">
+            <a href="{{ route('tech_data_list') }}" class="btn btn-info">
                 Вернуться в справочник</a>
         </div>
     </div>

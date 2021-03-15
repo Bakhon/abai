@@ -39,6 +39,7 @@
                             <th>Комментарий:</th>
                             <th>Добавлено: дата / автор:</th>
                             <th>Изменение: дата / автор:</th>
+                            <th>ID добавления:</th>
                             <th width="220px">{{__('app.action')}}</th>
                         </tr>
                         @foreach ($technicalDataForecast as $item)
@@ -58,6 +59,7 @@
                                     {{ $item->updated_at }} / {{ optional($item->editor)->name  }}
                                     @endif
                                 </td>
+                                <td>{{ $item->log_id }}</td>
                                 <td>
                                     <form action="{{ route('tech_data_forecast.destroy',$item->id) }}"
                                           method="POST">
