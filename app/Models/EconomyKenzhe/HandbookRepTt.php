@@ -14,28 +14,33 @@ class HandbookRepTt extends Model
 
     protected $table = 'rep_tt';
 
-    public function children()
+    public function handbookItems()
     {
         return $this->hasMany(HandbookRepTt::class, 'parent_id')->with('childHandbookItems');
     }
 
     public function childHandbookItems()
     {
-        return $this->hasMany(HandbookRepTt::class, 'parent_id')->with('children');
+        return $this->hasMany(HandbookRepTt::class, 'parent_id')->with('handbookItems');
+    }
+
+    public function reptValues()
+    {
+        return $this->belongsTo(HandbookRepTtValue::class, 'id', 'rep_id');
     }
 
 
     public function toArray()
     {
         $array = parent::toArray();
-        $camelArray = array();
+        $renameArrayKeys = array();
         foreach ($array as $name => $value) {
             if ($name == 'child_handbook_items') {
-                $camelArray['children'] = $value;
+                $renameArrayKeys['handbook_items'] = $value;
             } else {
-                $camelArray[$name] = $value;
+                $renameArrayKeys[$name] = $value;
             }
         }
-        return $camelArray;
+        return $renameArrayKeys;
     }
 }

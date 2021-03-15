@@ -10,13 +10,11 @@
       default-expand-all
       stripe
     >
-      <el-table-column prop="name" label="Наименование" sortable width="250">
+      <el-table-column prop="rept.name" label="Наименование" sortable width="250">
       </el-table-column>
-      <el-table-column prop="name" label="План на январь" sortable width="250">
+      <el-table-column prop="value" label="План на январь" sortable width="250">
       </el-table-column>
-
-      <el-table-column prop="id" label="Id" sortable width="180">
-      </el-table-column>
+      
     </el-table>
   </div>
 </template>
