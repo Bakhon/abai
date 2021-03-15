@@ -26,7 +26,7 @@ class FluidProduction extends TableForm
         return response()->json([], Response::HTTP_NO_CONTENT);
     }
 
-    public function getRows()
+    public function getRows(array $params = [])
     {
         $tech = Tech::find($this->request->get('tech'));
 
