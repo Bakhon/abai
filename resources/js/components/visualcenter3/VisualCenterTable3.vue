@@ -725,7 +725,7 @@
                             <input
                                     type="checkbox"
                                     :checked="dzoCompaniesAssets['isOperating']"
-                                    @click="`${changeAssets('isOperating')}`"
+                                    @click="`${changeAssets('isOperating','type')}`"
                             ></input>
                             {{trans("visualcenter.isOperating")}}
                           </div>
@@ -735,10 +735,27 @@
                             <input
                                     type="checkbox"
                                     :checked="dzoCompaniesAssets['isNonOperating']"
-                                    @click="`${changeAssets('isNonOperating')}`"
+                                    @click="`${changeAssets('isNonOperating','type')}`"
                             ></input>
                             {{trans("visualcenter.isNonOperating")}}
                             <div class="dzocompanies-dropdown__divider"></div>
+                          </div>
+                        </li>
+                        <li
+                                class="px-4"
+                                v-for="(region,index) of Object.keys(dzoRegionsMapping)"
+                        >
+                          <div>
+                            <input
+                                    type="checkbox"
+                                    :checked="dzoRegionsMapping[region].isActive"
+                                    @click="`${changeAssets('isRegion','region',region)}`"
+                            ></input>
+                            {{dzoRegionsMapping[region].translationName}}
+                            <div
+                                    class="dzocompanies-dropdown__divider"
+                                    v-if="(Object.keys(dzoRegionsMapping).length - 1) === index"
+                            ></div>
                           </div>
                         </li>
                         <li
