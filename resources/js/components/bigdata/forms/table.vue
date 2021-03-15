@@ -6,7 +6,7 @@
       <p class="bd-main-block__header-title">{{ params.title }}</p>
     </div>
     <div class="bd-main-block__date">
-      <span>{{ trans('bd.date') }}:</span>
+      <span class="bd-main-block__date-title">{{ trans('bd.date') }}:</span>
       <datetime
           v-model="date"
           :flow="['year', 'month', 'date']"
@@ -257,7 +257,7 @@ export default {
     align-items: center;
     display: flex;
 
-    span {
+    &-title {
       color: #fff;
       margin-right: 10px;
     }

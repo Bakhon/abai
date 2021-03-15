@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\DB;
 
 class FluidProduction extends TableForm
 {
+
     protected $configurationFileName = 'fluid_production';
 
     public function saveSingleField(string $field)
@@ -34,6 +35,7 @@ class FluidProduction extends TableForm
             ->with('techs', 'geo')
             ->select('id', 'uwi')
             ->orderBy('uwi')
+            ->active(Carbon::parse($this->request->get('date')))
             ->whereHas(
                 'techs',
                 function ($query) use ($tech) {
@@ -334,10 +336,18 @@ class FluidProduction extends TableForm
         }
 
         $techs = Tech::query()
-            ->with('wells', 'type')
+            ->with(
+                [
+                    'wells' => function ($query) {
+                        $query->active(Carbon::parse($this->request->get('date')));
+                    },
+                    'type'
+                ]
+            )
             ->where('dbeg', '<=', Carbon::parse($this->request->get('date')))
             ->where('dend', '>=', Carbon::parse($this->request->get('date')))
             ->get();
+
         foreach ($techs as $tech) {
             $techData[$tech->id] = [
                 'id' => $tech->id,
