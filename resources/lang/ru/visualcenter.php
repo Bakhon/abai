@@ -266,4 +266,5 @@ return array (
   'saveButton' => 'Сохранить',
   'errors' => 'Ошибки',
   'validateButton' => 'Провести проверку данных',
+  'importFormErrorList-incorrectDocumentFormat' => 'Неверный формат Excel документа',
 );

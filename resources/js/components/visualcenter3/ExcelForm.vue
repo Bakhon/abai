@@ -5,7 +5,6 @@
                     theme="material"
                     :source="rows"
                     :columns="columns"
-                    @afterEdit="afterEdit"
                     :rowSize="30"
                     @beforeRangeEdit="beforeRangeEdit"
                     :frameSize="72"
@@ -97,7 +96,7 @@
                 rowsCount: 57,
                 errorsList: [],
                 possibleErrors : {
-                    incorrectDocumentFormat: 'Неверный формат Excel документа',
+                    incorrectDocumentFormat: this.trans("visualcenter.importFormErrorList-incorrectDocumentFormat"),
                 },
                 columnsCountForHighlight: {
                     four: [0,1,2,3],
@@ -112,25 +111,23 @@
                 },
                 currentMonthNumber: moment().format('M'),
                 kgmCellsMapping: _.cloneDeep(cellsMappingKGM),
+                rowsFormatMapping: {
+                    title: [0,3,6,9,13,18,39,50],
+                    subTitle: [19,20,40],
+                    tableFooter: [38],
+                },
             };
-        },
-        created: function() {
-            let self = this;
-            //https://stackoverflow.com/questions/60297446/vuetify-hide-a-skeleton-loader-after-a-element-loads
-            const readyHandler = () => {
-                if ($('div[data-col="0"][data-row="0"]').length > 0) {
-                    self.setTableFormat();
-                    //window.removeEventListener('readystatechange', readyHandler);
-                }
-            };
-            document.addEventListener('readystatechange', readyHandler);
-            readyHandler();
         },
         async mounted() {
             this.dzoPlans = await this.getDzoMonthlyPlans();
             this.selectedDzo.plans = this.getSelectedDzoPlans();
+            await this.sleep(1000);
+            this.setTableFormat();
         },
         methods: {
+            sleep(ms) {
+                return new Promise(resolve => setTimeout(resolve, ms));
+            },
             getSelectedDzoPlans() {
                 let self = this;
                   return _.filter(this.dzoPlans, function(row) {
@@ -161,7 +158,6 @@
             },
             processSummary() {
                 const grid = document.querySelector('revo-grid');
-                console.log(this.rows);
             },
             deleteEmptyRows(dataSource) {
                 let self = this;
@@ -197,7 +193,6 @@
             },
             selectClassForCell(rowIndex,columnsList,className) {
                 let self = this;
-
                 if (typeof(columnsList) === 'object') {
                     columnsList.forEach(function(columnIndex) {
                         self.setClassToElement($('div[data-col="'+ columnIndex + '"][data-row="' + rowIndex + '"]'),className);
@@ -207,55 +202,20 @@
                 }
             },
             setTableFormat() {
-                let self = this;
-
                 for (let rowIndex = 0; rowIndex < this.rowsCount; rowIndex++) {
-                    if (rowIndex === 0) {
-                        self.selectClassForCell(rowIndex,this.columnsCountForHighlight.four,'title');
-                    } else if ([1,2].includes(rowIndex)) {
-                        self.selectClassForCell(rowIndex,this.columnsCountForHighlight.one,'main-header');
-                    } else if (rowIndex === 3) {
-                        self.selectClassForCell(rowIndex,this.columnsCountForHighlight.two,'title');
-                    } else if ([4,5].includes(rowIndex)) {
-                        self.selectClassForCell(rowIndex,this.columnsCountForHighlight.one,'main-header');
-                    } else if (rowIndex === 6) {
-                        self.selectClassForCell(rowIndex,this.columnsCountForHighlight.two,'title');
-                    } else if ([7,8].includes(rowIndex)) {
-                        self.selectClassForCell(rowIndex,this.columnsCountForHighlight.one,'main-header');
-                    } else if (rowIndex === 9) {
-                        self.selectClassForCell(rowIndex,this.columnsCountForHighlight.two,'title');
-                    } else if ([10,11,12].includes(rowIndex)) {
-                        self.selectClassForCell(rowIndex,this.columnsCountForHighlight.one,'main-header');
-                    } else if (rowIndex === 13) {
-                        self.selectClassForCell(rowIndex,this.columnsCountForHighlight.two,'title');
-                    } else if ([14,15,16,17].includes(rowIndex)) {
-                        self.selectClassForCell(rowIndex,this.columnsCountForHighlight.one,'main-header');
-                    } else if (rowIndex === 18) {
-                        self.selectClassForCell(rowIndex,this.columnsCountForHighlight.four,'title');
-                    } else if ([19,20].includes(rowIndex)) {
-                        self.selectClassForCell(rowIndex,this.columnsCountForHighlight.four,'sub-title');
-                    } else if ([21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37].includes(rowIndex)) {
-                        self.selectClassForCell(rowIndex,this.columnsCountForHighlight.one,'main-header');
-                    } else if (rowIndex === 38) {
-                        self.selectClassForCell(rowIndex,this.columnsCountForHighlight.four,'table-footer-format');
-                    } else if (rowIndex === 39) {
-                        self.selectClassForCell(rowIndex,this.columnsCountForHighlight.three,'title');
-                    } else if (rowIndex === 40) {
-                        self.selectClassForCell(rowIndex,this.columnsCountForHighlight.three,'sub-title');
-                    } else if ([41,42,43,44,45,46,47,48,49].includes(rowIndex)) {
-                        self.selectClassForCell(rowIndex,this.columnsCountForHighlight.one,'main-header');
-                    } else if (rowIndex === 50) {
-                        self.selectClassForCell(rowIndex,this.columnsCountForHighlight.three,'title');
-                    } else if ([51,52,53,54,55,56].includes(rowIndex)) {
-                        self.selectClassForCell(rowIndex,this.columnsCountForHighlight.one,'main-header');
+                    if (this.rowsFormatMapping.title.includes(rowIndex)) {
+                        this.selectClassForCell(rowIndex,this.columnsCountForHighlight.four,'title');
+                    } else if (this.rowsFormatMapping.subTitle.includes(rowIndex)) {
+                        this.selectClassForCell(rowIndex,this.columnsCountForHighlight.four,'sub-title');
+                    } else if (this.rowsFormatMapping.tableFooter.includes(rowIndex)) {
+                        this.selectClassForCell(rowIndex,this.columnsCountForHighlight.four,'table-footer-format');
+                    } else {
+                        this.selectClassForCell(rowIndex,this.columnsCountForHighlight.one,'main-header');
                     }
                 }
             },
             setClassToElement(el,className) {
                 el.addClass(className);
-            },
-            afterEdit(e) {
-                //console.log(e);
             },
         },
         components: {
@@ -287,24 +247,27 @@
     }
     revo-grid {
         height: 782px;
+        font-size: 12px;
+        font-family: "HarmoniaSansProCyr-Regular";
     }
-
     .table-form {
         max-width: 1320px;
         background-color: white;
     }
     .title {
-        background-color: #92d050;
-        text-align: center;
-        line-height: 30px;
-        font-size: 18px;
-        font-weight: bold;
-    }
-    .sub-title {
-        background-color: #92d050;
+        background-color: #20274F;
+        color: white !important;
         text-align: center;
         line-height: 30px;
         font-size: 14px;
+        font-weight: bold;
+    }
+    .sub-title {
+        background-color: #20274F;
+        color: white !important;
+        text-align: center;
+        line-height: 30px;
+        font-size: 12px;
         font-weight: bold;
     }
     .main-header {
@@ -335,6 +298,11 @@
     .button-enabled {
         pointer-events: all;
         opacity: 0;
+    }
+    @media (max-width:1400px) {
+        .table-form {
+            max-width: 930px;
+        }
     }
 </style>
 
