@@ -35,11 +35,12 @@ class MainController extends Controller
         }
     }
 
-    public function company($id, $date)
+    public function company(Request $request)
     {
-        $date = date('Y-m-d', strtotime('01-' . $date));
-        $company = SubholdingCompany::find($id);
-        $stats = $company->statsByDate($date)->get();
-        return view('economy_kenzhe.company')->with(compact('company', 'stats'));
+        SubholdingCompany::findOrFail(request('company'));
+        $stats = HandbookRepTt::where('parent_id', 0)->with('childHandbookItemsByDate')->get()->toArray();
+        $stats = json_encode($stats);
+
+        return view('economy_kenzhe.company')->with(compact('stats'));
     }
 }

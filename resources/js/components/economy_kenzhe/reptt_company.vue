@@ -10,9 +10,11 @@
       default-expand-all
       stripe
     >
-      <el-table-column prop="rept.name" label="Наименование" sortable width="250">
+      <el-table-column prop="name" label="Наименование" sortable width="250">
       </el-table-column>
-      <el-table-column prop="value" label="План на январь" sortable width="250">
+      <el-table-column prop="value" v-for="v in value" v-bind:key="v.id" label="План на январь" sortable width="250">
+        <el-table-column prop="v" label="План на январь" sortable width="250">
+        </el-table-column>
       </el-table-column>
       
     </el-table>
@@ -28,6 +30,7 @@ export default {
         id: "id",
         children: "handbook_items",
         name: "name",
+        value: 'rept_values'
       },
     };
   },
