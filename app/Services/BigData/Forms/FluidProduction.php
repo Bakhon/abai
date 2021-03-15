@@ -18,10 +18,6 @@ class FluidProduction extends TableForm
 {
     protected $configurationFileName = 'fluid_production';
 
-    public function submit(): array
-    {
-    }
-
     public function saveSingleField(string $field)
     {
         $this->validateSingleField($field);
@@ -30,11 +26,11 @@ class FluidProduction extends TableForm
         return response()->json([], Response::HTTP_NO_CONTENT);
     }
 
-    public function getRows()
+    public function getRows(array $params = [])
     {
         $tech = Tech::find($this->request->get('tech'));
 
-        $wells = Well::query()
+        $wellsQuery = Well::query()
             ->with('techs', 'geo')
             ->select('id', 'uwi')
             ->orderBy('uwi')
@@ -46,8 +42,13 @@ class FluidProduction extends TableForm
                         ->whereDate('tbdi.tech.dbeg', '<=', $this->request->get('date'))
                         ->whereDate('tbdi.tech.dend', '>=', $this->request->get('date'));
                 }
-            )
-            ->get();
+            );
+
+        if (isset($params['filter']['row_id'])) {
+            $wellsQuery->where('id', $params['filter']['row_id']);
+        }
+
+        $wells = $wellsQuery->get();
 
         $rowData = [];
 
@@ -259,7 +260,7 @@ class FluidProduction extends TableForm
         return Carbon::parse($date)->diffInDays(Carbon::parse($this->request->get('date'))) === 0;
     }
 
-    private function saveSingleFieldInDB(string $field)
+    protected function saveSingleFieldInDB(string $field): void
     {
         $column = $this->getFieldByCode($field);
 

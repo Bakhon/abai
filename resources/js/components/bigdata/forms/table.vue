@@ -21,6 +21,17 @@
       </datetime>
     </div>
     <div class="bd-main-block__body">
+      <div v-if="history.item" class="bd-main-block__body-history">
+        <big-data-history
+            :columns="formParams.columns"
+            :date="date"
+            :form-name="params.code"
+            :item="history.item"
+            v-on:close="history.item=null"
+        >
+        </big-data-history>
+      </div>
+      <template v-else>
       <div class="bd-main-block__tree scrollable">
         <b-tree-view
             v-if="filterTree.length"
@@ -43,6 +54,7 @@
                 <th v-for="column in formParams.columns">
                   {{ column.title }}
                 </th>
+                <th></th>
               </tr>
               </thead>
               <tbody>
@@ -64,15 +76,19 @@
                       <span v-if="row[column.code] && row[column.code].date" class="date">
                         {{ row[column.code].date | moment().format('YYYY-MM-DD') }}
                       </span>
+                      </template>
                     </template>
-                  </template>
-                </td>
-              </tr>
-              </tbody>
-            </table>
+                  </td>
+                  <td>
+                    <a class="links__item links__item_history" @click="showHistory(row)"></a>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
-        </div>
-      </form>
+        </form>
+      </template>
     </div>
   </div>
 </template>
@@ -83,6 +99,7 @@ import {Datetime} from 'vue-datetime'
 import 'vue-datetime/dist/vue-datetime.css'
 import {bTreeView} from 'bootstrap-vue-treeview'
 import {bdFormActions, bdFormState} from '@store/helpers'
+import BigDataHistory from './history'
 
 Vue.use(Datetime)
 
@@ -95,7 +112,8 @@ export default {
     },
   },
   components: {
-    bTreeView
+    bTreeView,
+    BigDataHistory
   },
   data() {
     return {
@@ -112,7 +130,10 @@ export default {
         row: null,
         column: null
       },
-      isloading: false
+      isloading: false,
+      history: {
+        item: null
+      }
     }
   },
   watch: {
@@ -206,6 +227,9 @@ export default {
     showError(err) {
       return err.join('<br>')
     },
+    showHistory(row) {
+      this.history.item = row
+    }
   },
 };
 </script>
