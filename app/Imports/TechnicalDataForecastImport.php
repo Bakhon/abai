@@ -64,44 +64,7 @@ class TechnicalDataForecastImport implements ToModel
 
         if (empty($gu)) {
             $cdng_name = $row[11];
-            $cdng = TechnicalStructureCdng::where("name", "=", $cdng_name)->first();
-                if (empty($cdng)) {
-                $ngdu_name = $row[8];
-                $ngdu = TechnicalStructureNgdu::where("name", "=", $ngdu_name)->first();
-                if (empty($ngdu)) {
-                    $field_name = $row[7];
-                    $field = TechnicalStructureField::where("name", "=", $field_name)->first();
-                    if (empty($field)) {
-                        $company_name = $row[6];
-                        $ndo = TechnicalStructureCompany::where("short_name", "=", $company_name)->first();
-                        if (!$ndo) {
-                            $ndo = TechnicalStructureCompany::create([
-                                "name" => $company_name,
-                                "short_name" => $company_name,
-                                "user_id" => $user_id
-                            ]);
-                        }
-
-                        $field = TechnicalStructureField::create([
-                            "name" => $field_name,
-                            "company_id" => $ndo -> id,
-                            "user_id" => $user_id
-                        ]);
-                    }
-
-                    $ngdu = TechnicalStructureNgdu::create([
-                        "name" => $ngdu_name,
-                        "field_id" => $field -> id,
-                        "user_id" => $user_id
-                    ]);
-                }
-
-                $cdng = TechnicalStructureCdng::create([
-                    "name" => $cdng_name,
-                    "ngdu_id" => $ngdu -> id,
-                    "user_id" => $user_id
-                ]);
-            }
+            $cdng = $this->get_cdng($cdng_name, $row, $user_id);
 
             $gu = TechnicalStructureGu::create([
                 "name" => $gu_name,
@@ -110,5 +73,88 @@ class TechnicalDataForecastImport implements ToModel
             ]);
         }
         return $gu;
+    }
+
+    /**
+     * @param $company_name
+     * @param int $user_id
+     * @return mixed
+     */
+    public function get_ndo($company_name, int $user_id)
+    {
+        $ndo = TechnicalStructureCompany::where("short_name", "=", $company_name)->first();
+        if (!$ndo) {
+            $ndo = TechnicalStructureCompany::create([
+                "name" => $company_name,
+                "short_name" => $company_name,
+                "user_id" => $user_id
+            ]);
+        }
+        return $ndo;
+    }
+
+    /**
+     * @param $field_name
+     * @param $row
+     * @param int $user_id
+     * @return mixed
+     */
+    public function get_field($field_name, $company_name, int $user_id)
+    {
+        $field = TechnicalStructureField::where("name", "=", $field_name)->first();
+        if (empty($field)) {
+            $ndo = $this->get_ndo($company_name, $user_id);
+
+            $field = TechnicalStructureField::create([
+                "name" => $field_name,
+                "company_id" => $ndo->id,
+                "user_id" => $user_id
+            ]);
+        }
+        return $field;
+    }
+
+    /**
+     * @param $ngdu_name
+     * @param array $row
+     * @param int $user_id
+     * @return mixed
+     */
+    public function get_ngdu($ngdu_name, array $row, int $user_id)
+    {
+        $ngdu = TechnicalStructureNgdu::where("name", "=", $ngdu_name)->first();
+        if (empty($ngdu)) {
+            $field_name = $row[7];
+            $field = $this->get_field($field_name, $row[6], $user_id);
+
+            $ngdu = TechnicalStructureNgdu::create([
+                "name" => $ngdu_name,
+                "field_id" => $field->id,
+                "user_id" => $user_id
+            ]);
+        }
+        return $ngdu;
+    }
+
+    /**
+     * @param $cdng_name
+     * @param array $row
+     * @param int $user_id
+     * @return mixed
+     */
+    public function get_cdng($cdng_name, array $row, int $user_id)
+    {
+        $cdng = TechnicalStructureCdng::where("name", "=", $cdng_name)->first();
+        if (empty($cdng)) {
+            $ngdu_name = $row[8];
+            $ngdu = $this->get_ngdu($ngdu_name, $row, $user_id);
+
+            $cdng = TechnicalStructureCdng::create([
+                "name" => $cdng_name,
+                "ngdu_id" => $ngdu->id,
+                "user_id" => $user_id
+            ]);
+        }
+        return $cdng;
     }
 }
