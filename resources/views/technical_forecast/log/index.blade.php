@@ -4,7 +4,7 @@
     <div class="container">
         <div class="row justify-content-center">
             <a href="{{ route('tech_data_list') }}" class="btn btn-info">
-                Вернуться в справочник</a>
+                {{ __('forecast.return_menu') }}</a>
         </div>
     </div>
     <div class="container">
@@ -21,8 +21,8 @@
                         <table class="table table-bordered">
                             <tr>
                                 <th>#</th>
-                                <th>Дата добавления:</th>
-                                <th>Автор добавления:</th>
+                                <th>{{ __('forecast.date_added') }}:</th>
+                                <th>{{ __('forecast.author_added') }}:</th>
                                 <th width="220px">{{__('app.action')}}</th>
                             </tr>
                             @foreach ($technicalForecast as $item)

@@ -4,15 +4,15 @@
     <div class="container">
         <div class="row justify-content-center">
             <a href="{{ route('tech_data_list') }}" class="btn btn-info">
-                Вернуться в справочник</a>
+                {{ __('forecast.return_menu') }}</a>
         </div>
     </div>
     <div class="container">
-        <h3 align="center">Импорт данных из Excel в базу данных MySQL</h3>
+        <h3 align="center">{{ __('forecast.import_data_from_excel') }}</h3>
         <br/>
         @if(count($errors) > 0)
             <div class="alert alert-danger">
-                Upload Validation Error<br><br>
+                {{ __('forecast.upload_validation_error') }}<br><br>
                 <ul>
                     @foreach($errors->all() as $error)
                         <li>{{ $error }}</li>
@@ -33,12 +33,13 @@
             <div class="form-group">
                 <table class="table">
                     <tr>
-                        <td width="40%" align="right"><label>Выберите Excel файл</label></td>
+                        <td width="40%" align="right"><label>{{ __('forecast.choose_excel_file') }}</label></td>
                         <td width="30">
                             <input type="file" name="select_file"/>
                         </td>
                         <td width="30%" align="left">
-                            <input type="submit" name="upload" class="btn btn-primary" value="Загрузить">
+                            <input type="submit" name="upload" class="btn btn-primary"
+                                   value="{{ __('forecast.upload') }}">
                         </td>
                     </tr>
                     <tr>

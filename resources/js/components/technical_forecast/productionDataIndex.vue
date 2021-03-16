@@ -6,7 +6,7 @@
           ref="table"
       >
         <template v-slot:column-11="{ props }">
-          <a v-bind:href="props.cellData">Редактировать</a>
+          <a v-bind:href="props.cellData">EDIT</a>
         </template>
       </vue-table-dynamic>
     </div>

@@ -4,7 +4,7 @@
     <div class="container">
         <div class="row justify-content-center">
             <a href="{{ route('tech_data_list') }}" class="btn btn-info">
-                Вернуться в справочник</a>
+                {{ __('forecast.return_menu') }}</a>
         </div>
     </div>
     <div class="container">
@@ -20,7 +20,7 @@
                             <div class="row">
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
-                                        <strong>Источник:</strong>
+                                        <strong>{{ __('forecast.source_data') }}:</strong>
                                         <select class="form-control" name="source_id">
                                             <option>Select Item</option>
                                             @foreach ($source as $item)
@@ -41,7 +41,7 @@
                             <div class="row">
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
-                                        <strong>ГУ:</strong>
+                                        <strong>{{ __('forecast.gu') }}:</strong>
                                         <select class="form-control" name="gu_id">
                                             <option>Select Item</option>
                                             @foreach ($gu as $item)
@@ -62,25 +62,25 @@
                             <div class="row">
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
-                                        <strong>Скважина:</strong>
+                                        <strong>{{ __('forecast.well') }}:</strong>
                                         <input type="text" name="well_id" class="form-control" placeholder=""
                                                value="{{$technicalDataForecast->well_id}}">
-                                        <strong>Дата:</strong>
+                                        <strong>{{ __('forecast.date') }}:</strong>
                                         <input type="date" name="date" class="form-control" placeholder=""
                                                value="{{$technicalDataForecast->date}}">
-                                        <strong>Добыча нефти, тыс.т:</strong>
+                                        <strong>{{ __('forecast.oil-production') }}:</strong>
                                         <input type="text" name="oil" class="form-control" placeholder=""
                                                value="{{$technicalDataForecast->oil}}">
-                                        <strong>Добыча жидкости тыс.т:</strong>
+                                        <strong>{{ __('forecast.extraction-liquid') }}:</strong>
                                         <input type="text" name="liquid" class="form-control" placeholder=""
                                                value="{{$technicalDataForecast->liquid}}">
-                                        <strong>Отработанные дни:</strong>
+                                        <strong>{{ __('forecast.days-worked') }}:</strong>
                                         <input type="text" name="days_worked" class="form-control" placeholder=""
                                                value="{{$technicalDataForecast->days_worked}}">
-                                        <strong>ПРС:</strong>
+                                        <strong>{{ __('forecast.prs') }}:</strong>
                                         <input type="text" name="prs" class="form-control" placeholder=""
                                                value="{{$technicalDataForecast->prs}}">
-                                        <strong>Комментарий:</strong>
+                                        <strong>{{ __('forecast.comment') }}:</strong>
                                         <input type="text" name="comment" class="form-control" placeholder=""
                                                value="{{$technicalDataForecast->comment }}">
                                     </div>

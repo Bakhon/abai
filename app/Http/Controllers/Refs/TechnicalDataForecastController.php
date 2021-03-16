@@ -28,9 +28,12 @@ class TechnicalDataForecastController extends Controller
         $tech_data = TechnicalForecastResource::collection(TechnicalDataForecast::all());
 
         $tech_data_array = [];
-        $column_names = ['Источник данных', 'ГУ', 'Скважина', 'Месяц-Год', 'Добыча нефти тыс.т',
-            'Добыча жидкости тыс.т', 'Отработанные дни', 'ПРС', 'Комментарий', 'Добавлено: дата / автор',
-            'Изменение: дата / автор', 'Редактировать', 'ID добавления'];
+        $column_names = [__('forecast.source_data'), __('forecast.gu'), __('forecast.well'),
+            __('forecast.month-year'), __('forecast.oil-production'), __('forecast.extraction-liquid'),
+            __('forecast.days-worked'), __('forecast.prs'), __('forecast.comment'),
+            __('forecast.added_date_author'),  __('forecast.changed_date_author'),
+            __('forecast.edit'), __('forecast.id_of_add')];
+
         array_push($tech_data_array, $column_names);
 
         foreach ($tech_data as $item) {
