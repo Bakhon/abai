@@ -105,4 +105,6 @@ return array (
   'zenitnii_ugol' => 'Зенит бұрышы',
   'azimut' => 'Азимут',
   'temp_nabora_krivizni' => 'Қисықтық жиынтығының қарқыны',
+  'zagruzka' => 'Жүктеу',
+  'no_data' => 'Деректер жоқ',
 );
