@@ -6,17 +6,17 @@
     <div v-else class="row no-margin col-12 no-padding relative gno-incl-content-wrapper">
       
       <div class="plot-block col-7 gno-plotly-graph">
-        <h5>Причины ПРС за скользящий год</h5>
+        <h5>{{trans('pgno.prichini_prs_god')}}</h5>
        <Plotly style="width: 730px;" :data="data" :layout="layout" :display-mode-bar="false"></Plotly>
        <div class="row">
         <div class="col-12">
           <h5 class="title-plot">
-            Количество ремонтов без ГТМ: {{numberRepairs}}
+            {{trans('pgno.number_of_repair')}}: {{numberRepairs}}
           </h5>
        </div>
        <div class="col-12">
           <h5 class="title-plot">
-            ННО: {{numberNNO + ' сут'}}
+            {{trans('pgno.nno')}}: {{numberNNO + ' сут'}}
           </h5>
        </div>
        </div>
@@ -24,7 +24,7 @@
       </div>
 
      <div class="col-5 no-padding no-scrollbar incl-modal-table">
-       <h5 class="krs-table-title">Информация по КРС</h5>
+       <h5 class="krs-table-title">{{trans('pgno.info_krs')}}</h5>
 
       <perfect-scrollbar>
         <table class="gno-table-with-header pgno">
