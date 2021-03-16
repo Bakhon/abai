@@ -59,7 +59,6 @@ export default {
   },
   beforeCreate: function () {
     this.axios.get(this.localeUrl('/tech_data_json')).then(({data}) => {
-      // console.log(data.tech_data);
       this.params.data = data.tech_data
     })
   },

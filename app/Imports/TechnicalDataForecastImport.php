@@ -42,7 +42,7 @@ class TechnicalDataForecastImport implements ToModel
             return null;
         }
 
-        $gu = self::get_gu($this->user_id, $row);
+        $gu = self::getGu($this->user_id, $row);
 
         return new TechnicalDataForecast([
             "source_id" => $this->source->id,
@@ -58,7 +58,7 @@ class TechnicalDataForecastImport implements ToModel
         ]);
     }
 
-    public function get_gu(int $user_id, array $row) {
+    public function getGu(int $user_id, array $row) {
         $gu_name = $row[9];
         $gu = TechnicalStructureGu::where("name", "=", $gu_name)->first();
 

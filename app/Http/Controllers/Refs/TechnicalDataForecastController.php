@@ -23,7 +23,7 @@ class TechnicalDataForecastController extends Controller
         return view('technical_forecast.production_data.index',compact('technicalDataForecast'));
     }
 
-    public function tech_data_json(): JsonResponse
+    public function techDataJson(): JsonResponse
     {
         $tech_data = TechnicalForecastResource::collection(TechnicalDataForecast::all());
 
@@ -34,28 +34,24 @@ class TechnicalDataForecastController extends Controller
         array_push($tech_data_array, $column_names);
 
         foreach ($tech_data as $item) {
-            $well = [];
-
             $edit_url = route("tech_data_forecast.edit", $item->id);
 
-            array_push($well, $item->source->name);
-            array_push($well, $item->gu->name);
+            $well = [
+                $item->source->name,
+                $item->gu->name,
+                $item->well_id,
+                date('m-Y', strtotime($item->date)),
+                $item->oil,
+                $item->liquid,
+                $item->days_worked,
+                $item->prs,
+                $item->comment,
+                "{$item->created_at} {$item->author->name}",
+                $item->editor ? "{$item->updated_at} {$item->editor->name}" : "",
+                $edit_url,
+                $item->log_id,
+            ];
 
-            array_push($well, $item['well_id']);
-            array_push($well, date('m-Y', strtotime($item['date'])));
-            array_push($well, $item['oil']);
-            array_push($well, $item['liquid']);
-            array_push($well, $item['days_worked']);
-            array_push($well, $item['prs']);
-            array_push($well, $item['comment']);
-            array_push($well, "{$item['created_at']} {$item->author->name}");
-            if ($item->editor) {
-                array_push($well, "{$item['updated_at']} {$item->editor->name}");
-            } else {
-                array_push($well, "");
-            }
-            array_push($well, $edit_url);
-            array_push($well, $item['log_id']);
             array_push($tech_data_array, $well);
         }
 

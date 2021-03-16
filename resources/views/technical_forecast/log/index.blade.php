@@ -29,7 +29,7 @@
                                 <tr>
                                     <td>{{ $item->id }}</td>
                                     <td>{{ $item->created_at  }}</td>
-                                    <td>{{ $item->author_id  }}</td>
+                                    <td>{{ $item->author->name  }}</td>
                                     <td>
                                         <form action="{{ route('tech_data_log.destroy',$item->id) }}" method="POST">
                                             @csrf
