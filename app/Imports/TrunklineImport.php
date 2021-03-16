@@ -41,6 +41,7 @@ class TrunklineImport implements ToCollection, WithEvents, WithColumnLimit, With
         'koll-bg' => '/koll.+bg/i',
         'os-st' => '/os.+st/i',
         'bg-gu' => '/bg.+gu/i',
+        'bg' => '/bg/i',
         'koll-koll' => '/koll/i',
         'st-koll' => '/st/i',
         'spt-koll' => '/spt/i'
