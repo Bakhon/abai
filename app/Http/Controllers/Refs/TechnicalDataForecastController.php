@@ -30,7 +30,7 @@ class TechnicalDataForecastController extends Controller
         $tech_data_array = [];
         $column_names = ['Источник данных', 'ГУ', 'Скважина', 'Месяц-Год', 'Добыча нефти тыс.т',
             'Добыча жидкости тыс.т', 'Отработанные дни', 'ПРС', 'Комментарий', 'Добавлено: дата / автор',
-            'Изменение: дата / автор', 'ID добавления', 'Редактировать'];
+            'Изменение: дата / автор', 'Редактировать', 'ID добавления'];
         array_push($tech_data_array, $column_names);
 
         foreach ($tech_data as $item) {
@@ -54,8 +54,8 @@ class TechnicalDataForecastController extends Controller
             } else {
                 array_push($well, "");
             }
-            array_push($well, $item['log_id']);
             array_push($well, $edit_url);
+            array_push($well, $item['log_id']);
             array_push($tech_data_array, $well);
         }
 
