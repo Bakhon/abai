@@ -4,6 +4,11 @@
     <div v-else-if="data.length === 0" class="gno-modal-loading-label">No data</div>
 
     <div v-else class="row no-margin col-12 no-padding relative gno-incl-content-wrapper">
+      
+      <div class="col-6 gno-plotly-graph" style="background-color: #2b2e5e; height: 600px;">
+       <Plotly :data="data" :layout="layout" :display-mode-bar="false"></Plotly>
+      </div>
+
      <div class="col-6 no-padding no-scrollbar incl-modal-table" style="height: 100%; overflow-y: auto;">
       <perfect-scrollbar>
         <table class="gno-table-with-header pgno" style="height: initial;">
@@ -31,10 +36,7 @@
         </table>
       </perfect-scrollbar>
     </div>
-    
-      <div class="col-6 gno-plotly-graph" style="background-color: #2b2e5e; height: 590px;">
-       <Plotly :data="data" :layout="layout" :display-mode-bar="false"></Plotly>
-      </div>
+
     </div>
   </div>
 </template>
