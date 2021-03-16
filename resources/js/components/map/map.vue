@@ -212,8 +212,9 @@ export default {
                 html: this.getGuTooltipHtml(guParams)
               }
             }
+
+            return object.name;
           }
-          return object && object.name
         },
         layers: this.layers,
       });
