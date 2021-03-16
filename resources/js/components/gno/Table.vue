@@ -2394,7 +2394,7 @@ export default {
           "hPumpValue": this.hPumpValue.split(' ')[0],
           "celSelect": this.CelButton,
           "celValue": this.CelValue.split(' ')[0],
-          "menu": "MainMenu",
+          "menu": this.menu,
           "well_age": this.age,
           "grp_skin": this.grp_skin,
           "analysisBox1": this.analysisBox1,
