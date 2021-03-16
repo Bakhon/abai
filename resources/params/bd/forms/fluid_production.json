@@ -2,25 +2,27 @@
   "type": "table",
   "columns": [
     {
-      "title": "Номер скважины",
+      "title": "uwi_number",
       "code": "uwi",
       "type": "link",
       "isEditable": false
     },
     {
-      "title": "Совместные скважины",
+      "title": "other_uwi",
       "code": "other_uwi",
       "type": "text",
       "isEditable": false
     },
     {
-      "title": "Отработанное время",
+      "title": "worktime",
       "code": "worktime",
+      "table": "tbdi.well_status",
+      "column": "well_status_type_id",
       "type": "text",
       "isEditable": false
     },
     {
-      "title": "Способ эксплуатации",
+      "title": "exp_type",
       "code": "exp_type",
       "table": "tbdi.well_expl",
       "column": "name",
@@ -28,7 +30,7 @@
       "isEditable": false
     },
     {
-      "title": "Отвод",
+      "title": "lease",
       "code": "lease",
       "table": "tbdi.well_tech",
       "column": "tap",
@@ -36,13 +38,13 @@
       "isEditable": false
     },
     {
-      "title": "Геоструктура",
+      "title": "geostructure",
       "code": "geo",
       "type": "text",
       "isEditable": false
     },
     {
-      "title": "Дебит жидк. по тех.режиму, м³/сут",
+      "title": "debit_fluid_tech",
       "code": "debit_fluid_tech",
       "table": "tbdi.tech_mode_well",
       "column": "liquid",
@@ -50,7 +52,7 @@
       "isEditable": false
     },
     {
-      "title": "Дебит нефти по тех. режиму, тн.",
+      "title": "debit_oil_tech",
       "code": "debit_oil_tech",
       "table": "tbdi.tech_mode_well",
       "column": "oil",
@@ -58,7 +60,7 @@
       "isEditable": false
     },
     {
-      "title": "Обводн. по тех.режиму, %",
+      "title": "bsw_tech",
       "code": "bsw_tech",
       "table": "tbdi.tech_mode_well",
       "column": "bsw",
@@ -66,19 +68,21 @@
       "isEditable": false
     },
     {
-      "title": "Добыча жидкости, м3",
+      "title": "liquid_val",
       "code": "liquid_val",
-      "type": "float",
+      "type": "calc",
+      "formula": "$liquid_debit$ * $worktime$",
       "isEditable": false
     },
     {
-      "title": "Добыча нефти, тн",
+      "title": "oil_val",
       "code": "oil_val",
-      "type": "float",
+      "type": "calc",
+      "formula": "$oil_debit$ * $worktime$",
       "isEditable": false
     },
     {
-      "title": "Дебит жидк., м³/сут",
+      "title": "liquid_debit",
       "code": "liquid_debit",
       "table": "tbdi.liquid_prod",
       "column": "liquid_val",
@@ -87,19 +91,19 @@
       "validation": "numeric|gt:0"
     },
     {
-      "title": "Отметка",
+      "title": "mark",
       "code": "mark",
       "type": "text",
       "isEditable": false
     },
     {
-      "title": "Жидк. с телеметрии, м³/сут",
+      "title": "liquid_telemetry",
       "code": "note",
       "type": "float",
       "isEditable": false
     },
     {
-      "title": "Тек. обводненность, %",
+      "title": "bsw",
       "code": "bsw",
       "table": "tbdi.bsw_prod",
       "column": "bsw_val",
@@ -108,25 +112,26 @@
       "validation": "numeric|gte:0|lte:100"
     },
     {
-      "title": "Дебит нефти",
+      "title": "oil_debit",
       "code": "oil_debit",
-      "type": "float",
+      "type": "calc",
+      "formula": "$liquid_debit$ * (1 - $bsw_tech$/100) * $density_oil$",
       "isEditable": false
     },
     {
-      "title": "Мех. примеси, %",
+      "title": "contamination",
       "code": "contamination",
       "type": "float",
       "isEditable": false
     },
     {
-      "title": "Диаметр штуцера, мм",
-      "code": "contamination",
+      "title": "pipe_diameter",
+      "code": "pipe_diameter",
       "type": "float",
       "isEditable": false
     },
     {
-      "title": "Рбуфф.",
+      "title": "p_buf",
       "code": "p_buf",
       "table": "tbdic.meas_log_cut",
       "column": "p_buf",
@@ -144,7 +149,7 @@
       "validation": "numeric|gt:0"
     },
     {
-      "title": "Рбуфф. до штуцера",
+      "title": "p_buf_b",
       "code": "p_buf_b",
       "table": "tbdic.meas_log_cut",
       "column": "p_buf_b",
@@ -153,7 +158,7 @@
       "validation": "numeric|gt:0"
     },
     {
-      "title": "Рбуфф. после штуцера",
+      "title": "p_buf_a",
       "code": "p_buf_a",
       "table": "tbdic.meas_log_cut",
       "column": "p_buf_a",
@@ -162,64 +167,70 @@
       "validation": "numeric|gt:0"
     },
     {
-      "title": "Об./мин",
+      "title": "cycle_per_minute",
       "code": "cycle_per_minute",
       "type": "float",
       "isEditable": false
     },
     {
-      "title": "Длина хода, м",
+      "title": "length_stroke",
       "code": "length_stroke",
       "type": "float",
       "isEditable": false
     },
     {
-      "title": "Число качаний",
+      "title": "reciprotating_speed",
       "code": "reciprotating_speed",
       "type": "float",
       "isEditable": false
     },
     {
-      "title": "Причина простоя",
+      "title": "downtime_reason",
       "code": "downtime_reason",
       "type": "text",
       "isEditable": false
     },
     {
-      "title": "Газовый фактор, м³/т",
+      "title": "gas_factor",
       "code": "gas_factor",
       "table": "tbdic.meas_log_cut",
       "column": "gas_factor",
       "type": "float",
-      "isEditable": false,
+      "isEditable": true,
       "validation": "numeric|gt:0"
     },
     {
-      "title": "Добыча газа, м³",
+      "title": "gas_output",
       "code": "gas_output",
-      "type": "float",
+      "type": "text",
       "isEditable": false
     },
     {
-      "title": "Примечание",
+      "title": "note",
       "code": "note",
       "table": "tbdic.meas_log_cut",
       "column": "note",
       "type": "text",
-      "isEditable": false
+      "isEditable": true
     },
     {
-      "title": "Причина снижения дебита",
+      "title": "prod_decline_reason",
       "code": "prod_decline_reason",
       "table": "tbdic.meas_log_cut",
       "column": "prod_decline_reason",
       "type": "text",
+      "isEditable": true
+    },
+    {
+      "title": "measure_last_month",
+      "code": "measure_last_month",
+      "type": "text",
       "isEditable": false
     },
     {
-      "title": "Замеры по скважине за последний месяц",
-      "code": "measure_last_month",
-      "type": "text",
+      "title": "Плотность нефти",
+      "code": "density_oil",
+      "type": "hidden",
       "isEditable": false
     }
   ]
