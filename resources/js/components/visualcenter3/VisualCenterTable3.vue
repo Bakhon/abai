@@ -1233,14 +1233,14 @@
               <div class="area-6-name row mt-3 mb-3 px-2">
                 <div class="col">
                   <div class="ml-4 bold">
-                    {{
-                      trans("visualcenter.idleWells")
+                    <!--Фонд нагнетательных скважин-->{{
+                      trans("visualcenter.idle_wells")
                     }}
                   </div>
                 </div>
                 <div class="col px-4">
                   <div class="close2" @click="changeTable('1')">
-                    {{ trans("visualcenter.close") }}
+                    <!-- Закрыть -->{{ trans("visualcenter.close") }}
                   </div>
                 </div>
               </div>
@@ -1330,7 +1330,7 @@
                             :class="wellStockIdleButtons.isInjectionIdleButtonActive ? 'button2 button-tab-highlighted' : 'button2'"
                             @click="calculateInjectionWellsData()"
                     >
-                      {{ trans("visualcenter.inIdle") }}
+                      {{ trans("visualcenter.in_idle") }}
                     </div>
                   </div>
                 </div>
@@ -1341,7 +1341,7 @@
                   <table v-if="injectionWells.length" class="table4 w-100 chemistry-table">
                     <thead>
                     <tr>
-                      <th>{{ trans("visualcenter.idleWells") }}</th>
+                      <th>{{ trans("visualcenter.idle_wells") }}</th>
                       <th>
                         {{ trans("visualcenter.otmMetricSystemWells") }}
                       </th>
@@ -1394,7 +1394,7 @@
               <div class="area-6-name row mt-3 mb-3 px-2">
                 <div class="col">
                   <div class="ml-4 bold">
-                    {{trans("visualcenter.prodWells")}}
+                    {{trans("visualcenter.prod_wells")}}
                   </div>
                 </div>
                 <div class="col px-4">
@@ -1490,7 +1490,7 @@
                             :class="wellStockIdleButtons.isProductionIdleButtonActive ? 'button2 button-tab-highlighted' : 'button2'"
                             @click="calculateProductionWellsData()"
                     >
-                      {{ trans("visualcenter.inIdle") }}
+                      {{ trans("visualcenter.in_idle") }}
                     </div>
                   </div>
                 </div>
@@ -1501,7 +1501,7 @@
                   <table v-if="productionWells.length" class="table4 w-100 chemistry-table">
                     <thead>
                     <tr>
-                      <th>{{ trans("visualcenter.prodWells") }}</th>
+                      <th>{{ trans("visualcenter.prod_wells") }}</th>
                       <th>{{ trans("visualcenter.otmMetricSystemWells") }}</th>
                     </tr>
                     </thead>
@@ -1872,7 +1872,7 @@
                   </table>
                 </div>
                 <div class="col-sm-5">
-                <div  class="name-chart-left">{{trans("visualcenter.chemVolume")}}</div>
+                <div  class="name-chart-left">Объём хим. реагента, тонны</div>
                   <visual-center3-wells
                     v-if="chemistryDataForChart"
                     :chartData="chemistryDataForChart"
@@ -1898,7 +1898,7 @@
                       {{ getFormattedNumber(prod_wells_work) }}
                     </div>
                     <div class="in-work">
-                      {{ trans("visualcenter.inWork") }}
+                      {{ trans("visualcenter.in_work") }}
                     </div>
                     <div
                       :class="`${getColor2(
@@ -1932,7 +1932,7 @@
                       </div>
                     </div>
                     <div class="in-idle">
-                      {{ trans("visualcenter.inIdle") }}
+                      {{ trans("visualcenter.in_idle") }}
                     </div>
                     <div
                       :class="`${getColor2(
@@ -1960,7 +1960,7 @@
                     :style="`${tableHover4}`"
                   >
                     <div class="txt2">
-                      {{ trans("visualcenter.prodWells") }}
+                      {{ trans("visualcenter.prod_wells") }}
                     </div>
                   </td>
                 </tr>
@@ -1979,7 +1979,7 @@
                         {{getFormattedNumber(inj_wells_work)}}
                       </div>
                       <div class="in-work">
-                        {{ trans("visualcenter.inWork") }}
+                        {{ trans("visualcenter.in_work") }}
                       </div>
                       <div
                         :class="`${getColor2(
@@ -2013,7 +2013,7 @@
                         </div>
                       </div>
                       <div class="in-idle">
-                        {{ trans("visualcenter.inIdle") }}
+                        {{ trans("visualcenter.in_idle") }}
                       </div>
                       <div
                         :class="`${getColor2(
@@ -2041,7 +2041,7 @@
                       :style="`${tableHover5}`"
                     >
                       <div class="txt2">
-                        {{ trans("visualcenter.idleWells") }}
+                        {{ trans("visualcenter.idle_wells") }}
                       </div>
                     </td>
                   </tr>
@@ -2185,10 +2185,10 @@
                     <div class="col-6">
                       <div>
                         <div class="in-idle">
-                          {{ trans("visualcenter.fromBegin") }}
+                          <!-- с начала -->{{ trans("visualcenter.from_begin") }}
                         </div>
                         <div class="in-idle">
-                          {{ trans("visualcenter.year") }}
+                          <!-- года -->{{ trans("visualcenter.year") }}
                         </div>
                       </div>
                     </div>
