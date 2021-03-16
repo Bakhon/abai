@@ -28,6 +28,7 @@
             :week-start="1"
             use24-hour
             auto
+            :disabled="!formFields.editable"
         >
         </datetime>
         <input type="hidden" name="date" v-model="formatedDate" class="form-control" placeholder="">
@@ -44,6 +45,7 @@
             name="pump_discharge_pressure"
             class="form-control"
             placeholder=""
+            :disabled="!formFields.editable"
         >
       </div>
       <label>{{ trans('monitoring.omgngdu.fields.bsw') }}</label>
@@ -57,6 +59,7 @@
             name="bsw"
             class="form-control"
             placeholder=""
+            :disabled="!formFields.editable"
         >
       </div>
       <label>{{ trans('monitoring.omgngdu.fields.daily_water_production') }}</label>
@@ -70,6 +73,7 @@
             name="daily_water_production"
             class="form-control"
             placeholder=""
+            :disabled="!formFields.editable"
         >
       </div>
     </div>
@@ -97,6 +101,7 @@
             name="daily_fluid_production"
             class="form-control"
             placeholder=""
+            :disabled="!formFields.editable"
         >
       </div>
       <label>{{ trans('monitoring.omgngdu.fields.heater_inlet_pressure') }}</label>
@@ -123,6 +128,7 @@
             name="daily_oil_production"
             class="form-control"
             placeholder=""
+            :disabled="!formFields.editable"
         >
       </div>
     </div>
@@ -176,6 +182,7 @@
             name="heater_output_pressure"
             class="form-control"
             placeholder=""
+            :disabled="!formFields.editable"
         >
       </div>
     </div>
@@ -218,6 +225,7 @@ export default {
         surge_tank_pressure: null,
         daily_gas_production_in_sib: null,
         heater_output_pressure: null,
+        editable: 0,
       },
       ngdus: {},
       cndgs: {},
@@ -288,24 +296,11 @@ export default {
   },
   mounted() {
     if (this.omgngdu) {
-      this.formFields = {
-        field_id: this.omgngdu.field_id,
-        gu_id: this.omgngdu.gu_id,
-        date: this.omgngdu.date,
-        pump_discharge_pressure: this.omgngdu.pump_discharge_pressure,
-        bsw: this.omgngdu.bsw,
-        daily_water_production: this.omgngdu.daily_water_production,
-        ngdu_id: this.omgngdu.ngdu_id,
-        zu_id: this.omgngdu.zu_id,
-        daily_fluid_production: this.omgngdu.daily_fluid_production,
-        heater_inlet_pressure: this.omgngdu.heater_inlet_pressure,
-        daily_oil_production: this.omgngdu.daily_oil_production,
-        cdng_id: this.omgngdu.cdng_id,
-        well_id: this.omgngdu.well_id,
-        surge_tank_pressure: this.omgngdu.surge_tank_pressure,
-        daily_gas_production_in_sib: this.omgngdu.daily_gas_production_in_sib,
-        heater_output_pressure: this.omgngdu.heater_output_pressure,
-      }
+      let daily_water_production = (this.omgngdu.daily_fluid_production * this.omgngdu.bsw)/100;
+
+      this.formFields = this.omgngdu;
+      this.formFields.daily_water_production = daily_water_production;
+
       if (this.omgngdu.gu_id) {
         this.chooseGu(true)
       }

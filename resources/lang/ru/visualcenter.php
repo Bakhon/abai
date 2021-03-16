@@ -264,6 +264,14 @@ return array (
   'exploitationFond' => 'Эксплуатационный фонд',
   'tonWithSpace' => ' тонн',
   'meterCubicWithSpace' => ' м³',
+  'saveButton' => 'Сохранить',
+  'errors' => 'Ошибки',
+  'validateButton' => 'Провести проверку данных',
+  'importForm' => [
+    'errorList' => [
+        'incorrectDocumentFormat' =>  'Неверный формат Excel документа',
+    ]
+  ],
   'requiredDailyPlan' => 'Необходимый ср/сут уровень',
   'dzoRegions' => 
   array (

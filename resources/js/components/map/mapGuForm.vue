@@ -48,13 +48,12 @@
     <h5>{{ trans('monitoring.gu.params') }}</h5>
     <div class="params_block">
       <p>{{ trans('monitoring.gu.fields.date') }}: {{ guParams.date }}</p>
-      <p>{{ trans('monitoring.gu.fields.daily_fluid_production') }}: {{ guParams.daily_fluid_production + ' ' + trans('measurements.tonn') }}</p>
-      <p>{{ trans('monitoring.gu.fields.daily_oil_production') }}: {{ guParams.daily_oil_production + ' ' + trans('measurements.tonn') }}</p>
-      <p>{{ trans('monitoring.gu.fields.daily_water_production') }}: {{ guParams.daily_water_production + ' ' + trans('measurements.tonn') }}</p>
+      <p>{{ trans('monitoring.gu.fields.daily_fluid_production') }}: {{ guParams.daily_fluid_production + ' ' + trans('measurements.m3/day') }}</p>
+      <p>{{ trans('monitoring.gu.fields.daily_oil_production') }}: {{ guParams.daily_oil_production + ' ' + trans('measurements.m3/day') }}</p>
+      <p>{{ trans('monitoring.gu.fields.daily_water_production') }}: {{ guParams.daily_water_production + ' ' + trans('measurements.m3/day') }}</p>
       <p>{{ trans('monitoring.gu.fields.bsw') }}: {{ guParams.bsw + trans('measurements.percent')}}</p>
       <p>{{ trans('monitoring.gu.fields.pump_discharge_pressure') }}: {{ guParams.pump_discharge_pressure + ' ' + trans('measurements.pressure_bar') }}</p>
-      <p>{{ trans('monitoring.gu.fields.heater_output_pressure') }}: {{ guParams.heater_output_pressure + ' ' + trans('measurements.pressure_bar') }}</p>
-
+      <p>{{ trans('monitoring.gu.fields.heater_output_temperature') }}: {{ guParams.heater_output_pressure + ' ' + trans('measurements.celsius') }}</p>
     </div>
   </div>
 </template>

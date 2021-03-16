@@ -33,10 +33,10 @@ const guMap = {
         SET_PIPE_TYPES(state, value) {
             state.pipeTypes = value;
         },
-        SET_NGDUS(state, value){
+        SET_NGDUS(state, value) {
             state.ngdus = value;
         },
-        SET_CDNGS(state, value){
+        SET_CDNGS(state, value) {
             state.cdngs = value;
         },
         ADD_GU_POINT(state, guPoint) {
@@ -108,7 +108,7 @@ const guMap = {
             });
         },
 
-        storeZu({state, commit}, objectData) {
+        storeZu({commit}, objectData) {
             return axios.post(this._vm.localeUrl("/gu-map/zu"), {zu: objectData}).then((response) => {
                 if (response.data.status == 'success') {
                     commit('ADD_ZU_POINT', response.data.zu);
@@ -119,7 +119,7 @@ const guMap = {
             });
         },
 
-        storeWell({state, commit}, objectData) {
+        storeWell({commit}, objectData) {
             return axios.post(this._vm.localeUrl("/gu-map/well"), {well: objectData}).then((response) => {
                 if (response.data.status == 'success') {
                     commit('ADD_WELL_POINT', response.data.well);
@@ -172,7 +172,7 @@ const guMap = {
             });
         },
 
-        deleteGu({state, commit}, gu) {
+        deleteGu({commit}, gu) {
             return axios.delete(this._vm.localeUrl("/gu-map/gu/" + gu.id)).then((response) => {
                 if (response.data.status == 'success') {
                     commit('DELETE_GU', gu.index);
@@ -182,7 +182,7 @@ const guMap = {
                 }
             });
         },
-        deleteZu({state, commit}, zu) {
+        deleteZu({commit}, zu) {
             return axios.delete(this._vm.localeUrl("/gu-map/zu/" + zu.id)).then((response) => {
                 if (response.data.status == 'success') {
                     commit('DELETE_ZU', zu.index);
@@ -192,7 +192,7 @@ const guMap = {
                 }
             });
         },
-        deleteWell({state, commit}, well) {
+        deleteWell({commit}, well) {
             return axios.delete(this._vm.localeUrl("/gu-map/well/" + well.id)).then((response) => {
                 if (response.data.status == 'success') {
                     commit('DELETE_WELL', well.index);
@@ -202,6 +202,22 @@ const guMap = {
                 }
             });
         },
+
+        getElevationByCoords({commit}, coords) {
+            let url = 'https://api.mapbox.com/v4/mapbox.mapbox-terrain-v2/tilequery/' + coords.lon + ',' + coords.lat + '.json?radius=25&limit=50&access_token=' + process.env.MIX_MAPBOX_TOKEN;
+            return axios.get(url).then((response) => {
+                let allFeatures = response.data.features;
+                let elevations = [];
+
+                for (let i = 0; i < allFeatures.length; i++) {
+                    if (typeof allFeatures[i].properties.ele !== 'undefined') {
+                        elevations.push(allFeatures[i].properties.ele);
+                    }
+                }
+
+                return Math.max(...elevations);
+            });
+        }
     },
 
     getters: {},

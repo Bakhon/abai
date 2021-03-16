@@ -154,6 +154,7 @@ export default {
       'deleteGu',
       'deleteZu',
       'deleteWell',
+      'getElevationByCoords'
     ]),
     async initMap() {
       this.pipes = await this.getMapData(this.gu);
@@ -201,7 +202,21 @@ export default {
         },
         onHover: ({object}) => (this.isHovering = Boolean(object)),
         getCursor: ({isDragging}) => (isDragging ? 'grabbing' : (this.isHovering ? 'pointer' : 'grab')),
-        getTooltip: ({object}) => object && object.name,
+        getTooltip: ({object}) => {
+          if (object) {
+            if (object.cdng_id && object.omgngdu[0]) {
+              let guParams = object.omgngdu[0];
+              guParams.daily_water_production = (guParams.daily_fluid_production * guParams.bsw) / 100;
+              guParams.name = object.name;
+
+              return {
+                html: this.getGuTooltipHtml(guParams)
+              }
+            }
+
+            return object.name;
+          }
+        },
         layers: this.layers,
       });
 
@@ -218,6 +233,18 @@ export default {
           layers: this.layers
         });
       });
+    },
+    getGuTooltipHtml (guParams){
+      return '<div class="params_block">' +
+          '<p>' + guParams.name + '</p>' +
+          '<p>' + this.trans('monitoring.gu.fields.date') + ': ' + guParams.date + '</p>' +
+          '<p>' + this.trans('monitoring.gu.fields.daily_fluid_production') + ': ' + guParams.daily_fluid_production + ' ' + this.trans('measurements.m3/day') + '</p>' +
+          '<p>' + this.trans('monitoring.gu.fields.daily_oil_production') + ': ' + guParams.daily_oil_production + ' ' + this.trans('measurements.m3/day') + '</p>' +
+          '<p>' + this.trans('monitoring.gu.fields.daily_water_production') + ': ' + guParams.daily_water_production + ' ' + this.trans('measurements.m3/day') + '</p>' +
+          '<p>' + this.trans('monitoring.gu.fields.bsw') + ': ' + guParams.bsw + this.trans('measurements.percent') + '</p>' +
+          '<p>' + this.trans('monitoring.gu.fields.pump_discharge_pressure') + ': ' + guParams.pump_discharge_pressure + ' ' + this.trans('measurements.pressure_bar') + '</p>' +
+          '<p>' + this.trans('monitoring.gu.fields.heater_output_temperature') + ': ' + guParams.heater_output_pressure + ' ' + this.trans('measurements.celsius') + '</p>' +
+          '</div>';
     },
     prepareLayers() {
       let pipesLayer = this.createPipeLayer('path-layer', this.pipes);
@@ -239,10 +266,16 @@ export default {
         wellPointsLayer,
       ];
     },
-    mapClickHandle(e) {
+    async mapClickHandle(e) {
+      let elevation = await this.getElevationByCoords({
+        lon: e.lngLat.lng,
+        lat: e.lngLat.lat
+      });
+
       if (this.editMode && this.editMode != 'pipe') {
         this.objectData.lon = e.lngLat.lng;
         this.objectData.lat = e.lngLat.lat;
+        this.objectData.elevation = elevation;
 
         if (this.editMode == 'gu') {
           this.objectData.omgngdu = [];
@@ -253,7 +286,7 @@ export default {
         this.pipeObject.coords.push({
           lat: e.lngLat.lat,
           lon: e.lngLat.lng,
-          elevation: 0,
+          elevation,
           h_distance: 0,
           m_distance: 0
         });
@@ -380,7 +413,7 @@ export default {
 
         option.lngLat = {
           lng: parseFloat(option.mapObject.object.lon),
-          lat: parseFloat(option.mapObject.object.lat),
+          lat: parseFloat(option.mapObject.object.lat)
         };
       }
 
@@ -454,25 +487,21 @@ export default {
       this.pipeObject = null;
     },
     cancelAddObject() {
-      this.resetForm();
-
       if (this.pipeObject) {
-        let layerIndex = this.layers.findIndex(layer => layer.id == 'path-layer-' + this.pipeLayerId);
+        let layerId = 'path-layer-temp';
+        let layerIndex = this.layers.findIndex(layer => layer.id == layerId);
 
         if (layerIndex != -1) {
           this.layers.splice(layerIndex, 1);
         }
 
-        this.updateLayers();
-        if (this.map.getLayer('path-layer-' + this.pipeLayerId)) {
-          this.map.removeLayer('path-layer-' + this.pipeLayerId);
+        if (this.map.getLayer(layerId)) {
+          this.map.removeLayer(layerId);
         }
-
-        this.deck.setProps({layers: this.layers});
-        this.pipeObject = null;
+        this.updateLayers();
       }
 
-      this.editMode = null;
+      this.resetForm();
       this.$bvModal.hide('object-modal');
     },
     handlerFormSubmit() {
@@ -534,7 +563,8 @@ export default {
         if (response.data.status == 'success') {
           this.pipes.push(response.data.pipe);
         } else {
-          console.log('error save Pipe in DB');
+          let $message = 'Error update Pipe in DB';
+          this.showToast($message, this.trans('app.error'), 'danger');
         }
       });
     },
@@ -694,8 +724,12 @@ export default {
         cancelTitle: this.trans('app.cancel'),
       })
           .then(value => {
-            let method = 'remove' + this.editMode.charAt(0).toUpperCase() + this.editMode.slice(1);
-            this[method]();
+            if (value) {
+              let method = 'remove' + this.editMode.charAt(0).toUpperCase() + this.editMode.slice(1);
+              this[method]();
+            } else {
+              this.resetForm();
+            }
           })
           .catch(err => {
             // An error occurred
@@ -744,17 +778,22 @@ export default {
       });
     },
 
-    mapObjectClickHandle(info) {
+    async mapObjectClickHandle(info) {
       this.clickedObject = info;
 
       if (this.editMode == 'pipe') {
+
         //pipe end point
         if ((info.type == 'zu' || info.type == 'gu') && this.pipeObject) {
+          let elevation = await this.getElevationByCoords({
+            lat: info.coordinate[1],
+            lon: info.coordinate[0],
+          });
 
           this.pipeObject.coords.push({
             lat: info.coordinate[1],
             lon: info.coordinate[0],
-            elevation: 0,
+            elevation,
             h_distance: 0,
             m_distance: 0
           });
