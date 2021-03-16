@@ -105,4 +105,6 @@ return array (
   'zenitnii_ugol' => 'Зенитный угол',
   'azimut' => 'Азимут',
   'temp_nabora_krivizni' => 'Темп набора пространственной кривизны',
+  'zagruzka' => 'Загрузка',
+  'no_data' => 'Нет данных',
 );

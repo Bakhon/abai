@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div v-if="!data" class="gno-modal-loading-label">Загрузка...</div>
-    <div v-else-if="data.length === 0" class="gno-modal-loading-label">No data</div>
+    <div v-if="!data" class="gno-modal-loading-label">{{trans('pgno.zagruzka')}}</div>
+    <div v-else-if="data.length === 0" class="gno-modal-loading-label">{{trans('pgno.no_data')}}</div>
 
     <div v-else class="row no-margin col-12 no-padding relative gno-incl-content-wrapper">
       
