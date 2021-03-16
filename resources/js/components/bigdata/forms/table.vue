@@ -51,28 +51,33 @@
             <table v-if="rows.length" class="table">
               <thead>
               <tr>
-                <th v-for="column in formParams.columns">
+                <th v-for="column in visibleColumns">
                   {{ column.title }}
                 </th>
                 <th></th>
               </tr>
               </thead>
               <tbody>
-              <tr v-for="(row, rowIndex) in rows">
+              <tr v-for="row in rows">
                 <td
-                    v-for="column in formParams.columns"
+                    v-for="column in visibleColumns"
                     :class="{'editable': column.isEditable}"
                     @dblclick="editCell(row, column)"
                 >
                   <a v-if="column.type === 'link'" :href="row[column.code].href">{{ row[column.code].name }}</a>
+                  <template v-else-if="column.type === 'calc'">
+                    <span class="value">{{ row[column.code] ? row[column.code].value : '' }}</span>
+                  </template>
                   <template v-else-if="['text', 'integer', 'float'].indexOf(column.type) > -1">
                     <div v-if="isCellEdited(row, column)" class="input-wrap">
                       <input v-model="row[column.code].value" class="form-control" type="text">
                       <button type="button" @click.prevent="saveCell(row, column)">OK</button>
                       <span v-if="errors[column.code]" class="error">{{ showError(errors[column.code]) }}</span>
                     </div>
-                    <template v-else>
-                      <span class="value">{{ row[column.code] ? row[column.code].value : '' }}</span>
+                    <template v-else-if="row[column.code]">
+                      <span class="value">{{
+                          row[column.code].date ? row[column.code].old_value : row[column.code].value
+                        }}</span>
                       <span v-if="row[column.code] && row[column.code].date" class="date">
                         {{ row[column.code].date | moment().format('YYYY-MM-DD') }}
                       </span>
@@ -145,6 +150,9 @@ export default {
     ...bdFormState([
       'formParams'
     ]),
+    visibleColumns() {
+      return this.formParams.columns.filter(column => column.type !== 'hidden')
+    }
   },
   mounted() {
 
@@ -177,11 +185,59 @@ export default {
       })
           .then(({data}) => {
             this.rows = data
+            this.recalculateCells()
           })
           .finally(() => {
             this.isloading = false
           })
 
+    },
+    recalculateCells() {
+      this.rows.forEach((row, rowIndex) => {
+        this.formParams.columns
+            .filter(column => column.type === 'calc')
+            .forEach(column => {
+              this.calculateCellValue(column, row, rowIndex)
+            })
+      })
+    },
+    calculateCellValue(cellColumn, cellRow, rowIndex) {
+
+      let formula = this.fillFormulaWithValues(cellColumn, cellRow)
+
+      let value = null
+      if (formula.indexOf('$') === -1) {
+        value = eval(formula)
+      }
+
+      this.$set(this.rows[rowIndex], cellColumn.code, {
+        value: value
+      })
+
+      return value
+    },
+    fillFormulaWithValues(cellColumn, cellRow) {
+      let formula = cellColumn.formula
+      this.formParams.columns.forEach(column => {
+
+        if (formula.indexOf(`$${column.code}$`) > -1) {
+
+          let value
+          if (column.type === 'calc') {
+            value = this.calculateCellValue(column, cellRow, rowIndex)
+          } else if (column.isEditable) {
+            value = cellRow[column.code].value
+          } else {
+            value = cellRow[column.code].old_value || cellRow[column.code].value
+          }
+
+          if (value !== null) {
+            formula = formula.replace(`$${column.code}$`, value)
+          }
+        }
+
+      })
+      return formula
     },
     editCell(row, column) {
       this.editableCell.row = row
@@ -211,6 +267,7 @@ export default {
               row: null,
               cell: null
             }
+            this.recalculateCells()
           })
           .catch(error => {
             Vue.set(this.errors, column.code, error.response.data.errors)
