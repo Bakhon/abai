@@ -11,9 +11,23 @@ export default {
                 changePercent: 0,
                 index: ''
             },
+            periodSelectOil: "",
+            oilPeriod: 7,
+            defaultOilPeriod: 7,
+            oilChart: "",
+            dailyOilPriceChange: '',
         };
     },
     methods: {
+        updateCurrentOilPrices(period) {
+            this.isPricesChartLoading = true;
+            this.oilPeriod = period;
+            this.usdPeriod = period;
+            let uri = this.localeUrl("/get-oil-rates");
+            this.setDataAndChart(uri, 'oil');
+            this.isPricesChartLoading = false;
+        },
+
         setDailyOilPriceChange(currentPrice, previousPrice) {
             if (currentPrice > previousPrice) {
                 this.dailyOilPriceChange = 'UP';

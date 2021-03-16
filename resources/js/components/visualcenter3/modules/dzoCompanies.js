@@ -3,6 +3,14 @@ import dzoCompaniesInitial from "../dzo_companies_initial.json";
 export default {
     data: function () {
         return {
+            isMultipleDzoCompaniesSelected: true,
+            dzoCompaniesSummaryForChart: {},
+            dzoColumns: {
+                daily: ['companyName', 'plan', 'fact', 'difference', 'percent'],
+                monthly: ['companyName', 'monthlyPlan', 'plan', 'fact', 'difference', 'percent'],
+                yearly: ['companyName', 'yearlyPlan', 'plan', 'fact', 'difference', 'percent'],
+            },
+            currentDzoList: 'daily',
             dzoCompaniesAssets: {},
             dzoCompaniesAssetsInitial: {
                 isAllAssets: true,
@@ -149,5 +157,29 @@ export default {
             this.calculateDzoCompaniesSummary();
         },
 
+        getDzoFactSummary(summaryData) {
+            return _.sumBy(summaryData, 'productionFactForChart');
+        },
+
+        getFilteredDzoYearlyPlan() {
+            let dzoYearlyPlanData = _.cloneDeep(this.yearlyPlan);
+            let filteredPlanData = dzoYearlyPlanData.filter(row => this.selectedDzoCompanies.includes(row.dzo));
+            if (filteredPlanData.length === 0) {
+                filteredPlanData = dzoYearlyPlanData;
+            }
+
+            return filteredPlanData;
+        },
+
+        exportDzoCompaniesSummaryForChart() {
+            this.$store.commit('globalloading/SET_LOADING', false);
+            this.$emit("data", {
+                dzoCompaniesSummaryForChart: this.dzoCompaniesSummaryForChart,
+                opec: this.opec,
+            });
+        },
     },
+    async mounted() {
+        this.dzoCompaniesAssets = _.cloneDeep(this.dzoCompaniesAssetsInitial);
+    }
 }

@@ -76,7 +76,7 @@ export default {
               '<path fill-rule="evenodd" clip-rule="evenodd" d="M15.7524 9.17679H16.7969V3.95065H15.7524V9.17679Z" fill="#3366FF"/>'+
               '</svg>',
 
-          url: this.localeUrl('/visualcenter3')
+          url: this.localeUrl('/modules')
         },
         {
           name: 'Технологический режим',

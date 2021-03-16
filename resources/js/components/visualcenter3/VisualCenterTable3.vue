@@ -687,9 +687,7 @@
                           )
                         "
                       >
-                        <!-- Закачка альбсен. воды -->{{
-                          trans("visualcenter.liqAlbsen")
-                        }}
+                        {{trans("visualcenter.liqAlbsen")}}
                       </a>
                     </li>
                   </ul>
@@ -698,7 +696,7 @@
             </div>
             <div class="row px-4 mt-3 middle-block__list-x-scroll">
               <div class="col-8 col-lg dropdown pr-1">
-                <div :class="[`${buttonDzoDropdown}`, 'button2 dzocompanylist__button']">
+                <div class="button2 dzocompanylist__button">
                   <div class="button2 dzocompanylist__button">
                     {{ trans("visualcenter.dzoAllCompany") }}
                     <button

@@ -1,7 +1,27 @@
 import moment from "moment";
 
 export default {
+    data: function () {
+        return {
+            tdStyle: "index % 2 === 0 ? 'tdStyle' : 'tdNone'",
+            tdStyleLight: "index % 2 === 0 ? 'tdStyleLight' : 'tdStyleLight2'",
+        };
+    },
     methods: {
+        filterDzoInputForSeparateCompany(data, company) {
+            return _.filter(data, function (item) {
+                return (item.dzo === company);
+            })
+        },
+
+        getDzoColumnsClass(rowIndex, columnName) {
+            if (this.getColumnIndex(columnName) % 2 === 0) {
+                return this.getDarkColorClass(rowIndex);
+            } else {
+                return this.getLightColorClass(rowIndex);
+            }
+        },
+
         formatDigitToThousand(num) {
             if (num == null) {
                 return 0;
@@ -110,31 +130,62 @@ export default {
         getFormattedNumber(num) {
             return (new Intl.NumberFormat("ru-RU").format(Math.round(num)))
         },
+
+        getColumnIndex(columnName) {
+            return this.dzoColumns[this.currentDzoList].indexOf(columnName);
+        },
+
+        getDarkColorClass(rowIndex) {
+            if (rowIndex % 2 === 0) {
+                return 'tdStyle'
+            } else {
+                return 'tdNone'
+            }
+        },
+
+        getLightColorClass(rowIndex) {
+            if (rowIndex % 2 === 0) {
+                return 'tdStyleLight'
+            } else {
+                return 'tdStyleLight2'
+            }
+        },
+
+        getDarkerClass(rowIndex) {
+            if (rowIndex % 2 === 0) {
+                return 'tdStyle3'
+            } else {
+                return 'tdNone'
+            }
+        },
+
+        getLighterClass(rowIndex) {
+            if (rowIndex % 2 === 0) {
+                return 'tdStyleLight3'
+            } else {
+                return 'tdStyleLight2'
+            }
+        },
+
+        getColor2(i) {
+            if (i < 0) return "arrow";
+            if (i > 0) return "arrow2";
+        },
     },
     computed: {
         periodSelectFunc() {
             let DMY = [
-                // "Неделя",
                 this.trans("visualcenter.week"),
-                // "Месяц",
                 this.trans("visualcenter.Month"),
-                // "Квартал",
                 this.trans("visualcenter.Quarter"),
-                // "Год",
                 this.trans("visualcenter.Year"),
-                // "Всё"
                 this.trans("visualcenter.All")
             ];
             let DMY_titles = [
-                // "За последние 7 дней",
                 this.trans("visualcenter.kurs7day"),
-                // "За последний месяц",
                 this.trans("visualcenter.kurslastmonth"),
-                // "За последние 3 месяца",
                 this.trans("visualcenter.kurs3month"),
-                // "За последний год",
                 this.trans("visualcenter.kurslastyear"),
-                // "За всё время"
                 this.trans("visualcenter.kursalltime"),
             ];
 

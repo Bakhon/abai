@@ -7,13 +7,22 @@ import {isString} from "lodash";
 import mainMenuConfiguration from './main_menu_configuration.json';
 import {dzoMapState, dzoMapActions} from '@store/helpers';
 
-import mainMenu from './visualcenter3/mainMenu';
-import dzoCompanies from './visualcenter3/dzoCompanies';
-import helpers from './visualcenter3/helpers';
-import otm from './visualcenter3/otm';
-import chemistry from './visualcenter3/chemistry';
-import oilRates from './visualcenter3/oilRates';
-import usdRates from './visualcenter3/usdRates';
+import mainMenuModule from './modules/mainMenu';
+import dzoCompaniesModule from './modules/dzoCompanies';
+import helpersModule from './modules/helpers';
+import otmModule from './modules/otm';
+import chemistryModule from './modules/chemistry';
+import oilRatesWidget from './modules/oilRates';
+import usdRatesWidget from './modules/usdRates';
+import injectionWellsModule from './modules/injectionWells';
+import productionWellsModule from './modules/productionWells';
+import companyStaffModule from './modules/companyStaff';
+import tableManagementModule from './modules/tablesManagement';
+import wellsModule from './modules/wells';
+import ratesModule from './modules/rates';
+import datesModule from './modules/dates';
+import oilProductionFilters from './modules/oilProductionFilters';
+
 
 Vue.component("calendar", Calendar);
 Vue.component("date-picker", DatePicker);
@@ -28,81 +37,19 @@ export default {
     },
     data: function () {
         return {
-            WellsDataAll: '',
             accidentTotal: '',
             noData: '',
-            tdStyle: "index % 2 === 0 ? 'tdStyle' : 'tdNone'",
-            tdStyleLight: "index % 2 === 0 ? 'tdStyleLight' : 'tdStyleLight2'",
-            opecDataSummMonth: 0,
-            opecDataSumm: 0,
-            opecData: 0,
-            scroll: '',
-            opec: 'утв.',
-            quarter1: 0,
-            quarter2: 0,
-            oneDate: '',
             lastDate1: 0,
             lastDate2: 0,
-            timeSelectOld: '',
             thousand: 'тыс.',
-            staffPercent: 0,
-            staff: 0,
-            flagOn: '<svg width="15" height="19" viewBox="0 0 15 19" fill="none" xmlns="http://www.w3.org/2000/svg">\n' +
-                '<path fill-rule="evenodd" clip-rule="evenodd" d="M12.4791 0.469238H2.31923C1.20141 0.469238 0.297516 1.38392 0.297516 2.50136L0.287109 18.7576L7.39917 15.7094L14.5112 18.7576V2.50136C14.5112 1.38392 13.5969 0.469238 12.4791 0.469238Z" fill="#2E50E9"/>' +
-                '</svg>',
-            flagOff: '<svg width="15" height="19" viewBox="0 0 15 19" fill="none" xmlns="http://www.w3.org/2000/svg"> \n' +
-                '<path fill-rule="evenodd" clip-rule="evenodd" d="M12.8448 0.286987H2.68496C1.56713 0.286987 0.663191 1.20167 0.663191 2.31911L0.652832 18.5754L7.76489 15.5272L14.877 18.5754V2.31911C14.877 1.20167 13.9627 0.286987 12.8448 0.286987Z" fill="#656A8A"/>' +
-                '</svg>',
-            inj_wells_idlePercent: 0,
-            inj_wells_workPercent: 0,
-            prod_wells_workPercent: 0,
-            prod_wells_idlePercent: 0,
             personalFact: '',
-            covidPercent: '',
-            covid: '',
             oilChartHeadName: this.trans('visualcenter.getoildynamic'),
-            injectionWells: [
-                {name: "ЭФ", value: 603, value2: 101},
-                {name: "ДФ", value: 98, value2: 56},
-                {name: "В работе добывающие скважины", value: 45, value2: 31},
-                {name: "БД", value: 121, value2: 108},
-                {name: "Освоение", value: 143, value2: 114},
-                {name: "ОФЛС", value: 98, value2: 36},
-                {name: "Простой добывающих скважин", value: 86, value2: 54}
-            ],
-            productionWells: '',
-            innerWells2SelectedRow: 'fond_neftedob_ef',
-            innerWells2ChartData: [],
-            innerWellsSelectedRow: 'fond_nagnetat_ef',
-            innerWellsChartData: [],
-            prod_wells_work: 0,
-            prod_wells_idle: 0,
-            inj_wells_idle: 0,
-            inj_wells_work: 0,
             productionFactPercentOneDzo: '',
             productionFactPercentSumm: '',
             quantityRange: '',
             productionFactPersent: '',
             productionPlanPersent: '',
             quantityGetProductionOilandGas: "",
-            /*calendar*/
-            range: {
-                /* start: "2020-12-18T06:00:00+06:00",
-                 end: "2020-12-18T09:00:00+06:00",*/
-            },
-            modelConfig: {
-                start: {
-                    timeAdjust: '00:00:00',
-                    type: 'string',
-                    mask: 'YYYY-MM-DDTHH:mm:ssXXX',
-                },
-                end: {
-                    timeAdjust: '23:59:00',
-                    type: 'string',
-                    mask: 'YYYY-MM-DDTHH:mm:ssXXX',
-                },
-            },
-            /*calendar*/
             oil_factDayPercent: "",
             oil_dlv_factDayPercent: "",
             gas_factDayPercent: "",
@@ -115,178 +62,34 @@ export default {
             oil_dlv_factDayProgressBar: "",
             oil_factDayProgressBar: "",
             gas_factDayProgressBar: "",
-            selectedDate: "",
-            tableHover1: "",
-            tableHover2: "",
-            tableHover3: "",
-            tableHover4: "",
-            tableHover5: "",
-            tableHover6: "",
-            Table1: "display:block;",
-            Table2: "display:none;",
-            Table3: "display:none;",
-            Table4: "display:none;",
-            Table5: "display:none;",
-            Table6: "display:none;",
-            Table7: "display:none;",
-            //oil and currency down
-            currencyNow: "",
-            currencyChartData: "",
-            currencyNowUsd: "",
-            selectedUsdPeriod: 0,
-            selectedDMY: 0,
-            periodSelectOil: "",
-            oilPeriod: 7,
-            usdPeriod: 7,
-            defaultOilPeriod: 7,
-            period: 0,
-            timeSelect: "",
-            prices: {
-                'oil': {},
-                'usd': {}
-            },
-            oilChart: "",
-            //oil and currency up
             index: "",
             widthProgress: "90",
-            DMY: this.trans("visualcenter.day"),
-            tables: "",
-            showTable2: "Yes",
-            displayChart: "display: none;",
-            showTableOn: "",
-            buttonNormalTab: "",
-            highlightedButton: "button-tab-highlighted",
-            oilProductionButton: "",
-            oilDeliveryButton: "",
-            gasProductionButton: "",
-            condensateProductionButton: "",
-            waterInjectionButton: "",
-            buttonDailyTab: "button-tab-highlighted",
-            buttonMonthlyTab: "",
-            buttonYearlyTab: "",
-            buttonPeriodTab: "",
-            buttonHoverProdInnerWells: "",
-
-            tableHover7: "",
-            tableHover8: "",
-            tableHover9: "",
-            tableHover10: "",
-            tableHover11: "",
-            tableHover12: "",
-
-            month: new Date().getMonth() + 1,
-            year: new Date().getFullYear(),
-            currentMonth: [],
-            ChartTable: "График",
-            date2: new Date().toLocaleString("ru", {
-                hour: "numeric",
-                minute: "numeric",
-            }),
-
-            date3: new Date().toLocaleString("ru", {
-                weekday: "long",
-            }),
-            dFirstMonth: "0",
-            day: ["Mn", "Tu", "We", "Th", "Fr", "Sa", "Su"],
-            monthes: [
-                "ЯНВАРЬ",
-                "ФЕВРАЛЬ",
-                "МАРТ",
-                "АПРЕЛЬ",
-                "МАЙ",
-                "ИЮНЬ",
-                "ИЮЛЬ",
-                "АВГУСТ",
-                "СЕНТЯБРЬ",
-                "ОКТЯБРЬ",
-                "НОЯБРЬ",
-                "ДЕКАБРЬ",
-            ],
-            monthes3: [
-                "",
-                "январь",
-                "февраль",
-                "март",
-                "апрель",
-                "май",
-                "июнь",
-                "июль",
-                "август",
-                "сентябрь",
-                "октябрь",
-                "ноябрь",
-                "декабрь",
-            ],
-            monthes2: [
-                "Jan",
-                "Feb",
-                "Mar",
-                "Apr",
-                "May",
-                "Jun",
-                "Jul",
-                "Aug",
-                "Sep",
-                "Oct",
-                "Nov",
-                "Dec",
-            ],
-
             NameDzoFull: {
                 0: "Всего добыча нефти с учётом доли участия АО НК КазМунайГаз",
                 1: "(конденсат)(100%)",
                 2: "в т.ч.:газовый конденсат",
                 3: 'АО ПетроКазахстан Инк',
                 'ОМГ': this.trans("visualcenter.omg"),
-                // 'АО "Озенмунайгаз"'
                 'ЭМГ': this.trans("visualcenter.emg"),
-                // 'АО "Эмбамунайгаз"',
                 'КБМ': this.trans("visualcenter.kbm"),
-                // 'АО "Каражанбасмунай"',
                 'КГМ': this.trans("visualcenter.kgm"),
-                // 'ТОО "Казгермунай"',
                 'ТШ': this.trans("visualcenter.tsho"),
-                // "ТОО «Тенгизшевройл»",
                 'ТШО': this.trans("visualcenter.tsho"),
-                // "ТОО «Тенгизшевройл»",
                 'ММГ': this.trans("visualcenter.mmg"),
-                // 'АО "Мангистаумунайгаз"',
                 'КТМ': this.trans("visualcenter.ktm"),
-                // 'ТОО "Казахтуркмунай"',
                 'КОА': this.trans("visualcenter.koa"),
-                // 'ТОО "Казахойл Актобе"',
                 'ПКИ': this.trans("visualcenter.pki"),
-                // '"ПетроКазахстан Инк."',
                 'АМГ': this.trans("visualcenter.ag"),
-                // '"Амангельды Газ"',
                 'АГ': this.trans("visualcenter.ag"),
-                // '"Амангельды Газ"',
                 'КПО': this.trans("visualcenter.kpo"),
-                // "«Карачаганак Петролеум Оперейтинг б.в.»",
                 'НКО': this.trans("visualcenter.nko"),
-                // "«Норт Каспиан Оперейтинг Компани н.в.»",
                 'ТП': this.trans("visualcenter.tp"),
-                // 'АО "Тургай-Петролеум"',
                 'УО': this.trans("visualcenter.uo"),
-                // 'Урихтау Оперейтинг',
                 'ПКК': this.trans("visualcenter.pkk"),
-                // 'АО ПетроКазахстан Кумколь Ресорсиз',
             },
-            date: new Date(),
-            selectedDay: undefined,
-            selectedMonth: undefined,
-            selectedYear: undefined,
-            selectedPeriod: 0,
-
-            wells: [""],
-            wells2: [""],
             bigTable: [],
-            displayTable: "display:  none;",
-            displayHeadTables: "display: block;",
             starts: [""],
-            test: [""],
             series: ["", ""],
-            display: "none",
             factYearSumm: "",
             planYearSumm: "",
             planMonthSumm: "",
@@ -295,110 +98,7 @@ export default {
             planDaySumm: "",
             timestampToday: "",
             timestampEnd: "",
-            dailyCurrencyChangeUsd: 0,
-            dailyCurrencyChangeIndexUsd: '',
-            dailyOilPriceChange: '',
             isPricesChartLoading: false,
-            currencyTimeSelect: new Date().toLocaleDateString(),
-            currentDzoList: 'daily',
-            dzoColumns: {
-                daily: ['companyName', 'plan', 'fact', 'difference', 'percent'],
-                monthly: ['companyName', 'monthlyPlan', 'plan', 'fact', 'difference', 'percent'],
-                yearly: ['companyName', 'yearlyPlan', 'plan', 'fact', 'difference', 'percent'],
-            },
-            buttonDzoDropdown: "",
-            isDzoCompaniesListSelectorOpened: false,
-            isMultipleDzoCompaniesSelected: true,
-            dzoCompaniesSummaryForChart: {},
-            assetTitleMapping: {
-                isOperating: this.trans("visualcenter.summaryOperatingAssets"),
-                isNonOperating: this.trans("visualcenter.summaryNonOperatingAssets"),
-                isAllAssets: this.trans("visualcenter.summaryAssets"),
-                opecRestriction: this.trans("visualcenter.opek"),
-                kmgParticipation: this.trans("visualcenter.dolyaUchast"),
-                isRegion: this.trans("visualcenter.summaryByRegion"),
-            },
-            kmgParticipationPercent: {
-                'АО "Каражанбасмунай"': 0.5,
-                'ТОО "Казгермунай"': 0.5,
-                'АО ПетроКазахстан Кумколь Ресорсиз': 0.33,
-                'ПетроКазахстан Инк.': 0.33,
-                'АО "Тургай-Петролеум"': 0.5 * 0.33,
-                "ТОО «Тенгизшевройл»": 0.2,
-                'АО "Мангистаумунайгаз"': 0.5,
-                'ТОО "Казахойл Актобе"': 0.5,
-                "«Карачаганак Петролеум Оперейтинг б.в.»": 0.1,
-                "«Норт Каспиан Оперейтинг Компани н.в.»": 0.1688
-            },
-            wellStockIdleButtons: {
-                isProductionIdleButtonActive: false,
-                isInjectionIdleButtonActive: false,
-            },
-            fondNamesByDBFields: {
-                'fond_neftedob_df': 'operatingFond',
-                'fond_neftedob_bd': 'nonOperatingFond',
-                'fond_neftedob_osvoenie': 'masteringFond',
-                'fond_neftedob_ofls': 'liquidationFond',
-                'fond_neftedob_konv': 'conservationFond',
-                'fond_neftedob_prs': 'undergroundRepairFond',
-                'fond_neftedob_oprs': 'waitingUndergroundRepairFond',
-                'fond_neftedob_krs': 'overhaulFond',
-                'fond_neftedob_okrs': 'waitingOverhaulFond',
-                'fond_neftedob_well_survey': 'researchFond',
-                'fond_neftedob_others': 'othersFond',
-                'fond_neftedob_ef': 'exploitationFond',
-                'fond_nagnetat_df': 'operatingFond',
-                'fond_nagnetat_bd': 'nonOperatingFond',
-                'fond_nagnetat_osvoenie': 'masteringFond',
-                'fond_nagnetat_ofls': 'liquidationFond',
-                'fond_nagnetat_konv': 'conservationFond',
-                'fond_nagnetat_prs': 'undergroundRepairFond',
-                'fond_nagnetat_oprs': 'waitingUndergroundRepairFond',
-                'fond_nagnetat_krs': 'overhaulFond',
-                'fond_nagnetat_okrs': 'waitingOverhaulFond',
-                'fond_nagnetat_well_survey': 'researchFond',
-                'fond_nagnetat_others': 'othersFond',
-                'fond_nagnetat_ef': 'exploitationFond',
-            },
-            productionFonds: [
-                'fond_neftedob_ef',
-                'fond_neftedob_df',
-                'fond_neftedob_bd',
-                'fond_neftedob_osvoenie',
-                'fond_neftedob_ofls',
-                'fond_neftedob_prs',
-                'fond_neftedob_oprs',
-                'fond_neftedob_krs',
-                'fond_neftedob_okrs',
-                'fond_neftedob_well_survey',
-                'fond_neftedob_nrs',
-                'fond_neftedob_others'
-            ],
-            injectionFonds: [
-                'fond_nagnetat_ef',
-                'fond_nagnetat_df',
-                'fond_nagnetat_bd',
-                'fond_nagnetat_osvoenie',
-                'fond_nagnetat_ofls',
-                'fond_nagnetat_konv',
-                'fond_nagnetat_prs',
-                'fond_nagnetat_oprs',
-                'fond_nagnetat_krs',
-                'fond_nagnetat_okrs',
-                'fond_nagnetat_well_survey',
-                'fond_nagnetat_others'
-            ],
-            opecFieldNameForChart: '',
-            injectionWellsOptions: [
-                {ticker: 'all', name: this.trans("visualcenter.allCompany")},
-                {ticker: 'ОМГ', name: this.trans("visualcenter.omg")},
-                {ticker: 'ММГ', name: this.trans("visualcenter.mmg")},
-                {ticker: 'КГМ', name: this.trans("visualcenter.kgm")},
-                {ticker: 'КОА', name: this.trans("visualcenter.koa")},
-                {ticker: 'КГМ', name: this.trans("visualcenter.kgm")},
-                {ticker: 'КБМ', name: this.trans("visualcenter.kbm")},
-                {ticker: 'ЭМГ', name: this.trans("visualcenter.emg")},
-            ],
             chartHeadName: this.trans("visualcenter.getoil"),
             chartSecondaryName: this.trans('visualcenter.getoil'),
             planFieldName: "oil_plan",
@@ -421,327 +121,6 @@ export default {
           });
         },
 
-        getDzoColumnsClass(rowIndex, columnName) {
-            if (this.getColumnIndex(columnName) % 2 === 0) {
-                return this.getDarkColorClass(rowIndex);
-            } else {
-                return this.getLightColorClass(rowIndex);
-            }
-        },
-
-        getColumnIndex(columnName) {
-            return this.dzoColumns[this.currentDzoList].indexOf(columnName);
-        },
-
-        getDarkColorClass(rowIndex) {
-            if (rowIndex % 2 === 0) {
-                return 'tdStyle'
-            } else {
-                return 'tdNone'
-            }
-        },
-
-        getLightColorClass(rowIndex) {
-            if (rowIndex % 2 === 0) {
-                return 'tdStyleLight'
-            } else {
-                return 'tdStyleLight2'
-            }
-        },
-
-        getDarkerClass(rowIndex) {
-            if (rowIndex % 2 === 0) {
-                return 'tdStyle3'
-            } else {
-                return 'tdNone'
-            }
-        },
-
-        getLighterClass(rowIndex) {
-            if (rowIndex % 2 === 0) {
-                return 'tdStyleLight3'
-            } else {
-                return 'tdStyleLight2'
-            }
-        },
-
-        changeTable(change) {
-            this.company = "all";
-            this.Table1 = "display:none";
-            this.Table2 = "display:none";
-            this.Table3 = "display:none";
-            this.Table4 = "display:none";
-            this.Table5 = "display:none";
-            this.Table6 = "display:none";
-            this.Table7 = "display:none";
-
-            this.tableHover1 = "";
-            this.tableHover2 = "";
-            this.tableHover3 = "";
-            this.tableHover4 = "";
-            this.tableHover5 = "";
-            this.tableHover6 = "";
-            this.tableHover7 = "";
-            var buttonHover2 = " background: #0d2792";
-
-            if (change == "1") {
-                this.Table1 = "display:block";
-                this.tableHover1 = buttonHover2;
-                this.changeMenu2(1);
-            } else if (change == "2") {
-                this.Table2 = "display:block";
-                this.tableHover2 = buttonHover2;
-            } else if (change == "3") {
-                this.Table3 = "display:block";
-                this.tableHover3 = buttonHover2;
-            } else if (change == "4") {
-                this.Table4 = "display:block";
-                this.tableHover4 = buttonHover2;
-            } else if (change == "5") {
-                this.Table5 = "display:block";
-                this.tableHover5 = buttonHover2;
-            } else if (change == "6") {
-                this.Table6 = "display:block";
-                this.tableHover6 = buttonHover2;
-            } else if (change == "7") {
-                this.Table7 = "display:block";
-                this.tableHover7 = buttonHover2;
-
-                let periodStart = moment().startOf('month').format();
-                let periodEnd = moment().subtract(1, "days").endOf('day').format();
-                if (periodStart > periodEnd) {
-                    periodStart = this.getPreviousWorkday();
-                }
-                this.range = {
-                    start: periodStart,
-                    end: periodEnd,
-                    formatInput: true,
-                };
-                this.changeDate();
-            }
-            this.updateProductionData(this.planFieldName, this.factFieldName, this.chartHeadName, this.metricName, this.chartSecondaryName);
-        },
-
-        getMainMenuButtonFlag(parentButton, childButton) {
-            if (!this.mainMenuButtonElementOptions[parentButton]) {
-                return this.flagOff;
-            }
-            let buttonOptions = this.mainMenuButtonElementOptions[parentButton].childItems[childButton];
-            return this[buttonOptions.flag];
-        },
-
-        dayClicked() {
-            this.changeMenu2('4');
-        },
-
-        changeMenu2(change) {
-            if (change === 1) {
-                this.currentDzoList = 'daily';
-                this.buttonDailyTab = this.highlightedButton;
-                this.range = {
-                    start: moment().startOf('day').subtract(1, "days").format(),
-                    end: moment().endOf('day').subtract(1, "days").format(),
-                    formatInput: true,
-                };
-                this.changeDate();
-                this.calculateDzoCompaniesSummary();
-            } else {
-                this.buttonDailyTab = "";
-            }
-
-            if (change === 2) {
-                this.buttonMonthlyTab = this.highlightedButton;
-                this.currentDzoList = 'monthly';
-                let periodStart = moment().startOf('month').format();
-                let periodEnd = moment().subtract(1, "days").endOf('day').format();
-                if (periodStart > periodEnd) {
-                    periodStart = this.getPreviousWorkday();
-                }
-                this.range = {
-                    start: periodStart,
-                    end: periodEnd,
-                    formatInput: true,
-                };
-
-                this.changeDate();
-            } else {
-                this.buttonMonthlyTab = "";
-            }
-
-            if (change === 3) {
-                this.buttonYearlyTab = this.highlightedButton;
-                this.currentDzoList = 'yearly';
-                this.range = {
-                    start: moment().startOf('year').format(),
-                    end: moment().endOf('day').format(),
-                    formatInput: true,
-                };
-                this.changeDate();
-            } else {
-                this.buttonYearlyTab = "";
-            }
-
-            if (change === 4) {
-                this.buttonPeriodTab = this.highlightedButton;
-            } else {
-                this.buttonPeriodTab = "";
-            }
-        },
-
-        periodSelect() {
-            if (this.period === 0) {
-                return this.$moment(new Date()).diff(this.$moment(new Date()).subtract(7, 'days'), 'days') + 1;
-            }
-            if (this.period === 1) {
-                return this.$moment(new Date()).diff(this.$moment(new Date()).subtract(1, 'months'), 'days') + 1;
-            }
-            if (this.period === 2) {
-                return this.$moment(new Date()).diff(this.$moment(new Date()).subtract(3, 'months'), 'days') + 1;
-            }
-            if (this.period === 3) {
-                return this.$moment(new Date()).diff(this.$moment(new Date()).subtract(1, 'years'), 'days') + 1;
-            }
-            if (this.period === 4) {
-                return null;
-            }
-        },
-
-        getCurrencyNow(dates) {
-
-
-            let uri = this.localeUrl("/getcurrency?fdate=") + dates + "";
-
-            this.axios.get(uri).then((response) => {
-                let data = response.data;
-
-
-                if (data) {
-                    this.currencyNow = parseInt(data.description * 10) / 10;
-                    this.currencyNowUsd = parseInt(data.description * 10) / 10;
-                    this.dailyCurrencyChangeUsd = Math.abs(parseFloat(data.change));
-                    this.dailyCurrencyChangeIndexUsd = data.index;
-                } else {
-                    console.log("No data");
-                }
-            });
-        },
-
-        updateCurrentOilPrices(period) {
-            this.isPricesChartLoading = true;
-            this.oilPeriod = period;
-            this.usdPeriod = period;
-            let uri = this.localeUrl("/get-oil-rates");
-            this.setDataAndChart(uri, 'oil');
-            this.isPricesChartLoading = false;
-        },
-
-        setDataAndChart(uri, type) {
-            let ratesData;
-            this.axios.get(uri).then((response) => {
-                let data = response.data;
-                if (!data) {
-                    console.log("No data");
-                    return;
-                }
-                ratesData = this.getRatesData(data, ratesData);
-                this.setQuotes(type, ratesData.for_chart);
-                if (type === 'oil') {
-                    this.setOilPlacements(ratesData);
-                } else {
-                    this.setUsdPlacements(ratesData);
-                }
-            });
-        },
-
-        getRatesData(data, ratesData) {
-            ratesData = {
-                for_chart: [],
-                for_table: []
-            };
-            let previousPrice = 0.00;
-            let self = this;
-            _.forEach(data, function (item) {
-                let currentPrice = parseFloat(item['value']);
-                let changeValue = ((currentPrice - previousPrice) / previousPrice * 100).toFixed(2);
-                self.pushRatesData(item, changeValue, ratesData);
-                self.pushRatesChart(item, ratesData);
-                previousPrice = currentPrice;
-            });
-            return ratesData;
-        },
-
-        pushRatesData(item, changeValue, ratesData) {
-            ratesData.for_table.push({
-                date_string: this.$moment(item['date']).format('DD.MM.YYYY'),
-                value: parseFloat(item['value']),
-                change: Math.abs(changeValue),
-                index: changeValue > 0 ? 'UP' : 'DOWN'
-            });
-        },
-
-        pushRatesChart(item, ratesData) {
-            ratesData.for_chart.push([
-                new Date(item['date']).getTime(),
-                parseFloat(item['value']),
-            ]);
-        },
-
-        getSortedQuotesData(chartData) {
-            return _.orderBy(
-                chartData,
-                [0],
-                ["desc"]
-            );
-        },
-
-        setQuotes(type, chartData) {
-            let sortedData = this.getSortedQuotesData(chartData);
-            this.setPrices(type, 'current', sortedData[0][1]);
-            this.setPrices(type, 'previous', sortedData[1][1]);
-            this.setPrices(type, 'previousFetchDate', sortedData[1][0]);
-        },
-
-        setPrices(type, pricesKey, value) {
-            this.prices[type][pricesKey] = value;
-        },
-
-        updatePrices(period) {
-            this.updateCurrentUsdPrices(period);
-            this.updateCurrentOilPrices(period);
-        },
-
-        updateCurrentUsdPrices(period) {
-            this.isPricesChartLoading = true;
-            this.usdPeriod = period;
-            let uri = this.localeUrl("/get-usd-rates");
-            this.setDataAndChart(uri, 'usd');
-            this.isPricesChartLoading = false;
-        },
-
-        getColor2(i) {
-            if (i < 0) return "arrow";
-            if (i > 0) return "arrow2";
-        },
-
-
-        menuDMY() {
-            var DMY = ["День", "Месяц", "Год"];
-            var menuDMY = [];
-            var id = 0;
-            for (let i = 0; i <= 2; i++) {
-                var a = {index: i, id: i};
-                a.DMY = DMY[i];
-                menuDMY.push(a);
-                if (this.selectedPeriod == i) {
-                    a.current = "#1D70B7";
-                    this.DMY = menuDMY[i]["DMY"];
-                }
-            }
-
-            localStorage.setItem("selectedPeriod", this.selectedPeriod);
-            return menuDMY;
-        },
-
         getProductionOilandGas(data) {
             if (data) {
                 var timestampToday = this.timestampToday;
@@ -756,7 +135,7 @@ export default {
                         _.inRange(
                             item.__time,
                             timestampToday,
-                            timestampEnd + 10// 86400000
+                            timestampEnd + 10
                         ),
                     ]);
                 });
@@ -765,7 +144,6 @@ export default {
                 this.quantityGetProductionOilandGas = quantityGetProductionOilandGas;
 
 
-                //Summ plan and fact from dzo
                 var SummFromRange = _(dataWithMay)
                     .groupBy("dzo")
                     .map((dzo, id) => ({
@@ -866,6 +244,7 @@ export default {
 
             }
         },
+
         getProductionOilandGasPercent(data) {
             if (data) {
                 var timestampToday = this.timestampToday;
@@ -889,7 +268,7 @@ export default {
                 });
                 this.lastDate1 = new Date(timestampToday - quantityRange * 86400000).toLocaleDateString();
                 this.lastDate2 = new Date(timestampToday - 86400000).toLocaleDateString();
-                //Summ plan and fact from dzo
+
                 var SummFromRange = _(dataWithMay)
                     .groupBy("dzo")
                     .map((dzo, id) => ({
@@ -956,19 +335,6 @@ export default {
                 this.gas_factDayPercent = gas_factSumm;
                 this.oil_dlv_factDayPercent = oil_dlv_factSumm;
 
-            }
-        },
-
-        changeOilProductionFilters() {
-            if (this.isOpecFilterActive) {
-                this.planFieldName = 'oil_opek_plan';
-                this.opec = this.trans("visualcenter.dzoOpec");
-                this.opecFieldNameForChart = 'oil_plan';
-                this.chartSecondaryName = this.trans("visualcenter.getoil");
-            } else {
-                this.opec = this.trans("visualcenter.utv");
-                this.planFieldName = 'oil_plan';
-                this.dzoCompaniesAssets['isOpecRestriction'] = false;
             }
         },
 
@@ -1040,7 +406,6 @@ export default {
             var arrdata = new Array();
             arrdata = _.filter(data, _.iteratee({dzo: this.company}));
 
-            //get data by Month
             var dataWithMay = new Array();
             dataWithMay = _.filter(arrdata, function (item) {
                 return _.every([
@@ -1130,16 +495,6 @@ export default {
                 this.noData = "";
             }
             this.tables = summForTables;
-        },
-
-        calculateKmgParticipationFilter(planAndFactSummary, dzoFieldName,factFieldName,planFieldName) {
-            return planAndFactSummary.map(item => {
-                if (typeof this.kmgParticipationPercent[this.getNameDzoFull(item[dzoFieldName])] !== 'undefined') {
-                    item[factFieldName] = item[factFieldName] * this.kmgParticipationPercent[this.getNameDzoFull(item[dzoFieldName])]
-                    item[planFieldName] = item[planFieldName] * this.kmgParticipationPercent[this.getNameDzoFull(item[dzoFieldName])]
-                }
-                return item;
-            });
         },
 
         processDataForAllCompanies(data, timestampToday, timestampEnd, start, end, planFieldName, factFieldName, chartSecondaryName) {
@@ -1243,9 +598,8 @@ export default {
             dataDay = _.filter(data, function (item) {
                 return _.every([
                     _.inRange(
-                        //item.dateSimple,
                         item.__time,
-                        timestampEnd - 86400000,// * Number(period),
+                        timestampEnd - 86400000,
                         timestampEnd
                     ),
                 ]);
@@ -1291,7 +645,6 @@ export default {
             var factMonth = [];
             var planMonth = [];
 
-            //delete after paste data for dzo
 
             if (this.dzoCompaniesAssets['isOperating']) {
                 productionPlanAndFactMonth = _.reject(productionPlanAndFactMonth, _.iteratee({dzo: "ТШО"}));
@@ -1524,25 +877,6 @@ export default {
             return data;
         },
 
-        addOpecToDzoSummary(inputData, mainTableData) {
-            let opecData = _.cloneDeep(this.opecData);
-            let self = this;
-            if (this.buttonMonthlyTab) {
-                opecData = this.getOpecMonth(inputData);
-            }
-
-            opecData = _.orderBy(
-                opecData,
-                ["dzoMonth"],
-                ["asc"]
-            );
-            _.forEach(opecData, function(dzoOpec, i) {
-                let opecDzoName = dzoOpec.dzoMonth;
-                let opecDzoPeriodPlan = dzoOpec.periodPlan;
-                self.addPeriodPlanData(mainTableData, opecDzoName, opecDzoPeriodPlan);
-            });
-        },
-
         addPeriodPlanData(mainTableData, opecDzoName, opecDzoPeriodPlan) {
             _.forEach(mainTableData, function (parentDzo) {
                 if (parentDzo.dzoMonth === opecDzoName) {
@@ -1585,347 +919,6 @@ export default {
             })
         },
 
-        exportDzoCompaniesSummaryForChart() {
-            this.$store.commit('globalloading/SET_LOADING', false);
-            this.$emit("data", {
-                dzoCompaniesSummaryForChart: this.dzoCompaniesSummaryForChart,
-                opec: this.opec,
-            });
-        },
-
-        filterDzoInputForSeparateCompany(data, company) {
-            return _.filter(data, function (item) {
-                return (item.dzo === company);
-            })
-        },
-
-        getProductionPercentCovid(data) {
-            var timestampToday = this.timestampToday;
-            var timestampEnd = this.timestampEnd;
-            var quantityRange = this.quantityRange;
-
-            var dataWithMay = new Array();
-            dataWithMay = _.filter(data, function (item) {
-                return _.every([
-                    _.inRange(
-                        item.__time,
-                        timestampToday - quantityRange * 86400000,
-                        (timestampToday - (quantityRange * 86400000)) + 86400000
-                    ),
-                ]);
-            });
-
-
-            this.covidPercent = _.reduce(
-                dataWithMay,
-                function (memo, item) {
-                    return memo + item['tb_covid_total'];
-                },
-                0
-            );
-        },
-
-
-        getProductionPercentWells(data) {
-            let inj_wells_idle = [];
-            let inj_wells_work = [];
-            let prod_wells_work = [];
-            let prod_wells_idle = [];
-            let timestampToday = this.timestampToday;
-            let timestampEnd = this.timestampEnd;
-            let quantityRange = this.quantityRange;
-
-            let dataWithMay = new Array();
-            dataWithMay = _.filter(data, function (item) {
-                return _.every([
-                    _.inRange(
-                        item.__time,
-                        timestampToday - quantityRange * 86400000,
-                        timestampToday
-                    ),
-                ]);
-            });
-
-            let productionPlanAndFactMonthWells = _(dataWithMay)
-                .groupBy("data")
-                .map((__time, id) => ({
-                    __time: id,
-                    inj_wells_idle: (_.sumBy(__time, 'inj_wells_idle')) / this.quantityRange,
-                    inj_wells_work: (_.sumBy(__time, 'inj_wells_work')) / this.quantityRange,
-                    prod_wells_work: (_.sumBy(__time, 'prod_wells_work')) / this.quantityRange,
-                    prod_wells_idle: (_.sumBy(__time, 'prod_wells_idle')) / this.quantityRange,
-                }))
-                .value();
-
-            this.inj_wells_idlePercent = productionPlanAndFactMonthWells[0]['inj_wells_idle'];
-            this.inj_wells_workPercent = productionPlanAndFactMonthWells[0]['inj_wells_work'];
-            this.prod_wells_workPercent = productionPlanAndFactMonthWells[0]['prod_wells_work'];
-            this.prod_wells_idlePercent = productionPlanAndFactMonthWells[0]['prod_wells_idle'];
-        },
-
-
-        getProductionPercent(data) {
-            var timestampToday = this.timestampToday;
-            var timestampEnd = this.timestampEnd
-            var quantityRange = this.quantityRange;
-
-
-            var productionPlan = this.planFieldName;
-            var productionFact = this.factFieldName;
-
-
-            var dataWithMay = new Array();
-            dataWithMay = _.filter(data, function (item) {
-                return _.every([
-                    _.inRange(
-                        item.__time,
-                        timestampToday - quantityRange * 86400000,
-                        timestampToday
-                    ),
-                ]);
-
-            });
-
-
-            return _(dataWithMay)
-                .groupBy("dzo")
-                .map((dzo, id) => ({
-                    dzoPercent: id,
-                    productionFactPercent: _.round(_.sumBy(dzo, productionFact), 0),
-                    productionPlanPercent: _.round(_.sumBy(dzo, productionPlan), 0),
-                }))
-                .value();
-        },
-
-        changeButton(showTableItem, changeButton) {
-            var a;
-            if (changeButton == "Yes") {
-                if (showTableItem == "Yes") {
-                    a = "No";
-                } else {
-                    a = "Yes";
-                }
-                this.showTable2 = a;
-                localStorage.setItem("changeButton", a);
-            }
-            this.showTable(localStorage.getItem("changeButton"));
-        },
-
-        showTable(showTableItem, changeButton) {
-            var showTableOn =
-                " border: none;" +
-                "color: white;" +
-                "background: url(../img/level1/button-on.png) no-repeat;" +
-                "background-size: 16% auto;" +
-                "background-position: 80% 50%;" +
-                "outline: none;";
-
-            if (showTableItem == "Yes") {
-                this.ChartTable = "График";
-                this.displayChart = "display:none;";
-
-                if (this.company == "all") {
-                    this.displayTable = "display:none;";
-                } else {
-                    this.displayTable = "d-flex;";
-                    this.displayHeadTables = "display: none";
-                }
-                this.showTableOn = "";
-            } else if (showTableItem == "No") {
-                this.displayTable = "display:none;";
-                this.displayChart = "display:block;";
-                this.ChartTable = "Таблица";
-
-
-                this.showTableOn = showTableOn; //colour button
-            }
-        },
-
-        changeDate() {
-            this.selectedDay = 0;
-            this.timestampToday = new Date(this.range.start).getTime();
-            this.timestampEnd = new Date(this.range.end).getTime();
-            let differenceBetweenDates = this.timestampEnd - this.timestampToday;
-            this.quantityRange = Math.trunc((Math.abs(differenceBetweenDates) / 86400000) + 1);
-            let nowDate = new Date(this.range.start).toLocaleDateString();
-            let oldDate = new Date(this.range.end).toLocaleDateString();
-            this.timeSelect = nowDate;
-            this.timeSelectOld = oldDate;
-
-            this.updateProductionData(this.planFieldName, this.factFieldName, this.chartHeadName, this.metricName, this.chartSecondaryName);
-            this.getCurrencyNow(new Date().toLocaleDateString());
-            this.getAccidentTotal();
-            this.updatePrices(this.period);
-
-        },
-
-
-        calculateInjectionWellsData() {
-            this.wellStockIdleButtons.isInjectionIdleButtonActive = !this.wellStockIdleButtons.isInjectionIdleButtonActive;
-            this.updateProductionData(this.planFieldName, this.factFieldName, this.chartHeadName, this.metricName, this.chartSecondaryName);
-        },
-
-
-        WellsData(arr) {
-            var productionPlanAndFactMonthWells = _(arr)
-                .groupBy("data")
-                .map((__time, id) => ({
-                    __time: id,
-                    inj_wells_idle: (_.sumBy(__time, 'inj_wells_idle')) / this.quantityRange,
-                    inj_wells_work: (_.sumBy(__time, 'inj_wells_work')) / this.quantityRange,
-                    prod_wells_work: (_.sumBy(__time, 'prod_wells_work')) / this.quantityRange,
-                    prod_wells_idle: (_.sumBy(__time, 'prod_wells_idle')) / this.quantityRange,
-                }))
-                .value();
-            var productionPlanAndFactMonthWellsName = [];
-
-            this.inj_wells_idle = productionPlanAndFactMonthWells[0]['inj_wells_idle'];
-            this.inj_wells_work = productionPlanAndFactMonthWells[0]['inj_wells_work'];
-            this.prod_wells_work = productionPlanAndFactMonthWells[0]['prod_wells_work'];
-            this.prod_wells_idle = productionPlanAndFactMonthWells[0]['prod_wells_idle'];
-
-        },
-
-        getSummaryInjectionWellsForChart(inputData) {
-            let innerWells = _.groupBy(inputData, item => {
-                return moment(parseInt(item.__time)).format("YYYY-MM-DD");
-            });
-
-            let result = {};
-
-            if (typeof innerWells !== 'undefined') {
-                for (let i in innerWells) {
-                    result[i] = {
-                        fond_nagnetat_ef: _.round(_.sumBy(innerWells[i], 'fond_nagnetat_ef'), 0),
-                        fond_nagnetat_df: _.round(_.sumBy(innerWells[i], 'fond_nagnetat_df'), 0),
-                        fond_nagnetat_bd: _.round(_.sumBy(innerWells[i], 'fond_nagnetat_bd'), 0),
-                        fond_nagnetat_osvoenie: _.round(_.sumBy(innerWells[i], 'fond_nagnetat_osvoenie'), 0),
-                        fond_nagnetat_ofls: _.round(_.sumBy(innerWells[i], 'fond_nagnetat_ofls'), 0),
-                        fond_nagnetat_konv: _.round(_.sumBy(innerWells[i], 'fond_nagnetat_konv'), 0),
-                        fond_nagnetat_prs: _.round(_.sumBy(innerWells[i], 'fond_nagnetat_prs'), 0),
-                        fond_nagnetat_oprs: _.round(_.sumBy(innerWells[i], 'fond_nagnetat_oprs'), 0),
-                        fond_nagnetat_krs: _.round(_.sumBy(innerWells[i], 'fond_nagnetat_krs'), 0),
-                        fond_nagnetat_okrs: _.round(_.sumBy(innerWells[i], 'fond_nagnetat_okrs'), 0),
-                        fond_nagnetat_well_survey: _.round(_.sumBy(innerWells[i], 'fond_nagnetat_well_survey'), 0),
-                        fond_nagnetat_others: _.round(_.sumBy(innerWells[i], 'fond_nagnetat_others'), 0),
-                    }
-                }
-            }
-            return result;
-        },
-
-        innerWellsNagMetOnChange($event) {
-            this.company = $event.target.value;
-            this.updateProductionData(this.planFieldName, this.factFieldName, this.chartHeadName, this.metricName, this.chartSecondaryName);
-        },
-
-
-        calculateProductionWellsData() {
-            this.wellStockIdleButtons.isProductionIdleButtonActive = !this.wellStockIdleButtons.isProductionIdleButtonActive;
-            this.updateProductionData(this.planFieldName, this.factFieldName, this.chartHeadName, this.metricName, this.chartSecondaryName);
-        },
-
-        getSummaryWells(inputData, isIdleActive, fondsName) {
-            let self = this;
-            let fonds = _.cloneDeep(this[fondsName]);
-            let productionPlanAndFactMonthWells = _(inputData)
-                .groupBy("data")
-                .map((__time, id) => (this.$_getSummaryFonds(fonds,__time,id)))
-                .value();
-            let halfOfProductionFondsLength = Math.ceil(fonds.length / 2);
-            let productionFondsForIterations = [];
-            let productionFondsSummary = [];
-            if (!isIdleActive) {
-                productionFondsForIterations = fonds.splice(0,halfOfProductionFondsLength);
-            } else {
-                productionFondsForIterations = fonds.splice(halfOfProductionFondsLength,fonds.length);
-            }
-            _.forEach(productionFondsForIterations, function(fondName) {
-                let translationName = "visualcenter." + self.fondNamesByDBFields[fondName];
-                productionFondsSummary.push(
-                    {
-                        value: productionPlanAndFactMonthWells[0][fondName],
-                        name: self.trans(translationName),
-                        code: fondName
-                    }
-                );
-            });
-
-            return productionFondsSummary;
-        },
-
-        $_getSummaryFonds(fonds,time, id) {
-            let summaryWells = {__time: id};
-            let self = this;
-            _.forEach(fonds, function(fond) {
-                summaryWells[fond] = (_.sumBy(time, fond)) / self.quantityRange;
-            });
-            return summaryWells;
-        },
-
-        getSummaryProductionWellsForChart(inputData) {
-            let innerWells = _.groupBy(inputData, item => {
-                return moment(parseInt(item.__time)).format("YYYY-MM-DD")//.format('D')
-            });
-
-            let result = {}
-            if (typeof innerWells !== 'undefined') {
-                for (let i in innerWells) {
-                    result[i] = {
-                        fond_neftedob_ef: _.round(_.sumBy(innerWells[i], 'fond_neftedob_ef'), 0),
-                        fond_neftedob_df: _.round(_.sumBy(innerWells[i], 'fond_neftedob_df'), 0),
-                        fond_neftedob_bd: _.round(_.sumBy(innerWells[i], 'fond_neftedob_bd'), 0),
-                        fond_neftedob_osvoenie: _.round(_.sumBy(innerWells[i], 'fond_neftedob_osvoenie'), 0),
-                        fond_neftedob_ofls: _.round(_.sumBy(innerWells[i], 'fond_neftedob_ofls'), 0),
-                        fond_neftedob_prs: _.round(_.sumBy(innerWells[i], 'fond_neftedob_prs'), 0),
-                        fond_neftedob_oprs: _.round(_.sumBy(innerWells[i], 'fond_neftedob_oprs'), 0),
-                        fond_neftedob_krs: _.round(_.sumBy(innerWells[i], 'fond_neftedob_krs'), 0),
-                        fond_neftedob_okrs: _.round(_.sumBy(innerWells[i], 'fond_neftedob_okrs'), 0),
-                        fond_neftedob_well_survey: _.round(_.sumBy(innerWells[i], 'fond_neftedob_well_survey'), 0),
-                        fond_neftedob_nrs: _.round(_.sumBy(innerWells[i], 'fond_neftedob_nrs'), 0),
-                        fond_neftedob_others: _.round(_.sumBy(innerWells[i], 'fond_neftedob_others'), 0),
-                    }
-                }
-            }
-            return result;
-        },
-
-        innerWellsProdMetOnChange($event) {
-            this.company = $event.target.value;
-            this.updateProductionData(this.planFieldName, this.factFieldName, this.chartHeadName, this.metricName, this.chartSecondaryName);
-        },
-
-        getStaff() {
-            let uri = this.localeUrl("/visualcenter3GetDataStaff");
-            this.axios.get(uri).then((response) => {
-                let data = response.data;
-                if (data) {
-                    var staff = _(data)
-                        .groupBy("date")
-                        .map((date, id) => ({
-                            date: id,
-                            staff_number: _.round(_.sumBy(date, 'staff_number'), 0),
-
-                        }))
-                        .value();
-                    staff = _.orderBy(
-                        staff,
-                        ["date"],
-                        ["desc"]
-                    );
-                    this.staff = staff[0]['staff_number'];
-                    this.staffPercent = staff[1]['staff_number'];
-
-                    this.quarter1 = this.getQuarter(new Date(staff[0]['date']));
-                    this.quarter2 = this.getQuarter(new Date(staff[1]['date']));
-
-                } else {
-                    console.log('No data Personal')
-                }
-
-            });
-        },
-
         getProductionForChart(data) {
             let summary = data.filter(row => this.selectedDzoCompanies.includes(row.dzo));
             if (summary.length === 0) {
@@ -1961,20 +954,6 @@ export default {
             return dzoPlanFactDifference / daysCountInYear;
         },
 
-        getDzoFactSummary(summaryData) {
-            return _.sumBy(summaryData, 'productionFactForChart');
-        },
-
-        getFilteredDzoYearlyPlan() {
-            let dzoYearlyPlanData = _.cloneDeep(this.yearlyPlan);
-            let filteredPlanData = dzoYearlyPlanData.filter(row => this.selectedDzoCompanies.includes(row.dzo));
-            if (filteredPlanData.length === 0) {
-                filteredPlanData = dzoYearlyPlanData;
-            }
-
-          return filteredPlanData;
-        },
-
         getAccidentTotal() {
             let year = new Date(this.range.end).getFullYear();
             let uri = this.localeUrl("/visualcenter3GetDataAccident?") + "year=" + year + " ";
@@ -1992,79 +971,24 @@ export default {
                 }
             });
         },
-
-        getOpecDataForYear() {
-            let uri = this.localeUrl("/visualcenter3GetDataOpec");
-
-            this.axios.get(uri).then((response) => {
-                let data = response.data;
-                if (data) {
-
-                    //Summ plan dzo year
-                    let SummFromRange = _(data)
-                        .groupBy("dzo")
-                        .map((dzo, id) => ({
-                            dzoMonth: id,
-                            periodPlan: _.round(_.sumBy(dzo, 'oil_plan'), 0),
-                        }))
-
-                        .value();
-                    let opecDataSumm = _.reduce(
-                        SummFromRange,
-                        function (memo, item) {
-                            return memo + item.periodPlan;
-                        },
-                        0
-                    );
-
-                    this.opecData = SummFromRange;
-                    this.opecDataSumm = opecDataSumm;
-
-                } else {
-                    console.log('Not opec data');
-                }
-            });
-        },
-
-        getOpecMonth(data) {
-
-            let dataWithMay = _.filter(data, _.iteratee({date: (this.year + '-' + this.pad(this.month) + '-01' + ' 00:00:00')}));
-            if (dataWithMay.length === 0) {
-                let dateFormat = 'YYYY-MM-DD HH:mm:ss';
-                let lastWorkingDay = this.getPreviousWorkday();
-                let lastSynchronizeDay = moment(lastWorkingDay).startOf('day').add(1, "days").format(dateFormat);
-                dataWithMay = _.filter(data, _.iteratee({date: lastSynchronizeDay}));
-            }
-            let oil;
-            if (this.opec === "ОПЕК+") {
-                oil = 'oil_opek_plan';
-            } else {
-                oil = 'oil_plan';
-            }
-
-            let SummFromRange = _(dataWithMay)
-                .groupBy("dzo")
-                .map((dzo, id) => ({
-                    dzoMonth: id,
-                    periodPlan: (_.sumBy(dzo, oil)) * moment().daysInMonth(),
-                }))
-
-                .value();
-
-            let opecDataSumm = _.reduce(
-                SummFromRange,
-                function (memo, item) {
-                    return memo + item.periodPlan;
-                },
-                0
-            );
-
-            this.opecDataSummMonth = opecDataSumm;
-
-            return SummFromRange;
-        },
     },
-    mixins: [mainMenu,dzoCompanies,helpers,otm,chemistry,oilRates,usdRates],
+    mixins: [
+        mainMenuModule,
+        dzoCompaniesModule,
+        helpersModule,
+        otmModule,
+        chemistryModule,
+        oilRatesWidget,
+        usdRatesWidget,
+        injectionWellsModule,
+        productionWellsModule,
+        companyStaffModule,
+        tableManagementModule,
+        wellsModule,
+        ratesModule,
+        datesModule,
+        oilProductionFilters
+    ],
     async mounted() {
         this.dzoCompaniesAssets = _.cloneDeep(this.dzoCompaniesAssetsInitial);
         this.getOpecDataForYear();
@@ -2118,32 +1042,6 @@ export default {
         ]),
         exactDateSelected() {
             return ((this.factFieldName === 'oil_fact' || this.factFieldName === 'oil_div_fact') && this.oneDate === 1);
-        },
-
-        innerWellsNagDataForChart() {
-            let series = []
-            let labels = []
-            for (let i in this.innerWellsChartData) {
-                series.push(this.innerWellsSelectedRow ? this.innerWellsChartData[i][this.innerWellsSelectedRow] : this.innerWellsChartData[i]['fond_nagnetat_ef'])
-                labels.push(i)
-            }
-            return {
-                series: series,
-                labels: labels
-            }
-        },
-
-        innerWellsProd2DataForChart() {
-            let series = []
-            let labels = []
-            for (let i in this.innerWells2ChartData) {
-                series.push(this.innerWells2SelectedRow ? this.innerWells2ChartData[i][this.innerWells2SelectedRow] : this.innerWells2ChartData[i]['fond_neftedob_ef'])
-                labels.push(i)
-            }
-            return {
-                series: series,
-                labels: labels
-            }
         },
     },
 };

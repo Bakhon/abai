@@ -29,36 +29,28 @@ export default {
 
             result.push(
                 {
-                    name:
-                    // 'Деэмульгатор',
-                        this.trans("visualcenter.chem_prod_zakacka_demulg_fact"),
+                    name: this.trans("visualcenter.chem_prod_zakacka_demulg_fact"),
                     code: 'chem_prod_zakacka_demulg_fact',
                     plan: chemistryData[0]['chem_prod_zakacka_demulg_plan'],
                     fact: chemistryData[0]['chem_prod_zakacka_demulg_fact'],
                     metricSystem: this.trans("visualcenter.chemistryMetricTon"),
                 },
                 {
-                    name:
-                    // 'Бактерицид',
-                        this.trans("visualcenter.chem_prod_zakacka_bakteracid_fact"),
+                    name: this.trans("visualcenter.chem_prod_zakacka_bakteracid_fact"),
                     code: 'chem_prod_zakacka_bakteracid_fact',
                     plan: chemistryData[0]['chem_prod_zakacka_bakteracid_plan'],
                     fact: chemistryData[0]['chem_prod_zakacka_bakteracid_fact'],
                     metricSystem: this.trans("visualcenter.chemistryMetricTon"),
                 },
                 {
-                    name:
-                    // 'Ингибитор коррозии',
-                        this.trans("visualcenter.chem_prod_zakacka_ingibator_korrozin_fact"),
+                    name: this.trans("visualcenter.chem_prod_zakacka_ingibator_korrozin_fact"),
                     code: 'chem_prod_zakacka_ingibator_korrozin_fact',
                     plan: chemistryData[0]['chem_prod_zakacka_ingibator_korrozin_plan'],
                     fact: chemistryData[0]['chem_prod_zakacka_ingibator_korrozin_fact'],
                     metricSystem: this.trans("visualcenter.chemistryMetricTon"),
                 },
                 {
-                    name:
-                    // 'Ингибитор солеотложения',
-                        this.trans("visualcenter.chem_prod_zakacka_ingibator_soleotloj_fact"),
+                    name: this.trans("visualcenter.chem_prod_zakacka_ingibator_soleotloj_fact"),
                     code: 'chem_prod_zakacka_ingibator_soleotloj_fact',
                     plan: chemistryData[0]['chem_prod_zakacka_ingibator_soleotloj_plan'],
                     fact: chemistryData[0]['chem_prod_zakacka_ingibator_soleotloj_fact'],
@@ -71,7 +63,7 @@ export default {
 
         getChemistryChartData(arr) {
             let chemistryData = _.groupBy(arr, item => {
-                return moment(parseInt(item.__time)).format("YYYY-MM-DD")//.format('D')
+                return moment(parseInt(item.__time)).format("YYYY-MM-DD");
             })
 
             let result = {}

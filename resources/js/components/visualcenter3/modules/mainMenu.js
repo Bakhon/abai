@@ -8,6 +8,12 @@ export default {
             mainMenuButtonHighlighted: "color: #fff;background: #237deb;font-weight:bold;",
             isOpecFilterActive: false,
             isKmgParticipationFilterActive: false,
+            flagOn: '<svg width="15" height="19" viewBox="0 0 15 19" fill="none" xmlns="http://www.w3.org/2000/svg">\n' +
+                '<path fill-rule="evenodd" clip-rule="evenodd" d="M12.4791 0.469238H2.31923C1.20141 0.469238 0.297516 1.38392 0.297516 2.50136L0.287109 18.7576L7.39917 15.7094L14.5112 18.7576V2.50136C14.5112 1.38392 13.5969 0.469238 12.4791 0.469238Z" fill="#2E50E9"/>' +
+                '</svg>',
+            flagOff: '<svg width="15" height="19" viewBox="0 0 15 19" fill="none" xmlns="http://www.w3.org/2000/svg"> \n' +
+                '<path fill-rule="evenodd" clip-rule="evenodd" d="M12.8448 0.286987H2.68496C1.56713 0.286987 0.663191 1.20167 0.663191 2.31911L0.652832 18.5754L7.76489 15.5272L14.877 18.5754V2.31911C14.877 1.20167 13.9627 0.286987 12.8448 0.286987Z" fill="#656A8A"/>' +
+                '</svg>',
         };
     },
     methods: {
@@ -100,6 +106,14 @@ export default {
             } else {
                 return "";
             }
+        },
+
+        getMainMenuButtonFlag(parentButton, childButton) {
+            if (!this.mainMenuButtonElementOptions[parentButton]) {
+                return this.flagOff;
+            }
+            let buttonOptions = this.mainMenuButtonElementOptions[parentButton].childItems[childButton];
+            return this[buttonOptions.flag];
         },
     },
 }
