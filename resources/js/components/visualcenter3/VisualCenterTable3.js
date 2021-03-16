@@ -7,21 +7,21 @@ import {isString} from "lodash";
 import mainMenuConfiguration from './main_menu_configuration.json';
 import {dzoMapState, dzoMapActions} from '@store/helpers';
 
-import mainMenuModule from './modules/mainMenu';
-import dzoCompaniesModule from './modules/dzoCompanies';
-import helpersModule from './modules/helpers';
-import otmModule from './modules/otm';
-import chemistryModule from './modules/chemistry';
-import oilRatesWidget from './modules/oilRates';
-import usdRatesWidget from './modules/usdRates';
-import injectionWellsModule from './modules/injectionWells';
-import productionWellsModule from './modules/productionWells';
-import companyStaffModule from './modules/companyStaff';
-import tableManagementModule from './modules/tablesManagement';
-import wellsModule from './modules/wells';
-import ratesModule from './modules/rates';
-import datesModule from './modules/dates';
-import oilProductionFilters from './modules/oilProductionFilters';
+import mainMenu from './widgets/mainMenu';
+import сompaniesDzo from './data_managers/dzoCompanies';
+import helpers from './data_managers/helpers';
+import otm from './data_managers/otm';
+import chemistry from './data_managers/chemistry';
+import oilRates from './widgets/oilRates';
+import usdRates from './widgets/usdRates';
+import injectionWells from './widgets/injectionWells';
+import productionWells from './widgets/productionWells';
+import companyStaff from './widgets/companyStaff';
+import mainStatisticsTable from './widgets/mainStatisticsTable';
+import wells from './data_managers/wells';
+import rates from './data_managers/rates';
+import dates from './data_managers/dates';
+import oilProductionFilters from './data_managers/oilProductionFilters';
 
 
 Vue.component("calendar", Calendar);
@@ -973,20 +973,20 @@ export default {
         },
     },
     mixins: [
-        mainMenuModule,
-        dzoCompaniesModule,
-        helpersModule,
-        otmModule,
-        chemistryModule,
-        oilRatesWidget,
-        usdRatesWidget,
-        injectionWellsModule,
-        productionWellsModule,
-        companyStaffModule,
-        tableManagementModule,
-        wellsModule,
-        ratesModule,
-        datesModule,
+        mainMenu,
+        сompaniesDzo,
+        helpers,
+        otm,
+        chemistry,
+        oilRates,
+        usdRates,
+        injectionWells,
+        productionWells,
+        companyStaff,
+        mainStatisticsTable,
+        wells,
+        rates,
+        dates,
         oilProductionFilters
     ],
     async mounted() {

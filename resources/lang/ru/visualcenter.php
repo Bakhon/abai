@@ -261,6 +261,7 @@ return array (
   'waitingOverhaulFond' => 'Ожидание капитального ремонта скважин',
   'researchFond' => 'Исследование скважин',
   'othersFond' => 'Прочие',
+  'unprofitableFond' => 'Нерентабельные скважины',
   'exploitationFond' => 'Эксплуатационный фонд',
   'tonWithSpace' => ' тонн',
   'meterCubicWithSpace' => ' м³',

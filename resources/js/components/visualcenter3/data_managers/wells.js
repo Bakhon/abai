@@ -28,6 +28,7 @@ export default {
                 'fond_nagnetat_well_survey': 'researchFond',
                 'fond_nagnetat_others': 'othersFond',
                 'fond_nagnetat_ef': 'exploitationFond',
+                'fond_neftedob_nrs': 'unprofitableFond',
             },
         };
     },
@@ -94,8 +95,9 @@ export default {
             } else {
                 productionFondsForIterations = fonds.splice(halfOfProductionFondsLength,fonds.length);
             }
+            console.log(productionFondsForIterations)
             _.forEach(productionFondsForIterations, function(fondName) {
-                let translationName = "visualcenter." + self.fondNamesByDBFields[fondName];
+                let translationName = "visualcenter." + self.fondNamesByDBFields[fondName.trim()];
                 productionFondsSummary.push(
                     {
                         value: productionPlanAndFactMonthWells[0][fondName],
