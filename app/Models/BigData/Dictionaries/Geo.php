@@ -19,6 +19,11 @@ class Geo extends TBDModel
         return $this->hasMany(Geo::class, 'parent_id', 'id');
     }
 
+    public function wells()
+    {
+        return $this->belongsToMany(\App\Models\BigData\Well::class, 'tbdi.well_geo', 'geo_id', 'well_id');
+    }
+
 
     public function ancestors()
     {

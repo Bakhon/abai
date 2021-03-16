@@ -7,4 +7,7 @@ return array (
   'ata' => 'ата',
   'atm/km' => 'атм/км',
   'm/s' => 'm/s',
+  'percent' => '%',
+  'pressure_bar' => 'Бар',
+  'tonn' => 'Тонн',
 );

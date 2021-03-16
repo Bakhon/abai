@@ -7,10 +7,19 @@ use Illuminate\Database\Eloquent\Model;
 class Well extends Model
 {
     protected $guarded = ['id'];
+    protected $hidden = [
+        'created_at',
+        'updated_at'
+    ];
 
     public function zu()
     {
         return $this->belongsTo(Zu::class);
+    }
+
+    public function ngdu()
+    {
+        return $this->belongsTo(Ngdu::class);
     }
 
     public function omgngdu()

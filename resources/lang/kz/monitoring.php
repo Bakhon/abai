@@ -213,17 +213,17 @@ return array (
     'menu' => 'Құбырлар',
     'title' => 'Құбырлар дерекқоры',
     'create_title' => 'Құбырлар бойынша деректерді енгізу',
-    'edit_title' => 'Құбырлар бойынша түзетулерді енгізу',
     'fields' => 
     array (
-      'length' => 'Ұзындық',
-      'outside_diameter' => 'Сыртқы диаметр',
       'inner_diameter' => 'Ішкі диаметр',
-      'thickness' => 'Қабырға қалыңдығы',
-      'roughness' => 'Кедір-бұдырлық',
+      'length' => 'Ұзындық',
       'material' => 'Материал',
+      'outside_diameter' => 'Сыртқы диаметр',
       'plot' => 'Бөлшегі',
+      'roughness' => 'Кедір-бұдырлық',
+      'thickness' => 'Қабырға қалыңдығы',
     ),
+    'edit_title' => 'Құбырлар бойынша түзетулерді енгізу',
   ),
   'inhibitor' => 
   array (
