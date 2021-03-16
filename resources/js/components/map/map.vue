@@ -71,6 +71,7 @@ import mapWellForm from "./mapWellForm";
 import mapPipeForm from "./mapPipeForm";
 import {guMapState, guMapMutations, guMapActions} from '@store/helpers';
 import mapContextMenu from "./mapContextMenu";
+import pipeColors from '~/json/pipe_colors.json'
 import axios from "axios";
 
 
@@ -118,6 +119,7 @@ export default {
       firstCentered: false,
       layers: [],
       pipes: [],
+      mapColorsMode: 'default'
     };
   },
   created() {
@@ -318,7 +320,7 @@ export default {
           });
           return path_coords;
         },
-        getColor: d => this.getColorByBetweenPoints(d.between_points),
+        getColor: d => pipeColors[this.mapColorsMode][d.between_points],
         getWidth: d => 3,
         onClick: (info) => {
           info.type = 'pipe';
@@ -403,33 +405,6 @@ export default {
 
       let method = 'on' + option.type.charAt(0).toUpperCase() + option.type.slice(1);
       this[method](option);
-    },
-    getColorByBetweenPoints(between_points) {
-      switch (between_points) {
-        case 'well-zu':
-          return [0, 255, 0]
-          break;
-
-        case 'fl-zu':
-          return [0, 255, 0]
-          break;
-
-        case 'well-collector':
-          return [0, 255, 0]
-          break;
-
-        case 'gu':
-          return [255, 0, 0]
-          break;
-
-        case 'zu-gu':
-          return [255, 0, 0]
-          break;
-
-        default:
-          return [255, 255, 255, 0];
-          break;
-      }
     },
     colorToRGBArray(color) {
 
