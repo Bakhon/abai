@@ -343,6 +343,7 @@ export default {
                 isOperating: false,
                 isNonOperating: false,
                 isOpecRestriction: false,
+                isRegion: false,
                 assetTitle: this.trans("visualcenter.summaryAssets"),
             },
             dzoCompaniesAssets: {},
@@ -353,6 +354,7 @@ export default {
                 isAllAssets: this.trans("visualcenter.summaryAssets"),
                 opecRestriction: this.trans("visualcenter.opek"),
                 kmgParticipation: this.trans("visualcenter.dolyaUchast"),
+                isRegion: this.trans("visualcenter.summaryByRegion"),
             },
             kmgParticipationPercent: {
                 'АО "Каражанбасмунай"': 0.5,
@@ -443,6 +445,32 @@ export default {
                 changePercent: 0,
                 index: ''
             },
+            dzoRegionsMapping: {
+                aturay: {
+                    isActive: false,
+                    translationName: this.trans("visualcenter.dzoRegions.aturay"),
+                },
+                actubinsk: {
+                    isActive: false,
+                    translationName: this.trans("visualcenter.dzoRegions.actubinsk"),
+                },
+                kuzulord: {
+                    isActive: false,
+                    translationName: this.trans("visualcenter.dzoRegions.kuzulord"),
+                },
+                mangistau: {
+                    isActive: false,
+                    translationName: this.trans("visualcenter.dzoRegions.mangistau"),
+                },
+                west: {
+                    isActive: false,
+                    translationName: this.trans("visualcenter.dzoRegions.west"),
+                },
+                zhambul: {
+                    isActive: false,
+                    translationName: this.trans("visualcenter.dzoRegions.zhambul"),
+                },
+            },
         };
     },
     methods: {
@@ -477,6 +505,7 @@ export default {
             this.selectCompany('all');
             this.isMultipleDzoCompaniesSelected = true;
             this.dzoCompaniesAssets = _.cloneDeep(this.dzoCompaniesAssetsInitial);
+            this.disableDzoRegions();
             this.selectedDzoCompanies = this.getAllDzoCompanies();
             this.buttonDzoDropdown = "";
             _.map(this.dzoCompanies, function (company) {
@@ -504,6 +533,12 @@ export default {
             this.dzoCompaniesSummary = summary;
         },
 
+        disableDzoRegions() {
+          _.forEach(this.dzoRegionsMapping, function(region) {
+              _.set(region, 'isActive', false);
+          });
+        },
+
         selectOneDzoCompany(companyTicker) {
             this.disableDzoCompaniesVisibility();
             this.selectDzoCompany(companyTicker);
@@ -515,15 +550,16 @@ export default {
             });
         },
 
-        selectMultipleDzoCompanies(type) {
+        selectMultipleDzoCompanies(type,category,regionName) {
             this.selectCompany('all');
             this.dzoCompaniesAssets['isAllAssets'] = false;
             this.disableDzoCompaniesVisibility();
-            this.switchDzoCompaniesVisibility(type,'type');
+            this.switchDzoCompaniesVisibility(type,category,regionName);
             this.calculateDzoCompaniesSummary();
         },
 
         selectDzoCompany(companyTicker) {
+            this.disableDzoRegions();
             this.selectCompany(companyTicker);
             this.selectedDzoCompanies = [companyTicker];
             this.dzoCompaniesAssets['isAllAssets'] = false;
@@ -533,7 +569,10 @@ export default {
             this.calculateDzoCompaniesSummary();
         },
 
-        switchDzoCompaniesVisibility(condition,type) {
+        switchDzoCompaniesVisibility(condition,type,regionName) {
+            if (regionName) {
+                condition = regionName;
+            }
             _.map(this.dzoCompanies, function(company) {
                 if (company[type] === condition) {
                     company.selected = !company.selected;
@@ -767,11 +806,10 @@ export default {
             }
         },
 
-        changeAssets(type) {
+        changeAssets(type,category,regionName) {
             this.dzoCompaniesAssets[type] = true;
             this.dzoCompaniesAssets['isAllAssets'] = false;
             this.dzoCompaniesAssets['assetTitle'] = this.assetTitleMapping[type];
-
 
             if (type === "opecRestriction") {
                 this.isOpecFilterActive = !this.isOpecFilterActive;
@@ -779,10 +817,13 @@ export default {
                 this.chartSecondaryName = this.trans("visualcenter.dolyaUchast");
                 this.isKmgParticipationFilterActive = !this.isKmgParticipationFilterActive;
             } else {
+                if (regionName) {
+                    this.dzoRegionsMapping[regionName].isActive = true;
+                }
                 this.dzoCompaniesAssets = _.cloneDeep(this.dzoCompaniesAssetsInitial);
                 this.dzoCompaniesAssets[type] = true;
-                this.selectedDzoCompanies = this.getSelectedDzoCompanies(type);
-                this.selectMultipleDzoCompanies(type);
+                this.selectedDzoCompanies = this.getSelectedDzoCompanies(type,category,regionName);
+                this.selectMultipleDzoCompanies(type,category,regionName);
             }
         },
 
@@ -790,8 +831,12 @@ export default {
             return _.cloneDeep(dzoCompaniesInitial).map(company => company.ticker);
         },
 
-        getSelectedDzoCompanies(type) {
-            return _.cloneDeep(dzoCompaniesInitial).filter(company => company.type === type).map(company => company.ticker);
+        getSelectedDzoCompanies(type, category, regionName) {
+            if (regionName) {
+                category = regionName;
+            }
+            type = type.toLowerCase().replace('is','');
+            return _.cloneDeep(dzoCompaniesInitial).filter(company => company[type] === category).map(company => company.ticker);
         },
 
         periodSelect() {
@@ -1613,6 +1658,16 @@ export default {
                     return dzoToShow.indexOf(fullName) > -1
                 })
 
+            }
+
+            if (this.dzoCompaniesAssets['isRegion']) {
+                let self = this;
+                productionPlanAndFactMonth = _.filter(productionPlanAndFactMonth, function(row) {
+                    return self.selectedDzoCompanies.includes(row.dzo);
+                });
+                data = _.filter(data, function(row) {
+                    return self.selectedDzoCompanies.includes(row.dzo);
+                });
             }
 
             if (this.isKmgParticipationFilterActive) {

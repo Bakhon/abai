@@ -1,7 +1,5 @@
 import {mapActions, mapGetters, mapMutations, mapState,} from 'vuex';
 
-// Map
-
 export const guMapState = arrNames => ({
     ...mapState('guMap', [
         ...arrNames,
@@ -50,4 +48,3 @@ export const dzoMapActions = arrNames => ({
     ]),
 });
 
-// End Map

@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace App\Services\BigData\Forms;
 
+use App\Http\Resources\BigData\HistoryResource;
+use App\Models\BigData\Infrastructure\History;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
 
 abstract class BaseForm
 {
@@ -22,15 +25,16 @@ abstract class BaseForm
         $this->validator = app()->make(\App\Services\BigData\CustomValidator::class);
     }
 
-    abstract public function submit(): array;
-
-    protected function params(): array
+    public function getHistory(int $id, \DateTimeInterface $date): JsonResource
     {
-        $jsonFile = base_path($this->configurationPath) . "/{$this->configurationFileName}.json";
-        if (!\Illuminate\Support\Facades\File::exists($jsonFile)) {
-            throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException();
-        }
-        return json_decode(file_get_contents($jsonFile), true);
+        $history = History::query()
+            ->where('row_id', $id)
+            ->where('date', $date)
+            ->orderBy('created_at', 'desc')
+            ->with('user')
+            ->get();
+
+        return HistoryResource::collection($history);
     }
 
     public function send(): array
@@ -47,11 +51,6 @@ abstract class BaseForm
         ];
     }
 
-    protected function getCustomValidationErrors(): array
-    {
-        return [];
-    }
-
     public function validateSingleField(string $field): void
     {
         $errors = $this->getCustomValidationErrors();
@@ -62,6 +61,35 @@ abstract class BaseForm
             $field,
             $errors
         );
+    }
+
+    protected function params(): array
+    {
+        $jsonFile = base_path($this->configurationPath) . "/{$this->configurationFileName}.json";
+        if (!\Illuminate\Support\Facades\File::exists($jsonFile)) {
+            throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException();
+        }
+        return json_decode(file_get_contents($jsonFile), true);
+    }
+
+    protected function getCustomValidationErrors(): array
+    {
+        return [];
+    }
+
+    protected function getFields(): \Illuminate\Support\Collection
+    {
+        $fields = collect();
+
+        foreach ($this->params()['tabs'] as $tab) {
+            foreach ($tab['blocks'] as $block) {
+                foreach ($block['items'] as $item) {
+                    $fields[] = $item;
+                }
+            }
+        }
+
+        return $fields;
     }
 
     private function validate(): void
@@ -98,20 +126,5 @@ abstract class BaseForm
         }
 
         return $attributes;
-    }
-
-    protected function getFields(): \Illuminate\Support\Collection
-    {
-        $fields = collect();
-
-        foreach ($this->params()['tabs'] as $tab) {
-            foreach ($tab['blocks'] as $block) {
-                foreach ($block['items'] as $item) {
-                    $fields[] = $item;
-                }
-            }
-        }
-
-        return $fields;
     }
 }
