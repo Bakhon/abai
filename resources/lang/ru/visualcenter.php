@@ -251,6 +251,14 @@ return array (
   'rise' => 'Рост',
   'buy' => 'Покупка',
   'chemVolume' => 'Объём хим. реагента, тонны',
+  'saveButton' => 'Сохранить',
+  'errors' => 'Ошибки',
+  'validateButton' => 'Провести проверку данных',
+  'importForm' => [
+    'errorList' => [
+        'incorrectDocumentFormat' =>  'Неверный формат Excel документа',
+    ]
+  ],
   'requiredDailyPlan' => 'Необходимый ср/сут уровень',
   'nrs' => 'Нерентабельные скважины',
   'dzoRegions' => 

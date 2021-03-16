@@ -252,6 +252,14 @@ return array (
   'rise' => 'Өсу',
   'buy' => 'Сатып алу',
   'chemVolume' => 'Хим. реагенттің көлемі, тонна',
+  'saveButton' => 'Сақтау',
+  'errors' => 'Қателік',
+  'validateButton' => 'Деректерді тексеру',
+  'importForm' => [
+    'errorList' => [
+        'incorrectDocumentFormat' =>  'Эксель құжатының форматы сәйкес емес',
+    ]
+  ],
   'requiredDailyPlan' => 'Қажетті орташа тәуліктік деңгей',
   'nrs' => 'Тиімсіз ұңғыма саны',
   'dzoRegions' => 
