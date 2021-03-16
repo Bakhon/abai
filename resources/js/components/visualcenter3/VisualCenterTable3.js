@@ -385,7 +385,6 @@ export default {
                 'fond_neftedob_krs': 'overhaulFond',
                 'fond_neftedob_okrs': 'waitingOverhaulFond',
                 'fond_neftedob_well_survey': 'researchFond',
-                'fond_neftedob_nrs': 'nrs',
                 'fond_neftedob_others': 'othersFond',
                 'fond_neftedob_ef': 'exploitationFond',
                 'fond_nagnetat_df': 'operatingFond',
@@ -1026,9 +1025,9 @@ export default {
         getDiffProcentLastP(a, b, c) {
             if (c) {
                 if (a > b) {
-                    return this.trans("visualcenter.decrease")
+                    return 'Снижение'
                 } else if (a < b) {
-                    return this.trans("visualcenter.rise")
+                    return 'Рост'
                 }
                 ;
             } else {
@@ -2254,28 +2253,36 @@ export default {
 
             result.push(
                 {
-                    name: this.trans("visualcenter.otmIzBurenia"),
+                    name:
+                    // 'Скважин из бурения',
+                        this.trans("visualcenter.otm_iz_burenia_skv_fact"),
                     code: 'otm_iz_burenia_skv_fact',
                     plan: otmData[0]['otm_iz_burenia_skv_plan'],
                     fact: otmData[0]['otm_iz_burenia_skv_fact'],
                     metricSystem: this.trans("visualcenter.otmMetricSystemWells"),
                 },
                 {
-                    name: this.trans("visualcenter.otmBurenieProhodka"),
+                    name:
+                    // 'Бурение проходка',
+                        this.trans("visualcenter.otm_burenie_prohodka_fact"),
                     code: 'otm_burenie_prohodka_fact',
                     plan: otmData[0]['otm_burenie_prohodka_plan'],
                     fact: otmData[0]['otm_burenie_prohodka_fact'],
                     metricSystem: this.trans("visualcenter.otmMetricSystemMeter"),
                 },
                 {
-                    name: this.trans("visualcenter.otmKrsSkv"),
+                    name:
+                    // 'КРС',
+                        this.trans("visualcenter.otm_krs_skv_fact"),
                     code: 'otm_krs_skv_fact',
                     plan: otmData[0]['otm_krs_skv_plan'],
                     fact: otmData[0]['otm_krs_skv_fact'],
                     metricSystem: this.trans("visualcenter.otmMetricSystemWells"),
                 },
                 {
-                    name: this.trans("visualcenter.otmPrsSkv"),
+                    name:
+                    // 'ПРС',
+                        this.trans("visualcenter.otm_prs_skv_fact"),
                     code: 'otm_prs_skv_fact',
                     plan: otmData[0]['otm_prs_skv_plan'],
                     fact: otmData[0]['otm_prs_skv_fact'],
@@ -2328,28 +2335,36 @@ export default {
 
             result.push(
                 {
-                    name: this.trans("visualcenter.chemProdZakackaDemulg"),
+                    name:
+                    // 'Деэмульгатор',
+                        this.trans("visualcenter.chem_prod_zakacka_demulg_fact"),
                     code: 'chem_prod_zakacka_demulg_fact',
                     plan: chemistryData[0]['chem_prod_zakacka_demulg_plan'],
                     fact: chemistryData[0]['chem_prod_zakacka_demulg_fact'],
                     metricSystem: this.trans("visualcenter.chemistryMetricTon"),
                 },
                 {
-                    name: this.trans("visualcenter.chemProdZakackaBakteracid"),
+                    name:
+                    // 'Бактерицид',
+                        this.trans("visualcenter.chem_prod_zakacka_bakteracid_fact"),
                     code: 'chem_prod_zakacka_bakteracid_fact',
                     plan: chemistryData[0]['chem_prod_zakacka_bakteracid_plan'],
                     fact: chemistryData[0]['chem_prod_zakacka_bakteracid_fact'],
                     metricSystem: this.trans("visualcenter.chemistryMetricTon"),
                 },
                 {
-                    name: this.trans("visualcenter.chemProdZakackaIngibatorKorrozin"),
+                    name:
+                    // 'Ингибитор коррозии',
+                        this.trans("visualcenter.chem_prod_zakacka_ingibator_korrozin_fact"),
                     code: 'chem_prod_zakacka_ingibator_korrozin_fact',
                     plan: chemistryData[0]['chem_prod_zakacka_ingibator_korrozin_plan'],
                     fact: chemistryData[0]['chem_prod_zakacka_ingibator_korrozin_fact'],
                     metricSystem: this.trans("visualcenter.chemistryMetricTon"),
                 },
                 {
-                    name: this.trans("visualcenter.chemProdZakackaIngibatorSoleotloj"),
+                    name:
+                    // 'Ингибитор солеотложения',
+                        this.trans("visualcenter.chem_prod_zakacka_ingibator_soleotloj_fact"),
                     code: 'chem_prod_zakacka_ingibator_soleotloj_fact',
                     plan: chemistryData[0]['chem_prod_zakacka_ingibator_soleotloj_plan'],
                     fact: chemistryData[0]['chem_prod_zakacka_ingibator_soleotloj_fact'],
