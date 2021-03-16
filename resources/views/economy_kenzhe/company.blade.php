@@ -3,7 +3,7 @@
     <div class="container">
         <div class="row">
             <div class="col-12">
-                <reptt-company :reptt="{{$stats}}"></reptt-company>
+                <reptt-company :reptt="{{$repTtReportValues}}"></reptt-company>
             </div>
         </div>
     </div>

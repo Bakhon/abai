@@ -30,7 +30,7 @@ export default {
         id: "id",
         children: "handbook_items",
         name: "name",
-        value: 'rept_values'
+        value: 'values'
       },
     };
   },

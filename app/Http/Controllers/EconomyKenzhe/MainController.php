@@ -35,12 +35,43 @@ class MainController extends Controller
         }
     }
 
-    public function company(Request $request)
+    public function company($id, $dateFrom, $dateTo)
     {
-        SubholdingCompany::findOrFail(request('company'));
-        $stats = HandbookRepTt::where('parent_id', 0)->with('childHandbookItemsByDate')->get()->toArray();
-        $stats = json_encode($stats);
-
-        return view('economy_kenzhe.company')->with(compact('stats'));
+        $dateTo = date('Y-m-d', strtotime('01-' . $dateTo));
+        $dateFrom = date('Y-m-d', strtotime('01-' . $dateFrom));
+        $handbook = HandbookRepTt::where('parent_id', 0)->with('childHandbookItems')->get()->toArray();
+        $companyRepTtValues = SubholdingCompany::find($id)->statsByDate($dateFrom,$dateTo)->get()->toArray();
+        $repTtReportValues = $this->recursiveSetValueToRepTt($handbook, $companyRepTtValues);
+        $repTtReportValues = json_encode($repTtReportValues);
+        return view('economy_kenzhe.company')->with(compact('repTtReportValues'));
     }
+
+    public function recursiveSetValueToRepTt(&$items, $companyValues)
+    {
+        $companyValuesRepTtIds = array_column($companyValues, 'rep_id');
+        foreach ($items as $key => $value) {
+            if (count($value['handbook_items']) > 0) {
+                $this->recursiveSetValueToRepTt($items[$key]['handbook_items'], $companyValues);
+            } else {
+                $id = $value['id'];
+                $k = [];
+                $k = array_filter($companyValuesRepTtIds, function ($v, $i) use ($id) {
+                    return $v == $id;
+                }, ARRAY_FILTER_USE_BOTH);
+                if (count($k) > 0) {
+                    if (!array_key_exists('values', $items[$key])) {
+                        $items[$key]['values'] = [];
+                    }
+                    foreach ($k as $k => $v) {
+                        array_push($items[$key]['values'], $companyValues[$k]);
+                    }
+                } else {
+                    $value['values'] = [];
+                    $items[$key] = $value;
+                }
+            }
+        }
+        return $items;
+    }
+    
 }
