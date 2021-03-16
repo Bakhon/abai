@@ -7,10 +7,9 @@ namespace App\Services\BigData\Forms;
 use App\Http\Resources\BigData\HistoryResource;
 use App\Models\BigData\Infrastructure\History;
 use Illuminate\Http\Request;
-use Illuminate\Support\Collection;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\File;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Illuminate\Http\Resources\Json\JsonResource;
 
 abstract class BaseForm
 {
@@ -70,10 +69,12 @@ abstract class BaseForm
     protected function params(): array
     {
         $jsonFile = base_path($this->configurationPath) . "/{$this->configurationFileName}.json";
-        if (!\Illuminate\Support\Facades\File::exists($jsonFile)) {
-            throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException();
+        if (!File::exists($jsonFile)) {
+            throw new NotFoundHttpException();
         }
-        return json_decode(file_get_contents($jsonFile), true);
+        $params = json_decode(file_get_contents($jsonFile), true);
+
+        return $this->localizeParams($params);
     }
 
     protected function getCustomValidationErrors(): array
