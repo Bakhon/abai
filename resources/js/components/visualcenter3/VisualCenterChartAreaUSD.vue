@@ -50,19 +50,19 @@ export default {
             "options": {
               "months": ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"],
               "shortMonths": [
-                this.trans("visualcenter.jan"), 
-                this.trans("visualcenter.feb"),// "Фев", 
-                this.trans("visualcenter.mar"),// "Мар", 
-                this.trans("visualcenter.apr"),// "Апр", 
-                this.trans("visualcenter.may"),// "Май", 
-                this.trans("visualcenter.june"),// "Июнь", 
-                this.trans("visualcenter.july"),// "Июль", 
-                this.trans("visualcenter.aug"),// "Авг", 
-                this.trans("visualcenfter.sept"),// "Сент",
-                this.trans("visualcenter.oct"),//  "Окт", 
-                this.trans("visualcenter.nov"),//  "Нояб", 
-                this.trans("visualcenter.dec")//  "Дек"
-                 ],
+              this.trans("visualcenter.jan"), 
+              this.trans("visualcenter.feb"),
+              this.trans("visualcenter.mar"),
+              this.trans("visualcenter.apr"),
+              this.trans("visualcenter.may"),
+              this.trans("visualcenter.june"),
+              this.trans("visualcenter.july"),
+              this.trans("visualcenter.aug"),
+              this.trans("visualcenfter.sept"),
+              this.trans("visualcenter.oct"),
+              this.trans("visualcenter.nov"),
+              this.trans("visualcenter.dec")
+              ],
               "days": ["Воскресенье", "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"],
               "shortDays": ["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"],
             }

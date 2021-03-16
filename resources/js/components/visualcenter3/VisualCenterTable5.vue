@@ -17,44 +17,44 @@
                     </h5>
                     <select class="w-100 p-2" :style="{background: '#2A2E5C', color: 'white'}" v-model="fromBeginOfYearSelect">
                         <option :value="0" :selected="'selected'">
-                            <!-- С начала года -->{{ trans("visualcenter.yearBegin") }}
-                            </option>
+                            {{ trans("visualcenter.yearBegin") }}
+                        </option>
                         <option :value="1">
-                            <!-- Январь 2020 -->{{ trans("visualcenter.jan2020") }}
-                            </option>
+                            {{ trans("visualcenter.jan2020") }}
+                        </option>
                         <option :value="2" :disabled="actualMonth < 1">
-                            <!-- Январь - Февраль 2020 -->{{ trans("visualcenter.jan_feb2020") }}
-                            </option>
+                            {{ trans("visualcenter.janFeb2020") }}
+                        </option>
                         <option :value="3" :disabled="actualMonth < 2">
-                            <!-- Январь - Март 2020 -->{{ trans("visualcenter.jan_mar2020") }}
-                            </option>
+                            {{ trans("visualcenter.janMar2020") }}
+                        </option>
                         <option :value="4" :disabled="actualMonth < 3">
-                            <!-- Январь - Апрель 2020 -->{{ trans("visualcenter.jan_apr2020") }}
-                            </option>
+                            {{ trans("visualcenter.janApr2020") }}
+                        </option>
                         <option :value="5" :disabled="actualMonth < 4">
-                            <!-- Январь - Май 2020 -->{{ trans("visualcenter.jan_may2020") }}
-                            </option>
+                            {{ trans("visualcenter.janMay2020") }}
+                        </option>
                         <option :value="6" :disabled="actualMonth < 5">
-                            <!-- Январь - Июнь 2020 -->{{ trans("visualcenter.jan_june2020") }}
-                            </option>
+                            {{ trans("visualcenter.janJune2020") }}
+                        </option>
                         <option :value="7" :disabled="actualMonth < 6">
-                            <!-- Январь - Июль 2020 -->{{ trans("visualcenter.jan_july2020") }}
-                            </option>
+                            {{ trans("visualcenter.janJuly2020") }}
+                        </option>
                         <option :value="8" :disabled="actualMonth < 7">
-                            <!-- Январь - Август 2020 -->{{ trans("visualcenter.jan_aug2020") }}
-                            </option>
+                            {{ trans("visualcenter.janAug2020") }}
+                        </option>
                         <option :value="9" :disabled="actualMonth < 8">
-                            <!-- Январь - Сентябрь 2020 -->{{ trans("visualcenter.jan_sept2020") }}
-                            </option>
+                            {{ trans("visualcenter.janSept2020") }}
+                        </option>
                         <option :value="10" :disabled="actualMonth < 9">
-                            <!-- Январь - Октябрь 2020 -->{{ trans("visualcenter.jan_oct2020") }}
-                            </option>
+                            {{ trans("visualcenter.janOct2020") }}
+                        </option>
                         <option :value="11" :disabled="actualMonth < 10">
-                            <!-- Январь - Ноябрь 2020 -->{{ trans("visualcenter.jan_nov2020") }}
-                            </option>
+                            {{ trans("visualcenter.janNov2020") }}
+                        </option>
                         <option :value="12" :disabled="actualMonth < 11">
-                            <!-- Январь - Декабрь 2020 -->{{ trans("visualcenter.jan_dec2020") }}
-                            </option>
+                            {{ trans("visualcenter.janDec2020") }}
+                        </option>
                     </select>
                 </div>
                 <div class="col-sm-6 flex-column pt-3">
@@ -111,17 +111,17 @@
                                 <!-- Квартал -->{{ trans("visualcenter.quarter") }}
                                 </option>
                             <option :value="1">
-                                <!-- Январь - Март 2020 -->{{ trans("visualcenter.jan_mar2020") }}
-                                </option>
+                                {{ trans("visualcenter.janMar2020") }}
+                            </option>
                             <option :value="4" :disabled="actualMonth < 3">
-                                <!-- Апрель - Июнь 2020 -->{{ trans("visualcenter.apr_june2020") }}
-                                </option>
+                                {{ trans("visualcenter.aprJune2020") }}
+                            </option>
                             <option :value="7" :disabled="actualMonth < 6">
-                                <!-- Июль - Сентябрь 2020 -->{{ trans("visualcenter.july_sept2020") }}
-                                </option>
+                                {{ trans("visualcenter.julySept2020") }}
+                            </option>
                             <option :value="10" :disabled="actualMonth < 9">
-                                <!-- Октябрь - Декабрь 2020 -->{{ trans("visualcenter.oct_dec2020") }}
-                                </option>
+                                {{ trans("visualcenter.octDec2020") }}
+                            </option>
                         </select>
                     </div>
                 </div>
