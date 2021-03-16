@@ -5,11 +5,30 @@
 
     <div v-else class="row no-margin col-12 no-padding relative gno-incl-content-wrapper">
       
-      <div class="col-6 gno-plotly-graph" style="background-color: #2b2e5e; height: 600px;">
-       <Plotly :data="data" :layout="layout" :display-mode-bar="false"></Plotly>
+      <div class="col-7 gno-plotly-graph" style="background-color: #272953;">
+        <h5>Причины ПРС за скользящий год</h5>
+       <Plotly style="width: 730px;" :data="data" :layout="layout" :display-mode-bar="false"></Plotly>
+       <div class="row">
+          <div class="col-12">
+         <h5 style="float: left;">
+          Количество ремонтов без ГТМ: {{numberRepairs}}
+       </h5>
+       </div>
+       <div class="col-12">
+          <h5 style="float: left;">
+         ННО: {{numberNNO + ' сут'}}
+       </h5>
+       </div>
+       </div>
+      
+       
+      
       </div>
 
-     <div class="col-6 no-padding no-scrollbar incl-modal-table" style="height: 100%; overflow-y: auto;">
+     <div class="col-5 no-padding no-scrollbar incl-modal-table" style="height: 100%; overflow-y: auto;">
+
+         <h5 style="text-align: center;">Информация по КРС</h5>
+
       <perfect-scrollbar>
         <table class="gno-table-with-header pgno" style="height: initial;">
           <thead>
@@ -50,6 +69,8 @@ props: ["wellNumber", "field", "wellIncl"],
 data: function(){
     return {
         krsTable: null,
+        numberRepairs: null,
+        numberNNO: null,
         data: [],
         chart: null,
         prs: [],
