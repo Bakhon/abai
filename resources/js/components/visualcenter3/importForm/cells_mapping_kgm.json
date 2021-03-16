@@ -1,0 +1,514 @@
+{
+  "oil": {
+    "production": {
+      "rowNumber": 1,
+      "cellNumber": 1,
+      "planField": "oil_plan",
+      "factField": "oil_fact",
+      "inputPlanField": "plan_oil"
+    },
+    "delivery": {
+      "rowNumber": 2,
+      "cellNumber": 1,
+      "planField": "oil_dlv_plan",
+      "factField": "oil_dlv_fact"
+    }
+  },
+  "condensate": {
+    "production": {
+      "rowNumber": 1,
+      "cellNumber": 2,
+      "planField": "gk_plan",
+      "factField": "gk_fact",
+      "inputPlanField": "plan_kondensat"
+    },
+    "delivery": {
+      "rowNumber": 2,
+      "cellNumber": 2,
+      "planField": "gk_dlv_plan",
+      "factField": "gk_dlv_fact"
+    }
+  },
+  "gas": {
+    "production": {
+      "rowNumber": 1,
+      "cellNumber": 3,
+      "planField": "gas_plan",
+      "factField": "gas_fact"
+    },
+    "delivery": {
+      "rowNumber": 2,
+      "cellNumber": 3,
+      "planField": "sdacha_gaza_prirod_plan",
+      "factField": "sdacha_gaza_prirod_fact"
+    }
+  },
+  "waterInjection": {
+    "totalInjection": {
+      "rowNumber": 4,
+      "cellNumber": 1,
+      "planField": "liq_plan",
+      "factField": "liq_fact"
+    },
+    "steam": {
+      "rowNumber": 5,
+      "cellNumber": 1,
+      "planField": "cpp_zakachka_para_plan",
+      "factField": "cpp_zakachka_para_fact"
+    }
+  },
+  "balanceOfGoods": {
+    "today": {
+      "rowNumber": 7,
+      "cellNumber": 1,
+      "planField": "",
+      "factField": "tovarnyi_ostatok_nefti_today"
+    },
+    "previousDay": {
+      "rowNumber": 8,
+      "cellNumber": 1
+    }
+  },
+  "otm": {
+    "penetration": {
+      "rowNumber": 10,
+      "cellNumber": 1,
+      "planField": "otm_burenie_prohodka_plan",
+      "factField": "otm_burenie_prohodka_fact"
+    },
+    "krc": {
+      "rowNumber": 11,
+      "cellNumber": 1,
+      "planField": "otm_krs_skv_plan",
+      "factField": "otm_krs_skv_fact"
+    },
+    "prs": {
+      "rowNumber": 12,
+      "cellNumber": 1,
+      "planField": "otm_prs_skv_plan",
+      "factField": "otm_prs_skv_fact"
+    }
+  },
+  "chemistry": {
+    "diemugator": {
+      "rowNumber": 14,
+      "cellNumber": 1,
+      "planField": "chem_prod_zakacka_demulg_plan",
+      "factField": "chem_prod_zakacka_demulg_fact"
+    },
+    "bactericide": {
+      "rowNumber": 15,
+      "cellNumber": 1,
+      "planField": "chem_prod_zakacka_bakteracid_plan",
+      "factField": "chem_prod_zakacka_bakteracid_fact"
+    },
+    "corrosionInhibitor": {
+      "rowNumber": 16,
+      "cellNumber": 1,
+      "planField": "chem_prod_zakacka_ingibator_korrozin_plan",
+      "factField": "chem_prod_zakacka_ingibator_korrozin_fact"
+    },
+    "scaleInhibitor": {
+      "rowNumber": 17,
+      "cellNumber": 1,
+      "planField": "chem_prod_zakacka_ingibator_soleotloj_plan",
+      "factField": "chem_prod_zakacka_ingibator_soleotloj_fact"
+    }
+  },
+  "idleProductionWells": {
+    "wellsCount": {
+      "prs": {
+        "rowNumber": 21,
+        "cellNumber": 1,
+        "planField": "",
+        "factField": "fond_neftedob_prs"
+      },
+      "prsWaiting": {
+        "rowNumber": 22,
+        "cellNumber": 1,
+        "planField": "",
+        "factField": "fond_neftedob_oprs"
+      },
+      "krsWaiting": {
+        "rowNumber": 23,
+        "cellNumber": 1,
+        "planField": "",
+        "factField": "fond_neftedob_okrs"
+      },
+      "krs": {
+        "rowNumber": 24,
+        "cellNumber": 1,
+        "planField": "",
+        "factField": "fond_neftedob_krs"
+      },
+      "wellsResearch": {
+        "rowNumber": 25,
+        "cellNumber": 1,
+        "planField": "",
+        "factField": "fond_neftedob_well_survey"
+      },
+      "other": {
+        "rowNumber": 26,
+        "cellNumber": 1,
+        "planField": "",
+        "factField": "fond_neftedob_others"
+      },
+      "cppnDnsGlut": {
+        "rowNumber": 27,
+        "cellNumber": 1
+      },
+      "impulse": {
+        "rowNumber": 28,
+        "cellNumber": 1
+      },
+      "electricalPart": {
+        "rowNumber": 29,
+        "cellNumber": 1
+      },
+      "groundEquipmentRepair": {
+        "rowNumber": 30,
+        "cellNumber": 1
+      },
+      "periodic": {
+        "rowNumber": 31,
+        "cellNumber": 1
+      },
+      "productionRestriction": {
+        "rowNumber": 32,
+        "cellNumber": 1
+      },
+      "wellsTreatment": {
+        "rowNumber": 33,
+        "cellNumber": 1
+      },
+      "highlyWatered": {
+        "rowNumber": 34,
+        "cellNumber": 1
+      },
+      "injectionResriction": {
+        "rowNumber": 35,
+        "cellNumber": 1
+      },
+      "alignmentInjectivityProfile": {
+        "rowNumber": 36,
+        "cellNumber": 1
+      },
+      "coilTubing": {
+        "rowNumber": 37,
+        "cellNumber": 1
+      },
+      "total": {
+        "rowNumber": 38,
+        "cellNumber": 1
+      }
+    },
+    "oilLoss": {
+      "prs": {
+        "rowNumber": 21,
+        "cellNumber": 2
+      },
+      "prsWaiting": {
+        "rowNumber": 22,
+        "cellNumber": 2
+      },
+      "krsWaiting": {
+        "rowNumber": 23,
+        "cellNumber": 2
+      },
+      "krs": {
+        "rowNumber": 24,
+        "cellNumber": 2
+      },
+      "wellsResearch": {
+        "rowNumber": 25,
+        "cellNumber": 2
+      },
+      "other": {
+        "rowNumber": 26,
+        "cellNumber": 2
+      },
+      "cppnDnsGlut": {
+        "rowNumber": 27,
+        "cellNumber": 2
+      },
+      "impulse": {
+        "rowNumber": 28,
+        "cellNumber": 2
+      },
+      "electricalPart": {
+        "rowNumber": 29,
+        "cellNumber": 2
+      },
+      "groundEquipmentRepair": {
+        "rowNumber": 30,
+        "cellNumber": 2
+      },
+      "periodic": {
+        "rowNumber": 31,
+        "cellNumber": 2
+      },
+      "productionRestriction": {
+        "rowNumber": 32,
+        "cellNumber": 2
+      },
+      "wellsTreatment": {
+        "rowNumber": 33,
+        "cellNumber": 2
+      },
+      "highlyWatered": {
+        "rowNumber": 34,
+        "cellNumber": 2
+      },
+      "injectionResriction": {
+        "rowNumber": 35,
+        "cellNumber": 2
+      },
+      "alignmentInjectivityProfile": {
+        "rowNumber": 36,
+        "cellNumber": 2
+      },
+      "coilTubing": {
+        "rowNumber": 37,
+        "cellNumber": 2
+      },
+      "total": {
+        "rowNumber": 38,
+        "cellNumber": 2
+      }
+    }
+  },
+  "idleInjectionWells": {
+    "wellsCount": {
+      "prs": {
+        "rowNumber": 21,
+        "cellNumber": 3,
+        "planField": "",
+        "factField": "fond_nagnetat_prs"
+      },
+      "prsWaiting": {
+        "rowNumber": 22,
+        "cellNumber": 3,
+        "planField": "",
+        "factField": "fond_nagnetat_oprs"
+      },
+      "krsWaiting": {
+        "rowNumber": 23,
+        "cellNumber": 3,
+        "planField": "",
+        "factField": "fond_nagnetat_okrs"
+      },
+      "krs": {
+        "rowNumber": 24,
+        "cellNumber": 3,
+        "planField": "",
+        "factField": "fond_nagnetat_krs"
+      },
+      "wellsResearch": {
+        "rowNumber": 25,
+        "cellNumber": 3,
+        "planField": "",
+        "factField": "fond_nagnetat_well_survey"
+      },
+      "other": {
+        "rowNumber": 26,
+        "cellNumber": 3,
+        "planField": "",
+        "factField": "fond_nagnetat_others"
+      },
+      "cppnDnsGlut": {
+        "rowNumber": 27,
+        "cellNumber": 3
+      },
+      "impulse": {
+        "rowNumber": 28,
+        "cellNumber": 3
+      },
+      "electricalPart": {
+        "rowNumber": 29,
+        "cellNumber": 3
+      },
+      "groundEquipmentRepair": {
+        "rowNumber": 30,
+        "cellNumber": 3
+      },
+      "periodic": {
+        "rowNumber": 31,
+        "cellNumber": 3
+      },
+      "productionRestriction": {
+        "rowNumber": 32,
+        "cellNumber": 3
+      },
+      "wellsTreatment": {
+        "rowNumber": 33,
+        "cellNumber": 3
+      },
+      "highlyWatered": {
+        "rowNumber": 34,
+        "cellNumber": 3
+      },
+      "injectionResriction": {
+        "rowNumber": 35,
+        "cellNumber": 3
+      },
+      "alignmentInjectivityProfile": {
+        "rowNumber": 36,
+        "cellNumber": 3
+      },
+      "coilTubing": {
+        "rowNumber": 37,
+        "cellNumber": 3
+      },
+      "total": {
+        "rowNumber": 38,
+        "cellNumber": 3
+      }
+    }
+  },
+  "oilProductionFond": {
+    "exploitation": {
+      "rowNumber": 41,
+      "cellNumber": 1,
+      "planField": "",
+      "factField": "fond_neftedob_ef"
+    },
+    "active": {
+      "rowNumber": 42,
+      "cellNumber": 1,
+      "planField": "",
+      "factField": "fond_neftedob_df"
+    },
+    "idle": {
+      "rowNumber": 43,
+      "cellNumber": 1,
+      "planField": "",
+      "factField": "prod_wells_idle"
+    },
+    "inWork": {
+      "rowNumber": 44,
+      "cellNumber": 1,
+      "planField": "",
+      "factField": "prod_wells_work"
+    },
+    "bd": {
+      "rowNumber": 45,
+      "cellNumber": 1,
+      "planField": "",
+      "factField": "fond_neftedob_bd"
+    },
+    "developing": {
+      "rowNumber": 46,
+      "cellNumber": 1,
+      "planField": "",
+      "factField": "fond_neftedob_osvoenie"
+    },
+    "ofls": {
+      "rowNumber": 47,
+      "cellNumber": 1,
+      "planField": "",
+      "factField": "fond_neftedob_ofls"
+    },
+    "nrs": {
+      "rowNumber": 48,
+      "cellNumber": 1,
+      "planField": "",
+      "factField": "fond_neftedob_nrs"
+    },
+    "conservation": {
+      "rowNumber": 49,
+      "cellNumber": 1
+    }
+  },
+  "oilInjectionFond": {
+    "exploitation": {
+      "rowNumber": 41,
+      "cellNumber": 2,
+      "planField": "",
+      "factField": "fond_nagnetat_ef"
+    },
+    "active": {
+      "rowNumber": 42,
+      "cellNumber": 2,
+      "planField": "",
+      "factField": "fond_nagnetat_df"
+    },
+    "idle": {
+      "rowNumber": 43,
+      "cellNumber": 2,
+      "planField": "",
+      "factField": "inj_wells_idle"
+    },
+    "inWork": {
+      "rowNumber": 44,
+      "cellNumber": 2,
+      "planField": "",
+      "factField": "inj_wells_work"
+    },
+    "bd": {
+      "rowNumber": 45,
+      "cellNumber": 2,
+      "planField": "",
+      "factField": "fond_nagnetat_bd"
+    },
+    "developing": {
+      "rowNumber": 46,
+      "cellNumber": 2,
+      "planField": "",
+      "factField": "fond_nagnetat_osvoenie"
+    },
+    "ofls": {
+      "rowNumber": 47,
+      "cellNumber": 2,
+      "planField": "",
+      "factField": "fond_nagnetat_ofls"
+    },
+    "nrs": {
+      "rowNumber": 48,
+      "cellNumber": 2
+    },
+    "conservation": {
+      "rowNumber": 49,
+      "cellNumber": 2,
+      "planField": "",
+      "factField": "fond_nagnetat_konv"
+    }
+  },
+  "decreaseReasons": {
+    "opec": {
+      "rowNumber": 51,
+      "cellNumber": 1,
+      "planField": "",
+      "factField": "opec2"
+    },
+    "pipelinesBurst": {
+      "rowNumber": 52,
+      "cellNumber": 1,
+      "planField": "",
+      "factField": "impulses"
+    },
+    "powerOutage": {
+      "rowNumber": 54,
+      "cellNumber": 1,
+      "planField": "",
+      "factField": "landing"
+    },
+    "systemFailure": {
+      "rowNumber": 55,
+      "cellNumber": 1,
+      "planField": "",
+      "factField": "accident"
+    },
+    "kto": {
+      "rowNumber": 56,
+      "cellNumber": 1,
+      "planField": "",
+      "factField": "restrictions"
+    },
+    "gasRestriction": {
+      "rowNumber": 57,
+      "cellNumber": 1,
+      "planField": "",
+      "factField": "otheraccidents"
+    }
+  }
+}

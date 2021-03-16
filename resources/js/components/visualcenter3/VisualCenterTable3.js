@@ -343,6 +343,7 @@ export default {
                 isOperating: false,
                 isNonOperating: false,
                 isOpecRestriction: false,
+                isRegion: false,
                 assetTitle: this.trans("visualcenter.summaryAssets"),
             },
             dzoCompaniesAssets: {},
@@ -353,6 +354,7 @@ export default {
                 isAllAssets: this.trans("visualcenter.summaryAssets"),
                 opecRestriction: this.trans("visualcenter.opek"),
                 kmgParticipation: this.trans("visualcenter.dolyaUchast"),
+                isRegion: this.trans("visualcenter.summaryByRegion"),
             },
             kmgParticipationPercent: {
                 'АО "Каражанбасмунай"': 0.5,
@@ -383,6 +385,7 @@ export default {
                 'fond_neftedob_krs': 'overhaulFond',
                 'fond_neftedob_okrs': 'waitingOverhaulFond',
                 'fond_neftedob_well_survey': 'researchFond',
+                'fond_neftedob_nrs': 'nrs',
                 'fond_neftedob_others': 'othersFond',
                 'fond_neftedob_ef': 'exploitationFond',
                 'fond_nagnetat_df': 'operatingFond',
@@ -442,6 +445,32 @@ export default {
                 changePercent: 0,
                 index: ''
             },
+            dzoRegionsMapping: {
+                aturay: {
+                    isActive: false,
+                    translationName: this.trans("visualcenter.dzoRegions.aturay"),
+                },
+                actubinsk: {
+                    isActive: false,
+                    translationName: this.trans("visualcenter.dzoRegions.actubinsk"),
+                },
+                kuzulord: {
+                    isActive: false,
+                    translationName: this.trans("visualcenter.dzoRegions.kuzulord"),
+                },
+                mangistau: {
+                    isActive: false,
+                    translationName: this.trans("visualcenter.dzoRegions.mangistau"),
+                },
+                west: {
+                    isActive: false,
+                    translationName: this.trans("visualcenter.dzoRegions.west"),
+                },
+                zhambul: {
+                    isActive: false,
+                    translationName: this.trans("visualcenter.dzoRegions.zhambul"),
+                },
+            },
         };
     },
     methods: {
@@ -476,6 +505,7 @@ export default {
             this.selectCompany('all');
             this.isMultipleDzoCompaniesSelected = true;
             this.dzoCompaniesAssets = _.cloneDeep(this.dzoCompaniesAssetsInitial);
+            this.disableDzoRegions();
             this.selectedDzoCompanies = this.getAllDzoCompanies();
             this.buttonDzoDropdown = "";
             _.map(this.dzoCompanies, function (company) {
@@ -503,6 +533,12 @@ export default {
             this.dzoCompaniesSummary = summary;
         },
 
+        disableDzoRegions() {
+          _.forEach(this.dzoRegionsMapping, function(region) {
+              _.set(region, 'isActive', false);
+          });
+        },
+
         selectOneDzoCompany(companyTicker) {
             this.disableDzoCompaniesVisibility();
             this.selectDzoCompany(companyTicker);
@@ -514,15 +550,16 @@ export default {
             });
         },
 
-        selectMultipleDzoCompanies(type) {
+        selectMultipleDzoCompanies(type,category,regionName) {
             this.selectCompany('all');
             this.dzoCompaniesAssets['isAllAssets'] = false;
             this.disableDzoCompaniesVisibility();
-            this.switchDzoCompaniesVisibility(type,'type');
+            this.switchDzoCompaniesVisibility(type,category,regionName);
             this.calculateDzoCompaniesSummary();
         },
 
         selectDzoCompany(companyTicker) {
+            this.disableDzoRegions();
             this.selectCompany(companyTicker);
             this.selectedDzoCompanies = [companyTicker];
             this.dzoCompaniesAssets['isAllAssets'] = false;
@@ -532,7 +569,10 @@ export default {
             this.calculateDzoCompaniesSummary();
         },
 
-        switchDzoCompaniesVisibility(condition,type) {
+        switchDzoCompaniesVisibility(condition,type,regionName) {
+            if (regionName) {
+                condition = regionName;
+            }
             _.map(this.dzoCompanies, function(company) {
                 if (company[type] === condition) {
                     company.selected = !company.selected;
@@ -766,11 +806,10 @@ export default {
             }
         },
 
-        changeAssets(type) {
+        changeAssets(type,category,regionName) {
             this.dzoCompaniesAssets[type] = true;
             this.dzoCompaniesAssets['isAllAssets'] = false;
             this.dzoCompaniesAssets['assetTitle'] = this.assetTitleMapping[type];
-
 
             if (type === "opecRestriction") {
                 this.isOpecFilterActive = !this.isOpecFilterActive;
@@ -778,10 +817,13 @@ export default {
                 this.chartSecondaryName = this.trans("visualcenter.dolyaUchast");
                 this.isKmgParticipationFilterActive = !this.isKmgParticipationFilterActive;
             } else {
+                if (regionName) {
+                    this.dzoRegionsMapping[regionName].isActive = true;
+                }
                 this.dzoCompaniesAssets = _.cloneDeep(this.dzoCompaniesAssetsInitial);
                 this.dzoCompaniesAssets[type] = true;
-                this.selectedDzoCompanies = this.getSelectedDzoCompanies(type);
-                this.selectMultipleDzoCompanies(type);
+                this.selectedDzoCompanies = this.getSelectedDzoCompanies(type,category,regionName);
+                this.selectMultipleDzoCompanies(type,category,regionName);
             }
         },
 
@@ -789,8 +831,12 @@ export default {
             return _.cloneDeep(dzoCompaniesInitial).map(company => company.ticker);
         },
 
-        getSelectedDzoCompanies(type) {
-            return _.cloneDeep(dzoCompaniesInitial).filter(company => company.type === type).map(company => company.ticker);
+        getSelectedDzoCompanies(type, category, regionName) {
+            if (regionName) {
+                category = regionName;
+            }
+            type = type.toLowerCase().replace('is','');
+            return _.cloneDeep(dzoCompaniesInitial).filter(company => company[type] === category).map(company => company.ticker);
         },
 
         periodSelect() {
@@ -980,9 +1026,9 @@ export default {
         getDiffProcentLastP(a, b, c) {
             if (c) {
                 if (a > b) {
-                    return 'Снижение'
+                    return this.trans("visualcenter.decrease")
                 } else if (a < b) {
-                    return 'Рост'
+                    return this.trans("visualcenter.rise")
                 }
                 ;
             } else {
@@ -1614,6 +1660,16 @@ export default {
 
             }
 
+            if (this.dzoCompaniesAssets['isRegion']) {
+                let self = this;
+                productionPlanAndFactMonth = _.filter(productionPlanAndFactMonth, function(row) {
+                    return self.selectedDzoCompanies.includes(row.dzo);
+                });
+                data = _.filter(data, function(row) {
+                    return self.selectedDzoCompanies.includes(row.dzo);
+                });
+            }
+
             if (this.isKmgParticipationFilterActive) {
                 productionPlanAndFactMonth = this.calculateKmgParticipationFilter(productionPlanAndFactMonth,
                     'dzo','productionFactForChart',
@@ -2198,36 +2254,28 @@ export default {
 
             result.push(
                 {
-                    name:
-                    // 'Скважин из бурения',
-                        this.trans("visualcenter.otm_iz_burenia_skv_fact"),
+                    name: this.trans("visualcenter.otmIzBurenia"),
                     code: 'otm_iz_burenia_skv_fact',
                     plan: otmData[0]['otm_iz_burenia_skv_plan'],
                     fact: otmData[0]['otm_iz_burenia_skv_fact'],
                     metricSystem: this.trans("visualcenter.otmMetricSystemWells"),
                 },
                 {
-                    name:
-                    // 'Бурение проходка',
-                        this.trans("visualcenter.otm_burenie_prohodka_fact"),
+                    name: this.trans("visualcenter.otmBurenieProhodka"),
                     code: 'otm_burenie_prohodka_fact',
                     plan: otmData[0]['otm_burenie_prohodka_plan'],
                     fact: otmData[0]['otm_burenie_prohodka_fact'],
                     metricSystem: this.trans("visualcenter.otmMetricSystemMeter"),
                 },
                 {
-                    name:
-                    // 'КРС',
-                        this.trans("visualcenter.otm_krs_skv_fact"),
+                    name: this.trans("visualcenter.otmKrsSkv"),
                     code: 'otm_krs_skv_fact',
                     plan: otmData[0]['otm_krs_skv_plan'],
                     fact: otmData[0]['otm_krs_skv_fact'],
                     metricSystem: this.trans("visualcenter.otmMetricSystemWells"),
                 },
                 {
-                    name:
-                    // 'ПРС',
-                        this.trans("visualcenter.otm_prs_skv_fact"),
+                    name: this.trans("visualcenter.otmPrsSkv"),
                     code: 'otm_prs_skv_fact',
                     plan: otmData[0]['otm_prs_skv_plan'],
                     fact: otmData[0]['otm_prs_skv_fact'],
@@ -2280,36 +2328,28 @@ export default {
 
             result.push(
                 {
-                    name:
-                    // 'Деэмульгатор',
-                        this.trans("visualcenter.chem_prod_zakacka_demulg_fact"),
+                    name: this.trans("visualcenter.chemProdZakackaDemulg"),
                     code: 'chem_prod_zakacka_demulg_fact',
                     plan: chemistryData[0]['chem_prod_zakacka_demulg_plan'],
                     fact: chemistryData[0]['chem_prod_zakacka_demulg_fact'],
                     metricSystem: this.trans("visualcenter.chemistryMetricTon"),
                 },
                 {
-                    name:
-                    // 'Бактерицид',
-                        this.trans("visualcenter.chem_prod_zakacka_bakteracid_fact"),
+                    name: this.trans("visualcenter.chemProdZakackaBakteracid"),
                     code: 'chem_prod_zakacka_bakteracid_fact',
                     plan: chemistryData[0]['chem_prod_zakacka_bakteracid_plan'],
                     fact: chemistryData[0]['chem_prod_zakacka_bakteracid_fact'],
                     metricSystem: this.trans("visualcenter.chemistryMetricTon"),
                 },
                 {
-                    name:
-                    // 'Ингибитор коррозии',
-                        this.trans("visualcenter.chem_prod_zakacka_ingibator_korrozin_fact"),
+                    name: this.trans("visualcenter.chemProdZakackaIngibatorKorrozin"),
                     code: 'chem_prod_zakacka_ingibator_korrozin_fact',
                     plan: chemistryData[0]['chem_prod_zakacka_ingibator_korrozin_plan'],
                     fact: chemistryData[0]['chem_prod_zakacka_ingibator_korrozin_fact'],
                     metricSystem: this.trans("visualcenter.chemistryMetricTon"),
                 },
                 {
-                    name:
-                    // 'Ингибитор солеотложения',
-                        this.trans("visualcenter.chem_prod_zakacka_ingibator_soleotloj_fact"),
+                    name: this.trans("visualcenter.chemProdZakackaIngibatorSoleotloj"),
                     code: 'chem_prod_zakacka_ingibator_soleotloj_fact',
                     plan: chemistryData[0]['chem_prod_zakacka_ingibator_soleotloj_plan'],
                     fact: chemistryData[0]['chem_prod_zakacka_ingibator_soleotloj_fact'],
