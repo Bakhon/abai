@@ -79,14 +79,10 @@
                                                value="{{$technicalDataForecast->days_worked}}">
                                         <strong>ПРС:</strong>
                                         <input type="text" name="prs" class="form-control" placeholder=""
-<<<<<<< HEAD:resources/views/tech_refs/productionData/edit.blade.php
-                                               value="{{$techRefsProductionData->prs}}">
+                                               value="{{$technicalDataForecast->prs}}">
                                         <strong>Комментарий:</strong>
                                         <input type="text" name="comment" class="form-control" placeholder=""
-                                               value="{{$techRefsProductionData->comment }}">
-=======
-                                               value="{{$technicalDataForecast->prs}}">
->>>>>>> origin/development/ib50/tech_refs_list:resources/views/technical_forecast/production_data/edit.blade.php
+                                               value="{{$technicalDataForecast->comment }}">
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12 text-center">

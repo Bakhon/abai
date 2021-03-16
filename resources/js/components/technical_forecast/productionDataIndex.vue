@@ -1,6 +1,5 @@
 <template>
   <div class="container-fluid economic-wrap">
-<!--    <cat-loader v-show="loading"/>-->
     <div class="row justify-content-between">
       <vue-table-dynamic
           :params="params"
@@ -17,7 +16,6 @@
 <script>
 import VModal from 'vue-js-modal'
 import VueTableDynamic from 'vue-table-dynamic'
-// import CatLoader from '../../ui-kit/CatLoader'
 
 Vue.use(VModal, {dynamicDefault: {draggable: true, resizable: true}});
 
@@ -25,7 +23,6 @@ export default {
   name: "tech-data-component",
   components: {
     VueTableDynamic,
-    // CatLoader
   },
   data: function () {
     return {
