@@ -1,6 +1,58 @@
 <template>
   <div>
-    <Plotly :data="data" :layout="layout" :display-mode-bar="false"></Plotly>
+    <div v-if="!data" class="gno-modal-loading-label">{{trans('pgno.zagruzka')}}</div>
+    <div v-else-if="data.length === 0" class="gno-modal-loading-label">{{trans('pgno.no_data')}}</div>
+
+    <div v-else class="row no-margin col-12 no-padding relative gno-incl-content-wrapper">
+      
+      <div class="plot-block col-7 gno-plotly-graph">
+        <h5>{{trans('pgno.prichini_prs_god')}}</h5>
+       <Plotly style="width: 730px;" :data="data" :layout="layout" :display-mode-bar="false"></Plotly>
+       <div class="row">
+        <div class="col-12">
+          <h5 class="title-plot">
+            {{trans('pgno.number_of_repair')}}: {{numberRepairs}}
+          </h5>
+       </div>
+       <div class="col-12">
+          <h5 class="title-plot">
+            {{trans('pgno.nno')}}: {{numberNNO + ' сут'}}
+          </h5>
+       </div>
+       </div>
+      
+      </div>
+
+     <div class="col-5 no-padding no-scrollbar incl-modal-table">
+       <h5 class="krs-table-title">{{trans('pgno.info_po_krs')}}</h5>
+
+      <perfect-scrollbar>
+        <table class="gno-table-with-header pgno">
+          <thead>
+            <tr height="10">
+              <td>
+                {{trans('pgno.data_nachala_rabot')}}
+              </td>
+              <td>
+                {{trans('pgno.data_okonchania')}}
+              </td>
+              <td>
+                {{trans('pgno.vid_remontnih_rabot')}}
+              </td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(row, row_index) in this.krsTable" :key="row_index">
+              <td>{{row.dbeg.substring(0, 10)}}</td>
+              <td>{{row.dend.substring(0, 10)}}</td>
+              <td>{{row.krs_name}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </perfect-scrollbar>
+    </div>
+
+    </div>
   </div>
 </template>
 <script>
@@ -12,6 +64,9 @@ export default {
 props: ["wellNumber", "field", "wellIncl"],
 data: function(){
     return {
+        krsTable: null,
+        numberRepairs: null,
+        numberNNO: null,
         data: [],
         chart: null,
         prs: [],
@@ -30,6 +85,14 @@ data: function(){
     }
 },
 mounted() {
+    let uriPrsKrs = "http://172.20.103.187:7575/api/nno/history/"+ this.field + "/" + this.wellNumber + "/";
+      this.axios.get(uriPrsKrs).then((response) => {
+        let krs = response['data']['krs']
+        let nno = JSON.parse(response['data']['prs']['nno'])
+        this.numberRepairs = nno['prs']
+        this.numberNNO = nno['NNO'].toFixed(0)
+        this.krsTable = JSON.parse(krs)["data"]
+    })
     var wi = this.wellIncl.split('_');
     let uri = "http://172.20.103.187:7575/api/nno/history/"  + wi[0] + "/" + wi[1] + "/";
     this.$emit('update:isLoading', true);
@@ -68,3 +131,29 @@ mounted() {
 }
 }
 </script>
+<style>
+.plot-block {
+  background-color: #272953;
+}
+.title-plot {
+  float: left;
+}
+
+.krs-table-title {
+  text-align: center;
+}
+
+.incl-modal-table {
+  height: 100%;
+  overflow-y: auto;
+}
+
+.gno-table-with-header {
+  height: initial;
+}
+
+tr {
+  font-weight: bold;
+  height: 10pt;
+}
+</style>
