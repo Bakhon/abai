@@ -15,8 +15,8 @@
           <p>{{ historyItem.updated_at | moment().format('YYYY-MM-DD HH:mm') }}</p>
         </div>
       </div>
-      <div class="col-9">
-        <table v-if="selectedItem" class="table table-bordered history__fields scrollable">
+      <div class="col-9 history__fields scrollable">
+        <table v-if="selectedItem" class="table table-bordered scrollable">
           <tr>
             <th><b>{{ trans('app.param_name') }}</b></th>
             <th>
@@ -153,9 +153,18 @@ export default {
   &__main {
     align-items: stretch;
     display: flex;
+    height: calc(100% - 80px);
 
-    .history__list-item {
-      color: #fff;
+    .history {
+      &__list {
+        &-item {
+          color: #fff;
+        }
+      }
+
+      &__fields {
+        overflow-y: auto;
+      }
     }
   }
 }
