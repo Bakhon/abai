@@ -58,7 +58,7 @@ export default {
     computed: {
         usdRatesDataTableForCurrentPeriod() {
             this.sortUsdRatesDataForTable;
-            if (typeof(this.usdPeriod) == 'number') {
+            if (typeof(this.usdPeriod) == 'number'  && this.usdRatesData.for_table.length > 0) {
                 return this.usdRatesData.for_table.slice(0, this.usdPeriod);
             }
             return this.usdRatesData.for_table;

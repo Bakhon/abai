@@ -53,7 +53,7 @@ export default {
     computed: {
         oilRatesDataTableForCurrentPeriod() {
             this.sortOilRatesDataForTable;
-            if (typeof(this.oilPeriod) == 'number') {
+            if (typeof(this.oilPeriod) == 'number' && this.oilRatesData.for_table.length > 0) {
                 return this.oilRatesData.for_table.slice(0, this.oilPeriod);
             }
             return this.oilRatesData.for_table;

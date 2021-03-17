@@ -16,6 +16,7 @@
 <script>
 import VueApexCharts from "vue-apexcharts";
 import {EventBus} from "../../event-bus.js";
+import moment from "moment";
 
 Vue.component("apexchart", VueApexCharts);
 
@@ -47,12 +48,12 @@ export default {
           // width: '100%',
           locales: [{
             "name": "ru",
-            "options": {
-              "months": ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"],
-              "shortMonths": ["Янв", "Фев", "Мар", "Апр", "Май", "Июнь", "Июль", "Авг", "Сент", "Окт", "Нояб", "Дек"],
-              "days": ["Воскресенье", "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"],
-              "shortDays": ["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"],
-            }
+            // "options": {
+            //   "months": ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"],
+            //   "shortMonths": ["Янв", "Фев", "Мар", "Апр", "Май", "Июнь", "Июль", "Авг", "Сент", "Окт", "Нояб", "Дек"],
+            //   "days": ["Воскресенье", "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"],
+            //   "shortDays": ["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"],
+            // }
           }],
           defaultLocale: "ru",
           foreColor: '#ffffff',
@@ -109,8 +110,11 @@ export default {
           },
           labels: {
             style: {
-              fontSize: '14px'
-            }
+              fontSize: '5px'
+            },
+            formatter: function (value, timestamp) {
+              return moment(timestamp).format("DD-MMM");
+            },
           }
         },
         yaxis: {
@@ -155,7 +159,7 @@ export default {
           tooltip: {
             x: {
               formatter: function (value) {
-                return self.$moment(value).format('DD MMM YYYY');
+                return self.$moment(value).format('DD-MM-YYYY');
               }
             },
             style: {
@@ -181,11 +185,16 @@ export default {
     updateZoom() {
       let self = this;
       setTimeout(() => {
-        self.$refs.chart.zoomX(
-            self.tableData[0].timestamp,
-            self.tableData[self.tableData.length - 1].timestamp
-        )
-      }, 100);
+        let periodEnd = moment(self.tableData[0].date_string, 'DD.MM.YYYY').valueOf();
+        let periodStart = moment(self.tableData[self.tableData.length - 1].date_string, 'DD.MM.YYYY').valueOf();
+        console.log(periodStart + ' periodEnd ' + periodEnd);
+       // let periodStart = self.tableData[0].date_string.replace(/\./g,'-');
+       // console.log(periodStart)
+        console.log(self.tableData.length);
+        // console.log(self.tableData[0].date_string)
+        // console.log(moment(periodStart));
+        self.$refs.chart.zoomX(periodStart, periodEnd);
+      }, 2000);
     }
   },
   watch: {
