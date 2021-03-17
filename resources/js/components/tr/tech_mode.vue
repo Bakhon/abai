@@ -1070,6 +1070,140 @@
                       </el-table-column>
                     </el-table-column>
 
+                    <el-table-column
+                      :label="`${this.trans('tr.tr28')}`"
+                      >
+                      <el-table-column
+                      :label="`${this.trans('tr.trs59')}`"
+                      >
+                        <el-table-column
+                          prop="grp_skin"
+                          label=""
+                          width="130"
+                          sortable
+                          >
+                        </el-table-column>
+                      </el-table-column>
+                      <el-table-column
+                      :label="`${this.trans('tr.trs60')}`"
+                      >
+                        <el-table-column
+                          prop="grp_jd"
+                          label=""
+                          width="130"
+                          sortable
+                          >
+                        </el-table-column>
+                      </el-table-column>
+
+                      <el-table-column
+                      :label="`${this.trans('tr.trs61')}`"
+                      >
+                        <el-table-column
+                          prop="grp_date"
+                          label=""
+                          width="150"
+                          sortable
+                          >
+                        </el-table-column>
+                      </el-table-column>
+                      <el-table-column
+                      label="Фирма"
+                      >
+                        <el-table-column
+                          prop="grp_contractor"
+                          label=""
+                          width="130"
+                          sortable
+                          >
+                        </el-table-column>
+                      </el-table-column>
+                    </el-table-column>
+
+
+                    <el-table-column
+                      :label="`${this.trans('tr.trs18')}`"
+                      >
+                      <el-table-column
+                        prop="visc_oil_rc"
+                        label=""
+                        width="230"
+                        sortable
+                        >
+                      </el-table-column>
+                    </el-table-column>
+
+                    <el-table-column
+                      :label="`${this.trans('tr.trs19')}`"
+                      >
+                      <el-table-column
+                        prop="visc_wat_r"
+                        label=""
+                        width="230"
+                        sortable
+                        >
+                      </el-table-column>
+                    </el-table-column>
+
+                    <el-table-column
+                      :label="`${this.trans('tr.trs20')}`"
+                      >
+                      <el-table-column
+                        prop="visc_liq_rc"
+                        label=""
+                        width="130"
+                        sortable
+                        >
+                      </el-table-column>
+                    </el-table-column>
+
+                    <el-table-column
+                      :label="`${this.trans('tr.trs21')}`"
+                      >
+                      <el-table-column
+                        prop="bo"
+                        label=""
+                        width="130"
+                        sortable
+                        >
+                      </el-table-column>
+                    </el-table-column>
+                    <el-table-column
+                      :label="`${this.trans('tr.trs22')}`"
+                      >
+                      <el-table-column
+                        prop="dens_oil"
+                        label=""
+                        width="130"
+                        sortable
+                        >
+                      </el-table-column>
+                    </el-table-column>
+                    <el-table-column
+                      :label="`${this.trans('tr.trs23')}`"
+                      >
+                      <el-table-column
+                        prop="dens_liq"
+                        label=""
+                        width="130"
+                        sortable
+                        >
+                      </el-table-column>
+                    </el-table-column>
+                    <el-table-column
+                      :label="`${this.trans('tr.trs24')}`"
+                      >
+                      <el-table-column
+                        prop="h_perf"
+                        label=""
+                        width="130"
+                        sortable
+                        >
+                      </el-table-column>
+                    </el-table-column>
+
+                    
+
 
                   </el-table>
                   <div class="ui-pagination">
