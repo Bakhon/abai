@@ -349,7 +349,7 @@
                 </div>
               </modal>
 
-              <modal class="modal-bign-wrapper" name="modal-prs" :width="1300" :height="700"
+              <modal class="modal-bign-wrapper" name="modal-prs" :width="1263" :height="612"
                 style="background: transparent;" :adaptive="true">
                 <div class="modal-bign modal-bign-container">
                   <div class="modal-bign-header">

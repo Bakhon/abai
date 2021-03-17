@@ -111,4 +111,13 @@ return array (
   'number_of_repair' => 'Количество ремонтов без ГТМ',
   'nno' => 'ННО',
   'info_krs' => 'Информация по КРС',
+  'md' => 'MD',
+  'tvd' => 'TVD',
+  'udl' => 'Удл',
+  'temp_nabora_krivizni_incl' => 'Максимальный темп набора кривизны',
+  'v_meste_ustanovki' => 'в месте установки насоса',
+  'v_inter_glubin' => 'в интервале глубины спуска',
+  'maks_zenit_ugol' => 'Максимальный зенитный угол',
+  'primenit_hpump' => 'Применить выбранную Нсп',
+  'vibor_glubin_hpump' => 'Выбор глубины спуска',
 );
