@@ -6,7 +6,7 @@ namespace App\Services\BigData\Forms;
 
 use App\Models\BigData\Well;
 
-class WellRegister extends BaseForm
+class WellRegister extends PlainForm
 {
     protected $configurationFileName = 'well_register';
 

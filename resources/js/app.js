@@ -99,10 +99,12 @@ Vue.component('zu-form', require('./components/zu/form.vue').default);
 Vue.component('gtm-main', require('./components/GTM/Main.vue').default);
 Vue.component('gtm-aegtm', require('./components/GTM/Aegtm.vue').default);
 Vue.component('gtm-aegtm-eco', require('./components/GTM/AegtmEco.vue').default);
-Vue.component('gtm-podbor-gtm', require('./components/GTM/podborGTM.vue').default);
+Vue.component('gtm-podbor-gtm', require('./components/GTM/PodborGTM.vue').default);
+Vue.component('gtm-digital-rating-gtm', require('./components/GTM/DigitalRating.vue').default);
 Vue.component('gtm-etu', require('./components/GTM/Etu.vue').default);
 Vue.component('gtm-main-menu', require('./components/GTM/MainMenu.vue').default);
 Vue.component('gtm-bar-chart', require('./components/GTM/BarChart.vue').default);
+Vue.component('gtm-line-chart', require('./components/GTM/LineChart.vue').default);
 Vue.component('gtm-tree', require('./components/GTM/Tree.vue').default);
 Vue.component('gtm-node-tree', require('./components/GTM/NodeTree.vue').default);
 
@@ -157,7 +159,7 @@ Vue.component('main-page', require('./components/mainpage.vue').default);
 
 Vue.component('profile', require('./components/profile/Profile.vue').default);
 
-
+Vue.component('reptt', require('./components/economy_kenzhe/reptt.vue').default);
 Vue.prototype.trans = string => _.get(window.i18n, string) || string;
 Vue.prototype.localeUrl = string => `/${window.current_lang}/${string[0] === '/' ? string.substr(1) : string}`;
 Vue.prototype.currentLang = window.current_lang;

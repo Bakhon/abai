@@ -107,7 +107,7 @@
         </perfect-scrollbar>
       </div>
 
-      <div class="col-6 gno-plotly-graph" style="background-color: #2b2e5e; height: 700px;">
+      <div class="col-6 gno-plotly-graph" style="background-color: #2b2e5e; height: 670px;">
         <Plotly :data="chart" :layout="layout" :display-mode-bar="false"></Plotly>
         <div class="col-12" style="padding-bottom: 10px; margin-top: 50px;">
           <div class="col-6" style="float: left; text-align: left; color: white; font-weight: bold;">Выбор глубины спуска {{ this.expChoose }} <br> Нсп 
