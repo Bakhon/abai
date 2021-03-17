@@ -53,8 +53,7 @@
           style="background: #40467E; margin-top: 4px;"
           aria-labelledby="dropdownMenuLink"
         >
-          <td style="margin-left: 8px; color: white; font-size: large">Еженедельный ФА</td>
-          <!-- <form class="form-group but-nav__link"> -->
+          <td style="margin-left: 8px; color: white; font-size: large">{{trans('tr.weeklyfa')}}</td>
           <label for="inputDate" style="margin-left: 8px;">{{trans('tr.fadt1')}}:</label>
           <input type="date" class="form-control" v-model="date1" />
           <label for="inputDate" style="margin-left: 8px;">{{trans('tr.fadt2')}}:</label>
@@ -82,7 +81,7 @@
           style="background: #40467E; margin-top: 4px;"
           aria-labelledby="dropdownMenuLink"
         >
-          <td style="margin-left: 8px; color: white; font-size: large">Ежемесячный ФА</td>
+          <td style="margin-left: 8px; color: white; font-size: large">{{trans('tr.monthlyfa')}}</td>
           <label for="inputDate" style="margin-left: 8px;">{{trans('tr.fadt1')}}:</label>
           <input type="date" class="form-control" v-model="date1" />
           <label for="inputDate" style="margin-left: 8px;">{{trans('tr.fadt2')}}:</label>
@@ -279,8 +278,6 @@
         <tr></tr>
         <tr class="subHeaderColumn" style="cursor: pointer">
            <td @click="sortBy('rus_wellname')"  style="background: #12135c" class="sortik">
-            <!-- <i class="fas fa-sort-down" v-if="issorttobig"></i>
-            <i class="fas fa-sort-up" v-if="!issorttobig"></i> -->
             <i class="fa fa-fw fa-sort"></i>
           </td>
           <td @click="sortBy('field')" style="background: #12135c; min-width: 120px;">
@@ -401,7 +398,6 @@
             </span>
           </td>
 
-          <!-- <td>{{Math.round(row.q_o_1*10)/10}}</td> -->
           <td v-show= hide
             style="background: #2c3379"
             :class="{
@@ -429,7 +425,6 @@
             </span>
           </td>
 
-          <!-- <td>{{Math.round(row.wct_1*10)/10}}</td> -->
           <td v-show= hide
             style="background: #2c3379"
             :class="{
@@ -457,7 +452,6 @@
             </span>
           </td>
 
-          <!-- <td>{{Math.round(row.bhp_1*10)/10}}</td> -->
           <td v-show= hide
             style="background: #2c3379"
             :class="{
@@ -485,7 +479,6 @@
             </span>
           </td>
 
-          <!-- <td>{{Math.round(row.p_res_1*10)/10}}</td> -->
           <td v-show= hide
             style="background: #2c3379"
             :class="{
@@ -513,7 +506,6 @@
             </span>
           </td>
 
-          <!-- <td>{{Math.round(row.pi_1*10)/10}}</td> -->
           <td v-show= hide
             style="background: #2c3379"
             :class="{
@@ -563,7 +555,6 @@
               {{ wells[row_index].prod_days_1[1][1] }}
             </span>
           </td>
-          <!-- <td>{{Math.round(row.q_l_2*10)/10}}</td> -->
           <td v-show= hide
             style="background: #1a2370"
             :class="{
@@ -591,7 +582,6 @@
             </span>
           </td>
 
-          <!-- <td>{{Math.round(row.q_o_2*10)/10}}</td> -->
           <td v-show= hide
             style="background: #1a2370"
             :class="{
@@ -619,7 +609,6 @@
             </span>
           </td>
 
-          <!-- <td>{{Math.round(row.wct_2*10)/10}}</td> -->
           <td v-show= hide
             style="background: #1a2370"
             :class="{
@@ -675,7 +664,6 @@
             </span>
           </td>
 
-          <!-- <td>{{Math.round(row.p_res_2*10)/10}}</td> -->
           <td v-show= hide
             style="background: #1a2370"
             :class="{
@@ -703,7 +691,6 @@
             </span>
           </td>
 
-          <!-- <td>{{Math.round(row.pi_2*10)/10}}</td> -->
           <td v-show= hide
             style="background: #1a2370"
             :class="{
@@ -753,15 +740,6 @@
               {{ wells[row_index].prod_days_2[1][1] }}
             </span>
           </td>
-          <!-- <td>{{Math.round(row.dqo*10)/10}}</td> -->
-          <!-- :style="`background :${Two(Math.round(row.dqo*10)/10)}`" -->
-          <!-- <td
-                        :style="{
-                            background: getColorone(Math.round(row.dqn*10)/10),
-                        }"
-                    >
-                        <span> {{Math.round(row.dqn*10)/10}} </span>
-                    </td> -->
 
           <td
             :style="{
@@ -1034,7 +1012,6 @@ import moment from "moment";
 import Vue from "vue";
 import SearchFormRefresh from "../ui-kit/SearchFormRefresh.vue";
 import columnSortable from 'vue-column-sortable'
-// import FadeLoader from "vue-spinner/src/FadeLoader.vue";
 import { fields } from "./constants.js";
 import TrMultiselect from "./TrMultiselect.vue";
 
@@ -1063,7 +1040,6 @@ export default {
       is_dynamic:true,
       colsize7: null,
       colsize2: null,
-      // filter: "Все месторождения",
       filter: [...fields],
       fieldFilterOptions: [
         {
@@ -1081,7 +1057,6 @@ export default {
       datepicker2: false,
       wdate2: null,
       wdate1: null,
-      // isloading: true,
       chartBarOptions: {
         chart: {
           height: 350,
@@ -1390,7 +1365,6 @@ export default {
       const { filter, fullWells } = this;
       console.log("filter = ", filter);
       console.log(fullWells);
-      // if (!filter || filter == "Казгермунай") {
       this.$store.commit("fa/SET_FILTER", filter);
       if (!filter) {
         this.wells = fullWells;
@@ -1406,9 +1380,6 @@ export default {
       }
       this.$modal.show(bign);
     },
-    // swap() {
-    //   this.issorttobig = !this.issorttobig;
-    // },
     getColor(status, ...values) {
       if (status < "0" && status === Math.min(status, ...values))
         return "#CD5C5C";
