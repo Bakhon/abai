@@ -74,7 +74,7 @@
         </template>
 
         <template v-else-if="activeTab === 'access'">
-            <access-profile></access-profile>
+            <access-profile :modules="modules" :other_modules="other_modules" :accesses="accesses"></access-profile>
         </template>
 
         <template v-else-if="activeTab === 'history'">
@@ -106,6 +106,18 @@ export default {
       required: true
     },
     logs: {
+      type: Array,
+      required: true
+    },
+    modules: {
+      type: Array,
+      required: true
+    },
+    other_modules: {
+      type: Array,
+      required: true
+    },
+    accesses: {
       type: Array,
       required: true
     },
