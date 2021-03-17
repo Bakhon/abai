@@ -1,5 +1,6 @@
 {
-  "type": "form",
+  "type": "plain",
+  "table": "bigdata_wells",
   "tabs": [
     {
       "title": "Основное",
