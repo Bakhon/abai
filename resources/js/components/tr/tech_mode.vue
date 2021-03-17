@@ -592,7 +592,7 @@
                         prop="field"
                         label=""
                         width="200"
-                        
+                        sortable
                         
                         >
                       </el-table-column>
@@ -604,7 +604,7 @@
                         prop="rus_wellname"
                         label=""
                         width="150"
-                        
+                        sortable
                         >
                       </el-table-column>
                     </el-table-column>
@@ -615,7 +615,7 @@
                         prop="well_type"
                         label=""
                         width="150"
-                        
+                        sortable
                         >
                       </el-table-column>
                     </el-table-column>
@@ -626,7 +626,7 @@
                         prop="horizon"
                         label=""
                         width="150"
-                        
+                        sortable
                         >
                       </el-table-column>
                     </el-table-column>
@@ -637,7 +637,7 @@
                         prop="object"
                         label=""
                         width="150"
-                        
+                        sortable
                         >
                       </el-table-column>
                     </el-table-column>
@@ -648,7 +648,7 @@
                         prop="block"
                         label=""
                         width="150"
-                        
+                        sortable
                         >
                       </el-table-column>
                     </el-table-column>
@@ -660,7 +660,7 @@
                         prop="r_con"
                         label=""
                         width="150"
-                        
+                        sortable
                         >
                       </el-table-column>
                     </el-table-column>
@@ -672,7 +672,7 @@
                         prop="cas_OD"
                         label=""
                         width="180"
-                        
+                        sortable
                         >
                       </el-table-column>
                     </el-table-column>
@@ -684,7 +684,7 @@
                         prop="cas_ID"
                         label=""
                         width="180"
-                        
+                        sortable
                         >
                       </el-table-column>
                     </el-table-column>
@@ -696,7 +696,7 @@
                         prop="tub_OD"
                         label=""
                         width="200"
-                        
+                        sortable
                         >
                       </el-table-column>
                     </el-table-column>
@@ -708,7 +708,7 @@
                         prop="tub_ID"
                         label=""
                         width="200"
-                        
+                        sortable
                         >
                       </el-table-column>
                     </el-table-column>
@@ -719,7 +719,7 @@
                         prop="choke_d"
                         label=""
                         width="200"
-                        
+                        sortable
                         >
                       </el-table-column>
                     </el-table-column>
@@ -730,7 +730,7 @@
                         prop="h_up_perf_md"
                         label=""
                         width="200"
-                        
+                        sortable
                         >
                       </el-table-column>
                     </el-table-column>
@@ -741,7 +741,7 @@
                         prop="h_up_perf_ext"
                         label=""
                         width="200"
-                        
+                        sortable
                         >
                       </el-table-column>
                     </el-table-column>
@@ -752,7 +752,7 @@
                         prop="exp_meth"
                         label=""
                         width="200"
-                        
+                        sortable
                         >
                       </el-table-column>
                     </el-table-column>
@@ -763,7 +763,7 @@
                         prop="pump_type"
                         label=""
                         width="200"
-                        
+                        sortable
                         >
                       </el-table-column>
                     </el-table-column>
@@ -775,7 +775,7 @@
                         prop="type_sr"
                         label=""
                         width="200"
-                        
+                        sortable
                         >
                       </el-table-column>
                     </el-table-column>
@@ -786,7 +786,7 @@
                         prop="spm"
                         label=""
                         width="200"
-                        
+                        sortable
                         >
                       </el-table-column>
                     </el-table-column>
@@ -797,7 +797,7 @@
                         prop="stroke_len"
                         label=""
                         width="200"
-                        
+                        sortable
                         >
                       </el-table-column>
                     </el-table-column>
@@ -808,7 +808,7 @@
                         prop="q_theor"
                         label=""
                         width="200"
-                        
+                        sortable
                         >
                       </el-table-column>
                     </el-table-column>
@@ -819,7 +819,7 @@
                         prop="freq"
                         label=""
                         width="400"
-                        
+                        sortable
                         >
                       </el-table-column>
                     </el-table-column>
@@ -833,7 +833,7 @@
                         prop="h_pump_set"
                         label=""
                         width="200"
-                        
+                        sortable
                         >
                       </el-table-column>
                     </el-table-column>
@@ -844,7 +844,7 @@
                         prop="whp"
                         label=""
                         width="200"
-                        
+                        sortable
                         >
                       </el-table-column>
                     </el-table-column>
@@ -855,7 +855,7 @@
                         prop="line_p"
                         label=""
                         width="200"
-                        
+                        sortable
                         >
                       </el-table-column>
                     </el-table-column>
@@ -866,7 +866,7 @@
                         prop="p_res"
                         label=""
                         width="200"
-                        
+                        sortable
                         >
                       </el-table-column>
                     </el-table-column>
@@ -877,7 +877,7 @@
                         prop="h_dyn"
                         label=""
                         width="200"
-                        
+                        sortable
                         >
                       </el-table-column>
                     </el-table-column>
@@ -888,7 +888,7 @@
                         prop="p_annular"
                         label=""
                         width="200"
-                        
+                        sortable
                         >
                       </el-table-column>
                     </el-table-column>
@@ -899,7 +899,7 @@
                         prop="p_intake"
                         label=""
                         width="200"
-                        
+                        sortable
                         >
                       </el-table-column>
                     </el-table-column>
@@ -914,7 +914,7 @@
                           prop="p_intake"
                           label=""
                           width="200"
-                          
+                          sortable
                           >
                         </el-table-column>
                       </el-table-column>
@@ -1939,9 +1939,6 @@ table::-webkit-scrollbar-corner {
 
 
 
-
-
-
 .el-table__body-wrapper {}
 
 .el-table__body-wrapper td {
@@ -1986,5 +1983,7 @@ table::-webkit-scrollbar-corner {
     color: #fff;
     font-size: 14px;
 }
-
+.el-table thead.is-group th {
+    background: rgb(51, 57, 117);
+}
 </style>
