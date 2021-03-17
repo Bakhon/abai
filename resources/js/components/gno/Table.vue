@@ -162,7 +162,6 @@
                   </div>
                   </div>
                   
-
                   <div class="devices-data table-border-gno-top no-gutter col-7">
                     {{trans('pgno.h_spuska')}}
                   </div>

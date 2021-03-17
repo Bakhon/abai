@@ -24,7 +24,7 @@
       </div>
 
      <div class="col-4 no-padding no-scrollbar incl-modal-table">
-       <h5 class="krs-table-title">{{trans('pgno.info_po_krs')}}</h5>
+       <!-- <h5 class="krs-table-title">{{trans('pgno.info_po_krs')}}</h5> -->
 
       <perfect-scrollbar>
         <table class="gno-table-with-header pgno">
@@ -82,6 +82,7 @@ data: function(){
         title: 'История ПРС',
         barmode: 'group',
         },
+        asd: {'data': {'Январь': {'text': 'ШГН-57, Нсп-1024, ГТМ', 'nno_size': '37.0'}, 'Февраль': {'text': 'ШГН-57, Нсп-1040, Пропуск/износ насоса', 'nno_size': '56.0'}, 'Март': {'text': '', 'nno_size': ''}, 'Апрель': {'text': '', 'nno_size': ''}, 'Май': {'text': '', 'nno_size': ''}, 'Июнь': {'text': '', 'nno_size': ''}, 'Июль': {'text': '', 'nno_size': ''}, 'Август': {'text': '', 'nno_size': ''}, 'Сентябрь': {'text': '', 'nno_size': ''}, 'Октябрь': {'text': '', 'nno_size': ''}, 'Ноябрь': {'text': '', 'nno_size': ''}, 'Декабрь': {'text': '', 'nno_size': ''}}, 'nno': '{"NNO": 56.0, "prs": 1}'}
     }
 },
 mounted() {
@@ -99,19 +100,30 @@ mounted() {
     this.axios.get(uri).then((response) => {
     this.prs = response['data']['prs']['data']
     for(let key of Object.keys(this.prs)){
-
       var nno_days = this.prs[key]['nno_size']
 
+      if (this.prs[key]['text'] === "") {
+        var isNull = false 
+      } else {
+        var isNull = true 
+      }
       this.data.push({x: [key], 
                       y: [nno_days*1], 
                       name: this.prs[key]['text'], 
+                      showlegend: isNull,
                       type: 'bar', 
-                      text: "ННО = "+nno_days+" дней",
+                      text: nno_days,
                       textposition: 'auto',
                       hoverinfo: 'none',})
     }
     this.layout= {
         showlegend: true,
+        legend: {"orientation": "h"},
+        xaxis: {
+          tickfont:{
+            size: 10
+          }
+        },
         yaxis: {rangemode:'tozero', 
                 autorange: true,
                 tickformat: ',d'},
