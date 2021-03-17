@@ -2251,9 +2251,6 @@ table::-webkit-scrollbar-corner {
   margin: 16px 0;
   text-align: center;
 }
-
-
-
 .el-table__body-wrapper {}
 
 .el-table__body-wrapper td {
