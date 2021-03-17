@@ -625,7 +625,7 @@
                       <el-table-column
                         prop="horizon"
                         label=""
-                        width="150"
+                        width="100"
                         sortable
                         >
                       </el-table-column>
@@ -865,7 +865,7 @@
                       <el-table-column
                         prop="p_res"
                         label=""
-                        width="200"
+                        width="130"
                         sortable
                         >
                       </el-table-column>
@@ -876,7 +876,7 @@
                       <el-table-column
                         prop="h_dyn"
                         label=""
-                        width="200"
+                        width="130"
                         sortable
                         >
                       </el-table-column>
@@ -887,7 +887,7 @@
                       <el-table-column
                         prop="p_annular"
                         label=""
-                        width="200"
+                        width="130"
                         sortable
                         >
                       </el-table-column>
@@ -898,7 +898,7 @@
                       <el-table-column
                         prop="p_intake"
                         label=""
-                        width="200"
+                        width="130"
                         sortable
                         >
                       </el-table-column>
@@ -913,7 +913,7 @@
                         <el-table-column
                           prop="bhp_prev_m"
                           label=""
-                          width="200"
+                          width="130"
                           sortable
                           >
                         </el-table-column>
@@ -924,7 +924,7 @@
                         <el-table-column
                           prop="q_l_prev_m"
                           label=""
-                          width="200"
+                          width="130"
                           sortable
                           >
                         </el-table-column>
@@ -936,7 +936,7 @@
                         <el-table-column
                           prop="wct_prev_m"
                           label=""
-                          width="200"
+                          width="130"
                           sortable
                           >
                         </el-table-column>
@@ -947,7 +947,7 @@
                         <el-table-column
                           prop="h_dyn_prev_m"
                           label=""
-                          width="200"
+                          width="130"
                           sortable
                           >
                         </el-table-column>
@@ -958,13 +958,121 @@
                         <el-table-column
                           prop="pi_prev_m"
                           label=""
-                          width="200"
+                          width="130"
                           sortable
                           >
                         </el-table-column>
                       </el-table-column>
                       
                     </el-table-column>
+                    <el-table-column
+                      :label="`${this.trans('tr.tr17')}`"
+                      >
+                      <el-table-column
+                      :label="`${this.trans('tr.tr20')}`"
+                      >
+                        <el-table-column
+                          prop="bhp"
+                          label=""
+                          width="130"
+                          sortable
+                          >
+                        </el-table-column>
+                      </el-table-column>
+                      <el-table-column
+                      :label="`${this.trans('tr.tr22')}`"
+                      >
+                        <el-table-column
+                          prop="q_o"
+                          label=""
+                          width="130"
+                          sortable
+                          >
+                        </el-table-column>
+                      </el-table-column>
+
+                      <el-table-column
+                      :label="`${this.trans('tr.tr23')}`"
+                      >
+                        <el-table-column
+                          prop="q_l"
+                          label=""
+                          width="130"
+                          sortable
+                          >
+                        </el-table-column>
+                      </el-table-column>
+                      <el-table-column
+                      :label="`${this.trans('tr.trs57')}`"
+                      >
+                        <el-table-column
+                          prop="wct"
+                          label=""
+                          width="130"
+                          sortable
+                          >
+                        </el-table-column>
+                      </el-table-column>
+                      <el-table-column
+                      :label="`${this.trans('tr.tr24')}`"
+                      >
+                        <el-table-column
+                          prop="gor"
+                          label=""
+                          width="130"
+                          sortable
+                          >
+                        </el-table-column>
+                      </el-table-column>
+                    </el-table-column>
+
+
+
+                    <el-table-column
+                      :label="`${this.trans('tr.tr25')}`"
+                      >
+                      <el-table-column
+                        prop="well_status_last_day"
+                        label=""
+                        width="230"
+                        sortable
+                        >
+                      </el-table-column>
+                    </el-table-column>
+                    <el-table-column
+                      :label="`${this.trans('tr.trs15')}`"
+                      >
+                      <el-table-column
+                        prop="P_bubble_point"
+                        label=""
+                        width="150"
+                        sortable
+                        >
+                      </el-table-column>
+                    </el-table-column>
+                    <el-table-column
+                      :label="`${this.trans('tr.trs16')}`"
+                      >
+                      <el-table-column
+                        prop="t_res"
+                        label=""
+                        width="150"
+                        sortable
+                        >
+                      </el-table-column>
+                    </el-table-column>
+                    <el-table-column
+                      :label="`${this.trans('tr.trs17')}`"
+                      >
+                      <el-table-column
+                        prop="wht"
+                        label=""
+                        width="150"
+                        sortable
+                        >
+                      </el-table-column>
+                    </el-table-column>
+
                     
 
                   </el-table>
