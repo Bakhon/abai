@@ -42,7 +42,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr style="height: 10pt;" v-for="(row, row_index) in this.krsTable" :key="row_index">
+            <tr v-for="(row, row_index) in this.krsTable" :key="row_index">
               <td>{{row.dbeg.substring(0, 10)}}</td>
               <td>{{row.dend.substring(0, 10)}}</td>
               <td>{{row.krs_name}}</td>
@@ -131,7 +131,7 @@ mounted() {
 }
 }
 </script>
-<style>
+<style scoped>
 .plot-block {
   background-color: #272953;
 }
@@ -150,6 +150,11 @@ mounted() {
 
 .gno-table-with-header {
   height: initial;
+}
+
+tr {
+  height: 10pt;
+  font-weight: bold;
 }
 
 </style>
