@@ -15,21 +15,21 @@ class ModuleController extends Controller
         $user = Auth::user();
         $module = Module::whereId($request->get('id'))->first();
         $accessActive = Access::where('user_id',$user->id)->where('module_id',$module->id)->where('status','process')->first();
-        if(!$accessActive){
-            $access = new Access();
-            $access->module_id = $module->id;
-            $access->module_icon = $module->ico;
-            $access->user_id = $user->id;
-            $access->user_name = $user->name;
-            $access->module_name = $module->name;
-            $access->status = 'process';
-            $access->save();
-            return response()->json(['message' => 'Заявка на запрос модуля успешно отправлена!','status' => 1]);
-        }elseif($accessActive){
+       
+        if($accessActive){
             return response()->json(['message' => 'Заявка на данный модуль уже существует. Ожидайте ответа','status' => 0]); 
-        }else{
-            return response()->json(['message' => 'Ошибка! Попробуйте отправить позднее']);  
         }
+
+        $access = new Access();
+        $access->module_id = $module->id;
+        $access->module_icon = $module->ico;
+        $access->user_id = $user->id;
+        $access->user_name = $user->name;
+        $access->module_name = $module->name;
+        $access->status = 'process';
+        $access->save();
+        return response()->json(['message' => 'Заявка на запрос модуля успешно отправлена!','status' => 1]);
+
     }
 }
 

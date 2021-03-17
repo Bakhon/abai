@@ -16,11 +16,13 @@ class AccessesController extends Controller
         $accesses = Access::all()->sortByDesc('created_at');
         return view('admin.accesses.index', compact('accesses'));
     }
+
     public function edit($id)
     {
             $access = Access::whereId($id)->first();
             return view('admin.accesses.edit', compact('access'));
     }
+    
     public function update(Request $request)
     {
             $status = $request->get('access_status');
@@ -32,18 +34,21 @@ class AccessesController extends Controller
             if($status == 'open'){
                 $user->modules()->detach($module_id);
                 $user->modules()->attach($module_id);
-                $access = Access::whereId($id)->first();
-                $access->status = $status;
-                $access->save();
+                $this->saveStatus($id, $status);
                 return back()->with(['message' => 'Статус запроса был обновлен! Статус: одобрено!']);
-            }elseif($status == 'close'){
-                $access = Access::whereId($id)->first();
-                $access->status = $status;
-                $access->save();
-                return back()->with(['message' => 'Статус запроса был обновлен! Статус: отклонено!']);
-            }else{
-                
             }
-        
+
+            if($status == 'close'){
+                $this->saveStatus($id, $status);
+                return back()->with(['message' => 'Статус запроса был обновлен! Статус: отклонено!']);
+            }
     }
+    
+    private function saveStatus($id, $status)
+       {
+            $access = Access::whereId($id)->first();
+            $access->status = $status;
+            $access->save();
+       }
+
 }
