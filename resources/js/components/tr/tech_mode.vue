@@ -1202,6 +1202,40 @@
                       </el-table-column>
                     </el-table-column>
 
+                    <el-table-column
+                      label="k"
+                      >
+                      <el-table-column
+                        prop="k"
+                        label=""
+                        width="130"
+                        sortable
+                        >
+                      </el-table-column>
+                    </el-table-column>
+                    <el-table-column
+                      label="КН"
+                      >
+                      <el-table-column
+                        prop="kh"
+                        label=""
+                        width="130"
+                        sortable
+                        >
+                      </el-table-column>
+                    </el-table-column>
+                    <el-table-column
+                      :label="`${this.trans('tr.trs58')}`"
+                      >
+                      <el-table-column
+                        prop="pi"
+                        label=""
+                        width="130"
+                        sortable
+                        >
+                      </el-table-column>
+                    </el-table-column>
+
                     
 
 
