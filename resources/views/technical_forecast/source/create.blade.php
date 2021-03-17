@@ -4,7 +4,7 @@
     <div class="container">
         <div class="row justify-content-center">
             <a href="{{ route('tech_data_list') }}" class="btn btn-info">
-                Вернуться в справочник</a>
+                {{ __('forecast.return_menu') }}</a>
         </div>
     </div>
     <div class="container">
@@ -20,7 +20,7 @@
                             <div class="row">
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
-                                        <strong>Источник данных:</strong>
+                                        <strong>{{ __('forecast.source_data') }} данных:</strong>
                                         <input type="text" name="name" class="form-control"
                                                placeholder="Пример: Ручное добавление или Автоматический импорт">
                                     </div>
