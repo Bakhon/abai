@@ -3,7 +3,7 @@
 return array (
   'choose_well' => 'Well selection',
   'mestorozhdenie' => 'Field',
-  'well' => 'Скважина',
+  'well' => 'Well',
   'new_well' => 'New well',
   'horizon' => 'Horizon',
   'method_of_operation' => 'Method of operation',
@@ -104,4 +104,6 @@ return array (
   'zenitnii_ugol' => 'Deviation',
   'azimut' => 'Azimut',
   'temp_nabora_krivizni' => 'Dog leg severity',
+  'zagruzka' => 'Loading',
+  'no_data' => 'No data',
 );

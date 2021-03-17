@@ -7,7 +7,17 @@ use Illuminate\Database\Eloquent\Model;
 class TechnicalDataForecast extends Model
 {
     protected $fillable = [
-        'source_id', 'gu_id', 'well_id', 'date', 'oil', 'liquid', 'days_worked', 'prs', 'author_id', 'editor_id'
+        'source_id',
+        'gu_id',
+        'well_id',
+        'date', 'oil',
+        'liquid',
+        'days_worked',
+        'prs',
+        'comment',
+        'author_id',
+        'editor_id',
+        'log_id'
     ];
 
     public function source()
@@ -28,5 +38,10 @@ class TechnicalDataForecast extends Model
     public function gu()
     {
         return $this->belongsTo('App\Models\Refs\TechnicalStructureGu', 'gu_id');
+    }
+
+    public function log()
+    {
+        return $this->belongsTo('App\Models\Refs\TechnicalDataLog', 'log_id');
     }
 }

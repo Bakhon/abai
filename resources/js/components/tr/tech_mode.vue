@@ -576,200 +576,352 @@
           </button>
         </div>
 
-        <div class="table-outer">
+        <div class="table-outer"> 
           <div class="table-inner abat_tr">
                   <el-table
-                    :data="tableData"
+                    :data="wells"
+                    height="750"
                     style="width: 100%"
-                    
-                    row-class-name="abba">>
-                    <el-table-column
-                      :label="`${this.trans('tr.tr1')}`">
-                      <el-table-column
-                        prop="name"
-                        label=""
-                        v-for="(row, row_index) in wells" 
-                        :key="row_index"
-                      >
-                      </el-table-column>
-                    </el-table-column>
+                    row-class-name="abba"
+                    :span-method="objectSpanMethod">
 
                     <el-table-column
-                      prop="date"
-                      :label="`${this.trans('tr.tr2')}`">
-                      <el-table-column
-                        prop="name"
-                        label=""
+                      :label="`${this.trans('tr.trs1')}`"
                       >
-                      </el-table-column>
-                    </el-table-column>
-                    <el-table-column
-                      prop="date"
-                      :label="`${this.trans('tr.tr3')}`">
                       <el-table-column
-                        prop="name"
+                        prop="field"
                         label=""
-                      >
-                      </el-table-column>
-                    </el-table-column>
-                    <el-table-column
-                      prop="date"
-                      :label="`${this.trans('tr.tr4')}`">
-                      <el-table-column
-                        prop="name"
-                        label=""
-                      >
-                      </el-table-column>
-                    </el-table-column>
-                    <el-table-column
-                      prop="date"
-                      :label="`${this.trans('tr.tr5')}`">
-                      <el-table-column
-                        prop="name"
-                        label=""
-                      >
-                      </el-table-column>
-                    </el-table-column>
-                    <el-table-column
-                      prop="date"
-                      :label="`${this.trans('tr.tr6')}`">
-                      <el-table-column
-                        prop="name"
-                        label=""
-                      >
-                      </el-table-column>
-                    </el-table-column>
-
-                    <el-table-column
-                      prop="date"
-                      :label="`${this.trans('tr.tr7')}`">
-                      <el-table-column
-                        prop="name"
-                        label=""
-                      >
-                      </el-table-column>
-                    </el-table-column>
-                    <el-table-column
-                      prop="date"
-                      :label="`${this.trans('tr.tr8')}`">
-                      <el-table-column
-                        prop="name"
-                        label=""
-                      >
-                      </el-table-column>
-                    </el-table-column>
-                    <el-table-column
-                      prop="date"
-                      :label="`${this.trans('tr.tr9')}`">
-                      <el-table-column
-                        prop="name"
-                        label=""
-                      >
-                      </el-table-column>
-                    </el-table-column>
-                    <el-table-column
-                      prop="date"
-                      :label="`${this.trans('tr.tr10')}`">
-                      <el-table-column
-                        prop="name"
-                        label=""
-                      >
-                      </el-table-column>
-                    </el-table-column>
-                    <el-table-column
-                      prop="date"
-                      :label="`${this.trans('tr.tr11')}`">
-                      <el-table-column
-                        prop="name"
-                        label=""
-                      >
-                      </el-table-column>
-                    </el-table-column>
-                    <el-table-column
-                      prop="date"
-                      :label="`${this.trans('tr.tr12')}`">
-                      <el-table-column
-                        prop="name"
-                        label=""
-                      >
-                      </el-table-column>
-                    </el-table-column>
-                    <el-table-column
-                      prop="date"
-                      :label="`${this.trans('tr.tr13')}`">
-                      <el-table-column
-                        prop="name"
-                        label=""
-                      >
-                      </el-table-column>
-                    </el-table-column>
-                    <el-table-column
-                      prop="date"
-                      :label="`${this.trans('tr.tr14')}`">
-                      <el-table-column
-                        prop="name"
-                        label=""
-                      >
-                      </el-table-column>
-                    </el-table-column>
-                    <el-table-column
-                      prop="date"
-                      :label="`${this.trans('tr.tr15')}`">
-                      <el-table-column
-                        prop="name"
-                        label=""
-                      >
-                      </el-table-column>
-                    </el-table-column>
-                    <el-table-column
-                      prop="date"
-                      :label="`${this.trans('tr.tr16')}`">
-                      <el-table-column
-                        prop="name"
-                        label=""
-                      >
-                      </el-table-column>
-                    </el-table-column>
-
-
-
-
-
-                    <el-table-column :label="`${this.trans('tr.tr17')}`">
-                      <el-table-column
-                        prop="name"
-                        :label="`${this.trans('tr.tr20')}`"
+                        width="200"
+                        
+                        
                         >
-                        <el-table-column
-                          prop="state"
-                          label=""
-                          >
-                        </el-table-column>
-                      </el-table-column>
-                      <el-table-column :label="`${this.trans('tr.tr20')}`">
-                        <el-table-column
-                          prop="state"
-                          label=""
-                          >
-                        </el-table-column>
-                        <el-table-column
-                          prop="city"
-                          label="City"
-                          width="120">
-                        </el-table-column>
-                        <el-table-column
-                          prop="address"
-                          label="Address"
-                          width="300">
-                        </el-table-column>
-                        <el-table-column
-                          prop="zip"
-                          label="Zip"
-                          width="120">
-                        </el-table-column>
                       </el-table-column>
                     </el-table-column>
+                    <el-table-column
+                      :label="`${this.trans('tr.tr1')}`"
+                      >
+                      <el-table-column
+                        prop="rus_wellname"
+                        label=""
+                        width="150"
+                        
+                        >
+                      </el-table-column>
+                    </el-table-column>
+                    <el-table-column
+                      :label="`${this.trans('tr.tr2')}`"
+                      >
+                      <el-table-column
+                        prop="well_type"
+                        label=""
+                        width="150"
+                        
+                        >
+                      </el-table-column>
+                    </el-table-column>
+                    <el-table-column
+                      :label="`${this.trans('tr.tr3')}`"
+                      >
+                      <el-table-column
+                        prop="horizon"
+                        label=""
+                        width="150"
+                        
+                        >
+                      </el-table-column>
+                    </el-table-column>
+                    <el-table-column
+                      :label="`${this.trans('tr.tr4')}`"
+                      >
+                      <el-table-column
+                        prop="object"
+                        label=""
+                        width="150"
+                        
+                        >
+                      </el-table-column>
+                    </el-table-column>
+                    <el-table-column
+                      :label="`${this.trans('tr.tr5')}`"
+                      >
+                      <el-table-column
+                        prop="block"
+                        label=""
+                        width="150"
+                        
+                        >
+                      </el-table-column>
+                    </el-table-column>
+
+                    <el-table-column
+                      :label="`${this.trans('tr.trs2')}`"
+                      >
+                      <el-table-column
+                        prop="r_con"
+                        label=""
+                        width="150"
+                        
+                        >
+                      </el-table-column>
+                    </el-table-column>
+
+                    <el-table-column
+                      :label="`${this.trans('tr.tr6')}`"
+                      >
+                      <el-table-column
+                        prop="cas_OD"
+                        label=""
+                        width="180"
+                        
+                        >
+                      </el-table-column>
+                    </el-table-column>
+
+                    <el-table-column
+                      :label="`${this.trans('tr.trs3')}`"
+                      >
+                      <el-table-column
+                        prop="cas_ID"
+                        label=""
+                        width="180"
+                        
+                        >
+                      </el-table-column>
+                    </el-table-column>
+
+                    <el-table-column
+                      :label="`${this.trans('tr.tr7')}`"
+                      >
+                      <el-table-column
+                        prop="tub_OD"
+                        label=""
+                        width="200"
+                        
+                        >
+                      </el-table-column>
+                    </el-table-column>
+
+                    <el-table-column
+                      :label="`${this.trans('tr.trs4')}`"
+                      >
+                      <el-table-column
+                        prop="tub_ID"
+                        label=""
+                        width="200"
+                        
+                        >
+                      </el-table-column>
+                    </el-table-column>
+                    <el-table-column
+                      :label="`${this.trans('tr.tr8')}`"
+                      >
+                      <el-table-column
+                        prop="choke_d"
+                        label=""
+                        width="200"
+                        
+                        >
+                      </el-table-column>
+                    </el-table-column>
+                    <el-table-column
+                      :label="`${this.trans('tr.tr9')}`"
+                      >
+                      <el-table-column
+                        prop="h_up_perf_md"
+                        label=""
+                        width="200"
+                        
+                        >
+                      </el-table-column>
+                    </el-table-column>
+                    <el-table-column
+                      :label="`${this.trans('tr.trs5')}`"
+                      >
+                      <el-table-column
+                        prop="h_up_perf_ext"
+                        label=""
+                        width="200"
+                        
+                        >
+                      </el-table-column>
+                    </el-table-column>
+                    <el-table-column
+                      :label="`${this.trans('tr.tr10')}`"
+                      >
+                      <el-table-column
+                        prop="exp_meth"
+                        label=""
+                        width="200"
+                        
+                        >
+                      </el-table-column>
+                    </el-table-column>
+                    <el-table-column
+                      :label="`${this.trans('tr.tr11')}`"
+                      >
+                      <el-table-column
+                        prop="pump_type"
+                        label=""
+                        width="200"
+                        
+                        >
+                      </el-table-column>
+                    </el-table-column>
+
+                    <el-table-column
+                      :label="`${this.trans('tr.trs6')}`"
+                      >
+                      <el-table-column
+                        prop="type_sr"
+                        label=""
+                        width="200"
+                        
+                        >
+                      </el-table-column>
+                    </el-table-column>
+                    <el-table-column
+                      :label="`${this.trans('tr.trs7')}`"
+                      >
+                      <el-table-column
+                        prop="spm"
+                        label=""
+                        width="200"
+                        
+                        >
+                      </el-table-column>
+                    </el-table-column>
+                    <el-table-column
+                      :label="`${this.trans('tr.trs8')}`"
+                      >
+                      <el-table-column
+                        prop="stroke_len"
+                        label=""
+                        width="200"
+                        
+                        >
+                      </el-table-column>
+                    </el-table-column>
+                    <el-table-column
+                      :label="`${this.trans('tr.trs9')}`"
+                      >
+                      <el-table-column
+                        prop="q_theor"
+                        label=""
+                        width="200"
+                        
+                        >
+                      </el-table-column>
+                    </el-table-column>
+                    <el-table-column
+                      :label="`${this.trans('tr.tr12')}`"
+                      >
+                      <el-table-column
+                        prop="freq"
+                        label=""
+                        width="400"
+                        
+                        >
+                      </el-table-column>
+                    </el-table-column>
+
+
+
+                    <el-table-column
+                      :label="`${this.trans('tr.tr13')}`"
+                      >
+                      <el-table-column
+                        prop="h_pump_set"
+                        label=""
+                        width="200"
+                        
+                        >
+                      </el-table-column>
+                    </el-table-column>
+                    <el-table-column
+                      :label="`${this.trans('tr.trs10')}`"
+                      >
+                      <el-table-column
+                        prop="whp"
+                        label=""
+                        width="200"
+                        
+                        >
+                      </el-table-column>
+                    </el-table-column>
+                    <el-table-column
+                      :label="`${this.trans('tr.trs11')}`"
+                      >
+                      <el-table-column
+                        prop="line_p"
+                        label=""
+                        width="200"
+                        
+                        >
+                      </el-table-column>
+                    </el-table-column>
+                    <el-table-column
+                      :label="`${this.trans('tr.tr14')}`"
+                      >
+                      <el-table-column
+                        prop="p_res"
+                        label=""
+                        width="200"
+                        
+                        >
+                      </el-table-column>
+                    </el-table-column>
+                    <el-table-column
+                      :label="`${this.trans('tr.tr15')}`"
+                      >
+                      <el-table-column
+                        prop="h_dyn"
+                        label=""
+                        width="200"
+                        
+                        >
+                      </el-table-column>
+                    </el-table-column>
+                    <el-table-column
+                      :label="`${this.trans('tr.tr16')}`"
+                      >
+                      <el-table-column
+                        prop="p_annular"
+                        label=""
+                        width="200"
+                        
+                        >
+                      </el-table-column>
+                    </el-table-column>
+                    <el-table-column
+                      :label="`${this.trans('tr.trs13')}`"
+                      >
+                      <el-table-column
+                        prop="p_intake"
+                        label=""
+                        width="200"
+                        
+                        >
+                      </el-table-column>
+                    </el-table-column>
+
+                    <el-table-column
+                      :label="`${this.trans('tr.trs13')}`"
+                      >
+                      <el-table-column
+                      :label="`${this.trans('tr.trs1')}`"
+                      >
+                        <el-table-column
+                          prop="p_intake"
+                          label=""
+                          width="200"
+                          
+                          >
+                        </el-table-column>
+                      </el-table-column>
+                      
+                    </el-table-column>
                     
+
                   </el-table>
                   <div class="ui-pagination">
                     <el-pagination
@@ -814,6 +966,7 @@ export default {
     // FadeLoader,
     
   },
+
   computed: {
     // Добавление выбранных данных в таблицу
     addWellData() {
@@ -972,6 +1125,7 @@ export default {
           console.log(data);
           this.wells = data.data;
           this.fullWells = data.data;
+          console.log(this.wells);
         } else {
           console.log("No data");
           
@@ -1024,56 +1178,6 @@ export default {
       Filter_well: undefined,
       checkers: false,
       checkersec: false,
-      tableData: [{
-          date: '',
-          name: '',
-          state: '',
-          city: ' ',
-          address: '',
-          zip: ''
-        }, {
-          date: '',
-          name: '',
-          state: '',
-          city: '',
-          address: '',
-          zip: ''
-        }, {
-          date: '',
-          name: '',
-          state: '',
-          city: '',
-          address: '',
-          zip: ''
-        }, {
-          date: '',
-          name: '',
-          state: '',
-          city: '',
-          address: '',
-          zip: ''
-        }, {
-          date: '',
-          name: '',
-          state: '',
-          city: '',
-          address: '',
-          zip: ''
-        }, {
-          date: '',
-          name: '',
-          state: '',
-          city: '',
-          address: '',
-          zip: ''
-        }, {
-          date: '',
-          name: '',
-          state: '',
-          city: '',
-          address: '',
-          zip: ''
-        }]
         
     };
   },
@@ -1086,6 +1190,21 @@ export default {
     },
   },
   methods: {
+     objectSpanMethod({ row, column, rowIndex, columnIndex }) {
+        if (columnIndex === 0) {
+          if (rowIndex % 2 === 0) {
+            return {
+              rowspan: 1,
+              colspan: 0
+            };
+          } else {
+            return {
+              rowspan: 0,
+              colspan: 0
+            };
+          }
+        }
+     },
     editrow(row, rowId) {
       this.$store.commit("globalloading/SET_LOADING", false);
       console.log("row = ", row);
@@ -1367,18 +1486,7 @@ export default {
           
         });
     },
-    // chooseField() {
-    //   const { filter, fullWells } = this;
-    //   console.log(filter);
-    //   console.log(fullWells);
-    //   // if (!filter || filter == "Казгермунай") {
-    //   this.$store.commit("tr/SET_FILTER", filter);
-    //   if (!filter || filter == "Все месторождения") {
-    //     this.wells = fullWells;
-    //   } else {
-    //     this.wells = fullWells.filter((e) => e.field === filter);
-    //   }
-    // },
+
     chooseField() {
       const { filter, fullWells } = this;
       console.log("filter = ", filter);
@@ -1828,6 +1936,56 @@ table::-webkit-scrollbar-corner {
 .ui-pagination {
   margin: 16px 0;
   text-align: center;
+}
+
+
+
+
+
+
+.el-table__body-wrapper {}
+
+.el-table__body-wrapper td {
+    height: auto;
+    margin: 0;
+    padding: 0;
+    background: transparent;
+}
+
+.el-table__body-wrapper td .cell {
+    line-height: 1.3;
+    padding: 12px 0;
+    margin: 0;
+    height: auto;
+    width: 100%;
+    background: transparent;
+}
+
+.el-table__body-wrapper tr:nth-child(even) {
+    background: #202b6b!important;
+}
+
+
+
+.el-table__body-wrapper tr:hover {
+    background: #000!important;
+}
+
+.el-table__body-wrapper tr:hover td {
+    background: #4c5cb5!important;
+}
+
+.el-table__header-wrapper th {
+    padding: 0;
+    height: auto;
+}
+
+.el-table__header-wrapper th div {
+    background: rgb(51, 57, 117);
+    height: auto;
+    padding: 20px 0;
+    color: #fff;
+    font-size: 14px;
 }
 
 </style>

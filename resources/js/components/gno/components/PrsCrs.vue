@@ -1,38 +1,35 @@
 <template>
   <div>
-    <div v-if="!data" class="gno-modal-loading-label">Загрузка...</div>
-    <div v-else-if="data.length === 0" class="gno-modal-loading-label">No data</div>
+    <div v-if="!data" class="gno-modal-loading-label">{{trans('pgno.zagruzka')}}</div>
+    <div v-else-if="data.length === 0" class="gno-modal-loading-label">{{trans('pgno.no_data')}}</div>
 
     <div v-else class="row no-margin col-12 no-padding relative gno-incl-content-wrapper">
       
-      <div class="col-7 gno-plotly-graph" style="background-color: #272953;">
-        <h5>Причины ПРС за скользящий год</h5>
+      <div class="plot-block col-7 gno-plotly-graph">
+        <h5>{{trans('pgno.prichini_prs_god')}}</h5>
        <Plotly style="width: 730px;" :data="data" :layout="layout" :display-mode-bar="false"></Plotly>
        <div class="row">
-          <div class="col-12">
-         <h5 style="float: left;">
-          Количество ремонтов без ГТМ: {{numberRepairs}}
-       </h5>
+        <div class="col-12">
+          <h5 class="title-plot">
+            {{trans('pgno.number_of_repair')}}: {{numberRepairs}}
+          </h5>
        </div>
        <div class="col-12">
-          <h5 style="float: left;">
-         ННО: {{numberNNO + ' сут'}}
-       </h5>
+          <h5 class="title-plot">
+            {{trans('pgno.nno')}}: {{numberNNO + ' сут'}}
+          </h5>
        </div>
        </div>
-      
-       
       
       </div>
 
-     <div class="col-5 no-padding no-scrollbar incl-modal-table" style="height: 100%; overflow-y: auto;">
-
-         <h5 style="text-align: center;">Информация по КРС</h5>
+     <div class="col-5 no-padding no-scrollbar incl-modal-table">
+       <h5 class="krs-table-title">{{trans('pgno.info_po_krs')}}</h5>
 
       <perfect-scrollbar>
-        <table class="gno-table-with-header pgno" style="height: initial;">
+        <table class="gno-table-with-header pgno">
           <thead>
-            <tr height="10" style="height: 10pt;">
+            <tr height="10">
               <td>
                 {{trans('pgno.data_nachala_rabot')}}
               </td>
@@ -42,11 +39,10 @@
               <td>
                 {{trans('pgno.vid_remontnih_rabot')}}
               </td>
-                            
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(row, row_index) in this.krsTable" :key="row_index" style="font-weight: bold;">
+            <tr v-for="(row, row_index) in this.krsTable" :key="row_index">
               <td>{{row.dbeg.substring(0, 10)}}</td>
               <td>{{row.dend.substring(0, 10)}}</td>
               <td>{{row.krs_name}}</td>
@@ -102,7 +98,6 @@ mounted() {
     this.$emit('update:isLoading', true);
     this.axios.get(uri).then((response) => {
     this.prs = response['data']['prs']['data']
-    console.log(this.data);
     for(let key of Object.keys(this.prs)){
 
       var nno_days = this.prs[key]['nno_size']
@@ -136,3 +131,30 @@ mounted() {
 }
 }
 </script>
+<style scoped>
+.plot-block {
+  background-color: #272953;
+}
+.title-plot {
+  float: left;
+}
+
+.krs-table-title {
+  text-align: center;
+}
+
+.incl-modal-table {
+  height: 100%;
+  overflow-y: auto;
+}
+
+.gno-table-with-header {
+  height: initial;
+}
+
+tr {
+  height: 10pt;
+  font-weight: bold;
+}
+
+</style>

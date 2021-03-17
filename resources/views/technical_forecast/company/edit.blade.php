@@ -4,7 +4,7 @@
     <div class="container">
         <div class="row justify-content-center">
             <a href="{{ route('tech_data_list') }}" class="btn btn-info">
-                Вернуться в справочник</a>
+                {{ __('forecast.return_menu') }}</a>
         </div>
     </div>
     <div class="container">
@@ -21,7 +21,7 @@
                             <div class="row">
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
-                                        <strong>НДО:</strong>
+                                        <strong>{{ __('forecast.NDO') }}:</strong>
                                         <input type="text" name="name" class="form-control" placeholder=""
                                                value="{{$technicalForecast->name}}">
                                         <strong>Сокращённое название компании:</strong>

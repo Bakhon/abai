@@ -10,24 +10,56 @@
                     :frameSize="72"
             ></v-grid>
         </div>
-        <div class="ml-3 col-3 helpers">
-            <div
-                    :class="[!isDataExist ? 'button-disabled' : '','button col-12']"
-                    @click="handleValidate()"
-            >
-                {{trans('visualcenter.validateButton')}}
+        <div class="ml-3 col-3 helpers mt-5">
+            <div class="row">
+                <div class="data-status">
+                    <span class="label">Статус: </span>
+                    <span>{{status}}</span>
+                </div>
+                <div
+                        :class="[!isDataExist ? 'button-disabled' : '','button col-12']"
+                        @click="handleValidate()"
+                >
+                    {{trans('visualcenter.validateButton')}}
+                </div>
+                <div
+                        :class="[!isDataReady ? 'button-disabled' : '','button col-12 mt-3']"
+                        @click="processSummary()"
+                >
+                    {{trans('visualcenter.saveButton')}}
+                </div>
+                <div
+                        class="button col-12 mt-3"
+                        @click="changeButtonVisibility()"
+                >
+                    {{trans('visualcenter.importForm.enterChemistryButton')}}
+                </div>
             </div>
-            <div
-                    :class="[!isDataReady ? 'button-disabled' : '','button col-12 mt-5']"
-                    @click="processSummary()"
-            >
-                {{trans('visualcenter.saveButton')}}
-            </div>
-            <div :class="[isDataValid ? 'error-list_disabled' : '','col-12 error-list']">
-                <ul>{{trans('visualcenter.errors')}}:</ul>
-                <li v-for="error in errorsList">
-                    <span>{{error}}</span>
-                </li>
+            <div :class="[isChemistryNeeded ? 'disabled' : '','chemistry-block mt-5 row p-3']">
+                <h4 class="col-12">{{trans("visualcenter.importForm.chemistry")}}</h4>
+                <div class="col-12 d-flex">
+                    <span class="col-7">{{trans("visualcenter.chem_prod_zakacka_demulg_fact")}}</span>
+                    <input class="col-5"></input>
+                </div>
+                <div class="col-12 d-flex">
+                    <span class="col-7">{{trans("visualcenter.chem_prod_zakacka_bakteracid_fact")}}</span>
+                    <input class="col-5"></input>
+                </div>
+                <div class="col-12 d-flex">
+                    <span class="col-7">{{trans("visualcenter.chem_prod_zakacka_ingibator_korrozin_fact")}}</span>
+                    <input class="col-5"></input>
+                </div>
+                <div class="col-12 d-flex">
+                    <span class="col-7">{{trans("visualcenter.chem_prod_zakacka_ingibator_soleotloj_fact")}}</span>
+                    <input class="col-5"></input>
+                </div>
+                <div class="col-6"></div>
+                <div
+                        class="button col-12 mt-2"
+                        @click="chemistrySave()"
+                >
+                    {{trans('visualcenter.saveButton')}}
+                </div>
             </div>
         </div>
     </div>
@@ -43,10 +75,12 @@
     export default {
         data: function () {
             return {
+                isChemistryNeeded: true,
+                status: this.trans("visualcenter.importForm.status.waitForData"),
                 columns: [
                     {
                         prop: "column1",
-                        size: 350,
+                        size: 440,
                         cellProperties: ({prop, model, data, column}) => {
                             return {
                                 style: {
@@ -88,21 +122,39 @@
                             };
                         },
                     },
+                    {
+                        prop: "column5",
+                        size: 280,
+                        cellProperties: ({prop, model, data, column}) => {
+                            return {
+                                style: {
+                                    border: '1px solid #F4F4F6'
+                                },
+                            };
+                        },
+                    },{
+                        prop: "column6",
+                        size: 280,
+                        cellProperties: ({prop, model, data, column}) => {
+                            return {
+                                style: {
+                                    border: '1px solid #F4F4F6'
+                                },
+                            };
+                        },
+                    },
                 ],
                 rows: _.cloneDeep(initialRowsKMG),
                 isDataExist: false,
-                isDataValid: true,
                 isDataReady: false,
-                rowsCount: 57,
-                errorsList: [],
-                possibleErrors : {
-                    incorrectDocumentFormat: this.trans("visualcenter.importForm.errorList.incorrectDocumentFormat"),
-                },
+                rowsCount: 78,
                 columnsCountForHighlight: {
+                    six: [0,1,2,3,4,5],
+                    five: [0,1,2,3,4],
                     four: [0,1,2,3],
                     three: [0,1,2],
                     two: [0,1],
-                    one: 0
+                    one: [0]
                 },
                 dzoPlans: [],
                 selectedDzo: {
@@ -112,9 +164,8 @@
                 currentMonthNumber: moment().format('M'),
                 kgmCellsMapping: _.cloneDeep(cellsMappingKGM),
                 rowsFormatMapping: {
-                    title: [0,3,6,9,13,18,39,50],
-                    subTitle: [19,20,40],
-                    tableFooter: [38],
+                    title: [0,6,12,17,23,29,35,41,61,71],
+                    subTitle: [42],
                 },
             };
         },
@@ -125,6 +176,13 @@
             this.setTableFormat();
         },
         methods: {
+            chemistrySave() {
+                this.status = this.trans("visualcenter.importForm.status.dataSaved");
+                this.isChemistryNeeded = !this.isChemistryNeeded;
+            },
+            changeButtonVisibility() {
+                this.isChemistryNeeded = !this.isChemistryNeeded;
+            },
             sleep(ms) {
                 return new Promise(resolve => setTimeout(resolve, ms));
             },
@@ -148,44 +206,13 @@
             handleValidate() {
                 const grid = document.querySelector('revo-grid');
                 let self = this;
-                grid.getSource()
-                    .then(function(dataSource) {
-                        self.deleteEmptyRows(dataSource);
-                    })
-                    .catch(function(error) {
-                        console.error(error);
-                    })
+                this.isDataReady = true;
+                this.isDataExist = false;
+                this.status = this.trans("visualcenter.importForm.status.dataValid");
             },
             processSummary() {
                 const grid = document.querySelector('revo-grid');
-            },
-            deleteEmptyRows(dataSource) {
-                let self = this;
-                let sourceLength = dataSource.length;
-                while (sourceLength--) {
-                    if (self.isRowForDelete(dataSource[sourceLength])) {
-                        dataSource.splice(sourceLength,1);
-                    }
-                }
-                this.rows = dataSource;
-                sourceLength = this.rows.length;
-                if (sourceLength !== this.rowsCount) {
-                    this.isDataValid = false;
-                    this.rows = _.cloneDeep(initialRowsKMG);
-                    this.errorsList.push(this.possibleErrors.incorrectDocumentFormat);
-                    return;
-                }
-                this.isDataValid = true;
-                this.isDataReady = true;
-            },
-            isRowForDelete(row,sourceLength) {
-                return this.isRowHeader(row) || this.isRowEmpty(row);
-            },
-            isRowHeader(row) {
-                return row['column1'].toLowerCase().includes('рапорт');
-            },
-            isRowEmpty(row) {
-                return row['column1'].length < 2 && row['column2'].length < 2 && row['column3'].length < 2 && row['column4'].length < 2;
+                this.status = this.trans("visualcenter.importForm.status.dataSaved");
             },
             beforeRangeEdit(e) {
                 this.setTableFormat();
@@ -193,26 +220,45 @@
             },
             selectClassForCell(rowIndex,columnsList,className) {
                 let self = this;
-                if (typeof(columnsList) === 'object') {
-                    columnsList.forEach(function(columnIndex) {
-                        self.setClassToElement($('div[data-col="'+ columnIndex + '"][data-row="' + rowIndex + '"]'),className);
-                    });
-                } else {
-                    self.setClassToElement($('div[data-col="'+ columnsList + '"][data-row="' + rowIndex + '"]'),className);
-                }
+                columnsList.forEach(function(columnIndex) {
+                    self.setClassToElement($('div[data-col="'+ columnIndex + '"][data-row="' + rowIndex + '"]'),className);
+                });
             },
             setTableFormat() {
                 for (let rowIndex = 0; rowIndex < this.rowsCount; rowIndex++) {
                     if (this.rowsFormatMapping.title.includes(rowIndex)) {
-                        this.selectClassForCell(rowIndex,this.columnsCountForHighlight.four,'title');
+                        this.selectClassForCell(rowIndex,this.getColumnsForHighLight(rowIndex),'title');
                     } else if (this.rowsFormatMapping.subTitle.includes(rowIndex)) {
-                        this.selectClassForCell(rowIndex,this.columnsCountForHighlight.four,'sub-title');
-                    } else if (this.rowsFormatMapping.tableFooter.includes(rowIndex)) {
-                        this.selectClassForCell(rowIndex,this.columnsCountForHighlight.four,'table-footer-format');
-                    } else {
-                        this.selectClassForCell(rowIndex,this.columnsCountForHighlight.one,'main-header');
+                        this.selectClassForCell(rowIndex,this.getColumnsForHighLight(rowIndex),'sub-title');
                     }
                 }
+            },
+            getColumnsForHighLight(rowIndex) {
+              let columns = 0;
+              if (rowIndex === 0) {
+                  columns = this.columnsCountForHighlight.four;
+              } else if (rowIndex === 6) {
+                  columns = this.columnsCountForHighlight.four;
+              } else if (rowIndex === 12) {
+                  columns = this.columnsCountForHighlight.two;
+              } else if (rowIndex === 17) {
+                  columns = this.columnsCountForHighlight.six;
+              } else if (rowIndex === 23) {
+                  columns = this.columnsCountForHighlight.six;
+              } else if (rowIndex === 29) {
+                  columns = this.columnsCountForHighlight.six;
+              } else if (rowIndex === 35) {
+                  columns = this.columnsCountForHighlight.five;
+              } else if (rowIndex === 41) {
+                  columns = this.columnsCountForHighlight.four;
+              } else if (rowIndex === 42) {
+                  columns = this.columnsCountForHighlight.four;
+              } else if (rowIndex === 61) {
+                  columns = this.columnsCountForHighlight.three;
+              } else if (rowIndex === 71) {
+                  columns = this.columnsCountForHighlight.six;
+              }
+              return columns;
             },
             setClassToElement(el,className) {
                 el.addClass(className);
@@ -225,10 +271,19 @@
 </script>
 
 <style>
-    .error-list {
-        margin-top: 80%;
+    .chemistry-block {
+        background-color: #20274F;
+        color: white;
     }
-    .error-list_disabled {
+    .data-status {
+        color: white;
+        font-size: 18px;
+    }
+    .data-status .label {
+        font-size: 36px;
+        color: rgba(19, 176, 98, 0.8);
+    }
+    .disabled {
         display: none;
     }
     .helpers {
@@ -283,12 +338,12 @@
         font-weight: bold;
         position: relative;
         padding: 15px 15px;
-        height: 44px;
+        height: 24px;
         background: rgba(19, 176, 98, 0.8);
         border-radius: 8px;
         text-align: center;
         margin-bottom: 0;
-        line-height: 18px;
+        line-height: 0px;
         cursor: pointer;
     }
     .button-disabled {
