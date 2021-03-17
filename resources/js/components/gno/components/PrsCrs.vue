@@ -42,7 +42,11 @@
             </tr>
           </thead>
           <tbody>
+<<<<<<< HEAD
             <tr style="height: 10pt;" v-for="(row, row_index) in this.krsTable" :key="row_index">
+=======
+            <tr v-for="(row, row_index) in this.krsTable" :key="row_index">
+>>>>>>> f87379e7bc4d6034ce19b55a0a331321d7344a9b
               <td>{{row.dbeg.substring(0, 10)}}</td>
               <td>{{row.dend.substring(0, 10)}}</td>
               <td>{{row.krs_name}}</td>
@@ -152,5 +156,12 @@ mounted() {
   height: initial;
 }
 
+<<<<<<< HEAD
 
+=======
+tr {
+  font-weight: bold;
+  height: 10pt;
+}
+>>>>>>> f87379e7bc4d6034ce19b55a0a331321d7344a9b
 </style>
