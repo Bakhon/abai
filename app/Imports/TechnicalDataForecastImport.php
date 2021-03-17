@@ -42,7 +42,7 @@ class TechnicalDataForecastImport implements ToModel
             return null;
         }
 
-        $gu = self::getGu($this->user_id, $row);
+        $gu = $this->getGu($this->user_id, $row);
 
         return new TechnicalDataForecast([
             "source_id" => $this->source->id,
@@ -64,7 +64,7 @@ class TechnicalDataForecastImport implements ToModel
 
         if (empty($gu)) {
             $cdng_name = $row[11];
-            $cdng = $this->get_cdng($cdng_name, $row, $user_id);
+            $cdng = $this->getCdng($cdng_name, $row, $user_id);
 
             $gu = TechnicalStructureGu::create([
                 "name" => $gu_name,
@@ -80,7 +80,7 @@ class TechnicalDataForecastImport implements ToModel
      * @param int $user_id
      * @return mixed
      */
-    public function get_ndo($company_name, int $user_id)
+    public function getNdo($company_name, int $user_id)
     {
         $ndo = TechnicalStructureCompany::where("short_name", "=", $company_name)->first();
         if (!$ndo) {
@@ -99,11 +99,11 @@ class TechnicalDataForecastImport implements ToModel
      * @param int $user_id
      * @return mixed
      */
-    public function get_field($field_name, $company_name, int $user_id)
+    public function getField($field_name, $company_name, int $user_id)
     {
         $field = TechnicalStructureField::where("name", "=", $field_name)->first();
         if (empty($field)) {
-            $ndo = $this->get_ndo($company_name, $user_id);
+            $ndo = $this->getNdo($company_name, $user_id);
 
             $field = TechnicalStructureField::create([
                 "name" => $field_name,
@@ -120,12 +120,12 @@ class TechnicalDataForecastImport implements ToModel
      * @param int $user_id
      * @return mixed
      */
-    public function get_ngdu($ngdu_name, array $row, int $user_id)
+    public function getNgdu($ngdu_name, array $row, int $user_id)
     {
         $ngdu = TechnicalStructureNgdu::where("name", "=", $ngdu_name)->first();
         if (empty($ngdu)) {
             $field_name = $row[7];
-            $field = $this->get_field($field_name, $row[6], $user_id);
+            $field = $this->getField($field_name, $row[6], $user_id);
 
             $ngdu = TechnicalStructureNgdu::create([
                 "name" => $ngdu_name,
@@ -142,12 +142,12 @@ class TechnicalDataForecastImport implements ToModel
      * @param int $user_id
      * @return mixed
      */
-    public function get_cdng($cdng_name, array $row, int $user_id)
+    public function getCdng($cdng_name, array $row, int $user_id)
     {
         $cdng = TechnicalStructureCdng::where("name", "=", $cdng_name)->first();
         if (empty($cdng)) {
             $ngdu_name = $row[8];
-            $ngdu = $this->get_ngdu($ngdu_name, $row, $user_id);
+            $ngdu = $this->getNgdu($ngdu_name, $row, $user_id);
 
             $cdng = TechnicalStructureCdng::create([
                 "name" => $cdng_name,

@@ -43,7 +43,7 @@ class TechnicalDataForecastController extends Controller
                 $item->source->name,
                 $item->gu->name,
                 $item->well_id,
-                date('m-Y', strtotime($item->date)),
+                date('Y-m', strtotime($item->date)),
                 $item->oil,
                 $item->liquid,
                 $item->days_worked,
