@@ -6,6 +6,7 @@ use App\Models\Refs\Org;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
+use App\Module;
 
 class User extends Authenticatable
 {
@@ -78,5 +79,10 @@ class User extends Authenticatable
     public function getOrganizationIds()
     {
         return $this->getOrganizations()->pluck('id')->toArray();
+    }
+
+    public function modules()
+    {
+        return $this->belongsToMany(Module::class);
     }
 }
