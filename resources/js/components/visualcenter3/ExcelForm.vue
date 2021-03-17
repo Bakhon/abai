@@ -147,14 +147,14 @@
                 rows: _.cloneDeep(initialRowsKMG),
                 isDataExist: false,
                 isDataReady: false,
-                rowsCount: 78,
+                rowsCount: 75,
                 columnsCountForHighlight: {
                     six: [0,1,2,3,4,5],
                     five: [0,1,2,3,4],
                     four: [0,1,2,3],
                     three: [0,1,2],
                     two: [0,1],
-                    one: [0]
+                    one: []
                 },
                 dzoPlans: [],
                 selectedDzo: {
@@ -166,6 +166,13 @@
                 rowsFormatMapping: {
                     title: [0,6,12,17,23,29,35,41,61,71],
                     subTitle: [42],
+                },
+                columnsFormatMapping: {
+                    two: [12],
+                    three: [61],
+                    four: [0,6,41,42],
+                    five: [35],
+                    six: [17,23,29,71],
                 },
             };
         },
@@ -193,7 +200,6 @@
                       return (rowMonthNumber === self.currentMonthNumber && row.dzo === self.selectedDzo.name);
                   });
             },
-
             async getDzoMonthlyPlans() {
                 let uri = this.localeUrl("/get-dzo-monthly-plans");
                 const response = await axios.get(uri);
@@ -202,7 +208,6 @@
                 }
                 return [];
             },
-
             handleValidate() {
                 const grid = document.querySelector('revo-grid');
                 let self = this;
@@ -211,18 +216,13 @@
                 this.status = this.trans("visualcenter.importForm.status.dataValid");
             },
             processSummary() {
+                this.isDataReady = !this.isDataReady;
                 const grid = document.querySelector('revo-grid');
                 this.status = this.trans("visualcenter.importForm.status.dataSaved");
             },
             beforeRangeEdit(e) {
                 this.setTableFormat();
                 this.isDataExist = true;
-            },
-            selectClassForCell(rowIndex,columnsList,className) {
-                let self = this;
-                columnsList.forEach(function(columnIndex) {
-                    self.setClassToElement($('div[data-col="'+ columnIndex + '"][data-row="' + rowIndex + '"]'),className);
-                });
             },
             setTableFormat() {
                 for (let rowIndex = 0; rowIndex < this.rowsCount; rowIndex++) {
@@ -233,32 +233,21 @@
                     }
                 }
             },
+            selectClassForCell(rowIndex,columnsList,className) {
+                let self = this;
+                columnsList.forEach(function(columnIndex) {
+                    self.setClassToElement($('div[data-col="'+ columnIndex + '"][data-row="' + rowIndex + '"]'),className);
+                });
+            },
             getColumnsForHighLight(rowIndex) {
-              let columns = 0;
-              if (rowIndex === 0) {
-                  columns = this.columnsCountForHighlight.four;
-              } else if (rowIndex === 6) {
-                  columns = this.columnsCountForHighlight.four;
-              } else if (rowIndex === 12) {
-                  columns = this.columnsCountForHighlight.two;
-              } else if (rowIndex === 17) {
-                  columns = this.columnsCountForHighlight.six;
-              } else if (rowIndex === 23) {
-                  columns = this.columnsCountForHighlight.six;
-              } else if (rowIndex === 29) {
-                  columns = this.columnsCountForHighlight.six;
-              } else if (rowIndex === 35) {
-                  columns = this.columnsCountForHighlight.five;
-              } else if (rowIndex === 41) {
-                  columns = this.columnsCountForHighlight.four;
-              } else if (rowIndex === 42) {
-                  columns = this.columnsCountForHighlight.four;
-              } else if (rowIndex === 61) {
-                  columns = this.columnsCountForHighlight.three;
-              } else if (rowIndex === 71) {
-                  columns = this.columnsCountForHighlight.six;
-              }
-              return columns;
+                let columnFormat = 'one';
+                let self = this;
+                _.forEach(Object.keys(this.columnsFormatMapping), function(key) {
+                   if (self.columnsFormatMapping[key].includes(rowIndex)) {
+                       columnFormat = key;
+                   }
+                });
+                return this.columnsCountForHighlight[columnFormat];
             },
             setClassToElement(el,className) {
                 el.addClass(className);

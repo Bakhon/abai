@@ -276,9 +276,7 @@ return array (
   ),
   'summaryByRegion' => 'Итого по активам области:',
   'unprofitableFond' => 'Нерентабельные скважины',
-  'saveButton' => 'Сохранить',
   'errors' => 'Ошибки',
-  'validateButton' => 'Провести проверку данных',
   'importForm' => 
   array (
     'errorList' => 
@@ -293,5 +291,7 @@ return array (
     ),
     'chemistry' => 'Химизация производства, т/мес',
     'enterChemistryButton' => 'Ввод данных по Химизации',
+    'validateButton' => 'Провести проверку данных',
+    'saveButton' => 'Сохранить',
   ),
 );
