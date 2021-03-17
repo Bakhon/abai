@@ -32,7 +32,7 @@ class EcoRefsCostController extends Controller
     {
         $sc_fa = EcoRefsScFa::get();
         $company = EcoRefsCompaniesId::get();
-        return view('ecorefscost.create',compact('sc_fa', 'company',));
+        return view('ecorefscost.create',compact('sc_fa', 'company'));
     }
 
     /**

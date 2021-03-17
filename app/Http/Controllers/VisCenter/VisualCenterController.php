@@ -8,12 +8,14 @@ use App\Imports\DZOyearImport;
 use App\Models\DZO\DZOcalc;
 use App\Models\UsdRate;
 use App\Models\OilRate;
+use App\Models\DZOyear;
 use App\Models\VisCenter\ImportForms\DZOcalc as ImportFormsDZOcalc;
 use App\Models\VisCenter\ImportForms\DZOstaff;
 use App\Models\VisCenter\ImportForms\DZOdaily as ImportFormsDZOdaily;
 use App\Models\VisCenter\ImportForms\DZOyear as ImportFormsDZOyear;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Models\DzoPlan;
 
 class VisualCenterController extends Controller
 {
@@ -85,6 +87,22 @@ class VisualCenterController extends Controller
           ->get()
           ->toArray();
       return response()->json($oilRatesData);
+    }
+
+    public function getDzoMonthlyPlans() {
+          $dzoMonthlyPlans = dzoPlan::query()
+              ->get()
+              ->toArray();
+          return response()->json($dzoMonthlyPlans);
+        }
+        
+    public function getDzoYearlyPlan() {
+        $dzoYearlyPlan = DZOyear::query()
+            ->where('date',date("Y"))
+            ->select('dzo','oil_plan','oil_opek_plan')
+            ->get()
+            ->toArray();
+        return response()->json($dzoYearlyPlan);
     }
 
     public function getCurrency(Request $request)

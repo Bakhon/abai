@@ -687,9 +687,7 @@
                           )
                         "
                       >
-                        <!-- Закачка альбсен. воды -->{{
-                          trans("visualcenter.liqAlbsen")
-                        }}
+                        {{trans("visualcenter.liqAlbsen")}}
                       </a>
                     </li>
                   </ul>
@@ -698,7 +696,7 @@
             </div>
             <div class="row px-4 mt-3 middle-block__list-x-scroll">
               <div class="col-8 col-lg dropdown pr-1">
-                <div :class="[`${buttonDzoDropdown}`, 'button2 dzocompanylist__button']">
+                <div class="button2 dzocompanylist__button">
                   <div class="button2 dzocompanylist__button">
                     {{ trans("visualcenter.dzoAllCompany") }}
                     <button
@@ -725,7 +723,7 @@
                             <input
                                     type="checkbox"
                                     :checked="dzoCompaniesAssets['isOperating']"
-                                    @click="`${changeAssets('isOperating')}`"
+                                    @click="`${changeAssets('isOperating','type')}`"
                             ></input>
                             {{trans("visualcenter.isOperating")}}
                           </div>
@@ -735,10 +733,27 @@
                             <input
                                     type="checkbox"
                                     :checked="dzoCompaniesAssets['isNonOperating']"
-                                    @click="`${changeAssets('isNonOperating')}`"
+                                    @click="`${changeAssets('isNonOperating','type')}`"
                             ></input>
                             {{trans("visualcenter.isNonOperating")}}
                             <div class="dzocompanies-dropdown__divider"></div>
+                          </div>
+                        </li>
+                        <li
+                                class="px-4"
+                                v-for="(region,index) of Object.keys(dzoRegionsMapping)"
+                        >
+                          <div>
+                            <input
+                                    type="checkbox"
+                                    :checked="dzoRegionsMapping[region].isActive"
+                                    @click="`${changeAssets('isRegion','region',region)}`"
+                            ></input>
+                            {{dzoRegionsMapping[region].translationName}}
+                            <div
+                                    class="dzocompanies-dropdown__divider"
+                                    v-if="(Object.keys(dzoRegionsMapping).length - 1) === index"
+                            ></div>
                           </div>
                         </li>
                         <li

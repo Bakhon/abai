@@ -10,6 +10,7 @@ class OmgNGDU extends Model
     use WithHistory;
 
     protected $guarded = ['id'];
+    protected $table = 'omg_n_g_d_u_s_1';
 
     public function ngdu()
     {
