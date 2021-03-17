@@ -45,6 +45,8 @@ class Ngdu4Wells extends Command
         } catch (\Exception $er) {
             if ($er->getMessage() == 'Stop import') {
                 $this->output->success('Import successful');
+            } else {
+                $this->output->error($er->getMessage());
             }
         }
     }
