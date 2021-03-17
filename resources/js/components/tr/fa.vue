@@ -636,7 +636,6 @@
             </span>
           </td>
 
-          <!-- <td>{{Math.round(row.bhp_2*10)/10}}</td> -->
           <td v-show= hide
             style="background: #1a2370"
             :class="{
