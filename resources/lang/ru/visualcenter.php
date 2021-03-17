@@ -261,18 +261,9 @@ return array (
   'waitingOverhaulFond' => 'Ожидание капитального ремонта скважин',
   'researchFond' => 'Исследование скважин',
   'othersFond' => 'Прочие',
-  'unprofitableFond' => 'Нерентабельные скважины',
   'exploitationFond' => 'Эксплуатационный фонд',
   'tonWithSpace' => ' тонн',
   'meterCubicWithSpace' => ' м³',
-  'saveButton' => 'Сохранить',
-  'errors' => 'Ошибки',
-  'validateButton' => 'Провести проверку данных',
-  'importForm' => [
-    'errorList' => [
-        'incorrectDocumentFormat' =>  'Неверный формат Excel документа',
-    ]
-  ],
   'requiredDailyPlan' => 'Необходимый ср/сут уровень',
   'dzoRegions' => 
   array (
@@ -284,4 +275,23 @@ return array (
     'zhambul' => 'Жамбылская область',
   ),
   'summaryByRegion' => 'Итого по активам области:',
+  'unprofitableFond' => 'Нерентабельные скважины',
+  'saveButton' => 'Сохранить',
+  'errors' => 'Ошибки',
+  'validateButton' => 'Провести проверку данных',
+  'importForm' => 
+  array (
+    'errorList' => 
+    array (
+      'incorrectDocumentFormat' => 'Неверный формат Excel документа',
+    ),
+    'status' => 
+    array (
+      'waitForData' => 'Ожидание входящих данных..',
+      'dataValid' => 'Данные успешно проверены.',
+      'dataSaved' => 'Данные успешно сохранены!',
+    ),
+    'chemistry' => 'Химизация производства, т/мес',
+    'enterChemistryButton' => 'Ввод данных по Химизации',
+  ),
 );
