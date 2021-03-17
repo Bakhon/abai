@@ -110,24 +110,25 @@
       <div class="col-6 gno-plotly-graph" style="background-color: #2b2e5e; height: 700px;">
         <Plotly :data="chart" :layout="layout" :display-mode-bar="false"></Plotly>
         <div class="col-12" style="padding-bottom: 10px; margin-top: 50px;">
-          <div class="col-6" style="float: left; text-align: left; color: white; font-weight: bold;">Выбор глубины спуска насоса Нсп 
-            <input style="width: 100px;" v-model="hPumpFromIncl" @change="updateHpump" type="text" onfocus="this.value=''" class="input-box-gno-incl podbor"/>
+          <div class="col-6" style="float: left; text-align: left; color: white; font-weight: bold;">Выбор глубины спуска {{ this.expChoose }} <br> Нсп 
+            <input style="width: 60px;" v-model="hPumpFromIncl" @change="updateHpump" type="text" onfocus="this.value=''" class="input-box-gno-incl podbor"/>
             </div>
           <button type="button col-6" class="old_well_button_incl" @click="onClickHpump">Применить выбранную Нсп</button>
         </div>
         <div class="col-12" style="padding-bottom: 10px;">
           <div class="col-12"  style="font-size: 14px; text-align: left; color: white;">
-            <b>Максимальный темп набора кривизны</b> в месте установки насоса 
-            <input style="width: 60px;" v-model="dls1" :disabled="dls1=='-'" type="text" onfocus="this.value=''" class="input-box-gno-incl podbor"/> в интервале глубины спуска 
-            <input style="width: 60px;" v-model="dls2" :disabled="dls2=='-'" type="text" onfocus="this.value=''" class="input-box-gno-incl podbor" />     
-        
+            <b>Максимальный темп набора кривизны</b> <br> в месте установки насоса 
+            <input style="width: 60px;" v-model="dls_glubina" :disabled="dls_glubina" type="text" onfocus="this.value=''" class="input-box-gno-incl podbor" /> в интервале глубины спуска  
+            <input style="width: 60px;" v-model="max_dls" :disabled="max_dls" type="text" onfocus="this.value=''" class="input-box-gno-incl podbor"/>    
+            
             </div> 
         </div>
         <div class="col-12" style="padding-bottom: 10px;">
           <div class="col-12" style="font-size: 14px; text-align: left; color: white; float: left;">
-            <b>Максимальный зенитный угол</b> в месте установки насоса
-            <input v-model="zu1" :disabled="zu1=='-'" style="width: 60px;" type="text" onfocus="this.value=''" class="input-box-gno-incl podbor"/> в интервале глубины спуска 
-            <input v-model="zu2" :disabled="zu2=='-'" style="width: 60px;" type="text" onfocus="this.value=''" class="input-box-gno-incl podbor" />  
+            <b>Максимальный зенитный угол</b>  <br> в месте установки насоса
+            
+            <input v-model="incl_glubina" :disabled="incl_glubina" style="width: 60px;" type="text" onfocus="this.value=''" class="input-box-gno-incl podbor" />  в интервале глубины спуска 
+             <input v-model="max_incl" :disabled="max_incl" style="width: 60px;" type="text" onfocus="this.value=''" class="input-box-gno-incl podbor"/> 
             </div>
         </div>
 
@@ -146,11 +147,12 @@ import {PerfectScrollbar} from "vue2-perfect-scrollbar";
 import "vue2-perfect-scrollbar/dist/vue2-perfect-scrollbar.css";
 import { mapState } from 'vuex';
 
+
 Vue.component("Plotly", Plotly);
 
 export default {
   components: { PerfectScrollbar },
-  props: ["wellNumber", "wellIncl", "isLoading"],
+  props: ["wellNumber", "wellIncl", "isLoading","expChoose"],
   data: function () {
     return {
       data() {},
@@ -162,9 +164,20 @@ export default {
       hPumpFromIncl: null,
       buttonHpump: false,
       hVal: null,
+      kraska:null,
+      tmp: null,
       dzArray: null,
       dxArray: null,
       dyArray: null,
+      ecn_color: null,
+      dls:null,
+      incl:null,
+      index1:null,
+      index2:null,
+      max_dls:null,
+      max_incl:null,
+      dls_glubina:null,
+      incl_glubina:null,
       xArr: null,
       yArr: null,
       zArr: null,
@@ -334,13 +347,77 @@ export default {
         this.dxArray = this.data.map((r) => Math.abs(r.dx * 1))
         this.dyArray = this.data.map((r) => Math.abs(r.dy * 1))
         this.dzArray = this.data.map((r) => Math.abs(r.md * 1))
+        this.ecn_color = this.data.map((r) => r.dls_color)
         this.xArr = this.data.map((r) => (r.dx * 1))
         this.yArr = this.data.map((r) => (r.dy * 1))
         this.zArr = this.data.map((r) => (r.md * -1))
         this.hVal = this.hPumpFromIncl.substring(0,4) * 1
-
         this.indexZ = this.closestVal(this.hVal, this.zArr)
+        this.dls=this.data.map((r) => Math.round(Math.abs(r.dls * 100))/100)
+        this.incl=this.data.map((r) =>Math.round(Math.abs(r.incl * 100))/100)
+       
 
+        if (this.expChoose=='ШГН'){
+          this.glubina=this.hVal+10
+          this.index1 = this.closestVal(this.hVal, this.zArr)
+          this.index2 = this.closestVal(this.glubina, this.zArr)
+        } else {
+          this.glubina=this.hVal+20
+          this.index1 = this.closestVal(this.hVal, this.zArr)
+          this.index2 = this.closestVal(this.glubina, this.zArr)
+        }
+
+        if (this.dzArray.includes(this.glubina)){
+          if(this.dzArray.includes(this.hVal)){
+          }else{
+            if (this.dzArray[this.index1]>this.hVal){
+              this.index1=this.index1-1
+            }
+          }
+        } else {
+          if (this.dzArray[this.index2]<this.glubina){
+              this.index2=this.index2+1
+            }
+          if(this.dzArray.includes(this.hVal)){
+          }else{
+            if (this.dzArray[this.index1]>this.hVal){
+              this.index1=this.index1-1
+            }
+          }
+        }
+
+        this.dls_glubina=Math.max(...this.dls.slice(this.index1+1,this.index2+1))
+        this.incl_glubina=Math.max(...this.incl.slice(this.index1+1,this.index2+1))
+        this.max_dls=Math.max(...this.dls.slice(0,this.index2+1))
+        this.max_incl=Math.max(...this.incl.slice(0,this.index2+1))
+        
+        for (const i in this.ecn_color){
+          this.tmp=this.dzArray[this.closestVal(this.dzArray[i] + 20, this.zArr)]
+          if (this.tmp>=this.dzArray[i] + 20){
+            if (Math.max(...this.dls.slice(Number(i)+1,this.closestVal(this.dzArray[i] + 20, this.zArr)+1))>0.3){
+              this.ecn_color[i]='red'
+            } else if (Math.max(...this.dls.slice(Number(i)+1,this.closestVal(this.dzArray[i] + 20, this.zArr)+1))<=0.3 && Math.max(...this.dls.slice(Number(i)+1,this.closestVal(this.dzArray[i] + 20, this.zArr)+1))>0.05) {
+              this.ecn_color[i]='yellow'
+            } else {
+              this.ecn_color[i]='green'
+            }
+          } else {
+            if (Math.max(...this.dls.slice(Number(i)+1,this.closestVal(this.dzArray[i] + 20, this.zArr)+2))>0.3){
+              this.ecn_color[i]='red'
+            } else if (Math.max(...this.dls.slice(Number(i)+1,this.closestVal(this.dzArray[i] + 20, this.zArr)+2))<=0.3 && Math.max(...this.dls.slice(Number(i)+1,this.closestVal(this.dzArray[i] + 20, this.zArr)+2))>0.05) {
+              this.ecn_color[i]='yellow'
+            } else {
+              this.ecn_color[i]='green'
+            }
+          }
+        }
+        
+        if (this.expChoose=='ШГН'){
+          this.kraska= this.data.map((r) => r.dls_color)
+        } else {
+          this.kraska=this.ecn_color
+        }
+        
         this.pointZ = this.zArr[this.indexZ]
         this.pointX = this.xArr[this.indexZ]
         this.pointY = this.yArr[this.indexZ]
@@ -370,12 +447,11 @@ export default {
           opacity: 1,
           line: {
             width: 12,
-            color: this.data.map((r) => r.dls_color),
+            color: this.kraska.map((r) => r),
             colorscale: [[0, 'rgb(0,0,255)'], [1, 'rgb(255,0,0)']],
             type: 'heatmap'
           },
           
-
         },{
           type: 'scatter3d',
           mode: 'markers',
