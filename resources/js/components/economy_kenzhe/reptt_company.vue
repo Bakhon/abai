@@ -4,17 +4,17 @@
       @node-click="handleNodeClick"
       :data="reptt"
       :tree-props="defaultProps"
-      style="width: 100%; margin-bottom: 20px"
+      style="width: 100%;x"
       row-key="id"
       border
-      default-expand-all
       stripe
     >
-      <el-table-column prop="name" label="Наименование" sortable width="250">
+      <el-table-column prop="name" label="Наименование" sortable min-width="400">
       </el-table-column>
-      <el-table-column prop="value" v-for="v in value" v-bind:key="v.id" label="План на январь" sortable width="250">
-        <el-table-column prop="v" label="План на январь" sortable width="250">
-        </el-table-column>
+      <el-table-column label="План на январь" sortable width="250">
+        <template slot-scope="scope">
+            {{ sum(scope.row.values) }} <br>
+        </template>
       </el-table-column>
       
     </el-table>
@@ -29,8 +29,6 @@ export default {
       defaultProps: {
         id: "id",
         children: "handbook_items",
-        name: "name",
-        value: 'values'
       },
     };
   },
@@ -38,9 +36,21 @@ export default {
     handleNodeClick(data) {
       console.log(data);
     },
+    sum(values){
+      let sum = 0;
+      $.each(values, function(key, value){
+          sum += parseFloat(value.value);
+      });
+      return sum;
+    }
   },
   mounted() {
     console.log(this.reptt);
   },
 };
 </script>
+<style scoped>
+.el-table td, .el-table th{
+  padding: 5px;
+}
+</style>
