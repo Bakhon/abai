@@ -131,7 +131,7 @@ mounted() {
 }
 }
 </script>
-<style>
+<style scoped>
 .plot-block {
   background-color: #272953;
 }
@@ -153,7 +153,8 @@ mounted() {
 }
 
 tr {
-  font-weight: bold;
   height: 10pt;
+  font-weight: bold;
 }
+
 </style>
