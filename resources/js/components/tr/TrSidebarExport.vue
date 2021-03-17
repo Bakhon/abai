@@ -41,15 +41,12 @@ export default {
         {
           year: this.$store.getters["fa/year"],
           month: this.$store.getters["fa/month"],
-          day: this.$store.getters["fa/day"],
           pryear: this.$store.getters["fa/pryear"],
           prmonth: this.$store.getters["fa/prmonth"],
-          prday: this.$store.getters["fa/prday"],
           searchString: this.$store.getters["fa/searchString"],
           filter: this.$store.getters["fa/filter"],
           sortType: this.$store.getters["fa/sortType"],
           sortParam: this.$store.getters["fa/sortParam"],
-          is_dynamic:  this.$store.getters["fa/is_dynamic"],
         },
         {
           year: this.$store.getters["tr/year"],
