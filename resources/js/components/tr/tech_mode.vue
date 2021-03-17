@@ -905,13 +905,58 @@
                     </el-table-column>
 
                     <el-table-column
-                      :label="`${this.trans('tr.trs13')}`"
+                      :label="`${this.trans('tr.trs14')}`"
                       >
                       <el-table-column
-                      :label="`${this.trans('tr.trs1')}`"
+                      :label="`${this.trans('tr.tr20')}`"
                       >
                         <el-table-column
-                          prop="p_intake"
+                          prop="bhp_prev_m"
+                          label=""
+                          width="200"
+                          sortable
+                          >
+                        </el-table-column>
+                      </el-table-column>
+                      <el-table-column
+                      :label="`${this.trans('tr.tr22')}`"
+                      >
+                        <el-table-column
+                          prop="q_l_prev_m"
+                          label=""
+                          width="200"
+                          sortable
+                          >
+                        </el-table-column>
+                      </el-table-column>
+
+                      <el-table-column
+                      :label="`${this.trans('tr.tr23')}`"
+                      >
+                        <el-table-column
+                          prop="wct_prev_m"
+                          label=""
+                          width="200"
+                          sortable
+                          >
+                        </el-table-column>
+                      </el-table-column>
+                      <el-table-column
+                      :label="`${this.trans('tr.trs57')}`"
+                      >
+                        <el-table-column
+                          prop="h_dyn_prev_m"
+                          label=""
+                          width="200"
+                          sortable
+                          >
+                        </el-table-column>
+                      </el-table-column>
+                      <el-table-column
+                      :label="`${this.trans('tr.trs25')}`"
+                      >
+                        <el-table-column
+                          prop="pi_prev_m"
                           label=""
                           width="200"
                           sortable
