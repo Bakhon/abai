@@ -42,7 +42,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(row, row_index) in this.krsTable" :key="row_index">
+            <tr style="height: 10pt;" v-for="(row, row_index) in this.krsTable" :key="row_index">
               <td>{{row.dbeg.substring(0, 10)}}</td>
               <td>{{row.dend.substring(0, 10)}}</td>
               <td>{{row.krs_name}}</td>
@@ -152,8 +152,5 @@ mounted() {
   height: initial;
 }
 
-tr {
-  font-weight: bold;
-  height: 10pt;
-}
+
 </style>
