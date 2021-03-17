@@ -68,10 +68,15 @@
   {
     "name": "Цифровой рейтинг новых скважин",
     "icon": "/img/GTM/new_wells_rating.svg",
+    "parentType": "digitalRating",
     "children": [
       {
         "name": "Критерии подбора",
-        "component": null
+        "component": {
+          "name": "child-component",
+          "template": "<div><gtm-digital-rating-gtm></gtm-digital-rating-gtm></div>",
+          "parentType": "digitalRating"
+        }
       },
       {
         "name": "Прогноз эффективности (методика)",

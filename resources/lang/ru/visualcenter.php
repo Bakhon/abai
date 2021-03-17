@@ -5,6 +5,9 @@ return array (
   'oildlv' => 'Сдача нефти',
   'getgaz' => 'Добыча газа',
   'oilPrice' => 'Цена на нефть (Brent)',
+  'chekslines' => 'проверкастроки',
+  'wells1' => 'Фонд нагнетательных скважин',
+  'wells2' => 'Фонд нагнетательных скважин23',
   'usdKurs' => 'Курс доллара',
   'dolyaUchast' => 'С учётом доли участия КМГ',
   'ostatokNefti' => 'Товарный остаток нефти',
@@ -242,6 +245,7 @@ return array (
   'otmMetricSystem' => 'м.',
   'isOperating' => 'Операционные активы',
   'isNonOperating' => 'Не операционные активы',
+  'totalAllactives' => 'Итого по всем активам:',
   'productionChemicalization' => 'Химизация производства',
   'otmColumnTitle' => 'Организационно-технические мероприятия',
   'wellsNumber' => 'Кол-во скважин',
@@ -259,6 +263,24 @@ return array (
   'othersFond' => 'Прочие',
   'exploitationFond' => 'Эксплуатационный фонд',
   'tonWithSpace' => ' тонн',
-  'meterCubicWithSpace' => ' м³'
+  'meterCubicWithSpace' => ' м³',
+  'saveButton' => 'Сохранить',
+  'errors' => 'Ошибки',
+  'validateButton' => 'Провести проверку данных',
+  'importForm' => [
+    'errorList' => [
+        'incorrectDocumentFormat' =>  'Неверный формат Excel документа',
+    ]
+  ],
+  'requiredDailyPlan' => 'Необходимый ср/сут уровень',
+  'dzoRegions' => 
+  array (
+    'aturay' => 'Атырауская область',
+    'actubinsk' => 'Актюбинская область',
+    'kuzulord' => 'Кызылординская область',
+    'mangistau' => 'Мангистауская область',
+    'west' => 'Западно – Казахстанская область',
+    'zhambul' => 'Жамбылская область',
+  ),
+  'summaryByRegion' => 'Итого по активам области:',
 );
-

@@ -3,7 +3,7 @@
 namespace App\Console\Commands\Import;
 
 use Illuminate\Console\Command;
-use Level23\Druid\Types\Granularity;
+use App\Imports\GuWellsImport;
 use Maatwebsite\Excel\Facades\Excel;
 
 class Wells extends Command
@@ -39,6 +39,13 @@ class Wells extends Command
      */
     public function handle(): void
     {
-        Excel::import(new \App\Imports\GuWellsImport(), base_path($this->argument('path')));
+        $this->output->title('Starting import');
+        try {
+            Excel::import(new GuWellsImport($this), base_path($this->argument('path')));
+        } catch (\Exception $er) {
+            if ($er->getMessage() == 'Stop import') {
+                $this->output->success('Import successful');
+            }
+        }
     }
 }

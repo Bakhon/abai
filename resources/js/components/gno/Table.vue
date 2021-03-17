@@ -2256,15 +2256,6 @@ export default {
   },
 
   watch: {
-    // watchButtonHpump() {
-    //   if(this.buttonHpump) {
-    //     this.buttonHpump = this.$store.getters.getHpumpButton
-    //     this.$modal.hide('modalIncl')
-    //     this.hPumpValue = this.$store.getters.getHpump
-    //     console.log(this.hPumpValue, 'vuex hpump');
-    //     this.postCurveData();
-    //   }
-    // },
     curveSelect(newVal) {
       if (newVal === 'pi') {
         this.QhydCurveSelect = null;
@@ -2308,14 +2299,7 @@ export default {
     }
   },
   computed: {
-    // onChangeButtonHpump() {
-    //   alert('good')
-    //   console.log(this.buttonHpump)
-    //   if(this.buttonHpump == true) {
-    //     this.$modal.hide('modalIncl')
-    //     console.log('regi');
-    //   }
-    // },
+  
     wellNum() {
       return this.$store.state.wellNum
     },
@@ -2410,7 +2394,7 @@ export default {
           "hPumpValue": this.hPumpValue.split(' ')[0],
           "celSelect": this.CelButton,
           "celValue": this.CelValue.split(' ')[0],
-          "menu": "MainMenu",
+          "menu": this.menu,
           "well_age": this.age,
           "grp_skin": this.grp_skin,
           "analysisBox1": this.analysisBox1,
@@ -3725,18 +3709,7 @@ export default {
             "Qн = %{text:.1f} т/сут<br>" +
             "Pзаб = %{y:.1f} атм<extra></extra>"
     }
-  },
-  // updated() {
-  //   if(this.buttonHpump) {
-  //     this.closeInclModal()
-  //     console.log('true daguddass', this.buttonHpump);
-  //     this.buttonHpump = this.$store.getters.getHpumpButton
-  //     this.$modal.hide('modalIncl')
-  //     this.hPumpValue = this.$store.getters.getHpump
-  //     console.log(this.hPumpValue, 'vuex hpump');
-  //     this.postCurveData();
-  //   }
-  // }
+  }
 };
 </script>
 
