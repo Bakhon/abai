@@ -1125,7 +1125,6 @@ export default {
           console.log(data);
           this.wells = data.data;
           this.fullWells = data.data;
-          console.log(this.wells);
         } else {
           console.log("No data");
           
