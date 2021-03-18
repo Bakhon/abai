@@ -13,7 +13,18 @@
         <div class="ml-3 col-3 helpers mt-5">
             <div class="row">
                 <div class="data-status">
-                    <span class="label">Статус: </span>
+                    <span class="label">Выберите ДЗО: </span>
+                </div>
+                <select
+                        class="dzo-select col-12"
+                        @change="dzoChange($event)"
+                >
+                    <option v-for="dzo in dzoCompanies" :value="dzo.ticker">
+                        {{dzo.name}}
+                    </option>
+                </select>
+                <div class="data-status">
+                    <span class="label">{{trans('visualcenter.importForm.statusLabel')}}</span>
                     <span>{{status}}</span>
                 </div>
                 <div
@@ -67,14 +78,44 @@
 
 <script>
     import VGrid from "@revolist/vue-datagrid";
-    import initialRowsKMG from './importForm/initial_rows_data_kmg.json';
-    import cellsMappingKGM from './importForm/cells_mapping_kgm.json';
+    import initialRowsKOA from './importForm/initial_rows_koa.json';
+    import initialRowsKTM from './importForm/initial_rows_ktm.json';
+    import fieldsMapping from './importForm/fields_mapping.json';
+    import formatMappingKOA from './importForm/format_mapping_koa.json';
     import moment from "moment";
+
+    const defaultDzoTicker = "KOA";
+    const dzoMapping = {
+        "KOA" : {
+            rows: initialRowsKOA,
+            format: formatMappingKOA
+        },
+        "KTM" : {
+            rows: initialRowsKTM,
+            format: formatMappingKOA
+        },
+    };
+
+    const dzoOptionsMapping = {
+        cells: fieldsMapping,
+        initialRows: dzoMapping[defaultDzoTicker].rows,
+        format: dzoMapping[defaultDzoTicker].format
+    };
 
 
     export default {
         data: function () {
             return {
+                dzoCompanies: [
+                    {
+                      ticker: 'KOA',
+                      name: 'ТОО "Казахойл Актобе"'
+                    },
+                    {
+                        ticker: 'KTM',
+                        name: 'ТОО "Казахтуркмунай"'
+                    },
+                ],
                 isChemistryNeeded: true,
                 status: this.trans("visualcenter.importForm.status.waitForData"),
                 columns: [
@@ -144,7 +185,7 @@
                         },
                     },
                 ],
-                rows: _.cloneDeep(initialRowsKMG),
+                rows: _.cloneDeep(dzoOptionsMapping.initialRows),
                 isDataExist: false,
                 isDataReady: false,
                 rowsCount: 75,
@@ -158,22 +199,13 @@
                 },
                 dzoPlans: [],
                 selectedDzo: {
-                  name: 'КГМ',
+                  ticker: defaultDzoTicker,
                   plans: [],
                 },
                 currentMonthNumber: moment().format('M'),
-                kgmCellsMapping: _.cloneDeep(cellsMappingKGM),
-                rowsFormatMapping: {
-                    title: [0,6,12,17,23,29,35,41,61,71],
-                    subTitle: [42],
-                },
-                columnsFormatMapping: {
-                    two: [12],
-                    three: [61],
-                    four: [0,6,41,42],
-                    five: [35],
-                    six: [17,23,29,71],
-                },
+                kgmCellsMapping: _.cloneDeep(dzoOptionsMapping.cells),
+                rowsFormatMapping: _.cloneDeep(dzoOptionsMapping.format.rowsFormatMapping),
+                columnsFormatMapping: _.cloneDeep(dzoOptionsMapping.format.columnsFormatMapping),
             };
         },
         async mounted() {
@@ -183,6 +215,13 @@
             this.setTableFormat();
         },
         methods: {
+            dzoChange($event) {
+                let dzoTicker = $event.target.value;
+                this.selectedDzo.ticker = dzoTicker;
+                dzoOptionsMapping.initialRows = dzoMapping[dzoTicker].rows;
+                dzoOptionsMapping.format = dzoMapping[dzoTicker].format;
+                this.rows = _.cloneDeep(dzoOptionsMapping.initialRows);
+            },
             chemistrySave() {
                 this.status = this.trans("visualcenter.importForm.status.dataSaved");
                 this.isChemistryNeeded = !this.isChemistryNeeded;
@@ -197,7 +236,7 @@
                 let self = this;
                   return _.filter(this.dzoPlans, function(row) {
                       let rowMonthNumber = moment(row.date).format('M');
-                      return (rowMonthNumber === self.currentMonthNumber && row.dzo === self.selectedDzo.name);
+                      return (rowMonthNumber === self.currentMonthNumber && row.dzo === self.selectedDzo.ticker);
                   });
             },
             async getDzoMonthlyPlans() {
@@ -260,6 +299,9 @@
 </script>
 
 <style>
+    .dzo-select {
+        height: 24px;
+    }
     .chemistry-block {
         background-color: #20274F;
         color: white;
