@@ -4,10 +4,11 @@ namespace App\Console\Commands\Import;
 
 use Illuminate\Console\Command;
 use App\Imports\GuWellsImport;
-use Maatwebsite\Excel\Facades\Excel;
 
 class Wells extends Command
 {
+    use ExcelImport;
+
     /**
      * The name and signature of the console command.
      *
@@ -39,15 +40,6 @@ class Wells extends Command
      */
     public function handle(): void
     {
-        $this->output->title('Starting import');
-        try {
-            Excel::import(new GuWellsImport($this), base_path($this->argument('path')));
-        } catch (\Exception $er) {
-            if ($er->getMessage() == 'Stop import') {
-                $this->output->success('Import successful');
-            } else {
-                $this->output->error($er->getMessage());
-            }
-        }
+        $this->importExcel(new GuWellsImport($this));
     }
 }

@@ -119,8 +119,8 @@ class GuWellsImport implements ToCollection, WithEvents, WithColumnLimit, WithSt
         $between_points = null;
         $pipe = null;
         $zu = null;
-        $newPipe = true;
-        $deleting = false;
+        $isNewPipe = true;
+        $isDeleting = false;
 
         $this->command->line('----------------------------');
         $this->command->info('Processing '.$guName);
@@ -136,11 +136,11 @@ class GuWellsImport implements ToCollection, WithEvents, WithColumnLimit, WithSt
             $row[self::LAT] = str_replace(',','.', $row[self::LAT]);
             $row[self::LON] = str_replace(',','.', $row[self::LON]);
 
-            if (!empty($row[self::PIPE_START_NAME]) && $newPipe) {
+            if (!empty($row[self::PIPE_START_NAME]) && $isNewPipe) {
                 if ($row[self::PIPE_NAME] == '#LINK!' || !$row[self::PIPE_NAME]) {
                     $row[self::PIPE_NAME] = $row[self::PIPE_START_NAME];
                 }
-                $newPipe = false;
+                $isNewPipe = false;
 
                 $pipe_type = $this->createPipeType($row);
 
@@ -176,8 +176,8 @@ class GuWellsImport implements ToCollection, WithEvents, WithColumnLimit, WithSt
 
             if ($row[self::COMMENT] &&
                 (strpos(mb_strtolower($row[self::COMMENT]), 'ликвид') !== false ||
-                    strpos($row[self::COMMENT], 'тательн') !== false ||
-                    strpos($row[self::COMMENT], 'нагнет') !== false
+                    strpos(mb_strtolower($row[self::COMMENT]), 'тательн') !== false ||
+                    strpos(mb_strtolower($row[self::COMMENT], 'нагнет')) !== false
                 )
             ) {
                 if ($pipe) {
@@ -187,22 +187,22 @@ class GuWellsImport implements ToCollection, WithEvents, WithColumnLimit, WithSt
                 $zu = $well = $pipe = $between_points = null;
 
                 if (!$row[self::END_PIPE]) {
-                    $deleting = true;
+                    $isDeleting = true;
                 } else {
-                    $newPipe = true;
+                    $isNewPipe = true;
                 }
 
                 continue;
             }
 
-            if ($deleting && !$row[self::END_PIPE]) {
+            if ($isDeleting && !$row[self::END_PIPE]) {
                 continue;
             }
 
             if ($row[self::END_PIPE]) {
-                if ($deleting) {
-                    $deleting = false;
-                    $newPipe = true;
+                if ($isDeleting) {
+                    $isDeleting = false;
+                    $isNewPipe = true;
                     continue;
                 }
 
@@ -286,7 +286,7 @@ class GuWellsImport implements ToCollection, WithEvents, WithColumnLimit, WithSt
                     }
                 }
 
-                $newPipe = true;
+                $isNewPipe = true;
             }
 
             $this->createPipeCoord($row, $pipe->id);
