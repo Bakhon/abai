@@ -276,4 +276,21 @@ return array (
     'zhambul' => 'Жамбылская область',
   ),
   'summaryByRegion' => 'Итого по активам области:',
+  'chartOptions' =>
+  array (
+    'monthNames' =>
+        array (
+          'january' => 'Январь',
+          'february' => 'Февраль',
+          'march' => 'Март',
+          'april' => 'Апрель',
+          'may' => 'Май',
+          'june' => 'Июнь',
+          'july' => 'Июль',
+          'august' => 'Август',
+          'september' => 'Сентябрь',
+          'october' => 'Октябрь',
+          'november' => 'Ноябрь',
+          'december' => 'Декабрь',
+    ),
 );
