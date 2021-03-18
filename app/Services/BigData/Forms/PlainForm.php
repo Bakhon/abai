@@ -8,15 +8,7 @@ use Illuminate\Support\Facades\DB;
 
 abstract class PlainForm extends BaseForm
 {
-    public function submit(): array
-    {
-        $fields = $this->request->all();
-        $fields['created_at'] = \Carbon\Carbon::now();
-        $fields['updated_at'] = \Carbon\Carbon::now();
+    protected $jsonValidationSchemeFileName = 'plain_form.json';
 
-        $id = DB::table($this->params()['table'])
-            ->insertGetId($fields);
-
-        return (array)DB::table($this->params()['table'])->where('id', $id)->first();
-    }
+    abstract public function submit(): array;
 }

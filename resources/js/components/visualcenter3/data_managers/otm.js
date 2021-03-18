@@ -29,28 +29,28 @@ export default {
 
             result.push(
                 {
-                    name: this.trans("visualcenter.otm_iz_burenia_skv_fact"),
+                    name: this.trans("visualcenter.otmIzBurenia"),
                     code: 'otm_iz_burenia_skv_fact',
                     plan: otmData[0]['otm_iz_burenia_skv_plan'],
                     fact: otmData[0]['otm_iz_burenia_skv_fact'],
                     metricSystem: this.trans("visualcenter.otmMetricSystemWells"),
                 },
                 {
-                    name: this.trans("visualcenter.otm_burenie_prohodka_fact"),
+                    name: this.trans("visualcenter.otmBurenieProhodka"),
                     code: 'otm_burenie_prohodka_fact',
                     plan: otmData[0]['otm_burenie_prohodka_plan'],
                     fact: otmData[0]['otm_burenie_prohodka_fact'],
                     metricSystem: this.trans("visualcenter.otmMetricSystemMeter"),
                 },
                 {
-                    name: this.trans("visualcenter.otm_krs_skv_fact"),
+                    name: this.trans("visualcenter.otmKrsSkv"),
                     code: 'otm_krs_skv_fact',
                     plan: otmData[0]['otm_krs_skv_plan'],
                     fact: otmData[0]['otm_krs_skv_fact'],
                     metricSystem: this.trans("visualcenter.otmMetricSystemWells"),
                 },
                 {
-                    name: this.trans("visualcenter.otm_prs_skv_fact"),
+                    name: this.trans("visualcenter.otmPrsSkv"),
                     code: 'otm_prs_skv_fact',
                     plan: otmData[0]['otm_prs_skv_plan'],
                     fact: otmData[0]['otm_prs_skv_fact'],

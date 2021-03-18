@@ -4,7 +4,7 @@
     <div class="container">
         <div class="row justify-content-center">
             <a href="{{ route('tech_data_list') }}" class="btn btn-info">
-                Вернуться в справочник</a>
+                {{ __('forecast.return_menu') }}</a>
         </div>
     </div>
     <div class="container">
@@ -21,7 +21,7 @@
                             <div class="row">
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
-                                        <strong>НДГУ:</strong>
+                                        <strong>{{ __('forecast.NGDU') }}:</strong>
                                         <select class="form-control" name="ngdu_id">
                                             <option>Select Item</option>
                                             @foreach ($ngdu as $item)
@@ -42,7 +42,7 @@
                             <div class="row">
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
-                                        <strong>СДНГ:</strong>
+                                        <strong>{{ __('forecast.CDNG') }}:</strong>
                                         <input type="text" name="name" class="form-control" placeholder=""
                                                value="{{$technicalForecast->name}}">
                                     </div>

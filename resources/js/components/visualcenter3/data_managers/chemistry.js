@@ -29,28 +29,28 @@ export default {
 
             result.push(
                 {
-                    name: this.trans("visualcenter.chem_prod_zakacka_demulg_fact"),
+                    name: this.trans("visualcenter.chemProdZakackaDemulg"),
                     code: 'chem_prod_zakacka_demulg_fact',
                     plan: chemistryData[0]['chem_prod_zakacka_demulg_plan'],
                     fact: chemistryData[0]['chem_prod_zakacka_demulg_fact'],
                     metricSystem: this.trans("visualcenter.chemistryMetricTon"),
                 },
                 {
-                    name: this.trans("visualcenter.chem_prod_zakacka_bakteracid_fact"),
+                    name: this.trans("visualcenter.chemProdZakackaBakteracid"),
                     code: 'chem_prod_zakacka_bakteracid_fact',
                     plan: chemistryData[0]['chem_prod_zakacka_bakteracid_plan'],
                     fact: chemistryData[0]['chem_prod_zakacka_bakteracid_fact'],
                     metricSystem: this.trans("visualcenter.chemistryMetricTon"),
                 },
                 {
-                    name: this.trans("visualcenter.chem_prod_zakacka_ingibator_korrozin_fact"),
+                    name: this.trans("visualcenter.chemProdZakackaIngibatorKorrozin"),
                     code: 'chem_prod_zakacka_ingibator_korrozin_fact',
                     plan: chemistryData[0]['chem_prod_zakacka_ingibator_korrozin_plan'],
                     fact: chemistryData[0]['chem_prod_zakacka_ingibator_korrozin_fact'],
                     metricSystem: this.trans("visualcenter.chemistryMetricTon"),
                 },
                 {
-                    name: this.trans("visualcenter.chem_prod_zakacka_ingibator_soleotloj_fact"),
+                    name: this.trans("visualcenter.chemProdZakackaIngibatorSoleotloj"),
                     code: 'chem_prod_zakacka_ingibator_soleotloj_fact',
                     plan: chemistryData[0]['chem_prod_zakacka_ingibator_soleotloj_plan'],
                     fact: chemistryData[0]['chem_prod_zakacka_ingibator_soleotloj_fact'],

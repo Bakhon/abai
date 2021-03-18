@@ -45,9 +45,16 @@ class Ngdu4WellsImport implements ToCollection, WithEvents, WithColumnLimit, Wit
     const COLLECTOR = 17;
     const WELL_NUMBER = 18;
 
+    const BETWEEN_POINTS_ARRAY = [
+        'well-zu',
+        'fl-zu',
+        'well-collector',
+        'gu',
+        'zu-gu'
+    ];
+
     public function __construct(\App\Console\Commands\Import\Ngdu4Wells $command)
     {
-        $this->ngdu = Ngdu::where('name', 'НГДУ-4')->first();
         $this->command = $command;
         $this->sheetName = null;
     }
@@ -65,18 +72,22 @@ class Ngdu4WellsImport implements ToCollection, WithEvents, WithColumnLimit, Wit
             BeforeSheet::class => function (BeforeSheet $event) {
                 $this->sheetName = $event->getSheet()->getTitle();
 
-                $this->command->line(' ');
-                $this->command->line('----------------------------');
-                $this->command->info('sheetName ' . $this->sheetName);
-                $this->command->line('----------------------------');
-                $this->command->line(' ');
-
                 if (strpos($this->sheetName, 'НГДУ-4') !== 0) {
                     foreach ($this->errors as $error) {
                         $this->command->error($error);
                     }
                     throw new \Exception('Stop import');
                 }
+
+                $this->ngdu = Ngdu::where('name', 'НГДУ-4')->first();
+                MapPipe::where('ngdu_id', $this->ngdu->id)->whereIn('between_points', self::BETWEEN_POINTS_ARRAY)->delete();
+                Well::where('ngdu_id', $this->ngdu->id)->delete();
+
+                $this->command->line(' ');
+                $this->command->line('----------------------------');
+                $this->command->info('sheetName ' . $this->sheetName);
+                $this->command->line('----------------------------');
+                $this->command->line(' ');
             }
         ];
     }

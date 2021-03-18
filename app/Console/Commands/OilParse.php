@@ -34,17 +34,15 @@ class OilParse extends Command
 
     public function getOilRates()
     {
-      $this->deleteOldRates();
-
       $url = "https://yandex.ru/news/quotes/graph_1006.json";
       $data = json_decode(file_get_contents($url), true);
       if (!$data) return;
+      $this->deleteOldRates();
       $oilPricesByDate = array_values($data['prices']);
       foreach($oilPricesByDate as $item) {
         list($date,$price) = $item;
         $this->insertOilRatesInDB($price,$date);
       }
-
     }
 
     public function deleteOldRates()
