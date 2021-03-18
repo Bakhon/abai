@@ -118,8 +118,8 @@
         <div class="col-12" style="padding-bottom: 10px;">
           <div class="col-12"  style="font-size: 14px; text-align: left; color: white;">
             <b>Максимальный темп набора кривизны</b> <br> в месте установки насоса 
-            <input style="width: 60px;" v-model="dls_glubina" :disabled="dls_glubina" type="text" onfocus="this.value=''" class="input-box-gno-incl podbor" /> в интервале глубины спуска  
-            <input style="width: 60px;" v-model="max_dls" :disabled="max_dls" type="text" onfocus="this.value=''" class="input-box-gno-incl podbor"/>    
+            <input style="width: 60px;" v-model="dlsGlubina" :disabled="dlsGlubina" type="text" onfocus="this.value=''" class="input-box-gno-incl podbor" /> в интервале глубины спуска  
+            <input style="width: 60px;" v-model="maxDls" :disabled="maxDls" type="text" onfocus="this.value=''" class="input-box-gno-incl podbor"/>    
             
             </div> 
         </div>
@@ -127,8 +127,8 @@
           <div class="col-12" style="font-size: 14px; text-align: left; color: white; float: left;">
             <b>Максимальный зенитный угол</b>  <br> в месте установки насоса
             
-            <input v-model="incl_glubina" :disabled="incl_glubina" style="width: 60px;" type="text" onfocus="this.value=''" class="input-box-gno-incl podbor" />  в интервале глубины спуска 
-             <input v-model="max_incl" :disabled="max_incl" style="width: 60px;" type="text" onfocus="this.value=''" class="input-box-gno-incl podbor"/> 
+            <input v-model="inclGlubina" :disabled="inclGlubina" style="width: 60px;" type="text" onfocus="this.value=''" class="input-box-gno-incl podbor" />  в интервале глубины спуска 
+             <input v-model="maxIncl" :disabled="maxIncl" style="width: 60px;" type="text" onfocus="this.value=''" class="input-box-gno-incl podbor"/> 
             </div>
         </div>
 
@@ -169,15 +169,15 @@ export default {
       dzArray: null,
       dxArray: null,
       dyArray: null,
-      ecn_color: null,
+      ecnColor: null,
       dls:null,
       incl:null,
       index1:null,
       index2:null,
-      max_dls:null,
-      max_incl:null,
-      dls_glubina:null,
-      incl_glubina:null,
+      maxDls:null,
+      maxIncl:null,
+      dlsGlubina:null,
+      inclGlubina:null,
       xArr: null,
       yArr: null,
       zArr: null,
@@ -347,7 +347,7 @@ export default {
         this.dxArray = this.data.map((r) => Math.abs(r.dx * 1))
         this.dyArray = this.data.map((r) => Math.abs(r.dy * 1))
         this.dzArray = this.data.map((r) => Math.abs(r.md * 1))
-        this.ecn_color = this.data.map((r) => r.dls_color)
+        this.ecnColor = this.data.map((r) => r.dls_color)
         this.xArr = this.data.map((r) => (r.dx * 1))
         this.yArr = this.data.map((r) => (r.dy * 1))
         this.zArr = this.data.map((r) => (r.md * -1))
@@ -367,47 +367,37 @@ export default {
           this.index2 = this.closestVal(this.glubina, this.zArr)
         }
 
-        if (this.dzArray.includes(this.glubina)){
-          if(this.dzArray.includes(this.hVal)){
-          }else{
-            if (this.dzArray[this.index1]>this.hVal){
-              this.index1=this.index1-1
-            }
-          }
-        } else {
-          if (this.dzArray[this.index2]<this.glubina){
-              this.index2=this.index2+1
-            }
-          if(this.dzArray.includes(this.hVal)){
-          }else{
-            if (this.dzArray[this.index1]>this.hVal){
-              this.index1=this.index1-1
-            }
-          }
+        if(!this.dzArray.includes(this.hVal) && this.dzArray[this.index1]>this.hVal){
+          this.index1=this.index1-1
+        }
+        if (!this.dzArray.includes(this.glubina) && this.dzArray[this.index2]<this.glubina){
+          this.index2=this.index2+1
         }
 
-        this.dls_glubina=Math.max(...this.dls.slice(this.index1+1,this.index2+1))
-        this.incl_glubina=Math.max(...this.incl.slice(this.index1+1,this.index2+1))
-        this.max_dls=Math.max(...this.dls.slice(0,this.index2+1))
-        this.max_incl=Math.max(...this.incl.slice(0,this.index2+1))
+        this.dlsGlubina=Math.max(...this.dls.slice(this.index1+1,this.index2+1))
+        this.inclGlubina=Math.max(...this.incl.slice(this.index1+1,this.index2+1))
+        this.maxDls=Math.max(...this.dls.slice(0,this.index2+1))
+        this.maxIncl=Math.max(...this.incl.slice(0,this.index2+1))
         
-        for (const i in this.ecn_color){
+        for (const i in this.ecnColor){
           this.tmp=this.dzArray[this.closestVal(this.dzArray[i] + 20, this.zArr)]
+          this.tmp2=Math.max(...this.dls.slice(Number(i)+1,this.closestVal(this.dzArray[i] + 20, this.zArr)+1))
+          this.tmp3=Math.max(...this.dls.slice(Number(i)+1,this.closestVal(this.dzArray[i] + 20, this.zArr)+2))
           if (this.tmp>=this.dzArray[i] + 20){
-            if (Math.max(...this.dls.slice(Number(i)+1,this.closestVal(this.dzArray[i] + 20, this.zArr)+1))>0.3){
-              this.ecn_color[i]='red'
-            } else if (Math.max(...this.dls.slice(Number(i)+1,this.closestVal(this.dzArray[i] + 20, this.zArr)+1))<=0.3 && Math.max(...this.dls.slice(Number(i)+1,this.closestVal(this.dzArray[i] + 20, this.zArr)+1))>0.05) {
-              this.ecn_color[i]='yellow'
+            if (this.tmp2>0.3){
+              this.ecnColor[i]='red'
+            } else if (this.tmp2<=0.3 && this.tmp2>0.05) {
+              this.ecnColor[i]='yellow'
             } else {
-              this.ecn_color[i]='green'
+              this.ecnColor[i]='green'
             }
           } else {
-            if (Math.max(...this.dls.slice(Number(i)+1,this.closestVal(this.dzArray[i] + 20, this.zArr)+2))>0.3){
-              this.ecn_color[i]='red'
-            } else if (Math.max(...this.dls.slice(Number(i)+1,this.closestVal(this.dzArray[i] + 20, this.zArr)+2))<=0.3 && Math.max(...this.dls.slice(Number(i)+1,this.closestVal(this.dzArray[i] + 20, this.zArr)+2))>0.05) {
-              this.ecn_color[i]='yellow'
+            if (this.tmp3>0.3){
+              this.ecnColor[i]='red'
+            } else if (this.tmp3<=0.3 && this.tmp3>0.05) {
+              this.ecnColor[i]='yellow'
             } else {
-              this.ecn_color[i]='green'
+              this.ecnColor[i]='green'
             }
           }
         }
@@ -415,7 +405,7 @@ export default {
         if (this.expChoose=='ШГН'){
           this.kraska= this.data.map((r) => r.dls_color)
         } else {
-          this.kraska=this.ecn_color
+          this.kraska=this.ecnColor
         }
         
         this.pointZ = this.zArr[this.indexZ]
