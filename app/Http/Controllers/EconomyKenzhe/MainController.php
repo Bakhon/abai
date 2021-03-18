@@ -7,6 +7,7 @@ use App\Models\EconomyKenzhe\HandbookRepTt;
 use App\Models\EconomyKenzhe\SubholdingCompany;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Config;
 use Maatwebsite\Excel\Facades\Excel;
 
 class MainController extends Controller
@@ -30,7 +31,8 @@ class MainController extends Controller
         if ($request->isMethod('GET')) {
             return view('economy_kenzhe.import_rep');
         } elseif ($request->isMethod('POST')) {
-            Excel::import(new HandbookRepTtValueImport(), $request->select_file);
+            // ini_set('max_execution_time', '400');
+            Excel::import(new HandbookRepTtValueImport($request->importExcelType), $request->select_file);
             return back()->with('success', 'Загрузка прошла успешно.');
         }
     }
@@ -42,21 +44,19 @@ class MainController extends Controller
         $handbook = HandbookRepTt::where('parent_id', 0)->with('childHandbookItems')->get()->toArray();
         $companyRepTtValues = SubholdingCompany::find($id)->statsByDate($dateFrom,$dateTo)->get()->toArray();
         $repTtReportValues = $this->recursiveSetValueToRepTt($handbook, $companyRepTtValues);
-        // return array_slice($repTtReportValues, 0, 1);
         $repTtReportValues = json_encode($repTtReportValues);
-        
         return view('economy_kenzhe.company')->with(compact('repTtReportValues'));
     }
 
-    public function recursiveSetValueToRepTt(&$items, $companyValues)
+    public function recursiveSetValueToRepTt(&$items, $companyRepTtValues)
     {
-        $companyValuesRepTtIds = array_column($companyValues, 'rep_id');
+        $companyValuesRepTtIds = array_column($companyRepTtValues, 'rep_id');
         foreach ($items as $key => $value) {
             if (!array_key_exists('values', $items[$key])) {
                 $items[$key]['values'] = [];
             }
             if (count($value['handbook_items']) > 0) {
-                $this->recursiveSetValueToRepTt($items[$key]['handbook_items'], $companyValues);
+                $this->recursiveSetValueToRepTt($items[$key]['handbook_items'], $companyRepTtValues);
             } else {
                 $id = $value['id'];
                 $k = [];
@@ -65,7 +65,7 @@ class MainController extends Controller
                 }, ARRAY_FILTER_USE_BOTH);
                 if (count($k) > 0) {
                     foreach ($k as $k => $v) {
-                        array_push($items[$key]['values'], $companyValues[$k]);
+                        array_push($items[$key]['values'], $companyRepTtValues[$k]);
                     }
                 } else {
                     $items[$key]['values'] = [];
