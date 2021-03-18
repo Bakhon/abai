@@ -84,6 +84,9 @@ export default {
   mounted() {
 
     this.updateForm(this.params.code)
+        .catch(error => {
+          Vue.prototype.$notifyError(error.response.data.text + "\r\n\r\n" + error.response.data.errors)
+        })
 
   },
   methods: {
