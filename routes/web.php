@@ -185,6 +185,7 @@ Route::group(
                 Route::get('organizations', 'OrganizationsController@index')->name('organizations');
 
                 Route::get('profile', 'UserController@profile')->name('profile');
+                Route::post('modulerequest','ModuleController@moduleRequest')->name('modulerequest');
 
                 Route::get('anticrisis', 'AntiCrisisController@index')->name('anticrisis');
 
