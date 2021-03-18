@@ -47,7 +47,7 @@ class GenerateForm extends Command
             $formName = $this->askFormName();
         }
 
-        if (!$this->isFormExists($formName)) {
+        if ($this->isFormExists($formName)) {
             $this->error('Форма с указанным названием уже существует');
             $formName = $this->askFormName();
         }
@@ -75,10 +75,7 @@ class GenerateForm extends Command
 
     private function isFormExists($formName): bool
     {
-        if (class_exists("\App\Services\BigData\Forms\\$formName")) {
-            return false;
-        }
-        return true;
+        return class_exists("\App\Services\BigData\Forms\\$formName");
     }
 
     private function generateFormConfig(): void
