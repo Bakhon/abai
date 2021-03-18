@@ -1240,7 +1240,7 @@
 
 
 
-                     <el-table-column
+                    <el-table-column
                       :label="`${this.trans('tr.tr18')}`"
                       >
                       <el-table-column
@@ -1275,11 +1275,21 @@
                             >
                           </el-table-column>
                         </el-table-column>
-                        <el-table-column :label="`${this.trans('tr.trs78')}`">
+                        <el-table-column :label="`${this.trans('tr.tr21')}`">
                           <el-table-column
-                            prop="gp_idn_q_liq_cas_d_corr"
+                            prop="gp_idn_q_oil"
                             sortable
-                            :label="`${this.trans('tr.mtr2')}`"
+                            :label="`${this.trans('tr.mtr3')}`"
+                            width="200"
+                            
+                            >
+                          </el-table-column>
+                        </el-table-column>
+                        <el-table-column :label="`${this.trans('tr.tr32')}`">
+                          <el-table-column
+                            prop="gp_idn_q_oil_inc"
+                            sortable
+                            :label="`${this.trans('tr.mtr3')}`"
                             width="200"
                             
                             >
@@ -1287,7 +1297,53 @@
                         </el-table-column>
                       </el-table-column>
                       
+
+
+
+                      <el-table-column
+                      :label="`${this.trans('tr.tr27')}`"
+                      >
+                        <el-table-column :label="`${this.trans('tr.tr22')}`">
+                          <el-table-column
+                            prop="gp_idn_q_liq"
+                            label=""
+                            width="130"
+                            sortable
+                            >
+                          </el-table-column>
+                        </el-table-column>
+                        <el-table-column :label="`${this.trans('tr.trs78')}`">
+                          <el-table-column
+                            prop="gp_idn_q_liq_cas_d_corr"
+                            sortable
+                            :label="`${this.trans('tr.mtr2')}`"
+                            width="200"
+                            >
+                          </el-table-column>
+                        </el-table-column>
+                        <el-table-column :label="`${this.trans('tr.tr21')}`">
+                          <el-table-column
+                            prop="gp_idn_q_oil"
+                            sortable
+                            :label="`${this.trans('tr.mtr3')}`"
+                            width="200"
+                            
+                            >
+                          </el-table-column>
+                        </el-table-column>
+                        <el-table-column :label="`${this.trans('tr.tr32')}`">
+                          <el-table-column
+                            prop="gp_idn_q_oil_inc"
+                            sortable
+                            :label="`${this.trans('tr.mtr3')}`"
+                            width="200"
+                            
+                            >
+                          </el-table-column>
+                        </el-table-column>
+                      </el-table-column>
                     </el-table-column>
+                    
 
                     
                   </el-table>
