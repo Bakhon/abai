@@ -24,7 +24,6 @@
       </div>
 
      <div class="col-4 no-padding no-scrollbar incl-modal-table">
-       <!-- <h5 class="krs-table-title">{{trans('pgno.info_po_krs')}}</h5> -->
 
       <perfect-scrollbar>
         <table class="gno-table-with-header pgno">
