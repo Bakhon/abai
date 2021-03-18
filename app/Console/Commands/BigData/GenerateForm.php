@@ -38,7 +38,7 @@ class GenerateForm extends Command
         Artisan::call('config:clear');
     }
 
-    private function askFormName()
+    private function askFormName(): string
     {
         $formName = Str::ucfirst($this->ask('Укажите название формы (в CamelCase, например FluidProduction)'));
 
@@ -73,7 +73,7 @@ class GenerateForm extends Command
         return true;
     }
 
-    private function isFormExists($formName)
+    private function isFormExists($formName): bool
     {
         if (class_exists("\App\Services\BigData\Forms\\$formName")) {
             return false;
@@ -81,7 +81,7 @@ class GenerateForm extends Command
         return true;
     }
 
-    private function generateFormConfig()
+    private function generateFormConfig(): void
     {
         $configPath = resource_path("/params/bd/forms/") . "{$this->configFileName}.json";
         if (File::exists($configPath)) {
@@ -93,7 +93,7 @@ class GenerateForm extends Command
         File::put($configPath, $text);
     }
 
-    private function generateFormClass()
+    private function generateFormClass(): void
     {
         $text = File::get(__DIR__ . '/Templates/formClassTemplate');
         $text = str_replace(
@@ -113,7 +113,7 @@ class GenerateForm extends Command
         File::put(app_path() . "/Services/BigData/Forms/{$this->formName}.php", $text);
     }
 
-    private function addFormToFormsList()
+    private function addFormToFormsList(): void
     {
         $formsList = config('bigdata_forms');
         $formsList[$this->configFileName] = "\App\Services\BigData\Forms\\$this->formName";
