@@ -25,7 +25,7 @@
                 </select>
                 <div class="data-status">
                     <span class="label">{{trans('visualcenter.importForm.statusLabel')}}</span>
-                    <span>{{status}}</span>
+                    <span :class="[isValidateError ? 'status-error' : '','']">{{status}}</span>
                 </div>
                 <div
                         :class="[!isDataExist ? 'button-disabled' : '','button col-12']"
@@ -35,7 +35,7 @@
                 </div>
                 <div
                         :class="[!isDataReady ? 'button-disabled' : '','button col-12 mt-3']"
-                        @click="processSummary()"
+                        @click="handleSave()"
                 >
                     {{trans('visualcenter.saveButton')}}
                 </div>
@@ -82,22 +82,25 @@
     import initialRowsKTM from './importForm/initial_rows_ktm.json';
     import fieldsMapping from './importForm/fields_mapping.json';
     import formatMappingKOA from './importForm/format_mapping_koa.json';
+    import cellsMappingKOA from './importForm/cells_mapping_koa.json';
     import moment from "moment";
 
     const defaultDzoTicker = "KOA";
     const dzoMapping = {
         "KOA" : {
             rows: initialRowsKOA,
-            format: formatMappingKOA
+            format: formatMappingKOA,
+            cells: cellsMappingKOA
         },
         "KTM" : {
             rows: initialRowsKTM,
-            format: formatMappingKOA
+            format: formatMappingKOA,
+            cells: cellsMappingKOA
         },
     };
 
     const dzoOptionsMapping = {
-        cells: fieldsMapping,
+        cells: dzoMapping[defaultDzoTicker].cells,
         initialRows: dzoMapping[defaultDzoTicker].rows,
         format: dzoMapping[defaultDzoTicker].format
     };
@@ -203,9 +206,15 @@
                   plans: [],
                 },
                 currentMonthNumber: moment().format('M'),
-                kgmCellsMapping: _.cloneDeep(dzoOptionsMapping.cells),
+                cellsMapping: _.cloneDeep(dzoOptionsMapping.cells),
                 rowsFormatMapping: _.cloneDeep(dzoOptionsMapping.format.rowsFormatMapping),
                 columnsFormatMapping: _.cloneDeep(dzoOptionsMapping.format.columnsFormatMapping),
+                excelData: {
+                    downtimeReason: {},
+                    decreaseReason: {},
+                    mainData: {}
+                },
+                isValidateError: false,
             };
         },
         async mounted() {
@@ -213,8 +222,20 @@
             this.selectedDzo.plans = this.getSelectedDzoPlans();
             await this.sleep(1000);
             this.setTableFormat();
+            await this.storeData();
         },
         methods: {
+            async storeData() {
+                let downtimeReason = {
+                    'dzoName': 'test',
+                    'downtimeReason': {
+                        'prs_downtime_production_wells_count': 2
+                    }
+                };
+                let uri = this.localeUrl("/dzo_excel_form");
+
+                this.axios.post(uri, downtimeReason);
+            },
             dzoChange($event) {
                 let dzoTicker = $event.target.value;
                 this.selectedDzo.ticker = dzoTicker;
@@ -248,16 +269,60 @@
                 return [];
             },
             handleValidate() {
-                const grid = document.querySelector('revo-grid');
                 let self = this;
-                this.isDataReady = true;
-                this.isDataExist = false;
-                this.status = this.trans("visualcenter.importForm.status.dataValid");
+                this.isValidateError = false;
+                this.isDataReady = false;
+                _.forEach(this.cellsMapping, function(row, index) {
+                    self.processTableData(row,index);
+                });
+                if (!this.isValidateError) {
+                    this.isDataExist = false;
+                    this.isDataReady = true;
+                    this.status = this.trans("visualcenter.importForm.status.dataValid");
+                } else {
+                    this.status = this.trans("visualcenter.importForm.status.dataIsNotValid");
+                }
+                console.log(this.isDataReady);
             },
-            processSummary() {
-                this.isDataReady = !this.isDataReady;
-                const grid = document.querySelector('revo-grid');
+            handleSave() {
+                let self = this;
+                _.forEach(this.cellsMapping, function(row, index) {
+                    self.processTableData(row,index);
+                });
+
                 this.status = this.trans("visualcenter.importForm.status.dataSaved");
+            },
+            processTableData(row,rowIndex) {
+                let self = this;
+                _.forEach(Object.keys(this.cellsMapping), function(key) {
+                    if (key === 'downtimeReason') {
+                        self.processBlock(self.cellsMapping[key],'downtimeReason');
+                    }
+                });
+            },
+            processBlock(block,category) {
+                let self = this;
+                _.forEach(block, function(row) {
+                    self.processFields(row,category);
+                });
+            },
+            processFields(row,category) {
+                for (let i = 1; i <= row.index.length; i++) {
+                    let selector = 'div[data-col="'+ i + '"][data-row="' + row.rowIndex + '"]';
+                    let cellValue = parseFloat($(selector).text());
+                    if (!this.isDowntimeReasonCellValid(cellValue,selector)) {
+                        return;
+                    }
+                    this.excelData[category][row.fields[i]] = cellValue;
+                }
+            },
+            isDowntimeReasonCellValid(inputData,selector) {
+                if (isNaN(inputData) || inputData < 0) {
+                    this.setClassToElement($(selector),'cell__color-red');
+                    this.isValidateError = true;
+                    return false;
+                }
+                return true;
             },
             beforeRangeEdit(e) {
                 this.setTableFormat();
@@ -299,6 +364,12 @@
 </script>
 
 <style>
+    .status-error {
+        color: red;
+    }
+    .cell__color-red {
+        background-color: red;
+    }
     .dzo-select {
         height: 24px;
     }

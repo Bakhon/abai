@@ -193,6 +193,7 @@ Route::group(
 
                 Route::get('/paegtm', 'GTM\GTMController@index')->name('gtm');
 
+                Route::post('dzo_excel_form', 'VisCenter\ExcelForm\ExcelFormController@store');
             }
         );
         Auth::routes(
