@@ -1437,7 +1437,6 @@ export default {
         this.$store.commit("globalloading/SET_LOADING", false);
         // this.isloading = false;
         if (data) {
-          console.log(data);
           this.wells = data.data;
           this.fullWells = data.data;
         } else {
