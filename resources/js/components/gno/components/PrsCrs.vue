@@ -82,8 +82,7 @@ data: function(){
         title: 'История ПРС',
         barmode: 'group',
         },
-        asd: {'data': {'Январь': {'text': 'ШГН-57, Нсп-1024, ГТМ', 'nno_size': '37.0'}, 'Февраль': {'text': 'ШГН-57, Нсп-1040, Пропуск/износ насоса', 'nno_size': '56.0'}, 'Март': {'text': '', 'nno_size': ''}, 'Апрель': {'text': '', 'nno_size': ''}, 'Май': {'text': '', 'nno_size': ''}, 'Июнь': {'text': '', 'nno_size': ''}, 'Июль': {'text': '', 'nno_size': ''}, 'Август': {'text': '', 'nno_size': ''}, 'Сентябрь': {'text': '', 'nno_size': ''}, 'Октябрь': {'text': '', 'nno_size': ''}, 'Ноябрь': {'text': '', 'nno_size': ''}, 'Декабрь': {'text': '', 'nno_size': ''}}, 'nno': '{"NNO": 56.0, "prs": 1}'}
-    }
+      }
 },
 mounted() {
     let uriPrsKrs = "http://172.20.103.187:7575/api/nno/history/"+ this.field + "/" + this.wellNumber + "/";
