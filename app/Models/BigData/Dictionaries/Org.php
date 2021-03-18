@@ -16,6 +16,16 @@ class Org extends TBDModel
         return $this->belongsTo(Org::class, 'parent_id');
     }
 
+    public function wells()
+    {
+        return $this->belongsToMany(\App\Models\BigData\Well::class, 'tbdi.well_org', 'org_id', 'well_id');
+    }
+
+    public function type()
+    {
+        return $this->belongsTo(OrgType::class, 'type_id');
+    }
+
 
     public function fieldIds()
     {

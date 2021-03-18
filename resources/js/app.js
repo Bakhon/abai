@@ -76,6 +76,9 @@ Vue.component('horizontal-indicators', require('./components/visualcenter3/Horiz
 Vue.component('vertical-indicators', require('./components/visualcenter3/VerticalIndicators.vue').default);
 Vue.component('vc-upstream-table', require('./components/visualcenter3/UpstreamTable.vue').default);
 Vue.component('visual-center-menu', require('./components/visualcenter/VisualCenterMenu.vue').default);
+
+Vue.component('tech-data-component', require('./components/technical_forecast/productionDataIndex.vue').default);
+
 Vue.component('economic-component', require('./components/Economic/main.vue').default);
 Vue.component('chart1-component', require('./components/Economic/chart1.vue').default);
 Vue.component('chart2-component', require('./components/Economic/chart2.vue').default);
@@ -99,10 +102,12 @@ Vue.component('zu-form', require('./components/zu/form.vue').default);
 Vue.component('gtm-main', require('./components/GTM/Main.vue').default);
 Vue.component('gtm-aegtm', require('./components/GTM/Aegtm.vue').default);
 Vue.component('gtm-aegtm-eco', require('./components/GTM/AegtmEco.vue').default);
-Vue.component('gtm-podbor-gtm', require('./components/GTM/podborGTM.vue').default);
+Vue.component('gtm-podbor-gtm', require('./components/GTM/PodborGTM.vue').default);
+Vue.component('gtm-digital-rating-gtm', require('./components/GTM/DigitalRating.vue').default);
 Vue.component('gtm-etu', require('./components/GTM/Etu.vue').default);
 Vue.component('gtm-main-menu', require('./components/GTM/MainMenu.vue').default);
 Vue.component('gtm-bar-chart', require('./components/GTM/BarChart.vue').default);
+Vue.component('gtm-line-chart', require('./components/GTM/LineChart.vue').default);
 Vue.component('gtm-tree', require('./components/GTM/Tree.vue').default);
 Vue.component('gtm-node-tree', require('./components/GTM/NodeTree.vue').default);
 

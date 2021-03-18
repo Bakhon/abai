@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ComplicationMonitoring\OmgNGDU;
 use App\Models\ComplicationMonitoring\PipeType;
 use App\Models\Pipes\MapPipe;
 use App\Models\Pipes\PipeCoord;
+use App\Models\Refs\Ngdu;
 use Illuminate\Http\Request;
 use App\Models\Pipes\GuZuPipe;
 use App\Services\MapService;
@@ -33,18 +35,11 @@ class MapsController extends Controller
 
     public function guMap()
     {
-        $gus = Gu::query()
-            ->whereNotNull('lat')
-            ->whereNotNull('lon')
-            ->orderByRaw('lpad(name, 10, 0) asc')
-            ->get();
-
-        $cdngs = Cdng::all();
-
-        return view('maps.gu_map', compact('cdngs', 'gus'));
+        return view('maps.gu_map');
     }
 
-    public function getMapCenter (){
+    public function getMapCenter()
+    {
         $coordinates = [];
         $this->getPipesWithCoords($coordinates);
 
@@ -57,7 +52,7 @@ class MapsController extends Controller
         return $center;
     }
 
-    public function guPipes(Request $request, DruidService $druidService): array
+    public function mapData(Request $request, DruidService $druidService): array
     {
         $pipes = MapPipe::with('coords', 'pipeType')->get();
 
@@ -66,8 +61,8 @@ class MapsController extends Controller
         $wellPoints = Well::query()
             ->whereHas('zu.gu')
             ->whereHas('ngdu')
-            ->whereNotNull('wells.lat')
-            ->whereNotNull('wells.lon')
+            ->whereNotNull('lat')
+            ->whereNotNull('lon')
             ->get();
 
         $zuPoints = Zu::query()
@@ -77,15 +72,36 @@ class MapsController extends Controller
             ->whereNotNull('lon')
             ->get();
 
-        $guPoints = Gu::query()
+        $guPoints = Gu::with(
+            [
+                'omgngdu' => function ($query) {
+                    $query->select(
+                        'id',
+                        'date',
+                        'gu_id',
+                        'daily_fluid_production',
+                        'daily_oil_production',
+                        'bsw',
+                        'pump_discharge_pressure',
+                        'heater_output_pressure',
+                        'editable'
+                    )->orderBy('date', 'desc')->first();
+                }
+            ]
+        )
             ->whereNotNull('lat')
             ->whereNotNull('lon')
+            ->orderByRaw('lpad(name, 10, 0) asc')
             ->get();
 
         $pipeTypes = PipeType::all();
+        $ngdus = Ngdu::all();
+        $cdngs = Cdng::all();
 
         return [
             'pipes' => $pipes,
+            'ngdus' => $ngdus,
+            'cdngs' => $cdngs,
             'wellPoints' => $wellPoints,
             'zuPoints' => $zuPoints,
             'guPoints' => $guPoints,
@@ -134,35 +150,32 @@ class MapsController extends Controller
         return $result;
     }
 
-    private function getWellPointsWithInfo(DruidService $druidService): \Illuminate\Database\Eloquent\Collection
-    {
-        $wellOilInfo = $this->getWellOilInfo($druidService);
-        return Well::query()
-            ->whereHas('zu.gu')
-            ->whereNotNull('wells.lat')
-            ->whereNotNull('wells.lon')
-            ->get()
-            ->map(
-                function ($well) use ($wellOilInfo) {
-                    $name = 'Скважина: ' . $well->name . "\n";
-                    if (array_key_exists($well->name, $wellOilInfo)) {
-                        $name .= 'Добыча за 01.07.2020: ' . $wellOilInfo[$well->name] . "\n";
-                    }
-
-                    $well->origName = $well->name;
-                    $well->name = $name;
-                    return $well;
-                }
-            );
-    }
-
     public function storeGu(Request $request): \Symfony\Component\HttpFoundation\Response
     {
         $gu_input = $request->input('gu');
-        $gu = $gu_input['id'] ? Gu::find($gu_input['id']) : new Gu;
+        $gu = new Gu;
 
         $gu->fill($gu_input);
         $gu->save();
+
+        $gu = Gu::with(
+            [
+                'omgngdu' => function ($query) {
+                    $query->select(
+                        'id',
+                        'date',
+                        'gu_id',
+                        'daily_fluid_production',
+                        'daily_oil_production',
+                        'bsw',
+                        'pump_discharge_pressure',
+                        'heater_output_pressure',
+                        'editable'
+                    )->orderBy('date', 'desc')->first();
+                }
+            ]
+        )
+            ->find($gu->id);
 
         return response()->json(
             [
@@ -191,20 +204,10 @@ class MapsController extends Controller
     public function storeWell(Request $request, DruidService $druidService): \Symfony\Component\HttpFoundation\Response
     {
         $well_input = $request->input('well');
-        $well = $well_input['id'] ? Well::find($well_input['id']) : new Well;
-        $well_input['name'] = $well_input['origName'];
+        $well = new Well;
 
         $well->fill($well_input);
         $well->save();
-
-        $wellOilInfo = $this->getWellOilInfo($druidService);
-        $name = 'Скважина: ' . $well->name . "\n";
-        if (array_key_exists($well->name, $wellOilInfo)) {
-            $name .= 'Добыча за 01.07.2020: ' . $wellOilInfo[$well->name] . "\n";
-        }
-
-        $well->origName = $well->name;
-        $well->name = $name;
 
         return response()->json(
             [
@@ -229,7 +232,6 @@ class MapsController extends Controller
         }
 
         $pipe = MapPipe::with('coords', 'pipeType')->find($pipe->id);
-        $pipe->color = $this->mapService->getPipeColor($pipe->between_points);
 
         return response()->json(
             [
@@ -245,6 +247,25 @@ class MapsController extends Controller
 
         $gu->fill($gu_input);
         $gu->save();
+
+        $gu = Gu::with(
+            [
+                'omgngdu' => function ($query) {
+                    $query->select(
+                        'id',
+                        'date',
+                        'gu_id',
+                        'daily_fluid_production',
+                        'daily_oil_production',
+                        'bsw',
+                        'pump_discharge_pressure',
+                        'heater_output_pressure',
+                        'editable'
+                    )->orderBy('date', 'desc')->first();
+                }
+            ]
+        )
+            ->find($gu->id);
 
         return response()->json(
             [
@@ -297,8 +318,6 @@ class MapsController extends Controller
         }
 
         $pipe = MapPipe::with('coords', 'pipeType')->find($pipe->id);
-
-        $pipe->color = $this->mapService->getPipeColor($pipe->between_points);
 
         return response()->json(
             [

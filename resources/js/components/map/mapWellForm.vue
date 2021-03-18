@@ -12,6 +12,26 @@
     </b-form-group>
 
     <b-form-group
+        :label="trans('monitoring.ngdu')"
+        label-for="ngdus">
+      <b-form-select
+          id="ngdus"
+          v-model="well.ngdu_id"
+          :options="ngduOptions"
+      ></b-form-select>
+    </b-form-group>
+
+    <b-form-group
+        :label="trans('monitoring.gu.gu')"
+        label-for="gus">
+      <b-form-select
+          id="gus"
+          v-model="well.gu_id"
+          :options="guOptions"
+      ></b-form-select>
+    </b-form-group>
+
+    <b-form-group
         :label="trans('monitoring.zu.zu')"
         label-for="zus">
       <b-form-select
@@ -48,6 +68,8 @@
 </template>
 
 <script>
+import {guMapState} from '@store/helpers';
+
 export default {
   name: "mapWellForm",
   props: {
@@ -55,20 +77,41 @@ export default {
       type: Object,
       required: true,
     },
-    zus: {
-      type: Array,
-      required: true,
-    }
   },
   computed: {
+    ...guMapState([
+      'guPoints',
+      'zuPoints',
+      'ngdus'
+    ]),
     zuOptions: function () {
       let options = [];
-      this.zus.forEach((item) => {
+      this.zuPoints.forEach((item) => {
         if (item.gu_id) {
           options.push(
               { value: item.id, text: item.name }
           );
         }
+      });
+
+      return options;
+    },
+    guOptions: function () {
+      let options = [];
+      this.guPoints.forEach((item) => {
+        options.push(
+            { value: item.id, text: item.name }
+        );
+      });
+
+      return options;
+    },
+    ngduOptions: function () {
+      let options = [];
+      this.ngdus.forEach((item) => {
+        options.push(
+            { value: item.id, text: item.name }
+        );
       });
 
       return options;

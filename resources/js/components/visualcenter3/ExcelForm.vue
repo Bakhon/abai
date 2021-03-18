@@ -1,114 +1,363 @@
 <template>
-  <div>
-    <hot-table
-      :data="data"
-      :colHeaders="true"
-      :settings="hotSettings"
-      :rowHeaders="true"
-      licenseKey="non-commercial-and-evaluation"
-      ref="myTable"
-    >
-      <input type="hidden" name="oil_plan" v-model="oil_plan" />
-      <input type="hidden" name="oil_fact" v-model="oil_fact" />
-      <button @click="changeData()" class="btn btn-primary" id="submit_btn">
-        Сохранить
-      </button>
-      <div @click="changeData()" class="btn btn-primary" id="submit_btn">
-        Проверить ошибки
-      </div>
-    </hot-table>
-  </div>
+    <div class="row">
+        <div class="table-form col-10">
+            <v-grid
+                    theme="material"
+                    :source="rows"
+                    :columns="columns"
+                    :rowSize="30"
+                    @beforeRangeEdit="beforeRangeEdit"
+                    :frameSize="72"
+            ></v-grid>
+        </div>
+        <div class="ml-3 col-3 helpers mt-5">
+            <div class="row">
+                <div class="data-status">
+                    <span class="label">Статус: </span>
+                    <span>{{status}}</span>
+                </div>
+                <div
+                        :class="[!isDataExist ? 'button-disabled' : '','button col-12']"
+                        @click="handleValidate()"
+                >
+                    {{trans('visualcenter.validateButton')}}
+                </div>
+                <div
+                        :class="[!isDataReady ? 'button-disabled' : '','button col-12 mt-3']"
+                        @click="processSummary()"
+                >
+                    {{trans('visualcenter.saveButton')}}
+                </div>
+                <div
+                        class="button col-12 mt-3"
+                        @click="changeButtonVisibility()"
+                >
+                    {{trans('visualcenter.importForm.enterChemistryButton')}}
+                </div>
+            </div>
+            <div :class="[isChemistryNeeded ? 'disabled' : '','chemistry-block mt-5 row p-3']">
+                <h4 class="col-12">{{trans("visualcenter.importForm.chemistry")}}</h4>
+                <div class="col-12 d-flex">
+                    <span class="col-7">{{trans("visualcenter.chem_prod_zakacka_demulg_fact")}}</span>
+                    <input class="col-5"></input>
+                </div>
+                <div class="col-12 d-flex">
+                    <span class="col-7">{{trans("visualcenter.chem_prod_zakacka_bakteracid_fact")}}</span>
+                    <input class="col-5"></input>
+                </div>
+                <div class="col-12 d-flex">
+                    <span class="col-7">{{trans("visualcenter.chem_prod_zakacka_ingibator_korrozin_fact")}}</span>
+                    <input class="col-5"></input>
+                </div>
+                <div class="col-12 d-flex">
+                    <span class="col-7">{{trans("visualcenter.chem_prod_zakacka_ingibator_soleotloj_fact")}}</span>
+                    <input class="col-5"></input>
+                </div>
+                <div class="col-6"></div>
+                <div
+                        class="button col-12 mt-2"
+                        @click="chemistrySave()"
+                >
+                    {{trans('visualcenter.saveButton')}}
+                </div>
+            </div>
+        </div>
+    </div>
 </template>
- 
+
 <script>
-import { HotTable } from "@handsontable/vue";
-export default {
-  data: function () {
-    return {
-      temp: [1],
-      oil_plan: "",
-      oil_fact: "",
-      data: [
-        [
-          '                           СУТОЧНЫЙ РАПОРТ  АО"КАРАЖАНБАСМУНАЙ"  ЗА 			',
-          " ",
-          " ",
-          " ",
-          "13.02.2021",
-          " ",
-          " ",
-          " ",
-        ],
-        ["НЕФТЬ /OIL", " ДОБЫЧА, тонн 						"],
-        [, "ГРАФИК на месяц ", "СУТОЧНАЯ 		", " ", " ", "С НАЧАЛА МЕСЯЦА		"],
-        [, , "План ", "Факт", "(+,-)", "План", "Факт ", "(+,-)"],
-        ['АО "КАРАЖАНБАСМУНАЙ" '],
-      ],
-      hotSettings: {
-        colHeaders: true,
-        rowHeaders: true,
-        contextMenu: true,
-        readOnly: true,
-        className: "first-class",
-        stretchH: "all",
-        mergeCells: [
-          { row: 0, col: 0, rowspan: 1, colspan: 4 },
-          { row: 1, col: 0, rowspan: 3, colspan: 1 },
-          { row: 1, col: 1, rowspan: 1, colspan: 7 },
-          { row: 2, col: 1, rowspan: 2, colspan: 1 },
-          { row: 2, col: 2, rowspan: 1, colspan: 3 },
-          { row: 2, col: 5, rowspan: 1, colspan: 3 },
-        ],
-        startCols: 30,
-        startRows: 50,
-        formulas: true,
-        licenseKey: "non-commercial-and-evaluation",
-        cells: function (row, col, prop) {
-          var cellProperties = {};
+    import VGrid from "@revolist/vue-datagrid";
+    import initialRowsKMG from './importForm/initial_rows_data_kmg.json';
+    import cellsMappingKGM from './importForm/cells_mapping_kgm.json';
+    import moment from "moment";
 
-          if (col > 0) {
-            if (row === 4) {
-              cellProperties.type = "numeric";
-              cellProperties.allowEmpty = false;
-              cellProperties.readOnly = false;
-            }
-          }
 
-          return cellProperties;
+    export default {
+        data: function () {
+            return {
+                isChemistryNeeded: true,
+                status: this.trans("visualcenter.importForm.status.waitForData"),
+                columns: [
+                    {
+                        prop: "column1",
+                        size: 440,
+                        cellProperties: ({prop, model, data, column}) => {
+                            return {
+                                style: {
+                                    border: '1px solid #F4F4F6',
+                                },
+                            };
+                        },
+                    },
+                    {
+                        prop: "column2",
+                        size: 280,
+                        cellProperties: ({prop, model, data, column}) => {
+                            return {
+                                style: {
+                                    border: '1px solid #F4F4F6'
+                                },
+                            };
+                        },
+                    },
+                    {
+                        prop: "column3",
+                        size: 330,
+                        cellProperties: ({prop, model, data, column}) => {
+                            return {
+                                style: {
+                                    border: '1px solid #F4F4F6'
+                                },
+                            };
+                        },
+                    },
+                    {
+                        prop: "column4",
+                        size: 280,
+                        cellProperties: ({prop, model, data, column}) => {
+                            return {
+                                style: {
+                                    border: '1px solid #F4F4F6'
+                                },
+                            };
+                        },
+                    },
+                    {
+                        prop: "column5",
+                        size: 280,
+                        cellProperties: ({prop, model, data, column}) => {
+                            return {
+                                style: {
+                                    border: '1px solid #F4F4F6'
+                                },
+                            };
+                        },
+                    },{
+                        prop: "column6",
+                        size: 280,
+                        cellProperties: ({prop, model, data, column}) => {
+                            return {
+                                style: {
+                                    border: '1px solid #F4F4F6'
+                                },
+                            };
+                        },
+                    },
+                ],
+                rows: _.cloneDeep(initialRowsKMG),
+                isDataExist: false,
+                isDataReady: false,
+                rowsCount: 78,
+                columnsCountForHighlight: {
+                    six: [0,1,2,3,4,5],
+                    five: [0,1,2,3,4],
+                    four: [0,1,2,3],
+                    three: [0,1,2],
+                    two: [0,1],
+                    one: [0]
+                },
+                dzoPlans: [],
+                selectedDzo: {
+                  name: 'КГМ',
+                  plans: [],
+                },
+                currentMonthNumber: moment().format('M'),
+                kgmCellsMapping: _.cloneDeep(cellsMappingKGM),
+                rowsFormatMapping: {
+                    title: [0,6,12,17,23,29,35,41,61,71],
+                    subTitle: [42],
+                },
+            };
         },
-      },
+        async mounted() {
+            this.dzoPlans = await this.getDzoMonthlyPlans();
+            this.selectedDzo.plans = this.getSelectedDzoPlans();
+            await this.sleep(1000);
+            this.setTableFormat();
+        },
+        methods: {
+            chemistrySave() {
+                this.status = this.trans("visualcenter.importForm.status.dataSaved");
+                this.isChemistryNeeded = !this.isChemistryNeeded;
+            },
+            changeButtonVisibility() {
+                this.isChemistryNeeded = !this.isChemistryNeeded;
+            },
+            sleep(ms) {
+                return new Promise(resolve => setTimeout(resolve, ms));
+            },
+            getSelectedDzoPlans() {
+                let self = this;
+                  return _.filter(this.dzoPlans, function(row) {
+                      let rowMonthNumber = moment(row.date).format('M');
+                      return (rowMonthNumber === self.currentMonthNumber && row.dzo === self.selectedDzo.name);
+                  });
+            },
+
+            async getDzoMonthlyPlans() {
+                let uri = this.localeUrl("/get-dzo-monthly-plans");
+                const response = await axios.get(uri);
+                if (response.status === 200) {
+                    return response.data;
+                }
+                return [];
+            },
+
+            handleValidate() {
+                const grid = document.querySelector('revo-grid');
+                let self = this;
+                this.isDataReady = true;
+                this.isDataExist = false;
+                this.status = this.trans("visualcenter.importForm.status.dataValid");
+            },
+            processSummary() {
+                const grid = document.querySelector('revo-grid');
+                this.status = this.trans("visualcenter.importForm.status.dataSaved");
+            },
+            beforeRangeEdit(e) {
+                this.setTableFormat();
+                this.isDataExist = true;
+            },
+            selectClassForCell(rowIndex,columnsList,className) {
+                let self = this;
+                columnsList.forEach(function(columnIndex) {
+                    self.setClassToElement($('div[data-col="'+ columnIndex + '"][data-row="' + rowIndex + '"]'),className);
+                });
+            },
+            setTableFormat() {
+                for (let rowIndex = 0; rowIndex < this.rowsCount; rowIndex++) {
+                    if (this.rowsFormatMapping.title.includes(rowIndex)) {
+                        this.selectClassForCell(rowIndex,this.getColumnsForHighLight(rowIndex),'title');
+                    } else if (this.rowsFormatMapping.subTitle.includes(rowIndex)) {
+                        this.selectClassForCell(rowIndex,this.getColumnsForHighLight(rowIndex),'sub-title');
+                    }
+                }
+            },
+            getColumnsForHighLight(rowIndex) {
+              let columns = 0;
+              if (rowIndex === 0) {
+                  columns = this.columnsCountForHighlight.four;
+              } else if (rowIndex === 6) {
+                  columns = this.columnsCountForHighlight.four;
+              } else if (rowIndex === 12) {
+                  columns = this.columnsCountForHighlight.two;
+              } else if (rowIndex === 17) {
+                  columns = this.columnsCountForHighlight.six;
+              } else if (rowIndex === 23) {
+                  columns = this.columnsCountForHighlight.six;
+              } else if (rowIndex === 29) {
+                  columns = this.columnsCountForHighlight.six;
+              } else if (rowIndex === 35) {
+                  columns = this.columnsCountForHighlight.five;
+              } else if (rowIndex === 41) {
+                  columns = this.columnsCountForHighlight.four;
+              } else if (rowIndex === 42) {
+                  columns = this.columnsCountForHighlight.four;
+              } else if (rowIndex === 61) {
+                  columns = this.columnsCountForHighlight.three;
+              } else if (rowIndex === 71) {
+                  columns = this.columnsCountForHighlight.six;
+              }
+              return columns;
+            },
+            setClassToElement(el,className) {
+                el.addClass(className);
+            },
+        },
+        components: {
+            VGrid,
+        },
     };
-  },
-  methods: {
-    changeData: function () {
-      this.oil_plan = this.data[4][2];
-      this.oil_fact = this.data[4][3];
-      if (
-        (this.oil_plan * 2 < this.oil_fact) |
-        (this.oil_plan / 2 > this.oil_fact)
-      ) {
-        this.$refs.myTable.hotInstance.setCellMeta(
-          4,
-          3,
-          "className",
-          "bg-danger"
-        );
-        this.$refs.myTable.hotInstance.render();
-      } else {
-        this.$refs.myTable.hotInstance.setCellMeta(
-          4,
-          3,
-          "className",
-          "first-class"
-        );
-        this.$refs.myTable.hotInstance.render();
-        alert("Ошибок нет");
-      }
-    },
-  },
-  components: {
-    HotTable,
-  },
-};
 </script>
+
+<style>
+    .chemistry-block {
+        background-color: #20274F;
+        color: white;
+    }
+    .data-status {
+        color: white;
+        font-size: 18px;
+    }
+    .data-status .label {
+        font-size: 36px;
+        color: rgba(19, 176, 98, 0.8);
+    }
+    .disabled {
+        display: none;
+    }
+    .helpers {
+        display: flex;
+        flex-wrap: wrap;
+        display: inline-block;
+    }
+    ul {
+        color: red;
+    }
+    li {
+        color: white;
+    }
+    revo-grid .header-wrapper {
+        display: none;
+    }
+    revo-grid {
+        height: 782px;
+        font-size: 12px;
+        font-family: "HarmoniaSansProCyr-Regular";
+    }
+    .table-form {
+        max-width: 1320px;
+        background-color: white;
+    }
+    .title {
+        background-color: #20274F;
+        color: white !important;
+        text-align: center;
+        line-height: 30px;
+        font-size: 14px;
+        font-weight: bold;
+    }
+    .sub-title {
+        background-color: #20274F;
+        color: white !important;
+        text-align: center;
+        line-height: 30px;
+        font-size: 12px;
+        font-weight: bold;
+    }
+    .main-header {
+        font-weight: bold;
+    }
+    .table-footer-format {
+        font-weight: bold;
+        line-height: 30px;
+    }
+    .button {
+        float: right;
+        font-size: 16px;
+        font-weight: bold;
+        position: relative;
+        padding: 15px 15px;
+        height: 24px;
+        background: rgba(19, 176, 98, 0.8);
+        border-radius: 8px;
+        text-align: center;
+        margin-bottom: 0;
+        line-height: 0px;
+        cursor: pointer;
+    }
+    .button-disabled {
+        pointer-events: none;
+        opacity: 0.4;
+    }
+    .button-enabled {
+        pointer-events: all;
+        opacity: 0;
+    }
+    @media (max-width:1400px) {
+        .table-form {
+            max-width: 930px;
+        }
+    }
+</style>
 

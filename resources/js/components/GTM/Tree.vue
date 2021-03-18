@@ -1,6 +1,6 @@
 <template>
     <div>
-        <ul>
+        <ul class="tree-main-ul">
             <gtm-node-tree :node="treeData" :handle-click="handleClick"></gtm-node-tree>
         </ul>
     </div>
