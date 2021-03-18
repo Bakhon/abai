@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\DB;
 
 abstract class TableForm extends BaseForm
 {
+    protected $jsonValidationSchemeFileName = 'table_form.json';
+
     abstract public function getRows(array $params = []);
 
     abstract protected function saveSingleFieldInDB(string $field): void;

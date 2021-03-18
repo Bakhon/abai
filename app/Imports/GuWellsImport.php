@@ -177,7 +177,7 @@ class GuWellsImport implements ToCollection, WithEvents, WithColumnLimit, WithSt
             if ($row[self::COMMENT] &&
                 (strpos(mb_strtolower($row[self::COMMENT]), 'ликвид') !== false ||
                     strpos(mb_strtolower($row[self::COMMENT]), 'тательн') !== false ||
-                    strpos(mb_strtolower($row[self::COMMENT], 'нагнет')) !== false
+                    strpos(mb_strtolower($row[self::COMMENT]), 'нагнет') !== false
                 )
             ) {
                 if ($pipe) {

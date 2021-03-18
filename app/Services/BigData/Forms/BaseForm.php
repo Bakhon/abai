@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services\BigData\Forms;
 
+use App\Exceptions\ParseJsonException;
 use App\Http\Resources\BigData\HistoryResource;
 use App\Models\BigData\Infrastructure\History;
 use Illuminate\Http\Request;
@@ -13,6 +14,8 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 abstract class BaseForm
 {
+    protected $jsonValidationSchemeFileName;
+
     protected $configurationFileName;
 
     protected $request;
@@ -72,8 +75,10 @@ abstract class BaseForm
         if (!File::exists($jsonFile)) {
             throw new NotFoundHttpException();
         }
-        $params = json_decode(file_get_contents($jsonFile), true);
+        $params = json_decode(file_get_contents($jsonFile));
+        $this->validateParams($params);
 
+        $params = json_decode(json_encode($params), true);
         return $this->localizeParams($params);
     }
 
@@ -85,7 +90,6 @@ abstract class BaseForm
     protected function getFields(): \Illuminate\Support\Collection
     {
         $fields = collect();
-
         foreach ($this->params()['tabs'] as $tab) {
             foreach ($tab['blocks'] as $block) {
                 foreach ($block['items'] as $item) {
@@ -147,5 +151,20 @@ abstract class BaseForm
             }
         }
         return $params;
+    }
+
+    private function validateParams($params)
+    {
+        $validator = new \JsonSchema\Validator();
+        $schemaFilePath = 'file://' . resource_path('params/bd/forms/schema/') . $this->jsonValidationSchemeFileName;
+
+        $validator->validate($params, (object)['$ref' => $schemaFilePath]);
+
+        if (!$validator->isValid()) {
+            foreach ($validator->getErrors() as $error) {
+                $errors[] = sprintf("[%s] %s\n", $error['property'], $error['message']);
+            }
+            throw new ParseJsonException(implode('<br>', $errors));
+        }
     }
 }
