@@ -49,58 +49,65 @@
         </button>
 
         <div v-if="datepicker1"
-          class="dropdown-menu fadropmenu"
-          style="background: #40467E; margin-top: 4px;"
+          class="dropdown-menu fadropmenu newmenu"
           aria-labelledby="dropdownMenuLink"
         >
-          <td style="margin-left: 8px; color: white; font-size: large">Еженедельный ФА</td>
+          <td class="calheader">Еженедельный ФА</td>
           <!-- <form class="form-group but-nav__link"> -->
-          <label for="inputDate" style="margin-left: 8px;">{{trans('tr.fadt1')}}:</label>
+          <label for="inputDate" class="calinput_date">{{trans('tr.fadt1')}}:</label>
           <input type="date" class="form-control" v-model="date1" />
-          <label for="inputDate" style="margin-left: 8px;">{{trans('tr.fadt2')}}:</label>
+          <label for="inputDate" class="calinput_date">{{trans('tr.fadt2')}}:</label>
           <input type="date" class="form-control" v-model="date2" />
-          <a href="#" class="btn btn-sm button_form" @click.prevent="chooseSecDt"
-            >{{trans('tr.sf')}}</a
-          >
+          <div class="fix_calendar">
+                  <a href="#" @click.prevent="chooseSecDt"  class="btn btn-sm button_form caldate"
+                    >{{trans('tr.sf')}}</a
+                  >
+                  <a  class="butchange" @click="calendarDynamic" @click.prevent.stop="() => {}" >
+                    <svg 
+                      width="32" 
+                      height="28" 
+                      viewBox="0 0 32 28" 
+                      fill="none" 
+                      xmlns="http://www.w3.org/2000/svg">
+                      <path d="M0.5 6C0.5 2.96243 2.96243 0.5 6 0.5H26C29.0376 0.5 31.5 2.96243 31.5 6V22C31.5 25.0376 29.0376 27.5 26 27.5H6C2.96243 27.5 0.5 25.0376 0.5 22V6Z" fill="#333975" stroke="#333975"/>
+                      <path d="M9 14.7282V13.3003C9 10.9807 10.8804 9.10034 13.2 9.10034H22.2999V9.10034" stroke="#D6D7E3" stroke-width="1.4" stroke-linecap="round"/>
+                      <path d="M20.8997 7L22.9289 9.02927C22.968 9.06832 22.968 9.13164 22.9289 9.17069L20.8997 11.2" stroke="#D6D7E3" stroke-width="1.4" stroke-linecap="round"/>
+                      <path d="M22.9996 13.2861V14.7141C22.9996 17.0336 21.1192 18.914 18.7996 18.914H9.69971V18.914" stroke="#D6D7E3" stroke-width="1.4" stroke-linecap="round"/>
+                      <path d="M11.1 21L9.07071 18.9707C9.03166 18.9317 9.03166 18.8684 9.07071 18.8293L11.1 16.8" stroke="#D6D7E3" stroke-width="1.4" stroke-linecap="round"/>
+                    </svg></a>
+                </div>
 
-          <a  @click="calendarDynamic" @click.prevent.stop="() => {}" style="padding-top: 5px; cursor: pointer;">
-            <svg 
-              width="32" height="28" viewBox="0 0 32 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M0.5 6C0.5 2.96243 2.96243 0.5 6 0.5H26C29.0376 0.5 31.5 2.96243 31.5 6V22C31.5 25.0376 29.0376 27.5 26 27.5H6C2.96243 27.5 0.5 25.0376 0.5 22V6Z" fill="#333975" stroke="#333975"/>
-              <path d="M9 14.7282V13.3003C9 10.9807 10.8804 9.10034 13.2 9.10034H22.2999V9.10034" stroke="#D6D7E3" stroke-width="1.4" stroke-linecap="round"/>
-              <path d="M20.8997 7L22.9289 9.02927C22.968 9.06832 22.968 9.13164 22.9289 9.17069L20.8997 11.2" stroke="#D6D7E3" stroke-width="1.4" stroke-linecap="round"/>
-              <path d="M22.9996 13.2861V14.7141C22.9996 17.0336 21.1192 18.914 18.7996 18.914H9.69971V18.914" stroke="#D6D7E3" stroke-width="1.4" stroke-linecap="round"/>
-              <path d="M11.1 21L9.07071 18.9707C9.03166 18.9317 9.03166 18.8684 9.07071 18.8293L11.1 16.8" stroke="#D6D7E3" stroke-width="1.4" stroke-linecap="round"/>
-            </svg>
 
-          </a>
         </div>
 
 
         <div v-if="datepicker2"
-          class="dropdown-menu fadropmenu"
-          style="background: #40467E; margin-top: 4px;"
+          class="dropdown-menu fadropmenu newmenu"
           aria-labelledby="dropdownMenuLink"
         >
-          <td style="margin-left: 8px; color: white; font-size: large">Ежемесячный ФА</td>
-          <label for="inputDate" style="margin-left: 8px;">{{trans('tr.fadt1')}}:</label>
+          <td class="calheader">Ежемесячный ФА</td>
+          <label for="inputDate" class="calinput_date">{{trans('tr.fadt1')}}:</label>
           <input type="date" class="form-control" v-model="date1" />
-          <label for="inputDate" style="margin-left: 8px;">{{trans('tr.fadt2')}}:</label>
+          <label for="inputDate" class="calinput_date">{{trans('tr.fadt2')}}:</label>
           <input type="date" class="form-control" v-model="date2" />
-          <a href="#" class="btn btn-sm button_form" @click.prevent="chooseDt"
-            >{{trans('tr.sf')}}</a
-          >
-          <a  @click="calendarDynamic" @click.prevent.stop="() => {}" style="padding-top: 5px; cursor: pointer;">
-            <svg 
-              width="32" height="28" viewBox="0 0 32 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M0.5 6C0.5 2.96243 2.96243 0.5 6 0.5H26C29.0376 0.5 31.5 2.96243 31.5 6V22C31.5 25.0376 29.0376 27.5 26 27.5H6C2.96243 27.5 0.5 25.0376 0.5 22V6Z" fill="#333975" stroke="#333975"/>
-              <path d="M9 14.7282V13.3003C9 10.9807 10.8804 9.10034 13.2 9.10034H22.2999V9.10034" stroke="#D6D7E3" stroke-width="1.4" stroke-linecap="round"/>
-              <path d="M20.8997 7L22.9289 9.02927C22.968 9.06832 22.968 9.13164 22.9289 9.17069L20.8997 11.2" stroke="#D6D7E3" stroke-width="1.4" stroke-linecap="round"/>
-              <path d="M22.9996 13.2861V14.7141C22.9996 17.0336 21.1192 18.914 18.7996 18.914H9.69971V18.914" stroke="#D6D7E3" stroke-width="1.4" stroke-linecap="round"/>
-              <path d="M11.1 21L9.07071 18.9707C9.03166 18.9317 9.03166 18.8684 9.07071 18.8293L11.1 16.8" stroke="#D6D7E3" stroke-width="1.4" stroke-linecap="round"/>
-            </svg>
-
-          </a>
+          <div class="fix_calendar">
+                  <a href="#" @click.prevent="chooseDt"  class="btn btn-sm button_form caldate"
+                    >{{trans('tr.sf')}}</a
+                  >
+                  <a  class="butchange" @click="calendarDynamic" @click.prevent.stop="() => {}" >
+                    <svg 
+                      width="32" 
+                      height="28" 
+                      viewBox="0 0 32 28" 
+                      fill="none" 
+                      xmlns="http://www.w3.org/2000/svg">
+                      <path d="M0.5 6C0.5 2.96243 2.96243 0.5 6 0.5H26C29.0376 0.5 31.5 2.96243 31.5 6V22C31.5 25.0376 29.0376 27.5 26 27.5H6C2.96243 27.5 0.5 25.0376 0.5 22V6Z" fill="#333975" stroke="#333975"/>
+                      <path d="M9 14.7282V13.3003C9 10.9807 10.8804 9.10034 13.2 9.10034H22.2999V9.10034" stroke="#D6D7E3" stroke-width="1.4" stroke-linecap="round"/>
+                      <path d="M20.8997 7L22.9289 9.02927C22.968 9.06832 22.968 9.13164 22.9289 9.17069L20.8997 11.2" stroke="#D6D7E3" stroke-width="1.4" stroke-linecap="round"/>
+                      <path d="M22.9996 13.2861V14.7141C22.9996 17.0336 21.1192 18.914 18.7996 18.914H9.69971V18.914" stroke="#D6D7E3" stroke-width="1.4" stroke-linecap="round"/>
+                      <path d="M11.1 21L9.07071 18.9707C9.03166 18.9317 9.03166 18.8684 9.07071 18.8293L11.1 16.8" stroke="#D6D7E3" stroke-width="1.4" stroke-linecap="round"/>
+                    </svg></a>
+                </div>
         </div>
       </div>
       <div class="big-data-input-container">
@@ -147,11 +154,6 @@
             class="trgraph"
             id="bt1"
             @click="toogle"
-            style="
-              background: #272953;
-              color: white;
-              border: none;
-            "
             :title="isHide ? trans('tr.trtlp3') : trans('tr.trtlp4')"
             data-toggle="tooltip"
             data-placement="top"
@@ -1588,6 +1590,8 @@ body {
 }
 #app .multiselect {
   max-width: 300px;
+  padding-right:6px;
+  
 }
 .but-nav__link {
   font-weight: inherit;
@@ -1713,7 +1717,9 @@ table::-webkit-scrollbar-corner {
   background: #333975;
 }
 .fadropmenu {
-width: 70%;
+width: calc(100% - 1px);
+background: #1627c4; 
+margin-top: 4px;
 }
 .button_form.button_form {
   background: #333975;
@@ -1725,5 +1731,39 @@ width: 70%;
 
 }
 
+.fix_calendar {
+  display:flex; 
+  justify-content: center; 
+  color: white;
+}
+
+.btn .btn-sm .button_form .caldate {
+  width: 80%;
+  
+  
+}
+.calheader {
+margin-left: 8px; 
+color: white; 
+font-size: large;
+}
+.calinput_date {
+margin-left: 8px;
+}
+.dropdown-menu .fadropmenu.newmenu {
+background: #1627c4; 
+margin-top: 4px;
+width: calc(100% - 26px);
+}
+.butchange {
+padding-top: 5px; 
+cursor: pointer;
+}
+.trgraph {
+background: #272953;
+color: white;
+border: none;
+padding-right: 8px;
+}
 
 </style>
