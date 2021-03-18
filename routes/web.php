@@ -136,6 +136,10 @@ Route::group(
                 Route::resource('tech_struct_gu', 'Refs\TechnicalStructureGuController');
                 Route::resource('tech_struct_bkns', 'Refs\TechnicalStructureBknsController');
                 Route::resource('tech_data_forecast', 'Refs\TechnicalDataForecastController');
+                Route::resource('tech_data_log', 'Refs\TechnicalDataLogController');
+                Route::get('tech_data_json', 'Refs\TechnicalDataForecastController@techDataJson');
+                Route::get('technical_forecast/upload_excel', 'Refs\TechnicalDataController@uploadExcel')->name('tech_refs_upload');
+                Route::post('technical_forecast/import_excel', 'Refs\TechnicalDataController@importExcel')->name('tech_refs_import');
 
                 Route::get('nnoeco', 'Refs\EcoRefsScFaController@nnoeco');
                 Route::resource('ecorefsexc', 'EcoRefsExcController');
@@ -181,6 +185,7 @@ Route::group(
                 Route::get('organizations', 'OrganizationsController@index')->name('organizations');
 
                 Route::get('profile', 'UserController@profile')->name('profile');
+                Route::post('modulerequest','ModuleController@moduleRequest')->name('modulerequest');
 
                 Route::get('anticrisis', 'AntiCrisisController@index')->name('anticrisis');
 

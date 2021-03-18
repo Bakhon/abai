@@ -4,10 +4,11 @@ namespace App\Console\Commands\Import;
 
 use App\Imports\Ngdu4WellsImport;
 use Illuminate\Console\Command;
-use Maatwebsite\Excel\Facades\Excel;
 
 class Ngdu4Wells extends Command
 {
+    use ExcelImport;
+
     /**
      * The name and signature of the console command.
      *
@@ -39,13 +40,6 @@ class Ngdu4Wells extends Command
      */
     public function handle()
     {
-        $this->output->title('Starting import');
-        try {
-            Excel::import(new Ngdu4WellsImport($this), base_path($this->argument('path')));
-        } catch (\Exception $er) {
-            if ($er->getMessage() == 'Stop import') {
-                $this->output->success('Import successful');
-            }
-        }
+        $this->importExcel(new Ngdu4WellsImport($this));
     }
 }

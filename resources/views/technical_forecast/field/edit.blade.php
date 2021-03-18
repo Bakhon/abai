@@ -4,7 +4,7 @@
     <div class="container">
         <div class="row justify-content-center">
             <a href="{{ route('tech_data_list') }}" class="btn btn-info">
-                Вернуться в справочник</a>
+                {{ __('forecast.return_menu') }}</a>
         </div>
     </div>
     <div class="container">
@@ -21,7 +21,7 @@
                             <div class="row">
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
-                                        <strong>Компания:</strong>
+                                        <strong>{{ __('forecast.company') }}:</strong>
                                         <select class="form-control" name="company_id">
                                             <option>Select Item</option>
                                             @foreach ($company as $item)
@@ -42,7 +42,7 @@
                             <div class="row">
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
-                                        <strong>Месторождение:</strong>
+                                        <strong>{{ __('forecast.field') }}:</strong>
                                         <input type="text" name="name" class="form-control" placeholder=""
                                                value="{{$technicalForecast->name}}">
                                     </div>

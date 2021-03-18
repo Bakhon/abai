@@ -592,7 +592,7 @@
                         prop="field"
                         label=""
                         width="200"
-                        
+                        sortable
                         
                         >
                       </el-table-column>
@@ -604,7 +604,7 @@
                         prop="rus_wellname"
                         label=""
                         width="150"
-                        
+                        sortable
                         >
                       </el-table-column>
                     </el-table-column>
@@ -615,7 +615,7 @@
                         prop="well_type"
                         label=""
                         width="150"
-                        
+                        sortable
                         >
                       </el-table-column>
                     </el-table-column>
@@ -625,8 +625,8 @@
                       <el-table-column
                         prop="horizon"
                         label=""
-                        width="150"
-                        
+                        width="100"
+                        sortable
                         >
                       </el-table-column>
                     </el-table-column>
@@ -637,7 +637,7 @@
                         prop="object"
                         label=""
                         width="150"
-                        
+                        sortable
                         >
                       </el-table-column>
                     </el-table-column>
@@ -648,7 +648,7 @@
                         prop="block"
                         label=""
                         width="150"
-                        
+                        sortable
                         >
                       </el-table-column>
                     </el-table-column>
@@ -660,7 +660,7 @@
                         prop="r_con"
                         label=""
                         width="150"
-                        
+                        sortable
                         >
                       </el-table-column>
                     </el-table-column>
@@ -672,7 +672,7 @@
                         prop="cas_OD"
                         label=""
                         width="180"
-                        
+                        sortable
                         >
                       </el-table-column>
                     </el-table-column>
@@ -684,7 +684,7 @@
                         prop="cas_ID"
                         label=""
                         width="180"
-                        
+                        sortable
                         >
                       </el-table-column>
                     </el-table-column>
@@ -696,7 +696,7 @@
                         prop="tub_OD"
                         label=""
                         width="200"
-                        
+                        sortable
                         >
                       </el-table-column>
                     </el-table-column>
@@ -708,7 +708,7 @@
                         prop="tub_ID"
                         label=""
                         width="200"
-                        
+                        sortable
                         >
                       </el-table-column>
                     </el-table-column>
@@ -719,7 +719,7 @@
                         prop="choke_d"
                         label=""
                         width="200"
-                        
+                        sortable
                         >
                       </el-table-column>
                     </el-table-column>
@@ -730,7 +730,7 @@
                         prop="h_up_perf_md"
                         label=""
                         width="200"
-                        
+                        sortable
                         >
                       </el-table-column>
                     </el-table-column>
@@ -741,7 +741,7 @@
                         prop="h_up_perf_ext"
                         label=""
                         width="200"
-                        
+                        sortable
                         >
                       </el-table-column>
                     </el-table-column>
@@ -752,7 +752,7 @@
                         prop="exp_meth"
                         label=""
                         width="200"
-                        
+                        sortable
                         >
                       </el-table-column>
                     </el-table-column>
@@ -763,7 +763,7 @@
                         prop="pump_type"
                         label=""
                         width="200"
-                        
+                        sortable
                         >
                       </el-table-column>
                     </el-table-column>
@@ -775,7 +775,7 @@
                         prop="type_sr"
                         label=""
                         width="200"
-                        
+                        sortable
                         >
                       </el-table-column>
                     </el-table-column>
@@ -786,7 +786,7 @@
                         prop="spm"
                         label=""
                         width="200"
-                        
+                        sortable
                         >
                       </el-table-column>
                     </el-table-column>
@@ -797,7 +797,7 @@
                         prop="stroke_len"
                         label=""
                         width="200"
-                        
+                        sortable
                         >
                       </el-table-column>
                     </el-table-column>
@@ -808,7 +808,7 @@
                         prop="q_theor"
                         label=""
                         width="200"
-                        
+                        sortable
                         >
                       </el-table-column>
                     </el-table-column>
@@ -819,7 +819,7 @@
                         prop="freq"
                         label=""
                         width="400"
-                        
+                        sortable
                         >
                       </el-table-column>
                     </el-table-column>
@@ -833,7 +833,7 @@
                         prop="h_pump_set"
                         label=""
                         width="200"
-                        
+                        sortable
                         >
                       </el-table-column>
                     </el-table-column>
@@ -844,7 +844,7 @@
                         prop="whp"
                         label=""
                         width="200"
-                        
+                        sortable
                         >
                       </el-table-column>
                     </el-table-column>
@@ -855,7 +855,7 @@
                         prop="line_p"
                         label=""
                         width="200"
-                        
+                        sortable
                         >
                       </el-table-column>
                     </el-table-column>
@@ -865,8 +865,8 @@
                       <el-table-column
                         prop="p_res"
                         label=""
-                        width="200"
-                        
+                        width="130"
+                        sortable
                         >
                       </el-table-column>
                     </el-table-column>
@@ -876,8 +876,8 @@
                       <el-table-column
                         prop="h_dyn"
                         label=""
-                        width="200"
-                        
+                        width="130"
+                        sortable
                         >
                       </el-table-column>
                     </el-table-column>
@@ -887,8 +887,8 @@
                       <el-table-column
                         prop="p_annular"
                         label=""
-                        width="200"
-                        
+                        width="130"
+                        sortable
                         >
                       </el-table-column>
                     </el-table-column>
@@ -898,30 +898,345 @@
                       <el-table-column
                         prop="p_intake"
                         label=""
-                        width="200"
-                        
+                        width="130"
+                        sortable
                         >
                       </el-table-column>
                     </el-table-column>
 
                     <el-table-column
-                      :label="`${this.trans('tr.trs13')}`"
+                      :label="`${this.trans('tr.trs14')}`"
                       >
                       <el-table-column
-                      :label="`${this.trans('tr.trs1')}`"
+                      :label="`${this.trans('tr.tr20')}`"
                       >
                         <el-table-column
-                          prop="p_intake"
+                          prop="bhp_prev_m"
                           label=""
-                          width="200"
-                          
+                          width="130"
+                          sortable
+                          >
+                        </el-table-column>
+                      </el-table-column>
+                      <el-table-column
+                      :label="`${this.trans('tr.tr22')}`"
+                      >
+                        <el-table-column
+                          prop="q_l_prev_m"
+                          label=""
+                          width="130"
+                          sortable
+                          >
+                        </el-table-column>
+                      </el-table-column>
+
+                      <el-table-column
+                      :label="`${this.trans('tr.tr23')}`"
+                      >
+                        <el-table-column
+                          prop="wct_prev_m"
+                          label=""
+                          width="130"
+                          sortable
+                          >
+                        </el-table-column>
+                      </el-table-column>
+                      <el-table-column
+                      :label="`${this.trans('tr.trs57')}`"
+                      >
+                        <el-table-column
+                          prop="h_dyn_prev_m"
+                          label=""
+                          width="130"
+                          sortable
+                          >
+                        </el-table-column>
+                      </el-table-column>
+                      <el-table-column
+                      :label="`${this.trans('tr.trs25')}`"
+                      >
+                        <el-table-column
+                          prop="pi_prev_m"
+                          label=""
+                          width="130"
+                          sortable
                           >
                         </el-table-column>
                       </el-table-column>
                       
                     </el-table-column>
-                    
+                    <el-table-column
+                      :label="`${this.trans('tr.tr17')}`"
+                      >
+                      <el-table-column
+                      :label="`${this.trans('tr.tr20')}`"
+                      >
+                        <el-table-column
+                          prop="bhp"
+                          label=""
+                          width="130"
+                          sortable
+                          >
+                        </el-table-column>
+                      </el-table-column>
+                      <el-table-column
+                      :label="`${this.trans('tr.tr22')}`"
+                      >
+                        <el-table-column
+                          prop="q_o"
+                          label=""
+                          width="130"
+                          sortable
+                          >
+                        </el-table-column>
+                      </el-table-column>
 
+                      <el-table-column
+                      :label="`${this.trans('tr.tr23')}`"
+                      >
+                        <el-table-column
+                          prop="q_l"
+                          label=""
+                          width="130"
+                          sortable
+                          >
+                        </el-table-column>
+                      </el-table-column>
+                      <el-table-column
+                      :label="`${this.trans('tr.trs57')}`"
+                      >
+                        <el-table-column
+                          prop="wct"
+                          label=""
+                          width="130"
+                          sortable
+                          >
+                        </el-table-column>
+                      </el-table-column>
+                      <el-table-column
+                      :label="`${this.trans('tr.tr24')}`"
+                      >
+                        <el-table-column
+                          prop="gor"
+                          label=""
+                          width="130"
+                          sortable
+                          >
+                        </el-table-column>
+                      </el-table-column>
+                    </el-table-column>
+                    <el-table-column
+                      :label="`${this.trans('tr.tr25')}`"
+                      >
+                      <el-table-column
+                        prop="well_status_last_day"
+                        label=""
+                        width="230"
+                        sortable
+                        >
+                      </el-table-column>
+                    </el-table-column>
+                    <el-table-column
+                      :label="`${this.trans('tr.trs15')}`"
+                      >
+                      <el-table-column
+                        prop="P_bubble_point"
+                        label=""
+                        width="150"
+                        sortable
+                        >
+                      </el-table-column>
+                    </el-table-column>
+                    <el-table-column
+                      :label="`${this.trans('tr.trs16')}`"
+                      >
+                      <el-table-column
+                        prop="t_res"
+                        label=""
+                        width="150"
+                        sortable
+                        >
+                      </el-table-column>
+                    </el-table-column>
+                    <el-table-column
+                      :label="`${this.trans('tr.trs17')}`"
+                      >
+                      <el-table-column
+                        prop="wht"
+                        label=""
+                        width="150"
+                        sortable
+                        >
+                      </el-table-column>
+                    </el-table-column>
+
+                    <el-table-column
+                      :label="`${this.trans('tr.tr28')}`"
+                      >
+                      <el-table-column
+                      :label="`${this.trans('tr.trs59')}`"
+                      >
+                        <el-table-column
+                          prop="grp_skin"
+                          label=""
+                          width="130"
+                          sortable
+                          >
+                        </el-table-column>
+                      </el-table-column>
+                      <el-table-column
+                      :label="`${this.trans('tr.trs60')}`"
+                      >
+                        <el-table-column
+                          prop="grp_jd"
+                          label=""
+                          width="130"
+                          sortable
+                          >
+                        </el-table-column>
+                      </el-table-column>
+
+                      <el-table-column
+                      :label="`${this.trans('tr.trs61')}`"
+                      >
+                        <el-table-column
+                          prop="grp_date"
+                          label=""
+                          width="150"
+                          sortable
+                          >
+                        </el-table-column>
+                      </el-table-column>
+                      <el-table-column
+                      label="Фирма"
+                      >
+                        <el-table-column
+                          prop="grp_contractor"
+                          label=""
+                          width="130"
+                          sortable
+                          >
+                        </el-table-column>
+                      </el-table-column>
+                    </el-table-column>
+
+
+                    <el-table-column
+                      :label="`${this.trans('tr.trs18')}`"
+                      >
+                      <el-table-column
+                        prop="visc_oil_rc"
+                        label=""
+                        width="230"
+                        sortable
+                        >
+                      </el-table-column>
+                    </el-table-column>
+
+                    <el-table-column
+                      :label="`${this.trans('tr.trs19')}`"
+                      >
+                      <el-table-column
+                        prop="visc_wat_r"
+                        label=""
+                        width="230"
+                        sortable
+                        >
+                      </el-table-column>
+                    </el-table-column>
+
+                    <el-table-column
+                      :label="`${this.trans('tr.trs20')}`"
+                      >
+                      <el-table-column
+                        prop="visc_liq_rc"
+                        label=""
+                        width="130"
+                        sortable
+                        >
+                      </el-table-column>
+                    </el-table-column>
+
+                    <el-table-column
+                      :label="`${this.trans('tr.trs21')}`"
+                      >
+                      <el-table-column
+                        prop="bo"
+                        label=""
+                        width="130"
+                        sortable
+                        >
+                      </el-table-column>
+                    </el-table-column>
+                    <el-table-column
+                      :label="`${this.trans('tr.trs22')}`"
+                      >
+                      <el-table-column
+                        prop="dens_oil"
+                        label=""
+                        width="130"
+                        sortable
+                        >
+                      </el-table-column>
+                    </el-table-column>
+                    <el-table-column
+                      :label="`${this.trans('tr.trs23')}`"
+                      >
+                      <el-table-column
+                        prop="dens_liq"
+                        label=""
+                        width="130"
+                        sortable
+                        >
+                      </el-table-column>
+                    </el-table-column>
+                    <el-table-column
+                      :label="`${this.trans('tr.trs24')}`"
+                      >
+                      <el-table-column
+                        prop="h_perf"
+                        label=""
+                        width="130"
+                        sortable
+                        >
+                      </el-table-column>
+                    </el-table-column>
+
+                    <el-table-column
+                      label="k"
+                      >
+                      <el-table-column
+                        prop="k"
+                        label=""
+                        width="130"
+                        sortable
+                        >
+                      </el-table-column>
+                    </el-table-column>
+                    <el-table-column
+                      label="КН"
+                      >
+                      <el-table-column
+                        prop="kh"
+                        label=""
+                        width="130"
+                        sortable
+                        >
+                      </el-table-column>
+                    </el-table-column>
+                    <el-table-column
+                      :label="`${this.trans('tr.trs58')}`"
+                      >
+                      <el-table-column
+                        prop="pi"
+                        label=""
+                        width="130"
+                        sortable
+                        >
+                      </el-table-column>
+                    </el-table-column>
+
+                    
                   </el-table>
                   <div class="ui-pagination">
                     <el-pagination
@@ -1122,10 +1437,8 @@ export default {
         this.$store.commit("globalloading/SET_LOADING", false);
         // this.isloading = false;
         if (data) {
-          console.log(data);
           this.wells = data.data;
           this.fullWells = data.data;
-          console.log(this.wells);
         } else {
           console.log("No data");
           
@@ -1937,12 +2250,6 @@ table::-webkit-scrollbar-corner {
   margin: 16px 0;
   text-align: center;
 }
-
-
-
-
-
-
 .el-table__body-wrapper {}
 
 .el-table__body-wrapper td {
@@ -1987,5 +2294,7 @@ table::-webkit-scrollbar-corner {
     color: #fff;
     font-size: 14px;
 }
-
+.el-table thead.is-group th {
+    background: rgb(51, 57, 117);
+}
 </style>

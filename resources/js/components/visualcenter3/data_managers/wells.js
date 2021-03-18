@@ -95,7 +95,7 @@ export default {
             } else {
                 productionFondsForIterations = fonds.splice(halfOfProductionFondsLength,fonds.length);
             }
-            console.log(productionFondsForIterations)
+
             _.forEach(productionFondsForIterations, function(fondName) {
                 let translationName = "visualcenter." + self.fondNamesByDBFields[fondName.trim()];
                 productionFondsSummary.push(

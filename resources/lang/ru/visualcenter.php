@@ -274,4 +274,23 @@ return array (
     'zhambul' => 'Жамбылская область',
   ),
   'summaryByRegion' => 'Итого по активам области:',
+  'unprofitableFond' => 'Нерентабельные скважины',
+  'saveButton' => 'Сохранить',
+  'errors' => 'Ошибки',
+  'validateButton' => 'Провести проверку данных',
+  'importForm' => 
+  array (
+    'errorList' => 
+    array (
+      'incorrectDocumentFormat' => 'Неверный формат Excel документа',
+    ),
+    'status' => 
+    array (
+      'waitForData' => 'Ожидание входящих данных..',
+      'dataValid' => 'Данные успешно проверены.',
+      'dataSaved' => 'Данные успешно сохранены!',
+    ),
+    'chemistry' => 'Химизация производства, т/мес',
+    'enterChemistryButton' => 'Ввод данных по Химизации',
+  ),
 );
