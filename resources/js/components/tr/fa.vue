@@ -198,10 +198,9 @@
           </button>
           </div>
     </div>
-    <div style="position: relative">
+    <div class="fatable">
       <table
         class="table table-bordered table-dark table-responsive fakrtableborderedtable"
-        style="background: #0d1e63"
       >
         <tr class="headerColumn">
           <td rowspan="3" style="background: #12135c"><span>{{trans('tr.fa1')}}</span></td>
@@ -1690,6 +1689,7 @@ body {
 .fakrtableborderedtable {
   font-size: 9px;
   padding: unset;
+  background: #0d1e63
 }
 
 /* width */
@@ -1765,5 +1765,7 @@ color: white;
 border: none;
 padding-right: 8px;
 }
-
+.fatable {
+position: relative;
+}
 </style>
