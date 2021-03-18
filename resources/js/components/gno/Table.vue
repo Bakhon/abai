@@ -2427,9 +2427,7 @@ export default {
 
     closeInclModal() {
       this.buttonHpump = this.$store.getters.getHpumpButton
-      this.$modal.hide('modalIncl')
-      this.hPumpValue = this.$store.getters.getHpump
-      this.postCurveData();      
+      this.$modal.hide('modalIncl')  
     },
     closeEconomicModal() {
       this.$modal.hide('tablePGNO')
