@@ -79,7 +79,7 @@ data: function(){
         plot_bgcolor: "#20274e",
         paper_bgcolor: "#20274e",
         height: 491,
-        title: 'История ПРС',
+        title: this.trans('pgno.history_prs'),
         barmode: 'group',
         },
       }
@@ -99,13 +99,8 @@ mounted() {
     this.axios.get(uri).then((response) => {
     this.prs = response['data']['prs']['data']
     for(let key of Object.keys(this.prs)){
-      var nno_days = this.prs[key]['nno_size']
-
-      if (this.prs[key]['text'] === "") {
-        var isNull = false 
-      } else {
-        var isNull = true 
-      }
+      let nno_days = this.prs[key]['nno_size']
+      let isNull = (this.prs[key]['text'] !== "");
       this.data.push({x: [key], 
                       y: [nno_days*1], 
                       name: this.prs[key]['text'], 
@@ -130,7 +125,7 @@ mounted() {
                 plot_bgcolor: "#20274e",
                 paper_bgcolor: "#20274e",
                 height: 450,
-                title: 'История ПРС',
+                title: this.trans('pgno.history_prs'),
                 barmode: 'group',
                 bargap: 4
         }

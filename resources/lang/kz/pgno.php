@@ -116,4 +116,5 @@ return array (
   'maks_zenit_ugol' => 'Максимальный зенитный угол',
   'primenit_hpump' => 'Применить выбранную Нсп',
   'vibor_glubin_hpump' => 'Выбор глубины спуска',
+  'history_prs' => 'История ПРС',
 );
