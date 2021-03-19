@@ -47,11 +47,6 @@ class Gu extends Model
         return $this->hasMany(OmgNGDU::class);
     }
 
-    public function omgngdulast()
-    {
-        return $this->hasMany(OmgNGDU::class)->orderBy('date', 'desc');
-    }
-
     public function watermeasurement()
     {
         return $this->hasMany(WaterMeasurement::class);

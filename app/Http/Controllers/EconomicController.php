@@ -445,6 +445,7 @@ class EconomicController extends Controller
 
         $builder = $this->druidClient->query('economic_2020v4', Granularity::DAY);
 
+        // Операционные убытки по НРС за последний месяц
         $builder
         ->interval('2020-01-01T00:00:00+00:00/2020-08-01T00:00:00+00:00')
         ->select('__time', 'dt', function (ExtractionBuilder $extractionBuilder) {

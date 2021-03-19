@@ -185,7 +185,7 @@
               },
               custom: function({series, seriesIndex, dataPointIndex, w}) {
                 return '<div class="vc-chart-tooltip">' +
-                        '<div>' + self.trans("visualcenter.chartOptions.buy") + '</div>' +
+                        '<div>' + self.trans("visualcenter.buy") + '</div>' +
                         '<div class="vc-chart-tooltip-value">' + series[seriesIndex][dataPointIndex] + '</div>' +
                         '</div>'
               }
