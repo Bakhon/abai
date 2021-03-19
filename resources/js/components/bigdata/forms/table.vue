@@ -32,17 +32,17 @@
         </big-data-history>
       </div>
       <template v-else>
-      <div class="bd-main-block__tree scrollable">
-        <b-tree-view
-            v-if="filterTree.length"
-            :contextMenu="false"
-            :contextMenuItems="[]"
-            :data="filterTree"
-            :renameNodeOnDblClick="false"
-            nodeLabelProp="name"
-            v-on:nodeSelect="filterForm"
-        ></b-tree-view>
-      </div>
+        <div class="bd-main-block__tree scrollable">
+          <b-tree-view
+              v-if="filterTree.length"
+              :contextMenu="false"
+              :contextMenuItems="[]"
+              :data="filterTree"
+              :renameNodeOnDblClick="false"
+              nodeLabelProp="name"
+              v-on:nodeSelect="filterForm"
+          ></b-tree-view>
+        </div>
         <form ref="form" class="bd-main-block__form" style="width: 100%">
           <div class="table-page">
             <p v-if="!tech" class="table__message">{{ trans('bd.select_dzo') }}</p>
@@ -54,31 +54,31 @@
                   <th v-for="column in visibleColumns">
                     {{ column.title }}
                   </th>
-                <th></th>
-              </tr>
-              </thead>
-              <tbody>
-              <tr v-for="row in rows">
-                <td
-                    v-for="column in visibleColumns"
-                    :class="{'editable': column.isEditable}"
-                    @dblclick="editCell(row, column)"
-                >
-                  <a v-if="column.type === 'link'" :href="row[column.code].href">{{ row[column.code].name }}</a>
-                  <template v-else-if="column.type === 'calc'">
-                    <span class="value">{{ row[column.code] ? row[column.code].value : '' }}</span>
-                  </template>
-                  <template v-else-if="['text', 'integer', 'float'].indexOf(column.type) > -1">
-                    <div v-if="isCellEdited(row, column)" class="input-wrap">
-                      <input v-model="row[column.code].value" class="form-control" type="text">
-                      <button type="button" @click.prevent="saveCell(row, column)">OK</button>
-                      <span v-if="errors[column.code]" class="error">{{ showError(errors[column.code]) }}</span>
-                    </div>
-                    <template v-else-if="row[column.code]">
+                  <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="row in rows">
+                  <td
+                      v-for="column in visibleColumns"
+                      :class="{'editable': column.isEditable}"
+                      @dblclick="editCell(row, column)"
+                  >
+                    <a v-if="column.type === 'link'" :href="row[column.code].href">{{ row[column.code].name }}</a>
+                    <template v-else-if="column.type === 'calc'">
+                      <span class="value">{{ row[column.code] ? row[column.code].value : '' }}</span>
+                    </template>
+                    <template v-else-if="['text', 'integer', 'float'].indexOf(column.type) > -1">
+                      <div v-if="isCellEdited(row, column)" class="input-wrap">
+                        <input v-model="row[column.code].value" class="form-control" type="text">
+                        <button type="button" @click.prevent="saveCell(row, column)">OK</button>
+                        <span v-if="errors[column.code]" class="error">{{ showError(errors[column.code]) }}</span>
+                      </div>
+                      <template v-else-if="row[column.code]">
                       <span class="value">{{
                           row[column.code].date ? row[column.code].old_value : row[column.code].value
                         }}</span>
-                      <span v-if="row[column.code] && row[column.code].date" class="date">
+                        <span v-if="row[column.code] && row[column.code].date" class="date">
                         {{ row[column.code].date | moment().format('YYYY-MM-DD') }}
                       </span>
                       </template>
@@ -203,7 +203,7 @@ export default {
     },
     calculateCellValue(cellColumn, cellRow, rowIndex) {
 
-      let formula = this.fillFormulaWithValues(cellColumn, cellRow)
+      let formula = this.fillFormulaWithValues(cellColumn, cellRow, rowIndex)
 
       let value = null
       if (formula.indexOf('$') === -1) {
@@ -216,7 +216,7 @@ export default {
 
       return value
     },
-    fillFormulaWithValues(cellColumn, cellRow) {
+    fillFormulaWithValues(cellColumn, cellRow, rowIndex) {
       let formula = cellColumn.formula
       this.formParams.columns.forEach(column => {
 
@@ -252,6 +252,7 @@ export default {
     },
     saveCell(row, column) {
 
+      if (!this.checkLimits(row, column)) return
       let data = {
         well_id: row.uwi.id,
         date: this.date,
@@ -276,6 +277,26 @@ export default {
             this.isloading = false
           })
 
+    },
+    checkLimits(row, column) {
+
+      if (!row[column.code].limits || row[column.code].limits.length === 0) return true
+
+      if (row[column.code].value >= row[column.code].limits.min && row[column.code].value <= row[column.code].limits.max) {
+        return true
+      }
+
+      let isConfirmed
+      let message = `Данное значение выходит за ограничения (${row[column.code].limits.min}, ${row[column.code].limits.max}). Вы уверены, что хотите сохранить изменения?`
+      this.$bvModal.msgBoxConfirm(message)
+          .then(result => {
+            isConfirmed = result
+          })
+          .catch(err => {
+            return false
+          })
+
+      return isConfirmed
     },
     changePage(page = 1) {
       this.currentPage = page

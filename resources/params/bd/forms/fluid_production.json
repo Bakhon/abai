@@ -87,7 +87,8 @@
       "column": "liquid_val",
       "type": "float",
       "isEditable": true,
-      "validation": "numeric|gt:0"
+      "validation": "numeric|gt:0",
+      "validate_deviation": true
     },
     {
       "title": "mark",
@@ -108,7 +109,8 @@
       "column": "bsw_val",
       "type": "float",
       "isEditable": true,
-      "validation": "numeric|gte:0|lte:100"
+      "validation": "numeric|gte:0|lte:100",
+      "validate_deviation": true
     },
     {
       "title": "oil_debit",
@@ -139,8 +141,7 @@
         "equip_prm": "2"
       },
       "type": "float",
-      "isEditable": false,
-      "date_field": "prm_date"
+      "isEditable": false
     },
     {
       "title": "p_buf",
@@ -149,7 +150,8 @@
       "column": "p_buf",
       "type": "float",
       "isEditable": true,
-      "validation": "numeric|gt:0"
+      "validation": "numeric|gt:0",
+      "validate_deviation": true
     },
     {
       "title": "Рзатр",
@@ -158,7 +160,8 @@
       "column": "p_zatr",
       "type": "float",
       "isEditable": true,
-      "validation": "numeric|gt:0"
+      "validation": "numeric|gt:0",
+      "validate_deviation": true
     },
     {
       "title": "p_buf_b",
@@ -167,7 +170,8 @@
       "column": "p_buf_b",
       "type": "float",
       "isEditable": true,
-      "validation": "numeric|gt:0"
+      "validation": "numeric|gt:0",
+      "validate_deviation": true
     },
     {
       "title": "p_buf_a",
@@ -176,7 +180,8 @@
       "column": "p_buf_a",
       "type": "float",
       "isEditable": true,
-      "validation": "numeric|gt:0"
+      "validation": "numeric|gt:0",
+      "validate_deviation": true
     },
     {
       "title": "cycle_per_minute",
@@ -224,7 +229,8 @@
       "column": "gas_factor",
       "type": "float",
       "isEditable": true,
-      "validation": "numeric|gt:0"
+      "validation": "numeric|gt:0",
+      "validate_deviation": true
     },
     {
       "title": "gas_output",

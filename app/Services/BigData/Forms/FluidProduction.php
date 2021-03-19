@@ -89,16 +89,12 @@ class FluidProduction extends TableForm
                     break;
 
                 default:
-                    $dateField = 'dbeg';
-                    if ($table === 'tbdic.well_equip_params') {
-                        $dateField = 'prm_date';
-                    }
                     $rowData[$table] = DB::connection('tbd')
                         ->table($table)
                         ->whereIn('well_id', $wells->pluck('id')->toArray())
-                        ->whereDate($dateField, '<=', $this->request->get('date'))
-                        ->whereDate($dateField, '>=', Carbon::parse($this->request->get('date'))->subMonths(2))
-                        ->orderBy($dateField, 'desc')
+                        ->whereDate('dbeg', '<=', $this->request->get('date'))
+                        ->whereDate('dbeg', '>=', Carbon::parse($this->request->get('date'))->subMonths(2))
+                        ->orderBy('dbeg', 'desc')
                         ->get()
                         ->groupBy('well_id');
             }
@@ -132,6 +128,8 @@ class FluidProduction extends TableForm
             }
         );
 
+        $this->addLimits($wells);
+
         return $wells->toArray();
     }
 
@@ -154,7 +152,7 @@ class FluidProduction extends TableForm
                 );
 
                 $value = 0;
-                if ($fieldInfo['value'] !== null) {
+                if (isset($fieldInfo['value']) && $fieldInfo['value'] !== null) {
                     $value = in_array($fieldInfo['value'], Well::WELL_ACTIVE_STATUSES) ? 1 : 0;
                 }
 
