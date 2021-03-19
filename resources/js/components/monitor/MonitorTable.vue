@@ -58,6 +58,7 @@
         </div>
       </div>
     </modal>
+
     <modal class="modal-bign-wrapper" name="corrosion" :width="1200" :height="800" :adaptive="true">
       <div class="modal-bign modal-bign-container">
         <div class="modal-bign-header">
@@ -127,6 +128,7 @@
             </div>
           </div>
           <br>
+
           <div class="row corrosion">
             <div class="col-12">
               <h4>{{ trans('monitoring.fluid_parameters') }}</h4>

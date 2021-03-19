@@ -2,25 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ComplicationMonitoring\OmgNGDU;
 use App\Models\ComplicationMonitoring\PipeType;
 use App\Models\Pipes\MapPipe;
 use App\Models\Pipes\PipeCoord;
 use App\Models\Refs\Ngdu;
 use Illuminate\Http\Request;
-use App\Models\Pipes\GuZuPipe;
 use App\Services\MapService;
 use App\Models\Refs\Gu;
 use App\Models\Refs\Zu;
 use App\Models\Refs\Cdng;
-use App\Models\Pipes\ZuWellPipe;
 use App\Models\Refs\Well;
 use App\Services\DruidService;
-use App\Http\Resources\GuZuPipeResource;
-use App\Http\Resources\ZuWellPipeResource;
+use App\Http\Requests\POSTCaller;
 
-use App\Imports\GuWellsImport;
-use Maatwebsite\Excel\Facades\Excel;
+use App\Http\Controllers\ComplicationMonitoring\OmgNGDUController;
+use App\Http\Controllers\ComplicationMonitoring\WaterMeasurementController;
+use App\Http\Controllers\DruidController;
 
 class MapsController extends Controller
 {
@@ -371,4 +368,77 @@ class MapsController extends Controller
             ]
         );
     }
+
+    public function test()
+    {
+        $date = "2020-12-05";
+        $guId = 38;
+
+        $post = new POSTCaller(
+            WaterMeasurementController::class,
+            'getGuData',
+            Request::class,
+            [
+                'gu_id' => $guId
+            ]
+        );
+
+        $guData = $post->call()->getData();
+
+        dump($guData);
+
+        $post = new POSTCaller(
+            OmgNGDUController::class,
+            'getGuDataByDay',
+            Request::class,
+            [
+                'dt' => $date,
+                'gu_id' => $guId
+            ]
+        );
+        $guDataByDay = $post->call()->getData();
+
+
+        dump($guDataByDay);
+
+        $data = [
+            "WC" => $guDataByDay->ngdu->bsw,
+            "GOR1" => $guData->constantsValues[0]->value,
+            "sigma" => $guData->constantsValues[1]->value,
+            "do" => $guData->pipe->outside_diameter,
+            "roughness" => $guData->pipe->roughness,
+            "l" => $guData->pipe->length,
+            "thickness" => $guData->pipe->thickness,
+            "P" => $guDataByDay->ngdu->pump_discharge_pressure,
+            "t_heater" => $guDataByDay->ngdu->heater_output_pressure,
+            "conH2S" => $guDataByDay->wmLastH2S->hydrogen_sulfide,
+            "conCO2" => $guDataByDay->wmLastCO2->carbon_dioxide,
+            "q_l" => $guDataByDay->ngdu->daily_fluid_production,
+            "H2O" => $guDataByDay->ngdu->bsw,
+            "HCO3" => $guDataByDay->wmLastHCO3->hydrocarbonate_ion,
+            "Cl" => $guDataByDay->wmLastCl->chlorum_ion,
+            "SO4" => $guDataByDay->wmLastSO4->sulphate_ion,
+            "q_g_sib" => $guDataByDay->ngdu->daily_gas_production_in_sib,
+            "P_bufer" => $guDataByDay->ngdu->surge_tank_pressure,
+            "rhol" => $guDataByDay->wmLastH2S->density,
+            "rho_o" => $guDataByDay->oilGas->water_density_at_20,
+            "rhog" => $guDataByDay->oilGas->gas_density_at_20,
+            "mul" => $guDataByDay->oilGas->oil_viscosity_at_20,
+            "mug" => $guDataByDay->oilGas->gas_viscosity_at_20,
+            "q_o" => $guDataByDay->ngdu->daily_oil_production
+        ];
+
+        dump($data);
+
+        $post = new POSTCaller(
+            DruidController::class,
+            'corrosion',
+            Request::class,
+            $data
+        );
+        $corrosion = $post->call()->getData();
+
+        dd($corrosion->corrosion_rate_mm_per_y_point_A);
+    }
+
 }
