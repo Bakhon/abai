@@ -9,7 +9,6 @@ use App\Models\BigData\Dictionaries\Tech;
 use App\Models\BigData\Well;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\Response;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
@@ -18,14 +17,6 @@ class FluidProduction extends TableForm
 {
 
     protected $configurationFileName = 'fluid_production';
-
-    public function saveSingleField(string $field)
-    {
-        $this->validateSingleField($field);
-        $this->saveSingleFieldInDB($field);
-
-        return response()->json([], Response::HTTP_NO_CONTENT);
-    }
 
     public function getRows(array $params = [])
     {
