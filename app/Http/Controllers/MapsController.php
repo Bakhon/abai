@@ -72,25 +72,9 @@ class MapsController extends Controller
             ->whereNotNull('lon')
             ->get();
 
-        $guPoints = Gu::with(
-            [
-                'omgngdu' => function ($query) {
-                    $query->select(
-                        'id',
-                        'date',
-                        'gu_id',
-                        'daily_fluid_production',
-                        'daily_oil_production',
-                        'bsw',
-                        'pump_discharge_pressure',
-                        'heater_output_pressure',
-                        'editable'
-                    )->orderBy('date', 'desc')->first();
-                }
-            ]
-        )
-            ->whereNotNull('lat')
+        $guPoints = Gu::whereNotNull('lat')
             ->whereNotNull('lon')
+            ->WithLastOmgngdu()
             ->orderByRaw('lpad(name, 10, 0) asc')
             ->get();
 

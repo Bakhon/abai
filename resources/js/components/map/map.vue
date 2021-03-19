@@ -206,8 +206,8 @@ export default {
         getCursor: ({isDragging}) => (isDragging ? 'grabbing' : (this.isHovering ? 'pointer' : 'grab')),
         getTooltip: ({object}) => {
           if (object) {
-            if (object.cdng_id && object.omgngdu[0]) {
-              let guParams = object.omgngdu[0];
+            if (object.cdng_id && object.last_omgngdu) {
+              let guParams = object.last_omgngdu;
               guParams.daily_water_production = (guParams.daily_fluid_production * guParams.bsw) / 100;
               guParams.name = object.name;
 

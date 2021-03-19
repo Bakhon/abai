@@ -47,6 +47,33 @@ class Gu extends Model
         return $this->hasMany(OmgNGDU::class);
     }
 
+    public function lastOmgngdu()
+    {
+        return $this->belongsTo(OmgNGDU::class)->select(
+            'id',
+            'date',
+            'gu_id',
+            'daily_fluid_production',
+            'daily_oil_production',
+            'bsw',
+            'pump_discharge_pressure',
+            'heater_output_pressure',
+            'editable'
+        );
+    }
+
+    public function scopeWithLastOmgngdu($query)
+    {
+        $query->addSelect(
+            [
+                'last_omgngdu_id' => OmgNGDU::select('id')
+                    ->whereColumn('gu_id', 'gus.id')
+                    ->orderBy('date', 'desc')
+                    ->take(1)
+            ]
+        )->with('lastOmgngdu');
+    }
+
     public function watermeasurement()
     {
         return $this->hasMany(WaterMeasurement::class);
