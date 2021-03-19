@@ -215,6 +215,7 @@
                     mainData: {}
                 },
                 isValidateError: false,
+                errorSelectors: [],
             };
         },
         async mounted() {
@@ -272,6 +273,7 @@
                 let self = this;
                 this.isValidateError = false;
                 this.isDataReady = false;
+                this.turnOffErrorHighlight();
                 _.forEach(this.cellsMapping, function(row, index) {
                     self.processTableData(row,index);
                 });
@@ -319,10 +321,18 @@
             isDowntimeReasonCellValid(inputData,selector) {
                 if (isNaN(inputData) || inputData < 0) {
                     this.setClassToElement($(selector),'cell__color-red');
+                    this.errorSelectors.push(selector);
                     this.isValidateError = true;
                     return false;
                 }
                 return true;
+            },
+            turnOffErrorHighlight() {
+                let self = this;
+                _.forEach(this.errorSelectors, function(selector) {
+                    self.setClassToElement($(selector),'cell__color-normal');
+                });
+                this.errorSelectors = [];
             },
             beforeRangeEdit(e) {
                 this.setTableFormat();
@@ -370,6 +380,9 @@
     .cell__color-red {
         background-color: red;
     }
+    .cell__color-normal {
+        background-color: white;
+    }
     .dzo-select {
         height: 24px;
     }
@@ -412,7 +425,7 @@
         background-color: white;
     }
     .title {
-        background-color: #20274F;
+        background-color: #1e4e79;
         color: white !important;
         text-align: center;
         line-height: 30px;
@@ -420,7 +433,7 @@
         font-weight: bold;
     }
     .sub-title {
-        background-color: #20274F;
+        background-color: #1e4e79;
         color: white !important;
         text-align: center;
         line-height: 30px;
