@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddColumnTypefieldToRepTtValuesTable extends Migration
+class AddColumnTypefieldToRepTtTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class AddColumnTypefieldToRepTtValuesTable extends Migration
      */
     public function up()
     {
-        Schema::table('rep_tt_values', function(Blueprint $table){
+        Schema::table('rep_tt', function (Blueprint $table) {
             $table->string('type')->nullable();
         });
     }
@@ -25,7 +25,7 @@ class AddColumnTypefieldToRepTtValuesTable extends Migration
      */
     public function down()
     {
-        Schema::table('rep_tt_values', function(Blueprint $table){
+        Schema::table('rep_tt', function (Blueprint $table) {
             $table->dropColumn('type');
         });
     }

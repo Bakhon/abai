@@ -43,20 +43,20 @@ class MainController extends Controller
         $dateFrom = date('Y-m-d', strtotime('01-' . $dateFrom));
         $handbook = HandbookRepTt::where('parent_id', 0)->with('childHandbookItems')->get()->toArray();
         $companyRepTtValues = SubholdingCompany::find($id)->statsByDate($dateFrom,$dateTo)->get()->toArray();
-        $repTtReportValues = $this->recursiveSetValueToRepTt($handbook, $companyRepTtValues);
+        $repTtReportValues = $this->recursiveSetValueToHandbook($handbook, $companyRepTtValues);
         $repTtReportValues = json_encode($repTtReportValues);
         return view('economy_kenzhe.company')->with(compact('repTtReportValues'));
     }
 
-    public function recursiveSetValueToRepTt(&$items, $companyRepTtValues)
+    public function recursiveSetValueToHandbook(&$items, $companyRepTtValues)
     {
         $companyValuesRepTtIds = array_column($companyRepTtValues, 'rep_id');
         foreach ($items as $key => $value) {
-            if (!array_key_exists('values', $items[$key])) {
-                $items[$key]['values'] = [];
+            if (!array_key_exists('value', $items[$key])) {
+                $items[$key]['value'] = 0;
             }
             if (count($value['handbook_items']) > 0) {
-                $this->recursiveSetValueToRepTt($items[$key]['handbook_items'], $companyRepTtValues);
+                $this->recursiveSetValueToHandbook($items[$key]['handbook_items'], $companyRepTtValues);
             } else {
                 $id = $value['id'];
                 $k = [];
@@ -65,10 +65,10 @@ class MainController extends Controller
                 }, ARRAY_FILTER_USE_BOTH);
                 if (count($k) > 0) {
                     foreach ($k as $k => $v) {
-                        array_push($items[$key]['values'], $companyRepTtValues[$k]);
+                        $items[$key]['value'] +=  abs($companyRepTtValues[$k]['value']);
                     }
                 } else {
-                    $items[$key]['values'] = [];
+                    $items[$key]['value'] = 0;
                 }
             }
         }
