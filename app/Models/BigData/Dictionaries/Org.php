@@ -31,8 +31,8 @@ class Org extends TBDModel
     {
         $result = DB::connection('tbd')
             ->table('tbdi.org as org')
-            ->select('tbdi.id', 'df.field as field')
-            ->leftJoin('tbdi.dzo_field as df', 'org.id', '=', 'df.dzo')
+            ->select('org.id', 'df.field as field')
+            ->leftJoin('tbdic.dzo_field as df', 'org.id', '=', 'df.dzo')
             ->where('org.id', '=', $this->id)
             ->whereNotNull('field')
             ->get()
