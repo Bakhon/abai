@@ -34,7 +34,7 @@
       </div>
       <div class="row">
         <button class="col btn get-report-button" id="experimentUploadButton a"
-                :disabled="input.provenanceId !== null || !file || isLoading"
+                :disabled="input.provenanceId === null || !file || isLoading"
                 @click="submitFile()">
           Загрузить
         </button>
