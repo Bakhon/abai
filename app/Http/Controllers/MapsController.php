@@ -2,13 +2,31 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ComplicationMonitoring\OmgNGDU;
+use App\Models\ComplicationMonitoring\PipeType;
+use App\Models\Pipes\MapPipe;
+use App\Models\Pipes\PipeCoord;
+use App\Models\Refs\Ngdu;
 use Illuminate\Http\Request;
+use App\Models\Pipes\GuZuPipe;
+use App\Services\MapService;
+use App\Models\Refs\Gu;
+use App\Models\Refs\Zu;
+use App\Models\Refs\Cdng;
+use App\Models\Pipes\ZuWellPipe;
+use App\Models\Refs\Well;
+use App\Services\DruidService;
+use App\Http\Resources\GuZuPipeResource;
+use App\Http\Resources\ZuWellPipeResource;
+
+use App\Imports\GuWellsImport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class MapsController extends Controller
 {
     protected $mapService;
 
-    public function __construct(\App\Services\MapService $mapService)
+    public function __construct(MapService $mapService)
     {
         $this->middleware('can:monitoring view pipes map');
 
@@ -17,93 +35,13 @@ class MapsController extends Controller
 
     public function guMap()
     {
-        $gus = \App\Models\Refs\Gu::query()
-            ->whereHas('zuPipes')
-            ->orWhereHas('wellPipes')
-            ->select('name', 'id')
-            //dirty hack for alphanumeric sort but other solutions doesn't work
-            ->orderByRaw('lpad(name, 10, 0) asc')
-            ->get();
-
-        return view('maps.gu_map', compact('gus'));
+        return view('maps.gu_map');
     }
 
-    public function guPipes(Request $request)
+    public function getMapCenter()
     {
-        $gus = \App\Models\Refs\Gu::all();
-
         $coordinates = [];
-        $zuPipes = \App\Models\Pipes\GuZuPipe::query()
-            ->whereHas('gu')
-            ->get()
-            ->map(
-                function ($pipe) use (&$coordinates) {
-                    if (!isset($coordinates[$pipe->gu_id])) {
-                        $coordinates[$pipe->gu_id] = [];
-                    }
-                    $coordinates[$pipe->gu_id] = array_merge(
-                        $coordinates[$pipe->gu_id],
-                        array_map(
-                            function ($coord) {
-                                return [
-                                    round($coord[1], 6),
-                                    round($coord[0], 6),
-                                ];
-                            },
-                            $pipe->coordinates
-                        )
-                    );
-                    return [
-                        'color' => [255, 0, 0],
-                        'name' => (string)$pipe->id,
-                        'path' => array_map(
-                            function ($coord) {
-                                return [
-                                    round($coord[1], 6),
-                                    round($coord[0], 6),
-                                ];
-                            },
-                            $pipe->coordinates
-                        )
-                    ];
-                }
-            );
-
-        $wellPipes = \App\Models\Pipes\ZuWellPipe::query()
-            ->whereHas('gu')
-            ->get()
-            ->map(
-                function ($pipe) use (&$coordinates) {
-                    if (!isset($coordinates[$pipe->gu_id])) {
-                        $coordinates[$pipe->gu_id] = [];
-                    }
-                    $coordinates[$pipe->gu_id] = array_merge(
-                        $coordinates[$pipe->gu_id],
-                        array_map(
-                            function ($coord) {
-                                return [
-                                    round($coord[1], 6),
-                                    round($coord[0], 6),
-                                ];
-                            },
-                            $pipe->coordinates
-                        )
-                    );
-                    return [
-                        'color' => [0, 255, 0],
-                        'name' => (string)$pipe->id,
-                        'path' => array_map(
-                            function ($coord) {
-                                return [
-                                    round($coord[1], 6),
-                                    round($coord[0], 6),
-                                ];
-                            },
-                            $pipe->coordinates
-                        )
-                    ];
-                }
-            );
+        $this->getPipesWithCoords($coordinates);
 
         foreach ($coordinates as $guId => $coords) {
             $guCenters[$guId] = !empty($coords) ? $this->mapService->calculateCenterOfCoordinates($coords) : null;
@@ -111,54 +49,326 @@ class MapsController extends Controller
 
         $center = $this->mapService->calculateCenterOfCoordinates($guCenters);
 
-        $wellPoints = \App\Models\Refs\Well::query()
-            ->whereHas('zu.gu')
-            ->whereNotNull('wells.lat')
-            ->whereNotNull('wells.lon')
-            ->get()
-            ->map(
-                function ($well) {
-                    return [
-                        'name' => $well->name,
-                        'coords' => [(float)$well->lon, (float)$well->lat],
-                    ];
-                }
-            );
+        return $center;
+    }
 
-        $zuPoints = \App\Models\Refs\Zu::query()
-            ->whereHas('gu')
+    public function mapData(Request $request, DruidService $druidService): array
+    {
+        $pipes = MapPipe::with('coords', 'pipeType')->get();
+
+        $center = [52.854602599069, 43.426262258809];
+
+        $wellPoints = Well::query()
+            ->whereHas('zu.gu')
+            ->whereHas('ngdu')
             ->whereNotNull('lat')
             ->whereNotNull('lon')
-            ->get()
-            ->map(
-                function ($zu) {
-                    return [
-                        'name' => $zu->name,
-                        'coords' => [(float)$zu->lon, (float)$zu->lat],
-                    ];
+            ->get();
+
+        $zuPoints = Zu::query()
+            ->whereHas('gu')
+            ->whereHas('ngdu')
+            ->whereNotNull('lat')
+            ->whereNotNull('lon')
+            ->get();
+
+        $guPoints = Gu::with(
+            [
+                'omgngdu' => function ($query) {
+                    $query->select(
+                        'id',
+                        'date',
+                        'gu_id',
+                        'daily_fluid_production',
+                        'daily_oil_production',
+                        'bsw',
+                        'pump_discharge_pressure',
+                        'heater_output_pressure',
+                        'editable'
+                    )->orderBy('date', 'desc')->first();
                 }
-            );
+            ]
+        )
+            ->whereNotNull('lat')
+            ->whereNotNull('lon')
+            ->orderByRaw('lpad(name, 10, 0) asc')
+            ->get();
 
-        $guPoints = [];
-        foreach ($gus as $gu) {
-            if ($gu->lat && $gu->lon) {
-                $guPoints[] = [
-                    'id' => $gu->id,
-                    'name' => $gu->name,
-                    'coords' => [(float)$gu->lon, (float)$gu->lat]
-                ];
-            }
-        }
-
+        $pipeTypes = PipeType::all();
+        $ngdus = Ngdu::all();
+        $cdngs = Cdng::all();
 
         return [
-            'pipes' => $wellPipes->merge($zuPipes),
+            'pipes' => $pipes,
+            'ngdus' => $ngdus,
+            'cdngs' => $cdngs,
             'wellPoints' => $wellPoints,
             'zuPoints' => $zuPoints,
             'guPoints' => $guPoints,
-            'guCenters' => $guCenters,
             'center' => $center,
+            'pipeTypes' => $pipeTypes,
         ];
     }
 
+    private function getPipesWithCoords(array &$coordinates): \Illuminate\Database\Eloquent\Collection
+    {
+        $map_pipes = MapPipe::with('coords', 'pipeType')->get();
+        $coords = [];
+
+        $map_pipes->map(
+            function ($map_pipe) use (&$coordinates, &$coords) {
+                $map_pipe->coords->map(
+                    function ($coord) use (&$coordinates, &$map_pipe, &$coords) {
+                        $coords[] = [$coord->lon, $coord->lat];
+
+                        return $coord;
+                    }
+                );
+
+                if (!isset($coordinates[$map_pipe->gu_id])) {
+                    $coordinates[$map_pipe->gu_id] = [];
+                }
+
+                $coordinates[$map_pipe->gu_id] = array_merge(
+                    $coordinates[$map_pipe->gu_id],
+                    $coords
+                );
+
+                return $map_pipe;
+            }
+        );
+
+        return $map_pipes;
+    }
+
+    private function getWellOilInfo(DruidService $druidService): array
+    {
+        $wellOil = $druidService->getWellOil();
+        foreach ($wellOil as $row) {
+            $result[$row['uwi']] = $row['oil'];
+        }
+        return $result;
+    }
+
+    public function storeGu(Request $request): \Symfony\Component\HttpFoundation\Response
+    {
+        $gu_input = $request->input('gu');
+        $gu = new Gu;
+
+        $gu->fill($gu_input);
+        $gu->save();
+
+        $gu = Gu::with(
+            [
+                'omgngdu' => function ($query) {
+                    $query->select(
+                        'id',
+                        'date',
+                        'gu_id',
+                        'daily_fluid_production',
+                        'daily_oil_production',
+                        'bsw',
+                        'pump_discharge_pressure',
+                        'heater_output_pressure',
+                        'editable'
+                    )->orderBy('date', 'desc')->first();
+                }
+            ]
+        )
+            ->find($gu->id);
+
+        return response()->json(
+            [
+                'gu' => $gu,
+                'status' => config('response.status.success'),
+            ]
+        );
+    }
+
+    public function storeZu(Request $request): \Symfony\Component\HttpFoundation\Response
+    {
+        $zu_input = $request->input('zu');
+        $zu = new Zu;
+
+        $zu->fill($zu_input);
+        $zu->save();
+
+        return response()->json(
+            [
+                'zu' => $zu,
+                'status' => config('response.status.success'),
+            ]
+        );
+    }
+
+    public function storeWell(Request $request, DruidService $druidService): \Symfony\Component\HttpFoundation\Response
+    {
+        $well_input = $request->input('well');
+        $well = new Well;
+
+        $well->fill($well_input);
+        $well->save();
+
+        return response()->json(
+            [
+                'well' => $well,
+                'status' => config('response.status.success'),
+            ]
+        );
+    }
+
+    public function storePipe(Request $request): \Symfony\Component\HttpFoundation\Response
+    {
+        $pipe_input = $request->input('pipe');
+        $pipe = new MapPipe;
+        $pipe->fill($pipe_input);
+        $pipe->save();
+
+        foreach ($pipe_input['coords'] as $coord) {
+            $pipe_coord = new PipeCoord;
+            $pipe_coord->fill($coord);
+            $pipe_coord->map_pipe_id = $pipe->id;
+            $pipe_coord->save();
+        }
+
+        $pipe = MapPipe::with('coords', 'pipeType')->find($pipe->id);
+
+        return response()->json(
+            [
+                'pipe' => $pipe,
+                'status' => config('response.status.success'),
+            ]
+        );
+    }
+
+    public function updateGu(Request $request, Gu $gu): \Symfony\Component\HttpFoundation\Response
+    {
+        $gu_input = $request->input('gu');
+
+        $gu->fill($gu_input);
+        $gu->save();
+
+        $gu = Gu::with(
+            [
+                'omgngdu' => function ($query) {
+                    $query->select(
+                        'id',
+                        'date',
+                        'gu_id',
+                        'daily_fluid_production',
+                        'daily_oil_production',
+                        'bsw',
+                        'pump_discharge_pressure',
+                        'heater_output_pressure',
+                        'editable'
+                    )->orderBy('date', 'desc')->first();
+                }
+            ]
+        )
+            ->find($gu->id);
+
+        return response()->json(
+            [
+                'gu' => $gu,
+                'status' => config('response.status.success'),
+            ]
+        );
+    }
+
+    public function updateZu(Request $request, Zu $zu): \Symfony\Component\HttpFoundation\Response
+    {
+        $zu_input = $request->input('zu');
+
+        $zu->fill($zu_input);
+        $zu->save();
+
+        return response()->json(
+            [
+                'zu' => $zu,
+                'status' => config('response.status.success'),
+            ]
+        );
+    }
+
+    public function updateWell(Request $request, Well $well): \Symfony\Component\HttpFoundation\Response
+    {
+        $well_input = $request->input('well');
+
+        $well->fill($well_input);
+        $well->save();
+
+        return response()->json(
+            [
+                'well' => $well,
+                'status' => config('response.status.success'),
+            ]
+        );
+    }
+
+    public function updatePipe(Request $request, MapPipe $pipe): \Symfony\Component\HttpFoundation\Response
+    {
+        $pipe_input = $request->input('pipe');
+        $pipe->fill($pipe_input);
+        $pipe->save();
+
+        foreach ($pipe_input['coords'] as $coord) {
+            $pipe_coord = PipeCoord::find($coord['id']);
+            $pipe_coord->fill($coord);
+            $pipe_coord->save();
+        }
+
+        $pipe = MapPipe::with('coords', 'pipeType')->find($pipe->id);
+
+        return response()->json(
+            [
+                'pipe' => $pipe,
+                'status' => config('response.status.success'),
+            ]
+        );
+    }
+
+    public function deleteGu(Gu $gu): \Symfony\Component\HttpFoundation\Response
+    {
+        $gu->delete();
+
+        return response()->json(
+            [
+                'status' => config('response.status.success'),
+            ]
+        );
+    }
+
+    public function deleteZu(Zu $zu): \Symfony\Component\HttpFoundation\Response
+    {
+        $zu->delete();
+
+        return response()->json(
+            [
+                'status' => config('response.status.success'),
+            ]
+        );
+    }
+
+    public function deleteWell(Well $well): \Symfony\Component\HttpFoundation\Response
+    {
+        $well->delete();
+
+        return response()->json(
+            [
+                'status' => config('response.status.success'),
+            ]
+        );
+    }
+
+    public function deletePipe(MapPipe $pipe): \Symfony\Component\HttpFoundation\Response
+    {
+        PipeCoord::where('map_pipe_id', $pipe->id)->delete();
+        $pipe->delete();
+
+        return response()->json(
+            [
+                'status' => config('response.status.success'),
+            ]
+        );
+    }
 }

@@ -1,10 +1,7 @@
 <template>
   <div class="big-numbers">
     <!-- <h4>Цифровые показатели</h4> -->
-    <div class="fadee tr-chart__loader" v-if="isLoading">
-      <fade-loader :loading="isLoading"></fade-loader>
-    </div>
-    <div class="big-numbers__list" v-else>
+    <div class="big-numbers__list">
       <div v-for="item in numbers" :key="item.name" class="big-numbers__item">
         <div class="big-numbers__count h2">{{ item.count }}</div>
         <div class="big-numbers__name">{{ item.name }}</div>
@@ -25,12 +22,9 @@
 </template>
 
 <script>
-import FadeLoader from "vue-spinner/src/FadeLoader.vue";
-
 export default {
   name: "BigNumbers",
   components: {
-    FadeLoader,
   },
   props: {
     list: {
@@ -43,17 +37,17 @@ export default {
       type: String,
       default: "exp_meth",
     },
-    isLoading: {
-      type: Boolean,
-      default: false,
-    },
     baseName: {
       type: String,
-      default: "Количество скважин",
+      default() {
+        return `${this.trans('tr.trbn1')}`;
+      },
     },
     nameAlias: {
       type: String,
-      default: "с ",
+      default() {
+        return [`${this.trans('tr.trbn2')}`, `${this.trans('tr.trbn3')}`, `${this.trans('tr.trbn4')}`, `${this.trans('tr.trbn5')}`];
+      },
     },
     paramValues: {
       type: Array,
@@ -85,7 +79,7 @@ export default {
           this.paramValues.indexOf(key) !== -1
         ) {
           newNumbers.push({
-            name: `${this.baseName} ${this.nameAlias} ${key}`,
+            name: `${this.nameAlias[this.paramValues.indexOf(key)]}`,
             count: parsedList[key],
             percent: ((parsedList[key] / newNumbers[0].count) * 100).toFixed(2),
           });
@@ -94,7 +88,7 @@ export default {
       for (let key of this.paramValues) {
         if (!parsedList[key]) {
           newNumbers.push({
-            name: `${this.baseName} ${this.nameAlias} ${key}`,
+            name: `${this.nameAlias[this.paramValues.indexOf(key)]}`,
             count: 0,
             percent: 0,
           });
@@ -118,10 +112,13 @@ export default {
   max-width: 100%;
   flex-grow: 0;
   flex-shrink: 0;
+  margin-left: 13px;
+  box-sizing: border-box;
+}
+.big-numbers__list {
   display: flex;
   flex-direction: column;
-  margin-left: 20px;
-  box-sizing: border-box;
+  height: 100%;
 }
 .big-numbers__list :first-child {
   margin-top: 0;
@@ -130,9 +127,13 @@ export default {
   margin-bottom: 0;
 }
 .big-numbers__item {
-  padding: 30px 20px;
+  padding: 5px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   background: #272953;
-  margin: 10px;
+  margin-top: 13px;
+  flex-grow: 1;
 }
 .big-numbers__name {
   font-size: 17px;

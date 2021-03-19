@@ -41,12 +41,15 @@ export default {
         {
           year: this.$store.getters["fa/year"],
           month: this.$store.getters["fa/month"],
+          day: this.$store.getters["fa/day"],
           pryear: this.$store.getters["fa/pryear"],
           prmonth: this.$store.getters["fa/prmonth"],
+          prday: this.$store.getters["fa/prday"],
           searchString: this.$store.getters["fa/searchString"],
           filter: this.$store.getters["fa/filter"],
           sortType: this.$store.getters["fa/sortType"],
           sortParam: this.$store.getters["fa/sortParam"],
+          isDynamic:  this.$store.getters["fa/isDynamic"],
         },
         {
           year: this.$store.getters["tr/year"],
@@ -55,6 +58,13 @@ export default {
           filter: this.$store.getters["tr/filter"],
           sortType: this.$store.getters["tr/sortType"],
           sortParam: this.$store.getters["tr/sortParam"],
+          year_dyn_start: this.$store.getters["tr/year_dyn_start"],
+          year_dyn_end:  this.$store.getters["tr/year_dyn_end"],
+          month_dyn_start: this.$store.getters["tr/month_dyn_start"],
+          month_dyn_end:  this.$store.getters["tr/month_dyn_end"],
+          day_dyn_start: this.$store.getters["tr/day_dyn_start"],
+          day_dyn_end:  this.$store.getters["tr/day_dyn_end"],
+          is_dynamic:  this.$store.getters["tr/is_dynamic"],
         }
       );
     },
@@ -69,8 +79,8 @@ export default {
   methods: {
     ifFaTr(fa, tr) {
       if (
-        window.location.pathname === "/ru/fa" ||
-        window.location.pathname === "/ru/trfa"
+        window.location.pathname === this.localeUrl("/fa") ||
+        window.location.pathname === this.localeUrl("/trfa")
       ) {
         // FA
         return fa;

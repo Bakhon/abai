@@ -2,30 +2,37 @@ export default {
   data: function () {
     return {
       dzoData: [],
+      macroData: [],
       fullCompanyNames: [
         {
           code: 'ОМГ',
-          title: 'АО "ОзенМунайГаз"'
+          title: this.trans('visualcenter.omg') 
+          // 'АО "ОзенМунайГаз"'
         },
         {
           code: 'ЭМГ',
-          title: 'АО "ЭмбаМунайГаз"'
+          title: this.trans('visualcenter.emg')  
+          // 'АО "ЭмбаМунайГаз"'
         },
         {
           code: 'КГМ',
-          title: 'ТОО "КазГерМунай"'
+          title: this.trans('visualcenter.kgm') 
+          // 'ТОО "КазГерМунай"'
         },
         {
           code: 'ММГ',
-          title: 'АО "Мангистаумунайгаз"'
+          title: this.trans('visualcenter.mmg') 
+          // 'АО "Мангистаумунайгаз"'
         },
         {
           code: 'КТМ',
-          title: 'ТОО "Казахтуркмунай"'
+          title: this.trans('visualcenter.ktm')  
+          // 'ТОО "Казахтуркмунай"'
         },
         {
           code: 'КОА',
-          title: 'ТОО "Казахойл Актобе"'
+          title: this.trans('visualcenter.koa') 
+          // 'ТОО "Казахойл Актобе"'
         },
       ],
       dzoSelect: 'ALL',
@@ -41,11 +48,13 @@ export default {
   },
   methods: {
     refreshData() {
-      let uri = "/ru/getdzocalcs";
+      let uri = this.localeUrl("/getdzocalcs");
       let dateStart = new Intl.DateTimeFormat('en', {year: 'numeric', month: 'short', day: '2-digit'}).format(this.dateStart)
       let dateEnd = new Intl.DateTimeFormat('en', {year: 'numeric', month: 'short', day: '2-digit'}).format(this.dateEnd)
       let queryParams = {params: {'dateStart': dateStart, 'dateEnd': dateEnd}};
+      this.$store.commit('globalloading/SET_LOADING',true);
       this.dzoData = [];
+      this.macroData = [];
       if (this.dzoSelect !== 'ALL') {
         queryParams.params.dzo = this.dzoSelect;
       }
@@ -63,7 +72,9 @@ export default {
             ebitdaPlan = 0.00, ebitdaFact = 0.00, ebitdaFactPrevYear = 0.00, ebitdaPlan2020 = 0.00,
             netProfitPlan = 0.00, netProfitFact = 0.00, netProfitFactPrevYear = 0.00, netProfitPlan2020 = 0.00,
             capitalInvPlan = 0.00, capitalInvFact = 0.00, capitalInvFactPrevYear = 0.00, capitalInvPlan2020 = 0.00,
-            cashFlowPlan = 0.00, cashFlowFact = 0.00, cashFlowFactPrevYear = 0.00, cashFlowPlan2020 = 0.00;
+            cashFlowPlan = 0.00, cashFlowFact = 0.00, cashFlowFactPrevYear = 0.00, cashFlowPlan2020 = 0.00,
+            kursPlan = 0.00, kursFact = 0.00, kursPrevYear = 0.00, kursPlan2020 = 0.00,
+            oilPricePlan = 0.00, oilPriceFact = 0.00, oilPricePrevYear = 0.00, oilPricePlan2020 = 0.00;
 
           _.forEach(response.data['dzoDataActual'], (item) => {
             dataPlan += item.main_prc_val_plan;
@@ -96,6 +107,12 @@ export default {
             cashFlowPlan += item.cash_flow_val_plan;
             cashFlowFact += item.cash_flow_val_fact;
 
+            kursPlan = item.kurs_plan;
+            kursFact = item.kurs_fact;
+
+            oilPricePlan = item.oil_price_plan;
+            oilPriceFact = item.oil_price_fact;
+
             plan2020 = item.main_prc_plan_2020;
             spendingPlan2020 = item.spending_plan_2020;
             costPlan2020 = item.cost_plan_2020;
@@ -106,6 +123,8 @@ export default {
             netProfitPlan2020 = item.net_profit_plan_2020;
             capitalInvPlan2020 = item.capital_inv_plan_2020;
             cashFlowPlan2020 = item.cash_flow_plan_2020;
+            kursPlan2020 = item.kurs_plan_2020;
+            oilPricePlan2020 = item.oil_price_plan_2020;
           });
           _.forEach(response.data['dzoDataPrevYear'], (item) => {
             dataFactPrevYear += item.main_prc_val_fact;
@@ -118,9 +137,12 @@ export default {
             netProfitFactPrevYear += item.net_profit_val_fact;
             capitalInvFactPrevYear += item.capital_inv_val_fact;
             cashFlowFactPrevYear += item.cash_flow_val_fact;
+            kursPrevYear = item.kurs_fact;
+            oilPricePrevYear = item.oil_price_fact;
           });
           this.dzoData.push({
-            title: 'Выручка от основной деятельности',
+            title: this.trans('visualcenter.eco1'),
+            // 'Выручка от основной деятельности',
             units: 'млрд.тг.',
             dataPlan: dataPlan,
             dataFact: dataFact,
@@ -129,7 +151,8 @@ export default {
             divider: 1000000,
           });
           this.dzoData.push({
-            title: 'Расходы',
+            title: this.trans('visualcenter.eco2'), 
+            // 'Расходы',
             units: 'млрд.тг.',
             dataPlan: spendingPlan,
             dataFact: spendingFact,
@@ -138,7 +161,8 @@ export default {
             divider: 1000000,
           });
           this.dzoData.push({
-            title: 'Себестоимость',
+            title: this.trans('visualcenter.eco3'),  
+            // 'Себестоимость',
             units: 'млрд.тг.',
             dataPlan: costPlan,
             dataFact: costFact,
@@ -147,7 +171,8 @@ export default {
             divider: 1000000,
           });
           this.dzoData.push({
-            title: 'Расходы по реализации',
+            title: this.trans('visualcenter.eco4'),  
+            // 'Расходы по реализации',
             units: 'млрд.тг.',
             dataPlan: rlzSpendingPlan,
             dataFact: rlzSpendingFact,
@@ -156,7 +181,8 @@ export default {
             divider: 1000000,
           });
           this.dzoData.push({
-            title: 'Общие административные вопросы',
+            title: this.trans('visualcenter.eco5'),  
+            // 'Общие административные вопросы',
             units: 'млрд.тг.',
             dataPlan: admSpendingPlan,
             dataFact: admSpendingFact,
@@ -165,7 +191,8 @@ export default {
             divider: 1000000,
           });
           this.dzoData.push({
-            title: 'EBITDA margin (Без СП)',
+            title: this.trans('visualcenter.eco6'), 
+            // 'EBITDA margin (Без СП)',
             units: '%',
             dataPlan: ebitdaMarginPlan,
             dataFact: ebitdaMarginFact,
@@ -183,7 +210,8 @@ export default {
             divider: 1000000,
           });
           this.dzoData.push({
-            title: 'Чистая прибыль*',
+            title: this.trans('visualcenter.eco7'),  
+            // 'Чистая прибыль*',
             units: 'млрд.тг.',
             dataPlan: netProfitPlan,
             dataFact: netProfitFact,
@@ -192,7 +220,8 @@ export default {
             divider: 1000000,
           });
           this.dzoData.push({
-            title: 'Капитальные вложения',
+            title: this.trans('visualcenter.eco8'), 
+            // 'Капитальные вложения',
             units: 'млрд.тг.',
             dataPlan: capitalInvPlan,
             dataFact: capitalInvFact,
@@ -201,13 +230,32 @@ export default {
             divider: 1000000,
           });
           this.dzoData.push({
-            title: 'Свободный денежный поток',
+            title: this.trans('visualcenter.eco9'),  
+            // 'Свободный денежный поток',
             units: 'млрд.тг.',
             dataPlan: cashFlowPlan,
             dataFact: cashFlowFact,
             dataFactPrevYear: cashFlowFactPrevYear,
             plan2020: cashFlowPlan2020,
             divider: 1000000,
+          });
+          this.macroData.push({
+            title: this.trans('visualcenter.eco10'), 
+            // 'Обменный курс',
+            units: 'Тенге/$',
+            dataPlan: kursPlan,
+            dataFact: kursFact,
+            dataFactPrevYear: kursPrevYear,
+            plan2020: kursPlan2020,
+          });
+          this.macroData.push({
+            title: this.trans('visualcenter.eco11'),  
+            // 'Цена Brent',
+            units: '$/баррель',
+            dataPlan: oilPricePlan,
+            dataFact: oilPriceFact,
+            dataFactPrevYear: oilPricePrevYear,
+            plan2020: oilPricePlan2020,
           });
           this.dzoData = this.dzoData.map((item) => {
             return {
@@ -222,6 +270,7 @@ export default {
         } else {
           console.log("No data");
         }
+        this.$store.commit('globalloading/SET_LOADING',false);
       })
     },
   },

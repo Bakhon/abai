@@ -21,13 +21,17 @@ class CreateDZOdailiesTable extends Migration
             $table->text("mestorozhdenie")->nullable();	
             $table->text("ngdu")->nullable();
             $table->float("oil_plan",32,8)->nullable();
+            $table->float('oil_opek_plan',32,8)->nullable();
             $table->float("oil_fact",32,8)->nullable();
             $table->float("gk_plan",32,8)->nullable();	
             $table->float("gk_fact",32,8)->nullable();	
+            $table->float("gk_dlv_plan",32,8)->nullable();	
+            $table->float("gk_dlv_fact",32,8)->nullable();
             $table->float("dobycha_zhidkosti_plan",32,8)->nullable();
             $table->float("dobycha_zhidkosti_fact",64,8)->nullable();
             $table->float("sdacha_nefti_kuun",32,8)->nullable();						
             $table->float("oil_dlv_plan",32,8)->nullable(); 
+            $table->float('oil_dlv_opek_plan',32,8)->nullable(); 
             $table->float("oil_dlv_fact",32,8)->nullable();
             $table->float("tovarnyi_ostatok_nefti_prev_day",32,8)->nullable();
             $table->float("tovarnyi_ostatok_nefti_today",32,8)->nullable(); 
@@ -139,6 +143,12 @@ class CreateDZOdailiesTable extends Migration
             $table->float("liq_fact",32,8)->nullable();
             $table->float("inj_wells_idle",32,8)->nullable();
             $table->float("prod_wells_idle",32,8)->nullable();  
+            $table->string("opec2",255)->nullable();
+            $table->string("accident",255)->nullable();
+            $table->string("restrictions",255)->nullable();
+            $table->string("otheraccidents",255)->nullable();
+            $table->string("impulses",255)->nullable(); 
+            $table->string("landing",255)->nullable();
             $table->timestamps();
         });
     }

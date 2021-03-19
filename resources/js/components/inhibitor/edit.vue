@@ -1,18 +1,18 @@
 <template>
     <div class="col-xs-12 col-sm-12 col-md-12 row">
         <div class="col-xs-12 col-sm-4 col-md-4">
-            <label>Название</label>
+            <label>{{ trans('monitoring.inhibitor.fields.title') }}</label>
             <div class="form-label-group">
                 <input v-model="formFields.name" type="text" name="name" class="form-control" placeholder="">
             </div>
         </div>
         <div class="col-xs-12 col-sm-12 col-md-12 row">
             <div class="col-xs-12 col-sm-12 col-md-12">
-                <a href="#" @click.prevent="showPriceChange = !showPriceChange">Изменить цену</a>
+                <a href="#" @click.prevent="showPriceChange = !showPriceChange">{{ trans('monitoring.inhibitor.change_price') }}</a>
             </div>
             <template v-if="showPriceChange">
                 <div class="col-xs-12 col-sm-4 col-md-4">
-                    <label>Цена</label>
+                    <label>{{ trans('monitoring.inhibitor.fields.price') }}</label>
                     <div class="form-label-group">
                         <input
                             v-model="formFields.price"
@@ -26,7 +26,7 @@
                     </div>
                 </div>
                 <div class="col-xs-12 col-sm-4 col-md-4">
-                    <label>Дата применения цены</label>
+                    <label>{{ trans('monitoring.fields.price_date') }}</label>
                     <div class="form-label-group">
                         <datetime
                             type="date"

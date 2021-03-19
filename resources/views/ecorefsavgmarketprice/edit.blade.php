@@ -34,13 +34,13 @@
                                     </div>
                                     <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
-                                        <strong>Среднемесячная рыночная цена, от:</strong>
+                                        <strong>Среднемесячная рыночная цена ($/баррель), от:</strong>
                                         <input type="integer" name="avg_market_price_beg" class="form-control" placeholder="" value="{{$row->avg_market_price_beg}}">
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
-                                        <strong>Среднемесячная рыночная цена, до:</strong>
+                                        <strong>Среднемесячная рыночная цена ($/баррель), до:</strong>
                                         <input type="integer" name="avg_market_price_end" class="form-control" placeholder="" value="{{$row->avg_market_price_end}}">
                                     </div>
                                 </div>

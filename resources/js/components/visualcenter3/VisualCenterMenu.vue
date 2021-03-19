@@ -19,7 +19,9 @@
       </div>
     </a>
     <a href="#submenu1" data-toggle="collapse" aria-expanded="false">
-      <div class="assets2" tabindex="0">Операционные активы</div>
+      <div class="assets2" tabindex="0">
+        <!-- Операционные активы -->{{ trans("visualcenter.operactive") }}
+        </div>
     </a>
     <div id="submenu1" class="collapse">
       <a
@@ -36,7 +38,9 @@
             height="25"
             class="companyLogo"
           />
-          <span class="menu-collapsed companyName">АО "ОзенМунайГаз"</span>
+          <span class="menu-collapsed companyName">
+            <!-- АО "ОзенМунайГаз" -->{{ trans("visualcenter.omg") }}
+            </span>
         </div>
       </a>
       <a
@@ -51,7 +55,9 @@
             height="25"
             class="companyLogo"
           />
-          <span class="menu-collapsed companyName">АО "Каражанбасмунай"</span>
+          <span class="menu-collapsed companyName">
+            <!-- АО "Каражанбасмунай" -->{{ trans("visualcenter.kbm") }}
+            </span>
         </div>
       </a>
       <a
@@ -66,7 +72,9 @@
             height="25"
             class="companyLogo"
           />
-          <span class="menu-collapsed companyName">ТОО "КазГерМунай"</span>
+          <span class="menu-collapsed companyName">
+            <!-- ТОО "КазГерМунай" -->{{ trans("visualcenter.kgm") }}
+            </span>
         </div>
       </a>
       <a
@@ -81,7 +89,9 @@
             height="25"
             class="companyLogo"
           />
-          <span class="menu-collapsed companyName">АО "ЭмбаМунайГаз"</span>
+          <span class="menu-collapsed companyName">
+            <!-- АО "ЭмбаМунайГаз" -->{{ trans("visualcenter.emg") }}
+            </span>
         </div>
       </a>
       <a
@@ -96,7 +106,9 @@
             height="25"
             class="companyLogo"
           />
-          <span class="menu-collapsed companyName">АО "Мангистаумунайгаз"</span>
+          <span class="menu-collapsed companyName">
+            <!-- АО "Мангистаумунайгаз" -->{{ trans("visualcenter.mmg") }}
+            </span>
         </div>
       </a>
       <a
@@ -111,7 +123,9 @@
             height="25"
             class="companyLogo"
           />
-          <span class="menu-collapsed companyName">ТОО "Казахтуркмунай"</span>
+          <span class="menu-collapsed companyName">
+            <!-- ТОО "Казахтуркмунай" -->{{ trans("visualcenter.ktm") }}
+            </span>
         </div>
       </a>
       <a
@@ -126,7 +140,9 @@
             height="25"
             class="companyLogo"
           />
-          <span class="menu-collapsed companyName">ТОО "Казахойл Актобе"</span>
+          <span class="menu-collapsed companyName">
+            <!-- ТОО "Казахойл Актобе" -->{{ trans("visualcenter.koa") }}
+            </span>
         </div>
       </a>
       <a
@@ -141,7 +157,9 @@
             height="25"
             class="companyLogo"
           />
-          <span class="menu-collapsed companyName">ПетроКазахстан Инк.</span>
+          <span class="menu-collapsed companyName">
+            <!-- ПетроКазахстан Инк. -->{{ trans("visualcenter.pki") }}
+            </span>
         </div>
       </a>
       <a
@@ -156,14 +174,16 @@
             height="25"
             class="companyLogo"
           />
-          <span class="menu-collapsed companyName">Амангельды Газ</span>
+          <span class="menu-collapsed companyName">
+            <!-- Амангельды Газ -->{{ trans("visualcenter.ag") }}
+            </span>
         </div>
       </a>
     </div>
 
     <a href="#submenu2" data-toggle="collapse" aria-expanded="false"
       ><div class="assets" tabindex="-0">
-        Неоперационные активы
+        <!-- Неоперационные активы -->{{ trans("visualcenter.neoperactive") }}
         <div tabindex="-0" class="button-menu button-menu-position"></div></div
     ></a>
     <div id="submenu2" class="collapse">
@@ -175,7 +195,9 @@
             height="25"
             class="companyLogo"
           />
-          <span class="menu-collapsed companyName">ТОО «Тенгизшевройл»</span>
+          <span class="menu-collapsed companyName">
+            <!-- ТОО «Тенгизшевройл» -->{{ trans("visualcenter.tsho") }}
+            </span>
         </div>
       </a>
       <a class="bg-dark list-group-item list-group-item-action">
@@ -187,7 +209,9 @@
             class="companyLogo"
           />
           <span class="menu-collapsed companyName"
-            >«Карачаганак Петролеум Оперейтинг б.в.»</span
+            >
+            <!-- «Карачаганак Петролеум Оперейтинг б.в.» -->{{ trans("visualcenter.kpo") }}
+            </span
           >
         </div>
       </a>
@@ -200,14 +224,16 @@
             class="companyLogo"
           />
           <span class="menu-collapsed companyName"
-            >«Норт Каспиан Оперейтинг Компани н.в.»</span
+            >
+            <!-- «Норт Каспиан Оперейтинг Компани н.в.» -->{{ trans("visualcenter.nko") }}
+            </span
           >
         </div>
       </a>
     </div>
     <div class="left-price-oil">
       <div class="left-price-oil2">
-        Цена за баррель нефти
+        <!-- Цена за баррель нефти -->{{ trans("visualcenter.barPrice") }}
         <div class="price-border">{{ oilNow }} $</div>
       </div>
 
@@ -262,7 +288,7 @@
 
     <div class="left-price-oil">
       <div class="left-price-oil2">
-        Курс доллара
+        <!-- Курс доллара -->{{ trans("visualcenter.usdKurs") }}
         <div class="price-border">{{ currencyNow.description }} &#8376;</div>
       </div>
       <div
@@ -428,7 +454,7 @@ export default {
 
     getCurrencyNow: function (dates) {
       var datas;
-      let uri = "/ru/getcurrency?fdate=" + dates + "";
+      let uri = this.localeUrl("/getcurrency?fdate=") + dates + "";
       this.axios.get(uri).then((response) => {
         var data = response.data;
         if (data) {
@@ -445,7 +471,7 @@ export default {
     getCurrencyPeriod: function (dates, item2) {
       var dates = dates;
       let uri =
-        "/ru/getcurrencyperiod?dates=" + dates + "&period=" + item2 + " ";
+        this.localeUrl("/getcurrencyperiod?dates=") + dates + "&period=" + item2 + " ";
       this.axios.get(uri).then((response) => {
         var data = response.data;
         if (data) {

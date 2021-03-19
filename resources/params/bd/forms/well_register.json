@@ -1,0 +1,166 @@
+{
+  "table": "bigdata_wells",
+  "tabs": [
+    {
+      "title": "Основное",
+      "blocks": [
+        {
+          "title": "Скважина",
+          "items": [
+            {
+              "code": "org",
+              "type": "dict_tree",
+              "title": "Оргструктура",
+              "validation": "required|exists:tbd.tbdi.org,id",
+              "dict": "orgs",
+              "callbacks": {
+                "filterGeoByDZO": "geo"
+              }
+            },
+            {
+              "code": "geo",
+              "type": "dict_tree",
+              "title": "Геоструктура",
+              "validation": "required|exists:tbd.tbdi.geo,id",
+              "dict": "geos",
+              "callbacks": {
+                "setWellPrefix": "name"
+              }
+            },
+            {
+              "code": "name",
+              "type": "text",
+              "title": "Номер скважины",
+              "validation": "required|max:255",
+              "prefix": ""
+            },
+            {
+              "code": "date_create",
+              "type": "date",
+              "title": "Дата создания проекта",
+              "validation": "required|date"
+            },
+            {
+              "code": "category",
+              "type": "dict",
+              "title": "Категория скважины",
+              "validation": "required|exists:tbd.tbdi.well_category_type,id",
+              "dict": "well_categories"
+            }
+          ]
+        },
+        {
+          "title": "Свойства скважины",
+          "items": [
+            {
+              "code": "altitude",
+              "type": "numeric",
+              "title": "Альтитуда",
+              "validation": "nullable|numeric|min:10|max:100"
+            },
+            {
+              "code": "rotor_table",
+              "type": "numeric",
+              "title": "Превышение стола ротора",
+              "validation": "numeric|min:10|max:100"
+            },
+            {
+              "code": "coord_type",
+              "type": "radio",
+              "title": "Координатная система",
+              "values": [
+                "WGS-84",
+                "Пулково-42"
+              ],
+              "validation": "required"
+            },
+            {
+              "code": "coord_mouth_x",
+              "type": "numeric",
+              "title": "Координаты устья X",
+              "validation": "nullable|numeric"
+            },
+            {
+              "code": "coord_mouth_y",
+              "type": "numeric",
+              "title": "Координаты устья Y",
+              "validation": "nullable|numeric"
+            },
+            {
+              "code": "type",
+              "type": "dict",
+              "title": "Вид скважины",
+              "dict": "well_types",
+              "validation": "required|exists:tbd.tbdi.well_vid,id"
+            },
+            {
+              "code": "coord_bottom_x",
+              "type": "numeric",
+              "title": "Координаты забоя X",
+              "validation": "nullable|numeric"
+            },
+            {
+              "code": "coord_bottom_y",
+              "type": "numeric",
+              "title": "Координаты забоя Y",
+              "validation": "nullable|numeric"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Проект бурения",
+      "blocks": [
+        {
+          "title": "Скважина",
+          "items": [
+            {
+              "code": "date_start_drilling",
+              "type": "date",
+              "title": "Дата начала бурения",
+              "validation": "nullable|date|before_or_equal:today"
+            },
+            {
+              "code": "date_end_drilling",
+              "type": "date",
+              "title": "Дата окончания бурения",
+              "validation": "nullable|date|before_or_equal:today|after:date_start_drilling"
+            },
+            {
+              "code": "company",
+              "type": "dict",
+              "title": "Подрядчик",
+              "dict": "companies",
+              "validation": "nullable|exists:tbd.tbdi.lic_ur"
+            },
+            {
+              "code": "agreement_num",
+              "type": "numeric",
+              "title": "Номер договора",
+              "validation": "required|numeric"
+            },
+            {
+              "code": "agreement_date",
+              "type": "date",
+              "title": "Дата договора",
+              "validation": "required|date"
+            },
+            {
+              "code": "planned_depth",
+              "type": "numeric",
+              "title": "Проектная глубина, м",
+              "validation": "nullable|numeric"
+            },
+            {
+              "code": "avg_gasoil_ratio",
+              "type": "numeric",
+              "title": "Средний газовый фактор",
+              "validation": "nullable|numeric"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,5 +1,5 @@
 .v-select {
-    background: #41488B;
+    background: $main2;
     border-radius: 5px;
     height: 40px;
     min-width: 300px;
@@ -23,8 +23,8 @@
         }
 
         &__dropdown-menu {
-            background: #40467E;
-            border: 0.4px solid #2E50E9;
+            background: $main3;
+            border: 0.4px solid $blue;
             top: 44px;
 
             li {

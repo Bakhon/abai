@@ -28,64 +28,12 @@ class CorrosionController extends CrudController
             'links' => [
                 'list' => route('corrosioncrud.list'),
             ],
-            'title' => 'База данных по скорости коррозии',
+            'title' => trans('monitoring.corrosion.title'),
             'fields' => [
-                'field' => [
-                    'title' => 'Месторождение',
-                    'type' => 'select',
-                    'filter' => [
-                        'values' => \App\Models\Refs\Field::whereHas('corrosion')
-                            ->orderBy('name', 'asc')
-                            ->get()
-                            ->map(
-                                function ($item) {
-                                    return [
-                                        'id' => $item->id,
-                                        'name' => $item->name,
-                                    ];
-                                }
-                            )
-                            ->toArray()
-                    ]
-                ],
-                'ngdu' => [
-                    'title' => 'НГДУ',
-                    'type' => 'select',
-                    'filter' => [
-                        'values' => \App\Models\Refs\Ngdu::whereHas('corrosion')
-                            ->orderBy('name', 'asc')
-                            ->get()
-                            ->map(
-                                function ($item) {
-                                    return [
-                                        'id' => $item->id,
-                                        'name' => $item->name,
-                                    ];
-                                }
-                            )
-                            ->toArray()
-                    ]
-                ],
-                'cdng' => [
-                    'title' => 'ЦДНГ',
-                    'type' => 'select',
-                    'filter' => [
-                        'values' => \App\Models\Refs\Cdng::whereHas('corrosion')
-                            ->orderBy('name', 'asc')
-                            ->get()
-                            ->map(
-                                function ($item) {
-                                    return [
-                                        'id' => $item->id,
-                                        'name' => $item->name,
-                                    ];
-                                }
-                            )
-                            ->toArray()
-                    ]
-                ],
+                
+                
                 'gu' => [
-                    'title' => 'ГУ',
+                    'title' => trans('monitoring.gu'),
                     'type' => 'select',
                     'filter' => [
                         'values' => \App\Models\Refs\Gu::whereHas('corrosion')
@@ -103,47 +51,47 @@ class CorrosionController extends CrudController
                     ]
                 ],
                 'start_date_of_background_corrosion' => [
-                    'title' => 'Дата начала',
+                    'title' => trans('monitoring.corrosion.fields.start_date_of_background_corrosion'),
                     'type' => 'date',
                 ],
                 'final_date_of_background_corrosion' => [
-                    'title' => 'Дата окончания',
+                    'title' => trans('monitoring.corrosion.fields.final_date_of_background_corrosion'),
                     'type' => 'date',
                 ],
                 'background_corrosion_velocity' => [
-                    'title' => 'Фоновая скорость',
+                    'title' => trans('monitoring.corrosion.fields.background_corrosion_velocity'),
                     'type' => 'numeric',
                 ],
                 'start_date_of_corrosion_velocity_with_inhibitor_measure' => [
-                    'title' => 'Дата начало замера скорости коррозии с реагентом',
+                    'title' => trans('monitoring.corrosion.fields.start_date_of_corrosion_velocity_with_inhibitor_measure'),
                     'type' => 'date',
                 ],
                 'final_date_of_corrosion_velocity_with_inhibitor_measure' => [
-                    'title' => 'Дата окончания замера скорости коррозии с реагентом',
+                    'title' => trans('monitoring.corrosion.fields.final_date_of_corrosion_velocity_with_inhibitor_measure'),
                     'type' => 'date',
                 ],
                 'corrosion_velocity_with_inhibitor' => [
-                    'title' => 'Скорость коррозии',
+                    'title' => trans('monitoring.corrosion.fields.corrosion_velocity_with_inhibitor'),
                     'type' => 'numeric',
                 ],
                 'sample_number' => [
-                    'title' => 'Номер образца-свидетеля',
+                    'title' => trans('monitoring.corrosion.fields.sample_number'),
                     'type' => 'numeric',
                 ],
                 'weight_before' => [
-                    'title' => 'Масса до установки, гр',
+                    'title' => trans('monitoring.corrosion.fields.weight_before'),
                     'type' => 'numeric',
                 ],
                 'days' => [
-                    'title' => 'Количество дней экспозиции',
+                    'title' => trans('monitoring.corrosion.fields.days'),
                     'type' => 'numeric',
                 ],
                 'weight_after' => [
-                    'title' => 'Масса после извлечения, гр',
+                    'title' => trans('monitoring.corrosion.fields.weight_after'),
                     'type' => 'numeric',
                 ],
                 'avg_speed' => [
-                    'title' => 'Средняя скорость коррозии, мм/г',
+                    'title' => trans('monitoring.corrosion.fields.avg_speed'),
                     'type' => 'numeric',
                 ]
             ]
@@ -156,7 +104,7 @@ class CorrosionController extends CrudController
             $params['links']['export'] = route('corrosioncrud.export');
         }
 
-        return view('сomplicationMonitoring.corrosion.index', compact('params'));
+        return view('complicationMonitoring.corrosion.index', compact('params'));
     }
 
     public function list(IndexTableRequest $request)
@@ -195,7 +143,7 @@ class CorrosionController extends CrudController
     public function create()
     {
         $validationParams = $this->getValidationParams('corrosioncrud');
-        return view('сomplicationMonitoring.corrosion.create', compact('validationParams'));
+        return view('complicationMonitoring.corrosion.create', compact('validationParams'));
     }
 
     /**
@@ -220,7 +168,7 @@ class CorrosionController extends CrudController
      */
     public function show(Corrosion $corrosioncrud)
     {
-        return view('сomplicationMonitoring.corrosion.show', ['corrosion' => $corrosioncrud]);
+        return view('complicationMonitoring.corrosion.show', ['corrosion' => $corrosioncrud]);
     }
 
     /**
@@ -232,7 +180,7 @@ class CorrosionController extends CrudController
     public function history(Corrosion $corrosion)
     {
         $corrosion->load('history');
-        return view('сomplicationMonitoring.corrosion.history', compact('corrosion'));
+        return view('complicationMonitoring.corrosion.history', compact('corrosion'));
     }
 
     /**
@@ -244,7 +192,7 @@ class CorrosionController extends CrudController
     public function edit(Corrosion $corrosioncrud)
     {
         $validationParams = $this->getValidationParams('corrosioncrud');
-        return view('сomplicationMonitoring.corrosion.edit', [
+        return view('complicationMonitoring.corrosion.edit', [
             'corrosion' => $corrosioncrud,
             'validationParams' => $validationParams
         ]);

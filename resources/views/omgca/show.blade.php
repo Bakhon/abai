@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.monitor')
 
 @section('content')
     <div class="row">
@@ -10,49 +10,26 @@
                 </div>
             @endif
             <div class="container">
-                <h1>Просмотр карточки</h1>
-                <h2>Дата: {{ \Carbon\Carbon::parse($omgca->date)->format('d.m.Y')}}</h2>
+                <h1>{{ trans('monitoring.show_title') }}</h1>
+                <h2>{{ trans('app.year') }}: {{ \Carbon\Carbon::parse($omgca->date)->format('Y')}}</h2>
                 <table class="table table-bordered">
                     <tr>
-                        <th><b>Наименование</b></th>
-                        <th><b>Значение</b></th>
+                        <th><b>{{ trans('app.param_name') }}</b></th>
+                        <th><b>{{ trans('app.param_value') }}</b></th>
                     </tr>
                     <tr>
-                        <td>Месторождение</td>
-                        <td>
-                            @if ($omgca->field === 1)
-                                Узень
-                            @else
-                                Карамандыбас
-                            @endif
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>НГДУ</td>
-                        <td>{{$omgca->ngdu->name}}</td>
-                    </tr>
-                    <tr>
-                        <td>ЦДНГ</td>
-                        <td>{{$omgca->cdng->name}}</td>
-                    </tr>
-                    <tr>
-                        <td>ГУ</td>
+                        <td>{{ trans('monitoring.gu.gu') }}</td>
                         <td>{{$omgca->gu->name}}</td>
                     </tr>
                     <tr>
-                        <td>ЗУ</td>
-                        <td>{{$omgca->zu->name}}</td>
-                    </tr>
-                    <tr>
-                        <td>Скважина</td>
-                        <td>{{$omgca->well->name}}</td>
-                    </tr>
-                    <tr>
-                        <td>Планируемая дозировка, г/м3</td>
+                        <td>{{ trans('monitoring.omgca.fields.plan_dosage') }}</td>
                         <td>{{$omgca->plan_dosage}}</td>
                     </tr>
+                    <tr>
+                        <td>{{ trans('monitoring.omgca.fields.tech_mode') }}</td>
+                        <td>{{$omgca->q_v}}</td>
+                    </tr>
                 </table>
-                {{-- <a class="btn btn-warning" href="{{ route('watermeasurement.edit',$wm->id) }}">{{__('app.edit')}}</a> --}}
                 <a class="btn btn-primary" href="{{ route('omgca.index') }}">{{__('app.back')}}</a>
             </div>
         </div>

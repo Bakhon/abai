@@ -10,154 +10,250 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('/', function () {
-    return redirect('/'. App\Http\Middleware\LocaleMiddleware::$mainLanguage);
-});
+
+use Illuminate\Support\Facades\Cache;
+
+Route::get(
+    '/',
+    function () {
+        return redirect('/' . App\Http\Middleware\LocaleMiddleware::$mainLanguage);
+    }
+);
 
 Route::get("/ecoeco", "ComplicationMonitoring\OilGasController@ecoData");
 
-Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], function() {
-    Route::group(['middleware' => 'auth'], function () {
-        Route::get("/geteconimicdata", "EconomicController@getEconomicData");
-        Route::get("/getcurrency", "DruidController@getCurrency");
-        Route::get("/getcurrencyperiod", "DruidController@getCurrencyPeriod");
-        Route::post("/corrosion", "DruidController@corrosion");
-        Route::get('/', function () {
-            return view('welcome');
-        });
-        Route::get('/druid', 'DruidController@index');
-        Route::get('/oilprice', 'DruidController@getOilPrice');
-        Route::get('/getnkkmg', 'DruidController@getNkKmg');
-        Route::get('/getwelldailyoil', 'DruidController@getWellDailyOil');
-        Route::get('/getnkkmgyear', 'DruidController@getNkKmgYear');
-        Route::get('/economic', 'EconomicController@index')->name('economic');
-        Route::get('/getdzocalcs', 'EconomicController@getDZOcalcs')->name('getdzocalcs');
-        Route::get('/getdzocalcsactualmonth', 'EconomicController@getDZOCalcsActualMonth')->name('getdzocalcsactualmonth');
-        Route::get('/economicpivot', 'EconomicController@economicPivot')->name('economicpivot');
-        Route::get('/oilpivot', 'EconomicController@oilPivot')->name('oilpivot');
-        Route::get('/geteconomicpivotdata', 'EconomicController@getEconomicPivotData')->name('geteconomicpivotdata');
-        Route::get('/getoilpivotdata', 'EconomicController@getOilPivotData')->name('getoilpivotdata');
-        Route::get('/visualcenter', 'DruidController@visualcenter')->name('visualcenter');
-        Route::get('/visualcenter2', 'DruidController@visualcenter2')->name('visualcenter2');
-        Route::get('/visualcenter3', 'DruidController@visualcenter3')->name('visualcenter3');
-        Route::get('/visualcenter3GetData', 'DruidController@visualcenter3GetData');
-        Route::get('/visualcenter4', 'DruidController@visualcenter4')->name('visualcenter4');
-        Route::get('/visualcenter5', 'DruidController@visualcenter5')->name('visualcenter5');
-        Route::get('/visualcenter6', 'DruidController@visualcenter6')->name('visualcenter6');
-        Route::get('/visualcenter7', 'DruidController@visualcenter7')->name('visualcenter7');
-        Route::get('/podborgno', 'DruidController@gno')->name('gno');
-        Route::get('/production', 'DruidController@production')->name('production');
-        Route::get('/gtmscor', 'DruidController@gtmscor')->name('gtmscor');
-        Route::get('/calcgtm', 'DruidController@calcGtm')->name('calcgtm');
-        Route::get('/mfond', 'DruidController@mfond')->name('mfond');
-        Route::get('/map', 'DruidController@map')->name('map');
-        Route::get('/oil', 'DruidController@oil')->name('oil');
-        Route::get('/facilities', 'DruidController@facilities')->name('facilities');
-        Route::get('/liquid', 'DruidController@liquid')->name('liquid');
-        Route::get('/hydraulics', 'DruidController@hydraulics')->name('hydraulics');
-        Route::get('/complications', 'DruidController@complications')->name('complications');
-        Route::get('/tabs', 'DruidController@tabs')->name('tabs');
-        Auth::routes();
-        Route::get('/home', 'HomeController@index')->name('home');
-        Route::get('/maps', 'DruidController@maps')->name('maps');
-        Route::get('/mzdn', 'DruidController@mzdn')->name('mzdn');
-        Route::get('/gtm', 'DruidController@gtm')->name('gtm');
-        Route::get('/dob', 'DruidController@dob')->name('dob');
-        Route::post('/protodata', 'ProtoDBController@getProtoOtchet1')->name('protodata');
-        Route::post('/gtm1', 'DBgtmController@gtm1')->name('gtm1');
-        Route::post('/dob1', 'DBdobController@dob1')->name('dob1');
-        Route::get('/bigdata', 'DruidController@bigdata')->name('bigdata');
-        Route::get('/constructor', 'DruidController@constructor')->name('constructor');
-        Route::get('/tr', 'DruidController@tr')->name('tr');
-        Route::get('/export', 'HomeController@export');
-        Route::get('/fa', 'DruidController@fa')->name('fa');
-        Route::get('/trfa', 'DruidController@trfa')->name('trfa');
-        Route::get('/tr_charts', 'DruidController@tr_charts')->name('tr_charts');
+Route::group(
+    ['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()],
+    function () {
+        Route::group(
+            ['middleware' => 'auth'],
+            function () {
+                Route::get("/geteconimicdata", "EconomicController@getEconomicData");
+
+                Route::post("/corrosion", "DruidController@corrosion");
+                Route::get(
+                    '/',
+                    function () {
+                        return view('welcome');
+                    }
+                )->name('mainpage');
+                Route::get('/druid', 'DruidController@index');
+                Route::get('/oilprice', 'DruidController@getOilPrice');
+                Route::get('/getnkkmg', 'DruidController@getNkKmg');
+                Route::get('/getwelldailyoil', 'DruidController@getWellDailyOil');
+                Route::get('/getnkkmgyear', 'DruidController@getNkKmgYear');
+                Route::get('/economic', 'EconomicController@index')->name('economic');
+                Route::get('/economicpivot', 'EconomicController@economicPivot')->name('economicpivot');
+                Route::get('/oilpivot', 'EconomicController@oilPivot')->name('oilpivot');
+                Route::get('/geteconomicpivotdata', 'EconomicController@getEconomicPivotData')->name(
+                    'geteconomicpivotdata'
+                );
+                Route::get('/getoilpivotdata', 'EconomicController@getOilPivotData')->name('getoilpivotdata');
+
+                // visual center
+                Route::get('/visualcenter', 'VisCenter\VisualCenterController@visualcenter')->name('visualcenter');
+                Route::get('/visualcenter2', 'VisCenter\VisualCenterController@visualcenter2')->name('visualcenter2');
+                Route::get('/visualcenter3', 'VisCenter\VisualCenterController@visualcenter3')->name('visualcenter3');
+                Route::get('/excelform', 'VisCenter\VisualCenterController@excelform')->name('excelform');
+                Route::get('/visualcenter3GetData', 'VisCenter\VisualCenterController@visualcenter3GetData');
+                Route::get('/visualcenter3GetDataOpec', 'VisCenter\VisualCenterController@visualcenter3GetDataOpec');
+                Route::get('/visualcenter3GetDataStaff', 'VisCenter\VisualCenterController@visualcenter3GetDataStaff');
+                Route::get('/visualcenter3GetDataAccident', 'VisCenter\VisualCenterController@visualcenter3GetDataAccident');               
+                Route::get('/visualcenter4', 'VisCenter\VisualCenterController@visualcenter4')->name('visualcenter4');
+                Route::get('/visualcenter5', 'VisCenter\VisualCenterController@visualcenter5')->name('visualcenter5');
+                Route::get('/visualcenter6', 'VisCenter\VisualCenterController@visualcenter6')->name('visualcenter6');
+                Route::get('/visualcenter7', 'VisCenter\VisualCenterController@visualcenter7')->name('visualcenter7');
+                Route::get('/getdzocalcs', 'VisCenter\VisualCenterController@getDZOcalcs')->name('getdzocalcs');
+                Route::get('/getdzocalcsactualmonth', 'VisCenter\VisualCenterController@getDZOCalcsActualMonth')->name(
+                    'getdzocalcsactualmonth'
+                );
+                Route::get("/getcurrency", "VisCenter\VisualCenterController@getCurrency");
+                Route::get("/getcurrencyperiod", "VisCenter\VisualCenterController@getCurrencyPeriod");
+                Route::get("/get-usd-rates", "VisCenter\VisualCenterController@getUsdRates");
+                Route::get("/get-oil-rates", "VisCenter\VisualCenterController@getOilRates");
+                Route::get("/get-dzo-monthly-plans", "VisCenter\VisualCenterController@getDzoMonthlyPlans");
+                Route::get('/get-dzo-yearly-plan', 'VisCenter\VisualCenterController@getDzoYearlyPlan');
+                Route::get('/podborgno', 'gno\GNOController@index')->name('gno');
+                Route::get('/production', 'DruidController@production')->name('production');
+                Route::get('/gtmscor', 'DruidController@gtmscor')->name('gtmscor');
+                Route::get('/calcgtm', 'DruidController@calcGtm')->name('calcgtm');
+                Route::get('/mfond', 'DruidController@mfond')->name('mfond');
+                Route::get('/map', 'DruidController@map')->name('map');
+                Route::get('/oil', 'DruidController@oil')->name('oil');
+                Route::get('/facilities', 'DruidController@facilities')->name('facilities');
+                Route::get('/liquid', 'DruidController@liquid')->name('liquid');
+                Route::get('/hydraulics', 'DruidController@hydraulics')->name('hydraulics');
+                Route::get('/complications', 'DruidController@complications')->name('complications');
+                Route::get('/tabs', 'DruidController@tabs')->name('tabs');
+                Auth::routes();
+                Route::get('/home', 'HomeController@index')->name('home');
+                Route::get('/maps', 'DruidController@maps')->name('maps');
+                Route::get('/mzdn', 'DruidController@mzdn')->name('mzdn');
+                Route::get('/gtm', 'DruidController@gtm')->name('gtm');
+                Route::get('/dob', 'DruidController@dob')->name('dob');
+                Route::post('/protodata', 'ProtoDBController@getProtoOtchet1')->name('protodata');
+                Route::post('/gtm1', 'DBgtmController@gtm1')->name('gtm1');
+                Route::post('/dob1', 'DBdobController@dob1')->name('dob1');
+                Route::get('/constructor', 'DruidController@constructor')->name('constructor');
+
+                //tr
+                Route::get('/tr', 'tr\TrController@tr')->name('tr');
+                Route::get('/export', 'HomeController@export');
+                Route::get('/fa', 'tr\TrController@fa')->name('fa');
+                Route::get('/trfa', 'tr\TrController@trfa')->name('trfa');
+                Route::get('/tr_charts', 'tr\TrController@tr_charts')->name('tr_charts');
+                Route::get('/tech_mode', 'tr\TrController@tech_mode')->name('tech_mode');
+
+                //gno economic
+                Route::resource('ecorefscompaniesids', 'EcoRefsCompaniesIdsController');
+                Route::resource('ecorefsdirection', 'EcoRefsDirectionController');
+                Route::resource('ecorefsrouteid', 'EcoRefsRouteIdController');
+                Route::resource('ecorefsroutetnid', 'EcoRefsRouteTnIdController');
+                Route::resource('ecorefsequipid', 'EcoRefsEquipIdController');
+                Route::resource('ecorefsannualprodvolume', 'EcoRefsAnnualProdVolumeController');
+                Route::resource('ecorefsrenttax', 'EcoRefsRentTaxController');
+                Route::resource('ecorefsavgmarketprice', 'EcoRefsAvgMarketPriceController');
+                Route::resource('ecorefsdiscontcoefbar', 'EcoRefsDiscontCoefBarController');
+                Route::resource('ecorefscost', 'EcoRefsCostController');
+                Route::resource('ecorefsbranchid', 'EcoRefsBrachIdController');
+                Route::resource('ecorefsrentequipelectservcost', 'EcoRefsRentEquipElectServCostController');
+                Route::resource('ecorefsservicetime', 'EcoRefsServiceTimeController');
+                Route::resource('ecorefsndorates', 'EcoRefsNdoRatesController');
+                Route::resource('ecorefselectprsbrigcost', 'EcoRefsPrepElectPrsBrigCostController');
+                Route::resource('ecorefstarifytn', 'EcoRefsTarifyTnController');
+                Route::resource('ecorefsmacro', 'EcoRefsMacroController');
+                Route::post('/getkormass', 'ComplicationMonitoring\OmgNGDUController@getKormass');
+                Route::resource('ecorefsempper', 'Refs\EcoRefsEmpPerController');
+                Route::resource('ecorefsscfa', 'Refs\EcoRefsScFaController');
+                Route::get('ecorefslist', 'Refs\EcoRefsScFaController@refsList')->name('eco_refs_list');
+
+                Route::get('tech_data_list', 'Refs\TechnicalDataController@refsList')->name('tech_data_list');
+                Route::resource('tech_struct_source', 'Refs\TechnicalStructureSourceController');
+                Route::resource('tech_struct_company', 'Refs\TechnicalStructureCompanyController');
+                Route::resource('tech_struct_field', 'Refs\TechnicalStructureFieldController');
+                Route::resource('tech_struct_ngdu', 'Refs\TechnicalStructureNgduController');
+                Route::resource('tech_struct_cdng', 'Refs\TechnicalStructureCdngController');
+                Route::resource('tech_struct_gu', 'Refs\TechnicalStructureGuController');
+                Route::resource('tech_struct_bkns', 'Refs\TechnicalStructureBknsController');
+                Route::resource('tech_data_forecast', 'Refs\TechnicalDataForecastController');
+                Route::resource('tech_data_log', 'Refs\TechnicalDataLogController');
+                Route::get('tech_data_json', 'Refs\TechnicalDataForecastController@techDataJson');
+                Route::get('technical_forecast/upload_excel', 'Refs\TechnicalDataController@uploadExcel')->name('tech_refs_upload');
+                Route::post('technical_forecast/import_excel', 'Refs\TechnicalDataController@importExcel')->name('tech_refs_import');
+
+                Route::get('nnoeco', 'Refs\EcoRefsScFaController@nnoeco');
+                Route::resource('ecorefsexc', 'EcoRefsExcController');
+                Route::resource('antiecoone', 'AntiCrisis\AntiEcoOneController');
+                Route::resource('antiecotwo', 'AntiCrisis\AntiEcoTwoController');
+                Route::resource('ecorefsprocdob', 'EcoRefsProcDobController');
+                Route::resource('ecorefsavgprs', 'EcoRefsAvgPrsController');
+
+                Route::resource('marabkpiid', 'VisCenter\KPI\MarabKpiIdController');
+                Route::resource('abdkpiid', 'VisCenter\KPI\AbdKpiIdController');
+                Route::resource('typeid', 'VisCenter\KPI\TypeIdController');
+                Route::resource('marab1', 'VisCenter\KPI\Marab1Controller');
+                Route::resource('marab2', 'VisCenter\KPI\Marab2Controller');
+                Route::resource('marab345', 'VisCenter\KPI\Marab345Controller');
+                Route::resource('marab6', 'VisCenter\KPI\Marab6Controller');
+                Route::resource('abd12', 'VisCenter\KPI\Abd12Controller');
+                Route::resource('abd35', 'VisCenter\KPI\Abd35Controller');
+                Route::resource('abd46', 'VisCenter\KPI\Abd46Controller');
+                Route::resource('corpkpiid', 'VisCenter\KPI\CorpKpiIdController');
+                Route::resource('corpall', 'VisCenter\KPI\CorpAllController');
+
+                Route::get('kpicalc', 'VisCenter\KPI\Marab2Controller@kpicalculation');
+                Route::get('kpiList', 'VisCenter\KPI\Marab2Controller@kpiList');
+
+                Route::resource('viscenter2', 'VisCenter\InputForm\Vis2FormController');
+                Route::resource('excelform2', 'VisCenter\InputForm\ExcelFormController');
+
+                Route::get('/import_hist', 'VisCenter\ImportForms\DZOdayController@importExcel');
+                Route::post('/import_h', 'VisCenter\ImportForms\DZOdayController@import')->name('import_h');
+
+                Route::get('importdzoyear', 'VisCenter\ImportForms\DZOyearController@importExcel');
+
+                Route::get('/import_econom', 'VisCenter\ImportForms\DZOcalcController@importExcel');
+                Route::post('/import_eco', 'VisCenter\ImportForms\DZOcalcController@import')->name('import_e');
+
+                Route::get('/import_excel', 'VisCenter\ImportForms\DZOdailyController@importExcel');
+                Route::resource('/dzodaily', 'VisCenter\ImportForms\DZOdailyCrudController');
+
+                Route::post('/import', 'VisCenter\ImportForms\DZOdailyController@import')->name('import');
+
+                Route::get('jobs/status', 'JobsController@getStatus')->name('jobs.status');
+
+                Route::get('organizations', 'OrganizationsController@index')->name('organizations');
+
+                Route::get('profile', 'UserController@profile')->name('profile');
+                Route::post('modulerequest','ModuleController@moduleRequest')->name('modulerequest');
+
+                Route::get('anticrisis', 'AntiCrisisController@index')->name('anticrisis');
 
 
-        //gno economic
-        Route::resource('ecorefscompaniesids','EcoRefsCompaniesIdsController');
-        Route::resource('ecorefsdirection','EcoRefsDirectionController');
-        Route::resource('ecorefsrouteid','EcoRefsRouteIdController');
-        Route::resource('ecorefsroutetnid','EcoRefsRouteTnIdController');
-        Route::resource('ecorefsequipid','EcoRefsEquipIdController');
-        Route::resource('ecorefsannualprodvolume','EcoRefsAnnualProdVolumeController');
-        Route::resource('ecorefsrenttax','EcoRefsRentTaxController');
-        Route::resource('ecorefsavgmarketprice','EcoRefsAvgMarketPriceController');
-        Route::resource('ecorefsdiscontcoefbar','EcoRefsDiscontCoefBarController');
-        Route::resource('ecorefsbranchid','EcoRefsBrachIdController');
-        Route::resource('ecorefsrentequipelectservcost','EcoRefsRentEquipElectServCostController');
-        Route::resource('ecorefsservicetime','EcoRefsServiceTimeController');
-        Route::resource('ecorefsndorates','EcoRefsNdoRatesController');
-        Route::resource('ecorefselectprsbrigcost','EcoRefsPrepElectPrsBrigCostController');
-        Route::resource('ecorefstarifytn','EcoRefsTarifyTnController');
-        Route::resource('ecorefsmacro','EcoRefsMacroController');
-        Route::post('/getkormass', 'ComplicationMonitoring\OmgNGDUController@getKormass');
-        Route::resource('ecorefsempper','Refs\EcoRefsEmpPerController');
-        Route::resource('ecorefsscfa','Refs\EcoRefsScFaController');
-        Route::get('ecorefslist','Refs\EcoRefsScFaController@refsList');
-        Route::get('nnoeco','Refs\EcoRefsScFaController@nnoeco');
-        Route::resource('ecorefsexc','EcoRefsExcController');
-        Route::resource('antiecoone','AntiCrisis\AntiEcoOneController');
-        Route::resource('antiecotwo','AntiCrisis\AntiEcoTwoController');
-        Route::resource('ecorefsprocdob','EcoRefsProcDobController');
-        Route::resource('ecorefsavgprs','EcoRefsAvgPrsController');
+                
+                Route::get('/module_economy', 'EconomyKenzhe\MainController@index');
+                Route::get('/module_economy/company/{id}/{date}', 'EconomyKenzhe\MainController@company')->name('company');
+                Route::get('/module_economy/companies', 'EconomyKenzhe\MainController@companies');
+                Route::match(['get','post'],'/import_rep', 'EconomyKenzhe\MainController@importRepTt')->name('import_rep');
 
-        Route::resource('marabkpiid','VizCenter\MarabKpiIdController');
-        Route::resource('abdkpiid','VizCenter\AbdKpiIdController');
-        Route::resource('typeid','VizCenter\TypeIdController');
-        Route::resource('marab1','VizCenter\Marab1Controller');
-        Route::resource('marab2','VizCenter\Marab2Controller');
-        Route::resource('marab345','VizCenter\Marab345Controller');
-        Route::resource('marab6','VizCenter\Marab6Controller');
-        Route::resource('abd12','VizCenter\Abd12Controller');
-        Route::resource('abd35','VizCenter\Abd35Controller');
-        Route::resource('abd46','VizCenter\Abd46Controller');
-        Route::resource('corpkpiid','VizCenter\CorpKpiIdController');
-        Route::resource('corpall','VizCenter\CorpAllController');
+                Route::get('/paegtm', 'GTM\GTMController@index')->name('gtm');
 
-        Route::get('kpicalc','VizCenter\Marab2Controller@kpicalculation');
-        Route::get('kpiList','VizCenter\Marab2Controller@kpiList');
+            }
+        );
+        Auth::routes(
+            [
+                'reset' => false,
+                'verify' => true,
+                'register' => false,
+            ]
+        );
 
-        Route::resource('viscenter2', 'VisCenter2\Vis2FormController');
+        Route::get(
+            '/js/lang.js',
+            function () {
+                $lang = App\Http\Middleware\LocaleMiddleware::getLocale();
+                $strings = Cache::rememberForever(
+                    'lang_' . $lang . '.js',
+                    function () use ($lang) {
+                        $files = glob(resource_path('lang/' . $lang . '/*.php'));
+                        $strings = [];
 
-        Route::get('/import_hist','DZO\DZOdayController@importExcel');
-        Route::post('/import_h', 'DZO\DZOdayController@import')->name('import_h');
+                        foreach ($files as $file) {
+                            $name = basename($file, '.php');
+                            $strings[$name] = require $file;
+                        }
 
-        Route::get('importdzoyear','DZO\DZOyearController@importExcel');
-        Route::get('importdzocalc','DZO\DZOcalcController@importExcel');
+                        return $strings;
+                    }
+                );
 
-        Route::get('/import_excel', 'DZO\DZOdailyController@importExcel');
-
-        Route::post('/import', 'DZO\DZOdailyController@import')->name('import');
-
-        Route::get('jobs/status', 'JobsController@getStatus')->name('jobs.status');
-
-    });
-    Auth::routes([
-        'reset' => false,
-        'verify' => true,
-        'register' => false,
-    ]);
-});
-
-Route::get('setlocale/{lang}', function ($lang) {
-    $referer = Redirect::back()->getTargetUrl();
-    $parse_url = parse_url($referer, PHP_URL_PATH);
-    $segments = explode('/', $parse_url);
-
-    if (in_array($segments[1], App\Http\Middleware\LocaleMiddleware::$languages)) {
-        unset($segments[1]);
+                header('Content-Type: text/javascript');
+                echo('window.current_lang = "' . $lang . '";');
+                echo('window.i18n = ' . json_encode($strings) . ';');
+                exit();
+            }
+        )->name('assets.lang');
     }
+);
 
-    array_splice($segments, 1, 0, $lang);
-    $url = Request::root().implode("/", $segments);
+Route::get(
+    'setlocale/{lang}',
+    function ($lang) {
+        $referer = Redirect::back()->getTargetUrl();
+        $parse_url = parse_url($referer, PHP_URL_PATH);
+        $segments = explode('/', $parse_url);
 
-    if(parse_url($referer, PHP_URL_QUERY)){
-        $url = $url.'?'. parse_url($referer, PHP_URL_QUERY);
+        if (in_array($segments[1], App\Http\Middleware\LocaleMiddleware::$languages)) {
+            unset($segments[1]);
+        }
+
+        array_splice($segments, 1, 0, $lang);
+        $url = Request::root() . implode("/", $segments);
+
+        if (parse_url($referer, PHP_URL_QUERY)) {
+            $url = $url . '?' . parse_url($referer, PHP_URL_QUERY);
+        }
+
+        return redirect($url);
     }
-
-    return redirect($url);
-})->name('setlocale');
-
-
+)->name('setlocale');

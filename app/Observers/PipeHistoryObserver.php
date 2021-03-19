@@ -22,14 +22,14 @@ class PipeHistoryObserver extends EditHistoryObserver
 
         $history = [];
         $fields = [
-            'gu_id' => 'ГУ',
-            'length' => 'Длина',
-            'outside_diameter' => 'Внешний диаметр',
-            'inner_diameter' => 'Внутренний диаметр',
-            'thickness' => 'Толщина стенок',
-            'roughness' => 'Жесткость',
-            'material_id' => 'Материал',
-            'plot' => 'Участок',
+            'gu_id' => 'monitoring.gu',
+            'length' => 'monitoring.pipe.fields.length',
+            'outside_diameter' => 'monitoring.pipe.fields.outside_diameter',
+            'inner_diameter' => 'monitoring.pipe.fields.inner_diameter',
+            'thickness' => 'monitoring.pipe.fields.thickness',
+            'roughness' => 'monitoring.pipe.fields.roughness',
+            'material_id' => 'monitoring.pipe.fields.material',
+            'plot' => 'monitoring.pipe.fields.plot',
         ];
 
         foreach ($fields as $field => $name) {

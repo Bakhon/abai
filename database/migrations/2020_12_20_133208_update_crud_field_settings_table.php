@@ -14,8 +14,17 @@ class UpdateCrudFieldSettingsTable extends Migration
      */
     public function up()
     {
-        DB::statement('ALTER TABLE crud_field_settings CHANGE min_value min_value DECIMAL(8, 5)');
-        DB::statement('ALTER TABLE crud_field_settings CHANGE max_value max_value DECIMAL(8, 5)');
+        Schema::table('crud_field_settings', function (Blueprint $table) {
+            $table->decimal('min_value',8,5)->change();
+        });
+        Schema::table('crud_field_settings', function (Blueprint $table) {
+            $table->decimal('max_value',8,5)->change();
+        });
+    }
+
+    public function __construct()
+    {
+        DB::getDoctrineSchemaManager()->getDatabasePlatform()->registerDoctrineTypeMapping('enum', 'string');
     }
 
     /**

@@ -1,1197 +1,2648 @@
 <template>
-  <div>
-    <div class="left-side">
-      <div class="first-string">
-        <div class="table-responsive">
-          <table class="table table1">
-            <tr>
-              <td>
-                <div class="first-td-header">
-                  <div class="nu">
-                    <div class="number">
-                      {{ new Intl.NumberFormat("ru-RU").format(oil_factDay) }}
-                    </div>
-                    <div class="unit-vc">тонн</div>
-                  </div>
-                  <div class="txt1">Добыча нефти</div>
-                  <br />
-                  <div class="progress">
-                    <br />
-                    <div
-                      class="progress-bar"
-                      role="progressbar"
-                      :style="{
-                        width: oil_factDayProgressBar + '%',
-                      }"
-                      :aria-valuenow="oil_planDay"
-                      aria-valuemin="0"
-                      :aria-valuemax="oil_factDay"
-                    ></div>
-                  </div>
-                  <div class="percent-header" v-if="oil_factDay">
-                    {{
-                      (
-                        100 -
-                        (oil_factDayPercent / oil_factDay - 1) * 100
-                      ).toFixed(2)
-                    }}%
-                  </div>
-                  <div class="plan-header" v-if="oil_planDay">
-                    {{ new Intl.NumberFormat("ru-RU").format(oil_planDay) }}
-                  </div>
-                  <br />
-                  <div
-                    v-if="(oil_factDayPercent / oil_factDay - 1) * 100 > 0"
-                    class="arrow2"
-                  ></div>
-                  <div
-                    v-if="(oil_factDayPercent / oil_factDay - 1) * 100 < 0"
-                    class="arrow3"
-                  ></div>
-
-                  <div class="txt2" v-if="oil_factDay">
-                    {{
-                      new Intl.NumberFormat("ru-RU").format(
-                        Math.abs(
-                          (oil_factDayPercent / oil_factDay - 1) * 100
-                        ).toFixed(2)
-                      )
-                    }}%
-                  </div>
-                  <div class="txt3">vs прошлый период</div>
-                </div>
-                <div class="second-td-header">
-                  <div class="vert-line"></div>
-                </div>
-              </td>
-              <td>
-                <div class="first-td-header">
-                  <div class="nu">
-                    <div class="number">
-                      {{
-                        new Intl.NumberFormat("ru-RU").format(oil_dlv_factDay)
-                      }}
-                    </div>
-                    <div class="unit-vc">тонн</div>
-                  </div>
-                  <div class="txt1">Сдача нефти</div>
-                  <br />
-                  <div class="progress">
-                    <br />
-                    <div
-                      class="progress-bar"
-                      role="progressbar"
-                      :style="{
-                        width: oil_dlv_factDayProgressBar + '%',
-                      }"
-                      :aria-valuenow="oil_dlv_factDay"
-                      aria-valuemin="0"
-                      :aria-valuemax="oil_dlv_planDay"
-                    ></div>
-                  </div>
-
-                  <div class="percent-header" v-if="oil_dlv_factDay">
-                    {{
-                      (
-                        100 -
-                        (oil_dlv_factDayPercent / oil_dlv_factDay - 1) * 100
-                      ).toFixed(2)
-                    }}%
-                  </div>
-                  <div class="plan-header" v-if="oil_dlv_planDay">
-                    {{ new Intl.NumberFormat("ru-RU").format(oil_dlv_planDay) }}
-                  </div>
-                  <br />
-                  <div
-                    v-if="
-                      (oil_dlv_factDayPercent / oil_dlv_factDay - 1) * 100 > 0
-                    "
-                    class="arrow2"
-                  ></div>
-                  <div
-                    v-if="
-                      (oil_dlv_factDayPercent / oil_dlv_factDay - 1) * 100 < 0
-                    "
-                    class="arrow3"
-                  ></div>
-
-                  <div class="txt2" v-if="oil_dlv_factDay">
-                    {{
-                      new Intl.NumberFormat("ru-RU").format(
-                        Math.abs(
-                          (oil_dlv_factDayPercent / oil_dlv_factDay - 1) * 100
-                        ).toFixed(2)
-                      )
-                    }}%
-                  </div>
-                  <div class="txt3">vs прошлый период</div>
-                </div>
-                <div class="second-td-header">
-                  <div class="vert-line"></div>
-                </div>
-              </td>
-              <td>
-                <div class="first-td-header">
-                  <div class="nu">
-                    <div class="number">
-                      {{ new Intl.NumberFormat("ru-RU").format(gas_factDay) }}
-                    </div>
-                    <div class="unit-vc">
-                      <!--млрд.-->
-                      млн. м³
-                    </div>
-                  </div>
-                  <div class="txt1">Добыча газа</div>
-                  <br />
-                  <div class="progress">
-                    <br />
-
-                    <div
-                      class="progress-bar"
-                      role="progressbar"
-                      :style="{
-                        width: gas_factDayProgressBar + '%',
-                      }"
-                      :aria-valuenow="gas_factDay"
-                      aria-valuemin="0"
-                      :aria-valuemax="gas_planDay"
-                    ></div>
-                  </div>
-
-                  <div class="percent-header" v-if="gas_factDay">
-                    {{
-                      (
-                        100 -
-                        (gas_factDayPercent / gas_factDay - 1) * 100
-                      ).toFixed(2)
-                    }}%
-                  </div>
-                  <div class="plan-header" v-if="gas_planDay">
-                    {{ new Intl.NumberFormat("ru-RU").format(gas_planDay) }}
-                  </div>
-
-                  <br />
-                  <div
-                    v-if="(gas_factDayPercent / gas_factDay - 1) * 100 > 0"
-                    class="arrow2"
-                  ></div>
-                  <div
-                    v-if="(gas_factDayPercent / gas_factDay - 1) * 100 < 0"
-                    class="arrow3"
-                  ></div>
-
-                  <div class="txt2" v-if="gas_factDay">
-                    {{
-                      new Intl.NumberFormat("ru-RU").format(
-                        Math.abs(
-                          (gas_factDayPercent / gas_factDay - 1) * 100
-                        ).toFixed(2)
-                      )
-                    }}%
-                  </div>
-                  <div class="txt3">vs прошлый период</div>
-                </div>
-                <div class="second-td-header"></div>
-              </td>
-              <td
-                style="width: 200px; border-left: 10px solid #0f1430;"
-                @click="changeTable('2')"
-                :style="`${tableHover2}`"
-              >
-                <div class="nu">
-                  <div class="number">{{ oilNow }}</div>
-                  <div class="unit-vc">$ / bbl</div>
-                </div>
-                <br />
-                <div class="txt1">Цена на нефть</div>
-                <br />
-                <div class="percent-currency">
-                  <div class="arrow"></div>
-                  <div class="txt2">5,2%</div>
-                  <div class="txt3">vs сентябрь</div>
-                </div>
-              </td>
-              <td
-                style="width: 200px; border-left: 10px solid #0f1430;"
-                @click="changeTable('3')"
-                :style="`${tableHover3}`"
-              >
-                <div class="nu">
-                  <div class="number">{{ currencyNow }}</div>
-                  <div class="unit-vc">kzt / $</div>
-                </div>
-                <br />
-                <div class="txt1">Курс доллара</div>
-                <br />
-                <div class="percent-currency">
-                  <div class="arrow"></div>
-                  <div class="txt2">5,2%</div>
-                  <div class="txt3">vs сентябрь</div>
-                </div>
-              </td>
-            </tr>
-          </table>
-        </div>
-      </div>
-      <div class="first-table" :style="`${Table1}`">
-        <div class="first-string first-string2">
-          <div class="container-fluid">
-            <!--class="table-responsive"-->
-            <table class="table table2">
+  <div class="visualcenter-page-wrapper">
+    <div class="row visualcenter-page-container">
+      <div class="left-side col-lg-10 middle-block-columns">
+        <div class="first-string px-2 middle-block__table">
+          <div class="px-2">
+            <table class="table table1">
               <tr>
-                <td class="dropdown3">
-                  <input type="checkbox" id="menu" />
+                  <div class="row upper-block">
+                  <div class="col-12 col-lg-8">
+                    <div class="row">
+                      <td class="col-4 col-lg-4 d-flex">
+                        <div class="first-td-header">
+                          <div class="row oil-block">
+                            <div class="number col-8 col-md-6 col-lg-8">
+                              {{ formatDigitToThousand(oil_factDay) }}
+                            </div>
+                            <div class="unit-vc col-12 col-md-5 col-lg-4">{{ thousand }}{{ trans('visualcenter.tonWithSpace') }}</div>
+                          </div>
+                          <div class="additional-header txt1 col-6 col-md-12">
+                            {{ trans("visualcenter.getoil") }}
+                          </div>
+                          <br />
+                          <div class="progress">
+                            <br />
+                            <div
+                              class="progress-bar"
+                              role="progressbar"
+                              :style="{
+                                width: oil_factDayProgressBar + '%',
+                              }"
+                              :aria-valuenow="oil_planDay"
+                              aria-valuemin="0"
+                              :aria-valuemax="oil_factDay"
+                            ></div>
+                          </div>
+                          <div class="row">
+                            <div class="percent-header col-5 col-md-6" v-if="oil_factDay">
+                              {{ getDiffProcentLastBigN(oil_factDay, oil_planDay) }}%
+                            </div>
+                            <div class="plan-header col-6" v-if="oil_planDay">
+                              {{ formatDigitToThousand(oil_planDay) }}
+                            </div>
+                            <br />
+                          </div>
+                          <div class="col-12 mt-4">
+                            <div
+                              :class="`${getColor2(
+                                getDiffProcentLastP(oil_factDay, oil_factDayPercent)
+                              )}`"
+                            ></div>
 
-                  <div
-                    class="button1"
-                    :style="`${buttonHover1}`"
-                    @click="
-                      getProduction(
-                        'oil_plan',
-                        'oil_fact',
-                        ' Добыча нефти',
-                        'тн'
-                      )
-                    "
-                  >
-                    <!-- <label for="menu">-->
-                    <div class="icon-all icons1"></div>
-                    <div class="txt5">Добыча нефти</div>
-                    <div class="txt6">тыс. тн</div>
-                    <!--   </label>-->
+                            <div class="txt2-2">
+                              {{
+                                Math.abs(
+                                  getDiffProcentLastP(oil_factDayPercent, oil_factDay)
+                                )
+                              }}%
+                            </div>
+                            <div class="txt3">
+                              vs
+                              <span v-if="oneDate"> {{ lastDate2 }}</span>
+                              <span v-else> {{ lastDate1 }} - {{ lastDate2 }}</span>
+                            </div>
+                          </div>
+                        </div>
+                        <div>
+                          <div class="vert-line"></div>
+                        </div>
+                      </td>
+                      <td class="col-4 col-lg-4 d-flex">
+                        <div class="first-td-header">
+                          <div class="row oil-block">
+                            <div class="number col-8 col-md-7 col-lg-8">
+                              {{ formatDigitToThousand(oil_dlv_factDay) }}
+                            </div>
+                            <div class="unit-vc col-12 col-md-5 col-lg-4">{{ thousand }}{{ trans('visualcenter.tonWithSpace') }}</div>
+                          </div>
+                          <div class="additional-header txt1 col-6 col-md-12">
+                            {{ trans("visualcenter.oildlv") }}
+                          </div>
+                          <br />
+                          <div class="progress">
+                            <br />
+                            <div
+                              class="progress-bar"
+                              role="progressbar"
+                              :style="{
+                                width: oil_dlv_factDayProgressBar + '%',
+                              }"
+                              :aria-valuenow="oil_dlv_factDay"
+                              aria-valuemin="0"
+                              :aria-valuemax="oil_dlv_planDay"
+                            ></div>
+                          </div>
+                          <div class="row">
+                            <div class="percent-header col-5 col-md-6" v-if="oil_dlv_factDay">
+                              {{
+                                getDiffProcentLastBigN(oil_dlv_factDay, oil_dlv_planDay)
+                              }}%
+                            </div>
+                            <div class="plan-header col-6" v-if="oil_dlv_planDay">
+                              {{ formatDigitToThousand(oil_dlv_planDay) }}
+                            </div>
+                          </div>
+                          <br />
+                          <div class="col-12 mt-2">
+                            <div
+                              :class="`${getColor2(
+                                getDiffProcentLastP(
+                                  oil_dlv_factDay,
+                                  oil_dlv_factDayPercent
+                                )
+                              )}`"
+                            ></div>
+
+                            <div class="txt2-2">
+                              {{
+                                Math.abs(
+                                  getDiffProcentLastP(
+                                    oil_dlv_factDayPercent,
+                                    oil_dlv_factDay
+                                  )
+                                )
+                              }}%
+                            </div>
+                            <div class="txt3">
+                              vs
+                              <span v-if="oneDate"> {{ lastDate2 }}</span>
+                              <span v-else> {{ lastDate1 }} - {{ lastDate2 }}</span>
+                            </div>
+                          </div>
+                        </div>
+                        <div>
+                          <div class="vert-line"></div>
+                        </div>
+                      </td>
+                      <td class="col-4 col-sm-4 d-flex">
+                        <div class="first-td-header">
+                          <div class="row oil-block">
+                            <div class="number col-8 col-md-7 col-lg-8">
+                              {{ formatDigitToThousand(gas_factDay) }}
+                            </div>
+                            <div class="unit-vc col-12 col-md-5 col-lg-4">
+                              {{ thousand }}{{ trans('visualcenter.meterCubicWithSpace') }}
+                            </div>
+                          </div>
+                          <div class="additional-header txt1 col-6 col-md-12">
+                            {{ trans("visualcenter.getgaz") }}
+                          </div>
+                          <br />
+                          <div class="progress">
+                            <br />
+
+                            <div
+                              class="progress-bar"
+                              role="progressbar"
+                              :style="{
+                                width: gas_factDayProgressBar + '%',
+                              }"
+                              :aria-valuenow="gas_factDay"
+                              aria-valuemin="0"
+                              :aria-valuemax="gas_planDay"
+                            ></div>
+                          </div>
+                          <div class="row">
+                            <div class="percent-header col-5 col-md-6" v-if="gas_factDay">
+                              {{ getDiffProcentLastBigN(gas_factDay, gas_planDay) }}%
+                            </div>
+                            <div class="plan-header col-6" v-if="gas_planDay">
+                              {{ formatDigitToThousand(gas_planDay) }}
+                            </div>
+                          </div>
+                          <br />
+                          <div class="col-12 mt-2">
+                            <div
+                              :class="`${getColor2(
+                                getDiffProcentLastP(gas_factDay, gas_factDayPercent)
+                              )}`"
+                            ></div>
+
+                            <div class="txt2-2">
+                              {{
+                                Math.abs(
+                                  getDiffProcentLastP(gas_factDayPercent, gas_factDay)
+                                )
+                              }}%
+                            </div>
+                            <div class="txt3">
+                              vs
+                              <span v-if="oneDate"> {{ lastDate2 }}</span>
+                              <span v-else> {{ lastDate1 }} - {{ lastDate2 }}</span>
+                            </div>
+                          </div>
+                        </div>
+                      <div></div>
+                    </td>
+                    </div>
                   </div>
-
-                  <!-- <div class="dropdown">-->
-
-                  <ul>
-                    <li class="center-li" @click="changeMenu('101')">
-                      <a>С учётом доли участия КМГ</a>
-
-                      <div
-                        class="square-small2"
-                        :style="`${changeMenuButton1}`"
+                  <div class="col-12 col-lg-4">
+                    <div class="row rates-block__row">
+                      <td
+                        class="vc-select-table col-6 col-lg-6 rates-block"
+                        @click="changeTable('2')"
+                        :style="`${tableHover2}`"
                       >
-                        &#10003;
+                        <div>
+                          <div class="number d-flex">
+                            <div class="col-10">
+                              {{ prices['oil']['current'] }}
+                            </div>
+                            <div class="col-2 mt-1">
+                              <img src="/img/icons/link.svg" />
+                            </div>
+                          </div>
+                          <div class="unit-vc col-12">$ / bbl</div>
+                        </div>
+                        <div class="txt1 col-12">
+                          {{trans("visualcenter.oilPrice")}}
+                        </div>
+                        <br />
+                        <div class="percent-currency col-12">
+                          <div
+                            class="arrow"
+                            v-if="dailyOilPriceChange === 'UP'"
+                          ></div>
+                          <div
+                            class="arrow2"
+                            v-if="dailyOilPriceChange === 'DOWN'"
+                          ></div>
+                          <div class="txt2-2">
+                            {{ Math.abs(getDiffProcentLastP(prices['oil']['previous'], prices['oil']['current'])) }} %
+                          </div>
+                          <div class="txt3">
+                            {{ trans("visualcenter.vsSeparator") }}
+                            {{ new Date(prices['oil']['previousFetchDate']).toLocaleDateString() }}
+                          </div>
+                        </div>
+                      </td>
+                      <td
+                      class="vc-select-table col-6 col-lg-6 rates-block"
+                      @click="changeTable('3')"
+                      :style="`${tableHover3}`"
+                    >
+                      <div>
+                        <div class="number d-flex">
+                          <div class="col-9">
+                            {{ currencyNow }}
+                          </div>
+                          <div class="col-2 mt-1">
+                            <img src="/img/icons/link.svg" />
+                          </div>
+                        </div>
+                        <div class="unit-vc col-12">kzt / $</div>
                       </div>
-                    </li>
-                  </ul>
-                </td>
-                <td class="dropdown3">
-                  <div
-                    class="button1"
-                    :style="`${buttonHover2}`"
-                    @click="
-                      getProduction(
-                        'oil_dlv_plan',
-                        'oil_dlv_fact',
-                        'Сдача нефти',
-                        'тн'
-                      )
-                    "
-                  >
-                    <div class="icon-all icons2"></div>
-                    <div class="txt5">Сдача нефти</div>
-                    <div class="txt6">тыс. тонн</div>
-                  </div>
-
-                  <ul>
-                    <li class="center-li" @click="changeMenu('102')">
-                      <a>Сдача нефти по узлам учёта</a>
-                      <div
-                        class="square-small2"
-                        :style="`${changeMenuButton2}`"
-                      >
-                        &#10003;
+                      <div class="txt1 col-12">
+                        {{ trans("visualcenter.usdKurs") }}
                       </div>
-                    </li>
-
-                    <li class="center-li" @click="changeMenu('103')">
-                      <a>Товарный остаток нефти</a>
-                      <div
-                        class="square-small2"
-                        :style="`${changeMenuButton3}`"
-                      >
-                        &#10003;
+                      <br />
+                      <div class="percent-currency col-12">
+                        <div
+                          class="arrow"
+                          v-if="dailyCurrencyChangeIndexUsd === 'UP'"
+                        ></div>
+                        <div
+                          class="arrow2"
+                          v-if="dailyCurrencyChangeIndexUsd === 'DOWN'"
+                        ></div>
+                        <div class="txt2-2">{{ dailyCurrencyChangeUsd }} {{trans("visualcenter.dzoPercent")}}</div>
+                        <div class="txt3">
+                          {{ trans("visualcenter.vsSeparator") }}
+                          {{ new Date(prices['usd']['previousFetchDate']).toLocaleDateString() }}
+                        </div>
                       </div>
-                    </li>
-                  </ul>
-                </td>
-                <td class="dropdown3">
-                  <div
-                    class="button1"
-                    :style="`${buttonHover3}`"
-                    @click="
-                      getProduction(
-                        'gas_plan',
-                        'gas_fact',
-                        'Добыча газа',
-                        'тыс м³'
-                      )
-                    "
-                  >
-                    <div class="icon-all icons3"></div>
-                    <div class="txt5">Добыча газа</div>
-                    <div class="txt6">млрд. м³</div>
+                    </td>
+                    </div>
                   </div>
-                  <ul>
-                    <li class="center-li">
-                      <a href> Сдача природного газа</a>
-                    </li>
-                    <li class="center-li">
-                      <a href>Расход природного газа на собственные нужды </a>
-                    </li>
-                    <li class="center-li">
-                      <a href>Переработка природного газа</a>
-                    </li>
-                    <li class="center-li"><a href>Сдача попутного газа </a></li>
-                    <li class="center-li">
-                      <a href>Расход попутного газа на собственные нужды </a>
-                    </li>
-                    <li class="center-li">
-                      <a href> Переработка попутного газа </a>
-                    </li>
-                  </ul>
-                </td>
-                <td class="dropdown3">
-                  <div
-                    class="button1"
-                    :style="`${buttonHover5}`"
-                    @click="
-                      getProduction(
-                        'gk_plan',
-                        'gk_fact',
-                        'Добыча конденсата',
-                        'тн'
-                      )
-                    "
-                  >
-                    <div class="icon-all icons4"></div>
-                    <div class="txt5">Добыча конденсата</div>
-                    <div class="txt6">тыс. тонн</div>
-                  </div>
-                  <ul>
-                    <li class="center-li">
-                      <a href>С учётом доли участия КМГ</a>
-                    </li>
-                  </ul>
-                </td>
-                <td class="dropdown3">
-                  <div
-                    class="button1"
-                    :style="`${buttonHover6}`"
-                    @click="
-                      getProduction(
-                        'inj_plan',
-                        'inj_fact',
-                        'Объём закачки',
-                        'м³'
-                      )
-                    "
-                  >
-                    <div class="icon-all icons5"></div>
-                    <div class="txt5">Объём закачки воды</div>
-                    <div class="txt6">тыс. м³</div>
-                  </div>
-                  <ul>
-                    <li class="center-li"><a href> Закачка морской воды</a></li>
-                    <li class="center-li"><a href>Закачка сточной воды</a></li>
-                    <li class="center-li"><a href>Закачка альбсен. воды</a></li>
-                  </ul>
-                </td>
+                </div>
               </tr>
             </table>
           </div>
-
-          <div class="container-fluid">
-            <table class="table table2">
-              <tr>
-                <td>
-                  <div
-                    class="button2"
-                    :style="`${buttonHover7}`"
-                    @click="changeMenu2(1)"
-                  >
-                    Суточная
+        </div>
+        <div class="first-table big-area" :style="`${Table1}`">
+          <div class="first-string first-string2">
+            <div class="row px-4 mt-3 middle-block__list-x-scroll">
+              <div class="col-12 col-lg dropdown dropdown4 font-weight pr-1">
+                <div :class="[`${oilProductionButton}`, 'button1']">
+                  <div class="button1-vc-inner">
+                    <div class="icon-all icons1"></div>
+                    <div
+                            class="txt5"
+                            @click="switchCategory(
+                                    'oil_plan',
+                                    'oil_fact',
+                                    trans('visualcenter.tonWithSpace'),
+                                    trans('visualcenter.getoil'))"
+                    >
+                      <!-- Добыча нефти -->{{ trans("visualcenter.getoil") }}
+                    </div>
                   </div>
-                </td>
-                <td>
-                  <div
-                    class="button2"
-                    :style="`${buttonHover8}`"
-                    @click="changeMenu2(2)"
-                  >
-                    С начала месяца
-                  </div>
-                </td>
-                <td>
-                  <div
-                    class="button2"
-                    :style="`${buttonHover9}`"
-                    @click="changeMenu2(3)"
-                  >
-                    С начала года
-                  </div>
-                </td>
-                <td class="dropdown3">
-                  <div
-                    class="button2"
-                    :style="`${buttonHover10}`"
-                    @click="changeMenu2(4)"
-                  >
-                    Календарь
-                  </div>
-                  <ul class="center-menu2">
-                    <li class="center-li">
-                      <!--<div
-                        class="calendar-tab"
-                        v-for="(menuDMY, index) in menuDMY()"
-                        @click="selectedDMY = menuDMY.id"
-                        :style="{
-                          'background-color': menuDMY.current,
-                        }"
+                  <button
+                    type="button"
+                    class="btn btn-primary dropdown-toggle position-button-vc"
+                    data-toggle="dropdown"
+                  ></button>
+                  <div>
+                    <ul
+                      class="dropdown-menu-vc dropdown-menu dropdown-menu-right"
+                    >
+                      <li
+                              class="center-li row px-4"
+                              @click="switchCategory(
+                                      'oil_plan',
+                          'oil_fact',
+                                      trans('visualcenter.tonWithSpace'),
+                                      trans('visualcenter.getoil'),
+                                      'oilProductionButton',
+                                      'kmgParticipation')"
                       >
-                     {{ menuDMY.DMY }}
-                      </div>-->
+                        <div
+                          class="col-1 mt-2"
+                          v-html="`${getMainMenuButtonFlag('oilProductionButton','kmgParticipation')}`"
+                        ></div>
+                        <a class="col-9 px-2">
+                          {{trans("visualcenter.dolyaUchast")}}
+                        </a>
+                      </li>
+                      <li
+                              class="center-li row px-4"
+                              @click="switchCategory(
+                                      'oil_opek_plan',
+                                      'oil_fact',
+                                      trans('visualcenter.tonWithSpace'),
+                                      trans('visualcenter.getoil'),
+                                      'oilProductionButton',
+                                      'opecRestriction')"
+                      >
+                      <div
+                              class="col-1 mt-2"
+                              v-html="`${getMainMenuButtonFlag('oilProductionButton','opecRestriction')}`"
+                      ></div>
+                      <a class="col-9 px-2">
+                        {{trans("visualcenter.opek")}}
+                      </a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12 col-lg dropdown dropdown4 font-weight px-1">
+                <div :class="[`${oilDeliveryButton}`, 'button1']">
+                  <div
+                    class="button1-vc-inner"
+                    @click="switchCategory(
+                            'oil_dlv_plan',
+                            'oil_dlv_fact',
+                            trans('visualcenter.tonWithSpace'),
+                            trans('visualcenter.oildlv'))"
+                  >
+                    <div class="icon-all icons2"></div>
+                    <div class="txt5">
+                      <!-- Сдача нефти  -->{{ trans("visualcenter.oildlv") }}
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    class="btn btn-primary dropdown-toggle position-button-vc"
+                    data-toggle="dropdown"
+                  ></button>
+
+                  <ul class="dropdown-menu-vc dropdown-menu dropdown-menu-right">
+                    <li
+                            class="center-li row px-4"
+                            @click="switchMainMenu('oilDeliveryButton','kmgParticipation')"
+                    >
+                      <div
+                        class="col-1 mt-2"
+                        v-html="`${getMainMenuButtonFlag('oilDeliveryButton','kmgParticipation')}`"
+                      ></div>
+
+                      <a
+                        class="col-9 px-2"
+                        @click="
+                          updateProductionData(
+                            'oil_dlv_plan',
+                            'oil_dlv_fact',
+                            trans('visualcenter.dlvoildynamic'),
+                            ' тонн',
+                            trans('visualcenter.dolyaUchast')
+                          )
+                        "
+                      >
+                        <!-- С учётом доли участия КМГ -->{{
+                          trans("visualcenter.dolyaUchast")
+                        }}
+                      </a>
+                    </li>
+                    <li
+                            class="center-li row px-4"
+                            @click="switchMainMenu('oilDeliveryButton','oilResidue')"
+                    >
+                      <div
+                        class="col-1 mt-2"
+                        v-html="`${getMainMenuButtonFlag('oilDeliveryButton','oilResidue')}`"
+                      ></div>
+                      <a
+                        class="col-9 px-2"
+                        @click="
+                          updateProductionData(
+                            'tovarnyi_ostatok_nefti_prev_day',
+                            'tovarnyi_ostatok_nefti_today',
+                            `${oilChartHeadName}`,
+                            ' тонн',
+                            trans('visualcenter.ostatokNefti')
+                          )
+                        "
+                      >
+                        <!-- Товарный остаток нефти -->{{
+                          trans("visualcenter.ostatokNefti")
+                        }}
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div class="col-12 col-lg dropdown dropdown4 font-weight px-1">
+                <div
+                        :class="[`${gasProductionButton}`, 'button1']"
+                >
+                  <div
+                    class="button1-vc-inner"
+                    @click="switchCategory(
+                            'gas_plan',
+                            'gas_fact',
+                            trans('visualcenter.meterCubicWithSpace'),
+                            trans('visualcenter.getgaz'))"
+                  >
+                    <div class="icon-all icons3"></div>
+                    <div class="txt5">
+                      <!-- Добыча газа -->{{ trans("visualcenter.getgaz") }}
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    class="btn btn-primary dropdown-toggle position-button-vc"
+                    data-toggle="dropdown"
+                  ></button>
+                  <ul class="dropdown-menu-vc dropdown-menu dropdown-menu-right">
+                    <li
+                            class="center-li row px-4"
+                            @click="switchMainMenu('gasProductionButton','deliveryNaturalGas')"
+                    >
+                      <div
+                        class="col-1 mt-2"
+                        v-html="`${getMainMenuButtonFlag('gasProductionButton','deliveryNaturalGas')}`"
+                      ></div>
+                      <a
+                        class="col-9 px-2"
+                        @click="
+                          updateProductionData(
+                            'sdacha_gaza_prirod_plan',
+                            'sdacha_gaza_prirod_fact',
+                            trans('visualcenter.dlvPrirodGasldynamic'),
+                            ' м³',
+                            trans('visualcenter.prirodGazdlv')
+                          )
+                        "
+                      >
+                        <!-- Сдача природного газа -->{{
+                          trans("visualcenter.prirodGazdlv")
+                        }}
+                      </a>
+                    </li>
+
+                    <li
+                            class="center-li row px-4"
+                            @click="switchMainMenu('gasProductionButton','gasConsumptionForNeeds')"
+                    >
+                      <div
+                        class="col-1 mt-2"
+                        v-html="`${getMainMenuButtonFlag('gasProductionButton','gasConsumptionForNeeds')}`"
+                      ></div>
+                      <a
+                        class="col-9 px-2"
+                        @click="
+                          updateProductionData(
+                            'raskhod_prirod_plan',
+                            'raskhod_prirod_fact',
+                            trans('visualcenter.raskhodprirodGazDynamic'),
+                            ' м³',
+                            trans('visualcenter.raskhodprirodGaz')
+                          )
+                        "
+                      >
+                        <!-- Расход природного газа на собственные нужды -->{{
+                          trans("visualcenter.raskhodprirodGaz")
+                        }}
+                      </a>
+                    </li>
+                    <li
+                            class="center-li row px-4"
+                            @click="switchMainMenu('gasProductionButton','deliveryAssociatedGas')"
+                    >
+                      <div
+                        class="col-1 mt-2"
+                        v-html="`${getMainMenuButtonFlag('gasProductionButton','deliveryAssociatedGas')}`"
+                      ></div>
+                      <a
+                        class="col-9 px-2"
+                        @click="
+                          updateProductionData(
+                            'sdacha_gaza_poput_plan',
+                            'sdacha_gaza_poput_fact',
+                            trans('visualcenter.poputGazdlvDynamic'),
+                            ' тонн',
+                            trans('visualcenter.poputGazdlv')
+                          )
+                        "
+                      >
+                        <!-- Сдача попутного газа -->{{
+                          trans("visualcenter.poputGazdlv")
+                        }}
+                      </a>
+                    </li>
+                    <li
+                            class="center-li row px-4"
+                            @click="switchMainMenu('gasProductionButton','associatedGasConsumptionForNeeds')"
+                    >
+                      <div
+                        class="col-1 mt-2"
+                        v-html="`${getMainMenuButtonFlag('gasProductionButton','associatedGasConsumptionForNeeds')}`"
+                      ></div>
+                      <a
+                        class="col-9 px-2"
+                        @click="
+                          updateProductionData(
+                            'raskhod_poput_plan',
+                            'raskhod_poput_fact',
+                            trans('visualcenter.raskhodpoputGazDynamic'),
+                            ' м³',
+                            trans('visualcenter.raskhodpoputGaz')
+                          )
+                        "
+                      >
+                        <!-- Расход попутного газа на собственные нужды -->{{
+                          trans("visualcenter.raskhodpoputGaz")
+                        }}
+                      </a>
+                    </li>
+                    <li
+                            class="center-li row px-4"
+                            @click="switchMainMenu('gasProductionButton','associatedGasProcessing')"
+                    >
+                      <div
+                            class="col-1 mt-2"
+                            v-html="`${getMainMenuButtonFlag('gasProductionButton','associatedGasProcessing')}`"
+                      ></div>
+                      <a
+                        class="col-9 px-2"
+                        @click="
+                          updateProductionData(
+                            'pererabotka_gaza_poput_plan',
+                            'pererabotka_gaza_poput_fact',
+                            trans('visualcenter.pererabotkapoputGazDynamic'),
+                            ' м³',
+                            trans('visualcenter.pererabotkapoputGaz')
+                          )
+                        "
+                      >
+                        <!-- Переработка попутного газа -->{{
+                          trans("visualcenter.pererabotkapoputGaz")
+                        }}
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div class="col-12 col-lg dropdown dropdown4 font-weight px-1">
+                <div :class="[`${condensateProductionButton}`, 'button1']">
+                  <div
+                    class="button1-vc-inner"
+                    @click="switchCategory(
+                            'gk_plan',
+                            'gk_fact',
+                            trans('visualcenter.tonWithSpace'),
+                            trans('visualcenter.getgk'))"
+                  >
+                    <div class="icon-all icons4"></div>
+                    <div class="txt5">
+                      {{ trans("visualcenter.getgk") }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12 col-lg dropdown dropdown4 font-weight pl-1">
+                <div
+                        :class="[`${waterInjectionButton}`, 'button1']"
+                >
+                  <div
+                    class="button1-vc-inner"
+                    @click="switchCategory(
+                            'liq_plan',
+                            'liq_fact',
+                            trans('visualcenter.meterCubicWithSpace'),
+                            trans('visualcenter.liq'))"
+                  >
+                    <div class="icon-all icons5"></div>
+                    <div class="txt5">
+                      <!-- Закачка воды -->{{ trans("visualcenter.liq") }}
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    class="btn btn-primary dropdown-toggle position-button-vc"
+                    data-toggle="dropdown"
+                  ></button>
+                  <ul class="dropdown-menu-vc dropdown-menu dropdown-menu-right">
+                    <li
+                            class="center-li row px-4"
+                            @click="switchMainMenu('waterInjectionButton','seaWaterInjection')"
+                    >
+                      <div
+                        class="col-1 mt-2"
+                        v-html="`${getMainMenuButtonFlag('waterInjectionButton','seaWaterInjection')}`"
+                      ></div>
+                      <a
+                        class="col-9 px-2"
+                        @click="
+                          updateProductionData(
+                            'ppd_zakachka_morskoi_vody_plan',
+                            'ppd_zakachka_morskoi_vody_fact',
+                            trans('visualcenter.liqOceanDynamic'),
+                            ' м³',
+                            trans('visualcenter.liqOcean')
+                          )
+                        "
+                      >
+                        <!-- Закачка морской воды -->{{
+                          trans("visualcenter.liqOcean")
+                        }}
+                      </a>
+                    </li>
+
+                    <li
+                            class="center-li row px-4"
+                            @click="switchMainMenu('waterInjectionButton','wasteWaterInjection')"
+                    >
+                      <div
+                        class="col-1 mt-2"
+                        v-html="`${getMainMenuButtonFlag('waterInjectionButton','wasteWaterInjection')}`"
+                      ></div>
+                      <a
+                        class="col-9 px-2"
+                        @click="
+                          updateProductionData(
+                            'ppd_zakachka_stochnoi_vody_plan',
+                            'ppd_zakachka_stochnoi_vody_fact',
+                            trans('visualcenter.liqStochnayaDynamic'),
+                            ' м³',
+                            trans('visualcenter.liqStochnaya')
+                          )
+                        "
+                      >
+                        <!-- Закачка сточной воды -->{{
+                          trans("visualcenter.liqStochnaya")
+                        }}
+                      </a>
+                    </li>
+
+                    <li
+                            class="center-li row px-4"
+                            @click="switchMainMenu('waterInjectionButton','albsenWaterInjection')"
+                    >
+                      <div
+                        class="col-1 mt-2"
+                        v-html="`${getMainMenuButtonFlag('waterInjectionButton','albsenWaterInjection')}`"
+                      ></div>
+                      <a
+                        class="col-9 px-2"
+                        @click="
+                          updateProductionData(
+                            'ppd_zakachka_albsen_vody_plan',
+                            'ppd_zakachka_albsen_vody_fact',
+                            trans('visualcenter.liqAlbsenDynamic'),
+                            ' м³',
+                            trans('visualcenter.liqAlbsen')
+                          )
+                        "
+                      >
+                        {{trans("visualcenter.liqAlbsen")}}
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="row px-4 mt-3 middle-block__list-x-scroll">
+              <div class="col-8 col-lg dropdown pr-1">
+                <div class="button2 dzocompanylist__button">
+                  <div class="button2 dzocompanylist__button">
+                    {{ trans("visualcenter.dzoAllCompany") }}
+                    <button
+                            type="button"
+                            class="btn btn-primary dropdown-toggle position-button-vc dzocompanies__button_position"
+                            data-toggle="dropdown"
+                    ></button>
+                    <div class="dzo-company-list">
+                      <ul class="dropdown-menu-vc dropdown-menu dropdown-menu-right">
+                        <li class="px-4">
+                          <div>
+                            <input
+                                    :disabled="dzoCompaniesAssets['isAllAssets']"
+                                    :checked="dzoCompaniesAssets['isAllAssets']"
+                                    type="checkbox"
+                                    @click="`${selectDzoCompanies()}`"
+                            ></input>
+                            {{trans("visualcenter.dzoAllCompany")}}
+                            <div class="dzocompanies-dropdown__divider"></div>
+                          </div>
+                        </li>
+                        <li class="px-4">
+                          <div>
+                            <input
+                                    type="checkbox"
+                                    :checked="dzoCompaniesAssets['isOperating']"
+                                    @click="`${changeAssets('isOperating','type')}`"
+                            ></input>
+                            {{trans("visualcenter.isOperating")}}
+                          </div>
+                        </li>
+                        <li class="px-4">
+                          <div>
+                            <input
+                                    type="checkbox"
+                                    :checked="dzoCompaniesAssets['isNonOperating']"
+                                    @click="`${changeAssets('isNonOperating','type')}`"
+                            ></input>
+                            {{trans("visualcenter.isNonOperating")}}
+                            <div class="dzocompanies-dropdown__divider"></div>
+                          </div>
+                        </li>
+                        <li
+                                class="px-4"
+                                v-for="(region,index) of Object.keys(dzoRegionsMapping)"
+                        >
+                          <div>
+                            <input
+                                    type="checkbox"
+                                    :checked="dzoRegionsMapping[region].isActive"
+                                    @click="`${changeAssets('isRegion','region',region)}`"
+                            ></input>
+                            {{dzoRegionsMapping[region].translationName}}
+                            <div
+                                    class="dzocompanies-dropdown__divider"
+                                    v-if="(Object.keys(dzoRegionsMapping).length - 1) === index"
+                            ></div>
+                          </div>
+                        </li>
+                        <li
+                                v-for="(company) in dzoCompanies"
+                                class="px-4"
+                        >
+                          <div>
+                            <input
+                                    type="checkbox"
+                                    :checked="company.selected"
+                                    @change="`${selectDzoCompany(company.ticker)}`"
+                            ></input>
+                            {{trans(company.companyName)}}
+                          </div>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-8 col-lg px-1">
+                <div
+                        :class="[`${buttonDailyTab}`,'button2']"
+                        @click="changeMenu2(1)"
+                >
+                  {{ trans("visualcenter.daily") }}
+                </div>
+              </div>
+              <div class="col-8 col-lg px-1">
+                <div
+                        :class="[`${buttonMonthlyTab}`,'button2']"
+                        @click="changeMenu2(2)"
+                >
+                  {{ trans("visualcenter.monthBegin") }}
+                </div>
+              </div>
+              <div class="col-8 col-lg px-1">
+                <div
+                        :class="[`${buttonYearlyTab}`,'button2']"
+                        @click="changeMenu2(3)"
+                >
+                  {{ trans("visualcenter.yearBegin") }}
+                </div>
+              </div>
+              <div class="col-8 col-lg pl-1">
+                <div class="dropdown3">
+                  <div
+                          :class="[`${buttonPeriodTab}`,'button2']"
+                          @click="changeMenu2(4)"
+                  >
+                    <span v-if="oneDate">
+                      <!-- Дата  -->{{ trans("visualcenter.date") }} [{{
+                        timeSelect
+                      }}]</span
+                    >
+                    <span v-else>
+                      <!-- Период  -->{{ trans("visualcenter.period") }} [{{
+                        timeSelect
+                      }}
+                      - {{ timeSelectOld }}]</span
+                    >
+                  </div>
+                  <ul class="center-menu2 right-indent">
+                    <li class="center-li">
                       <br /><br />
 
                       <div class="month-day">
-                        <div class="calendar-day">
+                        <div class="">
                           <date-picker
-                            v-if="selectedDMY == 0"
+                            v-if="selectedPeriod === 0"
                             mode="range"
                             v-model="range"
                             is-range
                             class="m-auto"
                             :model-config="modelConfig"
+                            @dayclick="dayClicked"
                             @input="changeDate"
                           />
-                          <!--<div
-                            class="week"
-                            v-for="(month, index) in getMonths()"
-                            :key="index.id"
-                            :style="{
-                              'background-color': month.current,
-                            }"
-                            @click="selectedMonth = month.index"
-                            v-on:click="displaynumbers"
-                          >
-                            {{ month.index }}
-                          </div>
-
-                          <div
-                            class="week"
-                            v-for="(year, index) in getYears()"
-                            :key="year.id"
-                            :style="{
-                              'background-color': year.current,
-                            }"
-                            @click="selectedYear = year.index"
-                            v-on:click="displaynumbers"
-                          >
-                            {{ year.index }}
-                          </div>-->
                         </div>
                       </div>
                     </li>
                   </ul>
-                </td>
-              </tr>
+                </div>
+              </div>
+            </div>
 
-              <tr>
-                <td>
-                  <div
-                    class="assets4"
-                    :style="`${buttonHover11}`"
-                    @click="changeAssets('b11')"
-                  >
-                    Операционные активы
-                  </div>
-                </td>
+            <div class="row mh-60 mt-3 px-3">
+              <div
+                      class="col-sm-7 vis-table"
+                      :class="scroll">
+                <table
+                        v-if="bigTable.length"
+                        :class="buttonDailyTab ? 'table4 w-100' : 'table4 w-100 mh-30'"
+                >
+                  <thead>
+                    <tr>
+                      <th>{{ trans("visualcenter.dzo") }}</th>
+                      <th v-if="buttonMonthlyTab" >
+                        {{ trans("visualcenter.dzoMonthlyPlan") }}
+                        <div v-if="currentDzoList !== 'daily'">
+                          {{ trans("visualcenter.dzoThousandTon") }}
+                        </div>
+                        <div v-if="currentDzoList === 'daily'">
+                          {{ trans("visualcenter.chemistryMetricTon") }}
+                        </div>
+                        <div v-if="isOpecFilterActive">
+                          {{ trans("visualcenter.dzoOpec") }}
+                        </div>
+                      </th>
+                      <th v-if="buttonYearlyTab">
+                        {{ trans("visualcenter.dzoYearlyPlan") }}
+                        <div v-if="currentDzoList !== 'daily'">
+                          {{ trans("visualcenter.dzoThousandTon") }}
+                        </div>
+                        <div v-if="currentDzoList === 'daily'">
+                          {{ trans("visualcenter.chemistryMetricTon") }}
+                        </div>
+                        <div v-if="isOpecFilterActive">
+                          {{ trans("visualcenter.dzoOpec") }}
+                        </div>
+                      </th>
+                      <th>
+                        {{ trans("visualcenter.plan") }}
+                        <div v-if="currentDzoList !== 'daily'">
+                          {{ trans("visualcenter.dzoThousandTon") }}
+                        </div>
+                        <div v-if="currentDzoList === 'daily'">
+                          {{ trans("visualcenter.chemistryMetricTon") }}
+                        </div>
+                        <div v-if="isOpecFilterActive">
+                          {{ trans("visualcenter.dzoOpec") }}
+                        </div>
+                      </th>
+                      <th>
+                        {{ trans("visualcenter.fact") }}
+                        <div v-if="currentDzoList !== 'daily'">
+                          {{ trans("visualcenter.dzoThousandTon") }}
+                        </div>
+                        <div v-if="currentDzoList === 'daily'">
+                          {{ trans("visualcenter.chemistryMetricTon") }}
+                        </div>
+                      </th>
+                      <th>
+                        {{ trans("visualcenter.dzoDifference") }}
+                        <div v-if="currentDzoList !== 'daily'">
+                          {{ trans("visualcenter.dzoThousandTon") }}
+                        </div>
+                        <div v-if="currentDzoList === 'daily'">
+                          {{ trans("visualcenter.chemistryMetricTon") }}
+                        </div>
+                      </th>
+                      <th>
+                        {{ trans("visualcenter.dzoPercent") }}
+                      </th>
+                      <th v-if="exactDateSelected">
+                        {{ trans("visualcenter.dzoOpec") }}
+                      </th>
+                      <th v-if="exactDateSelected">
+                        {{ trans("visualcenter.dzoImpulses") }}
+                      </th>
+                      <th v-if="exactDateSelected">
+                        {{ trans("visualcenter.dzoLanding") }}
+                      </th>
+                      <th v-if="exactDateSelected">
+                        {{ trans("visualcenter.dzoAlarmFirst") }}<br>
+                        {{ trans("visualcenter.dzoAlarmSecond") }}
+                      </th>
+                      <th v-if="exactDateSelected">
+                        {{ trans("visualcenter.dzoRestrictions") }}
+                      </th>
+                      <th v-if="exactDateSelected">
+                        {{ trans("visualcenter.dzoOthers") }}
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="(item, index) in dzoCompanySummary">
+                      <td
+                              @click="isMultipleDzoCompaniesSelected ? `${selectOneDzoCompany(item.dzoMonth)}` : `${selectAllDzoCompanies()}`"
+                              :class="index % 2 === 0 ? 'tdStyle' : ''"
+                              style="cursor: pointer"
+                      >
+                        <span>
+                          {{ getNameDzoFull(item.dzoMonth) }}
+                          <img src="/img/icons/link.svg" />
+                        </span>
+                      </td>
+                      <td
+                        v-if="buttonYearlyTab"
+                        :class="`${getDzoColumnsClass(index,'monthlyPlan')}`"
+                      >
+                        <div class="font">
+                          {{ formatDigitToThousand(item.periodPlan) }}
+                        </div>
+                      </td>
 
-                <td colspan="2">
-                  <div
-                    class="assets4"
-                    :style="`${buttonHover12}`"
-                    @click="changeAssets('b12')"
-                  >
-                    Неоперационные активы
-                  </div>
-                </td>
+                      <td
+                        v-if="buttonMonthlyTab"
+                        :class="`${getDzoColumnsClass(index,'yearlyPlan')}`"
+                      >
+                        <div class="font">
+                          {{ formatDigitToThousand(item.periodPlan) }}
+                        </div>
+                      </td>
 
-                <td>
-                  <div
-                    class="assets4"
-                    :style="`${buttonHover13}`"
-                    @click="changeAssets('b13')"
-                  >
-                    Все активы КМГ
+                      <td :class="`${getDzoColumnsClass(index,'plan')}`">
+
+                        <div class="font">
+                          {{ formatDigitToThousand(item.planMonth) }}
+                        </div>
+                      </td>
+
+                      <td :class="[`${getDzoColumnsClass(index,'fact')}`,'fact']">
+                        <div class="font">
+                          {{ formatDigitToThousand(item.factMonth) }}
+                        </div>
+                      </td>
+                      <td :class="`${getDzoColumnsClass(index,'difference')}`">
+                        <div
+                          v-if="item.factMonth"
+                          :class="
+                            item.factMonth - item.planMonth < 0 ?
+                            'triangle fall-indicator-production-data' :
+                            'triangle growth-indicator-production-data'
+                          "
+                        ></div>
+                        <div class="font dynamic" >
+                          {{
+                          formatDigitToThousand(
+                              Math.abs(item.factMonth - item.planMonth)
+                            )
+                          }}
+                        </div>
+                      </td>
+                      <td :class="`${getDzoColumnsClass(index,'percent')}`">
+                        <div
+                          v-if="item.factMonth"
+                          :class="
+                            ((item.factMonth - item.planMonth) /
+                            item.planMonth) * 100 < 0 ?
+                            'triangle fall-indicator-production-data' :
+                            'triangle growth-indicator-production-data'
+                          "
+                        ></div>
+                        <div class="font dynamic">
+                          {{
+                          formatVisTableNumber3 (item.factMonth , item.planMonth)
+                          }}
+                        </div>
+                      </td>
+                      <td
+                        v-if="exactDateSelected"
+                        :class="`${getLightColorClass(index)}`"
+                      >
+                        <div :class="item.impulses ? 'accident-triangle triangle' : 'no-accident-triangle triangle'">
+                        </div>
+                      </td>
+                      <td
+                        v-if="exactDateSelected"
+                        :class="`${getDarkColorClass(index)}`"
+                      >
+                        <div :class="item.impulses ? 'accident-triangle triangle' : 'no-accident-triangle triangle'">
+                        </div>
+                      </td>
+
+                      <td
+                              v-if="exactDateSelected"
+                              :class="`${getLightColorClass(index)}`"
+                      >
+                        <div :class="item.landing ? 'accident-triangle triangle' : 'no-accident-triangle triangle'">
+                        </div>
+                      </td>
+                      <td
+                              v-if="exactDateSelected"
+                              :class="`${getDarkColorClass(index)}`"
+                      >
+                        <div :class="item.accident ? 'accident-triangle triangle' : 'no-accident-triangle triangle'">
+                        </div>
+                      </td>
+                      <td
+                              v-if="exactDateSelected"
+                              :class="`${getLightColorClass(index)}`"
+                      >
+                        <div :class="item.restrictions ? 'accident-triangle triangle' : 'no-accident-triangle triangle'">
+                        </div>
+                      </td>
+                      <td
+                              v-if="exactDateSelected"
+                              :class="`${getDarkColorClass(index)}`"
+                      >
+                        <div :class="item.otheraccidents ? 'accident-triangle triangle' : 'no-accident-triangle triangle'">
+                        </div>
+                      </td>
+                    </tr>
+                    <tr v-if="isMultipleDzoCompaniesSelected">
+                      <td :class="index % 2 === 0 ? 'tdStyle3-total' : 'tdNone'">
+                        <div class="">{{ dzoCompaniesAssets['assetTitle'] }}</div>
+                      </td>
+
+                      <td
+                        v-if="buttonYearlyTab"
+                        :class="
+                          index % 2 === 0 ? 'tdStyle3-total' : 'tdStyle3-total'
+                        "
+                      >
+                        <div class="font">
+                          {{dzoCompaniesSummary.periodPlan}}
+                        </div>
+                      </td>
+
+                      <td
+                        v-if="buttonMonthlyTab"
+                        :class="index % 2 === 0 ? 'tdStyle3-total' : 'tdStyle3-total'"
+                      >
+                        <div class="font">
+                          {{dzoCompaniesSummary.periodPlan}}
+                        </div>
+                      </td>
+
+                      <td :class="`${getLighterClass(index)}`">
+                        <div class="font">
+                          {{dzoCompaniesSummary.plan}}
+                          <div class="right">
+                            {{ thousand }} {{ metricName }}
+                          </div>
+                        </div>
+                      </td>
+
+                      <td :class="`${getDarkerClass(index)}`">
+                        <div class="font">
+                          {{dzoCompaniesSummary.fact}}
+                          <div class="right">
+                            {{ thousand }} {{ metricName }}
+                          </div>
+                        </div>
+                      </td>
+                      <td :class="`${getLighterClass(index)}`">
+                        <div
+                          v-if="factMonthSumm"
+                          :class="
+                            factMonthSumm - planMonthSumm < 0 ?
+                            'triangle fall-indicator-production-data' :
+                            'triangle growth-indicator-production-data'
+                          "
+                        ></div>
+                        <div class="font dynamic">
+                          {{dzoCompaniesSummary.difference}}
+                          <div class="right">
+                            {{ thousand }}{{ metricName }}
+                          </div>
+                        </div>
+                      </td>
+                      <td :class="`${getDarkerClass(index)}`">
+                        <div
+                          v-if="factMonthSumm"
+                          :class="
+                            ((factMonthSumm - planMonthSumm) / planMonthSumm) *
+                            100 < 0 ?
+                            'triangle fall-indicator-production-data' :
+                            'triangle growth-indicator-production-data'
+                          "
+                        ></div>
+                        <div class="font dynamic" v-if="factMonthSumm">
+                          {{dzoCompaniesSummary.percent}}
+                        </div>
+                      </td>
+                      <td
+                              :class="`${getLighterClass(index)}`"
+                              v-if="exactDateSelected"
+                      >
+                      </td>
+                      <td
+                              :class="`${getDarkerClass(index)}`"
+                              v-if="exactDateSelected"
+                      ></td>
+                      <td
+                              :class="`${getLighterClass(index)}`"
+                              v-if="exactDateSelected"
+                      ></td>
+                      <td
+                              :class="`${getDarkerClass(index)}`"
+                              v-if="exactDateSelected"
+                      ></td>
+                      <td
+                              :class="`${getLighterClass(index)}`"
+                              v-if="exactDateSelected"
+                      ></td>
+                      <td
+                              :class="`${getDarkerClass(index)}`"
+                              v-if="exactDateSelected"
+                      ></td>
+                    </tr>
+                  </tbody>
+                </table>
+
+                <div
+                        v-if="!isMultipleDzoCompaniesSelected && buttonDailyTab"
+                        v-for="(item) in dzoCompanySummary"
+                        colspan="5"
+                        class="dzo-company-reason"
+                >
+                  <div class="mt-3 text-center">Текст причины</div>
+                  <div class="ml-3">
+                    <div class="mt-2" v-if="item.opec">{{ item.opec }}</div>
+                    <div class="mt-2" v-if="item.impulses">
+                      {{ item.impulses }}
+                    </div>
+                    <div class="mt-2" v-if="item.landing">{{ item.landing }}</div>
+                    <div class="mt-2" v-if="item.accident">
+                      {{ item.accident }}
+                    </div>
+                    <div class="mt-2" v-if="item.restrictions">
+                      {{ item.restrictions }}
+                    </div>
+                    <div class="mt-2" v-if="item.otheraccidents">
+                      {{ item.otheraccidents }}
+                    </div>
                   </div>
-                </td>
-              </tr>
-            </table>
+                </div>
+
+
+              </div>
+              <div
+                class="pl-3 col-sm-5"
+                v-if="
+                  ((planFieldName != 'oil_plan' &&
+                    planFieldName != 'oil_dlv_plan' &&
+                    planFieldName != 'oil_opek_plan') ||
+                  oneDate != 1) && !buttonDailyTab
+                "
+              >
+                <div class="name-chart-left">
+                  {{ chartSecondaryName }}, {{ thousand }} {{ metricName }}
+                </div>
+                <div class="name-chart-head">{{ chartHeadName }}</div>
+                <vc-chart :height="465"> </vc-chart>
+              </div>
+            </div>
           </div>
+        </div>
 
-          <div class="big-area" :style="`${displayTable}`">
-            <div
-              class="container-fluid w-50 table-near-chart2 table-responsive"
-            >
-              <table class="table4-2">
-                <tbody>
-                  <tr>
-                    <td class="big-table-hidtd small-td"></td>
+        <visual-center-usd-table
+          :style="`${Table2}`"
+          :period.sync="period"
+          :usd-rates-data.sync="oilRatesData"
+          :period-select-func.sync="periodSelectFunc"
+          :table-data.sync="oilRatesDataTableForCurrentPeriod"
+          :usd-chart-is-loading.sync="isPricesChartLoading"
+          @period-select-usd="
+            updatePrices(periodSelect(selectedPeriod))
+          "
+          @change-table="changeTable('1')"
+          :main-title="trans('visualcenter.oilPricedynamic')"
+          :second-title="'USD Yandex quote'"
+        />
+        <!-- 'Динамика цены на нефть' -->
+        <visual-center-usd-table
+          :style="`${Table3}`"
+          :period.sync="period"
+          :usd-rates-data.sync="usdRatesData"
+          :period-select-func.sync="periodSelectFunc"
+          :table-data.sync="usdRatesDataTableForCurrentPeriod"
+          :usd-chart-is-loading.sync="isPricesChartLoading"
+          @period-select-usd="
+            updatePrices(periodSelect(selectedPeriod))
+          "
+          @change-table="changeTable('1')"
+          :main-title="trans('visualcenter.kursHeader')"
+          :second-title="'USD НБ РК'"
+        />
+        <!-- 'Динамика курса доллара США к тенге (USD, НБ РК)' -->
+        <div class="third-table big-area" :style="`${Table5}`">
+          <div class="first-string first-string2">
+            <div class="container-fluid">
+              <div class="area-6-name row mt-3 mb-3 px-2">
+                <div class="col">
+                  <div class="ml-4 bold">
+                    {{
+                      trans("visualcenter.idleWells")
+                    }}
+                  </div>
+                </div>
+                <div class="col px-4">
+                  <div class="close2" @click="changeTable('1')">
+                    <!-- Закрыть -->{{ trans("visualcenter.close") }}
+                  </div>
+                </div>
+              </div>
 
-                    <td class="small-td">
-                      <div class="center">план</div>
-                    </td>
-                    <td class="small-td">
-                      <div class="center">факт</div>
-                    </td>
-                    <td class="small-td">
-                      <div class="center">+/-</div>
-                    </td>
-                    <td class="small-td"><div class="center">%</div></td>
-                  </tr>
-
-                  <tr v-for="(item, index) in tables">
-                    <td
-                      @click="saveCompany('all')"
-                      :class="index % 2 === 0 ? 'tdStyle' : 'tdNone first-td'"
+              <div class="row px-4">
+                <div class="col-3 pr-2">
+                  <div
+                          :class="[`${buttonDailyTab}`,'button2 side-tables__main-menu-button']"
+                          @click="changeMenu2(1)"
+                  >
+                    {{ trans("visualcenter.daily") }}
+                  </div>
+                </div>
+                <div class="col-3 px-2">
+                  <div
+                          :class="[`${buttonMonthlyTab}`,'button2 side-tables__main-menu-button']"
+                          @click="changeMenu2(2)"
+                  >
+                    {{ trans("visualcenter.monthBegin") }}
+                  </div>
+                </div>
+                <div class="col-3 px-2">
+                  <div
+                          :class="[`${buttonYearlyTab}`,'button2 side-tables__main-menu-button']"
+                          @click="changeMenu2(3)"
+                  >
+                    {{ trans("visualcenter.yearBegin") }}
+                  </div>
+                </div>
+                <div class="col-3 pl-2">
+                  <div class="dropdown3">
+                    <div
+                            :class="[`${buttonPeriodTab}`,'button2 side-tables__main-menu-button']"
+                            @click="changeMenu2(4)"
                     >
-                      <div class="first-td">{{ getNameDzoFull(item.dzo) }}</div>
-                    </td>
+                      <span v-if="oneDate">
+                        {{ trans("visualcenter.date") }} [{{
+                          timeSelect
+                        }}]</span
+                      >
+                      <span v-else>
+                        {{ trans("visualcenter.period") }} [{{
+                          timeSelect
+                        }}
+                        - {{ timeSelectOld }}]</span
+                      >
+                    </div>
+                    <ul class="center-menu2 right-indent">
+                      <li class="center-li">
+                        <br /><br />
 
-                    <td
-                      :class="
-                        index % 2 === 0 ? 'tdStyleLight' : 'tdStyleLight2'
-                      "
+                        <div class="month-day">
+                          <div>
+                            <date-picker
+                              v-if="selectedPeriod === 0"
+                              mode="range"
+                              v-model="range"
+                              is-range
+                              class="m-auto"
+                              :model-config="modelConfig"
+                              @input="changeDate"
+                              @dayclick="dayClicked"
+                            />
+                          </div>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <br />
+              <div class="">
+                <div class="row px-4">
+                  <div class="col">
+                    <select
+                      class="side-blocks__dzo-companies-dropdown w-100"
+                      @change="innerWellsNagMetOnChange($event)"
                     >
-                      <!--old date-->
-                      <div v-if="item.productionPlanForMonth">
-                        {{ (new Intl.NumberFormat('ru-RU').format(item.productionPlanForMonth)) }}
-                      </div>
+                      <option v-for="dzo in injectionWellsOptions" :value="dzo.ticker">
+                        {{dzo.name}}
+                      </option>
+                    </select>
+                  </div>
 
-                      <div v-if="item.planYear">
-                        {{ (new Intl.NumberFormat('ru-RU').format(item.planYear)) }}
-                      </div>
-                      <!--old date-->
-
-                      <div class="font" v-if="item.plan">
-                        {{ new Intl.NumberFormat("ru-RU").format(item.plan) }}
-                        <div class="right">{{ item4 }}</div>
-                      </div>
-                    </td>
-                    <td :class="index % 2 === 0 ? 'tdStyle' : 'tdNone'">
-                      <!--old date-->
-                      <div v-if="item.productionFactForMonth">
-                        {{ (new Intl.NumberFormat('ru-RU').format(item.productionFactForMonth)) }}
-                      </div>
-
-                      <div v-if="item.factYear">
-                        {{ (new Intl.NumberFormat('ru-RU').format(item.factYear ))}}
-                      </div>
-                      <!--old date-->
-
-                      <div class="font" v-if="item.fact">
-                        {{ new Intl.NumberFormat("ru-RU").format(item.fact) }}
-                        <div class="right">{{ item4 }}</div>
-                      </div>
-                    </td>
-                    <td
-                      :class="
-                        index % 2 === 0 ? 'tdStyleLight' : 'tdStyleLight2'
-                      "
+                  <div class="col pl-2">
+                    <div
+                            :class="wellStockIdleButtons.isInjectionIdleButtonActive ? 'button2 button-tab-highlighted' : 'button2'"
+                            @click="calculateInjectionWellsData()"
                     >
+                      {{ trans("visualcenter.inIdle") }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <br />
+              <div class="row container-fluid">
+                <div class="vis-table px-3 col-sm-7">
+                  <table v-if="injectionWells.length" class="table4 w-100 chemistry-table">
+                    <thead>
+                    <tr>
+                      <th>{{ trans("visualcenter.idleWells") }}</th>
+                      <th>
+                        {{ trans("visualcenter.otmMetricSystemWells") }}
+                      </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                      <tr
+                        v-for="(item, index) in injectionWells"
+                        @click="innerWellsSelectedRow = item.code"
+                      >
+                        <td
+                          @click="innerWellsSelectedRow = item.code"
+                          class="row-name_width_40 cursor-pointer"
+                          :class="{
+                            tdStyle: index % 2 === 0,
+                            selected: innerWellsSelectedRow === item.code,
+                          }"
+                        >
+                        <span>
+                          {{ item.name }}
+                        </span>
+                        </td>
+                        <td
+                          @click="innerWellsSelectedRow = item.code"
+                          class="w-25 tdNumber cursor-pointer"
+                          :class="index % 2 === 0 ? 'tdStyle' : ''"
+                        >
+                          <div class="font">
+                            {{ getFormattedNumber(item.value) }}
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div class="col-sm-5">
+                  <div  class="name-chart-left">{{ trans("visualcenter.wellsNumber") }}</div>
+                  <visual-center3-wells
+                    v-if="innerWellsNagDataForChart"
+                    :chartData="innerWellsNagDataForChart"
+                  ></visual-center3-wells>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="third-table big-area" :style="`${Table4}`">
+          <div class="first-string first-string2">
+            <div class="container-fluid">
+              <div class="area-6-name row mt-3 mb-3 px-2">
+                <div class="col">
+                  <div class="ml-4 bold">
+                    {{trans("visualcenter.prodWells")}}
+                  </div>
+                </div>
+                <div class="col px-4">
+                  <div class="close2" @click="changeTable('1')">
+                    {{ trans("visualcenter.close") }}
+                  </div>
+                </div>
+              </div>
+              <div class="row px-4">
+                <div class="col-3 pr-2">
+                  <div
+                          :class="[`${buttonDailyTab}`,'button2 side-tables__main-menu-button']"
+                          @click="changeMenu2(1)"
+                  >
+                    {{ trans("visualcenter.daily") }}
+                  </div>
+                </div>
+                <div class="col-3 px-2">
+                  <div
+                          :class="[`${buttonMonthlyTab}`,'button2 side-tables__main-menu-button']"
+                    @click="changeMenu2(2)"
+                  >
+                    {{ trans("visualcenter.monthBegin") }}
+                  </div>
+                </div>
+                <div class="col-3 px-2">
+                  <div
+                          :class="[`${buttonYearlyTab}`,'button2 side-tables__main-menu-button']"
+                          @click="changeMenu2(3)"
+                  >
+                    {{ trans("visualcenter.yearBegin") }}
+                  </div>
+                </div>
+                <div class="col-3 pl-2">
+                  <div class="dropdown3">
+                    <div
+                            :class="[`${buttonPeriodTab}`,'button2 side-tables__main-menu-button']"
+                            @click="changeMenu2(4)"
+                    >
+                      <span v-if="oneDate">
+                        {{ trans("visualcenter.date") }} [{{
+                          timeSelect
+                        }}]
+                      </span
+                      >
+                      <span v-else>
+                        {{ trans("visualcenter.period") }} [{{
+                          timeSelect
+                        }}
+                        - {{ timeSelectOld }}]
+                      </span
+                      >
+                    </div>
+                    <ul class="center-menu2 right-indent">
+                      <li class="center-li">
+                        <br /><br />
+
+                        <div class="month-day">
+                          <div>
+                            <date-picker
+                              v-if="selectedDMY == 0"
+                              mode="range"
+                              v-model="range"
+                              is-range
+                              class="m-auto"
+                              :model-config="modelConfig"
+                              @input="changeDate"
+                              @dayclick="dayClicked"
+                            />
+                          </div>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <br />
+              <div class="">
+                <div class="row px-4">
+                  <div class="col pr-2">
+                    <select
+                      class="side-blocks__dzo-companies-dropdown w-100"
+                      @change="innerWellsProdMetOnChange($event)"
+                    >
+                      <option v-for="dzo in injectionWellsOptions" :value="dzo.ticker">
+                        {{dzo.name}}
+                      </option>
+                    </select>
+                  </div>
+
+                  <div class="col pl-2">
+                    <div
+                            :class="wellStockIdleButtons.isProductionIdleButtonActive ? 'button2 button-tab-highlighted' : 'button2'"
+                            @click="calculateProductionWellsData()"
+                    >
+                      {{ trans("visualcenter.inIdle") }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <br />
+              <div class="row container-fluid">
+                <div class="vis-table px-3 col-sm-7">
+                  <table v-if="productionWells.length" class="table4 w-100 chemistry-table">
+                    <thead>
+                    <tr>
+                      <th>{{ trans("visualcenter.prodWells") }}</th>
+                      <th>{{ trans("visualcenter.otmMetricSystemWells") }}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                      <tr
+                        v-for="(item, index) in productionWells"
+                        @click="innerWells2SelectedRow = item.code"
+                      >
+                        <td
+                          @click="innerWells2SelectedRow = item.code"
+                          class="row-name_width_40 cursor-pointer"
+                          :class="{
+                            tdStyle: index % 2 === 0,
+                            selected: innerWells2SelectedRow === item.code,
+                          }"
+                        >
+                        <span>
+                          {{ item.name }}
+                        </span>
+                        </td>
+                        <td
+                          @click="innerWells2SelectedRow = item.code"
+                          class="w-25 text-center cursor-pointer"
+                          :class="
+                            index % 2 === 0 ? 'tdStyleLight' : 'tdStyleLight2'
+                          "
+                        >
+                        <div class="font">
+                          {{ getFormattedNumber(item.value) }}
+                        </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div class="col-sm-5">
+                  <div  class="name-chart-left">{{ trans('visualcenter.wellsNumber') }}</div>
+                  <visual-center3-wells
+                    v-if="innerWellsProd2DataForChart"
+                    :chartData="innerWellsProd2DataForChart"
+                  >
+                  </visual-center3-wells>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="third-table big-area" :style="`${Table6}`">
+          <div class="first-string first-string2">
+            <div class="container-fluid">
+              <div class="area-6-name row mt-3 mb-3 px-2">
+                <div class="col">
+                  <div class="ml-4 bold">
+                    {{ trans("visualcenter.otm") }}
+                  </div>
+                </div>
+                <div class="col px-4">
+                  <div class="close2" @click="changeTable('1')">
+                    {{ trans("visualcenter.close") }}
+                  </div>
+                </div>
+              </div>
+              <div class="row px-4">
+                <div class="col-3 pr-2">
+                  <div
+                          :class="[`${buttonDailyTab}`,'button2 side-tables__main-menu-button']"
+                          @click="changeMenu2(1)"
+                  >
+                    {{ trans("visualcenter.daily") }}
+                  </div>
+                </div>
+                <div class="col-3 px-2 ">
+                  <div
+                    :class="[`${buttonMonthlyTab}`,'button2 side-tables__main-menu-button']"
+                    @click="changeMenu2(2)"
+                  >
+                    {{ trans("visualcenter.monthBegin") }}
+                  </div>
+                </div>
+                <div class="col-3 px-2">
+                  <div
+                          :class="[`${buttonYearlyTab}`,'button2 side-tables__main-menu-button']"
+                          @click="changeMenu2(3)"
+                  >
+                    {{ trans("visualcenter.yearBegin") }}
+                  </div>
+                </div>
+                <div class="col-3 pl-2">
+                  <div class="dropdown3">
+                    <div
+                            :class="[`${buttonPeriodTab}`,'button2 side-tables__main-menu-button']"
+                            @click="changeMenu2(4)"
+                    >
+                      <span v-if="oneDate">
+                        {{ trans("visualcenter.date") }} [{{
+                          timeSelect
+                        }}]</span
+                      >
+                      <span v-else>
+                        {{ trans("visualcenter.period") }} [{{
+                          timeSelect
+                        }}
+                        - {{ timeSelectOld }}]</span
+                      >
+                    </div>
+                    <ul class="center-menu2 right-indent">
+                      <li class="center-li">
+                        <br /><br />
+
+                        <div class="month-day">
+                          <div>
+                            <date-picker
+                              v-if="selectedDMY == 0"
+                              mode="range"
+                              v-model="range"
+                              is-range
+                              class="m-auto"
+                              :model-config="modelConfig"
+                              @input="changeDate"
+                              @dayclick="dayClicked"
+                            />
+                          </div>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <br />
+              <div class="">
+                <div class="row px-4">
+                  <div class="col">
+                    <select
+                      class="side-blocks__dzo-companies-dropdown w-100"
+                      @change="innerWellsProdMetOnChange($event)"
+                    >
+                      <option v-for="dzo in injectionWellsOptions" :value="dzo.ticker">
+                        {{dzo.name}}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <br />
+              <div class="row container-fluid">
+                <div class="vis-table px-3 col-sm-7">
+                  <table
+                    v-if="otmData.length"
+                    class="table4 w-100 chemistry-table"
+                  >
+                    <thead>
+                    <tr>
+                      <th>{{ trans("visualcenter.otmColumnTitle") }}</th>
+                      <th>{{ trans("visualcenter.Plan") }}</th>
+                      <th>{{ trans("visualcenter.Fact") }}</th>
+                      <th>{{ trans("visualcenter.dzoDifference") }}</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                      <tr
+                        v-for="(item, index) in otmData"
+                        @click="otmSelectedRow = item.code"
+                      >
+                        <td
+                          @click="otmSelectedRow = item.code"
+                          class="row-name_width_40 cursor-pointer"
+                          :class="{
+                            tdStyle: index % 2 === 0,
+                            selected: otmSelectedRow === item.code,
+                          }"
+                        >
+                        <span>
+                          {{ item.name }}
+                        </span>
+                        </td>
+                        <td
+                          @click="otmSelectedRow = item.code"
+                          class="width-20 text-center data-pointer"
+                          :class="`${getDzoColumnsClass(index,'plan')}`"
+                        >
+                          <div class="font">
+                            {{ getFormattedNumber(item.plan) }}
+                            <span class="data-metrics">
+                              {{item.metricSystem}}
+                            </span>
+                          </div>
+                        </td>
+                        <td
+                          @click="otmSelectedRow = item.code"
+                          class="width-20 text-center data-pointer"
+                          :class="`${getDzoColumnsClass(index,'fact')}`"
+                        >
+                          <div class="font">
+                            {{getFormattedNumber(item.fact) }}
+                            <span class="data-metrics">
+                              {{item.metricSystem}}
+                            </span>
+                          </div>
+                        </td>
+                        <td
+                          class="width-20 text-center data-pointer"
+                          :class="`${getDzoColumnsClass(index,'difference')}`"
+                        >
+                          <div class="font dynamic">
+                            {{formatDigitToThousand(item.difference)}}
+                            <span class="data-metrics">
+                              {{item.metricSystem}}
+                            </span>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div class="col-sm-5">
+                  <div  class="name-chart-left">{{ trans("visualcenter.wellsNumber") }}</div>
+                  <visual-center3-wells
+                    v-if="otmDataForChart"
+                    :chartData="otmDataForChart"
+                  ></visual-center3-wells>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="third-table big-area" :style="`${Table7}`">
+          <div class="first-string first-string2">
+            <div class="container-fluid">
+              <div class="area-6-name row mt-3 mb-3 px-2">
+                <div class="col">
+                  <div class="ml-4 bold">
+                    {{ trans("visualcenter.chem") }}
+                  </div>
+                </div>
+                <div class="col px-4">
+                  <div class="close2" @click="changeTable('1')">
+                    {{ trans("visualcenter.close") }}
+                  </div>
+                </div>
+              </div>
+
+              <div class="row px-4">
+                <div class="col pr-2">
+                  <div
+                          :class="[`${buttonMonthlyTab}`,'button2 side-tables__main-menu-button']"
+                          @click="changeMenu2(2)"
+                  >
+                    {{ trans("visualcenter.monthBegin") }}
+                  </div>
+                </div>
+                <div class="col px-2">
+                  <div
+                          :class="[`${buttonYearlyTab}`,'button2 side-tables__main-menu-button']"
+                          @click="changeMenu2(3)"
+                  >
+                    {{ trans("visualcenter.yearBegin") }}
+                  </div>
+                </div>
+                <div class="col pl-2">
+                  <div class="dropdown3">
+                    <div
+                            :class="[`${buttonPeriodTab}`,'button2 side-tables__main-menu-button']"
+                            @click="changeMenu2(4)"
+                    >
+                      <span v-if="oneDate">
+                        {{ trans("visualcenter.date") }} [{{
+                          timeSelect
+                        }}]
+                      </span
+                      >
+                      <span v-else>
+                        {{ trans("visualcenter.period") }} [{{
+                          timeSelect
+                        }}
+                        - {{ timeSelectOld }}]
+                      </span
+                      >
+                    </div>
+                    <ul class="center-menu2 right-indent">
+                      <li class="center-li">
+                        <br /><br />
+
+                        <div class="month-day">
+                          <div>
+                            <date-picker
+                              v-if="selectedDMY == 0"
+                              mode="range"
+                              v-model="range"
+                              is-range
+                              class="m-auto"
+                              :model-config="modelConfig"
+                              @input="changeDate"
+                              @dayclick="dayClicked"
+                            />
+                          </div>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <br />
+              <div class="">
+                <div class="row px-4">
+                  <div class="col pr-2">
+                    <select
+                      class="side-blocks__dzo-companies-dropdown w-100"
+                      @change="innerWellsProdMetOnChange($event)"
+                    >
+                      <option v-for="dzo in injectionWellsOptions" :value="dzo.ticker">
+                        {{dzo.name}}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <br />
+              <div class="row container-fluid">
+                <div class="vis-table px-3 col-sm-7">
+                  <table
+                    v-if="chemistryData.length"
+                    class="table4 w-100 chemistry-table"
+                  >
+                    <thead>
+                    <tr>
+                      <th>{{ trans("visualcenter.productionChemicalization") }}</th>
+                      <th>
+                        {{ trans("visualcenter.Plan") }}<br>
+                        {{ trans("visualcenter.chemistryMetricTon") }}
+                      </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                      <tr
+                        v-for="(item, index) in chemistryData"
+                        @click="chemistrySelectedRow = item.code"
+                      >
+                        <td
+                          @click="chemistrySelectedRow = item.code"
+                          class="row-name_width_40 cursor-pointer"
+                          :class="{
+                            tdStyle: index % 2 === 0,
+                            selected: chemistrySelectedRow === item.code,
+                          }"
+                        >
+                          <span>
+                            {{ item.name }}
+                          </span>
+                        </td>
+                        <td
+                          @click="chemistrySelectedRow = item.code"
+                          class="width-20 text-center"
+                          :class="
+                            index % 2 === 0 ? 'tdStyleLight' : 'tdStyleLight2'
+                          "
+                        >
+                          <div v-if="index === 0" class="center">
+                          </div>
+                          <div class="font">
+                            {{ getFormattedNumber(item.fact) }}
+                         </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div class="col-sm-5">
+                <div  class="name-chart-left">Объём хим. реагента, тонны</div>
+                  <visual-center3-wells
+                    v-if="chemistryDataForChart"
+                    :chartData="chemistryDataForChart"
+                  ></visual-center3-wells>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="right-side2 col-12 col-lg-2 middle-block-columns">
+        <div class="col-md-12 second-column-container">
+          <div class="first-string">
+            <div>
+              <table class="table table1-2">
+                <tr class="cursor-pointer d-flex">
+                  <td
+                    class="col-6"
+                    @click="changeTable('4')"
+                    :style="`${tableHover4}`"
+                  >
+                    <div class="txt4">
+                      {{ getFormattedNumber(prod_wells_work) }}
+                    </div>
+                    <div class="in-work">
+                      {{ trans("visualcenter.inWork") }}
+                    </div>
+                    <div
+                      :class="`${getColor2(
+                        getDiffProcentLastP(prod_wells_work, prod_wells_workPercent)
+                      )}`"
+                    ></div>
+
+                    <div class="txt2-2">
+                      {{
+                        Math.abs(
+                          getDiffProcentLastP(
+                            prod_wells_work,
+                            prod_wells_workPercent
+                          )
+                        )
+                      }}%
+                    </div>
+                  </td>
+
+                  <td
+                    class="col-6"
+                    @click="changeTable('4')"
+                    :style="`${tableHover4}`"
+                  >
+                    <div class="txt4 d-flex">
+                      <div class="col-10 col-lg-9">
+                        {{ getFormattedNumber(prod_wells_idle) }}
+                      </div>
+                      <div class="mt-1 col-2">
+                        <img src="/img/icons/link.svg" />
+                      </div>
+                    </div>
+                    <div class="in-idle">
+                      {{ trans("visualcenter.inIdle") }}
+                    </div>
+                    <div
+                      :class="`${getColor2(
+                        getDiffProcentLastP(prod_wells_idle, prod_wells_idlePercent)
+                      )}`"
+                    ></div>
+
+                    <div class="txt2-2">
+                      {{
+                        Math.abs(
+                          getDiffProcentLastP(
+                            prod_wells_idle,
+                            prod_wells_idlePercent
+                          )
+                        )
+                      }}%
+                    </div>
+                    <br />
+                  </td>
+                </tr>
+                <tr class="cursor-pointer d-flex">
+                  <td
+                    class="col-12"
+                    @click="changeTable('4')"
+                    :style="`${tableHover4}`"
+                  >
+                    <div class="txt2">
+                      {{ trans("visualcenter.prodWells") }}
+                    </div>
+                  </td>
+                </tr>
+              </table>
+            </div>
+            <div class="first-string first-string2">
+              <div>
+                <table class="table table1-2">
+                  <tr class="cursor-pointer d-flex">
+                    <td
+                      class="col-6"
+                      @click="changeTable('5')"
+                      :style="`${tableHover5}`"
+                    >
+                      <div class="txt4">
+                        {{getFormattedNumber(inj_wells_work)}}
+                      </div>
+                      <div class="in-work">
+                        {{ trans("visualcenter.inWork") }}
+                      </div>
                       <div
-                        v-if="item.productionFactForMonth"
-                        class="triangle2"
-                        :style="`${getColor(
-                          item.productionFactForMonth -
-                            item.productionPlanForMonth
+                        :class="`${getColor2(
+                          getDiffProcentLastP(inj_wells_work, inj_wells_workPercent)
                         )}`"
                       ></div>
-                      <div
-                        class="percent2 font"
-                        v-if="item.productionFactForMonth"
-                      >
+
+                      <div class="txt2-2">
                         {{
-                          new Intl.NumberFormat("ru-RU").format(
-                            Math.abs(
-                              item.productionFactForMonth -
-                                item.productionPlanForMonth
+                          Math.abs(
+                            getDiffProcentLastP(
+                              inj_wells_work,
+                              inj_wells_workPercent
                             )
                           )
-                        }}
-                        <div class="right">{{ item4 }}</div>
-                      </div>
-                    </td>
-                    <td :class="index % 2 === 0 ? 'tdStyle' : 'tdNone'">
-                      <div
-                        v-if="item.productionFactForMonth"
-                        class="triangle2"
-                        :style="`${getColor(
-                          (item.productionFactForMonth -
-                                item.productionPlanForMonth)/item.productionPlanForMonth*100)}`"
-                      ></div>
-                      <div class="percent2 font">
-                       <!--                                       
-                        {{
-                          new Intl.NumberFormat("ru-RU").format(
-                            Math.abs(
-                              (productionFactPercentOneDzo /
-                                item.productionFactForMonth -
-                                1) *
-                                100
-                            ).toFixed(2)
-                          )
-                        }}-->                   
-                        {{   
-                          new Intl.NumberFormat("ru-RU").format(
-                            Math.abs (item.productionFactForMonth -
-                                item.productionPlanForMonth)/item.productionPlanForMonth*100)}}
-                      </div>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-
-            <div class="w-50 vc-chart">
-          
-              <vc-chart v-if="company != 'all'"> </vc-chart>
-            </div>
-          </div>
-          <div class="background-center" :style="`${displayHeadTables}`">
-            <div class="container-fluid w-50 table-near-chart2">
-              <table class="table4">
-                <tbody>
-                  <tr>
-                    <td class="big-table-hidtd small-td"></td>
-
-                    <td class="small-td">
-                      <div class="center">план</div>
-                    </td>
-                    <td class="small-td">
-                      <div class="center">факт</div>
-                    </td>
-                    <td class="small-td">
-                      <div class="center">+/-</div>
-                    </td>
-                    <td class="small-td"><div class="center">%</div></td>
-                  </tr>
-
-                  <tr v-for="(item, index) in bigTable">
-                    <td
-                      @click="saveCompany(item.dzoMonth)"
-                      :class="index % 2 === 0 ? 'tdStyle' : 'tdNone first-td'"
-                    >
-                      <div class="first-td">
-                        {{ getNameDzoFull(item.dzoMonth) }}
+                        }}%
                       </div>
                     </td>
 
                     <td
-                      :class="
-                        index % 2 === 0 ? 'tdStyleLight' : 'tdStyleLight2'
-                      "
+                      class="col-6"
+                      @click="changeTable('5')"
+                      :style="`${tableHover5}`"
                     >
-                      <div class="font" v-if="item.planMonth">
-                        <!-- {{
-                          new Intl.NumberFormat("ru-RU").format(item.planDay)
-                        }}-->
-
-                        {{
-                          new Intl.NumberFormat("ru-RU").format(item.planMonth)
-                        }}
-
-                        <div class="right">{{ item4 }}</div>
+                      <div class="txt4 d-flex">
+                        <div class="col-10 col-lg-9">
+                          {{getFormattedNumber(inj_wells_idle)}}
+                        </div>
+                        <div class="mt-1 col-2">
+                          <img src="/img/icons/link.svg" />
+                        </div>
                       </div>
-                    </td>
-                    <td :class="index % 2 === 0 ? 'tdStyle' : 'tdNone'">
-                      <div class="font" v-if="item.factMonth">
-                        <!--  {{
-                          new Intl.NumberFormat("ru-RU").format(item.factDay)
-                        }}-->
-
-                        {{
-                          new Intl.NumberFormat("ru-RU").format(item.factMonth)
-                        }}
-
-                        <div class="right">{{ item4 }}</div>
+                      <div class="in-idle">
+                        {{ trans("visualcenter.inIdle") }}
                       </div>
-                    </td>
-                    <td
-                      :class="
-                        index % 2 === 0 ? 'tdStyleLight' : 'tdStyleLight2'
-                      "
-                    >
                       <div
-                        v-if="item.factMonth"
-                        class="triangle"
-                        :style="`${getColor(item.factMonth - item.planMonth)}`"
-                      ></div>
-                      <div class="percent font" v-if="item.factMonth">
-                        {{
-                          new Intl.NumberFormat("ru-RU").format(
-                            Math.abs(item.factMonth - item.planMonth)
-                          )
-                        }}
-                        <!-- <div class="right">{{ item4 }}</div>-->
-                      </div>
-                    </td>
-                    <td :class="index % 2 === 0 ? 'tdStyle' : 'tdNone'">
-                      <div
-                        v-if="item.factMonth"
-                        class="triangle"
-                        :style="`${getColor(
-                      (item.factMonth -item.planMonth)/item.planMonth *
-                                100
+                        :class="`${getColor2(
+                          getDiffProcentLastP(inj_wells_idle, inj_wells_idlePercent)
                         )}`"
                       ></div>
-                      <div
-                        class="percent font"
-                        v-if="item.factMonth"
-                      >
+
+                      <div class="txt2-2">
                         {{
-                          new Intl.NumberFormat("ru-RU").format(
-                            Math.abs(
-                              (item.factMonth -item.planMonth)/item.planMonth *
-                                100
-                            ).toFixed(2)
+                          Math.abs(
+                            getDiffProcentLastP(
+                              inj_wells_idle,
+                              inj_wells_idlePercent
+                            )
                           )
-                        }}
-                        %
+                        }}%
+                      </div>
+                      <br />
+                    </td>
+                  </tr>
+                  <tr class="cursor-pointer d-flex">
+                    <td
+                      class="col-12"
+                      @click="changeTable('5')"
+                      :style="`${tableHover5}`"
+                    >
+                      <div class="txt2">
+                        {{ trans("visualcenter.idleWells") }}
                       </div>
                     </td>
                   </tr>
+                </table>
+              </div>
+            </div>
 
-                  <!--  <tr>
-                <td colspan="13">1</td>
-              </tr>
-
-              <tr>
-                <td>2</td>
-              </tr>
-
-              <tr>
-                <td colspan="13">3</td>
-              </tr>-->
-
-                  <tr>
-                    <td :class="index % 2 === 0 ? 'tdStyle3-total' : 'tdNone'">
-                      <div class="first-td">{{ NameDzoFull[0] }}</div>
+            <div class="first-string first-string2">
+              <div>
+                <table class="table table5">
+                  <tr class="cursor-pointer d-flex">
+                    <td
+                      class="col-6"
+                      @click="changeTable('6')"
+                      :style="`${tableHover6}`"
+                    >
+                      <div class="mt-1 float-right">
+                        <img data-v-3712f8d4="" src="/img/icons/link.svg" />
+                      </div>
+                      <div class="otm"></div>
+                      <div class="txt2">
+                        {{ trans("visualcenter.otm") }}
+                      </div>
                     </td>
 
                     <td
-                      :class="
-                        index % 2 === 0 ? 'tdStyleLight3' : 'tdStyleLight2'
-                      "
+                      class="col-6"
+                      @click="changeTable('7')"
+                      :style="`${tableHover7}`"
                     >
-                      <div class="font">
-                        <!--{{ new Intl.NumberFormat("ru-RU").format(planDaySumm) }}-->
-
-                        {{
-                          new Intl.NumberFormat("ru-RU").format(planMonthSumm)
-                        }}
-
-                        <div class="right">{{ item4 }}</div>
+                      <div class="mt-1 float-right">
+                        <img data-v-3712f8d4="" src="/img/icons/link.svg" />
                       </div>
-                    </td>
-                    <td :class="index % 2 === 0 ? 'tdStyle3' : 'tdNone'">
-                      <div class="font">
-                        <!-- {{ new Intl.NumberFormat("ru-RU").format(factDaySumm) }}-->
-                        {{
-                          new Intl.NumberFormat("ru-RU").format(factMonthSumm)
-                        }}
-                        <div class="right">{{ item4 }}</div>
-                      </div>
-                    </td>
-                    <td
-                      :class="
-                        index % 2 === 0 ? 'tdStyleLight3' : 'tdStyleLight2'
-                      "
-                    >
-                      <div
-                        v-if="factMonthSumm"
-                        class="triangle"
-                        :style="`${getColor(factMonthSumm - planMonthSumm)}`"
-                      ></div>
-                      <div class="percent font">
-                        {{
-                          new Intl.NumberFormat("ru-RU").format(
-                            Math.abs(factMonthSumm - planMonthSumm)
-                          )
-                        }}
-
-                        <!--<div class="right">{{ item4 }}</div>-->
-                      </div>
-                    </td>
-                    <td :class="index % 2 === 0 ? 'tdStyle3' : 'tdNone'">
-                      <div
-                        v-if="factMonthSumm"
-                        class="triangle"
-                        :style="`${getColor(
-                          (factMonthSumm -planMonthSumm)/planMonthSumm *
-                                100
-                            
-                        )}`"
-                      ></div>
-                      <div class="percent font" v-if="factMonthSumm">
-                        {{
-                          new Intl.NumberFormat("ru-RU").format(
-                            Math.abs(
-                              (factMonthSumm -planMonthSumm)/planMonthSumm *
-                                100
-                            ).toFixed(2)
-                          )
-                        }}
-                        %
+                      <div class="him"></div>
+                      <div class="txt2">
+                        {{ trans("visualcenter.chem") }}
                       </div>
                     </td>
                   </tr>
-                </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="first-string first-string2">
+            <div>
+              <table class="table">
+                <tr class="d-flex">
+                  <td class="col-6">
+                    <div class="number">{{ staff }}</div>
+                    <div class="in-idle2">
+                      {{ quarter1[0] }}
+                      {{ trans("visualcenter.quarter") }}
+                      {{ quarter1[1] }} г.
+                    </div>
+                  </td>
+
+                  <td class="col-6">
+                    <div class="d-flex">
+                      <div class="col-12">
+                        <div
+                          :class="`${getColor2(
+                            getDiffProcentLastP(staffPercent, staff)
+                          )}`"
+                        ></div>
+                        <div class="txt2-2">
+                          {{ Math.abs(getDiffProcentLastP(staffPercent, staff)) }}%
+                        </div>
+                      </div>
+                    </div>
+                    <div>
+                      <div class="in-idle">
+                        {{ getDiffProcentLastP(staffPercent, staff, "1") }}
+                      </div>
+                      <div class="in-idle">
+                        vs {{ quarter2[0] }}
+                        {{ trans("visualcenter.quarter") }}
+                        {{ quarter2[1] }}г.
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+                <tr class="d-flex">
+                  <td class="col-12">
+                    <div class="txt2">
+                      {{trans("visualcenter.personal")}}
+                    </div>
+                  </td>
+                </tr>
               </table>
             </div>
+          </div>
 
-            <div class="w-50 vc-chart">
-              <vc-chart v-if="company == 'all'"> </vc-chart>
+          <div class="first-string first-string2">
+            <div>
+              <table class="table">
+                <tr class="d-flex">
+                  <td class="col-6 px-2">
+                    <div class="number">{{ covid }}</div>
+                    <div class="in-idle2">{{ timeSelect }}</div>
+                  </td>
+
+                  <td class="col-6">
+                    <div class="d-flex">
+                      <div
+                        :class="`${getColor2(
+                          getDiffProcentLastP(covidPercent, covid)
+                        )}`"
+                      ></div>
+                      <div class="txt2-2">
+                        {{ Math.abs(getDiffProcentLastP(covidPercent, covid)) }}%
+                      </div>
+                    </div>
+                    <div>
+                      <div class="in-idle">
+                        {{ getDiffProcentLastP(covidPercent, covid, "1") }}
+                      </div>
+                      <div class="in-idle">
+                        vs
+                        <span v-if="oneDate"> {{ lastDate2 }}</span>
+                        <span v-else> {{ lastDate1 }} - {{ lastDate2 }}</span>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="col-12">
+                    <div class="txt2">COVID-19</div>
+                  </td>
+                </tr>
+              </table>
             </div>
           </div>
-        </div>
-      </div>
 
-      <div class="second-table" :style="`${Table2}`">
-        <div class="first-string first-string2">
-          <div class="close2" @click="changeTable('1')">Закрыть</div>
-          <div class="big-area">
-            <br />
-
-            <div
-              @click="selectedDMY = menuDMY.id"
-              class="period"
-              v-for="(menuDMY, index) in periodSelectFunc()"
-              :style="{
-                color: menuDMY.current,
-              }"
-              v-on:click="periodSelect"
-            >
-              <div>{{ menuDMY.DMY }}</div>
+          <div class="first-string first-string2">
+            <div>
+              <table class="table table1-2">
+                <tr>
+                  <td class="d-flex">
+                    <div class="number col-6">{{ accidentTotal }}</div>
+                    <div class="col-6">
+                      <div>
+                        <div class="in-idle">
+                          <!-- с начала -->{{ trans("visualcenter.fromBegin") }}
+                        </div>
+                        <div class="in-idle">
+                          <!-- года -->{{ trans("visualcenter.year") }}
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="d-flex">
+                    <div class="txt2 col-12">
+                      <!-- Несчастные случаи -->{{ trans("visualcenter.accident") }}
+                    </div>
+                  </td>
+                </tr>
+              </table>
             </div>
-            <visual-center-chart-area-oil3></visual-center-chart-area-oil3>
+          </div>
+
+          <div class="first-string first-string2">
+          <div>
+            <table class="table">
+              <tr>
+                <td class="d-flex">
+                  <div class="number col-6">0</div>
+                  <div class="col-6">
+                    <div class="in-idle">
+                      <!-- Прирост -->{{ trans("visualcenter.increase") }}
+                    </div>
+                    <div class="in-idle">
+                      <!-- с начала месяца -->{{
+                      trans("visualcenter.monthBegin")
+                      }}
+                    </div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="2">
+                  <div class="txt2">
+                    <!-- Смертельные случаи -->
+                    {{ trans("visualcenter.death") }}
+                  </div>
+                </td>
+              </tr>
+            </table>
           </div>
         </div>
-      </div>
-
-      <div class="third-table" :style="`${Table3}`">
-        <div class="first-string first-string2">
-          <div class="close2" @click="changeTable('1')">Закрыть</div>
-          <div class="big-area">
-            <br />
-
-            <div
-              @click="selectedDMY2 = menuDMY.id"
-              class="period"
-              v-for="(menuDMY, index) in periodSelectFunc()"
-              :style="{
-                color: menuDMY.current2,
-              }"
-              v-on:click="periodSelectUSD"
-            >
-              <div>{{ menuDMY.DMY }}</div>
-            </div>
-            <visual-center-chart-area-usd3></visual-center-chart-area-usd3>
-          </div>
         </div>
-      </div>
-
-      <div class="third-table" :style="`${Table4}`">
-        <div class="first-string first-string2">
-          <div class="close2" @click="changeTable('1')">Закрыть</div>
-          <div class="big-area">Фонд добывающих скважин</div>
-        </div>
-      </div>
-
-      <div class="third-table" :style="`${Table5}`">
-        <div class="first-string first-string2">
-          <div class="close2" @click="changeTable('1')">Закрыть</div>
-          <div class="big-area">Фонд нагнетательных скважин</div>
-        </div>
-      </div>
-
-      <div class="third-table" :style="`${Table6}`">
-        <div class="first-string first-string2">
-          <div class="close2" @click="changeTable('1')">Закрыть</div>
-          <div class="big-area">ОТМ</div>
-        </div>
-      </div>
-
-      <div class="third-table" :style="`${Table7}`">
-        <div class="first-string first-string2">
-          <div class="close2" @click="changeTable('1')">Закрыть</div>
-          <div class="big-area">Химизация</div>
-        </div>
-      </div>
     </div>
-    <div class="right-side2">
-      <div class="first-string">
-        <div class="table-responsive">
-          <table class="table table1-2">
-            <tr>
-              <td
-                class="w-50"
-                @click="changeTable('4')"
-                :style="`${tableHover4}`"
-              >
-                <div class="txt4">
-                  <!--v-if="wells2[0].prod_wells_work"  wells2[0].prod_wells_work-->
-                  {{ new Intl.NumberFormat("ru-RU").format(prod_wells_work) }}
-                </div>
-                <div class="in-work">В работе</div>
-                <div class="arrow"></div>
-                <div class="txt2">48</div>
-              </td>
-
-              <td
-                class="w-50"
-                @click="changeTable('4')"
-                :style="`${tableHover4}`"
-              >
-                <div class="txt4">
-                  <!--v-if="wells2[0].prod_wells_idle"-->
-                  {{
-                    new Intl.NumberFormat("ru-RU").format(
-                     // wells2[0].prod_wells_idle
-                     prod_wells_idle
-                    )
-                  }}
-                </div>
-                <div class="in-idle">В простое</div>
-                <div class="arrow"></div>
-                <div class="txt2">200</div>
-                <br />
-              </td>
-            </tr>
-            <tr>
-              <td
-                colspan="2"
-                @click="changeTable('4')"
-                :style="`${tableHover4}`"
-              >
-                <div class="txt2">Фонд добывающих скважин</div>
-              </td>
-            </tr>
-          </table>
-          <!-- <div class="line-bottom"></div>-->
-        </div>
-        <div class="first-string first-string2">
-          <div class="table-responsive">
-            <table class="table table1-2">
-              <tr>
-                <td
-                  class="w-50"
-                  @click="changeTable('5')"
-                  :style="`${tableHover5}`"
-                >
-                  <div class="txt4">
-                    <!--v-if="wells[0].inj_wells_work"-->
-                    {{
-                      new Intl.NumberFormat("ru-RU").format(
-                        //wells[0].inj_wells_work
-                        inj_wells_work
-                      )
-                    }}
-                  </div>
-                  <div class="in-work">В работе</div>
-                  <div class="arrow"></div>
-                  <div class="txt2">48</div>
-                </td>
-
-                <td
-                  class="w-50"
-                  @click="changeTable('5')"
-                  :style="`${tableHover5}`"
-                >
-                  <div class="txt4">
-                    <!-- v-if="wells[0].inj_wells_idle"-->
-                    {{
-                      new Intl.NumberFormat("ru-RU").format(
-                       // wells[0].inj_wells_idle
-                       inj_wells_idle
-                      )
-                    }}
-                  </div>
-                  <div class="in-idle">В простое</div>
-                  <div class="arrow"></div>
-                  <div class="txt2">200</div>
-                  <br />
-                </td>
-              </tr>
-              <tr>
-                <td
-                  colspan="2"
-                  @click="changeTable('5')"
-                  :style="`${tableHover5}`"
-                >
-                  <div class="txt2">Фонд нагнетательных скважин</div>
-                </td>
-              </tr>
-            </table>
-          </div>
-        </div>
-
-        <div class="first-string first-string2">
-          <div class="table-responsive">
-            <table class="table table5">
-              <tr>
-                <td
-                  class="w-50"
-                  @click="changeTable('6')"
-                  :style="`${tableHover6}`"
-                >
-                  <div class="otm"></div>
-                  <div class="txt2">ОТМ</div>
-                </td>
-
-                <td
-                  class="w-50"
-                  @click="changeTable('7')"
-                  :style="`${tableHover7}`"
-                >
-                  <div class="him"></div>
-                  <div class="txt2">Химизация</div>
-                </td>
-              </tr>
-            </table>
-          </div>
-        </div>
-      </div>
-
-      <div class="first-string first-string2">
-        <div class="table-responsive">
-          <table class="table">
-            <tr>
-              <td class="size-td">
-                <div class="number">908</div>
-              </td>
-
-              <td class="w-65">
-                <div class="column-1">
-                  <div class="arrow"></div>
-                  <div class="txt2">7</div>
-                </div>
-                <div class="column-1">
-                  <div class="in-idle">Прирост</div>
-                  <div class="in-idle">с начала месяца</div>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td colspan="2">
-                <div class="txt2">Численность персонала</div>
-              </td>
-            </tr>
-          </table>
-        </div>
-      </div>
-
-      <div class="first-string first-string2">
-        <div class="table-responsive">
-          <table class="table">
-            <tr>
-              <td class="size-td">
-                <div class="number">24</div>
-              </td>
-
-              <td class="w-65">
-                <div class="column-1">
-                  <div class="arrow"></div>
-                  <div class="txt2">11</div>
-                </div>
-                <div class="column-1">
-                  <div class="in-idle">Прирост</div>
-                  <div class="in-idle">с начала месяца</div>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td colspan="2">
-                <div class="txt2">COVID-19</div>
-              </td>
-            </tr>
-          </table>
-        </div>
-      </div>
-
-      <div class="first-string first-string2">
-        <div class="table-responsive">
-          <table class="table table1-2">
-            <tr>
-              <td>
-                <div class="number">11</div>
-                <div class="near-number">
-                  <!-- <div class="column-1">
-                    <div class="arrow"></div>
-                    <div class="txt2">7</div>
-                  </div>-->
-                  <div class="column-1">
-                    <!-- <div class="in-idle">Прирост</div>-->
-                    <div class="in-idle">с начала</div>
-                    <div class="in-idle">месяца</div>
-                  </div>
-                </div>
-              </td>
-
-              <td>
-                <div class="number">11</div>
-                <div class="near-number">
-                  <!--  <div class="column-1">
-                    <div class="arrow"></div>
-                    <div class="txt2">7</div>
-                  </div>-->
-                  <div class="column-1">
-                    <!--<div class="in-idle">Прирост</div>-->
-                    <div class="in-idle">с начала</div>
-                    <div class="in-idle">года</div>
-                  </div>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td colspan="2">
-                <div class="txt2">Несчастные случаи</div>
-              </td>
-            </tr>
-          </table>
-        </div>
-      </div>
-
-      <div class="first-string first-string2">
-        <div class="table-responsive">
-          <table class="table">
-            <tr>
-              <td class="size-td">
-                <div class="number">2</div>
-              </td>
-
-              <td class="w-65">
-                <!--  <div class="column-1">
-                  <div class="arrow"></div>
-                  <div class="txt2">1</div>
-                </div>-->
-                <div class="column-1">
-                  <div class="in-idle">Прирост</div>
-                  <div class="in-idle">с начала месяца</div>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td colspan="2">
-                <div class="txt2">Смертельные случаи</div>
-              </td>
-            </tr>
-          </table>
-        </div>
-      </div>
     </div>
   </div>
 </template>
+
 <script src="./VisualCenterTable3.js"></script>
+<style scoped lang="scss">
+  .dzocompanies-dropdown__divider {
+    border-bottom: 2px solid #656A8A;
+  }
+  .middle-block__list-x-scroll {
+    overflow-x: inherit;
+  }
+  .rates-block {
+    border-left: 10px solid #0f1430;
+  }
+  .oil-block {
+    align-items: baseline;
+  }
+  .additional-header {
+    margin-left: -15px;
+  }
+
+  .visualcenter-page-container {
+    flex-wrap: wrap;
+    margin: 0 !important;
+  }
+  .visualcenter-page-wrapper {
+    position: relative;
+  }
+  .second-column-container {
+    padding-left: 10px;
+    padding-right: 0;
+  }
+  .middle-block-columns {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+.vis-table {
+  overflow-y: auto;
+  &::-webkit-scrollbar {
+    width: 3px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #333975;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #1f213e;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: #1f213e;
+  }
+
+  &::-webkit-scrollbar-corner {
+    background: #333975;
+  }
+
+  .table4 {
+    min-width: 683px;
+    tr {
+      td {
+        padding: 5px 5px 5px 10px;
+        position: relative;
+        vertical-align: middle;
+        min-width: 71px;
+        &:first-child {
+          white-space: normal;
+          min-width: 290px;
+          font-weight: bold;
+          font-size: 15px;
+          min-height: 32px;
+          span {
+            img {
+              width: 9px;
+            }
+          }
+        }
+        &.selected {
+          background: #2e47c0 !important;
+        }
+        .font {
+          align-items: baseline;
+          justify-content: space-between;
+          font-size: 15px;
+          margin-left: 0;
+          &.dynamic {
+            padding-left: 17px;
+          }
+          .right {
+            font-size: 10px;
+            margin-right: 0;
+            display: none;
+            opacity: 0.6;
+          }
+        }
+        .center {
+          font-size: 0.63em;
+          font-weight: bold;
+          left: 0;
+          margin: 0;
+          position: absolute;
+          text-align: center;
+          top: 4px;
+          width: 100%;
+        }
+      }
+    }
+    tr:after {
+      content: ' ';
+      display: block;
+      visibility: hidden;
+      clear: both;
+    }
+    tr:first-child .th {
+      background: inherit;
+      top: -1px;
+      z-index: 3000;
+    }
+    th {
+      position: sticky;
+      position: --webkit-sticky;
+      top: -1;
+      z-index: 2;
+      border: 0.5px solid #272953;
+      width: 81px;
+      position: sticky;
+      font-size: 12px;
+      background: #353EA1;
+      text-align: center;
+      &:first-child {
+        width: 322px;
+        padding-top: 5px;
+        font-size: 15px;
+      }
+    }
+  }
+}
+
+.vis-table-small {
+  max-width: 46% !important;
+  tr {
+    line-height: 4.2rem !important;
+    font-size: 1.2rem !important;
+    font-family: Bold !important;
+  }
+  .tdNumber {
+    font-size: 1.6rem;
+    text-align: right;
+    span {
+      font-size: 0.7rem;
+      font-weight: normal;
+      opacity: 0.6;
+    }
+  }
+}
+
+.vis-table-small2 {
+  max-width: 46% !important;
+  tr {
+    // line-height: 4.2rem !important;
+    font-size: 1.2rem !important;
+    font-family: Bold !important;
+  }
+  .tdNumber {
+    font-size: 1.6rem;
+    text-align: right;
+    span {
+      font-size: 0.7rem;
+      font-weight: normal;
+    }
+  }
+}
+
+.row-name_width_40 {
+    width: 40%;
+  }
+  .width-20 {
+    width: 20%;
+  }
+
+  .data-metrics {
+    font-style: normal;
+    font-family: "HarmoniaSansProCyr-Regular";
+    font-size: 10px;
+    margin-left: 2%;
+  }
+  .triangle-responsive {
+    border: 6px solid transparent;
+    height: 6px;
+    margin-right: 5px;
+    width: 6px;
+    float: left;
+  }
+  .data-pointer {
+    cursor: pointer;
+    font-size: 30px;
+  }
+  .growth-indicator {
+    margin-top: 6px;
+    border-bottom: 6px solid #009846;
+  }
+  .fall-indicator {
+    margin-top: 13px;
+    border-top: 6px solid #e31e24;
+  }
+  .growth-indicator-production-data {
+    border-bottom: 6px solid #009846;
+  }
+  .fall-indicator-production-data {
+    margin-top: 8px;
+    border-top: 6px solid #e31e24;
+  }
+
+  .accident-triangle {
+    border-top: 6px solid rgb(227, 30, 36);
+    margin-left: 30%;
+  }
+  .no-accident-triangle {
+    position: relative;
+    width: 14px;
+    height: 5px;
+    background: #9da0b7;
+    border: unset;
+    margin-left: 30%;
+  }
+  .button-tab-highlighted {
+    border: none;
+    background: #2E50E9;
+    color:white;
+  }
+
+  .dzo-company-list ul {
+    margin: 10px 0 0 0;
+    height: 450px;
+    position: absolute;
+    left: -0.5px;
+    background: #40467E;
+    top: 3em;
+    padding: 5px;
+    list-style: none;
+    z-index: 999;
+    cursor: pointer;
+    color:white;
+    border-radius: inherit;
+    overflow: auto;
+    &::-webkit-scrollbar {
+      width: 3px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: #333975;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: #1f213e;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+      background: #1f213e;
+    }
+
+    &::-webkit-scrollbar-corner {
+      background: #333975;
+    }
+  }
+  .show-company-list {
+    display: block;
+  }
+  .hide-company-list {
+    display: none;
+  }
+  .dzo-company-list li {
+    text-align: left;
+    background: #40467E;
+    font-style: normal;
+    font-size: 14px;
+    line-height: 27px;
+    padding: 3px;
+  }
+  .arrow-down {
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 5px solid #9EA4C9;
+    display: inline-block;
+    cursor: pointer;
+    float: right;
+    margin-top: 20px;
+    margin-right: 15px;
+  }
+  .dzo-company-reason {
+    background: rgb(54, 59, 104);
+    min-height: 60%;
+    width: 100%;
+    border-top: 5px solid #272953;
+  }
+  .mh-60 {
+    min-height: 60%;
+  }
+  .mh-30 {
+    min-height: 30%;
+  }
+  .chemistry-table {
+    height: calc(100% - 20px);
+  }
+  .cursor-pointer {
+    cursor: pointer;
+  }
+  .main-table__scroll {
+    flex: unset;
+    max-height: 80%;
+    max-width: 100%;
+    overflow: auto;
+  }
+  @media (max-width:400px) {
+    .upper-block {
+      max-width: 380px;
+    }
+    .rates-block {
+      border-left: 0;
+      border-top: 10px solid #0f1430 !important;
+      &:last-child {
+        border-left: 10px solid #0f1430 !important;
+      }
+    }
+    .middle-block__list-x-scroll {
+      flex-wrap: unset;
+      overflow-x: scroll;
+    }
+    .second-column-container {
+      padding-left: 10px;
+      padding-right: 10px;
+      border-top: 10px solid #0f1430;
+    }
+    .table4 {
+      min-width: 0 !important;
+      font-size: 10px !important;
+      th {
+        font-size: inherit !important;
+        width: 5% !important;
+      }
+      tr td {
+        width: 100%;
+        min-width: 62px !important;
+        font-size: inherit !important;
+        .font {
+          font-size: inherit !important;
+        }
+      }
+
+    }
+    .middle-block-columns {
+      border-top: 10px solid #0f1430;
+    }
+    .side-tables__main-menu-button {
+      line-height: 20px;
+    }
+    .middle-block__table {
+      margin-left: 10px;
+      margin-right: 10px;
+    }
+    .first-string {
+      position: relative;
+    }
+    .dropdown {
+      position: static;
+    }
+    .dzocompanylist__button {
+      position: static;
+    }
+  }
+  .rates-block__row {
+    height: 100%;
+  }
+  @media (max-width:1400px) {
+    .rates-block__row {
+      height: auto;
+    }
+    .dzo-company-list li {
+      font-size: 12px;
+    }
+    .vis-table .table4 {
+      min-width: 0;
+    }
+  }
+  @media (max-width:2000px) {
+    .table4 {
+      tr td {
+        min-width: 5.3em !important;
+      }
+    }
+    .row-name_width_40 {
+      width: 80%;
+    }
+  }
+  .dzocompanies__button_position {
+    margin-top: 0.7em;
+  }
+  .side-blocks__dzo-companies-dropdown {
+    position: relative;
+    background-color: #333975;
+    height: 40px;
+    text-align: center;
+    line-height: 40px;
+    color: #9EA4C9;
+    border: none;
+
+  }
+</style>

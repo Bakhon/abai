@@ -1,20 +1,20 @@
 <template>
   <div class="col-xs-12 col-sm-12 col-md-12 row">
     <div class="col-xs-12 col-sm-4 col-md-4">
-      <label>Прочие объекты</label>
+      <label>{{ trans('monitoring.other_objects') }}</label>
       <div class="form-label-group">
         <select class="form-control" name="other_objects_id" v-model="formFields.other_objects_id"
                 v-show="otherObjects.length > 0">
           <option v-for="row in otherObjects" v-bind:value="row.id">{{ row.name }}</option>
         </select>
       </div>
-      <label>ГУ</label>
+      <label>{{ trans('monitoring.gu.gu') }}</label>
       <div class="form-label-group">
         <select class="form-control" name="gu_id" v-model="formFields.gu_id" @change="chooseGu()">
           <option v-for="row in gus" v-bind:value="row.id">{{ row.name }}</option>
         </select>
       </div>
-      <label>Дата и время</label>
+      <label>{{ trans('app.date_time') }}</label>
       <div class="form-label-group">
         <datetime
             type="datetime"
@@ -73,13 +73,13 @@
             placeholder=""
         >
       </div>
-      <label>Тип воды по Сулину</label>
+      <label>{{ trans('monitoring.wm.fields.water_type_by_sulin') }}</label>
       <div class="form-label-group">
         <select class="form-control" name="water_type_by_sulin_id" v-model="formFields.water_type_by_sulin_id">
           <option v-for="row in wbs" v-bind:value="row.id">{{ row.name }}</option>
         </select>
       </div>
-      <label>Cодержание стронция, мг/дм³</label>
+      <label>{{ trans('monitoring.wm.fields.strontium_content') }}</label>
       <div class="form-label-group">
         <input
             v-model="formFields.strontium_content"
@@ -92,7 +92,7 @@
             placeholder=""
         >
       </div>
-      <label>Содержание трехвалентного железа мг/дм3</label>
+      <label>{{ trans('monitoring.wm.fields.ferric_iron_content') }}</label>
       <div class="form-label-group">
         <input
             v-model="formFields.ferric_iron_content"
@@ -105,7 +105,7 @@
             placeholder=""
         >
       </div>
-      <label>О2, мг/дм3</label>
+      <label>{{ trans('monitoring.wm.fields.oxygen') }}</label>
       <div class="form-label-group">
         <input
             v-model="formFields.oxygen"
@@ -118,7 +118,7 @@
             placeholder=""
         >
       </div>
-      <label>УОБ, кл/см3</label>
+      <label>{{ trans('monitoring.wm.fields.hydrocarbon_oxidizing_bacteria') }}</label>
       <div class="form-label-group">
         <select class="form-control" name="hydrocarbon_oxidizing_bacteria_id"
                 v-model="formFields.hydrocarbon_oxidizing_bacteria_id">
@@ -127,13 +127,13 @@
       </div>
     </div>
     <div class="col-xs-12 col-sm-4 col-md-4">
-      <label>НГДУ</label>
+      <label>{{ trans('monitoring.ngdu') }}</label>
       <div class="form-label-group">
         <select class="form-control" name="ngdu_id" v-model="formFields.ngdu_id">
           <option v-for="row in ngdus" v-bind:value="row.id">{{ row.name }}</option>
         </select>
       </div>
-      <label>ЗУ</label>
+      <label>{{ trans('monitoring.zu.zu') }}</label>
       <div class="form-label-group">
         <select class="form-control" name="zu_id" v-model="formFields.zu_id" @change="chooseZu()">
           <option v-for="row in zus" v-bind:value="row.id">{{ row.name }}</option>
@@ -178,7 +178,7 @@
             placeholder=""
         >
       </div>
-      <label>Общая минерализация, мг/дм3</label>
+      <label>{{ trans('monitoring.wm.fields.mineralization') }}</label>
       <div class="form-label-group">
         <input
             v-model="formFields.mineralization"
@@ -191,7 +191,7 @@
             placeholder=""
         >
       </div>
-      <label>Содержание нефтепродуктов, мг/дм3</label>
+      <label>{{ trans('monitoring.wm.fields.content_of_petrolium_products') }}</label>
       <div class="form-label-group">
         <input
             v-model="formFields.content_of_petrolium_products"
@@ -204,7 +204,7 @@
             placeholder=""
         >
       </div>
-      <label>Содержание бария, мг/дм³</label>
+      <label>{{ trans('monitoring.wm.fields.barium_content') }}</label>
       <div class="form-label-group">
         <input
             v-model="formFields.barium_content"
@@ -217,7 +217,7 @@
             placeholder=""
         >
       </div>
-      <label>Содержание двухвалентного железа мг/дм3</label>
+      <label>{{ trans('monitoring.wm.fields.ferrous_iron_content') }}</label>
       <div class="form-label-group">
         <input
             v-model="formFields.ferrous_iron_content"
@@ -230,7 +230,7 @@
             placeholder=""
         >
       </div>
-      <label>CO2, мг/дм3 (после буферной емкости)</label>
+      <label>{{ trans('monitoring.wm.fields.carbon_dioxide') }}</label>
       <div class="form-label-group">
         <input
             v-model="formFields.carbon_dioxide"
@@ -243,7 +243,7 @@
             placeholder=""
         >
       </div>
-      <label>ТБ, кл/см3</label>
+      <label>{{ trans('monitoring.wm.fields.thionic_bacteria') }}</label>
       <div class="form-label-group">
         <select class="form-control" name="thionic_bacteria_id" v-model="formFields.thionic_bacteria_id">
           <option v-for="row in hb" v-bind:value="row.id">{{ row.name }}</option>
@@ -251,13 +251,13 @@
       </div>
     </div>
     <div class="col-xs-12 col-sm-4 col-md-4">
-      <label>ЦДНГ</label>
+      <label>{{ trans('monitoring.cdng') }}</label>
       <div class="form-label-group">
         <select class="form-control" name="cdng_id" v-model="formFields.cdng_id">
           <option v-for="row in cndgs" v-bind:value="row.id">{{ row.name }}</option>
         </select>
       </div>
-      <label>Скважина</label>
+      <label>{{ trans('monitoring.well.well') }}</label>
       <div class="form-label-group">
         <select class="form-control" name="well_id" v-model="formFields.well_id">
           <option v-for="row in wells" v-bind:value="row.id">{{ row.name }}</option>
@@ -289,7 +289,7 @@
             placeholder=""
         >
       </div>
-      <label>Плотность при 20°С, г/см3</label>
+      <label>{{ trans('monitoring.wm.fields.density') }}</label>
       <div class="form-label-group">
         <input
             v-model="formFields.density"
@@ -302,7 +302,7 @@
             placeholder=""
         >
       </div>
-      <label>Общая жесткость, мг-экв/дм3</label>
+      <label>{{ trans('monitoring.wm.fields.total_hardness') }}</label>
       <div class="form-label-group">
         <input
             v-model="formFields.total_hardness"
@@ -315,7 +315,7 @@
             placeholder=""
         >
       </div>
-      <label>Механические примеси, мг/дм3</label>
+      <label>{{ trans('monitoring.wm.fields.mechanical_impurities') }}</label>
       <div class="form-label-group">
         <input
             v-model="formFields.mechanical_impurities"
@@ -328,7 +328,7 @@
             placeholder=""
         >
       </div>
-      <label>Содержание общего железа мг/дм3</label>
+      <label>{{ trans('monitoring.wm.fields.total_iron_content') }}</label>
       <div class="form-label-group">
         <input
             v-model="formFields.total_iron_content"
@@ -341,7 +341,7 @@
             placeholder=""
         >
       </div>
-      <label>H2S, мг/дм3 (после буферной емкости)</label>
+      <label>{{ trans('monitoring.wm.fields.hydrogen_sulfide') }}</label>
       <div class="form-label-group">
         <input
             v-model="formFields.hydrogen_sulfide"
@@ -354,7 +354,7 @@
             placeholder=""
         >
       </div>
-      <label>СВБ, кл/см3</label>
+      <label>{{ trans('monitoring.wm.fields.sulphate_reducing_bacteria') }}</label>
       <div class="form-label-group">
         <select class="form-control" name="sulphate_reducing_bacteria_id"
                 v-model="formFields.sulphate_reducing_bacteria_id">
@@ -363,7 +363,7 @@
       </div>
     </div>
     <div class="col-xs-12 col-sm-12 col-md-12 text-center">
-      <button type="submit" :disabled="!formFields.date" class="btn btn-success">Сохранить</button>
+      <button type="submit" :disabled="!formFields.date" class="btn btn-success">{{ trans('app.save') }}</button>
     </div>
   </div>
 </template>
@@ -491,7 +491,7 @@ export default {
   },
   methods: {
     chooseGu(init = false) {
-      this.axios.post("/ru/getzu", {
+      this.axios.post(this.localeUrl("/getzu"), {
         gu_id: this.formFields.gu_id,
       }).then((response) => {
         let data = response.data;
@@ -505,7 +505,7 @@ export default {
         }
       });
 
-      this.axios.post("/ru/getgucdngngdufield", {
+      this.axios.post(this.localeUrl("/getgucdngngdufield"), {
         gu_id: this.formFields.gu_id,
       }).then((response) => {
         let data = response.data;
@@ -518,7 +518,7 @@ export default {
       });
     },
     chooseZu() {
-      this.axios.post("/ru/getwell", {
+      this.axios.post(this.localeUrl("/getwell"), {
         zu_id: this.formFields.zu_id,
       }).then((response) => {
         let data = response.data;
@@ -531,7 +531,7 @@ export default {
     },
   },
   beforeCreate: function () {
-    this.axios.get("/ru/getotherobjects").then((response) => {
+    this.axios.get(this.localeUrl("/getotherobjects")).then((response) => {
       let data = response.data;
       if (data) {
         this.otherObjects = data.data;
@@ -540,7 +540,7 @@ export default {
       }
     });
 
-    this.axios.get("/ru/getngdu").then((response) => {
+    this.axios.get(this.localeUrl("/getngdu")).then((response) => {
       let data = response.data;
       if (data) {
         this.ngdus = data.data;
@@ -549,7 +549,7 @@ export default {
       }
     });
 
-    this.axios.get("/ru/getcdng").then((response) => {
+    this.axios.get(this.localeUrl("/getcdng")).then((response) => {
       let data = response.data;
       if (data) {
         this.cndgs = data.data;
@@ -558,7 +558,7 @@ export default {
       }
     });
 
-    this.axios.get("/ru/getwbs").then((response) => {
+    this.axios.get(this.localeUrl("/getwbs")).then((response) => {
       let data = response.data;
       if (data) {
         this.wbs = data.data;
@@ -567,7 +567,7 @@ export default {
       }
     });
 
-    this.axios.get("/ru/getsrb").then((response) => {
+    this.axios.get(this.localeUrl("/getsrb")).then((response) => {
       let data = response.data;
       if (data) {
         this.srb = data.data;
@@ -576,7 +576,7 @@ export default {
       }
     });
 
-    this.axios.get("/ru/gethob").then((response) => {
+    this.axios.get(this.localeUrl("/gethob")).then((response) => {
       let data = response.data;
       if (data) {
         this.hob = data.data;
@@ -585,7 +585,7 @@ export default {
       }
     });
 
-    this.axios.get("/ru/gethb").then((response) => {
+    this.axios.get(this.localeUrl("/gethb")).then((response) => {
       let data = response.data;
       if (data) {
         this.hb = data.data;
@@ -594,7 +594,7 @@ export default {
       }
     });
 
-    this.axios.get("/ru/getallgus").then((response) => {
+    this.axios.get(this.localeUrl("/getallgus")).then((response) => {
       let data = response.data;
       if (data) {
         this.gus = data.data;

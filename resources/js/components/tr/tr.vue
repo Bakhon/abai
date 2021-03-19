@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid">
+  <div class="w-100">
     <div class="col-md-12 row trcolmd12">
       <div
         class="col-md-12 row justify-content-between"
@@ -9,13 +9,13 @@
           padding-right: 0;
           margin-right: 0;
           margin-left: 0;
-          paddng-left: 0;
+          padding-left: 0;
         "
       >
         <a
           href="fa"
           class="col but-nav__link but trheadhight"
-          style="margin-left: -17px"
+          style="min-width: 330px; line-height: 31px"
           ><i style="margin-right: 10px"
             ><svg
               width="24"
@@ -29,13 +29,13 @@
                 fill="white"
               />
             </svg> </i
-          >Факторный анализ отклонений ТР</a
+          >{{trans('tr.tr')}}</a
         >
         <!-- <form class="form-group but-nav__link">
                     <label for="inputDate">Введите дату:</label>
                     <input type="date" value = "01.06.2020" class="form-control" v-model="dt">
             </form> -->
-        <div class="col dropdown">
+        <div class="col dropdown" style="padding: 0 13px">
           <button
             class="col-md-12 but-nav__link but faheadhight"
             type="button"
@@ -58,12 +58,17 @@
                 />
               </svg>
             </i>
-            Выберите месяц
+            {{trans('tr.dt')}}
           </button>
-
-          <div
+          <div v-if="datepicker1"
             class="dropdown-menu fadropmenu"
-            style="background: #656a8a; height: 104px; width: 161px"
+            style="
+              background: #40467e;
+              height: 125px;
+              flex-direction: column;
+              width: calc(100% - 26px);
+              margin-top: 4px;
+            "
             aria-labelledby="dropdownMenuButton"
             data-toggle="dropdown"
             @click.prevent.stop="() => {}"
@@ -72,40 +77,40 @@
               <select
                 v-model="month"
                 style="
-                  background-color: #656a8a;
-                  border-color: #656a8a;
+                  background-color: #40467e;
+                  border-color: #40467e;
                   color: white;
+                  width: 100%;
+                  padding: 8px;
                 "
                 class="form-controll"
                 id="companySelect"
                 @change="onChangeMonth($event)"
               >
-                <option disabled>Выберите месяц</option>
-                <option value="1">январь</option>
-                <option value="2">февраль</option>
-                <option value="3">март</option>
-                <option value="4">апрель</option>
-                <option value="5">май</option>
-                <option value="6">июнь</option>
-                <option value="7">июль</option>
-                <option value="8">август</option>
-                <option value="9">сентябрь</option>
-                <option value="10">октябрь</option>
-                <option value="11">ноябрь</option>
-                <option value="12">декабрь</option>
+                <option value="1">{{trans('tr.jan')}}</option>
+                <option value="2">{{trans('tr.feb')}}</option>
+                <option value="3">{{trans('tr.mar')}}</option>
+                <option value="4">{{trans('tr.apr')}}</option>
+                <option value="5">{{trans('tr.may')}}</option>
+                <option value="6">{{trans('tr.jun')}}</option>
+                <option value="7">{{trans('tr.jul')}}</option>
+                <option value="8">{{trans('tr.aug')}}</option>
+                <option value="9">{{trans('tr.sep')}}</option>
+                <option value="10">{{trans('tr.oct')}}</option>
+                <option value="11">{{trans('tr.nov')}}</option>
+                <option value="12">{{trans('tr.dec')}}</option>
               </select>
             </div>
             <div>
               <select
                 v-model="selectYear"
                 style="
-                  background-color: #656A8A ;
-                  border-color: #656A8A;
+                  background-color: #40467E ;
+                  border-color: #40467E;
                   color: white;
-                  width: 131px;
-
-                  
-                  border: 1px solid #656A8A; !important;
+                  width: 100%;
+                  padding: 8px;
+                  border: none
                   height: 35px !important;
                   color: white !important;
                 "
@@ -113,118 +118,74 @@
                 id="companySelect"
                 @change="onChangeYear($event)"
               >
-                <option disabled value="">Выберите год</option>
+                <option value="2021">2021</option>
                 <option value="2020">2020</option>
                 <option value="2019">2019</option>
-                <option value="2018">2018</option>
-                <option value="2017">2017</option>
-                <option value="2016">2016</option>
-                <option value="2015">2015</option>
-                <option value="2014">2014</option>
+
               </select>
             </div>
-            <a href="#" @click.prevent="chooseDt" class="btn btn-primary"
-              >Сформировать</a
-            >
+            <div class="fix calendar" style="display:flex; justify-content: center; color: white;">
+              <a href="#" @click.prevent="chooseDt"  class="btn btn-sm button_form" style="width: 80%;"
+                >{{trans('tr.sf')}}</a
+              >
+              <a  @click="calendarDynamic" @click.prevent.stop="() => {}" style="padding-top: 5px; cursor: pointer;">
+                <svg 
+                  width="32" height="28" viewBox="0 0 32 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M0.5 6C0.5 2.96243 2.96243 0.5 6 0.5H26C29.0376 0.5 31.5 2.96243 31.5 6V22C31.5 25.0376 29.0376 27.5 26 27.5H6C2.96243 27.5 0.5 25.0376 0.5 22V6Z" fill="#333975" stroke="#333975"/>
+                  <path d="M9 14.7282V13.3003C9 10.9807 10.8804 9.10034 13.2 9.10034H22.2999V9.10034" stroke="#D6D7E3" stroke-width="1.4" stroke-linecap="round"/>
+                  <path d="M20.8997 7L22.9289 9.02927C22.968 9.06832 22.968 9.13164 22.9289 9.17069L20.8997 11.2" stroke="#D6D7E3" stroke-width="1.4" stroke-linecap="round"/>
+                  <path d="M22.9996 13.2861V14.7141C22.9996 17.0336 21.1192 18.914 18.7996 18.914H9.69971V18.914" stroke="#D6D7E3" stroke-width="1.4" stroke-linecap="round"/>
+                  <path d="M11.1 21L9.07071 18.9707C9.03166 18.9317 9.03166 18.8684 9.07071 18.8293L11.1 16.8" stroke="#D6D7E3" stroke-width="1.4" stroke-linecap="round"/>
+                </svg>
+
+              </a>
+            </div>
+        </div>
+          <div v-if="datepicker2"
+            class="dropdown-menu fadropmenu"
+            style="
+              background: #40467e;
+              height: 174px;
+              flex-direction: column;
+              width: calc(100% - 26px);
+              margin-top: 4px;
+            "
+            aria-labelledby="dropdownMenuLink"
+          >
+              
+                <!-- <form class="form-group but-nav__link"> -->
+                <label for="inputDate" style="margin-left: 8px;">Введите начальную дату::</label>
+                <input type="date" class="form-control" style="background: #333975 !important;" v-model="date2" />
+                <!-- <form class="form-group but-nav__link"> -->
+                <label for="inputDate" style="margin-left: 8px;">Введите конечную дату::</label>
+                <input type="date" class="form-control" style="background: #333975 !important;" v-model="date1" />
+            <!-- </div> -->
+                <div class="fix calendar" style="display:flex; justify-content: center; color: white;">
+                  <a href="#" @click.prevent="chooseDt1" @click="calendarDate" class="btn btn-sm button_form" style="width: 80%;"
+                    >{{trans('tr.sf')}}</a
+                  >
+                  <a  @click="calendarDynamic" @click.prevent.stop="() => {}" style="padding-top: 5px; cursor: pointer;" >
+                    <svg 
+                      width="32" 
+                      height="28" 
+                      viewBox="0 0 32 28" 
+                      fill="none" 
+                      xmlns="http://www.w3.org/2000/svg">
+                      <path d="M0.5 6C0.5 2.96243 2.96243 0.5 6 0.5H26C29.0376 0.5 31.5 2.96243 31.5 6V22C31.5 25.0376 29.0376 27.5 26 27.5H6C2.96243 27.5 0.5 25.0376 0.5 22V6Z" fill="#333975" stroke="#333975"/>
+                      <path d="M9 14.7282V13.3003C9 10.9807 10.8804 9.10034 13.2 9.10034H22.2999V9.10034" stroke="#D6D7E3" stroke-width="1.4" stroke-linecap="round"/>
+                      <path d="M20.8997 7L22.9289 9.02927C22.968 9.06832 22.968 9.13164 22.9289 9.17069L20.8997 11.2" stroke="#D6D7E3" stroke-width="1.4" stroke-linecap="round"/>
+                      <path d="M22.9996 13.2861V14.7141C22.9996 17.0336 21.1192 18.914 18.7996 18.914H9.69971V18.914" stroke="#D6D7E3" stroke-width="1.4" stroke-linecap="round"/>
+                      <path d="M11.1 21L9.07071 18.9707C9.03166 18.9317 9.03166 18.8684 9.07071 18.8293L11.1 16.8" stroke="#D6D7E3" stroke-width="1.4" stroke-linecap="round"/>
+                    </svg></a>
+                </div>
           </div>
         </div>
-        <!-- <div>
-                <div>
-                    <label class="text-wrap" style="color:white;" for="companySelect">Выберите месяц</label>
-                    <select
-                        style="background-color:#20274e;border-color:#20274e;color:white;"
-                        class="form-control"
-                        id="companySelect"
-                        @change="onChangeMonth($event)"
-                    >
-                    <option>Выберите месяц</option>
-                        <option value="1">январь</option>
-                        <option value="2">февраль</option>
-                        <option value="3">март</option>
-                        <option value="4">апрель</option>
-                        <option value="5">май</option>
-                        <option value="6">июнь</option>
-                        <option value="7">июль</option>
-                        <option value="8">август</option>
-                        <option value="9">сентябрь</option>
-                        <option value="10">октябрь</option>
-                        <option value="11">ноябрь</option>
-                        <option value="12">декабрь</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="text-wrap" style="color:white;" for="companySelect">Выберите год</label>
-                    <select
-                        style="background-color:#20274e;border-color:#20274e;color:white;"
-                        class="form-control"
-                        id="companySelect"
-                        @change="onChangeYear($event)"
-                    >
-                    <option value=''> Выберите год </option>
-                        <option value="2020">2020</option>
-                        <option value="2019">2019</option>
-                        <option value="2018">2018</option>
-                        <option value="2017">2017</option>
-                        <option value="2016">2016</option>
-                        <option value="2015">2015</option>
-                        <option value="2014">2014</option>
-
-                    </select>
-                </div>
-
-            </div> -->
-        <!-- <a href="#" class="but-nav__link but">Выбор даты 2</a> -->
-        <!-- <a href="#" @click.prevent="chooseDt" class="but-nav__link but">Сформировать</a> -->
-        <a
-          @click="editable()"
-          v-if="!edit"
-          class="col but-nav__link but trheadhight"
-          style="margin-right: 11px"
-          ><i style="margin-right: 10px">
-            <svg
-              width="19"
-              height="19"
-              viewBox="0 0 19 19"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M1.10481 18.579C0.824148 18.5785 0.55658 18.4602 0.367405 18.253C0.174748 18.0475 0.0790152 17.7695 0.104259 17.489L0.349395 14.795L11.6737 3.481L15.2126 7.017L3.89136 18.33L1.19586 18.575C1.16485 18.578 1.13383 18.579 1.10481 18.579ZM15.919 6.31L12.3811 2.774L14.5032 0.653001C14.691 0.465221 14.9456 0.359711 15.2111 0.359711C15.4767 0.359711 15.7313 0.465221 15.919 0.653001L18.0412 2.774C18.2291 2.96157 18.3347 3.21609 18.3347 3.4815C18.3347 3.74691 18.2291 4.00143 18.0412 4.189L15.92 6.309L15.919 6.31Z"
-                fill="white"
-              />
-            </svg>
-          </i>
-          Редактировать</a
-        >
-        <a
-          @click="savetable()"
-          v-if="edit"
-          class="col but-nav__link but trheadhight"
-          >Сохранить</a
-        >
-
-        <!-- <a href="http://172.20.103.51:7576/api/techregime/factor/download" download="Тех Режим.xlsx" class="but-nav__link but">Экспорт</a> -->
-
-        <!-- <div class="col trcol">
-          <div
-            class="input-group input-group-sm"
-            style="width: 422px !important"
-          >
-            <input
-              type="text"
-              placeholder="Поиск"
-              class="form-control fix-rounded-right"
-              required
-            />
-            <div class="input-group-prepend">
-              <button class="input-group-text">Поиск</button>
-            </div>
-          </div>
-        </div> -->
+        
         <div class="big-data-input-container">
           <search-form-refresh
             @input="handlerSearch"
             @start-search="searchWell()"
+            :clear="searched"
           />
         </div>
       </div>
@@ -235,46 +196,345 @@
     </div>
     <div class="col-md-12 maintable tablecont">
       <div class="maintable-level2" style="position: relative">
-        <div class="fadee" v-if="isloading">
-          <fade-loader :loading="isloading"></fade-loader>
-        </div>
         <div class="techbt1 tr-table-header">
-          <div class="tech" style="margin-left: 4px; color: white">
-            <h3 style="color: white; width: 475px">
-              Технологический режим на {{ dt }}
-            </h3>
+          <div class="tech" style="margin-left: 14px; color: white">
+            <h5 v-if="date_fix">{{trans('tr.htr')}} {{ dt }}</h5>
+            <h5 v-if="!date_fix">Технологический режим {{ dt3 }}</h5>
           </div>
-          <select
-            name="Company"
-            class="form-control tr-field-filter"
-            id="companySelect"
-            v-model="filter"
-            @change="chooseField"
-          >
-            <option value="Все месторождения">Все месторождения</option>
-            <option value="Акшабулак Центральный">Акшабулак Центральный</option>
-            <option value="Акшабулак Южный">Акшабулак Южный</option>
-            <option value="Акшабулак Восточный">Акшабулак Восточный</option>
-            <option value="Нуралы">Нуралы</option>
-            <option value="Аксай">Аксай</option>
-            <option value="Аксай Южный">Аксай Южный</option>
-          </select>
 
-          <div
-            @click="cancelEdit"
+          <tr-multiselect
+            :filter="filter"
+            :selectedAllTag="true"
+            :fieldFilterOptions="fieldFilterOptions"
+            @change-filter="handlerFilter"
+            filterName="месторождения"
+          />
+          
+          <a v-show="false" v-if="edit"></a>
+
+
+          <modal name="add_well" :width="1600" :height="220"  :adaptive="true" style="z-index:9900000; ">
+            <div class="main_modals" style="background: #272953; width=900; height=400; border: 3px solid #656A8A;">
+              <notifications position="top"></notifications>
+              <div>
+                    <div class="header_mod" style="color:white; display:flex; margin-left: 14px; padding-top: 8px; ">
+                        <h5>Добавление скважин</h5>
+                        <button type="button" class="modal-bign-button" @click="closeModal('add_well')">Закрыть</button>
+
+                        <!-- <a class="modal-close" title="Close" @click.prevent="reRender" style="cursor: pointer;"> -->
+                          <!-- <svg 
+                            width="24" 
+                            height="24" 
+                            viewBox="0 0 24 24" 
+                            fill="none" 
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path d="M17.6567 17.6575L6.34294 6.34383" 
+                              stroke="white" stroke-width="1.4" stroke-linecap="round"/>
+                            <path d="M17.6556 6.34383L6.34188 17.6575" 
+                              stroke="white" stroke-width="1.4" stroke-linecap="round"/>
+                          </svg>
+                        </a> -->
+                    </div>
+                    
+                    <div class="body" style="background: #272953; display:flex; justify-content: center; padding-top: 6px; padding-bottom: 7px;">
+                            <div style="margin-left: 7px;">
+                              <select
+                                class="form-control select_mod"
+                                style="background: #334296 !important"
+                                v-model="Filter_status"
+                                value="Статус"
+                              >
+                                <option v-for="(f, k) in statusFilters" :key="k" :value="f">
+                                  {{ f === undefined ? "Выберите статус" : f }}
+                                </option>
+                              </select>
+                            </div>
+                            <div style="margin-left: 7px; cursor: pointer;">
+                              <select
+                                class="select_mod form-control"
+                                style="background: #334296 !important"
+                                v-model="Filter_field"
+                                value="Месторождение"
+                              >
+                                <option v-for="(f, k) in fieldFilters" :key="k" :value="f">
+                                  {{ f === undefined ? "Выберите месторождение" : f }}
+                                </option>
+                              </select>
+                            </div>
+
+                            <div style="margin-left: 7px; cursor: pointer;">
+                              <select
+                                class="form-control select_mod"
+                                style="background: #334296 !important"
+                                v-model="Filter_well_type"
+                                value="Тип скв"
+                              >
+                                <option v-for="(f, k) in typeWellFilters" :key="k" :value="f">
+                                  {{ f === undefined ? "Выберите тип скв" : f }}
+                                </option>
+                              </select>
+                            </div>
+
+                            <div style="margin-left: 7px; cursor: pointer;">
+                              <select
+                                class="form-control select_mod"
+                                style="background: #334296 !important"
+                                v-model="Filter_well_status"
+                                value="Состояние"
+                              >
+                                <option v-for="(f, k) in wellStatusFilters" :key="k" :value="f">
+                                  {{ f === undefined ? "Выберите состояние" : f }}
+                                </option>
+                              </select>
+                            </div>
+
+                            <div style="margin-left: 7px; cursor: pointer;">
+                              <select
+                                class="select_mod form-control"
+                                style="background: #334296 !important"
+                                v-model="Filter_well"
+                                value="Скважина"
+                              >
+                                <option v-for="(f, k) in wellFilters" :key="k" :value="f">
+                                  {{ f === undefined ? "Выберите скважину" : f }}
+                                </option>
+                              </select>
+                            </div>
+                            
+                              <a
+                                
+                                style="margin-left: 50px;; cursor: pointer; color:white; margin-top: 5px;"
+                                v-if="!show_add"
+                                @click="addWellData"
+                                @click.prevent="showWells"
+                                ><svg 
+                                width="16" 
+                                height="16" 
+                                viewBox="0 0 16 16" 
+                                fill="none" 
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path d="M14.5 8L1.5 8" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                                <path d="M8 1.5V14.5" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                                </svg>
+                              Добавить</a>
+
+                              <a
+                                
+                                style="margin-left: 50px;; cursor: pointer; color:white; margin-top: 5px;"
+                                v-if="show_add"
+                                @click="showWells"
+                                ><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                  <path d="M17.6567 17.6575L6.34294 6.34383" 
+                                    stroke="white" stroke-width="1.4" stroke-linecap="round"/>
+                                  <path d="M17.6556 6.34383L6.34188 17.6575" 
+                                    stroke="white" stroke-width="1.4" stroke-linecap="round"/>
+                                  </svg>
+                              Отмена</a> 
+
+                            <a
+                              style="margin-left: 10px; cursor: pointer; color:white; margin-top: 5px;"
+                              @click="saveadd()"
+                              @click.prevent="reRender"
+                              v-show = checkers
+                              ><svg width="24" 
+                              height="24" 
+                              viewBox="0 0 24 24" 
+                              fill="none" 
+                              xmlns="http://www.w3.org/2000/svg">
+                              <path d="M4 12.5L8.85858 17.3586C8.93668 17.4367 9.06332 17.4367 9.14142 17.3586L20 6.5" stroke="white" 
+                              stroke-width="1.5" stroke-linecap="round"/>
+                              </svg>Сохранить</a>
+
+                             <a
+                              style="margin-left: 10px; cursor: pointer; color:white; margin-top: 5px;"
+                              @click="deleteWell"
+                              @click.prevent="reRender"
+                              v-show = checkersec
+
+                              ><svg width="24"
+                               height="24" 
+                               viewBox="0 0 24 24" 
+                               fill="none" 
+                               xmlns="http://www.w3.org/2000/svg">
+                              <path d="M17.6567 17.6575L6.34294 6.34383" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
+                              <path d="M17.6556 6.34383L6.34188 17.6575" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
+                              </svg>Удалить</a>
+                            
+                </div>
+              </div>
+              <div class="table" style="padding-top: 21px;  background: #454D7D; overflow: hidden !important;">
+
+                    <table class="table table-bordered table-dark table-responsive trtable" style="font-size: 12px; background: #454D7D; color: #fff; height: 100px;" v-if="show_add" :key="render">
+                    <thead>
+                      <tr >
+                        <td scope="col">Место-ние</td>
+                        <td scope="col">Состояние скв</td>
+                        <td scope="col">№ скв</td>
+                        <td scope="col">Горизонт</td>
+                        <td scope="col">Обьект</td>
+                        <td scope="col">Способ эксп-ии</td>
+                        <td scope="col">Тип скв</td>
+                        <td scope="col">Блок</td>
+                        <td scope="col">Наружный диаметр э/к</td>
+                        <td scope="col">Внутр. диаметр э/к</td>
+                        <td scope="col">Н вд</td>
+                        <td scope="col">Тип насоса</td>
+                        <td scope="col">Тип СК</td>
+                        <td scope="col">Р буф</td>
+                        <td scope="col">Р л</td>
+                        <td scope="col">Р пласт.</td>
+                        <td scope="col">Н д</td>
+                        <td scope="col">P затр</td>
+                        <td scope="col">Плот-ть нефти</td>
+                        <td scope="col">Плот-ть воды</td>
+                        <td scope="col">Н перф</td>
+                        <td scope="col">Р заб замерное</td>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr v-for="(row, row_index) in lonelywell" 
+                        :key="row_index"
+                        ref="editTable">
+                        <td><input data-key="field" :value="row.field" class="input_edit"></td>
+                        <td><input data-key="well_status_last_day" :value="row.well_status_last_day" class="input_edit"></td>
+                        <td><input data-key="rus_wellname" :value="row.rus_wellname" class="input_edit"></td>
+                        <td><input data-key="horizon" :value="row.horizon" class="input_edit"></td>
+                        <td><input data-key="object" :value="row.object" class="input_edit"></td>
+                        <td><input data-key="exp_meth" :value="row.exp_meth" class="input_edit"></td>
+                        <td><input data-key="type_text" :value="row.type_text" class="input_edit"></td>
+                        <td><input data-key="block" :value="row.block" class="input_edit"></td>
+                        <td><input data-key="cas_OD" :value="row.cas_OD" class="input_edit"></td>
+                        <td><input data-key="cas_ID" :value="row.cas_ID" class="input_edit"></td>
+                        <td><input data-key="h_up_perf_md" :value="row.h_up_perf_md" class="input_edit"></td>
+                        <td><input data-key="pump_type" :value="row.pump_type" class="input_edit"></td>
+                        <td><input data-key="type_sr" :value="row.type_sr" class="input_edit"></td>
+                        <td><input data-key="whp" :value="row.whp" class="input_edit"></td>
+                        <td><input data-key="line_p" :value="row.line_p" class="input_edit"></td>
+                        <td><input data-key="p_res" :value="row.p_res" class="input_edit"></td>
+                        <td><input data-key="h_dyn" :value="row.h_dyn" class="input_edit"></td>
+                        <td><input data-key="p_annular" :value="row.p_annular" class="input_edit"></td>
+                        <td><input data-key="dens_oil" :value="row.dens_oil" class="input_edit"></td>
+                        <td><input data-key="dens_liq" :value="row.dens_liq" class="input_edit"></td>
+                        <td><input data-key="h_perf" :value="row.h_perf" class="input_edit"></td>
+                        <td><input data-key="bhp_meter" :value="row.bhp_meter" class="input_edit"></td>
+                        <td v-show="false"><input data-key="well" :value="row.well" class="input_edit"></td>
+
+                      </tr>
+                    </tbody>
+                  </table>
+              </div>
+            </div>
+          </modal>
+
+          <button
+            type="button" 
+            data-toggle="modal" 
+            data-target="#exampleModalCenter" 
+            @click="addpush()"
+            @click.prevent="wellAdd"
+            style="background: #272953; border: none; margin-left: 10px;"
+            title="Добавить скважины">
+            
+            <svg 
+                width="24" 
+                height="24" 
+                viewBox="0 0 24 24"
+                fill="none" 
+                xmlns="http://www.w3.org/2000/svg">
+              <path 
+                d="M18.5 12L5.5 12" 
+                stroke="white" 
+                stroke-width="1.5" 
+                stroke-linecap="round"/>
+              <path 
+                d="M12 5.5V18.5" 
+                stroke="white" 
+                stroke-width="1.5" 
+                stroke-linecap="round"/>
+            </svg>
+          </button>
+            
+
+          <a
             v-if="edit"
-            class="col but-nav__link but mx-2 butcancel"
-          >
-            Отмена
-          </div>
+            v-bind:title="trans('tr.trtlp6')"
+            style="margin-left: 10px; cursor: pointer;"
+            @click="savetable()"
+            ><svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+                d="M15.4735 5C15.7387 5 15.9931 5.10536 16.1806 5.29289L18.9985 8.11077L18.9985 17.9985C18.9985 18.5508 18.5508 18.9985 17.9985 18.9985L6 18.9985C5.44772 18.9985 5 18.5508 5 17.9985L5 6C5 5.44772 5.44771 5 6 5L15.4735 5Z"
+                stroke="white"
+                stroke-width="1.2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              <rect
+                x="8.109"
+                y="12.778"
+                width="7.77693"
+                height="6.22155"
+                stroke="white"
+                stroke-width="1.2"
+                stroke-linejoin="round"
+              />
+              <rect
+                x="8.88917"
+                y="5"
+                width="6.22155"
+                height="3.88847"
+                stroke="white"
+                stroke-width="1.2"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </a>
+
+          <a
+            v-if="edit"
+            class="trgraph"
+            v-bind:title="trans('tr.trtlp5')"
+            style="cursor: pointer;"
+            data-toggle="tooltip"
+            data-placement="top"
+            @click="cancelEdit"
+            ><svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M17.6574 17.6575L6.34367 6.34383"
+                stroke="white"
+                stroke-width="1.4"
+                stroke-linecap="round"
+              />
+              <path
+                d="M17.6563 6.34383L6.34262 17.6575"
+                stroke="white"
+                stroke-width="1.4"
+                stroke-linecap="round"
+              />
+            </svg>
+          </a>
+
           <a
             v-if="!edit"
-            class="but-nav__link but trgraph"
-            title="Показать графики"
+            class="trgraph"
+            v-bind:title="trans('tr.trtlp1')"
             data-toggle="tooltip"
             data-placement="top"
             href="tr_charts"
-            @click="pushBign('chart')"
+           
             ><svg
               width="24"
               height="24"
@@ -291,24 +551,46 @@
             </svg>
           </a>
 
+          <a
+            v-if="!edit"
+            v-bind:title="trans('tr.trtlp2')"
+            style="cursor: pointer;"
+            data-toggle="tooltip"
+            data-placement="top"
+            @click="editable()"
+            ><svg
+              width="18"
+              height="18"
+              viewBox="0 0 18 18"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M3 11.5L1.55336 16.3221C1.53048 16.3984 1.6016 16.4695 1.67788 16.4466L6.5 15M3 11.5C3 11.5 11.0603 3.43942 12.7227 1.7772C12.8789 1.62104 13.1257 1.62572 13.2819 1.78189C13.8372 2.33714 15.1144 3.61434 16.2171 4.71709C16.3733 4.87334 16.3788 5.12115 16.2226 5.27738C14.5597 6.94002 6.5 15 6.5 15M3 11.5L3.64727 10.8527L7.14727 14.3527L6.5 15"
+                stroke="white"
+                stroke-width="1.4"
+              />
+            </svg>
+          </a>
+
           <button
             v-if="!edit"
+            class="trgraph"
             id="bt1"
             @click="swap"
             style="
               background: #272953;
               color: white;
-
               border: none;
             "
-            title="Длинная версия"
+            :title="isfulltable ? trans('tr.trtlp3') : trans('tr.trtlp4')"
             data-toggle="tooltip"
             data-placement="top"
           >
             <svg
-              width="25"
+              width="24"
               height="24"
-              viewBox="0 0 25 24"
+              viewBox="0 0 24 24"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
               v-if="isfulltable"
@@ -328,10 +610,9 @@
             </svg>
 
             <svg
-              width="19"
-              style="margin-right: 10px"
-              height="19"
-              viewBox="0 0 19 19"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
               v-if="!isfulltable"
@@ -352,228 +633,227 @@
             <!-- <TrFullTable :wells="wells" :edit="edit" @onSort="sortBy" v-show="show_second"/> -->
             <table
               v-if="show_second"
-              class="table table-bordered table-dark table-responsive ce trtable"
-              style="
-                position: sticky;
-                left: 5.31%;
-                right: 2.4%;
-                top: 48.21%;
-                bottom: 66.58%;
-                background: #0d1e63;
-              "
+              class="table table-bordered table-dark table-responsive trtable"
+              style="margin-bottom: 0; background: #0d1e63"
+
             >
               <thead>
                 <tr class="headerColumn sticky" style="background: #333975">
                   <td rowspan="4" class="th">№</td>
-                  <td rowspan="4" class="th">НГДУ/месторождение</td>
-                  <td rowspan="4" class="th">№ скв</td>
-                  <td rowspan="4" class="th">Тип скважины</td>
-                  <td rowspan="4" class="th">Горизонт</td>
-                  <td rowspan="4" class="th">Блок</td>
-                  <td rowspan="4" class="th">R контура питания</td>
-                  <td rowspan="4" class="th">Наружный диаметр э/к</td>
-                  <td rowspan="4" class="th">Внутренний диаметр э/к</td>
-                  <td rowspan="4" class="th">Наружный диаметр НКТ</td>
-                  <td rowspan="4" class="th">Внутренний диаметр НКТ</td>
-                  <td rowspan="4" class="th">Диаметр штуцера</td>
-                  <td rowspan="4" class="th">Нвдп</td>
-                  <td rowspan="4" class="th">Удлинение(Нвдп)</td>
-                  <td rowspan="4" class="th">Способ эксплуатации</td>
-                  <td rowspan="4" class="th">Тип Насоса</td>
-                  <td rowspan="4" class="th">Тип СК</td>
-                  <td rowspan="4" class="th">Число качаний</td>
-                  <td rowspan="4" class="th">Длина хода</td>
-                  <td rowspan="4" class="th">Q теор</td>
+                  <td rowspan="4" class="th">{{trans('tr.trs1')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.tr1')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.tr2')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.tr3')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.tr4')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.tr5')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.trs2')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.tr6')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.trs3')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.tr7')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.trs4')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.tr30')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.tr9')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.trs5')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.tr10')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.tr11')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.trs6')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.trs7')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.trs8')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.trs9')}}</td>
                   <td rowspan="4" class="th">
-                    Частота работы насоса или число оборотов
+                    {{trans('tr.tr12')}}
                   </td>
-                  <td rowspan="4" class="th">Н сп насоса</td>
-                  <td rowspan="4" class="th">P буф</td>
-                  <td rowspan="4" class="th">P лин</td>
-                  <td rowspan="4" class="th">P пл</td>
-                  <td rowspan="4" class="th">Н дин</td>
-                  <td rowspan="4" class="th">Р затр</td>
-                  <td rowspan="4" class="th">Р на приеме</td>
+                  <td rowspan="4" class="th">{{trans('tr.tr13')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.trs10')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.trs11')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.trs12')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.tr15')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.tr16')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.trs13')}}</td>
                   <td class="colspan th" colspan="5">
-                    Данные за предыдущий месяц
+                    {{trans('tr.trs14')}}
                   </td>
-                  <td class="colspan th" colspan="4">Фактический режим</td>
+                  <td class="colspan th" colspan="5">{{trans('tr.tr17')}}</td>
                   <td rowspan="4" class="th">
-                    <span>Состояние на конец месяца</span>
+                    <span>{{trans('tr.tr25')}}</span>
                   </td>
-                  <td rowspan="4" class="th">P нас</td>
-                  <td rowspan="4" class="th">ГФ</td>
-                  <td rowspan="4" class="th">Т пл</td>
-                  <td rowspan="4" class="th">Т уст</td>
-                  <td class="colspan th" colspan="4">ГРП</td>
+                  <td rowspan="4" class="th">{{trans('tr.trs15')}}</td>
+                  <!-- <td rowspan="4" class="th">ГФ</td> -->
+                  <td rowspan="4" class="th">{{trans('tr.trs16')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.trs17')}}</td>
+                  <td class="colspan th" colspan="4">{{trans('tr.tr28')}}</td>
                   <td rowspan="4" class="th">
-                    <span>Вязкость нефти в пластовых условиях</span>
+                    <span>{{trans('tr.trs18')}}</span>
                   </td>
                   <td rowspan="4" class="th">
-                    <span>Вязкость воды в пластовых условиях</span>
+                    <span>{{trans('tr.trs19')}}</span>
                   </td>
-                  <td rowspan="4" class="th">Вязкость жидкости</td>
-                  <td rowspan="4" class="th">Объемный коэффициент</td>
-                  <td rowspan="4" class="th">Плотность нефти</td>
-                  <td rowspan="4" class="th">Плотность воды</td>
-                  <td rowspan="4" class="th">Н перф</td>
+                  <td rowspan="4" class="th">{{trans('tr.trs20')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.trs21')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.trs22')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.trs23')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.trs24')}}</td>
                   <td rowspan="4" class="th">k</td>
                   <td rowspan="4" class="th">КН</td>
-                  <td rowspan="4" class="th">К пр</td>
+                  <td rowspan="4" class="th">{{trans('tr.trs25')}}</td>
                   <td class="colspan th" colspan="14">
-                    Расчет технологического потенциала от ИДН
+                    {{trans('tr.tr18')}}
                   </td>
                   <td class="colspan th" colspan="11">
-                    Расчёт геологического потенциала
+                    {{trans('tr.trs26')}}
                   </td>
-                  <td class="colspan th" colspan="4">Проверка</td>
+                  <td class="colspan th" colspan="4">{{trans('tr.trs27')}}</td>
                   <td rowspan="4" class="th">
-                    <span>Максимальная глубина спуска насоса при ИДН</span>
+                    <span>{{trans('tr.trs28')}}</span>
                   </td>
-                  <td rowspan="4" class="th">Дата остановки</td>
-                  <td rowspan="4" class="th">Расчлененность</td>
-                  <td rowspan="4" class="th">Зона</td>
-                  <td rowspan="4" class="th">Цех</td>
+                  <td rowspan="4" class="th">{{trans('tr.trs29')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.trs30')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.trs31')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.trs32')}}</td>
                   <td rowspan="4" class="th">
-                    <span>Фонтан через насос</span>
+                    <span>{{trans('tr.trs33')}}</span>
                   </td>
-                  <td rowspan="4" class="th">Нерентабельная</td>
-                  <td rowspan="4" class="th">Неустановившийся режим</td>
-                  <td rowspan="4" class="th">Дата ввода в эксплуатацию</td>
-                  <td rowspan="4" class="th">Назначение по проекту</td>
-                  <td rowspan="4" class="th">Р заб замерное</td>
-                  <td rowspan="4" class="th">Нефтенасыщенная толщина</td>
-                  <td rowspan="4" class="th">Накопленная добыча нефти</td>
+                  <td rowspan="4" class="th">{{trans('tr.trs34')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.trs35')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.trs36')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.trs37')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.trs38')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.trs39')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.trs40')}}</td>
                   <td rowspan="4" class="th">
-                    <span
-                      >Максимальный дебит жидкости за всю историю работы</span
-                    >
+                    <span>{{trans('tr.trs41')}}</span>
                   </td>
-                  <td rowspan="4" class="th">Расстояние до нагн скважины</td>
-                  <td rowspan="4" class="th">Расстояние до ВНК</td>
-                  <td rowspan="4" class="th">Текущий забой по скважине, м</td>
-                  <td rowspan="4" class="th">Кподачи насоса</td>
-                  <td rowspan="4" class="th">Тип ГЗУ</td>
-                  <td rowspan="4" class="th">Рпл начальное</td>
+                  <td rowspan="4" class="th">{{trans('tr.trs42')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.trs43')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.trs44')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.trs45')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.trs46')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.trs47')}}</td>
                   <td rowspan="4" class="th">
-                    <span>Qr характеристический дебит жидкости</span>
+                    <span>{{trans('tr.trs48')}}</span>
                   </td>
-                  <td class="colspan th" colspan="2">АПВ</td>
+                  <td class="colspan th" colspan="2">{{trans('tr.trs49')}}</td>
                   <td class="colspan th" colspan="3">
-                    Планируемые мероприятия
+                    {{trans('tr.trs50')}}
                   </td>
-                  <td rowspan="4" class="th"><span>Мероприятия</span></td>
+                  <td rowspan="4" class="th"><span>{{trans('tr.trs51')}}</span></td>
                   <td rowspan="4" class="th">
-                    <span>Сведения о тех.состоянии экс.колонны</span>
+                    <span>{{trans('tr.trs52')}}</span>
                   </td>
-                  <td rowspan="4" class="th"><span>Комментарии</span></td>
+                  <td rowspan="4" class="th"><span>{{trans('tr.trs54')}}</span></td>
                   <td rowspan="4" class="th">
-                    <span>Дата последнего ГТМ</span>
+                    <span>{{trans('tr.trs55')}}</span>
                   </td>
                   <td rowspan="4" class="th">
-                    <span>Вид последнего ГТМ</span>
+                    <span>{{trans('tr.trs56')}}</span>
                   </td>
-                  <td class="colspan th" colspan="12">Намечаемый режим</td>
+                  <td class="colspan th" colspan="14">{{trans('tr.tr19')}}</td>
                 </tr>
-                <tr class="headerColumn" style="background: #333975">
-                  <td rowspan="3" class="th"><span>P заб</span></td>
-                  <td rowspan="3" class="th"><span>Q ж</span></td>
-                  <td rowspan="3" class="th"><span>Обводненность</span></td>
-                  <td rowspan="3" class="th"><span>Hдин</span></td>
-                  <td rowspan="3" class="th"><span>Kпр</span></td>
-                  <td rowspan="3" class="th"><span>P заб</span></td>
-                  <td rowspan="3" class="th"><span>Q н</span></td>
-                  <td rowspan="3" class="th"><span>Q ж</span></td>
-                  <td rowspan="3" class="th"><span>Обводненность</span></td>
-                  <td rowspan="3" class="th"><span>Скин</span></td>
-                  <td rowspan="3" class="th"><span>JD факт</span></td>
-                  <td rowspan="3" class="th"><span>Дата проведения</span></td>
+                <tr class="headerColumn notsticky" style="background: #333975">
+                  <td rowspan="3" class="th"><span>{{trans('tr.tr20')}}</span></td>
+                  <td rowspan="3" class="th"><span>{{trans('tr.tr22')}}</span></td>
+                  <td rowspan="3" class="th"><span>{{trans('tr.tr23')}}</span></td>
+                  <td rowspan="3" class="th"><span>{{trans('tr.trs57')}}</span></td>
+                  <td rowspan="3" class="th"><span>{{trans('tr.trs58')}}</span></td>
+                  <td rowspan="3" class="th"><span>{{trans('tr.tr20')}}</span></td>
+                  <td rowspan="3" class="th"><span>{{trans('tr.tr21')}}</span></td>
+                  <td rowspan="3" class="th"><span>{{trans('tr.tr22')}}</span></td>
+                  <td rowspan="3" class="th"><span>{{trans('tr.tr23')}}</span></td>
+                  <td rowspan="3" class="th"><span>{{trans('tr.tr24')}}</span></td>
+                  <td rowspan="3" class="th"><span>{{trans('tr.trs59')}}</span></td>
+                  <td rowspan="3" class="th"><span>{{trans('tr.trs60')}}</span></td>
+                  <td rowspan="3" class="th"><span>{{trans('tr.trs61')}}</span></td>
                   <td rowspan="3" class="th"><span>Фирма</span></td>
-                  <td rowspan="3" class="th"><span>Р заб</span></td>
-                  <td class="colspan th" colspan="4">ИДН</td>
-                  <td rowspan="3" class="th"><span>JD опт</span></td>
+                  <td rowspan="3" class="th"><span>{{trans('tr.trs62')}}</span></td>
+                  <td class="colspan th" colspan="4">{{trans('tr.tr27')}}</td>
+                  <td rowspan="3" class="th"><span>{{trans('tr.trs63')}}</span></td>
                   <td rowspan="3" class="th"><span>Skin</span></td>
                   <td rowspan="3" class="th">
-                    <span>К пр от стимуляции</span>
+                    <span>{{trans('tr.trs64')}}</span>
                   </td>
-                  <td class="colspan th" colspan="4">ГРП</td>
-                  <td rowspan="3" class="th"><span>% прироста Q н</span></td>
-                  <td rowspan="3" class="th"><span>Общий прирост Q н</span></td>
-                  <td rowspan="3" class="th"><span>Р заб</span></td>
-                  <td class="colspan th" colspan="4">ИДН</td>
-                  <td class="colspan th" colspan="4">ГРП</td>
-                  <td rowspan="3" class="th"><span>% прироста Q н</span></td>
-                  <td rowspan="3" class="th"><span>Общий прирост Q н</span></td>
-                  <td class="colspan th" colspan="2">Ошибки</td>
-                  <td class="colspan th" colspan="2">Предупреждения</td>
-                  <td rowspan="3" class="th"><span>Траб</span></td>
-                  <td rowspan="3" class="th"><span>Тнак</span></td>
-                  <td class="colspan th" colspan="3">Изоляционные работы</td>
-                  <td rowspan="3" class="th"><span>Диаметр штуцера</span></td>
-                  <td rowspan="3" class="th"><span>Qн</span></td>
-                  <td rowspan="3" class="th"><span>Qж</span></td>
-                  <td rowspan="3" class="th"><span>Обводненность</span></td>
-                  <td rowspan="3" class="th"><span>Число дней работы</span></td>
+                  <td class="colspan th" colspan="4">{{trans('tr.tr28')}}</td>
+                  <td rowspan="3" class="th"><span>{{trans('tr.trs65')}}</span></td>
+                  <td rowspan="3" class="th"><span>{{trans('tr.tr29')}}</span></td>
+                  <td rowspan="3" class="th"><span>{{trans('tr.trs62')}}</span></td>
+                  <td class="colspan th" colspan="4">{{trans('tr.tr27')}}</td>
+                  <td class="colspan th" colspan="4">{{trans('tr.tr28')}}</td>
+                  <td rowspan="3" class="th"><span>{{trans('tr.trs65')}}</span></td>
+                  <td rowspan="3" class="th"><span>{{trans('tr.tr29')}}</span></td>
+                  <td class="colspan th" colspan="2">{{trans('tr.trs66')}}</td>
+                  <td class="colspan th" colspan="2">{{trans('tr.trs67')}}</td>
+                  <td rowspan="3" class="th"><span>{{trans('tr.trs68')}}</span></td>
+                  <td rowspan="3" class="th"><span>{{trans('tr.trs69')}}</span></td>
+                  <td class="colspan th" colspan="3">{{trans('tr.trs70')}}</td>
+                  <td rowspan="3" class="th"><span>{{trans('tr.tr30')}}</span></td>
+                  <td rowspan="3" class="th"><span>{{trans('tr.tr21')}}</span></td>
+                  <td rowspan="3" class="th"><span>{{trans('tr.tr22')}}</span></td>
+                  <td rowspan="3" class="th"><span>{{trans('tr.tr31')}}</span></td>
+                  <td rowspan="3" class="th"><span>{{trans('tr.tr23')}}</span></td>
+                  <td rowspan="3" class="th"><span>{{trans('tr.tr24')}}</span></td>
+                  <td rowspan="3" class="th"><span>{{trans('tr.trs71')}}</span></td>
                   <td rowspan="3" class="th">
-                    <span>Добыча нефти за месяц</span>
-                  </td>
-                  <td rowspan="3" class="th">
-                    <span>Добыча газа за месяц</span>
-                  </td>
-                  <td rowspan="3" class="th">
-                    <span>Добыча жидкость за месяц</span>
+                    <span>{{trans('tr.trs72')}}</span>
                   </td>
                   <td rowspan="3" class="th">
-                    <span>Добыча воды за месяц</span>
+                    <span>{{trans('tr.trs73')}}</span>
+                  </td>
+                  <td rowspan="3" class="th">
+                    <span>{{trans('tr.trs74')}}</span>
+                  </td>
+                  <td rowspan="3" class="th">
+                    <span>{{trans('tr.trs75')}}</span>
                   </td>
                   <td class="colspan th" colspan="2">
-                    <span>Изменения к режиму</span>
+                    <span>{{trans('tr.trs76')}}</span>
                   </td>
-                  <td rowspan="3">
-                    <span>Мероприятия по обеспечению техрежима</span>
+                  <td rowspan="3" class="th">
+                    <span>{{trans('tr.trs77')}}</span>
                   </td>
                 </tr>
-                <tr class="headerColumn" style="background: #333975">
-                  <td rowspan="2" class="th"><span>Q ж</span></td>
+                <tr class="headerColumn notsticky" style="background: #333975">
+                  <td rowspan="2" class="th"><span>{{trans('tr.tr22')}}</span></td>
                   <td rowspan="2" class="th">
-                    <span>Q ж с поправкой на D э/к</span>
+                    <span>{{trans('tr.trs78')}}</span>
                   </td>
-                  <td rowspan="2" class="th"><span>Q н</span></td>
-                  <td rowspan="2" class="th"><span>Прирост Q н</span></td>
-                  <td rowspan="2" class="th"><span>Q ж</span></td>
+                  <td rowspan="2" class="th"><span>{{trans('tr.tr21')}}</span></td>
+                  <td rowspan="2" class="th"><span>{{trans('tr.tr32')}}</span></td>
+                  <td rowspan="2" class="th"><span>{{trans('tr.tr22')}}</span></td>
                   <td rowspan="2" class="th">
-                    <span>Q ж с поправкой на D э/к</span>
+                    <span>{{trans('tr.trs78')}}</span>
                   </td>
-                  <td rowspan="2" class="th"><span>Q н</span></td>
-                  <td rowspan="2" class="th"><span>Прирост Q н</span></td>
-                  <td rowspan="2" class="th"><span>Q ж</span></td>
+                  <td rowspan="2" class="th"><span>{{trans('tr.tr21')}}</span></td>
+                  <td rowspan="2" class="th"><span>{{trans('tr.tr32')}}</span></td>
+                  <td rowspan="2" class="th"><span>{{trans('tr.tr22')}}</span></td>
                   <td rowspan="2" class="th">
-                    <span>Q ж с поправкой на D э/к</span>
+                    <span>{{trans('tr.trs78')}}</span>
                   </td>
-                  <td rowspan="2" class="th"><span>Q н</span></td>
-                  <td rowspan="2" class="th"><span>Прирост Q н</span></td>
-                  <td rowspan="2" class="th"><span>Q ж</span></td>
+                  <td rowspan="2" class="th"><span>{{trans('tr.tr21')}}</span></td>
+                  <td rowspan="2" class="th"><span>{{trans('tr.tr32')}}</span></td>
+                  <td rowspan="2" class="th"><span>{{trans('tr.tr22')}}</span></td>
                   <td rowspan="2" class="th">
-                    <span>Q ж с поправкой на D э/к</span>
+                    <span>{{trans('tr.trs78')}}</span>
                   </td>
-                  <td rowspan="2" class="th"><span>Q н</span></td>
-                  <td rowspan="2" class="th"><span>Прирост Q н</span></td>
-                  <td rowspan="2" class="th"><span>Число ошибок</span></td>
-                  <td rowspan="2" class="th"><span>Первая ошибка</span></td>
+                  <td rowspan="2" class="th"><span>{{trans('tr.tr21')}}</span></td>
+                  <td rowspan="2" class="th"><span>{{trans('tr.tr32')}}</span></td>
+                  <td rowspan="2" class="th"><span>{{trans('tr.trs79')}}</span></td>
+                  <td rowspan="2" class="th"><span>{{trans('tr.trs80')}}</span></td>
                   <td rowspan="2" class="th">
-                    <span>Число предупреждений</span>
+                    <span>{{trans('tr.trs81')}}</span>
                   </td>
                   <td rowspan="2" class="th">
-                    <span>Первое предупреждение</span>
+                    <span>{{trans('tr.trs82')}}</span>
                   </td>
-                  <td rowspan="2" class="th"><span>Проводить</span></td>
-                  <td rowspan="2" class="th"><span>Дебит жидкости</span></td>
-                  <td rowspan="2" class="th"><span>Обводненность</span></td>
-                  <td rowspan="2" class="th"><span>Q н</span></td>
-                  <td rowspan="2" class="th"><span>Q ж</span></td>
+                  <td rowspan="2" class="th"><span>{{trans('tr.trs83')}}</span></td>
+                  <td rowspan="2" class="th"><span>{{trans('tr.tr22')}}</span></td>
+                  <td rowspan="2" class="th"><span>{{trans('tr.tr23')}}</span></td>
+                  <td rowspan="2" class="th"><span>{{trans('tr.tr21')}}</span></td>
+                  <td rowspan="2" class="th"><span>{{trans('tr.tr22')}}</span></td>
                 </tr>
                 <tr></tr>
-                <tr class="subHeaderColumn" style="background: #333975">
+                <tr
+                  class="subHeaderColumn"
+                  style="background: #333975; cursor: pointer"
+                >
                   <td @click="sortBy('gu')" class="th">
                     <i class="fa fa-fw fa-sort"></i>
                   </td>
@@ -587,6 +867,9 @@
                     <i class="fa fa-fw fa-sort"></i>
                   </td>
                   <td @click="sortBy('horizon')" class="th">
+                    <i class="fa fa-fw fa-sort"></i>
+                  </td>
+                  <td @click="sortBy('object')" class="th">
                     <i class="fa fa-fw fa-sort"></i>
                   </td>
                   <td @click="sortBy('block')" class="th">
@@ -632,10 +915,10 @@
                     <i class="fa fa-fw fa-sort"></i>м
                   </td>
                   <td @click="sortBy('q_theor')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>м3/сут
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr2')}}
                   </td>
                   <td @click="sortBy('freq')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>Гц, об/мин
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr1')}}
                   </td>
                   <td @click="sortBy('h_pump_set')" class="th">
                     <i class="fa fa-fw fa-sort"></i>м
@@ -662,7 +945,7 @@
                     <i class="fa fa-fw fa-sort"></i>атм
                   </td>
                   <td @click="sortBy('q_l_prev_m')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>м3/сут
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr2')}}
                   </td>
                   <td @click="sortBy('wct_prev_m')" class="th">
                     <i class="fa fa-fw fa-sort"></i>%
@@ -671,28 +954,28 @@
                     <i class="fa fa-fw fa-sort"></i>м
                   </td>
                   <td @click="sortBy('pi_prev_m')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>м3/сут/атм
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr4')}}
                   </td>
                   <td @click="sortBy('bhp')" class="th">
                     <i class="fa fa-fw fa-sort"></i>атм
                   </td>
                   <td @click="sortBy('q_o')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>т/сут
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr3')}}
                   </td>
                   <td @click="sortBy('q_l')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>м3/сут
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr2')}}
                   </td>
                   <td @click="sortBy('wct')" class="th">
                     <i class="fa fa-fw fa-sort"></i>%
+                  </td>
+                  <td @click="sortBy('gor')" class="th">
+                    <i class="fa fa-fw fa-sort"></i>м3/т
                   </td>
                   <td @click="sortBy('well_status_last_day')" class="th">
                     <i class="fa fa-fw fa-sort"></i>
                   </td>
                   <td @click="sortBy('P_bubble_point')" class="th">
                     <i class="fa fa-fw fa-sort"></i>атм
-                  </td>
-                  <td @click="sortBy('gor')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>м3/т
                   </td>
                   <td @click="sortBy('t_res')" class="th">
                     <i class="fa fa-fw fa-sort"></i>ºC
@@ -740,22 +1023,22 @@
                     <i class="fa fa-fw fa-sort"></i>мДм
                   </td>
                   <td @click="sortBy('pi')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>м3/сут/атм
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr4')}}
                   </td>
                   <td @click="sortBy('tp_idn_bhp')" class="th">
                     <i class="fa fa-fw fa-sort"></i>атм
                   </td>
                   <td @click="sortBy('tp_idn_liq')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>м3/сут
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr2')}}
                   </td>
                   <td @click="sortBy('tp_idn_liq_cas_d_corr')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>м3/сут
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr2')}}
                   </td>
                   <td @click="sortBy('tp_idn_oil')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>т/сут
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr3')}}
                   </td>
                   <td @click="sortBy('tp_idn_oil_inc')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>т/сут
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr3')}}
                   </td>
                   <td @click="sortBy('tp_idn_jd')" class="th">
                     <i class="fa fa-fw fa-sort"></i>
@@ -764,44 +1047,44 @@
                     <i class="fa fa-fw fa-sort"></i>
                   </td>
                   <td @click="sortBy('tp_idn_pi_after')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>м3/сут/атм
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr4')}}
                   </td>
                   <td @click="sortBy('tp_idn_grp_q_liq')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>м3/сут
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr2')}}
                   </td>
                   <td @click="sortBy('tp_idn_grp_q_liq_cas_d_corr')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>м3/сут
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr2')}}
                   </td>
                   <td @click="sortBy('tp_idn_grp_q_oil')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>т/сут
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr3')}}
                   </td>
                   <td @click="sortBy('tp_idn_grp_q_oil_inc')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>т/сут
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr3')}}
                   </td>
                   <td @click="sortBy('tp_idn_q_oil_inc_perc')" class="th">
                     <i class="fa fa-fw fa-sort"></i>%
                   </td>
                   <td @click="sortBy('gt_total_inc')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>т/сут
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr3')}}
                   </td>
 
                   <td @click="sortBy('gp_idn_bhp')" class="th">
                     <i class="fa fa-fw fa-sort"></i>атм
                   </td>
                   <td @click="sortBy('gp_idn_q_liq')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>м3/сут
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr2')}}
                   </td>
                   <td @click="sortBy('gp_idn_q_liq_cas_d_corr')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>м3/сут
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr2')}}
                   </td>
                   <td @click="sortBy('gp_idn_q_oil')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>т/сут
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr3')}}
                   </td>
                   <td @click="sortBy('gp_idn_q_oil_inc')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>т/сут
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr3')}}
                   </td>
                   <td @click="sortBy('gp_grp_q_liq')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>%
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr2')}}
                   </td>
                   <td @click="sortBy('gp_grp_q_liq_cas_d_corr')" class="th">
                     <i class="fa fa-fw fa-sort"></i>
@@ -816,7 +1099,7 @@
                     <i class="fa fa-fw fa-sort"></i>%
                   </td>
                   <td @click="sortBy('gp_total_inc')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>т/сут
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr3')}}
                   </td>
                   <td @click="sortBy('error_count')" class="th">
                     <i class="fa fa-fw fa-sort"></i>
@@ -834,7 +1117,7 @@
                     <i class="fa fa-fw fa-sort"></i>
                   </td>
                   <td @click="sortBy('stop_date')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>д/м/г
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr6')}}
                   </td>
                   <td @click="sortBy('layers_count')" class="th">
                     <i class="fa fa-fw fa-sort"></i>
@@ -855,7 +1138,7 @@
                     <i class="fa fa-fw fa-sort"></i>
                   </td>
                   <td @click="sortBy('start_up_date')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>д/м/г
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr6')}}
                   </td>
                   <td @click="sortBy('well_project_purpose')" class="th">
                     <i class="fa fa-fw fa-sort"></i>
@@ -867,10 +1150,10 @@
                     <i class="fa fa-fw fa-sort"></i>м
                   </td>
                   <td @click="sortBy('oil_cumulative')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>тыс.т
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr7')}}
                   </td>
                   <td @click="sortBy('max_q_liq_hist')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>м3/сут
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr2')}}
                   </td>
                   <td @click="sortBy('dist_to_inj_well')" class="th">
                     <i class="fa fa-fw fa-sort"></i>м
@@ -882,7 +1165,7 @@
                     <i class="fa fa-fw fa-sort"></i>
                   </td>
                   <td @click="sortBy('pump_fillage')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>м3/сут
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr2')}}
                   </td>
                   <td @click="sortBy('gzu_type')" class="th">
                     <i class="fa fa-fw fa-sort"></i>
@@ -891,19 +1174,19 @@
                     <i class="fa fa-fw fa-sort"></i>атм
                   </td>
                   <td @click="sortBy('q_liq_charac')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>м3/сут
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr2')}}
                   </td>
                   <td @click="sortBy('APV_t_rab')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>час
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr8')}}
                   </td>
                   <td @click="sortBy('APV_t_nak')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>час
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr8')}}
                   </td>
                   <td @click="sortBy('plan_izo_work')" class="th">
                     <i class="fa fa-fw fa-sort"></i>атм
                   </td>
                   <td @click="sortBy('plan_act_q_l')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>м3/сут
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr2')}}
                   </td>
                   <td @click="sortBy('plan_act_wct')" class="th">
                     <i class="fa fa-fw fa-sort"></i>%
@@ -917,10 +1200,10 @@
                   <td @click="sortBy('plan_comment')" class="th">
                     <i class="fa fa-fw fa-sort"></i>
                   </td>
-                  <td @click="sortBy('EMPTY')" class="th">
+                  <td @click="sortBy('last_gtm_date')" class="th">
                     <i class="fa fa-fw fa-sort"></i>
                   </td>
-                  <td @click="sortBy('EMPTY')" class="th">
+                  <td @click="sortBy('last_gtm_type')" class="th">
                     <i class="fa fa-fw fa-sort"></i>
                   </td>
 
@@ -928,22 +1211,28 @@
                     <i class="fa fa-fw fa-sort"></i>мм
                   </td>
                   <td @click="sortBy('planned_oil')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>т/сут
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr3')}}
                   </td>
                   <td @click="sortBy('planned_liq')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>м3/сут
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr2')}}
+                  </td>
+                  <td @click="sortBy('planned_gas')" class="th">
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr5')}}
                   </td>
                   <td @click="sortBy('planned_wct')" class="th">
                     <i class="fa fa-fw fa-sort"></i>%
                   </td>
+                  <td @click="sortBy('planned_gor')" class="th">
+                    <i class="fa fa-fw fa-sort"></i>м3/т
+                  </td>
                   <td @click="sortBy('planned_month_days')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>сут
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr9')}}
                   </td>
                   <td @click="sortBy('planned_monthly_oil')" class="th">
                     <i class="fa fa-fw fa-sort"></i>тонн
                   </td>
                   <td @click="sortBy('planned_monthly_gas')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>тыс.м3
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr10')}}
                   </td>
                   <td @click="sortBy('planned_monthly_liq')" class="th">
                     <i class="fa fa-fw fa-sort"></i>м3
@@ -952,10 +1241,10 @@
                     <i class="fa fa-fw fa-sort"></i>м3
                   </td>
                   <td @click="sortBy('planned_diff_oil')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>т/сут
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr3')}}
                   </td>
                   <td @click="sortBy('planned_diff_liq')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>м3/сут
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr2')}}
                   </td>
                   <td @click="sortBy('planned_events')" class="th">
                     <i class="fa fa-fw fa-sort"></i>
@@ -970,8 +1259,8 @@
                   <td v-if="!edit">{{ row.field }}</td>
                   <td v-if="edit">{{ row.field }}</td>
 
-                  <td v-if="!edit">{{ row.well }}</td>
-                  <td v-if="edit">{{ row.well }}</td>
+                  <td v-if="!edit">{{ row.rus_wellname }}</td>
+                  <td v-if="edit">{{ row.rus_wellname }}</td>
                   <!-- <td>{{row.well_type}}</td> -->
 
                   <td
@@ -1091,8 +1380,9 @@
                     </span>
                   </td>
 
-                  <!-- <td v-if="!edit">{{row.block}}</td>
-                          <td v-if="edit" contenteditable='true'><input @change="editrow(row, row_index)" v-model="row.block" :disabled="!edit"></td> -->
+                  <td v-if="!edit">{{ row.object }}</td>
+                  <td v-if="edit">{{ row.object }}</td>
+
                   <td
                     v-if="!edit"
                     :class="{
@@ -1206,6 +1496,7 @@
                     </span>
                     <input
                       @change="editrow(row, row_index)"
+                      class="input_edit"
                       v-model="row.r_con[0]"
                       :disabled="!edit"
                     />
@@ -1406,7 +1697,7 @@
                     </span>
                   </td>
                   <td v-if="edit">
-                    {{ Math.round(row.h_up_perf_md * 10) / 10 }}
+                    {{ Math.round(row.h_up_perf_md[0] * 10) / 10 }}
                   </td>
 
                   <td
@@ -1744,7 +2035,6 @@
                       )}`"
                     >
                     </span>
-                    <!-- <input @change="editrow(row, row_index)" v-model="row.q_theor[0]" :disabled="!edit"> -->
                     <span v-if="Math.round(row.q_theor[0] * 10) / 10 != '0'">{{
                       Math.round(row.q_theor[0] * 10) / 10
                     }}</span>
@@ -1862,6 +2152,7 @@
                     >
                     </span>
                     <input
+                      class="input_edit"
                       @change="editrow(row, row_index)"
                       v-model="row.h_pump_set[0]"
                       :disabled="!edit"
@@ -1923,6 +2214,7 @@
                     >
                     </span>
                     <input
+                      class="input_edit"
                       @change="editrow(row, row_index)"
                       v-model="row.whp[0]"
                       :disabled="!edit"
@@ -1984,6 +2276,7 @@
                     >
                     </span>
                     <input
+                      class="input_edit"
                       @change="editrow(row, row_index)"
                       v-model="row.line_p[0]"
                       :disabled="!edit"
@@ -2044,6 +2337,7 @@
                     >
                     </span>
                     <input
+                      class="input_edit"
                       @change="editrow(row, row_index)"
                       v-model="row.p_res[0]"
                       :disabled="!edit"
@@ -2105,6 +2399,7 @@
                     >
                     </span>
                     <input
+                      class="input_edit"
                       @change="editrow(row, row_index)"
                       v-model="row.h_dyn[0]"
                       :disabled="!edit"
@@ -2166,6 +2461,7 @@
                     >
                     </span>
                     <input
+                      class="input_edit"
                       @change="editrow(row, row_index)"
                       v-model="row.p_annular[0]"
                       :disabled="!edit"
@@ -2227,6 +2523,7 @@
                     >
                     </span>
                     <input
+                      class="input_edit"
                       @change="editrow(row, row_index)"
                       v-model="row.p_intake[0]"
                       :disabled="!edit"
@@ -2445,6 +2742,7 @@
                     >
                     </span>
                     <input
+                      class="input_edit"
                       @change="editrow(row, row_index)"
                       v-model="row.q_l[0]"
                       :disabled="!edit"
@@ -2506,6 +2804,7 @@
                     >
                     </span>
                     <input
+                      class="input_edit"
                       @change="editrow(row, row_index)"
                       v-model="row.wct[0]"
                       :disabled="!edit"
@@ -2515,6 +2814,69 @@
                       {{ wells[row_index].wct[1][1] }}
                     </span>
                   </td>
+
+                  <!-- <td>{{Math.round(row.gor*10)/10}}</td> -->
+                  <td
+                    v-if="!edit"
+                    :class="{
+                      'cell-with-comment':
+                        wells &&
+                        wells[row_index] &&
+                        wells[row_index].gor[1][0] !== '0',
+                    }"
+                  >
+                    <span
+                      :class="{
+                        'circle-err':
+                          wells &&
+                          wells[row_index] &&
+                          wells[row_index].gor[1][0] !== '0',
+                      }"
+                      :style="`background :${getColor(
+                        wells[row_index].gor[1][0]
+                      )}`"
+                    >
+                    </span>
+                    <span v-if="row.gor[0] != null">{{
+                      Math.round(row.gor[0] * 10) / 10
+                    }}</span>
+                    <span v-if="wells && wells[row_index]" class="cell-comment">
+                      {{ wells[row_index].gor[1][1] }}
+                    </span>
+                  </td>
+                  <td
+                    v-if="edit"
+                    :class="{
+                      'cell-with-comment':
+                        wells &&
+                        wells[row_index] &&
+                        wells[row_index].gor[1][0] !== '0',
+                    }"
+                  >
+                    <span
+                      :class="{
+                        'circle-err':
+                          wells &&
+                          wells[row_index] &&
+                          wells[row_index].gor[1][0] !== '0',
+                      }"
+                      :style="`background :${getColor(
+                        wells[row_index].gor[1][0]
+                      )}`"
+                    >
+                    </span>
+                    <input
+                      class="input_edit"
+                      @change="editrow(row, row_index)"
+                      v-model="row.gor[0]"
+                      :disabled="!edit"
+                    />
+                    <!-- <span>{{Math.round(row.gor[0]*10)/10}}</span> -->
+                    <span v-if="wells && wells[row_index]" class="cell-comment">
+                      {{ wells[row_index].gor[1][1] }}
+                    </span>
+                  </td>
+
 
                   <!-- <td>{{row.well_status_last_day}}</td> -->
                   <td
@@ -2629,68 +2991,7 @@
                       {{ wells[row_index].P_bubble_point[1][1] }}
                     </span>
                   </td>
-
-                  <!-- <td>{{Math.round(row.gor*10)/10}}</td> -->
-                  <td
-                    v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].gor[1][0] !== '0',
-                    }"
-                  >
-                    <span
-                      :class="{
-                        'circle-err':
-                          wells &&
-                          wells[row_index] &&
-                          wells[row_index].gor[1][0] !== '0',
-                      }"
-                      :style="`background :${getColor(
-                        wells[row_index].gor[1][0]
-                      )}`"
-                    >
-                    </span>
-                    <span v-if="row.gor[0] != null">{{
-                      Math.round(row.gor[0] * 10) / 10
-                    }}</span>
-                    <span v-if="wells && wells[row_index]" class="cell-comment">
-                      {{ wells[row_index].gor[1][1] }}
-                    </span>
-                  </td>
-                  <td
-                    v-if="edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].gor[1][0] !== '0',
-                    }"
-                  >
-                    <span
-                      :class="{
-                        'circle-err':
-                          wells &&
-                          wells[row_index] &&
-                          wells[row_index].gor[1][0] !== '0',
-                      }"
-                      :style="`background :${getColor(
-                        wells[row_index].gor[1][0]
-                      )}`"
-                    >
-                    </span>
-                    <input
-                      @change="editrow(row, row_index)"
-                      v-model="row.gor[0]"
-                      :disabled="!edit"
-                    />
-                    <!-- <span>{{Math.round(row.gor[0]*10)/10}}</span> -->
-                    <span v-if="wells && wells[row_index]" class="cell-comment">
-                      {{ wells[row_index].gor[1][1] }}
-                    </span>
-                  </td>
-
+                 
                   <!-- <td>{{Math.round(row.t_res*10)/10}}</td> -->
                   <td
                     v-if="!edit"
@@ -2805,6 +3106,7 @@
                     >
                     </span>
                     <input
+                      class="input_edit"
                       @change="editrow(row, row_index)"
                       v-model="row.grp_skin[0]"
                       :disabled="!edit"
@@ -4837,6 +5139,7 @@
                     >
                     </span>
                     <input
+                      class="input_edit"
                       @change="editrow(row, row_index)"
                       v-model="row.idn_pump_depth_max[0]"
                       :disabled="!edit"
@@ -5360,6 +5663,7 @@
                     >
                     </span>
                     <input
+                      class="input_edit"
                       @change="editrow(row, row_index)"
                       v-model="row.bhp_meter[0]"
                       :disabled="!edit"
@@ -5846,11 +6150,11 @@
                   <td v-if="!edit">{{ row.plan_comment }}</td>
                   <td v-if="edit">{{ row.plan_comment }}</td>
 
-                  <td v-if="!edit">{{ row.EMPTY }}</td>
-                  <td v-if="edit">{{ row.EMPTY }}</td>
+                  <td v-if="!edit">{{ row.last_gtm_date }}</td>
+                  <td v-if="edit">{{ row.last_gtm_date }}</td>
 
-                  <td v-if="!edit">{{ row.EMPTY }}</td>
-                  <td v-if="edit">{{ row.EMPTY }}</td>
+                  <td v-if="!edit">{{ row.last_gtm_type }}</td>
+                  <td v-if="edit">{{ row.last_gtm_type }}</td>
 
                   <td
                     v-if="!edit"
@@ -5902,6 +6206,7 @@
                     >
                     </span>
                     <input
+                      class="input_edit"
                       @change="editrow(row, row_index)"
                       v-model="row.planned_choke[0]"
                       :disabled="!edit"
@@ -6018,6 +6323,7 @@
                     >
                     </span>
                     <input
+                      class="input_edit"
                       @change="editrow(row, row_index)"
                       v-model="row.planned_liq[0]"
                       :disabled="!edit"
@@ -6027,6 +6333,9 @@
                       {{ wells[row_index].planned_liq[1][1] }}
                     </span>
                   </td>
+
+                  <td v-if="!edit">{{ Math.round(row.planned_gas*10)/10 }}</td>
+                  <td v-if="edit">{{ Math.round(row.planned_gas*10)/10 }}</td>
 
                   <td
                     v-if="!edit"
@@ -6078,6 +6387,7 @@
                     >
                     </span>
                     <input
+                      class="input_edit"
                       @change="editrow(row, row_index)"
                       v-model="row.planned_wct[0]"
                       :disabled="!edit"
@@ -6087,6 +6397,9 @@
                       {{ wells[row_index].planned_wct[1][1] }}
                     </span>
                   </td>
+
+                  <td v-if="!edit">{{Math.round(row.planned_gor*10)/10}}</td>
+                  <td v-if="edit"><input v-model="row.planned_gor" @change="editrow(row, row_index)" :disabled="!edit" class="input_edit"></td>
 
                   <td
                     v-if="!edit"
@@ -6136,6 +6449,7 @@
                     >
                     </span>
                     <input
+                      class="input_edit"
                       @change="editrow(row, row_index)"
                       v-model="row.planned_month_days[0]"
                       :disabled="!edit"
@@ -6544,6 +6858,7 @@
                     >
                     </span>
                     <input
+                      class="input_edit"
                       @change="editrow(row, row_index)"
                       v-model="row.planned_events[0]"
                       :disabled="!edit"
@@ -6560,32 +6875,176 @@
         </div>
       </div>
     </div>
+    <notifications position="top"></notifications>
   </div>
 </template>
 <script>
+import NotifyPlugin from "vue-easy-notify";
+import "vue-easy-notify/dist/vue-easy-notify.css";
 import TrTable from "./table";
 import TrFullTable from "./tablefull";
 import SearchFormRefresh from "../ui-kit/SearchFormRefresh.vue";
-import FadeLoader from "vue-spinner/src/FadeLoader.vue";
+// import FadeLoader from "vue-spinner/src/FadeLoader.vue";
+import { fields } from "./constants.js";
+import TrMultiselect from "./TrMultiselect.vue";
 
+Vue.use(NotifyPlugin);
 export default {
   name: "TrPage",
   components: {
     TrTable,
     TrFullTable,
     SearchFormRefresh,
-    FadeLoader,
+    TrMultiselect,
+    // FadeLoader,
+  },
+  computed: {
+    // Добавление выбранных данных в таблицу
+    addWellData() {
+      if (this.allWells && this.allWells.length > 0) {
+        let is_saved = this.Filter_status;
+        let field = this.Filter_field;
+        let rus_wellname = this.Filter_well;
+        let type_text = this.Filter_well_type;
+        let well_status_last_day = this.Filter_well_status;
+        try {
+          let filteredResult = this.allWells.filter(
+            (row) =>
+              (!is_saved || row.is_saved === is_saved) &&
+              (!field || row.field === field) &&
+              (!rus_wellname || row.rus_wellname === rus_wellname) &&
+              (!type_text || row.type_text === type_text) &&
+              (!well_status_last_day || row.well_status_last_day === well_status_last_day)
+          );
+          this.filteredWellData = filteredResult;
+          console.log("filteredResult bat = ", filteredResult);
+        } catch (err) {
+          console.error(err);
+          return false;
+        }
+        if(this.filteredWellData.length === 1){
+          this.lonelywell = this.filteredWellData;
+        }
+        else return false;
+      } else return false;
+      this.render++;
+    },
+    // фильтр месторожд.
+    fieldFilters() {
+      if (this.allWells && this.allWells.length > 0) {
+        let filters = [];
+        this.allWells.forEach((el) => {
+          if (
+            filters.indexOf(el.field) === -1 &&
+            (!this.Filter_well || el.rus_wellname === this.Filter_well) &&
+            (!this.Filter_well_status || el.well_status_last_day === this.Filter_well_status) &&
+            (!this.Filter_status || el.is_saved === this.Filter_status) &&
+            (!this.Filter_well_type || el.type_text === this.Filter_well_type)
+          ) {
+            filters = [...filters, el.field];
+          }
+        });
+        return [undefined, ...filters];
+      } else return [];
+    },
+    // фильтр по скважинам
+    wellFilters() {
+      if (this.allWells && this.allWells.length > 0) {
+        let filters = [];
+        this.allWells.forEach((el) => {
+          if (
+            filters.indexOf(el.rus_wellname) === -1 &&
+            (!this.Filter_field || el.field === this.Filter_field) &&
+            (!this.Filter_well_status || el.well_status_last_day === this.Filter_well_status) &&
+            (!this.Filter_status || el.is_saved === this.Filter_status) &&
+            (!this.Filter_well_type || el.type_text === this.Filter_well_type)
+          ) {
+            filters = [...filters, el.rus_wellname];
+          }
+        });
+        return [undefined, ...filters];
+      } else return [];
+    },
+    // фильтр по сост.скв
+    wellStatusFilters() {
+      if (this.allWells && this.allWells.length > 0) {
+        let filters = [];
+        this.allWells.forEach((el) => {
+          if (
+            filters.indexOf(el.well_status_last_day) === -1 &&
+            (!this.Filter_field || el.field === this.Filter_field) &&
+            (!this.Filter_well || el.rus_wellname === this.Filter_well) &&
+            (!this.Filter_status || el.is_saved === this.Filter_status) &&
+            (!this.Filter_well_type || el.type_text === this.Filter_well_type)
+          ) {
+            filters = [...filters, el.well_status_last_day];
+          }
+        });
+        return [undefined, ...filters];
+      } else return [];
+    },
+    // фильтр по статусам (сохраненные или не сохраненные)
+    statusFilters() {
+      if (this.allWells && this.allWells.length > 0) {
+        let filters = [];
+        this.allWells.forEach((el) => {
+          if (
+            filters.indexOf(el.is_saved) === -1 &&
+            (!this.Filter_field || el.field === this.Filter_field) &&
+            (!this.Filter_well || el.rus_wellname === this.Filter_well)  &&
+            (!this.Filter_well_status || el.well_status_last_day === this.Filter_well_status) &&
+            (!this.Filter_well_type || el.type_text === this.Filter_well_type)
+          ) {
+            filters = [...filters, el.is_saved];
+          }
+        });
+        return [undefined, ...filters];
+      } else return [];
+    },
+    typeWellFilters() {
+      if (this.allWells && this.allWells.length > 0) {
+        let filters = [];
+        this.allWells.forEach((el) => {
+          if (
+            filters.indexOf(el.type_text) === -1 &&
+            (!this.Filter_field || el.field === this.Filter_field) &&
+            (!this.Filter_well || el.rus_wellname === this.Filter_well)  &&
+            (!this.Filter_well_status || el.well_status_last_day === this.Filter_well_status) &&
+            (!this.Filter_status || el.is_saved === this.Filter_status)
+          ) {
+            filters = [...filters, el.type_text];
+          }
+        });
+        return [undefined, ...filters];
+      } else return [];
+    },          
   },
   beforeCreate: function () {},
   created() {
+    this.$store.commit("globalloading/SET_LOADING", true);
     this.$store.commit("tr/SET_SORTPARAM", this.sortParam);
     this.$store.commit("tr/SET_SEARCH", this.searchString);
     this.$store.commit("tr/SET_FILTER", this.filter);
     var today = new Date();
     var mm = today.getMonth() + 1;
     var yyyy = today.getFullYear();
+    var day = today.getDate();
+    if(day > 25 && mm < 12) {
+      var mm1 = today.getMonth() + 2;
+      var yyyy1 = today.getFullYear();
+    }
+    else if(day > 25 && mm === 12){
+      var mm1 = 1;
+      var yyyy1 = today.getFullYear() + 1;
+    }
+    else{
+      var mm1 = today.getMonth() + 1;
+      var yyyy1 = today.getFullYear();
+    }
     this.$store.commit("tr/SET_MONTH", mm);
     this.$store.commit("tr/SET_YEAR", yyyy);
+    this.is_dynamic = false;
+    this.$store.commit("tr/SET_IS_DYNAMIC", "false");
     this.axios
       .get("http://172.20.103.187:7576/api/techregime/" + yyyy + "/" + mm + "/")
       .then((response) => {
@@ -6593,54 +7052,82 @@ export default {
         this.year = yyyy;
         this.selectYear = yyyy;
         this.month = mm;
-        this.isloading = false;
+        this.$store.commit("globalloading/SET_LOADING", false);
+        // this.isloading = false;
         if (data) {
           console.log(data);
           this.wells = data.data;
           this.fullWells = data.data;
         } else {
           console.log("No data");
+          
         }
-        if (mm < 10) {
-          this.dt = "01" + ".0" + mm + "." + yyyy;
+        if (mm1 < 10) {
+          this.dt = "01" + ".0" + mm1 + "." + yyyy1;
         } else {
-          this.dt = "01" + "." + mm + "." + yyyy;
+          this.dt = "01" + "." + mm1 + "." + yyyy1;
         }
       });
-    console.log("isloading", this.isloading);
-    //   this.isloading = false;
   },
   data: function () {
     return {
       wells: [],
       searchString: "",
+      searched: false,
       sortParam: "",
       sortType: "asc",
-      filter: "Все месторождения",
+      // filter: "Все месторождения",
+      filter: [...fields],
+      fieldFilterOptions: [
+        {
+          group: this.trans('tr.traw'),
+          fields: [...fields],
+        },
+      ],
       dt: null,
       fullWells: [],
       editedWells: [],
       show_first: true,
       show_second: false,
+      show_add: false,
       edit: false,
       editdtm: null,
       editdty: null,
-      // sortField: null,
-      // currentSortDir: 'asc',
       year: null,
       selectYear: null,
       month: null,
-      isloading: true,
       isfulltable: false,
+      Filter_field: undefined,
+      allWells: [],
+      awells: [],
+      Filter_well_status: undefined,
+      Filter_status: undefined,
+      Filter_well_type: undefined,
+      filteredWellData: [],
+      lonelywell: [],
+      render: 0,
+      searchStringModel: "",
+      Filter_well: undefined,
+      checkers: false,
+      checkersec: false,
+      datepicker1: true,
+      datepicker2: false,
+      date_fix: true,
+      is_dynamic: false,
+      // date_dyn: false,
     };
   },
   watch: {
     fullWells() {
       this.chooseField();
     },
+    filter() {
+      this.chooseField();
+    },
   },
   methods: {
     editrow(row, rowId) {
+      this.$store.commit("globalloading/SET_LOADING", false);
       console.log("row = ", row);
       console.log("rowId = ", rowId);
       row["index"] = 0;
@@ -6679,7 +7166,8 @@ export default {
     },
     savetable() {
       this.edit = false;
-      this.isloading = true;
+      this.$store.commit("globalloading/SET_LOADING", true);
+      // this.isloading = true;
       const searchParam = this.searchString ? `${this.searchString}/` : "";
       this.axios
         .post(
@@ -6697,12 +7185,15 @@ export default {
           console.log(response.data);
           this.fullWells = response.data;
           this.editedWells = [];
-          this.isloading = false;
+          this.$store.commit("globalloading/SET_LOADING", false);
+          // this.isloading = false;
+          this.searched = searchParam ? true : false;
         })
         .catch((error) => {
           console.log(error.data);
           this.editedWells = [];
           this.searchWell();
+          this.searched = searchParam ? true : false;
         });
     },
     cancelEdit() {
@@ -6710,10 +7201,87 @@ export default {
       this.editedWells = [];
       this.searchWell();
     },
+    cancelPP() {
+      this.edit = false;
+
+    },
+    reRender() {
+      this.filteredWellData = [];
+      this.Filter_well_status = undefined;
+      this.Filter_status = undefined;
+      this.Filter_well_type = undefined;
+      this.Filter_well = undefined;
+      this.Filter_field = undefined;
+      
+    },
+    reRenderAll() {
+      this.$store.commit("globalloading/SET_LOADING", true);
+      var today = new Date();
+      var mm = today.getMonth() + 1;
+      var yyyy = today.getFullYear();
+      var day = today.getDate();
+      if(day > 25 && mm < 12) {
+        var mm1 = today.getMonth() + 2;
+        var yyyy1 = today.getFullYear();
+      }
+      else if(day > 25 && mm === 12){
+        var mm1 = 1;
+        var yyyy1 = today.getFullYear() + 1;
+      }
+      else{
+        var mm1 = today.getMonth() + 1;
+        var yyyy1 = today.getFullYear();
+      }
+
+      this.axios
+        .get("http://172.20.103.187:7576/api/techregime/" + yyyy + "/" + mm + "/")
+        .then((response) => {
+          let data = response.data;
+
+          this.$store.commit("globalloading/SET_LOADING", false);
+          // this.isloading = false;
+          if (data) {
+            console.log(data);
+            this.wells = data.data;
+            this.fullWells = data.data;
+          } else {
+            console.log("No data");
+            
+          }
+
+        });
+    },
+    showWells() {
+      if(this.lonelywell.length === 1){
+        this.show_add = !this.show_add;
+        if(this.lonelywell[0].is_saved === "Сохранено"){
+          this.checkers = false;
+          this.checkersec = true;
+        }
+        else{
+          this.checkers = true;
+          this.checkersec = false;
+        }
+      }
+      else{
+        this.show_add = this.show_add;
+      }
+    },
     editable() {
       this.edit = true;
       this.show_second = true;
       this.show_first = false;
+    },
+    searchadd() {
+      this.$emit();
+    },
+    clearClickadd() {
+      this.searchStringModel= "";
+      this.$emit();
+      this.searchadd();
+    },
+    closeModal(modalName) {
+      this.$modal.hide(modalName)
     },
     sortBy(type) {
       this.sortParam = type;
@@ -6776,9 +7344,70 @@ export default {
       this.year = event.target.value;
       this.$store.commit("tr/SET_YEAR", event.target.value);
     },
+    chooseDt1() {
+      
+      // this.isloading = true;
+      const { date1, date2 } = this;
+      console.log("dt1-", date1, " dt2-", date2);
+      var choosenDt = date1.split("-");
+      var choosenSecDt = date2.split("-");
+      const dd = choosenDt[2];
+      const prdd = choosenSecDt[2];
+      const mm = choosenDt[1];
+      const prMm = choosenSecDt[1];
+      const yyyy = choosenDt[0];
+      const pryyyy = choosenSecDt[0];
+      if (choosenSecDt[2] >= choosenDt[2] && choosenSecDt[1] >= choosenDt[1] && choosenSecDt[0] >= choosenDt[0] || choosenSecDt[0] > choosenDt[0]) {
+        Vue.prototype.$notifyError("Дата 2 должна быть меньше чем Дата 1");
+      } else {
+        this.$store.commit("globalloading/SET_LOADING", true);
+        this.$store.commit("tr/SET_DYN_MONTH_END", mm);
+        this.$store.commit("tr/SET_DYN_YEAR_END", yyyy);
+        this.$store.commit("tr/SET_DYN_DAY_END", dd);
+        this.$store.commit("tr/SET_DYN_MONTH_START", prMm);
+        this.$store.commit("tr/SET_DYN_YEAR_START", pryyyy);
+        this.$store.commit("tr/SET_DYN_MONTH_START", prMm);
+        this.$store.commit("tr/SET_DYN_DAY_START", prdd);
+        this.axios
+          .get(
+            "http://172.20.103.187:7576/api/techregime/dynamic/" +
+              // this.selectYear +
+              // "/" +
+              // this.month +
+              // "/"
+              pryyyy + "/" + prMm + "/" + prdd + "/" + yyyy + "/" + mm + "/" + dd + "/"
+          )
+          .then((response) => {
+            this.$store.commit("globalloading/SET_LOADING", false);
+            // this.isloading = false;
+            let data = response.data;
+            if (data) {
+              this.searched = false;
+              this.date_fix = false;
+              this.is_dynamic = true;
+              this.$store.commit("tr/SET_IS_DYNAMIC", "true");
+              this.$store.commit("tr/SET_SORTPARAM", "");
+              this.$store.commit("tr/SET_SEARCH", "");
+              this.sortParam = "";
+              this.searchString = "";
+              console.log(data);
+              // this.wells = data.data;
+              this.fullWells = data.data;
+            } else {
+              console.log("No data");
+            }
+            if (this.month < 10) {
+              this.dt3 = '(' + prdd + "." + prMm+ "." + pryyyy + ' - ' + dd+ "." + mm+ "." + yyyy + ')';
+            } else {
+              this.dt3 = '(' + prdd + "." + prMm+ "." + pryyyy + ' - ' + dd+ "." + mm+ "." + yyyy + ')';
+            }
+          });
+        }
+    },
 
     chooseDt() {
-      this.isloading = true;
+      this.$store.commit("globalloading/SET_LOADING", true);
+      // this.isloading = true;
       this.axios
         .get(
           "http://172.20.103.187:7576/api/techregime/" +
@@ -6788,9 +7417,13 @@ export default {
             "/"
         )
         .then((response) => {
-          this.isloading = false;
+          this.$store.commit("globalloading/SET_LOADING", false);
+          // this.isloading = false;
           let data = response.data;
           if (data) {
+            this.searched = false;
+            this.is_dynamic = false;
+            this.$store.commit("tr/SET_IS_DYNAMIC", "false");
             this.$store.commit("tr/SET_SORTPARAM", "");
             this.$store.commit("tr/SET_SEARCH", "");
             this.sortParam = "";
@@ -6808,34 +7441,170 @@ export default {
           }
         });
     },
+
+    wellAdd() {
+      this.$store.commit("globalloading/SET_LOADING", true);
+      // this.isloading = true;
+      this.axios
+        .get(
+          "http://172.20.103.187:7576/api/techregime/new_wells/" 
+        )
+        .then((response) => {
+          this.$store.commit("globalloading/SET_LOADING", false);
+          // this.isloading = false;
+          let data = response.data;
+          if (data) {
+            this.searched = false;
+            this.$store.commit("tr/SET_SORTPARAM", "");
+            this.$store.commit("tr/SET_SEARCH", "");
+            this.sortParam = "";
+            this.searchString = "";
+            console.log(data);
+            // this.wells = data.data;
+            this.allWells = data.data;
+            
+          } else {
+            console.log("No data");
+          }
+          
+        });
+    },
+    // chooseField() {
+    //   const { filter, fullWells } = this;
+    //   console.log(filter);
+    //   console.log(fullWells);
+    //   // if (!filter || filter == "Казгермунай") {
+    //   this.$store.commit("tr/SET_FILTER", filter);
+    //   if (!filter || filter == "Все месторождения") {
+    //     this.wells = fullWells;
+    //   } else {
+    //     this.wells = fullWells.filter((e) => e.field === filter);
+    //   }
+    // },
     chooseField() {
       const { filter, fullWells } = this;
-      console.log(filter);
+      console.log("filter = ", filter);
       console.log(fullWells);
       // if (!filter || filter == "Казгермунай") {
       this.$store.commit("tr/SET_FILTER", filter);
-      if (!filter || filter == "Все месторождения") {
+      if (!filter) {
         this.wells = fullWells;
       } else {
-        this.wells = fullWells.filter((e) => e.field === filter);
+        this.wells = fullWells.filter((e) => filter.indexOf(e.field) !== -1);
       }
     },
     swap() {
       this.show_first = !this.show_first;
       this.show_second = !this.show_second;
       this.isfulltable = !this.isfulltable;
+
     },
+    calendarDynamic() {
+      this.is_dynamic_calendar = !this.is_dynamic_calendar
+      this.datepicker1 = !this.datepicker1
+      this.datepicker2 = !this.datepicker2
+    },
+    // calendarDate() {
+    //   this.date_fix = !this.date_fix
+    //   this.date_dyn = !this.date_dyn
+    // },
     getColor(status) {
       if (status === "1") return "#ffff00";
       return "#ff0000";
     },
+    closeModal(modalName) {
+      this.$modal.hide(modalName)
+      this.show_add=false;
+      this.checkers=false;
+      this.checkersec=false;
+      this.reRender();
+    },
+    addpush(){
+        
+        this.$modal.show('add_well')
+    },
+
     handlerSearch(search) {
       this.searchString = search;
     },
+    handlerFilter(filter) {
+      this.filter = filter;
+    },
+    // deleteOrSave() {
+    //   if(this.lonelywell[0].is_saved === "Не сохранено"){
+    //         this.is_save=true
+    //   }
+    //   else{
+    //     return this.is_save=false
+    //   }
+    // },
+    // Отправка данных с модалки в бэк
+
+    // deleteOrSave() {
+    //   if(this.lonelywell.length === 1){
+    //     this.save_check = !this.show_add;
+    //   }
+    //   else{
+    //     this.show_add = this.show_add;
+    //   }
+    // },
+
+
+
+
+
+    saveadd() {
+      console.log(this.$refs.editTable);
+      Vue.prototype.$notifySuccess (`Скважина ${this.lonelywell[0].rus_wellname} сохранена`);
+      //this.$refs.saveTable
+      let output = {}
+      console.log(this.$refs.editTable[0].children);
+      console.log(this.$refs.editTable[0].children[0].children[0].dataset.key);
+      console.log(this.$refs.editTable[0].children[0].children[0].value);
+      this.$refs.editTable[0].children.forEach((el) => {
+        output[el.children[0].dataset.key] = el.children[0].value;
+      });
+      console.log(output)
+      this.axios
+        .post(
+          "http://172.20.103.187:7576/api/techregime/new_wells/add_well/", 
+          output).then((res) => {
+            console.log(res.data)
+            this.wellAdd();
+            this.reRenderAll();
+            this.show_add=false;
+            this.checkers=false;
+            
+          })
+    },
+    // Удаление с модалки
+    deleteWell() {
+      Vue.prototype.$notifyError (`Скважина ${this.lonelywell[0].rus_wellname} удалена`);
+      this.$store.commit("globalloading/SET_LOADING", true);
+      if(this.lonelywell.length === 1 && this.lonelywell[0].is_saved === "Сохранено"){
+        this.axios
+          .get(
+            "http://172.20.103.187:7576/api/techregime/new_wells/delete_well/" + 
+            this.lonelywell[0].well).then((res) => {
+              console.log(res.data)
+              this.wellAdd();
+              this.reRenderAll();
+              this.show_add=false;
+              this.checkersec=false;
+              
+            })
+      }
+      else{
+        return console.log("error")
+      }
+    },
+
     searchWell() {
+      console.log("search = ", this.searchString);
       this.$store.commit("tr/SET_SORTPARAM", "");
       this.sortParam = "";
-      this.isloading = true;
+      this.$store.commit("globalloading/SET_LOADING", true);
+      // this.isloading = true;
       const searchParam = this.searchString
         ? `search/${this.searchString}/`
         : "";
@@ -6849,7 +7618,9 @@ export default {
             searchParam
         )
         .then((response) => {
-          this.isloading = false;
+          this.$store.commit("globalloading/SET_LOADING", false);
+          // this.isloading = false;
+          this.searched = searchParam ? true : false;
           this.$store.commit("tr/SET_SEARCH", this.searchString);
           let data = response.data;
           if (data) {
@@ -6864,7 +7635,9 @@ export default {
         })
         .catch((error) => {
           // this.wells = [];
-          this.isloading = false;
+          this.searched = searchParam ? true : false;
+          this.$store.commit("globalloading/SET_LOADING", false);
+          // this.isloading = false;
           this.fullWells = [];
           console.log("search error = ", error);
         });
@@ -6874,9 +7647,11 @@ export default {
 </script>
 <style scoped>
 /* @import "element-variables"; */
-
 body {
   color: white !important;
+}
+#app .multiselect {
+  max-width: 300px;
 }
 .form-control,
 .fix-rounded-right {
@@ -6905,7 +7680,7 @@ a:hover {
   text-decoration: none !important;
 }
 .maintable {
-  padding-top: 35px;
+  padding: 0;
 }
 .maintable-level2 {
   background: #272953;
@@ -6952,7 +7727,9 @@ tr:nth-child(even) {
 }
 
 .trcolmd12 {
-  margin-left: 0px;
+  margin: 0;
+  padding: 0;
+  margin-bottom: 13px;
 }
 .fadee {
   flex: 0 1 auto;
@@ -6974,7 +7751,7 @@ tr:nth-child(even) {
 }
 
 .trgraph {
-  margin-top: 4px;
+  margin: 0 10px;
   background: #272953;
 }
 
@@ -6986,7 +7763,7 @@ tr:nth-child(even) {
 }
 .table {
   overflow: scroll;
-  height: calc(100vh - 247px);
+  height: calc(100vh - 205px);
 }
 .trkrtableborderedtabledarktableresponsive {
   font-size: 9px;
@@ -6996,40 +7773,32 @@ tr:nth-child(even) {
   flex-grow: 0;
   width: 200px;
 }
-.tablecont {
-  margin-top: -38px;
-}
 
-/* .table {
-    overflow: scroll;
-    height: calc(100vh - 247px);
-} */
 .table .th {
   position: sticky;
   background: rgb(51, 57, 117);
 }
 .table tr:first-child .th {
-  top: 0;
+  top: -1px;
   z-index: 3000;
 }
 .table tr:nth-child(2) .th {
-  top: 25px;
+  top: 24px;
   z-index: 3000;
 }
 .table tr:nth-child(3) .th {
-  top: 50px;
+  top: 49px;
   z-index: 3000;
 }
 .table tr:nth-child(4) .th {
-  top: 81px;
+  top: 80px;
   z-index: 3000;
 }
 .table tr:nth-child(5) .th {
-  top: 98px;
+  top: 97px;
   z-index: 3000;
 }
 tr td:first-child {
-  background-color: #0074d9;
   color: #fff;
   position: sticky;
   left: 0;
@@ -7041,6 +7810,69 @@ tr td:first-child {
 .table-inner {
   overflow-y: visible;
 }
+tr:not(.notsticky) td:nth-child(-n + 3) {
+  position: sticky;
+  left: -1px;
+  width: 27px;
+  z-index: 3009;
+}
+tr:not(.notsticky) td:nth-child(2) {
+  left: 23px;
+  width: 100px;
+}
+tr:not(.notsticky) td:nth-child(3) {
+  left: 121px;
+  width: 55;
+}
+
+tr:nth-child(odd) td {
+  background-color: #454d7d;
+}
+tr:nth-child(even) td {
+  background-color: #26336f;
+}
+
+.table.table tr:not(.notsticky) .th:nth-child(-n + 3) {
+  z-index: 3010;
+}
+
+.input_edit {
+  background: #7879a6;
+}
+
+/* width */
+table::-webkit-scrollbar {
+  width: 13px;
+}
+
+/* Track */
+table::-webkit-scrollbar-track {
+  background: #333975;
+}
+
+/* Handle */
+table::-webkit-scrollbar-thumb {
+  background: #656A8A;
+  
+}
+
+/* Handle on hover */
+table::-webkit-scrollbar-thumb:hover {
+  background: #656A8A;
+  
+}
+
+table::-webkit-scrollbar-corner {
+  background: #333975;
+}
+.modalcont {
+  background: #272953;
+}
+.modalselect {
+  background: #334296;
+  color: #fff;
+}
+
 </style>
 <style>
 .tr-field-filter.tr-field-filter {
@@ -7057,12 +7889,43 @@ tr td:first-child {
   height: 40px;
 }
 .fadropmenu.fadropmenu {
-  background: #656a8a;
-  /* color: #ffffff; */
-  width: 246px;
-  z-index: 3001 !important;
+  background: #333975;
+  /* width: 246px; */
+  z-index: 4001 !important;
 }
 .faheadhight {
   height: 40px;
+}
+
+.button_form.button_form {
+  background: #333975;
+  border: 0px;
+  color: #fff;
+  align-self: center;
+  width: 150px;
+  margin-top: 5px;
+}
+.dropdown-menu.show {
+  display: flex;
+  flex-direction: column;
+}
+
+.header_mod {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: justify;
+    -webkit-justify-content: space-between;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    padding: 15px;
+}
+.select_mod.select_mod.select_mod.select_mod {
+     background: #334296; 
 }
 </style>

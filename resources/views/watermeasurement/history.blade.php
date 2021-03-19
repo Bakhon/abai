@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.monitor')
 
 @section('content')
     <div class="row">
@@ -10,7 +10,7 @@
                 </div>
             @endif
             <div class="container">
-                <h1>История изменений</h1>
+                <h1>{{ trans('monitoring.history.title') }}</h1>
                 <edit-history :history='@json($watermeasurement->history)'></edit-history>
                 <a class="btn btn-primary" href="{{ route('watermeasurement.index') }}">{{__('app.back')}}</a>
             </div>

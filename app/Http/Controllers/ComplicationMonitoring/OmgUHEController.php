@@ -31,68 +31,17 @@ class OmgUHEController extends CrudController
             'links' => [
                 'list' => route('omguhe.list'),
             ],
-            'title' => 'База данных ОМГ УХЭ',
+            'title' => trans('monitoring.omguhe.title'),
             'table_header' => [
-                'Узел отбора' => 6,
-                'Фактические данные от УХЭ' => 6,
+                trans('monitoring.selection_node') => 1,
+                trans('monitoring.omguhe.fields.fact_data') => 5,
             ],
             'fields' => [
-                'field' => [
-                    'title' => 'Месторождение',
-                    'type' => 'select',
-                    'filter' => [
-                        'values' => \App\Models\Refs\Field::whereHas('omguhe')
-                            ->orderBy('name', 'asc')
-                            ->get()
-                            ->map(
-                                function ($item) {
-                                    return [
-                                        'id' => $item->id,
-                                        'name' => $item->name,
-                                    ];
-                                }
-                            )
-                            ->toArray()
-                    ]
-                ],
-                'ngdu' => [
-                    'title' => 'НГДУ',
-                    'type' => 'select',
-                    'filter' => [
-                        'values' => \App\Models\Refs\Ngdu::whereHas('omguhe')
-                            ->orderBy('name', 'asc')
-                            ->get()
-                            ->map(
-                                function ($item) {
-                                    return [
-                                        'id' => $item->id,
-                                        'name' => $item->name,
-                                    ];
-                                }
-                            )
-                            ->toArray()
-                    ]
-                ],
-                'cdng' => [
-                    'title' => 'ЦДНГ',
-                    'type' => 'select',
-                    'filter' => [
-                        'values' => \App\Models\Refs\Cdng::whereHas('omguhe')
-                            ->orderBy('name', 'asc')
-                            ->get()
-                            ->map(
-                                function ($item) {
-                                    return [
-                                        'id' => $item->id,
-                                        'name' => $item->name,
-                                    ];
-                                }
-                            )
-                            ->toArray()
-                    ]
-                ],
+                
+                
+                
                 'gu' => [
-                    'title' => 'ГУ',
+                    'title' => trans('monitoring.gu'),
                     'type' => 'select',
                     'filter' => [
                         'values' => \App\Models\Refs\Gu::whereHas('omguhe')
@@ -109,90 +58,34 @@ class OmgUHEController extends CrudController
                             ->toArray()
                     ]
                 ],
-                'zu' => [
-                    'title' => 'ЗУ',
-                    'type' => 'select',
-                    'filter' => [
-                        'values' => \App\Models\Refs\Zu::whereHas('omguhe')
-                            ->orderBy('name', 'asc')
-                            ->get()
-                            ->map(
-                                function ($item) {
-                                    return [
-                                        'id' => $item->id,
-                                        'name' => $item->name,
-                                    ];
-                                }
-                            )
-                            ->toArray()
-                    ]
-                ],
-                'well' => [
-                    'title' => 'Скважина',
-                    'type' => 'select',
-                    'filter' => [
-                        'values' => \App\Models\Refs\Well::whereHas('omguhe')
-                            ->orderBy('name', 'asc')
-                            ->get()
-                            ->map(
-                                function ($item) {
-                                    return [
-                                        'id' => $item->id,
-                                        'name' => $item->name,
-                                    ];
-                                }
-                            )
-                            ->toArray()
-                    ]
-                ],
-                'date' => [
-                    'title' => 'Дата',
-                    'type' => 'date',
-                ],
-                'inhibitor' => [
-                    'title' => 'Ингибитор',
-                    'type' => 'select',
-                    'filter' => [
-                        'values' => \App\Models\Inhibitor::whereHas('omguhe')
-                            ->orderBy('name', 'asc')
-                            ->get()
-                            ->map(
-                                function ($item) {
-                                    return [
-                                        'id' => $item->id,
-                                        'name' => $item->name,
-                                    ];
-                                }
-                            )
-                            ->toArray()
-                    ]
-                ],
+                
+                
                 'current_dosage' => [
-                    'title' => 'Фактическая дозировка, г/м3',
+                    'title' => trans('monitoring.omguhe.fields.fact_dosage'),
                     'type' => 'numeric',
                 ],
                 'daily_inhibitor_flowrate' => [
-                    'title' => 'Суточный расход ингибитора, кг/сут',
+                    'title' => trans('monitoring.omguhe.fields.inhibitor_rate'),
                     'type' => 'numeric',
                 ],
                 'out_of_service_оf_dosing' => [
-                    'title' => 'Простой дозатора',
+                    'title' => trans('monitoring.omguhe.fields.dosator_idle'),
                     'type' => 'select',
                     'filter' => [
                         'values' => [
                             [
                                 'id' => '',
-                                'name' => 'Простоя не было'
+                                'name' => trans('monitoring.omguhe.fields.dosator.no_idle')
                             ],
                             [
                                 'id' => '1',
-                                'name' => 'Был простой'
+                                'name' => trans('monitoring.omguhe.fields.dosator.idle')
                             ],
                         ]
                     ]
                 ],
                 'reason' => [
-                    'title' => 'Причина',
+                    'title' => trans('monitoring.omguhe.fields.reason'),
                     'type' => 'numeric',
                 ]
             ]

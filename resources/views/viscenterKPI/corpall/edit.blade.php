@@ -73,13 +73,13 @@
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
                                         <strong>Дата:</strong>
-                                        <input type="date" name="date" value={{$row->date}} class="form-control">
+                                        <input type="date" name="date" value="{{$row->date}}" class="form-control">
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
                                         <strong>Значение:</strong>
-                                        <input type="float" name="value" value={{$row->value}} class="form-control">
+                                        <input type="float" name="value" value="{{$row->value}}" class="form-control">
                                     </div>
                                 </div>
                                 

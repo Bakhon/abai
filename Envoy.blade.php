@@ -38,7 +38,6 @@
     php artisan migrate --force --no-interaction
 
     php artisan storage:link
-    php artisan cache:clear
 @endtask
 
 @task('restart_services')
@@ -54,7 +53,8 @@
     echo "Build static"
     cd {{ $new_release_dir }}
     npm install --prefer-offline --no-audit
-    npm run --silent dev
+    export NODE_OPTIONS=--max_old_space_size=8192
+    npm run --silent prod
 @endtask
 
 @task('update_symlinks')
@@ -70,7 +70,7 @@
     echo "Updating permissions"
     sudo chown -R dash:dash {{ $new_release_dir }}
     sudo chgrp -R www-data {{ $new_release_dir }}/storage {{ $new_release_dir }}/bootstrap/cache
-    sudo chmod -R ug+rwx {{ $new_release_dir }}/storage {{ $new_release_dir }}/bootstrap/cache
+    sudo chmod -R 777 {{ $new_release_dir }}/storage {{ $new_release_dir }}/bootstrap/cache
 @endtask
 
 @task('clean_old_releases')

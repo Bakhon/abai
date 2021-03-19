@@ -16,7 +16,7 @@
                   d="M13.8015 10.4124C13.4953 10.4123 13.2018 10.2864 12.9853 10.062L9.52204 6.47442L2.25734 14L0.625 12.309L8.36763 4.28837C8.58407 4.06415 8.87765 3.93811 9.1838 3.93799H9.86032C10.1665 3.93811 10.46 4.06415 10.6765 4.28837L14.1397 7.87597L19.0956 2.74212L16.4485 0H23.375V7.17519L20.7279 4.43307L15.2941 10.062C15.0777 10.2864 14.7841 10.4123 14.478 10.4124H13.8015Z"
                   fill="white"
                 /></svg></i
-            >Факторный анализ отклонений ТР</a
+            >{{trans('tr.tr')}}</a
           >
           <a href="tr" class="col but-nav__link but ml-3"
             ><i style="margin-right: 10px"
@@ -32,7 +32,7 @@
                   fill="white"
                 />
               </svg> </i
-            >Технологический режим</a
+            >{{trans('tr.btr')}}</a
           >
         </div>
       </div>
@@ -47,12 +47,12 @@
             aria-haspopup="true"
             aria-expanded="false"
           >
-            Выберите график
+            {{trans('tr.trfacg')}}
           </a>
           <div class="dropdown-menu droptr" aria-labelledby="dropdownMenuLink">
             <a
               class="dropdown-item"
-              style="background: #656a8a !important; color: #fff"
+              style="background: #40467e !important; color: #fff"
               v-for="(item, index) in chartNames"
               :key="item"
               href="#"
@@ -65,18 +65,20 @@
         <div class="dropdown">
           <button
             class="btn btn-secondary dropdown-toggle trfabtgraph"
+            
             type="button"
             id="dropdownMenuButton"
             data-toggle="dropdown"
             aria-haspopup="true"
             aria-expanded="false"
           >
-            Выберите месяц
+            {{trans('tr.dt')}}
           </button>
 
           <div
             class="dropdown-menu"
-            style="background: #656a8a !important"
+            
+            style="background: #40467e !important; width: calc(100% - 2px);"
             aria-labelledby="dropdownMenuButton"
             data-toggle="dropdown"
             @click.prevent.stop="() => {}"
@@ -85,8 +87,8 @@
               <select
                 v-model="month"
                 style="
-                  background-color: #656a8a !important;
-                  border-color: #656a8a !important;
+                  background-color: #40467e !important;
+                  border-color: #40467e !important;
 
                   color: white;
                 "
@@ -94,27 +96,27 @@
                 id="companySelect"
                 @change="onChangeMonth($event)"
               >
-                <option disabled>Выберите месяц</option>
-                <option value="1">январь</option>
-                <option value="2">февраль</option>
-                <option value="3">март</option>
-                <option value="4">апрель</option>
-                <option value="5">май</option>
-                <option value="6">июнь</option>
-                <option value="7">июль</option>
-                <option value="8">август</option>
-                <option value="9">сентябрь</option>
-                <option value="10">октябрь</option>
-                <option value="11">ноябрь</option>
-                <option value="12">декабрь</option>
+                <!-- <option disabled>Выберите месяц</option> -->
+                <option value="1">{{trans('tr.jan')}}</option>
+                <option value="2">{{trans('tr.feb')}}</option>
+                <option value="3">{{trans('tr.mar')}}</option>
+                <option value="4">{{trans('tr.apr')}}</option>
+                <option value="5">{{trans('tr.may')}}</option>
+                <option value="6">{{trans('tr.jun')}}</option>
+                <option value="7">{{trans('tr.jul')}}</option>
+                <option value="8">{{trans('tr.aug')}}</option>
+                <option value="9">{{trans('tr.sep')}}</option>
+                <option value="10">{{trans('tr.oct')}}</option>
+                <option value="11">{{trans('tr.nov')}}</option>
+                <option value="12">{{trans('tr.dec')}}</option>
               </select>
             </div>
             <div>
               <select
                 v-model="selectYear"
                 style="
-                  background-color: #656a8a !important;
-                  border-color: #656a8a !important;
+                  background-color: #40467e !important;
+                  border-color: #40467e !important;
 
                   color: white;
                 "
@@ -122,69 +124,97 @@
                 id="companySelect"
                 @change="onChangeYear($event)"
               >
-                <option disabled value="">Выберите год</option>
+                <!-- <option disabled value="">Выберите год</option> -->
+                <option value="2021">2021</option>
                 <option value="2020">2020</option>
                 <option value="2019">2019</option>
-                <option value="2018">2018</option>
+                <!-- <option value="2018">2018</option>
                 <option value="2017">2017</option>
                 <option value="2016">2016</option>
                 <option value="2015">2015</option>
-                <option value="2014">2014</option>
+                <option value="2014">2014</option> -->
               </select>
             </div>
             <a
               href="#"
               @click.prevent="chooseDt"
-              class="btn btn-primary"
+              class="btn btn-sm button_form"
               style="margin-left: 15px"
-              >Сформировать</a
+              >{{trans('tr.sf')}}</a
             >
           </div>
+        </div>
+        <div class="namefilter" @click="showFilters = !showFilters">
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <g id="filter">
+              <path
+                id="Combined Shape"
+                d="M10.1488 12.2398H10.8488C10.8488 12.0699 10.787 11.9057 10.6749 11.778L10.1488 12.2398ZM5.25043 6.65971L4.72436 7.1215H4.72436L5.25043 6.65971ZM18.7472 6.65971L18.2211 6.19791L18.7472 6.65971ZM13.7956 12.3004L13.2696 11.8386C13.1574 11.9663 13.0956 12.1304 13.0956 12.3004H13.7956ZM13.7956 16.3796L14.2041 16.948C14.3871 16.8165 14.4956 16.6049 14.4956 16.3796H13.7956ZM10.1488 19H9.44881C9.44881 19.2625 9.59575 19.503 9.82938 19.6228C10.063 19.7427 10.3441 19.7216 10.5573 19.5684L10.1488 19ZM10.6749 11.778L5.77649 6.19791L4.72436 7.1215L9.62275 12.7016L10.6749 11.778ZM5.77649 6.19791C5.6063 6.00404 5.74397 5.7 6.00195 5.7V4.3C4.5401 4.3 3.75996 6.02289 4.72436 7.1215L5.77649 6.19791ZM6.00195 5.7H17.9957V4.3H6.00195V5.7ZM17.9957 5.7C18.2536 5.7 18.3913 6.00404 18.2211 6.19791L19.2733 7.12151C20.2377 6.02289 19.4575 4.3 17.9957 4.3V5.7ZM18.2211 6.19791L13.2696 11.8386L14.3217 12.7622L19.2733 7.12151L18.2211 6.19791ZM13.0956 12.3004V16.3796H14.4956V12.3004H13.0956ZM13.3872 15.8111L9.74034 18.4315L10.5573 19.5684L14.2041 16.948L13.3872 15.8111ZM10.8488 19V12.2398H9.44881V19H10.8488Z"
+                fill="white"
+              />
+            </g>
+          </svg>
+          <div class="mx-2">{{trans('tr.trfb')}}</div>
+        </div>
+        <div class="filters row" v-if="showFilters">
+          <div class="filters__item">
+            <tr-multiselect
+              :filter="chartFilter_field"
+              :fieldFilterOptions="fieldFilters"
+              @change-filter="handlerFilterFields"
+              filterName="месторождения"
+            />
+          </div>
+          <div class="filters__item">
+            <tr-multiselect
+              :filter="chartFilter_horizon"
+              :fieldFilterOptions="horizonFilters"
+              @change-filter="handlerFilterHorizons"
+              filterName="горизонты"
+              textFormsRow="horizons"
+            />
+          </div>
+          <div class="filters__item">
+            <tr-multiselect
+              :filter="chartFilter_exp_meth"
+              :fieldFilterOptions="exp_methFilters"
+              @change-filter="handlerFilterFieldsMethods"
+              filterName="способы"
+              filterNameAdditional="добычи"
+              textFormsRow="expMethods"
+            />
+          </div>
+          
+          <div class="filters__item">
+            <tr-multiselect
+              :filter="chartFilter_object"
+              :fieldFilterOptions="objectFilters"
+              @change-filter="handlerFilterObjects"
+              filterName="обьекты"
+              textFormsRow="objects"
+            />
+          </div>
+          <clear-icon
+            v-if="chartWells.length !== filteredWellsPreGraph.length"
+            @clear-click="clearFilters()"
+            background="#333975"
+            placeholder="Сбросить фильтры"
+            style="margin-left: 10px"
+          />
         </div>
       </div>
       <div class="sec_nav">
-        <!-- <h4 style="color: white">{{ chartNames[chartShow] }} на {{ dt }}</h4> -->
-        <div class="filter_chart row">
-          <div class="namefilter mb-2" style="color: white">
-            <h4>Фильтр по</h4>
-          </div>
-          <div class="filterplaceone" style="margin-left: 15px">
-            <select
-              class="form-control mb-2"
-              v-model="chartFilter_field"
-              value="Месторождение"
-            >
-              <option v-for="(f, k) in fieldFilters" :key="k" :value="f">
-                {{ f === undefined ? "Все месторождения" : f }}
-              </option>
-            </select>
-          </div>
-          <div class="filterplacetwo" style="margin-left: 15px">
-            <select class="form-control mb-2" v-model="chartFilter_horizon">
-              <option v-for="(f, k) in horizonFilters" :key="k" :value="f">
-                {{ f === undefined ? "Все горизонты" : f }}
-              </option>
-            </select>
-          </div>
-          <div class="filterplacethree" style="margin-left: 15px">
-            <select
-              v-if="exp_methFilters"
-              class="form-control mb-2"
-              v-model="chartFilter_exp_meth"
-            >
-              <option v-for="(f, k) in exp_methFilters" :key="k" :value="f">
-                {{ f === undefined ? "Все способы эксплуатации" : f }}
-              </option>
-            </select>
-          </div>
-        </div>
-        <div class="fadee tr-chart__loader" v-if="isLoading">
-          <fade-loader :loading="isLoading"></fade-loader>
-        </div>
-        <div class="" v-else>
+        <div class="">
           <div class="second_block">
             <apexchart
               v-if="chartData"
+              height="100%"
               :options="chartBarOptions"
               :series="chartData"
             ></apexchart>
@@ -192,38 +222,52 @@
         </div>
       </div>
     </div>
-    <big-numbers :list="filteredWells" :isLoading="isLoading" />
+    <big-numbers :list="filteredWells" />
   </div>
 </template>
 <script>
 import VueApexCharts from "vue-apexcharts";
-import FadeLoader from "vue-spinner/src/FadeLoader.vue";
+// import FadeLoader from "vue-spinner/src/FadeLoader.vue";
 import BigNumbers from "./BigNumbers.vue";
+import TrMultiselect from "./TrMultiselect.vue";
+import { getFilterText } from "./helpers.js";
+import ClearIcon from "../ui-kit/ClearIcon.vue";
 
 export default {
   name: "TrCharts",
   components: {
-    FadeLoader,
+    // FadeLoader,
+    TrMultiselect,
+    ClearIcon,
     BigNumbers,
   },
   computed: {
     titleText() {
-      return `${this.chartNames[this.chartShow]} на ${this.dt}`;
+      return `${this.chartNames[this.chartShow]} ${this.dt}`;
     },
     subtitleText() {
-      let filtersText = "";
-      if (this.chartFilter_field) filtersText = this.chartFilter_field;
-      if (this.chartFilter_horizon)
-        filtersText = filtersText
-          ? `${filtersText}, ${this.chartFilter_horizon}`
-          : this.chartFilter_horizon;
-      if (this.chartFilter_exp_meth)
-        filtersText = filtersText
-          ? `${filtersText}, ${this.chartFilter_exp_meth}`
-          : this.chartFilter_exp_meth;
-      if (filtersText) filtersText = `по ${filtersText}`;
-
-      return filtersText;
+      return [
+        getFilterText(
+          this.chartFilter_field,
+          this.fieldFilters[0].fields,
+          "fields"
+        ),
+        getFilterText(
+          this.chartFilter_horizon,
+          this.horizonFilters[0].fields,
+          "horizons"
+        ),
+        `${getFilterText(
+          this.chartFilter_exp_meth,
+          this.exp_methFilters[0].fields,
+          "expMethods"
+        )} добычи`,
+        getFilterText(
+          this.chartFilter_object,
+          this.objectFilters[0].fields,
+          "objects"
+        ),
+      ];
     },
     fieldFilters() {
       if (this.chartWells && this.chartWells.length > 0) {
@@ -234,14 +278,25 @@ export default {
           if (
             filters.indexOf(el.field) === -1 &&
             (!this.chartFilter_horizon ||
-              el_horizon === this.chartFilter_horizon) &&
+              this.chartFilter_horizon.length === 0 ||
+              this.chartFilter_horizon.indexOf(el_horizon) !== -1) &&
             (!this.chartFilter_exp_meth ||
-              el_exp_meth === this.chartFilter_exp_meth)
+              this.chartFilter_exp_meth.length === 0 ||
+              this.chartFilter_exp_meth.indexOf(el_exp_meth) !== -1) &&
+            (!this.chartFilter_object ||
+              this.chartFilter_object.length === 0 ||
+              this.chartFilter_object.indexOf(el.object) !== -1)
+            //change it to object
           ) {
             filters = [...filters, el.field];
           }
         });
-        return [undefined, ...filters];
+        return [
+          {
+            group: `${this.trans('tr.fltr')}`,
+            fields: [...filters],
+          },
+        ];
       } else return [];
     },
     horizonFilters() {
@@ -252,14 +307,25 @@ export default {
           const el_exp_meth = this.getStringOrFirstItem(el, "exp_meth");
           if (
             filters.indexOf(el_horizon) === -1 &&
-            (!this.chartFilter_field || el.field === this.chartFilter_field) &&
+            (!this.chartFilter_field ||
+              this.chartFilter_field.length === 0 ||
+              this.chartFilter_field.indexOf(el.field) !== -1) &&
             (!this.chartFilter_exp_meth ||
-              el_exp_meth === this.chartFilter_exp_meth)
+              this.chartFilter_exp_meth.length === 0 ||
+              this.chartFilter_exp_meth.indexOf(el_exp_meth) !== -1) &&
+            (!this.chartFilter_object ||
+              this.chartFilter_object.length === 0 ||
+              this.chartFilter_object.indexOf(el.object) !== -1)
           ) {
             filters = [...filters, el_horizon];
           }
         });
-        return [undefined, ...filters];
+        return [
+          {
+            group: `${this.trans('tr.trcmf1')}`,
+            fields: [...filters],
+          },
+        ];
       } else return [];
     },
     exp_methFilters() {
@@ -271,22 +337,64 @@ export default {
           const el_exp_meth = this.getStringOrFirstItem(el, "exp_meth");
           if (
             filters.indexOf(el_exp_meth) === -1 &&
-            (!this.chartFilter_field || el.field === this.chartFilter_field) &&
+            (!this.chartFilter_field ||
+              this.chartFilter_field.length === 0 ||
+              this.chartFilter_field.indexOf(el.field) !== -1) &&
             (!this.chartFilter_horizon ||
-              el_horizon === this.chartFilter_horizon)
+              this.chartFilter_horizon.length === 0 ||
+              this.chartFilter_horizon.indexOf(el_horizon) !== -1) &&
+            (!this.chartFilter_object ||
+              this.chartFilter_object.length === 0 ||
+              this.chartFilter_object.indexOf(el.object) !== -1)
           ) {
             filters = [...filters, el_exp_meth];
           }
         });
-        return [undefined, ...filters];
+        return [
+          {
+            group: `${this.trans('tr.trcmf2')}`,
+            fields: [...filters],
+          },
+        ];
+      } else return [];
+    },
+    objectFilters() {
+      if (this.chartWells && this.chartWells.length > 0) {
+        let filters = [];
+
+        this.chartWells.forEach((el) => {
+          const el_horizon = this.getStringOrFirstItem(el, "horizon");
+          const el_exp_meth = this.getStringOrFirstItem(el, "exp_meth");
+          if (
+            filters.indexOf(el.object) === -1 &&
+            (!this.chartFilter_field ||
+              this.chartFilter_field.length === 0 ||
+              this.chartFilter_field.indexOf(el.field) !== -1) &&
+            (!this.chartFilter_horizon ||
+              this.chartFilter_horizon.length === 0 ||
+              this.chartFilter_horizon.indexOf(el_horizon) !== -1) &&
+            (!this.chartFilter_exp_meth ||
+              this.chartFilter_exp_meth.length === 0 ||
+              this.chartFilter_exp_meth.indexOf(el_exp_meth) !== -1)
+          ) {
+            filters = [...filters, el.object];
+          }
+        });
+        return [
+          {
+            group: `${this.trans('tr.trcmf3')}`,
+            fields: [...filters],
+          },
+        ];
       } else return [];
     },
   },
   data: function () {
     return {
       chartShow: 0,
-      isLoading: true,
+      // isLoading: true,
       chartWells: [],
+      filteredWellsPreGraph: [],
       filteredWells: [],
       sortType: "asc",
       dt: null,
@@ -297,9 +405,15 @@ export default {
       editdty: null,
       editdtprevm: null,
       editdtprevy: null,
-      chartFilter_field: undefined,
-      chartFilter_horizon: undefined,
-      chartFilter_exp_meth: undefined,
+      showFilters: false,
+      chartFilter_field: [],
+      chartFilter_field_start: true,
+      chartFilter_horizon: [],
+      chartFilter_horizon_start: true,
+      chartFilter_exp_meth: [],
+      chartFilter_exp_meth_start: true,
+      chartFilter_object: [],
+      chartFilter_object_start: true,
       // sortField: null,
       // currentSortDir: 'asc',
       year: null,
@@ -307,19 +421,20 @@ export default {
       month: null,
       chartData: false,
       chartNames: [
-        "Анализ глубин пластов, спуска насосов и динамического уровня",
-        "ТОП-30 скважин. Потенциал прироста дебита нефти",
-        "ТОП-30 скважин. Потенциал прироста дебита нефти. Обводненность",
-        "ТОП-30 скважин. Потенциал прироста дебита нефти. Газовый фактор",
-        "ТОП-30 скважин. Потенциал прироста дебита жидкости",
-        "Суммарный дебит нефти и жидкости",
-        "Распределение коэффициента продуктивности",
-        "Распределение скважин по дебиту нефти",
-        "Распределение скважин по обводненности",
-        "Распределение скважин по дебиту жидкости",
+        `${this.trans('tr.trchn1')}`,
+        `${this.trans('tr.trchn2')}`,
+        `${this.trans('tr.trchn3')}`,
+        `${this.trans('tr.trchn4')}`,
+        `${this.trans('tr.trchn5')}`,
+        `${this.trans('tr.trchn6')}`,
+        `${this.trans('tr.trchn7')}`,
+        `${this.trans('tr.trchn8')}`,
+        `${this.trans('tr.trchn9')}`,
+        `${this.trans('tr.trchn10')}`,
       ],
       chartBarOptions: {
-        chart: {
+        colors: ["#00e396", "#feb019", "#5FA7FF", "#ff4560", "#554298"],
+        chart: { type: 'bar',
           height: "100%",
           stacked: true,
           toolbar: {
@@ -328,6 +443,7 @@ export default {
           zoom: {
             enabled: true,
           },
+          fontFamily: "Harmonia-sans, Helvetica, Arial, sans-serif",
         },
         plotOptions: {
           bar: {
@@ -365,7 +481,7 @@ export default {
             hideOverlappingLabels: true,
             rotate: -45,
             style: {
-              colors: "#008FFB",
+              colors: "#5FA7FF",
             },
           },
           categories: [],
@@ -407,19 +523,19 @@ export default {
       },
       titleBase: {
         align: "center",
-        offsetY: 18,
+        offsetY: 15,
         style: {
-          fontSize: "14px",
-          color: "#008FFB",
+          fontSize: "12px",
+          color: "#5FA7FF",
         },
       },
       subtitleBase: {
         align: "center",
-        offsetY: 36,
+        offsetY: 30,
         style: {
-          fontSize: "14px",
-          color: "#008FFB",
-          fontWeight: 900,
+          fontSize: "12px",
+          color: "#5FA7FF",
+          fontWeight: 700,
         },
       },
       yaxisBase: {
@@ -428,7 +544,7 @@ export default {
         },
         labels: {
           style: {
-            colors: "#008FFB",
+            colors: "#5FA7FF",
           },
         },
         axisTicks: {
@@ -437,7 +553,7 @@ export default {
         title: {
           text: "Дебит нефти [т/сут]",
           style: {
-            color: "#008FFB",
+            color: "#5FA7FF",
           },
         },
         decimalsInFloat: 2,
@@ -452,45 +568,124 @@ export default {
       this.calcChartData();
     },
     fieldFilters() {
+      if (this.chartFilter_field_start) {
+        this.chartFilter_field = this.fieldFilters[0].fields;
+        this.chartFilter_field_start = false;
+      } else {
+        const newFilter = this.chartFilter_field.filter(
+          (el) => this.fieldFilters[0].fields.indexOf(el) !== -1
+        );
+        if (newFilter.length !== this.chartFilter_field.length)
+          this.chartFilter_field = newFilter;
+      }
+      this.refreshFilters();
       this.calcChartData();
     },
     horizonFilters() {
+      if (this.chartFilter_horizon_start) {
+        this.chartFilter_horizon = this.horizonFilters[0].fields;
+        this.chartFilter_horizon_start = false;
+      } else {
+        const newFilter = this.chartFilter_horizon.filter(
+          (el) => this.horizonFilters[0].fields.indexOf(el) !== -1
+        );
+        if (newFilter.length !== this.chartFilter_horizon.length)
+          this.chartFilter_horizon = newFilter;
+      }
+      this.refreshFilters();
       this.calcChartData();
     },
     exp_methFilters() {
+      if (this.chartFilter_exp_meth_start) {
+        this.chartFilter_exp_meth = this.exp_methFilters[0].fields;
+        this.chartFilter_exp_meth_start = false;
+      } else {
+        const newFilter = this.chartFilter_exp_meth.filter(
+          (el) => this.exp_methFilters[0].fields.indexOf(el) !== -1
+        );
+        if (newFilter.length !== this.chartFilter_exp_meth.length)
+          this.chartFilter_exp_meth = newFilter;
+      }
+      this.refreshFilters();
+      this.calcChartData();
+    },
+    objectFilters() {
+      if (this.chartFilter_object_start) {
+        this.chartFilter_object = this.objectFilters[0].fields;
+        this.chartFilter_object_start = false;
+      } else {
+        const newFilter = this.chartFilter_object.filter(
+          (el) => this.objectFilters[0].fields.indexOf(el) !== -1
+        );
+        if (newFilter.length !== this.chartFilter_object.length)
+          this.chartFilter_object = newFilter;
+      }
+      this.refreshFilters();
       this.calcChartData();
     },
   },
   methods: {
+    clearFilters() {
+      this.chartFilter_object = [];
+      this.chartFilter_exp_meth = [];
+      this.chartFilter_horizon = [];
+      this.chartFilter_field = [];
+    },
+    refreshFilters() {
+      if (
+        this.chartFilter_object.length === 0 &&
+        this.chartFilter_exp_meth.length === 0 &&
+        this.chartFilter_horizon.length === 0 &&
+        this.chartFilter_field.length === 0
+      ) {
+        this.chartFilter_object = [...this.objectFilters[0].fields];
+        this.chartFilter_exp_meth = [...this.exp_methFilters[0].fields];
+        this.chartFilter_horizon = [...this.horizonFilters[0].fields];
+        this.chartFilter_field = [...this.fieldFilters[0].fields];
+      }
+    },
+    handlerFilterFields(filter) {
+      this.chartFilter_field = filter;
+    },
+    handlerFilterHorizons(filter) {
+      this.chartFilter_horizon = filter;
+    },
+    handlerFilterFieldsMethods(filter) {
+      this.chartFilter_exp_meth = filter;
+    },
+    handlerFilterObjects(filter) {
+      this.chartFilter_object = filter;
+    },
     async calcChartData() {
-      this.isLoading = true;
       if (this.chartWells && this.chartWells.length > 0) {
-        let field = this.chartFilter_field;
-        let horizon = this.chartFilter_horizon;
-        let exp_meth = this.chartFilter_exp_meth;
+        const field = this.chartFilter_field;
+        const horizon = this.chartFilter_horizon;
+        const exp_meth = this.chartFilter_exp_meth;
+        const object = this.chartFilter_object;
         try {
           const filteredResult = this.chartWells.filter(
             (row) =>
-              (!field || row.field === field) &&
+              (!field || field.indexOf(row.field) !== -1) &&
+              (!object || object.indexOf(row.object) !== -1) &&
               (!horizon ||
-                this.getStringOrFirstItem(row, "horizon") === horizon) &&
+                horizon.indexOf(this.getStringOrFirstItem(row, "horizon")) !==
+                  -1) &&
               (!exp_meth ||
-                this.getStringOrFirstItem(row, "exp_meth") === exp_meth)
+                exp_meth.indexOf(this.getStringOrFirstItem(row, "exp_meth")) !==
+                  -1)
           );
-
+          console.log("filtered = ", filteredResult);
+          this.filteredWellsPreGraph = filteredResult;
           this.chartData = await this[`setDataChart${this.chartShow}`](
             filteredResult
           );
-          this.isLoading = false;
         } catch (err) {
           console.error(err);
           this.chartData = false;
-          this.isLoading = false;
         }
         //return false;
       } else {
         this.chartData = false;
-        this.isLoading = false;
       }
     },
     setDataChart0(filteredResult) {
@@ -522,14 +717,17 @@ export default {
         }
         if (newMinY1 < minY1) minY1 = newMinY1;
         if (newMaxY1 > maxY1) maxY1 = newMaxY1;
-        return this.getStringOrFirstItem(item, "well");
+        return this.getStringOrFirstItem(item, "rus_wellname");
       });
-      const xaxis = { ...this.chartBarOptions.xaxis, categories };
+      const labels = { ...this.chartBarOptions.xaxis.labels };
+      labels.style.cssClass = "chart-labels";
+      labels.rotateAlways = true;
+      const xaxis = { ...this.chartBarOptions.xaxis, labels, categories };
       const stacked = false;
       const stroke = {
         show: true,
-        width: [5, 1, 1],
-        colors: ["#008ffb", "#27295300", "#27295300"],
+        width: [1, 1, 5],
+        colors: ["#27295300", "#27295300", "#5FA7FF"],
       };
       const chart = { ...this.chartBarOptions.chart, stacked };
       const yaxis = {
@@ -537,7 +735,7 @@ export default {
         title: {
           text: "Измеренная глубина [м]",
           style: {
-            color: "#008FFB",
+            color: "#5FA7FF",
           },
         },
         max: maxY1,
@@ -560,7 +758,7 @@ export default {
         chart,
         stroke,
         markers: {
-          size: [0, 5, 5],
+          size: [5, 5, 0],
           offsetX: -2,
         },
         fill: {
@@ -571,13 +769,6 @@ export default {
       };
 
       const series = [
-        {
-          name: "Н вдп",
-          type: "area",
-          data: filteredResult.map((item) =>
-            this.getStringOrFirstItem(item, "h_up_perf_md")
-          ),
-        },
         {
           name: "Н дин",
           type: "line",
@@ -590,6 +781,13 @@ export default {
           type: "line",
           data: filteredResult.map((item, index) =>
             this.getStringOrFirstItem(item, "h_pump_set")
+          ),
+        },
+        {
+          name: "Н вдп",
+          type: "area",
+          data: filteredResult.map((item) =>
+            this.getStringOrFirstItem(item, "h_up_perf_md")
           ),
         },
       ];
@@ -626,11 +824,18 @@ export default {
         if (newY1 > maxY1) maxY1 = newY1;
         if (newY2Min < minY2) minY1 = newY2Min;
         if (newY2Max > maxY2) maxY2 = newY2Max;
-        return this.getStringOrFirstItem(item, "well");
+        return this.getStringOrFirstItem(item, "rus_wellname");
       });
-      const xaxis = { ...this.chartBarOptions.xaxis, categories };
+      const labels = { ...this.chartBarOptions.xaxis.labels };
+      labels.style.cssClass = "";
+      labels.rotateAlways = true;
+      const xaxis = { ...this.chartBarOptions.xaxis, labels, categories };
+      console.log("xaxis = ", xaxis);
       const stacked = true;
-      const stroke = { show: false };
+      const stroke = {
+        show: false,
+        width: [1, 1, 1],
+      };
       const chart = { ...this.chartBarOptions.chart, stacked };
       const yaxis = [
         {
@@ -661,7 +866,7 @@ export default {
             rotate: 90,
             text: "Давление [атм]",
             style: {
-              color: "#008FFB",
+              color: "#5FA7FF",
             },
           },
           max: maxY2,
@@ -755,11 +960,17 @@ export default {
         if (newY1 > maxY1) maxY1 = newY1;
         if (newY2 < minY2) minY1 = newY2;
         if (newY2 > maxY2) maxY2 = newY2;
-        return this.getStringOrFirstItem(item, "well");
+        return this.getStringOrFirstItem(item, "rus_wellname");
       });
-      const xaxis = { ...this.chartBarOptions.xaxis, categories };
+      const labels = { ...this.chartBarOptions.xaxis.labels };
+      labels.style.cssClass = "";
+      labels.rotateAlways = true;
+      const xaxis = { ...this.chartBarOptions.xaxis, labels, categories };
       const stacked = true;
-      const stroke = { show: false };
+      const stroke = {
+        show: false,
+        width: [1, 1, 1],
+      };
       const chart = { ...this.chartBarOptions.chart, stacked };
       const yaxis = [
         {
@@ -771,13 +982,13 @@ export default {
           min: minY1,
         },
         {
-        ...this.yaxisBase,
+          ...this.yaxisBase,
           show: false,
           max: maxY1,
           min: minY1,
         },
         {
-        ...this.yaxisBase,
+          ...this.yaxisBase,
           show: false,
           max: maxY1,
           min: minY1,
@@ -789,7 +1000,7 @@ export default {
             rotate: 90,
             text: "Обводненность [%]",
             style: {
-              color: "#008FFB",
+              color: "#5FA7FF",
             },
           },
           max: maxY2,
@@ -876,11 +1087,17 @@ export default {
         if (newY1 > maxY1) maxY1 = newY1;
         if (newY2 < minY2) minY1 = newY2;
         if (newY2 > maxY2) maxY2 = newY2;
-        return this.getStringOrFirstItem(item, "well");
+        return this.getStringOrFirstItem(item, "rus_wellname");
       });
-      const xaxis = { ...this.chartBarOptions.xaxis, categories };
+      const labels = { ...this.chartBarOptions.xaxis.labels };
+      labels.style.cssClass = "";
+      labels.rotateAlways = true;
+      const xaxis = { ...this.chartBarOptions.xaxis, labels, categories };
       const stacked = true;
-      const stroke = { show: false };
+      const stroke = {
+        show: false,
+        width: [1, 1, 1],
+      };
       const chart = { ...this.chartBarOptions.chart, stacked };
       const yaxis = [
         {
@@ -892,13 +1109,13 @@ export default {
           min: minY1,
         },
         {
-        ...this.yaxisBase,
+          ...this.yaxisBase,
           show: false,
           max: maxY1,
           min: minY1,
         },
         {
-        ...this.yaxisBase,
+          ...this.yaxisBase,
           show: false,
           max: maxY1,
           min: minY1,
@@ -910,7 +1127,7 @@ export default {
             rotate: 90,
             text: "ГФ [м3/т]",
             style: {
-              color: "#008FFB",
+              color: "#5FA7FF",
             },
           },
           max: maxY2,
@@ -1000,11 +1217,17 @@ export default {
         if (newY1 > maxY1) maxY1 = newY1;
         if (newY2Min < minY2) minY1 = newY2Min;
         if (newY2Max > maxY2) maxY2 = newY2Max;
-        return this.getStringOrFirstItem(item, "well");
+        return this.getStringOrFirstItem(item, "rus_wellname");
       });
-      const xaxis = { ...this.chartBarOptions.xaxis, categories };
+      const labels = { ...this.chartBarOptions.xaxis.labels };
+      labels.style.cssClass = "";
+      labels.rotateAlways = true;
+      const xaxis = { ...this.chartBarOptions.xaxis, labels, categories };
       const stacked = true;
-      const stroke = { show: false };
+      const stroke = {
+        show: false,
+        width: [1, 1, 1],
+      };
       const chart = { ...this.chartBarOptions.chart, stacked };
       const yaxis = [
         {
@@ -1013,7 +1236,7 @@ export default {
           title: {
             text: "Дебит жидкости [м3/сут]",
             style: {
-              color: "#008FFB",
+              color: "#5FA7FF",
             },
           },
           tooltip: {
@@ -1023,13 +1246,13 @@ export default {
           min: minY1,
         },
         {
-        ...this.yaxisBase,
+          ...this.yaxisBase,
           show: false,
           max: maxY1,
           min: minY1,
         },
         {
-        ...this.yaxisBase,
+          ...this.yaxisBase,
           show: false,
           max: maxY1,
           min: minY1,
@@ -1041,7 +1264,7 @@ export default {
             rotate: 90,
             text: "Давление [атм]",
             style: {
-              color: "#008FFB",
+              color: "#5FA7FF",
             },
           },
           max: maxY2,
@@ -1110,7 +1333,10 @@ export default {
     setDataChart5(filteredResult) {
       this.filteredWells = filteredResult;
       const categories = ["Факт", "ИДН", "ИДН+ГРП"];
-      const xaxis = { ...this.chartBarOptions.xaxis, categories };
+      const labels = { ...this.chartBarOptions.xaxis.labels };
+      labels.style.cssClass = "";
+      labels.rotateAlways = false;
+      const xaxis = { ...this.chartBarOptions.xaxis, labels, categories };
       const stacked = false;
       const chart = { ...this.chartBarOptions.chart, stacked };
       const yaxis = {
@@ -1118,15 +1344,17 @@ export default {
         title: {
           text: "Дебит нефти [т.сут] | Дебит жидкости [м3/сут]",
           style: {
-            color: "#008FFB",
+            color: "#5FA7FF",
           },
         },
-        // max: maxY2,
-        // min: minY2,
       };
       const title = {
         ...this.titleBase,
         text: this.titleText,
+      };
+      const stroke = {
+        show: false,
+        width: [1, 1],
       };
       const subtitle = {
         ...this.subtitleBase,
@@ -1138,6 +1366,7 @@ export default {
         xaxis,
         yaxis,
         chart,
+        stroke,
         markers: this.markersBase,
         fill: this.fillBase,
         title,
@@ -1200,15 +1429,18 @@ export default {
         return 0;
       });
       const categories = filteredResult.map((item) =>
-        this.getStringOrFirstItem(item, "well")
+        this.getStringOrFirstItem(item, "rus_wellname")
       );
-      const xaxis = { ...this.chartBarOptions.xaxis, categories };
+      const labels = { ...this.chartBarOptions.xaxis.labels };
+      labels.style.cssClass = "chart-labels";
+      labels.rotateAlways = true;
+      const xaxis = { ...this.chartBarOptions.xaxis, labels, categories };
       const yaxis = {
         ...this.yaxisBase,
         title: {
           text: "Коэффициент продуктивности [м3/сут/атм]",
           style: {
-            color: "#008FFB",
+            color: "#5FA7FF",
           },
         },
       };
@@ -1220,11 +1452,15 @@ export default {
         ...this.subtitleBase,
         text: this.subtitleText,
       };
-
+      const stroke = {
+        show: false,
+        width: [1],
+      };
       this.chartBarOptions = {
         ...this.chartBarOptions,
         xaxis,
         yaxis,
+        stroke,
         fill: this.fillBase,
         title,
         subtitle,
@@ -1250,9 +1486,12 @@ export default {
         return 0;
       });
       const categories = filteredResult.map((item) =>
-        this.getStringOrFirstItem(item, "well")
+        this.getStringOrFirstItem(item, "rus_wellname")
       );
-      const xaxis = { ...this.chartBarOptions.xaxis, categories };
+      const labels = { ...this.chartBarOptions.xaxis.labels };
+      labels.style.cssClass = "chart-labels";
+      labels.rotateAlways = true;
+      const xaxis = { ...this.chartBarOptions.xaxis, labels, categories };
       const yaxis = { ...this.yaxisBase };
       const title = {
         ...this.titleBase,
@@ -1262,11 +1501,15 @@ export default {
         ...this.subtitleBase,
         text: this.subtitleText,
       };
-
+      const stroke = {
+        show: false,
+        width: [1],
+      };
       this.chartBarOptions = {
         ...this.chartBarOptions,
         xaxis,
         yaxis,
+        stroke,
         fill: this.fillBase,
         title,
         subtitle,
@@ -1292,15 +1535,18 @@ export default {
         return 0;
       });
       const categories = filteredResult.map((item) =>
-        this.getStringOrFirstItem(item, "well")
+        this.getStringOrFirstItem(item, "rus_wellname")
       );
-      const xaxis = { ...this.chartBarOptions.xaxis, categories };
+      const labels = { ...this.chartBarOptions.xaxis.labels };
+      labels.style.cssClass = "chart-labels";
+      labels.rotateAlways = true;
+      const xaxis = { ...this.chartBarOptions.xaxis, labels, categories };
       const yaxis = {
         ...this.yaxisBase,
         title: {
           text: "Обводненность [%]",
           style: {
-            color: "#008FFB",
+            color: "#5FA7FF",
           },
         },
       };
@@ -1312,11 +1558,15 @@ export default {
         ...this.subtitleBase,
         text: this.subtitleText,
       };
-
+      const stroke = {
+        show: false,
+        width: [1],
+      };
       this.chartBarOptions = {
         ...this.chartBarOptions,
         xaxis,
         yaxis,
+        stroke,
         fill: this.fillBase,
         title,
         subtitle,
@@ -1342,15 +1592,18 @@ export default {
         return 0;
       });
       const categories = filteredResult.map((item) =>
-        this.getStringOrFirstItem(item, "well")
+        this.getStringOrFirstItem(item, "rus_wellname")
       );
-      const xaxis = { ...this.chartBarOptions.xaxis, categories };
+      const labels = { ...this.chartBarOptions.xaxis.labels };
+      labels.style.cssClass = "chart-labels";
+      labels.rotateAlways = true;
+      const xaxis = { ...this.chartBarOptions.xaxis, labels, categories };
       const yaxis = {
         ...this.yaxisBase,
         title: {
           text: "Дебит жидкости [м3/сут]",
           style: {
-            color: "#008FFB",
+            color: "#5FA7FF",
           },
         },
       };
@@ -1362,11 +1615,15 @@ export default {
         ...this.subtitleBase,
         text: this.subtitleText,
       };
-
+      const stroke = {
+        show: false,
+        width: [1],
+      };
       this.chartBarOptions = {
         ...this.chartBarOptions,
         xaxis,
         yaxis,
+        stroke,
         fill: this.fillBase,
         title,
         subtitle,
@@ -1392,7 +1649,8 @@ export default {
       this.$store.commit("tr/SET_YEAR", event.target.value);
     },
     chooseDt() {
-      this.isLoading = true;
+      this.$store.commit("globalloading/SET_LOADING", true);
+      // this.isLoading = true;
       this.$store.commit("tr/SET_MONTH", this.month);
       this.$store.commit("tr/SET_YEAR", this.selectYear);
       if (this.month < 10) {
@@ -1411,10 +1669,16 @@ export default {
         .then((response) => {
           // this.editdtm = choosenDt[1];
           // this.editdty = choosenDt[0];
+          this.$store.commit("globalloading/SET_LOADING", false);
+          // this.isLoading = false;
           let data = response.data;
           if (data) {
             this.fullWells = data.data;
             this.chartWells = data.data;
+            this.chartFilter_field_start = true;
+            this.chartFilter_horizon_start = true;
+            this.chartFilter_exp_meth_start = true;
+            this.chartFilter_object_start = true;
           } else {
             console.log("No data");
           }
@@ -1428,7 +1692,8 @@ export default {
     },
   },
   created() {
-    this.isLoading = true;
+    this.$store.commit("globalloading/SET_LOADING", true);
+    // this.isLoading = true;
     if (this.$store.getters["tr/chart"])
       this.chartShow = this.$store.getters["tr/chart"];
     let mm, yyyy;
@@ -1454,7 +1719,8 @@ export default {
           "/"
       )
       .then((response) => {
-        this.isLoading = false;
+        this.$store.commit("globalloading/SET_LOADING", false);
+        // this.isLoading = false;
         let data = response.data;
         this.editdtm = mm;
         this.editdty = yyyy;
@@ -1471,35 +1737,13 @@ export default {
         }
       })
       .catch((e) => {
-        this.isLoading = false;
+        this.$store.commit("globalloading/SET_LOADING", false);
+        // this.isLoading = false;
       });
   },
 };
 </script>
 <style  scoped>
-.tr-chart .row {
-  margin-left: 0;
-  margin-right: 0;
-  padding: 0;
-  width: 100%;
-}
-.tr-chart .sec_nav {
-  padding: 20px;
-  box-sizing: border-box;
-  width: 100%;
-  justify-content: space-between;
-}
-.tr-chart .dropdown {
-  display: flex;
-  height: 35px;
-  margin: 0 20px;
-  width: 195px;
-}
-.tr-chart__loader {
-  margin: 50px auto;
-  width: 1px;
-  height: 78px;
-}
 body {
   color: white !important;
 }
@@ -1507,20 +1751,17 @@ body {
   margin-left: 57px;
 }
 .trfacolmdrowsecnav {
-  margin-bottom: 7px;
-  margin-top: 7px;
-  margin-left: 1px;
+  margin-bottom: 13px;
+  margin-top: 13px;
+  display: flex;
+  justify-content: flex-start;
 }
 .trfacolbutnavlinkbut {
   margin-left: 28px;
 }
-.trfabtdata {
-  margin-left: 864px;
-  background: #5973cc !important;
-}
 .trfabtgraph {
   width: 195px;
-  background: #5973cc !important;
+  background: #40467e !important;
 }
 .trfa_page.trfa_page {
   padding: 0 !important;
@@ -1537,33 +1778,19 @@ body {
   margin: 0;
 }
 .second_block {
-  height: calc(100vh - 355px);
-  width: calc(1.6 * (100vh - 355px));
-  max-width: calc(100vw - 440px);
+  height: calc(100vh - 280px);
+  min-height: 587px;
   margin: 0 auto;
 }
 .droptr.droptr {
-  background: #656a8a;
+  background: #5973cc;
+  padding: 0px;
 }
-</style>
-<style scoped>
-.tr-chart {
-  display: flex;
-  width: 100%;
-}
-.tr-chart__loader {
-  margin: 50px auto;
-  width: 1px;
-  height: 78px;
-}
-.tr-chart__content {
-  flex-basis: 0;
-  flex-grow: 1;
-  flex-shrink: 0;
+a:hover {
+  color: #ffffff;
 }
 .fadropmenu .fadropmenu {
   background: #656a8a;
-  /* color: #ffffff; */
   width: 246px;
 }
 .form-control {
@@ -1574,5 +1801,81 @@ body {
 }
 </style>
 
-
+<style >
+.tr-chart {
+  display: flex;
+  width: 100%;
+}
+.tr-chart__content {
+  flex-basis: 0;
+  flex-grow: 1;
+  flex-shrink: 0;
+}
+.tr-chart__loader {
+  margin: 50px auto;
+  width: 1px;
+  height: 78px;
+}
+.namefilter {
+  color: #fff;
+  margin: 0 0 0 auto;
+  display: flex;
+  align-items: center;
+  background: #454fa1;
+  border: 1px solid #82baff;
+  box-sizing: border-box;
+  border-radius: 4px;
+  padding: 3px 4px;
+  cursor: pointer;
+}
+.filters.filters.filters {
+  background: #333975;
+  border: 1px solid #82baff;
+  box-sizing: border-box;
+  border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: calc(100% - 155px);
+  position: absolute;
+  min-height: 55px;
+  top: 10px;
+  padding: 0 10px 10px 0;
+  z-index: 1000;
+}
+.filters__item {
+  flex: auto;
+  margin: 10px 0 0 10px;
+}
+.tr-chart .row {
+  margin-left: 0;
+  margin-right: 0;
+  padding: 0;
+  width: 100%;
+}
+.tr-chart .sec_nav {
+  padding: 20px;
+  box-sizing: border-box;
+  width: 100%;
+  justify-content: space-between;
+  position: relative;
+}
+.tr-chart .dropdown {
+  display: flex;
+  height: 35px;
+  margin-right: 20px;
+  width: 195px;
+}
+.button_form.button_form {
+  background: #333975;
+  border: 0px;
+  color: #fff;
+  align-self: center;
+  width: 150px;
+  margin-top: 5px;
+  margin-right: 12px;
+  /* display: flex;  */
+  /* justify-content: center */
+}
+</style>
 

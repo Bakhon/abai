@@ -2,7 +2,7 @@
 
 namespace App\Imports;
 
-use App\Models\DZO\DZOcalc;
+use App\Models\VisCenter\ImportForms\DZOcalc;
 use Maatwebsite\Excel\Concerns\ToModel;
 
 class DZOcalcImport implements ToModel
@@ -71,7 +71,12 @@ class DZOcalcImport implements ToModel
             'oil_price_plan' => $row[52],
             'oil_price_fact' => $row[53],
             'kurs_plan' => $row[54],
-            'kurs_fact' => $row[55]
+            'kurs_fact' => $row[55],
+            "fine_2020" => $row[56],
+            "rent_gtm_fact_2020" => $row[57],
+            "ne_rent_gtm_fact_2020" => $row[58],
+            "rent_burenie_fact_2020" => $row[59],
+            "ne_rent_burenie_fact_2020" => $row[60],
         ]);
     }
 }

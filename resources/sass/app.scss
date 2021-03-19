@@ -8,27 +8,35 @@
 font-family: "Bold";
 src: url("/fonts/HarmoniaSansProCyr-Bold.ttf") format("truetype");
 }
-// Variables
+
 @import "variables";
 
 // Bootstrap
 @import "~bootstrap/scss/bootstrap";
+@import '~bootstrap-vue/src/index';
+
 @import "~@fortawesome/fontawesome-free/scss/fontawesome";
 @import "~@fortawesome/fontawesome-free/scss/regular";
 @import "~@fortawesome/fontawesome-free/scss/solid";
 @import "~@fortawesome/fontawesome-free/scss/brands";
 
-// Material theme used for this sample
-@import "~@syncfusion/ej2-base/styles/material.css";
-@import "~@syncfusion/ej2-inputs/styles/material.css";
-@import "~@syncfusion/ej2-buttons/styles/material.css";
-@import "~@syncfusion/ej2-dropdowns/styles/material.css";
-@import "~@syncfusion/ej2-lists/styles/material.css";
-@import "~@syncfusion/ej2-popups/styles/material.css";
-@import "~@syncfusion/ej2-popups/styles/material.css";
-@import "~@syncfusion/ej2-navigations/styles/material.css";
-@import "~@syncfusion/ej2-grids/styles/material.css";
-@import "~@syncfusion/ej2-pivotview/styles/material.css";
-
+@import 'includes/layout';
 @import 'includes/navbar';
+@import 'includes/sidebar';
+@import 'includes/profile';
+@import 'includes/mainpage';
 @import 'components/vSelect';
+@import 'components/modal';
+
+@import 'modules/monitoring';
+@import 'modules/bigdata';
+@import '~handsontable/dist/handsontable.full.css';
+
+
+
+
+
+
+
+
+

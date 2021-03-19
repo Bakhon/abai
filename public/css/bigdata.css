@@ -7,7 +7,7 @@ span.r-txt svg {
     margin-right: 10px !important;
 }
 
-span.r-txt2 {
+div.r-txt2 {
     margin-top: 8px;
     font-family: "Bold";
 }
@@ -74,24 +74,24 @@ span.r-txt2 {
     color: white;
 }
 
-.btn-blocks.disabled {
+.section__content.disabled {
     opacity: 0.3;
 }
 
-.btn-blocks.disabled:hover {
+.section__content.disabled:hover {
     fill: #9EA4C9 !important;
     color: white;
 }
 
-.btn-blocks.selected {
+.section__content.selected {
     background: #3366FF;
 }
 
-.btn-blocks.selected svg {
+.section__content.selected svg {
     fill: #FEFEFE !important;
 }
 
-.btn-blocks:hover {
+.section__content:hover {
     background: #334296;
     fill: #FEFEFE !important;
 }
@@ -115,6 +115,39 @@ span.r-txt2 {
     user-select: none;
 }
 
+.section {
+    min-width: 150px;
+    min-height: 150px;
+}
+
+.section__wrapper {
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+    padding-bottom: 100%;
+}
+
+.section__content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #333975;
+    fill: #9EA4C9 !important;
+    text-align: center;
+    border-radius: 20px;
+    color: white;
+}
+.section__content:before {
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+    content: "";
+}
+.section_icon{
+    margin-bottom: 5px;
+}
 .pading-b-40 {
     padding-bottom: 40px;
 }
@@ -276,7 +309,7 @@ span.r-txt2 {
     height: 15px;
     margin: 0;
     padding: 0;
-
+    margin-bottom: 35px !important;
 }
 
 .reportsBut {
@@ -289,8 +322,10 @@ span.r-txt2 {
 
 .bold {
     font-family: "Bold";
-    margin-top: 17px;
+    /*margin-top: 17px;*/
     font-size: 17px;
+    display: inline-block;
+    vertical-align: middle;
 }
 
 span.height-center svg {

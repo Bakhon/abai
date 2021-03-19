@@ -26,11 +26,11 @@ td.fitwidth {
     font-weight: inherit;
     padding: 5px 15px;
     border-radius: 5px;
-    font-family: Roboto;
+    font-family: "Harmonia-sans";
     font-style: normal;
     font-size: 17px;
     color: #FFFFFF;
-    background: #656A8A;
+    background: #333975;
     border: none!important;
     text-align: left!important;
     cursor: pointer;
@@ -45,7 +45,7 @@ td.fitwidth {
     vertical-align: middle !important;
     font-size: 12px;
     width: 64px;
-    cursor: pointer;
+    /* cursor: pointer; */
 }
 
 .headerColumn td span {
@@ -120,9 +120,9 @@ table {
     padding-bottom: 0px;
 }
 
-
 .CellWithComment{
     position:relative;
+    
 }
 
 .cell-with-comment {
@@ -137,26 +137,30 @@ table {
 
 .circle-err {
     display: block;
-    background: #0d092a;
+    /* background: #0d092a; */
     height: 10px;
     border-radius: 50px;
     width: 10px;
     margin-right: 20px;
-    cursor: pointer;
+    background: rgb(255, 0, 0);
+    /* float: left;
+    margin-right: -10px; */
+    /* cursor: pointer; */
 }
 
 .cell-comment{
     display: none;
     width: auto;
     position:absolute;
-    z-index:100;
+    z-index:3060;
     text-align: Left;
     opacity: 0.4;
     transition: opacity 2s;
     border-radius: 6px;
     background-color: #555;
     padding:3px;
-    top:-80px;
+    bottom: 31px;
+    /* top:-80px; */
 }
 .cell-with-comment:hover .cell-comment {
     display: flex;
@@ -164,7 +168,7 @@ table {
 }
 
 .tech{
-    font-family: "Roboto", sans-serif;
+    font-family: "Harmonia-sans", sans-serif;
     font-size: 2rem;
     font-weight: 400;
     line-height: 1.6;
@@ -174,9 +178,7 @@ table {
 
 .tr_page.tr_page {
     padding: 0 !important;
-    width: calc(100vw - 65px);
     display: flex;
-    margin-left: 30px;
 }
 .tr_page .level1-content  {
     margin: 0;
@@ -186,4 +188,3 @@ table {
     padding: 0;
     margin: 0;
 }  
-

@@ -92,10 +92,9 @@ ol, ul, dl {
     display: flex;
     height: 1rem;
     overflow: hidden;
-    line-height: 0;
-    font-size: 0.675rem;
+    font-size: 0.9rem;
+    font-weight: bold;
     border-radius: 0.25rem;
-    height: 15px!important;
     background-color: #323370!important;
 }
 
@@ -780,12 +779,15 @@ li.center-li {
     background: #272953;
     padding: 0.2rem 0.5rem 0.5rem 0.5rem;
     display: inline-block;
-    vertical-align: top;
 }
 
 .speedometer-border {
     border-right: 1px solid;
     border-color: #454D7D !important;
+}
+
+.vc-speedometer-title {
+    font-size: 3.2rem;
 }
 
 .vc-central-block {
@@ -815,4 +817,45 @@ li.center-li {
     border: 1px solid #333975;
     background: rgb(42, 46, 92);
     line-height: normal;
+}
+
+.vc-wide-indicator-tooltip-text {
+    font-size: 1rem;
+    color: #9FA5C7;
+}
+
+.wide-indicator-border {
+    border-left: 1px solid #454D7D;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+#app > .container-fluid {
+    max-width: 100% !important;
+}
+
+.vc-speedometer-line {
+    height: 35.8%;
+}
+
+.vc-speedometer-title-block {
+    height: 40%;
+}
+
+.vc-speedometer-weight-block {
+    font-size: 1.2rem;
+    font-family: Bold;
+}
+
+.vc-speedometer-absolute-values {
+    font-size: 1rem;
+    width: 41%;
+    height: 33%;
+}
+
+.vc-speedometer-aim {
+    font-size: 1.4rem;
+    font-family: Bold;
 }

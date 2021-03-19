@@ -2,7 +2,7 @@
 
 namespace App\Imports;
 
-use App\Models\OtherObjects;
+use App\Models\Refs\OtherObjects;
 use Maatwebsite\Excel\Concerns\ToModel;
 
 class OtherObjectsImport implements ToModel

@@ -1,0 +1,120 @@
+.main-page {
+  background: url(/img/bg_main.png) no-repeat 50% 100%, radial-gradient(50% 50% at 50% 50%, $main1 0%, #0F1430 100%);
+  background-size: 100% auto;
+  color: #fff;
+  height: calc(100% - 13px);
+  margin: 0 13px 0 0;
+  padding: 80px 0 0;
+  width: auto;
+
+  &__inner {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    max-width: 80%;
+    width: 1350px;
+  }
+
+  &__logo {
+    margin-bottom: 40px;
+  }
+
+  &__search {
+    display: flex;
+    margin-bottom: 110px;
+    position: relative;
+    width: 100%;
+
+    &:before {
+      background: #42487D;
+      content: "";
+      height: 28px;
+      left: 63px;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 1px;
+    }
+
+    input {
+      background: #393D75 url(/img/icons/search.svg) 19px 50% no-repeat;
+      border-radius: 5px 0 0 5px;
+      border: none;
+      color: #fff;
+      font-size: 21px;
+      height: 52px;
+      outline: none;
+      padding: 0 80px;
+      width: calc(100% - 176px);
+
+      &::placeholder {
+        color: #9EA4C9;
+        opacity: 0.8;
+      }
+    }
+
+    button {
+      background: #3366FF;
+      border: none;
+      border-radius: 0 5px 5px 0;
+      color: #fff;
+      font-size: 24px;
+      outline: none;
+      width: 176px;
+
+      span {
+        opacity: 0.8;
+      }
+    }
+  }
+
+  &__blocks {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+
+    &-item {
+      text-align: center;
+      width: 180px;
+
+      &-img {
+        align-items: center;
+        background: $main4;
+        border-radius: 7px;
+        display: flex;
+        justify-content: center;
+        height: 180px;
+        margin-bottom: 23px;
+        width: 180px;
+      }
+
+      &-name {
+        color: #fff;
+        font-size: 24px;
+        line-height: 29px;
+
+        &:hover {
+          color: #fff;
+          text-decoration: none;
+        }
+      }
+
+      &:hover {
+        .main-page__blocks-item-name {
+          font-weight: bold;
+        }
+
+        .main-page__blocks-item-img {
+          background: #3366FF;
+
+          svg {
+            path {
+              fill: #fff;
+            }
+          }
+        }
+      }
+    }
+  }
+}

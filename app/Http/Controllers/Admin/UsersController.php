@@ -4,13 +4,18 @@ namespace App\Http\Controllers\Admin;
 
 use App\Filters\UserFilter;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\UserUpdateRequest;
 use App\Http\Requests\IndexTableRequest;
 use App\User;
+use App\Module;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
 class UsersController extends Controller
 {
+
+    const LOGS_PER_PAGE = 20;
+
     public function index()
     {
         $params = [
@@ -28,12 +33,16 @@ class UsersController extends Controller
                     'title' => 'Имя пользователя',
                     'type' => 'string',
                 ],
-                'company' => [
+                'org' => [
                     'title' => 'Компания',
                     'type' => 'string',
                 ],
                 'created_at' => [
                     'title' => 'Дата создания',
+                    'type' => 'string',
+                ],
+                'last_authorized_at' => [
+                    'title' => 'Был в последний раз',
                     'type' => 'string',
                 ],
             ],
@@ -73,8 +82,10 @@ class UsersController extends Controller
     public function edit(User $user)
     {
         $roles = \Spatie\Permission\Models\Role::all();
+        $orgs = \App\Models\Refs\Org::all();
+        $modules = Module::all();
 
-        return view('admin.users.edit', compact('user', 'roles'));
+        return view('admin.users.edit', compact('user', 'roles', 'orgs','modules'));
     }
 
     /**
@@ -84,10 +95,21 @@ class UsersController extends Controller
      * @param int $id
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, User $user)
+    public function update(UserUpdateRequest $request, User $user)
     {
+        $user->update([
+            'org_id' => $request->org_id
+        ]);
+
         $user->syncRoles($request->roles);
+        $user->modules()->sync($request->modules);
         return redirect()->route('admin.users.index')->with('success', __('app.updated'));
+    }
+
+    public function pageViewLogs(User $user)
+    {
+        $logs = $user->pageViewLogs()->paginate(self::LOGS_PER_PAGE);
+        return view('admin.users.log', compact('user', 'logs'));
     }
 
     protected function getFilteredQuery($filter, $query = null)

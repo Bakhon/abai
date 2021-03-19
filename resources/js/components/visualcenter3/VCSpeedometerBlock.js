@@ -3,6 +3,9 @@ export default {
     title: {
       default: 'Данные по умолчанию',
     },
+    mainTitle: {
+      default: '',
+    },
     mainValue: {
       default: '777',
     },
@@ -12,8 +15,16 @@ export default {
     tableToChange: {
       default: 1,
     },
+    toolTipPorog: '',
+    toolTipAim: '',
+    toolTipVizov: '',
+    showLink: false,
+    isLastBlock: false,
+    planWeight: 0,
   },
   data: function () {
-    return {}
+    return {
+      kpdIcon: 1,
+    }
   }
 }

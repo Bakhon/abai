@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.monitor')
 
 @section('content')
     <div class="row">
@@ -10,18 +10,18 @@
                 </div>
             @endif
             <div class="container">
-                <h1>Просмотр карточки</h1>
+                <h1>{{ trans('monitoring.show_title') }}</h1>
                 <table class="table table-bordered">
                     <tr>
-                        <th><b>Наименование</b></th>
-                        <th><b>Значение</b></th>
+                        <th><b>{{ trans('app.param_name') }}</b></th>
+                        <th><b>{{ trans('app.param_value') }}</b></th>
                     </tr>
                     <tr>
-                        <td>Название</td>
+                        <td>{{ trans('monitoring.inhibitor.fields.title') }}</td>
                         <td>{{$inhibitor->name}}</td>
                     </tr>
                     <tr>
-                        <td>Цена</td>
+                        <td>{{ trans('monitoring.inhibitor.fields.price') }}</td>
                         <td>{{$price->price}}</td>
                     </tr>
                 </table>

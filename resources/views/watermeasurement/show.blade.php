@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.monitor')
 
 @section('content')
     <div class="row">
@@ -10,35 +10,35 @@
                 </div>
             @endif
             <div class="container">
-                <h1>Просмотр карточки</h1>
-                <h2>Дата: {{ \Carbon\Carbon::parse($wm->date)->format('d.m.Y H:i:s')}}</h2>
+                <h1>{{ trans('monitoring.show_title') }}</h1>
+                <h2>{{ trans('app.date') }}: {{ \Carbon\Carbon::parse($wm->date)->format('d.m.Y H:i:s')}}</h2>
                 <table class="table table-bordered">
                     <tr>
-                        <th><b>Наименование</b></th>
-                        <th><b>Значение</b></th>
+                        <th><b>{{ trans('app.param_name') }}</b></th>
+                        <th><b>{{ trans('app.param_value') }}</b></th>
                     </tr>
                     <tr>
-                        <td>Прочие объекты</td>
+                        <td>{{ trans('monitoring.other_objects') }}</td>
                         <td>{{$wm->other_objects->name}}</td>
                     </tr>
                     <tr>
-                        <td>НГДУ</td>
+                        <td>{{ trans('monitoring.ngdu') }}</td>
                         <td>{{$wm->ngdu->name}}</td>
                     </tr>
                     <tr>
-                        <td>ЦДНГ</td>
+                        <td>{{ trans('monitoring.cdng') }}</td>
                         <td>{{$wm->cdng->name}}</td>
                     </tr>
                     <tr>
-                        <td>ГУ</td>
+                        <td>{{ trans('monitoring.gu.gu') }}</td>
                         <td>{{$wm->gu->name}}</td>
                     </tr>
                     <tr>
-                        <td>ЗУ</td>
+                        <td>{{ trans('monitoring.zu.zu') }}</td>
                         <td>{{$wm->zu->name}}</td>
                     </tr>
                     <tr>
-                        <td>Скважина</td>
+                        <td>{{ trans('monitoring.well.well') }}</td>
                         <td>{{$wm->well->name}}</td>
                     </tr>
                     <tr>
@@ -70,75 +70,75 @@
                         <td>{{$wm->potassium_ion_sodium_ion}}</td>
                     </tr>
                     <tr>
-                        <td>Плотность при 20°С, г/см3</td>
+                        <td>{{ trans('monitoring.wm.fields.density') }}</td>
                         <td>{{$wm->density}}</td>
                     </tr>
                     <tr>
-                        <td>рН</td>
+                        <td>pH</td>
                         <td>{{$wm->ph}}</td>
                     </tr>
                     <tr>
-                        <td>Общая минерализация, мг/дм3</td>
+                        <td>{{ trans('monitoring.wm.fields.mineralization') }}</td>
                         <td>{{$wm->mineralization}}</td>
                     </tr>
                     <tr>
-                        <td>Общая жесткость, мг-экв/дм3</td>
+                        <td>{{ trans('monitoring.wm.fields.total_hardness') }}</td>
                         <td>{{$wm->total_hardness}}</td>
                     </tr>
                     <tr>
-                        <td>Тип воды по Сулину</td>
+                        <td>{{ trans('monitoring.wm.fields.water_type_by_sulin') }}</td>
                         <td>{{$wm->waterTypeBySulin->name}}</td>
                     </tr>
                     <tr>
-                        <td>Содержание нефтепродуктов, мг/дм3</td>
+                        <td>{{ trans('monitoring.wm.fields.content_of_petrolium_products') }}</td>
                         <td>{{$wm->content_of_petrolium_products}}</td>
                     </tr>
                     <tr>
-                        <td>Механические примеси, мг/дм3</td>
+                        <td>{{ trans('monitoring.wm.fields.mechanical_impurities') }}</td>
                         <td>{{$wm->mechanical_impurities}}</td>
                     </tr>
                     <tr>
-                        <td>Содержание стронция, мг/дм³</td>
+                        <td>{{ trans('monitoring.wm.fields.strontium_content') }}</td>
                         <td>{{$wm->strontium_content}}</td>
                     </tr>
                     <tr>
-                        <td>Содержание бария, мг/дм³</td>
+                        <td>{{ trans('monitoring.wm.fields.barium_content') }}</td>
                         <td>{{$wm->barium_content}}</td>
                     </tr>
                     <tr>
-                        <td>Содержание общего железа мг/дм3</td>
+                        <td>{{ trans('monitoring.wm.fields.total_iron_content') }}</td>
                         <td>{{$wm->total_iron_content}}</td>
                     </tr>
                     <tr>
-                        <td>Содержание трехвалентного железа мг/дм3</td>
+                        <td>{{ trans('monitoring.wm.fields.ferric_iron_content') }}</td>
                         <td>{{$wm->ferric_iron_content}}</td>
                     </tr>
                     <tr>
-                        <td>Содержание двухвалентного железа мг/дм3</td>
+                        <td>{{ trans('monitoring.wm.fields.ferrous_iron_content') }}</td>
                         <td>{{$wm->ferrous_iron_content}}</td>
                     </tr>
                     <tr>
-                        <td>H2S, мг/дм3 (после буферной емкости)</td>
+                        <td>{{ trans('monitoring.wm.fields.hydrogen_sulfide') }}</td>
                         <td>{{$wm->hydrogen_sulfide}}</td>
                     </tr>
                     <tr>
-                        <td>О2, мг/дм3</td>
+                        <td>{{ trans('monitoring.wm.fields.oxygen') }}</td>
                         <td>{{$wm->oxygen}}</td>
                     </tr>
                     <tr>
-                        <td>CO2, мг/дм3 (после буферной емкости)</td>
+                        <td>{{ trans('monitoring.wm.fields.carbon_dioxide') }}</td>
                         <td>{{$wm->carbon_dioxide}}</td>
                     </tr>
                     <tr>
-                        <td>СВБ, кл/см3</td>
+                        <td>{{ trans('monitoring.wm.fields.sulphate_reducing_bacteria') }}</td>
                         <td>{{$wm->sulphateReducingBacteria->name}}</td>
                     </tr>
                     <tr>
-                        <td>УОБ, кл/см3</td>
+                        <td>{{ trans('monitoring.wm.fields.hydrocarbon_oxidizing_bacteria') }}</td>
                         <td>{{$wm->hydrocarbonOxidizingBacteria->name}}</td>
                     </tr>
                     <tr>
-                        <td>ТБ, кл/см3</td>
+                        <td>{{ trans('monitoring.wm.fields.thionic_bacteria') }}</td>
                         <td>{{$wm->thionicBacteria->name}}</td>
                     </tr>
                 </table>

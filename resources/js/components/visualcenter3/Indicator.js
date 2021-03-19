@@ -27,6 +27,10 @@ export default {
     tableToChange: {
       default: "1",
     },
+    percents: {
+      default: 100,
+    },
+    isLastBlock: false,
   },
   data: function () {
     return {

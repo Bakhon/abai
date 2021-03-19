@@ -2,10 +2,10 @@
 
 namespace App\Imports;
 
-use App\Models\Cdng;
-use App\Models\GuKormass;
-use App\Models\Gu;
-use App\Models\Kormass;
+use App\Models\ComplicationMonitoring\GuKormass;
+use App\Models\ComplicationMonitoring\Kormass;
+use App\Models\Refs\Cdng;
+use App\Models\Refs\Gu;
 use Maatwebsite\Excel\Concerns\ToModel;
 
 class GuKormassImport implements ToModel

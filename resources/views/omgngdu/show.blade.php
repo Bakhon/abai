@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.monitor')
 
 @section('content')
     <div class="row">
@@ -10,75 +10,74 @@
                 </div>
             @endif
             <div class="container">
-                <h1>Просмотр карточки</h1>
-                <h2>Дата: {{ \Carbon\Carbon::parse($omgngdu->date)->format('d.m.Y H:i:s')}}</h2>
+                <h1>{{ trans('monitoring.show_title') }}</h1>
+                <h2>{{ trans('app.date') }}: {{ \Carbon\Carbon::parse($omgngdu->date)->format('d.m.Y H:i:s')}}</h2>
                 <table class="table table-bordered">
                     <tr>
-                        <th><b>Наименование</b></th>
-                        <th><b>Значение</b></th>
+                        <th><b>{{ trans('app.param_name') }}</b></th>
+                        <th><b>{{ trans('app.param_value') }}</b></th>
                     </tr>
                     <tr>
-                        <td>Месторождение</td>
+                        <td>{{ trans('monitoring.field') }}</td>
                         <td>{{$omgngdu->field->name}}</td>
                     </tr>
                     <tr>
-                        <td>НГДУ</td>
+                        <td>{{ trans('monitoring.ngdu') }}</td>
                         <td>{{$omgngdu->ngdu->name}}</td>
                     </tr>
                     <tr>
-                        <td>ЦДНГ</td>
+                        <td>{{ trans('monitoring.cdng') }}</td>
                         <td>{{$omgngdu->cdng->name}}</td>
                     </tr>
                     <tr>
-                        <td>ГУ</td>
+                        <td>{{ trans('monitoring.gu.gu') }}</td>
                         <td>{{$omgngdu->gu->name}}</td>
                     </tr>
                     <tr>
-                        <td>ЗУ</td>
+                        <td>{{ trans('monitoring.zu.zu') }}</td>
                         <td>{{$omgngdu->zu->name}}</td>
                     </tr>
                     <tr>
-                        <td>Скважина</td>
+                        <td>{{ trans('monitoring.well.well') }}</td>
                         <td>{{$omgngdu->well->name}}</td>
                     </tr>
                     <tr>
-                        <td>Суточная добыча  жидкости, м3/сут</td>
+                        <td>{{ trans('monitoring.omgngdu.fields.daily_fluid_production') }}</td>
                         <td>{{$omgngdu->daily_fluid_production}}</td>
                     </tr>
                     <tr>
-                        <td>Суточная добыча  воды, м3/сут</td>
+                        <td>{{ trans('monitoring.omgngdu.fields.daily_water_production') }}</td>
                         <td>{{$omgngdu->daily_water_production}}</td>
                     </tr>
                     <tr>
-                        <td>Суточная добыча нефти, т/сут</td>
+                        <td>{{ trans('monitoring.omgngdu.fields.daily_oil_production') }}</td>
                         <td>{{$omgngdu->daily_oil_production}}</td>
                     </tr>
                     <tr>
-                        <td>Количество газа в СИБ, ст.м3/сут</td>
+                        <td>{{ trans('monitoring.omgngdu.fields.daily_gas_production_in_sib') }}</td>
                         <td>{{$omgngdu->daily_gas_production_in_sib}}</td>
                     </tr>
                     <tr>
-                        <td>Обводненность, %</td>
+                        <td>{{ trans('monitoring.omgngdu.fields.bsw') }}</td>
                         <td>{{$omgngdu->bsw}}</td>
                     </tr>
                     <tr>
-                        <td>Давление в буферной емкости, бар</td>
+                        <td>{{ trans('monitoring.omgngdu.fields.surge_tank_pressure') }}</td>
                         <td>{{$omgngdu->surge_tank_pressure}}</td>
                     </tr>
                     <tr>
-                        <td>Давление на выходе насоса, бар</td>
+                        <td>{{ trans('monitoring.omgngdu.fields.pump_discharge_pressure') }}</td>
                         <td>{{$omgngdu->pump_discharge_pressure}}</td>
                     </tr>
                     <tr>
-                        <td>Температура на входе в печи, С</td>
+                        <td>{{ trans('monitoring.omgngdu.fields.heater_inlet_pressure') }}</td>
                         <td>{{$omgngdu->heater_inlet_pressure}}</td>
                     </tr>
                     <tr>
-                        <td>Температура на выходе из печи, С</td>
+                        <td>{{ trans('monitoring.omgngdu.fields.heater_output_pressure') }}</td>
                         <td>{{$omgngdu->heater_output_pressure}}</td>
                     </tr>
                 </table>
-                {{-- <a class="btn btn-warning" href="{{ route('watermeasurement.edit',$omgngdu->id) }}">{{__('app.edit')}}</a> --}}
                 <a class="btn btn-primary" href="{{ route('omgngdu.index') }}">{{__('app.back')}}</a>
             </div>
         </div>

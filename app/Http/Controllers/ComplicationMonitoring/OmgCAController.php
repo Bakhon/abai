@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\ComplicationMonitoring;
 
 use App\Filters\OmgCAFilter;
-use App\Http\Controllers\Controller;
 use App\Http\Controllers\CrudController;
 use App\Http\Controllers\Traits\WithFieldsValidation;
 use App\Http\Requests\IndexTableRequest;
@@ -32,14 +31,14 @@ class OmgCAController extends CrudController
             'links' => [
                 'list' => route('omgca.list'),
             ],
-            'title' => 'База данных ОМГ ДДНГ',
+            'title' => __('monitoring.omgca.title'),
             'table_header' => [
-                'Узел отбора' => 1,
-                'Фактические данные ОМГ ЦА' => 3,
+                __('monitoring.selection_node') => 1,
+                __('monitoring.omgca.fields.fact_data') => 3,
             ],
             'fields' => [
                 'gu' => [
-                    'title' => 'ГУ',
+                    'title' => __('monitoring.gu'),
                     'type' => 'select',
                     'filter' => [
                         'values' => \App\Models\Refs\Gu::whereHas('omgca')
@@ -57,15 +56,15 @@ class OmgCAController extends CrudController
                     ]
                 ],
                 'date' => [
-                    'title' => 'Год',
+                    'title' => __('app.year'),
                     'type' => 'number',
                 ],
                 'plan_dosage' => [
-                    'title' => 'Планируемая дозировка, г/м³',
+                    'title' => __('monitoring.omgca.fields.plan_dosage'),
                     'type' => 'number',
                 ],
                 'q_v' => [
-                    'title' => 'Техрежим Qв, тыс.м³/год',
+                    'title' => __('monitoring.omgca.fields.tech_mode'),
                     'type' => 'number',
                 ],
             ]

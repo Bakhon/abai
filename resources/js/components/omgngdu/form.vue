@@ -1,19 +1,19 @@
 <template>
   <div class="col-xs-12 col-sm-12 col-md-12 row">
     <div class="col-xs-12 col-sm-4 col-md-4">
-      <label>Месторождение</label>
+      <label>{{ trans('monitoring.field') }}</label>
       <div class="form-label-group">
         <select class="form-control" name="field_id" v-model="formFields.field_id">
           <option v-for="row in fields" v-bind:value="row.id">{{ row.name }}</option>
         </select>
       </div>
-      <label>ГУ</label>
+      <label>{{ trans('monitoring.gu.gu') }}</label>
       <div class="form-label-group">
         <select class="form-control" name="gu_id" v-model="formFields.gu_id" @change="chooseGu()">
           <option v-for="row in gus" v-bind:value="row.id">{{ row.name }}</option>
         </select>
       </div>
-      <label>Дата и время</label>
+      <label>{{ trans('app.date_time') }}</label>
       <div class="form-label-group">
         <datetime
             type="date"
@@ -28,12 +28,13 @@
             :week-start="1"
             use24-hour
             auto
+            :disabled="!formFields.editable"
         >
         </datetime>
         <input type="hidden" name="date" v-model="formatedDate" class="form-control" placeholder="">
 
       </div>
-      <label>Давление на выходе насоса в ГУ, бар</label>
+      <label>{{ trans('monitoring.omgngdu.fields.pump_discharge_pressure') }}</label>
       <div class="form-label-group">
         <input
             v-model="formFields.pump_discharge_pressure"
@@ -44,9 +45,10 @@
             name="pump_discharge_pressure"
             class="form-control"
             placeholder=""
+            :disabled="!formFields.editable"
         >
       </div>
-      <label>Обводненность в ГУ, %</label>
+      <label>{{ trans('monitoring.omgngdu.fields.bsw') }}</label>
       <div class="form-label-group">
         <input
             v-model="formFields.bsw"
@@ -57,9 +59,10 @@
             name="bsw"
             class="form-control"
             placeholder=""
+            :disabled="!formFields.editable"
         >
       </div>
-      <label>Суточная добыча воды, м3/сут</label>
+      <label>{{ trans('monitoring.omgngdu.fields.daily_water_production') }}</label>
       <div class="form-label-group">
         <input
             v-model="formFields.daily_water_production"
@@ -70,11 +73,12 @@
             name="daily_water_production"
             class="form-control"
             placeholder=""
+            :disabled="!formFields.editable"
         >
       </div>
     </div>
     <div class="col-xs-12 col-sm-4 col-md-4">
-      <label>НГДУ</label>
+      <label>{{ trans('monitoring.ngdu') }}</label>
       <div class="form-label-group">
         <select class="form-control" name="ngdu_id" v-model="formFields.ngdu_id" @change="chooseNgdu($event)">
           <option v-for="row in ngdus" v-bind:value="row.id">{{ row.name }}</option>
@@ -86,7 +90,7 @@
           <option v-for="row in zus" v-bind:value="row.id">{{ row.name }}</option>
         </select>
       </div>
-      <label>Суточная добыча жидкости в ГУ, м3/сут</label>
+      <label>{{ trans('monitoring.omgngdu.fields.daily_fluid_production') }}</label>
       <div class="form-label-group">
         <input
             v-model="formFields.daily_fluid_production"
@@ -97,9 +101,10 @@
             name="daily_fluid_production"
             class="form-control"
             placeholder=""
+            :disabled="!formFields.editable"
         >
       </div>
-      <label>Температура на входе в печь в ГУ, С</label>
+      <label>{{ trans('monitoring.omgngdu.fields.heater_inlet_pressure') }}</label>
       <div class="form-label-group">
         <input
             v-model="formFields.heater_inlet_pressure"
@@ -112,7 +117,7 @@
             placeholder=""
         >
       </div>
-      <label>Суточная добыча нефти, т/сут</label>
+      <label>{{ trans('monitoring.omgngdu.fields.daily_oil_production') }}</label>
       <div class="form-label-group">
         <input
             v-model="formFields.daily_oil_production"
@@ -123,23 +128,24 @@
             name="daily_oil_production"
             class="form-control"
             placeholder=""
+            :disabled="!formFields.editable"
         >
       </div>
     </div>
     <div class="col-xs-12 col-sm-4 col-md-4">
-      <label>ЦДНГ</label>
+      <label>{{ trans('monitoring.cdng') }}</label>
       <div class="form-label-group">
         <select class="form-control" name="cdng_id" v-model="formFields.cdng_id" @change="chooseCdng($event)">
           <option v-for="row in cndgs" v-bind:value="row.id">{{ row.name }}</option>
         </select>
       </div>
-      <label>Скважина</label>
+      <label>{{ trans('monitoring.well.well') }}</label>
       <div class="form-label-group">
         <select class="form-control" name="well_id" v-model="formFields.well_id">
           <option v-for="row in wells" v-bind:value="row.id">{{ row.name }}</option>
         </select>
       </div>
-      <label>Давление в буферной емкости в ГУ, бар</label>
+      <label>{{ trans('monitoring.omgngdu.fields.surge_tank_pressure') }}</label>
       <div class="form-label-group">
         <input
             v-model="formFields.surge_tank_pressure"
@@ -152,7 +158,7 @@
             placeholder=""
         >
       </div>
-      <label>Количество газа в СИБ, ст.м3/сут</label>
+      <label>{{ trans('monitoring.omgngdu.fields.daily_gas_production_in_sib') }}</label>
       <div class="form-label-group">
         <input
             v-model="formFields.daily_gas_production_in_sib"
@@ -165,7 +171,7 @@
             placeholder=""
         >
       </div>
-      <label>Температура на выходе из печи в ГУ, С</label>
+      <label>{{ trans('monitoring.omgngdu.fields.heater_output_pressure') }}</label>
       <div class="form-label-group">
         <input
             v-model="formFields.heater_output_pressure"
@@ -176,11 +182,12 @@
             name="heater_output_pressure"
             class="form-control"
             placeholder=""
+            :disabled="!formFields.editable"
         >
       </div>
     </div>
     <div class="col-xs-12 col-sm-12 col-md-12 text-center">
-      <button type="submit" :disabled="!formFields.date" class="btn btn-success">Сохранить</button>
+      <button type="submit" :disabled="!formFields.date" class="btn btn-success">{{ trans('app.save') }}</button>
     </div>
   </div>
 </template>
@@ -189,11 +196,7 @@
 import Vue from 'vue'
 import {Datetime} from 'vue-datetime'
 import moment from 'moment'
-// You need a specific loader for CSS files
 import 'vue-datetime/dist/vue-datetime.css'
-import {Settings} from 'luxon'
-
-Settings.defaultLocale = 'ru'
 
 Vue.use(Datetime)
 
@@ -222,6 +225,7 @@ export default {
         surge_tank_pressure: null,
         daily_gas_production_in_sib: null,
         heater_output_pressure: null,
+        editable: 0,
       },
       ngdus: {},
       cndgs: {},
@@ -244,7 +248,7 @@ export default {
   },
   beforeCreate: function () {
 
-    this.axios.get("/ru/getfields").then((response) => {
+    this.axios.get(this.localeUrl("/getfields")).then((response) => {
       let data = response.data;
       if (data) {
         this.fields = data.data;
@@ -253,7 +257,7 @@ export default {
       }
     });
 
-    this.axios.get("/ru/getngdu").then((response) => {
+    this.axios.get(this.localeUrl("/getngdu")).then((response) => {
       let data = response.data;
       if (data) {
         this.ngdus = data.data;
@@ -262,7 +266,7 @@ export default {
       }
     });
 
-    this.axios.get("/ru/getcdng").then((response) => {
+    this.axios.get(this.localeUrl("/getcdng")).then((response) => {
       let data = response.data;
       if (data) {
         this.cndgs = data.data;
@@ -271,7 +275,7 @@ export default {
       }
     });
 
-    this.axios.get("/ru/getallgus").then((response) => {
+    this.axios.get(this.localeUrl("/getallgus")).then((response) => {
       let data = response.data;
       if (data) {
         this.gus = data.data;
@@ -280,7 +284,7 @@ export default {
       }
     });
 
-    this.axios.get("/ru/getallkormasses").then((response) => {
+    this.axios.get(this.localeUrl("/getallkormasses")).then((response) => {
       let data = response.data;
       if (data) {
         this.kormass = data.data;
@@ -292,24 +296,11 @@ export default {
   },
   mounted() {
     if (this.omgngdu) {
-      this.formFields = {
-        field_id: this.omgngdu.field_id,
-        gu_id: this.omgngdu.gu_id,
-        date: this.omgngdu.date,
-        pump_discharge_pressure: this.omgngdu.pump_discharge_pressure,
-        bsw: this.omgngdu.bsw,
-        daily_water_production: this.omgngdu.daily_water_production,
-        ngdu_id: this.omgngdu.ngdu_id,
-        zu_id: this.omgngdu.zu_id,
-        daily_fluid_production: this.omgngdu.daily_fluid_production,
-        heater_inlet_pressure: this.omgngdu.heater_inlet_pressure,
-        daily_oil_production: this.omgngdu.daily_oil_production,
-        cdng_id: this.omgngdu.cdng_id,
-        well_id: this.omgngdu.well_id,
-        surge_tank_pressure: this.omgngdu.surge_tank_pressure,
-        daily_gas_production_in_sib: this.omgngdu.daily_gas_production_in_sib,
-        heater_output_pressure: this.omgngdu.heater_output_pressure,
-      }
+      let daily_water_production = (this.omgngdu.daily_fluid_production * this.omgngdu.bsw)/100;
+
+      this.formFields = this.omgngdu;
+      this.formFields.daily_water_production = daily_water_production;
+
       if (this.omgngdu.gu_id) {
         this.chooseGu(true)
       }
@@ -320,7 +311,7 @@ export default {
   },
   methods: {
     chooseNgdu(event) {
-      this.axios.get("/ru/getcdng", {
+      this.axios.get(this.localeUrl("/getcdng"), {
         ngdu_id: event.target.value,
       }).then((response) => {
         let data = response.data;
@@ -332,7 +323,7 @@ export default {
       });
     },
     chooseCdng(event) {
-      this.axios.post("/ru/getgu", {
+      this.axios.post(this.localeUrl("/getgu"), {
         cdng_id: event.target.value,
       }).then((response) => {
         let data = response.data;
@@ -347,7 +338,7 @@ export default {
       if (!init) {
         this.formFields.well_id = null
       }
-      this.axios.post("/ru/getzu", {
+      this.axios.post(this.localeUrl("/getzu"), {
         gu_id: this.formFields.gu_id,
       }).then((response) => {
         let data = response.data;
@@ -359,7 +350,7 @@ export default {
       });
     },
     chooseZu() {
-      this.axios.post("/ru/getwell", {
+      this.axios.post(this.localeUrl("/getwell"), {
         zu_id: this.formFields.zu_id,
       }).then((response) => {
         let data = response.data;

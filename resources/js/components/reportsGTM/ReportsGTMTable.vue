@@ -176,7 +176,6 @@
 </template>
 <script>
 import BootstrapTable from 'bootstrap-table/dist/bootstrap-table-vue.esm.js'
-import 'tableexport.jquery.plugin'
 // import 'bootstrap-table/dist/extensions/export/bootstrap-table-export.js';
 // import 'bootstrap-table/dist/themes/materialize/bootstrap-table-materialize.min.css';
 import 'bootstrap-table/dist/extensions/fixed-columns/bootstrap-table-fixed-columns.min.css'
@@ -724,7 +723,7 @@ export default {
     // },
     updateData(){
       let uri = '/ru/gtm1';
-      this.axios.post("/ru/gtm1", {
+      this.axios.post(this.localeUrl("/gtm1"), {
         dzo: this.dzo,
          ngdu: this.ngdu,
          block: this.block,
