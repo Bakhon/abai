@@ -65,14 +65,15 @@ class TrunklineImport implements ToCollection, WithEvents, WithColumnLimit, With
             BeforeSheet::class => function (BeforeSheet $event) {
                 $this->sheetName = $event->getSheet()->getTitle();
 
-                $this->command->line(' ');
-                $this->command->line('----------------------------');
-                $this->command->info('sheetName '.$this->sheetName);
-                $this->command->line('----------------------------');
-                $this->command->line(' ');
-
                 if (strpos($this->sheetName, 'НГДУ') === 0) {
                     $this->ngdu = Ngdu::where('name', $this->sheetName)->first();
+
+                    $between_points = [];
+                    foreach (self::REGULARS as $key => $regular) {
+                        $between_points[] = $key;
+                    }
+
+                    MapPipe::where('ngdu_id', $this->ngdu->id)->whereIn('between_points', $between_points)->delete();
                 }
 
                 if (strpos($this->sheetName, 'НГДУ') !== 0) {
@@ -81,6 +82,12 @@ class TrunklineImport implements ToCollection, WithEvents, WithColumnLimit, With
                     }
                     throw new \Exception('Stop import');
                 }
+
+                $this->command->line(' ');
+                $this->command->line('----------------------------');
+                $this->command->info('sheetName '.$this->sheetName);
+                $this->command->line('----------------------------');
+                $this->command->line(' ');
             }
         ];
     }

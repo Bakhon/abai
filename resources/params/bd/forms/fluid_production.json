@@ -1,5 +1,4 @@
 {
-  "type": "table",
   "columns": [
     {
       "title": "uwi_number",
@@ -121,14 +120,27 @@
     {
       "title": "contamination",
       "code": "contamination",
+      "table": "tbdi.lab_research_value",
+      "column": "value_string",
+      "additional_filter": {
+        "name_param": "Мех. примеси, %"
+      },
       "type": "float",
-      "isEditable": false
+      "isEditable": false,
+      "date_field": "dt"
     },
     {
       "title": "pipe_diameter",
       "code": "pipe_diameter",
+      "table": "tbdic.well_equip_params",
+      "column": "value_double",
+      "additional_filter": {
+        "equip_type": "1",
+        "equip_prm": "2"
+      },
       "type": "float",
-      "isEditable": false
+      "isEditable": false,
+      "date_field": "prm_date"
     },
     {
       "title": "p_buf",
@@ -169,18 +181,33 @@
     {
       "title": "cycle_per_minute",
       "code": "cycle_per_minute",
+      "table": "tbdi.current_gdis_value",
+      "column": "value_double",
+      "additional_filter": {
+        "param_gdis_id": 5000000572
+      },
       "type": "float",
       "isEditable": false
     },
     {
       "title": "length_stroke",
       "code": "length_stroke",
+      "table": "tbdi.current_gdis_value",
+      "column": "value_double",
+      "additional_filter": {
+        "param_gdis_id": 5000000568
+      },
       "type": "float",
       "isEditable": false
     },
     {
       "title": "reciprotating_speed",
       "code": "reciprotating_speed",
+      "table": "tbdi.current_gdis_value",
+      "column": "value_double",
+      "additional_filter": {
+        "param_gdis_id": 5000000569
+      },
       "type": "float",
       "isEditable": false
     },
@@ -202,7 +229,8 @@
     {
       "title": "gas_output",
       "code": "gas_output",
-      "type": "text",
+      "type": "calc",
+      "formula": "$gas_factor$ * $worktime$",
       "isEditable": false
     },
     {

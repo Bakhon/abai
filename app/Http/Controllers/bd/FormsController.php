@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\bd;
 
+use App\Exceptions\ParseJsonException;
 use App\Http\Controllers\Controller;
 use App\Models\BigData\Dictionaries\Geo;
 use App\Services\BigData\Forms\BaseForm;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Http\Response;
 
 class FormsController extends Controller
 {
@@ -43,10 +45,22 @@ class FormsController extends Controller
         \Illuminate\Support\Facades\File::put($this->file, json_encode($values));
     }
 
-    public function getParams(string $formName): array
+    public function getParams(string $formName): \Illuminate\Http\JsonResponse
     {
         $form = $this->getForm($formName);
-        return $form->getFormatedParams();
+        try {
+            $result = $form->getFormatedParams();
+        } catch (ParseJsonException $e) {
+            return response()->json(
+                [
+                    'errors' => $e->getMessage(),
+                    'text' => 'Ошибка файла конфигурации'
+                ],
+                Response::HTTP_BAD_REQUEST
+            );
+        }
+
+        return response()->json($result);
     }
 
     public function validateField(string $formName, string $field): void
@@ -88,11 +102,11 @@ class FormsController extends Controller
                 break;
             }
 
-            if ($geo->field_code) {
+            if (!empty($geo->field_code)) {
                 $prefix = $geo->field_code . '_';
                 break;
             }
-            $geo = $geo->parent();
+            $geo = $geo->parent;
         }
 
         return ['prefix' => $prefix];

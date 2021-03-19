@@ -4,10 +4,11 @@ namespace App\Console\Commands\Import;
 
 use App\Imports\TrunklineImport;
 use Illuminate\Console\Command;
-use Maatwebsite\Excel\Facades\Excel;
 
 class ImportTrunkline extends Command
 {
+    use ExcelImport;
+
     /**
      * The name and signature of the console command.
      *
@@ -39,13 +40,6 @@ class ImportTrunkline extends Command
      */
     public function handle()
     {
-        $this->output->title('Starting import');
-        try {
-            Excel::import(new TrunklineImport($this), base_path($this->argument('path')));
-        } catch (\Exception $er) {
-            if ($er->getMessage() == 'Stop import') {
-                $this->output->success('Import successful');
-            }
-        }
+        $this->importExcel(new TrunklineImport($this));
     }
 }

@@ -9,7 +9,6 @@ use App\Models\BigData\Dictionaries\Tech;
 use App\Models\BigData\Well;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\Response;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
@@ -18,14 +17,6 @@ class FluidProduction extends TableForm
 {
 
     protected $configurationFileName = 'fluid_production';
-
-    public function saveSingleField(string $field)
-    {
-        $this->validateSingleField($field);
-        $this->saveSingleFieldInDB($field);
-
-        return response()->json([], Response::HTTP_NO_CONTENT);
-    }
 
     public function getRows(array $params = [])
     {
@@ -63,6 +54,7 @@ class FluidProduction extends TableForm
                         ->table('tbdi.well_expl as we')
                         ->whereIn('we.well_id', $wells->pluck('id')->toArray())
                         ->whereDate('dbeg', '<=', $this->request->get('date'))
+                        ->whereDate('dbeg', '>=', Carbon::parse($this->request->get('date'))->subMonths(2))
                         ->leftJoin('tbdi.well_expl_type as wet', 'we.well_expl_type_id', '=', 'wet.id')
                         ->orderBy('dbeg', 'desc')
                         ->get()
@@ -75,18 +67,38 @@ class FluidProduction extends TableForm
                         ->table('tbdi.tech_mode as tm')
                         ->whereIn('tm.well_id', $wells->pluck('id')->toArray())
                         ->whereDate('dbeg', '<=', $this->request->get('date'))
+                        ->whereDate('dbeg', '>=', Carbon::parse($this->request->get('date'))->subMonths(2))
                         ->leftJoin('tbdi.tech_mode_well as tmw', 'tmw.tech_mode_id', '=', 'tm.id')
                         ->orderBy('dbeg', 'desc')
                         ->get()
                         ->groupBy('well_id');
 
                     break;
+
+                case 'tbdi.lab_research_value':
+
+                    $rowData[$table] = DB::connection('tbd')
+                        ->table('tbdi.lab_research as lr')
+                        ->whereIn('lr.well_id', $wells->pluck('id')->toArray())
+                        ->whereDate('dt', '<=', $this->request->get('date'))
+                        ->leftJoin('tbdi.lab_research_value as lrv', 'lrv.lab_research_id', '=', 'lr.id')
+                        ->orderBy('dt', 'desc')
+                        ->get()
+                        ->groupBy('well_id');
+
+                    break;
+
                 default:
+                    $dateField = 'dbeg';
+                    if ($table === 'tbdic.well_equip_params') {
+                        $dateField = 'prm_date';
+                    }
                     $rowData[$table] = DB::connection('tbd')
                         ->table($table)
                         ->whereIn('well_id', $wells->pluck('id')->toArray())
-                        ->whereDate('dbeg', '<=', $this->request->get('date'))
-                        ->orderBy('dbeg', 'desc')
+                        ->whereDate($dateField, '<=', $this->request->get('date'))
+                        ->whereDate($dateField, '>=', Carbon::parse($this->request->get('date'))->subMonths(2))
+                        ->orderBy($dateField, 'desc')
                         ->get()
                         ->groupBy('well_id');
             }
@@ -249,7 +261,6 @@ class FluidProduction extends TableForm
             'prod_decline_reason',
         ];
 
-
         foreach ($measurements->get($item->id) as $measurement) {
             foreach ($measurementFields as $field) {
                 if (isset($result[$field])) {
@@ -288,7 +299,19 @@ class FluidProduction extends TableForm
         if (is_null($collection->get($item->id))) {
             return [];
         }
-        $row = $collection->get($item->id)->first();
+
+        $row = $collection->get($item->id);
+        if (!empty($fieldParams['additional_filter'])) {
+            foreach ($fieldParams['additional_filter'] as $key => $value) {
+                $row = $row->where($key, '=', $value);
+            }
+        }
+        $row = $row->first();
+
+        if (empty($row)) {
+            return [];
+        }
+
         $value = $row->{$fieldParams['column']};
 
         switch ($fieldParams['type']) {
@@ -305,11 +328,12 @@ class FluidProduction extends TableForm
             'value' => null,
         ];
 
-        if ($this->isCurrentDay($row->dbeg)) {
+        $dateField = $fieldParams['date_field'] ?? 'dbeg';
+        if ($this->isCurrentDay($row->{$dateField})) {
             $result['value'] = $value;
         } else {
             $result['old_value'] = $value;
-            $result['date'] = $row->dbeg;
+            $result['date'] = $row->{$dateField};
         }
 
         return $result;

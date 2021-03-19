@@ -27,7 +27,7 @@
           v-model="geoStructure"
       >
         <option disabled value="">Выберите геоструктуру</option>
-        <template v-for="(fields, dzo) in filtersData" >
+        <template v-for="(fields, dzo) in filtersData">
           <option v-if="org===dzo" v-for="field in fields" :value="field">{{ field }}</option>
         </template>
       </select>
@@ -144,8 +144,7 @@ export default {
         10: "В консервации нагнетательный фонд",
         11: "В консервации наблюдательный фонд"
       };
-      let uri = "http://172.20.103.157:8082/generic/";
-      // let uri = "http://0.0.0.0:8090/generic/";
+      let uri = "http://172.20.103.187:8082/generic/";
       let data = {
         type: 'rev_fund_well_' + this.fondType,
         period: 'days',

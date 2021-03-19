@@ -330,7 +330,7 @@ export default {
       }
     },
     loadDataForFilters() {
-      let uri = "http://172.20.103.157:8082/dzo_field_mapping/";
+      let uri = "http://172.20.103.187:8082/dzo_field_mapping/";
 
       this.isLoading = true;
 
