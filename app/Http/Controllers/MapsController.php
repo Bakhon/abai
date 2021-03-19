@@ -6,7 +6,6 @@ use App\Models\ComplicationMonitoring\PipeType;
 use App\Models\Pipes\MapPipe;
 use App\Models\Pipes\PipeCoord;
 use App\Models\Refs\Ngdu;
-use Carbon\CarbonPeriod;
 use Illuminate\Http\Request;
 use App\Services\MapService;
 use App\Models\Refs\Gu;
@@ -14,11 +13,6 @@ use App\Models\Refs\Zu;
 use App\Models\Refs\Cdng;
 use App\Models\Refs\Well;
 use App\Services\DruidService;
-use App\Http\Requests\POSTCaller;
-
-use App\Http\Controllers\ComplicationMonitoring\OmgNGDUController;
-use App\Http\Controllers\ComplicationMonitoring\WaterMeasurementController;
-use App\Http\Controllers\DruidController;
 
 class MapsController extends Controller
 {
