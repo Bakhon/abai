@@ -195,7 +195,7 @@
 
         this.series = [
           {
-            name: 'Продажа',
+            name: this.trans("visualcenter.chartOptions.selling"),
             data: value
           }
         ]
