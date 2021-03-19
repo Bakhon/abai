@@ -9,12 +9,12 @@ use App\Http\Controllers\Traits\WithFieldsValidation;
 use App\Http\Requests\IndexTableRequest;
 use App\Http\Requests\OmgNGDUCreateRequest;
 use App\Http\Requests\OmgNGDUUpdateRequest;
-use App\Models\ComplicationMonitoring\GuKormass as ComplicationMonitoringGuKormass;
-use App\Models\ComplicationMonitoring\Kormass as ComplicationMonitoringKormass;
+use App\Models\ComplicationMonitoring\GuKormass;
+use App\Models\ComplicationMonitoring\Kormass;
 use App\Models\ComplicationMonitoring\OilGas;
-use App\Models\ComplicationMonitoring\OmgCA as ComplicationMonitoringOmgCA;
-use App\Models\ComplicationMonitoring\OmgNGDU as ComplicationMonitoringOmgNGDU;
-use App\Models\ComplicationMonitoring\OmgUHE as ComplicationMonitoringOmgUHE;
+use App\Models\ComplicationMonitoring\OmgCA;
+use App\Models\ComplicationMonitoring\OmgNGDU;
+use App\Models\ComplicationMonitoring\OmgUHE;
 use App\Models\ComplicationMonitoring\WaterMeasurement;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -122,13 +122,8 @@ class OmgNGDUController extends CrudController
 
     public function list(IndexTableRequest $request)
     {
-        $query = ComplicationMonitoringOmgNGDU::query()
-            ->with('field')
-            ->with('ngdu')
-            ->with('cdng')
-            ->with('gu')
-            ->with('zu')
-            ->with('well');
+        $query = OmgNGDU::query()
+            ->with('field', 'ngdu', 'cdng', 'gu', 'zu', 'well');
 
         $omgngdu = $this
             ->getFilteredQuery($request->validated(), $query)
@@ -170,7 +165,7 @@ class OmgNGDUController extends CrudController
     {
         $this->validateFields($request, 'omgngdu');
 
-        $omgngdu = new ComplicationMonitoringOmgNGDU;
+        $omgngdu = new OmgNGDU;
         $omgngdu->fill($request->validated());
         $omgngdu->cruser_id = auth()->id();
         $omgngdu->save();
@@ -186,12 +181,8 @@ class OmgNGDUController extends CrudController
      */
     public function show($id)
     {
-        $omgngdu = ComplicationMonitoringOmgNGDU::where('id', '=', $id)
-            ->with('ngdu')
-            ->with('cdng')
-            ->with('gu')
-            ->with('zu')
-            ->with('well')
+        $omgngdu = OmgNGDU::where('id', '=', $id)
+            ->with('ngdu', 'cdng', 'gu', 'zu', 'well')
             ->first();
 
         return view('omgngdu.show', compact('omgngdu'));
@@ -203,7 +194,7 @@ class OmgNGDUController extends CrudController
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function history(ComplicationMonitoringOmgNGDU $omgngdu)
+    public function history(OmgNGDU $omgngdu)
     {
         $omgngdu->load('history');
         return view('omgngdu.history', compact('omgngdu'));
@@ -215,7 +206,7 @@ class OmgNGDUController extends CrudController
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(ComplicationMonitoringOmgNGDU $omgngdu)
+    public function edit(OmgNGDU $omgngdu)
     {
         $validationParams = $this->getValidationParams('omgngdu');
         return view('omgngdu.edit', compact('omgngdu', 'validationParams'));
@@ -228,7 +219,7 @@ class OmgNGDUController extends CrudController
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(OmgNGDUUpdateRequest $request, ComplicationMonitoringOmgNGDU $omgngdu)
+    public function update(OmgNGDUUpdateRequest $request, OmgNGDU $omgngdu)
     {
         $this->validateFields($request, 'omgngdu');
 
@@ -244,7 +235,7 @@ class OmgNGDUController extends CrudController
      */
     public function destroy(Request $request, $id)
     {
-        $omgngdu = ComplicationMonitoringOmgNGDU::find($id);
+        $omgngdu = OmgNGDU::find($id);
         $omgngdu->delete();
 
         if ($request->ajax()) {
@@ -256,12 +247,12 @@ class OmgNGDUController extends CrudController
 
     public function getKormass(Request $request)
     {
-        $guKormass = ComplicationMonitoringGuKormass::where('gu_id', '=', $request->gu_id)->get();
+        $guKormass = GuKormass::where('gu_id', '=', $request->gu_id)->get();
         $guKormassArray = [];
         foreach ($guKormass as $row) {
             array_push($guKormassArray, $row->kormass_id);
         }
-        $kormass = ComplicationMonitoringKormass::wherein('id', $guKormassArray)->get();
+        $kormass = Kormass::wherein('id', $guKormassArray)->get();
 
 
         return response()->json(
@@ -275,34 +266,50 @@ class OmgNGDUController extends CrudController
 
     public function getGuDataByDay(Request $request)
     {
-        $ngdu = ComplicationMonitoringOmgNGDU::where('date', '=', $request->dt)->where(
-            'gu_id',
-            '=',
-            $request->gu_id
-        )->first();
-        $uhe = ComplicationMonitoringOmgUHE::where('date', '=', $request->dt)->where(
-            'gu_id',
-            '=',
-            $request->gu_id
-        )->first();
-        $ca = ComplicationMonitoringOmgCA::where('date', '=', "" . date("Y") . "-01-01")->where(
-            'gu_id',
-            '=',
-            $request->gu_id
-        )->first();
-        $wmLast = WaterMeasurement::where('gu_id', '=', $request->gu_id)->latest()->first();
-        $wmLastCO2 = WaterMeasurement::where('gu_id', '=', $request->gu_id)->whereNotNull('carbon_dioxide')->latest(
-        )->first();
-        $wmLastH2S = WaterMeasurement::where('gu_id', '=', $request->gu_id)->whereNotNull('hydrogen_sulfide')->latest(
-        )->first();
-        $wmLastHCO3 = WaterMeasurement::where('gu_id', '=', $request->gu_id)->whereNotNull(
-            'hydrocarbonate_ion'
-        )->latest()->first();
-        $wmLastCl = WaterMeasurement::where('gu_id', '=', $request->gu_id)->whereNotNull('chlorum_ion')->latest(
-        )->first();
-        $wmLastSO4 = WaterMeasurement::where('gu_id', '=', $request->gu_id)->whereNotNull('sulphate_ion')->latest(
-        )->first();
-        $oilGas = OilGas::where('date', '=', $request->dt)->where('gu_id', '=', $request->gu_id)->first();
+        $ngdu = OmgNGDU::where('date', $request->dt)
+            ->where('gu_id', $request->gu_id)
+            ->first();
+
+        $uhe = OmgUHE::where('date', $request->dt)
+            ->where('gu_id', $request->gu_id)
+            ->first();
+
+        $ca = OmgCA::where('date', date("Y") . "-01-01")
+            ->where('gu_id', $request->gu_id)
+            ->first();
+
+        $wmLast = WaterMeasurement::where('gu_id', $request->gu_id)
+            ->latest()
+            ->first();
+
+        $wmLastCO2 = WaterMeasurement::where('gu_id', $request->gu_id)
+            ->whereNotNull('carbon_dioxide')
+            ->latest()
+            ->first();
+
+        $wmLastH2S = WaterMeasurement::where('gu_id', $request->gu_id)
+            ->whereNotNull('hydrogen_sulfide')
+            ->latest()
+            ->first();
+
+        $wmLastHCO3 = WaterMeasurement::where('gu_id', $request->gu_id)
+            ->whereNotNull('hydrocarbonate_ion')
+            ->latest()
+            ->first();
+
+        $wmLastCl = WaterMeasurement::where('gu_id', $request->gu_id)
+            ->whereNotNull('chlorum_ion')
+            ->latest()
+            ->first();
+
+        $wmLastSO4 = WaterMeasurement::where('gu_id', $request->gu_id)
+            ->whereNotNull('sulphate_ion')
+            ->latest()
+            ->first();
+
+        $oilGas = OilGas::where('date', $request->dt)
+            ->where('gu_id', $request->gu_id)
+            ->first();
 
         return response()->json(
             [
@@ -324,7 +331,7 @@ class OmgNGDUController extends CrudController
 
     public function getProblemGuToday()
     {
-        $uhes = ComplicationMonitoringOmgUHE::query()
+        $uhes = OmgUHE::query()
             ->select('gu_id', 'current_dosage')
             ->where('date', '=', \Carbon\Carbon::now()->format('Y-m-d'))
             ->leftJoin('gus', 'gus.id', '=', 'omg_u_h_e_s.gu_id')
@@ -332,7 +339,7 @@ class OmgNGDUController extends CrudController
             ->orderBy('gus_name', 'asc')
             ->get();
 
-        $cas = ComplicationMonitoringOmgCA::query()
+        $cas = OmgCA::query()
             ->select('gu_id', 'plan_dosage')
             ->where('date', '=', \Carbon\Carbon::now()->startOfYear()->format('Y-m-d'))
             ->get();
