@@ -78,11 +78,13 @@
 
 <script>
     import VGrid from "@revolist/vue-datagrid";
-    import initialRowsKOA from './importForm/initial_rows_koa.json';
-    import initialRowsKTM from './importForm/initial_rows_ktm.json';
-    import fieldsMapping from './importForm/fields_mapping.json';
-    import formatMappingKOA from './importForm/format_mapping_koa.json';
-    import cellsMappingKOA from './importForm/cells_mapping_koa.json';
+    import initialRowsKOA from './dzoData/initial_rows_koa.json';
+    import initialRowsKTM from './dzoData/initial_rows_ktm.json';
+    import fieldsMapping from './dzoData/fields_mapping.json';
+    import formatMappingKOA from './dzoData/format_mapping_koa.json';
+    import formatMappingKTM from './dzoData/format_mapping_ktm.json';
+    import cellsMappingKOA from './dzoData/cells_mapping_koa.json';
+    import cellsMappingKTM from './dzoData/cells_mapping_ktm.json';
     import moment from "moment";
 
     const defaultDzoTicker = "KOA";
@@ -94,8 +96,8 @@
         },
         "KTM" : {
             rows: initialRowsKTM,
-            format: formatMappingKOA,
-            cells: cellsMappingKOA
+            format: formatMappingKTM,
+            cells: cellsMappingKTM
         },
     };
 
@@ -193,12 +195,11 @@
                 isDataReady: false,
                 rowsCount: 75,
                 columnsCountForHighlight: {
-                    six: [0,1,2,3,4,5],
-                    five: [0,1,2,3,4],
-                    four: [0,1,2,3],
-                    three: [0,1,2],
-                    two: [0,1],
-                    one: []
+                    sixColumns: [0,1,2,3,4,5],
+                    fiveColumns: [0,1,2,3,4],
+                    fourColumns: [0,1,2,3],
+                    threeColumns: [0,1,2],
+                    twoColumns: [0,1]
                 },
                 dzoPlans: [],
                 selectedDzo: {
@@ -212,16 +213,22 @@
                 excelData: {
                     downtimeReason: {},
                     decreaseReason: {},
-                    mainData: {}
+                    fields: {}
                 },
                 isValidateError: false,
                 errorSelectors: [],
+                inputDataCategories: ['downtimeReason','decreaseReason','fields'],
+                stringColumns: [1,2],
+                fieldsGrouping: {
+                    first: [],
+                    second: []
+                },
             };
         },
         async mounted() {
             this.dzoPlans = await this.getDzoMonthlyPlans();
             this.selectedDzo.plans = this.getSelectedDzoPlans();
-            await this.sleep(1000);
+            await this.sleep(1500);
             this.setTableFormat();
             await this.storeData();
         },
@@ -270,13 +277,11 @@
                 return [];
             },
             handleValidate() {
-                let self = this;
                 this.isValidateError = false;
                 this.isDataReady = false;
                 this.turnOffErrorHighlight();
-                _.forEach(this.cellsMapping, function(row, index) {
-                    self.processTableData(row,index);
-                });
+                this.processTableData();
+                console.log(this.excelData);
                 if (!this.isValidateError) {
                     this.isDataExist = false;
                     this.isDataReady = true;
@@ -284,41 +289,72 @@
                 } else {
                     this.status = this.trans("visualcenter.importForm.status.dataIsNotValid");
                 }
-                console.log(this.isDataReady);
             },
-            handleSave() {
+            processTableData() {
                 let self = this;
-                _.forEach(this.cellsMapping, function(row, index) {
-                    self.processTableData(row,index);
-                });
-
-                this.status = this.trans("visualcenter.importForm.status.dataSaved");
-            },
-            processTableData(row,rowIndex) {
-                let self = this;
+                console.log(Object.keys(this.cellsMapping).length);
                 _.forEach(Object.keys(this.cellsMapping), function(key) {
-                    if (key === 'downtimeReason') {
-                        self.processBlock(self.cellsMapping[key],'downtimeReason');
+                    if (self.inputDataCategories.includes(key)) {
+                        self.processBlock(self.cellsMapping[key],key);
+                    } else {
+                        self.processNumberCells(self.cellsMapping[key],key);
                     }
                 });
             },
             processBlock(block,category) {
                 let self = this;
-                _.forEach(block, function(row) {
-                    self.processFields(row,category);
+                _.forEach(Object.keys(block), function(key) {
+                    if (category === self.inputDataCategories[1]) {
+                        self.processStringCells(block[key],category);
+                    } else if (category === self.inputDataCategories[2]) {
+                        self.processNumberCells(block[key],category,key);
+                    } else {
+                        self.processNumberCells(block[key],category);
+                    }
                 });
             },
-            processFields(row,category) {
-                for (let i = 1; i <= row.index.length; i++) {
-                    let selector = 'div[data-col="'+ i + '"][data-row="' + row.rowIndex + '"]';
+            processNumberCells(row,category,key) {
+                for (let columnIndex = 1; columnIndex <= row.rowLength; columnIndex++) {
+                    let selector = 'div[data-col="'+ columnIndex + '"][data-row="' + row.rowIndex + '"]';
                     let cellValue = parseFloat($(selector).text());
-                    if (!this.isDowntimeReasonCellValid(cellValue,selector)) {
-                        return;
+                    if (!this.isNumberCellValid(cellValue,selector)) {
+                        continue;
                     }
-                    this.excelData[category][row.fields[i]] = cellValue;
+                    if (this.inputDataCategories.includes(category)) {
+                        this.setNumberValueForCategories(category,row.fields[columnIndex-1],cellValue,key);
+                    } else {
+                        this.excelData[row.fields[columnIndex-1]] = cellValue;
+                    }
                 }
             },
-            isDowntimeReasonCellValid(inputData,selector) {
+            setNumberValueForCategories(category,fieldName,cellValue,key) {
+                if (key) {
+                    let groupName = this.getGroupingCategoryName(key);
+                    this.pushValuesToField(category,groupName,fieldName,cellValue,key);
+                } else {
+                    this.excelData[category][fieldName] = cellValue;
+                }
+
+            },
+            getGroupingCategoryName(categoryNamekey) {
+                let self = this;
+                let groupName = '';
+                _.forEach(Object.keys(this.fieldsGrouping), function (key) {
+                   if (categoryNamekey.toLowerCase().includes(key)) {
+                       groupName = key;
+                   }
+                });
+                return groupName;
+            },
+            pushValuesToField(category,groupName,fieldName,cellValue,key) {
+              if (!this.excelData[category][groupName]) {
+                  this.excelData[category][groupName] = [];
+              }
+              let data = {};
+              data[fieldName] = cellValue;
+              this.excelData[category][groupName].push(data);
+            },
+            isNumberCellValid(inputData,selector) {
                 if (isNaN(inputData) || inputData < 0) {
                     this.setClassToElement($(selector),'cell__color-red');
                     this.errorSelectors.push(selector);
@@ -326,6 +362,36 @@
                     return false;
                 }
                 return true;
+            },
+            processStringCells(row,category) {
+                for (let columnIndex = 1; columnIndex <= row.rowLength; columnIndex++) {
+                    let selector = 'div[data-col="'+ columnIndex + '"][data-row="' + row.rowIndex + '"]';
+                    let cellValue = $(selector).text();
+                    if (this.isStringCell(columnIndex) && this.isStringCellValid(cellValue,selector)) {
+                        this.excelData[category][row.fields[columnIndex-1]] = cellValue;
+                        continue;
+                    }
+                    if (!this.isNumberCellValid(cellValue,selector)) {
+                        continue;
+                    }
+                    this.setNumberValueForCategories(category,row.fields[columnIndex-1],cellValue);
+                }
+            },
+            isStringCell(rowIndex) {
+              return this.stringColumns.includes(rowIndex);
+            },
+            isStringCellValid(inputData,selector) {
+                if (!inputData || typeof(inputData) === 'number' || inputData.length < 3) {
+                    this.setClassToElement($(selector),'cell__color-red');
+                    this.errorSelectors.push(selector);
+                    this.isValidateError = true;
+                    return false;
+                }
+                return true;
+            },
+            handleSave() {
+                let self = this;
+                this.status = this.trans("visualcenter.importForm.status.dataSaved");
             },
             turnOffErrorHighlight() {
                 let self = this;

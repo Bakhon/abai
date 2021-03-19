@@ -46,7 +46,7 @@ class ExcelFormController extends Controller
         $dzoDecreaseReasons->save();
 
         $dzoImportFields = new DzoImportField;
-        $fieldsData = $request->request->get('importField');
+        $fieldsData = $request->request->get('fields');
         $dzoImportFields->importData()->associate($dzoSummary);
         foreach ($fieldsData as $key => $item) {
             $dzoImportFields->$key = $fieldsData[$key];

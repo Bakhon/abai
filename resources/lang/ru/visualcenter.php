@@ -329,4 +329,24 @@ return array (
   'buy' => 'Покупка',
   'chemVolume' => 'Объём хим. реагента, тонны',
   'nrs' => 'Нерентабельные скважины',
+  'chartOptions' => 
+  array (
+    'monthNames' => 
+    array (
+      'january' => 'Январь',
+      'february' => 'Февраль',
+      'march' => 'Март',
+      'april' => 'Апрель',
+      'may' => 'Май',
+      'june' => 'Июнь',
+      'july' => 'Июль',
+      'august' => 'Август',
+      'september' => 'Сентябрь',
+      'october' => 'Октябрь',
+      'november' => 'Ноябрь',
+      'december' => 'Декабрь',
+    ),
+    'buy' => 'Покупка',
+    'selling' => 'Продажа',
+  ),
 );
