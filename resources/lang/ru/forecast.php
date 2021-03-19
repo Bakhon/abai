@@ -17,7 +17,7 @@ return array (
     'id_of_add' => 'ID добавления',
     'return_menu' => 'Вернуться в справочник',
     'BKNS' => 'БКНС',
-    'NDGU' => 'НДГУ',
+    'NGDU' => 'НГДУ',
     'NDO' => 'НДО',
     'company' => 'Компания',
     'CDNG' => 'СДНГ',
@@ -28,6 +28,7 @@ return array (
     'choose_excel_file' => 'Выберите Excel файл',
     'загрузить' => 'upload',
     'upload_validation_error' => 'Ошибка загрузки файла',
-    'oil_liquid_days_prs' => 'Нефть / Жидкость / Отработанные дни / ПРС',
-    'delete_wrong_uploaded_data' => 'Удалить ошибочные загруженные файлы'
+    'forecast_data_production' => 'Прогнозные данные добычи по ДЗО',
+    'delete_wrong_uploaded_data' => 'Удалить ошибочные загруженные файлы',
+    'upload_excel' => 'Добавить данные в Excel',
 );
