@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Refs\Gu;
 use Illuminate\Http\Request;
 use Level23\Druid\DruidClient;
 use Level23\Druid\Types\Granularity;
@@ -188,9 +189,9 @@ class DruidController extends Controller
     {
         return view('reports.dob');
     }
-    public function monitor()
+    public function monitor(Request $request, ?Gu $gu = null)
     {
-        return view('monitor.monitor');
+        return view('monitor.monitor', compact('gu'));
     }
 
     public function calcGtm()

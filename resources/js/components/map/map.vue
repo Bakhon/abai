@@ -395,6 +395,10 @@ export default {
       this.objectData.index = option.mapObject.index;
       this.$bvModal.show('object-modal');
     },
+    onRedirect(option){
+      let url = this.localeUrl("/monitor/" + option.mapObject.object.id);
+      window.location.href = url;
+    },
     onCreate(option) {
       //pipe start point
       if (option.editMode == 'pipe') {
