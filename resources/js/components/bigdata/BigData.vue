@@ -69,7 +69,7 @@
               <div class="section">
                 <div class="section__wrapper">
                   <div class="section__content"
-                       :class="{'selected': selectedSection === section.tag, 'disabled': !section.reports.length}">
+                       :class="{'selected': selectedSection === section.tag}">
 
                     <div class="bold">
                       <span class="section_icon" v-html="section.icon"></span><br>
@@ -330,7 +330,7 @@ export default {
       }
     },
     loadDataForFilters() {
-      let uri = "http://172.20.103.187:8082/dzo_field_mapping/";
+      let uri = "http://172.20.103.157:8082/dzo_field_mapping/";
 
       this.isLoading = true;
 
