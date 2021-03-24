@@ -43,7 +43,7 @@
             v-on:nodeSelect="filterForm"
         ></b-tree-view>
       </div>
-        <form ref="form" class="bd-main-block__form" style="width: 100%">
+        <form ref="form" class="bd-main-block__form scrollable" style="width: 100%">
           <div class="table-page">
             <p v-if="!tech" class="table__message">{{ trans('bd.select_dzo') }}</p>
             <p v-else-if="rows.length === 0" class="table__message">{{ trans('bd.nothing_found') }}</p>
@@ -54,27 +54,32 @@
                   <th v-for="column in visibleColumns">
                     {{ column.title }}
                   </th>
-                <th></th>
-              </tr>
-              </thead>
-              <tbody>
-              <tr v-for="row in rows">
-                <td
-                    v-for="column in visibleColumns"
-                    :class="{'editable': column.isEditable}"
-                    @dblclick="editCell(row, column)"
-                >
-                  <a v-if="column.type === 'link'" :href="row[column.code].href">{{ row[column.code].name }}</a>
-                  <template v-else-if="column.type === 'calc'">
-                    <span class="value">{{ row[column.code] ? row[column.code].value : '' }}</span>
-                  </template>
-                  <template v-else-if="['text', 'integer', 'float'].indexOf(column.type) > -1">
-                    <div v-if="isCellEdited(row, column)" class="input-wrap">
-                      <input v-model="row[column.code].value" class="form-control" type="text">
-                      <button type="button" @click.prevent="saveCell(row, column)">OK</button>
-                      <span v-if="errors[column.code]" class="error">{{ showError(errors[column.code]) }}</span>
-                    </div>
-                    <template v-else-if="row[column.code]">
+                  <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="row in rows">
+                  <td
+                      v-for="column in visibleColumns"
+                      :class="{'editable': column.isEditable}"
+                      @dblclick="editCell(row, column)"
+                  >
+                    <template v-if="column.type === 'link'">
+                      <a :href="row[column.code].href">{{ row[column.code].name }}</a>
+                    </template>
+                    <template v-else-if="column.type === 'calc'">
+                      <span class="value">{{ row[column.code] ? row[column.code].value : '' }}</span>
+                    </template>
+                    <template v-else-if="column.type === 'history'">
+                      <a href="#" @click="showHistoricalDataForRow(row, column)">Посмотреть</a>
+                    </template>
+                    <template v-else-if="['text', 'integer', 'float'].indexOf(column.type) > -1">
+                      <div v-if="isCellEdited(row, column)" class="input-wrap">
+                        <input v-model="row[column.code].value" class="form-control" type="text">
+                        <button type="button" @click.prevent="saveCell(row, column)">OK</button>
+                        <span v-if="errors[column.code]" class="error">{{ showError(errors[column.code]) }}</span>
+                      </div>
+                      <template v-else-if="row[column.code]">
                       <span class="value">{{
                           row[column.code].date ? row[column.code].old_value : row[column.code].value
                         }}</span>
@@ -286,6 +291,17 @@ export default {
     },
     showHistory(row) {
       this.history.item = row
+    },
+    showHistoricalDataForRow(row, column) {
+      this.axios.get(this.localeUrl(`/bigdata/form/${this.params.code}/row-history`), {
+        params: {
+          well_id: row.uwi.id,
+          column: column.code,
+          date: this.date
+        }
+      }).then(response => {
+
+      })
     }
   },
 };
