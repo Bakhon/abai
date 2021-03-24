@@ -7,7 +7,7 @@ Route::group(
             ['middleware' => 'auth'],
             function () {
 
-                Route::get('/monitor', 'DruidController@monitor')->name('monitor');
+                Route::get('/monitor/{gu?}', 'DruidController@monitor')->name('monitor');
 
                 Route::get('watermeasurement/list', 'ComplicationMonitoring\WaterMeasurementController@list')->name(
                     'watermeasurement.list'

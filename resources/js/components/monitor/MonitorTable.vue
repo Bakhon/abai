@@ -335,6 +335,7 @@
         </div>
       </div>
     </modal>
+
     <div class="row monitor">
       <div class="col-2 monitor__charts">
         <div class="monitor__charts-item">
@@ -590,10 +591,15 @@ export default {
     DatePicker,
     VueTableDynamic
   },
+  props: {
+    gu: {
+      type: Number,
+      default: null
+    },
+  },
   data: function () {
     return {
       gus: null,
-      gu: null,
       date: null,
       kormass: null,
       showCalendar: false,

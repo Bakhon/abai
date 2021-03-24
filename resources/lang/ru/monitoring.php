@@ -295,6 +295,7 @@ return array (
       'date' => 'Дата',
       'heater_output_temperature' => 'Температура печи',
     ),
+    'redirect-to' => 'Перейти на',
   ),
   'zu' => 
   array (
