@@ -34,14 +34,14 @@ class OmgUHEController extends CrudController
             'title' => trans('monitoring.omguhe.title'),
             'table_header' => [
                 trans('monitoring.selection_node') => 1,
-                trans('monitoring.omguhe.fields.fact_data') => 5,
+                trans('monitoring.omguhe.fields.fact_data') => 4,
             ],
             'fields' => [
                 
                 
                 
                 'gu' => [
-                    'title' => trans('monitoring.gu'),
+                    'title' => trans('monitoring.gu.gu'),
                     'type' => 'select',
                     'filter' => [
                         'values' => \App\Models\Refs\Gu::whereHas('omguhe')

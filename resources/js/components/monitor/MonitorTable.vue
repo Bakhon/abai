@@ -128,6 +128,7 @@
             </div>
           </div>
           <br>
+
           <div class="row corrosion">
             <div class="col-12">
               <h4>{{ trans('monitoring.fluid_parameters') }}</h4>
