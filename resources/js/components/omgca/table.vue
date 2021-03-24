@@ -35,7 +35,7 @@
       <p>{{ params.success }}</p>
     </div>
     <div class="table-page__wrapper">
-      <table class="table">
+      <table class="table table-bordered table-dark" :class="tableClass">
         <thead>
         <tr v-if="params.table_header">
           <th v-for="(colspan, header) in params.table_header" :colspan="colspan">{{ header }}</th>
@@ -181,10 +181,17 @@ export default {
     vSelect,
     CatLoader
   },
-  props: [
-    'params'
-  ],
-  data() {
+  props: {
+    params: {
+      type: Object,
+      required: true
+    },
+    responsitive: {
+      type: Boolean,
+      default: false
+    }
+  },
+    data() {
     return {
       omgca: null,
       sort: {
@@ -214,6 +221,12 @@ export default {
 
       })
       return activeFilter
+    },
+    tableClass () {
+      return {
+        "table-responsive": this.responsitive,
+        'with-pagination': this.omgca && this.omgca.total > this.omgca.per_page
+      }
     }
   },
   methods: {
@@ -335,6 +348,34 @@ export default {
 };
 </script>
 <style lang="scss">
+
+
+/* width */
+table::-webkit-scrollbar {
+  width: 13px;
+}
+
+/* Track */
+table::-webkit-scrollbar-track {
+  background: #333975;
+}
+
+/* Handle */
+table::-webkit-scrollbar-thumb {
+  background: #656A8A;
+
+}
+
+/* Handle on hover */
+table::-webkit-scrollbar-thumb:hover {
+  background: #656A8A;
+
+}
+
+table::-webkit-scrollbar-corner {
+  background: #333975;
+}
+
 .table-page {
   background: #272953;
   padding: 16px 24px 20px 19px;
@@ -343,6 +384,7 @@ export default {
     min-height: 400px;
     overflow-x: auto;
     position: relative;
+    max-width: calc(100vw - 137px);
   }
 
   h1 {
@@ -516,6 +558,15 @@ export default {
     border: 1px solid #454D7D;
     color: white !important;
     margin-bottom: 28px;
+
+    &.table-responsive {
+      overflow: scroll;
+      height: calc(100vh - 205px);
+
+      &.with-pagination {
+        height: calc(100vh - 258px);
+      }
+    }
 
     th {
       background: #333975;
