@@ -14,45 +14,47 @@ class ExcelFormController extends Controller
 {
     public function store(Request $request)
     {
-        $dzoSummaryData = new DzoImportData;
-        $dzoData = $request->request->all();
-        foreach ($dzoData as $key => $item) {
-            if ($key == 'downtimeReason') {
+        $children_keys = array('downtimeReason' => 1, 'decreaseReason' => 2, 'fields' => 3);
+        $dzo_summary_data = new DzoImportData;
+        $dzo_data = $request->request->all();
+        foreach ($dzo_data as $key => $item) {
+            if (array_key_exists($key, $children_keys)) {
                 continue;
             }
-            $dzoSummaryData->$key = $dzoData[$key];
-        }
-        dd($dzoSummaryData);
-
-        $dzoSummaryData->save();
-        $dzoSummary = DzoImportData::latest('id')->first();
-
-        $dzoDowntimeReasons = new DzoImportDowntimeReason;
-        $downtimeData = $request->request->get('downtimeReason');
-        $dzoDowntimeReasons->importData()->associate($dzoSummary);
-        foreach ($downtimeData as $key => $item) {
-            $dzoDowntimeReasons->$key = $downtimeData[$key];
+            $dzo_summary_data->$key = $dzo_data[$key];
         }
 
-        $dzoDowntimeReasons->save();
+        $dzo_summary_data->save();
+        $dzo_summary = DzoImportData::latest('id')->first();
 
-        $dzoDecreaseReasons = new DzoImportDecreaseReason;
-        $decreaseData = $request->request->get('decreaseReason');
-        $dzoDecreaseReasons->importData()->associate($dzoSummary);
-        foreach ($decreaseData as $key => $item) {
-            $dzoDecreaseReasons->$key = $decreaseData[$key];
+        $fields_data = $request->request->get('fields');
+
+        foreach ($fields_data as $field_name => $field) {
+            $dzo_import_fields = new DzoImportField;
+            $dzo_import_fields->importData()->associate($dzo_summary);
+            $dzo_import_fields->field_name = $field_name;
+            foreach($field as $item_name => $item) {
+                $dzo_import_fields->$item_name = $field[$item_name];
+            }
+            $dzo_import_fields->save();
         }
 
-        $dzoDecreaseReasons->save();
-
-        $dzoImportFields = new DzoImportField;
-        $fieldsData = $request->request->get('fields');
-        $dzoImportFields->importData()->associate($dzoSummary);
-        foreach ($fieldsData as $key => $item) {
-            $dzoImportFields->$key = $fieldsData[$key];
+        $dzo_downtime_reasons = new DzoImportDowntimeReason;
+        $downtime_data = $request->request->get('downtimeReason');
+        $dzo_downtime_reasons->importData()->associate($dzo_summary);
+        foreach ($downtime_data as $key => $item) {
+            $dzo_downtime_reasons->$key = $downtime_data[$key];
         }
 
-        $dzoImportFields->save();
-        return redirect('ru/excelform')->withStatus(__('Данные успешно сохранены!'));
+        $dzo_downtime_reasons->save();
+
+        $dzo_decrease_reasons = new DzoImportDecreaseReason;
+        $decrease_data = $request->request->get('decreaseReason');
+        $dzo_decrease_reasons->importData()->associate($dzo_summary);
+        foreach ($decrease_data as $key => $item) {
+            $dzo_decrease_reasons->$key = $decrease_data[$key];
+        }
+
+        $dzo_decrease_reasons->save();
     }
 }

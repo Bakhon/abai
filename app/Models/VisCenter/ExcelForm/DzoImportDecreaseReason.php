@@ -1,12 +1,14 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\VisCenter\ExcelForm;
 
 use Illuminate\Database\Eloquent\Model;
 
 class DzoImportDecreaseReason extends Model
 {
-    public function importDecreaseReason()
+    public $timestamps = false;
+
+    public function importData()
     {
         return $this->belongsTo(DzoImportData::class);
     }

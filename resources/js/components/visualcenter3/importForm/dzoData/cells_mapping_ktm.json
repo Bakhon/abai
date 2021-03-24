@@ -132,141 +132,155 @@
     "rowLength": 2
   },
   "fields": {
-    "oilFirstField": {
-      "fields": [
-        "oil_production_fact",
-        "oil_delivery_fact",
-        "oil_delivery_by_stations_fact"
-      ],
-      "rowIndex": 2,
-      "rowLength": 3
+    "oil": {
+      "ЦДНГ №1 (месторождения: Западный Елемес, Восточное Сазтобе, Юго-Восточное Сазтобе, Северо-Восточное Сазтобе, ПСН Опорная)": {
+        "fields": [
+          "oil_production_fact",
+          "oil_delivery_fact",
+          "oil_delivery_by_stations_fact"
+        ],
+        "rowIndex": 2,
+        "rowLength": 3
+      },
+      "ЦДНГ №2 (месторождения: Лактыбай, Южное Каратобе, ГНПС Кенкияк)": {
+        "fields": [
+          "oil_production_fact",
+          "oil_delivery_fact",
+          "oil_delivery_by_stations_fact"
+        ],
+        "rowIndex": 3,
+        "rowLength": 3
+      }
     },
-    "oilSecondField": {
-      "fields": [
-        "oil_production_fact",
-        "oil_delivery_fact",
-        "oil_delivery_by_stations_fact"
-      ],
-      "rowIndex": 3,
-      "rowLength": 3
+    "condensate": {
+      "ЦДНГ №1 (месторождения: Западный Елемес, Восточное Сазтобе, Юго-Восточное Сазтобе, Северо-Восточное Сазтобе, ПСН Опорная)": {
+        "fields": [
+          "condensate_production_fact",
+          "condensate_delivery_fact",
+          "condensate_delivery_by_stations_fact"
+        ],
+        "rowIndex": 7,
+        "rowLength": 3
+      },
+      "ЦДНГ №2 (месторождения: Лактыбай, Южное Каратобе, ГНПС Кенкияк)": {
+        "fields": [
+          "condensate_production_fact",
+          "condensate_delivery_fact",
+          "condensate_delivery_by_stations_fact"
+        ],
+        "rowIndex": 8,
+        "rowLength": 3
+      }
     },
-    "condensateFirstField": {
-      "fields": [
-        "condensate_production_fact",
-        "condensate_delivery_fact",
-        "condensate_delivery_by_stations_fact"
-      ],
-      "rowIndex": 7,
-      "rowLength": 3
+    "stockOfGoods": {
+      "ЦДНГ №1 (месторождения: Западный Елемес, Восточное Сазтобе, Юго-Восточное Сазтобе, Северо-Восточное Сазтобе, ПСН Опорная)": {
+        "fields": [
+          "stock_of_goods_delivery_fact"
+        ],
+        "rowIndex": 12,
+        "rowLength": 1
+      },
+      "ЦДНГ №2 (месторождения: Лактыбай, Южное Каратобе, ГНПС Кенкияк)": {
+        "fields": [
+          "stock_of_goods_delivery_fact"
+        ],
+        "rowIndex": 13,
+        "rowLength": 1
+      }
     },
-    "condensateSecondField": {
-      "fields": [
-        "condensate_production_fact",
-        "condensate_delivery_fact",
-        "condensate_delivery_by_stations_fact"
-      ],
-      "rowIndex": 8,
-      "rowLength": 3
+    "naturalGas": {
+      "ЦДНГ №1 (месторождения: Западный Елемес, Восточное Сазтобе, Юго-Восточное Сазтобе, Северо-Восточное Сазтобе, ПСН Опорная)": {
+        "fields": [
+          "natural_gas_production_fact",
+          "natural_gas_delivery_fact",
+          "natural_gas_expenses_for_own_fact",
+          "natural_gas_processing_fact",
+          "natural_gas_flaring_fact"
+        ],
+        "rowIndex": 16,
+        "rowLength": 5
+      },
+      "ЦДНГ №2 (месторождения: Лактыбай, Южное Каратобе, ГНПС Кенкияк)": {
+        "fields": [
+          "natural_gas_production_fact",
+          "natural_gas_delivery_fact",
+          "natural_gas_expenses_for_own_fact",
+          "natural_gas_processing_fact",
+          "natural_gas_flaring_fact"
+        ],
+        "rowIndex": 17,
+        "rowLength": 5
+      }
     },
-    "stockOfGoodsFirstField": {
-      "fields": [
-        "stock_of_goods_delivery_fact"
-      ],
-      "rowIndex": 12,
-      "rowLength": 1
+    "associatedGas": {
+      "ЦДНГ №1 (месторождения: Западный Елемес, Восточное Сазтобе, Юго-Восточное Сазтобе, Северо-Восточное Сазтобе, ПСН Опорная)": {
+        "fields": [
+          "associated_gas_production_fact",
+          "associated_gas_delivery_fact",
+          "associated_gas_expenses_for_own_fact",
+          "associated_gas_processing_fact",
+          "associated_gas_flaring_fact"
+        ],
+        "rowIndex": 22,
+        "rowLength": 5
+      },
+      "ЦДНГ №2 (месторождения: Лактыбай, Южное Каратобе, ГНПС Кенкияк)": {
+        "fields": [
+          "associated_gas_production_fact",
+          "associated_gas_delivery_fact",
+          "associated_gas_expenses_for_own_fact",
+          "associated_gas_processing_fact",
+          "associated_gas_flaring_fact"
+        ],
+        "rowIndex": 23,
+        "rowLength": 5
+      }
     },
-    "stockOfGoodsSecondField": {
-      "fields": [
-        "stock_of_goods_delivery_fact"
-      ],
-      "rowIndex": 13,
-      "rowLength": 1
+    "agentUpload": {
+      "ЦДНГ №1 (месторождения: Западный Елемес, Восточное Сазтобе, Юго-Восточное Сазтобе, Северо-Восточное Сазтобе, ПСН Опорная)": {
+        "fields": [
+          "agent_upload_total_water_injection_fact",
+          "agent_upload_seawater_injection_fact",
+          "agent_upload_waste_water_injection_fact",
+          "agent_upload_albsenomanian_water_injection_fact",
+          "agent_upload_stream_injection_fact"
+        ],
+        "rowIndex": 27,
+        "rowLength": 5
+      },
+      "ЦДНГ №2 (месторождения: Лактыбай, Южное Каратобе, ГНПС Кенкияк)": {
+        "fields": [
+          "agent_upload_total_water_injection_fact",
+          "agent_upload_seawater_injection_fact",
+          "agent_upload_waste_water_injection_fact",
+          "agent_upload_albsenomanian_water_injection_fact",
+          "agent_upload_stream_injection_fact"
+        ],
+        "rowIndex": 28,
+        "rowLength": 5
+      }
     },
-    "naturalGasFirstField": {
-      "fields": [
-        "natural_gas_production_fact",
-        "natural_gas_delivery_fact",
-        "natural_gas_expenses_for_own_fact",
-        "natural_gas_processing_fact",
-        "natural_gas_flaring_fact"
-      ],
-      "rowIndex": 16,
-      "rowLength": 5
-    },
-    "naturalGasSecondField": {
-      "fields": [
-        "natural_gas_production_fact",
-        "natural_gas_delivery_fact",
-        "natural_gas_expenses_for_own_fact",
-        "natural_gas_processing_fact",
-        "natural_gas_flaring_fact"
-      ],
-      "rowIndex": 17,
-      "rowLength": 5
-    },
-    "associatedGasFirstField": {
-      "fields": [
-        "associated_gas_production_fact",
-        "associated_gas_delivery_fact",
-        "associated_gas_expenses_for_own_fact",
-        "associated_gas_processing_fact",
-        "associated_gas_flaring_fact"
-      ],
-      "rowIndex": 22,
-      "rowLength": 5
-    },
-    "associatedGasSecondField": {
-      "fields": [
-        "associated_gas_production_fact",
-        "associated_gas_delivery_fact",
-        "associated_gas_expenses_for_own_fact",
-        "associated_gas_processing_fact",
-        "associated_gas_flaring_fact"
-      ],
-      "rowIndex": 23,
-      "rowLength": 5
-    },
-    "agentUploadFirstField": {
-      "fields": [
-        "agent_upload_total_water_injection_fact",
-        "agent_upload_seawater_injection_fact",
-        "agent_upload_waste_water_injection_fact",
-        "agent_upload_albsenomanian_water_injection_fact",
-        "agent_upload_stream_injection_fact"
-      ],
-      "rowIndex": 27,
-      "rowLength": 5
-    },
-    "agentUploadSecondField": {
-      "fields": [
-        "agent_upload_total_water_injection_fact",
-        "agent_upload_seawater_injection_fact",
-        "agent_upload_waste_water_injection_fact",
-        "agent_upload_albsenomanian_water_injection_fact",
-        "agent_upload_stream_injection_fact"
-      ],
-      "rowIndex": 28,
-      "rowLength": 5
-    },
-    "otmFirstField": {
-      "fields": [
-        "otm_wells_commissioning_from_drilling_fact",
-        "otm_drilling_fact",
-        "otm_well_workover_fact",
-        "otm_underground_workover"
-      ],
-      "rowIndex": 32,
-      "rowLength": 4
-    },
-    "otmSecondField": {
-      "fields": [
-        "otm_wells_commissioning_from_drilling_fact",
-        "otm_drilling_fact",
-        "otm_well_workover_fact",
-        "otm_underground_workover"
-      ],
-      "rowIndex": 33,
-      "rowLength": 4
+    "otm": {
+      "ЦДНГ №1 (месторождения: Западный Елемес, Восточное Сазтобе, Юго-Восточное Сазтобе, Северо-Восточное Сазтобе, ПСН Опорная)": {
+        "fields": [
+          "otm_wells_commissioning_from_drilling_fact",
+          "otm_drilling_fact",
+          "otm_well_workover_fact",
+          "otm_underground_workover"
+        ],
+        "rowIndex": 32,
+        "rowLength": 4
+      },
+      "ЦДНГ №2 (месторождения: Лактыбай, Южное Каратобе, ГНПС Кенкияк)": {
+        "fields": [
+          "otm_wells_commissioning_from_drilling_fact",
+          "otm_drilling_fact",
+          "otm_well_workover_fact",
+          "otm_underground_workover"
+        ],
+        "rowIndex": 33,
+        "rowLength": 4
+      }
     }
   },
   "downtimeReason": {

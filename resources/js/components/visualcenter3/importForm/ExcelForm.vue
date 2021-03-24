@@ -10,7 +10,7 @@
                     :frameSize="72"
             ></v-grid>
         </div>
-        <div class="ml-3 col-3 helpers mt-5">
+        <div class="ml-3 col-3 helpers-block mt-5">
             <div class="row">
                 <div class="data-status">
                     <span class="label">Выберите ДЗО: </span>
@@ -28,25 +28,25 @@
                     <span :class="[isValidateError ? 'status-error' : '','']">{{status}}</span>
                 </div>
                 <div
-                        :class="[!isDataExist ? 'button-disabled' : '','button col-12']"
+                        :class="[!isDataExist ? 'menu__button_disabled' : '','menu__button col-12']"
                         @click="handleValidate()"
                 >
                     {{trans('visualcenter.validateButton')}}
                 </div>
                 <div
-                        :class="[!isDataReady ? 'button-disabled' : '','button col-12 mt-3']"
+                        :class="[!isDataReady ? 'menu__button_disabled' : '','menu__button col-12 mt-3']"
                         @click="handleSave()"
                 >
                     {{trans('visualcenter.saveButton')}}
                 </div>
                 <div
-                        class="button col-12 mt-3"
+                        class="menu__button col-12 mt-3"
                         @click="changeButtonVisibility()"
                 >
                     {{trans('visualcenter.importForm.enterChemistryButton')}}
                 </div>
             </div>
-            <div :class="[isChemistryNeeded ? 'disabled' : '','chemistry-block mt-5 row p-3']">
+            <div :class="[isChemistryNeeded ? 'chemistry-disabled' : '','chemistry-block mt-5 row p-3']">
                 <h4 class="col-12">{{trans("visualcenter.importForm.chemistry")}}</h4>
                 <div class="col-12 d-flex">
                     <span class="col-7">{{trans("visualcenter.chem_prod_zakacka_demulg_fact")}}</span>
@@ -66,7 +66,7 @@
                 </div>
                 <div class="col-6"></div>
                 <div
-                        class="button col-12 mt-2"
+                        class="menu__button col-12 mt-2"
                         @click="chemistrySave()"
                 >
                     {{trans('visualcenter.saveButton')}}
@@ -100,13 +100,6 @@
             cells: cellsMappingKTM
         },
     };
-
-    const dzoOptionsMapping = {
-        cells: dzoMapping[defaultDzoTicker].cells,
-        initialRows: dzoMapping[defaultDzoTicker].rows,
-        format: dzoMapping[defaultDzoTicker].format
-    };
-
 
     export default {
         data: function () {
@@ -190,7 +183,7 @@
                         },
                     },
                 ],
-                rows: _.cloneDeep(dzoOptionsMapping.initialRows),
+                rows: _.cloneDeep(dzoMapping[defaultDzoTicker].rows),
                 isDataExist: false,
                 isDataReady: false,
                 rowsCount: 75,
@@ -207,9 +200,9 @@
                   plans: [],
                 },
                 currentMonthNumber: moment().format('M'),
-                cellsMapping: _.cloneDeep(dzoOptionsMapping.cells),
-                rowsFormatMapping: _.cloneDeep(dzoOptionsMapping.format.rowsFormatMapping),
-                columnsFormatMapping: _.cloneDeep(dzoOptionsMapping.format.columnsFormatMapping),
+                cellsMapping: _.cloneDeep(dzoMapping[defaultDzoTicker].cells),
+                rowsFormatMapping: _.cloneDeep(dzoMapping[defaultDzoTicker].format.rowsFormatMapping),
+                columnsFormatMapping: _.cloneDeep(dzoMapping[defaultDzoTicker].format.columnsFormatMapping),
                 excelData: {
                     downtimeReason: {},
                     decreaseReason: {},
@@ -219,37 +212,25 @@
                 errorSelectors: [],
                 inputDataCategories: ['downtimeReason','decreaseReason','fields'],
                 stringColumns: [1,2],
-                fieldsGrouping: {
-                    first: [],
-                    second: []
-                },
             };
         },
         async mounted() {
             this.dzoPlans = await this.getDzoMonthlyPlans();
+            console.log(dzoMapping[defaultDzoTicker].rows.length)
             this.selectedDzo.plans = this.getSelectedDzoPlans();
             await this.sleep(1500);
             this.setTableFormat();
-            await this.storeData();
         },
         methods: {
-            async storeData() {
-                let downtimeReason = {
-                    'dzoName': 'test',
-                    'downtimeReason': {
-                        'prs_downtime_production_wells_count': 2
-                    }
-                };
-                let uri = this.localeUrl("/dzo_excel_form");
-
-                this.axios.post(uri, downtimeReason);
-            },
             dzoChange($event) {
                 let dzoTicker = $event.target.value;
                 this.selectedDzo.ticker = dzoTicker;
-                dzoOptionsMapping.initialRows = dzoMapping[dzoTicker].rows;
-                dzoOptionsMapping.format = dzoMapping[dzoTicker].format;
-                this.rows = _.cloneDeep(dzoOptionsMapping.initialRows);
+                this.cellsMapping = _.cloneDeep(dzoMapping[dzoTicker].cells);
+                this.rowsFormatMapping = _.cloneDeep(dzoMapping[dzoTicker].format.rowsFormatMapping);
+                this.columnsFormatMapping = _.cloneDeep(dzoMapping[dzoTicker].format.columnsFormatMapping),
+                this.rows = _.cloneDeep(dzoMapping[dzoTicker].rows);
+                this.rowsCount = this.rows.length + 2;
+                console.log(this.rowsCount);
             },
             chemistrySave() {
                 this.status = this.trans("visualcenter.importForm.status.dataSaved");
@@ -281,7 +262,7 @@
                 this.isDataReady = false;
                 this.turnOffErrorHighlight();
                 this.processTableData();
-                console.log(this.excelData);
+
                 if (!this.isValidateError) {
                     this.isDataExist = false;
                     this.isDataReady = true;
@@ -292,7 +273,6 @@
             },
             processTableData() {
                 let self = this;
-                console.log(Object.keys(this.cellsMapping).length);
                 _.forEach(Object.keys(this.cellsMapping), function(key) {
                     if (self.inputDataCategories.includes(key)) {
                         self.processBlock(self.cellsMapping[key],key);
@@ -307,21 +287,29 @@
                     if (category === self.inputDataCategories[1]) {
                         self.processStringCells(block[key],category);
                     } else if (category === self.inputDataCategories[2]) {
-                        self.processNumberCells(block[key],category,key);
+                        self.processFieldsBlock(block[key],category,key);
                     } else {
                         self.processNumberCells(block[key],category);
                     }
                 });
             },
-            processNumberCells(row,category,key) {
+            processFieldsBlock(row,category,key) {
+                let self = this;
+                _.forEach(Object.keys(row), function(fieldName) {
+                    self.processNumberCells(row[fieldName],category,fieldName)
+                });
+            },
+            processNumberCells(row,category,fieldCategoryName) {
                 for (let columnIndex = 1; columnIndex <= row.rowLength; columnIndex++) {
                     let selector = 'div[data-col="'+ columnIndex + '"][data-row="' + row.rowIndex + '"]';
                     let cellValue = parseFloat($(selector).text());
                     if (!this.isNumberCellValid(cellValue,selector)) {
                         continue;
                     }
-                    if (this.inputDataCategories.includes(category)) {
-                        this.setNumberValueForCategories(category,row.fields[columnIndex-1],cellValue,key);
+                    if (fieldCategoryName) {
+                        this.setNumberValueForCategories(category,row.fields[columnIndex-1],cellValue,fieldCategoryName);
+                    } else if (category === this.inputDataCategories[0]) {
+                        this.excelData[category][row.fields[columnIndex-1]] = cellValue;
                     } else {
                         this.excelData[row.fields[columnIndex-1]] = cellValue;
                     }
@@ -329,30 +317,16 @@
             },
             setNumberValueForCategories(category,fieldName,cellValue,key) {
                 if (key) {
-                    let groupName = this.getGroupingCategoryName(key);
-                    this.pushValuesToField(category,groupName,fieldName,cellValue,key);
+                    this.setFieldData(category,key,fieldName,cellValue);
                 } else {
                     this.excelData[category][fieldName] = cellValue;
                 }
-
             },
-            getGroupingCategoryName(categoryNamekey) {
-                let self = this;
-                let groupName = '';
-                _.forEach(Object.keys(this.fieldsGrouping), function (key) {
-                   if (categoryNamekey.toLowerCase().includes(key)) {
-                       groupName = key;
-                   }
-                });
-                return groupName;
-            },
-            pushValuesToField(category,groupName,fieldName,cellValue,key) {
+            setFieldData(category,groupName,fieldName,cellValue) {
               if (!this.excelData[category][groupName]) {
-                  this.excelData[category][groupName] = [];
+                  this.excelData[category][groupName] = {};
               }
-              let data = {};
-              data[fieldName] = cellValue;
-              this.excelData[category][groupName].push(data);
+              this.excelData[category][groupName][fieldName] = cellValue;
             },
             isNumberCellValid(inputData,selector) {
                 if (isNaN(inputData) || inputData < 0) {
@@ -366,7 +340,7 @@
             processStringCells(row,category) {
                 for (let columnIndex = 1; columnIndex <= row.rowLength; columnIndex++) {
                     let selector = 'div[data-col="'+ columnIndex + '"][data-row="' + row.rowIndex + '"]';
-                    let cellValue = $(selector).text();
+                    let cellValue = $(selector).text().trim();
                     if (this.isStringCell(columnIndex) && this.isStringCellValid(cellValue,selector)) {
                         this.excelData[category][row.fields[columnIndex-1]] = cellValue;
                         continue;
@@ -389,9 +363,23 @@
                 }
                 return true;
             },
-            handleSave() {
-                let self = this;
-                this.status = this.trans("visualcenter.importForm.status.dataSaved");
+            async handleSave() {
+                await this.storeData();
+                this.isDataReady = !this.isDataReady;
+            },
+            storeData() {
+                this.excelData['dzo_name'] = this.selectedDzo.ticker;
+                this.excelData['date'] = moment().format("YYYY-MM-DD HH:mm:ss");
+
+                let uri = this.localeUrl("/dzo_excel_form");
+
+                this.axios.post(uri, this.excelData).then((response) => {
+                    if (response.status === 200) {
+                        this.status = this.trans("visualcenter.importForm.status.dataSaved");
+                    } else {
+                        this.status = this.trans("visualcenter.importForm.status.dataIsNotValid");
+                    }
+                });
             },
             turnOffErrorHighlight() {
                 let self = this;
@@ -407,9 +395,9 @@
             setTableFormat() {
                 for (let rowIndex = 0; rowIndex < this.rowsCount; rowIndex++) {
                     if (this.rowsFormatMapping.title.includes(rowIndex)) {
-                        this.selectClassForCell(rowIndex,this.getColumnsForHighLight(rowIndex),'title');
+                        this.selectClassForCell(rowIndex,this.getColumnsForHighLight(rowIndex),'cell-title');
                     } else if (this.rowsFormatMapping.subTitle.includes(rowIndex)) {
-                        this.selectClassForCell(rowIndex,this.getColumnsForHighLight(rowIndex),'sub-title');
+                        this.selectClassForCell(rowIndex,this.getColumnsForHighLight(rowIndex),'cell-subtitle');
                     }
                 }
             },
@@ -464,19 +452,13 @@
         font-size: 36px;
         color: rgba(19, 176, 98, 0.8);
     }
-    .disabled {
+    .chemistry-disabled {
         display: none;
     }
-    .helpers {
+    .helpers-block {
         display: flex;
         flex-wrap: wrap;
         display: inline-block;
-    }
-    ul {
-        color: red;
-    }
-    li {
-        color: white;
     }
     revo-grid .header-wrapper {
         display: none;
@@ -490,7 +472,7 @@
         max-width: 1320px;
         background-color: white;
     }
-    .title {
+    .cell-title {
         background-color: #1e4e79;
         color: white !important;
         text-align: center;
@@ -498,7 +480,7 @@
         font-size: 14px;
         font-weight: bold;
     }
-    .sub-title {
+    .cell-subtitle {
         background-color: #1e4e79;
         color: white !important;
         text-align: center;
@@ -506,14 +488,7 @@
         font-size: 12px;
         font-weight: bold;
     }
-    .main-header {
-        font-weight: bold;
-    }
-    .table-footer-format {
-        font-weight: bold;
-        line-height: 30px;
-    }
-    .button {
+    .menu__button {
         float: right;
         font-size: 16px;
         font-weight: bold;
@@ -527,13 +502,9 @@
         line-height: 0px;
         cursor: pointer;
     }
-    .button-disabled {
+    .menu__button_disabled {
         pointer-events: none;
         opacity: 0.4;
-    }
-    .button-enabled {
-        pointer-events: all;
-        opacity: 0;
     }
     @media (max-width:1400px) {
         .table-form {
