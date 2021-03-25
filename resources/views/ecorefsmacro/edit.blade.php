@@ -59,7 +59,7 @@
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
                                         <strong>Мировая стоимость барреля нефти, доллар:</strong>
-                                        <input type="number" name="barrel_world_price" class="form-control"
+                                        <input type="number" step="0.01" name="barrel_world_price" class="form-control"
                                                placeholder="{{$row->barrel_world_price}}">
                                     </div>
                                 </div>
