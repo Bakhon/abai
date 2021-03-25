@@ -46,10 +46,19 @@ abstract class TableForm extends BaseForm
                 continue;
             }
 
-            $result[$field['code']] = $this->getFieldHistory($field, $rowData[$field['table']], $well);
+            $result[$field['code']] = array_map(
+                function ($item) use ($field) {
+                    return $this->getFormatedFieldValue($field, $item);
+                },
+                $this->getFieldHistory(
+                    $field,
+                    $rowData[$field['table']],
+                    $well
+                )
+            );
         }
 
-        return $result;
+        return $this->groupFieldsByDates($result, $dateFrom, $dateTo);
     }
 
     public function saveSingleField(string $field)
@@ -318,5 +327,23 @@ abstract class TableForm extends BaseForm
         }
 
         return array_unique($result);
+    }
+
+    private function groupFieldsByDates(array $fields, Carbon $dateFrom, Carbon $dateTo)
+    {
+        $result = [];
+
+        while ($dateFrom <= $dateTo) {
+            $date = $dateFrom->format('d.m.Y');
+
+            $dateValues = [];
+            foreach ($fields as $code => $field) {
+                $dateValues[$code] = isset($field[$date]) ? $field[$date] : null;
+            }
+            $result[$date] = $dateValues;
+
+            $dateFrom->addDay();
+        }
+        return $result;
     }
 }

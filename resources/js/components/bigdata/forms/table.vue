@@ -7,18 +7,20 @@
     </div>
     <div class="bd-main-block__date">
       <span class="bd-main-block__date-title">{{ trans('bd.date') }}:</span>
-      <datetime
-          v-model="date"
-          :flow="['year', 'month', 'date']"
-          :format="{ year: 'numeric', month: 'numeric', day: 'numeric'}"
-          :phrases="{ok: trans('bd.select'), cancel: trans('bd.exit')}"
-          auto
-          input-class="form-control"
-          type="date"
-          value-zone="Asia/Almaty"
-          zone="Asia/Almaty"
-      >
-      </datetime>
+      <div class="bd-main-block__date-input">
+        <datetime
+            v-model="date"
+            :flow="['year', 'month', 'date']"
+            :format="{ year: 'numeric', month: 'numeric', day: 'numeric'}"
+            :phrases="{ok: trans('bd.select'), cancel: trans('bd.exit')}"
+            auto
+            input-class="form-control"
+            type="date"
+            value-zone="Asia/Almaty"
+            zone="Asia/Almaty"
+        >
+        </datetime>
+      </div>
     </div>
     <div class="bd-main-block__body">
       <div v-if="history.item !== null" class="bd-main-block__body-history">
@@ -32,17 +34,17 @@
         </big-data-history>
       </div>
       <template v-else>
-      <div class="bd-main-block__tree scrollable">
-        <b-tree-view
-            v-if="filterTree.length"
-            :contextMenu="false"
-            :contextMenuItems="[]"
-            :data="filterTree"
-            :renameNodeOnDblClick="false"
-            nodeLabelProp="name"
-            v-on:nodeSelect="filterForm"
-        ></b-tree-view>
-      </div>
+        <div class="bd-main-block__tree scrollable">
+          <b-tree-view
+              v-if="filterTree.length"
+              :contextMenu="false"
+              :contextMenuItems="[]"
+              :data="filterTree"
+              :renameNodeOnDblClick="false"
+              nodeLabelProp="name"
+              v-on:nodeSelect="filterForm"
+          ></b-tree-view>
+        </div>
         <form ref="form" class="bd-main-block__form scrollable" style="width: 100%">
           <div class="table-page">
             <p v-if="!tech" class="table__message">{{ trans('bd.select_dzo') }}</p>
@@ -71,7 +73,7 @@
                       <span class="value">{{ row[column.code] ? row[column.code].value : '' }}</span>
                     </template>
                     <template v-else-if="column.type === 'history'">
-                      <a href="#" @click="showHistoricalDataForRow(row, column)">Посмотреть</a>
+                      <a href="#" @click.prevent="showHistoricalDataForRow(row, column)">Посмотреть</a>
                     </template>
                     <template v-else-if="['text', 'integer', 'float'].indexOf(column.type) > -1">
                       <div v-if="isCellEdited(row, column)" class="input-wrap">
@@ -83,7 +85,7 @@
                       <span class="value">{{
                           row[column.code].date ? row[column.code].old_value : row[column.code].value
                         }}</span>
-                      <span v-if="row[column.code] && row[column.code].date" class="date">
+                        <span v-if="row[column.code] && row[column.code].date" class="date">
                         {{ row[column.code].date | moment().format('YYYY-MM-DD') }}
                       </span>
                       </template>
@@ -99,6 +101,32 @@
           </div>
         </form>
       </template>
+    </div>
+    <div v-if="rowHistory" class="bd-popup">
+      <div class="bd-popup__inner">
+        <a class="bd-popup__close" href="#" @click.prevent="closeRowHistory()">Закрыть</a>
+        <p class="bd-popup__title">Замеры по скважине за последний месяц</p>
+        <div class="table-page">
+          <table class="table">
+            <thead>
+            <tr>
+              <th>Дата</th>
+              <th v-for="column in rowHistoryColumns">
+                {{ column.title }}
+              </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="(fields, date) in rowHistory">
+              <td>{{ date }}</td>
+              <td v-for="column in rowHistoryColumns">
+                {{ fields[column.code] === null ? '' : fields[column.code].value }}
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -143,7 +171,9 @@ export default {
       isloading: false,
       history: {
         item: null
-      }
+      },
+      rowHistory: null,
+      rowHistoryColumns: [],
     }
   },
   watch: {
@@ -208,7 +238,7 @@ export default {
     },
     calculateCellValue(cellColumn, cellRow, rowIndex) {
 
-      let formula = this.fillFormulaWithValues(cellColumn, cellRow)
+      let formula = this.fillFormulaWithValues(cellColumn, cellRow, rowIndex)
 
       let value = null
       if (formula.indexOf('$') === -1) {
@@ -221,7 +251,7 @@ export default {
 
       return value
     },
-    fillFormulaWithValues(cellColumn, cellRow) {
+    fillFormulaWithValues(cellColumn, cellRow, rowIndex) {
       let formula = cellColumn.formula
       this.formParams.columns.forEach(column => {
 
@@ -292,21 +322,122 @@ export default {
     showHistory(row) {
       this.history.item = row
     },
+    closeRowHistory() {
+      this.rowHistory = null
+      document.body.classList.remove('fixed')
+    },
     showHistoricalDataForRow(row, column) {
+      this.isloading = true
+      document.body.classList.add('fixed')
       this.axios.get(this.localeUrl(`/bigdata/form/${this.params.code}/row-history`), {
         params: {
           well_id: row.uwi.id,
           column: column.code,
           date: this.date
         }
-      }).then(response => {
-
+      }).then(({data}) => {
+        this.rowHistory = data
+        this.rowHistoryColumns = this.formParams.columns.filter(item => column.fields.indexOf(item.code) > -1)
+        this.isloading = false
       })
     }
   },
 };
 </script>
 <style lang="scss">
+body.fixed {
+  overflow: hidden;
+}
+
+.bd-popup {
+  background: rgba(0, 0, 0, 0.7);
+  height: 100%;
+  left: 0;
+  overflow: auto;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+
+  &__inner {
+    background: #272953;
+    border: 2px solid #656a8a;
+    border-radius: 8px;
+    color: #fff;
+    left: 50%;
+    min-width: 730px;
+    padding: 20px 25px;
+    position: absolute;
+    top: 100px;
+    transform: translateX(-50%);
+    z-index: 1001;
+  }
+
+  &__close {
+    background: #656A8A;
+    border-radius: 7px;
+    color: #fff;
+    font-size: 14px;
+    font-weight: bold;
+    height: 26px;
+    line-height: 26px;
+    position: absolute;
+    right: 19px;
+    text-align: center;
+    top: 14px;
+    width: 87px;
+
+    &:hover {
+      color: #fff;
+      text-decoration: none;
+    }
+  }
+
+  &__title {
+    font-size: 18px;
+    margin-bottom: 30px;
+  }
+
+  .table {
+    th {
+      background: #2b2e5e;
+      padding: 10px 5px;
+
+      &:nth-child(2n + 1) {
+        background: #2b40a9;
+      }
+    }
+
+    tbody {
+      tr {
+        td {
+          background: #2b2e5e;
+          border: none;
+
+          &:nth-child(2n + 1) {
+            background: #343868;
+          }
+
+          a {
+            color: #82BAFF;
+          }
+        }
+
+        &:nth-child(2n + 1) {
+          td {
+            background: #343868;
+
+            &:nth-child(2n + 1) {
+              background: #383d6d;
+            }
+          }
+        }
+      }
+    }
+  }
+
+}
+
 .bd-main-block {
   max-width: 1340px;
   margin: 0 auto;
@@ -329,11 +460,38 @@ export default {
   &__date {
     align-items: center;
     display: flex;
+    margin-bottom: 10px;
 
     &-title {
       color: #fff;
       margin-right: 10px;
     }
+
+    &-input {
+      position: relative;
+
+      &:after {
+        background: url(/img/bd/calendar.svg) no-repeat;
+        content: "";
+        height: 28px;
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: 28px;
+      }
+
+      input[type="text"] {
+        background: #1a1d46;
+        border-radius: 4px;
+        border: none;
+        color: #fff;
+        font-size: 14px;
+        font-weight: bold;
+        height: 28px;
+        width: 124px;
+      }
+    }
+
   }
 
   &__body {
@@ -527,99 +685,99 @@ export default {
       overflow-y: auto;
       width: 100%;
     }
+  }
 
-    .table {
+  .table {
 
-      &__message {
-        align-items: center;
-        color: #fff;
-        display: flex;
-        font-size: 16px;
-        height: 100%;
-        justify-content: center;
-        margin: 0;
-        width: 100%;
+    &__message {
+      align-items: center;
+      color: #fff;
+      display: flex;
+      font-size: 16px;
+      height: 100%;
+      justify-content: center;
+      margin: 0;
+      width: 100%;
+    }
+
+    th {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    td {
+      height: 52px;
+
+      span.date {
+        display: block;
+        font-size: 10px;
+        font-style: italic;
+        white-space: nowrap;
       }
 
-      th {
-        position: sticky;
-        top: 0;
-        z-index: 10;
+      span.error {
+        color: #ff6464;
+        font-size: 11px;
       }
+    }
 
-      td {
-        height: 52px;
+    .editable {
+      span {
+        position: relative;
 
-        span.date {
-          display: block;
-          font-size: 10px;
-          font-style: italic;
-          white-space: nowrap;
-        }
-
-        span.error {
-          color: #ff6464;
-          font-size: 11px;
-        }
-      }
-
-      .editable {
-        span {
-          position: relative;
-
-          &.value:after {
-            background: url(/img/bd/edit.svg) no-repeat;
-            content: "";
-            display: inline-block;
-            height: 14px;
-            opacity: 0;
-            position: absolute;
-            right: -20px;
-            top: -2px;
-            width: 14px;
-          }
-        }
-
-        &:hover {
-          span:after {
-            opacity: 1;
-          }
-        }
-
-        .input-wrap {
+        &.value:after {
+          background: url(/img/bd/edit.svg) no-repeat;
+          content: "";
           display: inline-block;
-          position: relative;
+          height: 14px;
+          opacity: 0;
+          position: absolute;
+          right: -20px;
+          top: -2px;
+          width: 14px;
+        }
+      }
 
-          input.form-control {
-            background: #1F2142;
-            border: 0.5px solid #454FA1;
-            border-radius: 4px;
-            color: #fff;
-            font-size: 14px;
-            min-width: 120px;
-            outline: none;
-            padding: 0 34px 0 10px;
-            height: 28px;
-          }
+      &:hover {
+        span:after {
+          opacity: 1;
+        }
+      }
 
-          button {
-            background: #3366FF;
-            border: none;
-            border-radius: 4px;
-            color: #fff;
-            font-size: 10px;
-            font-weight: 600;
-            height: 24px;
-            line-height: 24px;
-            position: absolute;
-            right: 2px;
-            text-align: center;
-            top: 2px;
-            width: 28px;
-          }
+      .input-wrap {
+        display: inline-block;
+        position: relative;
+
+        input.form-control {
+          background: #1F2142;
+          border: 0.5px solid #454FA1;
+          border-radius: 4px;
+          color: #fff;
+          font-size: 14px;
+          min-width: 120px;
+          outline: none;
+          padding: 0 34px 0 10px;
+          height: 28px;
         }
 
+        button {
+          background: #3366FF;
+          border: none;
+          border-radius: 4px;
+          color: #fff;
+          font-size: 10px;
+          font-weight: 600;
+          height: 24px;
+          line-height: 24px;
+          position: absolute;
+          right: 2px;
+          text-align: center;
+          top: 2px;
+          width: 28px;
+        }
       }
+
     }
   }
 }
