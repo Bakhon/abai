@@ -34,6 +34,7 @@ class OmgNGDUListResource extends CrudListResource
                 'pump_discharge_pressure' => $this->pump_discharge_pressure,
                 'heater_inlet_pressure' => $this->heater_inlet_pressure,
                 'heater_output_pressure' => $this->heater_output_pressure,
+                'temperature' => $this->temperature,
             ],
         ];
 

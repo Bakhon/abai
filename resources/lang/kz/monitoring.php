@@ -145,6 +145,7 @@ return array (
       'pump_discharge_pressure' => 'Сораптың шығыс қысымы, бар',
       'heater_inlet_pressure' => 'Пештің кіріс температурасы, С',
       'heater_output_pressure' => 'Пештің шығыс температурасы, С',
+      'temperature' => 'Пештің кіріс температурасы, С',
     ),
   ),
   'all_gus' => 'Барлық ТҚ',

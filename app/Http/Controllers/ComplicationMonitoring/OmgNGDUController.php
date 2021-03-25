@@ -21,6 +21,8 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
+use App\Http\Resources\OmgNGDUListResource;
+use App\Jobs\ExportOmgNGDUToExcel;
 
 class OmgNGDUController extends CrudController
 {
@@ -100,8 +102,8 @@ class OmgNGDUController extends CrudController
                     'title' => trans('monitoring.omgngdu.fields.pump_discharge_pressure'),
                     'type' => 'numeric',
                 ],
-                'heater_inlet_pressure' => [
-                    'title' => trans('monitoring.omgngdu.fields.heater_inlet_pressure'),
+                'temperature' => [
+                    'title' => trans('monitoring.omgngdu.fields.temperature'),
                     'type' => 'numeric',
                 ],
                 'heater_output_pressure' => [
@@ -136,12 +138,12 @@ class OmgNGDUController extends CrudController
             ->getFilteredQuery($request->validated(), $query)
             ->paginate(25);
 
-        return response()->json(json_decode(\App\Http\Resources\OmgNGDUListResource::collection($omgngdu)->toJson()));
+        return response()->json(json_decode(OmgNGDUListResource::collection($omgngdu)->toJson()));
     }
 
     public function export(IndexTableRequest $request)
     {
-        $job = new \App\Jobs\ExportOmgNGDUToExcel($request->validated());
+        $job = new ExportOmgNGDUToExcel($request->validated());
         $this->dispatch($job);
 
         return response()->json(
