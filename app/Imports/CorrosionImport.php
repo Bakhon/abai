@@ -43,6 +43,7 @@ class CorrosionImport implements ToModel
     }
 
     private function parseFloat ($str) {
-        return floatval(str_replace(',', '.', $str));
+        $float = floatval(str_replace(',', '.', $str));
+        return $float ?  $float : null;
     }
 }
