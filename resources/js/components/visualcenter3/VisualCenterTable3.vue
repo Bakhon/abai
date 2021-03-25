@@ -12,7 +12,7 @@
                       <td class="col-4 col-lg-4 d-flex">
                         <div class="first-td-header">
                           <div class="row oil-block">
-                            <div class="number col-8 col-md-6 col-lg-8">
+                            <div class="number col-8 col-md-6 col-lg-7">
                               {{ formatDigitToThousand(oil_factDay) }}
                             </div>
                             <div class="unit-vc col-12 col-md-5 col-lg-4">{{ thousand }}{{ trans('visualcenter.tonWithSpace') }}</div>
@@ -71,7 +71,7 @@
                       <td class="col-4 col-lg-4 d-flex">
                         <div class="first-td-header">
                           <div class="row oil-block">
-                            <div class="number col-8 col-md-7 col-lg-8">
+                            <div class="number col-8 col-md-7 col-lg-7">
                               {{ formatDigitToThousand(oil_dlv_factDay) }}
                             </div>
                             <div class="unit-vc col-12 col-md-5 col-lg-4">{{ thousand }}{{ trans('visualcenter.tonWithSpace') }}</div>
@@ -138,7 +138,7 @@
                       <td class="col-4 col-sm-4 d-flex">
                         <div class="first-td-header">
                           <div class="row oil-block">
-                            <div class="number col-8 col-md-7 col-lg-8">
+                            <div class="number col-8 col-md-7 col-lg-7">
                               {{ formatDigitToThousand(gas_factDay) }}
                             </div>
                             <div class="unit-vc col-12 col-md-5 col-lg-4">
