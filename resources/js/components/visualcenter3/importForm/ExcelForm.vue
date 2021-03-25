@@ -49,19 +49,19 @@
             <div :class="[isChemistryNeeded ? 'chemistry-disabled' : '','chemistry-block mt-5 row p-3']">
                 <h4 class="col-12">{{trans("visualcenter.importForm.chemistry")}}</h4>
                 <div class="col-12 d-flex">
-                    <span class="col-7">{{trans("visualcenter.chem_prod_zakacka_demulg_fact")}}</span>
+                    <span class="col-7">{{trans("visualcenter.chemProdZakackaDemulg")}}</span>
                     <input v-model="chemistryData.demulsifier" class="col-5"></input>
                 </div>
                 <div class="col-12 d-flex">
-                    <span class="col-7">{{trans("visualcenter.chem_prod_zakacka_bakteracid_fact")}}</span>
+                    <span class="col-7">{{trans("visualcenter.chemProdZakackaBakteracid")}}</span>
                     <input v-model="chemistryData.bactericide" class="col-5"></input>
                 </div>
                 <div class="col-12 d-flex">
-                    <span class="col-7">{{trans("visualcenter.chem_prod_zakacka_ingibator_korrozin_fact")}}</span>
+                    <span class="col-7">{{trans("visualcenter.chemProdZakackaIngibatorKorrozin")}}</span>
                     <input v-model="chemistryData.corrosion_inhibitor" class="col-5"></input>
                 </div>
                 <div class="col-12 d-flex">
-                    <span class="col-7">{{trans("visualcenter.chem_prod_zakacka_ingibator_soleotloj_fact")}}</span>
+                    <span class="col-7">{{trans("visualcenter.chemProdZakackaIngibatorSoleotloj")}}</span>
                     <input v-model="chemistryData.scale_inhibitor" class="col-5"></input>
                 </div>
                 <div v-if="chemistryErrorFields.length > 0" class="col-12 d-flex">
