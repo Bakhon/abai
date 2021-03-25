@@ -33,11 +33,11 @@ class CorrosionImport implements ToModel
             'ngdu_id' => $ngdu->id,
             'cdng_id' => $cdng->id,
             'gu_id' => $gu->id,
-            'start_date_of_background_corrosion' => Date::excelToDateTimeObject($row[4]),
-            'final_date_of_background_corrosion' => Date::excelToDateTimeObject($row[5]),
+            'start_date_of_background_corrosion' => $row[4] ? Date::excelToDateTimeObject($row[4]) : null,
+            'final_date_of_background_corrosion' => $row[5] ? Date::excelToDateTimeObject($row[5]) : null,
             'background_corrosion_velocity' => $this->parseFloat($row[6]),
-            'start_date_of_corrosion_velocity_with_inhibitor_measure' => Date::excelToDateTimeObject($row[7]),
-            'final_date_of_corrosion_velocity_with_inhibitor_measure' => Date::excelToDateTimeObject($row[8]),
+            'start_date_of_corrosion_velocity_with_inhibitor_measure' => $row[7] ? Date::excelToDateTimeObject($row[7]) : null,
+            'final_date_of_corrosion_velocity_with_inhibitor_measure' => $row[8] ? Date::excelToDateTimeObject($row[8]) : null,
             'corrosion_velocity_with_inhibitor' => $this->parseFloat($row[9]),
         ]);
     }
