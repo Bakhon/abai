@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\ComplicationMonitoring;
 
 use App\Filters\OmgNGDUFilter;
-use App\Http\Controllers\Controller;
 use App\Http\Controllers\CrudController;
 use App\Http\Controllers\Traits\WithFieldsValidation;
 use App\Http\Requests\IndexTableRequest;
@@ -14,8 +13,10 @@ use App\Models\ComplicationMonitoring\Kormass;
 use App\Models\ComplicationMonitoring\OilGas;
 use App\Models\ComplicationMonitoring\OmgCA;
 use App\Models\ComplicationMonitoring\OmgNGDU;
+use App\Models\ComplicationMonitoring\OmgNGDUOld;
 use App\Models\ComplicationMonitoring\OmgUHE;
 use App\Models\ComplicationMonitoring\WaterMeasurement;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
@@ -45,9 +46,9 @@ class OmgNGDUController extends CrudController
                 trans('monitoring.omgngdu.fields.fact_data') => 10,
             ],
             'fields' => [
-                
 
-                
+
+
                 'gu' => [
                     'title' => trans('monitoring.gu.gu'),
                     'type' => 'select',
@@ -66,7 +67,7 @@ class OmgNGDUController extends CrudController
                             ->toArray()
                     ]
                 ],
-                
+
                 'date' => [
                     'title' => trans('app.date'),
                     'type' => 'date',
@@ -122,8 +123,14 @@ class OmgNGDUController extends CrudController
 
     public function list(IndexTableRequest $request)
     {
+        $old = OmgNGDUOld::query()
+            ->with('field', 'ngdu', 'cdng', 'gu', 'zu', 'well')
+            ->where('date', '<', '2021-01-01');
+
         $query = OmgNGDU::query()
-            ->with('field', 'ngdu', 'cdng', 'gu', 'zu', 'well');
+            ->with('field', 'ngdu', 'cdng', 'gu', 'zu', 'well')
+            ->where('date', '>=', '2021-01-01')
+            ->union($old);
 
         $omgngdu = $this
             ->getFilteredQuery($request->validated(), $query)
@@ -333,7 +340,7 @@ class OmgNGDUController extends CrudController
     {
         $uhes = OmgUHE::query()
             ->select('gu_id', 'current_dosage')
-            ->where('date', '=', \Carbon\Carbon::now()->format('Y-m-d'))
+            ->where('date', '=', Carbon::now()->format('Y-m-d'))
             ->leftJoin('gus', 'gus.id', '=', 'omg_u_h_e_s.gu_id')
             ->addSelect(DB::raw('lpad(gus.name, 10, 0) AS gus_name'))
             ->orderBy('gus_name', 'asc')
@@ -341,7 +348,7 @@ class OmgNGDUController extends CrudController
 
         $cas = OmgCA::query()
             ->select('gu_id', 'plan_dosage')
-            ->where('date', '=', \Carbon\Carbon::now()->startOfYear()->format('Y-m-d'))
+            ->where('date', '=', Carbon::now()->startOfYear()->format('Y-m-d'))
             ->get();
 
         $gus = [];
