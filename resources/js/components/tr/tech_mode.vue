@@ -593,6 +593,8 @@
                         label=""
                         width="200"
                         sortable
+                        :filters="[{text: 'Акс-10', value: '2016-05-01'}, {text: 'Акс10Д', value: '2016-05-02'}, {text: 'Акс47', value: '2016-05-03'}, {text: 'Акс14', value: '2016-05-04'}]"
+                        :filter-method="filterHandler"
                         
                         >
                       </el-table-column>
@@ -700,7 +702,6 @@
                         >
                       </el-table-column>
                     </el-table-column>
-
                     <el-table-column
                       :label="`${this.trans('tr.trs4')}`"
                       >
@@ -969,14 +970,33 @@
                       :label="`${this.trans('tr.tr17')}`"
                       >
                       <el-table-column
-                      :label="`${this.trans('tr.tr20')}`"
+                      label="tr.tr20"
                       >
                         <el-table-column
-                          prop="bhp"
+                          
                           label=""
                           width="130"
                           sortable
                           >
+                          <template slot-scope="scope">{{scope.$index}}
+                            <span
+                              :class="{
+                                'circle-err':
+                                  wells &&
+                                  wells[scope.$index] &&
+                                  wells[scope.$index].bhp[1][0] !== '0',
+                              }"
+                              :style="`background :${getColor(
+                                wells[scope.$index].bhp[1][0]
+                              )}`"
+                            >
+                            </span><span v-if="scope.row.bhp[0] != null">{{
+                      Math.round(scope.row.bhp[0] * 10) / 10
+                    }}</span>
+                    <span v-if="wells && wells[scope.$index]" class="cell-comment">
+                      {{ wells[scope.$index].bhp[1][1] }}
+                    </span>
+                        </template>
                         </el-table-column>
                       </el-table-column>
                       <el-table-column
@@ -1384,6 +1404,8 @@ import NotifyPlugin from "vue-easy-notify";
 import "vue-easy-notify/dist/vue-easy-notify.css";
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
+import lang from 'element-ui/lib/locale/lang/ru-Ru';
+import locale from 'element-ui/lib/locale';
 import TrTable from "./table";
 import TrFullTable from "./tablefull";
 import SearchFormRefresh from "../ui-kit/SearchFormRefresh.vue";
@@ -1392,7 +1414,8 @@ import { fields } from "./constants.js";
 import TrMultiselect from "./TrMultiselect.vue";
 
 Vue.use(NotifyPlugin);
-Vue.use(ElementUI);
+Vue.use(ElementUI); 
+locale.use(lang)
 export default {
   name: "TrPage",
   components: {
@@ -1797,6 +1820,26 @@ export default {
     closeModal(modalName) {
       this.$modal.hide(modalName)
     },
+    resetDateFilter() {
+        this.$refs.filterTable.clearFilter('date');
+    },
+    clearFilter() {
+        this.$refs.filterTable.clearFilter();
+      },
+    formatter(row, column) {
+      return row.address;
+    },
+    filterTag(value, row) {
+      return row.tag === value;
+    },
+    filterHandler(value, row, column) {
+      const property = column['property'];
+      return row[property] === value;
+    },
+
+
+
+
     sortBy(type) {
       this.sortParam = type;
       this.$store.commit("tr/SET_SORTTYPE", this.sortType);
