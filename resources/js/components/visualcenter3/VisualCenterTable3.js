@@ -8,20 +8,20 @@ import mainMenuConfiguration from './main_menu_configuration.json';
 import {dzoMapState, dzoMapActions} from '@store/helpers';
 
 import mainMenu from './widgets/mainMenu';
-import сompaniesDzo from './data_managers/dzoCompanies';
-import helpers from './data_managers/helpers';
-import otm from './data_managers/otm';
-import chemistry from './data_managers/chemistry';
+import сompaniesDzo from './dataManagers/dzoCompanies';
+import helpers from './dataManagers/helpers';
+import otm from './dataManagers/otm';
+import chemistry from './dataManagers/chemistry';
 import oilRates from './widgets/oilRates';
 import usdRates from './widgets/usdRates';
 import injectionWells from './widgets/injectionWells';
 import productionWells from './widgets/productionWells';
 import companyStaff from './widgets/companyStaff';
 import mainStatisticsTable from './widgets/mainStatisticsTable';
-import wells from './data_managers/wells';
-import rates from './data_managers/rates';
-import dates from './data_managers/dates';
-import oilProductionFilters from './data_managers/oilProductionFilters';
+import wells from './dataManagers/wells';
+import rates from './dataManagers/rates';
+import dates from './dataManagers/dates';
+import oilProductionFilters from './dataManagers/oilProductionFilters';
 
 
 Vue.component("calendar", Calendar);

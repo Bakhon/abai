@@ -7,7 +7,7 @@ import formatMappingKTM from './dzoData/format_mapping_ktm.json';
 import cellsMappingKOA from './dzoData/cells_mapping_koa.json';
 import cellsMappingKTM from './dzoData/cells_mapping_ktm.json';
 import moment from "moment";
-import Visual from "./data_managers/visual";
+import Visual from "./dataManagers/visual";
 
 const defaultDzoTicker = "KOA";
 const dzoMapping = {
@@ -63,10 +63,10 @@ export default {
                 scale_inhibitor: 0
             },
             chemistryDataMapping: {
-                demulsifier: this.trans("visualcenter.chem_prod_zakacka_demulg_fact"),
-                bactericide: this.trans("visualcenter.chem_prod_zakacka_bakteracid_fact"),
-                corrosion_inhibitor: this.trans("visualcenter.chem_prod_zakacka_ingibator_korrozin_fact"),
-                scale_inhibitor: this.trans("visualcenter.chem_prod_zakacka_ingibator_soleotloj_fact"),
+                demulsifier: this.trans("visualcenter.chemProdZakackaDemulg"),
+                bactericide: this.trans("visualcenter.chemProdZakackaBakteracid"),
+                corrosion_inhibitor: this.trans("visualcenter.chemProdZakackaIngibatorKorrozin"),
+                scale_inhibitor: this.trans("visualcenter.chemProdZakackaIngibatorSoleotloj"),
             },
             chemistryErrorFields: [],
         };
@@ -184,6 +184,7 @@ export default {
                 let selector = 'div[data-col="'+ columnIndex + '"][data-row="' + row.rowIndex + '"]';
                 let cellValue = parseFloat($(selector).text());
                 if (!this.isNumberCellValid(cellValue,selector)) {
+                    this.turnErrorForCell(selector);
                     continue;
                 }
                 if (fieldCategoryName) {
@@ -210,22 +211,25 @@ export default {
         },
         isNumberCellValid(inputData,selector) {
             if (isNaN(inputData) || inputData < 0) {
-                this.setClassToElement($(selector),'cell__color-red');
-                this.errorSelectors.push(selector);
-                this.isValidateError = true;
                 return false;
             }
             return true;
+        },
+        turnErrorForCell(selector) {
+            this.setClassToElement($(selector),'cell__color-red');
+            this.errorSelectors.push(selector);
+            this.isValidateError = true;
         },
         processStringCells(row,category) {
             for (let columnIndex = 1; columnIndex <= row.rowLength; columnIndex++) {
                 let selector = 'div[data-col="'+ columnIndex + '"][data-row="' + row.rowIndex + '"]';
                 let cellValue = $(selector).text().trim();
-                if (this.isStringCell(columnIndex) && this.isStringCellValid(cellValue,selector)) {
+                if (this.isStringCell(columnIndex) && this.checkErrorsStringCell(cellValue,selector)) {
                     this.excelData[category][row.fields[columnIndex-1]] = cellValue;
                     continue;
                 }
                 if (!this.isNumberCellValid(cellValue,selector)) {
+                    this.turnErrorForCell(selector);
                     continue;
                 }
                 this.setNumberValueForCategories(category,row.fields[columnIndex-1],cellValue);
@@ -234,11 +238,15 @@ export default {
         isStringCell(rowIndex) {
             return this.stringColumns.includes(rowIndex);
         },
+        checkErrorsStringCell(cellValue,selector) {
+          if (!this.isStringCellValid(cellValue,selector)) {
+              this.turnErrorForCell(selector);
+              return false;
+          }
+          return true;
+        },
         isStringCellValid(inputData,selector) {
-            if (!inputData || typeof(inputData) === 'number' || inputData.length < 3) {
-                this.setClassToElement($(selector),'cell__color-red');
-                this.errorSelectors.push(selector);
-                this.isValidateError = true;
+            if (!inputData || typeof(inputData) === 'number' || inputData.length < 6) {
                 return false;
             }
             return true;

@@ -14,47 +14,67 @@ class ExcelFormController extends Controller
 {
     public function store(Request $request)
     {
-        $children_keys = array('downtimeReason' => 1, 'decreaseReason' => 2, 'fields' => 3);
-        $dzo_summary_data = new DzoImportData;
-        $dzo_data = $request->request->all();
-        foreach ($dzo_data as $key => $item) {
-            if (array_key_exists($key, $children_keys)) {
-                continue;
-            }
-            $dzo_summary_data->$key = $dzo_data[$key];
-        }
+        $this->processDzoSummaryData($request);
+        $dzo_summary_last_record = DzoImportData::latest('id')->first();
 
-        $dzo_summary_data->save();
-        $dzo_summary = DzoImportData::latest('id')->first();
-
-        $fields_data = $request->request->get('fields');
-
-        foreach ($fields_data as $field_name => $field) {
-            $dzo_import_fields = new DzoImportField;
-            $dzo_import_fields->importData()->associate($dzo_summary);
-            $dzo_import_fields->field_name = $field_name;
-            foreach($field as $item_name => $item) {
-                $dzo_import_fields->$item_name = $field[$item_name];
-            }
-            $dzo_import_fields->save();
-        }
+        $this->processDzoFieldsSummaryData($dzo_summary_last_record,$request);
 
         $dzo_downtime_reasons = new DzoImportDowntimeReason;
         $downtime_data = $request->request->get('downtimeReason');
-        $dzo_downtime_reasons->importData()->associate($dzo_summary);
-        foreach ($downtime_data as $key => $item) {
-            $dzo_downtime_reasons->$key = $downtime_data[$key];
-        }
-
+        $dzo_downtime_reasons = $this->getDzoChildSummaryData($dzo_downtime_reasons,$downtime_data,$dzo_summary_last_record);
         $dzo_downtime_reasons->save();
 
         $dzo_decrease_reasons = new DzoImportDecreaseReason;
         $decrease_data = $request->request->get('decreaseReason');
-        $dzo_decrease_reasons->importData()->associate($dzo_summary);
-        foreach ($decrease_data as $key => $item) {
-            $dzo_decrease_reasons->$key = $decrease_data[$key];
-        }
-
+        $dzo_decrease_reasons = $this->getDzoChildSummaryData($dzo_decrease_reasons,$decrease_data,$dzo_summary_last_record);
         $dzo_decrease_reasons->save();
+    }
+
+    public function processDzoSummaryData($request)
+    {
+        $dzo_data = $request->request->all();
+        $dzo_summary_data = $this->getDzoSummaryData($dzo_data);
+        $dzo_summary_data->save();
+    }
+
+    public function getDzoSummaryData($dzo_input_data)
+    {
+        $children_keys = array('downtimeReason' => 1, 'decreaseReason' => 2, 'fields' => 3);
+        $dzo_summary_data = new DzoImportData;
+        foreach ($dzo_input_data as $key => $item) {
+            if (array_key_exists($key, $children_keys)) {
+                continue;
+            }
+            $dzo_summary_data->$key = $dzo_input_data[$key];
+        }
+        return $dzo_summary_data;
+    }
+
+    public function processDzoFieldsSummaryData($dzo_summary_last_record,$request)
+    {
+        $fields_data = $request->request->get('fields');
+        foreach ($fields_data as $field_name => $field) {
+            $dzo_import_field_data = $this->getDzoFieldData($field_name,$dzo_summary_last_record,$field);
+            $dzo_import_field_data->save();
+        }
+    }
+
+    public function getDzoFieldData($field_name,$dzo_summary_last_record,$field)
+    {
+        $dzo_import_field = new DzoImportField;
+        $dzo_import_field->importData()->associate($dzo_summary_last_record);
+        $dzo_import_field->field_name = $field_name;
+        foreach($field as $key => $item) {
+            $dzo_import_field->$key = $field[$key];
+        }
+        return $dzo_import_field;
+    }
+    public function getDzoChildSummaryData($child_item,$dzo_input_data,$dzo_summary_last_record)
+    {
+        $child_item->importData()->associate($dzo_summary_last_record);
+        foreach ($dzo_input_data as $key => $item) {
+            $child_item->$key = $dzo_input_data[$key];
+        }
+        return $child_item;
     }
 }
