@@ -14,23 +14,23 @@ class ExcelFormController extends Controller
 {
     public function store(Request $request)
     {
-        $this->processDzoSummaryData($request);
+        $this->saveDzoSummaryData($request);
         $dzo_summary_last_record = DzoImportData::latest('id')->first();
 
-        $this->processDzoFieldsSummaryData($dzo_summary_last_record,$request);
+        $this->saveDzoFieldsSummaryData($dzo_summary_last_record,$request);
 
         $dzo_downtime_reasons = new DzoImportDowntimeReason;
         $downtime_data = $request->request->get('downtimeReason');
-        $dzo_downtime_reasons = $this->getDzoChildSummaryData($dzo_downtime_reasons,$downtime_data,$dzo_summary_last_record);
-        $dzo_downtime_reasons->save();
+        $dzo_downtime_reason = $this->getDzoChildSummaryData($dzo_downtime_reason,$downtime_data,$dzo_summary_last_record);
+        $dzo_downtime_reason->save();
 
         $dzo_decrease_reasons = new DzoImportDecreaseReason;
         $decrease_data = $request->request->get('decreaseReason');
-        $dzo_decrease_reasons = $this->getDzoChildSummaryData($dzo_decrease_reasons,$decrease_data,$dzo_summary_last_record);
-        $dzo_decrease_reasons->save();
+        $dzo_decrease_reason = $this->getDzoChildSummaryData($dzo_decrease_reason,$decrease_data,$dzo_summary_last_record);
+        $dzo_decrease_reason->save();
     }
 
-    public function processDzoSummaryData($request)
+    public function saveDzoSummaryData($request)
     {
         $dzo_data = $request->request->all();
         $dzo_summary_data = $this->getDzoSummaryData($dzo_data);
@@ -50,7 +50,7 @@ class ExcelFormController extends Controller
         return $dzo_summary_data;
     }
 
-    public function processDzoFieldsSummaryData($dzo_summary_last_record,$request)
+    public function saveDzoFieldsSummaryData($dzo_summary_last_record,$request)
     {
         $fields_data = $request->request->get('fields');
         foreach ($fields_data as $field_name => $field) {
