@@ -17,3 +17,9 @@ revo-grid .header-wrapper {
     font-size: 14px;
     font-weight: bold;
 }
+.cell__color-red {
+    background-color: red;
+}
+.cell__color-normal {
+    background-color: white;
+}

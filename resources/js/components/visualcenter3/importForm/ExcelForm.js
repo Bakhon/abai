@@ -56,6 +56,19 @@ export default {
             },
             isValidateError: false,
             inputDataCategories: ['downtimeReason','decreaseReason','fields'],
+            chemistryData: {
+                demulsifier: 0,
+                bactericide: 0,
+                corrosion_inhibitor: 0,
+                scale_inhibitor: 0
+            },
+            chemistryDataMapping: {
+                demulsifier: this.trans("visualcenter.chem_prod_zakacka_demulg_fact"),
+                bactericide: this.trans("visualcenter.chem_prod_zakacka_bakteracid_fact"),
+                corrosion_inhibitor: this.trans("visualcenter.chem_prod_zakacka_ingibator_korrozin_fact"),
+                scale_inhibitor: this.trans("visualcenter.chem_prod_zakacka_ingibator_soleotloj_fact"),
+            },
+            chemistryErrorFields: [],
         };
     },
     async mounted() {
@@ -74,9 +87,37 @@ export default {
             this.rows = _.cloneDeep(dzoMapping[dzoTicker].rows);
             this.rowsCount = this.rows.length + 2;
         },
-        chemistrySave() {
-            this.status = this.trans("visualcenter.importForm.status.dataSaved");
-            this.isChemistryNeeded = !this.isChemistryNeeded;
+        async chemistrySave() {
+            this.chemistryErrorFields = [];
+            let self = this;
+            _.forEach(Object.keys(this.chemistryData), function(key) {
+                self.isChemistryNumberValid(self.chemistryData[key],key);
+            });
+            if (this.chemistryErrorFields.length === 0) {
+                await this.storeChemistryData();
+            }
+        },
+        isChemistryNumberValid(inputData,key) {
+            if (isNaN(inputData) || inputData < 0) {
+                this.chemistryErrorFields.push(this.chemistryDataMapping[key]);
+                return false;
+            }
+            return true;
+        },
+        storeChemistryData() {
+            this.chemistryData['dzo_name'] = this.selectedDzo.ticker;
+            this.chemistryData['date'] = moment().format("YYYY-MM-DD HH:mm:ss");
+
+            let uri = this.localeUrl("/dzo_chemistry_excel_form");
+
+            this.axios.post(uri, this.chemistryData).then((response) => {
+                if (response.status === 200) {
+                    this.isChemistryNeeded = !this.isChemistryNeeded;
+                    this.status = this.trans("visualcenter.importForm.status.dataSaved");
+                } else {
+                    this.status = this.trans("visualcenter.importForm.status.dataIsNotValid");
+                }
+            });
         },
         sleep(ms) {
             return new Promise(resolve => setTimeout(resolve, ms));

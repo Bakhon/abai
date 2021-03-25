@@ -50,19 +50,25 @@
                 <h4 class="col-12">{{trans("visualcenter.importForm.chemistry")}}</h4>
                 <div class="col-12 d-flex">
                     <span class="col-7">{{trans("visualcenter.chem_prod_zakacka_demulg_fact")}}</span>
-                    <input class="col-5"></input>
+                    <input v-model="chemistryData.demulsifier" class="col-5"></input>
                 </div>
                 <div class="col-12 d-flex">
                     <span class="col-7">{{trans("visualcenter.chem_prod_zakacka_bakteracid_fact")}}</span>
-                    <input class="col-5"></input>
+                    <input v-model="chemistryData.bactericide" class="col-5"></input>
                 </div>
                 <div class="col-12 d-flex">
                     <span class="col-7">{{trans("visualcenter.chem_prod_zakacka_ingibator_korrozin_fact")}}</span>
-                    <input class="col-5"></input>
+                    <input v-model="chemistryData.corrosion_inhibitor" class="col-5"></input>
                 </div>
                 <div class="col-12 d-flex">
                     <span class="col-7">{{trans("visualcenter.chem_prod_zakacka_ingibator_soleotloj_fact")}}</span>
-                    <input class="col-5"></input>
+                    <input v-model="chemistryData.scale_inhibitor" class="col-5"></input>
+                </div>
+                <div v-if="chemistryErrorFields.length > 0" class="col-12 d-flex">
+                    <span class="col-12 status-error">{{trans("visualcenter.errors")}}:</span>
+                </div>
+                <div v-if="chemistryErrorFields.length > 0" class="col-12 d-flex">
+                    <span class="col-12 data-status">{{chemistryErrorFields.toString()}}</span>
                 </div>
                 <div class="col-6"></div>
                 <div
@@ -83,12 +89,6 @@
 
     .status-error {
         color: red;
-    }
-    .cell__color-red {
-        background-color: red;
-    }
-    .cell__color-normal {
-        background-color: white;
     }
     .dzo-select {
         height: 24px;

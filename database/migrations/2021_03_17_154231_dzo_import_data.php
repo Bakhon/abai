@@ -13,6 +13,10 @@ class DzoImportData extends Migration
      */
     public function up()
     {
+        Schema::dropIfExists('dzo_import_downtime_reasons');
+        Schema::dropIfExists('dzo_import_decrease_reasons');
+        Schema::dropIfExists('dzo_import_fields');
+        Schema::dropIfExists('dzo_import_data');
         Schema::create('dzo_import_data', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->dateTime('date');
@@ -69,6 +73,9 @@ class DzoImportData extends Migration
      */
     public function down()
     {
+        Schema::dropIfExists('dzo_import_downtime_reasons');
+        Schema::dropIfExists('dzo_import_decrease_reasons');
+        Schema::dropIfExists('dzo_import_fields');
         Schema::dropIfExists('dzo_import_data');
     }
 }
