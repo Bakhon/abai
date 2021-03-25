@@ -87,6 +87,12 @@ class FormsController extends Controller
         return $form->getRows();
     }
 
+    public function getRowHistory(string $formName, Request $request): array
+    {
+        $form = $this->getForm($formName);
+        return $form->getRowHistory(Carbon::parse($request->get('date')));
+    }
+
     public function getHistory(string $formName, Request $request): JsonResource
     {
         $form = $this->getForm($formName);
