@@ -158,7 +158,7 @@
                     {{ dNasosa }}
                   </div>
                   <div class="devices-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
-                    {{ pumpType }} м³/сут
+                    {{ pumpType }} мм
                   </div>
                   </div>
                   
