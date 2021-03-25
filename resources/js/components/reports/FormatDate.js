@@ -6,12 +6,12 @@ let maxOfDay = {hour: 23, minute: 59, second: 59};
 
 export const formatDate = {
     formatToFirstDayOfMonth: function (date) {
-        return moment(date).set(minOfDay).set('date', 1).format(dateFormat);
+        return moment.parseZone(date).set(minOfDay).set('date', 1).format(dateFormat);
     },
     formatToMinOfDay: function (date) {
-        return moment(date).set(minOfDay).format(dateFormat);
+        return moment.parseZone(date).set(minOfDay).format(dateFormat);
     },
     formatToMaxOfDay: function (date) {
-        return moment(date).set(maxOfDay).format(dateFormat);
+        return moment.parseZone(date).set(maxOfDay).format(dateFormat);
     }
 }

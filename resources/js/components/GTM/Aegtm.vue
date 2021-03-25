@@ -4,56 +4,86 @@
             <div class="col-lg-10 p-0">
                 <div class="row col-12 p-0 m-0">
                     <div class="col-6 d-none d-lg-block p-0 pl-1 gtm-map-block">
-                        <div class="bg-dark h-100">
+                        <div class="gtm-dark h-100">
                             <div class="block-header pb-0 pl-2 pt-1">
                                 Накопленная добыча нефти, тыc. т
                             </div>
-                            <div class="bg-dark p-1 pl-2 mh-370">
+                            <div class="gtm-dark p-1 pl-2 mh-370">
                                 <line-chart :height="360"></line-chart>
                             </div>
                         </div>
                     </div>
                     <div class="col-6 d-none d-lg-block p-0 gtm-map-block">
-                        <div class="bg-dark h-100">
+                        <div class="gtm-dark h-100">
                             <div class="block-header pb-0 pl-2 pt-1">
                                 Сопоставление плановых и фактических дебитов нефти новых скважин
                             </div>
-                            <div class="bg-dark p-1 pl-2">
-                                <img src="/img/GTM/demo_img_table.png" height="370">
+                            <div class="gtm-dark p-1 pl-2">
+                                <table class="table text-center text-white podbor-middle-table">
+                                    <thead>
+                                    <tr>
+                                        <th class="align-middle" rowspan="2">№ скв.</th>
+                                        <th colspan="2">Кол-во</th>
+                                        <th colspan="2">Ср. дебит</th>
+                                        <th colspan="2">Доп.добыча, тыс.т</th>
+                                        <th class="align-middle" rowspan="2">% усп.</th>
+                                    </tr>
+                                    <tr>
+                                        <th>план</th>
+                                        <th>факт</th>
+                                        <th>план</th>
+                                        <th>факт</th>
+                                        <th>план</th>
+                                        <th>факт</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr v-for="statisticsItem in statistics">
+                                        <td>{{ statisticsItem[0] }}</td>
+                                        <td>{{ statisticsItem[1] }}</td>
+                                        <td>{{ statisticsItem[2] }}</td>
+                                        <td>{{ statisticsItem[3] }}</td>
+                                        <td>{{ statisticsItem[4] }}</td>
+                                        <td>{{ statisticsItem[5] }}</td>
+                                        <td>{{ statisticsItem[6] }}</td>
+                                        <td>{{ statisticsItem[7] }}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="row col-12 p-0 m-0 pb-2">
                     <div class="col-6 d-none d-lg-block p-0 pl-1 gtm-map-block">
-                        <div class="bg-dark h-100">
+                        <div class="gtm-dark h-100">
                             <div class="block-header pb-0 pl-2">
                                 Индекс прибыльности и сопоставление плановых дебитов нефти с фактическими
                             </div>
-                            <div class="bg-dark p-1 pl-2">
+                            <div class="gtm-dark p-1 pl-2">
                                 <bar-chart :height="360"></bar-chart>
                             </div>
                         </div>
                     </div>
                     <div class="col-6 d-none d-lg-block p-0 gtm-map-block">
-                        <div class="bg-dark h-100 pb-2">
+                        <div class="gtm-dark h-100 pb-2">
                             <div class="block-header pb-0 pl-2">
                                 Причины недостижения планового прироста
                             </div>
-                            <div class="bg-dark p-1 pl-2">
+                            <div class="gtm-dark p-1 pl-2">
 <!--                                <pie-chart :height="360"></pie-chart>-->
-                                <img src="/img/GTM/demo_img_circle.png" height="370">
+                                <img class="demo-img" src="/img/GTM/demo_img_circle.png" height="350">
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="col-lg-2 p-0 pl-2 pr-1">
-                <div class="bg-dark">
+                <div class="gtm-dark">
                     <div class="block-header text-center p-2">
                         НДО
                     </div>
-                    <div class="bg-dark table-responsive table-scroll m-0">
+                    <div class="gtm-dark table-responsive table-scroll m-0">
                         <table class="table table-striped table-borderless text-center text-white near-wells-big">
                             <tbody>
                             <tr class="near-wells-table-item" v-for="ndoItem in ndo">
@@ -64,23 +94,29 @@
                     </div>
                 </div>
                 <div class="mt-2 row m-0">
-                    <div class="col-5 calendar-filter-block d-flex align-items-center">
-                        01.08.2018
-                        <img class="calendar-icon" src="/img/GTM/calendar_icon.svg">
+                    <div class="col-5 p-0">
+                        <div class="calendar-filter-block d-flex align-items-center">
+                            01.08.2018
+                            <img class="calendar-icon" src="/img/GTM/calendar_icon.svg">
+                        </div>
                     </div>
-                    <div class="col-5 ml-1 calendar-filter-block d-flex align-items-center">
-                        01.08.2018
-                        <img class="calendar-icon" src="/img/GTM/calendar_icon.svg">
+                    <div class="col-5 p-0">
+                        <div class="ml-1 calendar-filter-block d-flex align-items-center">
+                            01.08.2018
+                            <img class="calendar-icon" src="/img/GTM/calendar_icon.svg">
+                        </div>
                     </div>
-                    <div class="col-1 ml-1 p-1 pt-2 calendar-filter-block text-center">
-                        <img src="/img/GTM/gear.svg">
+                    <div class="col-1 p-0">
+                        <div class="ml-1 calendar-filter-block d-flex align-items-center">
+                            <img class="gear-icon m-auto" src="/img/GTM/gear.svg">
+                        </div>
                     </div>
                 </div>
-                <div class="bg-dark mt-2">
+                <div class="gtm-dark mt-2">
                     <div class="block-header text-center p-2">
                         Вид ГТМ
                     </div>
-                    <div class="bg-dark text-white pl-2">
+                    <div class="gtm-dark text-white pl-2">
                         1) Все ГТМ <br />
                         2) ВНС <br />
                         3) ГРП <br />
@@ -89,7 +125,7 @@
                         6) РИР <br />
                     </div>
                 </div>
-                <div class="bg-dark mt-2 row m-0">
+                <div class="gtm-dark mt-2 row m-0">
                     <div class="col-1 text-right mt-1 mb-1 p-0">
                         <img src="/img/GTM/lens.svg">
                     </div>
@@ -97,7 +133,7 @@
                         <input class="search-input w-75" type="text" placeholder="Поиск по скважине">
                         <button class="search-button pl-2 pr-2">Поиск</button>
                     </div>
-                    <div class="bg-dark text-white pl-2" style="min-height: 184px;">
+                    <div class="gtm-dark text-white pl-2" style="min-height: 156px;">
                         Все скважины
                     </div>
                 </div>
@@ -276,6 +312,19 @@ export default {
                 ['', '', ''],
                 ['', 'Аскар', ''],
                 ['', 'Каламкас', ''],
+            ],
+            statistics: [
+                [4320, 7.9, 5.53, 70, 4320, 7.9, 5.53, 70],
+                [4320, 7.9, 5.53, 70, 4320, 7.9, 5.53, 70],
+                [4320, 7.9, 5.53, 70, 4320, 7.9, 5.53, 70],
+                [4320, 7.9, 5.53, 70, 4320, 7.9, 5.53, 70],
+                [4320, 7.9, 5.53, 70, 4320, 7.9, 5.53, 70],
+                [4320, 7.9, 5.53, 70, 4320, 7.9, 5.53, 70],
+                [4320, 7.9, 5.53, 70, 4320, 7.9, 5.53, 70],
+                [4320, 7.9, 5.53, 70, 4320, 7.9, 5.53, 70],
+                [4320, 7.9, 5.53, 70, 4320, 7.9, 5.53, 70],
+                [4320, 7.9, 5.53, 70, 4320, 7.9, 5.53, 70],
+                [4320, 7.9, 5.53, 70, 4320, 7.9, 5.53, 70],
             ],
         };
     }

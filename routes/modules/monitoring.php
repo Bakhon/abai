@@ -7,7 +7,7 @@ Route::group(
             ['middleware' => 'auth'],
             function () {
 
-                Route::get('/monitor', 'DruidController@monitor')->name('monitor');
+                Route::get('/monitor/{gu?}', 'DruidController@monitor')->name('monitor');
 
                 Route::get('watermeasurement/list', 'ComplicationMonitoring\WaterMeasurementController@list')->name(
                     'watermeasurement.list'
@@ -95,7 +95,7 @@ Route::group(
                 Route::resource('corrosioncrud','ComplicationMonitoring\CorrosionController');
 
                 Route::get('/gu-map', 'MapsController@guMap')->name('maps.gu');
-                Route::get('/gu-map/pipes', 'MapsController@guPipes')->name('maps.gu_pipes');
+                Route::get('/gu-map/mapdata', 'MapsController@mapData')->name('maps.gu_pipes');
 
                 Route::post('/gu-map/gu', 'MapsController@storeGu')->name('maps.store_gu');
                 Route::post('/gu-map/zu', 'MapsController@storeZu')->name('maps.store_zu');
@@ -105,13 +105,14 @@ Route::group(
                 Route::put('/gu-map/gu/{gu}', 'MapsController@updateGu')->name('maps.update_gu');
                 Route::put('/gu-map/zu/{zu}', 'MapsController@updateZu')->name('maps.update_zu');
                 Route::put('/gu-map/well/{well}', 'MapsController@updateWell')->name('maps.update_well');
-                Route::put('/gu-map/pipe/{id}', 'MapsController@updatePipe')->name('maps.update_pipe');
+                Route::put('/gu-map/pipe/{pipe}', 'MapsController@updatePipe')->name('maps.update_pipe');
 
                 Route::delete('/gu-map/gu/{gu}', 'MapsController@deleteGu')->name('maps.delete_gu');
                 Route::delete('/gu-map/zu/{zu}', 'MapsController@deleteZu')->name('maps.delete_zu');
                 Route::delete('/gu-map/well/{well}', 'MapsController@deleteWell')->name('maps.delete_well');
-                Route::delete('/gu-map/pipe/{id}/{type}', 'MapsController@deletePipe')->name('maps.delete_pipe');
+                Route::delete('/gu-map/pipe/{pipe}', 'MapsController@deletePipe')->name('maps.delete_pipe');
 
+                Route::get('/gu-map/test', 'MapsController@test');
 
                 Route::get('/monitor/reports', 'ReportsController@index')->name('monitor.reports');
                 Route::get('/monitor/reports/generate', 'ReportsController@generateReport');

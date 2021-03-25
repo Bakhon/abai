@@ -71,6 +71,8 @@ Route::group(
                 Route::get("/getcurrencyperiod", "VisCenter\VisualCenterController@getCurrencyPeriod");
                 Route::get("/get-usd-rates", "VisCenter\VisualCenterController@getUsdRates");
                 Route::get("/get-oil-rates", "VisCenter\VisualCenterController@getOilRates");
+                Route::get("/get-dzo-monthly-plans", "VisCenter\VisualCenterController@getDzoMonthlyPlans");
+                Route::get('/get-dzo-yearly-plan', 'VisCenter\VisualCenterController@getDzoYearlyPlan');
                 Route::get('/podborgno', 'gno\GNOController@index')->name('gno');
                 Route::get('/production', 'DruidController@production')->name('production');
                 Route::get('/gtmscor', 'DruidController@gtmscor')->name('gtmscor');
@@ -124,6 +126,21 @@ Route::group(
                 Route::resource('ecorefsempper', 'Refs\EcoRefsEmpPerController');
                 Route::resource('ecorefsscfa', 'Refs\EcoRefsScFaController');
                 Route::get('ecorefslist', 'Refs\EcoRefsScFaController@refsList')->name('eco_refs_list');
+
+                Route::get('tech_data_list', 'Refs\TechnicalDataController@refsList')->name('tech_data_list');
+                Route::resource('tech_struct_source', 'Refs\TechnicalStructureSourceController');
+                Route::resource('tech_struct_company', 'Refs\TechnicalStructureCompanyController');
+                Route::resource('tech_struct_field', 'Refs\TechnicalStructureFieldController');
+                Route::resource('tech_struct_ngdu', 'Refs\TechnicalStructureNgduController');
+                Route::resource('tech_struct_cdng', 'Refs\TechnicalStructureCdngController');
+                Route::resource('tech_struct_gu', 'Refs\TechnicalStructureGuController');
+                Route::resource('tech_struct_bkns', 'Refs\TechnicalStructureBknsController');
+                Route::resource('tech_data_forecast', 'Refs\TechnicalDataForecastController');
+                Route::resource('tech_data_log', 'Refs\TechnicalDataLogController');
+                Route::get('tech_data_json', 'Refs\TechnicalDataForecastController@techDataJson');
+                Route::get('technical_forecast/upload_excel', 'Refs\TechnicalDataController@uploadExcel')->name('tech_refs_upload');
+                Route::post('technical_forecast/import_excel', 'Refs\TechnicalDataController@importExcel')->name('tech_refs_import');
+
                 Route::get('nnoeco', 'Refs\EcoRefsScFaController@nnoeco');
                 Route::resource('ecorefsexc', 'EcoRefsExcController');
                 Route::resource('antiecoone', 'AntiCrisis\AntiEcoOneController');
@@ -168,10 +185,19 @@ Route::group(
                 Route::get('organizations', 'OrganizationsController@index')->name('organizations');
 
                 Route::get('profile', 'UserController@profile')->name('profile');
+                Route::post('modulerequest','ModuleController@moduleRequest')->name('modulerequest');
 
                 Route::get('anticrisis', 'AntiCrisisController@index')->name('anticrisis');
 
+
+                
+                Route::get('/module_economy', 'EconomyKenzhe\MainController@index');
+                Route::get('/module_economy/company/{id}/{date}', 'EconomyKenzhe\MainController@company')->name('company');
+                Route::get('/module_economy/companies', 'EconomyKenzhe\MainController@companies');
+                Route::match(['get','post'],'/import_rep', 'EconomyKenzhe\MainController@importRepTt')->name('import_rep');
+
                 Route::get('/paegtm', 'GTM\GTMController@index')->name('gtm');
+
             }
         );
         Auth::routes(

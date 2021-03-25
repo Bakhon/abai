@@ -162,7 +162,6 @@
                   </div>
                   </div>
                   
-
                   <div class="devices-data table-border-gno-top no-gutter col-7">
                     {{trans('pgno.h_spuska')}}
                   </div>
@@ -331,7 +330,7 @@
         <div class="no-gutter col-lg-9 order-md-1 first-column container-fluid no-gutter">
           <div class="no-gutter col-md-12 first-column-curve-block">
             <div class="background">
-              <modal class="modal-bign-wrapper" name="modalIncl" :width="1400" :height="800"
+              <modal class="modal-bign-wrapper" name="modalIncl" :width="1300" :height="700"
                 style="background: transparent;" :adaptive="true">
                 <div class="modal-bign modal-bign-container">
                   <div class="modal-bign-header">
@@ -349,15 +348,49 @@
                 </div>
               </modal>
 
+              <modal class="modal-bign-wrapper" name="modal-prs" :width="1263" :height="612"
+                style="background: transparent;" :adaptive="true">
+                <div class="modal-bign modal-bign-container">
+                  <div class="modal-bign-header">
+                    <div class="modal-bign-title">{{trans('pgno.istoria_remontov')}} {{wellNumber}}</div>
+
+                    <button type="button" class="modal-bign-button" @click="closeModal('modal-prs')">
+                      {{trans('pgno.zakrit')}}
+                    </button>
+                  </div>
+
+                  <div class="Table" align="center" x:publishsource="Excel">
+                    <prs-crs :wellNumber="wellNumber" :wellIncl="wellIncl" :field="field" :is-loading.sync="isLoading"></prs-crs>
+                  </div>
+                </div>
+              </modal>
+
               <modal class="modal-bign-wrapper" name="modalOldWell" :width="1080" :height="450" :adaptive="true">
                 <div class="modal-bign modal-bign-container">
                   <div class="modal-bign-header">
                     <div class="modal-bign-title">
                       {{trans('pgno.analis_potenciala')}}
                     </div>
-                    <div style="position: absolute; margin-left: 200px; margin-top: 0px;">
-                      <svg style="fill: white;" @click="takePhotoOldNewWell()" height="30px" version="1.1" viewBox="0 0 32 32" width="32px" xmlns="http://www.w3.org/2000/svg" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns" xmlns:xlink="http://www.w3.org/1999/xlink"><title/><desc/><defs/><g fill="none" fill-rule="evenodd" id="Page-1" stroke="none" stroke-width="1"><g fill="#929292" id="icon-57-document-download"><path d="M16,25.049999 L12.75,21.799999 L12,22.549999 L16.5,27.049999 L21,22.549999 L20.25,21.799999 L17,25.049999 L17,14 L16,14 L16,25.049999 L16,25.049999 Z M19.5,3 L9.00276013,3 C7.89666625,3 7,3.89833832 7,5.00732994 L7,27.9926701 C7,29.1012878 7.89092539,30 8.99742191,30 L24.0025781,30 C25.1057238,30 26,29.1017876 26,28.0092049 L26,10.5 L26,10 L20,3 L19.5,3 L19.5,3 L19.5,3 Z M19,4 L8.9955775,4 C8.44573523,4 8,4.45526288 8,4.99545703 L8,28.004543 C8,28.5543187 8.45470893,29 8.9999602,29 L24.0000398,29 C24.5523026,29 25,28.5550537 25,28.0066023 L25,11 L20.9979131,11 C19.8944962,11 19,10.1134452 19,8.99408095 L19,4 L19,4 Z M20,4.5 L20,8.99121523 C20,9.54835167 20.4506511,10 20.9967388,10 L24.6999512,10 L20,4.5 L20,4.5 Z" id="document-download"/></g></g></svg>
+                   
+                <div style="position: absolute; margin-left: 175px; margin-top: 0px;">
+                  <div class="dropdown">
+                    <button class="download-curve-button" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M4.16699 11.1538V14.5C4.16699 14.7761 4.39085 15 4.66699 15H15.667C15.9431 15 16.167 14.7761 16.167 14.5V11.1538" stroke="white" stroke-linecap="round"/>
+                      <path d="M10.1667 5V11.1539" stroke="white" stroke-linecap="round"/>
+                      <path d="M7.5957 9.61572L10.1671 11.9234L12.7386 9.61572" stroke="white" stroke-linecap="round"/>
+                      </svg>
+                      Скачать
+                      <svg width="12" height="6" viewBox="0 0 12 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M1.5 1L5.93356 4.94095C5.97145 4.97462 6.02855 4.97462 6.06644 4.94095L10.5 1" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
+                      </svg>
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                      <a class="dropdown-item" href="#" @click="takePhotoOldNewWell()">Photo</a>
+                      <a class="dropdown-item" href="#" @click="downloadExcel()">MS Excel</a>
                     </div>
+                  </div>
+                </div>
 
                     <button type="button" class="modal-bign-button" @click="closeModal('modalOldWell')">
                      {{trans('pgno.zakrit')}}
@@ -412,9 +445,25 @@
                       {{trans('pgno.analis_potenciala')}}
                     </div>
 
-                    <div style="position: absolute; margin-left: 200px; margin-top: 0px;">
-                      <svg style="fill: white;" @click="takePhotoOldNewWell()" height="30px" version="1.1" viewBox="0 0 32 32" width="32px" xmlns="http://www.w3.org/2000/svg" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns" xmlns:xlink="http://www.w3.org/1999/xlink"><title/><desc/><defs/><g fill="none" fill-rule="evenodd" id="Page-1" stroke="none" stroke-width="1"><g fill="#929292" id="icon-57-document-download"><path d="M16,25.049999 L12.75,21.799999 L12,22.549999 L16.5,27.049999 L21,22.549999 L20.25,21.799999 L17,25.049999 L17,14 L16,14 L16,25.049999 L16,25.049999 Z M19.5,3 L9.00276013,3 C7.89666625,3 7,3.89833832 7,5.00732994 L7,27.9926701 C7,29.1012878 7.89092539,30 8.99742191,30 L24.0025781,30 C25.1057238,30 26,29.1017876 26,28.0092049 L26,10.5 L26,10 L20,3 L19.5,3 L19.5,3 L19.5,3 Z M19,4 L8.9955775,4 C8.44573523,4 8,4.45526288 8,4.99545703 L8,28.004543 C8,28.5543187 8.45470893,29 8.9999602,29 L24.0000398,29 C24.5523026,29 25,28.5550537 25,28.0066023 L25,11 L20.9979131,11 C19.8944962,11 19,10.1134452 19,8.99408095 L19,4 L19,4 Z M20,4.5 L20,8.99121523 C20,9.54835167 20.4506511,10 20.9967388,10 L24.6999512,10 L20,4.5 L20,4.5 Z" id="document-download"/></g></g></svg>
+                    <div style="position: absolute; margin-left: 175px; margin-top: 0px;">
+                  <div class="dropdown">
+                    <button class="download-curve-button" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M4.16699 11.1538V14.5C4.16699 14.7761 4.39085 15 4.66699 15H15.667C15.9431 15 16.167 14.7761 16.167 14.5V11.1538" stroke="white" stroke-linecap="round"/>
+                      <path d="M10.1667 5V11.1539" stroke="white" stroke-linecap="round"/>
+                      <path d="M7.5957 9.61572L10.1671 11.9234L12.7386 9.61572" stroke="white" stroke-linecap="round"/>
+                      </svg>
+                      Скачать
+                      <svg width="12" height="6" viewBox="0 0 12 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M1.5 1L5.93356 4.94095C5.97145 4.97462 6.02855 4.97462 6.06644 4.94095L10.5 1" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
+                      </svg>
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                      <a class="dropdown-item" href="#" @click="takePhotoOldNewWell()">Photo</a>
+                      <a class="dropdown-item" href="#" @click="downloadExcel()">MS Excel</a>
                     </div>
+                  </div>
+                </div>
 
 
                     <button type="button" class="modal-bign-button" @click="closeModal('modalNewWell')">
@@ -559,67 +608,6 @@
                 </div>
               </modal>
 
-              <modal class="" name="modal-prs" :width="1400" :height="600" :adaptive="true">
-                <div class="modal-bign modal-bign-container">
-                  <div class="modal-bign-header">
-                    <div class="modal-bign-title">
-                      {{trans('pgno.istoria_remontov')}} {{wellNumber}}
-                    </div>
-
-                    <button type="button" class="modal-bign-button" @click="closeModal('modal-prs')">
-                      {{trans('pgno.zakrit')}}
-                    </button>
-                  </div>
-                  <div class="container-fluid">
-	                  <div class="row">
-	                  	<div class="col-12">
-		                   	<div class="row">
-				                  
-                          <div class="col-8">
-                            <h6 style="text-align: center;">{{trans('pgno.prichini_prs')}}</h6>
-			                      <prs-crs :wellNumber="wellNumber" :wellIncl="wellIncl" :field="field" :is-loading.sync="isLoading"></prs-crs>
-                            <h6>{{trans('pgno.kolichestvo_remontov')}}: {{numberRepairs}}</h6>
-                            <h6>ННО: {{numberNNO + ' сут'}}</h6>
-                        	</div>
-  
-                          <div class="col-4">
-                            <h6 style="text-align: center;">{{trans('pgno.info_po_krs')}}</h6>
-				                     <div class="table-fix no-gutter">
-                              <perfect-scrollbar>
-                                <table class="gno-table-with-header pgno" style="height: initial;">
-                                  <thead>
-                                    <tr height="10" style="height: 10pt;">
-                                      <td>
-                                        {{trans('pgno.data_nachala_rabot')}}
-                                      </td>
-                                      <td>
-                                        {{trans('pgno.data_okonchania')}}
-                                      </td>
-                                      <td>
-                                        {{trans('pgno.vid_remontnih_rabot')}}
-                                      </td>
-                            
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-                                    <tr v-for="(row, row_index) in this.krsTable" :key="row_index" style="font-weight: bold;">
-                                      <td>{{row.dbeg.substring(0, 10)}}</td>
-                                      <td>{{row.dend.substring(0, 10)}}</td>
-                                      <td>{{row.krs_name}}</td>
-                                    </tr>
-                                  </tbody>
-                                </table>
-                              </perfect-scrollbar>
-                            </div>
-                          </div>
-			                  
-                        </div>
-		                  </div>
-	                  </div>
-                  </div>
-                  
-                </div>
-              </modal>
 
               <modal class="modal-bign-wrapper chart" name="modalExpAnalysis" :width="1300" :height="550"
                 :adaptive="true">
@@ -1069,26 +1057,24 @@
 
               <div class="gno-line-chart"  v-if="visibleChart">
                 <div style="position: absolute; margin-left: 175px; margin-top: 5px;">
-                                    <div class="dropdown">
+                  <div class="dropdown">
                     <button class="download-curve-button" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      
-                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M4.16699 11.1538V14.5C4.16699 14.7761 4.39085 15 4.66699 15H15.667C15.9431 15 16.167 14.7761 16.167 14.5V11.1538" stroke="white" stroke-linecap="round"/>
-                        <path d="M10.1667 5V11.1539" stroke="white" stroke-linecap="round"/>
-                        <path d="M7.5957 9.61572L10.1671 11.9234L12.7386 9.61572" stroke="white" stroke-linecap="round"/>
-                        </svg>
+                      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M4.16699 11.1538V14.5C4.16699 14.7761 4.39085 15 4.66699 15H15.667C15.9431 15 16.167 14.7761 16.167 14.5V11.1538" stroke="white" stroke-linecap="round"/>
+                      <path d="M10.1667 5V11.1539" stroke="white" stroke-linecap="round"/>
+                      <path d="M7.5957 9.61572L10.1671 11.9234L12.7386 9.61572" stroke="white" stroke-linecap="round"/>
+                      </svg>
                       Скачать
                       <svg width="12" height="6" viewBox="0 0 12 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M1.5 1L5.93356 4.94095C5.97145 4.97462 6.02855 4.97462 6.06644 4.94095L10.5 1" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
-</svg>
-
+                      <path d="M1.5 1L5.93356 4.94095C5.97145 4.97462 6.02855 4.97462 6.06644 4.94095L10.5 1" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
+                      </svg>
                     </button>
-  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-    <a class="dropdown-item" href="#" @click="takePhoto()">Photo</a>
-    <a class="dropdown-item" href="#" @click="downloadExcel()">MS Excel</a>
-  </div>
-</div>
-            </div>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                      <a class="dropdown-item" href="#" @click="takePhoto()">Photo</a>
+                      <a class="dropdown-item" href="#" @click="downloadExcel()">MS Excel</a>
+                    </div>
+                  </div>
+                </div>
                 <inflow-curve>
                 </inflow-curve>
                 
@@ -2407,7 +2393,7 @@ export default {
           "hPumpValue": this.hPumpValue.split(' ')[0],
           "celSelect": this.CelButton,
           "celValue": this.CelValue.split(' ')[0],
-          "menu": "MainMenu",
+          "menu": this.menu,
           "well_age": this.age,
           "grp_skin": this.grp_skin,
           "analysisBox1": this.analysisBox1,
@@ -3564,15 +3550,6 @@ export default {
 
     onPrsButtonClick() {
       this.$modal.show('modal-prs')
-      let krsTable = [];
-      let uriPrsKrs = "http://172.20.103.187:7575/api/nno/history/"+ this.field + "/" + this.wellNumber + "/";
-      this.axios.get(uriPrsKrs).then((response) => {
-        let krs = response['data']['krs']
-        let nno = JSON.parse(response['data']['prs']['nno'])
-        this.numberRepairs = nno['prs']
-        this.numberNNO = nno['NNO'].toFixed(0)
-        this.krsTable = JSON.parse(krs)["data"]
-    })
     },
 
     createPDF() {

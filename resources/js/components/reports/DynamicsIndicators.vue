@@ -90,8 +90,7 @@ export default {
       this.resultLink = response.data.report_link
     },
     updateData() {
-      let uri = "http://172.20.103.157:8082/dynamics/indicators/";
-      // let uri = "http://0.0.0.0:8090/dynamics/indicators/";
+      let uri = "http://172.20.103.187:8082/dynamics/indicators/";
       let data = {
         type: 'daily_dynamic_well_injection',
         period: 'days',

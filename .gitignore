@@ -29,11 +29,19 @@ public/test1.php
 public/test.php
 public/js/json/gno/line_points — копия.json
 
-/public/js/app.js
-/public/css/app.css
 public/0.js
 public/1.js
 public/2.js
+public/3.js
+public/4.js
+public/5.js
+public/6.js
+public/vendors~polyfills-core-js.js
+public/vendors~polyfills-dom.js
+
+
+/public/js/app.js
+/public/css/app.css
 
 #IDE file
 kmg-dashboard.iml

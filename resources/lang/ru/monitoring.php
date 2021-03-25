@@ -211,6 +211,8 @@ return array (
   'corrosion_name' => 'Коррозия',
   'pipe' => 
   array (
+    'title' => 'База данных по трубопроводам',
+    'menu' => 'Трубопроводы',
     'updated' => 'Трубовровод изменен',
     'deleted' => 'Трубопровод удален',
     'deleting_error' => 'Ошибка при удалении трубопровода',
@@ -218,9 +220,19 @@ return array (
     'add' => 'Добавить трубовровод',
     'type' => 'Тип трубопровода',
     'params' => 'Параметры трубопровода',
-      'fields' => array(
-          'outside_diameter' => 'Внешний диаметр'
-      )
+    'name' => 'Наименование трубопровода',
+    'fields' => 
+    array (
+      'inner_diameter' => 'Внутренний диаметр',
+      'length' => 'Длина',
+      'material' => 'Материал',
+      'outside_diameter' => 'Внешний диаметр',
+      'plot' => 'Участок',
+      'roughness' => 'Жесткость',
+      'thickness' => 'Толщина стенок',
+    ),
+    'edit_title' => 'Редактирование данных по трубопроводу',
+    'pipe' => 'Трубопровод',
   ),
   'inhibitor' => 
   array (
@@ -271,6 +283,19 @@ return array (
     'create_title' => 'Ввод данных по ГУ',
     'edit_title' => 'Редактирование ГУ',
     'gu' => 'ГУ',
+    'params' => 'Параметры ГУ',
+    'fields' => 
+    array (
+      'daily_fluid_production' => 'Добыча жидкости',
+      'daily_oil_production' => 'Добыча нефти',
+      'daily_water_production' => 'Количество воды',
+      'bsw' => 'Обводненность',
+      'pump_discharge_pressure' => 'Выходное давление',
+      'heater_output_pressure' => 'Давление сепаратора',
+      'date' => 'Дата',
+      'heater_output_temperature' => 'Температура печи',
+    ),
+    'redirect-to' => 'Перейти на',
   ),
   'zu' => 
   array (
@@ -284,4 +309,7 @@ return array (
   'well_vinit' => 'Cкважину',
   'longitude' => 'Долгота',
   'latitude' => 'Широта',
+  'elevation' => 'Высота',
+  'h_distance' => 'Горизонтальная длина',
+  'm_distance' => 'Измеренная длина',
 );

@@ -31,11 +31,25 @@
                 let plan1;
                 let plan2;
                 let datasets;
+                let chartLabels = {
+                    plan: '',
+                    opecPlan: '',
+                    dailyPlan: this.trans("visualcenter.requiredDailyPlan"),
+                    fact: this.trans("visualcenter.Fact"),
+                    deviation: this.trans("visualcenter.deviation"),
+                };
+                let chartColors = {
+                    plan: "#fff",
+                    opecPlan: "#2E50E9",
+                    fact: "#9EA4C9",
+                    dailyPlan: '#009846',
+                };
 
                 let formattedChartSummary = {
                     plan: [],
                     fact: [],
                     planOpec: [],
+                    dailyPlan: [],
                     labels: []
                 };
                 let self = this;
@@ -44,6 +58,7 @@
                     formattedChartSummary.plan.push(item.productionPlanForChart);
                     formattedChartSummary.fact.push(item.productionFactForChart);
                     formattedChartSummary.planOpec.push(item.productionPlanForChart2);
+                    formattedChartSummary.dailyPlan.push(item.dailyPlan);
                 });
 
                 let canvas = document.getElementById("line-chart");
@@ -80,29 +95,25 @@
                 })();
 
                 if (opec === "ОПЕК+") {
-                    color1 = "#fff";
-                    color2 = "#2E50E9";
-                    plan1 = this.trans("visualcenter.planOPEK");
-                    // "План ОПЕК+";
-                    plan2 =
+                    chartColors.plan = "#fff";
+                    chartColors.opecPlan = "#2E50E9";
+                    chartLabels.opecPlan = this.trans("visualcenter.planOPEK");
+                    chartLabels.plan =
                         this.trans("visualcenter.Plan") +
                         " " +
                         this.trans("visualcenter.utv");
-                    // "План утв.";
                 } else {
-                    color1 = "#2E50E9";
-                    color2 = "#fff";
-                    plan1 =
+                    chartColors.plan = "#2E50E9";
+                    chartColors.opecPlan = "#fff";
+                    chartLabels.opecPlan =
                         this.trans("visualcenter.Plan") +
                         " " +
                         this.trans("visualcenter.utv");
-                    // "План утв.";
-                    plan2 = this.trans("visualcenter.planOPEK");
-                    // "План ОПЕК+";
+                    chartLabels.plan = this.trans("visualcenter.planOPEK");
                 }
                 let planChartOptions = {
-                    label: plan1,
-                    borderColor: color1,
+                    label: chartLabels.opecPlan,
+                    borderColor: chartColors.plan,
                     fill: 1,
                     backgroundColor: fillPattern,
                     showLine: true,
@@ -110,9 +121,8 @@
                     pointRadius: 0,
                 };
                 let factChartOptions = {
-                    label: this.trans("visualcenter.Fact"),
-                    // "Факт",
-                    borderColor: "#9EA4C9",
+                    label: chartLabels.fact,
+                    borderColor: chartColors.fact,
                     fill: false,
                     showLine: true,
                     data: formattedChartSummary.fact,
@@ -120,19 +130,33 @@
                 };
 
                 let planOpecChartOptions = {
-                    label: plan2,
-                    borderColor: color2,
+                    label: chartLabels.opecPlan,
+                    borderColor: chartColors.opecPlan,
                     fill: false,
                     backgroundColor: fillPattern,
                     showLine: true,
                     data: formattedChartSummary.planOpec,
                     pointRadius: 0,
                 };
+                let dailyPlan = {
+                    label: chartLabels.dailyPlan,
+                    borderColor: chartColors.dailyPlan,
+                    fill: false,
+                    backgroundColor: fillPattern,
+                    showLine: true,
+                    data: formattedChartSummary.dailyPlan,
+                    pointRadius: 0,
+                };
+                let deviation = {
+                    label: chartLabels.deviation,
+                    backgroundColor: fillPattern
+                };
+
 
                 if (opec === "ОПЕК+") {
-                    datasets = [planChartOptions, factChartOptions, planOpecChartOptions];
+                    datasets = [planChartOptions, factChartOptions, planOpecChartOptions, deviation, dailyPlan];
                 } else {
-                    datasets = [planChartOptions, factChartOptions];
+                    datasets = [planChartOptions, factChartOptions, deviation, dailyPlan];
                 }
 
                 this.renderChart(
@@ -158,12 +182,6 @@
                                                 fillStyle: style.borderColor,
                                             };
                                         });
-                                        returnData.push({
-                                            text: this.trans("visualcenter.deviation"),
-                                            // "Отклонение",
-                                            fillStyle: fillPattern,
-                                        });
-
                                         return returnData;
                                     }
                                     return [];

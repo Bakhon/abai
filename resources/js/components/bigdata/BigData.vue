@@ -69,7 +69,7 @@
               <div class="section">
                 <div class="section__wrapper">
                   <div class="section__content"
-                       :class="{'selected': selectedSection === section.tag, 'disabled': !section.reports.length}">
+                       :class="{'selected': selectedSection === section.tag, 'disabled': !section.reports.length}" style="display: block !important">
 
                     <div class="bold">
                       <span class="section_icon" v-html="section.icon"></span><br>

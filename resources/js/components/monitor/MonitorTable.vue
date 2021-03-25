@@ -58,6 +58,7 @@
         </div>
       </div>
     </modal>
+
     <modal class="modal-bign-wrapper" name="corrosion" :width="1200" :height="800" :adaptive="true">
       <div class="modal-bign modal-bign-container">
         <div class="modal-bign-header">
@@ -127,6 +128,7 @@
             </div>
           </div>
           <br>
+
           <div class="row corrosion">
             <div class="col-12">
               <h4>{{ trans('monitoring.fluid_parameters') }}</h4>
@@ -333,6 +335,7 @@
         </div>
       </div>
     </modal>
+
     <div class="row monitor">
       <div class="col-2 monitor__charts">
         <div class="monitor__charts-item">
@@ -588,10 +591,15 @@ export default {
     DatePicker,
     VueTableDynamic
   },
+  props: {
+    gu: {
+      type: Number,
+      default: null
+    },
+  },
   data: function () {
     return {
       gus: null,
-      gu: null,
       date: null,
       kormass: null,
       showCalendar: false,

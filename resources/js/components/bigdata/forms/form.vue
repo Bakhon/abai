@@ -84,6 +84,9 @@ export default {
   mounted() {
 
     this.updateForm(this.params.code)
+        .catch(error => {
+          Vue.prototype.$notifyError(error.response.data.text + "\r\n\r\n" + error.response.data.errors)
+        })
 
   },
   methods: {
@@ -96,13 +99,16 @@ export default {
     ]),
     submit() {
 
-      this.submitForm({
-        code: this.params.code,
-        values: this.formValues
-      })
+      this
+          .submitForm({
+            code: this.params.code,
+            values: this.formValues
+          })
           .then(data => {
             this.errors = []
-            this.formValues.map(value => '')
+            Object.keys(this.formValues).forEach(key => {
+              this.formValues[key] = ''
+            })
             this.$refs.form.reset()
             Vue.prototype.$notifySuccess('Ваша форма успешно отправлена')
           })

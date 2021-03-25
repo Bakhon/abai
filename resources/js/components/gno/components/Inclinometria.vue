@@ -329,7 +329,6 @@ export default {
           
             if (this.expChoose=='ШГН'){
               this.kraska= this.data.map((r) => r.dls_color)
-
             } else {
               this.kraska=this.ecnColor
             }
