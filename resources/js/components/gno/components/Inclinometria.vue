@@ -162,7 +162,7 @@ export default {
       zu2: "-",
       disabled: false,
       hPumpFromIncl: null,
-      buttonHpump: false,
+      isButtonHpump: false,
       hVal: null,
       kraska:null,
       tmp: null,
@@ -390,7 +390,7 @@ export default {
       this.buildModel()
    },
    onClickHpump(){
-     this.$emit('update-hpump', this.buttonHpump);
+     this.$emit('update-hpump', this.isButtonHpump);
    }
   },
   mounted() {
