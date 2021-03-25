@@ -8,6 +8,7 @@ use App\Http\Controllers\Traits\WithFieldsValidation;
 use App\Http\Requests\IndexTableRequest;
 use App\Http\Requests\OmgNGDUCreateRequest;
 use App\Http\Requests\OmgNGDUUpdateRequest;
+use App\Models\ComplicationMonitoring\Corrosion;
 use App\Models\ComplicationMonitoring\GuKormass;
 use App\Models\ComplicationMonitoring\Kormass;
 use App\Models\ComplicationMonitoring\OilGas;
@@ -275,15 +276,22 @@ class OmgNGDUController extends CrudController
 
     public function getGuDataByDay(Request $request)
     {
-        $ngdu = OmgNGDU::where('date', $request->dt)
-            ->where('gu_id', $request->gu_id)
-            ->first();
+        // TODO remove after get all OMNGDU data
+        if (Carbon::parse($request->dt) >= Carbon::parse('2021-01-01')) {
+            $ngdu = OmgNGDU::where('date', $request->dt)
+                ->where('gu_id', $request->gu_id)
+                ->first();
+        } else {
+            $ngdu = OmgNGDUOld::where('date', $request->dt)
+                ->where('gu_id', $request->gu_id)
+                ->first();
+        }
 
         $uhe = OmgUHE::where('date', $request->dt)
             ->where('gu_id', $request->gu_id)
             ->first();
 
-        $ca = OmgCA::where('date', date("Y") . "-01-01")
+        $ca = OmgCA::where('date', Carbon::parse($request->dt)->year . "-01-01")
             ->where('gu_id', $request->gu_id)
             ->first();
 
@@ -320,6 +328,25 @@ class OmgNGDUController extends CrudController
             ->where('gu_id', $request->gu_id)
             ->first();
 
+        $lastInhibitorCorrosion = Corrosion::where('gu_id', $request->gu_id)
+            ->whereNotNull('corrosion_velocity_with_inhibitor')
+            ->where('start_date_of_corrosion_velocity_with_inhibitor_measure', '<=', $request->dt)
+            ->orderByDesc('start_date_of_corrosion_velocity_with_inhibitor_measure')
+            ->first();
+
+        $lastBackgroundCorrosion = Corrosion::where('gu_id', $request->gu_id)
+            ->whereNotNull('background_corrosion_velocity')
+            ->where('start_date_of_background_corrosion', '<=', $request->dt)
+            ->orderByDesc('start_date_of_background_corrosion')
+            ->first();
+
+        if (Carbon::parse($lastInhibitorCorrosion->start_date_of_corrosion_velocity_with_inhibitor_measure) >=
+            Carbon::parse($lastBackgroundCorrosion->start_date_of_background_corrosion)) {
+            $lastCorrosion = $lastInhibitorCorrosion;
+        } else {
+            $lastCorrosion = $lastBackgroundCorrosion;
+        }
+
         return response()->json(
             [
                 'code' => 200,
@@ -333,7 +360,9 @@ class OmgNGDUController extends CrudController
                 'wmLastCl' => $wmLastCl,
                 'wmLast' => $wmLast,
                 'wmLastSO4' => $wmLastSO4,
-                'oilGas' => $oilGas
+                'oilGas' => $oilGas,
+                'lastCorrosion' => $lastCorrosion
+
             ]
         );
     }
