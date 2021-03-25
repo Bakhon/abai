@@ -251,10 +251,10 @@ class EcoRefsScFaController extends Controller
             }
 
 
-            $emppersExp = EcoRefsEmpPer::whereIn('direction_id',$exports)->where('company_id',$org)->where('date',$element)->get();
-            $discontExp = EcoRefsDiscontCoefBar::whereIn('direction_id',$exports)->where('company_id',$org)->where('date',$element)->get();
-            $compRas = EcoRefsPrepElectPrsBrigCost::where('company_id',$org)->where('date',$element)->get();
-            $equipRas = EcoRefsRentEquipElectServCost::whereIn('equip_id',$equip)->where('company_id',$org)->whereYear('date',$year)->get();
+            $emppersExp = EcoRefsEmpPer::whereIn('direction_id',$exports)->where('sc_fa',$scfa[0])->where('company_id',$org)->where('date',$element)->get();
+            $discontExp = EcoRefsDiscontCoefBar::whereIn('direction_id',$exports)->where('sc_fa',$scfa[0])->where('company_id',$org)->where('date',$element)->get();
+            $compRas = EcoRefsPrepElectPrsBrigCost::where('company_id',$org)->where('sc_fa',$scfa[0])->where('date',$element)->get();
+            $equipRas = EcoRefsRentEquipElectServCost::whereIn('equip_id',$equip)->where('sc_fa',$scfa[0])->where('company_id',$org)->whereYear('date',$year)->get();
 
             $workday=0;
 
@@ -379,7 +379,7 @@ class EcoRefsScFaController extends Controller
 
             // TO DO
             foreach($exportsResults as $key => $value){
-                $tarifTnExp = EcoRefsTarifyTn::where('route_id',$key)->where('company_id',$org)->get();
+                $tarifTnExp = EcoRefsTarifyTn::where('route_id',$key)->where('sc_fa',$scfa[0])->where('company_id',$org)->get();
                 $tarifTnItemValue = 0;
                 foreach($tarifTnExp as $row){
                     if ($row->exc_id == 1){
@@ -438,8 +438,8 @@ class EcoRefsScFaController extends Controller
             }
 
 
-            $emppersIns = EcoRefsEmpPer::whereIn('direction_id',$inside)->where('company_id',$org)->where('date',$element)->get();
-            $discontIns = EcoRefsDiscontCoefBar::whereIn('direction_id',$inside)->where('company_id',$org)->where('date',$element)->get();
+            $emppersIns = EcoRefsEmpPer::whereIn('direction_id',$inside)->where('sc_fa',$scfa[0])->where('company_id',$org)->where('date',$element)->get();
+            $discontIns = EcoRefsDiscontCoefBar::whereIn('direction_id',$inside)->where('sc_fa',$scfa[0])->where('company_id',$org)->where('date',$element)->get();
 
             $insideResults = [];
             $insideDiscontResults = [];
@@ -466,7 +466,7 @@ class EcoRefsScFaController extends Controller
             // Rabota s TOTALAMI
 
             foreach($insideResults as $key => $value){
-                $tarifTnIns = EcoRefsTarifyTn::where('route_id','=',$key)->where('company_id',$org)->get();
+                $tarifTnIns = EcoRefsTarifyTn::where('route_id','=',$key)->where('sc_fa',$scfa[0])->where('company_id',$org)->get();
                 $tarifTnItemValue = 0;
                 foreach($tarifTnIns as $row){
                     if ($row->exc_id == 1){

@@ -206,8 +206,8 @@ export default {
         getCursor: ({isDragging}) => (isDragging ? 'grabbing' : (this.isHovering ? 'pointer' : 'grab')),
         getTooltip: ({object}) => {
           if (object) {
-            if (object.cdng_id && object.omgngdu[0]) {
-              let guParams = object.omgngdu[0];
+            if (object.cdng_id && object.last_omgngdu) {
+              let guParams = object.last_omgngdu;
               guParams.daily_water_production = (guParams.daily_fluid_production * guParams.bsw) / 100;
               guParams.name = object.name;
 
@@ -394,6 +394,10 @@ export default {
       this.objectData = option.mapObject.object;
       this.objectData.index = option.mapObject.index;
       this.$bvModal.show('object-modal');
+    },
+    onRedirect(option){
+      let url = this.localeUrl("/monitor/" + option.mapObject.object.id);
+      window.location.href = url;
     },
     onCreate(option) {
       //pipe start point

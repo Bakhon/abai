@@ -7,7 +7,7 @@ Route::group(
             ['middleware' => 'auth'],
             function () {
 
-                Route::get('/monitor', 'DruidController@monitor')->name('monitor');
+                Route::get('/monitor/{gu?}', 'DruidController@monitor')->name('monitor');
 
                 Route::get('watermeasurement/list', 'ComplicationMonitoring\WaterMeasurementController@list')->name(
                     'watermeasurement.list'
@@ -111,6 +111,8 @@ Route::group(
                 Route::delete('/gu-map/zu/{zu}', 'MapsController@deleteZu')->name('maps.delete_zu');
                 Route::delete('/gu-map/well/{well}', 'MapsController@deleteWell')->name('maps.delete_well');
                 Route::delete('/gu-map/pipe/{pipe}', 'MapsController@deletePipe')->name('maps.delete_pipe');
+
+                Route::get('/gu-map/test', 'MapsController@test');
 
                 Route::get('/monitor/reports', 'ReportsController@index')->name('monitor.reports');
                 Route::get('/monitor/reports/generate', 'ReportsController@generateReport');

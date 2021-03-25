@@ -102,11 +102,11 @@ class FormsController extends Controller
                 break;
             }
 
-            if ($geo->field_code) {
+            if (!empty($geo->field_code)) {
                 $prefix = $geo->field_code . '_';
                 break;
             }
-            $geo = $geo->parent();
+            $geo = $geo->parent;
         }
 
         return ['prefix' => $prefix];

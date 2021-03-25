@@ -34,6 +34,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Maatwebsite\Excel\Facades\Excel;
+use Carbon\Carbon;
 
 class WaterMeasurementController extends CrudController
 {
@@ -79,7 +80,7 @@ class WaterMeasurementController extends CrudController
                 ],
                 
                 'gu' => [
-                    'title' => trans('monitoring.gu'),
+                    'title' => trans('monitoring.gu.gu'),
                     'type' => 'select',
                     'filter' => [
                         'values' => \App\Models\Refs\Gu::whereHas('watermeasurement')
@@ -338,7 +339,7 @@ class WaterMeasurementController extends CrudController
      */
     public function show($id)
     {
-        $wm = ComplicationMonitoringWaterMeasurement::where('id', '=', $id)
+        $wm = ComplicationMonitoringWaterMeasurement::where('id', $id)
             ->with('other_objects')
             ->with('ngdu')
             ->with('cdng')
@@ -467,7 +468,7 @@ class WaterMeasurementController extends CrudController
     public function getGu(Request $request)
     {
         $gu = RefsGu::query()
-            ->where('cdng_id', '=', $request->cdng_id)
+            ->where('cdng_id', $request->cdng_id)
             ->select('name', 'id', 'cdng_id')
             //dirty hack for alphanumeric sort but other solutions doesn't work
             ->orderByRaw('lpad(name, 10, 0) asc')
@@ -484,7 +485,7 @@ class WaterMeasurementController extends CrudController
 
     public function getZu(Request $request)
     {
-        $zu = RefsZu::where('gu_id', '=', $request->gu_id)->get();
+        $zu = RefsZu::where('gu_id', $request->gu_id)->get();
 
         return response()->json(
             [
@@ -497,7 +498,7 @@ class WaterMeasurementController extends CrudController
 
     public function getWell(Request $request)
     {
-        $wells = RefsWell::where('zu_id', '=', $request->zu_id)->get();
+        $wells = RefsWell::where('zu_id', $request->zu_id)->get();
 
         return response()->json(
             [
@@ -598,56 +599,56 @@ class WaterMeasurementController extends CrudController
     public function getGuData(Request $request)
     {
         $wm = ComplicationMonitoringWaterMeasurement::query()
-            ->where('gu_id', '=', $request->gu_id)
-            ->where('date', '>=', \Carbon\Carbon::now()->subYear()->startOfMonth())
-            ->where('date', '<=', \Carbon\Carbon::now()->startOfMonth())
+            ->where('gu_id', $request->gu_id)
+            ->where('date', '>=', Carbon::now()->subYear()->startOfMonth())
+            ->where('date', '<=', Carbon::now()->startOfMonth())
             ->get()
             ->groupBy(
                 function ($item) {
-                    return \Carbon\Carbon::parse($item->date)->diffInMonths(\Carbon\Carbon::now()->startOfMonth()) > 6
+                    return Carbon::parse($item->date)->diffInMonths(Carbon::now()->startOfMonth()) > 6
                         ? '1 полугодие'
                         : '2 полугодие';
                 }
             );
 
         $uhe = ComplicationMonitoringOmgUHE::query()
-            ->where('gu_id', '=', $request->gu_id)
-            ->where('date', '>=', \Carbon\Carbon::now()->subYear()->startOfMonth())
-            ->where('date', '<=', \Carbon\Carbon::now()->startOfMonth())
+            ->where('gu_id', $request->gu_id)
+            ->where('date', '>=', Carbon::now()->subYear()->startOfMonth())
+            ->where('date', '<=', Carbon::now()->startOfMonth())
             ->get()
             ->groupBy(
                 function ($item) {
-                    return \Carbon\Carbon::parse($item->date)->diffInMonths(\Carbon\Carbon::now()->startOfMonth()) > 6
+                    return Carbon::parse($item->date)->diffInMonths(Carbon::now()->startOfMonth()) > 6
                         ? '1 полугодие'
                         : '2 полугодие';
                 }
             );
 
         $corrosion = ComplicationMonitoringCorrosion::query()
-            ->where('gu_id', '=', $request->gu_id)
+            ->where('gu_id', $request->gu_id)
             ->where(
                 'final_date_of_corrosion_velocity_with_inhibitor_measure',
                 '>=',
-                \Carbon\Carbon::now()->subYear()->startOfMonth()
+                Carbon::now()->subYear()->startOfMonth()
             )
             ->where(
                 'final_date_of_corrosion_velocity_with_inhibitor_measure',
                 '<=',
-                \Carbon\Carbon::now()->startOfMonth()
+                Carbon::now()->startOfMonth()
             )
             ->get()
             ->groupBy(
                 function ($item) {
-                    return \Carbon\Carbon::parse($item->date)->diffInMonths(\Carbon\Carbon::now()->startOfMonth()) > 6
+                    return Carbon::parse($item->date)->diffInMonths(Carbon::now()->startOfMonth()) > 6
                         ? '1 полугодие'
                         : '2 полугодие';
                 }
             );
 
-        $kormass = ComplicationMonitoringGuKormass::where('gu_id', '=', $request->gu_id)->with('kormass')->first();
-        $pipe = Pipe::where('gu_id', '=', $request->gu_id)->where('plot', '=', 'eg')->first();
-        $pipeAB = Pipe::where('gu_id', '=', $request->gu_id)->where('plot', '=', 'ab')->first();
-        $lastCorrosion = ComplicationMonitoringCorrosion::where('gu_id', '=', $request->gu_id)->whereNotNull(
+        $kormass = ComplicationMonitoringGuKormass::where('gu_id', $request->gu_id)->with('kormass')->first();
+        $pipe = Pipe::where('gu_id', $request->gu_id)->where('plot', 'eg')->first();
+        $pipeAB = Pipe::where('gu_id', $request->gu_id)->where('plot', 'ab')->first();
+        $lastCorrosion = ComplicationMonitoringCorrosion::where('gu_id', $request->gu_id)->whereNotNull(
             'corrosion_velocity_with_inhibitor'
         )->latest()->first();
         $constantsValues = ConstantsValue::get();
@@ -701,9 +702,9 @@ class WaterMeasurementController extends CrudController
 
     public function getGuNgduCdngField(Request $request)
     {
-        $gu = RefsGu::where('id', '=', $request->gu_id)->first();
-        $cdng = RefsCdng::where('id', '=', $gu->cdng_id)->first();
-        $kormass = ComplicationMonitoringGuKormass::where('gu_id', '=', $request->gu_id)->first();
+        $gu = RefsGu::where('id', $request->gu_id)->first();
+        $cdng = RefsCdng::where('id', $gu->cdng_id)->first();
+        $kormass = ComplicationMonitoringGuKormass::where('gu_id', $request->gu_id)->first();
 
         return response()->json(
             [

@@ -38,7 +38,7 @@ class OmgCAController extends CrudController
             ],
             'fields' => [
                 'gu' => [
-                    'title' => __('monitoring.gu'),
+                    'title' => __('monitoring.gu.gu'),
                     'type' => 'select',
                     'filter' => [
                         'values' => \App\Models\Refs\Gu::whereHas('omgca')

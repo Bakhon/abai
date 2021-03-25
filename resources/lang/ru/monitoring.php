@@ -211,6 +211,8 @@ return array (
   'corrosion_name' => 'Коррозия',
   'pipe' => 
   array (
+    'title' => 'База данных по трубопроводам',
+    'menu' => 'Трубопроводы',
     'updated' => 'Трубовровод изменен',
     'deleted' => 'Трубопровод удален',
     'deleting_error' => 'Ошибка при удалении трубопровода',
@@ -293,6 +295,7 @@ return array (
       'date' => 'Дата',
       'heater_output_temperature' => 'Температура печи',
     ),
+    'redirect-to' => 'Перейти на',
   ),
   'zu' => 
   array (
