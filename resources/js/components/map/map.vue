@@ -14,6 +14,80 @@
         </v-select>
       </div>
     </div>
+
+    <div class="legend">
+      <b-button v-b-toggle.legend variant="main2">Легенда</b-button>
+      <b-collapse id="legend" class="mt-2">
+        <b-card class="bg-main1 text-light">
+          <div class="legend-item">
+            <div class="icon-box bg-well-icon"></div>
+            <span>Скважина</span>
+          </div>
+          <div class="legend-item">
+            <div class="icon-box bg-zu-icon"></div>
+            <span>ЗУ</span>
+          </div>
+          <div class="legend-item">
+            <div class="icon-box bg-gu-icon"></div>
+            <span>ГУ</span>
+          </div>
+          <div class="legend-item">
+            <div class="color-box" :style="{backgroundColor: getColorByBetweenPoints('zu-gu')}"></div>
+            <span>Труба ЗУ - ГУ</span>
+          </div>
+          <div class="legend-item">
+            <div class="color-box" :style="{backgroundColor: getColorByBetweenPoints('well-zu')}"></div>
+            <span>Труба Скважина - ЗУ</span>
+          </div>
+          <div class="legend-item">
+            <div class="color-box" :style="{backgroundColor: getColorByBetweenPoints('fl-zu')}"></div>
+            <span>Труба ФЛ - ЗУ</span>
+          </div>
+          <div class="legend-item">
+            <div class="color-box" :style="{backgroundColor: getColorByBetweenPoints('fl-koll')}"></div>
+            <span>Труба ФЛ - Коллектор</span>
+          </div>
+          <div class="legend-item">
+            <div class="color-box" :style="{backgroundColor: getColorByBetweenPoints('gu-koll')}"></div>
+            <span>Труба ГУ - Коллектор</span>
+          </div>
+          <div class="legend-item">
+            <div class="color-box" :style="{backgroundColor: getColorByBetweenPoints('mgu-koll')}"></div>
+            <span>Труба МГУ - Коллектор</span>
+          </div>
+          <div class="legend-item">
+            <div class="color-box" :style="{backgroundColor: getColorByBetweenPoints('koll-bg')}"></div>
+            <span>Труба Коллектор - БГ</span>
+          </div>
+          <div class="legend-item">
+            <div class="color-box" :style="{backgroundColor: getColorByBetweenPoints('os-st')}"></div>
+            <span>Труба ОС - СТ</span>
+          </div>
+          <div class="legend-item">
+            <div class="color-box" :style="{backgroundColor: getColorByBetweenPoints('bg')}"></div>
+            <span>Труба БГ</span>
+          </div>
+          <div class="legend-item">
+            <div class="color-box" :style="{backgroundColor: getColorByBetweenPoints('bg-gu')}"></div>
+            <span>Труба БГ - ГУ</span>
+          </div>
+          <div class="legend-item">
+            <div class="color-box" :style="{backgroundColor: getColorByBetweenPoints('koll-koll')}"></div>
+            <span>Труба Коллектор - Коллектор</span>
+          </div>
+          <div class="legend-item">
+            <div class="color-box" :style="{backgroundColor: getColorByBetweenPoints('st-koll')}"></div>
+            <span>Труба СТ - Коллектор</span>
+          </div>
+          <div class="legend-item">
+            <div class="color-box" :style="{backgroundColor: getColorByBetweenPoints('spt-koll')}"></div>
+            <span>Труба СПТ - Коллектор</span>
+          </div>
+
+        </b-card>
+      </b-collapse>
+    </div>
+
     <div id="map"></div>
 
     <map-context-menu
@@ -34,8 +108,8 @@
 
       <map-gu-form :gu="objectData" v-if="editMode == 'gu'"></map-gu-form>
       <map-zu-form :zu="objectData" v-if="editMode == 'zu'"></map-zu-form>
-      <map-well-form :well="objectData"  v-if="editMode == 'well'"></map-well-form>
-      <map-pipe-form :pipe="pipeObject"  v-if="editMode == 'pipe' && pipeObject"></map-pipe-form>
+      <map-well-form :well="objectData" v-if="editMode == 'well'"></map-well-form>
+      <map-pipe-form :pipe="pipeObject" v-if="editMode == 'pipe' && pipeObject"></map-pipe-form>
 
       <template #modal-footer>
         <div class="w-100">
@@ -236,7 +310,7 @@ export default {
         });
       });
     },
-    getGuTooltipHtml (guParams){
+    getGuTooltipHtml(guParams) {
       return '<div class="params_block">' +
           '<p>' + guParams.name + '</p>' +
           '<p>' + this.trans('monitoring.gu.fields.date') + ': ' + guParams.date + '</p>' +
@@ -438,6 +512,12 @@ export default {
 
       let method = 'on' + option.type.charAt(0).toUpperCase() + option.type.slice(1);
       this[method](option);
+    },
+    getColorByBetweenPoints(between_points) {
+      return this.colorArrayToRgb(pipeColors[this.mapColorsMode][between_points])
+    },
+    colorArrayToRgb(colorArr) {
+      return 'rgb(' + colorArr[0] + ', ' + colorArr[1] + ', ' + colorArr[2] + ')';
     },
     colorToRGBArray(color) {
 
@@ -869,7 +949,7 @@ h1 {
     display: inline-block;
     padding: 15px 0 0 15px;
     position: relative;
-    z-index: 10;
+    z-index: 20;
     width: 100px;
 
     h1 {
@@ -905,5 +985,62 @@ h1 {
     width: 100% !important;
   }
 
+  .legend {
+    position: relative;
+    z-index: 10;
+    max-width: 275px;
+    padding: 15px 0 0 15px;
+
+    .btn {
+      width: 100%;
+      border: 1px solid rgba(60, 60, 60, .26);
+      border-radius: 5px;
+      height: 40px;
+    }
+
+    .legend-item {
+      display: flex;
+      margin-bottom: 15px;
+
+      .color-box {
+        width: 20px;
+        height: 20px;
+      }
+
+      span {
+        margin-left: 15px;
+      }
+
+      &:last-child {
+        margin-bottom: 0px;
+      }
+    }
+  }
+
+  .icon-box {
+    width: 25px;
+    height: 25px;
+    background-size: 20px;
+    background-position: 50% 50%;
+    padding: 5px;
+    background-color: white;
+    background-repeat: no-repeat;
+  }
+
+  .bg-well-icon {
+    background-image: url("/img/icons/well.png");
+  }
+
+  .bg-zu-icon {
+    background-image: url("/img/icons/barrel.png");
+    background-size: contain;
+  }
+
+  .bg-gu-icon {
+    background-image: url("/img/icons/barrel.png");
+    width: 30px;
+    height: 30px;
+    background-size: contain;
+  }
 }
 </style>
