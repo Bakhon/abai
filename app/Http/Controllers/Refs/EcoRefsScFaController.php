@@ -568,7 +568,6 @@ class EcoRefsScFaController extends Controller
             $npv=$npv+array_sum($svobodDenPotok);
 
             $vdata2=[
-                
                 'last'=>$lastDateOfMonth,
                 'day'=>$day,
                 'year'=>$year,
