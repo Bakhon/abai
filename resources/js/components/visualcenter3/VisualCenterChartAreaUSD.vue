@@ -1,12 +1,12 @@
 <template>
   <div>
     <apexchart
-        type="area"
-        height="450px"
-        width="100%"
-        ref="chart"
-        :options="chartOptions"
-        :series="series"
+            type="area"
+            height="450px"
+            width="100%"
+            ref="chart"
+            :options="chartOptions"
+            :series="series"
     ></apexchart>
     <div class="begin">{{ begin }}</div>
     <div class="end2">{{ end }}</div>
@@ -15,7 +15,7 @@
 
 <script>
 import VueApexCharts from "vue-apexcharts";
-import {EventBus} from "../../event-bus.js";
+import moment from "moment";
 
 Vue.component("apexchart", VueApexCharts);
 
@@ -43,28 +43,37 @@ export default {
           colors: ['#1956e5']
         },
         chart: {
-          // height: '450px',
-          // width: '100%',
           locales: [{
             "name": "ru",
             "options": {
-              "months": ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"],
-              "shortMonths": [
-              this.trans("visualcenter.jan"), 
-              this.trans("visualcenter.feb"),
-              this.trans("visualcenter.mar"),
-              this.trans("visualcenter.apr"),
-              this.trans("visualcenter.may"),
-              this.trans("visualcenter.june"),
-              this.trans("visualcenter.july"),
-              this.trans("visualcenter.aug"),
-              this.trans("visualcenter.sept"),
-              this.trans("visualcenter.oct"),
-              this.trans("visualcenter.nov"),
-              this.trans("visualcenter.dec")
+              "months": [
+                this.trans("visualcenter.chartOptions.monthNames.january"),
+                this.trans("visualcenter.chartOptions.monthNames.february"),
+                this.trans("visualcenter.chartOptions.monthNames.march"),
+                this.trans("visualcenter.chartOptions.monthNames.april"),
+                this.trans("visualcenter.chartOptions.monthNames.may"),
+                this.trans("visualcenter.chartOptions.monthNames.june"),
+                this.trans("visualcenter.chartOptions.monthNames.july"),
+                this.trans("visualcenter.chartOptions.monthNames.august"),
+                this.trans("visualcenter.chartOptions.monthNames.september"),
+                this.trans("visualcenter.chartOptions.monthNames.october"),
+                this.trans("visualcenter.chartOptions.monthNames.november"),
+                this.trans("visualcenter.chartOptions.monthNames.december"),
               ],
-              "days": ["Воскресенье", "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"],
-              "shortDays": ["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"],
+              "shortMonths": [
+                this.trans("visualcenter.jan"),
+                this.trans("visualcenter.feb"),
+                this.trans("visualcenter.mar"),
+                this.trans("visualcenter.apr"),
+                this.trans("visualcenter.may"),
+                this.trans("visualcenter.june"),
+                this.trans("visualcenter.july"),
+                this.trans("visualcenter.aug"),
+                this.trans("visualcenter.sept"),
+                this.trans("visualcenter.oct"),
+                this.trans("visualcenter.nov"),
+                this.trans("visualcenter.dec")
+              ],
             }
           }],
           defaultLocale: "ru",
@@ -84,9 +93,6 @@ export default {
         annotations: {
           yaxis: [{
             y: 30,
-            // label: {
-            //   show: false,
-            // }
           }],
           xaxis: [{
             x: new Date().getTime(),
@@ -123,7 +129,10 @@ export default {
           labels: {
             style: {
               fontSize: '14px'
-            }
+            },
+            formatter: function (value) {
+              return moment(value).format("DD MMM");
+            },
           }
         },
         yaxis: {
@@ -176,9 +185,9 @@ export default {
             },
             custom: function({series, seriesIndex, dataPointIndex, w}) {
               return '<div class="vc-chart-tooltip">' +
-                  '<div>Покупка</div>' +
-                  '<div class="vc-chart-tooltip-value">' + series[seriesIndex][dataPointIndex] + '</div>' +
-                  '</div>'
+                      '<div>' + self.trans("visualcenter.buy") + '</div>' +
+                      '<div class="vc-chart-tooltip-value">' + series[seriesIndex][dataPointIndex] + '</div>' +
+                      '</div>'
             }
           },
         }
@@ -186,7 +195,7 @@ export default {
 
       this.series = [
         {
-          name: 'Продажа',
+          name: this.trans("visualcenter.chartOptions.selling"),
           data: value
         }
       ]
@@ -195,8 +204,8 @@ export default {
       let self = this;
       setTimeout(() => {
         self.$refs.chart.zoomX(
-            self.tableData[0].timestamp,
-            self.tableData[self.tableData.length - 1].timestamp
+                self.tableData[0].timestamp,
+                self.tableData[self.tableData.length - 1].timestamp
         )
       }, 100);
     }

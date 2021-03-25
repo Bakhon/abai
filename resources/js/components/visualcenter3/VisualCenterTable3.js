@@ -1024,7 +1024,7 @@ export default {
         this.changeMenu2();
         this.getStaff();
 
-        this.buttonDailyTab = "button-daily-tab";
+        this.buttonDailyTab = "button-tab-highlighted";
         this.getAccidentTotal();
         this.mainMenuButtonElementOptions = _.cloneDeep(mainMenuConfiguration);
         this.getDzoYearlyPlan();

@@ -95,7 +95,7 @@ export default {
       return options;
     },
     guParams () {
-      let omgngdu = this.gu.omgngdu[0];
+      let omgngdu = this.gu.last_omgngdu;
       if (!omgngdu) {
         return blankGuParams;
       }

@@ -87,7 +87,7 @@ class OilGasController extends CrudController
                     ]
                 ],
                 'gu' => [
-                    'title' => trans('monitoring.gu'),
+                    'title' => trans('monitoring.gu.gu'),
                     'type' => 'select',
                     'filter' => [
                         'values' => \App\Models\Refs\Gu::whereHas('oilgas')
@@ -105,7 +105,7 @@ class OilGasController extends CrudController
                     ]
                 ],
                 'zu' => [
-                    'title' => trans('monitoring.zu'),
+                    'title' => trans('monitoring.zu.zu'),
                     'type' => 'select',
                     'filter' => [
                         'values' => \App\Models\Refs\Zu::whereHas('oilgas')
@@ -123,7 +123,7 @@ class OilGasController extends CrudController
                     ]
                 ],
                 'well' => [
-                    'title' => trans('monitoring.well'),
+                    'title' => trans('monitoring.well.well'),
                     'type' => 'select',
                     'filter' => [
                         'values' => \App\Models\Refs\Well::whereHas('oilgas')
