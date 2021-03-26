@@ -72,6 +72,9 @@
                     <template v-else-if="column.type === 'calc'">
                       <span class="value">{{ row[column.code] ? row[column.code].value : '' }}</span>
                     </template>
+                    <template v-else-if="column.type === 'history_graph'">
+                      <a href="#" @click.prevent="showHistoryGraphDataForRow(row, column)">Посмотреть</a>
+                    </template>
                     <template v-else-if="column.type === 'history'">
                       <a href="#" @click.prevent="showHistoricalDataForRow(row, column)">Посмотреть</a>
                     </template>
@@ -128,6 +131,12 @@
         </div>
       </div>
     </div>
+    <RowHistoryGraph
+        v-if="rowHistoryGraph"
+        :params="rowHistoryGraph"
+        v-on:close="rowHistoryGraph = null"
+    >
+    </RowHistoryGraph>
   </div>
 </template>
 
@@ -138,6 +147,7 @@ import 'vue-datetime/dist/vue-datetime.css'
 import {bTreeView} from 'bootstrap-vue-treeview'
 import {bdFormActions, bdFormState} from '@store/helpers'
 import BigDataHistory from './history'
+import RowHistoryGraph from './RowHistoryGraph'
 
 Vue.use(Datetime)
 
@@ -151,7 +161,8 @@ export default {
   },
   components: {
     bTreeView,
-    BigDataHistory
+    BigDataHistory,
+    RowHistoryGraph
   },
   data() {
     return {
@@ -174,6 +185,7 @@ export default {
       },
       rowHistory: null,
       rowHistoryColumns: [],
+      rowHistoryGraph: null,
     }
   },
   watch: {
@@ -339,6 +351,20 @@ export default {
         this.rowHistory = data
         this.rowHistoryColumns = this.formParams.columns.filter(item => column.fields.indexOf(item.code) > -1)
         this.isloading = false
+      })
+    },
+    showHistoryGraphDataForRow(row, column) {
+      this.isloading = true
+      document.body.classList.add('fixed')
+      this.axios.get(this.localeUrl(`/bigdata/form/${this.params.code}/row-history-graph`), {
+        params: {
+          well_id: row.uwi.id,
+          column: column.code,
+          date: this.date
+        }
+      }).then(({data}) => {
+        this.isloading = false
+        this.rowHistoryGraph = data
       })
     }
   },
