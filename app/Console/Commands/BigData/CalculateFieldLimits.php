@@ -93,9 +93,10 @@ class CalculateFieldLimits extends Command
     {
         $yesterday = \Carbon\CarbonImmutable::yesterday();
         foreach ($fields as $field) {
-            $startDate = $field['custom_period'] ? $yesterday->sub(
-                $field['custom_period']
-            ) : $yesterday->subMonthNoOverflow();
+            $startDate = $yesterday->subMonthNoOverflow();
+            if ($field['custom_period']) {
+                $startDate = $yesterday->sub($field['custom_period']);
+            }
 
             $query = DB::connection('tbd')
                 ->table($field['table'])
@@ -134,10 +135,10 @@ class CalculateFieldLimits extends Command
             $avg
         );
 
-        return [
-            'min' => round($avg - $deviation * self::DEVIATION_COEFFICIENT, 2),
-            'max' => round($avg + $deviation * self::DEVIATION_COEFFICIENT, 2),
-        ];
+        $min = $avg - $deviation * self::DEVIATION_COEFFICIENT;
+        $max = $avg + $deviation * self::DEVIATION_COEFFICIENT;
+
+        return $this->getRoundedValues($min, $max);
     }
 
     /**
@@ -152,5 +153,23 @@ class CalculateFieldLimits extends Command
         );
 
         return sqrt($sum / ($collection->count() - 1));
+    }
+
+    private function getRoundedValues(float $min, float $max)
+    {
+        if (abs($min) < 1 || abs($max) < 1) {
+            $min = floor($min * 100) / 100;
+            $max = ceil($max * 100) / 100;
+        } elseif (abs($min) < 10 || abs($max) < 10) {
+            $min = floor($min * 10) / 10;
+            $max = ceil($max * 10) / 10;
+        } else {
+            $min = floor($min);
+            $max = ceil($max);
+        }
+        return [
+            'min' => $min,
+            'max' => $max,
+        ];
     }
 }

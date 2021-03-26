@@ -191,8 +191,10 @@ export default {
   },
   mounted() {
 
+    this.isloading = true
     this.updateForm(this.params.code).then(data => {
       this.filterTree = data.filterTree
+      this.isloading = false
     })
 
   },
@@ -285,53 +287,60 @@ export default {
 
       return true
     },
-    saveCell(row, column) {
+    async saveCell(row, column) {
 
-      if (!this.checkLimits(row, column)) return
-      let data = {
-        well_id: row.uwi.id,
-        date: this.date,
-      }
-      data[column.code] = row[column.code].value
-      this.isloading = true
+      this.checkLimits(row, column).then(result => {
+        if (result === true) {
 
-      this.axios
-          .patch(this.localeUrl(`/bigdata/form/${this.params.code}/save/${column.code}`), data)
-          .then(({data}) => {
-            row[column.code].date = null
-            this.editableCell = {
-              row: null,
-              cell: null
-            }
-            this.recalculateCells()
-          })
-          .catch(error => {
-            Vue.set(this.errors, column.code, error.response.data.errors)
-          })
-          .finally(() => {
-            this.isloading = false
-          })
+          let data = {
+            well_id: row.uwi.id,
+            date: this.date,
+          }
+          data[column.code] = row[column.code].value
+          this.isloading = true
+
+          this.axios
+              .patch(this.localeUrl(`/bigdata/form/${this.params.code}/save/${column.code}`), data)
+              .then(({data}) => {
+                row[column.code].date = null
+                this.editableCell = {
+                  row: null,
+                  cell: null
+                }
+                this.recalculateCells()
+              })
+              .catch(error => {
+                Vue.set(this.errors, column.code, error.response.data.errors)
+              })
+              .finally(() => {
+                this.isloading = false
+              })
+
+        }
+      })
 
     },
     checkLimits(row, column) {
+      return new Promise((resolve, reject) => {
+        if (!row[column.code].limits || row[column.code].limits.length === 0) {
+          resolve(true)
+          return
+        }
 
-      if (!row[column.code].limits || row[column.code].limits.length === 0) return true
+        if (row[column.code].value >= row[column.code].limits.min && row[column.code].value <= row[column.code].limits.max) {
+          resolve(true)
+          return
+        }
 
-      if (row[column.code].value >= row[column.code].limits.min && row[column.code].value <= row[column.code].limits.max) {
-        return true
-      }
-
-      let isConfirmed
-      let message = `Данное значение выходит за ограничения (${row[column.code].limits.min}, ${row[column.code].limits.max}). Вы уверены, что хотите сохранить изменения?`
-      this.$bvModal.msgBoxConfirm(message)
-          .then(result => {
-            isConfirmed = result
-          })
-          .catch(err => {
-            return false
-          })
-
-      return isConfirmed
+        let message = `Данное значение выходит за ограничения (${row[column.code].limits.min}, ${row[column.code].limits.max}). Вы уверены, что хотите сохранить изменения?`
+        this.$bvModal.msgBoxConfirm(message, {
+          okTitle: this.trans('app.yes'),
+          cancelTitle: this.trans('app.no'),
+        })
+            .then(result => {
+              resolve(result)
+            })
+      })
     },
     changePage(page = 1) {
       this.currentPage = page
