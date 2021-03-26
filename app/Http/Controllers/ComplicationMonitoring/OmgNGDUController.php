@@ -402,32 +402,31 @@ class OmgNGDUController extends CrudController
         return (new OmgNGDUFilter($query, $filter))->filter();
     }
 
-    protected function getLastCorrosion(int $gu_id, string $date): ?Corrosion
+    protected function getLastCorrosion(int $guId, string $date): ?Corrosion
     {
-        $lastInhibitorCorrosion = Corrosion::where('gu_id', $gu_id)
+        $lastInhibitorCorrosion = Corrosion::where('gu_id', $guId)
             ->whereNotNull('corrosion_velocity_with_inhibitor')
             ->where('start_date_of_corrosion_velocity_with_inhibitor_measure', '<=', $date)
             ->orderByDesc('start_date_of_corrosion_velocity_with_inhibitor_measure')
             ->first();
 
-        $lastBackgroundCorrosion = Corrosion::where('gu_id', $gu_id)
+        $lastBackgroundCorrosion = Corrosion::where('gu_id', $guId)
             ->whereNotNull('background_corrosion_velocity')
             ->where('start_date_of_background_corrosion', '<=', $date)
             ->orderByDesc('start_date_of_background_corrosion')
             ->first();
 
-        if ($lastInhibitorCorrosion && $lastBackgroundCorrosion) {
+        if (is_null($lastInhibitorCorrosion)) {
+            return $lastBackgroundCorrosion;
+        } else if (is_null($lastBackgroundCorrosion)) {
+            return $lastInhibitorCorrosion;
+        } else {
             if (Carbon::parse($lastInhibitorCorrosion->start_date_of_corrosion_velocity_with_inhibitor_measure) >=
                 Carbon::parse($lastBackgroundCorrosion->start_date_of_background_corrosion)) {
                 return $lastInhibitorCorrosion;
             } else {
                 return $lastBackgroundCorrosion;
             }
-        }
-        else if (is_null($lastInhibitorCorrosion)) {
-            return $lastBackgroundCorrosion;
-        } else if (is_null($lastBackgroundCorrosion)) {
-            return $lastInhibitorCorrosion;
         }
 
         return null;
