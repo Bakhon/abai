@@ -306,20 +306,21 @@ class FluidProduction extends TableForm
             }
         );
 
-        foreach ($techData as &$tech) {
-            if (!empty($tech['parent_id'])) {
-                if (empty($techData[$tech['parent_id']])) {
-                    $tech['parent_id'] = null;
-                    continue;
-                }
-
-                $techData[$tech['parent_id']]['wells'] = array_unique(
-                    array_merge(
-                        $techData[$tech['parent_id']]['wells'],
-                        $tech['wells']
-                    )
-                );
+        foreach ($techData as $key => $tech) {
+            if (empty($tech['parent_id'])) {
+                continue;
             }
+            if (empty($techData[$tech['parent_id']])) {
+                $techData[$key]['parent_id'] = null;
+                continue;
+            }
+
+            $techData[$tech['parent_id']]['wells'] = array_unique(
+                array_merge(
+                    $techData[$tech['parent_id']]['wells'],
+                    $tech['wells']
+                )
+            );
         }
 
         Cache::put('bd_tech_with_wells_' . $this->request->get('date'), $techData, now()->addDay());
