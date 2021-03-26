@@ -418,17 +418,17 @@ class OmgNGDUController extends CrudController
 
         if (is_null($lastInhibitorCorrosion)) {
             return $lastBackgroundCorrosion;
-        } else if (is_null($lastBackgroundCorrosion)) {
-            return $lastInhibitorCorrosion;
-        } else {
-            if (Carbon::parse($lastInhibitorCorrosion->start_date_of_corrosion_velocity_with_inhibitor_measure) >=
-                Carbon::parse($lastBackgroundCorrosion->start_date_of_background_corrosion)) {
-                return $lastInhibitorCorrosion;
-            } else {
-                return $lastBackgroundCorrosion;
-            }
         }
 
-        return null;
+        if (is_null($lastBackgroundCorrosion)) {
+            return $lastInhibitorCorrosion;
+        }
+
+        if (Carbon::parse($lastInhibitorCorrosion->start_date_of_corrosion_velocity_with_inhibitor_measure) >=
+            Carbon::parse($lastBackgroundCorrosion->start_date_of_background_corrosion)) {
+            return $lastInhibitorCorrosion;
+        } else {
+            return $lastBackgroundCorrosion;
+        }
     }
 }
