@@ -23,11 +23,11 @@
               </div>
               <div class="choosing-well-data table-border-gno-top  col-7">
                 {{trans('pgno.new_well')}}
-                <input :checked="age === true" v-model="age" class="checkbox0" type="checkbox" />
+                <input :checked="isYoungAge === true" v-model="isYoungAge" class="checkbox0" type="checkbox" />
               </div>
               <div class="choosing-well-data table-border-gno table-border-gno-top cell4-gno-second  col-5">
                 {{trans('pgno.grp')}}
-                <input class="checkbox0" v-model="hasGrp" :disabled="!age" type="checkbox" />
+                <input class="checkbox0" v-model="hasGrp" :disabled="!isYoungAge" type="checkbox" />
               </div>
 
               <div class="choosing-well-data table-border-gno-top  col-7">{{trans('pgno.horizon')}}</div>
@@ -2085,7 +2085,7 @@ export default {
       type: String,
       required: true,
       wellNumber: null,
-      age: false,
+      isYoungAge: false,
       horizon: null,
       x: null,
       y: null,
@@ -2303,7 +2303,7 @@ export default {
     },
     getOnPgnoButtonTitle() {
      var langUrl = `${window.location.pathname}`.slice(1, 3);
-            if(this.isVisibleChart) {
+      if(this.isVisibleChart) {
         if(langUrl === 'ru') {
           return 'Подбор ГНО'
         } else if(langUrl === 'kz') {
@@ -2351,7 +2351,7 @@ export default {
           "celSelect": this.CelButton,
           "celValue": this.CelValue.split(' ')[0],
           "menu": this.menu,
-          "well_age": this.age,
+          "well_age": this.isYoungAge,
           "grp_skin": this.hasGrp,
           "analysisBox1": this.isAnalysisBoxValue1,
           "analysisBox2": this.isAnalysisBoxValue2,
@@ -2393,7 +2393,7 @@ export default {
           "celSelect": this.CelButton,
           "celValue": this.CelValue.split(' ')[0],
           "menu": this.menu,
-          "well_age": this.age,
+          "well_age": this.isYoungAge,
           "grp_skin": this.hasGrp,
           "analysisBox1": this.isAnalysisBoxValue1,
           "analysisBox2": this.isAnalysisBoxValue2,
@@ -2462,7 +2462,7 @@ export default {
         this.ngdu = data["Well Data"]["ngdu"][0]
         this.sk = data["Well Data"]["sk_type"][0]
         this.wellNumber = data["Well Data"]["well"][0].split("_")[1]
-        this.age = data["Age"]
+        this.isYoungAge = data["Age"]
         this.horizon = data["Well Data"]["horizon"][0]
         this.expMeth = data["Well Data"]["exp_meth"][0]
         this.tseh = data["Well Data"]["tseh"][0]
@@ -2546,23 +2546,13 @@ export default {
         this.qlCelButton = true
         this.qlCelValue = this.qLInput
         this.hPumpValue = this.hPumpSet + ' м'
-
-
-        // if (this.expMeth == "ШГН") {
-        //   this.expChoose = "ШГН"
-        // } 
-        // if (this.expMeth == "ЭЦН" || this.expMeth == "УЭЦН") {
-        //   this.expChoose = "ЭЦН"
-        // } else if (this.expMeth == "ФОН") {
-        //   this.expChoose = "ФОН"
-        // }
         
         this.expChoose = this.expMeth
         if (this.expMeth === "УЭЦН") {
           this.expChoose = "ЭЦН"
         }
 
-        if (this.age) {
+        if (this.isYoungAge) {
           this.curveSelect = 'pi'
         } else {
           if (this.expMeth === "ФОН"){
@@ -2700,7 +2690,7 @@ export default {
       this.postCurveData()
       this.setLine(this.curveLineData)
       this.setPoints(this.curvePointsData)
-      if (this.age) {
+      if (this.isYoungAge) {
         this.postAnalysisNew();
         this.$modal.show('modalNewWell');
       } else {
@@ -2788,7 +2778,7 @@ export default {
         this.param_eco=1;
         await this.EconomCalc();
       } else if (prs1==0 && prs2==0){
-        if(this.age){
+        if(this.isYoungAge){
           this.param_eco=1;
           await this.EconomCalc();
         } else {
@@ -2898,7 +2888,6 @@ export default {
             .finally(() => {
               this.isLoading = false;
             });
-        //microservise na SHGN NNO
 
 
         var data = JSON.parse(responses[0].data.Result)
@@ -2935,7 +2924,7 @@ export default {
     },
 
     InclMenu() {
-      if (this.age === true) {
+      if (this.isYoungAge === true) {
         var langUrl = `${window.location.pathname}`.slice(1, 3);
         if(langUrl === 'ru') {
           Vue.prototype.$notifyWarning("Данные инклинометрии новой скважины отсутствуют");
@@ -3067,7 +3056,7 @@ export default {
             this.curvePointsData = JSON.parse(data.PointsData)["data"]
             this.horizon = data["Well Data"]["horizon"][0]
             this.curveSelect = 'pi'
-            this.age = data["Age"]
+            this.isYoungAge = data["Age"]
 
 
             this.PBubblePoint = data["Well Data"]["P_bubble_point"][0].toFixed(1)
