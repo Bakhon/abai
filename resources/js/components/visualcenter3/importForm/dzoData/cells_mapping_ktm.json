@@ -1,0 +1,452 @@
+{
+  "oilDzo": {
+    "fields": [
+      "oil_production_fact",
+      "oil_delivery_fact",
+      "oil_delivery_by_stations_fact"
+    ],
+    "rowIndex": 1,
+    "rowLength": 3
+  },
+  "condensateDzo": {
+    "fields": [
+      "condensate_production_fact",
+      "condensate_delivery_fact",
+      "condensate_delivery_by_stations_fact"
+    ],
+    "rowIndex": 6,
+    "rowLength": 3
+  },
+  "stockOfGoodsDzo": {
+    "fields": [
+      "stock_of_goods_delivery_fact"
+    ],
+    "rowIndex": 11,
+    "rowLength": 1
+  },
+  "naturalGasDzo": {
+    "fields": [
+      "natural_gas_production_fact",
+      "natural_gas_delivery_fact",
+      "natural_gas_expenses_for_own_fact",
+      "natural_gas_processing_fact",
+      "natural_gas_flaring_fact"
+    ],
+    "rowIndex": 16,
+    "rowLength": 5
+  },
+  "associatedGasDzo": {
+    "fields": [
+      "associated_gas_production_fact",
+      "associated_gas_delivery_fact",
+      "associated_gas_expenses_for_own_fact",
+      "associated_gas_processing_fact",
+      "associated_gas_flaring_fact"
+    ],
+    "rowIndex": 21,
+    "rowLength": 5
+  },
+  "agentUploadDzo": {
+    "fields": [
+      "agent_upload_total_water_injection_fact",
+      "agent_upload_seawater_injection_fact",
+      "agent_upload_waste_water_injection_fact",
+      "agent_upload_albsenomanian_water_injection_fact",
+      "agent_upload_stream_injection_fact"
+    ],
+    "rowIndex": 26,
+    "rowLength": 5
+  },
+  "otmDzo": {
+    "fields": [
+      "otm_wells_commissioning_from_drilling_fact",
+      "otm_drilling_fact",
+      "otm_well_workover_fact",
+      "otm_underground_workover"
+    ],
+    "rowIndex": 31,
+    "rowLength": 4
+  },
+  "operatingFond": {
+    "fields": [
+      "operating_production_fond",
+      "operating_injection_fond"
+    ],
+    "rowIndex": 56,
+    "rowLength": 2
+  },
+  "activeFond": {
+    "fields": [
+      "active_production_fond",
+      "active_injection_fond"
+    ],
+    "rowIndex": 57,
+    "rowLength": 2
+  },
+  "inWorkFond": {
+    "fields": [
+      "in_work_production_fond",
+      "in_work_injection_fond"
+    ],
+    "rowIndex": 58,
+    "rowLength": 2
+  },
+  "inIdleFond": {
+    "fields": [
+      "in_idle_production_fond",
+      "in_idle_injection_fond"
+    ],
+    "rowIndex": 59,
+    "rowLength": 2
+  },
+  "inactiveFond": {
+    "fields": [
+      "inactive_production_fond",
+      "inactive_injection_fond"
+    ],
+    "rowIndex": 60,
+    "rowLength": 2
+  },
+  "developingFond": {
+    "fields": [
+      "developing_production_fond",
+      "developing_injection_fond"
+    ],
+    "rowIndex": 61,
+    "rowLength": 2
+  },
+  "pendingLiquidationFond": {
+    "fields": [
+      "pending_liquidation_production_fond",
+      "pending_liquidation_injection_fond"
+    ],
+    "rowIndex": 62,
+    "rowLength": 2
+  },
+  "inConservationFond": {
+    "fields": [
+      "in_conservation_production_fond",
+      "in_conservation_injection_fond"
+    ],
+    "rowIndex": 63,
+    "rowLength": 2
+  },
+  "fields": {
+    "oil": {
+      "ЦДНГ №1 (месторождения: Западный Елемес, Восточное Сазтобе, Юго-Восточное Сазтобе, Северо-Восточное Сазтобе, ПСН Опорная)": {
+        "fields": [
+          "oil_production_fact",
+          "oil_delivery_fact",
+          "oil_delivery_by_stations_fact"
+        ],
+        "rowIndex": 2,
+        "rowLength": 3
+      },
+      "ЦДНГ №2 (месторождения: Лактыбай, Южное Каратобе, ГНПС Кенкияк)": {
+        "fields": [
+          "oil_production_fact",
+          "oil_delivery_fact",
+          "oil_delivery_by_stations_fact"
+        ],
+        "rowIndex": 3,
+        "rowLength": 3
+      }
+    },
+    "condensate": {
+      "ЦДНГ №1 (месторождения: Западный Елемес, Восточное Сазтобе, Юго-Восточное Сазтобе, Северо-Восточное Сазтобе, ПСН Опорная)": {
+        "fields": [
+          "condensate_production_fact",
+          "condensate_delivery_fact",
+          "condensate_delivery_by_stations_fact"
+        ],
+        "rowIndex": 7,
+        "rowLength": 3
+      },
+      "ЦДНГ №2 (месторождения: Лактыбай, Южное Каратобе, ГНПС Кенкияк)": {
+        "fields": [
+          "condensate_production_fact",
+          "condensate_delivery_fact",
+          "condensate_delivery_by_stations_fact"
+        ],
+        "rowIndex": 8,
+        "rowLength": 3
+      }
+    },
+    "stockOfGoods": {
+      "ЦДНГ №1 (месторождения: Западный Елемес, Восточное Сазтобе, Юго-Восточное Сазтобе, Северо-Восточное Сазтобе, ПСН Опорная)": {
+        "fields": [
+          "stock_of_goods_delivery_fact"
+        ],
+        "rowIndex": 12,
+        "rowLength": 1
+      },
+      "ЦДНГ №2 (месторождения: Лактыбай, Южное Каратобе, ГНПС Кенкияк)": {
+        "fields": [
+          "stock_of_goods_delivery_fact"
+        ],
+        "rowIndex": 13,
+        "rowLength": 1
+      }
+    },
+    "naturalGas": {
+      "ЦДНГ №1 (месторождения: Западный Елемес, Восточное Сазтобе, Юго-Восточное Сазтобе, Северо-Восточное Сазтобе, ПСН Опорная)": {
+        "fields": [
+          "natural_gas_production_fact",
+          "natural_gas_delivery_fact",
+          "natural_gas_expenses_for_own_fact",
+          "natural_gas_processing_fact",
+          "natural_gas_flaring_fact"
+        ],
+        "rowIndex": 16,
+        "rowLength": 5
+      },
+      "ЦДНГ №2 (месторождения: Лактыбай, Южное Каратобе, ГНПС Кенкияк)": {
+        "fields": [
+          "natural_gas_production_fact",
+          "natural_gas_delivery_fact",
+          "natural_gas_expenses_for_own_fact",
+          "natural_gas_processing_fact",
+          "natural_gas_flaring_fact"
+        ],
+        "rowIndex": 17,
+        "rowLength": 5
+      }
+    },
+    "associatedGas": {
+      "ЦДНГ №1 (месторождения: Западный Елемес, Восточное Сазтобе, Юго-Восточное Сазтобе, Северо-Восточное Сазтобе, ПСН Опорная)": {
+        "fields": [
+          "associated_gas_production_fact",
+          "associated_gas_delivery_fact",
+          "associated_gas_expenses_for_own_fact",
+          "associated_gas_processing_fact",
+          "associated_gas_flaring_fact"
+        ],
+        "rowIndex": 22,
+        "rowLength": 5
+      },
+      "ЦДНГ №2 (месторождения: Лактыбай, Южное Каратобе, ГНПС Кенкияк)": {
+        "fields": [
+          "associated_gas_production_fact",
+          "associated_gas_delivery_fact",
+          "associated_gas_expenses_for_own_fact",
+          "associated_gas_processing_fact",
+          "associated_gas_flaring_fact"
+        ],
+        "rowIndex": 23,
+        "rowLength": 5
+      }
+    },
+    "agentUpload": {
+      "ЦДНГ №1 (месторождения: Западный Елемес, Восточное Сазтобе, Юго-Восточное Сазтобе, Северо-Восточное Сазтобе, ПСН Опорная)": {
+        "fields": [
+          "agent_upload_total_water_injection_fact",
+          "agent_upload_seawater_injection_fact",
+          "agent_upload_waste_water_injection_fact",
+          "agent_upload_albsenomanian_water_injection_fact",
+          "agent_upload_stream_injection_fact"
+        ],
+        "rowIndex": 27,
+        "rowLength": 5
+      },
+      "ЦДНГ №2 (месторождения: Лактыбай, Южное Каратобе, ГНПС Кенкияк)": {
+        "fields": [
+          "agent_upload_total_water_injection_fact",
+          "agent_upload_seawater_injection_fact",
+          "agent_upload_waste_water_injection_fact",
+          "agent_upload_albsenomanian_water_injection_fact",
+          "agent_upload_stream_injection_fact"
+        ],
+        "rowIndex": 28,
+        "rowLength": 5
+      }
+    },
+    "otm": {
+      "ЦДНГ №1 (месторождения: Западный Елемес, Восточное Сазтобе, Юго-Восточное Сазтобе, Северо-Восточное Сазтобе, ПСН Опорная)": {
+        "fields": [
+          "otm_wells_commissioning_from_drilling_fact",
+          "otm_drilling_fact",
+          "otm_well_workover_fact",
+          "otm_underground_workover"
+        ],
+        "rowIndex": 32,
+        "rowLength": 4
+      },
+      "ЦДНГ №2 (месторождения: Лактыбай, Южное Каратобе, ГНПС Кенкияк)": {
+        "fields": [
+          "otm_wells_commissioning_from_drilling_fact",
+          "otm_drilling_fact",
+          "otm_well_workover_fact",
+          "otm_underground_workover"
+        ],
+        "rowIndex": 33,
+        "rowLength": 4
+      }
+    }
+  },
+  "downtimeReason": {
+    "prs": {
+      "fields": ["prs_downtime_production_wells_count","prs_downtime_production_wells_oil_loss","prs_downtime_injection_wells_count"],
+      "rowIndex": 37,
+      "rowLength": 3
+    },
+    "prsWait": {
+      "fields": ["prs_wait_downtime_production_wells_count","prs_wait_downtime_production_wells_oil_loss","prs_wait_downtime_injection_wells_count"],
+      "rowIndex": 38,
+      "rowLength": 3
+    },
+    "krs": {
+      "fields": ["krs_downtime_production_wells_count","krs_downtime_production_wells_oil_loss","krs_downtime_injection_wells_count"],
+      "rowIndex": 39,
+      "rowLength": 3
+    },
+    "krsWait": {
+      "fields": ["krs_wait_downtime_production_wells_count","krs_wait_downtime_production_wells_oil_loss","krs_wait_downtime_injection_wells_count"],
+      "rowIndex": 40,
+      "rowLength": 3
+    },
+    "wellSurvey": {
+      "fields": ["well_survey_downtime_production_wells_count","well_survey_downtime_production_wells_oil_loss","well_survey_downtime_injection_wells_count"],
+      "rowIndex": 41,
+      "rowLength": 3
+    },
+    "other": {
+      "fields": ["other_downtime_production_wells_count","other_downtime_production_wells_oil_loss","other_downtime_injection_wells_count"],
+      "rowIndex": 42,
+      "rowLength": 3
+    },
+    "glut": {
+      "fields": ["glut_downtime_production_wells_count","glut_downtime_production_wells_oil_loss","glut_downtime_injection_wells_count"],
+      "rowIndex": 43,
+      "rowLength": 3
+    },
+    "impulse": {
+      "fields": ["impulse_replacement_downtime_production_wells_count","impulse_replacement_downtime_production_wells_oil_loss","impulse_replacement_downtime_injection_wells_count"],
+      "rowIndex": 44,
+      "rowLength": 3
+    },
+    "electricalPart": {
+      "fields": ["electrical_part_downtime_production_wells_count","electrical_part_downtime_production_wells_oil_loss","electrical_part_downtime_injection_wells_count"],
+      "rowIndex": 45,
+      "rowLength": 3
+    },
+    "groundRepair": {
+      "fields": ["ground_repair_downtime_production_wells_count","ground_repair_downtime_production_wells_oil_loss","ground_repair_downtime_injection_wells_count"],
+      "rowIndex": 46,
+      "rowLength": 3
+    },
+    "periodicDowntime": {
+      "fields": ["periodic_downtime_production_wells_count","periodic_downtime_production_wells_oil_loss","periodic_downtime_injection_wells_count"],
+      "rowIndex": 47,
+      "rowLength": 3
+    },
+    "productionRestriction": {
+      "fields": ["production_restriction_downtime_production_wells_count","production_restriction_downtime_production_wells_oil_loss","production_restriction_downtime_injection_wells_count"],
+      "rowIndex": 48,
+      "rowLength": 3
+    },
+    "wellTreatment": {
+      "fields": ["well_treatment_downtime_production_wells_count","well_treatment_downtime_production_wells_oil_loss","well_treatment_downtime_injection_wells_count"],
+      "rowIndex": 49,
+      "rowLength": 3
+    },
+    "highlyWatered": {
+      "fields": ["highly_watered_downtime_production_wells_count","highly_watered_downtime_production_wells_oil_loss","highly_watered_downtime_injection_wells_count"],
+      "rowIndex": 50,
+      "rowLength": 3
+    },
+    "limitedDownload": {
+      "fields": ["limited_download_downtime_production_wells_count","limited_download_downtime_production_wells_oil_loss","limited_download_downtime_injection_wells_count"],
+      "rowIndex": 51,
+      "rowLength": 3
+    },
+    "profileAlignment": {
+      "fields": ["profile_alignment_downtime_production_wells_count","profile_alignment_downtime_production_wells_oil_loss","profile_alignment_downtime_injection_wells_count"],
+      "rowIndex": 52,
+      "rowLength": 3
+    },
+    "coiltubing": {
+      "fields": ["coiltubing_downtime_production_wells_count","coiltubing_downtime_production_wells_oil_loss","coiltubing_downtime_injection_wells_count"],
+      "rowIndex": 53,
+      "rowLength": 3
+    }
+  },
+  "decreaseReason": {
+    "opec": {
+      "fields": [
+        "opec_explanation_reasons",
+        "opec_measures_taken",
+        "opec_wells_number",
+        "opec_downtime",
+        "opec_oil_losses"
+      ],
+      "rowIndex": 66,
+      "rowLength": 5
+    },
+    "impulse": {
+      "fields": [
+        "impulse_explanation_reasons",
+        "impulse_measures_taken",
+        "impulse_wells_number",
+        "impulse_downtime",
+        "impulse_oil_losses"
+      ],
+      "rowIndex": 67,
+      "rowLength": 5
+    },
+    "shutdown": {
+      "fields": [
+        "shutdown_explanation_reasons",
+        "shutdown_measures_taken",
+        "shutdown_wells_number",
+        "shutdown_downtime",
+        "shutdown_oil_losses"
+      ],
+      "rowIndex": 68,
+      "rowLength": 5
+    },
+    "accident": {
+      "fields": [
+        "accident_explanation_reasons",
+        "accident_measures_taken",
+        "accident_wells_number",
+        "accident_downtime",
+        "accident_oil_losses"
+      ],
+      "rowIndex": 69,
+      "rowLength": 5
+    },
+    "restrictionKto": {
+      "fields": [
+        "restriction_kto_explanation_reasons",
+        "restriction_kto_measures_taken",
+        "restriction_kto_wells_number",
+        "restriction_kto_downtime",
+        "restriction_kto_oil_losses"
+      ],
+      "rowIndex": 70,
+      "rowLength": 5
+    },
+    "gasRestriction": {
+      "fields": [
+        "gas_restriction_explanation_reasons",
+        "gas_restriction_measures_taken",
+        "gas_restriction_wells_number",
+        "gas_restriction_downtime",
+        "gas_restriction_oil_losses"
+      ],
+      "rowIndex": 71,
+      "rowLength": 5
+    },
+    "other": {
+      "fields": [
+        "other_explanation_reasons",
+        "other_measures_taken",
+        "other_wells_number",
+        "other_downtime",
+        "other_oil_losses"
+      ],
+      "rowIndex": 72,
+      "rowLength": 5
+    }
+  }
+}

@@ -148,7 +148,7 @@ Vue.component('tr_mode-table', require('./components/tr/tech_mode.vue').default)
 
 
 Vue.component('viscenter2-create', require('./components/visualcenter/viscenter2/create.vue').default);
-Vue.component('visualcenter3-excelform', require('./components/visualcenter3/ExcelForm.vue').default);
+Vue.component('visualcenter3-excelform', require('./components/visualcenter3/importForm/ExcelForm.vue').default);
 
 Vue.component('big-data', require('./components/bigdata/BigData.vue').default);
 Vue.component('las', require('./components/bigdata/Las.vue').default);
