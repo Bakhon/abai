@@ -31,42 +31,50 @@ const dzoMapping = {
     "КОА" : {
         rows: initialRowsKOA,
         format: formatMappingKOA,
-        cells: cellsMappingKOA
+        cells: cellsMappingKOA,
+        id: 101
     },
     "КТМ" : {
         rows: initialRowsKTM,
         format: formatMappingKTM,
-        cells: cellsMappingKTM
+        cells: cellsMappingKTM,
+        id: 80
     },
     "КБМ" : {
         rows: initialRowsKBM,
         format: formatMappingKBM,
-        cells: cellsMappingKBM
+        cells: cellsMappingKBM,
+        id: 101
     },
     "КГМ" : {
         rows: initialRowsKGM,
         format: formatMappingKGM,
-        cells: cellsMappingKGM
+        cells: cellsMappingKGM,
+        id: 101
     },
     "ММГ" : {
         rows: initialRowsMMG,
         format: formatMappingMMG,
-        cells: cellsMappingMMG
+        cells: cellsMappingMMG,
+        id: 101
     },
     "ОМГ" : {
         rows: initialRowsOMG,
         format: formatMappingOMG,
-        cells: cellsMappingOMG
+        cells: cellsMappingOMG,
+        id: 101
     },
     "УО" : {
         rows: initialRowsYO,
         format: formatMappingYO,
-        cells: cellsMappingYO
+        cells: cellsMappingYO,
+        id: 101
     },
     "ЕМГ" : {
         rows: initialRowsEMG,
         format: formatMappingEMG,
-        cells: cellsMappingEMG
+        cells: cellsMappingEMG,
+        id: 101
     },
 };
 
@@ -142,21 +150,32 @@ export default {
             chemistryErrorFields: [],
         };
     },
+    props: ['userId'],
     async mounted() {
+        this.selectedDzo.ticker = this.getDzoTicker();
+        this.changeDefaultDzo();
         this.dzoPlans = await this.getDzoMonthlyPlans();
         this.selectedDzo.plans = this.getSelectedDzoPlans();
         await this.sleep(1500);
         this.setTableFormat();
     },
     methods: {
-        async dzoChange($event) {
-            let dzoTicker = $event.target.value;
-            this.selectedDzo.ticker = dzoTicker;
-            this.cellsMapping = _.cloneDeep(dzoMapping[dzoTicker].cells);
-            this.rowsFormatMapping = _.cloneDeep(dzoMapping[dzoTicker].format.rowsFormatMapping);
-            this.columnsFormatMapping = _.cloneDeep(dzoMapping[dzoTicker].format.columnsFormatMapping);
-            this.rowsCount = _.cloneDeep(dzoMapping[dzoTicker].rows).length + 2;
-            this.rows = _.cloneDeep(dzoMapping[dzoTicker].rows);
+        getDzoTicker() {
+            let dzoTicker = '';
+            let self = this;
+            _.forEach(Object.keys(dzoMapping), function(key) {
+               if (dzoMapping[key].id === self.userId) {
+                   dzoTicker = key;
+               }
+            });
+            return dzoTicker;
+        },
+        async changeDefaultDzo() {
+            this.cellsMapping = _.cloneDeep(dzoMapping[this.selectedDzo.ticker].cells);
+            this.rowsFormatMapping = _.cloneDeep(dzoMapping[this.selectedDzo.ticker].format.rowsFormatMapping);
+            this.columnsFormatMapping = _.cloneDeep(dzoMapping[this.selectedDzo.ticker].format.columnsFormatMapping);
+            this.rowsCount = _.cloneDeep(dzoMapping[this.selectedDzo.ticker].rows).length + 2;
+            this.rows = _.cloneDeep(dzoMapping[this.selectedDzo.ticker].rows);
             await this.sleep(100);
             this.disableHighlightOnCells();
             this.setTableFormat();

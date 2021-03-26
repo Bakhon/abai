@@ -17,7 +17,8 @@
                 </div>
                 <select
                         class="dzo-select col-12"
-                        @change="dzoChange($event)"
+                        disabled
+                        v-model="selectedDzo.ticker"
                 >
                     <option v-for="dzo in dzoCompanies" :value="dzo.ticker">
                         {{dzo.name}}
