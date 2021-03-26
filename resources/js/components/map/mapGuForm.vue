@@ -95,21 +95,11 @@ export default {
       return options;
     },
     guParams () {
-      let omgngdu = this.gu.last_omgngdu;
-      if (!omgngdu) {
+      if (!this.gu.last_omgngdu) {
         return blankGuParams;
       }
 
-      let daily_water_production = (omgngdu.daily_fluid_production * omgngdu.bsw)/100;
-      return {
-        daily_fluid_production: omgngdu.daily_fluid_production,
-        daily_oil_production: omgngdu.daily_oil_production,
-        heater_output_pressure: omgngdu.heater_output_pressure,
-        pump_discharge_pressure: omgngdu.pump_discharge_pressure,
-        bsw: omgngdu.bsw,
-        daily_water_production: daily_water_production,
-        date: omgngdu.date
-      }
+      return this.gu.last_omgngdu;
     }
   },
 }

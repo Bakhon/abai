@@ -282,7 +282,6 @@ export default {
           if (object) {
             if (object.cdng_id && object.last_omgngdu) {
               let guParams = object.last_omgngdu;
-              guParams.daily_water_production = (guParams.daily_fluid_production * guParams.bsw) / 100;
               guParams.name = object.name;
 
               return {
