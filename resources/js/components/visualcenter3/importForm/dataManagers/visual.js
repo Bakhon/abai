@@ -71,7 +71,7 @@ export default {
                     },
                 },
             ],
-            rowsCount: 75,
+            rowsCount: 85,
             columnsCountForHighlight: {
                 sixColumns: [0,1,2,3,4,5],
                 fiveColumns: [0,1,2,3,4],
@@ -97,16 +97,20 @@ export default {
         setTableFormat() {
             for (let rowIndex = 0; rowIndex < this.rowsCount; rowIndex++) {
                 if (this.rowsFormatMapping.title.includes(rowIndex)) {
-                    this.selectClassForCell(rowIndex,this.getColumnsForHighLight(rowIndex),'cell-title');
+                    this.selectClassForCell(rowIndex,this.getColumnsForHighLight(rowIndex),'cell-title','add');
                 } else if (this.rowsFormatMapping.subTitle.includes(rowIndex)) {
-                    this.selectClassForCell(rowIndex,this.getColumnsForHighLight(rowIndex),'cell-subtitle');
+                    this.selectClassForCell(rowIndex,this.getColumnsForHighLight(rowIndex),'cell-subtitle','add');
                 }
             }
         },
-        selectClassForCell(rowIndex,columnsList,className) {
+        selectClassForCell(rowIndex,columnsList,className,action) {
             let self = this;
             columnsList.forEach(function(columnIndex) {
-                self.setClassToElement($('div[data-col="'+ columnIndex + '"][data-row="' + rowIndex + '"]'),className);
+                if (action === 'add') {
+                    self.setClassToElement($('div[data-col="'+ columnIndex + '"][data-row="' + rowIndex + '"]'),className);
+                } else {
+                    self.removeClassFromElement($('div[data-col="'+ columnIndex + '"][data-row="' + rowIndex + '"]'),className);
+                }
             });
         },
         getColumnsForHighLight(rowIndex) {
@@ -121,6 +125,14 @@ export default {
         },
         setClassToElement(el,className) {
             el.addClass(className);
+        },
+        disableHighlightOnCells() {
+            for (let i = 0; i < this.rowsCount; i++) {
+                this.selectClassForCell(i,this.columnsCountForHighlight.sixColumns,'cell-title cell-subtitle','remove');
+            }
+        },
+        removeClassFromElement(el,className) {
+            el.removeClass(className);
         },
     }
 }
