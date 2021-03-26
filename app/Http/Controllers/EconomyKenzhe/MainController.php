@@ -43,8 +43,10 @@ class MainController extends Controller
         $dateFrom = date('Y-m-d', strtotime('01-' . $dateFrom));
         $handbook = HandbookRepTt::where('parent_id', 0)->with('childHandbookItems')->get()->toArray();
         $companyRepTtValues = SubholdingCompany::find($id)->statsByDate($dateFrom,$dateTo)->get()->toArray();
-        $repTtReportValues = $this->recursiveSetValueToHandbook($handbook, $companyRepTtValues);
+        $repTtReportValues = $this->recursiveSetValueToHandbookByType($handbook, $companyRepTtValues);
         $repTtReportValues = json_encode($repTtReportValues);
+//        dd($repTtReportValues);
+
         return view('economy_kenzhe.company')->with(compact('repTtReportValues'));
     }
 
@@ -59,16 +61,44 @@ class MainController extends Controller
                 $this->recursiveSetValueToHandbook($items[$key]['handbook_items'], $companyRepTtValues);
             } else {
                 $id = $value['id'];
-                $k = [];
                 $k = array_filter($companyValuesRepTtIds, function ($v, $i) use ($id) {
                     return $v == $id;
                 }, ARRAY_FILTER_USE_BOTH);
                 if (count($k) > 0) {
-                    foreach ($k as $k => $v) {
-                        $items[$key]['value'] +=  abs($companyRepTtValues[$k]['value']);
+                    foreach ($k as $i => $v) {
+                        $items[$key]['value'] +=  abs($companyRepTtValues[$i]['value']);
                     }
-                } else {
-                    $items[$key]['value'] = 0;
+                }
+            }
+        }
+        return $items;
+    }
+
+    public function recursiveSetValueToHandbookByType(&$items, $companyRepTtValues)
+    {
+        $companyValuesRepTtIds = array_column($companyRepTtValues, 'rep_id');
+        foreach ($items as $key => $value) {
+            if (!array_key_exists('plan_value', $items[$key])) {
+                $items[$key]['plan_value'] = 0;
+            }
+            if (!array_key_exists('fact_value', $items[$key])) {
+                $items[$key]['fact_value'] = 0;
+            }
+            if (count($value['handbook_items']) > 0) {
+                $this->recursiveSetValueToHandbookByType($items[$key]['handbook_items'], $companyRepTtValues);
+            } else {
+                $id = $value['id'];
+                $k = array_filter($companyValuesRepTtIds, function ($v, $i) use ($id) {
+                    return $v == $id;
+                }, ARRAY_FILTER_USE_BOTH);
+                if (count($k) > 0) {
+                    foreach ($k as $i => $v) {
+                        if($companyRepTtValues[$i]['type'] == 'plan'){
+                            $items[$key]['plan_value'] +=  abs($companyRepTtValues[$i]['value']);
+                        }elseif($companyRepTtValues[$i]['type'] == 'fact'){
+                            $items[$key]['fact_value'] +=  abs($companyRepTtValues[$i]['value']);
+                        }
+                    }
                 }
             }
         }

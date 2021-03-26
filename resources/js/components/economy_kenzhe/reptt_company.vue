@@ -10,7 +10,9 @@
     >
       <el-table-column   prop="name" label="Наименование" sortable min-width="400" :key="Math.random()">
       </el-table-column>
-      <el-table-column  prop="value" label="План на январь" sortable width="250" :key="Math.random()">
+      <el-table-column  prop="plan_value" label="План на январь" sortable width="250" :key="Math.random()">
+      </el-table-column>
+      <el-table-column  prop="fact_value" label="Факт" sortable width="250" :key="Math.random()">
       </el-table-column>
     </el-table>
   </div>
@@ -47,18 +49,18 @@ export default {
     distributionSumOverTree(){
         this.reptt.reduce(function x(r, a, index) {
             let hasChild = a.handbook_items.length > 0;
-            a.value = a.value || hasChild && a.handbook_items.reduce(x, 0) || 0;
-            if(a.value == 0){
+            a.plan_value = a.plan_value || hasChild && a.handbook_items.reduce(x, 0) || 0;
+            if(a.plan_value == 0){
                 a.show = false;
             }else{
                 a.show = true;
             }
 
-            return r + Math.abs(a.value);
+            return r + Math.abs(a.plan_value);
         }, 0);
     },
       tableRowClassName: function (row, index) {
-          if (row.row.value === 0 && row.row.level !== 0) {
+          if (row.row.plan_value === 0 && row.row.level !== 0) {
               return 'hidden-row';
           }
           return '';

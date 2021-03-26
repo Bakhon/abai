@@ -29,7 +29,7 @@
                         <input type="file" name="select_file"/>
                     </td>
                     <td width="20%">
-                        <select name="type" id="" class="form-control">
+                        <select name="importExcelType" id="" class="form-control">
                             <option value="plan">План</option>
                             <option value="fact">факт</option>
                         </select>
