@@ -2303,7 +2303,7 @@ export default {
     },
     getOnPgnoButtonTitle() {
      var langUrl = `${window.location.pathname}`.slice(1, 3);
-            if(this.visibleChart) {
+            if(this.isVisibleChart) {
         if(langUrl === 'ru') {
           return 'Подбор ГНО'
         } else if(langUrl === 'kz') {
@@ -2548,14 +2548,21 @@ export default {
         this.hPumpValue = this.hPumpSet + ' м'
 
 
-        if (this.expMeth == "ШГН") {
-          this.expChoose = "ШГН"
-        } else if (this.expMeth == "ЭЦН" || this.expMeth == "УЭЦН") {
+        // if (this.expMeth == "ШГН") {
+        //   this.expChoose = "ШГН"
+        // } 
+        // if (this.expMeth == "ЭЦН" || this.expMeth == "УЭЦН") {
+        //   this.expChoose = "ЭЦН"
+        // } else if (this.expMeth == "ФОН") {
+        //   this.expChoose = "ФОН"
+        // }
+        
+        this.expChoose = this.expMeth
+        if (this.expMeth === "УЭЦН") {
           this.expChoose = "ЭЦН"
-        } else if (this.expMeth == "ФОН") {
-          this.expChoose = "ФОН"
         }
-        if (this.age === true) {
+
+        if (this.age) {
           this.curveSelect = 'pi'
         } else {
           if (this.expMeth === "ФОН"){
