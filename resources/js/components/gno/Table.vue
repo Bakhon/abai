@@ -1573,7 +1573,7 @@
                         </div>
                         <div class="col-12 px-2 gno-main-green-button">
                           <div class="button-podbor-gno col-12" @click="onPgnoClick()">
-                            {{ getOnPgnoButtonTitle }}
+                            {{ isVisibleChart ? podborGnoTitle : inflowCurveTitle }}
                           </div>
                         </div>
                       </div>
@@ -2249,6 +2249,8 @@ export default {
       hPumpFromIncl: null,
       isButtonHpump: false,
       postdata: null,
+      inflowCurveTitle: this.trans('pgno.krivaya_pritoka'),
+      podborGnoTitle: this.trans('pgno.podbor_gno')
     };
 
   },
@@ -2300,27 +2302,6 @@ export default {
   
     wellNum() {
       return this.$store.state.wellNum
-    },
-    getOnPgnoButtonTitle() {
-     var langUrl = `${window.location.pathname}`.slice(1, 3);
-      if(this.isVisibleChart) {
-        if(langUrl === 'ru') {
-          return 'Подбор ГНО'
-        } else if(langUrl === 'kz') {
-          return 'Терең сорғы жабдықтарын таңдау'
-        } else {
-          return 'Selection of downhole pumping equipment'
-        }
-        
-      } else {
-        if(langUrl === 'ru') {
-          return 'Кривая притока'
-        } else if(langUrl === 'kz') {
-          return 'Ағын қисығы'
-        } else {
-          return 'Inflow curve'
-        }
-      }
     },
     wellType() {
       return this.$store.state.wellType
