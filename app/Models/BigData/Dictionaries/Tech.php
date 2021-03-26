@@ -8,10 +8,6 @@ class Tech extends TBDModel
 {
     protected $table = 'tbdi.tech';
 
-    const TYPE_ZU = 3;
-    const TYPE_GU = 2;
-    const TYPE_GZU = 1;
-
     public function parent()
     {
         return $this->belongsTo(Geo::class, 'parent_id', 'id');
