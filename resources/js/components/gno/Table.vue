@@ -27,7 +27,7 @@
               </div>
               <div class="choosing-well-data table-border-gno table-border-gno-top cell4-gno-second  col-5">
                 {{trans('pgno.grp')}}
-                <input class="checkbox0" v-model="grp_skin" :disabled="!age" type="checkbox" />
+                <input class="checkbox0" v-model="hasGrp" :disabled="!age" type="checkbox" />
               </div>
 
               <div class="choosing-well-data table-border-gno-top  col-7">{{trans('pgno.horizon')}}</div>
@@ -137,7 +137,7 @@
                     {{ sk }}
                   </div>
 
-                  <div class="hide-block"  v-show="!hideStrokeLength">
+                  <div class="hide-block"  v-show="!hasStrokeLength">
                     <div class="devices-data table-border-gno-top no-gutter col-7">
                     {{trans('pgno.dlina_hoda')}}
                   </div>
@@ -158,7 +158,7 @@
                     {{ dNasosa }}
                   </div>
                   <div class="devices-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
-                    {{ pumpType }} м³/сут
+                    {{ pumpType }} мм
                   </div>
                   </div>
                   
@@ -342,7 +342,7 @@
                   </div>
 
                   <div class="Table" align="center" x:publishsource="Excel">
-                    <inclinometria @update-hpump="onChangeButtonHpump($event)" :buttonHpump="buttonHpump" :wellNumber="wellNumber" :expChoose="expChoose" :wellIncl="wellIncl" :is-loading.sync="isLoading">
+                    <inclinometria @update-hpump="onChangeButtonHpump($event)" :isButtonHpump="isButtonHpump" :wellNumber="wellNumber" :expChoose="expChoose" :wellIncl="wellIncl" :is-loading.sync="isLoading">
                     </inclinometria>
                   </div>
                 </div>
@@ -405,28 +405,28 @@
 
                     <div class="modal-analysis-menu">
                       <div class="form-check">
-                        <input v-model="analysisBox1" class="checkbox-modal-analysis-menu" @change="postAnalysisOld()"
+                        <input v-model="isAnalysisBoxValue1" class="checkbox-modal-analysis-menu" @change="postAnalysisOld()"
                           type="checkbox" />
                         <label for="checkbox1" class="checkbox-modal-analysis-menu-label">Рпл = Рнач</label>
                       </div>
                       <div class="form-check">
-                        <input v-model="analysisBox2" class="checkbox-modal-analysnauryzbekis-menu"
+                        <input v-model="isAnalysisBoxValue2" class="checkbox-modal-analysnauryzbekis-menu"
                           @change="postAnalysisOld()" type="checkbox" />
                         <label for="checkbox1" class="checkbox-modal-analysis-menu-label">Н дин = Ндин мин</label>
                       </div>
                       <div class="form-check">
-                        <input v-model="analysisBox3" class="checkbox-modal-analysnauryzbekis-menu"
+                        <input v-model="isAnalysisBoxValue3" class="checkbox-modal-analysnauryzbekis-menu"
                           @change="postAnalysisOld()" type="checkbox" />
                         <label for="checkbox1" class="checkbox-modal-analysis-menu-label">Рзаб пот >= 0,75 *
                           Рнас</label>
                       </div>
                       <div class="form-check">
-                        <input v-model="analysisBox4" class="checkbox-modal-analysis-menu" @change="postAnalysisOld()"
+                        <input v-model="isAnalysisBoxValue4" class="checkbox-modal-analysis-menu" @change="postAnalysisOld()"
                           type="checkbox" />
                         <label for="checkbox1" class="checkbox-modal-analysis-menu-label">Qж = Qж АСМА</label>
                       </div>
                       <div class="form-check">
-                        <input v-model="analysisBox5" class="checkbox-modal-analysis-menu" @change="postAnalysisOld()"
+                        <input v-model="isAnalysisBoxValue5" class="checkbox-modal-analysis-menu" @change="postAnalysisOld()"
                           type="checkbox" />
                         <label for="checkbox1" class="checkbox-modal-analysis-menu-label">Обв = Обв АСМА</label>
                       </div>
@@ -477,12 +477,12 @@
                     </div>
                     <div class="modal-analysis-menu">
                       <div class="form-check-new">
-                        <input v-model="analysisBox6" class="new-checkbox-modal-analysis-menu"
+                        <input v-model="isAnalysisBoxValue6" class="new-checkbox-modal-analysis-menu"
                           @change="postAnalysisNew()" type="checkbox" />
                         <label for="checkbox1" class="new-checkbox-modal-analysis-menu-label">Pпл = Р изобар</label>
                       </div>
                       <div class="form-check-new">
-                        <input v-model="analysisBox7" class="new-checkbox-modal-analysis-menu"
+                        <input v-model="isAnalysisBoxValue7" class="new-checkbox-modal-analysis-menu"
                           @change="postAnalysisNew()" type="checkbox" />
                         <label for="checkbox1" class="new-checkbox-modal-analysis-menu-label">К пр = К по окр.</label>
                       </div>
@@ -492,13 +492,13 @@
                         <label for="checkbox1">{{ wctOkr }}%</label>
                       </div>
                       <div class="form-check-new">
-                        <input v-model="analysisBox8" class="new-checkbox-modal-analysis-menu"
+                        <input v-model="isAnalysisBoxValue8" class="new-checkbox-modal-analysis-menu"
                           @change="postAnalysisNew()" type="checkbox" />
                         <label for="checkbox1" class="new-checkbox-modal-analysis-menu-label">Рзаб пот = 0.75 *
                           Рнас</label>
                       </div>
                       <div class="form-check-new">
-                        <input v-model="grp_skin" class="new-checkbox-modal-analysis-menu" @change="postAnalysisNew()"
+                        <input v-model="hasGrp" class="new-checkbox-modal-analysis-menu" @change="postAnalysisNew()"
                           type="checkbox" />
                         <label for="checkbox1" class="new-checkbox-modal-analysis-menu-label">с ГРП</label>
                       </div>
@@ -1055,7 +1055,7 @@
                 </div>
               </modal>
 
-              <div class="gno-line-chart"  v-if="visibleChart">
+              <div class="gno-line-chart"  v-if="isVisibleChart">
                 <div style="position: absolute; margin-left: 175px; margin-top: 5px;">
                   <div class="dropdown">
                     <button class="download-curve-button" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -1081,7 +1081,7 @@
               </div>
 
 
-              <div class="gno-shgn-wrapper" v-if="!visibleChart">
+              <div class="gno-shgn-wrapper" v-if="!isVisibleChart">
                 <div class="gno-shgn-block-title">
                   {{trans('pgno.komponovka_shgn')}}
                 </div>
@@ -1587,7 +1587,7 @@
         </div>
       </div>
       <div style="position: absolute; left: -9999px; height: 0; overflow: hidden;">
-        <div class="gno-line-chart-clone" ref="gno-chart" v-if="visibleChart" style="background-color: #272953;">
+        <div class="gno-line-chart-clone" ref="gno-chart" v-if="isVisibleChart" style="background-color: #272953;">
                 <div>
                   <div style="font-weight: bold; font-size: 20px; margin-left: 16px;  padding-top: 10px;">Скважина: {{field}}-{{wellNumber}}</div>
                   <div style="font-weight: bold; font-size: 20px; margin-left: 16px;  padding-top: 10px;">Дата формирования: {{new Date().toJSON().slice(0,10).replace(/-/g,'/')}}</div>
@@ -1595,7 +1595,7 @@
                 <inflow-curve></inflow-curve>
               </div>
 
-        <div class="gno-line-chart-well-old-clone" ref="gno-chart-new-old-well" v-if="visibleChart" style="background-color: #272953;">
+        <div class="gno-line-chart-well-old-clone" ref="gno-chart-new-old-well" v-if="isVisibleChart" style="background-color: #272953;">
                 <div>
                   <div style="font-weight: bold; font-size: 20px; margin-left: 16px;  padding-top: 10px;">Анализ потенциала cкважины: {{field}}-{{wellNumber}}</div>
                   <div style="font-weight: bold; font-size: 20px; margin-left: 16px;  padding-top: 10px;">Дата формирования: {{new Date().toJSON().slice(0,10).replace(/-/g,'/')}}</div>
@@ -2070,7 +2070,7 @@ export default {
       bhpPot: null,
       qlPot: null,
       pinPot: null,
-      visibleChart: true,
+      isVisibleChart: true,
       stroke_len: null,
       qOil: null,
       shgnPumpType: null,
@@ -2143,13 +2143,14 @@ export default {
       piCelValue: null,
       expID: null,
       CelValue: null,
-      analysisBox1: true,
-      analysisBox2: true,
-      analysisBox3: true,
-      analysisBox4: true,
-      analysisBox5: true,
-      analysisBox6: true,
-      analysisBox7: true,
+      isAnalysisBoxValue1: true,
+      isAnalysisBoxValue2: true,
+      isAnalysisBoxValue3: true,
+      isAnalysisBoxValue4: true,
+      isAnalysisBoxValue5: true,
+      isAnalysisBoxValue6: true,
+      isAnalysisBoxValue7: true,
+      isAnalysisBoxValue8: true,
       nk_fields: [
         {
           short_name: "UZN",
@@ -2180,12 +2181,11 @@ export default {
           short_name: "JET",
           full_name: "Жетыбай",
         }],
-      analysisBox8: true,
       shgnTubOD: null,
       menu: "MainMenu",
       ngdu: null,
       sk: null,
-      grp_skin: false,
+      hasGrp: false,
       newData: null,
       strokeLenDev: null,
       spmDev: '1/мин',
@@ -2217,7 +2217,6 @@ export default {
       param_eco:null,
       param_org:null,
       param_fact:null,
-      potMenu: false,
 
       field: null,
       wellIncl: null,
@@ -2233,7 +2232,7 @@ export default {
       stanokKachalka: null,
       freq: 'Число качаний',
       dNasosa: 'Диаметр насоса',
-      hideStrokeLength: false,
+      hasStrokeLength: false,
       krsTable: [],
       numberRepairs: null,
       numberNNO: null,
@@ -2248,7 +2247,7 @@ export default {
       orgs: null,
       nkt: null,
       hPumpFromIncl: null,
-      buttonHpump: false,
+      isButtonHpump: false,
       postdata: null,
     };
 
@@ -2353,15 +2352,15 @@ export default {
           "celValue": this.CelValue.split(' ')[0],
           "menu": this.menu,
           "well_age": this.age,
-          "grp_skin": this.grp_skin,
-          "analysisBox1": this.analysisBox1,
-          "analysisBox2": this.analysisBox2,
-          "analysisBox3": this.analysisBox3,
-          "analysisBox4": this.analysisBox4,
-          "analysisBox5": this.analysisBox5,
-          "analysisBox6": this.analysisBox6,
-          "analysisBox7": this.analysisBox7,
-          "analysisBox8": this.analysisBox8,
+          "grp_skin": this.hasGrp,
+          "analysisBox1": this.isAnalysisBoxValue1,
+          "analysisBox2": this.isAnalysisBoxValue2,
+          "analysisBox3": this.isAnalysisBoxValue3,
+          "analysisBox4": this.isAnalysisBoxValue4,
+          "analysisBox5": this.isAnalysisBoxValue5,
+          "analysisBox6": this.isAnalysisBoxValue6,
+          "analysisBox7": this.isAnalysisBoxValue7,
+          "analysisBox8": this.isAnalysisBoxValue8,
           "sep_meth": this.sep_meth,
           "sep_value": this.sep_value,
           "mech_sep": this.mech_sep,
@@ -2395,15 +2394,15 @@ export default {
           "celValue": this.CelValue.split(' ')[0],
           "menu": this.menu,
           "well_age": this.age,
-          "grp_skin": this.grp_skin,
-          "analysisBox1": this.analysisBox1,
-          "analysisBox2": this.analysisBox2,
-          "analysisBox3": this.analysisBox3,
-          "analysisBox4": this.analysisBox4,
-          "analysisBox5": this.analysisBox5,
-          "analysisBox6": this.analysisBox6,
-          "analysisBox7": this.analysisBox7,
-          "analysisBox8": this.analysisBox8,
+          "grp_skin": this.hasGrp,
+          "analysisBox1": this.isAnalysisBoxValue1,
+          "analysisBox2": this.isAnalysisBoxValue2,
+          "analysisBox3": this.isAnalysisBoxValue3,
+          "analysisBox4": this.isAnalysisBoxValue4,
+          "analysisBox5": this.isAnalysisBoxValue5,
+          "analysisBox6": this.isAnalysisBoxValue6,
+          "analysisBox7": this.isAnalysisBoxValue7,
+          "analysisBox8": this.isAnalysisBoxValue8,
           "sep_meth": this.sep_meth,
           "sep_value": this.sep_value,
           "mech_sep": this.mech_sep,
@@ -2426,10 +2425,8 @@ export default {
     },
 
     closeInclModal() {
-      this.buttonHpump = this.$store.getters.getHpumpButton
+      this.isButtonHpump = this.$store.getters.getHpumpButton
       this.$modal.hide('modalIncl')
-      this.hPumpValue = this.$store.getters.getHpump
-      this.postCurveData();      
     },
     closeEconomicModal() {
       this.$modal.hide('tablePGNO')
@@ -2531,7 +2528,7 @@ export default {
           this.spmDev = data["Well Data"]["freq"][0] + ' Гц'
         }
         if (this.expMeth == 'УЭЦН') {
-        this.hideStrokeLength = true
+        this.hasStrokeLength = true
         } else
 
 
@@ -2958,7 +2955,7 @@ export default {
             } else {
               this.ao = 'АО "ОМГ"'
             }
-      this.visibleChart = true;
+      this.isVisibleChart = true;
       let uri = this.url + this.field + "/" + wellnumber + "/";
       this.isLoading = true;
 
@@ -3190,7 +3187,7 @@ export default {
     },
 
     postCurveData() {
-      this.visibleChart = true;
+      this.isVisibleChart = true;
       let uri = this.url + this.field + "/" + this.wellNumber + "/";
       var langUrl = `${window.location.pathname}`.slice(1, 3);
       if (this.CelButton == 'ql') {
@@ -3285,7 +3282,7 @@ export default {
     },
 
     postAnalysisOld() {
-      this.visibleChart = true;
+      this.isVisibleChart = true;
       let uri = this.url + this.field + "/" + this.wellNumber + "/";
       if (this.CelButton == 'ql') {
         this.CelValue = this.qlCelValue
@@ -3317,7 +3314,7 @@ export default {
     },
 
     postAnalysisNew() {
-      this.visibleChart = true;
+      this.isVisibleChart = true;
       let uri = this.url + this.field + "/" + this.wellNumber + "/";
       if (this.CelButton == 'ql') {
         this.CelValue = this.qlCelValue
@@ -3422,7 +3419,7 @@ export default {
         Vue.prototype.$notifyError("Целевой режим превышает тех. потенциал")
       } else {
         if(this.expChoose == 'ШГН'){
-          if(this.visibleChart) {
+          if(this.isVisibleChart) {
             let uri = "http://172.20.103.187:7575/api/pgno/shgn";
             let jsonData = JSON.stringify(
               {
@@ -3502,7 +3499,7 @@ export default {
                     this.shgnS2L = data["s2l"].toFixed(0)
                     this.shgnTN = data["tn"]
                     this.shgnTNL = data["tn_l"]
-                    this.visibleChart = !this.visibleChart
+                    this.isVisibleChart = !this.isVisibleChart
                   }
 
                 }
@@ -3512,7 +3509,7 @@ export default {
               this.isLoading = false;
             })
           } else {
-            this.visibleChart = !this.visibleChart
+            this.isVisibleChart = !this.isVisibleChart
             this.postCurveData()
 
           }
@@ -3579,7 +3576,6 @@ export default {
 
     takePDF() {
       this.isLoading = true;
-
       htmlToImage.toPng(this.$refs['gno-chart'])
         .then(function (dataUrl) {
           let img = new Image();

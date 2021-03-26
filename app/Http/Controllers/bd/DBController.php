@@ -10,7 +10,6 @@ class DBController extends Controller
     public function __construct()
     {
         $this->middleware('can:bigdata view main')->only('bigdata', 'form', 'las');
-    
     }
 
     public function mzdn()

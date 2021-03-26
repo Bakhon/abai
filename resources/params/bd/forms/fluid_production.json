@@ -147,7 +147,10 @@
       "title": "p_buf",
       "code": "p_buf",
       "table": "tbdic.meas_log_cut",
-      "column": "p_buf",
+      "column": "value_double",
+      "additional_filter": {
+        "param_name": "p_buf"
+      },
       "type": "float",
       "isEditable": true,
       "validation": "numeric|gt:0",
@@ -157,7 +160,10 @@
       "title": "Рзатр",
       "code": "p_zatr",
       "table": "tbdic.meas_log_cut",
-      "column": "p_zatr",
+      "column": "value_double",
+      "additional_filter": {
+        "param_name": "p_zatr"
+      },
       "type": "float",
       "isEditable": true,
       "validation": "numeric|gt:0",
@@ -167,7 +173,10 @@
       "title": "p_buf_b",
       "code": "p_buf_b",
       "table": "tbdic.meas_log_cut",
-      "column": "p_buf_b",
+      "column": "value_double",
+      "additional_filter": {
+        "param_name": "p_buf_b"
+      },
       "type": "float",
       "isEditable": true,
       "validation": "numeric|gt:0",
@@ -177,7 +186,10 @@
       "title": "p_buf_a",
       "code": "p_buf_a",
       "table": "tbdic.meas_log_cut",
-      "column": "p_buf_a",
+      "column": "value_double",
+      "additional_filter": {
+        "param_name": "p_buf_a"
+      },
       "type": "float",
       "isEditable": true,
       "validation": "numeric|gt:0",
@@ -226,7 +238,10 @@
       "title": "gas_factor",
       "code": "gas_factor",
       "table": "tbdic.meas_log_cut",
-      "column": "gas_factor",
+      "column": "value_double",
+      "additional_filter": {
+        "param_name": "gas_factor"
+      },
       "type": "float",
       "isEditable": true,
       "validation": "numeric|gt:0",
@@ -243,7 +258,10 @@
       "title": "note",
       "code": "note",
       "table": "tbdic.meas_log_cut",
-      "column": "note",
+      "column": "value_string",
+      "additional_filter": {
+        "param_name": "note"
+      },
       "type": "text",
       "isEditable": true
     },
@@ -251,14 +269,23 @@
       "title": "prod_decline_reason",
       "code": "prod_decline_reason",
       "table": "tbdic.meas_log_cut",
-      "column": "prod_decline_reason",
+      "column": "value_string",
+      "additional_filter": {
+        "param_name": "prod_decline_reason"
+      },
       "type": "text",
       "isEditable": true
     },
     {
       "title": "measure_last_month",
       "code": "measure_last_month",
-      "type": "text",
+      "type": "history",
+      "fields": [
+        "liquid_debit",
+        "bsw",
+        "oil_debit",
+        "worktime"
+      ],
       "isEditable": false
     },
     {

@@ -43,80 +43,16 @@ class FluidProduction extends TableForm
 
         $wells = $wellsQuery->get();
 
-        $rowData = [];
-
         $tables = $this->getFields()->pluck('table')->filter()->unique();
-        foreach ($tables as $table) {
-            switch ($table) {
-                case 'tbdi.well_expl':
-
-                    $rowData[$table] = DB::connection('tbd')
-                        ->table('tbdi.well_expl as we')
-                        ->whereIn('we.well_id', $wells->pluck('id')->toArray())
-                        ->whereDate('dbeg', '<=', $this->request->get('date'))
-                        ->whereDate('dbeg', '>=', Carbon::parse($this->request->get('date'))->subMonths(2))
-                        ->leftJoin('tbdi.well_expl_type as wet', 'we.well_expl_type_id', '=', 'wet.id')
-                        ->orderBy('dbeg', 'desc')
-                        ->get()
-                        ->groupBy('well_id');
-
-                    break;
-                case 'tbdi.tech_mode_well':
-
-                    $rowData[$table] = DB::connection('tbd')
-                        ->table('tbdi.tech_mode as tm')
-                        ->whereIn('tm.well_id', $wells->pluck('id')->toArray())
-                        ->whereDate('dbeg', '<=', $this->request->get('date'))
-                        ->whereDate('dbeg', '>=', Carbon::parse($this->request->get('date'))->subMonths(2))
-                        ->leftJoin('tbdi.tech_mode_well as tmw', 'tmw.tech_mode_id', '=', 'tm.id')
-                        ->orderBy('dbeg', 'desc')
-                        ->get()
-                        ->groupBy('well_id');
-
-                    break;
-
-                case 'tbdi.lab_research_value':
-
-                    $rowData[$table] = DB::connection('tbd')
-                        ->table('tbdi.lab_research as lr')
-                        ->whereIn('lr.well_id', $wells->pluck('id')->toArray())
-                        ->whereDate('dt', '<=', $this->request->get('date'))
-                        ->leftJoin('tbdi.lab_research_value as lrv', 'lrv.lab_research_id', '=', 'lr.id')
-                        ->orderBy('dt', 'desc')
-                        ->get()
-                        ->groupBy('well_id');
-
-                    break;
-
-                default:
-                    $rowData[$table] = DB::connection('tbd')
-                        ->table($table)
-                        ->whereIn('well_id', $wells->pluck('id')->toArray())
-                        ->whereDate('dbeg', '<=', $this->request->get('date'))
-                        ->whereDate('dbeg', '>=', Carbon::parse($this->request->get('date'))->subMonths(2))
-                        ->orderBy('dbeg', 'desc')
-                        ->get()
-                        ->groupBy('well_id');
-            }
-        }
+        $rowData = $this->fetchRowData(
+            $tables,
+            $wells->pluck('id')->toArray(),
+            Carbon::parse($this->request->get('date'))
+        );
 
         $wells->transform(
             function ($item) use ($rowData) {
-                $result = [
-                    'uwi' => [
-                        'id' => $item->id,
-                        'name' => $item->uwi,
-                        'href' => '#'
-                    ],
-                    'density_oil' => [
-                        'id' => null,
-                        'value' => floatval($item->geo->first()->density_oil),
-                        'date' => null
-                    ]
-                ];
-
-                $measurementFields = $this->getMeasurementsByDates($rowData['tbdic.meas_log_cut'], $item);
-                $result = array_merge($result, $measurementFields);
+                $result = [];
 
                 foreach ($this->getFields() as $field) {
                     $fieldValue = $this->getFieldValue($field, $rowData, $item);
@@ -131,65 +67,6 @@ class FluidProduction extends TableForm
         $this->addLimits($wells);
 
         return $wells->toArray();
-    }
-
-    /**
-     * @param $field
-     * @param $collection
-     * @param $item
-     * @param array $result
-     * @return array
-     */
-    public function getFieldValue($field, $rowData, $item): ?array
-    {
-        switch ($field['code']) {
-            case 'worktime':
-
-                $fieldInfo = $this->getFieldByDates(
-                    $field,
-                    $rowData[$field['table']],
-                    $item
-                );
-
-                $value = 0;
-                if (isset($fieldInfo['value']) && $fieldInfo['value'] !== null) {
-                    $value = in_array($fieldInfo['value'], Well::WELL_ACTIVE_STATUSES) ? 1 : 0;
-                }
-
-                return [
-                    'value' => $value
-                ];
-
-            case 'other_uwi':
-
-                return $this->getOtherUwis($item);
-
-            case 'geo':
-
-                return [
-                    'value' => $this->getGeoBreadcrumbs($item->geo->first())
-                ];
-        }
-
-        if ($field['type'] === 'calc') {
-            return [
-                'value' => null
-            ];
-        }
-
-        if (!empty($field['table'])) {
-            switch ($field['table']) {
-                case 'tbdic.meas_log_cut':
-                    return null;
-                default:
-                    return $this->getFieldByDates(
-                        $field,
-                        $rowData[$field['table']],
-                        $item
-                    );
-            }
-        }
-        return null;
     }
 
     public function getGeoBreadcrumbs($geo)
@@ -242,104 +119,74 @@ class FluidProduction extends TableForm
         return $tree;
     }
 
-    private function getMeasurementsByDates(Collection $measurements, Model $item): array
+    protected function getFormatedFieldValue(array $field, array $rawValue): ?array
     {
-        if (empty($measurements->get($item->id))) {
-            return [];
-        }
+        switch ($field['code']) {
+            case 'worktime':
 
-        $result = [];
-        $measurementFields = [
-            'p_buf',
-            'p_zatr',
-            'p_buf_b',
-            'p_buf_a',
-            'gas_factor',
-            'note',
-            'prod_decline_reason',
-        ];
+                $value = 0;
+                if (isset($rawValue['value']) && $rawValue['value'] !== null) {
+                    $value = in_array($rawValue['value'], Well::WELL_ACTIVE_STATUSES) ? 1 : 0;
+                }
 
-        foreach ($measurements->get($item->id) as $measurement) {
-            foreach ($measurementFields as $field) {
-                if (isset($result[$field])) {
-                    break;
-                }
-                if (empty($measurement->{$field})) {
-                    continue;
-                }
-                $result[$field] = [
-                    'id' => $measurement->id,
-                    'value' => null
+                return [
+                    'value' => $value
                 ];
-                if ($this->isCurrentDay($measurement->dbeg)) {
-                    $result[$field]['value'] = $measurement->{$field};
-                } else {
-                    $result[$field]['old_value'] = $measurement->{$field};
-                    $result[$field]['date'] = $measurement->dbeg;
-                }
-            }
         }
 
-        foreach ($measurementFields as $field) {
-            if (!isset($result[$field])) {
-                $result[$field] = [
-                    'id' => null,
-                    'value' => null
-                ];
-            }
-        }
-
-        return $result;
+        return $rawValue;
     }
 
-    private function getFieldByDates(array $fieldParams, Collection $collection, Model $item)
+    protected function getCustomFieldValue(array $field, array $rowData, Model $item): ?array
+    {
+        switch ($field['code']) {
+            case 'density_oil':
+
+                return [
+                    'value' => floatval($item->geo->first()->density_oil)
+                ];
+
+            case 'other_uwi':
+
+                return $this->getOtherUwis($item);
+
+            case 'geo':
+
+                return [
+                    'value' => $this->getGeoBreadcrumbs($item->geo->first())
+                ];
+        }
+
+        return null;
+    }
+
+
+    private function getMeasurementFieldByDates(array $fieldParams, Collection $collection, Model $item)
     {
         if (is_null($collection->get($item->id))) {
-            return [];
+            return [
+                'value' => null
+            ];
         }
 
-        $row = $collection->get($item->id);
-        if (!empty($fieldParams['additional_filter'])) {
-            foreach ($fieldParams['additional_filter'] as $key => $value) {
-                $row = $row->where($key, '=', $value);
+        foreach ($collection->get($item->id) as $measurement) {
+            if (empty($measurement->{$fieldParams['column']})) {
+                continue;
             }
-        }
-        $row = $row->first();
-
-        if (empty($row)) {
-            return [];
-        }
-
-        $value = $row->{$fieldParams['column']};
-
-        switch ($fieldParams['type']) {
-            case 'float':
-                $value = floatval($value);
-                break;
-            case 'integer':
-                $value = intval($value);
-                break;
+            $result = [
+                'id' => $measurement->id,
+                'value' => null
+            ];
+            if ($this->isCurrentDay($measurement->dbeg)) {
+                $result['value'] = $measurement->{$fieldParams['column']};
+            } else {
+                $result['old_value'] = $measurement->{$fieldParams['column']};
+                $result['date'] = $measurement->dbeg;
+            }
+            return $result;
         }
 
-        $result = [
-            'id' => $row->id,
-            'value' => null,
-        ];
-
-        $dateField = $fieldParams['date_field'] ?? 'dbeg';
-        if ($this->isCurrentDay($row->{$dateField})) {
-            $result['value'] = $value;
-        } else {
-            $result['old_value'] = $value;
-            $result['date'] = $row->{$dateField};
-        }
-
-        return $result;
-    }
-
-    private function isCurrentDay(string $date)
-    {
-        return Carbon::parse($date)->diffInDays(Carbon::parse($this->request->get('date'))) === 0;
+        return ['value' => null];
     }
 
     protected function saveSingleFieldInDB(string $field): void
@@ -349,16 +196,22 @@ class FluidProduction extends TableForm
         $item = $this->getFieldRow($column, $this->request->get('well_id'), $this->request->get('date'));
 
         if (empty($item)) {
+            $data = [
+                'well_id' => $this->request->get('well_id'),
+                $column['column'] => $this->request->get($field),
+                'dbeg' => Carbon::parse($this->request->get('date'))->toDateTimeString(),
+                'dend' => Carbon::parse($this->request->get('date'))->addDay()->toDateTimeString()
+            ];
+
+            if (!empty($column['additional_filter'])) {
+                foreach ($column['additional_filter'] as $key => $value) {
+                    $data[$key] = $value;
+                }
+            }
+
             DB::connection('tbd')
                 ->table($column['table'])
-                ->insert(
-                    [
-                        'well_id' => $this->request->get('well_id'),
-                        $column['column'] => $this->request->get($field),
-                        'dbeg' => Carbon::parse($this->request->get('date'))->toDateTimeString(),
-                        'dend' => Carbon::parse($this->request->get('date'))->addDay()->toDateTimeString()
-                    ]
-                );
+                ->insert($data);
         } else {
             DB::connection('tbd')
                 ->table($column['table'])
@@ -373,15 +226,24 @@ class FluidProduction extends TableForm
 
     private function getFieldRow(array $column, int $wellId, string $date)
     {
-        return DB::connection('tbd')
+        $query = DB::connection('tbd')
             ->table($column['table'])
             ->where('well_id', $wellId)
-            ->whereDate(
+            ->whereBetween(
                 'dbeg',
-                '=',
-                Carbon::parse($date)->toDateTimeString()
-            )
-            ->first();
+                [
+                    Carbon::parse($date)->startOfDay(),
+                    Carbon::parse($date)->endOfDay()
+                ]
+            );
+
+        if (!empty($column['additional_filter'])) {
+            foreach ($column['additional_filter'] as $key => $value) {
+                $query->where($key, '=', $value);
+            }
+        }
+
+        return $query->first();
     }
 
     private function getOrgWithWells()
