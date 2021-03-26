@@ -17,7 +17,8 @@
               "integer",
               "text",
               "calc",
-              "hidden"
+              "hidden",
+              "history"
             ]
           },
           "title": {
@@ -54,7 +55,8 @@
                   "float",
                   "integer",
                   "text",
-                  "hidden"
+                  "hidden",
+                  "history"
                 ]
               }
             }

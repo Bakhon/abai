@@ -146,6 +146,7 @@ return array (
       'pump_discharge_pressure' => 'Давление на выходе насоса, бар',
       'heater_inlet_pressure' => 'Температура на входе в печь, С',
       'heater_output_pressure' => 'Температура на выходе из печи, С',
+      'temperature' => 'Температура на входе в печь, С',
     ),
   ),
   'all_gus' => 'Все ГУ',
@@ -211,8 +212,6 @@ return array (
   'corrosion_name' => 'Коррозия',
   'pipe' => 
   array (
-    'title' => 'База данных по трубопроводам',
-    'menu' => 'Трубопроводы',
     'updated' => 'Трубовровод изменен',
     'deleted' => 'Трубопровод удален',
     'deleting_error' => 'Ошибка при удалении трубопровода',

@@ -55,6 +55,7 @@ class Gu extends Model
             'gu_id',
             'daily_fluid_production',
             'daily_oil_production',
+            'daily_water_production',
             'bsw',
             'pump_discharge_pressure',
             'heater_output_pressure',
