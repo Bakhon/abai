@@ -5,12 +5,12 @@ namespace App\Models\ComplicationMonitoring;
 use App\Models\Traits\WithHistory;
 use Illuminate\Database\Eloquent\Model;
 
-class OmgNGDU extends Model
+class OmgNGDUOld extends Model
 {
     use WithHistory;
 
     protected $guarded = ['id'];
-    protected $table = 'omg_n_g_d_u_s_1';
+    protected $table = 'omg_n_g_d_u_s';
 
     public function ngdu()
     {

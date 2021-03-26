@@ -3,23 +3,27 @@
 namespace App\Http\Controllers\ComplicationMonitoring;
 
 use App\Filters\OmgNGDUFilter;
-use App\Http\Controllers\Controller;
 use App\Http\Controllers\CrudController;
 use App\Http\Controllers\Traits\WithFieldsValidation;
 use App\Http\Requests\IndexTableRequest;
 use App\Http\Requests\OmgNGDUCreateRequest;
 use App\Http\Requests\OmgNGDUUpdateRequest;
+use App\Models\ComplicationMonitoring\Corrosion;
 use App\Models\ComplicationMonitoring\GuKormass;
 use App\Models\ComplicationMonitoring\Kormass;
 use App\Models\ComplicationMonitoring\OilGas;
 use App\Models\ComplicationMonitoring\OmgCA;
 use App\Models\ComplicationMonitoring\OmgNGDU;
+use App\Models\ComplicationMonitoring\OmgNGDUOld;
 use App\Models\ComplicationMonitoring\OmgUHE;
 use App\Models\ComplicationMonitoring\WaterMeasurement;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
+use App\Http\Resources\OmgNGDUListResource;
+use App\Jobs\ExportOmgNGDUToExcel;
 
 class OmgNGDUController extends CrudController
 {
@@ -45,9 +49,9 @@ class OmgNGDUController extends CrudController
                 trans('monitoring.omgngdu.fields.fact_data') => 10,
             ],
             'fields' => [
-                
 
-                
+
+
                 'gu' => [
                     'title' => trans('monitoring.gu.gu'),
                     'type' => 'select',
@@ -66,7 +70,7 @@ class OmgNGDUController extends CrudController
                             ->toArray()
                     ]
                 ],
-                
+
                 'date' => [
                     'title' => trans('app.date'),
                     'type' => 'date',
@@ -99,8 +103,8 @@ class OmgNGDUController extends CrudController
                     'title' => trans('monitoring.omgngdu.fields.pump_discharge_pressure'),
                     'type' => 'numeric',
                 ],
-                'heater_inlet_pressure' => [
-                    'title' => trans('monitoring.omgngdu.fields.heater_inlet_pressure'),
+                'temperature' => [
+                    'title' => trans('monitoring.omgngdu.fields.temperature'),
                     'type' => 'numeric',
                 ],
                 'heater_output_pressure' => [
@@ -122,19 +126,25 @@ class OmgNGDUController extends CrudController
 
     public function list(IndexTableRequest $request)
     {
+        $old = OmgNGDUOld::query()
+            ->with('field', 'ngdu', 'cdng', 'gu', 'zu', 'well')
+            ->where('date', '<', '2021-01-01');
+
         $query = OmgNGDU::query()
-            ->with('field', 'ngdu', 'cdng', 'gu', 'zu', 'well');
+            ->with('field', 'ngdu', 'cdng', 'gu', 'zu', 'well')
+            ->where('date', '>=', '2021-01-01')
+            ->union($old);
 
         $omgngdu = $this
             ->getFilteredQuery($request->validated(), $query)
             ->paginate(25);
 
-        return response()->json(json_decode(\App\Http\Resources\OmgNGDUListResource::collection($omgngdu)->toJson()));
+        return response()->json(json_decode(OmgNGDUListResource::collection($omgngdu)->toJson()));
     }
 
     public function export(IndexTableRequest $request)
     {
-        $job = new \App\Jobs\ExportOmgNGDUToExcel($request->validated());
+        $job = new ExportOmgNGDUToExcel($request->validated());
         $this->dispatch($job);
 
         return response()->json(
@@ -181,7 +191,7 @@ class OmgNGDUController extends CrudController
      */
     public function show($id)
     {
-        $omgngdu = OmgNGDU::where('id', '=', $id)
+        $omgngdu = OmgNGDU::where('id', $id)
             ->with('ngdu', 'cdng', 'gu', 'zu', 'well')
             ->first();
 
@@ -247,7 +257,7 @@ class OmgNGDUController extends CrudController
 
     public function getKormass(Request $request)
     {
-        $guKormass = GuKormass::where('gu_id', '=', $request->gu_id)->get();
+        $guKormass = GuKormass::where('gu_id', $request->gu_id)->get();
         $guKormassArray = [];
         foreach ($guKormass as $row) {
             array_push($guKormassArray, $row->kormass_id);
@@ -266,15 +276,22 @@ class OmgNGDUController extends CrudController
 
     public function getGuDataByDay(Request $request)
     {
-        $ngdu = OmgNGDU::where('date', $request->dt)
-            ->where('gu_id', $request->gu_id)
-            ->first();
+        // TODO remove after get all OMNGDU data
+        if (Carbon::parse($request->dt) >= Carbon::parse('2021-01-01')) {
+            $ngdu = OmgNGDU::where('date', $request->dt)
+                ->where('gu_id', $request->gu_id)
+                ->first();
+        } else {
+            $ngdu = OmgNGDUOld::where('date', $request->dt)
+                ->where('gu_id', $request->gu_id)
+                ->first();
+        }
 
         $uhe = OmgUHE::where('date', $request->dt)
             ->where('gu_id', $request->gu_id)
             ->first();
 
-        $ca = OmgCA::where('date', date("Y") . "-01-01")
+        $ca = OmgCA::where('date', Carbon::parse($request->dt)->year . "-01-01")
             ->where('gu_id', $request->gu_id)
             ->first();
 
@@ -311,6 +328,8 @@ class OmgNGDUController extends CrudController
             ->where('gu_id', $request->gu_id)
             ->first();
 
+        $lastCorrosion = $this->getLastCorrosion($request->gu_id, $request->dt);
+
         return response()->json(
             [
                 'code' => 200,
@@ -324,7 +343,9 @@ class OmgNGDUController extends CrudController
                 'wmLastCl' => $wmLastCl,
                 'wmLast' => $wmLast,
                 'wmLastSO4' => $wmLastSO4,
-                'oilGas' => $oilGas
+                'oilGas' => $oilGas,
+                'lastCorrosion' => $lastCorrosion,
+
             ]
         );
     }
@@ -333,15 +354,15 @@ class OmgNGDUController extends CrudController
     {
         $uhes = OmgUHE::query()
             ->select('gu_id', 'current_dosage')
-            ->where('date', '=', \Carbon\Carbon::now()->format('Y-m-d'))
-            ->leftJoin('gus', 'gus.id', '=', 'omg_u_h_e_s.gu_id')
+            ->where('date', Carbon::now()->format('Y-m-d'))
+            ->leftJoin('gus', 'gus.id', 'omg_u_h_e_s.gu_id')
             ->addSelect(DB::raw('lpad(gus.name, 10, 0) AS gus_name'))
             ->orderBy('gus_name', 'asc')
             ->get();
 
         $cas = OmgCA::query()
             ->select('gu_id', 'plan_dosage')
-            ->where('date', '=', \Carbon\Carbon::now()->startOfYear()->format('Y-m-d'))
+            ->where('date', Carbon::now()->startOfYear()->format('Y-m-d'))
             ->get();
 
         $gus = [];
@@ -379,5 +400,35 @@ class OmgNGDUController extends CrudController
     protected function getFilteredQuery($filter, $query = null)
     {
         return (new OmgNGDUFilter($query, $filter))->filter();
+    }
+
+    protected function getLastCorrosion(int $guId, string $date): ?Corrosion
+    {
+        $lastInhibitorCorrosion = Corrosion::where('gu_id', $guId)
+            ->whereNotNull('corrosion_velocity_with_inhibitor')
+            ->where('start_date_of_corrosion_velocity_with_inhibitor_measure', '<=', $date)
+            ->orderByDesc('start_date_of_corrosion_velocity_with_inhibitor_measure')
+            ->first();
+
+        $lastBackgroundCorrosion = Corrosion::where('gu_id', $guId)
+            ->whereNotNull('background_corrosion_velocity')
+            ->where('start_date_of_background_corrosion', '<=', $date)
+            ->orderByDesc('start_date_of_background_corrosion')
+            ->first();
+
+        if (is_null($lastInhibitorCorrosion)) {
+            return $lastBackgroundCorrosion;
+        }
+
+        if (is_null($lastBackgroundCorrosion)) {
+            return $lastInhibitorCorrosion;
+        }
+
+        if (Carbon::parse($lastInhibitorCorrosion->start_date_of_corrosion_velocity_with_inhibitor_measure) >=
+            Carbon::parse($lastBackgroundCorrosion->start_date_of_background_corrosion)) {
+            return $lastInhibitorCorrosion;
+        } else {
+            return $lastBackgroundCorrosion;
+        }
     }
 }
