@@ -24,6 +24,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use App\Http\Resources\OmgNGDUListResource;
 use App\Jobs\ExportOmgNGDUToExcel;
+use phpDocumentor\Reflection\Types\Mixed_;
 
 class OmgNGDUController extends CrudController
 {
@@ -328,24 +329,7 @@ class OmgNGDUController extends CrudController
             ->where('gu_id', $request->gu_id)
             ->first();
 
-        $lastInhibitorCorrosion = Corrosion::where('gu_id', $request->gu_id)
-            ->whereNotNull('corrosion_velocity_with_inhibitor')
-            ->where('start_date_of_corrosion_velocity_with_inhibitor_measure', '<=', $request->dt)
-            ->orderByDesc('start_date_of_corrosion_velocity_with_inhibitor_measure')
-            ->first();
-
-        $lastBackgroundCorrosion = Corrosion::where('gu_id', $request->gu_id)
-            ->whereNotNull('background_corrosion_velocity')
-            ->where('start_date_of_background_corrosion', '<=', $request->dt)
-            ->orderByDesc('start_date_of_background_corrosion')
-            ->first();
-
-        if (Carbon::parse($lastInhibitorCorrosion->start_date_of_corrosion_velocity_with_inhibitor_measure) >=
-            Carbon::parse($lastBackgroundCorrosion->start_date_of_background_corrosion)) {
-            $lastCorrosion = $lastInhibitorCorrosion;
-        } else {
-            $lastCorrosion = $lastBackgroundCorrosion;
-        }
+        $lastCorrosion = $this->getLastCorrosion($request->gu_id, $request->dt);
 
         return response()->json(
             [
@@ -361,7 +345,7 @@ class OmgNGDUController extends CrudController
                 'wmLast' => $wmLast,
                 'wmLastSO4' => $wmLastSO4,
                 'oilGas' => $oilGas,
-                'lastCorrosion' => $lastCorrosion
+                'lastCorrosion' => $lastCorrosion,
 
             ]
         );
@@ -417,5 +401,36 @@ class OmgNGDUController extends CrudController
     protected function getFilteredQuery($filter, $query = null)
     {
         return (new OmgNGDUFilter($query, $filter))->filter();
+    }
+
+    protected function getLastCorrosion(int $gu_id, string $date): ?Corrosion
+    {
+        $lastInhibitorCorrosion = Corrosion::where('gu_id', $gu_id)
+            ->whereNotNull('corrosion_velocity_with_inhibitor')
+            ->where('start_date_of_corrosion_velocity_with_inhibitor_measure', '<=', $date)
+            ->orderByDesc('start_date_of_corrosion_velocity_with_inhibitor_measure')
+            ->first();
+
+        $lastBackgroundCorrosion = Corrosion::where('gu_id', $gu_id)
+            ->whereNotNull('background_corrosion_velocity')
+            ->where('start_date_of_background_corrosion', '<=', $date)
+            ->orderByDesc('start_date_of_background_corrosion')
+            ->first();
+
+        if ($lastInhibitorCorrosion && $lastBackgroundCorrosion) {
+            if (Carbon::parse($lastInhibitorCorrosion->start_date_of_corrosion_velocity_with_inhibitor_measure) >=
+                Carbon::parse($lastBackgroundCorrosion->start_date_of_background_corrosion)) {
+                return $lastInhibitorCorrosion;
+            } else {
+                return $lastBackgroundCorrosion;
+            }
+        }
+        else if (is_null($lastInhibitorCorrosion)) {
+            return $lastBackgroundCorrosion;
+        } else if (is_null($lastBackgroundCorrosion)) {
+            return $lastInhibitorCorrosion;
+        }
+
+        return null;
     }
 }
