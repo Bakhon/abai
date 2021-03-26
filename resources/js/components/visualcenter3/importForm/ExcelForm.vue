@@ -13,7 +13,7 @@
         <div class="ml-3 col-3 helpers-block mt-5">
             <div class="row">
                 <div class="data-status">
-                    <span class="label">Выберите ДЗО: </span>
+                    <span class="label">Выбранное ДЗО: </span>
                 </div>
                 <select
                         class="dzo-select col-12"
