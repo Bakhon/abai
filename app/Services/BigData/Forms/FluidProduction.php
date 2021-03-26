@@ -284,6 +284,7 @@ class FluidProduction extends TableForm
                     'type'
                 ]
             )
+            ->whereIn('tech_id', [Tech::TYPE_GZU, Tech::TYPE_GU, Tech::TYPE_ZU])
             ->where('dbeg', '<=', Carbon::parse($this->request->get('date')))
             ->where('dend', '>=', Carbon::parse($this->request->get('date')))
             ->get();
@@ -298,15 +299,20 @@ class FluidProduction extends TableForm
             ];
         }
 
-        usort(
+        uasort(
             $techData,
             function ($a, $b) {
                 return $a['parent_id'] > $b['parent_id'] ? 1 : -1;
             }
         );
 
-        foreach ($techData as $tech) {
-            if (!empty($tech['parent_id']) && !empty($techData[$tech['parent_id']])) {
+        foreach ($techData as &$tech) {
+            if (!empty($tech['parent_id'])) {
+                if (empty($techData[$tech['parent_id']])) {
+                    $tech['parent_id'] = null;
+                    continue;
+                }
+
                 $techData[$tech['parent_id']]['wells'] = array_unique(
                     array_merge(
                         $techData[$tech['parent_id']]['wells'],
@@ -315,6 +321,7 @@ class FluidProduction extends TableForm
                 );
             }
         }
+
         Cache::put('bd_tech_with_wells_' . $this->request->get('date'), $techData, now()->addDay());
         return $this->generateTree($techData);
     }
