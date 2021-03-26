@@ -24,9 +24,15 @@
         <div class="form-group">
             <table class="table">
                 <tr>
-                    <td width="40%" align="right"><label style="color: white;">{{trans('economy_kenzhe.chose_file')}}</label></td>
+                    <td width="20%" align="right"><label style="color: white;">{{trans('economy_kenzhe.chose_file')}}</label></td>
                     <td width="30">
                         <input type="file" name="select_file"/>
+                    </td>
+                    <td width="20%">
+                        <select name="type" id="" class="form-control">
+                            <option value="plan">План</option>
+                            <option value="fact">факт</option>
+                        </select>
                     </td>
                     <td width="30%" align="left">
                         <input type="submit" name="upload" class="btn btn-primary" value="Загрузить">

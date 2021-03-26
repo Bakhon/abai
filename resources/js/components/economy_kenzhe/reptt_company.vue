@@ -1,24 +1,27 @@
 <template>
   <div>
     <el-table
-      :data="reptt"
+      :data="tableData"
       :tree-props="defaultProps"
-      style="width: 100%;x"
+      style="width: 100%;"
       row-key="id"
       border
-      stripe
+      :row-class-name="tableRowClassName"
     >
-      <el-table-column prop="name" label="Наименование" sortable min-width="400">
+      <el-table-column   prop="name" label="Наименование" sortable min-width="400" :key="Math.random()">
       </el-table-column>
-      <el-table-column label="План на январь" sortable width="250">
-        <template slot-scope="scope" v-if="!scope.row.isHide">
-            {{ scope.row.value }} <br>
-        </template>
-      </el-table-column> 
+      <el-table-column  prop="value" label="План на январь" sortable width="250" :key="Math.random()">
+      </el-table-column>
     </el-table>
   </div>
 </template>
 
+<style>
+  .el-table .hidden-row {
+    display: none;
+  }
+
+</style>
 <script>
 export default {
   props: ["reptt"],
@@ -28,6 +31,16 @@ export default {
         id: "id",
         children: "handbook_items",
       },
+        tableData: [],
+        tableHeader:[
+            {
+                label: 'Наименование',
+                prop: 'name'
+            },{
+                label: 'План на январь',
+                prop: 'value'
+            }
+        ]
     };
   },
   methods: {
@@ -36,17 +49,24 @@ export default {
             let hasChild = a.handbook_items.length > 0;
             a.value = a.value || hasChild && a.handbook_items.reduce(x, 0) || 0;
             if(a.value == 0){
-                a.isHide = true;
+                a.show = false;
             }else{
-                a.isHide = false;
+                a.show = true;
             }
 
             return r + Math.abs(a.value);
         }, 0);
-    }
-  },
+    },
+      tableRowClassName: function (row, index) {
+          if (row.row.value === 0 && row.row.level !== 0) {
+              return 'hidden-row';
+          }
+          return '';
+      }
+    },
   mounted() {
     this.distributionSumOverTree();
+    this.tableData = this.reptt;
   },
 };
 </script>
