@@ -24,7 +24,6 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use App\Http\Resources\OmgNGDUListResource;
 use App\Jobs\ExportOmgNGDUToExcel;
-use phpDocumentor\Reflection\Types\Mixed_;
 
 class OmgNGDUController extends CrudController
 {
