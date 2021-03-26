@@ -912,8 +912,11 @@ class OilGasController extends CrudController
 
     static function getCorrosion($gu)
     {
-        $cor = Corrosion::where('gu_id', $gu)->orderBy('created_at', 'desc')->first();
-        return $cor->background_corrosion_velocity;
+        $cor = Corrosion::where('gu_id', $gu)
+            ->whereNotNull('background_corrosion_velocity')
+            ->orderBy('created_at', 'desc')
+            ->first();
+        return $cor ? $cor->background_corrosion_velocity : null;
     }
 
 }
