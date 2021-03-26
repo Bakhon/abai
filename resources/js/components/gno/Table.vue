@@ -23,7 +23,7 @@
               </div>
               <div class="choosing-well-data table-border-gno-top  col-7">
                 {{trans('pgno.new_well')}}
-                <input :checked="isYoungAge === true" v-model="isYoungAge" class="checkbox0" type="checkbox" />
+                <input :checked="isYoungAge" v-model="isYoungAge" class="checkbox0" type="checkbox" />
               </div>
               <div class="choosing-well-data table-border-gno table-border-gno-top cell4-gno-second  col-5">
                 {{trans('pgno.grp')}}
@@ -2924,7 +2924,7 @@ export default {
     },
 
     InclMenu() {
-      if (this.isYoungAge === true) {
+      if (this.isYoungAge) {
         var langUrl = `${window.location.pathname}`.slice(1, 3);
         if(langUrl === 'ru') {
           Vue.prototype.$notifyWarning("Данные инклинометрии новой скважины отсутствуют");
@@ -2939,10 +2939,6 @@ export default {
         this.$store.commit('UPDATE_HPUMP', this.hPumpValue)
         this.$modal.show('modalIncl')
       }
-    },
-
-    onGetHpumpSet(data) {
-      closeModal('modalIncl')
     },
 
     getWellNumber(wellnumber) {
