@@ -41,4 +41,9 @@ class OmgNGDU extends Model
     {
         return $this->hasOne('App\Models\Refs\Field','id','field_id')->withDefault();
     }
+
+    public function getDailyWaterProductionAttribute()
+    {
+        return round (($this->daily_fluid_production *  $this->bsw)/100 , 4);
+    }
 }

@@ -59,7 +59,7 @@ class OmgUHEController extends CrudController
                     ]
                 ],
                 
-                
+
                 'current_dosage' => [
                     'title' => trans('monitoring.omguhe.fields.fact_dosage'),
                     'type' => 'numeric',
@@ -166,7 +166,7 @@ class OmgUHEController extends CrudController
      */
     public function show($id)
     {
-        $omguhe = ComplicationMonitoringOmgUHE::where('id', '=', $id)
+        $omguhe = ComplicationMonitoringOmgUHE::where('id', $id)
                             ->with('ngdu')
                             ->with('cdng')
                             ->with('gu')
@@ -235,15 +235,15 @@ class OmgUHEController extends CrudController
     }
 
     public function getPrevDayLevel(Request $request){
-        $result = ComplicationMonitoringOmgUHE::where('gu_id', '=', $request->gu_id)
+        $result = ComplicationMonitoringOmgUHE::where('gu_id', $request->gu_id)
                                         ->where('date', '<', $request->date)
                                         ->where('out_of_service_оf_dosing', '<>', '1')
                                         ->latest()
                                         ->first();
         
         $datetime = new DateTime($request->date);
-        $ddng = OmgCA::where('gu_id', '=', $request->gu_id)
-                        ->where('date', '=', $datetime->format("Y").'-01-01')
+        $ddng = OmgCA::where('gu_id', $request->gu_id)
+                        ->where('date', $datetime->format("Y").'-01-01')
                         ->first();
 
         if($result){

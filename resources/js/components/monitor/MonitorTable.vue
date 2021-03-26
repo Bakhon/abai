@@ -204,7 +204,7 @@
                   <td>{{ trans('monitoring.fact_common_corrosion_speed') }} ({{ trans('monitoring.test_coupons') }}),
                     {{ trans('monitoring.units.v_kor_fact') }}
                   </td>
-                  <td v-if="corrosionVelocityWithInhibitor">{{ corrosionVelocityWithInhibitor.toFixed(2) }}
+                  <td v-if="corrosionVelocity">{{ corrosionVelocity.toFixed(2) }}
                     {{ trans('monitoring.units.mm_year') }}
                   </td>
                 </tr>
@@ -390,7 +390,7 @@
               <span>{{ trans('monitoring.gu.gu') }}</span>
               <select
                   name="gu_id"
-                  v-model="gu"
+                  v-model="localGu"
                   @change="chooseGu()"
               >
                 <option v-for="row in gus" v-bind:value="row.id">
@@ -480,7 +480,7 @@
                     readonly
                     type="text"
                     class="square2"
-                    v-model="corrosionVelocityWithInhibitor"
+                    v-model="corrosionVelocity"
                 />
                 <span class="after">{{ trans('monitoring.units.mm_g') }}</span>
               </li>
@@ -599,6 +599,7 @@ export default {
   },
   data: function () {
     return {
+      localGu: this.gu,
       gus: null,
       date: null,
       kormass: null,
@@ -625,7 +626,7 @@ export default {
       doseMgPerL: null,
       corrosionRateInMmAB: null,
       doseMgPerLAB: null,
-      corrosionVelocityWithInhibitor: null,
+      corrosionVelocity: null,
       wmLastH2S: null,
       wmLastCO2: null,
       wmLastH2O: null,
@@ -677,7 +678,7 @@ export default {
   },
   methods: {
     chooseProblemGu(gu_id) {
-      this.gu = gu_id
+      this.localGu = gu_id
       this.chooseGu()
       this.dayClicked({
         id: moment().format('YYYY-MM-DD')
@@ -687,7 +688,7 @@ export default {
       this.dose = 0;
       this.axios
           .post(this.localeUrl("/getgudata"), {
-            gu_id: this.gu
+            gu_id: this.localGu
           })
           .then((response) => {
             let data = response.data;
@@ -728,12 +729,12 @@ export default {
       this.doseMgPerL = null
       this.corrosionRateInMmAB = null
       this.doseMgPerLAB = null
-      this.corrosionVelocityWithInhibitor = null
+      this.corrosionVelocity = null
       this.dose = 0
       this.$emit("chart5", this.dose)
       this.axios
           .post(this.localeUrl("/getgudatabyday"), {
-            gu_id: this.gu,
+            gu_id: this.localGu,
             dt: day.id,
           })
           .then((response) => {
@@ -741,18 +742,22 @@ export default {
             if (data) {
               this.ngdu = data.ngdu
               this.uhe = data.uhe
-              this.plan_dosage = response.data.ca.plan_dosage
-              this.current_dosage = response.data.uhe.current_dosage
-              this.pressure = response.data.ngdu.pressure
-              this.temperature = response.data.ngdu.temperature
-              this.pump_discharge_pressure = response.data.ngdu.pump_discharge_pressure
-              this.surge_tank_pressure = response.data.ngdu.surge_tank_pressure
-              this.heater_inlet_pressure = response.data.ngdu.heater_inlet_pressure
-              this.heater_output_pressure = response.data.ngdu.heater_output_pressure
-              this.daily_fluid_production = response.data.ngdu.daily_fluid_production
-              this.signalizator = (response.data.uhe.current_dosage - response.data.ca.plan_dosage) * 100 / response.data.ca.plan_dosage
-              this.signalizatorAbs = Math.round(this.signalizator)
-              this.corrosionVelocityWithInhibitor = this.lastCorrosion.corrosion_velocity_with_inhibitor
+              this.plan_dosage = data.ca ? data.ca.plan_dosage : null
+              this.current_dosage = data.uhe ? data.uhe.current_dosage : null
+              this.pressure = data.ngdu ? data.ngdu.pressure : null
+              this.temperature = data.ngdu ? data.ngdu.temperature : null
+              this.pump_discharge_pressure = data.ngdu ? data.ngdu.pump_discharge_pressure : null
+              this.surge_tank_pressure = data.ngdu ? data.ngdu.surge_tank_pressure : null
+              this.heater_inlet_pressure = data.ngdu ? data.ngdu.heater_inlet_pressure : null
+              this.heater_output_pressure = data.ngdu ? data.ngdu.heater_output_pressure : null
+              this.daily_fluid_production =  data.ngdu ? data.ngdu.daily_fluid_production : null
+
+              if (data.uhe && data.ca) {
+                this.signalizator = (data.uhe.current_dosage - data.ca.plan_dosage) * 100 / data.ca.plan_dosage
+                this.signalizatorAbs = Math.round(this.signalizator)
+              }
+
+              this.lastCorrosion = data.lastCorrosion
               this.wmLast = data.wmLast
               this.wmLastH2S = data.wmLastH2S
               this.wmLastCO2 = data.wmLastCO2
@@ -761,6 +766,11 @@ export default {
               this.wmLastCl = data.wmLastCl
               this.wmLastSO4 = data.wmLastSO4
               this.oilGas = data.oilGas
+
+              let corrosion_with_inhibitor = this.lastCorrosion.corrosion_velocity_with_inhibitor;
+              let background_corrosion = this.lastCorrosion.background_corrosion_velocity;
+              this.corrosionVelocity = corrosion_with_inhibitor ? corrosion_with_inhibitor : background_corrosion;
+
               this.calc()
             } else {
               console.log("No data");
@@ -820,7 +830,7 @@ export default {
     getEconomicData(gu) {
       this.axios
           .post(this.localeUrl("/vcoreconomic"), {
-            gu: this.gu,
+            gu: this.localGu,
           })
           .then((response) => {
             let data = response.data;
@@ -833,7 +843,7 @@ export default {
 
       this.axios
           .post(this.localeUrl("/vcoreconomiccurrent"), {
-            gu: this.gu,
+            gu: this.localGu,
           })
           .then((response) => {
             let data = response.data;
