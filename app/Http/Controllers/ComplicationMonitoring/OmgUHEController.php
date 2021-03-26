@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\ComplicationMonitoring;
 
 use App\Filters\OmgUHEFilter;
-use App\Http\Controllers\Controller;
 use App\Http\Controllers\CrudController;
 use App\Http\Controllers\Traits\WithFieldsValidation;
 use App\Http\Requests\IndexTableRequest;
@@ -11,12 +10,11 @@ use App\Http\Requests\OmgUHECreateRequest;
 use App\Http\Requests\OmgUHEUpdateRequest;
 use App\Models\ComplicationMonitoring\OmgCA;
 use App\Models\ComplicationMonitoring\OmgUHE as ComplicationMonitoringOmgUHE;
-use Carbon\Carbon;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use App\Http\Resources\OmgUHEListResource;
 
 class OmgUHEController extends CrudController
 {
@@ -114,7 +112,7 @@ class OmgUHEController extends CrudController
             ->getFilteredQuery($request->validated(), $query)
             ->paginate(25);
 
-        return response()->json(json_decode(\App\Http\Resources\OmgUHEListResource::collection($omguhe)->toJson()));
+        return response()->json(json_decode(OmgUHEListResource::collection($omguhe)->toJson()));
     }
 
     public function export(IndexTableRequest $request)

@@ -408,45 +408,46 @@ class OilGasController extends CrudController
 
     static function ecoData($gu = 38)
     {
-        $ngduUheData = DB::table('omg_n_g_d_u_s')
+        $table = 'omg_n_g_d_u_s_1';
+        $ngduUheData = DB::table($table)
             ->leftJoin(
                 'omg_u_h_e_s',
-                function ($join) {
-                    $join->on('omg_n_g_d_u_s.gu_id', '=', 'omg_u_h_e_s.gu_id')
-                        ->on('omg_u_h_e_s.date', '=', 'omg_n_g_d_u_s.date');
+                function ($join) use ($table) {
+                    $join->on($table.'.gu_id', '=', 'omg_u_h_e_s.gu_id')
+                        ->on('omg_u_h_e_s.date', '=', $table.'.date');
                 }
             )
             ->leftJoin(
                 'pipes',
-                function ($join) {
-                    $join->on('omg_n_g_d_u_s.gu_id', '=', 'pipes.gu_id')
+                function ($join) use ($table) {
+                    $join->on($table.'.gu_id', '=', 'pipes.gu_id')
                         ->where('pipes.plot', '=', 'eg');
                 }
             )
-            ->where('omg_n_g_d_u_s.gu_id', '=', $gu)
-            ->whereNotNull('omg_n_g_d_u_s.date')
-            ->whereNotNull('omg_n_g_d_u_s.pump_discharge_pressure')
-            ->whereNotNull('omg_n_g_d_u_s.heater_output_pressure')
-            ->whereNotNull('omg_n_g_d_u_s.daily_fluid_production')
-            ->whereNotNull('omg_n_g_d_u_s.bsw')
-            ->whereNotNull('omg_n_g_d_u_s.daily_oil_production')
-            ->whereNotNull('omg_u_h_e_s.date')
-            ->whereNotNull('omg_u_h_e_s.current_dosage')
+            ->where($table.'.gu_id', '=', $gu)
+            ->whereNotNull($table.'.date')
+            ->whereNotNull($table.'.pump_discharge_pressure')
+            ->whereNotNull($table.'.heater_output_pressure')
+            ->whereNotNull($table.'.daily_fluid_production')
+            ->whereNotNull($table.'.bsw')
+            ->whereNotNull($table.'.daily_oil_production')
+            ->whereNotNull($table.'ate')
+            ->whereNotNull($table.'urrent_dosage')
             ->select(
-                'omg_n_g_d_u_s.date',
-                'omg_n_g_d_u_s.gu_id',
+                $table.'.date',
+                $table.'.gu_id',
                 'pipes.outside_diameter',
                 'pipes.roughness',
                 'pipes.length',
                 'pipes.thickness',
-                'omg_n_g_d_u_s.pump_discharge_pressure',
-                'omg_n_g_d_u_s.heater_output_pressure',
-                'omg_n_g_d_u_s.daily_fluid_production',
-                'omg_n_g_d_u_s.daily_water_production',
-                'omg_n_g_d_u_s.bsw',
-                'omg_n_g_d_u_s.daily_gas_production_in_sib',
-                'omg_n_g_d_u_s.surge_tank_pressure',
-                'omg_n_g_d_u_s.daily_oil_production',
+                $table.'.pump_discharge_pressure',
+                $table.'.heater_output_pressure',
+                $table.'.daily_fluid_production',
+                $table.'.daily_water_production',
+                $table.'.bsw',
+                $table.'.daily_gas_production_in_sib',
+                $table.'.surge_tank_pressure',
+                $table.'.daily_oil_production',
                 'omg_u_h_e_s.current_dosage')
             ->get();
 
