@@ -191,7 +191,7 @@ class OmgNGDUController extends CrudController
      */
     public function show($id)
     {
-        $omgngdu = OmgNGDU::where('id', '=', $id)
+        $omgngdu = OmgNGDU::where('id', $id)
             ->with('ngdu', 'cdng', 'gu', 'zu', 'well')
             ->first();
 
@@ -257,7 +257,7 @@ class OmgNGDUController extends CrudController
 
     public function getKormass(Request $request)
     {
-        $guKormass = GuKormass::where('gu_id', '=', $request->gu_id)->get();
+        $guKormass = GuKormass::where('gu_id', $request->gu_id)->get();
         $guKormassArray = [];
         foreach ($guKormass as $row) {
             array_push($guKormassArray, $row->kormass_id);
@@ -354,15 +354,15 @@ class OmgNGDUController extends CrudController
     {
         $uhes = OmgUHE::query()
             ->select('gu_id', 'current_dosage')
-            ->where('date', '=', Carbon::now()->format('Y-m-d'))
-            ->leftJoin('gus', 'gus.id', '=', 'omg_u_h_e_s.gu_id')
+            ->where('date', Carbon::now()->format('Y-m-d'))
+            ->leftJoin('gus', 'gus.id', 'omg_u_h_e_s.gu_id')
             ->addSelect(DB::raw('lpad(gus.name, 10, 0) AS gus_name'))
             ->orderBy('gus_name', 'asc')
             ->get();
 
         $cas = OmgCA::query()
             ->select('gu_id', 'plan_dosage')
-            ->where('date', '=', Carbon::now()->startOfYear()->format('Y-m-d'))
+            ->where('date', Carbon::now()->startOfYear()->format('Y-m-d'))
             ->get();
 
         $gus = [];
