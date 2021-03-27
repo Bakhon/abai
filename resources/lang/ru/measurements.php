@@ -11,4 +11,8 @@ return array (
   'pressure_bar' => 'Бар',
   'tonn' => 'Тонн',
   'celsius' => '°C',
+  'st' => 
+  array (
+    'm3/day' => 'ст.м³/сут',
+  ),
 );
