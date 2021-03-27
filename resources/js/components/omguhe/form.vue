@@ -35,7 +35,7 @@
               value-zone="Asia/Almaty"
               zone="Asia/Almaty"
               :format="{ year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: '2-digit', timeZoneName: 'short' }"
-              :phrases="{ok: 'Выбрать', cancel: 'Выход'}"
+              :phrases="{ok: this.trans('app.choose'), cancel: this.trans('app.cancel')}"
               :hour-step="1"
               :minute-step="5"
               :week-start="1"
