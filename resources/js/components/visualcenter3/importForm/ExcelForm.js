@@ -1,25 +1,72 @@
 import VGrid from "@revolist/vue-datagrid";
 import initialRowsKOA from './dzoData/initial_rows_koa.json';
 import initialRowsKTM from './dzoData/initial_rows_ktm.json';
-import fieldsMapping from './dzoData/fields_mapping.json';
+import initialRowsKBM from './dzoData/initial_rows_kbm.json';
+import initialRowsKGM from './dzoData/initial_rows_kgm.json';
+import initialRowsMMG from './dzoData/initial_rows_mmg.json';
+import initialRowsOMG from './dzoData/initial_rows_omg.json';
+import initialRowsYO from './dzoData/initial_rows_yo.json';
+import initialRowsEMG from './dzoData/initial_rows_emg.json';
 import formatMappingKOA from './dzoData/format_mapping_koa.json';
 import formatMappingKTM from './dzoData/format_mapping_ktm.json';
+import formatMappingKBM from './dzoData/format_mapping_kbm.json';
+import formatMappingKGM from './dzoData/format_mapping_kgm.json';
+import formatMappingMMG from './dzoData/format_mapping_mmg.json';
+import formatMappingOMG from './dzoData/format_mapping_omg.json';
+import formatMappingYO from './dzoData/format_mapping_yo.json';
+import formatMappingEMG from './dzoData/format_mapping_emg.json';
 import cellsMappingKOA from './dzoData/cells_mapping_koa.json';
 import cellsMappingKTM from './dzoData/cells_mapping_ktm.json';
+import cellsMappingKBM from './dzoData/cells_mapping_kbm.json';
+import cellsMappingKGM from './dzoData/cells_mapping_kgm.json';
+import cellsMappingMMG from './dzoData/cells_mapping_mmg.json';
+import cellsMappingOMG from './dzoData/cells_mapping_omg.json';
+import cellsMappingYO from './dzoData/cells_mapping_yo.json';
+import cellsMappingEMG from './dzoData/cells_mapping_emg.json';
 import moment from "moment";
 import Visual from "./dataManagers/visual";
 
-const defaultDzoTicker = "KOA";
+const defaultDzoTicker = "ЕМГ";
 const dzoMapping = {
-    "KOA" : {
+    "КОА" : {
         rows: initialRowsKOA,
         format: formatMappingKOA,
         cells: cellsMappingKOA
     },
-    "KTM" : {
+    "КТМ" : {
         rows: initialRowsKTM,
         format: formatMappingKTM,
         cells: cellsMappingKTM
+    },
+    "КБМ" : {
+        rows: initialRowsKBM,
+        format: formatMappingKBM,
+        cells: cellsMappingKBM
+    },
+    "КГМ" : {
+        rows: initialRowsKGM,
+        format: formatMappingKGM,
+        cells: cellsMappingKGM
+    },
+    "ММГ" : {
+        rows: initialRowsMMG,
+        format: formatMappingMMG,
+        cells: cellsMappingMMG
+    },
+    "ОМГ" : {
+        rows: initialRowsOMG,
+        format: formatMappingOMG,
+        cells: cellsMappingOMG
+    },
+    "УО" : {
+        rows: initialRowsYO,
+        format: formatMappingYO,
+        cells: cellsMappingYO
+    },
+    "ЕМГ" : {
+        rows: initialRowsEMG,
+        format: formatMappingEMG,
+        cells: cellsMappingEMG
     },
 };
 
@@ -28,12 +75,36 @@ export default {
         return {
             dzoCompanies: [
                 {
-                    ticker: 'KOA',
+                    ticker: 'ЕМГ',
+                    name: 'АО "Эмбамунайгаз"'
+                },
+                {
+                    ticker: 'КОА',
                     name: 'ТОО "Казахойл Актобе"'
                 },
                 {
-                    ticker: 'KTM',
+                    ticker: 'КТМ',
                     name: 'ТОО "Казахтуркмунай"'
+                },
+                {
+                    ticker: 'КБМ',
+                    name: 'АО "КАРАЖАНБАСМУНАЙ"'
+                },
+                {
+                    ticker: 'КГМ',
+                    name: 'ТОО СП "КАЗГЕРМУНАЙ"'
+                },
+                {
+                    ticker: 'ММГ',
+                    name: 'АО "Мангистаумунайгаз"'
+                },
+                {
+                    ticker: 'ОМГ',
+                    name: 'АО "ОзенМунайГаз"'
+                },
+                {
+                    ticker: 'УО',
+                    name: 'ТОО "Урихтау Оперейтинг"'
                 },
             ],
             status: this.trans("visualcenter.importForm.status.waitForData"),
@@ -78,14 +149,17 @@ export default {
         this.setTableFormat();
     },
     methods: {
-        dzoChange($event) {
+        async dzoChange($event) {
             let dzoTicker = $event.target.value;
             this.selectedDzo.ticker = dzoTicker;
             this.cellsMapping = _.cloneDeep(dzoMapping[dzoTicker].cells);
             this.rowsFormatMapping = _.cloneDeep(dzoMapping[dzoTicker].format.rowsFormatMapping);
             this.columnsFormatMapping = _.cloneDeep(dzoMapping[dzoTicker].format.columnsFormatMapping);
+            this.rowsCount = _.cloneDeep(dzoMapping[dzoTicker].rows).length + 2;
             this.rows = _.cloneDeep(dzoMapping[dzoTicker].rows);
-            this.rowsCount = this.rows.length + 2;
+            await this.sleep(100);
+            this.disableHighlightOnCells();
+            this.setTableFormat();
         },
         async chemistrySave() {
             this.chemistryErrorFields = [];
