@@ -24,8 +24,6 @@ class EconomicIbrahimImport implements ToModel
      */
     protected $user_id;
     protected $log_id;
-    protected $source;
-    protected $source_name = "Импорт Excel";
 
     function __construct($user_id) {
         $this->user_id = $user_id;
