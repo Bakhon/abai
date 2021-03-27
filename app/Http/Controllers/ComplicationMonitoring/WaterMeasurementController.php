@@ -595,16 +595,9 @@ class WaterMeasurementController extends CrudController
     {
         $wm = WaterMeasurement::query()
             ->where('gu_id', $request->gu_id)
-            ->where('date', '>=', Carbon::now()->subYear()->startOfMonth())
-            ->where('date', '<=', Carbon::now()->startOfMonth())
-            ->get()
-            ->groupBy(
-                function ($item) {
-                    return Carbon::parse($item->date)->diffInMonths(Carbon::now()->startOfMonth()) > 6
-                        ? '1 полугодие'
-                        : '2 полугодие';
-                }
-            );
+            ->where('date', '>=', Carbon::now()->subYear())
+            ->where('date', '<=', Carbon::now())
+            ->get();
 
         $uhe = OmgUHE::query()
             ->where('gu_id', $request->gu_id)
@@ -651,12 +644,12 @@ class WaterMeasurementController extends CrudController
             'value' => []
         ];
 
-        foreach ($wm as $key => $wmMonth) {
-            $chartDtCarbonDioxide['dt'][] = $key;
-            $chartDtCarbonDioxide['value'][] = $wmMonth->avg('carbon_dioxide');
+        foreach ($wm as $key => $wm_val) {
+            $chartDtCarbonDioxide['dt'][] = Carbon::parse($wm_val->date)->format('Y-m-d');
+            $chartDtCarbonDioxide['value'][] = $wm_val->carbon_dioxide;
 
-            $chartDtHydrogenSulfide['dt'][] = $key;
-            $chartDtHydrogenSulfide['value'][] = $wmMonth->avg('hydrogen_sulfide');
+            $chartDtHydrogenSulfide['dt'][] = Carbon::parse($wm_val->date)->format('Y-m-d');
+            $chartDtHydrogenSulfide['value'][] = $wm_val->hydrogen_sulfide;
         }
 
         foreach ($uhe as $key => $uheMonth) {
