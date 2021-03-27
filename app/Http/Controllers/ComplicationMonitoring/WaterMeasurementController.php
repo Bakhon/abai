@@ -644,12 +644,12 @@ class WaterMeasurementController extends CrudController
             'value' => []
         ];
 
-        foreach ($wm as $key => $wm_val) {
-            $chartDtCarbonDioxide['dt'][] = Carbon::parse($wm_val->date)->format('Y-m-d');
-            $chartDtCarbonDioxide['value'][] = $wm_val->carbon_dioxide;
+        foreach ($wm as $key => $val) {
+            $chartDtCarbonDioxide['dt'][] = Carbon::parse($val->date)->format('Y-m-d');
+            $chartDtCarbonDioxide['value'][] = $val->carbon_dioxide;
 
-            $chartDtHydrogenSulfide['dt'][] = Carbon::parse($wm_val->date)->format('Y-m-d');
-            $chartDtHydrogenSulfide['value'][] = $wm_val->hydrogen_sulfide;
+            $chartDtHydrogenSulfide['dt'][] = Carbon::parse($val->date)->format('Y-m-d');
+            $chartDtHydrogenSulfide['value'][] = $val->hydrogen_sulfide;
         }
 
         foreach ($uhe as $key => $uheMonth) {
