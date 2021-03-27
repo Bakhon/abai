@@ -9,7 +9,8 @@ use App\Http\Requests\IndexTableRequest;
 use App\Http\Requests\OmgUHECreateRequest;
 use App\Http\Requests\OmgUHEUpdateRequest;
 use App\Models\ComplicationMonitoring\OmgCA;
-use App\Models\ComplicationMonitoring\OmgUHE as ComplicationMonitoringOmgUHE;
+use App\Models\ComplicationMonitoring\OmgUHE;
+use Carbon\Carbon;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -32,7 +33,7 @@ class OmgUHEController extends CrudController
             'title' => trans('monitoring.omguhe.title'),
             'table_header' => [
                 trans('monitoring.selection_node') => 1,
-                trans('monitoring.omguhe.fields.fact_data') => 4,
+                trans('monitoring.omguhe.fields.fact_data') => 7,
             ],
             'fields' => [
                 
@@ -56,8 +57,22 @@ class OmgUHEController extends CrudController
                             ->toArray()
                     ]
                 ],
-                
-                
+
+                'date' => [
+                    'title' => trans('app.date'),
+                    'type' => 'date',
+                ],
+
+                'level' => [
+                    'title' => trans('monitoring.level'),
+                    'type' => 'numeric',
+                ],
+
+                'fill' => [
+                    'title' => trans('monitoring.omguhe.fields.fill'),
+                    'type' => 'numeric',
+                ],
+
                 'current_dosage' => [
                     'title' => trans('monitoring.omguhe.fields.fact_dosage'),
                     'type' => 'numeric',
@@ -101,7 +116,7 @@ class OmgUHEController extends CrudController
 
     public function list(IndexTableRequest $request)
     {
-        $query = ComplicationMonitoringOmgUHE::query()
+        $query = OmgUHE::query()
                                 ->with('ngdu')
                                 ->with('cdng')
                                 ->with('gu')
@@ -142,18 +157,29 @@ class OmgUHEController extends CrudController
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
      */
-    public function store(OmgUHECreateRequest $request)
+    public function store(OmgUHECreateRequest $request): \Symfony\Component\HttpFoundation\Response
     {
         $this->validateFields($request, 'omguhe');
 
-        $omgohe = new ComplicationMonitoringOmgUHE;
-        $omgohe->fill($request->validated());
+
+        $input = $request->validated();
+        $input['date'] = Carbon::parse($input['date'])->format('Y-m-d H:i:s');
+
+        $omgohe = new OmgUHE;
+        $omgohe->fill($input);
         $omgohe->cruser_id = auth()->id();
         $omgohe->save();
 
-        return redirect()->route('omguhe.index')->with('success',__('app.created'));
+        Session::flash('message', __('app.created'));
+
+        return response()->json(
+            [
+                'status' => config('response.status.success')
+            ]
+        );
+
+//        return redirect()->route('omguhe.index')->with('success',__('app.created'));
     }
 
     /**
@@ -164,7 +190,7 @@ class OmgUHEController extends CrudController
      */
     public function show($id)
     {
-        $omguhe = ComplicationMonitoringOmgUHE::where('id', '=', $id)
+        $omguhe = OmgUHE::where('id', $id)
                             ->with('ngdu')
                             ->with('cdng')
                             ->with('gu')
@@ -181,7 +207,7 @@ class OmgUHEController extends CrudController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function history(ComplicationMonitoringOmgUHE $omguhe)
+    public function history(OmgUHE $omguhe)
     {
         $omguhe->load('history');
         return view('omguhe.history', compact('omguhe'));
@@ -193,7 +219,7 @@ class OmgUHEController extends CrudController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(ComplicationMonitoringOmgUHE $omguhe)
+    public function edit(OmgUHE $omguhe)
     {
         $validationParams = $this->getValidationParams('omguhe');
         return view('omguhe.edit', compact('omguhe'), compact('validationParams'));
@@ -206,7 +232,7 @@ class OmgUHEController extends CrudController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(OmgUHEUpdateRequest $request, ComplicationMonitoringOmgUHE $omguhe)
+    public function update(OmgUHEUpdateRequest $request, OmgUHE $omguhe)
     {
         $this->validateFields($request, 'omguhe');
         $omguhe->update($request->validated());
@@ -221,7 +247,7 @@ class OmgUHEController extends CrudController
      */
     public function destroy(Request $request, $id)
     {
-        $omguhe = ComplicationMonitoringOmgUHE::find($id);
+        $omguhe = OmgUHE::find($id);
         $omguhe->delete();
 
         if($request->ajax()) {
@@ -233,18 +259,17 @@ class OmgUHEController extends CrudController
     }
 
     public function getPrevDayLevel(Request $request){
-        $result = ComplicationMonitoringOmgUHE::where('gu_id', '=', $request->gu_id)
+        $result = OmgUHE::where('gu_id', $request->gu_id)
                                         ->where('date', '<', $request->date)
-                                        ->where('out_of_service_оf_dosing', '<>', '1')
+                                        ->where('out_of_service_оf_dosing', '!=', '1')
                                         ->latest()
                                         ->first();
         
-        $datetime = new DateTime($request->date);
-        $ddng = OmgCA::where('gu_id', '=', $request->gu_id)
-                        ->where('date', '=', $datetime->format("Y").'-01-01')
+        $ddng = OmgCA::where('gu_id', $request->gu_id)
+                        ->where('date', Carbon::parse($request->date)->year . "-01-01")
                         ->first();
 
-        if($result){
+        if($result && $ddng && $request->gu_id){
             if($result->fill){
                 $res = [
                     'level' => $result->fill,
@@ -261,7 +286,7 @@ class OmgUHEController extends CrudController
                 return response()->json($res);
             }
         }else{
-            return false;
+            return response()->json(null);
         }
     }
 

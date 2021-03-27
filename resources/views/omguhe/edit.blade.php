@@ -1,7 +1,7 @@
 @extends('layouts.monitor')
 
 @section('content')
-    <div class="row" id="app">
+    <div  id="app">
         <div class="col-md-12">
             @if ($message = Session::get('success'))
                 <div class="alert alert-success">
@@ -15,9 +15,7 @@
                 <form action="{{ route('omguhe.update', $omguhe) }}" method="POST">
                     @method('patch')
                     @csrf
-                    <div class="row">
-                        <omguhe-form :omguhe='@json($omguhe)' :validation-params='@json($validationParams)'></omguhe-form>
-                    </div>
+                    <omguhe-form :omguhe='@json($omguhe)' :validation-params='@json($validationParams)'></omguhe-form>
                 </form>
             </div>
         </div>

@@ -64,7 +64,7 @@ return array (
       'background_corrosion_velocity' => 'Фоновая скорость',
       'start_date_of_corrosion_velocity_with_inhibitor_measure' => 'Дата начало замера скорости коррозии с реагентом',
       'final_date_of_corrosion_velocity_with_inhibitor_measure' => 'Дата окончания замера скорости коррозии с реагентом',
-      'corrosion_velocity_with_inhibitor' => 'Скорость коррозии',
+      'corrosion_velocity_with_inhibitor' => 'Скорость коррозии с игибитором',
       'sample_number' => 'Номер образца-свидетеля',
       'weight_before' => 'Масса до установки, гр',
       'days' => 'Количество дней экспозиции',
@@ -232,6 +232,8 @@ return array (
     ),
     'edit_title' => 'Редактирование данных по трубопроводу',
     'pipe' => 'Трубопровод',
+    'menu' => 'Трубопроводы',
+    'title' => 'База данных по трубопроводам',
   ),
   'inhibitor' => 
   array (
