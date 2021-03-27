@@ -178,8 +178,6 @@ class OmgUHEController extends CrudController
                 'status' => config('response.status.success')
             ]
         );
-
-//        return redirect()->route('omguhe.index')->with('success',__('app.created'));
     }
 
     /**
