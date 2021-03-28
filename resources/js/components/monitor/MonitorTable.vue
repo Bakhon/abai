@@ -848,7 +848,6 @@ export default {
           .then((response) => {
             let data = response.data;
             if (data) {
-              console.log(data);
               this.economicCurrentYear = data.tableData;
               this.economicCurrentDays = data.daysEcoCurrent;
             } else {
