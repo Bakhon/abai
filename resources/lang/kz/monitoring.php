@@ -254,6 +254,11 @@ return array (
   'gu' => 
   array (
     'gu' => 'ТҚ',
+    'fields' => 
+    array (
+      'surge_tank_pressure' => 'Буферлік сыйымдылық қысымы',
+      'daily_gas_production_in_sib' => 'БӨС газ мөлшері',
+    ),
   ),
   'well' => 
   array (
