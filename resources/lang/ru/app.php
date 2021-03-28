@@ -28,4 +28,5 @@ return array (
   'success' => 'Успешно',
   'error' => 'Ошибка',
   'delete_titie' => 'Удаление',
+  'choose' => 'Выбрать',
 );
