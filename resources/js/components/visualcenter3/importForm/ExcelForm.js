@@ -32,7 +32,7 @@ const dzoMapping = {
         rows: initialRowsKOA,
         format: formatMappingKOA,
         cells: cellsMappingKOA,
-        id: 101
+        id: 94
     },
     "КТМ" : {
         rows: initialRowsKTM,
@@ -44,31 +44,31 @@ const dzoMapping = {
         rows: initialRowsKBM,
         format: formatMappingKBM,
         cells: cellsMappingKBM,
-        id: 101
+        id: 95
     },
     "КГМ" : {
         rows: initialRowsKGM,
         format: formatMappingKGM,
         cells: cellsMappingKGM,
-        id: 101
+        id: 96
     },
     "ММГ" : {
         rows: initialRowsMMG,
         format: formatMappingMMG,
         cells: cellsMappingMMG,
-        id: 101
+        id: 97
     },
     "ОМГ" : {
         rows: initialRowsOMG,
         format: formatMappingOMG,
         cells: cellsMappingOMG,
-        id: 101
+        id: 90
     },
     "УО" : {
         rows: initialRowsYO,
         format: formatMappingYO,
         cells: cellsMappingYO,
-        id: 101
+        id: 99
     },
     "ЕМГ" : {
         rows: initialRowsEMG,
@@ -153,6 +153,9 @@ export default {
     props: ['userId'],
     async mounted() {
         this.selectedDzo.ticker = this.getDzoTicker();
+        if (!this.selectedDzo.ticker) {
+            this.selectedDzo.ticker = defaultDzoTicker;
+        }
         this.changeDefaultDzo();
         this.dzoPlans = await this.getDzoMonthlyPlans();
         this.selectedDzo.plans = this.getSelectedDzoPlans();
@@ -164,7 +167,7 @@ export default {
             let dzoTicker = '';
             let self = this;
             _.forEach(Object.keys(dzoMapping), function(key) {
-               if (dzoMapping[key].id === self.userId) {
+               if (parseInt(dzoMapping[key].id) === parseInt(self.userId)) {
                    dzoTicker = key;
                }
             });
