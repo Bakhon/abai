@@ -330,7 +330,7 @@
         <div class="no-gutter col-lg-9 order-md-1 first-column container-fluid no-gutter">
           <div class="no-gutter col-md-12 first-column-curve-block">
             <div class="background">
-              <modal class="modal-bign-wrapper" name="modalIncl" :width="1300" :height="700"
+              <modal class="modal-bign-wrapper" name="modalIncl" :draggable="true" :width="1300" :height="700"
                 style="background: transparent;" :adaptive="true">
                 <div class="modal-bign modal-bign-container">
                   <div class="modal-bign-header">
@@ -348,7 +348,7 @@
                 </div>
               </modal>
 
-              <modal class="modal-bign-wrapper" name="modal-prs" :width="1263" :height="612"
+              <modal class="modal-bign-wrapper" name="modal-prs" :draggable="true" :width="1263" :height="612"
                 style="background: transparent;" :adaptive="true">
                 <div class="modal-bign modal-bign-container">
                   <div class="modal-bign-header">
@@ -365,7 +365,7 @@
                 </div>
               </modal>
 
-              <modal class="modal-bign-wrapper" name="modalOldWell" :width="1080" :height="450" :adaptive="true">
+              <modal class="modal-bign-wrapper" name="modalOldWell" :draggable="true" :width="1080" :height="450" :adaptive="true">
                 <div class="modal-bign modal-bign-container">
                   <div class="modal-bign-header">
                     <div class="modal-bign-title">
@@ -438,7 +438,7 @@
                 </div>
               </modal>
 
-              <modal class="modal-bign-wrapper" name="modalNewWell" :width="1150" :height="450" :adaptive="true">
+              <modal class="modal-bign-wrapper" name="modalNewWell" :draggable="true" :width="1150" :height="450" :adaptive="true">
                 <div class="modal-bign modal-bign-container">
                   <div class="modal-bign-header">
                     <div class="modal-bign-title">
@@ -516,7 +516,7 @@
                 </div>
               </modal>
 
-              <modal class="" name="modalNearWells" :width="1150" :height="450" :adaptive="true">
+              <modal class="" name="modalNearWells" :draggable="true" :width="1150" :height="450" :adaptive="true">
                 <div class="modal-bign modal-bign-container">
                   <div class="modal-bign-header">
                     <div class="modal-bign-title">
@@ -609,7 +609,7 @@
               </modal>
 
 
-              <modal class="modal-bign-wrapper chart" name="modalExpAnalysis" :width="1300" :height="550"
+              <modal class="modal-bign-wrapper chart" name="modalExpAnalysis" :draggable="true" :width="1300" :height="550"
                 :adaptive="true">
                 <div class="modal-bign modal-bign-container">
                   <div class="modal-bign-header">
@@ -647,7 +647,7 @@
                 </div>
               </modal>
 
-              <modal class="modal-bign-wrapper chart" name="tablePGNO" :width="500" :height="550" :adaptive="true">
+              <modal class="modal-bign-wrapper chart" :draggable="true" name="tablePGNO" :width="500" :height="550" :adaptive="true">
                 <div class="modal-bign modal-bign-container no-padding">
                   <div class="modal-bign-header with-padding">
                     <div class="modal-bign-title">
@@ -1033,11 +1033,11 @@
                 </div>
               </modal>
 
-              <modal name="modalPGNO" :width="1150" :height="400" :adaptive="true">
+              <modal name="modalPGNO" :draggable="true" :width="1150" :height="400" :adaptive="true">
                 <div class="modal-bign3"></div>
               </modal> 
 
-              <modal name="paramSep" :width="1150" :height="400" :adaptive="true">
+              <modal name="paramSep" :draggable="true" :width="1150" :height="400" :adaptive="true">
                 <div class="modal-bign modal-bign-container">
                   <div class="modal-bign-header">
                     <div class="modal-bign-title">
@@ -1241,7 +1241,7 @@
             </div>
           </div>
 
-          <modal name="table" :width="1150" :height="385" :adaptive="true"></modal>
+          <modal name="table" :draggable="true" :width="1150" :height="385" :adaptive="true"></modal>
 
           <div class="no-gutter col-md-12 first-column-params-block">
             <div class="container-fluid d-sm-block">
