@@ -214,10 +214,20 @@ Vue.use(Datetime);
 
 export default {
   name: "omguhe-form",
-  props: [
-    'omguhe',
-    'validationParams'
-  ],
+  props: {
+    omguhe: {
+      type: Object,
+      default: null
+    },
+    validationParams: {
+      type: Object,
+      required: true,
+    },
+    isEditing: {
+      type: Boolean,
+      default: false
+    }
+  },
   components: {
     Datetime
   },
@@ -387,14 +397,24 @@ export default {
       return moment(date).format('YYYY-MM-DD HH:MM:SS')
     },
     submitForm () {
-      this.axios
-          .post(this.localeUrl("/omguhe"), this.formFields)
-          .then((response) => {
-            let data = response.data;
-            if (response.data.status == 'success') {
-              window.location.replace(this.localeUrl("/omguhe"));
-            }
-          });
+
+      if (this.isEditing) {
+        this.axios
+            .put(this.localeUrl("/omguhe/" + this.omguhe.id), this.formFields)
+            .then((response) => {
+              if (response.data.status == 'success') {
+                window.location.replace(this.localeUrl("/omguhe"));
+              }
+            });
+      } else {
+        this.axios
+            .post(this.localeUrl("/omguhe"), this.formFields)
+            .then((response) => {
+              if (response.data.status == 'success') {
+                window.location.replace(this.localeUrl("/omguhe"));
+              }
+            });
+      }
     }
   },
   beforeCreate: function () {

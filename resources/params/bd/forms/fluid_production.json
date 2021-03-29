@@ -98,8 +98,20 @@
     },
     {
       "title": "liquid_telemetry",
-      "code": "note",
-      "type": "float",
+      "code": "telemetry",
+      "type": "history_graph",
+      "fields": [
+        "liquid_telemetry",
+        "telemetry_source"
+      ],
+      "graph_fields": [
+        "liquid_val",
+        "bsw",
+        "oil_val",
+        "debit_fluid_tech",
+        "bsw_tech",
+        "debit_oil_tech"
+      ],
       "isEditable": false
     },
     {
@@ -292,6 +304,28 @@
       "title": "Плотность нефти",
       "code": "density_oil",
       "type": "hidden",
+      "isEditable": false
+    },
+    {
+      "title": "Данные телеметрии",
+      "code": "liquid_telemetry",
+      "type": "hidden",
+      "table": "tbdic.well_telemetry",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": "1"
+      },
+      "isEditable": false
+    },
+    {
+      "title": "Источник телеметрии",
+      "code": "telemetry_source",
+      "type": "hidden",
+      "table": "tbdic.well_telemetry",
+      "column": "source",
+      "additional_filter": {
+        "metric": "1"
+      },
       "isEditable": false
     }
   ]
