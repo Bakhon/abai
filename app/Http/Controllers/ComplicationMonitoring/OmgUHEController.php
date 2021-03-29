@@ -228,13 +228,22 @@ class OmgUHEController extends CrudController
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
-    public function update(OmgUHEUpdateRequest $request, OmgUHE $omguhe)
+    public function update(OmgUHEUpdateRequest $request, OmgUHE $omguhe): \Symfony\Component\HttpFoundation\Response
     {
         $this->validateFields($request, 'omguhe');
-        $omguhe->update($request->validated());
-        return redirect()->route('omguhe.index')->with('success',__('app.updated'));
+        $input = $request->validated();
+        $input['date'] = Carbon::parse($input['date'])->format('Y-m-d H:i:s');
+
+        $omguhe->update($input);
+
+        Session::flash('message', __('app.updated'));
+
+        return response()->json(
+            [
+                'status' => config('response.status.success')
+            ]
+        );
     }
 
     /**
