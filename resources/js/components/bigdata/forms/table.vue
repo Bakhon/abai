@@ -81,9 +81,14 @@
                     </template>
                   </template>
                   <template v-if="history[row.uwi.id] && history[row.uwi.id][column.code]">
-                    <div v-for="(value, time) in history[row.uwi.id][column.code]">
-                      {{ time }} - <b>{{ value.value }}</b> {{ value.user }}
-                    </div>
+                    <a :id="`history_${row.uwi.id}`">
+                      i
+                    </a>
+                    <b-popover :target="`history_${row.uwi.id}`" placement="top" triggers="hover">
+                      <div v-for="(value, time) in history[row.uwi.id][column.code]">
+                        {{ time }} - <b>{{ value.value }}</b> {{ value.user }}
+                      </div>
+                    </b-popover>
                   </template>
                 </td>
               </tr>
