@@ -64,7 +64,7 @@ return array (
       'background_corrosion_velocity' => 'Фоновая скорость',
       'start_date_of_corrosion_velocity_with_inhibitor_measure' => 'Дата начало замера скорости коррозии с реагентом',
       'final_date_of_corrosion_velocity_with_inhibitor_measure' => 'Дата окончания замера скорости коррозии с реагентом',
-      'corrosion_velocity_with_inhibitor' => 'Скорость коррозии',
+      'corrosion_velocity_with_inhibitor' => 'Скорость коррозии с игибитором',
       'sample_number' => 'Номер образца-свидетеля',
       'weight_before' => 'Масса до установки, гр',
       'days' => 'Количество дней экспозиции',
@@ -146,6 +146,7 @@ return array (
       'pump_discharge_pressure' => 'Давление на выходе насоса, бар',
       'heater_inlet_pressure' => 'Температура на входе в печь, С',
       'heater_output_pressure' => 'Температура на выходе из печи, С',
+      'temperature' => 'Температура на входе в печь, С',
     ),
   ),
   'all_gus' => 'Все ГУ',
@@ -211,8 +212,6 @@ return array (
   'corrosion_name' => 'Коррозия',
   'pipe' => 
   array (
-    'title' => 'База данных по трубопроводам',
-    'menu' => 'Трубопроводы',
     'updated' => 'Трубовровод изменен',
     'deleted' => 'Трубопровод удален',
     'deleting_error' => 'Ошибка при удалении трубопровода',
@@ -233,6 +232,8 @@ return array (
     ),
     'edit_title' => 'Редактирование данных по трубопроводу',
     'pipe' => 'Трубопровод',
+    'menu' => 'Трубопроводы',
+    'title' => 'База данных по трубопроводам',
   ),
   'inhibitor' => 
   array (
@@ -294,6 +295,8 @@ return array (
       'heater_output_pressure' => 'Давление сепаратора',
       'date' => 'Дата',
       'heater_output_temperature' => 'Температура печи',
+      'surge_tank_pressure' => 'Давление в буферной емкости',
+      'daily_gas_production_in_sib' => 'Количество газа в СИБ',
     ),
     'redirect-to' => 'Перейти на',
   ),

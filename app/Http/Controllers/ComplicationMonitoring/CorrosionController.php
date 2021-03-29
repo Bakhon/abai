@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\ComplicationMonitoring;
 
 use App\Filters\CorrosionFilter;
-use App\Http\Controllers\Controller;
 use App\Http\Controllers\CrudController;
 use App\Http\Controllers\Traits\WithFieldsValidation;
 use App\Http\Requests\CorrosionCreateRequest;
@@ -13,7 +12,7 @@ use App\Models\ComplicationMonitoring\Corrosion;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Session;
-use Maatwebsite\Excel\Facades\Excel;
+use App\Http\Resources\CorrosionListResource;
 
 class CorrosionController extends CrudController
 {
@@ -120,7 +119,7 @@ class CorrosionController extends CrudController
             ->getFilteredQuery($request->validated(), $query)
             ->paginate(25);
 
-        return response()->json(json_decode(\App\Http\Resources\CorrosionListResource::collection($corrosion)->toJson()));
+        return response()->json(json_decode(CorrosionListResource::collection($corrosion)->toJson()));
     }
 
     public function export(IndexTableRequest $request)

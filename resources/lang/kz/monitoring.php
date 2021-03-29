@@ -145,6 +145,7 @@ return array (
       'pump_discharge_pressure' => 'Сораптың шығыс қысымы, бар',
       'heater_inlet_pressure' => 'Пештің кіріс температурасы, С',
       'heater_output_pressure' => 'Пештің шығыс температурасы, С',
+      'temperature' => 'Пештің кіріс температурасы, С',
     ),
   ),
   'all_gus' => 'Барлық ТҚ',
@@ -210,8 +211,6 @@ return array (
   'corrosion_name' => 'Коррозия',
   'pipe' => 
   array (
-    'menu' => 'Құбырлар',
-    'title' => 'Құбырлар дерекқоры',
     'create_title' => 'Құбырлар бойынша деректерді енгізу',
     'fields' => 
     array (
@@ -224,6 +223,8 @@ return array (
       'thickness' => 'Қабырға қалыңдығы',
     ),
     'edit_title' => 'Құбырлар бойынша түзетулерді енгізу',
+    'title' => 'Құбырлар дерекқоры',
+    'menu' => 'Құбырлар',
   ),
   'inhibitor' => 
   array (
@@ -253,6 +254,11 @@ return array (
   'gu' => 
   array (
     'gu' => 'ТҚ',
+    'fields' => 
+    array (
+      'surge_tank_pressure' => 'Буферлік сыйымдылық қысымы',
+      'daily_gas_production_in_sib' => 'БӨС газ мөлшері',
+    ),
   ),
   'well' => 
   array (

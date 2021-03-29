@@ -55,10 +55,13 @@ class Gu extends Model
             'gu_id',
             'daily_fluid_production',
             'daily_oil_production',
+            'daily_water_production',
             'bsw',
             'pump_discharge_pressure',
             'heater_output_pressure',
-            'editable'
+            'editable',
+            'daily_gas_production_in_sib',
+            'surge_tank_pressure'
         );
     }
 

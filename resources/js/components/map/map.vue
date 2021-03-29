@@ -282,7 +282,6 @@ export default {
           if (object) {
             if (object.cdng_id && object.last_omgngdu) {
               let guParams = object.last_omgngdu;
-              guParams.daily_water_production = (guParams.daily_fluid_production * guParams.bsw) / 100;
               guParams.name = object.name;
 
               return {
@@ -320,6 +319,9 @@ export default {
           '<p>' + this.trans('monitoring.gu.fields.bsw') + ': ' + guParams.bsw + this.trans('measurements.percent') + '</p>' +
           '<p>' + this.trans('monitoring.gu.fields.pump_discharge_pressure') + ': ' + guParams.pump_discharge_pressure + ' ' + this.trans('measurements.pressure_bar') + '</p>' +
           '<p>' + this.trans('monitoring.gu.fields.heater_output_temperature') + ': ' + guParams.heater_output_pressure + ' ' + this.trans('measurements.celsius') + '</p>' +
+          '<p>' + this.trans('monitoring.gu.fields.daily_gas_production_in_sib') + ': ' + guParams.daily_gas_production_in_sib + ' ' + this.trans('measurements.st.m3/day') + '</p>' +
+          '<p>' + this.trans('monitoring.gu.fields.surge_tank_pressure') + ': ' + guParams.surge_tank_pressure + ' ' + this.trans('measurements.pressure_bar') + '</p>' +
+
           '</div>';
     },
     prepareLayers() {
