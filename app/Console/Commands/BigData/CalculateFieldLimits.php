@@ -3,6 +3,7 @@
 namespace App\Console\Commands\BigData;
 
 use App\Services\BigData\Forms\TableForm;
+use Carbon\CarbonImmutable;
 use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
@@ -91,7 +92,7 @@ class CalculateFieldLimits extends Command
 
     private function calculateLimits(array $fields)
     {
-        $yesterday = \Carbon\CarbonImmutable::yesterday();
+        $yesterday = CarbonImmutable::yesterday();
         foreach ($fields as $field) {
             $startDate = $yesterday->subMonthNoOverflow();
             if ($field['custom_period']) {
