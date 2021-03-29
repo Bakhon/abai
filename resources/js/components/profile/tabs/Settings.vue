@@ -8,10 +8,20 @@
                 <img :src="user.profile.thumb || '/img/level1/icon_user.svg'" class="avatar">
                 <div class="rightBlock">
                   <p class="name">Фотография</p>
-                  <button class="blue">Загрузить</button><button>Удалить</button>
+                  <div class="feedback"  v-if="feedback">
+                    <span  style="color:red">{{feedback}}</span>
+                  </div>
+                  <div class="delete" v-if="deletestatus">
+                    <span>{{deletestatus}}</span>
+                  </div>
+                  <form method="post" enctype="multipart/form-data" id="avatar_form" v-on:submit.prevent="submitAvatar">
+                    <input type="file" class="form-control-file" name="avatar" id="avatarFile" aria-describedby="fileHelp">
+                    <button class="blue" type="submit" onclick="$('input#avatarFile').change()">Загрузить</button>
+                  </form>
+                  <button v-on:click="deleteAvatar()">Удалить</button>
                   <p class="descr">Поддерживаются JPG, GIF или PNG. Максимальный размер 800kB</p>
                 </div>
-              </div>
+              </div> 
               <div class="secondBlock">
                 <div class="blockName">
                   <span class="blockIcon" v-html="icons.earth"></span>
@@ -67,6 +77,7 @@
 
 <script>
 import params from '../../../json/profile.json'
+import axios from 'axios';
 
 export default {
   name: 'SettingsProfile',
@@ -87,8 +98,55 @@ export default {
       value5: '0',
       value6: '0',
       radio: '1',
+      feedback: '',
+      deletestatus: '',
     }
   },
-  methods: {}
+  methods: {
+    submitAvatar(){
+      const files = document.querySelector('#avatar_form'); 
+      var bodyFormData = new FormData(files);
+      $('.delete').hide();
+      $('.feedback').hide();
+      axios({
+        method: 'post',
+        url: 'update_avatar',
+        data: bodyFormData,
+        config: { headers: {'Content-Type': 'multipart/form-data' }}
+        })
+        .then(function (response) {
+          $('img.avatar').attr('src',response.data.thumb);
+          $('.feedback').hide();
+          $('input#avatarFile').val('');
+        })
+        .catch(error => {
+          $('.feedback').show();
+          this.feedback = error.response.data.errors.avatar;
+         });
+    },
+    deleteAvatar(){
+      const self = this;
+      $('.delete').hide();
+      $('.feedback').hide();
+      axios({
+        method: 'post',
+        url: 'delete_avatar',
+        })
+        .then(function (response) {
+          if(response.data.status == 1){
+            self.deletestatus = response.data.message;
+      $('.delete').show();
+            $('img.avatar').attr('src','/img/level1/icon_user.svg');
+          }else if(response.data.status == 0){
+            self.deletestatus = response.data.message;
+      $('.delete').show();
+          }else{}
+        })
+      .catch(function (response) {
+            self.deletestatus = response.data.message;
+      $('.delete').show();
+        });
+    }
+  }
 }
 </script>
