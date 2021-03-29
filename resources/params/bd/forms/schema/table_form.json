@@ -18,7 +18,8 @@
               "text",
               "calc",
               "hidden",
-              "history"
+              "history",
+              "history_graph"
             ]
           },
           "title": {
@@ -56,7 +57,8 @@
                   "integer",
                   "text",
                   "hidden",
-                  "history"
+                  "history",
+                  "history_graph"
                 ]
               }
             }
