@@ -17,6 +17,7 @@ use Maatwebsite\Excel\Concerns\WithCalculatedFormulas;
 use Maatwebsite\Excel\Events\BeforeSheet;
 use App\Models\Refs\Well;
 use App\Models\Refs\Gu;
+use App\Console\Commands\Import\Ngdu4Wells;
 
 class Ngdu4WellsImport implements ToCollection, WithEvents, WithColumnLimit, WithStartRow, WithCalculatedFormulas
 {
@@ -53,7 +54,7 @@ class Ngdu4WellsImport implements ToCollection, WithEvents, WithColumnLimit, Wit
         'zu-gu'
     ];
 
-    public function __construct(\App\Console\Commands\Import\Ngdu4Wells $command)
+    public function __construct(Ngdu4Wells $command)
     {
         $this->command = $command;
         $this->sheetName = null;
