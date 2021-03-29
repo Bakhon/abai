@@ -26,61 +26,60 @@ import cellsMappingEMG from './dzoData/cells_mapping_emg.json';
 import moment from "moment";
 import Visual from "./dataManagers/visual";
 
-const defaultDzoTicker = "ЕМГ";
-const dzoMapping = {
-    "КОА" : {
-        rows: initialRowsKOA,
-        format: formatMappingKOA,
-        cells: cellsMappingKOA,
-        id: 94
-    },
-    "КТМ" : {
-        rows: initialRowsKTM,
-        format: formatMappingKTM,
-        cells: cellsMappingKTM,
-        id: 80
-    },
-    "КБМ" : {
-        rows: initialRowsKBM,
-        format: formatMappingKBM,
-        cells: cellsMappingKBM,
-        id: 95
-    },
-    "КГМ" : {
-        rows: initialRowsKGM,
-        format: formatMappingKGM,
-        cells: cellsMappingKGM,
-        id: 96
-    },
-    "ММГ" : {
-        rows: initialRowsMMG,
-        format: formatMappingMMG,
-        cells: cellsMappingMMG,
-        id: 97
-    },
-    "ОМГ" : {
-        rows: initialRowsOMG,
-        format: formatMappingOMG,
-        cells: cellsMappingOMG,
-        id: 90
-    },
-    "УО" : {
-        rows: initialRowsYO,
-        format: formatMappingYO,
-        cells: cellsMappingYO,
-        id: 99
-    },
-    "ЕМГ" : {
-        rows: initialRowsEMG,
-        format: formatMappingEMG,
-        cells: cellsMappingEMG,
-        id: 101
-    },
-};
-
 export default {
     data: function () {
+        let defaultDzoTicker = "ЕМГ";
         return {
+            dzoMapping : {
+                "КОА" : {
+                    rows: initialRowsKOA,
+                    format: formatMappingKOA,
+                    cells: cellsMappingKOA,
+                    id: 110
+                },
+                "КТМ" : {
+                    rows: initialRowsKTM,
+                    format: formatMappingKTM,
+                    cells: cellsMappingKTM,
+                    id: 107
+                },
+                "КБМ" : {
+                    rows: initialRowsKBM,
+                    format: formatMappingKBM,
+                    cells: cellsMappingKBM,
+                    id: 106
+                },
+                "КГМ" : {
+                    rows: initialRowsKGM,
+                    format: formatMappingKGM,
+                    cells: cellsMappingKGM,
+                    id: 108
+                },
+                "ММГ" : {
+                    rows: initialRowsMMG,
+                    format: formatMappingMMG,
+                    cells: cellsMappingMMG,
+                    id: 109
+                },
+                "ОМГ" : {
+                    rows: initialRowsOMG,
+                    format: formatMappingOMG,
+                    cells: cellsMappingOMG,
+                    id: 112
+                },
+                "УО" : {
+                    rows: initialRowsYO,
+                    format: formatMappingYO,
+                    cells: cellsMappingYO,
+                    id: 111
+                },
+                "ЕМГ" : {
+                    rows: initialRowsEMG,
+                    format: formatMappingEMG,
+                    cells: cellsMappingEMG,
+                    id: 113
+                },
+            },
             dzoCompanies: [
                 {
                     ticker: 'ЕМГ',
@@ -115,19 +114,19 @@ export default {
                     name: 'ТОО "Урихтау Оперейтинг"'
                 },
             ],
-            status: this.trans("visualcenter.importForm.status.waitForData"),
-            rows: _.cloneDeep(dzoMapping[defaultDzoTicker].rows),
-            isDataExist: false,
-            isDataReady: false,
-            dzoPlans: [],
             selectedDzo: {
                 ticker: defaultDzoTicker,
                 plans: [],
             },
+            status: this.trans("visualcenter.importForm.status.waitForData"),
+            rows: _.cloneDeep(initialRowsKOA),
+            isDataExist: false,
+            isDataReady: false,
+            dzoPlans: [],
             currentMonthNumber: moment().format('M'),
-            cellsMapping: _.cloneDeep(dzoMapping[defaultDzoTicker].cells),
-            rowsFormatMapping: _.cloneDeep(dzoMapping[defaultDzoTicker].format.rowsFormatMapping),
-            columnsFormatMapping: _.cloneDeep(dzoMapping[defaultDzoTicker].format.columnsFormatMapping),
+            cellsMapping: _.cloneDeep(cellsMappingKOA),
+            rowsFormatMapping: _.cloneDeep(formatMappingKOA.rowsFormatMapping),
+            columnsFormatMapping: _.cloneDeep(formatMappingKOA.columnsFormatMapping),
             excelData: {
                 downtimeReason: {},
                 decreaseReason: {},
@@ -159,26 +158,26 @@ export default {
         this.changeDefaultDzo();
         this.dzoPlans = await this.getDzoMonthlyPlans();
         this.selectedDzo.plans = this.getSelectedDzoPlans();
-        await this.sleep(1500);
+        await this.sleep(2000);
         this.setTableFormat();
     },
     methods: {
         getDzoTicker() {
             let dzoTicker = '';
             let self = this;
-            _.forEach(Object.keys(dzoMapping), function(key) {
-               if (parseInt(dzoMapping[key].id) === parseInt(self.userId)) {
+            _.forEach(Object.keys(this.dzoMapping), function(key) {
+               if (parseInt(self.dzoMapping[key].id) === parseInt(self.userId)) {
                    dzoTicker = key;
                }
             });
             return dzoTicker;
         },
         async changeDefaultDzo() {
-            this.cellsMapping = _.cloneDeep(dzoMapping[this.selectedDzo.ticker].cells);
-            this.rowsFormatMapping = _.cloneDeep(dzoMapping[this.selectedDzo.ticker].format.rowsFormatMapping);
-            this.columnsFormatMapping = _.cloneDeep(dzoMapping[this.selectedDzo.ticker].format.columnsFormatMapping);
-            this.rowsCount = _.cloneDeep(dzoMapping[this.selectedDzo.ticker].rows).length + 2;
-            this.rows = _.cloneDeep(dzoMapping[this.selectedDzo.ticker].rows);
+            this.cellsMapping = _.cloneDeep(this.dzoMapping[this.selectedDzo.ticker].cells);
+            this.rowsFormatMapping = _.cloneDeep(this.dzoMapping[this.selectedDzo.ticker].format.rowsFormatMapping);
+            this.columnsFormatMapping = _.cloneDeep(this.dzoMapping[this.selectedDzo.ticker].format.columnsFormatMapping);
+            this.rowsCount = _.cloneDeep(this.dzoMapping[this.selectedDzo.ticker].rows).length + 2;
+            this.rows = _.cloneDeep(this.dzoMapping[this.selectedDzo.ticker].rows);
             await this.sleep(100);
             this.disableHighlightOnCells();
             this.setTableFormat();
