@@ -177,7 +177,6 @@ class OmgUHEController extends CrudController
             ->where('date', '>=', Carbon::parse($request->date)->year . "-01-01")
             ->sum('daily_inhibitor_flowrate');
 
-
         $input['yearly_inhibitor_flowrate'] = $dailyInhibitorFlowrate + $input['daily_inhibitor_flowrate'];
 
         $omgohe = new OmgUHE;
@@ -253,7 +252,6 @@ class OmgUHEController extends CrudController
         $dailyInhibitorFlowrate = OmgUHE::where('gu_id', $request->gu_id)
             ->where('date', '>=', Carbon::parse($request->date)->year . "-01-01")
             ->sum('daily_inhibitor_flowrate');
-
 
         $input['yearly_inhibitor_flowrate'] = $dailyInhibitorFlowrate + $input['daily_inhibitor_flowrate'];
 
