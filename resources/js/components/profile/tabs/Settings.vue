@@ -9,9 +9,9 @@
                 <div class="rightBlock">
                   <p class="name">Фотография</p>
                   <div class="feedback"  v-if="feedback">
-                    <span  style="color:red">{{feedback}}</span>
+                    <span  style="color:red">{{feedbackstatus}}</span>
                   </div>
-                  <div class="delete" v-if="deletestatus">
+                  <div class="delete" v-if="deletebool">
                     <span>{{deletestatus}}</span>
                   </div>
                   <form method="post" enctype="multipart/form-data" id="avatar_form" v-on:submit.prevent="submitAvatar">
@@ -98,16 +98,19 @@ export default {
       value5: '0',
       value6: '0',
       radio: '1',
-      feedback: '',
+      feedback: false,
+      deletebool: false,
+      feedbackstatus: '',
       deletestatus: '',
     }
   },
   methods: {
     submitAvatar(){
+      const self = this;
       const files = document.querySelector('#avatar_form'); 
       var bodyFormData = new FormData(files);
-      $('.delete').hide();
-      $('.feedback').hide();
+      self.deletebool = false;
+      self.feedback = false;
       axios({
         method: 'post',
         url: 'update_avatar',
@@ -116,18 +119,18 @@ export default {
         })
         .then(function (response) {
           $('img.avatar').attr('src',response.data.thumb);
-          $('.feedback').hide();
+          self.feedback = false;
           $('input#avatarFile').val('');
         })
         .catch(error => {
-          $('.feedback').show();
-          this.feedback = error.response.data.errors.avatar;
+          self.feedback = true;
+          self.feedbackstatus = error.response.data.errors.avatar;
          });
     },
     deleteAvatar(){
       const self = this;
-      $('.delete').hide();
-      $('.feedback').hide();
+      self.deletebool = false;
+      self.feedback = false;
       axios({
         method: 'post',
         url: 'delete_avatar',
@@ -135,16 +138,16 @@ export default {
         .then(function (response) {
           if(response.data.status == 1){
             self.deletestatus = response.data.message;
-      $('.delete').show();
+            self.deletebool = true;
             $('img.avatar').attr('src','/img/level1/icon_user.svg');
           }else if(response.data.status == 0){
             self.deletestatus = response.data.message;
-      $('.delete').show();
-          }else{}
+            self.deletebool = true;
+          }
         })
-      .catch(function (response) {
-            self.deletestatus = response.data.message;
-      $('.delete').show();
+        .catch(function (response) {
+          self.deletestatus = response.data.message;
+          self.deletebool = true;
         });
     }
   }
