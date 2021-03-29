@@ -18,11 +18,11 @@ class UpdateEcoRefsCostsTable extends Migration
             $table->unsignedBigInteger('editor_id')->nullable();
             $table->string('comment')->nullable();
             $table->unsignedBigInteger('log_id')->nullable();
-            $table->unique(['company_id', 'date'], 'company_date');
+            $table->unique(['sc_fa', 'company_id', 'date'], 'sc_company_date');
 
             $table->foreign('log_id')
                 ->references('id')
-                ->on('eco_refs_costs_logs')
+                ->on('economic_data_logs')
                 ->onDelete('set null');
         });
     }
@@ -35,7 +35,7 @@ class UpdateEcoRefsCostsTable extends Migration
     public function down()
     {
         Schema::table('eco_refs_costs', function (Blueprint $table) {
-            $table->dropUnique('company_date');
+            $table->dropUnique('sc_company_date');
             $table->dropColumn(['author_id']);
             $table->dropColumn(['editor_id']);
             $table->dropColumn(['comment']);

@@ -23,14 +23,18 @@ class EconomicIbrahimImport implements ToModel
      * @return \Illuminate\Database\Eloquent\Model|null
      */
     protected $user_id;
-    protected $log_id;
+    protected $log;
 
-    function __construct($user_id) {
+    function __construct($user_id, $file_name) {
         $this->user_id = $user_id;
-        $this->log_id = EconomicDataLog::create(['author_id' => $user_id]);
+        $this->log = EconomicDataLog::create(['author_id' => $user_id]);
+
+        $sc_fa = EcoRefsScFa::where('name', '=', $file_name)->first();
+        if (empty($sc_fa)) {
+            $sc_fa = EcoRefsScFa::create(["name" => $file_name]);
+        }
+        $this->sc_fa_id = $sc_fa->id;
     }
-
-
 
     public function model(array $row)
     {
@@ -38,15 +42,11 @@ class EconomicIbrahimImport implements ToModel
             return null;
         }
 
-        $sc_fa_name = $row[0];
-        $sc_fa = EcoRefsScFa::where('name', '=', $sc_fa_name)->first();
-        if (empty($sc_fa)) {
-            $sc_fa = EcoRefsScFa::create(["name" => $sc_fa_name]);
-        }
+
         $company = EcoRefsCompaniesId::where('name', '=', $row[1])->first();
 
         return new EcoRefsCost([
-            "sc_fa" => $sc_fa->id,
+            "sc_fa" => $this->sc_fa_id,
             "company_id" => $company->id,
             "date" => $row[3],
             "variable" => round($row[4], 2),
@@ -59,7 +59,7 @@ class EconomicIbrahimImport implements ToModel
             "wr_payroll" => round($row[11], 2),
             "wo" => round($row[12], 2),
             "author_id" => $this->user_id,
-            "log_id" => $this->log_id->id
+            "log_id" => $this->log->id
         ]);
     }
 }
