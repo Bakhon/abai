@@ -111,6 +111,9 @@
         "bsw_tech",
         "debit_oil_tech"
       ],
+      "history_popup": {
+        "title": "telemetry_data"
+      },
       "isEditable": false
     },
     {
