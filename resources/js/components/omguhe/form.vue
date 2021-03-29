@@ -223,7 +223,7 @@ export default {
       type: Object,
       required: true,
     },
-    edit: {
+    isEdit: {
       type: Boolean,
       default: false
     }
@@ -398,7 +398,7 @@ export default {
     },
     submitForm () {
 
-      if (this.edit) {
+      if (this.isEdit) {
         this.axios
             .put(this.localeUrl("/omguhe/" + this.omguhe.id), this.formFields)
             .then((response) => {
