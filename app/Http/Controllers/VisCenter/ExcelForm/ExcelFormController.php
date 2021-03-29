@@ -19,12 +19,12 @@ class ExcelFormController extends Controller
 
         $this->saveDzoFieldsSummaryData($dzo_summary_last_record,$request);
 
-        $dzo_downtime_reasons = new DzoImportDowntimeReason;
+        $dzo_downtime_reason = new DzoImportDowntimeReason;
         $downtime_data = $request->request->get('downtimeReason');
         $dzo_downtime_reason = $this->getDzoChildSummaryData($dzo_downtime_reason,$downtime_data,$dzo_summary_last_record);
         $dzo_downtime_reason->save();
 
-        $dzo_decrease_reasons = new DzoImportDecreaseReason;
+        $dzo_decrease_reason = new DzoImportDecreaseReason;
         $decrease_data = $request->request->get('decreaseReason');
         $dzo_decrease_reason = $this->getDzoChildSummaryData($dzo_decrease_reason,$decrease_data,$dzo_summary_last_record);
         $dzo_decrease_reason->save();

@@ -23,6 +23,8 @@ class OmgUHEListResource extends CrudListResource
                 'cdng' => $this->cdng->name,
                 'gu' => $this->gu->name,
                 'zu' => $this->zu->name,
+                'level' => $this->level,
+                'fill' => $this->fill,
                 'well' => $this->well->name,
                 'date' => $this->date->format('d.m.Y H:i'),
                 'inhibitor' => $this->inhibitor->name,

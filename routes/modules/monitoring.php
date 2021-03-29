@@ -7,8 +7,6 @@ Route::group(
             ['middleware' => 'auth'],
             function () {
 
-                Route::get('/monitor/{gu?}', 'DruidController@monitor')->name('monitor');
-
                 Route::get('watermeasurement/list', 'ComplicationMonitoring\WaterMeasurementController@list')->name(
                     'watermeasurement.list'
                 );
@@ -118,15 +116,19 @@ Route::group(
                 Route::get('/monitor/reports/generate', 'ReportsController@generateReport');
 
                 Route::get('/settings/fields', 'Settings\FieldValidationsController@index')->name('settings.fields');
-                Route::post('/settings/fields', 'Settings\FieldValidationsController@update')->name('settings.fields.update');
+                Route::post('/settings/fields', 'Settings\FieldValidationsController@update')->name(
+                    'settings.fields.update'
+                );
 
                 Route::get('gus/list', 'ComplicationMonitoring\GusController@list')->name('gus.list');
                 Route::get('gus/history/{gu}', 'ComplicationMonitoring\GusController@history')->name('gus.history');
-                Route::resource('gus','ComplicationMonitoring\GusController');
+                Route::resource('gus', 'ComplicationMonitoring\GusController');
 
                 Route::get('zus/list', 'ComplicationMonitoring\ZusController@list')->name('zus.list');
                 Route::get('zus/history/{zu}', 'ComplicationMonitoring\ZusController@history')->name('zus.history');
-                Route::resource('zus','ComplicationMonitoring\ZusController');
+                Route::resource('zus', 'ComplicationMonitoring\ZusController');
+
+                Route::get('/monitor/{gu?}', 'DruidController@monitor')->name('monitor');
             }
         );
     }

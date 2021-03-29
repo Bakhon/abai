@@ -54,6 +54,8 @@
       <p>{{ trans('monitoring.gu.fields.bsw') }}: {{ guParams.bsw + trans('measurements.percent')}}</p>
       <p>{{ trans('monitoring.gu.fields.pump_discharge_pressure') }}: {{ guParams.pump_discharge_pressure + ' ' + trans('measurements.pressure_bar') }}</p>
       <p>{{ trans('monitoring.gu.fields.heater_output_temperature') }}: {{ guParams.heater_output_pressure + ' ' + trans('measurements.celsius') }}</p>
+      <p>{{this.trans('monitoring.gu.fields.daily_gas_production_in_sib')}}: {{guParams.daily_gas_production_in_sib}} {{trans('measurements.st.m3/day')}}</p>
+      <p>{{this.trans('monitoring.gu.fields.surge_tank_pressure')}}: {{guParams.surge_tank_pressure}} {{this.trans('measurements.pressure_bar')}}</p>
     </div>
   </div>
 </template>
