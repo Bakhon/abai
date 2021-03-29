@@ -23,84 +23,75 @@
       </div>
     </div>
     <div class="bd-main-block__body">
-      <div v-if="history.item !== null" class="bd-main-block__body-history">
-        <big-data-history
-            :columns="formParams.columns"
-            :date="date"
-            :form-name="params.code"
-            :item="history.item"
-            v-on:close="history.item=null"
-        >
-        </big-data-history>
+
+      <div class="bd-main-block__tree scrollable">
+        <b-tree-view
+            v-if="filterTree.length"
+            :contextMenu="false"
+            :contextMenuItems="[]"
+            :data="filterTree"
+            :renameNodeOnDblClick="false"
+            nodeLabelProp="name"
+            v-on:nodeSelect="filterForm"
+        ></b-tree-view>
       </div>
-      <template v-else>
-        <div class="bd-main-block__tree scrollable">
-          <b-tree-view
-              v-if="filterTree.length"
-              :contextMenu="false"
-              :contextMenuItems="[]"
-              :data="filterTree"
-              :renameNodeOnDblClick="false"
-              nodeLabelProp="name"
-              v-on:nodeSelect="filterForm"
-          ></b-tree-view>
-        </div>
-        <form ref="form" class="bd-main-block__form scrollable" style="width: 100%">
-          <div class="table-page">
-            <p v-if="!tech" class="table__message">{{ trans('bd.select_dzo') }}</p>
-            <p v-else-if="rows.length === 0" class="table__message">{{ trans('bd.nothing_found') }}</p>
-            <div v-else class="table-wrap scrollable">
-              <table v-if="rows.length" class="table">
-                <thead>
-                <tr>
-                  <th v-for="column in visibleColumns">
-                    {{ column.title }}
-                  </th>
-                  <th></th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr v-for="row in rows">
-                  <td
-                      v-for="column in visibleColumns"
-                      :class="{'editable': column.isEditable}"
-                      @dblclick="editCell(row, column)"
-                  >
-                    <template v-if="column.type === 'link'">
-                      <a :href="row[column.code].href">{{ row[column.code].name }}</a>
-                    </template>
-                    <template v-else-if="column.type === 'calc'">
-                      <span class="value">{{ row[column.code] ? row[column.code].value : '' }}</span>
-                    </template>
-                    <template v-else-if="column.type === 'history'">
-                      <a href="#" @click.prevent="showHistoricalDataForRow(row, column)">Посмотреть</a>
-                    </template>
-                    <template v-else-if="['text', 'integer', 'float'].indexOf(column.type) > -1">
-                      <div v-if="isCellEdited(row, column)" class="input-wrap">
-                        <input v-model="row[column.code].value" class="form-control" type="text">
-                        <button type="button" @click.prevent="saveCell(row, column)">OK</button>
-                        <span v-if="errors[column.code]" class="error">{{ showError(errors[column.code]) }}</span>
-                      </div>
-                      <template v-else-if="row[column.code]">
+      <form ref="form" class="bd-main-block__form scrollable" style="width: 100%">
+        <div class="table-page">
+          <p v-if="!tech" class="table__message">{{ trans('bd.select_dzo') }}</p>
+          <p v-else-if="rows.length === 0" class="table__message">{{ trans('bd.nothing_found') }}</p>
+          <div v-else class="table-wrap scrollable">
+            <table v-if="rows.length" class="table">
+              <thead>
+              <tr>
+                <th v-for="column in visibleColumns">
+                  {{ column.title }}
+                </th>
+                <th></th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr v-for="row in rows">
+                <td
+                    v-for="column in visibleColumns"
+                    :class="{'editable': column.isEditable}"
+                    @dblclick="editCell(row, column)"
+                >
+                  <template v-if="column.type === 'link'">
+                    <a :href="row[column.code].href">{{ row[column.code].name }}</a>
+                  </template>
+                  <template v-else-if="column.type === 'calc'">
+                    <span class="value">{{ row[column.code] ? row[column.code].value : '' }}</span>
+                  </template>
+                  <template v-else-if="column.type === 'history'">
+                    <a href="#" @click.prevent="showHistoricalDataForRow(row, column)">Посмотреть</a>
+                  </template>
+                  <template v-else-if="['text', 'integer', 'float'].indexOf(column.type) > -1">
+                    <div v-if="isCellEdited(row, column)" class="input-wrap">
+                      <input v-model="row[column.code].value" class="form-control" type="text">
+                      <button type="button" @click.prevent="saveCell(row, column)">OK</button>
+                      <span v-if="errors[column.code]" class="error">{{ showError(errors[column.code]) }}</span>
+                    </div>
+                    <template v-else-if="row[column.code]">
                       <span class="value">{{
                           row[column.code].date ? row[column.code].old_value : row[column.code].value
                         }}</span>
-                        <span v-if="row[column.code] && row[column.code].date" class="date">
+                      <span v-if="row[column.code] && row[column.code].date" class="date">
                         {{ row[column.code].date | moment().format('YYYY-MM-DD') }}
                       </span>
-                      </template>
                     </template>
-                  </td>
-                  <td>
-                    <a class="links__item links__item_history" @click="showHistory(row)"></a>
-                  </td>
-                </tr>
-                </tbody>
-              </table>
-            </div>
+                  </template>
+                  <template v-if="history[row.uwi.id] && history[row.uwi.id][column.code]">
+                    <div v-for="(value, time) in history[row.uwi.id][column.code]">
+                      {{ time }} - <b>{{ value.value }}</b> {{ value.user }}
+                    </div>
+                  </template>
+                </td>
+              </tr>
+              </tbody>
+            </table>
           </div>
-        </form>
-      </template>
+        </div>
+      </form>
     </div>
     <div v-if="rowHistory" class="bd-popup">
       <div class="bd-popup__inner">
@@ -137,7 +128,6 @@ import {Datetime} from 'vue-datetime'
 import 'vue-datetime/dist/vue-datetime.css'
 import {bTreeView} from 'bootstrap-vue-treeview'
 import {bdFormActions, bdFormState} from '@store/helpers'
-import BigDataHistory from './history'
 
 Vue.use(Datetime)
 
@@ -150,8 +140,7 @@ export default {
     },
   },
   components: {
-    bTreeView,
-    BigDataHistory
+    bTreeView
   },
   data() {
     return {
@@ -169,9 +158,7 @@ export default {
         column: null
       },
       isloading: false,
-      history: {
-        item: null
-      },
+      history: {},
       rowHistory: null,
       rowHistoryColumns: [],
     }
@@ -221,11 +208,27 @@ export default {
           .then(({data}) => {
             this.rows = data
             this.recalculateCells()
+            this.loadEditHistory()
           })
           .finally(() => {
             this.isloading = false
           })
 
+    },
+    loadEditHistory() {
+      this.rows.forEach(row => {
+
+        this.axios.get(this.localeUrl(`/bigdata/form/${this.params.code}/history`), {
+          params: {
+            date: this.date,
+            id: row.uwi.id
+          }
+        }).then(({data}) => {
+
+          this.$set(this.history, row.uwi.id, data)
+        })
+
+      })
     },
     recalculateCells() {
       this.rows.forEach((row, rowIndex) => {
@@ -318,9 +321,6 @@ export default {
     },
     showError(err) {
       return err.join('<br>')
-    },
-    showHistory(row) {
-      this.history.item = row
     },
     closeRowHistory() {
       this.rowHistory = null

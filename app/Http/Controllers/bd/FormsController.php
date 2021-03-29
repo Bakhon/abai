@@ -8,7 +8,6 @@ use App\Models\BigData\Dictionaries\Geo;
 use App\Services\BigData\Forms\BaseForm;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Response;
 
 class FormsController extends Controller
@@ -93,7 +92,7 @@ class FormsController extends Controller
         return $form->getRowHistory(Carbon::parse($request->get('date')));
     }
 
-    public function getHistory(string $formName, Request $request): JsonResource
+    public function getHistory(string $formName, Request $request): array
     {
         $form = $this->getForm($formName);
         return $form->getHistory($request->get('id'), Carbon::parse($request->get('date')));
