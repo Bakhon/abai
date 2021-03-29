@@ -344,7 +344,7 @@ export default {
           return
         }
 
-        let message = `Данное значение выходит за ограничения (${row[column.code].limits.min}, ${row[column.code].limits.max}). Вы уверены, что хотите сохранить изменения?`
+        let message = `${this.trans('bd.value_outside')} (${row[column.code].limits.min}, ${row[column.code].limits.max}). ${this.trans('bd.are_you_sure')}`
         this.$bvModal.msgBoxConfirm(message, {
           okTitle: this.trans('app.yes'),
           cancelTitle: this.trans('app.no'),
