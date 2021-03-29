@@ -120,6 +120,7 @@ class FormsController extends Controller
 
     private function getForm(string $formName): BaseForm
     {
+        $formName = strtolower($formName);
         if (empty(config("bigdata_forms.{$formName}"))) {
             abort(404);
         }

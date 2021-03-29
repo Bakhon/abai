@@ -177,6 +177,9 @@ export default {
     }
   },
   watch: {
+    params() {
+      this.init()
+    },
     date() {
       this.updateRows()
     }
@@ -190,11 +193,7 @@ export default {
     }
   },
   mounted() {
-
-    this.updateForm(this.params.code).then(data => {
-      this.filterTree = data.filterTree
-    })
-
+    this.init()
   },
   methods: {
     ...bdFormActions([
@@ -206,6 +205,11 @@ export default {
         this.tech = item.data.id
         this.updateRows()
       }
+    },
+    init() {
+      this.updateForm(this.params.code).then(data => {
+        this.filterTree = data.filterTree
+      })
     },
     updateRows() {
 
