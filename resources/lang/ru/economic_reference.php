@@ -3,6 +3,7 @@
 return array (
     'edit' => 'Редактировать',
     'source_data' => 'Сценарий/Факт',
+    'select_item' => 'Выбрать',
     'company' => 'Компания',
     'month-year' => 'Дата',
     'variable' => 'Условно-переменные расходы',

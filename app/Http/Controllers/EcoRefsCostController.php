@@ -179,8 +179,9 @@ class EcoRefsCostController extends Controller
     public function importExcel(Request $request)
     {
         $user_id = auth()->id();
-        $file_name = $request->select_file->getClientOriginalName()
-        Excel::import(new EconomicIbrahimImport($user_id, $file_name, $request->select_file);
+        $file_name = $request->select_file->getClientOriginalName();
+        $file_name = pathinfo($file_name, PATHINFO_FILENAME);
+        Excel::import(new EconomicIbrahimImport($user_id, $file_name), $request->select_file);
         return back()->with('success', 'Загрузка прошла успешно.');
     }
 }

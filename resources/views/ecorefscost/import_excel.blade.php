@@ -3,7 +3,7 @@
 @section('content')
     <div class="container">
         <div class="row justify-content-center">
-            <a href="{{ route('eco_refs_list') }}" class="btn btn-info">
+            <a href="{{ route('ecorefscost.index') }}" class="btn btn-info">
                 {{ __('economic_reference.return_menu') }}</a>
         </div>
     </div>
