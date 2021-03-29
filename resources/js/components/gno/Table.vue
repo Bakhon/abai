@@ -2315,7 +2315,7 @@ export default {
       this.postCurveData();
     },
     prepareData() {
-      this.postData = JSON.stringify(
+      this.postdata = JSON.stringify(
         {
           "curveSelect": this.curveSelect,
           "presValue": this.pResInput.split(' ')[0],
