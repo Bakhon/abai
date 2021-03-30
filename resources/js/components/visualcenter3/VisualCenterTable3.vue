@@ -219,7 +219,7 @@
                           {{trans("visualcenter.oilPrice")}}
                         </div>
                         <br />
-                        <div class="percent-currency col-12">
+                        <div class="percent-currency col-12 p-0">
                           <div
                             class="arrow"
                             v-if="dailyOilPriceChange === 'UP'"
@@ -257,7 +257,7 @@
                         {{ trans("visualcenter.usdKurs") }}
                       </div>
                       <br />
-                      <div class="percent-currency col-12">
+                      <div class="percent-currency col-12 mt-20">
                         <div
                           class="arrow"
                           v-if="dailyCurrencyChangeIndexUsd === 'UP'"
@@ -1005,10 +1005,10 @@
                         </div>
                       </td>
                       <td
-                        v-if="exactDateSelected"
-                        :class="`${getLightColorClass(index)}`"
+                              v-if="exactDateSelected"
+                              :class="`${getLightColorClass(index)}`"
                       >
-                        <div :class="item.impulses ? 'accident-triangle triangle' : 'no-accident-triangle triangle'">
+                        <div :class="item.opec ? 'accident-triangle triangle' : 'no-accident-triangle triangle'">
                         </div>
                       </td>
                       <td
@@ -1018,7 +1018,6 @@
                         <div :class="item.impulses ? 'accident-triangle triangle' : 'no-accident-triangle triangle'">
                         </div>
                       </td>
-
                       <td
                               v-if="exactDateSelected"
                               :class="`${getLightColorClass(index)}`"
@@ -2620,6 +2619,9 @@
     }
     .vis-table .table4 {
       min-width: 0;
+    }
+    .mt-20 {
+      margin-top: 20%;
     }
   }
   @media (max-width:2000px) {

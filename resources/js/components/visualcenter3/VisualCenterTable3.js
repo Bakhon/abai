@@ -497,6 +497,13 @@ export default {
             this.tables = summForTables;
         },
 
+        getFilteredTableData(productionPlanAndFactMonth, data, type) {
+            _.forEach(this.dzoType[type], function (dzoName) {
+                productionPlanAndFactMonth = _.reject(productionPlanAndFactMonth, _.iteratee({dzo: dzoName}));
+                data = _.reject(data, _.iteratee({dzo: dzoName}));
+            });
+            return {productionPlanAndFactMonth, data};
+        },
         processDataForAllCompanies(data, timestampToday, timestampEnd, start, end, planFieldName, factFieldName, chartSecondaryName) {
             var dzo = [];
             var factYear = [];
@@ -645,43 +652,16 @@ export default {
             var factMonth = [];
             var planMonth = [];
 
-
             if (this.dzoCompaniesAssets['isOperating']) {
-                productionPlanAndFactMonth = _.reject(productionPlanAndFactMonth, _.iteratee({dzo: "ТШО"}));
-                productionPlanAndFactMonth = _.reject(productionPlanAndFactMonth, _.iteratee({dzo: "НКО"}));
-                productionPlanAndFactMonth = _.reject(productionPlanAndFactMonth, _.iteratee({dzo: "КПО"}));
-                productionPlanAndFactMonth = _.reject(productionPlanAndFactMonth, _.iteratee({dzo: "ТП"}));
-                productionPlanAndFactMonth = _.reject(productionPlanAndFactMonth, _.iteratee({dzo: "ПКК"}));
-                productionPlanAndFactMonth = _.reject(productionPlanAndFactMonth, _.iteratee({dzo: "ПКИ"}));
-
-                data = _.reject(data, _.iteratee({dzo: "ТШО"}));
-                data = _.reject(data, _.iteratee({dzo: "НКО"}));
-                data = _.reject(data, _.iteratee({dzo: "КПО"}));
-                data = _.reject(data, _.iteratee({dzo: "ТП"}));
-                data = _.reject(data, _.iteratee({dzo: "ПКК"}));
-                data = _.reject(data, _.iteratee({dzo: "ПКИ"}));
-
-
+                const __ret = this.getFilteredTableData(productionPlanAndFactMonth, data, 'isNonOperating');
+                productionPlanAndFactMonth = __ret.productionPlanAndFactMonth;
+                data = __ret.data;
             }
 
             if (this.dzoCompaniesAssets['isNonOperating']) {
-
-                let dzoToShow = [
-                    "ТОО «Тенгизшевройл»",
-                    "«Карачаганак Петролеум Оперейтинг б.в.»",
-                    "«Норт Каспиан Оперейтинг Компани н.в.»"
-                ]
-
-                productionPlanAndFactMonth = productionPlanAndFactMonth.filter(item => {
-                    let fullName = this.getNameDzoFull(item.dzo)
-                    return dzoToShow.indexOf(fullName) > -1
-                })
-
-                data = dataWithMay.filter(item => {
-                    let fullName = this.getNameDzoFull(item.dzo)
-                    return dzoToShow.indexOf(fullName) > -1
-                })
-
+                const __ret = this.getFilteredTableData(productionPlanAndFactMonth, dataWithMay, 'isOperating');
+                productionPlanAndFactMonth = __ret.productionPlanAndFactMonth;
+                data = __ret.data;
             }
 
             if (this.dzoCompaniesAssets['isRegion']) {
