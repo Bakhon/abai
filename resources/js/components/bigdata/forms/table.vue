@@ -63,7 +63,7 @@
                 <tr v-for="row in rows">
                   <td
                       v-for="column in visibleColumns"
-                      :class="{'editable': column.isEditable}"
+                      :class="{'editable': column.is_editable}"
                       @dblclick="editCell(row, column)"
                   >
                     <template v-if="column.type === 'link'">
@@ -219,8 +219,10 @@ export default {
       }
     },
     init() {
+      this.isloading = true
       this.updateForm(this.params.code).then(data => {
         this.filterTree = data.filterTree
+        this.isloading = false
       })
     },
     updateRows() {
@@ -276,7 +278,7 @@ export default {
           let value
           if (column.type === 'calc') {
             value = this.calculateCellValue(column, cellRow, rowIndex)
-          } else if (column.isEditable) {
+          } else if (column.is_editable) {
             value = cellRow[column.code].value
           } else {
             value = cellRow[column.code].old_value || cellRow[column.code].value
@@ -295,38 +297,66 @@ export default {
       this.editableCell.column = column
     },
     isCellEdited(row, column) {
-      if (!column.isEditable) return false
+      if (!column.is_editable) return false
       if (this.editableCell.row !== row) return false
       if (this.editableCell.column !== column) return false
 
       return true
     },
-    saveCell(row, column) {
+    async saveCell(row, column) {
 
-      let data = {
-        well_id: row.uwi.id,
-        date: this.date,
-      }
-      data[column.code] = row[column.code].value
-      this.isloading = true
+      this.checkLimits(row, column).then(result => {
+        if (result === true) {
 
-      this.axios
-          .patch(this.localeUrl(`/bigdata/form/${this.params.code}/save/${column.code}`), data)
-          .then(({data}) => {
-            row[column.code].date = null
-            this.editableCell = {
-              row: null,
-              cell: null
-            }
-            this.recalculateCells()
-          })
-          .catch(error => {
-            Vue.set(this.errors, column.code, error.response.data.errors)
-          })
-          .finally(() => {
-            this.isloading = false
-          })
+          let data = {
+            well_id: row.uwi.id,
+            date: this.date,
+          }
+          data[column.code] = row[column.code].value
+          this.isloading = true
 
+          this.axios
+              .patch(this.localeUrl(`/bigdata/form/${this.params.code}/save/${column.code}`), data)
+              .then(({data}) => {
+                row[column.code].date = null
+                this.editableCell = {
+                  row: null,
+                  cell: null
+                }
+                this.recalculateCells()
+              })
+              .catch(error => {
+                Vue.set(this.errors, column.code, error.response.data.errors)
+              })
+              .finally(() => {
+                this.isloading = false
+              })
+
+        }
+      })
+
+    },
+    checkLimits(row, column) {
+      return new Promise((resolve, reject) => {
+        if (!row[column.code].limits || row[column.code].limits.length === 0) {
+          resolve(true)
+          return
+        }
+
+        if (row[column.code].value >= row[column.code].limits.min && row[column.code].value <= row[column.code].limits.max) {
+          resolve(true)
+          return
+        }
+
+        let message = `${this.trans('bd.value_outside')} (${row[column.code].limits.min}, ${row[column.code].limits.max}). ${this.trans('bd.are_you_sure')}`
+        this.$bvModal.msgBoxConfirm(message, {
+          okTitle: this.trans('app.yes'),
+          cancelTitle: this.trans('app.no'),
+        })
+            .then(result => {
+              resolve(result)
+            })
+      })
     },
     changePage(page = 1) {
       this.currentPage = page

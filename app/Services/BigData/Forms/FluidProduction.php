@@ -64,6 +64,8 @@ class FluidProduction extends TableForm
             }
         );
 
+        $this->addLimits($wells);
+
         return $wells->toArray();
     }
 

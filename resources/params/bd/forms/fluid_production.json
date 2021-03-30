@@ -4,13 +4,13 @@
       "title": "uwi_number",
       "code": "uwi",
       "type": "link",
-      "isEditable": false
+      "is_editable": false
     },
     {
       "title": "other_uwi",
       "code": "other_uwi",
       "type": "text",
-      "isEditable": false
+      "is_editable": false
     },
     {
       "title": "worktime",
@@ -18,7 +18,7 @@
       "table": "tbdi.well_status",
       "column": "well_status_type_id",
       "type": "text",
-      "isEditable": false
+      "is_editable": false
     },
     {
       "title": "exp_type",
@@ -26,7 +26,7 @@
       "table": "tbdi.well_expl",
       "column": "name",
       "type": "text",
-      "isEditable": false
+      "is_editable": false
     },
     {
       "title": "lease",
@@ -34,13 +34,13 @@
       "table": "tbdi.well_tech",
       "column": "tap",
       "type": "integer",
-      "isEditable": false
+      "is_editable": false
     },
     {
       "title": "geostructure",
       "code": "geo",
       "type": "text",
-      "isEditable": false
+      "is_editable": false
     },
     {
       "title": "debit_fluid_tech",
@@ -48,7 +48,7 @@
       "table": "tbdi.tech_mode_well",
       "column": "liquid",
       "type": "float",
-      "isEditable": false
+      "is_editable": false
     },
     {
       "title": "debit_oil_tech",
@@ -56,7 +56,7 @@
       "table": "tbdi.tech_mode_well",
       "column": "oil",
       "type": "float",
-      "isEditable": false
+      "is_editable": false
     },
     {
       "title": "bsw_tech",
@@ -64,21 +64,21 @@
       "table": "tbdi.tech_mode_well",
       "column": "bsw",
       "type": "float",
-      "isEditable": false
+      "is_editable": false
     },
     {
       "title": "liquid_val",
       "code": "liquid_val",
       "type": "calc",
       "formula": "$liquid_debit$ * $worktime$",
-      "isEditable": false
+      "is_editable": false
     },
     {
       "title": "oil_val",
       "code": "oil_val",
       "type": "calc",
       "formula": "$oil_debit$ * $worktime$",
-      "isEditable": false
+      "is_editable": false
     },
     {
       "title": "liquid_debit",
@@ -86,14 +86,15 @@
       "table": "tbdi.liquid_prod",
       "column": "liquid_val",
       "type": "float",
-      "isEditable": true,
-      "validation": "numeric|gt:0"
+      "is_editable": true,
+      "validation": "numeric|gt:0",
+      "validate_deviation": true
     },
     {
       "title": "mark",
       "code": "mark",
       "type": "text",
-      "isEditable": false
+      "is_editable": false
     },
     {
       "title": "liquid_telemetry",
@@ -111,7 +112,7 @@
         "bsw_tech",
         "debit_oil_tech"
       ],
-      "isEditable": false
+      "is_editable": false
     },
     {
       "title": "bsw",
@@ -119,15 +120,16 @@
       "table": "tbdi.bsw_prod",
       "column": "bsw_val",
       "type": "float",
-      "isEditable": true,
-      "validation": "numeric|gte:0|lte:100"
+      "is_editable": true,
+      "validation": "numeric|gte:0|lte:100",
+      "validate_deviation": true
     },
     {
       "title": "oil_debit",
       "code": "oil_debit",
       "type": "calc",
       "formula": "$liquid_debit$ * (1 - $bsw_tech$/100) * $density_oil$",
-      "isEditable": false
+      "is_editable": false
     },
     {
       "title": "contamination",
@@ -138,7 +140,7 @@
         "name_param": "Мех. примеси, %"
       },
       "type": "float",
-      "isEditable": false,
+      "is_editable": false,
       "date_field": "dt"
     },
     {
@@ -151,7 +153,7 @@
         "equip_prm": "2"
       },
       "type": "float",
-      "isEditable": false
+      "is_editable": false
     },
     {
       "title": "p_buf",
@@ -162,8 +164,9 @@
         "param_name": "p_buf"
       },
       "type": "float",
-      "isEditable": true,
-      "validation": "numeric|gt:0"
+      "is_editable": true,
+      "validation": "numeric|gt:0",
+      "validate_deviation": true
     },
     {
       "title": "Рзатр",
@@ -174,8 +177,9 @@
         "param_name": "p_zatr"
       },
       "type": "float",
-      "isEditable": true,
-      "validation": "numeric|gt:0"
+      "is_editable": true,
+      "validation": "numeric|gt:0",
+      "validate_deviation": true
     },
     {
       "title": "p_buf_b",
@@ -186,8 +190,9 @@
         "param_name": "p_buf_b"
       },
       "type": "float",
-      "isEditable": true,
-      "validation": "numeric|gt:0"
+      "is_editable": true,
+      "validation": "numeric|gt:0",
+      "validate_deviation": true
     },
     {
       "title": "p_buf_a",
@@ -198,8 +203,9 @@
         "param_name": "p_buf_a"
       },
       "type": "float",
-      "isEditable": true,
-      "validation": "numeric|gt:0"
+      "is_editable": true,
+      "validation": "numeric|gt:0",
+      "validate_deviation": true
     },
     {
       "title": "cycle_per_minute",
@@ -210,7 +216,7 @@
         "param_gdis_id": 5000000572
       },
       "type": "float",
-      "isEditable": false
+      "is_editable": false
     },
     {
       "title": "length_stroke",
@@ -221,7 +227,7 @@
         "param_gdis_id": 5000000568
       },
       "type": "float",
-      "isEditable": false
+      "is_editable": false
     },
     {
       "title": "reciprotating_speed",
@@ -232,13 +238,13 @@
         "param_gdis_id": 5000000569
       },
       "type": "float",
-      "isEditable": false
+      "is_editable": false
     },
     {
       "title": "downtime_reason",
       "code": "downtime_reason",
       "type": "text",
-      "isEditable": false
+      "is_editable": false
     },
     {
       "title": "gas_factor",
@@ -249,15 +255,16 @@
         "param_name": "gas_factor"
       },
       "type": "float",
-      "isEditable": true,
-      "validation": "numeric|gt:0"
+      "is_editable": true,
+      "validation": "numeric|gt:0",
+      "validate_deviation": true
     },
     {
       "title": "gas_output",
       "code": "gas_output",
       "type": "calc",
       "formula": "$gas_factor$ * $worktime$",
-      "isEditable": false
+      "is_editable": false
     },
     {
       "title": "note",
@@ -268,7 +275,7 @@
         "param_name": "note"
       },
       "type": "text",
-      "isEditable": true
+      "is_editable": true
     },
     {
       "title": "prod_decline_reason",
@@ -279,7 +286,7 @@
         "param_name": "prod_decline_reason"
       },
       "type": "text",
-      "isEditable": true
+      "is_editable": true
     },
     {
       "title": "measure_last_month",
@@ -291,13 +298,13 @@
         "oil_debit",
         "worktime"
       ],
-      "isEditable": false
+      "is_editable": false
     },
     {
       "title": "Плотность нефти",
       "code": "density_oil",
       "type": "hidden",
-      "isEditable": false
+      "is_editable": false
     },
     {
       "title": "Данные телеметрии",
@@ -308,7 +315,7 @@
       "additional_filter": {
         "metric": "1"
       },
-      "isEditable": false
+      "is_editable": false
     },
     {
       "title": "Источник телеметрии",
@@ -319,7 +326,7 @@
       "additional_filter": {
         "metric": "1"
       },
-      "isEditable": false
+      "is_editable": false
     }
   ]
 }
