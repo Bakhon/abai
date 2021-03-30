@@ -28,6 +28,7 @@ class OmgUHECreateRequest extends FormRequest
             'current_dosage' => 'nullable|numeric',
             'cdng_id' => 'nullable|numeric',
             'well_id' => 'nullable|numeric',
+            'consumption' => 'nullable|numeric',
         ];
     }
 }
