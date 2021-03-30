@@ -602,7 +602,7 @@ class WaterMeasurementController extends CrudController
 
         $uhe = OmgUHE::query()
             ->where('gu_id', $request->gu_id)
-            ->where('date', '>=', Carbon::now()->subYear())
+            ->where('date', '>=', Carbon::now()->subDays(31))
             ->where('date', '<=', Carbon::now())
             ->get();
 
