@@ -169,6 +169,7 @@
             name="daily_gas_production_in_sib"
             class="form-control"
             placeholder=""
+            :disabled="!formFields.editable"
         >
       </div>
       <label>{{ trans('monitoring.omgngdu.fields.heater_output_pressure') }}</label>
@@ -182,7 +183,6 @@
             name="heater_output_pressure"
             class="form-control"
             placeholder=""
-            :disabled="!formFields.editable"
         >
       </div>
     </div>
