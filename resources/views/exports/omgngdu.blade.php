@@ -40,8 +40,8 @@
                 <td style="border: 1px solid black; height: 15px; width: 15px">{{ $item->bsw }}</td>
                 <td style="border: 1px solid black; height: 15px; width: 15px">{{ $item->surge_tank_pressure }}</td>
                 <td style="border: 1px solid black; height: 15px; width: 15px">{{ $item->pump_discharge_pressure }}</td>
-                <td style="border: 1px solid black; height: 15px; width: 15px">{{ $item->heater_inlet_pressure }}</td>
-                <td style="border: 1px solid black; height: 15px; width: 15px">{{ $item->heater_output_pressure }}</td>
+                <td style="border: 1px solid black; height: 15px; width: 15px">{{ $item->heater_inlet_temperature }}</td>
+                <td style="border: 1px solid black; height: 15px; width: 15px">{{ $item->heater_output_temperature }}</td>
             </tr>
         @endforeach
     </tbody>

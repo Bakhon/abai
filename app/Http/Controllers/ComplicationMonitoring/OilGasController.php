@@ -427,7 +427,7 @@ class OilGasController extends CrudController
             ->where($table.'.gu_id', $gu)
             ->whereNotNull($table.'.date')
             ->whereNotNull($table.'.pump_discharge_pressure')
-            ->whereNotNull($table.'.heater_output_pressure')
+            ->whereNotNull($table.'.heater_output_temperature')
             ->whereNotNull($table.'.daily_fluid_production')
             ->whereNotNull($table.'.bsw')
             ->whereNotNull($table.'.daily_oil_production')
@@ -441,7 +441,7 @@ class OilGasController extends CrudController
                 'pipes.length',
                 'pipes.thickness',
                 $table.'.pump_discharge_pressure',
-                $table.'.heater_output_pressure',
+                $table.'.heater_output_temperature',
                 $table.'.daily_fluid_production',
                 $table.'.daily_water_production',
                 $table.'.bsw',
@@ -468,7 +468,7 @@ class OilGasController extends CrudController
                 $row->length,
                 $row->thickness,
                 $row->pump_discharge_pressure,
-                $row->heater_output_pressure,
+                $row->heater_output_temperature,
                 $lastWMData['hydrogen_sulfide'],
                 $lastWMData['carbon_dioxide'],
                 $row->daily_fluid_production,
