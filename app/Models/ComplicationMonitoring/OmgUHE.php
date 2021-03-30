@@ -16,6 +16,8 @@ class OmgUHE extends Model
         'out_of_service_оf_dosing' => 'boolean'
     ];
 
+    protected $attributes = ['out_of_service_оf_dosing' => 0];
+
     public function getCurrentDosageAttribute($value)
     {
         return $value ? round($value, 1) : $value;

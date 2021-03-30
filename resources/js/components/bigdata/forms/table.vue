@@ -189,6 +189,9 @@ export default {
     }
   },
   watch: {
+    params() {
+      this.init()
+    },
     date() {
       this.updateRows()
     }
@@ -202,13 +205,7 @@ export default {
     }
   },
   mounted() {
-
-    this.isloading = true
-    this.updateForm(this.params.code).then(data => {
-      this.filterTree = data.filterTree
-      this.isloading = false
-    })
-
+    this.init()
   },
   methods: {
     ...bdFormActions([
@@ -220,6 +217,13 @@ export default {
         this.tech = item.data.id
         this.updateRows()
       }
+    },
+    init() {
+      this.isloading = true
+      this.updateForm(this.params.code).then(data => {
+        this.filterTree = data.filterTree
+        this.isloading = false
+      })
     },
     updateRows() {
 

@@ -80,50 +80,24 @@
             </option>
           </select>
         </div>
-        <label>{{ trans('monitoring.zu.zu') }}</label>
-        <div class="form-label-group">
-          <select
-              class="form-control"
-              name="zu_id"
-              v-model="formFields.zu_id"
-              @change="chooseZu($event)"
-          >
-            <option v-for="row in zus" v-bind:value="row.id">
-              {{ row.name }}
-            </option>
-          </select>
-        </div>
-        <label>{{ trans('monitoring.level') }}, л</label>
+
+        <label>{{ trans('monitoring.level') }} {{ trans('measurements.liter') }}</label>
         <div class="form-label-group">
           <input
               :disabled="!formFields.gu_id && !formFields.date"
-              @change="inputLevel"
+              @input="inputLevel"
               v-model="formFields.level"
               type="number"
               step="0.0001"
               :min="validationParams.level.min"
-              :max="validationParams.level.max"
+              :max="prevData ? prevData : validationParams.level.max"
               name="level"
               class="form-control"
               placeholder=""
-              v-if="!prevData"
-          />
-          <input
-              :disabled="!formFields.gu_id && !formFields.date"
-              @change="inputLevel"
-              v-model="formFields.level"
-              type="number"
-              step="0.0001"
-              :min="validationParams.level.min"
-              :max="prevData"
-              name="level"
-              class="form-control"
-              placeholder=""
-              v-if="prevData"
           />
         </div>
 
-        <label>{{ trans('monitoring.omguhe.fields.fact_dosage') }}, л</label>
+        <label>{{ trans('monitoring.omguhe.fields.fact_dosage') }}</label>
         <div class="form-label-group">
           <input
               :disabled="true"
@@ -132,6 +106,32 @@
               name="current_dosage"
               class="form-control"
               v-model="formFields.current_dosage"
+              placeholder=""
+          />
+        </div>
+
+        <label>{{ trans('monitoring.fields.consumption') }} {{ trans('measurements.liter') }}</label>
+        <div class="form-label-group">
+          <input
+              :disabled="true"
+              type="number"
+              step="0.0001"
+              name="consumption"
+              class="form-control"
+              v-model="formFields.consumption"
+              placeholder=""
+          />
+        </div>
+
+        <label>{{ trans('monitoring.omguhe.fields.inhibitor_rate') }}</label>
+        <div class="form-label-group">
+          <input
+              :disabled="true"
+              type="number"
+              step="0.0001"
+              name="daily_inhibitor_flowrate"
+              class="form-control"
+              v-model="formFields.daily_inhibitor_flowrate"
               placeholder=""
           />
         </div>
@@ -178,7 +178,7 @@
               id="fill_status"
               v-model="formFields.fill_status"
           />
-          <label class="form-check-label" for="fill_status">{{ trans('monitoring.omguhe.fields.fill') }}</label>
+          <label class="form-check-label" for="fill_status">{{ trans('monitoring.omguhe.fields.fill') }} {{ trans('measurements.liter') }}</label>
         </div>
         <div class="form-label-group" v-show="formFields.fill_status">
           <input
@@ -226,7 +226,7 @@ export default {
     isEditing: {
       type: Boolean,
       default: false
-    }
+    },
   },
   components: {
     Datetime
@@ -240,7 +240,7 @@ export default {
       wells: {},
       fields: {},
       inhibitors: {},
-      out_of_service_оf_dosing: false,
+      out_of_service_оf_dosing: 0,
       prevData: null,
       qv: null,
       formFields: {
@@ -254,10 +254,11 @@ export default {
         inhibitor_id: null,
         fill: null,
         level: null,
-        out_of_service_оf_dosing: null,
+        out_of_service_оf_dosing: 0,
         current_dosage: null,
         reason: null,
-        fill_status: null
+        fill_status: null,
+        consumption: null
       }
     };
   },
@@ -278,6 +279,8 @@ export default {
         current_dosage: this.omguhe.current_dosage,
         reason: this.omguhe.reason,
         fill_status: !!this.omguhe.fill,
+        consumption: this.omguhe.consumption,
+        daily_inhibitor_flowrate: null
       }
       if (this.formFields.ngdu_id) {
         this.chooseNgdu()
@@ -325,21 +328,6 @@ export default {
           });
     },
     chooseGu() {
-      this.axios
-          .post(this.localeUrl("/getzu"), {
-            gu_id: this.formFields.gu_id,
-          })
-          .then((response) => {
-            let data = response.data;
-            if (data) {
-              this.zus = data.data;
-            } else {
-              console.log("No data");
-            }
-
-            this.inputLevel();
-          });
-
       this.axios
           .post(this.localeUrl("/getgucdngngdufield"), {
             gu_id: this.formFields.gu_id,
@@ -389,8 +377,15 @@ export default {
     },
     inputLevel() {
       if (this.prevData != null) {
-        let currentDosage = ((this.prevData - this.formFields.level) / this.qv) * 953;
+        this.formFields.level = this.formFields.level > this.prevData ? this.prevData : this.formFields.level;
+
+        this.formFields.consumption = this.prevData - this.formFields.level;
+        let currentDosage = (this.formFields.consumption / this.qv) * 946;
+
         this.formFields.current_dosage = currentDosage > 0 ? currentDosage.toFixed(2) : 0;
+        this.formFields.daily_inhibitor_flowrate = (this.formFields.current_dosage * this.qv/1000).toFixed(2);
+      } else {
+        this.formFields.consumption = this.formFields.current_dosage = 0;
       }
     },
     formatDate(date) {
