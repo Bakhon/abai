@@ -497,13 +497,13 @@ export default {
             this.tables = summForTables;
         },
 
-        getFilteredTableData(productionPlanAndFactMonth, data, type) {
+        getFilteredData(data, type) {
             _.forEach(this.dzoType[type], function (dzoName) {
-                productionPlanAndFactMonth = _.reject(productionPlanAndFactMonth, _.iteratee({dzo: dzoName}));
                 data = _.reject(data, _.iteratee({dzo: dzoName}));
             });
-            return {productionPlanAndFactMonth, data};
+            return data;
         },
+
         processDataForAllCompanies(data, timestampToday, timestampEnd, start, end, planFieldName, factFieldName, chartSecondaryName) {
             var dzo = [];
             var factYear = [];
@@ -653,15 +653,13 @@ export default {
             var planMonth = [];
 
             if (this.dzoCompaniesAssets['isOperating']) {
-                const __ret = this.getFilteredTableData(productionPlanAndFactMonth, data, 'isNonOperating');
-                productionPlanAndFactMonth = __ret.productionPlanAndFactMonth;
-                data = __ret.data;
+                productionPlanAndFactMonth = this.getFilteredData(productionPlanAndFactMonth, 'isNonOperating');
+                data = this.getFilteredData(data, 'isNonOperating');
             }
 
             if (this.dzoCompaniesAssets['isNonOperating']) {
-                const __ret = this.getFilteredTableData(productionPlanAndFactMonth, dataWithMay, 'isOperating');
-                productionPlanAndFactMonth = __ret.productionPlanAndFactMonth;
-                data = __ret.data;
+                productionPlanAndFactMonth = this.getFilteredData(productionPlanAndFactMonth, 'isOperating');
+                data = this.getFilteredData(dataWithMay, 'isOperating');
             }
 
             if (this.dzoCompaniesAssets['isRegion']) {
