@@ -104,15 +104,15 @@
             :disabled="!formFields.editable"
         >
       </div>
-      <label>{{ trans('monitoring.omgngdu.fields.heater_inlet_pressure') }}</label>
+      <label>{{ trans('monitoring.omgngdu.fields.heater_inlet_temperature') }}</label>
       <div class="form-label-group">
         <input
-            v-model="formFields.heater_inlet_pressure"
+            v-model="formFields.heater_inlet_temperature"
             type="number"
             step="0.0001"
-            :min="validationParams.heater_inlet_pressure.min"
-            :max="validationParams.heater_inlet_pressure.max"
-            name="heater_inlet_pressure"
+            :min="validationParams.heater_inlet_temperature.min"
+            :max="validationParams.heater_inlet_temperature.max"
+            name="heater_inlet_temperature"
             class="form-control"
             placeholder=""
         >
@@ -172,15 +172,15 @@
             :disabled="!formFields.editable"
         >
       </div>
-      <label>{{ trans('monitoring.omgngdu.fields.heater_output_pressure') }}</label>
+      <label>{{ trans('monitoring.omgngdu.fields.heater_output_temperature') }}</label>
       <div class="form-label-group">
         <input
-            v-model="formFields.heater_output_pressure"
+            v-model="formFields.heater_output_temperature"
             type="number"
             step="0.0001"
-            :min="validationParams.heater_output_pressure.min"
-            :max="validationParams.heater_output_pressure.max"
-            name="heater_output_pressure"
+            :min="validationParams.heater_output_temperature.min"
+            :max="validationParams.heater_output_temperature.max"
+            name="heater_output_temperature"
             class="form-control"
             placeholder=""
         >
@@ -218,13 +218,13 @@ export default {
         ngdu_id: null,
         zu_id: null,
         daily_fluid_production: null,
-        heater_inlet_pressure: null,
+        heater_inlet_temperature: null,
         daily_oil_production: null,
         cdng_id: null,
         well_id: null,
         surge_tank_pressure: null,
         daily_gas_production_in_sib: null,
-        heater_output_pressure: null,
+        heater_output_temperature: null,
         editable: 0,
       },
       ngdus: {},

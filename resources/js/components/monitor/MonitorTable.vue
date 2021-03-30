@@ -423,7 +423,7 @@
                     readonly
                     type="text"
                     class="square2"
-                    v-model="heater_output_pressure"
+                    v-model="heater_output_temperature"
                 />
                 <span class="after">С</span>
               </li>
@@ -612,8 +612,8 @@ export default {
       temperature: null,
       pump_discharge_pressure: null,
       surge_tank_pressure: null,
-      heater_inlet_pressure: null,
-      heater_output_pressure: null,
+      heater_inlet_temperature: null,
+      heater_output_temperature: null,
       daily_fluid_production: null,
       signalizator: null,
       signalizatorAbs: null,
@@ -720,8 +720,8 @@ export default {
       this.temperature = null
       this.pump_discharge_pressure = null
       this.surge_tank_pressure = null
-      this.heater_inlet_pressure = null
-      this.heater_output_pressure = null
+      this.heater_inlet_temperature = null
+      this.heater_output_temperature = null
       this.daily_fluid_production = null
       this.signalizator = null
       this.signalizatorAbs = null
@@ -748,8 +748,8 @@ export default {
               this.temperature = data.ngdu ? data.ngdu.temperature : null
               this.pump_discharge_pressure = data.ngdu ? data.ngdu.pump_discharge_pressure : null
               this.surge_tank_pressure = data.ngdu ? data.ngdu.surge_tank_pressure : null
-              this.heater_inlet_pressure = data.ngdu ? data.ngdu.heater_inlet_pressure : null
-              this.heater_output_pressure = data.ngdu ? data.ngdu.heater_output_pressure : null
+              this.heater_inlet_temperature = data.ngdu ? data.ngdu.heater_inlet_temperature : null
+              this.heater_output_temperature = data.ngdu ? data.ngdu.heater_output_temperature : null
               this.daily_fluid_production =  data.ngdu ? data.ngdu.daily_fluid_production : null
 
               if (data.uhe && data.ca) {
@@ -788,7 +788,8 @@ export default {
             l: this.pipe.length,
             thickness: this.pipe.thickness,
             P: this.ngdu.pump_discharge_pressure,
-            t_heater: this.ngdu.heater_output_pressure,
+            t_heater: this.ngdu.heater_output_temperature,
+            t_inlet_heater: this.ngdu.heater_inlet_temperature,
             conH2S: this.wmLastH2S.hydrogen_sulfide,
             conCO2: this.wmLastCO2.carbon_dioxide,
             q_l: this.ngdu.daily_fluid_production,

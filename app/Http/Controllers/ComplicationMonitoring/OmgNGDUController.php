@@ -102,12 +102,12 @@ class OmgNGDUController extends CrudController
                     'title' => trans('monitoring.omgngdu.fields.pump_discharge_pressure'),
                     'type' => 'numeric',
                 ],
-                'temperature' => [
-                    'title' => trans('monitoring.omgngdu.fields.temperature'),
+                'heater_inlet_temperature' => [
+                    'title' => trans('monitoring.omgngdu.fields.heater_inlet_temperature'),
                     'type' => 'numeric',
                 ],
-                'heater_output_pressure' => [
-                    'title' => trans('monitoring.omgngdu.fields.heater_output_pressure'),
+                'heater_output_temperature' => [
+                    'title' => trans('monitoring.omgngdu.fields.heater_output_temperature'),
                     'type' => 'numeric',
                 ],
             ]
