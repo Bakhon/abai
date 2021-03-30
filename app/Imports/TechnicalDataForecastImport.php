@@ -29,7 +29,7 @@ class TechnicalDataForecastImport implements ToModel
         $this->log = TechnicalDataLog::create(['author_id' => $user_id]);
 
         $this->source = TechnicalStructureSource::where('name', '=', $file_name)->first();
-        if (empty($source)) {
+        if (empty($this->source)) {
             $this->source = TechnicalStructureSource::create(["name" => $file_name]);
         }
     }
