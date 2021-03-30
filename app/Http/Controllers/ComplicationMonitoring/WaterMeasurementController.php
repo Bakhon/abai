@@ -8,6 +8,7 @@ use App\Http\Controllers\Traits\WithFieldsValidation;
 use App\Http\Requests\IndexTableRequest;
 use App\Http\Requests\WaterMeasurementCreateRequest;
 use App\Http\Requests\WaterMeasurementUpdateRequest;
+use App\Models\ComplicationMonitoring\CalculatedCorrosion;
 use App\Models\ComplicationMonitoring\ConstantsValue;
 use App\Models\ComplicationMonitoring\Corrosion;
 use App\Models\ComplicationMonitoring\GuKormass;
@@ -601,44 +602,24 @@ class WaterMeasurementController extends CrudController
 
         $uhe = OmgUHE::query()
             ->where('gu_id', $request->gu_id)
-            ->where('date', '>=', Carbon::now()->subYear()->startOfMonth())
-            ->where('date', '<=', Carbon::now()->startOfMonth())
-            ->get()
-            ->groupBy(
-                function ($item) {
-                    return Carbon::parse($item->date)->diffInMonths(Carbon::now()->startOfMonth()) > 6
-                        ? '1 полугодие'
-                        : '2 полугодие';
-                }
-            );
+            ->where('date', '>=', Carbon::now()->subDays(31))
+            ->where('date', '<=', Carbon::now())
+            ->get();
 
-        $corrosion = Corrosion::query()
+        $corrosion = CalculatedCorrosion::query()
             ->where('gu_id', $request->gu_id)
-            ->where(
-                'final_date_of_corrosion_velocity_with_inhibitor_measure',
-                '>=',
-                Carbon::now()->subYear()->startOfMonth()
-            )
-            ->where(
-                'final_date_of_corrosion_velocity_with_inhibitor_measure',
-                '<=',
-                Carbon::now()->startOfMonth()
-            )
-            ->get()
-            ->groupBy(
-                function ($item) {
-                    return Carbon::parse($item->date)->diffInMonths(Carbon::now()->startOfMonth()) > 6
-                        ? '1 полугодие'
-                        : '2 полугодие';
-                }
-            );
+            ->where('date', '>=', Carbon::now()->subYear())
+            ->where('date', '<=', Carbon::now())
+            ->get();
 
         $kormass = GuKormass::where('gu_id', $request->gu_id)->with('kormass')->first();
         $pipe = Pipe::where('gu_id', $request->gu_id)->where('plot', 'eg')->first();
         $pipeAB = Pipe::where('gu_id', $request->gu_id)->where('plot', 'ab')->first();
+        $constantsValues = ConstantsValue::get();
+
         $lastCorrosion = Corrosion::where('gu_id', $request->gu_id)
             ->whereNotNull('corrosion_velocity_with_inhibitor')->latest()->first();
-        $constantsValues = ConstantsValue::get();
+
         $chartDtCarbonDioxide = $chartDtHydrogenSulfide = $chartIngibitor = $chartCorrosion = [
             'dt' => [],
             'value' => []
@@ -652,14 +633,14 @@ class WaterMeasurementController extends CrudController
             $chartDtHydrogenSulfide['value'][] = $val->hydrogen_sulfide;
         }
 
-        foreach ($uhe as $key => $uheMonth) {
-            $chartIngibitor['dt'][] = $key;
-            $chartIngibitor['value'][] = $uheMonth->avg('current_dosage');
+        foreach ($uhe as $key => $val) {
+            $chartIngibitor['dt'][] = Carbon::parse($val->date)->format('Y-m-d');
+            $chartIngibitor['value'][] = $val->current_dosage;
         }
 
-        foreach ($corrosion as $key => $corrosionMonth) {
-            $chartCorrosion['dt'][] = $key;
-            $chartCorrosion['value'][] = $corrosionMonth->avg('corrosion_velocity_with_inhibitor');
+        foreach ($corrosion as $key => $val) {
+            $chartCorrosion['dt'][] = Carbon::parse($val->date)->format('Y-m-d');
+            $chartCorrosion['value'][] = $val->corrosion;
         }
 
         if ($kormass && $kormass->kormass->name != 'Прямой УПСВ') {

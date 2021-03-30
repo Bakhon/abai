@@ -409,10 +409,10 @@ class OilGasController extends CrudController
     static function ecoData($gu = 38)
     {
         $table = 'omg_n_g_d_u_s_1';
-        $ngduUheData = DB::table($table)
+        $ngduUheData = DB::table($table.'')
             ->leftJoin(
                 'omg_u_h_e_s',
-                function ($join) use ($table) {
+                function ($join) use ($table){
                     $join->on($table.'.gu_id', 'omg_u_h_e_s.gu_id')
                         ->on('omg_u_h_e_s.date', $table.'.date');
                 }
@@ -431,8 +431,8 @@ class OilGasController extends CrudController
             ->whereNotNull($table.'.daily_fluid_production')
             ->whereNotNull($table.'.bsw')
             ->whereNotNull($table.'.daily_oil_production')
-            ->whereNotNull($table.'ate')
-            ->whereNotNull($table.'urrent_dosage')
+            ->whereNotNull('omg_u_h_e_s.date')
+            ->whereNotNull('omg_u_h_e_s.current_dosage')
             ->select(
                 $table.'.date',
                 $table.'.gu_id',
@@ -450,6 +450,7 @@ class OilGasController extends CrudController
                 $table.'.daily_oil_production',
                 'omg_u_h_e_s.current_dosage')
             ->get();
+
 
         $result = 0;
         $qv = 0;
