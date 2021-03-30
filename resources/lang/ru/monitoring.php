@@ -125,6 +125,7 @@ return array (
       ),
       'reason' => 'Причина',
       'fill' => 'Заправка',
+      'yearly_inhibitor_rate' => 'Годовой расход ингибитора кг',
     ),
   ),
   'omgngdu' => 
@@ -315,4 +316,8 @@ return array (
   'elevation' => 'Высота',
   'h_distance' => 'Горизонтальная длина',
   'm_distance' => 'Измеренная длина',
+  'fields' => 
+  array (
+    'consumption' => 'Расход',
+  ),
 );

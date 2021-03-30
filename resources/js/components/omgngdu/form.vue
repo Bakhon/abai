@@ -169,6 +169,7 @@
             name="daily_gas_production_in_sib"
             class="form-control"
             placeholder=""
+            :disabled="!formFields.editable"
         >
       </div>
       <label>{{ trans('monitoring.omgngdu.fields.heater_output_pressure') }}</label>
@@ -182,7 +183,6 @@
             name="heater_output_pressure"
             class="form-control"
             placeholder=""
-            :disabled="!formFields.editable"
         >
       </div>
     </div>
@@ -348,6 +348,20 @@ export default {
           console.log('No data');
         }
       });
+
+      this.axios
+          .post(this.localeUrl("/getgucdngngdufield"), {
+            gu_id: this.formFields.gu_id,
+          })
+          .then((response) => {
+            let data = response.data;
+            if (data) {
+              this.formFields.cdng_id = data.cdng;
+              this.formFields.ngdu_id = data.ngdu;
+            } else {
+              console.log("No data");
+            }
+          });
     },
     chooseZu() {
       this.axios.post(this.localeUrl("/getwell"), {

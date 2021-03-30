@@ -15,4 +15,5 @@ return array (
   array (
     'm3/day' => 'ст.м³/сут',
   ),
+  'liter' => 'л',
 );

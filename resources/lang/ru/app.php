@@ -29,4 +29,6 @@ return array (
   'error' => 'Ошибка',
   'delete_titie' => 'Удаление',
   'choose' => 'Выбрать',
+  'yes' => 'Да',
+  'no' => 'Нет',
 );

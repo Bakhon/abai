@@ -23,55 +23,57 @@
       </div>
     </div>
     <div class="bd-main-block__body">
-
-      <div class="bd-main-block__tree scrollable">
-        <b-tree-view
-            v-if="filterTree.length"
-            :contextMenu="false"
-            :contextMenuItems="[]"
-            :data="filterTree"
-            :renameNodeOnDblClick="false"
-            nodeLabelProp="name"
-            v-on:nodeSelect="filterForm"
-        ></b-tree-view>
-      </div>
-      <form ref="form" class="bd-main-block__form scrollable" style="width: 100%">
-        <div class="table-page">
-          <p v-if="!tech" class="table__message">{{ trans('bd.select_dzo') }}</p>
-          <p v-else-if="rows.length === 0" class="table__message">{{ trans('bd.nothing_found') }}</p>
-          <div v-else class="table-wrap scrollable">
-            <table v-if="rows.length" class="table">
-              <thead>
-              <tr>
-                <th v-for="column in visibleColumns">
-                  {{ column.title }}
-                </th>
-                <th></th>
-              </tr>
-              </thead>
-              <tbody>
-              <tr v-for="row in rows">
-                <td
-                    v-for="column in visibleColumns"
-                    :class="{'editable': column.isEditable}"
-                    @dblclick="editCell(row, column)"
-                >
-                  <template v-if="column.type === 'link'">
-                    <a :href="row[column.code].href">{{ row[column.code].name }}</a>
-                  </template>
-                  <template v-else-if="column.type === 'calc'">
-                    <span class="value">{{ row[column.code] ? row[column.code].value : '' }}</span>
-                  </template>
-                  <template v-else-if="column.type === 'history'">
-                    <a href="#" @click.prevent="showHistoricalDataForRow(row, column)">Посмотреть</a>
-                  </template>
-                  <template v-else-if="['text', 'integer', 'float'].indexOf(column.type) > -1">
-                    <div v-if="isCellEdited(row, column)" class="input-wrap">
-                      <input v-model="row[column.code].value" class="form-control" type="text">
-                      <button type="button" @click.prevent="saveCell(row, column)">OK</button>
-                      <span v-if="errors[column.code]" class="error">{{ showError(errors[column.code]) }}</span>
-                    </div>
-                    <template v-else-if="row[column.code]">
+        <div class="bd-main-block__tree scrollable">
+          <b-tree-view
+              v-if="filterTree.length"
+              :contextMenu="false"
+              :contextMenuItems="[]"
+              :data="filterTree"
+              :renameNodeOnDblClick="false"
+              nodeLabelProp="name"
+              v-on:nodeSelect="filterForm"
+          ></b-tree-view>
+        </div>
+        <form ref="form" class="bd-main-block__form scrollable" style="width: 100%">
+          <div class="table-page">
+            <p v-if="!tech" class="table__message">{{ trans('bd.select_dzo') }}</p>
+            <p v-else-if="rows.length === 0" class="table__message">{{ trans('bd.nothing_found') }}</p>
+            <div v-else class="table-wrap scrollable">
+              <table v-if="rows.length" class="table">
+                <thead>
+                <tr>
+                  <th v-for="column in visibleColumns">
+                    {{ column.title }}
+                  </th>
+                  <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="row in rows">
+                  <td
+                      v-for="column in visibleColumns"
+                      :class="{'editable': column.is_editable}"
+                      @dblclick="editCell(row, column)"
+                  >
+                    <template v-if="column.type === 'link'">
+                      <a :href="row[column.code].href">{{ row[column.code].name }}</a>
+                    </template>
+                    <template v-else-if="column.type === 'calc'">
+                      <span class="value">{{ row[column.code] ? row[column.code].value : '' }}</span>
+                    </template>
+                    <template v-else-if="column.type === 'history_graph'">
+                      <a href="#" @click.prevent="showHistoryGraphDataForRow(row, column)">Посмотреть</a>
+                    </template>
+                    <template v-else-if="column.type === 'history'">
+                      <a href="#" @click.prevent="showHistoricalDataForRow(row, column)">Посмотреть</a>
+                    </template>
+                    <template v-else-if="['text', 'integer', 'float'].indexOf(column.type) > -1">
+                      <div v-if="isCellEdited(row, column)" class="input-wrap">
+                        <input v-model="row[column.code].value" class="form-control" type="text">
+                        <button type="button" @click.prevent="saveCell(row, column)">OK</button>
+                        <span v-if="errors[column.code]" class="error">{{ showError(errors[column.code]) }}</span>
+                      </div>
+                      <template v-else-if="row[column.code]">
                       <span class="value">{{
                           row[column.code].date ? row[column.code].old_value : row[column.code].value
                         }}</span>
@@ -124,6 +126,12 @@
         </div>
       </div>
     </div>
+    <RowHistoryGraph
+        v-if="rowHistoryGraph"
+        :params="rowHistoryGraph"
+        v-on:close="rowHistoryGraph = null"
+    >
+    </RowHistoryGraph>
   </div>
 </template>
 
@@ -133,6 +141,8 @@ import {Datetime} from 'vue-datetime'
 import 'vue-datetime/dist/vue-datetime.css'
 import {bTreeView} from 'bootstrap-vue-treeview'
 import {bdFormActions, bdFormState} from '@store/helpers'
+import BigDataHistory from './history'
+import RowHistoryGraph from './RowHistoryGraph'
 
 Vue.use(Datetime)
 
@@ -145,7 +155,9 @@ export default {
     },
   },
   components: {
-    bTreeView
+    bTreeView,
+    BigDataHistory,
+    RowHistoryGraph
   },
   data() {
     return {
@@ -166,9 +178,13 @@ export default {
       history: {},
       rowHistory: null,
       rowHistoryColumns: [],
+      rowHistoryGraph: null,
     }
   },
   watch: {
+    params() {
+      this.init()
+    },
     date() {
       this.updateRows()
     }
@@ -182,11 +198,7 @@ export default {
     }
   },
   mounted() {
-
-    this.updateForm(this.params.code).then(data => {
-      this.filterTree = data.filterTree
-    })
-
+    this.init()
   },
   methods: {
     ...bdFormActions([
@@ -198,6 +210,13 @@ export default {
         this.tech = item.data.id
         this.updateRows()
       }
+    },
+    init() {
+      this.isloading = true
+      this.updateForm(this.params.code).then(data => {
+        this.filterTree = data.filterTree
+        this.isloading = false
+      })
     },
     updateRows() {
 
@@ -268,7 +287,7 @@ export default {
           let value
           if (column.type === 'calc') {
             value = this.calculateCellValue(column, cellRow, rowIndex)
-          } else if (column.isEditable) {
+          } else if (column.is_editable) {
             value = cellRow[column.code].value
           } else {
             value = cellRow[column.code].old_value || cellRow[column.code].value
@@ -287,38 +306,66 @@ export default {
       this.editableCell.column = column
     },
     isCellEdited(row, column) {
-      if (!column.isEditable) return false
+      if (!column.is_editable) return false
       if (this.editableCell.row !== row) return false
       if (this.editableCell.column !== column) return false
 
       return true
     },
-    saveCell(row, column) {
+    async saveCell(row, column) {
 
-      let data = {
-        well_id: row.uwi.id,
-        date: this.date,
-      }
-      data[column.code] = row[column.code].value
-      this.isloading = true
+      this.checkLimits(row, column).then(result => {
+        if (result === true) {
 
-      this.axios
-          .patch(this.localeUrl(`/bigdata/form/${this.params.code}/save/${column.code}`), data)
-          .then(({data}) => {
-            row[column.code].date = null
-            this.editableCell = {
-              row: null,
-              cell: null
-            }
-            this.recalculateCells()
-          })
-          .catch(error => {
-            Vue.set(this.errors, column.code, error.response.data.errors)
-          })
-          .finally(() => {
-            this.isloading = false
-          })
+          let data = {
+            well_id: row.uwi.id,
+            date: this.date,
+          }
+          data[column.code] = row[column.code].value
+          this.isloading = true
 
+          this.axios
+              .patch(this.localeUrl(`/bigdata/form/${this.params.code}/save/${column.code}`), data)
+              .then(({data}) => {
+                row[column.code].date = null
+                this.editableCell = {
+                  row: null,
+                  cell: null
+                }
+                this.recalculateCells()
+              })
+              .catch(error => {
+                Vue.set(this.errors, column.code, error.response.data.errors)
+              })
+              .finally(() => {
+                this.isloading = false
+              })
+
+        }
+      })
+
+    },
+    checkLimits(row, column) {
+      return new Promise((resolve, reject) => {
+        if (!row[column.code].limits || row[column.code].limits.length === 0) {
+          resolve(true)
+          return
+        }
+
+        if (row[column.code].value >= row[column.code].limits.min && row[column.code].value <= row[column.code].limits.max) {
+          resolve(true)
+          return
+        }
+
+        let message = `${this.trans('bd.value_outside')} (${row[column.code].limits.min}, ${row[column.code].limits.max}). ${this.trans('bd.are_you_sure')}`
+        this.$bvModal.msgBoxConfirm(message, {
+          okTitle: this.trans('app.yes'),
+          cancelTitle: this.trans('app.no'),
+        })
+            .then(result => {
+              resolve(result)
+            })
+      })
     },
     changePage(page = 1) {
       this.currentPage = page
@@ -344,6 +391,20 @@ export default {
         this.rowHistory = data
         this.rowHistoryColumns = this.formParams.columns.filter(item => column.fields.indexOf(item.code) > -1)
         this.isloading = false
+      })
+    },
+    showHistoryGraphDataForRow(row, column) {
+      this.isloading = true
+      document.body.classList.add('fixed')
+      this.axios.get(this.localeUrl(`/bigdata/form/${this.params.code}/row-history-graph`), {
+        params: {
+          well_id: row.uwi.id,
+          column: column.code,
+          date: this.date
+        }
+      }).then(({data}) => {
+        this.isloading = false
+        this.rowHistoryGraph = data
       })
     }
   },

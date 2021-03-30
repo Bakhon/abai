@@ -92,6 +92,12 @@ class FormsController extends Controller
         return $form->getRowHistory(Carbon::parse($request->get('date')));
     }
 
+    public function getRowHistoryGraph(string $formName, Request $request): array
+    {
+        $form = $this->getForm($formName);
+        return $form->getRowHistoryGraph(Carbon::parse($request->get('date')));
+    }
+
     public function getHistory(string $formName, Request $request): array
     {
         $form = $this->getForm($formName);
@@ -119,6 +125,7 @@ class FormsController extends Controller
 
     private function getForm(string $formName): BaseForm
     {
+        $formName = strtolower($formName);
         if (empty(config("bigdata_forms.{$formName}"))) {
             abort(404);
         }
