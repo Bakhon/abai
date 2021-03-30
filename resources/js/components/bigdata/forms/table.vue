@@ -77,22 +77,29 @@
                       <span class="value">{{
                           row[column.code].date ? row[column.code].old_value : row[column.code].value
                         }}</span>
-                      <span v-if="row[column.code] && row[column.code].date" class="date">
+                        <span v-if="row[column.code] && row[column.code].date" class="date">
                         {{ row[column.code].date | moment().format('YYYY-MM-DD') }}
                       </span>
+                      </template>
                     </template>
-                  </template>
-                  <template v-if="history[row.uwi.id] && history[row.uwi.id][column.code]">
-                    <a :id="`history_${row.uwi.id}`">
-                      i
-                    </a>
-                    <b-popover :target="`history_${row.uwi.id}`" placement="top" triggers="hover">
-                      <div v-for="(value, time) in history[row.uwi.id][column.code]">
-                        {{ time }} - <b>{{ value.value }}</b> {{ value.user }}
-                      </div>
-                    </b-popover>
-                  </template>
-                </td>
+                    <template v-if="typeof history[row.uwi.id][column.code] !== 'undefined'">
+                      <a :id="`history_${row.uwi.id}_${column.code}`" class="icon-history">
+                        <svg fill="none" height="9" viewBox="0 0 2 9" width="2" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M1 7.5L1 3.5" stroke="white" stroke-linecap="round" stroke-width="1.6"/>
+                          <path clip-rule="evenodd"
+                                d="M1 -0.000146508C0.558175 -0.000146508 0.200003 0.358026 0.200003 0.799854C0.200003 1.24168 0.558175 1.59985 1 1.59985C1.44183 1.59985 1.8 1.24168 1.8 0.799854C1.8 0.358026 1.44183 -0.000146508 1 -0.000146508Z"
+                                fill="white" fill-rule="evenodd"/>
+                        </svg>
+                      </a>
+                      <b-popover :target="`history_${row.uwi.id}_${column.code}`" custom-class="history-popover"
+                                 placement="top" triggers="hover">
+                        <div v-for="(value, time) in history[row.uwi.id][column.code]">
+                          <em>{{ time }}</em><br>
+                          <b>{{ value.value }}</b> ({{ value.user }})
+                        </div>
+                      </b-popover>
+                    </template>
+                  </td>
               </tr>
               </tbody>
             </table>
@@ -774,6 +781,20 @@ body.fixed {
 
     td {
       height: 52px;
+      position: relative;
+
+      .icon-history {
+        align-items: center;
+        background: #3366FF;
+        border-radius: 1px;
+        bottom: 6px;
+        display: flex;
+        justify-content: center;
+        left: 1px;
+        height: 14px;
+        position: absolute;
+        width: 14px;
+      }
 
       span.date {
         display: block;
@@ -845,6 +866,21 @@ body.fixed {
       }
 
     }
+  }
+}
+
+.history-popover {
+  .popover-body {
+    background: #40467E;
+    border: 1px solid #2E50E9;
+    border-radius: 1px;
+    color: #fff;
+    font-size: 14px;
+    padding: 8px;
+  }
+
+  .arrow {
+    display: none;
   }
 }
 </style>
