@@ -220,8 +220,8 @@ class DruidController extends Controller
         $q_l = $request->q_l; // БД ОМГ НГДУ  input in pipesim m3/day
         $WC = $request->WC; // БД ОМГ НГДУ input in pipesim Watercut
         //oil density
-        $rhol = $request->rhol; // БД Лабараторная НЕФТИ input in pipesim density dead oil g/cm3
-        $rhol = $rhol * 1000;   // БД Лабараторная НЕФТИ input in pipesim density dead oil kg/m3
+        $rhol = $request->rhol;   // БД по промысловой жидкости input in pipesim density  g/cm3
+        $rhol = $rhol * 1000; // БД по промысловой жидкости input in pipesim density  kg/m3
 
         //$q_l = $q_l * 1000 / $rhol; // перевод массового расхода (т/сут) в объемный (м3/сут)
         $q_l = $q_l / 24.0 / 60.0 / 60.0; // input in pipesim convert from m3/d to m3/sec
@@ -233,9 +233,11 @@ class DruidController extends Controller
         //$GOR = ($GOR1*$q_l - $q_g_sib) / $q_l; // газосодержание на выходе с ГУ добоваить переменную q_o
         //Qoil(m3/d)=(Qoil(t/d)*1000)/ρoil(kg/m3)- перевод массового расхода (т/сут) в объемный (м3/сут)
         //GOR2=(GOR1*Qoil(m3/d) - Qsib(m3/d)/))/Qoil(m3/d)-газосодержание на выходе с ГУ
-        $q_o = $request->q_o;
-        $rho_o = $request->rho_o;
-        $q_o = $q_o * 1000 / $rho_o; // convert from t/day => m3/day
+        $q_o = $request->q_o; //ngdu daily_oil_production Т/сут
+
+        $rho_o = $request->rho_o; // БД Лабараторная НЕФТИ input in pipesim density dead oil g/cm3
+        $q_o = $q_o * 1000 / $rho_o; // БД Лабараторная НЕФТИ input in pipesim density dead oil kg/m3
+
         $q_o = $q_o / 24.0 / 60.0 / 60.0; // convert from m3/day => m3/sec
         $GOR = ($GOR1 * $q_o - $q_g_sib) / $q_o; // газосодержание на выходе с ГУ добоваить переменную q_o
 
@@ -251,7 +253,7 @@ class DruidController extends Controller
         //density of gas
         //$SG = 0.64; //input pipesim
         //$rhog = $SG * 1.204; // 1.204 kg/m3 = SG of Air
-        $rhog = $request->rhog; // БД Лабараторная по нефти и газу kg/m3 ???? надо перепроверить 06.11.2020
+        $rhog = $request->rhog; // БД Лабараторная по нефти и газу kg/m3
         //mass flowrate of liquid
         $m_dotl = $rhol * $q_l; // kg/m3 * m3/s = kg/s
         //mass flowrate of gas
