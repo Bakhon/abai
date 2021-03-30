@@ -13,13 +13,6 @@ use Maatwebsite\Excel\Concerns\WithBatchInserts;
 
 class HandbookRepTtTitlesImport implements ToModel
 {
-    protected $importFyleType = 'opiu';
-
-    function __construct($importExcelType)
-    {
-        $this->importFyleType = $importExcelType;
-    }
-
     /**
      * @param array $row
      *
@@ -29,8 +22,8 @@ class HandbookRepTtTitlesImport implements ToModel
     {
         return new HandbookRepTt([
             'num'=>$row[0],
-            'name'=>$row[1],
-            'type'=> $this->importFyleType,
+            'parent_id'=>$row[1],
+            'name'=>$row[2],
         ]);
     }
 
