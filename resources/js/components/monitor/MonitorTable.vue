@@ -340,19 +340,31 @@
       <div class="col-2 monitor__charts">
         <div class="monitor__charts-item">
           <p class="monitor__charts-item-title">{{ trans('monitoring.action_substance_of_co2') }}</p>
-          <monitor-chart :title="trans('monitoring.action_substance_of_co2')" :data="chart1Data"></monitor-chart>
+          <monitor-chart
+              :title="trans('monitoring.action_substance_of_co2')"
+              :measurement="trans('measurements.mg/dm3')"
+              :data="chart1Data" />
         </div>
         <div class="monitor__charts-item">
           <p class="monitor__charts-item-title">{{ trans('monitoring.action_substance_of_h2s') }}</p>
-          <monitor-chart :title="trans('monitoring.action_substance_of_h2s')" :data="chart2Data"></monitor-chart>
+          <monitor-chart
+              :title="trans('monitoring.action_substance_of_h2s')"
+              :measurement="trans('measurements.mg/dm3')"
+              :data="chart2Data" />
         </div>
         <div class="monitor__charts-item">
           <p class="monitor__charts-item-title">{{ trans('monitoring.actual_corrosion_speed') }}</p>
-          <monitor-chart :title="trans('monitoring.actual_corrosion_speed')" :data="chart3Data"></monitor-chart>
+          <monitor-chart
+              :title="trans('monitoring.actual_corrosion_speed')"
+              :measurement="trans('measurements.mm/g')"
+              :data="chart3Data" />
         </div>
         <div class="monitor__charts-item">
           <p class="monitor__charts-item-title">{{ trans('monitoring.actual_inhibitor_level') }}</p>
-          <monitor-chart :title="trans('monitoring.actual_inhibitor_level')" :data="chart4Data"></monitor-chart>
+          <monitor-chart
+              :title="trans('monitoring.actual_inhibitor_level')"
+              :measurement="trans('measurements.g/m3')"
+              :data="chart4Data" />
         </div>
       </div>
       <div class="col-8 monitor__schema">
