@@ -25,7 +25,7 @@ class HandbookRepTtValueImport implements ToModel, WithStartRow, WithBatchInsert
     /**
      * @param array $row
      *
-     * @return Model|Model[]|null
+     * @return HandbookRepTtValue
      */
     public function model(array $row)
     {
@@ -57,7 +57,7 @@ class HandbookRepTtValueImport implements ToModel, WithStartRow, WithBatchInsert
 
     public function startRow(): int
     {
-        return 3;
+        return 2;
     }
 
 }

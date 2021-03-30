@@ -178,6 +178,7 @@ Route::group(
                 Route::get('/module_economy/company/{id}/{dateFrom}/{dateTo}', 'EconomyKenzhe\MainController@company')->name('company');
                 Route::get('/module_economy/companies', 'EconomyKenzhe\MainController@companies');
                 Route::match(['GET','POST'],'/import_rep', 'EconomyKenzhe\MainController@importRepTt')->name('import_rep');
+                Route::match(['GET','POST'],'/import_reptt_titles', 'EconomyKenzhe\MainController@importRepTtTitles')->name('import_reptt_titles');
 
                 Route::get('/paegtm', 'GTM\GTMController@index')->name('gtm');
 

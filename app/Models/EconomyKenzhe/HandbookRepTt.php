@@ -9,7 +9,8 @@ class HandbookRepTt extends Model
     protected $fillable = [
         'parent_id',
         'num',
-        'name'
+        'name',
+        'type'
     ];
 
     protected $table = 'rep_tt';

@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\EconomyKenzhe;
 
+use App\Imports\HandbookRepTtTitlesImport;
 use App\Imports\HandbookRepTtValueImport;
 use App\Models\EconomyKenzhe\HandbookRepTt;
 use App\Models\EconomyKenzhe\SubholdingCompany;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Config;
 use Maatwebsite\Excel\Facades\Excel;
 
 class MainController extends Controller
@@ -29,10 +29,20 @@ class MainController extends Controller
     public function importRepTt(Request $request)
     {
         if ($request->isMethod('GET')) {
-            return view('economy_kenzhe.import_rep');
+            return view('economy_kenzhe.import_reptt');
         } elseif ($request->isMethod('POST')) {
-            // ini_set('max_execution_time', '400');
             Excel::import(new HandbookRepTtValueImport($request->importExcelType), $request->select_file);
+            return back()->with('success', 'Загрузка прошла успешно.');
+        }
+    }
+
+    public function importRepTtTitles(Request $request)
+    {
+        if ($request->isMethod('GET')) {
+            return view('economy_kenzhe.import_reptt_titles');
+        } elseif ($request->isMethod('POST')) {
+            $titles = Excel::toCollection(new HandbookRepTtTitlesImport($request->importExcelType), $request->select_file);
+            dd($titles);
             return back()->with('success', 'Загрузка прошла успешно.');
         }
     }
@@ -42,10 +52,9 @@ class MainController extends Controller
         $dateTo = date('Y-m-d', strtotime('01-' . $dateTo));
         $dateFrom = date('Y-m-d', strtotime('01-' . $dateFrom));
         $handbook = HandbookRepTt::where('parent_id', 0)->with('childHandbookItems')->get()->toArray();
-        $companyRepTtValues = SubholdingCompany::find($id)->statsByDate($dateFrom,$dateTo)->get()->toArray();
+        $companyRepTtValues = SubholdingCompany::find($id)->statsByDate($dateFrom, $dateTo)->get()->toArray();
         $repTtReportValues = $this->recursiveSetValueToHandbookByType($handbook, $companyRepTtValues);
         $repTtReportValues = json_encode($repTtReportValues);
-//        dd($repTtReportValues);
 
         return view('economy_kenzhe.company')->with(compact('repTtReportValues'));
     }
@@ -66,7 +75,7 @@ class MainController extends Controller
                 }, ARRAY_FILTER_USE_BOTH);
                 if (count($k) > 0) {
                     foreach ($k as $i => $v) {
-                        $items[$key]['value'] +=  abs($companyRepTtValues[$i]['value']);
+                        $items[$key]['value'] += abs($companyRepTtValues[$i]['value']);
                     }
                 }
             }
@@ -93,10 +102,10 @@ class MainController extends Controller
                 }, ARRAY_FILTER_USE_BOTH);
                 if (count($k) > 0) {
                     foreach ($k as $i => $v) {
-                        if($companyRepTtValues[$i]['type'] == 'plan'){
-                            $items[$key]['plan_value'] +=  abs($companyRepTtValues[$i]['value']);
-                        }elseif($companyRepTtValues[$i]['type'] == 'fact'){
-                            $items[$key]['fact_value'] +=  abs($companyRepTtValues[$i]['value']);
+                        if ($companyRepTtValues[$i]['type'] == 'plan') {
+                            $items[$key]['plan_value'] += $companyRepTtValues[$i]['value'];
+                        } elseif ($companyRepTtValues[$i]['type'] == 'fact') {
+                            $items[$key]['fact_value'] += $companyRepTtValues[$i]['value'];
                         }
                     }
                 }
@@ -104,5 +113,5 @@ class MainController extends Controller
         }
         return $items;
     }
-    
+
 }
