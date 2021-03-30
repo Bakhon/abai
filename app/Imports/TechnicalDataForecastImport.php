@@ -28,15 +28,15 @@ class TechnicalDataForecastImport implements ToModel
     function __construct($user_id, $file_name) {
         $this->user_id = $user_id;
         $this->log = TechnicalDataLog::create(['author_id' => $user_id]);
-        $this->source = TechnicalStructureSource::where("name", "=", $this->source_name)->first();
-        if (empty($this->source)) {
-            $this->source = TechnicalStructureSource::create(["name" => $this->source_name]);
-        }
 
+        $source = TechnicalStructureSource::where('name', '=', $file_name)->first();
+        if (empty($source)) {
+            $source = TechnicalStructureSource::create(["name" => $file_name]);
+        }
+        $this->source_id = $source->id;
     }
 
-
-
+    
     public function model(array $row)
     {
         if (!isset($row[0]) or ($row[0] == "Скважина")) {
@@ -46,7 +46,7 @@ class TechnicalDataForecastImport implements ToModel
         $gu = $this->getGu($this->user_id, $row);
 
         return new TechnicalDataForecast([
-            "source_id" => $this->source->id,
+            "source_id" => $this->source_id,
             "gu_id" => $gu->id,
             "well_id" => $row[0],
             "date" => Date::excelToDateTimeObject($row[1]),

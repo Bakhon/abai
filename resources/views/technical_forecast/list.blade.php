@@ -5,8 +5,6 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="list-group">
-                    <a href="{{ route('tech_struct_source.index') }}" class="list-group-item list-group-item-action">
-                        {{ __('forecast.source_data') }} </a>
                     <a href="{{ route('tech_data_forecast.index') }}" class="list-group-item list-group-item-action">
                         {{ __('forecast.forecast_data_production') }}</a>
                 </div>
