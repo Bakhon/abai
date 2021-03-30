@@ -413,18 +413,18 @@ class OilGasController extends CrudController
             ->leftJoin(
                 'omg_u_h_e_s',
                 function ($join) use ($table){
-                    $join->on($table.'.gu_id', '=', 'omg_u_h_e_s.gu_id')
-                        ->on('omg_u_h_e_s.date', '=', $table.'.date');
+                    $join->on($table.'.gu_id', 'omg_u_h_e_s.gu_id')
+                        ->on('omg_u_h_e_s.date', $table.'.date');
                 }
             )
             ->leftJoin(
                 'pipes',
                 function ($join) use ($table) {
-                    $join->on($table.'.gu_id', '=', 'pipes.gu_id')
-                        ->where('pipes.plot', '=', 'eg');
+                    $join->on($table.'.gu_id', 'pipes.gu_id')
+                        ->where('pipes.plot', 'eg');
                 }
             )
-            ->where($table.'.gu_id', '=', $gu)
+            ->where($table.'.gu_id', $gu)
             ->whereNotNull($table.'.date')
             ->whereNotNull($table.'.pump_discharge_pressure')
             ->whereNotNull($table.'.heater_output_temperature')
