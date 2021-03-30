@@ -63,7 +63,7 @@
                 <tr v-for="row in rows">
                   <td
                       v-for="column in visibleColumns"
-                      :class="{'editable': column.isEditable}"
+                      :class="{'editable': column.is_editable}"
                       @dblclick="editCell(row, column)"
                   >
                     <template v-if="column.type === 'link'">
@@ -278,7 +278,7 @@ export default {
           let value
           if (column.type === 'calc') {
             value = this.calculateCellValue(column, cellRow, rowIndex)
-          } else if (column.isEditable) {
+          } else if (column.is_editable) {
             value = cellRow[column.code].value
           } else {
             value = cellRow[column.code].old_value || cellRow[column.code].value
@@ -297,7 +297,7 @@ export default {
       this.editableCell.column = column
     },
     isCellEdited(row, column) {
-      if (!column.isEditable) return false
+      if (!column.is_editable) return false
       if (this.editableCell.row !== row) return false
       if (this.editableCell.column !== column) return false
 

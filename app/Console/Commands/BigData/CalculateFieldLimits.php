@@ -75,7 +75,7 @@ class CalculateFieldLimits extends Command
             if (!isset($column['validate_deviation']) || !$column['validate_deviation']) {
                 continue;
             }
-            if (!$column['isEditable']) {
+            if (!$column['is_editable']) {
                 continue;
             }
 
@@ -131,7 +131,7 @@ class CalculateFieldLimits extends Command
         }
 
         $avg = $columnValues->sum($field['column']) / $columnValues->count();
-        $deviation = $this->calcDeviation(
+        $deviation = $this->calcStandardDeviation(
             $columnValues->pluck($field['column']),
             $avg
         );
@@ -142,10 +142,7 @@ class CalculateFieldLimits extends Command
         return $this->getRoundedValues($min, $max);
     }
 
-    /**
-     * Расчет среднеквадратичного отклонения
-     */
-    private function calcDeviation(Collection $collection, float $avg): float
+    private function calcStandardDeviation(Collection $collection, float $avg): float
     {
         $sum = $collection->reduce(
             function ($sum, $item) use ($avg) {

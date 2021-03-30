@@ -7,8 +7,8 @@ namespace App\Services\BigData\Forms;
 use App\Models\BigData\Infrastructure\History;
 use App\Models\BigData\Well;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Model;
 use Carbon\CarbonImmutable;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Response;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
@@ -383,7 +383,7 @@ abstract class TableForm extends BaseForm
                     if (!isset($field['validate_deviation']) || !$field['validate_deviation']) {
                         continue;
                     }
-                    if (!$field['isEditable']) {
+                    if (!$field['is_editable']) {
                         continue;
                     }
 

@@ -82,7 +82,7 @@ export default {
   },
   computed: {
     editableColumns() {
-      return this.columns.filter(column => !!column.isEditable)
+      return this.columns.filter(column => !!column.is_editable)
     }
   },
   mounted() {
