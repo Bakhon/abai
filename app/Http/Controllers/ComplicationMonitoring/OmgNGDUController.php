@@ -14,7 +14,6 @@ use App\Models\ComplicationMonitoring\Kormass;
 use App\Models\ComplicationMonitoring\OilGas;
 use App\Models\ComplicationMonitoring\OmgCA;
 use App\Models\ComplicationMonitoring\OmgNGDU;
-use App\Models\ComplicationMonitoring\OmgNGDUOld;
 use App\Models\ComplicationMonitoring\OmgUHE;
 use App\Models\ComplicationMonitoring\WaterMeasurement;
 use Carbon\Carbon;
@@ -114,9 +113,6 @@ class OmgNGDUController extends CrudController
             ]
         ];
 
-        if(auth()->user()->can('monitoring create '.$this->modelName)) {
-            $params['links']['create'] = route($this->modelName.'.create');
-        }
         if(auth()->user()->can('monitoring export '.$this->modelName)) {
             $params['links']['export'] = route($this->modelName.'.export');
         }
@@ -126,14 +122,8 @@ class OmgNGDUController extends CrudController
 
     public function list(IndexTableRequest $request)
     {
-        $old = OmgNGDUOld::query()
-            ->with('field', 'ngdu', 'cdng', 'gu', 'zu', 'well')
-            ->where('date', '<', '2021-01-01');
-
         $query = OmgNGDU::query()
-            ->with('field', 'ngdu', 'cdng', 'gu', 'zu', 'well')
-            ->where('date', '>=', '2021-01-01')
-            ->union($old);
+            ->with('field', 'ngdu', 'cdng', 'gu', 'zu', 'well');
 
         $omgngdu = $this
             ->getFilteredQuery($request->validated(), $query)
@@ -276,16 +266,9 @@ class OmgNGDUController extends CrudController
 
     public function getGuDataByDay(Request $request)
     {
-        // TODO remove after get all OMNGDU data
-        if (Carbon::parse($request->dt) >= Carbon::parse('2021-01-01')) {
-            $ngdu = OmgNGDU::where('date', $request->dt)
-                ->where('gu_id', $request->gu_id)
-                ->first();
-        } else {
-            $ngdu = OmgNGDUOld::where('date', $request->dt)
-                ->where('gu_id', $request->gu_id)
-                ->first();
-        }
+        $ngdu = OmgNGDU::where('date', $request->dt)
+            ->where('gu_id', $request->gu_id)
+            ->first();
 
         $uhe = OmgUHE::where('date', $request->dt)
             ->where('gu_id', $request->gu_id)

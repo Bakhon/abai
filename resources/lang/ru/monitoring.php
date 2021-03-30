@@ -125,6 +125,7 @@ return array (
       ),
       'reason' => 'Причина',
       'fill' => 'Заправка',
+      'yearly_inhibitor_rate' => 'Годовой расход ингибитора кг',
     ),
   ),
   'omgngdu' => 
@@ -295,6 +296,8 @@ return array (
       'heater_output_pressure' => 'Давление сепаратора',
       'date' => 'Дата',
       'heater_output_temperature' => 'Температура печи',
+      'surge_tank_pressure' => 'Давление в буферной емкости',
+      'daily_gas_production_in_sib' => 'Количество газа в СИБ',
     ),
     'redirect-to' => 'Перейти на',
   ),
@@ -313,4 +316,8 @@ return array (
   'elevation' => 'Высота',
   'h_distance' => 'Горизонтальная длина',
   'm_distance' => 'Измеренная длина',
+  'fields' => 
+  array (
+    'consumption' => 'Расход',
+  ),
 );

@@ -69,9 +69,14 @@ abstract class BaseForm
         );
     }
 
+    public function getConfigFilePath()
+    {
+        return base_path($this->configurationPath) . "/{$this->configurationFileName}.json";
+    }
+
     protected function params(): array
     {
-        $jsonFile = base_path($this->configurationPath) . "/{$this->configurationFileName}.json";
+        $jsonFile = $this->getConfigFilePath();
         if (!File::exists($jsonFile)) {
             throw new NotFoundHttpException();
         }

@@ -4,14 +4,14 @@ namespace App\Http\Controllers\Settings;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\FieldValidationUpdateRequest;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use App\Models\CrudFieldSettings;
 
 class FieldValidationsController extends Controller
 {
     public function index()
     {
-        $fields = \App\Models\CrudFieldSettings::query()
+        $fields = CrudFieldSettings::query()
             ->get()
             ->groupBy('section');
 
@@ -21,7 +21,7 @@ class FieldValidationsController extends Controller
     public function update(FieldValidationUpdateRequest $request)
     {
         foreach ($request->fields as $fieldData) {
-            \App\Models\CrudFieldSettings::find($fieldData['id'])
+            CrudFieldSettings::find($fieldData['id'])
                 ->update(
                     [
                         'min_value' => $fieldData['min_value'],
