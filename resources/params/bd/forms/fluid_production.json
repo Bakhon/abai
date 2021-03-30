@@ -94,6 +94,11 @@
       "title": "mark",
       "code": "mark",
       "type": "text",
+      "table": "tbdic.well_telemetry",
+      "column": "source",
+      "additional_filter": {
+        "metric": "1"
+      },
       "is_editable": false
     },
     {
