@@ -186,6 +186,8 @@ Route::group(
 
                 Route::get('profile', 'UserController@profile')->name('profile');
                 Route::post('modulerequest','ModuleController@moduleRequest')->name('modulerequest');
+                Route::post('/update_avatar', 'UserController@update_avatar')->name('update_avatar');
+                Route::post('/delete_avatar', 'UserController@delete_avatar')->name('delete_avatar');
 
                 Route::get('anticrisis', 'AntiCrisisController@index')->name('anticrisis');
 
