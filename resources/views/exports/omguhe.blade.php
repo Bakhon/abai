@@ -33,7 +33,7 @@
                 <td style="border: 1px solid black; height: 15px; width: 15px">{{ $item->current_dosage }}</td>
                 <td style="border: 1px solid black; height: 15px; width: 15px">{{ $item->daily_inhibitor_flowrate }}</td>
                 <td style="border: 1px solid black; height: 15px; width: 15px">
-                    @if($item->out_of_service_оf_dosing == 1)
+                    @if($item->out_of_service_of_dosing == 1)
                         Был простой
                     @else
                         Простоя не было

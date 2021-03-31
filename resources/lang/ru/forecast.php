@@ -31,4 +31,5 @@ return array (
     'forecast_data_production' => 'Прогнозные данные добычи по ДЗО',
     'delete_wrong_uploaded_data' => 'Удалить ошибочные загруженные файлы',
     'upload_excel' => 'Добавить данные в Excel',
+    'upload' => 'Загрузить данные',
 );

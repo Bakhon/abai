@@ -195,7 +195,7 @@ class ExportMonitoringReportToExcel implements ShouldQueue
                     'conditions' => $omgCa ? $omgCa->q_v : null,
                     'current_dosage' => $omgUhe ? $omgUhe->current_dosage : null,
                     'daily_inhibitor_flowrate' => $omgUhe ? $omgUhe->daily_inhibitor_flowrate : null,
-                    'out_of_service_оf_dosing' => $omgUhe ? $omgUhe->out_of_service_оf_dosing : null,
+                    'out_of_service_of_dosing' => $omgUhe ? $omgUhe->out_of_service_of_dosing : null,
                     'reason' => $omgUhe ? $omgUhe->reason : null,
                     'level' => $omgUhe ? $omgUhe->level : null,
                     'fill' => $omgUhe ? $omgUhe->fill : null,

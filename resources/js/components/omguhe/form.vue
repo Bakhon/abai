@@ -47,20 +47,20 @@
           <input type="hidden" name="date" v-bind:value="formatDate(formFields.date)">
         </div>
         <div class="form-label-group form-check">
-          <input type="hidden" name="out_of_service_оf_dosing" value="0">
+          <input type="hidden" name="out_of_service_of_dosing" value="0">
           <input
               type="checkbox"
               class="form-check-input"
-              name="out_of_service_оf_dosing"
-              id="out_of_service_оf_dosing"
+              name="out_of_service_of_dosing"
+              id="out_of_service_of_dosing"
               value="1"
-              v-model="formFields.out_of_service_оf_dosing"
+              v-model="formFields.out_of_service_of_dosing"
           />
-          <label class="form-check-label" for="out_of_service_оf_dosing"
+          <label class="form-check-label" for="out_of_service_of_dosing"
           >{{ trans('monitoring.omguhe.fields.dosator_idle') }}</label
           >
         </div>
-        <div class="form-label-group" v-show="formFields.out_of_service_оf_dosing">
+        <div class="form-label-group" v-show="formFields.out_of_service_of_dosing">
           <label>{{ trans('monitoring.omguhe.fields.reason') }}</label>
           <textarea v-model="formFields.reason" type="text" name="reason" class="form-control" placeholder="">
         </textarea>
@@ -177,6 +177,7 @@
               name="fill_status"
               id="fill_status"
               v-model="formFields.fill_status"
+              @change="switchFillStatus()"
           />
           <label class="form-check-label" for="fill_status">{{ trans('monitoring.omguhe.fields.fill') }} {{ trans('measurements.liter') }}</label>
         </div>
@@ -240,7 +241,7 @@ export default {
       wells: {},
       fields: {},
       inhibitors: {},
-      out_of_service_оf_dosing: 0,
+      out_of_service_of_dosing: 0,
       prevData: null,
       qv: null,
       formFields: {
@@ -254,11 +255,12 @@ export default {
         inhibitor_id: null,
         fill: null,
         level: null,
-        out_of_service_оf_dosing: 0,
+        out_of_service_of_dosing: 0,
         current_dosage: null,
         reason: null,
         fill_status: null,
-        consumption: null
+        consumption: null,
+        daily_inhibitor_flowrate: null
       }
     };
   },
@@ -275,7 +277,7 @@ export default {
         inhibitor_id: this.omguhe.inhibitor_id,
         fill: this.omguhe.fill,
         level: this.omguhe.level,
-        out_of_service_оf_dosing: this.omguhe.out_of_service_оf_dosing,
+        out_of_service_of_dosing: this.omguhe.out_of_service_of_dosing,
         current_dosage: this.omguhe.current_dosage,
         reason: this.omguhe.reason,
         fill_status: !!this.omguhe.fill,
@@ -390,6 +392,9 @@ export default {
     },
     formatDate(date) {
       return moment(date).format('YYYY-MM-DD HH:MM:SS')
+    },
+    switchFillStatus () {
+      this.formFields.fill = this.fill_status ? this.formFields.fill : null;
     },
     submitForm () {
 

@@ -3,9 +3,9 @@
 
         <table style="width:100%">
           <tr>
-            <th>Дата и время последнего сеанса</th>
-            <th>Действие</th>
-            <th>IP адрес и устройство входа</th>
+            <th>{{ trans('profile.history.date') }}</th>
+            <th>{{ trans('profile.history.act') }}</th>
+            <th>{{ trans('profile.history.user_os') }}</th>
           </tr>
           <tr v-for="log in logs">
             <td>{{log.created_at}}</td>

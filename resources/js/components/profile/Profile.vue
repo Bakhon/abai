@@ -1,7 +1,7 @@
 <template>
   <div class="user-profile">
     <div class="user-profile__top">
-      <button class="bkgEditButton">Обложка профиля</button>
+      <button class="bkgEditButton">{{ trans('profile.user_background') }}</button>
       <div class="user-profile__top-avatar">
         <img :src="user.profile.thumb || '/img/level1/icon_user.svg'">
       </div>
