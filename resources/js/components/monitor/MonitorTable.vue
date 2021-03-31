@@ -374,7 +374,7 @@
             <ul class="string1">
               <li class="nav-string">
                 <span class="before">{{ trans('monitoring.units.p_kon') }}</span>
-                <input type="text" class="square2" readonly v-model="pressure"/>
+                <input type="text" class="square2" readonly v-model="final_pressure"/>
                 <span class="after">{{ trans('monitoring.units.bar') }}</span>
               </li>
               <li class="nav-string">
@@ -620,7 +620,7 @@ export default {
       plan_dosage: null,
       current_dosage: null,
       t_final_celsius_point_F: null,
-      pressure: null,
+      final_pressure: null,
       temperature: null,
       pump_discharge_pressure: null,
       surge_tank_pressure: null,
@@ -728,7 +728,7 @@ export default {
       this.dose = 0;
       this.result = {};
       this.t_final_celsius_point_F = null;
-      this.pressure = null;
+      this.final_pressure = null;
       this.ngdu = null;
       this.uhe = null;
       this.plan_dosage = null;
@@ -765,7 +765,7 @@ export default {
               this.uhe = data.uhe
               this.plan_dosage = data.ca ? data.ca.plan_dosage : null
               this.current_dosage = data.uhe ? data.uhe.current_dosage : null
-              this.pressure = data.ngdu ? data.ngdu.pressure : null
+              this.final_pressure = data.ngdu ? data.ngdu.pressure : null
               this.temperature = data.ngdu ? data.ngdu.temperature : null
               this.pump_discharge_pressure = data.ngdu ? data.ngdu.pump_discharge_pressure : null
               this.surge_tank_pressure = data.ngdu ? data.ngdu.surge_tank_pressure : null
@@ -802,8 +802,10 @@ export default {
           });
     },
     calc() {
+      console.log('calc');
       this.axios
           .post(this.localeUrl("/corrosion"), {
+            gu_id: this.localGu,
             WC: this.ngdu.bsw,
             GOR1: this.constantsValues[0].value,
             sigma: this.constantsValues[1].value,
@@ -839,7 +841,7 @@ export default {
               this.dose = data.max_dose
               this.result = data
               this.t_final_celsius_point_F = data.t_final_celsius_point_F
-              this.pressure = data.final_pressure_bar_point_F
+              this.final_pressure = data.final_pressure_bar_point_F
               this.$emit("chart5", data.max_dose)
             } else {
               console.log("No data")

@@ -84,6 +84,7 @@ class CalculateGuCorrosion extends Command
 
                 if ($guDataByDay->oilGas && $guData->pipe) {
                     $data = [
+                        "gu_id" => $gu->id,
                         "WC" => $guDataByDay->ngdu->bsw,
                         "GOR1" => $guData->constantsValues[0]->value,
                         "sigma" => $guData->constantsValues[1]->value,

@@ -248,7 +248,7 @@ class DruidController extends Controller
         if ($GOR <= 0) {
             $GOR = 0.001;
             ob_start(); //Start output buffer
-            echo "GOR1 x q_o less or equal to q_g_sib";
+//            echo "GOR1 x q_o less or equal to q_g_sib";
             //$environment_a = "CO2";
             $warning = ob_get_contents(); //Grab output
             ob_end_clean(); //Discard output buffer
@@ -300,13 +300,13 @@ class DruidController extends Controller
         $Re_lo = $v_lo * $d * $rhol / $mul; // m/s * m * kg/m3 / (kg/(m.s))
 
         if ($Re_lo <= 2000) {
-            echo "churchill";
+//            echo "churchill";
             //Calculate Friction factor as per Churchill
             $A = pow(2.457 * log(1 / (pow(7 / $Re_lo, 0.9) + (0.27 * $roughness / $d))), 16);
             $B = pow(37530 / $Re_lo, 16);
             $f_lo = 8 * pow(pow(8 / $Re_lo, 12) + 1 / (pow($A + $B, 1.5)), 1 / 12);
         } else {
-            echo "colebrook-white";
+//            echo "colebrook-white";
             //Calculate Friction factor as per Colebrook-White or Swamee-Jain
             $f_lo = 0.25 / pow(log10($roughness / $d / 3.7) + 5.74 / pow($Re_lo, 0.9), 2);
         }
@@ -522,7 +522,7 @@ class DruidController extends Controller
                 $omega = $x - $y + $z;
                 $r_a = pow(10, $omega);
                 ob_start(); //Start output buffer
-                echo "CO2";
+//                echo "CO2";
                 $environment_a = "CO2";
                 $output_a = ob_get_contents(); //Grab output
                 ob_end_clean(); //Discard output buffer
@@ -536,7 +536,7 @@ class DruidController extends Controller
                     //$r_a = -0.6274 + 16.9875 * $pH2S / 100 + 12.0596 * $pCO2 / 100; // Partial pressure was calculated in bar
                     $r_a = -0.6274 - 1.313 + 16.9875 * $pH2S / 100 + 12.0596 * $pCO2 / 100; //updated formula GU24 case 15.12.2020
                     ob_start(); //Start output buffer
-                    echo "H2S+CO2";
+//                    echo "H2S+CO2";
                     //$environment_a = "H2S+CO2";
                     $output_a = ob_get_contents(); //Grab output
                     ob_end_clean(); //Discard output buffer
@@ -565,7 +565,7 @@ class DruidController extends Controller
                 $omega = $x - $y + $z;
                 $r_a = pow(10, $omega);
                 ob_start(); //Start output buffer
-                echo "CO2";
+//                echo "CO2";
                 $environment_a = "CO2";
                 $output_a = ob_get_contents(); //Grab output
                 ob_end_clean(); //Discard output buffer
@@ -578,7 +578,7 @@ class DruidController extends Controller
                     //Скорость корр = -0,6274+16,9875*p(H2S)+12,0596*p(CO2)
                     $r_a = -0.6274 + 16.9875 * $pH2S / 100 + 12.0596 * $pCO2 / 100; // Partial pressure was calculated in bar
                     ob_start(); //Start output buffer
-                    echo "H2S+CO2";
+//                    echo "H2S+CO2";
                     //$environment_a = "H2S+CO2";
                     $output_a = ob_get_contents(); //Grab output
                     ob_end_clean(); //Discard output buffer
@@ -701,7 +701,7 @@ class DruidController extends Controller
                 $omega = $x - $y + $z;
                 $r_e = pow(10, $omega);
                 ob_start(); //Start output buffer///
-                echo "CO2";
+//                echo "CO2";
                 $output_e = ob_get_contents(); //Grab output
                 ob_end_clean(); //Discard output buffer
             } //r = pow(10, (7.96 - 2320 / (t + 273) - 5.55 * 10**(-3) * t + 0.67 * math.log10(co2))
@@ -713,7 +713,7 @@ class DruidController extends Controller
                     //$r_e = -0.6274 + 16.9875 * $pH2S / 100 + 12.0596 * $pCO2 / 100; //Partial pressure calculated in bar
                     $r_e = -0.6274 - 1.313 + 16.9875 * $pH2S / 100 + 12.0596 * $pCO2 / 100; //updated formula GU24 case 15.12.2020
                     ob_start(); //Start output buffer
-                    echo "H2S+CO2";
+//                    echo "H2S+CO2";
                     $output_e = ob_get_contents(); //Grab output
                     ob_end_clean(); //Discard output buffer
                 }
@@ -739,7 +739,7 @@ class DruidController extends Controller
                 $omega = $x - $y + $z;
                 $r_e = pow(10, $omega);
                 ob_start(); //Start output buffer///
-                echo "CO2";
+//                echo "CO2";
                 $output_e = ob_get_contents(); //Grab output
                 ob_end_clean(); //Discard output buffer
             } //r = pow(10, (7.96 - 2320 / (t + 273) - 5.55 * 10**(-3) * t + 0.67 * math.log10(co2))
@@ -750,7 +750,7 @@ class DruidController extends Controller
                     //Скорость корр = -0,6274+16,9875*p(H2S)+12,0596*p(CO2)
                     $r_e = -0.6274 + 16.9875 * $pH2S / 100 + 12.0596 * $pCO2 / 100; //Partial pressure calculated in bar
                     ob_start(); //Start output buffer
-                    echo "H2S+CO2";
+//                    echo "H2S+CO2";
                     $output_e = ob_get_contents(); //Grab output
                     ob_end_clean(); //Discard output buffer
                 }
@@ -868,7 +868,7 @@ class DruidController extends Controller
                 $omega = $x - $y + $z;
                 $r_f = pow(10, $omega);
                 ob_start(); //Start output buffer
-                echo "CO2";
+//                echo "CO2";
                 $output_f = ob_get_contents(); //Grab output
                 ob_end_clean(); //Discard output buffer
             } //r = pow(10, (7.96 - 2320 / (t + 273) - 5.55 * 10**(-3) * t + 0.67 * math.log10(co2))
@@ -880,7 +880,7 @@ class DruidController extends Controller
                     //$r_f = -0.6274 + 16.9875 * $pH2S / 100 + 12.0596 * $pCO2 / 100; //Partial pressure calculated in bar
                     $r_f = -0.6274 - 1.313 + 16.9875 * $pH2S / 100 + 12.0596 * $pCO2 / 100; //updated formula GU24 case 15.12.2020
                     ob_start(); //Start output buffer
-                    echo "H2S+CO2";
+//                    echo "H2S+CO2";
                     $output_f = ob_get_contents(); //Grab output
                     ob_end_clean(); //Discard output buffer
                 }
@@ -905,7 +905,7 @@ class DruidController extends Controller
                 $omega = $x - $y + $z;
                 $r_f = pow(10, $omega);
                 ob_start(); //Start output buffer
-                echo "CO2";
+//                echo "CO2";
                 $output_f = ob_get_contents(); //Grab output
                 ob_end_clean(); //Discard output buffer
             } //r = pow(10, (7.96 - 2320 / (t + 273) - 5.55 * 10**(-3) * t + 0.67 * math.log10(co2))
@@ -916,7 +916,7 @@ class DruidController extends Controller
                     //Скорость корр = -0,6274+16,9875*p(H2S)+12,0596*p(CO2)
                     $r_f = -0.6274 + 16.9875 * $pH2S / 100 + 12.0596 * $pCO2 / 100; //Partial pressure calculated in bar
                     ob_start(); //Start output buffer
-                    echo "H2S+CO2";
+//                    echo "H2S+CO2";
                     $output_f = ob_get_contents(); //Grab output
                     ob_end_clean(); //Discard output buffer
                 }
@@ -990,7 +990,7 @@ class DruidController extends Controller
             'final_pressure_bar_point_F' => round($P_final, 1),
             'corrosion_rate_mm_per_y_point_A' => round($r_a, 1),
             'corrosion_rate_mm_per_y_point_E' => round($r_e, 1),
-            //'corrosion_rate_mm_per_y_point_F' => round($r_f, 1),
+            'corrosion_rate_mm_per_y_point_F' => round($r_f, 1),
             'dose_mg_per_l_point_A' => round($dose_a, 1),
             'dose_mg_per_l_point_E' => round($dose_e, 1),
             'dose_mg_per_l_point_F' => round($dose_f, 1),
