@@ -97,22 +97,22 @@
                 if (opec === "ОПЕК+") {
                     chartColors.plan = "#fff";
                     chartColors.opecPlan = "#2E50E9";
-                    chartLabels.opecPlan = this.trans("visualcenter.planOPEK");
-                    chartLabels.plan =
+                    chartLabels.plan = this.trans("visualcenter.planOPEK");
+                    chartLabels.opecPlan =
                         this.trans("visualcenter.Plan") +
                         " " +
                         this.trans("visualcenter.utv");
                 } else {
                     chartColors.plan = "#2E50E9";
                     chartColors.opecPlan = "#fff";
-                    chartLabels.opecPlan =
+                    chartLabels.plan =
                         this.trans("visualcenter.Plan") +
                         " " +
                         this.trans("visualcenter.utv");
-                    chartLabels.plan = this.trans("visualcenter.planOPEK");
+                    chartLabels.opecPlan = this.trans("visualcenter.planOPEK");
                 }
                 let planChartOptions = {
-                    label: chartLabels.opecPlan,
+                    label: chartLabels.plan,
                     borderColor: chartColors.plan,
                     fill: 1,
                     backgroundColor: fillPattern,
@@ -154,9 +154,12 @@
 
 
                 if (opec === "ОПЕК+") {
-                    datasets = [planChartOptions, factChartOptions, planOpecChartOptions, deviation, dailyPlan];
+                    datasets = [planChartOptions, factChartOptions, planOpecChartOptions, deviation];
                 } else {
-                    datasets = [planChartOptions, factChartOptions, deviation, dailyPlan];
+                    datasets = [planChartOptions, factChartOptions, deviation];
+                }
+                if (chartSummary.buttonYearlyTab) {
+                    datasets.push(dailyPlan);
                 }
 
                 this.renderChart(

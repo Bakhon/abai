@@ -914,22 +914,74 @@ export default {
                 }))
                 .value();
 
-            let summaryFact = this.getDzoFactSummary(summaryForChart);
-            let dailyPlan = this.getDzoDailyPlan(summaryFact);
-
-            _.forEach(summaryForChart, function (row) {
-                _.set(row, 'dailyPlan', parseInt(dailyPlan));
-            });
+            if (this.buttonYearlyTab) {
+                let daysInYear = this.getDaysInYear(moment().year(),summaryForChart);
+                summaryForChart = this.getSummaryChartForYear(summaryForChart,daysInYear);
+            }
 
             return summaryForChart;
         },
 
-        getDzoDailyPlan(summaryFact) {
-            let filteredDzoYearlyPlan = this.getFilteredDzoYearlyPlan();
-            let dzoYearlyPlanSum = _.sumBy(filteredDzoYearlyPlan,this.planFieldName);
-            let dzoPlanFactDifference = dzoYearlyPlanSum - summaryFact;
-            let daysCountInYear = this.getDaysCountInYear();
-            return dzoPlanFactDifference / daysCountInYear;
+        getSummaryChartForYear(summaryForChart,daysInYear) {
+          let self = this;
+          _.forEach(summaryForChart, function(item) {
+              let date = new Date(parseInt(item.time));
+              let monthNumber = date.getMonth();
+              daysInYear[monthNumber].productionFactForChart += item.productionFactForChart;
+              daysInYear[monthNumber].productionPlanForChart2 += item.productionPlanForChart2;
+          });
+          return daysInYear;
+        },
+
+        getNulledTimezone(date,summaryForChart) {
+          return new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0);
+        },
+
+        getDaysInYear(year,summaryForChart) {
+            this.filteredDzoMonthlyPlans = _.cloneDeep(this.dzoMonthlyPlans).filter(row => this.selectedDzoCompanies.includes(row.dzo));
+            this.dzoGroupedMonthlyPlans = this.getGroupedMonthlyPlans();
+            this.setDzoYearlyPlan();
+            var date = moment().startOf('year');
+            var daysInYear = [];
+            while (date.year() === year) {
+                daysInYear.push(this.getInitialSummaryForYear(date,summaryForChart));
+                date = date.add(1, 'M');
+            }
+            return daysInYear;
+        },
+
+        getInitialSummaryForYear(date,summaryForChart) {
+            let monthlyPlan = this.dzoGroupedMonthlyPlans[date.month()]['dailyPlan'];
+            let initialSummary = _.cloneDeep(this.initialYearlySummary);
+            initialSummary.time = date.valueOf();
+            initialSummary.dailyPlan = this.getDzoDailyPlan(date,summaryForChart);
+            initialSummary.productionPlanForChart = monthlyPlan;
+            return initialSummary;
+        },
+        getGroupedMonthlyPlans() {
+            let self = this;
+            let initialPlans = _.cloneDeep(this.dzoMonthlyPlans);
+            if (this.filteredDzoMonthlyPlans.length > 0) {
+                initialPlans = _.cloneDeep(this.filteredDzoMonthlyPlans);
+            }
+            return _(initialPlans)
+                .groupBy("date")
+                .map((items,date) => ({
+                    monthNumber: new Date(Date.parse(date)).getMonth(),
+                    dailyPlan: _.round(_.sumBy(items, 'plan_oil') * self.daysCountInMonthMapping[moment(date).month()], 0),
+                }))
+                .value();
+        },
+
+        getDzoDailyPlan(date,summaryForChart) {
+            let monthlyFactSummary = summaryForChart.filter(function(item) {
+                return new Date(parseInt(item.time)).getMonth() === date.month();
+            }).map(function(item) {
+                return item;
+            });
+            let monthlyFactSum = _.sumBy(monthlyFactSummary, 'productionFactForChart');
+            let leftMonthesInYear = 12 - (date.month() + 1);
+            return Math.round((this.dzoYearlyData.plan - monthlyFactSum) / leftMonthesInYear);
         },
 
         getAccidentTotal() {
@@ -968,6 +1020,7 @@ export default {
         oilProductionFilters
     ],
     async mounted() {
+        this.setDaysCountInMonth();
         this.dzoCompaniesAssets = _.cloneDeep(this.dzoCompaniesAssetsInitial);
         this.getOpecDataForYear();
         this.chartHeadName = this.oilChartHeadName;
@@ -996,6 +1049,10 @@ export default {
         localStorage.setItem("selectedPeriod", "undefined");
         this.getCurrencyNow(this.timeSelect);
         this.updatePrices(this.period);
+        this.dzoMonthlyPlans = await this.getDzoMonthlyPlans();
+        this.dzoGroupedMonthlyPlans = this.getGroupedMonthlyPlans();
+
+        this.setDzoYearlyPlan();
 
         this.changeAssets('isAllAssets');
         this.changeDate();

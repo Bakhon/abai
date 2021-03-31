@@ -61,10 +61,36 @@ export default {
             dzoType: {
                 isOperating: [],
                 isNonOperating: []
+            },
+            dzoMonthlyPlans: [],
+            dzoGroupedMonthlyPlans: [],
+            filteredDzoMonthlyPlans: [],
+            initialYearlySummary: {
+                time: null,
+                dailyPlan: null,
+                productionPlanForChart: 0,
+                productionFactForChart: null,
+                productionPlanForChart2: 0,
+            },
+            dzoYearlyData: {
+                plan: 0,
+                fact: 0,
+                difference: 0
             }
         };
     },
     methods: {
+        setDzoYearlyPlan() {
+            this.dzoYearlyData.plan =  _.sumBy(this.dzoGroupedMonthlyPlans, 'dailyPlan');
+        },
+        async getDzoMonthlyPlans() {
+            let uri = this.localeUrl("/get-dzo-monthly-plans");
+            const response = await axios.get(uri);
+            if (response.status === 200) {
+                return response.data;
+            }
+            return [];
+        },
         getSelectedDzoCompanies(type, category, regionName) {
             if (regionName) {
                 category = regionName;
@@ -166,12 +192,11 @@ export default {
         },
 
         getFilteredDzoYearlyPlan() {
-            let dzoYearlyPlanData = _.cloneDeep(this.yearlyPlan);
-            let filteredPlanData = dzoYearlyPlanData.filter(row => this.selectedDzoCompanies.includes(row.dzo));
+            let dzoMonthlyPlanData = _.cloneDeep(this.dzoMonthlyPlans);
+            let filteredPlanData = dzoMonthlyPlanData.filter(row => this.selectedDzoCompanies.includes(row.dzo));
             if (filteredPlanData.length === 0) {
-                filteredPlanData = dzoYearlyPlanData;
+                filteredPlanData = dzoMonthlyPlanData;
             }
-
             return filteredPlanData;
         },
 
@@ -180,6 +205,7 @@ export default {
             this.$emit("data", {
                 dzoCompaniesSummaryForChart: this.dzoCompaniesSummaryForChart,
                 opec: this.opec,
+                buttonYearlyTab: this.buttonYearlyTab
             });
         },
         sortDzoList() {
