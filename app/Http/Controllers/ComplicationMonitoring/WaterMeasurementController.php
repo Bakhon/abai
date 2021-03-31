@@ -29,6 +29,7 @@ use App\Models\Refs\Well;
 use App\Models\Refs\Zu;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Carbon\Carbon;
 
@@ -613,8 +614,10 @@ class WaterMeasurementController extends CrudController
             ->get();
 
         $kormass = GuKormass::where('gu_id', $request->gu_id)->with('kormass')->first();
-        $pipe = Pipe::where('gu_id', $request->gu_id)->where('plot', 'eg')->first();
+
+        $pipe = Gu::find($request->gu_id)->mapPipes->first()->pipeType;
         $pipeAB = Pipe::where('gu_id', $request->gu_id)->where('plot', 'ab')->first();
+
         $constantsValues = ConstantsValue::get();
 
         $lastCorrosion = Corrosion::where('gu_id', $request->gu_id)
