@@ -45,7 +45,6 @@
                   <th v-for="column in visibleColumns">
                     {{ column.title }}
                   </th>
-                  <th></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -83,14 +82,7 @@
                       </template>
                     </template>
                     <template v-if="typeof history[row.uwi.id][column.code] !== 'undefined'">
-                      <a :id="`history_${row.uwi.id}_${column.code}`" class="icon-history">
-                        <svg fill="none" height="9" viewBox="0 0 2 9" width="2" xmlns="http://www.w3.org/2000/svg">
-                          <path d="M1 7.5L1 3.5" stroke="white" stroke-linecap="round" stroke-width="1.6"/>
-                          <path clip-rule="evenodd"
-                                d="M1 -0.000146508C0.558175 -0.000146508 0.200003 0.358026 0.200003 0.799854C0.200003 1.24168 0.558175 1.59985 1 1.59985C1.44183 1.59985 1.8 1.24168 1.8 0.799854C1.8 0.358026 1.44183 -0.000146508 1 -0.000146508Z"
-                                fill="white" fill-rule="evenodd"/>
-                        </svg>
-                      </a>
+                      <a :id="`history_${row.uwi.id}_${column.code}`" class="icon-history"></a>
                       <b-popover :target="`history_${row.uwi.id}_${column.code}`" custom-class="history-popover"
                                  placement="top" triggers="hover">
                         <div v-for="(value, time) in history[row.uwi.id][column.code]">
@@ -785,7 +777,7 @@ body.fixed {
 
       .icon-history {
         align-items: center;
-        background: #3366FF;
+        background: #3366FF url(/img/bd/info.svg) 50% 50% no-repeat;
         border-radius: 1px;
         bottom: 6px;
         display: flex;
