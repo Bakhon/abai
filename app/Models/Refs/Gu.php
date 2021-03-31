@@ -58,7 +58,7 @@ class Gu extends Model
             'daily_water_production',
             'bsw',
             'pump_discharge_pressure',
-            'heater_output_pressure',
+            'heater_output_temperature',
             'editable',
             'daily_gas_production_in_sib',
             'surge_tank_pressure'

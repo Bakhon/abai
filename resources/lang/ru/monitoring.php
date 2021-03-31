@@ -10,10 +10,10 @@ return array (
   'pipes' => 'Трубопроводы',
   'inhibitors' => 'Ингибиторы',
   'tech_map' => 'Техкарта',
-  'action_substance_of_co2' => 'Фактическое содержание углекислого газа',
-  'action_substance_of_h2s' => 'Фактическое содержание сероводорода',
-  'actual_corrosion_speed' => 'Фактическая скорость коррозии',
-  'actual_inhibitor_level' => 'Фактическая закачка ингибитора коррозии',
+  'action_substance_of_co2' => 'Фактическое содержание углекислого газа мг/дм³',
+  'action_substance_of_h2s' => 'Фактическое содержание сероводорода мг/дм³',
+  'actual_corrosion_speed' => 'Фактическая скорость коррозии мм/г',
+  'actual_inhibitor_level' => 'Фактическая закачка ингибитора коррозии г/м3',
   'units' => 
   array (
     'p_kon' => 'P кон.',

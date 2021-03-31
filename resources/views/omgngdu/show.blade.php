@@ -70,12 +70,12 @@
                         <td>{{$omgngdu->pump_discharge_pressure}}</td>
                     </tr>
                     <tr>
-                        <td>{{ trans('monitoring.omgngdu.fields.heater_inlet_pressure') }}</td>
-                        <td>{{$omgngdu->heater_inlet_pressure}}</td>
+                        <td>{{ trans('monitoring.omgngdu.fields.heater_inlet_temperature') }}</td>
+                        <td>{{$omgngdu->heater_inlet_temperature}}</td>
                     </tr>
                     <tr>
-                        <td>{{ trans('monitoring.omgngdu.fields.heater_output_pressure') }}</td>
-                        <td>{{$omgngdu->heater_output_pressure}}</td>
+                        <td>{{ trans('monitoring.omgngdu.fields.heater_output_temperature') }}</td>
+                        <td>{{$omgngdu->heater_output_temperature}}</td>
                     </tr>
                 </table>
                 <a class="btn btn-primary" href="{{ route('omgngdu.index') }}">{{__('app.back')}}</a>

@@ -94,6 +94,11 @@
       "title": "mark",
       "code": "mark",
       "type": "text",
+      "table": "tbdic.well_telemetry",
+      "column": "source",
+      "additional_filter": {
+        "metric": "1"
+      },
       "is_editable": false
     },
     {
@@ -112,6 +117,9 @@
         "bsw_tech",
         "debit_oil_tech"
       ],
+      "history_popup": {
+        "title": "telemetry_data"
+      },
       "is_editable": false
     },
     {

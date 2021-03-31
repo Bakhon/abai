@@ -30,15 +30,15 @@ class EcoRefsCostImport implements ToModel
             "sc_fa" => $sc_fa -> id,
             "company_id" => $company -> id,
             "date" => $row[2],
-            "variable" => round($row[56], 2),
-            "fix_noWRpayroll" => round($row[57], 2),
-            "fix_payroll" => round($row[58], 2),
-            "fix_nopayroll" => round($row[59], 2),
-            "fix" => round($row[60], 2),
-            "gaoverheads" => round($row[61], 2),
-            "wr_nopayroll" => round($row[62], 2),
-            "wr_payroll" => round($row[63], 2),
-            "wo" => round($row[65], 2)
+            "variable" => round($row[56], 5),
+            "fix_noWRpayroll" => round($row[57], 5),
+            "fix_payroll" => round($row[58], 5),
+            "fix_nopayroll" => round($row[59], 5),
+            "fix" => round($row[60], 5),
+            "gaoverheads" => round($row[61], 5),
+            "wr_nopayroll" => round($row[62], 5),
+            "wr_payroll" => round($row[63], 5),
+            "wo" => round($row[65], 5)
         ]);
     }
 }

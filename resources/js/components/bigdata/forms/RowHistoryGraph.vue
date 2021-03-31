@@ -2,13 +2,13 @@
   <div>
     <div class="bd-popup bd-popup_wide">
       <div class="bd-popup__inner">
-        <a class="bd-popup__close" href="#" @click.prevent="$emit('close')">Закрыть</a>
-        <p class="bd-popup__title">Данные телеметрии по скважине</p>
-        <div class="table-page table-page_fixed">
+        <a class="bd-popup__close" href="#" @click.prevent="$emit('close')">{{ trans('bd.close') }}</a>
+        <p class="bd-popup__title">{{ title }}</p>
+        <div class="table-page table-page_fixed scrollable">
           <table class="table">
             <thead>
             <tr>
-              <th>Дата</th>
+              <th>{{ trans('bd.date') }}</th>
               <th v-for="column in tableColumns">
                 {{ column.title }}
               </th>
@@ -24,11 +24,13 @@
             </tbody>
           </table>
         </div>
-        <Plotly :data="graphData"
-                :display-mode-bar="false"
-                :displaylogo="false"
-                :layout="layout"
-        />
+        <div class="graph">
+          <Plotly :data="graphData"
+                  :display-mode-bar="false"
+                  :displaylogo="false"
+                  :layout="layout"
+          />
+        </div>
       </div>
     </div>
 
@@ -55,7 +57,7 @@ export default {
         barmode: "overlay",
         height: 410,
         margin: {
-          l: 0,
+          l: 30,
           r: 0,
           b: 0,
           t: 30
@@ -68,27 +70,33 @@ export default {
           linecolor: "#454D7D",
           rangeselector: {
             buttons: [{
+              step: 'week',
+              stepmode: 'backward',
+              count: 1,
+              label: `1 ${this.trans('bd.week')}`
+            }, {
               step: 'month',
               stepmode: 'backward',
               count: 1,
-              label: '1m'
+              label: `1 ${this.trans('bd.month')}`
+            }, {
+              step: 'month',
+              stepmode: 'backward',
+              count: 3,
+              label: `3 ${this.trans('bd.month_1')}`
             }, {
               step: 'month',
               stepmode: 'backward',
               count: 6,
-              label: '6m'
-            }, {
-              step: 'year',
-              stepmode: 'todate',
-              count: 1,
-              label: 'YTD'
+              label: `6 ${this.trans('bd.month_2')}`
             }, {
               step: 'year',
               stepmode: 'backward',
               count: 1,
-              label: '1y'
+              label: `1 ${this.trans('bd.year')}`
             }, {
               step: 'all',
+              label: this.trans('bd.all')
             }],
           },
           rangeslider: {}
@@ -140,6 +148,10 @@ export default {
       }
       return Object.values(result)
     },
+    title() {
+      let column = this.formParams.columns.find(item => item.code === this.params.selectedColumn)
+      return column.history_popup.title
+    }
   },
   mounted() {
 
@@ -158,6 +170,14 @@ export default {
   .table-page.table-page_fixed {
     height: 200px;
     overflow: auto;
+  }
+
+  .graph {
+    margin-top: 15px;
+
+    .selector-rect {
+      fill: #2E50E9 !important;
+    }
   }
 }
 </style>
