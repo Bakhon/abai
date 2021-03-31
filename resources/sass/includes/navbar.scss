@@ -246,7 +246,7 @@
   &_mobile {
     margin-left: 0;
     padding-right: 10px;
-    @media(min-width: 992px) {
+    @media(min-width: 992px), (max-width: 400px) {
       display: none;
     }
 

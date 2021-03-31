@@ -1,200 +1,206 @@
 <template>
-    <div class="col-xs-12 col-sm-12 col-md-12 row">
-        <div class="col-xs-12 col-sm-4 col-md-4">
-            <label>{{ trans('monitoring.field') }}</label>
-            <div class="form-label-group">
-                <select
-                    class="form-control"
-                    name="field_id"
-                    v-model="formFields.field_id"
-                >
-                    <option v-for="row in fields" v-bind:value="row.id">
-                        {{ row.name }}
-                    </option>
-                </select>
-            </div>
-            <label>{{ trans('monitoring.gu') }}</label>
-            <div class="form-label-group">
-                <select
-                    class="form-control"
-                    name="gu_id"
-                    v-model="formFields.gu_id"
-                    @change="chooseGu($event)"
-                >
-                    <option v-for="row in gus" v-bind:value="row.id">
-                        {{ row.name }}
-                    </option>
-                </select>
-            </div>
-            <label> {{ trans('app.date_time') }} </label>
-            <div class="form-label-group">
-                <datetime
-                    type="datetime"
-                    v-model="formFields.date"
-                    input-class="form-control date"
-                    value-zone="Asia/Almaty"
-                    zone="Asia/Almaty"
-                    :format="{ year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: '2-digit', timeZoneName: 'short' }"
-                    :phrases="{ok: 'Выбрать', cancel: 'Выход'}"
-                    :hour-step="1"
-                    :minute-step="5"
-                    :week-start="1"
-                    use24-hour
-                    auto
-                    @close="pick"
-                >
-                </datetime>
-                <input type="hidden" name="date" v-bind:value="formatDate(formFields.date)">
-            </div>
-            <div class="form-label-group form-check">
-                <input type="hidden" name="out_of_service_оf_dosing" value="0">
-                <input
-                    type="checkbox"
-                    class="form-check-input"
-                    name="out_of_service_оf_dosing"
-                    id="out_of_service_оf_dosing"
-                    value="1"
-                    v-model="formFields.out_of_service_оf_dosing"
-                />
-                <label class="form-check-label" for="out_of_service_оf_dosing"
-                >{{ trans('monitoring.omguhe.fields.dosator_idle') }}</label
-                >
-            </div>
-            <div class="form-label-group" v-show="formFields.out_of_service_оf_dosing">
-                <label>{{ trans('monitoring.omguhe.fields.reason') }}</label>
-                <textarea v-model="formFields.reason" type="text" name="reason" class="form-control" placeholder="">
+  <div class="row">
+    <div class="col-xs-12 col-sm-4 col-md-4">
+        <label>{{ trans('monitoring.field') }}</label>
+        <div class="form-label-group">
+          <select
+              class="form-control"
+              name="field_id"
+              v-model="formFields.field_id"
+          >
+            <option v-for="row in fields" v-bind:value="row.id">
+              {{ row.name }}
+            </option>
+          </select>
+        </div>
+        <label>{{ trans('monitoring.gu.gu') }}</label>
+        <div class="form-label-group">
+          <select
+              class="form-control"
+              name="gu_id"
+              v-model="formFields.gu_id"
+              @change="chooseGu($event)"
+          >
+            <option v-for="row in gus" v-bind:value="row.id">
+              {{ row.name }}
+            </option>
+          </select>
+        </div>
+        <label> {{ trans('app.date_time') }} </label>
+        <div class="form-label-group">
+          <datetime
+              type="datetime"
+              v-model="formFields.date"
+              input-class="form-control date"
+              value-zone="Asia/Almaty"
+              zone="Asia/Almaty"
+              :format="{ year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: '2-digit', timeZoneName: 'short' }"
+              :phrases="{ok: this.trans('app.choose'), cancel: this.trans('app.cancel')}"
+              :hour-step="1"
+              :minute-step="5"
+              :week-start="1"
+              use24-hour
+              auto
+              @close="pick"
+          >
+          </datetime>
+          <input type="hidden" name="date" v-bind:value="formatDate(formFields.date)">
+        </div>
+        <div class="form-label-group form-check">
+          <input type="hidden" name="out_of_service_of_dosing" value="0">
+          <input
+              type="checkbox"
+              class="form-check-input"
+              name="out_of_service_of_dosing"
+              id="out_of_service_of_dosing"
+              value="1"
+              v-model="formFields.out_of_service_of_dosing"
+          />
+          <label class="form-check-label" for="out_of_service_of_dosing"
+          >{{ trans('monitoring.omguhe.fields.dosator_idle') }}</label
+          >
+        </div>
+        <div class="form-label-group" v-show="formFields.out_of_service_of_dosing">
+          <label>{{ trans('monitoring.omguhe.fields.reason') }}</label>
+          <textarea v-model="formFields.reason" type="text" name="reason" class="form-control" placeholder="">
         </textarea>
-            </div>
         </div>
-        <div class="col-xs-12 col-sm-4 col-md-4">
-            <label>{{ trans('monitoring.ngdu') }}</label>
-            <div class="form-label-group">
-                <select
-                    class="form-control"
-                    name="ngdu_id"
-                    v-model="formFields.ngdu_id"
-                    @change="chooseNgdu($event)"
-                >
-                    <option v-for="row in ngdus" v-bind:value="row.id">
-                        {{ row.name }}
-                    </option>
-                </select>
-            </div>
-            <label>{{ trans('monitoring.zu') }}</label>
-            <div class="form-label-group">
-                <select
-                    class="form-control"
-                    name="zu_id"
-                    v-model="formFields.zu_id"
-                    @change="chooseZu($event)"
-                >
-                    <option v-for="row in zus" v-bind:value="row.id">
-                        {{ row.name }}
-                    </option>
-                </select>
-            </div>
-            <label>{{ trans('monitoring.level') }}, л</label>
-            <div class="form-label-group">
-                <input
-                    type="hidden"
-                    step="0.0001"
-                    name="current_dosage"
-                    class="form-control"
-                    v-model="formFields.current_dosage"
-                    placeholder="current dosage"
-                />
-                <input
-                    :disabled="!formFields.gu_id && !formFields.date"
-                    @change="inputLevel"
-                    v-model="formFields.level"
-                    type="number"
-                    step="0.0001"
-                    :min="validationParams.level.min"
-                    :max="validationParams.level.max"
-                    name="level"
-                    class="form-control"
-                    placeholder=""
-                    v-if="!prevData"
-                />
-                <input
-                    :disabled="!formFields.gu_id && !formFields.date"
-                    @change="inputLevel"
-                    v-model="formFields.level"
-                    type="number"
-                    step="0.0001"
-                    :min="validationParams.level.min"
-                    :max="prevData"
-                    name="level"
-                    class="form-control"
-                    placeholder=""
-                    v-if="prevData"
-                />
-            </div>
+      </div>
+      <div class="col-xs-12 col-sm-4 col-md-4">
+        <label>{{ trans('monitoring.ngdu') }}</label>
+        <div class="form-label-group">
+          <select
+              class="form-control"
+              name="ngdu_id"
+              v-model="formFields.ngdu_id"
+              @change="chooseNgdu($event)"
+          >
+            <option v-for="row in ngdus" v-bind:value="row.id">
+              {{ row.name }}
+            </option>
+          </select>
         </div>
-        <div class="col-xs-12 col-sm-4 col-md-4">
-            <label>{{ trans('monitoring.cdng') }}</label>
-            <div class="form-label-group">
-                <select
-                    class="form-control"
-                    name="cdng_id"
-                    v-model="formFields.cdng_id"
-                    @change="chooseCdng($event)"
-                >
-                    <option v-for="row in cndgs" v-bind:value="row.id">
-                        {{ row.name }}
-                    </option>
-                </select>
-            </div>
-            <label>{{ trans('monitoring.well') }}</label>
-            <div class="form-label-group">
-                <select class="form-control" name="well_id" v-model="formFields.well_id">
-                    <option v-for="row in wells" v-bind:value="row.id">
-                        {{ row.name }}
-                    </option>
-                </select>
-            </div>
-            <label>{{ trans('monitoring.omguhe.fields.inhibitor') }}</label>
-            <div class="form-label-group">
-                <select
-                    class="form-control"
-                    name="inhibitor_id"
-                    v-model="formFields.inhibitor_id"
-                >
-                    <option v-for="row in inhibitors" v-bind:value="row.id">
-                        {{ row.name }}
-                    </option>
-                </select>
-            </div>
-            <div class="form-label-group form-check">
-                <input
-                type="checkbox"
-                class="form-check-input"
-                name="fill_status"
-                id="fill_status"
-                v-model="formFields.fill_status"
-                />
-                <label class="form-check-label" for="fill_status">{{ trans('monitoring.omguhe.fields.fill') }}</label>
-            </div>
-            <div class="form-label-group" v-show="formFields.fill_status">
-                <input
-                type="number"
-                step="0.0001"
-                :min="validationParams.fill.min"
-                :max="validationParams.fill.max"
-                name="fill"
-                v-model="formFields.fill"
-                class="form-control"
-                id="fill"
-                placeholder=""
-                />
-                <label class="form-check-label" for="fill">{{ trans('monitoring.omguhe.fields.fill') }}</label>
-            </div>
+
+        <label>{{ trans('monitoring.level') }} {{ trans('measurements.liter') }}</label>
+        <div class="form-label-group">
+          <input
+              :disabled="!formFields.gu_id && !formFields.date"
+              @input="inputLevel"
+              v-model="formFields.level"
+              type="number"
+              step="0.0001"
+              :min="validationParams.level.min"
+              :max="prevData ? prevData : validationParams.level.max"
+              name="level"
+              class="form-control"
+              placeholder=""
+          />
         </div>
-        <div class="col-xs-12 col-sm-12 col-md-12 text-center">
-            <button type="submit" :disabled="!formFields.date" class="btn btn-success">
-              {{ trans('app.save') }}
-            </button>
+
+        <label>{{ trans('monitoring.omguhe.fields.fact_dosage') }}</label>
+        <div class="form-label-group">
+          <input
+              :disabled="true"
+              type="number"
+              step="0.0001"
+              name="current_dosage"
+              class="form-control"
+              v-model="formFields.current_dosage"
+              placeholder=""
+          />
         </div>
+
+        <label>{{ trans('monitoring.fields.consumption') }} {{ trans('measurements.liter') }}</label>
+        <div class="form-label-group">
+          <input
+              :disabled="true"
+              type="number"
+              step="0.0001"
+              name="consumption"
+              class="form-control"
+              v-model="formFields.consumption"
+              placeholder=""
+          />
+        </div>
+
+        <label>{{ trans('monitoring.omguhe.fields.inhibitor_rate') }}</label>
+        <div class="form-label-group">
+          <input
+              :disabled="true"
+              type="number"
+              step="0.0001"
+              name="daily_inhibitor_flowrate"
+              class="form-control"
+              v-model="formFields.daily_inhibitor_flowrate"
+              placeholder=""
+          />
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-4 col-md-4">
+        <label>{{ trans('monitoring.cdng') }}</label>
+        <div class="form-label-group">
+          <select
+              class="form-control"
+              name="cdng_id"
+              v-model="formFields.cdng_id"
+              @change="chooseCdng($event)"
+          >
+            <option v-for="row in cndgs" v-bind:value="row.id">
+              {{ row.name }}
+            </option>
+          </select>
+        </div>
+        <label>{{ trans('monitoring.well.well') }}</label>
+        <div class="form-label-group">
+          <select class="form-control" name="well_id" v-model="formFields.well_id">
+            <option v-for="row in wells" v-bind:value="row.id">
+              {{ row.name }}
+            </option>
+          </select>
+        </div>
+        <label>{{ trans('monitoring.omguhe.fields.inhibitor') }}</label>
+        <div class="form-label-group">
+          <select
+              class="form-control"
+              name="inhibitor_id"
+              v-model="formFields.inhibitor_id"
+          >
+            <option v-for="row in inhibitors" v-bind:value="row.id">
+              {{ row.name }}
+            </option>
+          </select>
+        </div>
+        <div class="form-label-group form-check">
+          <input
+              type="checkbox"
+              class="form-check-input"
+              name="fill_status"
+              id="fill_status"
+              v-model="formFields.fill_status"
+              @change="switchFillStatus()"
+          />
+          <label class="form-check-label" for="fill_status">{{ trans('monitoring.omguhe.fields.fill') }} {{ trans('measurements.liter') }}</label>
+        </div>
+        <div class="form-label-group" v-show="formFields.fill_status">
+          <input
+              type="number"
+              step="0.0001"
+              :min="validationParams.fill.min"
+              :max="validationParams.fill.max"
+              name="fill"
+              v-model="formFields.fill"
+              class="form-control"
+              id="fill"
+              placeholder=""
+          />
+          <label class="form-check-label" for="fill">{{ trans('monitoring.omguhe.fields.fill') }}</label>
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-12 text-center">
+        <button type="submit" :disabled="!formFields.date" @click.prevent="submitForm" class="btn btn-success">
+          {{ trans('app.save') }}
+        </button>
+      </div>
     </div>
 </template>
 
@@ -208,224 +214,259 @@ import moment from "moment";
 Vue.use(Datetime);
 
 export default {
-    name: "omguhe-form",
-    props: [
-        'omguhe',
-        'validationParams'
-    ],
-    components: {
-        Datetime
+  name: "omguhe-form",
+  props: {
+    omguhe: {
+      type: Object,
+      default: null
     },
-    data: function () {
-        return {
-            ngdus: {},
-            cndgs: {},
-            gus: {},
-            zus: {},
-            wells: {},
-            fields: {},
-            inhibitors: {},
-            out_of_service_оf_dosing: false,
-            prevData: null,
-            qv: null,
-            formFields: {
-                field_id: null,
-                ngdu_id: null,
-                cdng_id: null,
-                gu_id: null,
-                zu_id: null,
-                well_id: null,
-                date: null,
-                inhibitor_id: null,
-                fill: null,
-                level: null,
-                out_of_service_оf_dosing: null,
-                current_dosage: null,
-                reason: null,
-                fill_status: null
-            }
-        };
+    validationParams: {
+      type: Object,
+      required: true,
     },
-    mounted() {
-        if (this.omguhe) {
-            this.formFields = {
-                field_id: this.omguhe.field_id,
-                ngdu_id: this.omguhe.ngdu_id,
-                cdng_id: this.omguhe.cdng_id,
-                gu_id: this.omguhe.gu_id,
-                zu_id: this.omguhe.zu_id,
-                well_id: this.omguhe.well_id,
-                date: moment(new Date(this.omguhe.date)).toISOString(),
-                inhibitor_id: this.omguhe.inhibitor_id,
-                fill: this.omguhe.fill,
-                level: this.omguhe.level,
-                out_of_service_оf_dosing: this.omguhe.out_of_service_оf_dosing,
-                current_dosage: this.omguhe.current_dosage,
-                reason: this.omguhe.reason,
-                fill_status: !!this.omguhe.fill,
-            }
-            if (this.formFields.ngdu_id) {
-                this.chooseNgdu()
-            }
-            if (this.formFields.cdng_id) {
-                this.chooseCdng()
-            }
-            if (this.formFields.gu_id) {
-                this.chooseGu()
-            }
-            if (this.formFields.zu_id) {
-                this.chooseZu()
-            }
+    isEditing: {
+      type: Boolean,
+      default: false
+    },
+  },
+  components: {
+    Datetime
+  },
+  data: function () {
+    return {
+      ngdus: {},
+      cndgs: {},
+      gus: {},
+      zus: {},
+      wells: {},
+      fields: {},
+      inhibitors: {},
+      out_of_service_of_dosing: 0,
+      prevData: null,
+      qv: null,
+      formFields: {
+        field_id: null,
+        ngdu_id: null,
+        cdng_id: null,
+        gu_id: null,
+        zu_id: null,
+        well_id: null,
+        date: null,
+        inhibitor_id: null,
+        fill: null,
+        level: null,
+        out_of_service_of_dosing: 0,
+        current_dosage: null,
+        reason: null,
+        fill_status: null,
+        consumption: null,
+        daily_inhibitor_flowrate: null
+      }
+    };
+  },
+  mounted() {
+    if (this.omguhe) {
+      this.formFields = {
+        field_id: this.omguhe.field_id,
+        ngdu_id: this.omguhe.ngdu_id,
+        cdng_id: this.omguhe.cdng_id,
+        gu_id: this.omguhe.gu_id,
+        zu_id: this.omguhe.zu_id,
+        well_id: this.omguhe.well_id,
+        date: moment(new Date(this.omguhe.date)).toISOString(),
+        inhibitor_id: this.omguhe.inhibitor_id,
+        fill: this.omguhe.fill,
+        level: this.omguhe.level,
+        out_of_service_of_dosing: this.omguhe.out_of_service_of_dosing,
+        current_dosage: this.omguhe.current_dosage,
+        reason: this.omguhe.reason,
+        fill_status: !!this.omguhe.fill,
+        consumption: this.omguhe.consumption,
+        daily_inhibitor_flowrate: null
+      }
+      if (this.formFields.ngdu_id) {
+        this.chooseNgdu()
+      }
+      if (this.formFields.cdng_id) {
+        this.chooseCdng()
+      }
+      if (this.formFields.gu_id) {
+        this.chooseGu()
+      }
+      if (this.formFields.zu_id) {
+        this.chooseZu()
+      }
 
-            this.pick();
-        }
-    },
-    methods: {
-        chooseNgdu() {
-            this.axios
-                .get(this.localeUrl("/getcdng"), {
-                    ngdu_id: this.formFields.ngdu_id,
-                })
-                .then((response) => {
-                    let data = response.data;
-                    if (data) {
-                        this.cndgs = data.data;
-                    } else {
-                        console.log("No data");
-                    }
-                });
-        },
-        chooseCdng() {
-            this.axios
-                .post(this.localeUrl("/getgu"), {
-                    cdng_id: this.formFields.cdng_id,
-                })
-                .then((response) => {
-                    let data = response.data;
-                    if (data) {
-                        this.gus = data.data;
-                    } else {
-                        console.log("No data");
-                    }
-                });
-        },
-        chooseGu() {
-            this.axios
-                .post(this.localeUrl("/getzu"), {
-                    gu_id: this.formFields.gu_id,
-                })
-                .then((response) => {
-                    let data = response.data;
-                    if (data) {
-                        this.zus = data.data;
-                    } else {
-                        console.log("No data");
-                    }
-                });
-
-            this.axios
-                .post(this.localeUrl("/getgucdngngdufield"), {
-                    gu_id: this.formFields.gu_id,
-                })
-                .then((response) => {
-                    let data = response.data;
-                    if (data) {
-                        this.formFields.cdng_id = data.cdng;
-                        this.formFields.ngdu_id = data.ngdu;
-                    } else {
-                        console.log("No data");
-                    }
-                });
-        },
-        chooseZu() {
-            this.axios
-                .post(this.localeUrl("/getwell"), {
-                    zu_id: this.formFields.zu_id,
-                })
-                .then((response) => {
-                    let data = response.data;
-                    if (data) {
-                        this.wells = data.data;
-                    } else {
-                        console.log("No data");
-                    }
-                });
-        },
-        pick() {
-            this.axios
-                .post(this.localeUrl("/getprevdaylevel"), {
-                    gu_id: this.formFields.gu_id,
-                    date: this.formFields.date,
-                })
-                .then((response) => {
-                    let data = response.data;
-                    if (data) {
-                        this.prevData = data.level;
-                        this.qv = (data.qv * 1000) / 365;
-                    } else {
-                        this.prevData = null;
-                    }
-                });
-        },
-        inputLevel() {
-            if (this.prevData != null) {
-                this.formFields.current_dosage = ((this.prevData - this.formFields.level) / this.qv) * 953;
-            }
-        },
-        formatDate(date) {
-            return moment(date).format('YYYY-MM-DD HH:MM:SS')
-        }
-    },
-    beforeCreate: function () {
-        this.axios.get(this.localeUrl("/getfields")).then((response) => {
+      this.pick();
+    }
+  },
+  methods: {
+    chooseNgdu() {
+      this.axios
+          .get(this.localeUrl("/getcdng"), {
+            ngdu_id: this.formFields.ngdu_id,
+          })
+          .then((response) => {
             let data = response.data;
             if (data) {
-                this.fields = data.data;
+              this.cndgs = data.data;
             } else {
-                console.log('No data');
+              console.log("No data");
             }
-        });
-
-        this.axios.get(this.localeUrl("/getngdu")).then((response) => {
-            let data = response.data;
-            if (data) {
-                this.ngdus = data.data;
-            } else {
-                console.log("No data");
-            }
-        });
-
-        this.axios.get(this.localeUrl("/getcdng")).then((response) => {
-            let data = response.data;
-            if (data) {
-                this.cndgs = data.data;
-            } else {
-                console.log("No data");
-            }
-        });
-
-        this.axios.get(this.localeUrl("/getallgus")).then((response) => {
-            let data = response.data;
-            if (data) {
-                this.gus = data.data;
-            } else {
-                console.log("No data");
-            }
-        });
-
-        this.axios.get(this.localeUrl("/getinhibitors")).then((response) => {
-            let data = response.data;
-            if (data) {
-                this.inhibitors = data.data;
-            } else {
-                console.log("No data");
-            }
-        });
+          });
     },
+    chooseCdng() {
+      this.axios
+          .post(this.localeUrl("/getgu"), {
+            cdng_id: this.formFields.cdng_id,
+          })
+          .then((response) => {
+            let data = response.data;
+            if (data) {
+              this.gus = data.data;
+            } else {
+              console.log("No data");
+            }
+          });
+    },
+    chooseGu() {
+      this.axios
+          .post(this.localeUrl("/getgucdngngdufield"), {
+            gu_id: this.formFields.gu_id,
+          })
+          .then((response) => {
+            let data = response.data;
+            if (data) {
+              this.formFields.cdng_id = data.cdng;
+              this.formFields.ngdu_id = data.ngdu;
+            } else {
+              console.log("No data");
+            }
+          });
+    },
+    chooseZu() {
+      this.axios
+          .post(this.localeUrl("/getwell"), {
+            zu_id: this.formFields.zu_id,
+          })
+          .then((response) => {
+            let data = response.data;
+            if (data) {
+              this.wells = data.data;
+            } else {
+              console.log("No data");
+            }
+          });
+    },
+    pick() {
+      this.axios
+          .post(this.localeUrl("/getprevdaylevel"), {
+            gu_id: this.formFields.gu_id,
+            date: this.formFields.date,
+          })
+          .then((response) => {
+            let data = response.data;
+
+            if (data) {
+              this.prevData = data.level;
+              this.qv = (data.qv * 1000) / 365;
+            } else {
+              this.prevData = null;
+            }
+
+            this.inputLevel();
+          });
+    },
+    inputLevel() {
+      if (this.prevData != null) {
+        this.formFields.level = this.formFields.level > this.prevData ? this.prevData : this.formFields.level;
+
+        this.formFields.consumption = this.prevData - this.formFields.level;
+        let currentDosage = (this.formFields.consumption / this.qv) * 946;
+
+        this.formFields.current_dosage = currentDosage > 0 ? currentDosage.toFixed(2) : 0;
+        this.formFields.daily_inhibitor_flowrate = (this.formFields.current_dosage * this.qv/1000).toFixed(2);
+      } else {
+        this.formFields.consumption = this.formFields.current_dosage = 0;
+      }
+    },
+    formatDate(date) {
+      return moment(date).format('YYYY-MM-DD HH:MM:SS')
+    },
+    switchFillStatus () {
+      this.formFields.fill = this.fill_status ? this.formFields.fill : null;
+    },
+    submitForm () {
+
+      if (this.isEditing) {
+        this.axios
+            .put(this.localeUrl("/omguhe/" + this.omguhe.id), this.formFields)
+            .then((response) => {
+              if (response.data.status == 'success') {
+                window.location.replace(this.localeUrl("/omguhe"));
+              }
+            });
+      } else {
+        this.axios
+            .post(this.localeUrl("/omguhe"), this.formFields)
+            .then((response) => {
+              if (response.data.status == 'success') {
+                window.location.replace(this.localeUrl("/omguhe"));
+              }
+            });
+      }
+    }
+  },
+  beforeCreate: function () {
+    this.axios.get(this.localeUrl("/getfields")).then((response) => {
+      let data = response.data;
+      if (data) {
+        this.fields = data.data;
+      } else {
+        console.log('No data');
+      }
+    });
+
+    this.axios.get(this.localeUrl("/getngdu")).then((response) => {
+      let data = response.data;
+      if (data) {
+        this.ngdus = data.data;
+      } else {
+        console.log("No data");
+      }
+    });
+
+    this.axios.get(this.localeUrl("/getcdng")).then((response) => {
+      let data = response.data;
+      if (data) {
+        this.cndgs = data.data;
+      } else {
+        console.log("No data");
+      }
+    });
+
+    this.axios.get(this.localeUrl("/getallgus")).then((response) => {
+      let data = response.data;
+      if (data) {
+        this.gus = data.data;
+      } else {
+        console.log("No data");
+      }
+    });
+
+    this.axios.get(this.localeUrl("/getinhibitors")).then((response) => {
+      let data = response.data;
+      if (data) {
+        this.inhibitors = data.data;
+      } else {
+        console.log("No data");
+      }
+    });
+  },
 };
 </script>
 <style scoped>
 .form-label-group {
-    padding-bottom: 30px;
+  padding-bottom: 30px;
 }
 </style>

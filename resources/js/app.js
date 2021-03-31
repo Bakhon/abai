@@ -76,6 +76,9 @@ Vue.component('horizontal-indicators', require('./components/visualcenter3/Horiz
 Vue.component('vertical-indicators', require('./components/visualcenter3/VerticalIndicators.vue').default);
 Vue.component('vc-upstream-table', require('./components/visualcenter3/UpstreamTable.vue').default);
 Vue.component('visual-center-menu', require('./components/visualcenter/VisualCenterMenu.vue').default);
+
+Vue.component('tech-data-component', require('./components/technical_forecast/productionDataIndex.vue').default);
+
 Vue.component('economic-component', require('./components/Economic/main.vue').default);
 Vue.component('chart1-component', require('./components/Economic/chart1.vue').default);
 Vue.component('chart2-component', require('./components/Economic/chart2.vue').default);
@@ -98,8 +101,15 @@ Vue.component('zu-form', require('./components/zu/form.vue').default);
 
 Vue.component('gtm-main', require('./components/GTM/Main.vue').default);
 Vue.component('gtm-aegtm', require('./components/GTM/Aegtm.vue').default);
-Vue.component('gtm-podbor-gtm', require('./components/GTM/podborGTM.vue').default);
+Vue.component('gtm-aegtm-eco', require('./components/GTM/AegtmEco.vue').default);
+Vue.component('gtm-podbor-gtm', require('./components/GTM/PodborGTM.vue').default);
+Vue.component('gtm-digital-rating-gtm', require('./components/GTM/DigitalRating.vue').default);
 Vue.component('gtm-etu', require('./components/GTM/Etu.vue').default);
+Vue.component('gtm-main-menu', require('./components/GTM/MainMenu.vue').default);
+Vue.component('gtm-bar-chart', require('./components/GTM/BarChart.vue').default);
+Vue.component('gtm-line-chart', require('./components/GTM/LineChart.vue').default);
+Vue.component('gtm-tree', require('./components/GTM/Tree.vue').default);
+Vue.component('gtm-node-tree', require('./components/GTM/NodeTree.vue').default);
 
 Vue.component('reports-table2', require('./components/reportsGTM/ReportsGTMTable.vue').default);
 Vue.component('reports-table3', require('./components/reportDob/RepDobTable.vue').default);
@@ -116,11 +126,11 @@ Vue.component('well-fund-inactive', require('./components/reports/WellFundInacti
 Vue.component('well-fund-revision-field', require('./components/reports/WellFundRevisionField.vue').default);
 Vue.component('well-fund-revision', require('./components/reports/WellFundRevision.vue').default);
 Vue.component('view-table', require('./components/omgca/table.vue').default);
-Vue.component('oilgas-form', require('./components/сomplicationMonitoring/oilGas/form.vue').default);
+Vue.component('oilgas-form', require('./components/complicationMonitoring/oilGas/form.vue').default);
 Vue.component('pipe-form', require('./components/pipes/form.vue').default);
 Vue.component('inhibitor-create', require('./components/inhibitor/create.vue').default);
 Vue.component('inhibitor-edit', require('./components/inhibitor/edit.vue').default);
-Vue.component('corrosion-form', require('./components/сomplicationMonitoring/corrosion/form.vue').default);
+Vue.component('corrosion-form', require('./components/complicationMonitoring/corrosion/form.vue').default);
 Vue.component('gu-map', require('./components/map/map.vue').default);
 Vue.component('field-settings', require('./components/settings/fields.vue').default);
 
@@ -138,14 +148,12 @@ Vue.component('tr_mode-table', require('./components/tr/tech_mode.vue').default)
 
 
 Vue.component('viscenter2-create', require('./components/visualcenter/viscenter2/create.vue').default);
-Vue.component('visualcenter3-excelform', require('./components/visualcenter3/ExcelForm.vue').default);
+Vue.component('visualcenter3-excelform', require('./components/visualcenter3/importForm/ExcelForm.vue').default);
 
 Vue.component('big-data', require('./components/bigdata/BigData.vue').default);
 Vue.component('las', require('./components/bigdata/Las.vue').default);
 Vue.component('proto-form', require('./components/bigdata/Forms.vue').default);
 Vue.component('bigdata-form-mobile', require('./components/bigdata/FormMobile.vue').default);
-Vue.component('bigdata-form', require('./components/bigdata/wells/form').default);
-Vue.component('bigdata-form-field', require('./components/bigdata/wells/field').default);
 Vue.component('search-form', require('./components/ui-kit/SearchForm.vue').default);
 Vue.component('bigdata-report-button', require('./components/bigdata/BigDataReportButton.vue').default);
 Vue.component('full-page-loader', require('./components/ui-kit/FullPageLoader.vue').default);
@@ -154,7 +162,7 @@ Vue.component('main-page', require('./components/mainpage.vue').default);
 
 Vue.component('profile', require('./components/profile/Profile.vue').default);
 
-
+Vue.component('reptt', require('./components/economy_kenzhe/reptt.vue').default);
 Vue.prototype.trans = string => _.get(window.i18n, string) || string;
 Vue.prototype.localeUrl = string => `/${window.current_lang}/${string[0] === '/' ? string.substr(1) : string}`;
 Vue.prototype.currentLang = window.current_lang;

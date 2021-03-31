@@ -30,15 +30,15 @@
                         <td>{{$omgngdu->cdng->name}}</td>
                     </tr>
                     <tr>
-                        <td>{{ trans('monitoring.gu') }}</td>
+                        <td>{{ trans('monitoring.gu.gu') }}</td>
                         <td>{{$omgngdu->gu->name}}</td>
                     </tr>
                     <tr>
-                        <td>{{ trans('monitoring.zu') }}</td>
+                        <td>{{ trans('monitoring.zu.zu') }}</td>
                         <td>{{$omgngdu->zu->name}}</td>
                     </tr>
                     <tr>
-                        <td>{{ trans('monitoring.well') }}</td>
+                        <td>{{ trans('monitoring.well.well') }}</td>
                         <td>{{$omgngdu->well->name}}</td>
                     </tr>
                     <tr>
@@ -70,12 +70,12 @@
                         <td>{{$omgngdu->pump_discharge_pressure}}</td>
                     </tr>
                     <tr>
-                        <td>{{ trans('monitoring.omgngdu.fields.heater_inlet_pressure') }}</td>
-                        <td>{{$omgngdu->heater_inlet_pressure}}</td>
+                        <td>{{ trans('monitoring.omgngdu.fields.heater_inlet_temperature') }}</td>
+                        <td>{{$omgngdu->heater_inlet_temperature}}</td>
                     </tr>
                     <tr>
-                        <td>{{ trans('monitoring.omgngdu.fields.heater_output_pressure') }}</td>
-                        <td>{{$omgngdu->heater_output_pressure}}</td>
+                        <td>{{ trans('monitoring.omgngdu.fields.heater_output_temperature') }}</td>
+                        <td>{{$omgngdu->heater_output_temperature}}</td>
                     </tr>
                 </table>
                 <a class="btn btn-primary" href="{{ route('omgngdu.index') }}">{{__('app.back')}}</a>

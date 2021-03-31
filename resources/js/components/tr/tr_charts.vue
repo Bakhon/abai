@@ -434,7 +434,7 @@ export default {
       ],
       chartBarOptions: {
         colors: ["#00e396", "#feb019", "#5FA7FF", "#ff4560", "#554298"],
-        chart: {
+        chart: { type: 'bar',
           height: "100%",
           stacked: true,
           toolbar: {

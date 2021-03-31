@@ -1,5 +1,6 @@
 #sidebar-container2{
-  z-index: 9999;
+  z-index: 4000;
+
   .left-panel{
     min-height: calc(100vh - 78px);
     position: relative;
@@ -30,5 +31,34 @@
       }
     }
 
+  }
+
+  .list-group-item {
+    padding: 15px 0px 15px 15px;
+  }
+
+  .dropright:hover>.dropdown-menu {
+    display: block;
+  }
+
+  .dropright .dropdown-menu {
+    background-color: #20274f;
+    color: white;
+  }
+
+  .dropright .dropdown-menu a:link {
+    color: white;
+  }
+
+  .dropright .dropdown-menu a {
+    color: white;
+  }
+
+  .dropright .dropdown-menu a:visited {
+    color: white;
+  }
+
+  .move-menu {
+    margin-left: 15px;
   }
 }

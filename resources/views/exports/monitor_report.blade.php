@@ -199,7 +199,7 @@
             @if(in_array('omguhe', $sections))
                 <td style="border: 1px solid black; height: 15px; width: 15px">{{ $item['current_dosage']}}</td>
                 <td style="border: 1px solid black; height: 15px; width: 15px">{{ $item['daily_inhibitor_flowrate']}}</td>
-                <td style="border: 1px solid black; height: 15px; width: 15px">{{ $item['out_of_service_оf_dosing']}}</td>
+                <td style="border: 1px solid black; height: 15px; width: 15px">{{ $item['out_of_service_of_dosing']}}</td>
                 <td style="border: 1px solid black; height: 15px; width: 15px">{{ $item['reason']}}</td>
                 <td style="border: 1px solid black; height: 15px; width: 15px">{{ $item['level']}}</td>
                 <td style="border: 1px solid black; height: 15px; width: 15px">{{ $item['fill']}}</td>
@@ -224,8 +224,8 @@
                 <td style="border: 1px solid black; height: 15px; width: 15px">{{ $item['daily_gas_production_in_sib']}}</td>
                 <td style="border: 1px solid black; height: 15px; width: 15px">{{ $item['surge_tank_pressure']}}</td>
                 <td style="border: 1px solid black; height: 15px; width: 15px">{{ $item['pump_discharge_pressure']}}</td>
-                <td style="border: 1px solid black; height: 15px; width: 15px">{{ $item['heater_inlet_pressure']}}</td>
-                <td style="border: 1px solid black; height: 15px; width: 15px">{{ $item['heater_outlet_pressure']}}</td>
+                <td style="border: 1px solid black; height: 15px; width: 15px">{{ $item['heater_inlet_temperature']}}</td>
+                <td style="border: 1px solid black; height: 15px; width: 15px">{{ $item['heater_outlet_temperature']}}</td>
             @endif
             @if(in_array('watermeasurement', $sections))
                 <td style="border: 1px solid black; height: 15px; width: 15px">{{ $item['hydrocarbonate_ion']}}</td>

@@ -62,8 +62,8 @@ class DictionaryService
     private function getPlainDict(string $dict): array
     {
         return (self::DICTIONARIES[$dict])::query()
-            ->select('id', 'name_ru as name')
-            ->orderBy('name_ru', 'asc')
+            ->select('id', 'name')
+            ->orderBy('name', 'asc')
             ->get()
             ->toArray();
     }
@@ -71,9 +71,9 @@ class DictionaryService
     private function getTreeDict(string $dict): array
     {
         $items = (self::TREE_DICTIONARIES[$dict])::query()
-            ->select('id', 'parent as parent_id', 'name_ru as label')
-            ->orderBy('parent', 'asc')
-            ->orderBy('name_ru', 'asc')
+            ->select('id', 'parent_id', 'name as label')
+            ->orderBy('parent_id', 'asc')
+            ->orderBy('name', 'asc')
             ->get()
             ->toArray();
 
@@ -104,15 +104,15 @@ class DictionaryService
     private function getGeoDict(): array
     {
         $items = DB::connection('tbd')
-            ->table('dict.geo as g')
-            ->select('g.id', 'g.name_ru as label', 'gp.parent as parent_id')
+            ->table('tbdi.geo as g')
+            ->select('g.id', 'g.name as label', 'gp.id as parent_id')
             ->distinct()
             ->orderBy('parent_id', 'asc')
             ->orderBy('label', 'asc')
             ->leftJoin(
-                'dict.geo_parent as gp',
+                'tbdi.geo as gp',
                 function ($join) {
-                    $join->on('gp.geo_id', '=', 'g.id');
+                    $join->on('gp.id', '=', 'g.parent_id');
                     $join->on('gp.dbeg', '<=', DB::raw("NOW()"));
                     $join->on('gp.dend', '>=', DB::raw("NOW()"));
                 }
