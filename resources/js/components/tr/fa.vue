@@ -122,7 +122,7 @@
       class="tech tr-table-header"
       style="display: flex; background: #272953; margin-left: 0px !important"
     >
-      <h3 style="margin-left: 14px">{{trans('tr.hfa')}}</h3>
+      <h3 style="margin-left: 14px">{{trans('tr.hfa')}} {{dt}}-{{dt2}}</h3>
       <tr-multiselect
         :filter="filter"
         :selectedAllTag="true"
@@ -1259,6 +1259,8 @@ export default {
       const prdd = prdynamic_date[2];
       const prmm = prdynamic_date[1];
       const pryyyy = prdynamic_date[0];
+      this.colsize7= 7;
+      this.colsize2= 2;
       this.isDynamic = true;
       this.isGenHide = true;
       this.$store.commit("fa/SET_IS_DYNAMIC", true);
@@ -1300,8 +1302,7 @@ export default {
             this.fullWells = data.data;
             this.isHide = false;
             this.isGenHide= true;
-            this.colsize7= 7;
-            this.colsize2= 2;
+
           } 
           else {
             console.log("No data");
@@ -1499,13 +1500,13 @@ export default {
     },
   },
   created: function () {
-    this.$store.commit("globalloading/SET_LOADING", false); //исправить на true
+    this.$store.commit("globalloading/SET_LOADING", true); 
     this.$store.commit("fa/SET_SORTTYPE", this.sortType);
     this.$store.commit("fa/SET_SORTPARAM", this.sortParam);
     this.$store.commit("fa/SET_SEARCH", this.searchString);
     this.$store.commit("fa/SET_FILTER", this.filter);
     var wdate2 = new Date();
-    this.wdate2 = wdate2.setDate(wdate2.getDate()-7);
+    this.wdate2 = wdate2.setDate(wdate2.getDate()-8);
     this.wdate2 = wdate2.toLocaleDateString();
     var dynamic_date2 = this.wdate2.split(".");
     const prdd = dynamic_date2[0];
@@ -1513,14 +1514,14 @@ export default {
     const pryyyy = dynamic_date2[2];
     this.isDynamic = true;
     var wdate1 = new Date();
-    this.wdate1 = wdate1.setDate(wdate1.getDate());
+    this.wdate1 = wdate1.setDate(wdate1.getDate()-1);
     this.wdate1 = wdate1.toLocaleDateString();
     var dynamic_date1 = this.wdate1.split(".");
     const dd = dynamic_date1[0];
     const mm = dynamic_date1[1];
     const yyyy = dynamic_date1[2];
     this.isGenHide= true;
-    this.colsize7 = 7
+    this.colsize7 = 7;
     this.colsize2 = 2;
     var weekd1 = yyyy + "-" + mm + "-" + dd;
     var weekd2 = pryyyy + "-" + prmm + "-" + prdd;
@@ -1768,4 +1769,5 @@ padding-right: 8px;
 .fatable {
 position: relative;
 }
+
 </style>
