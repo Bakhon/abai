@@ -10,9 +10,6 @@ use Illuminate\Http\RedirectResponse;
 
 class EconomicDataLogController extends Controller
 {
-    protected $model = "App\Models\Refs\EconomicDataLog";
-
-    protected $controller_name = 'log';
     protected $index_route = "economic_data_log.index";
 
     public function index()
