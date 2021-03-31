@@ -58,6 +58,10 @@ export default {
                 percent: 0,
             },
             dzoCompaniesSummary: {},
+            dzoType: {
+                isOperating: [],
+                isNonOperating: []
+            }
         };
     },
     methods: {
@@ -178,8 +182,15 @@ export default {
                 opec: this.opec,
             });
         },
+        sortDzoList() {
+            let self = this;
+            _.forEach(dzoCompaniesInitial, function(item) {
+                self.dzoType[item.type].push(item.ticker)
+            });
+        }
     },
     async mounted() {
         this.dzoCompaniesAssets = _.cloneDeep(this.dzoCompaniesAssetsInitial);
+        this.sortDzoList();
     }
 }
