@@ -118,7 +118,7 @@ class FormsController extends Controller
                 $prefix = $geo->field_code . '_';
                 break;
             }
-            $geo = $geo->parent;
+            $geo = $geo->parent();
         }
 
         return ['prefix' => $prefix];

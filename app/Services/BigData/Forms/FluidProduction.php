@@ -31,9 +31,9 @@ class FluidProduction extends TableForm
                 'techs',
                 function ($query) use ($tech) {
                     return $query
-                        ->where('tbdi.tech.id', $tech->id)
-                        ->whereDate('tbdi.tech.dbeg', '<=', $this->request->get('date'))
-                        ->whereDate('tbdi.tech.dend', '>=', $this->request->get('date'));
+                        ->where('dict.tech.id', $tech->id)
+                        ->whereDate('dict.tech.dbeg', '<=', $this->request->get('date'))
+                        ->whereDate('dict.tech.dend', '>=', $this->request->get('date'));
                 }
             );
 
@@ -273,9 +273,8 @@ class FluidProduction extends TableForm
     {
         $cacheKey = 'bd_tech_with_wells_' . $this->request->get('date');
         $techData = [];
-        if (Cache::has($cacheKey)) {
-            $techData = Cache::get($cacheKey);
-            return $this->generateTree($techData);
+        if (false && Cache::has($cacheKey)) {
+            return Cache::get($cacheKey);
         }
 
         $techs = Tech::query()
@@ -287,11 +286,11 @@ class FluidProduction extends TableForm
                     'type'
                 ]
             )
-            ->whereIn('tech_id', [Tech::TYPE_GZU, Tech::TYPE_GU, Tech::TYPE_ZU])
+            ->whereIn('tech_type', [Tech::TYPE_GZU, Tech::TYPE_GU, Tech::TYPE_ZU])
             ->where('dbeg', '<=', Carbon::parse($this->request->get('date')))
             ->where('dend', '>=', Carbon::parse($this->request->get('date')))
             ->get();
-
+        dd(Well::active(Carbon::parse($this->request->get('date')))->toSql());
         foreach ($techs as $tech) {
             $techData[$tech->id] = [
                 'id' => $tech->id,
@@ -325,7 +324,7 @@ class FluidProduction extends TableForm
                 )
             );
         }
-
+        dd($techData);
         $result = $this->generateTree($techData);
         Cache::put($cacheKey, $result, now()->addDay());
 
@@ -362,10 +361,10 @@ class FluidProduction extends TableForm
     private function getOtherUwis($item)
     {
         $uwi = DB::connection('tbd')
-            ->table('tbdi.well as w')
+            ->table('prod.well as w')
             ->selectRaw('w.id,w.uwi,array_agg(b.uwi) as other_uwi')
-            ->leftJoin('tbdic.joint_wells as j', 'w.id', '=', DB::raw("any(j.well_id_arr)"))
-            ->leftJoin('tbdi.well as b', 'b.id', '=', DB::raw('any(array_remove(j.well_id_arr, w.id))'))
+            ->leftJoin('prod.joint_wells as j', 'w.id', '=', DB::raw("any(j.well_id_arr)"))
+            ->leftJoin('prod.well as b', 'b.id', '=', DB::raw('any(array_remove(j.well_id_arr, w.id))'))
             ->where('w.id', $item->id)
             ->groupBy('w.id', 'w.uwi')
             ->first();

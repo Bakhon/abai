@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 
 class Org extends TBDModel
 {
-    protected $table = 'tbdi.org';
+    protected $table = 'dict.org';
 
     //relations
 
@@ -18,7 +18,7 @@ class Org extends TBDModel
 
     public function wells()
     {
-        return $this->belongsToMany(\App\Models\BigData\Well::class, 'tbdi.well_org', 'org_id', 'well_id');
+        return $this->belongsToMany(\App\Models\BigData\Well::class, 'prod.well_org', 'org', 'well');
     }
 
     public function type()
@@ -30,9 +30,9 @@ class Org extends TBDModel
     public function fieldIds()
     {
         $result = DB::connection('tbd')
-            ->table('tbdi.org as org')
+            ->table('dict.org as org')
             ->select('org.id', 'df.field as field')
-            ->leftJoin('tbdic.dzo_field as df', 'org.id', '=', 'df.dzo')
+            ->leftJoin('dict.dzo_field as df', 'org.id', '=', 'df.dzo')
             ->where('org.id', '=', $this->id)
             ->whereNotNull('field')
             ->get()
