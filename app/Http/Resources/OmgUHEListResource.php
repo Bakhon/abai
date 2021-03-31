@@ -30,7 +30,7 @@ class OmgUHEListResource extends CrudListResource
                 'inhibitor' => $this->inhibitor->name,
                 'current_dosage' => $this->current_dosage,
                 'daily_inhibitor_flowrate' => $this->daily_inhibitor_flowrate,
-                'out_of_service_оf_dosing' => $this->out_of_service_оf_dosing ? 'Был простой' : 'Не было простоя',
+                'out_of_service_of_dosing' => $this->out_of_service_of_dosing ? 'Был простой' : 'Не было простоя',
                 'reason' => $this->reason,
                 'consumption' => $this->consumption,
                 'yearly_inhibitor_flowrate' => $this->yearly_inhibitor_flowrate
