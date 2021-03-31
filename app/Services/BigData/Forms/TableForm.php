@@ -113,6 +113,7 @@ abstract class TableForm extends BaseForm
         }
 
         return [
+            'selectedColumn' => $this->request->get('column'),
             'table' => [
                 'rows' => $this->getRowHistory($dateTo, $dateFrom),
                 'columns' => $this->getRowHistoryColumnCodes($this->request->get('column'))
