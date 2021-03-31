@@ -582,12 +582,12 @@
                     :data="wells"
                     height="calc(100vh - 205px)"
                     style="width: 100%"
-                    :header-cell-class-name="getTableHeaderCell"
+                    :header-cell-class-name="getHeaderCellClassName"
                     :span-method="objectSpanMethod"
                     >
 
                     <el-table-column     
-                      :label="`${this.trans('tr.trs1')}`" :row-class-name="tableRowClassName" ref="jedi" 
+                      :label="`${this.trans('tr.trs1')}`"
                       >
                       <el-table-column label="" >
                         <el-table-column
@@ -595,8 +595,7 @@
                           label=""
                           width="200"
                           sortable
-                          :filters="[{text: 'Акс-10', value: '2016-05-01'}, {text: 'Акс10Д', value: '2016-05-02'}, {text: 'Акс47', value: '2016-05-03'}, {text: 'Акс14', value: '2016-05-04'}]"
-                          :filter-method="filterHandler"
+                          
                           
                           >
                         </el-table-column>
@@ -1652,7 +1651,7 @@ export default {
     },
   },
   methods: {
-    getTableHeaderCell({row, column, rowIndex, columnIndex}) {
+    getHeaderCellClassName({column}) {
 
  
       if(column.id === "el-table_1_column_1") {
@@ -1675,9 +1674,7 @@ export default {
           }
         }
      },
-  mounted () {
-    this.tableRowClassName()
-  },
+
     editrow(row, rowId) {
       this.$store.commit("globalloading/SET_LOADING", false);
       console.log("row = ", row);
@@ -1766,9 +1763,6 @@ export default {
       this.Filter_field = undefined;
       
     },
-    tableRowClassName() {
-      this.$refs.jedi.style.border-bottom === "none";
-    },
     reRenderAll() {
       this.$store.commit("globalloading/SET_LOADING", true);
       var today = new Date();
@@ -1838,26 +1832,7 @@ export default {
     closeModal(modalName) {
       this.$modal.hide(modalName)
     },
-    resetDateFilter() {
-        this.$refs.filterTable.clearFilter('date');
-    },
-    clearFilter() {
-        this.$refs.filterTable.clearFilter();
-      },
-    formatter(row, column) {
-      return row.address;
-    },
-    filterTag(value, row) {
-      return row.tag === value;
-    },
-    filterHandler(value, row, column) {
-      const property = column['property'];
-      return row[property] === value;
-    },
-
-
-
-
+   
     sortBy(type) {
       this.sortParam = type;
       this.$store.commit("tr/SET_SORTTYPE", this.sortType);
