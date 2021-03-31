@@ -2,6 +2,7 @@
 
 namespace App\Models\EconomyKenzhe;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class SubholdingCompany extends Model
@@ -28,9 +29,11 @@ class SubholdingCompany extends Model
         return $this->hasMany(HandbookRepTtValue::class, 'company_id');
     }
 
-    public function statsByDate($dateFrom, $dateTo)
+//    public function statsByDate($dateFrom, $dateTo)
+    public function statsByDate($date)
     {
-        return $this->hasMany(HandbookRepTtValue::class, 'company_id')->whereBetween('date', [$dateFrom, $dateTo]);
+//        return $this->hasMany(HandbookRepTtValue::class, 'company_id')->whereBetween('date', [$dateFrom, $dateTo])->orWhereYear('date', '=', Carbon::parse($dateFrom)->subYear()->format('Y'));
+        return $this->hasMany(HandbookRepTtValue::class, 'company_id')->whereYear('date', $date)->orWhereYear('date', '=', Carbon::parse($date)->subYear()->format('Y'));
     }
 
     public function toArray()

@@ -7,6 +7,7 @@ use App\Imports\HandbookRepTtValueImport;
 use App\Models\EconomyKenzhe\HandbookRepTt;
 use App\Models\EconomyKenzhe\SubholdingCompany;
 use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -42,21 +43,29 @@ class MainController extends Controller
             return view('economy_kenzhe.import_reptt_titles');
         } elseif ($request->isMethod('POST')) {
             $titles = Excel::toCollection(new HandbookRepTtTitlesImport($request->importExcelType), $request->select_file);
-            dd($titles);
+//            dd($titles);
             return back()->with('success', 'Загрузка прошла успешно.');
         }
     }
 
     public function company($id, $dateFrom, $dateTo)
     {
+        $currentYear = date('Y', strtotime('01-' .$dateFrom));
+        $previousYear = $currentYear-1;
         $dateTo = date('Y-m-d', strtotime('01-' . $dateTo));
         $dateFrom = date('Y-m-d', strtotime('01-' . $dateFrom));
         $handbook = HandbookRepTt::where('parent_id', 0)->with('childHandbookItems')->get()->toArray();
-        $companyRepTtValues = SubholdingCompany::find($id)->statsByDate($dateFrom, $dateTo)->get()->toArray();
-        $repTtReportValues = $this->recursiveSetValueToHandbookByType($handbook, $companyRepTtValues);
-        $repTtReportValues = json_encode($repTtReportValues);
+//        $companyRepTtValues = SubholdingCompany::find($id)->statsByDate($dateFrom, $dateTo)->get()->toArray();
+        $companyRepTtValues = SubholdingCompany::find($id)->statsByDate($currentYear)->get()->toArray();
+        $repTtReportValues = $this->recursiveSetValueToHandbookByType($handbook, $companyRepTtValues, $currentYear, $previousYear);
+        $data = [
+            'reptt'=> $repTtReportValues,
+            'currentYear' =>$currentYear,
+            'previousYear'=>$previousYear
+        ];
+        $data = json_encode($data);
 
-        return view('economy_kenzhe.company')->with(compact('repTtReportValues'));
+        return view('economy_kenzhe.company')->with(compact('data'));
     }
 
     public function recursiveSetValueToHandbook(&$items, $companyRepTtValues)
@@ -83,18 +92,20 @@ class MainController extends Controller
         return $items;
     }
 
-    public function recursiveSetValueToHandbookByType(&$items, $companyRepTtValues)
+    public function recursiveSetValueToHandbookByType(&$items, $companyRepTtValues, $currentYear, $previousYear)
     {
         $companyValuesRepTtIds = array_column($companyRepTtValues, 'rep_id');
         foreach ($items as $key => $value) {
             if (!array_key_exists('plan_value', $items[$key])) {
-                $items[$key]['plan_value'] = 0;
+                $items[$key]['plan_value'][$currentYear] = 0;
+                $items[$key]['plan_value'][$previousYear] = 0;
             }
             if (!array_key_exists('fact_value', $items[$key])) {
-                $items[$key]['fact_value'] = 0;
+                $items[$key]['fact_value'][$currentYear] = 0;
+                $items[$key]['fact_value'][$previousYear] = 0;
             }
             if (count($value['handbook_items']) > 0) {
-                $this->recursiveSetValueToHandbookByType($items[$key]['handbook_items'], $companyRepTtValues);
+                $this->recursiveSetValueToHandbookByType($items[$key]['handbook_items'], $companyRepTtValues, $currentYear, $previousYear);
             } else {
                 $id = $value['id'];
                 $k = array_filter($companyValuesRepTtIds, function ($v, $i) use ($id) {
@@ -103,9 +114,17 @@ class MainController extends Controller
                 if (count($k) > 0) {
                     foreach ($k as $i => $v) {
                         if ($companyRepTtValues[$i]['type'] == 'plan') {
-                            $items[$key]['plan_value'] += $companyRepTtValues[$i]['value'];
+                            if(date('Y', strtotime($companyRepTtValues[$i]['date'])) == $currentYear) {
+                                $items[$key]['plan_value'][$currentYear] += $companyRepTtValues[$i]['value'];
+                            }else{
+                                $items[$key]['plan_value'][$previousYear] += $companyRepTtValues[$i]['value'];
+                            }
                         } elseif ($companyRepTtValues[$i]['type'] == 'fact') {
-                            $items[$key]['fact_value'] += $companyRepTtValues[$i]['value'];
+                            if(date('Y', strtotime($companyRepTtValues[$i]['date'])) == $currentYear){
+                                $items[$key]['fact_value'][$currentYear] += $companyRepTtValues[$i]['value'];
+                            }else{
+                                $items[$key]['fact_value'][$previousYear] += $companyRepTtValues[$i]['value'];
+                            }
                         }
                     }
                 }
