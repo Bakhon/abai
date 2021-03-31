@@ -1,7 +1,7 @@
 <?php
 
 return array (
-  'action_substance_of_co2' => 'Көмірқышқыл газының нақты мөлшері',
+  'action_substance_of_co2' => 'Көмірқышқыл газының нақты мөлшері мг/дм³',
   'corrosion_monitoring' => 'ТҚ коррозия мониторингі - Кормасс',
   'kaznipi' => 'ҚазҒЗЖИ ОҒЗЗ',
   'wm_database' => 'Өндірістік сұйықтық пен газдар дерекқоры',
@@ -11,9 +11,9 @@ return array (
   'pipes' => 'Құбырлар',
   'inhibitors' => 'Ингибиторлар',
   'tech_map' => 'Техникалық карта',
-  'action_substance_of_h2s' => 'Күкіртсутектің нақты мөлшері',
-  'actual_corrosion_speed' => 'Нақты коррозия жылдамдығы',
-  'actual_inhibitor_level' => 'Коррозия ингибиторын нақты айдау',
+  'action_substance_of_h2s' => 'Күкіртсутектің нақты мөлшері мг/дм³',
+  'actual_corrosion_speed' => 'Нақты коррозия жылдамдығы мм/г',
+  'actual_inhibitor_level' => 'Коррозия ингибиторын нақты айдау г/м3',
   'units' => 
   array (
     'p_kon' => 'P соңғы.',

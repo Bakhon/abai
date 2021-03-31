@@ -220,8 +220,8 @@ class DruidController extends Controller
         $q_l = $request->q_l; // БД ОМГ НГДУ  input in pipesim m3/day
         $WC = $request->WC; // БД ОМГ НГДУ input in pipesim Watercut
         //oil density
-        $rhol = $request->rhol; // БД Лабараторная НЕФТИ input in pipesim density dead oil g/cm3
-        $rhol = $rhol * 1000;   // БД Лабараторная НЕФТИ input in pipesim density dead oil kg/m3
+        $rhol = $request->rhol;   // БД по промысловой жидкости input in pipesim density  g/cm3
+        $rhol = $rhol * 1000; // БД по промысловой жидкости input in pipesim density  kg/m3
 
         //$q_l = $q_l * 1000 / $rhol; // перевод массового расхода (т/сут) в объемный (м3/сут)
         $q_l = $q_l / 24.0 / 60.0 / 60.0; // input in pipesim convert from m3/d to m3/sec
@@ -233,11 +233,15 @@ class DruidController extends Controller
         //$GOR = ($GOR1*$q_l - $q_g_sib) / $q_l; // газосодержание на выходе с ГУ добоваить переменную q_o
         //Qoil(m3/d)=(Qoil(t/d)*1000)/ρoil(kg/m3)- перевод массового расхода (т/сут) в объемный (м3/сут)
         //GOR2=(GOR1*Qoil(m3/d) - Qsib(m3/d)/))/Qoil(m3/d)-газосодержание на выходе с ГУ
-        $q_o = $request->q_o;
-        $rho_o = $request->rho_o;
-        $q_o = $q_o * 1000 / $rho_o; // convert from t/day => m3/day
+        $q_o = $request->q_o; //ngdu daily_oil_production Т/сут
+
+        $rho_o = $request->rho_o; // БД Лабараторная НЕФТИ input in pipesim density dead oil g/cm3
+        $q_o = $q_o * 1000 / $rho_o; // БД Лабараторная НЕФТИ input in pipesim density dead oil kg/m3
+
         $q_o = $q_o / 24.0 / 60.0 / 60.0; // convert from m3/day => m3/sec
         $GOR = ($GOR1 * $q_o - $q_g_sib) / $q_o; // газосодержание на выходе с ГУ добоваить переменную q_o
+
+        $t_inlet_heater = $request->t_inlet_heater; //Температура на входе в печь C
 
         if ($GOR <= 0) {
             $GOR = 0.001;
@@ -251,7 +255,7 @@ class DruidController extends Controller
         //density of gas
         //$SG = 0.64; //input pipesim
         //$rhog = $SG * 1.204; // 1.204 kg/m3 = SG of Air
-        $rhog = $request->rhog; // БД Лабараторная по нефти и газу kg/m3 ???? надо перепроверить 06.11.2020
+        $rhog = $request->rhog; // БД Лабараторная по нефти и газу kg/m3
         //mass flowrate of liquid
         $m_dotl = $rhol * $q_l; // kg/m3 * m3/s = kg/s
         //mass flowrate of gas
@@ -352,7 +356,7 @@ class DruidController extends Controller
         //Outside temperature in K
         $to = 298.0;
         //Inside temperature in K
-        $t_heater = $request->t_heater; // БД ОМГ НГДУ temperature from Печь taken from database in Celsius
+        $t_heater = $request->t_heater; // БД ОМГ НГДУ ngdu -> heater_output_temperature from Печь taken from database in Celsius
         $ti = 273.0 + $t_heater;
         //heat capacity Cp fluid in J/kg*K
         $c_p = 4184.4;
@@ -407,7 +411,7 @@ class DruidController extends Controller
         //    GENERAL CORROSION POINT A    /
         // *********************************/
         $p = $P_bufer * 100; // from bar to kPa
-        $t = 25;  //temperature in C
+        $t = $t_inlet_heater;  //temperature in C
         //H2S concentration
         $conH2S = $request->conH2S; // БД Лаборатория жидкости, mg/l soluble in water previous was mole fraction ex: 0.0001
         $conH2S_frac = $conH2S * 0.07055; // from mg/l => volumetric fraction
@@ -528,9 +532,9 @@ class DruidController extends Controller
         // //LOCAL CORROSION CALCULATION IN POINT A*//
         // //************************************************//
         //H2O water concentration in %
-        $H2O = $request->H2O; // БД ОМГ НГДУ
+        $H2O = $request->H2O; // БД ОМГ НГДУ bsw
         //Please enter T temperature in C
-        $T = 25; //
+        $T = $t_inlet_heater;  //temperature in C
         //Pressure in bar [convert to psi]
         $P = $P_bufer * 14.503773773; //БД ОМГ НГДУ
         //pH2S partial pressure kPa [convert to psi]
@@ -649,7 +653,7 @@ class DruidController extends Controller
         //H2O water concentration in %
         $H2O = $request->H2O; // БД ОМГ НГДУ
         //Please enter T temperature in C
-        $T = $t_heater; // БД ОМГ НГДУ
+        $T = $t_heater; // БД ОМГ НГДУ ngdu -> heater_output_temperature
         //Pressure in bar [convert to psi]
         $P = $P_pump * 14.503773773; //БД ОМГ НГДУ
         //pH2S partial pressure kPa [convert to psi]
@@ -803,27 +807,27 @@ class DruidController extends Controller
 
         /////////////////////////////////
         //MAX DOSE
-        $max_dose = max($dose_a, $dose_e, $dose_f);
+        $max_dose = $dose_a;
         /////////////////////////////////
 
         $vdata = [
             'flow_velocity_meter_per_sec' => round($v_lo, 1),
             'm_dot' => round($m_dot, 2),
-            'final_pressure_bar_point_F' => round($P_final, 2),
+            'final_pressure_bar_point_F' => round($P_final, 1),
             'corrosion_rate_mm_per_y_point_A' => round($r_a, 1),
             'corrosion_rate_mm_per_y_point_E' => round($r_e, 1),
             'corrosion_rate_mm_per_y_point_F' => round($r_f, 1),
-            'dose_mg_per_l_point_A' => round($dose_a, 2),
-            'dose_mg_per_l_point_E' => round($dose_e, 2),
-            'dose_mg_per_l_point_F' => round($dose_f, 2),
-            'max_dose' => round($max_dose, 2),
+            'dose_mg_per_l_point_A' => round($dose_a, 1),
+            'dose_mg_per_l_point_E' => round($dose_e, 1),
+            'dose_mg_per_l_point_F' => round($dose_f, 1),
+            'max_dose' => round($max_dose, 1),
             //'warning' => $warning,
             'GOR1' => $GOR1,
             'GOR' => $GOR,
-            'q_o' => round($q_o, 4),
-            'q_g_sib' => round($q_g_sib, 4),
-            'q_l' => round($q_l, 4),
-            'q_g' => round($q_g, 4),
+            'q_o' => round($q_o, 1),
+            'q_g_sib' => round($q_g_sib, 1),
+            'q_l' => round($q_l, 1),
+            'q_g' => round($q_g, 1),
             //'Q_h' => round($Q_h,4),
             //'dP' => round($dP,4),
             //'d' => round($d,4),
@@ -836,8 +840,8 @@ class DruidController extends Controller
             't_final_celsius_point_F' => round($t_final, 1),
             't_final_celsius_point_E' => round($t_heater, 1),
             //'corrosion_mm_per_year' => round($r,4),
-            'pCO2_kPa' => round($pCO2, 2),
-            'pH2S_kPa' => round($pH2S, 2),
+            'pCO2_kPa' => round($pCO2, 1),
+            'pH2S_kPa' => round($pH2S, 1),
             //'dose_mg_per_l' => round($dose,4),
             //'H2S_mg_per_l' => round($H2S,4),
             //'CO2_mg_perl' => round($CO2,4),
@@ -846,9 +850,9 @@ class DruidController extends Controller
             'environment_point_E' => $output_e,
             'environment_point_F' => $output_f,
             //'pCO2_per_pH2S' => $ratio,
-            'papavinasam_corrosion_mm_per_y_point_A' => round($PCR_A, 2),
-            'papavinasam_corrosion_mm_per_y_point_E' => round($PCR_E, 2),
-            'papavinasam_corrosion_mm_per_y_point_F' => round($PCR_F, 2),
+            'papavinasam_corrosion_mm_per_y_point_A' => round($PCR_A, 1),
+            'papavinasam_corrosion_mm_per_y_point_E' => round($PCR_E, 1),
+            'papavinasam_corrosion_mm_per_y_point_F' => round($PCR_F, 1),
         ];
 
 

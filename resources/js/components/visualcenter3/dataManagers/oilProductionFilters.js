@@ -133,5 +133,11 @@ export default {
 
             return SummFromRange;
         },
+
+        disableOilFilters() {
+            this.isOpecFilterActive = false;
+            this.changeOilProductionFilters();
+            this.isKmgParticipationFilterActive = false;
+        },
     },
 }
