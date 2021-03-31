@@ -238,9 +238,6 @@ class OmgUHEController extends CrudController
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
      */
     public function update(OmgUHEUpdateRequest $request, OmgUHE $omguhe): \Symfony\Component\HttpFoundation\Response
     {

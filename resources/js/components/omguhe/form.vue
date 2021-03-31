@@ -47,8 +47,8 @@
           <input type="hidden" name="date" v-bind:value="formatDate(formFields.date)">
         </div>
         <div class="form-label-group form-check">
-          <input type="hidden" name="out_of_service_of_dosing" value="0">
           <input
+              @change="onChangeServiceDosing"
               type="checkbox"
               class="form-check-input"
               name="out_of_service_of_dosing"
@@ -84,7 +84,7 @@
         <label>{{ trans('monitoring.level') }} {{ trans('measurements.liter') }}</label>
         <div class="form-label-group">
           <input
-              :disabled="!formFields.gu_id && !formFields.date"
+              :disabled="(!formFields.gu_id && !formFields.date) || formFields.out_of_service_of_dosing"
               @input="inputLevel"
               v-model="formFields.level"
               type="number"
@@ -177,7 +177,7 @@
               name="fill_status"
               id="fill_status"
               v-model="formFields.fill_status"
-              @change="switchFillStatus()"
+              @change="onChangeFillStatus()"
           />
           <label class="form-check-label" for="fill_status">{{ trans('monitoring.omguhe.fields.fill') }} {{ trans('measurements.liter') }}</label>
         </div>
@@ -241,7 +241,7 @@ export default {
       wells: {},
       fields: {},
       inhibitors: {},
-      out_of_service_of_dosing: 0,
+      out_of_service_of_dosing: false,
       prevData: null,
       qv: null,
       formFields: {
@@ -255,7 +255,7 @@ export default {
         inhibitor_id: null,
         fill: null,
         level: null,
-        out_of_service_of_dosing: 0,
+        out_of_service_of_dosing: false,
         current_dosage: null,
         reason: null,
         fill_status: null,
@@ -393,10 +393,15 @@ export default {
     formatDate(date) {
       return moment(date).format('YYYY-MM-DD HH:MM:SS')
     },
-    switchFillStatus () {
+    onChangeFillStatus () {
       this.formFields.fill = this.fill_status ? this.formFields.fill : null;
     },
+    onChangeServiceDosing (){
+      this.formFields.level = this.formFields.out_of_service_of_dosing ? this.prevData : 0;
+      this.inputLevel();
+    },
     submitForm () {
+      this.formFields.out_of_service_of_dosing = this.formFields.out_of_service_of_dosing ? 1 : 0;
 
       if (this.isEditing) {
         this.axios
