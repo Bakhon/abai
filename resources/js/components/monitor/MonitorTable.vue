@@ -802,7 +802,6 @@ export default {
           });
     },
     calc() {
-      console.log('calc');
       this.axios
           .post(this.localeUrl("/corrosion"), {
             gu_id: this.localGu,
