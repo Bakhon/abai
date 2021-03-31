@@ -269,13 +269,13 @@ class OmgNGDUController extends CrudController
         $ngdu = OmgNGDU::where('date', '<=', $request->dt)
             ->where('gu_id', $request->gu_id)
             ->whereNotNull('id')
-            ->latest()
+            ->orderByDesc('date')
             ->first();
 
         $uhe = OmgUHE::where('date', '<=', $request->dt)
             ->where('gu_id', $request->gu_id)
             ->whereNotNull('id')
-            ->latest()
+            ->orderByDesc('date')
             ->first();
 
         $ca = OmgCA::where('date', Carbon::parse($request->dt)->year . "-01-01")
@@ -314,7 +314,7 @@ class OmgNGDUController extends CrudController
         $oilGas = OilGas::where('date', '<=', $request->dt)
             ->where('gu_id', $request->gu_id)
             ->whereNotNull('id')
-            ->latest()
+            ->orderByDesc('date')
             ->first();
 
         $lastCorrosion = $this->getLastCorrosion($request->gu_id, $request->dt);
