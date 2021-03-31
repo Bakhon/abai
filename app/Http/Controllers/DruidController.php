@@ -204,6 +204,7 @@ class DruidController extends Controller
     {
         return view('reports.dob');
     }
+
     public function monitor(Request $request, ?Gu $gu = null)
     {
         return view('monitor.monitor', compact('gu'));
@@ -216,12 +217,17 @@ class DruidController extends Controller
 
     public function corrosion(Request $request)
     {
+        //GU переменная
+        $gu_id = $request->gu_id;
+
+        $gu = Gu::find($gu_id);
+
         //flowrate of liquid oil//
         $q_l = $request->q_l; // БД ОМГ НГДУ  input in pipesim m3/day
         $WC = $request->WC; // БД ОМГ НГДУ input in pipesim Watercut
         //oil density
-        $rhol = $request->rhol;   // БД по промысловой жидкости input in pipesim density  g/cm3
-        $rhol = $rhol * 1000; // БД по промысловой жидкости input in pipesim density  kg/m3
+        $rhol = $request->rhol; // БД Лабараторная НЕФТИ input in pipesim density dead oil g/cm3
+        $rhol = $rhol * 1000;   // БД Лабараторная НЕФТИ input in pipesim density dead oil kg/m3
 
         //$q_l = $q_l * 1000 / $rhol; // перевод массового расхода (т/сут) в объемный (м3/сут)
         $q_l = $q_l / 24.0 / 60.0 / 60.0; // input in pipesim convert from m3/d to m3/sec
@@ -233,15 +239,11 @@ class DruidController extends Controller
         //$GOR = ($GOR1*$q_l - $q_g_sib) / $q_l; // газосодержание на выходе с ГУ добоваить переменную q_o
         //Qoil(m3/d)=(Qoil(t/d)*1000)/ρoil(kg/m3)- перевод массового расхода (т/сут) в объемный (м3/сут)
         //GOR2=(GOR1*Qoil(m3/d) - Qsib(m3/d)/))/Qoil(m3/d)-газосодержание на выходе с ГУ
-        $q_o = $request->q_o; //ngdu daily_oil_production Т/сут
-
-        $rho_o = $request->rho_o; // БД Лабараторная НЕФТИ input in pipesim density dead oil g/cm3
-        $q_o = $q_o * 1000 / $rho_o; // БД Лабараторная НЕФТИ input in pipesim density dead oil kg/m3
-
+        $q_o = $request->q_o;
+        $rho_o = $request->rho_o;
+        $q_o = $q_o / $rho_o; // convert from t/day => m3/day
         $q_o = $q_o / 24.0 / 60.0 / 60.0; // convert from m3/day => m3/sec
         $GOR = ($GOR1 * $q_o - $q_g_sib) / $q_o; // газосодержание на выходе с ГУ добоваить переменную q_o
-
-        $t_inlet_heater = $request->t_inlet_heater; //Температура на входе в печь C
 
         if ($GOR <= 0) {
             $GOR = 0.001;
@@ -255,7 +257,7 @@ class DruidController extends Controller
         //density of gas
         //$SG = 0.64; //input pipesim
         //$rhog = $SG * 1.204; // 1.204 kg/m3 = SG of Air
-        $rhog = $request->rhog; // БД Лабараторная по нефти и газу kg/m3
+        $rhog = $request->rhog; // БД Лабараторная по нефти и газу kg/m3 ???? надо перепроверить 06.11.2020
         //mass flowrate of liquid
         $m_dotl = $rhol * $q_l; // kg/m3 * m3/s = kg/s
         //mass flowrate of gas
@@ -281,7 +283,7 @@ class DruidController extends Controller
         $d = $do - 2 * $thickness; // in m
         //Roughness of pipes
         $roughness = $request->roughness; // Внутренняя БД константа m
-        //$roughness = $roughness / 1000; // from mm to m
+        $roughness = $roughness / 1000; // from mm to m
         //Length
         $l = $request->l; // // Внутренняя БД константа в метрах
         //Pressure
@@ -296,10 +298,19 @@ class DruidController extends Controller
         $v_lo = $m_dot / $rhol / (pi() / 4 * $d ** 2);
         //          Calculate Reynolds number
         $Re_lo = $v_lo * $d * $rhol / $mul; // m/s * m * kg/m3 / (kg/(m.s))
-        $A = pow(2.457 * log(1 / (pow(7 / $Re_lo, 0.9) + (0.27 * $roughness / $d))), 16);
-        $B = pow(37530 / $Re_lo, 16);
-        //          Calculate Friction factor
-        $f_lo = 8 * pow(pow(8 / $Re_lo, 12) + 1 / (pow($A + $B, 1.5)), 1 / 12);
+
+        if ($Re_lo <= 2000) {
+            echo "churchill";
+            //Calculate Friction factor as per Churchill
+            $A = pow(2.457 * log(1 / (pow(7 / $Re_lo, 0.9) + (0.27 * $roughness / $d))), 16);
+            $B = pow(37530 / $Re_lo, 16);
+            $f_lo = 8 * pow(pow(8 / $Re_lo, 12) + 1 / (pow($A + $B, 1.5)), 1 / 12);
+        } else {
+            echo "colebrook-white";
+            //Calculate Friction factor as per Colebrook-White or Swamee-Jain
+            $f_lo = 0.25 / pow(log10($roughness / $d / 3.7) + 5.74 / pow($Re_lo, 0.9), 2);
+        }
+
         $dP_lo = $f_lo * $l / $d * (0.5 * $rhol * $v_lo ** 2);
 
         //          Gas-only properties, for calculation of E
@@ -354,9 +365,10 @@ class DruidController extends Controller
         //thermal conductivity of ground
         $k_g = 0.774;
         //Outside temperature in K
-        $to = 298.0;
+        //$to = 298.0;
+        $to = 288.0;
         //Inside temperature in K
-        $t_heater = $request->t_heater; // БД ОМГ НГДУ ngdu -> heater_output_temperature from Печь taken from database in Celsius
+        $t_heater = $request->t_heater; // БД ОМГ НГДУ temperature from Печь taken from database in Celsius
         $ti = 273.0 + $t_heater;
         //heat capacity Cp fluid in J/kg*K
         $c_p = 4184.4;
@@ -411,7 +423,8 @@ class DruidController extends Controller
         //    GENERAL CORROSION POINT A    /
         // *********************************/
         $p = $P_bufer * 100; // from bar to kPa
-        $t = $t_inlet_heater;  //temperature in C
+        $t_heater_inlet = $request->t_inlet_heater; // БД ОМГ НГДУ temperature  before heater taken from database in Celsius
+        $t = $t_heater_inlet;  //temperature in C
         //H2S concentration
         $conH2S = $request->conH2S; // БД Лаборатория жидкости, mg/l soluble in water previous was mole fraction ex: 0.0001
         $conH2S_frac = $conH2S * 0.07055; // from mg/l => volumetric fraction
@@ -486,7 +499,7 @@ class DruidController extends Controller
         $pH2S = $p * $conH2S_frac / 100; // partial pressure H2S in kPa
         $ratio = $pCO2 / $pH2S;
 
-        if ($pCO2 / $pH2S >= 20) {
+        /*if ($pCO2 / $pH2S >= 20) {
             //if ($pH2S < 0.3){// in kPa
             $x = 7.96 - 2320 / ($t + 273);
             $y = $t * 5.55 * pow(10, -3);
@@ -497,21 +510,80 @@ class DruidController extends Controller
             echo "CO2";
             $environment_a = "CO2";
             $output_a = ob_get_contents(); //Grab output
-            ob_end_clean(); //Discard output buffer
-            //return $r;
-        } //r = pow(10, (7.96 - 2320 / (t + 273) - 5.55 * 10**(-3) * t + 0.67 * math.log10(co2))
-        else {
-            if ($pCO2 / $pH2S < 20) {
-                //else if ($pH2S > 0.3){
-                //$r_a = -0.6274 + 0.01318 * $conCO2 + 0.02397 * $conH2S;
-                //Скорость корр = -0,6274+16,9875*p(H2S)+12,0596*p(CO2)
-                $r_a = -0.6274 + 16.9875 * $pH2S / 100 + 12.0596 * $pCO2 / 100; // Partial pressure was calculated in bar
+            ob_end_clean();*/ //Discard output buffer
+        //return $r;
+
+        if ($gu->name == "ГУ-24") {
+            if ($pCO2 / $pH2S >= 20) {
+                //if ($pH2S < 0.3){// in kPa
+                $x = 7.96 - 2320 / ($t + 273);
+                $y = $t * 5.55 * pow(10, -3);
+                $z = 0.67 * log10($co2);
+                $omega = $x - $y + $z;
+                $r_a = pow(10, $omega);
                 ob_start(); //Start output buffer
-                echo "H2S+CO2";
-                //$environment_a = "H2S+CO2";
+                echo "CO2";
+                $environment_a = "CO2";
                 $output_a = ob_get_contents(); //Grab output
                 ob_end_clean(); //Discard output buffer
                 //return $r;
+            } //r = pow(10, (7.96 - 2320 / (t + 273) - 5.55 * 10**(-3) * t + 0.67 * math.log10(co2))
+            else {
+                if ($pCO2 / $pH2S < 20) {
+                    //else if ($pH2S > 0.3){
+                    //$r_a = -0.6274 + 0.01318 * $conCO2 + 0.02397 * $conH2S;
+                    //Скорость корр = -0,6274+16,9875*p(H2S)+12,0596*p(CO2)
+                    //$r_a = -0.6274 + 16.9875 * $pH2S / 100 + 12.0596 * $pCO2 / 100; // Partial pressure was calculated in bar
+                    $r_a = -0.6274 - 1.313 + 16.9875 * $pH2S / 100 + 12.0596 * $pCO2 / 100; //updated formula GU24 case 15.12.2020
+                    ob_start(); //Start output buffer
+                    echo "H2S+CO2";
+                    //$environment_a = "H2S+CO2";
+                    $output_a = ob_get_contents(); //Grab output
+                    ob_end_clean(); //Discard output buffer
+                    //return $r;
+                }
+            }
+        }
+        //r = pow(10, (7.96 - 2320 / (t + 273) - 5.55 * 10**(-3) * t + 0.67 * math.log10(co2))
+        /*else if ($pCO2 / $pH2S < 20) {
+            //else if ($pH2S > 0.3){
+            //$r_a = -0.6274 + 0.01318 * $conCO2 + 0.02397 * $conH2S;
+            //Скорость корр = -0,6274+16,9875*p(H2S)+12,0596*p(CO2)
+            $r_a = -0.6274 + 16.9875 * $pH2S / 100 + 12.0596 * $pCO2 / 100; // Partial pressure was calculated in bar
+            ob_start(); //Start output buffer
+            echo "H2S+CO2";
+            //$environment_a = "H2S+CO2";
+            $output_a = ob_get_contents(); //Grab output
+            ob_end_clean();*/ //Discard output buffer
+        //return $r;
+        else {
+            if ($pCO2 / $pH2S >= 20) {
+                //if ($pH2S < 0.3){// in kPa
+                $x = 7.96 - 2320 / ($t + 273);
+                $y = $t * 5.55 * pow(10, -3);
+                $z = 0.67 * log10($co2);
+                $omega = $x - $y + $z;
+                $r_a = pow(10, $omega);
+                ob_start(); //Start output buffer
+                echo "CO2";
+                $environment_a = "CO2";
+                $output_a = ob_get_contents(); //Grab output
+                ob_end_clean(); //Discard output buffer
+                //return $r;
+            } //r = pow(10, (7.96 - 2320 / (t + 273) - 5.55 * 10**(-3) * t + 0.67 * math.log10(co2))
+            else {
+                if ($pCO2 / $pH2S < 20) {
+                    //else if ($pH2S > 0.3){
+                    //$r_a = -0.6274 + 0.01318 * $conCO2 + 0.02397 * $conH2S;
+                    //Скорость корр = -0,6274+16,9875*p(H2S)+12,0596*p(CO2)
+                    $r_a = -0.6274 + 16.9875 * $pH2S / 100 + 12.0596 * $pCO2 / 100; // Partial pressure was calculated in bar
+                    ob_start(); //Start output buffer
+                    echo "H2S+CO2";
+                    //$environment_a = "H2S+CO2";
+                    $output_a = ob_get_contents(); //Grab output
+                    ob_end_clean(); //Discard output buffer
+                    //return $r;
+                }
             }
         }
 
@@ -532,9 +604,9 @@ class DruidController extends Controller
         // //LOCAL CORROSION CALCULATION IN POINT A*//
         // //************************************************//
         //H2O water concentration in %
-        $H2O = $request->H2O; // БД ОМГ НГДУ bsw
+        $H2O = $request->H2O; // БД ОМГ НГДУ
         //Please enter T temperature in C
-        $T = $t_inlet_heater;  //temperature in C
+        $T = $t_heater_inlet; //
         //Pressure in bar [convert to psi]
         $P = $P_bufer * 14.503773773; //БД ОМГ НГДУ
         //pH2S partial pressure kPa [convert to psi]
@@ -609,7 +681,7 @@ class DruidController extends Controller
         $pH2S = $p * $conH2S_frac / 100; // partial pressure H2S in kPa//
         $ratio = $pCO2 / $pH2S;
 
-        if ($pCO2 / $pH2S >= 20) {
+        /*if ($pCO2 / $pH2S >= 20) {
             //if ($pH2S < 0.3){// in kPa
             $x = 7.96 - 2320 / ($t + 273);
             $y = $t * 5.55 * pow(10, -3);
@@ -619,18 +691,69 @@ class DruidController extends Controller
             ob_start(); //Start output buffer///
             echo "CO2";
             $output_e = ob_get_contents(); //Grab output
-            ob_end_clean(); //Discard output buffer
-        } //r = pow(10, (7.96 - 2320 / (t + 273) - 5.55 * 10**(-3) * t + 0.67 * math.log10(co2))
-        else {
-            if ($pCO2 / $pH2S < 20) {
-                //else if ($pH2S > 0.3){// in kPa
-                //$r_e = -0.6274 + 0.01318 * $conCO2 + 0.02397 * $conH2S;
-                //Скорость корр = -0,6274+16,9875*p(H2S)+12,0596*p(CO2)
-                $r_e = -0.6274 + 16.9875 * $pH2S / 100 + 12.0596 * $pCO2 / 100; //Partial pressure calculated in bar
-                ob_start(); //Start output buffer
-                echo "H2S+CO2";
+            ob_end_clean();*/ //Discard output buffer
+        if ($gu->name == "ГУ-24") {
+            if ($pCO2 / $pH2S >= 20) {
+                //if ($pH2S < 0.3){// in kPa
+                $x = 7.96 - 2320 / ($t + 273);
+                $y = $t * 5.55 * pow(10, -3);
+                $z = 0.67 * log10($co2);
+                $omega = $x - $y + $z;
+                $r_e = pow(10, $omega);
+                ob_start(); //Start output buffer///
+                echo "CO2";
                 $output_e = ob_get_contents(); //Grab output
                 ob_end_clean(); //Discard output buffer
+            } //r = pow(10, (7.96 - 2320 / (t + 273) - 5.55 * 10**(-3) * t + 0.67 * math.log10(co2))
+            else {
+                if ($pCO2 / $pH2S < 20) {
+                    //else if ($pH2S > 0.3){// in kPa
+                    //$r_e = -0.6274 + 0.01318 * $conCO2 + 0.02397 * $conH2S;
+                    //Скорость корр = -0,6274+16,9875*p(H2S)+12,0596*p(CO2)
+                    //$r_e = -0.6274 + 16.9875 * $pH2S / 100 + 12.0596 * $pCO2 / 100; //Partial pressure calculated in bar
+                    $r_e = -0.6274 - 1.313 + 16.9875 * $pH2S / 100 + 12.0596 * $pCO2 / 100; //updated formula GU24 case 15.12.2020
+                    ob_start(); //Start output buffer
+                    echo "H2S+CO2";
+                    $output_e = ob_get_contents(); //Grab output
+                    ob_end_clean(); //Discard output buffer
+                }
+            }
+        }
+        //r = pow(10, (7.96 - 2320 / (t + 273) - 5.55 * 10**(-3) * t + 0.67 * math.log10(co2))
+        /*else if ($pCO2 / $pH2S < 20) {
+            //else if ($pH2S > 0.3){// in kPa
+            //$r_e = -0.6274 + 0.01318 * $conCO2 + 0.02397 * $conH2S;
+            //Скорость корр = -0,6274+16,9875*p(H2S)+12,0596*p(CO2)
+            $r_e = -0.6274 + 16.9875 * $pH2S / 100 + 12.0596 * $pCO2 / 100; //Partial pressure calculated in bar
+            ob_start(); //Start output buffer
+            echo "H2S+CO2";
+            $output_e = ob_get_contents(); //Grab output
+            ob_end_clean();*/ //Discard output buffer
+
+        else {
+            if ($pCO2 / $pH2S >= 20) {
+                //if ($pH2S < 0.3){// in kPa
+                $x = 7.96 - 2320 / ($t + 273);
+                $y = $t * 5.55 * pow(10, -3);
+                $z = 0.67 * log10($co2);
+                $omega = $x - $y + $z;
+                $r_e = pow(10, $omega);
+                ob_start(); //Start output buffer///
+                echo "CO2";
+                $output_e = ob_get_contents(); //Grab output
+                ob_end_clean(); //Discard output buffer
+            } //r = pow(10, (7.96 - 2320 / (t + 273) - 5.55 * 10**(-3) * t + 0.67 * math.log10(co2))
+            else {
+                if ($pCO2 / $pH2S < 20) {
+                    //else if ($pH2S > 0.3){// in kPa
+                    //$r_e = -0.6274 + 0.01318 * $conCO2 + 0.02397 * $conH2S;
+                    //Скорость корр = -0,6274+16,9875*p(H2S)+12,0596*p(CO2)
+                    $r_e = -0.6274 + 16.9875 * $pH2S / 100 + 12.0596 * $pCO2 / 100; //Partial pressure calculated in bar
+                    ob_start(); //Start output buffer
+                    echo "H2S+CO2";
+                    $output_e = ob_get_contents(); //Grab output
+                    ob_end_clean(); //Discard output buffer
+                }
             }
         }
 
@@ -653,7 +776,7 @@ class DruidController extends Controller
         //H2O water concentration in %
         $H2O = $request->H2O; // БД ОМГ НГДУ
         //Please enter T temperature in C
-        $T = $t_heater; // БД ОМГ НГДУ ngdu -> heater_output_temperature
+        $T = $t_heater; // БД ОМГ НГДУ
         //Pressure in bar [convert to psi]
         $P = $P_pump * 14.503773773; //БД ОМГ НГДУ
         //pH2S partial pressure kPa [convert to psi]
@@ -692,7 +815,7 @@ class DruidController extends Controller
         // GENERAL CORROSION RATE IN POINT F //
         //***********************************//
         $p = $P_final * 100; //from bar to kPa
-        $t = $t_final; //
+        $t = $t_final; // calculated from above
         //H2S concentration
         $conH2S = $request->conH2S; // БД Лаборатория жидкости, mg/l soluble in water previous was mole fraction ex: 0.0001
         //$conH2S = $conH2S * 0.07055; // from mg/l => volumetric fraction
@@ -723,30 +846,80 @@ class DruidController extends Controller
 
         $pH2S = $p * $conH2S_frac / 100; // partial pressure H2S in kPa
         $ratio = $pCO2 / $pH2S;
-        //$r_f = 0;
+        // //$r_f = 0;
 
-        if ($pCO2 / $pH2S >= 20) {
-            //if ($pH2S <= 0.3){// in kPa
-            $x = 7.96 - 2320 / ($t + 273);
-            $y = $t * 5.55 * pow(10, -3);
-            $z = 0.67 * log10($co2);
-            $omega = $x - $y + $z;
-            $r_f = pow(10, $omega);
-            ob_start(); //Start output buffer
-            echo "CO2";
-            $output_f = ob_get_contents(); //Grab output
-            ob_end_clean(); //Discard output buffer
-        } //r = pow(10, (7.96 - 2320 / (t + 273) - 5.55 * 10**(-3) * t + 0.67 * math.log10(co2))
-        else {
-            if ($pCO2 / $pH2S < 20) {
-                //else if ($pH2S > 0.3){// in kPa
-                //$r_f = -0.6274 + 0.01318 * $conCO2 + 0.02397 * $conH2S;
-                //Скорость корр = -0,6274+16,9875*p(H2S)+12,0596*p(CO2)
-                $r_f = -0.6274 + 16.9875 * $pH2S / 100 + 12.0596 * $pCO2 / 100; //Partial pressure calculated in bar
+        // /*if ($pCO2 / $pH2S >= 20) {
+        //     //if ($pH2S <= 0.3){// in kPa
+        //     $x = 7.96 - 2320 / ($t + 273);
+        //     $y = $t * 5.55 * pow(10, -3);
+        //     $z = 0.67 * log10($co2);
+        //     $omega = $x - $y + $z;
+        //     $r_f = pow(10, $omega);
+        //     ob_start(); //Start output buffer
+        //     echo "CO2";
+        //     $output_f = ob_get_contents(); //Grab output
+        //     ob_end_clean();*/ //Discard output buffer
+        if ($gu->name == "ГУ-24") {
+            if ($pCO2 / $pH2S >= 20) {
+                //if ($pH2S <= 0.3){// in kPa
+                $x = 7.96 - 2320 / ($t + 273);
+                $y = $t * 5.55 * pow(10, -3);
+                $z = 0.67 * log10($co2);
+                $omega = $x - $y + $z;
+                $r_f = pow(10, $omega);
                 ob_start(); //Start output buffer
-                echo "H2S+CO2";
+                echo "CO2";
                 $output_f = ob_get_contents(); //Grab output
                 ob_end_clean(); //Discard output buffer
+            } //r = pow(10, (7.96 - 2320 / (t + 273) - 5.55 * 10**(-3) * t + 0.67 * math.log10(co2))
+            else {
+                if ($pCO2 / $pH2S < 20) {
+                    //else if ($pH2S > 0.3){// in kPa
+                    //$r_f = -0.6274 + 0.01318 * $conCO2 + 0.02397 * $conH2S;
+                    //Скорость корр = -0,6274+16,9875*p(H2S)+12,0596*p(CO2)
+                    //$r_f = -0.6274 + 16.9875 * $pH2S / 100 + 12.0596 * $pCO2 / 100; //Partial pressure calculated in bar
+                    $r_f = -0.6274 - 1.313 + 16.9875 * $pH2S / 100 + 12.0596 * $pCO2 / 100; //updated formula GU24 case 15.12.2020
+                    ob_start(); //Start output buffer
+                    echo "H2S+CO2";
+                    $output_f = ob_get_contents(); //Grab output
+                    ob_end_clean(); //Discard output buffer
+                }
+            }
+        }
+        //r = pow(10, (7.96 - 2320 / (t + 273) - 5.55 * 10**(-3) * t + 0.67 * math.log10(co2))
+        /*else if ($pCO2 / $pH2S < 20) {
+            //else if ($pH2S > 0.3){// in kPa
+            //$r_f = -0.6274 + 0.01318 * $conCO2 + 0.02397 * $conH2S;
+            //Скорость корр = -0,6274+16,9875*p(H2S)+12,0596*p(CO2)
+            $r_f = -0.6274 + 16.9875 * $pH2S / 100 + 12.0596 * $pCO2 / 100; //Partial pressure calculated in bar
+            ob_start(); //Start output buffer
+            echo "H2S+CO2";
+            $output_f = ob_get_contents(); //Grab output
+            ob_end_clean(); */ //Discard output buffer
+        else {
+            if ($pCO2 / $pH2S >= 20) {
+                //if ($pH2S <= 0.3){// in kPa
+                $x = 7.96 - 2320 / ($t + 273);
+                $y = $t * 5.55 * pow(10, -3);
+                $z = 0.67 * log10($co2);
+                $omega = $x - $y + $z;
+                $r_f = pow(10, $omega);
+                ob_start(); //Start output buffer
+                echo "CO2";
+                $output_f = ob_get_contents(); //Grab output
+                ob_end_clean(); //Discard output buffer
+            } //r = pow(10, (7.96 - 2320 / (t + 273) - 5.55 * 10**(-3) * t + 0.67 * math.log10(co2))
+            else {
+                if ($pCO2 / $pH2S < 20) {
+                    //else if ($pH2S > 0.3){// in kPa
+                    //$r_f = -0.6274 + 0.01318 * $conCO2 + 0.02397 * $conH2S;
+                    //Скорость корр = -0,6274+16,9875*p(H2S)+12,0596*p(CO2)
+                    $r_f = -0.6274 + 16.9875 * $pH2S / 100 + 12.0596 * $pCO2 / 100; //Partial pressure calculated in bar
+                    ob_start(); //Start output buffer
+                    echo "H2S+CO2";
+                    $output_f = ob_get_contents(); //Grab output
+                    ob_end_clean(); //Discard output buffer
+                }
             }
         }
 
@@ -807,6 +980,7 @@ class DruidController extends Controller
 
         /////////////////////////////////
         //MAX DOSE
+        // $max_dose = max($dose_a, $dose_e, $dose_f);
         $max_dose = $dose_a;
         /////////////////////////////////
 
@@ -816,7 +990,7 @@ class DruidController extends Controller
             'final_pressure_bar_point_F' => round($P_final, 1),
             'corrosion_rate_mm_per_y_point_A' => round($r_a, 1),
             'corrosion_rate_mm_per_y_point_E' => round($r_e, 1),
-            'corrosion_rate_mm_per_y_point_F' => round($r_f, 1),
+            //'corrosion_rate_mm_per_y_point_F' => round($r_f, 1),
             'dose_mg_per_l_point_A' => round($dose_a, 1),
             'dose_mg_per_l_point_E' => round($dose_e, 1),
             'dose_mg_per_l_point_F' => round($dose_f, 1),
@@ -829,11 +1003,12 @@ class DruidController extends Controller
             'q_l' => round($q_l, 1),
             'q_g' => round($q_g, 1),
             //'Q_h' => round($Q_h,4),
-            //'dP' => round($dP,4),
-            //'d' => round($d,4),
+            'dP' => round($dP, 1),
+            'f_lo' => round($f_lo, 1),
+            'd' => round($d, 1),
             //'GOR' => round($GOR,4),
-            //'Re_lo' => round($Re_lo,4),
-            //'Re_go' => round($Re_go,4),
+            'Re_lo' => round($Re_lo, 1),
+            'Re_go' => round($Re_go, 1),
             //'rho_h' => round($rho_h,4),
             //'mdotl' => round($m_dotl,4),
             //'mdotg' => round($m_dotg,4),

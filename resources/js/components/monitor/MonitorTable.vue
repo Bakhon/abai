@@ -383,7 +383,7 @@
                     readonly
                     type="text"
                     class="square2"
-                    v-model="daily_fluid_production_kormass"
+                    v-model="t_final_celsius_point_F"
                 />
                 <span class="after">C</span>
               </li>
@@ -619,7 +619,7 @@ export default {
       ngdu: null,
       plan_dosage: null,
       current_dosage: null,
-      daily_fluid_production_kormass: null,
+      t_final_celsius_point_F: null,
       pressure: null,
       temperature: null,
       pump_discharge_pressure: null,
@@ -727,7 +727,7 @@ export default {
       this.corF = null;
       this.dose = 0;
       this.result = {};
-      this.daily_fluid_production_kormass = null;
+      this.t_final_celsius_point_F = null;
       this.pressure = null;
       this.ngdu = null;
       this.uhe = null;
@@ -838,7 +838,7 @@ export default {
               this.corF = data.corrosion_rate_mm_per_y_point_F
               this.dose = data.max_dose
               this.result = data
-              this.daily_fluid_production_kormass = data.t_final_celsius_point_F
+              this.t_final_celsius_point_F = data.t_final_celsius_point_F
               this.pressure = data.final_pressure_bar_point_F
               this.$emit("chart5", data.max_dose)
             } else {
