@@ -721,28 +721,37 @@ export default {
             }
           });
     },
+    resetData() {
+      this.corA = null;
+      this.corE = null;
+      this.corF = null;
+      this.dose = 0;
+      this.result = {};
+      this.daily_fluid_production_kormass = null;
+      this.pressure = null;
+      this.ngdu = null;
+      this.uhe = null;
+      this.plan_dosage = null;
+      this.current_dosage = null;
+      this.temperature = null;
+      this.pump_discharge_pressure = null;
+      this.surge_tank_pressure = null;
+      this.heater_inlet_temperature = null;
+      this.heater_output_temperature = null;
+      this.daily_fluid_production = null;
+      this.signalizator = null;
+      this.signalizatorAbs = null;
+      this.corrosionRateInMm = null;
+      this.doseMgPerL = null;
+      this.corrosionRateInMmAB = null;
+      this.doseMgPerLAB = null;
+      this.corrosionVelocity = null;
+    },
     dayClicked(day) {
       this.date = day.id;
-      this.ngdu = null
-      this.uhe = null
-      this.plan_dosage = null
-      this.current_dosage = null
-      this.daily_fluid_production_kormass = null
-      this.pressure = null
-      this.temperature = null
-      this.pump_discharge_pressure = null
-      this.surge_tank_pressure = null
-      this.heater_inlet_temperature = null
-      this.heater_output_temperature = null
-      this.daily_fluid_production = null
-      this.signalizator = null
-      this.signalizatorAbs = null
-      this.corrosionRateInMm = null
-      this.doseMgPerL = null
-      this.corrosionRateInMmAB = null
-      this.doseMgPerLAB = null
-      this.corrosionVelocity = null
-      this.dose = 0
+
+      this.resetData();
+
       this.$emit("chart5", this.dose)
       this.axios
           .post(this.localeUrl("/getgudatabyday"), {
@@ -783,7 +792,10 @@ export default {
               let background_corrosion = this.lastCorrosion.background_corrosion_velocity;
               this.corrosionVelocity = corrosion_with_inhibitor ? corrosion_with_inhibitor : background_corrosion;
 
-              this.calc()
+              if (this.ngdu && this.oilGas) {
+                this.calc()
+              }
+
             } else {
               console.log("No data");
             }
