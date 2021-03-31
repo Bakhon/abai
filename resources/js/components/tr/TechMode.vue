@@ -589,9 +589,8 @@
                     <el-table-column     
                       :label="`${this.trans('tr.trs1')}`" :row-class-name="tableRowClassName" ref="jedi" 
                       >
-                      <el-table-column label="" class="abat_pidr">
+                      <el-table-column label="" >
                         <el-table-column
-                          class="abat_pidr"
                           prop="field"
                           label=""
                           width="200"
@@ -605,7 +604,6 @@
                     </el-table-column>
                     <el-table-column
                       :label="`${this.trans('tr.tr1')}`"
-                       class="abat_pidr"
                       >
                       <el-table-column
                         prop="rus_wellname"
@@ -617,7 +615,6 @@
                     </el-table-column>
                     <el-table-column
                       :label="`${this.trans('tr.tr2')}`"
-                       class="abat_pidr"
                       >
                       <el-table-column
                         prop="well_type"
@@ -2457,8 +2454,6 @@ table::-webkit-scrollbar-corner {
 .el-table__body-wrapper tr:nth-child(even) {
     background: #202b6b!important;
 }
-
-
 
 .el-table__body-wrapper tr:hover {
     background: #000!important;
