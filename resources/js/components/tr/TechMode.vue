@@ -582,25 +582,30 @@
                     :data="wells"
                     height="calc(100vh - 205px)"
                     style="width: 100%"
-                    row-class-name="abba"
-                    :span-method="objectSpanMethod">
+                    :header-cell-class-name="getTableHeaderCell"
+                    :span-method="objectSpanMethod"
+                    >
 
-                    <el-table-column
-                      :label="`${this.trans('tr.trs1')}`"
+                    <el-table-column     
+                      :label="`${this.trans('tr.trs1')}`" :row-class-name="tableRowClassName" ref="jedi" 
                       >
-                      <el-table-column
-                        prop="field"
-                        label=""
-                        width="200"
-                        sortable
-                        :filters="[{text: 'Акс-10', value: '2016-05-01'}, {text: 'Акс10Д', value: '2016-05-02'}, {text: 'Акс47', value: '2016-05-03'}, {text: 'Акс14', value: '2016-05-04'}]"
-                        :filter-method="filterHandler"
-                        
-                        >
+                      <el-table-column label="" class="abat_pidr">
+                        <el-table-column
+                          class="abat_pidr"
+                          prop="field"
+                          label=""
+                          width="200"
+                          sortable
+                          :filters="[{text: 'Акс-10', value: '2016-05-01'}, {text: 'Акс10Д', value: '2016-05-02'}, {text: 'Акс47', value: '2016-05-03'}, {text: 'Акс14', value: '2016-05-04'}]"
+                          :filter-method="filterHandler"
+                          
+                          >
+                        </el-table-column>
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
                       :label="`${this.trans('tr.tr1')}`"
+                       class="abat_pidr"
                       >
                       <el-table-column
                         prop="rus_wellname"
@@ -612,6 +617,7 @@
                     </el-table-column>
                     <el-table-column
                       :label="`${this.trans('tr.tr2')}`"
+                       class="abat_pidr"
                       >
                       <el-table-column
                         prop="well_type"
@@ -904,10 +910,9 @@
                         >
                       </el-table-column>
                     </el-table-column>
+                    
 
-                    <el-table-column
-                      :label="`${this.trans('tr.trs14')}`"
-                      >
+                    <el-table-column :label="`${this.trans('tr.trs14')}`">
                       <el-table-column
                       :label="`${this.trans('tr.tr20')}`"
                       >
@@ -964,8 +969,10 @@
                           >
                         </el-table-column>
                       </el-table-column>
-                      
                     </el-table-column>
+
+                      
+            
                     <el-table-column
                       :label="`${this.trans('tr.tr17')}`"
                       >
@@ -1648,6 +1655,14 @@ export default {
     },
   },
   methods: {
+    getTableHeaderCell({row, column, rowIndex, columnIndex}) {
+
+ 
+      if(column.id === "el-table_1_column_1") {
+        return 'no_border';
+      }
+      return 'have_border';
+    },
      objectSpanMethod({ row, column, rowIndex, columnIndex }) {
         if (columnIndex === 0) {
           if (rowIndex % 2 === 0) {
@@ -1663,6 +1678,9 @@ export default {
           }
         }
      },
+  mounted () {
+    this.tableRowClassName()
+  },
     editrow(row, rowId) {
       this.$store.commit("globalloading/SET_LOADING", false);
       console.log("row = ", row);
@@ -1750,6 +1768,9 @@ export default {
       this.Filter_well = undefined;
       this.Filter_field = undefined;
       
+    },
+    tableRowClassName() {
+      this.$refs.jedi.style.border-bottom === "none";
     },
     reRenderAll() {
       this.$store.commit("globalloading/SET_LOADING", true);
@@ -2461,5 +2482,14 @@ table::-webkit-scrollbar-corner {
 }
 .el-table thead.is-group th {
     background: rgb(51, 57, 117);
+}
+.el-table th, .el-table tr {
+    background-color: #454D7D;
+    color: #fff
+}
+
+.no_border.no_border  {
+  border-bottom: none;
+  
 }
 </style>
