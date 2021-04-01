@@ -916,7 +916,7 @@ export default {
                 .value();
 
             if (this.isFilterTargetPlanActive) {
-                let monthlyPlansInYear = this.getMonthlyPlansInYear(moment().year(),summaryForChart);
+                let monthlyPlansInYear = this.getMonthlyPlansInYear(summaryForChart);
                 summaryForChart = this.getSummaryChartForYear(summaryForChart,monthlyPlansInYear);
             }
 
@@ -989,8 +989,6 @@ export default {
         this.getCurrencyNow(this.timeSelect);
         this.updatePrices(this.period);
         this.dzoMonthlyPlans = await this.getDzoMonthlyPlans();
-
-        this.setDzoYearlyPlan();
 
         this.changeAssets('isAllAssets');
         this.changeDate();
