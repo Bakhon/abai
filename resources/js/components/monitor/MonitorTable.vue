@@ -792,7 +792,7 @@ export default {
               let background_corrosion = this.lastCorrosion.background_corrosion_velocity;
               this.corrosionVelocity = corrosion_with_inhibitor ? corrosion_with_inhibitor : background_corrosion;
 
-              if (this.ngdu && this.oilGas) {
+              if (this.ngdu && this.oilGas && this.pipe) {
                 this.calc()
               }
 
