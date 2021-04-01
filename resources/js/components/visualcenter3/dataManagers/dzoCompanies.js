@@ -63,35 +63,9 @@ export default {
                 isOperating: [],
                 isNonOperating: []
             },
-            dzoMonthlyPlans: [],
-            dzoGroupedMonthlyPlans: [],
-            filteredDzoMonthlyPlans: [],
-            initialYearlySummary: {
-                time: null,
-                dailyPlan: null,
-                productionPlanForChart: 0,
-                productionFactForChart: null,
-                productionPlanForChart2: 0,
-            },
-            dzoYearlyData: {
-                plan: 0,
-                lastMonthWithFact: 0,
-                totallyFact: 0,
-            },
         };
     },
     methods: {
-        setDzoYearlyPlan(dzoGroupedMonthlyPlans) {
-            this.dzoYearlyData.plan =  _.sumBy(dzoGroupedMonthlyPlans, 'dailyPlan');
-        },
-        async getDzoMonthlyPlans() {
-            let uri = this.localeUrl("/get-dzo-monthly-plans");
-            const response = await axios.get(uri);
-            if (response.status === 200) {
-                return response.data;
-            }
-            return [];
-        },
         getSelectedDzoCompanies(type, category, regionName) {
             if (regionName) {
                 category = regionName;

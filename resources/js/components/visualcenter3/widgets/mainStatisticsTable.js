@@ -44,8 +44,6 @@ export default {
             gasProductionButton: "",
             condensateProductionButton: "",
             displayChart: "display: none;",
-            isFilterTargetPlanActive: false,
-            buttonTargetPlan: "",
         };
     },
     methods: {
