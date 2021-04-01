@@ -796,8 +796,7 @@ export default {
                   this.oilGas &&
                   this.pipe &&
                   this.pump_discharge_pressure &&
-                  this.surge_tank_pressure
-              )
+                  this.surge_tank_pressure)
               {
                 this.calc()
               }
