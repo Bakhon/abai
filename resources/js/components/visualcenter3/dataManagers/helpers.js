@@ -5,18 +5,9 @@ export default {
         return {
             tdStyle: "index % 2 === 0 ? 'tdStyle' : 'tdNone'",
             tdStyleLight: "index % 2 === 0 ? 'tdStyleLight' : 'tdStyleLight2'",
-            daysCountInMonthMapping: {}
         };
     },
     methods: {
-        setDaysCountInMonth() {
-            let date = moment().startOf('year');
-            for (let i=0; i<12; i++) {
-                this.daysCountInMonthMapping[i] = this.getDaysCountInMonth(date);
-                date = date.add(1, 'M');
-            }
-        },
-
         filterDzoInputForSeparateCompany(data, company) {
             return _.filter(data, function (item) {
                 return (item.dzo === company);
@@ -107,14 +98,8 @@ export default {
             return dzo;
         },
 
-        getDaysCountInYear(currentDate) {
-            let yearEnd = moment().endOf("year");
-            return yearEnd.diff(currentDate, 'days')
-        },
-
-        getDaysCountInMonth(currentDate) {
-            let nextMonth = _.cloneDeep(currentDate).add(1, "M");
-            return nextMonth.diff(currentDate, 'days')
+        getDaysCountInMonth(date) {
+            return moment(date, "YYYY-MM").daysInMonth();
         },
 
         getQuarter(d) {

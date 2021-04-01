@@ -915,49 +915,40 @@ export default {
                 .value();
 
             if (this.isFilterTargetPlanActive) {
-                let daysInYear = this.getDaysInYear(moment().year(),summaryForChart);
-                summaryForChart = this.getSummaryChartForYear(summaryForChart,daysInYear);
+                let monthlyPlansInYear = this.getMonthlyPlansInYear(moment().year(),summaryForChart);
+                summaryForChart = this.getSummaryChartForYear(summaryForChart,monthlyPlansInYear);
             }
 
             return summaryForChart;
         },
 
-        getSummaryChartForYear(summaryForChart,daysInYear) {
+        getSummaryChartForYear(summaryForChart,monthlyPlansInYear) {
           let self = this;
           _.forEach(summaryForChart, function(item) {
               let date = new Date(parseInt(item.time));
               let monthNumber = date.getMonth();
-              daysInYear[monthNumber].productionFactForChart += item.productionFactForChart;
-              daysInYear[monthNumber].productionPlanForChart2 += item.productionPlanForChart2;
+              monthlyPlansInYear[monthNumber].productionFactForChart += item.productionFactForChart;
+              monthlyPlansInYear[monthNumber].productionPlanForChart2 += item.productionPlanForChart2;
           });
-          return daysInYear;
+          return monthlyPlansInYear;
         },
 
-        getDaysInYear(year,summaryForChart) {
-            this.filteredDzoMonthlyPlans = _.cloneDeep(this.dzoMonthlyPlans).filter(row => this.selectedDzoCompanies.includes(row.dzo));
-            this.dzoGroupedMonthlyPlans = this.getGroupedMonthlyPlans();
-            this.setDzoYearlyPlan();
+        getMonthlyPlansInYear(year,summaryForChart) {
+            let dzoGroupedMonthlyPlans = this.getGroupedMonthlyPlans();
+            this.setDzoYearlyPlan(dzoGroupedMonthlyPlans);
             var date = moment().startOf('year');
-            var daysInYear = [];
+            var monthlyPlansInYear = [];
             while (date.year() === year) {
-                daysInYear.push(this.getInitialSummaryForYear(date,summaryForChart));
+                monthlyPlansInYear.push(this.getInitialSummaryForMonth(date,summaryForChart,dzoGroupedMonthlyPlans));
                 date = date.add(1, 'M');
             }
-            return daysInYear;
+            return monthlyPlansInYear;
         },
 
-        getInitialSummaryForYear(date,summaryForChart) {
-            let monthlyPlan = this.dzoGroupedMonthlyPlans[date.month()]['dailyPlan'];
-            let initialSummary = _.cloneDeep(this.initialYearlySummary);
-            initialSummary.time = date.valueOf();
-            initialSummary.dailyPlan = this.getDzoDailyPlan(date,summaryForChart);
-            this.dzoYearlyData.plan -= this.dzoYearlyData.totallyFact;
-            initialSummary.productionPlanForChart = monthlyPlan;
-            return initialSummary;
-        },
         getGroupedMonthlyPlans() {
             let self = this;
             let initialPlans = _.cloneDeep(this.dzoMonthlyPlans);
+            this.filteredDzoMonthlyPlans = _.cloneDeep(this.dzoMonthlyPlans).filter(row => this.selectedDzoCompanies.includes(row.dzo));
             if (this.filteredDzoMonthlyPlans.length > 0) {
                 this.dzoYearlyData.totallyFact = 0;
                 initialPlans = _.cloneDeep(this.filteredDzoMonthlyPlans);
@@ -966,27 +957,44 @@ export default {
                 .groupBy("date")
                 .map((items,date) => ({
                     monthNumber: new Date(Date.parse(date)).getMonth(),
-                    dailyPlan: _.round(_.sumBy(items, 'plan_oil') * self.daysCountInMonthMapping[moment(date).month()], 0),
+                    dailyPlan: _.round(_.sumBy(items, 'plan_oil') * self.getDaysCountInMonth(moment(date).year() + '-' + (moment(date).month() + 1)), 0),
                 }))
                 .value();
         },
 
+        getInitialSummaryForMonth(date,summaryForChart,dzoGroupedMonthlyPlans) {
+            let monthlyPlan = dzoGroupedMonthlyPlans[date.month()]['dailyPlan'];
+            let initialSummary = _.cloneDeep(this.initialYearlySummary);
+            initialSummary.time = date.valueOf();
+            if (date.month() !== 0) {
+                initialSummary.dailyPlan = this.getDzoDailyPlan(date,summaryForChart);
+            } else {
+                initialSummary.dailyPlan = this.dzoYearlyData.plan / 12;
+            }
+            initialSummary.productionPlanForChart = monthlyPlan;
+            return initialSummary;
+        },
+
         getDzoDailyPlan(date,summaryForChart) {
             let monthlyFactSum = this.getMonthlyFact(date,summaryForChart);
-            this.refreshTotalFact(monthlyFactSum);
-            let leftMonthesInYear = 12 - (date.month() + 1);
-            let targetPlan = Math.round((this.dzoYearlyData.plan - monthlyFactSum) / leftMonthesInYear);
+            let leftMonthesInYear = 12 - date.month();
+            if (date.month() !== 0) {
+                this.refreshTotalFact(monthlyFactSum);
+            }
+            let targetPlan = Math.round((this.dzoYearlyData.plan - this.dzoYearlyData.totallyFact) / leftMonthesInYear);
+
             if (monthlyFactSum !== 0) {
                 this.dzoYearlyData.lastTargetPlanWithFact = targetPlan;
             } else {
-                targetPlan =  this.dzoYearlyData.lastTargetPlanWithFact;
+                targetPlan = this.dzoYearlyData.lastTargetPlanWithFact;
             }
+
             return targetPlan;
         },
 
         getMonthlyFact(date,summaryForChart) {
             let monthlyFactSummary = summaryForChart.filter(function(item) {
-                return new Date(parseInt(item.time)).getMonth() === date.month();
+                return new Date(parseInt(item.time)).getMonth() === (date.month() - 1);
             }).map(function(item) {
                 return item;
             });
@@ -1029,7 +1037,7 @@ export default {
             _.forEach(this.dzoMonthlyPlans, function(dzo) {
                 let planDate = moment(dzo.date);
                 if (dzo.dzo === dzoName && planDate.month() < currentMonth) {
-                    dailyPlan +=  (dzo.plan_oil * self.daysCountInMonthMapping[planDate.month()]);
+                    dailyPlan +=  (dzo.plan_oil * self.getDaysCountInMonth(planDate.year() + '-' + (planDate.month() + 1)));
                 }
                 if (dzo.dzo === dzoName && planDate.month() === currentMonth) {
                     dailyPlan += dzo.plan_oil * (moment().date() - 1);
@@ -1056,7 +1064,6 @@ export default {
         oilProductionFilters
     ],
     async mounted() {
-        this.setDaysCountInMonth();
         this.dzoCompaniesAssets = _.cloneDeep(this.dzoCompaniesAssetsInitial);
         this.getOpecDataForYear();
         this.chartHeadName = this.oilChartHeadName;
@@ -1086,7 +1093,6 @@ export default {
         this.getCurrencyNow(this.timeSelect);
         this.updatePrices(this.period);
         this.dzoMonthlyPlans = await this.getDzoMonthlyPlans();
-        this.dzoGroupedMonthlyPlans = this.getGroupedMonthlyPlans();
 
         this.setDzoYearlyPlan();
 

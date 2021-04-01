@@ -81,8 +81,8 @@ export default {
         };
     },
     methods: {
-        setDzoYearlyPlan() {
-            this.dzoYearlyData.plan =  _.sumBy(this.dzoGroupedMonthlyPlans, 'dailyPlan');
+        setDzoYearlyPlan(dzoGroupedMonthlyPlans) {
+            this.dzoYearlyData.plan =  _.sumBy(dzoGroupedMonthlyPlans, 'dailyPlan');
         },
         async getDzoMonthlyPlans() {
             let uri = this.localeUrl("/get-dzo-monthly-plans");
