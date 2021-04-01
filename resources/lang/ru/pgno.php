@@ -123,4 +123,8 @@ return array (
   'history_prs' => 'История ПРС',
   'nominal_feed' => 'Номинальная подача',
   'podbor_gno' => 'Подбор ГНО',
+  'total_separation' => 'Общий коэффициент сепарации',
+  'separation_calc' => 'Расчет',
+  'separation_nat' => 'Естественная сепарация',
+  'separation_mech' => 'Механизированная сепарация',
 );
