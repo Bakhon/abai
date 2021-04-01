@@ -15,7 +15,7 @@ class AddRashodColumnOmguheTable extends Migration
     {
         Schema::table('omg_u_h_e_s', function (Blueprint $table) {
             $table->float('consumption',8,4)->nullable();
-            $table->float('out_of_service_оf_dosing', 8, 4)->nullable()->default(0)->change();
+            $table->float('out_of_service_of_dosing', 8, 4)->nullable()->default(0)->change();
             $table->float('yearly_inhibitor_flowrate', 12, 4)->nullable()->default(0);
         });
 
