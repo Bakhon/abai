@@ -22,6 +22,7 @@ class InhibitorListResource extends JsonResource
             'fields' => [
                 'name' => $this->name,
                 'price' => $price->price,
+                'density' => $this->density,
                 'date_from' => $price->date_from->format('Y-m-d'),
             ],
             'links' => []

@@ -235,9 +235,9 @@ return array (
     'fields' => 
     array (
       'title' => 'Аталуы',
-      'price' => 'баға',
+      'price' => 'баға тнг\\кг',
       'price_date' => 'Баға өзгеру уақыты',
-      'density' => 'Тығыздық',
+      'density' => 'Тығыздық  кг\\м³',
     ),
   ),
   'map' => 
