@@ -23,17 +23,6 @@
       </div>
     </div>
     <div class="bd-main-block__body">
-      <div v-if="history.item !== null" class="bd-main-block__body-history">
-        <big-data-history
-            :columns="formParams.columns"
-            :date="date"
-            :form-name="params.code"
-            :item="history.item"
-            v-on:close="history.item=null"
-        >
-        </big-data-history>
-      </div>
-      <template v-else>
         <div class="bd-main-block__tree scrollable">
           <b-tree-view
               v-if="filterTree.length"
@@ -56,7 +45,6 @@
                   <th v-for="column in visibleColumns">
                     {{ column.title }}
                   </th>
-                  <th></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -93,17 +81,23 @@
                       </span>
                       </template>
                     </template>
+                    <template v-if="typeof history[row.uwi.id][column.code] !== 'undefined'">
+                      <a :id="`history_${row.uwi.id}_${column.code}`" class="icon-history"></a>
+                      <b-popover :target="`history_${row.uwi.id}_${column.code}`" custom-class="history-popover"
+                                 placement="top" triggers="hover">
+                        <div v-for="(value, time) in history[row.uwi.id][column.code]">
+                          <em>{{ time }}</em><br>
+                          <b>{{ value.value }}</b> ({{ value.user }})
+                        </div>
+                      </b-popover>
+                    </template>
                   </td>
-                  <td>
-                    <a class="links__item links__item_history" @click="showHistory(row)"></a>
-                  </td>
-                </tr>
-                </tbody>
-              </table>
-            </div>
+              </tr>
+              </tbody>
+            </table>
           </div>
-        </form>
-      </template>
+        </div>
+      </form>
     </div>
     <div v-if="rowHistory" class="bd-popup">
       <div class="bd-popup__inner">
@@ -180,9 +174,7 @@ export default {
         column: null
       },
       isloading: false,
-      history: {
-        item: null
-      },
+      history: {},
       rowHistory: null,
       rowHistoryColumns: [],
       rowHistoryGraph: null,
@@ -239,11 +231,27 @@ export default {
           .then(({data}) => {
             this.rows = data
             this.recalculateCells()
+            this.loadEditHistory()
           })
           .finally(() => {
             this.isloading = false
           })
 
+    },
+    loadEditHistory() {
+      this.rows.forEach(row => {
+
+        this.axios.get(this.localeUrl(`/bigdata/form/${this.params.code}/history`), {
+          params: {
+            date: this.date,
+            id: row.uwi.id
+          }
+        }).then(({data}) => {
+
+          this.$set(this.history, row.uwi.id, data)
+        })
+
+      })
     },
     recalculateCells() {
       this.rows.forEach((row, rowIndex) => {
@@ -364,9 +372,6 @@ export default {
     },
     showError(err) {
       return err.join('<br>')
-    },
-    showHistory(row) {
-      this.history.item = row
     },
     closeRowHistory() {
       this.rowHistory = null
@@ -768,6 +773,20 @@ body.fixed {
 
     td {
       height: 52px;
+      position: relative;
+
+      .icon-history {
+        align-items: center;
+        background: #3366FF url(/img/bd/info.svg) 50% 50% no-repeat;
+        border-radius: 1px;
+        bottom: 6px;
+        display: flex;
+        justify-content: center;
+        left: 1px;
+        height: 14px;
+        position: absolute;
+        width: 14px;
+      }
 
       span.date {
         display: block;
@@ -839,6 +858,21 @@ body.fixed {
       }
 
     }
+  }
+}
+
+.history-popover {
+  .popover-body {
+    background: #40467E;
+    border: 1px solid #2E50E9;
+    border-radius: 1px;
+    color: #fff;
+    font-size: 14px;
+    padding: 8px;
+  }
+
+  .arrow {
+    display: none;
   }
 }
 </style>
