@@ -1407,7 +1407,7 @@ import NotifyPlugin from "vue-easy-notify";
 import "vue-easy-notify/dist/vue-easy-notify.css";
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
-import lang from 'element-ui/lib/locale/lang/ru-Ru';
+import lang from 'element-ui/lib/locale/lang/ru-RU';
 import locale from 'element-ui/lib/locale';
 import TrTable from "./table";
 import TrFullTable from "./tablefull";
