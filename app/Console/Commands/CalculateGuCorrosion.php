@@ -86,7 +86,8 @@ class CalculateGuCorrosion extends Command
                     $guData->pipe &&
                     $guDataByDay->ngdu &&
                     $guDataByDay->ngdu->surge_tank_pressure &&
-                    $guDataByDay->ngdu->pump_discharge_pressure) {
+                    $guDataByDay->ngdu->pump_discharge_pressure)
+                {
                     $data = [
                         "gu_id" => $gu->id,
                         "WC" => $guDataByDay->ngdu->bsw,
