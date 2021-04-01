@@ -1470,14 +1470,13 @@
 
                               <div class="col-2">
                                 <label class="label-for-celevoi" >ØНКТ</label>
-                                  <select class="input-box-gno podbor" v-model="nkt" :disabled="expChoose != 'ФОН'">
+                                  <select class="input-box-gno podbor" v-model="nkt" >
                                   <option value="50,3">60x5</option>
                                   <option value="62">73x5,5</option>
                                   <option value="59,3">73x7</option>
                                   <option value="75,9">89x6,5</option>
                                   <option value="83,6">102x6,5</option>
                                   <option value="100,3">114x7</option>
-
                                   </select>
                               </div>
 
@@ -1490,19 +1489,19 @@
 
                             </div>
                             <div class="row">
-                              <div style="height: 20px; padding-left: 15px;">Общий коэффициент сепарации</div>
+                              <div style="height: 20px; padding-left: 15px;">{{trans('pgno.total_separation')}}</div>
                             </div>
 
                             <div class="row" style="padding-top: 3px;"> 
 
                               <div class="col-4">
                                 <label style="width: 100px;" class="label-for-celevoi">
-                                    <input value="calc_value" v-model="sep_meth" class="checkbox34" checked="true" type="radio" name="gno20" :disabled="expChoose === 'ФОН'"/>
-                                    Расчет
+                                    <input value="calc_value" v-model="sep_meth" @change="postCurveData()" class="checkbox34" checked="true" type="radio" name="gno20" :disabled="expChoose === 'ФОН'"/>
+                                    {{trans('pgno.separation_calc')}}
                                 </label>
                               </div>
                               <div class="col-8 table-border-gno">
-                                <input v-model="nat_sep" type="checkbox" checked="true" :disabled="sep_meth ==='input_value' || expChoose === 'ФОН'">Естественная сепарация</div>
+                                <input v-model="nat_sep" @change="postCurveData()" type="checkbox" checked="true" :disabled="sep_meth ==='input_value' || expChoose === 'ФОН'">{{trans('pgno.separation_nat')}}</div>
 
                             </div>
 
@@ -1510,14 +1509,14 @@
 
                               <div class="col-4">
                                 <label style="width: 100px;" class="label-for-celevoi">
-                                  <input class="checkbox3" v-model="sep_meth" value="input_value" checked="true" type="radio" name="gno20" :disabled="expChoose === 'ФОН'"/>
-                                  <input v-model="sep_value" type="text" onfocus="this.value=''" class="input-box-gno podbor" 
+                                  <input class="checkbox3" v-model="sep_meth" @change="postCurveData()" value="input_value" checked="true" type="radio" name="gno20" :disabled="expChoose === 'ФОН'"/>
+                                  <input v-model="sep_value" @change="postCurveData()" type="text" onfocus="this.value=''" class="input-box-gno podbor" 
                                   :disabled="expChoose === 'ФОН' || sep_meth !='input_value'"/></label>
                               </div>
 
                               <div class="col-8 table-border-gno">
-                                <input checked="true" :disabled="sep_meth ==='input_value' || expChoose === 'ФОН'" 
-                              type="checkbox" v-model="mech_sep">Механизированная сепарация
+                                <input checked="true" @change="postCurveData()" :disabled="sep_meth ==='input_value' || expChoose === 'ФОН'" 
+                              type="checkbox" v-model="mech_sep">{{trans('pgno.separation_mech')}}
                               <input v-model="mech_sep_value" type="text" style="margin-left: 3px; margin-bottom: 0px;" 
                               :disabled="sep_meth ==='input_value' || expChoose === 'ФОН' ||  mech_sep === false" onfocus="this.value=''" class="input-box-gno podbor" /></div>
                             </div>
@@ -2240,8 +2239,8 @@ export default {
       sep_meth: 'calc_value',
       nat_sep: true,
       mech_sep: null,
-      sep_value: null,
-      mech_sep_value: null,
+      sep_value: 60,
+      mech_sep_value: 50,
       pBuf: null,
       ao: null,
       orgs: null,

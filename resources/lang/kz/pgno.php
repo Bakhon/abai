@@ -119,4 +119,8 @@ return array (
   'history_prs' => 'Тарих ПРС',
   'nominal_feed' => 'Номиналды беру',
   'podbor_gno' => 'Терең сорғы жабдықтарын таңдау',
+  'total_separation' => 'Общий коэффициент сепарации',
+  'separation_calc' => 'Расчет',
+  'separation_nat' => 'Естественная сепарация',
+  'separation_mech' => 'Механизированная сепарация',
 );

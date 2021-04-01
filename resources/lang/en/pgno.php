@@ -118,4 +118,8 @@ return array (
   'history_prs' => 'History of PRS',
   'nominal_feed' => 'Nominal feed',
   'podbor_gno' => 'Selection of downhole pumping equipment',
+  'total_separation' => 'Общий коэффициент сепарации',
+  'separation_calc' => 'Расчет',
+  'separation_nat' => 'Естественная сепарация',
+  'separation_mech' => 'Механизированная сепарация',
 );
