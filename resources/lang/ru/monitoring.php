@@ -245,9 +245,9 @@ return array (
     'fields' => 
     array (
       'title' => 'Название',
-      'price' => 'Цена',
+      'price' => 'Цена тнг\\кг',
       'price_date' => 'Дата изменения цены',
-      'density' => 'Плотность',
+      'density' => 'Плотность кг\\м³',
     ),
   ),
   'map' => 
