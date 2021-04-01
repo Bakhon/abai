@@ -102,20 +102,17 @@ class OmgNGDUController extends CrudController
                     'title' => trans('monitoring.omgngdu.fields.pump_discharge_pressure'),
                     'type' => 'numeric',
                 ],
-                'temperature' => [
-                    'title' => trans('monitoring.omgngdu.fields.temperature'),
+                'heater_inlet_temperature' => [
+                    'title' => trans('monitoring.omgngdu.fields.heater_inlet_temperature'),
                     'type' => 'numeric',
                 ],
-                'heater_output_pressure' => [
-                    'title' => trans('monitoring.omgngdu.fields.heater_output_pressure'),
+                'heater_output_temperature' => [
+                    'title' => trans('monitoring.omgngdu.fields.heater_output_temperature'),
                     'type' => 'numeric',
                 ],
             ]
         ];
 
-        if(auth()->user()->can('monitoring create '.$this->modelName)) {
-            $params['links']['create'] = route($this->modelName.'.create');
-        }
         if(auth()->user()->can('monitoring export '.$this->modelName)) {
             $params['links']['export'] = route($this->modelName.'.export');
         }
@@ -269,12 +266,16 @@ class OmgNGDUController extends CrudController
 
     public function getGuDataByDay(Request $request)
     {
-        $ngdu = OmgNGDU::where('date', $request->dt)
+        $ngdu = OmgNGDU::where('date', '<=', $request->dt)
             ->where('gu_id', $request->gu_id)
+            ->whereNotNull('id')
+            ->orderByDesc('date')
             ->first();
 
-        $uhe = OmgUHE::where('date', $request->dt)
+        $uhe = OmgUHE::where('date', '<=', $request->dt)
             ->where('gu_id', $request->gu_id)
+            ->whereNotNull('id')
+            ->orderByDesc('date')
             ->first();
 
         $ca = OmgCA::where('date', Carbon::parse($request->dt)->year . "-01-01")
@@ -310,8 +311,10 @@ class OmgNGDUController extends CrudController
             ->latest()
             ->first();
 
-        $oilGas = OilGas::where('date', $request->dt)
+        $oilGas = OilGas::where('date', '<=', $request->dt)
             ->where('gu_id', $request->gu_id)
+            ->whereNotNull('id')
+            ->orderByDesc('date')
             ->first();
 
         $lastCorrosion = $this->getLastCorrosion($request->gu_id, $request->dt);

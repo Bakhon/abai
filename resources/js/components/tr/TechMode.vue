@@ -582,19 +582,23 @@
                     :data="wells"
                     height="calc(100vh - 205px)"
                     style="width: 100%"
-                    row-class-name="abba"
-                    :span-method="objectSpanMethod">
+                    :header-cell-class-name="getHeaderCellClassName"
+                    :span-method="objectSpanMethod"
+                    >
 
-                    <el-table-column
+                    <el-table-column     
                       :label="`${this.trans('tr.trs1')}`"
                       >
-                      <el-table-column
-                        prop="field"
-                        label=""
-                        width="200"
-                        sortable
-                        
-                        >
+                      <el-table-column label="" >
+                        <el-table-column
+                          prop="field"
+                          label=""
+                          width="200"
+                          sortable
+                          
+                          
+                          >
+                        </el-table-column>
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
@@ -700,7 +704,6 @@
                         >
                       </el-table-column>
                     </el-table-column>
-
                     <el-table-column
                       :label="`${this.trans('tr.trs4')}`"
                       >
@@ -903,10 +906,9 @@
                         >
                       </el-table-column>
                     </el-table-column>
+                    
 
-                    <el-table-column
-                      :label="`${this.trans('tr.trs14')}`"
-                      >
+                    <el-table-column :label="`${this.trans('tr.trs14')}`">
                       <el-table-column
                       :label="`${this.trans('tr.tr20')}`"
                       >
@@ -963,20 +965,41 @@
                           >
                         </el-table-column>
                       </el-table-column>
-                      
                     </el-table-column>
+
+                      
+            
                     <el-table-column
                       :label="`${this.trans('tr.tr17')}`"
                       >
                       <el-table-column
-                      :label="`${this.trans('tr.tr20')}`"
+                      label="tr.tr20"
                       >
                         <el-table-column
-                          prop="bhp"
+                          
                           label=""
                           width="130"
                           sortable
                           >
+                          <template slot-scope="scope">{{scope.$index}}
+                            <span
+                              :class="{
+                                'circle-err':
+                                  wells &&
+                                  wells[scope.$index] &&
+                                  wells[scope.$index].bhp[1][0] !== '0',
+                              }"
+                              :style="`background :${getColor(
+                                wells[scope.$index].bhp[1][0]
+                              )}`"
+                            >
+                            </span><span v-if="scope.row.bhp[0] != null">{{
+                      Math.round(scope.row.bhp[0] * 10) / 10
+                    }}</span>
+                    <span v-if="wells && wells[scope.$index]" class="cell-comment">
+                      {{ wells[scope.$index].bhp[1][1] }}
+                    </span>
+                        </template>
                         </el-table-column>
                       </el-table-column>
                       <el-table-column
@@ -1384,6 +1407,8 @@ import NotifyPlugin from "vue-easy-notify";
 import "vue-easy-notify/dist/vue-easy-notify.css";
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
+import lang from 'element-ui/lib/locale/lang/ru-RU';
+import locale from 'element-ui/lib/locale';
 import TrTable from "./table";
 import TrFullTable from "./tablefull";
 import SearchFormRefresh from "../ui-kit/SearchFormRefresh.vue";
@@ -1392,7 +1417,8 @@ import { fields } from "./constants.js";
 import TrMultiselect from "./TrMultiselect.vue";
 
 Vue.use(NotifyPlugin);
-Vue.use(ElementUI);
+Vue.use(ElementUI); 
+locale.use(lang)
 export default {
   name: "TrPage",
   components: {
@@ -1625,6 +1651,14 @@ export default {
     },
   },
   methods: {
+    getHeaderCellClassName({column}) {
+
+ 
+      if(column.id === "el-table_1_column_1") {
+        return 'no_border';
+      }
+      return 'have_border';
+    },
      objectSpanMethod({ row, column, rowIndex, columnIndex }) {
         if (columnIndex === 0) {
           if (rowIndex % 2 === 0) {
@@ -1640,6 +1674,7 @@ export default {
           }
         }
      },
+
     editrow(row, rowId) {
       this.$store.commit("globalloading/SET_LOADING", false);
       console.log("row = ", row);
@@ -1797,6 +1832,7 @@ export default {
     closeModal(modalName) {
       this.$modal.hide(modalName)
     },
+   
     sortBy(type) {
       this.sortParam = type;
       this.$store.commit("tr/SET_SORTTYPE", this.sortType);
@@ -2394,8 +2430,6 @@ table::-webkit-scrollbar-corner {
     background: #202b6b!important;
 }
 
-
-
 .el-table__body-wrapper tr:hover {
     background: #000!important;
 }
@@ -2418,5 +2452,14 @@ table::-webkit-scrollbar-corner {
 }
 .el-table thead.is-group th {
     background: rgb(51, 57, 117);
+}
+.el-table th, .el-table tr {
+    background-color: #454D7D;
+    color: #fff
+}
+
+.no_border.no_border  {
+  border-bottom: none;
+  
 }
 </style>

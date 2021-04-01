@@ -145,7 +145,7 @@ class MapsController extends Controller
                         'daily_oil_production',
                         'bsw',
                         'pump_discharge_pressure',
-                        'heater_output_pressure',
+                        'heater_output_temperature',
                         'editable'
                     )->orderBy('date', 'desc')->first();
                 }
@@ -235,7 +235,7 @@ class MapsController extends Controller
                         'daily_oil_production',
                         'bsw',
                         'pump_discharge_pressure',
-                        'heater_output_pressure',
+                        'heater_output_temperature',
                         'editable'
                     )->orderBy('date', 'desc')->first();
                 }

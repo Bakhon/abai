@@ -15,7 +15,7 @@
                 <form action="{{ route('omguhe.update', $omguhe) }}" method="POST">
                     @method('patch')
                     @csrf
-                    <omguhe-form :omguhe='@json($omguhe)' :isEditing="true" :validation-params='@json($validationParams)'></omguhe-form>
+                    <omguhe-form :omguhe='@json($omguhe)' :validation-params='@json($validationParams)' :is-editing="true"></omguhe-form>
                 </form>
             </div>
         </div>

@@ -340,19 +340,31 @@
       <div class="col-2 monitor__charts">
         <div class="monitor__charts-item">
           <p class="monitor__charts-item-title">{{ trans('monitoring.action_substance_of_co2') }}</p>
-          <monitor-chart :title="trans('monitoring.action_substance_of_co2')" :data="chart1Data"></monitor-chart>
+          <monitor-chart
+              :title="trans('monitoring.action_substance_of_co2')"
+              :measurement="trans('measurements.mg/dm3')"
+              :data="chart1Data" />
         </div>
         <div class="monitor__charts-item">
           <p class="monitor__charts-item-title">{{ trans('monitoring.action_substance_of_h2s') }}</p>
-          <monitor-chart :title="trans('monitoring.action_substance_of_h2s')" :data="chart2Data"></monitor-chart>
+          <monitor-chart
+              :title="trans('monitoring.action_substance_of_h2s')"
+              :measurement="trans('measurements.mg/dm3')"
+              :data="chart2Data" />
         </div>
         <div class="monitor__charts-item">
           <p class="monitor__charts-item-title">{{ trans('monitoring.actual_corrosion_speed') }}</p>
-          <monitor-chart :title="trans('monitoring.actual_corrosion_speed')" :data="chart3Data"></monitor-chart>
+          <monitor-chart
+              :title="trans('monitoring.actual_corrosion_speed')"
+              :measurement="trans('measurements.mm/g')"
+              :data="chart3Data" />
         </div>
         <div class="monitor__charts-item">
           <p class="monitor__charts-item-title">{{ trans('monitoring.actual_inhibitor_level') }}</p>
-          <monitor-chart :title="trans('monitoring.actual_inhibitor_level')" :data="chart4Data"></monitor-chart>
+          <monitor-chart
+              :title="trans('monitoring.actual_inhibitor_level')"
+              :measurement="trans('measurements.g/m3')"
+              :data="chart4Data" />
         </div>
       </div>
       <div class="col-8 monitor__schema">
@@ -362,7 +374,7 @@
             <ul class="string1">
               <li class="nav-string">
                 <span class="before">{{ trans('monitoring.units.p_kon') }}</span>
-                <input type="text" class="square2" readonly v-model="pressure"/>
+                <input type="text" class="square2" readonly v-model="final_pressure"/>
                 <span class="after">{{ trans('monitoring.units.bar') }}</span>
               </li>
               <li class="nav-string">
@@ -371,7 +383,7 @@
                     readonly
                     type="text"
                     class="square2"
-                    v-model="daily_fluid_production_kormass"
+                    v-model="t_final_celsius_point_F"
                 />
                 <span class="after">C</span>
               </li>
@@ -423,7 +435,7 @@
                     readonly
                     type="text"
                     class="square2"
-                    v-model="heater_output_pressure"
+                    v-model="heater_output_temperature"
                 />
                 <span class="after">С</span>
               </li>
@@ -607,13 +619,13 @@ export default {
       ngdu: null,
       plan_dosage: null,
       current_dosage: null,
-      daily_fluid_production_kormass: null,
-      pressure: null,
+      t_final_celsius_point_F: null,
+      final_pressure: null,
       temperature: null,
       pump_discharge_pressure: null,
       surge_tank_pressure: null,
-      heater_inlet_pressure: null,
-      heater_output_pressure: null,
+      heater_inlet_temperature: null,
+      heater_output_temperature: null,
       daily_fluid_production: null,
       signalizator: null,
       signalizatorAbs: null,
@@ -709,28 +721,37 @@ export default {
             }
           });
     },
+    resetData() {
+      this.corA = null;
+      this.corE = null;
+      this.corF = null;
+      this.dose = 0;
+      this.result = {};
+      this.t_final_celsius_point_F = null;
+      this.final_pressure = null;
+      this.ngdu = null;
+      this.uhe = null;
+      this.plan_dosage = null;
+      this.current_dosage = null;
+      this.temperature = null;
+      this.pump_discharge_pressure = null;
+      this.surge_tank_pressure = null;
+      this.heater_inlet_temperature = null;
+      this.heater_output_temperature = null;
+      this.daily_fluid_production = null;
+      this.signalizator = null;
+      this.signalizatorAbs = null;
+      this.corrosionRateInMm = null;
+      this.doseMgPerL = null;
+      this.corrosionRateInMmAB = null;
+      this.doseMgPerLAB = null;
+      this.corrosionVelocity = null;
+    },
     dayClicked(day) {
       this.date = day.id;
-      this.ngdu = null
-      this.uhe = null
-      this.plan_dosage = null
-      this.current_dosage = null
-      this.daily_fluid_production_kormass = null
-      this.pressure = null
-      this.temperature = null
-      this.pump_discharge_pressure = null
-      this.surge_tank_pressure = null
-      this.heater_inlet_pressure = null
-      this.heater_output_pressure = null
-      this.daily_fluid_production = null
-      this.signalizator = null
-      this.signalizatorAbs = null
-      this.corrosionRateInMm = null
-      this.doseMgPerL = null
-      this.corrosionRateInMmAB = null
-      this.doseMgPerLAB = null
-      this.corrosionVelocity = null
-      this.dose = 0
+
+      this.resetData();
+
       this.$emit("chart5", this.dose)
       this.axios
           .post(this.localeUrl("/getgudatabyday"), {
@@ -744,12 +765,12 @@ export default {
               this.uhe = data.uhe
               this.plan_dosage = data.ca ? data.ca.plan_dosage : null
               this.current_dosage = data.uhe ? data.uhe.current_dosage : null
-              this.pressure = data.ngdu ? data.ngdu.pressure : null
+              this.final_pressure = data.ngdu ? data.ngdu.pressure : null
               this.temperature = data.ngdu ? data.ngdu.temperature : null
               this.pump_discharge_pressure = data.ngdu ? data.ngdu.pump_discharge_pressure : null
               this.surge_tank_pressure = data.ngdu ? data.ngdu.surge_tank_pressure : null
-              this.heater_inlet_pressure = data.ngdu ? data.ngdu.heater_inlet_pressure : null
-              this.heater_output_pressure = data.ngdu ? data.ngdu.heater_output_pressure : null
+              this.heater_inlet_temperature = data.ngdu ? data.ngdu.heater_inlet_temperature : null
+              this.heater_output_temperature = data.ngdu ? data.ngdu.heater_output_temperature : null
               this.daily_fluid_production =  data.ngdu ? data.ngdu.daily_fluid_production : null
 
               if (data.uhe && data.ca) {
@@ -771,7 +792,10 @@ export default {
               let background_corrosion = this.lastCorrosion.background_corrosion_velocity;
               this.corrosionVelocity = corrosion_with_inhibitor ? corrosion_with_inhibitor : background_corrosion;
 
-              this.calc()
+              if (this.ngdu && this.oilGas && this.pipe) {
+                this.calc()
+              }
+
             } else {
               console.log("No data");
             }
@@ -780,6 +804,7 @@ export default {
     calc() {
       this.axios
           .post(this.localeUrl("/corrosion"), {
+            gu_id: this.localGu,
             WC: this.ngdu.bsw,
             GOR1: this.constantsValues[0].value,
             sigma: this.constantsValues[1].value,
@@ -788,7 +813,8 @@ export default {
             l: this.pipe.length,
             thickness: this.pipe.thickness,
             P: this.ngdu.pump_discharge_pressure,
-            t_heater: this.ngdu.heater_output_pressure,
+            t_heater: this.ngdu.heater_output_temperature,
+            t_inlet_heater: this.ngdu.heater_inlet_temperature,
             conH2S: this.wmLastH2S.hydrogen_sulfide,
             conCO2: this.wmLastCO2.carbon_dioxide,
             q_l: this.ngdu.daily_fluid_production,
@@ -813,8 +839,8 @@ export default {
               this.corF = data.corrosion_rate_mm_per_y_point_F
               this.dose = data.max_dose
               this.result = data
-              this.daily_fluid_production_kormass = data.t_final_celsius_point_F
-              this.pressure = data.final_pressure_bar_point_F
+              this.t_final_celsius_point_F = data.t_final_celsius_point_F.toFixed(1)
+              this.final_pressure = data.final_pressure_bar_point_F.toFixed(2)
               this.$emit("chart5", data.max_dose)
             } else {
               console.log("No data")

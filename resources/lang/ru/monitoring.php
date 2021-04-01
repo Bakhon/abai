@@ -10,10 +10,10 @@ return array (
   'pipes' => 'Трубопроводы',
   'inhibitors' => 'Ингибиторы',
   'tech_map' => 'Техкарта',
-  'action_substance_of_co2' => 'Фактическое содержание углекислого газа',
-  'action_substance_of_h2s' => 'Фактическое содержание сероводорода',
-  'actual_corrosion_speed' => 'Фактическая скорость коррозии',
-  'actual_inhibitor_level' => 'Фактическая закачка ингибитора коррозии',
+  'action_substance_of_co2' => 'Фактическое содержание углекислого газа мг/дм³',
+  'action_substance_of_h2s' => 'Фактическое содержание сероводорода мг/дм³',
+  'actual_corrosion_speed' => 'Фактическая скорость коррозии мм/г',
+  'actual_inhibitor_level' => 'Фактическая закачка ингибитора коррозии г/м3',
   'units' => 
   array (
     'p_kon' => 'P кон.',
@@ -125,6 +125,7 @@ return array (
       ),
       'reason' => 'Причина',
       'fill' => 'Заправка',
+      'yearly_inhibitor_rate' => 'Годовой расход ингибитора кг',
     ),
   ),
   'omgngdu' => 
@@ -144,9 +145,9 @@ return array (
       'bsw' => 'Обводненность, %',
       'surge_tank_pressure' => 'Давление в буферной емкости, бар',
       'pump_discharge_pressure' => 'Давление на выходе насоса, бар',
-      'heater_inlet_pressure' => 'Температура на входе в печь, С',
-      'heater_output_pressure' => 'Температура на выходе из печи, С',
       'temperature' => 'Температура на входе в печь, С',
+      'heater_output_temperature' => 'Температура на выходе из печи, С',
+      'heater_inlet_temperature' => 'Температура на входе в печь, С',
     ),
   ),
   'all_gus' => 'Все ГУ',
@@ -315,4 +316,8 @@ return array (
   'elevation' => 'Высота',
   'h_distance' => 'Горизонтальная длина',
   'm_distance' => 'Измеренная длина',
+  'fields' => 
+  array (
+    'consumption' => 'Расход',
+  ),
 );

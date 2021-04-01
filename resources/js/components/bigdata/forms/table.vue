@@ -23,17 +23,6 @@
       </div>
     </div>
     <div class="bd-main-block__body">
-      <div v-if="history.item !== null" class="bd-main-block__body-history">
-        <big-data-history
-            :columns="formParams.columns"
-            :date="date"
-            :form-name="params.code"
-            :item="history.item"
-            v-on:close="history.item=null"
-        >
-        </big-data-history>
-      </div>
-      <template v-else>
         <div class="bd-main-block__tree scrollable">
           <b-tree-view
               v-if="filterTree.length"
@@ -56,14 +45,13 @@
                   <th v-for="column in visibleColumns">
                     {{ column.title }}
                   </th>
-                  <th></th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr v-for="row in rows">
                   <td
                       v-for="column in visibleColumns"
-                      :class="{'editable': column.isEditable}"
+                      :class="{'editable': column.is_editable}"
                       @dblclick="editCell(row, column)"
                   >
                     <template v-if="column.type === 'link'">
@@ -93,17 +81,23 @@
                       </span>
                       </template>
                     </template>
+                    <template v-if="typeof history[row.uwi.id][column.code] !== 'undefined'">
+                      <a :id="`history_${row.uwi.id}_${column.code}`" class="icon-history"></a>
+                      <b-popover :target="`history_${row.uwi.id}_${column.code}`" custom-class="history-popover"
+                                 placement="top" triggers="hover">
+                        <div v-for="(value, time) in history[row.uwi.id][column.code]">
+                          <em>{{ time }}</em><br>
+                          <b>{{ value.value }}</b> ({{ value.user }})
+                        </div>
+                      </b-popover>
+                    </template>
                   </td>
-                  <td>
-                    <a class="links__item links__item_history" @click="showHistory(row)"></a>
-                  </td>
-                </tr>
-                </tbody>
-              </table>
-            </div>
+              </tr>
+              </tbody>
+            </table>
           </div>
-        </form>
-      </template>
+        </div>
+      </form>
     </div>
     <div v-if="rowHistory" class="bd-popup">
       <div class="bd-popup__inner">
@@ -180,15 +174,16 @@ export default {
         column: null
       },
       isloading: false,
-      history: {
-        item: null
-      },
+      history: {},
       rowHistory: null,
       rowHistoryColumns: [],
       rowHistoryGraph: null,
     }
   },
   watch: {
+    params() {
+      this.init()
+    },
     date() {
       this.updateRows()
     }
@@ -202,11 +197,7 @@ export default {
     }
   },
   mounted() {
-
-    this.updateForm(this.params.code).then(data => {
-      this.filterTree = data.filterTree
-    })
-
+    this.init()
   },
   methods: {
     ...bdFormActions([
@@ -218,6 +209,13 @@ export default {
         this.tech = item.data.id
         this.updateRows()
       }
+    },
+    init() {
+      this.isloading = true
+      this.updateForm(this.params.code).then(data => {
+        this.filterTree = data.filterTree
+        this.isloading = false
+      })
     },
     updateRows() {
 
@@ -233,11 +231,27 @@ export default {
           .then(({data}) => {
             this.rows = data
             this.recalculateCells()
+            this.loadEditHistory()
           })
           .finally(() => {
             this.isloading = false
           })
 
+    },
+    loadEditHistory() {
+      this.rows.forEach(row => {
+
+        this.axios.get(this.localeUrl(`/bigdata/form/${this.params.code}/history`), {
+          params: {
+            date: this.date,
+            id: row.uwi.id
+          }
+        }).then(({data}) => {
+
+          this.$set(this.history, row.uwi.id, data)
+        })
+
+      })
     },
     recalculateCells() {
       this.rows.forEach((row, rowIndex) => {
@@ -272,7 +286,7 @@ export default {
           let value
           if (column.type === 'calc') {
             value = this.calculateCellValue(column, cellRow, rowIndex)
-          } else if (column.isEditable) {
+          } else if (column.is_editable) {
             value = cellRow[column.code].value
           } else {
             value = cellRow[column.code].old_value || cellRow[column.code].value
@@ -291,38 +305,66 @@ export default {
       this.editableCell.column = column
     },
     isCellEdited(row, column) {
-      if (!column.isEditable) return false
+      if (!column.is_editable) return false
       if (this.editableCell.row !== row) return false
       if (this.editableCell.column !== column) return false
 
       return true
     },
-    saveCell(row, column) {
+    async saveCell(row, column) {
 
-      let data = {
-        well_id: row.uwi.id,
-        date: this.date,
-      }
-      data[column.code] = row[column.code].value
-      this.isloading = true
+      this.checkLimits(row, column).then(result => {
+        if (result === true) {
 
-      this.axios
-          .patch(this.localeUrl(`/bigdata/form/${this.params.code}/save/${column.code}`), data)
-          .then(({data}) => {
-            row[column.code].date = null
-            this.editableCell = {
-              row: null,
-              cell: null
-            }
-            this.recalculateCells()
-          })
-          .catch(error => {
-            Vue.set(this.errors, column.code, error.response.data.errors)
-          })
-          .finally(() => {
-            this.isloading = false
-          })
+          let data = {
+            well_id: row.uwi.id,
+            date: this.date,
+          }
+          data[column.code] = row[column.code].value
+          this.isloading = true
 
+          this.axios
+              .patch(this.localeUrl(`/bigdata/form/${this.params.code}/save/${column.code}`), data)
+              .then(({data}) => {
+                row[column.code].date = null
+                this.editableCell = {
+                  row: null,
+                  cell: null
+                }
+                this.recalculateCells()
+              })
+              .catch(error => {
+                Vue.set(this.errors, column.code, error.response.data.errors)
+              })
+              .finally(() => {
+                this.isloading = false
+              })
+
+        }
+      })
+
+    },
+    checkLimits(row, column) {
+      return new Promise((resolve, reject) => {
+        if (!row[column.code].limits || row[column.code].limits.length === 0) {
+          resolve(true)
+          return
+        }
+
+        if (row[column.code].value >= row[column.code].limits.min && row[column.code].value <= row[column.code].limits.max) {
+          resolve(true)
+          return
+        }
+
+        let message = `${this.trans('bd.value_outside')} (${row[column.code].limits.min}, ${row[column.code].limits.max}). ${this.trans('bd.are_you_sure')}`
+        this.$bvModal.msgBoxConfirm(message, {
+          okTitle: this.trans('app.yes'),
+          cancelTitle: this.trans('app.no'),
+        })
+            .then(result => {
+              resolve(result)
+            })
+      })
     },
     changePage(page = 1) {
       this.currentPage = page
@@ -330,9 +372,6 @@ export default {
     },
     showError(err) {
       return err.join('<br>')
-    },
-    showHistory(row) {
-      this.history.item = row
     },
     closeRowHistory() {
       this.rowHistory = null
@@ -734,6 +773,20 @@ body.fixed {
 
     td {
       height: 52px;
+      position: relative;
+
+      .icon-history {
+        align-items: center;
+        background: #3366FF url(/img/bd/info.svg) 50% 50% no-repeat;
+        border-radius: 1px;
+        bottom: 6px;
+        display: flex;
+        justify-content: center;
+        left: 1px;
+        height: 14px;
+        position: absolute;
+        width: 14px;
+      }
 
       span.date {
         display: block;
@@ -805,6 +858,21 @@ body.fixed {
       }
 
     }
+  }
+}
+
+.history-popover {
+  .popover-body {
+    background: #40467E;
+    border: 1px solid #2E50E9;
+    border-radius: 1px;
+    color: #fff;
+    font-size: 14px;
+    padding: 8px;
+  }
+
+  .arrow {
+    display: none;
   }
 }
 </style>
