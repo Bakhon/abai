@@ -854,4 +854,23 @@ class DruidController extends Controller
 
         return response()->json($vdata);
     }
+
+    public function getDruidData(
+        $dataSource,
+        $selectFields,
+        $granularity = Granularity::DAY
+    ):array
+    {
+        $builder = $this->druidClient->query($dataSource, $granularity);
+        foreach ($selectFields as $selectField) {
+            $method = array_shift($selectField);
+            $builder->$method(...$selectField);
+        }
+        if (!$builder->getIntervals()) {
+            $builder->interval('2020-01-01T00:00:00+00:00', '2020-07-01T00:00:00+00:00');
+        }
+        $result = $builder->groupBy();
+
+        return $result->data();
+    }
 }
