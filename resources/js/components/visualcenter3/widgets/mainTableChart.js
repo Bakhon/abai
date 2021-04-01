@@ -36,6 +36,16 @@ export default {
             return [];
         },
 
+        changeTargetCompanyFilter() {
+            this.isFilterTargetPlanActive = !this.isFilterTargetPlanActive;
+            if (!this.buttonTargetPlan) {
+                this.buttonTargetPlan = "";
+            } else {
+                this.buttonTargetPlan = "button-tab-highlighted";
+            }
+            this.changeMenu2(3);
+        },
+
         getMonthlyPlansInYear(year,summaryForChart) {
             let dzoGroupedMonthlyPlans = this.getGroupedMonthlyPlans();
             this.setDzoYearlyPlan(dzoGroupedMonthlyPlans);
@@ -117,6 +127,29 @@ export default {
                 monthlyPlansInYear[monthNumber].productionPlanForChart2 += item.productionPlanForChart2;
             });
             return monthlyPlansInYear;
+        },
+
+        setTargetPlanForTable() {
+            let self = this;
+            _.forEach(this.dzoCompanySummary, function(dzo) {
+                dzo.targetPlan = self.getDzoPlanForPeriod(dzo.dzoMonth);
+            });
+        },
+
+        getDzoPlanForPeriod(dzoName) {
+            let currentMonth = moment().month();
+            let dailyPlan = 0;
+            let self = this;
+            _.forEach(this.dzoMonthlyPlans, function(dzo) {
+                let planDate = moment(dzo.date);
+                if (dzo.dzo === dzoName && planDate.month() < currentMonth) {
+                    dailyPlan +=  (dzo.plan_oil * self.getDaysCountInMonth(planDate.year() + '-' + (planDate.month() + 1)));
+                }
+                if (dzo.dzo === dzoName && planDate.month() === currentMonth) {
+                    dailyPlan += dzo.plan_oil * (moment().date() - 1);
+                }
+            });
+            return dailyPlan;
         },
     }
 }

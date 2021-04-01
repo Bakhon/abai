@@ -940,29 +940,6 @@ export default {
                 }
             });
         },
-
-        setTargetPlanForTable() {
-            let self = this;
-            _.forEach(this.dzoCompanySummary, function(dzo) {
-                dzo.targetPlan = self.getDzoPlanForPeriod(dzo.dzoMonth);
-            });
-        },
-
-        getDzoPlanForPeriod(dzoName) {
-            let currentMonth = moment().month();
-            let dailyPlan = 0;
-            let self = this;
-            _.forEach(this.dzoMonthlyPlans, function(dzo) {
-                let planDate = moment(dzo.date);
-                if (dzo.dzo === dzoName && planDate.month() < currentMonth) {
-                    dailyPlan +=  (dzo.plan_oil * self.getDaysCountInMonth(planDate.year() + '-' + (planDate.month() + 1)));
-                }
-                if (dzo.dzo === dzoName && planDate.month() === currentMonth) {
-                    dailyPlan += dzo.plan_oil * (moment().date() - 1);
-                }
-            });
-            return dailyPlan;
-        },
     },
     mixins: [
         mainMenu,

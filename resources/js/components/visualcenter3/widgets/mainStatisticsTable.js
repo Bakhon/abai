@@ -47,15 +47,6 @@ export default {
         };
     },
     methods: {
-        changeTargetCompanyFilter() {
-            this.isFilterTargetPlanActive = !this.isFilterTargetPlanActive;
-            if (!this.buttonTargetPlan) {
-                this.buttonTargetPlan = "";
-            } else {
-                this.buttonTargetPlan = "button-tab-highlighted";
-            }
-            this.changeMenu2(3);
-        },
         changeTable(change) {
             this.isFilterTargetPlanActive = false;
             this.buttonTargetPlan = "";
