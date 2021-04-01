@@ -604,13 +604,13 @@ class WaterMeasurementController extends CrudController
 
         $uhe = OmgUHE::query()
             ->where('gu_id', $request->gu_id)
-            ->where('date', '>=', Carbon::now()->subDays(30))
+            ->where('date', '>=', Carbon::now()->subDays(31))
             ->where('date', '<=', Carbon::now())
             ->get();
 
         $corrosion = CalculatedCorrosion::query()
             ->where('gu_id', $request->gu_id)
-            ->where('date', '>=', Carbon::now()->subDays(30))
+            ->where('date', '>=', Carbon::now()->subDays(31))
             ->where('date', '<=', Carbon::now())
             ->get();
 
