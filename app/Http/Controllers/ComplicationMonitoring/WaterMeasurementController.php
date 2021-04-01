@@ -615,7 +615,7 @@ class WaterMeasurementController extends CrudController
 
         $kormass = GuKormass::where('gu_id', $request->gu_id)->with('kormass')->first();
 
-        $pipe = Gu::find($request->gu_id)->mapPipes->first()->pipeType;
+        $pipe = Pipe::where('gu_id', $request->gu_id)->where('plot', 'eg')->first();
         $pipeAB = Pipe::where('gu_id', $request->gu_id)->where('plot', 'ab')->first();
 
         $constantsValues = ConstantsValue::get();
