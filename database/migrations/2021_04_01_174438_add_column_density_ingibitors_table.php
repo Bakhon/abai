@@ -26,7 +26,7 @@ class AddColumnDensityIngibitorsTable extends Migration
     public function down()
     {
         Schema::table('inhibitors', function (Blueprint $table) {
-            $table->dropColumn('inhibitors');
+            $table->dropColumn('density');
         });
     }
 }
