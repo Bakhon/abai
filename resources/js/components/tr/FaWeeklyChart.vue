@@ -37,37 +37,6 @@
         </div>
       </div>
       <div class="row sec_nav trfacolmdrowsecnav">
-        <div class="dropdown show">
-          <a
-            class="btn btn-secondary dropdown-toggle trfabtgraph"
-            href="#"
-            role="button"
-            id="dropdownMenuLink"
-            data-toggle="dropdown"
-            aria-haspopup="true"
-            aria-expanded="false"
-          >
-            {{trans('tr.trfacg')}}
-          </a>
-          <div
-            class="dropdown-menu fadropmenu"
-            aria-labelledby="dropdownMenuLink"
-            style="width: 576px; padding: 0"
-          >
-            <a
-              class="dropdown-item background_dropdown"
-              href="#"
-              @click="chartShow = 'bar'"
-              >{{trans('tr.trfag2')}}</a
-            >
-            <a
-              class="dropdown-item background_dropdown"
-              href="#"
-              @click="chartShow = 'line'"
-              >demo</a
-            >
-          </div>
-        </div>
         <div class="dropdown">
           <button
             class="btn btn-secondary dropdown-toggle trfabtgraph"
@@ -99,7 +68,7 @@
               value="Месторождение"
             >
               <option v-for="(f, k) in fieldFilter" :key="k" :value="f">
-                {{ f === undefined ? "Выберите месторождение" : f }}
+                {{ f === undefined ? trans('tr.choose_field') : f }}
               </option>
             </select>
           </div>
@@ -112,7 +81,7 @@
               value="Скважина"
             >
               <option v-for="(f, k) in wellFilters" :key="k" :value="f">
-                {{ f === undefined ? "Выберите скважину" : f }}
+                {{ f === undefined ? trans('tr.choose_well') : f }}
               </option>
             </select>
           </div>
@@ -120,23 +89,6 @@
         <notifications position="top"></notifications>
       </div>
       <div class="sec_nav">
-        <div class="" v-if="chartShow === 'bar'">
-          <div
-            class="second_block"
-            style="display: flex; justify-content: center"
-          >
-            <apexchart
-              v-if="barChartData && pieChartRerender"
-              type="bar"
-              width="1500"
-              height="95%"
-              :options="chartBarOptions"
-              :series="[{ name: '', data: barChartData }]"
-            ></apexchart>
-          </div>
-        </div>
-
-        <div class="" v-if="chartShow === 'line'">
           <div
             class="first_block"
             style="display: flex; justify-content: center"
@@ -149,7 +101,6 @@
               :options="areaChartOptions"
               :series="areaChartData"
             ></apexchart>
-          </div>
         </div>      
         </div>
     </div>
@@ -163,7 +114,6 @@ import VueApexCharts from "vue-apexcharts";
 export default {
   name: "Trfa",
   computed: {
-
     subtitleText() {
       return [
         getFilterText(
@@ -189,7 +139,7 @@ export default {
       ];
     },
     areaChartData() {
-      if (this.chartShow === 'line' && this.chartWells && this.chartWells.length > 0) {
+      if (this.chartWells && this.chartWells.length > 0) {
         let field = this.Filter_field;
         let well = this.Filter_well;
         try {
@@ -197,8 +147,9 @@ export default {
             (row) =>
               (!field || row.field === field) &&
               (!well || row.well === well)
-          );
-
+          ).sort((row1,row2)=>{
+            return new Date(row1.date) - new Date(row2.date);
+          });
           let qOil = filteredResult.map((row) => {
             return row.q_o
           });
@@ -208,10 +159,9 @@ export default {
           let qWct = filteredResult.map((row) => {
             return row.wct
           });
-          const categories = filteredResult.map((row) => {
-            return row.date
+          this.areaChartOptions.xaxis.categories = filteredResult.map((row) => {
+            return new Date(row.date).toLocaleDateString('ru-RU')
           });
-
           return [
             {
               name: "Q_Oil",
@@ -237,8 +187,7 @@ export default {
         let filters = [];
         this.allWells.forEach((el) => {
           if (
-            filters.indexOf(el.field) === -1 &&
-            (!this.Filter_well || el.well === this.Filter_well)
+            filters.indexOf(el.field) === -1
           ) {
             filters = [...filters, el.field];
           }
@@ -263,8 +212,6 @@ export default {
   },
   data: function () {
     return {
-      chartShow: "bar",
-      chartArr: ["bar","line"],
       chartWells: [],
       allWells: [],
       filteredWellsBar: [],
@@ -272,12 +219,10 @@ export default {
       dt2: null,
       date1: null,
       fullWells: [],
-      showFilters: false,
       areaChartRerender: true,
       Filter_well: undefined,
       Filter_field: undefined,
       xdate: [],
-
       areaChartOptions: {
         chart: {
             type: 'line',
@@ -309,6 +254,12 @@ export default {
       this.$nextTick(() => {
         this.areaChartRerender = true;
       });
+    },
+    wellFilters(newValue) {
+      this.Filter_well = newValue[0];
+    },
+    fieldFilter(newValue) {
+      this.Filter_field = newValue[0];
     },
   },
   methods: {
@@ -378,7 +329,6 @@ export default {
       .then((response) => {
         this.$store.commit("globalloading/SET_LOADING", false);
         let data = response.data;
-
         if (data) {
           console.log(data);
           this.fullWells = data.data;
@@ -390,20 +340,7 @@ export default {
         this.date1 = yyyy + "-" + mm + "-" + dd;
       });
   },
-  mounted: function () {
-    const mm =
-      `${this.$store.getters["fa/month"]}`.length < 2
-        ? `0${this.$store.getters["fa/month"]}`
-        : `${this.$store.getters["fa/month"]}`;
-    const prmm =
-      `${this.$store.getters["fa/prmonth"]}`.length < 2
-        ? `0${this.$store.getters["fa/prmonth"]}`
-        : `${this.$store.getters["fa/prmonth"]}`;
-    this.date1 = `${this.$store.getters["fa/year"]}-${mm}-01`;
-    this.date2 = `${this.$store.getters["fa/pryear"]}-${prmm}-01`;
-    this.dt = `01.${mm}.${this.$store.getters["fa/year"]}`;
-    this.dt2 = `01.${prmm}.${this.$store.getters["fa/pryear"]}`;
-  },
+
 };
 </script>
 <style  scoped>
@@ -423,13 +360,7 @@ body {
   margin-bottom: 13px;
   margin-top: 13px;
 }
-.trfacolbutnavlinkbut {
-  margin-left: 28px;
-}
-.trfabtdata {
-  margin-left: 864px;
-  background: #5973cc !important;
-}
+
 .trfabtgraph {
   width: 195px;
   background: #40467e !important;
@@ -459,6 +390,5 @@ a:hover {
   align-self: center;
   width: 150px;
   margin-top: 5px;
-
 }
 </style>
