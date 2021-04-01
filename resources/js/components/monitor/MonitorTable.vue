@@ -792,7 +792,7 @@ export default {
               let background_corrosion = this.lastCorrosion.background_corrosion_velocity;
               this.corrosionVelocity = corrosion_with_inhibitor ? corrosion_with_inhibitor : background_corrosion;
 
-              if (this.ngdu && this.oilGas) {
+              if (this.ngdu && this.oilGas && this.pipe) {
                 this.calc()
               }
 
@@ -839,8 +839,8 @@ export default {
               this.corF = data.corrosion_rate_mm_per_y_point_F
               this.dose = data.max_dose
               this.result = data
-              this.t_final_celsius_point_F = data.t_final_celsius_point_F
-              this.final_pressure = data.final_pressure_bar_point_F
+              this.t_final_celsius_point_F = data.t_final_celsius_point_F.toFixed(1)
+              this.final_pressure = data.final_pressure_bar_point_F.toFixed(2)
               this.$emit("chart5", data.max_dose)
             } else {
               console.log("No data")
