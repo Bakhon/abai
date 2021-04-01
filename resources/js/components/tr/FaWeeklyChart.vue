@@ -163,8 +163,7 @@ import VueApexCharts from "vue-apexcharts";
 export default {
   name: "Trfa",
   computed: {
-    // field horizon exp_meth
-    // Pbh wct p_res PI
+
     subtitleText() {
       return [
         getFilterText(
@@ -191,7 +190,6 @@ export default {
     },
     areaChartData() {
       if (this.chartShow === 'line' && this.chartWells && this.chartWells.length > 0) {
-        // const field = this.chartFilter_field;
         let field = this.Filter_field;
         let well = this.Filter_well;
         try {
@@ -200,9 +198,7 @@ export default {
               (!field || row.field === field) &&
               (!well || row.well === well)
           );
-          // console.log("asdfg", filteredResult);
-          // this.filteredData = filteredResult;
-          // this.filteredWellsBar = filteredResult;
+
           let qOil = filteredResult.map((row) => {
             return row.q_o
           });
@@ -215,14 +211,7 @@ export default {
           const categories = filteredResult.map((row) => {
             return row.date
           });
-          // let wellChecker = filteredResult.map((row) => {
-          //   if (row.well )
-          // });
-          console.log("qOil=", qOil);
-          console.log("qLiquid=", qLiquid);
-          console.log("qWct=", qWct);
-          console.log("filteredResult bat = ", filteredResult);
-          console.log("date = ", categories);
+
           return [
             {
               name: "Q_Oil",
@@ -288,10 +277,7 @@ export default {
       Filter_well: undefined,
       Filter_field: undefined,
       xdate: [],
-      // chartNames: [
-      //   "Распределение фонда скважин по основной причине снижения дебита нефти",
-      //   "Распределение суммарных отклонений TP по факторам, т/сут",
-      // ],
+
       areaChartOptions: {
         chart: {
             type: 'line',
@@ -313,17 +299,7 @@ export default {
           xaxis: {
             categories: []
           },
-          // tooltip: {
-          //   shared: false,
-          //   intersect: true,
-          //   x: {
-          //     show: false
-          //   }
-          // },
-          // legend: {
-          //   horizontalAlign: "left",
-          //   offsetX: 40
-          // }
+
         },
     };
   },
@@ -402,14 +378,7 @@ export default {
       .then((response) => {
         this.$store.commit("globalloading/SET_LOADING", false);
         let data = response.data;
-        // this.editdtm = mm;
-        // console.log(this.editdtm);
-        // this.editdty = yyyy;
-        // console.log(this.editdty);
-        // this.editdtprevm = prMm;
-        // console.log(this.editdtprevm);
-        // this.editdtprevy = yyyy;
-        // console.log(this.editdtprevy);
+
         if (data) {
           console.log(data);
           this.fullWells = data.data;
@@ -490,7 +459,6 @@ a:hover {
   align-self: center;
   width: 150px;
   margin-top: 5px;
-  /* display: flex;  */
-  /* justify-content: center */
+
 }
 </style>

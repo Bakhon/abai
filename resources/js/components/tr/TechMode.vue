@@ -1331,14 +1331,7 @@
                             >
                           </el-table-column>
                         </el-table-column>
-                        <el-table-column :label="`${this.trans('tr.trs78')}`">
-                          <el-table-column
-                            prop="gp_grp_q_liq_cas_d_corr"
-                            sortable
-                            label=""
-                            width="200"
-                            >
-                          </el-table-column>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
                         </el-table-column>
                         <el-table-column :label="`${this.trans('tr.tr21')}`">
                           <el-table-column
@@ -1426,8 +1419,6 @@ export default {
     TrFullTable,
     SearchFormRefresh,
     TrMultiselect,
-    // FadeLoader,
-    
   },
 
   computed: {
@@ -1962,7 +1953,6 @@ export default {
       const { filter, fullWells } = this;
       console.log("filter = ", filter);
       console.log(fullWells);
-      // if (!filter || filter == "Казгермунай") {
       this.$store.commit("tr/SET_FILTER", filter);
       if (!filter) {
         this.wells = fullWells;
