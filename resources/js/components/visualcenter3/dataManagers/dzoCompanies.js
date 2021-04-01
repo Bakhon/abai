@@ -56,6 +56,7 @@ export default {
                 fact: 0,
                 difference: 0,
                 percent: 0,
+                targetPlan: 0,
             },
             dzoCompaniesSummary: {},
             dzoType: {
@@ -74,7 +75,9 @@ export default {
             },
             dzoYearlyData: {
                 plan: 0,
-            }
+                lastMonthWithFact: 0,
+                totallyFact: 0,
+            },
         };
     },
     methods: {
@@ -131,10 +134,14 @@ export default {
 
         calculateDzoCompaniesSummary() {
             let summary = _.cloneDeep(this.dzoCompaniesSummaryInitial);
+            let self = this;
             _.map(this.dzoCompanySummary, function (company) {
                 summary.plan = parseInt(summary.plan) + parseInt(company.planMonth);
                 summary.fact = parseInt(summary.fact) + parseInt(company.factMonth);
                 summary.periodPlan = parseInt(summary.periodPlan) + parseInt(company.periodPlan);
+                if (self.isFilterTargetPlanActive) {
+                    summary.targetPlan = parseInt(summary.targetPlan) + parseInt(company.targetPlan);
+                }
             });
             summary.difference = this.formatDigitToThousand(
                 summary.plan - summary.fact);
@@ -144,6 +151,9 @@ export default {
             summary.plan = this.formatDigitToThousand(summary.plan);
             summary.fact = this.formatDigitToThousand(summary.fact);
             summary.periodPlan = this.formatDigitToThousand(summary.periodPlan);
+            if (this.isFilterTargetPlanActive) {
+                summary.targetPlan = this.formatDigitToThousand(summary.targetPlan);
+            }
             this.dzoCompaniesSummary = summary;
         },
 
@@ -203,7 +213,7 @@ export default {
             this.$emit("data", {
                 dzoCompaniesSummaryForChart: this.dzoCompaniesSummaryForChart,
                 opec: this.opec,
-                buttonYearlyTab: this.buttonYearlyTab
+                isFilterTargetPlanActive: this.isFilterTargetPlanActive
             });
         },
         sortDzoList() {

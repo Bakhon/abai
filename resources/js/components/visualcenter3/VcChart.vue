@@ -158,7 +158,7 @@
                 } else {
                     datasets = [planChartOptions, factChartOptions, deviation];
                 }
-                if (chartSummary.buttonYearlyTab) {
+                if (chartSummary.isFilterTargetPlanActive) {
                     datasets.push(dailyPlan);
                 }
 

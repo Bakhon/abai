@@ -5,7 +5,7 @@ export default {
         return {
             tdStyle: "index % 2 === 0 ? 'tdStyle' : 'tdNone'",
             tdStyleLight: "index % 2 === 0 ? 'tdStyleLight' : 'tdStyleLight2'",
-            daysCountInMonthMapping: {},
+            daysCountInMonthMapping: {}
         };
     },
     methods: {
@@ -113,9 +113,8 @@ export default {
         },
 
         getDaysCountInMonth(currentDate) {
-            let endDate = _.cloneDeep(currentDate);
-            let monthEnd = endDate.endOf("month");
-            return monthEnd.diff(currentDate, 'days')
+            let nextMonth = _.cloneDeep(currentDate).add(1, "M");
+            return nextMonth.diff(currentDate, 'days')
         },
 
         getQuarter(d) {

@@ -914,7 +914,7 @@ export default {
                 }))
                 .value();
 
-            if (this.buttonYearlyTab) {
+            if (this.isFilterTargetPlanActive) {
                 let daysInYear = this.getDaysInYear(moment().year(),summaryForChart);
                 summaryForChart = this.getSummaryChartForYear(summaryForChart,daysInYear);
             }
@@ -951,7 +951,7 @@ export default {
             let initialSummary = _.cloneDeep(this.initialYearlySummary);
             initialSummary.time = date.valueOf();
             initialSummary.dailyPlan = this.getDzoDailyPlan(date,summaryForChart);
-            this.dzoYearlyData.plan = this.dzoYearlyData.plan - monthlyPlan;
+            this.dzoYearlyData.plan -= this.dzoYearlyData.totallyFact;
             initialSummary.productionPlanForChart = monthlyPlan;
             return initialSummary;
         },
@@ -959,6 +959,7 @@ export default {
             let self = this;
             let initialPlans = _.cloneDeep(this.dzoMonthlyPlans);
             if (this.filteredDzoMonthlyPlans.length > 0) {
+                this.dzoYearlyData.totallyFact = 0;
                 initialPlans = _.cloneDeep(this.filteredDzoMonthlyPlans);
             }
             return _(initialPlans)
@@ -971,14 +972,29 @@ export default {
         },
 
         getDzoDailyPlan(date,summaryForChart) {
+            let monthlyFactSum = this.getMonthlyFact(date,summaryForChart);
+            this.refreshTotalFact(monthlyFactSum);
+            let leftMonthesInYear = 12 - (date.month() + 1);
+            let targetPlan = Math.round((this.dzoYearlyData.plan - monthlyFactSum) / leftMonthesInYear);
+            if (monthlyFactSum !== 0) {
+                this.dzoYearlyData.lastTargetPlanWithFact = targetPlan;
+            } else {
+                targetPlan =  this.dzoYearlyData.lastTargetPlanWithFact;
+            }
+            return targetPlan;
+        },
+
+        getMonthlyFact(date,summaryForChart) {
             let monthlyFactSummary = summaryForChart.filter(function(item) {
                 return new Date(parseInt(item.time)).getMonth() === date.month();
             }).map(function(item) {
                 return item;
             });
-            let monthlyFactSum = _.sumBy(monthlyFactSummary, 'productionFactForChart');
-            let leftMonthesInYear = 12 - (date.month() + 1);
-            return Math.round((this.dzoYearlyData.plan - monthlyFactSum) / leftMonthesInYear);
+            return _.sumBy(monthlyFactSummary, 'productionFactForChart');
+        },
+
+        refreshTotalFact(monthlyFactSum) {
+            this.dzoYearlyData.totallyFact += monthlyFactSum;
         },
 
         getAccidentTotal() {
@@ -997,6 +1013,29 @@ export default {
                     console.log('No data Accident')
                 }
             });
+        },
+
+        setTargetPlanForTable() {
+            let self = this;
+            _.forEach(this.dzoCompanySummary, function(dzo) {
+                dzo.targetPlan = self.getDzoPlanForPeriod(dzo.dzoMonth);
+            });
+        },
+
+        getDzoPlanForPeriod(dzoName) {
+            let currentMonth = moment().month();
+            let dailyPlan = 0;
+            let self = this;
+            _.forEach(this.dzoMonthlyPlans, function(dzo) {
+                let planDate = moment(dzo.date);
+                if (dzo.dzo === dzoName && planDate.month() < currentMonth) {
+                    dailyPlan +=  (dzo.plan_oil * self.daysCountInMonthMapping[planDate.month()]);
+                }
+                if (dzo.dzo === dzoName && planDate.month() === currentMonth) {
+                    dailyPlan += dzo.plan_oil * (moment().date() - 1);
+                }
+            });
+            return dailyPlan;
         },
     },
     mixins: [
@@ -1065,6 +1104,9 @@ export default {
     watch: {
         bigTable: function () {
             this.dzoCompanySummary = this.bigTable;
+            if (this.buttonYearlyTab) {
+                this.dzoCompanySummary.targetPlan = this.setTargetPlanForTable();
+            }
             this.calculateDzoCompaniesSummary();
         },
     },
