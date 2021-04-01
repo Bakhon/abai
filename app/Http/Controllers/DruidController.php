@@ -987,7 +987,7 @@ class DruidController extends Controller
         $vdata = [
             'flow_velocity_meter_per_sec' => round($v_lo, 1),
             'm_dot' => round($m_dot, 2),
-            'final_pressure_bar_point_F' => round($P_final, 1),
+            'final_pressure_bar_point_F' => round($P_final, 2),
             'corrosion_rate_mm_per_y_point_A' => round($r_a, 1),
             'corrosion_rate_mm_per_y_point_E' => round($r_e, 1),
             'corrosion_rate_mm_per_y_point_F' => round($r_f, 1),
