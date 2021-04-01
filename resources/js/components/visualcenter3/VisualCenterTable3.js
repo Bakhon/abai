@@ -933,10 +933,6 @@ export default {
           return daysInYear;
         },
 
-        getNulledTimezone(date,summaryForChart) {
-          return new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0);
-        },
-
         getDaysInYear(year,summaryForChart) {
             this.filteredDzoMonthlyPlans = _.cloneDeep(this.dzoMonthlyPlans).filter(row => this.selectedDzoCompanies.includes(row.dzo));
             this.dzoGroupedMonthlyPlans = this.getGroupedMonthlyPlans();
@@ -955,6 +951,7 @@ export default {
             let initialSummary = _.cloneDeep(this.initialYearlySummary);
             initialSummary.time = date.valueOf();
             initialSummary.dailyPlan = this.getDzoDailyPlan(date,summaryForChart);
+            this.dzoYearlyData.plan = this.dzoYearlyData.plan - monthlyPlan;
             initialSummary.productionPlanForChart = monthlyPlan;
             return initialSummary;
         },

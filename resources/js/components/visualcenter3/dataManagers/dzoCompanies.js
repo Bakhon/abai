@@ -74,8 +74,6 @@ export default {
             },
             dzoYearlyData: {
                 plan: 0,
-                fact: 0,
-                difference: 0
             }
         };
     },
