@@ -19,13 +19,7 @@
     .p-4{
         background-color: #0F1430;
     }
-    /* .main{
-        background-color: #0F1430;
-        background-image: url({{ asset('img/level1/grid.svg') }});
-        border: 1px solid #0D2B4D;
-        margin-left: 0px !important;
-        padding-top: 20px;
-    } */
+
     .title, .subtitle {
         color:white;
     }
