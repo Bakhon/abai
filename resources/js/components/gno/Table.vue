@@ -1470,13 +1470,10 @@
 
                               <div class="col-2">
                                 <label class="label-for-celevoi" >ØНКТ</label>
-                                  <select class="input-box-gno podbor" v-model="nkt" >
-                                  <option value="50,3">60x5</option>
-                                  <option value="62">73x5,5</option>
-                                  <option value="59,3">73x7</option>
-                                  <option value="75,9">89x6,5</option>
-                                  <option value="83,6">102x6,5</option>
-                                  <option value="100,3">114x7</option>
+                                  <select class="input-box-gno podbor" v-model="nkt" @change="postCurveData()">
+                                    <option v-for="nkts in nkt_choose" :value="nkts.for_calc_value" >
+                                    {{nkts.show_value}}
+                                    </option>
                                   </select>
                               </div>
 
@@ -2245,6 +2242,31 @@ export default {
       ao: null,
       orgs: null,
       nkt: null,
+      nkt_choose: [
+        {
+          for_calc_value: 50.3,
+          show_value: "60x5",
+        },
+        {
+          for_calc_value: 62,
+          show_value: "73x5,5",
+        },
+        {
+          for_calc_value: 59.3,
+          show_value: "73x7",
+        },
+        {
+          for_calc_value: 75.9,
+          show_value: "89x6,5",
+        },
+        {
+          for_calc_value: 83.6,
+          show_value: "102x6,5",
+        },
+        {
+          for_calc_value: 100.3,
+          show_value: "114x7",
+        }],
       hPumpFromIncl: null,
       isButtonHpump: false,
       postdata: null,
@@ -2345,7 +2367,8 @@ export default {
           "sep_value": this.sep_value,
           "mech_sep": this.mech_sep,
           "mech_sep_value": this.mech_sep_value,
-          "nat_sep": this.nat_sep
+          "nat_sep": this.nat_sep,
+          "nkt": this.nkt,
         })
     },
     downloadExcel() {
@@ -2481,6 +2504,7 @@ export default {
         this.wellIncl = data["Well Data"]["well"][0]
         this.hPerfND = data["Well Data"]["h_perf"][0]
         this.strokeLenDev = data["Well Data"]["stroke_len"][0]
+        this.nkt = this.tubID
         var langUrl = `${window.location.pathname}`.slice(1, 3);
         if (this.expMeth == 'ШГН') {
           if(langUrl === 'ru') {
