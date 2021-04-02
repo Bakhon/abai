@@ -145,7 +145,7 @@ Vue.component('cat-loader', require('./components/ui-kit/CatLoader.vue').default
 Vue.component('pagination', require('laravel-vue-pagination'));
 Vue.component('report-export', require('./components/reports/export.vue').default);
 Vue.component('tr_mode-table', require('./components/tr/TechMode.vue').default);
-Vue.component('tr_weekly_chart', require('./components/tr/FaWeeklyChart.vue').default);
+Vue.component('fa_weekly_chart', require('./components/tr/FaWeeklyChart.vue').default);
 
 
 
