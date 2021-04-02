@@ -11,7 +11,7 @@
             id="reportTypeSelect"
             :disabled="isLoading"
             v-model="input.reportType"
-            v-on:change="increaseSelectionLevel"
+            @change="increaseSelectionLevel"
         >
           <option disabled value="">Выберите тип отчета</option>
           <option value="По месяцам">По месяцам</option>
@@ -29,7 +29,7 @@
             id="reportRepresentation"
             :disabled="isLoading"
             v-model="input.reportRepresentation"
-            v-on:change="increaseSelectionLevel"
+            @change="increaseSelectionLevel"
         >
           <option disabled value="">Выберите представление</option>
           <option value="Данные по каждому объекту">Данные по каждому объекту</option>
@@ -45,7 +45,7 @@
             id="reportTypeSelect"
             :disabled="isLoading"
             v-model="input.objectType"
-            v-on:change="onObjectTypeChange"
+            @change="onObjectTypeChange"
         >
           <option disabled value="">Выберите объект для отчета</option>
           <option v-for="(objectName, objectType) in objectNameByType" :value="objectType">{{ objectName }}</option>
@@ -80,7 +80,7 @@
               class="col form-control filter-input-multiple select mr-2 mb-2"
               :disabled="isLoading"
               v-model="input.objectValue"
-              v-on:change="onObjectTypeChange"
+              @change="onObjectTypeChange"
               multiple
           >
 
@@ -128,7 +128,7 @@ export default {
   components: {},
   data() {
     return {
-      baseUrl: 'http://127.0.0.1:8092/',
+      baseUrl: 'http://172.20.103.187:8084/',
       input: {
         reportType: null,
         reportRepresentation: null,
