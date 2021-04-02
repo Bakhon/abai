@@ -96,6 +96,7 @@ export default {
                 if (periodStart > periodEnd) {
                     periodStart = this.getPreviousWorkday();
                 }
+
                 this.range = {
                     start: periodStart,
                     end: periodEnd,
@@ -126,9 +127,12 @@ export default {
                 this.currentDzoList = 'monthly';
                 let periodStart = moment().startOf('month').format();
                 let periodEnd = moment().subtract(1, "days").endOf('day').format();
-                if (periodStart > periodEnd) {
+                let daysDifference = moment(periodEnd).diff(moment(periodStart), 'days');
+                if (periodStart > periodEnd || daysDifference < 2) {
+                    periodEnd = moment(periodStart).endOf('day').format();
                     periodStart = this.getPreviousWorkday();
                 }
+
                 this.range = {
                     start: periodStart,
                     end: periodEnd,
