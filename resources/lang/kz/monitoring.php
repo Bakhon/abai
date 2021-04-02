@@ -141,8 +141,8 @@ return array (
       'daily_oil_production' => 'Мұнайдың тәуліктік өндірілуі, т/тәулік',
       'daily_gas_production_in_sib' => 'БӨС газ мөлшері, ст.м³/тәулік',
       'bsw' => 'Сулану, %',
-      'surge_tank_pressure' => 'Буферлік сыйымдылық қысымы, бар',
-      'pump_discharge_pressure' => 'Сораптың шығыс қысымы, бар',
+      'surge_tank_pressure' => 'Буферлік сыйымдылық қысымы, кгс\\см2',
+      'pump_discharge_pressure' => 'Сораптың шығыс қысымы, кгс\\см2',
       'temperature' => 'Пештің кіріс температурасы, С',
       'heater_inlet_temperature' => 'Пештің кіріс температурасы, С',
       'heater_output_temperature' => 'Пештің шығыс температурасы, С',
@@ -235,9 +235,9 @@ return array (
     'fields' => 
     array (
       'title' => 'Аталуы',
-      'price' => 'баға',
+      'price' => 'баға тнг\\кг',
       'price_date' => 'Баға өзгеру уақыты',
-      'density' => 'Тығыздық',
+      'density' => 'Тығыздық  кг\\м³',
     ),
   ),
   'map' => 

@@ -587,7 +587,7 @@ class DruidController extends Controller
             }
         }
 
-        if ($r_a > 0.125) {
+        if ($r_a > 0.2) {
             if ($conH2S < 17) {
                 $dose_a = 14.177 * log($r_a) + 35.222;
                 //return $dose;
