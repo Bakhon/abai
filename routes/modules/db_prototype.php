@@ -29,6 +29,7 @@ Route::group(
                 Route::get('form/{form}/rows', 'bd\FormsController@getRows');
                 Route::get('form/{form}/row-history', 'bd\FormsController@getRowHistory');
                 Route::get('form/{form}/row-history-graph', 'bd\FormsController@getRowHistoryGraph');
+                Route::get('form/{form}/copy', 'bd\FormsController@copyFieldValue');
                 Route::get('form/{form}/well-prefix', 'bd\FormsController@getWellPrefix');
                 Route::post('form/{form}/validate/{field}', 'bd\FormsController@validateField')->name(
                     'bigdata.form.validate.field'
