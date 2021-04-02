@@ -4,6 +4,7 @@
 namespace App\Services\BigData;
 
 use App\Services\BigData\Forms\TableForm;
+use Carbon\Carbon;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
@@ -48,7 +49,7 @@ class FieldLimitsService
             );
 
         $cacheKey = TableForm::getLimitsCacheKey($field, $date);
-        Cache::put($cacheKey, $result->toJson(), \Carbon\Carbon::now()->addDay());
+        Cache::put($cacheKey, $result->toJson(), Carbon::now()->addDay());
 
         return $result->toArray();
     }
