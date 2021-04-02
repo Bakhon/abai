@@ -1470,13 +1470,13 @@
 
                               <div class="col-2">
                                 <label class="label-for-celevoi" >ØНКТ</label>
-                                  <select class="input-box-gno podbor" v-model="nkt" >
-                                  <option value="50,3">60x5</option>
+                                  <select class="input-box-gno podbor" v-model="nkt" @change="postCurveData()">
+                                  <option value="50.3">60x5</option>
                                   <option value="62">73x5,5</option>
-                                  <option value="59,3">73x7</option>
-                                  <option value="75,9">89x6,5</option>
-                                  <option value="83,6">102x6,5</option>
-                                  <option value="100,3">114x7</option>
+                                  <option value="59.3">73x7</option>
+                                  <option value="75.9">89x6,5</option>
+                                  <option value="83.6">102x6,5</option>
+                                  <option value="100.3">114x7</option>
                                   </select>
                               </div>
 
@@ -2345,7 +2345,8 @@ export default {
           "sep_value": this.sep_value,
           "mech_sep": this.mech_sep,
           "mech_sep_value": this.mech_sep_value,
-          "nat_sep": this.nat_sep
+          "nat_sep": this.nat_sep,
+          "nkt": this.nkt,
         })
     },
     downloadExcel() {
@@ -2481,6 +2482,7 @@ export default {
         this.wellIncl = data["Well Data"]["well"][0]
         this.hPerfND = data["Well Data"]["h_perf"][0]
         this.strokeLenDev = data["Well Data"]["stroke_len"][0]
+        this.nkt = this.tubID
         var langUrl = `${window.location.pathname}`.slice(1, 3);
         if (this.expMeth == 'ШГН') {
           if(langUrl === 'ru') {
