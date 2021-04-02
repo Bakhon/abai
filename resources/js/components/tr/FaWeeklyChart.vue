@@ -228,7 +228,7 @@ export default {
             stacked: false
           },
           title: {
-            text: "Еженедельный график",
+            text: this.trans('tr.weekly_chart'),
             align: "center",
             style: {
               color: "#5FA7FF",
