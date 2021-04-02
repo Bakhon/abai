@@ -62,7 +62,7 @@
         </div>
           <div style="margin-left: 7px; cursor: pointer;">
             <select
-              class="select_mod form-control faweeklydropdown"
+              class="select_mod form-control fa_weekly_dropdown"
               v-model="Filter_field"
               value="Месторождение"
             >
@@ -74,7 +74,7 @@
         <div>
           <div style="margin-left: 7px; cursor: pointer;">
             <select
-              class="select_mod form-control faweeklydropdown"
+              class="select_mod form-control fa_weekly_dropdown"
               v-model="Filter_well"
               value="Скважина"
             >
@@ -413,7 +413,7 @@ a:hover {
   width: 150px;
   margin-top: 5px;
 }
-.faweeklydropdown {
+.fa_weekly_dropdown {
   background: #454FA1 !important;
 }
 </style>
