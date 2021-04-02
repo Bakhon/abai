@@ -76,8 +76,6 @@
                       <path d="M11.1 21L9.07071 18.9707C9.03166 18.9317 9.03166 18.8684 9.07071 18.8293L11.1 16.8" stroke="#D6D7E3" stroke-width="1.4" stroke-linecap="round"/>
                     </svg></a>
                 </div>
-
-
         </div>
 
 
@@ -1325,7 +1323,7 @@ export default {
       const pryyyy = choosenSecDt[0];
       this.isChartLink = "trfa"
       if (choosenDt[1] <= choosenSecDt[1] && choosenDt[0] === choosenSecDt[0]) {
-        Vue.prototype.$notifyError("Дата 2 должна быть меньше чем Дата 1");
+        Vue.prototype.$notifyError(this.trans('tr.fa_alarm'));
       } else {
         this.$store.commit("globalloading/SET_LOADING", true);
         this.$store.commit("fa/SET_MONTH", mm);
