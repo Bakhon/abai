@@ -62,8 +62,7 @@
         </div>
           <div style="margin-left: 7px; cursor: pointer;">
             <select
-              class="select_mod form-control"
-              style="background: #334296 !important"
+              class="select_mod form-control faweeklydropdown"
               v-model="Filter_field"
               value="Месторождение"
             >
@@ -75,8 +74,7 @@
         <div>
           <div style="margin-left: 7px; cursor: pointer;">
             <select
-              class="select_mod form-control"
-              style="background: #334296 !important"
+              class="select_mod form-control faweeklydropdown"
               v-model="Filter_well"
               value="Скважина"
             >
@@ -96,7 +94,7 @@
             <apexchart
               v-if="areaChartData && areaChartRerender"
               type="line"
-              width="800"
+              width="1600"
               height="100%"
               :options="areaChartOptions"
               :series="areaChartData"
@@ -229,6 +227,13 @@ export default {
             height: 350,
             stacked: false
           },
+          title: {
+            text: "Еженедельный график",
+            align: "center",
+            style: {
+              color: "#5FA7FF",
+            },
+          },
           dataLabels: {
             enabled: false
           },
@@ -241,9 +246,26 @@ export default {
               columnWidth: "20%"
             }
           },
-          xaxis: {
-            categories: []
+          legend: {
+            position: "bottom",
+            labels: {
+              useSeriesColors: true,
+            },
           },
+          xaxis: {
+            labels: {
+              hideOverlappingLabels: true,
+              style: {
+                colors: "#5FA7FF",
+              },
+          },},
+          yaxis: {
+            labels: {
+              hideOverlappingLabels: true,
+              style: {
+                colors: "#5FA7FF",
+              },
+          },},
 
         },
     };
@@ -363,7 +385,7 @@ body {
 
 .trfabtgraph {
   width: 195px;
-  background: #40467e !important;
+  background: #454FA1  !important;
 }
 a:hover {
   color: #ffffff;
@@ -390,5 +412,8 @@ a:hover {
   align-self: center;
   width: 150px;
   margin-top: 5px;
+}
+.faweeklydropdown {
+  background: #454FA1 !important;
 }
 </style>

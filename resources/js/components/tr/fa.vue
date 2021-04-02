@@ -132,7 +132,7 @@
       />
       <a
         class="but-nav__link but"
-        href="trfa"
+        :href="isChartLink"
         @click="pushBign('chart')"
         style="background: #272953"
         ><svg
@@ -1055,6 +1055,7 @@ export default {
       isDynamic: true,
       colsize7: null,
       colsize2: null,
+      isChartLink: "fa_weekly_chart",
       // filter: "Все месторождения",
       filter: [...fields],
       fieldFilterOptions: [
@@ -1263,6 +1264,7 @@ export default {
       this.colsize2= 2;
       this.isDynamic = true;
       this.isGenHide = true;
+      this.isChartLink = "fa_weekly_chart"
       this.$store.commit("fa/SET_IS_DYNAMIC", true);
       this.$store.commit("globalloading/SET_LOADING", true);
       this.$store.commit("fa/SET_MONTH", mm);
@@ -1321,6 +1323,7 @@ export default {
       const prMm = choosenSecDt[1];
       const yyyy = choosenDt[0];
       const pryyyy = choosenSecDt[0];
+      this.isChartLink = "trfa"
       if (choosenDt[1] <= choosenSecDt[1] && choosenDt[0] === choosenSecDt[0]) {
         Vue.prototype.$notifyError("Дата 2 должна быть меньше чем Дата 1");
       } else {
@@ -1523,6 +1526,7 @@ export default {
     this.isGenHide= true;
     this.colsize7 = 7;
     this.colsize2 = 2;
+    this.isChartLink = "fa_weekly_chart"
     var weekd1 = yyyy + "-" + mm + "-" + dd;
     var weekd2 = pryyyy + "-" + prmm + "-" + prdd;
     this.$store.commit("fa/SET_IS_DYNAMIC", true);

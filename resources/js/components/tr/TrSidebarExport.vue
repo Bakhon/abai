@@ -90,6 +90,7 @@ export default {
       }
     },
     download() {
+      this.$store.commit("globalloading/SET_LOADING", true);
       this.axios
         .post(
           this.downloadLink,
@@ -101,7 +102,9 @@ export default {
         .then((response) => {
           fileDownload(
             response.data,
-            this.filename
+            this.filename,
+            this.$store.commit("globalloading/SET_LOADING", false),
+
           );
           console.log("download then = ", response);
         })
