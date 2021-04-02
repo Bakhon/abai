@@ -8,7 +8,7 @@ Route::group(
             function () {
                 Route::get('/', 'bd\DBController@bigdata')->name('bigdata');
                 Route::get('/las', 'bd\DBController@las')->name('las');
-                Route::get('/user_reports', 'bd\DBController@userReports')->name('las');
+                Route::get('/user_reports', 'bd\DBController@userReports')->name('userReports');
 
                 Route::get('/reports', 'bd\DBController@reports')->name('bigdata.reports');
                 Route::get('/reports/favorite', 'bd\DBController@favoriteReports')->name('bigdata.reports.favorite');
