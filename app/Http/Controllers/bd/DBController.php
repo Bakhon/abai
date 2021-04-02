@@ -9,7 +9,7 @@ class DBController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('can:bigdata view main')->only('bigdata', 'form', 'las');
+        $this->middleware('can:bigdata view main')->only('bigdata', 'form', 'las', 'user_reports');
     }
 
     public function mzdn()
@@ -25,6 +25,11 @@ class DBController extends Controller
     public function las()
     {
         return view('reports.las');
+    }
+
+    public function user_reports()
+    {
+        return view('reports.user_reports');
     }
 
     public function constructor()
