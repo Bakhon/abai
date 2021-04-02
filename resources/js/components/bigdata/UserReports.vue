@@ -259,10 +259,10 @@ export default {
       let objectType = this.getInternalObjectType(this.input.objectType)
       this.$store.commit('globalloading/SET_LOADING', true);
       this.exampleReport = null;
-      let json_data = JSON.stringify({
+      let jsonData = JSON.stringify({
         'object_names': this.input.objectValue.join(',')
       });
-      this.axios.post(this.baseUrl + 'get_some_object_data/'+ objectType, json_data, {
+      this.axios.post(this.baseUrl + 'get_some_object_data/'+ objectType, jsonData, {
         responseType: 'json',
         headers: {
           'Content-Type': 'application/json'
