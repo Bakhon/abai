@@ -125,9 +125,6 @@ export default {
             summary.plan = this.formatDigitToThousand(summary.plan);
             summary.fact = this.formatDigitToThousand(summary.fact);
             summary.periodPlan = this.formatDigitToThousand(summary.periodPlan);
-            if (this.isFilterTargetPlanActive) {
-                summary.targetPlan = this.formatDigitToThousand(summary.targetPlan);
-            }
             this.dzoCompaniesSummary = summary;
         },
 

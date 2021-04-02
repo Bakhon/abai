@@ -464,7 +464,6 @@ export default {
 
                 this.dzoCompaniesSummaryForChart = this.getProductionForChart(dataWithMay3);
             } else {
-
                 this.dzoCompaniesSummaryForChart = this.getProductionForChart(dataWithMay);
             }
 
@@ -548,6 +547,7 @@ export default {
 
                 this.dzoCompaniesSummaryForChart = this.getProductionForChart(dataWithMay2);
             } else {
+                this.dzoInputData = dataWithMay;
                 this.dzoCompaniesSummaryForChart = this.getProductionForChart(dataWithMay);
             }
 
@@ -917,7 +917,7 @@ export default {
 
             if (this.isFilterTargetPlanActive) {
                 let monthlyPlansInYear = this.getMonthlyPlansInYear(summaryForChart);
-                summaryForChart = this.getSummaryChartForYear(summaryForChart,monthlyPlansInYear);
+                summaryForChart = monthlyPlansInYear;
             }
 
             return summaryForChart;
@@ -1004,10 +1004,18 @@ export default {
     watch: {
         bigTable: function () {
             this.dzoCompanySummary = this.bigTable;
-            if (this.buttonYearlyTab) {
-                this.dzoCompanySummary.targetPlan = this.setTargetPlanForTable();
-            }
             this.calculateDzoCompaniesSummary();
+        },
+        dzoCompaniesSummaryForChart: function () {
+            if (this.isFilterTargetPlanActive) {
+                let self = this;
+                _.forEach(this.dzoCompanySummary, function(dzo) {
+                     let yearlyData = self.getProductionData(self.dzoInputData,dzo.dzoMonth);
+                     dzo.targetPlan = self.getSummaryTargetPlan(yearlyData);
+                });
+                let summaryTargetPlan = _.sumBy(this.dzoCompanySummary, 'targetPlan');
+                this.dzoCompaniesSummary.targetPlan = this.formatDigitToThousand(summaryTargetPlan);
+            }
         },
     },
     computed: {
