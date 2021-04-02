@@ -705,7 +705,7 @@
                             data-toggle="dropdown"
                     ></button>
                     <div class="dzo-company-list">
-                      <ul class="dropdown-menu-vc dropdown-menu dropdown-menu-right">
+                      <ul class="dropdown-menu-vc dropdown-menu dropdown-menu-right dzo-dropdown">
                         <li class="px-4">
                           <div>
                             <input
@@ -791,12 +791,36 @@
                 </div>
               </div>
               <div class="col-8 col-lg px-1">
-                <div
-                        :class="[`${buttonYearlyTab}`,'button2']"
-                        @click="changeMenu2(3)"
-                >
+
+
+                <div :class="[`${buttonYearlyTab}`,'button2']">
+                  <div
+                          class="button1-vc-inner"
+                          @click="changeMenu2(3)"
+                  >
                   {{ trans("visualcenter.yearBegin") }}
+                  </div>
+                  <button
+                          type="button"
+                          class="btn btn-primary dropdown-toggle position-button-vc dzocompanies__button_position"
+                          data-toggle="dropdown"
+                  ></button>
+                  <div class="dzo-company-list">
+                    <ul class="dropdown-menu-vc dropdown-menu dropdown-menu-right year-period-dropdown">
+                      <li :class="[`${buttonTargetPlan}`, 'px-4']">
+                        <input
+                                type="checkbox"
+                                :disabled="!buttonYearlyTab"
+                                :checked="isFilterTargetPlanActive"
+                                @change="`${changeTargetCompanyFilter()}`"
+                        ></input>
+                        {{ trans("visualcenter.targetPlanFilter") }}
+                      </li>
+                    </ul>
+                  </div>
                 </div>
+
+
               </div>
               <div class="col-8 col-lg pl-1">
                 <div class="dropdown3">
@@ -905,8 +929,13 @@
                           {{ trans("visualcenter.chemistryMetricTon") }}
                         </div>
                       </th>
-                      <th>
+                      <th v-if="!isFilterTargetPlanActive">
                         {{ trans("visualcenter.dzoPercent") }}
+                      </th>
+                      <th v-if="isFilterTargetPlanActive">
+                        {{ trans("visualcenter.dzoTargetPlan") }}
+                        <br>
+                        {{ trans("visualcenter.dzoThousandTon") }}
                       </th>
                       <th v-if="exactDateSelected">
                         {{ trans("visualcenter.dzoOpec") }}
@@ -988,7 +1017,10 @@
                           }}
                         </div>
                       </td>
-                      <td :class="`${getDzoColumnsClass(index,'percent')}`">
+                      <td
+                              v-if="!isFilterTargetPlanActive"
+                              :class="`${getDzoColumnsClass(index,'percent')}`"
+                      >
                         <div
                           v-if="item.factMonth"
                           :class="
@@ -1002,6 +1034,14 @@
                           {{
                           formatVisTableNumber3 (item.factMonth , item.planMonth)
                           }}
+                        </div>
+                      </td>
+                      <td
+                              v-if="isFilterTargetPlanActive"
+                              :class="`${getDzoColumnsClass(index,'percent')}`"
+                      >
+                        <div class="font">
+                          {{ formatDigitToThousand(item.targetPlan) }}
                         </div>
                       </td>
                       <td
@@ -1105,7 +1145,10 @@
                           </div>
                         </div>
                       </td>
-                      <td :class="`${getDarkerClass(index)}`">
+                      <td
+                              v-if="!isFilterTargetPlanActive"
+                              :class="`${getDarkerClass(index)}`"
+                      >
                         <div
                           v-if="factMonthSumm"
                           :class="
@@ -1117,6 +1160,14 @@
                         ></div>
                         <div class="font dynamic" v-if="factMonthSumm">
                           {{dzoCompaniesSummary.percent}}
+                        </div>
+                      </td>
+                      <td
+                              v-if="isFilterTargetPlanActive"
+                              :class="`${getDarkerClass(index)}`"
+                      >
+                        <div class="font">
+                          {{dzoCompaniesSummary.targetPlan}}
                         </div>
                       </td>
                       <td
@@ -2466,9 +2517,12 @@
     color:white;
   }
 
+  .dzo-dropdown {
+    height: 450px;
+  }
+
   .dzo-company-list ul {
     margin: 10px 0 0 0;
-    height: 450px;
     position: absolute;
     left: -0.5px;
     background: #40467E;
@@ -2623,6 +2677,9 @@
     .mt-20 {
       margin-top: 20%;
     }
+    .year-period-dropdown {
+      min-width: 0;
+    }
   }
   @media (max-width:2000px) {
     .table4 {
@@ -2632,6 +2689,10 @@
     }
     .row-name_width_40 {
       width: 80%;
+    }
+    .year-period-dropdown {
+      min-width: 290px;
+      height: 45px;
     }
   }
   .dzocompanies__button_position {

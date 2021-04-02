@@ -98,11 +98,8 @@ export default {
             return dzo;
         },
 
-        getDaysCountInYear() {
-            let currentDate = new Date(this.timestampToday);
-            let yearEnd = moment().endOf("year");
-
-            return yearEnd.diff(currentDate, 'days')
+        getDaysCountInMonth(date) {
+            return moment(date, "YYYY-MM").daysInMonth();
         },
 
         getQuarter(d) {

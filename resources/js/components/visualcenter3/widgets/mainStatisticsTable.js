@@ -48,6 +48,8 @@ export default {
     },
     methods: {
         changeTable(change) {
+            this.isFilterTargetPlanActive = false;
+            this.buttonTargetPlan = "";
             this.company = "all";
             this.Table1 = "display:none";
             this.Table2 = "display:none";

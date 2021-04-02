@@ -56,12 +56,13 @@ export default {
                 fact: 0,
                 difference: 0,
                 percent: 0,
+                targetPlan: 0,
             },
             dzoCompaniesSummary: {},
             dzoType: {
                 isOperating: [],
                 isNonOperating: []
-            }
+            },
         };
     },
     methods: {
@@ -107,10 +108,14 @@ export default {
 
         calculateDzoCompaniesSummary() {
             let summary = _.cloneDeep(this.dzoCompaniesSummaryInitial);
+            let self = this;
             _.map(this.dzoCompanySummary, function (company) {
                 summary.plan = parseInt(summary.plan) + parseInt(company.planMonth);
                 summary.fact = parseInt(summary.fact) + parseInt(company.factMonth);
                 summary.periodPlan = parseInt(summary.periodPlan) + parseInt(company.periodPlan);
+                if (self.isFilterTargetPlanActive) {
+                    summary.targetPlan = parseInt(summary.targetPlan) + parseInt(company.targetPlan);
+                }
             });
             summary.difference = this.formatDigitToThousand(
                 summary.plan - summary.fact);
@@ -166,12 +171,11 @@ export default {
         },
 
         getFilteredDzoYearlyPlan() {
-            let dzoYearlyPlanData = _.cloneDeep(this.yearlyPlan);
-            let filteredPlanData = dzoYearlyPlanData.filter(row => this.selectedDzoCompanies.includes(row.dzo));
+            let dzoMonthlyPlanData = _.cloneDeep(this.dzoMonthlyPlans);
+            let filteredPlanData = dzoMonthlyPlanData.filter(row => this.selectedDzoCompanies.includes(row.dzo));
             if (filteredPlanData.length === 0) {
-                filteredPlanData = dzoYearlyPlanData;
+                filteredPlanData = dzoMonthlyPlanData;
             }
-
             return filteredPlanData;
         },
 
@@ -180,6 +184,7 @@ export default {
             this.$emit("data", {
                 dzoCompaniesSummaryForChart: this.dzoCompaniesSummaryForChart,
                 opec: this.opec,
+                isFilterTargetPlanActive: this.isFilterTargetPlanActive
             });
         },
         sortDzoList() {
