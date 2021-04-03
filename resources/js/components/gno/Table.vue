@@ -1471,7 +1471,7 @@
                               <div class="col-2">
                                 <label class="label-for-celevoi" >ØНКТ</label>
                                   <select class="input-box-gno podbor" v-model="nkt" @change="postCurveData()">
-                                    <option v-for="nkts in nkt_choose" :value="nkts.for_calc_value" >
+                                    <option v-for="(nkts, index) in nkt_choose" :value="nkts.for_calc_value" :key="index" >
                                     {{nkts.show_value}}
                                     </option>
                                   </select>
