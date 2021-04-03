@@ -1,0 +1,62 @@
+{
+  "table": "bigdata_wells",
+  "tabs": [
+    {
+      "title": "Основное",
+      "blocks": [
+        {
+          "title": "Показатели тех режимов",
+          "items": [
+              {
+                  "code": "date_start",
+                  "type": "date",
+                  "title": "Дата начала",
+                  "validation": "nullable|date|before_or_equal:today"
+                },
+                {
+                  "code": "date_end",
+                  "type": "date",
+                  "title": "Дата окончания",
+                  "validation": "nullable|date|before_or_equal:today|after:date_start_drilling"
+                }
+
+          ]
+        },
+        {
+          "title": "Намечаемый режим по добыче",
+          "items": [
+              {
+              "code": "liquid",
+              "type": "numeric",
+              "title": "Жидкость (м3/сутки)",
+              "validation": "numeric"
+              },
+              {
+              "code": "oil",
+              "type": "numeric",
+              "title": "Нефть (Т/сутки)",
+              "validation": "numeric"
+              },
+              {
+              "code": "water_cut",
+              "type": "numeric",
+              "title": "Обводненность (%)",
+              "validation": "numeric|min:0|max:100"
+              }
+          ]
+        },
+        {
+          "title": "Расчитываемые поля",
+          "items": [
+              {
+              "code": "oil_density",
+              "type": "numeric",
+              "title": "Плотность нефти (Т/М3)",
+              "validation": "numeric"
+              }
+          ]
+        }
+      ]
+    }
+  ]
+}
