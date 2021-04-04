@@ -16,7 +16,7 @@
             </thead>
             <tbody>
             <tr v-for="(fields, date) in params.table.rows">
-              <td>{{ date }}</td>
+              <td>{{ fields[column.code] === null ? date : fields[column.code].time }}</td>
               <td v-for="column in tableColumns">
                 {{ fields[column.code] === null ? '' : fields[column.code].value }}
               </td>
@@ -26,14 +26,15 @@
         </div>
         <div class="graph">
           <Plotly :data="graphData"
-                  :display-mode-bar="false"
+                  :display-mode-bar="true"
                   :displaylogo="false"
+                  :mode-bar-buttons-to-remove="buttonsToRemove"
                   :layout="layout"
+                  :options="options"
           />
         </div>
       </div>
     </div>
-
   </div>
 </template>
 
@@ -51,7 +52,21 @@ export default {
   },
   data() {
     return {
+      buttonsToRemove: [
+        'zoom2d',
+        'pan2d',
+        'select2d',
+        'lasso2d',
+        'zoomIn2d',
+        'zoomOut2d',
+        'autoScale2d',
+        'resetScale2d',
+        'hoverClosestCartesian',
+        'hoverCompareCartesian',
+        'toggleSpikelines'
+      ],
       layout: {
+        grid: {rows: 2, columns: 1, pattern: 'independent'},
         bargap: 0.05,
         bargroupgap: 0.2,
         barmode: "overlay",
@@ -64,7 +79,6 @@ export default {
         },
         xaxis: {
           title: '',
-          hoverformat: ".1f",
           gridcolor: "#454D7D",
           linewidth: 1,
           linecolor: "#454D7D",
@@ -152,9 +166,6 @@ export default {
       let column = this.formParams.columns.find(item => item.code === this.params.selectedColumn)
       return column.history_popup.title
     }
-  },
-  mounted() {
-
   }
 }
 </script>

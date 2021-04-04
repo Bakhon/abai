@@ -219,7 +219,7 @@ abstract class TableForm extends BaseForm
                     break;
             }
 
-            $result[$date] = ['value' => $value];
+            $result[$date] = ['value' => $value, 'time' => Carbon::parse($row->dbeg)->format('d.m.Y H:i:s')];
         }
 
         return $result;
