@@ -419,7 +419,7 @@ export default {
     },
     copyValues(row, column, rowIndex) {
 
-      this.$bvModal.msgBoxConfirm('Are you sure?', {
+      this.$bvModal.msgBoxConfirm(this.trans('bd.sure_you_want_to_copy'), {
         okTitle: this.trans('app.yes'),
         cancelTitle: this.trans('app.no'),
       })
