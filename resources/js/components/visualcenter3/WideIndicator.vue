@@ -25,7 +25,7 @@
             </div>
             <div class="d-flex d-flex-row mt-3 justify-content-between">
                 <div>
-                    <div class="name-squre-block font-weight-bold m-0 d-flex">{{ title }}</div>
+                    <div class="txt1 font-weight-bold m-0 d-flex">{{ title }}</div>
                 </div>
                 <div v-if="!hidePercents" class="txt2-2 d-flex justify-content-end font-weight-bold align-items-center">
                     <div v-if="isUpArrow" class="arrow3"></div>

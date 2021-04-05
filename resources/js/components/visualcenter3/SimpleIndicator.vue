@@ -5,7 +5,7 @@
             <div class="vc-wide-indicator-tooltip-text text-nowrap">
                 {{ units }}
             </div>
-            <div class="name-squre-block font-weight-bold m-0 d-flex mt-3">{{ title }}</div>
+            <div class="txt1 font-weight-bold m-0 d-flex mt-3">{{ title }}</div>
         </div>
     </div>
 </template>
