@@ -16,7 +16,7 @@
             </thead>
             <tbody>
             <tr v-for="(fields, date) in params.table.rows">
-              <td>{{ fields[column.code] === null ? date : fields[column.code].time }}</td>
+              <td>{{ fields[tableColumns[0].code] === null ? date : fields[tableColumns[0].code].time }}</td>
               <td v-for="column in tableColumns">
                 {{ fields[column.code] === null ? '' : fields[column.code].value }}
               </td>
@@ -174,13 +174,19 @@ export default {
   &_wide {
     .bd-popup__inner {
       max-width: 1485px;
-      width: 100%;
+      width: calc(100% - 130px);
     }
   }
 
-  .table-page.table-page_fixed {
-    height: 200px;
-    overflow: auto;
+  .table-page {
+    &.table-page_fixed {
+      height: 200px;
+      overflow: auto;
+    }
+
+    .table {
+      width: auto;
+    }
   }
 
   .graph {
