@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="row m-0 p-1">
+        <div class="row m-0 p-0 pl-1 pr-1">
             <div class="col-8 gtm-dark p-1">
                 <gtm-main-indicator
                     v-bind:data="[
@@ -61,7 +61,41 @@
                 <img src="/img/GTM/main_map.svg" class="gtm-main-map-img">
             </div>
             <div class="col-4 p-0 pl-2">
-
+                <div class="gtm-dark h-100">
+                    <div class="p-0">
+                        <table class="table text-center text-white podbor-middle-table h-100">
+                            <thead>
+                            <tr>
+                                <th class="align-middle" rowspan="2">{{ trans('paegtm.gtmType') }}</th>
+                                <th colspan="2">{{ trans('paegtm.countThLong') }}</th>
+                                <th class="align-middle" rowspan="2">{{ trans('paegtm.headway.tech') }}</th>
+                                <th class="align-middle" rowspan="2">{{ trans('paegtm.headway.econom') }}</th>
+                            </tr>
+                            <tr>
+                                <th>{{ trans('paegtm.plan').toLowerCase() }}</th>
+                                <th>{{ trans('paegtm.fact').toLowerCase() }}</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr v-for="comparisonIndicatorsItem in comparisonIndicators">
+                                <td v-for="value in comparisonIndicatorsItem" class="align-middle">{{ value }}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row m-0 p-1">
+            <div class="col-6 gtm-dark ">
+                <img src="/img/GTM/main_demo_graph.svg" height="190">
+            </div>
+            <div class="col-6 pr-0">
+                <div class="gtm-dark h-100">
+                    <div class="p-0">
+                        <img src="/img/GTM/main_demo_graph.svg" height="190">
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -69,5 +103,17 @@
 <script>
 
 export default {
+    data: function () {
+        return {
+            comparisonIndicators: [
+                ['Бурение', 15, 17, 78, 81],
+                ['ГРП', 15, 17, 78, 81],
+                ['ПВЛГ', 15, 17, 78, 81],
+                ['Скин ГРП', 15, 17, 78, 81],
+                ['ПВР', 15, 17, 78, 81],
+                ['РИР', 15, 17, 78, 81],
+            ]
+        };
+    },
 }
 </script>

@@ -6,7 +6,7 @@
             @closeTree="closeTree"
         ></gtm-main-menu>
         <div
-            class="mt-5"
+            class="main-content-block"
             v-bind:is="mainContent"
         ></div>
         <div

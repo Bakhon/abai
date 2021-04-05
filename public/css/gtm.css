@@ -1,8 +1,5 @@
-.paegtm-main {
-    height: 100%;
-    background-image: url("/img/GTM/main_bg.png");
-    background-repeat: no-repeat;
-    background-position: bottom;
+.main-content-block {
+    margin-top: 2.5rem;
 }
 
 .z-index-1 {
@@ -141,7 +138,7 @@
 }
 
 .gtm-main-map-img {
-    height: 31.2rem;
+    height: 27rem;
 }
 
 .gtm-map-img {
