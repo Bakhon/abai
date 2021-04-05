@@ -1,0 +1,93 @@
+{
+  "type": "plain",
+  "table": "",
+  "tabs": [
+    {
+      "title": "Основное",
+      "blocks": [
+        {
+          "title": "Параметры режима",
+          "items": [
+            {
+              "code": "field1",
+              "type": "date",
+              "title": "Дата начала:",
+              "validation": "required|date"
+            },
+            {
+              "code": "field2",
+              "type": "date",
+              "title": "Дата конца:",
+              "validation": "required|date"
+            }
+          ]
+        },
+        {
+          "title": "Технологические режимы нагнетательных скважин",
+          "items": [
+            {
+              "code": "field3",
+              "type": "numeric",
+              "title": "Объем агента (М³):",
+              "validation": "required|numeric",
+              "prefix": ""
+            },
+            {
+              "code": "field4",
+              "type": "dict_tree",
+              "title": "Вид агента:",
+              "validation": "required",
+              "dict":"",
+              "callbacks":{}
+            },
+            {
+              "code": "field5",
+              "type": "numeric",
+              "title": "Температура агента(С°):",
+              "validation": "required|numeric",
+              "prefix": ""
+            },
+            {
+              "code": "field6",
+              "type": "numeric",
+              "title": "Давление закачки(атм.):",
+              "validation": "required|numeric",
+              "prefix": ""
+            },
+            {
+              "code": "field7",
+              "type": "numeric",
+              "title": "Qмакс.прием:",
+              "validation": "required|numeric",
+              "prefix": ""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title":"Намечаемое мероприятие",
+      "blocks":[
+        {
+          "title":"Намечаемые мероприятия по технологическим режимам",
+          "items":[
+            {
+              "code":"field8",
+              "type":"dict_tree",
+              "title":"Мероприятие",
+              "validation":"required",
+              "dict":"",
+              "callbacks":{}
+            },
+            {
+              "code":"field9",
+              "type":"date",
+              "title": "Планируемый месяц:",
+              "validation": "required|date"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
