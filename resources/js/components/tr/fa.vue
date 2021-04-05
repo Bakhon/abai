@@ -1690,7 +1690,7 @@ body {
 }
 
 .fakrtableborderedtable {
-  font-size: 9px;
+  font-size: 12px;
   padding: unset;
   background: #0d1e63
 }
