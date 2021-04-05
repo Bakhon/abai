@@ -91,11 +91,8 @@ export default {
                 this.chartSecondaryName = this.trans("visualcenter.dolyaUchast");
                 this.isKmgParticipationFilterActive = !this.isKmgParticipationFilterActive;
             } else {
-                if (regionName) {
-                    this.dzoRegionsMapping[regionName].isActive = true;
-                }
                 this.dzoCompaniesAssets = _.cloneDeep(this.dzoCompaniesAssetsInitial);
-                this.dzoCompaniesAssets[type] = true;
+                this.dzoCompaniesAssets[type] = !this.dzoCompaniesAssets[type];
                 this.selectedDzoCompanies = this.getSelectedDzoCompanies(type,category,regionName);
                 this.selectMultipleDzoCompanies(type,category,regionName);
             }

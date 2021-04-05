@@ -722,6 +722,7 @@
                           <div>
                             <input
                                     type="checkbox"
+                                    :disabled="dzoCompaniesAssets['isOperating']"
                                     :checked="dzoCompaniesAssets['isOperating']"
                                     @click="`${changeAssets('isOperating','type')}`"
                             ></input>
@@ -732,6 +733,7 @@
                           <div>
                             <input
                                     type="checkbox"
+                                    :disabled="dzoCompaniesAssets['isNonOperating']"
                                     :checked="dzoCompaniesAssets['isNonOperating']"
                                     @click="`${changeAssets('isNonOperating','type')}`"
                             ></input>
@@ -746,6 +748,7 @@
                           <div>
                             <input
                                     type="checkbox"
+                                    :disabled="dzoRegionsMapping[region].isActive"
                                     :checked="dzoRegionsMapping[region].isActive"
                                     @click="`${changeAssets('isRegion','region',region)}`"
                             ></input>
