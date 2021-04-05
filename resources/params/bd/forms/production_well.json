@@ -5,53 +5,53 @@
       "title": "Основное",
       "blocks": [
         {
-          "title": "Показатели тех режимов",
+          "title": "Tech_modes_indicators",
           "items": [
               {
                   "code": "date_start",
                   "type": "date",
-                  "title": "Дата начала",
+                  "title": "date_start",
                   "validation": "nullable|date|before_or_equal:today"
                 },
                 {
                   "code": "date_end",
                   "type": "date",
-                  "title": "Дата окончания",
+                  "title": "date_end",
                   "validation": "nullable|date|before_or_equal:today|after:date_start_drilling"
                 }
 
           ]
         },
         {
-          "title": "Намечаемый режим по добыче",
+          "title": "Intended_production_regime",
           "items": [
               {
               "code": "liquid",
               "type": "numeric",
-              "title": "Жидкость (м3/сутки)",
+              "title": "liquid",
               "validation": "numeric"
               },
               {
               "code": "oil",
               "type": "numeric",
-              "title": "Нефть (Т/сутки)",
+              "title": "oil",
               "validation": "numeric"
               },
               {
               "code": "water_cut",
               "type": "numeric",
-              "title": "Обводненность (%)",
+              "title": "water_cut",
               "validation": "numeric|min:0|max:100"
               }
           ]
         },
         {
-          "title": "Расчитываемые поля",
+          "title": "calculated_fields",
           "items": [
               {
               "code": "oil_density",
               "type": "numeric",
-              "title": "Плотность нефти (Т/М3)",
+              "title": "oil_density",
               "validation": "numeric"
               }
           ]
