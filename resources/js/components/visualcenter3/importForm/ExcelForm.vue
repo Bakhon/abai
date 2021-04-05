@@ -13,7 +13,11 @@
         <div class="ml-3 col-3 helpers-block mt-5">
             <div class="row">
                 <div class="data-status">
-                    <span class="label">Выбранное ДЗО: </span>
+                    <span class="label">{{trans('visualcenter.importForm.yesterdayDateData')}}</span>
+                    {{currentDate}}
+                </div>
+                <div class="data-status">
+                    <span class="label">{{trans('visualcenter.importForm.selectedDZO')}}</span>
                 </div>
                 <select
                         class="dzo-select col-12"

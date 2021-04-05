@@ -209,7 +209,6 @@ return array (
   'productionChemicalization' => 'Химизация производства',
   'otmColumnTitle' => 'Организационно-технические мероприятия',
   'wellsNumber' => 'Кол-во скважин',
-  'chemistryCategory' => 'Химизация',
   'operatingFond' => 'Действующий фонд',
   'nonOperatingFond' => 'Бездействующий фонд скважин',
   'masteringFond' => 'Освоение',
@@ -257,6 +256,8 @@ return array (
     'validateButton' => 'Провести проверку данных',
     'saveButton' => 'Сохранить',
     'statusLabel' => 'Статус:',
+    'yesterdayDateData' => 'Внесение данных за:',
+    'selectedDZO' => 'Выбранное ДЗО:',
   ),
   'idleWells' => 'Фонд нагнетательных скважин',
   'inIdle' => 'В простое',
@@ -311,4 +312,5 @@ return array (
   ),
   'dzoTargetPlan' => 'Целевой уровень',
   'targetPlanFilter' => 'С учетом ср/сут уровня',
+  'chemistryCategory' => 'Химизация',
 );
