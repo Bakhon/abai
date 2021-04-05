@@ -8,32 +8,12 @@
     "rowIndex": 1,
     "rowLength": 3
   },
-  "condensateDzo": {
-    "fields": [
-      "condensate_production_fact",
-      "condensate_delivery_fact",
-      "condensate_delivery_by_stations_fact"
-    ],
-    "rowIndex": 6,
-    "rowLength": 3
-  },
   "stockOfGoodsDzo": {
     "fields": [
       "stock_of_goods_delivery_fact"
     ],
     "rowIndex": 11,
     "rowLength": 1
-  },
-  "naturalGasDzo": {
-    "fields": [
-      "natural_gas_production_fact",
-      "natural_gas_delivery_fact",
-      "natural_gas_expenses_for_own_fact",
-      "natural_gas_processing_fact",
-      "natural_gas_flaring_fact"
-    ],
-    "rowIndex": 16,
-    "rowLength": 5
   },
   "associatedGasDzo": {
     "fields": [
@@ -49,10 +29,7 @@
   "agentUploadDzo": {
     "fields": [
       "agent_upload_total_water_injection_fact",
-      "agent_upload_seawater_injection_fact",
-      "agent_upload_waste_water_injection_fact",
-      "agent_upload_albsenomanian_water_injection_fact",
-      "agent_upload_stream_injection_fact"
+      "agent_upload_albsenomanian_water_injection_fact"
     ],
     "rowIndex": 26,
     "rowLength": 5

@@ -26,9 +26,11 @@ import cellsMappingEMG from './dzoData/cells_mapping_emg.json';
 import moment from "moment";
 import Visual from "./dataManagers/visual";
 
+const defaultDzoTicker = "КТМ";
+
 export default {
     data: function () {
-        let defaultDzoTicker = "ЕМГ";
+        let defaultDzoTicker = "КТМ";
         return {
             dzoMapping : {
                 "КОА" : {
