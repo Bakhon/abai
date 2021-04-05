@@ -104,9 +104,8 @@
         let result = (Math.abs(currentYearPlanValue - currentYearFactValue) / currentYearPlanValue * 100).toFixed(1);
         if (isNaN(result) || !isFinite(result)) {
           return 0;
-        } else {
-          return result;
         }
+        return result;
       }
     },
     mounted() {
