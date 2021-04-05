@@ -1055,7 +1055,7 @@ ul.dropdown-child {
     padding: 45px 10px;
 }
 
-.cell {
+/*.cell {
     height: 56px;
     width: 82px;
     float: left;
@@ -1063,7 +1063,7 @@ ul.dropdown-child {
     background: #0F1430;
     padding: 5px 10px;
     line-height: 48px;
-}
+}*/
 
 .cell-last-top {
     float: left;
