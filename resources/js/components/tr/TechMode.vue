@@ -619,215 +619,291 @@
                     <el-table-column
                       :label="`${this.trans('tr.tr2')}`"
                       >
-                      <el-table-column
-                        prop="well_type"
-                        label=""
-                        width="150"
-                        sortable
-                        >
+                      <el-table-column label="" prop="fake" >
+                        <el-table-column label="" >
+                          <el-table-column
+                            prop="well_type"
+                            label=""
+                            width="150"
+                            sortable
+                            >
+                          </el-table-column>
+                        </el-table-column>
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
                       :label="`${this.trans('tr.tr3')}`"
                       >
-                      <el-table-column
-                        prop="horizon"
-                        label=""
-                        width="100"
-                        sortable
-                        >
+                      <el-table-column label="" prop="fake" >
+                        <el-table-column label="" >
+                          <el-table-column
+                            prop="horizon"
+                            label=""
+                            width="100"
+                            sortable
+                            >
+                          </el-table-column>
+                        </el-table-column>
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
                       :label="`${this.trans('tr.tr4')}`"
                       >
-                      <el-table-column
-                        prop="object"
-                        label=""
-                        width="150"
-                        sortable
-                        >
+                      <el-table-column label="" prop="fake" >
+                        <el-table-column label="" >
+                          <el-table-column
+                            prop="object"
+                            label=""
+                            width="150"
+                            sortable
+                            >
+                          </el-table-column>
+                        </el-table-column>
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
                       :label="`${this.trans('tr.tr5')}`"
                       >
-                      <el-table-column
-                        prop="block"
-                        label=""
-                        width="150"
-                        sortable
-                        >
+                      <el-table-column label="" prop="fake" >
+                        <el-table-column label="" >
+                          <el-table-column
+                            prop="block"
+                            label=""
+                            width="150"
+                            sortable
+                            >
+                          </el-table-column>
+                        </el-table-column>
                       </el-table-column>
                     </el-table-column>
 
                     <el-table-column
                       :label="`${this.trans('tr.trs2')}`"
                       >
-                      <el-table-column
-                        prop="r_con"
-                        label=""
-                        width="150"
-                        sortable
-                        >
+                      <el-table-column label="" prop="fake" >
+                        <el-table-column label="" >
+                          <el-table-column
+                            prop="r_con"
+                            label=""
+                            width="150"
+                            sortable
+                            >
+                          </el-table-column>
+                        </el-table-column>
                       </el-table-column>
                     </el-table-column>
 
                     <el-table-column
                       :label="`${this.trans('tr.tr6')}`"
                       >
-                      <el-table-column
-                        prop="cas_OD"
-                        label=""
-                        width="180"
-                        sortable
-                        >
+                      <el-table-column label="" prop="fake" >
+                        <el-table-column label="" >
+                          <el-table-column
+                            prop="cas_OD"
+                            label=""
+                            width="180"
+                            sortable
+                            >
+                          </el-table-column>
+                        </el-table-column>
                       </el-table-column>
                     </el-table-column>
 
                     <el-table-column
                       :label="`${this.trans('tr.trs3')}`"
                       >
-                      <el-table-column
-                        prop="cas_ID"
-                        label=""
-                        width="180"
-                        sortable
-                        >
+                      <el-table-column label="" prop="fake" >
+                        <el-table-column label="" >
+                          <el-table-column
+                            prop="cas_ID"
+                            label=""
+                            width="180"
+                            sortable
+                            >
+                          </el-table-column>
+                        </el-table-column>
                       </el-table-column>
                     </el-table-column>
 
                     <el-table-column
                       :label="`${this.trans('tr.tr7')}`"
                       >
-                      <el-table-column
-                        prop="tub_OD"
-                        label=""
-                        width="200"
-                        sortable
-                        >
+                      <el-table-column label="" prop="fake" >
+                        <el-table-column label="" >
+                          <el-table-column
+                            prop="tub_OD"
+                            label=""
+                            width="200"
+                            sortable
+                            >
+                          </el-table-column>
+                        </el-table-column>
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
                       :label="`${this.trans('tr.trs4')}`"
                       >
-                      <el-table-column
-                        prop="tub_ID"
-                        label=""
-                        width="200"
-                        sortable
-                        >
+                      <el-table-column label="" prop="fake" >
+                        <el-table-column label="" >
+                          <el-table-column
+                            prop="tub_ID"
+                            label=""
+                            width="200"
+                            sortable
+                            >
+                          </el-table-column>
+                        </el-table-column>
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
                       :label="`${this.trans('tr.tr8')}`"
                       >
-                      <el-table-column
-                        prop="choke_d"
-                        label=""
-                        width="200"
-                        sortable
-                        >
+                      <el-table-column label="" prop="fake" >
+                        <el-table-column label="" >
+                          <el-table-column
+                            prop="choke_d"
+                            label=""
+                            width="200"
+                            sortable
+                            >
+                          </el-table-column>
+                        </el-table-column>
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
                       :label="`${this.trans('tr.tr9')}`"
                       >
-                      <el-table-column
-                        prop="h_up_perf_md"
-                        label=""
-                        width="200"
-                        sortable
-                        >
+                      <el-table-column label="" prop="fake" >
+                        <el-table-column label="" >
+                          <el-table-column
+                            prop="h_up_perf_md"
+                            label=""
+                            width="200"
+                            sortable
+                            >
+                          </el-table-column>
+                        </el-table-column>
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
                       :label="`${this.trans('tr.trs5')}`"
                       >
-                      <el-table-column
-                        prop="h_up_perf_ext"
-                        label=""
-                        width="200"
-                        sortable
-                        >
+                      <el-table-column label="" prop="fake" >
+                        <el-table-column label="" >
+                          <el-table-column
+                            prop="h_up_perf_ext"
+                            label=""
+                            width="200"
+                            sortable
+                            >
+                          </el-table-column>
+                        </el-table-column>
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
                       :label="`${this.trans('tr.tr10')}`"
                       >
-                      <el-table-column
-                        prop="exp_meth"
-                        label=""
-                        width="200"
-                        sortable
-                        >
+                      <el-table-column label="" prop="fake" >
+                        <el-table-column label="" >
+                          <el-table-column
+                            prop="exp_meth"
+                            label=""
+                            width="200"
+                            sortable
+                            >
+                          </el-table-column>
+                        </el-table-column>
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
                       :label="`${this.trans('tr.tr11')}`"
                       >
-                      <el-table-column
-                        prop="pump_type"
-                        label=""
-                        width="200"
-                        sortable
-                        >
+                      <el-table-column label="" prop="fake" >
+                        <el-table-column label="" >
+                          <el-table-column
+                            prop="pump_type"
+                            label=""
+                            width="200"
+                            sortable
+                            >
+                          </el-table-column>
+                        </el-table-column>
                       </el-table-column>
                     </el-table-column>
 
                     <el-table-column
                       :label="`${this.trans('tr.trs6')}`"
                       >
-                      <el-table-column
-                        prop="type_sr"
-                        label=""
-                        width="200"
-                        sortable
-                        >
+                      <el-table-column label="" prop="fake" >
+                        <el-table-column label="" >
+                          <el-table-column
+                            prop="type_sr"
+                            label=""
+                            width="200"
+                            sortable
+                            >
+                          </el-table-column>
+                        </el-table-column>
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
                       :label="`${this.trans('tr.trs7')}`"
                       >
-                      <el-table-column
-                        prop="spm"
-                        label=""
-                        width="200"
-                        sortable
-                        >
+                      <el-table-column label="" prop="fake" >
+                        <el-table-column label="" >
+                          <el-table-column
+                            prop="spm"
+                            label=""
+                            width="200"
+                            sortable
+                            >
+                          </el-table-column>
+                        </el-table-column>
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
                       :label="`${this.trans('tr.trs8')}`"
                       >
-                      <el-table-column
-                        prop="stroke_len"
-                        label=""
-                        width="200"
-                        sortable
-                        >
+                      <el-table-column label="" prop="fake" >
+                        <el-table-column label="" >
+                          <el-table-column
+                            prop="stroke_len"
+                            label=""
+                            width="200"
+                            sortable
+                            >
+                          </el-table-column>
+                        </el-table-column>
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
                       :label="`${this.trans('tr.trs9')}`"
                       >
-                      <el-table-column
-                        prop="q_theor"
-                        label=""
-                        width="200"
-                        sortable
-                        >
+                      <el-table-column label="" prop="fake" >
+                        <el-table-column label="" >
+                          <el-table-column
+                            prop="q_theor"
+                            label=""
+                            width="200"
+                            sortable
+                            >
+                          </el-table-column>
+                        </el-table-column>
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
                       :label="`${this.trans('tr.tr12')}`"
                       >
-                      <el-table-column
-                        prop="freq"
-                        label=""
-                        width="400"
-                        sortable
-                        >
+                      <el-table-column label="" prop="fake" >
+                        <el-table-column label="" >
+                          <el-table-column
+                            prop="freq"
+                            label=""
+                            width="400"
+                            sortable
+                            >
+                          </el-table-column>
+                        </el-table-column>
                       </el-table-column>
                     </el-table-column>
 
@@ -836,45 +912,61 @@
                     <el-table-column
                       :label="`${this.trans('tr.tr13')}`"
                       >
-                      <el-table-column
-                        prop="h_pump_set"
-                        label=""
-                        width="200"
-                        sortable
-                        >
+                      <el-table-column label="" prop="fake" >
+                        <el-table-column label="" >
+                          <el-table-column
+                            prop="h_pump_set"
+                            label=""
+                            width="200"
+                            sortable
+                            >
+                          </el-table-column>
+                        </el-table-column>
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
                       :label="`${this.trans('tr.trs10')}`"
                       >
-                      <el-table-column
-                        prop="whp"
-                        label=""
-                        width="200"
-                        sortable
-                        >
+                      <el-table-column label="" prop="fake" >
+                        <el-table-column label="" >
+                          <el-table-column
+                            prop="whp"
+                            label=""
+                            width="200"
+                            sortable
+                            >
+                          </el-table-column>
+                        </el-table-column>
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
                       :label="`${this.trans('tr.trs11')}`"
                       >
-                      <el-table-column
-                        prop="line_p"
-                        label=""
-                        width="200"
-                        sortable
-                        >
+                      <el-table-column label="" prop="fake" >
+                        <el-table-column label="" >
+                          <el-table-column
+                            prop="line_p"
+                            label=""
+                            width="200"
+                            sortable
+                            >
+                          </el-table-column>
+                        </el-table-column>
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
                       :label="`${this.trans('tr.tr14')}`"
                       >
-                      <el-table-column
-                        prop="p_res"
-                        label=""
-                        width="130"
-                        sortable
-                        >
+                      <el-table-column label="" prop="fake" >
+                        <el-table-column label="" >
+                          <el-table-column
+                            prop="p_res"
+                            label=""
+                            width="130"
+                            sortable
+                            >
+                          </el-table-column>
+                        </el-table-column>
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
@@ -1302,468 +1394,7 @@
 
                     </el-table-column>
 
-                
-
-                    <!-- <el-table-column :label="`${this.trans('tr.trs14')}`">
-                      <el-table-column
-                      :label="`${this.trans('tr.tr20')}`"
-                      >
-                        <el-table-column
-                          prop="bhp_prev_m"
-                          label=""
-                          width="130"
-                          sortable
-                          >
-                        </el-table-column>
-                      </el-table-column>
-                      <el-table-column
-                      :label="`${this.trans('tr.tr22')}`"
-                      >
-                        <el-table-column
-                          prop="q_l_prev_m"
-                          label=""
-                          width="130"
-                          sortable
-                          >
-                        </el-table-column>
-                      </el-table-column>
-
-                      <el-table-column
-                      :label="`${this.trans('tr.tr23')}`"
-                      >
-                        <el-table-column
-                          prop="wct_prev_m"
-                          label=""
-                          width="130"
-                          sortable
-                          >
-                        </el-table-column>
-                      </el-table-column>
-                      <el-table-column
-                      :label="`${this.trans('tr.trs57')}`"
-                      >
-                        <el-table-column
-                          prop="h_dyn_prev_m"
-                          label=""
-                          width="130"
-                          sortable
-                          >
-                        </el-table-column>
-                      </el-table-column>
-                      <el-table-column
-                      :label="`${this.trans('tr.trs25')}`"
-                      >
-                        <el-table-column
-                          prop="pi_prev_m"
-                          label=""
-                          width="130"
-                          sortable
-                          >
-                        </el-table-column>
-                      </el-table-column>
-                    </el-table-column>
-
-                      
-            
-                    <el-table-column
-                      :label="`${this.trans('tr.tr17')}`"
-                      >
-                      <el-table-column
-                      label="tr.tr20"
-                      >
-                        <el-table-column
-                          
-                          label=""
-                          width="130"
-                          sortable
-                          >
-                          <template slot-scope="scope">{{scope.$index}}
-                            <span
-                              :class="{
-                                'circle-err':
-                                  wells &&
-                                  wells[scope.$index] &&
-                                  wells[scope.$index].bhp[1][0] !== '0',
-                              }"
-                              :style="`background :${getColor(
-                                wells[scope.$index].bhp[1][0]
-                              )}`"
-                            >
-                            </span><span v-if="scope.row.bhp[0] != null">{{
-                      Math.round(scope.row.bhp[0] * 10) / 10
-                    }}</span>
-                    <span v-if="wells && wells[scope.$index]" class="cell-comment">
-                      {{ wells[scope.$index].bhp[1][1] }}
-                    </span>
-                        </template>
-                        </el-table-column>
-                      </el-table-column>
-                      <el-table-column
-                      :label="`${this.trans('tr.tr22')}`"
-                      >
-                        <el-table-column
-                          prop="q_o"
-                          label=""
-                          width="130"
-                          sortable
-                          >
-                        </el-table-column>
-                      </el-table-column>
-
-                      <el-table-column
-                      :label="`${this.trans('tr.tr23')}`"
-                      >
-                        <el-table-column
-                          prop="q_l"
-                          label=""
-                          width="130"
-                          sortable
-                          >
-                        </el-table-column>
-                      </el-table-column>
-                      <el-table-column
-                      :label="`${this.trans('tr.trs57')}`"
-                      >
-                        <el-table-column
-                          prop="wct"
-                          label=""
-                          width="130"
-                          sortable
-                          >
-                        </el-table-column>
-                      </el-table-column>
-                      <el-table-column
-                      :label="`${this.trans('tr.tr24')}`"
-                      >
-                        <el-table-column
-                          prop="gor"
-                          label=""
-                          width="130"
-                          sortable
-                          >
-                        </el-table-column>
-                      </el-table-column>
-                    </el-table-column>
-                    <el-table-column
-                      :label="`${this.trans('tr.tr25')}`"
-                      >
-                      <el-table-column
-                        prop="well_status_last_day"
-                        label=""
-                        width="230"
-                        sortable
-                        >
-                      </el-table-column>
-                    </el-table-column>
-                    <el-table-column
-                      :label="`${this.trans('tr.trs15')}`"
-                      >
-                      <el-table-column
-                        prop="P_bubble_point"
-                        label=""
-                        width="150"
-                        sortable
-                        >
-                      </el-table-column>
-                    </el-table-column>
-                    <el-table-column
-                      :label="`${this.trans('tr.trs16')}`"
-                      >
-                      <el-table-column
-                        prop="t_res"
-                        label=""
-                        width="150"
-                        sortable
-                        >
-                      </el-table-column>
-                    </el-table-column>
-                    <el-table-column
-                      :label="`${this.trans('tr.trs17')}`"
-                      >
-                      <el-table-column
-                        prop="wht"
-                        label=""
-                        width="150"
-                        sortable
-                        >
-                      </el-table-column>
-                    </el-table-column>
-
-                    <el-table-column
-                      :label="`${this.trans('tr.tr28')}`"
-                      >
-                      <el-table-column
-                      :label="`${this.trans('tr.trs59')}`"
-                      >
-                        <el-table-column
-                          prop="grp_skin"
-                          label=""
-                          width="130"
-                          sortable
-                          >
-                        </el-table-column>
-                      </el-table-column>
-                      <el-table-column
-                      :label="`${this.trans('tr.trs60')}`"
-                      >
-                        <el-table-column
-                          prop="grp_jd"
-                          label=""
-                          width="130"
-                          sortable
-                          >
-                        </el-table-column>
-                      </el-table-column>
-
-                      <el-table-column
-                      :label="`${this.trans('tr.trs61')}`"
-                      >
-                        <el-table-column
-                          prop="grp_date"
-                          label=""
-                          width="150"
-                          sortable
-                          >
-                        </el-table-column>
-                      </el-table-column>
-                      <el-table-column
-                      label="Фирма"
-                      >
-                        <el-table-column
-                          prop="grp_contractor"
-                          label=""
-                          width="130"
-                          sortable
-                          >
-                        </el-table-column>
-                      </el-table-column>
-                    </el-table-column>
-
-
-                    <el-table-column
-                      :label="`${this.trans('tr.trs18')}`"
-                      >
-                      <el-table-column
-                        prop="visc_oil_rc"
-                        label=""
-                        width="230"
-                        sortable
-                        >
-                      </el-table-column>
-                    </el-table-column>
-
-                    <el-table-column
-                      :label="`${this.trans('tr.trs19')}`"
-                      >
-                      <el-table-column
-                        prop="visc_wat_r"
-                        label=""
-                        width="230"
-                        sortable
-                        >
-                      </el-table-column>
-                    </el-table-column>
-
-                    <el-table-column
-                      :label="`${this.trans('tr.trs20')}`"
-                      >
-                      <el-table-column
-                        prop="visc_liq_rc"
-                        label=""
-                        width="130"
-                        sortable
-                        >
-                      </el-table-column>
-                    </el-table-column>
-
-                    <el-table-column
-                      :label="`${this.trans('tr.trs21')}`"
-                      >
-                      <el-table-column
-                        prop="bo"
-                        label=""
-                        width="130"
-                        sortable
-                        >
-                      </el-table-column>
-                    </el-table-column>
-                    <el-table-column
-                      :label="`${this.trans('tr.trs22')}`"
-                      >
-                      <el-table-column
-                        prop="dens_oil"
-                        label=""
-                        width="130"
-                        sortable
-                        >
-                      </el-table-column>
-                    </el-table-column>
-                    <el-table-column
-                      :label="`${this.trans('tr.trs23')}`"
-                      >
-                      <el-table-column
-                        prop="dens_liq"
-                        label=""
-                        width="130"
-                        sortable
-                        >
-                      </el-table-column>
-                    </el-table-column>
-                    <el-table-column
-                      :label="`${this.trans('tr.trs24')}`"
-                      >
-                      <el-table-column
-                        prop="h_perf"
-                        label=""
-                        width="130"
-                        sortable
-                        >
-                      </el-table-column>
-                    </el-table-column>
-
-                    <el-table-column
-                      label="k"
-                      >
-                      <el-table-column
-                        prop="k"
-                        label=""
-                        width="130"
-                        sortable
-                        >
-                      </el-table-column>
-                    </el-table-column>
-                    <el-table-column
-                      label="КН"
-                      >
-                      <el-table-column
-                        prop="kh"
-                        label=""
-                        width="130"
-                        sortable
-                        >
-                      </el-table-column>
-                    </el-table-column>
-                    <el-table-column
-                      :label="`${this.trans('tr.trs58')}`"
-                      >
-                      <el-table-column
-                        prop="pi"
-                        label=""
-                        width="130"
-                        sortable
-                        >
-                      </el-table-column>
-                    </el-table-column>
-
-                    <el-table-column
-                      :label="`${this.trans('tr.tr18')}`"
-                      >
-                      <el-table-column
-                      :label="`${this.trans('tr.trs62')}`"
-                      >
-                        <el-table-column
-                          prop="tp_idn_bhp"
-                          label=""
-                          width="130"
-                          sortable
-                          >
-                        </el-table-column>
-                      </el-table-column>
-                      <el-table-column
-                      :label="`${this.trans('tr.tr27')}`"
-                      >
-                        <el-table-column :label="`${this.trans('tr.tr22')}`">
-                          <el-table-column
-                            prop="gp_idn_q_liq"
-                            label=""
-                            width="130"
-                            sortable
-                            >
-                          </el-table-column>
-                        </el-table-column>
-                        <el-table-column :label="`${this.trans('tr.trs78')}`">
-                          <el-table-column
-                            prop="gp_idn_q_liq_cas_d_corr"
-                            sortable
-                            :label="`${this.trans('tr.mtr2')}`"
-                            width="200"
-                            >
-                          </el-table-column>
-                        </el-table-column>
-                        <el-table-column :label="`${this.trans('tr.tr21')}`">
-                          <el-table-column
-                            prop="gp_idn_q_oil"
-                            sortable
-                            :label="`${this.trans('tr.mtr3')}`"
-                            width="200"
-                            
-                            >
-                          </el-table-column>
-                        </el-table-column>
-                        <el-table-column :label="`${this.trans('tr.tr32')}`">
-                          <el-table-column
-                            prop="gp_idn_q_oil_inc"
-                            sortable
-                            :label="`${this.trans('tr.mtr3')}`"
-                            width="200"
-                            
-                            >
-                          </el-table-column>
-                        </el-table-column>
-                      </el-table-column>
-                      <el-table-column
-                      :label="`${this.trans('tr.tr28')}`"
-                      >
-                        <el-table-column :label="`${this.trans('tr.tr22')}`">
-                          <el-table-column
-                            prop="gp_grp_q_liq"
-                            :label="`${this.trans('tr.mtr2')}`"
-                            width="130"
-                            sortable
-                            >
-                          </el-table-column>
-                        </el-table-column>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
-                        </el-table-column>
-                        <el-table-column :label="`${this.trans('tr.tr21')}`">
-                          <el-table-column
-                            prop="gp_grp_q_oil"
-                            sortable
-                            label=""
-                            width="200"                   
-                            >
-                          </el-table-column>
-                        </el-table-column>
-                        <el-table-column :label="`${this.trans('tr.tr32')}`">
-                          <el-table-column
-                            prop="gp_grp_q_oil_inc"
-                            sortable
-                            label=""
-                            width="200"
-                            >
-                          </el-table-column>
-                        </el-table-column>
-                      </el-table-column>
-                      <el-table-column :label="`${this.trans('tr.trs65')}`">
-                        <el-table-column
-                          prop="gp_total_inc_perc"
-                          sortable
-                          label=""
-                          width="200"
-                          >
-                        </el-table-column>
-                      </el-table-column>
-                      <el-table-column :label="`${this.trans('tr.trs65')}`">
-                        <el-table-column
-                          prop="gp_total_inc"
-                          sortable
-                          label=""
-                          width="200"
-                          >
-                        </el-table-column>
-                      </el-table-column>
-
-                    </el-table-column> -->
+              
                     
 
                     
@@ -2047,6 +1678,84 @@ export default {
         return 'no_border';
       }
       if(column.id === "el-table_1_column_5") {
+        return 'no_border';
+      }
+      if(column.id === "el-table_1_column_9") {
+        return 'no_border';
+      }
+      if(column.id === "el-table_1_column_13") {
+        return 'no_border';
+      }
+      if(column.id === "el-table_1_column_17") {
+        return 'no_border';
+      }
+      if(column.id === "el-table_1_column_21") {
+        return 'no_border';
+      }
+      if(column.id === "el-table_1_column_25") {
+        return 'no_border';
+      }
+      if(column.id === "el-table_1_column_29") {
+        return 'no_border';
+      }
+      if(column.id === "el-table_1_column_31") {
+        return 'no_border';
+      }
+      if(column.id === "el-table_1_column_33") {
+        return 'no_border';
+      }
+      if(column.id === "el-table_1_column_37") {
+        return 'no_border';
+      }
+      if(column.id === "el-table_1_column_41") {
+        return 'no_border';
+      }
+      if(column.id === "el-table_1_column_45") {
+        return 'no_border';
+      }
+      if(column.id === "el-table_1_column_49") {
+        return 'no_border';
+      }
+      if(column.id === "el-table_1_column_51") {
+        return 'no_border';
+      }
+      if(column.id === "el-table_1_column_53") {
+        return 'no_border';
+      }
+      if(column.id === "el-table_1_column_57") {
+        return 'no_border';
+      }
+      if(column.id === "el-table_1_column_61") {
+        return 'no_border';
+      }
+      if(column.id === "el-table_1_column_65") {
+        return 'no_border';
+      }
+
+
+
+      if(column.id === "el-table_1_column_69") {
+        return 'no_border';
+      }
+      if(column.id === "el-table_1_column_73") {
+        return 'no_border';
+      }
+      if(column.id === "el-table_1_column_77") {
+        return 'no_border';
+      }
+      if(column.id === "el-table_1_column_81") {
+        return 'no_border';
+      }
+      if(column.id === "el-table_1_column_85") {
+        return 'no_border';
+      }
+      if(column.id === "el-table_1_column_89") {
+        return 'no_border';
+      }
+      if(column.id === "el-table_1_column_93") {
+        return 'no_border';
+      }
+      if(column.id === "el-table_1_column_97") {
         return 'no_border';
       }
       return 'have_border';
