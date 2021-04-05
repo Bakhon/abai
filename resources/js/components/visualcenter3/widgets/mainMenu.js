@@ -41,7 +41,7 @@ export default {
             let self = this;
             this.isMainMenuItemChanged = false;
             let currentFilterOptions = this.mainMenuButtonElementOptions[parentButton].childItems[childButton];
-            if (this.categoryMenuPreviousParent !== parentButton || this.isOilProductionMenu) {
+            if (this.categoryMenuPreviousParent !== parentButton || !this.isOilProductionMenu(parentButton,childButton)) {
                 _.forEach(Object.keys(this.mainMenuButtonElementOptions), function (button) {
                     self.disableMainMenuFlags(self.mainMenuButtonElementOptions[button]);
                 });
