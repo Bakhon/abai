@@ -19,28 +19,17 @@
     color: white;
 }
 
-.menu-item:hover {
-    color: white;
-    text-decoration: none;
-}
-
 .menu-item-active {
     background: rgba(44,68,189,1);
 }
 
-.main-category {
-    padding: 2rem 1rem;
-    font-size: 1.8rem;
-}
-
-.mini-category {
-    padding: 0.2rem 0 0.2rem 1rem;
-    font-size: 1rem;
+.menu-item-bottom-border:not(:last-child) {
+    border-bottom: 1px solid rgba(69,77,125,1);
 }
 
 .main-menu-font {
     font-weight: 700;
-    font-size: 1.2rem;
+    font-size: 1rem;
     line-height: 2rem;
     color: white !important;
 }
@@ -149,6 +138,10 @@
     font-size: 1rem;
     font-weight: 700;
     line-height: 1.8rem;
+}
+
+.gtm-main-map-img {
+    height: 31.2rem;
 }
 
 .gtm-map-img {
@@ -387,29 +380,82 @@
     background: rgba(0, 0, 0, 0.5);
 }
 
+.gtm-indicator-item:not(:last-child) {
+    border-right: 1px solid rgba(69, 77, 125, 1);
+}
+
+.gtm-indicator-item div {
+    margin: 1rem 0;
+}
+
+.gtm-indicator-item .bigNumber {
+    color: white;
+    font-size: 3rem;
+    font-weight: 700;
+    margin: 0.5rem 0 0 0;
+}
+
+.gtm-indicator-item .units {
+    color: rgba(130, 186, 255, 1);
+    font-size: 1rem;
+}
+
+.gtm-indicator-item .title {
+    color: white;
+    font-size: 1rem;
+    font-weight: 700;
+    margin: 0.5rem 0 0 0;
+}
+
+.gtm-progress {
+    height: 0.5rem !important;
+}
+
+.gtm-indicator-item .progress-bar {
+    margin: 0;
+}
+
+.gtm-indicator-item .progressMax {
+    color: rgba(130, 186, 255, 1);
+}
+
 /*mobile*/
+@media screen and (max-width : 1900px) {
+    .gtm-main-map-img {
+        height: 29.5rem;
+    }
+}
+
 @media screen and (max-width : 1800px) {
-    .main-category {
-        font-size: 1.6rem;
+    .main-menu-font {
+        font-size: 0.8rem;
     }
 
-    .main-menu-font {
-        font-size: 1.1rem;
+    .gtm-main-map-img {
+        height: 28rem;
     }
 
     .gtm-map-img {
         height: 260px;
     }
+
+    .gtm-indicator-item .bigNumber {
+        font-size: 2.9rem;
+    }
+
+    .gtm-indicator-item .title {
+        font-size: 0.95rem;
+    }
 }
 
 @media screen and (max-width : 1700px) {
-    .main-category {
-        font-size: 1.4rem;
+    .main-menu-font {
+        font-size: 0.7rem;
+        line-height: 1.5rem;
     }
 
-    .main-menu-font {
-        font-size: 1rem;
-        line-height: 1.5rem;
+    .gtm-main-map-img {
+        height: 26.5rem;
     }
 
     .gtm-map-img {
@@ -437,9 +483,25 @@
         height: 1.9rem;
         font-size: 0.8rem;
     }
+
+    .gtm-indicator-item .bigNumber {
+        font-size: 2.8rem;
+    }
+
+    .gtm-indicator-item .title {
+        font-size: 0.9rem;
+    }
+
+    .gtm-indicator-item .units {
+        font-size: 0.8rem;
+    }
 }
 
 @media screen and (max-width : 1600px) {
+    .gtm-main-map-img {
+        height: 25rem;
+    }
+
     .gtm-map-img {
         height: 220px;
     }
@@ -460,11 +522,19 @@
     .near-wells-table-item, .podbor-middle-table th {
         font-size: 0.8rem;
     }
+
+    .gtm-indicator-item .bigNumber {
+        font-size: 2.6rem;
+    }
+
+    .gtm-indicator-item .title {
+        font-size: 0.85rem;
+    }
 }
 
 @media screen and (max-width : 1500px) {
-    .main-category {
-        font-size: 1.2rem;
+    .gtm-main-map-img {
+        height: 23.5rem;
     }
 
     .gtm-map-img {
@@ -510,17 +580,24 @@
     .podbor-middle-table td {
         font-size: 0.7rem;
     }
+
+    .gtm-indicator-item .bigNumber {
+        font-size: 2.2rem;
+    }
+
+    .gtm-indicator-item .title {
+        font-size: 0.8rem;
+    }
 }
 
 @media screen and (max-width : 1400px) {
-    .main-category {
-        font-size: 1rem;
-        padding: 1rem 0.5rem;
+    .main-menu-font {
+        font-size: 0.6rem;
+        line-height: 1rem;
     }
 
-    .main-menu-font {
-        font-size: 0.8rem;
-        line-height: 1rem;
+    .gtm-main-map-img {
+        height: 22rem;
     }
 
     .gtm-map-img {
@@ -553,8 +630,8 @@
     }
 
     .menu-item-bg img {
-        width: 36px;
-        height: 36px;
+        width: 20px;
+        height: 20px;
     }
 
     .tree-main-ul {
@@ -563,6 +640,10 @@
 }
 
 @media screen and (max-width : 1300px) {
+    .gtm-main-map-img {
+        height: 20.5rem;
+    }
+
     .gtm-map-img {
         height: 160px;
     }
@@ -603,6 +684,10 @@
         font-size: 0.8rem;
     }
 
+    .gtm-main-map-img {
+        height: 19rem;
+    }
+
     .gtm-map-img {
         height: 140px;
     }
@@ -626,18 +711,12 @@
     }
 
     .menu-item-bg img {
-        width: 24px;
-        height: 24px;
-    }
-
-    .main-category {
-        font-size: 0.6rem;
-        padding: 0.8rem 0.3rem;
+        width: 16px;
+        height: 16px;
     }
 
     .main-menu-font {
-        font-size: 0.6rem;
-        line-height: 1rem;
+        font-size: 0.5rem;
     }
 }
 

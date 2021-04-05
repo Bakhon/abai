@@ -79,7 +79,7 @@
                         <component v-bind:is="treeChildrenComponent" class="gtm-dark ml-2 h-100" @node-click="nodeClick"></component>
                     </keep-alive>
                 </div>
-                <div class="gtm-dark pb-3 position-relative z-index-1">
+                <div class="gtm-dark pb-3 position-relative">
                     <div class="block-header text-center">
                         Поиск потенциала
                     </div>

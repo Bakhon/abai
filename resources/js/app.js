@@ -100,7 +100,9 @@ Vue.component('omgngdu-form', require('./components/omgngdu/form.vue').default);
 Vue.component('gu-form', require('./components/gu/form.vue').default);
 Vue.component('zu-form', require('./components/zu/form.vue').default);
 
-Vue.component('gtm-main', require('./components/GTM/Main.vue').default);
+Vue.component('gtm-main', require('./components/GTM/GTMLayout.vue').default);
+Vue.component('gtm-main-page', require('./components/GTM/Main.vue').default);
+Vue.component('gtm-main-indicator', require('./components/GTM/MainIndicator.vue').default);
 Vue.component('gtm-aegtm', require('./components/GTM/Aegtm.vue').default);
 Vue.component('gtm-aegtm-eco', require('./components/GTM/AegtmEco.vue').default);
 Vue.component('gtm-podbor-gtm', require('./components/GTM/PodborGTM.vue').default);

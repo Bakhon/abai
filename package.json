@@ -98,7 +98,9 @@
         "snapshotSerializers": [
             "<rootDir>/node_modules/jest-serializer-vue"
         ],
-        "transformIgnorePatterns": ["<rootDir>/node_modules/"]
+        "transformIgnorePatterns": [
+            "<rootDir>/node_modules/"
+        ]
     },
     "babel": {
         "env": {
