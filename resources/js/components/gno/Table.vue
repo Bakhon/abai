@@ -2722,7 +2722,7 @@ export default {
             message: this.trans('pgno.uecn_not_recommended'),
             type: 'warning',
             size: 'lg',
-            timeout: 15000
+            timeout: 10000
           })
       }
 
@@ -2931,7 +2931,7 @@ export default {
             message: this.trans('pgno.no_incl'),
             type: 'warning',
             size: 'lg',
-            timeout: 15000
+            timeout: 10000
           })
         } else {
         this.$store.commit('UPDATE_HPUMP', this.hPumpValue)
@@ -2959,14 +2959,14 @@ export default {
                   message: this.trans('pgno.well_doesnt_exist'),
                   type: 'error',
                   size: 'lg',
-                  timeout: 15000
+                  timeout: 10000
                 })              
             } else if(data["Error"] == 'data_error') {
                 this.$notify({
                   message: this.trans('pgno.well_data_not_correct'),
                   type: 'error',
                   size: 'lg',
-                  timeout: 15000
+                  timeout: 10000
                 })    
             }
 
@@ -3062,14 +3062,14 @@ export default {
                   message: this.trans('pgno.150_hpump'),
                   type: 'warning',
                   size: 'lg',
-                  timeout: 15000
+                  timeout: 10000
                 })
 
             this.$notify({
                   message: this.trans('pgno.new_well'),
                   type: 'warning',
                   size: 'lg',
-                  timeout: 15000
+                  timeout: 10000
                 }) 
             
 
@@ -3134,7 +3134,7 @@ export default {
                   message: this.trans('pgno.no_sk_for_length'),
                   type: 'warning',
                   size: 'lg',
-                  timeout: 15000
+                  timeout: 10000
                 }) 
             }
             if(data["error_spm"] == "error_spm") {
@@ -3143,7 +3143,7 @@ export default {
                 message: this.trans('pgno.no_sk_for_num_kach'),
                 type: 'warning',
                 size: 'lg',
-                timeout: 15000
+                timeout: 10000
               }) 
             }
           }
@@ -3190,7 +3190,7 @@ export default {
                 message: this.trans('pgno.ek_127_down'),
                 type: 'error',
                 size: 'lg',
-                timeout: 15000
+                timeout: 10000
               }) 
       }
 
@@ -3199,7 +3199,7 @@ export default {
           message: this.trans('pgno.uecn_not_recommended'),
           type: 'warning',
           size: 'lg',
-          timeout: 15000
+          timeout: 10000
               })       
       }
       if (this.qlCelValue.split(' ')[0] > 106) {
@@ -3207,7 +3207,7 @@ export default {
           message: this.trans('pgno.shgn_restrict_potencial'),
           type: 'warning',
           size: 'lg',
-          timeout: 15000
+          timeout: 10000
           })  
       }
 
@@ -3220,7 +3220,7 @@ export default {
                 message: this.trans('pgno.p_zab_more_p_pl'),
                 type: 'warning',
                 size: 'lg',
-                timeout: 15000
+                timeout: 10000
               })  
               
             } else {
@@ -3229,7 +3229,7 @@ export default {
                   message: this.trans('pgno.n_set_down_perf'),
                   type: 'warning',
                   size: 'lg',
-                  timeout: 15000
+                  timeout: 10000
                 })   
               }
               this.setData(data)
@@ -3240,21 +3240,21 @@ export default {
                   message: this.trans('pgno.cel_rezhim_more_perf'),
                   type: 'error',
                   size: 'lg',
-                  timeout: 15000
+                  timeout: 10000
                 }) 
               } else if(this.bhpPot * 1  > this.bhpCelValue.split(' ')[0] * 1  && this.CelButton == 'bhp'){
                 this.$notify({
                   message: this.trans('pgno.cel_rezhim_more_perf'),
                   type: 'error',
                   size: 'lg',
-                  timeout: 15000
+                  timeout: 10000
                 }) 
               } else if(this.pinPot * 1  > this.piCelValue.split(' ')[0] * 1  && this.CelButton == 'pin'){
                 this.$notify({
                   message: this.trans('pgno.cel_rezhim_more_perf'),
                   type: 'error',
                   size: 'lg',
-                  timeout: 15000
+                  timeout: 10000
                 }) 
               }
             }
@@ -3364,7 +3364,7 @@ export default {
         message: this.trans('pgno.150_hpump'),
         type: 'warning',
         size: 'lg',
-        timeout: 15000
+        timeout: 10000
       }) 
       
       this.updateLine(this.newCurveLineData)
@@ -3401,21 +3401,21 @@ export default {
           message: this.trans('pgno.cel_rezhim_more_perf'),
           type: 'error',
           size: 'lg',
-          timeout: 15000
+          timeout: 10000
         }) 
       } else if(this.bhpPot * 1  > this.bhpCelValue.split(' ')[0] * 1  && this.CelButton == 'bhp'){
         this.$notify({
           message: this.trans('pgno.cel_rezhim_more_perf'),
           type: 'error',
           size: 'lg',
-          timeout: 15000
+          timeout: 10000
         }) 
       } else if(this.pinPot * 1  > this.piCelValue.split(' ')[0] * 1  && this.CelButton == 'pin'){
         this.$notify({
           message: this.trans('pgno.cel_rezhim_more_perf'),
           type: 'error',
           size: 'lg',
-          timeout: 15000
+          timeout: 10000
         }) 
       } else {
         if(this.expChoose == 'ШГН'){
@@ -3444,7 +3444,7 @@ export default {
                     message: this.trans('pgno.change_depth_descent'),
                     type: 'warning',
                     size: 'lg',
-                    timeout: 15000
+                    timeout: 10000
                   }) 
                 } else {
                   if(this.sk == "ПШГН" || this.sk == "0") {
@@ -3452,7 +3452,7 @@ export default {
                       message: this.trans('pgno.well_not_def'),
                       type: 'warning',
                       size: 'lg',
-                      timeout: 15000
+                      timeout: 10000
                     })   
                   }
                   this.shgnPumpType = data["pump_type"]
@@ -3466,29 +3466,21 @@ export default {
                         message: this.trans('pgno.nkn70_nkt89_restricted'),
                         type: 'warning',
                         size: 'lg',
-                        timeout: 15000
+                        timeout: 10000
                       })
                       this.$notify({
                         message: this.trans('pgno.change_depth_descent'),
                         type: 'warning',
                         size: 'lg',
-                        timeout: 15000
+                        timeout: 10000
                       })
                   } else {
                       this.$notify({
                           message: this.trans('pgno.shgn_under_contstruction'),
                           type: 'warning',
                           size: 'lg',
-                          timeout: 15000
+                          timeout: 10000
                         })
-
-                    // if(langUrl === 'ru') {
-                    //   Vue.prototype.$notifyWarning("Раздел 'Подбор ШГН' находится в разработке")
-                    // } else if(langUrl === 'kz') {
-                    //   Vue.prototype.$notifyWarning("ШТС таңдау бөлімі әзірлену үстінде")
-                    // } else {
-                    //   Vue.prototype.$notifyWarning("Section 'Selection of sucker rod pumps' is under development")
-                    // }
                     
                     this.shgnSPM = data["spm"].toFixed(0)
                     this.shgnLen = data["stroke_len"]
@@ -3518,7 +3510,7 @@ export default {
             message: this.trans('pgno.notify_uecn_ne_razrabotan'),
             type: 'warning',
             size: 'lg',
-            timeout: 15000
+            timeout: 10000
           })
         }
 
