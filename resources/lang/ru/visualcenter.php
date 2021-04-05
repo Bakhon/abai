@@ -256,7 +256,7 @@ return array (
     'validateButton' => 'Провести проверку данных',
     'saveButton' => 'Сохранить',
     'statusLabel' => 'Статус:',
-    'yesterdayDateData' => 'Внесение данных за:',
+    'yesterdayDate' => 'Внесение данных за:',
     'selectedDZO' => 'Выбранное ДЗО:',
   ),
   'idleWells' => 'Фонд нагнетательных скважин',
