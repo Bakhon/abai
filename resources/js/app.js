@@ -166,6 +166,7 @@ Vue.component('main-page', require('./components/mainpage.vue').default);
 Vue.component('profile', require('./components/profile/Profile.vue').default);
 
 Vue.component('reptt', require('./components/economy_kenzhe/reptt.vue').default);
+Vue.component('budget-execution', require('./components/economy_kenzhe/budgetExecution/budgetExecution.vue').default);
 Vue.prototype.trans = string => _.get(window.i18n, string) || string;
 Vue.prototype.localeUrl = string => `/${window.current_lang}/${string[0] === '/' ? string.substr(1) : string}`;
 Vue.prototype.currentLang = window.current_lang;

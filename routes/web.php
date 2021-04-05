@@ -208,6 +208,7 @@ Route::group(
 
                 Route::post('dzo_excel_form', 'VisCenter\ExcelForm\ExcelFormController@store');
                 Route::post('dzo_chemistry_excel_form', 'VisCenter\ExcelForm\ExcelFormChemistryController@store');
+                Route::get('/budgetexecution', 'EconomyKenzhe\budgetExecutionController@budgetExecution')->name('budgetExecution');
             }
         );
         Auth::routes(

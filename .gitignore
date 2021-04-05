@@ -49,3 +49,4 @@ public/vendors~polyfills-dom.js
 #IDE file
 kmg-dashboard.iml
 .DS_Store
+.vscode/settings.json
