@@ -22,7 +22,12 @@ class DatabaseSeeder extends Seeder
         $this->call(SulphateReducingBacteriaTableSeeder::class);
         $this->call(ThionicBacteriaTableSeeder::class);
         $this->call(WaterTypeBySulinTableSeeder::class);
-        $this->call(WaterMeasurementTableSeeder::class);
+
+        try {
+            $this->call(WaterMeasurementTableSeeder::class);
+        } catch (Throwable $e){
+
+        }
         $this->call(KormassTableSeeder::class);
         $this->call(KormassGuTableSeeder::class);
         $this->call(CorrosionTableSeeder::class);

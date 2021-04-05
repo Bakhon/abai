@@ -2,114 +2,110 @@
   <div class="container-fluid economic-wrap">
     <cat-loader v-show="loading"/>
 
-    <div class="row justify-content-between">
-      <modal
-          v-for="bignKey in bignKeys"
-          :key="bignKey"
-          :name="bignKey"
-          :width="1150"
-          :height="400"
-          adaptive>
-        <div class="modal-bign">
-          <vue-table-dynamic ref="table" :params="params"/>
-        </div>
-      </modal>
+    <div class="row">
+      <div class="col-10">
+        <modal
+            v-for="bignKey in bignKeys"
+            :key="bignKey"
+            :name="bignKey"
+            :width="1150"
+            :height="400"
+            adaptive>
+          <div class="modal-bign">
+            <vue-table-dynamic ref="table" :params="params"/>
+          </div>
+        </modal>
 
-      <div class="col-md-9 col-sm-12">
-        <h2 class="subtitle text-wrap">
-          Нерентабельный фонд скважин 2020 год
-        </h2>
+        <div class="main row justify-content-between"
+             style="padding:10px;">
+          <div class="col-md-3 col-sm-12 bignumber"
+               @click="pushBign('bign1')">
+            <p class="bignumber-number text-center text-wrap">
+              <span>{{ averageProfitlessCat1MonthCount }}</span>
+
+              <percent-badge :percent="persentCount"/>
+            </p>
+
+            <p class="text-center bignumber-title text-wrap">
+              Количество нерентабельных скважин за последний месяц
+            </p>
+          </div>
+
+          <div class="col-md-3 col-sm-12 bignumber"
+               @click="pushBign('bign2')">
+            <p class="bignumber-number text-center text-wrap">
+              {{ year }}
+            </p>
+
+            <p class="text-center bignumber-title text-wrap">
+              Операционные убытки по НРС с начала года
+            </p>
+          </div>
+
+          <div class="col-md-3 col-sm-12 bignumber"
+               @click="pushBign('bign3')">
+            <p class="bignumber-number text-center text-wrap">
+              <span>{{ month }}</span>
+
+              <percent-badge :percent="persent"/>
+            </p>
+
+            <p class="text-center bignumber-title text-wrap">
+              Операционные убытки по НРС за последний месяц
+            </p>
+          </div>
+
+          <div class="col-md-3 col-sm-12 bignumber" @click="pushBign('bign4')">
+            <p class="bignumber-number text-center text-wrap">
+              {{ prs }}
+
+            <p class="text-center bignumber-title text-wrap">
+              Количество ПРС на НРС с начала года
+            </p>
+          </div>
+        </div>
+
+        <div class="main container-fluid">
+          <div class="row">
+            <div class="col-xl-6 col-lg-6 col-md-5 col-sm-12">
+              <h5 class="subtitle text-wrap">
+                Распределение добычи нефти по типу рентабельности скважин
+              </h5>
+
+              <chart2-component/>
+            </div>
+
+            <div class="col-xl-6 ccol-lg-6 col-md-5 col-sm-12">
+              <h5 class="subtitle text-wrap">
+                Распределение скважин по типу рентабельности
+              </h5>
+
+              <chart1-component/>
+            </div>
+
+            <div class="col-xl-6 ccol-lg-6 col-md-5 col-sm-12">
+              <h5 class="subtitle text-wrap">
+                Распределение добычи жидкости по типу рентабельности скважин
+              </h5>
+
+              <chart4-component/>
+            </div>
+
+            <div class="col-xl-6 ccol-lg-6 col-md-5 col-sm-12">
+              <h5 class="subtitle text-wrap">
+                Рейтинг ТОП 10 прибыльных и убыточных скважин
+              </h5>
+
+              <chart3-component/>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <div class="col-md-3 col-sm-12">
+      <div class="col-2">
         <select-organization
             :organizations="organizations"
             @change="changeOrganization"/>
-      </div>
-    </div>
-
-    <div class="main row justify-content-between"
-         style="padding:10px;">
-      <div class="col-md-3 col-sm-12 bignumber"
-           @click="pushBign('bign1')">
-        <p class="bignumber-number text-center text-wrap">
-          <span>{{ averageProfitlessCat1MonthCount }}</span>
-
-          <percent-badge :percent="persentCount"/>
-        </p>
-
-        <p class="text-center bignumber-title text-wrap">
-          Количество нерентабельных скважин за последний месяц
-        </p>
-      </div>
-
-      <div class="col-md-3 col-sm-12 bignumber"
-           @click="pushBign('bign2')">
-        <p class="bignumber-number text-center text-wrap">
-          {{ year }}
-        </p>
-
-        <p class="text-center bignumber-title text-wrap">
-          Операционные убытки по НРС с начала года
-        </p>
-      </div>
-
-      <div class="col-md-3 col-sm-12 bignumber"
-           @click="pushBign('bign3')">
-        <p class="bignumber-number text-center text-wrap">
-          <span>{{ month }}</span>
-
-          <percent-badge :percent="persent"/>
-        </p>
-
-        <p class="text-center bignumber-title text-wrap">
-          Операционные убытки по НРС за последний месяц
-        </p>
-      </div>
-
-      <div class="col-md-3 col-sm-12 bignumber" @click="pushBign('bign4')">
-        <p class="bignumber-number text-center text-wrap">
-          {{ prs }}
-
-        <p class="text-center bignumber-title text-wrap">
-          Количество ПРС на НРС с начала года
-        </p>
-      </div>
-    </div>
-
-    <div class="main container-fluid">
-      <div class="row">
-        <div class="col-xl-6 col-lg-6 col-md-5 col-sm-12">
-          <h5 class="subtitle text-wrap">
-            Распределение добычи нефти по типу рентабельности скважин
-          </h5>
-
-          <chart2-component/>
-        </div>
-
-        <div class="col-xl-6 ccol-lg-6 col-md-5 col-sm-12">
-          <h5 class="subtitle text-wrap">
-            Распределение скважин по типу рентабельности
-          </h5>
-
-          <chart1-component/>
-        </div>
-
-        <div class="col-xl-6 ccol-lg-6 col-md-5 col-sm-12">
-          <h5 class="subtitle text-wrap">
-            Распределение добычи жидкости по типу рентабельности скважин
-          </h5>
-
-          <chart4-component/>
-        </div>
-
-        <div class="col-xl-6 ccol-lg-6 col-md-5 col-sm-12">
-          <h5 class="subtitle text-wrap">
-            Рейтинг ТОП 10 прибыльных и убыточных скважин
-          </h5>
-
-          <chart3-component/>
-        </div>
       </div>
     </div>
   </div>
