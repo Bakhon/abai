@@ -61,7 +61,12 @@
                       <span class="value">{{ row[column.code] ? row[column.code].value : '' }}</span>
                     </template>
                     <template v-else-if="column.type === 'history_graph'">
-                      <a href="#" @click.prevent="showHistoryGraphDataForRow(row, column)">Посмотреть</a>
+                      <a href="#" @click.prevent="showHistoryGraphDataForRow(row, column)">
+                        {{ row[column.code].date ? row[column.code].old_value : row[column.code].value }}
+                      </a>
+                      <span v-if="row[column.code] && row[column.code].date" class="date">
+                        {{ row[column.code].date | moment().format('YYYY-MM-DD') }}
+                      </span>
                     </template>
                     <template v-else-if="column.type === 'history'">
                       <a href="#" @click.prevent="showHistoricalDataForRow(row, column)">Посмотреть</a>

@@ -105,6 +105,11 @@
       "title": "liquid_telemetry",
       "code": "telemetry",
       "type": "history_graph",
+      "table": "tbdic.well_telemetry",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": "1"
+      },
       "fields": [
         "liquid_telemetry",
         "telemetry_source"
