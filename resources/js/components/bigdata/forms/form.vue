@@ -81,13 +81,13 @@ export default {
       'formParams'
     ]),
   },
+  watch: {
+    params() {
+      this.init()
+    }
+  },
   mounted() {
-
-    this.updateForm(this.params.code)
-        .catch(error => {
-          Vue.prototype.$notifyError(error.response.data.text + "\r\n\r\n" + error.response.data.errors)
-        })
-
+    this.init()
   },
   methods: {
     ...bdFormActions([
@@ -97,6 +97,13 @@ export default {
       'getWellPrefix',
       'getValidationErrors'
     ]),
+    init() {
+
+      this.updateForm(this.params.code)
+          .catch(error => {
+            Vue.prototype.$notifyError(error.response.data.text + "\r\n\r\n" + error.response.data.errors)
+          })
+    },
     submit() {
 
       this

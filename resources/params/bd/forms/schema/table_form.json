@@ -25,7 +25,7 @@
           "title": {
             "type": "string"
           },
-          "isEditable": {
+          "is_editable": {
             "type": "boolean"
           },
           "table": {
@@ -45,7 +45,7 @@
           "code",
           "type",
           "title",
-          "isEditable"
+          "is_editable"
         ],
         "oneOf": [
           {

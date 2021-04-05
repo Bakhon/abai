@@ -21,19 +21,18 @@ class TechnicalDataForecastImport implements ToModel
      * @return \Illuminate\Database\Eloquent\Model|null
      */
     protected $user_id;
-    protected $log_id;
+    protected $log;
     protected $source;
-    protected $source_name = "Импорт Excel";
 
-    function __construct($user_id) {
+    function __construct($user_id, $file_name) {
         $this->user_id = $user_id;
-        $this->log_id = TechnicalDataLog::create(['author_id' => $user_id]);
-        $this->source = TechnicalStructureSource::where("name", "=", $this->source_name)->first();
+        $this->log = TechnicalDataLog::create(['author_id' => $user_id]);
+
+        $this->source = TechnicalStructureSource::where('name', '=', $file_name)->first();
         if (empty($this->source)) {
-            $this->source = TechnicalStructureSource::create(["name" => $this->source_name]);
+            $this->source = TechnicalStructureSource::create(["name" => $file_name]);
         }
     }
-
 
 
     public function model(array $row)
@@ -54,7 +53,7 @@ class TechnicalDataForecastImport implements ToModel
             "days_worked" => round($row[4], 2),
             "prs" => $row[5],
             "author_id" => $this->user_id,
-            "log_id" => $this->log_id->id
+            "log_id" => $this->log->id
         ]);
     }
 

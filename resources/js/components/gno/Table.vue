@@ -1470,14 +1470,10 @@
 
                               <div class="col-2">
                                 <label class="label-for-celevoi" >ØНКТ</label>
-                                  <select class="input-box-gno podbor" v-model="nkt" :disabled="expChoose != 'ФОН'">
-                                  <option value="50,3">60x5</option>
-                                  <option value="62">73x5,5</option>
-                                  <option value="59,3">73x7</option>
-                                  <option value="75,9">89x6,5</option>
-                                  <option value="83,6">102x6,5</option>
-                                  <option value="100,3">114x7</option>
-
+                                  <select class="input-box-gno podbor" v-model="nkt" @change="postCurveData()">
+                                    <option v-for="(nkts, index) in nkt_choose" :value="nkts.for_calc_value" :key="index" >
+                                    {{nkts.show_value}}
+                                    </option>
                                   </select>
                               </div>
 
@@ -1490,19 +1486,19 @@
 
                             </div>
                             <div class="row">
-                              <div style="height: 20px; padding-left: 15px;">Общий коэффициент сепарации</div>
+                              <div style="height: 20px; padding-left: 15px;">{{trans('pgno.total_separation')}}</div>
                             </div>
 
                             <div class="row" style="padding-top: 3px;"> 
 
                               <div class="col-4">
                                 <label style="width: 100px;" class="label-for-celevoi">
-                                    <input value="calc_value" v-model="sep_meth" class="checkbox34" checked="true" type="radio" name="gno20" :disabled="expChoose === 'ФОН'"/>
-                                    Расчет
+                                    <input value="calc_value" v-model="sep_meth" @change="postCurveData()" class="checkbox34" checked="true" type="radio" name="gno20" :disabled="expChoose === 'ФОН'"/>
+                                    {{trans('pgno.separation_calc')}}
                                 </label>
                               </div>
                               <div class="col-8 table-border-gno">
-                                <input v-model="nat_sep" type="checkbox" checked="true" :disabled="sep_meth ==='input_value' || expChoose === 'ФОН'">Естественная сепарация</div>
+                                <input v-model="nat_sep" @change="postCurveData()" type="checkbox" checked="true" :disabled="sep_meth ==='input_value' || expChoose === 'ФОН'">{{trans('pgno.separation_nat')}}</div>
 
                             </div>
 
@@ -1510,14 +1506,14 @@
 
                               <div class="col-4">
                                 <label style="width: 100px;" class="label-for-celevoi">
-                                  <input class="checkbox3" v-model="sep_meth" value="input_value" checked="true" type="radio" name="gno20" :disabled="expChoose === 'ФОН'"/>
-                                  <input v-model="sep_value" type="text" onfocus="this.value=''" class="input-box-gno podbor" 
+                                  <input class="checkbox3" v-model="sep_meth" @change="postCurveData()" value="input_value" checked="true" type="radio" name="gno20" :disabled="expChoose === 'ФОН'"/>
+                                  <input v-model="sep_value" @change="postCurveData()" type="text" onfocus="this.value=''" class="input-box-gno podbor" 
                                   :disabled="expChoose === 'ФОН' || sep_meth !='input_value'"/></label>
                               </div>
 
                               <div class="col-8 table-border-gno">
-                                <input checked="true" :disabled="sep_meth ==='input_value' || expChoose === 'ФОН'" 
-                              type="checkbox" v-model="mech_sep">Механизированная сепарация
+                                <input checked="true" @change="postCurveData()" :disabled="sep_meth ==='input_value' || expChoose === 'ФОН'" 
+                              type="checkbox" v-model="mech_sep">{{trans('pgno.separation_mech')}}
                               <input v-model="mech_sep_value" type="text" style="margin-left: 3px; margin-bottom: 0px;" 
                               :disabled="sep_meth ==='input_value' || expChoose === 'ФОН' ||  mech_sep === false" onfocus="this.value=''" class="input-box-gno podbor" /></div>
                             </div>
@@ -2239,12 +2235,37 @@ export default {
       sep_meth: 'calc_value',
       nat_sep: true,
       mech_sep: null,
-      sep_value: null,
-      mech_sep_value: null,
+      sep_value: 60,
+      mech_sep_value: 50,
       pBuf: null,
       ao: null,
       orgs: null,
       nkt: null,
+      nkt_choose: [
+        {
+          for_calc_value: 50.3,
+          show_value: "60x5",
+        },
+        {
+          for_calc_value: 62,
+          show_value: "73x5,5",
+        },
+        {
+          for_calc_value: 59.3,
+          show_value: "73x7",
+        },
+        {
+          for_calc_value: 75.9,
+          show_value: "89x6,5",
+        },
+        {
+          for_calc_value: 83.6,
+          show_value: "102x6,5",
+        },
+        {
+          for_calc_value: 100.3,
+          show_value: "114x7",
+        }],
       hPumpFromIncl: null,
       isButtonHpump: false,
       postdata: null,
@@ -2345,7 +2366,8 @@ export default {
           "sep_value": this.sep_value,
           "mech_sep": this.mech_sep,
           "mech_sep_value": this.mech_sep_value,
-          "nat_sep": this.nat_sep
+          "nat_sep": this.nat_sep,
+          "nkt": this.nkt,
         })
     },
     downloadExcel() {
@@ -2481,6 +2503,7 @@ export default {
         this.wellIncl = data["Well Data"]["well"][0]
         this.hPerfND = data["Well Data"]["h_perf"][0]
         this.strokeLenDev = data["Well Data"]["stroke_len"][0]
+        this.nkt = this.tubID
         var langUrl = `${window.location.pathname}`.slice(1, 3);
         if (this.expMeth == 'ШГН') {
           if(langUrl === 'ru') {

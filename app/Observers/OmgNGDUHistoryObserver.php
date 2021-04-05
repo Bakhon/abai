@@ -29,11 +29,11 @@ class OmgNGDUHistoryObserver extends EditHistoryObserver
             'daily_fluid_production' => 'monitoring.omgngdu.fields.daily_fluid_production',
             'surge_tank_pressure' => 'monitoring.omgngdu.fields.surge_tank_pressure',
             'pump_discharge_pressure' => 'monitoring.omgngdu.fields.pump_discharge_pressure',
-            'heater_inlet_pressure' => 'monitoring.omgngdu.fields.heater_inlet_pressure',
+            'heater_inlet_temperature' => 'monitoring.omgngdu.fields.heater_inlet_temperature',
             'daily_gas_production_in_sib' => 'monitoring.omgngdu.fields.daily_gas_production_in_sib',
             'bsw' => 'monitoring.omgngdu.fields.bsw',
             'daily_oil_production' => 'monitoring.omgngdu.fields.daily_oil_production',
-            'heater_output_pressure' => 'monitoring.omgngdu.fields.heater_output_pressure',
+            'heater_output_temperature' => 'monitoring.omgngdu.fields.heater_output_temperature',
             'daily_water_production' => 'monitoring.omgngdu.fields.daily_water_production',
         ];
 

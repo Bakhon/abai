@@ -118,7 +118,6 @@ return array (
   'history_prs' => 'History of PRS',
   'nominal_feed' => 'Nominal feed',
   'podbor_gno' => 'Selection of downhole pumping equipment',
-  'notify_ek_127' => 'The using of ESP units with dimensions 5 and 5A is not possible in a production casing with a diameter of 127 mm and below',
   'notify_uecn_ne_razrabotan' => 'The section \'ESP selection\' is not developed',
   'notify_uecn_not_recommended' => 'ESP application is not recommended for low-rate wells',
   'notify_no_incl' => 'New well inclinometry data not available',
@@ -136,4 +135,8 @@ return array (
   'notify_well_not_def' => 'The type of pumping unit on the well is not defined',
   'notify_nkn70_nkt89_restricted' => '89 mm NKT restricted in 114 mm EK\'',
   'notify_shgn_under_contstruction' => 'Section \'Selection of sucker rod pumps\' is under development',
+  'total_separation' => 'Общий коэффициент сепарации',
+  'separation_calc' => 'Расчет',
+  'separation_nat' => 'Естественная сепарация',
+  'separation_mech' => 'Механизированная сепарация',
 );

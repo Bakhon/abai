@@ -64,6 +64,8 @@ class FluidProduction extends TableForm
             }
         );
 
+        $this->addLimits($wells);
+
         return $wells->toArray();
     }
 
@@ -262,6 +264,14 @@ class FluidProduction extends TableForm
                 'parent_id' => $org->parent_id
             ];
         }
+
+        usort(
+            $orgData,
+            function ($a, $b) {
+                return strnatcasecmp($a['name'], $b['name']);
+            }
+        );
+
         Cache::put('bd_org_with_wells', $orgData, now()->addDay());
 
         return $orgData;
@@ -269,9 +279,10 @@ class FluidProduction extends TableForm
 
     private function getTechWithWells()
     {
+        $cacheKey = 'bd_tech_with_wells_' . $this->request->get('date');
         $techData = [];
-        if (Cache::has('bd_tech_with_wells_' . $this->request->get('date'))) {
-            $techData = Cache::get('bd_tech_with_wells_' . $this->request->get('date'));
+        if (Cache::has($cacheKey)) {
+            $techData = Cache::get($cacheKey);
             return $this->generateTree($techData);
         }
 
@@ -323,12 +334,26 @@ class FluidProduction extends TableForm
             );
         }
 
-        Cache::put('bd_tech_with_wells_' . $this->request->get('date'), $techData, now()->addDay());
-        return $this->generateTree($techData);
+        usort(
+            $techData,
+            function ($a, $b) {
+                return strnatcasecmp($a['name'], $b['name']);
+            }
+        );
+
+        $result = $this->generateTree($techData);
+        Cache::put($cacheKey, $result, now()->addDay());
+
+        return $result;
     }
 
     private function combineOrgWithTechData($orgData, $techData)
     {
+        $cacheKey = 'bd_org_tech_' . $this->request->get('date');
+        if (Cache::has($cacheKey)) {
+            return Cache::get($cacheKey);
+        }
+
         foreach ($orgData as &$org) {
             if (empty($org['wells'])) {
                 continue;
@@ -338,13 +363,15 @@ class FluidProduction extends TableForm
                 if (count(array_intersect($org['wells'], $tech['wells'])) > 0) {
                     $org['children'][] = $tech;
                     unset($techData[$keyTech]);
-                    break;
                 }
             }
         }
         unset($org);
 
-        return $this->generateTree($orgData);
+        $result = $this->generateTree($orgData);
+        Cache::put($cacheKey, $result, now()->addDay());
+
+        return $result;
     }
 
     private function getOtherUwis($item)
