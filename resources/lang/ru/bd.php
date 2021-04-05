@@ -44,6 +44,18 @@ return [
             'prod_decline_reason' => 'Причина снижения дебита',
             'measure_last_month' => 'Замеры по скважине за последний месяц',
             'telemetry_data' => 'Данные телеметрии по скважине'
+        ],
+        'production_well' => [
+            'date_start' => 'Дата начала',
+            'date_end' => 'Дата окончания',
+            'Intended_production_regime' => 'Намечаемый режим по добыче',
+            'Tech_modes_indicators' => 'Показатели тех режимов',
+            'liquid' => 'Жидкость (м3/сутки)',
+            'oil' => 'Нефть (Т/сутки)',
+            'water_cut' => 'Обводненность (%)',
+            'calculated_fields' => 'Рассчитываемые поля',
+            'oil_density' => 'Плотность нефти (Т/М3)',
+            'water_cut' => 'Обводненность (%)'
         ]
     ],
     'close' => 'Закрыть',
