@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Refs\Field;
 use App\Models\Refs\Org;
 use Illuminate\Http\Request;
 use Level23\Druid\DruidClient;
@@ -48,7 +47,7 @@ class EconomicController extends Controller
 
         $org = Org::find($request->org);
 
-        $field = $request->field ? Field::find($request->field) : null;
+        $dpz = 'Акингень';
 
         $builder = $this->druidClient->query(self::DATA_SOURCE, Granularity::YEAR);
         $builder2 = $this->druidClient->query(self::DATA_SOURCE, Granularity::MONTH);
@@ -238,9 +237,56 @@ class EconomicController extends Controller
                 ->select('org_id2')
                 ->where('org_id2', '=', $org->druid_id);
         }
+        if ($dpz) {
+            $builder
+                ->where('dpz', '=', $dpz);
+
+            $builder2
+                ->where('dpz', '=', $dpz);
+
+            $builder3
+                ->where('dpz', '=', $dpz);
+
+            $builder4
+                ->where('dpz', '=', $dpz);
+
+            $builder5
+                ->where('dpz', '=', $dpz);
+
+            $builder6
+                ->where('dpz', '=', $dpz);
+
+            $builder7
+                ->where('dpz', '=', $dpz);
+
+            $builder8
+                ->where('dpz', '=', $dpz);
+
+            $builder9
+                ->where('dpz', '=', $dpz);
+
+            $builder10
+                ->where('dpz', '=', $dpz);
+
+            $builder11
+                ->where('dpz', '=', $dpz);
+
+            $builder12
+                ->where('dpz', '=', $dpz);
+
+            $builder13
+                ->where('dpz', '=', $dpz);
+
+            $builder14
+                ->where('dpz', '=', $dpz);
+
+            $builder15
+                ->where('dpz', '=', $dpz);
+        }
 
 
         $result = $builder->groupBy()->data();
+
         $result2 = $builder2->groupBy()->data();
         $result3 = $builder3->groupBy()->data();
         $result4 = $builder4->groupBy()->data();
