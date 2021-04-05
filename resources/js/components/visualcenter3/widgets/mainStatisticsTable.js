@@ -123,12 +123,13 @@ export default {
             }
 
             if (change === 2) {
+                let minimalDaysPeriodForChart = 2;
                 this.buttonMonthlyTab = this.highlightedButton;
                 this.currentDzoList = 'monthly';
                 let periodStart = moment().startOf('month').format();
                 let periodEnd = moment().subtract(1, "days").endOf('day').format();
                 let daysDifference = moment(periodEnd).diff(moment(periodStart), 'days');
-                if (periodStart > periodEnd || daysDifference < 2) {
+                if (periodStart > periodEnd || daysDifference < minimalDaysPeriodForChart) {
                     periodEnd = moment(periodStart).endOf('day').format();
                     periodStart = this.getPreviousWorkday();
                 }
