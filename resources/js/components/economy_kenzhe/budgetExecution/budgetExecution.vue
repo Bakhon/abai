@@ -292,11 +292,13 @@
             </div>
         </div>
         <div class="col-12 col-lg-2 middle-block-columns" v-if="dateStart">
+        <div class="second-column-container">
             <vertical-indicators
                 v-bind:dateStart="dateStart"
                 v-bind:dateEnd="dateEnd"
                 v-bind:dzo="dzoSelect"
             ></vertical-indicators>
+            </div>
         </div>
         <cat-loader />
     </div>
