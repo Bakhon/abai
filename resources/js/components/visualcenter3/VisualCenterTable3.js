@@ -149,9 +149,9 @@ export default {
                 ]);
             });
         },
-
-        getProductionSummary(date) {
-            return _(date)
+        
+        getProductionSummary(data) {
+            return _(data)
                 .groupBy("dzo")
                 .map((dzo, id) => ({
                     dzo: id,
@@ -165,10 +165,10 @@ export default {
                 .value();
         },
 
-        updateProductionSummary(inputData) {
+        updateProductionSummary(data) {
             let self = this;
             _.forEach(Object.keys(this.productionParams), function(itemName) {
-                self.productionParams[itemName] = _.sumBy(inputData,itemName);
+                self.productionParams[itemName] = _.sumBy(data,itemName);
             });
         },
 
