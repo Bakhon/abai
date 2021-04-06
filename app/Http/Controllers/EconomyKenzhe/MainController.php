@@ -36,28 +36,10 @@ class MainController extends Controller
             foreach ($handbookKeys as $key){
                 $this->setItemsDefaultValue($key, $items[$repttIndex], $currentYear, $previousYear);
             }
-            if (count($reptt['handbook_items']) <= 0) {
-                $equalIds = $this->getValuesIdsByRepTtId($companyValuesRepTtIds, $reptt);
-                if (count($equalIds) <= 0) {
-                    continue;
-                }
-                foreach (array_keys($equalIds) as $valIndex) {
-                    $currentItemDate = strtotime($companyRepTtValues[$valIndex]['date']);
-                    if ($companyRepTtValues[$valIndex]['type'] == 'plan') {
-                        if (date('Y', $currentItemDate) == $currentYear) {
-                            $this->sumValuesByItemType($items[$repttIndex], 'plan_value', $companyRepTtValues[$valIndex]['value'], $dateFrom, $dateTo, $currentYear, $currentItemDate);
-                        }
-                    }
-                    if ($companyRepTtValues[$valIndex]['type'] == 'fact') {
-                        if (date('Y', $currentItemDate) == $currentYear) {
-                            $this->sumValuesByItemType($items[$repttIndex], 'fact_value', $companyRepTtValues[$valIndex]['value'], $dateFrom, $dateTo, $currentYear, $currentItemDate);
-                        } else {
-                            $this->sumValuesByItemType($items[$repttIndex], 'fact_value', $companyRepTtValues[$valIndex]['value'], $dateFrom . " - 1 year", $dateTo . " - 1 year", $previousYear, $currentItemDate);
-                        }
-                    }
-                }
-            } else {
+            if (count($reptt['handbook_items']) > 0) {
                 $this->recursiveSetValueToHandbookByType($items[$repttIndex]['handbook_items'], $companyRepTtValues, $currentYear, $previousYear, $dateFrom, $dateTo);
+            } else {
+                $this->setValueForEqualIdsToitem($companyValuesRepTtIds, $reptt, $companyRepTtValues, $currentYear, $previousYear, $dateFrom, $dateTo, $items, $repttIndex);
             }
         }
         return $items;
@@ -78,6 +60,29 @@ class MainController extends Controller
         if (!array_key_exists($key, $item)) {
             $item[$key][$currentYear] = 0;
             $item[$key][$previousYear] = 0;
+        }
+    }
+
+    private function setValueForEqualIdsToitem($companyValuesRepTtIds, $reptt, $companyRepTtValues, $currentYear, $previousYear, $dateFrom, $dateTo, &$items, $repttIndex)
+    {
+        $equalIds = $this->getValuesIdsByRepTtId($companyValuesRepTtIds, $reptt);
+        if (count($equalIds) == 0) {
+            return;
+        }
+        foreach (array_keys($equalIds) as $valIndex) {
+            $currentItemDate = strtotime($companyRepTtValues[$valIndex]['date']);
+            if ($companyRepTtValues[$valIndex]['type'] == 'plan') {
+                if (date('Y', $currentItemDate) == $currentYear) {
+                    $this->sumValuesByItemType($items[$repttIndex], 'plan_value', $companyRepTtValues[$valIndex]['value'], $dateFrom, $dateTo, $currentYear, $currentItemDate);
+                }
+            }
+            if ($companyRepTtValues[$valIndex]['type'] == 'fact') {
+                if (date('Y', $currentItemDate) == $currentYear) {
+                    $this->sumValuesByItemType($items[$repttIndex], 'fact_value', $companyRepTtValues[$valIndex]['value'], $dateFrom, $dateTo, $currentYear, $currentItemDate);
+                } else {
+                    $this->sumValuesByItemType($items[$repttIndex], 'fact_value', $companyRepTtValues[$valIndex]['value'], $dateFrom . " - 1 year", $dateTo . " - 1 year", $previousYear, $currentItemDate);
+                }
+            }
         }
     }
 
