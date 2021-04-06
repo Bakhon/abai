@@ -6,6 +6,7 @@ namespace App\Services\BigData\Forms;
 
 use App\Models\BigData\Infrastructure\History;
 use App\Models\BigData\Well;
+use App\Services\BigData\FieldLimitsService;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Model;
@@ -246,7 +247,7 @@ abstract class TableForm extends BaseForm
                     break;
             }
 
-            $result[$date] = ['value' => $value];
+            $result[$date] = ['value' => $value, 'time' => Carbon::parse($row->dbeg)->format('d.m.Y H:i:s')];
         }
 
         return $result;
@@ -418,8 +419,13 @@ abstract class TableForm extends BaseForm
                     $cacheKey = self::getLimitsCacheKey($field, CarbonImmutable::yesterday());
                     if (Cache::has($cacheKey)) {
                         $fieldLimits = json_decode(Cache::get($cacheKey), true);
-                        $row[$field['code']]['limits'] = $fieldLimits[$row['uwi']['id']] ?? null;
+                    } else {
+                        $fieldLimits = app()->make(FieldLimitsService::class)->calculateFieldLimits(
+                            CarbonImmutable::yesterday(),
+                            $field
+                        );
                     }
+                    $row[$field['code']]['limits'] = $fieldLimits[$row['uwi']['id']] ?? null;
                 }
                 return $row;
             }

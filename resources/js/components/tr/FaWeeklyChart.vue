@@ -62,8 +62,7 @@
         </div>
           <div style="margin-left: 7px; cursor: pointer;">
             <select
-              class="select_mod form-control"
-              style="background: #334296 !important"
+              class="select_mod form-control fa_weekly_dropdown"
               v-model="Filter_field"
               value="Месторождение"
             >
@@ -75,8 +74,7 @@
         <div>
           <div style="margin-left: 7px; cursor: pointer;">
             <select
-              class="select_mod form-control"
-              style="background: #334296 !important"
+              class="select_mod form-control fa_weekly_dropdown"
               v-model="Filter_well"
               value="Скважина"
             >
@@ -96,7 +94,7 @@
             <apexchart
               v-if="areaChartData && areaChartRerender"
               type="line"
-              width="800"
+              width="1600"
               height="100%"
               :options="areaChartOptions"
               :series="areaChartData"
@@ -141,12 +139,12 @@ export default {
     areaChartData() {
       if (this.chartWells && this.chartWells.length > 0) {
         let field = this.Filter_field;
-        let well = this.Filter_well;
+        let rus_wellname = this.Filter_well;
         try {
           let filteredResult = this.allWells.filter(
             (row) =>
               (!field || row.field === field) &&
-              (!well || row.well === well)
+              (!rus_wellname || row.rus_wellname === rus_wellname)
           ).sort((row1,row2)=>{
             return new Date(row1.date) - new Date(row2.date);
           });
@@ -162,17 +160,18 @@ export default {
           this.areaChartOptions.xaxis.categories = filteredResult.map((row) => {
             return new Date(row.date).toLocaleDateString('ru-RU')
           });
+          this.areaChartOptions.title.text = this.trans('tr.weekly_fa_title') + ' ' + this.Filter_well + ' ' + this.trans('tr.weekly_fa_title_2');
           return [
             {
-              name: "Q_Oil",
+              name: this.trans('tr.q_oil'),
               data: qOil
             },
             {
-              name: "Q_Liquid",
+              name: this.trans('tr.q_liquid'),
               data: qLiquid
             },
             {
-              name: "Q_WCT",
+              name: this.trans('tr.water_cut'),
               data: qWct
             },
           ]
@@ -200,10 +199,10 @@ export default {
         let filters = [];
         this.allWells.forEach((el) => {
           if (
-            filters.indexOf(el.well) === -1 &&
+            filters.indexOf(el.rus_wellname) === -1 &&
             (!this.Filter_field || el.field === this.Filter_field)
           ) {
-            filters = [...filters, el.well];
+            filters = [...filters, el.rus_wellname];
           }
         });
         return [...filters];
@@ -216,18 +215,22 @@ export default {
       allWells: [],
       filteredWellsBar: [],
       dt: null,
-      dt2: null,
       date1: null,
       fullWells: [],
       areaChartRerender: true,
       Filter_well: undefined,
       Filter_field: undefined,
-      xdate: [],
       areaChartOptions: {
         chart: {
             type: 'line',
             height: 350,
             stacked: false
+          },
+          title: {
+            align: "center",
+            style: {
+              color: "#5FA7FF",
+            },
           },
           dataLabels: {
             enabled: false
@@ -241,9 +244,29 @@ export default {
               columnWidth: "20%"
             }
           },
-          xaxis: {
-            categories: []
+          legend: {
+            position: "bottom",
+            labels: {
+              useSeriesColors: true,
+            },
           },
+          xaxis: {
+            labels: {
+              hideOverlappingLabels: true,
+              style: {
+                colors: "#5FA7FF",
+              },
+          },},
+          yaxis: {
+            labels: {
+              formatter: function (val) {
+                return val.toFixed(1);
+              },
+              hideOverlappingLabels: true,
+              style: {
+                colors: "#5FA7FF",
+              },
+          },},
 
         },
     };
@@ -292,6 +315,7 @@ export default {
             console.log("No data");
           }
         });
+        this.dt = dd + '.' + mm + '.' + yyyy;
     },
   },
   created: function () {
@@ -338,6 +362,7 @@ export default {
           console.log("No data");
         }
         this.date1 = yyyy + "-" + mm + "-" + dd;
+        this.dt = dd + '.' + mm + '.' + yyyy;
       });
   },
 
@@ -363,7 +388,7 @@ body {
 
 .trfabtgraph {
   width: 195px;
-  background: #40467e !important;
+  background: #454FA1  !important;
 }
 a:hover {
   color: #ffffff;
@@ -390,5 +415,8 @@ a:hover {
   align-self: center;
   width: 150px;
   margin-top: 5px;
+}
+.fa_weekly_dropdown {
+  background: #454FA1 !important;
 }
 </style>

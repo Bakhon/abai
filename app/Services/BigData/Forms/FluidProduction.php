@@ -263,6 +263,14 @@ class FluidProduction extends TableForm
                 'parent_id' => $org->parent_id
             ];
         }
+
+        usort(
+            $orgData,
+            function ($a, $b) {
+                return strnatcasecmp($a['name'], $b['name']);
+            }
+        );
+
         Cache::put('bd_org_with_wells', $orgData, now()->addDay());
 
         return $orgData;
@@ -324,6 +332,13 @@ class FluidProduction extends TableForm
                 )
             );
         }
+
+        usort(
+            $techData,
+            function ($a, $b) {
+                return strnatcasecmp($a['name'], $b['name']);
+            }
+        );
 
         $result = $this->generateTree($techData);
         Cache::put($cacheKey, $result, now()->addDay());

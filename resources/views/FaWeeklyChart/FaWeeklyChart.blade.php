@@ -6,14 +6,14 @@
         </a>
         <div class="level1-content row">
             <div class="main col-md-12 col-lg-12 row">
-            <fa_weekly_chart></fa-fa_weekly_chart>
+            <fa_weekly_chart></fa_weekly_chart>
 
             </div>
         </div>
         <cat-loader />
     </div>
 @endsection
-<link href="{{ asset('css/fa.css')}}" rel="stylesheet">
+<link href="{{ asset('css/trfa.css')}}" rel="stylesheet">
 <link href="{{ asset('css/tr_unit.css')}}" rel="stylesheet">
 <style>
     .p-4{
