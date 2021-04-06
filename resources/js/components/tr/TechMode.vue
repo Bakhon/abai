@@ -1477,9 +1477,8 @@
                         </el-table-column>
 
                     </el-table-column>
-                    
 
-                    
+                   
                   </el-table>
                   <div class="ui-pagination">
                     <el-pagination
