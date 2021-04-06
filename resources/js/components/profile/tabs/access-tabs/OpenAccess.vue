@@ -8,8 +8,8 @@
              <span>"{{item.name}}"</span>
            </p>
            <div class="content">
-             <p><span class="icon" v-html="icons.icon"></span><span>Роль:</span> <!--Администратор модуля--></p>
-             <a :href="item.url">Перейти в модуль</a>
+             <p><span class="icon" v-html="icons.icon"></span><span>{{ trans('profile.access.role') }}:</span> <!--Администратор модуля--></p>
+             <a :href="item.url">{{ trans('profile.access.go') }}</a>
            </div>
          </div>
        </div>

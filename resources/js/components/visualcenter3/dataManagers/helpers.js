@@ -98,11 +98,8 @@ export default {
             return dzo;
         },
 
-        getDaysCountInYear() {
-            let currentDate = new Date(this.timestampToday);
-            let yearEnd = moment().endOf("year");
-
-            return yearEnd.diff(currentDate, 'days')
+        getDaysCountInMonth(date) {
+            return moment(date, "YYYY-MM").daysInMonth();
         },
 
         getQuarter(d) {
@@ -112,11 +109,11 @@ export default {
         getPreviousWorkday(){
             let workday = moment();
             let day = workday.day();
-            let diff = 1;
+            let diff = 2;
             if (day === 0 || day === 1){
                 diff = day + 2;
             }
-            return workday.subtract(diff, 'days').format();
+            return workday.subtract(diff, 'days').endOf('day').format();
         },
 
         formatVisTableNumber3(a, b) {

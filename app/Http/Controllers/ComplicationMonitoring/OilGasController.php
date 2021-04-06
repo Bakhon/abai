@@ -262,7 +262,7 @@ class OilGasController extends CrudController
      */
     public function show($id)
     {
-        $oilgas = OilGas::where('id', '=', $id)
+        $oilgas = OilGas::where('id', $id)
             ->orderByDesc('date')
             ->with('other_objects')
             ->with('ngdu')
@@ -335,8 +335,8 @@ class OilGasController extends CrudController
     public function economic(Request $request)
     {
         $economicNextYear = OmgCA::with('gu')
-            ->where('date', '=', date('Y', strtotime('+1 year')) . '-01-01')
-            ->where('gu_id', '=', $request->gu)
+            ->where('date', date('Y', strtotime('+1 year')) . '-01-01')
+            ->where('gu_id', $request->gu)
             ->get();
 
         $data = [
@@ -392,9 +392,9 @@ class OilGasController extends CrudController
                 'Экономия при внедрении рекомендации, тыс.тенге'
             ],
             [
-                round($eco['uheDose']/$eco['days'],1),
-                round($eco['qv']/$eco['days'],1),
-                round($eco['recDose']/$eco['days'],1),
+                $eco['days'] ? round($eco['uheDose']/$eco['days'],1) : 0,
+                $eco['days'] ? round($eco['qv']/$eco['days'],1) : 0,
+                $eco['days'] ? round($eco['recDose']/$eco['days'],1) : 0,
                 $eco['result']
             ]
         ];
@@ -408,47 +408,49 @@ class OilGasController extends CrudController
 
     static function ecoData($gu = 38)
     {
-        $ngduUheData = DB::table('omg_n_g_d_u_s')
+        $table = 'omg_n_g_d_u_s_1';
+        $ngduUheData = DB::table($table.'')
             ->leftJoin(
                 'omg_u_h_e_s',
-                function ($join) {
-                    $join->on('omg_n_g_d_u_s.gu_id', '=', 'omg_u_h_e_s.gu_id')
-                        ->on('omg_u_h_e_s.date', '=', 'omg_n_g_d_u_s.date');
+                function ($join) use ($table){
+                    $join->on($table.'.gu_id', 'omg_u_h_e_s.gu_id')
+                        ->on('omg_u_h_e_s.date', $table.'.date');
                 }
             )
             ->leftJoin(
                 'pipes',
-                function ($join) {
-                    $join->on('omg_n_g_d_u_s.gu_id', '=', 'pipes.gu_id')
-                        ->where('pipes.plot', '=', 'eg');
+                function ($join) use ($table) {
+                    $join->on($table.'.gu_id', 'pipes.gu_id')
+                        ->where('pipes.plot', 'eg');
                 }
             )
-            ->where('omg_n_g_d_u_s.gu_id', '=', $gu)
-            ->whereNotNull('omg_n_g_d_u_s.date')
-            ->whereNotNull('omg_n_g_d_u_s.pump_discharge_pressure')
-            ->whereNotNull('omg_n_g_d_u_s.heater_output_pressure')
-            ->whereNotNull('omg_n_g_d_u_s.daily_fluid_production')
-            ->whereNotNull('omg_n_g_d_u_s.bsw')
-            ->whereNotNull('omg_n_g_d_u_s.daily_oil_production')
+            ->where($table.'.gu_id', $gu)
+            ->whereNotNull($table.'.date')
+            ->whereNotNull($table.'.pump_discharge_pressure')
+            ->whereNotNull($table.'.heater_output_temperature')
+            ->whereNotNull($table.'.daily_fluid_production')
+            ->whereNotNull($table.'.bsw')
+            ->whereNotNull($table.'.daily_oil_production')
             ->whereNotNull('omg_u_h_e_s.date')
             ->whereNotNull('omg_u_h_e_s.current_dosage')
             ->select(
-                'omg_n_g_d_u_s.date',
-                'omg_n_g_d_u_s.gu_id',
+                $table.'.date',
+                $table.'.gu_id',
                 'pipes.outside_diameter',
                 'pipes.roughness',
                 'pipes.length',
                 'pipes.thickness',
-                'omg_n_g_d_u_s.pump_discharge_pressure',
-                'omg_n_g_d_u_s.heater_output_pressure',
-                'omg_n_g_d_u_s.daily_fluid_production',
-                'omg_n_g_d_u_s.daily_water_production',
-                'omg_n_g_d_u_s.bsw',
-                'omg_n_g_d_u_s.daily_gas_production_in_sib',
-                'omg_n_g_d_u_s.surge_tank_pressure',
-                'omg_n_g_d_u_s.daily_oil_production',
+                $table.'.pump_discharge_pressure',
+                $table.'.heater_output_temperature',
+                $table.'.daily_fluid_production',
+                $table.'.daily_water_production',
+                $table.'.bsw',
+                $table.'.daily_gas_production_in_sib',
+                $table.'.surge_tank_pressure',
+                $table.'.daily_oil_production',
                 'omg_u_h_e_s.current_dosage')
             ->get();
+
 
         $result = 0;
         $qv = 0;
@@ -467,7 +469,7 @@ class OilGasController extends CrudController
                 $row->length,
                 $row->thickness,
                 $row->pump_discharge_pressure,
-                $row->heater_output_pressure,
+                $row->heater_output_temperature,
                 $lastWMData['hydrogen_sulfide'],
                 $lastWMData['carbon_dioxide'],
                 $row->daily_fluid_production,
@@ -500,32 +502,27 @@ class OilGasController extends CrudController
     }
 
     static function getLastOilGasData($dt, $gu){
-        $oilGas = OilGas::where('gu_id', '=', $gu)
+        $oilGas = OilGas::where('gu_id', $gu)
                         ->where('date','<=', $dt)
                         ->whereNotNull('gas_viscosity_at_20')
                         ->first();
 
-        $oilGas2 = OilGas::where('gu_id', '=', $gu)
+        $oilGas2 = OilGas::where('gu_id', $gu)
                         ->where('date','<=', $dt)
                         ->whereNotNull('carbon_dioxide_in_gas')
                         ->first();
 
-        $oilGas3 = OilGas::where('gu_id', '=', $gu)
+        $oilGas3 = OilGas::where('gu_id', $gu)
                         ->where('date','<=', $dt)
                         ->whereNotNull('oil_viscosity_at_20')
                         ->first();
 
-        $oilGas4 = OilGas::where('gu_id', '=', $gu)
-                        ->where('date','<=', $dt)
-                        ->whereNotNull('gas_viscosity_at_20')
-                        ->first();
-
-        $oilGas5 = OilGas::where('gu_id', '=', $gu)
+        $oilGas5 = OilGas::where('gu_id', $gu)
                         ->where('date','<=', $dt)
                         ->whereNotNull('water_density_at_20')
                         ->first();
 
-        $oilGas6 = OilGas::where('gu_id', '=', $gu)
+        $oilGas6 = OilGas::where('gu_id', $gu)
                         ->where('date','<=', $dt)
                         ->whereNotNull('gas_density_at_20')
                         ->first();
@@ -534,39 +531,39 @@ class OilGasController extends CrudController
             'gas_viscosity_at_20' => $oilGas->gas_viscosity_at_20,
             'carbon_dioxide_in_gas' => $oilGas2->carbon_dioxide_in_gas,
             'oil_viscosity_at_20' => $oilGas3->oil_viscosity_at_20,
-            'gas_viscosity_at_20' => $oilGas4->gas_viscosity_at_20,
             'water_density_at_20' => $oilGas5->water_density_at_20,
             'gas_density_at_20' => $oilGas6->gas_density_at_20,
         ];
     }
 
     static function getLastWMData($dt, $gu){
-        $wm = WaterMeasurement::where('gu_id', '=', $gu)
+        $wm = WaterMeasurement::where('gu_id', $gu)
                         ->where('date','<=', $dt)
                         ->whereNotNull('hydrogen_sulfide')
+                        ->where('hydrogen_sulfide', '!=', 0)
                         ->first();
 
-        $wm2 = WaterMeasurement::where('gu_id', '=', $gu)
+        $wm2 = WaterMeasurement::where('gu_id', $gu)
                         ->where('date','<=', $dt)
                         ->whereNotNull('carbon_dioxide')
                         ->first();
 
-        $wm3 = WaterMeasurement::where('gu_id', '=', $gu)
+        $wm3 = WaterMeasurement::where('gu_id', $gu)
                         ->where('date','<=', $dt)
                         ->whereNotNull('hydrocarbonate_ion')
                         ->first();
 
-        $wm4 = WaterMeasurement::where('gu_id', '=', $gu)
+        $wm4 = WaterMeasurement::where('gu_id', $gu)
                         ->where('date','<=', $dt)
                         ->whereNotNull('sulphate_ion')
                         ->first();
 
-        $wm5 = WaterMeasurement::where('gu_id', '=', $gu)
+        $wm5 = WaterMeasurement::where('gu_id', $gu)
                         ->where('date','<=', $dt)
                         ->whereNotNull('density')
                         ->first();
 
-        $wm6 = WaterMeasurement::where('gu_id', '=', $gu)
+        $wm6 = WaterMeasurement::where('gu_id', $gu)
                         ->where('date','<=', $dt)
                         ->whereNotNull('chlorum_ion')
                         ->first();
@@ -917,8 +914,11 @@ class OilGasController extends CrudController
 
     static function getCorrosion($gu)
     {
-        $cor = Corrosion::where('gu_id', '=', $gu)->orderBy('created_at', 'desc')->first();
-        return $cor->background_corrosion_velocity;
+        $cor = Corrosion::where('gu_id', $gu)
+            ->whereNotNull('background_corrosion_velocity')
+            ->orderBy('created_at', 'desc')
+            ->first();
+        return $cor ? $cor->background_corrosion_velocity : null;
     }
 
 }

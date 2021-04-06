@@ -13,11 +13,12 @@
         <div class="ml-3 col-3 helpers-block mt-5">
             <div class="row">
                 <div class="data-status">
-                    <span class="label">Выберите ДЗО: </span>
+                    <span class="label">Выбранное ДЗО: </span>
                 </div>
                 <select
                         class="dzo-select col-12"
-                        @change="dzoChange($event)"
+                        disabled
+                        :value="selectedDzo.ticker"
                 >
                     <option v-for="dzo in dzoCompanies" :value="dzo.ticker">
                         {{dzo.name}}
@@ -40,6 +41,7 @@
                     {{trans('visualcenter.saveButton')}}
                 </div>
                 <div
+                        id="chemistryButton"
                         class="menu__button col-12 mt-3"
                         @click="changeButtonVisibility()"
                 >
@@ -146,4 +148,3 @@
         }
     }
 </style>
-

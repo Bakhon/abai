@@ -824,6 +824,9 @@ a.dropdown-link-vc3 {
     .right-indent {
         margin-left: -2.5em!important;
     }
+    .vert-line {
+        margin-left: 8%;
+    }
 }
 
 .left-side {

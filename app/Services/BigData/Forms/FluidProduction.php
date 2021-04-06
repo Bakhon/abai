@@ -64,6 +64,8 @@ class FluidProduction extends TableForm
             }
         );
 
+        $this->addLimits($wells);
+
         return $wells->toArray();
     }
 
@@ -187,23 +189,22 @@ class FluidProduction extends TableForm
         return ['value' => null];
     }
 
-    protected function saveSingleFieldInDB(string $field): void
+    protected function saveSingleFieldInDB(string $field, int $wellId, Carbon $date, $value): void
     {
         $column = $this->getFieldByCode($field);
 
-        $item = $this->getFieldRow($column, $this->request->get('well_id'), $this->request->get('date'));
+        $item = $this->getFieldRow($column, $wellId, $date);
 
         if (empty($item)) {
             $data = [
-                'well_id' => $this->request->get('well_id'),
-                $column['column'] => $this->request->get($field),
-                'dbeg' => Carbon::parse($this->request->get('date'))->toDateTimeString(),
-                'dend' => Carbon::parse($this->request->get('date'))->addDay()->toDateTimeString()
+                'well_id' => $wellId,
+                $column['column'] => $value,
+                'dbeg' => $date->toDateTimeString()
             ];
 
             if (!empty($column['additional_filter'])) {
-                foreach ($column['additional_filter'] as $key => $value) {
-                    $data[$key] = $value;
+                foreach ($column['additional_filter'] as $key => $val) {
+                    $data[$key] = $val;
                 }
             }
 
@@ -216,13 +217,13 @@ class FluidProduction extends TableForm
                 ->where('id', $item->id)
                 ->update(
                     [
-                        $column['column'] => $this->request->get($field)
+                        $column['column'] => $value
                     ]
                 );
         }
     }
 
-    private function getFieldRow(array $column, int $wellId, string $date)
+    private function getFieldRow(array $column, int $wellId, Carbon $date)
     {
         $query = DB::connection('tbd')
             ->table($column['table'])
@@ -230,8 +231,8 @@ class FluidProduction extends TableForm
             ->whereBetween(
                 'dbeg',
                 [
-                    Carbon::parse($date)->startOfDay(),
-                    Carbon::parse($date)->endOfDay()
+                    (clone $date)->startOfDay(),
+                    (clone $date)->endOfDay()
                 ]
             );
 
@@ -262,6 +263,14 @@ class FluidProduction extends TableForm
                 'parent_id' => $org->parent_id
             ];
         }
+
+        usort(
+            $orgData,
+            function ($a, $b) {
+                return strnatcasecmp($a['name'], $b['name']);
+            }
+        );
+
         Cache::put('bd_org_with_wells', $orgData, now()->addDay());
 
         return $orgData;
@@ -269,9 +278,10 @@ class FluidProduction extends TableForm
 
     private function getTechWithWells()
     {
+        $cacheKey = 'bd_tech_with_wells_' . $this->request->get('date');
         $techData = [];
-        if (Cache::has('bd_tech_with_wells_' . $this->request->get('date'))) {
-            $techData = Cache::get('bd_tech_with_wells_' . $this->request->get('date'));
+        if (Cache::has($cacheKey)) {
+            $techData = Cache::get($cacheKey);
             return $this->generateTree($techData);
         }
 
@@ -284,6 +294,7 @@ class FluidProduction extends TableForm
                     'type'
                 ]
             )
+            ->whereIn('tech_id', [Tech::TYPE_GZU, Tech::TYPE_GU, Tech::TYPE_ZU])
             ->where('dbeg', '<=', Carbon::parse($this->request->get('date')))
             ->where('dend', '>=', Carbon::parse($this->request->get('date')))
             ->get();
@@ -298,29 +309,50 @@ class FluidProduction extends TableForm
             ];
         }
 
-        usort(
+        uasort(
             $techData,
             function ($a, $b) {
                 return $a['parent_id'] > $b['parent_id'] ? 1 : -1;
             }
         );
 
-        foreach ($techData as $tech) {
-            if (!empty($tech['parent_id']) && !empty($techData[$tech['parent_id']])) {
-                $techData[$tech['parent_id']]['wells'] = array_unique(
-                    array_merge(
-                        $techData[$tech['parent_id']]['wells'],
-                        $tech['wells']
-                    )
-                );
+        foreach ($techData as $key => $tech) {
+            if (empty($tech['parent_id'])) {
+                continue;
             }
+            if (empty($techData[$tech['parent_id']])) {
+                $techData[$key]['parent_id'] = null;
+                continue;
+            }
+
+            $techData[$tech['parent_id']]['wells'] = array_unique(
+                array_merge(
+                    $techData[$tech['parent_id']]['wells'],
+                    $tech['wells']
+                )
+            );
         }
-        Cache::put('bd_tech_with_wells_' . $this->request->get('date'), $techData, now()->addDay());
-        return $this->generateTree($techData);
+
+        usort(
+            $techData,
+            function ($a, $b) {
+                return strnatcasecmp($a['name'], $b['name']);
+            }
+        );
+
+        $result = $this->generateTree($techData);
+        Cache::put($cacheKey, $result, now()->addDay());
+
+        return $result;
     }
 
     private function combineOrgWithTechData($orgData, $techData)
     {
+        $cacheKey = 'bd_org_tech_' . $this->request->get('date');
+        if (Cache::has($cacheKey)) {
+            return Cache::get($cacheKey);
+        }
+
         foreach ($orgData as &$org) {
             if (empty($org['wells'])) {
                 continue;
@@ -330,13 +362,15 @@ class FluidProduction extends TableForm
                 if (count(array_intersect($org['wells'], $tech['wells'])) > 0) {
                     $org['children'][] = $tech;
                     unset($techData[$keyTech]);
-                    break;
                 }
             }
         }
         unset($org);
 
-        return $this->generateTree($orgData);
+        $result = $this->generateTree($orgData);
+        Cache::put($cacheKey, $result, now()->addDay());
+
+        return $result;
     }
 
     private function getOtherUwis($item)
@@ -351,9 +385,7 @@ class FluidProduction extends TableForm
             ->first();
 
         return [
-            'id' => null,
             'value' => $uwi->other_uwi === '{NULL}' ? null : str_replace(['{', '}'], '', $uwi->other_uwi),
-            'date' => null
         ];
     }
 }

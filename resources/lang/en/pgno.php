@@ -115,5 +115,11 @@ return array (
   'maks_zenit_ugol' => 'Максимальный зенитный угол',
   'primenit_hpump' => 'Применить выбранную Нсп',
   'vibor_glubin_hpump' => 'Выбор глубины спуска',
-  'history_prs' => 'WBI history',
+  'history_prs' => 'History of PRS',
+  'nominal_feed' => 'Nominal feed',
+  'podbor_gno' => 'Selection of downhole pumping equipment',
+  'total_separation' => 'Общий коэффициент сепарации',
+  'separation_calc' => 'Расчет',
+  'separation_nat' => 'Естественная сепарация',
+  'separation_mech' => 'Механизированная сепарация',
 );

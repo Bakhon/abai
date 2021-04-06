@@ -44,6 +44,6 @@ class OmgNGDU extends Model
 
     public function getDailyWaterProductionAttribute()
     {
-        return round (($this->daily_fluid_production *  $this->bsw)/100 , 4);
+        return round (($this->daily_fluid_production *  $this->bsw)/100 , 2);
     }
 }

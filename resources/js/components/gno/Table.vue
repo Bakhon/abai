@@ -23,11 +23,11 @@
               </div>
               <div class="choosing-well-data table-border-gno-top  col-7">
                 {{trans('pgno.new_well')}}
-                <input :checked="age === true" v-model="age" class="checkbox0" type="checkbox" />
+                <input :checked="isYoungAge" v-model="isYoungAge" class="checkbox0" type="checkbox" />
               </div>
               <div class="choosing-well-data table-border-gno table-border-gno-top cell4-gno-second  col-5">
                 {{trans('pgno.grp')}}
-                <input class="checkbox0" v-model="hasGrp" :disabled="!age" type="checkbox" />
+                <input class="checkbox0" v-model="hasGrp" :disabled="!isYoungAge" type="checkbox" />
               </div>
 
               <div class="choosing-well-data table-border-gno-top  col-7">{{trans('pgno.horizon')}}</div>
@@ -330,7 +330,7 @@
         <div class="no-gutter col-lg-9 order-md-1 first-column container-fluid no-gutter">
           <div class="no-gutter col-md-12 first-column-curve-block">
             <div class="background">
-              <modal class="modal-bign-wrapper" name="modalIncl" :width="1300" :height="700"
+              <modal class="modal-bign-wrapper" name="modalIncl" :draggable="true" :width="1300" :height="700"
                 style="background: transparent;" :adaptive="true">
                 <div class="modal-bign modal-bign-container">
                   <div class="modal-bign-header">
@@ -348,7 +348,7 @@
                 </div>
               </modal>
 
-              <modal class="modal-bign-wrapper" name="modal-prs" :width="1263" :height="612"
+              <modal class="modal-bign-wrapper" name="modal-prs" :draggable="true" :width="1263" :height="612"
                 style="background: transparent;" :adaptive="true">
                 <div class="modal-bign modal-bign-container">
                   <div class="modal-bign-header">
@@ -365,7 +365,7 @@
                 </div>
               </modal>
 
-              <modal class="modal-bign-wrapper" name="modalOldWell" :width="1080" :height="450" :adaptive="true">
+              <modal class="modal-bign-wrapper" name="modalOldWell" :draggable="true" :width="1080" :height="450" :adaptive="true">
                 <div class="modal-bign modal-bign-container">
                   <div class="modal-bign-header">
                     <div class="modal-bign-title">
@@ -438,7 +438,7 @@
                 </div>
               </modal>
 
-              <modal class="modal-bign-wrapper" name="modalNewWell" :width="1150" :height="450" :adaptive="true">
+              <modal class="modal-bign-wrapper" name="modalNewWell" :draggable="true" :width="1150" :height="450" :adaptive="true">
                 <div class="modal-bign modal-bign-container">
                   <div class="modal-bign-header">
                     <div class="modal-bign-title">
@@ -516,7 +516,7 @@
                 </div>
               </modal>
 
-              <modal class="" name="modalNearWells" :width="1150" :height="450" :adaptive="true">
+              <modal class="" name="modalNearWells" :draggable="true" :width="1150" :height="450" :adaptive="true">
                 <div class="modal-bign modal-bign-container">
                   <div class="modal-bign-header">
                     <div class="modal-bign-title">
@@ -609,7 +609,7 @@
               </modal>
 
 
-              <modal class="modal-bign-wrapper chart" name="modalExpAnalysis" :width="1300" :height="550"
+              <modal class="modal-bign-wrapper chart" name="modalExpAnalysis" :draggable="true" :width="1300" :height="550"
                 :adaptive="true">
                 <div class="modal-bign modal-bign-container">
                   <div class="modal-bign-header">
@@ -647,7 +647,7 @@
                 </div>
               </modal>
 
-              <modal class="modal-bign-wrapper chart" name="tablePGNO" :width="500" :height="550" :adaptive="true">
+              <modal class="modal-bign-wrapper chart" :draggable="true" name="tablePGNO" :width="500" :height="550" :adaptive="true">
                 <div class="modal-bign modal-bign-container no-padding">
                   <div class="modal-bign-header with-padding">
                     <div class="modal-bign-title">
@@ -1033,11 +1033,11 @@
                 </div>
               </modal>
 
-              <modal name="modalPGNO" :width="1150" :height="400" :adaptive="true">
+              <modal name="modalPGNO" :draggable="true" :width="1150" :height="400" :adaptive="true">
                 <div class="modal-bign3"></div>
               </modal> 
 
-              <modal name="paramSep" :width="1150" :height="400" :adaptive="true">
+              <modal name="paramSep" :draggable="true" :width="1150" :height="400" :adaptive="true">
                 <div class="modal-bign modal-bign-container">
                   <div class="modal-bign-header">
                     <div class="modal-bign-title">
@@ -1241,7 +1241,7 @@
             </div>
           </div>
 
-          <modal name="table" :width="1150" :height="385" :adaptive="true"></modal>
+          <modal name="table" :draggable="true" :width="1150" :height="385" :adaptive="true"></modal>
 
           <div class="no-gutter col-md-12 first-column-params-block">
             <div class="container-fluid d-sm-block">
@@ -1470,14 +1470,10 @@
 
                               <div class="col-2">
                                 <label class="label-for-celevoi" >ØНКТ</label>
-                                  <select class="input-box-gno podbor" v-model="nkt" :disabled="expChoose != 'ФОН'">
-                                  <option value="50,3">60x5</option>
-                                  <option value="62">73x5,5</option>
-                                  <option value="59,3">73x7</option>
-                                  <option value="75,9">89x6,5</option>
-                                  <option value="83,6">102x6,5</option>
-                                  <option value="100,3">114x7</option>
-
+                                  <select class="input-box-gno podbor" v-model="nkt" @change="postCurveData()">
+                                    <option v-for="(nkts, index) in nkt_choose" :value="nkts.for_calc_value" :key="index" >
+                                    {{nkts.show_value}}
+                                    </option>
                                   </select>
                               </div>
 
@@ -1490,19 +1486,19 @@
 
                             </div>
                             <div class="row">
-                              <div style="height: 20px; padding-left: 15px;">Общий коэффициент сепарации</div>
+                              <div style="height: 20px; padding-left: 15px;">{{trans('pgno.total_separation')}}</div>
                             </div>
 
                             <div class="row" style="padding-top: 3px;"> 
 
                               <div class="col-4">
                                 <label style="width: 100px;" class="label-for-celevoi">
-                                    <input value="calc_value" v-model="sep_meth" class="checkbox34" checked="true" type="radio" name="gno20" :disabled="expChoose === 'ФОН'"/>
-                                    Расчет
+                                    <input value="calc_value" v-model="sep_meth" @change="postCurveData()" class="checkbox34" checked="true" type="radio" name="gno20" :disabled="expChoose === 'ФОН'"/>
+                                    {{trans('pgno.separation_calc')}}
                                 </label>
                               </div>
                               <div class="col-8 table-border-gno">
-                                <input v-model="nat_sep" type="checkbox" checked="true" :disabled="sep_meth ==='input_value' || expChoose === 'ФОН'">Естественная сепарация</div>
+                                <input v-model="nat_sep" @change="postCurveData()" type="checkbox" checked="true" :disabled="sep_meth ==='input_value' || expChoose === 'ФОН'">{{trans('pgno.separation_nat')}}</div>
 
                             </div>
 
@@ -1510,14 +1506,14 @@
 
                               <div class="col-4">
                                 <label style="width: 100px;" class="label-for-celevoi">
-                                  <input class="checkbox3" v-model="sep_meth" value="input_value" checked="true" type="radio" name="gno20" :disabled="expChoose === 'ФОН'"/>
-                                  <input v-model="sep_value" type="text" onfocus="this.value=''" class="input-box-gno podbor" 
+                                  <input class="checkbox3" v-model="sep_meth" @change="postCurveData()" value="input_value" checked="true" type="radio" name="gno20" :disabled="expChoose === 'ФОН'"/>
+                                  <input v-model="sep_value" @change="postCurveData()" type="text" onfocus="this.value=''" class="input-box-gno podbor" 
                                   :disabled="expChoose === 'ФОН' || sep_meth !='input_value'"/></label>
                               </div>
 
                               <div class="col-8 table-border-gno">
-                                <input checked="true" :disabled="sep_meth ==='input_value' || expChoose === 'ФОН'" 
-                              type="checkbox" v-model="mech_sep">Механизированная сепарация
+                                <input checked="true" @change="postCurveData()" :disabled="sep_meth ==='input_value' || expChoose === 'ФОН'" 
+                              type="checkbox" v-model="mech_sep">{{trans('pgno.separation_mech')}}
                               <input v-model="mech_sep_value" type="text" style="margin-left: 3px; margin-bottom: 0px;" 
                               :disabled="sep_meth ==='input_value' || expChoose === 'ФОН' ||  mech_sep === false" onfocus="this.value=''" class="input-box-gno podbor" /></div>
                             </div>
@@ -1573,7 +1569,7 @@
                         </div>
                         <div class="col-12 px-2 gno-main-green-button">
                           <div class="button-podbor-gno col-12" @click="onPgnoClick()">
-                            {{ getOnPgnoButtonTitle }}
+                            {{ isVisibleChart ? podborGnoTitle : inflowCurveTitle }}
                           </div>
                         </div>
                       </div>
@@ -2085,7 +2081,7 @@ export default {
       type: String,
       required: true,
       wellNumber: null,
-      age: false,
+      isYoungAge: false,
       horizon: null,
       x: null,
       y: null,
@@ -2240,15 +2236,42 @@ export default {
       sep_meth: 'calc_value',
       nat_sep: true,
       mech_sep: null,
-      sep_value: null,
-      mech_sep_value: null,
+      sep_value: 60,
+      mech_sep_value: 50,
       pBuf: null,
       ao: null,
       orgs: null,
       nkt: null,
+      nkt_choose: [
+        {
+          for_calc_value: 50.3,
+          show_value: "60x5",
+        },
+        {
+          for_calc_value: 62,
+          show_value: "73x5,5",
+        },
+        {
+          for_calc_value: 59.3,
+          show_value: "73x7",
+        },
+        {
+          for_calc_value: 75.9,
+          show_value: "89x6,5",
+        },
+        {
+          for_calc_value: 83.6,
+          show_value: "102x6,5",
+        },
+        {
+          for_calc_value: 100.3,
+          show_value: "114x7",
+        }],
       hPumpFromIncl: null,
       isButtonHpump: false,
       postdata: null,
+      inflowCurveTitle: this.trans('pgno.krivaya_pritoka'),
+      podborGnoTitle: this.trans('pgno.podbor_gno')
     };
 
   },
@@ -2301,27 +2324,6 @@ export default {
     wellNum() {
       return this.$store.state.wellNum
     },
-    getOnPgnoButtonTitle() {
-     var langUrl = `${window.location.pathname}`.slice(1, 3);
-            if(this.visibleChart) {
-        if(langUrl === 'ru') {
-          return 'Подбор ГНО'
-        } else if(langUrl === 'kz') {
-          return 'Терең сорғы жабдықтарын таңдау'
-        } else {
-          return 'Selection of downhole pumping equipment'
-        }
-        
-      } else {
-        if(langUrl === 'ru') {
-          return 'Кривая притока'
-        } else if(langUrl === 'kz') {
-          return 'Ағын қисығы'
-        } else {
-          return 'Inflow curve'
-        }
-      }
-    },
     wellType() {
       return this.$store.state.wellType
     },
@@ -2351,7 +2353,7 @@ export default {
           "celSelect": this.CelButton,
           "celValue": this.CelValue.split(' ')[0],
           "menu": this.menu,
-          "well_age": this.age,
+          "well_age": this.isYoungAge,
           "grp_skin": this.hasGrp,
           "analysisBox1": this.isAnalysisBoxValue1,
           "analysisBox2": this.isAnalysisBoxValue2,
@@ -2365,7 +2367,8 @@ export default {
           "sep_value": this.sep_value,
           "mech_sep": this.mech_sep,
           "mech_sep_value": this.mech_sep_value,
-          "nat_sep": this.nat_sep
+          "nat_sep": this.nat_sep,
+          "nkt": this.nkt,
         })
     },
     downloadExcel() {
@@ -2393,7 +2396,7 @@ export default {
           "celSelect": this.CelButton,
           "celValue": this.CelValue.split(' ')[0],
           "menu": this.menu,
-          "well_age": this.age,
+          "well_age": this.isYoungAge,
           "grp_skin": this.hasGrp,
           "analysisBox1": this.isAnalysisBoxValue1,
           "analysisBox2": this.isAnalysisBoxValue2,
@@ -2462,7 +2465,7 @@ export default {
         this.ngdu = data["Well Data"]["ngdu"][0]
         this.sk = data["Well Data"]["sk_type"][0]
         this.wellNumber = data["Well Data"]["well"][0].split("_")[1]
-        this.age = data["Age"]
+        this.isYoungAge = data["Age"]
         this.horizon = data["Well Data"]["horizon"][0]
         this.expMeth = data["Well Data"]["exp_meth"][0]
         this.tseh = data["Well Data"]["tseh"][0]
@@ -2501,6 +2504,7 @@ export default {
         this.wellIncl = data["Well Data"]["well"][0]
         this.hPerfND = data["Well Data"]["h_perf"][0]
         this.strokeLenDev = data["Well Data"]["stroke_len"][0]
+        this.nkt = this.tubID
         var langUrl = `${window.location.pathname}`.slice(1, 3);
         if (this.expMeth == 'ШГН') {
           if(langUrl === 'ru') {
@@ -2546,16 +2550,13 @@ export default {
         this.qlCelButton = true
         this.qlCelValue = this.qLInput
         this.hPumpValue = this.hPumpSet + ' м'
-
-
-        if (this.expMeth == "ШГН") {
-          this.expChoose = "ШГН"
-        } else if (this.expMeth == "ЭЦН" || this.expMeth == "УЭЦН") {
+        
+        this.expChoose = this.expMeth
+        if (this.expMeth === "УЭЦН") {
           this.expChoose = "ЭЦН"
-        } else if (this.expMeth == "ФОН") {
-          this.expChoose = "ФОН"
         }
-        if (this.age === true) {
+
+        if (this.isYoungAge) {
           this.curveSelect = 'pi'
         } else {
           if (this.expMeth === "ФОН"){
@@ -2693,7 +2694,7 @@ export default {
       this.postCurveData()
       this.setLine(this.curveLineData)
       this.setPoints(this.curvePointsData)
-      if (this.age) {
+      if (this.isYoungAge) {
         this.postAnalysisNew();
         this.$modal.show('modalNewWell');
       } else {
@@ -2781,7 +2782,7 @@ export default {
         this.param_eco=1;
         await this.EconomCalc();
       } else if (prs1==0 && prs2==0){
-        if(this.age){
+        if(this.isYoungAge){
           this.param_eco=1;
           await this.EconomCalc();
         } else {
@@ -2891,7 +2892,6 @@ export default {
             .finally(() => {
               this.isLoading = false;
             });
-        //microservise na SHGN NNO
 
 
         var data = JSON.parse(responses[0].data.Result)
@@ -2928,7 +2928,7 @@ export default {
     },
 
     InclMenu() {
-      if (this.age === true) {
+      if (this.isYoungAge) {
         var langUrl = `${window.location.pathname}`.slice(1, 3);
         if(langUrl === 'ru') {
           Vue.prototype.$notifyWarning("Данные инклинометрии новой скважины отсутствуют");
@@ -2943,10 +2943,6 @@ export default {
         this.$store.commit('UPDATE_HPUMP', this.hPumpValue)
         this.$modal.show('modalIncl')
       }
-    },
-
-    onGetHpumpSet(data) {
-      closeModal('modalIncl')
     },
 
     getWellNumber(wellnumber) {
@@ -3060,7 +3056,7 @@ export default {
             this.curvePointsData = JSON.parse(data.PointsData)["data"]
             this.horizon = data["Well Data"]["horizon"][0]
             this.curveSelect = 'pi'
-            this.age = data["Age"]
+            this.isYoungAge = data["Age"]
 
 
             this.PBubblePoint = data["Well Data"]["P_bubble_point"][0].toFixed(1)

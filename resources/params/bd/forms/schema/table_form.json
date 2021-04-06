@@ -18,13 +18,15 @@
               "text",
               "calc",
               "hidden",
-              "history"
+              "history",
+              "history_graph",
+              "copy"
             ]
           },
           "title": {
             "type": "string"
           },
-          "isEditable": {
+          "is_editable": {
             "type": "boolean"
           },
           "table": {
@@ -44,7 +46,7 @@
           "code",
           "type",
           "title",
-          "isEditable"
+          "is_editable"
         ],
         "oneOf": [
           {
@@ -56,7 +58,9 @@
                   "integer",
                   "text",
                   "hidden",
-                  "history"
+                  "history",
+                  "history_graph",
+                  "copy"
                 ]
               }
             }

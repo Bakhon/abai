@@ -1,3 +1,4 @@
+import mainMenuConfiguration from "../main_menu_configuration.json";
 
 export default {
     data: function () {
@@ -18,6 +19,10 @@ export default {
     },
     methods: {
         switchCategory(planFieldName, factFieldName, metricName, categoryName, parentButton, childButton) {
+            if (!childButton) {
+                this.mainMenuButtonElementOptions = _.cloneDeep(mainMenuConfiguration);
+                this.disableOilFilters();
+            }
             this.chartSecondaryName = categoryName;
             this.dzoCompaniesAssets['assetTitle'] = this.trans("visualcenter.summaryAssets");
             this.planFieldName = planFieldName;
@@ -36,7 +41,7 @@ export default {
             let self = this;
             this.isMainMenuItemChanged = false;
             let currentFilterOptions = this.mainMenuButtonElementOptions[parentButton].childItems[childButton];
-            if (this.categoryMenuPreviousParent !== parentButton) {
+            if (this.categoryMenuPreviousParent !== parentButton || !this.isOilProductionMenu(parentButton,childButton)) {
                 _.forEach(Object.keys(this.mainMenuButtonElementOptions), function (button) {
                     self.disableMainMenuFlags(self.mainMenuButtonElementOptions[button]);
                 });
@@ -44,7 +49,10 @@ export default {
             this.categoryMenuPreviousParent = parentButton;
             this.switchButtonOptions(currentFilterOptions);
         },
-
+        isOilProductionMenu(parentButton,childButton) {
+            let oilProductionSubMenuButtons = ['kmgParticipation','opecRestriction'];
+            return parentButton === 'oilProductionButton' && oilProductionSubMenuButtons.includes(childButton);
+        },
         switchButtonOptions(elementOptions) {
             let enabledFlag = 'flagOn';
             let disabledFlag = 'flagOff'
@@ -83,11 +91,8 @@ export default {
                 this.chartSecondaryName = this.trans("visualcenter.dolyaUchast");
                 this.isKmgParticipationFilterActive = !this.isKmgParticipationFilterActive;
             } else {
-                if (regionName) {
-                    this.dzoRegionsMapping[regionName].isActive = true;
-                }
                 this.dzoCompaniesAssets = _.cloneDeep(this.dzoCompaniesAssetsInitial);
-                this.dzoCompaniesAssets[type] = true;
+                this.dzoCompaniesAssets[type] = !this.dzoCompaniesAssets[type];
                 this.selectedDzoCompanies = this.getSelectedDzoCompanies(type,category,regionName);
                 this.selectMultipleDzoCompanies(type,category,regionName);
             }

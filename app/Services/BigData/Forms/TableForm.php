@@ -6,10 +6,13 @@ namespace App\Services\BigData\Forms;
 
 use App\Models\BigData\Infrastructure\History;
 use App\Models\BigData\Well;
+use App\Services\BigData\FieldLimitsService;
 use Carbon\Carbon;
+use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Response;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
 abstract class TableForm extends BaseForm
@@ -18,7 +21,16 @@ abstract class TableForm extends BaseForm
 
     abstract public function getRows(array $params = []);
 
-    abstract protected function saveSingleFieldInDB(string $field): void;
+    abstract protected function saveSingleFieldInDB(string $field, int $wellId, Carbon $date, $value): void;
+
+    public static function getLimitsCacheKey(array $field, CarbonImmutable $yesterday)
+    {
+        $cacheKey = 'bd_form_limits_' . $yesterday->format('Y-m-d') . '_' . $field['table'] . '_' . $field['column'];
+        if (!empty($field['additional_filter'])) {
+            $cacheKey .= '_' . base64_encode(json_encode($field['additional_filter']));
+        }
+        return $cacheKey;
+    }
 
     public function getRowHistory(Carbon $dateTo, Carbon $dateFrom = null)
     {
@@ -61,10 +73,90 @@ abstract class TableForm extends BaseForm
         return $this->groupFieldsByDates($result, $dateFrom, $dateTo);
     }
 
+    public function getRowHistoryGraph(Carbon $dateTo, Carbon $dateFrom = null)
+    {
+        $wellId = $this->request->get('well_id');
+        $well = Well::find($wellId);
+
+        $graphColumnCodes = $this->getRowHistoryColumnCodes($this->request->get('column'), 'graph_fields');
+        $tables = $this
+            ->getFields()
+            ->whereIn('code', $graphColumnCodes)
+            ->pluck('table')
+            ->filter()
+            ->unique();
+
+        $rowData = $this->fetchRowData($tables, (array)$well->id, $dateTo, (clone $dateTo)->subYears(10));
+
+        $result = [];
+        foreach ($this->getFields()->whereIn('code', $graphColumnCodes) as $field) {
+            if (empty($field['table'])) {
+                $result[$field['code']] = [];
+                continue;
+            }
+
+            $result[$field['code']] = array_map(
+                function ($item) use ($field) {
+                    return $this->getFormatedFieldValue($field, $item);
+                },
+                $this->getFieldHistory(
+                    $field,
+                    $rowData[$field['table']],
+                    $well
+                )
+            );
+        }
+
+        $minDate = Carbon::now();
+        foreach ($rowData as $data) {
+            $date = Carbon::parse($data->get($well->id)->sortBy('dbeg')->first()->dbeg);
+            $minDate = $date < $minDate ? $date : $minDate;
+        }
+
+        return [
+            'selectedColumn' => $this->request->get('column'),
+            'table' => [
+                'rows' => $this->getRowHistory($dateTo, $dateFrom),
+                'columns' => $this->getRowHistoryColumnCodes($this->request->get('column'))
+            ],
+            'graph' => [
+                'rows' => $this->groupFieldsByDates($result, $minDate, $dateTo),
+                'columns' => $this->getFieldByCode($this->request->get('column'))['graph_fields']
+            ]
+        ];
+    }
+
+    public function copyFieldValue(int $wellId, Carbon $date)
+    {
+        $column = $this->getFieldByCode($this->request->get('column'));
+        $columnFrom = $this->getFieldByCode($column['copy']['from']);
+        $columnTo = $this->getFieldByCode($column['copy']['to']);
+
+        $tables = $this
+            ->getFields()
+            ->where('code', $columnFrom['code'])
+            ->pluck('table')
+            ->filter();
+
+        $rowData = $this->fetchRowData($tables, (array)$wellId, $date);
+
+        $copyValue = $rowData[$columnFrom['table']]->get($wellId)->first()->{$columnFrom['column']};
+        $this->saveSingleFieldInDB($column['code'], $wellId, Carbon::parse($date), 1);
+        $this->saveSingleFieldInDB($columnTo['code'], $wellId, Carbon::parse($date), $copyValue);
+
+
+        return [];
+    }
+
     public function saveSingleField(string $field)
     {
         $this->validateSingleField($field);
-        $this->saveSingleFieldInDB($field);
+        $this->saveSingleFieldInDB(
+            $field,
+            $this->request->get('well_id'),
+            Carbon::parse($this->request->get('date')),
+            $this->request->get($field)
+        );
         $this->saveHistory($field, $this->request->get($field));
 
         return response()->json([], Response::HTTP_NO_CONTENT);
@@ -155,7 +247,7 @@ abstract class TableForm extends BaseForm
                     break;
             }
 
-            $result[$date] = ['value' => $value];
+            $result[$date] = ['value' => $value, 'time' => Carbon::parse($row->dbeg)->format('d.m.Y H:i:s')];
         }
 
         return $result;
@@ -312,11 +404,39 @@ abstract class TableForm extends BaseForm
             ->first();
     }
 
-    private function getRowHistoryColumnCodes($columnCode)
+    protected function addLimits(Collection $rows): void
+    {
+        $rows->transform(
+            function ($row) {
+                foreach ($this->getFields() as $field) {
+                    if (!isset($field['validate_deviation']) || !$field['validate_deviation']) {
+                        continue;
+                    }
+                    if (!$field['is_editable']) {
+                        continue;
+                    }
+
+                    $cacheKey = self::getLimitsCacheKey($field, CarbonImmutable::yesterday());
+                    if (Cache::has($cacheKey)) {
+                        $fieldLimits = json_decode(Cache::get($cacheKey), true);
+                    } else {
+                        $fieldLimits = app()->make(FieldLimitsService::class)->calculateFieldLimits(
+                            CarbonImmutable::yesterday(),
+                            $field
+                        );
+                    }
+                    $row[$field['code']]['limits'] = $fieldLimits[$row['uwi']['id']] ?? null;
+                }
+                return $row;
+            }
+        );
+    }
+
+    private function getRowHistoryColumnCodes($columnCode, $fieldsParam = 'fields')
     {
         $result = [];
         $column = $this->getFieldByCode($columnCode);
-        $columnCodes = $column['fields'];
+        $columnCodes = $column[$fieldsParam];
         foreach ($this->getFields()->whereIn('code', $columnCodes) as $column) {
             $result[] = $column['code'];
             if ($column['type'] === 'calc') {
@@ -326,7 +446,7 @@ abstract class TableForm extends BaseForm
             }
         }
 
-        return array_unique($result);
+        return array_values(array_unique($result));
     }
 
     private function groupFieldsByDates(array $fields, Carbon $dateFrom, Carbon $dateTo)
