@@ -320,4 +320,19 @@ return array (
   array (
     'consumption' => 'Расход',
   ),
+  'pipe_types' => 
+  array (
+    'menu' => 'Типы труб',
+    'title' => 'БД Типов труб',
+    'fields' => 
+    array (
+      'name' => 'Наименование',
+      'outside_diameter' => 'Внешний диаметр',
+      'inner_diameter' => 'Внутренний диаметр',
+      'thickness' => 'Толщина стенок',
+      'roughness' => 'Жесткость',
+      'material' => 'Материал',
+    ),
+    'edit_title' => 'Редактирование типа тркбы',
+  ),
 );

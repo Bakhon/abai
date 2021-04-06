@@ -264,4 +264,15 @@ return array (
   array (
     'well' => 'Ұңғы',
   ),
+  'pipe_types' => 
+  array (
+    'fields' => 
+    array (
+      'inner_diameter' => 'Ішкі диаметр',
+      'material' => 'Материал',
+      'outside_diameter' => 'Сыртқы диаметр',
+      'roughness' => 'Кедір-бұдырлық',
+      'thickness' => 'Қабырға қалыңдығы',
+    ),
+  ),
 );
