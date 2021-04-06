@@ -7,20 +7,12 @@ use App\Http\Controllers\DruidController;
 use App\Services\DruidService;
 use DateTime;
 use Illuminate\Http\JsonResponse;
-use Level23\Druid\DruidClient;
-use Level23\Druid\Extractions\ExtractionBuilder;
-use Level23\Druid\Types\Granularity;
 
 class GTMController extends Controller
 {
 
     const ACCUM_OIL_PROD_FACT_DATA_FIELD = 'add_prod_12m';
     const ACCUM_OIL_PROD_PLAN_DATA_FIELD = 'plan_add_prod_12m';
-
-    /**
-     * @var DruidClient
-     */
-    private $druidClient;
 
     /**
      * @var DruidController
@@ -30,8 +22,6 @@ class GTMController extends Controller
     public function __construct()
     {
         $this->middleware('can:paegtm view main')->only('index');
-        $this->druidClient = new DruidClient(['router_url' => env('DRUID_ROUTER_URL')]);
-        $this->druidController = new DruidController($this->druidClient);
     }
 
     public function index()
