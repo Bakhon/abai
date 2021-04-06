@@ -44,7 +44,7 @@ class MainController extends Controller
                 $this->setValuesByType($equalIds, $items, $companyRepTtValues, $currentYear, $previousYear, $dateFrom, $dateTo, $repttIndex);
 
             } else {
-                $this->recursiveSetValueToHandbookByType($items[$repttIndex]['handbook_items'], $companyRepTtValues, $currentYear, $previousYear, $dateFrom, $dateTo, $repttIndex);
+                $this->recursiveSetValueToHandbookByType($items[$repttIndex]['handbook_items'], $companyRepTtValues, $currentYear, $previousYear, $dateFrom, $dateTo);
             }
         }
         return $items;
