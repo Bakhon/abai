@@ -19,7 +19,7 @@
       <template v-for="(tab, index) in formParams.tabs">
         <div class="bd-main-block__form-tab" v-show="index === activeTab">
           <div
-              class="bd-main-block__form-block"
+              class="bd-main-block__form-block scrollable"
               :class="{'bd-main-block__form-block_full': tab.blocks.length === 1}"
               v-for="block in tab.blocks"
           >
@@ -269,6 +269,7 @@ export default {
       background: #272953;
       border-left: 1px solid #454D7D;
       height: 600px;
+      overflow-y: auto;
       width: 50%;
       @media (max-width: 767px) {
         border-left: none;
