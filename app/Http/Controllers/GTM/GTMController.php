@@ -4,6 +4,7 @@ namespace App\Http\Controllers\GTM;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\DruidController;
+use App\Services\DruidService;
 use DateTime;
 use Illuminate\Http\JsonResponse;
 use Level23\Druid\DruidClient;
@@ -38,74 +39,29 @@ class GTMController extends Controller
         return view('gtm.gtm');
     }
 
-    public function getAccumOilProd():JsonResponse
+    public function getAccumOilProd(DruidService $druidService):JsonResponse
     {
-        $data = $this->druidController->getDruidData(
-            'gtm_eff_forecast_v25',
-            [
-                [
-                    'interval',
-                    '2020-01-01T00:00:00+00:00',
-                    '2020-12-31T23:59:59+00:00',
-                ],
-                [
-                    'select',
-                    '__time',
-                    'dt',
-                    function (ExtractionBuilder $extractionBuilder) {
-                        $extractionBuilder->timeFormat('yyyy-MM');
-                    }
-                ],
-                [
-                    'floatSum',
-                    'add_prod_12m'
-                ],
-                [
-                    'floatSum',
-                    'plan_add_prod_12m'
-                ],
-            ],
-            Granularity::MONTH
-        );
+        $data = $druidService->getAccumOilProd('2020-01-01T00:00:00+00:00', '2020-12-31T23:59:59+00:00');
         $result = [];
+        $accumOilProdFactData = 0;
+        $accumOilProdPlanData = 0;
         foreach ($data as $item) {
             $dateTime = DateTime::createFromFormat('Y-m-d H:i:s', $item["dt"] . "-01 00:00:00", new \DateTimeZone("UTC"));
             $date = trans('paegtm.' . $dateTime->format('M')) . ' ' . $dateTime->format('Y');
+            $accumOilProdFactData += $item[self::ACCUM_OIL_PROD_FACT_DATA_FIELD] / 1000;
+            $accumOilProdPlanData += $item[self::ACCUM_OIL_PROD_PLAN_DATA_FIELD] / 1000;
             $result[] = [
                 'date' => $date,
-                'accumOilProdFactData' => $item[self::ACCUM_OIL_PROD_FACT_DATA_FIELD] / 1000,
-                'accumOilProdPlanData' => $item[self::ACCUM_OIL_PROD_PLAN_DATA_FIELD] / 1000,
+                'accumOilProdFactData' => $accumOilProdFactData,
+                'accumOilProdPlanData' => $accumOilProdPlanData,
             ];
         }
         return response()->json($result);
     }
 
-    public function getComparisonIndicators():JsonResponse
+    public function getComparisonIndicators(DruidService $druidService):JsonResponse
     {
-        $data = $this->druidController->getDruidData(
-            'gtm_eff_forecast_v25',
-            [
-                [
-                    'interval',
-                    '2020-01-01T00:00:00+00:00',
-                    '2020-12-31T23:59:59+00:00',
-                ],
-                [
-                    'select',
-                    '__time',
-                    'dt',
-                    function (ExtractionBuilder $extractionBuilder) {
-                        $extractionBuilder->timeFormat('yyyy');
-                    }
-                ],
-                ['select', 'gtm_kind'],
-                ['distinctCount', 'well_uwi'],
-                ['sum', 'work_time'],
-                ['floatSum', 'add_prod_12m'],
-                ['floatSum','plan_add_prod_12m'],
-            ],
-            Granularity::YEAR
-        );
+        $data = $druidService->getComparisonIndicators('2020-01-01T00:00:00+00:00', '2020-12-31T23:59:59+00:00');
         $result = [];
         foreach ($data as $item) {
             $result[] = [

@@ -172,31 +172,6 @@ Vue.component('line-chart', {
             })
     }
 });
-Vue.component('pie-chart', {
-    extends: VueChartJs.Doughnut,
-    mounted () {
-        this.renderChart({
-            labels: [
-                'Освободненность',
-                'Выработка запасов',
-                'Низкое РПЛ',
-                'Технологическая',
-                'Ухудшение ФЕС',
-                'ГНО',
-                'Выход на режим'
-            ],
-            datasets: [
-                {
-                    data: [35, 55, 17, 16, 12, 15, 5],
-                    backgroundColor: ["#EF5350", "#4CAF50", "#F0AD81", "#2196F3", "#F27E31", "#3F51B5", "#3951CE"],
-                }
-            ],
-        }, {
-            borderWidth: 1,
-            hoverBorderWidth: 5,
-        })
-    }
-});
 export default {
     data: function () {
         return {

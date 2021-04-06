@@ -66,8 +66,7 @@
                                 {{ trans('paegtm.plannedGrowthReasonsTitle') }}
                             </div>
                             <div class="gtm-dark p-1 pl-2">
-<!--                                <pie-chart :height="360"></pie-chart>-->
-                                <img class="demo-img" src="/img/GTM/demo_img_circle.png" height="350">
+                                <doughnut-chart :height="180"></doughnut-chart>
                             </div>
                         </div>
                     </div>
@@ -151,7 +150,7 @@ Vue.component('bar-chart', {
             ],
             datasets: [
                 {
-                    label: 'Факт',
+                    label: this.trans('paegtm.fact'),
                     borderColor: "#F27E31",
                     backgroundColor: '#F27E31',
                     data: [
@@ -165,7 +164,7 @@ Vue.component('bar-chart', {
                     pointBorderColor: "#FFFFFF",
                 },
                 {
-                    label: 'План',
+                    label: this.trans('paegtm.plan') ,
                     borderColor: "#82BAFF",
                     backgroundColor: '#82BAFF',
                     data: [
@@ -210,12 +209,12 @@ Vue.component('bar-chart', {
         })
     }
 });
-Vue.component('pie-chart', {
+Vue.component('doughnut-chart', {
     extends: VueChartJs.Doughnut,
     mounted () {
         this.renderChart({
             labels: [
-                'Освободненность',
+                'Обводненность',
                 'Выработка запасов',
                 'Низкое РПЛ',
                 'Технологическая',
@@ -225,13 +224,28 @@ Vue.component('pie-chart', {
             ],
             datasets: [
                 {
+                    hoverBackgroundColor: '#ccc',
+                    borderColor: '#272953',
+                    borderWidth: 2,
                     data: [35, 55, 17, 16, 12, 15, 5],
                     backgroundColor: ["#EF5350", "#4CAF50", "#F0AD81", "#2196F3", "#F27E31", "#3F51B5", "#3951CE"],
                 }
             ],
         }, {
-            borderWidth: 1,
-            hoverBorderWidth: 5,
+            cutoutPercentage: 80,
+            legend: {
+                display: true,
+                position: 'left',
+                labels: {
+                    fontColor: '#FFF',
+                    fontSize: 14,
+                    fontFamily: 'Harmonia-sans',
+                    fontStyle: '700',
+                },
+            },
+            onClick: function (event, legendItem) {
+                let legendItemIndex = legendItem[0]['_index'];
+            }
         })
     }
 });
@@ -294,7 +308,7 @@ export default {
         accumOilProdNewData (newData) {
             this.accumOilProdData = [
                 {
-                    label: 'Факт',
+                    label: this.trans('paegtm.fact'),
                     borderColor: "#F27E31",
                     backgroundColor: '#F27E31',
                     data: newData.accumOilProdFactData,
@@ -304,7 +318,7 @@ export default {
                     pointBorderColor: "#FFFFFF",
                 },
                 {
-                    label: 'План',
+                    label: this.trans('paegtm.plan'),
                     borderColor: "#82BAFF",
                     backgroundColor: '#82BAFF',
                     data: newData.accumOilProdPlanData,
@@ -320,7 +334,7 @@ export default {
         this.$store.commit('globalloading/SET_LOADING',true);
     },
     async mounted () {
-        this.axios.get('/ru/paegtm/accum_oil_prod_data').then((response) => {
+        this.axios.get(this.localeUrl('/paegtm') + '/accum_oil_prod_data').then((response) => {
             let data = response.data;
             if (data) {
                 let accumOilProdFactData = [];
@@ -334,12 +348,10 @@ export default {
                 });
                 this.accumOilProdNewData.accumOilProdFactData = accumOilProdFactData;
                 this.accumOilProdNewData.accumOilProdPlanData = accumOilProdPlanData;
-            } else {
-                console.log('No data');
             }
             this.loaded = true
         });
-        this.axios.get('/ru/paegtm/comparison_indicators_data').then((response) => {
+        this.axios.get(this.localeUrl('/paegtm') + '/comparison_indicators_data').then((response) => {
             let data = response.data;
             if (data) {
                 this.comparisonIndicators = [];
@@ -353,8 +365,6 @@ export default {
                         Math.round(item.add_prod_12m),
                     ])
                 });
-            } else {
-                console.log('No data');
             }
             this.$store.commit('globalloading/SET_LOADING',false);
             this.loaded = true
