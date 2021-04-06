@@ -30,11 +30,11 @@
                     </td>
                     <td width="20%">
                         <select name="importExcelType" id="" class="form-control">
-                            <option value="opiu">ОПиУ</option>
-                            <option value="Production">Производство</option>
-                            <option value="companies">Компании</option>
-                            <option value="balance">Баланс</option>
-                            <option value="kvl">КВЛ</option>
+                            <option value="opiu">{{trans('economy_kenzhe.opiu')}}</option>
+                            <option value="production">{{trans('economy_kenzhe.production')}}</option>
+                            <option value="companies">{{trans('economy_kenzhe.companies')}}</option>
+                            <option value="balance">{{trans('economy_kenzhe.balance')}}</option>
+                            <option value="kvl">{{trans('economy_kenzhe.kvl')}}</option>
                         </select>
                     </td>
                     <td width="30%" align="left">
