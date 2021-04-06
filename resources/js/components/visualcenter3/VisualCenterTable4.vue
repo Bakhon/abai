@@ -1,6 +1,6 @@
 <template>
     <div class="d-flex flex-column flex-sm-row justify-content-between w-sm-100">
-        <div class="flex-grow-1 mr-2 mb-2">
+        <div class="col-lg-10 middle-block-columns pr-2">
             <horizontal-indicators
                 v-bind:dateStart="dateStart"
                 v-bind:dateEnd="dateEnd"
@@ -80,13 +80,31 @@
                 </div>
             </div>
         </div>
-        <div class="flex-grow-1" v-if="dateStart">
+        <div class="col-12 col-lg-2 middle-block-columns" v-if="dateStart">
+      <div class="second-column-container">
             <vertical-indicators
                 v-bind:dateStart="dateStart"
                 v-bind:dateEnd="dateEnd"
             ></vertical-indicators>
-        </div>
+        </div></div>
         <cat-loader />
     </div>
 </template>
 <script src="./VisualCenterTable4.js"></script>
+<style scoped lang="scss">
+.visualcenter-page-container {
+  flex-wrap: wrap;
+  margin: 0 !important;
+  color: #fff;
+}
+
+.middle-block-columns {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+.second-column-container {
+  padding-left: 10px;
+  padding-right: 0;
+}
+</style>
