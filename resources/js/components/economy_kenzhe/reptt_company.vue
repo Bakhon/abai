@@ -109,14 +109,11 @@
       }
     },
     mounted() {
-      this.distributionSumOverTree('plan_value', this.currentYear);
-      this.distributionSumOverTree('fact_value', this.currentYear);
-      this.distributionSumOverTree('plan_value', this.previousYear);
-      this.distributionSumOverTree('fact_value', this.previousYear);
-      this.distributionSumOverTree('intermediate_plan_value', this.currentYear);
-      this.distributionSumOverTree('intermediate_fact_value', this.currentYear);
-      this.distributionSumOverTree('intermediate_plan_value', this.previousYear);
-      this.distributionSumOverTree('intermediate_fact_value', this.previousYear);
+      let handbookKeys = ['plan_value', 'fact_value', 'intermediate_plan_value', 'intermediate_fact_value'];
+      handbookKeys.forEach(key => {
+        this.distributionSumOverTree(key, this.currentYear);
+        this.distributionSumOverTree(key, this.previousYear);
+      });
     },
   };
 </script>

@@ -32,10 +32,10 @@ class MainController extends Controller
     {
         $companyValuesRepTtIds = array_column($companyRepTtValues, 'rep_id');
         foreach ($items as $repttIndex => $reptt) {
-            $this->isKeyExists('plan_value', $items[$repttIndex], $currentYear, $previousYear);
-            $this->isKeyExists('fact_value', $items[$repttIndex], $currentYear, $previousYear);
-            $this->isKeyExists('intermediate_plan_value', $items[$repttIndex], $currentYear, $previousYear);
-            $this->isKeyExists('intermediate_fact_value', $items[$repttIndex], $currentYear, $previousYear);
+            $handbookKeys = ['plan_value', 'fact_value', 'intermediate_plan_value', 'intermediate_fact_value'];
+            foreach ($handbookKeys as $key){
+                $this->setItemsDefaultValue($key, $items[$repttIndex], $currentYear, $previousYear);
+            }
             if (count($reptt['handbook_items']) <= 0) {
                 $equalIds = $this->getValuesIdsByRepTtId($companyValuesRepTtIds, $reptt);
                 if (count($equalIds) <= 0) {
@@ -73,7 +73,7 @@ class MainController extends Controller
         return $ids;
     }
 
-    public function isKeyExists($key, &$item, $currentYear, $previousYear)
+    public function setItemsDefaultValue($key, &$item, $currentYear, $previousYear)
     {
         if (!array_key_exists($key, $item)) {
             $item[$key][$currentYear] = 0;
