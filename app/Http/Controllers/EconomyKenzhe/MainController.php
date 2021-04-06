@@ -41,8 +41,21 @@ class MainController extends Controller
                 if (count($equalIds) <= 0) {
                     continue;
                 }
-                $this->setValuesByType($equalIds, $items, $companyRepTtValues, $currentYear, $previousYear, $dateFrom, $dateTo, $repttIndex);
-
+                foreach (array_keys($equalIds) as $valIndex) {
+                    $currentItemDate = strtotime($companyRepTtValues[$valIndex]['date']);
+                    if ($companyRepTtValues[$valIndex]['type'] == 'plan') {
+                        if (date('Y', $currentItemDate) == $currentYear) {
+                            $this->sumValuesByItemType($items[$repttIndex], 'plan_value', $companyRepTtValues[$valIndex]['value'], $dateFrom, $dateTo, $currentYear, $currentItemDate);
+                        }
+                    }
+                    if ($companyRepTtValues[$valIndex]['type'] == 'fact') {
+                        if (date('Y', $currentItemDate) == $currentYear) {
+                            $this->sumValuesByItemType($items[$repttIndex], 'fact_value', $companyRepTtValues[$valIndex]['value'], $dateFrom, $dateTo, $currentYear, $currentItemDate);
+                        } else {
+                            $this->sumValuesByItemType($items[$repttIndex], 'fact_value', $companyRepTtValues[$valIndex]['value'], $dateFrom . " - 1 year", $dateTo . " - 1 year", $previousYear, $currentItemDate);
+                        }
+                    }
+                }
             } else {
                 $this->recursiveSetValueToHandbookByType($items[$repttIndex]['handbook_items'], $companyRepTtValues, $currentYear, $previousYear, $dateFrom, $dateTo);
             }
@@ -68,31 +81,11 @@ class MainController extends Controller
         }
     }
 
-    public function setValuesByType($equalIds, &$items, $companyRepTtValues, $currentYear, $previousYear, $dateFrom, $dateTo, $repttIndex)
+    public function sumValuesByItemType(&$item, $attribute, $value, $dateFrom, $dateTo, $year, $currentItemDate)
     {
-        foreach (array_keys($equalIds) as $valIndex) {
-            $currentItemDate = strtotime($companyRepTtValues[$valIndex]['date']);
-            if ($companyRepTtValues[$valIndex]['type'] == 'plan') {
-                if (date('Y', $currentItemDate) == $currentYear) {
-                    $items[$repttIndex]['plan_value'][$currentYear] += $companyRepTtValues[$valIndex]['value'];
-                    if (strtotime($dateFrom) <= $currentItemDate && strtotime($dateTo) >= $currentItemDate) {
-                        $items[$repttIndex]['intermediate_plan_value'][$currentYear] += $companyRepTtValues[$valIndex]['value'];
-                    }
-                }
-            }
-            if ($companyRepTtValues[$valIndex]['type'] == 'fact') {
-                if (date('Y', $currentItemDate) == $currentYear) {
-                    $items[$repttIndex]['fact_value'][$currentYear] += $companyRepTtValues[$valIndex]['value'];
-                    if (strtotime($dateFrom) <= $currentItemDate && strtotime($dateTo) >= $currentItemDate) {
-                        $items[$repttIndex]['intermediate_fact_value'][$currentYear] += $companyRepTtValues[$valIndex]['value'];
-                    }
-                } else {
-                    $items[$repttIndex]['fact_value'][$previousYear] += $companyRepTtValues[$valIndex]['value'];
-                    if (strtotime($dateFrom . " - 1 year") <= $currentItemDate && strtotime($dateTo . " - 1 year") >= $currentItemDate) {
-                        $items[$repttIndex]['intermediate_fact_value'][$previousYear] += $companyRepTtValues[$valIndex]['value'];
-                    }
-                }
-            }
+        $item[$attribute][$year] += $value;
+        if (strtotime($dateFrom) <= $currentItemDate && strtotime($dateTo) >= $currentItemDate) {
+            $item['intermediate_'.$attribute][$year] += $value;
         }
     }
 }
