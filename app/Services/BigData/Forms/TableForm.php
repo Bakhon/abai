@@ -21,7 +21,7 @@ abstract class TableForm extends BaseForm
 
     abstract public function getRows(array $params = []);
 
-    abstract protected function saveSingleFieldInDB(string $field): void;
+    abstract protected function saveSingleFieldInDB(string $field, int $wellId, Carbon $date, $value): void;
 
     public static function getLimitsCacheKey(array $field, CarbonImmutable $yesterday)
     {
@@ -126,10 +126,37 @@ abstract class TableForm extends BaseForm
         ];
     }
 
+    public function copyFieldValue(int $wellId, Carbon $date)
+    {
+        $column = $this->getFieldByCode($this->request->get('column'));
+        $columnFrom = $this->getFieldByCode($column['copy']['from']);
+        $columnTo = $this->getFieldByCode($column['copy']['to']);
+
+        $tables = $this
+            ->getFields()
+            ->where('code', $columnFrom['code'])
+            ->pluck('table')
+            ->filter();
+
+        $rowData = $this->fetchRowData($tables, (array)$wellId, $date);
+
+        $copyValue = $rowData[$columnFrom['table']]->get($wellId)->first()->{$columnFrom['column']};
+        $this->saveSingleFieldInDB($column['code'], $wellId, Carbon::parse($date), 1);
+        $this->saveSingleFieldInDB($columnTo['code'], $wellId, Carbon::parse($date), $copyValue);
+
+
+        return [];
+    }
+
     public function saveSingleField(string $field)
     {
         $this->validateSingleField($field);
-        $this->saveSingleFieldInDB($field);
+        $this->saveSingleFieldInDB(
+            $field,
+            $this->request->get('well_id'),
+            Carbon::parse($this->request->get('date')),
+            $this->request->get($field)
+        );
         $this->saveHistory($field, $this->request->get($field));
 
         return response()->json([], Response::HTTP_NO_CONTENT);

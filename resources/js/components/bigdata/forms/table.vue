@@ -48,7 +48,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr v-for="row in rows">
+                <tr v-for="(row, rowIndex) in rows">
                   <td
                       v-for="column in visibleColumns"
                       :class="{'editable': column.is_editable}"
@@ -60,13 +60,19 @@
                     <template v-else-if="column.type === 'calc'">
                       <span class="value">{{ row[column.code] ? row[column.code].value : '' }}</span>
                     </template>
+                    <template v-else-if="column.type === 'copy'">
+                      <input :checked="row[column.code].value" type="checkbox"
+                             @change="copyValues(row, column, rowIndex)">
+                    </template>
                     <template v-else-if="column.type === 'history_graph'">
                       <a href="#" @click.prevent="showHistoryGraphDataForRow(row, column)">
-                        {{ row[column.code].date ? row[column.code].old_value : row[column.code].value }}
-                      </a>
-                      <span v-if="row[column.code] && row[column.code].date" class="date">
+                      <span class="value">{{
+                          row[column.code].date ? row[column.code].old_value : row[column.code].value
+                        }}</span>
+                        <span v-if="row[column.code] && row[column.code].date" class="date">
                         {{ row[column.code].date | moment().format('YYYY-MM-DD') }}
                       </span>
+                      </a>
                     </template>
                     <template v-else-if="column.type === 'history'">
                       <a href="#" @click.prevent="showHistoricalDataForRow(row, column)">Посмотреть</a>
@@ -410,6 +416,33 @@ export default {
         this.isloading = false
         this.rowHistoryGraph = data
       })
+    },
+    copyValues(row, column, rowIndex) {
+
+      this.$bvModal.msgBoxConfirm(this.trans('bd.sure_you_want_to_copy'), {
+        okTitle: this.trans('app.yes'),
+        cancelTitle: this.trans('app.no'),
+      })
+          .then(result => {
+            if (result === true) {
+              this.axios.get(this.localeUrl(`/bigdata/form/${this.params.code}/copy`), {
+                params: {
+                  well_id: row.uwi.id,
+                  column: column.code,
+                  date: this.date
+                }
+              }).then(({data}) => {
+                this.isloading = false
+                this.rowHistoryGraph = data
+
+                this.$set(this.rows[rowIndex], column.copy.to, {
+                  value: row[column.copy.from].value
+                })
+
+              })
+            }
+          })
+
     }
   },
 };
