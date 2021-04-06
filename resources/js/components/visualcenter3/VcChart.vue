@@ -95,10 +95,10 @@
                 })();
 
                 if (opec === "ОПЕК+") {
-                    chartColors.plan = "#fff";
-                    chartColors.opecPlan = "#2E50E9";
-                    chartLabels.plan = this.trans("visualcenter.planOPEK");
-                    chartLabels.opecPlan =
+                    chartColors.opecPlan = "#fff";
+                    chartColors.plan = "#2E50E9";
+                    chartLabels.opecPlan = this.trans("visualcenter.planOPEK");
+                    chartLabels.plan =
                         this.trans("visualcenter.Plan") +
                         " " +
                         this.trans("visualcenter.utv");
@@ -147,16 +147,12 @@
                     data: formattedChartSummary.monthlyPlan,
                     pointRadius: 0,
                 };
-                let deviation = {
-                    label: chartLabels.deviation,
-                    backgroundColor: fillPattern
-                };
 
 
                 if (opec === "ОПЕК+") {
-                    datasets = [planChartOptions, factChartOptions, planOpecChartOptions, deviation];
+                    datasets = [planChartOptions, factChartOptions, planOpecChartOptions];
                 } else {
-                    datasets = [planChartOptions, factChartOptions, deviation];
+                    datasets = [planChartOptions, factChartOptions];
                 }
                 if (chartSummary.isFilterTargetPlanActive) {
                     datasets.push(monthlyPlan);
@@ -185,6 +181,11 @@
                                                 fillStyle: style.borderColor,
                                             };
                                         });
+                                        returnData.push({
+                                            text: this.trans("visualcenter.deviation"),
+                                            fillStyle: fillPattern,
+                                        });
+
                                         return returnData;
                                     }
                                     return [];

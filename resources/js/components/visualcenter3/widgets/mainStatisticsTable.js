@@ -151,6 +151,7 @@ export default {
                 this.changeDate();
             } else {
                 this.buttonYearlyTab = "";
+                this.isFilterTargetPlanActive = false;
             }
 
             if (change === 4) {
