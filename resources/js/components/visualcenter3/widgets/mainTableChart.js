@@ -94,6 +94,7 @@ export default {
             if (monthlyFact > 0 && date.month() < moment().month()) {
                 initialSummary.productionFactForChart = monthlyFact;
             }
+
             if (date.month() !== 0) {
                 initialSummary.monthlyPlan = this.getDzoMonthlyPlan(date,monthlyPlan,monthlyFact);
             } else {

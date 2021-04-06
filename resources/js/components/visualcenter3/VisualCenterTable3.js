@@ -900,6 +900,7 @@ export default {
 
         getProductionForChart(data) {
             let summary = data.filter(row => this.selectedDzoCompanies.includes(row.dzo));
+
             if (summary.length === 0) {
                 summary = data;
             }
