@@ -2,8 +2,11 @@
   <div class="bd-table-field">
     <div class="bd-table-field__buttons">
       <a class="bd-table-field__buttons-button" href="#" @click.prevent="openCreateForm">Добавить</a>
-      <a class="bd-table-field__buttons-button" href="#">Редактировать</a>
-      <a class="bd-table-field__buttons-button" href="#">Удалить</a>
+      <a :class="{'bd-table-field__buttons-button_disabled': selectedItemIndex === null}"
+         class="bd-table-field__buttons-button" href="#"
+         @click.prevent="openEditForm(selectedItemIndex)">Редактировать</a>
+      <a :class="{'bd-table-field__buttons-button_disabled': selectedItemIndex === null}"
+         class="bd-table-field__buttons-button" href="#" @click.prevent="deleteItem(selectedItemIndex)">Удалить</a>
     </div>
     <table class="table">
       <thead>
@@ -14,9 +17,10 @@
       </tr>
       </thead>
       <tbody>
-      <tr v-for="item in items">
+      <tr v-for="(item, index) in items" :class="{'selected': selectedItemIndex === index}"
+          @click="selectedItemIndex = index">
         <td v-for="column in params.columns">
-          {{ item[column.code] }}
+          {{ item[column.code].text }}
         </td>
       </tr>
       </tbody>
@@ -31,7 +35,8 @@
           >
             <label>{{ column.title }}</label>
             <bigdata-form-field
-                v-model="formValues[column.code]"
+                v-bind:value="formValues[column.code].value"
+                v-on:update="updateField($event, column)"
                 :error="errors[column.code]"
                 :item="column"
             >
@@ -71,20 +76,24 @@ export default {
       editedItemIndex: null,
       items: [],
       errors: [],
-      formValues: []
+      formValues: {},
+      selectedItemIndex: null
     }
   },
   methods: {
     openCreateForm() {
       this.editedItemIndex = null
       this.isFormOpened = true
-      let formValues = []
+      let formValues = {}
       this.params.columns.forEach(column => {
-        formValues[column.code] = null
+        formValues[column.code] = {value: null, text: ''}
       })
       this.formValues = formValues
     },
-    openEditForm(item, index) {
+    openEditForm(index) {
+      if (index === null) return
+
+      let item = this.items[index]
       this.editedItemIndex = index
       this.isFormOpened = true
       let formValues = []
@@ -95,19 +104,33 @@ export default {
     },
     saveItem() {
 
-      if (this.editedItemIndex !== null) {
-        this.$set(this.items, this.editedItemIndex, this.formValues)
-        return
-      }
-
-      this.items.push(this.formValues)
-
       this.isFormOpened = false
 
+      if (this.editedItemIndex !== null) {
+        this.$set(this.items, this.editedItemIndex, this.formValues)
+      } else {
+        this.items.push(this.formValues)
+      }
+
+      this.$emit('change', this.items)
+
+    },
+    deleteItem(index) {
+      if (index === null) return
+      this.items.splice(index, 1)
+      this.selectedItemIndex = null
+    },
+    updateField(event, column) {
+      console.log(event)
+      this.formValues[column.code] = event
     }
   }
 };
 </script>
 <style lang="scss">
-
+.bd-table-field {
+  .table {
+    color: #fff;
+  }
+}
 </style>
