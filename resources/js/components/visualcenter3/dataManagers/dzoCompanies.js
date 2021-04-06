@@ -67,11 +67,17 @@ export default {
     },
     methods: {
         getSelectedDzoCompanies(type, category, regionName) {
-            if (regionName) {
-                category = regionName;
+            this.disableDzoRegions();
+            if (!regionName) {
+                return _.cloneDeep(dzoCompaniesInitial).filter(company => company[category] === type).map(company => company.ticker);
             }
-            type = type.toLowerCase().replace('is','');
-            return _.cloneDeep(dzoCompaniesInitial).filter(company => company[type] === category).map(company => company.ticker);
+            this.dzoRegionsMapping[regionName].isActive = !this.dzoRegionsMapping[regionName].isActive;
+            if (this.dzoRegionsMapping[regionName].isActive) {
+                category = regionName;
+                type = type.toLowerCase().replace('is','');
+                return _.cloneDeep(dzoCompaniesInitial).filter(company => company[type] === category).map(company => company.ticker);
+            }
+            return _.cloneDeep(dzoCompaniesInitial).map(company => company.ticker);
         },
 
         selectMultipleDzoCompanies(type,category,regionName) {
