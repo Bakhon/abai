@@ -3,84 +3,98 @@
     "companyName": "visualcenter.emg",
     "selected": false,
     "ticker":"ЭМГ",
-    "type": "isNonOperating"
+    "type": "isOperating",
+    "region": "aturay"
   },
   {
     "companyName": "visualcenter.pki",
     "selected": false,
     "ticker":"ПКИ",
-    "type": "isOperating"
+    "type": "isNonOperating",
+    "region": "kuzulord"
   },
   {
     "companyName": "visualcenter.omg",
     "selected": false,
     "ticker":"ОМГ",
-    "type": "isNonOperating"
+    "type": "isOperating",
+    "region": "mangistau"
   },
   {
     "companyName": "visualcenter.kbm",
     "selected": false,
     "ticker":"КБМ",
-    "type": "isNonOperating"
+    "type": "isOperating",
+    "region": "mangistau"
   },
   {
     "companyName": "visualcenter.kgm",
     "selected": false,
     "ticker":"КГМ",
-    "type": "isNonOperating"
+    "type": "isOperating",
+    "region": "kuzulord"
   },
   {
     "companyName": "visualcenter.pkk",
     "selected": false,
     "ticker":"ПКК",
-    "type": "isOperating"
+    "type": "isNonOperating",
+    "region": "kuzulord"
   },
   {
     "companyName": "visualcenter.tp",
     "selected": false,
     "ticker":"ТП",
-    "type": "isOperating"
+    "type": "isNonOperating",
+    "region": "kuzulord"
   },
   {
     "companyName": "visualcenter.tsho",
     "selected": false,
     "ticker":"ТШО",
-    "type": "isOperating"
+    "type": "isNonOperating",
+    "region": "aturay"
   },
   {
     "companyName": "visualcenter.mmg",
     "selected": false,
     "ticker":"ММГ",
-    "type": "isNonOperating"
+    "type": "isOperating",
+    "region": "mangistau"
   },
   {
     "companyName": "visualcenter.koa",
     "selected": false,
     "ticker":"КОА",
-    "type": "isNonOperating"
+    "type": "isOperating",
+    "region": "actubinsk"
   },
   {
     "companyName": "visualcenter.ktm",
     "selected": false,
     "ticker":"КТМ",
-    "type": "isNonOperating"
+    "type": "isOperating",
+    "region": "actubinsk"
   },
   {
     "companyName": "visualcenter.kpo",
     "selected": false,
     "ticker":"КПО",
-    "type": "isOperating"
+    "type": "isNonOperating",
+    "region": "west"
   },
   {
     "companyName": "visualcenter.nko",
     "selected": false,
     "ticker":"НКО",
-    "type": "isOperating"
+    "type": "isNonOperating",
+    "region": "aturay"
   },
   {
     "companyName": "visualcenter.uo",
     "selected": false,
     "ticker":"УО",
-    "type": "isNonOperating"
+    "type": "isOperating",
+    "region": "actubinsk"
   }
 ]

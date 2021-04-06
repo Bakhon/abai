@@ -2,6 +2,6 @@
 
 @section('content')
     <div id="app">
-        <view-table :params='@json($params)'></view-table>
+        <view-table :params='@json($params)' :isResponsive="true" ></view-table>
     </div>
 @endsection

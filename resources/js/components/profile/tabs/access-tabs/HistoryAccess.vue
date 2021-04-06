@@ -3,15 +3,16 @@
 
         <table style="width:100%" class="modulesTable">
         <tr>
-            <th>Дата и время</th>
-            <th>Модуль</th>
-            <th>Статус</th>
+            <th>{{ trans('profile.access.date') }}</th>
+            <th>{{ trans('profile.access.module') }}</th>
+            <th>{{ trans('profile.access.status') }}</th>
         </tr>
-        <tr v-for="item in modules">
-            <td>26 января 2021 в 11:15</td>
-            <td><p class="default"><span v-html="item.ico"></span><span>{{item.name}}</span></p></td>
-            <td v-if="item.status === 'open'"><p class="default"><span class="status green">Одобрен:</span><span>Ваша роль - <b>Администратор</b></span></p></td>
-            <td v-if="item.status === 'close'"><p class="default"><span class="status red">Отклонен</span></p></td>
+        <tr v-for="item in accesses">
+            <td>{{item.updated_at}}</td>
+            <td><p class="default"><span v-html="item.module_icon"></span><span>{{item.module_name}}</span></p></td>
+            <td v-if="item.status === 'open'"><p class="default"><span class="status green">{{ trans('profile.access.opened') }}</span><!--<span>Ваша роль - <b>Администратор</b></span>--></p></td>
+            <td v-if="item.status === 'close'"><p class="default"><span class="status red">{{ trans('profile.access.closed') }}</span></p></td>
+            <td v-if="item.status === 'process'"><p class="default"><span class="status grey">{{ trans('profile.access.process') }}</span></p></td>
         </tr>
         </table>
             
@@ -19,19 +20,26 @@
 </template>
 
 <script>
-import params from '../../../../json/profile.json'
 
 export default {
   name: 'HistoryAccessProfile',
   props: {
+    accesses: {
+      type: Array,
+      required: true
+    },
   },
   components: {},
   data() {
     return {
-        icons: params.icons,
-        modules: params.modules,
     }
   },
   methods: {}
 }
 </script>
+
+<style scoped>
+  span.status.grey{
+    color: #B9BDDE;
+  }
+</style>

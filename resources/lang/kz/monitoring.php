@@ -1,7 +1,7 @@
 <?php
 
 return array (
-  'action_substance_of_co2' => 'Көмірқышқыл газының нақты мөлшері',
+  'action_substance_of_co2' => 'Көмірқышқыл газының нақты мөлшері мг/дм³',
   'corrosion_monitoring' => 'ТҚ коррозия мониторингі - Кормасс',
   'kaznipi' => 'ҚазҒЗЖИ ОҒЗЗ',
   'wm_database' => 'Өндірістік сұйықтық пен газдар дерекқоры',
@@ -11,9 +11,9 @@ return array (
   'pipes' => 'Құбырлар',
   'inhibitors' => 'Ингибиторлар',
   'tech_map' => 'Техникалық карта',
-  'action_substance_of_h2s' => 'Күкіртсутектің нақты мөлшері',
-  'actual_corrosion_speed' => 'Нақты коррозия жылдамдығы',
-  'actual_inhibitor_level' => 'Коррозия ингибиторын нақты айдау',
+  'action_substance_of_h2s' => 'Күкіртсутектің нақты мөлшері мг/дм³',
+  'actual_corrosion_speed' => 'Нақты коррозия жылдамдығы мм/г',
+  'actual_inhibitor_level' => 'Коррозия ингибиторын нақты айдау г/м3',
   'units' => 
   array (
     'p_kon' => 'P соңғы.',
@@ -141,10 +141,11 @@ return array (
       'daily_oil_production' => 'Мұнайдың тәуліктік өндірілуі, т/тәулік',
       'daily_gas_production_in_sib' => 'БӨС газ мөлшері, ст.м³/тәулік',
       'bsw' => 'Сулану, %',
-      'surge_tank_pressure' => 'Буферлік сыйымдылық қысымы, бар',
-      'pump_discharge_pressure' => 'Сораптың шығыс қысымы, бар',
-      'heater_inlet_pressure' => 'Пештің кіріс температурасы, С',
-      'heater_output_pressure' => 'Пештің шығыс температурасы, С',
+      'surge_tank_pressure' => 'Буферлік сыйымдылық қысымы, кгс\\см2',
+      'pump_discharge_pressure' => 'Сораптың шығыс қысымы, кгс\\см2',
+      'temperature' => 'Пештің кіріс температурасы, С',
+      'heater_inlet_temperature' => 'Пештің кіріс температурасы, С',
+      'heater_output_temperature' => 'Пештің шығыс температурасы, С',
     ),
   ),
   'all_gus' => 'Барлық ТҚ',
@@ -210,20 +211,20 @@ return array (
   'corrosion_name' => 'Коррозия',
   'pipe' => 
   array (
-    'menu' => 'Құбырлар',
-    'title' => 'Құбырлар дерекқоры',
     'create_title' => 'Құбырлар бойынша деректерді енгізу',
-    'edit_title' => 'Құбырлар бойынша түзетулерді енгізу',
     'fields' => 
     array (
-      'length' => 'Ұзындық',
-      'outside_diameter' => 'Сыртқы диаметр',
       'inner_diameter' => 'Ішкі диаметр',
-      'thickness' => 'Қабырға қалыңдығы',
-      'roughness' => 'Кедір-бұдырлық',
+      'length' => 'Ұзындық',
       'material' => 'Материал',
+      'outside_diameter' => 'Сыртқы диаметр',
       'plot' => 'Бөлшегі',
+      'roughness' => 'Кедір-бұдырлық',
+      'thickness' => 'Қабырға қалыңдығы',
     ),
+    'edit_title' => 'Құбырлар бойынша түзетулерді енгізу',
+    'title' => 'Құбырлар дерекқоры',
+    'menu' => 'Құбырлар',
   ),
   'inhibitor' => 
   array (
@@ -234,9 +235,9 @@ return array (
     'fields' => 
     array (
       'title' => 'Аталуы',
-      'price' => 'баға',
+      'price' => 'баға тнг\\кг',
       'price_date' => 'Баға өзгеру уақыты',
-      'density' => 'Тығыздық',
+      'density' => 'Тығыздық  кг\\м³',
     ),
   ),
   'map' => 
@@ -253,6 +254,11 @@ return array (
   'gu' => 
   array (
     'gu' => 'ТҚ',
+    'fields' => 
+    array (
+      'surge_tank_pressure' => 'Буферлік сыйымдылық қысымы',
+      'daily_gas_production_in_sib' => 'БӨС газ мөлшері',
+    ),
   ),
   'well' => 
   array (

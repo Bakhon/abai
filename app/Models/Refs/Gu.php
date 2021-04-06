@@ -2,10 +2,8 @@
 
 namespace App\Models\Refs;
 
-use App\Models\Traits\WithHistory;
+use App\Models\Pipes\MapPipe;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Refs\Zu;
-use App\Models\Refs\Well;
 use App\Models\ComplicationMonitoring\OmgCA;
 use App\Models\ComplicationMonitoring\OmgNGDU;
 use App\Models\ComplicationMonitoring\WaterMeasurement;
@@ -18,10 +16,12 @@ use App\Models\Pipes\ZuWellPipe;
 
 class Gu extends Model
 {
-    use WithHistory;
-
     protected $localKey = 'id';
     protected $guarded = ['id'];
+    protected $hidden = [
+        'created_at',
+        'updated_at'
+    ];
 
     public function cdng()
     {
@@ -48,6 +48,36 @@ class Gu extends Model
         return $this->hasMany(OmgNGDU::class);
     }
 
+    public function lastOmgngdu()
+    {
+        return $this->belongsTo(OmgNGDU::class)->select(
+            'id',
+            'date',
+            'gu_id',
+            'daily_fluid_production',
+            'daily_oil_production',
+            'daily_water_production',
+            'bsw',
+            'pump_discharge_pressure',
+            'heater_output_temperature',
+            'editable',
+            'daily_gas_production_in_sib',
+            'surge_tank_pressure'
+        );
+    }
+
+    public function scopeWithLastOmgngdu($query)
+    {
+        $query->addSelect(
+            [
+                'last_omgngdu_id' => OmgNGDU::select('id')
+                    ->whereColumn('gu_id', 'gus.id')
+                    ->orderBy('date', 'desc')
+                    ->take(1)
+            ]
+        )->with('lastOmgngdu');
+    }
+
     public function watermeasurement()
     {
         return $this->hasMany(WaterMeasurement::class);
@@ -71,6 +101,11 @@ class Gu extends Model
     public function pipe()
     {
         return $this->hasMany(Pipe::class);
+    }
+
+    public function mapPipes()
+    {
+        return $this->hasMany(MapPipe::class);
     }
 
     public function zuPipes()

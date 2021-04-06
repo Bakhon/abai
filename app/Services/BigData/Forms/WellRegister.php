@@ -4,17 +4,10 @@ declare(strict_types=1);
 
 namespace App\Services\BigData\Forms;
 
-use App\Models\BigData\Well;
-
-class WellRegister extends BaseForm
+class WellRegister extends PlainForm
 {
     protected $configurationFileName = 'well_register';
 
-    public function submit(): array
-    {
-        $well = Well::create($this->request->all());
-        return $well->toArray();
-    }
 
     protected function getCustomValidationErrors(): array
     {

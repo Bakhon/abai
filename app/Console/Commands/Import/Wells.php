@@ -3,11 +3,12 @@
 namespace App\Console\Commands\Import;
 
 use Illuminate\Console\Command;
-use Level23\Druid\Types\Granularity;
-use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\GuWellsImport;
 
 class Wells extends Command
 {
+    use ExcelImport;
+
     /**
      * The name and signature of the console command.
      *
@@ -39,6 +40,6 @@ class Wells extends Command
      */
     public function handle(): void
     {
-        Excel::import(new \App\Imports\GuWellsImport(), base_path($this->argument('path')));
+        $this->importExcel(new GuWellsImport($this));
     }
 }

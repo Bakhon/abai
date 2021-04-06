@@ -1,7 +1,7 @@
 <template>
   <div class="user-profile">
     <div class="user-profile__top">
-      <button class="bkgEditButton">Обложка профиля</button>
+      <button class="bkgEditButton">{{ trans('profile.user_background') }}</button>
       <div class="user-profile__top-avatar">
         <img :src="user.profile.thumb || '/img/level1/icon_user.svg'">
       </div>
@@ -74,7 +74,7 @@
         </template>
 
         <template v-else-if="activeTab === 'access'">
-            <access-profile></access-profile>
+            <access-profile :modules="modules" :other_modules="other_modules" :accesses="accesses"></access-profile>
         </template>
 
         <template v-else-if="activeTab === 'history'">
@@ -106,6 +106,18 @@ export default {
       required: true
     },
     logs: {
+      type: Array,
+      required: true
+    },
+    modules: {
+      type: Array,
+      required: true
+    },
+    other_modules: {
+      type: Array,
+      required: true
+    },
+    accesses: {
       type: Array,
       required: true
     },

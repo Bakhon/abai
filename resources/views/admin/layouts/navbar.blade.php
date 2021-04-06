@@ -10,6 +10,9 @@
             <li class="nav-item mr-5">
                 <a href="{{route('admin.roles.index')}}"><span class="workTypeText">Роли</span></a>
             </li>
+            <li class="nav-item mr-5">
+                <a href="{{route('accesses-list')}}"><span class="workTypeText">Список запросов</span></a>
+            </li>
         </ul>
         <div class="form-inline my-2 my-lg-0">
             <ul class="navbar-nav flex align-items-center">

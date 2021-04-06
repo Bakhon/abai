@@ -31,7 +31,7 @@ class OmgUHEHistoryObserver extends EditHistoryObserver
             'field_id' => 'monitoring.field',
             'fill' => 'monitoring.omguhe.fields.fill',
             'level' => 'monitoring.level',
-            'out_of_service_оf_dosing' => 'monitoring.omguhe.fields.dosator_idle',
+            'out_of_service_of_dosing' => 'monitoring.omguhe.fields.dosator_idle',
             'current_dosage' => 'monitoring.omguhe.fields.fact_dosage',
             'reason' => 'monitoring.omguhe.fields.reason',
         ];
@@ -51,7 +51,7 @@ class OmgUHEHistoryObserver extends EditHistoryObserver
                         $changes[$field]
                     )->name : $oldValue;
                     break;
-                case 'out_of_service_оf_dosing':
+                case 'out_of_service_of_dosing':
                     $oldValue = $original[$field] ? 'да' : 'нет';
                     $newValue = array_key_exists($field, $changes) ? ($original[$field] != $changes[$field] ? ($changes[$field] ? 'да' : 'нет') : null) : $oldValue;
                     break;

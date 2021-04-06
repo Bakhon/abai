@@ -98,6 +98,15 @@ export default {
         }
       ];
 
+      if (this.clickedObject.type == 'gu' ) {
+        options.push({
+          name: this.trans('monitoring.gu.redirect-to') + ' ' + this.clickedObject.object.name,
+          mapObject: this.clickedObject,
+          type: 'redirect',
+          editMode: this.clickedObject.type
+        });
+      }
+
       if (this.clickedObject.type == 'zu' || this.clickedObject.type == 'well') {
         options.push({
           name: this.trans('monitoring.pipe.add'),

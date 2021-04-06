@@ -12,7 +12,7 @@
                       <td class="col-4 col-lg-4 d-flex">
                         <div class="first-td-header">
                           <div class="row oil-block">
-                            <div class="number col-8 col-md-6 col-lg-8">
+                            <div class="number col-8 col-md-6 col-lg-7">
                               {{ formatDigitToThousand(oil_factDay) }}
                             </div>
                             <div class="unit-vc col-12 col-md-5 col-lg-4">{{ thousand }}{{ trans('visualcenter.tonWithSpace') }}</div>
@@ -71,7 +71,7 @@
                       <td class="col-4 col-lg-4 d-flex">
                         <div class="first-td-header">
                           <div class="row oil-block">
-                            <div class="number col-8 col-md-7 col-lg-8">
+                            <div class="number col-8 col-md-7 col-lg-7">
                               {{ formatDigitToThousand(oil_dlv_factDay) }}
                             </div>
                             <div class="unit-vc col-12 col-md-5 col-lg-4">{{ thousand }}{{ trans('visualcenter.tonWithSpace') }}</div>
@@ -138,7 +138,7 @@
                       <td class="col-4 col-sm-4 d-flex">
                         <div class="first-td-header">
                           <div class="row oil-block">
-                            <div class="number col-8 col-md-7 col-lg-8">
+                            <div class="number col-8 col-md-7 col-lg-7">
                               {{ formatDigitToThousand(gas_factDay) }}
                             </div>
                             <div class="unit-vc col-12 col-md-5 col-lg-4">
@@ -219,7 +219,7 @@
                           {{trans("visualcenter.oilPrice")}}
                         </div>
                         <br />
-                        <div class="percent-currency col-12">
+                        <div class="percent-currency col-12 p-0">
                           <div
                             class="arrow"
                             v-if="dailyOilPriceChange === 'UP'"
@@ -257,7 +257,7 @@
                         {{ trans("visualcenter.usdKurs") }}
                       </div>
                       <br />
-                      <div class="percent-currency col-12">
+                      <div class="percent-currency col-12 mt-20">
                         <div
                           class="arrow"
                           v-if="dailyCurrencyChangeIndexUsd === 'UP'"
@@ -687,9 +687,7 @@
                           )
                         "
                       >
-                        <!-- Закачка альбсен. воды -->{{
-                          trans("visualcenter.liqAlbsen")
-                        }}
+                        {{trans("visualcenter.liqAlbsen")}}
                       </a>
                     </li>
                   </ul>
@@ -698,7 +696,7 @@
             </div>
             <div class="row px-4 mt-3 middle-block__list-x-scroll">
               <div class="col-8 col-lg dropdown pr-1">
-                <div :class="[`${buttonDzoDropdown}`, 'button2 dzocompanylist__button']">
+                <div class="button2 dzocompanylist__button">
                   <div class="button2 dzocompanylist__button">
                     {{ trans("visualcenter.dzoAllCompany") }}
                     <button
@@ -707,7 +705,7 @@
                             data-toggle="dropdown"
                     ></button>
                     <div class="dzo-company-list">
-                      <ul class="dropdown-menu-vc dropdown-menu dropdown-menu-right">
+                      <ul class="dropdown-menu-vc dropdown-menu dropdown-menu-right dzo-dropdown">
                         <li class="px-4">
                           <div>
                             <input
@@ -724,8 +722,9 @@
                           <div>
                             <input
                                     type="checkbox"
+                                    :disabled="dzoCompaniesAssets['isOperating']"
                                     :checked="dzoCompaniesAssets['isOperating']"
-                                    @click="`${changeAssets('isOperating')}`"
+                                    @click="`${changeAssets('isOperating','type')}`"
                             ></input>
                             {{trans("visualcenter.isOperating")}}
                           </div>
@@ -734,11 +733,30 @@
                           <div>
                             <input
                                     type="checkbox"
+                                    :disabled="dzoCompaniesAssets['isNonOperating']"
                                     :checked="dzoCompaniesAssets['isNonOperating']"
-                                    @click="`${changeAssets('isNonOperating')}`"
+                                    @click="`${changeAssets('isNonOperating','type')}`"
                             ></input>
                             {{trans("visualcenter.isNonOperating")}}
                             <div class="dzocompanies-dropdown__divider"></div>
+                          </div>
+                        </li>
+                        <li
+                                class="px-4"
+                                v-for="(region,index) of Object.keys(dzoRegionsMapping)"
+                        >
+                          <div>
+                            <input
+                                    type="checkbox"
+                                    :disabled="dzoRegionsMapping[region].isActive"
+                                    :checked="dzoRegionsMapping[region].isActive"
+                                    @click="`${changeAssets('isRegion','region',region)}`"
+                            ></input>
+                            {{dzoRegionsMapping[region].translationName}}
+                            <div
+                                    class="dzocompanies-dropdown__divider"
+                                    v-if="(Object.keys(dzoRegionsMapping).length - 1) === index"
+                            ></div>
                           </div>
                         </li>
                         <li
@@ -776,12 +794,36 @@
                 </div>
               </div>
               <div class="col-8 col-lg px-1">
-                <div
-                        :class="[`${buttonYearlyTab}`,'button2']"
-                        @click="changeMenu2(3)"
-                >
+
+
+                <div :class="[`${buttonYearlyTab}`,'button2']">
+                  <div
+                          class="button1-vc-inner"
+                          @click="changeMenu2(3)"
+                  >
                   {{ trans("visualcenter.yearBegin") }}
+                  </div>
+                  <button
+                          type="button"
+                          class="btn btn-primary dropdown-toggle position-button-vc dzocompanies__button_position"
+                          data-toggle="dropdown"
+                  ></button>
+                  <div class="dzo-company-list">
+                    <ul class="dropdown-menu-vc dropdown-menu dropdown-menu-right year-period-dropdown">
+                      <li :class="[`${buttonTargetPlan}`, 'px-4']">
+                        <input
+                                type="checkbox"
+                                :disabled="!buttonYearlyTab"
+                                :checked="isFilterTargetPlanActive"
+                                @change="`${changeTargetCompanyFilter()}`"
+                        ></input>
+                        {{ trans("visualcenter.targetPlanFilter") }}
+                      </li>
+                    </ul>
+                  </div>
                 </div>
+
+
               </div>
               <div class="col-8 col-lg pl-1">
                 <div class="dropdown3">
@@ -890,8 +932,13 @@
                           {{ trans("visualcenter.chemistryMetricTon") }}
                         </div>
                       </th>
-                      <th>
+                      <th v-if="!isFilterTargetPlanActive">
                         {{ trans("visualcenter.dzoPercent") }}
+                      </th>
+                      <th v-if="isFilterTargetPlanActive">
+                        {{ trans("visualcenter.dzoTargetPlan") }}
+                        <br>
+                        {{ trans("visualcenter.dzoThousandTon") }}
                       </th>
                       <th v-if="exactDateSelected">
                         {{ trans("visualcenter.dzoOpec") }}
@@ -973,7 +1020,10 @@
                           }}
                         </div>
                       </td>
-                      <td :class="`${getDzoColumnsClass(index,'percent')}`">
+                      <td
+                              v-if="!isFilterTargetPlanActive"
+                              :class="`${getDzoColumnsClass(index,'percent')}`"
+                      >
                         <div
                           v-if="item.factMonth"
                           :class="
@@ -990,10 +1040,18 @@
                         </div>
                       </td>
                       <td
-                        v-if="exactDateSelected"
-                        :class="`${getLightColorClass(index)}`"
+                              v-if="isFilterTargetPlanActive"
+                              :class="`${getDzoColumnsClass(index,'percent')}`"
                       >
-                        <div :class="item.impulses ? 'accident-triangle triangle' : 'no-accident-triangle triangle'">
+                        <div class="font">
+                          {{ formatDigitToThousand(item.targetPlan) }}
+                        </div>
+                      </td>
+                      <td
+                              v-if="exactDateSelected"
+                              :class="`${getLightColorClass(index)}`"
+                      >
+                        <div :class="item.opec ? 'accident-triangle triangle' : 'no-accident-triangle triangle'">
                         </div>
                       </td>
                       <td
@@ -1003,7 +1061,6 @@
                         <div :class="item.impulses ? 'accident-triangle triangle' : 'no-accident-triangle triangle'">
                         </div>
                       </td>
-
                       <td
                               v-if="exactDateSelected"
                               :class="`${getLightColorClass(index)}`"
@@ -1091,7 +1148,10 @@
                           </div>
                         </div>
                       </td>
-                      <td :class="`${getDarkerClass(index)}`">
+                      <td
+                              v-if="!isFilterTargetPlanActive"
+                              :class="`${getDarkerClass(index)}`"
+                      >
                         <div
                           v-if="factMonthSumm"
                           :class="
@@ -1103,6 +1163,14 @@
                         ></div>
                         <div class="font dynamic" v-if="factMonthSumm">
                           {{dzoCompaniesSummary.percent}}
+                        </div>
+                      </td>
+                      <td
+                              v-if="isFilterTargetPlanActive"
+                              :class="`${getDarkerClass(index)}`"
+                      >
+                        <div class="font">
+                          {{dzoCompaniesSummary.targetPlan}}
                         </div>
                       </td>
                       <td
@@ -1216,8 +1284,8 @@
               <div class="area-6-name row mt-3 mb-3 px-2">
                 <div class="col">
                   <div class="ml-4 bold">
-                    <!--Фонд нагнетательных скважин-->{{
-                      trans("visualcenter.idle_wells")
+                    {{
+                      trans("visualcenter.idleWells")
                     }}
                   </div>
                 </div>
@@ -1313,7 +1381,7 @@
                             :class="wellStockIdleButtons.isInjectionIdleButtonActive ? 'button2 button-tab-highlighted' : 'button2'"
                             @click="calculateInjectionWellsData()"
                     >
-                      {{ trans("visualcenter.in_idle") }}
+                      {{ trans("visualcenter.inIdle") }}
                     </div>
                   </div>
                 </div>
@@ -1324,7 +1392,7 @@
                   <table v-if="injectionWells.length" class="table4 w-100 chemistry-table">
                     <thead>
                     <tr>
-                      <th>{{ trans("visualcenter.idle_wells") }}</th>
+                      <th>{{ trans("visualcenter.idleWells") }}</th>
                       <th>
                         {{ trans("visualcenter.otmMetricSystemWells") }}
                       </th>
@@ -1377,7 +1445,7 @@
               <div class="area-6-name row mt-3 mb-3 px-2">
                 <div class="col">
                   <div class="ml-4 bold">
-                    {{trans("visualcenter.prod_wells")}}
+                    {{trans("visualcenter.prodWells")}}
                   </div>
                 </div>
                 <div class="col px-4">
@@ -1473,7 +1541,7 @@
                             :class="wellStockIdleButtons.isProductionIdleButtonActive ? 'button2 button-tab-highlighted' : 'button2'"
                             @click="calculateProductionWellsData()"
                     >
-                      {{ trans("visualcenter.in_idle") }}
+                      {{ trans("visualcenter.inIdle") }}
                     </div>
                   </div>
                 </div>
@@ -1484,7 +1552,7 @@
                   <table v-if="productionWells.length" class="table4 w-100 chemistry-table">
                     <thead>
                     <tr>
-                      <th>{{ trans("visualcenter.prod_wells") }}</th>
+                      <th>{{ trans("visualcenter.prodWells") }}</th>
                       <th>{{ trans("visualcenter.otmMetricSystemWells") }}</th>
                     </tr>
                     </thead>
@@ -1881,7 +1949,7 @@
                       {{ getFormattedNumber(prod_wells_work) }}
                     </div>
                     <div class="in-work">
-                      {{ trans("visualcenter.in_work") }}
+                      {{ trans("visualcenter.inWork") }}
                     </div>
                     <div
                       :class="`${getColor2(
@@ -1915,7 +1983,7 @@
                       </div>
                     </div>
                     <div class="in-idle">
-                      {{ trans("visualcenter.in_idle") }}
+                      {{ trans("visualcenter.inIdle") }}
                     </div>
                     <div
                       :class="`${getColor2(
@@ -1943,7 +2011,7 @@
                     :style="`${tableHover4}`"
                   >
                     <div class="txt2">
-                      {{ trans("visualcenter.prod_wells") }}
+                      {{ trans("visualcenter.prodWells") }}
                     </div>
                   </td>
                 </tr>
@@ -1962,7 +2030,7 @@
                         {{getFormattedNumber(inj_wells_work)}}
                       </div>
                       <div class="in-work">
-                        {{ trans("visualcenter.in_work") }}
+                        {{ trans("visualcenter.inWork") }}
                       </div>
                       <div
                         :class="`${getColor2(
@@ -1996,7 +2064,7 @@
                         </div>
                       </div>
                       <div class="in-idle">
-                        {{ trans("visualcenter.in_idle") }}
+                        {{ trans("visualcenter.inIdle") }}
                       </div>
                       <div
                         :class="`${getColor2(
@@ -2024,7 +2092,7 @@
                       :style="`${tableHover5}`"
                     >
                       <div class="txt2">
-                        {{ trans("visualcenter.idle_wells") }}
+                        {{ trans("visualcenter.idleWells") }}
                       </div>
                     </td>
                   </tr>
@@ -2168,7 +2236,7 @@
                     <div class="col-6">
                       <div>
                         <div class="in-idle">
-                          <!-- с начала -->{{ trans("visualcenter.from_begin") }}
+                          <!-- с начала -->{{ trans("visualcenter.fromBegin") }}
                         </div>
                         <div class="in-idle">
                           <!-- года -->{{ trans("visualcenter.year") }}
@@ -2452,9 +2520,12 @@
     color:white;
   }
 
+  .dzo-dropdown {
+    height: 450px;
+  }
+
   .dzo-company-list ul {
     margin: 10px 0 0 0;
-    height: 450px;
     position: absolute;
     left: -0.5px;
     background: #40467E;
@@ -2606,6 +2677,12 @@
     .vis-table .table4 {
       min-width: 0;
     }
+    .mt-20 {
+      margin-top: 20%;
+    }
+    .year-period-dropdown {
+      min-width: 0;
+    }
   }
   @media (max-width:2000px) {
     .table4 {
@@ -2615,6 +2692,10 @@
     }
     .row-name_width_40 {
       width: 80%;
+    }
+    .year-period-dropdown {
+      min-width: 290px;
+      height: 45px;
     }
   }
   .dzocompanies__button_position {

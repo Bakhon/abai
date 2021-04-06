@@ -1,11 +1,11 @@
 <template>
   <div>
-    <div v-if="!data" class="gno-modal-loading-label">Загрузка...</div>
-    <div v-else-if="data.length === 0" class="gno-modal-loading-label">No data</div>
+    <div v-if="!data" class="gno-modal-loading-label">{{trans('pgno.zagruzka')}}</div>
+    <div v-else-if="data.length === 0" class="gno-modal-loading-label">{{trans('pgno.no_data')}}</div>
 
     <div v-else
          class="row no-margin col-12 no-padding relative gno-incl-content-wrapper">
-      <div class="col-6 no-padding no-scrollbar incl-modal-table" style="height: 100%; overflow-y: auto;">
+      <div class="col-6 no-padding no-scrollbar incl-modal-table">
         <perfect-scrollbar>
           <table
             border="1"
@@ -22,21 +22,21 @@
                 width="64"
                 style="height: 60pt; width: 48pt;"
               >
-                MD,м
+                {{trans('pgno.md')}},м
               </td>
               <td
                 class="xl6321650"
                 width="64"
                 style="border-left: none; width: 48pt;"
               >
-                TVD, м
+                {{trans('pgno.tvd')}}, м
               </td>
               <td
                 class="xl6321650"
                 width="64"
                 style="border-left: none; width: 48pt;"
               >
-                Удл,м
+                {{trans('pgno.udl')}},м
               </td>
               <td
                 class="xl6321650"
@@ -107,27 +107,28 @@
         </perfect-scrollbar>
       </div>
 
-      <div class="col-6 gno-plotly-graph" style="background-color: #2b2e5e; height: 700px;">
+      <div class="col-6 gno-plotly-graph">
         <Plotly :data="chart" :layout="layout" :display-mode-bar="false"></Plotly>
-        <div class="col-12" style="padding-bottom: 10px; margin-top: 50px;">
-          <div class="col-6" style="float: left; text-align: left; color: white; font-weight: bold;">Выбор глубины спуска насоса Нсп 
-            <input style="width: 100px;" v-model="hPumpFromIncl" @change="updateHpump" type="text" onfocus="this.value=''" class="input-box-gno-incl podbor"/>
+        <div class="hpump-input col-12">
+          <div class="hpump-input-block col-6">{{trans('pgno.vibor_glubin_hpump')}} {{ this.expChoose }} <br> Нсп 
+            <input v-model="hPumpFromIncl" @change="updateHpump" type="text" onfocus="this.value=''" class="input-box-gno-incl podbor"/>
             </div>
-          <button type="button col-6" class="old_well_button_incl" @click="onClickHpump">Применить выбранную Нсп</button>
+          <button type="button col-6" class="old_well_button_incl" @click="onClickHpump">{{trans('pgno.primenit_hpump')}}</button>
         </div>
-        <div class="col-12" style="padding-bottom: 10px;">
-          <div class="col-12"  style="font-size: 14px; text-align: left; color: white;">
-            <b>Максимальный темп набора кривизны</b> в месте установки насоса 
-            <input style="width: 60px;" v-model="dls1" :disabled="dls1=='-'" type="text" onfocus="this.value=''" class="input-box-gno-incl podbor"/> в интервале глубины спуска 
-            <input style="width: 60px;" v-model="dls2" :disabled="dls2=='-'" type="text" onfocus="this.value=''" class="input-box-gno-incl podbor" />     
-        
+        <div class="text-incl-block col-12">
+          <div class="zenit-block col-12">
+            <b>{{trans('pgno.temp_nabora_krivizni')}}</b> <br> {{trans('pgno.v_meste_ustanovki')}}
+            <input v-model="dlsGlubina" :disabled="dlsGlubina" type="text" onfocus="this.value=''" class="input-box-gno-incl podbor" /> {{trans('pgno.v_inter_glubin')}}  
+            <input v-model="maxDls" :disabled="maxDls" type="text" onfocus="this.value=''" class="input-box-gno-incl podbor"/>    
+            
             </div> 
         </div>
-        <div class="col-12" style="padding-bottom: 10px;">
-          <div class="col-12" style="font-size: 14px; text-align: left; color: white; float: left;">
-            <b>Максимальный зенитный угол</b> в месте установки насоса
-            <input v-model="zu1" :disabled="zu1=='-'" style="width: 60px;" type="text" onfocus="this.value=''" class="input-box-gno-incl podbor"/> в интервале глубины спуска 
-            <input v-model="zu2" :disabled="zu2=='-'" style="width: 60px;" type="text" onfocus="this.value=''" class="input-box-gno-incl podbor" />  
+        <div class="text-incl-block col-12">
+          <div class="zenit-block col-12">
+            <b>{{trans('pgno.maks_zenit_ugol')}}</b>  <br> {{trans('pgno.v_meste_ustanovki')}}
+            
+            <input v-model="inclGlubina" :disabled="inclGlubina" type="text" onfocus="this.value=''" class="input-box-gno-incl podbor" /> {{trans('pgno.v_inter_glubin')}}   
+             <input v-model="maxIncl" :disabled="maxIncl" type="text" onfocus="this.value=''" class="input-box-gno-incl podbor"/> 
             </div>
         </div>
 
@@ -146,11 +147,12 @@ import {PerfectScrollbar} from "vue2-perfect-scrollbar";
 import "vue2-perfect-scrollbar/dist/vue2-perfect-scrollbar.css";
 import { mapState } from 'vuex';
 
+
 Vue.component("Plotly", Plotly);
 
 export default {
   components: { PerfectScrollbar },
-  props: ["wellNumber", "wellIncl", "isLoading"],
+  props: ["wellNumber", "wellIncl", "isLoading","expChoose"],
   data: function () {
     return {
       data() {},
@@ -160,11 +162,24 @@ export default {
       zu2: "-",
       disabled: false,
       hPumpFromIncl: null,
-      buttonHpump: false,
+      isButtonHpump: false,
       hVal: null,
+      kraska:null,
+      tmp: null,
+      tmp2: null,
+      tmp3: null,
       dzArray: null,
       dxArray: null,
       dyArray: null,
+      ecnColor: null,
+      dls:null,
+      incl:null,
+      index1:null,
+      index2:null,
+      maxDls:null,
+      maxIncl:null,
+      dlsGlubina:null,
+      inclGlubina:null,
       xArr: null,
       yArr: null,
       zArr: null,
@@ -243,156 +258,143 @@ export default {
             }
             return index
         },
+
+      buildModel(){
+        this.hPumpFromIncl = this.$store.getters.getHpump
+        var wi = this.wellIncl.split('_');
+        let uri = "http://172.20.103.187:7575/api/pgno/" + wi[0] + "/" + wi[1] + "/incl";
+        this.$emit('update:isLoading', true);
+        this.hPumpFromIncl = this.$store.getters.getHpump
+
+        this.axios.get(uri).then((response) => {
+          var data = JSON.parse(response.data.InclData)
+          if (data.data) {
+            this.data = data.data
+            this.dxArray = this.data.map((r) => Math.abs(r.dx * 1))
+            this.dyArray = this.data.map((r) => Math.abs(r.dy * 1))
+            this.dzArray = this.data.map((r) => Math.abs(r.md * 1))
+            this.xArr = this.data.map((r) => (r.dx * 1))
+            this.yArr = this.data.map((r) => (r.dy * 1))
+            this.zArr = this.data.map((r) => (r.md * -1))
+            this.hVal = this.hPumpFromIncl.substring(0,4) * 1
+            this.indexZ = this.closestVal(this.hVal, this.zArr)
+            this.ecnColor=this.data.map((r) => r.dls_color)
+            this.dls=this.data.map((r) => Math.round(Math.abs(r.dls * 100))/100)
+            this.incl=this.data.map((r) =>Math.round(Math.abs(r.incl * 100))/100)
+
+            if (this.expChoose=='ШГН'){
+              this.glubina=this.hVal+10
+              this.index1 = this.closestVal(this.hVal, this.zArr)
+              this.index2 = this.closestVal(this.glubina, this.zArr)
+            } else {
+              this.glubina=this.hVal+20
+              this.index1 = this.closestVal(this.hVal, this.zArr)
+              this.index2 = this.closestVal(this.glubina, this.zArr)
+            }
+
+            if(!this.dzArray.includes(this.hVal) && this.dzArray[this.index1]>this.hVal){
+              this.index1=this.index1-1
+            }
+            if (!this.dzArray.includes(this.glubina) && this.dzArray[this.index2]<this.glubina){
+              this.index2=this.index2+1
+            }
+
+            this.dlsGlubina=Math.max(...this.dls.slice(this.index1+1,this.index2+1))
+            this.inclGlubina=Math.max(...this.incl.slice(this.index1+1,this.index2+1))
+            this.maxDls=Math.max(...this.dls.slice(0,this.index2+1))
+            this.maxIncl=Math.max(...this.incl.slice(0,this.index2+1))
+
+            for (const i in this.ecnColor){
+              this.tmp=this.dzArray[this.closestVal(this.dzArray[i] + 20, this.zArr)]
+              this.tmp2=Math.max(...this.dls.slice(Number(i)+1,this.closestVal(this.dzArray[i] + 20, this.zArr)+1))
+              this.tmp3=Math.max(...this.dls.slice(Number(i)+1,this.closestVal(this.dzArray[i] + 20, this.zArr)+2))
+              if (this.tmp>=this.dzArray[i] + 20){
+                if (this.tmp2>0.3){
+                  this.ecnColor[i]='red'
+                } else if (this.tmp2<=0.3 && this.tmp2>0.05) {
+                  this.ecnColor[i]='yellow'
+                } else {
+                  this.ecnColor[i]='green'
+                }
+              } else {
+                if (this.tmp3>0.3){
+                  this.ecnColor[i]='red'
+                } else if (this.tmp3<=0.3 && this.tmp3>0.05) {
+                  this.ecnColor[i]='yellow'
+                } else {
+                  this.ecnColor[i]='green'
+                }
+              }
+            }
+          
+            if (this.expChoose=='ШГН'){
+              this.kraska= this.data.map((r) => r.dls_color)
+            } else {
+              this.kraska=this.ecnColor
+            }
+
+            this.pointZ = this.zArr[this.indexZ]
+            this.pointX = this.xArr[this.indexZ]
+            this.pointY = this.yArr[this.indexZ]
+          
+
+            if (Math.max(...this.dxArray) < 50 && Math.max(...this.dyArray) < 50) {
+              this.layout['scene']['xaxis']['range'][0] = 50
+              this.layout['scene']['xaxis']['range'][1] = -50
+              this.layout['scene']['yaxis']['range'][0] = 50
+              this.layout['scene']['yaxis']['range'][1] = -50
+            } else {
+              this.layout['scene']['xaxis']['range'][0] = Math.max(...this.dxArray) * 1.5
+              this.layout['scene']['xaxis']['range'][1] = Math.max(...this.dxArray) * -1.5
+              this.layout['scene']['yaxis']['range'][0] = Math.max(...this.dyArray) * 1.5
+              this.layout['scene']['yaxis']['range'][1] = Math.max(...this.dyArray) * -1.5
+            }
+            this.chart = [{
+              type: 'scatter3d',
+              mode: 'lines',
+              x: this.data.map((r) => r.dx),
+              y: this.data.map((r) => r.dy),
+              z: this.data.map((r) => r.md * -1),
+              text: this.data.map((r) => r.dls),
+              hovertemplate:
+                "MD = %{z:.1f} м<br>" +
+                "DLS = %{text:.1f} гр/10м<extra></extra>",
+              opacity: 1,
+              line: {
+                width: 12,
+                color: this.kraska.map((r) => r),
+                colorscale: [[0, 'rgb(0,0,255)'], [1, 'rgb(255,0,0)']],
+                type: 'heatmap'
+              },
+            },{
+              type: 'scatter3d',
+              mode: 'markers',
+              x: [this.pointX],
+              y: [this.pointY],
+              z: [this.pointZ],
+              marker: {
+                size:10,
+                color: '#AFCFEA',
+              }
+            }
+            ],
+            this.point = []
+          } else this.data = [];
+        }).finally(() => {
+          this.$emit('update:isLoading', false);
+        })
+
+      },
    updateHpump(event) {
       this.$store.commit('UPDATE_HPUMP', event.target.value)
-      this.hPumpFromIncl = this.$store.getters.getHpump
-      var wi = this.wellIncl.split('_');
-      let uri = "http://172.20.103.187:7575/api/pgno/" + wi[0] + "/" + wi[1] + "/incl";
-      this.$emit('update:isLoading', true);
-      this.hPumpFromIncl = this.$store.getters.getHpump
-
-      this.axios.get(uri).then((response) => {
-        var data = JSON.parse(response.data.InclData)
-        if (data.data) {
-          this.data = data.data
-          this.dxArray = this.data.map((r) => Math.abs(r.dx * 1))
-          this.dyArray = this.data.map((r) => Math.abs(r.dy * 1))
-          this.dzArray = this.data.map((r) => Math.abs(r.md * 1))
-          this.xArr = this.data.map((r) => (r.dx * 1))
-          this.yArr = this.data.map((r) => (r.dy * 1))
-          this.zArr = this.data.map((r) => (r.md * -1))
-          this.hVal = this.hPumpFromIncl.substring(0,4) * 1
-          this.indexZ = this.closestVal(this.hVal, this.zArr)
-          this.pointZ = this.zArr[this.indexZ]
-          this.pointX = this.xArr[this.indexZ]
-          this.pointY = this.yArr[this.indexZ]
-
-          if (Math.max(...this.dxArray) < 50 && Math.max(...this.dyArray) < 50) {
-            this.layout['scene']['xaxis']['range'][0] = 50
-            this.layout['scene']['xaxis']['range'][1] = -50
-            this.layout['scene']['yaxis']['range'][0] = 50
-            this.layout['scene']['yaxis']['range'][1] = -50
-          } else {
-            this.layout['scene']['xaxis']['range'][0] = Math.max(...this.dxArray) * 1.5
-            this.layout['scene']['xaxis']['range'][1] = Math.max(...this.dxArray) * -1.5
-            this.layout['scene']['yaxis']['range'][0] = Math.max(...this.dyArray) * 1.5
-            this.layout['scene']['yaxis']['range'][1] = Math.max(...this.dyArray) * -1.5
-          }
-          this.chart = [{
-            type: 'scatter3d',
-            mode: 'lines',
-            x: this.data.map((r) => r.dx),
-            y: this.data.map((r) => r.dy),
-            z: this.data.map((r) => r.md * -1),
-            text: this.data.map((r) => r.dls),
-            hovertemplate:
-              "MD = %{z:.1f} м<br>" +
-              "DLS = %{text:.1f} гр/10м<extra></extra>",
-            opacity: 1,
-            line: {
-              width: 12,
-              color: this.data.map((r) => r.dls_color),
-              colorscale: [[0, 'rgb(0,0,255)'], [1, 'rgb(255,0,0)']],
-              type: 'heatmap'
-            },
-          },{
-            type: 'scatter3d',
-            mode: 'markers',
-            x: [this.pointX],
-            y: [this.pointY],
-            z: [this.pointZ],
-            marker: {
-              size:10,
-              color: '#AFCFEA',
-            }
-          }
-          ],
-          this.point = []
-        } else this.data = [];
-      }).finally(() => {
-        this.$emit('update:isLoading', false);
-      })
+      this.buildModel()
    },
    onClickHpump(){
-     this.$emit('update-hpump', this.buttonHpump);
+     this.$emit('update-hpump', this.isButtonHpump);
    }
   },
   mounted() {
-    this.hPumpFromIncl = this.$store.getters.getHpump
-    var wi = this.wellIncl.split('_');
-    let uri = "http://172.20.103.187:7575/api/pgno/" + wi[0] + "/" + wi[1] + "/incl";
-    this.$emit('update:isLoading', true);
-    this.hPumpFromIncl = this.$store.getters.getHpump
-
-    this.axios.get(uri).then((response) => {
-
-      var data = JSON.parse(response.data.InclData)
-
-
-      if (data.data) {
-        this.data = data.data
-        this.dxArray = this.data.map((r) => Math.abs(r.dx * 1))
-        this.dyArray = this.data.map((r) => Math.abs(r.dy * 1))
-        this.dzArray = this.data.map((r) => Math.abs(r.md * 1))
-        this.xArr = this.data.map((r) => (r.dx * 1))
-        this.yArr = this.data.map((r) => (r.dy * 1))
-        this.zArr = this.data.map((r) => (r.md * -1))
-        this.hVal = this.hPumpFromIncl.substring(0,4) * 1
-
-        this.indexZ = this.closestVal(this.hVal, this.zArr)
-
-        this.pointZ = this.zArr[this.indexZ]
-        this.pointX = this.xArr[this.indexZ]
-        this.pointY = this.yArr[this.indexZ]
-
-        if (Math.max(...this.dxArray) < 50 && Math.max(...this.dyArray) < 50) {
-          this.layout['scene']['xaxis']['range'][0] = 50
-          this.layout['scene']['xaxis']['range'][1] = -50
-          this.layout['scene']['yaxis']['range'][0] = 50
-          this.layout['scene']['yaxis']['range'][1] = -50
-        } else {
-          this.layout['scene']['xaxis']['range'][0] = Math.max(...this.dxArray) * 1.5
-          this.layout['scene']['xaxis']['range'][1] = Math.max(...this.dxArray) * -1.5
-          this.layout['scene']['yaxis']['range'][0] = Math.max(...this.dyArray) * 1.5
-          this.layout['scene']['yaxis']['range'][1] = Math.max(...this.dyArray) * -1.5
-        }
-
-        this.chart = [{
-          type: 'scatter3d',
-          mode: 'lines',
-          x: this.data.map((r) => r.dx),
-          y: this.data.map((r) => r.dy),
-          z: this.data.map((r) => r.md * -1),
-          text: this.data.map((r) => r.dls),
-          hovertemplate:
-            "MD = %{z:.1f} м<br>" +
-            "DLS = %{text:.1f} гр/10м<extra></extra>",
-          opacity: 1,
-          line: {
-            width: 12,
-            color: this.data.map((r) => r.dls_color),
-            colorscale: [[0, 'rgb(0,0,255)'], [1, 'rgb(255,0,0)']],
-            type: 'heatmap'
-          },
-          
-
-        },{
-          type: 'scatter3d',
-          mode: 'markers',
-          x: [this.pointX],
-          y: [this.pointY],
-          z: [this.pointZ],
-          marker: {
-            size:10,
-            color: '#AFCFEA',
-          }
-        }
-        ],
-        this.point = []
-      } else this.data = [];
-    }).finally(() => {
-      this.$emit('update:isLoading', false);
-    })
+    this.buildModel()
   },
 }
 
@@ -430,7 +432,7 @@ export default {
     background: #494AA5;
     border: 1px solid #272953;
     outline: none;
-    width: 50px;
+    width: 60px;
     height: 22px;
     color: white;
     box-sizing: border-box;
@@ -458,5 +460,38 @@ export default {
 .input-box-gno-incl:disabled {
     color: #928f8f;
     background: #353e70;
+}
+
+.incl-modal-table {
+  height: 100%;
+  overflow-y: auto;
+}
+
+.text-incl-block {
+  padding-bottom: 10px;
+}
+
+.gno-plotly-graph {
+  background-color: #2b2e5e;
+  height: 670px;
+}
+
+.hpump-input {
+  padding-bottom: 10px;
+  margin-top: 50px;
+}
+
+.hpump-input-block {
+  float: left;
+  text-align: left;
+  color: white;
+  font-weight: bold;
+}
+
+.zenit-block {
+  font-size: 14px;
+  text-align: left;
+  color: white;
+  float: left;
 }
 </style>

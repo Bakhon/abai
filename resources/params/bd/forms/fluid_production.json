@@ -1,226 +1,349 @@
 {
-  "type": "table",
   "columns": [
     {
-      "title": "Номер скважины",
+      "title": "uwi_number",
       "code": "uwi",
       "type": "link",
-      "isEditable": false
+      "is_editable": false
     },
     {
-      "title": "Совместные скважины",
+      "title": "other_uwi",
       "code": "other_uwi",
       "type": "text",
-      "isEditable": false
+      "is_editable": false
     },
     {
-      "title": "Отработанное время",
+      "title": "worktime",
       "code": "worktime",
+      "table": "tbdi.well_status",
+      "column": "well_status_type_id",
       "type": "text",
-      "isEditable": false
+      "is_editable": false
     },
     {
-      "title": "Способ эксплуатации",
+      "title": "exp_type",
       "code": "exp_type",
       "table": "tbdi.well_expl",
       "column": "name",
       "type": "text",
-      "isEditable": false
+      "is_editable": false
     },
     {
-      "title": "Отвод",
+      "title": "lease",
       "code": "lease",
       "table": "tbdi.well_tech",
       "column": "tap",
       "type": "integer",
-      "isEditable": false
+      "is_editable": false
     },
     {
-      "title": "Геоструктура",
+      "title": "geostructure",
       "code": "geo",
       "type": "text",
-      "isEditable": false
+      "is_editable": false
     },
     {
-      "title": "Дебит жидк. по тех.режиму, м³/сут",
+      "title": "debit_fluid_tech",
       "code": "debit_fluid_tech",
       "table": "tbdi.tech_mode_well",
       "column": "liquid",
       "type": "float",
-      "isEditable": false
+      "is_editable": false
     },
     {
-      "title": "Дебит нефти по тех. режиму, тн.",
+      "title": "debit_oil_tech",
       "code": "debit_oil_tech",
       "table": "tbdi.tech_mode_well",
       "column": "oil",
       "type": "float",
-      "isEditable": false
+      "is_editable": false
     },
     {
-      "title": "Обводн. по тех.режиму, %",
+      "title": "bsw_tech",
       "code": "bsw_tech",
       "table": "tbdi.tech_mode_well",
       "column": "bsw",
       "type": "float",
-      "isEditable": false
+      "is_editable": false
     },
     {
-      "title": "Добыча жидкости, м3",
+      "title": "liquid_val",
       "code": "liquid_val",
-      "type": "float",
-      "isEditable": false
+      "type": "calc",
+      "formula": "$liquid_debit$ * $worktime$",
+      "is_editable": false
     },
     {
-      "title": "Добыча нефти, тн",
+      "title": "oil_val",
       "code": "oil_val",
-      "type": "float",
-      "isEditable": false
+      "type": "calc",
+      "formula": "$oil_debit$ * $worktime$",
+      "is_editable": false
     },
     {
-      "title": "Дебит жидк., м³/сут",
+      "title": "liquid_debit",
       "code": "liquid_debit",
       "table": "tbdi.liquid_prod",
       "column": "liquid_val",
       "type": "float",
-      "isEditable": true,
-      "validation": "numeric|gt:0"
+      "is_editable": true,
+      "validation": "numeric|gt:0",
+      "validate_deviation": true
     },
     {
-      "title": "Отметка",
+      "title": "mark",
       "code": "mark",
-      "type": "text",
-      "isEditable": false
+      "type": "copy",
+      "copy": {
+        "from": "liquid_telemetry",
+        "to": "liquid_debit"
+      },
+      "table": "tbdic.well_telemetry",
+      "column": "copied",
+      "additional_filter": {
+        "metric": "1"
+      },
+      "is_editable": false
     },
     {
-      "title": "Жидк. с телеметрии, м³/сут",
-      "code": "note",
-      "type": "float",
-      "isEditable": false
+      "title": "liquid_telemetry",
+      "code": "telemetry",
+      "type": "history_graph",
+      "table": "tbdic.well_telemetry",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": "1"
+      },
+      "fields": [
+        "liquid_telemetry",
+        "telemetry_source"
+      ],
+      "graph_fields": [
+        "liquid_val",
+        "bsw",
+        "oil_val",
+        "debit_fluid_tech",
+        "bsw_tech",
+        "debit_oil_tech"
+      ],
+      "history_popup": {
+        "title": "telemetry_data"
+      },
+      "is_editable": false
     },
     {
-      "title": "Тек. обводненность, %",
+      "title": "bsw",
       "code": "bsw",
       "table": "tbdi.bsw_prod",
       "column": "bsw_val",
       "type": "float",
-      "isEditable": true,
-      "validation": "numeric|gte:0|lte:100"
+      "is_editable": true,
+      "validation": "numeric|gte:0|lte:100",
+      "validate_deviation": true
     },
     {
-      "title": "Дебит нефти",
+      "title": "oil_debit",
       "code": "oil_debit",
-      "type": "float",
-      "isEditable": false
+      "type": "calc",
+      "formula": "$liquid_debit$ * (1 - $bsw_tech$/100) * $density_oil$",
+      "is_editable": false
     },
     {
-      "title": "Мех. примеси, %",
+      "title": "contamination",
       "code": "contamination",
+      "table": "tbdi.lab_research_value",
+      "column": "value_string",
+      "additional_filter": {
+        "name_param": "Мех. примеси, %"
+      },
       "type": "float",
-      "isEditable": false
+      "is_editable": false,
+      "date_field": "dt"
     },
     {
-      "title": "Диаметр штуцера, мм",
-      "code": "contamination",
+      "title": "pipe_diameter",
+      "code": "pipe_diameter",
+      "table": "tbdic.well_equip_params",
+      "column": "value_double",
+      "additional_filter": {
+        "equip_type": "1",
+        "equip_prm": "2"
+      },
       "type": "float",
-      "isEditable": false
+      "is_editable": false
     },
     {
-      "title": "Рбуфф.",
+      "title": "p_buf",
       "code": "p_buf",
       "table": "tbdic.meas_log_cut",
-      "column": "p_buf",
+      "column": "value_double",
+      "additional_filter": {
+        "param_name": "p_buf"
+      },
       "type": "float",
-      "isEditable": true,
-      "validation": "numeric|gt:0"
+      "is_editable": true,
+      "validation": "numeric|gt:0",
+      "validate_deviation": true
     },
     {
       "title": "Рзатр",
       "code": "p_zatr",
       "table": "tbdic.meas_log_cut",
-      "column": "p_zatr",
+      "column": "value_double",
+      "additional_filter": {
+        "param_name": "p_zatr"
+      },
       "type": "float",
-      "isEditable": true,
-      "validation": "numeric|gt:0"
+      "is_editable": true,
+      "validation": "numeric|gt:0",
+      "validate_deviation": true
     },
     {
-      "title": "Рбуфф. до штуцера",
+      "title": "p_buf_b",
       "code": "p_buf_b",
       "table": "tbdic.meas_log_cut",
-      "column": "p_buf_b",
+      "column": "value_double",
+      "additional_filter": {
+        "param_name": "p_buf_b"
+      },
       "type": "float",
-      "isEditable": true,
-      "validation": "numeric|gt:0"
+      "is_editable": true,
+      "validation": "numeric|gt:0",
+      "validate_deviation": true
     },
     {
-      "title": "Рбуфф. после штуцера",
+      "title": "p_buf_a",
       "code": "p_buf_a",
       "table": "tbdic.meas_log_cut",
-      "column": "p_buf_a",
+      "column": "value_double",
+      "additional_filter": {
+        "param_name": "p_buf_a"
+      },
       "type": "float",
-      "isEditable": true,
-      "validation": "numeric|gt:0"
+      "is_editable": true,
+      "validation": "numeric|gt:0",
+      "validate_deviation": true
     },
     {
-      "title": "Об./мин",
+      "title": "cycle_per_minute",
       "code": "cycle_per_minute",
+      "table": "tbdi.current_gdis_value",
+      "column": "value_double",
+      "additional_filter": {
+        "param_gdis_id": 5000000572
+      },
       "type": "float",
-      "isEditable": false
+      "is_editable": false
     },
     {
-      "title": "Длина хода, м",
+      "title": "length_stroke",
       "code": "length_stroke",
+      "table": "tbdi.current_gdis_value",
+      "column": "value_double",
+      "additional_filter": {
+        "param_gdis_id": 5000000568
+      },
       "type": "float",
-      "isEditable": false
+      "is_editable": false
     },
     {
-      "title": "Число качаний",
+      "title": "reciprotating_speed",
       "code": "reciprotating_speed",
+      "table": "tbdi.current_gdis_value",
+      "column": "value_double",
+      "additional_filter": {
+        "param_gdis_id": 5000000569
+      },
       "type": "float",
-      "isEditable": false
+      "is_editable": false
     },
     {
-      "title": "Причина простоя",
+      "title": "downtime_reason",
       "code": "downtime_reason",
       "type": "text",
-      "isEditable": false
+      "is_editable": false
     },
     {
-      "title": "Газовый фактор, м³/т",
+      "title": "gas_factor",
       "code": "gas_factor",
       "table": "tbdic.meas_log_cut",
-      "column": "gas_factor",
+      "column": "value_double",
+      "additional_filter": {
+        "param_name": "gas_factor"
+      },
       "type": "float",
-      "isEditable": false,
-      "validation": "numeric|gt:0"
+      "is_editable": true,
+      "validation": "numeric|gt:0",
+      "validate_deviation": true
     },
     {
-      "title": "Добыча газа, м³",
+      "title": "gas_output",
       "code": "gas_output",
-      "type": "float",
-      "isEditable": false
+      "type": "calc",
+      "formula": "$gas_factor$ * $worktime$",
+      "is_editable": false
     },
     {
-      "title": "Примечание",
+      "title": "note",
       "code": "note",
       "table": "tbdic.meas_log_cut",
-      "column": "note",
+      "column": "value_string",
+      "additional_filter": {
+        "param_name": "note"
+      },
       "type": "text",
-      "isEditable": false
+      "is_editable": true
     },
     {
-      "title": "Причина снижения дебита",
+      "title": "prod_decline_reason",
       "code": "prod_decline_reason",
       "table": "tbdic.meas_log_cut",
-      "column": "prod_decline_reason",
+      "column": "value_string",
+      "additional_filter": {
+        "param_name": "prod_decline_reason"
+      },
       "type": "text",
-      "isEditable": false
+      "is_editable": true
     },
     {
-      "title": "Замеры по скважине за последний месяц",
+      "title": "measure_last_month",
       "code": "measure_last_month",
-      "type": "text",
-      "isEditable": false
+      "type": "history",
+      "fields": [
+        "liquid_debit",
+        "bsw",
+        "oil_debit",
+        "worktime"
+      ],
+      "is_editable": false
+    },
+    {
+      "title": "Плотность нефти",
+      "code": "density_oil",
+      "type": "hidden",
+      "is_editable": false
+    },
+    {
+      "title": "Данные телеметрии",
+      "code": "liquid_telemetry",
+      "type": "hidden",
+      "table": "tbdic.well_telemetry",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": "1"
+      },
+      "is_editable": false
+    },
+    {
+      "title": "Источник телеметрии",
+      "code": "telemetry_source",
+      "type": "hidden",
+      "table": "tbdic.well_telemetry",
+      "column": "source",
+      "additional_filter": {
+        "metric": "1"
+      },
+      "is_editable": false
     }
   ]
 }

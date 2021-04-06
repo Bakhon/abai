@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\UserUpdateRequest;
 use App\Http\Requests\IndexTableRequest;
 use App\User;
+use App\Module;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
@@ -82,8 +83,9 @@ class UsersController extends Controller
     {
         $roles = \Spatie\Permission\Models\Role::all();
         $orgs = \App\Models\Refs\Org::all();
+        $modules = Module::all();
 
-        return view('admin.users.edit', compact('user', 'roles', 'orgs'));
+        return view('admin.users.edit', compact('user', 'roles', 'orgs','modules'));
     }
 
     /**
@@ -100,6 +102,7 @@ class UsersController extends Controller
         ]);
 
         $user->syncRoles($request->roles);
+        $user->modules()->sync($request->modules);
         return redirect()->route('admin.users.index')->with('success', __('app.updated'));
     }
 
