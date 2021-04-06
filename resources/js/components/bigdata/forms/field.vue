@@ -93,6 +93,9 @@
         </template>
       </datetime>
     </template>
+    <template v-else-if="item.type === 'table'">
+      <BigdataTableField :params="item"></BigdataTableField>
+    </template>
     <div v-if="error" class="text-danger error" v-html="showError(error)"></div>
   </div>
 </template>
@@ -103,12 +106,14 @@ import vSelect from "vue-select"
 import Treeselect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 import 'vue-select/dist/vue-select.css'
+import BigdataTableField from './fields/Table'
 
 export default {
   name: "BigdataFormField",
   components: {
     Treeselect,
-    vSelect
+    vSelect,
+    BigdataTableField
   },
   props: [
     'item',
