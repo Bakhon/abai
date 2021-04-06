@@ -1371,8 +1371,6 @@
                         </el-table-column>
                         
 
-
-
                         <el-table-column :label="`${this.trans('tr.tr27')}`">
                             <el-table-column :label="`${this.trans('tr.tr22')}`">
                               <el-table-column
@@ -1475,10 +1473,8 @@
                               </el-table-column>
                           </el-table-column>
                         </el-table-column>
-
                     </el-table-column>
-
-                   
+                    
                   </el-table>
                   <div class="ui-pagination">
                     <el-pagination
