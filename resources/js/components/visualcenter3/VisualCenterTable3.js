@@ -8,20 +8,21 @@ import mainMenuConfiguration from './main_menu_configuration.json';
 import {dzoMapState, dzoMapActions} from '@store/helpers';
 
 import mainMenu from './widgets/mainMenu';
-import сompaniesDzo from './data_managers/dzoCompanies';
-import helpers from './data_managers/helpers';
-import otm from './data_managers/otm';
-import chemistry from './data_managers/chemistry';
+import сompaniesDzo from './dataManagers/dzoCompanies';
+import helpers from './dataManagers/helpers';
+import otm from './dataManagers/otm';
+import chemistry from './dataManagers/chemistry';
 import oilRates from './widgets/oilRates';
 import usdRates from './widgets/usdRates';
 import injectionWells from './widgets/injectionWells';
 import productionWells from './widgets/productionWells';
 import companyStaff from './widgets/companyStaff';
 import mainStatisticsTable from './widgets/mainStatisticsTable';
-import wells from './data_managers/wells';
-import rates from './data_managers/rates';
-import dates from './data_managers/dates';
-import oilProductionFilters from './data_managers/oilProductionFilters';
+import wells from './dataManagers/wells';
+import rates from './dataManagers/rates';
+import dates from './dataManagers/dates';
+import oilProductionFilters from './dataManagers/oilProductionFilters';
+import mainTableChart from './widgets/mainTableChart.js';
 
 
 Vue.component("calendar", Calendar);
@@ -463,7 +464,6 @@ export default {
 
                 this.dzoCompaniesSummaryForChart = this.getProductionForChart(dataWithMay3);
             } else {
-
                 this.dzoCompaniesSummaryForChart = this.getProductionForChart(dataWithMay);
             }
 
@@ -495,6 +495,13 @@ export default {
                 this.noData = "";
             }
             this.tables = summForTables;
+        },
+
+        getFilteredData(data, type) {
+            _.forEach(this.dzoType[type], function (dzoName) {
+                data = _.reject(data, _.iteratee({dzo: dzoName}));
+            });
+            return data;
         },
 
         processDataForAllCompanies(data, timestampToday, timestampEnd, start, end, planFieldName, factFieldName, chartSecondaryName) {
@@ -540,6 +547,7 @@ export default {
 
                 this.dzoCompaniesSummaryForChart = this.getProductionForChart(dataWithMay2);
             } else {
+                this.dzoInputData = dataWithMay;
                 this.dzoCompaniesSummaryForChart = this.getProductionForChart(dataWithMay);
             }
 
@@ -645,43 +653,14 @@ export default {
             var factMonth = [];
             var planMonth = [];
 
-
             if (this.dzoCompaniesAssets['isOperating']) {
-                productionPlanAndFactMonth = _.reject(productionPlanAndFactMonth, _.iteratee({dzo: "ТШО"}));
-                productionPlanAndFactMonth = _.reject(productionPlanAndFactMonth, _.iteratee({dzo: "НКО"}));
-                productionPlanAndFactMonth = _.reject(productionPlanAndFactMonth, _.iteratee({dzo: "КПО"}));
-                productionPlanAndFactMonth = _.reject(productionPlanAndFactMonth, _.iteratee({dzo: "ТП"}));
-                productionPlanAndFactMonth = _.reject(productionPlanAndFactMonth, _.iteratee({dzo: "ПКК"}));
-                productionPlanAndFactMonth = _.reject(productionPlanAndFactMonth, _.iteratee({dzo: "ПКИ"}));
-
-                data = _.reject(data, _.iteratee({dzo: "ТШО"}));
-                data = _.reject(data, _.iteratee({dzo: "НКО"}));
-                data = _.reject(data, _.iteratee({dzo: "КПО"}));
-                data = _.reject(data, _.iteratee({dzo: "ТП"}));
-                data = _.reject(data, _.iteratee({dzo: "ПКК"}));
-                data = _.reject(data, _.iteratee({dzo: "ПКИ"}));
-
-
+                productionPlanAndFactMonth = this.getFilteredData(productionPlanAndFactMonth, 'isNonOperating');
+                data = this.getFilteredData(data, 'isNonOperating');
             }
 
             if (this.dzoCompaniesAssets['isNonOperating']) {
-
-                let dzoToShow = [
-                    "ТОО «Тенгизшевройл»",
-                    "«Карачаганак Петролеум Оперейтинг б.в.»",
-                    "«Норт Каспиан Оперейтинг Компани н.в.»"
-                ]
-
-                productionPlanAndFactMonth = productionPlanAndFactMonth.filter(item => {
-                    let fullName = this.getNameDzoFull(item.dzo)
-                    return dzoToShow.indexOf(fullName) > -1
-                })
-
-                data = dataWithMay.filter(item => {
-                    let fullName = this.getNameDzoFull(item.dzo)
-                    return dzoToShow.indexOf(fullName) > -1
-                })
-
+                productionPlanAndFactMonth = this.getFilteredData(productionPlanAndFactMonth, 'isOperating');
+                data = this.getFilteredData(dataWithMay, 'isOperating');
             }
 
             if (this.dzoCompaniesAssets['isRegion']) {
@@ -936,22 +915,12 @@ export default {
                 }))
                 .value();
 
-            let summaryFact = this.getDzoFactSummary(summaryForChart);
-            let dailyPlan = this.getDzoDailyPlan(summaryFact);
-
-            _.forEach(summaryForChart, function (row) {
-                _.set(row, 'dailyPlan', parseInt(dailyPlan));
-            });
+            if (this.isFilterTargetPlanActive) {
+                let monthlyPlansInYear = this.getMonthlyPlansInYear(summaryForChart);
+                summaryForChart = monthlyPlansInYear;
+            }
 
             return summaryForChart;
-        },
-
-        getDzoDailyPlan(summaryFact) {
-            let filteredDzoYearlyPlan = this.getFilteredDzoYearlyPlan();
-            let dzoYearlyPlanSum = _.sumBy(filteredDzoYearlyPlan,this.planFieldName);
-            let dzoPlanFactDifference = dzoYearlyPlanSum - summaryFact;
-            let daysCountInYear = this.getDaysCountInYear();
-            return dzoPlanFactDifference / daysCountInYear;
         },
 
         getAccidentTotal() {
@@ -987,7 +956,8 @@ export default {
         wells,
         rates,
         dates,
-        oilProductionFilters
+        oilProductionFilters,
+        mainTableChart
     ],
     async mounted() {
         this.dzoCompaniesAssets = _.cloneDeep(this.dzoCompaniesAssetsInitial);
@@ -1018,13 +988,14 @@ export default {
         localStorage.setItem("selectedPeriod", "undefined");
         this.getCurrencyNow(this.timeSelect);
         this.updatePrices(this.period);
+        this.dzoMonthlyPlans = await this.getDzoMonthlyPlans();
 
         this.changeAssets('isAllAssets');
         this.changeDate();
         this.changeMenu2();
         this.getStaff();
 
-        this.buttonDailyTab = "button-daily-tab";
+        this.buttonDailyTab = "button-tab-highlighted";
         this.getAccidentTotal();
         this.mainMenuButtonElementOptions = _.cloneDeep(mainMenuConfiguration);
         this.getDzoYearlyPlan();
@@ -1034,6 +1005,17 @@ export default {
         bigTable: function () {
             this.dzoCompanySummary = this.bigTable;
             this.calculateDzoCompaniesSummary();
+        },
+        dzoCompaniesSummaryForChart: function () {
+            if (this.isFilterTargetPlanActive) {
+                let self = this;
+                _.forEach(this.dzoCompanySummary, function(dzo) {
+                     let yearlyData = self.getProductionData(self.dzoInputData,dzo.dzoMonth);
+                     dzo.targetPlan = self.getSummaryTargetPlan(yearlyData);
+                });
+                let summaryTargetPlan = _.sumBy(this.dzoCompanySummary, 'targetPlan');
+                this.dzoCompaniesSummary.targetPlan = this.formatDigitToThousand(summaryTargetPlan);
+            }
         },
     },
     computed: {

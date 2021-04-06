@@ -3,11 +3,11 @@
 @section('content')
     <div class="container">
         <div class="row justify-content-center">
-            <a href="{{ route('tech_data_list') }}" class="btn btn-info">
+            <a href="{{ route('tech_data_forecast.index') }}" class="btn btn-info">
                 {{ __('forecast.return_menu') }}</a>
         </div>
     </div>
-    <div class="container">
+    <div class="container bg-dark text-dark my-3 py-3">
         <h3 align="center">{{ __('forecast.import_data_from_excel') }}</h3>
         <br/>
         @if(count($errors) > 0)
@@ -34,7 +34,7 @@
                 <table class="table">
                     <tr>
                         <td width="40%" align="right"><label>{{ __('forecast.choose_excel_file') }}</label></td>
-                        <td width="30">
+                        <td width="30" class="text-light ">
                             <input type="file" name="select_file"/>
                         </td>
                         <td width="30%" align="left">
@@ -50,5 +50,5 @@
                 </table>
             </div>
         </form>
-    </div>
+    </div class="container bg-dark text-dark my-3 py-3">
 @endsection

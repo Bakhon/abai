@@ -7,8 +7,8 @@ use App\Http\Controllers\Controller;
 use App\Models\BigData\Dictionaries\Geo;
 use App\Services\BigData\Forms\BaseForm;
 use Carbon\Carbon;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Response;
 
 class FormsController extends Controller
@@ -45,7 +45,7 @@ class FormsController extends Controller
         \Illuminate\Support\Facades\File::put($this->file, json_encode($values));
     }
 
-    public function getParams(string $formName): \Illuminate\Http\JsonResponse
+    public function getParams(string $formName): JsonResponse
     {
         $form = $this->getForm($formName);
         try {
@@ -87,10 +87,29 @@ class FormsController extends Controller
         return $form->getRows();
     }
 
-    public function getHistory(string $formName, Request $request): JsonResource
+    public function getRowHistory(string $formName, Request $request): array
+    {
+        $form = $this->getForm($formName);
+        return $form->getRowHistory(Carbon::parse($request->get('date')));
+    }
+
+    public function getRowHistoryGraph(string $formName, Request $request): array
+    {
+        $form = $this->getForm($formName);
+        return $form->getRowHistoryGraph(Carbon::parse($request->get('date')));
+    }
+
+    public function getHistory(string $formName, Request $request): array
     {
         $form = $this->getForm($formName);
         return $form->getHistory($request->get('id'), Carbon::parse($request->get('date')));
+    }
+
+    public function copyFieldValue(string $formName, Request $request): JsonResponse
+    {
+        $form = $this->getForm($formName);
+        $form->copyFieldValue($request->get('well_id'), Carbon::parse($request->get('date')));
+        return response()->json([], Response::HTTP_NO_CONTENT);
     }
 
     public function getWellPrefix(Request $request): array
@@ -114,6 +133,7 @@ class FormsController extends Controller
 
     private function getForm(string $formName): BaseForm
     {
+        $formName = strtolower($formName);
         if (empty(config("bigdata_forms.{$formName}"))) {
             abort(404);
         }

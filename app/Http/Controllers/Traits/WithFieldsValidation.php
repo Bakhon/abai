@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Traits;
 
-use Illuminate\Support\Facades\Validator;
+use App\Models\CrudFieldSettings;
 
 trait WithFieldsValidation
 {
     protected function getValidationParams($section) {
-        return \App\Models\CrudFieldSettings::query()
+        return CrudFieldSettings::query()
             ->where('section', $section)
             ->get()
             ->keyBy('field_code')
@@ -24,7 +24,7 @@ trait WithFieldsValidation
     {
         $validationRules = [];
 
-        $fieldsValidation = \App\Models\CrudFieldSettings::query()
+        $fieldsValidation = CrudFieldSettings::query()
             ->where('section', $section)
             ->get();
 

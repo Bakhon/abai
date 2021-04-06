@@ -10,10 +10,10 @@ return array (
   'pipes' => 'Трубопроводы',
   'inhibitors' => 'Ингибиторы',
   'tech_map' => 'Техкарта',
-  'action_substance_of_co2' => 'Фактическое содержание углекислого газа',
-  'action_substance_of_h2s' => 'Фактическое содержание сероводорода',
-  'actual_corrosion_speed' => 'Фактическая скорость коррозии',
-  'actual_inhibitor_level' => 'Фактическая закачка ингибитора коррозии',
+  'action_substance_of_co2' => 'Фактическое содержание углекислого газа мг/дм³',
+  'action_substance_of_h2s' => 'Фактическое содержание сероводорода мг/дм³',
+  'actual_corrosion_speed' => 'Фактическая скорость коррозии мм/г',
+  'actual_inhibitor_level' => 'Фактическая закачка ингибитора коррозии г/м3',
   'units' => 
   array (
     'p_kon' => 'P кон.',
@@ -64,7 +64,7 @@ return array (
       'background_corrosion_velocity' => 'Фоновая скорость',
       'start_date_of_corrosion_velocity_with_inhibitor_measure' => 'Дата начало замера скорости коррозии с реагентом',
       'final_date_of_corrosion_velocity_with_inhibitor_measure' => 'Дата окончания замера скорости коррозии с реагентом',
-      'corrosion_velocity_with_inhibitor' => 'Скорость коррозии',
+      'corrosion_velocity_with_inhibitor' => 'Скорость коррозии с игибитором',
       'sample_number' => 'Номер образца-свидетеля',
       'weight_before' => 'Масса до установки, гр',
       'days' => 'Количество дней экспозиции',
@@ -125,6 +125,7 @@ return array (
       ),
       'reason' => 'Причина',
       'fill' => 'Заправка',
+      'yearly_inhibitor_rate' => 'Годовой расход ингибитора кг',
     ),
   ),
   'omgngdu' => 
@@ -142,10 +143,11 @@ return array (
       'daily_oil_production' => 'Суточная добыча нефти, т/сут',
       'daily_gas_production_in_sib' => 'Количество газа в СИБ, ст.м³/сут',
       'bsw' => 'Обводненность, %',
-      'surge_tank_pressure' => 'Давление в буферной емкости, бар',
-      'pump_discharge_pressure' => 'Давление на выходе насоса, бар',
-      'heater_inlet_pressure' => 'Температура на входе в печь, С',
-      'heater_output_pressure' => 'Температура на выходе из печи, С',
+      'surge_tank_pressure' => 'Давление в буферной емкости, кгс\\см2',
+      'pump_discharge_pressure' => 'Давление на выходе насоса, кгс\\см2',
+      'temperature' => 'Температура на входе в печь, С',
+      'heater_output_temperature' => 'Температура на выходе из печи, С',
+      'heater_inlet_temperature' => 'Температура на входе в печь, С',
     ),
   ),
   'all_gus' => 'Все ГУ',
@@ -231,6 +233,8 @@ return array (
     ),
     'edit_title' => 'Редактирование данных по трубопроводу',
     'pipe' => 'Трубопровод',
+    'menu' => 'Трубопроводы',
+    'title' => 'База данных по трубопроводам',
   ),
   'inhibitor' => 
   array (
@@ -241,9 +245,9 @@ return array (
     'fields' => 
     array (
       'title' => 'Название',
-      'price' => 'Цена',
+      'price' => 'Цена тнг\\кг',
       'price_date' => 'Дата изменения цены',
-      'density' => 'Плотность',
+      'density' => 'Плотность кг\\м³',
     ),
   ),
   'map' => 
@@ -292,7 +296,10 @@ return array (
       'heater_output_pressure' => 'Давление сепаратора',
       'date' => 'Дата',
       'heater_output_temperature' => 'Температура печи',
+      'surge_tank_pressure' => 'Давление в буферной емкости',
+      'daily_gas_production_in_sib' => 'Количество газа в СИБ',
     ),
+    'redirect-to' => 'Перейти на',
   ),
   'zu' => 
   array (
@@ -309,4 +316,8 @@ return array (
   'elevation' => 'Высота',
   'h_distance' => 'Горизонтальная длина',
   'm_distance' => 'Измеренная длина',
+  'fields' => 
+  array (
+    'consumption' => 'Расход',
+  ),
 );

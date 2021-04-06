@@ -46,8 +46,8 @@
                     <div class="bold">
                       <span class="section_icon">
                         <svg width="40" height="38" viewBox="0 0 40 38" xmlns="http://www.w3.org/2000/svg"><path
-                            fill-rule="evenodd" clip-rule="evenodd"
-                            d="M20.0007 30.0735L32.3607 37.4194L29.0808 23.5739L40 14.258L25.6199 13.0578L20.0007 0L14.3794 13.0578L0 14.258L10.9192 23.5739L7.64 37.4194L20.0007 30.0735Z"></path></svg>
+                                fill-rule="evenodd" clip-rule="evenodd"
+                                d="M20.0007 30.0735L32.3607 37.4194L29.0808 23.5739L40 14.258L25.6199 13.0578L20.0007 0L14.3794 13.0578L0 14.258L10.9192 23.5739L7.64 37.4194L20.0007 30.0735Z"></path></svg>
                       </span>
                       <br>
                       <br>
@@ -69,7 +69,7 @@
               <div class="section">
                 <div class="section__wrapper">
                   <div class="section__content"
-                       :class="{'selected': selectedSection === section.tag, 'disabled': !section.reports.length}">
+                       :class="{'selected': selectedSection === section.tag, 'disabled': !section.reports.length}" style="display: block !important">
 
                     <div class="bold">
                       <span class="section_icon" v-html="section.icon"></span><br>
@@ -225,258 +225,258 @@
 </template>
 
 <script>
-import NewReportTable from '../reports/MonthlyProduction';
-import SearchForm from '../ui-kit/SearchForm';
-import BigDataReportButton from './BigDataReportButton';
-import moment from "moment";
+  import NewReportTable from '../reports/MonthlyProduction';
+  import SearchForm from '../ui-kit/SearchForm';
+  import BigDataReportButton from './BigDataReportButton';
+  import moment from "moment";
 
-export default {
-  components: {NewReportTable, SearchForm, BigDataReportButton},
-  data() {
-    return {
-      sections: [],
-      favorites: [],
-      favoritesShowed: false,
-      selectedSection: null,
-      activeReports: [],
-      selectedReport: null,
-      searchString: '',
-      searchResult: [],
-      filtersData: null,
-    }
-  },
-  mounted() {
-    this.displayReports();
-    this.loadDataForFilters();
-  },
-  methods: {
-    numWord(value, words) {
-      value = Math.abs(value) % 100;
-      let num = value % 10;
-      if (value > 10 && value < 20) {
-        return words[2];
+  export default {
+    components: {NewReportTable, SearchForm, BigDataReportButton},
+    data() {
+      return {
+        sections: [],
+        favorites: [],
+        favoritesShowed: false,
+        selectedSection: null,
+        activeReports: [],
+        selectedReport: null,
+        searchString: '',
+        searchResult: [],
+        filtersData: null,
       }
-
-      if (num > 1 && num < 5) {
-        return words[1];
-      }
-      if (num == 1) {
-        return words[0];
-      }
-
-      return words[2];
     },
-    displayReports() {
+    mounted() {
+      this.displayReports();
+      this.loadDataForFilters();
+    },
+    methods: {
+      numWord(value, words) {
+        value = Math.abs(value) % 100;
+        let num = value % 10;
+        if (value > 10 && value < 20) {
+          return words[2];
+        }
 
-      this.axios.get(this.localeUrl('/bigdata/reports')).then(({data}) => {
-        this.sections = data.data
+        if (num > 1 && num < 5) {
+          return words[1];
+        }
+        if (num == 1) {
+          return words[0];
+        }
 
-        this.axios.get(this.localeUrl('/bigdata/reports/favorite')).then(({data}) => {
-          this.favorites = data
+        return words[2];
+      },
+      displayReports() {
 
-          if (this.favorites.length > 0) {
-            this.showFavoriteReports()
-            this.selectFavoritesFirstReport()
-          } else {
-            this.selectFirstAvailableReport()
+        this.axios.get(this.localeUrl('/bigdata/reports')).then(({data}) => {
+          this.sections = data.data
+
+          this.axios.get(this.localeUrl('/bigdata/reports/favorite')).then(({data}) => {
+            this.favorites = data
+
+            if (this.favorites.length > 0) {
+              this.showFavoriteReports()
+              this.selectFavoritesFirstReport()
+            } else {
+              this.selectFirstAvailableReport()
+            }
+          })
+
+        })
+      },
+      showFavoriteReports() {
+
+        this.favoritesShowed = true
+        this.selectedSection = null
+        this.activeReports = []
+        this.sections.forEach(section => {
+          if (section.reports.length) {
+            section.reports.forEach(report => {
+              if (this.favorites.indexOf(report.id) > -1) {
+                this.activeReports.push(report)
+              }
+            })
           }
         })
 
-      })
-    },
-    showFavoriteReports() {
-
-      this.favoritesShowed = true
-      this.selectedSection = null
-      this.activeReports = []
-      this.sections.forEach(section => {
-        if (section.reports.length) {
-          section.reports.forEach(report => {
-            if (this.favorites.indexOf(report.id) > -1) {
-              this.activeReports.push(report)
+      },
+      selectFavoritesFirstReport() {
+        this.sections.some(section => {
+          if (section.reports.length > 0) {
+            let selectedReport = section.reports.find(report => report.id === this.favorites[0])
+            if (selectedReport) {
+              this.selectedReport = selectedReport
+              return true
             }
-          })
-        }
-      })
-
-    },
-    selectFavoritesFirstReport() {
-      this.sections.some(section => {
-        if (section.reports.length > 0) {
-          let selectedReport = section.reports.find(report => report.id === this.favorites[0])
-          if (selectedReport) {
-            this.selectedReport = selectedReport
+          }
+        })
+      },
+      selectFirstAvailableReport() {
+        this.sections.some(section => {
+          if (section.reports.length > 0) {
+            this.selectReportsSection(section)
+            this.selectedReport = section.reports[0]
             return true
           }
+        })
+      },
+      selectReportsSection(section) {
+        if (section.reports.length) {
+          this.favoritesShowed = false
+          this.searchResult = []
+          this.searchString = ''
+          this.selectedSection = section.tag
+          this.activeReports = section.reports
         }
-      })
-    },
-    selectFirstAvailableReport() {
-      this.sections.some(section => {
-        if (section.reports.length > 0) {
-          this.selectReportsSection(section)
-          this.selectedReport = section.reports[0]
-          return true
+      },
+      loadDataForFilters() {
+        let uri = "http://172.20.103.187:8082/dzo_field_mapping/";
+
+        this.isLoading = true;
+
+        this.axios.get(uri, {
+          responseType: 'json',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        })
+                .then((response) => {
+                  if (response.data) {
+                    this.filtersData = response.data
+                  } else {
+                    console.log("No data");
+                  }
+                })
+                .catch((error) => console.log(error));
+      },
+      selectReport(report, bySearchResult) {
+        if (!bySearchResult) {
+          this.searchResult = [];
+          this.searchString = '';
         }
-      })
-    },
-    selectReportsSection(section) {
-      if (section.reports.length) {
-        this.favoritesShowed = false
-        this.searchResult = []
-        this.searchString = ''
-        this.selectedSection = section.tag
-        this.activeReports = section.reports
-      }
-    },
-    loadDataForFilters() {
-      let uri = "http://172.20.103.187:8082/dzo_field_mapping/";
 
-      this.isLoading = true;
-
-      this.axios.get(uri, {
-        responseType: 'json',
-        headers: {
-          'Content-Type': 'application/json'
+        if (report.is_active) {
+          this.selectedReport = report;
         }
-      })
-          .then((response) => {
-            if (response.data) {
-              this.filtersData = response.data
-            } else {
-              console.log("No data");
-            }
-          })
-          .catch((error) => console.log(error));
-    },
-    selectReport(report, bySearchResult) {
-      if (!bySearchResult) {
-        this.searchResult = [];
-        this.searchString = '';
-      }
+      },
+      searchCondition(search, report) {
+        search = search.trim().replace('ё', 'е');
+        return search.length >= 3 && (report.title.toLowerCase().match(search.toLowerCase()) || report.description.toLowerCase().match(search.toLowerCase()))
+      },
+      addReportToFavor(report) {
 
-      if (report.is_active) {
-        this.selectedReport = report;
-      }
-    },
-    searchCondition(search, report) {
-      search = search.trim().replace('ё', 'е');
-      return search.length >= 3 && (report.title.toLowerCase().match(search.toLowerCase()) || report.description.toLowerCase().match(search.toLowerCase()))
-    },
-    addReportToFavor(report) {
+        this.axios.post(this.localeUrl('/bigdata/reports/favorite/' + report.id)).then(() => {
+          this.favorites.push(report.id)
+        })
 
-      this.axios.post(this.localeUrl('/bigdata/reports/favorite/' + report.id)).then(() => {
-        this.favorites.push(report.id)
-      })
+      },
+      removeReportFromFavor(report) {
 
-    },
-    removeReportFromFavor(report) {
+        this.axios.delete(this.localeUrl('/bigdata/reports/favorite/' + report.id)).then(() => {
+          this.favorites.splice(this.favorites.findIndex(favorite => favorite === report.id), 1)
+        })
 
-      this.axios.delete(this.localeUrl('/bigdata/reports/favorite/' + report.id)).then(() => {
-        this.favorites.splice(this.favorites.findIndex(favorite => favorite === report.id), 1)
-      })
+      },
+      checkResult(result, report) {
+        return result.find((item) => {
+          return item.tag === report.tag;
+        });
+      },
+      search() {
+        let self = this;
+        let searchVars = self.searchString.trim().split(' ');
+        let result = [];
 
-    },
-    checkResult(result, report) {
-      return result.find((item) => {
-        return item.tag === report.tag;
-      });
-    },
-    search() {
-      let self = this;
-      let searchVars = self.searchString.trim().split(' ');
-      let result = [];
+        self.searchResult = [];
+        self.selectedSection = null;
+        self.selectedReport = null;
 
-      self.searchResult = [];
-      self.selectedSection = null;
-      self.selectedReport = null;
-
-      self.sections.forEach((section) => {
-        if (section.tag !== 'favor' && section.reports.length) {
-          section.reports.forEach((report) => {
-            if (!self.checkResult(result, report) && self.searchCondition(self.searchString, report)) {
-              result.push(report);
-            }
-          });
-        }
-      });
-
-      if (!result.length) {
         self.sections.forEach((section) => {
           if (section.tag !== 'favor' && section.reports.length) {
             section.reports.forEach((report) => {
-              searchVars.forEach((search) => {
-                if (!self.checkResult(result, report) && self.searchCondition(search, report)) {
-                  result.push(report);
-                }
-              });
+              if (!self.checkResult(result, report) && self.searchCondition(self.searchString, report)) {
+                result.push(report);
+              }
             });
           }
         });
-      }
 
-      self.searchResult = result;
+        if (!result.length) {
+          self.sections.forEach((section) => {
+            if (section.tag !== 'favor' && section.reports.length) {
+              section.reports.forEach((report) => {
+                searchVars.forEach((search) => {
+                  if (!self.checkResult(result, report) && self.searchCondition(search, report)) {
+                    result.push(report);
+                  }
+                });
+              });
+            }
+          });
+        }
+
+        self.searchResult = result;
+      }
     }
   }
-}
 </script>
 
 <style>
-.underHeader {
-  position: relative;
-  Width: 1795px;
-  Height: 866px;
-}
+  .underHeader {
+    position: relative;
+    Width: 1795px;
+    Height: 866px;
+  }
 
-.underHeader > .col-sm1 {
-  width: 438px;
-  right: 1500px;
-}
+  .underHeader > .col-sm1 {
+    width: 438px;
+    right: 1500px;
+  }
 
-.bootstrap-table .fixed-table-container .table {
-  color: white;
-}
+  .bootstrap-table .fixed-table-container .table {
+    color: white;
+  }
 
-.table-hover tbody tr:hover {
-  color: #d4d4d4 !important;
-  background-color: rgba(0, 0, 0, 0.075);
-}
+  .table-hover tbody tr:hover {
+    color: #d4d4d4 !important;
+    background-color: rgba(0, 0, 0, 0.075);
+  }
 
-.float {
-  float: left;
-}
+  .float {
+    float: left;
+  }
 
-/*.form-control {*/
-/*  padding: unset!important;*/
-/*}*/
+  /*.form-control {*/
+  /*  padding: unset!important;*/
+  /*}*/
 
-.margin-top {
-  margin-top: 5px;
-}
+  .margin-top {
+    margin-top: 5px;
+  }
 
-.select-month {
-  background: rgb(51, 57, 117);
-  border-color: rgb(32, 39, 78);
-  width: 41vh !important;
-}
+  .select-month {
+    background: rgb(51, 57, 117);
+    border-color: rgb(32, 39, 78);
+    width: 41vh !important;
+  }
 
-.report-btn2 {
-  background: #2d4fe6;
-  color: white;
-  border-radius: unset;
-  width: 100%;
-  height: 36px;
+  .report-btn2 {
+    background: #2d4fe6;
+    color: white;
+    border-radius: unset;
+    width: 100%;
+    height: 36px;
 
-}
+  }
 
-.margin-top {
-  padding: 15px;
-}
+  .margin-top {
+    padding: 15px;
+  }
 
-.download-report {
-  color: white;
-  font-size: 28px;
-  text-decoration: underline;
-  font-weight: bold;
-}
+  .download-report {
+    color: white;
+    font-size: 28px;
+    text-decoration: underline;
+    font-weight: bold;
+  }
 </style>

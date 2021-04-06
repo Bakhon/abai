@@ -102,7 +102,8 @@ Route::group(
                 Route::get('/fa', 'tr\TrController@fa')->name('fa');
                 Route::get('/trfa', 'tr\TrController@trfa')->name('trfa');
                 Route::get('/tr_charts', 'tr\TrController@tr_charts')->name('tr_charts');
-                Route::get('/tech_mode', 'tr\TrController@tech_mode')->name('tech_mode');
+                Route::get('/tech_mode', 'tr\TrController@TechMode')->name('TechMode');
+                Route::get('/fa_weekly_chart', 'tr\TrController@FaWeeklyChart')->name('FaWeeklyChart');
 
                 //gno economic
                 Route::resource('ecorefscompaniesids', 'EcoRefsCompaniesIdsController');
@@ -115,6 +116,10 @@ Route::group(
                 Route::resource('ecorefsavgmarketprice', 'EcoRefsAvgMarketPriceController');
                 Route::resource('ecorefsdiscontcoefbar', 'EcoRefsDiscontCoefBarController');
                 Route::resource('ecorefscost', 'EcoRefsCostController');
+                Route::get('economic_data_json', 'EcoRefsCostController@economicDataJson');
+                Route::get('economic_data/upload_excel', 'EcoRefsCostController@uploadExcel')->name('economic_data_upload');
+                Route::post('economic_data/import_excel', 'EcoRefsCostController@importExcel')->name('economic_data_import');
+                Route::resource('economic_data_log', 'Refs\EconomicDataLogController');
                 Route::resource('ecorefsbranchid', 'EcoRefsBrachIdController');
                 Route::resource('ecorefsrentequipelectservcost', 'EcoRefsRentEquipElectServCostController');
                 Route::resource('ecorefsservicetime', 'EcoRefsServiceTimeController');
@@ -127,6 +132,7 @@ Route::group(
                 Route::resource('ecorefsscfa', 'Refs\EcoRefsScFaController');
                 Route::get('ecorefslist', 'Refs\EcoRefsScFaController@refsList')->name('eco_refs_list');
 
+                // economic tech data
                 Route::get('tech_data_list', 'Refs\TechnicalDataController@refsList')->name('tech_data_list');
                 Route::resource('tech_struct_source', 'Refs\TechnicalStructureSourceController');
                 Route::resource('tech_struct_company', 'Refs\TechnicalStructureCompanyController');
@@ -186,6 +192,8 @@ Route::group(
 
                 Route::get('profile', 'UserController@profile')->name('profile');
                 Route::post('modulerequest','ModuleController@moduleRequest')->name('modulerequest');
+                Route::post('/update_avatar', 'UserController@update_avatar')->name('update_avatar');
+                Route::post('/delete_avatar', 'UserController@delete_avatar')->name('delete_avatar');
 
                 Route::get('anticrisis', 'AntiCrisisController@index')->name('anticrisis');
 
@@ -198,6 +206,8 @@ Route::group(
 
                 Route::get('/paegtm', 'GTM\GTMController@index')->name('gtm');
 
+                Route::post('dzo_excel_form', 'VisCenter\ExcelForm\ExcelFormController@store');
+                Route::post('dzo_chemistry_excel_form', 'VisCenter\ExcelForm\ExcelFormChemistryController@store');
             }
         );
         Auth::routes(

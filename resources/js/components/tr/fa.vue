@@ -76,8 +76,6 @@
                       <path d="M11.1 21L9.07071 18.9707C9.03166 18.9317 9.03166 18.8684 9.07071 18.8293L11.1 16.8" stroke="#D6D7E3" stroke-width="1.4" stroke-linecap="round"/>
                     </svg></a>
                 </div>
-
-
         </div>
 
 
@@ -122,7 +120,7 @@
       class="tech tr-table-header"
       style="display: flex; background: #272953; margin-left: 0px !important"
     >
-      <h3 style="margin-left: 14px">{{trans('tr.hfa')}}</h3>
+      <h3 style="margin-left: 14px">{{trans('tr.hfa')}} {{dt}}-{{dt2}}</h3>
       <tr-multiselect
         :filter="filter"
         :selectedAllTag="true"
@@ -132,7 +130,7 @@
       />
       <a
         class="but-nav__link but"
-        href="trfa"
+        :href="isChartLink"
         @click="pushBign('chart')"
         style="background: #272953"
         ><svg
@@ -1055,6 +1053,7 @@ export default {
       isDynamic: true,
       colsize7: null,
       colsize2: null,
+      isChartLink: "fa_weekly_chart",
       // filter: "Все месторождения",
       filter: [...fields],
       fieldFilterOptions: [
@@ -1259,8 +1258,11 @@ export default {
       const prdd = prdynamic_date[2];
       const prmm = prdynamic_date[1];
       const pryyyy = prdynamic_date[0];
+      this.colsize7= 7;
+      this.colsize2= 2;
       this.isDynamic = true;
       this.isGenHide = true;
+      this.isChartLink = "fa_weekly_chart"
       this.$store.commit("fa/SET_IS_DYNAMIC", true);
       this.$store.commit("globalloading/SET_LOADING", true);
       this.$store.commit("fa/SET_MONTH", mm);
@@ -1300,8 +1302,7 @@ export default {
             this.fullWells = data.data;
             this.isHide = false;
             this.isGenHide= true;
-            this.colsize7= 7;
-            this.colsize2= 2;
+
           } 
           else {
             console.log("No data");
@@ -1320,8 +1321,9 @@ export default {
       const prMm = choosenSecDt[1];
       const yyyy = choosenDt[0];
       const pryyyy = choosenSecDt[0];
+      this.isChartLink = "trfa"
       if (choosenDt[1] <= choosenSecDt[1] && choosenDt[0] === choosenSecDt[0]) {
-        Vue.prototype.$notifyError("Дата 2 должна быть меньше чем Дата 1");
+        Vue.prototype.$notifyError(this.trans('tr.fa_alarm'));
       } else {
         this.$store.commit("globalloading/SET_LOADING", true);
         this.$store.commit("fa/SET_MONTH", mm);
@@ -1499,13 +1501,13 @@ export default {
     },
   },
   created: function () {
-    this.$store.commit("globalloading/SET_LOADING", false); //исправить на true
+    this.$store.commit("globalloading/SET_LOADING", true); 
     this.$store.commit("fa/SET_SORTTYPE", this.sortType);
     this.$store.commit("fa/SET_SORTPARAM", this.sortParam);
     this.$store.commit("fa/SET_SEARCH", this.searchString);
     this.$store.commit("fa/SET_FILTER", this.filter);
     var wdate2 = new Date();
-    this.wdate2 = wdate2.setDate(wdate2.getDate()-7);
+    this.wdate2 = wdate2.setDate(wdate2.getDate()-8);
     this.wdate2 = wdate2.toLocaleDateString();
     var dynamic_date2 = this.wdate2.split(".");
     const prdd = dynamic_date2[0];
@@ -1513,15 +1515,16 @@ export default {
     const pryyyy = dynamic_date2[2];
     this.isDynamic = true;
     var wdate1 = new Date();
-    this.wdate1 = wdate1.setDate(wdate1.getDate());
+    this.wdate1 = wdate1.setDate(wdate1.getDate()-1);
     this.wdate1 = wdate1.toLocaleDateString();
     var dynamic_date1 = this.wdate1.split(".");
     const dd = dynamic_date1[0];
     const mm = dynamic_date1[1];
     const yyyy = dynamic_date1[2];
     this.isGenHide= true;
-    this.colsize7 = 7
+    this.colsize7 = 7;
     this.colsize2 = 2;
+    this.isChartLink = "fa_weekly_chart"
     var weekd1 = yyyy + "-" + mm + "-" + dd;
     var weekd2 = pryyyy + "-" + prmm + "-" + prdd;
     this.$store.commit("fa/SET_IS_DYNAMIC", true);
@@ -1687,7 +1690,7 @@ body {
 }
 
 .fakrtableborderedtable {
-  font-size: 9px;
+  font-size: 12px;
   padding: unset;
   background: #0d1e63
 }
@@ -1768,4 +1771,5 @@ padding-right: 8px;
 .fatable {
 position: relative;
 }
+
 </style>

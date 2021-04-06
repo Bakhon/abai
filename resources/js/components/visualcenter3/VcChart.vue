@@ -34,7 +34,7 @@
                 let chartLabels = {
                     plan: '',
                     opecPlan: '',
-                    dailyPlan: this.trans("visualcenter.requiredDailyPlan"),
+                    monthlyPlan: this.trans("visualcenter.requiredDailyPlan"),
                     fact: this.trans("visualcenter.Fact"),
                     deviation: this.trans("visualcenter.deviation"),
                 };
@@ -42,14 +42,14 @@
                     plan: "#fff",
                     opecPlan: "#2E50E9",
                     fact: "#9EA4C9",
-                    dailyPlan: '#009846',
+                    monthlyPlan: '#009846',
                 };
 
                 let formattedChartSummary = {
                     plan: [],
                     fact: [],
                     planOpec: [],
-                    dailyPlan: [],
+                    monthlyPlan: [],
                     labels: []
                 };
                 let self = this;
@@ -58,7 +58,7 @@
                     formattedChartSummary.plan.push(item.productionPlanForChart);
                     formattedChartSummary.fact.push(item.productionFactForChart);
                     formattedChartSummary.planOpec.push(item.productionPlanForChart2);
-                    formattedChartSummary.dailyPlan.push(item.dailyPlan);
+                    formattedChartSummary.monthlyPlan.push(item.monthlyPlan);
                 });
 
                 let canvas = document.getElementById("line-chart");
@@ -97,22 +97,22 @@
                 if (opec === "ОПЕК+") {
                     chartColors.plan = "#fff";
                     chartColors.opecPlan = "#2E50E9";
-                    chartLabels.opecPlan = this.trans("visualcenter.planOPEK");
-                    chartLabels.plan =
+                    chartLabels.plan = this.trans("visualcenter.planOPEK");
+                    chartLabels.opecPlan =
                         this.trans("visualcenter.Plan") +
                         " " +
                         this.trans("visualcenter.utv");
                 } else {
                     chartColors.plan = "#2E50E9";
                     chartColors.opecPlan = "#fff";
-                    chartLabels.opecPlan =
+                    chartLabels.plan =
                         this.trans("visualcenter.Plan") +
                         " " +
                         this.trans("visualcenter.utv");
-                    chartLabels.plan = this.trans("visualcenter.planOPEK");
+                    chartLabels.opecPlan = this.trans("visualcenter.planOPEK");
                 }
                 let planChartOptions = {
-                    label: chartLabels.opecPlan,
+                    label: chartLabels.plan,
                     borderColor: chartColors.plan,
                     fill: 1,
                     backgroundColor: fillPattern,
@@ -138,13 +138,13 @@
                     data: formattedChartSummary.planOpec,
                     pointRadius: 0,
                 };
-                let dailyPlan = {
-                    label: chartLabels.dailyPlan,
-                    borderColor: chartColors.dailyPlan,
+                let monthlyPlan = {
+                    label: chartLabels.monthlyPlan,
+                    borderColor: chartColors.monthlyPlan,
                     fill: false,
                     backgroundColor: fillPattern,
                     showLine: true,
-                    data: formattedChartSummary.dailyPlan,
+                    data: formattedChartSummary.monthlyPlan,
                     pointRadius: 0,
                 };
                 let deviation = {
@@ -154,9 +154,12 @@
 
 
                 if (opec === "ОПЕК+") {
-                    datasets = [planChartOptions, factChartOptions, planOpecChartOptions, deviation, dailyPlan];
+                    datasets = [planChartOptions, factChartOptions, planOpecChartOptions, deviation];
                 } else {
-                    datasets = [planChartOptions, factChartOptions, deviation, dailyPlan];
+                    datasets = [planChartOptions, factChartOptions, deviation];
+                }
+                if (chartSummary.isFilterTargetPlanActive) {
+                    datasets.push(monthlyPlan);
                 }
 
                 this.renderChart(

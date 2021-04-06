@@ -1,7 +1,7 @@
 @extends('layouts.monitor')
 
 @section('content')
-    <div class="row" id="app">
+    <div id="app">
         <div class="col-md-12">
             @if ($message = Session::get('success'))
                 <div class="alert alert-success">
@@ -12,11 +12,9 @@
             <div class="x_panel">
             <h1>{{ trans('monitoring.omguhe.create_title') }}</h1>
             <a class="btn btn-primary float-left" href="{{ url()->previous() }}"><i class="fas fa-arrow-left"></i></a>
-                <form action="{{ route('omguhe.store') }}" method="POST">
+                <form action="{{ route('omguhe.store') }}" method="POST" id="omguhe_form">
                     @csrf
-                    <div class="row">
-                        <omguhe-form :validation-params='@json($validationParams)'></omguhe-form>
-                    </div>
+                    <omguhe-form :validation-params='@json($validationParams)'></omguhe-form>
                 </form>
             </div>
         </div>

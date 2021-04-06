@@ -53,7 +53,9 @@
       <p>{{ trans('monitoring.gu.fields.daily_water_production') }}: {{ guParams.daily_water_production + ' ' + trans('measurements.m3/day') }}</p>
       <p>{{ trans('monitoring.gu.fields.bsw') }}: {{ guParams.bsw + trans('measurements.percent')}}</p>
       <p>{{ trans('monitoring.gu.fields.pump_discharge_pressure') }}: {{ guParams.pump_discharge_pressure + ' ' + trans('measurements.pressure_bar') }}</p>
-      <p>{{ trans('monitoring.gu.fields.heater_output_temperature') }}: {{ guParams.heater_output_pressure + ' ' + trans('measurements.celsius') }}</p>
+      <p>{{ trans('monitoring.gu.fields.heater_output_temperature') }}: {{ guParams.heater_output_temperature + ' ' + trans('measurements.celsius') }}</p>
+      <p>{{this.trans('monitoring.gu.fields.daily_gas_production_in_sib')}}: {{guParams.daily_gas_production_in_sib}} {{trans('measurements.st.m3/day')}}</p>
+      <p>{{this.trans('monitoring.gu.fields.surge_tank_pressure')}}: {{guParams.surge_tank_pressure}} {{this.trans('measurements.pressure_bar')}}</p>
     </div>
   </div>
 </template>
@@ -64,7 +66,7 @@ import {guMapState} from '@store/helpers';
 const blankGuParams = {
   daily_fluid_production: 'N/A ',
   daily_oil_production: 'N/A ',
-  heater_output_pressure: 'N/A ',
+  heater_output_temperature: 'N/A ',
   pump_discharge_pressure: 'N/A ',
   daily_water_production: 'N/A ',
   bsw: 'N/A ',
@@ -95,21 +97,11 @@ export default {
       return options;
     },
     guParams () {
-      let omgngdu = this.gu.omgngdu[0];
-      if (!omgngdu) {
+      if (!this.gu.last_omgngdu) {
         return blankGuParams;
       }
 
-      let daily_water_production = (omgngdu.daily_fluid_production * omgngdu.bsw)/100;
-      return {
-        daily_fluid_production: omgngdu.daily_fluid_production,
-        daily_oil_production: omgngdu.daily_oil_production,
-        heater_output_pressure: omgngdu.heater_output_pressure,
-        pump_discharge_pressure: omgngdu.pump_discharge_pressure,
-        bsw: omgngdu.bsw,
-        daily_water_production: daily_water_production,
-        date: omgngdu.date
-      }
+      return this.gu.last_omgngdu;
     }
   },
 }

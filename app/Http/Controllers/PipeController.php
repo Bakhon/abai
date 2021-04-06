@@ -29,7 +29,7 @@ class PipeController extends CrudController
             'title' => trans('monitoring.pipe.title'),
             'fields' => [
                 'gu' => [
-                    'title' => trans('monitoring.gu'),
+                    'title' => trans('monitoring.gu.gu'),
                     'type' => 'select',
                     'filter' => [
                         'values' => \App\Models\Refs\Gu::whereHas('pipe')

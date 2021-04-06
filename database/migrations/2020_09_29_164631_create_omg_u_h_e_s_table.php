@@ -27,7 +27,7 @@ class CreateOmgUHESTable extends Migration
             $table->float('fill', 8, 4)->nullable();
             $table->float('daily_inhibitor_flowrate', 8, 4)->nullable();
             $table->float('monthly_inhibitor_flowrate', 8, 4)->nullable();
-            $table->float('out_of_service_оf_dosing', 8, 4)->nullable();
+            $table->float('out_of_service_of_dosing', 8, 4)->nullable();
             $table->longText('reason')->nullable();
             $table->integer('cruser_id');
             $table->timestamps();

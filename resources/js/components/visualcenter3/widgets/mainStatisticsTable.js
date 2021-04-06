@@ -48,6 +48,8 @@ export default {
     },
     methods: {
         changeTable(change) {
+            this.isFilterTargetPlanActive = false;
+            this.buttonTargetPlan = "";
             this.company = "all";
             this.Table1 = "display:none";
             this.Table2 = "display:none";
@@ -94,6 +96,7 @@ export default {
                 if (periodStart > periodEnd) {
                     periodStart = this.getPreviousWorkday();
                 }
+
                 this.range = {
                     start: periodStart,
                     end: periodEnd,
@@ -120,13 +123,17 @@ export default {
             }
 
             if (change === 2) {
+                let minimalDaysPeriodForChart = 2;
                 this.buttonMonthlyTab = this.highlightedButton;
                 this.currentDzoList = 'monthly';
                 let periodStart = moment().startOf('month').format();
                 let periodEnd = moment().subtract(1, "days").endOf('day').format();
-                if (periodStart > periodEnd) {
+                let daysDifference = moment(periodEnd).diff(moment(periodStart), 'days');
+                if (periodStart > periodEnd || daysDifference < minimalDaysPeriodForChart) {
+                    periodEnd = moment(periodStart).endOf('day').format();
                     periodStart = this.getPreviousWorkday();
                 }
+
                 this.range = {
                     start: periodStart,
                     end: periodEnd,
