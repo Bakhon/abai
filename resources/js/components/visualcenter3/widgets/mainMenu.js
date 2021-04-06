@@ -41,7 +41,7 @@ export default {
             let self = this;
             this.isMainMenuItemChanged = false;
             let currentFilterOptions = this.mainMenuButtonElementOptions[parentButton].childItems[childButton];
-            if (this.categoryMenuPreviousParent !== parentButton || this.isOilProductionMenu) {
+            if (this.categoryMenuPreviousParent !== parentButton || !this.isOilProductionMenu(parentButton,childButton)) {
                 _.forEach(Object.keys(this.mainMenuButtonElementOptions), function (button) {
                     self.disableMainMenuFlags(self.mainMenuButtonElementOptions[button]);
                 });
@@ -91,11 +91,8 @@ export default {
                 this.chartSecondaryName = this.trans("visualcenter.dolyaUchast");
                 this.isKmgParticipationFilterActive = !this.isKmgParticipationFilterActive;
             } else {
-                if (regionName) {
-                    this.dzoRegionsMapping[regionName].isActive = true;
-                }
                 this.dzoCompaniesAssets = _.cloneDeep(this.dzoCompaniesAssetsInitial);
-                this.dzoCompaniesAssets[type] = true;
+                this.dzoCompaniesAssets[type] = !this.dzoCompaniesAssets[type];
                 this.selectedDzoCompanies = this.getSelectedDzoCompanies(type,category,regionName);
                 this.selectMultipleDzoCompanies(type,category,regionName);
             }
