@@ -29,6 +29,7 @@ return array (
     'загрузить' => 'upload',
     'upload_validation_error' => 'Ошибка загрузки файла',
     'forecast_data_production' => 'Прогнозные данные добычи по ДЗО',
+    'mapping_company_tbd' => 'Маппинг ID компаний с ТБД',
     'delete_wrong_uploaded_data' => 'Удалить ошибочные загруженные файлы',
     'upload_excel' => 'Добавить данные в Excel',
     'upload' => 'Загрузить данные',

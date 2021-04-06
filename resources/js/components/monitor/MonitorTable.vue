@@ -688,6 +688,11 @@ export default {
       }
     });
   },
+  mounted: function () {
+    this.$nextTick(function () {
+      this.chooseGu();
+    })
+  },
   methods: {
     chooseProblemGu(gu_id) {
       this.localGu = gu_id
