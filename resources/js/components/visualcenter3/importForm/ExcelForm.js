@@ -30,7 +30,6 @@ const defaultDzoTicker = "КТМ";
 
 export default {
     data: function () {
-        let defaultDzoTicker = "КТМ";
         return {
             dzoMapping : {
                 "КОА" : {
