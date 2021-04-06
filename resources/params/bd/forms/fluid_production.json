@@ -93,9 +93,13 @@
     {
       "title": "mark",
       "code": "mark",
-      "type": "text",
+      "type": "copy",
+      "copy": {
+        "from": "liquid_telemetry",
+        "to": "liquid_debit"
+      },
       "table": "tbdic.well_telemetry",
-      "column": "source",
+      "column": "copied",
       "additional_filter": {
         "metric": "1"
       },
@@ -105,6 +109,11 @@
       "title": "liquid_telemetry",
       "code": "telemetry",
       "type": "history_graph",
+      "table": "tbdic.well_telemetry",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": "1"
+      },
       "fields": [
         "liquid_telemetry",
         "telemetry_source"

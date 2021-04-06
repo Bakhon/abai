@@ -103,6 +103,7 @@ Route::group(
                 Route::get('/trfa', 'tr\TrController@trfa')->name('trfa');
                 Route::get('/tr_charts', 'tr\TrController@tr_charts')->name('tr_charts');
                 Route::get('/tech_mode', 'tr\TrController@TechMode')->name('TechMode');
+                Route::get('/fa_weekly_chart', 'tr\TrController@FaWeeklyChart')->name('FaWeeklyChart');
 
                 //gno economic
                 Route::resource('ecorefscompaniesids', 'EcoRefsCompaniesIdsController');
@@ -197,11 +198,12 @@ Route::group(
                 Route::get('anticrisis', 'AntiCrisisController@index')->name('anticrisis');
 
 
-                
+
                 Route::get('/module_economy', 'EconomyKenzhe\MainController@index');
-                Route::get('/module_economy/company/{id}/{date}', 'EconomyKenzhe\MainController@company')->name('company');
+                Route::get('/module_economy/company/', 'EconomyKenzhe\MainController@company')->name('company');
                 Route::get('/module_economy/companies', 'EconomyKenzhe\MainController@companies');
-                Route::match(['get','post'],'/import_rep', 'EconomyKenzhe\MainController@importRepTt')->name('import_rep');
+                Route::match(['GET','POST'],'/import_rep', 'EconomyKenzhe\ImportController@importRepTtValues')->name('import_rep');
+                Route::match(['GET','POST'],'/import_reptt_titles', 'EconomyKenzhe\ImportController@importRepTtTitlesTree')->name('import_reptt_titles');
 
                 Route::get('/paegtm', 'GTM\GTMController@index')->name('gtm');
                 Route::get('/paegtm/accum_oil_prod_data', 'GTM\GTMController@getAccumOilProd')->name('gtm');

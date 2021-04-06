@@ -37,4 +37,8 @@ class TrController extends Controller
     {
         return view('TechMode.TechMode');
     }
+    public function FaWeeklyChart()
+    {
+        return view('FaWeeklyChart.FaWeeklyChart');
+    }
 }

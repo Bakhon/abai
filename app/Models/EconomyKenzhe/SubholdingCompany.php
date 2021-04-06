@@ -28,9 +28,9 @@ class SubholdingCompany extends Model
         return $this->hasMany(HandbookRepTtValue::class, 'company_id');
     }
 
-    public function statsByDate($date = '')
+    public function statsByDate($year)
     {
-        return $this->hasMany(HandbookRepTtValue::class, 'company_id')->where('date', '=', $date);
+        return $this->hasMany(HandbookRepTtValue::class, 'company_id')->whereBetween('date', [date('Y-m-d', strtotime(($year-1).'-01-01')), date('Y-m-d', strtotime($year.'-12-01'))]);
     }
 
     public function toArray()

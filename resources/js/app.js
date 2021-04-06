@@ -145,6 +145,7 @@ Vue.component('cat-loader', require('./components/ui-kit/CatLoader.vue').default
 Vue.component('pagination', require('laravel-vue-pagination'));
 Vue.component('report-export', require('./components/reports/export.vue').default);
 Vue.component('tr_mode-table', require('./components/tr/TechMode.vue').default);
+Vue.component('fa_weekly_chart', require('./components/tr/FaWeeklyChart.vue').default);
 
 
 
@@ -153,6 +154,7 @@ Vue.component('visualcenter3-excelform', require('./components/visualcenter3/imp
 
 Vue.component('big-data', require('./components/bigdata/BigData.vue').default);
 Vue.component('las', require('./components/bigdata/Las.vue').default);
+Vue.component('user-reports', require('./components/bigdata/UserReports.vue').default);
 Vue.component('proto-form', require('./components/bigdata/Forms.vue').default);
 Vue.component('bigdata-form-mobile', require('./components/bigdata/FormMobile.vue').default);
 Vue.component('search-form', require('./components/ui-kit/SearchForm.vue').default);
@@ -164,6 +166,7 @@ Vue.component('main-page', require('./components/mainpage.vue').default);
 Vue.component('profile', require('./components/profile/Profile.vue').default);
 
 Vue.component('reptt', require('./components/economy_kenzhe/reptt.vue').default);
+Vue.component('reptt-company', require('./components/economy_kenzhe/reptt_company.vue').default);
 Vue.prototype.trans = string => _.get(window.i18n, string) || string;
 Vue.prototype.localeUrl = string => `/${window.current_lang}/${string[0] === '/' ? string.substr(1) : string}`;
 Vue.prototype.currentLang = window.current_lang;

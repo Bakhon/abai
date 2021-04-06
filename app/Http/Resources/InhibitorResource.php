@@ -20,6 +20,7 @@ class InhibitorResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'density' => $this->density,
             'price' => $price->price,
             'minDate' => $price->date_from
         ];
