@@ -3,39 +3,39 @@
   "table": "",
   "tabs": [
     {
-      "title": "Основное",
+      "title": "Main",
       "blocks": [
         {
-          "title": "Параметры режима",
+          "title": "Mode_parameters",
           "items": [
             {
               "code": "field1",
               "type": "date",
-              "title": "Дата начала:",
+              "title": "date_start",
               "validation": "required|date"
             },
             {
               "code": "field2",
               "type": "date",
-              "title": "Дата конца:",
+              "title": "date_end",
               "validation": "required|date"
             }
           ]
         },
         {
-          "title": "Технологические режимы нагнетательных скважин",
+          "title": "Tech_modes_of_injection_wells",
           "items": [
             {
               "code": "field3",
               "type": "numeric",
-              "title": "Объем агента (М³):",
+              "title": "agent_volume",
               "validation": "required|numeric",
               "prefix": ""
             },
             {
               "code": "field4",
               "type": "dict_tree",
-              "title": "Вид агента:",
+              "title": "agent_type",
               "validation": "required",
               "dict":"",
               "callbacks":{}
@@ -43,21 +43,21 @@
             {
               "code": "field5",
               "type": "numeric",
-              "title": "Температура агента(С°):",
+              "title": "agent_temperature",
               "validation": "required|numeric",
               "prefix": ""
             },
             {
               "code": "field6",
               "type": "numeric",
-              "title": "Давление закачки(атм.):",
+              "title": "injection_pressure",
               "validation": "required|numeric",
               "prefix": ""
             },
             {
               "code": "field7",
               "type": "numeric",
-              "title": "Qмакс.прием:",
+              "title": "qmax_reception",
               "validation": "required|numeric",
               "prefix": ""
             }
@@ -66,15 +66,15 @@
       ]
     },
     {
-      "title":"Намечаемое мероприятие",
+      "title":"Planned_event",
       "blocks":[
         {
-          "title":"Намечаемые мероприятия по технологическим режимам",
+          "title":"Planned_events_tech_modes",
           "items":[
             {
               "code":"field8",
               "type":"dict_tree",
-              "title":"Мероприятие",
+              "title":"event",
               "validation":"required",
               "dict":"",
               "callbacks":{}
@@ -82,7 +82,7 @@
             {
               "code":"field9",
               "type":"date",
-              "title": "Планируемый месяц:",
+              "title": "planned_month",
               "validation": "required|date"
             }
           ]
