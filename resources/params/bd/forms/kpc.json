@@ -1,70 +1,150 @@
 {
-    "table": "bigdata_wells",
-    "tabs": [
-      {
-        "title": "repair",
-        "blocks": [
-            {
-                "title":"request",
-                "items":[{}]
-
-            },
-          {
-            "title": "delivery_certificate_for_repair",
-            "items": [
-              {
-                "code": "category",
-                "type": "date",
-                "title": "Категория скважины",
-                "validation": "required|exists:tbd.tbdi.well_category_type,id",
-                "dict": "well_categories"
-              }
-            ]
-          },
-          {
-              "title":"Акт приема из ремонта",
-              "items":[
-                  {
-
-                  }
-              ]
-          },
-          {
-            "title":"Причина отказа",
-            "items":[
-                {
-
-                }
-            ]
+  "table": "bigdata_wells",
+  "tabs": [
+    {
+      "title": "request",
+      "blocks": [
+        {
+          "title": "repair",
+          "items": [
+       
+          ]
         }
-        ]
-         
-     /* 
-            'work_start_date' => 'Дата начала работ',
-            'repair_work_type' => 'Вид ремонтных работ',
-            'planned_works_list'=> 'Список планируемых работ',
-            'on_our_own' => 'Собственными силами',
-            'contractor' => 'Подрядчик',
-            'brigade' => 'Бригада',
-            'brigade_master' => 'Мастер бригады',
-            'duplicate_in_gts' => 'Дублировать в ГТС',
-            'opi' => 'ОПИ',
-            'work_end_date' => 'Дата окончания работ', 
-            'done_work_description' => 'Описание проделанных работ',
-            'out_of_plan' => 'Вне плана',
-            'new_run-down_nkt' => 'Кол-во спущенных НКТ, новые',
-            'used_run-down_nkt' => 'Кол-во спущенных НКТ, б/у',
-            'actual_bottomhole_m' =>  'Фактический забой, м',
-            'no_slaughter' => 'Забой отсутствует',
-            'no_slaughter_reason' => 'Причина отсутсивия забоя',
-            'artificial_slaughter_m' => 'Искусственный забой, м',
-            'machine_technical_condition' => 'Техническое состояние скважин',
-            'not_change_technical_condition' => 'Не менять техническое состояние',
-            'status_before_selected_date' => 'Статус до выбранной даты', 
-            'date_not_selected' => 'Дата не выбрана',
-            'new_state' => 'Новое состояние',
-            'condition' => 'Состояние',
-            'not_change_state' => 'Не менять состояние',
-            'hardware_failure_cause' => 'Основная причина отказа оборудования',
-            'equipment_failure_type' => 'Вид причины отказа оборудования',
-            'stopping_reason' => 'Причина остановки', */
+
+      ]
+    },
+    {
+      "title": "delivery_certificate_for_repair",
+      "blocks": [
+        {
+          "title": "repair",
+          "items": [
+            {
+              "code": "work_start_date",
+              "type": "date",
+              "title": "work_start_date",
+              "validation": "nullable|date|before_or_equal:today"
+            },
+            {
+              "code": "repair_work_type",
+              "type": "dict",
+              "title": "repair_work_type",
+              "validation": "required|exists:",
+              "dict": "",
+              "callbacks": {
+                "": ""
+              }
+            },
+            {
+              "code": "planned_works_list",
+              "type": "text",
+              "title": "planned_works_list",
+              "validation": "required|max:255",
+              "prefix": ""
+            },
+            {
+              "code": "on_our_own",
+              "type": "radio",
+              "values": [
+                "on_our_own"
+              ],
+              "title": "on_our_own",
+              "validation":""
+            },
+            {
+              "code": "contractor",
+              "type": "dict",
+              "title": "contractor",
+              "validation": "required|exists:",
+              "dict": "",
+              "callbacks": {
+                "": ""
+              } 
+            },
+            {
+              "code": "brigade",
+              "type": "dict",
+              "title": "brigade",
+              "validation": "required|exists:",
+              "dict": "",
+              "callbacks": {
+                "": ""
+              } 
+            },
+            {
+              "code": "brigade_master",
+              "type": "dict",
+              "title": "brigade_master",
+              "validation": "required|exists:",
+              "dict": "",
+              "callbacks": {
+                "": ""
+              } 
+            },
+            {
+              "code": "duplicate_in_gts",
+              "type": "radio",
+              "values": [
+                "duplicate_in_gts"
+              ],
+              "title": "duplicate_in_gts",
+              "validation":""
+            },
+            {
+              "code": "opi",
+              "type": "radio",
+              "values": [
+                "opi"
+              ],
+              "title": "opi",
+              "validation":""
+            }    
+          ]
+        }
+
+      ]
+    },
+    {
+      "title": "acceptance_certificate_from_repair",
+      "blocks": [
+        {
+          "title": "repair",
+          "items": [
+            {
+              "code": "work_start_date",
+              "type": "dict",
+              "title": "work_start_date",
+              "validation": "required|exists:tbd.tbdi.org,id",
+              "dict": "orgs",
+              "callbacks": {
+                "filterGeoByDZO": "geo"
+              }
+            }
+          ]
+        }
+
+      ]
+    },
+    {
+      "title": "rejection_reason",
+      "blocks": [
+        {
+          "title": "repair",
+          "items": [
+            {
+              "code": "work_start_date",
+              "type": "dict",
+              "title": "work_start_date",
+              "validation": "required|exists:tbd.tbdi.org,id",
+              "dict": "orgs",
+              "callbacks": {
+                "filterGeoByDZO": "geo"
+              }
+            }
+          ]
+        }
+
+      ]
+    }
+  ]
+}

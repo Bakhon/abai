@@ -57,12 +57,12 @@ return [
             'oil_density' => 'Плотность нефти (Т/М3)',
             'water_cut' => 'Обводненность (%)'
         ],
-        'krc' => [
+        'kpc' => [
             'repair' => 'Ремонт',
             'request' => 'Заявка',
             'delivery_certificate_for_repair' => 'Акт сдачи в ремонт',
             'acceptance_certificate_from_repair' => 'Акт приема из ремонта',
-            'rejection reason' => 'Причина отказа',
+            'rejection_reason' => 'Причина отказа',
             'work_start_date' => 'Дата начала работ',
             'repair_work_type' => 'Вид ремонтных работ',
             'planned_works_list'=> 'Список планируемых работ',
@@ -90,8 +90,8 @@ return [
             'not_change_state' => 'Не менять состояние',
             'hardware_failure_cause' => 'Основная причина отказа оборудования',
             'equipment_failure_type' => 'Вид причины отказа оборудования',
-            'stopping_reason' => 'Причина остановки',
-        ],
+            'stopping_reason' => 'Причина остановки'
+        ]
     ],
     'close' => 'Закрыть',
     'value_outside' => 'Данное значение выходит за ограничения',
