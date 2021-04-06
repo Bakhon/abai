@@ -586,244 +586,327 @@
                     :span-method="objectSpanMethod"
                     >
 
-                    <el-table-column     
-                      :label="`${this.trans('tr.trs1')}`"
+                    <el-table-column 
+                   
+                      :label="`${this.trans('tr.trs1')}`" 
+                      
+
                       >
-                      <el-table-column label="" >
-                        <el-table-column
-                          prop="field"
-                          label=""
-                          width="200"
-                          sortable
-                          
-                          
-                          >
+                      <el-table-column label="" prop="fake" >
+                        <el-table-column label="" >
+                          <el-table-column
+                            prop="field"
+                            label=""
+                            width="200"
+                            sortable
+                            >
+                          </el-table-column>
                         </el-table-column>
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
                       :label="`${this.trans('tr.tr1')}`"
                       >
-                      <el-table-column
-                        prop="rus_wellname"
-                        label=""
-                        width="150"
-                        sortable
-                        >
+                      <el-table-column label="" prop="fake" >
+                        <el-table-column label="" >
+                          <el-table-column
+                            prop="rus_wellname"
+                            label=""
+                            width="150"
+                            sortable
+                            >
+                          </el-table-column>
+                        </el-table-column>
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
                       :label="`${this.trans('tr.tr2')}`"
                       >
-                      <el-table-column
-                        prop="well_type"
-                        label=""
-                        width="150"
-                        sortable
-                        >
+                      <el-table-column label="" prop="fake" >
+                        <el-table-column label="" >
+                          <el-table-column
+                            prop="well_type"
+                            label=""
+                            width="150"
+                            sortable
+                            >
+                          </el-table-column>
+                        </el-table-column>
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
                       :label="`${this.trans('tr.tr3')}`"
                       >
-                      <el-table-column
-                        prop="horizon"
-                        label=""
-                        width="100"
-                        sortable
-                        >
+                      <el-table-column label="" prop="fake" >
+                        <el-table-column label="" >
+                          <el-table-column
+                            prop="horizon"
+                            label=""
+                            width="100"
+                            sortable
+                            >
+                          </el-table-column>
+                        </el-table-column>
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
                       :label="`${this.trans('tr.tr4')}`"
                       >
-                      <el-table-column
-                        prop="object"
-                        label=""
-                        width="150"
-                        sortable
-                        >
+                      <el-table-column label="" prop="fake" >
+                        <el-table-column label="" >
+                          <el-table-column
+                            prop="object"
+                            label=""
+                            width="150"
+                            sortable
+                            >
+                          </el-table-column>
+                        </el-table-column>
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
                       :label="`${this.trans('tr.tr5')}`"
                       >
-                      <el-table-column
-                        prop="block"
-                        label=""
-                        width="150"
-                        sortable
-                        >
+                      <el-table-column label="" prop="fake" >
+                        <el-table-column label="" >
+                          <el-table-column
+                            prop="block"
+                            label=""
+                            width="150"
+                            sortable
+                            >
+                          </el-table-column>
+                        </el-table-column>
                       </el-table-column>
                     </el-table-column>
 
                     <el-table-column
                       :label="`${this.trans('tr.trs2')}`"
                       >
-                      <el-table-column
-                        prop="r_con"
-                        label=""
-                        width="150"
-                        sortable
-                        >
+                      <el-table-column label="" prop="fake" >
+                        <el-table-column label="" >
+                          <el-table-column
+                            prop="r_con"
+                            label=""
+                            width="150"
+                            sortable
+                            >
+                          </el-table-column>
+                        </el-table-column>
                       </el-table-column>
                     </el-table-column>
 
                     <el-table-column
                       :label="`${this.trans('tr.tr6')}`"
                       >
-                      <el-table-column
-                        prop="cas_OD"
-                        label=""
-                        width="180"
-                        sortable
-                        >
+                      <el-table-column label="" prop="fake" >
+                        <el-table-column label="" >
+                          <el-table-column
+                            prop="cas_OD"
+                            label=""
+                            width="180"
+                            sortable
+                            >
+                          </el-table-column>
+                        </el-table-column>
                       </el-table-column>
                     </el-table-column>
 
                     <el-table-column
                       :label="`${this.trans('tr.trs3')}`"
                       >
-                      <el-table-column
-                        prop="cas_ID"
-                        label=""
-                        width="180"
-                        sortable
-                        >
+                      <el-table-column label="" prop="fake" >
+                        <el-table-column label="" >
+                          <el-table-column
+                            prop="cas_ID"
+                            label=""
+                            width="180"
+                            sortable
+                            >
+                          </el-table-column>
+                        </el-table-column>
                       </el-table-column>
                     </el-table-column>
 
                     <el-table-column
                       :label="`${this.trans('tr.tr7')}`"
                       >
-                      <el-table-column
-                        prop="tub_OD"
-                        label=""
-                        width="200"
-                        sortable
-                        >
+                      <el-table-column label="" prop="fake" >
+                        <el-table-column label="" >
+                          <el-table-column
+                            prop="tub_OD"
+                            label=""
+                            width="200"
+                            sortable
+                            >
+                          </el-table-column>
+                        </el-table-column>
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
                       :label="`${this.trans('tr.trs4')}`"
                       >
-                      <el-table-column
-                        prop="tub_ID"
-                        label=""
-                        width="200"
-                        sortable
-                        >
+                      <el-table-column label="" prop="fake" >
+                        <el-table-column label="" >
+                          <el-table-column
+                            prop="tub_ID"
+                            label=""
+                            width="200"
+                            sortable
+                            >
+                          </el-table-column>
+                        </el-table-column>
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
                       :label="`${this.trans('tr.tr8')}`"
                       >
-                      <el-table-column
-                        prop="choke_d"
-                        label=""
-                        width="200"
-                        sortable
-                        >
+                      <el-table-column label="" prop="fake" >
+                        <el-table-column label="" >
+                          <el-table-column
+                            prop="choke_d"
+                            label=""
+                            width="200"
+                            sortable
+                            >
+                          </el-table-column>
+                        </el-table-column>
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
                       :label="`${this.trans('tr.tr9')}`"
                       >
-                      <el-table-column
-                        prop="h_up_perf_md"
-                        label=""
-                        width="200"
-                        sortable
-                        >
+                      <el-table-column label="" prop="fake" >
+                        <el-table-column label="" >
+                          <el-table-column
+                            prop="h_up_perf_md"
+                            label=""
+                            width="200"
+                            sortable
+                            >
+                          </el-table-column>
+                        </el-table-column>
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
                       :label="`${this.trans('tr.trs5')}`"
                       >
-                      <el-table-column
-                        prop="h_up_perf_ext"
-                        label=""
-                        width="200"
-                        sortable
-                        >
+                      <el-table-column label="" prop="fake" >
+                        <el-table-column label="" >
+                          <el-table-column
+                            prop="h_up_perf_ext"
+                            label=""
+                            width="200"
+                            sortable
+                            >
+                          </el-table-column>
+                        </el-table-column>
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
                       :label="`${this.trans('tr.tr10')}`"
                       >
-                      <el-table-column
-                        prop="exp_meth"
-                        label=""
-                        width="200"
-                        sortable
-                        >
+                      <el-table-column label="" prop="fake" >
+                        <el-table-column label="" >
+                          <el-table-column
+                            prop="exp_meth"
+                            label=""
+                            width="200"
+                            sortable
+                            >
+                          </el-table-column>
+                        </el-table-column>
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
                       :label="`${this.trans('tr.tr11')}`"
                       >
-                      <el-table-column
-                        prop="pump_type"
-                        label=""
-                        width="200"
-                        sortable
-                        >
+                      <el-table-column label="" prop="fake" >
+                        <el-table-column label="" >
+                          <el-table-column
+                            prop="pump_type"
+                            label=""
+                            width="200"
+                            sortable
+                            >
+                          </el-table-column>
+                        </el-table-column>
                       </el-table-column>
                     </el-table-column>
 
                     <el-table-column
                       :label="`${this.trans('tr.trs6')}`"
                       >
-                      <el-table-column
-                        prop="type_sr"
-                        label=""
-                        width="200"
-                        sortable
-                        >
+                      <el-table-column label="" prop="fake" >
+                        <el-table-column label="" >
+                          <el-table-column
+                            prop="type_sr"
+                            label=""
+                            width="200"
+                            sortable
+                            >
+                          </el-table-column>
+                        </el-table-column>
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
                       :label="`${this.trans('tr.trs7')}`"
                       >
-                      <el-table-column
-                        prop="spm"
-                        label=""
-                        width="200"
-                        sortable
-                        >
+                      <el-table-column label="" prop="fake" >
+                        <el-table-column label="" >
+                          <el-table-column
+                            prop="spm"
+                            label=""
+                            width="200"
+                            sortable
+                            >
+                          </el-table-column>
+                        </el-table-column>
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
                       :label="`${this.trans('tr.trs8')}`"
                       >
-                      <el-table-column
-                        prop="stroke_len"
-                        label=""
-                        width="200"
-                        sortable
-                        >
+                      <el-table-column label="" prop="fake" >
+                        <el-table-column label="" >
+                          <el-table-column
+                            prop="stroke_len"
+                            label=""
+                            width="200"
+                            sortable
+                            >
+                          </el-table-column>
+                        </el-table-column>
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
                       :label="`${this.trans('tr.trs9')}`"
                       >
-                      <el-table-column
-                        prop="q_theor"
-                        label=""
-                        width="200"
-                        sortable
-                        >
+                      <el-table-column label="" prop="fake" >
+                        <el-table-column label="" >
+                          <el-table-column
+                            prop="q_theor"
+                            label=""
+                            width="200"
+                            sortable
+                            >
+                          </el-table-column>
+                        </el-table-column>
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
                       :label="`${this.trans('tr.tr12')}`"
                       >
-                      <el-table-column
-                        prop="freq"
-                        label=""
-                        width="400"
-                        sortable
-                        >
+                      <el-table-column label="" prop="fake" >
+                        <el-table-column label="" >
+                          <el-table-column
+                            prop="freq"
+                            label=""
+                            width="400"
+                            sortable
+                            >
+                          </el-table-column>
+                        </el-table-column>
                       </el-table-column>
                     </el-table-column>
 
@@ -832,45 +915,61 @@
                     <el-table-column
                       :label="`${this.trans('tr.tr13')}`"
                       >
-                      <el-table-column
-                        prop="h_pump_set"
-                        label=""
-                        width="200"
-                        sortable
-                        >
+                      <el-table-column label="" prop="fake" >
+                        <el-table-column label="" >
+                          <el-table-column
+                            prop="h_pump_set"
+                            label=""
+                            width="200"
+                            sortable
+                            >
+                          </el-table-column>
+                        </el-table-column>
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
                       :label="`${this.trans('tr.trs10')}`"
                       >
-                      <el-table-column
-                        prop="whp"
-                        label=""
-                        width="200"
-                        sortable
-                        >
+                      <el-table-column label="" prop="fake" >
+                        <el-table-column label="" >
+                          <el-table-column
+                            prop="whp"
+                            label=""
+                            width="200"
+                            sortable
+                            >
+                          </el-table-column>
+                        </el-table-column>
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
                       :label="`${this.trans('tr.trs11')}`"
                       >
-                      <el-table-column
-                        prop="line_p"
-                        label=""
-                        width="200"
-                        sortable
-                        >
+                      <el-table-column label="" prop="fake" >
+                        <el-table-column label="" >
+                          <el-table-column
+                            prop="line_p"
+                            label=""
+                            width="200"
+                            sortable
+                            >
+                          </el-table-column>
+                        </el-table-column>
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
                       :label="`${this.trans('tr.tr14')}`"
                       >
-                      <el-table-column
-                        prop="p_res"
-                        label=""
-                        width="130"
-                        sortable
-                        >
+                      <el-table-column label="" prop="fake" >
+                        <el-table-column label="" >
+                          <el-table-column
+                            prop="p_res"
+                            label=""
+                            width="130"
+                            sortable
+                            >
+                          </el-table-column>
+                        </el-table-column>
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
@@ -1070,8 +1169,8 @@
                     </el-table-column>
 
                     <!-- ГРП -->
-                    <el-table-column :label="`${this.trans('tr.trs59')}`">
-                      <el-table-column :label="`${this.trans('tr.tr28')}`">
+                    <el-table-column :label="`${this.trans('tr.tr28')}`">
+                      <el-table-column :label="`${this.trans('tr.trs59')}`">
                         <el-table-column
                           prop="grp_skin"
                           width="130"
@@ -1297,13 +1396,7 @@
                         </el-table-column>
 
                     </el-table-column>
-
-                
-
-
-                    
-
-                    
+  
                   </el-table>
                   <div class="ui-pagination">
                     <el-pagination
@@ -1559,6 +1652,11 @@ export default {
       Filter_well: undefined,
       checkers: false,
       checkersec: false,
+      isBorderColumnId: ["el-table_1_column_1", "el-table_1_column_5", "el-table_1_column_9", "el-table_1_column_13", "el-table_1_column_17", 
+      "el-table_1_column_21", "el-table_1_column_25", "el-table_1_column_29", "el-table_1_column_31", "el-table_1_column_33", "el-table_1_column_37",
+      "el-table_1_column_41", "el-table_1_column_45", "el-table_1_column_49", "el-table_1_column_51", "el-table_1_column_53", "el-table_1_column_57",
+      "el-table_1_column_61", "el-table_1_column_65", "el-table_1_column_69",  "el-table_1_column_73", "el-table_1_column_77", "el-table_1_column_81", "el-table_1_column_85",
+       "el-table_1_column_89", "el-table_1_column_93", "el-table_1_column_97"],
         
     };
   },
@@ -1572,9 +1670,10 @@ export default {
   },
   methods: {
     getHeaderCellClassName({column}) {
-
- 
-      if(column.id === "el-table_1_column_1") {
+      if(column.property === "fake") {
+        return 'no_border';
+      }
+      if(this.isBorderColumnId.includes(column.id)) {
         return 'no_border';
       }
       return 'have_border';

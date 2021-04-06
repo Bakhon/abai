@@ -7,7 +7,7 @@
                         <div class="txt3 font-weight-bold">
                             {{ item.title }}
                         </div>
-                        <h1 class="text-nowrap font-weight-bold mb-0">{{ new Intl.NumberFormat("ru-RU").format(item.value) }}</h1>
+                        <div class="txt4 text-nowrap font-weight-bold mb-0">{{ new Intl.NumberFormat("ru-RU").format(item.value) }}</div>
                     </div>
                     <div class="vc-wide-indicator-tooltip-text text-nowrap">{{ leftUnits }}</div>
                 </div>
@@ -17,7 +17,7 @@
                             <div class="txt3 font-weight-bold">
                                 {{ item.title }}
                             </div>
-                            <h1 class="text-nowrap font-weight-bold mb-0">{{ new Intl.NumberFormat("ru-RU").format(item.value) }}</h1>
+                            <div class="txt4 text-nowrap font-weight-bold mb-0">{{ new Intl.NumberFormat("ru-RU").format(item.value) }}</div>
                         </div>
                     </div>
                     <div class="vc-wide-indicator-tooltip-text text-nowrap">{{ rightUnits }}</div>
@@ -25,9 +25,9 @@
             </div>
             <div class="d-flex d-flex-row mt-3 justify-content-between">
                 <div>
-                    <h5 class="font-weight-bold m-0 d-flex">{{ title }}</h5>
+                    <div class="txt1 font-weight-bold m-0 d-flex">{{ title }}</div>
                 </div>
-                <div v-if="!hidePercents" class="d-flex justify-content-end font-weight-bold align-items-center" style="font-size: 1.2rem;">
+                <div v-if="!hidePercents" class="txt2-2 d-flex justify-content-end font-weight-bold align-items-center">
                     <div v-if="isUpArrow" class="arrow3"></div>
                     <div v-else class="arrow2"></div>
                     {{ progressPercents }}%
