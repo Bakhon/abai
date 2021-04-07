@@ -955,10 +955,5 @@ export default {
         exactDateSelected() {
             return ((this.factFieldName === 'oil_fact' || this.factFieldName === 'oil_div_fact') && this.oneDate === 1);
         },
-        // oilProgressBar() {
-        //     return {
-        //         '--width': this.dailyProgressBars.oil + '%',
-        //     }
-        // }
     },
 };
