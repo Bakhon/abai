@@ -42,5 +42,8 @@ export default {
             return this.$store.state.isShadowBlockShow;
         },
     },
+    mounted () {
+        this.$store.commit('globalloading/SET_LOADING', false);
+    }
 }
 </script>
