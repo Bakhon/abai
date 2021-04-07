@@ -47,14 +47,16 @@ class AddPermissionsForPipeTypes extends Migration
                 'guard_name' => 'web'
             ]
         );
+        if (DB::table('role_has_permissions')->where('role_id', 1)->count() > 0) {
+            foreach ($ids as $id) {
 
-        foreach ($ids as $id) {
-            DB::table('role_has_permissions')->insert(
-                [
-                    'permission_id' => $id,
-                    'role_id' => 1
-                ]
-            );
+                DB::table('role_has_permissions')->insert(
+                    [
+                        'permission_id' => $id,
+                        'role_id' => 1
+                    ]
+                );
+            }
         }
     }
 
