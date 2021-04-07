@@ -1,7 +1,7 @@
 @extends('layouts.monitor')
 
 @section('content')
-    <div class="row" id="app">
+    <div id="app">
         <div class="col-md-12">
             @if ($message = Session::get('success'))
                 <div class="alert alert-success">
@@ -10,12 +10,12 @@
                 </div>
             @endif
             <div class="x_panel">
-            <h1>{{ trans('monitoring.pipe.create_title') }}</h1>
+            <h1>{{ trans('monitoring.pipe_types.create_title') }}</h1>
             <a class="btn btn-primary float-left" href="{{ url()->previous() }}"><i class="fas fa-arrow-left"></i></a>
-                <form action="{{ route('pipes.store') }}" method="POST">
+                <form action="{{ route('pipe_types.store') }}" method="POST">
                     @csrf
                     <div class="row">
-                        <pipe-form :validation-params='@json($validationParams)'></pipe-form>
+                        <pipe-type-form :validation-params='@json($validationParams)'></pipe-type-form>
                     </div>
                 </form>
             </div>

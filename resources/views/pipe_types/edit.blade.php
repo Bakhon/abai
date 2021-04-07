@@ -1,7 +1,7 @@
 @extends('layouts.monitor')
 
 @section('content')
-    <div class="row" id="app">
+    <div id="app">
         <div class="col-md-12">
             @if ($message = Session::get('success'))
                 <div class="alert alert-success">
@@ -12,11 +12,11 @@
             <div class="x_panel">
             <h1>{{ trans('monitoring.pipe_types.edit_title') }}</h1>
             <a class="btn btn-primary float-left" href="{{ url()->previous() }}"><i class="fas fa-arrow-left"></i></a>
-                <form action="{{ route('pipe_types.update', ['pipe_type' => $pipe_type->id]) }}" method="POST">
+                <form action="{{ route('pipe_types.update', ['pipe_type' => $pipe_type->id]) }}" method="PUT">
                     @method('patch')
                     @csrf
                     <div class="row">
-                        <pipe-form :pipe='@json($pipe)' :validation-params='@json($validationParams)'></pipe-form>
+                        <pipe-type-form :is-editing="true" :pipe-type='@json($pipe_type)' :validation-params='@json($validationParams)'></pipe-type-form>
                     </div>
                 </form>
             </div>
