@@ -1,4 +1,5 @@
 <?php
+
 Route::group(
     ['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()],
     function () {
