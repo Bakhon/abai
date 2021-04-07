@@ -117,13 +117,13 @@
                                         </a>
                                     </li>
                                 @endif
-{{--                                @if(auth()->user()->can('monitoring list pipe_types'))--}}
+                                @if(auth()->user()->can('monitoring list pipe_types'))
                                     <li class="left-menu-li">
                                         <a href="{{route('pipe_types.index')}}">
                                             {{ trans('monitoring.pipe_types.menu') }}
                                         </a>
                                     </li>
-{{--                                @endif--}}
+                                @endif
                                 @if(auth()->user()->can('monitoring list inhibitors'))
                                     <li class="left-menu-li">
                                         <a href="{{route('inhibitors.index')}}">

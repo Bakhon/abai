@@ -85,7 +85,7 @@
       </div>
     </div>
     <div class="col-xs-12 col-sm-12 col-md-12 text-center">
-      <button type="submit" :disabled="!valid" @click.prevent="submitForm" class="btn btn-success">{{ trans('app.save') }}</button>
+      <button type="submit" :disabled="!isValidFields" @click.prevent="submitForm" class="btn btn-success">{{ trans('app.save') }}</button>
     </div>
   </div>
 </template>
@@ -135,23 +135,13 @@ export default {
   },
   methods: {
     submitForm () {
-      if (this.isEditing) {
-        this.axios
-            .put(this.localeUrl("/pipe_types/" + this.pipeType.id), this.formFields)
-            .then((response) => {
-              if (response.data.status == 'success') {
-                window.location.replace(this.localeUrl("/pipe_types"));
-              }
-            });
-      } else {
-        this.axios
-            .post(this.localeUrl("/pipe_types"), this.formFields)
-            .then((response) => {
-              if (response.data.status == 'success') {
-                window.location.replace(this.localeUrl("/pipe_types"));
-              }
-            });
-      }
+      this.axios
+          [this.requestMethod](this.requestUrl, this.formFields)
+          .then((response) => {
+            if (response.data.status == 'success') {
+              window.location.replace(this.localeUrl("/pipe_types"));
+            }
+          });
     },
     calcInnerDiameter (){
       if (this.formFields.outside_diameter && this.formFields.thickness) {
@@ -165,14 +155,19 @@ export default {
     }
   },
   computed: {
-    valid() {
-      let valid = true
+    isValidFields() {
       this.requiredFields.forEach(field => {
         if (!this.formFields[field]) {
-          valid = false
+          return false
         }
       })
-      return valid
+      return true
+    },
+    requestUrl () {
+      return this.isEditing ? this.localeUrl("/pipe_types/" + this.pipeType.id) : this.localeUrl("/pipe_types");
+    },
+    requestMethod () {
+      return this.isEditing ? "put" : "post";
     }
   },
   beforeCreate: function () {
