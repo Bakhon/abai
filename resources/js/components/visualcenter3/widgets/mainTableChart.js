@@ -93,10 +93,12 @@ export default {
             initialSummary.productionPlanForChart = monthlyPlan;
             if (monthlyFact > 0 && date.month() < moment().month()) {
                 initialSummary.productionFactForChart = monthlyFact;
-            } else if (date.month() === moment().month() && dzoName) {
+            }
+            if (date.month() === moment().month() && dzoName) {
                 let initialMonthlyPlan = monthlyPlan / this.getDaysCountInMonth(date.format("YYYY-MM"));
-                let currentDatePlan = initialMonthlyPlan *= date.date();
-                initialSummary.productionFactForChart = currentDatePlan;
+                let currentDatePlan = initialMonthlyPlan *= moment().date();
+                initialSummary.monthlyPlan = (currentDatePlan - monthlyFact);
+                return initialSummary;
             }
             if (monthlyOpecPlan > 0 && date.month() < moment().month()) {
                 initialSummary.productionPlanForChart2 = monthlyOpecPlan;
@@ -143,7 +145,7 @@ export default {
         getSummaryTargetPlan(yearlyData) {
             let targetPlan = 0;
             _.forEach(yearlyData, function(monthData) {
-                if (moment(monthData.time).month() < moment().month()) {
+                if (moment(monthData.time).month() <= moment().month()) {
                     targetPlan += monthData.monthlyPlan;
                 }
             });
