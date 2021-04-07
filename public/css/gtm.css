@@ -10,6 +10,16 @@
     background: rgba(51,57,117,1);
 }
 
+.menu-item-bg:first-child {
+    border-radius: 0.25rem 0.25rem 0 0;
+    padding-top: 0.5rem;
+}
+
+.menu-item-bg:last-child {
+    border-radius: 0 0 0.25rem 0.25rem;
+    padding-bottom: 0.5rem;
+}
+
 .menu-item {
     font-weight: 700;
     line-height: 2rem;
@@ -27,7 +37,7 @@
 .main-menu-font {
     font-weight: 700;
     font-size: 1rem;
-    line-height: 2rem;
+    line-height: 1.7rem;
     color: white !important;
 }
 
@@ -626,7 +636,7 @@
         font-size: 0.6rem;
     }
 
-    .menu-item-bg img {
+    .menu-item-bg.menu-title img {
         width: 20px;
         height: 20px;
     }
@@ -707,7 +717,7 @@
         display: none !important;
     }
 
-    .menu-item-bg img {
+    .menu-item-bg.menu-title img {
         width: 16px;
         height: 16px;
     }

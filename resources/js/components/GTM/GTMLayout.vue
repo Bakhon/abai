@@ -32,12 +32,12 @@ export default {
     },
     methods: {
         menuClick (data) {
-            console.log(data)
             this.mainContent = data;
             this.parentType = data.parentType;
         },
         closeTree () {
             this.$store.commit('changeIsShadowBlockShow',false);
+            this.$store.commit('changeIsTreeMainComponentShow',false);
             this.$store.commit('changeTreeSettingComponent',null);
             this.$store.commit('changeTreeChildrenComponent',null);
         },
