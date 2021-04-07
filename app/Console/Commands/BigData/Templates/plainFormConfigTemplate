@@ -5,17 +5,19 @@
     {
       "title": "hello_world",
       "blocks": [
-        {
-          "title": "hello_world",
-          "items": [
-            {
-              "code": "hello_world",
-              "type": "text",
-              "title": "hello_world",
-              "validation": ""
-            }
-          ]
-        }
+        [
+          {
+            "title": "hello_world",
+            "items": [
+              {
+                "code": "hello_world",
+                "type": "text",
+                "title": "hello_world",
+                "validation": ""
+              }
+            ]
+          }
+        ]
       ]
     }
   ]
