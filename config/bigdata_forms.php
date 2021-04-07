@@ -3,4 +3,5 @@
     'fluid_production' => 'App\\Services\\BigData\\Forms\\FluidProduction',
     'production_well' => '\\App\\Services\\BigData\\Forms\\ProductionWell',
     'well_exploitation' => '\\App\\Services\\BigData\\Forms\\WellExploitation',
+    'injection_wells' => '\\App\\Services\\BigData\\Forms\\InjectionWells',
 );

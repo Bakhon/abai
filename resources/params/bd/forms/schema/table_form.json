@@ -19,7 +19,8 @@
               "calc",
               "hidden",
               "history",
-              "history_graph"
+              "history_graph",
+              "copy"
             ]
           },
           "title": {
@@ -58,7 +59,8 @@
                   "text",
                   "hidden",
                   "history",
-                  "history_graph"
+                  "history_graph",
+                  "copy"
                 ]
               }
             }
