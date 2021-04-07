@@ -7,8 +7,21 @@ use Illuminate\Database\Eloquent\Model;
 class EcoRefsCost extends Model
 {
     protected $fillable = [
-        'sc_fa', 'company_id', 'date', 'variable', 'fix_noWRpayroll', 'fix_payroll', 'fix', 'gaoverheads',
-        'wr_nopayroll', 'wr_payroll', 'wo', 'comment', 'author_id', 'log_id'
+        'sc_fa',
+        'company_id',
+        'date',
+        'variable',
+        'fix_noWRpayroll',
+        'fix_payroll',
+        'fix_nopayroll',
+        'fix',
+        'gaoverheads',
+        'wr_nopayroll',
+        'wr_payroll',
+        'wo',
+        'comment',
+        'author_id',
+        'log_id'
     ];
 
     public function scfa()
