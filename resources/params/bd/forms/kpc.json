@@ -42,15 +42,7 @@
               "validation": "required|max:255",
               "prefix": ""
             },
-            {
-              "code": "on_our_own",
-              "type": "radio",
-              "values": [
-                "on_our_own"
-              ],
-              "title": "on_our_own",
-              "validation":""
-            },
+
             {
               "code": "contractor",
               "type": "dict",
@@ -111,14 +103,111 @@
           "title": "repair",
           "items": [
             {
-              "code": "work_start_date",
+              "code": "work_end_date",
+              "type": "date",
+              "title": "work_end_date",
+              "validation": "nullable|date|before_or_equal:today"
+            },
+            {
+              "code": "done_work_description",
+              "type": "text",
+              "title": "done_work_description",
+              "validation": "required|max:255",
+              "prefix": ""
+            },
+            {
+              "code": "out_of_plan",
+              "type": "radio",
+              "values": [
+                "out_of_plan"
+              ],
+              "title": "out_of_plan",
+              "validation":""
+            },
+            {
+              "code": "new_run_down_nkt",
+              "type": "text",
+              "title": "new_run_down_nkt",
+              "validation": "required|max:255",
+              "prefix": ""
+            },
+            {
+              "code": "used_run_down_nkt",
+              "type": "text",
+              "title": "used_run_down_nkt",
+              "validation": "required|max:255",
+              "prefix": ""
+            },
+            {
+              "code": "actual_bottomhole_m",
+              "type": "text",
+              "title": "actual_bottomhole_m",
+              "validation": "required|max:255",
+              "prefix": ""
+            },
+            {
+              "code": "no_slaughter",
+              "type": "radio",
+              "values": [
+                "no_slaughter"
+              ],
+              "title": "no_slaughter",
+              "validation":""
+            },
+            {
+              "code": "no_slaughter_reason",
               "type": "dict",
-              "title": "work_start_date",
-              "validation": "required|exists:tbd.tbdi.org,id",
-              "dict": "orgs",
+              "title": "no_slaughter_reason",
+              "validation": "required|exists:",
+              "dict": "",
               "callbacks": {
-                "filterGeoByDZO": "geo"
-              }
+                "": ""
+              } 
+            },
+            {
+              "code": "artificial_slaughter_m",
+              "type": "text",
+              "title": "artificial_slaughter_m",
+              "validation": "required|max:255",
+              "prefix": ""
+            },
+            {
+              "code": "machine_technical_condition",
+              "type": "dict",
+              "title": "machine_technical_condition",
+              "validation": "required|exists:",
+              "dict": "",
+              "callbacks": {
+                "": ""
+              } 
+            },
+            {
+              "code": "not_change_technical_condition",
+              "type": "radio",
+              "values": [
+                "not_change_technical_condition"
+              ],
+              "title": "not_change_technical_condition",
+              "validation":""
+            },
+            {
+              "code": "condition",
+              "type": "dict",
+              "title": "condition",
+              "validation": "required|exists:",
+              "dict": "",
+              "callbacks": {
+                "": ""
+              } 
+            },
+            {
+              "code": "not_change_state",
+              "type": "radio",
+              "values": [
+                "not_change_state"
+              ],
+              "title": "not_change_technical_condition",
+              "validation":""
             }
           ]
         }
@@ -132,14 +221,34 @@
           "title": "repair",
           "items": [
             {
-              "code": "work_start_date",
+              "code": "hardware_failure_cause",
               "type": "dict",
-              "title": "work_start_date",
-              "validation": "required|exists:tbd.tbdi.org,id",
-              "dict": "orgs",
+              "title": "hardware_failure_cause",
+              "validation": "required|exists:",
+              "dict": "",
               "callbacks": {
-                "filterGeoByDZO": "geo"
-              }
+                "": ""
+              } 
+            },
+            {
+              "code": "equipment_failure_type",
+              "type": "dict",
+              "title": "equipment_failure_type",
+              "validation": "required|exists:",
+              "dict": "",
+              "callbacks": {
+                "": ""
+              } 
+            },
+            {
+              "code": "stopping_reason",
+              "type": "dict",
+              "title": "stopping_reason",
+              "validation": "required|exists:",
+              "dict": "",
+              "callbacks": {
+                "": ""
+              } 
             }
           ]
         }
