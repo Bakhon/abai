@@ -8,7 +8,7 @@ class HandbookRepTtValue extends Model
 {
     protected $table = 'rep_tt_values';
 
-    protected $fillable = ['rep_id', 'company_id', 'date', 'value', 'company', 'rep_tt'];
+    protected $fillable = ['rep_id', 'company_id', 'date', 'value', 'company', 'rep_tt', 'type'];
 
     public function company()
     {

@@ -13,9 +13,9 @@
                         <div class="first-td-header">
                           <div class="row oil-block">
                             <div class="number col-8 col-md-6 col-lg-7">
-                              {{ formatDigitToThousand(oil_factDay) }}
+                              {{ formatDigitToThousand(productionParams.oil_fact) }}
                             </div>
-                            <div class="unit-vc col-12 col-md-5 col-lg-4">{{ thousand }}{{ trans('visualcenter.tonWithSpace') }}</div>
+                            <div class="unit-vc col-12 col-md-5 col-lg-4">{{ trans("visualcenter.thousand") }}{{ trans('visualcenter.tonWithSpace') }}</div>
                           </div>
                           <div class="additional-header txt1 col-6 col-md-12">
                             {{ trans("visualcenter.getoil") }}
@@ -27,35 +27,29 @@
                               class="progress-bar"
                               role="progressbar"
                               :style="{
-                                width: oil_factDayProgressBar + '%',
+                                width: dailyProgressBars.oil + '%',
                               }"
-                              :aria-valuenow="oil_planDay"
+                              :aria-valuenow="productionParams.oil_plan"
                               aria-valuemin="0"
-                              :aria-valuemax="oil_factDay"
+                              :aria-valuemax="productionParams.oil_fact"
                             ></div>
                           </div>
                           <div class="row">
-                            <div class="percent-header col-5 col-md-6" v-if="oil_factDay">
-                              {{ getDiffProcentLastBigN(oil_factDay, oil_planDay) }}%
+                            <div class="percent-header col-5 col-md-6" v-if="productionParams.oil_fact">
+                              {{ getDiffProcentLastBigN(productionParams.oil_fact, productionParams.oil_plan) }}%
                             </div>
-                            <div class="plan-header col-6" v-if="oil_planDay">
-                              {{ formatDigitToThousand(oil_planDay) }}
+                            <div class="plan-header col-6" v-if="productionParams.oil_plan">
+                              {{ formatDigitToThousand(productionParams.oil_plan) }}
                             </div>
                             <br />
                           </div>
                           <div class="col-12 mt-4">
                             <div
-                              :class="`${getColor2(
-                                getDiffProcentLastP(oil_factDay, oil_factDayPercent)
-                              )}`"
+                              :class="`${getColor2(getDiffProcentLastP(productionParams.oil_fact, oil_factDayPercent))}`"
                             ></div>
 
                             <div class="txt2-2">
-                              {{
-                                Math.abs(
-                                  getDiffProcentLastP(oil_factDayPercent, oil_factDay)
-                                )
-                              }}%
+                              {{Math.abs(getDiffProcentLastP(oil_factDayPercent, productionParams.oil_fact))}}%
                             </div>
                             <div class="txt3">
                               vs
@@ -72,9 +66,9 @@
                         <div class="first-td-header">
                           <div class="row oil-block">
                             <div class="number col-8 col-md-7 col-lg-7">
-                              {{ formatDigitToThousand(oil_dlv_factDay) }}
+                              {{ formatDigitToThousand(productionParams.oil_dlv_fact) }}
                             </div>
-                            <div class="unit-vc col-12 col-md-5 col-lg-4">{{ thousand }}{{ trans('visualcenter.tonWithSpace') }}</div>
+                            <div class="unit-vc col-12 col-md-5 col-lg-4">{{ trans("visualcenter.thousand") }}{{ trans('visualcenter.tonWithSpace') }}</div>
                           </div>
                           <div class="additional-header txt1 col-6 col-md-12">
                             {{ trans("visualcenter.oildlv") }}
@@ -86,43 +80,29 @@
                               class="progress-bar"
                               role="progressbar"
                               :style="{
-                                width: oil_dlv_factDayProgressBar + '%',
+                                width: dailyProgressBars.oilDelivery + '%',
                               }"
-                              :aria-valuenow="oil_dlv_factDay"
+                              :aria-valuenow="productionParams.oil_dlv_fact"
                               aria-valuemin="0"
-                              :aria-valuemax="oil_dlv_planDay"
+                              :aria-valuemax="productionParams.oil_dlv_plan"
                             ></div>
                           </div>
                           <div class="row">
-                            <div class="percent-header col-5 col-md-6" v-if="oil_dlv_factDay">
-                              {{
-                                getDiffProcentLastBigN(oil_dlv_factDay, oil_dlv_planDay)
-                              }}%
+                            <div class="percent-header col-5 col-md-6" v-if="productionParams.oil_dlv_fact">
+                              {{getDiffProcentLastBigN(productionParams.oil_dlv_fact, productionParams.oil_dlv_plan)}}%
                             </div>
-                            <div class="plan-header col-6" v-if="oil_dlv_planDay">
-                              {{ formatDigitToThousand(oil_dlv_planDay) }}
+                            <div class="plan-header col-6" v-if="productionParams.oil_dlv_plan">
+                              {{ formatDigitToThousand(productionParams.oil_dlv_plan) }}
                             </div>
                           </div>
                           <br />
                           <div class="col-12 mt-2">
                             <div
-                              :class="`${getColor2(
-                                getDiffProcentLastP(
-                                  oil_dlv_factDay,
-                                  oil_dlv_factDayPercent
-                                )
-                              )}`"
+                              :class="`${getColor2(getDiffProcentLastP(productionParams.oil_dlv_fact,oil_dlv_factDayPercent))}`"
                             ></div>
 
                             <div class="txt2-2">
-                              {{
-                                Math.abs(
-                                  getDiffProcentLastP(
-                                    oil_dlv_factDayPercent,
-                                    oil_dlv_factDay
-                                  )
-                                )
-                              }}%
+                              {{Math.abs(getDiffProcentLastP(oil_dlv_factDayPercent,productionParams.oil_dlv_fact))}}%
                             </div>
                             <div class="txt3">
                               vs
@@ -139,10 +119,10 @@
                         <div class="first-td-header">
                           <div class="row oil-block">
                             <div class="number col-8 col-md-7 col-lg-7">
-                              {{ formatDigitToThousand(gas_factDay) }}
+                              {{ formatDigitToThousand(productionParams.gas_fact) }}
                             </div>
                             <div class="unit-vc col-12 col-md-5 col-lg-4">
-                              {{ thousand }}{{ trans('visualcenter.meterCubicWithSpace') }}
+                              {{ trans("visualcenter.thousand") }}{{ trans('visualcenter.meterCubicWithSpace') }}
                             </div>
                           </div>
                           <div class="additional-header txt1 col-6 col-md-12">
@@ -156,33 +136,33 @@
                               class="progress-bar"
                               role="progressbar"
                               :style="{
-                                width: gas_factDayProgressBar + '%',
+                                width: dailyProgressBars.gas + '%',
                               }"
-                              :aria-valuenow="gas_factDay"
+                              :aria-valuenow="productionParams.gas_fact"
                               aria-valuemin="0"
-                              :aria-valuemax="gas_planDay"
+                              :aria-valuemax="productionParams.gas_plan"
                             ></div>
                           </div>
                           <div class="row">
-                            <div class="percent-header col-5 col-md-6" v-if="gas_factDay">
-                              {{ getDiffProcentLastBigN(gas_factDay, gas_planDay) }}%
+                            <div class="percent-header col-5 col-md-6" v-if="productionParams.gas_fact">
+                              {{ getDiffProcentLastBigN(productionParams.gas_fact, productionParams.gas_plan) }}%
                             </div>
-                            <div class="plan-header col-6" v-if="gas_planDay">
-                              {{ formatDigitToThousand(gas_planDay) }}
+                            <div class="plan-header col-6" v-if="productionParams.gas_plan">
+                              {{ formatDigitToThousand(productionParams.gas_plan) }}
                             </div>
                           </div>
                           <br />
                           <div class="col-12 mt-2">
                             <div
                               :class="`${getColor2(
-                                getDiffProcentLastP(gas_factDay, gas_factDayPercent)
+                                getDiffProcentLastP(productionParams.gas_fact, gas_factDayPercent)
                               )}`"
                             ></div>
 
                             <div class="txt2-2">
                               {{
                                 Math.abs(
-                                  getDiffProcentLastP(gas_factDayPercent, gas_factDay)
+                                  getDiffProcentLastP(gas_factDayPercent, productionParams.gas_fact)
                                 )
                               }}%
                             </div>
@@ -722,6 +702,7 @@
                           <div>
                             <input
                                     type="checkbox"
+                                    :disabled="dzoCompaniesAssets['isOperating']"
                                     :checked="dzoCompaniesAssets['isOperating']"
                                     @click="`${changeAssets('isOperating','type')}`"
                             ></input>
@@ -732,6 +713,7 @@
                           <div>
                             <input
                                     type="checkbox"
+                                    :disabled="dzoCompaniesAssets['isNonOperating']"
                                     :checked="dzoCompaniesAssets['isNonOperating']"
                                     @click="`${changeAssets('isNonOperating','type')}`"
                             ></input>
@@ -746,6 +728,7 @@
                           <div>
                             <input
                                     type="checkbox"
+                                    :disabled="dzoRegionsMapping[region].isActive"
                                     :checked="dzoRegionsMapping[region].isActive"
                                     @click="`${changeAssets('isRegion','region',region)}`"
                             ></input>
@@ -1116,7 +1099,7 @@
                         <div class="font">
                           {{dzoCompaniesSummary.plan}}
                           <div class="right">
-                            {{ thousand }} {{ metricName }}
+                            {{ trans("visualcenter.thousand") }} {{ metricName }}
                           </div>
                         </div>
                       </td>
@@ -1125,7 +1108,7 @@
                         <div class="font">
                           {{dzoCompaniesSummary.fact}}
                           <div class="right">
-                            {{ thousand }} {{ metricName }}
+                            {{ trans("visualcenter.thousand") }} {{ metricName }}
                           </div>
                         </div>
                       </td>
@@ -1141,7 +1124,7 @@
                         <div class="font dynamic">
                           {{dzoCompaniesSummary.difference}}
                           <div class="right">
-                            {{ thousand }}{{ metricName }}
+                            {{ trans("visualcenter.thousand") }}{{ metricName }}
                           </div>
                         </div>
                       </td>
@@ -1236,7 +1219,7 @@
                 "
               >
                 <div class="name-chart-left">
-                  {{ chartSecondaryName }}, {{ thousand }} {{ metricName }}
+                  {{ chartSecondaryName }}, {{ trans("visualcenter.thousand") }} {{ metricName }}
                 </div>
                 <div class="name-chart-head">{{ chartHeadName }}</div>
                 <vc-chart :height="465"> </vc-chart>
@@ -2706,6 +2689,5 @@
     line-height: 40px;
     color: #9EA4C9;
     border: none;
-
   }
 </style>

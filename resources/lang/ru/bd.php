@@ -56,6 +56,22 @@ return [
             'calculated_fields' => 'Рассчитываемые поля',
             'oil_density' => 'Плотность нефти (Т/М3)',
             'water_cut' => 'Обводненность (%)'
+        ],
+        'injection_wells'=>[
+            'Main' => 'Основное',
+            'Planned_event' => 'Намечаемое мероприятие',
+            'Mode_parameters' => 'Параметры режима',
+            'date_start' => 'Дата начала',
+            'date_end' => 'Дата конца',
+            'Tech_modes_of_injection_wells' => 'Технологические режимы нагнетательных скважин',
+            'agent_volume' => 'Объем агента, м³',
+            'agent_type' => 'Вид агента',
+            'agent_temperature' => 'Температура агента, С°',
+            'injection_pressure' => 'Давление закачки, атм',
+            'qmax_reception' => 'Qмакс.прием',
+            'Planned_events_tech_modes' => 'Намечаемые мероприятия по технологическим режимам',
+            'event' => 'Мероприятие',
+            'planned_month' => 'Планируемый месяц'
         ]
     ],
     'close' => 'Закрыть',
@@ -67,4 +83,5 @@ return [
     'month_2' => 'месяцев',
     'year' => 'год',
     'all' => 'все',
+    'sure_you_want_to_copy' => 'Вы точно хотите скопировать данные из ячейки?'
 ];

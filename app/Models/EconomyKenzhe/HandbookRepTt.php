@@ -9,7 +9,8 @@ class HandbookRepTt extends Model
     protected $fillable = [
         'parent_id',
         'num',
-        'name'
+        'name',
+        'type'
     ];
 
     protected $table = 'rep_tt';
@@ -24,19 +25,22 @@ class HandbookRepTt extends Model
         return $this->hasMany(HandbookRepTt::class, 'parent_id')->with('handbookItems');
     }
 
-
+    public function reptValues()
+    {
+        return $this->hasMany(HandbookRepTtValue::class, 'rep_id', 'id');
+    }
+    
     public function toArray()
     {
         $array = parent::toArray();
-        $camelArray = array();
+        $renameArrayKeys = array();
         foreach ($array as $name => $value) {
-            if ($name == 'child_handbook_items') {
-                $camelArray['handbook_items'] = $value;
+            if ($name == 'child_handbook_items' or $name == 'child_handbook_items_by_date' or $name == 'handbook_items_by_date') {
+                $renameArrayKeys['handbook_items'] = $value;
             } else {
-                $camelArray[$name] = $value;
+                $renameArrayKeys[$name] = $value;
             }
-
         }
-        return $camelArray;
+        return $renameArrayKeys;
     }
 }
