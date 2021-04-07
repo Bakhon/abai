@@ -2,7 +2,7 @@
     <div class="mb-2">
         <div class="indicatorCell flex-grow-1 mb-1 mb-md-0 w-100">
             <div class="d-flex text-right text-sm-left">
-                <div class="w-50 d-flex flex-column mr-2">
+                <div class="w-100 d-flex flex-column mr-2">
                     <div v-for="item in leftNumbers">
                         <div class="txt3 font-weight-bold">
                             {{ item.title }}
@@ -12,7 +12,7 @@
                     <div class="vc-wide-indicator-tooltip-text text-nowrap">{{ leftUnits }}</div>
                 </div>
                 <div class="w-50 wide-indicator-border pl-3">
-                    <div class="w-50 d-flex flex-column">
+                    <div class="w-100 d-flex flex-column">
                         <div v-for="item in rightNumbers">
                             <div class="txt3 font-weight-bold">
                                 {{ item.title }}
