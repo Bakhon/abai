@@ -139,12 +139,12 @@ export default {
     areaChartData() {
       if (this.chartWells && this.chartWells.length > 0) {
         let field = this.Filter_field;
-        let well = this.Filter_well;
+        let rus_wellname = this.Filter_well;
         try {
           let filteredResult = this.allWells.filter(
             (row) =>
               (!field || row.field === field) &&
-              (!well || row.well === well)
+              (!rus_wellname || row.rus_wellname === rus_wellname)
           ).sort((row1,row2)=>{
             return new Date(row1.date) - new Date(row2.date);
           });
@@ -160,17 +160,18 @@ export default {
           this.areaChartOptions.xaxis.categories = filteredResult.map((row) => {
             return new Date(row.date).toLocaleDateString('ru-RU')
           });
+          this.areaChartOptions.title.text = this.trans('tr.weekly_fa_title') + ' ' + this.Filter_well + ' ' + this.trans('tr.weekly_fa_title_2');
           return [
             {
-              name: "Q_Oil",
+              name: this.trans('tr.q_oil'),
               data: qOil
             },
             {
-              name: "Q_Liquid",
+              name: this.trans('tr.q_liquid'),
               data: qLiquid
             },
             {
-              name: "Q_WCT",
+              name: this.trans('tr.water_cut'),
               data: qWct
             },
           ]
@@ -198,10 +199,10 @@ export default {
         let filters = [];
         this.allWells.forEach((el) => {
           if (
-            filters.indexOf(el.well) === -1 &&
+            filters.indexOf(el.rus_wellname) === -1 &&
             (!this.Filter_field || el.field === this.Filter_field)
           ) {
-            filters = [...filters, el.well];
+            filters = [...filters, el.rus_wellname];
           }
         });
         return [...filters];
@@ -214,13 +215,11 @@ export default {
       allWells: [],
       filteredWellsBar: [],
       dt: null,
-      dt2: null,
       date1: null,
       fullWells: [],
       areaChartRerender: true,
       Filter_well: undefined,
       Filter_field: undefined,
-      xdate: [],
       areaChartOptions: {
         chart: {
             type: 'line',
@@ -228,7 +227,6 @@ export default {
             stacked: false
           },
           title: {
-            text: this.trans('tr.weekly_chart'),
             align: "center",
             style: {
               color: "#5FA7FF",
@@ -261,6 +259,9 @@ export default {
           },},
           yaxis: {
             labels: {
+              formatter: function (val) {
+                return val.toFixed(1);
+              },
               hideOverlappingLabels: true,
               style: {
                 colors: "#5FA7FF",
@@ -314,6 +315,7 @@ export default {
             console.log("No data");
           }
         });
+        this.dt = dd + '.' + mm + '.' + yyyy;
     },
   },
   created: function () {
@@ -360,6 +362,7 @@ export default {
           console.log("No data");
         }
         this.date1 = yyyy + "-" + mm + "-" + dd;
+        this.dt = dd + '.' + mm + '.' + yyyy;
       });
   },
 

@@ -189,23 +189,22 @@ class FluidProduction extends TableForm
         return ['value' => null];
     }
 
-    protected function saveSingleFieldInDB(string $field): void
+    protected function saveSingleFieldInDB(string $field, int $wellId, Carbon $date, $value): void
     {
         $column = $this->getFieldByCode($field);
 
-        $item = $this->getFieldRow($column, $this->request->get('well_id'), $this->request->get('date'));
+        $item = $this->getFieldRow($column, $wellId, $date);
 
         if (empty($item)) {
             $data = [
-                'well_id' => $this->request->get('well_id'),
-                $column['column'] => $this->request->get($field),
-                'dbeg' => Carbon::parse($this->request->get('date'))->toDateTimeString(),
-                'dend' => Carbon::parse($this->request->get('date'))->addDay()->toDateTimeString()
+                'well_id' => $wellId,
+                $column['column'] => $value,
+                'dbeg' => $date->toDateTimeString()
             ];
 
             if (!empty($column['additional_filter'])) {
-                foreach ($column['additional_filter'] as $key => $value) {
-                    $data[$key] = $value;
+                foreach ($column['additional_filter'] as $key => $val) {
+                    $data[$key] = $val;
                 }
             }
 
@@ -218,13 +217,13 @@ class FluidProduction extends TableForm
                 ->where('id', $item->id)
                 ->update(
                     [
-                        $column['column'] => $this->request->get($field)
+                        $column['column'] => $value
                     ]
                 );
         }
     }
 
-    private function getFieldRow(array $column, int $wellId, string $date)
+    private function getFieldRow(array $column, int $wellId, Carbon $date)
     {
         $query = DB::connection('tbd')
             ->table($column['table'])
@@ -232,8 +231,8 @@ class FluidProduction extends TableForm
             ->whereBetween(
                 'dbeg',
                 [
-                    Carbon::parse($date)->startOfDay(),
-                    Carbon::parse($date)->endOfDay()
+                    (clone $date)->startOfDay(),
+                    (clone $date)->endOfDay()
                 ]
             );
 
@@ -386,9 +385,7 @@ class FluidProduction extends TableForm
             ->first();
 
         return [
-            'id' => null,
             'value' => $uwi->other_uwi === '{NULL}' ? null : str_replace(['{', '}'], '', $uwi->other_uwi),
-            'date' => null
         ];
     }
 }

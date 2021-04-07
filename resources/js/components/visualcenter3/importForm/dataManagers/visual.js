@@ -1,4 +1,4 @@
-
+import moment from "moment";
 
 export default {
     data: function () {
@@ -81,7 +81,14 @@ export default {
             },
             stringColumns: [1,2],
             errorSelectors: [],
+            currentDate: moment().subtract(1, 'days').format('DD-MM-YYYY'),
         };
+    },
+    created() {
+        if (moment().hour() > 7) {
+            this.currentDate = moment().format('DD-MM-YYYY');
+            this.currentDateDetailed = moment().format("YYYY-MM-DD HH:mm:ss")
+        }
     },
     methods: {
         changeButtonVisibility() {

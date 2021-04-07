@@ -115,5 +115,8 @@ export default {
             ]
         };
     },
+    mounted () {
+        this.$store.commit('globalloading/SET_LOADING', false);
+    }
 }
 </script>
