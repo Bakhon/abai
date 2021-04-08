@@ -13,10 +13,10 @@ class OmgUHE extends Model
 
     protected $casts = [
         'date' => 'datetime',
-        'out_of_service_оf_dosing' => 'boolean'
+        'out_of_service_of_dosing' => 'boolean'
     ];
 
-    protected $attributes = ['out_of_service_оf_dosing' => 0];
+    protected $attributes = ['out_of_service_of_dosing' => 0];
 
     public function getCurrentDosageAttribute($value)
     {

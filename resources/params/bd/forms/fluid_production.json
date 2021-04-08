@@ -93,7 +93,11 @@
     {
       "title": "mark",
       "code": "mark",
-      "type": "text",
+      "type": "copy",
+      "copy": {
+        "from": "liquid_telemetry",
+        "to": "liquid_debit"
+      },
       "table": "prod.well_telemetry",
       "column": "copied",
       "additional_filter": {
@@ -107,6 +111,9 @@
       "type": "history_graph",
       "table": "prod.well_telemetry",
       "column": "value_double",
+      "additional_filter": {
+        "metric": "1"
+      },
       "fields": [
         "liquid_telemetry",
         "telemetry_source"

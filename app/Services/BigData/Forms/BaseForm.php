@@ -5,10 +5,8 @@ declare(strict_types=1);
 namespace App\Services\BigData\Forms;
 
 use App\Exceptions\ParseJsonException;
-use App\Http\Resources\BigData\HistoryResource;
 use App\Models\BigData\Infrastructure\History;
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\File;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -30,16 +28,27 @@ abstract class BaseForm
         $this->validator = app()->make(\App\Services\BigData\CustomValidator::class);
     }
 
-    public function getHistory(int $id, \DateTimeInterface $date): JsonResource
+    public function getHistory(int $id, \DateTimeInterface $date): array
     {
-        $history = History::query()
+        $historyItems = History::query()
             ->where('row_id', $id)
             ->where('date', $date)
             ->orderBy('created_at', 'desc')
             ->with('user')
             ->get();
 
-        return HistoryResource::collection($history);
+        $result = [];
+
+        foreach ($historyItems as $history) {
+            foreach ($history->payload as $key => $value) {
+                $result[$key][$history->created_at->format('H:i:s')] = [
+                    'user' => $history->user->name,
+                    'value' => $value
+                ];
+            }
+        }
+
+        return $result;
     }
 
 
@@ -97,8 +106,10 @@ abstract class BaseForm
         $fields = collect();
         foreach ($this->params()['tabs'] as $tab) {
             foreach ($tab['blocks'] as $block) {
-                foreach ($block['items'] as $item) {
-                    $fields[] = $item;
+                foreach ($block as $subBlock) {
+                    foreach ($subBlock['items'] as $item) {
+                        $fields[] = $item;
+                    }
                 }
             }
         }

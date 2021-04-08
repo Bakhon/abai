@@ -1,63 +1,45 @@
 <template>
-    <div>
-        <el-tree :data="reptt" :props="defaultProps" @node-click="handleNodeClick"></el-tree>
-    </div>
+  <div>
+    <el-table
+      @node-click="handleNodeClick"
+      :data="reptt"
+      :tree-props="defaultProps"
+      style="width: 100%; margin-bottom: 20px"
+      row-key="id"
+      border
+      default-expand-all
+      stripe
+    >
+      <el-table-column prop="name" label="Наименование" sortable width="250">
+      </el-table-column>
+      <el-table-column prop="name" label="План на январь" sortable width="250">
+      </el-table-column>
+
+      <el-table-column prop="id" label="Id" sortable width="180">
+      </el-table-column>
+    </el-table>
+  </div>
 </template>
 
 <script>
-    export default {
-        props: [
-            'reptt'
-        ],
-        data() {
-            return {
-                data: [],
-                defaultProps: {
-                    id: 'id',
-                    children: 'repts',
-                    label: 'title',
-                }
-            };
-        },
-        methods: {
-            handleNodeClick(data) {
-                console.log(data);
-            }
-        },
-        computed: {
-            propsChildren() {
-                return this.props.children || 'repts' || 'childRepts';
-            },
-        }
+export default {
+  props: ["reptt"],
+  data() {
+    return {
+      defaultProps: {
+        id: "id",
+        children: "handbook_items",
+        name: "name",
+      },
     };
+  },
+  methods: {
+    handleNodeClick(data) {
+      console.log(data);
+    },
+  },
+  mounted() {
+    console.log(this.reptt);
+  },
+};
 </script>
-<style>
-    .el-tree-node__label {
-        color: white !important;
-    }
-
-    .el-tree {
-        padding: 16px;
-        background-color: #20274f !important;
-    }
-
-    .el-tree-node:focus > .el-tree-node__content > .el-tree-node__label {
-        color: #20274f !important;
-    }
-
-    .el-tree-node__expand-icon {
-        color: white;
-    }
-
-    .el-tree-node__content:hover .el-tree-node__label, .el-tree-node__label:hover {
-        color: #20274f !important;
-    }
-
-    .el-tree-node__content:hover .el-tree-node__expand-icon.is-leaf {
-        color: none !important;
-    }
-
-    .el-tree-node__content:hover .el-tree-node__expand-icon {
-        color: #20274f !important;
-    }
-</style>

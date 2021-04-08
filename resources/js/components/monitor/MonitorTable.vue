@@ -374,7 +374,7 @@
             <ul class="string1">
               <li class="nav-string">
                 <span class="before">{{ trans('monitoring.units.p_kon') }}</span>
-                <input type="text" class="square2" readonly v-model="pressure"/>
+                <input type="text" class="square2" readonly v-model="final_pressure"/>
                 <span class="after">{{ trans('monitoring.units.bar') }}</span>
               </li>
               <li class="nav-string">
@@ -383,7 +383,7 @@
                     readonly
                     type="text"
                     class="square2"
-                    v-model="daily_fluid_production_kormass"
+                    v-model="t_final_celsius_point_F"
                 />
                 <span class="after">C</span>
               </li>
@@ -619,8 +619,8 @@ export default {
       ngdu: null,
       plan_dosage: null,
       current_dosage: null,
-      daily_fluid_production_kormass: null,
-      pressure: null,
+      t_final_celsius_point_F: null,
+      final_pressure: null,
       temperature: null,
       pump_discharge_pressure: null,
       surge_tank_pressure: null,
@@ -688,6 +688,11 @@ export default {
       }
     });
   },
+  mounted: function () {
+    this.$nextTick(function () {
+      this.chooseGu();
+    })
+  },
   methods: {
     chooseProblemGu(gu_id) {
       this.localGu = gu_id
@@ -721,28 +726,37 @@ export default {
             }
           });
     },
+    resetData() {
+      this.corA = null;
+      this.corE = null;
+      this.corF = null;
+      this.dose = 0;
+      this.result = {};
+      this.t_final_celsius_point_F = null;
+      this.final_pressure = null;
+      this.ngdu = null;
+      this.uhe = null;
+      this.plan_dosage = null;
+      this.current_dosage = null;
+      this.temperature = null;
+      this.pump_discharge_pressure = null;
+      this.surge_tank_pressure = null;
+      this.heater_inlet_temperature = null;
+      this.heater_output_temperature = null;
+      this.daily_fluid_production = null;
+      this.signalizator = null;
+      this.signalizatorAbs = null;
+      this.corrosionRateInMm = null;
+      this.doseMgPerL = null;
+      this.corrosionRateInMmAB = null;
+      this.doseMgPerLAB = null;
+      this.corrosionVelocity = null;
+    },
     dayClicked(day) {
       this.date = day.id;
-      this.ngdu = null
-      this.uhe = null
-      this.plan_dosage = null
-      this.current_dosage = null
-      this.daily_fluid_production_kormass = null
-      this.pressure = null
-      this.temperature = null
-      this.pump_discharge_pressure = null
-      this.surge_tank_pressure = null
-      this.heater_inlet_temperature = null
-      this.heater_output_temperature = null
-      this.daily_fluid_production = null
-      this.signalizator = null
-      this.signalizatorAbs = null
-      this.corrosionRateInMm = null
-      this.doseMgPerL = null
-      this.corrosionRateInMmAB = null
-      this.doseMgPerLAB = null
-      this.corrosionVelocity = null
-      this.dose = 0
+
+      this.resetData();
+
       this.$emit("chart5", this.dose)
       this.axios
           .post(this.localeUrl("/getgudatabyday"), {
@@ -756,7 +770,7 @@ export default {
               this.uhe = data.uhe
               this.plan_dosage = data.ca ? data.ca.plan_dosage : null
               this.current_dosage = data.uhe ? data.uhe.current_dosage : null
-              this.pressure = data.ngdu ? data.ngdu.pressure : null
+              this.final_pressure = data.ngdu ? data.ngdu.pressure : null
               this.temperature = data.ngdu ? data.ngdu.temperature : null
               this.pump_discharge_pressure = data.ngdu ? data.ngdu.pump_discharge_pressure : null
               this.surge_tank_pressure = data.ngdu ? data.ngdu.surge_tank_pressure : null
@@ -783,7 +797,15 @@ export default {
               let background_corrosion = this.lastCorrosion.background_corrosion_velocity;
               this.corrosionVelocity = corrosion_with_inhibitor ? corrosion_with_inhibitor : background_corrosion;
 
-              this.calc()
+              if (this.ngdu &&
+                  this.oilGas &&
+                  this.pipe &&
+                  this.pump_discharge_pressure &&
+                  this.surge_tank_pressure)
+              {
+                this.calc()
+              }
+
             } else {
               console.log("No data");
             }
@@ -792,6 +814,7 @@ export default {
     calc() {
       this.axios
           .post(this.localeUrl("/corrosion"), {
+            gu_id: this.localGu,
             WC: this.ngdu.bsw,
             GOR1: this.constantsValues[0].value,
             sigma: this.constantsValues[1].value,
@@ -824,10 +847,10 @@ export default {
               this.corA = data.corrosion_rate_mm_per_y_point_A
               this.corE = data.corrosion_rate_mm_per_y_point_E
               this.corF = data.corrosion_rate_mm_per_y_point_F
-              this.dose = data.max_dose
+              this.dose = this.corA < 2 ? 0 : data.max_dose;
               this.result = data
-              this.daily_fluid_production_kormass = data.t_final_celsius_point_F
-              this.pressure = data.final_pressure_bar_point_F
+              this.t_final_celsius_point_F = data.t_final_celsius_point_F.toFixed(1)
+              this.final_pressure = data.final_pressure_bar_point_F.toFixed(2)
               this.$emit("chart5", data.max_dose)
             } else {
               console.log("No data")

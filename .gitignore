@@ -36,15 +36,12 @@ public/3.js
 public/4.js
 public/5.js
 public/6.js
+public/7.js
 public/vendors~polyfills-core-js.js
 public/vendors~polyfills-dom.js
-
-
 /public/js/app.js
 /public/css/app.css
-
-
-
 #IDE file
 kmg-dashboard.iml
 .DS_Store
+.vscode/settings.json

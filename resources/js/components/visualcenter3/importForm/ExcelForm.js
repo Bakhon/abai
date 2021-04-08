@@ -26,9 +26,10 @@ import cellsMappingEMG from './dzoData/cells_mapping_emg.json';
 import moment from "moment";
 import Visual from "./dataManagers/visual";
 
+const defaultDzoTicker = "КТМ";
+
 export default {
     data: function () {
-        let defaultDzoTicker = "ЕМГ";
         return {
             dzoMapping : {
                 "КОА" : {
@@ -147,6 +148,7 @@ export default {
                 scale_inhibitor: this.trans("visualcenter.chemProdZakackaIngibatorSoleotloj"),
             },
             chemistryErrorFields: [],
+            currentDateDetailed: moment().subtract(1, 'days').format("YYYY-MM-DD HH:mm:ss"),
         };
     },
     props: ['userId'],
@@ -352,7 +354,7 @@ export default {
         },
         storeData() {
             this.excelData['dzo_name'] = this.selectedDzo.ticker;
-            this.excelData['date'] = moment().format("YYYY-MM-DD HH:mm:ss");
+            this.excelData['date'] = this.currentDateDetailed;
 
             let uri = this.localeUrl("/dzo_excel_form");
 

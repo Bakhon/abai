@@ -89,7 +89,7 @@ class OmgUHEController extends CrudController
                     'title' => trans('monitoring.omguhe.fields.yearly_inhibitor_rate'),
                     'type' => 'numeric',
                 ],
-                'out_of_service_оf_dosing' => [
+                'out_of_service_of_dosing' => [
                     'title' => trans('monitoring.omguhe.fields.dosator_idle'),
                     'type' => 'select',
                     'filter' => [
@@ -171,7 +171,7 @@ class OmgUHEController extends CrudController
         $this->validateFields($request, 'omguhe');
         $input = $request->validated();
         $input['date'] = Carbon::parse($input['date'])->format('Y-m-d H:i:s');
-        $input['out_of_service_оf_dosing'] = $input['out_of_service_оf_dosing'] ? 1 : 0;
+        $input['out_of_service_of_dosing'] = $input['out_of_service_of_dosing'] ? 1 : 0;
 
         $dailyInhibitorFlowrate = OmgUHE::where('gu_id', $request->gu_id)
             ->where('date', '>=', Carbon::parse($request->date)->year . "-01-01")
@@ -238,19 +238,17 @@ class OmgUHEController extends CrudController
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
      */
     public function update(OmgUHEUpdateRequest $request, OmgUHE $omguhe): \Symfony\Component\HttpFoundation\Response
     {
         $this->validateFields($request, 'omguhe');
         $input = $request->validated();
         $input['date'] = Carbon::parse($input['date'])->format('Y-m-d H:i:s');
-        $input['out_of_service_оf_dosing'] = $input['out_of_service_оf_dosing'] ? 1 : 0;
+        $input['out_of_service_of_dosing'] = $input['out_of_service_of_dosing'] ? 1 : 0;
 
         $dailyInhibitorFlowrate = OmgUHE::where('gu_id', $request->gu_id)
             ->where('date', '>=', Carbon::parse($request->date)->year . "-01-01")
+            ->where('date', '<', $omguhe->date)
             ->sum('daily_inhibitor_flowrate');
 
         $input['yearly_inhibitor_flowrate'] = $dailyInhibitorFlowrate + $input['daily_inhibitor_flowrate'];
@@ -288,7 +286,7 @@ class OmgUHEController extends CrudController
     public function getPrevDayLevel(Request $request){
         $result = OmgUHE::where('gu_id', $request->gu_id)
                                         ->where('date', '<', $request->date)
-                                        ->where('out_of_service_оf_dosing', '!=', '1')
+                                        ->where('out_of_service_of_dosing', '!=', '1')
                                         ->orderByDesc('date')
                                         ->first();
         $ddng = OmgCA::where('gu_id', $request->gu_id)

@@ -141,11 +141,11 @@ return array (
       'daily_oil_production' => 'Мұнайдың тәуліктік өндірілуі, т/тәулік',
       'daily_gas_production_in_sib' => 'БӨС газ мөлшері, ст.м³/тәулік',
       'bsw' => 'Сулану, %',
-      'surge_tank_pressure' => 'Буферлік сыйымдылық қысымы, бар',
-      'pump_discharge_pressure' => 'Сораптың шығыс қысымы, бар',
-      'heater_inlet_pressure' => 'Пештің кіріс температурасы, С',
-      'heater_output_pressure' => 'Пештің шығыс температурасы, С',
+      'surge_tank_pressure' => 'Буферлік сыйымдылық қысымы, кгс\\см2',
+      'pump_discharge_pressure' => 'Сораптың шығыс қысымы, кгс\\см2',
       'temperature' => 'Пештің кіріс температурасы, С',
+      'heater_inlet_temperature' => 'Пештің кіріс температурасы, С',
+      'heater_output_temperature' => 'Пештің шығыс температурасы, С',
     ),
   ),
   'all_gus' => 'Барлық ТҚ',
@@ -209,23 +209,6 @@ return array (
     ),
   ),
   'corrosion_name' => 'Коррозия',
-  'pipe' => 
-  array (
-    'create_title' => 'Құбырлар бойынша деректерді енгізу',
-    'fields' => 
-    array (
-      'inner_diameter' => 'Ішкі диаметр',
-      'length' => 'Ұзындық',
-      'material' => 'Материал',
-      'outside_diameter' => 'Сыртқы диаметр',
-      'plot' => 'Бөлшегі',
-      'roughness' => 'Кедір-бұдырлық',
-      'thickness' => 'Қабырға қалыңдығы',
-    ),
-    'edit_title' => 'Құбырлар бойынша түзетулерді енгізу',
-    'title' => 'Құбырлар дерекқоры',
-    'menu' => 'Құбырлар',
-  ),
   'inhibitor' => 
   array (
     'title' => 'Ингибитор анықтамалығы',
@@ -235,9 +218,9 @@ return array (
     'fields' => 
     array (
       'title' => 'Аталуы',
-      'price' => 'баға',
+      'price' => 'баға тнг\\кг',
       'price_date' => 'Баға өзгеру уақыты',
-      'density' => 'Тығыздық',
+      'density' => 'Тығыздық  кг\\м³',
     ),
   ),
   'map' => 
@@ -263,5 +246,34 @@ return array (
   'well' => 
   array (
     'well' => 'Ұңғы',
+  ),
+  'pipe' => 
+  array (
+    'fields' => 
+    array (
+      'inner_diameter' => 'Ішкі диаметр',
+      'length' => 'Ұзындық',
+      'material' => 'Материал',
+      'outside_diameter' => 'Сыртқы диаметр',
+      'plot' => 'Бөлшегі',
+      'roughness' => 'Кедір-бұдырлық',
+      'thickness' => 'Қабырға қалыңдығы',
+    ),
+    'edit_title' => 'Құбырлар бойынша түзетулерді енгізу',
+    'title' => 'Құбырлар дерекқоры',
+    'menu' => 'Құбырлар',
+    'create_title' => 'Құбырлар бойынша деректерді енгізу',
+  ),
+  'pipe_types' => 
+  array (
+    'fields' => 
+    array (
+      'inner_diameter' => 'Ішкі диаметр',
+      'material' => 'Материал',
+      'outside_diameter' => 'Сыртқы диаметр',
+      'roughness' => 'Кедір-бұдырлық',
+      'thickness' => 'Қабырға қалыңдығы',
+      'plot' => 'Бөлшегі',
+    ),
   ),
 );

@@ -47,20 +47,20 @@
           <input type="hidden" name="date" v-bind:value="formatDate(formFields.date)">
         </div>
         <div class="form-label-group form-check">
-          <input type="hidden" name="out_of_service_оf_dosing" value="0">
           <input
+              @change="onChangeServiceDosing"
               type="checkbox"
               class="form-check-input"
-              name="out_of_service_оf_dosing"
-              id="out_of_service_оf_dosing"
+              name="out_of_service_of_dosing"
+              id="out_of_service_of_dosing"
               value="1"
-              v-model="formFields.out_of_service_оf_dosing"
+              v-model="formFields.out_of_service_of_dosing"
           />
-          <label class="form-check-label" for="out_of_service_оf_dosing"
+          <label class="form-check-label" for="out_of_service_of_dosing"
           >{{ trans('monitoring.omguhe.fields.dosator_idle') }}</label
           >
         </div>
-        <div class="form-label-group" v-show="formFields.out_of_service_оf_dosing">
+        <div class="form-label-group" v-show="formFields.out_of_service_of_dosing">
           <label>{{ trans('monitoring.omguhe.fields.reason') }}</label>
           <textarea v-model="formFields.reason" type="text" name="reason" class="form-control" placeholder="">
         </textarea>
@@ -84,7 +84,7 @@
         <label>{{ trans('monitoring.level') }} {{ trans('measurements.liter') }}</label>
         <div class="form-label-group">
           <input
-              :disabled="!formFields.gu_id && !formFields.date"
+              :disabled="(!formFields.gu_id && !formFields.date) || formFields.out_of_service_of_dosing"
               @input="inputLevel"
               v-model="formFields.level"
               type="number"
@@ -177,6 +177,7 @@
               name="fill_status"
               id="fill_status"
               v-model="formFields.fill_status"
+              @change="onChangeFillStatus()"
           />
           <label class="form-check-label" for="fill_status">{{ trans('monitoring.omguhe.fields.fill') }} {{ trans('measurements.liter') }}</label>
         </div>
@@ -240,7 +241,7 @@ export default {
       wells: {},
       fields: {},
       inhibitors: {},
-      out_of_service_оf_dosing: 0,
+      out_of_service_of_dosing: false,
       prevData: null,
       qv: null,
       formFields: {
@@ -254,11 +255,12 @@ export default {
         inhibitor_id: null,
         fill: null,
         level: null,
-        out_of_service_оf_dosing: 0,
+        out_of_service_of_dosing: false,
         current_dosage: null,
         reason: null,
         fill_status: null,
-        consumption: null
+        consumption: null,
+        daily_inhibitor_flowrate: null
       }
     };
   },
@@ -275,7 +277,7 @@ export default {
         inhibitor_id: this.omguhe.inhibitor_id,
         fill: this.omguhe.fill,
         level: this.omguhe.level,
-        out_of_service_оf_dosing: this.omguhe.out_of_service_оf_dosing,
+        out_of_service_of_dosing: this.omguhe.out_of_service_of_dosing,
         current_dosage: this.omguhe.current_dosage,
         reason: this.omguhe.reason,
         fill_status: !!this.omguhe.fill,
@@ -391,25 +393,31 @@ export default {
     formatDate(date) {
       return moment(date).format('YYYY-MM-DD HH:MM:SS')
     },
+    onChangeFillStatus () {
+      this.formFields.fill = this.fill_status ? this.formFields.fill : null;
+    },
+    onChangeServiceDosing (){
+      this.formFields.level = this.formFields.out_of_service_of_dosing ? this.prevData : 0;
+      this.inputLevel();
+    },
     submitForm () {
+      this.formFields.out_of_service_of_dosing = this.formFields.out_of_service_of_dosing ? 1 : 0;
 
-      if (this.isEditing) {
-        this.axios
-            .put(this.localeUrl("/omguhe/" + this.omguhe.id), this.formFields)
-            .then((response) => {
-              if (response.data.status == 'success') {
-                window.location.replace(this.localeUrl("/omguhe"));
-              }
-            });
-      } else {
-        this.axios
-            .post(this.localeUrl("/omguhe"), this.formFields)
-            .then((response) => {
-              if (response.data.status == 'success') {
-                window.location.replace(this.localeUrl("/omguhe"));
-              }
-            });
-      }
+      this.axios
+          [this.requestMethod](this.requestUrl, this.formFields)
+          .then((response) => {
+            if (response.data.status == 'success') {
+              window.location.replace(this.localeUrl("/omguhe"));
+            }
+          });
+    }
+  },
+  computed: {
+    requestUrl () {
+      return this.isEditing ? this.localeUrl("/omguhe/" + this.omguhe.id) : this.localeUrl("/omguhe");
+    },
+    requestMethod () {
+      return this.isEditing ? "put" : "post";
     }
   },
   beforeCreate: function () {

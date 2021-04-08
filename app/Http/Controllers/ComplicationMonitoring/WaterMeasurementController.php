@@ -29,6 +29,7 @@ use App\Models\Refs\Well;
 use App\Models\Refs\Zu;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Carbon\Carbon;
 
@@ -598,6 +599,7 @@ class WaterMeasurementController extends CrudController
             ->where('gu_id', $request->gu_id)
             ->where('date', '>=', Carbon::now()->subYear())
             ->where('date', '<=', Carbon::now())
+            ->orderBy('date')
             ->get();
 
         $uhe = OmgUHE::query()
@@ -608,30 +610,29 @@ class WaterMeasurementController extends CrudController
 
         $corrosion = CalculatedCorrosion::query()
             ->where('gu_id', $request->gu_id)
-            ->where('date', '>=', Carbon::now()->subYear())
+            ->where('date', '>=', Carbon::now()->subDays(31))
             ->where('date', '<=', Carbon::now())
             ->get();
 
         $kormass = GuKormass::where('gu_id', $request->gu_id)->with('kormass')->first();
+
         $pipe = Pipe::where('gu_id', $request->gu_id)->where('plot', 'eg')->first();
         $pipeAB = Pipe::where('gu_id', $request->gu_id)->where('plot', 'ab')->first();
+
         $constantsValues = ConstantsValue::get();
 
         $lastCorrosion = Corrosion::where('gu_id', $request->gu_id)
             ->whereNotNull('corrosion_velocity_with_inhibitor')->latest()->first();
 
-        $chartDtCarbonDioxide = $chartDtHydrogenSulfide = $chartIngibitor = $chartCorrosion = [
+        $chartIngibitor = $chartCorrosion = [
             'dt' => [],
             'value' => []
         ];
 
-        foreach ($wm as $key => $val) {
-            $chartDtCarbonDioxide['dt'][] = Carbon::parse($val->date)->format('Y-m-d');
-            $chartDtCarbonDioxide['value'][] = $val->carbon_dioxide;
+        $CarbonAndHydrogenChartData = $this->getCarbonAndHydrogenChartData($wm);
+        $chartDtCarbonDioxide = $CarbonAndHydrogenChartData['chartDtCarbonDioxide'];
+        $chartDtHydrogenSulfide = $CarbonAndHydrogenChartData['chartDtHydrogenSulfide'];
 
-            $chartDtHydrogenSulfide['dt'][] = Carbon::parse($val->date)->format('Y-m-d');
-            $chartDtHydrogenSulfide['value'][] = $val->hydrogen_sulfide;
-        }
 
         foreach ($uhe as $key => $val) {
             $chartIngibitor['dt'][] = Carbon::parse($val->date)->format('Y-m-d');
@@ -666,6 +667,48 @@ class WaterMeasurementController extends CrudController
                 'constantsValues' => $constantsValues
             ]
         );
+    }
+
+    private function getCarbonAndHydrogenChartData (\Illuminate\Database\Eloquent\Collection $wm): array
+    {
+        $chartDtCarbonDioxideByMonths = [];
+        $chartDtHydrogenSulfideByMonths = [];
+
+        foreach ($wm as $key => $val) {
+            $month = Carbon::parse($val->date)->month;
+            $chartDtCarbonDioxideByMonths[$month][] = $val->carbon_dioxide;
+            $chartDtHydrogenSulfideByMonths[$month][] = $val->hydrogen_sulfide;
+        }
+
+        for ($month = 0; $month < 12; $month++) {
+            $month_date = Carbon::now()->subYear()->addMonth($month);
+            $month_name = $month_date->format('Y-m');
+            $month_num = $month_date->month;
+
+
+            $chartDtCarbonDioxide['dt'][] = $month_name;
+            $average = 0;
+            if (isset($chartDtCarbonDioxideByMonths[$month_num])) {
+                $dtCarbonDioxideMonth = array_filter($chartDtCarbonDioxideByMonths[$month_num]);
+                $average = count($dtCarbonDioxideMonth) ? round(array_sum($dtCarbonDioxideMonth)/count($dtCarbonDioxideMonth), 2) : 0;
+            }
+            $chartDtCarbonDioxide['value'][] = $average;
+
+
+            $chartDtHydrogenSulfide['dt'][] = $month_name;
+            $average = 0;
+            if (isset($chartDtHydrogenSulfideByMonths[$month_num])) {
+                $dtHydrogenSulfideMonth = array_filter($chartDtHydrogenSulfideByMonths[$month_num]);
+                $average = count($dtHydrogenSulfideMonth) ? round(array_sum($dtHydrogenSulfideMonth)/count($dtHydrogenSulfideMonth), 2) : 0;
+            }
+
+            $chartDtHydrogenSulfide['value'][] = $average;
+        }
+
+        return [
+            'chartDtCarbonDioxide' => $chartDtCarbonDioxide,
+            'chartDtHydrogenSulfide' => $chartDtHydrogenSulfide
+        ];
     }
 
     public function getGuNgduCdngField(Request $request)
