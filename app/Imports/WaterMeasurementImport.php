@@ -2,10 +2,7 @@
 
 namespace App\Imports;
 
-use App\Models\ComplicationMonitoring\PipeType;
 use App\Models\ComplicationMonitoring\WaterMeasurement;
-use App\Models\Pipes\MapPipe;
-use App\Models\Pipes\PipeCoord;
 use App\Models\Refs\Cdng;
 use App\Models\Refs\HydrocarbonOxidizingBacteria;
 use App\Models\Refs\Ngdu;
@@ -17,7 +14,6 @@ use App\Models\Refs\Zu;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithColumnLimit;
 use Maatwebsite\Excel\Concerns\WithEvents;
