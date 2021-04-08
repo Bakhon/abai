@@ -39,7 +39,7 @@
       </div>
     </template>
     <template v-else-if="item.type === 'checkbox'">
-       <label :for="`${item.code}_${value}`"></label>
+       <label :for="`${item.code}`"></label>
         <input
             :name="item.code"
             type="checkbox"
