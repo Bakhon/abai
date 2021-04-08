@@ -57,8 +57,43 @@
             </div>
         </div>
         <div class="row m-0 p-1">
-            <div class="col-8 gtm-dark p-1 overflow-hidden">
-                <img src="/img/GTM/main_map.svg" class="gtm-main-map-img">
+            <div class="col-8 gtm-dark-light-transparent p-0 overflow-hidden">
+                <div class="text-center">
+                    <img src="/img/GTM/main_map.svg" class="gtm-main-map-img">
+                </div>
+                <div class="d-flex justify-content-around gtm-dark-light text-white p-1">
+                    <div class="d-flex">
+                        <img src="/img/GTM/main_map_line_blue.svg" alt="" class="my-auto mr-2">
+                        <div class="my-auto dr-fw-700">
+                            Действующий нефтепровод
+                        </div>
+                    </div>
+                    <div class="d-flex">
+                        <img src="/img/GTM/main_map_line_gray.svg" alt="" class="my-auto mr-2">
+                        <div class="my-auto dr-fw-700">
+                            Действующий газопровод
+                        </div>
+                    </div>
+                    <div class="d-flex">
+                        <img src="/img/GTM/main_map_icon_well.svg" alt="" class="my-auto mr-2">
+                        <img src="/img/GTM/main_map_icon_sea_well.svg" alt="" class="my-auto mr-2">
+                        <div class="my-auto dr-fw-700">
+                            Разведка и добыча
+                        </div>
+                    </div>
+                    <div class="d-flex">
+                        <img src="/img/GTM/main_map_icon_processing.svg" alt="" class="my-auto mr-2">
+                        <div class="my-auto dr-fw-700">
+                            Переработка
+                        </div>
+                    </div>
+                    <div class="d-flex">
+                        <img src="/img/GTM/main_map_icon_point.svg" alt="" class="my-auto mr-2">
+                        <div class="my-auto dr-fw-700">
+                            ДЗО
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="col-4 p-0 pl-2">
                 <div class="gtm-dark h-100">
@@ -87,20 +122,51 @@
             </div>
         </div>
         <div class="row m-0 p-1">
-            <div class="col-6 gtm-dark ">
-                <img src="/img/GTM/main_demo_graph.svg" height="190">
+            <div class="col-6 gtm-dark">
+                <div class="w-100 d-flex justify-content-end cursor-pointer">
+                    <img @click="showModal" src="/img/icons/link.svg" alt="" class="m-1 mt-2" width="18">
+                </div>
+                <bar-chart :height="190"></bar-chart>
             </div>
             <div class="col-6 pr-0">
-                <div class="gtm-dark h-100">
-                    <div class="p-0">
-                        <img src="/img/GTM/main_demo_graph.svg" height="190">
+                <div class="gtm-dark pr-2">
+                    <div class="w-100 d-flex justify-content-end cursor-pointer">
+                        <img @click="showModal" src="/img/icons/link.svg" alt="" class="m-1 mt-2" width="18">
                     </div>
+                    <bar-chart :height="190"></bar-chart>
                 </div>
             </div>
         </div>
+        <modal v-if="!isModalHide" @close="hideModal"></modal>
+        <script type="text/x-template" id="modal-template">
+            <transition name="modal">
+                <div class="modal-mask">
+                    <div class="modal-wrapper">
+                        <div class="modal-container gtm-dark">
+                            <div class="modal-body">
+                                <slot name="body">
+                                    <bar-chart :height="500"></bar-chart>
+                                </slot>
+                            </div>
+                            <div class="modal-footer">
+                                <slot name="footer">
+                                    <button class="modal-default-button gtm-dark-light p-1 px-2" @click="$emit('close')">
+                                        Close
+                                    </button>
+                                </slot>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </transition>
+        </script>
     </div>
 </template>
+
 <script>
+Vue.component("modal", {
+    template: "#modal-template"
+});
 
 export default {
     data: function () {
@@ -112,8 +178,48 @@ export default {
                 ['Скин ГРП', 15, 17, 78, 81],
                 ['ПВР', 15, 17, 78, 81],
                 ['РИР', 15, 17, 78, 81],
-            ]
+            ],
+            lineChartOptions: {
+                responsive: true,
+                maintainAspectRatio: false,
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        fontSize: 14,
+                        fontColor: '#FFF',
+                    },
+                },
+                scales: {
+                    yAxes: [{
+                        gridLines: {
+                            color: '#3C4270',
+                        },
+                        ticks: {
+                            fontColor: '#FFF',
+                            fontSize: 10,
+                        },
+                    }],
+                    xAxes: [{
+                        gridLines: {
+                            fontColor: '#3C4270',
+                        },
+                        ticks: {
+                            fontColor: '#FFF',
+                            fontSize: 10,
+                        },
+                    }],
+                }
+            },
+            isModalHide: true,
         };
+    },
+    methods: {
+        showModal() {
+            this.isModalHide = false;
+        },
+        hideModal() {
+            this.isModalHide = true;
+        }
     },
     mounted () {
         this.$store.commit('globalloading/SET_LOADING', false);
