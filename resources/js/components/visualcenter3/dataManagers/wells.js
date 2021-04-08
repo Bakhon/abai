@@ -95,6 +95,10 @@ export default {
                 productionFondsForIterations = fonds.splice(halfOfProductionFondsLength,fonds.length);
             }
 
+            if (productionPlanAndFactMonthWells[0]['fond_neftedob_df']) {
+                productionPlanAndFactMonthWells[0]['fond_neftedob_df'] = Math.round(this.prod_wells_work) + Math.round(this.prod_wells_idle);
+            }
+
             _.forEach(productionFondsForIterations, function(fondName) {
                 let translationName = "visualcenter." + self.fondNamesByDBFields[fondName.trim()];
                 productionFondsSummary.push(
