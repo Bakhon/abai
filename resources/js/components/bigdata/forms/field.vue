@@ -38,7 +38,6 @@
         <label :for="`${item.code}_${value}`">{{ value }}</label>
       </div>
     </template>
-
     <template v-else-if="item.type === 'checkbox'">
        <label :for="`${item.code}_${value}`"></label>
         <input
