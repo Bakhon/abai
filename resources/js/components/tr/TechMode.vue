@@ -1197,7 +1197,7 @@
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
-                      :label="`${this.trans('tr.trs8')}`"
+                      :label="`${this.trans('tr.stroke_length')}`"
                       >
                       <el-table-column label="" prop="fake" >
                         <el-table-column label="" >
@@ -1207,12 +1207,40 @@
                             width="200"
                             sortable
                             >
+                            <template slot-scope="scope">
+                              <div
+                                :class="{
+                                  'cell-with-comment':
+                                    wells &&
+                                    wells[scope.$index] &&
+                                    wells[scope.$index].stroke_len[1][0] !== '0',
+                                }"
+                              >
+                                          <span
+                                            :class="{
+                                              'circle-err':
+                                                wells &&
+                                                wells[scope.$index] &&
+                                                wells[scope.$index].stroke_len[1][0] !== '0',
+                                            }"
+                                            :style="`background :${getColor(
+                                              wells[scope.$index].stroke_len[1][0]
+                                            )}`"
+                                          >
+                                          </span><span v-if="scope.row.stroke_len[0] != null">{{
+                                    Math.round(scope.row.stroke_len[0] * 10) / 10
+                                  }}</span>
+                                  <span v-if="wells && wells[scope.$index]" class="cell-comment-tech">
+                                    {{ wells[scope.$index].stroke_len[1][1] }}
+                                  </span>
+                              </div>    
+                            </template>
                           </el-table-column>
                         </el-table-column>
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
-                      :label="`${this.trans('tr.trs9')}`"
+                      :label="`${this.trans('tr.q_theor')}`"
                       >
                       <el-table-column label="" prop="fake" >
                         <el-table-column label="" >
@@ -1222,12 +1250,41 @@
                             width="200"
                             sortable
                             >
+                            <template slot-scope="scope">
+                              <div
+                                :class="{
+                                  'cell-with-comment':
+                                    wells &&
+                                    wells[scope.$index] &&
+                                    wells[scope.$index].q_theor[1][0] !== '0',
+                                }"
+                              >
+                                          <span
+                                            :class="{
+                                              'circle-err':
+                                                wells &&
+                                                wells[scope.$index] &&
+                                                wells[scope.$index].q_theor[1][0] !== '0',
+                                            }"
+                                            :style="`background :${getColor(
+                                              wells[scope.$index].q_theor[1][0]
+                                            )}`"
+                                          >
+                                          </span><span v-if="Math.round(scope.row.q_theor[0] * 10) / 10 != '0'">{{
+                                          Math.round(scope.row.q_theor[0] * 10) / 10
+                                        }}</span>
+                                  <span v-if="wells && wells[scope.$index]" class="cell-comment-tech">
+                                    {{ wells[scope.$index].q_theor[1][1] }}
+                                  </span>
+                              </div>    
+
+                            </template>
                           </el-table-column>
                         </el-table-column>
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
-                      :label="`${this.trans('tr.tr12')}`"
+                      :label="`${this.trans('tr.pump_frequency_or_speed')}`"
                       >
                       <el-table-column label="" prop="fake" >
                         <el-table-column label="" >
