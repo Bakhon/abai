@@ -7,7 +7,7 @@ export default {
             columns: [
                 {
                     prop: "column1",
-                    size: 440,
+                    size: 400,
                     cellProperties: ({prop, model, data, column}) => {
                         return {
                             style: {
@@ -29,7 +29,7 @@ export default {
                 },
                 {
                     prop: "column3",
-                    size: 330,
+                    size: 260,
                     cellProperties: ({prop, model, data, column}) => {
                         return {
                             style: {
@@ -61,7 +61,7 @@ export default {
                     },
                 },{
                     prop: "column6",
-                    size: 280,
+                    size: 220,
                     cellProperties: ({prop, model, data, column}) => {
                         return {
                             style: {
@@ -82,6 +82,7 @@ export default {
             stringColumns: [1,2],
             errorSelectors: [],
             currentDate: moment().subtract(1, 'days').format('DD-MM-YYYY'),
+            isChemistryButtonVisible: false,
         };
     },
     created() {
