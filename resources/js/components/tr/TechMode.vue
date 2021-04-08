@@ -587,7 +587,7 @@
 
                     <el-table-column 
                    
-                      :label="`${this.trans('tr.trs1')}`" 
+                      :label="`${this.trans('tr.ngdu_field')}`" 
                       
 
                       >
@@ -604,7 +604,7 @@
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
-                      :label="`${this.trans('tr.tr1')}`"
+                      :label="`${this.trans('tr.well_number')}`"
                       >
                       <el-table-column label="" prop="fake" >
                         <el-table-column label="" >
@@ -619,7 +619,7 @@
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
-                      :label="`${this.trans('tr.tr2')}`"
+                      :label="`${this.trans('tr.well_type')}`"
                       >
                       <el-table-column label="" prop="fake" >
                         <el-table-column label="" >
@@ -660,7 +660,7 @@
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
-                      :label="`${this.trans('tr.tr3')}`"
+                      :label="`${this.trans('tr.horizon')}`"
                       >
                       <el-table-column label="" prop="fake" >
                         <el-table-column label="" >
@@ -702,7 +702,7 @@
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
-                      :label="`${this.trans('tr.tr4')}`"
+                      :label="`${this.trans('tr.object')}`"
                       >
                       <el-table-column label="" prop="fake" >
                         <el-table-column label="" >
@@ -717,7 +717,7 @@
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
-                      :label="`${this.trans('tr.tr5')}`"
+                      :label="`${this.trans('tr.block')}`"
                       >
                       <el-table-column label="" prop="fake" >
                         <el-table-column label="" >
@@ -760,7 +760,7 @@
                     </el-table-column>
 
                     <el-table-column
-                      :label="`${this.trans('tr.trs2')}`"
+                      :label="`${this.trans('tr.r_feed_loop')}`"
                       >
                       <el-table-column label="" prop="fake" >
                         <el-table-column label="" >
@@ -804,7 +804,7 @@
                     </el-table-column>
 
                     <el-table-column
-                      :label="`${this.trans('tr.tr6')}`"
+                      :label="`${this.trans('tr.outer_diameter_producing_casing')}`"
                       >
                       <el-table-column label="" prop="fake" >
                         <el-table-column label="" >
@@ -848,7 +848,7 @@
                     </el-table-column>
 
                     <el-table-column
-                      :label="`${this.trans('tr.trs3')}`"
+                      :label="`${this.trans('tr.inner_diameter_producing_casing')}`"
                       >
                       <el-table-column label="" prop="fake" >
                         <el-table-column label="" >
@@ -864,7 +864,7 @@
                     </el-table-column>
 
                     <el-table-column
-                      :label="`${this.trans('tr.tr7')}`"
+                      :label="`${this.trans('tr.outer_diameter_nkt')}`"
                       >
                       <el-table-column label="" prop="fake" >
                         <el-table-column label="" >
@@ -907,7 +907,7 @@
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
-                      :label="`${this.trans('tr.trs4')}`"
+                      :label="`${this.trans('tr.inner_diameter_nkt')}`"
                       >
                       <el-table-column label="" prop="fake" >
                         <el-table-column label="" >
@@ -922,7 +922,7 @@
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
-                      :label="`${this.trans('tr.tr8')}`"
+                      :label="`${this.trans('tr.choke_diameter')}`"
                       >
                       <el-table-column label="" prop="fake" >
                         <el-table-column label="" >
