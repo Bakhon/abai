@@ -206,9 +206,7 @@ export default {
       return value
     }
   }
-  ,
 }
-;
 </script>
 <style lang="scss">
 .bd-form-field {

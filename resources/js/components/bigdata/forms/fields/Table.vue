@@ -2,13 +2,13 @@
   <div class="bd-table-field">
     <div class="bd-table-field__buttons">
       <a class="bd-table-field__buttons-button bd-table-field__buttons-button_add" href="#"
-         @click.prevent="openCreateForm">Добавить</a>
+         @click.prevent="openCreateForm">{{ trans('app.create') }}</a>
       <a :class="{'bd-table-field__buttons-button_disabled': selectedItemIndex === null}"
          class="bd-table-field__buttons-button bd-table-field__buttons-button_edit" href="#"
-         @click.prevent="openEditForm(selectedItemIndex)">Редактировать</a>
+         @click.prevent="openEditForm(selectedItemIndex)">{{ trans('app.edit') }}</a>
       <a :class="{'bd-table-field__buttons-button_disabled': selectedItemIndex === null}"
          class="bd-table-field__buttons-button bd-table-field__buttons-button_remove" href="#"
-         @click.prevent="deleteItem(selectedItemIndex)">Удалить</a>
+         @click.prevent="deleteItem(selectedItemIndex)">{{ trans('app.delete') }}</a>
     </div>
     <table class="table">
       <thead>

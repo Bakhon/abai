@@ -24,8 +24,6 @@ abstract class PlainForm extends BaseForm
             ->toArray();
 
         $data = $this->request->except($tableFieldCodes);
-        //$data['created_at'] = \Carbon\Carbon::now();
-        //$data['updated_at'] = \Carbon\Carbon::now();
 
         $id = DB::connection('tbd')->table($this->params()['table'])
             ->insertGetId($data);
