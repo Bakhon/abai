@@ -32,7 +32,8 @@
                             "text",
                             "date",
                             "numeric",
-                            "radio"
+                            "radio",
+                            "checkbox"
                           ]
                         },
                         "title": {
@@ -68,7 +69,8 @@
                                 "dict",
                                 "text",
                                 "date",
-                                "numeric"
+                                "numeric",
+                                "checkbox"
                               ]
                             }
                           }

@@ -38,6 +38,17 @@
         <label :for="`${item.code}_${value}`">{{ value }}</label>
       </div>
     </template>
+
+    <template v-else-if="item.type === 'checkbox'">
+       <label :for="`${item.code}_${value}`"></label>
+        <input
+            :name="item.code"
+            type="checkbox"
+            :id="`${item.code}`"
+            v-bind:value="checked"
+            v-on:input="$emit('input', $event.target.checked); $emit('change', $event.target.checked)"
+        >
+    </template>
     <template v-else-if="item.type === 'dict'">
       <v-select
           v-on:input="$emit('input', $event.id); $emit('change', $event.id)"
