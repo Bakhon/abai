@@ -2,19 +2,19 @@
   <div>
     <div class="row">
       <div class="col-sm-4">
-        <select name="dateTo" @change="updateByBetweenMonthsData($event)" id="" class="form-control mb-3">
+        <select name="dateTo" v-model="betweenMonthsValue" @change="updateData('betweenMonthsValue')" class="form-control mb-3">
           <option value="">С началао года</option>
           <option v-for="month in betweenMonths" :value="month.value">{{month.title + currentYear}}</option>
         </select>
       </div>
       <div class="col-sm-4">
-        <select name="dateTo" @change="updateByMonthsData($event)" id="" class="form-control mb-3">
+        <select name="dateTo" v-model="monthsValue"  @change="updateData('monthsValue')"  class="form-control mb-3">
           <option value="">За месяц</option>
           <option v-for="month in months" :value="month.value">{{month.title + currentYear}}</option>
         </select>
       </div>
       <div class="col-sm-4">
-        <select name="dateTo" @change="updateByQuarterData($event)" id="" class="form-control mb-3">
+        <select name="dateTo" v-model="quarterValue"  @change="updateData( 'quarterValue')"  class="form-control mb-3">
           <option value="">Квартал</option>
           <option v-for="month in quarter" :value="month.value">{{month.title + currentYear}}</option>
         </select>
@@ -22,7 +22,7 @@
     </div>
 
     <el-table
-        :data="dataReptt.reptt"
+        :data="repttData.reptt"
         :tree-props="defaultProps"
         style="width: 100%;"
         row-key="id"
@@ -79,6 +79,7 @@
     props: ["dataReptt"],
     data() {
       return {
+        repttData: this.dataReptt,
         defaultProps: {
           id: "id",
           children: "handbook_items",
@@ -92,6 +93,9 @@
             prop: 'value'
           }
         ],
+        betweenMonthsValue: null,
+        monthsValue: null,
+        quarterValue: null,
           betweenMonths:[
               {title:'Январь - Февраль ', value: '02'},
               {title:'Январь - Март ', value: '03'},
@@ -161,22 +165,20 @@
         }
         return result;
       },
-      updateByBetweenMonthsData(event){
-        axios.get('');
+      updateData(attributeName){
+        axios.get('/ru/module_economy/company?'+attributeName+'='+this[attributeName]).then(response => (this.repttData = response.data));
+        this.recalculate();
       },
-      updateByMonthsData(event){
-
-      },
-      updateByQuarterData(event){
-
+      recalculate(){
+        let handbookKeys = ['plan_value', 'fact_value', 'intermediate_plan_value', 'intermediate_fact_value'];
+        handbookKeys.forEach(key => {
+          this.distributionSumOverTree(key, this.currentYear);
+          this.distributionSumOverTree(key, this.previousYear);
+        });
       }
     },
     mounted() {
-      let handbookKeys = ['plan_value', 'fact_value', 'intermediate_plan_value', 'intermediate_fact_value'];
-      handbookKeys.forEach(key => {
-        this.distributionSumOverTree(key, this.currentYear);
-        this.distributionSumOverTree(key, this.previousYear);
-      });
+      this.recalculate();
     },
   };
 </script>

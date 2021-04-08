@@ -10,40 +10,19 @@ use Illuminate\Http\Request;
 class MainController extends Controller
 {
 
-    public function getData(Request $request)
-    {
-        $companyId = 116;
-        $dateTo = date('Y-m-d', strtotime('-1 year'));
-        $dateFrom = date("Y-m-d", strtotime($dateTo . "-3 months"));
-        if ($request->dateTo) {
-            $dateTo = date('Y-m-d', strtotime($request->dateTo . '-01' . '-1 year'));
-        }
-        if ($request->dateFrom) {
-            $dateFrom = date("Y-m-d", strtotime($request->dateFrom . '-01' . "-3 months"));
-        }
-        $currentYear = date('Y', strtotime('-1 year'));
-        $previousYear = (string)$currentYear - 1;
-        $handbook = HandbookRepTt::where('parent_id', 0)->with('childHandbookItems')->get()->toArray();
-        $companyRepTtValues = SubholdingCompany::find($companyId)->statsByDate($currentYear)->get()->toArray();
-        $repTtReportValues = $this->recursiveSetValueToHandbookByType($handbook, $companyRepTtValues, $currentYear, $previousYear, $dateFrom, $dateTo);
-        $data = [
-            'reptt' => $repTtReportValues,
-            'currentYear' => $currentYear,
-            'previousYear' => $previousYear
-        ];
-        $data = json_encode($data);
-        return $data;
-    }
-
     public function company(Request $request)
     {
         $companyId = 116;
         $dateTo = date('Y-m-d', strtotime('-1 year'));
         $dateFrom = date("Y-m-d", strtotime($dateTo . "-3 months"));
-        if ($request->dateTo) {
-            $dateTo = date('Y-m-d', strtotime($request->dateTo . '-01' . '-1 year'));
+        if ($request->betweenMonthsValue) {
+            $dateFrom = date('Y-m-d', strtotime(date('Y').'-01-01  -1 year'));
+            $dateTo = date('Y-m-d', strtotime(date('Y').'-'.$request->betweenMonthsValue . '-01 -1 year'));
         }
-        if ($request->dateFrom) {
+        if ($request->months) {
+            $dateFrom = date("Y-m-d", strtotime($request->dateFrom . '-01' . "-3 months"));
+        }
+        if ($request->quarter) {
             $dateFrom = date("Y-m-d", strtotime($request->dateFrom . '-01' . "-3 months"));
         }
         $currentYear = date('Y', strtotime('-1 year'));
@@ -57,6 +36,9 @@ class MainController extends Controller
             'previousYear' => $previousYear
         ];
         $data = json_encode($data);
+        if($request->ajax()){
+            return $data;
+        }
         return view('economy_kenzhe.company')->with(compact('data'));
     }
 
