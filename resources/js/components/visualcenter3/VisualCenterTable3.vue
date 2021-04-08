@@ -847,7 +847,7 @@
               </div>
             </div>
 
-            <div class="row mh-60 mt-3 px-3">
+            <div class="row mh-60 mt-3 px-4">
               <div
                       class="col-sm-7 vis-table"
                       :class="scroll">
@@ -1368,7 +1368,7 @@
               </div>
               <br />
               <div class="row container-fluid">
-                <div class="vis-table px-3 col-sm-7">
+                <div class="vis-table px-4 col-sm-7">
                   <table v-if="injectionWells.length" class="table4 w-100 chemistry-table">
                     <thead>
                     <tr>
@@ -1528,7 +1528,7 @@
               </div>
               <br />
               <div class="row container-fluid">
-                <div class="vis-table px-3 col-sm-7">
+                <div class="vis-table px-4 col-sm-7">
                   <table v-if="productionWells.length" class="table4 w-100 chemistry-table">
                     <thead>
                     <tr>
@@ -1679,7 +1679,7 @@
               </div>
               <br />
               <div class="row container-fluid">
-                <div class="vis-table px-3 col-sm-7">
+                <div class="vis-table px-4 col-sm-7">
                   <table
                     v-if="otmData.length"
                     class="table4 w-100 chemistry-table"
@@ -1854,7 +1854,7 @@
               </div>
               <br />
               <div class="row container-fluid">
-                <div class="vis-table px-3 col-sm-7">
+                <div class="vis-table px-4 col-sm-7">
                   <table
                     v-if="chemistryData.length"
                     class="table4 w-100 chemistry-table"
@@ -2393,6 +2393,7 @@
       top: -1;
       z-index: 2;
       border: 0.5px solid #272953;
+      border-left: 0;
       width: 81px;
       position: sticky;
       font-size: 12px;

@@ -126,7 +126,7 @@ export default {
 
         getProductionOilandGas(data) {
             if (this.company != "all") {
-                data = _.filter(data, _.iteratee({dzo: company}));
+                data = _.filter(data, _.iteratee({dzo: this.company}));
             }
             let productionDataInPeriodRange = this.getProductionDataInPeriodRange(data);
             let productionSummary = this.getProductionSummary(productionDataInPeriodRange);
