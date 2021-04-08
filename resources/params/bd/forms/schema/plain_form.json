@@ -33,7 +33,8 @@
                             "date",
                             "datetime",
                             "numeric",
-                            "radio"
+                            "radio",
+                            "table"
                           ]
                         },
                         "title": {
@@ -69,8 +70,9 @@
                                 "dict",
                                 "text",
                                 "date",
-                                "datetime",
-                                "numeric"
+                                "numeric",
+                                "table",
+                                "datetime"
                               ]
                             }
                           }
