@@ -3,19 +3,16 @@
     <div class="row">
       <div class="col-sm-4">
         <select name="dateTo" v-model="betweenMonthsValue" @change="updateData('betweenMonthsValue')" class="form-control mb-3">
-          <option value="">С началао года</option>
           <option v-for="month in betweenMonths" :value="month.value">{{month.title + currentYear}}</option>
         </select>
       </div>
       <div class="col-sm-4">
         <select name="dateTo" v-model="monthsValue"  @change="updateData('monthsValue')"  class="form-control mb-3">
-          <option value="">За месяц</option>
           <option v-for="month in months" :value="month.value">{{month.title + currentYear}}</option>
         </select>
       </div>
       <div class="col-sm-4">
         <select name="dateTo" v-model="quarterValue"  @change="updateData( 'quarterValue')"  class="form-control mb-3">
-          <option value="">Квартал</option>
           <option v-for="month in quarter" :value="month.value">{{month.title + currentYear}}</option>
         </select>
       </div>
@@ -93,9 +90,9 @@
             prop: 'value'
           }
         ],
-        betweenMonthsValue: null,
-        monthsValue: null,
-        quarterValue: null,
+        betweenMonthsValue: 'С началао года',
+        monthsValue: 'За месяц',
+        quarterValue: 'Квартал',
           betweenMonths:[
               {title:'Январь - Февраль ', value: '02'},
               {title:'Январь - Март ', value: '03'},
