@@ -31,6 +31,7 @@
                             "dict",
                             "text",
                             "date",
+                            "datetime",
                             "numeric",
                             "radio"
                           ]
@@ -68,6 +69,7 @@
                                 "dict",
                                 "text",
                                 "date",
+                                "datetime",
                                 "numeric"
                               ]
                             }
