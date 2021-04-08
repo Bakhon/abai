@@ -297,7 +297,7 @@ class FluidProduction extends TableForm
             ->where('dbeg', '<=', Carbon::parse($this->request->get('date')))
             ->where('dend', '>=', Carbon::parse($this->request->get('date')))
             ->get();
-        dd(Well::active(Carbon::parse($this->request->get('date')))->toSql());
+
         foreach ($techs as $tech) {
             $techData[$tech->id] = [
                 'id' => $tech->id,
@@ -339,9 +339,9 @@ class FluidProduction extends TableForm
             }
         );
 
+        dd($techData);
         $result = $this->generateTree($techData);
         Cache::put($cacheKey, $result, now()->addDay());
-
         return $result;
     }
 
