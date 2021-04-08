@@ -583,7 +583,6 @@
                     height="calc(100vh - 205px)"
                     style="width: 100%"
                     :header-cell-class-name="getHeaderCellClassName"
-                    :span-method="objectSpanMethod"
                     >
 
                     <el-table-column 
@@ -630,6 +629,32 @@
                             width="150"
                             sortable
                             >
+                            <template slot-scope="scope">
+                              <div
+                                :class="{
+                                  'cell-with-comment':
+                                    wells &&
+                                    wells[scope.$index] &&
+                                    wells[scope.$index].r_con[1][0] !== '0',
+                                }"
+                              >
+                                        <span
+                                          :class="{
+                                            'circle-err':
+                                              wells &&
+                                              wells[scope.$index] &&
+                                              wells[scope.$index].well_type[1][0] !== '0',
+                                          }"
+                                          :style="`background :${getColor(
+                                            wells[scope.$index].well_type[1][0]
+                                          )}`"
+                                        >
+                                        </span><span>{{ scope.row.well_type[0] }}</span>
+                                <span v-if="wells && wells[scope.$index]" class="cell-comment-tech">
+                                  {{ wells[scope.$index].well_type[1][1] }}
+                                </span>
+                              </div>
+                            </template>
                           </el-table-column>
                         </el-table-column>
                       </el-table-column>
@@ -645,6 +670,33 @@
                             width="100"
                             sortable
                             >
+                            <template slot-scope="scope">
+                              <div
+                                :class="{
+                                  'cell-with-comment':
+                                    wells &&
+                                    wells[scope.$index] &&
+                                    wells[scope.$index].r_con[1][0] !== '0',
+                                }"
+                              >
+                              
+                                        <span
+                                          :class="{
+                                            'circle-err':
+                                              wells &&
+                                              wells[scope.$index] &&
+                                              wells[scope.$index].horizon[1][0] !== '0',
+                                          }"
+                                          :style="`background :${getColor(
+                                            wells[scope.$index].horizon[1][0]
+                                          )}`"
+                                        >
+                                        </span><span>{{ scope.row.horizon[0] }}</span>
+                                <span v-if="wells && wells[scope.$index]" class="cell-comment-tech">
+                                  {{ wells[scope.$index].horizon[1][1] }}
+                                </span>
+                              </div>
+                            </template>
                           </el-table-column>
                         </el-table-column>
                       </el-table-column>
@@ -675,6 +727,33 @@
                             width="150"
                             sortable
                             >
+                            <template slot-scope="scope">
+                              <div
+                                :class="{
+                                  'cell-with-comment':
+                                    wells &&
+                                    wells[scope.$index] &&
+                                    wells[scope.$index].r_con[1][0] !== '0',
+                                }"
+                              >
+                              
+                                        <span
+                                          :class="{
+                                            'circle-err':
+                                              wells &&
+                                              wells[scope.$index] &&
+                                              wells[scope.$index].block[1][0] !== '0',
+                                          }"
+                                          :style="`background :${getColor(
+                                            wells[scope.$index].block[1][0]
+                                          )}`"
+                                        >
+                                        </span><span>{{ scope.row.block[0] }}</span>
+                                <span v-if="wells && wells[scope.$index]" class="cell-comment-tech">
+                                  {{ wells[scope.$index].block[1][1] }}
+                                </span>
+                              </div>
+                            </template>
                           </el-table-column>
                         </el-table-column>
                       </el-table-column>
@@ -691,6 +770,34 @@
                             width="150"
                             sortable
                             >
+                            <template slot-scope="scope">
+                              <div
+                                :class="{
+                                  'cell-with-comment':
+                                    wells &&
+                                    wells[scope.$index] &&
+                                    wells[scope.$index].r_con[1][0] !== '0',
+                                }"
+                              >
+                                          <span
+                                            :class="{
+                                              'circle-err':
+                                                wells &&
+                                                wells[scope.$index] &&
+                                                wells[scope.$index].r_con[1][0] !== '0',
+                                            }"
+                                            :style="`background :${getColor(
+                                              wells[scope.$index].r_con[1][0]
+                                            )}`"
+                                          >
+                                          </span><span v-if="scope.row.r_con[0] != null">{{
+                                    Math.round(scope.row.r_con[0] * 10) / 10
+                                  }}</span>
+                                  <span v-if="wells && wells[scope.$index]" class="cell-comment-tech">
+                                    {{ wells[scope.$index].r_con[1][1] }}
+                                  </span>
+                              </div>    
+                            </template>
                           </el-table-column>
                         </el-table-column>
                       </el-table-column>
@@ -707,6 +814,34 @@
                             width="180"
                             sortable
                             >
+                            <template slot-scope="scope">
+                              <div
+                                :class="{
+                                  'cell-with-comment':
+                                    wells &&
+                                    wells[scope.$index] &&
+                                    wells[scope.$index].cas_OD[1][0] !== '0',
+                                }"
+                              >
+                                          <span
+                                            :class="{
+                                              'circle-err':
+                                                wells &&
+                                                wells[scope.$index] &&
+                                                wells[scope.$index].cas_OD[1][0] !== '0',
+                                            }"
+                                            :style="`background :${getColor(
+                                              wells[scope.$index].cas_OD[1][0]
+                                            )}`"
+                                          >
+                                          </span><span v-if="scope.row.cas_OD[0] != null">{{
+                                    Math.round(scope.row.cas_OD[0] * 10) / 10
+                                  }}</span>
+                                  <span v-if="wells && wells[scope.$index]" class="cell-comment-tech">
+                                    {{ wells[scope.$index].cas_OD[1][1] }}
+                                  </span>
+                              </div>    
+                            </template>
                           </el-table-column>
                         </el-table-column>
                       </el-table-column>
@@ -739,6 +874,34 @@
                             width="200"
                             sortable
                             >
+                            <template slot-scope="scope">
+                              <div
+                                :class="{
+                                  'cell-with-comment':
+                                    wells &&
+                                    wells[scope.$index] &&
+                                    wells[scope.$index].tub_OD[1][0] !== '0',
+                                }"
+                              >
+                                          <span
+                                            :class="{
+                                              'circle-err':
+                                                wells &&
+                                                wells[scope.$index] &&
+                                                wells[scope.$index].tub_OD[1][0] !== '0',
+                                            }"
+                                            :style="`background :${getColor(
+                                              wells[scope.$index].tub_OD[1][0]
+                                            )}`"
+                                          >
+                                          </span><span v-if="scope.row.tub_OD[0] != null">{{
+                                    Math.round(scope.row.tub_OD[0] * 10) / 10
+                                  }}</span>
+                                  <span v-if="wells && wells[scope.$index]" class="cell-comment-tech">
+                                    {{ wells[scope.$index].tub_OD[1][1] }}
+                                  </span>
+                              </div>    
+                            </template>
                           </el-table-column>
                         </el-table-column>
                       </el-table-column>
@@ -769,6 +932,34 @@
                             width="200"
                             sortable
                             >
+                            <template slot-scope="scope">
+                              <div
+                                :class="{
+                                  'cell-with-comment':
+                                    wells &&
+                                    wells[scope.$index] &&
+                                    wells[scope.$index].choke_d[1][0] !== '0',
+                                }"
+                              >
+                                          <span
+                                            :class="{
+                                              'circle-err':
+                                                wells &&
+                                                wells[scope.$index] &&
+                                                wells[scope.$index].choke_d[1][0] !== '0',
+                                            }"
+                                            :style="`background :${getColor(
+                                              wells[scope.$index].choke_d[1][0]
+                                            )}`"
+                                          >
+                                          </span><span v-if="scope.row.choke_d[0] != null">{{
+                                    Math.round(scope.row.choke_d[0] * 10) / 10
+                                  }}</span>
+                                  <span v-if="wells && wells[scope.$index]" class="cell-comment-tech">
+                                    {{ wells[scope.$index].choke_d[1][1] }}
+                                  </span>
+                              </div>    
+                            </template>
                           </el-table-column>
                         </el-table-column>
                       </el-table-column>
@@ -784,6 +975,34 @@
                             width="200"
                             sortable
                             >
+                            <template slot-scope="scope">
+                              <div
+                                :class="{
+                                  'cell-with-comment':
+                                    wells &&
+                                    wells[scope.$index] &&
+                                    wells[scope.$index].h_up_perf_md[1][0] !== '0',
+                                }"
+                              >
+                                          <span
+                                            :class="{
+                                              'circle-err':
+                                                wells &&
+                                                wells[scope.$index] &&
+                                                wells[scope.$index].h_up_perf_md[1][0] !== '0',
+                                            }"
+                                            :style="`background :${getColor(
+                                              wells[scope.$index].h_up_perf_md[1][0]
+                                            )}`"
+                                          >
+                                          </span><span v-if="scope.row.h_up_perf_md[0] != null">{{
+                                    Math.round(scope.row.h_up_perf_md[0] * 10) / 10
+                                  }}</span>
+                                  <span v-if="wells && wells[scope.$index]" class="cell-comment-tech">
+                                    {{ wells[scope.$index].h_up_perf_md[1][1] }}
+                                  </span>
+                              </div>    
+                            </template>
                           </el-table-column>
                         </el-table-column>
                       </el-table-column>
@@ -799,6 +1018,35 @@
                             width="200"
                             sortable
                             >
+                            <template slot-scope="scope">
+                              <div
+                                :class="{
+                                  'cell-with-comment':
+                                    wells &&
+                                    wells[scope.$index] &&
+                                    wells[scope.$index].h_up_perf_ext[1][0] !== '0',
+                                }"
+                              >
+                                          <span
+                                            :class="{
+                                              'circle-err':
+                                                wells &&
+                                                wells[scope.$index] &&
+                                                wells[scope.$index].h_up_perf_ext[1][0] !== '0',
+                                            }"
+                                            :style="`background :${getColor(
+                                              wells[scope.$index].h_up_perf_ext[1][0]
+                                            )}`"
+                                          >
+                                          </span><span v-if="scope.row.h_up_perf_ext[0] != null">{{
+                                    Math.round(scope.row.h_up_perf_ext[0] * 10) / 10
+                                  }}</span>
+                                  <span v-if="wells && wells[scope.$index]" class="cell-comment-tech">
+                                    {{ wells[scope.$index].h_up_perf_ext[1][1] }}
+                                  </span>
+                              </div>    
+                            </template>
+                            
                           </el-table-column>
                         </el-table-column>
                       </el-table-column>
@@ -998,7 +1246,30 @@
                             width="130"
                             sortable
                             >
+                            <template slot-scope="scope">
+                                      <span
+                                        :class="{
+                                          'circle-err':
+                                            wells &&
+                                            wells[scope.$index] &&
+                                            wells[scope.$index].p_annular[1][0] !== '0',
+                                        }"
+                                        :style="`background :${getColor(
+                                          wells[scope.$index].p_annular[1][0]
+                                        )}`"
+                                      >
+                                      </span><span v-if="scope.row.p_annular[0] != null">{{
+                                Math.round(scope.row.p_annular[0] * 10) / 10
+                              }}</span>
+                              <span v-if="wells && wells[scope.$index]" class="cell-comment-tech">
+                                {{ wells[scope.$index].p_annular[1][1] }}
+                              </span>
+                            </template>
                           </el-table-column>
+
+
+
+
                         </el-table-column>
                       </el-table-column>
                     </el-table-column>
@@ -1013,6 +1284,25 @@
                             width="130"
                             sortable
                             >
+                            <template slot-scope="scope">
+                                      <span
+                                        :class="{
+                                          'circle-err':
+                                            wells &&
+                                            wells[scope.$index] &&
+                                            wells[scope.$index].p_intake[1][0] !== '0',
+                                        }"
+                                        :style="`background :${getColor(
+                                          wells[scope.$index].p_intake[1][0]
+                                        )}`"
+                                      >
+                                      </span><span v-if="scope.row.p_intake[0] != null">{{
+                                Math.round(scope.row.p_intake[0] * 10) / 10
+                              }}</span>
+                              <span v-if="wells && wells[scope.$index]" class="cell-comment-tech">
+                                {{ wells[scope.$index].p_intake[1][1] }}
+                              </span>
+                            </template>
                           </el-table-column>
                         </el-table-column>
                       </el-table-column>
@@ -1100,6 +1390,25 @@
                             width="130"
                             sortable
                             >
+                            <template slot-scope="scope">
+                                      <span
+                                        :class="{
+                                          'circle-err':
+                                            wells &&
+                                            wells[scope.$index] &&
+                                            wells[scope.$index].bhp[1][0] !== '0',
+                                        }"
+                                        :style="`background :${getColor(
+                                          wells[scope.$index].bhp[1][0]
+                                        )}`"
+                                      >
+                                      </span><span v-if="scope.row.bhp[0] != null">{{
+                                Math.round(scope.row.bhp[0] * 10) / 10
+                              }}</span>
+                              <span v-if="wells && wells[scope.$index]" class="cell-comment-tech">
+                                {{ wells[scope.$index].bhp[1][1] }}
+                              </span>
+                            </template>
                           </el-table-column>
                         </el-table-column>
                         <el-table-column
@@ -1475,471 +1784,6 @@
                         </el-table-column>
                     </el-table-column>
 
-                
-
-                    <!-- <el-table-column :label="`${this.trans('tr.trs14')}`">
-                      <el-table-column
-                      :label="`${this.trans('tr.tr20')}`"
-                      >
-                        <el-table-column
-                          prop="bhp_prev_m"
-                          label=""
-                          width="130"
-                          sortable
-                          >
-                        </el-table-column>
-                      </el-table-column>
-                      <el-table-column
-                      :label="`${this.trans('tr.tr22')}`"
-                      >
-                        <el-table-column
-                          prop="q_l_prev_m"
-                          label=""
-                          width="130"
-                          sortable
-                          >
-                        </el-table-column>
-                      </el-table-column>
-
-                      <el-table-column
-                      :label="`${this.trans('tr.tr23')}`"
-                      >
-                        <el-table-column
-                          prop="wct_prev_m"
-                          label=""
-                          width="130"
-                          sortable
-                          >
-                        </el-table-column>
-                      </el-table-column>
-                      <el-table-column
-                      :label="`${this.trans('tr.trs57')}`"
-                      >
-                        <el-table-column
-                          prop="h_dyn_prev_m"
-                          label=""
-                          width="130"
-                          sortable
-                          >
-                        </el-table-column>
-                      </el-table-column>
-                      <el-table-column
-                      :label="`${this.trans('tr.trs25')}`"
-                      >
-                        <el-table-column
-                          prop="pi_prev_m"
-                          label=""
-                          width="130"
-                          sortable
-                          >
-                        </el-table-column>
-                      </el-table-column>
-                    </el-table-column>
-
-                      
-            
-                    <el-table-column
-                      :label="`${this.trans('tr.tr17')}`"
-                      >
-                      <el-table-column
-                      label="tr.tr20"
-                      >
-                        <el-table-column
-                          
-                          label=""
-                          width="130"
-                          sortable
-                          >
-                          <template slot-scope="scope">{{scope.$index}}
-                            <span
-                              :class="{
-                                'circle-err':
-                                  wells &&
-                                  wells[scope.$index] &&
-                                  wells[scope.$index].bhp[1][0] !== '0',
-                              }"
-                              :style="`background :${getColor(
-                                wells[scope.$index].bhp[1][0]
-                              )}`"
-                            >
-                            </span><span v-if="scope.row.bhp[0] != null">{{
-                      Math.round(scope.row.bhp[0] * 10) / 10
-                    }}</span>
-                    <span v-if="wells && wells[scope.$index]" class="cell-comment">
-                      {{ wells[scope.$index].bhp[1][1] }}
-                    </span>
-                        </template>
-                        </el-table-column>
-                      </el-table-column>
-                      <el-table-column
-                      :label="`${this.trans('tr.tr22')}`"
-                      >
-                        <el-table-column
-                          prop="q_o"
-                          label=""
-                          width="130"
-                          sortable
-                          >
-                        </el-table-column>
-                      </el-table-column>
-
-                      <el-table-column
-                      :label="`${this.trans('tr.tr23')}`"
-                      >
-                        <el-table-column
-                          prop="q_l"
-                          label=""
-                          width="130"
-                          sortable
-                          >
-                        </el-table-column>
-                      </el-table-column>
-                      <el-table-column
-                      :label="`${this.trans('tr.trs57')}`"
-                      >
-                        <el-table-column
-                          prop="wct"
-                          label=""
-                          width="130"
-                          sortable
-                          >
-                        </el-table-column>
-                      </el-table-column>
-                      <el-table-column
-                      :label="`${this.trans('tr.tr24')}`"
-                      >
-                        <el-table-column
-                          prop="gor"
-                          label=""
-                          width="130"
-                          sortable
-                          >
-                        </el-table-column>
-                      </el-table-column>
-                    </el-table-column>
-                    <el-table-column
-                      :label="`${this.trans('tr.tr25')}`"
-                      >
-                      <el-table-column
-                        prop="well_status_last_day"
-                        label=""
-                        width="230"
-                        sortable
-                        >
-                      </el-table-column>
-                    </el-table-column>
-                    <el-table-column
-                      :label="`${this.trans('tr.trs15')}`"
-                      >
-                      <el-table-column
-                        prop="P_bubble_point"
-                        label=""
-                        width="150"
-                        sortable
-                        >
-                      </el-table-column>
-                    </el-table-column>
-                    <el-table-column
-                      :label="`${this.trans('tr.trs16')}`"
-                      >
-                      <el-table-column
-                        prop="t_res"
-                        label=""
-                        width="150"
-                        sortable
-                        >
-                      </el-table-column>
-                    </el-table-column>
-                    <el-table-column
-                      :label="`${this.trans('tr.trs17')}`"
-                      >
-                      <el-table-column
-                        prop="wht"
-                        label=""
-                        width="150"
-                        sortable
-                        >
-                      </el-table-column>
-                    </el-table-column>
-
-                    <el-table-column
-                      :label="`${this.trans('tr.tr28')}`"
-                      >
-                      <el-table-column
-                      :label="`${this.trans('tr.trs59')}`"
-                      >
-                        <el-table-column
-                          prop="grp_skin"
-                          label=""
-                          width="130"
-                          sortable
-                          >
-                        </el-table-column>
-                      </el-table-column>
-                      <el-table-column
-                      :label="`${this.trans('tr.trs60')}`"
-                      >
-                        <el-table-column
-                          prop="grp_jd"
-                          label=""
-                          width="130"
-                          sortable
-                          >
-                        </el-table-column>
-                      </el-table-column>
-
-                      <el-table-column
-                      :label="`${this.trans('tr.trs61')}`"
-                      >
-                        <el-table-column
-                          prop="grp_date"
-                          label=""
-                          width="150"
-                          sortable
-                          >
-                        </el-table-column>
-                      </el-table-column>
-                      <el-table-column
-                      label="Фирма"
-                      >
-                        <el-table-column
-                          prop="grp_contractor"
-                          label=""
-                          width="130"
-                          sortable
-                          >
-                        </el-table-column>
-                      </el-table-column>
-                    </el-table-column>
-
-
-                    <el-table-column
-                      :label="`${this.trans('tr.trs18')}`"
-                      >
-                      <el-table-column
-                        prop="visc_oil_rc"
-                        label=""
-                        width="230"
-                        sortable
-                        >
-                      </el-table-column>
-                    </el-table-column>
-
-                    <el-table-column
-                      :label="`${this.trans('tr.trs19')}`"
-                      >
-                      <el-table-column
-                        prop="visc_wat_r"
-                        label=""
-                        width="230"
-                        sortable
-                        >
-                      </el-table-column>
-                    </el-table-column>
-
-                    <el-table-column
-                      :label="`${this.trans('tr.trs20')}`"
-                      >
-                      <el-table-column
-                        prop="visc_liq_rc"
-                        label=""
-                        width="130"
-                        sortable
-                        >
-                      </el-table-column>
-                    </el-table-column>
-
-                    <el-table-column
-                      :label="`${this.trans('tr.trs21')}`"
-                      >
-                      <el-table-column
-                        prop="bo"
-                        label=""
-                        width="130"
-                        sortable
-                        >
-                      </el-table-column>
-                    </el-table-column>
-                    <el-table-column
-                      :label="`${this.trans('tr.trs22')}`"
-                      >
-                      <el-table-column
-                        prop="dens_oil"
-                        label=""
-                        width="130"
-                        sortable
-                        >
-                      </el-table-column>
-                    </el-table-column>
-                    <el-table-column
-                      :label="`${this.trans('tr.trs23')}`"
-                      >
-                      <el-table-column
-                        prop="dens_liq"
-                        label=""
-                        width="130"
-                        sortable
-                        >
-                      </el-table-column>
-                    </el-table-column>
-                    <el-table-column
-                      :label="`${this.trans('tr.trs24')}`"
-                      >
-                      <el-table-column
-                        prop="h_perf"
-                        label=""
-                        width="130"
-                        sortable
-                        >
-                      </el-table-column>
-                    </el-table-column>
-
-                    <el-table-column
-                      label="k"
-                      >
-                      <el-table-column
-                        prop="k"
-                        label=""
-                        width="130"
-                        sortable
-                        >
-                      </el-table-column>
-                    </el-table-column>
-                    <el-table-column
-                      label="КН"
-                      >
-                      <el-table-column
-                        prop="kh"
-                        label=""
-                        width="130"
-                        sortable
-                        >
-                      </el-table-column>
-                    </el-table-column>
-                    <el-table-column
-                      :label="`${this.trans('tr.trs58')}`"
-                      >
-                      <el-table-column
-                        prop="pi"
-                        label=""
-                        width="130"
-                        sortable
-                        >
-                      </el-table-column>
-                    </el-table-column>
-
-                    <el-table-column
-                      :label="`${this.trans('tr.tr18')}`"
-                      >
-                      <el-table-column
-                      :label="`${this.trans('tr.trs62')}`"
-                      >
-                        <el-table-column
-                          prop="tp_idn_bhp"
-                          label=""
-                          width="130"
-                          sortable
-                          >
-                        </el-table-column>
-                      </el-table-column>
-                      <el-table-column
-                      :label="`${this.trans('tr.tr27')}`"
-                      >
-                        <el-table-column :label="`${this.trans('tr.tr22')}`">
-                          <el-table-column
-                            prop="gp_idn_q_liq"
-                            label=""
-                            width="130"
-                            sortable
-                            >
-                          </el-table-column>
-                        </el-table-column>
-                        <el-table-column :label="`${this.trans('tr.trs78')}`">
-                          <el-table-column
-                            prop="gp_idn_q_liq_cas_d_corr"
-                            sortable
-                            :label="`${this.trans('tr.mtr2')}`"
-                            width="200"
-                            >
-                          </el-table-column>
-                        </el-table-column>
-                        <el-table-column :label="`${this.trans('tr.tr21')}`">
-                          <el-table-column
-                            prop="gp_idn_q_oil"
-                            sortable
-                            :label="`${this.trans('tr.mtr3')}`"
-                            width="200"
-                            
-                            >
-                          </el-table-column>
-                        </el-table-column>
-                        <el-table-column :label="`${this.trans('tr.tr32')}`">
-                          <el-table-column
-                            prop="gp_idn_q_oil_inc"
-                            sortable
-                            :label="`${this.trans('tr.mtr3')}`"
-                            width="200"
-                            
-                            >
-                          </el-table-column>
-                        </el-table-column>
-                      </el-table-column>
-                      <el-table-column
-                      :label="`${this.trans('tr.tr28')}`"
-                      >
-                        <el-table-column :label="`${this.trans('tr.tr22')}`">
-                          <el-table-column
-                            prop="gp_grp_q_liq"
-                            :label="`${this.trans('tr.mtr2')}`"
-                            width="130"
-                            sortable
-                            >
-                          </el-table-column>
-                        </el-table-column>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
-                        </el-table-column>
-                        <el-table-column :label="`${this.trans('tr.tr21')}`">
-                          <el-table-column
-                            prop="gp_grp_q_oil"
-                            sortable
-                            label=""
-                            width="200"                   
-                            >
-                          </el-table-column>
-                        </el-table-column>
-                        <el-table-column :label="`${this.trans('tr.tr32')}`">
-                          <el-table-column
-                            prop="gp_grp_q_oil_inc"
-                            sortable
-                            label=""
-                            width="200"
-                            >
-                          </el-table-column>
-                        </el-table-column>
-                      </el-table-column>
-                      <el-table-column :label="`${this.trans('tr.trs65')}`">
-                        <el-table-column
-                          prop="gp_total_inc_perc"
-                          sortable
-                          label=""
-                          width="200"
-                          >
-                        </el-table-column>
-                      </el-table-column>
-                      <el-table-column :label="`${this.trans('tr.trs65')}`">
-                        <el-table-column
-                          prop="gp_total_inc"
-                          sortable
-                          label=""
-                          width="200"
-                          >
-                        </el-table-column>
-                      </el-table-column>
-
-                    </el-table-column> -->
-                    
-
-                    
                   </el-table>
                   <div class="ui-pagination">
                     <el-pagination
@@ -3026,5 +2870,19 @@ table::-webkit-scrollbar-corner {
 .no_border.no_border  {
   border-bottom: none;
   
+}
+.cell-comment-tech {
+    display: none;
+    width: auto;
+    position:absolute;
+    z-index:3060;
+    text-align: Left;
+    opacity: 0.4;
+    transition: opacity 2s;
+    border-radius: 6px;
+    background-color: #555;
+    padding:3px;
+    bottom: 31px;
+    margin-left: 18px;
 }
 </style>
