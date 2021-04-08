@@ -5,4 +5,5 @@
   'injection_wells' => '\\App\\Services\\BigData\\Forms\\InjectionWells',
   'well_exploitation' => '\\App\\Services\\BigData\\Forms\\WellExploitation',
   'gtm_register' => '\\App\\Services\\BigData\\Forms\\GtmRegister',
+  'prs' => '\\App\\Services\\BigData\\Forms\\Prs',
 );
