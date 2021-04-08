@@ -44,7 +44,7 @@
             :name="item.code"
             type="checkbox"
             :id="`${item.code}`"
-            v-bind:value="checked"
+            v-bind:checked="value"
             v-on:input="$emit('input', $event.target.checked); $emit('change', $event.target.checked)"
         >
     </template>
