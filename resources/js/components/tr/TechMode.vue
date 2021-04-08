@@ -965,7 +965,7 @@
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
-                      :label="`${this.trans('tr.tr9')}`"
+                      :label="`${this.trans('tr.h_water_permeability')}`"
                       >
                       <el-table-column label="" prop="fake" >
                         <el-table-column label="" >
@@ -1008,7 +1008,7 @@
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
-                      :label="`${this.trans('tr.trs5')}`"
+                      :label="`${this.trans('tr.h_water_permeability_extension')}`"
                       >
                       <el-table-column label="" prop="fake" >
                         <el-table-column label="" >
@@ -1052,7 +1052,7 @@
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
-                      :label="`${this.trans('tr.tr10')}`"
+                      :label="`${this.trans('tr.operation_method')}`"
                       >
                       <el-table-column label="" prop="fake" >
                         <el-table-column label="" >
@@ -1062,12 +1062,40 @@
                             width="200"
                             sortable
                             >
+                            <template slot-scope="scope">
+                              <div
+                                :class="{
+                                  'cell-with-comment':
+                                    wells &&
+                                    wells[scope.$index] &&
+                                    wells[scope.$index].exp_meth[1][0] !== '0',
+                                }"
+                              >
+                              
+                                        <span
+                                          :class="{
+                                            'circle-err':
+                                              wells &&
+                                              wells[scope.$index] &&
+                                              wells[scope.$index].exp_meth[1][0] !== '0',
+                                          }"
+                                          :style="`background :${getColor(
+                                            wells[scope.$index].exp_meth[1][0]
+                                          )}`"
+                                        >
+                                        </span><span>{{ scope.row.exp_meth[0] }}</span>
+                                <span v-if="wells && wells[scope.$index]" class="cell-comment-tech">
+                                  {{ wells[scope.$index].exp_meth[1][1] }}
+                                </span>
+                              </div>
+                            </template>
+                            
                           </el-table-column>
                         </el-table-column>
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
-                      :label="`${this.trans('tr.tr11')}`"
+                      :label="`${this.trans('tr.pump_type')}`"
                       >
                       <el-table-column label="" prop="fake" >
                         <el-table-column label="" >
@@ -1077,6 +1105,33 @@
                             width="200"
                             sortable
                             >
+                            <template slot-scope="scope">
+                              <div
+                                :class="{
+                                  'cell-with-comment':
+                                    wells &&
+                                    wells[scope.$index] &&
+                                    wells[scope.$index].pump_type[1][0] !== '0',
+                                }"
+                              >
+                              
+                                        <span
+                                          :class="{
+                                            'circle-err':
+                                              wells &&
+                                              wells[scope.$index] &&
+                                              wells[scope.$index].pump_type[1][0] !== '0',
+                                          }"
+                                          :style="`background :${getColor(
+                                            wells[scope.$index].pump_type[1][0]
+                                          )}`"
+                                        >
+                                        </span><span>{{ scope.row.pump_type[0] }}</span>
+                                <span v-if="wells && wells[scope.$index]" class="cell-comment-tech">
+                                  {{ wells[scope.$index].pump_type[1][1] }}
+                                </span>
+                              </div>
+                            </template>
                           </el-table-column>
                         </el-table-column>
                       </el-table-column>
