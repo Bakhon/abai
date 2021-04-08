@@ -33,10 +33,6 @@ export default {
         },
 
         getProductionPercentWells(data) {
-            let inj_wells_idle = [];
-            let inj_wells_work = [];
-            let prod_wells_work = [];
-            let prod_wells_idle = [];
             let timestampToday = this.timestampToday;
             let timestampEnd = this.timestampEnd;
             let quantityRange = this.quantityRange;

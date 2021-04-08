@@ -79,6 +79,9 @@ Route::group(
                 Route::get('pipes/history/{pipe}', 'PipeController@history')->name('pipes.history');
                 Route::resource('pipes','PipeController');
 
+                Route::get('pipe_types/list', 'ComplicationMonitoring\PipeTypesController@list')->name('pipe_types.list');
+                Route::resource('pipe_types','ComplicationMonitoring\PipeTypesController');
+
                 Route::get('inhibitors/list', 'InhibitorsController@list')->name('inhibitors.list');
                 Route::resource('inhibitors','InhibitorsController');
 

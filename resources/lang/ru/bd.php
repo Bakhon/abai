@@ -72,6 +72,18 @@ return [
             'Planned_events_tech_modes' => 'Намечаемые мероприятия по технологическим режимам',
             'event' => 'Мероприятие',
             'planned_month' => 'Планируемый месяц'
+        ],
+        'gtm_register'=>[
+            'Gtm_start'=>'Начало ГТМ',
+            'date_gtm_start'=>'Дата начала ГТМ',
+            'gtm_name'=>'Наименование ГТМ',
+            'new_technologies'=>'Новые технологии',
+            'own_forces'=>'Собственными силами',
+            'contractor'=>'Подрядчик',
+            'Gtm_end'=>'Окончание ГТМ',
+            'date_gtm_end'=>'Дата окончания ГТМ',
+            'gtm_parameters_results'=>'Параметры ГТМ/результаты',
+            'status'=>'Состояние'
         ]
     ],
     'close' => 'Закрыть',

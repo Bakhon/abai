@@ -2,10 +2,10 @@
 
 namespace App\Console\Commands\Import;
 
-use App\Imports\Ngdu4WellsImport;
+use App\Imports\WaterMeasurementImport;
 use Illuminate\Console\Command;
 
-class Ngdu4Wells extends Command
+class WaterMeasurement extends Command
 {
     use ExcelImport;
 
@@ -14,14 +14,14 @@ class Ngdu4Wells extends Command
      *
      * @var string
      */
-    protected $signature = 'import:Ngdu4Wells {path}';
+    protected $signature = 'import:watermeasurement';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Import coordinates of wells in GUs from NGDU-4';
+    protected $description = 'Import water measurement data';
 
     /**
      * Create a new command instance.
@@ -38,8 +38,8 @@ class Ngdu4Wells extends Command
      *
      * @return mixed
      */
-    public function handle()
+    public function handle(): void
     {
-        $this->importExcel(new Ngdu4WellsImport($this), base_path($this->argument('path')));
+        $this->importExcel(new WaterMeasurementImport($this), public_path('watermeasurement.xlsx'));
     }
 }
