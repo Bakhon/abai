@@ -64,14 +64,14 @@
           placeholer="Выберите..."
       />
     </template>
-    <template v-else-if="item.type === 'date'">
+    <template v-else-if="['date', 'datetime'].includes(item.type)">
       <datetime
-          type="date"
+          :format="dateFormat[item.type]"
           v-on:input="changeDate($event)"
           :input-class="{'form-control date': true, 'error': error}"
           value-zone="Asia/Almaty"
           zone="Asia/Almaty"
-          :format="{ year: 'numeric', month: 'numeric', day: 'numeric'}"
+          :type="item.type"
           :phrases="{ok: 'Выбрать', cancel: 'Выход'}"
           :week-start="1"
           use24-hour
@@ -116,7 +116,12 @@ export default {
     'error'
   ],
   data: function () {
-    return {}
+    return {
+      dateFormat: {
+        'date': {year: 'numeric', month: 'numeric', day: 'numeric'},
+        'datetime': {year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric'}
+      }
+    }
   },
   computed: {
     dict() {
