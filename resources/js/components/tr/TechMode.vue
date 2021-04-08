@@ -1138,7 +1138,7 @@
                     </el-table-column>
 
                     <el-table-column
-                      :label="`${this.trans('tr.trs6')}`"
+                      :label="`${this.trans('tr.sk_type')}`"
                       >
                       <el-table-column label="" prop="fake" >
                         <el-table-column label="" >
@@ -1148,12 +1148,13 @@
                             width="200"
                             sortable
                             >
+                            
                           </el-table-column>
                         </el-table-column>
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
-                      :label="`${this.trans('tr.trs7')}`"
+                      :label="`${this.trans('tr.swing_number')}`"
                       >
                       <el-table-column label="" prop="fake" >
                         <el-table-column label="" >
@@ -1163,6 +1164,34 @@
                             width="200"
                             sortable
                             >
+                            <template slot-scope="scope">
+                              <div
+                                :class="{
+                                  'cell-with-comment':
+                                    wells &&
+                                    wells[scope.$index] &&
+                                    wells[scope.$index].spm[1][0] !== '0',
+                                }"
+                              >
+                                          <span
+                                            :class="{
+                                              'circle-err':
+                                                wells &&
+                                                wells[scope.$index] &&
+                                                wells[scope.$index].spm[1][0] !== '0',
+                                            }"
+                                            :style="`background :${getColor(
+                                              wells[scope.$index].spm[1][0]
+                                            )}`"
+                                          >
+                                          </span><span v-if="scope.row.spm[0] != null">{{
+                                    Math.round(scope.row.spm[0] * 10) / 10
+                                  }}</span>
+                                  <span v-if="wells && wells[scope.$index]" class="cell-comment-tech">
+                                    {{ wells[scope.$index].h_up_perf_ext[1][1] }}
+                                  </span>
+                              </div>    
+                            </template>
                           </el-table-column>
                         </el-table-column>
                       </el-table-column>
