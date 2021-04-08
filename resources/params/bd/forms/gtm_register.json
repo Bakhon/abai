@@ -27,8 +27,8 @@
               "title":"",
               "validation":"required",
               "values":[
-                "Новые технологии",
-                "Собственными силами"
+                "new_technologies",
+                "own_forces"
               ]
             },
             {
