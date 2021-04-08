@@ -5,15 +5,47 @@ namespace App\Http\Controllers\EconomyKenzhe;
 use App\Models\EconomyKenzhe\HandbookRepTt;
 use App\Models\EconomyKenzhe\SubholdingCompany;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 
 class MainController extends Controller
 {
 
-    public function company()
+    public function getData(Request $request)
     {
         $companyId = 116;
         $dateTo = date('Y-m-d', strtotime('-1 year'));
         $dateFrom = date("Y-m-d", strtotime($dateTo . "-3 months"));
+        if ($request->dateTo) {
+            $dateTo = date('Y-m-d', strtotime($request->dateTo . '-01' . '-1 year'));
+        }
+        if ($request->dateFrom) {
+            $dateFrom = date("Y-m-d", strtotime($request->dateFrom . '-01' . "-3 months"));
+        }
+        $currentYear = date('Y', strtotime('-1 year'));
+        $previousYear = (string)$currentYear - 1;
+        $handbook = HandbookRepTt::where('parent_id', 0)->with('childHandbookItems')->get()->toArray();
+        $companyRepTtValues = SubholdingCompany::find($companyId)->statsByDate($currentYear)->get()->toArray();
+        $repTtReportValues = $this->recursiveSetValueToHandbookByType($handbook, $companyRepTtValues, $currentYear, $previousYear, $dateFrom, $dateTo);
+        $data = [
+            'reptt' => $repTtReportValues,
+            'currentYear' => $currentYear,
+            'previousYear' => $previousYear
+        ];
+        $data = json_encode($data);
+        return $data;
+    }
+
+    public function company(Request $request)
+    {
+        $companyId = 116;
+        $dateTo = date('Y-m-d', strtotime('-1 year'));
+        $dateFrom = date("Y-m-d", strtotime($dateTo . "-3 months"));
+        if ($request->dateTo) {
+            $dateTo = date('Y-m-d', strtotime($request->dateTo . '-01' . '-1 year'));
+        }
+        if ($request->dateFrom) {
+            $dateFrom = date("Y-m-d", strtotime($request->dateFrom . '-01' . "-3 months"));
+        }
         $currentYear = date('Y', strtotime('-1 year'));
         $previousYear = (string)$currentYear - 1;
         $handbook = HandbookRepTt::where('parent_id', 0)->with('childHandbookItems')->get()->toArray();
@@ -33,7 +65,7 @@ class MainController extends Controller
         $companyValuesRepTtIds = array_column($companyRepTtValues, 'rep_id');
         foreach ($items as $repttIndex => $reptt) {
             $handbookKeys = ['plan_value', 'fact_value', 'intermediate_plan_value', 'intermediate_fact_value'];
-            foreach ($handbookKeys as $key){
+            foreach ($handbookKeys as $key) {
                 $this->setItemsDefaultValue($key, $items[$repttIndex], $currentYear, $previousYear);
             }
             if (count($reptt['handbook_items']) > 0) {
@@ -90,7 +122,7 @@ class MainController extends Controller
     {
         $item[$attribute][$year] += $value;
         if (strtotime($dateFrom) <= $currentItemDate && strtotime($dateTo) >= $currentItemDate) {
-            $item['intermediate_'.$attribute][$year] += $value;
+            $item['intermediate_' . $attribute][$year] += $value;
         }
     }
 }

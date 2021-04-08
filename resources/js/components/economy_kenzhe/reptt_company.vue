@@ -1,5 +1,26 @@
 <template>
   <div>
+    <div class="row">
+      <div class="col-sm-4">
+        <select name="dateTo" @change="updateByBetweenMonthsData($event)" id="" class="form-control mb-3">
+          <option value="">С началао года</option>
+          <option v-for="month in betweenMonths" :value="month.value">{{month.title + currentYear}}</option>
+        </select>
+      </div>
+      <div class="col-sm-4">
+        <select name="dateTo" @change="updateByMonthsData($event)" id="" class="form-control mb-3">
+          <option value="">За месяц</option>
+          <option v-for="month in months" :value="month.value">{{month.title + currentYear}}</option>
+        </select>
+      </div>
+      <div class="col-sm-4">
+        <select name="dateTo" @change="updateByQuarterData($event)" id="" class="form-control mb-3">
+          <option value="">Квартал</option>
+          <option v-for="month in quarter" :value="month.value">{{month.title + currentYear}}</option>
+        </select>
+      </div>
+    </div>
+
     <el-table
         :data="dataReptt.reptt"
         :tree-props="defaultProps"
@@ -10,7 +31,7 @@
     >
       <el-table-column prop="name" label="Наименование" min-width="400" :key="Math.random()">
       </el-table-column>
-      <el-table-column prop="fact_value" label="Факт за 2019 год" width="200" :key="Math.random()">
+      <el-table-column prop="fact_value" :label="'Факт за '+ previousYear +' год'" width="200" :key="Math.random()">
         <template slot-scope="scope" v-if="scope.row">
           {{ scope.row.fact_value[previousYear] }}
         </template>
@@ -20,7 +41,7 @@
           {{ scope.row.intermediate_fact_value[previousYear] }}
         </template>
       </el-table-column>
-      <el-table-column prop="fact_value" label="План на 2020 год" width="200" :key="Math.random()">
+      <el-table-column prop="fact_value" :label="'План на '+ currentYear +' год'" width="200" :key="Math.random()">
         <template slot-scope="scope" v-if="scope.row">
           {{ scope.row.plan_value[currentYear] }}
         </template>
@@ -70,7 +91,40 @@
             label: 'План на январь',
             prop: 'value'
           }
-        ]
+        ],
+          betweenMonths:[
+              {title:'Январь - Февраль ', value: '02'},
+              {title:'Январь - Март ', value: '03'},
+              {title:'Январь - Апрель ', value: '04'},
+              {title:'Январь - Май ', value: '05'},
+              {title:'Январь - Июнь ', value: '06'},
+              {title:'Январь - Июль ', value: '07'},
+              {title:'Январь - Август ', value: '08'},
+              {title:'Январь - Сентябрь ', value: '09'},
+              {title:'Январь - Октябрь ', value: '10'},
+              {title:'Январь - Ноябрь ', value: '11'},
+              {title:'Январь - Декабрь ', value: '12'},
+          ],
+          months:[
+              {title:'Январь ', value: '01'},
+              {title:'Февраль ', value: '02'},
+              {title:'Март ', value: '03'},
+              {title:'Апрель ', value: '04'},
+              {title:'Май ', value: '05'},
+              {title:'Июнь ', value: '06'},
+              {title:'Июль ', value: '07'},
+              {title:'Август ', value: '08'},
+              {title:'Сентябрь ', value: '09'},
+              {title:'Октябрь ', value: '10'},
+              {title:'Ноябрь ', value: '11'},
+              {title:'Декабрь ', value: '12'},
+          ],
+          quarter: [
+              {title:'Январь - Март ', value: '03'},
+              {title:'Апрель - Июнь ', value: '04'},
+              {title:'Июль - Сентябрь ', value: '05'},
+              {title:'Октябрь - Декабрь ', value: '06'},
+          ]
       };
     },
     computed: {
@@ -106,6 +160,15 @@
           return 0;
         }
         return result;
+      },
+      updateByBetweenMonthsData(event){
+        axios.get('');
+      },
+      updateByMonthsData(event){
+
+      },
+      updateByQuarterData(event){
+
       }
     },
     mounted() {
