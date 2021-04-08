@@ -148,7 +148,7 @@
                                     <bar-chart :height="500"></bar-chart>
                                 </slot>
                             </div>
-                            <div class="modal-footer">
+                            <div class="d-flex justify-content-end">
                                 <slot name="footer">
                                     <button class="modal-default-button gtm-dark-light p-1 px-2" @click="$emit('close')">
                                         Close
