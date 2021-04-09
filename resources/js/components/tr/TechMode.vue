@@ -1246,25 +1246,7 @@
                             width="130"
                             sortable
                             >
-                            <template slot-scope="scope">
-                                      <span
-                                        :class="{
-                                          'circle-err':
-                                            wells &&
-                                            wells[scope.$index] &&
-                                            wells[scope.$index].p_intake[1][0] !== '0',
-                                        }"
-                                        :style="`background :${getColor(
-                                          wells[scope.$index].p_intake[1][0]
-                                        )}`"
-                                      >
-                                      </span><span v-if="scope.row.p_intake[0] != null">{{
-                                Math.round(scope.row.p_intake[0] * 10) / 10
-                              }}</span>
-                              <span v-if="wells && wells[scope.$index]" class="cell-comment-tech">
-                                {{ wells[scope.$index].p_intake[1][1] }}
-                              </span>
-                            </template>
+                            
                           </el-table-column>
                         </el-table-column>
                       </el-table-column>
