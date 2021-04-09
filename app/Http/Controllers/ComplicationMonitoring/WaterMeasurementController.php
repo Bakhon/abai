@@ -29,9 +29,10 @@ use App\Models\Refs\Well;
 use App\Models\Refs\Zu;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Carbon\Carbon;
+use App\Http\Resources\WaterMeasurementListResource;
+use App\Jobs\ExportWaterMeasurementToExcel;
 
 class WaterMeasurementController extends CrudController
 {
@@ -61,7 +62,7 @@ class WaterMeasurementController extends CrudController
                     'title' => trans('monitoring.other_objects'),
                     'type' => 'select',
                     'filter' => [
-                        'values' => \App\Models\Refs\OtherObjects::whereHas('watermeasurement')
+                        'values' => OtherObjects::whereHas('watermeasurement')
                             ->orderBy('name', 'asc')
                             ->get()
                             ->map(
@@ -80,7 +81,7 @@ class WaterMeasurementController extends CrudController
                     'title' => trans('monitoring.gu.gu'),
                     'type' => 'select',
                     'filter' => [
-                        'values' => \App\Models\Refs\Gu::whereHas('watermeasurement')
+                        'values' => Gu::whereHas('watermeasurement')
                             ->orderBy('name', 'asc')
                             ->get()
                             ->map(
@@ -143,7 +144,7 @@ class WaterMeasurementController extends CrudController
                     'title' => trans('monitoring.wm.fields.water_type_by_sulin'),
                     'type' => 'select',
                     'filter' => [
-                        'values' => \App\Models\Refs\WaterTypeBySulin::whereHas('watermeasurement')
+                        'values' => WaterTypeBySulin::whereHas('watermeasurement')
                             ->orderBy('name', 'asc')
                             ->get()
                             ->map(
@@ -201,7 +202,7 @@ class WaterMeasurementController extends CrudController
                     'title' => trans('monitoring.wm.fields.sulphate_reducing_bacteria'),
                     'type' => 'select',
                     'filter' => [
-                        'values' => \App\Models\Refs\SulphateReducingBacteria::whereHas('watermeasurement')
+                        'values' => SulphateReducingBacteria::whereHas('watermeasurement')
                             ->orderBy('name', 'asc')
                             ->get()
                             ->map(
@@ -219,7 +220,7 @@ class WaterMeasurementController extends CrudController
                     'title' => trans('monitoring.wm.fields.hydrocarbon_oxidizing_bacteria'),
                     'type' => 'select',
                     'filter' => [
-                        'values' => \App\Models\Refs\HydrocarbonOxidizingBacteria::whereHas('watermeasurement')
+                        'values' => HydrocarbonOxidizingBacteria::whereHas('watermeasurement')
                             ->orderBy('name', 'asc')
                             ->get()
                             ->map(
@@ -237,7 +238,7 @@ class WaterMeasurementController extends CrudController
                     'title' => trans('monitoring.wm.fields.thionic_bacteria'),
                     'type' => 'select',
                     'filter' => [
-                        'values' => \App\Models\Refs\ThionicBacteria::whereHas('watermeasurement')
+                        'values' => ThionicBacteria::whereHas('watermeasurement')
                             ->orderBy('name', 'asc')
                             ->get()
                             ->map(
@@ -283,13 +284,13 @@ class WaterMeasurementController extends CrudController
             ->paginate(25);
 
         return response()->json(
-            json_decode(\App\Http\Resources\WaterMeasurementListResource::collection($watermeasurement)->toJson())
+            json_decode(WaterMeasurementListResource::collection($watermeasurement)->toJson())
         );
     }
 
     public function export(IndexTableRequest $request)
     {
-        $job = new \App\Jobs\ExportWaterMeasurementToExcel($request->validated());
+        $job = new ExportWaterMeasurementToExcel($request->validated());
         $this->dispatch($job);
 
         return response()->json(
