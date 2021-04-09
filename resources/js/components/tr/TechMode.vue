@@ -630,14 +630,7 @@
                             sortable
                             >
                             <template slot-scope="scope">
-                              <div
-                                :class="{
-                                  'cell-with-comment':
-                                    wells &&
-                                    wells[scope.$index] &&
-                                    wells[scope.$index].r_con[1][0] !== '0',
-                                }"
-                              >
+                              <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index)}" >
                                         <span
                                           :class="{
                                             'circle-err':
@@ -2661,6 +2654,12 @@ export default {
           console.log("search error = ", error);
         });
     },
+    isCellWithCommentClass (index) {
+      return this.wells &&
+          this.wells[index] &&
+          this.wells[index].r_con[1][0] !== '0';
+    }
+
   },
 };
 </script>
