@@ -62,7 +62,7 @@
           :options="dict"
           :auto-load-root-options="false"
           :loading="true"
-          placeholer="Выберите..."
+          :placeholer="`${trans('app.select')}...`"
       />
     </template>
     <template v-else-if="['date', 'datetime'].includes(item.type)">
@@ -74,7 +74,7 @@
           value-zone="Asia/Almaty"
           zone="Asia/Almaty"
           :type="item.type"
-          :phrases="{ok: 'Выбрать', cancel: 'Выход'}"
+          :phrases="{ok: trans('app.select'), cancel: trans('app.exit')}"
           :week-start="1"
           use24-hour
           auto
