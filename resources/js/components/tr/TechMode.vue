@@ -1222,7 +1222,7 @@
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
-                      :label="`${this.trans('tr.trs11')}`"
+                      :label="`${this.trans('tr.p_linear')}`"
                       >
                       <el-table-column label="" prop="fake" >
                         <el-table-column label="" >
@@ -1232,12 +1232,29 @@
                             width="200"
                             sortable
                             >
+                            <template slot-scope="scope">
+                              <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`line_p`)}" >
+                                        <span
+                                          :class="{
+                                            'circle-err': isCircleErrClass(scope.$index,`line_p`)}"
+                                          :style="`background :${getColor(
+                                            wells[scope.$index].line_p[1][0]
+                                          )}`"
+                                        >
+                                          </span><span v-if="scope.row.line_p[0] != null">{{
+                                    Math.round(scope.row.line_p[0] * 10) / 10
+                                  }}</span>
+                                  <span v-if="wells && wells[scope.$index]" class="cell-comment-tech">
+                                    {{ wells[scope.$index].line_p[1][1] }}
+                                  </span>
+                              </div>    
+                            </template>
                           </el-table-column>
                         </el-table-column>
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
-                      :label="`${this.trans('tr.tr14')}`"
+                      :label="`${this.trans('tr.p_layer')}`"
                       >
                       <el-table-column label="" prop="fake" >
                         <el-table-column label="" >
@@ -1247,6 +1264,23 @@
                             width="130"
                             sortable
                             >
+                             <template slot-scope="scope">
+                              <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`p_res`)}" >
+                                        <span
+                                          :class="{
+                                            'circle-err': isCircleErrClass(scope.$index,`p_res`)}"
+                                          :style="`background :${getColor(
+                                            wells[scope.$index].p_res[1][0]
+                                          )}`"
+                                        >
+                                          </span><span v-if="scope.row.p_res[0] != null">{{
+                                    Math.round(scope.row.whp[0] * 10) / 10
+                                  }}</span>
+                                  <span v-if="wells && wells[scope.$index]" class="cell-comment-tech">
+                                    {{ wells[scope.$index].p_res[1][1] }}
+                                  </span>
+                              </div>    
+                            </template>
                           </el-table-column>
                         </el-table-column>
                       </el-table-column>
