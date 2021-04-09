@@ -1190,7 +1190,7 @@
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
-                      :label="`${this.trans('tr.trs10')}`"
+                      :label="`${this.trans('tr.p_buffer')}`"
                       >
                       <el-table-column label="" prop="fake" >
                         <el-table-column label="" >
@@ -1200,6 +1200,23 @@
                             width="200"
                             sortable
                             >
+                            <template slot-scope="scope">
+                              <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`whp`)}" >
+                                        <span
+                                          :class="{
+                                            'circle-err': isCircleErrClass(scope.$index,`whp`)}"
+                                          :style="`background :${getColor(
+                                            wells[scope.$index].whp[1][0]
+                                          )}`"
+                                        >
+                                          </span><span v-if="scope.row.whp[0] != null">{{
+                                    Math.round(scope.row.whp[0] * 10) / 10
+                                  }}</span>
+                                  <span v-if="wells && wells[scope.$index]" class="cell-comment-tech">
+                                    {{ wells[scope.$index].whp[1][1] }}
+                                  </span>
+                              </div>    
+                            </template>
                           </el-table-column>
                         </el-table-column>
                       </el-table-column>
