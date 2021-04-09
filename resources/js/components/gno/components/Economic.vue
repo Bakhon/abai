@@ -39,7 +39,24 @@ export default {
           },
         },
 
-        title: {
+        
+
+        colors: ["#fba409", "#13b062"],
+        chart: {
+          background: '#272953',
+          toolbar: {
+            show: true,
+            color: "#373d3f",
+              //autoSelected: "pan",
+          },
+          foreColor: "#fff",
+          animations: {
+              speed: 200,
+            },
+            //  height: 150,
+          type: "area",
+
+          title: {
             text: 'Сравнение технико-экономических показателей за 1 год эксплуатации ',
             align: 'center',
             margin: 20,
@@ -49,29 +66,7 @@ export default {
               fontSize: '20px'
             },
           },
-
-        colors: ["#fba409", "#13b062"],
-        chart: {
-          background: '#272953',
-          style: {
-            color: 'white'
-          }
-        },    
-         
-
-        background: '#272953',
-        toolbar: {
-          show: true,
-          color: "#373d3f",
-            //autoSelected: "pan",
-        
-          foreColor: "#fff",
-          animations: {
-            speed: 200,
-          },
-          //  height: 150,
-          type: "area",
-        },
+        }, 
 
         plotOptions: {
           bar: {
