@@ -122,7 +122,7 @@
     revo-grid {
         height: 782px;
         font-size: 12px;
-        font-family: "HarmoniaSansProCyr-Regular";
+        font-family: HarmoniaSansProCyr-Regular, Harmonia-sans;
     }
     .table-form {
         max-width: 1320px;

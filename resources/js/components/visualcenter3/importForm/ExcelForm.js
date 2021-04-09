@@ -262,7 +262,7 @@ export default {
             let self = this;
             _.forEach(Object.keys(block), function(key) {
                 if (category === self.inputDataCategories[1]) {
-                    self.processStringCells(block[key],category);
+                    self.processDecreaseReasonCells(block[key],category);
                 } else if (category === self.inputDataCategories[2]) {
                     self.processFieldsBlock(block[key],category,key);
                 } else {
@@ -317,19 +317,11 @@ export default {
             this.errorSelectors.push(selector);
             this.isValidateError = true;
         },
-        processStringCells(row,category) {
+        processDecreaseReasonCells(row,category) {
             for (let columnIndex = 1; columnIndex <= row.rowLength; columnIndex++) {
                 let selector = 'div[data-col="'+ columnIndex + '"][data-row="' + row.rowIndex + '"]';
                 let cellValue = $(selector).text().trim();
-                if (this.isStringCell(columnIndex) && this.checkErrorsStringCell(cellValue,selector)) {
-                    this.excelData[category][row.fields[columnIndex-1]] = cellValue;
-                    continue;
-                }
-                if (!this.isNumberCellValid(cellValue,selector)) {
-                    this.turnErrorForCell(selector);
-                    continue;
-                }
-                this.setNumberValueForCategories(category,row.fields[columnIndex-1],cellValue);
+                this.excelData[category][row.fields[columnIndex-1]] = cellValue;
             }
         },
         isStringCell(rowIndex) {
