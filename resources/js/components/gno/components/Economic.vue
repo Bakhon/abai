@@ -43,29 +43,21 @@ export default {
 
         colors: ["#fba409", "#13b062"],
         chart: {
+          
           background: '#272953',
           toolbar: {
             show: true,
-            color: "#373d3f",
+            Color: "#373d3f",
               //autoSelected: "pan",
           },
           foreColor: "#fff",
           animations: {
               speed: 200,
-            },
+          },
             //  height: 150,
           type: "area",
 
-          title: {
-            text: 'Сравнение технико-экономических показателей за 1 год эксплуатации ',
-            align: 'center',
-            margin: 20,
-            offsetY: 20,
-            style: {
-              color: 'white',
-              fontSize: '20px'
-            },
-          },
+          
         }, 
 
         plotOptions: {
@@ -107,7 +99,7 @@ export default {
             show: true,
           },
           labels: {
-            color: "white",
+            
             show: true,
             formatter: function (val) {
               return val /*+ "%"*/;
@@ -124,13 +116,23 @@ export default {
             show: true,
           },
           labels: {
-            color: "white",
+          
             show: true,
             formatter: function (val) {
               return val /*+ "%"*/;
             },
           },
         },
+
+        title: {
+            text: 'Сравнение технико-экономических показателей за 1 год эксплуатации ',
+            align: 'center',
+            margin: 20,
+            offsetY: 20,
+            style: {
+              fontSize: '20px'
+            },
+          },
       },
       series:[
         

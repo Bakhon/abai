@@ -614,8 +614,8 @@
                 <div class="modal-bign modal-bign-container">
                   <div class="modal-bign-header">
                     <div class="modal-bign-title">
-                      {{trans('pgno.techniko_econom_god')}}
-                    </div>
+                      
+                    </div> 
 
                     <button type="button" class="modal-bign-button" @click="closeModal('modalExpAnalysis')">
                       {{trans('pgno.zakrit')}}
