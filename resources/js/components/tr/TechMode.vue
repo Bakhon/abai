@@ -586,7 +586,7 @@
                     >
                     <el-table-column 
                    
-                      :label="`${this.trans('tr.ngdu_field')}`" 
+                      :label="trans('tr.ngdu_field')" 
                       >
                       <el-table-column label="" prop="fake" >
                         <el-table-column label="" >
@@ -601,7 +601,7 @@
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
-                      :label="`${this.trans('tr.well_number')}`"
+                      :label="trans('tr.well_number')"
                       >
                       <el-table-column label="" prop="fake" >
                         <el-table-column label="" >
@@ -616,7 +616,7 @@
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
-                      :label="`${this.trans('tr.well_type')}`"
+                      :label="trans('tr.well_type')"
                       >
                       <el-table-column label="" prop="fake" >
                         <el-table-column label="" >
@@ -646,7 +646,7 @@
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
-                      :label="`${this.trans('tr.horizon')}`"
+                      :label="trans('tr.horizon')"
                       >
                       <el-table-column label="" prop="fake" >
                         <el-table-column label="" >
@@ -676,7 +676,7 @@
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
-                      :label="`${this.trans('tr.object')}`"
+                      :label="trans('tr.object')"
                       >
                       <el-table-column label="" prop="fake" >
                         <el-table-column label="" >
@@ -691,7 +691,7 @@
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
-                      :label="`${this.trans('tr.block')}`"
+                      :label="trans('tr.block')"
                       >
                       <el-table-column label="" prop="fake" >
                         <el-table-column label="" >
@@ -722,7 +722,7 @@
                     </el-table-column>
 
                     <el-table-column
-                      :label="`${this.trans('tr.r_feed_loop')}`"
+                      :label="trans('tr.r_feed_loop')"
                       >
                       <el-table-column label="" prop="fake" >
                         <el-table-column label="" >
@@ -755,7 +755,7 @@
                     </el-table-column>
 
                     <el-table-column
-                      :label="`${this.trans('tr.outer_diameter_producing_casing')}`"
+                      :label="trans('tr.outer_diameter_producing_casing')"
                       >
                       <el-table-column label="" prop="fake" >
                         <el-table-column label="" >
@@ -788,7 +788,7 @@
                     </el-table-column>
 
                     <el-table-column
-                      :label="`${this.trans('tr.inner_diameter_producing_casing')}`"
+                      :label="trans('tr.inner_diameter_producing_casing')"
                       >
                       <el-table-column label="" prop="fake" >
                         <el-table-column label="" >
@@ -804,7 +804,7 @@
                     </el-table-column>
 
                     <el-table-column
-                      :label="`${this.trans('tr.outer_diameter_nkt')}`"
+                      :label="trans('tr.outer_diameter_nkt')"
                       >
                       <el-table-column label="" prop="fake" >
                         <el-table-column label="" >
@@ -836,7 +836,7 @@
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
-                      :label="`${this.trans('tr.inner_diameter_nkt')}`"
+                      :label="trans('tr.inner_diameter_nkt')"
                       >
                       <el-table-column label="" prop="fake" >
                         <el-table-column label="" >
@@ -851,7 +851,7 @@
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
-                      :label="`${this.trans('tr.choke_diameter')}`"
+                      :label="trans('tr.choke_diameter')"
                       >
                       <el-table-column label="" prop="fake" >
                         <el-table-column label="" >
@@ -883,7 +883,7 @@
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
-                      :label="`${this.trans('tr.h_water_permeability')}`"
+                      :label="trans('tr.h_water_permeability')"
                       >
                       <el-table-column label="" prop="fake" >
                         <el-table-column label="" >
@@ -915,7 +915,7 @@
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
-                      :label="`${this.trans('tr.h_water_permeability_extension')}`"
+                      :label="trans('tr.h_water_permeability_extension')"
                       >
                       <el-table-column label="" prop="fake" >
                         <el-table-column label="" >
@@ -948,7 +948,7 @@
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
-                      :label="`${this.trans('tr.operation_method')}`"
+                      :label="trans('tr.operation_method')"
                       >
                       <el-table-column label="" prop="fake" >
                         <el-table-column label="" >
@@ -979,7 +979,7 @@
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
-                      :label="`${this.trans('tr.pump_type')}`"
+                      :label="trans('tr.pump_type')"
                       >
                       <el-table-column label="" prop="fake" >
                         <el-table-column label="" >
@@ -1010,7 +1010,7 @@
                     </el-table-column>
 
                     <el-table-column
-                      :label="`${this.trans('tr.sk_type')}`"
+                      :label="trans('tr.sk_type')"
                       >
                       <el-table-column label="" prop="fake" >
                         <el-table-column label="" >
@@ -1026,7 +1026,7 @@
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
-                      :label="`${this.trans('tr.swing_number')}`"
+                      :label="trans('tr.swing_number')"
                       >
                       <el-table-column label="" prop="fake" >
                         <el-table-column label="" >
@@ -1058,7 +1058,7 @@
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
-                      :label="`${this.trans('tr.stroke_length')}`"
+                      :label="trans('tr.stroke_length')"
                       >
                       <el-table-column label="" prop="fake" >
                         <el-table-column label="" >
@@ -1090,7 +1090,7 @@
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
-                      :label="`${this.trans('tr.q_theor')}`"
+                      :label="trans('tr.q_theor')"
                       >
                       <el-table-column label="" prop="fake" >
                         <el-table-column label="" >
@@ -1123,7 +1123,7 @@
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
-                      :label="`${this.trans('tr.pump_frequency_or_speed')}`"
+                      :label="trans('tr.pump_frequency_or_speed')"
                       >
                       <el-table-column label="" prop="fake" >
                         <el-table-column label="" >
@@ -1158,7 +1158,7 @@
 
 
                     <el-table-column
-                      :label="`${this.trans('tr.h_pump_set')}`"
+                      :label="trans('tr.h_pump_set')"
                       >
                       <el-table-column label="" prop="fake" >
                         <el-table-column label="" >
@@ -1190,7 +1190,7 @@
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
-                      :label="`${this.trans('tr.p_buffer')}`"
+                      :label="trans('tr.p_buffer')"
                       >
                       <el-table-column label="" prop="fake" >
                         <el-table-column label="" >
@@ -1222,7 +1222,7 @@
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
-                      :label="`${this.trans('tr.p_linear')}`"
+                      :label="trans('tr.p_linear')"
                       >
                       <el-table-column label="" prop="fake" >
                         <el-table-column label="" >
@@ -1254,7 +1254,7 @@
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
-                      :label="`${this.trans('tr.p_layer')}`"
+                      :label="trans('tr.p_layer')"
                       >
                       <el-table-column label="" prop="fake" >
                         <el-table-column label="" >
@@ -1286,7 +1286,7 @@
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
-                      :label="`${this.trans('tr.h_dynamic')}`"
+                      :label="trans('tr.h_dynamic')"
                       >
                       <el-table-column label="" prop="fake" >
                         <el-table-column label="" >
@@ -1318,7 +1318,7 @@
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
-                      :label="`${this.trans('tr.annular_pressure')}`"
+                      :label="trans('tr.annular_pressure')"
                       >
                       <el-table-column label="" prop="fake" >
                         <el-table-column label="" >
@@ -1351,7 +1351,7 @@
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
-                      :label="`${this.trans('tr.p_intake')}`"
+                      :label="trans('tr.p_intake')"
                       >
                       <el-table-column label="" prop="fake" >
                         <el-table-column label="" >
@@ -1388,11 +1388,11 @@
 
                     <!-- Данные за предыдущий месяц -->
                     <el-table-column
-                      :label="`${this.trans('tr.previous_month_data')}`"
+                      :label="trans('tr.previous_month_data')"
                       >
                       <el-table-column label="" >
                         <el-table-column
-                        :label="`${this.trans('tr.bottomhole_pressure')}`"
+                        :label="trans('tr.bottomhole_pressure')"
                         >
 
                           <el-table-column
@@ -1401,10 +1401,29 @@
                             width="130"
                             sortable
                             >
+                            <template slot-scope="scope">
+                              <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`p_intake`)}" >
+                                        <span
+                                          :class="{
+                                            'circle-err': isCircleErrClass(scope.$index,`p_intake`)}"
+                                          :style="`background :${getColor(
+                                            wells[scope.$index].p_intake[1][0]
+                                          )}`"
+                                        >
+                                          </span><span v-if="scope.row.p_intake[0] != null">{{
+                                    Math.round(scope.row.p_intake[0] * 10) / 10
+                                  }}</span>
+                                  <span v-if="wells && wells[scope.$index]" class="cell-comment-tech">
+                                    {{ wells[scope.$index].p_intake[1][1] }}
+                                  </span>
+                              </div>    
+                            </template>
+
+                            
                           </el-table-column>
                         </el-table-column>
                         <el-table-column
-                        :label="`${this.trans('tr.tr22')}`"
+                        :label="trans('tr.tr22')"
                         >
                           <el-table-column
                             prop="q_l_prev_m"
@@ -1415,7 +1434,7 @@
                           </el-table-column>
                         </el-table-column>
                         <el-table-column
-                        :label="`${this.trans('tr.tr23')}`"
+                        :label="trans('tr.tr23')"
                         >
                           <el-table-column
                             prop="wct_prev_m"
@@ -1426,7 +1445,7 @@
                           </el-table-column>
                         </el-table-column>
                         <el-table-column
-                        :label="`${this.trans('tr.trs57')}`"
+                        :label="trans('tr.trs57')"
                         >
                           <el-table-column
                             prop="h_dyn_prev_m"
@@ -1437,7 +1456,7 @@
                           </el-table-column>
                         </el-table-column>
                         <el-table-column
-                        :label="`${this.trans('tr.trs25')}`"
+                        :label="trans('tr.trs25')"
                         >
                           <el-table-column
                             prop="pi_prev_m"
@@ -1453,11 +1472,11 @@
 
                     <!-- Фактический режим -->
                     <el-table-column
-                      :label="`${this.trans('tr.tr17')}`"
+                      :label="trans('tr.tr17')"
                       >
                       <el-table-column label="" >
                         <el-table-column
-                        :label="`${this.trans('tr.tr20')}`"
+                        :label="trans('tr.tr20')"
                         >
                           <el-table-column
                             prop="bhp"
@@ -1487,7 +1506,7 @@
                           </el-table-column>
                         </el-table-column>
                         <el-table-column
-                        :label="`${this.trans('tr.tr21')}`"
+                        :label="trans('tr.tr21')"
                         >
                           <el-table-column
                             prop="q_o"
@@ -1498,7 +1517,7 @@
                           </el-table-column>
                         </el-table-column>
                         <el-table-column
-                        :label="`${this.trans('tr.tr22')}`"
+                        :label="trans('tr.tr22')"
                         >
                           <el-table-column
                             prop="q_l"
@@ -1509,7 +1528,7 @@
                           </el-table-column>
                         </el-table-column>
                         <el-table-column
-                        :label="`${this.trans('tr.tr23')}`"
+                        :label="trans('tr.tr23')"
                         >
                           <el-table-column
                             prop="wct"
@@ -1520,7 +1539,7 @@
                           </el-table-column>
                         </el-table-column>
                         <el-table-column
-                        :label="`${this.trans('tr.tr24')}`"
+                        :label="trans('tr.tr24')"
                         >
                           <el-table-column
                             prop="gor"
@@ -1534,7 +1553,7 @@
                     </el-table-column>
           
                     <el-table-column
-                      :label="`${this.trans('tr.tr25')}`"
+                      :label="trans('tr.tr25')"
                       >
                       <el-table-column label="" prop="fake" >
                         <el-table-column label="" >
@@ -1547,7 +1566,7 @@
                       </el-table-column>
                     </el-table-column>
 
-                    <el-table-column :label="`${this.trans('tr.trs15')}`">
+                    <el-table-column :label="trans('tr.trs15')">
                       <el-table-column label="" prop="fake" >
                         <el-table-column label="" >
                           <el-table-column
@@ -1559,7 +1578,7 @@
                         </el-table-column>
                       </el-table-column>
                     </el-table-column>
-                    <el-table-column :label="`${this.trans('tr.trs16')}`">
+                    <el-table-column :label="trans('tr.trs16')">
                       <el-table-column label="" prop="fake" >
                         <el-table-column label="" >
                           <el-table-column
@@ -1571,7 +1590,7 @@
                         </el-table-column>
                       </el-table-column>
                     </el-table-column>
-                    <el-table-column :label="`${this.trans('tr.trs17')}`">
+                    <el-table-column :label="trans('tr.trs17')">
                       <el-table-column label="" prop="fake" >
                         <el-table-column label="" >
                           <el-table-column
@@ -1585,9 +1604,9 @@
                     </el-table-column>
 
                     <!-- ГРП -->
-                    <el-table-column :label="`${this.trans('tr.tr28')}`">
+                    <el-table-column :label="trans('tr.tr28')">
                       <el-table-column label="">
-                        <el-table-column :label="`${this.trans('tr.trs59')}`">
+                        <el-table-column :label="trans('tr.trs59')">
                           <el-table-column
                             prop="grp_skin"
                             width="130"
@@ -1595,7 +1614,7 @@
                             >
                           </el-table-column>
                         </el-table-column>
-                        <el-table-column :label="`${this.trans('tr.trs60')}`">
+                        <el-table-column :label="trans('tr.trs60')">
                           <el-table-column
                             prop="grp_jd"
                             width="130"
@@ -1603,7 +1622,7 @@
                             >
                           </el-table-column>
                         </el-table-column>
-                        <el-table-column :label="`${this.trans('tr.trs61')}`">
+                        <el-table-column :label="trans('tr.trs61')">
                           <el-table-column
                             prop="grp_date"
                             width="130"
@@ -1621,7 +1640,7 @@
                         </el-table-column>
                       </el-table-column>
                     </el-table-column>
-                    <el-table-column :label="`${this.trans('tr.trs18')}`">
+                    <el-table-column :label="trans('tr.trs18')">
                       <el-table-column label="" prop="fake" >
                         <el-table-column label="" >
                           <el-table-column
@@ -1633,7 +1652,7 @@
                         </el-table-column>
                       </el-table-column>
                     </el-table-column>
-                    <el-table-column :label="`${this.trans('tr.trs19')}`">
+                    <el-table-column :label="trans('tr.trs19')">
                       <el-table-column label="" prop="fake" >
                         <el-table-column label="" >
                           <el-table-column
@@ -1645,7 +1664,7 @@
                         </el-table-column>
                       </el-table-column>
                     </el-table-column>
-                    <el-table-column :label="`${this.trans('tr.trs20')}`">
+                    <el-table-column :label="trans('tr.trs20')">
                       <el-table-column label="" prop="fake" >
                         <el-table-column label="" >
                           <el-table-column
@@ -1657,7 +1676,7 @@
                         </el-table-column>
                       </el-table-column>
                     </el-table-column>
-                    <el-table-column :label="`${this.trans('tr.trs21')}`">
+                    <el-table-column :label="trans('tr.trs21')">
                       <el-table-column label="" prop="fake" >
                         <el-table-column label="" >
                           <el-table-column
@@ -1669,7 +1688,7 @@
                         </el-table-column>
                       </el-table-column>
                     </el-table-column>
-                    <el-table-column :label="`${this.trans('tr.trs22')}`">
+                    <el-table-column :label="trans('tr.trs22')">
                       <el-table-column label="" prop="fake" >
                         <el-table-column label="" >
                           <el-table-column
@@ -1681,7 +1700,7 @@
                         </el-table-column>
                       </el-table-column>
                     </el-table-column>
-                    <el-table-column :label="`${this.trans('tr.trs23')}`">
+                    <el-table-column :label="trans('tr.trs23')">
                       <el-table-column label="" prop="fake" >
                         <el-table-column label="" >
                           <el-table-column
@@ -1693,7 +1712,7 @@
                         </el-table-column>
                       </el-table-column>
                     </el-table-column>
-                    <el-table-column :label="`${this.trans('tr.trs24')}`">
+                    <el-table-column :label="trans('tr.trs24')">
                       <el-table-column label="" prop="fake" >
                         <el-table-column label="" >
                           <el-table-column
@@ -1729,7 +1748,7 @@
                         </el-table-column>
                       </el-table-column>
                     </el-table-column>
-                    <el-table-column :label="`${this.trans('tr.trs25')}`">
+                    <el-table-column :label="trans('tr.trs25')">
                       <el-table-column label="" prop="fake" >
                         <el-table-column label="" >
                           <el-table-column
@@ -1742,8 +1761,8 @@
                       </el-table-column>
                     </el-table-column>
                     <!-- Расчет технологического потенциала от ИДН -->
-                    <el-table-column :label="`${this.trans('tr.tr18')}`">
-                        <el-table-column :label="`${this.trans('tr.trs62')}`" prop="fake">
+                    <el-table-column :label="trans('tr.tr18')">
+                        <el-table-column :label="trans('tr.trs62')" prop="fake">
                           <el-table-column label="">
                             <el-table-column
                               prop="tp_idn_bhp"
@@ -1755,8 +1774,8 @@
                         </el-table-column>
                         
 
-                        <el-table-column :label="`${this.trans('tr.tr27')}`">
-                            <el-table-column :label="`${this.trans('tr.tr22')}`">
+                        <el-table-column :label="trans('tr.tr27')">
+                            <el-table-column :label="trans('tr.tr22')">
                               <el-table-column
                                 prop="tp_idn_liq"
                                 width="130"
@@ -1764,7 +1783,7 @@
                                 >
                               </el-table-column>
                             </el-table-column>
-                             <el-table-column :label="`${this.trans('tr.trs78')}`">
+                             <el-table-column :label="trans('tr.trs78')">
                               <el-table-column
                                 prop="tp_idn_liq_cas_d_corr"
                                 width="130"
@@ -1773,7 +1792,7 @@
                               </el-table-column>
                             </el-table-column>
 
-                            <el-table-column :label="`${this.trans('tr.tr21')}`">
+                            <el-table-column :label="trans('tr.tr21')">
                               <el-table-column
                                 prop="tp_idn_oil"
                                 width="130"
@@ -1781,7 +1800,7 @@
                                 >
                               </el-table-column>
                             </el-table-column>
-                            <el-table-column :label="`${this.trans('tr.tr32')}`">
+                            <el-table-column :label="trans('tr.tr32')">
                               <el-table-column
                                 prop="tp_idn_oil_inc"
                                 width="130"
@@ -1791,7 +1810,7 @@
                             </el-table-column>
                         </el-table-column>
 
-                        <el-table-column :label="`${this.trans('tr.trs63')}`" prop="fake">
+                        <el-table-column :label="trans('tr.trs63')" prop="fake">
                           <el-table-column label="">
                               <el-table-column
                                 prop="tp_idn_jd"
@@ -1811,7 +1830,7 @@
                               </el-table-column>
                           </el-table-column>
                         </el-table-column>
-                        <el-table-column :label="`${this.trans('tr.trs64')}`" prop="fake">
+                        <el-table-column :label="trans('tr.trs64')" prop="fake">
                           <el-table-column label="">
                               <el-table-column
                                 prop="tp_idn_pi_after"
@@ -1823,8 +1842,8 @@
                         </el-table-column>
 
 
-                        <el-table-column :label="`${this.trans('tr.tr28')}`">
-                          <el-table-column :label="`${this.trans('tr.tr22')}`">
+                        <el-table-column :label="trans('tr.tr28')">
+                          <el-table-column :label="trans('tr.tr22')">
                               <el-table-column
                                 prop="tp_idn_grp_q_liq"
                                 width="130"
@@ -1832,7 +1851,7 @@
                                 >
                               </el-table-column>
                           </el-table-column>
-                          <el-table-column :label="`${this.trans('tr.trs78')}`">
+                          <el-table-column :label="trans('tr.trs78')">
                               <el-table-column
                                 prop="tp_idn_grp_q_liq_cas_d_corr"
                                 width="130"
@@ -1840,7 +1859,7 @@
                                 >
                               </el-table-column>
                           </el-table-column>
-                          <el-table-column :label="`${this.trans('tr.tr21')}`">
+                          <el-table-column :label="trans('tr.tr21')">
                               <el-table-column
                                 prop="tp_idn_grp_q_oil"
                                 width="130"
@@ -1848,7 +1867,7 @@
                                 >
                               </el-table-column>
                           </el-table-column>
-                          <el-table-column :label="`${this.trans('tr.tr32')}`">
+                          <el-table-column :label="trans('tr.tr32')">
                               <el-table-column
                                 prop="tp_idn_grp_q_oil_inc"
                                 width="130"
@@ -1860,16 +1879,13 @@
                     </el-table-column>
 
 
-
-
-
                     <!-- Данные за предыдущий месяц -->
                     <el-table-column
-                      :label="`${this.trans('tr.previous_month_data')}`"
+                      :label="trans('tr.previous_month_data')"
                       >
                       <el-table-column label="" >
                         <el-table-column
-                        :label="`${this.trans('tr.bottomhole_pressure')}`"
+                        :label="trans('tr.bottomhole_pressure')"
                         >
 
                           <el-table-column
@@ -1878,10 +1894,29 @@
                             width="130"
                             sortable
                             >
+                            <template slot-scope="scope">
+                              <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`p_intake`)}" >
+                                        <span
+                                          :class="{
+                                            'circle-err': isCircleErrClass(scope.$index,`p_intake`)}"
+                                          :style="`background :${getColor(
+                                            wells[scope.$index].p_intake[1][0]
+                                          )}`"
+                                        >
+                                          </span><span v-if="scope.row.p_intake[0] != null">{{
+                                    Math.round(scope.row.p_intake[0] * 10) / 10
+                                  }}</span>
+                                  <span v-if="wells && wells[scope.$index]" class="cell-comment-tech">
+                                    {{ wells[scope.$index].p_intake[1][1] }}
+                                  </span>
+                              </div>    
+                            </template>
+
+                            
                           </el-table-column>
                         </el-table-column>
                         <el-table-column
-                        :label="`${this.trans('tr.tr22')}`"
+                        :label="trans('tr.tr22')"
                         >
                           <el-table-column
                             prop="q_l_prev_m"
@@ -1892,7 +1927,7 @@
                           </el-table-column>
                         </el-table-column>
                         <el-table-column
-                        :label="`${this.trans('tr.tr23')}`"
+                        :label="trans('tr.tr23')"
                         >
                           <el-table-column
                             prop="wct_prev_m"
@@ -1903,7 +1938,7 @@
                           </el-table-column>
                         </el-table-column>
                         <el-table-column
-                        :label="`${this.trans('tr.trs57')}`"
+                        :label="trans('tr.trs57')"
                         >
                           <el-table-column
                             prop="h_dyn_prev_m"
@@ -1914,7 +1949,7 @@
                           </el-table-column>
                         </el-table-column>
                         <el-table-column
-                        :label="`${this.trans('tr.trs25')}`"
+                        :label="trans('tr.trs25')"
                         >
                           <el-table-column
                             prop="pi_prev_m"
@@ -1930,11 +1965,11 @@
 
                     <!-- Фактический режим -->
                     <el-table-column
-                      :label="`${this.trans('tr.tr17')}`"
+                      :label="trans('tr.tr17')"
                       >
                       <el-table-column label="" >
                         <el-table-column
-                        :label="`${this.trans('tr.tr20')}`"
+                        :label="trans('tr.tr20')"
                         >
                           <el-table-column
                             prop="bhp"
@@ -1964,7 +1999,7 @@
                           </el-table-column>
                         </el-table-column>
                         <el-table-column
-                        :label="`${this.trans('tr.tr21')}`"
+                        :label="trans('tr.tr21')"
                         >
                           <el-table-column
                             prop="q_o"
@@ -1975,7 +2010,7 @@
                           </el-table-column>
                         </el-table-column>
                         <el-table-column
-                        :label="`${this.trans('tr.tr22')}`"
+                        :label="trans('tr.tr22')"
                         >
                           <el-table-column
                             prop="q_l"
@@ -1986,7 +2021,7 @@
                           </el-table-column>
                         </el-table-column>
                         <el-table-column
-                        :label="`${this.trans('tr.tr23')}`"
+                        :label="trans('tr.tr23')"
                         >
                           <el-table-column
                             prop="wct"
@@ -1997,7 +2032,7 @@
                           </el-table-column>
                         </el-table-column>
                         <el-table-column
-                        :label="`${this.trans('tr.tr24')}`"
+                        :label="trans('tr.tr24')"
                         >
                           <el-table-column
                             prop="gor"
@@ -2011,7 +2046,7 @@
                     </el-table-column>
           
                     <el-table-column
-                      :label="`${this.trans('tr.tr25')}`"
+                      :label="trans('tr.tr25')"
                       >
                       <el-table-column label="" prop="fake" >
                         <el-table-column label="" >
@@ -2024,7 +2059,7 @@
                       </el-table-column>
                     </el-table-column>
 
-                    <el-table-column :label="`${this.trans('tr.trs15')}`">
+                    <el-table-column :label="trans('tr.trs15')">
                       <el-table-column label="" prop="fake" >
                         <el-table-column label="" >
                           <el-table-column
@@ -2036,7 +2071,7 @@
                         </el-table-column>
                       </el-table-column>
                     </el-table-column>
-                    <el-table-column :label="`${this.trans('tr.trs16')}`">
+                    <el-table-column :label="trans('tr.trs16')">
                       <el-table-column label="" prop="fake" >
                         <el-table-column label="" >
                           <el-table-column
@@ -2048,7 +2083,7 @@
                         </el-table-column>
                       </el-table-column>
                     </el-table-column>
-                    <el-table-column :label="`${this.trans('tr.trs17')}`">
+                    <el-table-column :label="trans('tr.trs17')">
                       <el-table-column label="" prop="fake" >
                         <el-table-column label="" >
                           <el-table-column
@@ -2062,9 +2097,9 @@
                     </el-table-column>
 
                     <!-- ГРП -->
-                    <el-table-column :label="`${this.trans('tr.tr28')}`">
+                    <el-table-column :label="trans('tr.tr28')">
                       <el-table-column label="">
-                        <el-table-column :label="`${this.trans('tr.trs59')}`">
+                        <el-table-column :label="trans('tr.trs59')">
                           <el-table-column
                             prop="grp_skin"
                             width="130"
@@ -2072,7 +2107,7 @@
                             >
                           </el-table-column>
                         </el-table-column>
-                        <el-table-column :label="`${this.trans('tr.trs60')}`">
+                        <el-table-column :label="trans('tr.trs60')">
                           <el-table-column
                             prop="grp_jd"
                             width="130"
@@ -2080,7 +2115,7 @@
                             >
                           </el-table-column>
                         </el-table-column>
-                        <el-table-column :label="`${this.trans('tr.trs61')}`">
+                        <el-table-column :label="trans('tr.trs61')">
                           <el-table-column
                             prop="grp_date"
                             width="130"
@@ -2098,7 +2133,7 @@
                         </el-table-column>
                       </el-table-column>
                     </el-table-column>
-                    <el-table-column :label="`${this.trans('tr.trs18')}`">
+                    <el-table-column :label="trans('tr.trs18')">
                       <el-table-column label="" prop="fake" >
                         <el-table-column label="" >
                           <el-table-column
@@ -2110,7 +2145,7 @@
                         </el-table-column>
                       </el-table-column>
                     </el-table-column>
-                    <el-table-column :label="`${this.trans('tr.trs19')}`">
+                    <el-table-column :label="trans('tr.trs19')">
                       <el-table-column label="" prop="fake" >
                         <el-table-column label="" >
                           <el-table-column
@@ -2122,7 +2157,7 @@
                         </el-table-column>
                       </el-table-column>
                     </el-table-column>
-                    <el-table-column :label="`${this.trans('tr.trs20')}`">
+                    <el-table-column :label="trans('tr.trs20')">
                       <el-table-column label="" prop="fake" >
                         <el-table-column label="" >
                           <el-table-column
@@ -2134,7 +2169,7 @@
                         </el-table-column>
                       </el-table-column>
                     </el-table-column>
-                    <el-table-column :label="`${this.trans('tr.trs21')}`">
+                    <el-table-column :label="trans('tr.trs21')">
                       <el-table-column label="" prop="fake" >
                         <el-table-column label="" >
                           <el-table-column
@@ -2146,7 +2181,7 @@
                         </el-table-column>
                       </el-table-column>
                     </el-table-column>
-                    <el-table-column :label="`${this.trans('tr.trs22')}`">
+                    <el-table-column :label="trans('tr.trs22')">
                       <el-table-column label="" prop="fake" >
                         <el-table-column label="" >
                           <el-table-column
@@ -2158,7 +2193,7 @@
                         </el-table-column>
                       </el-table-column>
                     </el-table-column>
-                    <el-table-column :label="`${this.trans('tr.trs23')}`">
+                    <el-table-column :label="trans('tr.trs23')">
                       <el-table-column label="" prop="fake" >
                         <el-table-column label="" >
                           <el-table-column
@@ -2170,7 +2205,7 @@
                         </el-table-column>
                       </el-table-column>
                     </el-table-column>
-                    <el-table-column :label="`${this.trans('tr.trs24')}`">
+                    <el-table-column :label="trans('tr.trs24')">
                       <el-table-column label="" prop="fake" >
                         <el-table-column label="" >
                           <el-table-column
@@ -2206,7 +2241,7 @@
                         </el-table-column>
                       </el-table-column>
                     </el-table-column>
-                    <el-table-column :label="`${this.trans('tr.trs25')}`">
+                    <el-table-column :label="trans('tr.trs25')">
                       <el-table-column label="" prop="fake" >
                         <el-table-column label="" >
                           <el-table-column
@@ -2219,8 +2254,8 @@
                       </el-table-column>
                     </el-table-column>
                     <!-- Расчет технологического потенциала от ИДН -->
-                    <el-table-column :label="`${this.trans('tr.tr18')}`">
-                        <el-table-column :label="`${this.trans('tr.trs62')}`" prop="fake">
+                    <el-table-column :label="trans('tr.tr18')">
+                        <el-table-column :label="trans('tr.trs62')" prop="fake">
                           <el-table-column label="">
                             <el-table-column
                               prop="tp_idn_bhp"
@@ -2232,8 +2267,8 @@
                         </el-table-column>
                         
 
-                        <el-table-column :label="`${this.trans('tr.tr27')}`">
-                            <el-table-column :label="`${this.trans('tr.tr22')}`">
+                        <el-table-column :label="trans('tr.tr27')">
+                            <el-table-column :label="trans('tr.tr22')">
                               <el-table-column
                                 prop="tp_idn_liq"
                                 width="130"
@@ -2241,7 +2276,7 @@
                                 >
                               </el-table-column>
                             </el-table-column>
-                             <el-table-column :label="`${this.trans('tr.trs78')}`">
+                             <el-table-column :label="trans('tr.trs78')">
                               <el-table-column
                                 prop="tp_idn_liq_cas_d_corr"
                                 width="130"
@@ -2250,7 +2285,7 @@
                               </el-table-column>
                             </el-table-column>
 
-                            <el-table-column :label="`${this.trans('tr.tr21')}`">
+                            <el-table-column :label="trans('tr.tr21')">
                               <el-table-column
                                 prop="tp_idn_oil"
                                 width="130"
@@ -2258,7 +2293,7 @@
                                 >
                               </el-table-column>
                             </el-table-column>
-                            <el-table-column :label="`${this.trans('tr.tr32')}`">
+                            <el-table-column :label="trans('tr.tr32')">
                               <el-table-column
                                 prop="tp_idn_oil_inc"
                                 width="130"
@@ -2268,7 +2303,7 @@
                             </el-table-column>
                         </el-table-column>
 
-                        <el-table-column :label="`${this.trans('tr.trs63')}`" prop="fake">
+                        <el-table-column :label="trans('tr.trs63')" prop="fake">
                           <el-table-column label="">
                               <el-table-column
                                 prop="tp_idn_jd"
@@ -2288,7 +2323,7 @@
                               </el-table-column>
                           </el-table-column>
                         </el-table-column>
-                        <el-table-column :label="`${this.trans('tr.trs64')}`" prop="fake">
+                        <el-table-column :label="trans('tr.trs64')" prop="fake">
                           <el-table-column label="">
                               <el-table-column
                                 prop="tp_idn_pi_after"
@@ -2300,8 +2335,8 @@
                         </el-table-column>
 
 
-                        <el-table-column :label="`${this.trans('tr.tr28')}`">
-                          <el-table-column :label="`${this.trans('tr.tr22')}`">
+                        <el-table-column :label="trans('tr.tr28')">
+                          <el-table-column :label="trans('tr.tr22')">
                               <el-table-column
                                 prop="tp_idn_grp_q_liq"
                                 width="130"
@@ -2309,7 +2344,7 @@
                                 >
                               </el-table-column>
                           </el-table-column>
-                          <el-table-column :label="`${this.trans('tr.trs78')}`">
+                          <el-table-column :label="trans('tr.trs78')">
                               <el-table-column
                                 prop="tp_idn_grp_q_liq_cas_d_corr"
                                 width="130"
@@ -2317,7 +2352,7 @@
                                 >
                               </el-table-column>
                           </el-table-column>
-                          <el-table-column :label="`${this.trans('tr.tr21')}`">
+                          <el-table-column :label="trans('tr.tr21')">
                               <el-table-column
                                 prop="tp_idn_grp_q_oil"
                                 width="130"
@@ -2325,7 +2360,7 @@
                                 >
                               </el-table-column>
                           </el-table-column>
-                          <el-table-column :label="`${this.trans('tr.tr32')}`">
+                          <el-table-column :label="trans('tr.tr32')">
                               <el-table-column
                                 prop="tp_idn_grp_q_oil_inc"
                                 width="130"
