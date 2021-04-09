@@ -1133,6 +1133,23 @@
                             width="400"
                             sortable
                             >
+                            <template slot-scope="scope">
+                              <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`freq`)}" >
+                                        <span
+                                          :class="{
+                                            'circle-err': isCircleErrClass(scope.$index,`freq`)}"
+                                          :style="`background :${getColor(
+                                            wells[scope.$index].freq[1][0]
+                                          )}`"
+                                        >
+                                          </span><span v-if="scope.row.freq[0] != null">{{
+                                    Math.round(scope.row.freq[0] * 10) / 10
+                                  }}</span>
+                                  <span v-if="wells && wells[scope.$index]" class="cell-comment-tech">
+                                    {{ wells[scope.$index].freq[1][1] }}
+                                  </span>
+                              </div>    
+                            </template>
                           </el-table-column>
                         </el-table-column>
                       </el-table-column>
@@ -1141,7 +1158,7 @@
 
 
                     <el-table-column
-                      :label="`${this.trans('tr.tr13')}`"
+                      :label="`${this.trans('tr.h_pump_set')}`"
                       >
                       <el-table-column label="" prop="fake" >
                         <el-table-column label="" >
@@ -1151,6 +1168,23 @@
                             width="200"
                             sortable
                             >
+                            <template slot-scope="scope">
+                              <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`h_pump_set`)}" >
+                                        <span
+                                          :class="{
+                                            'circle-err': isCircleErrClass(scope.$index,`h_pump_set`)}"
+                                          :style="`background :${getColor(
+                                            wells[scope.$index].h_pump_set[1][0]
+                                          )}`"
+                                        >
+                                          </span><span v-if="scope.row.h_pump_set[0] != null">{{
+                                    Math.round(scope.row.h_pump_set[0] * 10) / 10
+                                  }}</span>
+                                  <span v-if="wells && wells[scope.$index]" class="cell-comment-tech">
+                                    {{ wells[scope.$index].h_pump_set[1][1] }}
+                                  </span>
+                              </div>    
+                            </template>
                           </el-table-column>
                         </el-table-column>
                       </el-table-column>
