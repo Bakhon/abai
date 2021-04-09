@@ -39,25 +39,32 @@ export default {
           },
         },
 
-        colors: ["#fba409", "#13b062"],
-        chart: {
-
-          title: {
+        title: {
             text: 'Сравнение технико-экономических показателей за 1 год эксплуатации ',
             align: 'center',
             margin: 20,
             offsetY: 20,
             style: {
+              color: 'white',
               fontSize: '20px'
-            }
-  },
-
-          background: '#272953',
-          toolbar: {
-            show: true,
-            Color: "#373d3f",
-            //autoSelected: "pan",
+            },
           },
+
+        colors: ["#fba409", "#13b062"],
+        chart: {
+          background: '#272953',
+          style: {
+            color: 'white'
+          }
+        },    
+         
+
+        background: '#272953',
+        toolbar: {
+          show: true,
+          color: "#373d3f",
+            //autoSelected: "pan",
+        
           foreColor: "#fff",
           animations: {
             speed: 200,
@@ -87,6 +94,9 @@ export default {
             colors: ["#c5c5c5"],
           },
         },
+
+       
+
         labels: ["Qн, т/сут", "ННО, сут", "Энергопотребление кВт*ч",  "NPV, млн.тг"],
         legend: {
           show: true,
@@ -102,6 +112,7 @@ export default {
             show: true,
           },
           labels: {
+            color: "white",
             show: true,
             formatter: function (val) {
               return val /*+ "%"*/;
@@ -117,6 +128,13 @@ export default {
           axisTicks: {
             show: true,
           },
+          labels: {
+            color: "white",
+            show: true,
+            formatter: function (val) {
+              return val /*+ "%"*/;
+            },
+          },
         },
       },
       series:[
@@ -124,6 +142,7 @@ export default {
         {
           name: "ШГН",
           type: "bar",
+          
           stroke: {
             show: true,
           },
@@ -133,6 +152,7 @@ export default {
         {
           name: "ЭЦН (аренда)",
           type: "bar",
+          
           stroke: {
             show: true,
           },
