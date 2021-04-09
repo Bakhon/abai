@@ -6,7 +6,7 @@ const paegtm = {
     isTreeMainComponentShow: true,
   },
   mutations: {
-    changeIsShadowBlockShow (state, value) {
+    changeTheDisplayShadowBlock (state, value) {
       this.state.isShadowBlockShow = value;
     },
     changeTreeSettingComponent (state, value) {
@@ -18,7 +18,7 @@ const paegtm = {
     changeTreeChildrenComponent (state, value) {
       this.state.treeChildrenComponent = value;
     },
-    changeIsTreeMainComponentShow (state, value) {
+    changeTheDisplayMainComponent (state, value) {
       this.state.isTreeMainComponentShow = value;
     },
   },

@@ -20,7 +20,7 @@
 
 export default {
     data: function () {
-        this.$store.commit('changeIsShadowBlockShow',false);
+        this.$store.commit('changeTheDisplayShadowBlock',false);
         return {
             mainContent: {
                 name: "main-component",
@@ -36,8 +36,8 @@ export default {
             this.parentType = data.parentType;
         },
         closeTree () {
-            this.$store.commit('changeIsShadowBlockShow',false);
-            this.$store.commit('changeIsTreeMainComponentShow',false);
+            this.$store.commit('changeTheDisplayShadowBlock',false);
+            this.$store.commit('changeTheDisplayMainComponent',false);
             this.$store.commit('changeTreeSettingComponent',null);
             this.$store.commit('changeTreeChildrenComponent',null);
         },

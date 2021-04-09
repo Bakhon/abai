@@ -247,7 +247,7 @@ export default {
         },
         $_setTreeChildrenComponent(data) {
             let node = data.node;
-            this.$store.commit('changeIsShadowBlockShow',true);
+            this.$store.commit('changeTheDisplayShadowBlock',true);
             if (node.ioi_finder_model === undefined) {
                 if (data.hideIoiMenu) {
                     this.$store.commit('changeTreeChildrenComponent',null);
