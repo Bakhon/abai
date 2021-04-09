@@ -26,6 +26,7 @@ export default {
       chartOptions: {
         tooltip: {
           theme: "dark",
+          
           x: {
             show: true,
           },
@@ -40,32 +41,32 @@ export default {
         },
 
         colors: ["#fba409", "#13b062"],
-        chart: {
-
-          title: {
+        
+        title: {
             text: 'Сравнение технико-экономических показателей за 1 год эксплуатации ',
             align: 'center',
+            
             margin: 20,
             offsetY: 20,
             style: {
-              fontSize: '20px'
-            }
-  },
-
-          background: '#272953',
-          toolbar: {
-            show: true,
-            Color: "#373d3f",
-            //autoSelected: "pan",
+              fontSize: '20px',
+              //color: 'white'
+            },
+            background: '#272953',
+            toolbar: {
+              show: true,
+              //Color: "#373d3f",
+              //autoSelected: "pan",
+            },
+            foreColor: "#fff",
+            animations: {
+              speed: 200,
+            },
+            //  height: 150,
+            type: "area",
           },
-          foreColor: "#fff",
-          animations: {
-            speed: 200,
-          },
-          //  height: 150,
-          type: "area",
-        },
-
+        
+        
         plotOptions: {
           bar: {
             //  endingShape: 'rounded'  ,
@@ -92,6 +93,9 @@ export default {
           show: true,
           position: "bottom",
           horizontalAlign: "center",
+          //color: 'white'
+      
+          
         },
 
         yaxis: {
