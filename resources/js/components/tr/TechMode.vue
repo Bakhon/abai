@@ -1318,7 +1318,7 @@
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
-                      :label="`${this.trans('tr.tr16')}`"
+                      :label="`${this.trans('tr.annular_pressure')}`"
                       >
                       <el-table-column label="" prop="fake" >
                         <el-table-column label="" >
@@ -1328,17 +1328,30 @@
                             width="130"
                             sortable
                             >
-                            
+                             <template slot-scope="scope">
+                              <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`p_annular`)}" >
+                                        <span
+                                          :class="{
+                                            'circle-err': isCircleErrClass(scope.$index,`p_annular`)}"
+                                          :style="`background :${getColor(
+                                            wells[scope.$index].p_annular[1][0]
+                                          )}`"
+                                        >
+                                          </span><span v-if="scope.row.p_annular[0] != null">{{
+                                    Math.round(scope.row.p_annular[0] * 10) / 10
+                                  }}</span>
+                                  <span v-if="wells && wells[scope.$index]" class="cell-comment-tech">
+                                    {{ wells[scope.$index].p_annular[1][1] }}
+                                  </span>
+                              </div>    
+                            </template>
                           </el-table-column>
-
-
-
 
                         </el-table-column>
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
-                      :label="`${this.trans('tr.trs13')}`"
+                      :label="`${this.trans('tr.p_intake')}`"
                       >
                       <el-table-column label="" prop="fake" >
                         <el-table-column label="" >
@@ -1348,7 +1361,23 @@
                             width="130"
                             sortable
                             >
-                            
+                            <template slot-scope="scope">
+                              <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`p_intake`)}" >
+                                        <span
+                                          :class="{
+                                            'circle-err': isCircleErrClass(scope.$index,`p_intake`)}"
+                                          :style="`background :${getColor(
+                                            wells[scope.$index].p_intake[1][0]
+                                          )}`"
+                                        >
+                                          </span><span v-if="scope.row.p_intake[0] != null">{{
+                                    Math.round(scope.row.p_intake[0] * 10) / 10
+                                  }}</span>
+                                  <span v-if="wells && wells[scope.$index]" class="cell-comment-tech">
+                                    {{ wells[scope.$index].p_intake[1][1] }}
+                                  </span>
+                              </div>    
+                            </template>
                           </el-table-column>
                         </el-table-column>
                       </el-table-column>
@@ -1359,11 +1388,11 @@
 
                     <!-- Данные за предыдущий месяц -->
                     <el-table-column
-                      :label="`${this.trans('tr.trs14')}`"
+                      :label="`${this.trans('tr.previous_month_data')}`"
                       >
                       <el-table-column label="" >
                         <el-table-column
-                        :label="`${this.trans('tr.tr20')}`"
+                        :label="`${this.trans('tr.bottomhole_pressure')}`"
                         >
 
                           <el-table-column
