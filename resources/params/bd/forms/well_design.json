@@ -1,0 +1,24 @@
+{
+  "type": "plain",
+  "table": "",
+  "tabs": [
+    {
+      "title": "Проект конструкции скважины",
+      "blocks": [
+        [
+          {
+            "title": "",
+            "items": [
+              {
+                "code": "В",
+                "type": "text",
+                "title": "hello_world",
+                "validation": ""
+              }
+            ]
+          }
+        ]
+      ]
+    }
+  ]
+}
