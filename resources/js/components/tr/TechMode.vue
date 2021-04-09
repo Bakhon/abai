@@ -1264,7 +1264,7 @@
                             width="130"
                             sortable
                             >
-                             <template slot-scope="scope">
+                            <template slot-scope="scope">
                               <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`p_res`)}" >
                                         <span
                                           :class="{
@@ -1286,7 +1286,7 @@
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
-                      :label="`${this.trans('tr.tr15')}`"
+                      :label="`${this.trans('tr.h_dynamic')}`"
                       >
                       <el-table-column label="" prop="fake" >
                         <el-table-column label="" >
@@ -1296,6 +1296,23 @@
                             width="130"
                             sortable
                             >
+                            <template slot-scope="scope">
+                              <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`h_dyn`)}" >
+                                        <span
+                                          :class="{
+                                            'circle-err': isCircleErrClass(scope.$index,`h_dyn`)}"
+                                          :style="`background :${getColor(
+                                            wells[scope.$index].h_dyn[1][0]
+                                          )}`"
+                                        >
+                                          </span><span v-if="scope.row.h_dyn[0] != null">{{
+                                    Math.round(scope.row.h_dyn[0] * 10) / 10
+                                  }}</span>
+                                  <span v-if="wells && wells[scope.$index]" class="cell-comment-tech">
+                                    {{ wells[scope.$index].h_dyn[1][1] }}
+                                  </span>
+                              </div>    
+                            </template>
                           </el-table-column>
                         </el-table-column>
                       </el-table-column>
