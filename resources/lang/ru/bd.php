@@ -84,6 +84,16 @@ return [
             'date_gtm_end'=>'Дата окончания ГТМ',
             'gtm_parameters_results'=>'Параметры ГТМ/результаты',
             'status'=>'Состояние'
+        ],
+        'well_design'=>[
+            "well_design_project" => "Проект конструкции скважины",
+            "casing_type" => "Вид колонны",
+            "casing_running_depth" => "Глубина спуска колонны",
+            "side_barrel" => "Боковой ствол",
+            "casing_type" => "Вид обсадной трубы",
+            "number_of_pipes" => "Количество труб",
+            "poured_cement_volume" => "Объем залитого цемента",
+            "cement_lifting_height" => "Высота подъема цемента" 
         ]
     ],
     'close' => 'Закрыть',
