@@ -351,6 +351,11 @@ export default {
                 this.isloading = false
               })
 
+        } else {
+          this.editableCell = {
+            row: null,
+            cell: null
+          }
         }
       })
 
@@ -749,6 +754,7 @@ body.fixed {
     color: #fff;
     font-size: 14px;
     padding: 8px;
+    white-space: nowrap;
   }
 
   .arrow {
