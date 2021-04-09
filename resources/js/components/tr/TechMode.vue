@@ -584,12 +584,9 @@
                     style="width: 100%"
                     :header-cell-class-name="getHeaderCellClassName"
                     >
-
                     <el-table-column 
                    
                       :label="`${this.trans('tr.ngdu_field')}`" 
-                      
-
                       >
                       <el-table-column label="" prop="fake" >
                         <el-table-column label="" >
@@ -630,14 +627,10 @@
                             sortable
                             >
                             <template slot-scope="scope">
-                              <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index)}" >
+                              <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`well_type`)}" >
                                         <span
                                           :class="{
-                                            'circle-err':
-                                              wells &&
-                                              wells[scope.$index] &&
-                                              wells[scope.$index].well_type[1][0] !== '0',
-                                          }"
+                                            'circle-err': isCircleErrClass(scope.$index,`well_type`)}"
                                           :style="`background :${getColor(
                                             wells[scope.$index].well_type[1][0]
                                           )}`"
@@ -664,22 +657,10 @@
                             sortable
                             >
                             <template slot-scope="scope">
-                              <div
-                                :class="{
-                                  'cell-with-comment':
-                                    wells &&
-                                    wells[scope.$index] &&
-                                    wells[scope.$index].r_con[1][0] !== '0',
-                                }"
-                              >
-                              
+                              <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`horizon`)}" >
                                         <span
                                           :class="{
-                                            'circle-err':
-                                              wells &&
-                                              wells[scope.$index] &&
-                                              wells[scope.$index].horizon[1][0] !== '0',
-                                          }"
+                                            'circle-err': isCircleErrClass(scope.$index,`horizon`)}"
                                           :style="`background :${getColor(
                                             wells[scope.$index].horizon[1][0]
                                           )}`"
@@ -721,22 +702,10 @@
                             sortable
                             >
                             <template slot-scope="scope">
-                              <div
-                                :class="{
-                                  'cell-with-comment':
-                                    wells &&
-                                    wells[scope.$index] &&
-                                    wells[scope.$index].r_con[1][0] !== '0',
-                                }"
-                              >
-                              
+                              <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`block`)}" >
                                         <span
                                           :class="{
-                                            'circle-err':
-                                              wells &&
-                                              wells[scope.$index] &&
-                                              wells[scope.$index].block[1][0] !== '0',
-                                          }"
+                                            'circle-err': isCircleErrClass(scope.$index,`block`)}"
                                           :style="`background :${getColor(
                                             wells[scope.$index].block[1][0]
                                           )}`"
@@ -763,26 +732,15 @@
                             width="150"
                             sortable
                             >
-                            <template slot-scope="scope">
-                              <div
-                                :class="{
-                                  'cell-with-comment':
-                                    wells &&
-                                    wells[scope.$index] &&
-                                    wells[scope.$index].r_con[1][0] !== '0',
-                                }"
-                              >
-                                          <span
-                                            :class="{
-                                              'circle-err':
-                                                wells &&
-                                                wells[scope.$index] &&
-                                                wells[scope.$index].r_con[1][0] !== '0',
-                                            }"
-                                            :style="`background :${getColor(
-                                              wells[scope.$index].r_con[1][0]
-                                            )}`"
-                                          >
+                           <template slot-scope="scope">
+                              <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`r_con`)}" >
+                                        <span
+                                          :class="{
+                                            'circle-err': isCircleErrClass(scope.$index,`r_con`)}"
+                                          :style="`background :${getColor(
+                                            wells[scope.$index].r_con[1][0]
+                                          )}`"
+                                        >
                                           </span><span v-if="scope.row.r_con[0] != null">{{
                                     Math.round(scope.row.r_con[0] * 10) / 10
                                   }}</span>
@@ -808,25 +766,14 @@
                             sortable
                             >
                             <template slot-scope="scope">
-                              <div
-                                :class="{
-                                  'cell-with-comment':
-                                    wells &&
-                                    wells[scope.$index] &&
-                                    wells[scope.$index].cas_OD[1][0] !== '0',
-                                }"
-                              >
-                                          <span
-                                            :class="{
-                                              'circle-err':
-                                                wells &&
-                                                wells[scope.$index] &&
-                                                wells[scope.$index].cas_OD[1][0] !== '0',
-                                            }"
-                                            :style="`background :${getColor(
-                                              wells[scope.$index].cas_OD[1][0]
-                                            )}`"
-                                          >
+                              <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`cas_OD`)}" >
+                                        <span
+                                          :class="{
+                                            'circle-err': isCircleErrClass(scope.$index,`cas_OD`)}"
+                                          :style="`background :${getColor(
+                                            wells[scope.$index].cas_OD[1][0]
+                                          )}`"
+                                        >
                                           </span><span v-if="scope.row.cas_OD[0] != null">{{
                                     Math.round(scope.row.cas_OD[0] * 10) / 10
                                   }}</span>
@@ -868,25 +815,14 @@
                             sortable
                             >
                             <template slot-scope="scope">
-                              <div
-                                :class="{
-                                  'cell-with-comment':
-                                    wells &&
-                                    wells[scope.$index] &&
-                                    wells[scope.$index].tub_OD[1][0] !== '0',
-                                }"
-                              >
-                                          <span
-                                            :class="{
-                                              'circle-err':
-                                                wells &&
-                                                wells[scope.$index] &&
-                                                wells[scope.$index].tub_OD[1][0] !== '0',
-                                            }"
-                                            :style="`background :${getColor(
-                                              wells[scope.$index].tub_OD[1][0]
-                                            )}`"
-                                          >
+                              <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`tub_OD`)}" >
+                                        <span
+                                          :class="{
+                                            'circle-err': isCircleErrClass(scope.$index,`tub_OD`)}"
+                                          :style="`background :${getColor(
+                                            wells[scope.$index].tub_OD[1][0]
+                                          )}`"
+                                        >
                                           </span><span v-if="scope.row.tub_OD[0] != null">{{
                                     Math.round(scope.row.tub_OD[0] * 10) / 10
                                   }}</span>
@@ -926,25 +862,14 @@
                             sortable
                             >
                             <template slot-scope="scope">
-                              <div
-                                :class="{
-                                  'cell-with-comment':
-                                    wells &&
-                                    wells[scope.$index] &&
-                                    wells[scope.$index].choke_d[1][0] !== '0',
-                                }"
-                              >
-                                          <span
-                                            :class="{
-                                              'circle-err':
-                                                wells &&
-                                                wells[scope.$index] &&
-                                                wells[scope.$index].choke_d[1][0] !== '0',
-                                            }"
-                                            :style="`background :${getColor(
-                                              wells[scope.$index].choke_d[1][0]
-                                            )}`"
-                                          >
+                              <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`choke_d`)}" >
+                                        <span
+                                          :class="{
+                                            'circle-err': isCircleErrClass(scope.$index,`choke_d`)}"
+                                          :style="`background :${getColor(
+                                            wells[scope.$index].choke_d[1][0]
+                                          )}`"
+                                        >
                                           </span><span v-if="scope.row.choke_d[0] != null">{{
                                     Math.round(scope.row.choke_d[0] * 10) / 10
                                   }}</span>
@@ -969,25 +894,14 @@
                             sortable
                             >
                             <template slot-scope="scope">
-                              <div
-                                :class="{
-                                  'cell-with-comment':
-                                    wells &&
-                                    wells[scope.$index] &&
-                                    wells[scope.$index].h_up_perf_md[1][0] !== '0',
-                                }"
-                              >
-                                          <span
-                                            :class="{
-                                              'circle-err':
-                                                wells &&
-                                                wells[scope.$index] &&
-                                                wells[scope.$index].h_up_perf_md[1][0] !== '0',
-                                            }"
-                                            :style="`background :${getColor(
-                                              wells[scope.$index].h_up_perf_md[1][0]
-                                            )}`"
-                                          >
+                              <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`h_up_perf_md`)}" >
+                                        <span
+                                          :class="{
+                                            'circle-err': isCircleErrClass(scope.$index,`h_up_perf_md`)}"
+                                          :style="`background :${getColor(
+                                            wells[scope.$index].h_up_perf_md[1][0]
+                                          )}`"
+                                        >
                                           </span><span v-if="scope.row.h_up_perf_md[0] != null">{{
                                     Math.round(scope.row.h_up_perf_md[0] * 10) / 10
                                   }}</span>
@@ -1011,26 +925,15 @@
                             width="200"
                             sortable
                             >
-                            <template slot-scope="scope">
-                              <div
-                                :class="{
-                                  'cell-with-comment':
-                                    wells &&
-                                    wells[scope.$index] &&
-                                    wells[scope.$index].h_up_perf_ext[1][0] !== '0',
-                                }"
-                              >
-                                          <span
-                                            :class="{
-                                              'circle-err':
-                                                wells &&
-                                                wells[scope.$index] &&
-                                                wells[scope.$index].h_up_perf_ext[1][0] !== '0',
-                                            }"
-                                            :style="`background :${getColor(
-                                              wells[scope.$index].h_up_perf_ext[1][0]
-                                            )}`"
-                                          >
+                             <template slot-scope="scope">
+                              <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`h_up_perf_ext`)}" >
+                                        <span
+                                          :class="{
+                                            'circle-err': isCircleErrClass(scope.$index,`h_up_perf_ext`)}"
+                                          :style="`background :${getColor(
+                                            wells[scope.$index].h_up_perf_ext[1][0]
+                                          )}`"
+                                        >
                                           </span><span v-if="scope.row.h_up_perf_ext[0] != null">{{
                                     Math.round(scope.row.h_up_perf_ext[0] * 10) / 10
                                   }}</span>
@@ -1056,22 +959,10 @@
                             sortable
                             >
                             <template slot-scope="scope">
-                              <div
-                                :class="{
-                                  'cell-with-comment':
-                                    wells &&
-                                    wells[scope.$index] &&
-                                    wells[scope.$index].exp_meth[1][0] !== '0',
-                                }"
-                              >
-                              
+                              <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`exp_meth`)}" >
                                         <span
                                           :class="{
-                                            'circle-err':
-                                              wells &&
-                                              wells[scope.$index] &&
-                                              wells[scope.$index].exp_meth[1][0] !== '0',
-                                          }"
+                                            'circle-err': isCircleErrClass(scope.$index,`exp_meth`)}"
                                           :style="`background :${getColor(
                                             wells[scope.$index].exp_meth[1][0]
                                           )}`"
@@ -1099,22 +990,10 @@
                             sortable
                             >
                             <template slot-scope="scope">
-                              <div
-                                :class="{
-                                  'cell-with-comment':
-                                    wells &&
-                                    wells[scope.$index] &&
-                                    wells[scope.$index].pump_type[1][0] !== '0',
-                                }"
-                              >
-                              
+                              <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`pump_type`)}" >
                                         <span
                                           :class="{
-                                            'circle-err':
-                                              wells &&
-                                              wells[scope.$index] &&
-                                              wells[scope.$index].pump_type[1][0] !== '0',
-                                          }"
+                                            'circle-err': isCircleErrClass(scope.$index,`pump_type`)}"
                                           :style="`background :${getColor(
                                             wells[scope.$index].pump_type[1][0]
                                           )}`"
@@ -1157,26 +1036,15 @@
                             width="200"
                             sortable
                             >
-                            <template slot-scope="scope">
-                              <div
-                                :class="{
-                                  'cell-with-comment':
-                                    wells &&
-                                    wells[scope.$index] &&
-                                    wells[scope.$index].spm[1][0] !== '0',
-                                }"
-                              >
-                                          <span
-                                            :class="{
-                                              'circle-err':
-                                                wells &&
-                                                wells[scope.$index] &&
-                                                wells[scope.$index].spm[1][0] !== '0',
-                                            }"
-                                            :style="`background :${getColor(
-                                              wells[scope.$index].spm[1][0]
-                                            )}`"
-                                          >
+                             <template slot-scope="scope">
+                              <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`spm`)}" >
+                                        <span
+                                          :class="{
+                                            'circle-err': isCircleErrClass(scope.$index,`spm`)}"
+                                          :style="`background :${getColor(
+                                            wells[scope.$index].spm[1][0]
+                                          )}`"
+                                        >
                                           </span><span v-if="scope.row.spm[0] != null">{{
                                     Math.round(scope.row.spm[0] * 10) / 10
                                   }}</span>
@@ -1200,26 +1068,15 @@
                             width="200"
                             sortable
                             >
-                            <template slot-scope="scope">
-                              <div
-                                :class="{
-                                  'cell-with-comment':
-                                    wells &&
-                                    wells[scope.$index] &&
-                                    wells[scope.$index].stroke_len[1][0] !== '0',
-                                }"
-                              >
-                                          <span
-                                            :class="{
-                                              'circle-err':
-                                                wells &&
-                                                wells[scope.$index] &&
-                                                wells[scope.$index].stroke_len[1][0] !== '0',
-                                            }"
-                                            :style="`background :${getColor(
-                                              wells[scope.$index].stroke_len[1][0]
-                                            )}`"
-                                          >
+                             <template slot-scope="scope">
+                              <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`stroke_len`)}" >
+                                        <span
+                                          :class="{
+                                            'circle-err': isCircleErrClass(scope.$index,`stroke_len`)}"
+                                          :style="`background :${getColor(
+                                            wells[scope.$index].stroke_len[1][0]
+                                          )}`"
+                                        >
                                           </span><span v-if="scope.row.stroke_len[0] != null">{{
                                     Math.round(scope.row.stroke_len[0] * 10) / 10
                                   }}</span>
@@ -1244,25 +1101,14 @@
                             sortable
                             >
                             <template slot-scope="scope">
-                              <div
-                                :class="{
-                                  'cell-with-comment':
-                                    wells &&
-                                    wells[scope.$index] &&
-                                    wells[scope.$index].q_theor[1][0] !== '0',
-                                }"
-                              >
-                                          <span
-                                            :class="{
-                                              'circle-err':
-                                                wells &&
-                                                wells[scope.$index] &&
-                                                wells[scope.$index].q_theor[1][0] !== '0',
-                                            }"
-                                            :style="`background :${getColor(
-                                              wells[scope.$index].q_theor[1][0]
-                                            )}`"
-                                          >
+                              <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`q_theor`)}" >
+                                        <span
+                                          :class="{
+                                            'circle-err': isCircleErrClass(scope.$index,`q_theor`)}"
+                                          :style="`background :${getColor(
+                                            wells[scope.$index].q_theor[1][0]
+                                          )}`"
+                                        >
                                           </span><span v-if="Math.round(scope.row.q_theor[0] * 10) / 10 != '0'">{{
                                           Math.round(scope.row.q_theor[0] * 10) / 10
                                         }}</span>
@@ -1380,25 +1226,7 @@
                             width="130"
                             sortable
                             >
-                            <template slot-scope="scope">
-                                      <span
-                                        :class="{
-                                          'circle-err':
-                                            wells &&
-                                            wells[scope.$index] &&
-                                            wells[scope.$index].p_annular[1][0] !== '0',
-                                        }"
-                                        :style="`background :${getColor(
-                                          wells[scope.$index].p_annular[1][0]
-                                        )}`"
-                                      >
-                                      </span><span v-if="scope.row.p_annular[0] != null">{{
-                                Math.round(scope.row.p_annular[0] * 10) / 10
-                              }}</span>
-                              <span v-if="wells && wells[scope.$index]" class="cell-comment-tech">
-                                {{ wells[scope.$index].p_annular[1][1] }}
-                              </span>
-                            </template>
+                            
                           </el-table-column>
 
 
@@ -2654,11 +2482,17 @@ export default {
           console.log("search error = ", error);
         });
     },
-    isCellWithCommentClass (index) {
+    isCellWithCommentClass (index, value) {
       return this.wells &&
           this.wells[index] &&
-          this.wells[index].r_con[1][0] !== '0';
-    }
+          this.wells[index][value][1][0] !== '0';
+
+    },
+    isCircleErrClass (index, value) {
+      return this.wells &&
+          this.wells[index] &&
+          this.wells[index][value][1][0] !== '0';
+    },
 
   },
 };
