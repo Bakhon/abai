@@ -47,10 +47,7 @@ class ExcelFormController extends Controller
 
     public function isAlreadyUploaded($todayDzoImportDataRecord)
     {
-        if (!is_null($todayDzoImportDataRecord)) {
-            return true;
-        }
-        return false;
+        return !is_null($todayDzoImportDataRecord);
     }
 
     public function saveDzoSummaryData($request)
