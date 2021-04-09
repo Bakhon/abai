@@ -83,6 +83,7 @@ export default {
             errorSelectors: [],
             currentDate: moment().subtract(1, 'days').format('DD-MM-YYYY'),
             isChemistryButtonVisible: false,
+            daysWhenChemistryNeeded: [5,6,7,8,9,10],
         };
     },
     created() {

@@ -259,6 +259,8 @@ return array (
     'yesterdayDateData' => 'Внесение данные за:',
     'selectedDZO' => 'Выбранное ДЗО:',
     'yesterdayDate' => 'Внесение данных за:',
+    'chemistryNeeded' => 'Необходимо внести Химизацию',
+    'chemistryNotNeeded' => 'Химизацию вносить не нужно',
   ),
   'idleWells' => 'Фонд нагнетательных скважин',
   'inIdle' => 'В простое',

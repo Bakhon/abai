@@ -36,14 +36,25 @@
                 {{trans('visualcenter.saveButton')}}
             </div>
         </div>
-        <div class="col-3">
+        <div class="col-3 p-0">
             <div class="chemistry-container col-12 p-0">
                 <div class="data-status col-12">
-                    <span class="label">Заполните Химизацию</span>
+                    <span
+                            v-if="!isChemistryButtonVisible"
+                            class="label chemistry-label"
+                    >
+                        {{trans('visualcenter.importForm.chemistryNotNeeded')}}
+                    </span>
+                    <span
+                            v-if="isChemistryButtonVisible"
+                            class="label chemistry-label"
+                    >
+                        {{trans('visualcenter.importForm.chemistryNeeded')}}
+                    </span>
                 </div>
                 <div
                         id="chemistryButton"
-                        :class="[isChemistryButtonVisible ? 'menu__button_disabled' : '','menu__button chemistry-button col-12 m-2']"
+                        :class="[!isChemistryButtonVisible ? 'menu__button_disabled' : 'chemistry-button_animation','chemistry-button menu__button col-8 col-lg-8 m-2']"
                         @click="changeButtonVisibility()"
                 >
                     {{trans('visualcenter.importForm.enterChemistryButton')}}
@@ -160,14 +171,20 @@
     }
     @media (max-width:1400px) {
         .table-form {
-            max-width: 930px;
+            max-width: 1270px;
         }
     }
     .chemistry-container {
         position: relative;
     }
     .chemistry-button {
+        float: right;
+    }
+    .chemistry-button_animation {
         animation: pulse 2s linear infinite alternate;
+    }
+    .chemistry-label {
+        float: right;
     }
     @keyframes pulse {
         from {background-color: #34bf49}
