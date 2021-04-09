@@ -98,6 +98,9 @@ export default {
             if (productionPlanAndFactMonthWells[0]['fond_neftedob_df']) {
                 productionPlanAndFactMonthWells[0]['fond_neftedob_df'] = Math.round(this.prod_wells_work) + Math.round(this.prod_wells_idle);
             }
+            if (productionPlanAndFactMonthWells[0]['fond_nagnetat_df']) {
+                productionPlanAndFactMonthWells[0]['fond_nagnetat_df'] = Math.round(this.inj_wells_work) + Math.round(this.inj_wells_idle);
+            }
 
             _.forEach(productionFondsForIterations, function(fondName) {
                 let translationName = "visualcenter." + self.fondNamesByDBFields[fondName.trim()];
