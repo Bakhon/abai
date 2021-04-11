@@ -2,6 +2,13 @@
   <div>
     <div class="row">
       <div class="col-sm-4">
+        <select name="company" v-model="company" @change="updateData('betweenMonthsValue')" class="form-control mb-3">
+          <option v-for="company in repttData.companies" :value="company.id">{{company.name}}</option>
+        </select>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-4">
         <select name="dateTo" v-model="betweenMonthsValue" @change="updateData('betweenMonthsValue')" class="form-control mb-3">
           <option v-for="month in betweenMonths" :value="month.value">{{month.title + currentYear}}</option>
         </select>
@@ -90,10 +97,12 @@
             prop: 'value'
           }
         ],
-        betweenMonthsValue: 'С началао года',
-        monthsValue: 'За месяц',
-        quarterValue: 'Квартал',
+        betweenMonthsValue: '01',
+        monthsValue: '00',
+        quarterValue: '01',
+        company: '116',
           betweenMonths:[
+              {title:'С началао года ', value: '01'},
               {title:'Январь - Февраль ', value: '02'},
               {title:'Январь - Март ', value: '03'},
               {title:'Январь - Апрель ', value: '04'},
@@ -107,6 +116,7 @@
               {title:'Январь - Декабрь ', value: '12'},
           ],
           months:[
+              {title:'За месяц ', value: '00'},
               {title:'Январь ', value: '01'},
               {title:'Февраль ', value: '02'},
               {title:'Март ', value: '03'},
@@ -121,10 +131,11 @@
               {title:'Декабрь ', value: '12'},
           ],
           quarter: [
+              {title:'Квартал ', value: '01'},
               {title:'Январь - Март ', value: '03'},
-              {title:'Апрель - Июнь ', value: '04'},
-              {title:'Июль - Сентябрь ', value: '05'},
-              {title:'Октябрь - Декабрь ', value: '06'},
+              {title:'Апрель - Июнь ', value: '06'},
+              {title:'Июль - Сентябрь ', value: '9'},
+              {title:'Октябрь - Декабрь ', value: '12'},
           ]
       };
     },
@@ -138,7 +149,7 @@
     },
     methods: {
       distributionSumOverTree(attributeName, year) {
-        this.dataReptt.reptt.reduce(function x(r, a) {
+        this.repttData.reptt.reduce(function x(r, a) {
           let hasChild = a.handbook_items.length > 0;
           a[attributeName][year] = ((a[attributeName][year] < 0) ? a[attributeName][year] * -1 : a[attributeName][year]) || hasChild && a.handbook_items.reduce(x, 0) || 0;
 
@@ -163,8 +174,10 @@
         return result;
       },
       updateData(attributeName){
-        axios.get('/ru/module_economy/company?'+attributeName+'='+this[attributeName]).then(response => (this.repttData = response.data));
-        this.recalculate();
+          axios.get('/ru/module_economy/company?'+attributeName+'='+this[attributeName]).then(response => {
+              this.repttData = response.data;
+              this.recalculate();
+          });
       },
       recalculate(){
         let handbookKeys = ['plan_value', 'fact_value', 'intermediate_plan_value', 'intermediate_fact_value'];

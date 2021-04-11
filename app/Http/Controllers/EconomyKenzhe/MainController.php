@@ -15,27 +15,35 @@ class MainController extends Controller
         $companyId = 116;
         $dateTo = date('Y-m-d', strtotime('-1 year'));
         $dateFrom = date("Y-m-d", strtotime($dateTo . "-3 months"));
+        if($request->company){
+            $companyId = $request->company;
+        }
         if ($request->betweenMonthsValue) {
             $dateFrom = date('Y-m-d', strtotime(date('Y').'-01-01  -1 year'));
             $dateTo = date('Y-m-d', strtotime(date('Y').'-'.$request->betweenMonthsValue . '-01 -1 year'));
         }
-        if ($request->months) {
-            $dateFrom = date("Y-m-d", strtotime($request->dateFrom . '-01' . "-3 months"));
+        if ($request->monthsValue) {
+            $dateFrom = date("Y-m-d", strtotime(date('Y').'-'.$request->monthsValue . '-01'));
+            $dateTo = date("Y-m-d", strtotime(date('Y').'-'.$request->monthsValue . '-31'));
         }
-        if ($request->quarter) {
-            $dateFrom = date("Y-m-d", strtotime($request->dateFrom . '-01' . "-3 months"));
+        if ($request->quarterValue) {
+            $dateFrom = date("Y-m-d", strtotime(date('Y').'-'.$request->quarterValue . '-01' . "-3 months"));
+            $dateTo = date("Y-m-d", strtotime(date('Y').'-'.$request->quarterValue . '-01'));
         }
         $currentYear = date('Y', strtotime('-1 year'));
         $previousYear = (string)$currentYear - 1;
         $handbook = HandbookRepTt::where('parent_id', 0)->with('childHandbookItems')->get()->toArray();
+        $companies = SubholdingCompany::all();
         $companyRepTtValues = SubholdingCompany::find($companyId)->statsByDate($currentYear)->get()->toArray();
         $repTtReportValues = $this->recursiveSetValueToHandbookByType($handbook, $companyRepTtValues, $currentYear, $previousYear, $dateFrom, $dateTo);
         $data = [
             'reptt' => $repTtReportValues,
             'currentYear' => $currentYear,
-            'previousYear' => $previousYear
+            'previousYear' => $previousYear,
+            'companies' => $companies,
         ];
         $data = json_encode($data);
+
         if($request->ajax()){
             return $data;
         }
