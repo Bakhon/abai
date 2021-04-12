@@ -5,7 +5,7 @@
       <label>{{ trans('monitoring.gu.gu') }}</label>
       <div class="form-label-group">
         <select class="form-control" name="gu_id" v-model="formFields.gu_id" @change="chooseGu">
-          <option v-for="row in gus" v-bind:value="row.id">{{ row.name }}</option>
+          <option v-for="gu in gus" v-bind:value="gu.id">{{ gu.name }}</option>
         </select>
       </div>
       <label>{{ trans('app.date') }}</label>
@@ -73,13 +73,13 @@
       <label>{{ trans('monitoring.ngdu') }}</label>
       <div class="form-label-group">
         <select class="form-control" name="ngdu_id" v-model="formFields.ngdu_id" @change="chooseNgdu($event)">
-          <option v-for="row in ngdus" v-bind:value="row.id">{{ row.name }}</option>
+          <option v-for="ngdu in ngdus" v-bind:value="ngdu.id">{{ ngdu.name }}</option>
         </select>
       </div>
       <label>ЗУ</label>
       <div class="form-label-group">
         <select class="form-control" name="zu_id" v-model="formFields.zu_id" @change="chooseZu">
-          <option v-for="row in zus" v-bind:value="row.id">{{ row.name }}</option>
+          <option v-for="zu in zus" v-bind:value="zu.id">{{ zu.name }}</option>
         </select>
       </div>
       <label>{{ trans('monitoring.omgngdu_well.fields.daily_fluid_production') }}</label>
@@ -115,13 +115,13 @@
       <label>{{ trans('monitoring.cdng') }}</label>
       <div class="form-label-group">
         <select class="form-control" name="cdng_id" v-model="formFields.cdng_id" @change="chooseCdng($event)">
-          <option v-for="row in cdngs" v-bind:value="row.id">{{ row.name }}</option>
+          <option v-for="cdng in cdngs" v-bind:value="cdng.id">{{ cdng.name }}</option>
         </select>
       </div>
       <label>{{ trans('monitoring.well.well') }}</label>
       <div class="form-label-group">
         <select class="form-control" name="well_id" v-model="formFields.well_id">
-          <option v-for="row in wells" v-bind:value="row.id">{{ row.name }}</option>
+          <option v-for="well in wells" v-bind:value="well.id">{{ well.name }}</option>
         </select>
       </div>
       <label>{{ trans('monitoring.omgngdu_well.fields.gas_factor') }}</label>
@@ -168,7 +168,6 @@ import CatLoader from '../ui-kit/CatLoader'
 
 Vue.use(Datetime)
 
-//853 средняя плотность нефти кг/м3
 const averageOilDensity = 853;
 
 export default {
