@@ -331,7 +331,7 @@ export default {
     },
     chooseGu() {
       this.axios
-          .post(this.localeUrl("/getgucdngngdufield"), {
+          .post(this.localeUrl("/get-gu-cdng-ngdu-field"), {
             gu_id: this.formFields.gu_id,
           })
           .then((response) => {

@@ -85,8 +85,8 @@ Route::group(
 
 
                 Route::post(
-                    '/getgucdngngdufield',
-                    'ComplicationMonitoring\WaterMeasurementController@getGuNgduCdngField'
+                    '/get-gu-cdng-ngdu-field',
+                    'ComplicationMonitoring\WaterMeasurementController@get_Gu_Ngdu_Cdng_Field'
                 );
 
                 Route::get('oilgas/list', 'ComplicationMonitoring\OilGasController@list')->name('oilgas.list');

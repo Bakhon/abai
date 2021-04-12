@@ -845,7 +845,7 @@ class WaterMeasurementController extends CrudController
         ];
     }
 
-    public function getGuNgduCdngField(Request $request): \Symfony\Component\HttpFoundation\Response
+    public function get_Gu_Ngdu_Cdng_Field(Request $request): \Symfony\Component\HttpFoundation\Response
     {
         $gu = Gu::where('id', $request->gu_id)->first();
         $cdng = Cdng::where('id', $gu->cdng_id)->first();
