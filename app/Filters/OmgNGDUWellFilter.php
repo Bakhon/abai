@@ -14,16 +14,16 @@ class OmgNGDUWellFilter extends BaseFilter
                 $this->query
                     ->select($this->table.'.*')
                     ->leftJoin('zus', 'zus.id', '=', $this->table.'.zu_id')
-                    ->orderBy('zus.name', $desc === true ? 'desc' : 'asc');
+                    ->orderBy('zus.name', $desc ? 'desc' : 'asc');
                 break;
             case 'well':
                 $this->query
                     ->select($this->table.'.*')
                     ->leftJoin('wells', 'wells.id', '=', $this->table.'.well_id')
-                    ->orderBy('wells.name', $desc === true ? 'desc' : 'asc');
+                    ->orderBy('wells.name', $desc ? 'desc' : 'asc');
                 break;
             default:
-                $this->query->orderBy($field, $desc === true ? 'desc' : 'asc');
+                $this->query->orderBy($field, $desc ? 'desc' : 'asc');
         }
     }
 

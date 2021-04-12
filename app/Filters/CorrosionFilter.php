@@ -22,7 +22,7 @@ class CorrosionFilter extends BaseFilter
                 $this->query
                 ->select('corrosions.*')
                 ->leftJoin('fields', 'fields.id', '=', 'corrosions.field_id')
-                ->orderBy('fields.name', $desc === true ? 'desc' : 'asc');
+                ->orderBy('fields.name', $desc ? 'desc' : 'asc');
                 break;
             case 'gu':
                 $this->query
@@ -30,34 +30,34 @@ class CorrosionFilter extends BaseFilter
                 ->leftJoin('gus', 'gus.id', '=', 'corrosions.gu_id')
                 //dirty hack for alphanumeric sort but other solutions doesn't work
                 ->addSelect(DB::raw('lpad(gus.name, 10, 0) AS gus_name'))
-                ->orderBy('gus_name', $desc === true ? 'desc' : 'asc');
+                ->orderBy('gus_name', $desc ? 'desc' : 'asc');
                 break;
             case 'zu':
                 $this->query
                 ->select('corrosions.*')
                 ->leftJoin('zus', 'zus.id', '=', 'corrosions.zu_id')
-                ->orderBy('zus.name', $desc === true ? 'desc' : 'asc');
+                ->orderBy('zus.name', $desc ? 'desc' : 'asc');
                 break;
             case 'ngdu':
                 $this->query
                 ->select('corrosions.*')
                 ->leftJoin('ngdus', 'ngdus.id', '=', 'corrosions.ngdu_id')
-                ->orderBy('ngdus.name', $desc === true ? 'desc' : 'asc');
+                ->orderBy('ngdus.name', $desc ? 'desc' : 'asc');
                 break;
             case 'cdng':
                 $this->query
                 ->select('corrosions.*')
                 ->leftJoin('cdngs', 'cdngs.id', '=', 'corrosions.cdng_id')
-                ->orderBy('cdngs.name', $desc === true ? 'desc' : 'asc');
+                ->orderBy('cdngs.name', $desc ? 'desc' : 'asc');
                 break;
             case 'well':
                 $this->query
                 ->select('corrosions.*')
                 ->leftJoin('wells', 'wells.id', '=', 'corrosions.well_id')
-                ->orderBy('wells.name', $desc === true ? 'desc' : 'asc');
+                ->orderBy('wells.name', $desc ? 'desc' : 'asc');
                 break;
             default:
-                $this->query->orderBy($field, $desc === true ? 'desc' : 'asc');
+                $this->query->orderBy($field, $desc ? 'desc' : 'asc');
         }
     }
 

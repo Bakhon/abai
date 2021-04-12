@@ -16,7 +16,7 @@ class OmgNGDUFilter extends BaseFilter
                 $this->query
                 ->select($this->table.'.*')
                 ->leftJoin('fields', 'fields.id', '=', $this->table.'.field_id')
-                ->orderBy('fields.name', $desc === true ? 'desc' : 'asc');
+                ->orderBy('fields.name', $desc ? 'desc' : 'asc');
                 break;
             case 'gu':
                 $this->query
@@ -24,34 +24,34 @@ class OmgNGDUFilter extends BaseFilter
                 ->leftJoin('gus', 'gus.id', '=', $this->table.'.gu_id')
                 //dirty hack for alphanumeric sort but other solutions doesn't work
                 ->addSelect(DB::raw('lpad(gus.name, 10, 0) AS gus_name'))
-                ->orderBy('gus_name', $desc === true ? 'desc' : 'asc');
+                ->orderBy('gus_name', $desc ? 'desc' : 'asc');
                 break;
             case 'zu':
                 $this->query
                 ->select($this->table.'.*')
                 ->leftJoin('zus', 'zus.id', '=', $this->table.'.zu_id')
-                ->orderBy('zus.name', $desc === true ? 'desc' : 'asc');
+                ->orderBy('zus.name', $desc ? 'desc' : 'asc');
                 break;
             case 'ngdu':
                 $this->query
                 ->select($this->table.'.*')
                 ->leftJoin('ngdus', 'ngdus.id', '=', $this->table.'.ngdu_id')
-                ->orderBy('ngdus.name', $desc === true ? 'desc' : 'asc');
+                ->orderBy('ngdus.name', $desc ? 'desc' : 'asc');
                 break;
             case 'cdng':
                 $this->query
                 ->select($this->table.'.*')
                 ->leftJoin('cdngs', 'cdngs.id', '=', $this->table.'.cdng_id')
-                ->orderBy('cdngs.name', $desc === true ? 'desc' : 'asc');
+                ->orderBy('cdngs.name', $desc ? 'desc' : 'asc');
                 break;
             case 'well':
                 $this->query
                 ->select($this->table.'.*')
                 ->leftJoin('wells', 'wells.id', '=', $this->table.'.well_id')
-                ->orderBy('wells.name', $desc === true ? 'desc' : 'asc');
+                ->orderBy('wells.name', $desc ? 'desc' : 'asc');
                 break;
             default:
-                $this->query->orderBy($field, $desc === true ? 'desc' : 'asc');
+                $this->query->orderBy($field, $desc ? 'desc' : 'asc');
         }
     }
 

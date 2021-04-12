@@ -11,10 +11,10 @@ class UserFilter extends BaseFilter
                 $this->query
                     ->select('users.*')
                     ->leftJoin('orgs', 'orgs.id', '=', 'users.org_id')
-                    ->orderBy('orgs.name', $desc === true ? 'desc' : 'asc');
+                    ->orderBy('orgs.name', $desc ? 'desc' : 'asc');
                 break;
             default:
-                $this->query->orderBy($field, $desc === true ? 'desc' : 'asc');
+                $this->query->orderBy($field, $desc ? 'desc' : 'asc');
         }
     }
 
