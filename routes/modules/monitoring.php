@@ -86,7 +86,7 @@ Route::group(
 
                 Route::post(
                     '/get-gu-cdng-ngdu-field',
-                    'ComplicationMonitoring\WaterMeasurementController@get_Gu_Ngdu_Cdng_Field'
+                    'ComplicationMonitoring\WaterMeasurementController@getGuNgduCdngField'
                 );
 
                 Route::get('oilgas/list', 'ComplicationMonitoring\OilGasController@list')->name('oilgas.list');
@@ -114,7 +114,7 @@ Route::group(
                 Route::post('vcoreconomic', 'ComplicationMonitoring\OilGasController@economic');
                 Route::post('vcoreconomiccurrent', 'ComplicationMonitoring\OilGasController@economicCurrentYear');
                 Route::post('checkdublicateomgddng', 'ComplicationMonitoring\OmgCAController@checkDublicate');
-                Route::post('getprevdaylevel', 'ComplicationMonitoring\OmgUHEController@getPrevDayLevel');
+                Route::post('get-prev-day-level', 'ComplicationMonitoring\OmgUHEController@getPrevDayLevel');
 
                 Route::get('corrosioncrud/list', 'ComplicationMonitoring\CorrosionController@list')->name(
                     'corrosioncrud.list'
