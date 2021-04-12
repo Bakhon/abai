@@ -303,6 +303,10 @@
     border-right: 1px solid rgba(69,77,125,1);
 }
 
+.gtm-main-table td {
+    font-size: 2rem;
+}
+
 .dr-border-light {
     border: 0.1rem solid rgba(69, 77, 125, 1);
 }
