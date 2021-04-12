@@ -36,7 +36,7 @@ class OmgNGDUWellController extends CrudController
             'title' => trans('monitoring.omgngdu_well.title'),
             'table_header' => [
                 trans('monitoring.selection_node') => 1,
-                trans('monitoring.omgngdu_well.fields.fact_data') => 10,
+                trans('monitoring.omgngdu_well.fields.fact_data') => 9,
             ],
             'fields' => [
                 'zu' => [
@@ -121,15 +121,12 @@ class OmgNGDUWellController extends CrudController
 
     public function list(IndexTableRequest $request)
     {
-        dd('test');
         $query = OmgNGDUWell::query()
             ->with('zu', 'well');
 
         $omgngdu_well = $this
             ->getFilteredQuery($request->validated(), $query)
             ->paginate(25);
-
-        dd(OmgNGDUWellListResource::collection($omgngdu_well));
 
         return response()->json(json_decode(OmgNGDUWellListResource::collection($omgngdu_well)->toJson()));
     }
@@ -173,7 +170,7 @@ class OmgNGDUWellController extends CrudController
     public function show($id)
     {
         $omgngdu_well = OmgNGDUWell::where('id', $id)
-            ->with('ngdu', 'cdng', 'gu', 'zu', 'well')
+            ->with('zu.gu.ngdu', 'well')
             ->first();
 
         return view('omgngdu_well.show', compact('omgngdu_well'));
@@ -184,7 +181,8 @@ class OmgNGDUWellController extends CrudController
      */
     public function edit(OmgNGDUWell $omgngdu_well): \Illuminate\View\View
     {
-        $validationParams = $this->getValidationParams('omgngdu');
+        $omgngdu_well->load('zu.gu');
+        $validationParams = $this->getValidationParams('omgngdu_well');
         return view('omgngdu_well.edit', compact('omgngdu_well', 'validationParams'));
     }
 

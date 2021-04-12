@@ -26,8 +26,12 @@ Route::group(
                 Route::get('/getallcdng', 'ComplicationMonitoring\WaterMeasurementController@getAllCdng');
                 Route::post('/getgu', 'ComplicationMonitoring\WaterMeasurementController@getGu');
                 Route::get('/getallgus', 'ComplicationMonitoring\WaterMeasurementController@getAllGu');
+                Route::get('/get_all_monitoring_data', 'ComplicationMonitoring\WaterMeasurementController@getAllMonitoringData');
                 Route::post('/getzu', 'ComplicationMonitoring\WaterMeasurementController@getZu');
                 Route::post('/get_gu_relations', 'ComplicationMonitoring\WaterMeasurementController@getGuRelations');
+                Route::post('/get_zu_relations', 'ComplicationMonitoring\WaterMeasurementController@getZuRelations');
+                Route::post('/get_ngdu_relations', 'ComplicationMonitoring\WaterMeasurementController@getNgduRelations');
+                Route::post('/get_cdng_relations', 'ComplicationMonitoring\WaterMeasurementController@getCdngRelations');
                 Route::get('/getallzu', 'ComplicationMonitoring\WaterMeasurementController@getAllZu');
                 Route::post('/getwell', 'ComplicationMonitoring\WaterMeasurementController@getWell');
                 Route::get('/getallwell', 'ComplicationMonitoring\WaterMeasurementController@getAllWell');
@@ -73,10 +77,12 @@ Route::group(
                 );
                 Route::resource('omgngdu', 'ComplicationMonitoring\OmgNGDUController');
 
-                Route::resource('omgngdu_well', 'ComplicationMonitoring\OmgNGDUWellController');
+
                 Route::get('omgngdu_well/list', 'ComplicationMonitoring\OmgNGDUWellController@list')->name(
                     'omgngdu_well.list'
                 );
+                Route::resource('omgngdu_well', 'ComplicationMonitoring\OmgNGDUWellController');
+
 
                 Route::post(
                     '/getgucdngngdufield',

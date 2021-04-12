@@ -31,12 +31,15 @@ const complicationMonitoring = {
     },
 
     actions: {
-        async getAllComplicationMonitoringData({dispatch}) {
-            dispatch('getAllNgdus')
-            dispatch('getAllGus');
-            dispatch('getAllCdngs')
-            dispatch('getAllZus')
-            dispatch('getAllWells');
+        async getAllComplicationMonitoringObjectsData({commit}) {
+            return axios.get(this._vm.localeUrl("/get_all_monitoring_data")).then((response) => {
+                let data = response.data.data;
+                commit('SET_NGDUS', data.ngdu);
+                commit('SET_CDNGS', data.cdng);
+                commit('SET_ZUS', data.zus);
+                commit('SET_WELLS', data.wells);
+                commit('SET_GUS', data.gus);
+            });
         },
 
         getAllNgdus({commit}) {
@@ -75,15 +78,45 @@ const complicationMonitoring = {
         },
 
         getGuRelations ({commit}, gu_id) {
-            return axios.post(this._vm.localeUrl("/get_gu_relations"), {gu_id: gu_id}).then((response) => {
-                console.log(response);
+            return axios.post(this._vm.localeUrl("/get_gu_relations"), {gu_id}).then((response) => {
                 let wells = response.data.data.wells;
                 let zus = response.data.data.zus;
                 commit('SET_WELLS', wells);
                 commit('SET_ZUS', zus);
                 return response.data.data;
             });
-        }
+        },
+        getZuRelations ({commit}, zu_id) {
+            return axios.post(this._vm.localeUrl("/get_zu_relations"), {zu_id}).then((response) => {
+                let wells = response.data.data.wells;
+                commit('SET_WELLS', wells);
+                return response.data.data;
+            });
+        },
+        getNgduRelations ({commit}, ngdu_id) {
+            return axios.post(this._vm.localeUrl("/get_ngdu_relations"), {ngdu_id}).then((response) => {
+                let gus = response.data.data.gu;
+                commit('SET_GUS', gus);
+
+                let cdng = response.data.data.cdng;
+                commit('SET_CDNGS', cdng);
+
+                let zus = response.data.data.zus;
+                commit('SET_ZUS', zus);
+                return response.data.data;
+            });
+        },
+        getCdngRelations ({commit}, cdng_id) {
+            return axios.post(this._vm.localeUrl("/get_cdng_relations"), {cdng_id}).then((response) => {
+                let gus = response.data.data.gu;
+                commit('SET_GUS', gus);
+
+                let zus = response.data.data.zus;
+                commit('SET_ZUS', zus);
+
+                return response.data.data;
+            });
+        },
     },
 
     getters: {},

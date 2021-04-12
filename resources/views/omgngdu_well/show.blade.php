@@ -11,16 +11,29 @@
             @endif
             <div class="container">
                 <h1>{{ trans('monitoring.show_title') }}</h1>
-                <h2>{{ trans('app.date') }}: {{ \Carbon\Carbon::parse($omgngdu_well->date)->format('d.m.Y H:i:s')}}</h2>
+                <h2>{{ trans('app.date') }}: {{ \Carbon\Carbon::parse($omgngdu_well->date)->format('d.m.Y')}}</h2>
                 <table class="table table-bordered">
                     <tr>
                         <th><b>{{ trans('app.param_name') }}</b></th>
                         <th><b>{{ trans('app.param_value') }}</b></th>
                     </tr>
                     <tr>
+                        <td>{{ trans('monitoring.ngdu') }}</td>
+                        <td>{{$omgngdu_well->zu->gu->ngdu->name}}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ trans('monitoring.gu.gu') }}</td>
+                        <td>{{$omgngdu_well->zu->gu->name}}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ trans('monitoring.zu.zu') }}</td>
+                        <td>{{$omgngdu_well->zu->name}}</td>
+                    </tr>
+                    <tr>
                         <td>{{ trans('monitoring.well.well') }}</td>
                         <td>{{$omgngdu_well->well->name}}</td>
                     </tr>
+
                     <tr>
                         <td>{{ trans('monitoring.omgngdu.fields.daily_fluid_production') }}</td>
                         <td>{{$omgngdu_well->daily_fluid_production}}</td>

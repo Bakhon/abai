@@ -1,9 +1,10 @@
 <template>
   <div class="col-xs-12 col-sm-12 col-md-12 row">
+    <cat-loader v-show="loading"/>
     <div class="col-xs-12 col-sm-4 col-md-4">
       <label>{{ trans('monitoring.gu.gu') }}</label>
       <div class="form-label-group">
-        <select class="form-control" name="gu_id" v-model="formFields.gu_id" @change="chooseGu()">
+        <select class="form-control" name="gu_id" v-model="formFields.gu_id" @change="chooseGu">
           <option v-for="row in gus" v-bind:value="row.id">{{ row.name }}</option>
         </select>
       </div>
@@ -54,6 +55,19 @@
             placeholder=""
         >
       </div>
+      <label>{{ trans('monitoring.omgngdu_well.fields.temperature') }}</label>
+      <div class="form-label-group">
+        <input
+            v-model="formFields.temperature"
+            type="number"
+            step="0.0001"
+            :min="validationParams.temperature.min"
+            :max="validationParams.temperature.max"
+            name="temperature"
+            class="form-control"
+            placeholder=""
+        >
+      </div>
     </div>
     <div class="col-xs-12 col-sm-4 col-md-4">
       <label>{{ trans('monitoring.ngdu') }}</label>
@@ -64,7 +78,7 @@
       </div>
       <label>ЗУ</label>
       <div class="form-label-group">
-        <select class="form-control" name="zu_id" v-model="formFields.zu_id" >
+        <select class="form-control" name="zu_id" v-model="formFields.zu_id" @change="chooseZu">
           <option v-for="row in zus" v-bind:value="row.id">{{ row.name }}</option>
         </select>
       </div>
@@ -110,7 +124,7 @@
           <option v-for="row in wells" v-bind:value="row.id">{{ row.name }}</option>
         </select>
       </div>
-      <label>{{ trans('monitoring.omgngdu.fields.gas_factor') }}</label>
+      <label>{{ trans('monitoring.omgngdu_well.fields.gas_factor') }}</label>
       <div class="form-label-group">
         <input
             v-model="formFields.gas_factor"
@@ -150,11 +164,15 @@ import {Datetime} from 'vue-datetime'
 import moment from 'moment'
 import 'vue-datetime/dist/vue-datetime.css'
 import {complicationMonitoringState, complicationMonitoringActions} from '@store/helpers';
+import CatLoader from '../ui-kit/CatLoader'
 
 Vue.use(Datetime)
 
+//853 средняя плотность нефти кг/м3
+const averageOilDensity = 853;
+
 export default {
-  name: "omgngdu-form",
+  name: "omgngdu-well-form",
   props: {
     omgngduWell: {
       type: Object,
@@ -168,6 +186,9 @@ export default {
       type: Boolean,
       default: false
     },
+  },
+  components: {
+    CatLoader
   },
   data: function () {
     return {
@@ -186,6 +207,7 @@ export default {
         pressure: null,
         gas_factor: null,
       },
+      loading: false,
     }
   },
   computed: {
@@ -209,38 +231,82 @@ export default {
       return this.isEditing ? "put" : "post";
     }
   },
-  created: function () {
-    this.getAllComplicationMonitoringData();
-  },
   mounted() {
-    if (this.omgngduWell) {
-      let daily_water_production = (this.omgngduWell.daily_fluid_production * this.omgngduWell.bsw) / 100;
+    this.$nextTick(async () => {
+      this.loading = true;
+      await this.getAllComplicationMonitoringObjectsData();
 
-      this.formFields = this.omgngduWell;
-      this.formFields.daily_water_production = daily_water_production;
-    }
+      if (this.omgngduWell) {
+        this.formFields = {
+          gu_id: this.omgngduWell.zu.gu_id,
+          date: this.omgngduWell.date,
+          bsw: this.omgngduWell.bsw,
+          daily_water_production: this.omgngduWell.daily_water_production,
+          ngdu_id: this.omgngduWell.zu.ngdu_id,
+          zu_id: this.omgngduWell.zu_id,
+          daily_fluid_production: this.omgngduWell.daily_fluid_production,
+          temperature: this.omgngduWell.temperature,
+          daily_oil_production: this.omgngduWell.daily_oil_production,
+          cdng_id: this.omgngduWell.zu.gu.cdng_id,
+          well_id: this.omgngduWell.well_id,
+          pressure: this.omgngduWell.pressure,
+          gas_factor: this.omgngduWell.gas_factor,
+        }
+
+        this.chooseZu();
+      }
+      this.loading = false;
+    });
+
   },
   methods: {
     ...complicationMonitoringActions([
-      'getAllComplicationMonitoringData',
+      'getAllComplicationMonitoringObjectsData',
       'getAllNgdus',
       'getAllGus',
       'getAllCdngs',
       'getAllZus',
       'getAllWells',
-      'getGuRelations'
+      'getGuRelations',
+      'getZuRelations',
+      'getNgduRelations',
+      'getCdngRelations'
     ]),
     calculateFluidParams () {
       if (this.formFields.daily_fluid_production && this.formFields.bsw) {
         this.formFields.daily_water_production = (this.formFields.daily_fluid_production * this.formFields.bsw) / 100;
-        this.formFields.daily_oil_production = (this.formFields.daily_fluid_production * (100 - this.formFields.bsw)) / 100;
+        this.formFields.daily_oil_production = ((this.formFields.daily_fluid_production * (100 - this.formFields.bsw)) / 100) * averageOilDensity / 1000;
       }
     },
     async chooseGu() {
+      this.loading = true;
       let gu = await this.getGuRelations(this.formFields.gu_id);
+      this.loading = false;
 
       this.formFields.ngdu_id = gu.ngdu_id;
       this.formFields.cdng_id = gu.cdng_id;
+    },
+    async chooseZu() {
+      this.loading = true;
+      let zu = await this.getZuRelations(this.formFields.zu_id);
+      this.loading = false;
+
+      this.formFields.gu_id = zu.gu_id;
+      this.formFields.ngdu_id = zu.ngdu_id;
+      this.formFields.cdng_id = zu.gu.cdng_id;
+    },
+    async chooseNgdu () {
+      this.loading = true;
+      await this.getNgduRelations(this.formFields.ngdu_id);
+      this.loading = false;
+      this.formFields.gu_id = null;
+    },
+    async chooseCdng () {
+      this.loading = true;
+      let cdng = await this.getCdngRelations(this.formFields.cdng_id);
+      this.loading = false;
+      this.formFields.ngdu_id = cdng.ngdu_id;
+      this.formFields.gu_id = null;
     },
     submitForm () {
       this.axios
