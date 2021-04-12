@@ -2,6 +2,7 @@
 
 namespace App\Models\ComplicationMonitoring;
 
+use App\Models\Pipes\MapPipe;
 use Illuminate\Database\Eloquent\Model;
 
 class PipeType extends Model
@@ -17,5 +18,10 @@ class PipeType extends Model
     public function material()
     {
         return $this->belongsTo(Material::class)->withDefault();
+    }
+
+    public function map_pipe()
+    {
+        return $this->belongsTo(MapPipe::class, 'id', 'type_id');
     }
 }

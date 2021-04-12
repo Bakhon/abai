@@ -3,7 +3,8 @@
     <cat-loader v-show="loading"/>
     <div class="filter-bg" v-if="filterOpened" @click="hideFilters"></div>
     <div class="float-right table-page__links">
-      <a v-if="params.links.create" class="table-page__links-item table-page__links-item_add" :href="params.links.create">
+      <a v-if="params.links.create" class="table-page__links-item table-page__links-item_add"
+         :href="params.links.create">
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path fill-rule="evenodd" clip-rule="evenodd" d="M16 9.6H9.6V16H6.4V9.6H0V6.4H6.4V0H9.6V6.4H16V9.6Z"
                 fill="white"/>
@@ -35,7 +36,7 @@
       <p>{{ params.success }}</p>
     </div>
     <div class="table-page__wrapper">
-      <table class="table">
+      <table class="table table-bordered table-dark" :class="tableClass">
         <thead>
         <tr v-if="params.table_header">
           <th v-for="(colspan, header) in params.table_header" :colspan="colspan">{{ header }}</th>
@@ -153,7 +154,8 @@
               <a v-if="row.links.edit" class="links__item links__item_edit" :href="row.links.edit"></a>
               <a v-if="row.links.show" class="links__item links__item_view" :href="row.links.show"></a>
               <a v-if="row.links.history" class="links__item links__item_history" :href="row.links.history"></a>
-              <a v-if="row.links.delete" href="#" class="links__item links__item_delete" @click.prevent="deleteItem(row)"></a>
+              <a v-if="row.links.delete" href="#" class="links__item links__item_delete"
+                 @click.prevent="deleteItem(row)"></a>
             </div>
           </td>
         </tr>
@@ -181,9 +183,16 @@ export default {
     vSelect,
     CatLoader
   },
-  props: [
-    'params'
-  ],
+  props: {
+    params: {
+      type: Object,
+      required: true
+    },
+    isResponsive: {
+      type: Boolean,
+      default: false
+    }
+  },
   data() {
     return {
       omgca: null,
@@ -214,6 +223,12 @@ export default {
 
       })
       return activeFilter
+    },
+    tableClass() {
+      return {
+        "table-responsive": this.isResponsive,
+        'with-pagination': this.omgca && this.omgca.total > this.omgca.per_page
+      }
     }
   },
   methods: {
@@ -290,7 +305,7 @@ export default {
       this.loadData()
     },
     deleteItem(item) {
-      if(window.confirm('Вы действительно хотите удалить запись?')) {
+      if (window.confirm('Вы действительно хотите удалить запись?')) {
         this.axios.delete(item.links.delete).then(response => {
           this.loadData()
           this.params.success = this.trans('app.deleted')
@@ -335,6 +350,34 @@ export default {
 };
 </script>
 <style lang="scss">
+
+
+/* width */
+table::-webkit-scrollbar {
+  width: 13px;
+}
+
+/* Track */
+table::-webkit-scrollbar-track {
+  background: #333975;
+}
+
+/* Handle */
+table::-webkit-scrollbar-thumb {
+  background: #656A8A;
+
+}
+
+/* Handle on hover */
+table::-webkit-scrollbar-thumb:hover {
+  background: #656A8A;
+
+}
+
+table::-webkit-scrollbar-corner {
+  background: #333975;
+}
+
 .table-page {
   background: #272953;
   padding: 16px 24px 20px 19px;
@@ -343,6 +386,7 @@ export default {
     min-height: 400px;
     overflow-x: auto;
     position: relative;
+    max-width: calc(100vw - 137px);
   }
 
   h1 {
@@ -517,6 +561,15 @@ export default {
     color: white !important;
     margin-bottom: 28px;
 
+    &.table-responsive {
+      overflow: scroll;
+      height: calc(100vh - 205px);
+
+      &.with-pagination {
+        height: calc(100vh - 258px);
+      }
+    }
+
     th {
       background: #333975;
       border: 1px solid #454D7D;
@@ -669,7 +722,8 @@ export default {
     top: 0;
     right: 0;
     bottom: 0;
-    .v-spinner{
+
+    .v-spinner {
       top: 250px;
     }
   }

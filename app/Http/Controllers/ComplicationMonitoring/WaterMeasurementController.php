@@ -3,37 +3,36 @@
 namespace App\Http\Controllers\ComplicationMonitoring;
 
 use App\Filters\WaterMeasurementFilter;
-use App\Http\Controllers\Controller;
 use App\Http\Controllers\CrudController;
 use App\Http\Controllers\Traits\WithFieldsValidation;
 use App\Http\Requests\IndexTableRequest;
 use App\Http\Requests\WaterMeasurementCreateRequest;
 use App\Http\Requests\WaterMeasurementUpdateRequest;
+use App\Models\ComplicationMonitoring\CalculatedCorrosion;
 use App\Models\ComplicationMonitoring\ConstantsValue;
-use App\Models\ComplicationMonitoring\Corrosion as ComplicationMonitoringCorrosion;
-use App\Models\ComplicationMonitoring\GuKormass as ComplicationMonitoringGuKormass;
+use App\Models\ComplicationMonitoring\Corrosion;
+use App\Models\ComplicationMonitoring\GuKormass;
 use App\Models\ComplicationMonitoring\Kormass;
-use App\Models\ComplicationMonitoring\OmgUHE as ComplicationMonitoringOmgUHE;
+use App\Models\ComplicationMonitoring\OmgUHE;
 use App\Models\ComplicationMonitoring\Pipe;
-use App\Models\ComplicationMonitoring\WaterMeasurement as ComplicationMonitoringWaterMeasurement;
-use App\Models\Refs\Cdng as RefsCdng;
-use App\Models\Refs\Field as RefsField;
-use App\Models\Refs\Gu as RefsGu;
-use App\Models\Refs\HydrocarbonOxidizingBacteria as RefsHydrocarbonOxidizingBacteria;
-use App\Models\Refs\Ngdu as RefsNgdu;
-use App\Models\Refs\OtherObjects as RefsOtherObjects;
-use App\Models\Refs\SulphateReducingBacteria as RefsSulphateReducingBacteria;
-use App\Models\Refs\ThionicBacteria as RefsThionicBacteria;
-use App\Models\Refs\WaterTypeBySulin as RefsWaterTypeBySulin;
-use App\Models\Refs\Well as RefsWell;
-use App\Models\Refs\Zu as RefsZu;
-use DateTime;
+use App\Models\ComplicationMonitoring\WaterMeasurement;
+use App\Models\Refs\Cdng;
+use App\Models\Refs\Field;
+use App\Models\Refs\Gu;
+use App\Models\Refs\HydrocarbonOxidizingBacteria;
+use App\Models\Refs\Ngdu;
+use App\Models\Refs\OtherObjects;
+use App\Models\Refs\SulphateReducingBacteria;
+use App\Models\Refs\ThionicBacteria;
+use App\Models\Refs\WaterTypeBySulin;
+use App\Models\Refs\Well;
+use App\Models\Refs\Zu;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
-use Maatwebsite\Excel\Facades\Excel;
+use Carbon\Carbon;
+use App\Http\Resources\WaterMeasurementListResource;
+use App\Jobs\ExportWaterMeasurementToExcel;
 
 class WaterMeasurementController extends CrudController
 {
@@ -63,7 +62,7 @@ class WaterMeasurementController extends CrudController
                     'title' => trans('monitoring.other_objects'),
                     'type' => 'select',
                     'filter' => [
-                        'values' => \App\Models\Refs\OtherObjects::whereHas('watermeasurement')
+                        'values' => OtherObjects::whereHas('watermeasurement')
                             ->orderBy('name', 'asc')
                             ->get()
                             ->map(
@@ -79,10 +78,10 @@ class WaterMeasurementController extends CrudController
                 ],
                 
                 'gu' => [
-                    'title' => trans('monitoring.gu'),
+                    'title' => trans('monitoring.gu.gu'),
                     'type' => 'select',
                     'filter' => [
-                        'values' => \App\Models\Refs\Gu::whereHas('watermeasurement')
+                        'values' => Gu::whereHas('watermeasurement')
                             ->orderBy('name', 'asc')
                             ->get()
                             ->map(
@@ -145,7 +144,7 @@ class WaterMeasurementController extends CrudController
                     'title' => trans('monitoring.wm.fields.water_type_by_sulin'),
                     'type' => 'select',
                     'filter' => [
-                        'values' => \App\Models\Refs\WaterTypeBySulin::whereHas('watermeasurement')
+                        'values' => WaterTypeBySulin::whereHas('watermeasurement')
                             ->orderBy('name', 'asc')
                             ->get()
                             ->map(
@@ -203,7 +202,7 @@ class WaterMeasurementController extends CrudController
                     'title' => trans('monitoring.wm.fields.sulphate_reducing_bacteria'),
                     'type' => 'select',
                     'filter' => [
-                        'values' => \App\Models\Refs\SulphateReducingBacteria::whereHas('watermeasurement')
+                        'values' => SulphateReducingBacteria::whereHas('watermeasurement')
                             ->orderBy('name', 'asc')
                             ->get()
                             ->map(
@@ -221,7 +220,7 @@ class WaterMeasurementController extends CrudController
                     'title' => trans('monitoring.wm.fields.hydrocarbon_oxidizing_bacteria'),
                     'type' => 'select',
                     'filter' => [
-                        'values' => \App\Models\Refs\HydrocarbonOxidizingBacteria::whereHas('watermeasurement')
+                        'values' => HydrocarbonOxidizingBacteria::whereHas('watermeasurement')
                             ->orderBy('name', 'asc')
                             ->get()
                             ->map(
@@ -239,7 +238,7 @@ class WaterMeasurementController extends CrudController
                     'title' => trans('monitoring.wm.fields.thionic_bacteria'),
                     'type' => 'select',
                     'filter' => [
-                        'values' => \App\Models\Refs\ThionicBacteria::whereHas('watermeasurement')
+                        'values' => ThionicBacteria::whereHas('watermeasurement')
                             ->orderBy('name', 'asc')
                             ->get()
                             ->map(
@@ -268,7 +267,7 @@ class WaterMeasurementController extends CrudController
 
     public function list(IndexTableRequest $request)
     {
-        $query = ComplicationMonitoringWaterMeasurement::query()
+        $query = WaterMeasurement::query()
             ->with('other_objects')
             ->with('ngdu')
             ->with('cdng')
@@ -285,13 +284,13 @@ class WaterMeasurementController extends CrudController
             ->paginate(25);
 
         return response()->json(
-            json_decode(\App\Http\Resources\WaterMeasurementListResource::collection($watermeasurement)->toJson())
+            json_decode(WaterMeasurementListResource::collection($watermeasurement)->toJson())
         );
     }
 
     public function export(IndexTableRequest $request)
     {
-        $job = new \App\Jobs\ExportWaterMeasurementToExcel($request->validated());
+        $job = new ExportWaterMeasurementToExcel($request->validated());
         $this->dispatch($job);
 
         return response()->json(
@@ -322,7 +321,7 @@ class WaterMeasurementController extends CrudController
     {
         $this->validateFields($request, 'watermeasurement');
 
-        $wm = new ComplicationMonitoringWaterMeasurement;
+        $wm = new WaterMeasurement;
         $wm->fill($request->validated());
         $wm->cruser_id = auth()->id();
         $wm->save();
@@ -338,7 +337,7 @@ class WaterMeasurementController extends CrudController
      */
     public function show($id)
     {
-        $wm = ComplicationMonitoringWaterMeasurement::where('id', '=', $id)
+        $wm = WaterMeasurement::where('id', $id)
             ->with('other_objects')
             ->with('ngdu')
             ->with('cdng')
@@ -360,7 +359,7 @@ class WaterMeasurementController extends CrudController
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function history(ComplicationMonitoringWaterMeasurement $watermeasurement)
+    public function history(WaterMeasurement $watermeasurement)
     {
         $watermeasurement->load('history');
         return view('watermeasurement.history', compact('watermeasurement'));
@@ -372,7 +371,7 @@ class WaterMeasurementController extends CrudController
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(ComplicationMonitoringWaterMeasurement $watermeasurement)
+    public function edit(WaterMeasurement $watermeasurement)
     {
         $validationParams = $this->getValidationParams('watermeasurement');
         return view('watermeasurement.edit', compact('watermeasurement', 'validationParams'));
@@ -387,7 +386,7 @@ class WaterMeasurementController extends CrudController
      */
     public function update(
         WaterMeasurementUpdateRequest $request,
-        ComplicationMonitoringWaterMeasurement $watermeasurement
+        WaterMeasurement $watermeasurement
     ) {
         $this->validateFields($request, 'watermeasurement');
         $watermeasurement->update($request->validated());
@@ -402,7 +401,7 @@ class WaterMeasurementController extends CrudController
      */
     public function destroy(Request $request, $id)
     {
-        $wm = ComplicationMonitoringWaterMeasurement::find($id);
+        $wm = WaterMeasurement::find($id);
         $wm->delete();
 
         if ($request->ajax()) {
@@ -414,7 +413,7 @@ class WaterMeasurementController extends CrudController
 
     public function getFields()
     {
-        $otherObjects = RefsField::all();
+        $otherObjects = Field::all();
 
         return response()->json(
             [
@@ -427,7 +426,7 @@ class WaterMeasurementController extends CrudController
 
     public function getOtherObjects()
     {
-        $otherObjects = RefsOtherObjects::get();
+        $otherObjects = OtherObjects::get();
 
         return response()->json(
             [
@@ -440,7 +439,7 @@ class WaterMeasurementController extends CrudController
 
     public function getNgdu()
     {
-        $ngdu = RefsNgdu::get();
+        $ngdu = Ngdu::get();
 
         return response()->json(
             [
@@ -453,7 +452,7 @@ class WaterMeasurementController extends CrudController
 
     public function getCdng()
     {
-        $cdng = RefsCdng::get();
+        $cdng = Cdng::get();
 
         return response()->json(
             [
@@ -466,8 +465,8 @@ class WaterMeasurementController extends CrudController
 
     public function getGu(Request $request)
     {
-        $gu = RefsGu::query()
-            ->where('cdng_id', '=', $request->cdng_id)
+        $gu = Gu::query()
+            ->where('cdng_id', $request->cdng_id)
             ->select('name', 'id', 'cdng_id')
             //dirty hack for alphanumeric sort but other solutions doesn't work
             ->orderByRaw('lpad(name, 10, 0) asc')
@@ -484,7 +483,7 @@ class WaterMeasurementController extends CrudController
 
     public function getZu(Request $request)
     {
-        $zu = RefsZu::where('gu_id', '=', $request->gu_id)->get();
+        $zu = Zu::where('gu_id', $request->gu_id)->get();
 
         return response()->json(
             [
@@ -497,7 +496,7 @@ class WaterMeasurementController extends CrudController
 
     public function getWell(Request $request)
     {
-        $wells = RefsWell::where('zu_id', '=', $request->zu_id)->get();
+        $wells = Well::where('zu_id', $request->zu_id)->get();
 
         return response()->json(
             [
@@ -510,7 +509,7 @@ class WaterMeasurementController extends CrudController
 
     public function getWaterBySulin()
     {
-        $wbs = RefsWaterTypeBySulin::get();
+        $wbs = WaterTypeBySulin::get();
 
 
         return response()->json(
@@ -524,7 +523,7 @@ class WaterMeasurementController extends CrudController
 
     public function getSulphateReducingBacteria()
     {
-        $srb = RefsSulphateReducingBacteria::get();
+        $srb = SulphateReducingBacteria::get();
 
 
         return response()->json(
@@ -538,7 +537,7 @@ class WaterMeasurementController extends CrudController
 
     public function getHydrocarbonOxidizingBacteria()
     {
-        $hob = RefsHydrocarbonOxidizingBacteria::get();
+        $hob = HydrocarbonOxidizingBacteria::get();
 
 
         return response()->json(
@@ -552,7 +551,7 @@ class WaterMeasurementController extends CrudController
 
     public function getThionicBacteria()
     {
-        $hb = RefsThionicBacteria::get();
+        $hb = ThionicBacteria::get();
 
 
         return response()->json(
@@ -566,7 +565,7 @@ class WaterMeasurementController extends CrudController
 
     public function getWm(Request $request)
     {
-        $wm = ComplicationMonitoringWaterMeasurement::find($request->id);
+        $wm = WaterMeasurement::find($request->id);
 
 
         return response()->json(
@@ -580,7 +579,7 @@ class WaterMeasurementController extends CrudController
 
     public function getAllGu()
     {
-        $gus = RefsGu::query()
+        $gus = Gu::query()
             ->select('name', 'id', 'cdng_id')
             //dirty hack for alphanumeric sort but other solutions doesn't work
             ->orderByRaw('lpad(name, 10, 0) asc')
@@ -597,81 +596,53 @@ class WaterMeasurementController extends CrudController
 
     public function getGuData(Request $request)
     {
-        $wm = ComplicationMonitoringWaterMeasurement::query()
-            ->where('gu_id', '=', $request->gu_id)
-            ->where('date', '>=', \Carbon\Carbon::now()->subYear()->startOfMonth())
-            ->where('date', '<=', \Carbon\Carbon::now()->startOfMonth())
-            ->get()
-            ->groupBy(
-                function ($item) {
-                    return \Carbon\Carbon::parse($item->date)->diffInMonths(\Carbon\Carbon::now()->startOfMonth()) > 6
-                        ? '1 полугодие'
-                        : '2 полугодие';
-                }
-            );
+        $wm = WaterMeasurement::query()
+            ->where('gu_id', $request->gu_id)
+            ->where('date', '>=', Carbon::now()->subYear())
+            ->where('date', '<=', Carbon::now())
+            ->orderBy('date')
+            ->get();
 
-        $uhe = ComplicationMonitoringOmgUHE::query()
-            ->where('gu_id', '=', $request->gu_id)
-            ->where('date', '>=', \Carbon\Carbon::now()->subYear()->startOfMonth())
-            ->where('date', '<=', \Carbon\Carbon::now()->startOfMonth())
-            ->get()
-            ->groupBy(
-                function ($item) {
-                    return \Carbon\Carbon::parse($item->date)->diffInMonths(\Carbon\Carbon::now()->startOfMonth()) > 6
-                        ? '1 полугодие'
-                        : '2 полугодие';
-                }
-            );
+        $uhe = OmgUHE::query()
+            ->where('gu_id', $request->gu_id)
+            ->where('date', '>=', Carbon::now()->subDays(31))
+            ->where('date', '<=', Carbon::now())
+            ->get();
 
-        $corrosion = ComplicationMonitoringCorrosion::query()
-            ->where('gu_id', '=', $request->gu_id)
-            ->where(
-                'final_date_of_corrosion_velocity_with_inhibitor_measure',
-                '>=',
-                \Carbon\Carbon::now()->subYear()->startOfMonth()
-            )
-            ->where(
-                'final_date_of_corrosion_velocity_with_inhibitor_measure',
-                '<=',
-                \Carbon\Carbon::now()->startOfMonth()
-            )
-            ->get()
-            ->groupBy(
-                function ($item) {
-                    return \Carbon\Carbon::parse($item->date)->diffInMonths(\Carbon\Carbon::now()->startOfMonth()) > 6
-                        ? '1 полугодие'
-                        : '2 полугодие';
-                }
-            );
+        $corrosion = CalculatedCorrosion::query()
+            ->where('gu_id', $request->gu_id)
+            ->where('date', '>=', Carbon::now()->subDays(31))
+            ->where('date', '<=', Carbon::now())
+            ->get();
 
-        $kormass = ComplicationMonitoringGuKormass::where('gu_id', '=', $request->gu_id)->with('kormass')->first();
-        $pipe = Pipe::where('gu_id', '=', $request->gu_id)->where('plot', '=', 'eg')->first();
-        $pipeAB = Pipe::where('gu_id', '=', $request->gu_id)->where('plot', '=', 'ab')->first();
-        $lastCorrosion = ComplicationMonitoringCorrosion::where('gu_id', '=', $request->gu_id)->whereNotNull(
-            'corrosion_velocity_with_inhibitor'
-        )->latest()->first();
+        $kormass = GuKormass::where('gu_id', $request->gu_id)->with('kormass')->first();
+
+        $pipe = Pipe::where('gu_id', $request->gu_id)->where('plot', 'eg')->first();
+        $pipeAB = Pipe::where('gu_id', $request->gu_id)->where('plot', 'ab')->first();
+
         $constantsValues = ConstantsValue::get();
-        $chartDtCarbonDioxide = $chartDtHydrogenSulfide = $chartIngibitor = $chartCorrosion = [
+
+        $lastCorrosion = Corrosion::where('gu_id', $request->gu_id)
+            ->whereNotNull('corrosion_velocity_with_inhibitor')->latest()->first();
+
+        $chartIngibitor = $chartCorrosion = [
             'dt' => [],
             'value' => []
         ];
 
-        foreach ($wm as $key => $wmMonth) {
-            $chartDtCarbonDioxide['dt'][] = $key;
-            $chartDtCarbonDioxide['value'][] = $wmMonth->avg('carbon_dioxide');
+        $CarbonAndHydrogenChartData = $this->getCarbonAndHydrogenChartData($wm);
+        $chartDtCarbonDioxide = $CarbonAndHydrogenChartData['chartDtCarbonDioxide'];
+        $chartDtHydrogenSulfide = $CarbonAndHydrogenChartData['chartDtHydrogenSulfide'];
 
-            $chartDtHydrogenSulfide['dt'][] = $key;
-            $chartDtHydrogenSulfide['value'][] = $wmMonth->avg('hydrogen_sulfide');
+
+        foreach ($uhe as $key => $val) {
+            $chartIngibitor['dt'][] = Carbon::parse($val->date)->format('Y-m-d');
+            $chartIngibitor['value'][] = $val->current_dosage;
         }
 
-        foreach ($uhe as $key => $uheMonth) {
-            $chartIngibitor['dt'][] = $key;
-            $chartIngibitor['value'][] = $uheMonth->avg('current_dosage');
-        }
-
-        foreach ($corrosion as $key => $corrosionMonth) {
-            $chartCorrosion['dt'][] = $key;
-            $chartCorrosion['value'][] = $corrosionMonth->avg('corrosion_velocity_with_inhibitor');
+        foreach ($corrosion as $key => $val) {
+            $chartCorrosion['dt'][] = Carbon::parse($val->date)->format('Y-m-d');
+            $chartCorrosion['value'][] = $val->corrosion;
         }
 
         if ($kormass && $kormass->kormass->name != 'Прямой УПСВ') {
@@ -699,11 +670,53 @@ class WaterMeasurementController extends CrudController
         );
     }
 
+    private function getCarbonAndHydrogenChartData (\Illuminate\Database\Eloquent\Collection $wm): array
+    {
+        $chartDtCarbonDioxideByMonths = [];
+        $chartDtHydrogenSulfideByMonths = [];
+
+        foreach ($wm as $key => $val) {
+            $month = Carbon::parse($val->date)->month;
+            $chartDtCarbonDioxideByMonths[$month][] = $val->carbon_dioxide;
+            $chartDtHydrogenSulfideByMonths[$month][] = $val->hydrogen_sulfide;
+        }
+
+        for ($month = 0; $month < 12; $month++) {
+            $month_date = Carbon::now()->subYear()->addMonth($month);
+            $month_name = $month_date->format('Y-m');
+            $month_num = $month_date->month;
+
+
+            $chartDtCarbonDioxide['dt'][] = $month_name;
+            $average = 0;
+            if (isset($chartDtCarbonDioxideByMonths[$month_num])) {
+                $dtCarbonDioxideMonth = array_filter($chartDtCarbonDioxideByMonths[$month_num]);
+                $average = count($dtCarbonDioxideMonth) ? round(array_sum($dtCarbonDioxideMonth)/count($dtCarbonDioxideMonth), 2) : 0;
+            }
+            $chartDtCarbonDioxide['value'][] = $average;
+
+
+            $chartDtHydrogenSulfide['dt'][] = $month_name;
+            $average = 0;
+            if (isset($chartDtHydrogenSulfideByMonths[$month_num])) {
+                $dtHydrogenSulfideMonth = array_filter($chartDtHydrogenSulfideByMonths[$month_num]);
+                $average = count($dtHydrogenSulfideMonth) ? round(array_sum($dtHydrogenSulfideMonth)/count($dtHydrogenSulfideMonth), 2) : 0;
+            }
+
+            $chartDtHydrogenSulfide['value'][] = $average;
+        }
+
+        return [
+            'chartDtCarbonDioxide' => $chartDtCarbonDioxide,
+            'chartDtHydrogenSulfide' => $chartDtHydrogenSulfide
+        ];
+    }
+
     public function getGuNgduCdngField(Request $request)
     {
-        $gu = RefsGu::where('id', '=', $request->gu_id)->first();
-        $cdng = RefsCdng::where('id', '=', $gu->cdng_id)->first();
-        $kormass = ComplicationMonitoringGuKormass::where('gu_id', '=', $request->gu_id)->first();
+        $gu = Gu::where('id', $request->gu_id)->first();
+        $cdng = Cdng::where('id', $gu->cdng_id)->first();
+        $kormass = GuKormass::where('gu_id', $request->gu_id)->first();
 
         return response()->json(
             [

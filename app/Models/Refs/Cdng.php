@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Cdng extends Model
 {
+    protected $fillable = ['name'];
+
     public function gu()
     {
         return $this->hasMany(Gu::class);

@@ -7,7 +7,7 @@
                 @click="accessTab = code">
                   <a href="#">
                   <span v-html="tab.ico"></span>
-                  <span>{{tab.name}}</span>
+                  <span>{{trans(tab.name)}}</span>
                   </a>
                 </li>
               </ul>

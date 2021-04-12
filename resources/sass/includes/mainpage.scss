@@ -71,10 +71,11 @@
 
   &__blocks {
     display: flex;
-    justify-content: space-between;
+    flex-wrap: wrap;
     width: 100%;
 
     &-item {
+      margin: 0 45px 20px 0;
       text-align: center;
       width: 180px;
 

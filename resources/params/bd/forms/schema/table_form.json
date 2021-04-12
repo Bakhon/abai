@@ -1,0 +1,82 @@
+{
+  "type": "object",
+  "properties": {
+    "columns": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "link",
+              "float",
+              "integer",
+              "text",
+              "calc",
+              "hidden",
+              "history",
+              "history_graph",
+              "copy"
+            ]
+          },
+          "title": {
+            "type": "string"
+          },
+          "is_editable": {
+            "type": "boolean"
+          },
+          "table": {
+            "type": "string"
+          },
+          "column": {
+            "type": "string"
+          },
+          "formula": {
+            "type": "string"
+          },
+          "validation": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "type",
+          "title",
+          "is_editable"
+        ],
+        "oneOf": [
+          {
+            "properties": {
+              "type": {
+                "enum": [
+                  "link",
+                  "float",
+                  "integer",
+                  "text",
+                  "hidden",
+                  "history",
+                  "history_graph",
+                  "copy"
+                ]
+              }
+            }
+          },
+          {
+            "required": [
+              "formula"
+            ]
+          }
+        ],
+        "dependencies": {
+          "table": [
+            "column"
+          ]
+        }
+      }
+    }
+  }
+}

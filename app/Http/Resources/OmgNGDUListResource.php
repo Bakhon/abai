@@ -32,8 +32,9 @@ class OmgNGDUListResource extends CrudListResource
                 'daily_gas_production_in_sib' => $this->daily_gas_production_in_sib,
                 'surge_tank_pressure' => $this->surge_tank_pressure,
                 'pump_discharge_pressure' => $this->pump_discharge_pressure,
-                'heater_inlet_pressure' => $this->heater_inlet_pressure,
-                'heater_output_pressure' => $this->heater_output_pressure,
+                'heater_inlet_temperature' => $this->heater_inlet_temperature,
+                'heater_output_temperature' => $this->heater_output_temperature,
+                'temperature' => $this->temperature,
             ],
         ];
 

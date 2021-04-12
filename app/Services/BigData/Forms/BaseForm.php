@@ -4,15 +4,16 @@ declare(strict_types=1);
 
 namespace App\Services\BigData\Forms;
 
-use App\Http\Resources\BigData\HistoryResource;
+use App\Exceptions\ParseJsonException;
 use App\Models\BigData\Infrastructure\History;
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\File;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 abstract class BaseForm
 {
+    protected $jsonValidationSchemeFileName;
+
     protected $configurationFileName;
 
     protected $request;
@@ -27,16 +28,27 @@ abstract class BaseForm
         $this->validator = app()->make(\App\Services\BigData\CustomValidator::class);
     }
 
-    public function getHistory(int $id, \DateTimeInterface $date): JsonResource
+    public function getHistory(int $id, \DateTimeInterface $date): array
     {
-        $history = History::query()
+        $historyItems = History::query()
             ->where('row_id', $id)
             ->where('date', $date)
             ->orderBy('created_at', 'desc')
             ->with('user')
             ->get();
 
-        return HistoryResource::collection($history);
+        $result = [];
+
+        foreach ($historyItems as $history) {
+            foreach ($history->payload as $key => $value) {
+                $result[$key][$history->created_at->format('H:i:s')] = [
+                    'user' => $history->user->name,
+                    'value' => $value
+                ];
+            }
+        }
+
+        return $result;
     }
 
 
@@ -66,14 +78,21 @@ abstract class BaseForm
         );
     }
 
+    public function getConfigFilePath()
+    {
+        return base_path($this->configurationPath) . "/{$this->configurationFileName}.json";
+    }
+
     protected function params(): array
     {
-        $jsonFile = base_path($this->configurationPath) . "/{$this->configurationFileName}.json";
+        $jsonFile = $this->getConfigFilePath();
         if (!File::exists($jsonFile)) {
             throw new NotFoundHttpException();
         }
-        $params = json_decode(file_get_contents($jsonFile), true);
+        $params = json_decode(file_get_contents($jsonFile));
+        $this->validateParams($params);
 
+        $params = json_decode(json_encode($params), true);
         return $this->localizeParams($params);
     }
 
@@ -85,11 +104,12 @@ abstract class BaseForm
     protected function getFields(): \Illuminate\Support\Collection
     {
         $fields = collect();
-
         foreach ($this->params()['tabs'] as $tab) {
             foreach ($tab['blocks'] as $block) {
-                foreach ($block['items'] as $item) {
-                    $fields[] = $item;
+                foreach ($block as $subBlock) {
+                    foreach ($subBlock['items'] as $item) {
+                        $fields[] = $item;
+                    }
                 }
             }
         }
@@ -147,5 +167,20 @@ abstract class BaseForm
             }
         }
         return $params;
+    }
+
+    private function validateParams($params)
+    {
+        $validator = new \JsonSchema\Validator();
+        $schemaFilePath = 'file://' . resource_path('params/bd/forms/schema/') . $this->jsonValidationSchemeFileName;
+
+        $validator->validate($params, (object)['$ref' => $schemaFilePath]);
+
+        if (!$validator->isValid()) {
+            foreach ($validator->getErrors() as $error) {
+                $errors[] = sprintf("[%s] %s\n", $error['property'], $error['message']);
+            }
+            throw new ParseJsonException(implode('<br>', $errors));
+        }
     }
 }

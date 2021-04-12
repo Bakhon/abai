@@ -28,7 +28,7 @@
                     <tr>
                         <td>{{ trans('monitoring.omguhe.fields.dosator_idle') }}</td>
                         <td>
-                            @if($omguhe->out_of_service_оf_dosing == 1)
+                            @if($omguhe->out_of_service_of_dosing == 1)
                                 {{ trans('monitoring.omguhe.fields.dosator.idle') }}
                             @else
                                 {{ trans('monitoring.omguhe.fields.dosator.no_idle') }}

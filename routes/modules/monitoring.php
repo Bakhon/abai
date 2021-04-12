@@ -7,8 +7,6 @@ Route::group(
             ['middleware' => 'auth'],
             function () {
 
-                Route::get('/monitor', 'DruidController@monitor')->name('monitor');
-
                 Route::get('watermeasurement/list', 'ComplicationMonitoring\WaterMeasurementController@list')->name(
                     'watermeasurement.list'
                 );
@@ -81,6 +79,9 @@ Route::group(
                 Route::get('pipes/history/{pipe}', 'PipeController@history')->name('pipes.history');
                 Route::resource('pipes','PipeController');
 
+                Route::get('pipe_types/list', 'ComplicationMonitoring\PipeTypesController@list')->name('pipe_types.list');
+                Route::resource('pipe_types','ComplicationMonitoring\PipeTypesController');
+
                 Route::get('inhibitors/list', 'InhibitorsController@list')->name('inhibitors.list');
                 Route::resource('inhibitors','InhibitorsController');
 
@@ -112,19 +113,25 @@ Route::group(
                 Route::delete('/gu-map/well/{well}', 'MapsController@deleteWell')->name('maps.delete_well');
                 Route::delete('/gu-map/pipe/{pipe}', 'MapsController@deletePipe')->name('maps.delete_pipe');
 
+                Route::get('/gu-map/test', 'MapsController@test');
+
                 Route::get('/monitor/reports', 'ReportsController@index')->name('monitor.reports');
                 Route::get('/monitor/reports/generate', 'ReportsController@generateReport');
 
                 Route::get('/settings/fields', 'Settings\FieldValidationsController@index')->name('settings.fields');
-                Route::post('/settings/fields', 'Settings\FieldValidationsController@update')->name('settings.fields.update');
+                Route::post('/settings/fields', 'Settings\FieldValidationsController@update')->name(
+                    'settings.fields.update'
+                );
 
                 Route::get('gus/list', 'ComplicationMonitoring\GusController@list')->name('gus.list');
                 Route::get('gus/history/{gu}', 'ComplicationMonitoring\GusController@history')->name('gus.history');
-                Route::resource('gus','ComplicationMonitoring\GusController');
+                Route::resource('gus', 'ComplicationMonitoring\GusController');
 
                 Route::get('zus/list', 'ComplicationMonitoring\ZusController@list')->name('zus.list');
                 Route::get('zus/history/{zu}', 'ComplicationMonitoring\ZusController@history')->name('zus.history');
-                Route::resource('zus','ComplicationMonitoring\ZusController');
+                Route::resource('zus', 'ComplicationMonitoring\ZusController');
+
+                Route::get('/monitor/{gu?}', 'DruidController@monitor')->name('monitor');
             }
         );
     }

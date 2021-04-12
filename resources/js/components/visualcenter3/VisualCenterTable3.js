@@ -8,20 +8,21 @@ import mainMenuConfiguration from './main_menu_configuration.json';
 import {dzoMapState, dzoMapActions} from '@store/helpers';
 
 import mainMenu from './widgets/mainMenu';
-import сompaniesDzo from './data_managers/dzoCompanies';
-import helpers from './data_managers/helpers';
-import otm from './data_managers/otm';
-import chemistry from './data_managers/chemistry';
+import сompaniesDzo from './dataManagers/dzoCompanies';
+import helpers from './dataManagers/helpers';
+import otm from './dataManagers/otm';
+import chemistry from './dataManagers/chemistry';
 import oilRates from './widgets/oilRates';
 import usdRates from './widgets/usdRates';
 import injectionWells from './widgets/injectionWells';
 import productionWells from './widgets/productionWells';
 import companyStaff from './widgets/companyStaff';
 import mainStatisticsTable from './widgets/mainStatisticsTable';
-import wells from './data_managers/wells';
-import rates from './data_managers/rates';
-import dates from './data_managers/dates';
-import oilProductionFilters from './data_managers/oilProductionFilters';
+import wells from './dataManagers/wells';
+import rates from './dataManagers/rates';
+import dates from './dataManagers/dates';
+import oilProductionFilters from './dataManagers/oilProductionFilters';
+import mainTableChart from './widgets/mainTableChart.js';
 
 
 Vue.component("calendar", Calendar);
@@ -41,7 +42,6 @@ export default {
             noData: '',
             lastDate1: 0,
             lastDate2: 0,
-            thousand: 'тыс.',
             personalFact: '',
             oilChartHeadName: this.trans('visualcenter.getoildynamic'),
             productionFactPercentOneDzo: '',
@@ -49,19 +49,9 @@ export default {
             quantityRange: '',
             productionFactPersent: '',
             productionPlanPersent: '',
-            quantityGetProductionOilandGas: "",
             oil_factDayPercent: "",
             oil_dlv_factDayPercent: "",
             gas_factDayPercent: "",
-            oil_factDay: "",
-            oil_planDay: "",
-            oil_dlv_factDay: "",
-            oil_dlv_planDay: "",
-            gas_factDay: "",
-            gas_planDay: "",
-            oil_dlv_factDayProgressBar: "",
-            oil_factDayProgressBar: "",
-            gas_factDayProgressBar: "",
             index: "",
             widthProgress: "90",
             NameDzoFull: {
@@ -104,6 +94,19 @@ export default {
             planFieldName: "oil_plan",
             factFieldName: "oil_fact",
             metricName: this.trans("visualcenter.chemistryMetricTon"),
+            productionParams : {
+                oil_plan: 0,
+                oil_fact: 0,
+                oil_dlv_plan: 0,
+                oil_dlv_fact: 0,
+                gas_plan: 0,
+                gas_fact: 0,
+            },
+            dailyProgressBars: {
+                oilDelivery: 0,
+                oil: 0,
+                gas: 0,
+            },
         };
     },
     methods: {
@@ -122,127 +125,55 @@ export default {
         },
 
         getProductionOilandGas(data) {
-            if (data) {
-                var timestampToday = this.timestampToday;
-                var timestampEnd = this.timestampEnd;
-                var company = this.company;
-                if (company != "all") {
-                    data = _.filter(data, _.iteratee({dzo: company}));
-                }
-                var dataWithMay = new Array();
-                dataWithMay = _.filter(data, function (item) {
-                    return _.every([
-                        _.inRange(
-                            item.__time,
-                            timestampToday,
-                            timestampEnd + 10
-                        ),
-                    ]);
-                });
-
-                var quantityGetProductionOilandGas = Object.keys(_.filter(dataWithMay, _.iteratee({dzo: dataWithMay[0].dzo}))).length;//k1q
-                this.quantityGetProductionOilandGas = quantityGetProductionOilandGas;
-
-
-                var SummFromRange = _(dataWithMay)
-                    .groupBy("dzo")
-                    .map((dzo, id) => ({
-                        dzo: id,
-                        oil_plan: _.round(_.sumBy(dzo, 'oil_plan'), 0),
-                        oil_fact: _.round(_.sumBy(dzo, 'oil_fact'), 0),
-                        oil_dlv_plan: _.round(_.sumBy(dzo, 'oil_dlv_plan'), 0),
-                        oil_dlv_fact: _.round(_.sumBy(dzo, 'oil_dlv_fact'), 0),
-                        gas_plan: _.round(_.sumBy(dzo, 'gas_plan'), 0),
-                        gas_fact: _.round(_.sumBy(dzo, 'gas_fact'), 0),
-                    }))
-
-                    .value();
-
-
-                var oil_planSumm = _.reduce(
-                    SummFromRange,
-                    function (memo, item) {
-                        return memo + item.oil_plan;
-                    },
-                    0
-                );
-
-
-                var oil_factSumm = _.reduce(
-                    SummFromRange,
-                    function (memo, item) {
-                        return memo + item.oil_fact;
-                    },
-                    0
-                );
-
-
-                var oil_dlv_planSumm = _.reduce(
-                    SummFromRange,
-                    function (memo, item) {
-                        return memo + item.oil_dlv_plan;
-                    },
-                    0
-                );
-
-
-                var oil_dlv_factSumm = _.reduce(
-                    SummFromRange,
-                    function (memo, item) {
-                        return memo + item.oil_dlv_fact;
-                    },
-                    0
-                );
-
-
-                var gas_planSumm = _.reduce(
-                    SummFromRange,
-                    function (memo, item) {
-                        return memo + item.gas_plan;
-                    },
-                    0
-                );
-
-
-                var gas_factSumm = _.reduce(
-                    SummFromRange,
-                    function (memo, item) {
-                        return memo + item.gas_fact;
-                    },
-                    0
-                );
-
-                if (oil_factSumm) {
-                    this.oil_factDay = oil_factSumm;
-                }
-                if (oil_planSumm) {
-                    this.oil_planDay = oil_planSumm;
-                }
-                if (oil_factSumm || oil_planSumm) {
-                    this.oil_factDayProgressBar = (oil_factSumm / oil_planSumm) * 100;
-                }
-
-                if (oil_dlv_factSumm) {
-                    this.oil_dlv_factDay = oil_dlv_factSumm;
-                }
-                if (oil_dlv_planSumm) {
-                    this.oil_dlv_planDay = oil_dlv_planSumm;
-                }
-                if (oil_dlv_factSumm || oil_dlv_planSumm) {
-                    this.oil_dlv_factDayProgressBar = (oil_dlv_factSumm / oil_dlv_planSumm) * 100;
-                }
-
-                if (gas_factSumm) {
-                    this.gas_factDay = gas_factSumm;
-                }
-                if (gas_planSumm) {
-                    this.gas_planDay = gas_planSumm;
-                }
-                if (gas_factSumm || gas_planSumm) {
-                    this.gas_factDayProgressBar = (gas_factSumm / gas_planSumm) * 100;
-                }
-
+            if (this.company != "all") {
+                data = _.filter(data, _.iteratee({dzo: this.company}));
             }
+            let productionDataInPeriodRange = this.getProductionDataInPeriodRange(data);
+            let productionSummary = this.getProductionSummary(productionDataInPeriodRange);
+
+            this.updateProductionSummary(productionSummary);
+            this.dailyProgressBars.oil = this.getProductionProgressBarData('oil_plan','oil_fact');
+            this.dailyProgressBars.oilDelivery = this.getProductionProgressBarData('oil_dlv_plan','oil_dlv_fact');
+            this.dailyProgressBars.gas = this.getProductionProgressBarData('gas_plan','gas_fact');
+        },
+        
+        getProductionDataInPeriodRange(data) {
+            let self = this;
+            return _.filter(data, function (item) {
+                return _.every([
+                    _.inRange(
+                        item.__time,
+                        self.timestampToday,
+                        self.timestampEnd
+                    ),
+                ]);
+            });
+        },
+        
+        getProductionSummary(data) {
+            return _(data)
+                .groupBy("dzo")
+                .map((dzo, id) => ({
+                    dzo: id,
+                    oil_plan: _.round(_.sumBy(dzo, 'oil_plan'), 0),
+                    oil_fact: _.round(_.sumBy(dzo, 'oil_fact'), 0),
+                    oil_dlv_plan: _.round(_.sumBy(dzo, 'oil_dlv_plan'), 0),
+                    oil_dlv_fact: _.round(_.sumBy(dzo, 'oil_dlv_fact'), 0),
+                    gas_plan: _.round(_.sumBy(dzo, 'gas_plan'), 0),
+                    gas_fact: _.round(_.sumBy(dzo, 'gas_fact'), 0),
+                }))
+                .value();
+        },
+
+        updateProductionSummary(data) {
+            let self = this;
+            _.forEach(Object.keys(this.productionParams), function(itemName) {
+                self.productionParams[itemName] = _.sumBy(data,itemName);
+            });
+        },
+
+        getProductionProgressBarData(planFieldName,factFieldName) {
+            return (this.productionParams[factFieldName] / this.productionParams[planFieldName]) * 100;
         },
 
         getProductionOilandGasPercent(data) {
@@ -463,7 +394,6 @@ export default {
 
                 this.dzoCompaniesSummaryForChart = this.getProductionForChart(dataWithMay3);
             } else {
-
                 this.dzoCompaniesSummaryForChart = this.getProductionForChart(dataWithMay);
             }
 
@@ -495,6 +425,13 @@ export default {
                 this.noData = "";
             }
             this.tables = summForTables;
+        },
+
+        getFilteredData(data, type) {
+            _.forEach(this.dzoType[type], function (dzoName) {
+                data = _.reject(data, _.iteratee({dzo: dzoName}));
+            });
+            return data;
         },
 
         processDataForAllCompanies(data, timestampToday, timestampEnd, start, end, planFieldName, factFieldName, chartSecondaryName) {
@@ -540,6 +477,7 @@ export default {
 
                 this.dzoCompaniesSummaryForChart = this.getProductionForChart(dataWithMay2);
             } else {
+                this.dzoInputData = dataWithMay;
                 this.dzoCompaniesSummaryForChart = this.getProductionForChart(dataWithMay);
             }
 
@@ -645,43 +583,14 @@ export default {
             var factMonth = [];
             var planMonth = [];
 
-
             if (this.dzoCompaniesAssets['isOperating']) {
-                productionPlanAndFactMonth = _.reject(productionPlanAndFactMonth, _.iteratee({dzo: "ТШО"}));
-                productionPlanAndFactMonth = _.reject(productionPlanAndFactMonth, _.iteratee({dzo: "НКО"}));
-                productionPlanAndFactMonth = _.reject(productionPlanAndFactMonth, _.iteratee({dzo: "КПО"}));
-                productionPlanAndFactMonth = _.reject(productionPlanAndFactMonth, _.iteratee({dzo: "ТП"}));
-                productionPlanAndFactMonth = _.reject(productionPlanAndFactMonth, _.iteratee({dzo: "ПКК"}));
-                productionPlanAndFactMonth = _.reject(productionPlanAndFactMonth, _.iteratee({dzo: "ПКИ"}));
-
-                data = _.reject(data, _.iteratee({dzo: "ТШО"}));
-                data = _.reject(data, _.iteratee({dzo: "НКО"}));
-                data = _.reject(data, _.iteratee({dzo: "КПО"}));
-                data = _.reject(data, _.iteratee({dzo: "ТП"}));
-                data = _.reject(data, _.iteratee({dzo: "ПКК"}));
-                data = _.reject(data, _.iteratee({dzo: "ПКИ"}));
-
-
+                productionPlanAndFactMonth = this.getFilteredData(productionPlanAndFactMonth, 'isNonOperating');
+                data = this.getFilteredData(data, 'isNonOperating');
             }
 
             if (this.dzoCompaniesAssets['isNonOperating']) {
-
-                let dzoToShow = [
-                    "ТОО «Тенгизшевройл»",
-                    "«Карачаганак Петролеум Оперейтинг б.в.»",
-                    "«Норт Каспиан Оперейтинг Компани н.в.»"
-                ]
-
-                productionPlanAndFactMonth = productionPlanAndFactMonth.filter(item => {
-                    let fullName = this.getNameDzoFull(item.dzo)
-                    return dzoToShow.indexOf(fullName) > -1
-                })
-
-                data = dataWithMay.filter(item => {
-                    let fullName = this.getNameDzoFull(item.dzo)
-                    return dzoToShow.indexOf(fullName) > -1
-                })
-
+                productionPlanAndFactMonth = this.getFilteredData(productionPlanAndFactMonth, 'isOperating');
+                data = this.getFilteredData(dataWithMay, 'isOperating');
             }
 
             if (this.dzoCompaniesAssets['isRegion']) {
@@ -936,22 +845,12 @@ export default {
                 }))
                 .value();
 
-            let summaryFact = this.getDzoFactSummary(summaryForChart);
-            let dailyPlan = this.getDzoDailyPlan(summaryFact);
-
-            _.forEach(summaryForChart, function (row) {
-                _.set(row, 'dailyPlan', parseInt(dailyPlan));
-            });
+            if (this.isFilterTargetPlanActive) {
+                let monthlyPlansInYear = this.getMonthlyPlansInYear(summaryForChart);
+                summaryForChart = monthlyPlansInYear;
+            }
 
             return summaryForChart;
-        },
-
-        getDzoDailyPlan(summaryFact) {
-            let filteredDzoYearlyPlan = this.getFilteredDzoYearlyPlan();
-            let dzoYearlyPlanSum = _.sumBy(filteredDzoYearlyPlan,this.planFieldName);
-            let dzoPlanFactDifference = dzoYearlyPlanSum - summaryFact;
-            let daysCountInYear = this.getDaysCountInYear();
-            return dzoPlanFactDifference / daysCountInYear;
         },
 
         getAccidentTotal() {
@@ -987,7 +886,8 @@ export default {
         wells,
         rates,
         dates,
-        oilProductionFilters
+        oilProductionFilters,
+        mainTableChart
     ],
     async mounted() {
         this.dzoCompaniesAssets = _.cloneDeep(this.dzoCompaniesAssetsInitial);
@@ -1018,13 +918,14 @@ export default {
         localStorage.setItem("selectedPeriod", "undefined");
         this.getCurrencyNow(this.timeSelect);
         this.updatePrices(this.period);
+        this.dzoMonthlyPlans = await this.getDzoMonthlyPlans();
 
         this.changeAssets('isAllAssets');
         this.changeDate();
         this.changeMenu2();
         this.getStaff();
 
-        this.buttonDailyTab = "button-daily-tab";
+        this.buttonDailyTab = "button-tab-highlighted";
         this.getAccidentTotal();
         this.mainMenuButtonElementOptions = _.cloneDeep(mainMenuConfiguration);
         this.getDzoYearlyPlan();
@@ -1034,6 +935,17 @@ export default {
         bigTable: function () {
             this.dzoCompanySummary = this.bigTable;
             this.calculateDzoCompaniesSummary();
+        },
+        dzoCompaniesSummaryForChart: function () {
+            if (this.isFilterTargetPlanActive) {
+                let self = this;
+                _.forEach(this.dzoCompanySummary, function(dzo) {
+                     let yearlyData = self.getProductionData(self.dzoInputData,dzo.dzoMonth);
+                     dzo.targetPlan = self.getSummaryTargetPlan(yearlyData);
+                });
+                let summaryTargetPlan = _.sumBy(this.dzoCompanySummary, 'targetPlan');
+                this.dzoCompaniesSummary.targetPlan = this.formatDigitToThousand(summaryTargetPlan);
+            }
         },
     },
     computed: {

@@ -45,7 +45,7 @@
     <div class="row">
       <div class="col-12 blueblock three">
         <div v-if="activeForm" class="col-12 blueblock three">
-          <BigDataForm v-if="activeForm.type === 'form'" :params="activeForm"></BigDataForm>
+          <BigDataForm v-if="activeForm.type === 'plain'" :params="activeForm"></BigDataForm>
           <BigDataTable v-else-if="activeForm.type === 'table'" :params="activeForm"></BigDataTable>
         </div>
       </div>

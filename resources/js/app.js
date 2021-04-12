@@ -77,6 +77,7 @@ Vue.component('vertical-indicators', require('./components/visualcenter3/Vertica
 Vue.component('vc-upstream-table', require('./components/visualcenter3/UpstreamTable.vue').default);
 Vue.component('visual-center-menu', require('./components/visualcenter/VisualCenterMenu.vue').default);
 
+Vue.component('economic-data-component', require('./components/Economic/data/index.vue').default);
 Vue.component('tech-data-component', require('./components/technical_forecast/productionDataIndex.vue').default);
 
 Vue.component('economic-component', require('./components/Economic/main.vue').default);
@@ -99,7 +100,9 @@ Vue.component('omgngdu-form', require('./components/omgngdu/form.vue').default);
 Vue.component('gu-form', require('./components/gu/form.vue').default);
 Vue.component('zu-form', require('./components/zu/form.vue').default);
 
-Vue.component('gtm-main', require('./components/GTM/Main.vue').default);
+Vue.component('gtm-main', require('./components/GTM/GTMLayout.vue').default);
+Vue.component('gtm-main-page', require('./components/GTM/Main.vue').default);
+Vue.component('gtm-main-indicator', require('./components/GTM/MainIndicator.vue').default);
 Vue.component('gtm-aegtm', require('./components/GTM/Aegtm.vue').default);
 Vue.component('gtm-aegtm-eco', require('./components/GTM/AegtmEco.vue').default);
 Vue.component('gtm-podbor-gtm', require('./components/GTM/PodborGTM.vue').default);
@@ -128,6 +131,7 @@ Vue.component('well-fund-revision', require('./components/reports/WellFundRevisi
 Vue.component('view-table', require('./components/omgca/table.vue').default);
 Vue.component('oilgas-form', require('./components/complicationMonitoring/oilGas/form.vue').default);
 Vue.component('pipe-form', require('./components/pipes/form.vue').default);
+Vue.component('pipe-type-form', require('./components/pipeTypes/form.vue').default);
 Vue.component('inhibitor-create', require('./components/inhibitor/create.vue').default);
 Vue.component('inhibitor-edit', require('./components/inhibitor/edit.vue').default);
 Vue.component('corrosion-form', require('./components/complicationMonitoring/corrosion/form.vue').default);
@@ -143,15 +147,17 @@ Vue.component('tr-sidebar-export', require('./components/tr/TrSidebarExport.vue'
 Vue.component('cat-loader', require('./components/ui-kit/CatLoader.vue').default);
 Vue.component('pagination', require('laravel-vue-pagination'));
 Vue.component('report-export', require('./components/reports/export.vue').default);
-Vue.component('tr_mode-table', require('./components/tr/tech_mode.vue').default);
+Vue.component('tr_mode-table', require('./components/tr/TechMode.vue').default);
+Vue.component('fa_weekly_chart', require('./components/tr/FaWeeklyChart.vue').default);
 
 
 
 Vue.component('viscenter2-create', require('./components/visualcenter/viscenter2/create.vue').default);
-Vue.component('visualcenter3-excelform', require('./components/visualcenter3/ExcelForm.vue').default);
+Vue.component('visualcenter3-excelform', require('./components/visualcenter3/importForm/ExcelForm.vue').default);
 
 Vue.component('big-data', require('./components/bigdata/BigData.vue').default);
 Vue.component('las', require('./components/bigdata/Las.vue').default);
+Vue.component('user-reports', require('./components/bigdata/UserReports.vue').default);
 Vue.component('proto-form', require('./components/bigdata/Forms.vue').default);
 Vue.component('bigdata-form-mobile', require('./components/bigdata/FormMobile.vue').default);
 Vue.component('search-form', require('./components/ui-kit/SearchForm.vue').default);
@@ -163,6 +169,7 @@ Vue.component('main-page', require('./components/mainpage.vue').default);
 Vue.component('profile', require('./components/profile/Profile.vue').default);
 
 Vue.component('reptt', require('./components/economy_kenzhe/reptt.vue').default);
+Vue.component('reptt-company', require('./components/economy_kenzhe/reptt_company.vue').default);
 Vue.prototype.trans = string => _.get(window.i18n, string) || string;
 Vue.prototype.localeUrl = string => `/${window.current_lang}/${string[0] === '/' ? string.substr(1) : string}`;
 Vue.prototype.currentLang = window.current_lang;

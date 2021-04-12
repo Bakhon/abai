@@ -5,16 +5,16 @@
 
     <div v-else class="row no-margin col-12 no-padding relative gno-incl-content-wrapper">
       
-      <div class="plot-block col-7 gno-plotly-graph">
+      <div class="plot-block col-8 gno-plotly-graph">
         <h5>{{trans('pgno.prichini_prs_god')}}</h5>
-       <Plotly style="width: 730px;" :data="data" :layout="layout" :display-mode-bar="false"></Plotly>
+       <Plotly style="width: 784px;" :data="data" :layout="layout" :display-mode-bar="false"></Plotly>
        <div class="row">
-        <div class="col-12">
+        <div class="col-6">
           <h5 class="title-plot">
             {{trans('pgno.number_of_repair')}}: {{numberRepairs}}
           </h5>
        </div>
-       <div class="col-12">
+       <div class="col-6">
           <h5 class="title-plot">
             {{trans('pgno.nno')}}: {{numberNNO + ' сут'}}
           </h5>
@@ -23,13 +23,12 @@
       
       </div>
 
-     <div class="col-5 no-padding no-scrollbar incl-modal-table">
-       <h5 class="krs-table-title">{{trans('pgno.info_po_krs')}}</h5>
+     <div class="col-4 no-padding no-scrollbar incl-modal-table">
 
       <perfect-scrollbar>
         <table class="gno-table-with-header pgno">
           <thead>
-            <tr height="10">
+            <tr height="20">
               <td>
                 {{trans('pgno.data_nachala_rabot')}}
               </td>
@@ -78,11 +77,11 @@ data: function(){
         font: {color: "white"},
         plot_bgcolor: "#20274e",
         paper_bgcolor: "#20274e",
-        height: 450,
-        title: 'История ПРС',
+        height: 491,
+        title: this.trans('pgno.history_prs'),
         barmode: 'group',
         },
-    }
+      }
 },
 mounted() {
     let uriPrsKrs = "http://172.20.103.187:7575/api/nno/history/"+ this.field + "/" + this.wellNumber + "/";
@@ -99,19 +98,25 @@ mounted() {
     this.axios.get(uri).then((response) => {
     this.prs = response['data']['prs']['data']
     for(let key of Object.keys(this.prs)){
-
-      var nno_days = this.prs[key]['nno_size']
-
+      let nno_days = this.prs[key]['nno_size']
+      let isNull = (this.prs[key]['text'] !== "");
       this.data.push({x: [key], 
                       y: [nno_days*1], 
                       name: this.prs[key]['text'], 
+                      showlegend: isNull,
                       type: 'bar', 
-                      text: "ННО = "+nno_days+" дней",
+                      text: nno_days,
                       textposition: 'auto',
                       hoverinfo: 'none',})
     }
     this.layout= {
         showlegend: true,
+        legend: {"orientation": "h"},
+        xaxis: {
+          tickfont:{
+            size: 10
+          }
+        },
         yaxis: {rangemode:'tozero', 
                 autorange: true,
                 tickformat: ',d'},
@@ -119,7 +124,7 @@ mounted() {
                 plot_bgcolor: "#20274e",
                 paper_bgcolor: "#20274e",
                 height: 450,
-                title: 'История ПРС',
+                title: this.trans('pgno.history_prs'),
                 barmode: 'group',
                 bargap: 4
         }
@@ -137,6 +142,8 @@ mounted() {
 }
 .title-plot {
   float: left;
+  margin-left: 20px;
+  margin-top: 20px;
 }
 
 .krs-table-title {
@@ -155,6 +162,11 @@ mounted() {
 tr {
   height: 10pt;
   font-weight: bold;
+}
+
+.incl-modal-table {
+  width: 425px;
+  height: 529px;
 }
 
 </style>

@@ -9,7 +9,6 @@ use App\Models\BigData\Dictionaries\Tech;
 use App\Models\BigData\Well;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\Response;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
@@ -18,14 +17,6 @@ class FluidProduction extends TableForm
 {
 
     protected $configurationFileName = 'fluid_production';
-
-    public function saveSingleField(string $field)
-    {
-        $this->validateSingleField($field);
-        $this->saveSingleFieldInDB($field);
-
-        return response()->json([], Response::HTTP_NO_CONTENT);
-    }
 
     public function getRows(array $params = [])
     {
@@ -52,63 +43,16 @@ class FluidProduction extends TableForm
 
         $wells = $wellsQuery->get();
 
-        $rowData = [];
-
         $tables = $this->getFields()->pluck('table')->filter()->unique();
-        foreach ($tables as $table) {
-            switch ($table) {
-                case 'tbdi.well_expl':
-
-                    $rowData[$table] = DB::connection('tbd')
-                        ->table('tbdi.well_expl as we')
-                        ->whereIn('we.well_id', $wells->pluck('id')->toArray())
-                        ->whereDate('dbeg', '<=', $this->request->get('date'))
-                        ->leftJoin('tbdi.well_expl_type as wet', 'we.well_expl_type_id', '=', 'wet.id')
-                        ->orderBy('dbeg', 'desc')
-                        ->get()
-                        ->groupBy('well_id');
-
-                    break;
-                case 'tbdi.tech_mode_well':
-
-                    $rowData[$table] = DB::connection('tbd')
-                        ->table('tbdi.tech_mode as tm')
-                        ->whereIn('tm.well_id', $wells->pluck('id')->toArray())
-                        ->whereDate('dbeg', '<=', $this->request->get('date'))
-                        ->leftJoin('tbdi.tech_mode_well as tmw', 'tmw.tech_mode_id', '=', 'tm.id')
-                        ->orderBy('dbeg', 'desc')
-                        ->get()
-                        ->groupBy('well_id');
-
-                    break;
-                default:
-                    $rowData[$table] = DB::connection('tbd')
-                        ->table($table)
-                        ->whereIn('well_id', $wells->pluck('id')->toArray())
-                        ->whereDate('dbeg', '<=', $this->request->get('date'))
-                        ->orderBy('dbeg', 'desc')
-                        ->get()
-                        ->groupBy('well_id');
-            }
-        }
+        $rowData = $this->fetchRowData(
+            $tables,
+            $wells->pluck('id')->toArray(),
+            Carbon::parse($this->request->get('date'))
+        );
 
         $wells->transform(
             function ($item) use ($rowData) {
-                $result = [
-                    'uwi' => [
-                        'id' => $item->id,
-                        'name' => $item->uwi,
-                        'href' => '#'
-                    ],
-                    'density_oil' => [
-                        'id' => null,
-                        'value' => floatval($item->geo->first()->density_oil),
-                        'date' => null
-                    ]
-                ];
-
-                $measurementFields = $this->getMeasurementsByDates($rowData['tbdic.meas_log_cut'], $item);
-                $result = array_merge($result, $measurementFields);
+                $result = [];
 
                 foreach ($this->getFields() as $field) {
                     $fieldValue = $this->getFieldValue($field, $rowData, $item);
@@ -120,66 +64,9 @@ class FluidProduction extends TableForm
             }
         );
 
+        $this->addLimits($wells);
+
         return $wells->toArray();
-    }
-
-    /**
-     * @param $field
-     * @param $collection
-     * @param $item
-     * @param array $result
-     * @return array
-     */
-    public function getFieldValue($field, $rowData, $item): ?array
-    {
-        switch ($field['code']) {
-            case 'worktime':
-
-                $fieldInfo = $this->getFieldByDates(
-                    $field,
-                    $rowData[$field['table']],
-                    $item
-                );
-
-                $value = 0;
-                if ($fieldInfo['value'] !== null) {
-                    $value = in_array($fieldInfo['value'], Well::WELL_ACTIVE_STATUSES) ? 1 : 0;
-                }
-
-                return [
-                    'value' => $value
-                ];
-
-            case 'other_uwi':
-
-                return $this->getOtherUwis($item);
-
-            case 'geo':
-
-                return [
-                    'value' => $this->getGeoBreadcrumbs($item->geo->first())
-                ];
-        }
-
-        if ($field['type'] === 'calc') {
-            return [
-                'value' => null
-            ];
-        }
-
-        if (!empty($field['table'])) {
-            switch ($field['table']) {
-                case 'tbdic.meas_log_cut':
-                    return null;
-                default:
-                    return $this->getFieldByDates(
-                        $field,
-                        $rowData[$field['table']],
-                        $item
-                    );
-            }
-        }
-        return null;
     }
 
     public function getGeoBreadcrumbs($geo)
@@ -232,134 +119,130 @@ class FluidProduction extends TableForm
         return $tree;
     }
 
-    private function getMeasurementsByDates(Collection $measurements, Model $item): array
+    protected function getFormatedFieldValue(array $field, array $rawValue): ?array
     {
-        if (empty($measurements->get($item->id))) {
-            return [];
-        }
+        switch ($field['code']) {
+            case 'worktime':
 
-        $result = [];
-        $measurementFields = [
-            'p_buf',
-            'p_zatr',
-            'p_buf_b',
-            'p_buf_a',
-            'gas_factor',
-            'note',
-            'prod_decline_reason',
-        ];
-
-
-        foreach ($measurements->get($item->id) as $measurement) {
-            foreach ($measurementFields as $field) {
-                if (isset($result[$field])) {
-                    break;
+                $value = 0;
+                if (isset($rawValue['value']) && $rawValue['value'] !== null) {
+                    $value = in_array($rawValue['value'], Well::WELL_ACTIVE_STATUSES) ? 1 : 0;
                 }
-                if (empty($measurement->{$field})) {
-                    continue;
-                }
-                $result[$field] = [
-                    'id' => $measurement->id,
-                    'value' => null
+
+                return [
+                    'value' => $value
                 ];
-                if ($this->isCurrentDay($measurement->dbeg)) {
-                    $result[$field]['value'] = $measurement->{$field};
-                } else {
-                    $result[$field]['old_value'] = $measurement->{$field};
-                    $result[$field]['date'] = $measurement->dbeg;
-                }
-            }
         }
 
-        foreach ($measurementFields as $field) {
-            if (!isset($result[$field])) {
-                $result[$field] = [
-                    'id' => null,
-                    'value' => null
-                ];
-            }
-        }
-
-        return $result;
+        return $rawValue;
     }
 
-    private function getFieldByDates(array $fieldParams, Collection $collection, Model $item)
+    protected function getCustomFieldValue(array $field, array $rowData, Model $item): ?array
+    {
+        switch ($field['code']) {
+            case 'density_oil':
+
+                return [
+                    'value' => floatval($item->geo->first()->density_oil)
+                ];
+
+            case 'other_uwi':
+
+                return $this->getOtherUwis($item);
+
+            case 'geo':
+
+                return [
+                    'value' => $this->getGeoBreadcrumbs($item->geo->first())
+                ];
+        }
+
+        return null;
+    }
+
+
+    private function getMeasurementFieldByDates(array $fieldParams, Collection $collection, Model $item)
     {
         if (is_null($collection->get($item->id))) {
-            return [];
-        }
-        $row = $collection->get($item->id)->first();
-        $value = $row->{$fieldParams['column']};
-
-        switch ($fieldParams['type']) {
-            case 'float':
-                $value = floatval($value);
-                break;
-            case 'integer':
-                $value = intval($value);
-                break;
+            return [
+                'value' => null
+            ];
         }
 
-        $result = [
-            'id' => $row->id,
-            'value' => null,
-        ];
-
-        if ($this->isCurrentDay($row->dbeg)) {
-            $result['value'] = $value;
-        } else {
-            $result['old_value'] = $value;
-            $result['date'] = $row->dbeg;
+        foreach ($collection->get($item->id) as $measurement) {
+            if (empty($measurement->{$fieldParams['column']})) {
+                continue;
+            }
+            $result = [
+                'id' => $measurement->id,
+                'value' => null
+            ];
+            if ($this->isCurrentDay($measurement->dbeg)) {
+                $result['value'] = $measurement->{$fieldParams['column']};
+            } else {
+                $result['old_value'] = $measurement->{$fieldParams['column']};
+                $result['date'] = $measurement->dbeg;
+            }
+            return $result;
         }
 
-        return $result;
+        return ['value' => null];
     }
 
-    private function isCurrentDay(string $date)
-    {
-        return Carbon::parse($date)->diffInDays(Carbon::parse($this->request->get('date'))) === 0;
-    }
-
-    protected function saveSingleFieldInDB(string $field): void
+    protected function saveSingleFieldInDB(string $field, int $wellId, Carbon $date, $value): void
     {
         $column = $this->getFieldByCode($field);
 
-        $item = $this->getFieldRow($column, $this->request->get('well_id'), $this->request->get('date'));
+        $item = $this->getFieldRow($column, $wellId, $date);
 
         if (empty($item)) {
+            $data = [
+                'well_id' => $wellId,
+                $column['column'] => $value,
+                'dbeg' => $date->toDateTimeString()
+            ];
+
+            if (!empty($column['additional_filter'])) {
+                foreach ($column['additional_filter'] as $key => $val) {
+                    $data[$key] = $val;
+                }
+            }
+
             DB::connection('tbd')
                 ->table($column['table'])
-                ->insert(
-                    [
-                        'well_id' => $this->request->get('well_id'),
-                        $column['column'] => $this->request->get($field),
-                        'dbeg' => Carbon::parse($this->request->get('date'))->toDateTimeString(),
-                        'dend' => Carbon::parse($this->request->get('date'))->addDay()->toDateTimeString()
-                    ]
-                );
+                ->insert($data);
         } else {
             DB::connection('tbd')
                 ->table($column['table'])
                 ->where('id', $item->id)
                 ->update(
                     [
-                        $column['column'] => $this->request->get($field)
+                        $column['column'] => $value
                     ]
                 );
         }
     }
 
-    private function getFieldRow(array $column, int $wellId, string $date)
+    private function getFieldRow(array $column, int $wellId, Carbon $date)
     {
-        return DB::connection('tbd')
+        $query = DB::connection('tbd')
             ->table($column['table'])
             ->where('well_id', $wellId)
-            ->whereDate(
+            ->whereBetween(
                 'dbeg',
-                '=',
-                Carbon::parse($date)->toDateTimeString()
-            )
-            ->first();
+                [
+                    (clone $date)->startOfDay(),
+                    (clone $date)->endOfDay()
+                ]
+            );
+
+        if (!empty($column['additional_filter'])) {
+            foreach ($column['additional_filter'] as $key => $value) {
+                $query->where($key, '=', $value);
+            }
+        }
+
+        return $query->first();
     }
 
     private function getOrgWithWells()
@@ -380,6 +263,14 @@ class FluidProduction extends TableForm
                 'parent_id' => $org->parent_id
             ];
         }
+
+        usort(
+            $orgData,
+            function ($a, $b) {
+                return strnatcasecmp($a['name'], $b['name']);
+            }
+        );
+
         Cache::put('bd_org_with_wells', $orgData, now()->addDay());
 
         return $orgData;
@@ -387,9 +278,10 @@ class FluidProduction extends TableForm
 
     private function getTechWithWells()
     {
+        $cacheKey = 'bd_tech_with_wells_' . $this->request->get('date');
         $techData = [];
-        if (Cache::has('bd_tech_with_wells_' . $this->request->get('date'))) {
-            $techData = Cache::get('bd_tech_with_wells_' . $this->request->get('date'));
+        if (Cache::has($cacheKey)) {
+            $techData = Cache::get($cacheKey);
             return $this->generateTree($techData);
         }
 
@@ -402,6 +294,7 @@ class FluidProduction extends TableForm
                     'type'
                 ]
             )
+            ->whereIn('tech_id', [Tech::TYPE_GZU, Tech::TYPE_GU, Tech::TYPE_ZU])
             ->where('dbeg', '<=', Carbon::parse($this->request->get('date')))
             ->where('dend', '>=', Carbon::parse($this->request->get('date')))
             ->get();
@@ -416,29 +309,50 @@ class FluidProduction extends TableForm
             ];
         }
 
-        usort(
+        uasort(
             $techData,
             function ($a, $b) {
                 return $a['parent_id'] > $b['parent_id'] ? 1 : -1;
             }
         );
 
-        foreach ($techData as $tech) {
-            if (!empty($tech['parent_id']) && !empty($techData[$tech['parent_id']])) {
-                $techData[$tech['parent_id']]['wells'] = array_unique(
-                    array_merge(
-                        $techData[$tech['parent_id']]['wells'],
-                        $tech['wells']
-                    )
-                );
+        foreach ($techData as $key => $tech) {
+            if (empty($tech['parent_id'])) {
+                continue;
             }
+            if (empty($techData[$tech['parent_id']])) {
+                $techData[$key]['parent_id'] = null;
+                continue;
+            }
+
+            $techData[$tech['parent_id']]['wells'] = array_unique(
+                array_merge(
+                    $techData[$tech['parent_id']]['wells'],
+                    $tech['wells']
+                )
+            );
         }
-        Cache::put('bd_tech_with_wells_' . $this->request->get('date'), $techData, now()->addDay());
-        return $this->generateTree($techData);
+
+        usort(
+            $techData,
+            function ($a, $b) {
+                return strnatcasecmp($a['name'], $b['name']);
+            }
+        );
+
+        $result = $this->generateTree($techData);
+        Cache::put($cacheKey, $result, now()->addDay());
+
+        return $result;
     }
 
     private function combineOrgWithTechData($orgData, $techData)
     {
+        $cacheKey = 'bd_org_tech_' . $this->request->get('date');
+        if (Cache::has($cacheKey)) {
+            return Cache::get($cacheKey);
+        }
+
         foreach ($orgData as &$org) {
             if (empty($org['wells'])) {
                 continue;
@@ -448,13 +362,15 @@ class FluidProduction extends TableForm
                 if (count(array_intersect($org['wells'], $tech['wells'])) > 0) {
                     $org['children'][] = $tech;
                     unset($techData[$keyTech]);
-                    break;
                 }
             }
         }
         unset($org);
 
-        return $this->generateTree($orgData);
+        $result = $this->generateTree($orgData);
+        Cache::put($cacheKey, $result, now()->addDay());
+
+        return $result;
     }
 
     private function getOtherUwis($item)
@@ -469,9 +385,7 @@ class FluidProduction extends TableForm
             ->first();
 
         return [
-            'id' => null,
             'value' => $uwi->other_uwi === '{NULL}' ? null : str_replace(['{', '}'], '', $uwi->other_uwi),
-            'date' => null
         ];
     }
 }

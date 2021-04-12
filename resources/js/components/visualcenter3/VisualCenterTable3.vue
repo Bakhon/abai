@@ -12,10 +12,10 @@
                       <td class="col-4 col-lg-4 d-flex">
                         <div class="first-td-header">
                           <div class="row oil-block">
-                            <div class="number col-8 col-md-6 col-lg-8">
-                              {{ formatDigitToThousand(oil_factDay) }}
+                            <div class="number col-8 col-md-6 col-lg-7">
+                              {{ formatDigitToThousand(productionParams.oil_fact) }}
                             </div>
-                            <div class="unit-vc col-12 col-md-5 col-lg-4">{{ thousand }}{{ trans('visualcenter.tonWithSpace') }}</div>
+                            <div class="unit-vc col-12 col-md-5 col-lg-4">{{ trans("visualcenter.thousand") }}{{ trans('visualcenter.tonWithSpace') }}</div>
                           </div>
                           <div class="additional-header txt1 col-6 col-md-12">
                             {{ trans("visualcenter.getoil") }}
@@ -27,35 +27,29 @@
                               class="progress-bar"
                               role="progressbar"
                               :style="{
-                                width: oil_factDayProgressBar + '%',
+                                width: dailyProgressBars.oil + '%',
                               }"
-                              :aria-valuenow="oil_planDay"
+                              :aria-valuenow="productionParams.oil_plan"
                               aria-valuemin="0"
-                              :aria-valuemax="oil_factDay"
+                              :aria-valuemax="productionParams.oil_fact"
                             ></div>
                           </div>
                           <div class="row">
-                            <div class="percent-header col-5 col-md-6" v-if="oil_factDay">
-                              {{ getDiffProcentLastBigN(oil_factDay, oil_planDay) }}%
+                            <div class="percent-header col-5 col-md-6" v-if="productionParams.oil_fact">
+                              {{ getDiffProcentLastBigN(productionParams.oil_fact, productionParams.oil_plan) }}%
                             </div>
-                            <div class="plan-header col-6" v-if="oil_planDay">
-                              {{ formatDigitToThousand(oil_planDay) }}
+                            <div class="plan-header col-6" v-if="productionParams.oil_plan">
+                              {{ formatDigitToThousand(productionParams.oil_plan) }}
                             </div>
                             <br />
                           </div>
                           <div class="col-12 mt-4">
                             <div
-                              :class="`${getColor2(
-                                getDiffProcentLastP(oil_factDay, oil_factDayPercent)
-                              )}`"
+                              :class="`${getColor2(getDiffProcentLastP(productionParams.oil_fact, oil_factDayPercent))}`"
                             ></div>
 
                             <div class="txt2-2">
-                              {{
-                                Math.abs(
-                                  getDiffProcentLastP(oil_factDayPercent, oil_factDay)
-                                )
-                              }}%
+                              {{Math.abs(getDiffProcentLastP(oil_factDayPercent, productionParams.oil_fact))}}%
                             </div>
                             <div class="txt3">
                               vs
@@ -71,10 +65,10 @@
                       <td class="col-4 col-lg-4 d-flex">
                         <div class="first-td-header">
                           <div class="row oil-block">
-                            <div class="number col-8 col-md-7 col-lg-8">
-                              {{ formatDigitToThousand(oil_dlv_factDay) }}
+                            <div class="number col-8 col-md-7 col-lg-7">
+                              {{ formatDigitToThousand(productionParams.oil_dlv_fact) }}
                             </div>
-                            <div class="unit-vc col-12 col-md-5 col-lg-4">{{ thousand }}{{ trans('visualcenter.tonWithSpace') }}</div>
+                            <div class="unit-vc col-12 col-md-5 col-lg-4">{{ trans("visualcenter.thousand") }}{{ trans('visualcenter.tonWithSpace') }}</div>
                           </div>
                           <div class="additional-header txt1 col-6 col-md-12">
                             {{ trans("visualcenter.oildlv") }}
@@ -86,43 +80,29 @@
                               class="progress-bar"
                               role="progressbar"
                               :style="{
-                                width: oil_dlv_factDayProgressBar + '%',
+                                width: dailyProgressBars.oilDelivery + '%',
                               }"
-                              :aria-valuenow="oil_dlv_factDay"
+                              :aria-valuenow="productionParams.oil_dlv_fact"
                               aria-valuemin="0"
-                              :aria-valuemax="oil_dlv_planDay"
+                              :aria-valuemax="productionParams.oil_dlv_plan"
                             ></div>
                           </div>
                           <div class="row">
-                            <div class="percent-header col-5 col-md-6" v-if="oil_dlv_factDay">
-                              {{
-                                getDiffProcentLastBigN(oil_dlv_factDay, oil_dlv_planDay)
-                              }}%
+                            <div class="percent-header col-5 col-md-6" v-if="productionParams.oil_dlv_fact">
+                              {{getDiffProcentLastBigN(productionParams.oil_dlv_fact, productionParams.oil_dlv_plan)}}%
                             </div>
-                            <div class="plan-header col-6" v-if="oil_dlv_planDay">
-                              {{ formatDigitToThousand(oil_dlv_planDay) }}
+                            <div class="plan-header col-6" v-if="productionParams.oil_dlv_plan">
+                              {{ formatDigitToThousand(productionParams.oil_dlv_plan) }}
                             </div>
                           </div>
                           <br />
                           <div class="col-12 mt-2">
                             <div
-                              :class="`${getColor2(
-                                getDiffProcentLastP(
-                                  oil_dlv_factDay,
-                                  oil_dlv_factDayPercent
-                                )
-                              )}`"
+                              :class="`${getColor2(getDiffProcentLastP(productionParams.oil_dlv_fact,oil_dlv_factDayPercent))}`"
                             ></div>
 
                             <div class="txt2-2">
-                              {{
-                                Math.abs(
-                                  getDiffProcentLastP(
-                                    oil_dlv_factDayPercent,
-                                    oil_dlv_factDay
-                                  )
-                                )
-                              }}%
+                              {{Math.abs(getDiffProcentLastP(oil_dlv_factDayPercent,productionParams.oil_dlv_fact))}}%
                             </div>
                             <div class="txt3">
                               vs
@@ -138,11 +118,11 @@
                       <td class="col-4 col-sm-4 d-flex">
                         <div class="first-td-header">
                           <div class="row oil-block">
-                            <div class="number col-8 col-md-7 col-lg-8">
-                              {{ formatDigitToThousand(gas_factDay) }}
+                            <div class="number col-8 col-md-7 col-lg-7">
+                              {{ formatDigitToThousand(productionParams.gas_fact) }}
                             </div>
                             <div class="unit-vc col-12 col-md-5 col-lg-4">
-                              {{ thousand }}{{ trans('visualcenter.meterCubicWithSpace') }}
+                              {{ trans("visualcenter.thousand") }}{{ trans('visualcenter.meterCubicWithSpace') }}
                             </div>
                           </div>
                           <div class="additional-header txt1 col-6 col-md-12">
@@ -156,33 +136,33 @@
                               class="progress-bar"
                               role="progressbar"
                               :style="{
-                                width: gas_factDayProgressBar + '%',
+                                width: dailyProgressBars.gas + '%',
                               }"
-                              :aria-valuenow="gas_factDay"
+                              :aria-valuenow="productionParams.gas_fact"
                               aria-valuemin="0"
-                              :aria-valuemax="gas_planDay"
+                              :aria-valuemax="productionParams.gas_plan"
                             ></div>
                           </div>
                           <div class="row">
-                            <div class="percent-header col-5 col-md-6" v-if="gas_factDay">
-                              {{ getDiffProcentLastBigN(gas_factDay, gas_planDay) }}%
+                            <div class="percent-header col-5 col-md-6" v-if="productionParams.gas_fact">
+                              {{ getDiffProcentLastBigN(productionParams.gas_fact, productionParams.gas_plan) }}%
                             </div>
-                            <div class="plan-header col-6" v-if="gas_planDay">
-                              {{ formatDigitToThousand(gas_planDay) }}
+                            <div class="plan-header col-6" v-if="productionParams.gas_plan">
+                              {{ formatDigitToThousand(productionParams.gas_plan) }}
                             </div>
                           </div>
                           <br />
                           <div class="col-12 mt-2">
                             <div
                               :class="`${getColor2(
-                                getDiffProcentLastP(gas_factDay, gas_factDayPercent)
+                                getDiffProcentLastP(productionParams.gas_fact, gas_factDayPercent)
                               )}`"
                             ></div>
 
                             <div class="txt2-2">
                               {{
                                 Math.abs(
-                                  getDiffProcentLastP(gas_factDayPercent, gas_factDay)
+                                  getDiffProcentLastP(gas_factDayPercent, productionParams.gas_fact)
                                 )
                               }}%
                             </div>
@@ -219,7 +199,7 @@
                           {{trans("visualcenter.oilPrice")}}
                         </div>
                         <br />
-                        <div class="percent-currency col-12">
+                        <div class="percent-currency col-12 p-0">
                           <div
                             class="arrow"
                             v-if="dailyOilPriceChange === 'UP'"
@@ -257,7 +237,7 @@
                         {{ trans("visualcenter.usdKurs") }}
                       </div>
                       <br />
-                      <div class="percent-currency col-12">
+                      <div class="percent-currency col-12 mt-20">
                         <div
                           class="arrow"
                           v-if="dailyCurrencyChangeIndexUsd === 'UP'"
@@ -705,7 +685,7 @@
                             data-toggle="dropdown"
                     ></button>
                     <div class="dzo-company-list">
-                      <ul class="dropdown-menu-vc dropdown-menu dropdown-menu-right">
+                      <ul class="dropdown-menu-vc dropdown-menu dropdown-menu-right dzo-dropdown">
                         <li class="px-4">
                           <div>
                             <input
@@ -722,6 +702,7 @@
                           <div>
                             <input
                                     type="checkbox"
+                                    :disabled="dzoCompaniesAssets['isOperating']"
                                     :checked="dzoCompaniesAssets['isOperating']"
                                     @click="`${changeAssets('isOperating','type')}`"
                             ></input>
@@ -732,6 +713,7 @@
                           <div>
                             <input
                                     type="checkbox"
+                                    :disabled="dzoCompaniesAssets['isNonOperating']"
                                     :checked="dzoCompaniesAssets['isNonOperating']"
                                     @click="`${changeAssets('isNonOperating','type')}`"
                             ></input>
@@ -746,6 +728,7 @@
                           <div>
                             <input
                                     type="checkbox"
+                                    :disabled="dzoRegionsMapping[region].isActive"
                                     :checked="dzoRegionsMapping[region].isActive"
                                     @click="`${changeAssets('isRegion','region',region)}`"
                             ></input>
@@ -791,12 +774,36 @@
                 </div>
               </div>
               <div class="col-8 col-lg px-1">
-                <div
-                        :class="[`${buttonYearlyTab}`,'button2']"
-                        @click="changeMenu2(3)"
-                >
+
+
+                <div :class="[`${buttonYearlyTab}`,'button2']">
+                  <div
+                          class="button1-vc-inner"
+                          @click="changeMenu2(3)"
+                  >
                   {{ trans("visualcenter.yearBegin") }}
+                  </div>
+                  <button
+                          type="button"
+                          class="btn btn-primary dropdown-toggle position-button-vc dzocompanies__button_position"
+                          data-toggle="dropdown"
+                  ></button>
+                  <div class="dzo-company-list">
+                    <ul class="dropdown-menu-vc dropdown-menu dropdown-menu-right year-period-dropdown">
+                      <li :class="[`${buttonTargetPlan}`, 'px-4']">
+                        <input
+                                type="checkbox"
+                                :disabled="!buttonYearlyTab"
+                                :checked="isFilterTargetPlanActive"
+                                @change="`${changeTargetCompanyFilter()}`"
+                        ></input>
+                        {{ trans("visualcenter.targetPlanFilter") }}
+                      </li>
+                    </ul>
+                  </div>
                 </div>
+
+
               </div>
               <div class="col-8 col-lg pl-1">
                 <div class="dropdown3">
@@ -840,7 +847,7 @@
               </div>
             </div>
 
-            <div class="row mh-60 mt-3 px-3">
+            <div class="row mh-60 mt-3 px-4">
               <div
                       class="col-sm-7 vis-table"
                       :class="scroll">
@@ -905,8 +912,13 @@
                           {{ trans("visualcenter.chemistryMetricTon") }}
                         </div>
                       </th>
-                      <th>
+                      <th v-if="!isFilterTargetPlanActive">
                         {{ trans("visualcenter.dzoPercent") }}
+                      </th>
+                      <th v-if="isFilterTargetPlanActive">
+                        {{ trans("visualcenter.dzoTargetPlan") }}
+                        <br>
+                        {{ trans("visualcenter.dzoThousandTon") }}
                       </th>
                       <th v-if="exactDateSelected">
                         {{ trans("visualcenter.dzoOpec") }}
@@ -988,7 +1000,10 @@
                           }}
                         </div>
                       </td>
-                      <td :class="`${getDzoColumnsClass(index,'percent')}`">
+                      <td
+                              v-if="!isFilterTargetPlanActive"
+                              :class="`${getDzoColumnsClass(index,'percent')}`"
+                      >
                         <div
                           v-if="item.factMonth"
                           :class="
@@ -1005,10 +1020,18 @@
                         </div>
                       </td>
                       <td
-                        v-if="exactDateSelected"
-                        :class="`${getLightColorClass(index)}`"
+                              v-if="isFilterTargetPlanActive"
+                              :class="`${getDzoColumnsClass(index,'percent')}`"
                       >
-                        <div :class="item.impulses ? 'accident-triangle triangle' : 'no-accident-triangle triangle'">
+                        <div class="font">
+                          {{ formatDigitToThousand(item.targetPlan) }}
+                        </div>
+                      </td>
+                      <td
+                              v-if="exactDateSelected"
+                              :class="`${getLightColorClass(index)}`"
+                      >
+                        <div :class="item.opec ? 'accident-triangle triangle' : 'no-accident-triangle triangle'">
                         </div>
                       </td>
                       <td
@@ -1018,7 +1041,6 @@
                         <div :class="item.impulses ? 'accident-triangle triangle' : 'no-accident-triangle triangle'">
                         </div>
                       </td>
-
                       <td
                               v-if="exactDateSelected"
                               :class="`${getLightColorClass(index)}`"
@@ -1077,7 +1099,7 @@
                         <div class="font">
                           {{dzoCompaniesSummary.plan}}
                           <div class="right">
-                            {{ thousand }} {{ metricName }}
+                            {{ trans("visualcenter.thousand") }} {{ metricName }}
                           </div>
                         </div>
                       </td>
@@ -1086,7 +1108,7 @@
                         <div class="font">
                           {{dzoCompaniesSummary.fact}}
                           <div class="right">
-                            {{ thousand }} {{ metricName }}
+                            {{ trans("visualcenter.thousand") }} {{ metricName }}
                           </div>
                         </div>
                       </td>
@@ -1102,11 +1124,14 @@
                         <div class="font dynamic">
                           {{dzoCompaniesSummary.difference}}
                           <div class="right">
-                            {{ thousand }}{{ metricName }}
+                            {{ trans("visualcenter.thousand") }}{{ metricName }}
                           </div>
                         </div>
                       </td>
-                      <td :class="`${getDarkerClass(index)}`">
+                      <td
+                              v-if="!isFilterTargetPlanActive"
+                              :class="`${getDarkerClass(index)}`"
+                      >
                         <div
                           v-if="factMonthSumm"
                           :class="
@@ -1118,6 +1143,14 @@
                         ></div>
                         <div class="font dynamic" v-if="factMonthSumm">
                           {{dzoCompaniesSummary.percent}}
+                        </div>
+                      </td>
+                      <td
+                              v-if="isFilterTargetPlanActive"
+                              :class="`${getDarkerClass(index)}`"
+                      >
+                        <div class="font">
+                          {{dzoCompaniesSummary.targetPlan}}
                         </div>
                       </td>
                       <td
@@ -1186,7 +1219,7 @@
                 "
               >
                 <div class="name-chart-left">
-                  {{ chartSecondaryName }}, {{ thousand }} {{ metricName }}
+                  {{ chartSecondaryName }}, {{ trans("visualcenter.thousand") }} {{ metricName }}
                 </div>
                 <div class="name-chart-head">{{ chartHeadName }}</div>
                 <vc-chart :height="465"> </vc-chart>
@@ -1335,7 +1368,7 @@
               </div>
               <br />
               <div class="row container-fluid">
-                <div class="vis-table px-3 col-sm-7">
+                <div class="vis-table px-4 col-sm-7">
                   <table v-if="injectionWells.length" class="table4 w-100 chemistry-table">
                     <thead>
                     <tr>
@@ -1495,7 +1528,7 @@
               </div>
               <br />
               <div class="row container-fluid">
-                <div class="vis-table px-3 col-sm-7">
+                <div class="vis-table px-4 col-sm-7">
                   <table v-if="productionWells.length" class="table4 w-100 chemistry-table">
                     <thead>
                     <tr>
@@ -1646,7 +1679,7 @@
               </div>
               <br />
               <div class="row container-fluid">
-                <div class="vis-table px-3 col-sm-7">
+                <div class="vis-table px-4 col-sm-7">
                   <table
                     v-if="otmData.length"
                     class="table4 w-100 chemistry-table"
@@ -1821,7 +1854,7 @@
               </div>
               <br />
               <div class="row container-fluid">
-                <div class="vis-table px-3 col-sm-7">
+                <div class="vis-table px-4 col-sm-7">
                   <table
                     v-if="chemistryData.length"
                     class="table4 w-100 chemistry-table"
@@ -2360,6 +2393,7 @@
       top: -1;
       z-index: 2;
       border: 0.5px solid #272953;
+      border-left: 0;
       width: 81px;
       position: sticky;
       font-size: 12px;
@@ -2467,9 +2501,12 @@
     color:white;
   }
 
+  .dzo-dropdown {
+    height: 450px;
+  }
+
   .dzo-company-list ul {
     margin: 10px 0 0 0;
-    height: 450px;
     position: absolute;
     left: -0.5px;
     background: #40467E;
@@ -2621,6 +2658,12 @@
     .vis-table .table4 {
       min-width: 0;
     }
+    .mt-20 {
+      margin-top: 20%;
+    }
+    .year-period-dropdown {
+      min-width: 0;
+    }
   }
   @media (max-width:2000px) {
     .table4 {
@@ -2630,6 +2673,10 @@
     }
     .row-name_width_40 {
       width: 80%;
+    }
+    .year-period-dropdown {
+      min-width: 290px;
+      height: 45px;
     }
   }
   .dzocompanies__button_position {
@@ -2643,6 +2690,5 @@
     line-height: 40px;
     color: #9EA4C9;
     border: none;
-
   }
 </style>
