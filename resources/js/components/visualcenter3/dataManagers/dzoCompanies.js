@@ -189,7 +189,7 @@ export default {
             this.$store.commit('globalloading/SET_LOADING', false);
             this.$emit("data", {
                 dzoCompaniesSummaryForChart: this.dzoCompaniesSummaryForChart,
-                opec: this.opec,
+                isOpecFilterActive: this.isOpecFilterActive,
                 isFilterTargetPlanActive: this.isFilterTargetPlanActive
             });
         },
