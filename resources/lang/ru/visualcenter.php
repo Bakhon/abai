@@ -252,7 +252,7 @@ return array (
       'dataIsNotValid' => 'Найдены ошибки. Проверьте данные!',
     ),
     'chemistry' => 'Химизация производства, т/мес',
-    'enterChemistryButton' => 'Ввод данных по Химизации',
+    'enterChemistryButton' => 'Химизация производства',
     'validateButton' => 'Провести проверку данных',
     'saveButton' => 'Сохранить',
     'statusLabel' => 'Статус:',
