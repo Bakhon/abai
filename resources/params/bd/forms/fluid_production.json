@@ -135,7 +135,7 @@
       "title": "bsw",
       "code": "bsw",
       "table": "prod.meas_water_cut",
-      "column": "bsw_val",
+      "column": "water_cut",
       "type": "float",
       "is_editable": true,
       "validation": "numeric|gte:0|lte:100",
@@ -163,11 +163,11 @@
     {
       "title": "pipe_diameter",
       "code": "pipe_diameter",
-      "table": "dict.equip_factory_param",
+      "table": "prod.well_equip",
       "column": "value_double",
       "additional_filter": {
-        "type": "1",
-        "prm": 313
+        "dict.equip.equip_type": "1",
+        "dict.equip_factory_param.prm": 313
       },
       "type": "float",
       "is_editable": false
@@ -235,7 +235,7 @@
     {
       "title": "cycle_per_minute",
       "code": "cycle_per_minute",
-      "table": "prod.current_gdis_value",
+      "table": "prod.gdis_current_value",
       "column": "value_double",
       "additional_filter": {
         "metric": "318",
@@ -248,7 +248,7 @@
     {
       "title": "length_stroke",
       "code": "length_stroke",
-      "table": "prod.current_gdis_value",
+      "table": "prod.gdis_current_value",
       "column": "value_double",
       "additional_filter": {
         "metric": "319",
@@ -261,7 +261,7 @@
     {
       "title": "reciprotating_speed",
       "code": "reciprotating_speed",
-      "table": "prod.current_gdis_value",
+      "table": "prod.gdis_current_value",
       "column": "value_double",
       "additional_filter": {
         "metric": "320",

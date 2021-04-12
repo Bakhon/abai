@@ -333,18 +333,6 @@ abstract class TableForm extends BaseForm
                         ->groupBy('well_id');
 
                     break;
-                case 'tbdi.tech_mode_well':
-                    $result[$table] = DB::connection('tbd')
-                        ->table('tbdi.tech_mode as tm')
-                        ->whereIn('tm.well_id', $wellIds)
-                        ->whereDate('dbeg', '<=', $date)
-                        ->whereDate('dbeg', '>=', $dateFrom)
-                        ->leftJoin('tbdi.tech_mode_well as tmw', 'tmw.tech_mode_id', '=', 'tm.id')
-                        ->orderBy('dbeg', 'desc')
-                        ->get()
-                        ->groupBy('well_id');
-
-                    break;
                 case 'prod.lab_research_value':
                     $result[$table] = DB::connection('tbd')
                         ->table('prod.lab_research as lr')
@@ -355,6 +343,30 @@ abstract class TableForm extends BaseForm
                         ->orderBy('research_date', 'desc')
                         ->get()
                         ->groupBy('well');
+
+                    break;
+                case 'prod.gdis_current_value':
+                    $result[$table] = DB::connection('tbd')
+                        ->table('prod.gdis_current as gc')
+                        ->whereIn('gc.well', $wellIds)
+                        ->whereDate('meas_date', '<=', $date)
+                        ->whereDate('meas_date', '>=', $dateFrom)
+                        ->leftJoin('prod.gdis_current_value as gcv', 'gcv.gdis_curr', '=', 'gc.id')
+                        ->orderBy('meas_date', 'desc')
+                        ->get()
+                        ->groupBy('well');
+
+                    break;
+                case 'prod.well_status':
+                    $result[$table] = DB::connection('tbd')
+                        ->table('prod.well_status as ws')
+                        ->whereIn('ws.well', $wellIds)
+                        ->whereDate('dbeg', '<=', $date)
+                        ->whereDate('dbeg', '>=', $dateFrom)
+                        ->leftJoin('dict.well_status_type as wst', 'ws.status', '=', 'wst.id')
+                        ->orderBy('dbeg', 'desc')
+                        ->get()
+                        ->groupBy('well_id');
 
                     break;
                 default:
