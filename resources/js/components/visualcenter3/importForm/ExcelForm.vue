@@ -3,11 +3,11 @@
         <div class="col-2 row mt-3 ml-1">
             <div class="col-12 status-block">
                 <span>{{trans('visualcenter.importForm.yesterdayDate')}}</span><br>
-                <span>{{currentDate}}</span>
+                <span class="dzo-name">{{currentDate}}</span>
             </div>
             <div class="col-12 status-block mt-3">
                 <span>{{trans('visualcenter.importForm.selectedDZO')}}</span><br>
-                <span>{{selectedDzo.ticker}}</span>
+                <span class="dzo-name">{{selectedDzo.name}}</span>
             </div>
         </div>
 
@@ -23,7 +23,7 @@
                 {{trans('visualcenter.validateButton')}}
             </div>
             <div
-                    :class="[!isDataReady ? '' : '','status-block status-block_little menu__button col-12 mt-3']"
+                    :class="[!isDataReady ? 'menu__button_disabled' : '','status-block status-block_little menu__button col-12 mt-3']"
                     @click="handleSave()"
             >
                 {{trans('visualcenter.saveButton')}}
@@ -157,6 +157,11 @@
     }
     .status-block_little .label {
         font-size: 13px;
+        color: #82BAFF;
+    }
+    .status-block .dzo-name {
+        font-size: 22px;
+        color: #82BAFF;
     }
     .button-block {
         background: #656A8A;
