@@ -84,7 +84,7 @@ data: function(){
       }
 },
 mounted() {
-    let uriPrsKrs = "http://172.20.103.187:7573/api/nno/history/"+ this.field + "/" + this.wellNumber + "/";
+    let uriPrsKrs = "http://172.20.103.187:7575/api/nno/history/"+ this.field + "/" + this.wellNumber + "/";
       this.axios.get(uriPrsKrs).then((response) => {
         let krs = response['data']['krs']
         let nno = JSON.parse(response['data']['prs']['nno'])
@@ -95,7 +95,7 @@ mounted() {
     })
     
     var wi = this.wellIncl.split('_');
-    let uri = "http://172.20.103.187:7573/api/nno/history/"  + wi[0] + "/" + wi[1] + "/";
+    let uri = "http://172.20.103.187:7575/api/nno/history/"  + wi[0] + "/" + wi[1] + "/";
     this.$emit('update:isLoading', true);
     this.axios.get(uri).then((response) => {
     this.prs = response['data']['prs']['data']
@@ -128,7 +128,6 @@ mounted() {
       }
       
     }
-    console.log(this.data)
     this.layout= {
         showlegend: true,
         legend: {"orientation": "h"},
