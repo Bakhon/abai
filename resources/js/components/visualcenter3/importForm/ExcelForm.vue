@@ -29,8 +29,10 @@
                 {{trans('visualcenter.saveButton')}}
             </div>
         </div>
+        <div class="col-4 mt-3 row ml-1"></div>
 
         <div class="col-4 row mt-3 ml-1">
+            <div class="col-6 status-block status-block_little"></div>
             <div
                     id="chemistryButton"
                     :class="[!isChemistryButtonVisible ? 'menu__button_disabled' : 'chemistry-button_animation','col-6 status-block status-block_little menu__button']"
