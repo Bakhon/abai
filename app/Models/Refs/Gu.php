@@ -28,6 +28,11 @@ class Gu extends Model
         return $this->belongsTo(Cdng::class);
     }
 
+    public function ngdu()
+    {
+        return $this->belongsTo(Ngdu::class);
+    }
+
     public function zus()
     {
         return $this->hasMany(Zu::class);

@@ -7,7 +7,7 @@ export default {
             columns: [
                 {
                     prop: "column1",
-                    size: 440,
+                    size: 400,
                     cellProperties: ({prop, model, data, column}) => {
                         return {
                             style: {
@@ -29,7 +29,7 @@ export default {
                 },
                 {
                     prop: "column3",
-                    size: 330,
+                    size: 260,
                     cellProperties: ({prop, model, data, column}) => {
                         return {
                             style: {
@@ -61,7 +61,7 @@ export default {
                     },
                 },{
                     prop: "column6",
-                    size: 280,
+                    size: 220,
                     cellProperties: ({prop, model, data, column}) => {
                         return {
                             style: {
@@ -87,6 +87,8 @@ export default {
                 hours: 7,
                 minutes: 0,
             },
+            isChemistryButtonVisible: false,
+            daysWhenChemistryNeeded: [5,6,7,8,9,10],
         };
     },
     created() {

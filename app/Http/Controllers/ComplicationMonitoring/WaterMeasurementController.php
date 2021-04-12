@@ -76,7 +76,7 @@ class WaterMeasurementController extends CrudController
                             ->toArray()
                     ]
                 ],
-                
+
                 'gu' => [
                     'title' => trans('monitoring.gu.gu'),
                     'type' => 'select',
@@ -95,7 +95,7 @@ class WaterMeasurementController extends CrudController
                             ->toArray()
                     ]
                 ],
-                
+
                 'hydrocarbonate_ion' => [
                     'title' => 'НСО3-',
                     'type' => 'numeric',
@@ -255,11 +255,11 @@ class WaterMeasurementController extends CrudController
             ]
         ];
 
-        if(auth()->user()->can('monitoring create '.$this->modelName)) {
-            $params['links']['create'] = route($this->modelName.'.create');
+        if (auth()->user()->can('monitoring create ' . $this->modelName)) {
+            $params['links']['create'] = route($this->modelName . '.create');
         }
-        if(auth()->user()->can('monitoring export '.$this->modelName)) {
-            $params['links']['export'] = route($this->modelName.'.export');
+        if (auth()->user()->can('monitoring export ' . $this->modelName)) {
+            $params['links']['export'] = route($this->modelName . '.export');
         }
 
         return view('watermeasurement.index', compact('params'));
@@ -411,7 +411,7 @@ class WaterMeasurementController extends CrudController
         }
     }
 
-    public function getFields()
+    public function getFields(): \Symfony\Component\HttpFoundation\Response
     {
         $otherObjects = Field::all();
 
@@ -424,7 +424,7 @@ class WaterMeasurementController extends CrudController
         );
     }
 
-    public function getOtherObjects()
+    public function getOtherObjects(): \Symfony\Component\HttpFoundation\Response
     {
         $otherObjects = OtherObjects::get();
 
@@ -437,7 +437,7 @@ class WaterMeasurementController extends CrudController
         );
     }
 
-    public function getNgdu()
+    public function getNgdu(): \Symfony\Component\HttpFoundation\Response
     {
         $ngdu = Ngdu::get();
 
@@ -450,7 +450,20 @@ class WaterMeasurementController extends CrudController
         );
     }
 
-    public function getCdng()
+    public function getAllNgdu(): \Symfony\Component\HttpFoundation\Response
+    {
+        $ngdu = Ngdu::get();
+
+        return response()->json(
+            [
+                'code' => 200,
+                'message' => 'success',
+                'data' => $ngdu
+            ]
+        );
+    }
+
+    public function getCdng(): \Symfony\Component\HttpFoundation\Response
     {
         $cdng = Cdng::get();
 
@@ -463,7 +476,20 @@ class WaterMeasurementController extends CrudController
         );
     }
 
-    public function getGu(Request $request)
+    public function getallcdng(): \Symfony\Component\HttpFoundation\Response
+    {
+        $cdng = Cdng::get();
+
+        return response()->json(
+            [
+                'code' => 200,
+                'message' => 'success',
+                'data' => $cdng
+            ]
+        );
+    }
+
+    public function getGu(Request $request): \Symfony\Component\HttpFoundation\Response
     {
         $gu = Gu::query()
             ->where('cdng_id', $request->cdng_id)
@@ -481,7 +507,7 @@ class WaterMeasurementController extends CrudController
         );
     }
 
-    public function getZu(Request $request)
+    public function getZu(Request $request): \Symfony\Component\HttpFoundation\Response
     {
         $zu = Zu::where('gu_id', $request->gu_id)->get();
 
@@ -494,7 +520,72 @@ class WaterMeasurementController extends CrudController
         );
     }
 
-    public function getWell(Request $request)
+    public function getGuRelations(Request $request): \Symfony\Component\HttpFoundation\Response
+    {
+        $gu = Gu::with('zus', 'wells')->find($request->gu_id);
+
+        return response()->json(
+            [
+                'code' => 200,
+                'message' => 'success',
+                'data' => $gu
+            ]
+        );
+    }
+
+    public function getZuRelations(Request $request): \Symfony\Component\HttpFoundation\Response
+    {
+        $zu = Zu::with('wells', 'gu')->find($request->zu_id);
+
+        return response()->json(
+            [
+                'code' => 200,
+                'message' => 'success',
+                'data' => $zu
+            ]
+        );
+    }
+
+    public function getNgduRelations(Request $request): \Symfony\Component\HttpFoundation\Response
+    {
+        $ngdu = Ngdu::with('cdng', 'gu', 'zus')->find($request->ngdu_id);
+
+        return response()->json(
+            [
+                'code' => 200,
+                'message' => 'success',
+                'data' => $ngdu
+            ]
+        );
+    }
+
+    public function getCdngRelations(Request $request): \Symfony\Component\HttpFoundation\Response
+    {
+        $cdng = Cdng::with('gu', 'zus')->find($request->cdng_id);
+
+        return response()->json(
+            [
+                'code' => 200,
+                'message' => 'success',
+                'data' => $cdng
+            ]
+        );
+    }
+
+    public function getAllZu(): \Symfony\Component\HttpFoundation\Response
+    {
+        $zus = Zu::get();
+
+        return response()->json(
+            [
+                'code' => 200,
+                'message' => 'success',
+                'data' => $zus
+            ]
+        );
+    }
+
+    public function getWell(Request $request): \Symfony\Component\HttpFoundation\Response
     {
         $wells = Well::where('zu_id', $request->zu_id)->get();
 
@@ -507,7 +598,43 @@ class WaterMeasurementController extends CrudController
         );
     }
 
-    public function getWaterBySulin()
+    public function getAllWell(): \Symfony\Component\HttpFoundation\Response
+    {
+        $wells = Well::get();
+
+        return response()->json(
+            [
+                'code' => 200,
+                'message' => 'success',
+                'data' => $wells
+            ]
+        );
+    }
+
+    public function getAllMonitoringData(): \Symfony\Component\HttpFoundation\Response
+    {
+        $wells = Well::orderBy('name')->get();
+        $zus = Zu::orderBy('name')->get();
+        $cdng = Cdng::orderBy('name')->get();
+        $ngdu = Ngdu::orderBy('name')->get();
+        $gus = Gu::orderBy('name')->get();
+
+        return response()->json(
+            [
+                'code' => 200,
+                'message' => 'success',
+                'data' => [
+                    'wells' => $wells,
+                    'zus' => $zus,
+                    'cdng' => $cdng,
+                    'ngdu' => $ngdu,
+                    'gus' => $gus
+                ]
+            ]
+        );
+    }
+
+    public function getWaterBySulin(): \Symfony\Component\HttpFoundation\Response
     {
         $wbs = WaterTypeBySulin::get();
 
@@ -521,7 +648,7 @@ class WaterMeasurementController extends CrudController
         );
     }
 
-    public function getSulphateReducingBacteria()
+    public function getSulphateReducingBacteria(): \Symfony\Component\HttpFoundation\Response
     {
         $srb = SulphateReducingBacteria::get();
 
@@ -535,7 +662,7 @@ class WaterMeasurementController extends CrudController
         );
     }
 
-    public function getHydrocarbonOxidizingBacteria()
+    public function getHydrocarbonOxidizingBacteria(): \Symfony\Component\HttpFoundation\Response
     {
         $hob = HydrocarbonOxidizingBacteria::get();
 
@@ -549,7 +676,7 @@ class WaterMeasurementController extends CrudController
         );
     }
 
-    public function getThionicBacteria()
+    public function getThionicBacteria(): \Symfony\Component\HttpFoundation\Response
     {
         $hb = ThionicBacteria::get();
 
@@ -563,7 +690,7 @@ class WaterMeasurementController extends CrudController
         );
     }
 
-    public function getWm(Request $request)
+    public function getWm(Request $request): \Symfony\Component\HttpFoundation\Response
     {
         $wm = WaterMeasurement::find($request->id);
 
@@ -577,7 +704,7 @@ class WaterMeasurementController extends CrudController
         );
     }
 
-    public function getAllGu()
+    public function getAllGu(): \Symfony\Component\HttpFoundation\Response
     {
         $gus = Gu::query()
             ->select('name', 'id', 'cdng_id')
@@ -594,7 +721,7 @@ class WaterMeasurementController extends CrudController
         );
     }
 
-    public function getGuData(Request $request)
+    public function getGuData(Request $request): \Symfony\Component\HttpFoundation\Response
     {
         $wm = WaterMeasurement::query()
             ->where('gu_id', $request->gu_id)
@@ -670,7 +797,7 @@ class WaterMeasurementController extends CrudController
         );
     }
 
-    private function getCarbonAndHydrogenChartData (\Illuminate\Database\Eloquent\Collection $wm): array
+    private function getCarbonAndHydrogenChartData(\Illuminate\Database\Eloquent\Collection $wm): array
     {
         $chartDtCarbonDioxideByMonths = [];
         $chartDtHydrogenSulfideByMonths = [];
@@ -691,7 +818,10 @@ class WaterMeasurementController extends CrudController
             $average = 0;
             if (isset($chartDtCarbonDioxideByMonths[$month_num])) {
                 $dtCarbonDioxideMonth = array_filter($chartDtCarbonDioxideByMonths[$month_num]);
-                $average = count($dtCarbonDioxideMonth) ? round(array_sum($dtCarbonDioxideMonth)/count($dtCarbonDioxideMonth), 2) : 0;
+                $average = count($dtCarbonDioxideMonth) ? round(
+                    array_sum($dtCarbonDioxideMonth) / count($dtCarbonDioxideMonth),
+                    2
+                ) : 0;
             }
             $chartDtCarbonDioxide['value'][] = $average;
 
@@ -700,7 +830,10 @@ class WaterMeasurementController extends CrudController
             $average = 0;
             if (isset($chartDtHydrogenSulfideByMonths[$month_num])) {
                 $dtHydrogenSulfideMonth = array_filter($chartDtHydrogenSulfideByMonths[$month_num]);
-                $average = count($dtHydrogenSulfideMonth) ? round(array_sum($dtHydrogenSulfideMonth)/count($dtHydrogenSulfideMonth), 2) : 0;
+                $average = count($dtHydrogenSulfideMonth) ? round(
+                    array_sum($dtHydrogenSulfideMonth) / count($dtHydrogenSulfideMonth),
+                    2
+                ) : 0;
             }
 
             $chartDtHydrogenSulfide['value'][] = $average;
@@ -712,7 +845,7 @@ class WaterMeasurementController extends CrudController
         ];
     }
 
-    public function getGuNgduCdngField(Request $request)
+    public function getGuNgduCdngField(Request $request): \Symfony\Component\HttpFoundation\Response
     {
         $gu = Gu::where('id', $request->gu_id)->first();
         $cdng = Cdng::where('id', $gu->cdng_id)->first();
@@ -729,7 +862,7 @@ class WaterMeasurementController extends CrudController
         );
     }
 
-    public function getAllKormasses()
+    public function getAllKormasses(): \Symfony\Component\HttpFoundation\Response
     {
         $kormasses = Kormass::orderBy('name')->get();
 

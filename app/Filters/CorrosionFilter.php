@@ -15,49 +15,49 @@ class CorrosionFilter extends BaseFilter
         $this->defaultSortField = 'final_date_of_background_corrosion';
     }
 
-    protected function sort(string $field, bool $desc)
+    protected function sort(string $field, bool $isDescending)
     {
         switch($field) {
             case 'field':
                 $this->query
                 ->select('corrosions.*')
-                ->leftJoin('fields', 'fields.id', '=', 'corrosions.field_id')
-                ->orderBy('fields.name', $desc === true ? 'desc' : 'asc');
+                ->leftJoin('fields', 'fields.id', 'corrosions.field_id')
+                ->orderBy('fields.name', $isDescending ? 'desc' : 'asc');
                 break;
             case 'gu':
                 $this->query
                 ->select('corrosions.*')
-                ->leftJoin('gus', 'gus.id', '=', 'corrosions.gu_id')
+                ->leftJoin('gus', 'gus.id', 'corrosions.gu_id')
                 //dirty hack for alphanumeric sort but other solutions doesn't work
                 ->addSelect(DB::raw('lpad(gus.name, 10, 0) AS gus_name'))
-                ->orderBy('gus_name', $desc === true ? 'desc' : 'asc');
+                ->orderBy('gus_name', $isDescending ? 'desc' : 'asc');
                 break;
             case 'zu':
                 $this->query
                 ->select('corrosions.*')
-                ->leftJoin('zus', 'zus.id', '=', 'corrosions.zu_id')
-                ->orderBy('zus.name', $desc === true ? 'desc' : 'asc');
+                ->leftJoin('zus', 'zus.id', 'corrosions.zu_id')
+                ->orderBy('zus.name', $isDescending ? 'desc' : 'asc');
                 break;
             case 'ngdu':
                 $this->query
                 ->select('corrosions.*')
-                ->leftJoin('ngdus', 'ngdus.id', '=', 'corrosions.ngdu_id')
-                ->orderBy('ngdus.name', $desc === true ? 'desc' : 'asc');
+                ->leftJoin('ngdus', 'ngdus.id', 'corrosions.ngdu_id')
+                ->orderBy('ngdus.name', $isDescending ? 'desc' : 'asc');
                 break;
             case 'cdng':
                 $this->query
                 ->select('corrosions.*')
-                ->leftJoin('cdngs', 'cdngs.id', '=', 'corrosions.cdng_id')
-                ->orderBy('cdngs.name', $desc === true ? 'desc' : 'asc');
+                ->leftJoin('cdngs', 'cdngs.id', 'corrosions.cdng_id')
+                ->orderBy('cdngs.name', $isDescending ? 'desc' : 'asc');
                 break;
             case 'well':
                 $this->query
                 ->select('corrosions.*')
-                ->leftJoin('wells', 'wells.id', '=', 'corrosions.well_id')
-                ->orderBy('wells.name', $desc === true ? 'desc' : 'asc');
+                ->leftJoin('wells', 'wells.id', 'corrosions.well_id')
+                ->orderBy('wells.name', $isDescending ? 'desc' : 'asc');
                 break;
             default:
-                $this->query->orderBy($field, $desc === true ? 'desc' : 'asc');
+                $this->query->orderBy($field, $isDescending ? 'desc' : 'asc');
         }
     }
 

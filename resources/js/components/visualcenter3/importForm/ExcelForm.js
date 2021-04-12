@@ -153,6 +153,10 @@ export default {
     },
     props: ['userId'],
     async mounted() {
+        let currentDayNumber = moment().date();
+        if (this.daysWhenChemistryNeeded.includes(currentDayNumber)) {
+            this.isChemistryButtonVisible = true;
+        }
         this.selectedDzo.ticker = this.getDzoTicker();
         if (!this.selectedDzo.ticker) {
             this.selectedDzo.ticker = defaultDzoTicker;
@@ -279,10 +283,13 @@ export default {
         processNumberCells(row,category,fieldCategoryName) {
             for (let columnIndex = 1; columnIndex <= row.rowLength; columnIndex++) {
                 let selector = 'div[data-col="'+ columnIndex + '"][data-row="' + row.rowIndex + '"]';
-                let cellValue = parseFloat($(selector).text());
+                let cellValue = $(selector).text();
                 if (!this.isNumberCellValid(cellValue,selector)) {
                     this.turnErrorForCell(selector);
                     continue;
+                }
+                if (cellValue.trim().length === 0) {
+                    cellValue = null;
                 }
                 if (fieldCategoryName) {
                     this.setNumberValueForCategories(category,row.fields[columnIndex-1],cellValue,fieldCategoryName);
@@ -307,7 +314,7 @@ export default {
             this.excelData[category][groupName][fieldName] = cellValue;
         },
         isNumberCellValid(inputData,selector) {
-            if (isNaN(inputData) || inputData < 0) {
+            if (inputData.trim().length > 0 && (isNaN(parseFloat(inputData)) || parseFloat(inputData) < 0)) {
                 return false;
             }
             return true;
