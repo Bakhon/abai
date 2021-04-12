@@ -8,6 +8,7 @@ use App\Http\Controllers\Traits\WithFieldsValidation;
 use App\Http\Requests\IndexTableRequest;
 use App\Http\Requests\OmgNGDUWellRequest;
 use App\Http\Resources\OmgNGDUWellListResource;
+use App\Models\ComplicationMonitoring\OmgNGDU;
 use App\Models\ComplicationMonitoring\OmgNGDUWell;
 use App\Models\Refs\Well;
 use App\Models\Refs\Zu;
@@ -128,6 +129,15 @@ class OmgNGDUWellController extends CrudController
             ->paginate(25);
 
         return response()->json(json_decode(OmgNGDUWellListResource::collection($omgngdu_well)->toJson()));
+    }
+
+    /**
+     * Display the specified resource.
+    */
+    public function history(OmgNGDUWell $omgngdu_well): \Illuminate\View\View
+    {
+        $omgngdu_well->load('history');
+        return view('omgngdu_well.history', compact('omgngdu_well'));
     }
 
     /**

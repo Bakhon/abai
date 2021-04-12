@@ -11,8 +11,8 @@
             @endif
             <div class="container">
                 <h1>{{ trans('monitoring.history.title') }}</h1>
-                <edit-history :history='@json($omgngdu->history)'></edit-history>
-                <a class="btn btn-primary" href="{{ route('omgngdu.index') }}">{{__('app.back')}}</a>
+                <edit-history :history='@json($omgngdu_well->history)'></edit-history>
+                <a class="btn btn-primary" href="{{ route('omgngdu_well.index') }}">{{__('app.back')}}</a>
             </div>
         </div>
     </div>
