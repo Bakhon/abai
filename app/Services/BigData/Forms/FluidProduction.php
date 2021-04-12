@@ -77,7 +77,7 @@ class FluidProduction extends TableForm
 
         $ancestors = $geo->ancestors()
             ->reverse()
-            ->pluck('name')
+            ->pluck('name_ru')
             ->toArray();
 
         $ancestors[] = $geo->name;
@@ -373,10 +373,10 @@ class FluidProduction extends TableForm
     private function getOtherUwis($item)
     {
         $uwi = DB::connection('tbd')
-            ->table('prod.well as w')
-            ->selectRaw('w.id,w.uwi,array_agg(b.uwi) as other_uwi')
+            ->table('dict.well')
+            ->selectRaw('w.id,w.uwi as other_uwi')
             ->leftJoin('prod.joint_wells as j', 'w.id', '=', DB::raw("any(j.well_id_arr)"))
-            ->leftJoin('prod.well as b', 'b.id', '=', DB::raw('any(array_remove(j.well_id_arr, w.id))'))
+            ->leftJoin('dict.well as b', 'b.id', '=', DB::raw('any(array_remove(j.well_id_arr, w.id))'))
             ->where('w.id', $item->id)
             ->groupBy('w.id', 'w.uwi')
             ->first();
