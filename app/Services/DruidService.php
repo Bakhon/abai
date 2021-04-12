@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use Illuminate\Http\JsonResponse;
+use DateTime;
 use Level23\Druid\DruidClient;
 use Level23\Druid\Extractions\ExtractionBuilder;
 use Level23\Druid\Types\Granularity;
@@ -51,4 +53,38 @@ class DruidService
         return $result->data();
     }
 
+    public function getAccumOilProd(string $intervalStart, string $intervalStop):array
+    {
+        $builder = $this->client->query('gtm_eff_forecast_v25', Granularity::MONTH);
+        $builder->interval($intervalStart, $intervalStop);
+        $builder->select(...['__time', 'dt',
+            function (ExtractionBuilder $extractionBuilder) {
+                $extractionBuilder->timeFormat('yyyy-MM');
+            }
+        ]);
+        $builder->floatSum('add_prod_12m');
+        $builder->floatSum('plan_add_prod_12m');
+        $result = $builder->groupBy();
+
+        return $result->data();
+    }
+
+    public function getComparisonIndicators(string $intervalStart, string $intervalStop):array
+    {
+        $builder = $this->client->query('gtm_eff_forecast_v25', Granularity::YEAR);
+        $builder->interval($intervalStart, $intervalStop);
+        $builder->select(...['__time', 'dt',
+            function (ExtractionBuilder $extractionBuilder) {
+                $extractionBuilder->timeFormat('yyyy');
+            }
+        ]);
+        $builder->select('gtm_kind');
+        $builder->distinctCount('well_uwi');
+        $builder->sum('work_time');
+        $builder->floatSum('add_prod_12m');
+        $builder->floatSum('plan_add_prod_12m');
+        $result = $builder->groupBy();
+
+        return $result->data();
+    }
 }

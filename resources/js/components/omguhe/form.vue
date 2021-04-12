@@ -403,23 +403,21 @@ export default {
     submitForm () {
       this.formFields.out_of_service_of_dosing = this.formFields.out_of_service_of_dosing ? 1 : 0;
 
-      if (this.isEditing) {
-        this.axios
-            .put(this.localeUrl("/omguhe/" + this.omguhe.id), this.formFields)
-            .then((response) => {
-              if (response.data.status == 'success') {
-                window.location.replace(this.localeUrl("/omguhe"));
-              }
-            });
-      } else {
-        this.axios
-            .post(this.localeUrl("/omguhe"), this.formFields)
-            .then((response) => {
-              if (response.data.status == 'success') {
-                window.location.replace(this.localeUrl("/omguhe"));
-              }
-            });
-      }
+      this.axios
+          [this.requestMethod](this.requestUrl, this.formFields)
+          .then((response) => {
+            if (response.data.status == 'success') {
+              window.location.replace(this.localeUrl("/omguhe"));
+            }
+          });
+    }
+  },
+  computed: {
+    requestUrl () {
+      return this.isEditing ? this.localeUrl("/omguhe/" + this.omguhe.id) : this.localeUrl("/omguhe");
+    },
+    requestMethod () {
+      return this.isEditing ? "put" : "post";
     }
   },
   beforeCreate: function () {
