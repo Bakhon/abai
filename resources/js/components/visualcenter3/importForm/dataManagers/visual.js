@@ -81,7 +81,12 @@ export default {
             },
             stringColumns: [1,2],
             errorSelectors: [],
-            currentDate: moment().subtract(1, 'days').format('DD-MM-YYYY'),
+            currentDate: moment().tz('Asia/Almaty').subtract(1, 'days').format('DD-MM-YYYY'),
+            weekendsDays: [6,7],
+            limitForEnteringData: {
+                hours: 7,
+                minutes: 0,
+            },
             isChemistryButtonVisible: false,
             daysWhenChemistryNeeded: [5,6,7,8,9,10],
         };
