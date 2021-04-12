@@ -14,6 +14,8 @@ class ExcelFormController extends Controller
 {
     public function store(Request $request)
     {
+        $this->deleteAlreadyExistRecord($request);
+
         $this->saveDzoSummaryData($request);
         $dzo_summary_last_record = DzoImportData::latest('id')->first();
 
@@ -28,6 +30,24 @@ class ExcelFormController extends Controller
         $decrease_data = $request->request->get('decreaseReason');
         $dzo_decrease_reason = $this->getDzoChildSummaryData($dzo_decrease_reason,$decrease_data,$dzo_summary_last_record);
         $dzo_decrease_reason->save();
+    }
+
+    public function deleteAlreadyExistRecord($request)
+    {
+        $dzoName = $request->request->get('dzo_name');
+        $recordDate = $request->request->get('date');
+        $todayDzoImportDataRecord = DzoImportData::whereDate('date', Carbon::parse($recordDate))->where('dzo_name', $dzoName)->first();
+        if ($this->isAlreadyUploaded($todayDzoImportDataRecord)) {
+            DzoImportField::where('import_data_id',$todayDzoImportDataRecord->id)->delete();
+            DzoImportDecreaseReason::where('import_data_id',$todayDzoImportDataRecord->id)->delete();
+            DzoImportDowntimeReason::where('import_data_id',$todayDzoImportDataRecord->id)->delete();
+            DzoImportData::where('id',$todayDzoImportDataRecord->id)->delete();
+        }
+    }
+
+    public function isAlreadyUploaded($todayDzoImportDataRecord)
+    {
+        return !is_null($todayDzoImportDataRecord);
     }
 
     public function saveDzoSummaryData($request)
