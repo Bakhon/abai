@@ -24,7 +24,7 @@ export default {
   components: { PerfectScrollbar, FullPageLoader },
   data: function () {
     return {
-      url: "http://172.20.103.187:7575/api/pgno/",
+      url: "http://172.20.103.187:7573/api/pgno/",
       isLoading: false,
       activeRightTabName: 'technological-mode',
       layout: {
@@ -464,7 +464,7 @@ export default {
           "mech_sep_value": this.mech_sep_value,
           "nat_sep": this.nat_sep
         });
-      let uri = "http://172.20.103.187:7575/api/pgno/"+ this.field + "/" + this.wellNumber + "/download";
+      let uri = "http://172.20.103.187:7573/api/pgno/"+ this.field + "/" + this.wellNumber + "/download";
       this.axios.post(uri, jsonData,{responseType: "blob"}).then((response) => {
         fileDownload(response.data, "ПГНО_" + this.field + "_" + this.wellNumber + ".xlsx")
       }
@@ -887,7 +887,7 @@ export default {
       }
     },
     async NnoCalc(){
-      let uri = "http://172.20.103.187:7575/api/nno/";
+      let uri = "http://172.20.103.187:7573/api/nno/";
 
       this.eco_param=null;
 
@@ -1455,7 +1455,7 @@ export default {
       } else {
         if(this.expChoose == 'ШГН'){
           if(this.isVisibleChart) {
-            let uri = "http://172.20.103.187:7575/api/pgno/shgn";
+            let uri = "http://172.20.103.187:7573/api/pgno/shgn";
             let jsonData = JSON.stringify(
               {
                 "ql_cel": this.qlCelValue.split(' ')[0],
