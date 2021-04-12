@@ -345,27 +345,27 @@ abstract class TableForm extends BaseForm
                         ->groupBy('well_id');
 
                     break;
-                case 'tbdi.lab_research_value':
+                case 'prod.lab_research_value':
                     $result[$table] = DB::connection('tbd')
-                        ->table('tbdi.lab_research as lr')
-                        ->whereIn('lr.well_id', $wellIds)
-                        ->whereDate('dt', '<=', $date)
-                        ->whereDate('dt', '>=', $dateFrom)
-                        ->leftJoin('tbdi.lab_research_value as lrv', 'lrv.lab_research_id', '=', 'lr.id')
-                        ->orderBy('dt', 'desc')
+                        ->table('prod.lab_research as lr')
+                        ->whereIn('lr.well', $wellIds)
+                        ->whereDate('research_date', '<=', $date)
+                        ->whereDate('research_date', '>=', $dateFrom)
+                        ->leftJoin('prod.lab_research_value as lrv', 'lrv.research', '=', 'lr.id')
+                        ->orderBy('research_date', 'desc')
                         ->get()
-                        ->groupBy('well_id');
+                        ->groupBy('well');
 
                     break;
                 default:
                     $result[$table] = DB::connection('tbd')
                         ->table($table)
-                        ->whereIn('well_id', $wellIds)
+                        ->whereIn('well', $wellIds)
                         ->whereDate('dbeg', '<=', $date)
                         ->whereDate('dbeg', '>=', $dateFrom)
                         ->orderBy('dbeg', 'desc')
                         ->get()
-                        ->groupBy('well_id');
+                        ->groupBy('well');
             }
         }
         return $result;

@@ -257,10 +257,10 @@ class FluidProduction extends TableForm
         foreach ($orgs as $org) {
             $orgData[$org->id] = [
                 'id' => $org->id,
-                'name' => $org->name,
+                'name' => $org->name_ru,
                 'wells' => $org->wells->pluck('id')->toArray(),
                 'type' => 'org',
-                'parent_id' => $org->parent_id
+                'parent_id' => $org->parent
             ];
         }
 
@@ -289,8 +289,7 @@ class FluidProduction extends TableForm
                 [
                     'wells' => function ($query) {
                         $query->active(Carbon::parse($this->request->get('date')));
-                    },
-                    'type'
+                    }
                 ]
             )
             ->whereIn('tech_type', [Tech::TYPE_GZU, Tech::TYPE_GU, Tech::TYPE_ZU])
@@ -301,10 +300,10 @@ class FluidProduction extends TableForm
         foreach ($techs as $tech) {
             $techData[$tech->id] = [
                 'id' => $tech->id,
-                'name' => $tech->name,
+                'name' => $tech->name_ru,
                 'wells' => $tech->wells->pluck('id')->toArray(),
                 'type' => 'tech',
-                'parent_id' => $tech->parent_id
+                'parent_id' => $tech->parent
             ];
         }
 
@@ -339,7 +338,6 @@ class FluidProduction extends TableForm
             }
         );
 
-        dd($techData);
         $result = $this->generateTree($techData);
         Cache::put($cacheKey, $result, now()->addDay());
         return $result;
