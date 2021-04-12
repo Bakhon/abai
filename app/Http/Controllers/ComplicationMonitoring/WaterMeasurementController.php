@@ -450,7 +450,33 @@ class WaterMeasurementController extends CrudController
         );
     }
 
+    public function getAllNgdu()
+    {
+        $ngdu = Ngdu::get();
+
+        return response()->json(
+            [
+                'code' => 200,
+                'message' => 'success',
+                'data' => $ngdu
+            ]
+        );
+    }
+
     public function getCdng()
+    {
+        $cdng = Cdng::get();
+
+        return response()->json(
+            [
+                'code' => 200,
+                'message' => 'success',
+                'data' => $cdng
+            ]
+        );
+    }
+
+    public function getallcdng()
     {
         $cdng = Cdng::get();
 
@@ -494,9 +520,48 @@ class WaterMeasurementController extends CrudController
         );
     }
 
+    public function getGuRelations(Request $request)
+    {
+        $gu = Gu::with('zus', 'wells')->find($request->gu_id);
+
+        return response()->json(
+            [
+                'code' => 200,
+                'message' => 'success',
+                'data' => $gu
+            ]
+        );
+    }
+
+    public function getAllZu ()
+    {
+        $zus = Zu::get();
+
+        return response()->json(
+            [
+                'code' => 200,
+                'message' => 'success',
+                'data' => $zus
+            ]
+        );
+    }
+
     public function getWell(Request $request)
     {
         $wells = Well::where('zu_id', $request->zu_id)->get();
+
+        return response()->json(
+            [
+                'code' => 200,
+                'message' => 'success',
+                'data' => $wells
+            ]
+        );
+    }
+
+    public function getAllWell ()
+    {
+        $wells = Well::get();
 
         return response()->json(
             [

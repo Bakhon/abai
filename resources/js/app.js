@@ -97,6 +97,7 @@ Vue.component('wm-form', require('./components/wm/form.vue').default);
 Vue.component('omgca-form', require('./components/omgca/form.vue').default);
 Vue.component('omguhe-form', require('./components/omguhe/form.vue').default);
 Vue.component('omgngdu-form', require('./components/omgngdu/form.vue').default);
+Vue.component('omgngdu-well-form', require('./components/omgngdu_well/form.vue').default);
 Vue.component('gu-form', require('./components/gu/form.vue').default);
 Vue.component('zu-form', require('./components/zu/form.vue').default);
 
