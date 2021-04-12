@@ -427,6 +427,7 @@
           </modal>
 
           <button
+            v-if="permission"
             type="button" 
             data-toggle="modal" 
             data-target="#exampleModalCenter" 
@@ -552,7 +553,7 @@
           </a>
 
           <a
-            v-if="!edit"
+            v-if="!edit, permission"
             v-bind:title="trans('tr.trtlp2')"
             style="cursor: pointer;"
             data-toggle="tooltip"
@@ -6891,6 +6892,12 @@ import TrMultiselect from "./TrMultiselect.vue";
 Vue.use(NotifyPlugin);
 export default {
   name: "TrPage",
+  props: [
+    'params'
+  ],
+  mounted () {
+    console.log(this.params)
+  },
   components: {
     TrTable,
     TrFullTable,
@@ -7067,6 +7074,11 @@ export default {
         } else {
           this.dt = "01" + "." + mm1 + "." + yyyy1;
         }
+        if(this.params.includes(this.permissionName)) {
+          this.permission = true;
+        } else {
+          this.permission = false;
+        }
       });
   },
   data: function () {
@@ -7114,6 +7126,8 @@ export default {
       datepicker2: false,
       date_fix: true,
       is_dynamic: false,
+      permissionName: 'tr edit',
+      permission: undefined,
       // date_dyn: false,
     };
   },
