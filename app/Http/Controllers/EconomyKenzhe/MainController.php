@@ -31,7 +31,7 @@ class MainController extends Controller
             $dateTo = date("Y-m-d", strtotime(date('Y').'-'.$request->quarterValue . '-01'));
         }
         $currentYear = date('Y', strtotime('-1 year'));
-        $previousYear = (string)$currentYear - 1;
+        $previousYear = (string) $currentYear - 1;
         $handbook = HandbookRepTt::where('parent_id', 0)->with('childHandbookItems')->get()->toArray();
         $companies = SubholdingCompany::all();
         $companyRepTtValues = SubholdingCompany::find($companyId)->statsByDate($currentYear)->get()->toArray();
