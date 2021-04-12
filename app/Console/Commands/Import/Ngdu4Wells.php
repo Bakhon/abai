@@ -40,6 +40,6 @@ class Ngdu4Wells extends Command
      */
     public function handle()
     {
-        $this->importExcel(new Ngdu4WellsImport($this), base_path($this->argument('path')));
+        $this->importExcel(new Ngdu4WellsImport($this));
     }
 }

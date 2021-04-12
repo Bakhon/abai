@@ -1,4 +1,4 @@
-import moment from "moment-timezone";
+import moment from "moment";
 
 export default {
     data: function () {
@@ -7,7 +7,7 @@ export default {
             columns: [
                 {
                     prop: "column1",
-                    size: 400,
+                    size: 440,
                     cellProperties: ({prop, model, data, column}) => {
                         return {
                             style: {
@@ -29,7 +29,7 @@ export default {
                 },
                 {
                     prop: "column3",
-                    size: 260,
+                    size: 330,
                     cellProperties: ({prop, model, data, column}) => {
                         return {
                             style: {
@@ -61,7 +61,7 @@ export default {
                     },
                 },{
                     prop: "column6",
-                    size: 220,
+                    size: 280,
                     cellProperties: ({prop, model, data, column}) => {
                         return {
                             style: {
@@ -81,24 +81,13 @@ export default {
             },
             stringColumns: [1,2],
             errorSelectors: [],
-            currentDate: moment().tz('Asia/Almaty').subtract(1, 'days').format('DD-MM-YYYY'),
-            weekendsDays: [6,7],
-            limitForEnteringData: {
-                hours: 7,
-                minutes: 0,
-            },
-            isChemistryButtonVisible: false,
-            daysWhenChemistryNeeded: [5,6,7,8,9,10],
+            currentDate: moment().subtract(1, 'days').format('DD-MM-YYYY'),
         };
     },
     created() {
-        let almatyCurrentDate = moment().tz('Asia/Almaty');
-        if (this.weekendsDays.includes(almatyCurrentDate.day())) {
-            this.hourLimitForEnteringData.hours = 8;
-        }
-        if (almatyCurrentDate.hour() >= this.limitForEnteringData.hours && almatyCurrentDate.minutes() > this.limitForEnteringData.minutes) {
-            this.currentDate = almatyCurrentDate.format('DD-MM-YYYY');
-            this.currentDateDetailed = almatyCurrentDate.format("YYYY-MM-DD HH:mm:ss");
+        if (moment().hour() > 7) {
+            this.currentDate = moment().format('DD-MM-YYYY');
+            this.currentDateDetailed = moment().format("YYYY-MM-DD HH:mm:ss")
         }
     },
     methods: {

@@ -105,10 +105,8 @@ class RouteServiceProvider extends ServiceProvider
             'db_prototype',
             'visual_center',
             'gno',
-            'tr',
-            'monitoring',
-            'paegtm',
-            'ndo'
+            'tech',
+            'monitoring'
         ];
 
         foreach ($modules as $module) {

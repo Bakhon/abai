@@ -31,7 +31,6 @@
                             "dict",
                             "text",
                             "date",
-                            "datetime",
                             "numeric",
                             "radio",
                             "checkbox"

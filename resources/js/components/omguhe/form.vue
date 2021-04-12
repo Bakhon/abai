@@ -331,7 +331,7 @@ export default {
     },
     chooseGu() {
       this.axios
-          .post(this.localeUrl("/get-gu-cdng-ngdu-field"), {
+          .post(this.localeUrl("/getgucdngngdufield"), {
             gu_id: this.formFields.gu_id,
           })
           .then((response) => {
@@ -360,7 +360,7 @@ export default {
     },
     pick() {
       this.axios
-          .post(this.localeUrl("/get-prev-day-level"), {
+          .post(this.localeUrl("/getprevdaylevel"), {
             gu_id: this.formFields.gu_id,
             date: this.formFields.date,
           })
@@ -403,21 +403,23 @@ export default {
     submitForm () {
       this.formFields.out_of_service_of_dosing = this.formFields.out_of_service_of_dosing ? 1 : 0;
 
-      this.axios
-          [this.requestMethod](this.requestUrl, this.formFields)
-          .then((response) => {
-            if (response.data.status == 'success') {
-              window.location.replace(this.localeUrl("/omguhe"));
-            }
-          });
-    }
-  },
-  computed: {
-    requestUrl () {
-      return this.isEditing ? this.localeUrl("/omguhe/" + this.omguhe.id) : this.localeUrl("/omguhe");
-    },
-    requestMethod () {
-      return this.isEditing ? "put" : "post";
+      if (this.isEditing) {
+        this.axios
+            .put(this.localeUrl("/omguhe/" + this.omguhe.id), this.formFields)
+            .then((response) => {
+              if (response.data.status == 'success') {
+                window.location.replace(this.localeUrl("/omguhe"));
+              }
+            });
+      } else {
+        this.axios
+            .post(this.localeUrl("/omguhe"), this.formFields)
+            .then((response) => {
+              if (response.data.status == 'success') {
+                window.location.replace(this.localeUrl("/omguhe"));
+              }
+            });
+      }
     }
   },
   beforeCreate: function () {

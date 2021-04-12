@@ -505,7 +505,7 @@ export default {
         }
       });
 
-      this.axios.post(this.localeUrl("/get-gu-cdng-ngdu-field"), {
+      this.axios.post(this.localeUrl("/getgucdngngdufield"), {
         gu_id: this.formFields.gu_id,
       }).then((response) => {
         let data = response.data;

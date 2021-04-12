@@ -1,46 +1,46 @@
 <template>
     <div>
         <div class="row mx-0 mt-lg-2 gtm">
-            <div class="gtm-dark col-lg-10 p-0">
+            <div class="col-lg-10 p-0">
                 <div class="row col-12 p-0 m-0">
                     <div class="col-6 d-none d-lg-block p-0 pl-1 gtm-map-block">
-                        <div class="h-100">
+                        <div class="gtm-dark h-100">
                             <div class="block-header pb-0 pl-2">
                                 Доходы от дополнительной добычи нефти
                             </div>
-                            <div class="p-1 pl-2">
+                            <div class="gtm-dark p-1 pl-2">
                                 <gtm-bar-chart :chartdata="{labels: barLabels, datasets: firstBarData}" :options="barOptions" :height="350"></gtm-bar-chart>
                             </div>
                         </div>
                     </div>
                     <div class="col-6 d-none d-lg-block p-0 gtm-map-block">
-                        <div class="h-100">
+                        <div class="gtm-dark h-100">
                             <div class="block-header pb-0 pl-2 pt-1">
                                 Свободные денежные потоки (FCF) 2020г
                             </div>
-                            <div class="p-1 pl-2">
+                            <div class="gtm-dark p-1 pl-2">
                                 <gtm-bar-chart :chartdata="{labels: barLabels, datasets: secondBarData}" :options="barOptions" :height="350"></gtm-bar-chart>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="row col-12 p-0 m-0">
+                <div class="row col-12 p-0 m-0 pb-2">
                     <div class="col-6 d-none d-lg-block p-0 pl-1 gtm-map-block">
-                        <div class="h-100">
+                        <div class="gtm-dark h-100">
                             <div class="block-header pb-0 pl-2">
                                 Расходы на ГТМ
                             </div>
-                            <div class="p-1 pl-2">
+                            <div class="gtm-dark p-1 pl-2">
                                 <gtm-bar-chart :chartdata="{labels: barLabels, datasets: thirdBarData}" :options="barOptions" :height="350"></gtm-bar-chart>
                             </div>
                         </div>
                     </div>
                     <div class="col-6 d-none d-lg-block p-0 gtm-map-block">
-                        <div class="h-100">
+                        <div class="gtm-dark h-100">
                             <div class="block-header pb-0 pl-2 pt-1">
                                 Бурение скважин за 9 месяцев  2020г
                             </div>
-                            <div class="p-1 pl-2 mh-370">
+                            <div class="gtm-dark p-1 pl-2 mh-370">
                                 <line-chart :height="350"></line-chart>
                             </div>
                         </div>

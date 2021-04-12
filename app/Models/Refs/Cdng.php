@@ -13,16 +13,6 @@ class Cdng extends Model
         return $this->hasMany(Gu::class);
     }
 
-    public function zus()
-    {
-        return $this->hasManyThrough(Zu::class, Gu::class);
-    }
-
-    public function ngdu()
-    {
-        return $this->belongsTo(Ngdu::class);
-    }
-
     public function omgngdu()
     {
         return $this->hasMany(\App\Models\ComplicationMonitoring\OmgNGDU::class);

@@ -17,7 +17,6 @@ use Maatwebsite\Excel\Concerns\WithCalculatedFormulas;
 use Maatwebsite\Excel\Events\BeforeSheet;
 use App\Models\Refs\Well;
 use App\Models\Refs\Gu;
-use App\Console\Commands\Import\Wells;
 
 class GuWellsImport implements ToCollection, WithEvents, WithColumnLimit, WithStartRow, WithCalculatedFormulas
 {
@@ -54,7 +53,7 @@ class GuWellsImport implements ToCollection, WithEvents, WithColumnLimit, WithSt
         'zu-zu'
     ];
 
-    public function __construct(Wells $command)
+    public function __construct(\App\Console\Commands\Import\Wells $command)
     {
         $this->command = $command;
         $this->sheetName = null;
@@ -84,7 +83,7 @@ class GuWellsImport implements ToCollection, WithEvents, WithColumnLimit, WithSt
                     foreach ($this->errors as $error) {
                         $this->command->error($error);
                     }
-                    throw new \Exception('Success import');
+                    throw new \Exception('Stop import');
                 }
 
                 $this->command->line(' ');
@@ -106,7 +105,7 @@ class GuWellsImport implements ToCollection, WithEvents, WithColumnLimit, WithSt
         $guName = str_replace('GU-', 'ГУ-', $guName);
         $this->gu = Gu::firstOrCreate(
             [
-                'name' => strtoupper($guName)
+                'name' => $guName
             ]
         );
 
@@ -339,7 +338,7 @@ class GuWellsImport implements ToCollection, WithEvents, WithColumnLimit, WithSt
     {
         $well = Well::firstOrNew(
             [
-                'name' => strtoupper($row[self::START_POINT]),
+                'name' => $row[self::START_POINT],
                 'ngdu_id' => $this->ngdu->id,
                 'gu_id' => $this->gu->id
             ]
@@ -357,7 +356,7 @@ class GuWellsImport implements ToCollection, WithEvents, WithColumnLimit, WithSt
         $this->command->info('Create Zu '.$row[self::FINISH_POINT]);
         $zu = Zu::firstOrNew(
             [
-                'name' => strtoupper($row[self::FINISH_POINT]),
+                'name' => $row[self::FINISH_POINT],
                 'ngdu_id' => $this->ngdu->id,
                 'gu_id' => $this->gu->id
             ]

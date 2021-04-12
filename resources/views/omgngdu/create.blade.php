@@ -22,3 +22,9 @@
         </div>
     </div>
 @endsection
+<style>
+    body{color: white !important;}
+    .table{
+        color: white !important;
+    }
+</style>

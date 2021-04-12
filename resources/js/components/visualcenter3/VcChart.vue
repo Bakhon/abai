@@ -21,19 +21,6 @@
                     this.trans("visualcenter.nov"),
                     this.trans("visualcenter.dec"),
                 ],
-                initialChartColors: {
-                    plan: "#2E50E9",
-                    opecPlan: "#fff",
-                    fact: "#9EA4C9",
-                    monthlyPlan: '#009846',
-                },
-                initialChartLabels: {
-                    plan: this.trans("visualcenter.Plan") + " " + this.trans("visualcenter.utv"),
-                    opecPlan: this.trans("visualcenter.planOPEK"),
-                    monthlyPlan: this.trans("visualcenter.requiredDailyPlan"),
-                    fact: this.trans("visualcenter.Fact"),
-                    deviation: this.trans("visualcenter.deviation"),
-                },
             }
         },
         methods: {
@@ -43,6 +30,20 @@
                 let color2;
                 let plan1;
                 let plan2;
+                let datasets;
+                let chartLabels = {
+                    plan: '',
+                    opecPlan: '',
+                    monthlyPlan: this.trans("visualcenter.requiredDailyPlan"),
+                    fact: this.trans("visualcenter.Fact"),
+                    deviation: this.trans("visualcenter.deviation"),
+                };
+                let chartColors = {
+                    plan: "#fff",
+                    opecPlan: "#2E50E9",
+                    fact: "#9EA4C9",
+                    monthlyPlan: '#009846',
+                };
 
                 let formattedChartSummary = {
                     plan: [],
@@ -93,13 +94,23 @@
                     return ctx.createPattern(tmpCanvas, "repeat");
                 })();
 
-                let chartColors = _.cloneDeep(this.initialChartColors);
-                let chartLabels = _.cloneDeep(this.initialChartLabels);
-                if (chartSummary.isOpecFilterActive) {
-                    chartColors.plan = _.cloneDeep(this.initialChartColors).opecPlan;
-                    chartColors.opecPlan = _.cloneDeep(this.initialChartColors).plan;
+                if (opec === "ОПЕК+") {
+                    chartColors.plan = "#fff";
+                    chartColors.opecPlan = "#2E50E9";
+                    chartLabels.plan = this.trans("visualcenter.planOPEK");
+                    chartLabels.opecPlan =
+                        this.trans("visualcenter.Plan") +
+                        " " +
+                        this.trans("visualcenter.utv");
+                } else {
+                    chartColors.plan = "#2E50E9";
+                    chartColors.opecPlan = "#fff";
+                    chartLabels.plan =
+                        this.trans("visualcenter.Plan") +
+                        " " +
+                        this.trans("visualcenter.utv");
+                    chartLabels.opecPlan = this.trans("visualcenter.planOPEK");
                 }
-
                 let planChartOptions = {
                     label: chartLabels.plan,
                     borderColor: chartColors.plan,
@@ -136,10 +147,16 @@
                     data: formattedChartSummary.monthlyPlan,
                     pointRadius: 0,
                 };
+                let deviation = {
+                    label: chartLabels.deviation,
+                    backgroundColor: fillPattern
+                };
 
-                let datasets = [planChartOptions, factChartOptions];
-                if (chartSummary.isOpecFilterActive) {
-                    datasets.push(planOpecChartOptions);
+
+                if (opec === "ОПЕК+") {
+                    datasets = [planChartOptions, factChartOptions, planOpecChartOptions, deviation];
+                } else {
+                    datasets = [planChartOptions, factChartOptions, deviation];
                 }
                 if (chartSummary.isFilterTargetPlanActive) {
                     datasets.push(monthlyPlan);
@@ -168,11 +185,6 @@
                                                 fillStyle: style.borderColor,
                                             };
                                         });
-                                        returnData.push({
-                                            text: this.trans("visualcenter.deviation"),
-                                            fillStyle: fillPattern,
-                                        });
-
                                         return returnData;
                                     }
                                     return [];

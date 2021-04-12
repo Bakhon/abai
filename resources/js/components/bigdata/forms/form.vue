@@ -100,7 +100,7 @@ export default {
       'getValidationErrors'
     ]),
     init() {
-      this.activeTab = 0
+
       this.updateForm(this.params.code)
           .catch(error => {
             Vue.prototype.$notifyError(error.response.data.text + "\r\n\r\n" + error.response.data.errors)

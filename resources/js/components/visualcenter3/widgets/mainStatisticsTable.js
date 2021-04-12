@@ -108,12 +108,6 @@ export default {
         },
 
         changeMenu2(change) {
-            this.buttonDailyTab = "";
-            this.buttonMonthlyTab = "";
-            this.buttonYearlyTab = "";
-            this.buttonPeriodTab = "";
-            this.isFilterTargetPlanActive = false;
-
             if (change === 1) {
                 this.currentDzoList = 'daily';
                 this.buttonDailyTab = this.highlightedButton;
@@ -124,6 +118,8 @@ export default {
                 };
                 this.changeDate();
                 this.calculateDzoCompaniesSummary();
+            } else {
+                this.buttonDailyTab = "";
             }
 
             if (change === 2) {
@@ -143,7 +139,10 @@ export default {
                     end: periodEnd,
                     formatInput: true,
                 };
+
                 this.changeDate();
+            } else {
+                this.buttonMonthlyTab = "";
             }
 
             if (change === 3) {
@@ -155,10 +154,14 @@ export default {
                     formatInput: true,
                 };
                 this.changeDate();
+            } else {
+                this.buttonYearlyTab = "";
             }
 
             if (change === 4) {
                 this.buttonPeriodTab = this.highlightedButton;
+            } else {
+                this.buttonPeriodTab = "";
             }
         },
 
