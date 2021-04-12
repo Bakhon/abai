@@ -2,6 +2,7 @@
 
 namespace App\Models\Refs;
 
+use App\Models\ComplicationMonitoring\OmgNGDUWell;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\ComplicationMonitoring\OmgNGDU;
 use App\Models\ComplicationMonitoring\WaterMeasurement;
@@ -49,5 +50,10 @@ class Zu extends Model
     public function omguhe()
     {
         return $this->hasMany(OmgUHE::class);
+    }
+
+    public function omgngdu_well()
+    {
+        return $this->hasMany(OmgNGDUWell::class);
     }
 }

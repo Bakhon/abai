@@ -331,7 +331,7 @@ export default {
     },
     chooseGu() {
       this.axios
-          .post(this.localeUrl("/getgucdngngdufield"), {
+          .post(this.localeUrl("/get-gu-cdng-ngdu-field"), {
             gu_id: this.formFields.gu_id,
           })
           .then((response) => {
@@ -360,7 +360,7 @@ export default {
     },
     pick() {
       this.axios
-          .post(this.localeUrl("/getprevdaylevel"), {
+          .post(this.localeUrl("/get-prev-day-level"), {
             gu_id: this.formFields.gu_id,
             date: this.formFields.date,
           })
