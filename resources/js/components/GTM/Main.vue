@@ -137,7 +137,7 @@
                 </div>
             </div>
         </div>
-        <modal v-if="!isModalHide" @close="hideModal"></modal>
+        <gtm-modal v-if="!isModalHide" @close="hideModal"></gtm-modal>
         <script type="text/x-template" id="modal-template">
             <transition name="modal">
                 <div class="modal-mask">
@@ -164,8 +164,8 @@
 </template>
 
 <script>
-Vue.component("modal", {
-    template: "#modal-template"
+Vue.component("gtm-modal", {
+  template: "#modal-template"
 });
 
 export default {
