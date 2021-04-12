@@ -9,7 +9,7 @@
                     <p>{{ $message }}</p>
                 </div>
             @endif
-            <div class="container">
+            <div class="container  table-page">
                 <h1>{{ trans('monitoring.history.title') }}</h1>
                 <edit-history :history='@json($omgngdu->history)'></edit-history>
                 <a class="btn btn-primary" href="{{ route('omgngdu.index') }}">{{__('app.back')}}</a>

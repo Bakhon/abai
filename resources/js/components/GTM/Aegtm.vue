@@ -1,14 +1,14 @@
 <template>
     <div>
         <div class="row mx-0 mt-lg-2 gtm">
-            <div class="col-lg-10 p-0">
+            <div class="gtm-dark col-lg-10 p-0">
                 <div class="row col-12 p-0 m-0">
                     <div class="col-6 d-none d-lg-block p-0 pl-1 gtm-map-block">
-                        <div class="gtm-dark h-100">
+                        <div class="h-100">
                             <div class="block-header pb-0 pl-2 pt-1">
                                 {{ trans('paegtm.accumulatedOilProdTitle') }}
                             </div>
-                            <div class="gtm-dark p-1 pl-2 mh-370">
+                            <div class="p-1 pl-2 mh-370">
                                 <gtm-line-chart
                                     v-if="loaded"
                                     :chartdata="{labels: accumOilProdLabels, datasets: accumOilProdData}"
@@ -19,11 +19,11 @@
                         </div>
                     </div>
                     <div class="col-6 d-none d-lg-block p-0 gtm-map-block">
-                        <div class="gtm-dark h-100">
+                        <div class="h-100">
                             <div class="block-header pb-0 pl-2 pt-1">
                                 {{ trans('paegtm.comparisonIndicatorsTitle') }}
                             </div>
-                            <div class="gtm-dark p-1 pl-2">
+                            <div class="p-1 pl-2">
                                 <table class="table text-center text-white podbor-middle-table h-75">
                                     <thead>
                                     <tr>
@@ -49,23 +49,23 @@
                         </div>
                     </div>
                 </div>
-                <div class="row col-12 p-0 m-0 pb-2">
+                <div class="row col-12 p-0 m-0">
                     <div class="col-6 d-none d-lg-block p-0 pl-1 gtm-map-block">
-                        <div class="gtm-dark h-100">
+                        <div class="h-100">
                             <div class="block-header pb-0 pl-2">
                                 {{ trans('paegtm.profitabilityIndexTitle') }}
                             </div>
-                            <div class="gtm-dark p-1 pl-2">
+                            <div class="p-1 pl-2">
                                 <bar-chart :height="360"></bar-chart>
                             </div>
                         </div>
                     </div>
                     <div class="col-6 d-none d-lg-block p-0 gtm-map-block">
-                        <div class="gtm-dark h-100 pb-2">
+                        <div class="h-100 pb-2">
                             <div class="block-header pb-0 pl-2">
                                 {{ trans('paegtm.plannedGrowthReasonsTitle') }}
                             </div>
-                            <div class="gtm-dark p-1 pl-2">
+                            <div class="p-1 pl-2">
                                 <doughnut-chart :height="180"></doughnut-chart>
                             </div>
                         </div>
