@@ -39,25 +39,18 @@ export default {
           },
         },
 
-        
-
         colors: ["#fba409", "#13b062"],
         chart: {
-          
           background: '#272953',
           toolbar: {
             show: true,
             Color: "#373d3f",
-              //autoSelected: "pan",
           },
           foreColor: "#fff",
           animations: {
               speed: 200,
           },
-            //  height: 150,
           type: "area",
-
-          
         }, 
 
         plotOptions: {
@@ -81,8 +74,6 @@ export default {
             colors: ["#c5c5c5"],
           },
         },
-
-       
 
         labels: ["Qн, т/сут", "ННО, сут", "Энергопотребление кВт*ч",  "NPV, млн.тг"],
         legend: {
