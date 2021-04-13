@@ -295,10 +295,10 @@
             <i class="fa fa-fw fa-sort"></i>
           </td>
           <td v-show= isHide @click="sortBy('q_l_1')" style="background: #2c3379">
-            <i class="fa fa-fw fa-sort"></i>{{isQliquidMeasure}}
+            <i class="fa fa-fw fa-sort"></i>{{qLiquidMeasure}}
           </td>
           <td v-show= isHide @click="sortBy('q_o_1')" style="background: #2c3379">
-            <i class="fa fa-fw fa-sort"></i>{{isFactorsMeasure}}
+            <i class="fa fa-fw fa-sort"></i>{{factorsMeasure}}
           </td>
           <td v-show= isHide @click="sortBy('wct_1')" style="background: #2c3379">
             <i class="fa fa-fw fa-sort"></i>%
@@ -310,16 +310,16 @@
             <i class="fa fa-fw fa-sort"></i>атм
           </td>
           <td v-show= isHide @click="sortBy('pi_1')" style="background: #2c3379">
-            <i class="fa fa-fw fa-sort"></i>{{isFactorsMeasure}}
+            <i class="fa fa-fw fa-sort"></i>{{prodIndexMeasure}}
           </td>
           <td v-if= isGenHide v-show= isHide @click="sortBy('prod_days_1')" style="background: #2c3379">
             <i class="fa fa-fw fa-sort"></i>сут
           </td>
           <td v-show= isHide @click="sortBy('q_l_2')" style="background: #1a2370">
-            <i class="fa fa-fw fa-sort"></i>{{isQliquidMeasure}}
+            <i class="fa fa-fw fa-sort"></i>{{qLiquidMeasure}}
           </td>
           <td v-show= isHide @click="sortBy('q_o_2')" style="background: #1a2370">
-            <i class="fa fa-fw fa-sort"></i>{{isFactorsMeasure}}
+            <i class="fa fa-fw fa-sort"></i>{{factorsMeasure}}
           </td>
           <td v-show= isHide @click="sortBy('wct_2')" style="background: #1a2370">
             <i class="fa fa-fw fa-sort"></i>%
@@ -331,28 +331,28 @@
             <i class="fa fa-fw fa-sort"></i>атм
           </td>
           <td v-show= isHide @click="sortBy('pi_2')" style="background: #1a2370">
-            <i class="fa fa-fw fa-sort"></i>{{isFactorsMeasure}}
+            <i class="fa fa-fw fa-sort"></i>{{prodIndexMeasure}}
           </td>
           <td v-if= isGenHide v-show= isHide @click="sortBy('prod_days_2')" style="background: #1a2370">
             <i class="fa fa-fw fa-sort"></i>сут
           </td>
           <td @click="sortBy('dqn')" style="background: #12135C">
-            <i class="fa fa-fw fa-sort"></i>{{isFactorsMeasure}}
+            <i class="fa fa-fw fa-sort"></i>{{factorsMeasure}}
           </td>
           <td @click="sortBy('Pbh')" style="background: #12135C">
-            <i class="fa fa-fw fa-sort"></i>{{isFactorsMeasure}}
+            <i class="fa fa-fw fa-sort"></i>{{factorsMeasure}}
           </td>
           <td v-if= isGenHide @click="sortBy('prod_days')" style="background: #12135C">
-            <i class="fa fa-fw fa-sort"></i>{{isFactorsMeasure}}
+            <i class="fa fa-fw fa-sort"></i>{{factorsMeasure}}
           </td>
           <td @click="sortBy('wct')" style="background: #12135C">
-            <i class="fa fa-fw fa-sort"></i>{{isFactorsMeasure}}
+            <i class="fa fa-fw fa-sort"></i>{{factorsMeasure}}
           </td>
           <td @click="sortBy('p_res')" style="background: #12135C">
-            <i class="fa fa-fw fa-sort"></i>{{isFactorsMeasure}}
+            <i class="fa fa-fw fa-sort"></i>{{factorsMeasure}}
           </td>
           <td @click="sortBy('PI')" style="background: #12135C">
-            <i class="fa fa-fw fa-sort"></i>{{isFactorsMeasure}}
+            <i class="fa fa-fw fa-sort"></i>{{factorsMeasure}}
           </td>
           <td @click="sortBy('Main_problem')" style="background: #12135C; min-width:248px;">
             <i class="fa fa-fw fa-sort"></i>
@@ -1070,9 +1070,9 @@ export default {
       datepicker2: false,
       wdate2: null,
       wdate1: null,
-      isFactorsMeasure: this.trans('tr.t'),
-      isQliquidMeasure: this.trans('tr.m3'),
-      isProdIndexMeasure: this.trans('tr.mtr4'),
+      factorsMeasure: this.trans('tr.t'),
+      qLiquidMeasure: this.trans('tr.m3'),
+      prodIndexMeasure: this.trans('tr.mtr4'),
       chartBarOptions: {
         chart: {
           height: 350,
@@ -1309,9 +1309,9 @@ export default {
           }
           this.dt = dd + "." + mm + "." + yyyy;
           this.dt2 = prdd + "." + prmm + "." + pryyyy;
-          this.isFactorsMeasure = this.trans('tr.t');
-          this.isQliquidMeasure = this.trans('tr.m3');
-          this.isProdIndexMeasure = this.trans('tr.mtr4'); 
+          this.factorsMeasure = this.trans('tr.t');
+          this.qLiquidMeasure = this.trans('tr.m3');
+          this.prodIndexMeasure = this.trans('tr.mtr4'); 
         });
     },
     chooseDt() {
@@ -1380,9 +1380,9 @@ export default {
             this.isGenHide= false;
             this.colsize7= 6;
             this.colsize2= 1;
-            this.isProdIndexMeasure = this.trans('tr.mtrfa1');
-            this.isQliquidMeasure = this.trans('tr.mtr2');
-            this.isFactorsMeasure = this.trans('tr.mtr3'); 
+            this.prodIndexMeasure = this.trans('tr.mtrfa1');
+            this.qLiquidMeasure = this.trans('tr.mtr2');
+            this.factorsMeasure = this.trans('tr.mtr3'); 
           });
       }
     },
