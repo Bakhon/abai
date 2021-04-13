@@ -44,5 +44,18 @@ public/vendors~polyfills-dom.js
 #IDE file
 kmg-dashboard.iml
 .DS_Store
+<<<<<<< HEAD
 .vscode/settings.json
 /.vs/
+=======
+public/0.js
+public/1.js
+public/2.js
+public/3.js
+public/4.js
+public/5.js
+public/6.js
+resources/js/components/gno/Table.vue
+public/vendors~polyfills-core-js.js
+public/vendors~polyfills-dom.js
+>>>>>>> 08e79cb4b775744daaee2f113734c7a7bee14027

@@ -116,6 +116,4 @@ return array (
   'primenit_hpump' => 'Применить выбранную Нсп',
   'vibor_glubin_hpump' => 'Выбор глубины спуска',
   'history_prs' => 'WBI history',
-  'nno' => 'NNO',
-  'power_consumption'=>'Power consumption kW*h',
 );
