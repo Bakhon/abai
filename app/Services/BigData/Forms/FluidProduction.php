@@ -279,7 +279,7 @@ class FluidProduction extends TableForm
     {
         $cacheKey = 'bd_tech_with_wells_' . $this->request->get('date');
         $techData = [];
-        if (false && Cache::has($cacheKey)) {
+        if (Cache::has($cacheKey)) {
             return Cache::get($cacheKey);
         }
 
@@ -319,7 +319,7 @@ class FluidProduction extends TableForm
             return Cache::get($cacheKey);
         }
 
-        $organizations = $this->getOrgStructure();
+        $orgStructure = $this->getOrgStructure();
         $techStructure = $this->getTechStructure();
 
         $orgTechs = DB::connection('tbd')
@@ -335,7 +335,7 @@ class FluidProduction extends TableForm
             )
             ->toArray();
 
-        foreach ($organizations as &$org) {
+        foreach ($orgStructure as &$org) {
             foreach ($techStructure as $keyTech => $tech) {
                 if (isset($orgTechs[$org['id']]) && in_array($tech['id'], $orgTechs[$org['id']])) {
                     $org['children'][] = $tech;
@@ -345,7 +345,7 @@ class FluidProduction extends TableForm
         }
         unset($org);
 
-        $result = $this->generateTree($organizations);
+        $result = $this->generateTree($orgStructure);
         Cache::put($cacheKey, $result, now()->addDay());
 
         return $result;
