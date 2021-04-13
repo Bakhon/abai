@@ -345,7 +345,7 @@ class FluidProduction extends TableForm
         }
         unset($org);
 
-        $result = $this->generateTree($orgStructure);
+        $result = $this->generateTree($orgStructures);
         Cache::put($cacheKey, $result, now()->addDay());
 
         return $result;
