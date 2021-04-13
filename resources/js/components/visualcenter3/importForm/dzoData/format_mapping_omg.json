@@ -4,10 +4,10 @@
     "subTitle": [22]
   },
   "columnsFormatMapping": {
-    "twoColumns": [6],
-    "threeColumns": [41],
-    "fourColumns": [0,3,21,22],
-    "fiveColumns": [18],
-    "sixColumns": [9,12,15,51]
+    "twoColumns": [6,12],
+    "threeColumns": [0,3,9,41],
+    "fourColumns": [15,18,21,22],
+    "fiveColumns": [],
+    "sixColumns": [51]
   }
 }

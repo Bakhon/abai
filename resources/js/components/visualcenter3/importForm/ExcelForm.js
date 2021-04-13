@@ -26,7 +26,7 @@ import cellsMappingEMG from './dzoData/cells_mapping_emg.json';
 import moment from "moment";
 import Visual from "./dataManagers/visual";
 
-const defaultDzoTicker = "КТМ";
+const defaultDzoTicker = "КОА";
 
 export default {
     data: function () {
@@ -74,7 +74,7 @@ export default {
                     cells: cellsMappingYO,
                     id: 111
                 },
-                "ЕМГ" : {
+                "ЭМГ" : {
                     rows: initialRowsEMG,
                     format: formatMappingEMG,
                     cells: cellsMappingEMG,
@@ -83,7 +83,7 @@ export default {
             },
             dzoCompanies: [
                 {
-                    ticker: 'ЕМГ',
+                    ticker: 'ЭМГ',
                     name: 'АО "Эмбамунайгаз"'
                 },
                 {
@@ -162,6 +162,10 @@ export default {
         if (!this.selectedDzo.ticker) {
             this.selectedDzo.ticker = defaultDzoTicker;
         }
+        if ( this.selectedDzo.ticker === 'КОА') {
+            this.addColumnsToGrid();
+        }
+
         this.selectedDzo.name = this.getDzoName();
         this.changeDefaultDzo();
         this.dzoPlans = await this.getDzoMonthlyPlans();
@@ -170,6 +174,23 @@ export default {
         this.setTableFormat();
     },
     methods: {
+        addColumnsToGrid() {
+            for (let i = 7; i < 9; i++) {
+                this.columns.push(
+                    {
+                        prop: "column" + i,
+                        size: 280,
+                        cellProperties: ({prop, model, data, column}) => {
+                            return {
+                                style: {
+                                    border: '1px solid #F4F4F6'
+                                },
+                            };
+                        },
+                    }
+                );
+            }
+        },
         getDzoTicker() {
             let dzoTicker = '';
             let self = this;
