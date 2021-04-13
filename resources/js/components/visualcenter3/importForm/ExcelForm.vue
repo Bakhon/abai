@@ -2,11 +2,11 @@
     <div class="row main-layout">
         <div class="col-2 row mt-3 ml-1">
             <div class="col-12 status-block">
-                <span>{{trans('visualcenter.importForm.yesterdayDate')}}</span><br>
-                <span class="dzo-name">{{currentDate}}</span>
+                &nbsp;
             </div>
             <div class="col-12 status-block mt-3">
-                <span>{{trans('visualcenter.importForm.selectedDZO')}}</span><br>
+                <span>{{trans('visualcenter.importForm.yesterdayDate')}}</span><br>
+                <span class="dzo-name">{{currentDate}}</span><br>
                 <span class="dzo-name">{{selectedDzo.name}}</span>
             </div>
         </div>
@@ -32,6 +32,12 @@
         <div class="col-4 mt-3 row ml-1"></div>
 
         <div class="col-4 row mt-3 ml-1">
+            <div class="col-12 mt-3 status-block status-block_little">
+                &nbsp;
+            </div>
+            <div class="col-12 mt-3 status-block status-block_little">
+                &nbsp;
+            </div>
             <div class="col-6 status-block status-block_little"></div>
             <div
                     id="chemistryButton"
@@ -40,8 +46,7 @@
             >
                 {{trans('visualcenter.importForm.enterChemistryButton')}}
             </div>
-            <div class="col-6"></div>
-            <div :class="[isChemistryNeeded ? 'chemistry-disabled' : '','chemistry-block row col-12 p-2 mt-5 ml-1']">
+            <div :class="[isChemistryNeeded ? 'chemistry-disabled' : '','chemistry-block row col-12 p-2']">
                 <h4 class="col-12">{{trans("visualcenter.importForm.chemistry")}}</h4>
                 <div class="col-12 d-flex">
                     <span class="col-7">{{trans("visualcenter.chemProdZakackaDemulg")}}</span>
@@ -74,12 +79,6 @@
                     {{trans('visualcenter.saveButton')}}
                 </div>
             </div>
-            <div class="col-12 mt-3 status-block status-block_little">
-                &nbsp;
-            </div>
-            <div class="col-12 mt-3 status-block status-block_little">
-                &nbsp;
-            </div>
         </div>
 
         <div class="table-form col-10 mt-3 ml-1">
@@ -108,6 +107,7 @@
         color: white;
         position: absolute;
         z-index: 9999;
+        margin-top: 160px;
     }
     .chemistry-disabled {
         display: none;

@@ -261,6 +261,7 @@ return array (
     'yesterdayDate' => 'Внесение данных за:',
     'chemistryNeeded' => 'Необходимо внести Химизацию',
     'chemistryNotNeeded' => 'Химизацию вносить не нужно',
+    'operatingInformationTitle' => 'Оперативная информация по ДЗО для АО НК "КазМунайГаз"',
   ),
   'idleWells' => 'Фонд нагнетательных скважин',
   'inIdle' => 'В простое',
