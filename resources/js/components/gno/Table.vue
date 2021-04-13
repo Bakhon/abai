@@ -715,10 +715,10 @@
                           <tr>
                             <td>{{trans('pgno.srednee_prod_prs')}}</td>
                             <td>
-                              {{ Math.round(expAnalysisData.npvTable1.sredniiPrs) }}
+                              {{ expAnalysisData.npvTable1.sredniiPrs }}
                             </td>
                             <td>
-                              {{ Math.round(expAnalysisData.npvTable2.sredniiPrs) }}
+                              {{ expAnalysisData.npvTable2.sredniiPrs }}
                             </td>
                           </tr>
                           <tr>
@@ -728,14 +728,14 @@
                             <td>
                               {{
                               Math.round(
-                                expAnalysisData.npvTable1.godovoiNdo / 1000
+                                expAnalysisData.npvTable1.godovoiNdo 
                               )
                             }}
                             </td>
                             <td>
                               {{
                               Math.round(
-                                expAnalysisData.npvTable2.godovoiNdo / 1000
+                                expAnalysisData.npvTable2.godovoiNdo
                               )
                             }}
                             </td>
