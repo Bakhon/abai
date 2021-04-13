@@ -4,7 +4,6 @@
         <budget-execution></budget-execution>
     </div>
 @endsection
-<link href="{{ asset('css/visualcenter4.css')}}" rel="stylesheet">
 <style>
 .visualcenter-page-container {
     flex-wrap: wrap;

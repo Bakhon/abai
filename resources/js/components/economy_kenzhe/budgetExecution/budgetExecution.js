@@ -1,38 +1,33 @@
 export default {
   data: function () {
     return {
+      getCompanyData: "0",
       dzoData: [],
       macroData: [],
       fullCompanyNames: [
         {
           code: 'ОМГ',
-          title: this.trans('visualcenter.omg') 
-          // 'АО "ОзенМунайГаз"'
+          title: this.trans('visualcenter.omg')          
         },
         {
           code: 'ЭМГ',
-          title: this.trans('visualcenter.emg')  
-          // 'АО "ЭмбаМунайГаз"'
+          title: this.trans('visualcenter.emg')        
         },
         {
           code: 'КГМ',
-          title: this.trans('visualcenter.kgm') 
-          // 'ТОО "КазГерМунай"'
+          title: this.trans('visualcenter.kgm')         
         },
         {
           code: 'ММГ',
           title: this.trans('visualcenter.mmg') 
-          // 'АО "Мангистаумунайгаз"'
         },
         {
           code: 'КТМ',
-          title: this.trans('visualcenter.ktm')  
-          // 'ТОО "Казахтуркмунай"'
+          title: this.trans('visualcenter.ktm')    
         },
         {
           code: 'КОА',
-          title: this.trans('visualcenter.koa') 
-          // 'ТОО "Казахойл Актобе"'
+          title: this.trans('visualcenter.koa')         
         },
       ],
       dzoSelect: 'ALL',
@@ -47,6 +42,14 @@ export default {
     }
   },
   methods: {
+    getCompany() {
+      let uri = this.localeUrl("/module_economy/company");
+      this.axios.get(uri).then((response) => {
+        let data = response.data;
+        this.getCompanyData = data;
+        console.log(this.getCompanyData);
+      });
+    },
     refreshData() {
       let uri = this.localeUrl("/getdzocalcs");
       let dateStart = new Intl.DateTimeFormat('en', {year: 'numeric', month: 'short', day: '2-digit'}).format(this.dateStart)
@@ -251,7 +254,7 @@ export default {
           this.macroData.push({
             title: this.trans('visualcenter.eco11'),  
             // 'Цена Brent',
-            units: '$/баррель',
+            units: '$/бар.',
             dataPlan: oilPricePlan,
             dataFact: oilPriceFact,
             dataFactPrevYear: oilPricePrevYear,
@@ -270,7 +273,7 @@ export default {
         } else {
           console.log("No data");
         }
-        this.$store.commit('globalloading/SET_LOADING',false);
+
       })
     },
   },
@@ -320,7 +323,8 @@ export default {
     },
 
   },
-  created() {
+  created() {  
+    this.getCompany();
     this.axios
       .get('/ru/getdzocalcsactualmonth', {})
       .then(response => {
@@ -329,5 +333,5 @@ export default {
           this.actualMonthSelect = 1;
         }
       })
-  }
+  },
 }

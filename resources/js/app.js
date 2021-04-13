@@ -168,6 +168,13 @@ Vue.component('profile', require('./components/profile/Profile.vue').default);
 Vue.component('reptt', require('./components/economy_kenzhe/reptt.vue').default);
 Vue.component('budget-execution', require('./components/economy_kenzhe/budgetExecution/budgetExecution.vue').default);
 Vue.component('reptt-company', require('./components/economy_kenzhe/reptt_company.vue').default);
+
+Vue.component('budgetexecution-indicator', require('./components/economy_kenzhe/budgetExecution/budgetExecutionComponents/Indicator.vue').default);
+Vue.component('budgetexecution-wide-indicator', require('./components/economy_kenzhe/budgetExecution/budgetExecutionComponents/WideIndicator.vue').default);
+Vue.component('budgetexecution-simple-indicator', require('./components/economy_kenzhe/budgetExecution/budgetExecutionComponents/SimpleIndicator.vue').default);
+Vue.component('budgetexecution-horizontal-indicators', require('./components/economy_kenzhe/budgetExecution/budgetExecutionComponents/HorizontalIndicators.vue').default);
+Vue.component('budgetexecution-vertical-indicators', require('./components/economy_kenzhe/budgetExecution/budgetExecutionComponents/VerticalIndicators.vue').default);
+
 Vue.prototype.trans = string => _.get(window.i18n, string) || string;
 Vue.prototype.localeUrl = string => `/${window.current_lang}/${string[0] === '/' ? string.substr(1) : string}`;
 Vue.prototype.currentLang = window.current_lang;
