@@ -22,11 +22,11 @@ use App\Models\Refs\EcoRefsScFa;
 use Illuminate\Http\Request;
 use function Complex\ln;
 
-class LocationCalcController extends Controller
+class FieldCalcController extends Controller
 {
-    public $serviceTime = 12;
+    const  ONE_YEAR = 365;
+    const  SERVICE_TIME = 12;
     public $razrab = 5;
-    public $oneYear = 365;
     public $prs = null;
     public $year = null;
     public $qZhidkosti = null;
@@ -39,10 +39,11 @@ class LocationCalcController extends Controller
     public $equipIdRequest = null;
     public $scorfa = null;
 
+
     public function nnoeco(Request $request)
     {
         $this->prs = $request->prs;
-        $this->year = $request->date;
+        $this->year = $request->date ?? '2021';
         $this->qZhidkosti = $request->qzh;
         $this->qoil = $request->qo;
         $this->reqDay = $request->reqd;
@@ -64,9 +65,7 @@ class LocationCalcController extends Controller
         // VIDY OBORUDOVANIYA
         $equip = EcoRefsEquipId::where('id' ,'>' ,0)->pluck('id');
 
-
         $result2 = [];
-
         $godovoiLiquid = null;
         $godovoiOil = null;
         $godovoiEmpper = null;
@@ -107,12 +106,12 @@ class LocationCalcController extends Controller
                 $monthname = '0' . $month;
             }
             $lastDateOfMonth = date("Y-m-t", strtotime($this->year . '-' . $monthname . '-01'));
+            $firstDateOfMonth = date("Y-m-d", strtotime($this->year . '-' . $monthname . '-01'));
+            $lastDay = date("d", strtotime($lastDateOfMonth));
 
-            $day = date("d", strtotime($lastDateOfMonth));
-
-            $emppersExp = EcoRefsEmpPer::whereIn('direction_id', $exports)->where('sc_fa', $scfa[0])->where('company_id', $this->org)->where('date', $element)->get();
-            $discontExp = EcoRefsDiscontCoefBar::whereIn('direction_id', $exports)->where('sc_fa', $scfa[0])->where('company_id', $this->org)->where('date', $element)->get();
-            $compRas = EcoRefsPrepElectPrsBrigCost::where('company_id', $this->org)->where('sc_fa', $scfa[0])->where('date', $element)->get();
+            $emppersExp = EcoRefsEmpPer::whereIn('direction_id', $exports)->where('sc_fa', $scfa[0])->where('company_id', $this->org)->where('date', $firstDateOfMonth)->get();
+            $discontExp = EcoRefsDiscontCoefBar::whereIn('direction_id', $exports)->where('sc_fa', $scfa[0])->where('company_id', $this->org)->where('date', $firstDateOfMonth)->get();
+            $compRas = EcoRefsPrepElectPrsBrigCost::where('company_id', $this->org)->where('sc_fa', $scfa[0])->where('date', $firstDateOfMonth)->get();
             $equipRas = EcoRefsRentEquipElectServCost::whereIn('equip_id', $equip)->where('sc_fa', $scfa[0])->where('company_id', $this->org)->whereYear('date', $this->year)->get();
 
             $exportsResults = [];
@@ -124,30 +123,30 @@ class LocationCalcController extends Controller
             $exportsElectResults = [];
             $zatrPrepResults = [];
             $zatrElectResults = [];
-            $this->prsCostResults = [];
+            $prsCostResults = [];
             $expDayResults = [];
-            $this->prsResult = [];
+            $prsResult = [];
 
             foreach ($compRas as $item) {
                 $avgprsday = EcoRefsAvgPrs::where('company_id', $item->company_id)->first();
                 if ($this->param == 1) {
-                    if ($this->reqDay >= $this->oneYear) {
-                        $this->prsResult[$item->company_id] = $this->oneYear / ($this->reqDay);
+                    if ($this->reqDay >= self::ONE_YEAR) {
+                        $prsResult[$item->company_id] = self::ONE_YEAR / ($this->reqDay);
                     } else {
-                        $this->prsResult[$item->company_id] = $this->oneYear / ($this->reqDay + $avgprsday->avg_prs);
+                        $prsResult[$item->company_id] = self::ONE_YEAR / ($this->reqDay + $avgprsday->avg_prs);
                     }
                 } else {
                     if ($this->param == 2) {
                         if ($this->equipIdRequest == 1) {
-                            $this->prsResult[$item->company_id] = $this->oneYear / ($this->reqDay + $avgprsday->avg_prs);
+                            $prsResult[$item->company_id] = self::ONE_YEAR / ($this->reqDay + $avgprsday->avg_prs);
                         } else {
-                            $this->prsResult[$item->company_id] = $this->reqecn;
+                            $prsResult[$item->company_id] = $this->reqecn;
                         }
                     } else {
                         if ($this->equipIdRequest == 1) {
-                            $this->prsResult[$item->company_id] = $this->reqecn;
+                            $prsResult[$item->company_id] = $this->reqecn;
                         } else {
-                            $this->prsResult[$item->company_id] = $this->oneYear / ($this->reqDay + $avgprsday->avg_prs);
+                            $prsResult[$item->company_id] = self::ONE_YEAR / ($this->reqDay + $avgprsday->avg_prs);
                         }
                     }
                 }
@@ -155,12 +154,12 @@ class LocationCalcController extends Controller
 
             $avgprsday = EcoRefsAvgPrs::where('company_id', $this->org)->first();
 
-            $procent = ($this->oneYear - array_sum($this->prsResult) * $avgprsday->avg_prs) / $this->oneYear;
+            $procent = (self::ONE_YEAR - array_sum($prsResult) * $avgprsday->avg_prs) / self::ONE_YEAR;
 
 
-            $workday = $day * $procent;
+            $workday = $lastDay * $procent;
             $this->liquid = $this->qZhidkosti * $workday;
-            $oil = $this->qoil * (1 - exp(log(1 - $this->razrab / 100) / $this->oneYear * $workday)) / -(log(1 - $this->razrab / 100) / $this->oneYear);
+            $oil = $this->qoil * (1 - exp(log(1 - $this->razrab / 100) / self::ONE_YEAR * $workday)) / -(log(1 - $this->razrab / 100) / self::ONE_YEAR);
             $perreal = EcoRefsProcDob::where('company_id', $this->org)->first();
             $empper = $oil - $oil * $perreal->proc_dob;
 
@@ -176,7 +175,7 @@ class LocationCalcController extends Controller
             foreach ($compRas as $item) {
                 $zatrPrepResults[$item->company_id] = $this->liquid * $item->trans_prep_cost;
             }
-
+//            dd($equipRas);
             foreach ($equipRas as $item) {
                 $electCost = EcoRefsPrepElectPrsBrigCost::where('company_id', '=', $item->company_id)->first();
                 if ($item->equip_id == 1) {
@@ -187,7 +186,7 @@ class LocationCalcController extends Controller
             }
 
             foreach ($compRas as $item) {
-                $this->prsCostResults[$item->company_id] = array_sum($this->prsResult) / 12 * $avgprsday->avg_prs * $item->prs_brigade_cost;
+                $this->prsCostResults[$item->company_id] = array_sum($prsResult) / 12 * $avgprsday->avg_prs * $item->prs_brigade_cost;
             }
 
             foreach ($equipRas as $item) {
@@ -279,8 +278,8 @@ class LocationCalcController extends Controller
             }
 
 
-            $emppersIns = EcoRefsEmpPer::whereIn('direction_id', $inside)->where('sc_fa', $scfa[0])->where('company_id', $this->org)->where('date', $element)->get();
-            $discontIns = EcoRefsDiscontCoefBar::whereIn('direction_id', $inside)->where('sc_fa', $scfa[0])->where('company_id', $this->org)->where('date', $element)->get();
+            $emppersIns = EcoRefsEmpPer::whereIn('direction_id', $inside)->where('sc_fa', $scfa[0])->where('company_id', $this->org)->where('date', $firstDateOfMonth)->get();
+            $discontIns = EcoRefsDiscontCoefBar::whereIn('direction_id', $inside)->where('sc_fa', $scfa[0])->where('company_id', $this->org)->where('date', $firstDateOfMonth)->get();
 
             $insideResults = [];
             $insideDiscontResults = [];
@@ -330,7 +329,7 @@ class LocationCalcController extends Controller
             if ($this->equipIdRequest == 1) {
                 $srokSluzhby = EcoRefsServiceTime::where('equip_id', '=', $this->equipIdRequest)->where('company_id', '=', $this->org)->first();
                 $equipCost = EcoRefsRentEquipElectServCost::where('equip_id', '=', $this->equipIdRequest)->where('company_id', '=', $this->org)->first();
-                if ($srokSluzhby->avg_serv_life > $this->serviceTime) {
+                if ($srokSluzhby->avg_serv_life > self::SERVICE_TIME) {
                     $amortizaciyaResult = $equipCost->equip_cost / $srokSluzhby->avg_serv_life;
                 } else {
                     $amortizaciyaResult = 0;
@@ -370,7 +369,7 @@ class LocationCalcController extends Controller
             }
 
             $godovoiLiquid = $godovoiLiquid + $this->liquid;
-            $godovoiOil = $godovoiOil + $oil;
+            $oil = $godovoiOil + $oil;
             $godovoiEmpper = $godovoiEmpper + $empper;
             $godovoiWorkday = $godovoiWorkday + $workday;
             $godovoiPrs = $godovoiPrs + $this->prs;
@@ -402,14 +401,14 @@ class LocationCalcController extends Controller
 
             $vdata2 = [
                 'last' => $lastDateOfMonth,
-                'day' => $day,
+                'day' => $lastDay,
                 'year' => $this->year,
                 'monthname' => $monthname,
                 'liquid' => $this->liquid,
                 'oil' => $oil,
                 'empper' => $empper,
                 'workday' => $workday,
-                'prs' => array_sum($this->prsResult) / 12,
+                'prs' => array_sum($prsResult) / 12,
                 'srednii' => $avgprsday->avg_prs,
                 'exportsResultsTotal' => $exportsResultsTotal,
                 'exportsResults' => $exportsResults,
@@ -449,12 +448,11 @@ class LocationCalcController extends Controller
         }
 
         $godovoi = [
-
             'liquid' => $godovoiLiquid,
             'oil' => $godovoiOil,
             'empper' => $godovoiEmpper,
             'workday' => $godovoiWorkday,
-            'kolichestvoPrs' => array_sum($this->prsResult),
+            'kolichestvoPrs' => array_sum($prsResult),
             'sredniiPrs' => $avgprsday->avg_prs,
             'godovoiNdo' => $godovoiNdo,
             'godovoiDohod' => $godovoiDohod,
