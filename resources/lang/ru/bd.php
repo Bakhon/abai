@@ -87,7 +87,7 @@ return [
         ],
         'well_design'=>[
             "well_design_project" => "Проект конструкции скважины",
-            "casing_type" => "Вид колонны",
+            "column_type" => "Вид колонны",
             "casing_running_depth" => "Глубина спуска колонны",
             "side_barrel" => "Боковой ствол",
             "casing_type" => "Вид обсадной трубы",

@@ -1,20 +1,58 @@
 {
   "type": "plain",
-  "table": "",
+  "table": "prod",
   "tabs": [
     {
-      "title": "Проект конструкции скважины",
+      "title": "well_design_project",
       "blocks": [
         [
           {
             "title": "",
             "items": [
               {
-                "code": "В",
-                "type": "text",
-                "title": "hello_world",
-                "validation": ""
-              }
+                "code": "casing_nom",
+                "type": "dict",
+                "title": "casing_type",
+                "dict": "equip",
+                "validation": "nullable|exists:abaiprot.dict.equip,name_ru"
+              },
+              {
+                "code": "depth",
+                "type": "numeric",
+                "title": "casing_running_depth",
+                "validation": "numeric"
+              },
+              {
+                "code": "sidetrack",
+                "type": "numeric",
+                "title": "side_barrel",
+                "validation": "numeric"
+              },
+              {
+                "code": "casing_type",
+                "type": "dict",
+                "title": "casing_type",
+                "dict": "tube_nom",
+                "validation": "nullable|exists:exists:abaiprot.dict.tube_nom,od,wt,vd,sq"
+              },
+              {
+                "code": "tube_count",
+                "type": "numeric",
+                "title": "number_of_pipes",
+                "validation": "numeric"
+              },
+              {
+                "code": "cem_volume",
+                "type": "numeric",
+                "title": "poured_cement_volume",
+                "validation": "numeric"
+              },
+              {
+                "code": "cem_height",
+                "type": "numeric",
+                "title": "cement_lifting_height",
+                "validation": "numeric"
+              }      
             ]
           }
         ]
