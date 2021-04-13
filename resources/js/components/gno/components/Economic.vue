@@ -75,7 +75,7 @@ export default {
           },
         },
 
-        labels: ["Qн, т/сут", "ННО, сут", "Энергопотребление кВт*ч",  "NPV, млн.тг"],
+        labels: [this.trans('pgno.q_nefti'), this.trans('pgno.nno'), this.trans('power_consumption'),  this.trans('pgno.npv')],
         legend: {
           show: true,
           position: "bottom",
@@ -116,7 +116,7 @@ export default {
         },
 
         title: {
-            text: 'Сравнение технико-экономических показателей за 1 год эксплуатации ',
+            text: this.trans('pgno.techniko_econom_god'),
             align: 'center',
             margin: 20,
             offsetY: 20,
@@ -128,7 +128,7 @@ export default {
       series:[
         
         {
-          name: "ШГН",
+          name: this.trans('pgno.shgn_pokupka'),
           type: "bar",
           
           stroke: {
@@ -138,7 +138,7 @@ export default {
           data: [Math.round(this.data.qoilShgn), Math.round(this.data.NNO1), Math.round(this.data.shgnParam/1000), Math.round(this.data.shgnNpv/1000000)],
         },
         {
-          name: "ЭЦН (аренда)",
+          name: this.trans('pgno.ecn_arenda'),
           type: "bar",
           
           stroke: {
