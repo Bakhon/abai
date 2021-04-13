@@ -40,6 +40,6 @@ class Wells extends Command
      */
     public function handle(): void
     {
-        $this->importExcel(new GuWellsImport($this));
+        $this->importExcel(new GuWellsImport($this), base_path($this->argument('path')));
     }
 }

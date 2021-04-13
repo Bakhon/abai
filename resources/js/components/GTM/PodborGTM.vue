@@ -1,14 +1,14 @@
 <template>
     <div>
         <div class="row mx-0 mt-lg-2 gtm">
-            <div class="col-lg-10 p-0">
+            <div class="gtm-dark col-lg-10 p-0">
                 <div class="row col-12 p-0 m-0">
                     <div class="col-6 d-none d-lg-block p-0 pl-1">
-                        <div class="gtm-dark h-100">
+                        <div class="h-100">
                             <div class="block-header pb-0 pl-2 pt-1">
                                 Скважины-кандидаты
                             </div>
-                            <div class="gtm-dark p-1 pl-2">
+                            <div class="p-1 pl-2">
                                 <table class="table text-center text-white podbor-middle-table">
                                     <thead>
                                         <tr>
@@ -36,11 +36,11 @@
                         </div>
                     </div>
                     <div class="col-6 d-none d-lg-block p-0">
-                        <div class="gtm-dark h-100">
+                        <div class="h-100">
                             <div class="block-header pb-0 pl-2 pt-1">
                                 Карта текущих отборов
                             </div>
-                            <div class="gtm-dark p-3">
+                            <div class="p-3">
                                 <img src="/img/GTM/map.svg" class="gtm-map-img">
                             </div>
                         </div>
@@ -48,21 +48,21 @@
                 </div>
                 <div class="row col-12 p-0 m-0 pb-2">
                     <div class="col-6 d-none d-lg-block p-0 pl-1">
-                        <div class="gtm-dark h-100">
+                        <div class="h-100">
                             <div class="block-header pb-0 pl-2 pt-1">
                                 Скважина 4931
                             </div>
-                            <div class="gtm-dark p-1 pl-2 mh-370">
+                            <div class="p-1 pl-2 mh-370">
                                 <gtm-line-chart :chartdata="{labels: lineLabels, datasets: lineChartData}" :options="lineChartOptions" :height="360"></gtm-line-chart>
                             </div>
                         </div>
                     </div>
                     <div class="col-6 d-none d-lg-block p-0">
-                        <div class="gtm-dark h-100 pb-2">
+                        <div class="h-100 pb-2">
                             <div class="block-header pb-0 pl-2">
                                 Факторный анализ по объекту разработки, тыс. тонн
                             </div>
-                            <div class="gtm-dark p-1 pl-2">
+                            <div class="p-1 pl-2">
                                 <!--                                <pie-chart :height="360"></pie-chart>-->
                                 <img class="demo-img" src="/img/GTM/podbo_demo_graph.svg" height="350">
                             </div>
@@ -79,7 +79,7 @@
                         <component v-bind:is="treeChildrenComponent" class="gtm-dark ml-2 h-100" @node-click="nodeClick"></component>
                     </keep-alive>
                 </div>
-                <div class="gtm-dark pb-3 position-relative z-index-1">
+                <div class="gtm-dark pb-3 position-relative" :class="{'z-index-1': isTreeMainComponentShow}">
                     <div class="block-header text-center">
                         Поиск потенциала
                     </div>
@@ -247,7 +247,7 @@ export default {
         },
         $_setTreeChildrenComponent(data) {
             let node = data.node;
-            this.$store.commit('changeIsShadowBlockShow',true);
+            this.$store.commit('changeTheDisplayShadowBlock',true);
             if (node.ioi_finder_model === undefined) {
                 if (data.hideIoiMenu) {
                     this.$store.commit('changeTreeChildrenComponent',null);
@@ -280,6 +280,9 @@ export default {
         },
         treeSettingComponent() {
             return this.$store.state.treeSettingComponent;
+        },
+        isTreeMainComponentShow() {
+            return this.$store.state.isTreeMainComponentShow;
         },
     },
 }

@@ -80,7 +80,7 @@ class TrunklineImport implements ToCollection, WithEvents, WithColumnLimit, With
                     foreach ($this->errors as $error) {
                         $this->command->error($error);
                     }
-                    throw new \Exception('Stop import');
+                    throw new \Exception('Success import');
                 }
 
                 $this->command->line(' ');
