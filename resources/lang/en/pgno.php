@@ -139,4 +139,7 @@ return array (
   'separation_calc' => 'Расчет',
   'separation_nat' => 'Естественная сепарация',
   'separation_mech' => 'Механизированная сепарация',
+  'history_prs' => 'WBI history',
+  'nno' => 'NNO',
+  'power_consumption'=>'Power consumption kW*h',
 );

@@ -140,4 +140,8 @@ return array (
   'separation_calc' => 'Расчет',
   'separation_nat' => 'Естественная сепарация',
   'separation_mech' => 'Механизированная сепарация',
+  'history_prs' => 'История ПРС',
+  'nno' => 'ННО',
+  'power_consumption'=>'Энергия тұтыну, кВт * сағ',
+
 );

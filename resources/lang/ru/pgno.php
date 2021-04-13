@@ -107,6 +107,10 @@ return array (
   'temp_nabora_krivizni' => 'Темп набора пространственной кривизны',
   'zagruzka' => 'Загрузка',
   'no_data' => 'Нет данных',
+  'prichini_prs_god' => 'Причины ПРС за скользящий год',
+  'number_of_repair' => 'Количество ремонтов без ГТМ',
+  'nno' => 'ННО',
+  'info_krs' => 'Информация по КРС',
   'md' => 'MD',
   'tvd' => 'TVD',
   'udl' => 'Удл',
@@ -140,4 +144,5 @@ return array (
   'separation_calc' => 'Расчет',
   'separation_nat' => 'Естественная сепарация',
   'separation_mech' => 'Механизированная сепарация',
+  'power_consumption'=>'Энергопотребление кВт*ч',
 );
