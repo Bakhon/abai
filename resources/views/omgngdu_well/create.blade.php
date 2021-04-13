@@ -10,13 +10,12 @@
                 </div>
             @endif
             <div class="x_panel">
-                <h1>{{ trans('monitoring.omgngdu.edit_title') }}</h1>
-                <a class="btn btn-primary float-left" href="{{ url()->previous() }}"><i class="fas fa-arrow-left"></i></a>
-                <form action="{{ route('omgngdu.update', ['omgngdu' => $omgngdu->id]) }}" method="POST">
-                    @method('patch')
+            <h1>{{ trans('monitoring.omgngdu_well.create_title') }}</h1>
+            <a class="btn btn-primary float-left" href="{{ url()->previous() }}"><i class="fas fa-arrow-left"></i></a>
+                <form action="{{ route('omgngdu.store') }}" method="POST">
                     @csrf
                     <div class="row">
-                        <omgngdu-form :omgngdu='@json($omgngdu)' :validation-params='@json($validationParams)'></omgngdu-form>
+                        <omgngdu-well-form :validation-params='@json($validationParams)'></omgngdu-well-form>
                     </div>
                 </form>
             </div>
