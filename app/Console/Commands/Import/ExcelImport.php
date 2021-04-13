@@ -6,13 +6,13 @@ use Maatwebsite\Excel\Facades\Excel;
 
 trait  ExcelImport
 {
-    public function importExcel($importObject): void
+    public function importExcel(object $importObject, string $filePath): void
     {
         $this->output->title('Starting import');
         try {
-            Excel::import($importObject, base_path($this->argument('path')));
+            Excel::import($importObject, $filePath);
         } catch (\Exception $er) {
-            if ($er->getMessage() == 'Stop import') {
+            if ($er->getMessage() == 'Success import') {
                 $this->output->success('Import successful');
             } else {
                 $this->output->error($er->getMessage());
