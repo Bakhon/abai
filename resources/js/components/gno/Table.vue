@@ -630,8 +630,8 @@
                 <div class="modal-bign modal-bign-container">
                   <div class="modal-bign-header">
                     <div class="modal-bign-title">
-
-                    </div>
+                      
+                    </div> 
 
                     <button type="button" class="modal-bign-button" @click="closeModal('modalExpAnalysis')">
                       {{trans('pgno.zakrit')}}
@@ -731,10 +731,10 @@
                           <tr>
                             <td>{{trans('pgno.srednee_prod_prs')}}</td>
                             <td>
-                              {{ Math.round(expAnalysisData.npvTable1.sredniiPrs) }}
+                              {{ expAnalysisData.npvTable1.sredniiPrs }}
                             </td>
                             <td>
-                              {{ Math.round(expAnalysisData.npvTable2.sredniiPrs) }}
+                              {{ expAnalysisData.npvTable2.sredniiPrs }}
                             </td>
                           </tr>
                           <tr>
@@ -744,14 +744,14 @@
                             <td>
                               {{
                               Math.round(
-                                expAnalysisData.npvTable1.godovoiNdo / 1000
+                                expAnalysisData.npvTable1.godovoiNdo 
                               )
                             }}
                             </td>
                             <td>
                               {{
                               Math.round(
-                                expAnalysisData.npvTable2.godovoiNdo / 1000
+                                expAnalysisData.npvTable2.godovoiNdo
                               )
                             }}
                             </td>

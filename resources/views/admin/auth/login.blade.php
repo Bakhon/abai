@@ -102,6 +102,7 @@
         background: url('{{ asset('img/loginBackground.png') }}') no-repeat;
         color: white;
         font-family: 'Roboto', sans-serif;
+        background-size: 100vw 100vh;
     }
 
     .row {

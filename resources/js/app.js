@@ -97,10 +97,13 @@ Vue.component('wm-form', require('./components/wm/form.vue').default);
 Vue.component('omgca-form', require('./components/omgca/form.vue').default);
 Vue.component('omguhe-form', require('./components/omguhe/form.vue').default);
 Vue.component('omgngdu-form', require('./components/omgngdu/form.vue').default);
+Vue.component('omgngdu-well-form', require('./components/omgngdu_well/form.vue').default);
 Vue.component('gu-form', require('./components/gu/form.vue').default);
 Vue.component('zu-form', require('./components/zu/form.vue').default);
 
-Vue.component('gtm-main', require('./components/GTM/Main.vue').default);
+Vue.component('gtm-main', require('./components/GTM/GTMLayout.vue').default);
+Vue.component('gtm-main-page', require('./components/GTM/Main.vue').default);
+Vue.component('gtm-main-indicator', require('./components/GTM/MainIndicator.vue').default);
 Vue.component('gtm-aegtm', require('./components/GTM/Aegtm.vue').default);
 Vue.component('gtm-aegtm-eco', require('./components/GTM/AegtmEco.vue').default);
 Vue.component('gtm-podbor-gtm', require('./components/GTM/PodborGTM.vue').default);
@@ -129,6 +132,7 @@ Vue.component('well-fund-revision', require('./components/reports/WellFundRevisi
 Vue.component('view-table', require('./components/omgca/table.vue').default);
 Vue.component('oilgas-form', require('./components/complicationMonitoring/oilGas/form.vue').default);
 Vue.component('pipe-form', require('./components/pipes/form.vue').default);
+Vue.component('pipe-type-form', require('./components/pipeTypes/form.vue').default);
 Vue.component('inhibitor-create', require('./components/inhibitor/create.vue').default);
 Vue.component('inhibitor-edit', require('./components/inhibitor/edit.vue').default);
 Vue.component('corrosion-form', require('./components/complicationMonitoring/corrosion/form.vue').default);
@@ -166,6 +170,7 @@ Vue.component('main-page', require('./components/mainpage.vue').default);
 Vue.component('profile', require('./components/profile/Profile.vue').default);
 
 Vue.component('reptt', require('./components/economy_kenzhe/reptt.vue').default);
+Vue.component('reptt-company', require('./components/economy_kenzhe/reptt_company.vue').default);
 Vue.prototype.trans = string => _.get(window.i18n, string) || string;
 Vue.prototype.localeUrl = string => `/${window.current_lang}/${string[0] === '/' ? string.substr(1) : string}`;
 Vue.prototype.currentLang = window.current_lang;

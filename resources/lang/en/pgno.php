@@ -175,4 +175,7 @@ return array (
   'diametr_nasosa' => 'Диаметр насоса',
   'kolonna_shtang' => 'Колонна штанг',
   'gf_s' => 'GR',
+  'history_prs' => 'WBI history',
+  'nno' => 'NNO',
+  'power_consumption'=>'Power consumption kW*h',
 );

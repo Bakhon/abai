@@ -285,10 +285,10 @@ export default {
       numberRepairs: null,
       numberNNO: null,
       langUrl: '',
-      sep_meth: 'calc_value',
+      sep_meth: 'input_value',
       nat_sep: true,
       mech_sep: null,
-      sep_value: 60,
+      sep_value: null,
       mech_sep_value: 50,
       pBuf: null,
       ao: null,
@@ -508,6 +508,7 @@ export default {
         this.piCelValue = JSON.parse(data.PointsData)["data"][2]["pin"].toFixed(0) + this.trans('measurements.atm')
         this.whpInput = data["Well Data"]["whp"][0].toFixed(0) + this.trans('measurements.atm')
         this.pManomInput = data["Well Data"]["p_intake"][0] + this.trans('measurements.atm')
+        this.sep_value = (data["Well Data"]["es"][0]* 100).toFixed(0)
         if(this.curveSelect == 'pmanom') {
           this.hPumpManomInput = data["Well Data"]["h_pump_point"][0] + this.trans('measurements.m')
         }
@@ -560,6 +561,7 @@ export default {
         this.wellIncl = data["Well Data"]["well"][0]
         this.hPerfND = data["Well Data"]["h_perf"][0]
         this.strokeLenDev = data["Well Data"]["stroke_len"][0]
+        this.sep_value = (data["Well Data"]["es"][0]* 100).toFixed(0)
         this.nkt = this.tubID
         let langUrl = `${window.location.pathname}`.slice(1, 3);
         if (this.expMeth == 'ШГН') {
@@ -1165,7 +1167,7 @@ export default {
             this.qlCelValue = 0 + this.trans('measurements.m3/day');
             this.bhpCelValue = 0 + this.trans('measurements.atm');
             this.piCelValue = 0 + this.trans('measurements.atm');
-
+            this.sep_value = 60
           } else if (data["Age"] === false){
             this.setData(data)
             if(data["error_len"] == "error_len") {
