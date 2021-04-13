@@ -106,8 +106,10 @@ abstract class BaseForm
         $fields = collect();
         foreach ($this->params()['tabs'] as $tab) {
             foreach ($tab['blocks'] as $block) {
-                foreach ($block['items'] as $item) {
-                    $fields[] = $item;
+                foreach ($block as $subBlock) {
+                    foreach ($subBlock['items'] as $item) {
+                        $fields[] = $item;
+                    }
                 }
             }
         }

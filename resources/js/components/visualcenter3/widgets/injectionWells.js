@@ -44,7 +44,7 @@ export default {
                 {ticker: 'ММГ', name: this.trans("visualcenter.mmg")},
                 {ticker: 'КГМ', name: this.trans("visualcenter.kgm")},
                 {ticker: 'КОА', name: this.trans("visualcenter.koa")},
-                {ticker: 'КГМ', name: this.trans("visualcenter.kgm")},
+                {ticker: 'КТМ', name: this.trans("visualcenter.ktm")},
                 {ticker: 'КБМ', name: this.trans("visualcenter.kbm")},
                 {ticker: 'ЭМГ', name: this.trans("visualcenter.emg")},
             ],

@@ -19,26 +19,28 @@
       <template v-for="(tab, index) in formParams.tabs">
         <div class="bd-main-block__form-tab" v-show="index === activeTab">
           <div
-              class="bd-main-block__form-block"
+              class="bd-main-block__form-block scrollable"
               :class="{'bd-main-block__form-block_full': tab.blocks.length === 1}"
               v-for="block in tab.blocks"
           >
-            <p class="bd-main-block__form-block-title" v-if="block.title">{{ block.title }}</p>
-            <div class="bd-main-block__form-block-content">
-              <div
-                  v-for="item in block.items"
-              >
-                <label>{{ item.title }}</label>
-                <bigdata-form-field
-                    :item="item"
-                    v-model="formValues[item.code]"
-                    :error="errors[item.code]"
-                    v-on:change="validateField($event, item)"
-                    v-on:input="callback($event, item)"
+            <template v-for="subBlock in block">
+              <p v-if="subBlock.title" class="bd-main-block__form-block-title">{{ subBlock.title }}</p>
+              <div class="bd-main-block__form-block-content">
+                <div
+                    v-for="item in subBlock.items"
                 >
-                </bigdata-form-field>
+                  <label>{{ item.title }}</label>
+                  <bigdata-form-field
+                      v-model="formValues[item.code]"
+                      :error="errors[item.code]"
+                      :item="item"
+                      v-on:change="validateField($event, item)"
+                      v-on:input="callback($event, item)"
+                  >
+                  </bigdata-form-field>
+                </div>
               </div>
-            </div>
+            </template>
           </div>
         </div>
       </template>
@@ -98,7 +100,7 @@ export default {
       'getValidationErrors'
     ]),
     init() {
-
+      this.activeTab = 0
       this.updateForm(this.params.code)
           .catch(error => {
             Vue.prototype.$notifyError(error.response.data.text + "\r\n\r\n" + error.response.data.errors)
@@ -267,6 +269,7 @@ export default {
       background: #272953;
       border-left: 1px solid #454D7D;
       height: 600px;
+      overflow-y: auto;
       width: 50%;
       @media (max-width: 767px) {
         border-left: none;
@@ -294,7 +297,6 @@ export default {
       }
 
       &-content {
-        height: calc(100% - 50px);
         overflow-y: auto;
         padding: 20px 55px 10px 43px;
         @media (max-width: 767px) {

@@ -77,7 +77,7 @@ class Ngdu4WellsImport implements ToCollection, WithEvents, WithColumnLimit, Wit
                     foreach ($this->errors as $error) {
                         $this->command->error($error);
                     }
-                    throw new \Exception('Stop import');
+                    throw new \Exception('Success import');
                 }
 
                 $this->ngdu = Ngdu::where('name', 'НГДУ-4')->first();
@@ -129,7 +129,7 @@ class Ngdu4WellsImport implements ToCollection, WithEvents, WithColumnLimit, Wit
 
                 $this->gu = Gu::firstOrCreate(
                     [
-                        'name' => $guName
+                        'name' => strtoupper($guName)
                     ]
                 );
 
@@ -273,7 +273,7 @@ class Ngdu4WellsImport implements ToCollection, WithEvents, WithColumnLimit, Wit
         $this->command->info('Create Well ' . $row[self::WELL_NAME]);
         $well = Well::firstOrNew(
             [
-                'name' => $row[self::WELL_NAME],
+                'name' => strtoupper($row[self::WELL_NAME]),
                 'ngdu_id' => $this->ngdu->id,
                 'gu_id' => $this->gu->id
             ]
@@ -291,7 +291,7 @@ class Ngdu4WellsImport implements ToCollection, WithEvents, WithColumnLimit, Wit
         $this->command->info('Create Zu ' . $row[self::ZU]);
         $zu = Zu::firstOrNew(
             [
-                'name' => $row[self::ZU],
+                'name' => strtoupper($row[self::ZU]),
                 'ngdu_id' => $this->ngdu->id,
                 'gu_id' => $this->gu->id
             ]
