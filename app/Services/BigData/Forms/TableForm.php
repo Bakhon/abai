@@ -436,7 +436,13 @@ abstract class TableForm extends BaseForm
     {
         $result = [];
         $column = $this->getFieldByCode($columnCode);
-        $columnCodes = $column[$fieldsParam];
+
+        $columnCodes = [];
+        foreach ($column[$fieldsParam] as $block) {
+            foreach ($block as $column => $columnParams) {
+                $columnCodes[] = $column;
+            }
+        }
         foreach ($this->getFields()->whereIn('code', $columnCodes) as $column) {
             $result[] = $column['code'];
             if ($column['type'] === 'calc') {

@@ -32,8 +32,8 @@ class FluidProduction extends TableForm
                 function ($query) use ($tech) {
                     return $query
                         ->where('tbdi.tech.id', $tech->id)
-                        ->whereDate('tbdi.tech.dbeg', '<=', $this->request->get('date'))
-                        ->whereDate('tbdi.tech.dend', '>=', $this->request->get('date'));
+                        ->whereDate('tbdi.well_tech.dbeg', '<=', $this->request->get('date'))
+                        ->whereDate('tbdi.well_tech.dend', '>=', $this->request->get('date'));
                 }
             );
 
