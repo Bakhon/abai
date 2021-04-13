@@ -117,6 +117,7 @@ export default {
             ],
             selectedDzo: {
                 ticker: defaultDzoTicker,
+                name: 'ТОО "Казахтуркмунай"',
                 plans: [],
             },
             status: this.trans("visualcenter.importForm.status.waitForData"),
@@ -161,6 +162,7 @@ export default {
         if (!this.selectedDzo.ticker) {
             this.selectedDzo.ticker = defaultDzoTicker;
         }
+        this.selectedDzo.name = this.getDzoName();
         this.changeDefaultDzo();
         this.dzoPlans = await this.getDzoMonthlyPlans();
         this.selectedDzo.plans = this.getSelectedDzoPlans();
@@ -177,6 +179,16 @@ export default {
                }
             });
             return dzoTicker;
+        },
+        getDzoName() {
+            let dzoName = '';
+            let self = this;
+            _.forEach(this.dzoCompanies, function(dzo) {
+                if (dzo.ticker === self.selectedDzo.ticker) {
+                    dzoName = dzo.name;
+                }
+            });
+            return dzoName;
         },
         async changeDefaultDzo() {
             this.cellsMapping = _.cloneDeep(this.dzoMapping[this.selectedDzo.ticker].cells);
