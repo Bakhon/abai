@@ -75,7 +75,7 @@ export default {
           },
         },
 
-        labels: [this.trans('pgno.q_nefti'), this.trans('pgno.nno'), this.trans('power_consumption'),  this.trans('pgno.npv')],
+        labels: [this.trans('pgno.q_nefti'), this.trans('pgno.nno'), this.trans('pgno.power_consumption'),  this.trans('pgno.npv')],
         legend: {
           show: true,
           position: "bottom",
