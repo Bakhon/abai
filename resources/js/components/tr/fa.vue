@@ -295,10 +295,10 @@
             <i class="fa fa-fw fa-sort"></i>
           </td>
           <td v-show= isHide @click="sortBy('q_l_1')" style="background: #2c3379">
-            <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr2')}}
+            <i class="fa fa-fw fa-sort"></i>{{isQliquidMeasure}}
           </td>
           <td v-show= isHide @click="sortBy('q_o_1')" style="background: #2c3379">
-            <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr3')}}
+            <i class="fa fa-fw fa-sort"></i>{{isFactorsMeasure}}
           </td>
           <td v-show= isHide @click="sortBy('wct_1')" style="background: #2c3379">
             <i class="fa fa-fw fa-sort"></i>%
@@ -310,16 +310,16 @@
             <i class="fa fa-fw fa-sort"></i>атм
           </td>
           <td v-show= isHide @click="sortBy('pi_1')" style="background: #2c3379">
-            <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtrfa1')}}
+            <i class="fa fa-fw fa-sort"></i>{{isFactorsMeasure}}
           </td>
           <td v-if= isGenHide v-show= isHide @click="sortBy('prod_days_1')" style="background: #2c3379">
             <i class="fa fa-fw fa-sort"></i>сут
           </td>
           <td v-show= isHide @click="sortBy('q_l_2')" style="background: #1a2370">
-            <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr2')}}
+            <i class="fa fa-fw fa-sort"></i>{{isQliquidMeasure}}
           </td>
           <td v-show= isHide @click="sortBy('q_o_2')" style="background: #1a2370">
-            <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr3')}}
+            <i class="fa fa-fw fa-sort"></i>{{isFactorsMeasure}}
           </td>
           <td v-show= isHide @click="sortBy('wct_2')" style="background: #1a2370">
             <i class="fa fa-fw fa-sort"></i>%
@@ -331,28 +331,28 @@
             <i class="fa fa-fw fa-sort"></i>атм
           </td>
           <td v-show= isHide @click="sortBy('pi_2')" style="background: #1a2370">
-            <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtrfa1')}}
+            <i class="fa fa-fw fa-sort"></i>{{isFactorsMeasure}}
           </td>
           <td v-if= isGenHide v-show= isHide @click="sortBy('prod_days_2')" style="background: #1a2370">
             <i class="fa fa-fw fa-sort"></i>сут
           </td>
           <td @click="sortBy('dqn')" style="background: #12135C">
-            <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr3')}}
+            <i class="fa fa-fw fa-sort"></i>{{isFactorsMeasure}}
           </td>
           <td @click="sortBy('Pbh')" style="background: #12135C">
-            <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr3')}}
+            <i class="fa fa-fw fa-sort"></i>{{isFactorsMeasure}}
           </td>
           <td v-if= isGenHide @click="sortBy('prod_days')" style="background: #12135C">
-            <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr3')}}
+            <i class="fa fa-fw fa-sort"></i>{{isFactorsMeasure}}
           </td>
           <td @click="sortBy('wct')" style="background: #12135C">
-            <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr3')}}
+            <i class="fa fa-fw fa-sort"></i>{{isFactorsMeasure}}
           </td>
           <td @click="sortBy('p_res')" style="background: #12135C">
-            <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr3')}}
+            <i class="fa fa-fw fa-sort"></i>{{isFactorsMeasure}}
           </td>
           <td @click="sortBy('PI')" style="background: #12135C">
-            <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr3')}}
+            <i class="fa fa-fw fa-sort"></i>{{isFactorsMeasure}}
           </td>
           <td @click="sortBy('Main_problem')" style="background: #12135C; min-width:248px;">
             <i class="fa fa-fw fa-sort"></i>
@@ -1024,7 +1024,6 @@ import moment from "moment";
 import Vue from "vue";
 import SearchFormRefresh from "../ui-kit/SearchFormRefresh.vue";
 import columnSortable from 'vue-column-sortable'
-// import FadeLoader from "vue-spinner/src/FadeLoader.vue";
 import { fields } from "./constants.js";
 import TrMultiselect from "./TrMultiselect.vue";
 
@@ -1032,13 +1031,13 @@ Vue.use(NotifyPlugin, VueMomentLib);
 export default {
   name: "FaPage",
   components: {
-    // FadeLoader,
+
     SearchFormRefresh,
     TrMultiselect,
   },
   data: function () {
     return {
-      // issorttobig: false,
+
       pieChartRerender: true,
       wells: [],
       searchString: "",
@@ -1054,7 +1053,6 @@ export default {
       colsize7: null,
       colsize2: null,
       isChartLink: "fa_weekly_chart",
-      // filter: "Все месторождения",
       filter: [...fields],
       fieldFilterOptions: [
         {
@@ -1072,7 +1070,9 @@ export default {
       datepicker2: false,
       wdate2: null,
       wdate1: null,
-      // isloading: true,
+      isFactorsMeasure: this.trans('tr.t'),
+      isQliquidMeasure: this.trans('tr.m3'),
+      isProdIndexMeasure: this.trans('tr.mtr4'),
       chartBarOptions: {
         chart: {
           height: 350,
@@ -1081,7 +1081,7 @@ export default {
         plotOptions: {
           bar: {
             dataLabels: {
-              position: "bottom", // top, center, bottom
+              position: "bottom",
             },
           },
         },
@@ -1309,6 +1309,9 @@ export default {
           }
           this.dt = dd + "." + mm + "." + yyyy;
           this.dt2 = prdd + "." + prmm + "." + pryyyy;
+          this.isFactorsMeasure = this.trans('tr.t');
+          this.isQliquidMeasure = this.trans('tr.m3');
+          this.isProdIndexMeasure = this.trans('tr.mtr4'); 
         });
     },
     chooseDt() {
@@ -1377,6 +1380,9 @@ export default {
             this.isGenHide= false;
             this.colsize7= 6;
             this.colsize2= 1;
+            this.isProdIndexMeasure = this.trans('tr.mtrfa1');
+            this.isQliquidMeasure = this.trans('tr.mtr2');
+            this.isFactorsMeasure = this.trans('tr.mtr3'); 
           });
       }
     },
