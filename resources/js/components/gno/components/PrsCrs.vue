@@ -117,17 +117,20 @@ mounted() {
       } else{
         let nno_days = this.prs[key]['nno_size']
         let isNull = (this.prs[key]['text'] !== "");
-        this.data.push({x: [key], 
-                      y: [nno_days*1], 
-                      name: this.prs[key]['text'], 
-                      showlegend: isNull,
-                      type: 'bar', 
-                      text: nno_days,
-                      textposition: 'auto',
-                      hoverinfo: 'none',})
+        if(nno_days!=0){
+          this.data.push({x: [key], 
+                        y: [nno_days*1], 
+                        name: this.prs[key]['text'], 
+                        showlegend: isNull,
+                        type: 'bar', 
+                        text: nno_days,
+                        textposition: 'auto',
+                        hoverinfo: 'none',})
+                      }
       }
       
     }
+    console.log(this.data)
     this.layout= {
         showlegend: true,
         legend: {"orientation": "h"},
