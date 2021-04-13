@@ -12,7 +12,7 @@
         </div>
 
         <div class="col-2 row mt-3 ml-1">
-            <div class="col-12 status-block status-block_little">
+            <div class="col-12 status-block status-block_little status-label">
                 <span>{{trans('visualcenter.importForm.statusLabel')}}&nbsp;</span>
                 <span :class="[isValidateError ? 'status-error' : '','label']">{{status}}</span>
             </div>
@@ -179,5 +179,8 @@
         background: #656A8A;
         font-weight: 500;
         cursor: pointer;
+    }
+    .status-label {
+        border: 1px solid #656A8A;
     }
 </style>
