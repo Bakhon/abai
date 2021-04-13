@@ -319,7 +319,7 @@ class FluidProduction extends TableForm
             return Cache::get($cacheKey);
         }
 
-        $orgStructure = $this->getOrgStructure();
+        $orgStructures = $this->getOrgStructure();
         $techStructure = $this->getTechStructure();
 
         $orgTechs = DB::connection('tbd')
@@ -335,7 +335,7 @@ class FluidProduction extends TableForm
             )
             ->toArray();
 
-        foreach ($orgStructure as &$org) {
+        foreach ($orgStructures as &$org) {
             foreach ($techStructure as $keyTech => $tech) {
                 if (isset($orgTechs[$org['id']]) && in_array($tech['id'], $orgTechs[$org['id']])) {
                     $org['children'][] = $tech;
