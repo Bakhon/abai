@@ -62,19 +62,19 @@
           :options="dict"
           :auto-load-root-options="false"
           :loading="true"
-          placeholer="Выберите..."
+          :placeholer="`${trans('app.select')}...`"
       />
     </template>
-    <template v-else-if="item.type === 'date'">
+    <template v-else-if="['date', 'datetime'].includes(item.type)">
       <datetime
-          type="date"
+          :format="dateFormat[item.type]"
           v-on:input="changeDate($event)"
           :value="formatedValue.value"
           :input-class="{'form-control date': true, 'error': error}"
           value-zone="Asia/Almaty"
           zone="Asia/Almaty"
-          :format="{ year: 'numeric', month: 'numeric', day: 'numeric'}"
-          :phrases="{ok: 'Выбрать', cancel: 'Выход'}"
+          :type="item.type"
+          :phrases="{ok: trans('app.select'), cancel: trans('app.exit')}"
           :week-start="1"
           use24-hour
           auto
@@ -127,6 +127,10 @@ export default {
       formatedValue: {
         value: null,
         text: null
+      },
+      dateFormat: {
+        'date': {year: 'numeric', month: 'numeric', day: 'numeric'},
+        'datetime': {year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric'}
       }
     }
   },

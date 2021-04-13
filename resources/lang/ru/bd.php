@@ -85,6 +85,7 @@ return [
             'gtm_parameters_results'=>'Параметры ГТМ/результаты',
             'status'=>'Состояние'
         ],
+<<<<<<< HEAD
         'well_design'=>[
             "well_design_project" => "Проект конструкции скважины",
             "column_type" => "Вид колонны",
@@ -94,6 +95,31 @@ return [
             "number_of_pipes" => "Количество труб",
             "poured_cement_volume" => "Объем залитого цемента",
             "cement_lifting_height" => "Высота подъема цемента" 
+=======
+        'prs' => [
+            'repair' => 'Ремонт',
+            'delivery_cert' => 'Акт сдачи в ремонт',
+            'rej_reason' => 'Причина отказа',
+            'acceptance_cert' => 'Акт приема из ремонта',
+            'start_date' => 'Дата начала работы',
+            'type_rep_work' => 'Вид ремонтных работ',
+            'planned_works_list' => 'Список планируемых работ',
+            'contractor' => 'Подрядчик',
+            'brigade' => 'Бригада',
+            'brigade_master' => 'Мастер бригады',
+            'cause_h_failure' => 'Основная причина отказа оборудования',
+            'reason_type' => 'Вид причины отказа оборудования',
+            'reason_stopping' => 'Причина остановки',
+            'completion_date' => 'Дата и время окончания работ',
+            'desc_done' => 'Описание проделанной работы',
+            'rep_type' => 'Вид ремонта',
+            'nkt_new' => 'Кол-во спущенных НКТ, новые',
+            'nkt_used' => 'Кол-во спущенных НКТ, б/у',
+            'actual_bh' => 'Фактический забой, м',
+            'tech_condition' => 'Техническое состояние скважин',
+            'new_condition' => 'Новое состояние'
+            
+>>>>>>> master
         ]
     ],
     'close' => 'Закрыть',

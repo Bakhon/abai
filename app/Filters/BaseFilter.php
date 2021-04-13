@@ -53,7 +53,7 @@ abstract class BaseFilter
         return 'filter_'.$field;
     }
 
-    abstract protected function sort(string $field, bool $desc);
+    abstract protected function sort(string $field, bool $isDescending);
 
     protected function filter_field($guId)
     {

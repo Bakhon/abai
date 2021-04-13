@@ -9,7 +9,7 @@
                     <p>{{ $message }}</p>
                 </div>
             @endif
-            <div class="container">
+            <div class="container  table-page">
                 <h1>{{ trans('monitoring.show_title') }}</h1>
                 <h2>{{ trans('app.date') }}: {{ \Carbon\Carbon::parse($omgngdu->date)->format('d.m.Y H:i:s')}}</h2>
                 <table class="table table-bordered">
@@ -83,9 +83,3 @@
         </div>
     </div>
 @endsection
-<style>
-    body{color: white !important;}
-    .table{
-        color: white !important;
-    }
-</style>
