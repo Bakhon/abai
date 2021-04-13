@@ -2,6 +2,7 @@
 
 namespace App\Models\BigData\Dictionaries;
 
+use App\Models\BigData\Well;
 use App\Models\TBDModel;
 
 class Tech extends TBDModel
@@ -19,7 +20,7 @@ class Tech extends TBDModel
 
     public function wells()
     {
-        return $this->belongsToMany(\App\Models\BigData\Well::class, 'prod.well_tech', 'tech', 'well');
+        return $this->belongsToMany(Well::class, 'prod.well_tech', 'tech', 'well');
     }
 
     public function type()

@@ -375,8 +375,8 @@ class FluidProduction extends TableForm
         $uwi = DB::connection('tbd')
             ->table('dict.well')
             ->selectRaw('w.id,w.uwi as other_uwi')
-            ->leftJoin('prod.joint_wells as j', 'w.id', '=', DB::raw("any(j.well_id_arr)"))
-            ->leftJoin('dict.well as b', 'b.id', '=', DB::raw('any(array_remove(j.well_id_arr, w.id))'))
+            ->leftJoin('prod.joint_wells as j', 'w.id', DB::raw("any(j.well_id_arr)"))
+            ->leftJoin('dict.well as b', 'b.id', DB::raw('any(array_remove(j.well_id_arr, w.id))'))
             ->where('w.id', $item->id)
             ->groupBy('w.id', 'w.uwi')
             ->first();

@@ -2,6 +2,7 @@
 
 namespace App\Models\BigData\Dictionaries;
 
+use App\Models\BigData\Well;
 use App\Models\TBDModel;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
@@ -28,7 +29,7 @@ class Geo extends TBDModel
 
     public function wells()
     {
-        return $this->belongsToMany(\App\Models\BigData\Well::class, 'prod.well_geo', 'geo_id', 'well_id');
+        return $this->belongsToMany(Well::class, 'prod.well_geo', 'geo_id', 'well_id');
     }
 
 
