@@ -8,6 +8,8 @@ use App\Models\BigData\Dictionaries\Company;
 use App\Models\BigData\Dictionaries\Org;
 use App\Models\BigData\Dictionaries\WellCategory;
 use App\Models\BigData\Dictionaries\WellType;
+use App\Models\BigData\Dictionaries\Equip;
+use App\Models\BigData\Dictionaries\CasingType;
 use Carbon\Carbon;
 use Illuminate\Cache\Repository;
 use Illuminate\Support\Facades\DB;
@@ -17,6 +19,8 @@ class DictionaryService
     const DICTIONARIES = [
         'well_categories' => WellCategory::class,
         'well_types' => WellType::class,
+        'equips' => Equip::class,
+        'casings'=>CasingType::class,
         'companies' => Company::class
     ];
 
@@ -50,6 +54,8 @@ class DictionaryService
                 case 'geos':
                     $dict = $this->getGeoDict();
                     break;
+                case 'casing_types':
+                    $dict = $this->getCasingTypeDict();
                 default:
                     throw new DictionaryNotFound();
             }

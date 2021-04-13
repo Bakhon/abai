@@ -12,9 +12,9 @@
               {
                 "code": "casing_nom",
                 "type": "dict",
-                "title": "casing_type",
-                "dict": "equip",
-                "validation": "nullable|exists:abaiprot.dict.equip,name_ru"
+                "title": "column_type",
+                "dict": "equips",
+                "validation": "nullable|exists:tbd.dict.equip_type,name_ru"
               },
               {
                 "code": "depth",
@@ -32,8 +32,8 @@
                 "code": "casing_type",
                 "type": "dict",
                 "title": "casing_type",
-                "dict": "tube_nom",
-                "validation": "nullable|exists:exists:abaiprot.dict.tube_nom,od,wt,vd,sq"
+                "dict": "casings",
+                "validation": "nullable|exists:exists:tbd.dict.tube_nom,od,wt,vd,sq"
               },
               {
                 "code": "tube_count",
