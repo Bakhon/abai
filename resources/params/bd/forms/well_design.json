@@ -24,9 +24,8 @@
               },
               {
                 "code": "sidetrack",
-                "type": "numeric",
-                "title": "side_barrel",
-                "validation": "numeric"
+                "type": "checkbox",
+                "title": "side_barrel"
               },
               {
                 "code": "casing_type",
