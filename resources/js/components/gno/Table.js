@@ -603,7 +603,7 @@ export default {
         this.gorInput = this.gor  + " " +  this.trans('measurements.m3/t')
         this.bhpInput = this.bhp  + " " +  this.trans('measurements.atm')
         this.hDynInput = this.hDyn  + " " +  this.trans('measurements.m')
-        this.pAnnularInput = this.pAnnular + " " + + this.trans('measurements.atm')
+        this.pAnnularInput = this.pAnnular + " " + this.trans('measurements.atm')
         this.pManomInput = data["Well Data"]["p_intake"][0]  + " " +  this.trans('measurements.atm')
         this.hPumpManomInput = data["Well Data"]["h_pump_set"][0]  + " " +  this.trans('measurements.m')
         this.whpInput = this.whp  + " " +  this.trans('measurements.atm')
