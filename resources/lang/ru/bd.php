@@ -90,7 +90,7 @@ return [
             'not_change_state' => 'Не менять состояние',
             'hardware_failure_cause' => 'Основная причина отказа оборудования',
             'equipment_failure_type' => 'Вид причины отказа оборудования',
-            'stopping_reason' => 'Причина остановки'
+            'stopping_reason' => 'Причина остановки'],
         'injection_wells'=>[
             'Main' => 'Основное',
             'Planned_event' => 'Намечаемое мероприятие',
