@@ -4,6 +4,7 @@
     {
       "title": "request",
       "blocks": [
+        [
         {
           "title": "repair",
           "items": [
@@ -12,10 +13,12 @@
         }
 
       ]
+    ]
     },
     {
       "title": "delivery_certificate_for_repair",
       "blocks": [
+        [
         {
           "title": "repair",
           "items": [
@@ -95,10 +98,12 @@
         }
 
       ]
+    ]
     },
     {
       "title": "acceptance_certificate_from_repair",
       "blocks": [
+        [
         {
           "title": "repair",
           "items": [
@@ -213,10 +218,12 @@
         }
 
       ]
+    ]
     },
     {
       "title": "rejection_reason",
       "blocks": [
+        [
         {
           "title": "repair",
           "items": [
@@ -252,8 +259,8 @@
             }
           ]
         }
-
       ]
+    ]
     }
   ]
 }
