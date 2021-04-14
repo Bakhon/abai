@@ -206,7 +206,15 @@ export default {
         }
         plotIndex++
       })
-
+      return this.fillValues(plots)
+    },
+    title() {
+      let column = this.formParams.columns.find(item => item.code === this.params.selectedColumn)
+      return column.history_popup.title
+    }
+  },
+  methods: {
+    fillValues(plots) {
       for (let date in this.params.graph.rows) {
         let plotIndex = 1;
         this.params.graph.columns.forEach(block => {
@@ -219,12 +227,7 @@ export default {
           plotIndex++
         })
       }
-
       return plots
-    },
-    title() {
-      let column = this.formParams.columns.find(item => item.code === this.params.selectedColumn)
-      return column.history_popup.title
     }
   }
 }

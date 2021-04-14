@@ -87,6 +87,24 @@ class FluidProduction extends TableForm
         return $breadcrumbs;
     }
 
+    public function getFormatedFieldValue(array $field, array $rawValue): ?array
+    {
+        switch ($field['code']) {
+            case 'worktime':
+
+                $value = 0;
+                if (isset($rawValue['value']) && $rawValue['value'] !== null) {
+                    $value = in_array($rawValue['value'], Well::WELL_ACTIVE_STATUSES) ? 1 : 0;
+                }
+
+                return [
+                    'value' => $value
+                ];
+        }
+
+        return $rawValue;
+    }
+
     protected function getFilterTree(): array
     {
         $orgData = $this->getOrgWithWells();
@@ -117,24 +135,6 @@ class FluidProduction extends TableForm
             $tree[] = $l;
         }
         return $tree;
-    }
-
-    protected function getFormatedFieldValue(array $field, array $rawValue): ?array
-    {
-        switch ($field['code']) {
-            case 'worktime':
-
-                $value = 0;
-                if (isset($rawValue['value']) && $rawValue['value'] !== null) {
-                    $value = in_array($rawValue['value'], Well::WELL_ACTIVE_STATUSES) ? 1 : 0;
-                }
-
-                return [
-                    'value' => $value
-                ];
-        }
-
-        return $rawValue;
     }
 
     protected function getCustomFieldValue(array $field, array $rowData, Model $item): ?array
