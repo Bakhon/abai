@@ -112,7 +112,9 @@ export default {
             this.buttonMonthlyTab = "";
             this.buttonYearlyTab = "";
             this.buttonPeriodTab = "";
-            this.isFilterTargetPlanActive = false;
+            if (change !== 3) {
+                this.isFilterTargetPlanActive = false;
+            }
 
             if (change === 1) {
                 this.currentDzoList = 'daily';

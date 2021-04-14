@@ -12,10 +12,21 @@
                       <td class="col-4 col-lg-4 d-flex">
                         <div class="first-td-header">
                           <div class="row oil-block">
-                            <div class="number col-8 col-md-6 col-lg-7">
+                            <div class="number">
                               {{ formatDigitToThousand(productionParams.oil_fact) }}
                             </div>
-                            <div class="unit-vc col-12 col-md-5 col-lg-4">{{ trans("visualcenter.thousand") }}{{ trans('visualcenter.tonWithSpace') }}</div>
+                            <div
+                                    v-if="!buttonDailyTab && (oneDate !== 1)"
+                                    class="unit-vc ml-2"
+                            >
+                              {{ trans("visualcenter.thousand") }}{{ trans('visualcenter.tonWithSpace') }}
+                            </div>
+                            <div
+                                    v-else
+                                    class="unit-vc ml-2"
+                            >
+                              {{ trans('visualcenter.tonWithSpace') }}
+                            </div>
                           </div>
                           <div class="additional-header txt1 col-6 col-md-12">
                             {{ trans("visualcenter.getoil") }}
@@ -65,10 +76,21 @@
                       <td class="col-4 col-lg-4 d-flex">
                         <div class="first-td-header">
                           <div class="row oil-block">
-                            <div class="number col-8 col-md-7 col-lg-7">
+                            <div class="number">
                               {{ formatDigitToThousand(productionParams.oil_dlv_fact) }}
                             </div>
-                            <div class="unit-vc col-12 col-md-5 col-lg-4">{{ trans("visualcenter.thousand") }}{{ trans('visualcenter.tonWithSpace') }}</div>
+                            <div
+                                    v-if="!buttonDailyTab && (oneDate !== 1)"
+                                    class="unit-vc ml-2"
+                            >
+                              {{ trans("visualcenter.thousand") }}{{ trans('visualcenter.tonWithSpace') }}
+                            </div>
+                            <div
+                                    v-else
+                                    class="unit-vc ml-2"
+                            >
+                              {{ trans('visualcenter.tonWithSpace') }}
+                            </div>
                           </div>
                           <div class="additional-header txt1 col-6 col-md-12">
                             {{ trans("visualcenter.oildlv") }}
@@ -118,11 +140,20 @@
                       <td class="col-4 col-sm-4 d-flex">
                         <div class="first-td-header">
                           <div class="row oil-block">
-                            <div class="number col-8 col-md-7 col-lg-7">
+                            <div class="number">
                               {{ formatDigitToThousand(productionParams.gas_fact) }}
                             </div>
-                            <div class="unit-vc col-12 col-md-5 col-lg-4">
+                            <div
+                                    v-if="!buttonDailyTab && (oneDate !== 1)"
+                                    class="unit-vc ml-2"
+                            >
                               {{ trans("visualcenter.thousand") }}{{ trans('visualcenter.meterCubicWithSpace') }}
+                            </div>
+                            <div
+                                    v-else
+                                    class="unit-vc ml-2"
+                            >
+                              {{ trans('visualcenter.meterCubicWithSpace') }}
                             </div>
                           </div>
                           <div class="additional-header txt1 col-6 col-md-12">
