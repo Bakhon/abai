@@ -1,10 +1,17 @@
 import download from "downloadjs";
+import {Datetime} from 'vue-datetime';
+import Vue from "vue";
+
+Vue.use(Datetime)
 
 export default {
     components: {},
     data() {
         return {
-            file: '',
+            files: [],
+            currentFileInfo: 0,
+            isFilesUploadedOnPreApproval: false,
+
             experimentId: null,
             statisticsInput: {
                 experimentId: null,
@@ -13,14 +20,47 @@ export default {
             experimentStatistics: null,
             experimentsId: null,
             wellId: null,
+            filenameParameters: {
+                generic: {
+                    fields: ['Месторождение1', 'Месторождение2', 'Месторождение3'],
+                    wells: ['Скважина1','Скважина2','Скважина3','Скважина4'],
+
+                    extensions: ['las', 'lis', 'dlis', 'ascii', 'txt'],
+                    stemTypes: ['ST1', 'ST2'],
+                    stemSections: ['ST1', 'ST2'],
+                    recordingMethods: ['LWD', 'WL'],
+                    fileStatuses: ['RAW', 'FIN', 'INT', 'UNK'],
+                    recordStates:['MAIN', 'RPT'],
+                },
+                specific: [{
+                    mnemonics: ['DEPTH', 'AUS', 'TOX'],
+                    recordingDepths: [100, 1500],
+                }]
+            },
+            filenameDelimiter: '_',
             input: {
                 well: null,
                 field: null,
                 comment: null,
-                filename: null,
-                provenanceId: null,
+                provenanceId: '',
+                endDate: '',
+                filename: {
+                    name: '',
+                    field: '',
+                    well: '',
+                    stemType: '',
+                    stemSection: '',
+                    recordingMethod: '',
+                    mnemonics: [],
+                    fileStatus: '',
+                    recordingDepth: '',
+                    extension: '',
+                    recordState: '',
+                },
             },
-            baseUrl: 'http://172.20.103.187:8083/',
+
+            // baseUrl: 'http://172.20.103.187:8083/',
+            baseUrl: 'http://127.0.0.1:8091/',
             experimentInfo: null,
             selectedExperimentsInfo: null,
             loadProvenance: null,
@@ -50,18 +90,57 @@ export default {
                     console.log("No data");
                 }
                 this.isLoading = false;
-            }).catch((error) => console.log(error));
+            }).catch((error) => {
+                console.log(error)
+                this.provenances = [{'id': 0, 'origin': 'fake1'}, {'id': 1, 'origin': 'fake2'},]
+                this.isLoading = false
+
+            });
         },
         handleFileUpload() {
-            this.file = this.$refs.file.files[0];
+            this.files = this.$refs.file.files;
+            console.log(this.files);
+        },
+        submitExperimentInfo() {
+            if (this.currentFileInfo > this.files.length - 1) {
+                return
+            }
+            this.currentFileInfo += 1
+            this.setExperimentFileParameters()
+        },
+        setExperimentFileParameters() {
+            let experiment = this.filenameParameters.specific[this.currentFileInfo]
+            this.input.filename.recordingDepth = experiment.recordingDepths[0] + this.filenameDelimiter + experiment.recordingDepths[1]
         },
         submitFile() {
             let formData = new FormData();
-            formData.append('file', this.file)
+            for (let i = 0; i < this.files.length; i++) {
+                formData.append('files', this.files[i])
+            }
 
             this.$store.commit('globalloading/SET_LOADING', true);
             this.experimentsId = null;
             this.axios.post(this.baseUrl + 'upload/', formData, {
+                responseType: 'json',
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            }).then((response) => {
+                if (response.data) {
+                    this.experimentsId = response.data.experiments_id
+                    this.setExperimentFileParameters()
+                    this.isFilesUploadedOnPreApproval = true
+                }
+            }).catch((error) => console.log(error)
+            ).finally(() => this.$store.commit('globalloading/SET_LOADING', false));
+        },
+        submitFileParams() {
+            let formData = new FormData();
+            formData.append('file', this.files)
+
+            this.$store.commit('globalloading/SET_LOADING', true);
+            this.experimentsId = null;
+            this.axios.post(this.baseUrl + 'approve-upload/', formData, {
                 responseType: 'json',
                 params: {
                     well: this.input.well,
@@ -76,11 +155,10 @@ export default {
             }).then((response) => {
                 if (response.data) {
                     this.experimentsId = response.data.experiments_id
+                    this.setExperimentFileParameters()
                 }
             }).catch((error) => console.log(error)
             ).finally(() => this.$store.commit('globalloading/SET_LOADING', false));
-
-
         },
         fetchStatistics() {
             this.$store.commit('globalloading/SET_LOADING', true);
