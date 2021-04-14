@@ -494,23 +494,23 @@ export default {
     
     setData: function(data) {
       if (this.method == "CurveSetting") {
-        this.pResInput = data["Well Data"]["p_res"][0] + this.trans('measurements.atm')
-        this.piInput = data["Well Data"]["pi"][0].toFixed(2) + this.trans('measurements.m3/d/atm')
-        this.qLInput = data["Well Data"]["q_l"][0].toFixed(0) + this.trans('measurements.m3/day')
-        this.wctInput = data["Well Data"]["wct"][0] + this.trans('measurements.percent')
-        this.hPumpValue = data["Well Data"]["h_pump_set"][0].toFixed(0) + this.trans('measurements.m')
-        this.gorInput = data["Well Data"]["gor"][0] + this.trans('measurements.m3/t')
-        this.bhpInput = data["Well Data"]["bhp"][0].toFixed(0) + this.trans('measurements.atm')
-        this.hDynInput = data["Well Data"]["h_dyn"][0].toFixed(0) + this.trans('measurements.m')
-        this.pAnnularInput = data["Well Data"]["p_annular"][0].toFixed(0) + this.trans('measurements.atm')
-        this.qlCelValue = JSON.parse(data.PointsData)["data"][2]["q_l"].toFixed(0) + this.trans('measurements.m3/day')
-        this.bhpCelValue = JSON.parse(data.PointsData)["data"][2]["p"].toFixed(0) + this.trans('measurements.atm')
-        this.piCelValue = JSON.parse(data.PointsData)["data"][2]["pin"].toFixed(0) + this.trans('measurements.atm')
-        this.whpInput = data["Well Data"]["whp"][0].toFixed(0) + this.trans('measurements.atm')
-        this.pManomInput = data["Well Data"]["p_intake"][0] + this.trans('measurements.atm')
+        this.pResInput = data["Well Data"]["p_res"][0] + " " + this.trans('measurements.atm')
+        this.piInput = data["Well Data"]["pi"][0].toFixed(2)  + " " +  this.trans('measurements.m3/d/atm')
+        this.qLInput = data["Well Data"]["q_l"][0].toFixed(0)  + " " +  this.trans('measurements.m3/day')
+        this.wctInput = data["Well Data"]["wct"][0]  + " " +  this.trans('measurements.percent')
+        this.hPumpValue = data["Well Data"]["h_pump_set"][0].toFixed(0)  + " " +  this.trans('measurements.m')
+        this.gorInput = data["Well Data"]["gor"][0]  + " " +  this.trans('measurements.m3/t')
+        this.bhpInput = data["Well Data"]["bhp"][0].toFixed(0)  + " " +  this.trans('measurements.atm')
+        this.hDynInput = data["Well Data"]["h_dyn"][0].toFixed(0)  + " " + this.trans('measurements.m')
+        this.pAnnularInput = data["Well Data"]["p_annular"][0].toFixed(0)  + " " +  this.trans('measurements.atm')
+        this.qlCelValue = JSON.parse(data.PointsData)["data"][2]["q_l"].toFixed(0)  + " " +  this.trans('measurements.m3/day')
+        this.bhpCelValue = JSON.parse(data.PointsData)["data"][2]["p"].toFixed(0)  + " " +  this.trans('measurements.atm')
+        this.piCelValue = JSON.parse(data.PointsData)["data"][2]["pin"].toFixed(0)  + " " +  this.trans('measurements.atm')
+        this.whpInput = data["Well Data"]["whp"][0].toFixed(0)  + " " +  this.trans('measurements.atm')
+        this.pManomInput = data["Well Data"]["p_intake"][0]  + " " +  this.trans('measurements.atm')
         this.sep_value = (data["Well Data"]["es"][0]* 100).toFixed(0)
         if(this.curveSelect == 'pmanom') {
-          this.hPumpManomInput = data["Well Data"]["h_pump_point"][0] + this.trans('measurements.m')
+          this.hPumpManomInput = data["Well Data"]["h_pump_point"][0]  + " " + this.trans('measurements.m')
         }
         this.curveLineData = JSON.parse(data.LineData)["data"]
         this.curvePointsData = JSON.parse(data.PointsData)["data"]
@@ -556,8 +556,8 @@ export default {
         this.lineP = data["Well Data"]["line_p"][0].toFixed(0)
         this.piInput = data["Well Data"]["pi"][0].toFixed(2) + ' м³/сут/ат'
         this.curr = data["Well Data"]["curr_bh"][0].toFixed(0)
-        this.piCelValue = JSON.parse(data.PointsData)["data"][0]["pin"].toFixed(0) + this.trans('measurements.atm')
-        this.bhpCelValue = JSON.parse(data.PointsData)["data"][0]["p"].toFixed(0) + this.trans('measurements.atm')
+        this.piCelValue = JSON.parse(data.PointsData)["data"][0]["pin"].toFixed(0)  + " " +  this.trans('measurements.atm')
+        this.bhpCelValue = JSON.parse(data.PointsData)["data"][0]["p"].toFixed(0)  + " " +  this.trans('measurements.atm')
         this.wellIncl = data["Well Data"]["well"][0]
         this.hPerfND = data["Well Data"]["h_perf"][0]
         this.strokeLenDev = data["Well Data"]["stroke_len"][0]
@@ -575,8 +575,8 @@ export default {
             this.dNasosa = "Pump diameter"
             this.freq = "Pump rate"
           }
-          this.spmDev = data["Well Data"]["spm"][0] + this.trans('measurements.1/min')
-          this.pumpType = this.pumpType + this.trans('measurements.mm')
+          this.spmDev = data["Well Data"]["spm"][0]  + " " +  this.trans('measurements.1/min')
+          this.pumpType = this.pumpType  + " " +  this.trans('measurements.mm')
         } else {
           if(langUrl === 'ru') {
             this.dNasosa = 'Номинальная подача'
@@ -588,8 +588,8 @@ export default {
             this.dNasosa = "Nominal feed"
             this.freq = "Frequency"
           }
-          this.spmDev = data["Well Data"]["freq"][0] + this.trans('measurements.gc')
-          this.pumpType = this.pumpType + this.trans('measurements.m3/day')
+          this.spmDev = data["Well Data"]["freq"][0]  + " " +  this.trans('measurements.gc')
+          this.pumpType = this.pumpType  + " " +  this.trans('measurements.m3/day')
         }
         if (this.expMeth == 'УЭЦН') {
         this.hasStrokeLength = true
@@ -597,19 +597,19 @@ export default {
 
 
         this.stopDate = this.stopDate.substring(0, 10)
-        this.pResInput = this.pRes + this.trans('measurements.atm')
-        this.qLInput = this.qL  + this.trans('measurements.m3/day')
-        this.wctInput = this.wct + this.trans('measurements.percent')
-        this.gorInput = this.gor + this.trans('measurements.m3/t')
-        this.bhpInput = this.bhp + this.trans('measurements.atm')
-        this.hDynInput = this.hDyn + this.trans('measurements.m')
-        this.pAnnularInput = this.pAnnular + this.trans('measurements.atm')
-        this.pManomInput = data["Well Data"]["p_intake"][0] + this.trans('measurements.atm')
-        this.hPumpManomInput = data["Well Data"]["h_pump_set"][0] + this.trans('measurements.m')
-        this.whpInput = this.whp + this.trans('measurements.atm')
+        this.pResInput = this.pRes  + " " +  this.trans('measurements.atm')
+        this.qLInput = this.qL   + " " +  this.trans('measurements.m3/day')
+        this.wctInput = this.wct  + " " +  this.trans('measurements.percent')
+        this.gorInput = this.gor  + " " +  this.trans('measurements.m3/t')
+        this.bhpInput = this.bhp  + " " +  this.trans('measurements.atm')
+        this.hDynInput = this.hDyn  + " " +  this.trans('measurements.m')
+        this.pAnnularInput = this.pAnnular + " " + this.trans('measurements.atm')
+        this.pManomInput = data["Well Data"]["p_intake"][0]  + " " +  this.trans('measurements.atm')
+        this.hPumpManomInput = data["Well Data"]["h_pump_set"][0]  + " " +  this.trans('measurements.m')
+        this.whpInput = this.whp  + " " +  this.trans('measurements.atm')
         this.qlCelButton = true
         this.qlCelValue = this.qLInput
-        this.hPumpValue = this.hPumpSet + this.trans('measurements.m')
+        this.hPumpValue = this.hPumpSet  + " " +  this.trans('measurements.m')
         
         this.expChoose = this.expMeth
         if (this.expMeth === "УЭЦН") {
@@ -1097,7 +1097,7 @@ export default {
             this.viscWaterRc = data["Well Data"]["visc_wat_rc"][0].toFixed(1)
             this.densOil = data["Well Data"]["dens_oil"][0].toFixed(1)
             this.densWater = data["Well Data"]["dens_liq"][0].toFixed(1)
-            this.hPumpValue = data["Well Data"]["h_pump_set"][0].toFixed(0) + this.trans('measurements.m')
+            this.hPumpValue = data["Well Data"]["h_pump_set"][0].toFixed(0)  + " " +  this.trans('measurements.m')
 
             this.$notify({
                   message: this.trans('pgno.notify_150_hpump'),
@@ -1150,23 +1150,23 @@ export default {
             this.lineP = 0;
 
             //Настройка кривой притока
-            this.pResInput = 0 + this.trans('measurements.atm');
-            this.piInput = 0 + this.trans('measurements.m3/d/atm');
-            this.qLInput = 0 + this.trans('measurements.m3/day');
-            this.bhpInput = 0 + this.trans('measurements.atm');
-            this.wctInput = 0 + this.trans('measurements.percent');
-            this.gorInput = this.gor + this.trans('measurements.m3/t');;
-            this.hDynInput = 0 + this.trans('measurements.m');
-            this.pAnnularInput = 0 + this.trans('measurements.atm');
-            this.hPumpManomInput = 0 + this.trans('measurements.atm');
-            this.whpInput = 0 + this.trans('measurements.atm');
-            this.pManomInput = 0 + this.trans('measurements.atm');
+            this.pResInput = 0  + " " +  this.trans('measurements.atm');
+            this.piInput = 0  + " " +  this.trans('measurements.m3/d/atm');
+            this.qLInput = 0  + " " +  this.trans('measurements.m3/day');
+            this.bhpInput = 0  + " " +  this.trans('measurements.atm');
+            this.wctInput = 0  + " " +  this.trans('measurements.percent');
+            this.gorInput = this.gor  + " " +  this.trans('measurements.m3/t');;
+            this.hDynInput = 0  + " " +  this.trans('measurements.m');
+            this.pAnnularInput = 0  + " " +  this.trans('measurements.atm');
+            this.hPumpManomInput = 0  + " " +  this.trans('measurements.atm');
+            this.whpInput = 0  + " " +  this.trans('measurements.atm');
+            this.pManomInput = 0  + " " +  this.trans('measurements.atm');
             this.expChoose = 'ШГН'
 
             //Параметры подбора
-            this.qlCelValue = 0 + this.trans('measurements.m3/day');
-            this.bhpCelValue = 0 + this.trans('measurements.atm');
-            this.piCelValue = 0 + this.trans('measurements.atm');
+            this.qlCelValue = 0  + " " +  this.trans('measurements.m3/day');
+            this.bhpCelValue = 0  + " " +  this.trans('measurements.atm');
+            this.piCelValue = 0  + " " +  this.trans('measurements.atm');
             this.sep_value = 60
           } else if (data["Age"] === false){
             this.setData(data)
@@ -1387,19 +1387,19 @@ export default {
       this.$modal.hide('modalOldWell');
       this.$eventBus.$emit('newCurveLineData', this.newCurveLineData)
       this.$eventBus.$emit('newPointsData', this.newPointsData)
-      this.pResInput = this.newData["p_res"][0].toFixed(0) + this.trans('measurements.atm');
-      this.piInput = this.newData["pi"][0].toFixed(2) + this.trans('measurements.m3/d/atm');
-      this.qLInput = this.newData["q_l"][0].toFixed(0) + this.trans('measurements.m3/day');
-      this.bhpInput = this.newData["bhp"][0].toFixed(0) + this.trans('measurements.atm');
-      this.hDynInput = this.newData["h_dyn"][0].toFixed(0) + this.trans('measurements.m');
-      this.pAnnularInput = this.newData["p_annular"][0].toFixed(0) + this.trans('measurements.atm');
-      this.pManomInput = this.newData["p_intake"][0].toFixed(0) + this.trans('measurements.atm');
-      this.hPumpManomInput = this.newData["h_pump_set"][0].toFixed(0) + this.trans('measurements.m');
-      this.whpInput = this.newData["whp"][0].toFixed(0) + this.trans('measurements.atm');
-      this.wctInput = this.newData["wct"][0].toFixed(0) + this.trans('measurements.percent');
-      this.qlCelValue = this.newPointsData[0]["q_l"].toFixed(0) + this.trans('measurements.m3/day');
-      this.bhpCelValue = this.newPointsData[0]["p"].toFixed(0) + this.trans('measurements.atm');
-      this.piCelValue = this.newPointsData[0]["pin"].toFixed(0) + this.trans('measurements.atm');
+      this.pResInput = this.newData["p_res"][0].toFixed(0)  + " " +  this.trans('measurements.atm');
+      this.piInput = this.newData["pi"][0].toFixed(2)  + " " +  this.trans('measurements.m3/d/atm');
+      this.qLInput = this.newData["q_l"][0].toFixed(0)  + " " +  this.trans('measurements.m3/day');
+      this.bhpInput = this.newData["bhp"][0].toFixed(0)  + " " +  this.trans('measurements.atm');
+      this.hDynInput = this.newData["h_dyn"][0].toFixed(0) + " " +  this.trans('measurements.m');
+      this.pAnnularInput = this.newData["p_annular"][0].toFixed(0)  + " " +  this.trans('measurements.atm');
+      this.pManomInput = this.newData["p_intake"][0].toFixed(0)  + " " +  this.trans('measurements.atm');
+      this.hPumpManomInput = this.newData["h_pump_set"][0].toFixed(0)  + " " +  this.trans('measurements.m');
+      this.whpInput = this.newData["whp"][0].toFixed(0)  + " " +  this.trans('measurements.atm');
+      this.wctInput = this.newData["wct"][0].toFixed(0)  + " " +  this.trans('measurements.percent');
+      this.qlCelValue = this.newPointsData[0]["q_l"].toFixed(0)  + " " +  this.trans('measurements.m3/day');
+      this.bhpCelValue = this.newPointsData[0]["p"].toFixed(0)  + " " +  this.trans('measurements.atm');
+      this.piCelValue = this.newPointsData[0]["pin"].toFixed(0)  + " " +  this.trans('measurements.atm');
     },
 
     setGraphNew() {
@@ -1415,10 +1415,10 @@ export default {
       this.$modal.hide('modalNewWell');
       this.$eventBus.$emit('newCurveLineData', this.newCurveLineData)
       this.$eventBus.$emit('newPointsData', this.newPointsData)
-      this.pResInput = this.newData["p_res"][0].toFixed(0) + this.trans('measurements.atm');
-      this.piInput = this.newData["pi"][0].toFixed(2) + this.trans('measurements.m3/d/at');
-      this.wctInput = this.newData["wct"][0].toFixed(0) + this.trans('measurements.percent');
-      this.hPumpValue = this.newData["h_pump_set"][0].toFixed(0) + this.trans('measurements.m');
+      this.pResInput = this.newData["p_res"][0].toFixed(0)  + " " +  this.trans('measurements.atm');
+      this.piInput = this.newData["pi"][0].toFixed(2)  + " " +  this.trans('measurements.m3/d/at');
+      this.wctInput = this.newData["wct"][0].toFixed(0)  + " " +  this.trans('measurements.percent');
+      this.hPumpValue = this.newData["h_pump_set"][0].toFixed(0)  + " " +  this.trans('measurements.m');
     },
 
     onCompareNpv() {
