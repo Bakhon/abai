@@ -233,4 +233,6 @@ return array (
   'bottomhole_pressure_2' => 'P забойное',
   'pi_incorrect_value' => 'Некорректное значение Kпрод',
   'p_layer_2' => 'P пластовое',
+  't' => 'т',
+  'm3' => 'м3',
 );

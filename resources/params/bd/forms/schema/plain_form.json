@@ -34,7 +34,7 @@
                             "datetime",
                             "numeric",
                             "radio",
-                            "table"
+                            "checkbox"
                           ]
                         },
                         "title": {
@@ -70,9 +70,9 @@
                                 "dict",
                                 "text",
                                 "date",
+                                "datetime",
                                 "numeric",
-                                "table",
-                                "datetime"
+                                "checkbox"
                               ]
                             }
                           }
