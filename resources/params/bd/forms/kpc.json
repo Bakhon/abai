@@ -8,7 +8,45 @@
         {
           "title": "repair",
           "items": [
-       
+            {
+              "code":"",
+              "type":"date",
+              "title":"request_date",
+              "validation": "nullable|date|before_or_equal:today"
+            },
+            {
+              "code":"",
+              "type":"date",
+              "title":"planned_date",
+              "validation": "nullable|date|before_or_equal:today"
+            },
+            {
+              "code": "",
+              "type": "dict",
+              "title": "work_type",
+              "validation": "required|exists:",
+              "dict": "",
+              "callbacks": {
+                "": ""
+              }    
+            },
+            {
+              "code": "",
+              "type": "dict",
+              "title": "gtm_type",
+              "validation": "required|exists:",
+              "dict": "",
+              "callbacks": {
+                "": ""
+              }    
+            },
+            {
+              "code":"",
+              "type":"text",
+              "title":"planing_work_list",
+              "validation": "nullable|date|before_or_equal:today",
+              "prefix": ""
+            }
           ]
         }
 
@@ -24,7 +62,7 @@
           "items": [
             {
               "code": "work_start_date",
-              "type": "date",
+              "type": "datetime",
               "title": "work_start_date",
               "validation": "nullable|date|before_or_equal:today"
             },

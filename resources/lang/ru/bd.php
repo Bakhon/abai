@@ -58,6 +58,11 @@ return [
             'water_cut' => 'Обводненность (%)'
         ],
         'kpc' => [
+            'request_date'=>'Дата подачи заявки',
+            'planned_date'=>'Ожидаемая дата проведения',
+            'work_type'=>'Вид работ',
+            'gtm_type'=>'Вид ГТМ',
+            'planing_work_list'=>'Список планируемых работ',
             'repair' => 'Ремонт',
             'request' => 'Заявка',
             'delivery_certificate_for_repair' => 'Акт сдачи в ремонт',
