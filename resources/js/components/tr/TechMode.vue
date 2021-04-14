@@ -595,7 +595,8 @@
                             label=""
                             width="200"
                             sortable
-                            
+                            :filters="filter_column.field"
+                            :filter-method="filterHandler"
         
                             >
                           </el-table-column>
@@ -627,7 +628,8 @@
                             label=""
                             width="150"
                             sortable
-                          
+                            :filters="filter_column.well_type"
+                            :filter-method="filterHandler"
                             >
                             <template slot-scope="scope">
                               <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`well_type`)}" >
@@ -658,6 +660,8 @@
                             label=""
                             width="100"
                             sortable
+                            :filters="filter_column.horizon"
+                            :filter-method="filterHandler"
                             >
                             <template slot-scope="scope">
                               <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`horizon`)}" >
@@ -688,6 +692,8 @@
                             label=""
                             width="150"
                             sortable
+                            :filters="filter_column.object"
+                            :filter-method="filterHandler"
                             >
                           </el-table-column>
                         </el-table-column>
@@ -703,6 +709,8 @@
                             label=""
                             width="150"
                             sortable
+                            :filters="filter_column.block"
+                            :filter-method="filterHandler"
                             >
                             <template slot-scope="scope">
                               <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`block`)}" >
@@ -2090,6 +2098,22 @@ export default {
           console.log("No data");
           
         }
+      });
+    this.axios
+      .get(
+        "http://172.20.103.187:7576/api/techregime/tr_parameter_filters/"
+      )
+      .then((response) => {
+        this.$store.commit("globalloading/SET_LOADING", false);
+        let data = response.data;
+        if (data) {
+          
+          this.filter_column = data;
+        }
+        else {
+          console.log("No data");
+        }
+
         if (mm1 < 10) {
           this.dt = "01" + ".0" + mm1 + "." + yyyy1;
         } else {
@@ -2146,8 +2170,10 @@ export default {
        "el-table_1_column_113", "el-table_1_column_125", "el-table_1_column_137", "el-table_1_column_141","el-table_1_column_145","el-table_1_column_149", 
        "el-table_1_column_153", "el-table_1_column_163", "el-table_1_column_165", "el-table_1_column_167", "el-table_1_column_169", "el-table_1_column_171",
         "el-table_1_column_173", "el-table_1_column_175",  "el-table_1_column_177", "el-table_1_column_179",  "el-table_1_column_181", "el-table_1_column_183", 
-      "el-table_1_column_187",  "el-table_1_column_191",  "el-table_1_column_195",  "el-table_1_column_199", ],  
+      "el-table_1_column_187",  "el-table_1_column_191",  "el-table_1_column_195",  "el-table_1_column_199", ], 
+      filter_column: [], 
     };
+    
 
   },
   watch: {
@@ -2575,7 +2601,26 @@ export default {
         return console.log("error")
       }
     },
-
+    resetDateFilter() {
+      this.$refs.filterTable.clearFilter('date');
+    },
+    clearFilter() {
+      this.$refs.filterTable.clearFilter();
+    },
+    formatter(row, column) {
+      return row.address;
+    },
+    filterTag(value, row) {
+      return row.tag === value;
+    },
+    filterHandler(value, row, column) {
+      const property = column['property'];
+      return row[property][0] === value;
+    },
+    filterHandlerOne(value, row, column) {
+      const property = column['property'];
+      return row[property] === value;
+    },
 
     searchWell() {
       console.log("search = ", this.searchString);
