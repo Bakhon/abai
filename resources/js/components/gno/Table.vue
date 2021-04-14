@@ -67,35 +67,35 @@
               <div class="construction no-gutter col-12"><b>{{trans('pgno.construction')}}</b></div>
               <div class="construction-data no-gutter col-7">{{trans('pgno.naruznii_diametr_ex_col')}}</div>
               <div class="construction-data table-border-gno cell4-gno-second no-gutter col-5">
-                {{ casOD }} мм
+                {{ casOD }} {{trans('measurements.mm')}}
               </div>
 
               <div class="construction-data table-border-gno-top no-gutter col-7">
                 {{trans('pgno.vnutrenii_diametr_ex_col')}}
               </div>
               <div class="construction-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
-                {{ casID }} мм
+                {{ casID }} {{trans('measurements.mm')}}
               </div>
 
               <div class="construction-data table-border-gno-top no-gutter col-7">
                 {{trans('pgno.glubina_perf')}}
               </div>
               <div class="construction-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
-                {{ hPerf }} м
+                {{ hPerf }} {{trans('measurements.m')}}
               </div>
 
               <div class="construction-data table-border-gno-top no-gutter col-7">
                 {{trans('pgno.udlinenie_perf')}}
               </div>
               <div class="construction-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
-                {{ udl }} м
+                {{ udl }} {{trans('measurements.m')}}
               </div>
 
               <div class="construction-data table-border-gno-top no-gutter col-7">
                 {{trans('pgno.tekushii_zaboi')}}
               </div>
               <div class="construction-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
-                {{ curr }} м
+                {{ curr }} {{trans('measurements.m')}}
               </div>
             </div>
             <!-- Конструкция end -->
@@ -106,10 +106,11 @@
 
             <div class="spoiler"
                  :class="{ 'opened': activeRightTabName === 'devices' }">
-              <input style="width: 845px; height: 45px;" type="checkbox"
-                     tabindex="-1"
-                     :checked="activeRightTabName === 'devices'"
-                     @change="setActiveRightTabName($event, 'devices')"/>
+              <input class="checkbox-devices" 
+                type="checkbox"
+                tabindex="-1"
+                :checked="activeRightTabName === 'devices'"
+                @change="setActiveRightTabName($event, 'devices')"/>
               <div class="right-side-box">
                 <div class="select-well no-gutter col-12">
                   <div class="devices-title"><b>{{trans('pgno.devices')}}</b></div>
@@ -142,11 +143,12 @@
                     {{trans('pgno.dlina_hoda')}}
                   </div>
                   <div class="devices-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
-                    {{strokeLenDev}} м
+                    {{strokeLenDev}} {{trans('measurements.m')}}
                   </div>
                   </div>
 
                   <div v-if="expChoose">
+                    <div v-if="expChoose ? 'ШГН' : 'ЭЦН' && 'УЭЦН'"></div>
                     <div class="devices-data table-border-gno-top no-gutter col-7">
                     {{ freq }}
                   </div>
@@ -158,7 +160,7 @@
                     {{ dNasosa }}
                   </div>
                   <div class="devices-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
-                    {{ pumpType }} мм
+                    {{ pumpType }}
                   </div>
                   </div>
                   
@@ -166,20 +168,20 @@
                     {{trans('pgno.h_spuska')}}
                   </div>
                   <div class="devices-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
-                    {{ hPumpSet }} м
+                    {{ hPumpSet }} {{trans('measurements.m')}}
                   </div>
 
                   <div class="devices-data table-border-gno-top no-gutter col-7">
                     {{trans('pgno.naruzhnii_nkt')}}
                   </div>
                   <div class="devices-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
-                    {{ tubOD }} мм
+                    {{ tubOD }} {{trans('measurements.mm')}}
                   </div>
                   <div class="devices-data table-border-gno-top no-gutter col-7">
                     {{trans('pgno.vnutrenii_nkt')}}
                   </div>
                   <div class="devices-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
-                    {{ tubID }} мм
+                    {{ tubID }} {{trans('measurements.mm')}}
                   </div>
                   <div class="devices-data table-border-gno-top no-gutter col-7">
                     {{trans('pgno.data_zapuska')}}
@@ -194,14 +196,14 @@
 
             <div class="spoiler"
                  :class="{ 'opened': activeRightTabName === 'pvt' }">
-              <input style="width: 845px; height: 45px;"
+              <input class="checkbox-devices"
                      type="checkbox"
                      tabindex="-1"
                      :checked="activeRightTabName === 'pvt'"
                      @change="setActiveRightTabName($event, 'pvt')"/>
               <div class="right-side-box">
                 <div class="select-well no-gutter col-12">
-                  <div class="pvt-title">PVT</div>
+                  <div class="pvt-title">{{trans('pgno.pvt')}}</div>
                 </div>
                 <span class="closer">
                   <svg width="12" height="7" viewBox="0 0 12 7" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -222,44 +224,44 @@
                 <div class="right-block-details" v-show="activeRightTabName === 'pvt'">
                   <div class="pvt-data no-gutter col-7">{{trans('pgno.p_nas')}}</div>
                   <div class="pvt-data table-border-gno cell4-gno-second no-gutter col-5">
-                    {{ PBubblePoint }} атм
+                    {{ PBubblePoint }} {{trans('measurements.atm')}}
                   </div>
 
                   <div class="pvt-data table-border-gno-top no-gutter col-7">{{trans('pgno.gf')}}</div>
                   <div class="pvt-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
-                    {{ gor }} м³/т
+                    {{ gor }} {{trans('measurements.m3/t')}}
                   </div>
 
                   <div class="pvt-data table-border-gno-top no-gutter col-7">{{trans('pgno.t_pl')}}</div>
                   <div class="pvt-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
-                    {{ tRes }} ℃
+                    {{ tRes }} {{trans('measurements.celsius')}}
                   </div>
 
                   <div class="pvt-data table-border-gno-top no-gutter col-7">
                     {{trans('pgno.vyazkost_nefti')}}
                   </div>
                   <div class="pvt-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
-                    {{ viscOilRc }} сПз
+                    {{ viscOilRc }} {{trans('measurements.spz')}}
                   </div>
 
                   <div class="pvt-data table-border-gno-top no-gutter col-7">
                     {{trans('pgno.vyazkost_vody')}}
                   </div>
                   <div class="pvt-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
-                    {{ viscWaterRc }} сПз
+                    {{ viscWaterRc }} {{trans('measurements.spz')}}
                   </div>
 
                   <div class="pvt-data table-border-gno-top no-gutter col-7">
                     {{trans('pgno.plotnost_nefti')}}
                   </div>
                   <div class="pvt-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
-                    {{ densOil }} г/cм³
+                    {{ densOil }} {{trans('measurements.g/sm3')}}
                   </div>
                   <div class="pvt-data table-border-gno-top no-gutter col-7">
                     {{trans('pgno.plotnost_vody')}}
                   </div>
                   <div class="pvt-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
-                    {{ densWater }} г/cм³
+                    {{ densWater }} {{trans('measurements.g/sm3')}}
                   </div>
                 </div>
               </div>
@@ -282,44 +284,44 @@
                   v-show="activeRightTabName === 'technological-mode' || (windowWidth <= 1300 && windowWidth > 991)">
                   <div class="tech-data no-gutter col-7">{{trans('pgno.q_zhidkosti')}}</div>
                   <div class="tech-data table-border-gno cell4-gno-second no-gutter col-5">
-                    {{ qL }} м³/сут
+                    {{ qL }} {{trans('measurements.m3/day')}}
                   </div>
 
                   <div class="tech-data table-border-gno-top no-gutter col-7">{{trans('pgno.q_nefti')}}</div>
                   <div class="tech-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
-                    {{ qO }} т/сут
+                    {{ qO }} {{trans('measurements.t/d')}}
                   </div>
 
                   <div class="tech-data table-border-gno-top no-gutter col-7">{{trans('pgno.obvodnenost')}}</div>
                   <div class="tech-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
-                    {{ wct }} %
+                    {{ wct }} {{trans('measurements.percent')}}
                   </div>
 
                   <div class="tech-data table-border-gno-top no-gutter col-7">{{trans('pgno.p_zab')}}</div>
                   <div class="tech-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
-                    {{ bhp }} атм
+                    {{ bhp }} {{trans('measurements.atm')}}
                   </div>
 
                   <div class="tech-data table-border-gno-top no-gutter col-7">{{trans('pgno.p_pl')}}</div>
                   <div class="tech-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
-                    {{ pRes }} ат
+                    {{ pRes }} {{trans('measurements.at')}}
                   </div>
 
                   <div class="tech-data table-border-gno-top no-gutter col-7">{{trans('pgno.h_dyn')}}</div>
                   <div class="tech-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
-                    {{ hDyn }} м
+                    {{ hDyn }} {{trans('measurements.m')}}
                   </div>
                   <div class="tech-data table-border-gno-top no-gutter col-7">{{trans('pgno.p_zat')}}</div>
                   <div class="tech-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
-                    {{ pAnnular }} атм
+                    {{ pAnnular }} {{trans('measurements.atm')}}
                   </div>
                   <div class="tech-data table-border-gno-top no-gutter col-7">{{trans('pgno.p_buf')}}</div>
                   <div class="tech-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
-                    {{ whp }} атм
+                    {{ whp }} {{trans('measurements.atm')}}
                   </div>
                   <div class="tech-data table-border-gno-top no-gutter col-7">{{trans('pgno.p_lin')}}</div>
                   <div class="tech-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
-                    {{ lineP }} атм
+                    {{ lineP }} {{trans('measurements.atm')}}
                   </div>
                 </div>
               </div>
@@ -337,13 +339,30 @@
                     <div class="modal-bign-title">{{trans('pgno.inclinometria')}}</div>
 
                     <button type="button" class="modal-bign-button" @click="closeInclModal()">
-                      Закрыть
+                      {{trans('pgno.zakrit')}}
                     </button>
                   </div>
 
                   <div class="Table" align="center" x:publishsource="Excel">
                     <inclinometria @update-hpump="onChangeButtonHpump($event)" :isButtonHpump="isButtonHpump" :wellNumber="wellNumber" :expChoose="expChoose" :wellIncl="wellIncl" :is-loading.sync="isLoading">
                     </inclinometria>
+                  </div>
+                </div>
+              </modal>
+
+               <modal class="modal-bign-wrapper" name="modalSeparation" :draggable="true" :width="600" :height="300"
+                style="background: transparent;" :adaptive="true">
+                <div class="modal-bign modal-bign-container">
+                  <div class="modal-bign-header">
+                    <div class="modal-bign-title"></div>
+
+                    <button type="button" class="modal-bign-button" @click="closeModal('modalSeparation')">
+                      {{trans('pgno.zakrit')}}
+                    </button>
+                  </div>
+
+                  <div class="Table" align="center" x:publishsource="Excel">
+                    
                   </div>
                 </div>
               </modal>
@@ -372,7 +391,7 @@
                       {{trans('pgno.analis_potenciala')}}
                     </div>
                    
-                <div style="position: absolute; margin-left: 175px; margin-top: 0px;">
+                <div class="download-button-excel">
                   <div class="dropdown">
                     <button class="download-curve-button" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                       <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -380,7 +399,7 @@
                       <path d="M10.1667 5V11.1539" stroke="white" stroke-linecap="round"/>
                       <path d="M7.5957 9.61572L10.1671 11.9234L12.7386 9.61572" stroke="white" stroke-linecap="round"/>
                       </svg>
-                      Скачать
+                      {{trans('pgno.download')}}
                       <svg width="12" height="6" viewBox="0 0 12 6" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M1.5 1L5.93356 4.94095C5.97145 4.97462 6.02855 4.97462 6.06644 4.94095L10.5 1" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
                       </svg>
@@ -407,28 +426,27 @@
                       <div class="form-check">
                         <input v-model="isAnalysisBoxValue1" class="checkbox-modal-analysis-menu" @change="postAnalysisOld()"
                           type="checkbox" />
-                        <label for="checkbox1" class="checkbox-modal-analysis-menu-label">Рпл = Рнач</label>
+                        <label for="checkbox1" class="checkbox-modal-analysis-menu-label">{{trans('pgno.ppl_equal_pnach')}}</label>
                       </div>
                       <div class="form-check">
                         <input v-model="isAnalysisBoxValue2" class="checkbox-modal-analysnauryzbekis-menu"
                           @change="postAnalysisOld()" type="checkbox" />
-                        <label for="checkbox1" class="checkbox-modal-analysis-menu-label">Н дин = Ндин мин</label>
+                        <label for="checkbox1" class="checkbox-modal-analysis-menu-label">{{trans('pgno.hdin_equal_hdin_min')}}</label>
                       </div>
                       <div class="form-check">
                         <input v-model="isAnalysisBoxValue3" class="checkbox-modal-analysnauryzbekis-menu"
                           @change="postAnalysisOld()" type="checkbox" />
-                        <label for="checkbox1" class="checkbox-modal-analysis-menu-label">Рзаб пот >= 0,75 *
-                          Рнас</label>
+                        <label for="checkbox1" class="checkbox-modal-analysis-menu-label">{{trans('pgno.p_zab_more_p_nas')}}</label>
                       </div>
                       <div class="form-check">
                         <input v-model="isAnalysisBoxValue4" class="checkbox-modal-analysis-menu" @change="postAnalysisOld()"
                           type="checkbox" />
-                        <label for="checkbox1" class="checkbox-modal-analysis-menu-label">Qж = Qж АСМА</label>
+                        <label for="checkbox1" class="checkbox-modal-analysis-menu-label">{{trans('pgno.q_liq_equal_q_liq')}}</label>
                       </div>
                       <div class="form-check">
                         <input v-model="isAnalysisBoxValue5" class="checkbox-modal-analysis-menu" @change="postAnalysisOld()"
                           type="checkbox" />
-                        <label for="checkbox1" class="checkbox-modal-analysis-menu-label">Обв = Обв АСМА</label>
+                        <label for="checkbox1" class="checkbox-modal-analysis-menu-label">{{trans('pgno.obv_obv_acma')}}</label>
                       </div>
                       <button type="button" class="old_well_button" @click="setGraphOld()">
                         {{trans('pgno.primenit_korrektirovki')}}
@@ -445,7 +463,7 @@
                       {{trans('pgno.analis_potenciala')}}
                     </div>
 
-                    <div style="position: absolute; margin-left: 175px; margin-top: 0px;">
+                    <div class="download-button-excel">
                   <div class="dropdown">
                     <button class="download-curve-button" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                       <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -453,7 +471,7 @@
                       <path d="M10.1667 5V11.1539" stroke="white" stroke-linecap="round"/>
                       <path d="M7.5957 9.61572L10.1671 11.9234L12.7386 9.61572" stroke="white" stroke-linecap="round"/>
                       </svg>
-                      Скачать
+                      {{trans('pgno.download')}}
                       <svg width="12" height="6" viewBox="0 0 12 6" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M1.5 1L5.93356 4.94095C5.97145 4.97462 6.02855 4.97462 6.06644 4.94095L10.5 1" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
                       </svg>
@@ -479,28 +497,26 @@
                       <div class="form-check-new">
                         <input v-model="isAnalysisBoxValue6" class="new-checkbox-modal-analysis-menu"
                           @change="postAnalysisNew()" type="checkbox" />
-                        <label for="checkbox1" class="new-checkbox-modal-analysis-menu-label">Pпл = Р изобар</label>
+                        <label for="checkbox1" class="new-checkbox-modal-analysis-menu-label">{{trans('pgno.p_pl_p_izobar')}}</label>
                       </div>
                       <div class="form-check-new">
                         <input v-model="isAnalysisBoxValue7" class="new-checkbox-modal-analysis-menu"
                           @change="postAnalysisNew()" type="checkbox" />
-                        <label for="checkbox1" class="new-checkbox-modal-analysis-menu-label">К пр = К по окр.</label>
+                        <label for="checkbox1" class="new-checkbox-modal-analysis-menu-label">{{trans('pgno.k_pr_k_po_okr')}}</label>
                       </div>
                       <div class="form-check-new">
-                        <label for="checkbox1" class="new-checkbox-modal-analysis-menu-label">Обв по окр. =
-                        </label>
+                        <label for="checkbox1" class="new-checkbox-modal-analysis-menu-label">{{trans('obv_po_okr')}}</label>
                         <label for="checkbox1">{{ wctOkr }}%</label>
                       </div>
                       <div class="form-check-new">
                         <input v-model="isAnalysisBoxValue8" class="new-checkbox-modal-analysis-menu"
                           @change="postAnalysisNew()" type="checkbox" />
-                        <label for="checkbox1" class="new-checkbox-modal-analysis-menu-label">Рзаб пот = 0.75 *
-                          Рнас</label>
+                        <label for="checkbox1" class="new-checkbox-modal-analysis-menu-label">{{trans('pgno.p_zab_more_p_nas')}}</label>
                       </div>
                       <div class="form-check-new">
                         <input v-model="hasGrp" class="new-checkbox-modal-analysis-menu" @change="postAnalysisNew()"
                           type="checkbox" />
-                        <label for="checkbox1" class="new-checkbox-modal-analysis-menu-label">с ГРП</label>
+                        <label for="checkbox1" class="new-checkbox-modal-analysis-menu-label">{{trans('pgno.s_grp')}}</label>
                       </div>
                       <div class="icon-for-table" @click="onOpenTable()">
                         <svg width="31" height="35" viewBox="0 0 31 35" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -537,37 +553,37 @@
                               № п/п
                             </td>
                             <td>
-                              Номер скважины
+                              {{trans('pgno.number_of_well')}}
                             </td>
                             <td>
-                              Расстояние, м
+                              {{trans('pgno.distance')}}, {{trans('measurements.m')}}
                             </td>
                             <td>
-                              Коэффициент влияния
+                             {{trans('pgno.influence_factor')}}
                             </td>
                             <td>
-                              Кпрод, (м³/сут)/атм
+                              {{trans('pgno.k_prod')}}, {{trans('measurements.m3/d/atm')}}
                             </td>
                             <td>
-                              kh
+                              {{trans('pgno.kh')}}
                             </td>
                             <td>
-                              Скин-фактор
+                              {{trans('pgno.skin_factor')}}
                             </td>
                             <td>
-                              Рпл, атм
+                              {{trans('pgno.p_pl')}}, {{trans('measurements.atm')}}
                             </td>
                             <td>
-                              Рзаб, атм
+                              {{trans('pgno.p_zab')}}, {{trans('measurements.atm')}}
                             </td>
                             <td>
-                              Qж, м³/сут
+                              {{trans('pgno.q_liq')}}, {{trans('measurements.m3/day')}}
                             </td>
                             <td>
-                              WC, %
+                              {{trans('pgno.wc')}}, {{trans('measurements.percent')}}
                             </td>
                             <td>
-                              Qн, т/сут
+                                {{trans('pgno.q_nefti')}}, {{trans('measurements.t/d')}}
                             </td>
                           </tr>
                         </thead>
@@ -614,8 +630,8 @@
                 <div class="modal-bign modal-bign-container">
                   <div class="modal-bign-header">
                     <div class="modal-bign-title">
-                      {{trans('pgno.techniko_econom_god')}}
-                    </div>
+                      
+                    </div> 
 
                     <button type="button" class="modal-bign-button" @click="closeModal('modalExpAnalysis')">
                       {{trans('pgno.zakrit')}}
@@ -715,10 +731,10 @@
                           <tr>
                             <td>{{trans('pgno.srednee_prod_prs')}}</td>
                             <td>
-                              {{ Math.round(expAnalysisData.npvTable1.sredniiPrs) }}
+                              {{ expAnalysisData.npvTable1.sredniiPrs }}
                             </td>
                             <td>
-                              {{ Math.round(expAnalysisData.npvTable2.sredniiPrs) }}
+                              {{ expAnalysisData.npvTable2.sredniiPrs }}
                             </td>
                           </tr>
                           <tr>
@@ -728,14 +744,14 @@
                             <td>
                               {{
                               Math.round(
-                                expAnalysisData.npvTable1.godovoiNdo / 1000
+                                expAnalysisData.npvTable1.godovoiNdo 
                               )
                             }}
                             </td>
                             <td>
                               {{
                               Math.round(
-                                expAnalysisData.npvTable2.godovoiNdo / 1000
+                                expAnalysisData.npvTable2.godovoiNdo
                               )
                             }}
                             </td>
@@ -1056,7 +1072,7 @@
               </modal>
 
               <div class="gno-line-chart"  v-if="isVisibleChart">
-                <div style="position: absolute; margin-left: 175px; margin-top: 5px;">
+                <div class="download-button-excel-1">
                   <div class="dropdown">
                     <button class="download-curve-button" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                       <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1064,7 +1080,7 @@
                       <path d="M10.1667 5V11.1539" stroke="white" stroke-linecap="round"/>
                       <path d="M7.5957 9.61572L10.1671 11.9234L12.7386 9.61572" stroke="white" stroke-linecap="round"/>
                       </svg>
-                      Скачать
+                      {{trans('pgno.download')}}
                       <svg width="12" height="6" viewBox="0 0 12 6" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M1.5 1L5.93356 4.94095C5.97145 4.97462 6.02855 4.97462 6.06644 4.94095L10.5 1" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
                       </svg>
@@ -1088,27 +1104,27 @@
 
                 <div class="podbor-gno">
                   <div class="image-data col-3">
-                    <div class="shgn-image-text image-text-1">{{trans('pgno.eks_kolonna')}} {{ this.casID }}мм</div>
-                    <div class="shgn-image-text image-text-2">{{trans('pgno.nkt')}} {{ this.tubOD }}мм</div>
-                    <div class="shgn-image-text image-text-3">{{trans('pgno.shtangi')}} {{ this.shgnS1D }}мм 0-{{ this.shgnS1L }}м</div>
+                    <div class="shgn-image-text image-text-1">{{trans('pgno.eks_kolonna')}} {{ this.casID }}{{trans('measurements.mm')}}</div>
+                    <div class="shgn-image-text image-text-2">{{trans('pgno.nkt')}} {{ this.tubOD }}{{trans('measurements.mm')}}</div>
+                    <div class="shgn-image-text image-text-3">{{trans('pgno.shtangi')}} {{ this.shgnS1D }}{{trans('measurements.mm')}} 0-{{ this.shgnS1L }}{{trans('measurements.m')}}</div>
                     <div class="shgn-image-text image-text-4">
-                      {{trans('pgno.shtangi')}} {{ this.shgnS2D }}мм {{ this.shgnS1L }}-{{
+                      {{trans('pgno.shtangi')}} {{ this.shgnS2D }}{{trans('measurements.mm')}} {{ this.shgnS1L }}-{{
                         this.shgnS1L * 1 + this.shgnS2L * 1
-                      }}м
+                      }}{{trans('measurements.m')}}
                     </div>
                     <div class="shgn-image-text image-text-5">
-                      {{trans('pgno.shtangi')}} {{ this.shgnS1D }}мм
+                      {{trans('pgno.shtangi')}} {{ this.shgnS1D }}{{trans('measurements.mm')}}
                       {{ this.shgnS1L * 1 + this.shgnS2L * 1 }}-{{
                         this.shgnS1L * 1 + this.shgnS2L * 1 + this.shgnTNL * 1
-                      }}м
+                      }}{{trans('measurements.m')}}
                     </div>
-                    <div class="shgn-image-text image-text-6">{{trans('pgno.nasos')}} {{ this.shgnPumpType }}мм</div>
+                    <div class="shgn-image-text image-text-6">{{trans('pgno.nasos')}} {{ this.shgnPumpType }}{{trans('measurements.mm')}}</div>
                     <div class="shgn-image-text image-text-7">
                       {{trans('pgno.interval_perf')}} <br> {{ this.hPerf }}-{{
                         this.hPerf * 1 + this.hPerfND * 1
-                      }}м
+                      }}{{trans('measurements.m')}}
                     </div>
-                    <div class="shgn-image-text image-text-8">{{trans('pgno.tekushii_zaboi')}} {{ this.curr }}м</div>
+                    <div class="shgn-image-text image-text-8">{{trans('pgno.tekushii_zaboi')}} {{ this.curr }}{{trans('measurements.m')}}</div>
 
                     <img class="podborgnoimg"
                          src="./images/shgn.png"
@@ -1128,27 +1144,27 @@
                           </thead>
                           <tbody>
                             <tr>
-                              <td class="td-pgno" rowspan="1">Qж</td>
+                              <td class="td-pgno" rowspan="1">{{trans('pgno.q_liq')}}</td>
                               <td class="td-pgno" rowspan="1">
                                 {{ qlCelValue }}
                               </td>
                             </tr>
                             <tr>
-                              <td class="td-pgno" rowspan="1">Qн</td>
-                              <td class="td-pgno" rowspan="1">{{ qOil }} т/сут</td>
+                              <td class="td-pgno" rowspan="1">{{trans('pgno.q_nefti')}}</td>
+                              <td class="td-pgno" rowspan="1">{{ qOil }} {{trans('measurements.t/d')}}</td>
                             </tr>
                             <tr>
-                              <td class="td-pgno" rowspan="1">Обв</td>
+                              <td class="td-pgno" rowspan="1">{{trans('pgno.obvodnenost')}}</td>
                               <td class="td-pgno" rowspan="1">{{ wctInput }}</td>
                             </tr>
                             <tr>
-                              <td class="td-pgno" rowspan="1">Рзаб</td>
+                              <td class="td-pgno" rowspan="1">{{trans('pgno.p_zab')}}</td>
                               <td class="td-pgno" rowspan="1">
                                 {{ bhpCelValue }}
                               </td>
                             </tr>
                             <tr>
-                              <td class="td-pgno" rowspan="1">Рпр</td>
+                              <td class="td-pgno" rowspan="1">{{trans('p_pr')}}</td>
                               <td class="td-pgno" rowspan="1">{{ piCelValue }}</td>
                             </tr>
                           </tbody>
@@ -1168,16 +1184,16 @@
                             <tr>
                               <td class="td-pgno" rowspan="1">Ø {{trans('pgno.nasosa')}}</td>
                               <td class="td-pgno" rowspan="1">
-                                {{ shgnPumpType }} мм
+                                {{ shgnPumpType }} {{trans('measurements.mm')}}
                               </td>
                             </tr>
                             <tr>
                               <td class="td-pgno" rowspan="1">{{trans('pgno.chislo_kachanii')}}</td>
-                              <td class="td-pgno" rowspan="1">{{ shgnSPM }} мин-1</td>
+                              <td class="td-pgno" rowspan="1">{{ shgnSPM }} {{trans('measurements.min-1')}}</td>
                             </tr>
                             <tr>
                               <td class="td-pgno" rowspan="1">{{trans('pgno.dlina_hoda')}}</td>
-                              <td class="td-pgno" rowspan="1">{{ shgnLen }} м</td>
+                              <td class="td-pgno" rowspan="1">{{ shgnLen }} {{trans('measurements.m')}}</td>
                             </tr>
                             <tr>
                               <td class="td-pgno" rowspan="1">{{trans('pgno.typ_sk')}}</td>
@@ -1185,10 +1201,10 @@
                             </tr>
                             <tr>
                               <td class="td-pgno" rowspan="1">Ø {{trans('pgno.nkt')}}</td>
-                              <td class="td-pgno" rowspan="1">{{ shgnTubOD }} мм</td>
+                              <td class="td-pgno" rowspan="1">{{ shgnTubOD }} {{trans('measurements.mm')}}</td>
                             </tr>
                             <tr>
-                              <td class="td-pgno" rowspan="1">Нсп насоса</td>
+                              <td class="td-pgno" rowspan="1">{{trans('pgno.h_spuska')}}</td>
                               <td class="td-pgno" rowspan="1">{{ hPumpValue }}</td>
                             </tr>
                           </tbody>
@@ -1203,11 +1219,11 @@
                                 {{trans('pgno.shtangi')}}
                               </td>
                               <td class="td-pgno" rowspan="1">
-                                Ø, мм
+                                Ø, {{trans('measurements.mm')}}
                               </td>
 
                               <td class="td-pgno" rowspan="1">
-                                {{trans('pgno.dlina')}}, м
+                                {{trans('pgno.dlina')}}, {{trans('measurements.m')}}
                               </td>
                             </tr>
                           </thead>
@@ -1260,7 +1276,7 @@
                                 <div class="row">
                                   <div class="col-2 px-0 pt-1 ic-min-block1">
                                     <div class="table-border-gno-right py-1 ml-3">
-                                      Рпл
+                                      {{trans('pgno.p_pl')}}
                                     </div>
                                   </div>
                                   <div class="col-5  px-1">
@@ -1293,7 +1309,7 @@
                                         <label for="">
                                           <input v-model="curveSelect" class="checkbox-k-prod" value="pi" type="radio"
                                             name="set" @change="postCurveData()" />
-                                          Кпрод
+                                          {{trans('pgno.k_prod')}}
                                         </label>
 
                                       </div>
@@ -1308,7 +1324,7 @@
                                 </div>
                                 <div class="col-2 px-0">
                                   <div class="table-border-gno-right ic-ar pt-1">
-                                    ГФ.
+                                    {{trans('pgno.gf_s')}}
                                   </div>
                                 </div>
                                 <div class="col-2  py-1 pl-2 pr-0">
@@ -1327,7 +1343,7 @@
                                       <div class="table-border-gno-right">
                                         <label for="">
                                           <input v-model="QhydCurveSelect" class="checkbox-q-liquid" value="hdyn"
-                                            type="radio" @change="postCurveData()" name="set" /> Qж</label>
+                                            type="radio" @change="postCurveData()" name="set" />{{trans('pgno.q_liq')}}</label>
                                       </div>
                                     </div>
                                     <div class="col-5 py-1 px-1">
@@ -1346,7 +1362,7 @@
                                   <label for="" class="text-ellipsis">
                                     <input v-model="curveSelect" value="bhp" :disabled="curveSelect == 'pi'"
                                       class="checkbox-k-prod" type="radio" @change="postCurveData()" name="set2" />
-                                    Рзаб</label>
+                                   {{trans('pgno.p_zab')}}</label>
                                 </div>
                                 <div class="col-6 pt-1 pb-1">
                                   <input :disabled="curveSelect != 'bhp'" v-model="bhpInput" @change="postCurveData()"
@@ -1361,7 +1377,7 @@
                                   <label for="" class="text-ellipsis">
                                     <input v-model="curveSelect" value="hdyn" :disabled="curveSelect == 'pi'"
                                       class="checkbox-k-prod" type="radio" @change="postCurveData()" name="set2" />
-                                    Ндин</label>
+                                    {{trans('pgno.h_dyn')}}</label>
                                 </div>
                                 <div class="col-6 table-border-gno-right table-border-gno-right-second pt-1 pb-1">
                                   <input :disabled="curveSelect != 'hdyn'" v-model="hDynInput" @change="postCurveData()"
@@ -1372,7 +1388,7 @@
                               <div class="col-sm-6 col-xs-12 no-margin no-padding row">
                                 <div class="col-6 table-border-gno-right pt-1 pb-1">
                                   <div class="tech-data curve text-ellipsis">
-                                    Рзат
+                                    {{trans('pgno.p_zat')}}
                                   </div>
                                 </div>
                                 <div class="col-6 pt-1 pb-1">
@@ -1388,7 +1404,7 @@
                                   <label for="" class="text-ellipsis">
                                     <input v-model="curveSelect" value="pmanom" :disabled="curveSelect == 'pi'"
                                       class="checkbox-k-prod" type="radio" @change="postCurveData()" name="set2" />
-                                    Рманом</label>
+                                    {{trans('pgno.p_manom')}}</label>
                                 </div>
                                 <div class="col-6 table-border-gno-right table-border-gno-right-second pt-1 pb-1">
                                   <input :disabled="curveSelect != 'pmanom'" v-model="pManomInput"
@@ -1399,7 +1415,7 @@
                               <div class="col-sm-6 col-xs-12 no-margin no-padding row">
                                 <div class="col-6 table-border-gno-right pt-1 pb-1">
                                   <div class="tech-data curve text-ellipsis">
-                                    Нсп маном
+                                    {{trans('pgno.h_sp_manom')}}
                                   </div>
                                 </div>
                                 <div class="col-6 pt-1 pb-1">
@@ -1415,7 +1431,7 @@
                                   <label for="" class="text-ellipsis">
                                     <input v-model="curveSelect" value="whp" :disabled="curveSelect == 'pi'"
                                       class="checkbox-k-prod" type="radio" @change="postCurveData()" name="set2" />
-                                    Рбуф(ФЭ)</label>
+                                    {{trans('pgno.p_buf')}}</label>
                                 </div>
                                 <div class="col-6 pt-1 pb-1">
                                   <input :disabled="curveSelect != 'whp'" v-model="whpInput" @change="postCurveData()"
@@ -1437,19 +1453,19 @@
                             <div class="row">
                               <div style="height: 5px;"></div>
                             </div>
-                            <div class="row pt-2" style="height: 50px;">
+                            <div class="row pt-3" style="height: 50px;">
                               <div class="col-2 pr-0">
                                 <div>
                                   <label class="label-for-celevoi">
                                     <input class="checkbox3" value="ШГН" v-model="expChoose" @change="postCurveData()"
-                                      :checked="expChoose === 'ШГН'" type="radio" name="gno10" />ШГН</label>
+                                      :checked="expChoose === 'ШГН'" type="radio" name="gno10" />{{trans('pgno.shgn')}}</label>
                                 </div>
                               </div>
-                              <div class="col-2  pr-0">
+                              <div class="col-2 pr-0">
                                 <div>
                                   <label class="label-for-celevoi"><input class="checkbox3" value="ЭЦН"
                                       v-model="expChoose" @change="postCurveData()" :checked="expChoose === 'ЭЦН'"
-                                      type="radio" name="gno10" />ЭЦН</label>
+                                      type="radio" name="gno10" />{{trans('pgno.ecn')}}</label>
                                 </div>
                               </div>
 
@@ -1458,18 +1474,18 @@
                                   <label class="label-for-celevoi">
                                     <input class="checkbox3" value="ФОН"
                                       v-model="expChoose" @change="postCurveData()" :checked="expChoose === 'ФОН'"
-                                       type="radio" name="gno10" />ФОН</label>
+                                       type="radio" name="gno10" />{{trans('pgno.fon')}}</label>
                                 </div>
                               </div>
 
                               <div class="table-border-gno col-2">
-                                <label class="label-for-celevoi">Рбуф</label>
+                                <label class="label-for-celevoi">{{trans('pgno.p_buf')}}</label>
                                 <input type="text" v-model="pBuf" onfocus="this.value=''" 
                                   class="input-box-gno podbor" :disabled="expChoose != 'ФОН'"/>
                               </div>
 
                               <div class="col-2">
-                                <label class="label-for-celevoi" >ØНКТ</label>
+                                <label class="label-for-celevoi" >Ø{{trans('pgno.nkt')}}</label>
                                   <select class="input-box-gno podbor" v-model="nkt" @change="postCurveData()">
                                     <option v-for="(nkts, index) in nkt_choose" :value="nkts.for_calc_value" :key="index" >
                                     {{nkts.show_value}}
@@ -1478,9 +1494,15 @@
                               </div>
 
                               <div class="col-2">
-                                <label class="label-for-celevoi">Нсп</label>
+                                <label class="label-for-celevoi">{{trans('pgno.h_spuska')}}</label>
                                 <input v-model="hPumpValue" @change="postCurveData()" type="text" onfocus="this.value=''" 
                                   class="input-box-gno podbor" />
+                              </div>
+
+                              <div class="gear-icon" @click="onChangeParams()">
+                                <svg id="gear-icon" width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M17.4556 7.37945L15.7922 6.82498C15.6712 6.45197 15.52 6.08401 15.3436 5.73621L16.1249 4.16858C16.1753 4.06273 16.2055 3.95183 16.2055 3.8359C16.2055 3.63932 16.1249 3.44777 15.9838 3.30664L14.6934 2.01624C14.5522 1.87511 14.3607 1.79446 14.1641 1.79446C14.0482 1.79446 13.9373 1.8247 13.8314 1.87511L12.2638 2.62111C11.916 2.43965 11.548 2.28843 11.175 2.1725L10.6206 0.509101C10.5197 0.201625 10.2375 0 9.91487 0C9.89975 0 9.88967 0 9.87455 0H8.09017C7.76757 0 7.4853 0.201624 7.37945 0.504061L6.83002 2.1725C6.45197 2.28843 6.08905 2.43965 5.73621 2.62111L4.16858 1.87511C4.06777 1.8247 3.95183 1.79446 3.84094 1.79446C3.63932 1.79446 3.45281 1.87511 3.31168 2.01624L2.01624 3.30664C1.88015 3.44777 1.7995 3.63932 1.7995 3.8359C1.7995 3.95183 1.8247 4.06273 1.87511 4.16858L2.62616 5.73621C2.44469 6.08401 2.29348 6.45197 2.17754 6.82498L0.509101 7.37945C0.206665 7.48026 0 7.76253 0 8.08513V9.90983C0 9.91991 0 9.93503 0 9.95015C0 10.2677 0.206665 10.555 0.509101 10.6558L2.17754 11.2103C2.29348 11.5833 2.44469 11.9513 2.62111 12.2991L1.87511 13.8667C1.8247 13.9726 1.7995 14.0835 1.7995 14.1994C1.7995 14.396 1.88015 14.5875 2.01624 14.7286L3.31168 16.019C3.45281 16.1602 3.63932 16.2358 3.84094 16.2358C3.95183 16.2358 4.06777 16.2106 4.16858 16.1602L5.73621 15.3738C6.08905 15.5553 6.45197 15.7065 6.83002 15.8225L7.37945 17.4909C7.4853 17.7933 7.76757 18 8.09017 18H9.91487C9.92495 18 9.94007 18 9.95015 18C10.2728 18 10.555 17.7933 10.6609 17.4909L11.2103 15.8225C11.5884 15.7065 11.9513 15.5553 12.3041 15.3789L13.8717 16.1602C13.9726 16.2106 14.0885 16.2358 14.1994 16.2358C14.401 16.2358 14.5875 16.1602 14.7286 16.019L16.0241 14.7286C16.1602 14.5875 16.2408 14.396 16.2408 14.1994C16.2408 14.0835 16.2156 13.9726 16.1652 13.8667L15.3789 12.2991C15.5603 11.9513 15.7116 11.5833 15.8275 11.2103L17.4909 10.6558C17.7984 10.555 18 10.2677 18 9.95015C18 9.93503 18 9.91991 18 9.90983V8.08513C17.995 7.75749 17.7732 7.46514 17.4556 7.37945ZM9.00252 12.7326C6.94091 12.7326 5.26743 11.0591 5.26743 8.99748C5.26743 6.93587 6.94091 5.26239 9.00252 5.26239C11.0641 5.26239 12.7376 6.93587 12.7376 8.99748C12.7376 11.0591 11.0641 12.7326 9.00252 12.7326Z" fill="white"/>
+                                </svg>
                               </div>
 
 
@@ -1538,7 +1560,7 @@
                                 <div class="table-border-gno-right pdo-bottom-cell">
                                   <label class="label-for-celevoi">
                                     <input v-model="CelButton" class="checkbox3" value="ql" type="radio"
-                                      name="gno11" />Qж</label>
+                                      name="gno11" />{{trans('pgno.q_nefti')}}</label>
                                   <input v-model="qlCelValue" @change="postCurveData()" :disabled="CelButton != 'ql'"
                                     onfocus="this.value=''" type="text" class="square3 podbor" />
                                 </div>
@@ -1546,7 +1568,7 @@
                               <div class="col-4 pr-0">
                                 <div class="table-border-gno-right pdo-bottom-cell">
                                   <label class="label-for-celevoi"><input v-model="CelButton" class="checkbox3"
-                                      value="bhp" type="radio" name="gno11" />Рзаб</label>
+                                      value="bhp" type="radio" name="gno11" />{{trans('pgno.p_zab')}}</label>
 
                                   <input v-model="bhpCelValue" @change="postCurveData()" :disabled="CelButton != 'bhp'"
                                     type="text" onfocus="this.value=''" class="square3 podbor" />
@@ -1555,7 +1577,7 @@
                               <div class="col-4 pdo-bottom-cell">
                                 <label class="label-for-celevoi">
                                   <input v-model="CelButton" class="checkbox3" value="pin" type="radio" :disabled="expChoose === 'ФОН'"
-                                    name="gno11" />Pnp
+                                    name="gno11" />{{trans('pgno.p_pr')}}
                                 </label>
                                 <input v-model="piCelValue" @change="postCurveData()" :disabled="CelButton != 'pin' || expChoose === 'ФОН'"
                                   type="text" onfocus="this.value=''" class="square3 podbor" />
@@ -1585,16 +1607,16 @@
       <div style="position: absolute; left: -9999px; height: 0; overflow: hidden;">
         <div class="gno-line-chart-clone" ref="gno-chart" v-if="isVisibleChart" style="background-color: #272953;">
                 <div>
-                  <div style="font-weight: bold; font-size: 20px; margin-left: 16px;  padding-top: 10px;">Скважина: {{field}}-{{wellNumber}}</div>
-                  <div style="font-weight: bold; font-size: 20px; margin-left: 16px;  padding-top: 10px;">Дата формирования: {{new Date().toJSON().slice(0,10).replace(/-/g,'/')}}</div>
+                  <div style="font-weight: bold; font-size: 20px; margin-left: 16px;  padding-top: 10px;">{{trans('pgno.well')}}: {{field}}-{{wellNumber}}</div>
+                  <div style="font-weight: bold; font-size: 20px; margin-left: 16px;  padding-top: 10px;">{{trans('pgno.data_form')}}: {{new Date().toJSON().slice(0,10).replace(/-/g,'/')}}</div>
                 </div>
                 <inflow-curve></inflow-curve>
               </div>
 
         <div class="gno-line-chart-well-old-clone" ref="gno-chart-new-old-well" v-if="isVisibleChart" style="background-color: #272953;">
                 <div>
-                  <div style="font-weight: bold; font-size: 20px; margin-left: 16px;  padding-top: 10px;">Анализ потенциала cкважины: {{field}}-{{wellNumber}}</div>
-                  <div style="font-weight: bold; font-size: 20px; margin-left: 16px;  padding-top: 10px;">Дата формирования: {{new Date().toJSON().slice(0,10).replace(/-/g,'/')}}</div>
+                  <div style="font-weight: bold; font-size: 20px; margin-left: 16px;  padding-top: 10px;">{{trans('pgno.analis_potenciala_skvazhini')}}: {{field}}-{{wellNumber}}</div>
+                  <div style="font-weight: bold; font-size: 20px; margin-left: 16px;  padding-top: 10px;">{{trans('pgno.data_form')}}: {{new Date().toJSON().slice(0,10).replace(/-/g,'/')}}</div>
                 </div>
                 <Plotly :data="data" :layout="layout" :display-mode-bar="false"></Plotly>
               </div>
@@ -1603,42 +1625,42 @@
           <div class="row">
             <div class="col-10" style="background-color: #20274f; width: 1500px; left: 76px; margin: 0;">
               <div class="logo" style="top: 0px;"></div>
-              <div style="left: 90px; color: white; padding-top: 10px; font-size: 20px;">ИС ABAI. Модуль Подбор ГНО.</div>
+              <div style="left: 90px; color: white; padding-top: 10px; font-size: 20px;">{{trans('pgno.is_Abai_modul_gno')}}</div>
             </div>
           </div>
         <div class="first-report-block row">
           <div class="report-block-title col-5">
-            Отчет по подбору ГНО
+            {{trans('pgno.otchet_pgno')}}
           </div>
           <div class="report-block-title col-5">
-            СКВАЖИНА {{wellNumber}}
+            {{trans('pgno.well')}} {{wellNumber}}
           </div>
         </div>
 
         <div class="first-report-block-data row">
           <div class="report-block-data col-5">
-            Дата формирования: {{new Date().toJSON().slice(0,10).replace(/-/g,'/')}}
+            {{trans('pgno.data_form')}}: {{new Date().toJSON().slice(0,10).replace(/-/g,'/')}}
           </div>
           <div class="report-block-data col-5">
-            Месторождение: {{field}}
-          </div>
-        </div>
-
-        <div class="first-report-block-data row">
-          <div class="report-block-data col-5">
-            Выполнил технолог: КМГИ
-          </div>
-          <div class="report-block-data col-5">
-            Горизонт: {{horizon}}
+            {{trans('pgno.mestorozhdenie')}}: {{field}}
           </div>
         </div>
 
         <div class="first-report-block-data row">
           <div class="report-block-data col-5">
+            {{trans('pgno.technolog_kmgi')}}
+          </div>
+          <div class="report-block-data col-5">
+            {{trans('pgno.horizon')}}: {{horizon}}
+          </div>
+        </div>
+
+        <div class="first-report-block-data row">
+          <div class="report-block-data col-5">
 
           </div>
           <div class="report-block-data col-5">
-            Способ эксплуатации: {{ expMeth }}
+            {{trans('pgno.method_of_operation')}}: {{ expMeth }}
           </div>
         </div>
 
@@ -1647,19 +1669,19 @@
 
           </div>
           <div class="report-block-data-second-bottom col-5">
-            Орг.структура: {{ ngdu }}
+            {{trans('pgno.org_struktura')}}: {{ ngdu }}
           </div>
         </div>
 
         <div class="second-report-block row">
           <div class="second-report-block-title-main col-10" style="border-bottom: 2px solid #8c8caf">
-            ДАННЫЕ ДЛЯ РАСЧЕТА
+            {{trans('pgno.data_for_raschet')}}
           </div>
         </div>
 
         <div class="first-report-block row">
           <div class="second-report-block-title col-5">
-            Конструкция
+            {{trans('pgno.construction')}}
           </div>
           <div class="second-report-block-title col-5">
             PVT
@@ -1668,46 +1690,46 @@
 
         <div class="first-report-block-data row">
           <div class="report-block-data-second-top col-5">
-            Наружный Ø ЭК: {{casOD + ' мм'}}
+            {{trans('pgno.naruznii_diametr_ex_col')}}: {{casOD}} {{trans('measurements.mm')}}
           </div>
           <div class="report-block-data-second-top col-5">
-            Рнас: {{PBubblePoint + ' атм'}}
-          </div>
-        </div>
-
-        <div class="first-report-block-data row">
-          <div class="report-block-data-second-top col-5">
-            Внутренний Ø ЭК: {{casID}}
-          </div>
-          <div class="report-block-data-second-top col-5">
-            Газовый фактор: {{gorInput}}
+             {{trans('pgno.p_nas')}}: {{PBubblePoint}} {{trans('measurements.atm')}}
           </div>
         </div>
 
         <div class="first-report-block-data row">
           <div class="report-block-data-second-top col-5">
-            Нперф (ВДП): {{hPerf + ' м'}}
+            {{trans('pgno.vnutrenii_diametr_ex_col')}}: {{casID}}
           </div>
           <div class="report-block-data-second-top col-5">
-            Температура пласта: {{tRes + ' ℃'}}
-          </div>
-        </div>
-
-        <div class="first-report-block-data row">
-          <div class="report-block-data-second-top col-5">
-            Удл.на Нперф: {{udl + ' м'}}
-          </div>
-          <div class="report-block-data-second-top col-5">
-            Вязкость нефти (пл.усл.): {{viscOilRc + ' сПз'}}
+            {{trans('pgno.gaz_faktor')}}: {{gorInput}}
           </div>
         </div>
 
         <div class="first-report-block-data row">
           <div class="report-block-data-second-top col-5">
-            Текущий забой: {{curr + ' м'}}
+            {{trans('pgno.glubina_perf')}}: {{hPerf}} {{trans('measurements.m')}}
           </div>
           <div class="report-block-data-second-top col-5">
-            Вязкость воды (пл.усл.): {{viscWaterRc + ' г/cм³'}}
+            {{trans('pgno.temp_plasta')}}: {{tRes}} {{trans('measurements.celsius')}}
+          </div>
+        </div>
+
+        <div class="first-report-block-data row">
+          <div class="report-block-data-second-top col-5">
+            {{trans('pgno.udlinenie_perf')}}: {{udl}} {{trans('measurements.m')}}
+          </div>
+          <div class="report-block-data-second-top col-5">
+            {{trans('pgno.vyazkost_nefti')}}: {{viscOilRc}} {{trans('measurements.spz')}}
+          </div>
+        </div>
+
+        <div class="first-report-block-data row">
+          <div class="report-block-data-second-top col-5">
+            {{trans('pgno.tekushii_zaboi')}}: {{curr}} {{trans('measurements.m')}}
+          </div>
+          <div class="report-block-data-second-top col-5">
+            {{trans('pgno.vyazkost_vody')}}: {{viscWaterRc}} {{trans('measurements.g/sm3')}}
           </div>
         </div>
 
@@ -1716,7 +1738,7 @@
 
           </div>
           <div class="report-block-data-second-top col-5">
-            Плотность нефти: {{densOil + ' г/cм³'}}
+            {{trans('pgno.plotnost_nefti')}}: {{densOil}} {{trans('measurements.g/sm3')}}
           </div>
         </div>
 
@@ -1725,49 +1747,49 @@
 
           </div>
           <div class="report-block-data-second-bottom-2 col-5">
-            Плотность воды: {{densWater + ' г/cм³'}}
+            {{trans('pgno.plotnost_vody')}}: {{densWater}} {{trans('measurements.g/sm3')}}
           </div>
         </div>
 
         <div class="second-report-block row">
           <div class="second-report-block-title-main-2 col-10" style="border-bottom: 2px solid #8c8caf">
-            Технологический режим:
+            {{trans('pgno.technologicheskii_rezhim')}}:
           </div>
         </div>
 
         <div class="first-report-block-data row">
           <div class="report-block-data-second-top col-5">
-            Qж: {{qL + ' м³/сут'}}
+            {{trans('pgno.q_liq')}}: {{qL}} {{trans('measurements.m3/day')}}
           </div>
           <div class="report-block-data-second-top col-5">
-            Pзаб: {{bhp + ' атм'}}
-          </div>
-        </div>
-
-        <div class="first-report-block-data row">
-          <div class="report-block-data-second-top col-5">
-            Обв: {{wct + ' %'}}
-          </div>
-          <div class="report-block-data-second-top col-5">
-            Qн: {{qO + ' т/сут '}}
+            {{trans('pgno.p_zab')}}: {{bhp}} {{trans('measurements.atm')}}
           </div>
         </div>
 
         <div class="first-report-block-data row">
           <div class="report-block-data-second-top col-5">
-            Ндин: {{hDyn + ' м'}}
+            {{trans('pgno.obvodnenost')}}: {{wct}} {{trans('measurements.percent')}}
           </div>
           <div class="report-block-data-second-top col-5">
-            Рзатр: {{pAnnular + ' атм'}}
+            {{trans('pgno.q_nefti')}}: {{qO}} {{trans('measurements.t/d')}}
+          </div>
+        </div>
+
+        <div class="first-report-block-data row">
+          <div class="report-block-data-second-top col-5">
+            {{trans('pgno.h_dyn')}}: {{hDyn}} {{trans('measurements.m')}}
+          </div>
+          <div class="report-block-data-second-top col-5">
+            {{trans('pgno.p_zat')}}: {{pAnnular}} {{trans('measurements.atm')}}
           </div>
         </div>
 
         <div class="first-report-block-data row">
           <div class="report-block-data-third-bottom col-5">
-            Гф: {{gor + ' м³/т'}}
+            {{trans('pgno.gf')}}: {{gor}} {{trans('measurements.m3/t')}}
           </div>
           <div class="report-block-data-third-bottom col-5">
-            Рпл: {{pRes + ' атм'}}
+            {{trans('pgno.p_pl')}}: {{pRes}} {{trans('measurements.atm')}}
           </div>
         </div>
 
@@ -1776,7 +1798,7 @@
         </div>
 
         <div class="title-page-2 col-10">
-          <h2>РЕЗУЛЬТАТЫ ПОДБОРА ГНО</h2>
+          <h2>{{trans('pgno.result_podbora_gno')}}</h2>
         </div>
 
         <div class="block-results row">
@@ -1784,27 +1806,27 @@
             <div class="block-results row">
               <div class="image-data-clone col-4">
 
-                <div class="shgn-image-text image-text-1">Экс.колонна {{ this.casID }}мм</div>
-                    <div class="shgn-image-text image-text-2">НКТ {{ this.tubOD }}мм</div>
-                    <div class="shgn-image-text image-text-3">Штанги {{ this.shgnS1D }}мм 0-{{ this.shgnS1L }}м</div>
+                <div class="shgn-image-text image-text-1">{{trans('pgno.eks_kolonna')}} {{ this.casID }}{{trans('measurements.mm')}}</div>
+                    <div class="shgn-image-text image-text-2">{{trans('pgno.nkt')}} {{ this.tubOD }}{{trans('measurements.mm')}}</div>
+                    <div class="shgn-image-text image-text-3">{{trans('pgno.shtangi')}} {{ this.shgnS1D }}{{trans('measurements.mm')}} 0-{{ this.shgnS1L }}{{trans('measurements.m')}}</div>
                     <div class="shgn-image-text image-text-4">
-                      Штанги {{ this.shgnS2D }}мм {{ this.shgnS1L }}-{{
+                      {{trans('pgno.shtangi')}} {{ this.shgnS2D }}{{trans('measurements.mm')}} {{ this.shgnS1L }}-{{
                         this.shgnS1L * 1 + this.shgnS2L * 1
-                      }}м
+                      }}{{trans('measurements.m')}}
                     </div>
                     <div class="shgn-image-text image-text-5">
-                      Штанги {{ this.shgnS1D }}мм
+                      {{trans('pgno.shtangi')}} {{ this.shgnS1D }}{{trans('measurements.mm')}}
                       {{ this.shgnS1L * 1 + this.shgnS2L * 1 }}-{{
                         this.shgnS1L * 1 + this.shgnS2L * 1 + this.shgnTNL * 1
-                      }}м
+                      }}{{trans('measurements.m')}}
                     </div>
-                    <div class="shgn-image-text image-text-6">Насос {{ this.shgnPumpType }}мм</div>
+                    <div class="shgn-image-text image-text-6">{{trans('pgno.nasos')}} {{ this.shgnPumpType }}{{trans('measurements.mm')}}</div>
                     <div class="shgn-image-text image-text-7">
-                      Интервал перфорации <br> {{ this.hPerf }}-{{
+                      {{trans('pgno.interval_perf')}} <br> {{ this.hPerf }}-{{
                         this.hPerf * 1 + this.hPerfND * 1
-                      }}м
+                      }}{{trans('measurements.m')}}
                     </div>
-                    <div class="shgn-image-text image-text-8">Текущий забой {{ this.curr }}м</div>
+                    <div class="shgn-image-text image-text-8">{{trans('pgno.tekushii_zaboi')}} {{ this.curr }}{{trans('measurements.m')}}</div>
                 
                 <img class="podborgnoimg"
                          src="./images/shgn.png"
@@ -1817,31 +1839,31 @@
                   <div class="col-12">
                     <div class="col-12"
                       style="margin-left: -15px; background-color: #656a8a; width: 513px; max-width: 1000px; font-size: 20px; color: white; height: 50px; padding-top: 10px; font-weight: bold;">
-                      Расчетный режим:
+                      {{trans('pgno.raschetnii_rezhim')}}:
                     </div>
 
                     <div class="row">
                       <div class="col-6"
                         style="background-color: white; color: black; border-right: 2px solid #8c8caf; border-bottom: 2px solid #8c8caf; border-left: 2px solid #8c8caf;">
-                        Qж: {{qLInput}}
+                        {{trans('pgno.q_liq')}}: {{qLInput}}
                       </div>
                       <div class="col-6"
                         style="background-color: white; color: black; border-bottom: 2px solid #8c8caf; border-right: 2px solid #8c8caf;">
-                        Qн: {{qO}}
+                        {{trans('pgno.q_nefti')}}: {{qO}}
                       </div>
 
                       <div class="col-6"
                         style="background-color: white; color: black; border-right: 2px solid #8c8caf; border-bottom: 2px solid #8c8caf; border-left: 2px solid #8c8caf;">
-                        %обв: {{wctInput}}
+                        {{trans('pgno.obvodnenost')}}: {{wctInput}}
                       </div>
                       <div class="col-6"
                         style="background-color: white; color: black; border-bottom: 2px solid #8c8caf; border-right: 2px solid #8c8caf;">
-                        Рзаб: {{bhpInput}}
+                        {{trans('pgno.p_zab')}}: {{bhpInput}}
                       </div>
 
                       <div class="col-6"
                         style="background-color: white; color: black; border-bottom: 2px solid #8c8caf; border-left: 2px solid #8c8caf;">
-                        Рпр: {{piCelValue}}
+                        {{trans('pgno.p_pr')}}: {{piCelValue}}
                       </div>
                       <div class="col-6"
                         style="background-color: white; color: black; border-bottom: 2px solid #8c8caf; border-right: 2px solid #8c8caf;">
@@ -1854,78 +1876,78 @@
                   <div class="col-12">
                     <div class="col-12"
                       style="margin-left: -15px; background-color: #656a8a; width: 513px; max-width: 1000px; font-size: 20px; color: white; height: 50px; padding-top: 10px; font-weight: bold;">
-                      Компоновка ШГН
+                      {{trans('pgno.komponovka_shgn')}}
                     </div>
                     <div class="col-12"
                       style="margin-left: -15px; background-color: #c1c3d0; width: 513px; max-width: 1000px; font-size: 20px; color: black; height: 50px; padding-top: 10px;">
-                      Диаметр насоса:
+                      {{trans('pgno.diametr_nasosa')}}:
                     </div>
                     <div class="row">
                       <div class="col-6"
                         style="background-color: white; color: black; border-right: 2px solid #8c8caf; border-bottom: 2px solid #8c8caf; border-left: 2px solid #8c8caf;">
-                        Нсп: {{hPumpManomInput}}
+                        {{trans('pgno.h_spuska')}}: {{hPumpManomInput}}
                       </div>
                       <div class="col-6"
                         style="background-color: white; color: black; border-bottom: 2px solid #8c8caf; border-right: 2px solid #8c8caf;">
-                        Тип СК: {{sk}}
+                        {{trans('pgno.typ_sk')}}: {{sk}}
                       </div>
 
                       <div class="col-6"
                         style="background-color: white; color: black; border-right: 2px solid #8c8caf; border-bottom: 2px solid #8c8caf; border-left: 2px solid #8c8caf;">
-                        Длина хода: {{strokeLenDev + ' м'}}
+                        {{trans('pgno.dlina_hoda')}}: {{strokeLenDev}} {{trans('measurements.m')}}
                       </div>
                       <div class="col-6"
                         style="background-color: white; color: black; border-bottom: 2px solid #8c8caf; border-right: 2px solid #8c8caf;">
-                        Число качаний: {{spmDev + ' 1/мин'}}
+                        {{trans('pgno.chislo_kachanii')}}: {{spmDev}} {{trans('measurements.1/min')}}
                       </div>
 
                     </div>
 
                     <div class="col-12"
                       style="margin-left: -15px; background-color: #c1c3d0; width: 513px; max-width: 1000px; font-size: 20px; color: black; height: 50px; padding-top: 10px; font-weight: bold;">
-                      Колонна штанг:
+                      {{trans('pgno.kolonna_shtang')}}:
                     </div>
                     <div class="row">
                       <div class="col-4"
                         style="background-color: white; color: black; border-bottom: 2px solid #8c8caf; border-left: 2px solid #8c8caf; height: 29px;">
-                        Секция 1
+                        {{trans('pgno.sekcia')}} 1
                       </div>
                       <div class="col-4"
                         style="background-color: white; color: black; border-right: 2px solid #8c8caf; border-bottom: 2px solid #8c8caf; border-left: 2px solid #8c8caf; height: 29px;">
-                        диаметр: {{shgnS1D + ' мм'}}
+                        {{trans('measurements.diameter')}}: {{shgnS1D}} {{trans('measurements.mm')}}
                       </div>
 
                       <div class="col-4"
                         style="background-color: white; color: black; border-right: 2px solid #8c8caf; border-bottom: 2px solid #8c8caf; height: 29px;">
-                        длина: {{shgnS1L + ' м'}}
+                        {{trans('measurements.dlina')}}: {{shgnS1L}} {{trans('measurements.m')}}
                       </div>
 
                       <div class="col-4"
                         style="background-color: white; color: black;  border-bottom: 2px solid #8c8caf; border-left: 2px solid #8c8caf; height: 29px;">
-                        Секция 2
+                        {{trans('pgno.sekcia')}} 2
                       </div>
                       <div class="col-4"
                         style="background-color: white; color: black; border-right: 2px solid #8c8caf; border-bottom: 2px solid #8c8caf; border-left: 2px solid #8c8caf; height: 29px;">
-                        диаметр: {{shgnS2D + ' мм'}}
+                        {{trans('measurements.diameter')}}: {{shgnS2D}} {{trans('measurements.mm')}}
                       </div>
 
                       <div class="col-4"
                         style="background-color: white; color: black; border-right: 2px solid #8c8caf; border-bottom: 2px solid #8c8caf; height: 29px;">
-                        длина: {{shgnS2L + ' м'}}
+                        {{trans('measurements.dlina')}}: {{shgnS2L}} {{trans('measurements.m')}}
                       </div>
 
                       <div class="col-4"
                         style="background-color: white; color: black; border-bottom: 2px solid #8c8caf; border-left: 2px solid #8c8caf; height: 29px;">
-                        ТН
+                        {{trans('pgno.tn')}}
                       </div>
                       <div class="col-4"
                         style="background-color: white; color: black; border-right: 2px solid #8c8caf; border-bottom: 2px solid #8c8caf; border-left: 2px solid #8c8caf; height: 29px;">
-                        диаметр: {{shgnS1D + ' мм'}}
+                        {{trans('measurements.diameter')}}: {{shgnS1D}} {{trans('measurements.mm')}}
                       </div>
 
                       <div class="col-4"
                         style="background-color: white; color: black; border-right: 2px solid #8c8caf; border-bottom: 2px solid #8c8caf; height: 29px;">
-                        длина: {{shgnTNL + ' м'}}
+                        {{trans('measurements.dlina')}}: {{shgnTNL}} {{trans('measurements.m')}}
                       </div>
 
                     </div>
@@ -1947,6 +1969,34 @@
 <script src="./Table.js"></script>
 
 <style scoped>
+.gear-icon {
+  right: 12px;
+  top: 35px;
+  position: absolute;
+}
+
+@keyframes gear-icon {
+  50% { left: 0;}
+  90% { left: 300px;}
+}
+  
+.checkbox-devices {
+  width: 845px;
+  height: 45px;
+}
+
+.download-button-excel {
+  position: absolute;
+  margin-left: 175px;
+  margin-top: 0px;
+}
+
+.download-button-excel-1 {
+  position: absolute;
+  margin-left: 175px;
+  margin-top: 5px;
+}
+
 .select-download-button {
 outline: none;
 text-align: center;
