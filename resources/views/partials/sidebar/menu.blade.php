@@ -65,6 +65,14 @@
                                     </a>
                                 </li>
                             @endif
+                            @if(auth()->user()->can('monitoring view main'))
+                                <li class="left-menu-li">
+                                    <a href="{{route('omgngdu_well.index')}}">
+                                        {{ trans('monitoring.omgngdu_well.menu') }}
+                                    </a>
+                                </li>
+                            @endif
+
                         </ul>
                     </li>
                     @if(
@@ -114,6 +122,13 @@
                                     <li class="left-menu-li">
                                         <a href="{{route('pipes.index')}}">
                                             {{ trans('monitoring.pipe.menu') }}
+                                        </a>
+                                    </li>
+                                @endif
+                                @if(auth()->user()->can('monitoring list pipe_types'))
+                                    <li class="left-menu-li">
+                                        <a href="{{route('pipe_types.index')}}">
+                                            {{ trans('monitoring.pipe_types.menu') }}
                                         </a>
                                     </li>
                                 @endif

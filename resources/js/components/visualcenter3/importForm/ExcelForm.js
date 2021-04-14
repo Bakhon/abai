@@ -26,9 +26,10 @@ import cellsMappingEMG from './dzoData/cells_mapping_emg.json';
 import moment from "moment";
 import Visual from "./dataManagers/visual";
 
+const defaultDzoTicker = "КОА";
+
 export default {
     data: function () {
-        let defaultDzoTicker = "ЕМГ";
         return {
             dzoMapping : {
                 "КОА" : {
@@ -73,7 +74,7 @@ export default {
                     cells: cellsMappingYO,
                     id: 111
                 },
-                "ЕМГ" : {
+                "ЭМГ" : {
                     rows: initialRowsEMG,
                     format: formatMappingEMG,
                     cells: cellsMappingEMG,
@@ -82,7 +83,7 @@ export default {
             },
             dzoCompanies: [
                 {
-                    ticker: 'ЕМГ',
+                    ticker: 'ЭМГ',
                     name: 'АО "Эмбамунайгаз"'
                 },
                 {
@@ -116,6 +117,7 @@ export default {
             ],
             selectedDzo: {
                 ticker: defaultDzoTicker,
+                name: 'ТОО "Казахтуркмунай"',
                 plans: [],
             },
             status: this.trans("visualcenter.importForm.status.waitForData"),
@@ -147,14 +149,24 @@ export default {
                 scale_inhibitor: this.trans("visualcenter.chemProdZakackaIngibatorSoleotloj"),
             },
             chemistryErrorFields: [],
+            currentDateDetailed: moment().subtract(1, 'days').format("YYYY-MM-DD HH:mm:ss"),
         };
     },
     props: ['userId'],
     async mounted() {
+        let currentDayNumber = moment().date();
+        if (this.daysWhenChemistryNeeded.includes(currentDayNumber)) {
+            this.isChemistryButtonVisible = true;
+        }
         this.selectedDzo.ticker = this.getDzoTicker();
         if (!this.selectedDzo.ticker) {
             this.selectedDzo.ticker = defaultDzoTicker;
         }
+        if ( this.selectedDzo.ticker === 'КОА') {
+            this.addColumnsToGrid();
+        }
+
+        this.selectedDzo.name = this.getDzoName();
         this.changeDefaultDzo();
         this.dzoPlans = await this.getDzoMonthlyPlans();
         this.selectedDzo.plans = this.getSelectedDzoPlans();
@@ -162,6 +174,23 @@ export default {
         this.setTableFormat();
     },
     methods: {
+        addColumnsToGrid() {
+            for (let i = 7; i < 9; i++) {
+                this.columns.push(
+                    {
+                        prop: "column" + i,
+                        size: 280,
+                        cellProperties: ({prop, model, data, column}) => {
+                            return {
+                                style: {
+                                    border: '1px solid #F4F4F6'
+                                },
+                            };
+                        },
+                    }
+                );
+            }
+        },
         getDzoTicker() {
             let dzoTicker = '';
             let self = this;
@@ -171,6 +200,16 @@ export default {
                }
             });
             return dzoTicker;
+        },
+        getDzoName() {
+            let dzoName = '';
+            let self = this;
+            _.forEach(this.dzoCompanies, function(dzo) {
+                if (dzo.ticker === self.selectedDzo.ticker) {
+                    dzoName = dzo.name;
+                }
+            });
+            return dzoName;
         },
         async changeDefaultDzo() {
             this.cellsMapping = _.cloneDeep(this.dzoMapping[this.selectedDzo.ticker].cells);
@@ -260,7 +299,7 @@ export default {
             let self = this;
             _.forEach(Object.keys(block), function(key) {
                 if (category === self.inputDataCategories[1]) {
-                    self.processStringCells(block[key],category);
+                    self.processDecreaseReasonCells(block[key],category);
                 } else if (category === self.inputDataCategories[2]) {
                     self.processFieldsBlock(block[key],category,key);
                 } else {
@@ -277,10 +316,13 @@ export default {
         processNumberCells(row,category,fieldCategoryName) {
             for (let columnIndex = 1; columnIndex <= row.rowLength; columnIndex++) {
                 let selector = 'div[data-col="'+ columnIndex + '"][data-row="' + row.rowIndex + '"]';
-                let cellValue = parseFloat($(selector).text());
+                let cellValue = $(selector).text();
                 if (!this.isNumberCellValid(cellValue,selector)) {
                     this.turnErrorForCell(selector);
                     continue;
+                }
+                if (cellValue.trim().length === 0) {
+                    cellValue = null;
                 }
                 if (fieldCategoryName) {
                     this.setNumberValueForCategories(category,row.fields[columnIndex-1],cellValue,fieldCategoryName);
@@ -305,7 +347,7 @@ export default {
             this.excelData[category][groupName][fieldName] = cellValue;
         },
         isNumberCellValid(inputData,selector) {
-            if (isNaN(inputData) || inputData < 0) {
+            if (inputData.trim().length > 0 && (isNaN(parseFloat(inputData)) || parseFloat(inputData) < 0)) {
                 return false;
             }
             return true;
@@ -315,19 +357,11 @@ export default {
             this.errorSelectors.push(selector);
             this.isValidateError = true;
         },
-        processStringCells(row,category) {
+        processDecreaseReasonCells(row,category) {
             for (let columnIndex = 1; columnIndex <= row.rowLength; columnIndex++) {
                 let selector = 'div[data-col="'+ columnIndex + '"][data-row="' + row.rowIndex + '"]';
                 let cellValue = $(selector).text().trim();
-                if (this.isStringCell(columnIndex) && this.checkErrorsStringCell(cellValue,selector)) {
-                    this.excelData[category][row.fields[columnIndex-1]] = cellValue;
-                    continue;
-                }
-                if (!this.isNumberCellValid(cellValue,selector)) {
-                    this.turnErrorForCell(selector);
-                    continue;
-                }
-                this.setNumberValueForCategories(category,row.fields[columnIndex-1],cellValue);
+                this.excelData[category][row.fields[columnIndex-1]] = cellValue;
             }
         },
         isStringCell(rowIndex) {
@@ -352,7 +386,7 @@ export default {
         },
         storeData() {
             this.excelData['dzo_name'] = this.selectedDzo.ticker;
-            this.excelData['date'] = moment().format("YYYY-MM-DD HH:mm:ss");
+            this.excelData['date'] = this.currentDateDetailed;
 
             let uri = this.localeUrl("/dzo_excel_form");
 

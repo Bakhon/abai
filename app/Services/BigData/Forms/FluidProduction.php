@@ -87,11 +87,9 @@ class FluidProduction extends TableForm
         return $breadcrumbs;
     }
 
-    protected function getFilterTree(): array
+    public function getFilterTree(): array
     {
-        $orgData = $this->getOrgWithWells();
-        $techData = $this->getTechWithWells();
-        return $this->combineOrgWithTechData($orgData, $techData);
+        return $this->combineOrgWithTechData();
     }
 
     private function generateTree($items): array
@@ -189,23 +187,22 @@ class FluidProduction extends TableForm
         return ['value' => null];
     }
 
-    protected function saveSingleFieldInDB(string $field): void
+    protected function saveSingleFieldInDB(string $field, int $wellId, Carbon $date, $value): void
     {
         $column = $this->getFieldByCode($field);
 
-        $item = $this->getFieldRow($column, $this->request->get('well_id'), $this->request->get('date'));
+        $item = $this->getFieldRow($column, $wellId, $date);
 
         if (empty($item)) {
             $data = [
-                'well_id' => $this->request->get('well_id'),
-                $column['column'] => $this->request->get($field),
-                'dbeg' => Carbon::parse($this->request->get('date'))->toDateTimeString(),
-                'dend' => Carbon::parse($this->request->get('date'))->addDay()->toDateTimeString()
+                'well_id' => $wellId,
+                $column['column'] => $value,
+                'dbeg' => $date->toDateTimeString()
             ];
 
             if (!empty($column['additional_filter'])) {
-                foreach ($column['additional_filter'] as $key => $value) {
-                    $data[$key] = $value;
+                foreach ($column['additional_filter'] as $key => $val) {
+                    $data[$key] = $val;
                 }
             }
 
@@ -218,13 +215,13 @@ class FluidProduction extends TableForm
                 ->where('id', $item->id)
                 ->update(
                     [
-                        $column['column'] => $this->request->get($field)
+                        $column['column'] => $value
                     ]
                 );
         }
     }
 
-    private function getFieldRow(array $column, int $wellId, string $date)
+    private function getFieldRow(array $column, int $wellId, Carbon $date)
     {
         $query = DB::connection('tbd')
             ->table($column['table'])
@@ -232,8 +229,8 @@ class FluidProduction extends TableForm
             ->whereBetween(
                 'dbeg',
                 [
-                    Carbon::parse($date)->startOfDay(),
-                    Carbon::parse($date)->endOfDay()
+                    (clone $date)->startOfDay(),
+                    (clone $date)->endOfDay()
                 ]
             );
 
@@ -246,20 +243,21 @@ class FluidProduction extends TableForm
         return $query->first();
     }
 
-    private function getOrgWithWells()
+    private function getOrgStructure()
     {
         $orgData = [];
         if (Cache::has('bd_org_with_wells')) {
             return Cache::get('bd_org_with_wells');
         }
 
-        $orgs = Org::with('wells', 'type')
+        $orgs = Org::query()
+            ->with('type')
             ->get();
+
         foreach ($orgs as $org) {
             $orgData[$org->id] = [
                 'id' => $org->id,
                 'name' => $org->name,
-                'wells' => $org->wells->pluck('id')->toArray(),
                 'type' => 'org',
                 'parent_id' => $org->parent_id
             ];
@@ -277,64 +275,32 @@ class FluidProduction extends TableForm
         return $orgData;
     }
 
-    private function getTechWithWells()
+    private function getTechStructure()
     {
         $cacheKey = 'bd_tech_with_wells_' . $this->request->get('date');
         $techData = [];
         if (Cache::has($cacheKey)) {
-            $techData = Cache::get($cacheKey);
-            return $this->generateTree($techData);
+            return Cache::get($cacheKey);
         }
 
         $techs = Tech::query()
-            ->with(
-                [
-                    'wells' => function ($query) {
-                        $query->active(Carbon::parse($this->request->get('date')));
-                    },
-                    'type'
-                ]
-            )
             ->whereIn('tech_id', [Tech::TYPE_GZU, Tech::TYPE_GU, Tech::TYPE_ZU])
             ->where('dbeg', '<=', Carbon::parse($this->request->get('date')))
             ->where('dend', '>=', Carbon::parse($this->request->get('date')))
             ->get();
 
+        $techIds = $techs->pluck('id')->toArray();
+
         foreach ($techs as $tech) {
             $techData[$tech->id] = [
                 'id' => $tech->id,
                 'name' => $tech->name,
-                'wells' => $tech->wells->pluck('id')->toArray(),
                 'type' => 'tech',
-                'parent_id' => $tech->parent_id
+                'parent_id' => in_array($tech->parent_id, $techIds) ? $tech->parent_id : null
             ];
         }
 
         uasort(
-            $techData,
-            function ($a, $b) {
-                return $a['parent_id'] > $b['parent_id'] ? 1 : -1;
-            }
-        );
-
-        foreach ($techData as $key => $tech) {
-            if (empty($tech['parent_id'])) {
-                continue;
-            }
-            if (empty($techData[$tech['parent_id']])) {
-                $techData[$key]['parent_id'] = null;
-                continue;
-            }
-
-            $techData[$tech['parent_id']]['wells'] = array_unique(
-                array_merge(
-                    $techData[$tech['parent_id']]['wells'],
-                    $tech['wells']
-                )
-            );
-        }
-
-        usort(
             $techData,
             function ($a, $b) {
                 return strnatcasecmp($a['name'], $b['name']);
@@ -343,32 +309,43 @@ class FluidProduction extends TableForm
 
         $result = $this->generateTree($techData);
         Cache::put($cacheKey, $result, now()->addDay());
-
         return $result;
     }
 
-    private function combineOrgWithTechData($orgData, $techData)
+    private function combineOrgWithTechData()
     {
         $cacheKey = 'bd_org_tech_' . $this->request->get('date');
         if (Cache::has($cacheKey)) {
             return Cache::get($cacheKey);
         }
 
-        foreach ($orgData as &$org) {
-            if (empty($org['wells'])) {
-                continue;
-            }
+        $orgStructures = $this->getOrgStructure();
+        $techStructure = $this->getTechStructure();
 
-            foreach ($techData as $keyTech => $tech) {
-                if (count(array_intersect($org['wells'], $tech['wells'])) > 0) {
+        $orgTechs = DB::connection('tbd')
+            ->table('dict.org_tech')
+            ->select('org', 'tech')
+            ->get()
+            ->mapToGroups(
+                function ($item, $key) {
+                    return [
+                        $item->org => $item->tech
+                    ];
+                }
+            )
+            ->toArray();
+
+        foreach ($orgStructures as &$org) {
+            foreach ($techStructure as $keyTech => $tech) {
+                if (isset($orgTechs[$org['id']]) && in_array($tech['id'], $orgTechs[$org['id']])) {
                     $org['children'][] = $tech;
-                    unset($techData[$keyTech]);
+                    unset($techStructure[$keyTech]);
                 }
             }
         }
         unset($org);
 
-        $result = $this->generateTree($orgData);
+        $result = $this->generateTree($orgStructures);
         Cache::put($cacheKey, $result, now()->addDay());
 
         return $result;
@@ -386,9 +363,7 @@ class FluidProduction extends TableForm
             ->first();
 
         return [
-            'id' => null,
             'value' => $uwi->other_uwi === '{NULL}' ? null : str_replace(['{', '}'], '', $uwi->other_uwi),
-            'date' => null
         ];
     }
 }

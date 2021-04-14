@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\BigData\Dictionaries\Geo;
 use App\Services\BigData\Forms\BaseForm;
 use Carbon\Carbon;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -44,7 +45,7 @@ class FormsController extends Controller
         \Illuminate\Support\Facades\File::put($this->file, json_encode($values));
     }
 
-    public function getParams(string $formName): \Illuminate\Http\JsonResponse
+    public function getParams(string $formName): JsonResponse
     {
         $form = $this->getForm($formName);
         try {
@@ -102,6 +103,13 @@ class FormsController extends Controller
     {
         $form = $this->getForm($formName);
         return $form->getHistory($request->get('id'), Carbon::parse($request->get('date')));
+    }
+
+    public function copyFieldValue(string $formName, Request $request): JsonResponse
+    {
+        $form = $this->getForm($formName);
+        $form->copyFieldValue($request->get('well_id'), Carbon::parse($request->get('date')));
+        return response()->json([], Response::HTTP_NO_CONTENT);
     }
 
     public function getWellPrefix(Request $request): array

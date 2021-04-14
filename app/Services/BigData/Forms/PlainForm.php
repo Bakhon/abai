@@ -12,13 +12,31 @@ abstract class PlainForm extends BaseForm
 
     public function submit(): array
     {
-        $fields = $this->request->all();
-        $fields['created_at'] = \Carbon\Carbon::now();
-        $fields['updated_at'] = \Carbon\Carbon::now();
+        $tableFields = $this->getFields()
+            ->filter(
+                function ($item) {
+                    return $item['type'] === 'table';
+                }
+            );
 
-        $id = DB::table($this->params()['table'])
-            ->insertGetId($fields);
+        $tableFieldCodes = $tableFields
+            ->pluck('code')
+            ->toArray();
 
-        return (array)DB::table($this->params()['table'])->where('id', $id)->first();
+        $data = $this->request->except($tableFieldCodes);
+
+        $id = DB::connection('tbd')->table($this->params()['table'])
+            ->insertGetId($data);
+
+        if (!empty($tableFields)) {
+            foreach ($tableFields as $field) {
+                foreach ($this->request->get($field['code']) as $data) {
+                    $data[$field['parent_column']] = $id;
+                    DB::connection('tbd')->table($field['table'])->insert($data);
+                }
+            }
+        }
+
+        return (array)DB::connection('tbd')->table($this->params()['table'])->where('id', $id)->first();
     }
 }

@@ -10,4 +10,9 @@ class Material extends Model
     {
         return $this->hasOne(Pipe::class)->withDefault();
     }
+
+    public function pipeType()
+    {
+        return $this->hasOne(PipeType::class);
+    }
 }

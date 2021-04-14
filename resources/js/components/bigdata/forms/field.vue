@@ -5,8 +5,8 @@
           :type="item.type === 'numeric' ? 'number' : 'text'"
           :name="item.code"
           v-bind:value="formatValue(value)"
-          v-on:input="$emit('input', $event.target.value)"
-          v-on:change="$emit('change', $event.target.value)"
+          v-on:change="updateValue($event.target.value)"
+          v-on:input="updateValue($event.target.value)"
           class="form-control"
           :class="{'error': error}"
           placeholder=""
@@ -14,7 +14,7 @@
     </template>
     <template v-else-if="item.type === 'list'">
       <v-select
-          v-on:input="$emit('input', $event.id); $emit('change', $event.id)"
+          v-on:input="updateValue($event.id)"
           :options="item.values"
           :name="item.code"
       >
@@ -31,18 +31,29 @@
         <input
             :name="item.code"
             v-bind:value="value"
-            v-on:input="$emit('input', $event.target.value); $emit('change', $event.target.value)"
+            v-on:input="updateValue($event.target.value)"
             type="radio"
             :id="`${item.code}_${value}`"
         >
         <label :for="`${item.code}_${value}`">{{ value }}</label>
       </div>
     </template>
+    <template v-else-if="item.type === 'checkbox'">
+       <label :for="`${item.code}`"></label>
+        <input
+            :name="item.code"
+            type="checkbox"
+            :id="`${item.code}`"
+            v-bind:checked="value"
+            v-on:input="$emit('input', $event.target.checked); $emit('change', $event.target.checked)"
+        >
+    </template>
     <template v-else-if="item.type === 'dict'">
       <v-select
-          v-on:input="$emit('input', $event.id); $emit('change', $event.id)"
+          :value="formatedValue"
           label="name"
           :options="dict"
+          @input="updateValue($event.id)"
           :name="item.code"
       >
         <template #open-indicator="{ attributes }">
@@ -56,23 +67,24 @@
     <template v-else-if="item.type === 'dict_tree'">
       <treeselect
           v-bind:value="value || null"
-          v-on:input="$emit('input', $event); $emit('change', $event)"
+          v-on:input="updateValue($event)"
           :multiple="false"
           :options="dict"
           :auto-load-root-options="false"
           :loading="true"
-          placeholer="Выберите..."
+          :placeholer="`${trans('app.select')}...`"
       />
     </template>
-    <template v-else-if="item.type === 'date'">
+    <template v-else-if="['date', 'datetime'].includes(item.type)">
       <datetime
-          type="date"
+          :format="dateFormat[item.type]"
           v-on:input="changeDate($event)"
+          :value="formatedValue.value"
           :input-class="{'form-control date': true, 'error': error}"
           value-zone="Asia/Almaty"
           zone="Asia/Almaty"
-          :format="{ year: 'numeric', month: 'numeric', day: 'numeric'}"
-          :phrases="{ok: 'Выбрать', cancel: 'Выход'}"
+          :type="item.type"
+          :phrases="{ok: trans('app.select'), cancel: trans('app.exit')}"
           :week-start="1"
           use24-hour
           auto
@@ -93,6 +105,9 @@
         </template>
       </datetime>
     </template>
+    <template v-else-if="item.type === 'table'">
+      <BigdataTableField :params="item" v-on:change="updateValue($event)"></BigdataTableField>
+    </template>
     <div v-if="error" class="text-danger error" v-html="showError(error)"></div>
   </div>
 </template>
@@ -103,12 +118,14 @@ import vSelect from "vue-select"
 import Treeselect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 import 'vue-select/dist/vue-select.css'
+import BigdataTableField from './fields/Table'
 
 export default {
   name: "BigdataFormField",
   components: {
     Treeselect,
-    vSelect
+    vSelect,
+    BigdataTableField
   },
   props: [
     'item',
@@ -116,17 +133,33 @@ export default {
     'error'
   ],
   data: function () {
-    return {}
+    return {
+      formatedValue: {
+        value: null,
+        text: null
+      },
+      dateFormat: {
+        'date': {year: 'numeric', month: 'numeric', day: 'numeric'},
+        'datetime': {year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric'}
+      }
+    }
   },
   computed: {
     dict() {
       return this.$store.getters['bd/dict'](this.item.dict);
+    },
+  },
+  watch: {
+    value(newValue) {
+      this.formatedValue = this.getFormatedValue(newValue)
     }
   },
   mounted() {
     if (['dict', 'dict_tree'].indexOf(this.item.type) > -1) {
       this.loadDict()
     }
+
+    this.formatedValue = this.getFormatedValue(this.value)
   },
   methods: {
     loadDict() {
@@ -140,9 +173,34 @@ export default {
     changeDate(date) {
       if (date) {
         let formatedDate = moment(date).format('YYYY-MM-DD HH:MM:SS')
-        this.$emit('input', formatedDate)
-        this.$emit('change', formatedDate)
+        this.updateValue(formatedDate)
       }
+    },
+    updateValue(value) {
+      this.formatedValue = this.getFormatedValue(value)
+      this.$emit('change', value)
+      this.$emit('input', value)
+      this.$emit('update', this.formatedValue)
+    },
+    getFormatedValue(value) {
+      if (this.item.type === 'dict') {
+        let selected = this.dict.find(item => item.id === value) || {id: null, name: null}
+        return {
+          id: selected.id,
+          name: selected.name,
+          value: selected.id,
+          text: selected.name
+        }
+      }
+      if (this.item.type === 'date') {
+
+        return {
+          text: value ? moment(value).format('YYYY-MM-DD HH:MM:SS') : null,
+          value: value ? moment(value).format() : null
+        }
+      }
+
+      return {value: value, text: value}
     },
     showError(err) {
       return err.join('<br>')
@@ -161,8 +219,8 @@ export default {
 
       return value
     }
-  },
-};
+  }
+}
 </script>
 <style lang="scss">
 .bd-form-field {

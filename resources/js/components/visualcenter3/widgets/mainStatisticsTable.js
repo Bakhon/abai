@@ -96,6 +96,7 @@ export default {
                 if (periodStart > periodEnd) {
                     periodStart = this.getPreviousWorkday();
                 }
+
                 this.range = {
                     start: periodStart,
                     end: periodEnd,
@@ -107,6 +108,14 @@ export default {
         },
 
         changeMenu2(change) {
+            this.buttonDailyTab = "";
+            this.buttonMonthlyTab = "";
+            this.buttonYearlyTab = "";
+            this.buttonPeriodTab = "";
+            if (change !== 3) {
+                this.isFilterTargetPlanActive = false;
+            }
+
             if (change === 1) {
                 this.currentDzoList = 'daily';
                 this.buttonDailyTab = this.highlightedButton;
@@ -117,27 +126,26 @@ export default {
                 };
                 this.changeDate();
                 this.calculateDzoCompaniesSummary();
-            } else {
-                this.buttonDailyTab = "";
             }
 
             if (change === 2) {
+                let minimalDaysPeriodForChart = 2;
                 this.buttonMonthlyTab = this.highlightedButton;
                 this.currentDzoList = 'monthly';
                 let periodStart = moment().startOf('month').format();
                 let periodEnd = moment().subtract(1, "days").endOf('day').format();
-                if (periodStart > periodEnd) {
+                let daysDifference = moment(periodEnd).diff(moment(periodStart), 'days');
+                if (periodStart > periodEnd || daysDifference < minimalDaysPeriodForChart) {
+                    periodEnd = moment(periodStart).endOf('day').format();
                     periodStart = this.getPreviousWorkday();
                 }
+
                 this.range = {
                     start: periodStart,
                     end: periodEnd,
                     formatInput: true,
                 };
-
                 this.changeDate();
-            } else {
-                this.buttonMonthlyTab = "";
             }
 
             if (change === 3) {
@@ -149,14 +157,10 @@ export default {
                     formatInput: true,
                 };
                 this.changeDate();
-            } else {
-                this.buttonYearlyTab = "";
             }
 
             if (change === 4) {
                 this.buttonPeriodTab = this.highlightedButton;
-            } else {
-                this.buttonPeriodTab = "";
             }
         },
 
