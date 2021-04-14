@@ -95,7 +95,6 @@ class FieldCalcController extends Controller
         $discSvobPotok = null;
         $nakopDiscSvodPotok = null;
         $npv = null;
-
         $pokupka = 0;
 
 
@@ -123,7 +122,6 @@ class FieldCalcController extends Controller
             $exportsElectResults = [];
             $zatrPrepResults = [];
             $zatrElectResults = [];
-            $prsCostResults = [];
             $expDayResults = [];
             $prsResult = [];
 
@@ -135,34 +133,24 @@ class FieldCalcController extends Controller
                     } else {
                         $prsResult[$item->company_id] = self::ONE_YEAR / ($this->reqDay + $avgprsday->avg_prs);
                     }
-                } else {
-                    if ($this->param == 2) {
-                        if ($this->equipIdRequest == 1) {
-                            $prsResult[$item->company_id] = self::ONE_YEAR / ($this->reqDay + $avgprsday->avg_prs);
-                        } else {
-                            $prsResult[$item->company_id] = $this->reqecn;
-                        }
+                }
+                if ($this->param == 2) {
+                    if ($this->equipIdRequest == 1) {
+                        $prsResult[$item->company_id] = self::ONE_YEAR / ($this->reqDay + $avgprsday->avg_prs);
                     } else {
-                        if ($this->equipIdRequest == 1) {
-                            $prsResult[$item->company_id] = $this->reqecn;
-                        } else {
-                            $prsResult[$item->company_id] = self::ONE_YEAR / ($this->reqDay + $avgprsday->avg_prs);
-                        }
+                        $prsResult[$item->company_id] = $this->reqecn;
                     }
                 }
             }
-
             $avgprsday = EcoRefsAvgPrs::where('company_id', $this->org)->first();
 
             $procent = (self::ONE_YEAR - array_sum($prsResult) * $avgprsday->avg_prs) / self::ONE_YEAR;
-
 
             $workday = $lastDay * $procent;
             $this->liquid = $this->qZhidkosti * $workday;
             $oil = $this->qoil * (1 - exp(log(1 - $this->razrab / 100) / self::ONE_YEAR * $workday)) / -(log(1 - $this->razrab / 100) / self::ONE_YEAR);
             $perreal = EcoRefsProcDob::where('company_id', $this->org)->first();
             $empper = $oil - $oil * $perreal->proc_dob;
-
 
             $ecnParam = 95.343 * pow($this->liq, -0.607);
             $shgnParam = 108.29 * pow($this->liq, -0.743);
@@ -175,7 +163,7 @@ class FieldCalcController extends Controller
             foreach ($compRas as $item) {
                 $zatrPrepResults[$item->company_id] = $this->liquid * $item->trans_prep_cost;
             }
-//            dd($equipRas);
+
             foreach ($equipRas as $item) {
                 $electCost = EcoRefsPrepElectPrsBrigCost::where('company_id', '=', $item->company_id)->first();
                 if ($item->equip_id == 1) {
@@ -195,14 +183,9 @@ class FieldCalcController extends Controller
 
             $rentCostResult = 0;
 
-            if ($this->equipIdRequest == 1) {
-                $buyCost = EcoRefsRentEquipElectServCost::where('equip_id', '=', $this->equipIdRequest)->first();
-                $rentCostResult = 0;
-            } else {
-                $buyCost = EcoRefsRentEquipElectServCost::where('equip_id', '=', $this->equipIdRequest)->first();
-                $rentCostResult = $buyCost->rent_cost;
+            if ($this->equipIdRequest != 1) {
+                $rentCostResult = EcoRefsRentEquipElectServCost::where('equip_id', '=', $this->equipIdRequest)->first()->rent_cost;
             }
-
 
             $buyCostResult = 0;
 
@@ -210,9 +193,6 @@ class FieldCalcController extends Controller
                 if ($this->equipIdRequest == 1) {
                     $buyCost = EcoRefsRentEquipElectServCost::where('equip_id', '=', $this->equipIdRequest)->where('company_id', $this->org)->first();
                     $buyCostResult = $buyCost->equip_cost;
-                } else {
-                    $buyCost = EcoRefsRentEquipElectServCost::where('equip_id', '=', $this->equipIdRequest)->where('company_id', $this->org)->first();
-                    $buyCostResult = 0;
                 }
                 $pokupka = 1;
             }
@@ -299,12 +279,10 @@ class FieldCalcController extends Controller
             foreach ($discontIns as $item) {
                 $insideNdpiResults[$item->route_id] = $insideResults[$item->route_id] * $item->macro * $stavki->ndo_rates * 0.5;
             }
-
             $insideNdpiResultsTotal = array_sum($insideNdpiResults);
             // Inside END
 
             // Rabota s TOTALAMI
-
             foreach ($insideResults as $key => $value) {
                 $tarifTnIns = EcoRefsTarifyTn::where('route_id', '=', $key)->where('sc_fa', $scfa[0])->where('company_id', $this->org)->get();
                 $tarifTnItemValue = 0;
