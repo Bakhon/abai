@@ -21,8 +21,7 @@
             <label class="subsection-text">Выберите параметры для формирования имени файла</label>
           </div>
           <div class="row">
-            <label class="label-text">Имя файла: UZN_0001_ST2_OH_WL_DEN_NEU_RES_030321_FIN_100_1500_MAIN.las
-              {{ input.filename.name }}</label>
+            <label class="label-text">Имя файла: {{ filenameByParameters }}</label>
           </div>
           <div class="row">
             <div class="col-6">
@@ -97,7 +96,7 @@
                   v-model="input.filename.mnemonics"
                   multiple
               >
-                <option v-for="mnemonic in filenameParameters.specific[currentFileInfo].mnemonics" :value="mnemonic">{{ mnemonic }}</option>
+                <option v-for="mnemonic in filenameParameters.specific[currentFileInfo].mnemonics" :value="mnemonic" selected>{{ mnemonic }}</option>
               </select>
             </div>
           </div>
@@ -109,7 +108,7 @@
               <datetime
                   id="end_date"
                   type="date"
-                  v-model="input.endDate"
+                  v-model="input.filename.date"
                   value-zone="Asia/Almaty"
                   zone="Asia/Almaty"
                   input-class="form-control filter-input"
@@ -146,10 +145,10 @@
                   class="col form-control filter-input select mr-2 mb-2"
                   id="originSelect"
                   :disabled="isLoading"
-                  v-model="input.filename.recordState"
+                  v-model="input.filename.recordingState"
               >
                 <option disabled value="">Статус записи</option>
-                <option v-for="recordState in filenameParameters.generic.recordStates" :value="recordState">{{ recordState }}</option>
+                <option v-for="recordState in filenameParameters.generic.recordingStates" :value="recordState">{{ recordState }}</option>
               </select>
             </div>
           </div>
@@ -167,6 +166,13 @@
             </div>
             <div class="col"></div>
           </div>
+          <div class="row">
+            <button class="col btn get-report-button" id="submitExperimentInfo"
+                    :disabled="!files || isLoading"
+                    @click="submitFileParams()">
+              Подвердить данные по эксперименту
+            </button>
+          </div>
         </div>
 
         <div v-else>
@@ -177,9 +183,10 @@
             <input class="col form-control filter-input mr-2 mb-2" type="file" id="file" ref="file" title="Файл"
                    @change="handleFileUpload()" multiple>
           </div>
+
           <div class="row">
             <button class="col btn get-report-button" id="experimentUploadButton a"
-                    :disabled="!files || isLoading"
+                    :disabled="files.length === 0"
                     @click="submitFile()">
               Загрузить
             </button>
@@ -198,13 +205,6 @@
             <option selected disabled value="">Укажите происхождение файла</option>
             <option v-for="provenance in provenances" :value="provenance.id">{{ provenance.origin }}</option>
           </select>
-        </div>
-        <div class="row">
-          <button class="col btn get-report-button" id="submitExperimentInfo"
-                  :disabled="input.provenanceId === null || !files || isLoading"
-                  @click="submitExperimentInfo()">
-            Подвердить данные по эксперименту
-          </button>
         </div>
       </transition>
     </div>

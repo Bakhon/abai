@@ -13,6 +13,7 @@ export default {
             isFilesUploadedOnPreApproval: false,
 
             experimentId: null,
+            experimentIds: [],
             statisticsInput: {
                 experimentId: null,
                 mnemonics: [],
@@ -23,27 +24,39 @@ export default {
             filenameParameters: {
                 generic: {
                     fields: ['Месторождение1', 'Месторождение2', 'Месторождение3'],
-                    wells: ['Скважина1','Скважина2','Скважина3','Скважина4'],
-
+                    wells: ['Скважина1', 'Скважина2', 'Скважина3', 'Скважина4'],
                     extensions: ['las', 'lis', 'dlis', 'ascii', 'txt'],
                     stemTypes: ['ST1', 'ST2'],
-                    stemSections: ['ST1', 'ST2'],
+                    stemSections: ['OH', 'CH', 'NON'],
                     recordingMethods: ['LWD', 'WL'],
                     fileStatuses: ['RAW', 'FIN', 'INT', 'UNK'],
-                    recordStates:['MAIN', 'RPT'],
+                    recordingStates: ['MAIN', 'RPT'],
                 },
                 specific: [{
                     mnemonics: ['DEPTH', 'AUS', 'TOX'],
                     recordingDepths: [100, 1500],
-                }]
+                }, {
+                    mnemonics: ['DEPTH', 'AUS', 'TOX'],
+                    recordingDepths: [100, 1500],
+                }, {
+                    mnemonics: ['DEPTH', 'AUS', 'TOX'],
+                    recordingDepths: [100, 1500],
+                }
+
+
+                ]
             },
             filenameDelimiter: '_',
+            filenameParametersForName: [
+                'field', 'well', 'stemType', 'stemSection', 'recordingMethod',
+                'mnemonics', 'date', 'fileStatus', 'recordingDepth',
+                'recordingState', 'extension'
+            ],
             input: {
                 well: null,
                 field: null,
                 comment: null,
                 provenanceId: '',
-                endDate: '',
                 filename: {
                     name: '',
                     field: '',
@@ -52,10 +65,24 @@ export default {
                     stemSection: '',
                     recordingMethod: '',
                     mnemonics: [],
+                    date: '',
                     fileStatus: '',
                     recordingDepth: '',
                     extension: '',
-                    recordState: '',
+                    recordingState: '',
+                },
+                defaultsForFilename: {
+                    field: '<Месторождение>',
+                    well: '<Скважина>',
+                    stemType: '<Наименование Ствола>',
+                    stemSection: '<Секция Ствола>',
+                    recordingMethod: '<Технология Записи>',
+                    mnemonics: '<Мнемоники>',
+                    date: '<Дата>',
+                    fileStatus: '<Статус Обработки>',
+                    recordingDepth: '<Глубина Записи>',
+                    recordingState: '<Тип Записи>',
+                    extension: '<Расширение>',
                 },
             },
 
@@ -101,17 +128,6 @@ export default {
             this.files = this.$refs.file.files;
             console.log(this.files);
         },
-        submitExperimentInfo() {
-            if (this.currentFileInfo > this.files.length - 1) {
-                return
-            }
-            this.currentFileInfo += 1
-            this.setExperimentFileParameters()
-        },
-        setExperimentFileParameters() {
-            let experiment = this.filenameParameters.specific[this.currentFileInfo]
-            this.input.filename.recordingDepth = experiment.recordingDepths[0] + this.filenameDelimiter + experiment.recordingDepths[1]
-        },
         submitFile() {
             let formData = new FormData();
             for (let i = 0; i < this.files.length; i++) {
@@ -135,30 +151,38 @@ export default {
             ).finally(() => this.$store.commit('globalloading/SET_LOADING', false));
         },
         submitFileParams() {
-            let formData = new FormData();
-            formData.append('file', this.files)
-
             this.$store.commit('globalloading/SET_LOADING', true);
-            this.experimentsId = null;
-            this.axios.post(this.baseUrl + 'approve-upload/', formData, {
+
+            let jsonData = JSON.stringify({
+                well: this.input.well,
+                field: this.input.field,
+                comment: this.input.comment,
+                filename: this.input.filename,
+                provenance_id: this.input.provenanceId
+            });
+            this.axios.post(this.baseUrl + 'approve-upload/', jsonData, {
                 responseType: 'json',
-                params: {
-                    well: this.input.well,
-                    field: this.input.field,
-                    comment: this.input.comment,
-                    filename: this.input.filename,
-                    provenance_id: this.input.provenanceId
-                },
                 headers: {
-                    'Content-Type': 'multipart/form-data'
+                    'Content-Type': 'application/json'
                 }
             }).then((response) => {
                 if (response.data) {
-                    this.experimentsId = response.data.experiments_id
-                    this.setExperimentFileParameters()
+                    this.experimentIds.push(response.data.experiments_id);
+                    this.updateExperimentInfo()
                 }
             }).catch((error) => console.log(error)
             ).finally(() => this.$store.commit('globalloading/SET_LOADING', false));
+        },
+        updateExperimentInfo() {
+            if (this.currentFileInfo > this.files.length - 1) {
+                return
+            }
+            this.currentFileInfo += 1
+            this.setExperimentFileParameters()
+        },
+        setExperimentFileParameters() {
+            let experiment = this.filenameParameters.specific[this.currentFileInfo]
+            this.input.filename.recordingDepth = experiment.recordingDepths[0] + this.filenameDelimiter + experiment.recordingDepths[1]
         },
         fetchStatistics() {
             this.$store.commit('globalloading/SET_LOADING', true);
@@ -218,6 +242,38 @@ export default {
                 }
             }).catch((error) => console.log(error)
             ).finally(() => this.$store.commit('globalloading/SET_LOADING', false));
+        },
+        getInputForFilename(field) {
+            let content = this.input.filename[field]
+            if ((_.isArray(content) && content.length === 0) || (content === '')) {
+                return this.input.defaultsForFilename[field]
+            }
+            return content
+        },
+        getDelimeterForFilename(index) {
+            if (index !== 0 && index !== (this.filenameParametersForName.length - 1)) {
+                return this.filenameDelimiter
+            }
+            if (index == (this.filenameParametersForName.length - 1)) {
+                return '.'
+            }
+            return ''
+        }
+    },
+    computed: {
+        filenameByParameters() {
+            let filename = ''
+            for (let i = 0; i < this.filenameParametersForName.length; i++) {
+                filename += this.getDelimeterForFilename(i)
+                let inputField = this.filenameParametersForName[i]
+                let inputContent = this.getInputForFilename(inputField)
+                if (_.isArray(inputContent)) {
+                    filename += inputContent.join(this.filenameDelimiter)
+                    continue
+                }
+                filename += inputContent
+            }
+            return filename
         }
     }
 }
