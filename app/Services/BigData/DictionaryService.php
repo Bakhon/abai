@@ -73,8 +73,6 @@ class DictionaryService
                 case 'geos':
                     $dict = $this->getGeoDict();
                     break;
-                case 'casing_types':
-                    $dict = $this->getCasingTypeDict();
                 default:
                     throw new DictionaryNotFound();
             }
