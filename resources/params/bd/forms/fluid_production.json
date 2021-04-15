@@ -115,16 +115,28 @@
         "metric": "1"
       },
       "fields": [
-        "liquid_telemetry",
-        "telemetry_source"
+        {
+          "liquid_telemetry": {},
+          "telemetry_source": {}
+        }
       ],
       "graph_fields": [
-        "liquid_val",
-        "bsw",
-        "oil_val",
-        "debit_fluid_tech",
-        "bsw_tech",
-        "debit_oil_tech"
+        {
+          "liquid_val": {
+            "axis": true
+          },
+          "bsw": {
+            "axis": true
+          },
+          "debit_fluid_tech": {},
+          "bsw_tech": {}
+        },
+        {
+          "oil_val": {
+            "axis": true
+          },
+          "debit_oil_tech": {}
+        }
       ],
       "history_popup": {
         "title": "telemetry_data"
