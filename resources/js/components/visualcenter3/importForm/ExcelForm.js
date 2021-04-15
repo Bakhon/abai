@@ -324,7 +324,9 @@ export default {
                 if (cellValue.trim().length === 0) {
                     cellValue = null;
                 }
-                cellValue = this.getFormattedNumber(cellValue);
+                if (cellValue) {
+                    cellValue = this.getFormattedNumber(cellValue);
+                }
                 if (fieldCategoryName) {
                     this.setNumberValueForCategories(category,row.fields[columnIndex-1],cellValue,fieldCategoryName);
                 } else if (category === this.inputDataCategories[0]) {
@@ -362,7 +364,7 @@ export default {
             for (let columnIndex = 1; columnIndex <= row.rowLength; columnIndex++) {
                 let selector = 'div[data-col="'+ columnIndex + '"][data-row="' + row.rowIndex + '"]';
                 let cellValue = $(selector).text().trim();
-                if (!this.stringColumns.includes(columnIndex)) {
+                if (cellValue && !this.stringColumns.includes(columnIndex)) {
                     cellValue = this.getFormattedNumber(cellValue);
                 }
                 this.excelData[category][row.fields[columnIndex-1]] = cellValue;
