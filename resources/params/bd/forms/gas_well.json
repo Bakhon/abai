@@ -3,11 +3,11 @@
   "table": "",
   "tabs": [
     {
-      "title": "Main",
+      "title": "main",
       "blocks": [
         [
           {
-            "title": "Mode_parameters",
+            "title": "mode_parameters",
             "items": [
               {
                 "code": "field1",
@@ -24,7 +24,7 @@
             ]
           },
           {
-            "title":"Tech_modes_gas_well",
+            "title":"tech_modes_gas_well",
             "items":[
               {
                 "code":"field3",
@@ -35,7 +35,7 @@
             ]
           },
           {
-            "title":"Planned_events",
+            "title":"planned_events",
             "items":[
               {
                 "code":"field4",
