@@ -5,212 +5,244 @@
     </div>
     <div class="container container-main">
       <transition name="fade">
+        <div>
+          <div v-if="isFilesUploadedOnPreApproval">
+            <div class="row">
+              <label class="section-text">Укажите данные для LAS файла: {{ files[currentFileInfo].name }} | файл
+                {{ currentFileInfo + 1 }} из {{ files.length }}</label>
+            </div>
+            <div class="row">
 
-        <div v-if="isFilesUploadedOnPreApproval">
-          <div class="row">
-            <label class="section-text">Укажите данные для LAS файла: {{ files[currentFileInfo].name }} | файл
-              {{ currentFileInfo + 1 }} из {{ files.length }}</label>
-          </div>
-          <div class="row">
+              <input class="col form-control filter-input mr-2 mb-2" v-model="input.well" placeholder="id скважины">
+              <input class="col form-control filter-input mr-2 mb-2" v-model="input.field"
+                     placeholder="id месторождения">
+              <input class="col form-control filter-input mr-2 mb-2" v-model="input.comment" placeholder="комментарий">
+            </div>
+            <div class="row">
+              <label class="label-text">Укажите происхождение файла</label>
+            </div>
+            <div class="row">
+              <select
+                  class="col form-control filter-input select mr-2 mb-2"
+                  id="originSelect"
+                  :disabled="isLoading"
+                  v-model="input.provenanceId"
+              >
+                <option selected disabled value="">Укажите происхождение файла</option>
+                <option v-for="provenance in provenances" :value="provenance.id">{{ provenance.origin }}</option>
+              </select>
+            </div>
+            <div class="row">
+              <label class="subsection-text">Выберите параметры для формирования имени файла</label>
+            </div>
+            <div class="row">
+              <label class="label-text">Имя файла: {{ filenameByParameters }}</label>
+            </div>
+            <div class="row">
+              <div class="col-6">
+                <select
+                    class="form-control filter-input select mr-2 mb-2"
+                    id="originSelect2"
+                    :disabled="isLoading"
+                    v-model="input.filename.field"
+                    required
+                >
+                  <option disabled value="">Месторождение</option>
+                  <option v-for="field in filenameParameters.generic.fields" :value="field">{{ field }}</option>
+                </select>
+              </div>
+              <div class="col-6">
+                <select
+                    class="col form-control filter-input select mr-2 mb-2"
+                    id="originSelect"
+                    :disabled="isLoading"
+                    v-model="input.filename.well"
+                    required
+                >
+                  <option disabled value="">Скважина</option>
+                  <option v-for="well in filenameParameters.generic.wells" :value="well">{{ well }}</option>
+                </select>
+              </div>
+            </div>
+            <div class="row">
 
-            <input class="col form-control filter-input mr-2 mb-2" v-model="input.well" placeholder="id скважины">
-            <input class="col form-control filter-input mr-2 mb-2" v-model="input.field" placeholder="id месторождения">
-            <input class="col form-control filter-input mr-2 mb-2" v-model="input.comment" placeholder="комментарий">
-          </div>
-          <div class="row">
-            <label class="subsection-text">Выберите параметры для формирования имени файла</label>
-          </div>
-          <div class="row">
-            <label class="label-text">Имя файла: {{ filenameByParameters }}</label>
-          </div>
-          <div class="row">
-            <div class="col-6">
-              <select
-                  class="form-control filter-input select mr-2 mb-2"
-                  id="originSelect2"
-                  :disabled="isLoading"
-                  v-model="input.filename.field"
-              >
-                <option disabled value="">Месторождение</option>
-                <option v-for="field in filenameParameters.generic.fields" :value="field">{{ field }}</option>
-              </select>
-            </div>
-            <div class="col-6">
-              <select
-                  class="col form-control filter-input select mr-2 mb-2"
-                  id="originSelect"
-                  :disabled="isLoading"
-                  v-model="input.filename.well"
-              >
-                <option disabled value="">Скважина</option>
-                <option v-for="well in filenameParameters.generic.wells" :value="well">{{ well }}</option>
-              </select>
-            </div>
-          </div>
-          <div class="row">
+              <div class="col">
+                <select
+                    class="col form-control filter-input select mr-2 mb-2"
+                    id="originSelect"
+                    :disabled="isLoading"
+                    v-model="input.filename.stemType"
+                    required
+                >
+                  <option disabled value="">Наименование ствола</option>
+                  <option v-for="stemType in filenameParameters.generic.stemTypes" :value="stemType">{{ stemType }}
+                  </option>
+                </select>
+              </div>
+              <div class="col">
+                <select
+                    class="col form-control filter-input select mr-2 mb-2"
+                    id="originSelect"
+                    :disabled="isLoading"
+                    v-model="input.filename.stemSection"
+                    required
+                >
+                  <option disabled value="">Секция ствола</option>
+                  <option v-for="stemSection in filenameParameters.generic.stemSections" :value="stemSection">{{
+                      stemSection
+                    }}
+                  </option>
+                </select>
+              </div>
 
-            <div class="col">
-              <select
-                  class="col form-control filter-input select mr-2 mb-2"
-                  id="originSelect"
-                  :disabled="isLoading"
-                  v-model="input.filename.stemType"
-              >
-                <option disabled value="">Наименование ствола</option>
-                <option v-for="stemType in filenameParameters.generic.stemTypes" :value="stemType">{{ stemType }}</option>
-              </select>
             </div>
-            <div class="col">
-              <select
-                  class="col form-control filter-input select mr-2 mb-2"
-                  id="originSelect"
-                  :disabled="isLoading"
-                  v-model="input.filename.stemSection"
-              >
-                <option disabled value="">Секция ствола</option>
-                <option v-for="stemSection in filenameParameters.generic.stemSections" :value="stemSection">{{ stemSection }}</option>
-              </select>
+            <div class="row">
+              <div class="col-6">
+                <select
+                    class="col form-control filter-input select mr-2 mb-2"
+                    id="originSelect"
+                    :disabled="isLoading"
+                    v-model="input.filename.recordingMethod"
+                    required
+                >
+                  <option disabled value="">Наименование технологии записи</option>
+                  <option v-for="recordingMethod in filenameParameters.generic.recordingMethods"
+                          :value="recordingMethod">
+                    {{ recordingMethod }}
+                  </option>
+                </select>
+              </div>
+              <div class="col-3">
+                <label class="label-text">Выберите мнемоники:</label>
+              </div>
+              <div class="col-3">
+                <select
+                    class="col form-control filter-input-multiple select mr-2 mb-2"
+                    id="originSelect"
+                    :disabled="isLoading"
+                    v-model="input.filename.mnemonics"
+                    multiple
+                    required
+                >
+                  <option v-for="mnemonic in filenameParameters.specific[currentFileInfo].mnemonics" :value="mnemonic"
+                          selected>{{ mnemonic }}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-3">
+                <label class="label-text">Выберите дату проведения работ:</label>
+              </div>
+              <div class="col-3">
+                <datetime
+                    id="end_date"
+                    type="date"
+                    v-model="input.filename.date"
+                    value-zone="Asia/Almaty"
+                    zone="Asia/Almaty"
+                    input-class="form-control filter-input"
+                    format="dd LLLL yyyy"
+                    :phrases="{ok: '', cancel: ''}"
+                    :disabled="isLoading"
+                    input-id="end_date2"
+                    auto
+                    :flow="['year', 'month', 'date']"
+                >
+                </datetime>
+              </div>
+              <div class="col-6">
+                <select
+                    class="col form-control filter-input select mr-2 mb-2"
+                    id="originSelect"
+                    :disabled="isLoading"
+                    v-model="input.filename.fileStatus"
+                    required
+                >
+                  <option disabled value="">Статус обработки</option>
+                  <option v-for="fileStatus in filenameParameters.generic.fileStatuses" :value="fileStatus">{{
+                      fileStatus
+                    }}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-3">
+                <label class="label-text">Глубина записи:</label>
+              </div>
+              <div class="col-3">
+                <input class="col form-control filter-input mr-2 mb-2" v-model="input.filename.recordingDepth" required>
+              </div>
+              <div class="col-6">
+                <select
+                    class="col form-control filter-input select mr-2 mb-2"
+                    id="originSelect"
+                    :disabled="isLoading"
+                    v-model="input.filename.recordingState"
+                    required
+                >
+                  <option disabled value="">Статус записи</option>
+                  <option v-for="recordState in filenameParameters.generic.recordingStates" :value="recordState">{{
+                      recordState
+                    }}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <select
+                    class="col form-control filter-input select mr-2 mb-2"
+                    id="originSelect"
+                    :disabled="isLoading"
+                    v-model="input.filename.extension"
+                    required
+                >
+                  <option disabled value="">Расширение файла</option>
+                  <option v-for="extension in filenameParameters.generic.extensions" :value="extension">{{ extension }}
+                  </option>
+                </select>
+              </div>
+              <div class="col"></div>
+            </div>
+            <div class="row">
+              <button class="col btn get-report-button" id="submitExperimentInfo"
+                      :disabled="!isInputFilledFieldsForFileUpload || !files || isLoading || input.provenanceId === ''"
+                      @click="submitFileParams()">
+                Подвердить данные по эксперименту
+              </button>
+            </div>
+            <div class="row mt-5">
+              <a :href="localeUrl('/bigdata/geo-data-reference-book')" class="reference-link">Управление
+                справочником</a>
             </div>
 
-          </div>
-          <div class="row">
-            <div class="col-6">
-              <select
-                  class="col form-control filter-input select mr-2 mb-2"
-                  id="originSelect"
-                  :disabled="isLoading"
-                  v-model="input.filename.recordingMethod"
-              >
-                <option disabled value="">Наименование технологии записи</option>
-                <option v-for="recordingMethod in filenameParameters.generic.recordingMethods" :value="recordingMethod">{{ recordingMethod }}</option>
-              </select>
-            </div>
-            <div class="col-3">
-              <label class="label-text">Выберите мнемоники:</label>
-            </div>
-            <div class="col-3">
-              <select
-                  class="col form-control filter-input-multiple select mr-2 mb-2"
-                  id="originSelect"
-                  :disabled="isLoading"
-                  v-model="input.filename.mnemonics"
-                  multiple
-              >
-                <option v-for="mnemonic in filenameParameters.specific[currentFileInfo].mnemonics" :value="mnemonic" selected>{{ mnemonic }}</option>
-              </select>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-3">
-              <label class="label-text">Выберите дату проведения работ:</label>
-            </div>
-            <div class="col-3">
-              <datetime
-                  id="end_date"
-                  type="date"
-                  v-model="input.filename.date"
-                  value-zone="Asia/Almaty"
-                  zone="Asia/Almaty"
-                  input-class="form-control filter-input"
-                  format="dd LLLL yyyy"
-                  :phrases="{ok: '', cancel: ''}"
-                  :disabled="isLoading"
-                  input-id="end_date2"
-                  auto
-                  :flow="['year', 'month', 'date']"
-              >
-              </datetime>
-            </div>
-            <div class="col-6">
-              <select
-                  class="col form-control filter-input select mr-2 mb-2"
-                  id="originSelect"
-                  :disabled="isLoading"
-                  v-model="input.filename.fileStatus"
-              >
-                <option disabled value="">Статус обработки</option>
-                <option v-for="fileStatus in filenameParameters.generic.fileStatuses" :value="fileStatus">{{ fileStatus }}</option>
-              </select>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-3">
-              <label class="label-text">Глубина записи:</label>
-            </div>
-            <div class="col-3">
-              <input class="col form-control filter-input mr-2 mb-2" v-model="input.filename.recordingDepth">
-            </div>
-            <div class="col-6">
-              <select
-                  class="col form-control filter-input select mr-2 mb-2"
-                  id="originSelect"
-                  :disabled="isLoading"
-                  v-model="input.filename.recordingState"
-              >
-                <option disabled value="">Статус записи</option>
-                <option v-for="recordState in filenameParameters.generic.recordingStates" :value="recordState">{{ recordState }}</option>
-              </select>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col">
-              <select
-                  class="col form-control filter-input select mr-2 mb-2"
-                  id="originSelect"
-                  :disabled="isLoading"
-                  v-model="input.filename.extension"
-              >
-                <option disabled value="">Расширение файла</option>
-                <option v-for="extension in filenameParameters.generic.extensions" :value="extension">{{ extension }}</option>
-              </select>
-            </div>
-            <div class="col"></div>
-          </div>
-          <div class="row">
-            <button class="col btn get-report-button" id="submitExperimentInfo"
-                    :disabled="!files || isLoading"
-                    @click="submitFileParams()">
-              Подвердить данные по эксперименту
-            </button>
-          </div>
-        </div>
-
-        <div v-else>
-          <div class="row">
-            <label class="section-text">Загрузить LAS файлы </label>
-          </div>
-          <div class="row">
-            <input class="col form-control filter-input mr-2 mb-2" type="file" id="file" ref="file" title="Файл"
-                   @change="handleFileUpload()" multiple>
           </div>
 
-          <div class="row">
-            <button class="col btn get-report-button" id="experimentUploadButton a"
-                    :disabled="files.length === 0"
-                    @click="submitFile()">
-              Загрузить
-            </button>
+          <div v-else>
+            <div class="row">
+              <label class="section-text">Загрузить LAS файлы </label>
+            </div>
+            <div class="row">
+              <input class="col form-control filter-input mr-2 mb-2" type="file" id="file" ref="file" title="Файл"
+                     @change="handleFileUpload()" multiple>
+            </div>
+
+            <div class="row">
+              <button class="col btn get-report-button" id="experimentUploadButton a"
+                      :disabled="files.length === 0"
+                      @click="submitFile()">
+                Загрузить
+              </button>
+            </div>
           </div>
-        </div>
-        <div class="row">
-          <label class="label-text">Укажите происхождение файла</label>
-        </div>
-        <div class="row">
-          <select
-              class="col form-control filter-input select mr-2 mb-2"
-              id="originSelect"
-              :disabled="isLoading"
-              v-model="input.provenanceId"
-          >
-            <option selected disabled value="">Укажите происхождение файла</option>
-            <option v-for="provenance in provenances" :value="provenance.id">{{ provenance.origin }}</option>
-          </select>
         </div>
       </transition>
     </div>
-<!--    <div class="container  container-main info pt-5">-->
-<!--      <label class="label-text" v-if="experimentsId">ID эксперимента {{ experimentsId }}</label>-->
-<!--    </div>-->
+    <!--    <div class="container  container-main info pt-5">-->
+    <!--      <label class="label-text" v-if="experimentsId">ID эксперимента {{ experimentsId }}</label>-->
+    <!--    </div>-->
 
     <div class="container  container-main pt-5">
       <div class="row">
@@ -378,11 +410,17 @@
 }
 
 .fade-enter-active, .fade-leave-active {
-  transition: opacity .5s
+  transition: opacity 1s
 }
 
 .fade-enter, .fade-leave-to, .fade-leave-active {
   opacity: 0
+}
+
+.reference-link {
+  color: #fff;
+  font-size: 20px;
+  line-height: 25px;
 }
 
 </style>

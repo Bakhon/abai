@@ -157,9 +157,10 @@ export default {
                 well: this.input.well,
                 field: this.input.field,
                 comment: this.input.comment,
-                filename: this.input.filename,
+                filename: this.filenameByParameters,
                 provenance_id: this.input.provenanceId
-            });
+            })
+            console.log(jsonData)
             this.axios.post(this.baseUrl + 'approve-upload/', jsonData, {
                 responseType: 'json',
                 headers: {
@@ -258,7 +259,7 @@ export default {
                 return '.'
             }
             return ''
-        }
+        },
     },
     computed: {
         filenameByParameters() {
@@ -274,6 +275,20 @@ export default {
                 filename += inputContent
             }
             return filename
+        },
+        isInputFilledFieldsForFileUpload() {
+            for (let i = 0; i < this.filenameParametersForName.length; i++) {
+                let inputField = this.filenameParametersForName[i]
+                let inputContent = this.input.filename[inputField]
+                if (_.isArray(inputContent) && inputContent.length === 0) {
+                    return false
+                }
+                if (inputContent === '') {
+                    return false
+                }
+            }
+            return true
         }
+
     }
 }
