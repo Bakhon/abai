@@ -17,15 +17,34 @@ use Illuminate\Support\Facades\DB;
 class DictionaryService
 {
     const DICTIONARIES = [
-        'well_categories' => WellCategory::class,
-        'well_types' => WellType::class,
-        'equips' => Equip::class,
-        'casings'=>CasingType::class,
-        'companies' => Company::class
+        'well_categories' => [
+            'class' => WellCategory::class,
+            'name_field' => 'name'
+        ],
+        'well_types' => [
+            'class' => WellType::class,
+            'name_field' => 'name'
+        ],
+        'companies' => [
+            'class' => Company::class,
+            'name_field' => 'name'
+        ],
+        [
+            'equips' => Equip::class,
+            'name_field' => 'name_ru'
+        ],
+        [
+            'casings' => CasingType::class,
+            'od' => 'name_ru'
+        ],
+
     ];
 
     const TREE_DICTIONARIES = [
-        'orgs' => Org::class
+        'orgs' => [
+            'class' => Org::class,
+            'name_field' => 'name'
+        ]
     ];
 
     const CACHE_TTL = 60;
@@ -67,8 +86,12 @@ class DictionaryService
 
     private function getPlainDict(string $dict): array
     {
-        return (self::DICTIONARIES[$dict])::query()
-            ->select('id', 'name')
+        $dictClass = self::DICTIONARIES[$dict]['class'];
+        $nameField = self::DICTIONARIES[$dict]['name_field'] ?? 'name';
+
+        return $dictClass::query()
+            ->select('id')
+            ->selectRaw("$nameField as name")
             ->orderBy('name', 'asc')
             ->get()
             ->toArray();
@@ -76,10 +99,14 @@ class DictionaryService
 
     private function getTreeDict(string $dict): array
     {
-        $items = (self::TREE_DICTIONARIES[$dict])::query()
-            ->select('id', 'parent_id', 'name as label')
+        $dictClass = self::TREE_DICTIONARIES[$dict]['class'];
+        $nameField = self::TREE_DICTIONARIES[$dict]['name_field'] ?? 'name';
+
+        $items = $dictClass::query()
+            ->select('id', 'parent_id')
+            ->selectRaw("$nameField as label")
             ->orderBy('parent_id', 'asc')
-            ->orderBy('name', 'asc')
+            ->orderBy($nameField, 'asc')
             ->get()
             ->toArray();
 
