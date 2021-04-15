@@ -629,7 +629,7 @@
                             width="150"
                             sortable
                             :filters="filter_column.well_type"
-                            :filter-method="filterHandler"
+                            :filter-method="filterHandlerArray"
                             >
                             <template slot-scope="scope">
                               <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`well_type`)}" >
@@ -661,7 +661,7 @@
                             width="100"
                             sortable
                             :filters="filter_column.horizon"
-                            :filter-method="filterHandler"
+                            :filter-method="filterHandlerArray"
                             >
                             <template slot-scope="scope">
                               <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`horizon`)}" >
@@ -710,7 +710,7 @@
                             width="150"
                             sortable
                             :filters="filter_column.block"
-                            :filter-method="filterHandler"
+                            :filter-method="filterHandlerArray"
                             >
                             <template slot-scope="scope">
                               <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`block`)}" >
@@ -2613,11 +2613,11 @@ export default {
     filterTag(value, row) {
       return row.tag === value;
     },
-    filterHandler(value, row, column) {
+    filterHandlerArray(value, row, column) {
       const property = column['property'];
       return row[property][0] === value;
     },
-    filterHandlerOne(value, row, column) {
+    filterHandler(value, row, column) {
       const property = column['property'];
       return row[property] === value;
     },
