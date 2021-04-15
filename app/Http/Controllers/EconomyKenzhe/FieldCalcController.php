@@ -65,7 +65,9 @@ class FieldCalcController extends Controller
         // VIDY OBORUDOVANIYA
         $equip = EcoRefsEquipId::where('id' ,'>' ,0)->pluck('id');
 
-        $result2 = [];
+        $directionIns = EcoRefsDirectionId::where('name', '=', 'Внутренний рынок')->get();
+
+        $result = [];
         $godovoiLiquid = null;
         $godovoiOil = null;
         $godovoiEmpper = null;
@@ -197,6 +199,7 @@ class FieldCalcController extends Controller
                 $pokupka = 1;
             }
 
+            $rate = EcoRefsMacro::whereMonth('date', $monthname)->first();
             // TO DO
             foreach ($exportsResults as $key => $value) {
                 $tarifTnExp = EcoRefsTarifyTn::where('route_id', $key)->where('sc_fa', $scfa[0])->where('company_id', $this->org)->get();
@@ -205,10 +208,8 @@ class FieldCalcController extends Controller
                     if ($row->exc_id == 1) {
                         $tarifTnItemValue += $value * $row->tn_rate;
                     } elseif ($row->exc_id == 2) {
-                        $rate = EcoRefsMacro::whereMonth('date', $monthname)->first();
                         $tarifTnItemValue += $value * $row->tn_rate * $rate->ex_rate_dol;
                     } else {
-                        $rate = EcoRefsMacro::whereMonth('date', $monthname)->first();
                         $tarifTnItemValue += $value * $row->tn_rate * $rate->ex_rate_rub;
                     }
                 }
@@ -217,30 +218,28 @@ class FieldCalcController extends Controller
 
             $exportsTarTnResultsTotal = array_sum($exportsTarTnResults);
 
+            $rate = EcoRefsMacro::where('date', '=', $item->date)->first();
+
             //To do rate->exp_dol
             foreach ($discontExp as $item) {
-                $rate = EcoRefsMacro::where('date', '=', $item->date)->first();
                 $exportsDiscontResults[$item->route_id] = $exportsResults[$item->route_id] * $item->barr_coef * (($item->macro - $item->discont) * $rate->ex_rate_dol);
             }
             $exportsDiscontResultsTotal = array_sum($exportsDiscontResults);
 
             // To DO
             foreach ($discontExp as $item) {
-                $rate = EcoRefsMacro::where('date', '=', $item->date)->first();
                 $stavki = EcoRefsNdoRates::where('company_id', '=', $item->company_id)->first();
                 $exportsNdpiResults[$item->route_id] = $exportsResults[$item->route_id] * $item->barr_coef * $item->macro * $stavki->ndo_rates * $rate->ex_rate_dol;
             }
             $exportsNdpiResultsTotal = array_sum($exportsNdpiResults);
 
             foreach ($discontExp as $item) {
-                $rate = EcoRefsMacro::where('date', '=', $item->date)->first();
                 $rent = EcoRefsRentTax::where('world_price_beg', '<', $item->macro)->where('world_price_end', '<=', $item->macro)->first();
                 $exportsRentTaxResults[$item->route_id] = $exportsResults[$item->route_id] * $item->barr_coef * $item->macro * $rent->rate * $rate->ex_rate_dol;
             }
             $exportsRentTaxResultsTotal = array_sum($exportsRentTaxResults);
 
             foreach ($discontExp as $item) {
-                $rate = EcoRefsMacro::where('date', '=', $item->date)->first();
                 $etp = EcoRefsAvgMarketPrice::where('avg_market_price_beg', '>=', $item->macro)->where('avg_market_price_end', '>', $item->macro)->first();
                 $exportsEtpResults[$item->route_id] = $exportsResults[$item->route_id] * $etp->exp_cust_duty_rate * $rate->ex_rate_dol;
             }
@@ -248,15 +247,12 @@ class FieldCalcController extends Controller
 
 
             // Export END
-
             // Inside BEGIN
-            $directionIns = EcoRefsDirectionId::where('name', '=', 'Внутренний рынок')->get();
             $inside = [];
 
             foreach ($directionIns as $item) {
                 array_push($inside, $item->id);
             }
-
 
             $emppersIns = EcoRefsEmpPer::whereIn('direction_id', $inside)->where('sc_fa', $scfa[0])->where('company_id', $this->org)->where('date', $firstDateOfMonth)->get();
             $discontIns = EcoRefsDiscontCoefBar::whereIn('direction_id', $inside)->where('sc_fa', $scfa[0])->where('company_id', $this->org)->where('date', $firstDateOfMonth)->get();
@@ -290,10 +286,8 @@ class FieldCalcController extends Controller
                     if ($row->exc_id == 1) {
                         $tarifTnItemValue += $value * $row->tn_rate;
                     } elseif ($row->exc_id == 2) {
-                        $rate = EcoRefsMacro::whereMonth('date', $monthname)->first();
                         $tarifTnItemValue += $value * $row->tn_rate * $rate->ex_rate_dol;
                     } else {
-                        $rate = EcoRefsMacro::whereMonth('date', $monthname)->first();
                         $tarifTnItemValue += $value * $row->tn_rate * $rate->ex_rate_rub;
                     }
                 }
@@ -313,7 +307,6 @@ class FieldCalcController extends Controller
                     $amortizaciyaResult = 0;
                 }
             } else {
-                $buyCost = EcoRefsRentEquipElectServCost::where('equip_id', '=', $this->equipIdRequest)->where('company_id', '=', $this->org)->first();
                 $amortizaciyaResult = 0;
             }
 
@@ -347,7 +340,6 @@ class FieldCalcController extends Controller
             }
 
             $godovoiLiquid = $godovoiLiquid + $this->liquid;
-            $oil = $godovoiOil + $oil;
             $godovoiEmpper = $godovoiEmpper + $empper;
             $godovoiWorkday = $godovoiWorkday + $workday;
             $godovoiPrs = $godovoiPrs + $this->prs;
@@ -383,7 +375,7 @@ class FieldCalcController extends Controller
                 'year' => $this->year,
                 'monthname' => $monthname,
                 'liquid' => $this->liquid,
-                'oil' => $oil,
+                'oil' => $godovoiOil + $oil,
                 'empper' => $empper,
                 'workday' => $workday,
                 'prs' => array_sum($prsResult) / 12,
@@ -422,7 +414,7 @@ class FieldCalcController extends Controller
                 'shgnParam' => $shgnParam * $this->liq * $workday,
                 'ecnParam' => $ecnParam * $this->liq * $workday,
             ];
-            array_push($result2, $vdata2);
+            array_push($result, $vdata2);
         }
 
         $godovoi = [
@@ -444,7 +436,6 @@ class FieldCalcController extends Controller
             'godovoiZatrPrs' => $godovoiZatrPrs,
             'godovoiZatrSutObs' => $godovoiZatrSutObs,
             'godovoiArenda' => $godovoiArenda,
-
             'godovoiAmortizacia' => $godovoiAmortizacia,
             'godovoiOperPryb' => $godovoiOperPryb,
             'godovoiKpn' => $godovoiKpn,
@@ -456,10 +447,9 @@ class FieldCalcController extends Controller
             'godovoiEcnParam' => $godovoiEcnParam,
 
         ];
+        array_push($result, $godovoi);
 
-        array_push($result2, $godovoi);
 
-
-        return response()->json($result2);
+        return response()->json($result);
     }
 }
