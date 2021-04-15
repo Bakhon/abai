@@ -367,7 +367,6 @@ export default {
                 });
             }
             this.$store.commit('globalloading/SET_LOADING',false);
-            this.loaded = true
         });
     }
 }
