@@ -57,41 +57,46 @@
             </div>
         </div>
         <div class="row m-0 p-1">
-            <div class="col-8 gtm-dark-light-transparent p-0 overflow-hidden">
-                <div class="text-center">
-                    <img src="/img/GTM/main_map.svg" class="gtm-main-map-img">
+            <div class="gtm-dark col-8 p-0 gtm-main-table">
+                <div class="position-absolute p-0 pr-2 pt-2 w-100 d-flex justify-content-end">
+                    <div @click="showMainMap = !showMainMap" class="d-flex cursor-pointer switch-map-button dr-fw-700">
+                        <img class="align-middle mr-1" :src="mainBlockButtonIcon" alt="" width="18">
+                        <div class="align-middle">{{ mainBlockButtonText }}</div>
+                    </div>
                 </div>
-                <div class="d-flex justify-content-around gtm-dark-light text-white p-1">
-                    <div class="d-flex">
-                        <img src="/img/GTM/main_map_line_blue.svg" alt="" class="my-auto mr-2">
-                        <div class="my-auto dr-fw-700">
-                            Действующий нефтепровод
-                        </div>
+                <div v-if="!showMainMap">
+                    <div class="p-0">
+                        <table class="table table-striped text-center text-white podbor-middle-table h-100">
+                            <thead>
+                            <tr>
+                                <th class="align-middle" rowspan="2">ДЗО</th>
+                                <th colspan="3">Дополнительная добыча ВРС, тонн</th>
+                                <th colspan="3">Дополнительная добыча ГТМ, тонн</th>
+                                <th colspan="3">Базовая добыча</th>
+                            </tr>
+                            <tr>
+                                <th>{{ trans('paegtm.plan').toLowerCase() }}</th>
+                                <th>{{ trans('paegtm.fact').toLowerCase() }}</th>
+                                <th>+/-</th>
+                                <th>{{ trans('paegtm.plan').toLowerCase() }}</th>
+                                <th>{{ trans('paegtm.fact').toLowerCase() }}</th>
+                                <th>+/-</th>
+                                <th>{{ trans('paegtm.plan').toLowerCase() }}</th>
+                                <th>{{ trans('paegtm.fact').toLowerCase() }}</th>
+                                <th>+/-</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr v-for="mainTableItem in mainTableData">
+                                <td v-for="value in mainTableItem" class="align-middle">{{ value }}</td>
+                            </tr>
+                            </tbody>
+                        </table>
                     </div>
-                    <div class="d-flex">
-                        <img src="/img/GTM/main_map_line_gray.svg" alt="" class="my-auto mr-2">
-                        <div class="my-auto dr-fw-700">
-                            Действующий газопровод
-                        </div>
-                    </div>
-                    <div class="d-flex">
-                        <img src="/img/GTM/main_map_icon_well.svg" alt="" class="my-auto mr-2">
-                        <img src="/img/GTM/main_map_icon_sea_well.svg" alt="" class="my-auto mr-2">
-                        <div class="my-auto dr-fw-700">
-                            Разведка и добыча
-                        </div>
-                    </div>
-                    <div class="d-flex">
-                        <img src="/img/GTM/main_map_icon_processing.svg" alt="" class="my-auto mr-2">
-                        <div class="my-auto dr-fw-700">
-                            Переработка
-                        </div>
-                    </div>
-                    <div class="d-flex">
-                        <img src="/img/GTM/main_map_icon_point.svg" alt="" class="my-auto mr-2">
-                        <div class="my-auto dr-fw-700">
-                            ДЗО
-                        </div>
+                </div>
+                <div v-if="showMainMap">
+                    <div class="text-center">
+                        <img src="/img/GTM/main_map.svg" class="gtm-main-map-img">
                     </div>
                 </div>
             </div>
@@ -171,6 +176,15 @@ Vue.component("gtm-modal", {
 export default {
     data: function () {
         return {
+            mainTableData: [
+                ['АО "Озенмунайгаз"', 300245, 270221, -30025, 345281, 310753, -34528, 300245, 270221, -30025],
+                ['АО "ЭмбаМунайГаз"', 300245, 270221, -30025, 345281, 310753, -34528, 300245, 270221, -30025],
+                ['АО "Мангистаумунайгаз"', 300245, 270221, -30025, 345281, 310753, -34528, 300245, 270221, -30025],
+                ['АО "Каражанбасмунайгаз"', 300245, 270221, -30025, 345281, 310753, -34528, 300245, 270221, -30025],
+                ['АО "Казгермунай"', 300245, 270221, -30025, 345281, 310753, -34528, 300245, 270221, -30025],
+                ['АО "Казахтуркмунай"', 300245, 270221, -30025, 345281, 310753, -34528, 300245, 270221, -30025],
+                ['АО "Казахойл Актобе"', 300245, 270221, -30025, 345281, 310753, -34528, 300245, 270221, -30025],
+            ],
             comparisonIndicators: [
                 ['Бурение', 15, 17, 78, 81],
                 ['ГРП', 15, 17, 78, 81],
@@ -211,6 +225,7 @@ export default {
                 }
             },
             isModalHide: true,
+            showMainMap: false,
         };
     },
     methods: {
@@ -220,6 +235,14 @@ export default {
         hideModal() {
             this.isModalHide = true;
         }
+    },
+    computed: {
+        mainBlockButtonText: function () {
+            return this.showMainMap ? 'Таблица' : 'Карта'
+        },
+        mainBlockButtonIcon: function () {
+            return this.showMainMap ? '/img/GTM/icon_main_table_button.svg' : '/img/GTM/icon_main_map_button.svg'
+        },
     },
     mounted () {
         this.$store.commit('globalloading/SET_LOADING', false);
