@@ -87,6 +87,7 @@
                     :columns="columns"
                     :rowSize="30"
                     @beforeRangeEdit="beforeRangeEdit"
+                    @beforeEdit="beforeRangeEdit"
                     :frameSize="72"
             ></v-grid>
         </div>

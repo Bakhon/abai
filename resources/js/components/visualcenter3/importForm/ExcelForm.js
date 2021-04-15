@@ -26,7 +26,7 @@ import cellsMappingEMG from './dzoData/cells_mapping_emg.json';
 import moment from "moment";
 import Visual from "./dataManagers/visual";
 
-const defaultDzoTicker = "КОА";
+const defaultDzoTicker = "ОМГ";
 
 export default {
     data: function () {
@@ -324,6 +324,7 @@ export default {
                 if (cellValue.trim().length === 0) {
                     cellValue = null;
                 }
+                cellValue = this.getFormattedNumber(cellValue);
                 if (fieldCategoryName) {
                     this.setNumberValueForCategories(category,row.fields[columnIndex-1],cellValue,fieldCategoryName);
                 } else if (category === this.inputDataCategories[0]) {
@@ -361,24 +362,17 @@ export default {
             for (let columnIndex = 1; columnIndex <= row.rowLength; columnIndex++) {
                 let selector = 'div[data-col="'+ columnIndex + '"][data-row="' + row.rowIndex + '"]';
                 let cellValue = $(selector).text().trim();
+                if (!this.stringColumns.includes(columnIndex)) {
+                    cellValue = this.getFormattedNumber(cellValue);
+                }
                 this.excelData[category][row.fields[columnIndex-1]] = cellValue;
             }
         },
-        isStringCell(rowIndex) {
-            return this.stringColumns.includes(rowIndex);
-        },
-        checkErrorsStringCell(cellValue,selector) {
-          if (!this.isStringCellValid(cellValue,selector)) {
-              this.turnErrorForCell(selector);
-              return false;
-          }
-          return true;
-        },
-        isStringCellValid(inputData,selector) {
-            if (!inputData || typeof(inputData) === 'number' || inputData.length < 6) {
-                return false;
+        getFormattedNumber(cellValue) {
+            if (cellValue.includes(',')) {
+                cellValue = cellValue.replace(',', '.');
             }
-            return true;
+            return parseFloat(cellValue);
         },
         async handleSave() {
             await this.storeData();
