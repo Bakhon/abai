@@ -33,6 +33,7 @@
                             "date",
                             "datetime",
                             "numeric",
+                            "table",
                             "radio",
                             "checkbox"
                           ]
@@ -70,7 +71,9 @@
                                 "dict",
                                 "text",
                                 "date",
+                                "datetime",
                                 "numeric",
+                                "table",
                                 "checkbox"
                               ]
                             }

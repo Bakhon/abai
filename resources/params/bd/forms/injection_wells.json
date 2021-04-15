@@ -5,88 +5,94 @@
     {
       "title": "Main",
       "blocks": [
-        {
-          "title": "Mode_parameters",
-          "items": [
-            {
-              "code": "field1",
-              "type": "date",
-              "title": "date_start",
-              "validation": "required|date"
-            },
-            {
-              "code": "field2",
-              "type": "date",
-              "title": "date_end",
-              "validation": "required|date"
-            }
-          ]
-        },
-        {
-          "title": "Tech_modes_of_injection_wells",
-          "items": [
-            {
-              "code": "field3",
-              "type": "numeric",
-              "title": "agent_volume",
-              "validation": "required|numeric",
-              "prefix": ""
-            },
-            {
-              "code": "field4",
-              "type": "dict_tree",
-              "title": "agent_type",
-              "validation": "required",
-              "dict":"",
-              "callbacks":{}
-            },
-            {
-              "code": "field5",
-              "type": "numeric",
-              "title": "agent_temperature",
-              "validation": "required|numeric",
-              "prefix": ""
-            },
-            {
-              "code": "field6",
-              "type": "numeric",
-              "title": "injection_pressure",
-              "validation": "required|numeric",
-              "prefix": ""
-            },
-            {
-              "code": "field7",
-              "type": "numeric",
-              "title": "qmax_reception",
-              "validation": "required|numeric",
-              "prefix": ""
-            }
-          ]
-        }
+        [
+          {
+            "title": "Mode_parameters",
+            "items": [
+              {
+                "code": "field1",
+                "type": "date",
+                "title": "date_start",
+                "validation": "required|date"
+              },
+              {
+                "code": "field2",
+                "type": "date",
+                "title": "date_end",
+                "validation": "required|date"
+              }
+            ]
+          }
+        ],
+        [
+          {
+            "title": "Tech_modes_of_injection_wells",
+            "items": [
+              {
+                "code": "field3",
+                "type": "numeric",
+                "title": "agent_volume",
+                "validation": "required|numeric",
+                "prefix": ""
+              },
+              {
+                "code": "field4",
+                "type": "dict_tree",
+                "title": "agent_type",
+                "validation": "required",
+                "dict": "",
+                "callbacks": {}
+              },
+              {
+                "code": "field5",
+                "type": "numeric",
+                "title": "agent_temperature",
+                "validation": "required|numeric",
+                "prefix": ""
+              },
+              {
+                "code": "field6",
+                "type": "numeric",
+                "title": "injection_pressure",
+                "validation": "required|numeric",
+                "prefix": ""
+              },
+              {
+                "code": "field7",
+                "type": "numeric",
+                "title": "qmax_reception",
+                "validation": "required|numeric",
+                "prefix": ""
+              }
+            ]
+          }
+        ]
       ]
     },
     {
-      "title":"Planned_event",
-      "blocks":[
-        {
-          "title":"Planned_events_tech_modes",
-          "items":[
-            {
-              "code":"field8",
-              "type":"dict_tree",
-              "title":"event",
-              "validation":"required",
-              "dict":"",
-              "callbacks":{}
-            },
-            {
-              "code":"field9",
-              "type":"date",
-              "title": "planned_month",
-              "validation": "required|date"
-            }
-          ]
-        }
+      "title": "Planned_event",
+      "blocks": [
+        [
+          {
+            "title": "Planned_events_tech_modes",
+            "items": [
+              {
+                "code": "field8",
+                "type": "dict_tree",
+                "title": "event",
+                "validation": "required",
+                "dict": "",
+                "callbacks": {}
+              },
+              {
+                "code": "field9",
+                "type": "date",
+                "title": "planned_month",
+                "validation": "required|date"
+              }
+            ]
+          }
+        ]
       ]
     }
   ]
