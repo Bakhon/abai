@@ -369,9 +369,7 @@ export default {
             }
         },
         getFormattedNumber(cellValue) {
-            if (cellValue.includes(',')) {
-                cellValue = cellValue.replace(',', '.');
-            }
+            cellValue = cellValue.replace(',', '.');
             return parseFloat(cellValue);
         },
         async handleSave() {
