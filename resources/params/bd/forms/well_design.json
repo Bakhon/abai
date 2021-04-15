@@ -14,7 +14,7 @@
                 "type": "dict",
                 "title": "column_type",
                 "dict": "equips",
-                "validation": "nullable|exists:tbd.dict.equip_type,name_ru"
+                "validation": "nullable|exists:dict.equip_type,id"
               },
               {
                 "code": "depth",
@@ -32,7 +32,7 @@
                 "type": "dict",
                 "title": "casing_type",
                 "dict": "casings",
-                "validation": "nullable|exists:exists:tbd.dict.tube_nom,od,wt,vd,sq"
+                "validation": "nullable|exists:exists:dict.tube_nom,id"
               },
               {
                 "code": "tube_count",
