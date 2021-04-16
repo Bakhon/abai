@@ -348,8 +348,8 @@
                         <td scope="col">{{trans('tr.field')}}</td>
                         <td scope="col">{{trans('tr.well_state')}}</td>
                         <td scope="col">{{trans('tr.well_number_short')}}</td>
-                        <td scope="col">{{trans('tr.horizon')}}</td>
-                        <td scope="col">{{trans('tr.object')}}</td>
+                        <td scope="col">{{trans('tr.u_horizon')}}</td>
+                        <td scope="col">{{trans('tr.u_object')}}</td>
                         <td scope="col">{{trans('tr.operation_method_short')}}</td>
                         <td scope="col">{{trans('tr.well_type_short')}}</td>
                         <td scope="col">{{trans('tr.block')}}</td>
@@ -405,6 +405,7 @@
           </modal>
 
           <button
+            v-if="isPermission"
             type="button" 
             data-toggle="modal" 
             data-target="#exampleModalCenter" 
@@ -530,7 +531,7 @@
           </a>
 
           <a
-            v-if="!edit"
+            v-if="!edit && isPermission"
             v-bind:title="trans('tr.edit')"
             style="cursor: pointer;"
             data-toggle="tooltip"
@@ -6684,6 +6685,9 @@ import TrMultiselect from "./TrMultiselect.vue";
 Vue.use(NotifyPlugin);
 export default {
   name: "TrPage",
+  props: [
+    'params'
+  ],
   components: {
     TrTable,
     TrFullTable,
@@ -6859,6 +6863,7 @@ export default {
         } else {
           this.dt = "01" + "." + mm1 + "." + yyyy1;
         }
+        this.isPermission = this.params.includes(this.permissionName);
       });
   },
   data: function () {
@@ -6905,6 +6910,8 @@ export default {
       datepicker2: false,
       date_fix: true,
       is_dynamic: false,
+      permissionName: 'tr edit',
+      isPermission: false,
     };
   },
   watch: {
