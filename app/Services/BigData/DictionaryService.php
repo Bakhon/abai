@@ -29,15 +29,14 @@ class DictionaryService
             'class' => Company::class,
             'name_field' => 'name'
         ],
-        [
-            'equips' => Equip::class,
+        'equips' => [
+            'class' => Equip::class,
             'name_field' => 'name_ru'
         ],
-        [
-            'casings' => CasingType::class,
-            'od' => 'name_ru'
-        ],
-
+        'casings' => [
+            'class' => CasingType::class,
+            'name_field' => 'CONCAT(\'Условный диаметр трубы(мм): \', od, \', Толщина стенки с норм. резьбой(мм):\', wt, \', Внутренний диаметр трубы с норм. резьбой (мм)\' , vd, \', Группа прочности: \', sg)'
+        ]
     ];
 
     const TREE_DICTIONARIES = [

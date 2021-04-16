@@ -6,5 +6,5 @@ use App\Models\TBDModel;
 
 class CasingType extends TBDModel
 {
-    protected $table = 'tbd.tbdi.block';
+    protected $table = 'dict.tube_nom';
 }
