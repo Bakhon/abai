@@ -15,12 +15,7 @@ class TrController extends Controller
     }
     public function tr()
     {
-        $permissions = auth()->user()->getAllPermissions();
-
-        $permissionNames = [];
-        foreach ($permissions as $permission){
-            array_push($permissionNames, $permission->name);
-        }        
+        $permissionNames = auth()->user()->getAllPermissions()->pluck('name')->toArray();        
         
         return view('tr.tr', compact('permissionNames'));
     }   

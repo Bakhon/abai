@@ -1216,7 +1216,6 @@ export default {
       const chart = { ...this.chartBarOptions.chart, stacked };
       const yaxis = [
         {
-          // seriesName: this.trans('tr.q_oil_1'),
           ...this.yaxisBase,
           title: {
             text: this.trans('tr.liquid_flow_rate'),
