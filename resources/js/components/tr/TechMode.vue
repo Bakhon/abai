@@ -595,6 +595,9 @@
                             label=""
                             width="200"
                             sortable
+                            :filters="filter_column.field"
+                            :filter-method="filterHandler"
+        
                             >
                           </el-table-column>
                         </el-table-column>
@@ -625,6 +628,8 @@
                             label=""
                             width="150"
                             sortable
+                            :filters="filter_column.well_type"
+                            :filter-method="filterHandlerArray"
                             >
                             <template slot-scope="scope">
                               <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`well_type`)}" >
@@ -655,6 +660,8 @@
                             label=""
                             width="100"
                             sortable
+                            :filters="filter_column.horizon"
+                            :filter-method="filterHandlerArray"
                             >
                             <template slot-scope="scope">
                               <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`horizon`)}" >
@@ -685,6 +692,8 @@
                             label=""
                             width="150"
                             sortable
+                            :filters="filter_column.object"
+                            :filter-method="filterHandler"
                             >
                           </el-table-column>
                         </el-table-column>
@@ -700,6 +709,8 @@
                             label=""
                             width="150"
                             sortable
+                            :filters="filter_column.block"
+                            :filter-method="filterHandlerArray"
                             >
                             <template slot-scope="scope">
                               <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`block`)}" >
@@ -1401,25 +1412,7 @@
                             width="130"
                             sortable
                             >
-                            <template slot-scope="scope">
-                              <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`p_intake`)}" >
-                                        <span
-                                          :class="{
-                                            'circle-err': isCircleErrClass(scope.$index,`p_intake`)}"
-                                          :style="`background :${getColor(
-                                            wells[scope.$index].p_intake[1][0]
-                                          )}`"
-                                        >
-                                          </span><span v-if="scope.row.p_intake[0] != null">{{
-                                    Math.round(scope.row.p_intake[0] * 10) / 10
-                                  }}</span>
-                                  <span v-if="wells && wells[scope.$index]" class="cell-comment-tech">
-                                    {{ wells[scope.$index].p_intake[1][1] }}
-                                  </span>
-                              </div>    
-                            </template>
-
-                            
+               
                           </el-table-column>
                         </el-table-column>
                         <el-table-column
@@ -1878,498 +1871,7 @@
                         </el-table-column>
                     </el-table-column>
 
-
-                    <!-- Данные за предыдущий месяц -->
-                    <el-table-column
-                      :label="trans('tr.previous_month_data')"
-                      >
-                      <el-table-column label="" >
-                        <el-table-column
-                        :label="trans('tr.bottomhole_pressure')"
-                        >
-
-                          <el-table-column
-                            prop="bhp_prev_m"
-                            label=""
-                            width="130"
-                            sortable
-                            >
-                            <template slot-scope="scope">
-                              <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`p_intake`)}" >
-                                        <span
-                                          :class="{
-                                            'circle-err': isCircleErrClass(scope.$index,`p_intake`)}"
-                                          :style="`background :${getColor(
-                                            wells[scope.$index].p_intake[1][0]
-                                          )}`"
-                                        >
-                                          </span><span v-if="scope.row.p_intake[0] != null">{{
-                                    Math.round(scope.row.p_intake[0] * 10) / 10
-                                  }}</span>
-                                  <span v-if="wells && wells[scope.$index]" class="cell-comment-tech">
-                                    {{ wells[scope.$index].p_intake[1][1] }}
-                                  </span>
-                              </div>    
-                            </template>
-
-                            
-                          </el-table-column>
-                        </el-table-column>
-                        <el-table-column
-                        :label="trans('tr.tr22')"
-                        >
-                          <el-table-column
-                            prop="q_l_prev_m"
-                            label=""
-                            width="130"
-                            sortable
-                            >
-                          </el-table-column>
-                        </el-table-column>
-                        <el-table-column
-                        :label="trans('tr.tr23')"
-                        >
-                          <el-table-column
-                            prop="wct_prev_m"
-                            label=""
-                            width="130"
-                            sortable
-                            >
-                          </el-table-column>
-                        </el-table-column>
-                        <el-table-column
-                        :label="trans('tr.trs57')"
-                        >
-                          <el-table-column
-                            prop="h_dyn_prev_m"
-                            label=""
-                            width="130"
-                            sortable
-                            >
-                          </el-table-column>
-                        </el-table-column>
-                        <el-table-column
-                        :label="trans('tr.trs25')"
-                        >
-                          <el-table-column
-                            prop="pi_prev_m"
-                            label=""
-                            width="130"
-                            sortable
-                            >
-                          </el-table-column>
-                        </el-table-column>
-                      </el-table-column>
-                    </el-table-column>
-
-
-                    <!-- Фактический режим -->
-                    <el-table-column
-                      :label="trans('tr.tr17')"
-                      >
-                      <el-table-column label="" >
-                        <el-table-column
-                        :label="trans('tr.tr20')"
-                        >
-                          <el-table-column
-                            prop="bhp"
-                            label=""
-                            width="130"
-                            sortable
-                            >
-                            <template slot-scope="scope">
-                                      <span
-                                        :class="{
-                                          'circle-err':
-                                            wells &&
-                                            wells[scope.$index] &&
-                                            wells[scope.$index].bhp[1][0] !== '0',
-                                        }"
-                                        :style="`background :${getColor(
-                                          wells[scope.$index].bhp[1][0]
-                                        )}`"
-                                      >
-                                      </span><span v-if="scope.row.bhp[0] != null">{{
-                                Math.round(scope.row.bhp[0] * 10) / 10
-                              }}</span>
-                              <span v-if="wells && wells[scope.$index]" class="cell-comment-tech">
-                                {{ wells[scope.$index].bhp[1][1] }}
-                              </span>
-                            </template>
-                          </el-table-column>
-                        </el-table-column>
-                        <el-table-column
-                        :label="trans('tr.tr21')"
-                        >
-                          <el-table-column
-                            prop="q_o"
-                            label=""
-                            width="130"
-                            sortable
-                            >
-                          </el-table-column>
-                        </el-table-column>
-                        <el-table-column
-                        :label="trans('tr.tr22')"
-                        >
-                          <el-table-column
-                            prop="q_l"
-                            label=""
-                            width="130"
-                            sortable
-                            >
-                          </el-table-column>
-                        </el-table-column>
-                        <el-table-column
-                        :label="trans('tr.tr23')"
-                        >
-                          <el-table-column
-                            prop="wct"
-                            label=""
-                            width="130"
-                            sortable
-                            >
-                          </el-table-column>
-                        </el-table-column>
-                        <el-table-column
-                        :label="trans('tr.tr24')"
-                        >
-                          <el-table-column
-                            prop="gor"
-                            label=""
-                            width="130"
-                            sortable
-                            >
-                          </el-table-column>
-                        </el-table-column>
-                      </el-table-column>
-                    </el-table-column>
-          
-                    <el-table-column
-                      :label="trans('tr.tr25')"
-                      >
-                      <el-table-column label="" prop="fake" >
-                        <el-table-column label="" >
-                          <el-table-column 
-                            prop="well_status_last_day"
-                            width="130"
-                            sortable>
-                          </el-table-column>
-                        </el-table-column>
-                      </el-table-column>
-                    </el-table-column>
-
-                    <el-table-column :label="trans('tr.trs15')">
-                      <el-table-column label="" prop="fake" >
-                        <el-table-column label="" >
-                          <el-table-column
-                            prop="P_bubble_point"
-                            width="130"
-                            sortable
-                            >
-                          </el-table-column>
-                        </el-table-column>
-                      </el-table-column>
-                    </el-table-column>
-                    <el-table-column :label="trans('tr.trs16')">
-                      <el-table-column label="" prop="fake" >
-                        <el-table-column label="" >
-                          <el-table-column
-                            prop="t_res"
-                            width="130"
-                            sortable
-                            >
-                          </el-table-column>
-                        </el-table-column>
-                      </el-table-column>
-                    </el-table-column>
-                    <el-table-column :label="trans('tr.trs17')">
-                      <el-table-column label="" prop="fake" >
-                        <el-table-column label="" >
-                          <el-table-column
-                            prop="wht"
-                            width="130"
-                            sortable
-                            >
-                          </el-table-column>
-                        </el-table-column>
-                      </el-table-column>
-                    </el-table-column>
-
-                    <!-- ГРП -->
-                    <el-table-column :label="trans('tr.tr28')">
-                      <el-table-column label="">
-                        <el-table-column :label="trans('tr.trs59')">
-                          <el-table-column
-                            prop="grp_skin"
-                            width="130"
-                            sortable
-                            >
-                          </el-table-column>
-                        </el-table-column>
-                        <el-table-column :label="trans('tr.trs60')">
-                          <el-table-column
-                            prop="grp_jd"
-                            width="130"
-                            sortable
-                            >
-                          </el-table-column>
-                        </el-table-column>
-                        <el-table-column :label="trans('tr.trs61')">
-                          <el-table-column
-                            prop="grp_date"
-                            width="130"
-                            sortable
-                            >
-                          </el-table-column>
-                        </el-table-column>
-                        <el-table-column label="Фирма">
-                          <el-table-column
-                            prop="grp_contractor"
-                            width="130"
-                            sortable
-                            >
-                          </el-table-column>
-                        </el-table-column>
-                      </el-table-column>
-                    </el-table-column>
-                    <el-table-column :label="trans('tr.trs18')">
-                      <el-table-column label="" prop="fake" >
-                        <el-table-column label="" >
-                          <el-table-column
-                            prop="visc_oil_rc"
-                            width="130"
-                            sortable
-                            >
-                          </el-table-column>
-                        </el-table-column>
-                      </el-table-column>
-                    </el-table-column>
-                    <el-table-column :label="trans('tr.trs19')">
-                      <el-table-column label="" prop="fake" >
-                        <el-table-column label="" >
-                          <el-table-column
-                            prop="visc_wat_rc"
-                            width="130"
-                            sortable
-                            >
-                          </el-table-column>
-                        </el-table-column>
-                      </el-table-column>
-                    </el-table-column>
-                    <el-table-column :label="trans('tr.trs20')">
-                      <el-table-column label="" prop="fake" >
-                        <el-table-column label="" >
-                          <el-table-column
-                            prop="visc_liq_rc"
-                            width="130"
-                            sortable
-                            >
-                          </el-table-column>
-                        </el-table-column>
-                      </el-table-column>
-                    </el-table-column>
-                    <el-table-column :label="trans('tr.trs21')">
-                      <el-table-column label="" prop="fake" >
-                        <el-table-column label="" >
-                          <el-table-column
-                            prop="bo"
-                            width="130"
-                            sortable
-                            >
-                          </el-table-column>
-                        </el-table-column>
-                      </el-table-column>
-                    </el-table-column>
-                    <el-table-column :label="trans('tr.trs22')">
-                      <el-table-column label="" prop="fake" >
-                        <el-table-column label="" >
-                          <el-table-column
-                            prop="dens_oil"
-                            width="130"
-                            sortable
-                            >
-                          </el-table-column>
-                        </el-table-column>
-                      </el-table-column>
-                    </el-table-column>
-                    <el-table-column :label="trans('tr.trs23')">
-                      <el-table-column label="" prop="fake" >
-                        <el-table-column label="" >
-                          <el-table-column
-                            prop="dens_liq"
-                            width="130"
-                            sortable
-                            >
-                          </el-table-column>
-                        </el-table-column>
-                      </el-table-column>
-                    </el-table-column>
-                    <el-table-column :label="trans('tr.trs24')">
-                      <el-table-column label="" prop="fake" >
-                        <el-table-column label="" >
-                          <el-table-column
-                            prop="h_perf"
-                            width="130"
-                            sortable
-                            >
-                          </el-table-column>
-                        </el-table-column>
-                      </el-table-column>
-                    </el-table-column>
-                    <el-table-column label="k">
-                      <el-table-column label="" prop="fake" >
-                        <el-table-column label="" >
-                          <el-table-column
-                            prop="k"
-                            width="130"
-                            sortable
-                            >
-                          </el-table-column>
-                        </el-table-column>
-                      </el-table-column>
-                    </el-table-column>
-                    <el-table-column label="KH">
-                      <el-table-column label="" prop="fake" >
-                        <el-table-column label="" >
-                          <el-table-column
-                            prop="kh"
-                            width="130"
-                            sortable
-                            >
-                          </el-table-column>
-                        </el-table-column>
-                      </el-table-column>
-                    </el-table-column>
-                    <el-table-column :label="trans('tr.trs25')">
-                      <el-table-column label="" prop="fake" >
-                        <el-table-column label="" >
-                          <el-table-column
-                            prop="pi"
-                            width="130"
-                            sortable
-                            >
-                          </el-table-column>
-                        </el-table-column>
-                      </el-table-column>
-                    </el-table-column>
-                    <!-- Расчет технологического потенциала от ИДН -->
-                    <el-table-column :label="trans('tr.tr18')">
-                        <el-table-column :label="trans('tr.trs62')" prop="fake">
-                          <el-table-column label="">
-                            <el-table-column
-                              prop="tp_idn_bhp"
-                              width="130"
-                              sortable
-                              >
-                            </el-table-column>
-                          </el-table-column>
-                        </el-table-column>
-                        
-
-                        <el-table-column :label="trans('tr.tr27')">
-                            <el-table-column :label="trans('tr.tr22')">
-                              <el-table-column
-                                prop="tp_idn_liq"
-                                width="130"
-                                sortable
-                                >
-                              </el-table-column>
-                            </el-table-column>
-                             <el-table-column :label="trans('tr.trs78')">
-                              <el-table-column
-                                prop="tp_idn_liq_cas_d_corr"
-                                width="130"
-                                sortable
-                                >
-                              </el-table-column>
-                            </el-table-column>
-
-                            <el-table-column :label="trans('tr.tr21')">
-                              <el-table-column
-                                prop="tp_idn_oil"
-                                width="130"
-                                sortable
-                                >
-                              </el-table-column>
-                            </el-table-column>
-                            <el-table-column :label="trans('tr.tr32')">
-                              <el-table-column
-                                prop="tp_idn_oil_inc"
-                                width="130"
-                                sortable
-                                >
-                              </el-table-column>
-                            </el-table-column>
-                        </el-table-column>
-
-                        <el-table-column :label="trans('tr.trs63')" prop="fake">
-                          <el-table-column label="">
-                              <el-table-column
-                                prop="tp_idn_jd"
-                                width="130"
-                                sortable
-                                >
-                              </el-table-column>
-                          </el-table-column>
-                        </el-table-column>
-                        <el-table-column label="Skin" prop="fake">
-                          <el-table-column label="">
-                              <el-table-column
-                                prop="tp_idn_skin"
-                                width="130"
-                                sortable
-                                >
-                              </el-table-column>
-                          </el-table-column>
-                        </el-table-column>
-                        <el-table-column :label="trans('tr.trs64')" prop="fake">
-                          <el-table-column label="">
-                              <el-table-column
-                                prop="tp_idn_pi_after"
-                                width="130"
-                                sortable
-                                >
-                              </el-table-column>
-                          </el-table-column>
-                        </el-table-column>
-
-
-                        <el-table-column :label="trans('tr.tr28')">
-                          <el-table-column :label="trans('tr.tr22')">
-                              <el-table-column
-                                prop="tp_idn_grp_q_liq"
-                                width="130"
-                                sortable
-                                >
-                              </el-table-column>
-                          </el-table-column>
-                          <el-table-column :label="trans('tr.trs78')">
-                              <el-table-column
-                                prop="tp_idn_grp_q_liq_cas_d_corr"
-                                width="130"
-                                sortable
-                                >
-                              </el-table-column>
-                          </el-table-column>
-                          <el-table-column :label="trans('tr.tr21')">
-                              <el-table-column
-                                prop="tp_idn_grp_q_oil"
-                                width="130"
-                                sortable
-                                >
-                              </el-table-column>
-                          </el-table-column>
-                          <el-table-column :label="trans('tr.tr32')">
-                              <el-table-column
-                                prop="tp_idn_grp_q_oil_inc"
-                                width="130"
-                                sortable
-                                >
-                              </el-table-column>
-                          </el-table-column>
-                        </el-table-column>
-                    </el-table-column>
+                    
 
                   </el-table>
                   <div class="ui-pagination">
@@ -2578,6 +2080,22 @@ export default {
           console.log("No data");
           
         }
+      });
+    this.axios
+      .get(
+        "http://172.20.103.187:7576/api/techregime/tr_parameter_filters/"
+      )
+      .then((response) => {
+        this.$store.commit("globalloading/SET_LOADING", false);
+        let data = response.data;
+        if (data) {
+          
+          this.filter_column = data;
+        }
+        else {
+          console.log("No data");
+        }
+
         if (mm1 < 10) {
           this.dt = "01" + ".0" + mm1 + "." + yyyy1;
         } else {
@@ -2634,9 +2152,11 @@ export default {
        "el-table_1_column_113", "el-table_1_column_125", "el-table_1_column_137", "el-table_1_column_141","el-table_1_column_145","el-table_1_column_149", 
        "el-table_1_column_153", "el-table_1_column_163", "el-table_1_column_165", "el-table_1_column_167", "el-table_1_column_169", "el-table_1_column_171",
         "el-table_1_column_173", "el-table_1_column_175",  "el-table_1_column_177", "el-table_1_column_179",  "el-table_1_column_181", "el-table_1_column_183", 
-      "el-table_1_column_187",  "el-table_1_column_191",  "el-table_1_column_195",  "el-table_1_column_199", ],
-        
+      "el-table_1_column_187",  "el-table_1_column_191",  "el-table_1_column_195",  "el-table_1_column_199", ], 
+      filter_column: [], 
     };
+    
+
   },
   watch: {
     fullWells() {
@@ -3063,6 +2583,26 @@ export default {
         return console.log("error")
       }
     },
+    resetDateFilter() {
+      this.$refs.filterTable.clearFilter('date');
+    },
+    clearFilter() {
+      this.$refs.filterTable.clearFilter();
+    },
+    formatter(row, column) {
+      return row.address;
+    },
+    filterTag(value, row) {
+      return row.tag === value;
+    },
+    filterHandlerArray(value, row, column) {
+      const property = column['property'];
+      return row[property][0] === value;
+    },
+    filterHandler(value, row, column) {
+      const property = column['property'];
+      return row[property] === value;
+    },
 
     searchWell() {
       console.log("search = ", this.searchString);
@@ -3482,6 +3022,15 @@ table::-webkit-scrollbar-corner {
     background-color: #555;
     padding:3px;
     bottom: 31px;
+    margin-left: 18px;
+}
+.circle-err {
+    display: block;
+    height: 10px;
+    border-radius: 50px;
+    width: 10px;
+    margin-right: 20px;
+    background: rgb(255, 0, 0);
     margin-left: 18px;
 }
 </style>

@@ -1057,7 +1057,7 @@ export default {
       firstWeekDate: null,
       factorsMeasure: this.trans('tr.t'),
       qLiquidMeasure: this.trans('tr.m3'),
-      prodIndexMeasure: this.trans('tr.mtr4'),
+      prodIndexMeasure: this.trans('tr.m3_day_atm'),
       fa_table_header: null,
       fa_table_header2: null,
       firstWeekDate: null,
@@ -1072,7 +1072,7 @@ export default {
         plotOptions: {
           bar: {
             dataLabels: {
-              position: "bottom", // top, center, bottom
+              position: "bottom",
             },
           },
         },
@@ -1465,7 +1465,6 @@ export default {
         .then((response) => {
           this.searched = searchParam ? true : false;
           this.$store.commit("globalloading/SET_LOADING", false);
-          // this.isloading = false;
           console.log("search resp = ", response.data);
           this.$store.commit("fa/SET_SEARCH", this.searchString);
           let data = response.data;

@@ -41,30 +41,17 @@ export default {
 
         colors: ["#fba409", "#13b062"],
         chart: {
-
-          title: {
-            text: 'Сравнение технико-экономических показателей за 1 год эксплуатации ',
-            align: 'center',
-            margin: 20,
-            offsetY: 20,
-            style: {
-              fontSize: '20px'
-            }
-  },
-
           background: '#272953',
           toolbar: {
             show: true,
             Color: "#373d3f",
-            //autoSelected: "pan",
           },
           foreColor: "#fff",
           animations: {
-            speed: 200,
+              speed: 200,
           },
-          //  height: 150,
           type: "area",
-        },
+        }, 
 
         plotOptions: {
           bar: {
@@ -87,7 +74,8 @@ export default {
             colors: ["#c5c5c5"],
           },
         },
-        labels: ["Qн, т/сут", "ННО, сут", "Энергопотребление кВт*ч",  "NPV, млн.тг"],
+
+        labels: [this.trans('pgno.q_nefti'), this.trans('pgno.nno'), this.trans('pgno.power_consumption'),  this.trans('pgno.npv')],
         legend: {
           show: true,
           position: "bottom",
@@ -102,6 +90,7 @@ export default {
             show: true,
           },
           labels: {
+            
             show: true,
             formatter: function (val) {
               return val /*+ "%"*/;
@@ -117,13 +106,31 @@ export default {
           axisTicks: {
             show: true,
           },
+          labels: {
+          
+            show: true,
+            formatter: function (val) {
+              return val /*+ "%"*/;
+            },
+          },
         },
+
+        title: {
+            text: this.trans('pgno.techniko_econom_god'),
+            align: 'center',
+            margin: 20,
+            offsetY: 20,
+            style: {
+              fontSize: '20px'
+            },
+          },
       },
       series:[
         
         {
-          name: "ШГН",
+          name: this.trans('pgno.shgn_pokupka'),
           type: "bar",
+          
           stroke: {
             show: true,
           },
@@ -131,8 +138,9 @@ export default {
           data: [Math.round(this.data.qoilShgn), Math.round(this.data.NNO1), Math.round(this.data.shgnParam/1000), Math.round(this.data.shgnNpv/1000000)],
         },
         {
-          name: "ЭЦН (аренда)",
+          name: this.trans('pgno.ecn_arenda'),
           type: "bar",
+          
           stroke: {
             show: true,
           },
