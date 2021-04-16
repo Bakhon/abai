@@ -235,7 +235,7 @@ export default {
           dataLabels: {
             enabled: false
           },
-          colors: ["#FF1654", "#247BA0", "#5FA7FF"],
+          colors: ["#06AED5", "#9C7300", "#33CC99"],
           stroke: {
             width: [4, 4, 4]
           },

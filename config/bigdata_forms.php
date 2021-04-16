@@ -6,4 +6,5 @@
   'well_exploitation' => '\\App\\Services\\BigData\\Forms\\WellExploitation',
   'gtm_register' => '\\App\\Services\\BigData\\Forms\\GtmRegister',
   'prs' => '\\App\\Services\\BigData\\Forms\\Prs',
+  'gas_well' => '\\App\\Services\\BigData\\Forms\\GasWell',
 );

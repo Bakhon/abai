@@ -6,6 +6,8 @@ use App\Exceptions\ParseJsonException;
 use App\Http\Controllers\Controller;
 use App\Models\BigData\Dictionaries\Geo;
 use App\Services\BigData\Forms\BaseForm;
+use App\Services\BigData\Forms\RowHistory\RowHistory;
+use App\Services\BigData\Forms\TableForm;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -89,14 +91,26 @@ class FormsController extends Controller
 
     public function getRowHistory(string $formName, Request $request): array
     {
+        /** @var TableForm $form */
         $form = $this->getForm($formName);
-        return $form->getRowHistory(Carbon::parse($request->get('date')));
+        $rowHistory = new RowHistory($form);
+        return $rowHistory->getRowHistory(
+            $request->get('well_id'),
+            $request->get('column'),
+            Carbon::parse($request->get('date'))
+        );
     }
 
     public function getRowHistoryGraph(string $formName, Request $request): array
     {
+        /** @var TableForm $form */
         $form = $this->getForm($formName);
-        return $form->getRowHistoryGraph(Carbon::parse($request->get('date')));
+        $rowHistory = new RowHistory($form);
+        return $rowHistory->getRowHistoryGraph(
+            $request->get('well_id'),
+            $request->get('column'),
+            Carbon::parse($request->get('date'))
+        );
     }
 
     public function getHistory(string $formName, Request $request): array
