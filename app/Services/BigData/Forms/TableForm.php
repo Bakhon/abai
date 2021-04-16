@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Services\BigData\Forms;
 
 use App\Models\BigData\Infrastructure\History;
-use App\Models\BigData\Well;
 use App\Services\BigData\FieldLimitsService;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
@@ -32,99 +31,6 @@ abstract class TableForm extends BaseForm
         return $cacheKey;
     }
 
-    public function getRowHistory(Carbon $dateTo, Carbon $dateFrom = null)
-    {
-        if (is_null($dateFrom)) {
-            $dateFrom = (clone $dateTo)->subMonthNoOverflow();
-        }
-
-        $wellId = $this->request->get('well_id');
-        $well = Well::find($wellId);
-        $columnCodes = $this->getRowHistoryColumnCodes($this->request->get('column'));
-
-        $tables = $this
-            ->getFields()
-            ->whereIn('code', $columnCodes)
-            ->pluck('table')
-            ->filter()
-            ->unique();
-
-        $rowData = $this->fetchRowData($tables, (array)$well->id, $dateTo, $dateFrom);
-
-        $result = [];
-        foreach ($this->getFields()->whereIn('code', $columnCodes) as $field) {
-            if (empty($field['table'])) {
-                $result[$field['code']] = [];
-                continue;
-            }
-
-            $result[$field['code']] = array_map(
-                function ($item) use ($field) {
-                    return $this->getFormatedFieldValue($field, $item);
-                },
-                $this->getFieldHistory(
-                    $field,
-                    $rowData[$field['table']],
-                    $well
-                )
-            );
-        }
-
-        return $this->groupFieldsByDates($result, $dateFrom, $dateTo);
-    }
-
-    public function getRowHistoryGraph(Carbon $dateTo, Carbon $dateFrom = null)
-    {
-        $wellId = $this->request->get('well_id');
-        $well = Well::find($wellId);
-
-        $graphColumnCodes = $this->getRowHistoryColumnCodes($this->request->get('column'), 'graph_fields');
-        $tables = $this
-            ->getFields()
-            ->whereIn('code', $graphColumnCodes)
-            ->pluck('table')
-            ->filter()
-            ->unique();
-
-        $rowData = $this->fetchRowData($tables, (array)$well->id, $dateTo, (clone $dateTo)->subYears(10));
-
-        $result = [];
-        foreach ($this->getFields()->whereIn('code', $graphColumnCodes) as $field) {
-            if (empty($field['table'])) {
-                $result[$field['code']] = [];
-                continue;
-            }
-
-            $result[$field['code']] = array_map(
-                function ($item) use ($field) {
-                    return $this->getFormatedFieldValue($field, $item);
-                },
-                $this->getFieldHistory(
-                    $field,
-                    $rowData[$field['table']],
-                    $well
-                )
-            );
-        }
-
-        $minDate = Carbon::now();
-        foreach ($rowData as $data) {
-            $date = Carbon::parse($data->get($well->id)->sortBy('dbeg')->first()->dbeg);
-            $minDate = $date < $minDate ? $date : $minDate;
-        }
-
-        return [
-            'selectedColumn' => $this->request->get('column'),
-            'table' => [
-                'rows' => $this->getRowHistory($dateTo, $dateFrom),
-                'columns' => $this->getRowHistoryColumnCodes($this->request->get('column'))
-            ],
-            'graph' => [
-                'rows' => $this->groupFieldsByDates($result, $minDate, $dateTo),
-                'columns' => $this->getFieldByCode($this->request->get('column'))['graph_fields']
-            ]
-        ];
-    }
 
     public function copyFieldValue(int $wellId, Carbon $date)
     {
@@ -171,7 +77,12 @@ abstract class TableForm extends BaseForm
         ];
     }
 
-    protected function getFieldByCode(string $code)
+    public function getFields(): Collection
+    {
+        return collect($this->params()['columns']);
+    }
+
+    public function getFieldByCode(string $code)
     {
         return $this->getFields()->where('code', $code)->first();
     }
@@ -179,11 +90,6 @@ abstract class TableForm extends BaseForm
     protected function getFilterTree(): array
     {
         return [];
-    }
-
-    protected function getFields(): Collection
-    {
-        return collect($this->params()['columns']);
     }
 
     protected function getFieldValue(array $field, array $rowData, Model $item): ?array
@@ -212,48 +118,7 @@ abstract class TableForm extends BaseForm
         return $this->getFormatedFieldValue($field, $result);
     }
 
-    private function getFieldHistory(array $fieldParams, Collection $collection, Model $item)
-    {
-        $result = [];
-        if (is_null($collection->get($item->id))) {
-            return $result;
-        }
-
-        $rows = $collection->get($item->id);
-        if (!empty($fieldParams['additional_filter'])) {
-            foreach ($fieldParams['additional_filter'] as $key => $value) {
-                $rows->where($key, '=', $value);
-            }
-        }
-
-        if ($rows->isEmpty()) {
-            return $result;
-        }
-
-        foreach ($rows as $row) {
-            $date = Carbon::parse($row->dbeg)->format('d.m.Y');
-            if (isset($result[$date])) {
-                continue;
-            }
-
-            $value = $row->{$fieldParams['column']};
-
-            switch ($fieldParams['type']) {
-                case 'float':
-                    $value = floatval($value);
-                    break;
-                case 'integer':
-                    $value = intval($value);
-                    break;
-            }
-
-            $result[$date] = ['value' => $value, 'time' => Carbon::parse($row->dbeg)->format('d.m.Y H:i:s')];
-        }
-
-        return $result;
-    }
-
-    protected function getFormatedFieldValue(array $field, array $value): ?array
+    public function getFormatedFieldValue(array $field, array $value): ?array
     {
         return $value;
     }
@@ -312,7 +177,7 @@ abstract class TableForm extends BaseForm
         return $result;
     }
 
-    protected function fetchRowData(Collection $tables, array $wellIds, Carbon $date, Carbon $dateFrom = null): array
+    public function fetchRowData(Collection $tables, array $wellIds, Carbon $date, Carbon $dateFrom = null): array
     {
         if (is_null($dateFrom)) {
             $dateFrom = (clone $date)->subMonthNoOverflow();
@@ -430,40 +295,5 @@ abstract class TableForm extends BaseForm
                 return $row;
             }
         );
-    }
-
-    private function getRowHistoryColumnCodes($columnCode, $fieldsParam = 'fields')
-    {
-        $result = [];
-        $column = $this->getFieldByCode($columnCode);
-        $columnCodes = $column[$fieldsParam];
-        foreach ($this->getFields()->whereIn('code', $columnCodes) as $column) {
-            $result[] = $column['code'];
-            if ($column['type'] === 'calc') {
-                if (preg_match_all('#\$([\S]*)\$#', $column['formula'], $matches)) {
-                    $result = array_merge($result, $matches[1]);
-                }
-            }
-        }
-
-        return array_values(array_unique($result));
-    }
-
-    private function groupFieldsByDates(array $fields, Carbon $dateFrom, Carbon $dateTo)
-    {
-        $result = [];
-
-        while ($dateFrom <= $dateTo) {
-            $date = $dateFrom->format('d.m.Y');
-
-            $dateValues = [];
-            foreach ($fields as $code => $field) {
-                $dateValues[$code] = isset($field[$date]) ? $field[$date] : null;
-            }
-            $result[$date] = $dateValues;
-
-            $dateFrom->addDay();
-        }
-        return $result;
     }
 }
