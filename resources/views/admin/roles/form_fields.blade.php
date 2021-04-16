@@ -163,9 +163,20 @@
                 <label class="form-check-label"
                        for="permission_{{$permissions->get('tr view main')->id}}">Просмотр главной
                     страницы</label>
+                    
+                <input
+                        class="form-check-input"
+                        id="permission_{{$permissions->get('tr edit')->id}}"
+                        type="checkbox"
+                        name="permissions[]"
+                        value="{{$permissions->get('tr edit')->id}}"
+                        {{!empty($role) && $role->permissions->where('id', $permissions->get('tr edit')->id)->isNotEmpty() ? 'checked' : ''}}
+                >
+                <label class="form-check-label"
+                       for="permission_{{$permissions->get('tr edit')->id}}">Редактирование
+                    </label>
             </div>
         </div>
-
         <div class="tabs tab-viscenter">
             <div class="form-check">
                 <input
