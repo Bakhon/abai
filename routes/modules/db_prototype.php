@@ -10,6 +10,8 @@ Route::group(
                 Route::get('/las', 'bd\DBController@las')->name('las');
                 Route::get('/user_reports', 'bd\DBController@userReports')->name('userReports');
 
+                Route::get('/geo-data-reference-book', 'bd\DBController@geoDataReferenceBook')->name('bigdata.geoDataReferenceBook');
+
                 Route::get('/reports', 'bd\DBController@reports')->name('bigdata.reports');
                 Route::get('/reports/favorite', 'bd\DBController@favoriteReports')->name('bigdata.reports.favorite');
                 Route::post('/reports/favorite/{report}', 'bd\DBController@addReportToFavorites')->name(
