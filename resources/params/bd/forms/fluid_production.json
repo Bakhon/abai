@@ -122,20 +122,7 @@
       ],
       "graph_fields": [
         {
-          "liquid_val": {
-            "axis": true
-          },
-          "bsw": {
-            "axis": true
-          },
-          "debit_fluid_tech": {},
-          "bsw_tech": {}
-        },
-        {
-          "oil_val": {
-            "axis": true
-          },
-          "debit_oil_tech": {}
+          "liquid_telemetry": {}
         }
       ],
       "history_popup": {
@@ -337,10 +324,12 @@
       "code": "measure_last_month",
       "type": "history",
       "fields": [
-        "liquid_debit",
-        "bsw",
-        "oil_debit",
-        "worktime"
+        {
+          "liquid_debit": {},
+          "bsw": {},
+          "oil_debit": {},
+          "worktime": {}
+        }
       ],
       "is_editable": false
     },

@@ -2,6 +2,7 @@
 
 namespace App\Imports;
 
+use App\Console\Commands\Import\Wells;
 use App\Models\ComplicationMonitoring\PipeType;
 use App\Models\Pipes\MapPipe;
 use App\Models\Pipes\PipeCoord;
@@ -48,7 +49,7 @@ class TrunklineImport implements ToCollection, WithEvents, WithColumnLimit, With
     ];
 
 
-    public function __construct(\App\Console\Commands\Import\ImportTrunkline $command)
+    public function __construct(Wells $command)
     {
         $this->command = $command;
         $this->sheetName = null;

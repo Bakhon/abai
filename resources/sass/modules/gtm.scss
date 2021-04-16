@@ -8,16 +8,16 @@
 
 .menu-item-bg {
     background: rgba(51,57,117,1);
-}
 
-.menu-item-bg:first-child {
-    border-radius: 0.25rem 0.25rem 0 0;
-    padding-top: 0.5rem;
-}
+    &:first-child {
+        border-radius: 0.25rem 0.25rem 0 0;
+        padding-top: 0.5rem;
+    }
 
-.menu-item-bg:last-child {
-    border-radius: 0 0 0.25rem 0.25rem;
-    padding-bottom: 0.5rem;
+    &:last-child {
+        border-radius: 0 0 0.25rem 0.25rem;
+        padding-bottom: 0.5rem;
+    }
 }
 
 .menu-item {
@@ -79,11 +79,11 @@
     cursor: pointer;
     font-size: 0.9rem;
     padding: 0.5rem;
-}
 
-.calendar-filter-block .calendar-icon {
-    margin-bottom: 0.2rem;
-    margin-left: 0.5rem;
+    .calendar-icon {
+        margin-bottom: 0.2rem;
+        margin-left: 0.5rem;
+    }
 }
 
 .search-input {
@@ -92,11 +92,11 @@
     border: none;
     line-height: 1.8rem;
     color: white;
-}
 
-.search-input::placeholder {
-    color: rgba(158, 164, 201, 1);
-    padding-left: 1rem;
+    &::placeholder {
+        color: rgba(158, 164, 201, 1);
+        padding-left: 1rem;
+    }
 }
 
 .search-button {
@@ -123,23 +123,6 @@
     background: rgba(31, 33, 66, 1);
 }
 
-.gtm-menu div {
-    font-size: 1.2rem;
-    font-weight: 700;
-    line-height: 3.2rem;
-    color: #656A8A;
-}
-
-.gtm-menu div:hover {
-    color: white;
-    cursor: pointer;
-}
-
-.gtm-menu div.active {
-    color: white;
-    border-bottom: 0.2rem solid white;
-}
-
 .block-header {
     color: white;
     font-size: 1rem;
@@ -163,10 +146,6 @@
     height: 280px;
 }
 
-.near-wells-table-block {
-    max-height: 400px
-}
-
 .table-scroll::-webkit-scrollbar {
     width: 0.2rem;
 }
@@ -175,11 +154,6 @@
 {
     background-color: #3951CE;
     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
-}
-
-.near-wells {
-    font-size: 0.7rem;
-    line-height: 0.7rem;
 }
 
 .near-wells-big {
@@ -197,23 +171,6 @@
     border-color: #454D7D !important;
 }
 
-.schemaTable {
-    font-size: 0.6rem;
-}
-
-.schemaTHead {
-    background-color: #3951CE;
-}
-
-.schemaTHead th {
-    padding: 0;
-}
-
-.schemaTHead th {
-    border-right: 1px solid !important;
-    border-color: #3C4270 !important;
-}
-
 .treeUl {
     color: white;
     list-style: none;
@@ -229,78 +186,35 @@
 
 .tree-setting-block {
     right: 100%;
-}
 
-.tree-setting-block div {
-    min-width: 20rem;
-}
+    div {
+        min-width: 20rem;
+    }
 
-.tree-setting-block .block-header {
-    padding: 0 1rem;
-}
-
-.gtm-setting-checkbox {
-    position: absolute;
-    z-index: -1;
-    opacity: 0;
-}
-
-.gtm-setting-checkbox-div {
-    display: inline-flex;
-    align-items: center;
-    user-select: none;
-}
-
-.gtm-setting-custom-checkbox::before {
-    content: '';
-    display: inline-block;
-    width: 1em;
-    height: 1em;
-    flex-shrink: 0;
-    flex-grow: 0;
-    border: 1px solid rgba(35, 125, 235, 0.3);
-    border-radius: 0.25em;
-    margin: 0 0.2rem;
-    background-repeat: no-repeat;
-    background-position: center center;
-    background-size: 50% 50%;
-}
-
-.h-324 {
-    height: 324px;
-}
-
-.mh-324 {
-    max-height: 324px;
-}
-
-.h-400 {
-    height: 400px;
-}
-
-.mh-400 {
-    max-height: 400px;
+    .block-header {
+        padding: 0 1rem;
+    }
 }
 
 .podbor-middle-table {
     border: 1px solid rgba(69,77,125,1);
-}
 
-.podbor-middle-table th {
-    border: 1px solid rgba(69,77,125,1) !important;
-    background-color: #333975;
-    font-size: 0.9rem;
-    padding: 0.3rem !important;
-}
+    th {
+        border: 1px solid rgba(69,77,125,1) !important;
+        background-color: #333975;
+        font-size: 0.9rem;
+        padding: 0.3rem !important;
+    }
 
-.podbor-middle-table td {
-    font-size: 0.8rem;
-    padding: 0.3rem !important;
-    border-top: none !important;
-}
+    td {
+        font-size: 0.8rem;
+        padding: 0.3rem !important;
+        border-top: none !important;
+    }
 
-.podbor-middle-table td:not(last-child) {
-    border-right: 1px solid rgba(69,77,125,1);
+    td:not(last-child) {
+        border-right: 1px solid rgba(69,77,125,1);
+    }
 }
 
 .dr-border-light {
@@ -310,45 +224,45 @@
 .dr-wt-table {
     border-collapse: collapse;
     margin: 0;
-}
 
-.dr-wt-table tbody tr td {
-    background: rgba(31, 33, 66, 1);
-    border: 0.5rem solid rgba(39, 41, 83, 1);
-    padding: 0.8rem 0.5rem;
-    font-size: 0.8rem;
-}
+    tbody tr td {
+        background: rgba(31, 33, 66, 1);
+        border: 0.5rem solid rgba(39, 41, 83, 1);
+        padding: 0.8rem 0.5rem;
+        font-size: 0.8rem;
+    }
 
-.dr-wt-table tbody tr td:first-child {
-    vertical-align: top;
-    border-left: none;
-    padding: 0.1rem;
-}
+    tbody tr td:first-child {
+        vertical-align: top;
+        border-left: none;
+        padding: 0.1rem;
+    }
 
-.dr-wt-table tbody tr td:first-child img {
-    margin-bottom: 0.3rem;
-}
+    tbody tr td:first-child img {
+        margin-bottom: 0.3rem;
+    }
 
-.dr-wt-table tbody tr td:last-child {
-    border-right: none;
-}
+    tbody tr td:last-child {
+        border-right: none;
+    }
 
-.dr-wt-table tbody tr:first-child td {
-    border-top: none;
-}
+    tbody tr:first-child td {
+        border-top: none;
+    }
 
-.dr-wt-table tbody tr:last-child td {
-    border-bottom: none;
-}
+    tbody tr:last-child td {
+        border-bottom: none;
+    }
 
-.dr-wt-table tbody tr td:first-child div {
-    width: 1.2rem;
-    word-wrap: break-word;
-}
+    tbody tr td:first-child div {
+        width: 1.2rem;
+        word-wrap: break-word;
+    }
 
-.dr-wt-table tbody tr td div {
-    width: 5rem;
-    word-wrap: break-word;
+    tbody tr td div {
+        width: 5rem;
+        word-wrap: break-word;
+    }
 }
 
 .dr-search-bg {
@@ -371,19 +285,21 @@
     font-size: 0.8rem;
 }
 
-.dr-graph-switch > div {
-    height: 4rem;
-    background: rgba(51, 57, 117, 1);
-    margin-bottom: 1rem;
-}
+.dr-graph-switch {
+    > div {
+        height: 4rem;
+        background: rgba(51, 57, 117, 1);
+        margin-bottom: 1rem;
+    }
 
-.dr-graph-switch > div:last-child {
-    margin-bottom: 0;
-}
+    > div:last-child {
+        margin-bottom: 0;
+    }
 
-.dr-graph-switch span {
-    font-size: 0.8rem;
-    color: #9EA4C9;
+    span {
+        font-size: 0.8rem;
+        color: #9EA4C9;
+    }
 }
 
 .shadow-block {
@@ -395,47 +311,45 @@
     background: rgba(0, 0, 0, 0.5);
 }
 
-.gtm-indicator-item:not(:last-child) {
-    border-right: 1px solid rgba(69, 77, 125, 1);
-}
+.gtm-indicator-item {
+    :not(:last-child) {
+        border-right: 1px solid rgba(69, 77, 125, 1);
+    }
 
-.gtm-indicator-item div {
-    margin: 1rem 0;
-}
+    div {
+        margin: 1rem 0;
+    }
 
-.gtm-indicator-item .bigNumber {
-    color: white;
-    font-size: 3rem;
-    font-weight: 700;
-    margin: 0;
-}
+    .bigNumber {
+        color: white;
+        font-size: 3rem;
+        font-weight: 700;
+        margin: 0;
+    }
 
-.gtm-indicator-item .units {
-    color: rgba(130, 186, 255, 1);
-    font-size: 1rem;
-}
+    .units {
+        color: rgba(130, 186, 255, 1);
+        font-size: 1rem;
+    }
 
-.gtm-indicator-item .title {
-    color: white;
-    font-size: 1rem;
-    font-weight: 700;
-    margin: 0;
+    .title {
+        color: white;
+        font-size: 1rem;
+        font-weight: 700;
+        margin: 0;
+    }
+
+    .progress-bar {
+        margin: 0;
+    }
+
+    .progressMax {
+        color: rgba(130, 186, 255, 1);
+    }
 }
 
 .gtm-progress {
     height: 0.5rem !important;
-}
-
-.gtm-indicator-item .progress-bar {
-    margin: 0;
-}
-
-.gtm-indicator-item .progressMax {
-    color: rgba(130, 186, 255, 1);
-}
-
-.main-map-line-blue {
-    background: rgba(46, 80, 233, 1);
 }
 
 .switch-map-button {
@@ -516,12 +430,14 @@
         height: 260px;
     }
 
-    .gtm-indicator-item .bigNumber {
-        font-size: 2.9rem;
-    }
+    .gtm-indicator-item {
+        .bigNumber {
+            font-size: 2.9rem;
+        }
 
-    .gtm-indicator-item .title {
-        font-size: 0.95rem;
+        .title {
+            font-size: 0.95rem;
+        }
     }
 
     .gtm-main-table {
@@ -545,15 +461,15 @@
 
     .calendar-filter-block {
         font-size: 0.8rem;
-    }
 
-    .calendar-filter-block .calendar-icon {
-        width: 0.8rem;
-        margin-left: 0.3rem;
-    }
+        .calendar-icon {
+            width: 0.8rem;
+            margin-left: 0.3rem;
+        }
 
-    .calendar-filter-block .gear-icon {
-        margin-top: 0.3rem;
+        .gear-icon {
+            margin-top: 0.3rem;
+        }
     }
 
     .demo-img {
@@ -565,16 +481,18 @@
         font-size: 0.8rem;
     }
 
-    .gtm-indicator-item .bigNumber {
-        font-size: 2.8rem;
-    }
+    .gtm-indicator-item {
+        .bigNumber {
+            font-size: 2.8rem;
+        }
 
-    .gtm-indicator-item .title {
-        font-size: 0.9rem;
-    }
+        .title {
+            font-size: 0.9rem;
+        }
 
-    .gtm-indicator-item .units {
-        font-size: 0.8rem;
+        .units {
+            font-size: 0.8rem;
+        }
     }
 
     .gtm-main-table {
@@ -608,12 +526,14 @@
         font-size: 0.8rem;
     }
 
-    .gtm-indicator-item .bigNumber {
-        font-size: 2.6rem;
-    }
+    .gtm-indicator-item {
+        .bigNumber {
+            font-size: 2.6rem;
+        }
 
-    .gtm-indicator-item .title {
-        font-size: 0.85rem;
+        .title {
+            font-size: 0.85rem;
+        }
     }
 
     .gtm-main-table {
@@ -634,15 +554,15 @@
         height: 2rem;
         min-width: 2rem;
         padding: 0.2rem;
-    }
 
-    .calendar-filter-block .calendar-icon {
-        width: 0.6rem;
-        margin-left: 0.2rem;
-    }
+        .calendar-icon {
+            width: 0.6rem;
+            margin-left: 0.2rem;
+        }
 
-    .calendar-filter-block .gear-icon {
-        width: 0.8rem;
+        .gear-icon {
+            width: 0.8rem;
+        }
     }
 
     .demo-img {
@@ -662,20 +582,24 @@
         font-size: 0.7rem;
     }
 
-    .podbor-middle-table th {
-        font-size: 0.8rem;
+    .podbor-middle-table {
+        th {
+            font-size: 0.8rem;
+        }
+
+        td {
+            font-size: 0.7rem;
+        }
     }
 
-    .podbor-middle-table td {
-        font-size: 0.7rem;
-    }
+    .gtm-indicator-item {
+        .bigNumber {
+            font-size: 2.2rem;
+        }
 
-    .gtm-indicator-item .bigNumber {
-        font-size: 2.2rem;
-    }
-
-    .gtm-indicator-item .title {
-        font-size: 0.8rem;
+        .title {
+            font-size: 0.8rem;
+        }
     }
 
     .gtm-main-table {
@@ -695,11 +619,6 @@
 
     .gtm-map-img {
         height: 180px;
-    }
-
-    .gtm-menu div {
-        font-size: 1rem;
-        line-height: 2.8rem;
     }
 
     .calendar-filter-block {
@@ -747,10 +666,10 @@
 
     .calendar-filter-block {
         font-size: 0.6rem;
-    }
 
-    .calendar-filter-block .calendar-icon {
-        margin-bottom: 0.3rem;
+        .calendar-icon {
+            margin-bottom: 0.3rem;
+        }
     }
 
     .demo-img {
@@ -762,12 +681,14 @@
         font-size: 0.5rem;
     }
 
-    .podbor-middle-table th {
-        font-size: 0.7rem;
-    }
+    .podbor-middle-table {
+        th {
+            font-size: 0.7rem;
+        }
 
-    .podbor-middle-table td {
-        font-size: 0.6rem;
+        td {
+            font-size: 0.6rem;
+        }
     }
 
     .gtm-main-table {
@@ -776,11 +697,6 @@
 }
 
 @media screen and (max-width : 1200px) {
-    .gtm-menu div {
-        font-size: 0.8rem;
-        line-height: 2.4rem;
-    }
-
     .menu-item {
         font-size: 0.8rem;
     }
@@ -807,10 +723,6 @@
 }
 
 @media screen and (max-width : 991px) {
-    .gtm-menu {
-        display: none !important;
-    }
-
     .menu-item-bg.menu-title img {
         width: 16px;
         height: 16px;

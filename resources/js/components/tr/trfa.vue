@@ -16,7 +16,7 @@
                   d="M13.8015 10.4124C13.4953 10.4123 13.2018 10.2864 12.9853 10.062L9.52204 6.47442L2.25734 14L0.625 12.309L8.36763 4.28837C8.58407 4.06415 8.87765 3.93811 9.1838 3.93799H9.86032C10.1665 3.93811 10.46 4.06415 10.6765 4.28837L14.1397 7.87597L19.0956 2.74212L16.4485 0H23.375V7.17519L20.7279 4.43307L15.2941 10.062C15.0777 10.2864 14.7841 10.4123 14.478 10.4124H13.8015Z"
                   fill="white"
                 /></svg></i
-            >{{trans('tr.tr')}}</a
+            >{{trans('tr.fa_tr_deviations')}}</a
           >
           <a href="tr" class="col but-nav__link but trfabuttech"
             ><i style="margin-right: 10px"
@@ -32,7 +32,7 @@
                   fill="white"
                 />
               </svg> </i
-            >{{trans('tr.btr')}}</a
+            >{{trans('tr.tr')}}</a
           >
         </div>
       </div>
@@ -47,7 +47,7 @@
             aria-haspopup="true"
             aria-expanded="false"
           >
-            {{trans('tr.trfacg')}}
+            {{trans('tr.choose_graph')}}
           </a>
           <div
             class="dropdown-menu fadropmenu"
@@ -58,13 +58,13 @@
               class="dropdown-item background_dropdown"
               href="#"
               @click="chartShow = 'pie'"
-              >{{trans('tr.trfag1')}}</a
+              >{{trans('tr.distribution_of_the_well_stock_due_to_the_main_reason_for_the_decline_in_oil_production')}}</a
             >
             <a
               class="dropdown-item background_dropdown"
               href="#"
               @click="chartShow = 'bar'"
-              >{{trans('tr.trfag2')}}</a
+              >{{trans('tr.distribution_of_total_TP_deviations_by_factors')}}</a
             >
           </div>
         </div>
@@ -77,19 +77,19 @@
             aria-haspopup="true"
             aria-expanded="false"
           >
-            {{trans('tr.trchdt')}}
+            {{trans('tr.choose_date')}}
           </button>
           <div
             class="dropdown-menu fadropmenu"
             aria-labelledby="dropdownMenuLink"
             style="background: #40467e"
           >
-            <label for="inputDate" style="margin-left: 8px;">{{trans('tr.fadt1')}}:</label>
+            <label for="inputDate" style="margin-left: 8px;">{{trans('tr.enter_reference_date')}}:</label>
             <input type="date" class="form-control" v-model="date1" />
-            <label for="inputDate" style="margin-left: 8px;">{{trans('tr.fadt2')}}:</label>
+            <label for="inputDate" style="margin-left: 8px;">{{trans('tr.enter_compare_date')}}:</label>
             <input type="date" class="form-control" v-model="date2" />
             <a href="#" class="btn btn-sm button_form" @click.prevent="chooseDt"
-              >{{trans('tr.sf')}}</a
+              >{{trans('tr.form')}}</a
             >
           </div>
         </div>
@@ -109,7 +109,7 @@
               />
             </g>
           </svg>
-          <div class="mx-2">{{trans('tr.trfb')}}</div>
+          <div class="mx-2">{{trans('tr.filter')}}</div>
         </div>
         <div class="filters row" v-if="showFilters">
           <div class="filters__item">
@@ -152,7 +152,7 @@
             v-if="chartWells.length !== filteredWellsBar.length"
             @clear-click="clearFilters()"
             background="#333975"
-            placeholder="Сбросить фильтры"
+            v-bind:placeholder="trans('tr.reset_filters')"
             style="margin-left: 10px;"
           />
         </div>
@@ -259,7 +259,7 @@ export default {
                   -1)
           );
           console.log("filteredResult pie = ", filteredResult);
-          this.chartOptions.title.text = `${this.trans('tr.trfagn1')} ${this.dt}/${this.dt2}`;
+          this.chartOptions.title.text = `${this.trans('tr.distribution_of_the_well_stock_due_to_the_main_reason_for_the_decline_in_oil_production_on')} ${this.dt}/${this.dt2}`;
           this.chartOptions.subtitle.text = this.subtitleText;
           let filteredData = filteredResult.reduce((acc, res) => {
             if (acc.hasOwnProperty(res["Main_problem"])) {
@@ -304,7 +304,7 @@ export default {
           );
           this.filteredWellsBar = filteredResult;
           console.log("filteredResult bat = ", filteredResult);
-          this.chartBarOptions.title.text = `${this.trans('tr.trfagn2')} ${this.dt}/${this.dt2}`;
+          this.chartBarOptions.title.text = `${this.trans('tr.distribution_of_total_TP_deviations_by_factors_on')} ${this.dt}/${this.dt2}`;
           this.chartBarOptions.subtitle.text = this.subtitleText;
           let filteredData = filteredResult.reduce(
             (acc, res) => {
@@ -359,7 +359,7 @@ export default {
         });
         return [
           {
-            group: `${this.trans('tr.fltr')}`,
+            group: `${this.trans('tr.all_wells')}`,
             fields: [...filters],
           },
         ];
@@ -388,7 +388,7 @@ export default {
         });
         return [
           {
-            group: `${this.trans('tr.trcmf1')}`,
+            group: `${this.trans('tr.all_horizon')}`,
             fields: [...filters],
           },
         ];
@@ -418,7 +418,7 @@ export default {
         });
         return [
           {
-            group: `${this.trans('tr.trcmf2')}`,
+            group: `${this.trans('tr.all_mining_methods')}`,
             fields: [...filters],
           },
         ];
@@ -448,7 +448,7 @@ export default {
         });
         return [
           {
-            group: `${this.trans('tr.trcmf3')}`,
+            group: `${this.trans('tr.all_objects')}`,
             fields: [...filters],
           },
         ];
@@ -714,7 +714,6 @@ export default {
           this.chartFilter_object = newFilter;
       }
       this.refreshFilters();
-      this.calcChartData();
     },
   },
   methods: {
@@ -962,7 +961,6 @@ a:hover {
   align-self: center;
   width: 150px;
   margin-top: 5px;
-  /* display: flex;  */
-  /* justify-content: center */
+
 }
 </style>
