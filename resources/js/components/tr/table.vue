@@ -2,53 +2,53 @@
     <table class="table table-bordered table-dark table-responsive trkrtableborderedtabledarktableresponsive" style="background: #0D1E63; margin-bottom: 0;">
         <thead>
             <tr class="headerColumn trkrheadercolumn" style="background: #333975;">
-                <td rowspan="4" class="th" style="background: #333975;">{{trans('tr.tr1')}}</td>
-                <td rowspan="4" class="th">{{trans('tr.tr2')}}</td>
-                <td rowspan="4" class="th">{{trans('tr.tr3')}}</td>
-                <td rowspan="4" class="th">{{trans('tr.tr4')}}</td>
-                <td rowspan="4" class="th">{{trans('tr.tr5')}}</td>
-                <td rowspan="4" class="th">{{trans('tr.tr6')}}</td>
-                <td rowspan="4" class="th">{{trans('tr.tr7')}}</td>
-                <td rowspan="4" class="th">{{trans('tr.tr8')}}</td>
-                <td rowspan="4" class="th">{{trans('tr.tr9')}}</td>
-                <td rowspan="4" class="th">{{trans('tr.tr10')}}</td>
-                <td rowspan="4" class="th">{{trans('tr.tr11')}}</td>
-                <td rowspan="4" class="th">{{trans('tr.tr12')}}</td>
-                <td rowspan="4" class="th">{{trans('tr.tr13')}}</td>
-                <td rowspan="4" class="th">{{trans('tr.tr14')}}</td>
-                <td rowspan="4" class="th">{{trans('tr.tr15')}}</td>
-                <td rowspan="4" class="th">{{trans('tr.tr16')}}</td>
-                <td class="colspan th" colspan="5">{{trans('tr.tr17')}}</td>
-                <td rowspan="4" class="th">{{trans('tr.tr25')}}</td>
-                <td rowspan="4" class="th">{{trans('tr.tr26')}}</td>
-                <td class="colspan th" colspan="7">{{trans('tr.tr18')}}</td>
-                <td class="colspan th" colspan="6">{{trans('tr.tr19')}}</td>
+                <td rowspan="4" class="th" style="background: #333975;">{{trans('tr.well_number')}}</td>
+                <td rowspan="4" class="th">{{trans('tr.well_type')}}</td>
+                <td rowspan="4" class="th">{{trans('tr.horizon')}}</td>
+                <td rowspan="4" class="th">{{trans('tr.object')}}</td>
+                <td rowspan="4" class="th">{{trans('tr.block')}}</td>
+                <td rowspan="4" class="th">{{trans('tr.outer_diameter_producing_casing')}}</td>
+                <td rowspan="4" class="th">{{trans('tr.outer_diameter_nkt')}}</td>
+                <td rowspan="4" class="th">{{trans('tr.choke_diameter')}}</td>
+                <td rowspan="4" class="th">{{trans('tr.h_water_permeability')}}</td>
+                <td rowspan="4" class="th">{{trans('tr.operation_method')}}</td>
+                <td rowspan="4" class="th">{{trans('tr.pump_type')}}</td>
+                <td rowspan="4" class="th">{{trans('tr.pump_frequency_or_speed')}}</td>
+                <td rowspan="4" class="th">{{trans('tr.h_pump_set')}}</td>
+                <td rowspan="4" class="th">{{trans('tr.p_layer')}}</td>
+                <td rowspan="4" class="th">{{trans('tr.h_dynamic')}}</td>
+                <td rowspan="4" class="th">{{trans('tr.annular_pressure')}}</td>
+                <td class="colspan th" colspan="5">{{trans('tr.actual_mode')}}</td>
+                <td rowspan="4" class="th">{{trans('tr.state_at_the_end_of_the_month')}}</td>
+                <td rowspan="4" class="th">{{trans('tr.productivity_index')}}</td>
+                <td class="colspan th" colspan="7">{{trans('tr.calculation_of_technological_potential_from_IDN')}}</td>
+                <td class="colspan th" colspan="6">{{trans('tr.intended_mode')}}</td>
             </tr>
             <tr class="headerColumn trkrheadercolumn" style="background: #333975;">
-                <td rowspan="3" class="th" style="background: #333975;">{{trans('tr.tr20')}}</td>
-                <td rowspan="3" class="th">{{trans('tr.tr21')}}</td>
-                <td rowspan="3" class="th" style="background: #333975;">{{trans('tr.tr22')}}</td>
-                <td rowspan="3" class="th">{{trans('tr.tr23')}}</td>
-                <td rowspan="3" class="th">{{trans('tr.tr24')}}</td>
-                <td rowspan="3" class="th">{{trans('tr.tr20')}}</td>
-                <td class="colspan th" colspan="2">{{trans('tr.tr27')}}</td>
-                <td rowspan="3" class="th">{{trans('tr.tr33')}}</td>
-                <td class="colspan th" colspan="2">{{trans('tr.tr28')}}</td>
-                <td rowspan="3" class="th">{{trans('tr.tr29')}}</td>
+                <td rowspan="3" class="th" style="background: #333975;">{{trans('tr.bottomhole_pressure')}}</td>
+                <td rowspan="3" class="th">{{trans('tr.q_oil')}}</td>
+                <td rowspan="3" class="th" style="background: #333975;">{{trans('tr.q_liquid')}}</td>
+                <td rowspan="3" class="th">{{trans('tr.water_cut')}}</td>
+                <td rowspan="3" class="th">{{trans('tr.gas_factor')}}</td>
+                <td rowspan="3" class="th">{{trans('tr.bottomhole_pressure')}}</td>
+                <td class="colspan th" colspan="2">{{trans('tr.idn')}}</td>
+                <td rowspan="3" class="th">{{trans('tr.stimulation_coefficient_of_productivity')}}</td>
+                <td class="colspan th" colspan="2">{{trans('tr.grp')}}</td>
+                <td rowspan="3" class="th">{{trans('tr.q_oil_total_growth')}}</td>
 
-                <td rowspan="3" class="th">{{trans('tr.tr30')}}</td>
-                <td rowspan="3" class="th">{{trans('tr.tr21')}}</td>
-                <td rowspan="3" class="th" style="background: #333975;">{{trans('tr.tr22')}}</td>
-                <td rowspan="3" class="th" style="background: #333975;">{{trans('tr.tr31')}}</td>
-                <td rowspan="3" class="th">{{trans('tr.tr23')}}</td>
-                <td rowspan="3" class="th">{{trans('tr.tr24')}}</td>
+                <td rowspan="3" class="th">{{trans('tr.choke_diameter')}}</td>
+                <td rowspan="3" class="th">{{trans('tr.q_oil')}}</td>
+                <td rowspan="3" class="th" style="background: #333975;">{{trans('tr.q_liquid')}}</td>
+                <td rowspan="3" class="th" style="background: #333975;">{{trans('tr.q_gas')}}</td>
+                <td rowspan="3" class="th">{{trans('tr.water_cut')}}</td>
+                <td rowspan="3" class="th">{{trans('tr.gas_factor')}}</td>
 
             </tr>
             <tr class="headerColumn trkrheadercolumn" style="background: #333975;">
-                <td rowspan="2" class="th" style="background: #333975;">{{trans('tr.tr22')}}</td>
-                <td rowspan="2" class="th" style="background: #333975;">{{trans('tr.tr32')}}</td>
-                <td rowspan="2" class="th" style="background: #333975;">{{trans('tr.tr22')}}</td>
-                <td rowspan="2" class="th">{{trans('tr.tr32')}}</td>
+                <td rowspan="2" class="th" style="background: #333975;">{{trans('tr.q_liquid')}}</td>
+                <td rowspan="2" class="th" style="background: #333975;">{{trans('tr.q_oil_gain')}}</td>
+                <td rowspan="2" class="th" style="background: #333975;">{{trans('tr.q_liquid')}}</td>
+                <td rowspan="2" class="th">{{trans('tr.q_oil_gain')}}</td>
             </tr>
             <tr></tr>
             <tr class="subHeaderColumn" style="background: #333975; cursor: pointer;">
@@ -57,43 +57,42 @@
                 <td @click="sortBy('horizon')" class="th"><i class="fa fa-fw fa-sort"></i></td>
                 <td @click="sortBy('object')" class="th"><i class="fa fa-fw fa-sort"></i></td>
                 <td @click="sortBy('block')" class="th"><i class="fa fa-fw fa-sort"></i></td>
-                <td @click="sortBy('cas_OD')" class="th"><i class="fa fa-fw fa-sort"></i>мм</td>
-                <td @click="sortBy('tub_OD')" class="th"><i class="fa fa-fw fa-sort"></i>мм</td>
-                <td @click="sortBy('choke_d')" class="th"><i class="fa fa-fw fa-sort"></i>мм</td>
-                <td @click="sortBy('h_up_perf_md')" class="th"><i class="fa fa-fw fa-sort"></i>м</td>
+                <td @click="sortBy('cas_OD')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.mm')}}</td>
+                <td @click="sortBy('tub_OD')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.mm')}}</td>
+                <td @click="sortBy('choke_d')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.mm')}}</td>
+                <td @click="sortBy('h_up_perf_md')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.m')}}</td>
                 <td @click="sortBy('exp_meth')" class="th"><i class="fa fa-fw fa-sort"></i></td>
                 <td @click="sortBy('pump_type')" class="th"><i class="fa fa-fw fa-sort"></i></td>
-                <td @click="sortBy('freq')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr1')}}</td>
-                <td @click="sortBy('h_pump_set')" class="th"><i class="fa fa-fw fa-sort"></i>м</td>
-                <td @click="sortBy('p_res')" class="th"><i class="fa fa-fw fa-sort"></i>атм</td>
-                <td @click="sortBy('h_dyn')" class="th"><i class="fa fa-fw fa-sort"></i>м</td>
-                <td @click="sortBy('p_annular')" class="th"><i class="fa fa-fw fa-sort"></i>атм</td>
-                <td @click="sortBy('bhp')" class="th"><i class="fa fa-fw fa-sort"></i>атм</td>
-                <td @click="sortBy('q_o')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr3')}}</td>
-                <td @click="sortBy('q_l')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr2')}}</td>
+                <td @click="sortBy('freq')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.gc_ob/min')}}</td>
+                <td @click="sortBy('h_pump_set')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.m')}}</td>
+                <td @click="sortBy('p_res')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.atm')}}</td>
+                <td @click="sortBy('h_dyn')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.m')}}</td>
+                <td @click="sortBy('p_annular')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.atm')}}</td>
+                <td @click="sortBy('bhp')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.atm')}}</td>
+                <td @click="sortBy('q_o')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.t_day')}}</td>
+                <td @click="sortBy('q_l')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.m3_day')}}</td>
                 <td @click="sortBy('wct')" class="th"><i class="fa fa-fw fa-sort"></i>%</td>
-                <td @click="sortBy('gor')" class="th"><i class="fa fa-fw fa-sort"></i>м3/т</td>
+                <td @click="sortBy('gor')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.m3/t')}}</td>
                 <td @click="sortBy('well_status_last_day')" class="th"><i class="fa fa-fw fa-sort"></i></td>
-                <td @click="sortBy('pi')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr4')}}</td>
-                <td @click="sortBy('tp_idn_bhp')" class="th"><i class="fa fa-fw fa-sort"></i>атм</td>
-                <td @click="sortBy('tp_idn_liq')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr2')}}</td>
-                <td @click="sortBy('tp_idn_oil_inc')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr3')}}</td>
-                <td @click="sortBy('tp_idn_pi_after')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr4')}}</td>
-                <td @click="sortBy('tp_idn_grp_q_liq')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr2')}}</td>
-                <td @click="sortBy('tp_idn_grp_q_oil_inc')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr3')}}</td>
-                <td @click="sortBy('gt_total_inc')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr3')}}</td>
-                <td @click="sortBy('planned_choke')" class="th"><i class="fa fa-fw fa-sort"></i>мм</td>
-                <td @click="sortBy('planned_oil')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr3')}}</td>
-                <td @click="sortBy('planned_liq')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr2')}}</td>
-                <td @click="sortBy('planned_gas')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr5')}}</td>
+                <td @click="sortBy('pi')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.m3_day_atm')}}</td>
+                <td @click="sortBy('tp_idn_bhp')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.atm')}}</td>
+                <td @click="sortBy('tp_idn_liq')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.m3_day')}}</td>
+                <td @click="sortBy('tp_idn_oil_inc')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.t_day')}}</td>
+                <td @click="sortBy('tp_idn_pi_after')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.m3_day_atm')}}</td>
+                <td @click="sortBy('tp_idn_grp_q_liq')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.m3_day')}}</td>
+                <td @click="sortBy('tp_idn_grp_q_oil_inc')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.t_day')}}</td>
+                <td @click="sortBy('gt_total_inc')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.t_day')}}</td>
+                <td @click="sortBy('planned_choke')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.mm')}}</td>
+                <td @click="sortBy('planned_oil')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.t_day')}}</td>
+                <td @click="sortBy('planned_liq')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.m3_day')}}</td>
+                <td @click="sortBy('planned_gas')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.thousan_m3_day')}}</td>
                 <td @click="sortBy('planned_wct')" class="th"><i class="fa fa-fw fa-sort"></i>%</td>
-                <td @click="sortBy('planned_gor')" class="th"><i class="fa fa-fw fa-sort"></i>м3/т</td>
+                <td @click="sortBy('planned_gor')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.m3/t')}}</td>
             </tr>
         </thead>
         <tbody class="table_tbody">
             <tr v-for="(row, row_index) in wells" :key="row_index" class="trtablerow">
                 <td class="fixcol">{{row.rus_wellname}} </td>
-                <!-- <td>{{row.well_type}}</td> -->
                 <td :class="{'cell-with-comment': wells && wells[row_index] &&
                 wells[row_index].well_type[1][0] !== '0'}" td class="fixcol">
                     <span :class="{'circle-err': wells && wells[row_index] &&
@@ -105,7 +104,6 @@
                     </span>
                 </td>
 
-                <!-- <td>{{row.horizon}}</td> -->
                 <td :class="{'cell-with-comment': wells && wells[row_index] &&
                 wells[row_index].horizon[1][0] !== '0'}" class="tb">
                     <span :class="{'circle-err': wells && wells[row_index] &&
@@ -121,7 +119,6 @@
                 <td class="fixcol">{{row.object}} </td>
 
 
-                <!-- <td>{{row.block}}</td> -->
                 <td :class="{'cell-with-comment': wells && wells[row_index] &&
                 wells[row_index].block[1][0] !== '0'}">
                     <span :class="{'circle-err': wells && wells[row_index] &&
@@ -133,7 +130,6 @@
                     </span>
                 </td>
 
-                <!-- <td>{{row.cas_OD}}</td> -->
                 <td :class="{'cell-with-comment': wells && wells[row_index] &&
                 wells[row_index].cas_OD[1][0] !== '0'}">
                     <span :class="{'circle-err': wells && wells[row_index] &&
@@ -145,7 +141,6 @@
                     </span>
                 </td>
 
-                <!-- <td>{{row.tub_OD}}</td> -->
                 <td :class="{'cell-with-comment': wells && wells[row_index] &&
                 wells[row_index].tub_OD[1][0] !== '0'}">
                     <span :class="{'circle-err': wells && wells[row_index] &&
@@ -157,7 +152,6 @@
                     </span>
                 </td>
 
-                <!-- <td>{{row.choke_d}}</td> -->
                 <td :class="{'cell-with-comment': wells && wells[row_index] &&
                 wells[row_index].choke_d[1][0] !== '0'}">
                     <span :class="{'circle-err': wells && wells[row_index] &&
@@ -169,7 +163,6 @@
                     </span>
                 </td>
 
-                <!-- <td>{{row.h_up_perf_md}}</td> -->
                 <td :class="{'cell-with-comment': wells && wells[row_index] &&
                 wells[row_index].h_up_perf_md[1][0] !== '0'}">
                     <span :class="{'circle-err': wells && wells[row_index] &&
@@ -180,7 +173,6 @@
                         {{ wells[row_index].h_up_perf_md[1][1]}}
                     </span>
                 </td>
-                <!-- <td>{{row.exp_meth}}</td> -->
                 <td :class="{'cell-with-comment': wells && wells[row_index] &&
                 wells[row_index].exp_meth[1][0] !== '0'}">
                     <span :class="{'circle-err': wells && wells[row_index] &&
@@ -192,7 +184,6 @@
                     </span>
                 </td>
 
-                <!-- <td>{{row.pump_type}}</td> -->
                 <td :class="{'cell-with-comment': wells && wells[row_index] &&
                 wells[row_index].pump_type[1][0] !== '0'}">
                     <span :class="{'circle-err': wells && wells[row_index] &&
@@ -204,7 +195,6 @@
                     </span>
                 </td>
 
-                <!-- <td>{{row.freq[1][1]}}</td> -->
                 <td :class="{'cell-with-comment': wells && wells[row_index] &&
                 wells[row_index].freq[1][0] !== '0'}">
                     <span :class="{'circle-err': wells && wells[row_index] &&
@@ -216,7 +206,6 @@
                     </span>
                 </td>
 
-                <!-- <td>{{Math.round(row.h_pump_set*10)/10}}</td> -->
                 <td :class="{'cell-with-comment': wells && wells[row_index] &&
                 wells[row_index].h_pump_set[1][0] !== '0'}">
                     <span :class="{'circle-err': wells && wells[row_index] &&
@@ -239,7 +228,6 @@
                     </span>
                 </td>
 
-                <!-- <td>{{Math.round(row.h_dyn*10)/10}}</td> -->
                 <td :class="{'cell-with-comment': wells && wells[row_index] &&
                 wells[row_index].h_dyn[1][0] !== '0'}">
                     <span :class="{'circle-err': wells && wells[row_index] &&
@@ -251,7 +239,6 @@
                     </span>
                 </td>
 
-                <!-- <td>{{Math.round(row.p_annular*10)/10}}</td> -->
                 <td :class="{'cell-with-comment': wells && wells[row_index] &&
                 wells[row_index].p_annular[1][0] !== '0'}">
                     <span :class="{'circle-err': wells && wells[row_index] &&
@@ -263,7 +250,6 @@
                     </span>
                 </td>
 
-                <!-- <td>{{Math.round(row.bhp*10)/10}}</td> -->
                 <td :class="{'cell-with-comment': wells && wells[row_index] &&
                 wells[row_index].bhp[1][0] !== '0'}">
                     <span :class="{'circle-err': wells && wells[row_index] &&
@@ -275,7 +261,6 @@
                     </span>
                 </td>
 
-                <!-- <td>{{Math.round(row.q_o*10)/10}}</td> -->
                 <td :class="{'cell-with-comment': wells && wells[row_index] &&
                 wells[row_index].q_o[1][0] !== '0'}">
                     <span :class="{'circle-err': wells && wells[row_index] &&
@@ -287,7 +272,6 @@
                     </span>
                 </td>
 
-                <!-- <td>{{Math.round(row.q_l*10)/10}}</td> -->
                 <td :class="{'cell-with-comment': wells && wells[row_index] &&
                 wells[row_index].q_l[1][0] !== '0'}">
                     <span :class="{'circle-err': wells && wells[row_index] &&
@@ -299,7 +283,6 @@
                     </span>
                 </td>
 
-                <!-- <td>{{Math.round(row.wct*10)/10}}</td> -->
                 <td :class="{'cell-with-comment': wells && wells[row_index] &&
                 wells[row_index].wct[1][0] !== '0'}">
                     <span :class="{'circle-err': wells && wells[row_index] &&
@@ -311,7 +294,6 @@
                     </span>
                 </td>
 
-                <!-- <td>{{Math.round(row.gor*10)/10}}</td> -->
                 <td :class="{'cell-with-comment': wells && wells[row_index] &&
                 wells[row_index].gor[1][0] !== '0'}">
                     <span :class="{'circle-err': wells && wells[row_index] &&
@@ -322,7 +304,6 @@
                         {{ wells[row_index].gor[1][1]}}
                     </span>
                 </td>
-                <!-- <td>{{row.well_status_last_day[0]}}</td> -->
 
                 <td :class="{'cell-with-comment': wells && wells[row_index] &&
                 wells[row_index].well_status_last_day[1][0] !== '0'}">
@@ -336,7 +317,6 @@
                 </td>
 
 
-                <!-- <td>{{Math.round(row.pi*10)/10}}</td> -->
                 <td :class="{'cell-with-comment': wells && wells[row_index] &&
                 wells[row_index].pi[1][0] !== '0'}">
                     <span :class="{'circle-err': wells && wells[row_index] &&
@@ -348,7 +328,6 @@
                     </span>
                 </td>
 
-                <!-- <td>{{Math.round(row.tp_idn_bhp*10)/10}}</td> -->
                 <td :class="{'cell-with-comment': wells && wells[row_index] &&
                 wells[row_index].tp_idn_bhp[1][0] !== '0'}">
                     <span :class="{'circle-err': wells && wells[row_index] &&
@@ -360,7 +339,6 @@
                     </span>
                 </td>
 
-                <!-- <td>{{Math.round(row.tp_idn_liq*10)/10}}</td> -->
                 <td :class="{'cell-with-comment': wells && wells[row_index] &&
                 wells[row_index].tp_idn_liq[1][0] !== '0'}">
                     <span :class="{'circle-err': wells && wells[row_index] &&
@@ -372,7 +350,6 @@
                     </span>
                 </td>
 
-                <!-- <td>{{Math.round(row.tp_idn_oil_inc*10)/10}}</td> -->
                 <td :class="{'cell-with-comment': wells && wells[row_index] &&
                 wells[row_index].tp_idn_oil_inc[1][0] !== '0'}">
                     <span :class="{'circle-err': wells && wells[row_index] &&
@@ -384,7 +361,6 @@
                     </span>
                 </td>
 
-                <!-- <td>{{Math.round(row.tp_idn_pi_after*10)/10}}</td> -->
                 <td :class="{'cell-with-comment': wells && wells[row_index] &&
                 wells[row_index].tp_idn_pi_after[1][0] !== '0'}">
                     <span :class="{'circle-err': wells && wells[row_index] &&
@@ -396,7 +372,6 @@
                     </span>
                 </td>
 
-                <!-- <td>{{Math.round(row.tp_idn_grp_q_liq*10)/10}}</td> -->
                 <td :class="{'cell-with-comment': wells && wells[row_index] &&
                 wells[row_index].tp_idn_grp_q_liq[1][0] !== '0'}">
                     <span :class="{'circle-err': wells && wells[row_index] &&
@@ -408,7 +383,6 @@
                     </span>
                 </td>
 
-                <!-- <td>{{Math.round(row.tp_idn_grp_q_oil_inc*10)/10}}</td> -->
                 <td :class="{'cell-with-comment': wells && wells[row_index] &&
                 wells[row_index].tp_idn_grp_q_oil_inc[1][0] !== '0'}">
                     <span :class="{'circle-err': wells && wells[row_index] &&
