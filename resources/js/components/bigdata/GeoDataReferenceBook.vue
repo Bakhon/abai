@@ -23,7 +23,7 @@
                  placeholder="EN:">
         </div>
         <div class="row">
-          <button class="col btn get-report-button" @click="update(referenceBook)">
+          <button class="col btn get-report-button" @click="saveReferenceBook(referenceBook)">
             Добавить
           </button>
         </div>
@@ -39,103 +39,14 @@
 
 <script>
 
+import referenceBooksJson from './reference_books.json';
 export default {
   components: {},
   data() {
     return {
       baseUrl: 'http://172.20.103.187:8084/',
-      referenceBooks: [
-        {
-          description: 'Расширение',
-          referenceBook: 'extension',
-          input: 'extension',
-        },
-        {
-          description: 'Наименование ствола',
-          referenceBook: 'stem_type',
-          input: 'stemType',
-        },
-        {
-          description: 'Секция ствола',
-          referenceBook: 'stem_section',
-          input: 'stemSection',
-        },
-        {
-          description: 'Наименование технологии записи',
-          referenceBook: 'recording_method',
-          input: 'recordingMethod',
-        },
-        {
-          description: 'Статус обработки',
-          referenceBook: 'file_status',
-          input: 'fileStatus',
-        },
-        {
-          description: 'Запись',
-          referenceBook: 'recording_state',
-          input: 'recordingState',
-        },
-        {
-          description: 'Месторождение',
-          referenceBook: 'field',
-          input: 'field',
-        },
-        {
-          description: 'Скважина',
-          referenceBook: 'well',
-          input: 'well',
-        }
-      ],
-      input: {
-        extension: {
-          value: '',
-          ru: '',
-          kz: '',
-          en: ''
-        },
-        stemType: {
-          value: '',
-          ru: '',
-          kz: '',
-          en: ''
-        },
-        stemSection: {
-          value: '',
-          ru: '',
-          kz: '',
-          en: ''
-        },
-        recordingMethod: {
-          value: '',
-          ru: '',
-          kz: '',
-          en: ''
-        },
-        fileStatus: {
-          value: '',
-          ru: '',
-          kz: '',
-          en: ''
-        },
-        recordingState: {
-          value: '',
-          ru: '',
-          kz: '',
-          en: ''
-        },
-        well: {
-          value: '',
-          ru: '',
-          kz: '',
-          en: ''
-        },
-        field: {
-          value: '',
-          ru: '',
-          kz: '',
-          en: ''
-        },
-      },
+      referenceBooks: referenceBooksJson['referenceBooks'],
+      input: referenceBooksJson['input'],
       isUpdated: {
         extension: false,
         stemType: false,
@@ -150,9 +61,10 @@ export default {
     this.$nextTick(function () {
       this.$store.commit('globalloading/SET_LOADING', false)
     });
+
   },
   methods: {
-    update(referenceBook) {
+    saveReferenceBook(referenceBook) {
 
       this.$store.commit('globalloading/SET_LOADING', true)
       let referenceName = referenceBook.input
