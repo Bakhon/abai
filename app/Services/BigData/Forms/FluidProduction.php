@@ -388,6 +388,7 @@ class FluidProduction extends TableForm
 
             if (empty($tech['wells'])) {
                 unset($result[$key]);
+                continue;
             }
 
             unset($result[$key]['wells']);
