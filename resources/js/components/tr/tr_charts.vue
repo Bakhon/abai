@@ -16,7 +16,7 @@
                   d="M13.8015 10.4124C13.4953 10.4123 13.2018 10.2864 12.9853 10.062L9.52204 6.47442L2.25734 14L0.625 12.309L8.36763 4.28837C8.58407 4.06415 8.87765 3.93811 9.1838 3.93799H9.86032C10.1665 3.93811 10.46 4.06415 10.6765 4.28837L14.1397 7.87597L19.0956 2.74212L16.4485 0H23.375V7.17519L20.7279 4.43307L15.2941 10.062C15.0777 10.2864 14.7841 10.4123 14.478 10.4124H13.8015Z"
                   fill="white"
                 /></svg></i
-            >{{trans('tr.tr')}}</a
+            >{{trans('tr.fa_tr_deviations')}}</a
           >
           <a href="tr" class="col but-nav__link but ml-3"
             ><i style="margin-right: 10px"
@@ -32,7 +32,7 @@
                   fill="white"
                 />
               </svg> </i
-            >{{trans('tr.btr')}}</a
+            >{{trans('tr.tr')}}</a
           >
         </div>
       </div>
@@ -47,7 +47,7 @@
             aria-haspopup="true"
             aria-expanded="false"
           >
-            {{trans('tr.trfacg')}}
+            {{trans('tr.choose_graph')}}
           </a>
           <div class="dropdown-menu droptr" aria-labelledby="dropdownMenuLink">
             <a
@@ -72,7 +72,7 @@
             aria-haspopup="true"
             aria-expanded="false"
           >
-            {{trans('tr.dt')}}
+            {{trans('tr.choose_month')}}
           </button>
 
           <div
@@ -96,7 +96,6 @@
                 id="companySelect"
                 @change="onChangeMonth($event)"
               >
-                <!-- <option disabled>Выберите месяц</option> -->
                 <option value="1">{{trans('tr.jan')}}</option>
                 <option value="2">{{trans('tr.feb')}}</option>
                 <option value="3">{{trans('tr.mar')}}</option>
@@ -124,15 +123,9 @@
                 id="companySelect"
                 @change="onChangeYear($event)"
               >
-                <!-- <option disabled value="">Выберите год</option> -->
                 <option value="2021">2021</option>
                 <option value="2020">2020</option>
                 <option value="2019">2019</option>
-                <!-- <option value="2018">2018</option>
-                <option value="2017">2017</option>
-                <option value="2016">2016</option>
-                <option value="2015">2015</option>
-                <option value="2014">2014</option> -->
               </select>
             </div>
             <a
@@ -140,7 +133,7 @@
               @click.prevent="chooseDt"
               class="btn btn-sm button_form"
               style="margin-left: 15px"
-              >{{trans('tr.sf')}}</a
+              >{{trans('tr.form')}}</a
             >
           </div>
         </div>
@@ -160,7 +153,7 @@
               />
             </g>
           </svg>
-          <div class="mx-2">{{trans('tr.trfb')}}</div>
+          <div class="mx-2">{{trans('tr.filter')}}</div>
         </div>
         <div class="filters row" v-if="showFilters">
           <div class="filters__item">
@@ -204,7 +197,7 @@
             v-if="chartWells.length !== filteredWellsPreGraph.length"
             @clear-click="clearFilters()"
             background="#333975"
-            placeholder="Сбросить фильтры"
+            v-bind:placeholder="trans('tr.reset_filters')"
             style="margin-left: 10px"
           />
         </div>
@@ -227,7 +220,6 @@
 </template>
 <script>
 import VueApexCharts from "vue-apexcharts";
-// import FadeLoader from "vue-spinner/src/FadeLoader.vue";
 import BigNumbers from "./BigNumbers.vue";
 import TrMultiselect from "./TrMultiselect.vue";
 import { getFilterText } from "./helpers.js";
@@ -236,7 +228,6 @@ import ClearIcon from "../ui-kit/ClearIcon.vue";
 export default {
   name: "TrCharts",
   components: {
-    // FadeLoader,
     TrMultiselect,
     ClearIcon,
     BigNumbers,
@@ -286,14 +277,13 @@ export default {
             (!this.chartFilter_object ||
               this.chartFilter_object.length === 0 ||
               this.chartFilter_object.indexOf(el.object) !== -1)
-            //change it to object
           ) {
             filters = [...filters, el.field];
           }
         });
         return [
           {
-            group: `${this.trans('tr.fltr')}`,
+            group: `${this.trans('tr.all_wells')}`,
             fields: [...filters],
           },
         ];
@@ -322,7 +312,7 @@ export default {
         });
         return [
           {
-            group: `${this.trans('tr.trcmf1')}`,
+            group: `${this.trans('tr.all_horizon')}`,
             fields: [...filters],
           },
         ];
@@ -352,7 +342,7 @@ export default {
         });
         return [
           {
-            group: `${this.trans('tr.trcmf2')}`,
+            group: `${this.trans('tr.all_mining_methods')}`,
             fields: [...filters],
           },
         ];
@@ -382,7 +372,7 @@ export default {
         });
         return [
           {
-            group: `${this.trans('tr.trcmf3')}`,
+            group: `${this.trans('tr.all_objects')}`,
             fields: [...filters],
           },
         ];
@@ -392,7 +382,6 @@ export default {
   data: function () {
     return {
       chartShow: 0,
-      // isLoading: true,
       chartWells: [],
       filteredWellsPreGraph: [],
       filteredWells: [],
@@ -414,23 +403,21 @@ export default {
       chartFilter_exp_meth_start: true,
       chartFilter_object: [],
       chartFilter_object_start: true,
-      // sortField: null,
-      // currentSortDir: 'asc',
       year: null,
       selectYear: null,
       month: null,
       chartData: false,
       chartNames: [
-        `${this.trans('tr.trchn1')}`,
-        `${this.trans('tr.trchn2')}`,
-        `${this.trans('tr.trchn3')}`,
-        `${this.trans('tr.trchn4')}`,
-        `${this.trans('tr.trchn5')}`,
-        `${this.trans('tr.trchn6')}`,
-        `${this.trans('tr.trchn7')}`,
-        `${this.trans('tr.trchn8')}`,
-        `${this.trans('tr.trchn9')}`,
-        `${this.trans('tr.trchn10')}`,
+        `${this.trans('tr.analysis_of_reservoir_depth_pump_run_and_dynamic_level')}`,
+        `${this.trans('tr.top_30_wells_oil_production_growth_potential')}`,
+        `${this.trans('tr.top_30_wells_oil_production_growth_potential_water_cut')}`,
+        `${this.trans('tr.top_30_wells_oil_production_growth_potential_gas_factor')}`,
+        `${this.trans('tr.top_30_wells_liquid_production_growth_potential')}`,
+        `${this.trans('tr.total_oil_and_liquid_production_rate')}`,
+        `${this.trans('tr.distribution_of_productivity_index')}`,
+        `${this.trans('tr.distribution_of_wells_by_oil_production_rate')}`,
+        `${this.trans('tr.distribution_of_wells_by_fluid_flow_rate')}`,
+        `${this.trans('tr.distribution_of_wells_by_water_cut')}`,
       ],
       chartBarOptions: {
         colors: ["#00e396", "#feb019", "#5FA7FF", "#ff4560", "#554298"],
@@ -448,7 +435,7 @@ export default {
         plotOptions: {
           bar: {
             dataLabels: {
-              position: "bottom", // top, center, bottom
+              position: "bottom",
             },
           },
         },
@@ -683,7 +670,6 @@ export default {
           console.error(err);
           this.chartData = false;
         }
-        //return false;
       } else {
         this.chartData = false;
       }
@@ -733,7 +719,7 @@ export default {
       const yaxis = {
         ...this.yaxisBase,
         title: {
-          text: "Измеренная глубина [м]",
+          text: this.trans('tr.measured_depth_m'),
           style: {
             color: "#5FA7FF",
           },
@@ -770,21 +756,21 @@ export default {
 
       const series = [
         {
-          name: "Н дин",
+          name: this.trans('tr.h_dynamic'),
           type: "line",
           data: filteredResult.map((item) =>
             this.getStringOrFirstItem(item, "h_dyn")
           ),
         },
         {
-          name: "Н сп насоса",
+          name: this.trans('tr.h_pump_set'),
           type: "line",
           data: filteredResult.map((item, index) =>
             this.getStringOrFirstItem(item, "h_pump_set")
           ),
         },
         {
-          name: "Н вдп",
+          name: this.trans('tr.h_water_permeability '),
           type: "area",
           data: filteredResult.map((item) =>
             this.getStringOrFirstItem(item, "h_up_perf_md")
@@ -839,7 +825,6 @@ export default {
       const chart = { ...this.chartBarOptions.chart, stacked };
       const yaxis = [
         {
-          // seriesName: "Q нефти",
           ...this.yaxisBase,
           tooltip: {
             enabled: true,
@@ -864,7 +849,7 @@ export default {
           opposite: true,
           title: {
             rotate: 90,
-            text: "Давление [атм]",
+            text: this.trans('tr.pressure_atm'),
             style: {
               color: "#5FA7FF",
             },
@@ -895,35 +880,35 @@ export default {
       };
       const series = [
         {
-          name: "Q нефти",
+          name: this.trans('tr.q_oil_1'),
           type: "bar",
           data: filtered30.map((item) =>
             this.getStringOrFirstItem(item, "q_o")
           ),
         },
         {
-          name: "Прирост Qн идн",
+          name: this.trans('tr.q_oil_gain_idn'),
           type: "bar",
           data: filtered30.map((item) =>
             this.getStringOrFirstItem(item, "tp_idn_oil_inc")
           ),
         },
         {
-          name: "Прирост Qн грп",
+          name: this.trans('tr.q_oil_gain_idn'),
           type: "bar",
           data: filtered30.map((item) =>
             this.getStringOrFirstItem(item, "tp_idn_grp_q_oil")
           ),
         },
         {
-          name: "Рзаб идн",
+          name: this.trans('tr.bottomhole_pressure_idn'),
           type: "line",
           data: filtered30.map((item, index) =>
             this.getStringOrFirstItem(item, "tp_idn_bhp")
           ),
         },
         {
-          name: "Рзаб факт",
+          name: this.trans('tr.bottomhole_pressure_fact'),
           type: "bubble",
           data: filtered30.map((item, inde) =>
             this.getStringOrFirstItem(item, "bhp")
@@ -998,7 +983,7 @@ export default {
           opposite: true,
           title: {
             rotate: 90,
-            text: "Обводненность [%]",
+            text: this.trans('tr.water_cut_in_per'),
             style: {
               color: "#5FA7FF",
             },
@@ -1029,28 +1014,28 @@ export default {
       };
       const series = [
         {
-          name: "Q нефти",
+          name: this.trans('tr.q_oil_1'),
           type: "bar",
           data: filtered30.map((item) =>
             this.getStringOrFirstItem(item, "q_o")
           ),
         },
         {
-          name: "Прирост Qн идн",
+          name: this.trans('tr.q_oil_gain_idn'),
           type: "bar",
           data: filtered30.map((item) =>
             this.getStringOrFirstItem(item, "tp_idn_oil_inc")
           ),
         },
         {
-          name: "Прирост Qн грп",
+          name: this.trans('tr.q_oil_gain_grp'),
           type: "bar",
           data: filtered30.map((item) =>
             this.getStringOrFirstItem(item, "tp_idn_grp_q_oil")
           ),
         },
         {
-          name: "Обводненность",
+          name: this.trans('tr.water_cut'),
           type: "line",
           data: filtered30.map((item, index) =>
             this.getStringOrFirstItem(item, "wct")
@@ -1125,7 +1110,7 @@ export default {
           opposite: true,
           title: {
             rotate: 90,
-            text: "ГФ [м3/т]",
+            text: this.trans('tr.gf_m3/t'),
             style: {
               color: "#5FA7FF",
             },
@@ -1156,28 +1141,28 @@ export default {
       };
       const series = [
         {
-          name: "Q нефти",
+          name: this.trans('tr.q_oil_1'),
           type: "bar",
           data: filtered30.map((item) =>
             this.getStringOrFirstItem(item, "q_o")
           ),
         },
         {
-          name: "Прирост Qн идн",
+          name: this.trans('tr.q_oil_gain_idn'),
           type: "bar",
           data: filtered30.map((item) =>
             this.getStringOrFirstItem(item, "tp_idn_oil_inc")
           ),
         },
         {
-          name: "Прирост Qн грп",
+          name: this.trans('tr.q_oil_gain_grp'),
           type: "bar",
           data: filtered30.map((item) =>
             this.getStringOrFirstItem(item, "tp_idn_grp_q_oil")
           ),
         },
         {
-          name: "Газовый фактор",
+          name: this.trans('tr.gas_factor_1'),
           type: "line",
           data: filtered30.map((item, index) =>
             this.getStringOrFirstItem(item, "gor")
@@ -1231,10 +1216,10 @@ export default {
       const chart = { ...this.chartBarOptions.chart, stacked };
       const yaxis = [
         {
-          // seriesName: "Q нефти",
+          // seriesName: this.trans('tr.q_oil_1'),
           ...this.yaxisBase,
           title: {
-            text: "Дебит жидкости [м3/сут]",
+            text: this.trans('tr.liquid_flow_rate'),
             style: {
               color: "#5FA7FF",
             },
@@ -1262,7 +1247,7 @@ export default {
           opposite: true,
           title: {
             rotate: 90,
-            text: "Давление [атм]",
+            text: this.trans('tr.pressure_atm'),
             style: {
               color: "#5FA7FF",
             },
@@ -1293,35 +1278,35 @@ export default {
       };
       const series = [
         {
-          name: "Q жидкости",
+          name: this.trans('tr.q_liquid_1'),
           type: "bar",
           data: filtered30.map((item) =>
             this.getStringOrFirstItem(item, "q_l")
           ),
         },
         {
-          name: "Прирост Qж идн",
+          name: this.trans('tr.q_liq_gain_idn'),
           type: "bar",
           data: filtered30.map((item) =>
             this.getStringOrFirstItem(item, "tp_idn_liq_inc")
           ),
         },
         {
-          name: "Прирост Qж грп",
+          name: this.trans('tr.q_liq_gain_grp'),
           type: "bar",
           data: filtered30.map((item) =>
             this.getStringOrFirstItem(item, "tp_idn_grp_q_liq")
           ),
         },
         {
-          name: "Рзаб идн",
+          name: this.trans('tr.bottomhole_pressure_idn'),
           type: "line",
           data: filtered30.map((item, index) =>
             this.getStringOrFirstItem(item, "tp_idn_bhp")
           ),
         },
         {
-          name: "Рзаб факт",
+          name: this.trans('tr.bottomhole_pressure_fact'),
           type: "bubble",
           data: filtered30.map((item, inde) =>
             this.getStringOrFirstItem(item, "bhp")
@@ -1342,7 +1327,7 @@ export default {
       const yaxis = {
         ...this.yaxisBase,
         title: {
-          text: "Дебит нефти [т.сут] | Дебит жидкости [м3/сут]",
+          text: this.trans('tr.oil_liq_flow_rate'),
           style: {
             color: "#5FA7FF",
           },
@@ -1398,7 +1383,7 @@ export default {
       );
       const series = [
         {
-          name: "Q нефти суммарный по фонду",
+          name: this.trans('tr.q_oil_fund_sum'),
           type: "bar",
           data: [
             filteredData.oil,
@@ -1407,7 +1392,7 @@ export default {
           ],
         },
         {
-          name: "Q жидкости суммарный по фонду",
+          name: this.trans('tr.q_liq_fund_sum'),
           type: "bar",
           data: [
             filteredData.q_l,
@@ -1438,7 +1423,7 @@ export default {
       const yaxis = {
         ...this.yaxisBase,
         title: {
-          text: "Коэффициент продуктивности [м3/сут/атм]",
+          text: this.trans('tr.productivity_coefficient'),
           style: {
             color: "#5FA7FF",
           },
@@ -1516,7 +1501,7 @@ export default {
       };
       const series = [
         {
-          name: "Q нефти",
+          name: this.trans('tr.q_oil_1'),
           type: "bar",
           data: filteredResult.map((item) =>
             this.getStringOrFirstItem(item, "q_o")
@@ -1544,7 +1529,7 @@ export default {
       const yaxis = {
         ...this.yaxisBase,
         title: {
-          text: "Обводненность [%]",
+          text: this.trans('tr.water_cut_in_per'),
           style: {
             color: "#5FA7FF",
           },
@@ -1573,7 +1558,7 @@ export default {
       };
       const series = [
         {
-          name: "Обводненность",
+          name: this.trans('tr.water_cut'),
           type: "bar",
           data: filteredResult.map((item) =>
             this.getStringOrFirstItem(item, "wct")
@@ -1601,7 +1586,7 @@ export default {
       const yaxis = {
         ...this.yaxisBase,
         title: {
-          text: "Дебит жидкости [м3/сут]",
+          text: this.trans('tr.liquid_flow_rate'),
           style: {
             color: "#5FA7FF",
           },
@@ -1630,7 +1615,7 @@ export default {
       };
       const series = [
         {
-          name: "Дебит жидкости",
+          name: this.trans('tr.liquid_flow'),
           type: "bar",
           data: filteredResult.map((item) =>
             this.getStringOrFirstItem(item, "q_l")
@@ -1650,7 +1635,6 @@ export default {
     },
     chooseDt() {
       this.$store.commit("globalloading/SET_LOADING", true);
-      // this.isLoading = true;
       this.$store.commit("tr/SET_MONTH", this.month);
       this.$store.commit("tr/SET_YEAR", this.selectYear);
       if (this.month < 10) {
@@ -1667,10 +1651,7 @@ export default {
             "/"
         )
         .then((response) => {
-          // this.editdtm = choosenDt[1];
-          // this.editdty = choosenDt[0];
           this.$store.commit("globalloading/SET_LOADING", false);
-          // this.isLoading = false;
           let data = response.data;
           if (data) {
             this.fullWells = data.data;
@@ -1693,7 +1674,6 @@ export default {
   },
   created() {
     this.$store.commit("globalloading/SET_LOADING", true);
-    // this.isLoading = true;
     if (this.$store.getters["tr/chart"])
       this.chartShow = this.$store.getters["tr/chart"];
     let mm, yyyy;
@@ -1720,7 +1700,6 @@ export default {
       )
       .then((response) => {
         this.$store.commit("globalloading/SET_LOADING", false);
-        // this.isLoading = false;
         let data = response.data;
         this.editdtm = mm;
         this.editdty = yyyy;
@@ -1738,7 +1717,6 @@ export default {
       })
       .catch((e) => {
         this.$store.commit("globalloading/SET_LOADING", false);
-        // this.isLoading = false;
       });
   },
 };
@@ -1874,8 +1852,6 @@ a:hover {
   width: 150px;
   margin-top: 5px;
   margin-right: 12px;
-  /* display: flex;  */
-  /* justify-content: center */
 }
 </style>
 

@@ -1,4 +1,3 @@
-<?php print_r($permissionNames); ?>
 @extends('layouts.tr')
 @section('content')
     <div class="col p-4 tr_page" id="app">
