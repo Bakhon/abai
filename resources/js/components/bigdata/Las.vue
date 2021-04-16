@@ -122,7 +122,7 @@
               </div>
               <div class="col-3">
                 <select
-                    class="col form-control filter-input-multiple select mr-2 mb-2"
+                    class="col filter-input-multiple select mr-2 mb-2"
                     id="originSelect"
                     :disabled="isLoading"
                     v-model="input.filename.mnemonics"
@@ -320,7 +320,7 @@
       </div>
       <div class="row">
         <select
-            class="col form-control filter-input-multiple select mr-2 mb-2"
+            class="col filter-input-multiple select mr-2 mb-2"
             id="mnemonicsSelect"
             :disabled="isLoading"
             v-model="statisticsInput.mnemonics"
@@ -417,14 +417,14 @@
 
 
 .filter-input-multiple {
-  background-color: #333975 !important;
-  border-color: #333975 !important;
-  color: white !important;
-  height: 70px !important;
-  padding-left: 20px !important;
-  padding-right: 20px !important;
-  font-size: 14px !important;
-  font-weight: bold !important;
+  background-color: #333975;
+  border-color: #333975;
+  color: white;
+  height: 70px;
+  padding-left: 20px;
+  padding-right: 20px;
+  font-size: 14px;
+  font-weight: bold;
   position: relative;
 }
 
