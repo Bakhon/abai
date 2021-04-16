@@ -161,6 +161,7 @@ export default {
 
             if (change === 4) {
                 this.buttonPeriodTab = this.highlightedButton;
+                this.currentDzoList = 'daily';
             }
         },
 

@@ -84,7 +84,7 @@ export default {
     },
     methods: {
         dayClicked() {
-            this.changeMenu2('4');
+            this.changeMenu2(4);
         },
 
         periodSelect() {

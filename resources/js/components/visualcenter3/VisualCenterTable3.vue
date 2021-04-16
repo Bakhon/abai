@@ -1109,7 +1109,7 @@
                       <td
                         v-if="buttonYearlyTab"
                         :class="
-                          index % 2 === 0 ? 'tdStyle3-total' : 'tdStyle3-total'
+                          index % 2 === 0 ? `${getLighterClass(index)}` : 'tdStyle3-total'
                         "
                       >
                         <div class="font">
@@ -1119,14 +1119,28 @@
 
                       <td
                         v-if="buttonMonthlyTab"
-                        :class="index % 2 === 0 ? 'tdStyle3-total' : 'tdStyle3-total'"
+                        :class="index % 2 === 0 ? `${getLighterClass(index)}` : 'tdStyle3-total'"
                       >
                         <div class="font">
                           {{dzoCompaniesSummary.periodPlan}}
                         </div>
                       </td>
 
-                      <td :class="`${getLighterClass(index)}`">
+                      <td
+                              v-if="buttonMonthlyTab || buttonYearlyTab"
+                              :class="index % 2 === 0 ? `${getDarkerClass(index)}` : `${getLighterClass(index)}`"
+                      >
+                        <div class="font">
+                          {{dzoCompaniesSummary.plan}}
+                          <div class="right">
+                            {{ trans("visualcenter.thousand") }} {{ metricName }}
+                          </div>
+                        </div>
+                      </td>
+                      <td
+                              v-else
+                              :class="index % 2 === 0 ? `${getLighterClass(index)}` : `${getDarkerClass(index)}`"
+                      >
                         <div class="font">
                           {{dzoCompaniesSummary.plan}}
                           <div class="right">
@@ -1135,7 +1149,10 @@
                         </div>
                       </td>
 
-                      <td :class="`${getDarkerClass(index)}`">
+                      <td
+                              v-if="buttonMonthlyTab || buttonYearlyTab"
+                              :class="index % 2 === 0 ? `${getLighterClass(index)}` : `${getDarkerClass(index)}`"
+                      >
                         <div class="font">
                           {{dzoCompaniesSummary.fact}}
                           <div class="right">
@@ -1143,7 +1160,21 @@
                           </div>
                         </div>
                       </td>
-                      <td :class="`${getLighterClass(index)}`">
+                      <td
+                              v-else
+                              :class="index % 2 === 0 ? `${getDarkerClass(index)}` : `${getLighterClass(index)}`"
+                      >
+                        <div class="font">
+                          {{dzoCompaniesSummary.fact}}
+                          <div class="right">
+                            {{ trans("visualcenter.thousand") }} {{ metricName }}
+                          </div>
+                        </div>
+                      </td>
+                      <td
+                              v-if="buttonMonthlyTab || buttonYearlyTab"
+                              :class="index % 2 === 0 ? `${getDarkerClass(index)}` : `${getLighterClass(index)}`"
+                      >
                         <div
                           v-if="factMonthSumm"
                           :class="
@@ -1160,8 +1191,35 @@
                         </div>
                       </td>
                       <td
-                              v-if="!isFilterTargetPlanActive"
-                              :class="`${getDarkerClass(index)}`"
+                              v-else
+                              :class="index % 2 === 0 ? `${getLighterClass(index)}` : `${getDarkerClass(index)}`"
+                      >
+                        <div
+                                v-if="factMonthSumm"
+                                :class="
+                            factMonthSumm - planMonthSumm < 0 ?
+                            'triangle fall-indicator-production-data' :
+                            'triangle growth-indicator-production-data'
+                          "
+                        ></div>
+                        <div class="font dynamic">
+                          {{dzoCompaniesSummary.difference}}
+                          <div class="right">
+                            {{ trans("visualcenter.thousand") }}{{ metricName }}
+                          </div>
+                        </div>
+                      </td>
+                      <td
+                              v-if="isFilterTargetPlanActive"
+                              :class="`${getColorClassBySelectedPeriod(index)}`"
+                      >
+                        <div class="font">
+                          {{dzoCompaniesSummary.targetPlan}}
+                        </div>
+                      </td>
+                      <td
+                              v-else
+                              :class="`${getColorClassBySelectedPeriod(index)}`"
                       >
                         <div
                           v-if="factMonthSumm"
@@ -1176,14 +1234,7 @@
                           {{dzoCompaniesSummary.percent}}
                         </div>
                       </td>
-                      <td
-                              v-if="isFilterTargetPlanActive"
-                              :class="`${getDarkerClass(index)}`"
-                      >
-                        <div class="font">
-                          {{dzoCompaniesSummary.targetPlan}}
-                        </div>
-                      </td>
+
                       <td
                               :class="`${getLighterClass(index)}`"
                               v-if="exactDateSelected"
