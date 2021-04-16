@@ -407,7 +407,13 @@ export default {
         }
       }).then(({data}) => {
         this.rowHistory = data
-        this.rowHistoryColumns = this.formParams.columns.filter(item => column.fields.indexOf(item.code) > -1)
+
+        let columns = []
+        column.fields.forEach(block => {
+          columns = [...columns, ...this.formParams.columns.filter(item => Object.keys(block).includes(item.code))]
+        })
+
+        this.rowHistoryColumns = columns
         this.isloading = false
       })
     },
