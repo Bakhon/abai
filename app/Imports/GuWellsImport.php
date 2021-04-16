@@ -81,7 +81,6 @@ class GuWellsImport implements ToCollection, WithEvents, WithColumnLimit, WithSt
 
                 if (strpos($this->sheetName, 'НГДУ') === 0) {
                     $this->ngdu = Ngdu::where('name', $this->sheetName)->first();
-                    MapPipe::where('ngdu_id', $this->ngdu->id)->whereIn('between_points', self::BETWEEN_POINTS_ARRAY)->delete();
                     Well::where('ngdu_id', $this->ngdu->id)->delete();
                     Zu::whereNull('ngdu_id')->delete();
                 }
@@ -195,7 +194,7 @@ class GuWellsImport implements ToCollection, WithEvents, WithColumnLimit, WithSt
                         $pipe->start_point = $zu->name;
                         $pipe->zu_id = $zu->id;
                     }
-                    $pipe->end_point_point = $row[self::PIPE_START_NAME];
+                    $pipe->end_point = $row[self::PIPE_START_NAME];
                 }
 
                 if ($between_points == 'mgu-mgu') {

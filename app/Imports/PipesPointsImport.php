@@ -94,8 +94,10 @@ class PipesPointsImport implements ToCollection, WithEvents, WithColumnLimit, Wi
                 ->where('h_distance', 0)
                 ->first();
 
-            if (!$pipe_coords_start || !$pipe_coords_end) {
-                dd($row);
+            if (!$pipe_coords_end) {
+                $pipe_coords_end = PipeCoord::where('map_pipe_id', $pipe_coords_start->map_pipe_id)
+                    ->orderByDesc('m_distance')
+                    ->first();
             }
 
             $trunkline_end_point = TrunklinePoint::firstOrCreate(
@@ -131,5 +133,7 @@ class PipesPointsImport implements ToCollection, WithEvents, WithColumnLimit, Wi
 
             $trunkline_start_point->save();
         }
+
+        throw new \Exception('Success import');
     }
 }

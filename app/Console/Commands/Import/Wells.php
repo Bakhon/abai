@@ -4,7 +4,10 @@ namespace App\Console\Commands\Import;
 
 use App\Imports\Ngdu4WellsImport;
 use App\Imports\TrunklineImport;
+use App\Models\Pipes\MapPipe;
 use App\Models\Pipes\PipeCoord;
+use App\Models\Refs\Well;
+use App\Models\Refs\Zu;
 use Illuminate\Console\Command;
 use App\Imports\GuWellsImport;
 use Illuminate\Support\Facades\DB;
@@ -44,6 +47,8 @@ class Wells extends Command
      */
     public function handle(): void
     {
+        DB::table('map_pipes')->delete();
+        DB::statement("ALTER TABLE map_pipes AUTO_INCREMENT = 1;");
         PipeCoord::truncate();
 
         $files = [
