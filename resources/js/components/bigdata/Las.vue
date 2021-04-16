@@ -6,10 +6,10 @@
     <div class="container container-main">
       <transition name="fade">
         <div>
-          <div v-if="isFilesUploadedOnPreApproval">
+          <div v-if="isFilesUploadedOnPreApproval && !isLastFileProcessed">
             <div class="row">
-              <label class="section-text">Укажите данные для LAS файла: {{ files[currentFileInfo].name }} | файл
-                {{ currentFileInfo + 1 }} из {{ files.length }}</label>
+              <label class="section-text">Укажите данные для LAS файла: {{ files[currentFileInfoNum].name }} | файл
+                {{ currentFileInfoNum + 1 }} из {{ files.length }}</label>
             </div>
             <div class="row">
 
@@ -48,7 +48,9 @@
                     required
                 >
                   <option disabled value="">Месторождение</option>
-                  <option v-for="field in filenameParameters.generic.fields" :value="field">{{ field }}</option>
+                  <option v-for="field in filenameParameters.generic.fields" :value="field.value">
+                    {{ getLocalizedParameterName(field) }}
+                  </option>
                 </select>
               </div>
               <div class="col-6">
@@ -60,7 +62,9 @@
                     required
                 >
                   <option disabled value="">Скважина</option>
-                  <option v-for="well in filenameParameters.generic.wells" :value="well">{{ well }}</option>
+                  <option v-for="well in filenameParameters.generic.wells" :value="well.value">
+                    {{ getLocalizedParameterName(well) }}
+                  </option>
                 </select>
               </div>
             </div>
@@ -75,7 +79,8 @@
                     required
                 >
                   <option disabled value="">Наименование ствола</option>
-                  <option v-for="stemType in filenameParameters.generic.stemTypes" :value="stemType">{{ stemType }}
+                  <option v-for="stemType in filenameParameters.generic.stemTypes" :value="stemType.value">
+                    {{ getLocalizedParameterName(stemType) }}
                   </option>
                 </select>
               </div>
@@ -88,8 +93,8 @@
                     required
                 >
                   <option disabled value="">Секция ствола</option>
-                  <option v-for="stemSection in filenameParameters.generic.stemSections" :value="stemSection">{{
-                      stemSection
+                  <option v-for="stemSection in filenameParameters.generic.stemSections" :value="stemSection.value">{{
+                      getLocalizedParameterName(stemSection)
                     }}
                   </option>
                 </select>
@@ -107,8 +112,8 @@
                 >
                   <option disabled value="">Наименование технологии записи</option>
                   <option v-for="recordingMethod in filenameParameters.generic.recordingMethods"
-                          :value="recordingMethod">
-                    {{ recordingMethod }}
+                          :value="recordingMethod.value">
+                    {{ recordingMethod.value }}
                   </option>
                 </select>
               </div>
@@ -124,7 +129,8 @@
                     multiple
                     required
                 >
-                  <option v-for="mnemonic in filenameParameters.specific[currentFileInfo].mnemonics" :value="mnemonic"
+                  <option v-for="mnemonic in filenameParameters.specific[currentFileInfoNum].mnemonics"
+                          :value="mnemonic"
                           selected>{{ mnemonic }}
                   </option>
                 </select>
@@ -160,8 +166,8 @@
                     required
                 >
                   <option disabled value="">Статус обработки</option>
-                  <option v-for="fileStatus in filenameParameters.generic.fileStatuses" :value="fileStatus">{{
-                      fileStatus
+                  <option v-for="fileStatus in filenameParameters.generic.fileStatuses" :value="fileStatus.value">{{
+                      getLocalizedParameterName(fileStatus)
                     }}
                   </option>
                 </select>
@@ -183,8 +189,9 @@
                     required
                 >
                   <option disabled value="">Статус записи</option>
-                  <option v-for="recordState in filenameParameters.generic.recordingStates" :value="recordState">{{
-                      recordState
+                  <option v-for="recordState in filenameParameters.generic.recordingStates" :value="recordState.value">
+                    {{
+                      getLocalizedParameterName(recordState)
                     }}
                   </option>
                 </select>
@@ -200,7 +207,8 @@
                     required
                 >
                   <option disabled value="">Расширение файла</option>
-                  <option v-for="extension in filenameParameters.generic.extensions" :value="extension">{{ extension }}
+                  <option v-for="extension in filenameParameters.generic.extensions" :value="extension.value">
+                    {{ getLocalizedParameterName(extension) }}
                   </option>
                 </select>
               </div>
@@ -219,7 +227,6 @@
             </div>
 
           </div>
-
           <div v-else>
             <div class="row">
               <label class="section-text">Загрузить LAS файлы </label>
@@ -232,7 +239,7 @@
             <div class="row">
               <button class="col btn get-report-button" id="experimentUploadButton a"
                       :disabled="files.length === 0"
-                      @click="submitFile()">
+                      @click="submitFiles()">
                 Загрузить
               </button>
             </div>
@@ -240,10 +247,30 @@
         </div>
       </transition>
     </div>
-    <!--    <div class="container  container-main info pt-5">-->
-    <!--      <label class="label-text" v-if="experimentsId">ID эксперимента {{ experimentsId }}</label>-->
-    <!--    </div>-->
+    <div class="container  container-main info pt-5" v-if="isLastFileProcessed">
+      <div class="row mb-2">
+        <label class="section-text">Результат загрузки файлов:</label>
+      </div>
+      <div class="row mb-2">
+        <div class="col-2">
+        <label class="label-text pt-4">Id</label>
+        </div>
 
+        <div class="col">
+        <label class="label-text pt-4">Имя файла</label>
+        </div>
+      </div>
+      <div v-for="parameter in filenameParameters.specific">
+        <div class="row mb-2">
+          <div class="col-2">
+          <label class="label-text pt-4">{{ parameter.experimentId }}</label>
+          </div>
+            <div class="col">
+          <label class="label-text pt-4">{{ parameter.userFilename }}</label>
+            </div>
+        </div>
+      </div>
+    </div>
     <div class="container  container-main pt-5">
       <div class="row">
         <label class="section-text">Поиск экспериментов по номеру скважины</label>

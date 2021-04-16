@@ -1,4 +1,5 @@
 import download from "downloadjs";
+import moment from 'moment';
 import {Datetime} from 'vue-datetime';
 import Vue from "vue";
 
@@ -9,43 +10,19 @@ export default {
     data() {
         return {
             files: [],
-            currentFileInfo: 0,
+            currentFileInfoNum: 0,
             isFilesUploadedOnPreApproval: false,
-
+            isLastFileProcessed: false,
             experimentId: null,
-            experimentIds: [],
             statisticsInput: {
                 experimentId: null,
                 mnemonics: [],
             },
             experimentStatistics: null,
-            experimentsId: null,
             wellId: null,
-            filenameParameters: {
-                generic: {
-                    fields: ['Месторождение1', 'Месторождение2', 'Месторождение3'],
-                    wells: ['Скважина1', 'Скважина2', 'Скважина3', 'Скважина4'],
-                    extensions: ['las', 'lis', 'dlis', 'ascii', 'txt'],
-                    stemTypes: ['ST1', 'ST2'],
-                    stemSections: ['OH', 'CH', 'NON'],
-                    recordingMethods: ['LWD', 'WL'],
-                    fileStatuses: ['RAW', 'FIN', 'INT', 'UNK'],
-                    recordingStates: ['MAIN', 'RPT'],
-                },
-                specific: [{
-                    mnemonics: ['DEPTH', 'AUS', 'TOX'],
-                    recordingDepths: [100, 1500],
-                }, {
-                    mnemonics: ['DEPTH', 'AUS', 'TOX'],
-                    recordingDepths: [100, 1500],
-                }, {
-                    mnemonics: ['DEPTH', 'AUS', 'TOX'],
-                    recordingDepths: [100, 1500],
-                }
-
-
-                ]
-            },
+            dateFormat: 'DDMMYY',
+            localization: 'ru',
+            filenameParameters: null,
             filenameDelimiter: '_',
             filenameParametersForName: [
                 'field', 'well', 'stemType', 'stemSection', 'recordingMethod',
@@ -86,8 +63,7 @@ export default {
                 },
             },
 
-            // baseUrl: 'http://172.20.103.187:8083/',
-            baseUrl: 'http://127.0.0.1:8091/',
+            baseUrl: 'http://172.20.103.187:8083/',
             experimentInfo: null,
             selectedExperimentsInfo: null,
             loadProvenance: null,
@@ -119,23 +95,20 @@ export default {
                 this.isLoading = false;
             }).catch((error) => {
                 console.log(error)
-                this.provenances = [{'id': 0, 'origin': 'fake1'}, {'id': 1, 'origin': 'fake2'},]
                 this.isLoading = false
-
             });
         },
         handleFileUpload() {
             this.files = this.$refs.file.files;
-            console.log(this.files);
         },
-        submitFile() {
+        submitFiles() {
             let formData = new FormData();
+            this.resetInternalVariablesOfFileUpload();
             for (let i = 0; i < this.files.length; i++) {
                 formData.append('files', this.files[i])
             }
 
             this.$store.commit('globalloading/SET_LOADING', true);
-            this.experimentsId = null;
             this.axios.post(this.baseUrl + 'upload/', formData, {
                 responseType: 'json',
                 headers: {
@@ -143,12 +116,18 @@ export default {
                 }
             }).then((response) => {
                 if (response.data) {
-                    this.experimentsId = response.data.experiments_id
+                    this.filenameParameters = response.data
                     this.setExperimentFileParameters()
                     this.isFilesUploadedOnPreApproval = true
                 }
             }).catch((error) => console.log(error)
             ).finally(() => this.$store.commit('globalloading/SET_LOADING', false));
+        },
+        resetInternalVariablesOfFileUpload() {
+            this.isLastFileProcessed = false
+            this.currentFileInfoNum = 0
+            this.isFilesUploadedOnPreApproval = false
+            this.filenameParameters = null
         },
         submitFileParams() {
             this.$store.commit('globalloading/SET_LOADING', true);
@@ -158,8 +137,10 @@ export default {
                 field: this.input.field,
                 comment: this.input.comment,
                 filename: this.filenameByParameters,
-                provenance_id: this.input.provenanceId
+                provenanceId: this.input.provenanceId,
+                experimentIdToApprove: this.filenameParameters.specific[this.currentFileInfoNum]['futureExperimentId'],
             })
+            this.setExperimentUserFileName()
             console.log(jsonData)
             this.axios.post(this.baseUrl + 'approve-upload/', jsonData, {
                 responseType: 'json',
@@ -168,21 +149,32 @@ export default {
                 }
             }).then((response) => {
                 if (response.data) {
-                    this.experimentIds.push(response.data.experiments_id);
+                    this.setExperimentId(response.data.experimentId)
                     this.updateExperimentInfo()
                 }
             }).catch((error) => console.log(error)
             ).finally(() => this.$store.commit('globalloading/SET_LOADING', false));
         },
+        setExperimentId(experimentId) {
+            this.filenameParameters.specific[this.currentFileInfoNum]['experimentId'] = experimentId
+        },
+        setExperimentUserFileName() {
+            this.filenameParameters.specific[this.currentFileInfoNum]['userFilename'] = this.filenameByParameters
+        },
         updateExperimentInfo() {
-            if (this.currentFileInfo > this.files.length - 1) {
+            if (this.currentFileInfoNum >= this.files.length - 1) {
+                this.isLastFileProcessed = true
                 return
             }
-            this.currentFileInfo += 1
+            this.currentFileInfoNum += 1
             this.setExperimentFileParameters()
         },
         setExperimentFileParameters() {
-            let experiment = this.filenameParameters.specific[this.currentFileInfo]
+            let experiment = this.filenameParameters.specific[this.currentFileInfoNum]
+            if ('experimentId' in experiment && experiment['experimentId'] !== null) {
+                this.updateExperimentInfo()
+            }
+
             this.input.filename.recordingDepth = experiment.recordingDepths[0] + this.filenameDelimiter + experiment.recordingDepths[1]
         },
         fetchStatistics() {
@@ -246,10 +238,19 @@ export default {
         },
         getInputForFilename(field) {
             let content = this.input.filename[field]
+            if (field === 'date') {
+                return this.formatDate(content)
+            }
             if ((_.isArray(content) && content.length === 0) || (content === '')) {
                 return this.input.defaultsForFilename[field]
             }
             return content
+        },
+        formatDate(date) {
+            if (date === '') {
+                return date
+            }
+            return moment.parseZone(this.input.filename['date']).format(this.dateFormat)
         },
         getDelimeterForFilename(index) {
             if (index !== 0 && index !== (this.filenameParametersForName.length - 1)) {
@@ -260,6 +261,15 @@ export default {
             }
             return ''
         },
+        getLocalizedParameterName(parameter) {
+            if (parameter[this.localization] !== '') {
+                return parameter[this.localization]
+            }
+            if (parameter['ru'] !== '') {
+                return parameter['ru']
+            }
+            return parameter['value']
+        }
     },
     computed: {
         filenameByParameters() {
@@ -288,7 +298,6 @@ export default {
                 }
             }
             return true
-        }
-
+        },
     }
 }

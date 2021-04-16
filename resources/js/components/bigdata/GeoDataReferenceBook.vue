@@ -43,8 +43,7 @@ export default {
   components: {},
   data() {
     return {
-      // baseUrl: 'http://172.20.103.187:8084/',
-      baseUrl: 'http://127.0.0.1:8091/',
+      baseUrl: 'http://172.20.103.187:8084/',
       referenceBooks: [
         {
           description: 'Расширение',
@@ -75,6 +74,16 @@ export default {
           description: 'Запись',
           referenceBook: 'recording_state',
           input: 'recordingState',
+        },
+        {
+          description: 'Месторождение',
+          referenceBook: 'field',
+          input: 'field',
+        },
+        {
+          description: 'Скважина',
+          referenceBook: 'well',
+          input: 'well',
         }
       ],
       input: {
@@ -109,6 +118,18 @@ export default {
           en: ''
         },
         recordingState: {
+          value: '',
+          ru: '',
+          kz: '',
+          en: ''
+        },
+        well: {
+          value: '',
+          ru: '',
+          kz: '',
+          en: ''
+        },
+        field: {
           value: '',
           ru: '',
           kz: '',
