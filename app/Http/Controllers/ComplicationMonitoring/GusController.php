@@ -6,6 +6,7 @@ use App\Http\Controllers\CrudController;
 use App\Http\Controllers\Traits\WithFieldsValidation;
 use App\Http\Requests\GuUpdateRequest;
 use App\Http\Requests\IndexTableRequest;
+use App\Jobs\ExportOmgCAToExcel;
 use App\Models\Refs\Gu;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -84,7 +85,7 @@ class GusController extends CrudController
 
     public function export(IndexTableRequest $request)
     {
-        $job = new \App\Jobs\ExportOmgCAToExcel($request->validated());
+        $job = new ExportOmgCAToExcel($request->validated());
         $this->dispatch($job);
 
         return response()->json(
@@ -179,5 +180,10 @@ class GusController extends CrudController
     protected function getFilteredQuery($filter, $query = null)
     {
         return (new \App\Filters\GuFilter($query, $filter))->filter();
+    }
+
+    public function createExcel()
+    {
+
     }
 }
