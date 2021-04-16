@@ -6863,11 +6863,7 @@ export default {
         } else {
           this.dt = "01" + "." + mm1 + "." + yyyy1;
         }
-        if(this.params.includes(this.permissionName)) {
-          this.isPermission = true;
-        } else {
-          this.isPermission = false;
-        }
+        this.isPermission = this.params.includes(this.permissionName);
       });
   },
   data: function () {
