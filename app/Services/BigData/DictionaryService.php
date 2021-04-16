@@ -8,6 +8,8 @@ use App\Models\BigData\Dictionaries\Company;
 use App\Models\BigData\Dictionaries\Org;
 use App\Models\BigData\Dictionaries\WellCategory;
 use App\Models\BigData\Dictionaries\WellType;
+use App\Models\BigData\Dictionaries\Equip;
+use App\Models\BigData\Dictionaries\CasingType;
 use Carbon\Carbon;
 use Illuminate\Cache\Repository;
 use Illuminate\Support\Facades\DB;
@@ -26,6 +28,14 @@ class DictionaryService
         'companies' => [
             'class' => Company::class,
             'name_field' => 'name'
+        ],
+        'equips' => [
+            'class' => Equip::class,
+            'name_field' => 'name_ru'
+        ],
+        'casings' => [
+            'class' => CasingType::class,
+            'name_field' => 'CONCAT(\'Условный диаметр трубы(мм): \', od, \', Толщина стенки с норм. резьбой(мм):\', wt, \', Внутренний диаметр трубы с норм. резьбой (мм)\' , vd, \', Группа прочности: \', sg)'
         ]
     ];
 
