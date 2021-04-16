@@ -11,6 +11,8 @@ class Tech extends TBDModel
     const TYPE_ZU = 3;
     const TYPE_GU = 2;
     const TYPE_GZU = 1;
+    const TYPE_AGZU = 2000000000004;
+    const TYPE_SPGU = 14;
 
     public function parent()
     {
