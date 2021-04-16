@@ -25,20 +25,14 @@
               "type": "dict",
               "title": "work_type",
               "validation": "required|exists:",
-              "dict": "",
-              "callbacks": {
-                "": ""
-              }    
+              "dict": ""
             },
             {
               "code": "",
               "type": "dict",
               "title": "gtm_type",
               "validation": "required|exists:",
-              "dict": "",
-              "callbacks": {
-                "": ""
-              }    
+              "dict": ""
             },
             {
               "code":"",
@@ -71,10 +65,7 @@
               "type": "dict",
               "title": "repair_work_type",
               "validation": "required|exists:",
-              "dict": "",
-              "callbacks": {
-                "": ""
-              }
+              "dict": ""
             },
             {
               "code": "planned_works_list",
@@ -94,30 +85,21 @@
               "type": "dict",
               "title": "contractor",
               "validation": "required|exists:",
-              "dict": "",
-              "callbacks": {
-                "": ""
-              } 
+              "dict": ""
             },
             {
               "code": "brigade",
               "type": "dict",
               "title": "brigade",
               "validation": "required|exists:",
-              "dict": "",
-              "callbacks": {
-                "": ""
-              } 
+              "dict": ""
             },
             {
               "code": "brigade_master",
               "type": "dict",
               "title": "brigade_master",
               "validation": "required|exists:",
-              "dict": "",
-              "callbacks": {
-                "": ""
-              } 
+              "dict": ""
             },
             {
               "code": "duplicate_in_gts",
@@ -195,10 +177,7 @@
               "type": "dict",
               "title": "no_slaughter_reason",
               "validation": "required|exists:",
-              "dict": "",
-              "callbacks": {
-                "": ""
-              } 
+              "dict": ""
             },
             {
               "code": "artificial_slaughter_m",
@@ -212,10 +191,7 @@
               "type": "dict",
               "title": "machine_technical_condition",
               "validation": "required|exists:",
-              "dict": "",
-              "callbacks": {
-                "": ""
-              } 
+              "dict": ""
             },
             {
               "code": "not_change_technical_condition",
@@ -228,10 +204,7 @@
               "type": "dict",
               "title": "condition",
               "validation": "required|exists:",
-              "dict": "",
-              "callbacks": {
-                "": ""
-              } 
+              "dict": ""
             },
             {
               "code": "not_change_state",
@@ -257,30 +230,21 @@
               "type": "dict",
               "title": "hardware_failure_cause",
               "validation": "required|exists:",
-              "dict": "",
-              "callbacks": {
-                "": ""
-              } 
+              "dict": ""
             },
             {
               "code": "equipment_failure_type",
               "type": "dict",
               "title": "equipment_failure_type",
               "validation": "required|exists:",
-              "dict": "",
-              "callbacks": {
-                "": ""
-              } 
+              "dict": ""
             },
             {
               "code": "stopping_reason",
               "type": "dict",
               "title": "stopping_reason",
               "validation": "required|exists:",
-              "dict": "",
-              "callbacks": {
-                "": ""
-              } 
+              "dict": ""
             }
           ]
         }
