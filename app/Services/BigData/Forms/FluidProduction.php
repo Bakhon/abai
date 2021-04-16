@@ -31,9 +31,9 @@ class FluidProduction extends TableForm
                 'techs',
                 function ($query) use ($tech) {
                     return $query
-                        ->where('tbdi.tech.id', $tech->id)
-                        ->whereDate('tbdi.well_tech.dbeg', '<=', $this->request->get('date'))
-                        ->whereDate('tbdi.well_tech.dend', '>=', $this->request->get('date'));
+                        ->where('dict.tech.id', $tech->id)
+                        ->whereDate('dict.tech.dbeg', '<=', $this->request->get('date'))
+                        ->whereDate('dict.tech.dend', '>=', $this->request->get('date'));
                 }
             );
 
@@ -77,7 +77,7 @@ class FluidProduction extends TableForm
 
         $ancestors = $geo->ancestors()
             ->reverse()
-            ->pluck('name')
+            ->pluck('name_ru')
             ->toArray();
 
         $ancestors[] = $geo->name;
@@ -257,9 +257,9 @@ class FluidProduction extends TableForm
         foreach ($orgs as $org) {
             $orgData[$org->id] = [
                 'id' => $org->id,
-                'name' => $org->name,
+                'name' => $org->name_ru,
                 'type' => 'org',
-                'parent_id' => $org->parent_id
+                'parent_id' => $org->parent
             ];
         }
 
@@ -284,7 +284,7 @@ class FluidProduction extends TableForm
         }
 
         $techs = Tech::query()
-            ->whereIn('tech_id', [Tech::TYPE_GZU, Tech::TYPE_GU, Tech::TYPE_ZU, Tech::TYPE_AGZU, Tech::TYPE_SPGU])
+            ->whereIn('tech_type', [Tech::TYPE_GZU, Tech::TYPE_GU, Tech::TYPE_ZU, Tech::TYPE_AGZU, Tech::TYPE_SPGU])
             ->where('dbeg', '<=', Carbon::parse($this->request->get('date')))
             ->where('dend', '>=', Carbon::parse($this->request->get('date')))
             ->with(
@@ -302,10 +302,10 @@ class FluidProduction extends TableForm
         foreach ($techs as $tech) {
             $techData[$tech->id] = [
                 'id' => $tech->id,
-                'name' => $tech->name,
+                'name' => $tech->name_ru,
                 'type' => 'tech',
                 'wells' => $tech->wells->pluck('id')->toArray(),
-                'parent_id' => in_array($tech->parent_id, $techIds) ? $tech->parent_id : null
+                'parent_id' => in_array($tech->parent, $techIds) ? $tech->parent : null
             ];
         }
 
@@ -364,10 +364,10 @@ class FluidProduction extends TableForm
     private function getOtherUwis($item)
     {
         $uwi = DB::connection('tbd')
-            ->table('tbdi.well as w')
-            ->selectRaw('w.id,w.uwi,array_agg(b.uwi) as other_uwi')
-            ->leftJoin('tbdic.joint_wells as j', 'w.id', '=', DB::raw("any(j.well_id_arr)"))
-            ->leftJoin('tbdi.well as b', 'b.id', '=', DB::raw('any(array_remove(j.well_id_arr, w.id))'))
+            ->table('dict.well')
+            ->selectRaw('w.id,w.uwi as other_uwi')
+            ->leftJoin('prod.joint_wells as j', 'w.id', DB::raw("any(j.well_id_arr)"))
+            ->leftJoin('dict.well as b', 'b.id', DB::raw('any(array_remove(j.well_id_arr, w.id))'))
             ->where('w.id', $item->id)
             ->groupBy('w.id', 'w.uwi')
             ->first();
