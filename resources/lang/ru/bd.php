@@ -124,6 +124,16 @@ return [
             'gtm_parameters_results'=>'Параметры ГТМ/результаты',
             'status'=>'Состояние'
         ],
+        'well_design'=>[
+            "well_design_project" => "Проект конструкции скважины",
+            "column_type" => "Вид колонны",
+            "casing_running_depth" => "Глубина спуска колонны",
+            "side_barrel" => "Боковой ствол",
+            "casing_type" => "Вид обсадной трубы",
+            "number_of_pipes" => "Количество труб",
+            "poured_cement_volume" => "Объем залитого цемента",
+            "cement_lifting_height" => "Высота подъема цемента" 
+        ],
         'prs' => [
             'repair' => 'Ремонт',
             'delivery_cert' => 'Акт сдачи в ремонт',
@@ -146,7 +156,6 @@ return [
             'actual_bh' => 'Фактический забой, м',
             'tech_condition' => 'Техническое состояние скважин',
             'new_condition' => 'Новое состояние'
-            
         ],
         'gas_well'=>[
             'main' => 'Основное',
