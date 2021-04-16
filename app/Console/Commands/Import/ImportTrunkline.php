@@ -40,6 +40,6 @@ class ImportTrunkline extends Command
      */
     public function handle()
     {
-        $this->importExcel(new TrunklineImport($this), base_path($this->argument('path')));
+        $this->importExcel(new TrunklineImport($this), public_path('imports/trunkline.xlsx'));
     }
 }

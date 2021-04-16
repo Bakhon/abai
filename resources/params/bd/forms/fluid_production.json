@@ -115,16 +115,15 @@
         "metric": "1"
       },
       "fields": [
-        "liquid_telemetry",
-        "telemetry_source"
+        {
+          "liquid_telemetry": {},
+          "telemetry_source": {}
+        }
       ],
       "graph_fields": [
-        "liquid_val",
-        "bsw",
-        "oil_val",
-        "debit_fluid_tech",
-        "bsw_tech",
-        "debit_oil_tech"
+        {
+          "liquid_telemetry": {}
+        }
       ],
       "history_popup": {
         "title": "telemetry_data"
@@ -310,10 +309,12 @@
       "code": "measure_last_month",
       "type": "history",
       "fields": [
-        "liquid_debit",
-        "bsw",
-        "oil_debit",
-        "worktime"
+        {
+          "liquid_debit": {},
+          "bsw": {},
+          "oil_debit": {},
+          "worktime": {}
+        }
       ],
       "is_editable": false
     },

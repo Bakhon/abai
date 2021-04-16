@@ -2,7 +2,10 @@
 
 namespace App\Jobs;
 
+use App\Exports\OmgCAExport;
+use App\Filters\OmgCAFilter;
 use App\Models\ComplicationMonitoring\OmgCA;
+use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -44,12 +47,12 @@ class ExportOmgCAToExcel implements ShouldQueue
         $query = OmgCA::query()
             ->with('gu');
 
-        $omgca = (new \App\Filters\OmgCAFilter($query, $this->params))
+        $omgca = (new OmgCAFilter($query, $this->params))
             ->filter()
             ->get();
 
-        $fileName = '/export/omgca_' . \Carbon\Carbon::now()->format('YmdHis') . '.xlsx';
-        Excel::store(new \App\Exports\OmgCAExport($omgca), 'public'.$fileName);
+        $fileName = '/export/omgca_' . Carbon::now()->format('YmdHis') . '.xlsx';
+        Excel::store(new OmgCAExport($omgca), 'public'.$fileName);
 
         $this->setOutput(
             [

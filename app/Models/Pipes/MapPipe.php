@@ -42,4 +42,13 @@ class MapPipe extends Model
     {
         return $this->hasMany(PipeCoord::class);
     }
+
+    public static function boot() {
+        parent::boot();
+        self::deleting(function($pipe) {
+            $pipe->coords()->each(function($coord) {
+                $coord->delete();
+            });
+        });
+    }
 }

@@ -47,11 +47,17 @@ class GuWellsImport implements ToCollection, WithEvents, WithColumnLimit, WithSt
 
     const BETWEEN_POINTS_ARRAY = [
         'well-zu',
-        'fl-zu',
+        'fl-gu',
         'well-collector',
-        'gu',
+        'well_collector-zu',
+        'gu-gu',
         'zu-gu',
-        'zu-zu'
+        'zu-zu_coll',
+        'zu_coll-gu',
+        'zu_coll-mgu',
+        'zu-zu',
+        'zu-mgu',
+        'mgu-mgu'
     ];
 
     public function __construct(Wells $command)
@@ -75,7 +81,6 @@ class GuWellsImport implements ToCollection, WithEvents, WithColumnLimit, WithSt
 
                 if (strpos($this->sheetName, 'НГДУ') === 0) {
                     $this->ngdu = Ngdu::where('name', $this->sheetName)->first();
-                    MapPipe::where('ngdu_id', $this->ngdu->id)->whereIn('between_points', self::BETWEEN_POINTS_ARRAY)->delete();
                     Well::where('ngdu_id', $this->ngdu->id)->delete();
                     Zu::whereNull('ngdu_id')->delete();
                 }
@@ -109,6 +114,9 @@ class GuWellsImport implements ToCollection, WithEvents, WithColumnLimit, WithSt
                 'name' => strtoupper($guName)
             ]
         );
+
+        $this->gu->ngdu_id = $this->ngdu->id;
+        $this->gu->save();
 
         if (!$this->dataIsValid($collection)) {
             return;
@@ -157,6 +165,13 @@ class GuWellsImport implements ToCollection, WithEvents, WithColumnLimit, WithSt
 
                 $between_points = $this->getPipeType($row);
 
+                if ($between_points == 'zu-mgu' || $between_points == 'zu_coll-mgu') {
+                    $names = explode('-', $row[self::PIPE_START_NAME]);
+                    $pipe->end_point = $names[1];
+                    $pipe->start_point = $names[0];
+                    $pipe->save();
+                }
+
                 if ($between_points == 'well-zu') {
                     $this->command->info('Create Well '.$row[self::START_POINT]);
                     $well = $this->createWell($row);
@@ -167,8 +182,26 @@ class GuWellsImport implements ToCollection, WithEvents, WithColumnLimit, WithSt
 
                     if ($zu) {
                         $pipe->zu_id = $zu->id;
+                        $pipe->start_point = $zu->name;
                     }
+
+                    $pipe->end_point = $this->gu->name;
                 }
+
+                if ($between_points == 'zu-zu_coll') {
+                    $zu = Zu::where('lat', $row[self::LAT])->where('lon', $row[self::LON])->first();
+                    if ($zu) {
+                        $pipe->start_point = $zu->name;
+                        $pipe->zu_id = $zu->id;
+                    }
+                    $pipe->end_point = $row[self::PIPE_START_NAME];
+                }
+
+                if ($between_points == 'mgu-mgu') {
+                    $pipe->start_point = $row[self::FINISH_POINT];
+                }
+
+
 
                 $pipe->gu_id = $this->gu->id;
                 $pipe->between_points = $between_points;
@@ -237,7 +270,8 @@ class GuWellsImport implements ToCollection, WithEvents, WithColumnLimit, WithSt
 
                     $pipe->zu_id = $zu->id;
                     $pipe->well_id = $well->id;
-                    $pipe->color = '[0,255,0]';
+                    $pipe->start_point = $well->name;
+                    $pipe->end_point = $zu->name;
                     $pipe->save();
                 }
 
@@ -246,23 +280,35 @@ class GuWellsImport implements ToCollection, WithEvents, WithColumnLimit, WithSt
                     $this->gu->lon = $row[self::LON];
                     $this->gu->elevation = $row[self::ELEVATION];
                     $this->gu->save();
-                    $pipe->color = '[255,0,0]';
+                    $pipe->end_point = $this->gu->name;
                     $pipe->save();
                 }
 
-                if ($between_points == 'gu') {
-                    $pipe->color = '[255,0,0]';
+                if ($between_points == 'fl-gu' || $between_points == 'gu-gu') {
+                    $pipe->end_point = $this->gu->name;
+                    $pipe->start_point = $this->gu->name;
                     $pipe->save();
                 }
 
-                if ($between_points == 'fl-zu') {
-                    $pipe->color = '[0,255,0]';
+                if ($between_points == 'zu-zu_coll') {
+                    $pipe->end_point = $row[self::FINISH_POINT];
                     $pipe->save();
                 }
 
-                if ($between_points == 'well-collector') {
+                if ($between_points == 'zu_coll-gu') {
+                    $pipe->end_point = $this->gu->name;
+                    $pipe->save();
+                }
+
+
+                if ($between_points == 'mgu-mgu') {
+                    $pipe->end_point = $row[self::FINISH_POINT];
+                    $pipe->name = $pipe->start_point.'-'.$pipe->end_point;
+                    $pipe->save();
+                }
+
+                if ($between_points == 'well_collector-zu') {
                     $pipe_names = explode('&', $pipe->name);
-                    $pipe->color = '[0,255,0]';
                     $pipe->save();
 
                     foreach ($pipe_names as $pipe_name) {
@@ -279,6 +325,8 @@ class GuWellsImport implements ToCollection, WithEvents, WithColumnLimit, WithSt
                                 $zu->elevation = $row[self::ELEVATION];
                                 $zu->save();
 
+                                $pipe->start_point = $pipe->name;
+                                $pipe->end_point = $zu->name;
                                 $pipe->zu_id = $zu->id;
                                 $pipe->save();
                                 break;
@@ -391,8 +439,26 @@ class GuWellsImport implements ToCollection, WithEvents, WithColumnLimit, WithSt
             return 'well-zu';
         }
 
-        if (preg_match('/zu.+zu/i', $row[self::PIPE_START_NAME])) {
-            return 'zu-zu';
+        if (preg_match('/mgu/i', $row[self::PIPE_START_NAME]) AND
+            preg_match('/mgu/i', $row[self::FINISH_POINT])) {
+            return 'mgu-mgu';
+        }
+
+        if (preg_match('/zu.+&.+mgu/i', $row[self::PIPE_START_NAME])) {
+            return 'zu_coll-mgu';
+        }
+
+        if (preg_match('/zu.+mgu/i', $row[self::PIPE_START_NAME])) {
+            return 'zu-mgu';
+        }
+
+        if (preg_match('/zu.+zu/i', $row[self::PIPE_START_NAME]) AND
+            !preg_match('/gu/i', $row[self::PIPE_START_NAME])) {
+            return 'zu-zu_coll';
+        }
+
+        if (preg_match('/zu.+zu.+gu/i', $row[self::PIPE_START_NAME])) {
+            return 'zu_coll-gu';
         }
 
         if (preg_match('/zu.+gu/i', $row[self::PIPE_START_NAME])) {
@@ -403,19 +469,19 @@ class GuWellsImport implements ToCollection, WithEvents, WithColumnLimit, WithSt
             return 'well-zu';
         }
 
-        if (preg_match('/fl/i', $row[self::PIPE_START_NAME])) {
-            return 'fl-zu';
+        if (preg_match('/fl/i', $row[self::PIPE_START_NAME]) || preg_match('/фл/i', $row[self::PIPE_START_NAME])) {
+            return 'fl-gu';
         }
 
         if (preg_match('/&/i', $row[self::PIPE_START_NAME]) &&
             !preg_match('/gu|zu/i', $row[self::PIPE_START_NAME])) {
-            return 'well-collector';
+            return 'well_collector-zu';
         }
 
 
         if (!preg_match('/&|zu/i', $row[self::PIPE_START_NAME]) &&
             preg_match('/gu/i', $row[self::PIPE_START_NAME])) {
-            return 'gu';
+            return 'gu-gu';
         }
 
         if (!preg_match('/&/i', $row[self::PIPE_START_NAME]) &&

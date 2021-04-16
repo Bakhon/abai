@@ -407,7 +407,13 @@ export default {
         }
       }).then(({data}) => {
         this.rowHistory = data
-        this.rowHistoryColumns = this.formParams.columns.filter(item => column.fields.indexOf(item.code) > -1)
+
+        let columns = []
+        column.fields.forEach(block => {
+          columns = [...columns, ...this.formParams.columns.filter(item => Object.keys(block).includes(item.code))]
+        })
+
+        this.rowHistoryColumns = columns
         this.isloading = false
       })
     },
@@ -694,22 +700,28 @@ body.fixed {
       span {
         position: relative;
 
-        &.value:after {
-          background: url(/img/bd/edit.svg) no-repeat;
-          content: "";
+        &.value {
+          background: #323370;
+          border: 1px solid #272953;
+          box-sizing: border-box;
+          border-radius: 2px;
           display: inline-block;
-          height: 14px;
-          opacity: 0;
-          position: absolute;
-          right: -20px;
-          top: -2px;
-          width: 14px;
-        }
-      }
+          height: 24px;
+          line-height: 24px;
+          padding: 0 8px;
+          margin: 0 20px 3px 0;
+          min-width: 50px;
 
-      &:hover {
-        span:after {
-          opacity: 1;
+          &:after {
+            background: url(/img/bd/edit.svg) no-repeat;
+            content: "";
+            display: inline-block;
+            height: 14px;
+            position: absolute;
+            right: -20px;
+            top: 4px;
+            width: 14px;
+          }
         }
       }
 
@@ -723,7 +735,7 @@ body.fixed {
           border-radius: 4px;
           color: #fff;
           font-size: 14px;
-          min-width: 120px;
+          min-width: 95px;
           outline: none;
           padding: 0 34px 0 10px;
           height: 28px;
