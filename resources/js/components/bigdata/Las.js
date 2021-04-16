@@ -141,7 +141,6 @@ export default {
                 experimentIdToApprove: this.filenameParameters.specific[this.currentFileInfoNum]['futureExperimentId'],
             })
             this.setExperimentUserFileName()
-            console.log(jsonData)
             this.axios.post(this.baseUrl + 'approve-upload/', jsonData, {
                 responseType: 'json',
                 headers: {
@@ -173,8 +172,8 @@ export default {
             let experiment = this.filenameParameters.specific[this.currentFileInfoNum]
             if ('experimentId' in experiment && experiment['experimentId'] !== null) {
                 this.updateExperimentInfo()
+                return
             }
-
             this.input.filename.recordingDepth = experiment.recordingDepths[0] + this.filenameDelimiter + experiment.recordingDepths[1]
         },
         fetchStatistics() {
