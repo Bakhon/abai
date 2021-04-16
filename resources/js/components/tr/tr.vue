@@ -348,8 +348,8 @@
                         <td scope="col">{{trans('tr.field')}}</td>
                         <td scope="col">{{trans('tr.well_state')}}</td>
                         <td scope="col">{{trans('tr.well_number_short')}}</td>
-                        <td scope="col">{{trans('tr.horizon')}}</td>
-                        <td scope="col">{{trans('tr.object')}}</td>
+                        <td scope="col">{{trans('tr.u_horizon')}}</td>
+                        <td scope="col">{{trans('tr.u_object')}}</td>
                         <td scope="col">{{trans('tr.operation_method_short')}}</td>
                         <td scope="col">{{trans('tr.well_type_short')}}</td>
                         <td scope="col">{{trans('tr.block')}}</td>
