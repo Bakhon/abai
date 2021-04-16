@@ -2667,9 +2667,9 @@ export default {
       if  (this.wells &&
           this.wells[index] &&
           this.wells[index][value][1][1]==="Нет Ошибок") {
-      return false;}
-      else  {
-      return this.wells[index][value][1][1];}
+        return false;}
+      
+      return this.wells[index][value][1][1];
       
 
     },
@@ -2677,9 +2677,9 @@ export default {
       if  (this.wells &&
           this.wells[index] &&
           this.wells[index][value][1][1]==="Нет Ошибок") {
-      return false;}
-      else  {
-      return "top";}
+        return false;}
+
+      return "top";
     },
 
   },
