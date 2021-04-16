@@ -1,6 +1,6 @@
 {
   "type": "plain",
-  "table": "well_constr",
+  "table": "prod.well_constr",
   "tabs": [
     {
       "title": "well_design_project",
@@ -14,7 +14,7 @@
                 "type": "dict",
                 "title": "column_type",
                 "dict": "equips",
-                "validation": "nullable|exists:dict.equip_type,id"
+                "validation": "nullable|exists:tbd.dict.equip_type,id"
               },
               {
                 "code": "depth",
@@ -32,7 +32,7 @@
                 "type": "dict",
                 "title": "casing_type",
                 "dict": "casings",
-                "validation": "nullable|exists:exists:dict.tube_nom,id"
+                "validation": "nullable|exists:tbd.dict.tube_nom,id"
               },
               {
                 "code": "tube_count",
