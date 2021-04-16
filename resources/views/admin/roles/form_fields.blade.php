@@ -18,7 +18,6 @@
             <button class="btn btn-outline-secondary ml-3" type="button" data-tab="economic">Модуль экономика</button>
             <button class="btn btn-outline-secondary ml-3" type="button" data-tab="bigdata">Модуль Прототип БД</button>
             <button class="btn btn-outline-secondary ml-3" type="button" data-tab="tr">Модуль ТР</button>
-            <button class="btn btn-outline-secondary ml-3" type="button" data-tab="tredit">Модуль ТР редактирование</button>
             <button class="btn btn-outline-secondary ml-3" type="button" data-tab="viscenter">Модуль центр визуализации</button>
             <button class="btn btn-outline-secondary ml-3" type="button" data-tab="podborGno">Модуль Подбор ГНО</button>
             <button class="btn btn-outline-secondary ml-3" type="button" data-tab="paegtm">Модуль Подбор ГТМ</button>
@@ -164,10 +163,7 @@
                 <label class="form-check-label"
                        for="permission_{{$permissions->get('tr view main')->id}}">Просмотр главной
                     страницы</label>
-            </div>
-        </div>
-        <div class="tabs tab-tredit">
-            <div class="form-check">
+                    
                 <input
                         class="form-check-input"
                         id="permission_{{$permissions->get('tr edit')->id}}"
@@ -177,8 +173,8 @@
                         {{!empty($role) && $role->permissions->where('id', $permissions->get('tr edit')->id)->isNotEmpty() ? 'checked' : ''}}
                 >
                 <label class="form-check-label"
-                       for="permission_{{$permissions->get('tr edit')->id}}">Просмотр главной
-                    страницы</label>
+                       for="permission_{{$permissions->get('tr edit')->id}}">Редактирование
+                    </label>
             </div>
         </div>
         <div class="tabs tab-viscenter">

@@ -36,9 +36,6 @@
             @if(auth()->user()->can('tr view main'))
             <li class="left-menu-li"><a href="{{route('tr')}}">Модуль "Технологический режим"</a></li>
             @endif
-            @if(auth()->user()->can('tr edit'))
-            <li class="left-menu-li"><a href="{{route('tr')}}">Модуль "Технологический режим"</a></li>
-            @endif
             @if(auth()->user()->can('podborGno view main'))
             <li class="left-menu-li"><a href="{{route('gno')}}">Модуль "Подбор ГНО"</a></li>
             @endif
