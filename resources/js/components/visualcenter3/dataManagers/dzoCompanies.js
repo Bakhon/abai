@@ -72,6 +72,11 @@ export default {
                 return _.cloneDeep(dzoCompaniesInitial).filter(company => company[category] === type).map(company => company.ticker);
             }
             this.dzoRegionsMapping[regionName].isActive = !this.dzoRegionsMapping[regionName].isActive;
+            if (regionName === 'zhambul') {
+                category = regionName;
+                type = type.toLowerCase().replace('is','');
+                return ['АГ'];
+            }
             if (this.dzoRegionsMapping[regionName].isActive) {
                 category = regionName;
                 type = type.toLowerCase().replace('is','');
