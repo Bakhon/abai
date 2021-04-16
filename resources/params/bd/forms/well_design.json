@@ -1,6 +1,6 @@
 {
   "type": "plain",
-  "table": "prod",
+  "table": "well_constr",
   "tabs": [
     {
       "title": "well_design_project",
