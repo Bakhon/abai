@@ -815,6 +815,7 @@
                   {{ trans("visualcenter.yearBegin") }}
                   </div>
                   <button
+                          v-if="buttonYearlyTab"
                           type="button"
                           class="btn btn-primary dropdown-toggle position-button-vc dzocompanies__button_position"
                           data-toggle="dropdown"
