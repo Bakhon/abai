@@ -531,7 +531,7 @@
           </a>
 
           <a
-            v-if="!edit, isPermission"
+            v-if="!edit && isPermission"
             v-bind:title="trans('tr.edit')"
             style="cursor: pointer;"
             data-toggle="tooltip"
@@ -6911,7 +6911,7 @@ export default {
       date_fix: true,
       is_dynamic: false,
       permissionName: 'tr edit',
-      isPermission: undefined,
+      isPermission: false,
     };
   },
   watch: {
