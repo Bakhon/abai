@@ -3,7 +3,7 @@
     <cat-loader v-show="loading"/>
 
     <div class="row">
-      <div class="col-10">
+      <div class="col-9">
         <modal
             v-for="bignKey in bignKeys"
             :key="bignKey"
@@ -16,100 +16,62 @@
           </div>
         </modal>
 
-        <div class="main row justify-content-between text-white"
-             style="padding:10px;">
-          <div class="col-md-3 col-sm-12"
-               @click="pushBign('bign1')">
+        <div class="row justify-content-between text-white bg-blue-dark text-wrap">
+          <economic-col @click.native="pushBign('bign1')">
             <economic-title>
-              {{ res.averageProfitlessCat1MonthCount.toLocaleString() }}
+              <span>{{ res.averageProfitlessCat1MonthCount.toLocaleString() }}</span>
+
+              <economic-percent-badge :percent="res.percentCount"/>
             </economic-title>
 
-            <economic-percent-badge :percent="res.percentCount"/>
-
-            <div class="white-space-normal">
+            <economic-subtitle>
               Количество нерентабельных скважин за последний месяц
-            </div>
-          </div>
+            </economic-subtitle>
+          </economic-col>
 
-          <div class="col-md-3 col-sm-12"
-               @click="pushBign('bign2')">
+          <economic-col @click.native="pushBign('bign2')">
             <economic-title>
               <span>{{ res.year.toLocaleString() }}</span>
-              <span class="font-size-16px text-blue">{{ res.yearWord }}</span>
+              <span class="font-size-16px line-height-20px text-blue">{{ res.yearWord }}</span>
             </economic-title>
 
-            <div class="white-space-normal">
+            <economic-subtitle>
               Операционные убытки по НРС с начала года
-            </div>
-          </div>
+            </economic-subtitle>
+          </economic-col>
 
-          <div class="col-md-3 col-sm-12"
-               @click="pushBign('bign3')">
+          <economic-col @click.native="pushBign('bign3')">
             <economic-title>
               <span>{{ res.month }}</span>
-              <span class="font-size-16px text-blue">{{ res.monthWord }}</span>
+              <span class="font-size-16px line-height-20px text-blue">{{ res.monthWord }}</span>
+
+              <economic-percent-badge :percent="res.percent"/>
             </economic-title>
 
-            <economic-percent-badge :percent="res.percent"/>
-
-            <div class="white-space-normal">
+            <economic-subtitle>
               Операционные убытки по НРС за последний месяц
-            </div>
-          </div>
+            </economic-subtitle>
+          </economic-col>
 
-          <div class="col-md-3 col-sm-12"
-               @click="pushBign('bign4')">
+          <economic-col @click.native="pushBign('bign4')">
             <economic-title>
-              {{ res.prs }}
+              {{ res.prs.toLocaleString() }}
             </economic-title>
 
-            <div class="white-space-normal">
+            <economic-subtitle>
               Количество ПРС на НРС с начала года
-            </div>
-          </div>
+            </economic-subtitle>
+          </economic-col>
         </div>
 
-        <div class="main container-fluid">
-          <div class="row">
-            <div class="col-xl-6 col-lg-6 col-md-5 col-sm-12">
-              <h5 class="subtitle text-wrap">
-                Распределение добычи нефти по типу рентабельности скважин
-              </h5>
-
-              <chart2-component/>
-            </div>
-
-            <div class="col-xl-6 ccol-lg-6 col-md-5 col-sm-12">
-              <h5 class="subtitle text-wrap">
-                Распределение скважин по типу рентабельности
-              </h5>
-
-              <chart1-component/>
-            </div>
-
-            <div class="col-xl-6 ccol-lg-6 col-md-5 col-sm-12">
-              <h5 class="subtitle text-wrap">
-                Распределение добычи жидкости по типу рентабельности скважин
-              </h5>
-
-              <chart4-component/>
-            </div>
-
-            <div class="col-xl-6 ccol-lg-6 col-md-5 col-sm-12">
-              <h5 class="subtitle text-wrap">
-                Рейтинг ТОП 10 прибыльных и убыточных скважин
-              </h5>
-
-              <chart3-component/>
-            </div>
-          </div>
-        </div>
+        <economic-charts v-if="res.chart1" :charts="res"/>
       </div>
 
-      <economic-select-organization
-          :organizations="organizations"
-          class="col-2"
-          @change="changeOrganization"/>
+      <div class="col-3 bg-main1">
+        <economic-select-organization
+            :organizations="organizations"
+            @change="changeOrganization"/>
+      </div>
     </div>
   </div>
 </template>
@@ -118,7 +80,10 @@
 import VModal from 'vue-js-modal'
 import VueTableDynamic from 'vue-table-dynamic'
 import CatLoader from '../ui-kit/CatLoader'
+import EconomicCol from "./components/EconomicCol";
+import EconomicCharts from "./components/EconomicCharts";
 import EconomicTitle from "./components/EconomicTitle";
+import EconomicSubtitle from "./components/EconomicSubtitle";
 import EconomicSelectOrganization from "./components/EconomicSelectOrganization";
 import EconomicPercentBadge from "./components/EconomicPercentBadge";
 
@@ -130,25 +95,33 @@ export default {
   components: {
     VueTableDynamic,
     CatLoader,
+    EconomicCol,
+    EconomicCharts,
     EconomicTitle,
+    EconomicSubtitle,
     EconomicSelectOrganization,
     EconomicPercentBadge
   },
   data: () => ({
     organizations: [],
+    activeTab: 0,
     res: {
-      averageProfitlessCat1MonthCount: '',
-      month: '',
+      averageProfitlessCat1MonthCount: 0,
+      month: 0,
       monthWord: '',
-      year: '',
+      year: 0,
       yearWord: '',
       percent: null,
       percentCount: null,
       wellsList: null,
       OperatingProfitMonth: null,
       OperatingProfitYear: null,
-      prs: null,
-      prs1: null,
+      prs: 0,
+      prs1: 0,
+      chart1: null,
+      chart2: null,
+      chart3: null,
+      chart4: null,
     },
     params: {
       data: [],
@@ -164,14 +137,6 @@ export default {
     loading: false
   }),
   computed: {
-    urlOrganizations() {
-      return '/ru/organizations'
-    },
-
-    urlEconomicData() {
-      return '/ru/geteconimicdata'
-    },
-
     bignKeys() {
       return [
         'bign1',
@@ -205,7 +170,7 @@ export default {
     async getOrganizations() {
       this.loading = true
 
-      const {data} = await this.axios.get(this.urlOrganizations)
+      const {data} = await this.axios.get('/ru/organizations')
 
       this.organizations = data.organizations
 
@@ -215,7 +180,7 @@ export default {
     async getEconomicData(org) {
       this.loading = true
 
-      const {data} = await this.axios.get(this.urlEconomicData, {params: {org: org}})
+      const {data} = await this.axios.get('/ru/geteconimicdata', {params: {org: org}})
 
       if (!data) {
         return this.loading = false
@@ -224,10 +189,6 @@ export default {
       this.res = data
 
       this.params.data = data.wellsList
-
-      this.chartKeys.forEach(chartKey => {
-        this.$emit(chartKey, data[chartKey])
-      })
 
       this.loading = false
     },
@@ -258,12 +219,16 @@ export default {
   font-size: 16px;
 }
 
-.text-blue {
-  color: #82BAFF;
+.line-height-20px {
+  font-size: 20px;
 }
 
-.white-space-normal {
-  white-space: normal;
+.bg-blue-dark {
+  background: #2B2E5E;
+}
+
+.text-blue {
+  color: #82BAFF;
 }
 
 .loader {

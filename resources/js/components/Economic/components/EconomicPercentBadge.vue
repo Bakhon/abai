@@ -1,15 +1,9 @@
 <template>
- <div class="badge badge-pill font-size-24px line-height-28px">
+  <div class="font-size-24px line-height-28px font-weight-bold">
     <economic-percent-badge-icon :percent="percent"/>
 
-    <span v-if="percent > 0">
-      {{ percent }}%
-    </span>
-
-    <span v-else-if="percent < 0">
-      {{ -percent }}%
-    </span>
- </div>
+    <span>{{ Math.abs(percent) }}% </span>
+  </div>
 </template>
 
 <script>
@@ -30,11 +24,11 @@ export default {
 </script>
 
 <style scoped>
-  .font-size-24px{
-    font-size: 24px;
-  }
+.font-size-24px {
+  font-size: 24px;
+}
 
-  .line-height-28px{
-    line-height: 28px;
-  }
+.line-height-28px {
+  line-height: 28px;
+}
 </style>

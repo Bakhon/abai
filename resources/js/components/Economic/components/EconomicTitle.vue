@@ -1,5 +1,5 @@
 <template>
-  <div class="font-size-68px line-height-82px font-weight-bold">
+  <div class="flex-grow-1 font-size-68px line-height-82px font-weight-bold">
     <slot></slot>
   </div>
 </template>
