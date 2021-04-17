@@ -47,7 +47,7 @@ class EconomicController extends Controller
 
         $org = Org::find($request->org);
 
-        $dpz = 'Акингень';
+        $dpz = null;
 
         $builder = $this->druidClient->query(self::DATA_SOURCE, Granularity::YEAR);
         $builder2 = $this->druidClient->query(self::DATA_SOURCE, Granularity::MONTH);
@@ -237,6 +237,7 @@ class EconomicController extends Controller
                 ->select('org_id2')
                 ->where('org_id2', '=', $org->druid_id);
         }
+
         if ($dpz) {
             $builder
                 ->where('dpz', '=', $dpz);
@@ -284,9 +285,7 @@ class EconomicController extends Controller
                 ->where('dpz', '=', $dpz);
         }
 
-
         $result = $builder->groupBy()->data();
-
         $result2 = $builder2->groupBy()->data();
         $result3 = $builder3->groupBy()->data();
         $result4 = $builder4->groupBy()->data();
@@ -438,16 +437,18 @@ class EconomicController extends Controller
         $prevMonthIndex = count($result2) - 2;
 
 
-        $year = self::moneyFotmat($result[$yearIndex]["Operating_profit"]);
-        $month = self::moneyFotmat($result2[$lastMonthIndex]["Operating_profit"]);
-        $persent = ($result2[$prevMonthIndex]["Operating_profit"] - $result2[$lastMonthIndex]["Operating_profit"]) * 100 / $result2[$prevMonthIndex]["Operating_profit"];
-        $persentCount = ($averageProfitlessCat1PrevMonth - $averageProfitlessCat1Month) * 100 / $averageProfitlessCat1PrevMonth;
+        list($year, $yearWord) = self::moneyFormat($result[$yearIndex]["Operating_profit"]);
+        list($month, $monthWord) = self::moneyFormat($result2[$lastMonthIndex]["Operating_profit"]);
+        $percent = ($result2[$prevMonthIndex]["Operating_profit"] - $result2[$lastMonthIndex]["Operating_profit"]) * 100 / $result2[$prevMonthIndex]["Operating_profit"];
+        $percentCount = ($averageProfitlessCat1PrevMonth - $averageProfitlessCat1Month) * 100 / $averageProfitlessCat1PrevMonth;
 
         $vdata = [
             'year' => $year,
+            'yearWord' => $yearWord,
             'month' => $month,
-            'persent' => round($persent),
-            'persentCount' => round($persentCount),
+            'monthWord' => $monthWord,
+            'percent' => round($percent),
+            'percentCount' => round($percentCount),
             'averageProfitlessCat1MonthCount' => round($averageProfitlessCat1Month),
             'prs' => round($result5[0]["prs1"]),
             'wellsList' => $data['wellsList'],
@@ -472,28 +473,28 @@ class EconomicController extends Controller
         return "{$liquid_round}.{$bsw_round}";
     }
 
-    static function moneyFotmat($digit)
+    static function moneyFormat($digit): array
     {
-        if ($digit < 0) {
-            $digit *= -1;
-            if ($digit < 1000000) {
-                $format = number_format(-1 * $digit);
-            } else if ($digit < 1000000000) {
-                $format = number_format(-1 * $digit / 1000000, 2) . ' млн';
-            } else {
-                $format = number_format(-1 * $digit / 1000000000, 2) . ' млрд';
-            }
-        } else {
-            if ($digit < 1000000) {
-                $format = number_format($digit);
-            } else if ($digit < 1000000000) {
-                $format = number_format($digit / 1000000, 2) . ' млн';
-            } else {
-                $format = number_format($digit / 1000000000, 2) . ' млрд';
-            }
+        $digitAbs = abs($digit);
+
+        if ($digitAbs < 1000000) {
+            return [
+                number_format($digit),
+                ''
+            ];
         }
 
-        return $format;
+        if ($digitAbs < 1000000000) {
+            return [
+                number_format($digit / 1000000, 2),
+                'млн'
+            ];
+        }
+
+        return [
+            number_format($digit / 1000000000, 2),
+            'млрд'
+        ];
     }
 
     public function economicPivot()

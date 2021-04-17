@@ -10,7 +10,7 @@
 
 <script>
 export default {
-  name: "PercentBadgeIcon",
+  name: "EconomicPercentBadgeIcon",
   props: {
     percent: {
       required: true,

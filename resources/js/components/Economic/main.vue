@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid economic-wrap">
+  <div class="container-fluid position-relative">
     <cat-loader v-show="loading"/>
 
     <div class="row">
@@ -16,52 +16,56 @@
           </div>
         </modal>
 
-        <div class="main row justify-content-between"
+        <div class="main row justify-content-between text-white"
              style="padding:10px;">
-          <div class="col-md-3 col-sm-12 bignumber"
+          <div class="col-md-3 col-sm-12"
                @click="pushBign('bign1')">
-            <p class="bignumber-number text-center text-wrap">
-              <span>{{ averageProfitlessCat1MonthCount }}</span>
+            <economic-title>
+              {{ res.averageProfitlessCat1MonthCount.toLocaleString() }}
+            </economic-title>
 
-              <percent-badge :percent="persentCount"/>
-            </p>
+            <economic-percent-badge :percent="res.percentCount"/>
 
-            <p class="text-center bignumber-title text-wrap">
+            <div class="white-space-normal">
               Количество нерентабельных скважин за последний месяц
-            </p>
+            </div>
           </div>
 
-          <div class="col-md-3 col-sm-12 bignumber"
+          <div class="col-md-3 col-sm-12"
                @click="pushBign('bign2')">
-            <p class="bignumber-number text-center text-wrap">
-              {{ year }}
-            </p>
+            <economic-title>
+              <span>{{ res.year.toLocaleString() }}</span>
+              <span class="font-size-16px text-blue">{{ res.yearWord }}</span>
+            </economic-title>
 
-            <p class="text-center bignumber-title text-wrap">
+            <div class="white-space-normal">
               Операционные убытки по НРС с начала года
-            </p>
+            </div>
           </div>
 
-          <div class="col-md-3 col-sm-12 bignumber"
+          <div class="col-md-3 col-sm-12"
                @click="pushBign('bign3')">
-            <p class="bignumber-number text-center text-wrap">
-              <span>{{ month }}</span>
+            <economic-title>
+              <span>{{ res.month }}</span>
+              <span class="font-size-16px text-blue">{{ res.monthWord }}</span>
+            </economic-title>
 
-              <percent-badge :percent="persent"/>
-            </p>
+            <economic-percent-badge :percent="res.percent"/>
 
-            <p class="text-center bignumber-title text-wrap">
+            <div class="white-space-normal">
               Операционные убытки по НРС за последний месяц
-            </p>
+            </div>
           </div>
 
-          <div class="col-md-3 col-sm-12 bignumber" @click="pushBign('bign4')">
-            <p class="bignumber-number text-center text-wrap">
-              {{ prs }}
+          <div class="col-md-3 col-sm-12"
+               @click="pushBign('bign4')">
+            <economic-title>
+              {{ res.prs }}
+            </economic-title>
 
-            <p class="text-center bignumber-title text-wrap">
+            <div class="white-space-normal">
               Количество ПРС на НРС с начала года
-            </p>
+            </div>
           </div>
         </div>
 
@@ -102,11 +106,10 @@
         </div>
       </div>
 
-      <div class="col-2">
-        <select-organization
-            :organizations="organizations"
-            @change="changeOrganization"/>
-      </div>
+      <economic-select-organization
+          :organizations="organizations"
+          class="col-2"
+          @change="changeOrganization"/>
     </div>
   </div>
 </template>
@@ -115,8 +118,9 @@
 import VModal from 'vue-js-modal'
 import VueTableDynamic from 'vue-table-dynamic'
 import CatLoader from '../ui-kit/CatLoader'
-import SelectOrganization from "./components/SelectOrganization";
-import PercentBadge from "./components/PercentBadge";
+import EconomicTitle from "./components/EconomicTitle";
+import EconomicSelectOrganization from "./components/EconomicSelectOrganization";
+import EconomicPercentBadge from "./components/EconomicPercentBadge";
 
 Vue.use(VModal, {dynamicDefault: {draggable: true, resizable: true}});
 
@@ -126,20 +130,26 @@ export default {
   components: {
     VueTableDynamic,
     CatLoader,
-    SelectOrganization,
-    PercentBadge
+    EconomicTitle,
+    EconomicSelectOrganization,
+    EconomicPercentBadge
   },
   data: () => ({
-    averageProfitlessCat1MonthCount: null,
-    month: null,
-    persent: null,
-    persentCount: null,
-    prs: null,
-    year: null,
-    wellsList: null,
-    OperatingProfitMonth: null,
-    OperatingProfitYear: null,
-    prs1: null,
+    organizations: [],
+    res: {
+      averageProfitlessCat1MonthCount: '',
+      month: '',
+      monthWord: '',
+      year: '',
+      yearWord: '',
+      percent: null,
+      percentCount: null,
+      wellsList: null,
+      OperatingProfitMonth: null,
+      OperatingProfitYear: null,
+      prs: null,
+      prs1: null,
+    },
     params: {
       data: [],
       enableSearch: true,
@@ -151,7 +161,6 @@ export default {
       pageSizes: [10, 20, 50],
       height: 300
     },
-    organizations: [],
     loading: false
   }),
   computed: {
@@ -212,17 +221,8 @@ export default {
         return this.loading = false
       }
 
-      this.averageProfitlessCat1MonthCount = data.averageProfitlessCat1MonthCount
-      this.month = data.month
-      this.persent = data.persent
-      this.persentCount = data.persentCount
-      this.prs = data.prs
-      this.year = data.year
-      this.wellsList = data.wellsList
-      this.OperatingProfitMonth = data.OperatingProfitMonth
-      this.OperatingProfitYear = data.OperatingProfitYear
-      this.prs1 = data.prs1
-      this.is_data_fetched = true
+      this.res = data
+
       this.params.data = data.wellsList
 
       this.chartKeys.forEach(chartKey => {
@@ -231,73 +231,55 @@ export default {
 
       this.loading = false
     },
+
     pushBign(bign) {
       switch (bign) {
         case 'bign1':
-          this.params.data = this.wellsList;
+          this.params.data = this.res.wellsList;
           break;
         case 'bign2':
-          this.params.data = this.OperatingProfitYear;
+          this.params.data = this.res.OperatingProfitYear;
           break;
         case 'bign3':
-          this.params.data = this.OperatingProfitMonth;
+          this.params.data = this.res.OperatingProfitMonth;
           break;
         case 'bign4':
-          this.params.data = this.prs1;
+          this.params.data = this.res.prs1;
           break;
       }
+
       this.$modal.show(bign);
     }
   }
 };
 </script>
-<style lang="scss" scoped>
-.title,
-.subtitle,
-.drag-area-title {
-  color: white;
+<style scoped>
+.font-size-16px {
+  font-size: 16px;
 }
 
-.table {
-  color: #fff !important;
+.text-blue {
+  color: #82BAFF;
 }
 
-.bignumber {
-  background-color: #20274e !important;
-  border-radius: 15px;
-  flex: 0 0 24%;
-  margin-bottom: 5px;
-
-  &-number {
-    color: #fff;
-    font-size: 40px;
-  }
-
-  &-title {
-    color: #fff;
-    font-size: 20px;
-    word-wrap: break-word;
-  }
+.white-space-normal {
+  white-space: normal;
 }
 
-.economic-wrap {
-  position: relative;
-
-  .loader {
-    flex: 0 1 auto;
-    flex-flow: row wrap;
-    width: 100%;
-    align-items: flex-start;
-    position: absolute;
-    height: 100%;
-    justify-content: center;
-    display: flex;
-    z-index: 5000;
-    background: rgba(0, 0, 0, 0.4);
-    left: 0;
-    top: 0;
-    right: 0;
-    bottom: 0;
-  }
+.loader {
+  flex: 0 1 auto;
+  flex-flow: row wrap;
+  width: 100%;
+  align-items: flex-start;
+  position: absolute;
+  height: 100%;
+  justify-content: center;
+  display: flex;
+  z-index: 5000;
+  background: rgba(0, 0, 0, 0.4);
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
 }
 </style>
