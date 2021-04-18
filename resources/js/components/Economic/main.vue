@@ -11,9 +11,7 @@
             :width="1150"
             :height="400"
             adaptive>
-          <div class="modal-bign">
-            <vue-table-dynamic ref="table" :params="params"/>
-          </div>
+          <vue-table-dynamic ref="table" :params="params"/>
         </modal>
 
         <div class="row justify-content-between text-white bg-blue-dark text-wrap">
@@ -30,6 +28,8 @@
           </economic-col>
 
           <economic-col @click.native="pushBign('bign2')">
+            <economic-divider/>
+
             <economic-title>
               <span>{{ res.year.toLocaleString() }}</span>
               <span class="font-size-16px line-height-20px text-blue">
@@ -43,6 +43,8 @@
           </economic-col>
 
           <economic-col @click.native="pushBign('bign3')">
+            <economic-divider/>
+
             <economic-title>
               <span>{{ res.month }}</span>
               <span class="font-size-16px line-height-20px text-blue">
@@ -58,6 +60,8 @@
           </economic-col>
 
           <economic-col @click.native="pushBign('bign4')">
+            <economic-divider/>
+
             <economic-title>
               {{ res.prs.toLocaleString() }}
             </economic-title>
@@ -72,7 +76,36 @@
       </div>
 
       <div class="col-3">
-        <div class="bg-main1 p-3">
+        <div
+            v-for="(block, index) in blocks"
+            :key="index"
+            class="d-flex bg-main1 text-white text-wrap p-3 mb-3"
+            style="height: 220px">
+          <div
+              v-for="(subBlock, subBlockIndex) in block"
+              :key="subBlock.title"
+              class="col-6 d-flex flex-column position-relative">
+            <economic-divider v-if="subBlockIndex % 2 === 1"/>
+
+            <div class="font-weight-bold font-size-32px line-height-38px">
+              {{ subBlock.value.toLocaleString() }}
+            </div>
+
+            <div class="text-blue font-size-12px line-height-14px">
+              {{ subBlock.valueWord }}
+            </div>
+
+            <div class="flex-grow-1 mt-3 font-weight-bold line-height-20px font-size-16px">
+              {{ subBlock.title }}
+            </div>
+
+            <economic-percent-badge
+                :percent="subBlock.percent"
+                class="font-size-22px line-height-26px"/>
+          </div>
+        </div>
+
+        <div class="bg-main1 p-3 mt-3">
           <economic-select-organization
               :organizations="organizations"
               @change="changeOrganization"/>
@@ -86,6 +119,7 @@
 import VModal from 'vue-js-modal'
 import VueTableDynamic from 'vue-table-dynamic'
 import CatLoader from '../ui-kit/CatLoader'
+import EconomicDivider from "./components/EconomicDivider";
 import EconomicCol from "./components/EconomicCol";
 import EconomicCharts from "./components/EconomicCharts";
 import EconomicTitle from "./components/EconomicTitle";
@@ -101,6 +135,7 @@ export default {
   components: {
     VueTableDynamic,
     CatLoader,
+    EconomicDivider,
     EconomicCol,
     EconomicCharts,
     EconomicTitle,
@@ -143,6 +178,53 @@ export default {
     loading: false
   }),
   computed: {
+    blocks() {
+      return [
+        [
+          {
+            title: 'Выручка экспорт',
+            value: 320120,
+            valueWord: 'млн. тенге',
+            percent: 10.75
+          },
+          {
+            title: 'Выручка местный рынок',
+            value: 50160,
+            valueWord: 'млн. тенге',
+            percent: 10.75
+          }
+        ],
+        [
+          {
+            title: 'Условно-переменные затраты',
+            value: 45230,
+            valueWord: 'млн. тенге',
+            percent: 10.75
+          },
+          {
+            title: 'Условно-постоянные затраты',
+            value: 185190,
+            valueWord: 'млн. тенге',
+            percent: 10.75
+          }
+        ],
+        [
+          {
+            title: 'Отчисления в государство(НДПИ, Рентный налог, ЭТП)',
+            value: 75300,
+            valueWord: '',
+            percent: 527
+          },
+          {
+            title: 'Общие призводственые затраты',
+            value: 230420,
+            valueWord: '',
+            percent: 1.2
+          },
+        ],
+      ]
+    },
+
     bignKeys() {
       return [
         'bign1',
@@ -151,15 +233,6 @@ export default {
         'bign4',
       ]
     },
-
-    chartKeys() {
-      return [
-        'chart1',
-        'chart2',
-        'chart3',
-        'chart4',
-      ]
-    }
   },
   async created() {
     await this.getOrganizations()
@@ -221,12 +294,32 @@ export default {
 };
 </script>
 <style scoped>
+.font-size-12px {
+  font-size: 12px !important;
+}
+
 .font-size-16px {
   font-size: 16px !important;
 }
 
-.line-height-20px {
-  line-height: 20px !important;
+.font-size-22px {
+  font-size: 22px !important;
+}
+
+.font-size-32px {
+  font-size: 32px !important;
+}
+
+.line-height-14px {
+  line-height: 14px !important;
+}
+
+.line-height-22px {
+  line-height: 22px !important;
+}
+
+.line-height-26px {
+  line-height: 26px !important;
 }
 
 .bg-blue-dark {

@@ -7,27 +7,23 @@
 </template>
 
 <script>
-const ru = require("apexcharts/dist/locales/ru.json");
-
-import {chartInitMixin} from "./mixins/chartMixin";
+import {chartInitMixin} from "../mixins/chartMixin";
 
 export default {
-  name: 'chart1',
-  mixins: [
-    chartInitMixin
-  ],
+  name: 'EconomicChart2',
+  mixins: [chartInitMixin],
   computed: {
     options() {
       return {
         ...this.chartOptions, ...{
           yaxis: {
             labels: {
-              formatter(val) {
-                return Math.round(val);
+              formatter: function (value) {
+                return Math.round(value);
               }
             },
             title: {
-              text: 'Количество скважин',
+              text: 'Добыча нефти',
             },
             min: 0
           },
@@ -38,7 +34,7 @@ export default {
               formatter(y) {
                 return y === undefined
                     ? y
-                    : new Intl.NumberFormat('en-IN', {maximumSignificantDigits: 3}).format(y.toFixed(0)) + "";
+                    : new Intl.NumberFormat('en-IN', {maximumSignificantDigits: 3}).format(y.toFixed(0)) + " тыс. тонн";
               }
             }
           }
@@ -48,4 +44,3 @@ export default {
   },
 }
 </script>
-

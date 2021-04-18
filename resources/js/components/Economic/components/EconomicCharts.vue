@@ -19,17 +19,25 @@
         {{ tab }}
       </h5>
 
-      <chart1
+      <economic-chart1
           v-if="index === 0"
           :data="charts.chart1"
           class="bg-economic-chart"/>
 
-      <chart2 v-else-if="index === 1" :data="charts.chart2"/>
+      <economic-chart2
+          v-else-if="index === 1"
+          :data="charts.chart2"
+          class="bg-economic-chart"/>
 
-      <chart3 v-else-if="index === 2" :data="charts.chart3"/>
+      <economic-chart3
+          v-else-if="index === 2"
+          :data="charts.chart3"
+          class="bg-economic-chart"/>
 
-      <chart4 v-else-if="index === 3" :data="charts.chart4"/>
-      />
+      <economic-chart4
+          v-else-if="index === 3"
+          :data="charts.chart4"
+          class="bg-economic-chart"/>
     </div>
   </div>
 </template>
@@ -37,19 +45,19 @@
 <script>
 import EconomicChartButton from "./EconomicChartButton";
 
-import chart1 from "../chart1";
-import chart2 from "../chart2";
-import chart3 from "../chart3";
-import chart4 from "../chart4";
+import EconomicChart1 from "./EconomicChart1";
+import EconomicChart2 from "./EconomicChart2";
+import EconomicChart3 from "./EconomicChart3";
+import EconomicChart4 from "./EconomicChart4";
 
 export default {
   name: "EconomicCharts",
   components: {
     EconomicChartButton,
-    chart1,
-    chart2,
-    chart3,
-    chart4,
+    EconomicChart1,
+    EconomicChart2,
+    EconomicChart3,
+    EconomicChart4,
   },
   props: {
     charts: {

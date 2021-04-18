@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex flex-column p-3 col-md-3 col-sm-12">
+  <div class="d-flex flex-column p-3 col-md-3 col-sm-12 position-relative">
     <slot></slot>
   </div>
 </template>

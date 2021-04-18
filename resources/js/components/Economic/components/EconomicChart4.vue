@@ -7,13 +7,11 @@
 </template>
 
 <script>
-import {chartInitMixin} from "./mixins/chartMixin";
+import {chartInitMixin} from "../mixins/chartMixin";
 
 export default {
-  name: 'chart4',
-  mixins: [
-    chartInitMixin
-  ],
+  name: 'EconomicChart4',
+  mixins: [chartInitMixin],
   computed: {
     options() {
       return {
