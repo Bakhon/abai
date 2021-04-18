@@ -105,10 +105,19 @@
           </div>
         </div>
 
-        <div class="bg-main1 p-3 mt-3">
+        <div class="bg-main1 p-3 mt-3 text-white">
+          <div class="font-size-16px line-height-22px font-weight-bold mb-3">
+            Выбор параметров отображения данных
+          </div>
+
           <economic-select-organization
-              :organizations="organizations"
-              @change="changeOrganization"/>
+              :form="form"
+              class="mb-3"
+              @change="getEconomicData"/>
+
+          <economic-select-dpz
+              :form="form"
+              @change="getEconomicData"/>
         </div>
       </div>
     </div>
@@ -125,6 +134,7 @@ import EconomicCharts from "./components/EconomicCharts";
 import EconomicTitle from "./components/EconomicTitle";
 import EconomicSubtitle from "./components/EconomicSubtitle";
 import EconomicSelectOrganization from "./components/EconomicSelectOrganization";
+import EconomicSelectDpz from "./components/EconomicSelectDpz";
 import EconomicPercentBadge from "./components/EconomicPercentBadge";
 
 Vue.use(VModal, {dynamicDefault: {draggable: true, resizable: true}});
@@ -141,11 +151,15 @@ export default {
     EconomicTitle,
     EconomicSubtitle,
     EconomicSelectOrganization,
+    EconomicSelectDpz,
     EconomicPercentBadge
   },
   data: () => ({
-    organizations: [],
     activeTab: 0,
+    form: {
+      org: null,
+      dpz: null
+    },
     res: {
       averageProfitlessCat1MonthCount: 0,
       month: 0,
@@ -175,7 +189,7 @@ export default {
       pageSizes: [10, 20, 50],
       height: 300
     },
-    loading: false
+    loading: true
   }),
   computed: {
     blocks() {
@@ -185,13 +199,13 @@ export default {
             title: 'Выручка экспорт',
             value: 320120,
             valueWord: 'млн. тенге',
-            percent: 10.75
+            percent: -10.75
           },
           {
             title: 'Выручка местный рынок',
             value: 50160,
             valueWord: 'млн. тенге',
-            percent: 10.75
+            percent: -10.75
           }
         ],
         [
@@ -199,18 +213,18 @@ export default {
             title: 'Условно-переменные затраты',
             value: 45230,
             valueWord: 'млн. тенге',
-            percent: 10.75
+            percent: -10.75
           },
           {
             title: 'Условно-постоянные затраты',
             value: 185190,
             valueWord: 'млн. тенге',
-            percent: 10.75
+            percent: -10.75
           }
         ],
         [
           {
-            title: 'Отчисления в государство(НДПИ, Рентный налог, ЭТП)',
+            title: 'Отчисления в государство (НДПИ, Рентный налог, ЭТП)',
             value: 75300,
             valueWord: '',
             percent: 527
@@ -234,32 +248,11 @@ export default {
       ]
     },
   },
-  async created() {
-    await this.getOrganizations()
-
-    if (this.organizations.length) {
-      await this.getEconomicData(this.organizations[0].id)
-    }
-  },
   methods: {
-    changeOrganization(org) {
-      this.getEconomicData(org)
-    },
-
-    async getOrganizations() {
+    async getEconomicData() {
       this.loading = true
 
-      const {data} = await this.axios.get('/ru/organizations')
-
-      this.organizations = data.organizations
-
-      this.loading = false
-    },
-
-    async getEconomicData(org) {
-      this.loading = true
-
-      const {data} = await this.axios.get('/ru/geteconimicdata', {params: {org: org}})
+      const {data} = await this.axios.get('/ru/geteconimicdata', {params: this.form})
 
       if (!data) {
         return this.loading = false

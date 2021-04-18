@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Economic\EconomicDataRequest;
 use App\Models\Refs\Org;
-use Illuminate\Http\Request;
 use Level23\Druid\DruidClient;
 use Level23\Druid\Extractions\ExtractionBuilder;
 use Level23\Druid\Types\Granularity;
@@ -21,7 +21,7 @@ class EconomicController extends Controller
 
     const INTERVAL_PIVOT = '2020-01-01T00:00:00+00:00/2020-08-01T00:00:00+00:00';
 
-    const DATA_SOURCE = 'economic_2020v4';
+    const DATA_SOURCE = 'economic_2020v16_test';
 
     const TIME_FORMAT = 'yyyy-MM-dd';
 
@@ -39,7 +39,7 @@ class EconomicController extends Controller
         return view('economic.main');
     }
 
-    public function getEconomicData(Request $request)
+    public function getEconomicData(EconomicDataRequest $request)
     {
         if (!in_array($request->org, auth()->user()->getOrganizationIds())) {
             abort(403);
@@ -47,7 +47,7 @@ class EconomicController extends Controller
 
         $org = Org::find($request->org);
 
-        $dpz = null;
+        $dpz = $request->dpz;
 
         $builder = $this->druidClient->query(self::DATA_SOURCE, Granularity::YEAR);
         $builder2 = $this->druidClient->query(self::DATA_SOURCE, Granularity::MONTH);
