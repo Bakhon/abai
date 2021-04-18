@@ -351,7 +351,7 @@ class EconomicController extends Controller
 
             $dataChart3['uwi'][] = $item['uwi'];
 
-            $dataChart3['Operating_profit'][] = $item['Operating_profit'];
+            $dataChart3['Operating_profit'][] = $item['Operating_profit'] / 1000;
         }
 
         foreach ($result[13] as $index => &$item) {

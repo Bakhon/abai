@@ -72,7 +72,9 @@
           </economic-col>
         </div>
 
-        <economic-charts v-if="res.chart1" :charts="res"/>
+        <economic-charts
+            v-if="res.chart1 && res.chart2 && res.chart3 && res.chart4"
+            :charts="res"/>
       </div>
 
       <div class="col-3">
