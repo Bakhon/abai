@@ -21,7 +21,7 @@ class EconomicController extends Controller
 
     const INTERVAL_PIVOT = '2020-01-01T00:00:00+00:00/2020-08-01T00:00:00+00:00';
 
-    const DATA_SOURCE = 'economic_2020v16_test';
+    const DATA_SOURCE = 'economic_2020v4';
 
     const TIME_FORMAT = 'yyyy-MM-dd';
 
@@ -261,10 +261,10 @@ class EconomicController extends Controller
 
         $data['OperatingProfitYear'] = $data['OperatingProfitMonth'];
 
-        $dataChart['dt'] = [];
-        $dataChart['profitable'] = [];
-        $dataChart['profitless_cat_1'] = [];
-        $dataChart['profitless_cat_2'] = [];
+        $dataChart1['dt'] = [];
+        $dataChart1['profitable'] = [];
+        $dataChart1['profitless_cat_1'] = [];
+        $dataChart1['profitless_cat_2'] = [];
 
         $dataChart2['dt'] = [];
         $dataChart2['profitable'] = [];
@@ -309,24 +309,21 @@ class EconomicController extends Controller
         }
 
         foreach ($result[8] as &$item) {
-            $data['prs1'][] = [
-                $item['uwi'],
-                $item['prs1']
-            ];
+            $data['prs1'][] = [$item['uwi'], $item['prs1']];
         }
 
         foreach ($result[9] as &$item) {
-            $dataChart['dt'][] = $item['dt'];
+            $dataChart1['dt'][] = $item['dt'];
 
-            $dataChart['profitable'][] = $item['uwi'];
+            $dataChart1['profitable'][] = $item['uwi'];
         }
 
         foreach ($result[10] as &$item) {
-            $dataChart['profitless_cat_1'][] = $item['uwi'];
+            $dataChart1['profitless_cat_1'][] = $item['uwi'];
         }
 
         foreach ($result[11] as $item) {
-            $dataChart['profitless_cat_2'][] = $item['uwi'];
+            $dataChart1['profitless_cat_2'][] = $item['uwi'];
         }
 
         foreach ($result[12] as &$item) {
@@ -347,15 +344,19 @@ class EconomicController extends Controller
             }
         }
 
-        $dataChart2['dt'] = array_unique($dataChart2['dt']);
+        $dataChart2['dt'] = array_values(array_unique($dataChart2['dt']));
 
-        foreach (array_reverse($result[13]) as &$item) {
+        foreach (array_reverse($result[13]) as $index => &$item) {
+            if ($index === 10) break;
+
             $dataChart3['uwi'][] = $item['uwi'];
 
             $dataChart3['Operating_profit'][] = $item['Operating_profit'];
         }
 
-        foreach ($result[13] as &$item) {
+        foreach ($result[13] as $index => &$item) {
+            if ($index === 10) break;
+
             $dataChart3['uwi'][] = $item['uwi'];
 
             $dataChart3['Operating_profit'][] = $item['Operating_profit'] / 1000;
@@ -364,10 +365,10 @@ class EconomicController extends Controller
         foreach ($result[14] as &$item) {
             $dataChart4['dt'][] = $item['dt'];
 
-            $dataChart4[$item['profitability']] = self::profitabilityFormat($item);
+            $dataChart4[$item['profitability']][] = self::profitabilityFormat($item);
         }
 
-        $dataChart4['dt'] = array_unique($dataChart4['dt']);
+        $dataChart4['dt'] = array_values(array_unique($dataChart4['dt']));
 
         $averageProfitlessCat1Month = count($result[3]);
         $averageProfitlessCat1PrevMonth = count($result[2]);
@@ -396,7 +397,7 @@ class EconomicController extends Controller
             'OperatingProfitMonth' => $data['OperatingProfitMonth'],
             'OperatingProfitYear' => $data['OperatingProfitYear'],
             'prs1' => $data['prs1'],
-            'chart1' => $dataChart,
+            'chart1' => $dataChart1,
             'chart2' => $dataChart2,
             'chart3' => $dataChart3,
             'chart4' => $dataChart4,

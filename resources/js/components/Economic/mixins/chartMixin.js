@@ -28,7 +28,7 @@ export const chartInitMixin = {
 
         chartOptions() {
             return {
-                labels: this.data.dt,
+                labels: this.data.dt || [],
                 stroke: {
                     width: 4,
                     curve: 'smooth'
