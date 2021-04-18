@@ -47,54 +47,48 @@ class EconomicController extends Controller
 
         $org = Org::findOrFail($request->org);
 
-        $dpz = $request->dpz;
-
-        $builder = $this->druidClient->query(self::DATA_SOURCE, Granularity::YEAR);
-        $builder2 = $this->druidClient->query(self::DATA_SOURCE, Granularity::MONTH);
-        $builder3 = $this->druidClient->query(self::DATA_SOURCE, Granularity::MONTH);
-        $builder4 = $this->druidClient->query(self::DATA_SOURCE, Granularity::MONTH);
-        $builder5 = $this->druidClient->query(self::DATA_SOURCE, Granularity::YEAR);
-        $builder6 = $this->druidClient->query(self::DATA_SOURCE, Granularity::MONTH);
-        $builder7 = $this->druidClient->query(self::DATA_SOURCE, Granularity::DAY);
-        $builder8 = $this->druidClient->query(self::DATA_SOURCE, Granularity::MONTH);
-        $builder9 = $this->druidClient->query(self::DATA_SOURCE, Granularity::YEAR);
-        $builder10 = $this->druidClient->query(self::DATA_SOURCE, Granularity::DAY);
-        $builder11 = $this->druidClient->query(self::DATA_SOURCE, Granularity::DAY);
-        $builder12 = $this->druidClient->query(self::DATA_SOURCE, Granularity::DAY);
-        $builder13 = $this->druidClient->query(self::DATA_SOURCE, Granularity::DAY);
-        $builder14 = $this->druidClient->query(self::DATA_SOURCE, Granularity::YEAR);
-        $builder15 = $this->druidClient->query(self::DATA_SOURCE, Granularity::DAY);
-
-        $builder
+        $builder0 = $this
+            ->druidClient
+            ->query(self::DATA_SOURCE, Granularity::YEAR)
             ->interval(self::INTERVAL1)
             ->select('profitability')
             ->sum("Operating_profit")
             ->where('profitability', '=', 'profitless_cat_1');
 
-        $builder2
+        $builder1 = $this
+            ->druidClient
+            ->query(self::DATA_SOURCE, Granularity::MONTH)
             ->interval(self::INTERVAL2)
             ->select('profitability')
             ->sum("Operating_profit")
             ->where('profitability', '=', 'profitless_cat_1');
 
-        $builder3
+        $builder2 = $this
+            ->druidClient
+            ->query(self::DATA_SOURCE, Granularity::MONTH)
             ->interval(self::INTERVAL3)
             ->select("uwi")
             ->where('profitability', '=', 'profitless_cat_1');
 
-        $builder4
+        $builder3 = $this
+            ->druidClient
+            ->query(self::DATA_SOURCE, Granularity::MONTH)
             ->interval(self::INTERVAL4)
             ->select("uwi")
             ->where('profitability', '=', 'profitless_cat_1');
 
-        $builder5
+        $builder4 = $this
+            ->druidClient
+            ->query(self::DATA_SOURCE, Granularity::YEAR)
             ->interval(self::INTERVAL1)
             ->longSum("prs1")
             ->where('profitability', '=', 'profitless_cat_1')
             ->count("*")
             ->divide('prs', ['prs1', '*']);
 
-        $builder6
+        $builder5 = $this
+            ->druidClient
+            ->query(self::DATA_SOURCE, Granularity::MONTH)
             ->interval(self::INTERVAL4)
             ->select("uwi")
             ->sum("oil")
@@ -104,21 +98,27 @@ class EconomicController extends Controller
             ->sum("Operating_profit")
             ->where('profitability', '=', 'profitless_cat_1');
 
-        $builder7
+        $builder6 = $this
+            ->druidClient
+            ->query(self::DATA_SOURCE, Granularity::DAY)
             ->interval(self::INTERVAL4)
             ->sum("oil")
             ->sum("liquid")
             ->sum("Operating_profit")
             ->where('profitability', '=', 'profitless_cat_1');
 
-        $builder8
+        $builder7 = $this
+            ->druidClient
+            ->query(self::DATA_SOURCE, Granularity::MONTH)
             ->interval(self::INTERVAL8)
             ->sum("oil")
             ->sum("liquid")
             ->sum("Operating_profit")
             ->where('profitability', '=', 'profitless_cat_1');
 
-        $builder9
+        $builder8 = $this
+            ->druidClient
+            ->query(self::DATA_SOURCE, Granularity::YEAR)
             ->interval(self::INTERVAL8)
             ->select("uwi")
             ->sum("prs1")
@@ -126,7 +126,9 @@ class EconomicController extends Controller
             ->where('prs1', '>', '0')
             ->where('profitability', '=', 'profitless_cat_1');
 
-        $builder10
+        $builder9 = $this
+            ->druidClient
+            ->query(self::DATA_SOURCE, Granularity::DAY)
             ->interval(self::INTERVAL_PIVOT)
             ->select('__time', 'dt', function (ExtractionBuilder $extractionBuilder) {
                 $extractionBuilder->timeFormat(self::TIME_FORMAT);
@@ -136,7 +138,9 @@ class EconomicController extends Controller
             ->where('status', '=', 'В работе')
             ->where('profitability', '=', 'profitable');
 
-        $builder11
+        $builder10 = $this
+            ->druidClient
+            ->query(self::DATA_SOURCE, Granularity::DAY)
             ->interval(self::INTERVAL_PIVOT)
             ->select('__time', 'dt', function (ExtractionBuilder $extractionBuilder) {
                 $extractionBuilder->timeFormat(self::TIME_FORMAT);
@@ -146,7 +150,9 @@ class EconomicController extends Controller
             ->where('status', '=', 'В работе')
             ->where('profitability', '=', 'profitless_cat_1');
 
-        $builder12
+        $builder11 = $this
+            ->druidClient
+            ->query(self::DATA_SOURCE, Granularity::DAY)
             ->interval(self::INTERVAL_PIVOT)
             ->select('__time', 'dt', function (ExtractionBuilder $extractionBuilder) {
                 $extractionBuilder->timeFormat(self::TIME_FORMAT);
@@ -156,7 +162,9 @@ class EconomicController extends Controller
             ->where('status', '=', 'В работе')
             ->where('profitability', '=', 'profitless_cat_2');
 
-        $builder13
+        $builder12 = $this
+            ->druidClient
+            ->query(self::DATA_SOURCE, Granularity::DAY)
             ->interval(self::INTERVAL_PIVOT)
             ->select('__time', 'dt', function (ExtractionBuilder $extractionBuilder) {
                 $extractionBuilder->timeFormat(self::TIME_FORMAT);
@@ -165,7 +173,9 @@ class EconomicController extends Controller
             ->where('status', '=', 'В работе')
             ->sum('oil');
 
-        $builder14
+        $builder13 = $this
+            ->druidClient
+            ->query(self::DATA_SOURCE, Granularity::YEAR)
             ->interval(self::INTERVAL14)
             ->select("uwi")
             ->sum("Operating_profit")
@@ -173,7 +183,9 @@ class EconomicController extends Controller
             ->where('status', '=', 'В работе')
             ->orderBy('Operating_profit', 'desc');
 
-        $builder15
+        $builder14 = $this
+            ->druidClient
+            ->query(self::DATA_SOURCE, Granularity::DAY)
             ->interval(self::INTERVAL_PIVOT)
             ->select('__time', 'dt', function (ExtractionBuilder $extractionBuilder) {
                 $extractionBuilder->timeFormat(self::TIME_FORMAT);
@@ -185,7 +197,8 @@ class EconomicController extends Controller
             ->where('status', '=', 'В работе');
 
         $builders = [
-            $builder,
+            $builder0,
+            $builder1,
             $builder2,
             $builder3,
             $builder4,
@@ -199,7 +212,6 @@ class EconomicController extends Controller
             $builder12,
             $builder13,
             $builder14,
-            $builder15,
         ];
 
         if ($org->druid_id) {
@@ -208,69 +220,19 @@ class EconomicController extends Controller
             }
         }
 
-        if ($dpz) {
-            $builder
-                ->where('dpz', '=', $dpz);
-
-            $builder2
-                ->where('dpz', '=', $dpz);
-
-            $builder3
-                ->where('dpz', '=', $dpz);
-
-            $builder4
-                ->where('dpz', '=', $dpz);
-
-            $builder5
-                ->where('dpz', '=', $dpz);
-
-            $builder6
-                ->where('dpz', '=', $dpz);
-
-            $builder7
-                ->where('dpz', '=', $dpz);
-
-            $builder8
-                ->where('dpz', '=', $dpz);
-
-            $builder9
-                ->where('dpz', '=', $dpz);
-
-            $builder10
-                ->where('dpz', '=', $dpz);
-
-            $builder11
-                ->where('dpz', '=', $dpz);
-
-            $builder12
-                ->where('dpz', '=', $dpz);
-
-            $builder13
-                ->where('dpz', '=', $dpz);
-
-            $builder14
-                ->where('dpz', '=', $dpz);
-
-            $builder15
-                ->where('dpz', '=', $dpz);
+        if ($request->dpz) {
+            foreach ($builders as &$builder) {
+                $builder->where('dpz', '=', $request->dpz);
+            }
         }
 
-        $result = $builder->groupBy()->data();
+        $result = [];
 
-        $result2 = $builder2->groupBy()->data();
-        $result3 = $builder3->groupBy()->data();
-        $result4 = $builder4->groupBy()->data();
-        $result5 = $builder5->groupBy()->data();
-        $result6 = $builder6->groupBy()->data();
-        $result7 = $builder7->timeseries()->data();
-        $result8 = $builder8->timeseries()->data();
-        $result9 = $builder9->groupBy()->data();
-        $result10 = $builder10->groupBy()->data();
-        $result11 = $builder11->groupBy()->data();
-        $result12 = $builder12->groupBy()->data();
-        $result13 = $builder13->groupBy()->data();
-        $result14 = $builder14->groupBy()->data();
-        $result15 = $builder15->groupBy()->data();
+        foreach ($builders as $index => $builder) {
+            $result[$index] = in_array($index, [6, 7])
+                ? $builder->timeseries()->data()
+                : $builder->groupBy()->data();
+        }
 
         $data['count'] = [];
         $data['countProfitlessCat1PrevMonth'] = [];
@@ -313,7 +275,7 @@ class EconomicController extends Controller
         $dataChart4['profitless_cat_1'] = [];
         $dataChart4['profitless_cat_2'] = [];
 
-        foreach ($result6 as &$item) {
+        foreach ($result[5] as &$item) {
             $data['wellsList'][] = [
                 $item['uwi'],
                 $item['oil'],
@@ -324,7 +286,7 @@ class EconomicController extends Controller
             ];
         }
 
-        foreach ($result7 as &$item) {
+        foreach ($result[6] as &$item) {
             $data['OperatingProfitMonth'][] = [
                 date('d-m-Y', strtotime($item['timestamp'])),
                 $item['oil'],
@@ -333,7 +295,7 @@ class EconomicController extends Controller
             ];
         }
 
-        foreach ($result8 as &$item) {
+        foreach ($result[7] as &$item) {
             $data['OperatingProfitYear'][] = [
                 date('m-Y', strtotime($item['timestamp'])),
                 $item['oil'],
@@ -342,28 +304,28 @@ class EconomicController extends Controller
             ];
         }
 
-        foreach ($result9 as &$item) {
+        foreach ($result[8] as &$item) {
             $data['prs1'][] = [
                 $item['uwi'],
                 $item['prs1']
             ];
         }
 
-        foreach ($result10 as &$item) {
+        foreach ($result[9] as &$item) {
             $dataChart['dt'][] = $item['dt'];
 
             $dataChart['profitable'][] = $item['uwi'];
         }
 
-        foreach ($result11 as &$item) {
+        foreach ($result[10] as &$item) {
             $dataChart['profitless_cat_1'][] = $item['uwi'];
         }
 
-        foreach ($result12 as $item) {
+        foreach ($result[11] as $item) {
             $dataChart['profitless_cat_2'][] = $item['uwi'];
         }
 
-        foreach ($result13 as &$item) {
+        foreach ($result[12] as &$item) {
             $dataChart2['dt'][] = $item['dt'];
 
             $oil = $item['oil'] / 1000;
@@ -383,19 +345,19 @@ class EconomicController extends Controller
 
         $dataChart2['dt'] = array_unique($dataChart2['dt']);
 
-        foreach (array_reverse($result14) as &$item) {
+        foreach (array_reverse($result[13]) as &$item) {
             $dataChart3['uwi'][] = $item['uwi'];
 
             $dataChart3['Operating_profit'][] = $item['Operating_profit'];
         }
 
-        foreach ($result14 as &$item) {
+        foreach ($result[13] as &$item) {
             $dataChart3['uwi'][] = $item['uwi'];
 
             $dataChart3['Operating_profit'][] = $item['Operating_profit'] / 1000;
         }
 
-        foreach ($result15 as &$item) {
+        foreach ($result[14] as &$item) {
             $dataChart4['dt'][] = $item['dt'];
 
             $dataChart4[$item['profitability']] = self::profitabilityFormat($item);
@@ -403,18 +365,18 @@ class EconomicController extends Controller
 
         $dataChart4['dt'] = array_unique($dataChart4['dt']);
 
-        $averageProfitlessCat1Month = count($result4);
-        $averageProfitlessCat1PrevMonth = count($result3);
+        $averageProfitlessCat1Month = count($result[3]);
+        $averageProfitlessCat1PrevMonth = count($result[2]);
 
 
-        $yearIndex = count($result) - 1;
-        $lastMonthIndex = count($result2) - 1;
-        $prevMonthIndex = count($result2) - 2;
+        $yearIndex = count($result[0]) - 1;
+        $lastMonthIndex = count($result[1]) - 1;
+        $prevMonthIndex = $lastMonthIndex - 1;
 
 
-        list($year, $yearWord) = self::moneyFormat($result[$yearIndex]["Operating_profit"]);
-        list($month, $monthWord) = self::moneyFormat($result2[$lastMonthIndex]["Operating_profit"]);
-        $percent = ($result2[$prevMonthIndex]["Operating_profit"] - $result2[$lastMonthIndex]["Operating_profit"]) * 100 / $result2[$prevMonthIndex]["Operating_profit"];
+        list($year, $yearWord) = self::moneyFormat($result[0][$yearIndex]["Operating_profit"]);
+        list($month, $monthWord) = self::moneyFormat($result[1][$lastMonthIndex]["Operating_profit"]);
+        $percent = ($result[1][$prevMonthIndex]["Operating_profit"] - $result[1][$lastMonthIndex]["Operating_profit"]) * 100 / $result[1][$prevMonthIndex]["Operating_profit"];
         $percentCount = ($averageProfitlessCat1PrevMonth - $averageProfitlessCat1Month) * 100 / $averageProfitlessCat1PrevMonth;
 
         return [
@@ -425,7 +387,7 @@ class EconomicController extends Controller
             'percent' => round($percent),
             'percentCount' => round($percentCount),
             'averageProfitlessCat1MonthCount' => round($averageProfitlessCat1Month),
-            'prs' => round($result5[0]["prs1"]),
+            'prs' => round($result[4][0]["prs1"]),
             'wellsList' => $data['wellsList'],
             'OperatingProfitMonth' => $data['OperatingProfitMonth'],
             'OperatingProfitYear' => $data['OperatingProfitYear'],
