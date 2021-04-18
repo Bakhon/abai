@@ -139,6 +139,24 @@ import EconomicPercentBadge from "./components/EconomicPercentBadge";
 
 Vue.use(VModal, {dynamicDefault: {draggable: true, resizable: true}});
 
+const economicRes = {
+  averageProfitlessCat1MonthCount: 0,
+  month: 0,
+  monthWord: '',
+  year: 0,
+  yearWord: '',
+  percent: null,
+  percentCount: null,
+  wellsList: null,
+  OperatingProfitMonth: null,
+  OperatingProfitYear: null,
+  prs: 0,
+  prs1: 0,
+  chart1: null,
+  chart2: null,
+  chart3: null,
+  chart4: null,
+}
 
 export default {
   name: "economic-component",
@@ -160,24 +178,7 @@ export default {
       org: null,
       dpz: null
     },
-    res: {
-      averageProfitlessCat1MonthCount: 0,
-      month: 0,
-      monthWord: '',
-      year: 0,
-      yearWord: '',
-      percent: null,
-      percentCount: null,
-      wellsList: null,
-      OperatingProfitMonth: null,
-      OperatingProfitYear: null,
-      prs: 0,
-      prs1: 0,
-      chart1: null,
-      chart2: null,
-      chart3: null,
-      chart4: null,
-    },
+    res: economicRes,
     params: {
       data: [],
       enableSearch: true,
@@ -252,15 +253,17 @@ export default {
     async getEconomicData() {
       this.loading = true
 
-      const {data} = await this.axios.get('/ru/geteconimicdata', {params: this.form})
+      try {
+        const {data} = await this.axios.get('/ru/geteconimicdata', {params: this.form})
 
-      if (!data) {
-        return this.loading = false
+        this.res = data
+
+        this.params.data = data.wellsList
+      } catch (e) {
+        this.res = economicRes
+
+        console.log(e)
       }
-
-      this.res = data
-
-      this.params.data = data.wellsList
 
       this.loading = false
     },
