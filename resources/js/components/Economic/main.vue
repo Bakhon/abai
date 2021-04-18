@@ -32,7 +32,9 @@
           <economic-col @click.native="pushBign('bign2')">
             <economic-title>
               <span>{{ res.year.toLocaleString() }}</span>
-              <span class="font-size-16px line-height-20px text-blue">{{ res.yearWord }}</span>
+              <span class="font-size-16px line-height-20px text-blue">
+                {{ res.yearWord }}
+              </span>
             </economic-title>
 
             <economic-subtitle>
@@ -43,7 +45,9 @@
           <economic-col @click.native="pushBign('bign3')">
             <economic-title>
               <span>{{ res.month }}</span>
-              <span class="font-size-16px line-height-20px text-blue">{{ res.monthWord }}</span>
+              <span class="font-size-16px line-height-20px text-blue">
+                {{ res.monthWord }}
+              </span>
 
               <economic-percent-badge :percent="res.percent"/>
             </economic-title>
@@ -67,10 +71,12 @@
         <economic-charts v-if="res.chart1" :charts="res"/>
       </div>
 
-      <div class="col-3 bg-main1">
-        <economic-select-organization
-            :organizations="organizations"
-            @change="changeOrganization"/>
+      <div class="col-3">
+        <div class="bg-main1 p-3">
+          <economic-select-organization
+              :organizations="organizations"
+              @change="changeOrganization"/>
+        </div>
       </div>
     </div>
   </div>
@@ -216,11 +222,11 @@ export default {
 </script>
 <style scoped>
 .font-size-16px {
-  font-size: 16px;
+  font-size: 16px !important;
 }
 
 .line-height-20px {
-  font-size: 20px;
+  line-height: 20px !important;
 }
 
 .bg-blue-dark {

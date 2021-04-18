@@ -1,3 +1,5 @@
+const ru = require("apexcharts/dist/locales/ru.json");
+
 export const chartInitMixin = {
     props: {
         data: {
@@ -5,28 +7,51 @@ export const chartInitMixin = {
             type: Object
         }
     },
-    data: () => ({
-        series: [],
-    }),
-    mounted() {
-        this.init()
-    },
-    methods: {
-        init() {
-            this.series = [
+    computed: {
+        chartSeries() {
+            return [
                 {
                     name: 'Рентабельные скважины',
+                    type: 'area',
                     data: this.data.profitable
                 }, {
                     name: 'Условно-рентабельные скважины',
+                    type: 'area',
                     data: this.data.profitless_cat_2
                 }, {
                     name: 'Нерентабельные скважины',
+                    type: 'area',
                     data: this.data.profitless_cat_1
                 }
-            ];
+            ]
+        },
 
-            this.chartOptions = {labels: this.data.dt};
+        chartOptions() {
+            return {
+                labels: this.data.dt,
+                stroke: {
+                    width: 4,
+                    curve: 'smooth'
+                },
+                colors: ['#13B062', '#F7BB2E', '#AB130E'],
+                chart: {
+                    stacked: true,
+                    foreColor: '#FFFFFF',
+                    locales: [ru],
+                    defaultLocale: 'ru'
+                },
+                markers: {
+                    size: 0
+                },
+                plotOptions: {
+                    bar: {
+                        columnWidth: '50%'
+                    }
+                },
+                xaxis: {
+                    type: 'datetime'
+                },
+            }
         },
     },
 }

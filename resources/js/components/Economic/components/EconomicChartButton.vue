@@ -1,7 +1,7 @@
 <template>
   <div
       :class="active ? 'economic-tab-btn-active' : ''"
-      class="text-white text-wrap font-weight-bold economic-tab-btn py-2">
+      class="text-white text-wrap economic-tab-btn py-2">
     {{ text }}
   </div>
 </template>
