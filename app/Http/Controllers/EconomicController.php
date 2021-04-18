@@ -234,28 +234,32 @@ class EconomicController extends Controller
                 : $builder->groupBy()->data();
         }
 
-        $data['count'] = [];
-        $data['countProfitlessCat1PrevMonth'] = [];
-        $data['countProfitlessCat1Month'] = [];
-        $data['wellsList'] = [[
-            'Скважина',
-            'Добыча нефти',
-            'Добыча жидкости',
-            'Revenue_total',
-            'NetBack_bf_pr_exp',
-            'Operating_profit'
-        ]];
+        $data = [
+            'count' => [],
+            'countProfitlessCat1PrevMonth' => [],
+            'countProfitlessCat1Month' => [],
+            'wellsList' => [[
+                'Скважина',
+                'Добыча нефти',
+                'Добыча жидкости',
+                'Revenue_total',
+                'NetBack_bf_pr_exp',
+                'Operating_profit'
+            ]],
+            'prs1' => [[
+                'Скважина',
+                'Количесвто ПРС'
+            ]]
+        ];
+
         $data['OperatingProfitMonth'] = [[
             'Дата',
             'Добыча нефти',
             'Добыча жидкости',
             'Operating_profit'
         ]];
+
         $data['OperatingProfitYear'] = $data['OperatingProfitMonth'];
-        $data['prs1'] = [[
-            'Скважина',
-            'Количесвто ПРС'
-        ]];
 
         $dataChart['dt'] = [];
         $dataChart['profitable'] = [];
