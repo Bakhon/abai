@@ -21,7 +21,8 @@ class EconomicController extends Controller
 
     const INTERVAL_PIVOT = '2020-01-01T00:00:00+00:00/2020-08-01T00:00:00+00:00';
 
-    const DATA_SOURCE = 'economic_2020v4';
+//    const DATA_SOURCE = 'economic_2020v4';
+    const DATA_SOURCE = 'economic_2020v16_test';
 
     const TIME_FORMAT = 'yyyy-MM-dd';
 
@@ -169,7 +170,7 @@ class EconomicController extends Controller
             ->select('__time', 'dt', function (ExtractionBuilder $extractionBuilder) {
                 $extractionBuilder->timeFormat(self::TIME_FORMAT);
             })
-            ->select(['profitability', 'price_export_1'])
+            ->select('profitability')
             ->where('status', '=', 'В работе')
             ->sum('oil');
 
@@ -190,11 +191,22 @@ class EconomicController extends Controller
             ->select('__time', 'dt', function (ExtractionBuilder $extractionBuilder) {
                 $extractionBuilder->timeFormat(self::TIME_FORMAT);
             })
-            ->select(['profitability', 'price_export_1'])
+            ->select('profitability')
             ->sum('liquid')
             ->sum('bsw')
             ->count('uwi')
             ->where('status', '=', 'В работе');
+
+        $builder15 = $this
+            ->druidClient
+            ->query(self::DATA_SOURCE, Granularity::DAY)
+            ->interval(self::INTERVAL_PIVOT)
+            ->select('__time', 'dt', function (ExtractionBuilder $extractionBuilder) {
+                $extractionBuilder->timeFormat(self::TIME_FORMAT);
+            })
+            ->select('profitability_v_prostoe')
+            ->where('status', '=', 'В простое')
+            ->sum('oil');
 
         $builders = [
             $builder0,
@@ -212,6 +224,7 @@ class EconomicController extends Controller
             $builder12,
             $builder13,
             $builder14,
+            $builder15,
         ];
 
         if ($org->druid_id) {
@@ -278,6 +291,11 @@ class EconomicController extends Controller
         $dataChart4['profitable'] = [];
         $dataChart4['profitless_cat_1'] = [];
         $dataChart4['profitless_cat_2'] = [];
+
+//        $dataChart5['dt'] = [];
+//        $dataChart5['profitable'] = [];
+//        $dataChart5['profitless_cat_1'] = [];
+//        $dataChart5['profitless_cat_2'] = [];
 
         foreach ($result[5] as &$item) {
             $data['wellsList'][] = [
@@ -370,6 +388,12 @@ class EconomicController extends Controller
 
         $dataChart4['dt'] = array_values(array_unique($dataChart4['dt']));
 
+//        foreach ($result[15] as &$item) {
+//            $dataChart5['dt'][] = $item['dt'];
+//
+//            $dataChart5[$item['profitability_v_prostoe']][] = self::profitabilityFormat($item);
+//        }
+
         $averageProfitlessCat1Month = count($result[3]);
         $averageProfitlessCat1PrevMonth = count($result[2]);
 
@@ -401,6 +425,7 @@ class EconomicController extends Controller
             'chart2' => $dataChart2,
             'chart3' => $dataChart3,
             'chart4' => $dataChart4,
+//            'chart5' => $dataChart5,
         ];
     }
 

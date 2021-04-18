@@ -18,7 +18,7 @@ export default {
         ...this.chartOptions, ...{
           yaxis: {
             labels: {
-              formatter: function (value) {
+              formatter(value) {
                 return Math.floor(value);
               }
             },
