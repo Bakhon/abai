@@ -39,13 +39,13 @@ class EconomicController extends Controller
         return view('economic.main');
     }
 
-    public function getEconomicData(EconomicDataRequest $request)
+    public function getEconomicData(EconomicDataRequest $request): array
     {
         if (!in_array($request->org, auth()->user()->getOrganizationIds())) {
             abort(403);
         }
 
-        $org = Org::find($request->org);
+        $org = Org::findOrFail($request->org);
 
         $dpz = $request->dpz;
 
@@ -90,7 +90,9 @@ class EconomicController extends Controller
         $builder5
             ->interval(self::INTERVAL1)
             ->longSum("prs1")
-            ->where('profitability', '=', 'profitless_cat_1');
+            ->where('profitability', '=', 'profitless_cat_1')
+            ->count("*")
+            ->divide('prs', ['prs1', '*']);
 
         $builder6
             ->interval(self::INTERVAL4)
@@ -159,7 +161,7 @@ class EconomicController extends Controller
             ->select('__time', 'dt', function (ExtractionBuilder $extractionBuilder) {
                 $extractionBuilder->timeFormat(self::TIME_FORMAT);
             })
-            ->select('profitability')
+            ->select(['profitability', 'price_export_1'])
             ->where('status', '=', 'В работе')
             ->sum('oil');
 
@@ -176,66 +178,34 @@ class EconomicController extends Controller
             ->select('__time', 'dt', function (ExtractionBuilder $extractionBuilder) {
                 $extractionBuilder->timeFormat(self::TIME_FORMAT);
             })
-            ->select('profitability')
+            ->select(['profitability', 'price_export_1'])
             ->sum('liquid')
             ->sum('bsw')
             ->count('uwi')
             ->where('status', '=', 'В работе');
 
+        $builders = [
+            $builder,
+            $builder2,
+            $builder3,
+            $builder4,
+            $builder5,
+            $builder6,
+            $builder7,
+            $builder8,
+            $builder9,
+            $builder10,
+            $builder11,
+            $builder12,
+            $builder13,
+            $builder14,
+            $builder15,
+        ];
+
         if ($org->druid_id) {
-            $builder
-                ->where('org_id2', '=', $org->druid_id);
-
-            $builder2
-                ->where('org_id2', '=', $org->druid_id);
-
-            $builder3
-                ->where('org_id2', '=', $org->druid_id);
-
-            $builder4
-                ->where('org_id2', '=', $org->druid_id);
-
-            $builder5
-                ->count("*")
-                ->where('org_id2', '=', $org->druid_id)
-                ->divide('prs', ['prs1', '*']);
-
-            $builder6
-                ->where('org_id2', '=', $org->druid_id);
-
-            $builder7
-                ->where('org_id2', '=', $org->druid_id);
-
-            $builder8
-                ->where('org_id2', '=', $org->druid_id);
-
-            $builder9
-                ->where('org_id2', '=', $org->druid_id);
-
-            $builder10
-                ->select('org_id2')
-                ->where('org_id2', '=', $org->druid_id);
-
-            $builder11
-                ->select('org_id2')
-                ->where('org_id2', '=', $org->druid_id);
-
-            $builder12
-                ->select('org_id2')
-                ->where('org_id2', '=', $org->druid_id);
-
-            $builder13
-                ->select('price_export_1')
-                ->select('org_id2')
-                ->sum('oil');
-
-            $builder14
-                ->where('org_id2', '=', $org->druid_id);
-
-            $builder15
-                ->select('price_export_1')
-                ->select('org_id2')
-                ->where('org_id2', '=', $org->druid_id);
+            foreach ($builders as &$builder) {
+                $builder->where('org_id2', '=', $org->druid_id);
+            }
         }
 
         if ($dpz) {
@@ -286,6 +256,7 @@ class EconomicController extends Controller
         }
 
         $result = $builder->groupBy()->data();
+
         $result2 = $builder2->groupBy()->data();
         $result3 = $builder3->groupBy()->data();
         $result4 = $builder4->groupBy()->data();
@@ -318,12 +289,7 @@ class EconomicController extends Controller
             'Добыча жидкости',
             'Operating_profit'
         ]];
-        $data['OperatingProfitYear'] = [[
-            'Дата',
-            'Добыча нефти',
-            'Добыча жидкости',
-            'Operating_profit'
-        ]];
+        $data['OperatingProfitYear'] = $data['OperatingProfitMonth'];
         $data['prs1'] = [[
             'Скважина',
             'Количесвто ПРС'
@@ -347,86 +313,95 @@ class EconomicController extends Controller
         $dataChart4['profitless_cat_1'] = [];
         $dataChart4['profitless_cat_2'] = [];
 
-        foreach ($result6 as $item) {
-            $well = [];
-            array_push($well, $item['uwi']);
-            array_push($well, $item['oil']);
-            array_push($well, $item['liquid']);
-            array_push($well, $item['Revenue_total']);
-            array_push($well, $item['NetBack_bf_pr_exp']);
-            array_push($well, $item['Operating_profit']);
-            array_push($data['wellsList'], $well);
+        foreach ($result6 as &$item) {
+            $data['wellsList'][] = [
+                $item['uwi'],
+                $item['oil'],
+                $item['liquid'],
+                $item['Revenue_total'],
+                $item['NetBack_bf_pr_exp'],
+                $item['Operating_profit']
+            ];
         }
 
-        foreach ($result7 as $item) {
-            $well = [];
-            array_push($well, date('d-m-Y', strtotime($item['timestamp'])));
-            array_push($well, $item['oil']);
-            array_push($well, $item['liquid']);
-            array_push($well, $item['Operating_profit']);
-            array_push($data['OperatingProfitMonth'], $well);
+        foreach ($result7 as &$item) {
+            $data['OperatingProfitMonth'][] = [
+                date('d-m-Y', strtotime($item['timestamp'])),
+                $item['oil'],
+                $item['liquid'],
+                $item['Operating_profit']
+            ];
         }
 
-        foreach ($result8 as $item) {
-            $well = [];
-            array_push($well, date('m-Y', strtotime($item['timestamp'])));
-            array_push($well, $item['oil']);
-            array_push($well, $item['liquid']);
-            array_push($well, $item['Operating_profit']);
-            array_push($data['OperatingProfitYear'], $well);
+        foreach ($result8 as &$item) {
+            $data['OperatingProfitYear'][] = [
+                date('m-Y', strtotime($item['timestamp'])),
+                $item['oil'],
+                $item['liquid'],
+                $item['Operating_profit']
+            ];
         }
 
-        foreach ($result9 as $item) {
-            $well = [];
-            array_push($well, $item['uwi']);
-            array_push($well, $item['prs1']);
-            array_push($data['prs1'], $well);
+        foreach ($result9 as &$item) {
+            $data['prs1'][] = [
+                $item['uwi'],
+                $item['prs1']
+            ];
         }
 
-        foreach ($result10 as $item) {
-            array_push($dataChart['dt'], $item['dt']);
-            array_push($dataChart['profitable'], $item['uwi']);
+        foreach ($result10 as &$item) {
+            $dataChart['dt'][] = $item['dt'];
+
+            $dataChart['profitable'][] = $item['uwi'];
         }
 
-        foreach ($result11 as $item) {
-            array_push($dataChart['profitless_cat_1'], $item['uwi']);
+        foreach ($result11 as &$item) {
+            $dataChart['profitless_cat_1'][] = $item['uwi'];
         }
 
         foreach ($result12 as $item) {
-            array_push($dataChart['profitless_cat_2'], $item['uwi']);
+            $dataChart['profitless_cat_2'][] = $item['uwi'];
         }
 
-        foreach ($result13 as $item) {
-            if (!in_array($item['dt'], $dataChart2['dt'])) {
-                array_push($dataChart2['dt'], $item['dt']);
+        foreach ($result13 as &$item) {
+            $dataChart2['dt'][] = $item['dt'];
+
+            $oil = $item['oil'] / 1000;
+
+            switch ($item['profitability']) {
+                case 'profitable':
+                    $dataChart2['profitable'][] = $oil;
+                    break;
+                case 'profitless_cat_2':
+                    $dataChart2['profitless_cat_2'][] = $oil;
+                    break;
+                case 'profitless_cat_1':
+                    $dataChart2['profitless_cat_1'][] = $oil;
+                    break;
             }
-            if ($item['profitability'] == 'profitable') {
-                array_push($dataChart2['profitable'], $item['oil'] / 1000);
-            } elseif ($item['profitability'] == 'profitless_cat_2') {
-                array_push($dataChart2['profitless_cat_2'], $item['oil'] / 1000);
-            } elseif ($item['profitability'] == 'profitless_cat_1') {
-                array_push($dataChart2['profitless_cat_1'], $item['oil'] / 1000);
-            }
         }
 
-        $reversed14 = array_reverse($result14);
-        for ($i = 0; $i < 10; $i++) {
-            array_push($dataChart3['uwi'], $reversed14[$i]['uwi']);
-            array_push($dataChart3['Operating_profit'], $reversed14[$i]['Operating_profit'] / 1000);
+        $dataChart2['dt'] = array_unique($dataChart2['dt']);
+
+        foreach (array_reverse($result14) as &$item) {
+            $dataChart3['uwi'][] = $item['uwi'];
+
+            $dataChart3['Operating_profit'][] = $item['Operating_profit'];
         }
 
-        for ($i = 0; $i < 10; $i++) {
-            array_push($dataChart3['uwi'], $result14[$i]['uwi']);
-            array_push($dataChart3['Operating_profit'], $result14[$i]['Operating_profit'] / 1000);
+        foreach ($result14 as &$item) {
+            $dataChart3['uwi'][] = $item['uwi'];
+
+            $dataChart3['Operating_profit'][] = $item['Operating_profit'] / 1000;
         }
 
-        foreach ($result15 as $item) {
-            if (!in_array($item['dt'], $dataChart4['dt'])) {
-                array_push($dataChart4['dt'], $item['dt']);
-            }
+        foreach ($result15 as &$item) {
+            $dataChart4['dt'][] = $item['dt'];
 
-            array_push($dataChart4[$item['profitability']], self::profitabilityFormat($item));
+            $dataChart4[$item['profitability']] = self::profitabilityFormat($item);
         }
+
+        $dataChart4['dt'] = array_unique($dataChart4['dt']);
 
         $averageProfitlessCat1Month = count($result4);
         $averageProfitlessCat1PrevMonth = count($result3);
@@ -442,7 +417,7 @@ class EconomicController extends Controller
         $percent = ($result2[$prevMonthIndex]["Operating_profit"] - $result2[$lastMonthIndex]["Operating_profit"]) * 100 / $result2[$prevMonthIndex]["Operating_profit"];
         $percentCount = ($averageProfitlessCat1PrevMonth - $averageProfitlessCat1Month) * 100 / $averageProfitlessCat1PrevMonth;
 
-        $vdata = [
+        return [
             'year' => $year,
             'yearWord' => $yearWord,
             'month' => $month,
@@ -460,11 +435,9 @@ class EconomicController extends Controller
             'chart3' => $dataChart3,
             'chart4' => $dataChart4,
         ];
-
-        return response()->json($vdata);
     }
 
-    static function profitabilityFormat($item)
+    static function profitabilityFormat($item): string
     {
         $bsw_round = round(($item['bsw'] / 1000) / ($item['uwi'] / 1000));
 
