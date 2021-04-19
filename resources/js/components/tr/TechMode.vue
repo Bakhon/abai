@@ -1548,7 +1548,7 @@
                           </el-table-column>
                         </el-table-column>
                         <el-table-column
-                        :label="trans('tr.tr24')"
+                        :label="trans('tr.gas_factor')"
                         >
                           <el-table-column
                             prop="gor"
@@ -1556,20 +1556,52 @@
                             width="130"
                             sortable
                             >
+                            <template slot-scope="scope">
+                              <el-tooltip class="item" effect="dark"  v-bind:content="haveTooltip(scope.$index, `gor`)" :placement="isPlacement(scope.$index, `gor`)">
+                                <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`gor`)}" >
+                                          <span
+                                            :class="{
+                                              'circle-err': isCircleErrClass(scope.$index,`gor`)}"
+                                            :style="`background :${getColor(
+                                              wells[scope.$index].gor[1][0]
+                                            )}`"
+                                          >
+                                            </span><span v-if="scope.row.gor[0] != null">{{
+                                      Math.round(scope.row.gor[0] * 10) / 10
+                                    }}</span>
+                                </div>   
+                              </el-tooltip> 
+                            </template>
                           </el-table-column>
                         </el-table-column>
                       </el-table-column>
                     </el-table-column>
           
                     <el-table-column
-                      :label="trans('tr.tr25')"
+                      :label="trans('tr.state_at_the_end_of_the_month')"
                       >
                       <el-table-column label="" prop="fake" >
                         <el-table-column label="" >
                           <el-table-column 
                             prop="well_status_last_day"
                             width="130"
-                            sortable>
+                            sortable
+                            >
+                            <template slot-scope="scope">
+                              <el-tooltip class="item" effect="dark"  v-bind:content="haveTooltip(scope.$index, `well_status_last_day`)" :placement="isPlacement(scope.$index, `well_status_last_day`)">
+                                <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`well_status_last_day`)}" >
+                                          <span
+                                            :class="{
+                                              'circle-err': isCircleErrClass(scope.$index,`well_status_last_day`)}"
+                                            :style="`background :${getColor(
+                                              wells[scope.$index].well_status_last_day[1][0]
+                                            )}`"
+                                          >
+                                          </span><span>{{ scope.row.well_status_last_day[0] }}</span>  
+                                </div>   
+                              </el-tooltip> 
+                            </template>
+
                           </el-table-column>
                         </el-table-column>
                       </el-table-column>
