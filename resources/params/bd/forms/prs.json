@@ -4,145 +4,149 @@
     {
       "title": "delivery_cert",
       "blocks": [
-        {
-          "title": "repair",
-          "items": [
-            {
-              "code": "",
-              "type": "date",
-              "title": "start_date",
-              "validation": "nullable|date|before_or_equal:today"
-            },
-            {
-              "code": "",
-              "type": "dict_tree",
-              "title": "type_rep_work",
-              "validation": "required",
-              "dict": ""
-            },
-
-            {
-              "code": "",
-              "type": "text",
-              "title": "planned_works_list",
-              "validation": ""
-            },
-
-            {
-              "code": "",
-              "type": "dict_tree",
-              "title": "contractor",
-              "validation": "required",
-              "dict": ""
-            },
-            {
-              "code": "",
-              "type": "dict_tree",
-              "title": "brigade",
-              "validation": "required",
-              "dict": ""
-            },
-            {
-              "code": "",
-              "type": "dict_tree",
-              "title": "brigade_master",
-              "validation": "required",
-              "dict": ""
-            }
-          ]
-        }
+        [
+          {
+            "title": "repair",
+            "items": [
+              {
+                "code": "",
+                "type": "date",
+                "title": "start_date",
+                "validation": "nullable|date|before_or_equal:today"
+              },
+              {
+                "code": "",
+                "type": "dict_tree",
+                "title": "type_rep_work",
+                "validation": "required",
+                "dict": ""
+              },
+              {
+                "code": "",
+                "type": "text",
+                "title": "planned_works_list",
+                "validation": ""
+              },
+              {
+                "code": "",
+                "type": "dict_tree",
+                "title": "contractor",
+                "validation": "required",
+                "dict": ""
+              },
+              {
+                "code": "",
+                "type": "dict_tree",
+                "title": "brigade",
+                "validation": "required",
+                "dict": ""
+              },
+              {
+                "code": "",
+                "type": "dict_tree",
+                "title": "brigade_master",
+                "validation": "required",
+                "dict": ""
+              }
+            ]
+          }
+        ]
       ]
     },
     {
       "title": "acceptance_cert",
       "blocks": [
-        {
-          "title": "repair",
-          "items": [
-            {
-              "code": "",
-              "type": "date",
-              "title": "completion_date",
-              "validation": "nullable|date|before_or_equal:today"
-            },
-            {
-              "code": "",
-              "type": "text",
-              "title": "desc_done",
-              "validation": ""
-            },
-            {
-              "code": "",
-              "type": "dict_tree",
-              "title": "rep_type",
-              "validation": "required",
-              "dict": ""
-            },
-            {
-              "code": "",
-              "type": "text",
-              "title": "nkt_new",
-              "validation": ""
-            },
-            {
-              "code": "",
-              "type": "text",
-              "title": "nkt_used",
-              "validation": ""
-            },
-            {
-              "code": "",
-              "type": "text",
-              "title": "actual_bh",
-              "validation": ""
-            },
-            {
-              "code": "",
-              "type": "dict_tree",
-              "title": "tech_condition",
-              "validation": "required",
-              "dict": ""
-            },
-            {
-              "code": "",
-              "type": "dict_tree",
-              "title": "new_condition",
-              "validation": "required",
-              "dict": ""
-            }
-          ]
-        }
+        [
+          {
+            "title": "repair",
+            "items": [
+              {
+                "code": "",
+                "type": "date",
+                "title": "completion_date",
+                "validation": "nullable|date|before_or_equal:today"
+              },
+              {
+                "code": "",
+                "type": "text",
+                "title": "desc_done",
+                "validation": ""
+              },
+              {
+                "code": "",
+                "type": "dict_tree",
+                "title": "rep_type",
+                "validation": "required",
+                "dict": ""
+              },
+              {
+                "code": "",
+                "type": "text",
+                "title": "nkt_new",
+                "validation": ""
+              },
+              {
+                "code": "",
+                "type": "text",
+                "title": "nkt_used",
+                "validation": ""
+              },
+              {
+                "code": "",
+                "type": "text",
+                "title": "actual_bh",
+                "validation": ""
+              },
+              {
+                "code": "",
+                "type": "dict_tree",
+                "title": "tech_condition",
+                "validation": "required",
+                "dict": ""
+              },
+              {
+                "code": "",
+                "type": "dict_tree",
+                "title": "new_condition",
+                "validation": "required",
+                "dict": ""
+              }
+            ]
+          }
+        ]
       ]
     },
     {
       "title": "rej_reason",
       "blocks": [
-        {
-          "title": "repair",
-          "items": [
-            {
-              "code": "",
-              "type": "dict_tree",
-              "title": "cause_h_failure",
-              "validation": "required",
-              "dict": ""
-            },
-            {
-              "code": "",
-              "type": "dict_tree",
-              "title": "reason_type",
-              "validation": "required",
-              "dict": ""
-            },
-            {
-              "code": "",
-              "type": "dict_tree",
-              "title": "reason_stopping",
-              "validation": "required",
-              "dict": ""
-            }
-          ]
-        }
+        [
+          {
+            "title": "repair",
+            "items": [
+              {
+                "code": "",
+                "type": "dict_tree",
+                "title": "cause_h_failure",
+                "validation": "required",
+                "dict": ""
+              },
+              {
+                "code": "",
+                "type": "dict_tree",
+                "title": "reason_type",
+                "validation": "required",
+                "dict": ""
+              },
+              {
+                "code": "",
+                "type": "dict_tree",
+                "title": "reason_stopping",
+                "validation": "required",
+                "dict": ""
+              }
+            ]
+          }
+        ]
       ]
     }
   ]

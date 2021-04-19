@@ -3,7 +3,7 @@
         <div class="row mx-0 mt-lg-2 gtm">
             <div class="gtm-dark col-lg-10 p-0">
                 <div class="row col-12 p-0 m-0">
-                    <div class="col-6 d-none d-lg-block p-0 pl-1 gtm-map-block">
+                    <div class="col-6 d-none d-lg-block p-0 pl-1">
                         <div class="h-100">
                             <div class="block-header pb-0 pl-2 pt-1">
                                 {{ trans('paegtm.accumulatedOilProdTitle') }}
@@ -18,13 +18,13 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-6 d-none d-lg-block p-0 gtm-map-block">
+                    <div class="col-6 d-none d-lg-block p-0">
                         <div class="h-100">
                             <div class="block-header pb-0 pl-2 pt-1">
                                 {{ trans('paegtm.comparisonIndicatorsTitle') }}
                             </div>
-                            <div class="p-1 pl-2">
-                                <table class="table text-center text-white podbor-middle-table h-75">
+                            <div class="p-1 pl-2 h-75">
+                                <table class="table text-center text-white podbor-middle-table h-100">
                                     <thead>
                                     <tr>
                                         <th class="align-middle" rowspan="2">{{ trans('paegtm.gtmType') }}</th>
@@ -50,7 +50,7 @@
                     </div>
                 </div>
                 <div class="row col-12 p-0 m-0">
-                    <div class="col-6 d-none d-lg-block p-0 pl-1 gtm-map-block">
+                    <div class="col-6 d-none d-lg-block p-0 pl-1">
                         <div class="h-100">
                             <div class="block-header pb-0 pl-2">
                                 {{ trans('paegtm.profitabilityIndexTitle') }}
@@ -60,7 +60,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-6 d-none d-lg-block p-0 gtm-map-block">
+                    <div class="col-6 d-none d-lg-block p-0">
                         <div class="h-100 pb-2">
                             <div class="block-header pb-0 pl-2">
                                 {{ trans('paegtm.plannedGrowthReasonsTitle') }}
@@ -367,7 +367,6 @@ export default {
                 });
             }
             this.$store.commit('globalloading/SET_LOADING',false);
-            this.loaded = true
         });
     }
 }

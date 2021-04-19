@@ -5,70 +5,76 @@
     {
       "title": "Gtm_start",
       "blocks": [
-        {
-          "title": "Gtm_start",
-          "items": [
-            {
-              "code": "field1",
-              "type": "date",
-              "title": "date_gtm_start",
-              "validation": "required|date"
-            },
-            {
-              "code": "field2",
-              "type": "dict",
-              "title": "gtm_name",
-              "dict":"",
-              "validation": "required|date"
-            },
-            {
-              "code":"field3_4",
-              "type":"radio",
-              "title":"",
-              "validation":"required",
-              "values":[
-                "new_technologies",
-                "own_forces"
-              ]
-            },
-            {
-              "code":"field5",
-              "type":"dict",
-              "title":"contractor",
-              "dict":"",
-              "validation":"required"
-            }
-          ]
-        }
+        [
+          {
+            "title": "Gtm_start",
+            "items": [
+              {
+                "code": "field1",
+                "type": "datetime",
+                "title": "date_gtm_start",
+                "validation": "required"
+              },
+              {
+                "code": "field2",
+                "type": "dict",
+                "title": "gtm_name",
+                "dict":"",
+                "validation": "required|date"
+              },
+              {
+                "code":"field3",
+                "type":"checkbox",
+                "title":"new_technologies",
+                "validation":""
+              },
+              {
+                "code":"field4",
+                "type":"checkbox",
+                "title":"own_forces",
+                "validation":""
+              },
+              {
+                "code":"field5",
+                "type":"dict",
+                "title":"contractor",
+                "dict":"",
+                "validation":"required"
+              }
+            ]
+          }
+        ]
       ]
     },
     {
       "title":"Gtm_end",
       "blocks":[
-        {
-          "title":"Gtm_end",
-          "items":[
-            {
-              "code":"field6",
-              "type":"date",
-              "title":"date_gtm_end",
-              "validation":"required|date"
-            },
-            {
-              "code":"field7",
-              "type":"text",
-              "title": "gtm_parameters_results",
-              "validation": "required|string"
-            },
-            {
-              "code":"field8",
-              "type":"dict",
-              "title":"status",
-              "dict":"",
-              "validation":"required"
-            }
-          ]
-        }
+        [
+          {
+            "title":"Gtm_end",
+            "items":[
+              {
+                "code":"field6",
+                "type":"date",
+                "title":"date_gtm_end",
+                "validation":"required|date"
+              },
+              {
+                "code":"field7",
+                "type":"text",
+                "title": "gtm_parameters_results",
+                "validation": "required|string"
+              },
+              {
+                "code":"field8",
+                "type":"dict",
+                "title":"status",
+                "dict":"",
+                "validation":"required"
+              }
+            ]
+          }
+        ]
       ]
     }
   ]

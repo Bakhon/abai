@@ -26,7 +26,7 @@ import cellsMappingEMG from './dzoData/cells_mapping_emg.json';
 import moment from "moment";
 import Visual from "./dataManagers/visual";
 
-const defaultDzoTicker = "КТМ";
+const defaultDzoTicker = "ОМГ";
 
 export default {
     data: function () {
@@ -74,7 +74,7 @@ export default {
                     cells: cellsMappingYO,
                     id: 111
                 },
-                "ЕМГ" : {
+                "ЭМГ" : {
                     rows: initialRowsEMG,
                     format: formatMappingEMG,
                     cells: cellsMappingEMG,
@@ -83,7 +83,7 @@ export default {
             },
             dzoCompanies: [
                 {
-                    ticker: 'ЕМГ',
+                    ticker: 'ЭМГ',
                     name: 'АО "Эмбамунайгаз"'
                 },
                 {
@@ -117,6 +117,7 @@ export default {
             ],
             selectedDzo: {
                 ticker: defaultDzoTicker,
+                name: 'ТОО "Казахтуркмунай"',
                 plans: [],
             },
             status: this.trans("visualcenter.importForm.status.waitForData"),
@@ -161,6 +162,11 @@ export default {
         if (!this.selectedDzo.ticker) {
             this.selectedDzo.ticker = defaultDzoTicker;
         }
+        if ( this.selectedDzo.ticker === 'КОА') {
+            this.addColumnsToGrid();
+        }
+
+        this.selectedDzo.name = this.getDzoName();
         this.changeDefaultDzo();
         this.dzoPlans = await this.getDzoMonthlyPlans();
         this.selectedDzo.plans = this.getSelectedDzoPlans();
@@ -168,6 +174,23 @@ export default {
         this.setTableFormat();
     },
     methods: {
+        addColumnsToGrid() {
+            for (let i = 7; i < 9; i++) {
+                this.columns.push(
+                    {
+                        prop: "column" + i,
+                        size: 280,
+                        cellProperties: ({prop, model, data, column}) => {
+                            return {
+                                style: {
+                                    border: '1px solid #F4F4F6'
+                                },
+                            };
+                        },
+                    }
+                );
+            }
+        },
         getDzoTicker() {
             let dzoTicker = '';
             let self = this;
@@ -177,6 +200,16 @@ export default {
                }
             });
             return dzoTicker;
+        },
+        getDzoName() {
+            let dzoName = '';
+            let self = this;
+            _.forEach(this.dzoCompanies, function(dzo) {
+                if (dzo.ticker === self.selectedDzo.ticker) {
+                    dzoName = dzo.name;
+                }
+            });
+            return dzoName;
         },
         async changeDefaultDzo() {
             this.cellsMapping = _.cloneDeep(this.dzoMapping[this.selectedDzo.ticker].cells);
@@ -291,6 +324,9 @@ export default {
                 if (cellValue.trim().length === 0) {
                     cellValue = null;
                 }
+                if (cellValue) {
+                    cellValue = this.getFormattedNumber(cellValue);
+                }
                 if (fieldCategoryName) {
                     this.setNumberValueForCategories(category,row.fields[columnIndex-1],cellValue,fieldCategoryName);
                 } else if (category === this.inputDataCategories[0]) {
@@ -328,24 +364,15 @@ export default {
             for (let columnIndex = 1; columnIndex <= row.rowLength; columnIndex++) {
                 let selector = 'div[data-col="'+ columnIndex + '"][data-row="' + row.rowIndex + '"]';
                 let cellValue = $(selector).text().trim();
+                if (cellValue && !this.stringColumns.includes(columnIndex)) {
+                    cellValue = this.getFormattedNumber(cellValue);
+                }
                 this.excelData[category][row.fields[columnIndex-1]] = cellValue;
             }
         },
-        isStringCell(rowIndex) {
-            return this.stringColumns.includes(rowIndex);
-        },
-        checkErrorsStringCell(cellValue,selector) {
-          if (!this.isStringCellValid(cellValue,selector)) {
-              this.turnErrorForCell(selector);
-              return false;
-          }
-          return true;
-        },
-        isStringCellValid(inputData,selector) {
-            if (!inputData || typeof(inputData) === 'number' || inputData.length < 6) {
-                return false;
-            }
-            return true;
+        getFormattedNumber(cellValue) {
+            cellValue = cellValue.replace(',', '.');
+            return parseFloat(cellValue);
         },
         async handleSave() {
             await this.storeData();

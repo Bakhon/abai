@@ -12,10 +12,21 @@
                       <td class="col-4 col-lg-4 d-flex">
                         <div class="first-td-header">
                           <div class="row oil-block">
-                            <div class="number col-8 col-md-6 col-lg-7">
+                            <div class="number">
                               {{ formatDigitToThousand(productionParams.oil_fact) }}
                             </div>
-                            <div class="unit-vc col-12 col-md-5 col-lg-4">{{ trans("visualcenter.thousand") }}{{ trans('visualcenter.tonWithSpace') }}</div>
+                            <div
+                                    v-if="!buttonDailyTab && (oneDate !== 1)"
+                                    class="unit-vc ml-2"
+                            >
+                              {{ trans("visualcenter.thousand") }}{{ trans('visualcenter.tonWithSpace') }}
+                            </div>
+                            <div
+                                    v-else
+                                    class="unit-vc ml-2"
+                            >
+                              {{ trans('visualcenter.tonWithSpace') }}
+                            </div>
                           </div>
                           <div class="additional-header txt1 col-6 col-md-12">
                             {{ trans("visualcenter.getoil") }}
@@ -65,10 +76,21 @@
                       <td class="col-4 col-lg-4 d-flex">
                         <div class="first-td-header">
                           <div class="row oil-block">
-                            <div class="number col-8 col-md-7 col-lg-7">
+                            <div class="number">
                               {{ formatDigitToThousand(productionParams.oil_dlv_fact) }}
                             </div>
-                            <div class="unit-vc col-12 col-md-5 col-lg-4">{{ trans("visualcenter.thousand") }}{{ trans('visualcenter.tonWithSpace') }}</div>
+                            <div
+                                    v-if="!buttonDailyTab && (oneDate !== 1)"
+                                    class="unit-vc ml-2"
+                            >
+                              {{ trans("visualcenter.thousand") }}{{ trans('visualcenter.tonWithSpace') }}
+                            </div>
+                            <div
+                                    v-else
+                                    class="unit-vc ml-2"
+                            >
+                              {{ trans('visualcenter.tonWithSpace') }}
+                            </div>
                           </div>
                           <div class="additional-header txt1 col-6 col-md-12">
                             {{ trans("visualcenter.oildlv") }}
@@ -118,11 +140,20 @@
                       <td class="col-4 col-sm-4 d-flex">
                         <div class="first-td-header">
                           <div class="row oil-block">
-                            <div class="number col-8 col-md-7 col-lg-7">
+                            <div class="number">
                               {{ formatDigitToThousand(productionParams.gas_fact) }}
                             </div>
-                            <div class="unit-vc col-12 col-md-5 col-lg-4">
+                            <div
+                                    v-if="!buttonDailyTab && (oneDate !== 1)"
+                                    class="unit-vc ml-2"
+                            >
                               {{ trans("visualcenter.thousand") }}{{ trans('visualcenter.meterCubicWithSpace') }}
+                            </div>
+                            <div
+                                    v-else
+                                    class="unit-vc ml-2"
+                            >
+                              {{ trans('visualcenter.meterCubicWithSpace') }}
                             </div>
                           </div>
                           <div class="additional-header txt1 col-6 col-md-12">
@@ -746,6 +777,7 @@
                           <div>
                             <input
                                     type="checkbox"
+                                    :disabled="isGrouppingFilterActive()"
                                     :checked="company.selected"
                                     @change="`${selectDzoCompany(company.ticker)}`"
                             ></input>
@@ -760,7 +792,7 @@
               <div class="col-8 col-lg px-1">
                 <div
                         :class="[`${buttonDailyTab}`,'button2']"
-                        @click="changeMenu2(1)"
+                        @click="changeMenu2('daily')"
                 >
                   {{ trans("visualcenter.daily") }}
                 </div>
@@ -768,7 +800,7 @@
               <div class="col-8 col-lg px-1">
                 <div
                         :class="[`${buttonMonthlyTab}`,'button2']"
-                        @click="changeMenu2(2)"
+                        @click="changeMenu2('monthly')"
                 >
                   {{ trans("visualcenter.monthBegin") }}
                 </div>
@@ -779,17 +811,18 @@
                 <div :class="[`${buttonYearlyTab}`,'button2']">
                   <div
                           class="button1-vc-inner"
-                          @click="changeMenu2(3)"
+                          @click="changeMenu2('yearly')"
                   >
                   {{ trans("visualcenter.yearBegin") }}
                   </div>
                   <button
+                          v-if="buttonYearlyTab"
                           type="button"
                           class="btn btn-primary dropdown-toggle position-button-vc dzocompanies__button_position"
                           data-toggle="dropdown"
                   ></button>
                   <div class="dzo-company-list">
-                    <ul class="dropdown-menu-vc dropdown-menu dropdown-menu-right year-period-dropdown">
+                    <ul class="dropdown-menu-vc dropdown-menu dropdown-menu-right year-period-dropdown" ref="targetPlan">
                       <li :class="[`${buttonTargetPlan}`, 'px-4']">
                         <input
                                 type="checkbox"
@@ -809,7 +842,7 @@
                 <div class="dropdown3">
                   <div
                           :class="[`${buttonPeriodTab}`,'button2']"
-                          @click="changeMenu2(4)"
+                          @click="changeMenu2('period')"
                   >
                     <span v-if="oneDate">
                       <!-- Дата  -->{{ trans("visualcenter.date") }} [{{
@@ -1078,7 +1111,7 @@
                       <td
                         v-if="buttonYearlyTab"
                         :class="
-                          index % 2 === 0 ? 'tdStyle3-total' : 'tdStyle3-total'
+                          index % 2 === 0 ? `${getLighterClass(index)}` : 'tdStyle3-total'
                         "
                       >
                         <div class="font">
@@ -1088,14 +1121,28 @@
 
                       <td
                         v-if="buttonMonthlyTab"
-                        :class="index % 2 === 0 ? 'tdStyle3-total' : 'tdStyle3-total'"
+                        :class="index % 2 === 0 ? `${getLighterClass(index)}` : 'tdStyle3-total'"
                       >
                         <div class="font">
                           {{dzoCompaniesSummary.periodPlan}}
                         </div>
                       </td>
 
-                      <td :class="`${getLighterClass(index)}`">
+                      <td
+                              v-if="buttonMonthlyTab || buttonYearlyTab"
+                              :class="index % 2 === 0 ? `${getDarkerClass(index)}` : `${getLighterClass(index)}`"
+                      >
+                        <div class="font">
+                          {{dzoCompaniesSummary.plan}}
+                          <div class="right">
+                            {{ trans("visualcenter.thousand") }} {{ metricName }}
+                          </div>
+                        </div>
+                      </td>
+                      <td
+                              v-else
+                              :class="index % 2 === 0 ? `${getLighterClass(index)}` : `${getDarkerClass(index)}`"
+                      >
                         <div class="font">
                           {{dzoCompaniesSummary.plan}}
                           <div class="right">
@@ -1104,7 +1151,10 @@
                         </div>
                       </td>
 
-                      <td :class="`${getDarkerClass(index)}`">
+                      <td
+                              v-if="buttonMonthlyTab || buttonYearlyTab"
+                              :class="index % 2 === 0 ? `${getLighterClass(index)}` : `${getDarkerClass(index)}`"
+                      >
                         <div class="font">
                           {{dzoCompaniesSummary.fact}}
                           <div class="right">
@@ -1112,11 +1162,25 @@
                           </div>
                         </div>
                       </td>
-                      <td :class="`${getLighterClass(index)}`">
+                      <td
+                              v-else
+                              :class="index % 2 === 0 ? `${getDarkerClass(index)}` : `${getLighterClass(index)}`"
+                      >
+                        <div class="font">
+                          {{dzoCompaniesSummary.fact}}
+                          <div class="right">
+                            {{ trans("visualcenter.thousand") }} {{ metricName }}
+                          </div>
+                        </div>
+                      </td>
+                      <td
+                              v-if="buttonMonthlyTab || buttonYearlyTab"
+                              :class="index % 2 === 0 ? `${getDarkerClass(index)}` : `${getLighterClass(index)}`"
+                      >
                         <div
                           v-if="factMonthSumm"
                           :class="
-                            factMonthSumm - planMonthSumm < 0 ?
+                            factMonthSumm < planMonthSumm ?
                             'triangle fall-indicator-production-data' :
                             'triangle growth-indicator-production-data'
                           "
@@ -1129,14 +1193,40 @@
                         </div>
                       </td>
                       <td
-                              v-if="!isFilterTargetPlanActive"
-                              :class="`${getDarkerClass(index)}`"
+                              v-else
+                              :class="index % 2 === 0 ? `${getLighterClass(index)}` : `${getDarkerClass(index)}`"
+                      >
+                        <div
+                                v-if="factMonthSumm"
+                                :class="
+                            factMonthSumm < planMonthSumm ?
+                            'triangle fall-indicator-production-data' :
+                            'triangle growth-indicator-production-data'
+                          "
+                        ></div>
+                        <div class="font dynamic">
+                          {{dzoCompaniesSummary.difference}}
+                          <div class="right">
+                            {{ trans("visualcenter.thousand") }}{{ metricName }}
+                          </div>
+                        </div>
+                      </td>
+                      <td
+                              v-if="isFilterTargetPlanActive"
+                              :class="`${getColorClassBySelectedPeriod(index)}`"
+                      >
+                        <div class="font">
+                          {{dzoCompaniesSummary.targetPlan}}
+                        </div>
+                      </td>
+                      <td
+                              v-else
+                              :class="`${getColorClassBySelectedPeriod(index)}`"
                       >
                         <div
                           v-if="factMonthSumm"
                           :class="
-                            ((factMonthSumm - planMonthSumm) / planMonthSumm) *
-                            100 < 0 ?
+                            planMonthSumm > factMonthSumm ?
                             'triangle fall-indicator-production-data' :
                             'triangle growth-indicator-production-data'
                           "
@@ -1145,14 +1235,7 @@
                           {{dzoCompaniesSummary.percent}}
                         </div>
                       </td>
-                      <td
-                              v-if="isFilterTargetPlanActive"
-                              :class="`${getDarkerClass(index)}`"
-                      >
-                        <div class="font">
-                          {{dzoCompaniesSummary.targetPlan}}
-                        </div>
-                      </td>
+
                       <td
                               :class="`${getLighterClass(index)}`"
                               v-if="exactDateSelected"
@@ -1280,7 +1363,7 @@
                 <div class="col-3 pr-2">
                   <div
                           :class="[`${buttonDailyTab}`,'button2 side-tables__main-menu-button']"
-                          @click="changeMenu2(1)"
+                          @click="changeMenu2('daily')"
                   >
                     {{ trans("visualcenter.daily") }}
                   </div>
@@ -1288,7 +1371,7 @@
                 <div class="col-3 px-2">
                   <div
                           :class="[`${buttonMonthlyTab}`,'button2 side-tables__main-menu-button']"
-                          @click="changeMenu2(2)"
+                          @click="changeMenu2('monthly')"
                   >
                     {{ trans("visualcenter.monthBegin") }}
                   </div>
@@ -1296,7 +1379,7 @@
                 <div class="col-3 px-2">
                   <div
                           :class="[`${buttonYearlyTab}`,'button2 side-tables__main-menu-button']"
-                          @click="changeMenu2(3)"
+                          @click="changeMenu2('yearly')"
                   >
                     {{ trans("visualcenter.yearBegin") }}
                   </div>
@@ -1305,7 +1388,7 @@
                   <div class="dropdown3">
                     <div
                             :class="[`${buttonPeriodTab}`,'button2 side-tables__main-menu-button']"
-                            @click="changeMenu2(4)"
+                            @click="changeMenu2('period')"
                     >
                       <span v-if="oneDate">
                         {{ trans("visualcenter.date") }} [{{
@@ -1438,7 +1521,7 @@
                 <div class="col-3 pr-2">
                   <div
                           :class="[`${buttonDailyTab}`,'button2 side-tables__main-menu-button']"
-                          @click="changeMenu2(1)"
+                          @click="changeMenu2('daily')"
                   >
                     {{ trans("visualcenter.daily") }}
                   </div>
@@ -1446,7 +1529,7 @@
                 <div class="col-3 px-2">
                   <div
                           :class="[`${buttonMonthlyTab}`,'button2 side-tables__main-menu-button']"
-                    @click="changeMenu2(2)"
+                    @click="changeMenu2('monthly')"
                   >
                     {{ trans("visualcenter.monthBegin") }}
                   </div>
@@ -1454,7 +1537,7 @@
                 <div class="col-3 px-2">
                   <div
                           :class="[`${buttonYearlyTab}`,'button2 side-tables__main-menu-button']"
-                          @click="changeMenu2(3)"
+                          @click="changeMenu2('yearly')"
                   >
                     {{ trans("visualcenter.yearBegin") }}
                   </div>
@@ -1463,7 +1546,7 @@
                   <div class="dropdown3">
                     <div
                             :class="[`${buttonPeriodTab}`,'button2 side-tables__main-menu-button']"
-                            @click="changeMenu2(4)"
+                            @click="changeMenu2('period')"
                     >
                       <span v-if="oneDate">
                         {{ trans("visualcenter.date") }} [{{
@@ -1600,7 +1683,7 @@
                 <div class="col-3 pr-2">
                   <div
                           :class="[`${buttonDailyTab}`,'button2 side-tables__main-menu-button']"
-                          @click="changeMenu2(1)"
+                          @click="changeMenu2('daily')"
                   >
                     {{ trans("visualcenter.daily") }}
                   </div>
@@ -1608,7 +1691,7 @@
                 <div class="col-3 px-2 ">
                   <div
                     :class="[`${buttonMonthlyTab}`,'button2 side-tables__main-menu-button']"
-                    @click="changeMenu2(2)"
+                    @click="changeMenu2('monthly')"
                   >
                     {{ trans("visualcenter.monthBegin") }}
                   </div>
@@ -1616,7 +1699,7 @@
                 <div class="col-3 px-2">
                   <div
                           :class="[`${buttonYearlyTab}`,'button2 side-tables__main-menu-button']"
-                          @click="changeMenu2(3)"
+                          @click="changeMenu2('yearly')"
                   >
                     {{ trans("visualcenter.yearBegin") }}
                   </div>
@@ -1625,7 +1708,7 @@
                   <div class="dropdown3">
                     <div
                             :class="[`${buttonPeriodTab}`,'button2 side-tables__main-menu-button']"
-                            @click="changeMenu2(4)"
+                            @click="changeMenu2('period')"
                     >
                       <span v-if="oneDate">
                         {{ trans("visualcenter.date") }} [{{
@@ -1781,7 +1864,7 @@
                 <div class="col pr-2">
                   <div
                           :class="[`${buttonMonthlyTab}`,'button2 side-tables__main-menu-button']"
-                          @click="changeMenu2(2)"
+                          @click="changeMenu2('monthly')"
                   >
                     {{ trans("visualcenter.monthBegin") }}
                   </div>
@@ -1789,7 +1872,7 @@
                 <div class="col px-2">
                   <div
                           :class="[`${buttonYearlyTab}`,'button2 side-tables__main-menu-button']"
-                          @click="changeMenu2(3)"
+                          @click="changeMenu2('yearly')"
                   >
                     {{ trans("visualcenter.yearBegin") }}
                   </div>
@@ -1798,7 +1881,7 @@
                   <div class="dropdown3">
                     <div
                             :class="[`${buttonPeriodTab}`,'button2 side-tables__main-menu-button']"
-                            @click="changeMenu2(4)"
+                            @click="changeMenu2('period')"
                     >
                       <span v-if="oneDate">
                         {{ trans("visualcenter.date") }} [{{

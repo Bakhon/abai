@@ -20,32 +20,32 @@ class Well extends TBDModel
 
     const WELL_CATEGORY_OIL = 1;
 
-    protected $table = 'tbdi.well';
+    protected $table = 'dict.well';
     protected $guarded = ['id'];
 
     public function geo()
     {
-        return $this->belongsToMany(Geo::class, 'tbdi.well_geo', 'well_id', 'geo_id');
+        return $this->belongsToMany(Geo::class, 'prod.well_geo', 'well', 'geo');
     }
 
     public function orgs()
     {
-        return $this->belongsToMany(Org::class, 'tbdi.well_org', 'well_id', 'org_id');
+        return $this->belongsToMany(Org::class, 'prod.well_org', 'well', 'org');
     }
 
     public function techs()
     {
-        return $this->belongsToMany(Tech::class, 'tbdi.well_tech', 'well_id', 'tech_id');
+        return $this->belongsToMany(Tech::class, 'prod.well_tech', 'well', 'tech');
     }
 
     public function status()
     {
-        return $this->belongsToMany(WellStatus::class, 'tbdi.well_status', 'well_id', 'well_status_type_id');
+        return $this->belongsToMany(WellStatus::class, 'prod.well_status', 'well', 'status');
     }
 
     public function category()
     {
-        return $this->belongsToMany(WellCategory::class, 'tbdi.well_category', 'well_id', 'well_category_type_id');
+        return $this->belongsToMany(WellCategory::class, 'prod.well_category', 'well', 'category');
     }
 
 
@@ -56,7 +56,7 @@ class Well extends TBDModel
             function ($query) use ($date) {
                 $query->where('dbeg', '<=', $date)
                     ->where('dend', '>=', $date)
-                    ->whereIn('tbdi.well_status.well_status_type_id', self::WELL_ACTIVE_STATUSES);
+                    ->whereIn('prod.well_status.status', self::WELL_ACTIVE_STATUSES);
             }
         );
         $query->whereHas(
@@ -64,7 +64,7 @@ class Well extends TBDModel
             function ($query) use ($date) {
                 $query->where('dbeg', '<=', $date)
                     ->where('dend', '>=', $date)
-                    ->where('tbdi.well_category.well_category_type_id', self::WELL_CATEGORY_OIL);
+                    ->where('prod.well_category.category', self::WELL_CATEGORY_OIL);
             }
         );
 
