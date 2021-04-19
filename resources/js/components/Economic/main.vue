@@ -72,9 +72,7 @@
           </economic-col>
         </div>
 
-        <economic-charts
-            v-if="res.chart1 && res.chart2 && res.chart3 && res.chart4"
-            :charts="res"/>
+        <economic-charts v-if="!loading" :charts="res"/>
       </div>
 
       <div class="col-3">
@@ -158,6 +156,7 @@ const economicRes = {
   chart2: null,
   chart3: null,
   chart4: null,
+  chart5: null,
 }
 
 export default {

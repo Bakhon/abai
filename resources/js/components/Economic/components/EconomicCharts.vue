@@ -6,7 +6,8 @@
           :key="index"
           :text="tab"
           :active="activeTab === index"
-          class="col-2 mr-2"
+          :class="index ? 'ml-2' : ''"
+          class="col"
           @click.native="activeTab = index"/>
     </div>
 
@@ -37,6 +38,11 @@
       <economic-chart4
           v-else-if="index === 3"
           :data="charts.chart4"
+          class="bg-economic-chart"/>
+
+      <economic-chart1
+          v-else-if="index === 4"
+          :data="charts.chart5"
           class="bg-economic-chart"/>
     </div>
   </div>
@@ -79,6 +85,7 @@ export default {
         'Распределение добычи нефти по типу рентабельности скважин',
         'Рейтинг ТОП 10 прибыльных и убыточных скважин',
         'Распределение добычи жидкости по типу рентабельности скважин',
+        'Распределение скважин в простое по типу рентабельности',
       ]
     },
   }

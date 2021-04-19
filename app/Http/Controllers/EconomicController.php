@@ -29,6 +29,9 @@ class EconomicController extends Controller
     const PROFITABILITY_CAT_2 = 'profitless_cat_2';
     const PROFITABILITY_PROFITABLE = 'profitable';
 
+    const STATUS_ACTIVE = 'В работе';
+    const STATUS_PAUSE = 'В простое';
+
     const LIMIT_TOP = 10;
 
     public function __construct(DruidClient $druidClient)
@@ -139,7 +142,7 @@ class EconomicController extends Controller
             })
             ->select('profitability')
             ->count('uwi')
-            ->where('status', '=', 'В работе')
+            ->where('status', '=', self::STATUS_ACTIVE)
             ->where('profitability', '=', self::PROFITABILITY_PROFITABLE);
 
         $builder10 = $this
@@ -151,7 +154,7 @@ class EconomicController extends Controller
             })
             ->select('profitability')
             ->count('uwi')
-            ->where('status', '=', 'В работе')
+            ->where('status', '=', self::STATUS_ACTIVE)
             ->where('profitability', '=', self::PROFITABILITY_CAT_1);
 
         $builder11 = $this
@@ -163,7 +166,7 @@ class EconomicController extends Controller
             })
             ->select('profitability')
             ->count('uwi')
-            ->where('status', '=', 'В работе')
+            ->where('status', '=', self::STATUS_ACTIVE)
             ->where('profitability', '=', self::PROFITABILITY_CAT_2);
 
         $builder12 = $this
@@ -174,7 +177,7 @@ class EconomicController extends Controller
                 $extractionBuilder->timeFormat(self::TIME_FORMAT);
             })
             ->select('profitability')
-            ->where('status', '=', 'В работе')
+            ->where('status', '=', self::STATUS_ACTIVE)
             ->sum('oil');
 
         $builder13 = $this
@@ -184,7 +187,7 @@ class EconomicController extends Controller
             ->select("uwi")
             ->sum("Operating_profit")
             ->where('Operating_profit', '!=', '0')
-            ->where('status', '=', 'В работе')
+            ->where('status', '=', self::STATUS_ACTIVE)
             ->orderBy('Operating_profit', 'desc');
 
         $builder14 = $this
@@ -198,7 +201,7 @@ class EconomicController extends Controller
             ->sum('liquid')
             ->sum('bsw')
             ->count('uwi')
-            ->where('status', '=', 'В работе');
+            ->where('status', '=', self::STATUS_ACTIVE);
 
         $builder15 = $this
             ->druidClient
@@ -208,8 +211,13 @@ class EconomicController extends Controller
                 $extractionBuilder->timeFormat(self::TIME_FORMAT);
             })
             ->select('profitability_v_prostoe')
-            ->where('status', '=', 'В простое')
-            ->sum('oil');
+            ->count('count')
+            ->where('status', '=', self::STATUS_PAUSE)
+            ->whereIn('profitability_v_prostoe', [
+                self::PROFITABILITY_PROFITABLE,
+                self::PROFITABILITY_CAT_1,
+                self::PROFITABILITY_CAT_2,
+            ]);
 
         $builders = [
             $builder0,
@@ -285,14 +293,13 @@ class EconomicController extends Controller
         ];
 
         $dataChart2 = $dataChart1;
+        $dataChart4 = $dataChart1;
+        $dataChart5 = $dataChart1;
 
         $dataChart3 = [
             'uwi' => [],
             'Operating_profit' => []
         ];
-
-        $dataChart4 = $dataChart1;
-        $dataChart5 = $dataChart1;
 
         foreach ($result[5] as &$item) {
             $data['wellsList'][] = [
@@ -331,19 +338,21 @@ class EconomicController extends Controller
             $dataChart1['dt'][] = $item['dt'];
 
             $dataChart1[self::PROFITABILITY_PROFITABLE][] = $item['uwi'];
+
             $dataChart1[self::PROFITABILITY_CAT_1][] = $result[10][$index]['uwi'];
+
             $dataChart1[self::PROFITABILITY_CAT_2][] = $result[11][$index]['uwi'];
         }
 
         foreach ($result[12] as &$item) {
             $oil = $item['oil'] / 1000;
 
-            $dataChart2['dt'][] = $item['dt'];
+            $dataChart2['dt'][$item['dt']] = 1;
 
             $dataChart2[$item['profitability']][] = $oil;
         }
 
-        $dataChart2['dt'] = array_values(array_unique($dataChart2['dt']));
+        $dataChart2['dt'] = array_keys($dataChart2['dt']);
 
         $result[13] = array_merge(
             array_reverse(array_slice($result[13], -self::LIMIT_TOP, self::LIMIT_TOP)),
@@ -357,18 +366,20 @@ class EconomicController extends Controller
         }
 
         foreach ($result[14] as &$item) {
-            $dataChart4['dt'][] = $item['dt'];
+            $dataChart4['dt'][$item['dt']] = 1;
 
             $dataChart4[$item['profitability']][] = self::profitabilityFormat($item);
         }
 
-        $dataChart4['dt'] = array_values(array_unique($dataChart4['dt']));
+        $dataChart4['dt'] = array_keys($dataChart4['dt']);
 
-//        foreach ($result[15] as &$item) {
-//            $dataChart5['dt'][] = $item['dt'];
-//
-//            $dataChart5[$item['profitability_v_prostoe']][] = self::profitabilityFormat($item);
-//        }
+        foreach ($result[15] as &$item) {
+            $dataChart5['dt'][$item['dt']] = 1;
+
+            $dataChart5[$item['profitability_v_prostoe']][] = $item['count'];
+        }
+
+        $dataChart5['dt'] = array_keys($dataChart5['dt']);
 
         $averageProfitlessCat1Month = count($result[3]);
         $averageProfitlessCat1PrevMonth = count($result[2]);
@@ -399,7 +410,7 @@ class EconomicController extends Controller
             'chart2' => $dataChart2,
             'chart3' => $dataChart3,
             'chart4' => $dataChart4,
-//            'chart5' => $dataChart5,
+            'chart5' => $dataChart5,
         ];
     }
 
