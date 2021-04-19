@@ -105,10 +105,15 @@
           </div>
         </div>
 
-        <div class="bg-main1 p-3 mt-3 text-white">
+        <div class="bg-main1 p-3 mt-3 text-white text-wrap">
           <div class="font-size-16px line-height-22px font-weight-bold mb-3">
             Выбор параметров отображения данных
           </div>
+
+          <economic-select-interval
+              :form="form"
+              class="mb-3"
+              @change="getEconomicData"/>
 
           <economic-select-organization
               :form="form"
@@ -133,6 +138,7 @@ import EconomicCol from "./components/EconomicCol";
 import EconomicCharts from "./components/EconomicCharts";
 import EconomicTitle from "./components/EconomicTitle";
 import EconomicSubtitle from "./components/EconomicSubtitle";
+import EconomicSelectInterval from "./components/EconomicSelectInterval";
 import EconomicSelectOrganization from "./components/EconomicSelectOrganization";
 import EconomicSelectDpz from "./components/EconomicSelectDpz";
 import EconomicPercentBadge from "./components/EconomicPercentBadge";
@@ -175,6 +181,7 @@ export default {
     EconomicCharts,
     EconomicTitle,
     EconomicSubtitle,
+    EconomicSelectInterval,
     EconomicSelectOrganization,
     EconomicSelectDpz,
     EconomicPercentBadge
@@ -183,7 +190,8 @@ export default {
     activeTab: 0,
     form: {
       org: null,
-      dpz: null
+      dpz: null,
+      interval: null
     },
     res: economicRes,
     params: {
@@ -249,7 +257,16 @@ export default {
       this.loading = true
 
       try {
-        const {data} = await this.axios.get('/ru/geteconimicdata', {params: this.form})
+        let params = this.form
+
+        if(this.form.interval){
+          params.interval = [
+              this.form.interval.slice(0, 10),
+              this.form.interval.slice(11, 21),
+          ]
+        }
+
+        const {data} = await this.axios.get('/ru/geteconimicdata', {params: params})
 
         this.res = data
 

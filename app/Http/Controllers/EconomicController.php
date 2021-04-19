@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Economic\EconomicDataRequest;
 use App\Models\Refs\Org;
+use Carbon\Carbon;
 use Level23\Druid\DruidClient;
 use Level23\Druid\Extractions\ExtractionBuilder;
 use Level23\Druid\Queries\QueryBuilder;
@@ -58,14 +59,14 @@ class EconomicController extends Controller
 
         $org = Org::findOrFail($request->org);
 
-        $interval = $request->dt
-            ? self::intervalDtFormat($request->dt)
+        $interval = $request->interval
+            ? self::intervalFormat($request->interval)
             : null;
 
         $builder1 = $this
             ->druidClient
             ->query(self::DATA_SOURCE, Granularity::YEAR)
-            ->interval($interval ?? self::INTERVAL_LAST_YEAR)
+            ->interval(self::INTERVAL_LAST_YEAR)
             ->longSum("prs1")
             ->sum("Operating_profit")
             ->where('profitability', '=', self::PROFITABILITY_CAT_1);
@@ -73,7 +74,7 @@ class EconomicController extends Controller
         $builder2 = $this
             ->druidClient
             ->query(self::DATA_SOURCE, Granularity::MONTH)
-            ->interval($interval ?? self::INTERVAL_LAST_2_MONTHS)
+            ->interval(self::INTERVAL_LAST_2_MONTHS)
             ->sum("Operating_profit")
             ->distinctCount('uwi')
             ->where('profitability', '=', self::PROFITABILITY_CAT_1);
@@ -81,7 +82,7 @@ class EconomicController extends Controller
         $builder5 = $this
             ->druidClient
             ->query(self::DATA_SOURCE, Granularity::MONTH)
-            ->interval($interval ?? self::INTERVAL_LAST_MONTH)
+            ->interval(self::INTERVAL_LAST_MONTH)
             ->select("uwi")
             ->sum("oil")
             ->sum("liquid")
@@ -93,7 +94,7 @@ class EconomicController extends Controller
         $builder6 = $this
             ->druidClient
             ->query(self::DATA_SOURCE, Granularity::DAY)
-            ->interval($interval ?? self::INTERVAL_LAST_MONTH)
+            ->interval(self::INTERVAL_LAST_MONTH)
             ->sum("oil")
             ->sum("liquid")
             ->sum("Operating_profit")
@@ -102,7 +103,7 @@ class EconomicController extends Controller
         $builder7 = $this
             ->druidClient
             ->query(self::DATA_SOURCE, Granularity::MONTH)
-            ->interval($interval ?? self::INTERVAL_LAST_MONTH)
+            ->interval(self::INTERVAL_LAST_MONTH)
             ->sum("oil")
             ->sum("liquid")
             ->sum("Operating_profit")
@@ -111,7 +112,7 @@ class EconomicController extends Controller
         $builder8 = $this
             ->druidClient
             ->query(self::DATA_SOURCE, Granularity::YEAR)
-            ->interval($interval ?? self::INTERVAL_LAST_MONTH)
+            ->interval(self::INTERVAL_LAST_MONTH)
             ->select("uwi")
             ->sum("prs1")
             ->orderBy('prs1', 'desc')
@@ -121,7 +122,7 @@ class EconomicController extends Controller
         $builder13 = $this
             ->druidClient
             ->query(self::DATA_SOURCE, Granularity::YEAR)
-            ->interval($interval ?? self::INTERVAL_LAST_YEAR)
+            ->interval(self::INTERVAL_LAST_YEAR)
             ->select("uwi")
             ->sum("Operating_profit")
             ->where('Operating_profit', '!=', '0')
@@ -131,7 +132,7 @@ class EconomicController extends Controller
         $builder14 = $this
             ->druidClient
             ->query(self::DATA_SOURCE, Granularity::DAY)
-            ->interval($interval ?? self::INTERVAL_LAST_YEAR)
+            ->interval(self::INTERVAL_LAST_YEAR)
             ->select('__time', 'dt', function (ExtractionBuilder $extractionBuilder) {
                 $extractionBuilder->timeFormat(self::TIME_FORMAT);
             })
@@ -171,7 +172,7 @@ class EconomicController extends Controller
             $buildersProfitabilityCount[$status] = $this
                 ->druidClient
                 ->query(self::DATA_SOURCE, Granularity::DAY)
-                ->interval($interval ?? self::INTERVAL_LAST_YEAR)
+                ->interval(self::INTERVAL_LAST_YEAR)
                 ->select('__time', 'dt', function (ExtractionBuilder $extractionBuilder) {
                     $extractionBuilder->timeFormat(self::TIME_FORMAT);
                 })
@@ -389,11 +390,11 @@ class EconomicController extends Controller
         return round(($prev - $last) * 100 / $prev);
     }
 
-    static function intervalDtFormat(array $interval): string
+    static function intervalFormat(array $interval): string
     {
-        return $interval[0]
+        return Carbon::createFromFormat('d/m/Y', $interval[0])->format('Y-m-d')
             . "T00:00:00+00:00/"
-            . $interval[1]
+            . Carbon::createFromFormat('d/m/Y', $interval[1])->format('Y-m-d')
             . "T00:00:00+00:00";
     }
 
