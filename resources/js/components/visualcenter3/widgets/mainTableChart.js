@@ -24,6 +24,10 @@ export default {
         };
     },
     methods: {
+        isGrouppingFilterActive() {
+          return (this.dzoCompaniesAssets.isOperating || this.dzoCompaniesAssets.isNonOperating || this.dzoCompaniesAssets.isRegion);
+        },
+
         setDzoYearlyPlan(dzoGroupedMonthlyPlans) {
             this.dzoYearlyData.plan =  _.sumBy(dzoGroupedMonthlyPlans, 'monthlyPlan');
         },

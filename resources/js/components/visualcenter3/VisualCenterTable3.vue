@@ -777,7 +777,7 @@
                           <div>
                             <input
                                     type="checkbox"
-                                    :disabled="dzoCompaniesAssets.isOperating || dzoCompaniesAssets.isNonOperating || dzoCompaniesAssets.isRegion"
+                                    :disabled="isGrouppingFilterActive()"
                                     :checked="company.selected"
                                     @change="`${selectDzoCompany(company.ticker)}`"
                             ></input>
@@ -1180,7 +1180,7 @@
                         <div
                           v-if="factMonthSumm"
                           :class="
-                            factMonthSumm - planMonthSumm < 0 ?
+                            factMonthSumm < planMonthSumm ?
                             'triangle fall-indicator-production-data' :
                             'triangle growth-indicator-production-data'
                           "
@@ -1199,7 +1199,7 @@
                         <div
                                 v-if="factMonthSumm"
                                 :class="
-                            factMonthSumm - planMonthSumm < 0 ?
+                            factMonthSumm < planMonthSumm ?
                             'triangle fall-indicator-production-data' :
                             'triangle growth-indicator-production-data'
                           "
