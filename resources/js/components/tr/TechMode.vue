@@ -632,19 +632,19 @@
                             :filter-method="filterHandlerArray"
                             >
                             <template slot-scope="scope">
-                              <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`well_type`)}" >
-                                        <span
-                                          :class="{
-                                            'circle-err': isCircleErrClass(scope.$index,`well_type`)}"
-                                          :style="`background :${getColor(
-                                            wells[scope.$index].well_type[1][0]
-                                          )}`"
-                                        >
-                                        </span><span>{{ scope.row.well_type[0] }}</span>
-                                <span v-if="wells && wells[scope.$index]" class="cell-comment">
-                                  {{ wells[scope.$index].well_type[1][1] }}
-                                </span>
-                              </div>
+                              <el-tooltip class="item" effect="dark"  v-bind:content="haveTooltip(scope.$index, `well_type`)" :placement="isPlacement(scope.$index, `well_type`)">
+                                <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`well_type`)}" >
+                                          <span
+                                            :class="{
+                                              'circle-err': isCircleErrClass(scope.$index,`well_type`)}"
+                                            :style="`background :${getColor(
+                                              wells[scope.$index].well_type[1][0]
+                                            )}`"
+                                          >
+                                          </span><span>{{ scope.row.well_type[0] }}</span>  
+
+                                </div>   
+                              </el-tooltip> 
                             </template>
                           </el-table-column>
                         </el-table-column>
@@ -743,10 +743,8 @@
                             width="150"
                             sortable
                             >
-                           <template slot-scope="scope">
-                            <el-tooltip class="item" effect="dark"  v-bind:content="haveTooltip(scope.$index, `r_con`)" :placement="isPlacement(scope.$index, `r_con`)">
-      
-    
+                            <template slot-scope="scope">
+                              <el-tooltip class="item" effect="dark"  v-bind:content="haveTooltip(scope.$index, `r_con`)" :placement="isPlacement(scope.$index, `r_con`)">
                                 <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`r_con`)}" >
                                           <span
                                             :class="{
@@ -780,8 +778,6 @@
                             >
                             <template slot-scope="scope">
                               <el-tooltip class="item" effect="dark"  v-bind:content="haveTooltip(scope.$index, `cas_OD`)" :placement="isPlacement(scope.$index, `cas_OD`)">
-      
-    
                                 <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`cas_OD`)}" >
                                           <span
                                             :class="{
@@ -793,7 +789,6 @@
                                             </span><span v-if="scope.row.cas_OD[0] != null">{{
                                       Math.round(scope.row.cas_OD[0] * 10) / 10
                                     }}</span>
-
                                 </div>   
                               </el-tooltip> 
                             </template>
@@ -801,7 +796,6 @@
                         </el-table-column>
                       </el-table-column>
                     </el-table-column>
-
                     <el-table-column
                       :label="trans('tr.inner_diameter_producing_casing')"
                       >
@@ -830,21 +824,20 @@
                             sortable
                             >
                             <template slot-scope="scope">
-                              <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`tub_OD`)}" >
-                                        <span
-                                          :class="{
-                                            'circle-err': isCircleErrClass(scope.$index,`tub_OD`)}"
-                                          :style="`background :${getColor(
-                                            wells[scope.$index].tub_OD[1][0]
-                                          )}`"
-                                        >
-                                          </span><span v-if="scope.row.tub_OD[0] != null">{{
-                                    Math.round(scope.row.tub_OD[0] * 10) / 10
-                                  }}</span>
-                                  <span v-if="wells && wells[scope.$index]" class="cell-comment">
-                                    {{ wells[scope.$index].tub_OD[1][1] }}
-                                  </span>
-                              </div>    
+                              <el-tooltip class="item" effect="dark"  v-bind:content="haveTooltip(scope.$index, `tub_OD`)" :placement="isPlacement(scope.$index, `tub_OD`)">
+                                <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`tub_OD`)}" >
+                                          <span
+                                            :class="{
+                                              'circle-err': isCircleErrClass(scope.$index,`tub_OD`)}"
+                                            :style="`background :${getColor(
+                                              wells[scope.$index].tub_OD[1][0]
+                                            )}`"
+                                          >
+                                            </span><span v-if="scope.row.tub_OD[0] != null">{{
+                                      Math.round(scope.row.tub_OD[0] * 10) / 10
+                                    }}</span>
+                                </div>   
+                              </el-tooltip> 
                             </template>
                           </el-table-column>
                         </el-table-column>
@@ -877,21 +870,20 @@
                             sortable
                             >
                             <template slot-scope="scope">
-                              <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`choke_d`)}" >
-                                        <span
-                                          :class="{
-                                            'circle-err': isCircleErrClass(scope.$index,`choke_d`)}"
-                                          :style="`background :${getColor(
-                                            wells[scope.$index].choke_d[1][0]
-                                          )}`"
-                                        >
-                                          </span><span v-if="scope.row.choke_d[0] != null">{{
-                                    Math.round(scope.row.choke_d[0] * 10) / 10
-                                  }}</span>
-                                  <span v-if="wells && wells[scope.$index]" class="cell-comment">
-                                    {{ wells[scope.$index].choke_d[1][1] }}
-                                  </span>
-                              </div>    
+                              <el-tooltip class="item" effect="dark"  v-bind:content="haveTooltip(scope.$index, `choke_d`)" :placement="isPlacement(scope.$index, `choke_d`)">
+                                <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`choke_d`)}" >
+                                          <span
+                                            :class="{
+                                              'circle-err': isCircleErrClass(scope.$index,`choke_d`)}"
+                                            :style="`background :${getColor(
+                                              wells[scope.$index].choke_d[1][0]
+                                            )}`"
+                                          >
+                                            </span><span v-if="scope.row.choke_d[0] != null">{{
+                                      Math.round(scope.row.choke_d[0] * 10) / 10
+                                    }}</span>
+                                </div>   
+                              </el-tooltip> 
                             </template>
                           </el-table-column>
                         </el-table-column>
@@ -909,21 +901,20 @@
                             sortable
                             >
                             <template slot-scope="scope">
-                              <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`h_up_perf_md`)}" >
-                                        <span
-                                          :class="{
-                                            'circle-err': isCircleErrClass(scope.$index,`h_up_perf_md`)}"
-                                          :style="`background :${getColor(
-                                            wells[scope.$index].h_up_perf_md[1][0]
-                                          )}`"
-                                        >
-                                          </span><span v-if="scope.row.h_up_perf_md[0] != null">{{
-                                    Math.round(scope.row.h_up_perf_md[0] * 10) / 10
-                                  }}</span>
-                                  <span v-if="wells && wells[scope.$index]" class="cell-comment">
-                                    {{ wells[scope.$index].h_up_perf_md[1][1] }}
-                                  </span>
-                              </div>    
+                              <el-tooltip class="item" effect="dark"  v-bind:content="haveTooltip(scope.$index, `h_up_perf_md`)" :placement="isPlacement(scope.$index, `h_up_perf_md`)">
+                                <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`h_up_perf_md`)}" >
+                                          <span
+                                            :class="{
+                                              'circle-err': isCircleErrClass(scope.$index,`h_up_perf_md`)}"
+                                            :style="`background :${getColor(
+                                              wells[scope.$index].h_up_perf_md[1][0]
+                                            )}`"
+                                          >
+                                            </span><span v-if="scope.row.h_up_perf_md[0] != null">{{
+                                      Math.round(scope.row.h_up_perf_md[0] * 10) / 10
+                                    }}</span>
+                                </div>   
+                              </el-tooltip> 
                             </template>
                           </el-table-column>
                         </el-table-column>
@@ -940,24 +931,22 @@
                             width="200"
                             sortable
                             >
-                             <template slot-scope="scope">
-                              <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`h_up_perf_ext`)}" >
-                                        <span
-                                          :class="{
-                                            'circle-err': isCircleErrClass(scope.$index,`h_up_perf_ext`)}"
-                                          :style="`background :${getColor(
-                                            wells[scope.$index].h_up_perf_ext[1][0]
-                                          )}`"
-                                        >
-                                          </span><span v-if="scope.row.h_up_perf_ext[0] != null">{{
-                                    Math.round(scope.row.h_up_perf_ext[0] * 10) / 10
-                                  }}</span>
-                                  <span v-if="wells && wells[scope.$index]" class="cell-comment">
-                                    {{ wells[scope.$index].h_up_perf_ext[1][1] }}
-                                  </span>
-                              </div>    
+                            <template slot-scope="scope">
+                              <el-tooltip class="item" effect="dark"  v-bind:content="haveTooltip(scope.$index, `h_up_perf_ext`)" :placement="isPlacement(scope.$index, `h_up_perf_ext`)">
+                                <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`h_up_perf_ext`)}" >
+                                          <span
+                                            :class="{
+                                              'circle-err': isCircleErrClass(scope.$index,`h_up_perf_ext`)}"
+                                            :style="`background :${getColor(
+                                              wells[scope.$index].h_up_perf_ext[1][0]
+                                            )}`"
+                                          >
+                                            </span><span v-if="scope.row.h_up_perf_ext[0] != null">{{
+                                      Math.round(scope.row.h_up_perf_ext[0] * 10) / 10
+                                    }}</span>
+                                </div>   
+                              </el-tooltip> 
                             </template>
-                            
                           </el-table-column>
                         </el-table-column>
                       </el-table-column>
@@ -1051,22 +1040,21 @@
                             width="200"
                             sortable
                             >
-                             <template slot-scope="scope">
-                              <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`spm`)}" >
-                                        <span
-                                          :class="{
-                                            'circle-err': isCircleErrClass(scope.$index,`spm`)}"
-                                          :style="`background :${getColor(
-                                            wells[scope.$index].spm[1][0]
-                                          )}`"
-                                        >
-                                          </span><span v-if="scope.row.spm[0] != null">{{
-                                    Math.round(scope.row.spm[0] * 10) / 10
-                                  }}</span>
-                                  <span v-if="wells && wells[scope.$index]" class="cell-comment">
-                                    {{ wells[scope.$index].h_up_perf_ext[1][1] }}
-                                  </span>
-                              </div>    
+                            <template slot-scope="scope">
+                              <el-tooltip class="item" effect="dark"  v-bind:content="haveTooltip(scope.$index, `spm`)" :placement="isPlacement(scope.$index, `spm`)">
+                                <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`spm`)}" >
+                                          <span
+                                            :class="{
+                                              'circle-err': isCircleErrClass(scope.$index,`spm`)}"
+                                            :style="`background :${getColor(
+                                              wells[scope.$index].spm[1][0]
+                                            )}`"
+                                          >
+                                            </span><span v-if="scope.row.spm[0] != null">{{
+                                      Math.round(scope.row.spm[0] * 10) / 10
+                                    }}</span>
+                                </div>   
+                              </el-tooltip> 
                             </template>
                           </el-table-column>
                         </el-table-column>
@@ -1083,22 +1071,21 @@
                             width="200"
                             sortable
                             >
-                             <template slot-scope="scope">
-                              <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`stroke_len`)}" >
-                                        <span
-                                          :class="{
-                                            'circle-err': isCircleErrClass(scope.$index,`stroke_len`)}"
-                                          :style="`background :${getColor(
-                                            wells[scope.$index].stroke_len[1][0]
-                                          )}`"
-                                        >
-                                          </span><span v-if="scope.row.stroke_len[0] != null">{{
-                                    Math.round(scope.row.stroke_len[0] * 10) / 10
-                                  }}</span>
-                                  <span v-if="wells && wells[scope.$index]" class="cell-comment">
-                                    {{ wells[scope.$index].stroke_len[1][1] }}
-                                  </span>
-                              </div>    
+                            <template slot-scope="scope">
+                              <el-tooltip class="item" effect="dark"  v-bind:content="haveTooltip(scope.$index, `stroke_len`)" :placement="isPlacement(scope.$index, `stroke_len`)">
+                                <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`stroke_len`)}" >
+                                          <span
+                                            :class="{
+                                              'circle-err': isCircleErrClass(scope.$index,`stroke_len`)}"
+                                            :style="`background :${getColor(
+                                              wells[scope.$index].stroke_len[1][0]
+                                            )}`"
+                                          >
+                                            </span><span v-if="scope.row.stroke_len[0] != null">{{
+                                      Math.round(scope.row.stroke_len[0] * 10) / 10
+                                    }}</span>
+                                </div>   
+                              </el-tooltip> 
                             </template>
                           </el-table-column>
                         </el-table-column>
@@ -1116,22 +1103,20 @@
                             sortable
                             >
                             <template slot-scope="scope">
-                              <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`q_theor`)}" >
-                                        <span
-                                          :class="{
-                                            'circle-err': isCircleErrClass(scope.$index,`q_theor`)}"
-                                          :style="`background :${getColor(
-                                            wells[scope.$index].q_theor[1][0]
-                                          )}`"
-                                        >
-                                          </span><span v-if="Math.round(scope.row.q_theor[0] * 10) / 10 != '0'">{{
-                                          Math.round(scope.row.q_theor[0] * 10) / 10
-                                        }}</span>
-                                  <span v-if="wells && wells[scope.$index]" class="cell-comment">
-                                    {{ wells[scope.$index].q_theor[1][1] }}
-                                  </span>
-                              </div>    
-
+                              <el-tooltip class="item" effect="dark"  v-bind:content="haveTooltip(scope.$index, `q_theor`)" :placement="isPlacement(scope.$index, `q_theor`)">
+                                <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`q_theor`)}" >
+                                          <span
+                                            :class="{
+                                              'circle-err': isCircleErrClass(scope.$index,`q_theor`)}"
+                                            :style="`background :${getColor(
+                                              wells[scope.$index].q_theor[1][0]
+                                            )}`"
+                                          >
+                                            </span><span v-if="scope.row.q_theor[0] != null">{{
+                                      Math.round(scope.row.q_theor[0] * 10) / 10
+                                    }}</span>
+                                </div>   
+                              </el-tooltip> 
                             </template>
                           </el-table-column>
                         </el-table-column>
@@ -1149,28 +1134,25 @@
                             sortable
                             >
                             <template slot-scope="scope">
-                              <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`freq`)}" >
-                                        <span
-                                          :class="{
-                                            'circle-err': isCircleErrClass(scope.$index,`freq`)}"
-                                          :style="`background :${getColor(
-                                            wells[scope.$index].freq[1][0]
-                                          )}`"
-                                        >
-                                          </span><span v-if="scope.row.freq[0] != null">{{
-                                    Math.round(scope.row.freq[0] * 10) / 10
-                                  }}</span>
-                                  <span v-if="wells && wells[scope.$index]" class="cell-comment">
-                                    {{ wells[scope.$index].freq[1][1] }}
-                                  </span>
-                              </div>    
+                              <el-tooltip class="item" effect="dark"  v-bind:content="haveTooltip(scope.$index, `freq`)" :placement="isPlacement(scope.$index, `freq`)">
+                                <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`freq`)}" >
+                                          <span
+                                            :class="{
+                                              'circle-err': isCircleErrClass(scope.$index,`freq`)}"
+                                            :style="`background :${getColor(
+                                              wells[scope.$index].freq[1][0]
+                                            )}`"
+                                          >
+                                            </span><span v-if="scope.row.freq[0] != null">{{
+                                      Math.round(scope.row.freq[0] * 10) / 10
+                                    }}</span>
+                                </div>   
+                              </el-tooltip> 
                             </template>
                           </el-table-column>
                         </el-table-column>
                       </el-table-column>
                     </el-table-column>
-
-
 
                     <el-table-column
                       :label="trans('tr.h_pump_set')"
@@ -1184,21 +1166,20 @@
                             sortable
                             >
                             <template slot-scope="scope">
-                              <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`h_pump_set`)}" >
-                                        <span
-                                          :class="{
-                                            'circle-err': isCircleErrClass(scope.$index,`h_pump_set`)}"
-                                          :style="`background :${getColor(
-                                            wells[scope.$index].h_pump_set[1][0]
-                                          )}`"
-                                        >
-                                          </span><span v-if="scope.row.h_pump_set[0] != null">{{
-                                    Math.round(scope.row.h_pump_set[0] * 10) / 10
-                                  }}</span>
-                                  <span v-if="wells && wells[scope.$index]" class="cell-comment">
-                                    {{ wells[scope.$index].h_pump_set[1][1] }}
-                                  </span>
-                              </div>    
+                              <el-tooltip class="item" effect="dark"  v-bind:content="haveTooltip(scope.$index, `h_pump_set`)" :placement="isPlacement(scope.$index, `h_pump_set`)">
+                                <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`h_pump_set`)}" >
+                                          <span
+                                            :class="{
+                                              'circle-err': isCircleErrClass(scope.$index,`h_pump_set`)}"
+                                            :style="`background :${getColor(
+                                              wells[scope.$index].h_pump_set[1][0]
+                                            )}`"
+                                          >
+                                            </span><span v-if="scope.row.h_pump_set[0] != null">{{
+                                      Math.round(scope.row.h_pump_set[0] * 10) / 10
+                                    }}</span>
+                                </div>   
+                              </el-tooltip> 
                             </template>
                           </el-table-column>
                         </el-table-column>
@@ -1216,21 +1197,20 @@
                             sortable
                             >
                             <template slot-scope="scope">
-                              <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`whp`)}" >
-                                        <span
-                                          :class="{
-                                            'circle-err': isCircleErrClass(scope.$index,`whp`)}"
-                                          :style="`background :${getColor(
-                                            wells[scope.$index].whp[1][0]
-                                          )}`"
-                                        >
-                                          </span><span v-if="scope.row.whp[0] != null">{{
-                                    Math.round(scope.row.whp[0] * 10) / 10
-                                  }}</span>
-                                  <span v-if="wells && wells[scope.$index]" class="cell-comment">
-                                    {{ wells[scope.$index].whp[1][1] }}
-                                  </span>
-                              </div>    
+                              <el-tooltip class="item" effect="dark"  v-bind:content="haveTooltip(scope.$index, `whp`)" :placement="isPlacement(scope.$index, `whp`)">
+                                <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`whp`)}" >
+                                          <span
+                                            :class="{
+                                              'circle-err': isCircleErrClass(scope.$index,`whp`)}"
+                                            :style="`background :${getColor(
+                                              wells[scope.$index].whp[1][0]
+                                            )}`"
+                                          >
+                                            </span><span v-if="scope.row.whp[0] != null">{{
+                                      Math.round(scope.row.whp[0] * 10) / 10
+                                    }}</span>
+                                </div>   
+                              </el-tooltip> 
                             </template>
                           </el-table-column>
                         </el-table-column>
@@ -1248,21 +1228,20 @@
                             sortable
                             >
                             <template slot-scope="scope">
-                              <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`line_p`)}" >
-                                        <span
-                                          :class="{
-                                            'circle-err': isCircleErrClass(scope.$index,`line_p`)}"
-                                          :style="`background :${getColor(
-                                            wells[scope.$index].line_p[1][0]
-                                          )}`"
-                                        >
-                                          </span><span v-if="scope.row.line_p[0] != null">{{
-                                    Math.round(scope.row.line_p[0] * 10) / 10
-                                  }}</span>
-                                  <span v-if="wells && wells[scope.$index]" class="cell-comment">
-                                    {{ wells[scope.$index].line_p[1][1] }}
-                                  </span>
-                              </div>    
+                              <el-tooltip class="item" effect="dark"  v-bind:content="haveTooltip(scope.$index, `line_p`)" :placement="isPlacement(scope.$index, `line_p`)">
+                                <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`line_p`)}" >
+                                          <span
+                                            :class="{
+                                              'circle-err': isCircleErrClass(scope.$index,`line_p`)}"
+                                            :style="`background :${getColor(
+                                              wells[scope.$index].line_p[1][0]
+                                            )}`"
+                                          >
+                                            </span><span v-if="scope.row.line_p[0] != null">{{
+                                      Math.round(scope.row.line_p[0] * 10) / 10
+                                    }}</span>
+                                </div>   
+                              </el-tooltip> 
                             </template>
                           </el-table-column>
                         </el-table-column>
@@ -1280,21 +1259,20 @@
                             sortable
                             >
                             <template slot-scope="scope">
-                              <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`p_res`)}" >
-                                        <span
-                                          :class="{
-                                            'circle-err': isCircleErrClass(scope.$index,`p_res`)}"
-                                          :style="`background :${getColor(
-                                            wells[scope.$index].p_res[1][0]
-                                          )}`"
-                                        >
-                                          </span><span v-if="scope.row.p_res[0] != null">{{
-                                    Math.round(scope.row.whp[0] * 10) / 10
-                                  }}</span>
-                                  <span v-if="wells && wells[scope.$index]" class="cell-comment">
-                                    {{ wells[scope.$index].p_res[1][1] }}
-                                  </span>
-                              </div>    
+                              <el-tooltip class="item" effect="dark"  v-bind:content="haveTooltip(scope.$index, `p_res`)" :placement="isPlacement(scope.$index, `p_res`)">
+                                <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`p_res`)}" >
+                                          <span
+                                            :class="{
+                                              'circle-err': isCircleErrClass(scope.$index,`p_res`)}"
+                                            :style="`background :${getColor(
+                                              wells[scope.$index].p_res[1][0]
+                                            )}`"
+                                          >
+                                            </span><span v-if="scope.row.p_res[0] != null">{{
+                                      Math.round(scope.row.p_res[0] * 10) / 10
+                                    }}</span>
+                                </div>   
+                              </el-tooltip> 
                             </template>
                           </el-table-column>
                         </el-table-column>
@@ -1312,21 +1290,20 @@
                             sortable
                             >
                             <template slot-scope="scope">
-                              <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`h_dyn`)}" >
-                                        <span
-                                          :class="{
-                                            'circle-err': isCircleErrClass(scope.$index,`h_dyn`)}"
-                                          :style="`background :${getColor(
-                                            wells[scope.$index].h_dyn[1][0]
-                                          )}`"
-                                        >
-                                          </span><span v-if="scope.row.h_dyn[0] != null">{{
-                                    Math.round(scope.row.h_dyn[0] * 10) / 10
-                                  }}</span>
-                                  <span v-if="wells && wells[scope.$index]" class="cell-comment">
-                                    {{ wells[scope.$index].h_dyn[1][1] }}
-                                  </span>
-                              </div>    
+                              <el-tooltip class="item" effect="dark"  v-bind:content="haveTooltip(scope.$index, `h_dyn`)" :placement="isPlacement(scope.$index, `h_dyn`)">
+                                <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`h_dyn`)}" >
+                                          <span
+                                            :class="{
+                                              'circle-err': isCircleErrClass(scope.$index,`h_dyn`)}"
+                                            :style="`background :${getColor(
+                                              wells[scope.$index].h_dyn[1][0]
+                                            )}`"
+                                          >
+                                            </span><span v-if="scope.row.h_dyn[0] != null">{{
+                                      Math.round(scope.row.h_dyn[0] * 10) / 10
+                                    }}</span>
+                                </div>   
+                              </el-tooltip> 
                             </template>
                           </el-table-column>
                         </el-table-column>
@@ -1343,22 +1320,21 @@
                             width="130"
                             sortable
                             >
-                             <template slot-scope="scope">
-                              <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`p_annular`)}" >
-                                        <span
-                                          :class="{
-                                            'circle-err': isCircleErrClass(scope.$index,`p_annular`)}"
-                                          :style="`background :${getColor(
-                                            wells[scope.$index].p_annular[1][0]
-                                          )}`"
-                                        >
-                                          </span><span v-if="scope.row.p_annular[0] != null">{{
-                                    Math.round(scope.row.p_annular[0] * 10) / 10
-                                  }}</span>
-                                  <span v-if="wells && wells[scope.$index]" class="cell-comment">
-                                    {{ wells[scope.$index].p_annular[1][1] }}
-                                  </span>
-                              </div>    
+                            <template slot-scope="scope">
+                              <el-tooltip class="item" effect="dark"  v-bind:content="haveTooltip(scope.$index, `p_annular`)" :placement="isPlacement(scope.$index, `p_annular`)">
+                                <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`p_annular`)}" >
+                                          <span
+                                            :class="{
+                                              'circle-err': isCircleErrClass(scope.$index,`p_annular`)}"
+                                            :style="`background :${getColor(
+                                              wells[scope.$index].p_annular[1][0]
+                                            )}`"
+                                          >
+                                            </span><span v-if="scope.row.p_annular[0] != null">{{
+                                      Math.round(scope.row.p_annular[0] * 10) / 10
+                                    }}</span>
+                                </div>   
+                              </el-tooltip> 
                             </template>
                           </el-table-column>
 
@@ -1377,21 +1353,20 @@
                             sortable
                             >
                             <template slot-scope="scope">
-                              <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`p_intake`)}" >
-                                        <span
-                                          :class="{
-                                            'circle-err': isCircleErrClass(scope.$index,`p_intake`)}"
-                                          :style="`background :${getColor(
-                                            wells[scope.$index].p_intake[1][0]
-                                          )}`"
-                                        >
-                                          </span><span v-if="scope.row.p_intake[0] != null">{{
-                                    Math.round(scope.row.p_intake[0] * 10) / 10
-                                  }}</span>
-                                  <span v-if="wells && wells[scope.$index]" class="cell-comment">
-                                    {{ wells[scope.$index].p_intake[1][1] }}
-                                  </span>
-                              </div>    
+                              <el-tooltip class="item" effect="dark"  v-bind:content="haveTooltip(scope.$index, `p_intake`)" :placement="isPlacement(scope.$index, `p_intake`)">
+                                <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`p_intake`)}" >
+                                          <span
+                                            :class="{
+                                              'circle-err': isCircleErrClass(scope.$index,`p_intake`)}"
+                                            :style="`background :${getColor(
+                                              wells[scope.$index].p_intake[1][0]
+                                            )}`"
+                                          >
+                                            </span><span v-if="scope.row.p_intake[0] != null">{{
+                                      Math.round(scope.row.p_intake[0] * 10) / 10
+                                    }}</span>
+                                </div>   
+                              </el-tooltip> 
                             </template>
                           </el-table-column>
                         </el-table-column>
@@ -2667,21 +2642,16 @@ export default {
       if  (this.wells &&
           this.wells[index] &&
           this.wells[index][value][1][1]==="Нет Ошибок") {
-        return false;}
-      
+        return false;}      
       return this.wells[index][value][1][1];
-      
-
     },
     isPlacement (index, value) {
       if  (this.wells &&
           this.wells[index] &&
           this.wells[index][value][1][1]==="Нет Ошибок") {
         return false;}
-
       return "top";
     },
-
   },
 };
 </script>
