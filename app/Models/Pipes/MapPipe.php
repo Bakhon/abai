@@ -3,11 +3,11 @@
 namespace App\Models\Pipes;
 
 
+use App\Models\Pipes\PipeCoord;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Refs\Zu;
 use App\Models\Refs\Gu;
 use App\Models\Refs\Well;
-use App\Models\Pipes\PipeCoord;
 use App\Models\ComplicationMonitoring\PipeType;
 
 class MapPipe extends Model
@@ -41,6 +41,16 @@ class MapPipe extends Model
     public function coords()
     {
         return $this->hasMany(PipeCoord::class);
+    }
+
+    public function firstCoords()
+    {
+        return $this->hasOne(PipeCoord::class)->orderBy('m_distance');
+    }
+
+    public function lastCoords()
+    {
+        return $this->hasOne(PipeCoord::class)->orderByDesc('m_distance');
     }
 
     public static function boot() {

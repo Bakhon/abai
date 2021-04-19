@@ -27,7 +27,7 @@ class TrunklinePoint extends Model
         return $this->belongsTo(MapPipe::class);
     }
 
-    public function trunkline_point()
+    public function trunkline_end_point()
     {
         return $this->belongsTo(TrunklinePoint::class, 'point_end_id', 'id');
     }

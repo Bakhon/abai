@@ -119,12 +119,12 @@ class PipesPointsImport implements ToCollection, WithEvents, WithColumnLimit, Wi
                     'name' => $row[self::START_POINT],
                     'lat' => $pipe_coords_start->lat,
                     'lon' => $pipe_coords_start->lon,
-                    'elevation' => $pipe_coords_start->elevation
+                    'elevation' => $pipe_coords_start->elevation,
+                    'point_end_id' => $trunkline_end_point->id
                 ]
             );
 
             $trunkline_start_point->map_pipe_id = $pipe_coords_start->map_pipe_id;
-            $trunkline_start_point->point_end_id = $trunkline_end_point->id;
 
             if (strpos($trunkline_start_point->name, 'ГУ') !== false) {
                 $gu = Gu::where('name', $trunkline_start_point->name)->first();
