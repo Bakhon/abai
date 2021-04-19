@@ -879,4 +879,216 @@ class WaterMeasurementController extends CrudController
     {
         return (new WaterMeasurementFilter($query, $filter))->filter();
     }
+
+    public function hydroCalcTable () {
+        $params = [
+            'success' => Session::get('success'),
+            'links' => [
+                'list' => route('hydroCalcTable.list'),
+            ],
+            'title' => trans('hydroCalc.wm.title'),
+            'fields' => [
+                'date' => [
+                    'title' => trans('monitoring.wm.fields.date'),
+                    'type' => 'date',
+                ],
+                'other_objects' => [
+                    'title' => trans('monitoring.other_objects'),
+                    'type' => 'select',
+                    'filter' => [
+                        'values' => OtherObjects::whereHas('watermeasurement')
+                            ->orderBy('name', 'asc')
+                            ->get()
+                            ->map(
+                                function ($item) {
+                                    return [
+                                        'id' => $item->id,
+                                        'name' => $item->name,
+                                    ];
+                                }
+                            )
+                            ->toArray()
+                    ]
+                ],
+
+                'gu' => [
+                    'title' => trans('monitoring.gu.gu'),
+                    'type' => 'select',
+                    'filter' => [
+                        'values' => Gu::whereHas('watermeasurement')
+                            ->orderBy('name', 'asc')
+                            ->get()
+                            ->map(
+                                function ($item) {
+                                    return [
+                                        'id' => $item->id,
+                                        'name' => $item->name,
+                                    ];
+                                }
+                            )
+                            ->toArray()
+                    ]
+                ],
+
+                'hydrocarbonate_ion' => [
+                    'title' => 'НСО3-',
+                    'type' => 'numeric',
+                ],
+                'carbonate_ion' => [
+                    'title' => 'СО32-',
+                    'type' => 'numeric',
+                ],
+                'sulphate_ion' => [
+                    'title' => 'SO42-',
+                    'type' => 'numeric',
+                ],
+                'chlorum_ion' => [
+                    'title' => 'Cl-',
+                    'type' => 'numeric',
+                ],
+                'calcium_ion' => [
+                    'title' => 'Ca2+',
+                    'type' => 'numeric',
+                ],
+                'magnesium_ion' => [
+                    'title' => 'Mg2+',
+                    'type' => 'numeric',
+                ],
+                'potassium_ion_sodium_ion' => [
+                    'title' => 'Na+K+',
+                    'type' => 'numeric',
+                ],
+                'density' => [
+                    'title' => trans('monitoring.wm.fields.density'),
+                    'type' => 'numeric',
+                ],
+                'ph' => [
+                    'title' => 'pH',
+                    'type' => 'numeric',
+                ],
+                'mineralization' => [
+                    'title' => trans('monitoring.wm.fields.mineralization'),
+                    'type' => 'numeric',
+                ],
+                'total_hardness' => [
+                    'title' => trans('monitoring.wm.fields.total_hardness'),
+                    'type' => 'numeric',
+                ],
+                'water_type_by_sulin' => [
+                    'title' => trans('monitoring.wm.fields.water_type_by_sulin'),
+                    'type' => 'select',
+                    'filter' => [
+                        'values' => WaterTypeBySulin::whereHas('watermeasurement')
+                            ->orderBy('name', 'asc')
+                            ->get()
+                            ->map(
+                                function ($item) {
+                                    return [
+                                        'id' => $item->id,
+                                        'name' => $item->name,
+                                    ];
+                                }
+                            )
+                            ->toArray()
+                    ]
+                ],
+                'content_of_petrolium_products' => [
+                    'title' => trans('monitoring.wm.fields.content_of_petrolium_products'),
+                    'type' => 'numeric',
+                ],
+                'mechanical_impurities' => [
+                    'title' => trans('monitoring.wm.fields.mechanical_impurities'),
+                    'type' => 'numeric',
+                ],
+                'strontium_content' => [
+                    'title' => trans('monitoring.wm.fields.strontium_content'),
+                    'type' => 'numeric',
+                ],
+                'barium_content' => [
+                    'title' => trans('monitoring.wm.fields.barium_content'),
+                    'type' => 'numeric',
+                ],
+                'total_iron_content' => [
+                    'title' => trans('monitoring.wm.fields.total_iron_content'),
+                    'type' => 'numeric',
+                ],
+                'ferric_iron_content' => [
+                    'title' => trans('monitoring.wm.fields.ferric_iron_content'),
+                    'type' => 'numeric',
+                ],
+                'ferrous_iron_content' => [
+                    'title' => trans('monitoring.wm.fields.ferrous_iron_content'),
+                    'type' => 'numeric',
+                ],
+                'hydrogen_sulfide' => [
+                    'title' => trans('monitoring.wm.fields.hydrogen_sulfide'),
+                    'type' => 'numeric',
+                ],
+                'oxygen' => [
+                    'title' => trans('monitoring.wm.fields.oxygen'),
+                    'type' => 'numeric',
+                ],
+                'carbon_dioxide' => [
+                    'title' => trans('monitoring.wm.fields.carbon_dioxide'),
+                    'type' => 'numeric',
+                ],
+                'sulphate_reducing_bacteria' => [
+                    'title' => trans('monitoring.wm.fields.sulphate_reducing_bacteria'),
+                    'type' => 'select',
+                    'filter' => [
+                        'values' => SulphateReducingBacteria::whereHas('watermeasurement')
+                            ->orderBy('name', 'asc')
+                            ->get()
+                            ->map(
+                                function ($item) {
+                                    return [
+                                        'id' => $item->id,
+                                        'name' => $item->name,
+                                    ];
+                                }
+                            )
+                            ->toArray()
+                    ]
+                ],
+                'hydrocarbon_oxidizing_bacteria' => [
+                    'title' => trans('monitoring.wm.fields.hydrocarbon_oxidizing_bacteria'),
+                    'type' => 'select',
+                    'filter' => [
+                        'values' => HydrocarbonOxidizingBacteria::whereHas('watermeasurement')
+                            ->orderBy('name', 'asc')
+                            ->get()
+                            ->map(
+                                function ($item) {
+                                    return [
+                                        'id' => $item->id,
+                                        'name' => $item->name,
+                                    ];
+                                }
+                            )
+                            ->toArray()
+                    ]
+                ],
+                'thionic_bacteria' => [
+                    'title' => trans('monitoring.wm.fields.thionic_bacteria'),
+                    'type' => 'select',
+                    'filter' => [
+                        'values' => ThionicBacteria::whereHas('watermeasurement')
+                            ->orderBy('name', 'asc')
+                            ->get()
+                            ->map(
+                                function ($item) {
+                                    return [
+                                        'id' => $item->id,
+                                        'name' => $item->name,
+                                    ];
+                                }
+                            )
+                            ->toArray()
+                    ]
+                ],
+            ]
+        ];
+
+        return view('watermeasurement.index', compact('params'));
+    }
 }
