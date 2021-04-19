@@ -17,7 +17,7 @@
         <div class="row justify-content-between text-white bg-blue-dark text-wrap">
           <economic-col @click.native="pushBign('bign1')">
             <economic-title>
-              <span>{{ res.averageProfitlessCat1MonthCount.toLocaleString() }}</span>
+              <span>{{ res.lastMonthCat1Count.toLocaleString() }}</span>
 
               <economic-percent-badge :percent="res.percentCount"/>
             </economic-title>
@@ -88,11 +88,11 @@
             <economic-divider v-if="subBlockIndex % 2 === 1"/>
 
             <div class="font-weight-bold font-size-32px line-height-38px">
-              {{ subBlock.value.toLocaleString() }}
+              {{ subBlock.values[0].toLocaleString() }}
             </div>
 
             <div class="text-blue font-size-12px line-height-14px">
-              {{ subBlock.valueWord }}
+              {{ subBlock.values[1] }}
             </div>
 
             <div class="flex-grow-1 mt-3 font-weight-bold line-height-20px font-size-16px">
@@ -100,7 +100,7 @@
             </div>
 
             <economic-percent-badge
-                :percent="subBlock.percent"
+                :percent="subBlock.values[2]"
                 class="font-size-22px line-height-26px"/>
           </div>
         </div>
@@ -140,7 +140,7 @@ import EconomicPercentBadge from "./components/EconomicPercentBadge";
 Vue.use(VModal, {dynamicDefault: {draggable: true, resizable: true}});
 
 const economicRes = {
-  averageProfitlessCat1MonthCount: 0,
+  lastMonthCat1Count: 0,
   month: [0, ''],
   year: [0, ''],
   percent: null,
@@ -155,6 +155,14 @@ const economicRes = {
   chart3: null,
   chart4: null,
   chart5: null,
+  sum: {
+    Fixed_expenditures: [0, '', 0],
+    MET_payments: [0, '', 0],
+    Production_expenditures: [0, '', 0],
+    Revenue_export: [0, '', 0],
+    Revenue_local: [0, '', 0],
+    Variable_expenditures: [0, '', 0],
+  }
 }
 
 export default {
@@ -197,43 +205,31 @@ export default {
         [
           {
             title: 'Выручка экспорт',
-            value: 320120,
-            valueWord: 'млн. тенге',
-            percent: -10.75
+            values: this.res.sum.Revenue_export
           },
           {
             title: 'Выручка местный рынок',
-            value: 50160,
-            valueWord: 'млн. тенге',
-            percent: -10.75
+            values: this.res.sum.Revenue_local
           }
         ],
         [
           {
             title: 'Условно-переменные затраты',
-            value: 45230,
-            valueWord: 'млн. тенге',
-            percent: -10.75
+            values: this.res.sum.Variable_expenditures
           },
           {
             title: 'Условно-постоянные затраты',
-            value: 185190,
-            valueWord: 'млн. тенге',
-            percent: -10.75
+            values: this.res.sum.Fixed_expenditures
           }
         ],
         [
           {
             title: 'Отчисления в государство (НДПИ, Рентный налог, ЭТП)',
-            value: 75300,
-            valueWord: '',
-            percent: 527
+            values: this.res.sum.MET_payments
           },
           {
             title: 'Общие призводственые затраты',
-            value: 230420,
-            valueWord: '',
-            percent: 1.2
+            values: this.res.sum.Production_expenditures
           },
         ],
       ]

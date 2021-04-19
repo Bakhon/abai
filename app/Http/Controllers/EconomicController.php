@@ -145,7 +145,7 @@ class EconomicController extends Controller
         $builder16 = $this
             ->druidClient
             ->query(self::DATA_SOURCE, Granularity::MONTH)
-            ->interval($interval ?? self::INTERVAL_LAST_MONTH);
+            ->interval($interval ?? self::INTERVAL_LAST_2_MONTHS);
 
         $sumKeys = [
             'Revenue_export',
@@ -351,15 +351,25 @@ class EconomicController extends Controller
         $prevMonthCat1Count = (int)$prevMonth['uwi'];
         $lastMonthCat1Count = (int)$lastMonth['uwi'];
 
-        $percent = ($prevMonth["Operating_profit"] - $lastMonth["Operating_profit"]) * 100 / $prevMonth["Operating_profit"];
-        $percentCount = ($prevMonthCat1Count - $lastMonthCat1Count) * 100 / $prevMonthCat1Count;
+        $percent = self::percentFormat($lastMonth["Operating_profit"], $prevMonth["Operating_profit"]);
+        $percentCount = self::percentFormat($lastMonthCat1Count, $prevMonthCat1Count);
+
+        foreach ($sumKeys as $sumKey) {
+            $sumKeyPercent = self::percentFormat($result[16][1][$sumKey], $result[16][0][$sumKey]);
+
+            $result[16][1][$sumKey] = self::moneyFormat($result[16][1][$sumKey]);
+
+            $result[16][1][$sumKey][] = $sumKeyPercent;
+        }
+
+        unset($result[16][1]['timestamp']);
 
         return [
             'year' => self::moneyFormat(end($result[self::BUILDER_OPERATING_PROFIT_AND_PRS1_LAST_YEAR])["Operating_profit"]),
             'month' => self::moneyFormat($lastMonth["Operating_profit"]),
-            'percent' => round($percent),
-            'percentCount' => round($percentCount),
-            'averageProfitlessCat1MonthCount' => round($lastMonthCat1Count),
+            'percent' => $percent,
+            'percentCount' => $percentCount,
+            'lastMonthCat1Count' => $lastMonthCat1Count,
             'prs' => round($result[self::BUILDER_OPERATING_PROFIT_AND_PRS1_LAST_YEAR][0]["prs1"]),
             'wellsList' => $data['wellsList'],
             'OperatingProfitMonth' => $data['OperatingProfitMonth'],
@@ -370,8 +380,13 @@ class EconomicController extends Controller
             'chart3' => $dataChart3,
             'chart4' => $dataChart4,
             'chart5' => $dataChart5,
-            'sum' => $result[16]
+            'sum' => $result[16][1]
         ];
+    }
+
+    static function percentFormat(float $last, float $prev): float
+    {
+        return round(($prev - $last) * 100 / $prev);
     }
 
     static function intervalDtFormat(array $interval): string
