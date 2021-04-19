@@ -1225,8 +1225,7 @@
                         <div
                           v-if="factMonthSumm"
                           :class="
-                            ((factMonthSumm - planMonthSumm) / planMonthSumm) *
-                            100 < 0 ?
+                            planMonthSumm > factMonthSumm ?
                             'triangle fall-indicator-production-data' :
                             'triangle growth-indicator-production-data'
                           "
@@ -1363,7 +1362,7 @@
                 <div class="col-3 pr-2">
                   <div
                           :class="[`${buttonDailyTab}`,'button2 side-tables__main-menu-button']"
-                          @click="changeMenu2(1)"
+                          @click="changeMenu2('daily')"
                   >
                     {{ trans("visualcenter.daily") }}
                   </div>
@@ -1371,7 +1370,7 @@
                 <div class="col-3 px-2">
                   <div
                           :class="[`${buttonMonthlyTab}`,'button2 side-tables__main-menu-button']"
-                          @click="changeMenu2(2)"
+                          @click="changeMenu2('monthly')"
                   >
                     {{ trans("visualcenter.monthBegin") }}
                   </div>
@@ -1379,7 +1378,7 @@
                 <div class="col-3 px-2">
                   <div
                           :class="[`${buttonYearlyTab}`,'button2 side-tables__main-menu-button']"
-                          @click="changeMenu2(3)"
+                          @click="changeMenu2('yearly')"
                   >
                     {{ trans("visualcenter.yearBegin") }}
                   </div>
@@ -1388,7 +1387,7 @@
                   <div class="dropdown3">
                     <div
                             :class="[`${buttonPeriodTab}`,'button2 side-tables__main-menu-button']"
-                            @click="changeMenu2(4)"
+                            @click="changeMenu2('period')"
                     >
                       <span v-if="oneDate">
                         {{ trans("visualcenter.date") }} [{{
