@@ -14,6 +14,7 @@ use App\Models\Refs\WaterTypeBySulin;
 use App\Models\Refs\Zu;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithColumnLimit;
 use Maatwebsite\Excel\Concerns\WithEvents;
@@ -84,21 +85,35 @@ class PipesPointsImport implements ToCollection, WithEvents, WithColumnLimit, Wi
             $start_coords = $coords[0];
             $end_coords = end($coords);
 
+
+            $map_pipe_id = DB::select(
+                DB::raw(
+                    "SELECT pipe_coords.map_pipe_id FROM `pipe_coords`
+                LEFT JOIN (SELECT * FROM `pipe_coords` 
+                    WHERE `lon` LIKE :end_coords_lon AND `lat` LIKE :end_coords_lat) end_coords 
+                    ON end_coords.`map_pipe_id` = pipe_coords.map_pipe_id
+                WHERE pipe_coords.`lat` LIKE :start_coords_lat
+                            AND pipe_coords.`lon` LIKE :start_coords_lon
+                            AND pipe_coords.id IS NOT NULL
+                            AND end_coords.id IS NOT NULL"
+                ),
+                array(
+                    'end_coords_lon' => $end_coords[self::LON],
+                    'end_coords_lat' => $end_coords[self::LAT],
+                    'start_coords_lat' => $start_coords[self::LAT],
+                    'start_coords_lon' => $start_coords[self::LON]
+                )
+            )[0]->map_pipe_id;
+
             $pipe_coords_start = PipeCoord::where('lat', $start_coords[self::LAT])
                 ->where('lon', $start_coords[self::LON])
-                ->where('h_distance', 0)
+                ->where('map_pipe_id', $map_pipe_id)
+                ->where('m_distance', 0)
                 ->first();
 
-            $pipe_coords_end = PipeCoord::where('lat', $end_coords[self::LAT])
-                ->where('lon', $end_coords[self::LON])
-                ->where('h_distance', 0)
+            $pipe_coords_end = PipeCoord::where('map_pipe_id', $map_pipe_id)
+                ->orderByDesc('m_distance')
                 ->first();
-
-            if (!$pipe_coords_end) {
-                $pipe_coords_end = PipeCoord::where('map_pipe_id', $pipe_coords_start->map_pipe_id)
-                    ->orderByDesc('m_distance')
-                    ->first();
-            }
 
             $trunkline_end_point = TrunklinePoint::firstOrCreate(
                 [
@@ -110,7 +125,7 @@ class PipesPointsImport implements ToCollection, WithEvents, WithColumnLimit, Wi
                 ]
             );
 
-            $trunkline_end_point->map_pipe_id = $pipe_coords_end->map_pipe_id;
+            $trunkline_end_point->map_pipe_id = $map_pipe_id;
             $trunkline_end_point->save();
 
             $trunkline_start_point = TrunklinePoint::firstOrCreate(
@@ -124,7 +139,7 @@ class PipesPointsImport implements ToCollection, WithEvents, WithColumnLimit, Wi
                 ]
             );
 
-            $trunkline_start_point->map_pipe_id = $pipe_coords_start->map_pipe_id;
+            $trunkline_start_point->map_pipe_id = $map_pipe_id;
 
             if (strpos($trunkline_start_point->name, 'ГУ') !== false) {
                 $gu = Gu::where('name', $trunkline_start_point->name)->first();

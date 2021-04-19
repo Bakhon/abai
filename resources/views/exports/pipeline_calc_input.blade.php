@@ -31,17 +31,17 @@
             <tr>
                 <td>{{ $key + 1 }}</td>
                 <td>{{ $item->map_pipe->pipeType->outside_diameter }}</td>
-                <td>{{ $item->map_pipe->pipeType->thickness / 2  }}</td>
+                <td>{{ $item->map_pipe->pipeType->thickness  }}</td>
                 <td>{{ $item->map_pipe->lastCoords->m_distance }}</td>
-                <td>{{ $item->gu ? $item->gu->lastOmgngdu->daily_fluid_production : ''}}</td>
-                <td>{{ $item->gu ? $item->gu->lastOmgngdu->bsw : ''}}</td>
+                <td>{{ $item->lastOmgngdu ? $item->lastOmgngdu->daily_fluid_production : ''}}</td>
+                <td>{{ $item->lastOmgngdu ? $item->lastOmgngdu->bsw : ''}}</td>
                 <td>{{ $item->gu ? 0 : ''}}</td>
-                <td>{{ $item->gu ? $item->gu->lastOmgngdu->pump_discharge_pressure : ''}}</td>
+                <td>{{ $item->lastOmgngdu ? $item->lastOmgngdu->pump_discharge_pressure : ''}}</td>
                 <td></td>
-                <td>{{ $item->gu ? $item->gu->lastOmgngdu->heater_output_temperature : '' }}</td>
+                <td>{{ $item->lastOmgngdu ? $item->lastOmgngdu->heater_output_temperature : '' }}</td>
                 <td></td>
                 <td>{{ $item->name }}</td>
-                <td>{{ $item->gu ? $item->gu->name : $item->trunkline_end_point->name }}</td>
+                <td>{{ $item->trunkline_end_point->name }}</td>
                 <td>{{ $item->map_pipe->name }}</td>
                 <td></td>
                 <td></td>

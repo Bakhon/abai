@@ -14,7 +14,7 @@ class TrunklinePoint extends Model
 
     public function gu()
     {
-        return $this->belongsTo(Gu::class);
+        return $this->belongsTo(Gu::class, 'gu_id', 'id');
     }
 
     public function ngdu()

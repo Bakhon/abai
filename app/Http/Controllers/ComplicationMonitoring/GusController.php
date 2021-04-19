@@ -12,6 +12,7 @@ use App\Http\Requests\GuUpdateRequest;
 use App\Http\Requests\IndexTableRequest;
 use App\Http\Resources\GuListResource;
 use App\Jobs\ExportOmgCAToExcel;
+use App\Models\ComplicationMonitoring\OmgNGDU;
 use App\Models\ComplicationMonitoring\TrunklinePoint;
 use App\Models\Refs\Gu;
 use Carbon\Carbon;
@@ -193,17 +194,18 @@ class GusController extends CrudController
     public function createExcel()
     {
         $points = TrunklinePoint::with('map_pipe.pipeType', 'map_pipe.firstCoords', 'map_pipe.lastCoords', 'gu', 'trunkline_end_point')->get();
-//        $gu = Gu::WithLastOmgngdu()->find('38');
-//        dump($points[5]);
-//        dd($points[5]->gu->WithLastOmgngdu()->first());
 
         foreach($points as $key => $point) {
-            if ($point->gu) {
-                $points[$key]->gu = $point->gu->WithLastOmgngdu()->first();
+            if ($points[$key]->gu) {
+                $points[$key]->lastOmgngdu = OmgNGDU::where('gu_id', $points[$key]->gu->id)
+                    ->orderBy('date', 'desc')
+                    ->first();
 
-                $temperature = $points[$key]->gu->lastOmgngdu->heater_output_temperature;
-                $temperature = $temperature ? ($temperature < 40 ? 50 : $temperature) : 50;
-                $points[$key]->gu->lastOmgngdu->heater_output_temperature = $temperature;
+                if ($points[$key]->lastOmgngdu) {
+                    $temperature = $points[$key]->lastOmgngdu->heater_output_temperature;
+                    $temperature = $temperature ? ($temperature < 40 ? 50 : $temperature) : 50;
+                    $points[$key]->lastOmgngdu->heater_output_temperature = $temperature;
+                }
             }
         }
 
