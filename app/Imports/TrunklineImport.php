@@ -177,7 +177,7 @@ class TrunklineImport implements ToCollection, WithEvents, WithColumnLimit, With
             [
                 'outside_diameter' => $row[self::OUTSIDE_DIAMETER],
                 'inner_diameter' => $row[self::INNER_DIAMETER],
-                'thickness' => $row[self::THICKNESS],
+                'thickness' => ($row[self::OUTSIDE_DIAMETER] - $row[self::INNER_DIAMETER])/2,
                 'roughness' => $roughness
             ]
         );
