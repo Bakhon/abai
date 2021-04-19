@@ -205,8 +205,8 @@
           <td rowspan="3" style="background: #12135c; min-width: 120px;">
             <span>{{trans('tr.field')}}</span>
           </td>
-          <td rowspan="3" style="background: #12135c"><span>{{trans('tr.horizon')}}</span></td>
-          <td rowspan="3" style="background: #12135c"><span>{{trans('tr.object')}}</span></td>
+          <td rowspan="3" style="background: #12135c"><span>{{trans('tr.u_horizon')}}</span></td>
+          <td rowspan="3" style="background: #12135c"><span>{{trans('tr.u_object')}}</span></td>
           <td rowspan="3" style="background: #12135c">
             <span>{{trans('tr.operation_method')}}</span>
           </td>

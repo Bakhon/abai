@@ -4,7 +4,7 @@ namespace App\Models\BigData\Dictionaries;
 
 use App\Models\TBDModel;
 
-class WellType extends TBDModel
+class Equip extends TBDModel
 {
-    protected $table = 'dict.well_type';
+    protected $table = 'dict.equip_type';
 }

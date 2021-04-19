@@ -2,15 +2,16 @@
 
 namespace App\Models\BigData\Dictionaries;
 
+use App\Models\BigData\Well;
 use App\Models\TBDModel;
 
 class Tech extends TBDModel
 {
-    protected $table = 'tbdi.tech';
+    protected $table = 'dict.tech';
 
-    const TYPE_ZU = 3;
-    const TYPE_GU = 2;
-    const TYPE_GZU = 1;
+    const TYPE_ZU = 1;
+    const TYPE_GU = 3;
+    const TYPE_GZU = 2;
     const TYPE_AGZU = 2000000000004;
     const TYPE_SPGU = 14;
 
@@ -21,11 +22,11 @@ class Tech extends TBDModel
 
     public function wells()
     {
-        return $this->belongsToMany(\App\Models\BigData\Well::class, 'tbdi.well_tech', 'tech_id', 'well_id');
+        return $this->belongsToMany(Well::class, 'prod.well_tech', 'tech', 'well');
     }
 
     public function type()
     {
-        return $this->belongsTo(TechType::class, 'tech_id');
+        return $this->hasOne(TechType::class, 'tech_type');
     }
 }

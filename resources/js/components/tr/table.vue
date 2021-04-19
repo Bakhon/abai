@@ -4,8 +4,8 @@
             <tr class="headerColumn trkrheadercolumn" style="background: #333975;">
                 <td rowspan="4" class="th" style="background: #333975;">{{trans('tr.well_number')}}</td>
                 <td rowspan="4" class="th">{{trans('tr.well_type')}}</td>
-                <td rowspan="4" class="th">{{trans('tr.horizon')}}</td>
-                <td rowspan="4" class="th">{{trans('tr.object')}}</td>
+                <td rowspan="4" class="th">{{trans('tr.u_horizon')}}</td>
+                <td rowspan="4" class="th">{{trans('tr.u_object')}}</td>
                 <td rowspan="4" class="th">{{trans('tr.block')}}</td>
                 <td rowspan="4" class="th">{{trans('tr.outer_diameter_producing_casing')}}</td>
                 <td rowspan="4" class="th">{{trans('tr.outer_diameter_nkt')}}</td>

@@ -30,7 +30,7 @@ class FieldLimitsService
 
         $query = DB::connection('tbd')
             ->table($field['table'])
-            ->select('well_id', $field['column'])
+            ->select('well', $field['column'])
             ->where('dbeg', '>=', $startDate)
             ->where('dbeg', '<=', $date);
 
@@ -41,7 +41,7 @@ class FieldLimitsService
         }
 
         $result = $query->get()
-            ->groupBy('well_id')
+            ->groupBy('well')
             ->map(
                 function ($columnValues) use ($field) {
                     return $this->calculateColumnLimits($field['column'], $columnValues);

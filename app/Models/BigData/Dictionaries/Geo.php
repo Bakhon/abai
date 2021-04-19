@@ -2,16 +2,24 @@
 
 namespace App\Models\BigData\Dictionaries;
 
+use App\Models\BigData\Well;
 use App\Models\TBDModel;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 
 class Geo extends TBDModel
 {
-    protected $table = 'tbdi.geo';
+    protected $table = 'dict.geo';
 
     public function parent()
     {
-        return $this->belongsTo(Geo::class, 'parent_id', 'id');
+        $result = DB::connection($this->connection)
+            ->table('dict.geo_parent')
+            ->select('parent')
+            ->where('geo_id', $this->id)
+            ->first();
+
+        return $result ? Geo::find($result->parent) : null;
     }
 
     public function children()
@@ -21,7 +29,7 @@ class Geo extends TBDModel
 
     public function wells()
     {
-        return $this->belongsToMany(\App\Models\BigData\Well::class, 'tbdi.well_geo', 'geo_id', 'well_id');
+        return $this->belongsToMany(Well::class, 'prod.well_geo', 'geo_id', 'well_id');
     }
 
 
@@ -32,7 +40,7 @@ class Geo extends TBDModel
         $item = $this;
 
         while (true) {
-            $parent = $item->parent;
+            $parent = $item->parent();
             if (empty($parent)) {
                 break;
             }
