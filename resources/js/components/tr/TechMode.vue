@@ -585,7 +585,6 @@
                     :header-cell-class-name="getHeaderCellClassName"
                     >
                     <el-table-column 
-                   
                       :label="trans('tr.ngdu_field')" 
                       >
                       <el-table-column label="" prop="fake" >
@@ -1410,7 +1409,7 @@
                           </el-table-column>
                         </el-table-column>
                         <el-table-column
-                        :label="trans('tr.trs57')"
+                        :label="trans('tr.h_dyn')"
                         >
                           <el-table-column
                             prop="h_dyn_prev_m"
@@ -1421,7 +1420,7 @@
                           </el-table-column>
                         </el-table-column>
                         <el-table-column
-                        :label="trans('tr.trs25')"
+                        :label="trans('tr.k_prod')"
                         >
                           <el-table-column
                             prop="pi_prev_m"
@@ -1437,11 +1436,11 @@
 
                     <!-- Фактический режим -->
                     <el-table-column
-                      :label="trans('tr.tr17')"
+                      :label="trans('tr.actual_mode')"
                       >
                       <el-table-column label="" >
                         <el-table-column
-                        :label="trans('tr.tr20')"
+                        :label="trans('tr.bottomhole_pressure')"
                         >
                           <el-table-column
                             prop="bhp"
@@ -1450,28 +1449,25 @@
                             sortable
                             >
                             <template slot-scope="scope">
-                                      <span
-                                        :class="{
-                                          'circle-err':
-                                            wells &&
-                                            wells[scope.$index] &&
-                                            wells[scope.$index].bhp[1][0] !== '0',
-                                        }"
-                                        :style="`background :${getColor(
-                                          wells[scope.$index].bhp[1][0]
-                                        )}`"
-                                      >
-                                      </span><span v-if="scope.row.bhp[0] != null">{{
-                                Math.round(scope.row.bhp[0] * 10) / 10
-                              }}</span>
-                              <span v-if="wells && wells[scope.$index]" class="cell-comment">
-                                {{ wells[scope.$index].bhp[1][1] }}
-                              </span>
+                              <el-tooltip class="item" effect="dark"  v-bind:content="haveTooltip(scope.$index, `bhp`)" :placement="isPlacement(scope.$index, `bhp`)">
+                                <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`bhp`)}" >
+                                          <span
+                                            :class="{
+                                              'circle-err': isCircleErrClass(scope.$index,`bhp`)}"
+                                            :style="`background :${getColor(
+                                              wells[scope.$index].bhp[1][0]
+                                            )}`"
+                                          >
+                                            </span><span v-if="scope.row.bhp[0] != null">{{
+                                      Math.round(scope.row.bhp[0] * 10) / 10
+                                    }}</span>
+                                </div>   
+                              </el-tooltip> 
                             </template>
                           </el-table-column>
                         </el-table-column>
                         <el-table-column
-                        :label="trans('tr.tr21')"
+                        :label="trans('tr.q_oil')"
                         >
                           <el-table-column
                             prop="q_o"
@@ -1479,10 +1475,26 @@
                             width="130"
                             sortable
                             >
+                            <template slot-scope="scope">
+                              <el-tooltip class="item" effect="dark"  v-bind:content="haveTooltip(scope.$index, `q_o`)" :placement="isPlacement(scope.$index, `q_o`)">
+                                <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`q_o`)}" >
+                                          <span
+                                            :class="{
+                                              'circle-err': isCircleErrClass(scope.$index,`q_o`)}"
+                                            :style="`background :${getColor(
+                                              wells[scope.$index].q_o[1][0]
+                                            )}`"
+                                          >
+                                            </span><span v-if="scope.row.q_o[0] != null">{{
+                                      Math.round(scope.row.q_o[0] * 10) / 10
+                                    }}</span>
+                                </div>   
+                              </el-tooltip> 
+                            </template>
                           </el-table-column>
                         </el-table-column>
                         <el-table-column
-                        :label="trans('tr.tr22')"
+                        :label="trans('tr.q_liquid')"
                         >
                           <el-table-column
                             prop="q_l"
@@ -1490,10 +1502,26 @@
                             width="130"
                             sortable
                             >
+                            <template slot-scope="scope">
+                              <el-tooltip class="item" effect="dark"  v-bind:content="haveTooltip(scope.$index, `q_l`)" :placement="isPlacement(scope.$index, `q_l`)">
+                                <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`q_l`)}" >
+                                          <span
+                                            :class="{
+                                              'circle-err': isCircleErrClass(scope.$index,`q_l`)}"
+                                            :style="`background :${getColor(
+                                              wells[scope.$index].q_l[1][0]
+                                            )}`"
+                                          >
+                                            </span><span v-if="scope.row.q_l[0] != null">{{
+                                      Math.round(scope.row.q_l[0] * 10) / 10
+                                    }}</span>
+                                </div>   
+                              </el-tooltip> 
+                            </template>
                           </el-table-column>
                         </el-table-column>
                         <el-table-column
-                        :label="trans('tr.tr23')"
+                        :label="trans('tr.water_cut')"
                         >
                           <el-table-column
                             prop="wct"
@@ -1501,6 +1529,22 @@
                             width="130"
                             sortable
                             >
+                            <template slot-scope="scope">
+                              <el-tooltip class="item" effect="dark"  v-bind:content="haveTooltip(scope.$index, `wct`)" :placement="isPlacement(scope.$index, `wct`)">
+                                <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`wct`)}" >
+                                          <span
+                                            :class="{
+                                              'circle-err': isCircleErrClass(scope.$index,`wct`)}"
+                                            :style="`background :${getColor(
+                                              wells[scope.$index].wct[1][0]
+                                            )}`"
+                                          >
+                                            </span><span v-if="scope.row.wct[0] != null">{{
+                                      Math.round(scope.row.wct[0] * 10) / 10
+                                    }}</span>
+                                </div>   
+                              </el-tooltip> 
+                            </template>
                           </el-table-column>
                         </el-table-column>
                         <el-table-column
