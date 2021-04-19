@@ -1388,7 +1388,7 @@
                           </el-table-column>
                         </el-table-column>
                         <el-table-column
-                        :label="trans('tr.tr22')"
+                        :label="trans('tr.q_liquid')"
                         >
                           <el-table-column
                             prop="q_l_prev_m"
@@ -1399,7 +1399,7 @@
                           </el-table-column>
                         </el-table-column>
                         <el-table-column
-                        :label="trans('tr.tr23')"
+                        :label="trans('tr.water_cut')"
                         >
                           <el-table-column
                             prop="wct_prev_m"
