@@ -31,9 +31,9 @@
             <economic-divider/>
 
             <economic-title>
-              <span>{{ res.year.toLocaleString() }}</span>
+              <span>{{ res.year[0].toLocaleString() }}</span>
               <span class="font-size-16px line-height-20px text-blue">
-                {{ res.yearWord }}
+                {{ res.year[1] }}
               </span>
             </economic-title>
 
@@ -46,9 +46,9 @@
             <economic-divider/>
 
             <economic-title>
-              <span>{{ res.month }}</span>
+              <span>{{ res.month[0].toLocaleString() }}</span>
               <span class="font-size-16px line-height-20px text-blue">
-                {{ res.monthWord }}
+                {{ res.month[1] }}
               </span>
 
               <economic-percent-badge :percent="res.percent"/>
@@ -141,10 +141,8 @@ Vue.use(VModal, {dynamicDefault: {draggable: true, resizable: true}});
 
 const economicRes = {
   averageProfitlessCat1MonthCount: 0,
-  month: 0,
-  monthWord: '',
-  year: 0,
-  yearWord: '',
+  month: [0, ''],
+  year: [0, ''],
   percent: null,
   percentCount: null,
   wellsList: null,
@@ -309,6 +307,10 @@ export default {
 
 .line-height-14px {
   line-height: 14px !important;
+}
+
+.line-height-20px {
+  line-height: 20px !important;
 }
 
 .line-height-22px {
