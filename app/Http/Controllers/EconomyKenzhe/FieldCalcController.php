@@ -30,6 +30,7 @@ class FieldCalcController extends Controller
     const ONE_YEAR = 365;
     public $worldBarrelPrice = 0;
     public $worldDollarRate = 0;
+    public $worldRubRate = 0;
     public $oilProduction = 64;
 
     public function __construct()
@@ -37,17 +38,20 @@ class FieldCalcController extends Controller
         $data = FieldCalcHelper::getBarrelWorldPrice();
         $this->worldBarrelPrice = $data['averageBarrelPrice'];
         $this->worldDollarRate = $data['averageDollarRate'];
+        $this->worldRubRate = $data['averageRubRate'];
     }
 
-
     public function index(){
-        $companiesNames = ['АО "МангистауМунайГаз"','АО "Каражанбасмунай"'];
-        $companies = new FieldCalcCompany();
-        $companies = $companies->companiesByName($companiesNames);
-        $exports = EcoRefsDirectionId::where('name', '=', 'Экспорт')->pluck('id')->toArray();
+//        $companies = FieldCalcCompany::with('getCompanyBarrelPrice')->get();
+        $companyData = [];
+        $companies = FieldCalcCompany::all();
+        foreach ($companies as $company){
+            $companyData[$company->id] = $company->getCompanyBarrelPriceByDirection(1)->get();
+        }
+        dd($companyData);
+        $exportDirections = EcoRefsDirectionId::where('name', '=', 'Экспорт')->pluck('id')->toArray();
         $scenario = EcoRefsScFa::where('name', '=', 'Корр. 6 на 2021-2025')->pluck('id')->toArray();
-        $emppersExp = EcoRefsEmpPer::whereIn('direction_id', $exports)->where('sc_fa', $scenario[0])->where('company_id', 7)->where('date', '2020-02-31')->get();
-        dd($emppersExp);
+        $emppersExp = EcoRefsEmpPer::whereIn('direction_id', $exportDirections)->where('sc_fa', $scenario[0])->where('company_id', 7)->where('date', '2020-02-31')->get();
     }
 
 }

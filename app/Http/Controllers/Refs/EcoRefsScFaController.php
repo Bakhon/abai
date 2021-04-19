@@ -253,7 +253,7 @@ class EcoRefsScFaController extends Controller
 
             $emppersExp = EcoRefsEmpPer::whereIn('direction_id',$exports)->where('sc_fa',$scfa[0])->where('company_id',$org)->where('date',$element)->get();
             $discontExp = EcoRefsDiscontCoefBar::whereIn('direction_id',$exports)->where('sc_fa',$scfa[0])->where('company_id',$org)->where('date',$element)->get();
-            $compRas = EcoRefsPrepElectPrsBrigCost::where('company_id',$org)->where('sc_fa',$scfa[0])->where('date',$element)->get();
+            $compRas = EcoRefsPrepElectPrsBrigCost::where('company_id',$org)->where('sc_fa',$scfa[0])->where('date',  $element)->get();
             $equipRas = EcoRefsRentEquipElectServCost::whereIn('equip_id',$equip)->where('sc_fa',$scfa[0])->where('company_id',$org)->whereYear('date',$year)->get();
 
             $workday=0;
