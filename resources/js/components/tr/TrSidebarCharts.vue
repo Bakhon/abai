@@ -51,20 +51,20 @@ export default {
   data() {
     return {
       chartNames: [
-        `${this.trans('tr.trchn1')}`,
-        `${this.trans('tr.trchn2')}`,
-        `${this.trans('tr.trchn3')}`,
-        `${this.trans('tr.trchn4')}`,
-        `${this.trans('tr.trchn5')}`,
-        `${this.trans('tr.trchn6')}`,
-        `${this.trans('tr.trchn7')}`,
-        `${this.trans('tr.trchn8')}`,
-        `${this.trans('tr.trchn9')}`,
-        `${this.trans('tr.trchn10')}`,
+        `${this.trans('tr.analysis_of_reservoir_depth_pump_run_and_dynamic_level')}`,
+        `${this.trans('tr.top_30_wells_oil_production_growth_potential')}`,
+        `${this.trans('tr.top_30_wells_oil_production_growth_potential_water_cut')}`,
+        `${this.trans('tr.top_30_wells_oil_production_growth_potential_gas_factor')}`,
+        `${this.trans('tr.top_30_wells_liquid_production_growth_potential')}`,
+        `${this.trans('tr.total_oil_and_liquid_production_rate')}`,
+        `${this.trans('tr.distribution_of_productivity_index')}`,
+        `${this.trans('tr.distribution_of_wells_by_oil_production_rate')}`,
+        `${this.trans('tr.distribution_of_wells_by_water_cut')}`,
+        `${this.trans('tr.distribution_of_wells_by_fluid_flow_rate')}`,
       ],
       chartNamesFA: [
-        `${this.trans('tr.trsbg1')}`,
-        `${this.trans('tr.trsbg2')}`,
+        `${this.trans('tr.distribution_of_the_well_stock_due_to_the_main_reason_for_the_decline_in_oil_production')}`,
+        `${this.trans('tr.distribution_of_total_TP_deviations_by_factors')}`,
       ],
     };
   },
