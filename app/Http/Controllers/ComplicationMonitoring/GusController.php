@@ -196,22 +196,53 @@ class GusController extends CrudController
         $points = TrunklinePoint::with('map_pipe.pipeType', 'map_pipe.firstCoords', 'map_pipe.lastCoords', 'gu', 'trunkline_end_point')->get();
 
         foreach($points as $key => $point) {
-            if ($points[$key]->gu) {
-                $points[$key]->lastOmgngdu = OmgNGDU::where('gu_id', $points[$key]->gu->id)
-                    ->orderBy('date', 'desc')
-                    ->first();
-
-                if ($points[$key]->lastOmgngdu) {
-                    $temperature = $points[$key]->lastOmgngdu->heater_output_temperature;
-                    $temperature = $temperature ? ($temperature < 40 ? 50 : $temperature) : 50;
-                    $points[$key]->lastOmgngdu->heater_output_temperature = $temperature;
-                }
+            if (!$points[$key]->gu) {
+                continue;
             }
+
+            $points[$key]->lastOmgngdu = OmgNGDU::where('gu_id', $points[$key]->gu->id)
+                ->orderBy('date', 'desc')
+                ->first();
+
+            if ($points[$key]->lastOmgngdu) {
+                continue;
+            }
+
+            $temperature = $points[$key]->lastOmgngdu->heater_output_temperature;
+            $temperature = $temperature ? ($temperature < 40 ? 50 : $temperature) : 50;
+            $points[$key]->lastOmgngdu->heater_output_temperature = $temperature;
         }
 
+        $columnNames = [
+            '№',
+            'out_dia',
+            'wall_thick',
+            'length',
+            'qliq',
+            'wc',
+            'gazf',
+            'press_start',
+            'press_end',
+            'temp_start',
+            'temp_end',
+            'start_point',
+            'end_point',
+            'name',
+            'mix_speed_avg',
+            'fluid_speed',
+            'gaz_speed',
+            'flow_type',
+            'press_change',
+            'break_qty',
+            'height_drop'
+        ];
+
+        $data = [
+            'points' => $points,
+            'columnNames' => $columnNames
+        ];
+
         $fileName = '/export/pipeline_calc_input.xlsx';
-        Excel::store(new PipeLineCalcExport($points), 'public'.$fileName);
-
-
+        Excel::store(new PipeLineCalcExport($data), 'public'.$fileName);
     }
 }

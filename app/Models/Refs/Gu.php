@@ -83,13 +83,6 @@ class Gu extends Model
         )->with('lastOmgngdu');
     }
 
-//    public function withLastOmgngdu()
-//    {
-//        return $this->lastOmgngdu()
-//            ->orderByDesc('date')
-//            ->first();
-//    }
-
     public function watermeasurement()
     {
         return $this->hasMany(WaterMeasurement::class);
