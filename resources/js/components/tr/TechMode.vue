@@ -664,19 +664,18 @@
                             :filter-method="filterHandlerArray"
                             >
                             <template slot-scope="scope">
-                              <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`horizon`)}" >
-                                        <span
-                                          :class="{
-                                            'circle-err': isCircleErrClass(scope.$index,`horizon`)}"
-                                          :style="`background :${getColor(
-                                            wells[scope.$index].horizon[1][0]
-                                          )}`"
-                                        >
-                                        </span><span>{{ scope.row.horizon[0] }}</span>
-                                <span v-if="wells && wells[scope.$index]" class="cell-comment">
-                                  {{ wells[scope.$index].horizon[1][1] }}
-                                </span>
-                              </div>
+                              <el-tooltip class="item" effect="dark"  v-bind:content="haveTooltip(scope.$index, `horizon`)" :placement="isPlacement(scope.$index, `horizon`)">
+                                <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`horizon`)}" >
+                                          <span
+                                            :class="{
+                                              'circle-err': isCircleErrClass(scope.$index,`horizon`)}"
+                                            :style="`background :${getColor(
+                                              wells[scope.$index].horizon[1][0]
+                                            )}`"
+                                          >
+                                          </span><span>{{ scope.row.horizon[0] }}</span>  
+                                </div>   
+                              </el-tooltip> 
                             </template>
                           </el-table-column>
                         </el-table-column>
@@ -713,19 +712,18 @@
                             :filter-method="filterHandlerArray"
                             >
                             <template slot-scope="scope">
-                              <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`block`)}" >
-                                        <span
-                                          :class="{
-                                            'circle-err': isCircleErrClass(scope.$index,`block`)}"
-                                          :style="`background :${getColor(
-                                            wells[scope.$index].block[1][0]
-                                          )}`"
-                                        >
-                                        </span><span>{{ scope.row.block[0] }}</span>
-                                <span v-if="wells && wells[scope.$index]" class="cell-comment">
-                                  {{ wells[scope.$index].block[1][1] }}
-                                </span>
-                              </div>
+                              <el-tooltip class="item" effect="dark"  v-bind:content="haveTooltip(scope.$index, `block`)" :placement="isPlacement(scope.$index, `block`)">
+                                <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`horizon`)}" >
+                                          <span
+                                            :class="{
+                                              'circle-err': isCircleErrClass(scope.$index,`block`)}"
+                                            :style="`background :${getColor(
+                                              wells[scope.$index].block[1][0]
+                                            )}`"
+                                          >
+                                          </span><span>{{ scope.row.block[0] }}</span>  
+                                </div>   
+                              </el-tooltip> 
                             </template>
                           </el-table-column>
                         </el-table-column>
@@ -963,21 +961,19 @@
                             sortable
                             >
                             <template slot-scope="scope">
-                              <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`exp_meth`)}" >
-                                        <span
-                                          :class="{
-                                            'circle-err': isCircleErrClass(scope.$index,`exp_meth`)}"
-                                          :style="`background :${getColor(
-                                            wells[scope.$index].exp_meth[1][0]
-                                          )}`"
-                                        >
-                                        </span><span>{{ scope.row.exp_meth[0] }}</span>
-                                <span v-if="wells && wells[scope.$index]" class="cell-comment">
-                                  {{ wells[scope.$index].exp_meth[1][1] }}
-                                </span>
-                              </div>
+                              <el-tooltip class="item" effect="dark"  v-bind:content="haveTooltip(scope.$index, `exp_meth`)" :placement="isPlacement(scope.$index, `exp_meth`)">
+                                <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`exp_meth`)}" >
+                                          <span
+                                            :class="{
+                                              'circle-err': isCircleErrClass(scope.$index,`exp_meth`)}"
+                                            :style="`background :${getColor(
+                                              wells[scope.$index].exp_meth[1][0]
+                                            )}`"
+                                          >
+                                          </span><span>{{ scope.row.exp_meth[0] }}</span>  
+                                </div>   
+                              </el-tooltip> 
                             </template>
-                            
                           </el-table-column>
                         </el-table-column>
                       </el-table-column>
@@ -994,19 +990,18 @@
                             sortable
                             >
                             <template slot-scope="scope">
-                              <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`pump_type`)}" >
-                                        <span
-                                          :class="{
-                                            'circle-err': isCircleErrClass(scope.$index,`pump_type`)}"
-                                          :style="`background :${getColor(
-                                            wells[scope.$index].pump_type[1][0]
-                                          )}`"
-                                        >
-                                        </span><span>{{ scope.row.pump_type[0] }}</span>
-                                <span v-if="wells && wells[scope.$index]" class="cell-comment">
-                                  {{ wells[scope.$index].pump_type[1][1] }}
-                                </span>
-                              </div>
+                              <el-tooltip class="item" effect="dark"  v-bind:content="haveTooltip(scope.$index, `pump_type`)" :placement="isPlacement(scope.$index, `pump_type`)">
+                                <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`pump_type`)}" >
+                                          <span
+                                            :class="{
+                                              'circle-err': isCircleErrClass(scope.$index,`pump_type`)}"
+                                            :style="`background :${getColor(
+                                              wells[scope.$index].pump_type[1][0]
+                                            )}`"
+                                          >
+                                          </span><span>{{ scope.row.pump_type[0] }}</span>  
+                                </div>   
+                              </el-tooltip> 
                             </template>
                           </el-table-column>
                         </el-table-column>
@@ -1372,8 +1367,6 @@
                         </el-table-column>
                       </el-table-column>
                     </el-table-column>
-
-
 
 
                     <!-- Данные за предыдущий месяц -->
