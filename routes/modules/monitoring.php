@@ -165,6 +165,10 @@ Route::group(
                 Route::resource('zus', 'ComplicationMonitoring\ZusController');
 
                 Route::get('/monitor/{gu?}', 'DruidController@monitor')->name('monitor');
+
+                Route::get('/hydro-calc-table/', 'ComplicationMonitoring\WaterMeasurementController@hydroCalcTable')->name('hydroCalcTable.index');
+                Route::get('/hydro-calc-table/list', 'ComplicationMonitoring\WaterMeasurementController@hydroCalcTableList')->name('hydroCalcTable.list');
+
             }
         );
     }

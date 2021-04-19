@@ -15,6 +15,7 @@ use App\Models\ComplicationMonitoring\GuKormass;
 use App\Models\ComplicationMonitoring\Kormass;
 use App\Models\ComplicationMonitoring\OmgUHE;
 use App\Models\ComplicationMonitoring\Pipe;
+use App\Models\ComplicationMonitoring\TrunklinePoint;
 use App\Models\ComplicationMonitoring\WaterMeasurement;
 use App\Models\Refs\Cdng;
 use App\Models\Refs\Field;
@@ -886,209 +887,116 @@ class WaterMeasurementController extends CrudController
             'links' => [
                 'list' => route('hydroCalcTable.list'),
             ],
-            'title' => trans('hydroCalc.wm.title'),
+            'title' => 'Таблица расчета гидравлики',
             'fields' => [
-                'date' => [
-                    'title' => trans('monitoring.wm.fields.date'),
-                    'type' => 'date',
-                ],
-                'other_objects' => [
-                    'title' => trans('monitoring.other_objects'),
-                    'type' => 'select',
-                    'filter' => [
-                        'values' => OtherObjects::whereHas('watermeasurement')
-                            ->orderBy('name', 'asc')
-                            ->get()
-                            ->map(
-                                function ($item) {
-                                    return [
-                                        'id' => $item->id,
-                                        'name' => $item->name,
-                                    ];
-                                }
-                            )
-                            ->toArray()
-                    ]
-                ],
-
-                'gu' => [
-                    'title' => trans('monitoring.gu.gu'),
-                    'type' => 'select',
-                    'filter' => [
-                        'values' => Gu::whereHas('watermeasurement')
-                            ->orderBy('name', 'asc')
-                            ->get()
-                            ->map(
-                                function ($item) {
-                                    return [
-                                        'id' => $item->id,
-                                        'name' => $item->name,
-                                    ];
-                                }
-                            )
-                            ->toArray()
-                    ]
-                ],
-
-                'hydrocarbonate_ion' => [
-                    'title' => 'НСО3-',
+                'number' => [
+                    'title' => '№',
                     'type' => 'numeric',
                 ],
-                'carbonate_ion' => [
-                    'title' => 'СО32-',
+                'out_dia' => [
+                    'title' => 'Внешний диаметр, мм',
                     'type' => 'numeric',
                 ],
-                'sulphate_ion' => [
-                    'title' => 'SO42-',
+                'wall_thick' => [
+                    'title' => 'Толщина стенки, мм',
                     'type' => 'numeric',
                 ],
-                'chlorum_ion' => [
-                    'title' => 'Cl-',
+                'length' => [
+                    'title' => 'Протяженность, м',
                     'type' => 'numeric',
                 ],
-                'calcium_ion' => [
-                    'title' => 'Ca2+',
+                'qliq' => [
+                    'title' => 'Qж, м3/сут',
                     'type' => 'numeric',
                 ],
-                'magnesium_ion' => [
-                    'title' => 'Mg2+',
+                'wc' => [
+                    'title' => 'Обводненность, %',
                     'type' => 'numeric',
                 ],
-                'potassium_ion_sodium_ion' => [
-                    'title' => 'Na+K+',
+                'gazf' => [
+                    'title' => 'ГФ, м3/м3',
                     'type' => 'numeric',
                 ],
-                'density' => [
-                    'title' => trans('monitoring.wm.fields.density'),
+                'press_start' => [
+                    'title' => 'Давление начальное, ата',
                     'type' => 'numeric',
                 ],
-                'ph' => [
-                    'title' => 'pH',
+                'press_end' => [
+                    'title' => 'Давление конечное, ата',
                     'type' => 'numeric',
                 ],
-                'mineralization' => [
-                    'title' => trans('monitoring.wm.fields.mineralization'),
+                'temp_start' => [
+                    'title' => 'Температура начальная, °С',
                     'type' => 'numeric',
                 ],
-                'total_hardness' => [
-                    'title' => trans('monitoring.wm.fields.total_hardness'),
+                'temp_end' => [
+                    'title' => 'Температура конечная, °С',
                     'type' => 'numeric',
                 ],
-                'water_type_by_sulin' => [
-                    'title' => trans('monitoring.wm.fields.water_type_by_sulin'),
-                    'type' => 'select',
-                    'filter' => [
-                        'values' => WaterTypeBySulin::whereHas('watermeasurement')
-                            ->orderBy('name', 'asc')
-                            ->get()
-                            ->map(
-                                function ($item) {
-                                    return [
-                                        'id' => $item->id,
-                                        'name' => $item->name,
-                                    ];
-                                }
-                            )
-                            ->toArray()
-                    ]
-                ],
-                'content_of_petrolium_products' => [
-                    'title' => trans('monitoring.wm.fields.content_of_petrolium_products'),
+                'start_point' => [
+                    'title' => 'Начальная точка',
                     'type' => 'numeric',
                 ],
-                'mechanical_impurities' => [
-                    'title' => trans('monitoring.wm.fields.mechanical_impurities'),
+                'end_point' => [
+                    'title' => 'Конечная точка',
                     'type' => 'numeric',
                 ],
-                'strontium_content' => [
-                    'title' => trans('monitoring.wm.fields.strontium_content'),
+                'name' => [
+                    'title' => 'Трубопровод',
                     'type' => 'numeric',
                 ],
-                'barium_content' => [
-                    'title' => trans('monitoring.wm.fields.barium_content'),
+                'mix_speed_avg' => [
+                    'title' => 'Средняя скорость смеси, м/с',
                     'type' => 'numeric',
                 ],
-                'total_iron_content' => [
-                    'title' => trans('monitoring.wm.fields.total_iron_content'),
+                'fluid_speed' => [
+                    'title' => 'Скорость жидкости, м/с',
                     'type' => 'numeric',
                 ],
-                'ferric_iron_content' => [
-                    'title' => trans('monitoring.wm.fields.ferric_iron_content'),
+                'gaz_speed' => [
+                    'title' => 'Скорость газа, м/с',
                     'type' => 'numeric',
                 ],
-                'ferrous_iron_content' => [
-                    'title' => trans('monitoring.wm.fields.ferrous_iron_content'),
+                'flow_type' => [
+                    'title' => 'Режим течения',
                     'type' => 'numeric',
                 ],
-                'hydrogen_sulfide' => [
-                    'title' => trans('monitoring.wm.fields.hydrogen_sulfide'),
+                'press_change' => [
+                    'title' => 'Перепад давления, атм/км',
                     'type' => 'numeric',
                 ],
-                'oxygen' => [
-                    'title' => trans('monitoring.wm.fields.oxygen'),
+                'break_qty' => [
+                    'title' => 'Количество порывов',
                     'type' => 'numeric',
                 ],
-                'carbon_dioxide' => [
-                    'title' => trans('monitoring.wm.fields.carbon_dioxide'),
+                'height_drop' => [
+                    'title' => 'Перепад высот, м',
                     'type' => 'numeric',
-                ],
-                'sulphate_reducing_bacteria' => [
-                    'title' => trans('monitoring.wm.fields.sulphate_reducing_bacteria'),
-                    'type' => 'select',
-                    'filter' => [
-                        'values' => SulphateReducingBacteria::whereHas('watermeasurement')
-                            ->orderBy('name', 'asc')
-                            ->get()
-                            ->map(
-                                function ($item) {
-                                    return [
-                                        'id' => $item->id,
-                                        'name' => $item->name,
-                                    ];
-                                }
-                            )
-                            ->toArray()
-                    ]
-                ],
-                'hydrocarbon_oxidizing_bacteria' => [
-                    'title' => trans('monitoring.wm.fields.hydrocarbon_oxidizing_bacteria'),
-                    'type' => 'select',
-                    'filter' => [
-                        'values' => HydrocarbonOxidizingBacteria::whereHas('watermeasurement')
-                            ->orderBy('name', 'asc')
-                            ->get()
-                            ->map(
-                                function ($item) {
-                                    return [
-                                        'id' => $item->id,
-                                        'name' => $item->name,
-                                    ];
-                                }
-                            )
-                            ->toArray()
-                    ]
-                ],
-                'thionic_bacteria' => [
-                    'title' => trans('monitoring.wm.fields.thionic_bacteria'),
-                    'type' => 'select',
-                    'filter' => [
-                        'values' => ThionicBacteria::whereHas('watermeasurement')
-                            ->orderBy('name', 'asc')
-                            ->get()
-                            ->map(
-                                function ($item) {
-                                    return [
-                                        'id' => $item->id,
-                                        'name' => $item->name,
-                                    ];
-                                }
-                            )
-                            ->toArray()
-                    ]
                 ],
             ]
         ];
 
-        return view('watermeasurement.index', compact('params'));
+        return view('watermeasurement.hydroCalcTable', compact('params'));
+    }
+
+    public function hydroCalcTableList ()
+    {
+        $points = TrunklinePoint::with('map_pipe.pipeType', 'map_pipe.firstCoords', 'map_pipe.lastCoords', 'gu', 'trunkline_end_point')->get();
+
+        foreach($points as $key => $point) {
+            if ($points[$key]->gu) {
+                $points[$key]->lastOmgngdu = OmgNGDU::where('gu_id', $points[$key]->gu->id)
+                    ->orderBy('date', 'desc')
+                    ->first();
+
+                if ($points[$key]->lastOmgngdu) {
+                    $temperature = $points[$key]->lastOmgngdu->heater_output_temperature;
+                    $temperature = $temperature ? ($temperature < 40 ? 50 : $temperature) : 50;
+                    $points[$key]->lastOmgngdu->heater_output_temperature = $temperature;
+                }
+            }
+        }
+
+        return response()->json($points);
     }
 }
