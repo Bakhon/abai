@@ -71,7 +71,7 @@ export default {
             if (change == "1") {
                 this.Table1 = "display:block";
                 this.tableHover1 = buttonHover2;
-                this.changeMenu2(1);
+                this.changeMenu2('daily');
             } else if (change == "2") {
                 this.Table2 = "display:block";
                 this.tableHover2 = buttonHover2;
@@ -112,7 +112,7 @@ export default {
             this.buttonMonthlyTab = "";
             this.buttonYearlyTab = "";
             this.buttonPeriodTab = "";
-            if (change !== 3) {
+            if (change !== 'yearly') {
                 this.isFilterTargetPlanActive = false;
             }
 

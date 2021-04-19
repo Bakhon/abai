@@ -777,6 +777,7 @@
                           <div>
                             <input
                                     type="checkbox"
+                                    :disabled="dzoCompaniesAssets.isOperating || dzoCompaniesAssets.isNonOperating || dzoCompaniesAssets.isRegion"
                                     :checked="company.selected"
                                     @change="`${selectDzoCompany(company.ticker)}`"
                             ></input>
@@ -791,7 +792,7 @@
               <div class="col-8 col-lg px-1">
                 <div
                         :class="[`${buttonDailyTab}`,'button2']"
-                        @click="changeMenu2(1)"
+                        @click="changeMenu2('daily')"
                 >
                   {{ trans("visualcenter.daily") }}
                 </div>
@@ -799,7 +800,7 @@
               <div class="col-8 col-lg px-1">
                 <div
                         :class="[`${buttonMonthlyTab}`,'button2']"
-                        @click="changeMenu2(2)"
+                        @click="changeMenu2('monthly')"
                 >
                   {{ trans("visualcenter.monthBegin") }}
                 </div>
@@ -810,7 +811,7 @@
                 <div :class="[`${buttonYearlyTab}`,'button2']">
                   <div
                           class="button1-vc-inner"
-                          @click="changeMenu2(3)"
+                          @click="changeMenu2('yearly')"
                   >
                   {{ trans("visualcenter.yearBegin") }}
                   </div>
@@ -821,7 +822,7 @@
                           data-toggle="dropdown"
                   ></button>
                   <div class="dzo-company-list">
-                    <ul class="dropdown-menu-vc dropdown-menu dropdown-menu-right year-period-dropdown">
+                    <ul class="dropdown-menu-vc dropdown-menu dropdown-menu-right year-period-dropdown" ref="targetPlan">
                       <li :class="[`${buttonTargetPlan}`, 'px-4']">
                         <input
                                 type="checkbox"
@@ -841,7 +842,7 @@
                 <div class="dropdown3">
                   <div
                           :class="[`${buttonPeriodTab}`,'button2']"
-                          @click="changeMenu2(4)"
+                          @click="changeMenu2('period')"
                   >
                     <span v-if="oneDate">
                       <!-- Дата  -->{{ trans("visualcenter.date") }} [{{
@@ -1520,7 +1521,7 @@
                 <div class="col-3 pr-2">
                   <div
                           :class="[`${buttonDailyTab}`,'button2 side-tables__main-menu-button']"
-                          @click="changeMenu2(1)"
+                          @click="changeMenu2('daily')"
                   >
                     {{ trans("visualcenter.daily") }}
                   </div>
@@ -1528,7 +1529,7 @@
                 <div class="col-3 px-2">
                   <div
                           :class="[`${buttonMonthlyTab}`,'button2 side-tables__main-menu-button']"
-                    @click="changeMenu2(2)"
+                    @click="changeMenu2('monthly')"
                   >
                     {{ trans("visualcenter.monthBegin") }}
                   </div>
@@ -1536,7 +1537,7 @@
                 <div class="col-3 px-2">
                   <div
                           :class="[`${buttonYearlyTab}`,'button2 side-tables__main-menu-button']"
-                          @click="changeMenu2(3)"
+                          @click="changeMenu2('yearly')"
                   >
                     {{ trans("visualcenter.yearBegin") }}
                   </div>
@@ -1545,7 +1546,7 @@
                   <div class="dropdown3">
                     <div
                             :class="[`${buttonPeriodTab}`,'button2 side-tables__main-menu-button']"
-                            @click="changeMenu2(4)"
+                            @click="changeMenu2('period')"
                     >
                       <span v-if="oneDate">
                         {{ trans("visualcenter.date") }} [{{
@@ -1682,7 +1683,7 @@
                 <div class="col-3 pr-2">
                   <div
                           :class="[`${buttonDailyTab}`,'button2 side-tables__main-menu-button']"
-                          @click="changeMenu2(1)"
+                          @click="changeMenu2('daily')"
                   >
                     {{ trans("visualcenter.daily") }}
                   </div>
@@ -1690,7 +1691,7 @@
                 <div class="col-3 px-2 ">
                   <div
                     :class="[`${buttonMonthlyTab}`,'button2 side-tables__main-menu-button']"
-                    @click="changeMenu2(2)"
+                    @click="changeMenu2('monthly')"
                   >
                     {{ trans("visualcenter.monthBegin") }}
                   </div>
@@ -1698,7 +1699,7 @@
                 <div class="col-3 px-2">
                   <div
                           :class="[`${buttonYearlyTab}`,'button2 side-tables__main-menu-button']"
-                          @click="changeMenu2(3)"
+                          @click="changeMenu2('yearly')"
                   >
                     {{ trans("visualcenter.yearBegin") }}
                   </div>
@@ -1707,7 +1708,7 @@
                   <div class="dropdown3">
                     <div
                             :class="[`${buttonPeriodTab}`,'button2 side-tables__main-menu-button']"
-                            @click="changeMenu2(4)"
+                            @click="changeMenu2('period')"
                     >
                       <span v-if="oneDate">
                         {{ trans("visualcenter.date") }} [{{
@@ -1863,7 +1864,7 @@
                 <div class="col pr-2">
                   <div
                           :class="[`${buttonMonthlyTab}`,'button2 side-tables__main-menu-button']"
-                          @click="changeMenu2(2)"
+                          @click="changeMenu2('monthly')"
                   >
                     {{ trans("visualcenter.monthBegin") }}
                   </div>
@@ -1871,7 +1872,7 @@
                 <div class="col px-2">
                   <div
                           :class="[`${buttonYearlyTab}`,'button2 side-tables__main-menu-button']"
-                          @click="changeMenu2(3)"
+                          @click="changeMenu2('yearly')"
                   >
                     {{ trans("visualcenter.yearBegin") }}
                   </div>
@@ -1880,7 +1881,7 @@
                   <div class="dropdown3">
                     <div
                             :class="[`${buttonPeriodTab}`,'button2 side-tables__main-menu-button']"
-                            @click="changeMenu2(4)"
+                            @click="changeMenu2('period')"
                     >
                       <span v-if="oneDate">
                         {{ trans("visualcenter.date") }} [{{
