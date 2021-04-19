@@ -260,7 +260,7 @@ export default {
 
   .scrollable {
     &::-webkit-scrollbar {
-      height: 4px;
+      height: 10px;
       width: 4px;
     }
 
