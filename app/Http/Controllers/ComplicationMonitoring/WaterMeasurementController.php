@@ -13,6 +13,7 @@ use App\Models\ComplicationMonitoring\ConstantsValue;
 use App\Models\ComplicationMonitoring\Corrosion;
 use App\Models\ComplicationMonitoring\GuKormass;
 use App\Models\ComplicationMonitoring\Kormass;
+use App\Models\ComplicationMonitoring\OmgNGDU;
 use App\Models\ComplicationMonitoring\OmgUHE;
 use App\Models\ComplicationMonitoring\Pipe;
 use App\Models\ComplicationMonitoring\TrunklinePoint;
@@ -983,7 +984,7 @@ class WaterMeasurementController extends CrudController
     {
         $points = TrunklinePoint::with('map_pipe.pipeType', 'map_pipe.firstCoords', 'map_pipe.lastCoords', 'gu', 'trunkline_end_point')->get();
 
-        foreach($points as $key => $point) {
+        foreach ($points as $key => $point) {
             if ($points[$key]->gu) {
                 $points[$key]->lastOmgngdu = OmgNGDU::where('gu_id', $points[$key]->gu->id)
                     ->orderBy('date', 'desc')
@@ -995,8 +996,40 @@ class WaterMeasurementController extends CrudController
                     $points[$key]->lastOmgngdu->heater_output_temperature = $temperature;
                 }
             }
+
+            if ($point->gu or $point->trunkline_end_point) {
+                $points[$key]->number = $key + 1;
+                $points[$key]->out_dia = $point->map_pipe->pipeType->outside_diameter;
+                $points[$key]->wall_thick = $point->map_pipe->pipeType->thickness;
+                $points[$key]->length = $point->map_pipe->lastCoords->m_distance;
+                $points[$key]->qliq = $point->lastOmgngdu ? $point->lastOmgngdu->daily_fluid_production : '';
+                $points[$key]->wc = $point->lastOmgngdu ? $point->lastOmgngdu->bsw : '';
+                $points[$key]->gazf = $point->gu ? 0 : '';
+                $points[$key]->press_start = $point->lastOmgngdu ? $point->lastOmgngdu->pump_discharge_pressure : '';
+                $points[$key]->temp_start = $point->lastOmgngdu ? $point->lastOmgngdu->heater_output_temperature : '';
+                $points[$key]->start_point = $point->name;
+                $points[$key]->end_point = $point->trunkline_end_point->name;
+                $points[$key]->name = $point->map_pipe->name;
+                $points[$key]->height_drop = $point->map_pipe->lastCoords->elevation - $point->map_pipe->firstCoords->elevation;
+            }
         }
 
-        return response()->json($points);
+
+    $data = [
+        'current_page' => 1,
+        'first_page_url' => 'http://127.0.0.1:8000/ru/hydro-calc-table/list?page=1',
+        'from' => 1,
+        'last_page' => 1,
+        'last_page_url' => 'http://127.0.0.1:8000/ru/hydro-calc-table/list?page=1',
+        'next_page_url' => 'http://127.0.0.1:8000/ru/hydro-calc-table/list?page=1',
+        'path' => "http://127.0.0.1:8000/ru/hydro-calc-table/list",
+        'per_page' => 30,
+        'prev_page_url' => 'http://127.0.0.1:8000/ru/hydro-calc-table/list?page=1',
+        'to' => 30,
+        'total' => 30,
+        'data' => $points
+    ];
+
+        return response()->json($data);
     }
 }
