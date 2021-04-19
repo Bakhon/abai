@@ -6,19 +6,21 @@ use App\Http\Requests\Economic\EconomicDataRequest;
 use App\Models\Refs\Org;
 use Level23\Druid\DruidClient;
 use Level23\Druid\Extractions\ExtractionBuilder;
+use Level23\Druid\Queries\QueryBuilder;
 use Level23\Druid\Types\Granularity;
 
 class EconomicController extends Controller
 {
     protected $druidClient;
 
-    const INTERVAL1 = '2019-01-01T00:00:00+00:00/2020-08-31T00:00:00+00:00';
-    const INTERVAL2 = '2020-06-01T00:00:00+00:00/2028-08-31T00:00:00+00:00';
-    const INTERVAL3 = '2020-06-01T00:00:00+00:00/2020-07-01T00:00:00+00:00';
-    const INTERVAL4 = '2020-07-01T00:00:00+00:00/2020-08-01T00:00:00+00:00';
-    const INTERVAL8 = '2019-07-01T00:00:00+00:00/2020-08-01T00:00:00+00:00';
-    const INTERVAL14 = '2020-07-30T00:00:00+00:00/2020-07-31T00:00:00+00:00';
-    const INTERVAL_PIVOT = '2020-01-01T00:00:00+00:00/2020-08-01T00:00:00+00:00';
+    const INTERVAL1 = '2019-01-01T00:00:00/2020-08-31T00:00:00';
+    const INTERVAL4 = '2020-07-01T00:00:00/2020-08-01T00:00:00';
+    const INTERVAL8 = '2019-07-01T00:00:00/2020-08-01T00:00:00';
+    const INTERVAL14 = '2020-07-30T00:00:00/2020-07-31T00:00:00';
+    const INTERVAL_PIVOT = '2020-01-01T00:00:00/2020-08-01T00:00:00';
+    const INTERVAL_LAST_MONTH = '2020-12-01T00:00:00/2021-01-01T00:00:00';
+
+    const INTERVAL_CAT_1 = '2020-06-01T00:00:00/2020-08-01T00:00:00';
 
 //    const DATA_SOURCE = 'economic_2020v4';
     const DATA_SOURCE = 'economic_2020v16_test';
@@ -33,6 +35,8 @@ class EconomicController extends Controller
     const STATUS_PAUSE = 'В простое';
 
     const LIMIT_TOP = 10;
+
+    const BUILDER_CAT1_COUNT = 'BUILDER_CAT1_COUNT';
 
     public function __construct(DruidClient $druidClient)
     {
@@ -56,47 +60,42 @@ class EconomicController extends Controller
 
         $org = Org::findOrFail($request->org);
 
+        $interval = $request->dt
+            ? self::intervalDtFormat($request->dt)
+            : null;
+
         $builder0 = $this
             ->druidClient
             ->query(self::DATA_SOURCE, Granularity::YEAR)
-            ->interval(self::INTERVAL1)
-            ->select('profitability')
+            ->interval($interval ?? self::INTERVAL1)
             ->sum("Operating_profit")
             ->where('profitability', '=', self::PROFITABILITY_CAT_1);
 
         $builder1 = $this
             ->druidClient
             ->query(self::DATA_SOURCE, Granularity::MONTH)
-            ->interval(self::INTERVAL2)
-            ->select('profitability')
+            ->interval($interval ?? self::INTERVAL1)
             ->sum("Operating_profit")
             ->where('profitability', '=', self::PROFITABILITY_CAT_1);
 
-        $builder2 = $this
+        $builderCat1Count = $this
             ->druidClient
             ->query(self::DATA_SOURCE, Granularity::MONTH)
-            ->interval(self::INTERVAL3)
-            ->select("uwi")
-            ->where('profitability', '=', self::PROFITABILITY_CAT_1);
-
-        $builder3 = $this
-            ->druidClient
-            ->query(self::DATA_SOURCE, Granularity::MONTH)
-            ->interval(self::INTERVAL4)
-            ->select("uwi")
+            ->interval(self::INTERVAL_CAT_1)
+            ->distinctCount('uwi')
             ->where('profitability', '=', self::PROFITABILITY_CAT_1);
 
         $builder4 = $this
             ->druidClient
             ->query(self::DATA_SOURCE, Granularity::YEAR)
-            ->interval(self::INTERVAL1)
+            ->interval($interval ?? self::INTERVAL1)
             ->longSum("prs1")
             ->where('profitability', '=', self::PROFITABILITY_CAT_1);
 
         $builder5 = $this
             ->druidClient
             ->query(self::DATA_SOURCE, Granularity::MONTH)
-            ->interval(self::INTERVAL4)
+            ->interval($interval ?? self::INTERVAL4)
             ->select("uwi")
             ->sum("oil")
             ->sum("liquid")
@@ -108,7 +107,7 @@ class EconomicController extends Controller
         $builder6 = $this
             ->druidClient
             ->query(self::DATA_SOURCE, Granularity::DAY)
-            ->interval(self::INTERVAL4)
+            ->interval($interval ?? self::INTERVAL4)
             ->sum("oil")
             ->sum("liquid")
             ->sum("Operating_profit")
@@ -117,7 +116,7 @@ class EconomicController extends Controller
         $builder7 = $this
             ->druidClient
             ->query(self::DATA_SOURCE, Granularity::MONTH)
-            ->interval(self::INTERVAL8)
+            ->interval($interval ?? self::INTERVAL8)
             ->sum("oil")
             ->sum("liquid")
             ->sum("Operating_profit")
@@ -126,53 +125,42 @@ class EconomicController extends Controller
         $builder8 = $this
             ->druidClient
             ->query(self::DATA_SOURCE, Granularity::YEAR)
-            ->interval(self::INTERVAL8)
+            ->interval($interval ?? self::INTERVAL8)
             ->select("uwi")
             ->sum("prs1")
             ->orderBy('prs1', 'desc')
             ->where('prs1', '>', '0')
             ->where('profitability', '=', self::PROFITABILITY_CAT_1);
 
-        $builder9 = $this
-            ->druidClient
-            ->query(self::DATA_SOURCE, Granularity::DAY)
-            ->interval(self::INTERVAL_PIVOT)
-            ->select('__time', 'dt', function (ExtractionBuilder $extractionBuilder) {
-                $extractionBuilder->timeFormat(self::TIME_FORMAT);
-            })
-            ->select('profitability')
-            ->count('uwi')
-            ->where('status', '=', self::STATUS_ACTIVE)
-            ->where('profitability', '=', self::PROFITABILITY_PROFITABLE);
+        $buildersProfitabilityCount = [];
 
-        $builder10 = $this
-            ->druidClient
-            ->query(self::DATA_SOURCE, Granularity::DAY)
-            ->interval(self::INTERVAL_PIVOT)
-            ->select('__time', 'dt', function (ExtractionBuilder $extractionBuilder) {
-                $extractionBuilder->timeFormat(self::TIME_FORMAT);
-            })
-            ->select('profitability')
-            ->count('uwi')
-            ->where('status', '=', self::STATUS_ACTIVE)
-            ->where('profitability', '=', self::PROFITABILITY_CAT_1);
+        $statuses = [
+            'profitability' => self::STATUS_ACTIVE,
+            'profitability_v_prostoe' => self::STATUS_PAUSE
+        ];
 
-        $builder11 = $this
-            ->druidClient
-            ->query(self::DATA_SOURCE, Granularity::DAY)
-            ->interval(self::INTERVAL_PIVOT)
-            ->select('__time', 'dt', function (ExtractionBuilder $extractionBuilder) {
-                $extractionBuilder->timeFormat(self::TIME_FORMAT);
-            })
-            ->select('profitability')
-            ->count('uwi')
-            ->where('status', '=', self::STATUS_ACTIVE)
-            ->where('profitability', '=', self::PROFITABILITY_CAT_2);
+        foreach ($statuses as $column => $status) {
+            $buildersProfitabilityCount[$status] = $this
+                ->druidClient
+                ->query(self::DATA_SOURCE, Granularity::DAY)
+                ->interval($interval ?? self::INTERVAL_PIVOT)
+                ->select('__time', 'dt', function (ExtractionBuilder $extractionBuilder) {
+                    $extractionBuilder->timeFormat(self::TIME_FORMAT);
+                })
+                ->select($column)
+                ->count('count')
+                ->where('status', '=', $status)
+                ->whereIn($column, [
+                    self::PROFITABILITY_PROFITABLE,
+                    self::PROFITABILITY_CAT_1,
+                    self::PROFITABILITY_CAT_2,
+                ]);
+        }
 
         $builder12 = $this
             ->druidClient
             ->query(self::DATA_SOURCE, Granularity::DAY)
-            ->interval(self::INTERVAL_PIVOT)
+            ->interval($interval ?? self::INTERVAL_PIVOT)
             ->select('__time', 'dt', function (ExtractionBuilder $extractionBuilder) {
                 $extractionBuilder->timeFormat(self::TIME_FORMAT);
             })
@@ -183,7 +171,7 @@ class EconomicController extends Controller
         $builder13 = $this
             ->druidClient
             ->query(self::DATA_SOURCE, Granularity::YEAR)
-            ->interval(self::INTERVAL14)
+            ->interval($interval ?? self::INTERVAL14)
             ->select("uwi")
             ->sum("Operating_profit")
             ->where('Operating_profit', '!=', '0')
@@ -193,7 +181,7 @@ class EconomicController extends Controller
         $builder14 = $this
             ->druidClient
             ->query(self::DATA_SOURCE, Granularity::DAY)
-            ->interval(self::INTERVAL_PIVOT)
+            ->interval($interval ?? self::INTERVAL_PIVOT)
             ->select('__time', 'dt', function (ExtractionBuilder $extractionBuilder) {
                 $extractionBuilder->timeFormat(self::TIME_FORMAT);
             })
@@ -203,48 +191,53 @@ class EconomicController extends Controller
             ->count('uwi')
             ->where('status', '=', self::STATUS_ACTIVE);
 
-        $builder15 = $this
-            ->druidClient
-            ->query(self::DATA_SOURCE, Granularity::DAY)
-            ->interval(self::INTERVAL_PIVOT)
-            ->select('__time', 'dt', function (ExtractionBuilder $extractionBuilder) {
-                $extractionBuilder->timeFormat(self::TIME_FORMAT);
-            })
-            ->select('profitability_v_prostoe')
-            ->count('count')
-            ->where('status', '=', self::STATUS_PAUSE)
-            ->whereIn('profitability_v_prostoe', [
-                self::PROFITABILITY_PROFITABLE,
-                self::PROFITABILITY_CAT_1,
-                self::PROFITABILITY_CAT_2,
-            ]);
 
-        $builders = [
-            $builder0,
-            $builder1,
-            $builder2,
-            $builder3,
-            $builder4,
-            $builder5,
-            $builder6,
-            $builder7,
-            $builder8,
-            $builder9,
-            $builder10,
-            $builder11,
-            $builder12,
-            $builder13,
-            $builder14,
-            $builder15,
+        $builder16 = $this
+            ->druidClient
+            ->query(self::DATA_SOURCE, Granularity::MONTH)
+            ->interval($interval ?? self::INTERVAL_LAST_MONTH);
+
+        $sumKeys = [
+            'Revenue_export',
+            'Revenue_local',
+            'Variable_expenditures',
+            'Fixed_expenditures',
+            'MET_payments',
+            'Production_expenditures',
         ];
 
+        foreach ($sumKeys as $sumKey) {
+            $builder16->sum($sumKey);
+        }
+
+        $builders = [
+            0 => $builder0,
+            1 => $builder1,
+            self::BUILDER_CAT1_COUNT => $builderCat1Count,
+            4 => $builder4,
+            5 => $builder5,
+            6 => $builder6,
+            7 => $builder7,
+            8 => $builder8,
+            12 => $builder12,
+            13 => $builder13,
+            14 => $builder14,
+            16 => $builder16,
+        ];
+
+        foreach ($buildersProfitabilityCount as $key => $builder) {
+            $builders[$key] = $builder;
+        }
+
         if ($org->druid_id) {
+            /** @var QueryBuilder $builder */
             foreach ($builders as &$builder) {
                 $builder->where('org_id2', '=', $org->druid_id);
             }
         }
 
         if ($request->dpz) {
+            /** @var QueryBuilder $builder */
             foreach ($builders as &$builder) {
                 $builder->where('dpz', '=', $request->dpz);
             }
@@ -252,8 +245,8 @@ class EconomicController extends Controller
 
         $result = [];
 
-        foreach ($builders as $index => $builder) {
-            $result[$index] = in_array($index, [6, 7])
+        foreach ($builders as $key => $builder) {
+            $result[$key] = in_array($key, [6, 7, 16])
                 ? $builder->timeseries()->data()
                 : $builder->groupBy()->data();
         }
@@ -334,16 +327,6 @@ class EconomicController extends Controller
             $data['prs1'][] = [$item['uwi'], $item['prs1']];
         }
 
-        foreach ($result[9] as $index => &$item) {
-            $dataChart1['dt'][] = $item['dt'];
-
-            $dataChart1[self::PROFITABILITY_PROFITABLE][] = $item['uwi'];
-
-            $dataChart1[self::PROFITABILITY_CAT_1][] = $result[10][$index]['uwi'];
-
-            $dataChart1[self::PROFITABILITY_CAT_2][] = $result[11][$index]['uwi'];
-        }
-
         foreach ($result[12] as &$item) {
             $oil = $item['oil'] / 1000;
 
@@ -373,7 +356,13 @@ class EconomicController extends Controller
 
         $dataChart4['dt'] = array_keys($dataChart4['dt']);
 
-        foreach ($result[15] as &$item) {
+        foreach ($result[self::STATUS_ACTIVE] as &$item) {
+            $dataChart1['dt'][$item['dt']] = 1;
+
+            $dataChart1[$item['profitability']][] = $item['count'];
+        }
+
+        foreach ($result[self::STATUS_PAUSE] as &$item) {
             $dataChart5['dt'][$item['dt']] = 1;
 
             $dataChart5[$item['profitability_v_prostoe']][] = $item['count'];
@@ -381,16 +370,14 @@ class EconomicController extends Controller
 
         $dataChart5['dt'] = array_keys($dataChart5['dt']);
 
-        $averageProfitlessCat1Month = count($result[3]);
-        $averageProfitlessCat1PrevMonth = count($result[2]);
+        $averageProfitlessCat1PrevMonth = (int)$result[self::BUILDER_CAT1_COUNT][0]['uwi'];
+        $averageProfitlessCat1Month = (int)$result[self::BUILDER_CAT1_COUNT][1]['uwi'];
 
-        $yearIndex = count($result[0]) - 1;
-        $lastMonthIndex = count($result[1]) - 1;
-        $prevMonthIndex = $lastMonthIndex - 1;
+        list($prevMonth, $lastMonth) = array_slice($result[1], -2, 2);
 
-        list($year, $yearWord) = self::moneyFormat($result[0][$yearIndex]["Operating_profit"]);
-        list($month, $monthWord) = self::moneyFormat($result[1][$lastMonthIndex]["Operating_profit"]);
-        $percent = ($result[1][$prevMonthIndex]["Operating_profit"] - $result[1][$lastMonthIndex]["Operating_profit"]) * 100 / $result[1][$prevMonthIndex]["Operating_profit"];
+        list($year, $yearWord) = self::moneyFormat(end($result[0])["Operating_profit"]);
+        list($month, $monthWord) = self::moneyFormat($lastMonth["Operating_profit"]);
+        $percent = ($prevMonth["Operating_profit"] - $lastMonth["Operating_profit"]) * 100 / $prevMonth["Operating_profit"];
         $percentCount = ($averageProfitlessCat1PrevMonth - $averageProfitlessCat1Month) * 100 / $averageProfitlessCat1PrevMonth;
 
         return [
@@ -411,7 +398,16 @@ class EconomicController extends Controller
             'chart3' => $dataChart3,
             'chart4' => $dataChart4,
             'chart5' => $dataChart5,
+            'sum' => $result[16]
         ];
+    }
+
+    static function intervalDtFormat(array $interval): string
+    {
+        return $interval[0]
+            . "T00:00:00+00:00/"
+            . $interval[1]
+            . "T00:00:00+00:00";
     }
 
     static function profitabilityFormat($item): string

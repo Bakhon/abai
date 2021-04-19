@@ -32,7 +32,7 @@ export default {
   background: #656A8A;
   font-size: 12px;
   line-height: 14px;
-  height: 54px;
+  min-height: 54px;
   cursor: pointer;
 }
 </style>

@@ -15,7 +15,9 @@ class EconomicDataRequest extends FormRequest
     {
         return [
             'org' => 'required|integer|min:1',
-            'dpz' => 'nullable|string'
+            'dpz' => 'nullable|string',
+            'dt' => 'nullable|array|min:2|max:2',
+            'dt.*' => 'required_with:dt|date_format:d-m-Y'
         ];
     }
 }
