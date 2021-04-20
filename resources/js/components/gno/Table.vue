@@ -1254,7 +1254,7 @@
 
                     <div class="block__centrators">
                         <h6 class="main__title__block_centrators"><b>{{trans('pgno.interval_centrators')}}:</b></h6>
-                        <h6 class="title__block__centrators">{{trans('pgno.recomended')}}: 0-280, 350-450, 550-580</h6>
+                        <h6 class="title__block__centrators">{{trans('pgno.recommended')}}: 0-280, 350-450, 550-580</h6>
                         <h6 class="title__block__centrators">{{trans('pgno.required')}}: 320-330, 650-760, 990-1030</h6>
                       </div>
                     <button class="button-pdf col-12" @click="createPDF()">
