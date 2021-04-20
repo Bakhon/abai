@@ -9,9 +9,6 @@ class HydroCalcFilter extends BaseFilter
 
     protected function sort(string $field, bool $isDescending)
     {
-        switch($field) {
-            default:
-                $this->query->orderBy($field, $isDescending ? 'desc' : 'asc');
-        }
+        $this->query->orderBy($field, $isDescending ? 'desc' : 'asc');
     }
 }

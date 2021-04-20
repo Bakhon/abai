@@ -28,123 +28,123 @@ class HydroCalculcation extends Controller
             'links' => [
                 'list' => route('hydro_calculcation.list'),
             ],
-            'title' => 'Таблица расчета гидравлики',
+            'title' => trans('monitoring.hydro_calculcation.table_title'),
             'fields' => [
                 'id' => [
                     'title' => '№',
                     'type' => 'numeric',
                 ],
                 'out_dia' => [
-                    'title' => 'Внешний диаметр, мм',
+                    'title' => trans('monitoring.pipe_types.fields.outside_diameter'),
                     'type' => 'numeric',
 
                 ],
                 'wall_thick' => [
-                    'title' => 'Толщина стенки, мм',
+                    'title' => trans('monitoring.pipe_types.fields.thickness'),
                     'type' => 'numeric',
                     'sortable' => false,
                     'filterable' => false,
                 ],
                 'length' => [
-                    'title' => 'Протяженность, м',
+                    'title' => trans('monitoring.hydro_calculcation.fields.length'),
                     'type' => 'numeric',
                     'sortable' => false,
                     'filterable' => false,
                 ],
                 'qliq' => [
-                    'title' => 'Qж, м3/сут',
+                    'title' => trans('monitoring.units.q_zh').', '.trans('measurements.m3/day'),
                     'type' => 'numeric',
                     'sortable' => false,
                     'filterable' => false,
                 ],
                 'wc' => [
-                    'title' => 'Обводненность, %',
+                    'title' => trans('monitoring.gu.fields.bsw').', '.trans('measurements.percent'),
                     'type' => 'numeric',
                     'sortable' => false,
                     'filterable' => false,
                 ],
                 'gazf' => [
-                    'title' => 'ГФ, м3/м3',
+                    'title' => trans('monitoring.omgngdu.fields.gas_factor'),
                     'type' => 'numeric',
                     'sortable' => false,
                     'filterable' => false,
                 ],
                 'press_start' => [
-                    'title' => 'Давление начальное, ата',
+                    'title' => trans('monitoring.hydro_calculcation.fields.pressure_start'),
                     'type' => 'numeric',
                     'sortable' => false,
                     'filterable' => false,
                 ],
                 'press_end' => [
-                    'title' => 'Давление конечное, ата',
+                    'title' => trans('monitoring.hydro_calculcation.fields.pressure_end'),
                     'type' => 'numeric',
                     'sortable' => false,
                     'filterable' => false,
                 ],
                 'temp_start' => [
-                    'title' => 'Температура начальная, °С',
+                    'title' => trans('monitoring.hydro_calculcation.fields.temperature_start'),
                     'type' => 'numeric',
                     'sortable' => false,
                     'filterable' => false,
                 ],
                 'temp_end' => [
-                    'title' => 'Температура конечная, °С',
+                    'title' => trans('monitoring.hydro_calculcation.fields.temperature_end'),
                     'type' => 'numeric',
                     'sortable' => false,
                     'filterable' => false,
                 ],
                 'start_point' => [
-                    'title' => 'Начальная точка',
+                    'title' => trans('monitoring.hydro_calculcation.fields.start_point'),
                     'type' => 'numeric',
                 ],
                 'end_point' => [
-                    'title' => 'Конечная точка',
+                    'title' => trans('monitoring.hydro_calculcation.fields.end_point'),
                     'type' => 'numeric',
                 ],
                 'name' => [
-                    'title' => 'Трубопровод',
+                    'title' => trans('monitoring.hydro_calculcation.fields.pipe_name'),
                     'type' => 'numeric',
                     'sortable' => false,
                     'filterable' => false,
                 ],
                 'mix_speed_avg' => [
-                    'title' => 'Средняя скорость смеси, м/с',
+                    'title' => trans('monitoring.hydro_calculcation.fields.mix_speed_avg'),
                     'type' => 'numeric',
                     'sortable' => false,
                     'filterable' => false,
                 ],
                 'fluid_speed' => [
-                    'title' => 'Скорость жидкости, м/с',
+                    'title' => trans('monitoring.hydro_calculcation.fields.fluid_speed'),
                     'type' => 'numeric',
                     'sortable' => false,
                     'filterable' => false,
                 ],
                 'gaz_speed' => [
-                    'title' => 'Скорость газа, м/с',
+                    'title' => trans('monitoring.hydro_calculcation.fields.gaz_speed'),
                     'type' => 'numeric',
                     'sortable' => false,
                     'filterable' => false,
                 ],
                 'flow_type' => [
-                    'title' => 'Режим течения',
+                    'title' => trans('monitoring.hydro_calculcation.fields.flow_type'),
                     'type' => 'numeric',
                     'sortable' => false,
                     'filterable' => false,
                 ],
                 'press_change' => [
-                    'title' => 'Перепад давления, атм/км',
+                    'title' => trans('monitoring.hydro_calculcation.fields.press_change'),
                     'type' => 'numeric',
                     'sortable' => false,
                     'filterable' => false,
                 ],
                 'break_qty' => [
-                    'title' => 'Количество порывов',
+                    'title' => trans('monitoring.hydro_calculcation.fields.break_qty'),
                     'type' => 'numeric',
                     'sortable' => false,
                     'filterable' => false,
                 ],
                 'height_drop' => [
-                    'title' => 'Перепад высот, м',
+                    'title' => trans('monitoring.hydro_calculcation.fields.height_drop'),
                     'type' => 'numeric',
                     'sortable' => false,
                     'filterable' => false,
@@ -169,17 +169,21 @@ class HydroCalculcation extends Controller
             ->paginate(25);
 
         foreach ($points as $key => $point) {
-            if ($points[$key]->gu) {
-                $points[$key]->lastOmgngdu = OmgNGDU::where('gu_id', $points[$key]->gu->id)
-                    ->orderBy('date', 'desc')
-                    ->first();
-
-                if ($points[$key]->lastOmgngdu) {
-                    $temperature = $points[$key]->lastOmgngdu->heater_output_temperature;
-                    $temperature = $temperature ? ($temperature < 40 ? 50 : $temperature) : 50;
-                    $points[$key]->lastOmgngdu->heater_output_temperature = $temperature;
-                }
+            if (!$points[$key]->gu) {
+                continue;
             }
+
+            $points[$key]->lastOmgngdu = OmgNGDU::where('gu_id', $points[$key]->gu->id)
+                ->orderBy('date', 'desc')
+                ->first();
+
+            if (!$points[$key]->lastOmgngdu) {
+                continue;
+            }
+
+            $temperature = $points[$key]->lastOmgngdu->heater_output_temperature;
+            $temperature = $temperature ? ($temperature < 40 ? 50 : $temperature) : 50;
+            $points[$key]->lastOmgngdu->heater_output_temperature = $temperature;
         }
 
         return response()->json(json_decode(HydroCalcListResource::collection($points)->toJson()));
