@@ -750,9 +750,9 @@
                                               wells[scope.$index].r_con[1][0]
                                             )}`"
                                           >
-                                            </span><span v-if="scope.row.r_con[0] != null">{{
-                                      Math.round(scope.row.r_con[0] * 10) / 10
-                                    }}</span>
+                                            </span><span v-if="scope.row.r_con[0] != null">
+                                          {{_.round(scope.row.r_con[0], 1)}}
+                                    </span>
 
                                 </div>   
                               </el-tooltip> 
@@ -783,9 +783,9 @@
                                               wells[scope.$index].cas_OD[1][0]
                                             )}`"
                                           >
-                                            </span><span v-if="scope.row.cas_OD[0] != null">{{
-                                      Math.round(scope.row.cas_OD[0] * 10) / 10
-                                    }}</span>
+                                            </span><span v-if="scope.row.cas_OD[0] != null">
+                                              {{_.round(scope.row.cas_OD[0], 1)}}
+                                            </span>
                                 </div>   
                               </el-tooltip> 
                             </template>
@@ -830,9 +830,7 @@
                                               wells[scope.$index].tub_OD[1][0]
                                             )}`"
                                           >
-                                            </span><span v-if="scope.row.tub_OD[0] != null">{{
-                                      Math.round(scope.row.tub_OD[0] * 10) / 10
-                                    }}</span>
+                                            </span><span v-if="scope.row.tub_OD[0] != null">{{_.round(scope.row.tub_OD[0], 1)}}</span>
                                 </div>   
                               </el-tooltip> 
                             </template>
@@ -876,9 +874,7 @@
                                               wells[scope.$index].choke_d[1][0]
                                             )}`"
                                           >
-                                            </span><span v-if="scope.row.choke_d[0] != null">{{
-                                      Math.round(scope.row.choke_d[0] * 10) / 10
-                                    }}</span>
+                                            </span><span v-if="scope.row.choke_d[0] != null">{{_.round(scope.row.choke_d[0], 1)}}</span>
                                 </div>   
                               </el-tooltip> 
                             </template>
@@ -907,9 +903,7 @@
                                               wells[scope.$index].h_up_perf_md[1][0]
                                             )}`"
                                           >
-                                            </span><span v-if="scope.row.h_up_perf_md[0] != null">{{
-                                      Math.round(scope.row.h_up_perf_md[0] * 10) / 10
-                                    }}</span>
+                                            </span><span v-if="scope.row.h_up_perf_md[0] != null">{{_.round(scope.row.h_up_perf_md[0], 1)}}</span>
                                 </div>   
                               </el-tooltip> 
                             </template>
@@ -938,9 +932,7 @@
                                               wells[scope.$index].h_up_perf_ext[1][0]
                                             )}`"
                                           >
-                                            </span><span v-if="scope.row.h_up_perf_ext[0] != null">{{
-                                      Math.round(scope.row.h_up_perf_ext[0] * 10) / 10
-                                    }}</span>
+                                            </span><span v-if="scope.row.h_up_perf_ext[0] != null">{{_.round(scope.row.h_up_perf_ext[0], 1)}}</span>
                                 </div>   
                               </el-tooltip> 
                             </template>
@@ -1044,9 +1036,7 @@
                                               wells[scope.$index].spm[1][0]
                                             )}`"
                                           >
-                                            </span><span v-if="scope.row.spm[0] != null">{{
-                                      Math.round(scope.row.spm[0] * 10) / 10
-                                    }}</span>
+                                            </span><span v-if="scope.row.spm[0] != null">{{_.round(scope.row.spm[0], 1)}}</span>
                                 </div>   
                               </el-tooltip> 
                             </template>
@@ -1075,9 +1065,7 @@
                                               wells[scope.$index].stroke_len[1][0]
                                             )}`"
                                           >
-                                            </span><span v-if="scope.row.stroke_len[0] != null">{{
-                                      Math.round(scope.row.stroke_len[0] * 10) / 10
-                                    }}</span>
+                                            </span><span v-if="scope.row.stroke_len[0] != null">{{_.round(scope.row.stroke_len[0], 1)}}</span>
                                 </div>   
                               </el-tooltip> 
                             </template>
@@ -1106,9 +1094,7 @@
                                               wells[scope.$index].q_theor[1][0]
                                             )}`"
                                           >
-                                            </span><span v-if="scope.row.q_theor[0] != null">{{
-                                      Math.round(scope.row.q_theor[0] * 10) / 10
-                                    }}</span>
+                                            </span><span v-if="scope.row.q_theor[0] != null">{{_.round(scope.row.q_theor[0], 1)}}</span>
                                 </div>   
                               </el-tooltip> 
                             </template>
@@ -1137,9 +1123,7 @@
                                               wells[scope.$index].freq[1][0]
                                             )}`"
                                           >
-                                            </span><span v-if="scope.row.freq[0] != null">{{
-                                      Math.round(scope.row.freq[0] * 10) / 10
-                                    }}</span>
+                                            </span><span v-if="scope.row.freq[0] != null">{{_.round(scope.row.freq[0], 1)}}</span>
                                 </div>   
                               </el-tooltip> 
                             </template>
@@ -1169,9 +1153,7 @@
                                               wells[scope.$index].h_pump_set[1][0]
                                             )}`"
                                           >
-                                            </span><span v-if="scope.row.h_pump_set[0] != null">{{
-                                      Math.round(scope.row.h_pump_set[0] * 10) / 10
-                                    }}</span>
+                                            </span><span v-if="scope.row.h_pump_set[0] != null">{{_.round(scope.row.h_pump_set[0], 1)}}</span>
                                 </div>   
                               </el-tooltip> 
                             </template>
@@ -1200,9 +1182,7 @@
                                               wells[scope.$index].whp[1][0]
                                             )}`"
                                           >
-                                            </span><span v-if="scope.row.whp[0] != null">{{
-                                      Math.round(scope.row.whp[0] * 10) / 10
-                                    }}</span>
+                                            </span><span v-if="scope.row.whp[0] != null">{{_.round(scope.row.whp[0], 1)}}</span>
                                 </div>   
                               </el-tooltip> 
                             </template>
@@ -1231,9 +1211,7 @@
                                               wells[scope.$index].line_p[1][0]
                                             )}`"
                                           >
-                                            </span><span v-if="scope.row.line_p[0] != null">{{
-                                      Math.round(scope.row.line_p[0] * 10) / 10
-                                    }}</span>
+                                            </span><span v-if="scope.row.line_p[0] != null">{{_.round(scope.row.line_p[0], 1)}}</span>
                                 </div>   
                               </el-tooltip> 
                             </template>
@@ -1262,9 +1240,7 @@
                                               wells[scope.$index].p_res[1][0]
                                             )}`"
                                           >
-                                            </span><span v-if="scope.row.p_res[0] != null">{{
-                                      Math.round(scope.row.p_res[0] * 10) / 10
-                                    }}</span>
+                                            </span><span v-if="scope.row.p_res[0] != null">{{_.round(scope.row.p_res[0], 1)}}</span>
                                 </div>   
                               </el-tooltip> 
                             </template>
@@ -1293,9 +1269,7 @@
                                               wells[scope.$index].h_dyn[1][0]
                                             )}`"
                                           >
-                                            </span><span v-if="scope.row.h_dyn[0] != null">{{
-                                      Math.round(scope.row.h_dyn[0] * 10) / 10
-                                    }}</span>
+                                            </span><span v-if="scope.row.h_dyn[0] != null">{{_.round(scope.row.h_dyn[0], 1)}}</span>
                                 </div>   
                               </el-tooltip> 
                             </template>
@@ -1324,9 +1298,7 @@
                                               wells[scope.$index].p_annular[1][0]
                                             )}`"
                                           >
-                                            </span><span v-if="scope.row.p_annular[0] != null">{{
-                                      Math.round(scope.row.p_annular[0] * 10) / 10
-                                    }}</span>
+                                            </span><span v-if="scope.row.p_annular[0] != null">{{_.round(scope.row.p_annular[0], 1)}}</span>
                                 </div>   
                               </el-tooltip> 
                             </template>
@@ -1356,9 +1328,7 @@
                                               wells[scope.$index].p_intake[1][0]
                                             )}`"
                                           >
-                                            </span><span v-if="scope.row.p_intake[0] != null">{{
-                                      Math.round(scope.row.p_intake[0] * 10) / 10
-                                    }}</span>
+                                            </span><span v-if="scope.row.p_intake[0] != null">{{_.round(scope.row.p_intake[0], 1)}}</span>
                                 </div>   
                               </el-tooltip> 
                             </template>
@@ -1458,9 +1428,7 @@
                                               wells[scope.$index].bhp[1][0]
                                             )}`"
                                           >
-                                            </span><span v-if="scope.row.bhp[0] != null">{{
-                                      Math.round(scope.row.bhp[0] * 10) / 10
-                                    }}</span>
+                                            </span><span v-if="scope.row.bhp[0] != null">{{_.round(scope.row.bhp[0], 1)}}</span>
                                 </div>   
                               </el-tooltip> 
                             </template>
@@ -1485,9 +1453,7 @@
                                               wells[scope.$index].q_o[1][0]
                                             )}`"
                                           >
-                                            </span><span v-if="scope.row.q_o[0] != null">{{
-                                      Math.round(scope.row.q_o[0] * 10) / 10
-                                    }}</span>
+                                            </span><span v-if="scope.row.q_o[0] != null">{{_.round(scope.row.q_o[0], 1)}}</span>
                                 </div>   
                               </el-tooltip> 
                             </template>
@@ -1512,9 +1478,7 @@
                                               wells[scope.$index].q_l[1][0]
                                             )}`"
                                           >
-                                            </span><span v-if="scope.row.q_l[0] != null">{{
-                                      Math.round(scope.row.q_l[0] * 10) / 10
-                                    }}</span>
+                                            </span><span v-if="scope.row.q_l[0] != null">{{_.round(scope.row.q_l[0], 1)}}</span>
                                 </div>   
                               </el-tooltip> 
                             </template>
@@ -1539,9 +1503,7 @@
                                               wells[scope.$index].wct[1][0]
                                             )}`"
                                           >
-                                            </span><span v-if="scope.row.wct[0] != null">{{
-                                      Math.round(scope.row.wct[0] * 10) / 10
-                                    }}</span>
+                                            </span><span v-if="scope.row.wct[0] != null">{{_.round(scope.row.wct[0], 1)}}</span>
                                 </div>   
                               </el-tooltip> 
                             </template>
@@ -1566,9 +1528,7 @@
                                               wells[scope.$index].gor[1][0]
                                             )}`"
                                           >
-                                            </span><span v-if="scope.row.gor[0] != null">{{
-                                      Math.round(scope.row.gor[0] * 10) / 10
-                                    }}</span>
+                                            </span><span v-if="scope.row.gor[0] != null">{{_.round(scope.row.gor[0], 1)}}</span>
                                 </div>   
                               </el-tooltip> 
                             </template>
@@ -1951,9 +1911,12 @@ import locale from 'element-ui/lib/locale';
 import TrTable from "./table";
 import TrFullTable from "./tablefull";
 import SearchFormRefresh from "../ui-kit/SearchFormRefresh.vue";
-// import FadeLoader from "vue-spinner/src/FadeLoader.vue";
 import { fields } from "./constants.js";
 import TrMultiselect from "./TrMultiselect.vue";
+
+import { isString } from "lodash";
+
+
 
 Vue.use(NotifyPlugin);
 Vue.use(ElementUI); 
@@ -1968,6 +1931,7 @@ export default {
   },
 
   computed: {
+    _() { return _; }, 
     // Добавление выбранных данных в таблицу
     addWellData() {
       if (this.allWells && this.allWells.length > 0) {
@@ -1998,6 +1962,7 @@ export default {
       } else return false;
       this.render++;
     },
+
     // фильтр месторожд.
     fieldFilters() {
       if (this.allWells && this.allWells.length > 0) {
