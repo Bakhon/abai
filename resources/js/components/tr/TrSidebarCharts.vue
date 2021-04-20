@@ -83,15 +83,7 @@ export default {
 </script>
 
 
-
-
 <style  scoped>
-/* .tr-sidebar__chart-menu {
-  margin: 0;
-  padding: 0;
-  width: 520px;
-  max-width: 80vw;
-} */
 .tr-sidebar__link {
   color: #FFF;
 
@@ -100,12 +92,8 @@ export default {
   font-weight: bold;
   font-size: 18px;
   padding: 3px 20px;
-  /* background: #3A3D7C; */
 }
-/* .tr-sidebar__graph {
-  background: #40467e;
-  padding: 3px 20px;
-} */
+
 .dropright.dropright {
   z-index: 5000;
 }
