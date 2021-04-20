@@ -29,7 +29,12 @@ class AddFieldsToDzoImportData extends Migration
     public function down()
     {
         Schema::table('dzo_import_data', function (Blueprint $table) {
-            //
+            $table->dropColumn(
+                'associated_gas_receive_kaspiy_aral_fact',
+                'associated_gas_raw_fact',
+                'associated_gas_delivery_commercial_gas_fact',
+                "associated_gas_expenses_for_own_losses_fact"
+            );
         });
     }
 }

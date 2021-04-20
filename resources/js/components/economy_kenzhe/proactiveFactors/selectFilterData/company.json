@@ -1,0 +1,13 @@
+[
+    {
+        "option": "company"
+    },
+    {
+        "value": 1,
+        "option": "selectFilterOption1"
+    },
+    {
+        "value": 2,
+        "option": "selectFilterOption2"
+    }
+]

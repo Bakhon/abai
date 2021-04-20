@@ -121,6 +121,9 @@ class TrunklineImport implements ToCollection, WithEvents, WithColumnLimit, With
 
             $row[self::LAT] = str_replace(',','.', $row[self::LAT]);
             $row[self::LON] = str_replace(',','.', $row[self::LON]);
+            $row[self::ELEVATION] = str_replace(',','.', $row[self::ELEVATION]);
+            $row[self::H_DISTANCE] = str_replace(',','.', $row[self::H_DISTANCE]);
+            $row[self::M_DISTANCE] = str_replace(',','.', $row[self::M_DISTANCE]);
 
             if (!empty($row[self::PIPE_START_NAME])) {
                 $pipe_type = $this->createPipeType($row);
@@ -177,7 +180,7 @@ class TrunklineImport implements ToCollection, WithEvents, WithColumnLimit, With
             [
                 'outside_diameter' => $row[self::OUTSIDE_DIAMETER],
                 'inner_diameter' => $row[self::INNER_DIAMETER],
-                'thickness' => $row[self::THICKNESS],
+                'thickness' => ($row[self::OUTSIDE_DIAMETER] - $row[self::INNER_DIAMETER])/2,
                 'roughness' => $roughness
             ]
         );

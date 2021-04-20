@@ -2,15 +2,24 @@
 
 namespace App\Http\Controllers\ComplicationMonitoring;
 
+use App\Exports\OmgCAExport;
+use App\Exports\PipeLineCalcExport;
+use App\Filters\GuFilter;
 use App\Http\Controllers\CrudController;
 use App\Http\Controllers\Traits\WithFieldsValidation;
+use App\Http\Requests\GuCreateRequest;
 use App\Http\Requests\GuUpdateRequest;
 use App\Http\Requests\IndexTableRequest;
+use App\Http\Resources\GuListResource;
 use App\Jobs\ExportOmgCAToExcel;
+use App\Models\ComplicationMonitoring\OmgNGDU;
+use App\Models\ComplicationMonitoring\TrunklinePoint;
 use App\Models\Refs\Gu;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Session;
+use Maatwebsite\Excel\Facades\Excel;
 
 class GusController extends CrudController
 {
@@ -80,7 +89,7 @@ class GusController extends CrudController
             ->getFilteredQuery($request->validated(), $query)
             ->paginate(25);
 
-        return response()->json(json_decode(\App\Http\Resources\GuListResource::collection($gus)->toJson()));
+        return response()->json(json_decode(GuListResource::collection($gus)->toJson()));
     }
 
     public function export(IndexTableRequest $request)
@@ -111,7 +120,7 @@ class GusController extends CrudController
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(\App\Http\Requests\GuCreateRequest $request)
+    public function store(GuCreateRequest $request)
     {
         $this->validateFields($request, 'gu');
 
@@ -179,11 +188,6 @@ class GusController extends CrudController
 
     protected function getFilteredQuery($filter, $query = null)
     {
-        return (new \App\Filters\GuFilter($query, $filter))->filter();
-    }
-
-    public function createExcel()
-    {
-
+        return (new GuFilter($query, $filter))->filter();
     }
 }
