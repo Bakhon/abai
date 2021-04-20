@@ -154,7 +154,7 @@ export default {
       this.formatedValue = this.getFormatedValue(newValue)
     }
   },
-  mounted() {
+  created() {
     if (['dict', 'dict_tree'].indexOf(this.item.type) > -1) {
       this.loadDict()
     }
@@ -260,7 +260,9 @@ export default {
       font-size: 14px;
       font-weight: normal;
       height: 28px;
+      line-height: 1;
       margin-top: 0;
+      max-width: 95%;
     }
 
     .vs__dropdown-menu {
