@@ -44,32 +44,7 @@ class PipeTypesController extends CrudController
                     'title' => trans('monitoring.pipe_types.fields.thickness'),
                     'type' => 'numeric',
                 ],
-                'roughness' => [
-                    'title' => trans('monitoring.pipe_types.fields.roughness'),
-                    'type' => 'numeric',
-                ],
-                'material' => [
-                    'title' => trans('monitoring.pipe_types.fields.material'),
-                    'type' => 'select',
-                    'filter' => [
-                        'values' => \App\Models\ComplicationMonitoring\Material::whereHas('pipeType')
-                            ->orderBy('name', 'asc')
-                            ->get()
-                            ->map(
-                                function ($item) {
-                                    return [
-                                        'id' => $item->id,
-                                        'name' => $item->name,
-                                    ];
-                                }
-                            )
-                            ->toArray()
-                    ]
-                ],
-                'plot' => [
-                    'title' => trans('monitoring.pipe_types.fields.plot'),
-                    'type' => 'numeric',
-                ],
+                
             ]
         ];
 

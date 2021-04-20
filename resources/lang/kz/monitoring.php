@@ -220,9 +220,9 @@ return array (
     'fields' => 
     array (
       'length' => 'Ұзындық',
-      'outside_diameter' => 'Сыртқы диаметр',
+      'outside_diameter' => 'Сыртқы диаметр, мм',
       'inner_diameter' => 'Ішкі диаметр',
-      'thickness' => 'Қабырға қалыңдығы',
+      'thickness' => 'Қабырға қалыңдығы, мм',
       'roughness' => 'Кедір-бұдырлық',
       'material' => 'Материал',
       'plot' => 'Бөлшегі',
@@ -249,14 +249,25 @@ return array (
   ),
   'module_name' => 'Асқынулар мониторингі',
   'close' => 'Жабу',
-  'zu' => 'ӨҚ',
+  'zu' => 
+  array (
+    'zu' => 'ӨҚ',
+  ),
   'well' => 'Ұңғы',
-  'gu' => 'ТҚ',
+  'gu' => 
+  array (
+    'fields' => 
+    array (
+      'surge_tank_pressure' => 'Буферлік сыйымдылық қысымы',
+      'daily_gas_production_in_sib' => 'БӨС газ мөлшері',
+    ),
+    'gu' => 'ТҚ',
+  ),
   'pipe_types' => 
   array (
     'fields' => 
     array (
-      'inner_diameter' => 'Ішкі диаметр',
+      'inner_diameter' => 'Ішкі диаметр, мм',
       'material' => 'Материал',
       'outside_diameter' => 'Сыртқы диаметр',
       'roughness' => 'Кедір-бұдырлық',

@@ -223,9 +223,9 @@ return array (
     'fields' => 
     array (
       'length' => 'Длина',
-      'outside_diameter' => 'Внешний диаметр',
+      'outside_diameter' => 'Внешний диаметр, мм',
       'inner_diameter' => 'Внутренний диаметр',
-      'thickness' => 'Толщина стенок',
+      'thickness' => 'Толщина стенки, мм',
       'roughness' => 'Жесткость',
       'material' => 'Материал',
       'plot' => 'Участок',
@@ -275,8 +275,39 @@ return array (
   ),
   'close' => 'Закрыть',
   'well' => 'Скважина',
-  'gu.gu' => 'ГУ',
-  'zu' => 'ЗУ',
+  'gu' => 
+  array (
+    'deleted' => 'ГУ удален',
+    'deleting_error' => 'Ошибка при удалении ГУ',
+    'name' => 'Имя ГУ',
+    'create_title' => 'Ввод данных по ГУ',
+    'edit_title' => 'Редактирование ГУ',
+    'params' => 'Параметры ГУ',
+    'fields' => 
+    array (
+      'daily_fluid_production' => 'Добыча жидкости',
+      'daily_oil_production' => 'Добыча нефти',
+      'daily_water_production' => 'Количество воды',
+      'bsw' => 'Обводненность',
+      'pump_discharge_pressure' => 'Выходное давление',
+      'heater_output_pressure' => 'Давление сепаратора',
+      'date' => 'Дата',
+      'heater_output_temperature' => 'Температура печи',
+      'surge_tank_pressure' => 'Давление в буферной емкости',
+      'daily_gas_production_in_sib' => 'Количество газа в СИБ',
+    ),
+    'redirect-to' => 'Перейти на',
+    'gu' => 'ГУ',
+  ),
+  'zu' => 
+  array (
+    'deleted' => 'ЗУ удален',
+    'deleting_error' => 'Ошибка при удалении ЗУ',
+    'name' => 'Имя ЗУ',
+    'create_title' => 'Ввод данных по ЗУ',
+    'edit_title' => 'Редактирование ЗУ',
+    'zu' => 'ЗУ',
+  ),
   'well_vinit' => 'Cкважину',
   'longitude' => 'Долгота',
   'latitude' => 'Широта',
@@ -290,7 +321,6 @@ return array (
   'pipe_types' => 
   array (
     'menu' => 'Типы труб',
-    'title' => 'Справочник тип размеров трубопроводов',
     'fields' => 
     array (
       'name' => 'Тип размер',
@@ -303,6 +333,7 @@ return array (
     ),
     'edit_title' => 'Редактирование типа трубы',
     'create_title' => 'Ввод данных по типу трубы',
+    'title' => 'Справочник тип размеров трубопроводов',
   ),
   'omgngdu_well' => 
   array (
