@@ -6,8 +6,7 @@
 @endsection
 <style>
     .proactive-factors-page-container {
-        flex-wrap: wrap;
-        margin: 0 !important;
+        flex-wrap: wrap;      
         color: #fff;
     }
 

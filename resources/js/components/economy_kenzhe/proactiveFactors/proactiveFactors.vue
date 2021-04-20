@@ -1,10 +1,10 @@
 <template>
-  <div class="row proactive-factors-page-container">
-    <div class="col-10 middle-block-columns">
-      <div class="col px-2 container-col_color"></div>
+  <div class="row">
+    <div class="col-10 container-fluid pr-1">
+      <div class="container-col_color">тест</div>
     </div>
-    <div class="col-2 px-2 middle-block-columns">
-      <div class="col px-2">
+    <div class="col-2 container-fluid pl-1">
+      <div>
         <div class="col container-col_color">
           <proactive-factors-select-filter
             v-bind:selectFilter="selectFilterFactor"
