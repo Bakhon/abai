@@ -102,7 +102,7 @@
               {{ subBlock.title }}
             </div>
 
-            <div class="progress mb-2"
+            <div class="progress my-2"
                  style="background: rgba(94, 92, 230, 0.2); height: 5px">
               <div
                   class="progress-bar"
