@@ -1,7 +1,7 @@
 <template>
   <div class="row">
     <div class="col-10 container-fluid pr-1">
-      <div class="container-col_color">тест</div>
+      <div class="container-col_color"></div>
     </div>
     <div class="col-2 container-fluid pl-1">
       <div>
