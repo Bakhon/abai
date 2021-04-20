@@ -12,6 +12,43 @@ use Carbon\Carbon;
 
 class ExcelFormController extends Controller
 {
+
+    public function getDzoCurrentData(Request $request)
+    {
+        $dzoName = $request->request->get('dzoName');
+        $dzoImportData = DzoImportData::query()
+            ->whereDate('date',Carbon::today('Asia/Almaty'))
+            ->where('dzo_name',$dzoName)
+            ->first();
+
+         $dzoImportData->downtimeReason = $this->getDowntimeReason($dzoImportData->id);
+         $dzoImportData->decreaseReason = $this->getDecreaseReason($dzoImportData->id);
+         $dzoImportData->fields = $this->getFieldsData($dzoImportData->id);
+
+         return response()->json($dzoImportData);
+    }
+
+    public function getDowntimeReason($parentId)
+    {
+        return DzoImportDowntimeReason::query()
+            ->where('import_data_id',$parentId)
+            ->get();
+    }
+
+    public function getDecreaseReason($parentId)
+    {
+        return DzoImportDecreaseReason::query()
+            ->where('import_data_id',$parentId)
+            ->get();
+    }
+
+    public function getFieldsData($parentId)
+        {
+            return DzoImportField::query()
+                ->where('import_data_id',$parentId)
+                ->get();
+        }
+
     public function store(Request $request)
     {
         $this->deleteAlreadyExistRecord($request);
