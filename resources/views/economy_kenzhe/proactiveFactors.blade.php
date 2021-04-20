@@ -6,7 +6,8 @@
 @endsection
 <style>
     .proactive-factors-page-container {
-        flex-wrap: wrap;      
+        flex-wrap: wrap;
+        margin: 0 !important;
         color: #fff;
     }
 
@@ -15,16 +16,26 @@
         width: 100%;
     }
 
+    .contro-panel-col_height {
+        height: 75px;
+        font-weight: bold;
+    }
+
+    .contro-panel-col_text {
+        position: relative;
+        top: 2em;
+
+    }
+
     .filter__input {
         background-color: #272953;
         color: #fff;
         border: none;
-        height: 70px;
-        width: 100%;
+        height: 75px;
     }
 
-    .filter__input option {
-        width: 100%;
+    .filter__option {
+        border: none;
     }
 
     .bootstrap-select ul.filter__input li:first-child {
@@ -34,5 +45,15 @@
     .middle-block-columns {
         padding-left: 0 !important;
         padding-right: 0 !important;
+    }
+
+    .btn.btn_color {
+        background-color: #293688;
+        border: none;
+    }
+
+    option .filter__option {
+        /* height: 75px; */
+        line-height: 75px;
     }
 </style>
