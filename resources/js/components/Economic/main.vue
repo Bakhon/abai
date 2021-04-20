@@ -54,7 +54,7 @@
                 {{ res.lastMonth.Operating_profit.sum.value[1] }}
               </span>
 
-              <economic-percent-badge :percent="res.lastMonth.Operating_profit.sum.percent"/>
+              <economic-percent-badge :percent="-res.lastMonth.Operating_profit.sum.percent"/>
             </economic-title>
 
             <economic-subtitle>
@@ -102,8 +102,28 @@
               {{ subBlock.title }}
             </div>
 
+            <div class="progress mb-2"
+                 style="background: rgba(94, 92, 230, 0.2); height: 5px">
+              <div
+                  class="progress-bar"
+                  role="progressbar"
+                  :style="{width: (100 + subBlock.sum.percent) + '%'}"
+                  :aria-valuenow="subBlock.sum.percent"
+                  :aria-valuemin="0"
+                  :aria-valuemax="100"
+              ></div>
+            </div>
+
+            <div class="d-flex font-size-12px line-height-14px mb-2">
+              <div class="flex-grow-1" style="color: #82BAFF">
+                {{ 100 + subBlock.sum.percent }} %
+              </div>
+
+              <div>{{ subBlock.sum.value_prev[0] }}</div>
+            </div>
+
             <economic-percent-badge
-                :percent="subBlock.sum.percent"
+                :percent="subBlock.reversePercent ? -subBlock.sum.percent : subBlock.sum.percent"
                 :reverse="subBlock.reverse"
                 class="font-size-22px line-height-26px"/>
           </div>
@@ -176,6 +196,7 @@ const economicRes = {
       data: [],
       sum: {
         value: [0, ''],
+        value_prev: [0, ''],
         percent: 0
       },
     },
@@ -183,6 +204,7 @@ const economicRes = {
       data: [],
       sum: {
         value: [0, ''],
+        value_prev: [0, ''],
         percent: 0
       },
     },
@@ -190,6 +212,7 @@ const economicRes = {
       data: [],
       sum: {
         value: [0, ''],
+        value_prev: [0, ''],
         percent: 0
       },
     },
@@ -197,6 +220,7 @@ const economicRes = {
       data: [],
       sum: {
         value: [0, ''],
+        value_prev: [0, ''],
         percent: 0
       },
     },
@@ -204,6 +228,7 @@ const economicRes = {
       data: [],
       sum: {
         value: [0, ''],
+        value_prev: [0, ''],
         percent: 0
       },
     },
@@ -211,6 +236,7 @@ const economicRes = {
       data: [],
       sum: {
         value: [0, ''],
+        value_prev: [0, ''],
         percent: 0
       },
     },
@@ -284,21 +310,25 @@ export default {
         [
           {
             title: 'Условно-переменные затраты',
-            sum: this.res.lastMonth.Variable_expenditures.sum
+            sum: this.res.lastMonth.Variable_expenditures.sum,
+            reversePercent: true
           },
           {
             title: 'Условно-постоянные затраты',
-            sum: this.res.lastMonth.Fixed_expenditures.sum
+            sum: this.res.lastMonth.Fixed_expenditures.sum,
+            reversePercent: true
           }
         ],
         [
           {
             title: 'Отчисления в государство (НДПИ, Рентный налог, ЭТП)',
-            sum: this.res.lastMonth.MET_payments.sum
+            sum: this.res.lastMonth.MET_payments.sum,
+            reversePercent: true
           },
           {
             title: 'Общие призводственые затраты',
-            sum: this.res.lastMonth.Production_expenditures.sum
+            sum: this.res.lastMonth.Production_expenditures.sum,
+            reversePercent: true
           },
         ],
       ]

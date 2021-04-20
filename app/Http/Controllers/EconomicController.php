@@ -65,7 +65,7 @@ class EconomicController extends Controller
         $builder1 = $this
             ->druidClient
             ->query(self::DATA_SOURCE, Granularity::YEAR)
-            ->interval($interval)
+            ->interval($interval ?? self::INTERVAL_LAST_YEAR)
             ->longSum("prs1")
             ->sum("Operating_profit")
             ->where('profitability', '=', self::PROFITABILITY_CAT_1);
@@ -121,7 +121,7 @@ class EconomicController extends Controller
         $builder7 = $this
             ->druidClient
             ->query(self::DATA_SOURCE, Granularity::YEAR)
-            ->interval($interval)
+            ->interval($interval ?? self::INTERVAL_LAST_YEAR)
             ->select("uwi")
             ->sum("Operating_profit")
             ->where('Operating_profit', '!=', '0')
@@ -131,7 +131,7 @@ class EconomicController extends Controller
         $builder8 = $this
             ->druidClient
             ->query(self::DATA_SOURCE, Granularity::DAY)
-            ->interval($interval)
+            ->interval($interval ?? self::INTERVAL_LAST_YEAR)
             ->select('__time', 'dt', function (ExtractionBuilder $extractionBuilder) {
                 $extractionBuilder->timeFormat(self::TIME_FORMAT);
             })
@@ -367,6 +367,7 @@ class EconomicController extends Controller
             'Operating_profit' => [
                 'data' => $data['Operating_profit_month'],
                 'sum' => [
+                    'value_prev' => self::moneyFormat($prevMonth["Operating_profit"]),
                     'value' => self::moneyFormat($lastMonth["Operating_profit"]),
                     'percent' => self::percentFormat($lastMonth["Operating_profit"], $prevMonth["Operating_profit"]),
                 ],
@@ -374,6 +375,7 @@ class EconomicController extends Controller
             'cat1' => [
                 'data' => $data['cat1_month'],
                 'count' => [
+                    'value_prev' => (int)$prevMonth['uwi'],
                     'value' => (int)$lastMonth['uwi'],
                     'percent' => self::percentFormat((int)$lastMonth['uwi'], (int)$prevMonth['uwi'])
                 ],
@@ -390,6 +392,7 @@ class EconomicController extends Controller
             $resLastMonth[$sumKey] = [
                 'sum' => [
                     'value' => self::moneyFormat($lastMonth),
+                    'value_prev' => self::moneyFormat($prevMonth),
                     'percent' => self::percentFormat($lastMonth, $prevMonth)
                 ]
             ];
@@ -421,7 +424,7 @@ class EconomicController extends Controller
 
     static function percentFormat(float $last, float $prev): float
     {
-        return round(($prev - $last) * 100 / $prev);
+        return round(($last - $prev) * 100 / $prev);
     }
 
     static function intervalLastYear(): string
