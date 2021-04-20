@@ -17,9 +17,9 @@
         <div class="row justify-content-between text-white bg-blue-dark text-wrap">
           <economic-col @click.native="pushBign('bign1')">
             <economic-title>
-              <span>{{ res.lastMonthCat1Count.toLocaleString() }}</span>
+              <span>{{ res.lastMonth.cat1.count.value.toLocaleString() }}</span>
 
-              <economic-percent-badge :percent="res.percentCount"/>
+              <economic-percent-badge :percent="-res.lastMonth.cat1.count.percent"/>
             </economic-title>
 
             <economic-subtitle>
@@ -31,9 +31,9 @@
             <economic-divider/>
 
             <economic-title>
-              <span>{{ res.year[0].toLocaleString() }}</span>
+              <span>{{ res.lastYear.Operating_profit.sum.value[0].toLocaleString() }}</span>
               <span class="font-size-16px line-height-20px text-blue">
-                {{ res.year[1] }}
+                {{ res.lastYear.Operating_profit.sum.value[1] }}
               </span>
             </economic-title>
 
@@ -46,12 +46,15 @@
             <economic-divider/>
 
             <economic-title>
-              <span>{{ res.month[0].toLocaleString() }}</span>
-              <span class="font-size-16px line-height-20px text-blue">
-                {{ res.month[1] }}
+              <span>
+                {{ res.lastMonth.Operating_profit.sum.value[0].toLocaleString() }}
               </span>
 
-              <economic-percent-badge :percent="res.percent"/>
+              <span class="font-size-16px line-height-20px text-blue">
+                {{ res.lastMonth.Operating_profit.sum.value[1] }}
+              </span>
+
+              <economic-percent-badge :percent="res.lastMonth.Operating_profit.sum.percent"/>
             </economic-title>
 
             <economic-subtitle>
@@ -63,7 +66,7 @@
             <economic-divider/>
 
             <economic-title>
-              {{ res.prs.toLocaleString() }}
+              {{ res.lastYear.prs1.count.value.toLocaleString() }}
             </economic-title>
 
             <economic-subtitle>
@@ -88,11 +91,11 @@
             <economic-divider v-if="subBlockIndex % 2 === 1"/>
 
             <div class="font-weight-bold font-size-32px line-height-38px">
-              {{ subBlock.values[0].toLocaleString() }}
+              {{ subBlock.sum.value[0].toLocaleString() }}
             </div>
 
             <div class="text-blue font-size-12px line-height-14px">
-              {{ subBlock.values[1] }}
+              {{ subBlock.sum.value[1] }}
             </div>
 
             <div class="flex-grow-1 mt-3 font-weight-bold line-height-20px font-size-16px">
@@ -100,7 +103,7 @@
             </div>
 
             <economic-percent-badge
-                :percent="subBlock.values[2]"
+                :percent="subBlock.sum.percent"
                 class="font-size-22px line-height-26px"/>
           </div>
         </div>
@@ -146,29 +149,83 @@ import EconomicPercentBadge from "./components/EconomicPercentBadge";
 Vue.use(VModal, {dynamicDefault: {draggable: true, resizable: true}});
 
 const economicRes = {
-  lastMonthCat1Count: 0,
-  month: [0, ''],
-  year: [0, ''],
-  percent: null,
-  percentCount: null,
-  wellsList: null,
-  OperatingProfitMonth: null,
-  OperatingProfitYear: null,
-  prs: 0,
-  prs1: 0,
+  lastYear: {
+    Operating_profit: {
+      data: [],
+      sum: {
+        value: [0, '']
+      },
+    },
+    prs1: {
+      data: [],
+      count: {
+        value: 0
+      },
+    },
+  },
+  lastMonth: {
+    Operating_profit: {
+      data: [],
+      sum: {
+        value: [0, ''],
+        percent: 0
+      },
+    },
+    Fixed_expenditures: {
+      data: [],
+      sum: {
+        value: [0, ''],
+        percent: 0
+      },
+    },
+    MET_payments: {
+      data: [],
+      sum: {
+        value: [0, ''],
+        percent: 0
+      },
+    },
+    Production_expenditures: {
+      data: [],
+      sum: {
+        value: [0, ''],
+        percent: 0
+      },
+    },
+    Revenue_export: {
+      data: [],
+      sum: {
+        value: [0, ''],
+        percent: 0
+      },
+    },
+    Revenue_local: {
+      data: [],
+      sum: {
+        value: [0, ''],
+        percent: 0
+      },
+    },
+    Variable_expenditures: {
+      data: [],
+      sum: {
+        value: [0, ''],
+        percent: 0
+      },
+    },
+    cat1: {
+      data: [],
+      count: {
+        value: 0,
+        percent: 0
+      },
+    },
+  },
   chart1: null,
   chart2: null,
   chart3: null,
   chart4: null,
   chart5: null,
-  sum: {
-    Fixed_expenditures: [0, '', 0],
-    MET_payments: [0, '', 0],
-    Production_expenditures: [0, '', 0],
-    Revenue_export: [0, '', 0],
-    Revenue_local: [0, '', 0],
-    Variable_expenditures: [0, '', 0],
-  }
 }
 
 export default {
@@ -213,31 +270,31 @@ export default {
         [
           {
             title: 'Выручка экспорт',
-            values: this.res.sum.Revenue_export
+            sum: this.res.lastMonth.Revenue_export.sum
           },
           {
             title: 'Выручка местный рынок',
-            values: this.res.sum.Revenue_local
+            sum: this.res.lastMonth.Revenue_local.sum
           }
         ],
         [
           {
             title: 'Условно-переменные затраты',
-            values: this.res.sum.Variable_expenditures
+            sum: this.res.lastMonth.Variable_expenditures.sum
           },
           {
             title: 'Условно-постоянные затраты',
-            values: this.res.sum.Fixed_expenditures
+            sum: this.res.lastMonth.Fixed_expenditures.sum
           }
         ],
         [
           {
             title: 'Отчисления в государство (НДПИ, Рентный налог, ЭТП)',
-            values: this.res.sum.MET_payments
+            sum: this.res.lastMonth.MET_payments.sum
           },
           {
             title: 'Общие призводственые затраты',
-            values: this.res.sum.Production_expenditures
+            sum: this.res.lastMonth.Production_expenditures.sum
           },
         ],
       ]
@@ -259,18 +316,16 @@ export default {
       try {
         let params = this.form
 
-        if(this.form.interval){
+        if (this.form.interval) {
           params.interval = [
-              this.form.interval.slice(0, 10),
-              this.form.interval.slice(11, 21),
+            this.form.interval.slice(0, 10),
+            this.form.interval.slice(11, 21),
           ]
         }
 
         const {data} = await this.axios.get('/ru/geteconimicdata', {params: params})
 
         this.res = data
-
-        this.params.data = data.wellsList
       } catch (e) {
         this.res = economicRes
 
@@ -283,16 +338,16 @@ export default {
     pushBign(bign) {
       switch (bign) {
         case 'bign1':
-          this.params.data = this.res.wellsList;
+          this.params.data = this.res.lastMonth.cat1.data;
           break;
         case 'bign2':
-          this.params.data = this.res.OperatingProfitYear;
+          this.params.data = this.res.lastYear.Operating_profit.data;
           break;
         case 'bign3':
-          this.params.data = this.res.OperatingProfitMonth;
+          this.params.data = this.res.lastMonth.Operating_profit.data;
           break;
         case 'bign4':
-          this.params.data = this.res.prs1;
+          this.params.data = this.res.lastYear.prs1.data;
           break;
       }
 
