@@ -26,7 +26,6 @@ class OmgUHEHistoryObserver extends EditHistoryObserver
             'gu_id' => 'monitoring.gu.gu',
             'zu_id' => 'monitoring.zu.zu',
             'well_id' => 'monitoring.well.well',
-            'date' => 'app.date_time',
             'inhibitor_id' => 'monitoring.omguhe.fields.inhibitor',
             'field_id' => 'monitoring.field',
             'fill' => 'monitoring.omguhe.fields.fill',

@@ -26,7 +26,6 @@ class OilGasHistoryObserver extends EditHistoryObserver
             'gu_id' => 'monitoring.gu.gu',
             'zu_id' => 'monitoring.zu.zu',
             'well_id' => 'monitoring.well.well',
-            'date' => 'app.date_time',
             'water_density_at_20' => 'monitoring.oil.fields.water_density_at_20',
             'oil_viscosity_at_20' => 'monitoring.oil.fields.oil_viscosity_at_20',
             'oil_viscosity_at_40' => 'monitoring.oil.fields.oil_viscosity_at_40',
