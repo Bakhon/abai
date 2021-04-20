@@ -4,6 +4,8 @@ const paegtm = {
     treeChildrenComponent: Object,
     treeSettingComponent: Object,
     isTreeMainComponentShow: true,
+    dateStart: Date,
+    dateEnd: Date,
   },
   mutations: {
     changeTheDisplayShadowBlock (state, value) {
@@ -20,6 +22,12 @@ const paegtm = {
     },
     changeTheDisplayMainComponent (state, value) {
       this.state.isTreeMainComponentShow = value;
+    },
+    changeDateStart (state, value) {
+      this.state.dateStart = value;
+    },
+    changeDateEnd (state, value) {
+      this.state.dateEnd = value;
     },
   },
   getters: {

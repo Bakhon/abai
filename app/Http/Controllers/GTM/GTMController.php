@@ -7,6 +7,7 @@ use App\Http\Controllers\DruidController;
 use App\Services\DruidService;
 use DateTime;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class GTMController extends Controller
 {
@@ -29,9 +30,9 @@ class GTMController extends Controller
         return view('gtm.gtm');
     }
 
-    public function getAccumOilProd(DruidService $druidService):JsonResponse
+    public function getAccumOilProd(DruidService $druidService, Request $request):JsonResponse
     {
-        $data = $druidService->getAccumOilProd('2020-01-01T00:00:00+00:00', '2020-12-31T23:59:59+00:00');
+        $data = $druidService->getAccumOilProd($request->dateStart, $request->dateEnd);
         $result = [];
         $accumOilProdFactData = 0;
         $accumOilProdPlanData = 0;
@@ -49,9 +50,9 @@ class GTMController extends Controller
         return response()->json($result);
     }
 
-    public function getComparisonIndicators(DruidService $druidService):JsonResponse
+    public function getComparisonIndicators(DruidService $druidService, Request $request):JsonResponse
     {
-        $data = $druidService->getComparisonIndicators('2020-01-01T00:00:00+00:00', '2020-12-31T23:59:59+00:00');
+        $data = $druidService->getComparisonIndicators($request->dateStart, $request->dateEnd);
         $result = [];
         foreach ($data as $item) {
             $result[] = [

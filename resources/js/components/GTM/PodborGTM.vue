@@ -93,23 +93,7 @@
                     </div>
                 </div>
                 <div class="mt-2 row m-0">
-                    <div class="col-5 p-0">
-                        <div class="calendar-filter-block d-flex align-items-center">
-                            01.08.2018
-                            <img class="calendar-icon" src="/img/GTM/calendar_icon.svg">
-                        </div>
-                    </div>
-                    <div class="col-5 p-0">
-                        <div class="ml-1 calendar-filter-block d-flex align-items-center">
-                            01.08.2018
-                            <img class="calendar-icon" src="/img/GTM/calendar_icon.svg">
-                        </div>
-                    </div>
-                    <div class="col-1 p-0">
-                        <div class="ml-1 calendar-filter-block d-flex align-items-center">
-                            <img class="gear-icon m-auto" src="/img/GTM/gear.svg">
-                        </div>
-                    </div>
+                    <gtm-date-picker @dateChanged="getData"></gtm-date-picker>
                 </div>
                 <div class="gtm-dark mt-2">
                     <div class="block-header text-center p-2">
@@ -272,6 +256,8 @@ export default {
                     }
                 }
             });
+        },
+        getData: function () {
         }
     },
     computed: {

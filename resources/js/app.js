@@ -114,6 +114,7 @@ Vue.component('gtm-bar-chart', require('./components/GTM/BarChart.vue').default)
 Vue.component('gtm-line-chart', require('./components/GTM/LineChart.vue').default);
 Vue.component('gtm-tree', require('./components/GTM/Tree.vue').default);
 Vue.component('gtm-node-tree', require('./components/GTM/NodeTree.vue').default);
+Vue.component('gtm-date-picker', require('./components/GTM/DatePicker.vue').default);
 
 Vue.component('reports-table2', require('./components/reportsGTM/ReportsGTMTable.vue').default);
 Vue.component('reports-table3', require('./components/reportDob/RepDobTable.vue').default);
