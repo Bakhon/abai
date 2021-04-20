@@ -18,8 +18,6 @@ class EconomicController extends Controller
     const INTERVAL_LAST_MONTH = '2020-12-01T00:00:00/2021-01-01T00:00:00';
     const INTERVAL_LAST_2_MONTHS = '2020-11-01T00:00:00/2021-01-01T00:00:00';
 
-    const INTERVAL_PIVOT = '2020-01-01T00:00:00/2020-08-01T00:00:00';
-
 //    const DATA_SOURCE = 'economic_2020v4';
     const DATA_SOURCE = 'economic_2020v16_test';
 
@@ -34,8 +32,10 @@ class EconomicController extends Controller
 
     const LIMIT_TOP = 10;
 
-    const BUILDER_OPERATING_PROFIT_AND_PRS1_LAST_YEAR = 'BUILDER_OPERATING_PROFIT_AND_PRS1_LAST_YEAR';
-    const BUILDER_OPERATING_PROFIT_AND_UWI_LAST_2_MONTHS = 'BUILDER_OPERATING_PROFIT_LAST_2_MONTHS';
+    const BUILDER_OPERATING_PROFIT_AND_PRS1_LAST_YEAR = 'builder1';
+    const BUILDER_OPERATING_PROFIT_AND_UWI_LAST_2_MONTHS = 'builder2';
+    const BUILDER_SUM_LAST_2_MONTHS = 'builder16';
+    const BUILDER_OPERATING_PROFIT_TOP_10_LAST_YEAR = 'builder7';
 
     public function __construct(DruidClient $druidClient)
     {
@@ -79,7 +79,7 @@ class EconomicController extends Controller
             ->distinctCount('uwi')
             ->where('profitability', '=', self::PROFITABILITY_CAT_1);
 
-        $builder5 = $this
+        $builder3 = $this
             ->druidClient
             ->query(self::DATA_SOURCE, Granularity::MONTH)
             ->interval(self::INTERVAL_LAST_MONTH)
@@ -91,7 +91,7 @@ class EconomicController extends Controller
             ->sum("Operating_profit")
             ->where('profitability', '=', self::PROFITABILITY_CAT_1);
 
-        $builder6 = $this
+        $builder4 = $this
             ->druidClient
             ->query(self::DATA_SOURCE, Granularity::DAY)
             ->interval(self::INTERVAL_LAST_MONTH)
@@ -100,7 +100,7 @@ class EconomicController extends Controller
             ->sum("Operating_profit")
             ->where('profitability', '=', self::PROFITABILITY_CAT_1);
 
-        $builder7 = $this
+        $builder5 = $this
             ->druidClient
             ->query(self::DATA_SOURCE, Granularity::MONTH)
             ->interval(self::INTERVAL_LAST_MONTH)
@@ -109,7 +109,7 @@ class EconomicController extends Controller
             ->sum("Operating_profit")
             ->where('profitability', '=', self::PROFITABILITY_CAT_1);
 
-        $builder8 = $this
+        $builder6 = $this
             ->druidClient
             ->query(self::DATA_SOURCE, Granularity::YEAR)
             ->interval(self::INTERVAL_LAST_MONTH)
@@ -119,7 +119,7 @@ class EconomicController extends Controller
             ->where('prs1', '>', '0')
             ->where('profitability', '=', self::PROFITABILITY_CAT_1);
 
-        $builder13 = $this
+        $builder7 = $this
             ->druidClient
             ->query(self::DATA_SOURCE, Granularity::YEAR)
             ->interval(self::INTERVAL_LAST_YEAR)
@@ -129,7 +129,7 @@ class EconomicController extends Controller
             ->where('status', '=', self::STATUS_ACTIVE)
             ->orderBy('Operating_profit', 'desc');
 
-        $builder14 = $this
+        $builder8 = $this
             ->druidClient
             ->query(self::DATA_SOURCE, Granularity::DAY)
             ->interval(self::INTERVAL_LAST_YEAR)
@@ -143,7 +143,7 @@ class EconomicController extends Controller
             ->count('uwi')
             ->where('status', '=', self::STATUS_ACTIVE);
 
-        $builder16 = $this
+        $builder9 = $this
             ->druidClient
             ->query(self::DATA_SOURCE, Granularity::MONTH)
             ->interval($interval ?? self::INTERVAL_LAST_2_MONTHS);
@@ -158,7 +158,7 @@ class EconomicController extends Controller
         ];
 
         foreach ($sumKeys as $sumKey) {
-            $builder16->sum($sumKey);
+            $builder9->sum($sumKey);
         }
 
         $buildersProfitabilityCount = [];
@@ -190,13 +190,13 @@ class EconomicController extends Controller
         $builders = [
             self::BUILDER_OPERATING_PROFIT_AND_PRS1_LAST_YEAR => $builder1,
             self::BUILDER_OPERATING_PROFIT_AND_UWI_LAST_2_MONTHS => $builder2,
+            3 => $builder3,
+            4 => $builder4,
             5 => $builder5,
             6 => $builder6,
-            7 => $builder7,
+            self::BUILDER_OPERATING_PROFIT_TOP_10_LAST_YEAR => $builder7,
             8 => $builder8,
-            13 => $builder13,
-            14 => $builder14,
-            16 => $builder16,
+            self::BUILDER_SUM_LAST_2_MONTHS => $builder9,
         ];
 
         foreach ($buildersProfitabilityCount as $key => $builder) {
@@ -223,9 +223,9 @@ class EconomicController extends Controller
             $timeseries = [
                 self::BUILDER_OPERATING_PROFIT_AND_UWI_LAST_2_MONTHS,
                 self::BUILDER_OPERATING_PROFIT_AND_PRS1_LAST_YEAR,
-                6,
-                7,
-                16
+                4,
+                5,
+                self::BUILDER_SUM_LAST_2_MONTHS
             ];
 
             $result[$key] = in_array($key, $timeseries)
@@ -276,7 +276,7 @@ class EconomicController extends Controller
             'Operating_profit' => []
         ];
 
-        foreach ($result[5] as &$item) {
+        foreach ($result[3] as &$item) {
             $data['wellsList'][] = [
                 $item['uwi'],
                 $item['oil'],
@@ -287,7 +287,7 @@ class EconomicController extends Controller
             ];
         }
 
-        foreach ($result[6] as &$item) {
+        foreach ($result[4] as &$item) {
             $data['OperatingProfitMonth'][] = [
                 date('d-m-Y', strtotime($item['timestamp'])),
                 $item['oil'],
@@ -296,7 +296,7 @@ class EconomicController extends Controller
             ];
         }
 
-        foreach ($result[7] as &$item) {
+        foreach ($result[5] as &$item) {
             $data['OperatingProfitYear'][] = [
                 date('m-Y', strtotime($item['timestamp'])),
                 $item['oil'],
@@ -305,22 +305,22 @@ class EconomicController extends Controller
             ];
         }
 
-        foreach ($result[8] as &$item) {
+        foreach ($result[6] as &$item) {
             $data['prs1'][] = [$item['uwi'], $item['prs1']];
         }
 
-        $result[13] = array_merge(
-            array_reverse(array_slice($result[13], -self::LIMIT_TOP, self::LIMIT_TOP)),
-            array_slice($result[13], 0, self::LIMIT_TOP)
+        $result[self::BUILDER_OPERATING_PROFIT_TOP_10_LAST_YEAR] = array_merge(
+            array_reverse(array_slice($result[self::BUILDER_OPERATING_PROFIT_TOP_10_LAST_YEAR], -self::LIMIT_TOP, self::LIMIT_TOP)),
+            array_slice($result[self::BUILDER_OPERATING_PROFIT_TOP_10_LAST_YEAR], 0, self::LIMIT_TOP)
         );
 
-        foreach ($result[13] as &$item) {
+        foreach ($result[self::BUILDER_OPERATING_PROFIT_TOP_10_LAST_YEAR] as &$item) {
             $dataChart3['uwi'][] = $item['uwi'];
 
             $dataChart3['Operating_profit'][] = $item['Operating_profit'] / 1000;
         }
 
-        foreach ($result[14] as &$item) {
+        foreach ($result[8] as &$item) {
             $dataChart2['dt'][$item['dt']] = 1;
 
             $dataChart2[$item['profitability']][] = $item['oil'] / 1000;
@@ -356,14 +356,19 @@ class EconomicController extends Controller
         $percentCount = self::percentFormat($lastMonthCat1Count, $prevMonthCat1Count);
 
         foreach ($sumKeys as $sumKey) {
-            $sumKeyPercent = self::percentFormat($result[16][1][$sumKey], $result[16][0][$sumKey]);
+            $sumKeyPercent = self::percentFormat(
+                $result[self::BUILDER_SUM_LAST_2_MONTHS][1][$sumKey],
+                $result[self::BUILDER_SUM_LAST_2_MONTHS][0][$sumKey]
+            );
 
-            $result[16][1][$sumKey] = self::moneyFormat($result[16][1][$sumKey]);
+            $result[self::BUILDER_SUM_LAST_2_MONTHS][1][$sumKey] = self::moneyFormat(
+                $result[self::BUILDER_SUM_LAST_2_MONTHS][1][$sumKey]
+            );
 
-            $result[16][1][$sumKey][] = $sumKeyPercent;
+            $result[self::BUILDER_SUM_LAST_2_MONTHS][1][$sumKey][] = $sumKeyPercent;
         }
 
-        unset($result[16][1]['timestamp']);
+        unset($result[self::BUILDER_SUM_LAST_2_MONTHS][1]['timestamp']);
 
         return [
             'year' => self::moneyFormat(end($result[self::BUILDER_OPERATING_PROFIT_AND_PRS1_LAST_YEAR])["Operating_profit"]),
@@ -381,7 +386,7 @@ class EconomicController extends Controller
             'chart3' => $dataChart3,
             'chart4' => $dataChart4,
             'chart5' => $dataChart5,
-            'sum' => $result[16][1]
+            'sum' => $result[self::BUILDER_SUM_LAST_2_MONTHS][1]
         ];
     }
 
