@@ -249,7 +249,8 @@ export default {
     form: {
       org: null,
       dpz: null,
-      interval: null
+      interval_start: null,
+      interval_end: null
     },
     res: economicRes,
     params: {
@@ -317,16 +318,7 @@ export default {
       this.loading = true
 
       try {
-        let params = this.form
-
-        if (this.form.interval) {
-          params.interval = [
-            this.form.interval.slice(0, 10),
-            this.form.interval.slice(11, 21),
-          ]
-        }
-
-        const {data} = await this.axios.get('/ru/geteconimicdata', {params: params})
+        const {data} = await this.axios.get('/ru/geteconimicdata', {params: this.form})
 
         this.res = data
       } catch (e) {

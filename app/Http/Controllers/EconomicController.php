@@ -60,14 +60,12 @@ class EconomicController extends Controller
 
         $org = Org::findOrFail($request->org);
 
-        $interval = $request->interval
-            ? self::intervalFormat($request->interval)
-            : null;
+        $interval = self::intervalFormat($request->interval_start, $request->interval_end);
 
         $builder1 = $this
             ->druidClient
             ->query(self::DATA_SOURCE, Granularity::YEAR)
-            ->interval(self::INTERVAL_LAST_YEAR)
+            ->interval($interval)
             ->longSum("prs1")
             ->sum("Operating_profit")
             ->where('profitability', '=', self::PROFITABILITY_CAT_1);
@@ -75,7 +73,7 @@ class EconomicController extends Controller
         $builder2 = $this
             ->druidClient
             ->query(self::DATA_SOURCE, Granularity::MONTH)
-            ->interval(self::INTERVAL_LAST_2_MONTHS)
+            ->interval($interval ?? self::INTERVAL_LAST_2_MONTHS)
             ->sum("Operating_profit")
             ->distinctCount('uwi')
             ->where('profitability', '=', self::PROFITABILITY_CAT_1);
@@ -83,7 +81,7 @@ class EconomicController extends Controller
         $builder3 = $this
             ->druidClient
             ->query(self::DATA_SOURCE, Granularity::MONTH)
-            ->interval(self::INTERVAL_LAST_MONTH)
+            ->interval($interval ?? self::INTERVAL_LAST_MONTH)
             ->select("uwi")
             ->sum("oil")
             ->sum("liquid")
@@ -95,7 +93,7 @@ class EconomicController extends Controller
         $builder4 = $this
             ->druidClient
             ->query(self::DATA_SOURCE, Granularity::DAY)
-            ->interval(self::INTERVAL_LAST_MONTH)
+            ->interval($interval ?? self::INTERVAL_LAST_MONTH)
             ->sum("oil")
             ->sum("liquid")
             ->sum("Operating_profit")
@@ -104,7 +102,7 @@ class EconomicController extends Controller
         $builder5 = $this
             ->druidClient
             ->query(self::DATA_SOURCE, Granularity::MONTH)
-            ->interval(self::INTERVAL_LAST_MONTH)
+            ->interval($interval ?? self::INTERVAL_LAST_MONTH)
             ->sum("oil")
             ->sum("liquid")
             ->sum("Operating_profit")
@@ -113,7 +111,7 @@ class EconomicController extends Controller
         $builder6 = $this
             ->druidClient
             ->query(self::DATA_SOURCE, Granularity::YEAR)
-            ->interval(self::INTERVAL_LAST_MONTH)
+            ->interval($interval ?? self::INTERVAL_LAST_MONTH)
             ->select("uwi")
             ->sum("prs1")
             ->orderBy('prs1', 'desc')
@@ -123,7 +121,7 @@ class EconomicController extends Controller
         $builder7 = $this
             ->druidClient
             ->query(self::DATA_SOURCE, Granularity::YEAR)
-            ->interval(self::INTERVAL_LAST_YEAR)
+            ->interval($interval)
             ->select("uwi")
             ->sum("Operating_profit")
             ->where('Operating_profit', '!=', '0')
@@ -133,7 +131,7 @@ class EconomicController extends Controller
         $builder8 = $this
             ->druidClient
             ->query(self::DATA_SOURCE, Granularity::DAY)
-            ->interval(self::INTERVAL_LAST_YEAR)
+            ->interval($interval)
             ->select('__time', 'dt', function (ExtractionBuilder $extractionBuilder) {
                 $extractionBuilder->timeFormat(self::TIME_FORMAT);
             })
@@ -173,7 +171,7 @@ class EconomicController extends Controller
             $buildersProfitabilityCount[$status] = $this
                 ->druidClient
                 ->query(self::DATA_SOURCE, Granularity::DAY)
-                ->interval($interval ?? self::INTERVAL_LAST_YEAR)
+                ->interval($interval)
                 ->select('__time', 'dt', function (ExtractionBuilder $extractionBuilder) {
                     $extractionBuilder->timeFormat(self::TIME_FORMAT);
                 })
@@ -360,7 +358,10 @@ class EconomicController extends Controller
 
         $dataChart5['dt'] = array_keys($dataChart5['dt']);
 
-        list($prevMonth, $lastMonth) = $result[self::BUILDER_OPERATING_PROFIT_AND_UWI_LAST_2_MONTHS];
+        $monthsCount = count($result[self::BUILDER_OPERATING_PROFIT_AND_UWI_LAST_2_MONTHS]);
+
+        $lastMonth = $result[self::BUILDER_OPERATING_PROFIT_AND_UWI_LAST_2_MONTHS][$monthsCount - 1];
+        $prevMonth = $result[self::BUILDER_OPERATING_PROFIT_AND_UWI_LAST_2_MONTHS][$monthsCount - 2];
 
         $resLastMonth = [
             'Operating_profit' => [
@@ -379,10 +380,12 @@ class EconomicController extends Controller
             ]
         ];
 
-        foreach ($sumKeys as $sumKey) {
-            $lastMonth = $result[self::BUILDER_SUM_LAST_2_MONTHS][1][$sumKey];
+        $monthsCount = count($result[self::BUILDER_SUM_LAST_2_MONTHS]);
 
-            $prevMonth = $result[self::BUILDER_SUM_LAST_2_MONTHS][0][$sumKey];
+        foreach ($sumKeys as $sumKey) {
+            $lastMonth = $result[self::BUILDER_SUM_LAST_2_MONTHS][$monthsCount - 1][$sumKey];
+
+            $prevMonth = $result[self::BUILDER_SUM_LAST_2_MONTHS][$monthsCount - 2][$sumKey];
 
             $resLastMonth[$sumKey] = [
                 'sum' => [
@@ -421,11 +424,25 @@ class EconomicController extends Controller
         return round(($prev - $last) * 100 / $prev);
     }
 
-    static function intervalFormat(array $interval): string
+    static function intervalLastYear(): string
     {
-        return Carbon::createFromFormat('d/m/Y', $interval[0])->format('Y-m-d')
+        $currentYear = now()->setDay(1)->setMonth(1);
+
+        return $currentYear->copy()->subYear()->format('Y-m-d')
             . "T00:00:00+00:00/"
-            . Carbon::createFromFormat('d/m/Y', $interval[1])->format('Y-m-d')
+            . $currentYear->format('Y-m-d')
+            . "T00:00:00+00:00";
+    }
+
+    static function intervalFormat(string $start = null, string $end = null): string
+    {
+        $start = $start ?? now()->subYear()->setDay(1)->setMonth(1);
+
+        $end = $end ?? now();
+
+        return Carbon::parse($start)->format('Y-m-d')
+            . "T00:00:00+00:00/"
+            . Carbon::parse($end)->format('Y-m-d')
             . "T00:00:00+00:00";
     }
 
