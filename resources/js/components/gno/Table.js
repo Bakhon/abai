@@ -803,7 +803,7 @@ export default {
       }
 
     },
-    async EconomParams(){
+    async EconomParam(){
         //эта функция будет сделана на бэк-энде, сейчас временно тут
       var prs1 = this.expAnalysisData.prs1;
       var prs2 = this.expAnalysisData.prs2;
