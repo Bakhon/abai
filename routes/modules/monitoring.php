@@ -156,6 +156,7 @@ Route::group(
                     'settings.fields.update'
                 );
 
+                Route::get('gus/createExcel', 'ComplicationMonitoring\GusController@createExcel')->name('gus.createExcel');
                 Route::get('gus/list', 'ComplicationMonitoring\GusController@list')->name('gus.list');
                 Route::get('gus/history/{gu}', 'ComplicationMonitoring\GusController@history')->name('gus.history');
                 Route::resource('gus', 'ComplicationMonitoring\GusController');
