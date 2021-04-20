@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\EconomicDataExport;
 use App\Http\Requests\Economic\EconomicDataRequest;
 use App\Models\Refs\Org;
 use Carbon\Carbon;
@@ -420,6 +421,38 @@ class EconomicController extends Controller
             'chart4' => $dataChart4,
             'chart5' => $dataChart5,
         ];
+    }
+
+    public function exportEconomicData(EconomicDataRequest $request)
+    {
+        if (!in_array($request->org, auth()->user()->getOrganizationIds())) {
+            abort(403);
+        }
+
+        $org = Org::findOrFail($request->org);
+
+        $interval = self::intervalFormat($request->interval_start, $request->interval_end);
+
+        $builder = $this
+            ->druidClient
+            ->query(self::DATA_SOURCE, Granularity::MONTH)
+            ->interval($interval)
+            ->longSum("prs1")
+            ->sum("oil")
+            ->sum("liquid")
+            ->sum("Revenue_total")
+            ->sum("NetBack_bf_pr_exp")
+            ->sum("Operating_profit");
+
+        if ($org->druid_id) {
+            $builder->where('org_id2', '=', $org->druid_id);
+        }
+
+        if ($request->dpz) {
+            $builder->where('dpz', '=', $request->dpz);
+        }
+
+        return (new EconomicDataExport($builder->groupBy()->data()))->download('export.xlsx');
     }
 
     static function percentFormat(float $last, float $prev): float

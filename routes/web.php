@@ -29,6 +29,7 @@ Route::group(
             ['middleware' => 'auth'],
             function () {
                 Route::get("/geteconimicdata", "EconomicController@getEconomicData");
+                Route::post("/exporteconimicdata", "EconomicController@exportEconomicData");
 
                 Route::post("/corrosion", "DruidController@corrosion");
                 Route::get(

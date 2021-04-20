@@ -147,6 +147,13 @@
           <economic-select-dpz
               :form="form"
               @change="getEconomicData"/>
+
+          <button
+              class="btn btn-primary mt-4 py-2 w-100 border-0"
+              style="background: #213181 !important"
+              @click="exportEconomicData">
+            Выгрузить в Excel
+          </button>
         </div>
       </div>
     </div>
@@ -154,6 +161,8 @@
 </template>
 
 <script>
+const fileDownload = require("js-file-download");
+
 import VModal from 'vue-js-modal'
 import VueTableDynamic from 'vue-table-dynamic'
 import CatLoader from '../ui-kit/CatLoader'
@@ -358,6 +367,21 @@ export default {
       }
 
       this.loading = false
+    },
+
+    async exportEconomicData() {
+      try {
+        const res = await this.axios.post(
+            '/ru/exporteconimicdata',
+            this.form,
+            {responseType: "blob"}
+        )
+
+        fileDownload(res.data, 'export.xlsx');
+      } catch (e) {
+        console.log(e)
+      }
+
     },
 
     pushBign(bign) {
