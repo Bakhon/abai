@@ -1215,7 +1215,7 @@
                       </div>
 
                       <div class="table-pgno-four">
-                        <table class="table-pgno shgn-table" style="line-height: 10px;">
+                        <table class="table-pgno shgn-table">
                           <thead>
                             <tr class="tr-pgno" height="5px" style="height: 30pt;">
                               <td class="td-pgno" rowspan="1">
