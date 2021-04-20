@@ -352,7 +352,7 @@
                         <td scope="col">{{trans('tr.u_object')}}</td>
                         <td scope="col">{{trans('tr.operation_method_short')}}</td>
                         <td scope="col">{{trans('tr.well_type_short')}}</td>
-                        <td scope="col">{{trans('tr.block')}}</td>
+                        <td scope="col">{{trans('tr.u_block')}}</td>
                         <td scope="col">{{trans('tr.outer_diameter_producing_casing')}}</td>
                         <td scope="col">{{trans('tr.inner_diameter_producing_casing_short')}}</td>
                         <td scope="col">{{trans('tr.h_water_permeability_short')}}</td>
@@ -740,7 +740,7 @@
                   <td rowspan="3" class="th"><span>{{trans('tr.skin')}}</span></td>
                   <td rowspan="3" class="th"><span>{{trans('tr.jd_fact')}}</span></td>
                   <td rowspan="3" class="th"><span>{{trans('tr.grp_date')}}</span></td>
-                  <td rowspan="3" class="th"><span>Фирма</span></td>
+                  <td rowspan="3" class="th"><span>{{trans('tr.firm')}}</span></td>
                   <td rowspan="3" class="th"><span>{{trans('tr.bottomhole_pressure')}}</span></td>
                   <td class="colspan th" colspan="4">{{trans('tr.idn')}}</td>
                   <td rowspan="3" class="th"><span>{{trans('tr.jd_opt')}}</span></td>

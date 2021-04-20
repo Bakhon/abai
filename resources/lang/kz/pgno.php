@@ -175,8 +175,7 @@ return array (
   'diametr_nasosa' => 'Диаметр насоса',
   'kolonna_shtang' => 'Колонна штанг',
   'gf_s' => 'ГФ',
-  'history_prs' => 'История ПРС',
-  'nno' => 'ННО',
-  'power_consumption'=>'Энергия тұтыну, кВт * сағ',
-
+  'interval_centrators' => 'Орталықтандырғышты орнату аралықтары',
+  'recommended' => 'Ұсынылған',
+  'required' => 'Міндетті',
 );
