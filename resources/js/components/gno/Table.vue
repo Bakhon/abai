@@ -332,7 +332,7 @@
         <div class="no-gutter col-lg-9 order-md-1 first-column container-fluid no-gutter">
           <div class="no-gutter col-md-12 first-column-curve-block">
             <div class="background">
-              <modal class="modal-bign-wrapper" name="modalIncl" :draggable="true" :width="1300" :height="700"
+              <modal class="modal-bign-wrapper" name="modalIncl" :draggable="false" :width="1300" :height="700"
                 style="background: transparent;" :adaptive="true">
                 <div class="modal-bign modal-bign-container">
                   <div class="modal-bign-header">
@@ -344,7 +344,7 @@
                   </div>
 
                   <div class="Table" align="center" x:publishsource="Excel">
-                    <inclinometria @update-hpump="onChangeButtonHpump($event)" :isButtonHpump="isButtonHpump" :wellNumber="wellNumber" :expChoose="expChoose" :wellIncl="wellIncl" :is-loading.sync="isLoading">
+                    <inclinometria @update-hpump="setHpumpValueFromIncl($event)" :isButtonHpump="isButtonHpump" :wellNumber="wellNumber" :expChoose="expChoose" :wellIncl="wellIncl" :is-loading.sync="isLoading">
                     </inclinometria>
                   </div>
                 </div>
@@ -1131,7 +1131,10 @@
                          alt="podbor-gno"/>
                   </div>
 
-                  <div class="table-pgno-button gno-shgn-table-section col-9">
+                      
+
+                  <div class="table-pgno-button gno-shgn-table-section col-9" >
+                    
                     <div class="shgn-tables-wrapper">
                       <div class="table-pgno-one">
                         <table class="table-pgno shgn-table">
@@ -1212,7 +1215,7 @@
                       </div>
 
                       <div class="table-pgno-four">
-                        <table class="table-pgno shgn-table">
+                        <table class="table-pgno shgn-table" style="line-height: 10px;">
                           <thead>
                             <tr class="tr-pgno" height="5px" style="height: 30pt;">
                               <td class="td-pgno" rowspan="1">
@@ -1246,7 +1249,21 @@
                           </tbody>
                         </table>
                       </div>
+
+                      
+
+                    
+                              
                     </div>
+
+                    <div class="block__centrators">
+                        <h6 class="main__title__block_centrators"><b>{{trans('pgno.interval_centrators')}}:</b></h6>
+                        <h6 class="title__block__centrators">{{trans('pgno.recomended')}}: 0-280, 350-450, 550-580</h6>
+                        <h6 class="title__block__centrators">{{trans('pgno.required')}}: 320-330, 650-760, 990-1030</h6>
+                      </div>
+
+                    
+
 
                     <button class="button-pdf col-12" @click="createPDF()">
                       {{trans('pgno.sozdanie_otcheta')}}
@@ -1441,7 +1458,7 @@
                             </div>
                           </div>
 
-                          <div class="tables-string-gno5 col-12" @click="PotAnalysisMenu()">
+                          <div class="tables-string-gno5 col-12" @click="updateAnalysisMenu()">
                             {{trans('pgno.analis_potenciala_skvazhini')}}
                           </div>
                         </div>
@@ -1585,7 +1602,7 @@
                             </div>
                           </div>
 
-                          <div class="tables-string-gno55 col-12" @click="ExpAnalysisMenu()">
+                          <div class="tables-string-gno55 col-12" @click="setExpAnalysisMenu()">
                              {{trans('pgno.analis_effect_sposoba_exp')}}
                           </div>
                         </div>
@@ -2046,6 +2063,14 @@ background: #494aa5 url("data:image/svg+xml;utf8,<svg viewBox='0 0 140 140' widt
 background-position: right 5px top 50%;
 }
 
+.title__block__centrators {
+  margin-bottom: 2px; 
+}
+
+.main__title__block_centrators {
+  text-align: center;
+}
+
 
 .input-box-gno {
     background: #494AA5;
@@ -2099,6 +2124,37 @@ background-position: right 5px top 50%;
 
 .button-podbor-gno:hover {
     background-color: #484749;
+}
+
+.table-pgno-four {
+  height: 100px;
+}
+
+.table-pgno-two {
+  height: 200px;
+}
+
+.table-pgno-one {
+  height: 200px;
+}
+
+.block__centrators {
+	background-color:#272953;
+  align-items: center;
+	border-radius:6px;
+	border:2px solid #666;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:Arial;
+	font-size:14px;
+	padding:1px 15px;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #144079;
+  width: 550px;
+  height: 75px;
+  bottom: 60px;
+  word-spacing: 4px;
 }
 
 </style>

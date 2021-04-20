@@ -382,7 +382,7 @@ export default {
     ...mapState(['wells'])
   },
   methods: {
-    onChangeButtonHpump() {
+    setHpumpValueFromIncl() {
       this.$modal.hide('modalIncl')
       this.hPumpValue = this.$store.getters.getHpump
       this.postCurveData();
@@ -738,7 +738,7 @@ export default {
       this.layout['shapes'][0]['x1'] = value[1]['q_l']
 
     },
-    PotAnalysisMenu() {
+    updateAnalysisMenu() {
       this.postCurveData()
       this.setLine(this.curveLineData)
       this.setPoints(this.curvePointsData)
@@ -751,7 +751,7 @@ export default {
       }
     },
 
-    async ExpAnalysisMenu(){
+    async setExpAnalysisMenu(){
       await this.NnoCalc()
 
       if(this.casOD < 127) {
@@ -803,7 +803,7 @@ export default {
       }
 
     },
-    async EconomParam(){
+    async EconomParams(){
         //эта функция будет сделана на бэк-энде, сейчас временно тут
       var prs1 = this.expAnalysisData.prs1;
       var prs2 = this.expAnalysisData.prs2;
