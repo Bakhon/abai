@@ -133,6 +133,7 @@
               </template>
             </div>
             <span
+                v-if="isShowSort(code)"
                 class="arrows"
                 :class="{
                             'asc': sort.by === code && sort.desc === false,
@@ -235,6 +236,10 @@ export default {
     showFilter(code) {
       this.filters[code].show = true
       this.filterOpened = true
+    },
+    isShowSort(code){
+      return typeof this.params.fields[code].sortable == 'undefined'
+          || (typeof this.params.fields[code].sortable != 'undefined' && this.params.fields[code].sortable);
     },
     hideFilters() {
       this.filterOpened = false
