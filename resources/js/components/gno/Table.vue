@@ -2007,18 +2007,18 @@
 }
 
 .block__centrators {
-	background-color:#272953;
+  background-color:#272953;
   align-items: center;
-	border-radius:6px;
-	border:2px solid #666;
-	display:inline-block;
-	cursor:pointer;
-	color:#ffffff;
-	font-family:Arial;
-	font-size:14px;
-	padding:1px 15px;
-	text-decoration:none;
-	text-shadow:0px 1px 0px #144079;
+  border-radius:6px;
+  border:2px solid #666;
+  display:inline-block;
+  cursor:pointer;
+  color:#ffffff;
+  font-family:Arial;
+  font-size:14px;
+  padding:1px 15px;
+  text-decoration:none;
+  text-shadow:0px 1px 0px #144079;
   width: 550px;
   height: 75px;
   bottom: 60px;
