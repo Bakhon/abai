@@ -24,7 +24,7 @@ class OmgNGDUHistoryObserver extends EditHistoryObserver
             'cdng_id' => 'monitoring.cdng',
             'gu_id' => 'monitoring.gu.gu',
             'zu_id' => 'monitoring.zu.zu',
-            'well_id' => 'monitoring.well',
+            'well_id' => 'monitoring.well.well',
             'date' => 'app.date_time',
             'daily_fluid_production' => 'monitoring.omgngdu.fields.daily_fluid_production',
             'surge_tank_pressure' => 'monitoring.omgngdu.fields.surge_tank_pressure',

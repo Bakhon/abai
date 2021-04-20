@@ -25,7 +25,7 @@ class WaterMeasurementHistoryObserver extends EditHistoryObserver
             'cdng_id' => 'monitoring.cdng',
             'gu_id' => 'monitoring.gu.gu',
             'zu_id' => 'monitoring.zu.zu',
-            'well_id' => 'monitoring.well',
+            'well_id' => 'monitoring.well.well',
             'date' => 'app.date_time',
             'hydrocarbonate_ion' => 'НСО3',
             'carbonate_ion' => 'СО32-',
