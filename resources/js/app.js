@@ -150,6 +150,7 @@ Vue.component('pagination', require('laravel-vue-pagination'));
 Vue.component('report-export', require('./components/reports/export.vue').default);
 Vue.component('tr_mode-table', require('./components/tr/TechMode.vue').default);
 Vue.component('fa_weekly_chart', require('./components/tr/FaWeeklyChart.vue').default);
+Vue.component('well_cart', require('./components/well_cart/well_cart.vue').default);
 
 
 
