@@ -2,8 +2,15 @@
 
 namespace App\Console\Commands\Import;
 
+use App\Imports\Ngdu4WellsImport;
+use App\Imports\TrunklineImport;
+use App\Models\Pipes\MapPipe;
+use App\Models\Pipes\PipeCoord;
+use App\Models\Refs\Well;
+use App\Models\Refs\Zu;
 use Illuminate\Console\Command;
 use App\Imports\GuWellsImport;
+use Illuminate\Support\Facades\DB;
 
 class Wells extends Command
 {
@@ -14,7 +21,7 @@ class Wells extends Command
      *
      * @var string
      */
-    protected $signature = 'import:wells {path}';
+    protected $signature = 'import:wells';
 
     /**
      * The console command description.
@@ -40,6 +47,24 @@ class Wells extends Command
      */
     public function handle(): void
     {
-        $this->importExcel(new GuWellsImport($this), base_path($this->argument('path')));
+        DB::table('map_pipes')->delete();
+        DB::statement("ALTER TABLE map_pipes AUTO_INCREMENT = 1;");
+        PipeCoord::truncate();
+
+        $files = [
+            'ngdu-1.xlsx',
+            'ngdu-2.xlsx',
+            'ngdu-3.xlsx'
+        ];
+
+        foreach ($files as $file) {
+            $this->importExcel(new GuWellsImport($this), public_path('imports/'.$file));
+        }
+
+        $this->importExcel(new Ngdu4WellsImport($this), public_path('imports/ngdu-4.xlsx'));
+
+        $this->importExcel(new TrunklineImport($this), public_path('imports/trunkline.xlsx'));
+
+        DB::raw('UPDATE zus SET name = UPPER(name)');
     }
 }

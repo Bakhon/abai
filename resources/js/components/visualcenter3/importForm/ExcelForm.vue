@@ -1,12 +1,11 @@
 <template>
     <div class="row main-layout">
         <div class="col-2 row mt-3 ml-1">
-            <div class="col-12 status-block">
-                &nbsp;
-            </div>
-            <div class="col-12 status-block mt-3">
+            <div class="col-12 status-block currentdate-label status-label">
                 <span>{{trans('visualcenter.importForm.yesterdayDate')}}</span><br>
                 <span class="dzo-name">{{currentDate}}</span><br>
+            </div>
+            <div class="col-12 status-block dzoname-label status-label">
                 <span class="dzo-name">{{selectedDzo.name}}</span>
             </div>
         </div>
@@ -88,6 +87,7 @@
                     :columns="columns"
                     :rowSize="30"
                     @beforeRangeEdit="beforeRangeEdit"
+                    @beforeEdit="beforeRangeEdit"
                     :frameSize="72"
             ></v-grid>
         </div>
@@ -182,5 +182,24 @@
     }
     .status-label {
         border: 1px solid #656A8A;
+    }
+    .dzoname-label {
+        bottom: 0;
+        position: absolute;
+        width: 90%;
+        font-size: 16px;
+        span.dzo-name {
+            font-size: 16px;
+        }
+    }
+    .currentdate-label {
+        position: absolute;
+        width: 90%;
+        height: 65%;
+        span.dzo-name {
+            bottom: 0;
+            position: absolute;
+            left: 27%;
+        }
     }
 </style>

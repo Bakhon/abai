@@ -24,6 +24,10 @@ export default {
         };
     },
     methods: {
+        isGrouppingFilterActive() {
+          return (this.dzoCompaniesAssets.isOperating || this.dzoCompaniesAssets.isNonOperating || this.dzoCompaniesAssets.isRegion);
+        },
+
         setDzoYearlyPlan(dzoGroupedMonthlyPlans) {
             this.dzoYearlyData.plan =  _.sumBy(dzoGroupedMonthlyPlans, 'monthlyPlan');
         },
@@ -38,13 +42,14 @@ export default {
         },
 
         changeTargetCompanyFilter() {
+            this.$refs.targetPlan.classList.remove('show');
             this.isFilterTargetPlanActive = !this.isFilterTargetPlanActive;
             if (!this.buttonTargetPlan) {
                 this.buttonTargetPlan = "";
             } else {
                 this.buttonTargetPlan = "button-tab-highlighted";
             }
-            this.changeMenu2(3);
+            this.changeMenu2('yearly');
         },
 
         getMonthlyPlansInYear(summaryForChart,dzoName) {

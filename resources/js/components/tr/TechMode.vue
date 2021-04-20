@@ -595,7 +595,8 @@
                             label=""
                             width="200"
                             sortable
-                            
+                            :filters="filter_column.field"
+                            :filter-method="filterHandler"
         
                             >
                           </el-table-column>
@@ -627,7 +628,8 @@
                             label=""
                             width="150"
                             sortable
-                          
+                            :filters="filter_column.well_type"
+                            :filter-method="filterHandlerArray"
                             >
                             <template slot-scope="scope">
                               <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`well_type`)}" >
@@ -639,7 +641,7 @@
                                           )}`"
                                         >
                                         </span><span>{{ scope.row.well_type[0] }}</span>
-                                <span v-if="wells && wells[scope.$index]" class="cell-comment-tech">
+                                <span v-if="wells && wells[scope.$index]" class="cell-comment">
                                   {{ wells[scope.$index].well_type[1][1] }}
                                 </span>
                               </div>
@@ -658,6 +660,8 @@
                             label=""
                             width="100"
                             sortable
+                            :filters="filter_column.horizon"
+                            :filter-method="filterHandlerArray"
                             >
                             <template slot-scope="scope">
                               <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`horizon`)}" >
@@ -669,7 +673,7 @@
                                           )}`"
                                         >
                                         </span><span>{{ scope.row.horizon[0] }}</span>
-                                <span v-if="wells && wells[scope.$index]" class="cell-comment-tech">
+                                <span v-if="wells && wells[scope.$index]" class="cell-comment">
                                   {{ wells[scope.$index].horizon[1][1] }}
                                 </span>
                               </div>
@@ -688,6 +692,8 @@
                             label=""
                             width="150"
                             sortable
+                            :filters="filter_column.object"
+                            :filter-method="filterHandler"
                             >
                           </el-table-column>
                         </el-table-column>
@@ -703,6 +709,8 @@
                             label=""
                             width="150"
                             sortable
+                            :filters="filter_column.block"
+                            :filter-method="filterHandlerArray"
                             >
                             <template slot-scope="scope">
                               <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`block`)}" >
@@ -714,7 +722,7 @@
                                           )}`"
                                         >
                                         </span><span>{{ scope.row.block[0] }}</span>
-                                <span v-if="wells && wells[scope.$index]" class="cell-comment-tech">
+                                <span v-if="wells && wells[scope.$index]" class="cell-comment">
                                   {{ wells[scope.$index].block[1][1] }}
                                 </span>
                               </div>
@@ -736,21 +744,23 @@
                             sortable
                             >
                            <template slot-scope="scope">
-                              <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`r_con`)}" >
-                                        <span
-                                          :class="{
-                                            'circle-err': isCircleErrClass(scope.$index,`r_con`)}"
-                                          :style="`background :${getColor(
-                                            wells[scope.$index].r_con[1][0]
-                                          )}`"
-                                        >
-                                          </span><span v-if="scope.row.r_con[0] != null">{{
-                                    Math.round(scope.row.r_con[0] * 10) / 10
-                                  }}</span>
-                                  <span v-if="wells && wells[scope.$index]" class="cell-comment-tech">
-                                    {{ wells[scope.$index].r_con[1][1] }}
-                                  </span>
-                              </div>    
+                            <el-tooltip class="item" effect="dark"  v-bind:content="haveTooltip(scope.$index, `r_con`)" :placement="isPlacement(scope.$index, `r_con`)">
+      
+    
+                                <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`r_con`)}" >
+                                          <span
+                                            :class="{
+                                              'circle-err': isCircleErrClass(scope.$index,`r_con`)}"
+                                            :style="`background :${getColor(
+                                              wells[scope.$index].r_con[1][0]
+                                            )}`"
+                                          >
+                                            </span><span v-if="scope.row.r_con[0] != null">{{
+                                      Math.round(scope.row.r_con[0] * 10) / 10
+                                    }}</span>
+
+                                </div>   
+                              </el-tooltip> 
                             </template>
                           </el-table-column>
                         </el-table-column>
@@ -769,21 +779,23 @@
                             sortable
                             >
                             <template slot-scope="scope">
-                              <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`cas_OD`)}" >
-                                        <span
-                                          :class="{
-                                            'circle-err': isCircleErrClass(scope.$index,`cas_OD`)}"
-                                          :style="`background :${getColor(
-                                            wells[scope.$index].cas_OD[1][0]
-                                          )}`"
-                                        >
-                                          </span><span v-if="scope.row.cas_OD[0] != null">{{
-                                    Math.round(scope.row.cas_OD[0] * 10) / 10
-                                  }}</span>
-                                  <span v-if="wells && wells[scope.$index]" class="cell-comment-tech">
-                                    {{ wells[scope.$index].cas_OD[1][1] }}
-                                  </span>
-                              </div>    
+                              <el-tooltip class="item" effect="dark"  v-bind:content="haveTooltip(scope.$index, `cas_OD`)" :placement="isPlacement(scope.$index, `cas_OD`)">
+      
+    
+                                <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`cas_OD`)}" >
+                                          <span
+                                            :class="{
+                                              'circle-err': isCircleErrClass(scope.$index,`cas_OD`)}"
+                                            :style="`background :${getColor(
+                                              wells[scope.$index].cas_OD[1][0]
+                                            )}`"
+                                          >
+                                            </span><span v-if="scope.row.cas_OD[0] != null">{{
+                                      Math.round(scope.row.cas_OD[0] * 10) / 10
+                                    }}</span>
+
+                                </div>   
+                              </el-tooltip> 
                             </template>
                           </el-table-column>
                         </el-table-column>
@@ -829,7 +841,7 @@
                                           </span><span v-if="scope.row.tub_OD[0] != null">{{
                                     Math.round(scope.row.tub_OD[0] * 10) / 10
                                   }}</span>
-                                  <span v-if="wells && wells[scope.$index]" class="cell-comment-tech">
+                                  <span v-if="wells && wells[scope.$index]" class="cell-comment">
                                     {{ wells[scope.$index].tub_OD[1][1] }}
                                   </span>
                               </div>    
@@ -876,7 +888,7 @@
                                           </span><span v-if="scope.row.choke_d[0] != null">{{
                                     Math.round(scope.row.choke_d[0] * 10) / 10
                                   }}</span>
-                                  <span v-if="wells && wells[scope.$index]" class="cell-comment-tech">
+                                  <span v-if="wells && wells[scope.$index]" class="cell-comment">
                                     {{ wells[scope.$index].choke_d[1][1] }}
                                   </span>
                               </div>    
@@ -908,7 +920,7 @@
                                           </span><span v-if="scope.row.h_up_perf_md[0] != null">{{
                                     Math.round(scope.row.h_up_perf_md[0] * 10) / 10
                                   }}</span>
-                                  <span v-if="wells && wells[scope.$index]" class="cell-comment-tech">
+                                  <span v-if="wells && wells[scope.$index]" class="cell-comment">
                                     {{ wells[scope.$index].h_up_perf_md[1][1] }}
                                   </span>
                               </div>    
@@ -940,7 +952,7 @@
                                           </span><span v-if="scope.row.h_up_perf_ext[0] != null">{{
                                     Math.round(scope.row.h_up_perf_ext[0] * 10) / 10
                                   }}</span>
-                                  <span v-if="wells && wells[scope.$index]" class="cell-comment-tech">
+                                  <span v-if="wells && wells[scope.$index]" class="cell-comment">
                                     {{ wells[scope.$index].h_up_perf_ext[1][1] }}
                                   </span>
                               </div>    
@@ -971,7 +983,7 @@
                                           )}`"
                                         >
                                         </span><span>{{ scope.row.exp_meth[0] }}</span>
-                                <span v-if="wells && wells[scope.$index]" class="cell-comment-tech">
+                                <span v-if="wells && wells[scope.$index]" class="cell-comment">
                                   {{ wells[scope.$index].exp_meth[1][1] }}
                                 </span>
                               </div>
@@ -1002,7 +1014,7 @@
                                           )}`"
                                         >
                                         </span><span>{{ scope.row.pump_type[0] }}</span>
-                                <span v-if="wells && wells[scope.$index]" class="cell-comment-tech">
+                                <span v-if="wells && wells[scope.$index]" class="cell-comment">
                                   {{ wells[scope.$index].pump_type[1][1] }}
                                 </span>
                               </div>
@@ -1051,7 +1063,7 @@
                                           </span><span v-if="scope.row.spm[0] != null">{{
                                     Math.round(scope.row.spm[0] * 10) / 10
                                   }}</span>
-                                  <span v-if="wells && wells[scope.$index]" class="cell-comment-tech">
+                                  <span v-if="wells && wells[scope.$index]" class="cell-comment">
                                     {{ wells[scope.$index].h_up_perf_ext[1][1] }}
                                   </span>
                               </div>    
@@ -1083,7 +1095,7 @@
                                           </span><span v-if="scope.row.stroke_len[0] != null">{{
                                     Math.round(scope.row.stroke_len[0] * 10) / 10
                                   }}</span>
-                                  <span v-if="wells && wells[scope.$index]" class="cell-comment-tech">
+                                  <span v-if="wells && wells[scope.$index]" class="cell-comment">
                                     {{ wells[scope.$index].stroke_len[1][1] }}
                                   </span>
                               </div>    
@@ -1115,7 +1127,7 @@
                                           </span><span v-if="Math.round(scope.row.q_theor[0] * 10) / 10 != '0'">{{
                                           Math.round(scope.row.q_theor[0] * 10) / 10
                                         }}</span>
-                                  <span v-if="wells && wells[scope.$index]" class="cell-comment-tech">
+                                  <span v-if="wells && wells[scope.$index]" class="cell-comment">
                                     {{ wells[scope.$index].q_theor[1][1] }}
                                   </span>
                               </div>    
@@ -1148,7 +1160,7 @@
                                           </span><span v-if="scope.row.freq[0] != null">{{
                                     Math.round(scope.row.freq[0] * 10) / 10
                                   }}</span>
-                                  <span v-if="wells && wells[scope.$index]" class="cell-comment-tech">
+                                  <span v-if="wells && wells[scope.$index]" class="cell-comment">
                                     {{ wells[scope.$index].freq[1][1] }}
                                   </span>
                               </div>    
@@ -1183,7 +1195,7 @@
                                           </span><span v-if="scope.row.h_pump_set[0] != null">{{
                                     Math.round(scope.row.h_pump_set[0] * 10) / 10
                                   }}</span>
-                                  <span v-if="wells && wells[scope.$index]" class="cell-comment-tech">
+                                  <span v-if="wells && wells[scope.$index]" class="cell-comment">
                                     {{ wells[scope.$index].h_pump_set[1][1] }}
                                   </span>
                               </div>    
@@ -1215,7 +1227,7 @@
                                           </span><span v-if="scope.row.whp[0] != null">{{
                                     Math.round(scope.row.whp[0] * 10) / 10
                                   }}</span>
-                                  <span v-if="wells && wells[scope.$index]" class="cell-comment-tech">
+                                  <span v-if="wells && wells[scope.$index]" class="cell-comment">
                                     {{ wells[scope.$index].whp[1][1] }}
                                   </span>
                               </div>    
@@ -1247,7 +1259,7 @@
                                           </span><span v-if="scope.row.line_p[0] != null">{{
                                     Math.round(scope.row.line_p[0] * 10) / 10
                                   }}</span>
-                                  <span v-if="wells && wells[scope.$index]" class="cell-comment-tech">
+                                  <span v-if="wells && wells[scope.$index]" class="cell-comment">
                                     {{ wells[scope.$index].line_p[1][1] }}
                                   </span>
                               </div>    
@@ -1279,7 +1291,7 @@
                                           </span><span v-if="scope.row.p_res[0] != null">{{
                                     Math.round(scope.row.whp[0] * 10) / 10
                                   }}</span>
-                                  <span v-if="wells && wells[scope.$index]" class="cell-comment-tech">
+                                  <span v-if="wells && wells[scope.$index]" class="cell-comment">
                                     {{ wells[scope.$index].p_res[1][1] }}
                                   </span>
                               </div>    
@@ -1311,7 +1323,7 @@
                                           </span><span v-if="scope.row.h_dyn[0] != null">{{
                                     Math.round(scope.row.h_dyn[0] * 10) / 10
                                   }}</span>
-                                  <span v-if="wells && wells[scope.$index]" class="cell-comment-tech">
+                                  <span v-if="wells && wells[scope.$index]" class="cell-comment">
                                     {{ wells[scope.$index].h_dyn[1][1] }}
                                   </span>
                               </div>    
@@ -1343,7 +1355,7 @@
                                           </span><span v-if="scope.row.p_annular[0] != null">{{
                                     Math.round(scope.row.p_annular[0] * 10) / 10
                                   }}</span>
-                                  <span v-if="wells && wells[scope.$index]" class="cell-comment-tech">
+                                  <span v-if="wells && wells[scope.$index]" class="cell-comment">
                                     {{ wells[scope.$index].p_annular[1][1] }}
                                   </span>
                               </div>    
@@ -1376,7 +1388,7 @@
                                           </span><span v-if="scope.row.p_intake[0] != null">{{
                                     Math.round(scope.row.p_intake[0] * 10) / 10
                                   }}</span>
-                                  <span v-if="wells && wells[scope.$index]" class="cell-comment-tech">
+                                  <span v-if="wells && wells[scope.$index]" class="cell-comment">
                                     {{ wells[scope.$index].p_intake[1][1] }}
                                   </span>
                               </div>    
@@ -1404,25 +1416,7 @@
                             width="130"
                             sortable
                             >
-                            <template slot-scope="scope">
-                              <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`p_intake`)}" >
-                                        <span
-                                          :class="{
-                                            'circle-err': isCircleErrClass(scope.$index,`p_intake`)}"
-                                          :style="`background :${getColor(
-                                            wells[scope.$index].p_intake[1][0]
-                                          )}`"
-                                        >
-                                          </span><span v-if="scope.row.p_intake[0] != null">{{
-                                    Math.round(scope.row.p_intake[0] * 10) / 10
-                                  }}</span>
-                                  <span v-if="wells && wells[scope.$index]" class="cell-comment-tech">
-                                    {{ wells[scope.$index].p_intake[1][1] }}
-                                  </span>
-                              </div>    
-                            </template>
-
-                            
+               
                           </el-table-column>
                         </el-table-column>
                         <el-table-column
@@ -1502,7 +1496,7 @@
                                       </span><span v-if="scope.row.bhp[0] != null">{{
                                 Math.round(scope.row.bhp[0] * 10) / 10
                               }}</span>
-                              <span v-if="wells && wells[scope.$index]" class="cell-comment-tech">
+                              <span v-if="wells && wells[scope.$index]" class="cell-comment">
                                 {{ wells[scope.$index].bhp[1][1] }}
                               </span>
                             </template>
@@ -2090,6 +2084,22 @@ export default {
           console.log("No data");
           
         }
+      });
+    this.axios
+      .get(
+        "http://172.20.103.187:7576/api/techregime/tr_parameter_filters/"
+      )
+      .then((response) => {
+        this.$store.commit("globalloading/SET_LOADING", false);
+        let data = response.data;
+        if (data) {
+          
+          this.filter_column = data;
+        }
+        else {
+          console.log("No data");
+        }
+
         if (mm1 < 10) {
           this.dt = "01" + ".0" + mm1 + "." + yyyy1;
         } else {
@@ -2146,8 +2156,10 @@ export default {
        "el-table_1_column_113", "el-table_1_column_125", "el-table_1_column_137", "el-table_1_column_141","el-table_1_column_145","el-table_1_column_149", 
        "el-table_1_column_153", "el-table_1_column_163", "el-table_1_column_165", "el-table_1_column_167", "el-table_1_column_169", "el-table_1_column_171",
         "el-table_1_column_173", "el-table_1_column_175",  "el-table_1_column_177", "el-table_1_column_179",  "el-table_1_column_181", "el-table_1_column_183", 
-      "el-table_1_column_187",  "el-table_1_column_191",  "el-table_1_column_195",  "el-table_1_column_199", ],  
+      "el-table_1_column_187",  "el-table_1_column_191",  "el-table_1_column_195",  "el-table_1_column_199", ], 
+      filter_column: [], 
     };
+    
 
   },
   watch: {
@@ -2575,7 +2587,26 @@ export default {
         return console.log("error")
       }
     },
-
+    resetDateFilter() {
+      this.$refs.filterTable.clearFilter('date');
+    },
+    clearFilter() {
+      this.$refs.filterTable.clearFilter();
+    },
+    formatter(row, column) {
+      return row.address;
+    },
+    filterTag(value, row) {
+      return row.tag === value;
+    },
+    filterHandlerArray(value, row, column) {
+      const property = column['property'];
+      return row[property][0] === value;
+    },
+    filterHandler(value, row, column) {
+      const property = column['property'];
+      return row[property] === value;
+    },
 
     searchWell() {
       console.log("search = ", this.searchString);
@@ -2630,6 +2661,25 @@ export default {
       return this.wells &&
           this.wells[index] &&
           this.wells[index][value][1][0] !== '0';
+    },
+
+    haveTooltip (index, value) {
+      if  (this.wells &&
+          this.wells[index] &&
+          this.wells[index][value][1][1]==="Нет Ошибок") {
+        return false;}
+      
+      return this.wells[index][value][1][1];
+      
+
+    },
+    isPlacement (index, value) {
+      if  (this.wells &&
+          this.wells[index] &&
+          this.wells[index][value][1][1]==="Нет Ошибок") {
+        return false;}
+
+      return "top";
     },
 
   },
@@ -2983,7 +3033,7 @@ table::-webkit-scrollbar-corner {
   border-bottom: none;
   
 }
-.cell-comment-tech {
+.cell-comment {
     display: none;
     width: auto;
     position:absolute;
@@ -3006,4 +3056,9 @@ table::-webkit-scrollbar-corner {
     background: rgb(255, 0, 0);
     margin-left: 18px;
 }
+.cell-with-comment:hover .cell-comment {
+    display: flex;
+    opacity: 1;
+}
+
 </style>

@@ -16,7 +16,7 @@
                   d="M13.8015 10.4124C13.4953 10.4123 13.2018 10.2864 12.9853 10.062L9.52204 6.47442L2.25734 14L0.625 12.309L8.36763 4.28837C8.58407 4.06415 8.87765 3.93811 9.1838 3.93799H9.86032C10.1665 3.93811 10.46 4.06415 10.6765 4.28837L14.1397 7.87597L19.0956 2.74212L16.4485 0H23.375V7.17519L20.7279 4.43307L15.2941 10.062C15.0777 10.2864 14.7841 10.4123 14.478 10.4124H13.8015Z"
                   fill="white"
                 /></svg></i
-            >{{trans('tr.tr')}}</a
+            >{{trans('tr.fa_tr_deviations')}}</a
           >
           <a href="tr" class="col but-nav__link but trfabuttech"
             ><i style="margin-right: 10px"
@@ -32,7 +32,7 @@
                   fill="white"
                 />
               </svg> </i
-            >{{trans('tr.btr')}}</a
+            >{{trans('tr.tr')}}</a
           >
         </div>
       </div>
@@ -46,17 +46,17 @@
             aria-haspopup="true"
             aria-expanded="false"
           >
-            {{trans('tr.trchdt')}}
+            {{trans('tr.choose_date')}}
           </button>
           <div
             class="dropdown-menu fadropmenu"
             aria-labelledby="dropdownMenuLink"
             style="background: #40467e"
           >
-            <label for="inputDate" style="margin-left: 8px;">{{trans('tr.fadt1')}}:</label>
+            <label for="inputDate" style="margin-left: 8px;">{{trans('tr.enter_reference_date')}}:</label>
             <input type="date" class="form-control" v-model="date1" />
             <a href="#" class="btn btn-sm button_form" @click.prevent="chooseDt"
-              >{{trans('tr.sf')}}</a
+              >{{trans('tr.form')}}</a
             >
           </div>
         </div>
@@ -235,7 +235,7 @@ export default {
           dataLabels: {
             enabled: false
           },
-          colors: ["#FF1654", "#247BA0", "#5FA7FF"],
+          colors: ["#06AED5", "#9C7300", "#33CC99"],
           stroke: {
             width: [4, 4, 4]
           },

@@ -19,7 +19,7 @@
     :group-select="true"
     :limit="1"
     :limit-text="() => ''"
-    :placeholder="`Выберите ${filterName} ${filterNameAdditional}`"
+    :placeholder="`${this.trans('tr.choose')} ${filterName} ${filterNameAdditional}`"
   >
     <div
       class="multiselect__option__item"
@@ -91,7 +91,7 @@ export default {
     },
     getFieldFilterText() {
       if (!this.fieldFilterOptions[0] || !this.fieldFilterOptions[0].fields) return "Нет опций"
-      if (this.selectedAllTag && this.fieldFilterOptions[0].fields.length === this.filter.length) return `${this.trans('tr.trfw1')}`;
+      if (this.selectedAllTag && this.fieldFilterOptions[0].fields.length === this.filter.length) return `${this.trans('tr.all_wells_selected')}`;
       return `${this.filter.length} ${this.trans(`${declOfNum(this.filter.length, this.textFormsRow)}`)}`;
     },
   },

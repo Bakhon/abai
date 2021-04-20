@@ -164,6 +164,14 @@ export default {
             }
         },
 
+        getColorClassBySelectedPeriod(index) {
+            if (this.buttonMonthlyTab || this.buttonYearlyTab) {
+                return this.getLighterClass(index);
+            } else {
+                return this.getDarkerClass(index);
+            }
+        },
+
         getColor2(i) {
             if (i < 0) return "arrow";
             if (i > 0) return "arrow2";
