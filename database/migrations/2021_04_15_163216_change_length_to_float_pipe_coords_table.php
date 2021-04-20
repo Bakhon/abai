@@ -20,7 +20,7 @@ class ChangeLengthToFloatPipeCoordsTable extends Migration
         Schema::table('pipe_coords', function (Blueprint $table) {
             $table->float('elevation', 6, 2)->change();
             $table->float('h_distance', 7, 2)->change();
-            $table->float('m_distance', 10, 7)->change();
+            $table->float('m_distance', 10, 5)->change();
         });
     }
 
