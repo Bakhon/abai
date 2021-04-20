@@ -10,14 +10,6 @@
     </select>
   </div>
 </template>
-<style scoped lang="scss">
-.filter__input {
-  width: 100%;
-  $form-select-color: #293688;
-  $form-select-line-height: 75px;
-}
-</style>
-
 <script>
 export default {
   props: ["selectFilter"],

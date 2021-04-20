@@ -2,7 +2,7 @@
   <div class="row proactive-factors-page-container">
     <div class="col-10 middle-block-columns">
       <div class="col px-2 container-col_color">
-         <reptt-company :data-reptt="getCompanyData"></reptt-company>
+         <reptt-company2 :data-reptt="getCompanyData"></reptt-company2>
       </div>
     </div>
     <div class="col-2 px-2 middle-block-columns">
@@ -93,3 +93,4 @@ export default {
     }
 };
 </script>
+
