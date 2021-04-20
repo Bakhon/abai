@@ -34,7 +34,17 @@ class AddFieldsToDzoImportDowntimeReasons extends Migration
     public function down()
     {
         Schema::table('dzo_import_downtime_reasons', function (Blueprint $table) {
-            //
+            $table->dropColumn(
+                'chrf_restriction_downtime_production_wells_count',
+                'chrf_restriction_downtime_production_wells_oil_loss',
+                'chrf_restriction_downtime_injection_wells_count',
+                "unprofitable_downtime_production_wells_count",
+                "unprofitable_downtime_production_wells_oil_loss",
+                "unprofitable_downtime_injection_wells_count",
+                "drilling_restriction_downtime_production_wells_count",
+                "drilling_restriction_downtime_production_wells_oil_loss",
+                "drilling_restriction_downtime_injection_wells_count"
+            );
         });
     }
 }
