@@ -42,16 +42,13 @@ class FieldCalcController extends Controller
     }
 
     public function index(){
-//        $companies = FieldCalcCompany::with('getCompanyBarrelPrice')->get();
-        $companyData = [];
         $companies = FieldCalcCompany::all();
-        foreach ($companies as $company){
-            $companyData[$company->id] = $company->getCompanyBarrelPriceByDirection(1)->get();
+        foreach ($companies as $key=> $company){
+            $company['ecorefsemppers'] = $company->getCompanyBarrelPriceByDirection(1)->get()->toArray();
         }
-        dd($companyData);
-        $exportDirections = EcoRefsDirectionId::where('name', '=', 'Экспорт')->pluck('id')->toArray();
-        $scenario = EcoRefsScFa::where('name', '=', 'Корр. 6 на 2021-2025')->pluck('id')->toArray();
-        $emppersExp = EcoRefsEmpPer::whereIn('direction_id', $exportDirections)->where('sc_fa', $scenario[0])->where('company_id', 7)->where('date', '2020-02-31')->get();
+        echo '<pre>';
+        print_r($companies);
+        echo '</pre>';
     }
 
 }
