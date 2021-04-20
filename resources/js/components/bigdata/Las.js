@@ -63,7 +63,8 @@ export default {
                 },
             },
 
-            baseUrl: 'http://172.20.103.187:8083/',
+            //baseUrl: 'http://172.20.103.187:8083/',
+            baseUrl: 'http://127.0.0.1:8091/',
             experimentInfo: null,
             selectedExperimentsInfo: null,
             loadProvenance: null,
@@ -149,6 +150,7 @@ export default {
             }).then((response) => {
                 if (response.data) {
                     this.setExperimentId(response.data.experimentId)
+                    this.resetFileUploadFields()
                     this.updateExperimentInfo()
                 }
             }).catch((error) => console.log(error)
@@ -156,6 +158,9 @@ export default {
         },
         setExperimentId(experimentId) {
             this.filenameParameters.specific[this.currentFileInfoNum]['experimentId'] = experimentId
+        },
+        resetFileUploadFields() {
+            this.input.filename.mnemonics = []
         },
         setExperimentUserFileName() {
             this.filenameParameters.specific[this.currentFileInfoNum]['userFilename'] = this.filenameByParameters

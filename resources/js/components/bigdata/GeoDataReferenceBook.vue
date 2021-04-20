@@ -44,7 +44,8 @@ export default {
   components: {},
   data() {
     return {
-      baseUrl: 'http://172.20.103.187:8084/',
+      //baseUrl: 'http://172.20.103.187:8083/',
+      baseUrl: 'http://127.0.0.1:8091/',
       referenceBooks: referenceBooksJson['referenceBooks'],
       input: referenceBooksJson['input'],
       isUpdated: {

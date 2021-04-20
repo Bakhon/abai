@@ -33,7 +33,7 @@
               </select>
             </div>
             <div class="row">
-              <label class="subsection-text">Выберите параметры для формирования имени файла</label>
+              <label class="subsection-text">Параметры для формирования имени файла</label>
             </div>
             <div class="row">
               <label class="label-text">Имя файла: {{ filenameByParameters }}</label>
@@ -78,7 +78,7 @@
                     v-model="input.filename.stemType"
                     required
                 >
-                  <option disabled value="">Наименование ствола</option>
+                  <option disabled value="">Тип ствола</option>
                   <option v-for="stemType in filenameParameters.generic.stemTypes" :value="stemType.value">
                     {{ getLocalizedParameterName(stemType) }}
                   </option>
@@ -110,7 +110,7 @@
                     v-model="input.filename.recordingMethod"
                     required
                 >
-                  <option disabled value="">Наименование технологии записи</option>
+                  <option disabled value="">Технология записи</option>
                   <option v-for="recordingMethod in filenameParameters.generic.recordingMethods"
                           :value="recordingMethod.value">
                     {{ recordingMethod.value }}
@@ -118,7 +118,7 @@
                 </select>
               </div>
               <div class="col-3">
-                <label class="label-text">Выберите мнемоники:</label>
+                <label class="label-text">Мнемоники:</label>
               </div>
               <div class="col-3">
                 <select
@@ -131,14 +131,14 @@
                 >
                   <option v-for="mnemonic in filenameParameters.specific[currentFileInfoNum].mnemonics"
                           :value="mnemonic"
-                          selected>{{ mnemonic }}
+                          >{{ mnemonic }}
                   </option>
                 </select>
               </div>
             </div>
             <div class="row">
               <div class="col-3">
-                <label class="label-text">Выберите дату проведения работ:</label>
+                <label class="label-text">Дата проведения работ:</label>
               </div>
               <div class="col-3">
                 <datetime
@@ -218,7 +218,7 @@
               <button class="col btn get-report-button" id="submitExperimentInfo"
                       :disabled="!isInputFilledFieldsForFileUpload || !files || isLoading || input.provenanceId === ''"
                       @click="submitFileParams()">
-                Подвердить данные по эксперименту
+                Подтвердить данные по эксперименту
               </button>
             </div>
             <div class="row mt-5">
@@ -316,7 +316,7 @@
     </div>
     <div class="container  container-main info pt-5" v-if="experimentStatistics">
       <div class="row">
-        <label class="col label-text">Выберите мнемоники</label>
+        <label class="col label-text">Мнемоники</label>
       </div>
       <div class="row">
         <select
