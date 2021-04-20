@@ -68,7 +68,7 @@ import selectFilterVersionBp from "./selectFilterData/versionBp.json";
 import selectFilterPriceBrent from "./selectFilterData/priceBrent.json";
 import selectFilterPriceInnerMarket from "./selectFilterData/priceInnerMarket.json";
 import selectFilterCurrency from "./selectFilterData/currency.json";
-import selectFilterCapex from "./selectFilterData/Capex.json";
+import selectFilterCapex from "./selectFilterData/capex.json";
 import selectFilterGetOil from "./selectFilterData/getOil.json";
 import selectFilterExportSalesPercentage from "./selectFilterData/exportSalesPercentage.json";
 
