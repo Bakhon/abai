@@ -1,0 +1,61 @@
+{
+  "type": "plain",
+  "table": "prod.well_constr",
+  "tabs": [
+    {
+      "title": "well_design_project",
+      "blocks": [
+        [
+          {
+            "title": "",
+            "items": [
+              {
+                "code": "casing_nom",
+                "type": "dict",
+                "title": "column_type",
+                "dict": "equips",
+                "validation": "nullable|exists:tbd.dict.equip_type,id"
+              },
+              {
+                "code": "depth",
+                "type": "numeric",
+                "title": "casing_running_depth",
+                "validation": "numeric"
+              },
+              {
+                "code": "sidetrack",
+                "type": "checkbox",
+                "title": "side_barrel"
+              },
+              {
+                "code": "casing_type",
+                "type": "dict",
+                "title": "casing_type",
+                "dict": "casings",
+                "validation": "nullable|exists:tbd.dict.tube_nom,id"
+              },
+              {
+                "code": "tube_count",
+                "type": "numeric",
+                "title": "number_of_pipes",
+                "validation": "numeric"
+              },
+              {
+                "code": "cem_volume",
+                "type": "numeric",
+                "title": "poured_cement_volume",
+                "validation": "numeric"
+              },
+              {
+                "code": "cem_height",
+                "type": "numeric",
+                "title": "cement_lifting_height",
+                "validation": "numeric"
+              }      
+            ]
+          }
+        ]
+      ]
+    }
+  ]
+}

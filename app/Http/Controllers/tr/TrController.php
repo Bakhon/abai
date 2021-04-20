@@ -3,11 +3,7 @@
 namespace App\Http\Controllers\tr;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use Level23\Druid\DruidClient;
-use Level23\Druid\Types\Granularity;
-use Level23\Druid\Extractions\ExtractionBuilder;
-use App\Models\DZO\DZOdaily;
+
 
 
 class TrController extends Controller
@@ -19,7 +15,9 @@ class TrController extends Controller
     }
     public function tr()
     {
-        return view('tr.tr');
+        $permissionNames = auth()->user()->getAllPermissions()->pluck('name')->toArray();       
+        
+        return view('tr.tr', compact('permissionNames'));
     }   
     public function fa()
     {

@@ -113,6 +113,10 @@ class OmgNGDUController extends CrudController
             ]
         ];
 
+        if(auth()->user()->can('monitoring create '.$this->modelName)) {
+            $params['links']['create'] = route($this->modelName.'.create');
+        }
+
         if(auth()->user()->can('monitoring export '.$this->modelName)) {
             $params['links']['export'] = route($this->modelName.'.export');
         }
