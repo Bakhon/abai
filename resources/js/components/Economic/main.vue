@@ -83,7 +83,7 @@
             v-for="(block, index) in blocks"
             :key="index"
             class="d-flex bg-main1 text-white text-wrap p-3 mb-3"
-            style="height: 220px">
+            style="min-height: 220px">
           <div
               v-for="(subBlock, subBlockIndex) in block"
               :key="subBlock.title"
@@ -104,6 +104,7 @@
 
             <economic-percent-badge
                 :percent="subBlock.sum.percent"
+                :reverse="subBlock.reverse"
                 class="font-size-22px line-height-26px"/>
           </div>
         </div>
@@ -270,11 +271,13 @@ export default {
         [
           {
             title: 'Выручка экспорт',
-            sum: this.res.lastMonth.Revenue_export.sum
+            sum: this.res.lastMonth.Revenue_export.sum,
+            reverse: true
           },
           {
             title: 'Выручка местный рынок',
-            sum: this.res.lastMonth.Revenue_local.sum
+            sum: this.res.lastMonth.Revenue_local.sum,
+            reverse: true
           }
         ],
         [

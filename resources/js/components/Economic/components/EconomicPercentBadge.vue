@@ -1,6 +1,6 @@
 <template>
   <div class="font-size-24px line-height-28px font-weight-bold">
-    <economic-percent-badge-icon :percent="percent"/>
+    <economic-percent-badge-icon :percent="percent" :reverse="reverse"/>
 
     <span>{{ Math.abs(percent) }}% </span>
   </div>
@@ -19,6 +19,10 @@ export default {
       required: true,
       type: Number
     },
+    reverse: {
+      required: false,
+      type: Boolean
+    }
   },
 }
 </script>

@@ -1,11 +1,13 @@
 <template>
   <i v-if="percent > 0"
-     class="fas fa-angle-down"
-     style="color:#13B062"></i>
+     :class="reverse ? 'fa-angle-up' : 'fa-angle-down'"
+     class="fas"
+     style="color: #13B062"></i>
 
-  <i v-else-if="percent < 0"
-     class="fas fa-angle-up"
-     style="color:#AB130E"></i>
+  <i v-else
+     :class="reverse ? 'fa-angle-down' : 'fa-angle-up'"
+     class="fas"
+     style="color: #AB130E"></i>
 </template>
 
 <script>
@@ -15,6 +17,10 @@ export default {
     percent: {
       required: true,
       type: Number
+    },
+    reverse: {
+      required: false,
+      type: Boolean
     }
   }
 }
