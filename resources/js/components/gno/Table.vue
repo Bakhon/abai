@@ -2006,6 +2006,25 @@
   margin-top: 5px;
 }
 
+.block__centrators {
+	background-color:#272953;
+  align-items: center;
+	border-radius:6px;
+	border:2px solid #666;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:Arial;
+	font-size:14px;
+	padding:1px 15px;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #144079;
+  width: 550px;
+  height: 75px;
+  bottom: 60px;
+  word-spacing: 4px;
+}
+
 .select-download-button {
 outline: none;
 text-align: center;
@@ -2129,24 +2148,4 @@ background-position: right 5px top 50%;
 .table-pgno-one {
   height: 200px;
 }
-
-.block__centrators {
-	background-color:#272953;
-  align-items: center;
-	border-radius:6px;
-	border:2px solid #666;
-	display:inline-block;
-	cursor:pointer;
-	color:#ffffff;
-	font-family:Arial;
-	font-size:14px;
-	padding:1px 15px;
-	text-decoration:none;
-	text-shadow:0px 1px 0px #144079;
-  width: 550px;
-  height: 75px;
-  bottom: 60px;
-  word-spacing: 4px;
-}
-
 </style>
