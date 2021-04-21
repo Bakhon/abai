@@ -2,33 +2,29 @@
 
 namespace App\Http\Controllers\ComplicationMonitoring;
 
-use App\Exports\PipeLineCalcExport;
 use App\Filters\HydroCalcFilter;
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\CrudController;
 use App\Http\Controllers\Traits\WithFieldsValidation;
 use App\Http\Requests\IndexTableRequest;
 use App\Http\Resources\HydroCalcListResource;
 use App\Jobs\ExportHydroCalcTableToExcel;
 use App\Models\ComplicationMonitoring\OmgNGDU;
 use App\Models\ComplicationMonitoring\TrunklinePoint;
-
 use Illuminate\Support\Facades\Session;
-use Maatwebsite\Excel\Facades\Excel;
 
-class HydroCalculcation extends Controller
+class HydroCalculation extends Controller
 {
     use WithFieldsValidation;
 
-    protected $modelName = 'hydro_calculcation';
+    protected $modelName = 'hydro_calculation';
 
     public function index () {
         $params = [
             'success' => Session::get('success'),
             'links' => [
-                'list' => route('hydro_calculcation.list'),
+                'list' => route('hydro_calculation.list'),
             ],
-            'title' => trans('monitoring.hydro_calculcation.table_title'),
+            'title' => trans('monitoring.hydro_calculation.table_title'),
             'fields' => [
                 'id' => [
                     'title' => '№',
@@ -46,7 +42,7 @@ class HydroCalculcation extends Controller
                     'filterable' => false,
                 ],
                 'length' => [
-                    'title' => trans('monitoring.hydro_calculcation.fields.length'),
+                    'title' => trans('monitoring.hydro_calculation.fields.length'),
                     'type' => 'numeric',
                     'sortable' => false,
                     'filterable' => false,
@@ -70,81 +66,81 @@ class HydroCalculcation extends Controller
                     'filterable' => false,
                 ],
                 'press_start' => [
-                    'title' => trans('monitoring.hydro_calculcation.fields.pressure_start'),
+                    'title' => trans('monitoring.hydro_calculation.fields.pressure_start'),
                     'type' => 'numeric',
                     'sortable' => false,
                     'filterable' => false,
                 ],
                 'press_end' => [
-                    'title' => trans('monitoring.hydro_calculcation.fields.pressure_end'),
+                    'title' => trans('monitoring.hydro_calculation.fields.pressure_end'),
                     'type' => 'numeric',
                     'sortable' => false,
                     'filterable' => false,
                 ],
                 'temp_start' => [
-                    'title' => trans('monitoring.hydro_calculcation.fields.temperature_start'),
+                    'title' => trans('monitoring.hydro_calculation.fields.temperature_start'),
                     'type' => 'numeric',
                     'sortable' => false,
                     'filterable' => false,
                 ],
                 'temp_end' => [
-                    'title' => trans('monitoring.hydro_calculcation.fields.temperature_end'),
+                    'title' => trans('monitoring.hydro_calculation.fields.temperature_end'),
                     'type' => 'numeric',
                     'sortable' => false,
                     'filterable' => false,
                 ],
                 'start_point' => [
-                    'title' => trans('monitoring.hydro_calculcation.fields.start_point'),
+                    'title' => trans('monitoring.hydro_calculation.fields.start_point'),
                     'type' => 'numeric',
                 ],
                 'end_point' => [
-                    'title' => trans('monitoring.hydro_calculcation.fields.end_point'),
+                    'title' => trans('monitoring.hydro_calculation.fields.end_point'),
                     'type' => 'numeric',
                 ],
                 'name' => [
-                    'title' => trans('monitoring.hydro_calculcation.fields.pipe_name'),
+                    'title' => trans('monitoring.hydro_calculation.fields.pipe_name'),
                     'type' => 'numeric',
                     'sortable' => false,
                     'filterable' => false,
                 ],
                 'mix_speed_avg' => [
-                    'title' => trans('monitoring.hydro_calculcation.fields.mix_speed_avg'),
+                    'title' => trans('monitoring.hydro_calculation.fields.mix_speed_avg'),
                     'type' => 'numeric',
                     'sortable' => false,
                     'filterable' => false,
                 ],
                 'fluid_speed' => [
-                    'title' => trans('monitoring.hydro_calculcation.fields.fluid_speed'),
+                    'title' => trans('monitoring.hydro_calculation.fields.fluid_speed'),
                     'type' => 'numeric',
                     'sortable' => false,
                     'filterable' => false,
                 ],
                 'gaz_speed' => [
-                    'title' => trans('monitoring.hydro_calculcation.fields.gaz_speed'),
+                    'title' => trans('monitoring.hydro_calculation.fields.gaz_speed'),
                     'type' => 'numeric',
                     'sortable' => false,
                     'filterable' => false,
                 ],
                 'flow_type' => [
-                    'title' => trans('monitoring.hydro_calculcation.fields.flow_type'),
+                    'title' => trans('monitoring.hydro_calculation.fields.flow_type'),
                     'type' => 'numeric',
                     'sortable' => false,
                     'filterable' => false,
                 ],
                 'press_change' => [
-                    'title' => trans('monitoring.hydro_calculcation.fields.press_change'),
+                    'title' => trans('monitoring.hydro_calculation.fields.press_change'),
                     'type' => 'numeric',
                     'sortable' => false,
                     'filterable' => false,
                 ],
                 'break_qty' => [
-                    'title' => trans('monitoring.hydro_calculcation.fields.break_qty'),
+                    'title' => trans('monitoring.hydro_calculation.fields.break_qty'),
                     'type' => 'numeric',
                     'sortable' => false,
                     'filterable' => false,
                 ],
                 'height_drop' => [
-                    'title' => trans('monitoring.hydro_calculcation.fields.height_drop'),
+                    'title' => trans('monitoring.hydro_calculation.fields.height_drop'),
                     'type' => 'numeric',
                     'sortable' => false,
                     'filterable' => false,
@@ -188,7 +184,7 @@ class HydroCalculcation extends Controller
             $points[$key]->omgngdu = $query->orderBy('date', 'desc')->first();
 
             if (!$points[$key]->omgngdu) {
-                $alert = $points[$key]->gu->name.' нет данных ОМГДУ';
+                $alert = $points[$key]->gu->name.' '.trans('monitoring.hydro_calculation.message.no-omgdu-data');
 
                 if (isset($input['date'])) {
                     $alert .= ' на '.$input['date'];
@@ -202,19 +198,19 @@ class HydroCalculcation extends Controller
             $points[$key]->omgngdu->heater_output_temperature = $temperature;
 
             if ($points[$key]->omgngdu->pump_discharge_pressure == 0) {
-                $alerts[] = $points[$key]->gu->name.' давление 0 !';
+                $alerts[] = $points[$key]->gu->name.' '.trans('monitoring.hydro_calculation.message.pressure-0');
             }
 
             if (is_null($points[$key]->omgngdu->pump_discharge_pressure)) {
-                $alerts[] = $points[$key]->gu->name.' нет данных по давлению !';
+                $alerts[] = $points[$key]->gu->name.' '.trans('monitoring.hydro_calculation.message.no-pressure-data');
             }
 
             if (!$points[$key]->omgngdu->daily_fluid_production) {
-                $alerts[] = $points[$key]->gu->name.' нет данных по cуточной добычи жидкости !';
+                $alerts[] = $points[$key]->gu->name.' '.trans('monitoring.hydro_calculation.message.no-daily-fluid-data');
             }
 
             if (!$points[$key]->omgngdu->bsw) {
-                $alerts[] = $points[$key]->gu->name.' нет данных по обводненности !';
+                $alerts[] = $points[$key]->gu->name.' '.trans('monitoring.hydro_calculation.message.no-bsw-data');
             }
         }
 
