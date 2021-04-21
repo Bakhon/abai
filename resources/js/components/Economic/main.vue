@@ -393,7 +393,7 @@ export default {
 
             this.loading = false
 
-            return window.open(data.job.output.filename, '_blank').focus();
+            return window.open(data.job.output.filename, '_blank')
           case 'failed':
             clearInterval(interval)
 
