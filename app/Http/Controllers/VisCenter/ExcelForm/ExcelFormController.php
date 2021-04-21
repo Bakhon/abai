@@ -25,7 +25,7 @@ class ExcelFormController extends Controller
             ->first();
 
          if (is_null($dzoImportData)) {
-             return response()->json($dzoImportData);
+            return response()->json($dzoImportData);
          }
          $dzoImportData->fields = $this->getFormattedFields($dzoImportData);
 
