@@ -246,8 +246,6 @@ export default {
     },
     mounted () {
         this.$store.commit('globalloading/SET_LOADING', false);
-        this.$store.commit('changeDateStart', new Date('2020-01-01T00:00:01+00:00'));
-        this.$store.commit('changeDateEnd', new Date('2020-12-31T23:59:59+00:00'));
     }
 }
 </script>

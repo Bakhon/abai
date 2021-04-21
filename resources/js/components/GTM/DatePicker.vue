@@ -26,13 +26,15 @@
 </template>
 <script>
 
+import {paegtmMapActions} from '@store/helpers';
+
 export default {
     data: function () {
         return {
             isDatePickerShow: false,
             dateRange: {
-                start: this.$store.state.dateStart,
-                end: this.$store.state.dateEnd,
+                start: new Date(this.$store.state.dateStart),
+                end: new Date(this.$store.state.dateEnd),
             },
         }
     },
@@ -49,10 +51,14 @@ export default {
         }
     },
     methods: {
+        ...paegtmMapActions([
+            'changeDateStart',
+            'changeDateEnd',
+        ]),
         onDateRangeChange() {
             this.isDatePickerShow = false;
-            this.$store.commit('changeDateStart', this.dateRange.start);
-            this.$store.commit('changeDateEnd', this.dateRange.end);
+            this.changeDateStart(this.dateRange.start);
+            this.changeDateEnd(this.dateRange.end);
             this.$emit('dateChanged')
         }
     }

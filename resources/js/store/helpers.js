@@ -66,3 +66,9 @@ export const complicationMonitoringActions = arrNames => ({
     ]),
 });
 
+export const paegtmMapActions = arrNames => ({
+    ...mapActions('paegtmMap', [
+        ...arrNames,
+    ]),
+});
+

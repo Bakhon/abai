@@ -127,6 +127,7 @@
 
 <script>
 import structureMain from './structure_main.json'
+import {paegtmMapActions} from '@store/helpers';
 export default {
     data: function () {
         return {
@@ -215,9 +216,14 @@ export default {
         };
     },
     methods: {
+        ...paegtmMapActions([
+            'changeDisplayShadowBlock',
+            'changeTreeSettingComponent',
+            'changeTreeChildrenComponent',
+        ]),
         nodeClick (data) {
             this.$_setTreeChildrenComponent(data);
-            this.$store.commit('changeTreeSettingComponent', {
+            this.changeTreeSettingComponent({
                 name: 'gtm-tree-setting',
                 data: function () {
                     return {
@@ -231,16 +237,16 @@ export default {
         },
         $_setTreeChildrenComponent(data) {
             let node = data.node;
-            this.$store.commit('changeTheDisplayShadowBlock',true);
+            this.changeDisplayShadowBlock(true);
             if (node.ioi_finder_model === undefined) {
                 if (data.hideIoiMenu) {
-                    this.$store.commit('changeTreeChildrenComponent',null);
+                    this.changeTreeChildrenComponent(null);
                     return;
                 } else {
                     return;
                 }
             }
-            this.$store.commit('changeTreeChildrenComponent', {
+            this.changeTreeChildrenComponent({
                 name: 'gtm-tree-setting',
                 data: function () {
                     return {
