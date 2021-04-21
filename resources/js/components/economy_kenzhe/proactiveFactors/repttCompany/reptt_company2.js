@@ -1,7 +1,5 @@
 export default {
-	props: [
-		'dataReptt'
-	],
+	props: [ 'dataReptt' ],
 	data() {
 		return {
 			yearLast: 2019,
@@ -20,16 +18,12 @@ export default {
 			},
 			tableHeader: [
 				{
-					label:
-						'Наименование',
-					prop:
-						'name'
+					label: 'Наименование',
+					prop: 'name'
 				},
 				{
-					label:
-						'План на январь',
-					prop:
-						'value'
+					label: 'План на январь',
+					prop: 'value'
 				}
 			]
 		};
@@ -48,23 +42,10 @@ export default {
 				let hasChild = a.handbook_items.length > 0;
 				let yearValue = a[attributeName][year];
 				if (yearValue < 0) {
-					a[
-						attributeName
-					][
-						year
-					] =
-						yearValue *
-						-1;
+					a[attributeName][year] = yearValue * -1;
 				}
 				if (hasChild) {
-					a[
-						attributeName
-					][
-						year
-					] = a.handbook_items.reduce(
-						x,
-						0
-					);
+					a[attributeName][year] = a.handbook_items.reduce(x, 0);
 				}
 				return r + a[attributeName][year];
 			}, 0);
@@ -73,8 +54,10 @@ export default {
 		getChangedColumnClass(obj) {
 			if (obj.columnIndex > 4) {
 				return 'reptt-column-blue reptt-cell';
+			} else if (obj.columnIndex === 0) {
+				return 'reptt-column-zero reptt-column reptt-cell';
 			} else {
-				return obj.columnIndex === 0 ? 'reptt-column-zero reptt-column reptt-cell' : 'reptt-column reptt-cell';
+				return 'reptt-column reptt-cell';
 			}
 		},
 
@@ -108,12 +91,7 @@ export default {
 		this.col7Reptt = this.trans('economy_pf.repttTable.fact') + ' \n' + this.trans('economy_pf.repttTable.sinceTheBeginningOfTheYear');
 		this.col8Reptt = this.trans('economy_pf.repttTable.absDeviation') + ' \n ' + this.trans('economy_pf.repttTable.sinceTheBeginningOfTheYear') + ', +/-';
 		this.col9Reptt = this.trans('economy_pf.repttTable.relativeDeviation') + ' \n' + this.trans('economy_pf.repttTable.sinceTheBeginningOfTheYear') + ', %';
-		let handbookKeys = [
-			'plan_value',
-			'fact_value',
-			'intermediate_plan_value',
-			'intermediate_fact_value'
-		];
+		let handbookKeys = [ 'plan_value', 'fact_value', 'intermediate_plan_value', 'intermediate_fact_value' ];
 		handbookKeys.forEach((key) => {
 			this.distributionSumOverTree(key, this.currentYear);
 			this.distributionSumOverTree(key, this.previousYear);

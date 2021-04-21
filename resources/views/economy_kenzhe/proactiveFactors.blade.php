@@ -4,7 +4,7 @@
     <proactive-factors></proactive-factors>
 </div>
 @endsection
-<style>
+<style scoped>
     .proactive-factors-page-container {
         flex-wrap: wrap;
         margin: 0 !important;
@@ -107,5 +107,4 @@
     .reptt.el-table::after {
         background-color: #424a7e;
     }
-  
 </style>
