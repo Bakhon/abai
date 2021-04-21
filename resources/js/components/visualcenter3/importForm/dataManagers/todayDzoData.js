@@ -4,6 +4,10 @@ export default {
             todayData: {},
             fieldsCategory: 'fields',
             otherCategories: ['downtimeReason','decreaseReason'],
+            tablesMapping: {
+                'downtimeReason': 'import_downtime_reason',
+                'decreaseReason': 'import_decrease_reason'
+            }
         };
     },
     methods: {
@@ -29,8 +33,9 @@ export default {
         },
         processCategory(categoryBlock,categoryName) {
             let self = this;
+            let mappedCategoryName = this.tablesMapping[categoryName];
             _.forEach(categoryBlock, function (block) {
-                self.processDataBlock(block,categoryName,_.cloneDeep(self.todayData[categoryName][0]));
+                self.processDataBlock(block,categoryName,_.cloneDeep(self.todayData[mappedCategoryName]));
             });
         },
         processDataBlock(block,categoryName,formattedTodayData) {

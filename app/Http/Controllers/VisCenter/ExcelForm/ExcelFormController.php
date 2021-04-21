@@ -19,44 +19,25 @@ class ExcelFormController extends Controller
         $dzoImportData = DzoImportData::query()
             ->whereDate('date',Carbon::yesterday('Asia/Almaty'))
             ->where('dzo_name',$dzoName)
+            ->with('importField')
+            ->with('importDowntimeReason')
+            ->with('importDecreaseReason')
             ->first();
 
          if (is_null($dzoImportData)) {
-            return response()->json($dzoImportData);
+             return response()->json($dzoImportData);
          }
-         $dzoImportData->downtimeReason = $this->getDowntimeReason($dzoImportData->id);
-         $dzoImportData->decreaseReason = $this->getDecreaseReason($dzoImportData->id);
-         $dzoImportData->fields = $this->getFieldsData($dzoImportData->id);
+         $dzoImportData->fields = $this->getFormattedFields($dzoImportData);
 
          return response()->json($dzoImportData);
     }
 
-    public function getDowntimeReason($parentId)
+    public function getFormattedFields($dzoImportData)
     {
-        return DzoImportDowntimeReason::query()
-            ->where('import_data_id',$parentId)
-            ->get();
+        return $dzoImportData->importField->mapWithKeys(function ($field) {
+           return [$field['field_name'] => $field];
+        });
     }
-
-    public function getDecreaseReason($parentId)
-    {
-        return DzoImportDecreaseReason::query()
-            ->where('import_data_id',$parentId)
-            ->get();
-    }
-
-    public function getFieldsData($parentId)
-        {
-            $formattedFieldsData = array();
-            $fieldsData = DzoImportField::query()
-              ->where('import_data_id',$parentId)
-              ->get();
-             foreach($fieldsData as $field) {
-                $formattedFieldsData[$field['field_name']] = $field;
-             }
-             return $formattedFieldsData;
-
-        }
 
     public function store(Request $request)
     {
