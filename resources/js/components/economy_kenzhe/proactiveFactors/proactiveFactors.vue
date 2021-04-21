@@ -2,7 +2,7 @@
   <div class="row proactive-factors-page-container">
     <div class="col-10 middle-block-columns">
       <div class="col px-2 container-col_color">
-         <reptt-company2 :data-reptt="getCompanyData"></reptt-company2>
+         <reptt-company2 :data-reptt="companyData"></reptt-company2>
       </div>
     </div>
     <div class="col-2 px-2 middle-block-columns">
@@ -68,7 +68,7 @@ import costAllocationBase from "./selectFilterData/costAllocationBase.json";
 export default {
   data: function () {
     return { 
-      getCompanyData: "0",
+      companyData:'',
       selectFilterCompany: selectFilterCompany,
       selectFilterVersionBp: selectFilterVersionBp,
       selectFilterPriceBrent: selectFilterPriceBrent,
@@ -85,7 +85,7 @@ export default {
       let uri = this.localeUrl("/module_economy/company");
       this.axios.get(uri).then((response) => {
         let data = response.data;
-        this.getCompanyData = data;
+        this.companyData = data;
         });
     }},
     created() {  

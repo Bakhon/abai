@@ -7,8 +7,8 @@
       style="width: 100%;"
       row-key="id"
       border    
-      :cell-class-name="changeColumn"
-      :header-cell-class-name="changeColumn"
+      :cell-class-name="getColumnChangedClass"
+      :header-cell-class-name="getColumnChangedClass"
       :row-class-name="hideEmptyValues"
       class="reptt"
     >
@@ -33,7 +33,7 @@
         :key="Math.random()"
       >
         <template slot-scope="scope" v-if="scope.row">
-          {{ scope.row.fact_value[previousYear] }}
+          {{ formatter(scope.row.fact_value[previousYear]) }}
         </template>
       </el-table-column>
       <el-table-column
@@ -43,7 +43,7 @@
         :key="Math.random()"
       >
         <template slot-scope="scope" v-if="scope.row">
-          {{ scope.row.intermediate_fact_value[previousYear] }}
+          {{ formatter(scope.row.intermediate_fact_value[previousYear]) }}
         </template>
       </el-table-column>
       <el-table-column
@@ -53,7 +53,7 @@
         :key="Math.random()"
       >
         <template slot-scope="scope" v-if="scope.row">
-          {{ scope.row.plan_value[currentYear] }}
+          {{ formatter(scope.row.plan_value[currentYear]) }}
         </template>
       </el-table-column>
       <el-table-column
@@ -63,7 +63,7 @@
         :key="Math.random()"
       >
         <template slot-scope="scope" v-if="scope.row">
-          {{ scope.row.intermediate_plan_value[currentYear] }}
+          {{formatter( scope.row.intermediate_plan_value[currentYear] )}}
         </template>
       </el-table-column>
       <el-table-column
@@ -73,26 +73,26 @@
         :key="Math.random()"
       >
         <template slot-scope="scope" v-if="scope.row">
-          {{ scope.row.intermediate_fact_value[currentYear] }}
+          {{formatter( scope.row.intermediate_fact_value[currentYear]) }}
         </template>
       </el-table-column>
       <el-table-column :label="col8Reptt" :min-width="10">
         <template slot-scope="scope" v-if="scope.row">
           {{
-            absoluteDeviation(
+           formatter( getAbsoluteDeviation(
               scope.row.plan_value[currentYear],
               scope.row.fact_value[currentYear]
-            )
+            ))
           }}
         </template>
       </el-table-column>
       <el-table-column :label="col9Reptt" :min-width="10">
         <template slot-scope="scope" v-if="scope.row">
           {{
-            relativeDeviation(
+           formatter( getRelativeDeviation(
               scope.row.plan_value[currentYear],
               scope.row.fact_value[currentYear]
-            )
+            ))
           }}
         </template>
       </el-table-column>
