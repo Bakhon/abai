@@ -117,8 +117,7 @@ mounted() {
       } else{
         let nno_days = this.prs[key]['nno_size']
         let isNull = (this.prs[key]['text'] !== "");
-        if(nno_days!=0){
-          this.data.push({x: [key], 
+        this.data.push({x: [key], 
                         y: [nno_days*1], 
                         name: this.prs[key]['text'], 
                         showlegend: isNull,
@@ -126,11 +125,11 @@ mounted() {
                         text: nno_days,
                         textposition: 'auto',
                         hoverinfo: 'none',})
-                      }
+                      
       }
       
     }
-    console.log(this.data)
+    
     this.layout= {
         showlegend: true,
         legend: {"orientation": "h"},
@@ -148,7 +147,7 @@ mounted() {
                 height: 450,
                 title: this.trans('pgno.history_prs'),
                 barmode: 'group',
-                bargap: 4
+                bargap: 2
         }
   }).catch()
   
