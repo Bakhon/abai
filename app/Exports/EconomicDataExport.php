@@ -31,6 +31,7 @@ class EconomicDataExport implements FromArray, WithHeadings
             'sum_Revenue_total',
             'sum_NetBack_bf_pr_exp',
             'sum_Operating_profit',
+            'timeseries'
         ];
     }
 }
