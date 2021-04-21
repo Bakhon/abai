@@ -3,7 +3,21 @@
 
         <div class="col-md-3">
                 <div class="bg-dark">
-                <h1>Дело скважины</h1>
+                        <div class="row">
+                                <div class="well-deal">
+                                    <div class="icon-ierarchy"></div>
+                                    <h2>Дело скважины</h2>
+                                </div>
+                        </div>
+                        <div class="row">
+                            <div class="directory">
+                                <img src="/img/bd/pointer-solid.svg">
+                                <div class="icon-pointer-solid">
+
+                                </div>
+                                <h3>КПД Заместителя председателя Правления по розведке и добыче</h3>
+                            </div>
+                        </div>
                 </div>
          </div>
 
@@ -73,10 +87,67 @@
                 <div class="bg-dark">
                 <h1>Паспорт скважины</h1>
                 </div>
-         </div>
+         </div>        border-bottom: 1px solid #555BA6;
     </div>
 </template>
 <style scoped lang="scss">
+    .well-deal{
+        width: 100%;
+        display: flex;
+        padding: 10px 25px;
+        h2{
+            font-size: 20px;
+            line-height: 24px;
+            margin: 0px;
+            padding: 10px 5px;
+        }
+        .icon-ierarchy{
+            width: 10px;
+            height: 100%;
+            background: url(/img/bd/ierarhy.svg) 50% 50% no-repeat;
+            padding: 0 15px 0 10px;
+        }
+    }
+    .directory{
+        display:flex;
+        border-top: 1px solid #555BA6;
+        width: 100%;
+        padding: 10px;
+        height: 100px;
+        margin: 10px 40px 10px 25px;
+        h3{
+            font-size: 14px;
+            font-weight: 700;
+            line-height: 17px;
+        }
+        .icon-directory{
+            width: 10px;
+            height: 100%;
+            background: url(/img/bd/folder.svg) no-repeat;
+            padding: 0 15px 0 10px;
+        }
+        .icon-pointer-solid{
+            width: 10px;
+            height: 100%;
+            //background: url(/img/bd/pointer-solid.svg) no-repeat;
+            padding: 0 15px 0 10px;
+            margin-top: 5px;
+            border-top: 1px dashed #555BA6;
+            border-left: 1px dashed #555BA6;
+            border-bottom: 1px dashed #555BA6;
+            
+        }
+        img{
+            width: 5px;
+        }
+        /*
+        .directory-border{
+            border-top: 1px dashed #555BA6;
+            border-left: 1px dashed #555BA6;
+            border-bottom: 1px dashed #555BA6;
+        }
+        */
+    }
     .txt5{
         display: flex;
         padding-left: 5px;
@@ -93,6 +164,10 @@
         color: white;
         background: none;
         border: none;
+        &:focus{
+            color:white;
+            background: #20274f;
+        }
     }
     .dropdown-icon-1{
         background: white url(/img/bd/fond.svg) 50% 50% no-repeat;
