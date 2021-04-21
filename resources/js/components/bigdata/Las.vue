@@ -289,12 +289,14 @@
       <div class="row mb-2">
         <label class="col label-text pt-4">Id</label>
         <label class="col label-text pt-4">Происхождение</label>
+        <label class="col label-text pt-4">Месторождение</label>
         <div class="col"></div>
       </div>
       <div v-for="experimentsInfo in selectedExperimentsInfo">
         <div class="row mb-2">
           <label class="col label-text pt-4">{{ experimentsInfo.id }}</label>
           <label class="col label-text pt-4">{{ experimentsInfo.provenance_origin }}</label>
+          <label class="col label-text pt-4">{{ experimentsInfo.field }}</label>
           <button class="col btn get-report-button" @click="getOriginalLas(experimentsInfo)">Скачать</button>
         </div>
       </div>

@@ -24,6 +24,7 @@ export default {
             localization: 'ru',
             filenameParameters: null,
             filenameDelimiter: '_',
+            recordingDepthDelimiter: '-',
             filenameParametersForName: [
                 'field', 'well', 'stemType', 'stemSection', 'recordingMethod',
                 'mnemonics', 'date', 'fileStatus', 'recordingDepth',
@@ -179,7 +180,7 @@ export default {
                 this.updateExperimentInfo()
                 return
             }
-            this.input.filename.recordingDepth = experiment.recordingDepths[0] + this.filenameDelimiter + experiment.recordingDepths[1]
+            this.input.filename.recordingDepth = experiment.recordingDepths[0] + this.recordingDepthDelimiter + experiment.recordingDepths[1]
         },
         fetchStatistics() {
             this.$store.commit('globalloading/SET_LOADING', true);
@@ -247,6 +248,11 @@ export default {
             }
             if ((_.isArray(content) && content.length === 0) || (content === '')) {
                 return this.input.defaultsForFilename[field]
+            }
+            if (field === 'recordingDepth') {
+                return this.input.filename.recordingDepth.replaceAll(
+                    this.recordingDepthDelimiter, this.filenameDelimiter
+                )
             }
             return content
         },
