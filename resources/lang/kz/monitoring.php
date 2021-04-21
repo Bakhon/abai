@@ -261,6 +261,27 @@ return array (
       'surge_tank_pressure' => 'Буферлік сыйымдылық қысымы',
       'daily_gas_production_in_sib' => 'БӨС газ мөлшері',
     ),
+  ),
+  'well' => 
+  array (
+    'well' => 'Ұңғы',
+  ),
+  'pipe' => 
+  array (
+    'fields' => 
+    array (
+      'inner_diameter' => 'Ішкі диаметр',
+      'length' => 'Ұзындық',
+      'material' => 'Материал',
+      'outside_diameter' => 'Сыртқы диаметр',
+      'plot' => 'Бөлшегі',
+      'roughness' => 'Кедір-бұдырлық',
+      'thickness' => 'Қабырға қалыңдығы',
+    ),
+    'edit_title' => 'Құбырлар бойынша түзетулерді енгізу',
+    'title' => 'Құбырлар дерекқоры',
+    'menu' => 'Құбырлар',
+    'create_title' => 'Құбырлар бойынша деректерді енгізу',
     'gu' => 'ТҚ',
   ),
   'pipe_types' => 
