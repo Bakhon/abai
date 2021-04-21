@@ -2250,11 +2250,272 @@
                               </el-table-column>
                           </el-table-column>
                         </el-table-column>
+                        <el-table-column :label="trans('tr.tp_idn_q_oil_inc_perc')" prop="fake">
+                          <el-table-column label="">
+                            <el-table-column
+                              prop="tp_idn_q_oil_inc_perc"
+                              width="130"
+                              sortable
+                              >
+                              <template slot-scope="scope">
+                                  <span v-if="scope.row.tp_idn_q_oil_inc_perc != null">{{ Math.round(scope.row.tp_idn_q_oil_inc_perc * 10) / 10 }}</span>
+                              </template>
+                            </el-table-column>
+                          </el-table-column>
+                        </el-table-column>
+                        <el-table-column :label="trans('tr.q_oil_total_growth')" prop="fake">
+                          <el-table-column label="">
+                            <el-table-column
+                              prop="gt_total_inc"
+                              width="130"
+                              sortable
+                              >
+                              <template slot-scope="scope">
+                                  <span v-if="scope.row.gt_total_inc != null">{{ Math.round(scope.row.gt_total_inc * 10) / 10 }}</span>
+                              </template>
+                            </el-table-column>
+                          </el-table-column>
+                        </el-table-column>
                     </el-table-column>
+                    <!-- Расчёт геологического потенциала -->
+                    <el-table-column :label="trans('tr.geological_potential_calculation')">
+                        <el-table-column :label="trans('tr.bottomhole_pressure')" prop="fake">
+                          <el-table-column label="">
+                            <el-table-column
+                              prop="gp_idn_bhp"
+                              width="130"
+                              sortable
+                              >
+                              <template slot-scope="scope">
+                                <el-tooltip class="item" effect="dark"  v-bind:content="haveTooltip(scope.$index, `gp_idn_bhp`)" :placement="isPlacement(scope.$index, `gp_idn_bhp`)">
+                                  <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`gp_idn_bhp`)}" >
+                                            <span
+                                              :class="{
+                                                'circle-err': isCircleErrClass(scope.$index,`gp_idn_bhp`)}"
+                                              :style="`background :${getColor(
+                                                wells[scope.$index].gp_idn_bhp[1][0]
+                                              )}`"
+                                            >
+                                              </span><span v-if="scope.row.gp_idn_bhp[0] != null">{{_.round(scope.row.gp_idn_bhp[0], 1)}}</span>
+                                  </div>   
+                                </el-tooltip> 
+                              </template>
+                            </el-table-column>
+                          </el-table-column>
+                        </el-table-column>
+                        
 
+                        <el-table-column :label="trans('tr.idn')">
+                            <el-table-column :label="trans('tr.q_liquid')">
+                              <el-table-column
+                                prop="gp_idn_q_liq"
+                                width="130"
+                                sortable
+                                >
+                                <template slot-scope="scope">
+                                  <el-tooltip class="item" effect="dark"  v-bind:content="haveTooltip(scope.$index, `gp_idn_q_liq`)" :placement="isPlacement(scope.$index, `gp_idn_q_liq`)">
+                                    <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`gp_idn_q_liq`)}" >
+                                              <span
+                                                :class="{
+                                                  'circle-err': isCircleErrClass(scope.$index,`gp_idn_q_liq`)}"
+                                                :style="`background :${getColor(
+                                                  wells[scope.$index].gp_idn_q_liq[1][0]
+                                                )}`"
+                                              >
+                                                </span><span v-if="scope.row.gp_idn_q_liq[0] != null">{{_.round(scope.row.gp_idn_q_liq[0], 1)}}</span>
+                                    </div>   
+                                  </el-tooltip> 
+                                </template>
+                              </el-table-column>
+                            </el-table-column>
+                             <el-table-column :label="trans('tr.q_liquid_corrected_d_producing_casing')">
+                              <el-table-column
+                                prop="gp_idn_q_liq_cas_d_corr"
+                                width="130"
+                                sortable
+                                >
+                                <template slot-scope="scope">
+                                  <el-tooltip class="item" effect="dark"  v-bind:content="haveTooltip(scope.$index, `gp_idn_q_liq_cas_d_corr`)" :placement="isPlacement(scope.$index, `gp_idn_q_liq_cas_d_corr`)">
+                                    <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`gp_idn_q_liq_cas_d_corr`)}" >
+                                              <span
+                                                :class="{
+                                                  'circle-err': isCircleErrClass(scope.$index,`gp_idn_q_liq_cas_d_corr`)}"
+                                                :style="`background :${getColor(
+                                                  wells[scope.$index].gp_idn_q_liq_cas_d_corr[1][0]
+                                                )}`"
+                                              >
+                                                </span><span v-if="scope.row.gp_idn_q_liq_cas_d_corr[0] != null">{{_.round(scope.row.gp_idn_q_liq_cas_d_corr[0], 1)}}</span>
+                                    </div>   
+                                  </el-tooltip> 
+                                </template>
+                              </el-table-column>
+                            </el-table-column>
+
+                            <el-table-column :label="trans('tr.q_oil')">
+                              <el-table-column
+                                prop="gp_idn_q_oil"
+                                width="130"
+                                sortable
+                                >
+                                <template slot-scope="scope">
+                                  <el-tooltip class="item" effect="dark"  v-bind:content="haveTooltip(scope.$index, `gp_idn_q_oil`)" :placement="isPlacement(scope.$index, `gp_idn_q_oil`)">
+                                    <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`gp_idn_q_oil`)}" >
+                                              <span
+                                                :class="{
+                                                  'circle-err': isCircleErrClass(scope.$index,`gp_idn_q_oil`)}"
+                                                :style="`background :${getColor(
+                                                  wells[scope.$index].gp_idn_q_oil[1][0]
+                                                )}`"
+                                              >
+                                                </span><span v-if="scope.row.gp_idn_q_oil[0] != null">{{_.round(scope.row.gp_idn_q_oil[0], 1)}}</span>
+                                    </div>   
+                                  </el-tooltip> 
+                                </template>
+                              </el-table-column>
+                            </el-table-column>
+                            <el-table-column :label="trans('tr.q_oil_gain')">
+                              <el-table-column
+                                prop="gp_idn_q_oil_inc"
+                                width="130"
+                                sortable
+                                >
+                                <template slot-scope="scope">
+                                  <el-tooltip class="item" effect="dark"  v-bind:content="haveTooltip(scope.$index, `gp_idn_q_oil_inc`)" :placement="isPlacement(scope.$index, `gp_idn_q_oil_inc`)">
+                                    <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`gp_idn_q_oil_inc`)}" >
+                                              <span
+                                                :class="{
+                                                  'circle-err': isCircleErrClass(scope.$index,`gp_idn_q_oil_inc`)}"
+                                                :style="`background :${getColor(
+                                                  wells[scope.$index].gp_idn_q_oil_inc[1][0]
+                                                )}`"
+                                              >
+                                                </span><span v-if="scope.row.gp_idn_q_oil_inc[0] != null">{{_.round(scope.row.gp_idn_q_oil_inc[0], 1)}}</span>
+                                    </div>   
+                                  </el-tooltip> 
+                                </template>
+                              </el-table-column>
+                            </el-table-column>
+                        </el-table-column>
+
+              
+                        <el-table-column :label="trans('tr.grp')">
+                          <el-table-column :label="trans('tr.q_liquid')">
+                              <el-table-column
+                                prop="gp_grp_q_liq"
+                                width="130"
+                                sortable
+                                >
+                                <template slot-scope="scope">
+                                  <el-tooltip class="item" effect="dark"  v-bind:content="haveTooltip(scope.$index, `gp_grp_q_liq`)" :placement="isPlacement(scope.$index, `gp_grp_q_liq`)">
+                                    <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`gp_grp_q_liq`)}" >
+                                              <span
+                                                :class="{
+                                                  'circle-err': isCircleErrClass(scope.$index,`gp_grp_q_liq`)}"
+                                                :style="`background :${getColor(
+                                                  wells[scope.$index].gp_grp_q_liq[1][0]
+                                                )}`"
+                                              >
+                                                </span><span v-if="scope.row.gp_grp_q_liq[0] != null">{{_.round(scope.row.gp_grp_q_liq[0], 1)}}</span>
+                                    </div>   
+                                  </el-tooltip> 
+                                </template>
+                              </el-table-column>
+                          </el-table-column>
+                          <el-table-column :label="trans('tr.q_liquid_corrected_d_producing_casing')">
+                              <el-table-column
+                                prop="gp_grp_q_liq_cas_d_corr"
+                                width="130"
+                                sortable
+                                >
+                                <template slot-scope="scope">
+                                  <el-tooltip class="item" effect="dark"  v-bind:content="haveTooltip(scope.$index, `gp_grp_q_liq_cas_d_corr`)" :placement="isPlacement(scope.$index, `gp_grp_q_liq_cas_d_corr`)">
+                                    <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`gp_grp_q_liq_cas_d_corr`)}" >
+                                              <span
+                                                :class="{
+                                                  'circle-err': isCircleErrClass(scope.$index,`gp_grp_q_liq_cas_d_corr`)}"
+                                                :style="`background :${getColor(
+                                                  wells[scope.$index].gp_grp_q_liq_cas_d_corr[1][0]
+                                                )}`"
+                                              >
+                                                </span><span v-if="scope.row.gp_grp_q_liq_cas_d_corr[0] != null">{{_.round(scope.row.gp_grp_q_liq_cas_d_corr[0], 1)}}</span>
+                                    </div>   
+                                  </el-tooltip> 
+                                </template>
+                              </el-table-column>
+                          </el-table-column>
+                          <el-table-column :label="trans('tr.q_oil')">
+                              <el-table-column
+                                prop="gp_grp_q_oil"
+                                width="130"
+                                sortable
+                                >
+                                <template slot-scope="scope">
+                                  <el-tooltip class="item" effect="dark"  v-bind:content="haveTooltip(scope.$index, `gp_grp_q_oil`)" :placement="isPlacement(scope.$index, `gp_grp_q_oil`)">
+                                    <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`gp_grp_q_oil`)}" >
+                                              <span
+                                                :class="{
+                                                  'circle-err': isCircleErrClass(scope.$index,`gp_grp_q_oil`)}"
+                                                :style="`background :${getColor(
+                                                  wells[scope.$index].gp_grp_q_oil[1][0]
+                                                )}`"
+                                              >
+                                                </span><span v-if="scope.row.gp_grp_q_oil[0] != null">{{_.round(scope.row.gp_grp_q_oil[0], 1)}}</span>
+                                    </div>   
+                                  </el-tooltip> 
+                                </template>
+                              </el-table-column>
+                          </el-table-column>
+                          <el-table-column :label="trans('tr.q_oil_gain')">
+                              <el-table-column
+                                prop="gp_grp_q_oil_inc"
+                                width="130"
+                                sortable
+                                >
+                                <template slot-scope="scope">
+                                  <el-tooltip class="item" effect="dark"  v-bind:content="haveTooltip(scope.$index, `gp_grp_q_oil_inc`)" :placement="isPlacement(scope.$index, `gp_grp_q_oil_inc`)">
+                                    <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`gp_grp_q_oil_inc`)}" >
+                                              <span
+                                                :class="{
+                                                  'circle-err': isCircleErrClass(scope.$index,`gp_grp_q_oil_inc`)}"
+                                                :style="`background :${getColor(
+                                                  wells[scope.$index].gp_grp_q_oil_inc[1][0]
+                                                )}`"
+                                              >
+                                                </span><span v-if="scope.row.gp_grp_q_oil_inc[0] != null">{{_.round(scope.row.gp_grp_q_oil_inc[0], 1)}}</span>
+                                    </div>   
+                                  </el-tooltip> 
+                                </template>
+                              </el-table-column>
+                          </el-table-column>
+                        </el-table-column>
+                        <el-table-column :label="trans('tr.tp_idn_q_oil_inc_perc')" prop="fake">
+                          <el-table-column label="">
+                            <el-table-column
+                              prop="gp_total_inc_perc"
+                              width="130"
+                              sortable
+                              >
+                              <template slot-scope="scope">
+                                  <span v-if="scope.row.gp_total_inc_perc != null">{{ Math.round(scope.row.gp_total_inc_perc * 10) / 10 }}</span>
+                              </template>
+                            </el-table-column>
+                          </el-table-column>
+                        </el-table-column>
+                        <el-table-column :label="trans('tr.q_oil_total_growth')" prop="fake">
+                          <el-table-column label="">
+                            <el-table-column
+                              prop="gp_total_inc"
+                              width="130"
+                              sortable
+                              >
+                              <template slot-scope="scope">
+                                  <span v-if="scope.row.gp_total_inc != null">{{ Math.round(scope.row.gp_total_inc * 10) / 10 }}</span>
+                              </template>
+                            </el-table-column>
+                          </el-table-column>
+                        </el-table-column>
+                    </el-table-column>
                   </el-table>
-           
-            
           </div>
         </div>
       </div>

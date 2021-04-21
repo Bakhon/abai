@@ -1311,7 +1311,7 @@ export default {
           this.secWeekDate = prdd + "." + prmm + "." + pryyyy;
           this.fa_table_header = this.trans('tr.period_of_act_data') + this.firstWeekDate2 + '-' + this.dt;
           this.fa_table_header2 = this.trans('tr.period_of_act_data') + this.dt2 + '-' + this.secWeekDate;
-          this.faHeader = this.trans('tr.fa_') + this.dt2 + '-' + this.dt;
+          this.faHeader = this.trans('tr.fa') + ' ' + this.dt2 + '-' + this.dt;
         });
     },
     chooseDt() {
@@ -1382,7 +1382,7 @@ export default {
             this.factorsMeasure = this.trans('tr.t_day');  
             this.fa_table_header = this.trans('tr.period_of_act_data') + this.dt;
             this.fa_table_header2 = this.trans('tr.period_of_act_data') + this.dt2;
-            this.faHeader = this.trans('tr.fa_') + this.dt2 + '-' + this.dt;
+            this.faHeader = this.trans('tr.fa') + ' ' + this.dt2 + '-' + this.dt;
           });
       }
     },
@@ -1574,7 +1574,7 @@ export default {
         this.date2 = weekd2;
         this.fa_table_header = this.trans('tr.period_of_act_data') + this.firstWeekDate2 + '-' + this.firstWeekDate;
         this.fa_table_header2 = this.trans('tr.period_of_act_data') + this.secWeekDate2 + '-' + this.secWeekDate;
-        this.faHeader = this.trans('tr.fa_') + this.secWeekDate2 + '-' + this.firstWeekDate;
+        this.faHeader = this.trans('tr.fa') + ' ' + this.secWeekDate2 + '-' + this.firstWeekDate;
       });
   },
   mounted: function () {
