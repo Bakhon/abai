@@ -54,11 +54,9 @@ export default {
 		getChangedColumnClass(obj) {
 			if (obj.columnIndex > 4) {
 				return 'reptt-column-blue reptt-cell';
-			}
-			else if (obj.columnIndex === 0) {
+			} else if (obj.columnIndex === 0) {
 				return 'reptt-column-zero reptt-column reptt-cell';
-			}
-			else {
+			} else {
 				return 'reptt-column reptt-cell';
 			}
 		},
