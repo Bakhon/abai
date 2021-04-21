@@ -363,36 +363,6 @@ return array (
     'create_title' => 'Ввод данных ОМГ НГДУ ЗУ - Скважина',
     'edit_title' => 'Редактирование данных ОМГ НГДУ Скважина',
   ),
-  'hydro_calculcation' => 
-  array (
-    'fields' => 
-    array (
-      'length' => 'Протяженность, м',
-      'pressure_start' => 'Давление начальное, ата',
-      'pressure_end' => 'Давление конечное, ата',
-      'temperature_start' => 'Температура начальная, °С',
-      'temperature_end' => 'Температура конечная, °С',
-      'start_point' => 'Начальная точка',
-      'end_point' => 'Конечная точка',
-      'pipe_name' => 'Трубопровод',
-      'mix_speed_avg' => 'Средняя скорость смеси, м/с',
-      'fluid_speed' => 'Скорость жидкости, м/с',
-      'gaz_speed' => 'Скорость газа, м/с',
-      'flow_type' => 'Режим течения',
-      'press_change' => 'Перепад давления, атм/км',
-      'break_qty' => 'Количество порывов',
-      'height_drop' => 'Перепад высот, м',
-    ),
-    'table_title' => 'Таблица расчета гидравлики',
-    'message' => 
-    array (
-      'no-omgdu-data' => 'нет данных ОМГДУ',
-      'pressure-0' => 'давление 0 !',
-      'no-pressure-data' => 'нет данных по давлению !',
-      'no-daily-fluid-data' => 'нет данных по cуточной добычи жидкости !',
-      'no-bsw-data' => 'нет данных по обводненности !',
-    ),
-  ),
   'hydro_calculation' => 
   array (
     'fields' => 
