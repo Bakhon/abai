@@ -68,12 +68,14 @@ class EconomicController extends Controller
 
         $org = Org::findOrFail($request->org);
 
-        $interval = self::intervalFormat($request->interval_start, $request->interval_end);
+        $intervalYear = self::intervalYears($request->interval_start, $request->interval_end);
+
+        $intervalMonths = self::intervalMonths($request->interval_end);
 
         $builder1 = $this
             ->druidClient
             ->query(self::DATA_SOURCE, Granularity::YEAR)
-            ->interval($interval ?? self::INTERVAL_LAST_YEAR)
+            ->interval($intervalYear)
             ->longSum("prs1")
             ->sum("Operating_profit")
             ->where('profitability', '=', self::PROFITABILITY_CAT_1);
@@ -81,7 +83,7 @@ class EconomicController extends Controller
         $builder2 = $this
             ->druidClient
             ->query(self::DATA_SOURCE, Granularity::MONTH)
-            ->interval($interval ?? self::INTERVAL_LAST_2_MONTHS)
+            ->interval($intervalMonths)
             ->sum("Operating_profit")
             ->distinctCount('uwi')
             ->where('profitability', '=', self::PROFITABILITY_CAT_1);
@@ -89,7 +91,7 @@ class EconomicController extends Controller
         $builder3 = $this
             ->druidClient
             ->query(self::DATA_SOURCE, Granularity::MONTH)
-            ->interval($interval ?? self::INTERVAL_LAST_MONTH)
+            ->interval($intervalMonths)
             ->select("uwi")
             ->sum("oil")
             ->sum("liquid")
@@ -101,7 +103,7 @@ class EconomicController extends Controller
         $builder4 = $this
             ->druidClient
             ->query(self::DATA_SOURCE, Granularity::DAY)
-            ->interval($interval ?? self::INTERVAL_LAST_MONTH)
+            ->interval($intervalMonths)
             ->sum("oil")
             ->sum("liquid")
             ->sum("Operating_profit")
@@ -110,7 +112,7 @@ class EconomicController extends Controller
         $builder5 = $this
             ->druidClient
             ->query(self::DATA_SOURCE, Granularity::MONTH)
-            ->interval($interval ?? self::INTERVAL_LAST_MONTH)
+            ->interval($intervalMonths)
             ->sum("oil")
             ->sum("liquid")
             ->sum("Operating_profit")
@@ -119,7 +121,7 @@ class EconomicController extends Controller
         $builder6 = $this
             ->druidClient
             ->query(self::DATA_SOURCE, Granularity::YEAR)
-            ->interval($interval ?? self::INTERVAL_LAST_MONTH)
+            ->interval($intervalMonths)
             ->select("uwi")
             ->sum("prs1")
             ->orderBy('prs1', 'desc')
@@ -129,7 +131,7 @@ class EconomicController extends Controller
         $builder7 = $this
             ->druidClient
             ->query(self::DATA_SOURCE, Granularity::YEAR)
-            ->interval($interval ?? self::INTERVAL_LAST_YEAR)
+            ->interval($intervalYear)
             ->select("uwi")
             ->sum("Operating_profit")
             ->where('Operating_profit', '!=', '0')
@@ -139,7 +141,7 @@ class EconomicController extends Controller
         $builder8 = $this
             ->druidClient
             ->query(self::DATA_SOURCE, Granularity::DAY)
-            ->interval($interval ?? self::INTERVAL_LAST_YEAR)
+            ->interval($intervalYear)
             ->select('__time', 'dt', function (ExtractionBuilder $extractionBuilder) {
                 $extractionBuilder->timeFormat(self::TIME_FORMAT);
             })
@@ -153,7 +155,7 @@ class EconomicController extends Controller
         $builder9 = $this
             ->druidClient
             ->query(self::DATA_SOURCE, Granularity::MONTH)
-            ->interval($interval ?? self::INTERVAL_LAST_2_MONTHS);
+            ->interval($intervalMonths);
 
         $sumKeys = [
             'Revenue_export',
@@ -179,7 +181,7 @@ class EconomicController extends Controller
             $buildersProfitabilityCount[$status] = $this
                 ->druidClient
                 ->query(self::DATA_SOURCE, Granularity::DAY)
-                ->interval($interval)
+                ->interval($intervalMonths)
                 ->select('__time', 'dt', function (ExtractionBuilder $extractionBuilder) {
                     $extractionBuilder->timeFormat(self::TIME_FORMAT);
                 })
@@ -239,7 +241,6 @@ class EconomicController extends Controller
                 ? $builder->timeseries()->data()
                 : $builder->groupBy()->data();
         }
-
 
         $data = [
             'cat1_month' => [[
@@ -435,12 +436,12 @@ class EconomicController extends Controller
 
         $org = Org::findOrFail($request->org);
 
-        $interval = self::intervalFormat($request->interval_start, $request->interval_end);
+        $intervalMonths = self::intervalMonths($request->interval_end);
 
         $builder = $this
             ->druidClient
             ->query(self::DATA_SOURCE, Granularity::DAY)
-            ->interval($interval)
+            ->interval($intervalMonths)
             ->longSum("prs1")
             ->sum("oil")
             ->sum("liquid")
@@ -474,15 +475,34 @@ class EconomicController extends Controller
         return $last ? 100 : 0;
     }
 
-    static function intervalFormat(string $start = null, string $end = null): string
+    static function intervalYears(string $start = null, string $end = null, int $count = 1)
     {
-        $start = $start ?? now()->subYear()->setDay(1)->setMonth(1);
+        $end = $end ? Carbon::parse($end) : now();
 
-        $end = $end ?? now();
+        $start = $start ? Carbon::parse($start) : $end->copy();
 
-        return Carbon::parse($start)->format('Y-m-d')
+        $start->subYears($count)->setDay(1)->setMonth(1);
+
+        return self::intervalFormat($start, $end);
+    }
+
+    /*
+     * TODO: count = 6 -> count = 2
+     */
+    static function intervalMonths(string $end = null, int $count = 6): string
+    {
+        $end = $end ? Carbon::parse($end) : now();
+
+        $start = $end->copy()->subMonths($count)->setDay(1);
+
+        return self::intervalFormat($start, $end);
+    }
+
+    static function intervalFormat(Carbon $start, Carbon $end): string
+    {
+        return $start->format('Y-m-d')
             . "T00:00:00+00:00/"
-            . Carbon::parse($end)->format('Y-m-d')
+            . $end->format('Y-m-d')
             . "T00:00:00+00:00";
     }
 
