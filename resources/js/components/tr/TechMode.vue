@@ -1567,7 +1567,7 @@
                       </el-table-column>
                     </el-table-column>
 
-                    <el-table-column :label="trans('tr.trs15')">
+                    <el-table-column :label="trans('tr.p_saturation')">
                       <el-table-column label="" prop="fake" >
                         <el-table-column label="" >
                           <el-table-column
@@ -1575,11 +1575,25 @@
                             width="130"
                             sortable
                             >
+                            <template slot-scope="scope">
+                              <el-tooltip class="item" effect="dark"  v-bind:content="haveTooltip(scope.$index, `P_bubble_point`)" :placement="isPlacement(scope.$index, `P_bubble_point`)">
+                                <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`P_bubble_point`)}" >
+                                          <span
+                                            :class="{
+                                              'circle-err': isCircleErrClass(scope.$index,`P_bubble_point`)}"
+                                            :style="`background :${getColor(
+                                              wells[scope.$index].P_bubble_point[1][0]
+                                            )}`"
+                                          >
+                                            </span><span v-if="scope.row.P_bubble_point[0] != null">{{_.round(scope.row.P_bubble_point[0], 1)}}</span>
+                                </div>   
+                              </el-tooltip> 
+                            </template>
                           </el-table-column>
                         </el-table-column>
                       </el-table-column>
                     </el-table-column>
-                    <el-table-column :label="trans('tr.trs16')">
+                    <el-table-column :label="trans('tr.t_layer')">
                       <el-table-column label="" prop="fake" >
                         <el-table-column label="" >
                           <el-table-column
@@ -1587,11 +1601,25 @@
                             width="130"
                             sortable
                             >
+                            <template slot-scope="scope">
+                              <el-tooltip class="item" effect="dark"  v-bind:content="haveTooltip(scope.$index, `t_res`)" :placement="isPlacement(scope.$index, `t_res`)">
+                                <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`t_res`)}" >
+                                          <span
+                                            :class="{
+                                              'circle-err': isCircleErrClass(scope.$index,`t_res`)}"
+                                            :style="`background :${getColor(
+                                              wells[scope.$index].t_res[1][0]
+                                            )}`"
+                                          >
+                                            </span><span v-if="scope.row.t_res[0] != null">{{_.round(scope.row.t_res[0], 1)}}</span>
+                                </div>   
+                              </el-tooltip> 
+                            </template>
                           </el-table-column>
                         </el-table-column>
                       </el-table-column>
                     </el-table-column>
-                    <el-table-column :label="trans('tr.trs17')">
+                    <el-table-column :label="trans('tr.t_mouth')">
                       <el-table-column label="" prop="fake" >
                         <el-table-column label="" >
                           <el-table-column
@@ -1599,28 +1627,48 @@
                             width="130"
                             sortable
                             >
+                            <template slot-scope="scope">
+                                <span v-if="scope.row.wht != null">{{Math.round(scope.row.wht * 10) / 10}}</span>
+                            </template>
                           </el-table-column>
                         </el-table-column>
                       </el-table-column>
                     </el-table-column>
 
                     <!-- ГРП -->
-                    <el-table-column :label="trans('tr.tr28')">
+                    <el-table-column :label="trans('tr.grp')">
                       <el-table-column label="">
-                        <el-table-column :label="trans('tr.trs59')">
+                        <el-table-column :label="trans('tr.skin')">
                           <el-table-column
                             prop="grp_skin"
                             width="130"
                             sortable
                             >
+                            <template slot-scope="scope">
+                              <el-tooltip class="item" effect="dark"  v-bind:content="haveTooltip(scope.$index, `grp_skin`)" :placement="isPlacement(scope.$index, `grp_skin`)">
+                                <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`grp_skin`)}" >
+                                          <span
+                                            :class="{
+                                              'circle-err': isCircleErrClass(scope.$index,`grp_skin`)}"
+                                            :style="`background :${getColor(
+                                              wells[scope.$index].grp_skin[1][0]
+                                            )}`"
+                                          >
+                                            </span><span v-if="scope.row.grp_skin[0] != null">{{_.round(scope.row.grp_skin[0], 1)}}</span>
+                                </div>   
+                              </el-tooltip> 
+                            </template>
                           </el-table-column>
                         </el-table-column>
-                        <el-table-column :label="trans('tr.trs60')">
+                        <el-table-column :label="trans('tr.jd_fact')">
                           <el-table-column
                             prop="grp_jd"
                             width="130"
                             sortable
                             >
+                            <template slot-scope="scope">
+                                <span v-if="scope.row.grp_jd != null">{{_.round(scope.row.grp_skin[0], 2)}}</span>
+                            </template>
                           </el-table-column>
                         </el-table-column>
                         <el-table-column :label="trans('tr.trs61')">
@@ -1879,21 +1927,8 @@
                         </el-table-column>
                     </el-table-column>
 
-                    
-
                   </el-table>
-                  <div class="ui-pagination">
-                    <el-pagination
-                      small
-                      round
-                      @current-change="$emit('handleCurrentChange')"
-                      :current-page.sync="currentPage"
-                      :page-size="pageSize"
-                      :total="totalItems"
-                      layout="prev, pager, next, jumper">
-                    </el-pagination>
-                  </div>
-            <!-- <TrFullTable :wells="wells" :edit="edit" @onSort="sortBy" v-show="show_second"/> -->
+           
             
           </div>
         </div>
@@ -1913,10 +1948,7 @@ import TrFullTable from "./tablefull";
 import SearchFormRefresh from "../ui-kit/SearchFormRefresh.vue";
 import { fields } from "./constants.js";
 import TrMultiselect from "./TrMultiselect.vue";
-
 import { isString } from "lodash";
-
-
 
 Vue.use(NotifyPlugin);
 Vue.use(ElementUI); 
@@ -2676,14 +2708,15 @@ export default {
       if  (this.wells &&
           this.wells[index] &&
           this.wells[index][value][1][1]==="Нет Ошибок") {
-        return false;}      
+        return '';}   
+           
       return this.wells[index][value][1][1];
     },
     isPlacement (index, value) {
       if  (this.wells &&
           this.wells[index] &&
           this.wells[index][value][1][1]==="Нет Ошибок") {
-        return false;}
+        return '';}
       return "top";
     },
   },

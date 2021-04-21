@@ -82,7 +82,6 @@ export default {
 };
 </script>
 
-
 <style  scoped>
 .tr-sidebar__link {
   color: #FFF;
