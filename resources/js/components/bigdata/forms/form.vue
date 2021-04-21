@@ -2,6 +2,7 @@
   <div class="bd-main-block">
     <notifications position="top"></notifications>
     <div class="bd-main-block__header">
+      <p v-if="well" class="bd-main-block__header-title">Скважина {{ well.uwi }}</p>
       <p class="bd-main-block__header-title">{{ params.title }}</p>
     </div>
     <form class="bd-main-block__form" style="width: 100%" ref="form">
@@ -70,12 +71,17 @@ export default {
       type: Object,
       required: true
     },
+    wellId: {
+      type: Number,
+      required: true
+    }
   },
   data() {
     return {
       errors: {},
       activeTab: 0,
-      formValues: {}
+      formValues: {},
+      well: null
     }
   },
   computed: {
@@ -105,12 +111,17 @@ export default {
           .catch(error => {
             Vue.prototype.$notifyError(error.response.data.text + "\r\n\r\n" + error.response.data.errors)
           })
+
+      this.axios.get(this.localeUrl(`/api/bigdata/wells/${this.wellId}`)).then(({data}) => {
+        this.well = data.well
+      })
     },
     submit() {
 
       this
           .submitForm({
             code: this.params.code,
+            wellId: this.wellId,
             values: this.formValues
           })
           .then(data => {

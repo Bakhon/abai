@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\bd;
+namespace App\Http\Controllers\Api\DB;
 
 use App\Exceptions\ParseJsonException;
 use App\Http\Controllers\Controller;
