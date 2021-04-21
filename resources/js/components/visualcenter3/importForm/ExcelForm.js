@@ -25,8 +25,9 @@ import cellsMappingYO from './dzoData/cells_mapping_yo.json';
 import cellsMappingEMG from './dzoData/cells_mapping_emg.json';
 import moment from "moment";
 import Visual from "./dataManagers/visual";
+import TodayDzoData from "./dataManagers/todayDzoData";
 
-const defaultDzoTicker = "ОМГ";
+const defaultDzoTicker = "КТМ";
 
 export default {
     data: function () {
@@ -172,6 +173,8 @@ export default {
         this.selectedDzo.plans = this.getSelectedDzoPlans();
         await this.sleep(2000);
         this.setTableFormat();
+        this.todayData = await this.getDzoTodayData();
+        this.processTodayData();
     },
     methods: {
         addColumnsToGrid() {
@@ -400,5 +403,5 @@ export default {
     components: {
         VGrid,
     },
-    mixins: [Visual],
+    mixins: [Visual,TodayDzoData],
 };
