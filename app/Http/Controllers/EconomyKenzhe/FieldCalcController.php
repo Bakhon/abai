@@ -5,6 +5,8 @@ namespace App\Http\Controllers\EconomyKenzhe;
 use App\Http\Controllers\Controller;
 
 use App\Models\EconomyKenzhe\FieldCalcCompany;
+use App\Models\EconomyKenzhe\HandbookRepTt;
+use App\Models\EconomyKenzhe\SubholdingCompany;
 use App\Models\EcoRefsAvgMarketPrice;
 use App\Models\EcoRefsAvgPrs;
 use App\Models\EcoRefsCompaniesId;
@@ -41,14 +43,23 @@ class FieldCalcController extends Controller
         $this->worldRubRate = $data['averageRubRate'];
     }
 
-    public function index(){
+    public function index()
+    {
+        $currentYear = '2020';
+        $previousYear = '2019';
+        $dateTo = date('Y-m-d', strtotime($currentYear.'-12-01'));
+        $dateFrom = date("Y-m-d", strtotime($currentYear . "-01-01"));
         $companies = FieldCalcCompany::all();
-        foreach ($companies as $key=> $company){
+        foreach ($companies as $key => $company) {
             $company['ecorefsemppers'] = $company->getCompanyBarrelPriceByDirection(1)->get()->toArray();
+            $company['opiu'] = SubholdingCompany::whereName($company->name)->first();
+            if($company['opiu']){
+                $handbook = HandbookRepTt::where('parent_id', 0)->with('childHandbookItems')->get()->toArray();
+                $companyRepTtValues = $company['opiu']->statsByDate($currentYear)->get()->toArray();
+                $company['opiu']['values'] = app('App\Http\Controllers\EconomyKenzhe\MainController')->recursiveSetValueToHandbookByType($handbook, $companyRepTtValues, $currentYear, $previousYear, $dateFrom, $dateTo);
+            }
         }
-        echo '<pre>';
-        print_r($companies);
-        echo '</pre>';
+        dd($companies);
     }
 
 }

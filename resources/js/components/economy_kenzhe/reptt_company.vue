@@ -151,8 +151,13 @@
       distributionSumOverTree(attributeName, year) {
         this.repttData.reptt.reduce(function x(r, a) {
           let hasChild = a.handbook_items.length > 0;
-          a[attributeName][year] = ((a[attributeName][year] < 0) ? a[attributeName][year] * -1 : a[attributeName][year]) || hasChild && a.handbook_items.reduce(x, 0) || 0;
-
+          let yearValue = a[attributeName][year];
+          if(yearValue < 0){
+            a[attributeName][year] = yearValue * -1
+          }
+          if(hasChild){
+            a[attributeName][year] = a.handbook_items.reduce(x, 0)
+          }
           return r + a[attributeName][year];
         }, 0);
       },

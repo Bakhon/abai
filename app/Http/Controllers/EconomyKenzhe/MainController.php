@@ -15,6 +15,7 @@ class MainController extends Controller
         $companyId = 116;
         $dateTo = date('Y-m-d', strtotime('-1 year'));
         $dateFrom = date("Y-m-d", strtotime($dateTo . "-3 months"));
+
         if($request->company){
             $companyId = $request->company;
         }
