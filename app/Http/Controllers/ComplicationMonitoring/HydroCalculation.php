@@ -2,33 +2,29 @@
 
 namespace App\Http\Controllers\ComplicationMonitoring;
 
-use App\Exports\PipeLineCalcExport;
 use App\Filters\HydroCalcFilter;
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\CrudController;
 use App\Http\Controllers\Traits\WithFieldsValidation;
 use App\Http\Requests\IndexTableRequest;
 use App\Http\Resources\HydroCalcListResource;
 use App\Jobs\ExportHydroCalcTableToExcel;
 use App\Models\ComplicationMonitoring\OmgNGDU;
 use App\Models\ComplicationMonitoring\TrunklinePoint;
-
 use Illuminate\Support\Facades\Session;
-use Maatwebsite\Excel\Facades\Excel;
 
-class HydroCalculcation extends Controller
+class HydroCalculation extends Controller
 {
     use WithFieldsValidation;
 
-    protected $modelName = 'hydro_calculcation';
+    protected $modelName = 'hydro_calculation';
 
     public function index () {
         $params = [
             'success' => Session::get('success'),
             'links' => [
-                'list' => route('hydro_calculcation.list'),
+                'list' => route('hydro_calculation.list'),
             ],
-            'title' => trans('monitoring.hydro_calculcation.table_title'),
+            'title' => trans('monitoring.hydro_calculation.table_title'),
             'fields' => [
                 'id' => [
                     'title' => '№',
@@ -46,7 +42,7 @@ class HydroCalculcation extends Controller
                     'filterable' => false,
                 ],
                 'length' => [
-                    'title' => trans('monitoring.hydro_calculcation.fields.length'),
+                    'title' => trans('monitoring.hydro_calculation.fields.length'),
                     'type' => 'numeric',
                     'sortable' => false,
                     'filterable' => false,
@@ -70,81 +66,81 @@ class HydroCalculcation extends Controller
                     'filterable' => false,
                 ],
                 'press_start' => [
-                    'title' => trans('monitoring.hydro_calculcation.fields.pressure_start'),
+                    'title' => trans('monitoring.hydro_calculation.fields.pressure_start'),
                     'type' => 'numeric',
                     'sortable' => false,
                     'filterable' => false,
                 ],
                 'press_end' => [
-                    'title' => trans('monitoring.hydro_calculcation.fields.pressure_end'),
+                    'title' => trans('monitoring.hydro_calculation.fields.pressure_end'),
                     'type' => 'numeric',
                     'sortable' => false,
                     'filterable' => false,
                 ],
                 'temp_start' => [
-                    'title' => trans('monitoring.hydro_calculcation.fields.temperature_start'),
+                    'title' => trans('monitoring.hydro_calculation.fields.temperature_start'),
                     'type' => 'numeric',
                     'sortable' => false,
                     'filterable' => false,
                 ],
                 'temp_end' => [
-                    'title' => trans('monitoring.hydro_calculcation.fields.temperature_end'),
+                    'title' => trans('monitoring.hydro_calculation.fields.temperature_end'),
                     'type' => 'numeric',
                     'sortable' => false,
                     'filterable' => false,
                 ],
                 'start_point' => [
-                    'title' => trans('monitoring.hydro_calculcation.fields.start_point'),
+                    'title' => trans('monitoring.hydro_calculation.fields.start_point'),
                     'type' => 'numeric',
                 ],
                 'end_point' => [
-                    'title' => trans('monitoring.hydro_calculcation.fields.end_point'),
+                    'title' => trans('monitoring.hydro_calculation.fields.end_point'),
                     'type' => 'numeric',
                 ],
                 'name' => [
-                    'title' => trans('monitoring.hydro_calculcation.fields.pipe_name'),
+                    'title' => trans('monitoring.hydro_calculation.fields.pipe_name'),
                     'type' => 'numeric',
                     'sortable' => false,
                     'filterable' => false,
                 ],
                 'mix_speed_avg' => [
-                    'title' => trans('monitoring.hydro_calculcation.fields.mix_speed_avg'),
+                    'title' => trans('monitoring.hydro_calculation.fields.mix_speed_avg'),
                     'type' => 'numeric',
                     'sortable' => false,
                     'filterable' => false,
                 ],
                 'fluid_speed' => [
-                    'title' => trans('monitoring.hydro_calculcation.fields.fluid_speed'),
+                    'title' => trans('monitoring.hydro_calculation.fields.fluid_speed'),
                     'type' => 'numeric',
                     'sortable' => false,
                     'filterable' => false,
                 ],
                 'gaz_speed' => [
-                    'title' => trans('monitoring.hydro_calculcation.fields.gaz_speed'),
+                    'title' => trans('monitoring.hydro_calculation.fields.gaz_speed'),
                     'type' => 'numeric',
                     'sortable' => false,
                     'filterable' => false,
                 ],
                 'flow_type' => [
-                    'title' => trans('monitoring.hydro_calculcation.fields.flow_type'),
+                    'title' => trans('monitoring.hydro_calculation.fields.flow_type'),
                     'type' => 'numeric',
                     'sortable' => false,
                     'filterable' => false,
                 ],
                 'press_change' => [
-                    'title' => trans('monitoring.hydro_calculcation.fields.press_change'),
+                    'title' => trans('monitoring.hydro_calculation.fields.press_change'),
                     'type' => 'numeric',
                     'sortable' => false,
                     'filterable' => false,
                 ],
                 'break_qty' => [
-                    'title' => trans('monitoring.hydro_calculcation.fields.break_qty'),
+                    'title' => trans('monitoring.hydro_calculation.fields.break_qty'),
                     'type' => 'numeric',
                     'sortable' => false,
                     'filterable' => false,
                 ],
                 'height_drop' => [
-                    'title' => trans('monitoring.hydro_calculcation.fields.height_drop'),
+                    'title' => trans('monitoring.hydro_calculation.fields.height_drop'),
                     'type' => 'numeric',
                     'sortable' => false,
                     'filterable' => false,
@@ -153,45 +149,82 @@ class HydroCalculcation extends Controller
         ];
 
         $params['links']['export'] = route($this->modelName.'.export');
+        $params['links']['date'] = route($this->modelName.'.export');
 
         return view('hydro_calc.index', compact('params'));
     }
 
     public function list (IndexTableRequest $request)
     {
+        $input = $request->validated();
+
         $query = TrunklinePoint::query()
             ->with('map_pipe.pipeType', 'map_pipe.firstCoords', 'map_pipe.lastCoords', 'gu', 'trunkline_end_point');
 
         $points = $this
-            ->getFilteredQuery($request->validated(), $query)
+            ->getFilteredQuery($input, $query)
             ->whereNotNull('gu_id')
             ->orWhereNotNull('point_end_id')
             ->paginate(25);
 
+        $alerts = [];
+
         foreach ($points as $key => $point) {
+
             if (!$points[$key]->gu) {
                 continue;
             }
 
-            $points[$key]->lastOmgngdu = OmgNGDU::where('gu_id', $points[$key]->gu->id)
-                ->orderBy('date', 'desc')
-                ->first();
+            $query = OmgNGDU::where('gu_id', $points[$key]->gu->id);
 
-            if (!$points[$key]->lastOmgngdu) {
+            if (isset($input['date'])) {
+                $query = $query->where('date', $input['date']);
+            }
+
+            $points[$key]->omgngdu = $query->orderBy('date', 'desc')->first();
+
+            if (!$points[$key]->omgngdu) {
+                $alert = $points[$key]->gu->name.' '.trans('monitoring.hydro_calculation.message.no-omgdu-data');
+
+                if (isset($input['date'])) {
+                    $alert .= ' на '.$input['date'];
+                }
+                $alerts[] = $alert .= ' !';
                 continue;
             }
 
-            $temperature = $points[$key]->lastOmgngdu->heater_output_temperature;
+            $temperature = $points[$key]->omgngdu->heater_output_temperature;
             $temperature = $temperature ? ($temperature < 40 ? 50 : $temperature) : 50;
-            $points[$key]->lastOmgngdu->heater_output_temperature = $temperature;
+            $points[$key]->omgngdu->heater_output_temperature = $temperature;
+
+            if ($points[$key]->omgngdu->pump_discharge_pressure == 0) {
+                $alerts[] = $points[$key]->gu->name.' '.trans('monitoring.hydro_calculation.message.pressure-0');
+            }
+
+            if (is_null($points[$key]->omgngdu->pump_discharge_pressure)) {
+                $alerts[] = $points[$key]->gu->name.' '.trans('monitoring.hydro_calculation.message.no-pressure-data');
+            }
+
+            if (!$points[$key]->omgngdu->daily_fluid_production) {
+                $alerts[] = $points[$key]->gu->name.' '.trans('monitoring.hydro_calculation.message.no-daily-fluid-data');
+            }
+
+            if (!$points[$key]->omgngdu->bsw) {
+                $alerts[] = $points[$key]->gu->name.' '.trans('monitoring.hydro_calculation.message.no-bsw-data');
+            }
         }
 
-        return response()->json(json_decode(HydroCalcListResource::collection($points)->toJson()));
+        $list = json_decode(HydroCalcListResource::collection($points)->toJson());
+        if (count($alerts)) {
+            $list->alerts = $alerts;
+        }
+
+        return response()->json($list);
     }
 
-    public function exportExcel()
+    public function exportExcel(IndexTableRequest $request)
     {
-        $job = new ExportHydroCalcTableToExcel();
+        $job = new ExportHydroCalcTableToExcel($request->validated());
         $this->dispatch($job);
 
         return response()->json(

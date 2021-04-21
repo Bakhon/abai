@@ -24,15 +24,17 @@ class ExportHydroCalcTableToExcel implements ShouldQueue
     public $tries = 1;
 
     protected $params;
+    protected $input;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(array $input)
     {
         $this->prepareStatus();
+        $this->input = $input;
     }
 
     /**
@@ -49,17 +51,22 @@ class ExportHydroCalcTableToExcel implements ShouldQueue
                 continue;
             }
 
-            $points[$key]->lastOmgngdu = OmgNGDU::where('gu_id', $points[$key]->gu->id)
-                ->orderBy('date', 'desc')
-                ->first();
+            $query = OmgNGDU::where('gu_id', $points[$key]->gu->id)
+                ->orderBy('date', 'desc');
 
-            if (!$points[$key]->lastOmgngdu) {
+            if (isset($this->input['date'])) {
+                $query = $query->where('date', $this->input['date']);
+            }
+
+            $points[$key]->omgngdu = $query->orderBy('date', 'desc')->first();
+
+            if (!$points[$key]->omgngdu) {
                 continue;
             }
 
-            $temperature = $points[$key]->lastOmgngdu->heater_output_temperature;
+            $temperature = $points[$key]->omgngdu->heater_output_temperature;
             $temperature = $temperature ? ($temperature < 40 ? 50 : $temperature) : 50;
-            $points[$key]->lastOmgngdu->heater_output_temperature = $temperature;
+            $points[$key]->omgngdu->heater_output_temperature = $temperature;
         }
 
         $columnNames = [
