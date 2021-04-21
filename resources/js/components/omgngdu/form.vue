@@ -225,7 +225,7 @@ export default {
         surge_tank_pressure: null,
         daily_gas_production_in_sib: null,
         heater_output_temperature: null,
-        editable: 0,
+        editable: 1,
       },
       ngdus: {},
       cndgs: {},

@@ -153,45 +153,82 @@ class HydroCalculcation extends Controller
         ];
 
         $params['links']['export'] = route($this->modelName.'.export');
+        $params['links']['date'] = route($this->modelName.'.export');
 
         return view('hydro_calc.index', compact('params'));
     }
 
     public function list (IndexTableRequest $request)
     {
+        $input = $request->validated();
+
         $query = TrunklinePoint::query()
             ->with('map_pipe.pipeType', 'map_pipe.firstCoords', 'map_pipe.lastCoords', 'gu', 'trunkline_end_point');
 
         $points = $this
-            ->getFilteredQuery($request->validated(), $query)
+            ->getFilteredQuery($input, $query)
             ->whereNotNull('gu_id')
             ->orWhereNotNull('point_end_id')
             ->paginate(25);
 
+        $alerts = [];
+
         foreach ($points as $key => $point) {
+
             if (!$points[$key]->gu) {
                 continue;
             }
 
-            $points[$key]->lastOmgngdu = OmgNGDU::where('gu_id', $points[$key]->gu->id)
-                ->orderBy('date', 'desc')
-                ->first();
+            $query = OmgNGDU::where('gu_id', $points[$key]->gu->id);
 
-            if (!$points[$key]->lastOmgngdu) {
+            if (isset($input['date'])) {
+                $query = $query->where('date', $input['date']);
+            }
+
+            $points[$key]->omgngdu = $query->orderBy('date', 'desc')->first();
+
+            if (!$points[$key]->omgngdu) {
+                $alert = $points[$key]->gu->name.' нет данных ОМГДУ';
+
+                if (isset($input['date'])) {
+                    $alert .= ' на '.$input['date'];
+                }
+                $alerts[] = $alert .= ' !';
                 continue;
             }
 
-            $temperature = $points[$key]->lastOmgngdu->heater_output_temperature;
+            $temperature = $points[$key]->omgngdu->heater_output_temperature;
             $temperature = $temperature ? ($temperature < 40 ? 50 : $temperature) : 50;
-            $points[$key]->lastOmgngdu->heater_output_temperature = $temperature;
+            $points[$key]->omgngdu->heater_output_temperature = $temperature;
+
+            if ($points[$key]->omgngdu->pump_discharge_pressure == 0) {
+                $alerts[] = $points[$key]->gu->name.' давление 0 !';
+            }
+
+            if (is_null($points[$key]->omgngdu->pump_discharge_pressure)) {
+                $alerts[] = $points[$key]->gu->name.' нет данных по давлению !';
+            }
+
+            if (!$points[$key]->omgngdu->daily_fluid_production) {
+                $alerts[] = $points[$key]->gu->name.' нет данных по cуточной добычи жидкости !';
+            }
+
+            if (!$points[$key]->omgngdu->bsw) {
+                $alerts[] = $points[$key]->gu->name.' нет данных по обводненности !';
+            }
         }
 
-        return response()->json(json_decode(HydroCalcListResource::collection($points)->toJson()));
+        $list = json_decode(HydroCalcListResource::collection($points)->toJson());
+        if (count($alerts)) {
+            $list->alerts = $alerts;
+        }
+
+        return response()->json($list);
     }
 
-    public function exportExcel()
+    public function exportExcel(IndexTableRequest $request)
     {
-        $job = new ExportHydroCalcTableToExcel();
+        $job = new ExportHydroCalcTableToExcel($request->validated());
         $this->dispatch($job);
 
         return response()->json(

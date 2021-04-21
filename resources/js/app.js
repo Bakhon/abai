@@ -27,7 +27,6 @@ import PerfectScrollbar from "vue2-perfect-scrollbar";
 import "vue2-perfect-scrollbar/dist/vue2-perfect-scrollbar.css";
 import columnSortable from 'vue-column-sortable';
 
-
 require('./bootstrap');
 window.Vue = require('vue');
 window.Jquery = require('jquery');
@@ -42,6 +41,11 @@ Vue.use(PerfectScrollbar);
 Vue.use(columnSortable);
 Vue.use(VueSimpleAlert);
 Vue.use(BootstrapVue);
+
+//Mixins
+import showToast from './mixins/showToast';
+Vue.mixin(showToast);
+
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue

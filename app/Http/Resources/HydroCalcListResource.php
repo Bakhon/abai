@@ -23,11 +23,11 @@ class HydroCalcListResource extends CrudListResource
                 'name' => $this->map_pipe->name,
                 'height_drop' => round($this->map_pipe->lastCoords->elevation - $this->map_pipe->firstCoords->elevation,2),
                 'end_point' => $this->trunkline_end_point ? $this->trunkline_end_point->name : '',
-                'qliq' => $this->lastOmgngdu ? $this->lastOmgngdu->daily_fluid_production : '',
-                'wc' => $this->lastOmgngdu ? $this->lastOmgngdu->bsw : '',
+                'qliq' => $this->omgngdu ? $this->omgngdu->daily_fluid_production : '',
+                'wc' => $this->omgngdu ? $this->omgngdu->bsw : '',
                 'gazf' => $this->gu ? 0 : '',
-                'press_start' => $this->lastOmgngdu ? $this->lastOmgngdu->pump_discharge_pressure : '',
-                'temp_start' => $this->lastOmgngdu ? $this->lastOmgngdu->heater_output_temperature : '',
+                'press_start' => $this->omgngdu ? $this->omgngdu->pump_discharge_pressure + 1 : '',
+                'temp_start' => $this->omgngdu ? $this->omgngdu->heater_output_temperature : '',
             ],
         ];
 
