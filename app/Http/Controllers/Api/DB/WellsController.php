@@ -7,7 +7,7 @@ use App\Models\BigData\Well;
 
 class WellsController extends Controller
 {
-    public function get(Well $well)
+    public function get(Well $well): array
     {
         return ['well' => $well];
     }
