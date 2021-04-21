@@ -10,6 +10,8 @@ Route::group(
                 Route::get('/las', 'bd\DBController@las')->name('las');
                 Route::get('/user_reports', 'bd\DBController@userReports')->name('userReports');
 
+                Route::get('/geo-data-reference-book', 'bd\DBController@geoDataReferenceBook')->name('bigdata.geoDataReferenceBook');
+
                 Route::get('/reports', 'bd\DBController@reports')->name('bigdata.reports');
                 Route::get('/reports/favorite', 'bd\DBController@favoriteReports')->name('bigdata.reports.favorite');
                 Route::post('/reports/favorite/{report}', 'bd\DBController@addReportToFavorites')->name(
@@ -30,6 +32,7 @@ Route::group(
                 Route::get('form/{form}/rows', 'bd\FormsController@getRows');
                 Route::get('form/{form}/row-history', 'bd\FormsController@getRowHistory');
                 Route::get('form/{form}/row-history-graph', 'bd\FormsController@getRowHistoryGraph');
+                Route::get('form/{form}/copy', 'bd\FormsController@copyFieldValue');
                 Route::get('form/{form}/well-prefix', 'bd\FormsController@getWellPrefix');
                 Route::post('form/{form}/validate/{field}', 'bd\FormsController@validateField')->name(
                     'bigdata.form.validate.field'

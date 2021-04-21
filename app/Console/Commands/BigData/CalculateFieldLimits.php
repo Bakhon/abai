@@ -2,17 +2,14 @@
 
 namespace App\Console\Commands\BigData;
 
+use App\Services\BigData\FieldLimitsService;
 use App\Services\BigData\Forms\TableForm;
 use Carbon\CarbonImmutable;
 use Illuminate\Console\Command;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\DB;
 use ReflectionClass;
 
 class CalculateFieldLimits extends Command
 {
-    const DEVIATION_COEFFICIENT = 0.341;
     /**
      * The name and signature of the console command.
      *
@@ -26,13 +23,16 @@ class CalculateFieldLimits extends Command
      */
     protected $description = 'Расчет изменчивости параметров для форм ввода';
 
+    protected $limitsService;
+
     /**
      * Create a new command instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(FieldLimitsService $limitsService)
     {
+        $this->limitsService = $limitsService;
         parent::__construct();
     }
 
@@ -93,81 +93,6 @@ class CalculateFieldLimits extends Command
     private function calculateLimits(array $fields)
     {
         $yesterday = CarbonImmutable::yesterday();
-        foreach ($fields as $field) {
-            $startDate = $yesterday->subMonthNoOverflow();
-            if ($field['custom_period']) {
-                $startDate = $yesterday->sub($field['custom_period']);
-            }
-
-            $query = DB::connection('tbd')
-                ->table($field['table'])
-                ->select('well_id', $field['column'])
-                ->where('dbeg', '>=', $startDate)
-                ->where('dbeg', '<=', $yesterday);
-
-            if (!empty($field['additional_filter'])) {
-                foreach ($field['additional_filter'] as $key => $value) {
-                    $query->where($key, $value);
-                }
-            }
-
-            $result = $query->get()
-                ->groupBy('well_id')
-                ->map(
-                    function ($columnValues) use ($field) {
-                        return $this->calculateFieldLimit($field, $columnValues);
-                    }
-                );
-
-            $cacheKey = TableForm::getLimitsCacheKey($field, $yesterday);
-            Cache::put($cacheKey, $result->toJson(), \Carbon\Carbon::now()->addDay());
-        }
-    }
-
-    private function calculateFieldLimit(array $field, Collection $columnValues): array
-    {
-        if ($columnValues->count() <= 1) {
-            return [];
-        }
-
-        $avg = $columnValues->sum($field['column']) / $columnValues->count();
-        $deviation = $this->calcStandardDeviation(
-            $columnValues->pluck($field['column']),
-            $avg
-        );
-
-        $min = $avg - $deviation * self::DEVIATION_COEFFICIENT;
-        $max = $avg + $deviation * self::DEVIATION_COEFFICIENT;
-
-        return $this->getRoundedValues($min, $max);
-    }
-
-    private function calcStandardDeviation(Collection $collection, float $avg): float
-    {
-        $sum = $collection->reduce(
-            function ($sum, $item) use ($avg) {
-                return $sum + pow($item - $avg, 2);
-            }
-        );
-
-        return sqrt($sum / ($collection->count() - 1));
-    }
-
-    private function getRoundedValues(float $min, float $max)
-    {
-        if (abs($min) < 1 || abs($max) < 1) {
-            $min = floor($min * 100) / 100;
-            $max = ceil($max * 100) / 100;
-        } elseif (abs($min) < 10 || abs($max) < 10) {
-            $min = floor($min * 10) / 10;
-            $max = ceil($max * 10) / 10;
-        } else {
-            $min = floor($min);
-            $max = ceil($max);
-        }
-        return [
-            'min' => $min,
-            'max' => $max,
-        ];
+        $this->limitsService->calculate($fields, $yesterday);
     }
 }

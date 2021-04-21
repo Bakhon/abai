@@ -6,7 +6,6 @@ Route::group(
         Route::group(
             ['middleware' => 'auth'],
             function () {
-
                 Route::get('watermeasurement/list', 'ComplicationMonitoring\WaterMeasurementController@list')->name(
                     'watermeasurement.list'
                 );
@@ -22,19 +21,30 @@ Route::group(
                 Route::get('/getfields', 'ComplicationMonitoring\WaterMeasurementController@getFields');
                 Route::get('/getotherobjects', 'ComplicationMonitoring\WaterMeasurementController@getOtherObjects');
                 Route::get('/getngdu', 'ComplicationMonitoring\WaterMeasurementController@getNgdu');
+                Route::get('/getallngdu', 'ComplicationMonitoring\WaterMeasurementController@getAllNgdu');
                 Route::get('/getcdng', 'ComplicationMonitoring\WaterMeasurementController@getCdng');
+                Route::get('/getallcdng', 'ComplicationMonitoring\WaterMeasurementController@getAllCdng');
                 Route::post('/getgu', 'ComplicationMonitoring\WaterMeasurementController@getGu');
+                Route::get('/getallgus', 'ComplicationMonitoring\WaterMeasurementController@getAllGu');
+                Route::get('/get_all_monitoring_data', 'ComplicationMonitoring\WaterMeasurementController@getAllMonitoringData');
                 Route::post('/getzu', 'ComplicationMonitoring\WaterMeasurementController@getZu');
+                Route::post('/get_gu_relations', 'ComplicationMonitoring\WaterMeasurementController@getGuRelations');
+                Route::post('/get_zu_relations', 'ComplicationMonitoring\WaterMeasurementController@getZuRelations');
+                Route::post('/get_ngdu_relations', 'ComplicationMonitoring\WaterMeasurementController@getNgduRelations');
+                Route::post('/get_cdng_relations', 'ComplicationMonitoring\WaterMeasurementController@getCdngRelations');
+                Route::get('/getallzu', 'ComplicationMonitoring\WaterMeasurementController@getAllZu');
                 Route::post('/getwell', 'ComplicationMonitoring\WaterMeasurementController@getWell');
+                Route::get('/getallwell', 'ComplicationMonitoring\WaterMeasurementController@getAllWell');
+                Route::post('/getallwell', 'ComplicationMonitoring\WaterMeasurementController@getAllWell');
                 Route::get('/getwbs', 'ComplicationMonitoring\WaterMeasurementController@getWaterBySulin');
                 Route::get('/getsrb', 'ComplicationMonitoring\WaterMeasurementController@getSulphateReducingBacteria');
                 Route::get(
                     '/gethob',
-                    'ComplicationMonitoring\WaterMeasurementController@getHydrocarbonOxidizingBacteria'
+                    'ComplicationMonitoring\OmgNGDUController@getHydrocarbonOxidizingBacteria'
                 );
+
                 Route::get('/gethb', 'ComplicationMonitoring\WaterMeasurementController@getThionicBacteria');
                 Route::post('/getwm', 'ComplicationMonitoring\WaterMeasurementController@getWm');
-                Route::get('/getallgus', 'ComplicationMonitoring\WaterMeasurementController@getAllGu');
                 Route::get('/getallkormasses', 'ComplicationMonitoring\WaterMeasurementController@getAllKormasses');
                 Route::post('/getgudata', 'ComplicationMonitoring\WaterMeasurementController@getGuData');
                 Route::post('/getgudatabyday', 'ComplicationMonitoring\OmgNGDUController@getGuDataByDay');
@@ -67,30 +77,56 @@ Route::group(
                 );
                 Route::resource('omgngdu', 'ComplicationMonitoring\OmgNGDUController');
 
-                Route::post('/getgucdngngdufield', 'ComplicationMonitoring\WaterMeasurementController@getGuNgduCdngField');
+
+                Route::get('omgngdu_well/list', 'ComplicationMonitoring\OmgNGDUWellController@list')->name(
+                    'omgngdu_well.list'
+                );
+                Route::resource('omgngdu_well', 'ComplicationMonitoring\OmgNGDUWellController');
+
+
+                Route::post(
+                    '/get-gu-cdng-ngdu-field',
+                    'ComplicationMonitoring\WaterMeasurementController@getGuNgduCdngField'
+                );
 
                 Route::get('oilgas/list', 'ComplicationMonitoring\OilGasController@list')->name('oilgas.list');
                 Route::get('oilgas/export', 'ComplicationMonitoring\OilGasController@export')->name('oilgas.export');
-                Route::get('oilgas/history/{oilgas}', 'ComplicationMonitoring\OilGasController@history')->name('oilgas.history');
-                Route::resource('oilgas','ComplicationMonitoring\OilGasController')->parameters(['oilgas' => 'oilgas']);
+                Route::get('oilgas/history/{oilgas}', 'ComplicationMonitoring\OilGasController@history')->name(
+                    'oilgas.history'
+                );
+                Route::resource('oilgas', 'ComplicationMonitoring\OilGasController')->parameters(
+                    ['oilgas' => 'oilgas']
+                );
 
                 Route::get('pipes/list', 'PipeController@list')->name('pipes.list');
                 Route::get('pipes/export', 'PipeController@export')->name('pipes.export');
                 Route::get('pipes/history/{pipe}', 'PipeController@history')->name('pipes.history');
-                Route::resource('pipes','PipeController');
+                Route::resource('pipes', 'PipeController');
+
+                Route::get('pipe_types/list', 'ComplicationMonitoring\PipeTypesController@list')->name(
+                    'pipe_types.list'
+                );
+                Route::resource('pipe_types', 'ComplicationMonitoring\PipeTypesController');
 
                 Route::get('inhibitors/list', 'InhibitorsController@list')->name('inhibitors.list');
-                Route::resource('inhibitors','InhibitorsController');
+                Route::resource('inhibitors', 'InhibitorsController');
 
-                Route::post('vcoreconomic','ComplicationMonitoring\OilGasController@economic');
-                Route::post('vcoreconomiccurrent','ComplicationMonitoring\OilGasController@economicCurrentYear');
-                Route::post('checkdublicateomgddng','ComplicationMonitoring\OmgCAController@checkDublicate');
-                Route::post('getprevdaylevel','ComplicationMonitoring\OmgUHEController@getPrevDayLevel');
+                Route::post('vcoreconomic', 'ComplicationMonitoring\OilGasController@economic');
+                Route::post('vcoreconomiccurrent', 'ComplicationMonitoring\OilGasController@economicCurrentYear');
+                Route::post('checkdublicateomgddng', 'ComplicationMonitoring\OmgCAController@checkDublicate');
+                Route::post('get-prev-day-level', 'ComplicationMonitoring\OmgUHEController@getPrevDayLevel');
 
-                Route::get('corrosioncrud/list', 'ComplicationMonitoring\CorrosionController@list')->name('corrosioncrud.list');
-                Route::get('corrosioncrud/export', 'ComplicationMonitoring\CorrosionController@export')->name('corrosioncrud.export');
-                Route::get('corrosioncrud/history/{corrosion}', 'ComplicationMonitoring\CorrosionController@history')->name('corrosioncrud.history');
-                Route::resource('corrosioncrud','ComplicationMonitoring\CorrosionController');
+                Route::get('corrosioncrud/list', 'ComplicationMonitoring\CorrosionController@list')->name(
+                    'corrosioncrud.list'
+                );
+                Route::get('corrosioncrud/export', 'ComplicationMonitoring\CorrosionController@export')->name(
+                    'corrosioncrud.export'
+                );
+                Route::get(
+                    'corrosioncrud/history/{corrosion}',
+                    'ComplicationMonitoring\CorrosionController@history'
+                )->name('corrosioncrud.history');
+                Route::resource('corrosioncrud', 'ComplicationMonitoring\CorrosionController');
 
                 Route::get('/gu-map', 'MapsController@guMap')->name('maps.gu');
                 Route::get('/gu-map/mapdata', 'MapsController@mapData')->name('maps.gu_pipes');
@@ -129,6 +165,10 @@ Route::group(
                 Route::resource('zus', 'ComplicationMonitoring\ZusController');
 
                 Route::get('/monitor/{gu?}', 'DruidController@monitor')->name('monitor');
+
+                Route::get('/hydro-calc/list', 'ComplicationMonitoring\HydroCalculcation@list')->name('hydro_calculcation.list');
+                Route::get('/hydro-calc/export', 'ComplicationMonitoring\HydroCalculcation@exportExcel')->name('hydro_calculcation.export');
+                Route::resource('hydro-calc', 'ComplicationMonitoring\HydroCalculcation');
             }
         );
     }

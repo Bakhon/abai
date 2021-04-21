@@ -22,6 +22,6 @@ mix.webpackConfig({
 
 mix.js('resources/js/app.js', 'public/js')
    mix.sass('resources/sass/app.scss', 'public/css')
-   .copyDirectory('resources/sass/font', 'public/fonts')
-   .copy('node_modules/@fortawesome/fontawesome-free/webfonts', 'public/webfonts');
+     .copyDirectory('resources/sass/font', 'public/fonts')
+     .copy('node_modules/@fortawesome/fontawesome-free/webfonts', 'public/webfonts');
    

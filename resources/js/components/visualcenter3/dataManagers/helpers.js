@@ -109,11 +109,11 @@ export default {
         getPreviousWorkday(){
             let workday = moment();
             let day = workday.day();
-            let diff = 1;
+            let diff = 2;
             if (day === 0 || day === 1){
                 diff = day + 2;
             }
-            return workday.subtract(diff, 'days').format();
+            return workday.subtract(diff, 'days').endOf('day').format();
         },
 
         formatVisTableNumber3(a, b) {
@@ -161,6 +161,14 @@ export default {
                 return 'tdStyleLight3'
             } else {
                 return 'tdStyleLight2'
+            }
+        },
+
+        getColorClassBySelectedPeriod(index) {
+            if (this.buttonMonthlyTab || this.buttonYearlyTab) {
+                return this.getLighterClass(index);
+            } else {
+                return this.getDarkerClass(index);
             }
         },
 

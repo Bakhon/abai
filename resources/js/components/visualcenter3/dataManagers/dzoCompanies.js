@@ -11,7 +11,14 @@ export default {
                 yearly: ['companyName', 'yearlyPlan', 'plan', 'fact', 'difference', 'percent'],
             },
             currentDzoList: 'daily',
-            dzoCompaniesAssets: {},
+            dzoCompaniesAssets: {
+                isAllAssets: true,
+                isOperating: false,
+                isNonOperating: false,
+                isOpecRestriction: false,
+                isRegion: false,
+                assetTitle: this.trans("visualcenter.summaryAssets"),
+            },
             dzoCompaniesAssetsInitial: {
                 isAllAssets: true,
                 isOperating: false,
@@ -48,7 +55,7 @@ export default {
             },
             selectedDzoCompanies: [],
             company: "all",
-            dzoCompanies: dzoCompaniesInitial,
+            dzoCompanies: _.cloneDeep(dzoCompaniesInitial),
             dzoCompanySummary: this.bigTable,
             dzoCompaniesSummaryInitial: {
                 plan: 0,
@@ -67,11 +74,22 @@ export default {
     },
     methods: {
         getSelectedDzoCompanies(type, category, regionName) {
-            if (regionName) {
-                category = regionName;
+            this.disableDzoRegions();
+            if (!regionName) {
+                return _.cloneDeep(dzoCompaniesInitial).filter(company => company[category] === type).map(company => company.ticker);
             }
-            type = type.toLowerCase().replace('is','');
-            return _.cloneDeep(dzoCompaniesInitial).filter(company => company[type] === category).map(company => company.ticker);
+            this.dzoRegionsMapping[regionName].isActive = !this.dzoRegionsMapping[regionName].isActive;
+            if (regionName === 'zhambul') {
+                category = regionName;
+                type = type.toLowerCase().replace('is','');
+                return ['АГ'];
+            }
+            if (this.dzoRegionsMapping[regionName].isActive) {
+                category = regionName;
+                type = type.toLowerCase().replace('is','');
+                return _.cloneDeep(dzoCompaniesInitial).filter(company => company[type] === category).map(company => company.ticker);
+            }
+            return _.cloneDeep(dzoCompaniesInitial).map(company => company.ticker);
         },
 
         selectMultipleDzoCompanies(type,category,regionName) {
@@ -134,6 +152,7 @@ export default {
 
         selectAllDzoCompanies() {
             this.selectDzoCompanies();
+            this.dzoCompanies = _.cloneDeep(dzoCompaniesInitial);
         },
 
         selectDzoCompanies() {
@@ -143,9 +162,6 @@ export default {
             this.disableDzoRegions();
             this.selectedDzoCompanies = this.getAllDzoCompanies();
             this.buttonDzoDropdown = "";
-            _.map(this.dzoCompanies, function (company) {
-                company.selected = true;
-            });
             this.dzoCompanySummary = this.bigTable;
             this.calculateDzoCompaniesSummary();
         },
@@ -158,11 +174,16 @@ export default {
         selectDzoCompany(companyTicker) {
             this.disableDzoRegions();
             this.selectCompany(companyTicker);
-            this.selectedDzoCompanies = [companyTicker];
+
             this.dzoCompaniesAssets['isAllAssets'] = false;
             this.buttonDzoDropdown = this.highlightedButton;
             this.switchDzoCompaniesVisibility(companyTicker,'ticker');
             this.isMultipleDzoCompaniesSelected = this.dzoCompanySummary.length > 1;
+            if (this.isMultipleDzoCompaniesSelected) {
+                this.selectedDzoCompanies.push(companyTicker);
+            } else {
+                this.selectedDzoCompanies = [companyTicker];
+            }
             this.calculateDzoCompaniesSummary();
         },
 
@@ -183,7 +204,7 @@ export default {
             this.$store.commit('globalloading/SET_LOADING', false);
             this.$emit("data", {
                 dzoCompaniesSummaryForChart: this.dzoCompaniesSummaryForChart,
-                opec: this.opec,
+                isOpecFilterActive: this.isOpecFilterActive,
                 isFilterTargetPlanActive: this.isFilterTargetPlanActive
             });
         },
@@ -194,8 +215,4 @@ export default {
             });
         }
     },
-    async mounted() {
-        this.dzoCompaniesAssets = _.cloneDeep(this.dzoCompaniesAssetsInitial);
-        this.sortDzoList();
-    }
 }

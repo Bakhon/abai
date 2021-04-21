@@ -71,7 +71,7 @@ export default {
             if (change == "1") {
                 this.Table1 = "display:block";
                 this.tableHover1 = buttonHover2;
-                this.changeMenu2(1);
+                this.changeMenu2('daily');
             } else if (change == "2") {
                 this.Table2 = "display:block";
                 this.tableHover2 = buttonHover2;
@@ -96,6 +96,7 @@ export default {
                 if (periodStart > periodEnd) {
                     periodStart = this.getPreviousWorkday();
                 }
+
                 this.range = {
                     start: periodStart,
                     end: periodEnd,
@@ -107,7 +108,15 @@ export default {
         },
 
         changeMenu2(change) {
-            if (change === 1) {
+            this.buttonDailyTab = "";
+            this.buttonMonthlyTab = "";
+            this.buttonYearlyTab = "";
+            this.buttonPeriodTab = "";
+            if (change !== 'yearly') {
+                this.isFilterTargetPlanActive = false;
+            }
+
+            if (change === 'daily') {
                 this.currentDzoList = 'daily';
                 this.buttonDailyTab = this.highlightedButton;
                 this.range = {
@@ -117,30 +126,29 @@ export default {
                 };
                 this.changeDate();
                 this.calculateDzoCompaniesSummary();
-            } else {
-                this.buttonDailyTab = "";
             }
 
-            if (change === 2) {
+            if (change === 'monthly') {
+                let minimalDaysPeriodForChart = 2;
                 this.buttonMonthlyTab = this.highlightedButton;
                 this.currentDzoList = 'monthly';
                 let periodStart = moment().startOf('month').format();
                 let periodEnd = moment().subtract(1, "days").endOf('day').format();
-                if (periodStart > periodEnd) {
+                let daysDifference = moment(periodEnd).diff(moment(periodStart), 'days');
+                if (periodStart > periodEnd || daysDifference < minimalDaysPeriodForChart) {
+                    periodEnd = moment(periodStart).endOf('day').format();
                     periodStart = this.getPreviousWorkday();
                 }
+
                 this.range = {
                     start: periodStart,
                     end: periodEnd,
                     formatInput: true,
                 };
-
                 this.changeDate();
-            } else {
-                this.buttonMonthlyTab = "";
             }
 
-            if (change === 3) {
+            if (change === 'yearly') {
                 this.buttonYearlyTab = this.highlightedButton;
                 this.currentDzoList = 'yearly';
                 this.range = {
@@ -149,14 +157,11 @@ export default {
                     formatInput: true,
                 };
                 this.changeDate();
-            } else {
-                this.buttonYearlyTab = "";
             }
 
-            if (change === 4) {
+            if (change === 'period') {
                 this.buttonPeriodTab = this.highlightedButton;
-            } else {
-                this.buttonPeriodTab = "";
+                this.currentDzoList = 'daily';
             }
         },
 

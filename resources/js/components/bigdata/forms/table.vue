@@ -23,75 +23,89 @@
       </div>
     </div>
     <div class="bd-main-block__body">
-        <div class="bd-main-block__tree scrollable">
-          <b-tree-view
-              v-if="filterTree.length"
-              :contextMenu="false"
-              :contextMenuItems="[]"
-              :data="filterTree"
-              :renameNodeOnDblClick="false"
-              nodeLabelProp="name"
-              v-on:nodeSelect="filterForm"
-          ></b-tree-view>
-        </div>
-        <form ref="form" class="bd-main-block__form scrollable" style="width: 100%">
-          <div class="table-page">
-            <p v-if="!tech" class="table__message">{{ trans('bd.select_dzo') }}</p>
-            <p v-else-if="rows.length === 0" class="table__message">{{ trans('bd.nothing_found') }}</p>
-            <div v-else class="table-wrap scrollable">
-              <table v-if="rows.length" class="table">
-                <thead>
-                <tr>
-                  <th v-for="column in visibleColumns">
-                    {{ column.title }}
-                  </th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr v-for="row in rows">
-                  <td
-                      v-for="column in visibleColumns"
-                      :class="{'editable': column.is_editable}"
-                      @dblclick="editCell(row, column)"
-                  >
-                    <template v-if="column.type === 'link'">
-                      <a :href="row[column.code].href">{{ row[column.code].name }}</a>
-                    </template>
-                    <template v-else-if="column.type === 'calc'">
-                      <span class="value">{{ row[column.code] ? row[column.code].value : '' }}</span>
-                    </template>
-                    <template v-else-if="column.type === 'history_graph'">
-                      <a href="#" @click.prevent="showHistoryGraphDataForRow(row, column)">Посмотреть</a>
-                    </template>
-                    <template v-else-if="column.type === 'history'">
-                      <a href="#" @click.prevent="showHistoricalDataForRow(row, column)">Посмотреть</a>
-                    </template>
-                    <template v-else-if="['text', 'integer', 'float'].indexOf(column.type) > -1">
-                      <div v-if="isCellEdited(row, column)" class="input-wrap">
-                        <input v-model="row[column.code].value" class="form-control" type="text">
-                        <button type="button" @click.prevent="saveCell(row, column)">OK</button>
-                        <span v-if="errors[column.code]" class="error">{{ showError(errors[column.code]) }}</span>
-                      </div>
-                      <template v-else-if="row[column.code]">
+      <div class="bd-main-block__tree scrollable">
+        <b-tree-view
+            v-if="filterTree.length"
+            :contextMenu="false"
+            :contextMenuItems="[]"
+            :data="filterTree"
+            :renameNodeOnDblClick="false"
+            nodeLabelProp="name"
+            v-on:nodeSelect="filterForm"
+        ></b-tree-view>
+      </div>
+      <form ref="form" class="bd-main-block__form scrollable" style="width: 100%">
+        <div class="table-page">
+          <p v-if="!tech" class="table__message">{{ trans('bd.select_dzo') }}</p>
+          <p v-else-if="rows.length === 0" class="table__message">{{ trans('bd.nothing_found') }}</p>
+          <div v-else class="table-wrap scrollable">
+            <table v-if="rows.length" class="table">
+              <thead>
+              <tr>
+                <th v-for="column in visibleColumns">
+                  {{ column.title }}
+                </th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr v-for="(row, rowIndex) in rows">
+                <td
+                    v-for="column in visibleColumns"
+                    :class="{'editable': column.is_editable}"
+                    @dblclick="editCell(row, column)"
+                >
+                  <template v-if="column.type === 'link'">
+                    <a :href="row[column.code].href">{{ row[column.code].name }}</a>
+                  </template>
+                  <template v-else-if="column.type === 'calc'">
+                    <span class="value">{{ row[column.code] ? row[column.code].value : '' }}</span>
+                  </template>
+                  <template v-else-if="column.type === 'copy'">
+                    <input
+                        v-model="row[column.code].value"
+                        :disabled="row[column.code].value"
+                        type="checkbox"
+                        @change="copyValues(row, column, rowIndex)">
+                  </template>
+                  <template v-else-if="column.type === 'history_graph'">
+                    <a href="#" @click.prevent="showHistoryGraphDataForRow(row, column)">
                       <span class="value">{{
                           row[column.code].date ? row[column.code].old_value : row[column.code].value
                         }}</span>
-                        <span v-if="row[column.code] && row[column.code].date" class="date">
+                      <span v-if="row[column.code] && row[column.code].date" class="date">
                         {{ row[column.code].date | moment().format('YYYY-MM-DD') }}
                       </span>
-                      </template>
+                    </a>
+                  </template>
+                  <template v-else-if="column.type === 'history'">
+                    <a href="#" @click.prevent="showHistoricalDataForRow(row, column)">Посмотреть</a>
+                  </template>
+                  <template v-else-if="['text', 'integer', 'float'].indexOf(column.type) > -1">
+                    <div v-if="isCellEdited(row, column)" class="input-wrap">
+                      <input v-model="row[column.code].value" class="form-control" type="text">
+                      <button type="button" @click.prevent="saveCell(row, column)">OK</button>
+                      <span v-if="errors[column.code]" class="error">{{ showError(errors[column.code]) }}</span>
+                    </div>
+                    <template v-else-if="row[column.code]">
+                      <span class="value">{{
+                          row[column.code].date ? row[column.code].old_value : row[column.code].value
+                        }}</span>
+                      <span v-if="row[column.code] && row[column.code].date" class="date">
+                        {{ row[column.code].date | moment().format('YYYY-MM-DD') }}
+                      </span>
                     </template>
-                    <template v-if="typeof history[row.uwi.id][column.code] !== 'undefined'">
-                      <a :id="`history_${row.uwi.id}_${column.code}`" class="icon-history"></a>
-                      <b-popover :target="`history_${row.uwi.id}_${column.code}`" custom-class="history-popover"
-                                 placement="top" triggers="hover">
-                        <div v-for="(value, time) in history[row.uwi.id][column.code]">
-                          <em>{{ time }}</em><br>
-                          <b>{{ value.value }}</b> ({{ value.user }})
-                        </div>
-                      </b-popover>
-                    </template>
-                  </td>
+                  </template>
+                  <template v-if="typeof history[row.uwi.id][column.code] !== 'undefined'">
+                    <a :id="`history_${row.uwi.id}_${column.code}`" class="icon-history"></a>
+                    <b-popover :target="`history_${row.uwi.id}_${column.code}`" custom-class="history-popover"
+                               placement="top" triggers="hover">
+                      <div v-for="(value, time) in history[row.uwi.id][column.code]">
+                        <em>{{ time }}</em><br>
+                        <b>{{ value.value }}</b> ({{ value.user }})
+                      </div>
+                    </b-popover>
+                  </template>
+                </td>
               </tr>
               </tbody>
             </table>
@@ -340,6 +354,11 @@ export default {
                 this.isloading = false
               })
 
+        } else {
+          this.editableCell = {
+            row: null,
+            cell: null
+          }
         }
       })
 
@@ -388,7 +407,13 @@ export default {
         }
       }).then(({data}) => {
         this.rowHistory = data
-        this.rowHistoryColumns = this.formParams.columns.filter(item => column.fields.indexOf(item.code) > -1)
+
+        let columns = []
+        column.fields.forEach(block => {
+          columns = [...columns, ...this.formParams.columns.filter(item => Object.keys(block).includes(item.code))]
+        })
+
+        this.rowHistoryColumns = columns
         this.isloading = false
       })
     },
@@ -405,6 +430,34 @@ export default {
         this.isloading = false
         this.rowHistoryGraph = data
       })
+    },
+    copyValues(row, column, rowIndex) {
+
+      this.$bvModal.msgBoxConfirm(this.trans('bd.sure_you_want_to_copy'), {
+        okTitle: this.trans('app.yes'),
+        cancelTitle: this.trans('app.no'),
+      })
+          .then(result => {
+            if (result === true) {
+              this.isloading = true
+              this.axios.get(this.localeUrl(`/bigdata/form/${this.params.code}/copy`), {
+                params: {
+                  well_id: row.uwi.id,
+                  column: column.code,
+                  date: this.date
+                }
+              }).then(({data}) => {
+                this.isloading = false
+                this.rowHistoryGraph = data
+
+                row[column.copy.to].value = row[column.copy.from].value
+                this.$set(this.rows, rowIndex, row)
+                this.$nextTick()
+
+              })
+            }
+          })
+
     }
   },
 };
@@ -504,24 +557,6 @@ body.fixed {
 }
 
 .bd-main-block {
-  max-width: 1340px;
-  margin: 0 auto;
-
-  &__header {
-    align-items: center;
-    display: flex;
-    justify-content: space-between;
-    margin: 16px 0 20px;
-
-    &-title {
-      color: #fff;
-      font-weight: bold;
-      font-size: 20px;
-      line-height: 24px;
-      margin: 0;
-    }
-  }
-
   &__date {
     align-items: center;
     display: flex;
@@ -597,146 +632,6 @@ body.fixed {
     background: #272953;
     overflow-y: auto;
     width: 100%;
-
-    &-tabs {
-      &-header {
-        display: flex;
-        justify-content: flex-start;
-
-        &-tab {
-          align-items: center;
-          background: #31335f;
-          border-top-left-radius: 3px;
-          border-top-right-radius: 3px;
-          color: #8389AF;
-          display: flex;
-          font-size: 14px;
-          font-weight: 600;
-          height: 28px;
-          margin-right: 15px;
-          padding: 0 45px;
-          @media (max-width: 768px) {
-            padding: 0 15px;
-          }
-
-          &:hover {
-            color: #fff;
-          }
-
-          &.active {
-            background: #363b68;
-            color: #fff;
-          }
-
-          p {
-            margin-bottom: 0;
-          }
-        }
-      }
-    }
-
-    &-tab {
-      background: #363b68;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      padding: 10px;
-    }
-
-    &-block {
-      background: #272953;
-      border-left: 1px solid #454D7D;
-      height: 600px;
-      width: 50%;
-      @media (max-width: 767px) {
-        border-left: none;
-        height: auto;
-        width: 100%;
-      }
-
-      &_full {
-        width: 100%;
-      }
-
-      &:first-child {
-        border-left: none;
-      }
-
-      &-title {
-        background: #333975;
-        color: #FFFFFF;
-        font-weight: bold;
-        font-size: 14px;
-        height: 48px;
-        line-height: 48px;
-        margin-bottom: 0;
-        padding: 0 0 0 43px;
-      }
-
-      &-content {
-        height: calc(100% - 50px);
-        overflow-y: auto;
-        padding: 20px 55px 10px 43px;
-        @media (max-width: 767px) {
-          height: auto;
-        }
-
-        &::-webkit-scrollbar {
-          width: 4px;
-        }
-
-        &::-webkit-scrollbar-track {
-          background: #20274F;
-        }
-
-        &::-webkit-scrollbar-thumb {
-          background: #656A8A;
-        }
-
-        &::-webkit-scrollbar-thumb:hover {
-          background: #656A8A;
-        }
-
-        &::-webkit-scrollbar-corner {
-          background: #20274F;
-        }
-
-        label {
-          font-size: 14px;
-          font-weight: 600;
-          line-height: 1;
-          margin: 14px 0 10px;
-        }
-
-        & > div:first-child {
-          label {
-            margin-top: 0;
-          }
-        }
-
-      }
-    }
-
-    &-buttons {
-      background: #363b68;
-      display: flex;
-      justify-content: flex-end;
-      padding: 0 20px 10px;
-
-      button {
-        background: #3366FF;
-        border: none;
-        color: #fff;
-        font-size: 14px;
-        font-weight: 600;
-        margin-left: 8px;
-        width: 116px;
-
-        &.btn-info {
-          background: #40467E;
-        }
-      }
-    }
   }
 
   .table-page {
@@ -805,22 +700,28 @@ body.fixed {
       span {
         position: relative;
 
-        &.value:after {
-          background: url(/img/bd/edit.svg) no-repeat;
-          content: "";
+        &.value {
+          background: #323370;
+          border: 1px solid #272953;
+          box-sizing: border-box;
+          border-radius: 2px;
           display: inline-block;
-          height: 14px;
-          opacity: 0;
-          position: absolute;
-          right: -20px;
-          top: -2px;
-          width: 14px;
-        }
-      }
+          height: 24px;
+          line-height: 24px;
+          padding: 0 8px;
+          margin: 0 20px 3px 0;
+          min-width: 50px;
 
-      &:hover {
-        span:after {
-          opacity: 1;
+          &:after {
+            background: url(/img/bd/edit.svg) no-repeat;
+            content: "";
+            display: inline-block;
+            height: 14px;
+            position: absolute;
+            right: -20px;
+            top: 4px;
+            width: 14px;
+          }
         }
       }
 
@@ -834,7 +735,7 @@ body.fixed {
           border-radius: 4px;
           color: #fff;
           font-size: 14px;
-          min-width: 120px;
+          min-width: 95px;
           outline: none;
           padding: 0 34px 0 10px;
           height: 28px;
@@ -869,6 +770,7 @@ body.fixed {
     color: #fff;
     font-size: 14px;
     padding: 8px;
+    white-space: nowrap;
   }
 
   .arrow {

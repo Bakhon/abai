@@ -2,6 +2,7 @@
 
 namespace App\Imports;
 
+use App\Console\Commands\Import\Wells;
 use App\Models\ComplicationMonitoring\PipeType;
 use App\Models\Pipes\MapPipe;
 use App\Models\Pipes\PipeCoord;
@@ -48,7 +49,7 @@ class TrunklineImport implements ToCollection, WithEvents, WithColumnLimit, With
     ];
 
 
-    public function __construct(\App\Console\Commands\Import\ImportTrunkline $command)
+    public function __construct(Wells $command)
     {
         $this->command = $command;
         $this->sheetName = null;
@@ -80,7 +81,7 @@ class TrunklineImport implements ToCollection, WithEvents, WithColumnLimit, With
                     foreach ($this->errors as $error) {
                         $this->command->error($error);
                     }
-                    throw new \Exception('Stop import');
+                    throw new \Exception('Success import');
                 }
 
                 $this->command->line(' ');
@@ -120,6 +121,9 @@ class TrunklineImport implements ToCollection, WithEvents, WithColumnLimit, With
 
             $row[self::LAT] = str_replace(',','.', $row[self::LAT]);
             $row[self::LON] = str_replace(',','.', $row[self::LON]);
+            $row[self::ELEVATION] = str_replace(',','.', $row[self::ELEVATION]);
+            $row[self::H_DISTANCE] = str_replace(',','.', $row[self::H_DISTANCE]);
+            $row[self::M_DISTANCE] = str_replace(',','.', $row[self::M_DISTANCE]);
 
             if (!empty($row[self::PIPE_START_NAME])) {
                 $pipe_type = $this->createPipeType($row);
@@ -176,7 +180,7 @@ class TrunklineImport implements ToCollection, WithEvents, WithColumnLimit, With
             [
                 'outside_diameter' => $row[self::OUTSIDE_DIAMETER],
                 'inner_diameter' => $row[self::INNER_DIAMETER],
-                'thickness' => $row[self::THICKNESS],
+                'thickness' => ($row[self::OUTSIDE_DIAMETER] - $row[self::INNER_DIAMETER])/2,
                 'roughness' => $roughness
             ]
         );

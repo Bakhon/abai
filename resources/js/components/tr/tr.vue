@@ -29,12 +29,8 @@
                 fill="white"
               />
             </svg> </i
-          >{{trans('tr.tr')}}</a
+          >{{trans('tr.fa_tr_deviations')}}</a
         >
-        <!-- <form class="form-group but-nav__link">
-                    <label for="inputDate">Введите дату:</label>
-                    <input type="date" value = "01.06.2020" class="form-control" v-model="dt">
-            </form> -->
         <div class="col dropdown" style="padding: 0 13px">
           <button
             class="col-md-12 but-nav__link but faheadhight"
@@ -58,7 +54,7 @@
                 />
               </svg>
             </i>
-            {{trans('tr.dt')}}
+            {{trans('tr.choose_month')}}
           </button>
           <div v-if="datepicker1"
             class="dropdown-menu fadropmenu"
@@ -126,7 +122,7 @@
             </div>
             <div class="fix calendar" style="display:flex; justify-content: center; color: white;">
               <a href="#" @click.prevent="chooseDt"  class="btn btn-sm button_form" style="width: 80%;"
-                >{{trans('tr.sf')}}</a
+                >{{trans('tr.form')}}</a
               >
               <a  @click="calendarDynamic" @click.prevent.stop="() => {}" style="padding-top: 5px; cursor: pointer;">
                 <svg 
@@ -153,16 +149,13 @@
             aria-labelledby="dropdownMenuLink"
           >
               
-                <!-- <form class="form-group but-nav__link"> -->
-                <label for="inputDate" style="margin-left: 8px;">Введите начальную дату::</label>
+                <label for="inputDate" style="margin-left: 8px;">{{trans('tr.start_date_enter')}}:</label>
                 <input type="date" class="form-control" style="background: #333975 !important;" v-model="date2" />
-                <!-- <form class="form-group but-nav__link"> -->
-                <label for="inputDate" style="margin-left: 8px;">Введите конечную дату::</label>
+                <label for="inputDate" style="margin-left: 8px;">{{trans('tr.end_date_enter')}}:</label>
                 <input type="date" class="form-control" style="background: #333975 !important;" v-model="date1" />
-            <!-- </div> -->
                 <div class="fix calendar" style="display:flex; justify-content: center; color: white;">
                   <a href="#" @click.prevent="chooseDt1" @click="calendarDate" class="btn btn-sm button_form" style="width: 80%;"
-                    >{{trans('tr.sf')}}</a
+                    >{{trans('tr.form')}}</a
                   >
                   <a  @click="calendarDynamic" @click.prevent.stop="() => {}" style="padding-top: 5px; cursor: pointer;" >
                     <svg 
@@ -192,14 +185,13 @@
     </div>
 
     <div>
-      <!-- <input type="text" placeholder="Enter Name" v-model="searchText"> -->
     </div>
     <div class="col-md-12 maintable tablecont">
       <div class="maintable-level2" style="position: relative">
         <div class="techbt1 tr-table-header">
           <div class="tech" style="margin-left: 14px; color: white">
-            <h5 v-if="date_fix">{{trans('tr.htr')}} {{ dt }}</h5>
-            <h5 v-if="!date_fix">Технологический режим {{ dt3 }}</h5>
+            <h5 v-if="date_fix">{{trans('tr.tr_to')}} {{ dt }}</h5>
+            <h5 v-if="!date_fix">{{trans('tr.tr')}} {{ dt3 }}</h5>
           </div>
 
           <tr-multiselect
@@ -218,22 +210,8 @@
               <notifications position="top"></notifications>
               <div>
                     <div class="header_mod" style="color:white; display:flex; margin-left: 14px; padding-top: 8px; ">
-                        <h5>Добавление скважин</h5>
-                        <button type="button" class="modal-bign-button" @click="closeModal('add_well')">Закрыть</button>
-
-                        <!-- <a class="modal-close" title="Close" @click.prevent="reRender" style="cursor: pointer;"> -->
-                          <!-- <svg 
-                            width="24" 
-                            height="24" 
-                            viewBox="0 0 24 24" 
-                            fill="none" 
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path d="M17.6567 17.6575L6.34294 6.34383" 
-                              stroke="white" stroke-width="1.4" stroke-linecap="round"/>
-                            <path d="M17.6556 6.34383L6.34188 17.6575" 
-                              stroke="white" stroke-width="1.4" stroke-linecap="round"/>
-                          </svg>
-                        </a> -->
+                        <h5>{{trans('tr.well_add')}}</h5>
+                        <button type="button" class="modal-bign-button" @click="closeModal('add_well')">{{trans('tr.close')}}</button>
                     </div>
                     
                     <div class="body" style="background: #272953; display:flex; justify-content: center; padding-top: 6px; padding-bottom: 7px;">
@@ -245,7 +223,7 @@
                                 value="Статус"
                               >
                                 <option v-for="(f, k) in statusFilters" :key="k" :value="f">
-                                  {{ f === undefined ? "Выберите статус" : f }}
+                                  {{ f === undefined ? trans('tr.choose_status') : f }}
                                 </option>
                               </select>
                             </div>
@@ -257,7 +235,7 @@
                                 value="Месторождение"
                               >
                                 <option v-for="(f, k) in fieldFilters" :key="k" :value="f">
-                                  {{ f === undefined ? "Выберите месторождение" : f }}
+                                  {{ f === undefined ? trans('tr.choose_field') : f }}
                                 </option>
                               </select>
                             </div>
@@ -270,7 +248,7 @@
                                 value="Тип скв"
                               >
                                 <option v-for="(f, k) in typeWellFilters" :key="k" :value="f">
-                                  {{ f === undefined ? "Выберите тип скв" : f }}
+                                  {{ f === undefined ? trans('tr.choose_well_type') : f }}
                                 </option>
                               </select>
                             </div>
@@ -283,7 +261,7 @@
                                 value="Состояние"
                               >
                                 <option v-for="(f, k) in wellStatusFilters" :key="k" :value="f">
-                                  {{ f === undefined ? "Выберите состояние" : f }}
+                                  {{ f === undefined ? trans('tr.choose_state') : f }}
                                 </option>
                               </select>
                             </div>
@@ -296,7 +274,7 @@
                                 value="Скважина"
                               >
                                 <option v-for="(f, k) in wellFilters" :key="k" :value="f">
-                                  {{ f === undefined ? "Выберите скважину" : f }}
+                                  {{ f === undefined ? trans('tr.choose_well') : f }}
                                 </option>
                               </select>
                             </div>
@@ -316,7 +294,7 @@
                                 <path d="M14.5 8L1.5 8" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
                                 <path d="M8 1.5V14.5" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
                                 </svg>
-                              Добавить</a>
+                              {{trans('tr.add')}}</a>
 
                               <a
                                 
@@ -329,7 +307,7 @@
                                   <path d="M17.6556 6.34383L6.34188 17.6575" 
                                     stroke="white" stroke-width="1.4" stroke-linecap="round"/>
                                   </svg>
-                              Отмена</a> 
+                              {{trans('tr.cancel')}}</a> 
 
                             <a
                               style="margin-left: 10px; cursor: pointer; color:white; margin-top: 5px;"
@@ -343,7 +321,7 @@
                               xmlns="http://www.w3.org/2000/svg">
                               <path d="M4 12.5L8.85858 17.3586C8.93668 17.4367 9.06332 17.4367 9.14142 17.3586L20 6.5" stroke="white" 
                               stroke-width="1.5" stroke-linecap="round"/>
-                              </svg>Сохранить</a>
+                              </svg> {{trans('tr.save')}}</a>
 
                              <a
                               style="margin-left: 10px; cursor: pointer; color:white; margin-top: 5px;"
@@ -358,7 +336,7 @@
                                xmlns="http://www.w3.org/2000/svg">
                               <path d="M17.6567 17.6575L6.34294 6.34383" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
                               <path d="M17.6556 6.34383L6.34188 17.6575" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
-                              </svg>Удалить</a>
+                              </svg> {{trans('tr.delete')}}</a>
                             
                 </div>
               </div>
@@ -367,28 +345,28 @@
                     <table class="table table-bordered table-dark table-responsive trtable" style="font-size: 12px; background: #454D7D; color: #fff; height: 100px;" v-if="show_add" :key="render">
                     <thead>
                       <tr >
-                        <td scope="col">Место-ние</td>
-                        <td scope="col">Состояние скв</td>
-                        <td scope="col">№ скв</td>
-                        <td scope="col">Горизонт</td>
-                        <td scope="col">Обьект</td>
-                        <td scope="col">Способ эксп-ии</td>
-                        <td scope="col">Тип скв</td>
-                        <td scope="col">Блок</td>
-                        <td scope="col">Наружный диаметр э/к</td>
-                        <td scope="col">Внутр. диаметр э/к</td>
-                        <td scope="col">Н вд</td>
-                        <td scope="col">Тип насоса</td>
-                        <td scope="col">Тип СК</td>
-                        <td scope="col">Р буф</td>
-                        <td scope="col">Р л</td>
-                        <td scope="col">Р пласт.</td>
-                        <td scope="col">Н д</td>
-                        <td scope="col">P затр</td>
-                        <td scope="col">Плот-ть нефти</td>
-                        <td scope="col">Плот-ть воды</td>
-                        <td scope="col">Н перф</td>
-                        <td scope="col">Р заб замерное</td>
+                        <td scope="col">{{trans('tr.field')}}</td>
+                        <td scope="col">{{trans('tr.well_state')}}</td>
+                        <td scope="col">{{trans('tr.well_number_short')}}</td>
+                        <td scope="col">{{trans('tr.u_horizon')}}</td>
+                        <td scope="col">{{trans('tr.u_object')}}</td>
+                        <td scope="col">{{trans('tr.operation_method_short')}}</td>
+                        <td scope="col">{{trans('tr.well_type_short')}}</td>
+                        <td scope="col">{{trans('tr.u_block')}}</td>
+                        <td scope="col">{{trans('tr.outer_diameter_producing_casing')}}</td>
+                        <td scope="col">{{trans('tr.inner_diameter_producing_casing_short')}}</td>
+                        <td scope="col">{{trans('tr.h_water_permeability_short')}}</td>
+                        <td scope="col">{{trans('tr.pump_type')}}</td>
+                        <td scope="col">{{trans('tr.sk_type')}}</td>
+                        <td scope="col">{{trans('tr.p_buffer')}}</td>
+                        <td scope="col">{{trans('tr.p_linear')}}</td>
+                        <td scope="col">{{trans('tr.p_layer')}}</td>
+                        <td scope="col">{{trans('tr.h_dynamic')}}</td>
+                        <td scope="col">{{trans('tr.p_annular')}}</td>
+                        <td scope="col">{{trans('tr.oil_density_short')}}</td>
+                        <td scope="col">{{trans('tr.water_density_short')}}</td>
+                        <td scope="col">{{trans('tr.h_up_perf_md')}}</td>
+                        <td scope="col">{{trans('tr.bhp_meter')}}</td>
                       </tr>
                     </thead>
                     <tbody>
@@ -427,14 +405,15 @@
           </modal>
 
           <button
+            v-if="isPermission"
             type="button" 
             data-toggle="modal" 
             data-target="#exampleModalCenter" 
             @click="addpush()"
             @click.prevent="wellAdd"
             style="background: #272953; border: none; margin-left: 10px;"
-            title="Добавить скважины">
-            
+            v-bind:title="trans('tr.add_well')"
+            >
             <svg 
                 width="24" 
                 height="24" 
@@ -457,7 +436,7 @@
 
           <a
             v-if="edit"
-            v-bind:title="trans('tr.trtlp6')"
+            v-bind:title="trans('tr.save')"
             style="margin-left: 10px; cursor: pointer;"
             @click="savetable()"
             ><svg
@@ -500,7 +479,7 @@
           <a
             v-if="edit"
             class="trgraph"
-            v-bind:title="trans('tr.trtlp5')"
+            v-bind:title="trans('tr.cancel')"
             style="cursor: pointer;"
             data-toggle="tooltip"
             data-placement="top"
@@ -530,7 +509,7 @@
           <a
             v-if="!edit"
             class="trgraph"
-            v-bind:title="trans('tr.trtlp1')"
+            v-bind:title="trans('tr.show_graph')"
             data-toggle="tooltip"
             data-placement="top"
             href="tr_charts"
@@ -552,8 +531,8 @@
           </a>
 
           <a
-            v-if="!edit"
-            v-bind:title="trans('tr.trtlp2')"
+            v-if="!edit && isPermission"
+            v-bind:title="trans('tr.edit')"
             style="cursor: pointer;"
             data-toggle="tooltip"
             data-placement="top"
@@ -583,7 +562,7 @@
               color: white;
               border: none;
             "
-            :title="isfulltable ? trans('tr.trtlp3') : trans('tr.trtlp4')"
+            :title="isfulltable ? trans('tr.short_version') : trans('tr.full_version')"
             data-toggle="tooltip"
             data-placement="top"
           >
@@ -630,7 +609,6 @@
         <div class="table-outer">
           <div class="table-inner">
             <TrTable :wells="wells" @onSort="sortBy" v-if="show_first" />
-            <!-- <TrFullTable :wells="wells" :edit="edit" @onSort="sortBy" v-show="show_second"/> -->
             <table
               v-if="show_second"
               class="table table-bordered table-dark table-responsive trtable"
@@ -640,214 +618,213 @@
               <thead>
                 <tr class="headerColumn sticky" style="background: #333975">
                   <td rowspan="4" class="th">№</td>
-                  <td rowspan="4" class="th">{{trans('tr.trs1')}}</td>
-                  <td rowspan="4" class="th">{{trans('tr.tr1')}}</td>
-                  <td rowspan="4" class="th">{{trans('tr.tr2')}}</td>
-                  <td rowspan="4" class="th">{{trans('tr.tr3')}}</td>
-                  <td rowspan="4" class="th">{{trans('tr.tr4')}}</td>
-                  <td rowspan="4" class="th">{{trans('tr.tr5')}}</td>
-                  <td rowspan="4" class="th">{{trans('tr.trs2')}}</td>
-                  <td rowspan="4" class="th">{{trans('tr.tr6')}}</td>
-                  <td rowspan="4" class="th">{{trans('tr.trs3')}}</td>
-                  <td rowspan="4" class="th">{{trans('tr.tr7')}}</td>
-                  <td rowspan="4" class="th">{{trans('tr.trs4')}}</td>
-                  <td rowspan="4" class="th">{{trans('tr.tr30')}}</td>
-                  <td rowspan="4" class="th">{{trans('tr.tr9')}}</td>
-                  <td rowspan="4" class="th">{{trans('tr.trs5')}}</td>
-                  <td rowspan="4" class="th">{{trans('tr.tr10')}}</td>
-                  <td rowspan="4" class="th">{{trans('tr.tr11')}}</td>
-                  <td rowspan="4" class="th">{{trans('tr.trs6')}}</td>
-                  <td rowspan="4" class="th">{{trans('tr.trs7')}}</td>
-                  <td rowspan="4" class="th">{{trans('tr.trs8')}}</td>
-                  <td rowspan="4" class="th">{{trans('tr.trs9')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.ngdu_field')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.well_number')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.well_type')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.horizon')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.object')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.block')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.r_feed_loop')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.outer_diameter_producing_casing')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.inner_diameter_producing_casing')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.outer_diameter_nkt')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.inner_diameter_nkt')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.choke_diameter')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.h_water_permeability')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.h_water_permeability_extension')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.operation_method')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.pump_type')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.sk_type')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.swing_number')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.stroke_length')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.q_theor')}}</td>
                   <td rowspan="4" class="th">
-                    {{trans('tr.tr12')}}
+                    {{trans('tr.pump_frequency_or_speed')}}
                   </td>
-                  <td rowspan="4" class="th">{{trans('tr.tr13')}}</td>
-                  <td rowspan="4" class="th">{{trans('tr.trs10')}}</td>
-                  <td rowspan="4" class="th">{{trans('tr.trs11')}}</td>
-                  <td rowspan="4" class="th">{{trans('tr.trs12')}}</td>
-                  <td rowspan="4" class="th">{{trans('tr.tr15')}}</td>
-                  <td rowspan="4" class="th">{{trans('tr.tr16')}}</td>
-                  <td rowspan="4" class="th">{{trans('tr.trs13')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.h_pump_set')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.p_buffer')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.p_linear')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.p_layer')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.h_dynamic')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.annular_pressure')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.p_intake')}}</td>
                   <td class="colspan th" colspan="5">
-                    {{trans('tr.trs14')}}
+                    {{trans('tr.previous_month_data')}}
                   </td>
-                  <td class="colspan th" colspan="5">{{trans('tr.tr17')}}</td>
+                  <td class="colspan th" colspan="5">{{trans('tr.actual_mode')}}</td>
                   <td rowspan="4" class="th">
-                    <span>{{trans('tr.tr25')}}</span>
+                    <span>{{trans('tr.state_at_the_end_of_the_month')}}</span>
                   </td>
-                  <td rowspan="4" class="th">{{trans('tr.trs15')}}</td>
-                  <!-- <td rowspan="4" class="th">ГФ</td> -->
-                  <td rowspan="4" class="th">{{trans('tr.trs16')}}</td>
-                  <td rowspan="4" class="th">{{trans('tr.trs17')}}</td>
-                  <td class="colspan th" colspan="4">{{trans('tr.tr28')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.p_saturation')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.t_layer')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.t_mouth')}}</td>
+                  <td class="colspan th" colspan="4">{{trans('tr.grp')}}</td>
                   <td rowspan="4" class="th">
-                    <span>{{trans('tr.trs18')}}</span>
+                    <span>{{trans('tr.oil_viscosity_in_reservoir_conditions')}}</span>
                   </td>
                   <td rowspan="4" class="th">
-                    <span>{{trans('tr.trs19')}}</span>
+                    <span>{{trans('tr.water_viscosity_at_reservoir_conditions')}}</span>
                   </td>
-                  <td rowspan="4" class="th">{{trans('tr.trs20')}}</td>
-                  <td rowspan="4" class="th">{{trans('tr.trs21')}}</td>
-                  <td rowspan="4" class="th">{{trans('tr.trs22')}}</td>
-                  <td rowspan="4" class="th">{{trans('tr.trs23')}}</td>
-                  <td rowspan="4" class="th">{{trans('tr.trs24')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.liquid_viscosity')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.b_oil')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.oil_density')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.water_density')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.h_up_perf_md')}}</td>
                   <td rowspan="4" class="th">k</td>
                   <td rowspan="4" class="th">КН</td>
-                  <td rowspan="4" class="th">{{trans('tr.trs25')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.pi')}}</td>
                   <td class="colspan th" colspan="14">
-                    {{trans('tr.tr18')}}
+                    {{trans('tr.calculation_of_technological_potential_from_IDN')}}
                   </td>
                   <td class="colspan th" colspan="11">
-                    {{trans('tr.trs26')}}
+                    {{trans('tr.geological_potential_calculation')}}
                   </td>
-                  <td class="colspan th" colspan="4">{{trans('tr.trs27')}}</td>
+                  <td class="colspan th" colspan="4">{{trans('tr.check')}}</td>
                   <td rowspan="4" class="th">
-                    <span>{{trans('tr.trs28')}}</span>
+                    <span>{{trans('tr.idn_maximum_pump_lowering_depth')}}</span>
                   </td>
-                  <td rowspan="4" class="th">{{trans('tr.trs29')}}</td>
-                  <td rowspan="4" class="th">{{trans('tr.trs30')}}</td>
-                  <td rowspan="4" class="th">{{trans('tr.trs31')}}</td>
-                  <td rowspan="4" class="th">{{trans('tr.trs32')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.stop_date')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.dismemberment')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.zone')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.tseh')}}</td>
                   <td rowspan="4" class="th">
-                    <span>{{trans('tr.trs33')}}</span>
+                    <span>{{trans('tr.pump_fountain_through')}}</span>
                   </td>
-                  <td rowspan="4" class="th">{{trans('tr.trs34')}}</td>
-                  <td rowspan="4" class="th">{{trans('tr.trs35')}}</td>
-                  <td rowspan="4" class="th">{{trans('tr.trs36')}}</td>
-                  <td rowspan="4" class="th">{{trans('tr.trs37')}}</td>
-                  <td rowspan="4" class="th">{{trans('tr.trs38')}}</td>
-                  <td rowspan="4" class="th">{{trans('tr.trs39')}}</td>
-                  <td rowspan="4" class="th">{{trans('tr.trs40')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.unprofitable')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.transient_mode')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.commisioning_date')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.project_assignment')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.bhp_meter')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.oil_net_pay')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.oil_cumulative')}}</td>
                   <td rowspan="4" class="th">
-                    <span>{{trans('tr.trs41')}}</span>
+                    <span>{{trans('tr.max_q_liquid_hist')}}</span>
                   </td>
-                  <td rowspan="4" class="th">{{trans('tr.trs42')}}</td>
-                  <td rowspan="4" class="th">{{trans('tr.trs43')}}</td>
-                  <td rowspan="4" class="th">{{trans('tr.trs44')}}</td>
-                  <td rowspan="4" class="th">{{trans('tr.trs45')}}</td>
-                  <td rowspan="4" class="th">{{trans('tr.trs46')}}</td>
-                  <td rowspan="4" class="th">{{trans('tr.trs47')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.dist_to_inj_well')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.dist_to_woc')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.current_bh')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.pump_fillage')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.gzu_type')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.p_res_init')}}</td>
                   <td rowspan="4" class="th">
-                    <span>{{trans('tr.trs48')}}</span>
+                    <span>{{trans('tr.q_liquid_characteristic')}}</span>
                   </td>
-                  <td class="colspan th" colspan="2">{{trans('tr.trs49')}}</td>
+                  <td class="colspan th" colspan="2">{{trans('tr.apv')}}</td>
                   <td class="colspan th" colspan="3">
-                    {{trans('tr.trs50')}}
+                    {{trans('tr.planned_activities')}}
                   </td>
-                  <td rowspan="4" class="th"><span>{{trans('tr.trs51')}}</span></td>
+                  <td rowspan="4" class="th"><span>{{trans('tr.activity')}}</span></td>
                   <td rowspan="4" class="th">
-                    <span>{{trans('tr.trs52')}}</span>
+                    <span>{{trans('tr.planned_casing_info')}}</span>
                   </td>
-                  <td rowspan="4" class="th"><span>{{trans('tr.trs54')}}</span></td>
+                  <td rowspan="4" class="th"><span>{{trans('tr.comments')}}</span></td>
                   <td rowspan="4" class="th">
-                    <span>{{trans('tr.trs55')}}</span>
+                    <span>{{trans('tr.last_gtm_date')}}</span>
                   </td>
                   <td rowspan="4" class="th">
-                    <span>{{trans('tr.trs56')}}</span>
+                    <span>{{trans('tr.last_gtm_type')}}</span>
                   </td>
-                  <td class="colspan th" colspan="14">{{trans('tr.tr19')}}</td>
+                  <td class="colspan th" colspan="14">{{trans('tr.intended_mode')}}</td>
                 </tr>
                 <tr class="headerColumn notsticky" style="background: #333975">
-                  <td rowspan="3" class="th"><span>{{trans('tr.tr20')}}</span></td>
-                  <td rowspan="3" class="th"><span>{{trans('tr.tr22')}}</span></td>
-                  <td rowspan="3" class="th"><span>{{trans('tr.tr23')}}</span></td>
-                  <td rowspan="3" class="th"><span>{{trans('tr.trs57')}}</span></td>
-                  <td rowspan="3" class="th"><span>{{trans('tr.trs58')}}</span></td>
-                  <td rowspan="3" class="th"><span>{{trans('tr.tr20')}}</span></td>
-                  <td rowspan="3" class="th"><span>{{trans('tr.tr21')}}</span></td>
-                  <td rowspan="3" class="th"><span>{{trans('tr.tr22')}}</span></td>
-                  <td rowspan="3" class="th"><span>{{trans('tr.tr23')}}</span></td>
-                  <td rowspan="3" class="th"><span>{{trans('tr.tr24')}}</span></td>
-                  <td rowspan="3" class="th"><span>{{trans('tr.trs59')}}</span></td>
-                  <td rowspan="3" class="th"><span>{{trans('tr.trs60')}}</span></td>
-                  <td rowspan="3" class="th"><span>{{trans('tr.trs61')}}</span></td>
-                  <td rowspan="3" class="th"><span>Фирма</span></td>
-                  <td rowspan="3" class="th"><span>{{trans('tr.trs62')}}</span></td>
-                  <td class="colspan th" colspan="4">{{trans('tr.tr27')}}</td>
-                  <td rowspan="3" class="th"><span>{{trans('tr.trs63')}}</span></td>
+                  <td rowspan="3" class="th"><span>{{trans('tr.bottomhole_pressure')}}</span></td>
+                  <td rowspan="3" class="th"><span>{{trans('tr.q_liquid')}}</span></td>
+                  <td rowspan="3" class="th"><span>{{trans('tr.water_cut')}}</span></td>
+                  <td rowspan="3" class="th"><span>{{trans('tr.h_dyn')}}</span></td>
+                  <td rowspan="3" class="th"><span>{{trans('tr.k_prod')}}</span></td>
+                  <td rowspan="3" class="th"><span>{{trans('tr.bottomhole_pressure')}}</span></td>
+                  <td rowspan="3" class="th"><span>{{trans('tr.q_oil')}}</span></td>
+                  <td rowspan="3" class="th"><span>{{trans('tr.q_liquid')}}</span></td>
+                  <td rowspan="3" class="th"><span>{{trans('tr.water_cut')}}</span></td>
+                  <td rowspan="3" class="th"><span>{{trans('tr.gas_factor')}}</span></td>
+                  <td rowspan="3" class="th"><span>{{trans('tr.skin')}}</span></td>
+                  <td rowspan="3" class="th"><span>{{trans('tr.jd_fact')}}</span></td>
+                  <td rowspan="3" class="th"><span>{{trans('tr.grp_date')}}</span></td>
+                  <td rowspan="3" class="th"><span>{{trans('tr.firm')}}</span></td>
+                  <td rowspan="3" class="th"><span>{{trans('tr.bottomhole_pressure')}}</span></td>
+                  <td class="colspan th" colspan="4">{{trans('tr.idn')}}</td>
+                  <td rowspan="3" class="th"><span>{{trans('tr.jd_opt')}}</span></td>
                   <td rowspan="3" class="th"><span>Skin</span></td>
                   <td rowspan="3" class="th">
-                    <span>{{trans('tr.trs64')}}</span>
+                    <span>{{trans('tr.tp_idn_pi_after')}}</span>
                   </td>
-                  <td class="colspan th" colspan="4">{{trans('tr.tr28')}}</td>
-                  <td rowspan="3" class="th"><span>{{trans('tr.trs65')}}</span></td>
-                  <td rowspan="3" class="th"><span>{{trans('tr.tr29')}}</span></td>
-                  <td rowspan="3" class="th"><span>{{trans('tr.trs62')}}</span></td>
-                  <td class="colspan th" colspan="4">{{trans('tr.tr27')}}</td>
-                  <td class="colspan th" colspan="4">{{trans('tr.tr28')}}</td>
-                  <td rowspan="3" class="th"><span>{{trans('tr.trs65')}}</span></td>
-                  <td rowspan="3" class="th"><span>{{trans('tr.tr29')}}</span></td>
-                  <td class="colspan th" colspan="2">{{trans('tr.trs66')}}</td>
-                  <td class="colspan th" colspan="2">{{trans('tr.trs67')}}</td>
-                  <td rowspan="3" class="th"><span>{{trans('tr.trs68')}}</span></td>
-                  <td rowspan="3" class="th"><span>{{trans('tr.trs69')}}</span></td>
-                  <td class="colspan th" colspan="3">{{trans('tr.trs70')}}</td>
-                  <td rowspan="3" class="th"><span>{{trans('tr.tr30')}}</span></td>
-                  <td rowspan="3" class="th"><span>{{trans('tr.tr21')}}</span></td>
-                  <td rowspan="3" class="th"><span>{{trans('tr.tr22')}}</span></td>
-                  <td rowspan="3" class="th"><span>{{trans('tr.tr31')}}</span></td>
-                  <td rowspan="3" class="th"><span>{{trans('tr.tr23')}}</span></td>
-                  <td rowspan="3" class="th"><span>{{trans('tr.tr24')}}</span></td>
-                  <td rowspan="3" class="th"><span>{{trans('tr.trs71')}}</span></td>
+                  <td class="colspan th" colspan="4">{{trans('tr.grp')}}</td>
+                  <td rowspan="3" class="th"><span>{{trans('tr.tp_idn_q_oil_inc_perc')}}</span></td>
+                  <td rowspan="3" class="th"><span>{{trans('tr.q_oil_total_growth')}}</span></td>
+                  <td rowspan="3" class="th"><span>{{trans('tr.bottomhole_pressure')}}</span></td>
+                  <td class="colspan th" colspan="4">{{trans('tr.idn')}}</td>
+                  <td class="colspan th" colspan="4">{{trans('tr.grp')}}</td>
+                  <td rowspan="3" class="th"><span>{{trans('tr.tp_idn_q_oil_inc_perc')}}</span></td>
+                  <td rowspan="3" class="th"><span>{{trans('tr.q_oil_total_growth')}}</span></td>
+                  <td class="colspan th" colspan="2">{{trans('tr.errors')}}</td>
+                  <td class="colspan th" colspan="2">{{trans('tr.warnings')}}</td>
+                  <td rowspan="3" class="th"><span>{{trans('tr.apv_t_rab')}}</span></td>
+                  <td rowspan="3" class="th"><span>{{trans('tr.apv_t_nak')}}</span></td>
+                  <td class="colspan th" colspan="3">{{trans('tr.isolation_works')}}</td>
+                  <td rowspan="3" class="th"><span>{{trans('tr.choke_diameter')}}</span></td>
+                  <td rowspan="3" class="th"><span>{{trans('tr.q_oil')}}</span></td>
+                  <td rowspan="3" class="th"><span>{{trans('tr.q_liquid')}}</span></td>
+                  <td rowspan="3" class="th"><span>{{trans('tr.q_gas')}}</span></td>
+                  <td rowspan="3" class="th"><span>{{trans('tr.water_cut')}}</span></td>
+                  <td rowspan="3" class="th"><span>{{trans('tr.gas_factor')}}</span></td>
+                  <td rowspan="3" class="th"><span>{{trans('tr.work_days')}}</span></td>
                   <td rowspan="3" class="th">
-                    <span>{{trans('tr.trs72')}}</span>
-                  </td>
-                  <td rowspan="3" class="th">
-                    <span>{{trans('tr.trs73')}}</span>
+                    <span>{{trans('tr.planned_monthly_oil')}}</span>
                   </td>
                   <td rowspan="3" class="th">
-                    <span>{{trans('tr.trs74')}}</span>
+                    <span>{{trans('tr.planned_monthly_gas')}}</span>
                   </td>
                   <td rowspan="3" class="th">
-                    <span>{{trans('tr.trs75')}}</span>
+                    <span>{{trans('tr.planned_monthly_liquid')}}</span>
+                  </td>
+                  <td rowspan="3" class="th">
+                    <span>{{trans('tr.monthly_liquid_production')}}</span>
                   </td>
                   <td class="colspan th" colspan="2">
-                    <span>{{trans('tr.trs76')}}</span>
+                    <span>{{trans('tr.regime_changes')}}</span>
                   </td>
                   <td rowspan="3" class="th">
-                    <span>{{trans('tr.trs77')}}</span>
+                    <span>{{trans('tr.tr_measure_to_ensure')}}</span>
                   </td>
                 </tr>
                 <tr class="headerColumn notsticky" style="background: #333975">
-                  <td rowspan="2" class="th"><span>{{trans('tr.tr22')}}</span></td>
+                  <td rowspan="2" class="th"><span>{{trans('tr.q_liquid')}}</span></td>
                   <td rowspan="2" class="th">
-                    <span>{{trans('tr.trs78')}}</span>
+                    <span>{{trans('tr.q_liquid_corrected_d_producing_casing')}}</span>
                   </td>
-                  <td rowspan="2" class="th"><span>{{trans('tr.tr21')}}</span></td>
-                  <td rowspan="2" class="th"><span>{{trans('tr.tr32')}}</span></td>
-                  <td rowspan="2" class="th"><span>{{trans('tr.tr22')}}</span></td>
+                  <td rowspan="2" class="th"><span>{{trans('tr.q_oil')}}</span></td>
+                  <td rowspan="2" class="th"><span>{{trans('tr.q_oil_gain')}}</span></td>
+                  <td rowspan="2" class="th"><span>{{trans('tr.q_liquid')}}</span></td>
                   <td rowspan="2" class="th">
-                    <span>{{trans('tr.trs78')}}</span>
+                    <span>{{trans('tr.q_liquid_corrected_d_producing_casing')}}</span>
                   </td>
-                  <td rowspan="2" class="th"><span>{{trans('tr.tr21')}}</span></td>
-                  <td rowspan="2" class="th"><span>{{trans('tr.tr32')}}</span></td>
-                  <td rowspan="2" class="th"><span>{{trans('tr.tr22')}}</span></td>
+                  <td rowspan="2" class="th"><span>{{trans('tr.q_oil')}}</span></td>
+                  <td rowspan="2" class="th"><span>{{trans('tr.q_oil_gain')}}</span></td>
+                  <td rowspan="2" class="th"><span>{{trans('tr.q_liquid')}}</span></td>
                   <td rowspan="2" class="th">
-                    <span>{{trans('tr.trs78')}}</span>
+                    <span>{{trans('tr.q_liquid_corrected_d_producing_casing')}}</span>
                   </td>
-                  <td rowspan="2" class="th"><span>{{trans('tr.tr21')}}</span></td>
-                  <td rowspan="2" class="th"><span>{{trans('tr.tr32')}}</span></td>
-                  <td rowspan="2" class="th"><span>{{trans('tr.tr22')}}</span></td>
+                  <td rowspan="2" class="th"><span>{{trans('tr.q_oil')}}</span></td>
+                  <td rowspan="2" class="th"><span>{{trans('tr.q_oil_gain')}}</span></td>
+                  <td rowspan="2" class="th"><span>{{trans('tr.q_liquid')}}</span></td>
                   <td rowspan="2" class="th">
-                    <span>{{trans('tr.trs78')}}</span>
+                    <span>{{trans('tr.q_liquid_corrected_d_producing_casing')}}</span>
                   </td>
-                  <td rowspan="2" class="th"><span>{{trans('tr.tr21')}}</span></td>
-                  <td rowspan="2" class="th"><span>{{trans('tr.tr32')}}</span></td>
-                  <td rowspan="2" class="th"><span>{{trans('tr.trs79')}}</span></td>
-                  <td rowspan="2" class="th"><span>{{trans('tr.trs80')}}</span></td>
+                  <td rowspan="2" class="th"><span>{{trans('tr.q_oil')}}</span></td>
+                  <td rowspan="2" class="th"><span>{{trans('tr.q_oil_gain')}}</span></td>
+                  <td rowspan="2" class="th"><span>{{trans('tr.error_quantity')}}</span></td>
+                  <td rowspan="2" class="th"><span>{{trans('tr.first_error')}}</span></td>
                   <td rowspan="2" class="th">
-                    <span>{{trans('tr.trs81')}}</span>
+                    <span>{{trans('tr.warning_quantity')}}</span>
                   </td>
                   <td rowspan="2" class="th">
-                    <span>{{trans('tr.trs82')}}</span>
+                    <span>{{trans('tr.first_warning')}}</span>
                   </td>
-                  <td rowspan="2" class="th"><span>{{trans('tr.trs83')}}</span></td>
-                  <td rowspan="2" class="th"><span>{{trans('tr.tr22')}}</span></td>
-                  <td rowspan="2" class="th"><span>{{trans('tr.tr23')}}</span></td>
-                  <td rowspan="2" class="th"><span>{{trans('tr.tr21')}}</span></td>
-                  <td rowspan="2" class="th"><span>{{trans('tr.tr22')}}</span></td>
+                  <td rowspan="2" class="th"><span>{{trans('tr.spend')}}</span></td>
+                  <td rowspan="2" class="th"><span>{{trans('tr.q_liquid')}}</span></td>
+                  <td rowspan="2" class="th"><span>{{trans('tr.water_cut')}}</span></td>
+                  <td rowspan="2" class="th"><span>{{trans('tr.q_oil')}}</span></td>
+                  <td rowspan="2" class="th"><span>{{trans('tr.q_liquid')}}</span></td>
                 </tr>
                 <tr></tr>
                 <tr
@@ -876,25 +853,25 @@
                     <i class="fa fa-fw fa-sort"></i>
                   </td>
                   <td @click="sortBy('r_con')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>м
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.m')}}
                   </td>
                   <td @click="sortBy('cas_OD')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>мм
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mm')}}
                   </td>
                   <td @click="sortBy('cas_ID')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>мм
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mm')}}
                   </td>
                   <td @click="sortBy('tub_OD')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>мм
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mm')}}
                   </td>
                   <td @click="sortBy('tub_ID')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>мм
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mm')}}
                   </td>
                   <td @click="sortBy('choke_d')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>мм
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mm')}}
                   </td>
                   <td @click="sortBy('h_up_perf_md')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>м
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.m')}}
                   </td>
                   <td @click="sortBy('h_up_perf_ext')" class="th">
                     <i class="fa fa-fw fa-sort"></i>
@@ -912,70 +889,70 @@
                     <i class="fa fa-fw fa-sort"></i>
                   </td>
                   <td @click="sortBy('stroke_len')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>м
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.m')}}
                   </td>
                   <td @click="sortBy('q_theor')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr2')}}
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.m3_day')}}
                   </td>
                   <td @click="sortBy('freq')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr1')}}
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.gc_ob/min')}}
                   </td>
                   <td @click="sortBy('h_pump_set')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>м
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.m')}}
                   </td>
                   <td @click="sortBy('whp')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>атм
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.atm')}}
                   </td>
                   <td @click="sortBy('line_p')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>атм
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.atm')}}
                   </td>
                   <td @click="sortBy('p_res')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>атм
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.atm')}}
                   </td>
                   <td @click="sortBy('h_dyn')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>м
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.m')}}
                   </td>
                   <td @click="sortBy('p_annular')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>атм
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.atm')}}
                   </td>
                   <td @click="sortBy('p_intake')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>атм
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.atm')}}
                   </td>
                   <td @click="sortBy('bhp_prev_m')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>атм
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.atm')}}
                   </td>
                   <td @click="sortBy('q_l_prev_m')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr2')}}
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.m3_day')}}
                   </td>
                   <td @click="sortBy('wct_prev_m')" class="th">
                     <i class="fa fa-fw fa-sort"></i>%
                   </td>
                   <td @click="sortBy('h_dyn_prev_m')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>м
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.m')}}
                   </td>
                   <td @click="sortBy('pi_prev_m')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr4')}}
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.m3_day_atm')}}
                   </td>
                   <td @click="sortBy('bhp')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>атм
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.atm')}}
                   </td>
                   <td @click="sortBy('q_o')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr3')}}
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.t_day')}}
                   </td>
                   <td @click="sortBy('q_l')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr2')}}
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.m3_day')}}
                   </td>
                   <td @click="sortBy('wct')" class="th">
                     <i class="fa fa-fw fa-sort"></i>%
                   </td>
                   <td @click="sortBy('gor')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>м3/т
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.m3/t')}}
                   </td>
                   <td @click="sortBy('well_status_last_day')" class="th">
                     <i class="fa fa-fw fa-sort"></i>
                   </td>
                   <td @click="sortBy('P_bubble_point')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>атм
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.atm')}}
                   </td>
                   <td @click="sortBy('t_res')" class="th">
                     <i class="fa fa-fw fa-sort"></i>ºC
@@ -990,55 +967,55 @@
                     <i class="fa fa-fw fa-sort"></i>
                   </td>
                   <td @click="sortBy('grp_date')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>д/м/г
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.d/m/y')}}
                   </td>
                   <td @click="sortBy('grp_contractor')" class="th">
                     <i class="fa fa-fw fa-sort"></i>
                   </td>
                   <td @click="sortBy('visc_oil_rc')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>сПз
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.spz')}}
                   </td>
                   <td @click="sortBy('visc_wat_rc')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>сПз
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.spz')}}
                   </td>
                   <td @click="sortBy('visc_liq_rc')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>сПз
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.spz')}}
                   </td>
                   <td @click="sortBy('bo')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>м3/м3
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.m3/m3')}}
                   </td>
                   <td @click="sortBy('dens_oil')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>г/см3
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.g/cm3')}}
                   </td>
                   <td @click="sortBy('dens_liq')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>г/см3
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.g/cm3')}}
                   </td>
                   <td @click="sortBy('h_perf')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>м
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.m')}}
                   </td>
                   <td @click="sortBy('k')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>мД
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.md')}}
                   </td>
                   <td @click="sortBy('kh')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>мДм
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mdm')}}
                   </td>
                   <td @click="sortBy('pi')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr4')}}
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.m3_day_atm')}}
                   </td>
                   <td @click="sortBy('tp_idn_bhp')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>атм
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.atm')}}
                   </td>
                   <td @click="sortBy('tp_idn_liq')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr2')}}
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.m3_day')}}
                   </td>
                   <td @click="sortBy('tp_idn_liq_cas_d_corr')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr2')}}
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.m3_day')}}
                   </td>
                   <td @click="sortBy('tp_idn_oil')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr3')}}
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.t_day')}}
                   </td>
                   <td @click="sortBy('tp_idn_oil_inc')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr3')}}
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.t_day')}}
                   </td>
                   <td @click="sortBy('tp_idn_jd')" class="th">
                     <i class="fa fa-fw fa-sort"></i>
@@ -1047,44 +1024,44 @@
                     <i class="fa fa-fw fa-sort"></i>
                   </td>
                   <td @click="sortBy('tp_idn_pi_after')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr4')}}
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.m3_day_atm')}}
                   </td>
                   <td @click="sortBy('tp_idn_grp_q_liq')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr2')}}
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.m3_day')}}
                   </td>
                   <td @click="sortBy('tp_idn_grp_q_liq_cas_d_corr')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr2')}}
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.m3_day')}}
                   </td>
                   <td @click="sortBy('tp_idn_grp_q_oil')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr3')}}
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.t_day')}}
                   </td>
                   <td @click="sortBy('tp_idn_grp_q_oil_inc')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr3')}}
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.t_day')}}
                   </td>
                   <td @click="sortBy('tp_idn_q_oil_inc_perc')" class="th">
                     <i class="fa fa-fw fa-sort"></i>%
                   </td>
                   <td @click="sortBy('gt_total_inc')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr3')}}
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.t_day')}}
                   </td>
 
                   <td @click="sortBy('gp_idn_bhp')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>атм
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.atm')}}
                   </td>
                   <td @click="sortBy('gp_idn_q_liq')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr2')}}
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.m3_day')}}
                   </td>
                   <td @click="sortBy('gp_idn_q_liq_cas_d_corr')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr2')}}
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.m3_day')}}
                   </td>
                   <td @click="sortBy('gp_idn_q_oil')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr3')}}
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.t_day')}}
                   </td>
                   <td @click="sortBy('gp_idn_q_oil_inc')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr3')}}
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.t_day')}}
                   </td>
                   <td @click="sortBy('gp_grp_q_liq')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr2')}}
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.m3_day')}}
                   </td>
                   <td @click="sortBy('gp_grp_q_liq_cas_d_corr')" class="th">
                     <i class="fa fa-fw fa-sort"></i>
@@ -1099,7 +1076,7 @@
                     <i class="fa fa-fw fa-sort"></i>%
                   </td>
                   <td @click="sortBy('gp_total_inc')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr3')}}
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.t_day')}}
                   </td>
                   <td @click="sortBy('error_count')" class="th">
                     <i class="fa fa-fw fa-sort"></i>
@@ -1117,7 +1094,7 @@
                     <i class="fa fa-fw fa-sort"></i>
                   </td>
                   <td @click="sortBy('stop_date')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr6')}}
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.d_m_y')}}
                   </td>
                   <td @click="sortBy('layers_count')" class="th">
                     <i class="fa fa-fw fa-sort"></i>
@@ -1138,55 +1115,55 @@
                     <i class="fa fa-fw fa-sort"></i>
                   </td>
                   <td @click="sortBy('start_up_date')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr6')}}
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.d_m_y')}}
                   </td>
                   <td @click="sortBy('well_project_purpose')" class="th">
                     <i class="fa fa-fw fa-sort"></i>
                   </td>
                   <td @click="sortBy('bhp_meter')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>атм
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.atm')}}
                   </td>
                   <td @click="sortBy('oil_net_pay')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>м
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.m')}}
                   </td>
                   <td @click="sortBy('oil_cumulative')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr7')}}
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.thousand_t')}}
                   </td>
                   <td @click="sortBy('max_q_liq_hist')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr2')}}
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.m3_day')}}
                   </td>
                   <td @click="sortBy('dist_to_inj_well')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>м
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.m')}}
                   </td>
                   <td @click="sortBy('dist_to_woc')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>м
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.m')}}
                   </td>
                   <td @click="sortBy('curr_bh')" class="th">
                     <i class="fa fa-fw fa-sort"></i>
                   </td>
                   <td @click="sortBy('pump_fillage')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr2')}}
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.m3_day')}}
                   </td>
                   <td @click="sortBy('gzu_type')" class="th">
                     <i class="fa fa-fw fa-sort"></i>
                   </td>
                   <td @click="sortBy('p_res_init')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>атм
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.atm')}}
                   </td>
                   <td @click="sortBy('q_liq_charac')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr2')}}
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.m3_day')}}
                   </td>
                   <td @click="sortBy('APV_t_rab')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr8')}}
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.hour')}}
                   </td>
                   <td @click="sortBy('APV_t_nak')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr8')}}
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.hour')}}
                   </td>
                   <td @click="sortBy('plan_izo_work')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>атм
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.atm')}}
                   </td>
                   <td @click="sortBy('plan_act_q_l')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr2')}}
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.m3_day')}}
                   </td>
                   <td @click="sortBy('plan_act_wct')" class="th">
                     <i class="fa fa-fw fa-sort"></i>%
@@ -1208,43 +1185,43 @@
                   </td>
 
                   <td @click="sortBy('planned_choke')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>мм
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mm')}}
                   </td>
                   <td @click="sortBy('planned_oil')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr3')}}
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.t_day')}}
                   </td>
                   <td @click="sortBy('planned_liq')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr2')}}
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.m3_day')}}
                   </td>
                   <td @click="sortBy('planned_gas')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr5')}}
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.thousan_m3_day')}}
                   </td>
                   <td @click="sortBy('planned_wct')" class="th">
                     <i class="fa fa-fw fa-sort"></i>%
                   </td>
                   <td @click="sortBy('planned_gor')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>м3/т
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.m3/t')}}
                   </td>
                   <td @click="sortBy('planned_month_days')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr9')}}
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.day')}}
                   </td>
                   <td @click="sortBy('planned_monthly_oil')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>тонн
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.tonn')}}
                   </td>
                   <td @click="sortBy('planned_monthly_gas')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr10')}}
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.thousand_m3')}}
                   </td>
                   <td @click="sortBy('planned_monthly_liq')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>м3
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.m3')}}
                   </td>
                   <td @click="sortBy('planned_monthly_water')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>м3
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.m3')}}
                   </td>
                   <td @click="sortBy('planned_diff_oil')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr3')}}
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.t_day')}}
                   </td>
                   <td @click="sortBy('planned_diff_liq')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr2')}}
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.m3_day')}}
                   </td>
                   <td @click="sortBy('planned_events')" class="th">
                     <i class="fa fa-fw fa-sort"></i>
@@ -1310,18 +1287,12 @@
                       )}`"
                     >
                     </span>
-                    <!-- <input
-                    @change="editrow(row, row_index)"
-                    v-model="row.well_type[0]"
-                    :disabled="!edit"
-                  /> -->
                     <span>{{ row.well_type[0] }}</span>
                     <span v-if="wells && wells[row_index]" class="cell-comment">
                       {{ wells[row_index].well_type[1][1] }}
                     </span>
                   </td>
 
-                  <!-- <td>{{row.horizon}}</td> -->
                   <td
                     v-if="!edit"
                     :class="{
@@ -1369,11 +1340,6 @@
                       )}`"
                     >
                     </span>
-                    <!-- <input
-                    @change="editrow(row, row_index)"
-                    v-model="row.horizon[0]"
-                    :disabled="!edit"
-                  /> -->
                     <span>{{ row.horizon[0] }}</span>
                     <span v-if="wells && wells[row_index]" class="cell-comment">
                       {{ wells[row_index].horizon[1][1] }}
@@ -1430,21 +1396,12 @@
                       )}`"
                     >
                     </span>
-                    <!-- <input @change="editrow(row, row_index)" v-model="row.block[0]" :disabled="!edit"> -->
                     <span>{{ row.block[0] }}</span>
                     <span v-if="wells && wells[row_index]" class="cell-comment">
                       {{ wells[row_index].block[1][1] }}
                     </span>
                   </td>
 
-                  <!-- <td v-if="!edit">{{ Math.round(row.r_con * 10) / 10 }}</td>
-              <td v-if="edit" contenteditable="true">
-                <input
-                  @change="editrow(row, row_index)"
-                  v-model="row.r_con"
-                  :disabled="!edit"
-                />
-              </td> -->
                   <td
                     v-if="!edit"
                     :class="{
@@ -1506,7 +1463,6 @@
                     </span>
                   </td>
 
-                  <!-- <td>{{Math.round(row.cas_OD*10)/10}}</td> -->
                   <td
                     v-if="!edit"
                     :class="{
@@ -1556,7 +1512,6 @@
                       )}`"
                     >
                     </span>
-                    <!-- <input @change="editrow(row, row_index)" v-model="row.cas_OD[0]" :disabled="!edit"> -->
                     <span>{{ Math.round(row.cas_OD[0] * 10) / 10 }}</span>
                     <span v-if="wells && wells[row_index]" class="cell-comment">
                       {{ wells[row_index].cas_OD[1][1] }}
@@ -1570,7 +1525,6 @@
                   </td>
                   <td v-if="edit">{{ Math.round(row.cas_ID * 10) / 10 }}</td>
 
-                  <!-- <td>{{Math.round(row.tub_OD*10)/10}}</td> -->
                   <td
                     v-if="!edit"
                     :class="{
@@ -1620,7 +1574,6 @@
                       )}`"
                     >
                     </span>
-                    <!-- <input @change="editrow(row, row_index)" v-model="row.tub_OD[0]" :disabled="!edit"> -->
                     <span>{{ Math.round(row.tub_OD[0] * 10) / 10 }}</span>
                     <span v-if="wells && wells[row_index]" class="cell-comment">
                       {{ wells[row_index].tub_OD[1][1] }}
@@ -1634,7 +1587,6 @@
                   </td>
                   <td v-if="edit">{{ Math.round(row.tub_ID * 10) / 10 }}</td>
 
-                  <!-- <td>{{Math.round(row.choke_d*10)/10}}</td> -->
                   <td
                     v-if="!edit"
                     :class="{
@@ -1684,7 +1636,6 @@
                       )}`"
                     >
                     </span>
-                    <!-- <input @change="editrow(row, row_index)" v-model="row.choke_d[0]" :disabled="!edit"> -->
                     <span>{{ Math.round(row.choke_d[0] * 10) / 10 }}</span>
                     <span v-if="wells && wells[row_index]" class="cell-comment">
                       {{ wells[row_index].choke_d[1][1] }}
@@ -1749,7 +1700,6 @@
                       )}`"
                     >
                     </span>
-                    <!-- <input @change="editrow(row, row_index)" v-model="row.h_up_perf_ext[0]" :disabled="!edit"> -->
                     <span>{{
                       Math.round(row.h_up_perf_ext[0] * 10) / 10
                     }}</span>
@@ -1758,7 +1708,6 @@
                     </span>
                   </td>
 
-                  <!-- <td>{{row.exp_meth}}</td> -->
                   <td
                     v-if="!edit"
                     :class="{
@@ -1806,14 +1755,12 @@
                       )}`"
                     >
                     </span>
-                    <!-- <input @change="editrow(row, row_index)" v-model="row.exp_meth[0]" :disabled="!edit"> -->
                     <span>{{ row.exp_meth[0] }}</span>
                     <span v-if="wells && wells[row_index]" class="cell-comment">
                       {{ wells[row_index].exp_meth[1][1] }}
                     </span>
                   </td>
 
-                  <!-- <td>{{row.pump_type}}</td> -->
                   <td
                     v-if="!edit"
                     :class="{
@@ -1861,7 +1808,6 @@
                       )}`"
                     >
                     </span>
-                    <!-- <input @change="editrow(row, row_index)" v-model="row.pump_type[0]" :disabled="!edit"> -->
                     <span>{{ row.pump_type[0] }}</span>
                     <span v-if="wells && wells[row_index]" class="cell-comment">
                       {{ wells[row_index].pump_type[1][1] }}
@@ -1871,7 +1817,6 @@
                   <td v-if="!edit">{{ row.type_sr }}</td>
                   <td v-if="edit">{{ row.type_sr }}</td>
 
-                  <!-- <td>{{Math.round(row.spm*10)/10}}</td> -->
                   <td
                     v-if="!edit"
                     :class="{
@@ -1921,14 +1866,12 @@
                       )}`"
                     >
                     </span>
-                    <!-- <input @change="editrow(row, row_index)" v-model="row.spm[0]" :disabled="!edit"> -->
                     <span>{{ Math.round(row.spm[0] * 10) / 10 }}</span>
                     <span v-if="wells && wells[row_index]" class="cell-comment">
                       {{ wells[row_index].spm[1][1] }}
                     </span>
                   </td>
 
-                  <!-- <td>{{Math.round(row.stroke_len*10)/10}}</td> -->
                   <td
                     v-if="!edit"
                     :class="{
@@ -1978,14 +1921,12 @@
                       )}`"
                     >
                     </span>
-                    <!-- <input @change="editrow(row, row_index)" v-model="row.stroke_len[0]" :disabled="!edit"> -->
                     <span>{{ Math.round(row.stroke_len[0] * 10) / 10 }}</span>
                     <span v-if="wells && wells[row_index]" class="cell-comment">
                       {{ wells[row_index].stroke_len[1][1] }}
                     </span>
                   </td>
 
-                  <!-- <td>{{Math.round(row.q_theor*10)/10}}</td> -->
                   <td
                     v-if="!edit"
                     :class="{
@@ -2043,7 +1984,6 @@
                     </span>
                   </td>
 
-                  <!-- <td>{{Math.round(row.freq*10)/10}}</td> -->
                   <td
                     v-if="!edit"
                     :class="{
@@ -2094,14 +2034,12 @@
                       )}`"
                     >
                     </span>
-                    <!-- <input @change="editrow(row, row_index)" v-model="row.freq[0]" :disabled="!edit"> -->
                     <span>{{ Math.round(row.freq[0] * 10) / 10 }}</span>
                     <span v-if="wells && wells[row_index]" class="cell-comment">
                       {{ wells[row_index].freq[1][1] }}
                     </span>
                   </td>
 
-                  <!-- <td>{{Math.round(row.h_pump_set*10)/10}}</td> -->
                   <td
                     v-if="!edit"
                     :class="{
@@ -2157,13 +2095,11 @@
                       v-model="row.h_pump_set[0]"
                       :disabled="!edit"
                     />
-                    <!-- <span>{{Math.round(row.h_pump_set[0]*10)/10}}</span> -->
                     <span v-if="wells && wells[row_index]" class="cell-comment">
                       {{ wells[row_index].h_pump_set[1][1] }}
                     </span>
                   </td>
 
-                  <!-- <td>{{Math.round(row.whp*10)/10}}</td> -->
                   <td
                     v-if="!edit"
                     :class="{
@@ -2219,13 +2155,11 @@
                       v-model="row.whp[0]"
                       :disabled="!edit"
                     />
-                    <!-- <span>{{Math.round(row.whp[0]*10)/10}}</span> -->
                     <span v-if="wells && wells[row_index]" class="cell-comment">
                       {{ wells[row_index].whp[1][1] }}
                     </span>
                   </td>
 
-                  <!-- <td>{{Math.round(row.line_p*10)/10}}</td> -->
                   <td
                     v-if="!edit"
                     :class="{
@@ -2281,7 +2215,6 @@
                       v-model="row.line_p[0]"
                       :disabled="!edit"
                     />
-                    <!-- <span>{{Math.round(row.line_p[0]*10)/10}}</span> -->
                     <span v-if="wells && wells[row_index]" class="cell-comment">
                       {{ wells[row_index].line_p[1][1] }}
                     </span>
@@ -2342,13 +2275,11 @@
                       v-model="row.p_res[0]"
                       :disabled="!edit"
                     />
-                    <!-- <span>{{Math.round(row.p_res[0]*10)/10}}</span> -->
                     <span v-if="wells && wells[row_index]" class="cell-comment">
                       {{ wells[row_index].p_res[1][1] }}
                     </span>
                   </td>
 
-                  <!-- <td>{{Math.round(row.h_dyn*10)/10}}</td> -->
                   <td
                     v-if="!edit"
                     :class="{
@@ -2404,13 +2335,11 @@
                       v-model="row.h_dyn[0]"
                       :disabled="!edit"
                     />
-                    <!-- <span>{{Math.round(row.h_dyn[0]*10)/10}}</span> -->
                     <span v-if="wells && wells[row_index]" class="cell-comment">
                       {{ wells[row_index].h_dyn[1][1] }}
                     </span>
                   </td>
 
-                  <!-- <td>{{Math.round(row.p_annular*10)/10}}</td> -->
                   <td
                     v-if="!edit"
                     :class="{
@@ -2466,13 +2395,11 @@
                       v-model="row.p_annular[0]"
                       :disabled="!edit"
                     />
-                    <!-- <span>{{Math.round(row.p_annular[0]*10)/10}}</span> -->
                     <span v-if="wells && wells[row_index]" class="cell-comment">
                       {{ wells[row_index].p_annular[1][1] }}
                     </span>
                   </td>
 
-                  <!-- <td>{{Math.round(row.p_intake*10)/10}}</td> -->
                   <td
                     v-if="!edit"
                     :class="{
@@ -2528,7 +2455,6 @@
                       v-model="row.p_intake[0]"
                       :disabled="!edit"
                     />
-                    <!-- <span>{{Math.round(row.p_intake[0]*10)/10}}</span> -->
                     <span v-if="wells && wells[row_index]" class="cell-comment">
                       {{ wells[row_index].p_intake[1][1] }}
                     </span>
@@ -2577,7 +2503,6 @@
                   </td>
                   <td v-if="edit">{{ Math.round(row.pi_prev_m * 10) / 10 }}</td>
 
-                  <!-- <td>{{Math.round(row.bhp*10)/10}}</td> -->
                   <td
                     v-if="!edit"
                     :class="{
@@ -2627,14 +2552,12 @@
                       )}`"
                     >
                     </span>
-                    <!-- <input @change="editrow(row, row_index)" v-model="row.bhp[0]" :disabled="!edit"> -->
                     <span>{{ Math.round(row.bhp[0] * 10) / 10 }}</span>
                     <span v-if="wells && wells[row_index]" class="cell-comment">
                       {{ wells[row_index].bhp[1][1] }}
                     </span>
                   </td>
 
-                  <!-- <td>{{Math.round(row.q_o*10)/10}}</td> -->
                   <td
                     v-if="!edit"
                     :class="{
@@ -2684,14 +2607,12 @@
                       )}`"
                     >
                     </span>
-                    <!-- <input @change="editrow(row, row_index)" v-model="row.q_o[0]" :disabled="!edit"> -->
                     <span>{{ Math.round(row.q_o[0] * 10) / 10 }}</span>
                     <span v-if="wells && wells[row_index]" class="cell-comment">
                       {{ wells[row_index].q_o[1][1] }}
                     </span>
                   </td>
 
-                  <!-- <td>{{Math.round(row.q_l*10)/10}}</td> -->
                   <td
                     v-if="!edit"
                     :class="{
@@ -2747,13 +2668,11 @@
                       v-model="row.q_l[0]"
                       :disabled="!edit"
                     />
-                    <!-- <span>{{Math.round(row.q_l[0]*10)/10}}</span> -->
                     <span v-if="wells && wells[row_index]" class="cell-comment">
                       {{ wells[row_index].q_l[1][1] }}
                     </span>
                   </td>
 
-                  <!-- <td>{{Math.round(row.wct*10)/10}}</td> -->
                   <td
                     v-if="!edit"
                     :class="{
@@ -2809,13 +2728,11 @@
                       v-model="row.wct[0]"
                       :disabled="!edit"
                     />
-                    <!-- <span>{{Math.round(row.wct[0]*10)/10}}</span> -->
                     <span v-if="wells && wells[row_index]" class="cell-comment">
                       {{ wells[row_index].wct[1][1] }}
                     </span>
                   </td>
 
-                  <!-- <td>{{Math.round(row.gor*10)/10}}</td> -->
                   <td
                     v-if="!edit"
                     :class="{
@@ -2871,14 +2788,12 @@
                       v-model="row.gor[0]"
                       :disabled="!edit"
                     />
-                    <!-- <span>{{Math.round(row.gor[0]*10)/10}}</span> -->
                     <span v-if="wells && wells[row_index]" class="cell-comment">
                       {{ wells[row_index].gor[1][1] }}
                     </span>
                   </td>
 
 
-                  <!-- <td>{{row.well_status_last_day}}</td> -->
                   <td
                     v-if="!edit"
                     :class="{
@@ -2926,14 +2841,12 @@
                       )}`"
                     >
                     </span>
-                    <!-- <input @change="editrow(row, row_index)" v-model="row.well_status_last_day[0]" :disabled="!edit"> -->
                     <span>{{ row.well_status_last_day[0] }}</span>
                     <span v-if="wells && wells[row_index]" class="cell-comment">
                       {{ wells[row_index].well_status_last_day[1][1] }}
                     </span>
                   </td>
 
-                  <!-- <td>{{Math.round(row.P_bubble_point*10)/10}}</td> -->
                   <td
                     v-if="!edit"
                     :class="{
@@ -2983,7 +2896,6 @@
                       )}`"
                     >
                     </span>
-                    <!-- <input @change="editrow(row, row_index)" v-model="row.P_bubble_point[0]" :disabled="!edit"> -->
                     <span>{{
                       Math.round(row.P_bubble_point[0] * 10) / 10
                     }}</span>
@@ -2992,7 +2904,6 @@
                     </span>
                   </td>
                  
-                  <!-- <td>{{Math.round(row.t_res*10)/10}}</td> -->
                   <td
                     v-if="!edit"
                     :class="{
@@ -3042,7 +2953,6 @@
                       )}`"
                     >
                     </span>
-                    <!-- <input @change="editrow(row, row_index)" v-model="row.t_res[0]" :disabled="!edit"> -->
                     <span>{{ Math.round(row.t_res[0] * 10) / 10 }}</span>
                     <span v-if="wells && wells[row_index]" class="cell-comment">
                       {{ wells[row_index].t_res[1][1] }}
@@ -3111,7 +3021,6 @@
                       v-model="row.grp_skin[0]"
                       :disabled="!edit"
                     />
-                    <!-- <span>{{ Math.round(row.grp_skin[0] * 10) / 10 }}</span> -->
                     <span v-if="wells && wells[row_index]" class="cell-comment">
                       {{ wells[row_index].grp_skin[1][1] }}
                     </span>
@@ -3123,7 +3032,6 @@
                   </td>
                   <td v-if="edit">{{ Math.round(row.grp_jd * 10) / 10 }}</td>
 
-                  <!-- <td>{{row.grp_date}}</td> -->
                   <td
                     v-if="!edit"
                     :class="{
@@ -3171,14 +3079,12 @@
                       )}`"
                     >
                     </span>
-                    <!-- <input @change="editrow(row, row_index)" v-model="row.grp_date[0]" :disabled="!edit"> -->
                     <span>{{ row.grp_date[0] }}</span>
                     <span v-if="wells && wells[row_index]" class="cell-comment">
                       {{ wells[row_index].grp_date[1][1] }}
                     </span>
                   </td>
 
-                  <!-- <td>{{row.grp_contractor}}</td> -->
                   <td
                     v-if="!edit"
                     :class="{
@@ -3226,14 +3132,12 @@
                       )}`"
                     >
                     </span>
-                    <!-- <input @change="editrow(row, row_index)" v-model="row.grp_contractor[0]" :disabled="!edit"> -->
                     <span>{{ row.grp_contractor[0] }}</span>
                     <span v-if="wells && wells[row_index]" class="cell-comment">
                       {{ wells[row_index].grp_contractor[1][1] }}
                     </span>
                   </td>
 
-                  <!-- <td>{{Math.round(row.visc_oil_rc*10)/10}}</td> -->
                   <td
                     v-if="!edit"
                     :class="{
@@ -3283,14 +3187,12 @@
                       )}`"
                     >
                     </span>
-                    <!-- <input @change="editrow(row, row_index)" v-model="row.visc_oil_rc[0]" :disabled="!edit"> -->
                     <span>{{ Math.round(row.visc_oil_rc[0] * 10) / 10 }}</span>
                     <span v-if="wells && wells[row_index]" class="cell-comment">
                       {{ wells[row_index].visc_oil_rc[1][1] }}
                     </span>
                   </td>
 
-                  <!-- <td>{{Math.round(row.visc_wat_rc*10)/10}}</td> -->
                   <td
                     v-if="!edit"
                     :class="{
@@ -3340,14 +3242,12 @@
                       )}`"
                     >
                     </span>
-                    <!-- <input @change="editrow(row, row_index)" v-model="row.visc_wat_rc[0]" :disabled="!edit"> -->
                     <span>{{ Math.round(row.visc_wat_rc[0] * 10) / 10 }}</span>
                     <span v-if="wells && wells[row_index]" class="cell-comment">
                       {{ wells[row_index].visc_wat_rc[1][1] }}
                     </span>
                   </td>
 
-                  <!-- <td>{{Math.round(row.visc_liq_rc*10)/10}}</td> -->
                   <td
                     v-if="!edit"
                     :class="{
@@ -3397,7 +3297,6 @@
                       )}`"
                     >
                     </span>
-                    <!-- <input @change="editrow(row, row_index)" v-model="row.visc_liq_rc[0]" :disabled="!edit"> -->
                     <span>{{
                       Math.round(row.visc_liq_rc[0] * 100) / 100
                     }}</span>
@@ -3406,7 +3305,6 @@
                     </span>
                   </td>
 
-                  <!-- <td>{{Math.round(row.bo*10)/10}}</td> -->
                   <td
                     v-if="!edit"
                     :class="{
@@ -3456,14 +3354,12 @@
                       )}`"
                     >
                     </span>
-                    <!-- <input @change="editrow(row, row_index)" v-model="row.bo[0]" :disabled="!edit"> -->
                     <span>{{ Math.round(row.bo[0] * 10) / 10 }}</span>
                     <span v-if="wells && wells[row_index]" class="cell-comment">
                       {{ wells[row_index].bo[1][1] }}
                     </span>
                   </td>
 
-                  <!-- <td>{{Math.round(row.dens_oil*10)/10}}</td> -->
                   <td
                     v-if="!edit"
                     :class="{
@@ -3513,14 +3409,12 @@
                       )}`"
                     >
                     </span>
-                    <!-- <input @change="editrow(row, row_index)" v-model="row.dens_oil[0]" :disabled="!edit"> -->
                     <span>{{ Math.round(row.dens_oil[0] * 10) / 10 }}</span>
                     <span v-if="wells && wells[row_index]" class="cell-comment">
                       {{ wells[row_index].dens_oil[1][1] }}
                     </span>
                   </td>
 
-                  <!-- <td>{{Math.round(row.dens_liq*10)/10}}</td> -->
                   <td
                     v-if="!edit"
                     :class="{
@@ -3570,14 +3464,12 @@
                       )}`"
                     >
                     </span>
-                    <!-- <input @change="editrow(row, row_index)" v-model="row.dens_liq[0]" :disabled="!edit"> -->
                     <span>{{ Math.round(row.dens_liq[0] * 10) / 10 }}</span>
                     <span v-if="wells && wells[row_index]" class="cell-comment">
                       {{ wells[row_index].dens_liq[1][1] }}
                     </span>
                   </td>
 
-                  <!-- <td>{{Math.round(row.h_perf*10)/10}}</td> -->
                   <td
                     v-if="!edit"
                     :class="{
@@ -3627,14 +3519,12 @@
                       )}`"
                     >
                     </span>
-                    <!-- <input @change="editrow(row, row_index)" v-model="row.h_perf[0]" :disabled="!edit"> -->
                     <span>{{ Math.round(row.h_perf[0] * 10) / 10 }}</span>
                     <span v-if="wells && wells[row_index]" class="cell-comment">
                       {{ wells[row_index].h_perf[1][1] }}
                     </span>
                   </td>
 
-                  <!-- <td>{{Math.round(row.k*10)/10}}</td> -->
                   <td
                     v-if="!edit"
                     :class="{
@@ -3684,14 +3574,12 @@
                       )}`"
                     >
                     </span>
-                    <!-- <input @change="editrow(row, row_index)" v-model="row.k[0]" :disabled="!edit"> -->
                     <span>{{ Math.round(row.k[0] * 10) / 10 }}</span>
                     <span v-if="wells && wells[row_index]" class="cell-comment">
                       {{ wells[row_index].k[1][1] }}
                     </span>
                   </td>
 
-                  <!-- <td>{{Math.round(row.kh*10)/10}}</td> -->
                   <td
                     v-if="!edit"
                     :class="{
@@ -3741,14 +3629,12 @@
                       )}`"
                     >
                     </span>
-                    <!-- <input @change="editrow(row, row_index)" v-model="row.kh[0]" :disabled="!edit"> -->
                     <span>{{ Math.round(row.kh[0] * 10) / 10 }}</span>
                     <span v-if="wells && wells[row_index]" class="cell-comment">
                       {{ wells[row_index].kh[1][1] }}
                     </span>
                   </td>
 
-                  <!-- <td>{{Math.round(row.pi*10)/10}}</td> -->
                   <td
                     v-if="!edit"
                     :class="{
@@ -3798,14 +3684,12 @@
                       )}`"
                     >
                     </span>
-                    <!-- <input @change="editrow(row, row_index)" v-model="row.pi[0]" :disabled="!edit"> -->
                     <span>{{ Math.round(row.pi[0] * 10) / 10 }}</span>
                     <span v-if="wells && wells[row_index]" class="cell-comment">
                       {{ wells[row_index].pi[1][1] }}
                     </span>
                   </td>
 
-                  <!-- <td>{{Math.round(row.tp_idn_bhp*10)/10}}</td> -->
                   <td
                     v-if="!edit"
                     :class="{
@@ -3855,14 +3739,12 @@
                       )}`"
                     >
                     </span>
-                    <!-- <input @change="editrow(row, row_index)" v-model="row.tp_idn_bhp[0]" :disabled="!edit"> -->
                     <span>{{ Math.round(row.tp_idn_bhp[0] * 10) / 10 }}</span>
                     <span v-if="wells && wells[row_index]" class="cell-comment">
                       {{ wells[row_index].tp_idn_bhp[1][1] }}
                     </span>
                   </td>
 
-                  <!-- <td>{{Math.round(row.tp_idn_liq*10)/10}}</td> -->
                   <td
                     v-if="!edit"
                     :class="{
@@ -3912,14 +3794,12 @@
                       )}`"
                     >
                     </span>
-                    <!-- <input @change="editrow(row, row_index)" v-model="row.tp_idn_liq[0]" :disabled="!edit"> -->
                     <span>{{ Math.round(row.tp_idn_liq[0] * 10) / 10 }}</span>
                     <span v-if="wells && wells[row_index]" class="cell-comment">
                       {{ wells[row_index].tp_idn_liq[1][1] }}
                     </span>
                   </td>
 
-                  <!-- <td>{{Math.round(row.tp_idn_liq_cas_d_corr*10)/10}}</td> -->
                   <td
                     v-if="!edit"
                     :class="{
@@ -3969,7 +3849,6 @@
                       )}`"
                     >
                     </span>
-                    <!-- <input @change="editrow(row, row_index)" v-model="row.tp_idn_liq_cas_d_corr[0]" :disabled="!edit"> -->
                     <span>{{
                       Math.round(row.tp_idn_liq_cas_d_corr[0] * 10) / 10
                     }}</span>
@@ -3978,7 +3857,6 @@
                     </span>
                   </td>
 
-                  <!-- <td>{{Math.round(row.tp_idn_oil*10)/10}}</td> -->
                   <td
                     v-if="!edit"
                     :class="{
@@ -4028,14 +3906,12 @@
                       )}`"
                     >
                     </span>
-                    <!-- <input @change="editrow(row, row_index)" v-model="row.tp_idn_oil[0]" :disabled="!edit"> -->
                     <span>{{ Math.round(row.tp_idn_oil[0] * 10) / 10 }}</span>
                     <span v-if="wells && wells[row_index]" class="cell-comment">
                       {{ wells[row_index].tp_idn_oil[1][1] }}
                     </span>
                   </td>
 
-                  <!-- <td>{{Math.round(row.tp_idn_oil_inc*10)/10}}</td> -->
                   <td
                     v-if="!edit"
                     :class="{
@@ -4085,7 +3961,6 @@
                       )}`"
                     >
                     </span>
-                    <!-- <input @change="editrow(row, row_index)" v-model="row.tp_idn_oil_inc[0]" :disabled="!edit"> -->
                     <span>{{
                       Math.round(row.tp_idn_oil_inc[0] * 10) / 10
                     }}</span>
@@ -4094,7 +3969,6 @@
                     </span>
                   </td>
 
-                  <!-- <td>{{Math.round(row.tp_idn_jd*10)/10}}</td> -->
                   <td
                     v-if="!edit"
                     :class="{
@@ -4144,14 +4018,12 @@
                       )}`"
                     >
                     </span>
-                    <!-- <input @change="editrow(row, row_index)" v-model="row.tp_idn_jd[0]" :disabled="!edit"> -->
                     <span>{{ Math.round(row.tp_idn_jd[0] * 10) / 10 }}</span>
                     <span v-if="wells && wells[row_index]" class="cell-comment">
                       {{ wells[row_index].tp_idn_jd[1][1] }}
                     </span>
                   </td>
 
-                  <!-- <td>{{Math.round(row.tp_idn_skin*10)/10}}</td> -->
                   <td
                     v-if="!edit"
                     :class="{
@@ -4201,14 +4073,12 @@
                       )}`"
                     >
                     </span>
-                    <!-- <input @change="editrow(row, row_index)" v-model="row.tp_idn_skin[0]" :disabled="!edit"> -->
                     <span>{{ Math.round(row.tp_idn_skin[0] * 10) / 10 }}</span>
                     <span v-if="wells && wells[row_index]" class="cell-comment">
                       {{ wells[row_index].tp_idn_skin[1][1] }}
                     </span>
                   </td>
 
-                  <!-- <td>{{Math.round(row.tp_idn_pi_after*10)/10}}</td> -->
                   <td
                     v-if="!edit"
                     :class="{
@@ -4258,7 +4128,6 @@
                       )}`"
                     >
                     </span>
-                    <!-- <input @change="editrow(row, row_index)" v-model="row.tp_idn_pi_after[0]" :disabled="!edit"> -->
                     <span>{{
                       Math.round(row.tp_idn_pi_after[0] * 10) / 10
                     }}</span>
@@ -4267,7 +4136,6 @@
                     </span>
                   </td>
 
-                  <!-- <td>{{Math.round(row.tp_idn_grp_q_liq*10)/10}}</td> -->
                   <td
                     v-if="!edit"
                     :class="{
@@ -4317,7 +4185,6 @@
                       )}`"
                     >
                     </span>
-                    <!-- <input @change="editrow(row, row_index)" v-model="row.tp_idn_grp_q_liq[0]" :disabled="!edit"> -->
                     <span>{{
                       Math.round(row.tp_idn_grp_q_liq[0] * 10) / 10
                     }}</span>
@@ -4326,7 +4193,6 @@
                     </span>
                   </td>
 
-                  <!-- <td>{{Math.round(row.tp_idn_grp_q_liq_cas_d_corr*10)/10}}</td> -->
                   <td
                     v-if="!edit"
                     :class="{
@@ -4380,7 +4246,6 @@
                       )}`"
                     >
                     </span>
-                    <!-- <input @change="editrow(row, row_index)" v-model="row.tp_idn_grp_q_liq_cas_d_corr[0]" :disabled="!edit"> -->
                     <span>{{
                       Math.round(row.tp_idn_grp_q_liq_cas_d_corr[0] * 10) / 10
                     }}</span>
@@ -4389,7 +4254,6 @@
                     </span>
                   </td>
 
-                  <!-- <td>{{Math.round(row.tp_idn_grp_q_oil*10)/10}}</td> -->
                   <td
                     v-if="!edit"
                     :class="{
@@ -4439,7 +4303,6 @@
                       )}`"
                     >
                     </span>
-                    <!-- <input @change="editrow(row, row_index)" v-model="row.tp_idn_grp_q_oil[0]" :disabled="!edit"> -->
                     <span>{{
                       Math.round(row.tp_idn_grp_q_oil[0] * 10) / 10
                     }}</span>
@@ -4448,7 +4311,6 @@
                     </span>
                   </td>
 
-                  <!-- <td>{{Math.round(row.tp_idn_grp_q_oil_inc*10)/10}}</td> -->
                   <td
                     v-if="!edit"
                     :class="{
@@ -4498,7 +4360,6 @@
                       )}`"
                     >
                     </span>
-                    <!-- <input @change="editrow(row, row_index)" v-model="row.tp_idn_grp_q_oil_inc[0]" :disabled="!edit"> -->
                     <span>{{
                       Math.round(row.tp_idn_grp_q_oil_inc[0] * 10) / 10
                     }}</span>
@@ -4525,7 +4386,6 @@
                     {{ Math.round(row.gt_total_inc * 10) / 10 }}
                   </td>
 
-                  <!-- <td>{{Math.round(row.gp_idn_bhp*10)/10}}</td> -->
                   <td
                     v-if="!edit"
                     :class="{
@@ -4575,14 +4435,12 @@
                       )}`"
                     >
                     </span>
-                    <!-- <input @change="editrow(row, row_index)" v-model="row.gp_idn_bhp[0]" :disabled="!edit"> -->
                     <span>{{ Math.round(row.gp_idn_bhp[0] * 10) / 10 }}</span>
                     <span v-if="wells && wells[row_index]" class="cell-comment">
                       {{ wells[row_index].gp_idn_bhp[1][1] }}
                     </span>
                   </td>
 
-                  <!-- <td>{{Math.round(row.gp_idn_q_liq*10)/10}}</td> -->
                   <td
                     v-if="!edit"
                     :class="{
@@ -4632,14 +4490,12 @@
                       )}`"
                     >
                     </span>
-                    <!-- <input @change="editrow(row, row_index)" v-model="row.gp_idn_q_liq[0]" :disabled="!edit"> -->
                     <span>{{ Math.round(row.gp_idn_q_liq[0] * 10) / 10 }}</span>
                     <span v-if="wells && wells[row_index]" class="cell-comment">
                       {{ wells[row_index].gp_idn_q_liq[1][1] }}
                     </span>
                   </td>
 
-                  <!-- <td>{{Math.round(row.gp_idn_q_liq_cas_d_corr*10)/10}}</td> -->
                   <td
                     v-if="!edit"
                     :class="{
@@ -4691,7 +4547,6 @@
                       )}`"
                     >
                     </span>
-                    <!-- <input @change="editrow(row, row_index)" v-model="row.gp_idn_q_liq_cas_d_corr[0]" :disabled="!edit"> -->
                     <span>{{
                       Math.round(row.gp_idn_q_liq_cas_d_corr[0] * 10) / 10
                     }}</span>
@@ -4700,7 +4555,6 @@
                     </span>
                   </td>
 
-                  <!-- <td>{{Math.round(row.gp_idn_q_oil*10)/10}}</td> -->
                   <td
                     v-if="!edit"
                     :class="{
@@ -4750,14 +4604,12 @@
                       )}`"
                     >
                     </span>
-                    <!-- <input @change="editrow(row, row_index)" v-model="row.gp_idn_q_oil[0]" :disabled="!edit"> -->
                     <span>{{ Math.round(row.gp_idn_q_oil[0] * 10) / 10 }}</span>
                     <span v-if="wells && wells[row_index]" class="cell-comment">
                       {{ wells[row_index].gp_idn_q_oil[1][1] }}
                     </span>
                   </td>
 
-                  <!-- <td>{{Math.round(row.gp_idn_q_oil_inc*10)/10}}</td> -->
                   <td
                     v-if="!edit"
                     :class="{
@@ -4807,7 +4659,6 @@
                       )}`"
                     >
                     </span>
-                    <!-- <input @change="editrow(row, row_index)" v-model="row.gp_idn_q_oil_inc[0]" :disabled="!edit"> -->
                     <span>{{
                       Math.round(row.gp_idn_q_oil_inc[0] * 10) / 10
                     }}</span>
@@ -4816,7 +4667,6 @@
                     </span>
                   </td>
 
-                  <!-- <td>{{Math.round(row.gp_grp_q_liq*10)/10}}</td> -->
                   <td
                     v-if="!edit"
                     :class="{
@@ -4866,14 +4716,12 @@
                       )}`"
                     >
                     </span>
-                    <!-- <input @change="editrow(row, row_index)" v-model="row.gp_grp_q_liq[0]" :disabled="!edit"> -->
                     <span>{{ Math.round(row.gp_grp_q_liq[0] * 10) / 10 }}</span>
                     <span v-if="wells && wells[row_index]" class="cell-comment">
                       {{ wells[row_index].gp_grp_q_liq[1][1] }}
                     </span>
                   </td>
 
-                  <!-- <td>{{Math.round(row.gp_grp_q_liq_cas_d_corr*10)/10}}</td> -->
                   <td
                     v-if="!edit"
                     :class="{
@@ -4925,7 +4773,6 @@
                       )}`"
                     >
                     </span>
-                    <!-- <input @change="editrow(row, row_index)" v-model="row.gp_grp_q_liq_cas_d_corr[0]" :disabled="!edit"> -->
                     <span>{{
                       Math.round(row.gp_grp_q_liq_cas_d_corr[0] * 10) / 10
                     }}</span>
@@ -4934,7 +4781,6 @@
                     </span>
                   </td>
 
-                  <!-- <td>{{Math.round(row.gp_grp_q_oil*10)/10}}</td> -->
                   <td
                     v-if="!edit"
                     :class="{
@@ -4984,14 +4830,12 @@
                       )}`"
                     >
                     </span>
-                    <!-- <input @change="editrow(row, row_index)" v-model="row.gp_grp_q_oil[0]" :disabled="!edit"> -->
                     <span>{{ Math.round(row.gp_grp_q_oil[0] * 10) / 10 }}</span>
                     <span v-if="wells && wells[row_index]" class="cell-comment">
                       {{ wells[row_index].gp_grp_q_oil[1][1] }}
                     </span>
                   </td>
 
-                  <!-- <td>{{Math.round(row.gp_grp_q_oil_inc*10)/10}}</td> -->
                   <td
                     v-if="!edit"
                     :class="{
@@ -5041,7 +4885,6 @@
                       )}`"
                     >
                     </span>
-                    <!-- <input @change="editrow(row, row_index)" v-model="row.gp_grp_q_oil_inc[0]" :disabled="!edit"> -->
                     <span>{{
                       Math.round(row.gp_grp_q_oil_inc[0] * 10) / 10
                     }}</span>
@@ -5088,7 +4931,6 @@
                   <td v-if="!edit">{{ row.error_first_warning }}</td>
                   <td v-if="edit">{{ row.error_first_warning }}</td>
 
-                  <!-- <td>{{Math.round(row.idn_pump_depth_max*10)/10}}</td> -->
                   <td
                     v-if="!edit"
                     :class="{
@@ -5144,13 +4986,11 @@
                       v-model="row.idn_pump_depth_max[0]"
                       :disabled="!edit"
                     />
-                    <!-- <span>{{Math.round(row.idn_pump_depth_max[0]*10)/10}}</span> -->
                     <span v-if="wells && wells[row_index]" class="cell-comment">
                       {{ wells[row_index].idn_pump_depth_max[1][1] }}
                     </span>
                   </td>
 
-                  <!-- <td>{{row.stop_date}}</td> -->
                   <td
                     v-if="!edit"
                     :class="{
@@ -5200,14 +5040,12 @@
                       )}`"
                     >
                     </span>
-                    <!-- <input @change="editrow(row, row_index)" v-model="row.stop_date[0]" :disabled="!edit"> -->
                     <span>{{ row.stop_date[0] }}</span>
                     <span v-if="wells && wells[row_index]" class="cell-comment">
                       {{ wells[row_index].stop_date[1][1] }}
                     </span>
                   </td>
 
-                  <!-- <td>{{row.layers_count}}</td> -->
                   <td
                     v-if="!edit"
                     :class="{
@@ -5257,15 +5095,12 @@
                       )}`"
                     >
                     </span>
-                    <!-- <input @change="editrow(row, row_index)" v-model="row.layers_count[0]" :disabled="!edit"> -->
                     <span>{{ row.layers_count[0] }}</span>
                     <span v-if="wells && wells[row_index]" class="cell-comment">
                       {{ wells[row_index].layers_count[1][1] }}
                     </span>
                   </td>
 
-                  <!-- <td v-if="!edit">{{row.zone}}</td>
-                          <td v-if="edit" contenteditable='true'><input @change="editrow(row, row_index)" v-model="row.zone" :disabled="!edit"></td> -->
                   <td
                     v-if="!edit"
                     :class="{
@@ -5313,15 +5148,12 @@
                       )}`"
                     >
                     </span>
-                    <!-- <input @change="editrow(row, row_index)" v-model="row.zone[0]" :disabled="!edit"> -->
                     <span>{{ row.zone[0] }}</span>
                     <span v-if="wells && wells[row_index]" class="cell-comment">
                       {{ wells[row_index].zone[1][1] }}
                     </span>
                   </td>
 
-                  <!-- <td v-if="!edit">{{row.tseh}}</td>
-                          <td v-if="edit" contenteditable='true'><input @change="editrow(row, row_index)" v-model="row.tseh" :disabled="!edit"></td> -->
                   <td
                     v-if="!edit"
                     :class="{
@@ -5369,7 +5201,6 @@
                       )}`"
                     >
                     </span>
-                    <!-- <input @change="editrow(row, row_index)" v-model="row.tseh[0]" :disabled="!edit"> -->
                     <span>{{ row.tseh[0] }}</span>
                     <span v-if="wells && wells[row_index]" class="cell-comment">
                       {{ wells[row_index].tseh[1][1] }}
@@ -5383,7 +5214,6 @@
                   </td>
                   <td v-if="edit">{{ row.semi_free_flow[0] }}</td>
 
-                  <!-- <td>{{row.non_profit[0]}}</td> -->
                   <td
                     v-if="!edit"
                     :class="{
@@ -5433,15 +5263,12 @@
                       )}`"
                     >
                     </span>
-                    <!-- <input @change="editrow(row, row_index)" v-model="row.non_profit[0]" :disabled="!edit"> -->
                     <span>{{ row.non_profit[0] }}</span>
                     <span v-if="wells && wells[row_index]" class="cell-comment">
                       {{ wells[row_index].non_profit[1][1] }}
                     </span>
                   </td>
 
-                  <!-- <td v-if="!edit">{{row.unsteady_state}}</td>
-                          <td v-if="edit" contenteditable='true'><input @change="editrow(row, row_index)" v-model="row.unsteady_state" :disabled="!edit"></td> -->
                   <td
                     v-if="!edit"
                     :class="{
@@ -5491,14 +5318,12 @@
                       )}`"
                     >
                     </span>
-                    <!-- <input @change="editrow(row, row_index)" v-model="row.unsteady_state[0]" :disabled="!edit"> -->
                     <span>{{ row.unsteady_state[0] }}</span>
                     <span v-if="wells && wells[row_index]" class="cell-comment">
                       {{ wells[row_index].unsteady_state[1][1] }}
                     </span>
                   </td>
 
-                  <!-- <td>{{row.start_up_date}}</td> -->
                   <td
                     v-if="!edit"
                     :class="{
@@ -5548,14 +5373,12 @@
                       )}`"
                     >
                     </span>
-                    <!-- <input @change="editrow(row, row_index)" v-model="row.start_up_date[0]" :disabled="!edit"> -->
                     <span>{{ row.start_up_date[0] }}</span>
                     <span v-if="wells && wells[row_index]" class="cell-comment">
                       {{ wells[row_index].start_up_date[1][1] }}
                     </span>
                   </td>
 
-                  <!-- <td>{{row.well_project_purpose}}</td> -->
                   <td
                     v-if="!edit"
                     :class="{
@@ -5605,14 +5428,12 @@
                       )}`"
                     >
                     </span>
-                    <!-- <input @change="editrow(row, row_index)" v-model="row.well_project_purpose[0]" :disabled="!edit"> -->
                     <span>{{ row.well_project_purpose[0] }}</span>
                     <span v-if="wells && wells[row_index]" class="cell-comment">
                       {{ wells[row_index].well_project_purpose[1][1] }}
                     </span>
                   </td>
 
-                  <!-- <td>{{Math.round(row.bhp_meter*10)/10}}</td> -->
                   <td
                     v-if="!edit"
                     :class="{
@@ -5724,14 +5545,12 @@
                       )}`"
                     >
                     </span>
-                    <!-- <input @change="editrow(row, row_index)" v-model="row.oil_net_pay[0]" :disabled="!edit"> -->
                     <span>{{ Math.round(row.oil_net_pay[0] * 10) / 10 }}</span>
                     <span v-if="wells && wells[row_index]" class="cell-comment">
                       {{ wells[row_index].oil_net_pay[1][1] }}
                     </span>
                   </td>
 
-                  <!-- <td>{{Math.round(row.oil_cumulative*10)/10}}</td> -->
                   <td
                     v-if="!edit"
                     :class="{
@@ -5790,7 +5609,6 @@
                     </span>
                   </td>
 
-                  <!-- <td>{{Math.round(row.max_q_liq_hist*10)/10}}</td> -->
                   <td
                     v-if="!edit"
                     :class="{
@@ -5840,7 +5658,6 @@
                       )}`"
                     >
                     </span>
-                    <!-- <input @change="editrow(row, row_index)" v-model="row.max_q_liq_hist[0]" :disabled="!edit"> -->
                     <span>{{
                       Math.round(row.max_q_liq_hist[0] * 10) / 10
                     }}</span>
@@ -5865,7 +5682,6 @@
                     {{ Math.round(row.dist_to_woc * 10) / 10 }}
                   </td>
 
-                  <!-- <td>{{Math.round(row.curr_bh*10)/10}}</td> -->
                   <td
                     v-if="!edit"
                     :class="{
@@ -5915,14 +5731,12 @@
                       )}`"
                     >
                     </span>
-                    <!-- <input @change="editrow(row, row_index)" v-model="row.curr_bh[0]" :disabled="!edit"> -->
                     <span>{{ Math.round(row.curr_bh[0] * 10) / 10 }}</span>
                     <span v-if="wells && wells[row_index]" class="cell-comment">
                       {{ wells[row_index].curr_bh[1][1] }}
                     </span>
                   </td>
 
-                  <!-- <td>{{Math.round(row.pump_fillage*10)/10}}</td> -->
                   <td
                     v-if="!edit"
                     :class="{
@@ -5972,7 +5786,6 @@
                       )}`"
                     >
                     </span>
-                    <!-- <input @change="editrow(row, row_index)" v-model="row.pump_fillage[0]" :disabled="!edit"> -->
                     <span>{{ Math.round(row.pump_fillage[0] * 10) / 10 }}</span>
                     <span v-if="wells && wells[row_index]" class="cell-comment">
                       {{ wells[row_index].pump_fillage[1][1] }}
@@ -5999,9 +5812,6 @@
                   <td v-if="edit">
                     {{ Math.round(row.q_liq_charac * 10) / 10 }}
                   </td>
-
-                  <!-- <td v-if="!edit">{{row.APV_t_rab}}</td>
-                          <td v-if="edit">{{row.APV_t_rab}}</td> -->
                   <td
                     v-if="!edit"
                     :class="{
@@ -6051,15 +5861,12 @@
                       )}`"
                     >
                     </span>
-                    <!-- <input @change="editrow(row, row_index)" v-model="row.APV_t_rab[0]" :disabled="!edit"> -->
                     <span>{{ row.APV_t_rab[0] }}</span>
                     <span v-if="wells && wells[row_index]" class="cell-comment">
                       {{ wells[row_index].APV_t_rab[1][1] }}
                     </span>
                   </td>
 
-                  <!-- <td v-if="!edit">{{row.APV_t_nak}}</td>
-                          <td v-if="edit">{{row.APV_t_nak}}</td> -->
                   <td
                     v-if="!edit"
                     :class="{
@@ -6109,7 +5916,6 @@
                       )}`"
                     >
                     </span>
-                    <!-- <input @change="editrow(row, row_index)" v-model="row.APV_t_nak[0]" :disabled="!edit"> -->
                     <span>{{ row.APV_t_nak[0] }}</span>
                     <span v-if="wells && wells[row_index]" class="cell-comment">
                       {{ wells[row_index].APV_t_nak[1][1] }}
@@ -6211,7 +6017,6 @@
                       v-model="row.planned_choke[0]"
                       :disabled="!edit"
                     />
-                    <!-- <span>{{Math.round(row.APV_t_rab[0]*10)/10}}</span> -->
                     <span v-if="wells && wells[row_index]" class="cell-comment">
                       {{ wells[row_index].planned_choke[1][1] }}
                     </span>
@@ -6266,7 +6071,6 @@
                       )}`"
                     >
                     </span>
-                    <!-- <input @change="editrow(row, row_index)" v-model="row.planned_oil[0]" :disabled="!edit"> -->
                     <span>{{ Math.round(row.planned_oil[0] * 10) / 10 }}</span>
                     <span v-if="wells && wells[row_index]" class="cell-comment">
                       {{ wells[row_index].planned_oil[1][1] }}
@@ -6328,7 +6132,6 @@
                       v-model="row.planned_liq[0]"
                       :disabled="!edit"
                     />
-                    <!-- <span>{{Math.round(row.APV_t_rab[0]*10)/10}}</span> -->
                     <span v-if="wells && wells[row_index]" class="cell-comment">
                       {{ wells[row_index].planned_liq[1][1] }}
                     </span>
@@ -6392,7 +6195,6 @@
                       v-model="row.planned_wct[0]"
                       :disabled="!edit"
                     />
-                    <!-- <span>{{Math.round(row.APV_t_rab[0]*10)/10}}</span> -->
                     <span v-if="wells && wells[row_index]" class="cell-comment">
                       {{ wells[row_index].planned_wct[1][1] }}
                     </span>
@@ -6454,7 +6256,6 @@
                       v-model="row.planned_month_days[0]"
                       :disabled="!edit"
                     />
-                    <!-- <span>{{Math.round(row.APV_t_rab[0]*10)/10}}</span> -->
                     <span v-if="wells && wells[row_index]" class="cell-comment">
                       {{ wells[row_index].planned_month_days[1][1] }}
                     </span>
@@ -6509,7 +6310,6 @@
                       )}`"
                     >
                     </span>
-                    <!-- <input @change="editrow(row, row_index)" v-model="row.planned_monthly_oil[0]" :disabled="!edit"> -->
                     <span>{{
                       Math.round(row.planned_monthly_oil[0] * 10) / 10
                     }}</span>
@@ -6567,7 +6367,6 @@
                       )}`"
                     >
                     </span>
-                    <!-- <input @change="editrow(row, row_index)" v-model="row.planned_monthly_gas[0]" :disabled="!edit"> -->
                     <span>{{
                       Math.round(row.planned_monthly_gas[0] * 10) / 10
                     }}</span>
@@ -6625,7 +6424,6 @@
                       )}`"
                     >
                     </span>
-                    <!-- <input @change="editrow(row, row_index)" v-model="row.planned_monthly_liq[0]" :disabled="!edit"> -->
                     <span>{{
                       Math.round(row.planned_monthly_liq[0] * 10) / 10
                     }}</span>
@@ -6683,7 +6481,6 @@
                       )}`"
                     >
                     </span>
-                    <!-- <input @change="editrow(row, row_index)" v-model="row.planned_monthly_water[0]" :disabled="!edit"> -->
                     <span>{{
                       Math.round(row.planned_monthly_water[0] * 10) / 10
                     }}</span>
@@ -6741,7 +6538,6 @@
                       )}`"
                     >
                     </span>
-                    <!-- <input @change="editrow(row, row_index)" v-model="row.planned_diff_oil[0]" :disabled="!edit"> -->
                     <span>{{
                       Math.round(row.planned_diff_oil[0] * 10) / 10
                     }}</span>
@@ -6799,7 +6595,6 @@
                       )}`"
                     >
                     </span>
-                    <!-- <input @change="editrow(row, row_index)" v-model="row.planned_diff_liq[0]" :disabled="!edit"> -->
                     <span>{{
                       Math.round(row.planned_diff_liq[0] * 10) / 10
                     }}</span>
@@ -6863,7 +6658,6 @@
                       v-model="row.planned_events[0]"
                       :disabled="!edit"
                     />
-                    <!-- <span>{{Math.round(row.APV_t_rab[0]*10)/10}}</span> -->
                     <span v-if="wells && wells[row_index]" class="cell-comment">
                       {{ wells[row_index].planned_events[1][1] }}
                     </span>
@@ -6891,6 +6685,9 @@ import TrMultiselect from "./TrMultiselect.vue";
 Vue.use(NotifyPlugin);
 export default {
   name: "TrPage",
+  props: [
+    'params'
+  ],
   components: {
     TrTable,
     TrFullTable,
@@ -7053,7 +6850,6 @@ export default {
         this.selectYear = yyyy;
         this.month = mm;
         this.$store.commit("globalloading/SET_LOADING", false);
-        // this.isloading = false;
         if (data) {
           console.log(data);
           this.wells = data.data;
@@ -7067,6 +6863,7 @@ export default {
         } else {
           this.dt = "01" + "." + mm1 + "." + yyyy1;
         }
+        this.isPermission = this.params.includes(this.permissionName);
       });
   },
   data: function () {
@@ -7076,11 +6873,10 @@ export default {
       searched: false,
       sortParam: "",
       sortType: "asc",
-      // filter: "Все месторождения",
       filter: [...fields],
       fieldFilterOptions: [
         {
-          group: this.trans('tr.traw'),
+          group: this.trans('tr.all_wells'),
           fields: [...fields],
         },
       ],
@@ -7114,7 +6910,8 @@ export default {
       datepicker2: false,
       date_fix: true,
       is_dynamic: false,
-      // date_dyn: false,
+      permissionName: 'tr edit',
+      isPermission: false,
     };
   },
   watch: {
@@ -7144,12 +6941,6 @@ export default {
         )
         .then((response) => {
           if (response.data) {
-            // console.log('EDIT_RESPONSE', response.data.data[0])
-            // this.wells = this.wells.map((currentRow, index) => {
-            //   // console.log('norm', index, rowId)
-            //   return index === rowId ? response.data.data[0] :   currentRow;
-            // });
-
             this.wells = [
               ...this.wells.slice(0, rowId),
               response.data.data[0],
@@ -7167,7 +6958,6 @@ export default {
     savetable() {
       this.edit = false;
       this.$store.commit("globalloading/SET_LOADING", true);
-      // this.isloading = true;
       const searchParam = this.searchString ? `${this.searchString}/` : "";
       this.axios
         .post(
@@ -7186,7 +6976,6 @@ export default {
           this.fullWells = response.data;
           this.editedWells = [];
           this.$store.commit("globalloading/SET_LOADING", false);
-          // this.isloading = false;
           this.searched = searchParam ? true : false;
         })
         .catch((error) => {
@@ -7239,7 +7028,6 @@ export default {
           let data = response.data;
 
           this.$store.commit("globalloading/SET_LOADING", false);
-          // this.isloading = false;
           if (data) {
             console.log(data);
             this.wells = data.data;
@@ -7345,8 +7133,6 @@ export default {
       this.$store.commit("tr/SET_YEAR", event.target.value);
     },
     chooseDt1() {
-      
-      // this.isloading = true;
       const { date1, date2 } = this;
       console.log("dt1-", date1, " dt2-", date2);
       var choosenDt = date1.split("-");
@@ -7371,15 +7157,10 @@ export default {
         this.axios
           .get(
             "http://172.20.103.187:7576/api/techregime/dynamic/" +
-              // this.selectYear +
-              // "/" +
-              // this.month +
-              // "/"
               pryyyy + "/" + prMm + "/" + prdd + "/" + yyyy + "/" + mm + "/" + dd + "/"
           )
           .then((response) => {
             this.$store.commit("globalloading/SET_LOADING", false);
-            // this.isloading = false;
             let data = response.data;
             if (data) {
               this.searched = false;
@@ -7391,7 +7172,6 @@ export default {
               this.sortParam = "";
               this.searchString = "";
               console.log(data);
-              // this.wells = data.data;
               this.fullWells = data.data;
             } else {
               console.log("No data");
@@ -7407,7 +7187,6 @@ export default {
 
     chooseDt() {
       this.$store.commit("globalloading/SET_LOADING", true);
-      // this.isloading = true;
       this.axios
         .get(
           "http://172.20.103.187:7576/api/techregime/" +
@@ -7418,7 +7197,6 @@ export default {
         )
         .then((response) => {
           this.$store.commit("globalloading/SET_LOADING", false);
-          // this.isloading = false;
           let data = response.data;
           if (data) {
             this.searched = false;
@@ -7429,7 +7207,6 @@ export default {
             this.sortParam = "";
             this.searchString = "";
             console.log(data);
-            // this.wells = data.data;
             this.fullWells = data.data;
           } else {
             console.log("No data");
@@ -7444,14 +7221,12 @@ export default {
 
     wellAdd() {
       this.$store.commit("globalloading/SET_LOADING", true);
-      // this.isloading = true;
       this.axios
         .get(
           "http://172.20.103.187:7576/api/techregime/new_wells/" 
         )
         .then((response) => {
           this.$store.commit("globalloading/SET_LOADING", false);
-          // this.isloading = false;
           let data = response.data;
           if (data) {
             this.searched = false;
@@ -7460,7 +7235,6 @@ export default {
             this.sortParam = "";
             this.searchString = "";
             console.log(data);
-            // this.wells = data.data;
             this.allWells = data.data;
             
           } else {
@@ -7469,23 +7243,11 @@ export default {
           
         });
     },
-    // chooseField() {
-    //   const { filter, fullWells } = this;
-    //   console.log(filter);
-    //   console.log(fullWells);
-    //   // if (!filter || filter == "Казгермунай") {
-    //   this.$store.commit("tr/SET_FILTER", filter);
-    //   if (!filter || filter == "Все месторождения") {
-    //     this.wells = fullWells;
-    //   } else {
-    //     this.wells = fullWells.filter((e) => e.field === filter);
-    //   }
-    // },
     chooseField() {
       const { filter, fullWells } = this;
       console.log("filter = ", filter);
       console.log(fullWells);
-      // if (!filter || filter == "Казгермунай") {
+
       this.$store.commit("tr/SET_FILTER", filter);
       if (!filter) {
         this.wells = fullWells;
@@ -7504,10 +7266,7 @@ export default {
       this.datepicker1 = !this.datepicker1
       this.datepicker2 = !this.datepicker2
     },
-    // calendarDate() {
-    //   this.date_fix = !this.date_fix
-    //   this.date_dyn = !this.date_dyn
-    // },
+
     getColor(status) {
       if (status === "1") return "#ffff00";
       return "#ff0000";
@@ -7519,8 +7278,7 @@ export default {
       this.checkersec=false;
       this.reRender();
     },
-    addpush(){
-        
+    addpush(){     
         this.$modal.show('add_well')
     },
 
@@ -7530,33 +7288,10 @@ export default {
     handlerFilter(filter) {
       this.filter = filter;
     },
-    // deleteOrSave() {
-    //   if(this.lonelywell[0].is_saved === "Не сохранено"){
-    //         this.is_save=true
-    //   }
-    //   else{
-    //     return this.is_save=false
-    //   }
-    // },
-    // Отправка данных с модалки в бэк
-
-    // deleteOrSave() {
-    //   if(this.lonelywell.length === 1){
-    //     this.save_check = !this.show_add;
-    //   }
-    //   else{
-    //     this.show_add = this.show_add;
-    //   }
-    // },
-
-
-
-
 
     saveadd() {
       console.log(this.$refs.editTable);
       Vue.prototype.$notifySuccess (`Скважина ${this.lonelywell[0].rus_wellname} сохранена`);
-      //this.$refs.saveTable
       let output = {}
       console.log(this.$refs.editTable[0].children);
       console.log(this.$refs.editTable[0].children[0].children[0].dataset.key);
@@ -7604,7 +7339,6 @@ export default {
       this.$store.commit("tr/SET_SORTPARAM", "");
       this.sortParam = "";
       this.$store.commit("globalloading/SET_LOADING", true);
-      // this.isloading = true;
       const searchParam = this.searchString
         ? `search/${this.searchString}/`
         : "";
@@ -7619,25 +7353,21 @@ export default {
         )
         .then((response) => {
           this.$store.commit("globalloading/SET_LOADING", false);
-          // this.isloading = false;
+
           this.searched = searchParam ? true : false;
           this.$store.commit("tr/SET_SEARCH", this.searchString);
           let data = response.data;
           if (data) {
             console.log(data);
-            // this.wells = data.data;
             this.fullWells = data.data;
           } else {
-            // this.wells = [];
             this.fullWells = [];
             console.log("No data");
           }
         })
         .catch((error) => {
-          // this.wells = [];
           this.searched = searchParam ? true : false;
           this.$store.commit("globalloading/SET_LOADING", false);
-          // this.isloading = false;
           this.fullWells = [];
           console.log("search error = ", error);
         });
@@ -7646,7 +7376,7 @@ export default {
 };
 </script>
 <style scoped>
-/* @import "element-variables"; */
+
 body {
   color: white !important;
 }
@@ -7673,7 +7403,7 @@ body {
 }
 .input-group-prepend {
   padding-top: 3px !important;
-  /* margin-right: 0px!important; */
+
 }
 a:hover {
   color: white !important;
@@ -7890,7 +7620,6 @@ table::-webkit-scrollbar-corner {
 }
 .fadropmenu.fadropmenu {
   background: #333975;
-  /* width: 246px; */
   z-index: 4001 !important;
 }
 .faheadhight {

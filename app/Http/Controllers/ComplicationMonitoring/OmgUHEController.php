@@ -179,10 +179,10 @@ class OmgUHEController extends CrudController
 
         $input['yearly_inhibitor_flowrate'] = $dailyInhibitorFlowrate + $input['daily_inhibitor_flowrate'];
 
-        $omgohe = new OmgUHE;
-        $omgohe->fill($input);
-        $omgohe->cruser_id = auth()->id();
-        $omgohe->save();
+        $omguhe = new OmgUHE;
+        $omguhe->fill($input);
+        $omguhe->cruser_id = auth()->id();
+        $omguhe->save();
 
         Session::flash('message', __('app.created'));
 

@@ -84,7 +84,7 @@ export default {
     },
     methods: {
         dayClicked() {
-            this.changeMenu2('4');
+            this.changeMenu2('period');
         },
 
         periodSelect() {
@@ -107,7 +107,7 @@ export default {
 
         changeDate() {
             this.selectedDay = 0;
-            this.timestampToday = new Date(this.range.start).getTime();
+            this.timestampToday = this.formatDateWithoutTimezone(new Date(this.range.start));
             this.timestampEnd = new Date(this.range.end).getTime();
             let differenceBetweenDates = this.timestampEnd - this.timestampToday;
             this.quantityRange = Math.trunc((Math.abs(differenceBetweenDates) / 86400000) + 1);
@@ -120,6 +120,10 @@ export default {
             this.getCurrencyNow(new Date().toLocaleDateString());
             this.getAccidentTotal();
             this.updatePrices(this.period);
+        },
+
+        formatDateWithoutTimezone(date) {
+            return new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0).getTime();
         },
 
         menuDMY() {

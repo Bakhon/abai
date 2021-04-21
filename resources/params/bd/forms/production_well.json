@@ -1,0 +1,65 @@
+{
+  "table": "bigdata_wells",
+  "tabs": [
+    {
+      "title": "Основное",
+      "blocks": [
+        [
+          {
+            "title": "Tech_modes_indicators",
+            "items": [
+              {
+                "code": "date_start",
+                "type": "date",
+                "title": "date_start",
+                "validation": "nullable|date|before_or_equal:today"
+              },
+              {
+                "code": "date_end",
+                "type": "date",
+                "title": "date_end",
+                "validation": "nullable|date|before_or_equal:today|after:date_start_drilling"
+              }
+            ]
+          },
+          {
+            "title": "calculated_fields",
+            "items": [
+              {
+                "code": "oil_density",
+                "type": "numeric",
+                "title": "oil_density",
+                "validation": "numeric"
+              }
+            ]
+          }
+        ],
+        [
+          {
+            "title": "Intended_production_regime",
+            "items": [
+              {
+                "code": "liquid",
+                "type": "numeric",
+                "title": "liquid",
+                "validation": "numeric"
+              },
+              {
+                "code": "oil",
+                "type": "numeric",
+                "title": "oil",
+                "validation": "numeric"
+              },
+              {
+                "code": "water_cut",
+                "type": "numeric",
+                "title": "water_cut",
+                "validation": "numeric|min:0|max:100"
+              }
+            ]
+          }
+        ]
+      ]
+    }
+  ]
+}

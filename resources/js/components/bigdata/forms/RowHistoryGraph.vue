@@ -16,7 +16,7 @@
             </thead>
             <tbody>
             <tr v-for="(fields, date) in params.table.rows">
-              <td>{{ date }}</td>
+              <td>{{ fields[tableColumns[0].code] === null ? date : fields[tableColumns[0].code].time }}</td>
               <td v-for="column in tableColumns">
                 {{ fields[column.code] === null ? '' : fields[column.code].value }}
               </td>
@@ -25,15 +25,18 @@
           </table>
         </div>
         <div class="graph">
-          <Plotly :data="graphData"
-                  :display-mode-bar="false"
-                  :displaylogo="false"
-                  :layout="layout"
+          <Plotly
+              v-for="(data, index) in graphData"
+              :key="`plot_${index}`"
+              :data="Object.values(data)"
+              :display-mode-bar="true"
+              :displaylogo="false"
+              :layout="layout"
+              :mode-bar-buttons-to-remove="buttonsToRemove"
           />
         </div>
       </div>
     </div>
-
   </div>
 </template>
 
@@ -51,6 +54,19 @@ export default {
   },
   data() {
     return {
+      buttonsToRemove: [
+        'zoom2d',
+        'pan2d',
+        'select2d',
+        'lasso2d',
+        'zoomIn2d',
+        'zoomOut2d',
+        'autoScale2d',
+        'resetScale2d',
+        'hoverClosestCartesian',
+        'hoverCompareCartesian',
+        'toggleSpikelines'
+      ],
       layout: {
         bargap: 0.05,
         bargroupgap: 0.2,
@@ -62,9 +78,9 @@ export default {
           b: 0,
           t: 30
         },
+        showlegend: true,
         xaxis: {
           title: '',
-          hoverformat: ".1f",
           gridcolor: "#454D7D",
           linewidth: 1,
           linecolor: "#454D7D",
@@ -110,6 +126,36 @@ export default {
           linecolor: "#454D7D",
           fixedrange: true
         },
+        yaxis2: {
+          title: '',
+          showline: true,
+          gridcolor: "#454D7D",
+          linewidth: 1,
+          linecolor: "#454D7D",
+          fixedrange: true,
+          overlaying: 'y',
+          side: 'right'
+        },
+        yaxis3: {
+          title: '',
+          showline: true,
+          gridcolor: "#454D7D",
+          linewidth: 1,
+          linecolor: "#454D7D",
+          fixedrange: true,
+          overlaying: 'y',
+          side: 'right'
+        },
+        yaxis4: {
+          title: '',
+          showline: true,
+          gridcolor: "#454D7D",
+          linewidth: 1,
+          linecolor: "#454D7D",
+          fixedrange: true,
+          overlaying: 'y',
+          side: 'right'
+        },
         paper_bgcolor: "#272953",
         plot_bgcolor: "#272953",
         font: {color: "#fff"}
@@ -128,33 +174,61 @@ export default {
     },
     graphData() {
 
-      let result = {};
-      this.formParams.columns.filter(item => this.params.graph.columns.indexOf(item.code) > -1).forEach(column => {
-        result[column.code] = {
-          name: this.trans(column.title),
-          type: 'line',
-          x: [],
-          y: []
-        }
+      let columnCodes = []
+      this.params.graph.columns.forEach(block => {
+        columnCodes = [...columnCodes, ...Object.keys(block)]
       })
 
-      for (let date in this.params.graph.rows) {
-        this.params.graph.columns.forEach(column => {
-          if (this.params.graph.rows[date][column]) {
-            result[column].x.push(moment(date, 'DD.MM.YYYY').format('YYYY-MM-DD'))
-            result[column].y.push(this.params.graph.rows[date][column].value)
+      let plots = {}
+      let plotIndex = 1
+      this.params.graph.columns.forEach(block => {
+        plots[plotIndex] = {}
+        let yAxisIndex = 0
+        for (let columnCode in block) {
+          let column = this.formParams.columns.find(item => item.code === columnCode)
+
+          if (block[columnCode].axis) {
+            yAxisIndex++
           }
-        })
-      }
-      return Object.values(result)
+
+          let data = {
+            name: this.trans(column.title),
+            type: 'line',
+            x: [],
+            y: []
+          }
+
+          if (yAxisIndex > 0) {
+            data.yaxis = `y${yAxisIndex}`
+          }
+
+          plots[plotIndex][column.code] = data
+        }
+        plotIndex++
+      })
+      return this.fillValues(plots)
     },
     title() {
       let column = this.formParams.columns.find(item => item.code === this.params.selectedColumn)
       return column.history_popup.title
     }
   },
-  mounted() {
-
+  methods: {
+    fillValues(plots) {
+      for (let date in this.params.graph.rows) {
+        let plotIndex = 1;
+        this.params.graph.columns.forEach(block => {
+          for (let columnCode in block) {
+            if (this.params.graph.rows[date][columnCode]) {
+              plots[plotIndex][columnCode].x.push(moment(date, 'DD.MM.YYYY').format('YYYY-MM-DD'))
+              plots[plotIndex][columnCode].y.push(this.params.graph.rows[date][columnCode].value)
+            }
+          }
+          plotIndex++
+        })
+      }
+      return plots
+    }
   }
 }
 </script>
@@ -163,13 +237,19 @@ export default {
   &_wide {
     .bd-popup__inner {
       max-width: 1485px;
-      width: 100%;
+      width: calc(100% - 130px);
     }
   }
 
-  .table-page.table-page_fixed {
-    height: 200px;
-    overflow: auto;
+  .table-page {
+    &.table-page_fixed {
+      height: 200px;
+      overflow: auto;
+    }
+
+    .table {
+      width: auto;
+    }
   }
 
   .graph {

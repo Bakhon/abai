@@ -15,7 +15,7 @@
     {
       "title": "worktime",
       "code": "worktime",
-      "table": "tbdi.well_status",
+      "table": "prod.well_status",
       "column": "well_status_type_id",
       "type": "text",
       "is_editable": false
@@ -23,7 +23,7 @@
     {
       "title": "exp_type",
       "code": "exp_type",
-      "table": "tbdi.well_expl",
+      "table": "prod.well_expl",
       "column": "name",
       "type": "text",
       "is_editable": false
@@ -31,7 +31,7 @@
     {
       "title": "lease",
       "code": "lease",
-      "table": "tbdi.well_tech",
+      "table": "prod.well_tech",
       "column": "tap",
       "type": "integer",
       "is_editable": false
@@ -45,7 +45,7 @@
     {
       "title": "debit_fluid_tech",
       "code": "debit_fluid_tech",
-      "table": "tbdi.tech_mode_well",
+      "table": "prod.tech_mode",
       "column": "liquid",
       "type": "float",
       "is_editable": false
@@ -53,7 +53,7 @@
     {
       "title": "debit_oil_tech",
       "code": "debit_oil_tech",
-      "table": "tbdi.tech_mode_well",
+      "table": "prod.tech_mode",
       "column": "oil",
       "type": "float",
       "is_editable": false
@@ -61,8 +61,8 @@
     {
       "title": "bsw_tech",
       "code": "bsw_tech",
-      "table": "tbdi.tech_mode_well",
-      "column": "bsw",
+      "table": "prod.tech_mode",
+      "column": "wcut",
       "type": "float",
       "is_editable": false
     },
@@ -83,8 +83,8 @@
     {
       "title": "liquid_debit",
       "code": "liquid_debit",
-      "table": "tbdi.liquid_prod",
-      "column": "liquid_val",
+      "table": "prod.meas_liq",
+      "column": "liquid",
       "type": "float",
       "is_editable": true,
       "validation": "numeric|gt:0",
@@ -93,9 +93,13 @@
     {
       "title": "mark",
       "code": "mark",
-      "type": "text",
-      "table": "tbdic.well_telemetry",
-      "column": "source",
+      "type": "copy",
+      "copy": {
+        "from": "liquid_telemetry",
+        "to": "liquid_debit"
+      },
+      "table": "prod.well_telemetry",
+      "column": "copied",
       "additional_filter": {
         "metric": "1"
       },
@@ -105,17 +109,21 @@
       "title": "liquid_telemetry",
       "code": "telemetry",
       "type": "history_graph",
+      "table": "prod.well_telemetry",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": "1"
+      },
       "fields": [
-        "liquid_telemetry",
-        "telemetry_source"
+        {
+          "liquid_telemetry": {},
+          "telemetry_source": {}
+        }
       ],
       "graph_fields": [
-        "liquid_val",
-        "bsw",
-        "oil_val",
-        "debit_fluid_tech",
-        "bsw_tech",
-        "debit_oil_tech"
+        {
+          "liquid_telemetry": {}
+        }
       ],
       "history_popup": {
         "title": "telemetry_data"
@@ -125,8 +133,8 @@
     {
       "title": "bsw",
       "code": "bsw",
-      "table": "tbdi.bsw_prod",
-      "column": "bsw_val",
+      "table": "prod.meas_water_cut",
+      "column": "water_cut",
       "type": "float",
       "is_editable": true,
       "validation": "numeric|gte:0|lte:100",
@@ -142,10 +150,10 @@
     {
       "title": "contamination",
       "code": "contamination",
-      "table": "tbdi.lab_research_value",
-      "column": "value_string",
+      "table": "prod.lab_research_value",
+      "column": "value_text",
       "additional_filter": {
-        "name_param": "Мех. примеси, %"
+        "param": 258
       },
       "type": "float",
       "is_editable": false,
@@ -154,11 +162,11 @@
     {
       "title": "pipe_diameter",
       "code": "pipe_diameter",
-      "table": "tbdic.well_equip_params",
+      "table": "prod.well_equip",
       "column": "value_double",
       "additional_filter": {
-        "equip_type": "1",
-        "equip_prm": "2"
+        "dict.equip.equip_type": "1",
+        "dict.equip_factory_param.prm": 313
       },
       "type": "float",
       "is_editable": false
@@ -166,10 +174,12 @@
     {
       "title": "p_buf",
       "code": "p_buf",
-      "table": "tbdic.meas_log_cut",
+      "table": "prod.meas_well",
       "column": "value_double",
       "additional_filter": {
-        "param_name": "p_buf"
+        "metric": "314",
+        "activity": "1",
+        "value_type": "1"
       },
       "type": "float",
       "is_editable": true,
@@ -179,10 +189,12 @@
     {
       "title": "Рзатр",
       "code": "p_zatr",
-      "table": "tbdic.meas_log_cut",
+      "table": "prod.meas_well",
       "column": "value_double",
       "additional_filter": {
-        "param_name": "p_zatr"
+        "metric": "315",
+        "activity": "1",
+        "value_type": "1"
       },
       "type": "float",
       "is_editable": true,
@@ -192,10 +204,12 @@
     {
       "title": "p_buf_b",
       "code": "p_buf_b",
-      "table": "tbdic.meas_log_cut",
+      "table": "prod.meas_well",
       "column": "value_double",
       "additional_filter": {
-        "param_name": "p_buf_b"
+        "metric": "316",
+        "activity": "1",
+        "value_type": "1"
       },
       "type": "float",
       "is_editable": true,
@@ -205,10 +219,12 @@
     {
       "title": "p_buf_a",
       "code": "p_buf_a",
-      "table": "tbdic.meas_log_cut",
+      "table": "prod.meas_well",
       "column": "value_double",
       "additional_filter": {
-        "param_name": "p_buf_a"
+        "metric": "317",
+        "activity": "1",
+        "value_type": "1"
       },
       "type": "float",
       "is_editable": true,
@@ -218,10 +234,12 @@
     {
       "title": "cycle_per_minute",
       "code": "cycle_per_minute",
-      "table": "tbdi.current_gdis_value",
+      "table": "prod.gdis_current_value",
       "column": "value_double",
       "additional_filter": {
-        "param_gdis_id": 5000000572
+        "metric": "318",
+        "activity": "1",
+        "value_type": "1"
       },
       "type": "float",
       "is_editable": false
@@ -229,10 +247,12 @@
     {
       "title": "length_stroke",
       "code": "length_stroke",
-      "table": "tbdi.current_gdis_value",
+      "table": "prod.gdis_current_value",
       "column": "value_double",
       "additional_filter": {
-        "param_gdis_id": 5000000568
+        "metric": "319",
+        "activity": "1",
+        "value_type": "1"
       },
       "type": "float",
       "is_editable": false
@@ -240,10 +260,12 @@
     {
       "title": "reciprotating_speed",
       "code": "reciprotating_speed",
-      "table": "tbdi.current_gdis_value",
+      "table": "prod.gdis_current_value",
       "column": "value_double",
       "additional_filter": {
-        "param_gdis_id": 5000000569
+        "metric": "320",
+        "activity": "1",
+        "value_type": "1"
       },
       "type": "float",
       "is_editable": false
@@ -251,16 +273,23 @@
     {
       "title": "downtime_reason",
       "code": "downtime_reason",
+      "table": "prod.well_status",
+      "column": "reason",
+      "additional_filter": {
+        "status": "4"
+      },
       "type": "text",
       "is_editable": false
     },
     {
       "title": "gas_factor",
       "code": "gas_factor",
-      "table": "tbdic.meas_log_cut",
+      "table": "prod.meas_well",
       "column": "value_double",
       "additional_filter": {
-        "param_name": "gas_factor"
+        "metric": "321",
+        "activity": "1",
+        "value_type": "1"
       },
       "type": "float",
       "is_editable": true,
@@ -277,22 +306,16 @@
     {
       "title": "note",
       "code": "note",
-      "table": "tbdic.meas_log_cut",
-      "column": "value_string",
-      "additional_filter": {
-        "param_name": "note"
-      },
+      "table": "prod.meas_liq",
+      "column": "note",
       "type": "text",
       "is_editable": true
     },
     {
       "title": "prod_decline_reason",
       "code": "prod_decline_reason",
-      "table": "tbdic.meas_log_cut",
-      "column": "value_string",
-      "additional_filter": {
-        "param_name": "prod_decline_reason"
-      },
+      "table": "prod.meas_liq",
+      "column": "reason_decline",
       "type": "text",
       "is_editable": true
     },
@@ -301,10 +324,12 @@
       "code": "measure_last_month",
       "type": "history",
       "fields": [
-        "liquid_debit",
-        "bsw",
-        "oil_debit",
-        "worktime"
+        {
+          "liquid_debit": {},
+          "bsw": {},
+          "oil_debit": {},
+          "worktime": {}
+        }
       ],
       "is_editable": false
     },
@@ -318,7 +343,7 @@
       "title": "Данные телеметрии",
       "code": "liquid_telemetry",
       "type": "hidden",
-      "table": "tbdic.well_telemetry",
+      "table": "prod.well_telemetry",
       "column": "value_double",
       "additional_filter": {
         "metric": "1"
@@ -329,7 +354,7 @@
       "title": "Источник телеметрии",
       "code": "telemetry_source",
       "type": "hidden",
-      "table": "tbdic.well_telemetry",
+      "table": "prod.well_telemetry",
       "column": "source",
       "additional_filter": {
         "metric": "1"
