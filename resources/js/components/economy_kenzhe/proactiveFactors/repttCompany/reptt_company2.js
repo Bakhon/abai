@@ -70,7 +70,7 @@ export default {
 			}, 0);
 		},
 
-		getColumnChangedClass(obj) {
+		getChangedColumnClass(obj) {
 			if (obj.columnIndex > 4) {
 				return 'reptt-column-blue reptt-cell';
 			} else {

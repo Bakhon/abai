@@ -7,8 +7,8 @@
       style="width: 100%;"
       row-key="id"
       border    
-      :cell-class-name="getColumnChangedClass"
-      :header-cell-class-name="getColumnChangedClass"
+      :cell-class-name="getChangedColumnClass"
+      :header-cell-class-name="getChangedColumnClass"
       :row-class-name="hideEmptyValues"
       class="reptt"
     >
