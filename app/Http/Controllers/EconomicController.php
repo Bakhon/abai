@@ -485,7 +485,17 @@ class EconomicController extends Controller
     {
         $end = Carbon::parse($end ?? now());
 
-        $start = $start ? Carbon::parse($start) : $end->copy()->subMonths($count)->setDay(1);
+        if ($start) {
+            $start = Carbon::parse($start);
+
+            $diffMonths = $start->diffInMonths($end);
+
+            if ($diffMonths < 2) {
+                $start->subMonths(2 - $diffMonths);
+            }
+        } else {
+            $start = $end->copy()->subMonths($count)->setDay(1);
+        }
 
         return self::intervalFormat($start, $end);
     }

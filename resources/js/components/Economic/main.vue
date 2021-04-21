@@ -102,12 +102,14 @@
               {{ subBlock.title }}
             </div>
 
-            <div class="progress my-2"
+            <div :class="subBlock.sum.percent < 0 ? '' : 'bg-green'"
+                 class="progress my-2"
                  style="background: rgba(94, 92, 230, 0.2); height: 5px">
               <div
                   class="progress-bar"
                   role="progressbar"
-                  :style="{width: (100 + subBlock.sum.percent) + '%'}"
+                  :class="subBlock.sum.percent < 0 ? 'bg-red' : 'bg-light-blue-dark'"
+                  :style="{width: (100 - Math.abs(subBlock.sum.percent)) + '%'}"
                   :aria-valuenow="subBlock.sum.percent"
                   :aria-valuemin="0"
                   :aria-valuemax="100"
@@ -460,6 +462,18 @@ export default {
 
 .bg-blue-dark {
   background: #2B2E5E;
+}
+
+.bg-light-blue-dark{
+  background: #323370 !important;
+}
+
+.bg-red{
+  background: rgb(171, 19, 14) !important;
+}
+
+.bg-green{
+  background: rgb(19, 176, 98) !important;
 }
 
 .text-blue {

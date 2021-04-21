@@ -14,7 +14,7 @@
         <tr>
             @foreach(\App\Exports\EconomicDataExport::COLUMNS as $column)
                 <th style="border: 1px solid black; height: 20px">
-                    {{$item[$column]}}
+                    {{$item[$column] ?? null}}
                 </th>
             @endforeach
         </tr>
