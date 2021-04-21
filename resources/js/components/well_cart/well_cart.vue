@@ -94,7 +94,10 @@
     </div>
         <div class="col-md-2">
                 <div class="bg-dark">
-                <h1>Поиск скважины</h1>
+                    <div class="heading">Поиск скважины</div>
+                    <form class="search-form">
+                        <input type="text" placeholder="Номер скважины">
+                    </form>
                 </div>
          </div>
 
@@ -172,6 +175,13 @@
             padding-left: 35px;
             display: flex;
         }
+    }
+    .heading{
+        font-family: Roboto;
+        color: white;
+        font-size: 16px;
+        line-height: 18px;
+        font-weight: 700;
     }
     .txt5{
         display: flex;
