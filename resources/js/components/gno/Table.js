@@ -11,6 +11,7 @@ import Vue from 'vue';
 import FullPageLoader from '../ui-kit/FullPageLoader';
 import * as htmlToImage from 'html-to-image';
 import jsPDF from 'jspdf';
+import Tabs from './tabs/Tabs.vue'
 const fileDownload = require("js-file-download");
 
 Vue.prototype.$eventBus = new Vue();
@@ -21,7 +22,7 @@ Vue.component("Plotly", Plotly);
 
 
 export default {
-  components: { PerfectScrollbar, FullPageLoader },
+  components: { PerfectScrollbar, FullPageLoader, Tabs },
   data: function () {
     return {
       url: "http://172.20.103.187:7575/api/pgno/",

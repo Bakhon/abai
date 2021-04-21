@@ -350,7 +350,7 @@
                 </div>
               </modal>
 
-               <modal class="modal-bign-wrapper" name="modalSeparation" :draggable="true" :width="600" :height="300"
+               <modal class="modal-bign-wrapper" name="modalSeparation" :draggable="false" :width="1000" :height="500"
                 style="background: transparent;" :adaptive="true">
                 <div class="modal-bign modal-bign-container">
                   <div class="modal-bign-header">
@@ -362,7 +362,7 @@
                   </div>
 
                   <div class="Table" align="center" x:publishsource="Excel">
-                    
+                    <tabs></tabs>
                   </div>
                 </div>
               </modal>
@@ -1215,7 +1215,7 @@
                       </div>
 
                       <div class="table-pgno-four">
-                        <table class="table-pgno shgn-table" style="line-height: 10px;">
+                        <table class="table-pgno shgn-table">
                           <thead>
                             <tr class="tr-pgno" height="5px" style="height: 30pt;">
                               <td class="td-pgno" rowspan="1">
