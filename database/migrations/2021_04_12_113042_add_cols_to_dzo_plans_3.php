@@ -26,7 +26,7 @@ class AddColsToDzoPlans3 extends Migration
     public function down()
     {
         Schema::table('dzo_plans', function (Blueprint $table) {
-            //
+            $table->dropColumn('plan_liq_voljsk');
         });
     }
 }

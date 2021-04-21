@@ -120,7 +120,7 @@
       class="tech tr-table-header"
       style="display: flex; background: #272953; margin-left: 0px !important"
     >
-      <h3 style="margin-left: 14px">{{trans('tr.fa')}}</h3>
+      <h3 style="margin-left: 14px">{{faHeader}}</h3>
       <tr-multiselect
         :filter="filter"
         :selectedAllTag="true"
@@ -1023,6 +1023,7 @@ export default {
   },
   data: function () {
     return {
+      faHeader: null,
       pieChartRerender: true,
       wells: [],
       searchString: "",
@@ -1308,8 +1309,9 @@ export default {
           this.prodIndexMeasure = this.trans('tr.m3_day_atm');     
           this.dt = dd + "." + mm + "." + yyyy;
           this.secWeekDate = prdd + "." + prmm + "." + pryyyy;
-          this.fa_table_header = this.trans('tr.period_of_act_data') + this.dt + '-' + this.firstWeekDate2;
-          this.fa_table_header2 = this.trans('tr.period_of_act_data') + this.secWeekDate + '-' + this.dt2;
+          this.fa_table_header = this.trans('tr.period_of_act_data') + this.firstWeekDate2 + '-' + this.dt;
+          this.fa_table_header2 = this.trans('tr.period_of_act_data') + this.dt2 + '-' + this.secWeekDate;
+          this.faHeader = this.trans('tr.fa_') + this.dt2 + '-' + this.dt;
         });
     },
     chooseDt() {
@@ -1380,6 +1382,7 @@ export default {
             this.factorsMeasure = this.trans('tr.t_day');  
             this.fa_table_header = this.trans('tr.period_of_act_data') + this.dt;
             this.fa_table_header2 = this.trans('tr.period_of_act_data') + this.dt2;
+            this.faHeader = this.trans('tr.fa_') + this.dt2 + '-' + this.dt;
           });
       }
     },
@@ -1569,8 +1572,9 @@ export default {
         }
         this.date1 = weekd1;
         this.date2 = weekd2;
-        this.fa_table_header = this.trans('tr.period_of_act_data') + this.firstWeekDate + '-' + this.firstWeekDate2;
-        this.fa_table_header2 = this.trans('tr.period_of_act_data') + this.secWeekDate + '-' + this.secWeekDate2;
+        this.fa_table_header = this.trans('tr.period_of_act_data') + this.firstWeekDate2 + '-' + this.firstWeekDate;
+        this.fa_table_header2 = this.trans('tr.period_of_act_data') + this.secWeekDate2 + '-' + this.secWeekDate;
+        this.faHeader = this.trans('tr.fa_') + this.secWeekDate2 + '-' + this.firstWeekDate;
       });
   },
   mounted: function () {
