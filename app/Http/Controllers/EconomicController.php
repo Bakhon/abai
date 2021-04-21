@@ -43,6 +43,8 @@ class EconomicController extends Controller
     const BUILDER_OIL_PRODUCTION = 'builder8';
     const BUILDER_SUM_LAST_2_MONTHS = 'builder9';
 
+    const EXPORT_NAME = 'export.xlsx';
+
 
     public function __construct(DruidClient $druidClient)
     {
@@ -437,7 +439,7 @@ class EconomicController extends Controller
 
         $builder = $this
             ->druidClient
-            ->query(self::DATA_SOURCE, Granularity::MONTH)
+            ->query(self::DATA_SOURCE, Granularity::DAY)
             ->interval($interval)
             ->longSum("prs1")
             ->sum("oil")
@@ -456,7 +458,7 @@ class EconomicController extends Controller
 
         return (new EconomicDataExport(
             $builder->timeseries()->data()
-        ))->download('export.xlsx');
+        ))->download(self::EXPORT_NAME);
     }
 
     static function percentFormat(?float $last, ?float $prev): float
@@ -484,7 +486,7 @@ class EconomicController extends Controller
             . "T00:00:00+00:00";
     }
 
-    static function profitabilityFormat($item): string
+    static function profitabilityFormat(array $item): string
     {
         $bsw = round(($item['bsw'] / 1000) / ($item['uwi'] / 1000));
 
