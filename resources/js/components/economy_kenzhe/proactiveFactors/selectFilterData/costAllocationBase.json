@@ -1,0 +1,13 @@
+[
+    {
+        "option": "costAllocationBase.name"
+    },
+    {
+        "value": 1,
+        "option": "costAllocationBase.option1"
+    },
+    {
+        "value": 2,
+        "option": "costAllocationBase.option2"
+    }
+]

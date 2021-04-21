@@ -156,7 +156,6 @@ Route::group(
                     'settings.fields.update'
                 );
 
-                Route::get('gus/createExcel', 'ComplicationMonitoring\GusController@createExcel')->name('gus.createExcel');
                 Route::get('gus/list', 'ComplicationMonitoring\GusController@list')->name('gus.list');
                 Route::get('gus/history/{gu}', 'ComplicationMonitoring\GusController@history')->name('gus.history');
                 Route::resource('gus', 'ComplicationMonitoring\GusController');
@@ -166,6 +165,10 @@ Route::group(
                 Route::resource('zus', 'ComplicationMonitoring\ZusController');
 
                 Route::get('/monitor/{gu?}', 'DruidController@monitor')->name('monitor');
+
+                Route::get('/hydro-calc/list', 'ComplicationMonitoring\HydroCalculcation@list')->name('hydro_calculcation.list');
+                Route::get('/hydro-calc/export', 'ComplicationMonitoring\HydroCalculcation@exportExcel')->name('hydro_calculcation.export');
+                Route::resource('hydro-calc', 'ComplicationMonitoring\HydroCalculcation');
             }
         );
     }

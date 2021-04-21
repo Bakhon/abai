@@ -25,7 +25,7 @@ class MainController extends Controller
             'previousYear' => $previousYear
         ];
         $data = json_encode($data);
-        return view('economy_kenzhe.company')->with(compact('data'));
+        return $data;
     }
 
     public function recursiveSetValueToHandbookByType(&$items, $companyRepTtValues, $currentYear, $previousYear, $dateFrom, $dateTo)

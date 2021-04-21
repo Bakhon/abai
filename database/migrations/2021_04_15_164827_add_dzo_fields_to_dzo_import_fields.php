@@ -27,7 +27,10 @@ class AddDzoFieldsToDzoImportFields extends Migration
     public function down()
     {
         Schema::table('dzo_import_fields', function (Blueprint $table) {
-            //
+            $table->dropColumn(
+                'agent_upload_tech_water_injection_fact',
+                'agent_upload_volga_water_injection_fact'
+            );
         });
     }
 }
