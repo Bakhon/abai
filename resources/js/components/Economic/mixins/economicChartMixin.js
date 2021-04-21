@@ -1,6 +1,6 @@
 const ru = require("apexcharts/dist/locales/ru.json");
 
-export const chartInitMixin = {
+export const economicChartInitMixin = {
     props: {
         data: {
             required: true,

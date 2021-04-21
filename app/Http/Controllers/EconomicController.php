@@ -472,16 +472,6 @@ class EconomicController extends Controller
         return $last ? 100 : 0;
     }
 
-    static function intervalLastYear(): string
-    {
-        $currentYear = now()->setDay(1)->setMonth(1);
-
-        return $currentYear->copy()->subYear()->format('Y-m-d')
-            . "T00:00:00+00:00/"
-            . $currentYear->format('Y-m-d')
-            . "T00:00:00+00:00";
-    }
-
     static function intervalFormat(string $start = null, string $end = null): string
     {
         $start = $start ?? now()->subYear()->setDay(1)->setMonth(1);

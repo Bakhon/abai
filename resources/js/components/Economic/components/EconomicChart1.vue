@@ -9,11 +9,11 @@
 <script>
 const ru = require("apexcharts/dist/locales/ru.json");
 
-import {chartInitMixin} from "../mixins/chartMixin";
+import {economicChartInitMixin} from "../mixins/economicChartMixin";
 
 export default {
   name: 'EconomicChart1',
-  mixins: [chartInitMixin],
+  mixins: [economicChartInitMixin],
   computed: {
     options() {
       return {
