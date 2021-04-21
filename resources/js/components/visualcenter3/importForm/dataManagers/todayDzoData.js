@@ -1,7 +1,9 @@
 export default {
     data: function () {
         return {
-            todayData: {}
+            todayData: {},
+            fieldsCategory: 'fields',
+            otherCategories: ['downtimeReason','decreaseReason'],
         };
     },
     methods: {
@@ -15,24 +17,47 @@ export default {
         },
         processTodayData() {
             let self = this;
-            console.log(this.todayData)
-            _.forEach(Object.keys(this.cellsMapping), function(key) {
-                if (self.inputDataCategories.includes(key)) {
-                    //process decrease, downtime, fields
+            _.forEach(Object.keys(this.cellsMapping), function (key) {
+                if (self.otherCategories.includes(key)) {
+                    self.processCategory(self.cellsMapping[key],key);
+                } else if (key == self.fieldsCategory) {
+                    self.processFieldsCategory(self.cellsMapping[key],key);
                 } else {
                     self.processDataBlock(self.cellsMapping[key]);
                 }
             });
         },
-        processDataBlock(block) {
+        processCategory(categoryBlock,categoryName) {
+            let self = this;
+            _.forEach(categoryBlock, function (block) {
+                self.processDataBlock(block,categoryName,_.cloneDeep(self.todayData[categoryName][0]));
+            });
+        },
+        processDataBlock(block,categoryName,formattedTodayData) {
             let self = this;
             _.forEach(block.fields, function(fieldName, index) {
-                self.setDataToTable(self.todayData[fieldName],block.rowIndex,(index + 1));
+                if (!categoryName && !formattedTodayData) {
+                    self.setDataToTable(self.todayData[fieldName],block.rowIndex,(index + 1));
+                } else {
+                    self.setDataToTable(formattedTodayData[fieldName],block.rowIndex,(index + 1));
+                }
             });
         },
         setDataToTable(cellValue, rowIndex, columnIndex) {
             let selector = $('div[data-col="'+ columnIndex + '"][data-row="' + rowIndex + '"]');
             selector.text(cellValue);
         },
+        processFieldsCategory(categoryBlock,categoryName) {
+            let self = this;
+            _.forEach(categoryBlock, function (block) {
+                self.processFields(block,categoryName);
+            });
+        },
+        processFields(fieldsBlock,categoryName) {
+            let self = this;
+            _.forEach(Object.keys(fieldsBlock), function (key) {
+                self.processDataBlock(fieldsBlock[key],categoryName,self.todayData[categoryName][key]);
+            });
+        }
     }
 }

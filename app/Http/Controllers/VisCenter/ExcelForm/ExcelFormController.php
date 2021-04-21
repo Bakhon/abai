@@ -17,10 +17,13 @@ class ExcelFormController extends Controller
     {
         $dzoName = $request->request->get('dzoName');
         $dzoImportData = DzoImportData::query()
-            ->whereDate('date',Carbon::today('Asia/Almaty'))
+            ->whereDate('date',Carbon::yesterday('Asia/Almaty'))
             ->where('dzo_name',$dzoName)
             ->first();
 
+         if (is_null($dzoImportData)) {
+            return response()->json($dzoImportData);
+         }
          $dzoImportData->downtimeReason = $this->getDowntimeReason($dzoImportData->id);
          $dzoImportData->decreaseReason = $this->getDecreaseReason($dzoImportData->id);
          $dzoImportData->fields = $this->getFieldsData($dzoImportData->id);
@@ -44,9 +47,15 @@ class ExcelFormController extends Controller
 
     public function getFieldsData($parentId)
         {
-            return DzoImportField::query()
-                ->where('import_data_id',$parentId)
-                ->get();
+            $formattedFieldsData = array();
+            $fieldsData = DzoImportField::query()
+              ->where('import_data_id',$parentId)
+              ->get();
+             foreach($fieldsData as $field) {
+                $formattedFieldsData[$field['field_name']] = $field;
+             }
+             return $formattedFieldsData;
+
         }
 
     public function store(Request $request)
