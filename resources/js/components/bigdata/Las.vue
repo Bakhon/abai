@@ -1,8 +1,6 @@
 <template>
   <div class="table-container">
     <cat-loader/>
-    <div>file<span>&nbsp;*</span>
-    </div>
     <div class="container container-main">
       <transition name="fade">
         <div>
@@ -131,7 +129,7 @@
                 >
                   <option v-for="mnemonic in filenameParameters.specific[currentFileInfoNum].mnemonics"
                           :value="mnemonic"
-                          >{{ mnemonic }}
+                  >{{ mnemonic }}
                   </option>
                 </select>
               </div>
@@ -253,21 +251,21 @@
       </div>
       <div class="row mb-2">
         <div class="col-2">
-        <label class="label-text pt-4">Id</label>
+          <label class="label-text pt-4">Id</label>
         </div>
 
         <div class="col">
-        <label class="label-text pt-4">Имя файла</label>
+          <label class="label-text pt-4">Имя файла</label>
         </div>
       </div>
       <div v-for="parameter in filenameParameters.specific">
         <div class="row mb-2">
           <div class="col-2">
-          <label class="label-text pt-4">{{ parameter.experimentId }}</label>
+            <label class="label-text pt-4">{{ parameter.experimentId }}</label>
           </div>
-            <div class="col">
-          <label class="label-text pt-4">{{ parameter.userFilename }}</label>
-            </div>
+          <div class="col">
+            <label class="label-text pt-4">{{ parameter.userFilename }}</label>
+          </div>
         </div>
       </div>
     </div>
