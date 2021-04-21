@@ -465,9 +465,11 @@ class EconomicController extends Controller
 
         $prev = $prev ?? 0;
 
-        return $prev
-            ? round(($last - $prev) * 100 / $prev)
-            : 100;
+        if ($prev) {
+            return round(($last - $prev) * 100 / $prev);
+        }
+
+        return $last ? 100 : 0;
     }
 
     static function intervalLastYear(): string
