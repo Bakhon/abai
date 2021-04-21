@@ -67,7 +67,7 @@ class EconomicController extends Controller
 
         $intervalYear = self::intervalYears($request->interval_start, $request->interval_end);
 
-        $intervalMonths = self::intervalMonths($request->interval_end);
+        $intervalMonths = self::intervalMonths($request->interval_start, $request->interval_end);
 
         $builder1 = $this
             ->druidClient
@@ -481,11 +481,11 @@ class EconomicController extends Controller
         return self::intervalFormat($start, $end);
     }
 
-    static function intervalMonths(string $end = null, int $count = 6): string
+    static function intervalMonths(string $start = null, string $end = null, int $count = 6): string
     {
         $end = Carbon::parse($end ?? now());
 
-        $start = $end->copy()->subMonths($count)->setDay(1);
+        $start = $start ? Carbon::parse($start) : $end->copy()->subMonths($count)->setDay(1);
 
         return self::intervalFormat($start, $end);
     }
