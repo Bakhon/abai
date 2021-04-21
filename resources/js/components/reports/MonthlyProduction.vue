@@ -60,7 +60,7 @@
     </div>
 
     <div class="form-group4">
-      <button :disabled="!org || !startDate || !endDate || isLoading"
+      <button :disabled="!isMandatoryParametersFilled()"
               @click="updateData()"
               class="btn get-report-button">
         <span>
@@ -144,6 +144,9 @@ export default {
     },
     onChangeYear(event) {
       this.year = event.target.value;
+    },
+    isMandatoryParametersFilled() {
+      return (this.org && this.startDate && this.endDate && !this.isLoading)
     },
   },
 }
