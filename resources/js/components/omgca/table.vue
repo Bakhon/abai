@@ -35,7 +35,7 @@
               value-zone="Asia/Almaty"
               zone="Asia/Almaty"
               :format="{ year: 'numeric', month: 'long', day: 'numeric' }"
-              :phrases="{ok: 'Выбрать', cancel: 'Выход'}"
+              :phrases="{ok: trans('app.choose'), cancel: trans('app.cancel')}"
               :week-start="1"
               @input="loadData"
               auto
