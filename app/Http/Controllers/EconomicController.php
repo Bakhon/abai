@@ -45,7 +45,6 @@ class EconomicController extends Controller
 
     const EXPORT_NAME = 'export.xlsx';
 
-
     public function __construct(DruidClient $druidClient)
     {
         $this
@@ -436,18 +435,19 @@ class EconomicController extends Controller
 
         $org = Org::findOrFail($request->org);
 
-        $intervalMonths = self::intervalMonths($request->interval_end);
+        $interval = self::intervalMonth($request->interval_start, $request->interval_end);
 
         $builder = $this
             ->druidClient
             ->query(self::DATA_SOURCE, Granularity::DAY)
-            ->interval($intervalMonths)
-            ->longSum("prs1")
-            ->sum("oil")
-            ->sum("liquid")
-            ->sum("Revenue_total")
-            ->sum("NetBack_bf_pr_exp")
-            ->sum("Operating_profit");
+            ->interval($interval)
+            ->select('__time', 'dt', function (ExtractionBuilder $extractionBuilder) {
+                $extractionBuilder->timeFormat(self::TIME_FORMAT);
+            });
+
+        foreach (EconomicDataExport::COLUMNS as $column) {
+            $builder->select($column);
+        }
 
         if ($org->druid_id) {
             $builder->where('org_id2', '=', $org->druid_id);
@@ -457,9 +457,7 @@ class EconomicController extends Controller
             $builder->where('dpz', '=', $request->dpz);
         }
 
-        return (new EconomicDataExport(
-            $builder->timeseries()->data()
-        ))->download(self::EXPORT_NAME);
+        return (new EconomicDataExport($builder->groupBy()->data()))->download(self::EXPORT_NAME);
     }
 
     static function percentFormat(?float $last, ?float $prev): float
@@ -475,9 +473,18 @@ class EconomicController extends Controller
         return $last ? 100 : 0;
     }
 
+    static function intervalMonth(string $start = null, string $end = null): string
+    {
+        $end = Carbon::parse($end ?? now());
+
+        $start = $start ? Carbon::parse($start) : $end->copy()->subMonth();
+
+        return self::intervalFormat($start, $end);
+    }
+
     static function intervalYears(string $start = null, string $end = null, int $count = 1)
     {
-        $end = $end ? Carbon::parse($end) : now();
+        $end = Carbon::parse($end ?? now());
 
         $start = $start ? Carbon::parse($start) : $end->copy();
 
@@ -486,12 +493,9 @@ class EconomicController extends Controller
         return self::intervalFormat($start, $end);
     }
 
-    /*
-     * TODO: count = 6 -> count = 2
-     */
     static function intervalMonths(string $end = null, int $count = 6): string
     {
-        $end = $end ? Carbon::parse($end) : now();
+        $end = Carbon::parse($end ?? now());
 
         $start = $end->copy()->subMonths($count)->setDay(1);
 

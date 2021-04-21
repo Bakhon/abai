@@ -5,12 +5,31 @@ namespace App\Exports;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromArray;
 use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\WithMapping;
 
-class EconomicDataExport implements FromArray, WithHeadings
+class EconomicDataExport implements FromArray, WithHeadings, WithMapping
 {
     use Exportable;
 
     protected $data;
+
+    const COLUMNS = [
+        'uwi',
+        'oil',
+        'liquid',
+        'prs',
+        'status',
+        'Revenue_total',
+        'Trans_expenditures',
+        'MET_payments',
+        'ERT_payments',
+        'ECD_payments',
+        'PRS_expenditures',
+        'Overall_expenditures',
+        'Operating_profit',
+        'profitability',
+        'profitability_v_prostoe',
+    ];
 
     public function __construct(array $data)
     {
@@ -24,14 +43,19 @@ class EconomicDataExport implements FromArray, WithHeadings
 
     public function headings(): array
     {
-        return [
-            'sum_prs1',
-            'sum_oil',
-            'sum_liquid',
-            'sum_Revenue_total',
-            'sum_NetBack_bf_pr_exp',
-            'sum_Operating_profit',
-            'timeseries'
-        ];
+        return array_merge(self::COLUMNS, ['date']);
+    }
+
+    public function map($row): array
+    {
+        $res = [];
+
+        foreach (self::COLUMNS as $column) {
+            $res[$column] = $row[$column];
+        }
+
+        $res['date'] = $row['dt'];
+
+        return $res;
     }
 }
