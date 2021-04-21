@@ -27,7 +27,7 @@ import moment from "moment";
 import Visual from "./dataManagers/visual";
 import TodayDzoData from "./dataManagers/todayDzoData";
 
-const defaultDzoTicker = "ММГ";
+const defaultDzoTicker = "КТМ";
 
 export default {
     data: function () {

@@ -20,6 +20,10 @@ export default {
             return [];
         },
         processTodayData() {
+            if (Object.keys(this.todayData).length === 0) {
+                return;
+            }
+            this.isDataExist = true;
             let self = this;
             _.forEach(Object.keys(this.cellsMapping), function (key) {
                 if (self.otherCategories.includes(key)) {
@@ -30,6 +34,7 @@ export default {
                     self.processDataBlock(self.cellsMapping[key]);
                 }
             });
+            document.querySelector('revo-grid').refresh('all');
         },
         processCategory(categoryBlock,categoryName) {
             let self = this;
@@ -42,15 +47,14 @@ export default {
             let self = this;
             _.forEach(block.fields, function(fieldName, index) {
                 if (!categoryName && !formattedTodayData) {
-                    self.setDataToTable(self.todayData[fieldName],block.rowIndex,(index + 1));
+                    self.setDataToTable(self.todayData[fieldName],block.rowIndex,(index + 2));
                 } else {
-                    self.setDataToTable(formattedTodayData[fieldName],block.rowIndex,(index + 1));
+                    self.setDataToTable(formattedTodayData[fieldName],block.rowIndex,(index + 2));
                 }
             });
         },
         setDataToTable(cellValue, rowIndex, columnIndex) {
-            let selector = $('div[data-col="'+ columnIndex + '"][data-row="' + rowIndex + '"]');
-            selector.text(cellValue);
+            this.rows[rowIndex]['column' + columnIndex] = cellValue;
         },
         processFieldsCategory(categoryBlock,categoryName) {
             let self = this;

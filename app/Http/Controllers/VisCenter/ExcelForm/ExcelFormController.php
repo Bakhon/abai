@@ -65,9 +65,9 @@ class ExcelFormController extends Controller
         $recordDate = $request->request->get('date');
         $todayDzoImportDataRecord = DzoImportData::whereDate('date', Carbon::parse($recordDate))->where('dzo_name', $dzoName)->first();
         if ($this->isAlreadyUploaded($todayDzoImportDataRecord)) {
-            DzoImportField::where('import_data_id',$todayDzoImportDataRecord->id)->delete();
-            DzoImportDecreaseReason::where('import_data_id',$todayDzoImportDataRecord->id)->delete();
-            DzoImportDowntimeReason::where('import_data_id',$todayDzoImportDataRecord->id)->delete();
+            DzoImportField::where('dzo_import_data_id',$todayDzoImportDataRecord->id)->delete();
+            DzoImportDecreaseReason::where('dzo_import_data_id',$todayDzoImportDataRecord->id)->delete();
+            DzoImportDowntimeReason::where('dzo_import_data_id',$todayDzoImportDataRecord->id)->delete();
             DzoImportData::where('id',$todayDzoImportDataRecord->id)->delete();
         }
     }
