@@ -1671,25 +1671,53 @@
                             </template>
                           </el-table-column>
                         </el-table-column>
-                        <el-table-column :label="trans('tr.trs61')">
+                        <el-table-column :label="trans('tr.grp_date')">
                           <el-table-column
                             prop="grp_date"
                             width="130"
                             sortable
                             >
+                            <template slot-scope="scope">
+                              <el-tooltip class="item" effect="dark"  v-bind:content="haveTooltip(scope.$index, `grp_date`)" :placement="isPlacement(scope.$index, `grp_date`)">
+                                <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`grp_date`)}" >
+                                          <span
+                                            :class="{
+                                              'circle-err': isCircleErrClass(scope.$index,`grp_date`)}"
+                                            :style="`background :${getColor(
+                                              wells[scope.$index].grp_date[1][0]
+                                            )}`"
+                                          >
+                                          </span><span>{{ scope.row.grp_date[0] }}</span>  
+                                </div>   
+                              </el-tooltip> 
+                            </template>
                           </el-table-column>
                         </el-table-column>
-                        <el-table-column label="Фирма">
+                        <el-table-column :label="trans('tr.firm')">
                           <el-table-column
                             prop="grp_contractor"
                             width="130"
                             sortable
                             >
+                            <template slot-scope="scope">
+                              <el-tooltip class="item" effect="dark"  v-bind:content="haveTooltip(scope.$index, `grp_contractor`)" :placement="isPlacement(scope.$index, `grp_contractor`)">
+                                <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`grp_contractor`)}" >
+                                          <span
+                                            :class="{
+                                              'circle-err': isCircleErrClass(scope.$index,`grp_contractor`)}"
+                                            :style="`background :${getColor(
+                                              wells[scope.$index].grp_contractor[1][0]
+                                            )}`"
+                                          >
+                                          </span><span>{{ scope.row.grp_contractor[0] }}</span>  
+                                </div>   
+                              </el-tooltip> 
+                            </template>
                           </el-table-column>
                         </el-table-column>
                       </el-table-column>
                     </el-table-column>
-                    <el-table-column :label="trans('tr.trs18')">
+                    <el-table-column :label="trans('tr.oil_viscosity_in_reservoir_conditions')">
                       <el-table-column label="" prop="fake" >
                         <el-table-column label="" >
                           <el-table-column
@@ -1697,11 +1725,25 @@
                             width="130"
                             sortable
                             >
+                            <template slot-scope="scope">
+                              <el-tooltip class="item" effect="dark"  v-bind:content="haveTooltip(scope.$index, `visc_oil_rc`)" :placement="isPlacement(scope.$index, `visc_oil_rc`)">
+                                <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`visc_oil_rc`)}" >
+                                          <span
+                                            :class="{
+                                              'circle-err': isCircleErrClass(scope.$index,`visc_oil_rc`)}"
+                                            :style="`background :${getColor(
+                                              wells[scope.$index].visc_oil_rc[1][0]
+                                            )}`"
+                                          >
+                                            </span><span v-if="scope.row.visc_oil_rc[0] != null">{{_.round(scope.row.visc_oil_rc[0], 2)}}</span>
+                                </div>   
+                              </el-tooltip> 
+                            </template>
                           </el-table-column>
                         </el-table-column>
                       </el-table-column>
                     </el-table-column>
-                    <el-table-column :label="trans('tr.trs19')">
+                    <el-table-column :label="trans('tr.water_viscosity_at_reservoir_conditions')">
                       <el-table-column label="" prop="fake" >
                         <el-table-column label="" >
                           <el-table-column
@@ -1709,11 +1751,25 @@
                             width="130"
                             sortable
                             >
+                            <template slot-scope="scope">
+                              <el-tooltip class="item" effect="dark"  v-bind:content="haveTooltip(scope.$index, `visc_wat_rc`)" :placement="isPlacement(scope.$index, `visc_wat_rc`)">
+                                <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`visc_wat_rc`)}" >
+                                          <span
+                                            :class="{
+                                              'circle-err': isCircleErrClass(scope.$index,`visc_wat_rc`)}"
+                                            :style="`background :${getColor(
+                                              wells[scope.$index].visc_wat_rc[1][0]
+                                            )}`"
+                                          >
+                                            </span><span v-if="scope.row.visc_wat_rc[0] != null">{{_.round(scope.row.visc_wat_rc[0], 2)}}</span>
+                                </div>   
+                              </el-tooltip> 
+                            </template>
                           </el-table-column>
                         </el-table-column>
                       </el-table-column>
                     </el-table-column>
-                    <el-table-column :label="trans('tr.trs20')">
+                    <el-table-column :label="trans('tr.liquid_viscosity')">
                       <el-table-column label="" prop="fake" >
                         <el-table-column label="" >
                           <el-table-column
@@ -1721,11 +1777,25 @@
                             width="130"
                             sortable
                             >
+                            <template slot-scope="scope">
+                              <el-tooltip class="item" effect="dark"  v-bind:content="haveTooltip(scope.$index, `visc_liq_rc`)" :placement="isPlacement(scope.$index, `visc_liq_rc`)">
+                                <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`visc_liq_rc`)}" >
+                                          <span
+                                            :class="{
+                                              'circle-err': isCircleErrClass(scope.$index,`visc_liq_rc`)}"
+                                            :style="`background :${getColor(
+                                              wells[scope.$index].visc_liq_rc[1][0]
+                                            )}`"
+                                          >
+                                            </span><span v-if="scope.row.visc_liq_rc[0] != null">{{_.round(scope.row.visc_liq_rc[0], 2)}}</span>
+                                </div>   
+                              </el-tooltip> 
+                            </template>
                           </el-table-column>
                         </el-table-column>
                       </el-table-column>
                     </el-table-column>
-                    <el-table-column :label="trans('tr.trs21')">
+                    <el-table-column :label="trans('tr.b_oil')">
                       <el-table-column label="" prop="fake" >
                         <el-table-column label="" >
                           <el-table-column
@@ -1733,11 +1803,25 @@
                             width="130"
                             sortable
                             >
+                            <template slot-scope="scope">
+                              <el-tooltip class="item" effect="dark"  v-bind:content="haveTooltip(scope.$index, `bo`)" :placement="isPlacement(scope.$index, `bo`)">
+                                <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`bo`)}" >
+                                          <span
+                                            :class="{
+                                              'circle-err': isCircleErrClass(scope.$index,`bo`)}"
+                                            :style="`background :${getColor(
+                                              wells[scope.$index].bo[1][0]
+                                            )}`"
+                                          >
+                                            </span><span v-if="scope.row.bo[0] != null">{{_.round(scope.row.bo[0], 2)}}</span>
+                                </div>   
+                              </el-tooltip> 
+                            </template>
                           </el-table-column>
                         </el-table-column>
                       </el-table-column>
                     </el-table-column>
-                    <el-table-column :label="trans('tr.trs22')">
+                    <el-table-column :label="trans('tr.oil_density')">
                       <el-table-column label="" prop="fake" >
                         <el-table-column label="" >
                           <el-table-column
@@ -1745,6 +1829,20 @@
                             width="130"
                             sortable
                             >
+                            <template slot-scope="scope">
+                              <el-tooltip class="item" effect="dark"  v-bind:content="haveTooltip(scope.$index, `dens_oil`)" :placement="isPlacement(scope.$index, `dens_oil`)">
+                                <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`dens_oil`)}" >
+                                          <span
+                                            :class="{
+                                              'circle-err': isCircleErrClass(scope.$index,`dens_oil`)}"
+                                            :style="`background :${getColor(
+                                              wells[scope.$index].dens_oil[1][0]
+                                            )}`"
+                                          >
+                                            </span><span v-if="scope.row.dens_oil[0] != null">{{_.round(scope.row.dens_oil[0], 2)}}</span>
+                                </div>   
+                              </el-tooltip> 
+                            </template>
                           </el-table-column>
                         </el-table-column>
                       </el-table-column>
