@@ -165,6 +165,10 @@ Route::group(
                 Route::resource('zus', 'ComplicationMonitoring\ZusController');
 
                 Route::get('/monitor/{gu?}', 'DruidController@monitor')->name('monitor');
+
+                Route::get('/hydro-calc/list', 'ComplicationMonitoring\HydroCalculcation@list')->name('hydro_calculcation.list');
+                Route::get('/hydro-calc/export', 'ComplicationMonitoring\HydroCalculcation@exportExcel')->name('hydro_calculcation.export');
+                Route::resource('hydro-calc', 'ComplicationMonitoring\HydroCalculcation');
             }
         );
     }

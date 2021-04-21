@@ -73,6 +73,8 @@ export default {
             ],
             rowsCount: 85,
             columnsCountForHighlight: {
+                eightColumns: [0,1,2,3,4,5,6,7],
+                sevenColumns: [0,1,2,3,4,5,6],
                 sixColumns: [0,1,2,3,4,5],
                 fiveColumns: [0,1,2,3,4],
                 fourColumns: [0,1,2,3],

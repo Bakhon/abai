@@ -158,6 +158,7 @@ Vue.component('visualcenter3-excelform', require('./components/visualcenter3/imp
 
 Vue.component('big-data', require('./components/bigdata/BigData.vue').default);
 Vue.component('las', require('./components/bigdata/Las.vue').default);
+Vue.component('geo-data-reference-book', require('./components/bigdata/GeoDataReferenceBook.vue').default);
 Vue.component('user-reports', require('./components/bigdata/UserReports.vue').default);
 Vue.component('proto-form', require('./components/bigdata/Forms.vue').default);
 Vue.component('bigdata-form-mobile', require('./components/bigdata/FormMobile.vue').default);
@@ -171,6 +172,9 @@ Vue.component('profile', require('./components/profile/Profile.vue').default);
 
 Vue.component('reptt', require('./components/economy_kenzhe/reptt.vue').default);
 Vue.component('reptt-company', require('./components/economy_kenzhe/reptt_company.vue').default);
+Vue.component('proactive-factors', require('./components/economy_kenzhe/proactiveFactors/proactiveFactors.vue').default);
+Vue.component('proactive-factors-select-filter', require('./components/economy_kenzhe/proactiveFactors/selectFilter.vue').default);
+
 Vue.prototype.trans = string => _.get(window.i18n, string) || string;
 Vue.prototype.localeUrl = string => `/${window.current_lang}/${string[0] === '/' ? string.substr(1) : string}`;
 Vue.prototype.currentLang = window.current_lang;

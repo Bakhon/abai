@@ -125,12 +125,12 @@ export default {
         },
 
         getProductionOilandGas(data) {
-            if (this.company != "all") {
-                data = _.filter(data, _.iteratee({dzo: this.company}));
-            }
+            let self = this;
+            data = _.filter(data, function (item) {
+                return self.selectedDzoCompanies.includes(item.dzo);
+            });
             let productionDataInPeriodRange = this.getProductionDataInPeriodRange(data);
             let productionSummary = this.getProductionSummary(productionDataInPeriodRange);
-
             this.updateProductionSummary(productionSummary);
             this.dailyProgressBars.oil = this.getProductionProgressBarData('oil_plan','oil_fact');
             this.dailyProgressBars.oilDelivery = this.getProductionProgressBarData('oil_dlv_plan','oil_dlv_fact');
@@ -890,7 +890,6 @@ export default {
         mainTableChart
     ],
     async mounted() {
-        this.dzoCompaniesAssets = _.cloneDeep(this.dzoCompaniesAssetsInitial);
         this.getOpecDataForYear();
         this.chartHeadName = this.oilChartHeadName;
 
@@ -921,6 +920,8 @@ export default {
         this.dzoMonthlyPlans = await this.getDzoMonthlyPlans();
 
         this.changeAssets('isAllAssets');
+        this.dzoCompaniesAssets = _.cloneDeep(this.dzoCompaniesAssetsInitial);
+        this.sortDzoList();
         this.changeDate();
         this.changeMenu2();
         this.getStaff();

@@ -45,7 +45,7 @@
     <div class="row">
       <div class="col-12 blueblock three">
         <div v-if="activeForm" class="col-12 blueblock three">
-          <BigDataForm v-if="activeForm.type === 'plain'" :params="activeForm"></BigDataForm>
+          <BigDataForm v-if="activeForm.type === 'plain'" :params="activeForm" :well-id="wellId"></BigDataForm>
           <BigDataTable v-else-if="activeForm.type === 'table'" :params="activeForm"></BigDataTable>
         </div>
       </div>
@@ -59,6 +59,12 @@ import BigDataForm from './forms/form'
 import BigDataTable from './forms/table'
 
 export default {
+  props: {
+    wellId: {
+      type: Number,
+      required: true
+    },
+  },
   data() {
     return {
       forms: forms,
@@ -260,7 +266,7 @@ export default {
 
   .scrollable {
     &::-webkit-scrollbar {
-      height: 4px;
+      height: 10px;
       width: 4px;
     }
 
