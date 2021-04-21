@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Exports\EconomicDataExport;
 use App\Http\Requests\Economic\EconomicDataRequest;
+use App\Jobs\ExportEconomicDataToExcel;
 use App\Models\Refs\Org;
 use Carbon\Carbon;
 use Level23\Druid\DruidClient;
@@ -42,8 +42,6 @@ class EconomicController extends Controller
     const BUILDER_SUM_OPERATING_PROFIT_TOP_LAST_YEAR = 'builder7';
     const BUILDER_OIL_PRODUCTION = 'builder8';
     const BUILDER_SUM_LAST_2_MONTHS = 'builder9';
-
-    const EXPORT_NAME = 'export.xlsx';
 
     public function __construct(DruidClient $druidClient)
     {
@@ -435,29 +433,19 @@ class EconomicController extends Controller
 
         $org = Org::findOrFail($request->org);
 
-        $interval = self::intervalMonth($request->interval_start, $request->interval_end);
-
-        $builder = $this
-            ->druidClient
-            ->query(self::DATA_SOURCE, Granularity::DAY)
-            ->interval($interval)
-            ->select('__time', 'dt', function (ExtractionBuilder $extractionBuilder) {
-                $extractionBuilder->timeFormat(self::TIME_FORMAT);
-            });
-
-        foreach (EconomicDataExport::COLUMNS as $column) {
-            $builder->select($column);
-        }
+        $params = $request->validated();
 
         if ($org->druid_id) {
-            $builder->where('org_id2', '=', $org->druid_id);
+            $params['org_id2'] = $org->druid_id;
         }
 
-        if ($request->dpz) {
-            $builder->where('dpz', '=', $request->dpz);
-        }
+        $job = new ExportEconomicDataToExcel($params);
 
-        return (new EconomicDataExport($builder->groupBy()->data()))->download(self::EXPORT_NAME);
+        $this->dispatch($job);
+
+        return response()->json([
+            'id' => $job->getJobStatusId()
+        ]);
     }
 
     static function percentFormat(?float $last, ?float $prev): float

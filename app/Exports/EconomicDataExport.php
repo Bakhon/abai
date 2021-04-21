@@ -2,15 +2,11 @@
 
 namespace App\Exports;
 
-use Maatwebsite\Excel\Concerns\Exportable;
-use Maatwebsite\Excel\Concerns\FromArray;
-use Maatwebsite\Excel\Concerns\WithHeadings;
-use Maatwebsite\Excel\Concerns\WithMapping;
+use Illuminate\Contracts\View\View;
+use Maatwebsite\Excel\Concerns\FromView;
 
-class EconomicDataExport implements FromArray, WithHeadings, WithMapping
+class EconomicDataExport implements FromView
 {
-    use Exportable;
-
     protected $data;
 
     const COLUMNS = [
@@ -36,16 +32,6 @@ class EconomicDataExport implements FromArray, WithHeadings, WithMapping
         $this->data = $data;
     }
 
-    public function array(): array
-    {
-        return $this->data;
-    }
-
-    public function headings(): array
-    {
-        return array_merge(self::COLUMNS, ['date']);
-    }
-
     public function map($row): array
     {
         $res = [];
@@ -57,5 +43,12 @@ class EconomicDataExport implements FromArray, WithHeadings, WithMapping
         $res['date'] = $row['dt'];
 
         return $res;
+    }
+
+    public function view(): View
+    {
+        return view('exports.economic', [
+            'data' => $this->data
+        ]);
     }
 }

@@ -371,17 +371,37 @@ export default {
 
     async exportEconomicData() {
       try {
-        const res = await this.axios.post(
-            '/ru/exporteconimicdata',
-            this.form,
-            {responseType: "blob"}
-        )
+        this.loading = true
 
-        fileDownload(res.data, 'export.xlsx');
+        const {data} = await this.axios.post('/ru/exporteconimicdata', this.form)
+
+        this.exportFromExcelJob(data)
       } catch (e) {
+        this.loading = false
+
         console.log(e)
       }
+    },
 
+    exportFromExcelJob({id}) {
+      let interval = setInterval(async () => {
+        const {data} = await this.axios.get('/ru/jobs/status', {params: {id: id}})
+
+        switch (data.job.status) {
+          case 'finished':
+            clearInterval(interval)
+
+            this.loading = false
+
+            return window.open(data.job.output.filename, '_blank').focus();
+          case 'failed':
+            clearInterval(interval)
+
+            this.loading = false
+
+            return alert('Ошибка экспорта')
+        }
+      }, 2000)
     },
 
     pushBign(bign) {
