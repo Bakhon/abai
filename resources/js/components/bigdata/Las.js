@@ -152,7 +152,7 @@ export default {
                 if (response.data) {
                     this.setExperimentId(response.data.experimentId)
                     this.resetFileUploadFields()
-                    this.updateExperimentInfo()
+                    this.setNextExperimentInfo()
                 }
             }).catch((error) => console.log(error)
             ).finally(() => this.$store.commit('globalloading/SET_LOADING', false));
@@ -166,7 +166,7 @@ export default {
         setExperimentUserFileName() {
             this.filenameParameters.specific[this.currentFileInfoNum]['userFilename'] = this.filenameByParameters
         },
-        updateExperimentInfo() {
+        setNextExperimentInfo() {
             if (this.currentFileInfoNum >= this.files.length - 1) {
                 this.isLastFileProcessed = true
                 return
@@ -177,7 +177,7 @@ export default {
         setExperimentFileParameters() {
             let experiment = this.filenameParameters.specific[this.currentFileInfoNum]
             if ('experimentId' in experiment && experiment['experimentId'] !== null) {
-                this.updateExperimentInfo()
+                this.setNextExperimentInfo()
                 return
             }
             this.input.filename.recordingDepth = experiment.recordingDepths[0] + this.recordingDepthDelimiter + experiment.recordingDepths[1]
@@ -308,6 +308,23 @@ export default {
                 }
             }
             return true
+        },
+        refreshGenericUploadParams() {
+
+            let uri = this.baseUrl + "generic_upload_params/";
+            this.$store.commit('globalloading/SET_LOADING', true);
+            this.axios.get(uri, {
+                responseType: 'json',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }).then((response) => {
+                if (response.data) {
+                    this.filenameParameters.generic = response.data
+                    this.setExperimentFileParameters()
+                }
+            }).catch((error) => console.log(error)
+            ).finally(() => this.$store.commit('globalloading/SET_LOADING', false));
         },
     }
 }

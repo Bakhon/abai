@@ -5,9 +5,16 @@
       <transition name="fade">
         <div>
           <div v-if="isFilesUploadedOnPreApproval && !isLastFileProcessed">
+
             <div class="row">
-              <label class="section-text">Укажите данные для LAS файла: {{ files[currentFileInfoNum].name }} | файл
+              <label class="col-11 section-text">Укажите данные для LAS файла: {{ files[currentFileInfoNum].name }} | файл
                 {{ currentFileInfoNum + 1 }} из {{ files.length }}</label>
+
+              <button class="col btn get-report-button" id="refreshExperimentInfo"
+                      :disabled="isLoading"
+                      @click="refreshGenericUploadParams()">
+                &#x21bb; Обновить
+              </button>
             </div>
             <div class="row">
 
