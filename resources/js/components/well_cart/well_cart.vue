@@ -93,21 +93,53 @@
             </div>
     </div>
         <div class="col-md-2">
-                <div class="bg-dark">
-                    <div class="heading">Поиск скважины</div>
-                    <form class="search-form">
-                        <input type="text" placeholder="Номер скважины">
-                    </form>
+            <div class="bg-dark">
+                    <div class="row">
+                        <div class="col">
+                            <div class="heading">
+                                <p>Поиск скважины</p>                                
+                            </div>           
+                            <div class="sheare-icon"></div>     
+                        </div>
+                    </div>
+                <div class="row">
+                    <div class="col">
+                        <form class="search-form">
+                            <input type="text" placeholder="Номер скважины" class="search-input">
+                        </form>
+                    </div>
                 </div>
+            </div>
          </div>
 
         <div class="col-md-3">
                 <div class="bg-dark">
-                <h1>Паспорт скважины</h1>
+                    <div class="row">
+                        <div class="col">
+                            <div class="heading">
+                                <p>Паспорт скважины</p>                                
+                            </div>           
+                            <div class="sheare-icon"></div>   
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="row">
+                            <div class="icon-all pointer-large-icon">
+                                <img src="/img/bd/pointer-large.svg">
+                            </div>
+                            <div class="file-icon-large">
+                            </div>
+                            <div class="icon-all pointer-large-icon"><img src="/img/bd/pointer-large.svg"></div>
+                        </div>
+                    </div>
                 </div>
-         </div>        border-bottom: 1px solid #555BA6;
+         </div>       
     </div>
 </template>
+
+
+
+
 <style scoped lang="scss">
     .well-deal{
         width: 100%;
@@ -131,7 +163,6 @@
         border-top: 1px solid #555BA6;
         width: 100%;
         padding: 10px;
-        //height: 100px;
         margin: 10px 40px 10px 25px;
         col{
             display:flex;
@@ -164,17 +195,28 @@
             width: 10px;
             margin-bottom: auto;
             }
-        /*
-        .directory-border{
-            border-top: 1px dashed #555BA6;
-            border-left: 1px dashed #555BA6;
-            border-bottom: 1px dashed #555BA6;
-        }
-        */
         .file{
             padding-left: 35px;
             display: flex;
         }
+    }
+    .search-form{
+        width: 100%;
+        padding: 5px 10px;
+        .search-input{
+        background: url("/img/bd/search.svg");
+        background-color: #272953;
+        border: 1px solid #272953;
+        background-size: contain;
+        background-repeat: no-repeat;
+        text-indent: 20px;
+        width: 100%;
+        &::placeholder{
+            color:white;
+            font-family: Roboto;
+            font-size: 14px;
+        }
+    }
     }
     .heading{
         font-family: Roboto;
@@ -182,6 +224,11 @@
         font-size: 16px;
         line-height: 18px;
         font-weight: 700;
+        display: flex;
+        padding: 5px 10px;
+        p{
+            margin: 0px;
+        }
     }
     .txt5{
         display: flex;
@@ -216,6 +263,19 @@
     .file-icon{
         background: url(/img/bd/file.svg) 50% 50% no-repeat;
     }
+    .pointer-large-icon{
+        margin-top: auto;
+        margin-bottom: auto;
+     //   background: url(/img/bd/pointer-large.svg) 50% 50% no-repeat;
+    }
+    .file-icon-large{
+        margin-left: 35px;
+        margin-right: 35px;
+        background: url(/img/bd/file-large.svg) no-repeat;
+        height: 150px;
+        width: 120px;
+
+    }
     .full-size-icon{
         width: 20px;
         margin-bottom: auto;
@@ -226,7 +286,6 @@
         height: 20px;
         width: 20px;
         border-radius: 15px;
-        //margin-left: -30px;
     }
     .button1-vc-inner{
         display: inline-block;
@@ -251,5 +310,16 @@
 
     .col{
         display: flex;
+    }
+    .sheare-icon{
+        background: url("/img/bd/share.svg") no-repeat;
+        width: 10px;
+        padding: 10px;
+        margin-left: auto;
+        margin-top: auto;
+        margin-bottom: auto;
+    }
+    .bg-dark{
+        padding-bottom: 20px;
     }
 </style>
