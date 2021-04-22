@@ -194,7 +194,7 @@ class HydroCalculation extends Controller
                 }
 
                 $alerts[] = [
-                    'message' => $message .= ' !',
+                    'message' => $message.' !',
                     'variant' => 'danger'
                 ];
                 continue;
