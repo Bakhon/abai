@@ -128,7 +128,7 @@ class EconomicController extends Controller
         $builder7 = $this
             ->druidClient
             ->query(self::DATA_SOURCE, Granularity::YEAR)
-            ->interval($intervalYear)
+            ->interval($intervalMonths)
             ->select("uwi")
             ->sum("Operating_profit")
             ->where('Operating_profit', '!=', '0')
@@ -138,7 +138,7 @@ class EconomicController extends Controller
         $builder8 = $this
             ->druidClient
             ->query(self::DATA_SOURCE, Granularity::DAY)
-            ->interval($intervalYear)
+            ->interval($intervalMonths)
             ->select('__time', 'dt', function (ExtractionBuilder $extractionBuilder) {
                 $extractionBuilder->timeFormat(self::TIME_FORMAT);
             })
