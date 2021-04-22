@@ -2515,6 +2515,59 @@
                           </el-table-column>
                         </el-table-column>
                     </el-table-column>
+                    <!-- Проверка -->
+                    <el-table-column :label="trans('tr.check')">
+                        
+
+                        <el-table-column :label="trans('tr.errors')">
+                            <el-table-column :label="trans('tr.error_quantity')">
+                              <el-table-column
+                                prop="error_count"
+                                width="130"
+                                sortable
+                                >
+                                <template slot-scope="scope">
+                                  <span v-if="scope.row.error_count != null">{{scope.row.error_count}}</span>
+                                </template>
+                              </el-table-column>
+                            </el-table-column>
+                             <el-table-column :label="trans('tr.first_error')">
+                              <el-table-column
+                                prop="error_first"
+                                width="130"
+                                sortable
+                                >
+                              </el-table-column>
+                            </el-table-column>
+
+                        </el-table-column>
+
+              
+                        <el-table-column :label="trans('tr.warnings')">
+                          <el-table-column :label="trans('tr.warning_quantity')">
+                              <el-table-column
+                                prop="error_warning"
+                                width="130"
+                                sortable
+                                >
+                                <template slot-scope="scope">
+                                  <span v-if="scope.row.error_warning != null">{{scope.row.error_warning}}</span>
+                                </template>
+                              </el-table-column>
+                          </el-table-column>
+                          <el-table-column :label="trans('tr.first_warning')">
+                              <el-table-column
+                                prop="error_first_warning"
+                                width="130"
+                                sortable
+                                >
+                                <template slot-scope="scope">
+                                  <span v-if="scope.row.error_first_warning != null">{{scope.row.error_first_warning}}</span>
+                                </template>
+                              </el-table-column>
+                          </el-table-column>
+                        </el-table-column>
+                    </el-table-column>
                   </el-table>
           </div>
         </div>
