@@ -178,4 +178,6 @@ return array (
   'interval_centrators' => 'Centralizer installation intervals',
   'recommended' => 'Recommended',
   'required' => 'Mandatory',
+  'economic' => 'Economics',
+  'develop' => 'Develop',
 );
