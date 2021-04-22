@@ -26,6 +26,7 @@ import cellsMappingEMG from './dzoData/cells_mapping_emg.json';
 import moment from "moment";
 import Visual from "./dataManagers/visual";
 import TodayDzoData from "./dataManagers/todayDzoData";
+import InputDataOperations from "./dataManagers/inputDataOperations";
 
 const defaultDzoTicker = "КТМ";
 
@@ -175,6 +176,7 @@ export default {
         this.setTableFormat();
         this.todayData = await this.getDzoTodayData();
         this.processTodayData();
+        this.addListeners();
     },
     methods: {
         addColumnsToGrid() {
@@ -395,13 +397,9 @@ export default {
                 }
             });
         },
-        beforeRangeEdit(e) {
-            this.setTableFormat();
-            this.isDataExist = true;
-        },
     },
     components: {
         VGrid,
     },
-    mixins: [Visual,TodayDzoData],
+    mixins: [Visual,TodayDzoData,InputDataOperations],
 };
