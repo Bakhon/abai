@@ -54,7 +54,7 @@
       <button type="button" class="close" data-dismiss="alert">&times;</button>
       <p>{{ params.success }}</p>
     </div>
-    <b-alert v-for="alert in alerts"  :variant="alert.variant" show dismissible>
+    <b-alert v-for="(alert, index) in alerts" :key="index" :variant="alert.variant" show dismissible>
       {{ alert.message }}
     </b-alert>
     <div class="table-page__wrapper">
