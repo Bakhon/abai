@@ -1470,7 +1470,7 @@
                             >
                             <template slot-scope="scope">
                               <el-tooltip class="item" effect="dark"  v-bind:content="haveTooltip(scope.$index, `q_l`)" :placement="isPlacement(scope.$index, `q_l`)">
-                                <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`q_l`)}" >
+                                <div v-if="!edit" :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`q_l`)}" >
                                           <span
                                             :class="{
                                               'circle-err': isCircleErrClass(scope.$index,`q_l`)}"
@@ -1479,7 +1479,24 @@
                                             )}`"
                                           >
                                             </span><span v-if="scope.row.q_l[0] != null">{{_.round(scope.row.q_l[0], 1)}}</span>
-                                </div>   
+                                </div>
+                                <div v-if="edit" :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`q_l`)}" >
+                                          <span
+                                            :class="{
+                                              'circle-err': isCircleErrClass(scope.$index,`q_l`)}"
+                                            :style="`background :${getColor(
+                                              wells[scope.$index].q_l[1][0]
+                                            )}`"
+                                          >
+                                          </span>
+                                          <input
+                                            class="input_edit"
+                                            @change="editrow(scope.$index)"
+                                            v-model="scope.row.q_l[0]"
+                                            :disabled="!edit"
+                                          />
+                                          
+                                </div>    
                               </el-tooltip> 
                             </template>
                           </el-table-column>
@@ -2999,7 +3016,7 @@
                             >
                              <template slot-scope="scope">
                               <span>
-                                          {{ Math.round(scope.row.dist_to_inj_well * 10) / 10 }}
+                                  {{ Math.round(scope.row.dist_to_inj_well * 10) / 10 }}
                               </span>
                             </template>
                           </el-table-column>
@@ -3187,6 +3204,124 @@
                           </el-table-column>
                         </el-table-column>
                         
+                      </el-table-column>
+                    </el-table-column>
+                    <!-- Планируемые мероприятия -->
+                    <el-table-column :label="trans('tr.planned_activities')">
+                        
+
+                        <el-table-column :label="trans('tr.isolation_works')">
+                            <el-table-column :label="trans('tr.spend')">
+                              <el-table-column
+                                prop="plan_izo_work"
+                                width="130"
+                                sortable
+                                >
+                                <template slot-scope="scope">
+                                  <span v-if="scope.row.plan_izo_work != null">{{scope.row.plan_izo_work}}</span>
+                                </template>
+                              </el-table-column>
+                            </el-table-column>
+                            <el-table-column :label="trans('tr.q_liquid')">
+                              <el-table-column
+                                prop="plan_act_q_l"
+                                width="130"
+                                sortable
+                                >
+                                <template slot-scope="scope">
+                                  <span v-if="scope.row.plan_act_q_l != null">{{Math.round(scope.row.plan_act_q_l * 10) / 10}}</span>
+                                </template>
+                              </el-table-column>
+                            </el-table-column>
+                            <el-table-column :label="trans('tr.water_cut')">
+                              <el-table-column
+                                prop="plan_act_wct"
+                                width="130"
+                                sortable
+                                >
+                                <template slot-scope="scope">
+                                  <span v-if="scope.row.plan_act_wct != null">{{Math.round(scope.row.plan_act_wct * 10) / 10}}</span>
+                                </template>
+                              </el-table-column>
+                            </el-table-column>
+                        </el-table-column>
+                    </el-table-column>
+                    <!-- Мероприятия -->
+                    <el-table-column
+                      :label="trans('tr.activity')"
+                      >
+                      <el-table-column label="" prop="fake" >
+                        <el-table-column label="" >
+                          <el-table-column
+                            prop="plan_activities"
+                            label=""
+                            width="200"
+                            sortable
+                            >
+                          </el-table-column>
+                        </el-table-column>
+                      </el-table-column>
+                    </el-table-column>
+                    <el-table-column
+                      :label="trans('tr.planned_casing_info')"
+                      >
+                      <el-table-column label="" prop="fake" >
+                        <el-table-column label="" >
+                          <el-table-column
+                            prop="plan_casing_info"
+                            label=""
+                            width="200"
+                            sortable
+                            >
+                          </el-table-column>
+                        </el-table-column>
+                      </el-table-column>
+                    </el-table-column>
+                    <el-table-column
+                      :label="trans('tr.comments')"
+                      >
+                      <el-table-column label="" prop="fake" >
+                        <el-table-column label="" >
+                          <el-table-column
+                            prop="plan_comment"
+                            label=""
+                            width="200"
+                            sortable
+                            >
+                          </el-table-column>
+                        </el-table-column>
+                      </el-table-column>
+                    </el-table-column>
+                    <el-table-column
+                      :label="trans('tr.last_gtm_date')"
+                      >
+                      <el-table-column label="" prop="fake" >
+                        <el-table-column label="" >
+                          <el-table-column
+                            prop="last_gtm_date"
+                            label=""
+                            width="200"
+                            sortable
+                            >
+
+                          </el-table-column>
+                        </el-table-column>
+                      </el-table-column>
+                    </el-table-column>
+                    <el-table-column
+                      :label="trans('tr.last_gtm_type')"
+                      >
+                      <el-table-column label="" prop="fake" >
+                        <el-table-column label="" >
+                          <el-table-column
+                            prop="last_gtm_type"
+                            label=""
+                            width="200"
+                            sortable
+                            >
+
+                          </el-table-column>
+                        </el-table-column>
                       </el-table-column>
                     </el-table-column>
                   </el-table>
