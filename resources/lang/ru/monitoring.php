@@ -272,7 +272,7 @@ return array (
     'fields' => 
     array (
       'inner_diameter' => 'Внутренний диаметр',
-      'length' => 'Длина',
+      'length' => 'Длина, м',
       'material' => 'Материал',
       'outside_diameter' => 'Внешний диаметр',
       'plot' => 'Участок',

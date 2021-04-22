@@ -10,7 +10,7 @@
     @foreach($data['points'] as $key => $item)
         @if($item->gu OR $item->trunkline_end_point)
             <tr>
-                <td>{{ $key + 1 }}</td>
+                <td>{{ $item->id }}</td>
                 <td>{{ $item->map_pipe->pipeType->outside_diameter }}</td>
                 <td>{{ $item->map_pipe->pipeType->thickness  }}</td>
                 <td>{{ $item->map_pipe->lastCoords->m_distance }}</td>
