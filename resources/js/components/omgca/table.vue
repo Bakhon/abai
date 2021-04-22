@@ -54,6 +54,9 @@
       <button type="button" class="close" data-dismiss="alert">&times;</button>
       <p>{{ params.success }}</p>
     </div>
+    <b-alert v-for="alert in alerts"  :variant="alert.variant" show dismissible>
+      {{ alert.message }}
+    </b-alert>
     <div class="table-page__wrapper">
       <table class="table table-bordered table-dark" :class="tableClass">
         <thead>
@@ -231,7 +234,8 @@ export default {
       calendarToShow: false,
       filterOpened: false,
       isSelectDate: false,
-      selectedDate: null
+      selectedDate: null,
+      alerts: [],
     }
   },
   mounted() {
@@ -319,7 +323,7 @@ export default {
 
       this.axios.get(this.params.links.list, {params: this.prepareQueryParams()}).then(response => {
         this.omgca = response.data;
-        response.data.alerts.forEach(alert => this.showToast(alert, this.trans('app.error'), 'danger'));
+        this.alerts = response.data.alerts;
       }).catch(e => {
 
       }).finally(() => {
