@@ -3024,6 +3024,171 @@
                         </el-table-column>
                       </el-table-column>
                     </el-table-column>
+                    <el-table-column
+                      :label="trans('tr.current_bh')"
+                      >
+                      <el-table-column label="" prop="fake" >
+                        <el-table-column label="" >
+                          <el-table-column
+                            prop="curr_bh"
+                            label=""
+                            width="200"
+                            sortable
+                            >
+                            <template slot-scope="scope">
+                              <el-tooltip class="item" effect="dark"  v-bind:content="haveTooltip(scope.$index, `curr_bh`)" :placement="isPlacement(scope.$index, `curr_bh`)">
+                                <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`curr_bh`)}" >
+                                          <span
+                                            :class="{
+                                              'circle-err': isCircleErrClass(scope.$index,`curr_bh`)}"
+                                            :style="`background :${getColor(
+                                              wells[scope.$index].curr_bh[1][0]
+                                            )}`"
+                                          >
+                                            </span><span v-if="scope.row.curr_bh[0] != null">
+                                          {{_.round(scope.row.curr_bh[0], 1)}}
+                                    </span>
+
+                                </div>   
+                              </el-tooltip> 
+                            </template>
+                          </el-table-column>
+                        </el-table-column>
+                      </el-table-column>
+                    </el-table-column>
+                    <el-table-column
+                      :label="trans('tr.pump_fillage')"
+                      >
+                      <el-table-column label="" prop="fake" >
+                        <el-table-column label="" >
+                          <el-table-column
+                            prop="pump_fillage"
+                            :label="trans('tr.m3_day')"
+                            width="200"
+                            sortable
+                            >
+                            <template slot-scope="scope">
+                              <el-tooltip class="item" effect="dark"  v-bind:content="haveTooltip(scope.$index, `pump_fillage`)" :placement="isPlacement(scope.$index, `pump_fillage`)">
+                                <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`pump_fillage`)}" >
+                                          <span
+                                            :class="{
+                                              'circle-err': isCircleErrClass(scope.$index,`pump_fillage`)}"
+                                            :style="`background :${getColor(
+                                              wells[scope.$index].pump_fillage[1][0]
+                                            )}`"
+                                          >
+                                            </span><span v-if="scope.row.pump_fillage[0] != null">
+                                          {{_.round(scope.row.pump_fillage[0], 1)}}
+                                    </span>
+
+                                </div>   
+                              </el-tooltip> 
+                            </template>
+                          </el-table-column>
+                        </el-table-column>
+                      </el-table-column>
+                    </el-table-column>
+                    <el-table-column
+                      :label="trans('tr.gzu_type')"
+                      >
+                      <el-table-column label="" prop="fake" >
+                        <el-table-column label="" >
+                          <el-table-column
+                            prop="gzu_type"
+                            label=""
+                            width="200"
+                            sortable
+                            >
+                          </el-table-column>
+                        </el-table-column>
+                      </el-table-column>
+                    </el-table-column>
+                    <el-table-column
+                      :label="trans('tr.p_res_init')"
+                      >
+                      <el-table-column label="" prop="fake" >
+                        <el-table-column label="" >
+                          <el-table-column
+                            prop="p_res_init"
+                            :label="trans('tr.atm')"
+                            width="200"
+                            sortable
+                            >
+                            <template slot-scope="scope">
+                              <span v-if="scope.row.p_res_init != null">{{Math.round(scope.row.p_res_init * 10) / 10}}</span>
+                            </template>
+                          </el-table-column>
+                        </el-table-column>
+                      </el-table-column>
+                    </el-table-column>
+                    <el-table-column
+                      :label="trans('tr.q_liquid_characteristic')"
+                      >
+                      <el-table-column label="" prop="fake" >
+                        <el-table-column label="" >
+                          <el-table-column
+                            prop="q_liq_charac"
+                            :label="trans('tr.m3_day')"
+                            width="200"
+                            sortable
+                            >
+                            <template slot-scope="scope">
+                              <span v-if="scope.row.q_liq_charac != null">{{Math.round(scope.row.q_liq_charac * 10) / 10}}</span>
+                            </template>
+                          </el-table-column>
+                        </el-table-column>
+                      </el-table-column>
+                    </el-table-column>
+                    <!-- АПВ -->
+                    <el-table-column :label="trans('tr.apv')">
+                      <el-table-column label="">
+                        <el-table-column :label="trans('tr.apv_t_rab')">
+                          <el-table-column
+                            prop="APV_t_rab"
+                            width="130"
+                            sortable
+                            >
+                            <template slot-scope="scope">
+                              <el-tooltip class="item" effect="dark"  v-bind:content="haveTooltip(scope.$index, `APV_t_rab`)" :placement="isPlacement(scope.$index, `APV_t_rab`)">
+                                <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`APV_t_rab`)}" >
+                                          <span
+                                            :class="{
+                                              'circle-err': isCircleErrClass(scope.$index,`APV_t_rab`)}"
+                                            :style="`background :${getColor(
+                                              wells[scope.$index].APV_t_rab[1][0]
+                                            )}`"
+                                          >
+                                            </span><span v-if="scope.row.APV_t_rab[0] != null">{{scope.row.APV_t_rab[0]}}</span>
+                                </div>   
+                              </el-tooltip> 
+                            </template>
+                          </el-table-column>
+                        </el-table-column>
+                        <el-table-column :label="trans('tr.apv_t_nak')">
+                          <el-table-column
+                            prop="APV_t_nak"
+                            width="130"
+                            sortable
+                            >
+                            <template slot-scope="scope">
+                              <el-tooltip class="item" effect="dark"  v-bind:content="haveTooltip(scope.$index, `APV_t_nak`)" :placement="isPlacement(scope.$index, `APV_t_nak`)">
+                                <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`APV_t_nak`)}" >
+                                          <span
+                                            :class="{
+                                              'circle-err': isCircleErrClass(scope.$index,`APV_t_nak`)}"
+                                            :style="`background :${getColor(
+                                              wells[scope.$index].APV_t_nak[1][0]
+                                            )}`"
+                                          >
+                                            </span><span v-if="scope.row.APV_t_nak[0] != null">{{scope.row.APV_t_nak[0]}}</span>
+                                </div>   
+                              </el-tooltip> 
+                            </template>
+                          </el-table-column>
+                        </el-table-column>
+                        
+                      </el-table-column>
+                    </el-table-column>
                   </el-table>
           </div>
         </div>
@@ -3294,7 +3459,8 @@ export default {
         "el-table_1_column_173", "el-table_1_column_175",  "el-table_1_column_177", "el-table_1_column_179",  "el-table_1_column_181", "el-table_1_column_183", 
       "el-table_1_column_187",  "el-table_1_column_191",  "el-table_1_column_195",  "el-table_1_column_199", "el-table_1_column_279", "el-table_1_column_283", , "el-table_1_column_287"
       , "el-table_1_column_291", , "el-table_1_column_295", "el-table_1_column_299", "el-table_1_column_303", "el-table_1_column_303", "el-table_1_column_307", "el-table_1_column_311"
-      , "el-table_1_column_315"], 
+      , "el-table_1_column_315", "el-table_1_column_319", "el-table_1_column_323", "el-table_1_column_327", "el-table_1_column_331", "el-table_1_column_335", 
+      "el-table_1_column_339", "el-table_1_column_343", "el-table_1_column_347", "el-table_1_column_351", "el-table_1_column_355", "el-table_1_column_359", "el-table_1_column_363"], 
       filter_column: [], 
     };
     
