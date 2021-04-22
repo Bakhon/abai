@@ -2,7 +2,7 @@
   <select
       v-model="form.org"
       class="form-control text-white bg-main4-important border-0"
-      @change="$emit('change')"
+      @change="changeOrganization"
   >
     <option
         v-for="org in organizations"
@@ -40,6 +40,12 @@ export default {
 
       this.$emit('change')
     },
+
+    changeOrganization() {
+      this.form.dpz = null
+
+      this.$emit('change')
+    }
   }
 }
 </script>
