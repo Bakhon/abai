@@ -2537,6 +2537,9 @@
                                 width="130"
                                 sortable
                                 >
+                                <template slot-scope="scope">
+                                  <span v-if="scope.row.error_first != null">{{scope.row.error_first}}</span>
+                                </template>
                               </el-table-column>
                             </el-table-column>
 
@@ -2567,6 +2570,293 @@
                               </el-table-column>
                           </el-table-column>
                         </el-table-column>
+                    </el-table-column>
+                    <!-- Максимальная глубина спуска насоса при ИДН -->
+                    <el-table-column
+                      :label="trans('tr.idn_maximum_pump_lowering_depth')"
+                      >
+                      <el-table-column label="" prop="fake" >
+                        <el-table-column label="" >
+                          <el-table-column
+                            prop="idn_pump_depth_max"
+                            label=""
+                            width="100"
+                            sortable
+                            >
+                            <template slot-scope="scope">
+                              <el-tooltip class="item" effect="dark"  v-bind:content="haveTooltip(scope.$index, `idn_pump_depth_max`)" :placement="isPlacement(scope.$index, `idn_pump_depth_max`)">
+                                <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`idn_pump_depth_max`)}" >
+                                          <span
+                                            :class="{
+                                              'circle-err': isCircleErrClass(scope.$index,`idn_pump_depth_max`)}"
+                                            :style="`background :${getColor(
+                                              wells[scope.$index].idn_pump_depth_max[1][0]
+                                            )}`"
+                                          >
+                                            </span><span v-if="scope.row.idn_pump_depth_max[0] != null">
+                                          {{_.round(scope.row.idn_pump_depth_max[0], 1)}}
+                                    </span>
+
+                                </div>   
+                              </el-tooltip> 
+                            </template>
+                          </el-table-column>
+                        </el-table-column>
+                      </el-table-column>
+                    </el-table-column>
+                    <el-table-column
+                      :label="trans('tr.stop_date')"
+                      >
+                      <el-table-column label="" prop="fake" >
+                        <el-table-column label="" >
+                          <el-table-column
+                            prop="stop_date"
+                            label=""
+                            width="150"
+                            sortable
+                            >
+                            <template slot-scope="scope">
+                              <el-tooltip class="item" effect="dark"  v-bind:content="haveTooltip(scope.$index, `idn_pump_depth_max`)" :placement="isPlacement(scope.$index, `idn_pump_depth_max`)">
+                                <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`idn_pump_depth_max`)}" >
+                                          <span
+                                            :class="{
+                                              'circle-err': isCircleErrClass(scope.$index,`idn_pump_depth_max`)}"
+                                            :style="`background :${getColor(
+                                              wells[scope.$index].idn_pump_depth_max[1][0]
+                                            )}`"
+                                          >
+                                            </span><span v-if="scope.row.stop_date[0] != null">{{scope.row.stop_date[0]}}</span>
+
+                                </div>   
+                              </el-tooltip> 
+                            </template>
+                          </el-table-column>
+                        </el-table-column>
+                      </el-table-column>
+                    </el-table-column>
+                    <el-table-column
+                      :label="trans('tr.dismemberment')"
+                      >
+                      <el-table-column label="" prop="fake" >
+                        <el-table-column label="" >
+                          <el-table-column
+                            prop="layers_count"
+                            label=""
+                            width="150"
+                            sortable
+                            >
+                            <template slot-scope="scope">
+                              <el-tooltip class="item" effect="dark"  v-bind:content="haveTooltip(scope.$index, `block`)" :placement="isPlacement(scope.$index, `block`)">
+                                <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`horizon`)}" >
+                                          <span
+                                            :class="{
+                                              'circle-err': isCircleErrClass(scope.$index,`block`)}"
+                                            :style="`background :${getColor(
+                                              wells[scope.$index].block[1][0]
+                                            )}`"
+                                          >
+                                          </span><span v-if="scope.row.layers_count[0] != null">{{scope.row.layers_count[0]}}</span>  
+                                </div>   
+                              </el-tooltip> 
+                            </template>
+                          </el-table-column>
+                        </el-table-column>
+                      </el-table-column>
+                    </el-table-column>
+
+                    <el-table-column
+                      :label="trans('tr.zone')"
+                      >
+                      <el-table-column label="" prop="fake" >
+                        <el-table-column label="" >
+                          <el-table-column
+                            prop="zone"
+                            label=""
+                            width="150"
+                            sortable
+                            >
+                            <template slot-scope="scope">
+                              <el-tooltip class="item" effect="dark"  v-bind:content="haveTooltip(scope.$index, `zone`)" :placement="isPlacement(scope.$index, `zone`)">
+                                <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`zone`)}" >
+                                          <span
+                                            :class="{
+                                              'circle-err': isCircleErrClass(scope.$index,`zone`)}"
+                                            :style="`background :${getColor(
+                                              wells[scope.$index].zone[1][0]
+                                            )}`"
+                                          >
+                                          </span><span v-if="scope.row.zone[0] != null">{{scope.row.zone[0]}}</span>  
+                                </div>   
+                              </el-tooltip> 
+                            </template>
+                          </el-table-column>
+                        </el-table-column>
+                      </el-table-column>
+                    </el-table-column>
+
+                    <el-table-column
+                      :label="trans('tr.tseh')"
+                      >
+                      <el-table-column label="" prop="fake" >
+                        <el-table-column label="" >
+                          <el-table-column
+                            prop="tseh"
+                            label=""
+                            width="180"
+                            sortable
+                            >
+                            <template slot-scope="scope">
+                              <el-tooltip class="item" effect="dark"  v-bind:content="haveTooltip(scope.$index, `tseh`)" :placement="isPlacement(scope.$index, `tseh`)">
+                                <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`tseh`)}" >
+                                          <span
+                                            :class="{
+                                              'circle-err': isCircleErrClass(scope.$index,`tseh`)}"
+                                            :style="`background :${getColor(
+                                              wells[scope.$index].tseh[1][0]
+                                            )}`"
+                                          >
+                                          </span><span v-if="scope.row.tseh[0] != null">{{scope.row.tseh[0]}}</span>  
+                                </div>   
+                              </el-tooltip> 
+                            </template>
+                          </el-table-column>
+                        </el-table-column>
+                      </el-table-column>
+                    </el-table-column>
+                    <el-table-column
+                      :label="trans('tr.pump_fountain_through')"
+                      >
+                      <el-table-column label="" prop="fake" >
+                        <el-table-column label="" >
+                          <el-table-column
+                            prop="semi_free_flow"
+                            label=""
+                            width="180"
+                            sortable
+                            >
+                            <template slot-scope="scope">
+                              <span v-if="scope.row.semi_free_flow[0] != null">{{scope.row.semi_free_flow[0]}}</span>  
+                            </template>
+                          </el-table-column>
+                        </el-table-column>
+                      </el-table-column>
+                    </el-table-column>
+
+                    <el-table-column
+                      :label="trans('tr.unprofitable')"
+                      >
+                      <el-table-column label="" prop="fake" >
+                        <el-table-column label="" >
+                          <el-table-column
+                            prop="non_profit"
+                            label=""
+                            width="200"
+                            sortable
+                            >
+                            <template slot-scope="scope">
+                              <el-tooltip class="item" effect="dark"  v-bind:content="haveTooltip(scope.$index, `non_profit`)" :placement="isPlacement(scope.$index, `non_profit`)">
+                                <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`non_profit`)}" >
+                                          <span
+                                            :class="{
+                                              'circle-err': isCircleErrClass(scope.$index,`non_profit`)}"
+                                            :style="`background :${getColor(
+                                              wells[scope.$index].non_profit[1][0]
+                                            )}`"
+                                          >
+                                          </span><span v-if="scope.row.non_profit[0] != null">{{scope.row.non_profit[0]}}</span>  
+                                </div>   
+                              </el-tooltip> 
+                            </template>
+                          </el-table-column>
+                        </el-table-column>
+                      </el-table-column>
+                    </el-table-column>
+                    <el-table-column
+                      :label="trans('tr.transient_mode')"
+                      >
+                      <el-table-column label="" prop="fake" >
+                        <el-table-column label="" >
+                          <el-table-column
+                            prop="unsteady_state"
+                            label=""
+                            width="200"
+                            sortable
+                            >
+                            <template slot-scope="scope">
+                              <el-tooltip class="item" effect="dark"  v-bind:content="haveTooltip(scope.$index, `unsteady_state`)" :placement="isPlacement(scope.$index, `unsteady_state`)">
+                                <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`unsteady_state`)}" >
+                                          <span
+                                            :class="{
+                                              'circle-err': isCircleErrClass(scope.$index,`unsteady_state`)}"
+                                            :style="`background :${getColor(
+                                              wells[scope.$index].unsteady_state[1][0]
+                                            )}`"
+                                          >
+                                          </span><span v-if="scope.row.unsteady_state[0] != null">{{scope.row.unsteady_state[0]}}</span>  
+                                </div>   
+                              </el-tooltip> 
+                            </template>
+                          </el-table-column>
+                        </el-table-column>
+                      </el-table-column>
+                    </el-table-column>
+                    <el-table-column
+                      :label="trans('tr.commisioning_date')"
+                      >
+                      <el-table-column label="" prop="fake" >
+                        <el-table-column label="" >
+                          <el-table-column
+                            prop="start_up_date"
+                            width="200"
+                            sortable
+                            :label="trans('tr.d_m_y')"
+                            >
+                            <template slot-scope="scope">
+                              <el-tooltip class="item" effect="dark"  v-bind:content="haveTooltip(scope.$index, `start_up_date`)" :placement="isPlacement(scope.$index, `start_up_date`)">
+                                <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`start_up_date`)}" >
+                                          <span
+                                            :class="{
+                                              'circle-err': isCircleErrClass(scope.$index,`start_up_date`)}"
+                                            :style="`background :${getColor(
+                                              wells[scope.$index].start_up_date[1][0]
+                                            )}`"
+                                          >
+                                          </span><span v-if="scope.row.start_up_date[0] != null">{{scope.row.start_up_date[0]}}</span>  
+                                </div>   
+                              </el-tooltip> 
+                            </template>
+                          </el-table-column>
+                        </el-table-column>
+                      </el-table-column>
+                    </el-table-column>
+                    <el-table-column
+                      :label="trans('tr.project_assignment')"
+                      >
+                      <el-table-column label="" prop="fake" >
+                        <el-table-column label="" >
+                          <el-table-column
+                            prop="well_project_purpose"
+                            label=""
+                            width="200"
+                            sortable
+                            >
+                            <template slot-scope="scope">
+                              <el-tooltip class="item" effect="dark"  v-bind:content="haveTooltip(scope.$index, `well_project_purpose`)" :placement="isPlacement(scope.$index, `well_project_purpose`)">
+                                <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`well_project_purpose`)}" >
+                                          <span
+                                            :class="{
+                                              'circle-err': isCircleErrClass(scope.$index,`well_project_purpose`)}"
+                                            :style="`background :${getColor(
+                                              wells[scope.$index].well_project_purpose[1][0]
+                                            )}`"
+                                          >
+                                          </span><span v-if="scope.row.well_project_purpose[0] != null">{{scope.row.well_project_purpose[0]}}</span>  
+                                </div>   
+                              </el-tooltip> 
+                            </template>
+                          </el-table-column>
+                        </el-table-column>
+                      </el-table-column>
                     </el-table-column>
                   </el-table>
           </div>
@@ -2836,7 +3126,9 @@ export default {
        "el-table_1_column_113", "el-table_1_column_125", "el-table_1_column_137", "el-table_1_column_141","el-table_1_column_145","el-table_1_column_149", 
        "el-table_1_column_153", "el-table_1_column_163", "el-table_1_column_165", "el-table_1_column_167", "el-table_1_column_169", "el-table_1_column_171",
         "el-table_1_column_173", "el-table_1_column_175",  "el-table_1_column_177", "el-table_1_column_179",  "el-table_1_column_181", "el-table_1_column_183", 
-      "el-table_1_column_187",  "el-table_1_column_191",  "el-table_1_column_195",  "el-table_1_column_199", ], 
+      "el-table_1_column_187",  "el-table_1_column_191",  "el-table_1_column_195",  "el-table_1_column_199", "el-table_1_column_279", "el-table_1_column_283", , "el-table_1_column_287"
+      , "el-table_1_column_291", , "el-table_1_column_295", "el-table_1_column_299", "el-table_1_column_303", "el-table_1_column_303", "el-table_1_column_307", "el-table_1_column_311"
+      , "el-table_1_column_315"], 
       filter_column: [], 
     };
     
