@@ -145,12 +145,12 @@ return array (
       'bsw' => 'Обводненность, %',
       'surge_tank_pressure' => 'Давление в буферной емкости, кгс\\см2',
       'pump_discharge_pressure' => 'Давление на выходе насоса, кгс\\см2',
-      'heater_inlet_pressure' => 'Температура на входе в печь, С',
-      'heater_output_pressure' => 'Температура на выходе из печи, С',
       'temperature' => 'Температура на входе в печь, С',
       'heater_output_temperature' => 'Температура на выходе из печи, С',
       'heater_inlet_temperature' => 'Температура на входе в печь, С',
       'gas_factor' => 'Газовый фактор, м3/м3',
+      'heater_inlet_pressure' => 'Температура на входе в печь, С',
+      'heater_output_pressure' => 'Температура на выходе из печи, С',
     ),
   ),
   'all_gus' => 'Все ГУ',
@@ -214,32 +214,6 @@ return array (
     ),
   ),
   'corrosion_name' => 'Коррозия',
-  'pipe' => 
-  array (
-    'menu' => 'Трубопроводы',
-    'title' => 'Трубопроводы ГУ кармасс',
-    'create_title' => 'Ввод данных по трубопроводу',
-    'edit_title' => 'Редактирование данных по трубопроводу',
-    'fields' => 
-    array (
-      'length' => 'Длина',
-      'outside_diameter' => 'Внешний диаметр, мм',
-      'inner_diameter' => 'Внутренний диаметр',
-      'thickness' => 'Толщина стенки, мм',
-      'roughness' => 'Жесткость',
-      'material' => 'Материал',
-      'plot' => 'Участок',
-    ),
-    'updated' => 'Трубовровод изменен',
-    'deleted' => 'Трубопровод удален',
-    'deleting_error' => 'Ошибка при удалении трубопровода',
-    'coords' => 'Координаты трубопровода',
-    'add' => 'Добавить трубовровод',
-    'type' => 'Тип размер трубопровода',
-    'params' => 'Параметры трубопровода',
-    'name' => 'Наименование трубопровода',
-    'pipe' => 'Трубопровод',
-  ),
   'inhibitor' => 
   array (
     'title' => 'Справочник ингибиторов',
@@ -311,7 +285,6 @@ return array (
     'title' => 'База данных по трубопроводам',
     'create_title' => 'Ввод данных по трубопроводу',
   ),
-  'well' => 'Скважина',
   'gu' => 
   array (
     'deleted' => 'ГУ удален',
@@ -319,6 +292,7 @@ return array (
     'name' => 'Имя ГУ',
     'create_title' => 'Ввод данных по ГУ',
     'edit_title' => 'Редактирование ГУ',
+    'gu' => 'ГУ',
     'params' => 'Параметры ГУ',
     'fields' => 
     array (
@@ -334,7 +308,6 @@ return array (
       'daily_gas_production_in_sib' => 'Количество газа в СИБ',
     ),
     'redirect-to' => 'Перейти на',
-    'gu' => 'ГУ',
   ),
   'zu' => 
   array (
@@ -358,6 +331,7 @@ return array (
   'pipe_types' => 
   array (
     'menu' => 'Справочник тип размеров трубопроводов',
+    'title' => 'Справочник тип размеров трубопроводов',
     'fields' => 
     array (
       'name' => 'Тип размер',
@@ -370,7 +344,6 @@ return array (
     ),
     'edit_title' => 'Редактирование типа трубы',
     'create_title' => 'Ввод данных по типу трубы',
-    'title' => 'Справочник тип размеров трубопроводов',
   ),
   'omgngdu_well' => 
   array (
@@ -390,7 +363,7 @@ return array (
     'create_title' => 'Ввод данных ОМГ НГДУ ЗУ - Скважина',
     'edit_title' => 'Редактирование данных ОМГ НГДУ Скважина',
   ),
-  'hydro_calculcation' => 
+  'hydro_calculation' => 
   array (
     'fields' => 
     array (
@@ -411,5 +384,13 @@ return array (
       'height_drop' => 'Перепад высот, м',
     ),
     'table_title' => 'Таблица расчета гидравлики',
+    'message' => 
+    array (
+      'no-omgdu-data' => 'нет данных ОМГДУ',
+      'pressure-0' => 'давление 0 !',
+      'no-pressure-data' => 'нет данных по давлению !',
+      'no-daily-fluid-data' => 'нет данных по cуточной добычи жидкости !',
+      'no-bsw-data' => 'нет данных по обводненности !',
+    ),
   ),
 );

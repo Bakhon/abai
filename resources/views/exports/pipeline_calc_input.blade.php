@@ -14,12 +14,12 @@
                 <td>{{ $item->map_pipe->pipeType->outside_diameter }}</td>
                 <td>{{ $item->map_pipe->pipeType->thickness  }}</td>
                 <td>{{ $item->map_pipe->lastCoords->m_distance }}</td>
-                <td>{{ $item->lastOmgngdu ? $item->lastOmgngdu->daily_fluid_production : ''}}</td>
-                <td>{{ $item->lastOmgngdu ? $item->lastOmgngdu->bsw : ''}}</td>
+                <td>{{ $item->omgngdu ? $item->omgngdu->daily_fluid_production : ''}}</td>
+                <td>{{ $item->omgngdu ? $item->omgngdu->bsw : ''}}</td>
                 <td>{{ $item->gu ? 0 : ''}}</td>
-                <td>{{ $item->lastOmgngdu ? $item->lastOmgngdu->pump_discharge_pressure : ''}}</td>
+                <td>{{ $item->omgngdu ? $item->omgngdu->pump_discharge_pressure + 1: ''}}</td>
                 <td></td>
-                <td>{{ $item->lastOmgngdu ? $item->lastOmgngdu->heater_output_temperature : '' }}</td>
+                <td>{{ $item->omgngdu ? $item->omgngdu->heater_output_temperature : '' }}</td>
                 <td></td>
                 <td>{{ $item->name }}</td>
                 <td>{{ $item->trunkline_end_point->name }}</td>

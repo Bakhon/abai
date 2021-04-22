@@ -12,6 +12,33 @@ use Carbon\Carbon;
 
 class ExcelFormController extends Controller
 {
+
+    public function getDzoCurrentData(Request $request)
+    {
+        $dzoName = $request->request->get('dzoName');
+        $dzoImportData = DzoImportData::query()
+            ->whereDate('date',Carbon::yesterday('Asia/Almaty'))
+            ->where('dzo_name',$dzoName)
+            ->with('importField')
+            ->with('importDowntimeReason')
+            ->with('importDecreaseReason')
+            ->first();
+
+         if (is_null($dzoImportData)) {
+            return response()->json($dzoImportData);
+         }
+         $dzoImportData->fields = $this->getFormattedFields($dzoImportData);
+
+         return response()->json($dzoImportData);
+    }
+
+    public function getFormattedFields($dzoImportData)
+    {
+        return $dzoImportData->importField->mapWithKeys(function ($field) {
+           return [$field['field_name'] => $field];
+        });
+    }
+
     public function store(Request $request)
     {
         $this->deleteAlreadyExistRecord($request);
@@ -38,9 +65,9 @@ class ExcelFormController extends Controller
         $recordDate = $request->request->get('date');
         $todayDzoImportDataRecord = DzoImportData::whereDate('date', Carbon::parse($recordDate))->where('dzo_name', $dzoName)->first();
         if ($this->isAlreadyUploaded($todayDzoImportDataRecord)) {
-            DzoImportField::where('import_data_id',$todayDzoImportDataRecord->id)->delete();
-            DzoImportDecreaseReason::where('import_data_id',$todayDzoImportDataRecord->id)->delete();
-            DzoImportDowntimeReason::where('import_data_id',$todayDzoImportDataRecord->id)->delete();
+            DzoImportField::where('dzo_import_data_id',$todayDzoImportDataRecord->id)->delete();
+            DzoImportDecreaseReason::where('dzo_import_data_id',$todayDzoImportDataRecord->id)->delete();
+            DzoImportDowntimeReason::where('dzo_import_data_id',$todayDzoImportDataRecord->id)->delete();
             DzoImportData::where('id',$todayDzoImportDataRecord->id)->delete();
         }
     }
