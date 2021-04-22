@@ -115,8 +115,8 @@ export default {
       let data = {
         dzo: this.org,
         period: 'monthly',
-        report_date_start: formatDate.formatToFirstDayOfMonth(this.startDate),
-        report_date_end: formatDate.formatToLastDayOfMonth(this.endDate)
+        report_date_start: formatDate.getFirstDayOfMonthFormatted(this.startDate),
+        report_date_end: formatDate.getLastDayOfMonthFormatted(this.endDate)
       };
       let jsonData = JSON.stringify(data);
 
