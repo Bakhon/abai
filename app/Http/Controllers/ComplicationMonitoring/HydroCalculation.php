@@ -10,6 +10,9 @@ use App\Http\Resources\HydroCalcListResource;
 use App\Jobs\ExportHydroCalcTableToExcel;
 use App\Models\ComplicationMonitoring\OmgNGDU;
 use App\Models\ComplicationMonitoring\TrunklinePoint;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Session;
 
 class HydroCalculation extends Controller
@@ -165,7 +168,7 @@ class HydroCalculation extends Controller
             ->getFilteredQuery($input, $query)
             ->whereNotNull('gu_id')
             ->orWhereNotNull('point_end_id')
-            ->paginate(25);
+            ->get();
 
         $alerts = [];
 
@@ -184,12 +187,16 @@ class HydroCalculation extends Controller
             $points[$key]->omgngdu = $query->orderBy('date', 'desc')->first();
 
             if (!$points[$key]->omgngdu) {
-                $alert = $points[$key]->gu->name.' '.trans('monitoring.hydro_calculation.message.no-omgdu-data');
+                $message = $points[$key]->gu->name.' '.trans('monitoring.hydro_calculation.message.no-omgdu-data');
 
                 if (isset($input['date'])) {
-                    $alert .= ' на '.$input['date'];
+                    $message .= ' на '.$input['date'];
                 }
-                $alerts[] = $alert .= ' !';
+
+                $alerts[] = [
+                    'message' => $message .= ' !',
+                    'variant' => 'danger'
+                ];
                 continue;
             }
 
@@ -198,21 +205,35 @@ class HydroCalculation extends Controller
             $points[$key]->omgngdu->heater_output_temperature = $temperature;
 
             if ($points[$key]->omgngdu->pump_discharge_pressure == 0) {
-                $alerts[] = $points[$key]->gu->name.' '.trans('monitoring.hydro_calculation.message.pressure-0');
+                $alerts[] = [
+                    'message' => $points[$key]->gu->name . ' ' . trans('monitoring.hydro_calculation.message.pressure-0'),
+                    'variant' => 'danger'
+                ];
             }
 
             if (is_null($points[$key]->omgngdu->pump_discharge_pressure)) {
-                $alerts[] = $points[$key]->gu->name.' '.trans('monitoring.hydro_calculation.message.no-pressure-data');
+                $alerts[] = [
+                    'message' => $points[$key]->gu->name.' '.trans('monitoring.hydro_calculation.message.no-pressure-data'),
+                    'variant' => 'danger'
+                ];
             }
 
             if (!$points[$key]->omgngdu->daily_fluid_production) {
-                $alerts[] = $points[$key]->gu->name.' '.trans('monitoring.hydro_calculation.message.no-daily-fluid-data');
+                $alerts[] = [
+                    'message' => $points[$key]->gu->name.' '.trans('monitoring.hydro_calculation.message.no-daily-fluid-data'),
+                    'variant' => 'danger'
+                ];
             }
 
             if (!$points[$key]->omgngdu->bsw) {
-                $alerts[] = $points[$key]->gu->name.' '.trans('monitoring.hydro_calculation.message.no-bsw-data');
+                $alerts[] = [
+                    'message' => $points[$key]->gu->name.' '.trans('monitoring.hydro_calculation.message.no-bsw-data'),
+                    'variant' => 'danger'
+                ];
             }
         }
+
+        $points = $this->paginate($points, 25, (int)$input['page']);
 
         $list = json_decode(HydroCalcListResource::collection($points)->toJson());
         if (count($alerts)) {
@@ -237,5 +258,19 @@ class HydroCalculation extends Controller
     protected function getFilteredQuery($filter, $query = null)
     {
         return (new HydroCalcFilter($query, $filter))->filter();
+    }
+
+    /**
+     * Generates the pagination of items in an array or collection.
+     *
+     * @param array|Collection $items
+     */
+    protected function paginate($items, int $perPage = 15, int $page = null, array $options = []): LengthAwarePaginator
+    {
+        $page = $page ?: (Paginator::resolveCurrentPage() ?: 1);
+
+        $items = $items instanceof Collection ? $items : Collection::make($items);
+
+        return new LengthAwarePaginator($items->forPage($page, $perPage), $items->count(), $perPage, $page, $options);
     }
 }

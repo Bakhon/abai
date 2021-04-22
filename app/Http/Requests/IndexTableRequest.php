@@ -20,7 +20,8 @@ class IndexTableRequest extends FormRequest
             'date_from' => 'nullable|date',
             'date_to' => 'nullable|date',
             'filter' => 'nullable|array',
-            'date' => 'nullable|date'
+            'date' => 'nullable|date',
+            'page' => 'nullable|int',
         ];
     }
 }
