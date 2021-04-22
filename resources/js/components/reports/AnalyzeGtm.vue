@@ -165,9 +165,9 @@ export default {
       let data = {
         period: 'days',
         dzo: this.org,
-        report_date_start: formatDate.formatToMinOfDay(this.start_date),
-        report_date_end: formatDate.formatToMinOfDay(this.end_date),
-        report_date: formatDate.formatToMinOfDay(this.report_date),
+        report_date_start: formatDate.getMinOfDayFormatted(this.start_date),
+        report_date_end: formatDate.getMinOfDayFormatted(this.end_date),
+        report_date: formatDate.getMinOfDayFormatted(this.report_date),
         type_event: `${this.type_event}`,
       };
 

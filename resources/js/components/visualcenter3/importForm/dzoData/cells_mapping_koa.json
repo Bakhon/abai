@@ -27,8 +27,8 @@
       "associated_gas_production_fact",
       "associated_gas_delivery_fact",
       "associated_gas_expenses_for_own_fact",
-      "natural_gas_processing_fact",
-      "natural_gas_flaring_fact",
+      "associated_gas_processing_fact",
+      "associated_gas_flaring_fact",
       "associated_gas_receive_kaspiy_aral_fact",
       "associated_gas_raw_fact"
     ],
@@ -37,10 +37,11 @@
   },
   "agentUploadDzo": {
     "fields": [
-      "agent_upload_total_water_injection_fact"
+      "agent_upload_total_water_injection_fact",
+      "agent_upload_tech_water_injection_fact"
     ],
     "rowIndex": 21,
-    "rowLength": 1
+    "rowLength": 2
   },
   "otmDzo": {
     "fields": [
@@ -175,8 +176,8 @@
           "associated_gas_production_fact",
           "associated_gas_delivery_fact",
           "associated_gas_expenses_for_own_fact",
-          "natural_gas_processing_fact",
-          "natural_gas_flaring_fact",
+          "associated_gas_processing_fact",
+          "associated_gas_flaring_fact",
           "associated_gas_receive_kaspiy_aral_fact",
           "associated_gas_raw_fact"
         ],
@@ -186,12 +187,12 @@
       "Кожасай": {
         "fields": [
           "associated_gas_production_fact",
+          "associated_gas_delivery_fact",
+          "associated_gas_expenses_for_own_fact",
+          "associated_gas_processing_fact",
+          "associated_gas_flaring_fact",
           "associated_gas_receive_kaspiy_aral_fact",
-          "associated_gas_raw_fact",
-          "associated_gas_delivery_commercial_gas_fact",
-          "associated_gas_expenses_for_own_losses_fact",
-          "natural_gas_processing_fact",
-          "natural_gas_flaring_fact"
+          "associated_gas_raw_fact"
         ],
         "rowIndex": 18,
         "rowLength": 7
@@ -200,17 +201,19 @@
     "agentUpload": {
       "Алибекмола": {
         "fields": [
-          "agent_upload_total_water_injection_fact"
+          "agent_upload_total_water_injection_fact",
+          "agent_upload_tech_water_injection_fact"
         ],
         "rowIndex": 22,
-        "rowLength": 1
+        "rowLength": 2
       },
       "Кожасай": {
         "fields": [
-          "agent_upload_total_water_injection_fact"
+          "agent_upload_total_water_injection_fact",
+          "agent_upload_tech_water_injection_fact"
         ],
         "rowIndex": 23,
-        "rowLength": 1
+        "rowLength": 2
       }
     },
     "otm": {
