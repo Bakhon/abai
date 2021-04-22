@@ -15,6 +15,7 @@ return array (
     'wr_nopayroll' => 'Средняя стоимость 1 ПРС без ФОТ',
     'wr_payroll' => 'ФОТ на 1 ПРС',
     'wo' => 'Средняя стоимость КРС',
+    'net_back' => 'NetBack',
     'comment' => 'Комментарий',
     'added_date_author' => 'Добавлено: дата / автор',
     'changed_date_author' => 'Изменение: дата / автор',
