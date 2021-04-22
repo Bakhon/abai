@@ -8,6 +8,9 @@ export const formatDate = {
     formatToFirstDayOfMonth: function (date) {
         return moment.parseZone(date).set(minOfDay).set('date', 1).format(dateFormat);
     },
+    formatToLastDayOfMonth: function (date) {
+        return moment.parseZone(date).set(minOfDay).endOf('month').format(dateFormat);
+    },
     formatToMinOfDay: function (date) {
         return moment.parseZone(date).set(minOfDay).format(dateFormat);
     },
