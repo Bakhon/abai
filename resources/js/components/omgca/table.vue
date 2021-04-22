@@ -107,7 +107,7 @@
                       class="filter-input"
                       type="text"
                       @click="calendarFromShow = !calendarFromShow"
-                      v-bind:value="formatDate(filters[code].value.from)"
+                      :value="formatDate(filters[code].value.from)"
                       readonly
                   >
                   <date-picker
@@ -126,7 +126,7 @@
                       class="filter-input"
                       type="text"
                       @click="calendarToShow = !calendarToShow"
-                      v-bind:value="formatDate(filters[code].value.to)"
+                      :value="formatDate(filters[code].value.to)"
                       readonly
                   >
                   <date-picker
@@ -304,6 +304,11 @@ export default {
           queryParams['filter[' + code + ']'] = filter.value
 
         })
+      }
+
+      if (this.filters.date) {
+        this.filters.date.value.to = this.formatDate(this.filters.date.value.to);
+        this.filters.date.value.from = this.formatDate(this.filters.date.value.from);
       }
 
       if (this.params.links.date && this.selectedDate) {

@@ -172,7 +172,7 @@ export default {
     },
     changeDate(date) {
       if (date) {
-        let formatedDate = moment(date).format('YYYY-MM-DD HH:MM:SS')
+        let formatedDate = moment.parseZone(date).format('YYYY-MM-DD HH:MM:SS')
         this.updateValue(formatedDate)
       }
     },
