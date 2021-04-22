@@ -461,15 +461,6 @@ class EconomicController extends Controller
         return $last ? 100 : 0;
     }
 
-    static function intervalMonth(string $start = null, string $end = null): string
-    {
-        $end = Carbon::parse($end ?? now());
-
-        $start = $start ? Carbon::parse($start) : $end->copy()->subMonth();
-
-        return self::intervalFormat($start, $end);
-    }
-
     static function intervalYears(string $start = null, string $end = null, int $count = 1)
     {
         $end = Carbon::parse($end ?? now());

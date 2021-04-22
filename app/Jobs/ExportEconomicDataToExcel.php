@@ -37,7 +37,7 @@ class ExportEconomicDataToExcel implements ShouldQueue
 
     public function handle()
     {
-        $interval = EconomicController::intervalMonth(
+        $interval = EconomicController::intervalMonths(
             $this->params['interval_start'] ?? null,
             $this->params['interval_end'] ?? null
         );
@@ -47,12 +47,16 @@ class ExportEconomicDataToExcel implements ShouldQueue
         $builder = $druid
             ->query(EconomicController::DATA_SOURCE, Granularity::DAY)
             ->interval($interval)
-            ->select('__time', 'dt', function (ExtractionBuilder $extractionBuilder) {
+            ->select('__time', EconomicDataExport::COLUMN_DATE, function (ExtractionBuilder $extractionBuilder) {
                 $extractionBuilder->timeFormat(EconomicController::TIME_FORMAT);
             });
 
-        foreach (EconomicDataExport::COLUMNS as $column) {
+        foreach (EconomicDataExport::COLUMNS_SELECT as $column) {
             $builder->select($column);
+        }
+
+        foreach (EconomicDataExport::COLUMNS_SUM as $column) {
+            $builder->sum($column);
         }
 
         if (isset($this->params['org_id2'])) {

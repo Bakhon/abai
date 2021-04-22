@@ -1,7 +1,7 @@
 <table style="width: 100%;">
     <thead>
     <tr>
-        @foreach(\App\Exports\EconomicDataExport::COLUMNS as $column)
+        @foreach(\App\Exports\EconomicDataExport::columns() as $column)
             <th style="border: 1px solid black; height: 20px">
                 {{$column}}
             </th>
@@ -12,7 +12,7 @@
     <tbody>
     @foreach($data as $item)
         <tr>
-            @foreach(\App\Exports\EconomicDataExport::COLUMNS as $column)
+            @foreach(\App\Exports\EconomicDataExport::columns() as $column)
                 <th style="border: 1px solid black; height: 20px">
                     {{$item[$column] ?? null}}
                 </th>

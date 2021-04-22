@@ -102,11 +102,12 @@
               {{ subBlock.title }}
             </div>
 
-            <div class="progress my-2"
-                 style="background: rgba(94, 92, 230, 0.2); height: 5px">
+            <div :class="subBlock.sum.percent > 0 ? 'progress-reverse' : ''"
+                 class="progress my-2 bg-progress"
+                 style="height: 5px">
               <div
-                  :class="subBlock.sum.percent > 0  && !subBlock.reversePercent || subBlock.sum.percent < 0 && subBlock.reversePercent ? 'bg-green' : 'bg-red'"
-                  :style="{width: (subBlock.sum.percent < 0 ? subBlock.sum.percent + 100 : subBlock.sum.percent) + '%'}"
+                  :class="calcSubBlockBg(subBlock.sum.percent, subBlock.reversePercent)"
+                  :style="{width: calcSubBlockWidth(subBlock.sum.percent) + '%'}"
                   :aria-valuenow="subBlock.sum.percent"
                   :aria-valuemin="0"
                   :aria-valuemax="100"
@@ -116,7 +117,7 @@
             </div>
 
             <div class="d-flex font-size-12px line-height-14px mb-2">
-              <div class="flex-grow-1" style="color: #82BAFF">
+              <div class="flex-grow-1 text-blue">
                 {{ 100 + subBlock.sum.percent }} %
               </div>
 
@@ -150,8 +151,7 @@
               @change="getEconomicData"/>
 
           <button
-              class="btn btn-primary mt-4 py-2 w-100 border-0"
-              style="background: #213181 !important"
+              class="btn btn-primary mt-4 py-2 w-100 border-0 bg-export"
               @click="exportEconomicData">
             Выгрузить в Excel
           </button>
@@ -354,6 +354,18 @@ export default {
     },
   },
   methods: {
+    calcSubBlockBg(percent, reversePercent) {
+      return (percent > 0 && !reversePercent) || (percent < 0 && reversePercent)
+          ? 'bg-green'
+          : 'bg-red'
+    },
+
+    calcSubBlockWidth(percent) {
+      return percent <= 0
+          ? percent + 100
+          : +Math.floor(100 * percent / (100 + percent))
+    },
+
     async getEconomicData() {
       this.loading = true
 
@@ -459,6 +471,10 @@ export default {
   line-height: 26px !important;
 }
 
+.progress-reverse {
+  transform: rotateY(180deg);
+}
+
 .bg-blue-dark {
   background: #2B2E5E;
 }
@@ -467,12 +483,20 @@ export default {
   background: #323370 !important;
 }
 
+.bg-export {
+  background: #213181 !important
+}
+
 .bg-red {
   background: rgb(171, 19, 14) !important;
 }
 
 .bg-green {
   background: rgb(19, 176, 98) !important;
+}
+
+.bg-progress {
+  background: #323370 !important;;
 }
 
 .text-blue {
