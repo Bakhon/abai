@@ -285,7 +285,7 @@ export default {
     },
     formatDate(date) {
       if (!date) return null
-      return moment(date).format('YYYY-MM-DD')
+      return moment.parseZone(date).format('YYYY-MM-DD')
     },
     prepareQueryParams() {
       let queryParams = {
