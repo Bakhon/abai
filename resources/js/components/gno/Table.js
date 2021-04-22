@@ -1664,7 +1664,7 @@ export default {
     window.addEventListener("resize", () => {
       this.windowWidth = window.innerWidth;
     });
-    
+
     let langUrl = `${window.location.pathname}`.slice(1, 3);
     if(langUrl === 'ru') {
       this.layout.xaxis.title = this.titleXRu
