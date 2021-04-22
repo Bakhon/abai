@@ -2,47 +2,53 @@
   <div>
       <ul class="nav nav-tabs">
           <li class="nav-item">
-              <a class="nav-link" @click="selectTab(1)" href="#">ШГН</a>
+              <a class="nav-link" @click="selectTab(1)" href="#">{{trans('pgno.shgn')}}</a>
           </li>
           <li class="nav-item">
-              <a class="nav-link" @click="selectTab(2)" href="#">ЭЦН</a>
+              <a class="nav-link" @click="selectTab(2)" href="#">{{trans('pgno.ecn')}}</a>
           </li>
           <li class="nav-item">
-              <a class="nav-link" @click="selectTab(3)" href="#">ФОН</a>
+              <a class="nav-link" @click="selectTab(3)" href="#">{{trans('pgno.fon')}}</a>
           </li>
           <li class="nav-item">
-              <a class="nav-link" @click="selectTab(4)" href="#">Разработка</a>
+              <a class="nav-link" @click="selectTab(4)" href="#">{{trans('pgno.develop')}}</a>
           </li>
           <li class="nav-item">
-              <a class="nav-link" @click="selectTab(5)" href="#">Экономика</a>
+              <a class="nav-link" @click="selectTab(5)" href="#">{{trans('pgno.economic')}}</a>
           </li>
       </ul>
 
     <div v-if="currentTab == 1">
-        <h2>ШГН</h2>
+        <shgn></shgn>
     </div>
 
     <div v-if="currentTab == 2">
-        <h2>ЭЦН</h2>
+        <ecn></ecn>
     </div>
 
     <div v-if="currentTab == 3">
-        <h2>ФОН</h2>
+        <fon></fon>
     </div>
 
     <div v-if="currentTab == 4">
-        <h2>Разработка</h2>
+        <develop></develop>
     </div>
 
     <div v-if="currentTab == 5">
-        <h2>Экономика</h2>
+        <economic></economic>
     </div>
 
   </div>
 </template>
 
 <script>
+import Economic from './components/Economic.vue'
+import Shgn from './components/Shgn.vue'
+import Ecn from './components/Ecn.vue'
+import Develop from './components/Develop.vue'
+import Fon from './components/Fon.vue'
 export default {
+    components: { Shgn, Ecn, Fon, Develop, Economic },
     props: {
         value: String
     },
@@ -59,7 +65,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .nav-link {
     color: white;
     outline: none !important;
