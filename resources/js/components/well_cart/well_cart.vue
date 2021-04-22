@@ -122,23 +122,54 @@
                             <div class="sheare-icon"></div>   
                         </div>
                     </div>
-                    <div class="col">
-                        <div class="row">
+                    <div class="row">
+                        <div class="col">
                             <div class="icon-all pointer-large-icon">
                                 <img src="/img/bd/pointer-large.svg">
                             </div>
-                            <div class="file-icon-large">
+                            <div class="file-container">
+                                <div class="row">
+                                    <div class="col">
+                                        <p> 233 MB</p>
+                                    </div>
+                                </div> 
+                                <div class="row">
+                                    <div class="col">
+                                          <div class="file-icon-large"></div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="icon-container">
+                                          <img src="/img/bd/folder-white.svg">
+
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="icon-all pointer-large-icon"><img src="/img/bd/pointer-large.svg"></div>
+                            <div class="icon-all pointer-large-icon"><img src="/img/bd/pointer-large.svg" style="transform: scale(-1);"></div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="center">
+                                <h2>UZN_6067</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-dark">
+                    <div class="row">
+                        <div class="col">
+                            <div class="heading">
+                                <p>Общая информация</p>                                
+                            </div>           
                         </div>
                     </div>
                 </div>
          </div>       
     </div>
 </template>
-
-
-
 
 <style scoped lang="scss">
     .well-deal{
@@ -204,17 +235,20 @@
         width: 100%;
         padding: 5px 10px;
         .search-input{
-        background: url("/img/bd/search.svg");
-        background-color: #272953;
-        border: 1px solid #272953;
-        background-size: contain;
-        background-repeat: no-repeat;
-        text-indent: 20px;
-        width: 100%;
-        &::placeholder{
-            color:white;
-            font-family: Roboto;
-            font-size: 14px;
+            padding: 10px;
+            border-radius: 10px;
+            height: 40px;
+            background: url("/img/bd/search.svg");
+            background-color: #272953;
+            border: 1px solid #3b4a84;
+            background-size: contain;
+            background-repeat: no-repeat;
+            text-indent: 20px;
+            width: 100%;
+            &::placeholder{
+                color:white;
+                font-family: Roboto;
+                font-size: 14px;
         }
     }
     }
@@ -229,6 +263,29 @@
         p{
             margin: 0px;
         }
+    }
+    .file-container{
+        background: #313563;
+        margin-left: auto;
+        margin-right: auto;
+        width: 200px;
+        height: 250px;
+      //  padding: 40px;
+        .file-icon-large{
+            margin-left: auto;
+            margin-right: auto;
+            background: url(/img/bd/file-large.svg) no-repeat;
+            height: 150px;
+            width: 120px;
+      }
+      p{
+          margin-left: auto;
+          color: white;
+          background-color: #A18F47;
+      }
+      .icon-container{
+          margin:10px;
+      }
     }
     .txt5{
         display: flex;
@@ -266,15 +323,6 @@
     .pointer-large-icon{
         margin-top: auto;
         margin-bottom: auto;
-     //   background: url(/img/bd/pointer-large.svg) 50% 50% no-repeat;
-    }
-    .file-icon-large{
-        margin-left: 35px;
-        margin-right: 35px;
-        background: url(/img/bd/file-large.svg) no-repeat;
-        height: 150px;
-        width: 120px;
-
     }
     .full-size-icon{
         width: 20px;
@@ -310,7 +358,9 @@
 
     .col{
         display: flex;
-    }
+        margin-right: auto;
+        margin-left: auto;
+    }center
     .sheare-icon{
         background: url("/img/bd/share.svg") no-repeat;
         width: 10px;
@@ -321,5 +371,14 @@
     }
     .bg-dark{
         padding-bottom: 20px;
+       margin-bottom: 20px;
+    }
+    .center{
+    margin-left: auto;
+    margin-right: auto;
+        h2{
+        margin: none;
+        padding:20px;
+        }
     }
 </style>
