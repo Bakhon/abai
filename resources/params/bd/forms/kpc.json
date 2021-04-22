@@ -1,5 +1,5 @@
 {
-  "table": "bigdata_wells",
+  "table": "well_workover",
   "tabs": [
     {
       "title": "request",
@@ -9,33 +9,33 @@
           "title": "repair",
           "items": [
             {
-              "code":"",
+              "code":"request_date",
               "type":"date",
               "title":"request_date",
               "validation": "nullable|date|before_or_equal:today"
             },
             {
-              "code":"",
+              "code":"expected_date",
               "type":"date",
               "title":"planned_date",
               "validation": "nullable|date|before_or_equal:today"
             },
             {
-              "code": "",
+              "code": "work_type",
               "type": "dict",
               "title": "work_type",
-              "validation": "required|exists:",
-              "dict": ""
+              "validation": "required|exists:tbd.dict.repair_work_type,id",
+              "dict": "repair_work_types"
             },
             {
-              "code": "",
+              "code": "gtm_type",
               "type": "dict",
               "title": "gtm_type",
-              "validation": "required|exists:",
-              "dict": ""
+              "validation": "required|exists:tbd.dict.gtm_type,id",
+              "dict": "gtm_types"
             },
             {
-              "code":"",
+              "code":"work_plan",
               "type":"text",
               "title":"planing_work_list",
               "validation": "nullable|date|before_or_equal:today",
@@ -55,7 +55,7 @@
           "title": "repair",
           "items": [
             {
-              "code": "work_start_date",
+              "code": "dbeg",
               "type": "datetime",
               "title": "work_start_date",
               "validation": "nullable|date|before_or_equal:today"
@@ -64,18 +64,18 @@
               "code": "repair_work_type",
               "type": "dict",
               "title": "repair_work_type",
-              "validation": "required|exists:",
-              "dict": ""
+              "validation": "required|exists:tbd.dict.repair_work_type,id",
+              "dict": "repair_work_types"
             },
             {
-              "code": "planned_works_list",
+              "code": "work_plan",
               "type": "text",
               "title": "planned_works_list",
               "validation": "required|max:255",
               "prefix": ""
             },
             {
-              "code": "on_our_own",
+              "code": "by_ourselves",
               "type": "checkbox",
               "title": "on_our_own",
               "validation":""
@@ -84,31 +84,31 @@
               "code": "contractor",
               "type": "dict",
               "title": "contractor",
-              "validation": "required|exists:",
-              "dict": ""
+              "validation": "required|exists:tbd.dict.company, id",
+              "dict": "companies"
             },
             {
               "code": "brigade",
               "type": "dict",
               "title": "brigade",
-              "validation": "required|exists:",
-              "dict": ""
+              "validation": "required|exists:tbd.dict.brigade, id",
+              "dict": "brigades"
             },
             {
               "code": "brigade_master",
               "type": "dict",
               "title": "brigade_master",
-              "validation": "required|exists:",
-              "dict": ""
+              "validation": "required|exists:tbd.dict.brigadier,id",
+              "dict": "brigadiers"
             },
             {
-              "code": "duplicate_in_gts",
+              "code": "gtm_duplicate",
               "type": "checkbox",
               "title": "duplicate_in_gts",
               "validation":""
             },
             {
-              "code": "opi",
+              "code": "pit",
               "type": "checkbox",
               "title": "opi",
               "validation":""
@@ -127,13 +127,13 @@
           "title": "repair",
           "items": [
             {
-              "code": "work_end_date",
+              "code": "dend",
               "type": "datetime",
               "title": "work_end_date",
               "validation": "nullable|date|before_or_equal:today"
             },
             {
-              "code": "done_work_description",
+              "code": "work_list",
               "type": "text",
               "title": "done_work_description",
               "validation": "required|max:255",
@@ -146,28 +146,28 @@
               "validation":""
             },
             {
-              "code": "new_run_down_nkt",
+              "code": "cnl_new",
               "type": "text",
               "title": "new_run_down_nkt",
               "validation": "required|max:255",
               "prefix": ""
             },
             {
-              "code": "used_run_down_nkt",
+              "code": "cnl_used",
               "type": "text",
               "title": "used_run_down_nkt",
               "validation": "required|max:255",
               "prefix": ""
             },
             {
-              "code": "actual_bottomhole_m",
+              "code": "td",
               "type": "text",
               "title": "actual_bottomhole_m",
               "validation": "required|max:255",
               "prefix": ""
             },
             {
-              "code": "no_slaughter",
+              "code": "no_btm",
               "type": "checkbox",
               "title": "no_slaughter",
               "validation":""
@@ -176,11 +176,11 @@
               "code": "no_slaughter_reason",
               "type": "dict",
               "title": "no_slaughter_reason",
-              "validation": "required|exists:",
-              "dict": ""
+              "validation": "required|exists:tbd.dict.reason, id",
+              "dict": "no_btm_reasons"
             },
             {
-              "code": "artificial_slaughter_m",
+              "code": "hud",
               "type": "text",
               "title": "artificial_slaughter_m",
               "validation": "required|max:255",
@@ -194,7 +194,7 @@
               "dict": ""
             },
             {
-              "code": "not_change_technical_condition",
+              "code": "no_change_tech_state",
               "type": "checkbox",
               "title": "not_change_technical_condition",
               "validation":""
@@ -203,11 +203,11 @@
               "code": "condition",
               "type": "dict",
               "title": "condition",
-              "validation": "required|exists:",
-              "dict": ""
+              "validation": "required|exists:tbd.dict.well_status_type,id",
+              "dict": "well_statuses"
             },
             {
-              "code": "not_change_state",
+              "code": "no_change_state",
               "type": "checkbox",
               "title": "not_change_technical_condition",
               "validation":""
