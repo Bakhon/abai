@@ -358,14 +358,14 @@ return array (
   ),
   'pipe_types' => 
   array (
-    'menu' => 'Типы труб',
+    'menu' => 'Справочник тип размеров трубопроводов',
     'fields' => 
     array (
       'name' => 'Тип размер',
       'outside_diameter' => 'Внешний диаметр, мм',
       'inner_diameter' => 'Внутренний диаметр, мм',
       'thickness' => 'Толщина стенки, мм',
-      'roughness' => 'Жесткость',
+      'roughness' => 'Шероховатость',
       'material' => 'Материал',
       'plot' => 'Участок',
     ),
