@@ -2604,7 +2604,7 @@
                           </el-table-column>
                         </el-table-column>
                     </el-table-column>
-                    <!-- Проверка -->
+                    
                     <el-table-column :label="trans('tr.check')">
                         
 
