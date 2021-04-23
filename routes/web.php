@@ -29,7 +29,7 @@ Route::group(
             ['middleware' => 'auth'],
             function () {
                 Route::get("/geteconimicdata", "EconomicController@getEconomicData");
-                Route::post("/exporteconimicdata", "EconomicController@exportEconomicData");
+                Route::post("/export-econimic-data", "EconomicController@exportEconomicData");
 
                 Route::post("/corrosion", "DruidController@corrosion");
                 Route::get(
@@ -127,6 +127,7 @@ Route::group(
                 Route::get('jobs/status', 'JobsController@getStatus')->name('jobs.status');
 
                 Route::get('organizations', 'OrganizationsController@index')->name('organizations');
+                Route::get('fields', 'FieldController@index')->name('fields');
 
                 Route::get('profile', 'UserController@profile')->name('profile');
                 Route::post('modulerequest','ModuleController@moduleRequest')->name('modulerequest');
