@@ -660,7 +660,34 @@ export default {
       chart3Data: null,
       chart4Data: null,
       problemGus: [],
-      economicCurrentDays: null
+      economicCurrentDays: null,
+      validation: [
+        {
+          key: 'ngdu',
+          error: this.trans('monitoring.monitor.errors.ngdu')
+        },
+        {
+          key: 'oilGas',
+          error: this.trans('monitoring.monitor.errors.oilGas')
+        },
+        {
+          key: 'pipe',
+          error: this.trans('monitoring.monitor.errors.pipe')
+        },
+        {
+          key: 'pump_discharge_pressure',
+          error: this.trans('monitoring.monitor.errors.pump_discharge_pressure')
+        },
+        {
+          key: 'surge_tank_pressure',
+          error: this.trans('monitoring.monitor.errors.surge_tank_pressure')
+        },
+        {
+          key: 'wmLastH2S.hydrogen_sulfide',
+          error: this.trans('monitoring.monitor.errors.hydrogen_sulfide')
+        },
+
+      ]
     };
   },
   computed: {
@@ -797,12 +824,7 @@ export default {
               let background_corrosion = this.lastCorrosion.background_corrosion_velocity;
               this.corrosionVelocity = corrosion_with_inhibitor ? corrosion_with_inhibitor : background_corrosion;
 
-              if (this.ngdu &&
-                  this.oilGas &&
-                  this.pipe &&
-                  this.pump_discharge_pressure &&
-                  this.surge_tank_pressure)
-              {
+              if (!this.validateData()) {
                 this.calc()
               }
 
@@ -810,6 +832,30 @@ export default {
               console.log("No data");
             }
           });
+    },
+    validateData(){
+      let isErrors = false;
+      this.validation.forEach((rule) => {
+        let ruleKeys = rule.key.split('.');
+
+        let value = 'empty';
+        for (let i = 0; i < ruleKeys.length; i++) {
+          if (value !== 'empty') {
+            value = value[ruleKeys[i]]
+          } else {
+            value = this[ruleKeys[i]];
+          }
+
+          if (i == (ruleKeys.length - 1)) {
+            if (!value || value == 'empty') {
+              this.showToast(rule.error, 'Ошибка', 'danger', 10000);
+              isErrors = true;
+            }
+          }
+        }
+      });
+
+      return isErrors;
     },
     calc() {
       this.axios
