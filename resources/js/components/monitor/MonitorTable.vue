@@ -794,6 +794,9 @@ export default {
           })
           .then((response) => {
             let data = response.data;
+            this.isDataValidated = false;
+            this.validationErrors = [];
+
             if (data) {
               this.ngdu = data.ngdu
               this.uhe = data.uhe
@@ -838,7 +841,6 @@ export default {
           });
     },
     validateData() {
-      this.isDataValidated = true;
       this.validation.forEach((rule) => {
         let ruleKeys = rule.key.split('.');
 
@@ -852,22 +854,20 @@ export default {
         }
         if (!value || value == 'empty') {
           this.validationErrors.push(rule.error);
-          this.isDataValidated = false;
         }
       });
+      this.isDataValidated = true;
     },
     isValidData() {
       if (!this.isDataValidated) {
         this.validateData()
       }
-      return this.isDataValidated;
+      return this.validationErrors.length === 0;
     },
     displayErrors() {
       this.validationErrors.forEach((error) => {
         this.showToast(error, this.trans('app.error'), 'danger', 10000);
       });
-
-      this.validationErrors = [];
     },
     calc() {
       this.axios
