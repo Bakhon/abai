@@ -1,12 +1,12 @@
 <template>
   <select
-      v-model="form.org"
+      v-model="form.org_id"
       class="form-control text-white bg-main4-important border-0"
       @change="changeOrganization"
   >
     <option
         v-for="org in organizations"
-        :key="`org_${org.id}`"
+        :key="org.id"
         :value="org.id">
       {{ org.name }}
     </option>
@@ -36,13 +36,13 @@ export default {
 
       if (!this.organizations.length) return
 
-      this.form.org = this.organizations[0].id
+      this.form.org_id = this.organizations[0].id
 
       this.$emit('change')
     },
 
     changeOrganization() {
-      this.form.dpz = null
+      this.form.field_id = null
 
       this.$emit('change')
     }
@@ -52,6 +52,6 @@ export default {
 
 <style scoped>
 .bg-main4-important {
-  background-color: #333975 !important;
+  background-color: #333975;
 }
 </style>

@@ -16,8 +16,8 @@ class EconomicDataRequest extends FormRequest
     public function rules()
     {
         return [
-            'org' => 'required|integer|min:1',
-            'dpz' => 'nullable|string',
+            'org_id' => 'required|integer|min:1',
+            'field_id' => 'nullable|integer|min:1',
             'granularity' => [
                 'required',
                 'string',

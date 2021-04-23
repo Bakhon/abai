@@ -293,8 +293,8 @@ export default {
   data: () => ({
     activeTab: 0,
     form: {
-      org: null,
-      dpz: null,
+      org_id: null,
+      field_id: null,
       granularity: GRANULARITY_DAY,
       interval_start: null,
       interval_end: null
@@ -451,35 +451,35 @@ export default {
 </script>
 <style scoped>
 .font-size-12px {
-  font-size: 12px !important;
+  font-size: 12px;
 }
 
 .font-size-16px {
-  font-size: 16px !important;
+  font-size: 16px;
 }
 
 .font-size-22px {
-  font-size: 22px !important;
+  font-size: 22px;
 }
 
 .font-size-32px {
-  font-size: 32px !important;
+  font-size: 32px;
 }
 
 .line-height-14px {
-  line-height: 14px !important;
+  line-height: 14px;
 }
 
 .line-height-20px {
-  line-height: 20px !important;
+  line-height: 20px;
 }
 
 .line-height-22px {
-  line-height: 22px !important;
+  line-height: 22px;
 }
 
 .line-height-26px {
-  line-height: 26px !important;
+  line-height: 26px;
 }
 
 .progress-reverse {
@@ -491,23 +491,23 @@ export default {
 }
 
 .bg-light-blue-dark {
-  background: #323370 !important;
+  background: #323370;
 }
 
 .bg-export {
-  background: #213181 !important
+  background: #213181;
 }
 
 .bg-red {
-  background: rgb(171, 19, 14) !important;
+  background: rgb(171, 19, 14);
 }
 
 .bg-green {
-  background: rgb(19, 176, 98) !important;
+  background: rgb(19, 176, 98);
 }
 
 .bg-progress {
-  background: #323370 !important;;
+  background: #323370;
 }
 
 .text-blue {

@@ -59,11 +59,16 @@ class EconomicController extends Controller
 
     public function getEconomicData(EconomicDataRequest $request): array
     {
-        if (!in_array($request->org, auth()->user()->getOrganizationIds())) {
+        if (!in_array($request->org_id, auth()->user()->getOrganizationIds())) {
             abort(403);
         }
 
-        $org = Org::findOrFail($request->org);
+        /** @var Org $org */
+        $org = Org::findOrFail($request->org_id);
+
+        $dpz = $request->field_id
+            ? $org->fields()->whereId($request->field_id)->firstOrFail()->druid_id
+            : null;
 
         $intervalYear = self::intervalYears($request->interval_start, $request->interval_end);
 
@@ -219,10 +224,10 @@ class EconomicController extends Controller
             }
         }
 
-        if ($request->dpz) {
+        if ($dpz) {
             /** @var QueryBuilder $builder */
             foreach ($builders as &$builder) {
-                $builder->where('dpz', '=', $request->dpz);
+                $builder->where('dpz', '=', $dpz);
             }
         }
 
@@ -434,12 +439,21 @@ class EconomicController extends Controller
             abort(403);
         }
 
+        /** @var Org $org */
         $org = Org::findOrFail($request->org);
+
+        $dpz = $request->field_id
+            ? $org->fields()->whereId($request->field_id)->firstOrFail()->druid_id
+            : null;
 
         $params = $request->validated();
 
         if ($org->druid_id) {
             $params['org_id2'] = $org->druid_id;
+        }
+
+        if ($dpz) {
+            $params['dpz'] = $dpz;
         }
 
         $job = new ExportEconomicDataToExcel($params);

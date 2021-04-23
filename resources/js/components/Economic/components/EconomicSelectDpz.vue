@@ -1,6 +1,6 @@
 <template>
   <select
-      v-model="form.dpz"
+      v-model="form.field_id"
       class="form-control text-white bg-main4-important border-0"
       @change="$emit('change')"
   >
@@ -84,9 +84,9 @@ export default {
       let defaultField = [{value: null, label: 'Выберите месторождение'}]
 
 
-      let fields = this.form.org === 1
+      let fields = this.form.org_id === 1
           ? FIELDS
-          : FIELDS.filter(x => x.org === this.form.org)
+          : FIELDS.filter(x => x.org === this.form.org_id)
 
       return [...defaultField, ...fields]
     }

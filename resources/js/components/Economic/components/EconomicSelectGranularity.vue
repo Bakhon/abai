@@ -44,6 +44,6 @@ export default {
 
 <style scoped>
 .bg-main4-important {
-  background-color: #333975 !important;
+  background-color: #333975;
 }
 </style>

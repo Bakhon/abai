@@ -1,13 +1,11 @@
 <template>
   <i v-if="percent > 0"
      :class="reverse ? 'fa-angle-up' : 'fa-angle-down'"
-     class="fas"
-     style="color: #13B062"></i>
+     class="fas color-green"></i>
 
   <i v-else
      :class="reverse ? 'fa-angle-down' : 'fa-angle-up'"
-     class="fas"
-     style="color: #AB130E"></i>
+     class="fas color-red"></i>
 </template>
 
 <script>
@@ -27,5 +25,11 @@ export default {
 </script>
 
 <style scoped>
+.color-green{
+  color: #13B062
+}
 
+.color-red{
+  color: #AB130E
+}
 </style>

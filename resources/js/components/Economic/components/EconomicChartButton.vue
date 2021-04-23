@@ -24,7 +24,7 @@ export default {
 
 <style scoped>
 .economic-tab-btn-active, .economic-tab-btn:hover {
-  background: #2E50E9 !important;
+  background: #2E50E9;
 }
 
 .economic-tab-btn {

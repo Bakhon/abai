@@ -14,6 +14,17 @@ import {economicChartInitMixin} from "../mixins/economicChartMixin";
 export default {
   name: 'EconomicChart1',
   mixins: [economicChartInitMixin],
+  props: {
+    title: {
+      required: false,
+      type: String,
+      default: () => 'Количество скважин'
+    },
+    tooltipText: {
+      required: false,
+      type: String
+    }
+  },
   computed: {
     options() {
       return {
@@ -25,7 +36,7 @@ export default {
               }
             },
             title: {
-              text: 'Количество скважин',
+              text: this.title,
             },
             min: 0
           },
@@ -34,9 +45,14 @@ export default {
             intersect: false,
             y: {
               formatter(y) {
-                return y === undefined
-                    ? y
-                    : new Intl.NumberFormat('en-IN', {maximumSignificantDigits: 3}).format(y.toFixed(0)) + "";
+                if (y === undefined) {
+                  return y
+                }
+
+                return new Intl.NumberFormat(
+                    'en-IN',
+                    {maximumSignificantDigits: 3}
+                ).format(y.toFixed(0)) + this.tooltipText;
               }
             }
           }

@@ -44,10 +44,10 @@ export default {
 
 <style scoped>
 .white-placeholder >>> *::placeholder {
-  color: #fff !important;
+  color: #fff;
 }
 
 .cursor-pointer {
-  cursor: pointer !important;
+  cursor: pointer;
 }
 </style>

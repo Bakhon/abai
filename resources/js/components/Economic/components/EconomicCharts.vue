@@ -26,10 +26,12 @@
           :granularity="granularity"
           class="bg-economic-chart"/>
 
-      <economic-chart2
-          v-else-if="index === 1"
+      <economic-chart1
+          v-if="index === 1"
           :data="charts.chart2"
           :granularity="granularity"
+          title="Добыча нефти"
+          tooltip-text="тыс. тонн"
           class="bg-economic-chart"/>
 
       <economic-chart3
@@ -57,7 +59,6 @@
 import EconomicChartButton from "./EconomicChartButton";
 
 import EconomicChart1 from "./EconomicChart1";
-import EconomicChart2 from "./EconomicChart2";
 import EconomicChart3 from "./EconomicChart3";
 import EconomicChart4 from "./EconomicChart4";
 
@@ -66,7 +67,6 @@ export default {
   components: {
     EconomicChartButton,
     EconomicChart1,
-    EconomicChart2,
     EconomicChart3,
     EconomicChart4,
   },
