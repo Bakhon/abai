@@ -249,21 +249,21 @@ class EconomicController extends Controller
 
         $data = [
             'cat1_month' => [[
-                'Скважина',
-                'Добыча нефти',
-                'Добыча жидкости',
+                trans('economic_reference.well'),
+                trans('economic_reference.oil_production'),
+                trans('economic_reference.liquid_production'),
                 'Revenue_total',
                 'NetBack_bf_pr_exp',
                 'Operating_profit'
             ]],
             'prs1' => [[
-                'Скважина',
-                'Количесвто ПРС'
+                trans('economic_reference.well'),
+                trans('economic_reference.count_prs'),
             ]],
             'Operating_profit_month' => [[
-                'Дата',
-                'Добыча нефти',
-                'Добыча жидкости',
+                trans('app.date'),
+                trans('economic_reference.oil_production'),
+                trans('economic_reference.liquid_production'),
                 'Operating_profit'
             ]]
         ];
@@ -548,13 +548,13 @@ class EconomicController extends Controller
         if ($digitAbs < 1000000000) {
             return [
                 number_format($digit / 1000000, 2),
-                'млн'
+                trans('economic_reference.million')
             ];
         }
 
         return [
             number_format($digit / 1000000000, 2),
-            'млрд'
+            trans('economic_reference.billion')
         ];
     }
 

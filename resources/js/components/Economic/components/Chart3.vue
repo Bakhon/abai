@@ -7,20 +7,20 @@
 </template>
 
 <script>
-import {economicChartInitMixin} from "../mixins/economicChartMixin";
+import {chartInitMixin} from "../mixins/chartMixin";
 
 export default {
-  name: 'EconomicChart3',
-  mixins: [economicChartInitMixin],
+  name: 'Chart3',
+  mixins: [chartInitMixin],
   computed: {
     chartSeries() {
       return [
         {
-          name: 'Топ 10 нерентабельных скважин',
+          name: this.trans('economic_reference.operating_profit_top_10_lowest'),
           data: this.data.Operating_profit.slice(0, 10)
         },
         {
-          name: 'Топ 10 рентабельных скважин',
+          name: this.trans('economic_reference.operating_profit_top_10_highest'),
           data: this.data.Operating_profit.slice(10)
         }
       ];

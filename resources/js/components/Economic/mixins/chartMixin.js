@@ -1,8 +1,8 @@
 const ru = require("apexcharts/dist/locales/ru.json");
 
-import {GRANULARITY_DAY} from "../components/EconomicSelectGranularity";
+import {GRANULARITY_DAY} from "../components/SelectGranularity";
 
-export const economicChartInitMixin = {
+export const chartInitMixin = {
     props: {
         data: {
             required: true,

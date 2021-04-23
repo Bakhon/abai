@@ -18,7 +18,7 @@ export const GRANULARITY_DAY = 'day'
 export const GRANULARITY_MONTH = 'month'
 
 export default {
-  name: "EconomicSelectGranularity",
+  name: "SelectGranularity",
   props: {
     form: {
       required: true,
@@ -29,11 +29,11 @@ export default {
     data() {
       return [
         {
-          label: 'По дням',
+          label: this.trans('economic_reference.granularity_daily'),
           value: GRANULARITY_DAY
         },
         {
-          label: 'По месяцам',
+          label: this.trans('economic_reference.granularity_monthly'),
           value: GRANULARITY_MONTH
         }
       ]

@@ -2,7 +2,7 @@
   <select
       v-model="form.org_id"
       class="form-control text-white bg-main4-important border-0"
-      @change="changeOrganization"
+      @change="$emit('change')"
   >
     <option
         v-for="org in organizations"
@@ -15,7 +15,7 @@
 
 <script>
 export default {
-  name: "EconomicSelectOrganization",
+  name: "SelectOrganization",
   props: {
     form: {
       required: true,
@@ -40,12 +40,6 @@ export default {
 
       this.$emit('change')
     },
-
-    changeOrganization() {
-      this.form.field_id = null
-
-      this.$emit('change')
-    }
   }
 }
 </script>

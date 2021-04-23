@@ -1,7 +1,7 @@
 <template>
   <div class="row p-3 mt-3 bg-main1">
     <div class="d-flex">
-      <economic-chart-button
+      <chart-button
           v-for="(tab, index) in tabs"
           :key="index"
           :text="tab"
@@ -20,55 +20,57 @@
         {{ tab }}
       </h5>
 
-      <economic-chart1
+      <chart1
           v-if="index === 0"
           :data="charts.chart1"
           :granularity="granularity"
+          :title="trans('economic_reference.count_well')"
           class="bg-economic-chart"/>
 
-      <economic-chart1
+      <chart1
           v-if="index === 1"
           :data="charts.chart2"
           :granularity="granularity"
-          title="Добыча нефти"
-          tooltip-text="тыс. тонн"
+          :title="trans('economic_reference.oil_production')"
+          :tooltip-text="trans('economic_reference.thousand_tons')"
           class="bg-economic-chart"/>
 
-      <economic-chart3
+      <chart3
           v-else-if="index === 2"
           :data="charts.chart3"
           :granularity="granularity"
           class="bg-economic-chart"/>
 
-      <economic-chart4
+      <chart4
           v-else-if="index === 3"
           :data="charts.chart4"
           :granularity="granularity"
           class="bg-economic-chart"/>
 
-      <economic-chart1
+      <chart1
           v-else-if="index === 4"
           :data="charts.chart5"
           :granularity="granularity"
+          :title="trans('economic_reference.count_well')"
           class="bg-economic-chart"/>
     </div>
   </div>
 </template>
 
 <script>
-import EconomicChartButton from "./EconomicChartButton";
+import ChartButton from "./ChartButton";
 
-import EconomicChart1 from "./EconomicChart1";
-import EconomicChart3 from "./EconomicChart3";
-import EconomicChart4 from "./EconomicChart4";
+import Chart1 from "./Chart1";
+import Chart3 from "./Chart3";
+import Chart4 from "./Chart4";
 
 export default {
-  name: "EconomicCharts",
+  name: "Charts",
   components: {
-    EconomicChartButton,
-    EconomicChart1,
-    EconomicChart3,
-    EconomicChart4,
+    ChartButton,
+    Chart1,
+    Chart3,
+    Chart4,
   },
   props: {
     charts: {

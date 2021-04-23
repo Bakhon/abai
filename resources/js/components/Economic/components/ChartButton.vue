@@ -8,7 +8,7 @@
 
 <script>
 export default {
-  name: "EconomicChartButton",
+  name: "ChartButton",
   props: {
     text: {
       required: true,
@@ -24,7 +24,7 @@ export default {
 
 <style scoped>
 .economic-tab-btn-active, .economic-tab-btn:hover {
-  background: #2E50E9;
+  background: #2E50E9 !important;
 }
 
 .economic-tab-btn {

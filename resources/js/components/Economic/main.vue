@@ -16,36 +16,36 @@
 
         <div class="row justify-content-between text-white bg-blue-dark text-wrap">
           <economic-col @click.native="pushBign('bign1')">
-            <economic-title>
+            <title>
               <span>{{ res.lastMonth.cat1.count.value.toLocaleString() }}</span>
 
-              <economic-percent-badge :percent="-res.lastMonth.cat1.count.percent"/>
-            </economic-title>
+              <percent-badge :percent="-res.lastMonth.cat1.count.percent"/>
+            </title>
 
-            <economic-subtitle>
-              Количество нерентабельных скважин за последний месяц
-            </economic-subtitle>
+            <subtitle>
+              {{ trans('economic_reference.count_unprofitable_well_last_month') }}
+            </subtitle>
           </economic-col>
 
           <economic-col @click.native="pushBign('bign2')">
-            <economic-divider/>
+            <divider/>
 
-            <economic-title>
+            <title>
               <span>{{ res.lastYear.Operating_profit.sum.value[0].toLocaleString() }}</span>
               <span class="font-size-16px line-height-20px text-blue">
                 {{ res.lastYear.Operating_profit.sum.value[1] }}
               </span>
-            </economic-title>
+            </title>
 
-            <economic-subtitle>
-              Операционные убытки по НРС с начала года
-            </economic-subtitle>
+            <subtitle>
+              {{ trans('economic_reference.operating_profit_last_year') }}
+            </subtitle>
           </economic-col>
 
           <economic-col @click.native="pushBign('bign3')">
-            <economic-divider/>
+            <divider/>
 
-            <economic-title>
+            <title>
               <span>
                 {{ res.lastMonth.Operating_profit.sum.value[0].toLocaleString() }}
               </span>
@@ -54,28 +54,28 @@
                 {{ res.lastMonth.Operating_profit.sum.value[1] }}
               </span>
 
-              <economic-percent-badge :percent="-res.lastMonth.Operating_profit.sum.percent"/>
-            </economic-title>
+              <percent-badge :percent="-res.lastMonth.Operating_profit.sum.percent"/>
+            </title>
 
-            <economic-subtitle>
-              Операционные убытки по НРС за последний месяц
-            </economic-subtitle>
+            <subtitle>
+              {{ trans('economic_reference.operating_profit_last_month') }}
+            </subtitle>
           </economic-col>
 
           <economic-col @click.native="pushBign('bign4')">
-            <economic-divider/>
+            <divider/>
 
-            <economic-title>
+            <title>
               {{ res.lastYear.prs1.count.value.toLocaleString() }}
-            </economic-title>
+            </title>
 
-            <economic-subtitle>
-              Количество ПРС на НРС с начала года
-            </economic-subtitle>
+            <subtitle>
+              {{ trans('economic_reference.count_prs_per_nrs_last_year') }}
+            </subtitle>
           </economic-col>
         </div>
 
-        <economic-charts
+        <charts
             v-if="!loading"
             :charts="res"
             :granularity="form.granularity"/>
@@ -91,7 +91,7 @@
               v-for="(subBlock, subBlockIndex) in block"
               :key="subBlock.title"
               class="col-6 d-flex flex-column position-relative">
-            <economic-divider v-if="subBlockIndex % 2 === 1"/>
+            <divider v-if="subBlockIndex % 2 === 1"/>
 
             <div class="font-weight-bold font-size-32px line-height-38px">
               {{ subBlock.sum.value[0].toLocaleString() }}
@@ -127,7 +127,7 @@
               <div>{{ subBlock.sum.value_prev[0] }}</div>
             </div>
 
-            <economic-percent-badge
+            <percent-badge
                 :percent="subBlock.reversePercent ? -subBlock.sum.percent : subBlock.sum.percent"
                 :reverse="subBlock.reverse"
                 class="font-size-22px line-height-26px"/>
@@ -136,32 +136,34 @@
 
         <div class="bg-main1 p-3 mt-3 text-white text-wrap">
           <div class="font-size-16px line-height-22px font-weight-bold mb-3">
-            Выбор параметров отображения данных
+            {{ trans('economic_reference.select_data_display_options') }}
           </div>
 
-          <economic-select-interval
+          <select-interval
               :form="form"
               class="mb-3"
               @change="getEconomicData"/>
 
-          <economic-select-granularity
+          <select-granularity
               :form="form"
               class="mb-3"
               @change="getEconomicData"/>
 
-          <economic-select-organization
+          <select-organization
               :form="form"
               class="mb-3"
               @change="getEconomicData"/>
 
-          <economic-select-dpz
+          <select-field
+              v-if="form.org_id"
+              :org_id="form.org_id"
               :form="form"
               @change="getEconomicData"/>
 
           <button
               class="btn btn-primary mt-4 py-2 w-100 border-0 bg-export"
               @click="exportEconomicData">
-            Выгрузить в Excel
+            {{ trans('economic_reference.export_excel') }}
           </button>
         </div>
       </div>
@@ -175,16 +177,16 @@ const fileDownload = require("js-file-download");
 import VModal from 'vue-js-modal'
 import VueTableDynamic from 'vue-table-dynamic'
 import CatLoader from '../ui-kit/CatLoader'
-import EconomicDivider from "./components/EconomicDivider";
+import Divider from "./components/Divider";
 import EconomicCol from "./components/EconomicCol";
-import EconomicCharts from "./components/EconomicCharts";
-import EconomicTitle from "./components/EconomicTitle";
-import EconomicSubtitle from "./components/EconomicSubtitle";
-import EconomicSelectInterval from "./components/EconomicSelectInterval";
-import EconomicSelectGranularity, {GRANULARITY_DAY} from "./components/EconomicSelectGranularity";
-import EconomicSelectOrganization from "./components/EconomicSelectOrganization";
-import EconomicSelectDpz from "./components/EconomicSelectDpz";
-import EconomicPercentBadge from "./components/EconomicPercentBadge";
+import Charts from "./components/Charts";
+import Title from "./components/Title";
+import Subtitle from "./components/Subtitle";
+import SelectInterval from "./components/SelectInterval";
+import SelectGranularity, {GRANULARITY_DAY} from "./components/SelectGranularity";
+import SelectOrganization from "./components/SelectOrganization";
+import SelectField from "./components/SelectField";
+import PercentBadge from "./components/PercentBadge";
 
 Vue.use(VModal, {dynamicDefault: {draggable: true, resizable: true}});
 
@@ -279,16 +281,16 @@ export default {
   components: {
     VueTableDynamic,
     CatLoader,
-    EconomicDivider,
+    Divider,
     EconomicCol,
-    EconomicCharts,
-    EconomicTitle,
-    EconomicSubtitle,
-    EconomicSelectInterval,
-    EconomicSelectGranularity,
-    EconomicSelectOrganization,
-    EconomicSelectDpz,
-    EconomicPercentBadge
+    Charts,
+    Title,
+    Subtitle,
+    SelectInterval,
+    SelectGranularity,
+    SelectOrganization,
+    SelectField,
+    PercentBadge
   },
   data: () => ({
     activeTab: 0,
@@ -318,36 +320,36 @@ export default {
       return [
         [
           {
-            title: 'Выручка экспорт',
+            title: this.trans('economic_reference.revenue_export'),
             sum: this.res.lastMonth.Revenue_export.sum,
             reverse: true
           },
           {
-            title: 'Выручка местный рынок',
+            title: this.trans('economic_reference.revenue_local'),
             sum: this.res.lastMonth.Revenue_local.sum,
             reverse: true
           }
         ],
         [
           {
-            title: 'Условно-переменные затраты',
+            title: this.trans('economic_reference.variable_expenditures'),
             sum: this.res.lastMonth.Variable_expenditures.sum,
             reversePercent: true
           },
           {
-            title: 'Условно-постоянные затраты',
+            title: this.trans('economic_reference.fixed_expenditures'),
             sum: this.res.lastMonth.Fixed_expenditures.sum,
             reversePercent: true
           }
         ],
         [
           {
-            title: 'Отчисления в государство (НДПИ, Рентный налог, ЭТП)',
+            title: this.trans('economic_reference.met_payments'),
             sum: this.res.lastMonth.MET_payments.sum,
             reversePercent: true
           },
           {
-            title: 'Общие призводственые затраты',
+            title: this.trans('economic_reference.production_expenditures'),
             sum: this.res.lastMonth.Production_expenditures.sum,
             reversePercent: true
           },

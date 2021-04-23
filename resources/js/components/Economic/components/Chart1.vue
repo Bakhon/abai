@@ -7,23 +7,35 @@
 </template>
 
 <script>
-import {economicChartInitMixin} from "../mixins/economicChartMixin";
+const ru = require("apexcharts/dist/locales/ru.json");
+
+import {chartInitMixin} from "../mixins/chartMixin";
 
 export default {
-  name: 'EconomicChart4',
-  mixins: [economicChartInitMixin],
+  name: 'Chart1',
+  mixins: [chartInitMixin],
+  props: {
+    title: {
+      required: true,
+      type: String,
+    },
+    tooltipText: {
+      required: false,
+      type: String,
+    }
+  },
   computed: {
     options() {
       return {
         ...this.chartOptions, ...{
           yaxis: {
             labels: {
-              formatter(value) {
-                return Math.floor(value);
+              formatter(val) {
+                return Math.round(val);
               }
             },
             title: {
-              text: 'Добыча жидкости',
+              text: this.title,
             },
             min: 0
           },
@@ -36,11 +48,10 @@ export default {
                   return y
                 }
 
-                let liquid = y.toString().split('.');
-
-                return liquid.length > 1
-                    ? `${liquid[0]} тыс. тонн, обв: ${liquid[1]}%`
-                    : `${liquid[0]} тыс. тонн`
+                return new Intl.NumberFormat(
+                    'en-IN',
+                    {maximumSignificantDigits: 3}
+                ).format(y.toFixed(0)) + (this.tooltipText || "");
               }
             }
           }
@@ -50,3 +61,4 @@ export default {
   },
 }
 </script>
+

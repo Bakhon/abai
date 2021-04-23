@@ -6,7 +6,7 @@
 
 <script>
 export default {
-  name: "EconomicTitle"
+  name: "Title"
 }
 </script>
 

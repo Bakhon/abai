@@ -5,10 +5,10 @@
       @change="$emit('change')"
   >
     <option
-        v-for="dpz in fields"
-        :key="dpz.value"
-        :value="dpz.value">
-      {{ dpz.label }}
+        v-for="field in fields"
+        :key="field.id"
+        :value="field.id">
+      {{ field.name }}
     </option>
   </select>
 </template>
@@ -72,30 +72,50 @@ const FIELDS = [
 ]
 
 export default {
-  name: "EconomicSelectDpz",
+  name: "SelectField",
   props: {
     form: {
       required: true,
       type: Object
     },
+    org_id: {
+      required: true,
+      type: Number
+    }
   },
-  computed: {
-    fields() {
-      let defaultField = [{value: null, label: 'Выберите месторождение'}]
+  data: () => ({
+    fields: []
+  }),
+  created() {
+    this.getFields()
+  },
+  methods: {
+    async getFields() {
+      this.form.field_id = null
 
+      this.fields = [{
+        id: null,
+        name: this.trans('economic_reference.select_field')
+      }]
 
-      let fields = this.form.org_id === 1
-          ? FIELDS
-          : FIELDS.filter(x => x.org === this.form.org_id)
+      const params = {org_id: this.form.org_id}
 
-      return [...defaultField, ...fields]
+      const {data} = await this.axios.get('/ru/fields', {params: params})
+
+      this.fields = [...this.fields, ...data.fields]
+    },
+  },
+  watch: {
+    org_id() {
+      this.getFields()
     }
   }
+
 }
 </script>
 
 <style scoped>
 .bg-main4-important {
-  background-color: #333975 !important;
+  background-color: #333975;
 }
 </style>

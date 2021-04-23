@@ -2,7 +2,7 @@
   <div class="d-flex align-items-center white-placeholder">
     <datetime
         v-model="form.interval_start"
-        placeholder="Начало"
+        :placeholder="trans('economic_reference.interval_start')"
         input-class="bg-main4 text-white form-control border-0"
         class="mr-2 flex-grow-1"
         auto
@@ -10,7 +10,7 @@
 
     <datetime
         v-model="form.interval_end"
-        placeholder="Конец"
+        :placeholder="trans('economic_reference.interval_end')"
         input-class="bg-main4 text-white form-control border-0"
         class="mr-2 flex-grow-1"
         auto
@@ -26,7 +26,7 @@
 
 <script>
 export default {
-  name: "EconomicSelectInterval",
+  name: "SelectInterval",
   props: {
     form: {
       required: true,
