@@ -281,7 +281,6 @@ export default {
             this.isDataReady = false;
             this.turnOffErrorHighlight();
             this.processTableData();
-
             if (!this.isValidateError) {
                 this.isDataExist = false;
                 this.isDataReady = true;

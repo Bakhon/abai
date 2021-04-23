@@ -11,9 +11,11 @@
         </div>
 
         <div class="col-2 row mt-3 ml-1">
-            <div class="col-12 status-block status-block_little status-label">
-                <span>{{trans('visualcenter.importForm.statusLabel')}}&</span>
-                <span :class="[isValidateError ? 'status-error' : '','label']">{{status}}</span>
+            <div
+                    class="col-12 status-block status-block_little menu__button rainbow"
+                    @click="pasteClipboardContent()"
+            >
+                {{trans('visualcenter.importForm.pasteData')}}
             </div>
             <div
                     :class="[!isDataExist ? 'menu__button_disabled' : '','col-12 status-block status-block_little menu__button mt-3']"
@@ -28,12 +30,11 @@
                 {{trans('visualcenter.saveButton')}}
             </div>
         </div>
+        <div class="col-2 mt-3 row ml-1"></div>
         <div class="col-2 row mt-3 ml-1">
-            <div
-                    class="col-12 status-block status-block_little menu__button rainbow"
-                    @click="getClipboardContent()"
-            >
-                Вставить данные
+            <div class="col-12 status-block status-block_little status-label">
+                <span>{{trans('visualcenter.importForm.statusLabel')}}</span>
+                <span :class="[isValidateError ? 'status-error' : '','label']">&nbsp;{{status}}</span>
             </div>
             <div class="col-12 mt-3 status-block status-block_little">
                 &nbsp;
@@ -42,15 +43,8 @@
                 &nbsp;
             </div>
         </div>
-        <div class="col-2 mt-3 row ml-1"></div>
 
         <div class="col-4 row mt-3 ml-1">
-            <div class="col-12 mt-3 status-block status-block_little">
-                &nbsp;
-            </div>
-            <div class="col-12 mt-3 status-block status-block_little">
-                &nbsp;
-            </div>
             <div class="col-6 status-block status-block_little"></div>
             <div
                     id="chemistryButton"
@@ -92,6 +86,13 @@
                     {{trans('visualcenter.saveButton')}}
                 </div>
             </div>
+            <div class="col-12 mt-3 status-block status-block_little">
+                &nbsp;
+            </div>
+            <div class="col-12 mt-3 status-block status-block_little">
+                &nbsp;
+            </div>
+
         </div>
 
         <div class="table-form col-10 mt-3 ml-1">
@@ -257,7 +258,7 @@
             background-repeat: no-repeat;
             background-size: 50% 50%, 50% 50%;
             background-position: 0 0, 100% 0, 100% 100%, 0 100%;
-            animation: rotate 4s linear infinite;
+            animation: rotate 10s linear infinite;
         }
         &::after {
             content: '';
@@ -265,8 +266,6 @@
             z-index: -1;
             left: 6px;
             top: 6px;
-            width: calc(100% - 12px);
-            height: calc(100% - 12px);
             background: #656A8A;
             border-radius: 1px;
         }
