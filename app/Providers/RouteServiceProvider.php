@@ -106,7 +106,8 @@ class RouteServiceProvider extends ServiceProvider
             'visual_center',
             'gno',
             'tech',
-            'monitoring'
+            'monitoring',
+            'digital_drilling'
         ];
 
         foreach ($modules as $module) {
