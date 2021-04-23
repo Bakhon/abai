@@ -59,9 +59,8 @@
                                         </div>
                                     </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <a class="dropdown-item" href="#">Action</a>
-                                        <a class="dropdown-item" href="#">Another action</a>
-                                        <a class="dropdown-item" href="#">Something else here</a>
+                                        <a class="dropdown-item" href="#">Технологическая структура</a>
+                                        <a class="dropdown-item" href="#">Распределительная подстанция</a>
                                     </div>
                                 </div>
 
@@ -73,9 +72,12 @@
                                         </div>
                                     </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <a class="dropdown-item" href="#">Action</a>
-                                        <a class="dropdown-item" href="#">Another action</a>
-                                        <a class="dropdown-item" href="#">Something else here</a>
+                                        <a class="dropdown-item" href="#">Технологическая структура</a>
+                                        <a class="dropdown-item" href="#">Распределительная подстанция</a>
+                                        <a class="dropdown-item" href="#">Категория запасов</a>
+                                        <a class="dropdown-item" href="#">Добывающие скважины</a>
+                                        <a class="dropdown-item" href="#">Нагнетательные скважины</a>
+                                        <a class="dropdown-item" href="#">Поглощающие скважины</a>
                                     </div>
                                 </div>
                             <div class="dropdown small-select">
@@ -295,6 +297,150 @@
                                     </div>
                                 </div>
                                 <div class="row">
+                                    <div class="col-md-6 table-border element-position">59.06</div>
+                                    <div class="col-md-2 table-border element-position">59.06</div>
+                                    <div class="col-md-2 table-border element-position">5.77</div>
+                                    <div class="col-md-2 table-border element-position">
+                                        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M3 11.4998L1.55336 16.322C1.53048 16.3983 1.6016 16.4694 1.67788 16.4465L6.5 14.9998M3 11.4998C3 11.4998 11.0603 3.4393 12.7227 1.77708C12.8789 1.62091 13.1257 1.6256 13.2819 1.78177C13.8372 2.33702 15.1144 3.61422 16.2171 4.71697C16.3733 4.87322 16.3788 5.12103 16.2226 5.27726C14.5597 6.9399 6.5 14.9998 6.5 14.9998M3 11.4998L3.64727 10.8525L7.14727 14.3525L6.5 14.9998" stroke="white" stroke-width="1.4"/>
+                                        </svg>                                        
+                                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M14.5 8L1.5 8" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                                        <path d="M8 1.5V14.5" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                                        </svg>
+                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M12.6574 12.6575L1.34367 1.34383" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
+                                        <path d="M12.6563 1.34383L1.34262 12.6575" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
+                                        </svg>
+                                    </div>
+                                </div>
+                                                                <div class="row">
+                                    <div class="col-md-6 table-border element-position">59.06</div>
+                                    <div class="col-md-2 table-border element-position">59.06</div>
+                                    <div class="col-md-2 table-border element-position">5.77</div>
+                                    <div class="col-md-2 table-border element-position">
+                                        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M3 11.4998L1.55336 16.322C1.53048 16.3983 1.6016 16.4694 1.67788 16.4465L6.5 14.9998M3 11.4998C3 11.4998 11.0603 3.4393 12.7227 1.77708C12.8789 1.62091 13.1257 1.6256 13.2819 1.78177C13.8372 2.33702 15.1144 3.61422 16.2171 4.71697C16.3733 4.87322 16.3788 5.12103 16.2226 5.27726C14.5597 6.9399 6.5 14.9998 6.5 14.9998M3 11.4998L3.64727 10.8525L7.14727 14.3525L6.5 14.9998" stroke="white" stroke-width="1.4"/>
+                                        </svg>                                        
+                                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M14.5 8L1.5 8" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                                        <path d="M8 1.5V14.5" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                                        </svg>
+                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M12.6574 12.6575L1.34367 1.34383" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
+                                        <path d="M12.6563 1.34383L1.34262 12.6575" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
+                                        </svg>
+                                    </div>
+                                </div>
+                                                                <div class="row">
+                                    <div class="col-md-6 table-border element-position">59.06</div>
+                                    <div class="col-md-2 table-border element-position">59.06</div>
+                                    <div class="col-md-2 table-border element-position">5.77</div>
+                                    <div class="col-md-2 table-border element-position">
+                                        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M3 11.4998L1.55336 16.322C1.53048 16.3983 1.6016 16.4694 1.67788 16.4465L6.5 14.9998M3 11.4998C3 11.4998 11.0603 3.4393 12.7227 1.77708C12.8789 1.62091 13.1257 1.6256 13.2819 1.78177C13.8372 2.33702 15.1144 3.61422 16.2171 4.71697C16.3733 4.87322 16.3788 5.12103 16.2226 5.27726C14.5597 6.9399 6.5 14.9998 6.5 14.9998M3 11.4998L3.64727 10.8525L7.14727 14.3525L6.5 14.9998" stroke="white" stroke-width="1.4"/>
+                                        </svg>                                        
+                                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M14.5 8L1.5 8" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                                        <path d="M8 1.5V14.5" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                                        </svg>
+                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M12.6574 12.6575L1.34367 1.34383" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
+                                        <path d="M12.6563 1.34383L1.34262 12.6575" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
+                                        </svg>
+                                    </div>
+                                </div>
+                                                                <div class="row">
+                                    <div class="col-md-6 table-border element-position">59.06</div>
+                                    <div class="col-md-2 table-border element-position">59.06</div>
+                                    <div class="col-md-2 table-border element-position">5.77</div>
+                                    <div class="col-md-2 table-border element-position">
+                                        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M3 11.4998L1.55336 16.322C1.53048 16.3983 1.6016 16.4694 1.67788 16.4465L6.5 14.9998M3 11.4998C3 11.4998 11.0603 3.4393 12.7227 1.77708C12.8789 1.62091 13.1257 1.6256 13.2819 1.78177C13.8372 2.33702 15.1144 3.61422 16.2171 4.71697C16.3733 4.87322 16.3788 5.12103 16.2226 5.27726C14.5597 6.9399 6.5 14.9998 6.5 14.9998M3 11.4998L3.64727 10.8525L7.14727 14.3525L6.5 14.9998" stroke="white" stroke-width="1.4"/>
+                                        </svg>                                        
+                                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M14.5 8L1.5 8" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                                        <path d="M8 1.5V14.5" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                                        </svg>
+                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M12.6574 12.6575L1.34367 1.34383" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
+                                        <path d="M12.6563 1.34383L1.34262 12.6575" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
+                                        </svg>
+                                    </div>
+                                </div>
+                                                                <div class="row">
+                                    <div class="col-md-6 table-border element-position">59.06</div>
+                                    <div class="col-md-2 table-border element-position">59.06</div>
+                                    <div class="col-md-2 table-border element-position">5.77</div>
+                                    <div class="col-md-2 table-border element-position">
+                                        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M3 11.4998L1.55336 16.322C1.53048 16.3983 1.6016 16.4694 1.67788 16.4465L6.5 14.9998M3 11.4998C3 11.4998 11.0603 3.4393 12.7227 1.77708C12.8789 1.62091 13.1257 1.6256 13.2819 1.78177C13.8372 2.33702 15.1144 3.61422 16.2171 4.71697C16.3733 4.87322 16.3788 5.12103 16.2226 5.27726C14.5597 6.9399 6.5 14.9998 6.5 14.9998M3 11.4998L3.64727 10.8525L7.14727 14.3525L6.5 14.9998" stroke="white" stroke-width="1.4"/>
+                                        </svg>                                        
+                                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M14.5 8L1.5 8" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                                        <path d="M8 1.5V14.5" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                                        </svg>
+                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M12.6574 12.6575L1.34367 1.34383" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
+                                        <path d="M12.6563 1.34383L1.34262 12.6575" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
+                                        </svg>
+                                    </div>
+                                </div>
+                                                                <div class="row">
+                                    <div class="col-md-6 table-border element-position">59.06</div>
+                                    <div class="col-md-2 table-border element-position">59.06</div>
+                                    <div class="col-md-2 table-border element-position">5.77</div>
+                                    <div class="col-md-2 table-border element-position">
+                                        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M3 11.4998L1.55336 16.322C1.53048 16.3983 1.6016 16.4694 1.67788 16.4465L6.5 14.9998M3 11.4998C3 11.4998 11.0603 3.4393 12.7227 1.77708C12.8789 1.62091 13.1257 1.6256 13.2819 1.78177C13.8372 2.33702 15.1144 3.61422 16.2171 4.71697C16.3733 4.87322 16.3788 5.12103 16.2226 5.27726C14.5597 6.9399 6.5 14.9998 6.5 14.9998M3 11.4998L3.64727 10.8525L7.14727 14.3525L6.5 14.9998" stroke="white" stroke-width="1.4"/>
+                                        </svg>                                        
+                                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M14.5 8L1.5 8" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                                        <path d="M8 1.5V14.5" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                                        </svg>
+                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M12.6574 12.6575L1.34367 1.34383" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
+                                        <path d="M12.6563 1.34383L1.34262 12.6575" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
+                                        </svg>
+                                    </div>
+                                </div>
+                                                                <div class="row">
+                                    <div class="col-md-6 table-border element-position">59.06</div>
+                                    <div class="col-md-2 table-border element-position">59.06</div>
+                                    <div class="col-md-2 table-border element-position">5.77</div>
+                                    <div class="col-md-2 table-border element-position">
+                                        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M3 11.4998L1.55336 16.322C1.53048 16.3983 1.6016 16.4694 1.67788 16.4465L6.5 14.9998M3 11.4998C3 11.4998 11.0603 3.4393 12.7227 1.77708C12.8789 1.62091 13.1257 1.6256 13.2819 1.78177C13.8372 2.33702 15.1144 3.61422 16.2171 4.71697C16.3733 4.87322 16.3788 5.12103 16.2226 5.27726C14.5597 6.9399 6.5 14.9998 6.5 14.9998M3 11.4998L3.64727 10.8525L7.14727 14.3525L6.5 14.9998" stroke="white" stroke-width="1.4"/>
+                                        </svg>                                        
+                                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M14.5 8L1.5 8" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                                        <path d="M8 1.5V14.5" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                                        </svg>
+                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M12.6574 12.6575L1.34367 1.34383" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
+                                        <path d="M12.6563 1.34383L1.34262 12.6575" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
+                                        </svg>
+                                    </div>
+                                </div>
+                                                                <div class="row">
+                                    <div class="col-md-6 table-border element-position">59.06</div>
+                                    <div class="col-md-2 table-border element-position">59.06</div>
+                                    <div class="col-md-2 table-border element-position">5.77</div>
+                                    <div class="col-md-2 table-border element-position">
+                                        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M3 11.4998L1.55336 16.322C1.53048 16.3983 1.6016 16.4694 1.67788 16.4465L6.5 14.9998M3 11.4998C3 11.4998 11.0603 3.4393 12.7227 1.77708C12.8789 1.62091 13.1257 1.6256 13.2819 1.78177C13.8372 2.33702 15.1144 3.61422 16.2171 4.71697C16.3733 4.87322 16.3788 5.12103 16.2226 5.27726C14.5597 6.9399 6.5 14.9998 6.5 14.9998M3 11.4998L3.64727 10.8525L7.14727 14.3525L6.5 14.9998" stroke="white" stroke-width="1.4"/>
+                                        </svg>                                        
+                                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M14.5 8L1.5 8" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                                        <path d="M8 1.5V14.5" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                                        </svg>
+                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M12.6574 12.6575L1.34367 1.34383" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
+                                        <path d="M12.6563 1.34383L1.34262 12.6575" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
+                                        </svg>
+                                    </div>
+                                </div>
+                                                                <div class="row">
                                     <div class="col-md-6 table-border element-position">59.06</div>
                                     <div class="col-md-2 table-border element-position">59.06</div>
                                     <div class="col-md-2 table-border element-position">5.77</div>
@@ -782,10 +928,33 @@ h4{
     .blue-section{
         color:#82BAFF;
     }
-::-webkit-scrollbar {
-  width: 20px;
-  background-color: #30396B;
-  scrollbar-color: red;
-}
+    /* width */
+    ::-webkit-scrollbar {
+    width: 15px;
+    background: #272953; 
 
+    }
+
+    /* Track */
+    ::-webkit-scrollbar-track {
+    background: #272953; 
+
+    }
+    
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+    background: #374178; 
+    height:10px;
+    }
+    /* Handle on hover 
+    ::-webkit-scrollbar-thumb:hover {
+    background: #AAA; 
+    }
+    */
+    ::-webkit-scrollbar-button{
+    background: URL("/img/bd/scroll-array.svg") no-repeat 50% #485499;
+         &:end{
+            background: URL("/img/bd/scroll-array-end.svg") no-repeat 50% #485499;
+        }
+    }
 </style>
