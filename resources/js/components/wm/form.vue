@@ -440,7 +440,7 @@ export default {
   computed: {
     formatedDate() {
       if (this.formFields.date) {
-        return moment(this.formFields.date).format('YYYY-MM-DD HH:mm')
+        return moment.parseZone(this.formFields.date).format('YYYY-MM-DD HH:mm')
       }
       return null
     }
