@@ -848,7 +848,7 @@ export default {
 
           if (i == (ruleKeys.length - 1)) {
             if (!value || value == 'empty') {
-              this.showToast(rule.error, 'Ошибка', 'danger', 10000);
+              this.showToast(rule.error, this.trans('app.error'), 'danger', 10000);
               isErrors = true;
             }
           }
