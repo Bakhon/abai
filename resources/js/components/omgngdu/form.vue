@@ -22,7 +22,7 @@
             value-zone="Asia/Almaty"
             zone="Asia/Almaty"
             :format="{ year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: '2-digit', timeZoneName: 'short' }"
-            :phrases="{ok: 'Выбрать', cancel: 'Выход'}"
+            :phrases="{ok: trans('app.choose'), cancel: trans('app.cancel')}"
             :hour-step="1"
             :minute-step="5"
             :week-start="1"
@@ -225,7 +225,7 @@ export default {
         surge_tank_pressure: null,
         daily_gas_production_in_sib: null,
         heater_output_temperature: null,
-        editable: 0,
+        editable: 1,
       },
       ngdus: {},
       cndgs: {},
@@ -241,7 +241,7 @@ export default {
   computed: {
     formatedDate() {
       if (this.formFields.date) {
-        return moment(this.formFields.date).format('YYYY-MM-DD HH:mm')
+        return moment.parseZone(this.formFields.date).format('YYYY-MM-DD HH:mm')
       }
       return null
     }

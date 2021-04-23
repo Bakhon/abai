@@ -148,6 +148,8 @@ return array (
       'temperature' => 'Пештің кіріс температурасы, С',
       'heater_inlet_temperature' => 'Пештің кіріс температурасы, С',
       'heater_output_temperature' => 'Пештің шығыс температурасы, С',
+      'heater_inlet_pressure' => 'Пештің кіріс температурасы, С',
+      'heater_output_pressure' => 'Пештің шығыс температурасы, С',
     ),
   ),
   'all_gus' => 'Барлық ТҚ',
@@ -282,7 +284,6 @@ return array (
     'title' => 'Құбырлар дерекқоры',
     'menu' => 'Құбырлар',
     'create_title' => 'Құбырлар бойынша деректерді енгізу',
-
     'gu' => 'ТҚ',
   ),
   'pipe_types' => 

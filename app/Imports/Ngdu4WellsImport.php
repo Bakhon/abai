@@ -119,6 +119,9 @@ class Ngdu4WellsImport implements ToCollection, WithEvents, WithColumnLimit, Wit
 
             $row[self::LAT] = str_replace(',','.', $row[self::LAT]);
             $row[self::LON] = str_replace(',','.', $row[self::LON]);
+            $row[self::ELEVATION] = str_replace(',','.', $row[self::ELEVATION]);
+            $row[self::H_DISTANCE] = str_replace(',','.', $row[self::H_DISTANCE]);
+            $row[self::M_DISTANCE] = str_replace(',','.', $row[self::M_DISTANCE]);
 
             if ($guName != $row[self::GU]) {
                 if ($guName !== null) {

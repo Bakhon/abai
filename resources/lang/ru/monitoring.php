@@ -151,6 +151,8 @@ return array (
       'heater_output_temperature' => 'Температура на выходе из печи, С',
       'heater_inlet_temperature' => 'Температура на входе в печь, С',
       'gas_factor' => 'Газовый фактор, м3/м3',
+      'heater_inlet_pressure' => 'Температура на входе в печь, С',
+      'heater_output_pressure' => 'Температура на выходе из печи, С',
     ),
   ),
   'all_gus' => 'Все ГУ',
@@ -298,7 +300,7 @@ return array (
     'fields' => 
     array (
       'inner_diameter' => 'Внутренний диаметр',
-      'length' => 'Длина',
+      'length' => 'Длина, м',
       'material' => 'Материал',
       'outside_diameter' => 'Внешний диаметр',
       'plot' => 'Участок',
@@ -359,6 +361,7 @@ return array (
   'pipe_types' => 
   array (
     'menu' => 'Справочник тип размеров трубопроводов',
+    'title' => 'Справочник тип размеров трубопроводов',
     'fields' => 
     array (
       'name' => 'Тип размер',
@@ -391,7 +394,7 @@ return array (
     'create_title' => 'Ввод данных ОМГ НГДУ ЗУ - Скважина',
     'edit_title' => 'Редактирование данных ОМГ НГДУ Скважина',
   ),
-  'hydro_calculcation' => 
+  'hydro_calculation' => 
   array (
     'fields' => 
     array (
@@ -412,5 +415,13 @@ return array (
       'height_drop' => 'Перепад высот, м',
     ),
     'table_title' => 'Таблица расчета гидравлики',
+    'message' => 
+    array (
+      'no-omgdu-data' => 'нет данных ОМГДУ',
+      'pressure-0' => 'давление 0 !',
+      'no-pressure-data' => 'нет данных по давлению !',
+      'no-daily-fluid-data' => 'нет данных по cуточной добычи жидкости !',
+      'no-bsw-data' => 'нет данных по обводненности !',
+    ),
   ),
 );

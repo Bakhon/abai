@@ -45,6 +45,8 @@ class PipeTypesController extends CrudController
                     'type' => 'numeric',
                 ],
                 
+                
+                
             ]
         ];
 
