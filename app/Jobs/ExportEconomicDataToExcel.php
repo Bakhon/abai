@@ -13,7 +13,6 @@ use Illuminate\Queue\SerializesModels;
 use Imtigger\LaravelJobStatus\Trackable;
 use Level23\Druid\DruidClient;
 use Level23\Druid\Extractions\ExtractionBuilder;
-use Level23\Druid\Types\Granularity;
 use Maatwebsite\Excel\Facades\Excel;
 
 class ExportEconomicDataToExcel implements ShouldQueue
@@ -44,11 +43,14 @@ class ExportEconomicDataToExcel implements ShouldQueue
 
         $druid = new DruidClient(config('druid'));
 
+        $granularity = $this->params['granularity'];
+        $granularityFormat = EconomicController::granularityFormat($granularity);
+
         $builder = $druid
-            ->query(EconomicController::DATA_SOURCE, Granularity::DAY)
+            ->query(EconomicController::DATA_SOURCE, $granularity)
             ->interval($interval)
-            ->select('__time', EconomicDataExport::COLUMN_DATE, function (ExtractionBuilder $extractionBuilder) {
-                $extractionBuilder->timeFormat(EconomicController::TIME_FORMAT);
+            ->select('__time', EconomicDataExport::COLUMN_DATE, function (ExtractionBuilder $extBuilder) use ($granularityFormat) {
+                $extBuilder->timeFormat($granularityFormat);
             });
 
         foreach (EconomicDataExport::COLUMNS_SELECT as $column) {

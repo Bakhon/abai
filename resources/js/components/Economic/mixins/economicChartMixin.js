@@ -1,10 +1,16 @@
 const ru = require("apexcharts/dist/locales/ru.json");
 
+import {GRANULARITY_DAY} from "../components/EconomicSelectGranularity";
+
 export const economicChartInitMixin = {
     props: {
         data: {
             required: true,
             type: Object
+        },
+        granularity: {
+            required: true,
+            type: String
         }
     },
     computed: {
@@ -49,7 +55,9 @@ export const economicChartInitMixin = {
                     }
                 },
                 xaxis: {
-                    type: 'datetime'
+                    type: this.granularity === GRANULARITY_DAY
+                        ? 'datetime'
+                        : 'date'
                 },
             }
         },

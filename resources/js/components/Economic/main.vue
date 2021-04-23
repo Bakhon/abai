@@ -75,7 +75,10 @@
           </economic-col>
         </div>
 
-        <economic-charts v-if="!loading" :charts="res"/>
+        <economic-charts
+            v-if="!loading"
+            :charts="res"
+            :granularity="form.granularity"/>
       </div>
 
       <div class="col-3">
@@ -141,6 +144,11 @@
               class="mb-3"
               @change="getEconomicData"/>
 
+          <economic-select-granularity
+              :form="form"
+              class="mb-3"
+              @change="getEconomicData"/>
+
           <economic-select-organization
               :form="form"
               class="mb-3"
@@ -173,6 +181,7 @@ import EconomicCharts from "./components/EconomicCharts";
 import EconomicTitle from "./components/EconomicTitle";
 import EconomicSubtitle from "./components/EconomicSubtitle";
 import EconomicSelectInterval from "./components/EconomicSelectInterval";
+import EconomicSelectGranularity, {GRANULARITY_DAY} from "./components/EconomicSelectGranularity";
 import EconomicSelectOrganization from "./components/EconomicSelectOrganization";
 import EconomicSelectDpz from "./components/EconomicSelectDpz";
 import EconomicPercentBadge from "./components/EconomicPercentBadge";
@@ -276,6 +285,7 @@ export default {
     EconomicTitle,
     EconomicSubtitle,
     EconomicSelectInterval,
+    EconomicSelectGranularity,
     EconomicSelectOrganization,
     EconomicSelectDpz,
     EconomicPercentBadge
@@ -285,6 +295,7 @@ export default {
     form: {
       org: null,
       dpz: null,
+      granularity: GRANULARITY_DAY,
       interval_start: null,
       interval_end: null
     },

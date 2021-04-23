@@ -19,10 +19,10 @@ class EconomicController extends Controller
     const INTERVAL_LAST_MONTH = '2020-12-01T00:00:00/2021-01-01T00:00:00';
     const INTERVAL_LAST_2_MONTHS = '2020-11-01T00:00:00/2021-01-01T00:00:00';
 
-//    const DATA_SOURCE = 'economic_2020v4';
     const DATA_SOURCE = 'economic_2020v16_test';
 
     const TIME_FORMAT = 'yyyy-MM-dd';
+    const DATE_FORMAT = 'yyyy-MM';
 
     const PROFITABILITY_CAT_1 = 'profitless_cat_1';
     const PROFITABILITY_CAT_2 = 'profitless_cat_2';
@@ -69,6 +69,9 @@ class EconomicController extends Controller
 
         $intervalMonths = self::intervalMonths($request->interval_start, $request->interval_end);
 
+        $granularity = $request->granularity;
+        $granularityFormat = self::granularityFormat($granularity);
+
         $builder1 = $this
             ->druidClient
             ->query(self::DATA_SOURCE, Granularity::YEAR)
@@ -99,7 +102,7 @@ class EconomicController extends Controller
 
         $builder4 = $this
             ->druidClient
-            ->query(self::DATA_SOURCE, Granularity::DAY)
+            ->query(self::DATA_SOURCE, $granularity)
             ->interval($intervalMonths)
             ->sum("oil")
             ->sum("liquid")
@@ -137,10 +140,10 @@ class EconomicController extends Controller
 
         $builder8 = $this
             ->druidClient
-            ->query(self::DATA_SOURCE, Granularity::DAY)
+            ->query(self::DATA_SOURCE, $granularity)
             ->interval($intervalMonths)
-            ->select('__time', 'dt', function (ExtractionBuilder $extractionBuilder) {
-                $extractionBuilder->timeFormat(self::TIME_FORMAT);
+            ->select('__time', 'dt', function (ExtractionBuilder $extBuilder) use ($granularityFormat) {
+                $extBuilder->timeFormat($granularityFormat);
             })
             ->select('profitability')
             ->sum('liquid')
@@ -177,10 +180,10 @@ class EconomicController extends Controller
         foreach ($statuses as $column => $status) {
             $buildersProfitabilityCount[$status] = $this
                 ->druidClient
-                ->query(self::DATA_SOURCE, Granularity::DAY)
+                ->query(self::DATA_SOURCE, $granularity)
                 ->interval($intervalMonths)
-                ->select('__time', 'dt', function (ExtractionBuilder $extractionBuilder) {
-                    $extractionBuilder->timeFormat(self::TIME_FORMAT);
+                ->select('__time', 'dt', function (ExtractionBuilder $extBuilder) use ($granularityFormat) {
+                    $extBuilder->timeFormat($granularityFormat);
                 })
                 ->select($column)
                 ->count('count')
@@ -459,6 +462,13 @@ class EconomicController extends Controller
         }
 
         return $last ? 100 : 0;
+    }
+
+    static function granularityFormat(string $granularity): string
+    {
+        return $granularity === Granularity::MONTH
+            ? self::DATE_FORMAT
+            : self::TIME_FORMAT;
     }
 
     static function intervalYears(string $start = null, string $end = null, int $count = 1)
