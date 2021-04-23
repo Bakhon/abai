@@ -24,6 +24,9 @@ export default {
       type: String,
     }
   },
+  created() {
+    window.economic_reference_chart1_tooltipText = this.tooltipText || ''
+  },
   computed: {
     options() {
       return {
@@ -51,7 +54,7 @@ export default {
                 return new Intl.NumberFormat(
                     'en-IN',
                     {maximumSignificantDigits: 3}
-                ).format(y.toFixed(0)) + (this.tooltipText || "");
+                ).format(y.toFixed(0)) + ` ${window.economic_reference_chart1_tooltipText}`;
               }
             }
           }

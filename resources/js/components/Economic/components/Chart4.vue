@@ -12,6 +12,10 @@ import {chartInitMixin} from "../mixins/chartMixin";
 export default {
   name: 'Chart4',
   mixins: [chartInitMixin],
+  created() {
+    window.economic_reference_thousand_tons = this.trans('economic_reference.thousand_tons')
+    window.economic_reference_liquid = this.trans('economic_reference.liquid')
+  },
   computed: {
     options() {
       return {
@@ -32,16 +36,18 @@ export default {
             intersect: false,
             y: {
               formatter(y) {
+                console.log(this)
+
                 if (y === undefined) {
                   return y
                 }
 
                 let liquid = y.toString().split('.');
 
-                let res = `${liquid[0]} ${this.trans('economic_reference.thousand_tons')}`
+                let res = `${liquid[0]} ${window.economic_reference_thousand_tons}`
 
                 return liquid.length > 1
-                    ? res + `, ${this.trans('economic_reference.liquid')}:  ${liquid[1]}%`
+                    ? res + `, ${window.economic_reference_liquid}:  ${liquid[1]}%`
                     : res
               }
             }
