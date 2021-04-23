@@ -259,16 +259,16 @@
           <td v-if= isGenHide v-show= isHide rowspan="2" style="background: #1a2370"><span>{{trans('tr.work_day')}}</span></td>
           <td rowspan="2" style="background: #12135C"><span>{{trans('tr.d_q_oil')}}</span></td>
           <td rowspan="2" style="background: #12135C">
-            <span>{{trans('tr.failure_to_reach_the_rated_P_bottomhole')}}</span>
+            <span>{{trans('tr.bottomhole_pressure')}}</span>
           </td>
           <td v-if= isGenHide rowspan="2" style="background: #12135C">
-            <span>{{trans('tr.exp_coefficient')}}</span>
+            <span>{{trans('tr.work_day')}}</span>
           </td>
           <td rowspan="2" style="background: #12135C">
-            <span>{{trans('tr.water_cut_increase')}}</span>
+            <span>{{trans('tr.water_cut')}}</span>
           </td>
           <td rowspan="2" style="background: #12135C">
-            <span>{{trans('tr.p_layer_decrease')}}</span>
+            <span>{{trans('tr.p_layer')}}</span>
           </td>
           <td rowspan="2" style="background: #12135C">
             <span>{{trans('tr.k_prod')}}</span>

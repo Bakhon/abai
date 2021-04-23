@@ -742,7 +742,7 @@
                             >
                             <template slot-scope="scope">
                               <el-tooltip class="item" effect="dark"  v-bind:content="haveTooltip(scope.$index, `r_con`)" :placement="isPlacement(scope.$index, `r_con`)">
-                                <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`r_con`)}" >
+                                <div v-if="!edit" :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`r_con`)}" >
                                           <span
                                             :class="{
                                               'circle-err': isCircleErrClass(scope.$index,`r_con`)}"
@@ -754,6 +754,23 @@
                                           {{_.round(scope.row.r_con[0], 1)}}
                                     </span>
 
+                                </div>
+                                <div v-if="edit" :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`r_con`)}" >
+                                          <span
+                                            :class="{
+                                              'circle-err': isCircleErrClass(scope.$index,`r_con`)}"
+                                            :style="`background :${getColor(
+                                              wells[scope.$index].r_con[1][0]
+                                            )}`"
+                                          >
+                                          </span>
+                                          <el-input
+                                            class="input_edit"
+                                            @change="editrow(scope.row,scope.$index)"
+                                            v-model="scope.row.r_con[0]"
+                                            :disabled="!edit">
+                                          </el-input>
+                                          
                                 </div>   
                               </el-tooltip> 
                             </template>
@@ -1489,12 +1506,12 @@
                                             )}`"
                                           >
                                           </span>
-                                          <input
+                                          <el-input
                                             class="input_edit"
-                                            @change="editrow(scope.$index)"
+                                            @change="editrow(scope.row,scope.$index)"
                                             v-model="scope.row.q_l[0]"
-                                            :disabled="!edit"
-                                          />
+                                            :disabled="!edit">
+                                          </el-input>
                                           
                                 </div>    
                               </el-tooltip> 
