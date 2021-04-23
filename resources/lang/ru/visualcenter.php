@@ -262,7 +262,7 @@ return array (
     'chemistryNeeded' => 'Необходимо внести Химизацию',
     'chemistryNotNeeded' => 'Химизацию вносить не нужно',
     'operatingInformationTitle' => 'Оперативная информация по ДЗО для АО НК "КазМунайГаз"',
-    "pasteData" => 'Вставить данные',
+    'pasteData' => 'Вставить данные',
   ),
   'idleWells' => 'Фонд нагнетательных скважин',
   'inIdle' => 'В простое',

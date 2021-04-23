@@ -354,10 +354,14 @@ export default {
             this.excelData[category][groupName][fieldName] = cellValue;
         },
         isNumberCellValid(inputData,selector) {
-            if (inputData.trim().length > 0 && (isNaN(parseFloat(inputData)) || parseFloat(inputData) < 0)) {
+            if (inputData.trim().length > 0 && (isNaN(parseFloat(inputData)) || parseFloat(inputData) < 0 || this.isContainsLetter(inputData))) {
                 return false;
             }
             return true;
+        },
+        isContainsLetter(inputData) {
+            let regExp = /[a-zA-Zа-яА-Я]/g;
+            return inputData.match(regExp) !== null;
         },
         turnErrorForCell(selector) {
             this.setClassToElement($(selector),'cell__color-red');
