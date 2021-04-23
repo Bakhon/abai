@@ -688,6 +688,7 @@ export default {
         },
 
       ],
+      isDataValidated: false,
       validationErrors: [],
     };
   },
@@ -836,8 +837,8 @@ export default {
             }
           });
     },
-    isValidData() {
-      let isValidated = true;
+    validateData() {
+      this.isDataValidated = true;
       this.validation.forEach((rule) => {
         let ruleKeys = rule.key.split('.');
 
@@ -848,22 +849,25 @@ export default {
           } else {
             value = this[ruleKeys[i]];
           }
-
-          if (i == (ruleKeys.length - 1)) {
-            if (!value || value == 'empty') {
-              this.validationErrors.push(rule.error);
-              isValidated = false;
-            }
-          }
+        }
+        if (!value || value == 'empty') {
+          this.validationErrors.push(rule.error);
+          this.isDataValidated = false;
         }
       });
-
-      return isValidated;
+    },
+    isValidData() {
+      if (!this.isDataValidated) {
+        this.validateData()
+      }
+      return this.isDataValidated;
     },
     displayErrors() {
       this.validationErrors.forEach((error) => {
         this.showToast(error, this.trans('app.error'), 'danger', 10000);
       });
+
+      this.validationErrors = [];
     },
     calc() {
       this.axios
