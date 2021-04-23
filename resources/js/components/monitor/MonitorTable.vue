@@ -688,7 +688,6 @@ export default {
         },
 
       ],
-      isValidated: true,
       validationErrors: [],
     };
   },
@@ -826,21 +825,19 @@ export default {
               let background_corrosion = this.lastCorrosion.background_corrosion_velocity;
               this.corrosionVelocity = corrosion_with_inhibitor ? corrosion_with_inhibitor : background_corrosion;
 
-              this.validateData();
-
-              if (this.isValidated()) {
+              if (this.isValidData()) {
                 this.calc();
-              } else {
-                this.displayErrors();
               }
+
+              this.displayErrors();
 
             } else {
               console.log("No data");
             }
           });
     },
-    validateData() {
-      this.isValidated = true;
+    isValidData() {
+      let isValidated = true;
       this.validation.forEach((rule) => {
         let ruleKeys = rule.key.split('.');
 
@@ -855,11 +852,13 @@ export default {
           if (i == (ruleKeys.length - 1)) {
             if (!value || value == 'empty') {
               this.validationErrors.push(rule.error);
-              this.isValidated = false;
+              isValidated = false;
             }
           }
         }
       });
+
+      return isValidated;
     },
     displayErrors() {
       this.validationErrors.forEach((error) => {
