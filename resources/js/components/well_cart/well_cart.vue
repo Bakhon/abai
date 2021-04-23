@@ -35,85 +35,104 @@
                     </div>
                 </div>
         </div>
-
-    <div class="col-md-4 bg-dark">
+    <div class="col-md-6">
         <div class="row">
-            <div class="col">
-            <select class ="transparent-select" id="">
-                <option>Дело скважины</option>
-                <option>Option 2</option>
-            </select>
-            </div>
-        </div>
-            <div class="col">
-                <div class="row">
-                    <div class="dropdown small-select">
-                            <button class="btn btn-secondary select-button" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <div class="button1-vc-inner">
-                                        <div class="icon-all dropdown-icon-1"> </div>
-                                        <div class="txt5">Фонд <div class="icon-pointer"> </div>
-                                        </div>
-                                        
-                                </div>
-                            </button>
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <a class="dropdown-item" href="#">Action</a>
-                                <a class="dropdown-item" href="#">Another action</a>
-                                <a class="dropdown-item" href="#">Something else here</a>
-                            </div>
-                        </div>
-
-                    <div class="dropdown small-select">
-                            <button class="btn btn-secondary select-button" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <div class="button1-vc-inner">
-                                        <div class="icon-all dropdown-icon-2"> </div>
-                                        <div class="txt5">График замеров <div class="icon-pointer"></div></div>
-                                </div>
-                            </button>
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <a class="dropdown-item" href="#">Action</a>
-                                <a class="dropdown-item" href="#">Another action</a>
-                                <a class="dropdown-item" href="#">Something else here</a>
-                            </div>
-                        </div>
-                    <div class="dropdown small-select">
-                            <button class="btn btn-secondary select-button" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <div class="button1-vc-inner">
-                                        <div class="icon-all dropdown-icon-3"> </div>
-                                        <div class="txt5">Эксплуатационные показатели <div class="icon-pointer"></div></div>
-                                </div>
-                            </button>
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <a class="dropdown-item" href="#">Action</a>
-                                <a class="dropdown-item" href="#">Another action</a>
-                                <a class="dropdown-item" href="#">Something else here</a>
-                            </div>
-                        </div>
-             </div>
-            </div>
-    </div>
-        <div class="col-md-2">
-            <div class="bg-dark">
-                    <div class="row">
-                        <div class="col">
-                            <div class="heading">
-                                <p>Поиск скважины</p>                                
-                            </div>           
-                            <div class="sheare-icon"></div>     
-                        </div>
-                    </div>
+                
+            <div class="col-md-7 bg-dark-transparent">
                 <div class="row">
                     <div class="col">
-                        <form class="search-form">
-                            <input type="text" placeholder="Номер скважины" class="search-input">
-                        </form>
+                    <select class ="transparent-select" id="">
+                        <option>Дело скважины</option>
+                        <option>Option 2</option>
+                    </select>
+                    </div>
+                </div>
+                    <div class="col">
+                        <div class="row">
+                            <div class="dropdown small-select">
+                                    <button class="btn btn-secondary select-button" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <div class="button1-vc-inner">
+                                                <div class="icon-all dropdown-icon-1"> </div>
+                                                <div class="txt5">Фонд <div class="icon-pointer"> </div>
+                                                </div>
+                                                
+                                        </div>
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <a class="dropdown-item" href="#">Action</a>
+                                        <a class="dropdown-item" href="#">Another action</a>
+                                        <a class="dropdown-item" href="#">Something else here</a>
+                                    </div>
+                                </div>
+
+                            <div class="dropdown small-select">
+                                    <button class="btn btn-secondary select-button" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <div class="button1-vc-inner">
+                                                <div class="icon-all dropdown-icon-2"> </div>
+                                                <div class="txt5">График замеров <div class="icon-pointer"></div></div>
+                                        </div>
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <a class="dropdown-item" href="#">Action</a>
+                                        <a class="dropdown-item" href="#">Another action</a>
+                                        <a class="dropdown-item" href="#">Something else here</a>
+                                    </div>
+                                </div>
+                            <div class="dropdown small-select">
+                                    <button class="btn btn-secondary select-button" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <div class="button1-vc-inner">
+                                                <div class="icon-all dropdown-icon-3"> </div>
+                                                <div class="txt5">Эксплуатационные показатели <div class="icon-pointer"></div></div>
+                                        </div>
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <a class="dropdown-item" href="#">Action</a>
+                                        <a class="dropdown-item" href="#">Another action</a>
+                                        <a class="dropdown-item" href="#">Something else here</a>
+                                    </div>
+                                </div>
+                    </div>
+                    </div>
+            </div>
+                <div class="col-md-5">
+                    <div class="bg-dark-transparent">
+                            <div class="row">
+                                <div class="col">
+                                    <div class="heading">
+                                        <p>Поиск скважины</p>                                
+                                    </div>           
+                                    <div class="sheare-icon"></div>     
+                                </div>
+                            </div>
+                        <div class="row">
+                            <div class="col">
+                                <form class="search-form">
+                                    <input type="text" placeholder="Номер скважины" class="search-input">
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 bg-dark-transparent">
+                <div class="row">
+                    <div class="col">
+                        <div class="table-container">
+                            <div class="table-container-header">
+                                <h4>
+                                    Текущая оргструктура: <span class="blue-section">НИИ/АО “РД “КазМунайГаз”/АО “Озенмунайгаз”/НГДУ-З/ППД-З</span>
+                                </h4>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-         </div>
+        </div>
+    </div>
 
         <div class="col-md-3">
-                <div class="bg-dark">
+                <div class="bg-dark-transparent">
                     <div class="row">
                         <div class="col">
                             <div class="heading">
@@ -172,6 +191,12 @@
 </template>
 
 <style scoped lang="scss">
+h4{
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 20px;
+    color: white;
+}
     .well-deal{
         width: 100%;
         display: flex;
@@ -270,7 +295,6 @@
         margin-right: auto;
         width: 200px;
         height: 250px;
-      //  padding: 40px;
         .file-icon-large{
             margin-left: auto;
             margin-right: auto;
@@ -306,6 +330,12 @@
         &:focus{
             color:white;
             background: #20274f;
+        }
+    }
+    .table-container{
+        background-color:#272953;
+        .table-container-header{
+            background-color:#32346C;
         }
     }
     .dropdown-icon-1{
@@ -360,6 +390,7 @@
         display: flex;
         margin-right: auto;
         margin-left: auto;
+        padding: 20px;
     }center
     .sheare-icon{
         background: url("/img/bd/share.svg") no-repeat;
@@ -381,4 +412,14 @@
         padding:20px;
         }
     }
+    .bg-dark-transparent{
+        background-color: rgba(39, 41, 83, 0.85);
+        padding-bottom: 20px;
+        margin-bottom: 20px;
+        z-index: 1000;
+    }
+    .blue-section{
+        color:#82BAFF;
+    }
+
 </style>
