@@ -17,15 +17,15 @@ export const chartInitMixin = {
         chartSeries() {
             return [
                 {
-                    name: 'Рентабельные скважины',
+                    name: this.trans('economic_reference.wells_profitable'),
                     type: 'area',
                     data: this.data.profitable
                 }, {
-                    name: 'Условно-рентабельные скважины',
+                    name: this.trans('economic_reference.wells_profitless_cat_2'),
                     type: 'area',
                     data: this.data.profitless_cat_2
                 }, {
-                    name: 'Нерентабельные скважины',
+                    name: this.trans('economic_reference.wells_profitless_cat_1'),
                     type: 'area',
                     data: this.data.profitless_cat_1
                 }

@@ -60,4 +60,8 @@ return array(
     'distribution_liquid_production_by_profitability' => 'Распределение добычи жидкости по типу рентабельности скважин',
     'distribution_pause_wells_by_profitability' => 'Распределение скважин в простое по типу рентабельности',
     'rating_top_10_wells_by_profitability' => 'Рейтинг ТОП 10 прибыльных и убыточных скважин',
+    'wells_profitable' => 'Рентабельные скважины',
+    'wells_profitless_cat_2' => 'Условно-рентабельные скважины',
+    'wells_profitless_cat_1' => 'Нерентабельные скважины',
+
 );
