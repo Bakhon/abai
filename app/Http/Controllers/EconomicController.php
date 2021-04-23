@@ -21,8 +21,8 @@ class EconomicController extends Controller
 
     const DATA_SOURCE = 'economic_2020v16_test';
 
-    const TIME_FORMAT = 'yyyy-MM-dd';
-    const DATE_FORMAT = 'yyyy-MM';
+    const GRANULARITY_DAILY_FORMAT = 'yyyy-MM-dd';
+    const GRANULARITY_MONTHLY_FORMAT = 'MM-yyyy';
 
     const PROFITABILITY_CAT_1 = 'profitless_cat_1';
     const PROFITABILITY_CAT_2 = 'profitless_cat_2';
@@ -467,8 +467,8 @@ class EconomicController extends Controller
     static function granularityFormat(string $granularity): string
     {
         return $granularity === Granularity::MONTH
-            ? self::DATE_FORMAT
-            : self::TIME_FORMAT;
+            ? self::GRANULARITY_MONTHLY_FORMAT
+            : self::GRANULARITY_DAILY_FORMAT;
     }
 
     static function intervalYears(string $start = null, string $end = null, int $count = 1)
@@ -564,7 +564,7 @@ class EconomicController extends Controller
         $builder
             ->interval(self::INTERVAL_LAST_MONTH)
             ->select('__time', 'dt', function (ExtractionBuilder $extractionBuilder) {
-                $extractionBuilder->timeFormat(self::TIME_FORMAT);
+                $extractionBuilder->timeFormat(self::GRANULARITY_DAILY_FORMAT);
             })
             ->select(['profitability', 'expl_type'])
             ->select(['org', 'status'])
