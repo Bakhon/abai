@@ -77,8 +77,13 @@
 
     td.reptt-column-blue,
     th.reptt-column-blue .cell {
-        background: #1a2370 !important;
+        background: #12135c !important;
     }
+
+    td.reptt-column-blue-lighter,
+    th.reptt-column-blue-lighter .cell {
+        background: #1a2370 !important;
+    }  
 
     td.reptt-cell .el-table__expand-icon {
         color: white;
