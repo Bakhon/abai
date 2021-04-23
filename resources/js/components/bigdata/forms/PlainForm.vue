@@ -219,7 +219,7 @@ export default {
   },
 };
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .bd-main-block {
 
   &__form {

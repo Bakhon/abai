@@ -71,7 +71,7 @@ export default {
   }
 };
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .bd-main-block {
   max-width: 1340px;
   margin: 0 auto;
