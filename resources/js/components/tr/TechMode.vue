@@ -1370,6 +1370,11 @@
                             width="130"
                             sortable
                             >
+                            <template slot-scope="scope">
+                              <span>
+                                  {{ Math.round(scope.row.bhp_prev_m * 10) / 10 }}
+                              </span>
+                            </template>
                
                           </el-table-column>
                         </el-table-column>
@@ -1382,6 +1387,11 @@
                             width="130"
                             sortable
                             >
+                            <template slot-scope="scope">
+                              <span>
+                                  {{ Math.round(scope.row.q_l_prev_m * 10) / 10 }}
+                              </span>
+                            </template>
                           </el-table-column>
                         </el-table-column>
                         <el-table-column
@@ -1393,6 +1403,11 @@
                             width="130"
                             sortable
                             >
+                            <template slot-scope="scope">
+                              <span>
+                                  {{ Math.round(scope.row.wct_prev_m * 10) / 10 }}
+                              </span>
+                            </template>
                           </el-table-column>
                         </el-table-column>
                         <el-table-column
@@ -1404,6 +1419,11 @@
                             width="130"
                             sortable
                             >
+                            <template slot-scope="scope">
+                              <span>
+                                  {{ Math.round(scope.row.h_dyn_prev_m * 10) / 10 }}
+                              </span>
+                            </template>
                           </el-table-column>
                         </el-table-column>
                         <el-table-column
@@ -1415,12 +1435,15 @@
                             width="130"
                             sortable
                             >
+                            <template slot-scope="scope">
+                              <span>
+                                  {{ Math.round(scope.row.pi_prev_m * 10) / 10 }}
+                              </span>
+                            </template>
                           </el-table-column>
                         </el-table-column>
                       </el-table-column>
                     </el-table-column>
-
-
                     <!-- Фактический режим -->
                     <el-table-column
                       :label="trans('tr.actual_mode')"
