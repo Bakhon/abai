@@ -113,7 +113,7 @@ class ExportHydroCalcTableToExcel implements ShouldQueue
         $filePath = 'public/export/'.$fileName;
         Excel::store(new PipeLineCalcExport($data), $filePath);
 
-        if (!env('HYDRO_CALC_PATH') || env('HYDRO_CALC_PY_FILENAME')) {
+        if (!env('HYDRO_CALC_PATH') || !env('HYDRO_CALC_PY_FILENAME')) {
             $this->setOutput(
                 [
                     'error' => 'HYDRO_CALC_PATH or HYDRO_CALC_PY_FILENAME not set in env'
