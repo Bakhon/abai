@@ -68,8 +68,5 @@ export default {
                 self.processDataBlock(fieldsBlock[key],categoryName,self.todayData[categoryName][key]);
             });
         },
-        beforeEdit(e) {
-            console.log(e);
-        },
     }
 }
