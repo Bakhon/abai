@@ -343,28 +343,28 @@
           <monitor-chart
               :title="trans('monitoring.action_substance_of_co2')"
               :measurement="trans('measurements.mg/dm3')"
-              :data="chart1Data" />
+              :data="chart1Data"/>
         </div>
         <div class="monitor__charts-item">
           <p class="monitor__charts-item-title">{{ trans('monitoring.action_substance_of_h2s') }}</p>
           <monitor-chart
               :title="trans('monitoring.action_substance_of_h2s')"
               :measurement="trans('measurements.mg/dm3')"
-              :data="chart2Data" />
+              :data="chart2Data"/>
         </div>
         <div class="monitor__charts-item">
           <p class="monitor__charts-item-title">{{ trans('monitoring.actual_corrosion_speed') }}</p>
           <monitor-chart
               :title="trans('monitoring.actual_corrosion_speed')"
               :measurement="trans('measurements.mm/g')"
-              :data="chart3Data" />
+              :data="chart3Data"/>
         </div>
         <div class="monitor__charts-item">
           <p class="monitor__charts-item-title">{{ trans('monitoring.actual_inhibitor_level') }}</p>
           <monitor-chart
               :title="trans('monitoring.actual_inhibitor_level')"
               :measurement="trans('measurements.g/m3')"
-              :data="chart4Data" />
+              :data="chart4Data"/>
         </div>
       </div>
       <div class="col-8 monitor__schema">
@@ -687,7 +687,9 @@ export default {
           error: this.trans('monitoring.monitor.errors.hydrogen_sulfide')
         },
 
-      ]
+      ],
+      isValidated: true,
+      validationErrors: [],
     };
   },
   computed: {
@@ -803,7 +805,7 @@ export default {
               this.surge_tank_pressure = data.ngdu ? data.ngdu.surge_tank_pressure : null
               this.heater_inlet_temperature = data.ngdu ? data.ngdu.heater_inlet_temperature : null
               this.heater_output_temperature = data.ngdu ? data.ngdu.heater_output_temperature : null
-              this.daily_fluid_production =  data.ngdu ? data.ngdu.daily_fluid_production : null
+              this.daily_fluid_production = data.ngdu ? data.ngdu.daily_fluid_production : null
 
               if (data.uhe && data.ca) {
                 this.signalizator = (data.uhe.current_dosage - data.ca.plan_dosage) * 100 / data.ca.plan_dosage
@@ -824,8 +826,12 @@ export default {
               let background_corrosion = this.lastCorrosion.background_corrosion_velocity;
               this.corrosionVelocity = corrosion_with_inhibitor ? corrosion_with_inhibitor : background_corrosion;
 
-              if (!this.validateData()) {
-                this.calc()
+              this.validateData();
+
+              if (this.isValidated()) {
+                this.calc();
+              } else {
+                this.displayErrors();
               }
 
             } else {
@@ -833,8 +839,8 @@ export default {
             }
           });
     },
-    validateData(){
-      let isErrors = false;
+    validateData() {
+      this.isValidated = true;
       this.validation.forEach((rule) => {
         let ruleKeys = rule.key.split('.');
 
@@ -848,14 +854,17 @@ export default {
 
           if (i == (ruleKeys.length - 1)) {
             if (!value || value == 'empty') {
-              this.showToast(rule.error, this.trans('app.error'), 'danger', 10000);
-              isErrors = true;
+              this.validationErrors.push(rule.error);
+              this.isValidated = false;
             }
           }
         }
       });
-
-      return isErrors;
+    },
+    displayErrors() {
+      this.validationErrors.forEach((error) => {
+        this.showToast(error, this.trans('app.error'), 'danger', 10000);
+      });
     },
     calc() {
       this.axios
