@@ -259,16 +259,16 @@
           <td v-if= isGenHide v-show= isHide rowspan="2" style="background: #1a2370"><span>{{trans('tr.work_day')}}</span></td>
           <td rowspan="2" style="background: #12135C"><span>{{trans('tr.d_q_oil')}}</span></td>
           <td rowspan="2" style="background: #12135C">
-            <span>{{trans('tr.failure_to_reach_the_rated_P_bottomhole')}}</span>
+            <span>{{pbhHeader}}</span>
           </td>
           <td v-if= isGenHide rowspan="2" style="background: #12135C">
-            <span>{{trans('tr.exp_coefficient')}}</span>
+            <span>{{workDaysHeader}}</span>
           </td>
           <td rowspan="2" style="background: #12135C">
-            <span>{{trans('tr.water_cut_increase')}}</span>
+            <span>{{waterCutHeader}}</span>
           </td>
           <td rowspan="2" style="background: #12135C">
-            <span>{{trans('tr.p_layer_decrease')}}</span>
+            <span>{{pLayerHeader}}</span>
           </td>
           <td rowspan="2" style="background: #12135C">
             <span>{{trans('tr.k_prod')}}</span>
@@ -341,7 +341,7 @@
             <i class="fa fa-fw fa-sort"></i>{{factorsMeasure}}
           </td>
           <td v-if= isGenHide @click="sortBy('prod_days')" style="background: #12135C">
-            <i class="fa fa-fw fa-sort"></i>{{factorsMeasure}}
+            <i class="fa fa-fw fa-sort"></i>{{workDaysMeasure}}
           </td>
           <td @click="sortBy('wct')" style="background: #12135C">
             <i class="fa fa-fw fa-sort"></i>{{factorsMeasure}}
@@ -1023,6 +1023,7 @@ export default {
   },
   data: function () {
     return {
+
       faHeader: null,
       pieChartRerender: true,
       wells: [],
@@ -1038,11 +1039,16 @@ export default {
       isDynamic: true,
       colsize7: null,
       colsize2: null,
+      pbhHeader: this.trans('tr.bottomhole_pressure'),
+      workDaysHeader: this.trans('tr.work_day'),
+      waterCutHeader: this.trans('tr.water_cut'),
+      pLayerHeader: this.trans('tr.p_layer'),
+      workDaysMeasure: this.trans('tr.day'),
       isChartLink: "fa_weekly_chart",
       filter: [...fields],
       fieldFilterOptions: [
         {
-          group: "Все месторождения",
+          group: this.trans('tr.all_wells'),
           fields: [...fields],
         },
       ],
@@ -1091,10 +1097,10 @@ export default {
 
         xaxis: {
           categories: [
-            "Недостижение режимного Pзаб",
-            "Рост обводненности",
-            "Снижение Pпл",
-            "Снижение Kпрод",
+            this.trans('tr.failure_to_reach_the_rated_P_bottomhole'),
+            this.trans('tr.water_cut_increase'),
+            this.trans('tr.p_layer_decrease'),
+            this.trans('tr.decrease_productivity_index'),
           ],
           position: "bottom",
           axisBorder: {
@@ -1136,10 +1142,10 @@ export default {
       },
       chartOptions: {
         labels: [
-          "Недостижение режимного Pзаб",
-          "Рост обводненности",
-          "Снижение Pпл",
-          "Снижение Kпрод",
+          this.trans('tr.failure_to_reach_the_rated_P_bottomhole'),
+          this.trans('tr.water_cut_increase'),
+          this.trans('tr.p_layer_decrease'),
+          this.trans('tr.decrease_productivity_index'),
         ],
         chart: {
           type: "pie",
@@ -1312,6 +1318,12 @@ export default {
           this.fa_table_header = this.trans('tr.period_of_act_data') + this.firstWeekDate2 + '-' + this.dt;
           this.fa_table_header2 = this.trans('tr.period_of_act_data') + this.dt2 + '-' + this.secWeekDate;
           this.faHeader = this.trans('tr.fa') + ' ' + this.dt2 + '-' + this.dt;
+          this.pbhHeader = this.trans('tr.bottomhole_pressure');
+          this.workDaysHeader = this.trans('tr.work_day');
+          this.waterCutHeader = this.trans('tr.water_cut');
+          this.pLayerHeader = this.trans('tr.p_layer');
+          this.workDaysMeasure = this.trans('tr.day');
+
         });
     },
     chooseDt() {
@@ -1383,6 +1395,11 @@ export default {
             this.fa_table_header = this.trans('tr.period_of_act_data') + this.dt;
             this.fa_table_header2 = this.trans('tr.period_of_act_data') + this.dt2;
             this.faHeader = this.trans('tr.fa') + ' ' + this.dt2 + '-' + this.dt;
+            this.pbhHeader = this.trans('tr.failure_to_reach_the_rated_P_bottomhole');
+            this.workDaysHeader = this.trans('tr.exp_coefficient');
+            this.waterCutHeader = this.trans('tr.water_cut_increase');
+            this.pLayerHeader = this.trans('tr.p_layer_decrease');
+            this.workDaysMeasure = this.trans('tr.t_day');
           });
       }
     },
