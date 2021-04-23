@@ -248,7 +248,7 @@ export default {
             'dateEnd',
         ]),
         mainBlockButtonText: function () {
-            return this.showMainMap ? 'Таблица' : 'Карта'
+            return this.showMainMap ? this.trans('paegtm.table') : this.trans('paegtm.map')
         },
         mainBlockButtonIcon: function () {
             return this.showMainMap ? '/img/GTM/icon_main_table_button.svg' : '/img/GTM/icon_main_map_button.svg'
