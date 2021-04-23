@@ -1048,7 +1048,7 @@ export default {
       filter: [...fields],
       fieldFilterOptions: [
         {
-          group: "Все месторождения",
+          group: this.trans('tr.all_wells'),
           fields: [...fields],
         },
       ],
@@ -1097,10 +1097,10 @@ export default {
 
         xaxis: {
           categories: [
-            "Недостижение режимного Pзаб",
-            "Рост обводненности",
-            "Снижение Pпл",
-            "Снижение Kпрод",
+            this.trans('tr.failure_to_reach_the_rated_P_bottomhole'),
+            this.trans('tr.water_cut_increase'),
+            this.trans('tr.p_layer_decrease'),
+            this.trans('tr.decrease_productivity_index'),
           ],
           position: "bottom",
           axisBorder: {
@@ -1142,10 +1142,10 @@ export default {
       },
       chartOptions: {
         labels: [
-          "Недостижение режимного Pзаб",
-          "Рост обводненности",
-          "Снижение Pпл",
-          "Снижение Kпрод",
+          this.trans('tr.failure_to_reach_the_rated_P_bottomhole'),
+          this.trans('tr.water_cut_increase'),
+          this.trans('tr.p_layer_decrease'),
+          this.trans('tr.decrease_productivity_index'),
         ],
         chart: {
           type: "pie",
