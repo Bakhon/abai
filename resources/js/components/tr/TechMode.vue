@@ -1659,7 +1659,7 @@
                             >
                             <template slot-scope="scope">
                               <el-tooltip class="item" effect="dark"  v-bind:content="haveTooltip(scope.$index, `gor`)" :placement="isPlacement(scope.$index, `gor`)">
-                                <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`gor`)}" >
+                                <div v-if="!edit" :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`gor`)}" >
                                           <span
                                             :class="{
                                               'circle-err': isCircleErrClass(scope.$index,`gor`)}"
@@ -1668,6 +1668,23 @@
                                             )}`"
                                           >
                                             </span><span v-if="scope.row.gor[0] != null">{{_.round(scope.row.gor[0], 1)}}</span>
+                                </div>
+                                <div v-if="edit" :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`gor`)}" >
+                                          <span
+                                            :class="{
+                                              'circle-err': isCircleErrClass(scope.$index,`gor`)}"
+                                            :style="`background :${getColor(
+                                              wells[scope.$index].gor[1][0]
+                                            )}`"
+                                          >
+                                            </span>
+                                            <el-input
+                                            class="input_edit"
+                                            @change="editrow(scope.row,scope.$index)"
+                                            v-model="scope.row.gor[0]"
+                                            :disabled="!edit">
+                                          </el-input>
+
                                 </div>   
                               </el-tooltip> 
                             </template>
@@ -1785,7 +1802,7 @@
                             >
                             <template slot-scope="scope">
                               <el-tooltip class="item" effect="dark"  v-bind:content="haveTooltip(scope.$index, `grp_skin`)" :placement="isPlacement(scope.$index, `grp_skin`)">
-                                <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`grp_skin`)}" >
+                                <div v-if="!edit" :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`grp_skin`)}" >
                                           <span
                                             :class="{
                                               'circle-err': isCircleErrClass(scope.$index,`grp_skin`)}"
@@ -1794,6 +1811,23 @@
                                             )}`"
                                           >
                                             </span><span v-if="scope.row.grp_skin[0] != null">{{_.round(scope.row.grp_skin[0], 1)}}</span>
+                                </div>
+                                <div v-if="edit" :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`grp_skin`)}" >
+                                          <span
+                                            :class="{
+                                              'circle-err': isCircleErrClass(scope.$index,`grp_skin`)}"
+                                            :style="`background :${getColor(
+                                              wells[scope.$index].grp_skin[1][0]
+                                            )}`"
+                                          >
+                                            </span>
+                                            <el-input
+                                            class="input_edit"
+                                            @change="editrow(scope.row,scope.$index)"
+                                            v-model="scope.row.grp_skin[0]"
+                                            :disabled="!edit">
+                                          </el-input>
+
                                 </div>   
                               </el-tooltip> 
                             </template>
