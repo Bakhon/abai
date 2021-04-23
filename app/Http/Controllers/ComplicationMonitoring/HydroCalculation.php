@@ -151,8 +151,9 @@ class HydroCalculation extends Controller
             ],
         ];
 
-        $params['links']['export'] = route($this->modelName.'.export');
-        $params['links']['date'] = route($this->modelName.'.export');
+        $params['links']['calc']['export'] = true;
+        $params['links']['calc']['link'] = route($this->modelName.'.calculate');
+        $params['links']['date'] = true;
 
         return view('hydro_calc.index', compact('params'));
     }
@@ -243,7 +244,7 @@ class HydroCalculation extends Controller
         return response()->json($list);
     }
 
-    public function exportExcel(IndexTableRequest $request)
+    public function calculate(IndexTableRequest $request)
     {
         $job = new ExportHydroCalcTableToExcel($request->validated());
         $this->dispatch($job);

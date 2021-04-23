@@ -114,7 +114,7 @@ class ExportHydroCalcTableToExcel implements ShouldQueue
         Excel::store(new PipeLineCalcExport($data), $filePath);
         copy(Storage::path($filePath), env('HYDRO_CALC_PATH').$fileName);
 
-        if (!$isErrors AND isset($this->input['date'])) {
+        if ($isErrors AND isset($this->input['date'])) {
             $command = escapeshellcmd(env('HYDRO_CALC_PATH').env('HYDRO_CALC_PY_FILENAME'));
             $output = shell_exec($command);
 
@@ -132,11 +132,13 @@ class ExportHydroCalcTableToExcel implements ShouldQueue
             }
         }
 
-        $this->setOutput(
-            [
-                'filename' => Storage::url($filePath)
-            ]
-        );
+        if (isset($this->input['calc_export']) && $this->input['calc_export'] == 'true') {
+            $this->setOutput(
+                [
+                    'filename' => Storage::url($filePath)
+                ]
+            );
+        }
     }
 
     protected function importResult ()
