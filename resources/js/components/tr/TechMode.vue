@@ -1529,7 +1529,7 @@
                             >
                             <template slot-scope="scope">
                               <el-tooltip class="item" effect="dark"  v-bind:content="haveTooltip(scope.$index, `wct`)" :placement="isPlacement(scope.$index, `wct`)">
-                                <div :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`wct`)}" >
+                                <div v-if="!edit" :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`wct`)}" >
                                           <span
                                             :class="{
                                               'circle-err': isCircleErrClass(scope.$index,`wct`)}"
@@ -1538,6 +1538,22 @@
                                             )}`"
                                           >
                                             </span><span v-if="scope.row.wct[0] != null">{{_.round(scope.row.wct[0], 1)}}</span>
+                                </div>
+                                <div v-if="edit" :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`wct`)}" >
+                                          <span
+                                            :class="{
+                                              'circle-err': isCircleErrClass(scope.$index,`wct`)}"
+                                            :style="`background :${getColor(
+                                              wells[scope.$index].wct[1][0]
+                                            )}`"
+                                          >
+                                            </span>
+                                            <el-input
+                                            class="input_edit"
+                                            @change="editrow(scope.row,scope.$index)"
+                                            v-model="scope.row.wct[0]"
+                                            :disabled="!edit">
+                                          </el-input>
                                 </div>   
                               </el-tooltip> 
                             </template>
