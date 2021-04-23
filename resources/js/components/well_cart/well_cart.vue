@@ -1,6 +1,5 @@
 <template>
   <div class="row">
-
         <div class="col-md-3">
                 <div class="bg-dark">
                     <div class="row">
@@ -8,6 +7,12 @@
                         <div class="well-deal">
                             <div class="icon-ierarchy"></div>
                             <h2>Дело скважины</h2>
+                            <div class="icon-all" style="margin-left: auto;">
+                                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M11 1L5.8053 6L11 11" stroke="white" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M6.19472 1L1 6L6.19472 11" stroke="white" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
                          </div>
                      </div>
 
@@ -28,10 +33,16 @@
                                     <div class="file">
                                         <img src="/img/bd/file.svg" class="full-size-icon">
                                         <h3>Прирост извлекаемых запасов нефти и конденсата</h3>
-                                    </div>
+                                    </div>                 
                                 </div>
                             </div>
                         </div>
+                        
+
+<!-- Требуется разработка логики потомков directory!-->
+
+
+
                     </div>
                 </div>
         </div>
@@ -784,7 +795,7 @@ h4{
         line-height: 18px;
         font-weight: 700;
         display: flex;
-        padding: 5px 10px;
+        padding: 11px 0px 32px 13px;
         p{
             margin: 0px;
         }
@@ -915,8 +926,9 @@ h4{
     }
     .sheare-icon{
         margin-left: auto;
-        margin-top: auto;
+        margin-top: 15px;
         margin-bottom: auto;
+        margin-right: 20px;
     }
     .bg-dark{
         padding-bottom: 20px;
