@@ -120,9 +120,31 @@
                     <div class="col">
                         <div class="table-container">
                             <div class="table-container-header">
-                                <h4>
-                                    Текущая оргструктура: <span class="blue-section">НИИ/АО “РД “КазМунайГаз”/АО “Озенмунайгаз”/НГДУ-З/ППД-З</span>
-                                </h4>
+                                <div class="row">
+                                    <div class="col">
+                                        <h4>
+                                            Текущая оргструктура: <span class="blue-section">НИИ/АО “РД “КазМунайГаз”/АО “Озенмунайгаз”/НГДУ-З/ППД-З</span>
+                                        </h4>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <h4>
+                                            Начало периода: 01.01.1980
+                                        </h4>
+                                        <h4>
+                                            Конец периода: ...
+                                        </h4>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="table-container-column-header">
+                                <div class="row" style="margin-right: 0px;">
+                                    <div class="col-md-6"></div>
+                                    <div class="col-md-2">Начало периода</div>
+                                    <div class="col-md-2">Конец периода</div>
+                                    <div class="col-md-2">Управление</div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -196,6 +218,7 @@ h4{
     font-weight: 400;
     line-height: 20px;
     color: white;
+    padding-right: 20px;
 }
     .well-deal{
         width: 100%;
@@ -334,8 +357,16 @@ h4{
     }
     .table-container{
         background-color:#272953;
+        overflow-y: scroll;
+        width: 100%;
         .table-container-header{
+            padding: 14px 20px 0px 20px;
             background-color:#32346C;
+        }
+        .table-container-column-header{
+            background-color: #505684;
+            height: 50px;
+            color: white;           
         }
     }
     .dropdown-icon-1{
@@ -390,7 +421,7 @@ h4{
         display: flex;
         margin-right: auto;
         margin-left: auto;
-        padding: 20px;
+        padding: 10px 30px 0px 20px;
     }center
     .sheare-icon{
         background: url("/img/bd/share.svg") no-repeat;
