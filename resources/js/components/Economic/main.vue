@@ -383,7 +383,7 @@ export default {
       this.loading = true
 
       try {
-        const {data} = await this.axios.get('/ru/geteconimicdata', {params: this.form})
+        const {data} = await this.axios.get(this.localeUrl('/geteconimicdata'), {params: this.form})
 
         this.res = data
       } catch (e) {
@@ -399,7 +399,7 @@ export default {
       try {
         this.loading = true
 
-        const {data} = await this.axios.post('/ru/exporteconimicdata', this.form)
+        const {data} = await this.axios.post(this.localeUrl('/export-economic-data'), this.form)
 
         this.exportFromExcelJob(data)
       } catch (e) {
@@ -411,7 +411,7 @@ export default {
 
     exportFromExcelJob({id}) {
       let interval = setInterval(async () => {
-        const {data} = await this.axios.get('/ru/jobs/status', {params: {id: id}})
+        const {data} = await this.axios.get(this.localeUrl('/jobs/status'), {params: {id: id}})
 
         switch (data.job.status) {
           case 'finished':
@@ -425,7 +425,7 @@ export default {
 
             this.loading = false
 
-            return alert('Ошибка экспорта')
+            return alert('Export error')
         }
       }, 2000)
     },

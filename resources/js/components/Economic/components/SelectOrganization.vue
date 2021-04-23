@@ -30,7 +30,7 @@ export default {
   },
   methods: {
     async getOrganizations() {
-      const {data} = await this.axios.get('/ru/organizations')
+      const {data} = await this.axios.get(this.localeUrl('/organizations'))
 
       this.organizations = data.organizations
 

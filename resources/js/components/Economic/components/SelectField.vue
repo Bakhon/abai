@@ -100,7 +100,7 @@ export default {
 
       const params = {org_id: this.form.org_id}
 
-      const {data} = await this.axios.get('/ru/fields', {params: params})
+      const {data} = await this.axios.get(this.localeUrl('/fields'), {params: params})
 
       this.fields = [...this.fields, ...data.fields]
     },
