@@ -92,11 +92,11 @@ export default {
 
     tabs() {
       return [
-        'Распределение скважин по типу рентабельности',
-        'Распределение добычи нефти по типу рентабельности скважин',
-        'Рейтинг ТОП 10 прибыльных и убыточных скважин',
-        'Распределение добычи жидкости по типу рентабельности скважин',
-        'Распределение скважин в простое по типу рентабельности',
+        this.trans('economic_reference.distribution_wells_by_profitability'),
+        this.trans('economic_reference.distribution_oil_production_by_profitability'),
+        this.trans('economic_reference.rating_top_10_wells_by_profitability'),
+        this.trans('economic_reference.distribution_liquid_production_by_profitability'),
+        this.trans('economic_reference.distribution_pause_wells_by_profitability'),
       ]
     },
   }

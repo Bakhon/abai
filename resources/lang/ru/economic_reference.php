@@ -54,5 +54,10 @@ return array(
     'interval_start' => 'Начало',
     'interval_end' => 'Конец',
     'granularity_daily' => 'По дням',
-    'granularity_monthly' => 'По месяцам'
+    'granularity_monthly' => 'По месяцам',
+    'distribution_wells_by_profitability' => 'Распределение скважин по типу рентабельности',
+    'distribution_oil_production_by_profitability' => 'Распределение добычи нефти по типу рентабельности скважин',
+    'distribution_liquid_production_by_profitability' => 'Распределение добычи жидкости по типу рентабельности скважин',
+    'distribution_pause_wells_by_profitability' => 'Распределение скважин в простое по типу рентабельности',
+    'rating_top_10_wells_by_profitability' => 'Рейтинг ТОП 10 прибыльных и убыточных скважин',
 );
