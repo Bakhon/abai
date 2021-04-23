@@ -1,52 +1,48 @@
 <template>
     <div>
         <div class="row mx-0 mt-lg-2 gtm">
-            <div class="col-lg-10 p-0">
+            <div class="gtm-dark col-lg-10 p-0">
                 <div class="row col-12 p-0 m-0">
-                    <div class="col-6 d-none d-lg-block p-0 pl-1 gtm-map-block">
-                        <div class="gtm-dark h-100">
+                    <div class="col-6 d-none d-lg-block p-0 pl-1">
+                        <div class="h-100">
                             <div class="block-header pb-0 pl-2 pt-1">
-                                Накопленная добыча нефти, тыc. т
+                                {{ trans('paegtm.accumulatedOilProdTitle') }}
                             </div>
-                            <div class="gtm-dark p-1 pl-2 mh-370">
-                                <line-chart :height="360"></line-chart>
+                            <div class="p-1 pl-2 mh-370">
+                                <gtm-line-chart
+                                    v-if="loaded"
+                                    :chartdata="{labels: accumOilProdLabels, datasets: accumOilProdData}"
+                                    :options="lineChartOptions"
+                                    :height="360"
+                                >
+                                </gtm-line-chart>
                             </div>
                         </div>
                     </div>
-                    <div class="col-6 d-none d-lg-block p-0 gtm-map-block">
-                        <div class="gtm-dark h-100">
+                    <div class="col-6 d-none d-lg-block p-0">
+                        <div class="h-100">
                             <div class="block-header pb-0 pl-2 pt-1">
-                                Сопоставление плановых и фактических дебитов нефти новых скважин
+                                {{ trans('paegtm.comparisonIndicatorsTitle') }}
                             </div>
-                            <div class="gtm-dark p-1 pl-2">
-                                <table class="table text-center text-white podbor-middle-table">
+                            <div class="p-1 pl-2 h-75">
+                                <table class="table text-center text-white podbor-middle-table h-100">
                                     <thead>
                                     <tr>
-                                        <th class="align-middle" rowspan="2">№ скв.</th>
-                                        <th colspan="2">Кол-во</th>
-                                        <th colspan="2">Ср. дебит</th>
-                                        <th colspan="2">Доп.добыча, тыс.т</th>
-                                        <th class="align-middle" rowspan="2">% усп.</th>
+                                        <th class="align-middle" rowspan="2">{{ trans('paegtm.gtmType') }}</th>
+                                        <th class="align-middle" rowspan="2">{{ trans('paegtm.countTh') }}</th>
+                                        <th colspan="2">{{ trans('paegtm.avgDebitTh') }}</th>
+                                        <th colspan="2">{{ trans('paegtm.additionalMiningTh') }}</th>
                                     </tr>
                                     <tr>
-                                        <th>план</th>
-                                        <th>факт</th>
-                                        <th>план</th>
-                                        <th>факт</th>
-                                        <th>план</th>
-                                        <th>факт</th>
+                                        <th>{{ trans('paegtm.plan').toLowerCase() }}</th>
+                                        <th>{{ trans('paegtm.fact').toLowerCase() }}</th>
+                                        <th>{{ trans('paegtm.plan').toLowerCase() }}</th>
+                                        <th>{{ trans('paegtm.fact').toLowerCase() }}</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr v-for="statisticsItem in statistics">
-                                        <td>{{ statisticsItem[0] }}</td>
-                                        <td>{{ statisticsItem[1] }}</td>
-                                        <td>{{ statisticsItem[2] }}</td>
-                                        <td>{{ statisticsItem[3] }}</td>
-                                        <td>{{ statisticsItem[4] }}</td>
-                                        <td>{{ statisticsItem[5] }}</td>
-                                        <td>{{ statisticsItem[6] }}</td>
-                                        <td>{{ statisticsItem[7] }}</td>
+                                    <tr v-for="comparisonIndicatorsItem in comparisonIndicators">
+                                        <td v-for="value in comparisonIndicatorsItem" class="align-middle">{{ value }}</td>
                                     </tr>
                                     </tbody>
                                 </table>
@@ -54,25 +50,24 @@
                         </div>
                     </div>
                 </div>
-                <div class="row col-12 p-0 m-0 pb-2">
-                    <div class="col-6 d-none d-lg-block p-0 pl-1 gtm-map-block">
-                        <div class="gtm-dark h-100">
+                <div class="row col-12 p-0 m-0">
+                    <div class="col-6 d-none d-lg-block p-0 pl-1">
+                        <div class="h-100">
                             <div class="block-header pb-0 pl-2">
-                                Индекс прибыльности и сопоставление плановых дебитов нефти с фактическими
+                                {{ trans('paegtm.profitabilityIndexTitle') }}
                             </div>
-                            <div class="gtm-dark p-1 pl-2">
+                            <div class="p-1 pl-2">
                                 <bar-chart :height="360"></bar-chart>
                             </div>
                         </div>
                     </div>
-                    <div class="col-6 d-none d-lg-block p-0 gtm-map-block">
-                        <div class="gtm-dark h-100 pb-2">
+                    <div class="col-6 d-none d-lg-block p-0">
+                        <div class="h-100 pb-2">
                             <div class="block-header pb-0 pl-2">
-                                Причины недостижения планового прироста
+                                {{ trans('paegtm.plannedGrowthReasonsTitle') }}
                             </div>
-                            <div class="gtm-dark p-1 pl-2">
-<!--                                <pie-chart :height="360"></pie-chart>-->
-                                <img class="demo-img" src="/img/GTM/demo_img_circle.png" height="350">
+                            <div class="p-1 pl-2">
+                                <doughnut-chart :height="180"></doughnut-chart>
                             </div>
                         </div>
                     </div>
@@ -93,24 +88,8 @@
                         </table>
                     </div>
                 </div>
-                <div class="mt-2 row m-0">
-                    <div class="col-5 p-0">
-                        <div class="calendar-filter-block d-flex align-items-center">
-                            01.08.2018
-                            <img class="calendar-icon" src="/img/GTM/calendar_icon.svg">
-                        </div>
-                    </div>
-                    <div class="col-5 p-0">
-                        <div class="ml-1 calendar-filter-block d-flex align-items-center">
-                            01.08.2018
-                            <img class="calendar-icon" src="/img/GTM/calendar_icon.svg">
-                        </div>
-                    </div>
-                    <div class="col-1 p-0">
-                        <div class="ml-1 calendar-filter-block d-flex align-items-center">
-                            <img class="gear-icon m-auto" src="/img/GTM/gear.svg">
-                        </div>
-                    </div>
+                <div class="mt-2">
+                    <gtm-date-picker @dateChanged="getData"></gtm-date-picker>
                 </div>
                 <div class="gtm-dark mt-2">
                     <div class="block-header text-center p-2">
@@ -144,65 +123,6 @@
 
 <script>
 import VueChartJs from 'vue-chartjs'
-Vue.component('line-chart', {
-    extends: VueChartJs.Line,
-    mounted () {
-        this.renderChart({
-            labels: ['Янв.', 'Фев.', 'Мар.', 'Апр.', 'Май', 'Июнь', 'Июль', 'Авг.', 'Сен.', 'Окт.', 'Ноя.', 'Дек.'],
-            datasets: [
-                {
-                    label: 'Факт',
-                    borderColor: "#F27E31",
-                    backgroundColor: '#F27E31',
-                    data: [4.5, 18, 32.3, 45, 58.9, 67, 75.8, 90, 105.6, 117.5, 125.2, 136, 148.8],
-                    fill: false,
-                    showLine: true,
-                    pointRadius: 4,
-                    pointBorderColor: "#FFFFFF",
-                },
-                {
-                    label: 'План',
-                    borderColor: "#82BAFF",
-                    backgroundColor: '#82BAFF',
-                    data: [28.1, 32, 46.2, 60, 74.7, 75, 91, 98, 107.8, 131, 134.4, 138, 150.8],
-                    fill: false,
-                    showLine: true,
-                    pointRadius: 4,
-                    pointBorderColor: "#FFFFFF",
-                }
-            ],
-        },
-        {
-            responsive: true,
-            maintainAspectRatio: false,
-            legend: {
-                position: 'bottom',
-            },
-            scales: {
-                yAxes: [{
-                    gridLines: {
-                        display: true,
-                        color: '#3C4270',
-                    },
-                    ticks: {
-                        suggestedMin: 0,
-                        suggestedMax: 350,
-                        fontColor: '#FFFFFF',
-                    },
-                }],
-                xAxes: [{
-                    gridLines: {
-                        display: true,
-                        color: '#3C4270'
-                    },
-                    ticks: {
-                        fontColor: '#FFFFFF',
-                    },
-                }],
-            }
-        })
-    }
-});
 Vue.component('bar-chart', {
     extends: VueChartJs.Bar,
     mounted () {
@@ -215,7 +135,7 @@ Vue.component('bar-chart', {
             ],
             datasets: [
                 {
-                    label: 'Факт',
+                    label: this.trans('paegtm.fact'),
                     borderColor: "#F27E31",
                     backgroundColor: '#F27E31',
                     data: [
@@ -229,7 +149,7 @@ Vue.component('bar-chart', {
                     pointBorderColor: "#FFFFFF",
                 },
                 {
-                    label: 'План',
+                    label: this.trans('paegtm.plan') ,
                     borderColor: "#82BAFF",
                     backgroundColor: '#82BAFF',
                     data: [
@@ -274,12 +194,12 @@ Vue.component('bar-chart', {
         })
     }
 });
-Vue.component('pie-chart', {
+Vue.component('doughnut-chart', {
     extends: VueChartJs.Doughnut,
     mounted () {
         this.renderChart({
             labels: [
-                'Освободненность',
+                'Обводненность',
                 'Выработка запасов',
                 'Низкое РПЛ',
                 'Технологическая',
@@ -289,13 +209,28 @@ Vue.component('pie-chart', {
             ],
             datasets: [
                 {
+                    hoverBackgroundColor: '#ccc',
+                    borderColor: '#272953',
+                    borderWidth: 2,
                     data: [35, 55, 17, 16, 12, 15, 5],
                     backgroundColor: ["#EF5350", "#4CAF50", "#F0AD81", "#2196F3", "#F27E31", "#3F51B5", "#3951CE"],
                 }
             ],
         }, {
-            borderWidth: 1,
-            hoverBorderWidth: 5,
+            cutoutPercentage: 80,
+            legend: {
+                display: true,
+                position: 'left',
+                labels: {
+                    fontColor: '#FFF',
+                    fontSize: 14,
+                    fontFamily: 'Harmonia-sans',
+                    fontStyle: '700',
+                },
+            },
+            onClick: function (event, legendItem) {
+                let legendItemIndex = legendItem[0]['_index'];
+            }
         })
     }
 });
@@ -313,20 +248,116 @@ export default {
                 ['', 'Аскар', ''],
                 ['', 'Каламкас', ''],
             ],
-            statistics: [
-                [4320, 7.9, 5.53, 70, 4320, 7.9, 5.53, 70],
-                [4320, 7.9, 5.53, 70, 4320, 7.9, 5.53, 70],
-                [4320, 7.9, 5.53, 70, 4320, 7.9, 5.53, 70],
-                [4320, 7.9, 5.53, 70, 4320, 7.9, 5.53, 70],
-                [4320, 7.9, 5.53, 70, 4320, 7.9, 5.53, 70],
-                [4320, 7.9, 5.53, 70, 4320, 7.9, 5.53, 70],
-                [4320, 7.9, 5.53, 70, 4320, 7.9, 5.53, 70],
-                [4320, 7.9, 5.53, 70, 4320, 7.9, 5.53, 70],
-                [4320, 7.9, 5.53, 70, 4320, 7.9, 5.53, 70],
-                [4320, 7.9, 5.53, 70, 4320, 7.9, 5.53, 70],
-                [4320, 7.9, 5.53, 70, 4320, 7.9, 5.53, 70],
-            ],
+            comparisonIndicators: [],
+            accumOilProdLabels: [],
+            accumOilProdFactData: [],
+            accumOilProdPlanData: [],
+            lineChartOptions: {
+                responsive: true,
+                maintainAspectRatio: false,
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        fontSize: 14,
+                        fontColor: '#FFF',
+                    },
+                },
+                scales: {
+                    yAxes: [{
+                        gridLines: {
+                            color: '#3C4270',
+                        },
+                        ticks: {
+                            fontColor: '#FFF',
+                            fontSize: 10,
+                        },
+                    }],
+                    xAxes: [{
+                        gridLines: {
+                            fontColor: '#3C4270',
+                        },
+                        ticks: {
+                            fontColor: '#FFF',
+                            fontSize: 10,
+                        },
+                    }],
+                }
+            },
+            loaded: false,
         };
-    }
+    },
+    computed: {
+            accumOilProdData: function () {
+                return [
+                    {
+                        label: this.trans('paegtm.fact'),
+                        borderColor: "#F27E31",
+                        backgroundColor: '#F27E31',
+                        data: this.accumOilProdFactData,
+                        fill: false,
+                        showLine: true,
+                        pointRadius: 4,
+                        pointBorderColor: "#FFFFFF",
+                    },
+                    {
+                        label: this.trans('paegtm.plan'),
+                        borderColor: "#82BAFF",
+                        backgroundColor: '#82BAFF',
+                        data: this.accumOilProdPlanData,
+                        fill: false,
+                        showLine: true,
+                        pointRadius: 4,
+                        pointBorderColor: "#FFFFFF",
+                    }
+                ]
+            }
+    },
+    methods: {
+        getData() {
+            this.$store.commit('globalloading/SET_LOADING',true);
+            this.axios.get(
+                this.localeUrl('/paegtm/accum_oil_prod_data'),
+                {params: {dateStart: this.$store.state.dateStart, dateEnd: this.$store.state.dateEnd}}
+            ).then((response) => {
+                let data = response.data;
+                if (data) {
+                    let accumOilProdFactData = [];
+                    let accumOilProdPlanData = [];
+                    this.accumOilProdLabels = [];
+                    data.forEach((item) => {
+                        this.accumOilProdLabels.push(item.date)
+                        accumOilProdFactData.push(Math.round(item.accumOilProdFactData))
+                        accumOilProdPlanData.push(Math.round(item.accumOilProdPlanData))
+                    });
+                    this.accumOilProdFactData = accumOilProdFactData;
+                    this.accumOilProdPlanData = accumOilProdPlanData;
+                }
+                this.loaded = true;
+            });
+            this.axios.get(
+                this.localeUrl('/paegtm/comparison_indicators_data'),
+                {params: {dateStart: this.$store.state.dateStart, dateEnd: this.$store.state.dateEnd}}
+            ).then((response) => {
+                let data = response.data;
+                if (data) {
+                    this.comparisonIndicators = [];
+                    data.forEach((item) => {
+                        this.comparisonIndicators.push([
+                            item.gtm_kind,
+                            item.wellsCount,
+                            Math.round(item.avgDebitPlan * 100) / 100,
+                            Math.round(item.avgDebitFact * 100) / 100,
+                            Math.round(item.plan_add_prod_12m),
+                            Math.round(item.add_prod_12m),
+                        ])
+                    });
+                }
+            });
+            this.$store.commit('globalloading/SET_LOADING',false);
+        }
+    },
+    mounted() {
+        this.getData();
+    },
 }
 </script>

@@ -13,7 +13,7 @@ export default {
                 monthlyPlan: null,
                 productionPlanForChart: 0,
                 productionFactForChart: null,
-                productionPlanForChart2: 0,
+                productionPlanForChart2: null,
             },
             dzoYearlyData: {
                 plan: 0,
@@ -24,6 +24,10 @@ export default {
         };
     },
     methods: {
+        isGrouppingFilterActive() {
+          return (this.dzoCompaniesAssets.isOperating || this.dzoCompaniesAssets.isNonOperating || this.dzoCompaniesAssets.isRegion);
+        },
+
         setDzoYearlyPlan(dzoGroupedMonthlyPlans) {
             this.dzoYearlyData.plan =  _.sumBy(dzoGroupedMonthlyPlans, 'monthlyPlan');
         },
@@ -38,13 +42,14 @@ export default {
         },
 
         changeTargetCompanyFilter() {
+            this.$refs.targetPlan.classList.remove('show');
             this.isFilterTargetPlanActive = !this.isFilterTargetPlanActive;
             if (!this.buttonTargetPlan) {
                 this.buttonTargetPlan = "";
             } else {
                 this.buttonTargetPlan = "button-tab-highlighted";
             }
-            this.changeMenu2(3);
+            this.changeMenu2('yearly');
         },
 
         getMonthlyPlansInYear(summaryForChart,dzoName) {
@@ -55,7 +60,7 @@ export default {
             var monthlyPlansInYear = [];
 
             while (currentPeriodDate.year() === currentYear) {
-                monthlyPlansInYear.push(this.getInitialSummaryForMonth(currentPeriodDate,summaryForChart,dzoGroupedMonthlyPlans));
+                monthlyPlansInYear.push(this.getInitialSummaryForMonth(currentPeriodDate,summaryForChart,dzoGroupedMonthlyPlans,dzoName));
                 currentPeriodDate = currentPeriodDate.add(1, 'M');
             }
             return monthlyPlansInYear;
@@ -84,46 +89,49 @@ export default {
                 .value();
         },
 
-        getInitialSummaryForMonth(date,summaryForChart,dzoGroupedMonthlyPlans) {
+        getInitialSummaryForMonth(date,summaryForChart,dzoGroupedMonthlyPlans,dzoName) {
             let monthlyPlan = dzoGroupedMonthlyPlans[date.month()]['monthlyPlan'];
-            let monthlyFact = this.getMonthlyFact(date,summaryForChart);
-
+            let monthlyFact = this.getMonthlyFact(date,summaryForChart,'productionFactForChart');
+            let monthlyOpecPlan = this.getMonthlyFact(date,summaryForChart,'productionPlanForChart2');
             let initialSummary = _.cloneDeep(this.initialYearlySummary);
             initialSummary.time = date.valueOf();
             initialSummary.productionPlanForChart = monthlyPlan;
             if (monthlyFact > 0 && date.month() < moment().month()) {
                 initialSummary.productionFactForChart = monthlyFact;
             }
-            if (date.month() !== 0) {
-                initialSummary.monthlyPlan = this.getDzoMonthlyPlan(date,monthlyPlan,monthlyFact);
-            } else {
-                this.setTotalDifference(monthlyPlan,monthlyFact);
-                initialSummary.monthlyPlan = monthlyPlan;
+            if (date.month() === moment().month() && dzoName) {
+                let initialMonthlyPlan = monthlyPlan / this.getDaysCountInMonth(date.format("YYYY-MM"));
+                let currentDatePlan = initialMonthlyPlan *= moment().date();
+                initialSummary.monthlyPlan = (currentDatePlan - monthlyFact);
+                return initialSummary;
             }
+            if (monthlyOpecPlan > 0 && date.month() < moment().month()) {
+                initialSummary.productionPlanForChart2 = monthlyOpecPlan;
+            }
+            initialSummary.monthlyPlan = this.getDzoMonthlyPlan(date,monthlyFact);
             return initialSummary;
         },
 
-        getMonthlyFact(date,summaryForChart) {
+        getMonthlyFact(date,summaryForChart,fieldName) {
             let monthlyFactSummary = summaryForChart.filter(function(item) {
                 return new Date(parseInt(item.time)).getMonth() === date.month();
             }).map(function(item) {
                 return item;
             });
-            return _.sumBy(monthlyFactSummary, 'productionFactForChart');
+            return _.sumBy(monthlyFactSummary, fieldName);
         },
 
-        getDzoMonthlyPlan(date,monthlyPlan,monthlyFact) {
+        getDzoMonthlyPlan(date,monthlyFact) {
             if (monthlyFact > 0) {
                 let monthsLeftInYear = 12 - date.month();
-                this.dzoYearlyData.differenceOnEachMonth = Math.round(this.dzoYearlyData.totalDifference / monthsLeftInYear);
-                this.setTotalDifference(monthlyPlan,monthlyFact);
+                this.dzoYearlyData.differenceOnEachMonth = Math.round((this.dzoYearlyData.plan - this.dzoYearlyData.totallyFact) / monthsLeftInYear);
+                this.setTotalFact(monthlyFact);
             }
-            return monthlyPlan + this.dzoYearlyData.differenceOnEachMonth;
+            return this.dzoYearlyData.differenceOnEachMonth;
         },
 
-        setTotalDifference(monthlyPlan,monthlyFact) {
-            let difference = Math.round(monthlyPlan - monthlyFact);
-            this.dzoYearlyData.totalDifference += difference;
+        setTotalFact(monthlyFact) {
+            this.dzoYearlyData.totallyFact += monthlyFact;
         },
 
         getProductionData(data, dzoName) {
@@ -142,7 +150,7 @@ export default {
         getSummaryTargetPlan(yearlyData) {
             let targetPlan = 0;
             _.forEach(yearlyData, function(monthData) {
-                if (moment(monthData.time).month() < moment().month()) {
+                if (moment(monthData.time).month() <= moment().month()) {
                     targetPlan += monthData.monthlyPlan;
                 }
             });

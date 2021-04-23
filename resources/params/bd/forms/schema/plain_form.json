@@ -12,77 +12,86 @@
           "blocks": {
             "type": "array",
             "items": {
-              "type": "object",
-              "properties": {
-                "items": {
-                  "type": "array",
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
                   "items": {
-                    "type": "object",
-                    "properties": {
-                      "code": {
-                        "type": "string"
-                      },
-                      "type": {
-                        "type": "string",
-                        "enum": [
-                          "dict_tree",
-                          "dict",
-                          "text",
-                          "date",
-                          "numeric",
-                          "radio"
-                        ]
-                      },
-                      "title": {
-                        "type": "string"
-                      },
-                      "validation": {
-                        "type": "string"
-                      },
-                      "dict": {
-                        "type": "string"
-                      },
-                      "prefix": {
-                        "type": "string"
-                      },
-                      "values": {
-                        "type": "array"
-                      },
-                      "callbacks": {
-                        "type": "object"
-                      }
-                    },
-                    "required": [
-                      "code",
-                      "type",
-                      "title"
-                    ],
-                    "oneOf": [
-                      {
-                        "properties": {
-                          "type": {
-                            "enum": [
-                              "dict_tree",
-                              "dict",
-                              "text",
-                              "date",
-                              "numeric"
-                            ]
-                          }
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "code": {
+                          "type": "string"
+                        },
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "dict_tree",
+                            "dict",
+                            "text",
+                            "date",
+                            "datetime",
+                            "numeric",
+                            "table",
+                            "radio",
+                            "checkbox"
+                          ]
+                        },
+                        "title": {
+                          "type": "string"
+                        },
+                        "validation": {
+                          "type": "string"
+                        },
+                        "dict": {
+                          "type": "string"
+                        },
+                        "prefix": {
+                          "type": "string"
+                        },
+                        "values": {
+                          "type": "array"
+                        },
+                        "callbacks": {
+                          "type": "object"
                         }
                       },
-                      {
-                        "required": [
-                          "values"
-                        ]
-                      }
-                    ]
+                      "required": [
+                        "code",
+                        "type",
+                        "title"
+                      ],
+                      "oneOf": [
+                        {
+                          "properties": {
+                            "type": {
+                              "enum": [
+                                "dict_tree",
+                                "dict",
+                                "text",
+                                "date",
+                                "datetime",
+                                "numeric",
+                                "table",
+                                "checkbox"
+                              ]
+                            }
+                          }
+                        },
+                        {
+                          "required": [
+                            "values"
+                          ]
+                        }
+                      ]
+                    }
                   }
-                }
-              },
-              "required": [
-                "items"
-              ]
+                },
+                "required": [
+                  "items"
+                ]
+              }
             }
           }
         },

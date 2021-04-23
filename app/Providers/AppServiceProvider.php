@@ -18,7 +18,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             DruidClient::class,
             function ($app) {
-                return new DruidClient(['router_url' => 'http://cent7-bigdata.kmg.kz:8888']);
+                return new DruidClient(['router_url' => env('DRUID_ROUTER_URL')]);
             }
         );
     }

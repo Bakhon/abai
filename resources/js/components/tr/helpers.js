@@ -1,33 +1,33 @@
 const textForms = {
     fields: [
-        'tr.trwf1',
-        'tr.trwf2',
-        'tr.trwf3',
-        'tr.trwf4',
+        'tr.field_e',
+        'tr.field_ya',
+        'tr.field_i',
+        'tr.field_ya',
     ],
     expMethods: [
-        'tr.tref1',
-        'tr.tref2',
-        'tr.tref3',
-        'tr.tref4',
+        'tr.way',
+        'tr.way_a',
+        'tr.way_v',
+        'tr.way_y',
     ],
     horizons: [
-        'tr.trhf1',
-        'tr.trhf2',
-        'tr.trhf3',
-        'tr.trhf4',
+        'tr.horizon',
+        'tr.horizon_a',
+        'tr.horizon_v',
+        'tr.horizon_y',
     ],
     objects: [
-        'tr.trof1',
-        'tr.trof2',
-        'tr.trof3',
-        'tr.trof4',
+        'tr.object',
+        'tr.object_a',
+        'tr.object_v',
+        'tr.object_y',
     ],
     blocks: [
-        'tr.trbf1',
-        'tr.trbf2',
-        'tr.trbf3',
-        'tr.trbf4',
+        'tr.block',
+        'tr.block_a',
+        'tr.block_v',
+        'tr.block_i',
     ],
 }
 
@@ -40,7 +40,6 @@ exports.declOfNum = (n, row = "fields") => {
 }
 
 exports.getFilterText = (filter, options, field) => {
-    if (filter.length === 0) return `Выберите ${textForms[field][3]}`
-    // if (filter.length === options.length) return `Все ${textForms[field][3]}`
+    if (filter.length === 0) return `${this.trans('tr.choose')} ${textForms[field][3]}`
     else return filter.join(', ');
 }

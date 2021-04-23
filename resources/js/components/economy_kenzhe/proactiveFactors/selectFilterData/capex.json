@@ -1,0 +1,21 @@
+[
+    {
+        "option": "capex.name"
+    },
+    {
+        "value": 1,
+        "option": "capex.option1"
+    },
+    {
+        "value": 2,
+        "option": "capex.option2"
+    },
+    {
+        "value": 3,
+        "option": "capex.option3"
+    },
+    {
+        "value": 4,
+        "option": "capex.option4"
+    }
+]

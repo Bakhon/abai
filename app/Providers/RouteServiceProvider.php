@@ -105,8 +105,10 @@ class RouteServiceProvider extends ServiceProvider
             'db_prototype',
             'visual_center',
             'gno',
-            'tech',
+            'tr',
             'monitoring',
+            'paegtm',
+            'ndo',
             'digital_drilling'
         ];
 

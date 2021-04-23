@@ -101,20 +101,6 @@ abstract class BaseForm
         return [];
     }
 
-    protected function getFields(): \Illuminate\Support\Collection
-    {
-        $fields = collect();
-        foreach ($this->params()['tabs'] as $tab) {
-            foreach ($tab['blocks'] as $block) {
-                foreach ($block['items'] as $item) {
-                    $fields[] = $item;
-                }
-            }
-        }
-
-        return $fields;
-    }
-
     private function validate(): void
     {
         $errors = $this->getCustomValidationErrors();

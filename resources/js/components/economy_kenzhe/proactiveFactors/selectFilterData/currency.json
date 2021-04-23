@@ -1,0 +1,22 @@
+[
+    {
+        "option": "currency.name"
+    },
+    {
+        "value": 1,
+        "option": "currency.option1"
+    },
+    {
+        "value": 2,
+        "option": "currency.option2"
+    },
+    {
+        "value": 3,
+        "option": "currency.option3"
+    },
+    {
+        "value": 4,
+        "option": "currency.option4"
+    }
+    
+]

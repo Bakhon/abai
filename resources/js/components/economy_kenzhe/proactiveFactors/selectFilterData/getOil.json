@@ -1,0 +1,43 @@
+[
+    {
+        "option": "getOil.name"
+    },
+    {
+        "value": 1,
+        "option": "getOil.option1"
+    },
+    {
+        "value": 2,
+        "option": "getOil.option2"
+    }
+    ,
+    {
+        "value": 3,
+        "option": "getOil.option3"
+    }
+    ,
+    {
+        "value": 4,
+        "option": "getOil.option4"
+    }
+    ,
+    {
+        "value": 5,
+        "option": "getOil.option5"
+    }
+    ,
+    {
+        "value": 6,
+        "option": "getOil.option6"
+    }
+    ,
+    {
+        "value": 7,
+        "option": "getOil.option7"
+    }
+    ,
+    {
+        "value": 8,
+        "option": "getOil.option8"
+    }
+]
