@@ -62,7 +62,7 @@ export default {
     }
   },
   beforeCreate: function () {
-    this.axios.get('/ru/economic_data_json').then(({data}) => {
+    this.axios.get(this.localeUrl('/economic_data_json')).then(({data}) => {
       this.params.data = data.economic_data
     })
   },
