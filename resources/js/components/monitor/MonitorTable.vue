@@ -795,7 +795,6 @@ export default {
           .then((response) => {
             let data = response.data;
             this.isDataValidated = false;
-            this.validationErrors = [];
 
             if (data) {
               this.ngdu = data.ngdu
@@ -841,6 +840,8 @@ export default {
           });
     },
     validateData() {
+      this.validationErrors = [];
+      
       this.validation.forEach((rule) => {
         let ruleKeys = rule.key.split('.');
 
