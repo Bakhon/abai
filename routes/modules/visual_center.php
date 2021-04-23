@@ -61,6 +61,8 @@ Route::group(
                 Route::resource('/dzodaily', 'VisCenter\ImportForms\DZOdailyCrudController');
 
                 Route::post('/import', 'VisCenter\ImportForms\DZOdailyController@import')->name('import');
+
+                Route::get('/get-dzo-today-data', 'VisCenter\ExcelForm\ExcelFormController@getDzoCurrentData');
             }
         );
     }

@@ -11,7 +11,7 @@ class WellsController extends Controller
 {
     public function index()
     {
-        $wells = Well::active(Carbon::now())->paginate(20);
+        $wells = Well::active(Carbon::now())->orderBy('uwi', 'asc')->paginate(20);
         return view('bigdata.wells.index', compact('wells'));
     }
 

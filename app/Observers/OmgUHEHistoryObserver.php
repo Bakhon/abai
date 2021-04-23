@@ -23,10 +23,9 @@ class OmgUHEHistoryObserver extends EditHistoryObserver
         $fields = [
             'ngdu_id' => 'monitoring.ngdu',
             'cdng_id' => 'monitoring.cdng',
-            'gu_id' => 'monitoring.gu',
-            'zu_id' => 'monitoring.zu',
-            'well_id' => 'monitoring.well',
-            'date' => 'app.date_time',
+            'gu_id' => 'monitoring.gu.gu',
+            'zu_id' => 'monitoring.zu.zu',
+            'well_id' => 'monitoring.well.well',
             'inhibitor_id' => 'monitoring.omguhe.fields.inhibitor',
             'field_id' => 'monitoring.field',
             'fill' => 'monitoring.omguhe.fields.fill',

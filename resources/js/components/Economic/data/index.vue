@@ -5,7 +5,7 @@
           :params="params"
           ref="table"
       >
-        <template v-slot:column-15="{ props }">
+        <template v-slot:column-16="{ props }">
           <a v-bind:href="props.cellData">EDIT</a>
         </template>
       </vue-table-dynamic>
@@ -40,23 +40,24 @@ export default {
         headerHeight: 120,
         rowHeight: 50,
         columnWidth: [
-            {column: 0, width: 100},
-            {column: 1, width: 120},
-            {column: 2, width: 80},
-            {column: 3, width: 80},
-            {column: 4, width: 150},
-            {column: 5, width: 120},
-            {column: 6, width: 120},
-            {column: 7, width: 120},
-            {column: 8, width: 120},
-            {column: 9, width: 100},
-            {column: 10, width: 100},
-            {column: 11, width: 100},
-            {column: 13, width: 150},
-            {column: 14, width: 150},
-            {column: 15, width: 120},
-            {column: 16, width: 80},
-            ]
+          {column: 0, width: 100},
+          {column: 1, width: 120},
+          {column: 2, width: 80},
+          {column: 3, width: 80},
+          {column: 4, width: 150},
+          {column: 5, width: 120},
+          {column: 6, width: 120},
+          {column: 7, width: 120},
+          {column: 8, width: 120},
+          {column: 9, width: 100},
+          {column: 10, width: 100},
+          {column: 11, width: 100},
+          {column: 12, width: 100},
+          {column: 13, width: 150},
+          {column: 14, width: 150},
+          {column: 15, width: 120},
+          {column: 16, width: 80},
+        ]
       },
       loading: false
     }

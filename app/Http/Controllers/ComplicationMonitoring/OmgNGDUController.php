@@ -213,6 +213,7 @@ class OmgNGDUController extends CrudController
     public function edit(OmgNGDU $omgngdu)
     {
         $validationParams = $this->getValidationParams('omgngdu');
+        $omgngdu->editable = 0;
         return view('omgngdu.edit', compact('omgngdu', 'validationParams'));
     }
 

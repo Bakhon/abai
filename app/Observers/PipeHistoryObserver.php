@@ -22,7 +22,7 @@ class PipeHistoryObserver extends EditHistoryObserver
 
         $history = [];
         $fields = [
-            'gu_id' => 'monitoring.gu',
+            'gu_id' => 'monitoring.gu.gu',
             'length' => 'monitoring.pipe.fields.length',
             'outside_diameter' => 'monitoring.pipe.fields.outside_diameter',
             'inner_diameter' => 'monitoring.pipe.fields.inner_diameter',
