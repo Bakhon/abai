@@ -435,12 +435,12 @@ class EconomicController extends Controller
 
     public function exportEconomicData(EconomicDataRequest $request)
     {
-        if (!in_array($request->org, auth()->user()->getOrganizationIds())) {
+        if (!in_array($request->org_id, auth()->user()->getOrganizationIds())) {
             abort(403);
         }
 
         /** @var Org $org */
-        $org = Org::findOrFail($request->org);
+        $org = Org::findOrFail($request->org_id);
 
         $dpz = $request->field_id
             ? $org->fields()->whereId($request->field_id)->firstOrFail()->druid_id
