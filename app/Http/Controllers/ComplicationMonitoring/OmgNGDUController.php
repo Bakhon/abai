@@ -113,6 +113,10 @@ class OmgNGDUController extends CrudController
             ]
         ];
 
+        if(auth()->user()->can('monitoring create '.$this->modelName)) {
+            $params['links']['create'] = route($this->modelName.'.create');
+        }
+
         if(auth()->user()->can('monitoring export '.$this->modelName)) {
             $params['links']['export'] = route($this->modelName.'.export');
         }
@@ -209,6 +213,7 @@ class OmgNGDUController extends CrudController
     public function edit(OmgNGDU $omgngdu)
     {
         $validationParams = $this->getValidationParams('omgngdu');
+        $omgngdu->editable = 0;
         return view('omgngdu.edit', compact('omgngdu', 'validationParams'));
     }
 

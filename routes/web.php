@@ -50,29 +50,6 @@ Route::group(
                 );
                 Route::get('/getoilpivotdata', 'EconomicController@getOilPivotData')->name('getoilpivotdata');
 
-                // visual center
-                Route::get('/visualcenter', 'VisCenter\VisualCenterController@visualcenter')->name('visualcenter');
-                Route::get('/visualcenter2', 'VisCenter\VisualCenterController@visualcenter2')->name('visualcenter2');
-                Route::get('/visualcenter3', 'VisCenter\VisualCenterController@visualcenter3')->name('visualcenter3');
-                Route::get('/excelform', 'VisCenter\VisualCenterController@excelform')->name('excelform');
-                Route::get('/visualcenter3GetData', 'VisCenter\VisualCenterController@visualcenter3GetData');
-                Route::get('/visualcenter3GetDataOpec', 'VisCenter\VisualCenterController@visualcenter3GetDataOpec');
-                Route::get('/visualcenter3GetDataStaff', 'VisCenter\VisualCenterController@visualcenter3GetDataStaff');
-                Route::get('/visualcenter3GetDataAccident', 'VisCenter\VisualCenterController@visualcenter3GetDataAccident');               
-                Route::get('/visualcenter4', 'VisCenter\VisualCenterController@visualcenter4')->name('visualcenter4');
-                Route::get('/visualcenter5', 'VisCenter\VisualCenterController@visualcenter5')->name('visualcenter5');
-                Route::get('/visualcenter6', 'VisCenter\VisualCenterController@visualcenter6')->name('visualcenter6');
-                Route::get('/visualcenter7', 'VisCenter\VisualCenterController@visualcenter7')->name('visualcenter7');
-                Route::get('/getdzocalcs', 'VisCenter\VisualCenterController@getDZOcalcs')->name('getdzocalcs');
-                Route::get('/getdzocalcsactualmonth', 'VisCenter\VisualCenterController@getDZOCalcsActualMonth')->name(
-                    'getdzocalcsactualmonth'
-                );
-                Route::get("/getcurrency", "VisCenter\VisualCenterController@getCurrency");
-                Route::get("/getcurrencyperiod", "VisCenter\VisualCenterController@getCurrencyPeriod");
-                Route::get("/get-usd-rates", "VisCenter\VisualCenterController@getUsdRates");
-                Route::get("/get-oil-rates", "VisCenter\VisualCenterController@getOilRates");
-                Route::get("/get-dzo-monthly-plans", "VisCenter\VisualCenterController@getDzoMonthlyPlans");
-                Route::get('/get-dzo-yearly-plan', 'VisCenter\VisualCenterController@getDzoYearlyPlan');
                 Route::get('/podborgno', 'gno\GNOController@index')->name('gno');
                 Route::get('/production', 'DruidController@production')->name('production');
                 Route::get('/gtmscor', 'DruidController@gtmscor')->name('gtmscor');
@@ -95,15 +72,6 @@ Route::group(
                 Route::post('/gtm1', 'DBgtmController@gtm1')->name('gtm1');
                 Route::post('/dob1', 'DBdobController@dob1')->name('dob1');
                 Route::get('/constructor', 'DruidController@constructor')->name('constructor');
-
-                //tr
-                Route::get('/tr', 'tr\TrController@tr')->name('tr');
-                Route::get('/export', 'HomeController@export');
-                Route::get('/fa', 'tr\TrController@fa')->name('fa');
-                Route::get('/trfa', 'tr\TrController@trfa')->name('trfa');
-                Route::get('/tr_charts', 'tr\TrController@tr_charts')->name('tr_charts');
-                Route::get('/tech_mode', 'tr\TrController@TechMode')->name('TechMode');
-                Route::get('/fa_weekly_chart', 'tr\TrController@FaWeeklyChart')->name('FaWeeklyChart');
 
                 //gno economic
                 Route::resource('ecorefscompaniesids', 'EcoRefsCompaniesIdsController');
@@ -154,37 +122,6 @@ Route::group(
                 Route::resource('ecorefsprocdob', 'EcoRefsProcDobController');
                 Route::resource('ecorefsavgprs', 'EcoRefsAvgPrsController');
 
-                Route::resource('marabkpiid', 'VisCenter\KPI\MarabKpiIdController');
-                Route::resource('abdkpiid', 'VisCenter\KPI\AbdKpiIdController');
-                Route::resource('typeid', 'VisCenter\KPI\TypeIdController');
-                Route::resource('marab1', 'VisCenter\KPI\Marab1Controller');
-                Route::resource('marab2', 'VisCenter\KPI\Marab2Controller');
-                Route::resource('marab345', 'VisCenter\KPI\Marab345Controller');
-                Route::resource('marab6', 'VisCenter\KPI\Marab6Controller');
-                Route::resource('abd12', 'VisCenter\KPI\Abd12Controller');
-                Route::resource('abd35', 'VisCenter\KPI\Abd35Controller');
-                Route::resource('abd46', 'VisCenter\KPI\Abd46Controller');
-                Route::resource('corpkpiid', 'VisCenter\KPI\CorpKpiIdController');
-                Route::resource('corpall', 'VisCenter\KPI\CorpAllController');
-
-                Route::get('kpicalc', 'VisCenter\KPI\Marab2Controller@kpicalculation');
-                Route::get('kpiList', 'VisCenter\KPI\Marab2Controller@kpiList');
-
-                Route::resource('viscenter2', 'VisCenter\InputForm\Vis2FormController');
-                Route::resource('excelform2', 'VisCenter\InputForm\ExcelFormController');
-
-                Route::get('/import_hist', 'VisCenter\ImportForms\DZOdayController@importExcel');
-                Route::post('/import_h', 'VisCenter\ImportForms\DZOdayController@import')->name('import_h');
-
-                Route::get('importdzoyear', 'VisCenter\ImportForms\DZOyearController@importExcel');
-
-                Route::get('/import_econom', 'VisCenter\ImportForms\DZOcalcController@importExcel');
-                Route::post('/import_eco', 'VisCenter\ImportForms\DZOcalcController@import')->name('import_e');
-
-                Route::get('/import_excel', 'VisCenter\ImportForms\DZOdailyController@importExcel');
-                Route::resource('/dzodaily', 'VisCenter\ImportForms\DZOdailyCrudController');
-
-                Route::post('/import', 'VisCenter\ImportForms\DZOdailyController@import')->name('import');
 
                 Route::get('jobs/status', 'JobsController@getStatus')->name('jobs.status');
 
@@ -198,16 +135,21 @@ Route::group(
                 Route::get('anticrisis', 'AntiCrisisController@index')->name('anticrisis');
 
 
-                
+
                 Route::get('/module_economy', 'EconomyKenzhe\MainController@index');
-                Route::get('/module_economy/company/{id}/{date}', 'EconomyKenzhe\MainController@company')->name('company');
+                Route::get('/module_economy/company/', 'EconomyKenzhe\MainController@company')->name('company');
                 Route::get('/module_economy/companies', 'EconomyKenzhe\MainController@companies');
-                Route::match(['get','post'],'/import_rep', 'EconomyKenzhe\MainController@importRepTt')->name('import_rep');
+                Route::match(['GET','POST'],'/import_rep', 'EconomyKenzhe\ImportController@importRepTtValues')->name('import_rep');
+                Route::match(['GET','POST'],'/import_reptt_titles', 'EconomyKenzhe\ImportController@importRepTtTitlesTree')->name('import_reptt_titles');
 
                 Route::get('/paegtm', 'GTM\GTMController@index')->name('gtm');
+                Route::get('/paegtm/accum_oil_prod_data', 'GTM\GTMController@getAccumOilProd')->name('gtm');
+                Route::get('/paegtm/comparison_indicators_data', 'GTM\GTMController@getComparisonIndicators')->name('gtm');
 
                 Route::post('dzo_excel_form', 'VisCenter\ExcelForm\ExcelFormController@store');
                 Route::post('dzo_chemistry_excel_form', 'VisCenter\ExcelForm\ExcelFormChemistryController@store');
+                Route::get('/proactive-factors', 'EconomyKenzhe\proactiveFactorsController@proactiveFactors')->name('proactiveFactors');          
+                
             }
         );
         Auth::routes(

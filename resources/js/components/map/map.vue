@@ -40,8 +40,12 @@
             <span>Труба Скважина - ЗУ</span>
           </div>
           <div class="legend-item">
-            <div class="color-box" :style="{backgroundColor: getColorByBetweenPoints('fl-zu')}"></div>
-            <span>Труба ФЛ - ЗУ</span>
+            <div class="color-box" :style="{backgroundColor: getColorByBetweenPoints('fl-gu')}"></div>
+            <span>Труба ФЛ - ГУ</span>
+          </div>
+          <div class="legend-item">
+            <div class="color-box" :style="{backgroundColor: getColorByBetweenPoints('gu-gu')}"></div>
+            <span>Труба ГУ - ГУ</span>
           </div>
           <div class="legend-item">
             <div class="color-box" :style="{backgroundColor: getColorByBetweenPoints('fl-koll')}"></div>
@@ -930,13 +934,6 @@ export default {
           return {}
           break;
       }
-    },
-    showToast(message, title, variant) {
-      this.$bvToast.toast(message, {
-        title: title,
-        variant: variant,
-        solid: true
-      });
     }
   }
 }

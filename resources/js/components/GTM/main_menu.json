@@ -10,7 +10,8 @@
           "name": "child-component",
           "template": "<div><gtm-aegtm></gtm-aegtm></div>",
           "parentType": "aegtm"
-        }
+        },
+        "icon": "/img/GTM/icon_menu_aegtm_tech.svg"
       },
       {
         "name": "Анализ экономических показателей<br />(затраты, PI, и т.п. в разрезе ГТМ/ВНС)",
@@ -18,15 +19,18 @@
           "name": "child-component",
           "template": "<div><gtm-aegtm-eco></gtm-aegtm-eco></div>",
           "parentType": "aegtm"
-        }
+        },
+        "icon": "/img/GTM/icon_menu_aegtm_econom.svg"
       },
       {
         "name": "Смежные графики",
-        "component": null
+        "component": null,
+        "icon": "/img/GTM/icon_menu_aegtm_graphs.svg"
       },
       {
         "name": "Выгрузка отчетности",
-        "component": null
+        "component": null,
+        "icon": "/img/GTM/icon_menu_export.svg"
       }
     ]
   },
@@ -41,27 +45,33 @@
           "name": "child-component",
           "template": "<div><gtm-podbor-gtm></gtm-podbor-gtm></div>",
           "parentType": "podborGtm"
-        }
+        },
+        "icon": "/img/GTM/icon_menu_criteria.svg"
       },
       {
         "name": "Кол-во кандидатов по видам ГТМ",
-        "component": null
+        "component": null,
+        "icon": "/img/GTM/icon_menu_candidate_count.svg"
       },
       {
         "name": "Прогноз эффективности (методика)",
-        "component": null
+        "component": null,
+        "icon": "/img/GTM/icon_menu_forecast.svg"
       },
       {
         "name": "Ранжирование кандидатов",
-        "component": null
+        "component": null,
+        "icon": "/img/GTM/icon_menu_raging.svg"
       },
       {
         "name": "Программа ГТМ",
-        "component": null
+        "component": null,
+        "icon": "/img/GTM/icon_menu_programm.svg"
       },
       {
         "name": "Выгрузка отчетности",
-        "component": null
+        "component": null,
+        "icon": "/img/GTM/icon_menu_export.svg"
       }
     ]
   },
@@ -76,23 +86,28 @@
           "name": "child-component",
           "template": "<div><gtm-digital-rating-gtm></gtm-digital-rating-gtm></div>",
           "parentType": "digitalRating"
-        }
+        },
+        "icon": "/img/GTM/icon_menu_criteria.svg"
       },
       {
         "name": "Прогноз эффективности (методика)",
-        "component": null
+        "component": null,
+        "icon": "/img/GTM/icon_menu_forecast.svg"
       },
       {
         "name": "Ранжирование кандидатов",
-        "component": null
+        "component": null,
+        "icon": "/img/GTM/icon_menu_raging.svg"
       },
       {
         "name": "Программа бурения",
-        "component": null
+        "component": null,
+        "icon": "/img/GTM/icon_menu_programm.svg"
       },
       {
         "name": "Выгрузка отчетности",
-        "component": null
+        "component": null,
+        "icon": "/img/GTM/icon_menu_export.svg"
       }
     ]
   }

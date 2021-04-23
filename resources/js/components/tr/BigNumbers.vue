@@ -1,6 +1,5 @@
 <template>
   <div class="big-numbers">
-    <!-- <h4>Цифровые показатели</h4> -->
     <div class="big-numbers__list">
       <div v-for="item in numbers" :key="item.name" class="big-numbers__item">
         <div class="big-numbers__count h2">{{ item.count }}</div>
@@ -40,13 +39,13 @@ export default {
     baseName: {
       type: String,
       default() {
-        return `${this.trans('tr.trbn1')}`;
+        return `${this.trans('tr.quantity')}`;
       },
     },
     nameAlias: {
       type: String,
       default() {
-        return [`${this.trans('tr.trbn2')}`, `${this.trans('tr.trbn3')}`, `${this.trans('tr.trbn4')}`, `${this.trans('tr.trbn5')}`];
+        return [`${this.trans('tr.ecn_quantity')}`, `${this.trans('tr.shgn_quantity')}`, `${this.trans('tr.fountain_quantity')}`, `${this.trans('tr.p_lift_quantity')}`];
       },
     },
     paramValues: {

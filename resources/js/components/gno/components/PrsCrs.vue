@@ -91,16 +91,33 @@ mounted() {
         this.numberRepairs = nno['prs']
         this.numberNNO = nno['NNO'].toFixed(0)
         this.krsTable = JSON.parse(krs)["data"]
+        
     })
+    
     var wi = this.wellIncl.split('_');
     let uri = "http://172.20.103.187:7575/api/nno/history/"  + wi[0] + "/" + wi[1] + "/";
     this.$emit('update:isLoading', true);
     this.axios.get(uri).then((response) => {
     this.prs = response['data']['prs']['data']
+    
     for(let key of Object.keys(this.prs)){
-      let nno_days = this.prs[key]['nno_size']
-      let isNull = (this.prs[key]['text'] !== "");
-      this.data.push({x: [key], 
+      if(this.prs[key].length!=undefined){
+        for(let val of this.prs[key]){
+        let nno_days = val['nno_size']
+        let isNull = (val['text'] !== "");
+        this.data.push({x: [key], 
+                      y: [nno_days*1], 
+                      name: val['text'], 
+                      showlegend: isNull,
+                      type: 'bar', 
+                      text: nno_days,
+                      textposition: 'auto',
+                      hoverinfo: 'none',})
+        }               
+      } else{
+        let nno_days = this.prs[key]['nno_size']
+        let isNull = (this.prs[key]['text'] !== "");
+        this.data.push({x: [key], 
                       y: [nno_days*1], 
                       name: this.prs[key]['text'], 
                       showlegend: isNull,
@@ -108,6 +125,8 @@ mounted() {
                       text: nno_days,
                       textposition: 'auto',
                       hoverinfo: 'none',})
+      }
+      
     }
     this.layout= {
         showlegend: true,
