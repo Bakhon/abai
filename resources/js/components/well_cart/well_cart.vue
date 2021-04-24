@@ -17,67 +17,27 @@
                      </div>
 
                         <div class="directory">
-                            <div class="row">
-                                <div class="col">
-                                    <img src="/img/bd/pointer-solid.svg" class="pointer">
-                                    <div class="border-pointer-solid"></div>
-                                    <img src="/img/bd/folder.svg" class="full-size-icon">
-                                        <h3>КПД Заместителя председателя Правления по розведке и добыче
-                                        <span class="names">(Марабаев Ж. Н.)</span>
-                                    </h3>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col">
-                                    <div class="file">
-                                        <img src="/img/bd/file.svg" class="full-size-icon">
-                                        <h3>Прирост извлекаемых запасов нефти и конденсата</h3>
-                                    </div>                 
-                                </div>
-                            </div>
-                               <div class="directory">
-                            <div class="row">
-                                <div class="col">
-                                    <img src="/img/bd/pointer-solid.svg" class="pointer">
-                                    <div class="border-pointer-solid"></div>
-                                    <img src="/img/bd/folder.svg" class="full-size-icon">
-                                        <h3>КПД Заместителя председателя Правления по розведке и добыче
-                                        <span class="names">(Марабаев Ж. Н.)</span>
-                                    </h3>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col">
-                                    <div class="file">
-                                        <img src="/img/bd/file.svg" class="full-size-icon">
-                                        <h3>Прирост извлекаемых запасов нефти и конденсата</h3>
-                                    </div>                 
-                                </div>
-                            </div>
-                        </div>
                         <div class="custom-directory">
                                 <ul id="myUL">
-                                    <li><span class="caret">КПД Заместителя председателя Правления по разведке и добыче (Марабаев Ж.Н.)</span>
+                                    <img src="/img/bd/pointer-solid.svg" class="pointer"><li><span class="caret"></span><span class="parent">КПД Заместителя председателя Правления по разведке и добыче <span class="names">(Марабаев Ж.Н.)</span></span>
                                         <ul class="nested">
-                                        <li>Прирост извлекаемых запасов нефти и конденсата</li>
-                                        <li><span class="caret">Исполнение бизнес- инициатив</span>
+                                        <li><span class="caret-child"></span><span class="child">Прирост извлекаемых запасов нефти и конденсата</span></li>
+                                        <img src="/img/bd/pointer-solid.svg" class="pointer"><li><span class="caret"></span><span class="parent">Исполнение бизнес- инициатив</span>
                                             <ul class="nested">
-                                            <li>МРП ОМГ</li>
-                                            <li>МРП КБМ</li>
-                                            <li>Заводнение ОМГ</li>
-                                            <li>Внедрение модулей ИС ABAI</li>
-                                            <li><span class="caret">Реализация инвестиционных проектов</span>
+                                            <li><span class="caret-child"></span><span class="child">МРП ОМГ</span></li>
+                                            <li><span class="caret-child"></span><span class="child">МРП КБМ</span></li>
+                                            <li><span class="caret-child"></span><span class="child">Заводнение ОМГ</span></li>
+                                            <li><span class="caret-child"></span><span class="child">Внедрение модулей ИС ABAI</span></li>
+                                            <img src="/img/bd/pointer-solid.svg" class="pointer"><li><span class="caret"></span><span class="parent">Реализация инвестиционных проектов</span>
                                                 <ul class="nested">
-                                                <li>Проект «Женис» - строительство разведочной скважины</li>
-                                                <li>Проект «Урихтау» – ввод 5-ти скважин Центр. Урихтау и разработка концепции Фазы 2</li>
-                                                <li>Проект «Рожковское» – мероприятия по опытно-промышленной эксплуатации на 2021 год</li>
-                                                <li>СПБУ - Получение контракта на бурение</li>
+                                                <li><span class="caret-child"></span><span class="child">Проект «Женис» - строительство разведочной скважины</span></li>
+                                                <li><span class="caret-child"></span><span class="child">Проект «Урихтау» – ввод 5-ти скважин Центр. Урихтау и разработка концепции Фазы 2</span></li>
+                                                <li><span class="caret-child"></span><span class="child">Проект «Рожковское» – мероприятия по опытно-промышленной эксплуатации на 2021 год</span></li>
+                                                <li><span class="caret-child"></span><span class="child">СПБУ - Получение контракта на бурение</span></li>
                                                 </ul>
                                             </li>
-                                            <li>Чистый денежный поток в КЦ КМГ от дивизиона</li>
-                                            <li>Операционные и капитальные затраты по ДЗО дивизиона</li>
+                                            <li><span class="caret-child"></span><span class="child">Чистый денежный поток в КЦ КМГ от дивизиона</span></li>
+                                            <li><span class="caret-child"></span><span class="child">Операционные и капитальные затраты по ДЗО дивизиона</span></li>
                                             </ul>
                                         </li>  
                                         </ul>
@@ -85,11 +45,6 @@
                                 </ul>
                         </div>                        
                         </div>
-                        
-
-<!-- Требуется разработка логики потомков directory!-->
-
-
 
                     </div>
                 </div>
@@ -117,7 +72,7 @@
                                                     <path d="M12.6738 19.9728C9.63312 19.9728 7.34045 18.6828 7.34045 16.9728V9.30609H7.37179C7.60493 8.43959 8.23036 7.73225 9.06179 7.39476C10.1926 6.87128 11.428 6.61294 12.6738 6.63942C15.7145 6.63942 18.0071 7.92942 18.0071 9.63942C18.0065 9.75126 17.9957 9.86282 17.9751 9.97276H18.0071V16.9728C18.0071 18.6828 15.7145 19.9728 12.6738 19.9728ZM8.52512 11.5688V16.9728C8.52512 17.6521 10.1405 18.6394 12.6738 18.6394C15.2071 18.6394 16.8218 17.6521 16.8218 16.9728V11.5688C15.5719 12.3196 14.1309 12.6914 12.6738 12.6394C11.2164 12.6914 9.77532 12.3194 8.52512 11.5688ZM12.6738 7.97276C10.1405 7.97276 8.52512 8.96009 8.52512 9.63942C8.52512 10.3188 10.1405 11.3061 12.6738 11.3061C15.2071 11.3061 16.8218 10.3188 16.8218 9.63942C16.8218 8.96009 15.2071 7.97276 12.6738 7.97276Z" fill="#237DEB"/>
                                                     </svg>
                                                 </div>
-                                                <div class="txt5">Фонд <div class="icon-pointer"> </div>
+                                                <div style="display:flex"><div class="txt5">Фонд</div><div class="icon-pointer" style="margin-left:auto"> </div>
                                                 </div>
                                                 
                                         </div>
@@ -935,6 +890,17 @@
     </div>
 </template>
 
+<script>
+// Служит для сокрытия/показа файловой системы
+var toggler = document.getElementsByClassName("caret");
+var i;
+for (i = 0; i < toggler.length; i++) {
+toggler[i].addEventListener("click", function() {
+this.parentElement.querySelector(".nested").classList.toggle("active");
+this.classList.toggle("caret-down");
+});
+}
+</script>
 <style scoped lang="scss">
 .custom-directory{
     color: white;
@@ -942,8 +908,12 @@
         padding-inline-start: 20px;
         list-style-type: none;
     } 
+    li{
+        padding-left: 10px;
+    }
     #myUL {
     list-style-type: none;
+    border-left: 1px dashed #555BA6;
     }
     #myUL {
     margin: 0;
@@ -956,7 +926,7 @@
     -ms-user-select: none; /* IE 10+ */
     user-select: none;
         &::before {
-        content: "\25B6";
+        content: URL(/img/bd/folder.svg);
         color: black;
         display: inline-block;
         margin-right: 6px;
@@ -974,12 +944,36 @@
     }
 
     .active {
-    display: block;
+    display: none;
+    }
+    .caret-parent{
+
+    }
+    .caret-child{
+        margin-right: 6px;
+        content: URL(/img/bd/file.svg);
+    }
+    .parent{
+    font-size: 14px;
+    font-family: Harmonia Sans Pro Cyr;
+    font-weight: 700;
+    line-height: 20px;
+    color: white;
+    padding-right: 20px;
+    }
+    .child{
+    display: inline;
+    font-size: 14px;
+    font-family: Harmonia Sans Pro Cyr;
+    font-weight: 700;
+    line-height: 20px;
+    color: white;
+    padding-right: 20px;
     }
 }
 h4{
     font-size: 16px;
-    font-weight: 400;
+    font-weight: 700;
     line-height: 20px;
     color: white;
     padding-right: 20px;
