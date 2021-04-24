@@ -78,10 +78,25 @@
                                         </div>
                                     </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <form>
                                         <ul>
-                                                <li><a class="dropdown-item" href="#">Технологическая структура</a></li>
-                                                <li><a class="dropdown-item" href="#">Распределительная подстанция</a></li>
+                                            
+                                               <li>
+                                                    <label for="tech_structire"> Технологическая структура</label>
+                                                    <input type="checkbox" id="tech_structire" name="tech_structire" value="tech_structire" class="dropdown-item">
+                                                </li>
+                                              
+                                                <li>
+                                                     <label for="opt_1"> Распределительная подстанция</label>
+                                                     <input type="checkbox" id="opt_1" name="opt_1" value="opt_1" class="dropdown-item">
+                                                </li>
+                                               
+                                                <li> <label for="opt_2"> Распределительная подстанция</label>    
+                                                <input type="checkbox" id="opt_2" name="opt_2" value="opt_2" class="dropdown-item">
+                                                </li>
+                                                   
                                         </ul>
+                                         </form>  
                                     </div>
                                 </div>
 
@@ -1111,7 +1126,12 @@ h4{
     }
     .dropdown{
         position:relative;
+        :focus{
+            background:#2E50E9;
+        }
+        
     }
+
     .small-select{
         min-width: 244px;
         margin-right: 0.25em;
@@ -1209,6 +1229,24 @@ h4{
     }
     .btn:not(:disabled):not(.disabled){
         width: 100%;
+    }
+    .dropdown-menu.show{
+        background: #40467E;
+        color: white;
+        width: 300px;
+        padding: 18px 31px;
+        li{
+            display: flex;
+            width: 100%;
+            input[type=checkbox]{
+                width: 5%;
+                margin-left: auto  ;
+                ::before {
+                content: URL(/img/bd/check-marker.svg);
+            }
+            }
+        }
+        
     }
     .select-button{
     background: #656A8A;
