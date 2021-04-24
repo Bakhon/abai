@@ -687,13 +687,196 @@
                         </div>
                     </div>
                 </div>
-                <div class="bg-dark">
+                <div class="bg-dark info">                    
                     <div class="row">
                         <div class="col">
                             <div class="heading">
                                 <p>Общая информация</p>                                
                             </div>           
+                            </div>
                         </div>
+                        <div class="info-element">
+                        <!-- Elemtnt start -->
+                        <div class="row">
+                            <div class="col">
+                                <p>
+                                Скважина
+                                </p>
+                            </div>
+                            <div class="col">
+                                <p>
+                                  UZN_6057
+                                </p>
+                            </div>
+                        </div>
+                        <!-- Element end -->
+                        <!-- Elemtnt start -->
+                        <div class="row">
+                            <div class="col">
+                                <p>
+                                Вид скважины
+                                </p>
+                            </div>
+                            <div class="col">
+                                <p>
+                                  Вертикальная
+                                </p>
+                            </div>
+                        </div>
+                        <!-- Element end -->
+                        <!-- Elemtnt start -->
+                        <div class="row">
+                            <div class="col">
+                                <p>
+                                Месторождение
+                                </p>
+                            </div>
+                            <div class="col">
+                                <p>
+                                  Узень
+                                </p>
+                            </div>
+                        </div>
+                        <!-- Element end -->
+                                                <!-- Elemtnt start -->
+                        <div class="row">
+                            <div class="col">
+                                <p>
+                                Блок
+                                </p>
+                            </div>
+                            <div class="col">
+                                <p>
+                                  Основной свод
+                                </p>
+                            </div>
+                        </div>
+                        <!-- Element end -->
+                                                <!-- Elemtnt start -->
+                        <div class="row">
+                            <div class="col">
+                                <p>
+                                Горизонт
+                                </p>
+                            </div>
+                            <div class="col">
+                                <p>
+                                  14
+                                </p>
+                            </div>
+                        </div>
+                        <!-- Element end -->
+                                                <!-- Elemtnt start -->
+                        <div class="row">
+                            <div class="col">
+                                <p>
+                                Тех. структура
+                                </p>
+                            </div>
+                            <div class="col">
+                                <p>
+                                  ЦПГ
+                                </p>
+                            </div>
+                        </div>
+                        <!-- Element end -->
+                                                <!-- Elemtnt start -->
+                        <div class="row">
+                            <div class="col">
+                                <p>
+                                Орг. структура
+                                </p>
+                            </div>
+                            <div class="col">
+                                <p>
+                                  КазМунайГаз
+                                </p>
+                            </div>
+                        </div>
+                        <!-- Element end -->
+                                                <!-- Elemtnt start -->
+                        <div class="row">
+                            <div class="col">
+                                <p>
+                                Зоны скважины
+                                </p>
+                            </div>
+                            <div class="col">
+                                <p>
+                                  3-13-14
+                                </p>
+                            </div>
+                        </div>
+                        <!-- Element end -->
+                                                <!-- Elemtnt start -->
+                        <div class="row">
+                            <div class="col">
+                                <p>
+                               Альтитуда устья скважины
+                                </p>
+                            </div>
+                            <div class="col">
+                                <p>
+                                  242.1
+                                </p>
+                            </div>
+                        </div>
+                        <!-- Element end -->
+                                                <!-- Elemtnt start -->
+                        <div class="row">
+                            <div class="col">
+                                <p>
+                                Координаты Х (устья)
+                                </p>
+                            </div>
+                            <div class="col">
+                                <p>
+                                  52.94
+                                </p>
+                            </div>
+                        </div>
+                        <!-- Element end -->
+                                                <!-- Elemtnt start -->
+                        <div class="row">
+                            <div class="col">
+                                <p>
+                                Координаты Y (устья)
+                                </p>
+                            </div>
+                            <div class="col">
+                                <p>
+                                  43.94
+                                </p>
+                            </div>
+                        </div>
+                        <!-- Element end -->
+                                                <!-- Elemtnt start -->
+                        <div class="row">
+                            <div class="col">
+                                <p>
+                                Координаты забоя Х 
+                                </p>
+                            </div>
+                            <div class="col">
+                                <p>
+                                  52.94
+                                </p>
+                            </div>
+                        </div>
+                        <!-- Element end -->
+                                                <!-- Elemtnt start -->
+                        <div class="row">
+                            <div class="col">
+                                <p>
+                                Координаты забоя Y 
+                                </p>
+                            </div>
+                            <div class="col">
+                                <p>
+                                  43.94
+                                </p>
+                            </div>
+                        </div>                       
                     </div>
                 </div>
          </div>       
@@ -853,6 +1036,7 @@ h4{
     .table-container{
         background-color:#272953;
         overflow-y: scroll;
+        overflow-x: hidden;
         width: 100%;
         color: white;   
         .table-container-header{
@@ -884,6 +1068,29 @@ h4{
         .table-border{
             border-left: 1px solid #464D7A;
         }
+    }
+    .info{
+        height: 650px;
+        overflow-y: scroll;
+        overflow-x: hidden;
+        .row{
+            border-bottom: 1px solid #30358F;
+        }
+        .heading{
+            padding: 11px 0px 15px 13px;
+            font-family: Harmonia Sans Pro Cyr;
+            font-weight: 700;
+        }
+        .info-element{
+             p{
+            padding: 10px 10px 12px 14px;
+            margin: 0px;
+            font-family: Harmonia Sans Pro Cyr;
+            font-weight: 400;
+            font-size: 14px;
+        }
+        }
+      
     }
     .full-size-icon{
         width: 20px;
@@ -971,7 +1178,7 @@ h4{
     
     /* Handle */
     ::-webkit-scrollbar-thumb {
-    background: #374178; 
+    background: URL("/img/bd/scroll-img.svg") no-repeat 50% #374178; 
     height:10px;
     }
     /* Handle on hover 
