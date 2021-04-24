@@ -771,20 +771,22 @@ h4{
         width: 100%;
         padding: 5px 10px;
         .search-input{
-            padding: 10px;
+            padding: 10px 5px 10px 20px;
             border-radius: 10px;
             height: 40px;
-            background: url("/img/bd/search.svg");
-            background-color: #272953;
+            background: url(/img/bd/search.svg) #272953;
+           // background-color: #272953;
             border: 1px solid #3b4a84;
             background-size: contain;
             background-repeat: no-repeat;
             text-indent: 20px;
             width: 100%;
+            font-size: 14px;
+            font-family: Roboto;
+            font-weight: 400;
             &::placeholder{
-                color:white;
-                font-family: Roboto;
-                font-size: 14px;
+                padding: 0px;
+                color: white;
         }
     }
     }
