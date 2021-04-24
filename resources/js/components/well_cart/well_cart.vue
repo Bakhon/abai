@@ -36,6 +36,54 @@
                                     </div>                 
                                 </div>
                             </div>
+                               <div class="directory">
+                            <div class="row">
+                                <div class="col">
+                                    <img src="/img/bd/pointer-solid.svg" class="pointer">
+                                    <div class="border-pointer-solid"></div>
+                                    <img src="/img/bd/folder.svg" class="full-size-icon">
+                                        <h3>КПД Заместителя председателя Правления по розведке и добыче
+                                        <span class="names">(Марабаев Ж. Н.)</span>
+                                    </h3>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col">
+                                    <div class="file">
+                                        <img src="/img/bd/file.svg" class="full-size-icon">
+                                        <h3>Прирост извлекаемых запасов нефти и конденсата</h3>
+                                    </div>                 
+                                </div>
+                            </div>
+                        </div>
+                        <div class="custom-directory">
+                                <ul id="myUL">
+                                    <li><span class="caret">КПД Заместителя председателя Правления по разведке и добыче (Марабаев Ж.Н.)</span>
+                                        <ul class="nested">
+                                        <li>Прирост извлекаемых запасов нефти и конденсата</li>
+                                        <li><span class="caret">Исполнение бизнес- инициатив</span>
+                                            <ul class="nested">
+                                            <li>МРП ОМГ</li>
+                                            <li>МРП КБМ</li>
+                                            <li>Заводнение ОМГ</li>
+                                            <li>Внедрение модулей ИС ABAI</li>
+                                            <li><span class="caret">Реализация инвестиционных проектов</span>
+                                                <ul class="nested">
+                                                <li>Проект «Женис» - строительство разведочной скважины</li>
+                                                <li>Проект «Урихтау» – ввод 5-ти скважин Центр. Урихтау и разработка концепции Фазы 2</li>
+                                                <li>Проект «Рожковское» – мероприятия по опытно-промышленной эксплуатации на 2021 год</li>
+                                                <li>СПБУ - Получение контракта на бурение</li>
+                                                </ul>
+                                            </li>
+                                            <li>Чистый денежный поток в КЦ КМГ от дивизиона</li>
+                                            <li>Операционные и капитальные затраты по ДЗО дивизиона</li>
+                                            </ul>
+                                        </li>  
+                                        </ul>
+                                    </li>
+                                </ul>
+                        </div>                        
                         </div>
                         
 
@@ -75,8 +123,10 @@
                                         </div>
                                     </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <a class="dropdown-item" href="#">Технологическая структура</a>
-                                        <a class="dropdown-item" href="#">Распределительная подстанция</a>
+                                        <ul>
+                                                <li><a class="dropdown-item" href="#">Технологическая структура</a></li>
+                                                <li><a class="dropdown-item" href="#">Распределительная подстанция</a></li>
+                                        </ul>
                                     </div>
                                 </div>
 
@@ -114,15 +164,17 @@
                                         </div>
                                     </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <a class="dropdown-item" href="#">Action</a>
-                                        <a class="dropdown-item" href="#">Another action</a>
-                                        <a class="dropdown-item" href="#">Something else here</a>
+                                        <ul>
+                                            <li><a class="dropdown-item" href="#">Action</a></li>
+                                            <li><a class="dropdown-item" href="#">Another action</a></li>
+                                            <li><a class="dropdown-item" href="#">Something else here</a></li>
+                                        </ul>
                                     </div>
                                 </div>
                     </div>
                     </div>
             </div>
-                <div class="col-md-4">
+                <div class="col-md-4">                  
                     <div class="bg-dark-transparent">
                             <div class="row">
                                 <div class="col">
@@ -884,6 +936,47 @@
 </template>
 
 <style scoped lang="scss">
+.custom-directory{
+    color: white;
+    ul{
+        padding-inline-start: 20px;
+        list-style-type: none;
+    } 
+    #myUL {
+    list-style-type: none;
+    }
+    #myUL {
+    margin: 0;
+    padding: 0;
+    }
+    .caret {
+    cursor: pointer;
+    -webkit-user-select: none; /* Safari 3.1+ */
+    -moz-user-select: none; /* Firefox 2+ */
+    -ms-user-select: none; /* IE 10+ */
+    user-select: none;
+        &::before {
+        content: "\25B6";
+        color: black;
+        display: inline-block;
+        margin-right: 6px;
+        }
+    }
+        .caret-down{
+            ::before {
+            -ms-transform: rotate(90deg); /* IE 9 */
+            -webkit-transform: rotate(90deg); /* Safari */
+            transform: rotate(90deg);  
+            }
+        }
+    .nested {
+    display: block;
+    }
+
+    .active {
+    display: block;
+    }
+}
 h4{
     font-size: 16px;
     font-weight: 400;
@@ -909,8 +1002,7 @@ h4{
         }
     }
     .directory{
-        display:block;
-        border-top: 1px solid #555BA6;
+        display:block;        
         width: 100%;
         padding: 10px;
         margin: 10px 40px 10px 25px;
@@ -948,6 +1040,9 @@ h4{
         .file{
             padding-left: 35px;
             display: flex;
+        }
+        &:first-child{
+            border-top: 1px solid #555BA6;
         }
     }
     .search-form{
@@ -1066,7 +1161,10 @@ h4{
             margin-right: 0px;
         }
         .table-border{
+            border-top: hidden;
             border-left: 1px solid #464D7A;
+            border-bottom: hidden;
+            border-right: hidden;
         }
     }
     .info{
@@ -1141,7 +1239,7 @@ h4{
     }
     .bg-dark{
         padding-bottom: 20px;
-       margin-bottom: 20px;
+        margin-bottom: 20px;
     }
     .center{
     margin-left: auto;
@@ -1158,7 +1256,6 @@ h4{
         background-color: rgba(39, 41, 83, 0.85);
         padding-bottom: 20px;
         margin-bottom: 20px;
-        z-index: 1000;
     }
     .blue-section{
         color:#82BAFF;
