@@ -913,7 +913,7 @@ this.classList.toggle("caret-down");
     }
     #myUL {
     list-style-type: none;
-    border-left: 1px dashed #555BA6;
+  //  border-left: 1px dashed #555BA6;
     }
     #myUL {
     margin: 0;
@@ -941,6 +941,10 @@ this.classList.toggle("caret-down");
         }
     .nested {
     display: block;
+    border-left: 1px dashed #555BA6;
+    &::before{
+        content: random($limit: 1);
+    }
     }
 
     .active {
@@ -972,6 +976,7 @@ this.classList.toggle("caret-down");
     }
 }
 h4{
+    text-align: left;
     font-size: 16px;
     font-weight: 700;
     line-height: 20px;
@@ -1200,6 +1205,7 @@ h4{
     .button1-vc-inner{
         display: inline-block;
         float:left;
+        width: 100%;
     }
     .btn:not(:disabled):not(.disabled){
         width: 100%;
@@ -1217,6 +1223,7 @@ h4{
         height: 10px;
         white-space: nowrap;
         background:url(/img/bd/pointer.svg) 50% 100% no-repeat;
+        margin-left: auto;
     }
 
     .col{
