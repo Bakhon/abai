@@ -45,8 +45,10 @@
     <div class="row">
       <div class="col-12 blueblock three">
         <div v-if="activeForm" class="col-12 blueblock three">
-          <BigDataForm v-if="activeForm.type === 'plain'" :params="activeForm"></BigDataForm>
-          <BigDataTable v-else-if="activeForm.type === 'table'" :params="activeForm"></BigDataTable>
+          <BigDataPlainFormWrapper v-if="activeForm.type === 'plain'" :params="activeForm"
+                                   :well-id="wellId"></BigDataPlainFormWrapper>
+          <BigDataTableFormWrapper v-else-if="activeForm.type === 'table'"
+                                   :params="activeForm"></BigDataTableFormWrapper>
         </div>
       </div>
     </div>
@@ -55,10 +57,16 @@
 
 <script>
 import forms from '../../json/bd/forms.json'
-import BigDataForm from './forms/form'
-import BigDataTable from './forms/table'
+import BigDataPlainFormWrapper from './forms/PlainFormWrapper'
+import BigDataTableFormWrapper from './forms/TableFormWrapper'
 
 export default {
+  props: {
+    wellId: {
+      type: Number,
+      required: true
+    },
+  },
   data() {
     return {
       forms: forms,
@@ -68,8 +76,8 @@ export default {
     }
   },
   components: {
-    BigDataForm,
-    BigDataTable
+    BigDataTableFormWrapper,
+    BigDataPlainFormWrapper
   },
   computed: {
     filteredForms() {

@@ -1,13 +1,34 @@
 [
     {
-        "option": "company"
+        "option": "company.name"
     },
     {
         "value": 1,
-        "option": "selectFilterOption1"
+        "option": "company.omg"
     },
     {
         "value": 2,
-        "option": "selectFilterOption2"
+        "option": "company.emg"
+    },
+    {
+        "value": 3,
+        "option": "company.kbm"
+    },
+    {
+        "value": 4,
+        "option": "company.mmg"
+    },
+    {
+        "value": 5,
+        "option": "company.koa"
+    },
+    {
+        "value": 6,
+        "option": "company.ktm"
+    },
+    {
+        "value": 7,
+        "option": "company.kgm"
     }
+  
 ]

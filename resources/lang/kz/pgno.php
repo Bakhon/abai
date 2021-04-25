@@ -178,4 +178,6 @@ return array (
   'interval_centrators' => 'Орталықтандырғышты орнату аралықтары',
   'recommended' => 'Ұсынылған',
   'required' => 'Міндетті',
+  'economic' => 'Экономика',
+  'develop' => 'Дамуы',
 );

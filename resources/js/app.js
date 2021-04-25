@@ -27,7 +27,6 @@ import PerfectScrollbar from "vue2-perfect-scrollbar";
 import "vue2-perfect-scrollbar/dist/vue2-perfect-scrollbar.css";
 import columnSortable from 'vue-column-sortable';
 
-
 require('./bootstrap');
 window.Vue = require('vue');
 window.Jquery = require('jquery');
@@ -42,6 +41,11 @@ Vue.use(PerfectScrollbar);
 Vue.use(columnSortable);
 Vue.use(VueSimpleAlert);
 Vue.use(BootstrapVue);
+
+//Mixins
+import showToast from './mixins/showToast';
+Vue.mixin(showToast);
+
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -110,6 +114,7 @@ Vue.component('gtm-bar-chart', require('./components/GTM/BarChart.vue').default)
 Vue.component('gtm-line-chart', require('./components/GTM/LineChart.vue').default);
 Vue.component('gtm-tree', require('./components/GTM/Tree.vue').default);
 Vue.component('gtm-node-tree', require('./components/GTM/NodeTree.vue').default);
+Vue.component('gtm-date-picker', require('./components/GTM/DatePicker.vue').default);
 
 Vue.component('reports-table2', require('./components/reportsGTM/ReportsGTMTable.vue').default);
 Vue.component('reports-table3', require('./components/reportDob/RepDobTable.vue').default);
@@ -170,6 +175,7 @@ Vue.component('reptt', require('./components/economy_kenzhe/reptt.vue').default)
 Vue.component('reptt-company', require('./components/economy_kenzhe/reptt_company.vue').default);
 Vue.component('proactive-factors', require('./components/economy_kenzhe/proactiveFactors/proactiveFactors.vue').default);
 Vue.component('proactive-factors-select-filter', require('./components/economy_kenzhe/proactiveFactors/selectFilter.vue').default);
+Vue.component('reptt-company2', require('./components/economy_kenzhe/proactiveFactors/repttCompany/reptt_company2.vue').default);
 
 Vue.prototype.trans = string => _.get(window.i18n, string) || string;
 Vue.prototype.localeUrl = string => `/${window.current_lang}/${string[0] === '/' ? string.substr(1) : string}`;

@@ -24,6 +24,25 @@
         </svg>
         <span>{{ trans('monitoring.table.export_excel') }}</span>
       </a>
+      <a v-if="params.links.date" class="table-page__links-item table-page__links-item_date"
+         @click.prevent="() => {return  false;}" href="#">
+        <i class="far fa-calendar-alt"></i>
+        <div class="datetime-picker">
+          <datetime
+              type="date"
+              v-model="selectedDate"
+              input-class="form-control date"
+              value-zone="Asia/Almaty"
+              zone="Asia/Almaty"
+              :format="{ year: 'numeric', month: 'long', day: 'numeric' }"
+              :phrases="{ok: trans('app.choose'), cancel: trans('app.cancel')}"
+              :week-start="1"
+              @input="loadData"
+              auto
+          >
+          </datetime>
+        </div>
+      </a>
       <a class="table-page__links-item table-page__links-item_add" @click.prevent="resetFilters" href="#"
          v-if="activeFilters">
         {{ trans('monitoring.table.reset_filter') }}
@@ -35,6 +54,9 @@
       <button type="button" class="close" data-dismiss="alert">&times;</button>
       <p>{{ params.success }}</p>
     </div>
+    <b-alert v-for="(alert, index) in alerts" :key="index" :variant="alert.variant" show dismissible>
+      {{ alert.message }}
+    </b-alert>
     <div class="table-page__wrapper">
       <table class="table table-bordered table-dark" :class="tableClass">
         <thead>
@@ -85,7 +107,7 @@
                       class="filter-input"
                       type="text"
                       @click="calendarFromShow = !calendarFromShow"
-                      v-bind:value="formatDate(filters[code].value.from)"
+                      :value="formatDate(filters[code].value.from)"
                       readonly
                   >
                   <date-picker
@@ -104,7 +126,7 @@
                       class="filter-input"
                       type="text"
                       @click="calendarToShow = !calendarToShow"
-                      v-bind:value="formatDate(filters[code].value.to)"
+                      :value="formatDate(filters[code].value.to)"
                       readonly
                   >
                   <date-picker
@@ -173,16 +195,20 @@
 </template>
 
 <script>
+import Vue from "vue";
 import moment from "moment"
 import vSelect from 'vue-select'
 import CatLoader from '../ui-kit/CatLoader'
 import 'vue-select/dist/vue-select.css'
+import {Datetime} from 'vue-datetime'
+import 'vue-datetime/dist/vue-datetime.css'
+Vue.use(Datetime)
 
 export default {
   name: "view-table",
   components: {
     vSelect,
-    CatLoader
+    CatLoader,
   },
   props: {
     params: {
@@ -206,7 +232,10 @@ export default {
       filters: {},
       calendarFromShow: false,
       calendarToShow: false,
-      filterOpened: false
+      filterOpened: false,
+      isSelectDate: false,
+      selectedDate: null,
+      alerts: [],
     }
   },
   mounted() {
@@ -256,7 +285,7 @@ export default {
     },
     formatDate(date) {
       if (!date) return null
-      return moment(date).format('YYYY-MM-DD')
+      return moment.parseZone(date).format('YYYY-MM-DD')
     },
     prepareQueryParams() {
       let queryParams = {
@@ -276,20 +305,30 @@ export default {
 
         })
       }
+
+      if (this.filters.date) {
+        this.filters.date.value.to = this.formatDate(this.filters.date.value.to);
+        this.filters.date.value.from = this.formatDate(this.filters.date.value.from);
+      }
+
+      if (this.params.links.date && this.selectedDate) {
+        queryParams.date = this.formatDate(this.selectedDate);
+      }
+
       return queryParams
     },
     changePage(page = 1) {
       this.currentPage = page
       this.loadData()
     },
-    loadData() {
-
+    loadData: _.debounce(function (e) {
       this.hideFilters()
 
       this.loading = true
 
       this.axios.get(this.params.links.list, {params: this.prepareQueryParams()}).then(response => {
-        this.omgca = response.data
+        this.omgca = response.data;
+        this.alerts = response.data.alerts;
       }).catch(e => {
 
       }).finally(() => {
@@ -299,7 +338,7 @@ export default {
           behavior: 'smooth'
         });
       });
-    },
+    }, 500),
     sortBy(field) {
       if (this.sort.by === field) {
         this.sort.desc = !this.sort.desc
@@ -426,6 +465,19 @@ table::-webkit-scrollbar-corner {
 
         span {
           margin-left: 9px;
+        }
+      }
+
+      &_date {
+        padding: 0 17px 0 20px;
+
+        i {
+          margin-right: 9px;
+          font-size: 18px;
+        }
+
+        input.vdatetime-input {
+          max-height: 20px;
         }
       }
     }

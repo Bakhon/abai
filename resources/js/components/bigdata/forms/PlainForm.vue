@@ -58,24 +58,35 @@
 
 <script>
 import BigdataFormField from './field'
+import BigdataPlainFormResults from './PlainFormResults'
 import {bdFormActions, bdFormState} from '@store/helpers'
 
 export default {
-  name: "bigdata-form",
+  name: "BigDataPlainForm",
   components: {
-    BigdataFormField
+    BigdataFormField,
+    BigdataPlainFormResults
   },
   props: {
     params: {
       type: Object,
       required: true
     },
+    wellId: {
+      type: Number,
+      required: true
+    },
+    values: {
+      type: Object,
+      required: false
+    }
   },
   data() {
     return {
       errors: {},
       activeTab: 0,
-      formValues: {}
+      formValues: {},
+      well: null
     }
   },
   computed: {
@@ -105,12 +116,21 @@ export default {
           .catch(error => {
             Vue.prototype.$notifyError(error.response.data.text + "\r\n\r\n" + error.response.data.errors)
           })
+
+      this.axios.get(this.localeUrl(`/api/bigdata/wells/${this.wellId}`)).then(({data}) => {
+        this.well = data.well
+      })
+
+      if (this.values) {
+        this.formValues = this.values
+      }
     },
     submit() {
 
       this
           .submitForm({
             code: this.params.code,
+            wellId: this.wellId,
             values: this.formValues
           })
           .then(data => {
@@ -199,25 +219,8 @@ export default {
   },
 };
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .bd-main-block {
-  max-width: 1340px;
-  margin: 0 auto;
-
-  &__header {
-    align-items: center;
-    display: flex;
-    justify-content: space-between;
-    margin: 16px 0 20px;
-
-    &-title {
-      color: #fff;
-      font-weight: bold;
-      font-size: 20px;
-      line-height: 24px;
-      margin: 0;
-    }
-  }
 
   &__form {
     &-tabs {

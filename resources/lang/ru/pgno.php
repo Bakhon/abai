@@ -178,4 +178,6 @@ return array (
   'interval_centrators' => 'Интервалы установки центраторов',
   'required' => 'Обязательные',
   'recommended' => 'Рекомендуемые',
+  'economic' => 'Экономика',
+  'develop' => 'Разработка',
 );
