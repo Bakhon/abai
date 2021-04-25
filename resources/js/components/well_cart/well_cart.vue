@@ -82,17 +82,21 @@
                                         <ul>
                                             
                                                <li>
+                                                   <div class="flag"></div>
                                                     <label for="tech_structire"> Технологическая структура</label>
                                                     <input type="checkbox" id="tech_structire" name="tech_structire" value="tech_structire" class="dropdown-item">
                                                 </li>
                                               
                                                 <li>
+                                                    <div class="flag"></div>
                                                      <label for="opt_1"> Распределительная подстанция</label>
                                                      <input type="checkbox" id="opt_1" name="opt_1" value="opt_1" class="dropdown-item">
                                                 </li>
                                                
-                                                <li> <label for="opt_2"> Распределительная подстанция</label>    
-                                                <input type="checkbox" id="opt_2" name="opt_2" value="opt_2" class="dropdown-item">
+                                                <li>
+                                                    <div class="flag"></div>
+                                                    <label for="opt_2"> Распределительная подстанция</label>    
+                                                    <input type="checkbox" id="opt_2" name="opt_2" value="opt_2" class="dropdown-item">
                                                 </li>
                                                    
                                         </ul>
@@ -904,7 +908,6 @@
          </div>       
     </div>
 </template>
-
 <script>
 // Служит для сокрытия/показа файловой системы
 var toggler = document.getElementsByClassName("caret");
@@ -916,6 +919,7 @@ this.classList.toggle("caret-down");
 });
 }
 </script>
+
 <style scoped lang="scss">
 .custom-directory{
     color: white;
@@ -1066,7 +1070,7 @@ h4{
             padding: 10px 5px 10px 20px;
             border-radius: 10px;
             height: 40px;
-            background: url(/img/bd/search.svg) #272953;
+            background: url(/img/bd/search.svg) 1% #272953;
            // background-color: #272953;
             border: 1px solid #3b4a84;
             background-size: contain;
@@ -1240,11 +1244,13 @@ h4{
             width: 100%;
             input[type=checkbox]{
                 width: 5%;
-                margin-left: auto  ;
-                ::before {
-                content: URL(/img/bd/check-marker.svg);
+                margin-left: auto ;
             }
-            }
+        }
+        .flag{
+            margin-bottom: auto;
+            padding-right: 9px;
+            content: URL(/img/bd/check-marker.svg);  
         }
         
     }
