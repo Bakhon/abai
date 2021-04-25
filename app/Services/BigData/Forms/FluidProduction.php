@@ -195,7 +195,7 @@ class FluidProduction extends TableForm
 
         if (empty($item)) {
             $data = [
-                'well_id' => $wellId,
+                'well' => $wellId,
                 $column['column'] => $value,
                 'dbeg' => $date->toDateTimeString()
             ];
@@ -225,7 +225,7 @@ class FluidProduction extends TableForm
     {
         $query = DB::connection('tbd')
             ->table($column['table'])
-            ->where('well_id', $wellId)
+            ->where('well', $wellId)
             ->whereBetween(
                 'dbeg',
                 [

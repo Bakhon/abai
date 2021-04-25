@@ -192,43 +192,6 @@ body.fixed {
 }
 
 .bd-main-block {
-  &__date {
-    align-items: center;
-    display: flex;
-    margin-bottom: 10px;
-
-    &-title {
-      color: #fff;
-      margin-right: 10px;
-    }
-
-    &-input {
-      position: relative;
-
-      &:after {
-        background: url(/img/bd/calendar.svg) no-repeat;
-        content: "";
-        height: 28px;
-        position: absolute;
-        right: 0;
-        top: 0;
-        width: 28px;
-      }
-
-      input[type="text"] {
-        background: #1a1d46;
-        border-radius: 4px;
-        border: none;
-        color: #fff;
-        font-size: 14px;
-        font-weight: bold;
-        height: 28px;
-        width: 124px;
-      }
-    }
-
-  }
-
   &__body {
     align-items: stretch;
     background: #363B68;
@@ -240,26 +203,6 @@ body.fixed {
 
     &-history {
       width: 100%;
-    }
-  }
-
-  &__tree {
-    background: #272953;
-    margin-right: 8px;
-    min-width: 310px;
-    overflow-y: auto;
-    padding: 17px 25px;
-    width: 310px;
-
-    .tree-view {
-      .tree-node-label {
-        color: #fff;
-
-        &:hover {
-          color: #fff;
-          background: none;
-        }
-      }
     }
   }
 
@@ -410,6 +353,67 @@ body.fixed {
 
   .arrow {
     display: none;
+  }
+}
+</style>
+<style lang="scss">
+.bd-main-block {
+
+  &__date {
+    align-items: center;
+    display: flex;
+    margin-bottom: 10px;
+
+    &-title {
+      color: #fff;
+      margin-right: 10px;
+    }
+
+    &-input {
+      position: relative;
+
+      &:after {
+        background: url(/img/bd/calendar.svg) no-repeat;
+        content: "";
+        height: 28px;
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: 28px;
+      }
+
+      input[type="text"] {
+        background: #1a1d46;
+        border-radius: 4px;
+        border: none;
+        color: #fff;
+        font-size: 14px;
+        font-weight: bold;
+        height: 28px;
+        width: 124px;
+      }
+    }
+
+  }
+
+  &__tree {
+    background: #272953;
+    margin-right: 8px;
+    min-width: 310px;
+    overflow-y: auto;
+    padding: 17px 25px;
+    width: 310px;
+
+    .tree-view {
+      .tree-node-label {
+        color: #fff;
+
+        &:hover {
+          color: #fff;
+          background: none;
+        }
+      }
+    }
   }
 }
 </style>
