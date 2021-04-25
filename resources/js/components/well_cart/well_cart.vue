@@ -79,27 +79,32 @@
                                     </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                         <form>
-                                        <ul>
-                                            
+                                            <ul>                                          
                                                <li>
                                                    <div class="flag"></div>
-                                                    <label for="tech_structire"> Технологическая структура</label>
-                                                    <input type="checkbox" id="tech_structire" name="tech_structire" value="tech_structire" class="dropdown-item">
+                                                    <label class="container" for="tech_structire">
+                                                        <span class="bottom-border">Технологическая структура</span>
+                                                        <input type="checkbox" id="tech_structire" name="tech_structire" value="tech_structire" class="dropdown-item">
+                                                        <span class="checkmark"></span>
+                                                    </label>                        
                                                 </li>
-                                              
                                                 <li>
-                                                    <div class="flag"></div>
-                                                     <label for="opt_1"> Распределительная подстанция</label>
-                                                     <input type="checkbox" id="opt_1" name="opt_1" value="opt_1" class="dropdown-item">
+                                                   <div class="flag"></div>
+                                                    <label class="container" for="tech_structire_1">
+                                                        <span class="bottom-border">Распределительная подстанция</span>
+                                                        <input type="checkbox" id="tech_structire_1" name="tech_structire_1" value="tech_structire" class="dropdown-item">
+                                                        <span class="checkmark"></span>
+                                                    </label>                        
                                                 </li>
-                                               
                                                 <li>
-                                                    <div class="flag"></div>
-                                                    <label for="opt_2"> Распределительная подстанция</label>    
-                                                    <input type="checkbox" id="opt_2" name="opt_2" value="opt_2" class="dropdown-item">
-                                                </li>
-                                                   
-                                        </ul>
+                                                   <div class="flag"></div>
+                                                    <label class="container" for="tech_structire_2">
+                                                        <span class="bottom-border">Распределительная подстанция</span>
+                                                        <input type="checkbox" id="tech_structire_2" name="tech_structire_2" value="tech_structire_2" class="dropdown-item">
+                                                        <span class="checkmark"></span>
+                                                    </label>                        
+                                                </li>            
+                                             </ul>
                                          </form>  
                                     </div>
                                 </div>
@@ -117,12 +122,25 @@
                                         </div>
                                     </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <a class="dropdown-item" href="#">Технологическая структура</a>
+                                       <ul>
+                                       <li class="dropdown-item"> 
+                                           <label class="container">One
+                                            <input type="checkbox" checked="checked">
+                                             <span class="checkmark"></span>
+                                        </label> </li>
+                                                                               <li class="dropdown-item"> 
+                                           <label class="container">One
+                                            <input type="checkbox" checked="checked">
+                                             <span class="checkmark"></span>
+                                        </label> </li>
+                                       
+                                       </ul>
+                                       <!-- <a class="dropdown-item" href="#">Технологическая структура</a>
                                         <a class="dropdown-item" href="#">Распределительная подстанция</a>
                                         <a class="dropdown-item" href="#">Категория запасов</a>
                                         <a class="dropdown-item" href="#">Добывающие скважины</a>
                                         <a class="dropdown-item" href="#">Нагнетательные скважины</a>
-                                        <a class="dropdown-item" href="#">Поглощающие скважины</a>
+                                        <a class="dropdown-item" href="#">Поглощающие скважины</a> -->
                                     </div>
                                 </div>
                             <div class="dropdown small-select">
@@ -1238,7 +1256,7 @@ h4{
         background: #40467E;
         color: white;
         width: 300px;
-        padding: 18px 31px;
+        padding: 18px 31px 0px 31px;
         li{
             display: flex;
             width: 100%;
@@ -1246,13 +1264,73 @@ h4{
                 width: 5%;
                 margin-left: auto ;
             }
+            :last-child{
+                border-bottom:0px;
+            }
         }
         .flag{
             margin-bottom: auto;
             padding-right: 9px;
             content: URL(/img/bd/check-marker.svg);  
         }
+        .bottom-border{
+            border-bottom: 1px solid rgba(196, 222, 242, 0.3);
+            padding-bottom: 15px;
+            margin-bottom: 15px;
+        }
+        /* The container */
+        .container {
+        padding: 0px;
+        display: flex;
+        position: relative;
+        cursor: pointer;
+        }
+        /* Hide the browser's default checkbox */
+        .container input {
+        opacity: 0;
+        cursor: pointer;
+        height: 0;
+        width: 0;
+        }
+        /* Create a custom checkbox */
+        .checkmark {
+        height: 20px;
+        width: 20px;
+        background-color: #656A8A;
+        border-radius: 6px;
+        border: 2px solid #237DEB;
+        }
+        /* On mouse-over, add a grey background color */
+        .container:hover input ~ .checkmark {
+        background-color: #6A6D9C;
+        }
+        /* When the checkbox is checked, add a blue background */
+        .container input:checked ~ .checkmark {
+        background: #2196F3;
         
+        }
+        /* Create the checkmark/indicator (hidden when not checked) */
+        .checkmark:after {
+        content: "";
+        position: relative;
+        display: none;
+        }
+        /* Show the checkmark when checked */
+        .container input:checked ~ .checkmark:after {
+        display: block;
+        }
+        /* Style the checkmark/indicator */
+        .container .checkmark:after {        
+        width: 5px;
+        height: 10px;
+        border: solid white;
+        border-width: 0 3px 3px 0;
+        -webkit-transform: rotate(45deg);
+        -ms-transform: rotate(45deg);
+        transform: rotate(45deg);
+        position: inherit;
+        margin: auto;
+        }
     }
     .select-button{
     background: #656A8A;
