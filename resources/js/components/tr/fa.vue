@@ -48,7 +48,7 @@
           {{trans('tr.choose_date_y')}}
         </button>
 
-        <div v-if="datepicker1"
+        <div v-if="isDatepicker1"
           class="dropdown-menu fadropmenu newmenu"
           aria-labelledby="dropdownMenuLink"
         >
@@ -79,7 +79,7 @@
         </div>
 
 
-        <div v-if="datepicker2"
+        <div v-if="isDatepicker2"
           class="dropdown-menu fadropmenu newmenu"
           aria-labelledby="dropdownMenuLink"
         >
@@ -112,7 +112,7 @@
         <search-form-refresh
           @input="handlerSearch"
           @start-search="searchWell()"
-          :clear="searched"
+          :clear="isSearched"
         />
       </div>
     </div>
@@ -1024,10 +1024,9 @@ export default {
   data: function () {
     return {
       faHeader: null,
-      pieChartRerender: true,
       wells: [],
       searchString: "",
-      searched: false,
+      isSearched: false,
       sortParam: "",
       sortType: "asc",
       dt: null,
@@ -1052,9 +1051,8 @@ export default {
       editdtprevy: null,
       isHide: false,
       isGenHide: true,
-      datepicker1: true,
-      datepicker2: false,
-      secWeekDate: null,
+      isDatepicker1: true,
+      isDatepicker2: false,
       firstWeekDate: null,
       factorsMeasure: this.trans('tr.t'),
       qLiquidMeasure: this.trans('tr.m3'),
@@ -1287,7 +1285,7 @@ export default {
           "/"
         )
         .then((response) => {
-          this.searched = false;
+          this.isSearched = false;
           this.$store.commit("globalloading/SET_LOADING", false);   
           let data = response.data;
           if (data) {
@@ -1350,7 +1348,7 @@ export default {
               "/"
           )
           .then((response) => {
-            this.searched = false;
+            this.isSearched = false;
             this.$store.commit("globalloading/SET_LOADING", false);
             let data = response.data;
             this.editdtm = choosenDt[1];
@@ -1429,8 +1427,8 @@ export default {
 
     },
     calendarDynamic() {
-      this.datepicker1 = !this.datepicker1
-      this.datepicker2 = !this.datepicker2
+      this.isDatepicker1 = !this.isDatepicker1
+      this.isDatepicker2 = !this.isDatepicker2
     },
     searchWell() {
       this.$store.commit("globalloading/SET_LOADING", true);
@@ -1466,7 +1464,7 @@ export default {
             searchParam
         )
         .then((response) => {
-          this.searched = searchParam ? true : false;
+          this.isSearched = searchParam ? true : false;
           this.$store.commit("globalloading/SET_LOADING", false);
           console.log("search resp = ", response.data);
           this.$store.commit("fa/SET_SEARCH", this.searchString);
@@ -1494,7 +1492,7 @@ export default {
           }
         })
         .catch((error) => {
-          this.searched = searchParam ? true : false;
+          this.isSearched = searchParam ? true : false;
           this.$store.commit("globalloading/SET_LOADING", false);
           this.wells = [];
           this.fullWells = [];
