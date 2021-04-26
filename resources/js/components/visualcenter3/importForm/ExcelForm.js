@@ -354,10 +354,13 @@ export default {
             this.excelData[category][groupName][fieldName] = cellValue;
         },
         isNumberCellValid(inputData,selector) {
-            if (inputData.trim().length > 0 && (isNaN(parseFloat(inputData)) || parseFloat(inputData) < 0 || this.isContainsLetter(inputData))) {
+            if (inputData.trim().length > 0 && this.isNotNumber(inputData)) {
                 return false;
             }
             return true;
+        },
+        isNotNumber(inputData) {
+             return isNaN(parseFloat(inputData)) || parseFloat(inputData) < 0 || this.isContainsLetter(inputData);
         },
         isContainsLetter(inputData) {
             let regExp = /[a-zA-Zа-яА-Я]/g;

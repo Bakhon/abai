@@ -30,7 +30,7 @@
                 {{trans('visualcenter.saveButton')}}
             </div>
         </div>
-        <div class="col-2 mt-3 row ml-1"></div>
+        <div class="col-4 mt-3 row ml-1"></div>
         <div class="col-2 row mt-3 ml-1">
             <div class="col-12 status-block status-block_little status-label">
                 <span>{{trans('visualcenter.importForm.statusLabel')}}</span>
@@ -44,11 +44,11 @@
             </div>
         </div>
 
-        <div class="col-4 row mt-3 ml-1">
-            <div class="col-6 status-block status-block_little"></div>
+        <div class="col-2 row mt-3 ml-1">
+            <div class="vert-line"></div>
             <div
                     id="chemistryButton"
-                    :class="[!isChemistryButtonVisible ? 'menu__button_disabled' : 'chemistry-button_animation','col-6 status-block status-block_little menu__button']"
+                    :class="[!isChemistryButtonVisible ? 'menu__button_disabled' : 'chemistry-button_animation','col-12 status-block status-block_little menu__button']"
                     @click="changeButtonVisibility()"
             >
                 {{trans('visualcenter.importForm.enterChemistryButton')}}
@@ -266,5 +266,14 @@
             background: #656A8A;
             border-radius: 1px;
         }
+    }
+
+    .vert-line {
+        background: url(/img/visualcenter3/line.png) no-repeat;
+        position: absolute;
+        width: 1px;
+        margin-left: -10px;
+        height: 90%;
+        margin-top: 1vh;
     }
 </style>
