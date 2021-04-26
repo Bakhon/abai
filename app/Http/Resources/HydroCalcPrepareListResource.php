@@ -16,7 +16,7 @@ class HydroCalcPrepareListResource extends CrudListResource
             'id' => $this->id,
             'fields' => [
                 'id' => $this->id,
-                'start_point' => $this->start_point,
+                'start_point' => $this->name,
                 'out_dia' => $this->map_pipe->pipeType->outside_diameter,
                 'wall_thick' => $this->map_pipe->pipeType->thickness,
                 'length' => $this->map_pipe->lastCoords->m_distance,
