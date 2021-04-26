@@ -2,7 +2,7 @@
 
 namespace App\Models\EconomyKenzhe;
 
-use App\Models\EcoRefsDiscontCoefBar;
+use App\Models\EcoRefsPrepElectPrsBrigCost;
 use App\Models\EcoRefsRoute;
 use Illuminate\Database\Eloquent\Model;
 
@@ -10,13 +10,21 @@ class FieldCalcCompany extends Model
 {
     protected $table = 'eco_refs_companies_ids';
 
-    public function getCompanyBarrelPriceByDirection($direction)
+    public function getCompanyBarrelPriceByDirection($direction, $scenario_fact)
     {
-        return $this->hasMany(CompanyRealizationPercent::class, 'company_id', 'id')->where('sc_fa', '=', 2)->with(['scfa', 'getCompanyDiscontСoefficientBarrel','direction'])->whereYear('date','=','2021')->whereDirectionId($direction);
+        return $this->hasMany(CompanyRealizationPercent::class, 'company_id', 'id')->where('sc_fa', '=', $scenario_fact)->with(['scfa', 'getCompanyDiscontСoefficientBarrel','direction'])->whereYear('date','=','2021')->whereDirectionId($direction);
     }
 
     public function routes()
     {
         return $this->belongsTo(EcoRefsRoute::class, 'route_id', 'id');
+    }
+
+    //Стоимость электроэнергии, тенге/кВт*ч
+    //Стоимость транспортировки и подготовки, тенге/тонна:
+    //Стоимость 1 сутки бригады ПРС, тенге:
+    public function compRas($scenario_fact)
+    {
+        return $this->belongsTo(EcoRefsPrepElectPrsBrigCost::class, 'company_id', 'id')->where('sc_fa', '=', $scenario_fact);
     }
 }
