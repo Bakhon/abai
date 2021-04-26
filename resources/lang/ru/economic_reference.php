@@ -37,7 +37,6 @@ return array (
   'count_prs' => 'Количество ПРС',
   'count_prs_per_nrs_last_year' => 'Количество ПРС на НРС с начала года',
   'count_well' => 'Количество скважин',
-  'count_unprofitable_well_last_month' => 'Количество нерентабельных скважин за последний месяц',
   'operating_profit_last_year' => 'Операционные убытки по НРС с начала года',
   'operating_profit_last_month' => 'Операционные убытки по НРС за последний месяц',
   'select_data_display_options' => 'Выбор параметров отображения данных',
@@ -64,4 +63,8 @@ return array (
   'wells_profitable' => 'Рентабельные скважины',
   'wells_profitless_cat_2' => 'Условно-рентабельные скважины',
   'wells_profitless_cat_1' => 'Нерентабельные скважины',
+  'count_unprofitable_well_last_month' => 'Количество нерентабельных скважин за последний месяц',
+  'profitability_full' => 'По полным затратам',
+  'profitability_direct' => 'По прямым затратам',
+  'profitability_direct_from_date' => 'По прямым затрат от определенной даты',
 );

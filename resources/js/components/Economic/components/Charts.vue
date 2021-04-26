@@ -24,6 +24,7 @@
           v-if="index === 0"
           :data="charts.chart1"
           :granularity="granularity"
+          :profitability="profitability"
           :title="trans('economic_reference.count_well')"
           class="bg-economic-chart"/>
 
@@ -31,6 +32,7 @@
           v-if="index === 1"
           :data="charts.chart2"
           :granularity="granularity"
+          :profitability="profitability"
           :title="trans('economic_reference.oil_production')"
           :tooltip-text="trans('economic_reference.thousand_tons')"
           class="bg-economic-chart"/>
@@ -39,18 +41,21 @@
           v-else-if="index === 2"
           :data="charts.chart3"
           :granularity="granularity"
+          :profitability="profitability"
           class="bg-economic-chart"/>
 
       <chart4
           v-else-if="index === 3"
           :data="charts.chart4"
           :granularity="granularity"
+          :profitability="profitability"
           class="bg-economic-chart"/>
 
       <chart1
           v-else-if="index === 4"
           :data="charts.chart5"
           :granularity="granularity"
+          :profitability="profitability"
           :title="trans('economic_reference.count_well')"
           class="bg-economic-chart"/>
     </div>
@@ -78,6 +83,10 @@ export default {
       type: Object
     },
     granularity: {
+      required: true,
+      type: String
+    },
+    profitability: {
       required: true,
       type: String
     }

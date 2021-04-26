@@ -1,6 +1,7 @@
 const ru = require("apexcharts/dist/locales/ru.json");
 
 import {GRANULARITY_DAY} from "../components/SelectGranularity";
+import {PROFITABILITY_FULL} from "../components/SelectProfitability";
 
 export const chartInitMixin = {
     props: {
@@ -11,25 +12,43 @@ export const chartInitMixin = {
         granularity: {
             required: true,
             type: String
-        }
+        },
+        profitability: {
+            required: true,
+            type: String
+        },
     },
     computed: {
         chartSeries() {
-            return [
-                {
-                    name: this.trans('economic_reference.wells_profitable'),
-                    type: 'area',
-                    data: this.data.profitable
-                }, {
-                    name: this.trans('economic_reference.wells_profitless_cat_2'),
-                    type: 'area',
-                    data: this.data.profitless_cat_2
-                }, {
-                    name: this.trans('economic_reference.wells_profitless_cat_1'),
-                    type: 'area',
-                    data: this.data.profitless_cat_1
-                }
-            ]
+            return this.profitability === PROFITABILITY_FULL
+                ? [
+                    {
+                        name: this.trans('economic_reference.wells_profitable'),
+                        type: 'area',
+                        data: this.data.profitable
+                    },
+                    {
+                        name: this.trans('economic_reference.wells_profitless_cat_2'),
+                        type: 'area',
+                        data: this.data.profitless_cat_2
+                    }, {
+                        name: this.trans('economic_reference.wells_profitless_cat_1'),
+                        type: 'area',
+                        data: this.data.profitless_cat_1
+                    }
+                ]
+                : [
+                    {
+                        name: this.trans('economic_reference.wells_profitable'),
+                        type: 'area',
+                        data: this.data.profitable
+                    },
+                    {
+                        name: this.trans('economic_reference.wells_profitless_cat_1'),
+                        type: 'area',
+                        data: this.data.profitless
+                    },
+                ]
         },
 
         chartOptions() {
