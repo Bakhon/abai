@@ -146,7 +146,7 @@ class ExportHydroCalcTableToExcel implements ShouldQueue
 
         if (!$isErrors AND isset($this->input['date'])) {
 
-            $fileurl = env('APP_URL').Storage::url($filePath);
+            $fileurl = 'http://172.20.103.32/'.Storage::url($filePath);
             $url = env('HYDRO_CALC_SERVICE_URL').'url_file/?url='.$fileurl;
 
             $client = new \GuzzleHttp\Client();
