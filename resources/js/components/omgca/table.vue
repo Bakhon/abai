@@ -383,8 +383,18 @@ export default {
               this.loading = false
               clearInterval(interval)
 
-              if (response.data.job.output.filename) {
-                document.location.href = response.data.job.output.filename
+              if (response.data.job.output) {
+                if (response.data.job.output.filename) {
+                  document.location.href = response.data.job.output.filename
+                }
+
+                if (response.data.job.output.error) {
+                  this.showToast(response.data.job.output.error, this.trans('app.error'),'danger');
+                }
+              }
+
+              if (this.params.links.calc) {
+                this.loadData();
               }
 
             } else if (response.data.job.status === 'failed') {

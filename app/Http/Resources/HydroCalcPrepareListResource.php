@@ -2,7 +2,7 @@
 
 namespace App\Http\Resources;
 
-class HydroCalcListResource extends CrudListResource
+class HydroCalcPrepareListResource extends CrudListResource
 {
     /**
      * Transform the resource into an array.
@@ -16,7 +16,7 @@ class HydroCalcListResource extends CrudListResource
             'id' => $this->id,
             'fields' => [
                 'id' => $this->id,
-                'start_point' => $this->name,
+                'start_point' => $this->start_point,
                 'out_dia' => $this->map_pipe->pipeType->outside_diameter,
                 'wall_thick' => $this->map_pipe->pipeType->thickness,
                 'length' => $this->map_pipe->lastCoords->m_distance,

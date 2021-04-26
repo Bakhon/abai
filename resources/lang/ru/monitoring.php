@@ -384,6 +384,10 @@ return array (
       'no-daily-fluid-data' => 'нет данных по cуточной добычи жидкости !',
       'no-bsw-data' => 'нет данных по обводненности !',
     ),
+    'error' => 
+    array (
+      'not-enough-data' => 'Не достаточно данных для расчета',
+    ),
   ),
   'monitor' => 
   array (
