@@ -11,9 +11,11 @@
         </div>
 
         <div class="col-2 row mt-3 ml-1">
-            <div class="col-12 status-block status-block_little status-label">
-                <span>{{trans('visualcenter.importForm.statusLabel')}}&nbsp;</span>
-                <span :class="[isValidateError ? 'status-error' : '','label']">{{status}}</span>
+            <div
+                    class="col-12 status-block status-block_little menu__button rainbow"
+                    @click="pasteClipboardContent()"
+            >
+                {{trans('visualcenter.importForm.pasteData')}}
             </div>
             <div
                     :class="[!isDataExist ? 'menu__button_disabled' : '','col-12 status-block status-block_little menu__button mt-3']"
@@ -29,18 +31,24 @@
             </div>
         </div>
         <div class="col-4 mt-3 row ml-1"></div>
+        <div class="col-2 row mt-3 ml-1">
+            <div class="col-12 status-block status-block_little status-label">
+                <span>{{trans('visualcenter.importForm.statusLabel')}}</span>
+                <span :class="[isValidateError ? 'status-error' : '','label']">&nbsp;{{status}}</span>
+            </div>
+            <div class="col-12 mt-3 status-block status-block_little">
+                &nbsp;
+            </div>
+            <div class="col-12 mt-3 status-block status-block_little">
+                &nbsp;
+            </div>
+        </div>
 
-        <div class="col-4 row mt-3 ml-1">
-            <div class="col-12 mt-3 status-block status-block_little">
-                &nbsp;
-            </div>
-            <div class="col-12 mt-3 status-block status-block_little">
-                &nbsp;
-            </div>
-            <div class="col-6 status-block status-block_little"></div>
+        <div class="col-2 row mt-3 ml-1">
+            <div class="vert-line"></div>
             <div
                     id="chemistryButton"
-                    :class="[!isChemistryButtonVisible ? 'menu__button_disabled' : 'chemistry-button_animation','col-6 status-block status-block_little menu__button']"
+                    :class="[!isChemistryButtonVisible ? 'menu__button_disabled' : 'chemistry-button_animation','col-12 status-block status-block_little menu__button']"
                     @click="changeButtonVisibility()"
             >
                 {{trans('visualcenter.importForm.enterChemistryButton')}}
@@ -78,6 +86,13 @@
                     {{trans('visualcenter.saveButton')}}
                 </div>
             </div>
+            <div class="col-12 mt-3 status-block status-block_little">
+                &nbsp;
+            </div>
+            <div class="col-12 mt-3 status-block status-block_little">
+                &nbsp;
+            </div>
+
         </div>
 
         <div class="table-form col-10 mt-3 ml-1">
@@ -201,5 +216,64 @@
             position: absolute;
             left: 27%;
         }
+    }
+    @keyframes rotate {
+        0% {
+            transform:scaleX(0);
+            transform-origin: left;
+        }
+        50%
+        {
+            transform:scaleX(1);
+            transform-origin: left;
+        }
+        50.1%
+        {
+            transform:scaleX(1);
+            transform-origin: right;
+        }
+        100%
+        {
+            transform:scaleX(0);
+            transform-origin: right;
+        }
+    }
+
+    .rainbow {
+        position: relative;
+        z-index: 0;
+        overflow: hidden;
+        &::before {
+            content: '';
+            position: absolute;
+            z-index: -2;
+            left: -50%;
+            top: -50%;
+            width: 200%;
+            height: 200%;
+            background-color: #82BAFF;
+            background-repeat: no-repeat;
+            background-size: 50% 50%, 50% 50%;
+            background-position: 0 0, 100% 0, 100% 100%, 0 100%;
+            animation: rotate 10s linear infinite;
+        }
+        &::after {
+            content: '';
+            position: absolute;
+            z-index: -1;
+            left: 6px;
+            top: 6px;
+            background: #656A8A;
+            border-radius: 1px;
+        }
+    }
+
+    .vert-line {
+        background: url(/img/visualcenter3/line.png) no-repeat;
+        position: absolute;
+        width: 1px;
+        margin-left: -10px;
+        height: 90%;
+        margin-top: 1vh;
     }
 </style>

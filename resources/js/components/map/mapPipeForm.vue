@@ -109,8 +109,7 @@
       <p>{{ trans('monitoring.pipe.fields.thickness') }}: {{ pipeTypeParams.thickness + trans('measurements.mm') }}</p>
       <p>{{ trans('monitoring.pipe.fields.inner_diameter') }}:
         {{ pipeTypeParams.inner_diameter + trans('measurements.mm') }}</p>
-      <p>{{ trans('monitoring.pipe.fields.roughness') }}: {{ pipeTypeParams.roughness }}</p>
-      <p>{{ trans('monitoring.pipe.fields.plot') }}: {{ pipeTypeParams.plot }}</p>
+      
 
     </div>
 

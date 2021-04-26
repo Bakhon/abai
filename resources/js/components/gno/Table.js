@@ -11,6 +11,7 @@ import Vue from 'vue';
 import FullPageLoader from '../ui-kit/FullPageLoader';
 import * as htmlToImage from 'html-to-image';
 import jsPDF from 'jspdf';
+import Tabs from './tabs/Tabs.vue'
 const fileDownload = require("js-file-download");
 
 Vue.prototype.$eventBus = new Vue();
@@ -21,7 +22,7 @@ Vue.component("Plotly", Plotly);
 
 
 export default {
-  components: { PerfectScrollbar, FullPageLoader },
+  components: { PerfectScrollbar, FullPageLoader, Tabs },
   data: function () {
     return {
       url: "http://172.20.103.187:7575/api/pgno/",
@@ -359,11 +360,6 @@ export default {
     })
     
   },
-  created() {
-    window.addEventListener("resize", () => {
-      this.windowWidth = window.innerWidth;
-    });
-  },
   mounted() {
     this.windowWidth = window.innerWidth;
 
@@ -382,7 +378,7 @@ export default {
     ...mapState(['wells'])
   },
   methods: {
-    onChangeButtonHpump() {
+    setHpumpValueFromIncl() {
       this.$modal.hide('modalIncl')
       this.hPumpValue = this.$store.getters.getHpump
       this.postCurveData();
@@ -738,7 +734,7 @@ export default {
       this.layout['shapes'][0]['x1'] = value[1]['q_l']
 
     },
-    PotAnalysisMenu() {
+    updateAnalysisMenu() {
       this.postCurveData()
       this.setLine(this.curveLineData)
       this.setPoints(this.curvePointsData)
@@ -751,7 +747,7 @@ export default {
       }
     },
 
-    async ExpAnalysisMenu(){
+    async setExpAnalysisMenu(){
       await this.NnoCalc()
 
       if(this.casOD < 127) {
@@ -1666,6 +1662,10 @@ export default {
     },
   },
   created() {
+    window.addEventListener("resize", () => {
+      this.windowWidth = window.innerWidth;
+    });
+
     let langUrl = `${window.location.pathname}`.slice(1, 3);
     if(langUrl === 'ru') {
       this.layout.xaxis.title = this.titleXRu

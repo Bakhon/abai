@@ -22,7 +22,7 @@
       <datetime
           id="start_date"
           type="date"
-          v-model="start_date"
+          v-model="startDate"
           value-zone="Asia/Almaty"
           zone="Asia/Almaty"
           input-class="form-control filter-input"
@@ -40,7 +40,7 @@
       <datetime
           id="end_date"
           type="date"
-          v-model="end_date"
+          v-model="endDate"
           value-zone="Asia/Almaty"
           zone="Asia/Almaty"
           input-class="form-control filter-input"
@@ -60,7 +60,7 @@
     </div>
 
     <div class="form-group4">
-      <button :disabled="!org || !start_date || !end_date || isLoading"
+      <button :disabled="!isMandatoryParametersFilled()"
               @click="updateData()"
               class="btn get-report-button">
         <span>
@@ -97,8 +97,8 @@ export default {
 
     return {
       org: '',
-      start_date: null,
-      end_date: null,
+      startDate: null,
+      endDate: null,
       isLoading: false,
       resultLink: null
     }
@@ -115,13 +115,12 @@ export default {
       let data = {
         dzo: this.org,
         period: 'monthly',
-        report_date_start: formatDate.formatToFirstDayOfMonth(this.start_date),
-        report_date_end: formatDate.formatToFirstDayOfMonth(this.endDate)
+        report_date_start: formatDate.getFirstDayOfMonthFormatted(this.startDate),
+        report_date_end: formatDate.getLastDayOfMonthFormatted(this.endDate)
       };
+      let jsonData = JSON.stringify(data);
 
-      let json_data = JSON.stringify(data);
-
-      this.axios.post(uri, json_data, {
+      this.axios.post(uri, jsonData, {
         responseType: 'json',
         headers: {
           'Content-Type': 'application/json'
@@ -145,6 +144,9 @@ export default {
     },
     onChangeYear(event) {
       this.year = event.target.value;
+    },
+    isMandatoryParametersFilled() {
+      return (this.org && this.startDate && this.endDate && !this.isLoading)
     },
   },
 }
