@@ -122,6 +122,13 @@
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
+                                        <strong>{{ __('economic_reference.net_back') }}:</strong>
+                                        <input type="float" name="net_back" class="form-control"
+                                               value="{{$eco_refs_cost->net_back}}">
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-12 col-md-12">
+                                    <div class="form-group">
                                         <strong>{{ __('economic_reference.comment') }}:</strong>
                                         <input type="float" name="comment" class="form-control"
                                                value="{{$eco_refs_cost->comment}}">

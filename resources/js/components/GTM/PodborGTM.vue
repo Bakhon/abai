@@ -93,23 +93,7 @@
                     </div>
                 </div>
                 <div class="mt-2 row m-0">
-                    <div class="col-5 p-0">
-                        <div class="calendar-filter-block d-flex align-items-center">
-                            01.08.2018
-                            <img class="calendar-icon" src="/img/GTM/calendar_icon.svg">
-                        </div>
-                    </div>
-                    <div class="col-5 p-0">
-                        <div class="ml-1 calendar-filter-block d-flex align-items-center">
-                            01.08.2018
-                            <img class="calendar-icon" src="/img/GTM/calendar_icon.svg">
-                        </div>
-                    </div>
-                    <div class="col-1 p-0">
-                        <div class="ml-1 calendar-filter-block d-flex align-items-center">
-                            <img class="gear-icon m-auto" src="/img/GTM/gear.svg">
-                        </div>
-                    </div>
+                    <gtm-date-picker @dateChanged="getData"></gtm-date-picker>
                 </div>
                 <div class="gtm-dark mt-2">
                     <div class="block-header text-center p-2">
@@ -143,6 +127,7 @@
 
 <script>
 import structureMain from './structure_main.json'
+import {paegtmMapActions} from '@store/helpers';
 export default {
     data: function () {
         return {
@@ -231,9 +216,14 @@ export default {
         };
     },
     methods: {
+        ...paegtmMapActions([
+            'changeDisplayShadowBlock',
+            'changeTreeSettingComponent',
+            'changeTreeChildrenComponent',
+        ]),
         nodeClick (data) {
             this.$_setTreeChildrenComponent(data);
-            this.$store.commit('changeTreeSettingComponent', {
+            this.changeTreeSettingComponent({
                 name: 'gtm-tree-setting',
                 data: function () {
                     return {
@@ -247,16 +237,16 @@ export default {
         },
         $_setTreeChildrenComponent(data) {
             let node = data.node;
-            this.$store.commit('changeTheDisplayShadowBlock',true);
+            this.changeDisplayShadowBlock(true);
             if (node.ioi_finder_model === undefined) {
                 if (data.hideIoiMenu) {
-                    this.$store.commit('changeTreeChildrenComponent',null);
+                    this.changeTreeChildrenComponent(null);
                     return;
                 } else {
                     return;
                 }
             }
-            this.$store.commit('changeTreeChildrenComponent', {
+            this.changeTreeChildrenComponent({
                 name: 'gtm-tree-setting',
                 data: function () {
                     return {
@@ -272,6 +262,8 @@ export default {
                     }
                 }
             });
+        },
+        getData: function () {
         }
     },
     computed: {

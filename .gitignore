@@ -46,3 +46,9 @@ kmg-dashboard.iml
 .DS_Store
 .vscode/settings.json
 /.vs/
+
+#Hydro Calc
+forward_pipes_beta_05.py
+pipeline_calc_input.xlsx
+calc_results.csv
+long_results.csv

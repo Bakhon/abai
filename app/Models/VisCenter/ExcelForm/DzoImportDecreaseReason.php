@@ -10,6 +10,6 @@ class DzoImportDecreaseReason extends Model
 
     public function importData()
     {
-        return $this->belongsTo(DzoImportData::class);
+        return $this->belongsTo(DzoImportData::class,'dzo_import_data_id','id');
     }
 }

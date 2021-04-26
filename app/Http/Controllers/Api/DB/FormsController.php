@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\bd;
+namespace App\Http\Controllers\Api\DB;
 
 use App\Exceptions\ParseJsonException;
 use App\Http\Controllers\Controller;
@@ -143,6 +143,18 @@ class FormsController extends Controller
         }
 
         return ['prefix' => $prefix];
+    }
+
+    public function getResults(Request $request, string $formName): JsonResponse
+    {
+        $form = $this->getForm($formName);
+        return $form->getResults($request->get('well_id'));
+    }
+
+    public function delete(Request $request, string $form, int $row): JsonResponse
+    {
+        $form = $this->getForm($form);
+        return $form->delete($row);
     }
 
     private function getForm(string $formName): BaseForm
