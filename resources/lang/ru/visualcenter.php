@@ -249,7 +249,7 @@ return array (
       'waitForData' => 'Ожидание входящих данных..',
       'dataValid' => 'Данные успешно проверены.',
       'dataSaved' => 'Данные успешно сохранены!',
-      'dataIsNotValid' => 'Найдены ошибки!',
+      'dataIsNotValid' => 'В данных найдены ошибки!',
     ),
     'chemistry' => 'Химизация производства, т/мес',
     'enterChemistryButton' => 'Химизация производства',
