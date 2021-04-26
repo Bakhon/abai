@@ -26,6 +26,7 @@ import cellsMappingEMG from './dzoData/cells_mapping_emg.json';
 import moment from "moment";
 import Visual from "./dataManagers/visual";
 import TodayDzoData from "./dataManagers/todayDzoData";
+import InputDataOperations from "./dataManagers/inputDataOperations";
 
 const defaultDzoTicker = "КТМ";
 
@@ -175,6 +176,7 @@ export default {
         this.setTableFormat();
         this.todayData = await this.getDzoTodayData();
         this.processTodayData();
+        this.addListeners();
     },
     methods: {
         addColumnsToGrid() {
@@ -279,7 +281,6 @@ export default {
             this.isDataReady = false;
             this.turnOffErrorHighlight();
             this.processTableData();
-
             if (!this.isValidateError) {
                 this.isDataExist = false;
                 this.isDataReady = true;
@@ -353,10 +354,17 @@ export default {
             this.excelData[category][groupName][fieldName] = cellValue;
         },
         isNumberCellValid(inputData,selector) {
-            if (inputData.trim().length > 0 && (isNaN(parseFloat(inputData)) || parseFloat(inputData) < 0)) {
-                return false;
+            if (inputData.trim().length > 0) {
+                return this.isNumber(inputData);
             }
             return true;
+        },
+        isNumber(inputData) {
+             return !isNaN(parseFloat(inputData)) && parseFloat(inputData) >= 0 && !this.isContainsLetter(inputData);
+        },
+        isContainsLetter(inputData) {
+            let regExp = /[a-zA-Zа-яА-Я]/g;
+            return inputData.match(regExp) !== null;
         },
         turnErrorForCell(selector) {
             this.setClassToElement($(selector),'cell__color-red');
@@ -395,13 +403,9 @@ export default {
                 }
             });
         },
-        beforeRangeEdit(e) {
-            this.setTableFormat();
-            this.isDataExist = true;
-        },
     },
     components: {
         VGrid,
     },
-    mixins: [Visual,TodayDzoData],
+    mixins: [Visual,TodayDzoData,InputDataOperations],
 };
