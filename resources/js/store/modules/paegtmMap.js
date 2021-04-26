@@ -5,7 +5,7 @@ const paegtmMap = {
     treeChildrenComponent: Object,
     treeSettingComponent: Object,
     isTreeMainComponentShow: true,
-    dateStart: new Date('2020-01-01T00:00:01+00:00'),
+    dateStart: new Date('2020-01-01T00:00:00+00:00'),
     dateEnd: new Date('2020-12-31T23:59:59+00:00'),
   },
   mutations: {
@@ -30,6 +30,8 @@ const paegtmMap = {
   },
   getters: {
     isShadowBlockShow: (state) => state.isShadowBlockShow,
+    dateStart: (state) => state.dateStart,
+    dateEnd: (state) => state.dateEnd,
   },
   actions: {
     changeDisplayShadowBlock({commit}, value) {

@@ -169,6 +169,8 @@
 </template>
 
 <script>
+import {paegtmMapActions, paegtmMapGetters} from '@store/helpers';
+import moment from "moment";
 Vue.component("gtm-modal", {
   template: "#modal-template"
 });
@@ -229,6 +231,10 @@ export default {
         };
     },
     methods: {
+        ...paegtmMapActions([
+            'changeDateStart',
+            'changeDateEnd',
+        ]),
         showModal() {
             this.isModalHide = false;
         },
@@ -237,8 +243,12 @@ export default {
         }
     },
     computed: {
+        ...paegtmMapGetters([
+            'dateStart',
+            'dateEnd',
+        ]),
         mainBlockButtonText: function () {
-            return this.showMainMap ? 'Таблица' : 'Карта'
+            return this.showMainMap ? this.trans('paegtm.table') : this.trans('paegtm.map')
         },
         mainBlockButtonIcon: function () {
             return this.showMainMap ? '/img/GTM/icon_main_table_button.svg' : '/img/GTM/icon_main_map_button.svg'
@@ -246,6 +256,8 @@ export default {
     },
     mounted () {
         this.$store.commit('globalloading/SET_LOADING', false);
+        this.changeDateStart(this.dateStart);
+        this.changeDateEnd(this.dateEnd);
     }
 }
 </script>

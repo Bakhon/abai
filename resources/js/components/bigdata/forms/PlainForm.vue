@@ -2,7 +2,6 @@
   <div class="bd-main-block">
     <notifications position="top"></notifications>
     <div class="bd-main-block__header">
-      <p v-if="well" class="bd-main-block__header-title">Скважина {{ well.uwi }}</p>
       <p class="bd-main-block__header-title">{{ params.title }}</p>
     </div>
     <form class="bd-main-block__form" style="width: 100%" ref="form">
@@ -59,12 +58,14 @@
 
 <script>
 import BigdataFormField from './field'
+import BigdataPlainFormResults from './PlainFormResults'
 import {bdFormActions, bdFormState} from '@store/helpers'
 
 export default {
-  name: "bigdata-form",
+  name: "BigDataPlainForm",
   components: {
-    BigdataFormField
+    BigdataFormField,
+    BigdataPlainFormResults
   },
   props: {
     params: {
@@ -74,6 +75,10 @@ export default {
     wellId: {
       type: Number,
       required: true
+    },
+    values: {
+      type: Object,
+      required: false
     }
   },
   data() {
@@ -115,6 +120,10 @@ export default {
       this.axios.get(this.localeUrl(`/api/bigdata/wells/${this.wellId}`)).then(({data}) => {
         this.well = data.well
       })
+
+      if (this.values) {
+        this.formValues = this.values
+      }
     },
     submit() {
 
@@ -210,25 +219,8 @@ export default {
   },
 };
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .bd-main-block {
-  max-width: 1340px;
-  margin: 0 auto;
-
-  &__header {
-    align-items: center;
-    display: flex;
-    justify-content: space-between;
-    margin: 16px 0 20px;
-
-    &-title {
-      color: #fff;
-      font-weight: bold;
-      font-size: 20px;
-      line-height: 24px;
-      margin: 0;
-    }
-  }
 
   &__form {
     &-tabs {
