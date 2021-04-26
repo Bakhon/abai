@@ -24,6 +24,10 @@ class EconomicController extends Controller
     const GRANULARITY_DAILY_FORMAT = 'yyyy-MM-dd';
     const GRANULARITY_MONTHLY_FORMAT = 'MM-yyyy';
 
+    const PROFITABILITY_FULL = 'profitability';
+    const PROFITABILITY_DIRECT = 'profitability_kbm';
+    const PROFITABILITY_DIRECT_FROM_DATE = 'profitability_kbm_date';
+
     const PROFITABILITY_CAT_1 = 'profitless_cat_1';
     const PROFITABILITY_CAT_2 = 'profitless_cat_2';
     const PROFITABILITY_PROFITABLE = 'profitable';
@@ -79,17 +83,7 @@ class EconomicController extends Controller
         $granularityFormat = self::granularityFormat($granularity);
 
         $profitabilityKey = $request->profitability;
-        $profitabilityValues = $profitabilityKey === 'profitability'
-            ? [
-                self::PROFITABILITY_PROFITABLE,
-                self::PROFITABILITY_CAT_2,
-                self::PROFITABILITY_CAT_1,
-            ]
-            : [
-                self::PROFITABILITY_PROFITABLE,
-                self::PROFITABILITY_PROFITLESS,
-            ];
-        $profitless = end($profitabilityValues);
+        list($profitabilityValues, $profitless) = self::profitabilityValues($profitabilityKey);
 
         $builder1 = $this
             ->druidClient
@@ -288,12 +282,11 @@ class EconomicController extends Controller
 
         $data['Operating_profit_year'] = $data['Operating_profit_month'];
 
-        $dataChart1 = [
-            'dt' => [],
-            self::PROFITABILITY_PROFITABLE => [],
-            self::PROFITABILITY_CAT_1 => [],
-            self::PROFITABILITY_CAT_2 => [],
-        ];
+        $dataChart1 = ['dt' => []];
+
+        foreach ($profitabilityValues as $value) {
+            $dataChart1[$value] = [];
+        }
 
         $dataChart2 = $dataChart1;
         $dataChart4 = $dataChart1;
@@ -494,6 +487,28 @@ class EconomicController extends Controller
         }
 
         return $last ? 100 : 0;
+    }
+
+    static function profitabilityValues(string $profitabilityKey): array
+    {
+        if ($profitabilityKey === self::PROFITABILITY_FULL) {
+            return [
+                [
+                    self::PROFITABILITY_PROFITABLE,
+                    self::PROFITABILITY_CAT_2,
+                    self::PROFITABILITY_CAT_1,
+                ],
+                self::PROFITABILITY_CAT_1
+            ];
+        }
+
+        return [
+            [
+                self::PROFITABILITY_PROFITABLE,
+                self::PROFITABILITY_PROFITLESS,
+            ],
+            self::PROFITABILITY_PROFITLESS
+        ];
     }
 
     static function granularityFormat(string $granularity): string
