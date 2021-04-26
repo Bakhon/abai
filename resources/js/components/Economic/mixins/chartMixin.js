@@ -19,8 +19,12 @@ export const chartInitMixin = {
         },
     },
     computed: {
-        chartSeries() {
+        isProfitabilityFull() {
             return this.profitability === PROFITABILITY_FULL
+        },
+
+        chartSeries() {
+            return this.isProfitabilityFull
                 ? [
                     {
                         name: this.trans('economic_reference.wells_profitable'),
@@ -58,7 +62,9 @@ export const chartInitMixin = {
                     width: 4,
                     curve: 'smooth'
                 },
-                colors: ['#13B062', '#F7BB2E', '#AB130E'],
+                colors: this.isProfitabilityFull
+                    ? ['#13B062', '#F7BB2E', '#AB130E']
+                    : ['#13B062', '#AB130E'],
                 chart: {
                     stacked: true,
                     foreColor: '#FFFFFF',

@@ -78,19 +78,18 @@ class EconomicController extends Controller
         $granularity = $request->granularity;
         $granularityFormat = self::granularityFormat($granularity);
 
-        $profitability = [
-            'profitability' => self::PROFITABILITY_CAT_1,
-            'profitability_kbm' => self::PROFITABILITY_PROFITLESS,
-            'profitability_kbm_date' => self::PROFITABILITY_PROFITLESS,
-        ];
-
-        $profitabilityValues = [
-            self::PROFITABILITY_PROFITABLE,
-            self::PROFITABILITY_PROFITLESS,
-        ];
-
-        $profitabilityKey = 'profitability_kbm';
-        $profitabilityValue = self::PROFITABILITY_PROFITLESS;
+        $profitabilityKey = $request->profitability;
+        $profitabilityValues = $profitabilityKey === 'profitability'
+            ? [
+                self::PROFITABILITY_PROFITABLE,
+                self::PROFITABILITY_CAT_2,
+                self::PROFITABILITY_CAT_1,
+            ]
+            : [
+                self::PROFITABILITY_PROFITABLE,
+                self::PROFITABILITY_PROFITLESS,
+            ];
+        $profitless = end($profitabilityValues);
 
         $builder1 = $this
             ->druidClient
@@ -153,7 +152,7 @@ class EconomicController extends Controller
 
         foreach ($buildersProfitability as &$builder) {
             /** @var QueryBuilder $builder */
-            $builder->where($profitabilityKey, '=', $profitabilityValue);
+            $builder->where($profitabilityKey, '=', $profitless);
         }
 
         $builder7 = $this
