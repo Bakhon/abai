@@ -46,18 +46,9 @@
                             </tr>
                             @for ($i = 0; $i < 10; $i++)
                                 <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
+                                    @for ($a = 0; $a < 12; $a++)
+                                        <td></td>
+                                    @endfor
                                 </tr>
                             @endfor
                         </table>

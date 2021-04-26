@@ -38,33 +38,15 @@
                                 <th colspan="1">Угол перекоса осей отклонителя, град.</th>
                             </tr>
                             <tr>
-                                <td>1</td>
-                                <td>2</td>
-                                <td>3</td>
-                                <td>4</td>
-                                <td>5</td>
-                                <td>6</td>
-                                <td>7</td>
-                                <td>8</td>
-                                <td>9</td>
-                                <td>10</td>
-                                <td>11</td>
-                                <td>12</td>
+                                @for ($a = 1; $a <= 12; $a++)
+                                    <td>{{$a}}</td>
+                                @endfor
                             </tr>
                             @for ($i = 0; $i < 20; $i++)
                                 <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
+                                    @for ($a = 0; $a < 12; $a++)
+                                        <td></td>
+                                    @endfor
                                 </tr>
                             @endfor
                         </table>

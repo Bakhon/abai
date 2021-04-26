@@ -15,7 +15,7 @@
                 </div>
                 <div class="row">
                     <div class="col-sm-12">
-                        <img src="/img/digital-drilling/calculation.png" alt="" style="height: auto;width: 50%;margin: 30px auto 50px;">
+                        <img src="/img/digital-drilling/calculation.png" alt="" class="calculation-img">
                     </div>
                 </div>
             </div>

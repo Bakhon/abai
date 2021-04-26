@@ -15,7 +15,7 @@
                 </div>
                 <div class="row">
                     <div class="col-sm-12">
-                        <img src="/img/digital-drilling/inclino.png" alt="" style="height: auto;width: 100%;margin: 20px 0 0;">
+                        <img src="/img/digital-drilling/inclino.png" alt="" class="inclino-img">
                     </div>
                 </div>
             </div>

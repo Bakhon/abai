@@ -1241,3 +1241,28 @@ th.verticalText {
     object-fit: contain!important;
     height: auto!important;
 }
+.digital_drilling .contentBlock .digitalDrillingWindow .windowBody img.structure-img{
+    max-width: 30%;
+    height: auto;
+    margin: 50px auto;
+}
+.digital_drilling .contentBlock .digitalDrillingWindow .windowBody img.inclino-img{
+    height: auto;
+    width: 100%;
+    margin: 20px 0 0;
+}
+.digital_drilling .contentBlock .digitalDrillingWindow .windowBody img.calculation-img{
+    height: auto;
+    width: 50%;
+    margin: 30px auto 50px;
+}
+.digital_drilling .contentBlock .digitalDrillingWindow .windowBody img.deepening-img{
+    height: auto;
+    width: 50%;
+    margin: 30px auto 50px;
+}
+.digital_drilling .contentBlock .digitalDrillingWindow .windowBody img.well-img{
+    height: auto;
+    width: 100%;
+    margin: 20px 0 0;
+}

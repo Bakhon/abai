@@ -36,31 +36,15 @@
                                 <th colspan="1">Норма расхода компонента кг/м3</th>
                             </tr>
                             <tr>
-                                <td>1</td>
-                                <td>2</td>
-                                <td>3</td>
-                                <td>4</td>
-                                <td>5</td>
-                                <td>6</td>
-                                <td>7</td>
-                                <td>8</td>
-                                <td>9</td>
-                                <td>10</td>
-                                <td>11</td>
+                                @for ($i = 1; $i <= 11; $i++)
+                                    <td>{{$i}}</td>
+                                @endfor
                             </tr>
                             @for ($i = 0; $i < 20; $i++)
                                 <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
+                                    @for ($a = 0; $a < 11; $a++)
+                                        <td></td>
+                                    @endfor
                                 </tr>
                             @endfor
                         </table>
