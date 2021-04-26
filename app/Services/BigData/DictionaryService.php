@@ -16,6 +16,7 @@ use App\Models\BigData\Dictionaries\GtmType;
 use App\Models\BigData\Dictionaries\NoBtmReason;
 use App\Models\BigData\Dictionaries\RepairWorkType;
 use App\Models\BigData\Dictionaries\WellCondition;
+use App\Models\BigData\Dictionaries\EquipFailReasonType;
 use Carbon\Carbon;
 use Illuminate\Cache\Repository;
 use Illuminate\Support\Facades\DB;
@@ -66,6 +67,10 @@ class DictionaryService
         'well_statuses' => [
             'class' => WellCondition::class,
             'name_field' => 'name_ru'
+        ],
+        'fail_reason_types' => [
+            'class' => EquipFailReasonType::class,
+            'name_field' => 'equil_fail_reason_type'
         ]
     ];
 

@@ -229,22 +229,22 @@
               "code": "hardware_failure_cause",
               "type": "dict",
               "title": "hardware_failure_cause",
-              "validation": "required|exists:",
-              "dict": ""
+              "validation": "required|exists:tbd.dict.reason, id",
+              "dict": "no_btm_reason"
             },
             {
               "code": "equipment_failure_type",
               "type": "dict",
               "title": "equipment_failure_type",
               "validation": "required|exists:",
-              "dict": ""
+              "dict": "fail_reason_types"
             },
             {
               "code": "stopping_reason",
               "type": "dict",
               "title": "stopping_reason",
-              "validation": "required|exists:",
-              "dict": ""
+              "validation": "required|exists:tbd.dict.reason, id",
+              "dict": "no_btm_reason"
             }
           ]
         }
