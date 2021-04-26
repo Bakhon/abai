@@ -163,7 +163,7 @@ export default {
   },
   methods: {
     loadDict() {
-      this.axios.get(this.localeUrl('/bigdata/dict/' + this.item.dict)).then(data => {
+      this.axios.get(this.localeUrl('/api/bigdata/dict/' + this.item.dict)).then(data => {
         this.$store.commit("bd/SAVE_DICT", {
           code: this.item.dict,
           items: data.data
@@ -172,7 +172,7 @@ export default {
     },
     changeDate(date) {
       if (date) {
-        let formatedDate = moment(date).format('YYYY-MM-DD HH:MM:SS')
+        let formatedDate = moment.parseZone(date).format('YYYY-MM-DD HH:MM:SS')
         this.updateValue(formatedDate)
       }
     },

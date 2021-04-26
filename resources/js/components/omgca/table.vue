@@ -11,7 +11,7 @@
         </svg>
       </a>
       <a v-if="params.links.export" class="table-page__links-item table-page__links-item_excel"
-         @click.prevent="exportExcel" href="#">
+         @click.prevent="runJob(params.links.export)" href="#">
         <svg width="16" height="20" viewBox="0 0 16 20" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path
               d="M14.7071 5.70711L10.293 1.2929C10.1055 1.10536 9.8511 1 9.58588 1L2.00028 1.00002C1.448 1.00002 1.00029 1.44774 1.00029 2.00002L1.00029 18C1.00029 18.5523 1.448 19 2.00029 19L14 19C14.5523 19 15 18.5523 15 18L15 6.41421C15 6.14899 14.8946 5.89464 14.7071 5.70711Z"
@@ -23,6 +23,19 @@
               fill="white"/>
         </svg>
         <span>{{ trans('monitoring.table.export_excel') }}</span>
+      </a>
+      <b-form-checkbox
+          class="table-page__links-item table-page__links-item_result_export"
+          v-if="this.params.links.calc && params.links.calc.export"
+          v-model="calcExport"
+          name="calc-export"
+      >
+        {{ trans('monitoring.table.calc_result_export') }}
+      </b-form-checkbox>
+      <a v-if="params.links.calc" class="table-page__links-item table-page__links-item_excel"
+         @click.prevent="runJob(params.links.calc.link)" href="#">
+        <i class="fas fa-calculator"></i>
+        <span>{{ trans('monitoring.table.calc_result') }}</span>
       </a>
       <a v-if="params.links.date" class="table-page__links-item table-page__links-item_date"
          @click.prevent="() => {return  false;}" href="#">
@@ -54,6 +67,9 @@
       <button type="button" class="close" data-dismiss="alert">&times;</button>
       <p>{{ params.success }}</p>
     </div>
+    <b-alert v-for="(alert, index) in alerts" :key="index" :variant="alert.variant" show dismissible>
+      {{ alert.message }}
+    </b-alert>
     <div class="table-page__wrapper">
       <table class="table table-bordered table-dark" :class="tableClass">
         <thead>
@@ -104,7 +120,7 @@
                       class="filter-input"
                       type="text"
                       @click="calendarFromShow = !calendarFromShow"
-                      v-bind:value="formatDate(filters[code].value.from)"
+                      :value="formatDate(filters[code].value.from)"
                       readonly
                   >
                   <date-picker
@@ -123,7 +139,7 @@
                       class="filter-input"
                       type="text"
                       @click="calendarToShow = !calendarToShow"
-                      v-bind:value="formatDate(filters[code].value.to)"
+                      :value="formatDate(filters[code].value.to)"
                       readonly
                   >
                   <date-picker
@@ -231,7 +247,9 @@ export default {
       calendarToShow: false,
       filterOpened: false,
       isSelectDate: false,
-      selectedDate: null
+      selectedDate: null,
+      alerts: [],
+      calcExport: true,
     }
   },
   mounted() {
@@ -281,7 +299,7 @@ export default {
     },
     formatDate(date) {
       if (!date) return null
-      return moment(date).format('YYYY-MM-DD')
+      return moment.parseZone(date).format('YYYY-MM-DD')
     },
     prepareQueryParams() {
       let queryParams = {
@@ -302,8 +320,17 @@ export default {
         })
       }
 
+      if (this.filters.date && this.filters.date.value) {
+        this.filters.date.value.to = this.formatDate(this.filters.date.value.to);
+        this.filters.date.value.from = this.formatDate(this.filters.date.value.from);
+      }
+
       if (this.params.links.date && this.selectedDate) {
         queryParams.date = this.formatDate(this.selectedDate);
+      }
+
+      if (this.params.links.calc && this.params.links.calc.export) {
+        queryParams.calc_export = this.calcExport;
       }
 
       return queryParams
@@ -319,7 +346,7 @@ export default {
 
       this.axios.get(this.params.links.list, {params: this.prepareQueryParams()}).then(response => {
         this.omgca = response.data;
-        response.data.alerts.forEach(alert => this.showToast(alert, this.trans('app.error'), 'danger'));
+        this.alerts = response.data.alerts;
       }).catch(e => {
 
       }).finally(() => {
@@ -347,15 +374,29 @@ export default {
         })
       }
     },
-    exportExcel() {
+    runJob(url) {
       this.loading = true
-      this.axios.get(this.params.links.export, {params: this.prepareQueryParams()}).then((response) => {
+      this.axios.get(url, {params: this.prepareQueryParams()}).then((response) => {
         let interval = setInterval(() => {
           this.axios.get('/ru/jobs/status', {params: {id: response.data.id}}).then((response) => {
             if (response.data.job.status === 'finished') {
               this.loading = false
               clearInterval(interval)
-              document.location.href = response.data.job.output.filename
+
+              if (response.data.job.output) {
+                if (response.data.job.output.filename) {
+                  document.location.href = response.data.job.output.filename
+                }
+
+                if (response.data.job.output.error) {
+                  this.showToast(response.data.job.output.error, this.trans('app.error'),'danger');
+                }
+              }
+
+              if (this.params.links.calc) {
+                this.loadData();
+              }
+
             } else if (response.data.job.status === 'failed') {
               this.loading = false
               clearInterval(interval)
@@ -469,6 +510,23 @@ table::-webkit-scrollbar-corner {
 
         input.vdatetime-input {
           max-height: 20px;
+        }
+      }
+
+      &_result_export {
+        &.custom-control.custom-checkbox {
+          line-height: 30px;
+          background: none;
+        }
+
+        .custom-control-label::before {
+          top: 7px;
+          left: -30px;
+        }
+
+        .custom-control-label::after {
+          top: 7px;
+          left: -30px;
         }
       }
     }

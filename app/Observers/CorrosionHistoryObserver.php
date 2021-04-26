@@ -21,7 +21,7 @@ class CorrosionHistoryObserver extends EditHistoryObserver
 
         $history = [];
         $fields = [
-            'gu_id' => 'monitoring.gu',
+            'gu_id' => 'monitoring.gu.gu',
             'ngdu_id' => 'monitoring.ngdu',
             'cdng_id' => 'monitoring.cdng',
             'start_date_of_background_corrosion' => 'monitoring.corrosion.fields.start_date_of_background_corrosion',

@@ -6,10 +6,15 @@ use App\Filters\HydroCalcFilter;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Traits\WithFieldsValidation;
 use App\Http\Requests\IndexTableRequest;
-use App\Http\Resources\HydroCalcListResource;
+use App\Http\Resources\HydroCalcCalculatedListResource;
+use App\Http\Resources\HydroCalcPrepareListResource;
 use App\Jobs\ExportHydroCalcTableToExcel;
+use App\Models\ComplicationMonitoring\HydroCalcResult;
 use App\Models\ComplicationMonitoring\OmgNGDU;
 use App\Models\ComplicationMonitoring\TrunklinePoint;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Session;
 
 class HydroCalculation extends Controller
@@ -148,8 +153,9 @@ class HydroCalculation extends Controller
             ],
         ];
 
-        $params['links']['export'] = route($this->modelName.'.export');
-        $params['links']['date'] = route($this->modelName.'.export');
+        $params['links']['calc']['export'] = false;
+        $params['links']['calc']['link'] = route($this->modelName.'.calculate');
+        $params['links']['date'] = true;
 
         return view('hydro_calc.index', compact('params'));
     }
@@ -157,7 +163,29 @@ class HydroCalculation extends Controller
     public function list (IndexTableRequest $request)
     {
         $input = $request->validated();
+        $points = null;
 
+        if (isset($input['date'])) {
+            $points = $this->getCalculatedData($input['date']);
+            $list = json_decode(HydroCalcCalculatedListResource::collection($points)->toJson());
+        }
+
+        if (!$points || !$points->total()) {
+            $prepairedData = $this->getPrepairedData($input);
+            $points = $prepairedData['points'];
+            $alerts = $prepairedData['alerts'];
+            $list = json_decode(HydroCalcPrepareListResource::collection($points)->toJson());
+
+            if (count($alerts)) {
+                $list->alerts = $alerts;
+            }
+        }
+
+        return response()->json($list);
+    }
+
+    public function getPrepairedData (array $input) :array
+    {
         $query = TrunklinePoint::query()
             ->with('map_pipe.pipeType', 'map_pipe.firstCoords', 'map_pipe.lastCoords', 'gu', 'trunkline_end_point');
 
@@ -165,7 +193,7 @@ class HydroCalculation extends Controller
             ->getFilteredQuery($input, $query)
             ->whereNotNull('gu_id')
             ->orWhereNotNull('point_end_id')
-            ->paginate(25);
+            ->get();
 
         $alerts = [];
 
@@ -184,12 +212,16 @@ class HydroCalculation extends Controller
             $points[$key]->omgngdu = $query->orderBy('date', 'desc')->first();
 
             if (!$points[$key]->omgngdu) {
-                $alert = $points[$key]->gu->name.' '.trans('monitoring.hydro_calculation.message.no-omgdu-data');
+                $message = $points[$key]->gu->name.' '.trans('monitoring.hydro_calculation.message.no-omgdu-data');
 
                 if (isset($input['date'])) {
-                    $alert .= ' на '.$input['date'];
+                    $message .= ' на '.$input['date'];
                 }
-                $alerts[] = $alert .= ' !';
+
+                $alerts[] = [
+                    'message' => $message.' !',
+                    'variant' => 'danger'
+                ];
                 continue;
             }
 
@@ -198,31 +230,46 @@ class HydroCalculation extends Controller
             $points[$key]->omgngdu->heater_output_temperature = $temperature;
 
             if ($points[$key]->omgngdu->pump_discharge_pressure == 0) {
-                $alerts[] = $points[$key]->gu->name.' '.trans('monitoring.hydro_calculation.message.pressure-0');
+                $alerts[] = [
+                    'message' => $points[$key]->gu->name . ' ' . trans('monitoring.hydro_calculation.message.pressure-0'),
+                    'variant' => 'danger'
+                ];
             }
 
             if (is_null($points[$key]->omgngdu->pump_discharge_pressure)) {
-                $alerts[] = $points[$key]->gu->name.' '.trans('monitoring.hydro_calculation.message.no-pressure-data');
+                $alerts[] = [
+                    'message' => $points[$key]->gu->name.' '.trans('monitoring.hydro_calculation.message.no-pressure-data'),
+                    'variant' => 'danger'
+                ];
             }
 
             if (!$points[$key]->omgngdu->daily_fluid_production) {
-                $alerts[] = $points[$key]->gu->name.' '.trans('monitoring.hydro_calculation.message.no-daily-fluid-data');
+                $alerts[] = [
+                    'message' => $points[$key]->gu->name.' '.trans('monitoring.hydro_calculation.message.no-daily-fluid-data'),
+                    'variant' => 'danger'
+                ];
             }
 
             if (!$points[$key]->omgngdu->bsw) {
-                $alerts[] = $points[$key]->gu->name.' '.trans('monitoring.hydro_calculation.message.no-bsw-data');
+                $alerts[] = [
+                    'message' => $points[$key]->gu->name.' '.trans('monitoring.hydro_calculation.message.no-bsw-data'),
+                    'variant' => 'danger'
+                ];
             }
         }
 
-        $list = json_decode(HydroCalcListResource::collection($points)->toJson());
-        if (count($alerts)) {
-            $list->alerts = $alerts;
-        }
-
-        return response()->json($list);
+        $points = $this->paginate($points, 25, (int)$input['page']);
+        return ['points' => $points, 'alerts' => $alerts];
     }
 
-    public function exportExcel(IndexTableRequest $request)
+    public function getCalculatedData (string $date)
+    {
+        return HydroCalcResult::with('map_pipe.pipeType')
+            ->where('date', $date)
+            ->paginate(25);
+    }
+
+    public function calculate(IndexTableRequest $request)
     {
         $job = new ExportHydroCalcTableToExcel($request->validated());
         $this->dispatch($job);
@@ -237,5 +284,19 @@ class HydroCalculation extends Controller
     protected function getFilteredQuery($filter, $query = null)
     {
         return (new HydroCalcFilter($query, $filter))->filter();
+    }
+
+    /**
+     * Generates the pagination of items in an array or collection.
+     *
+     * @param array|Collection $items
+     */
+    protected function paginate($items, int $perPage = 15, int $page = null, array $options = []): LengthAwarePaginator
+    {
+        $page = $page ?: (Paginator::resolveCurrentPage() ?: 1);
+
+        $items = $items instanceof Collection ? $items : Collection::make($items);
+
+        return new LengthAwarePaginator($items->forPage($page, $perPage), $items->count(), $perPage, $page, $options);
     }
 }

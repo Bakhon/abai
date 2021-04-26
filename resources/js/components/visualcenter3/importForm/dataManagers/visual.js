@@ -110,7 +110,7 @@ export default {
         turnOffErrorHighlight() {
             let self = this;
             _.forEach(this.errorSelectors, function(selector) {
-                self.setClassToElement($(selector),'cell__color-normal');
+                self.removeClassFromElement($(selector),'cell__color-red');
             });
             this.errorSelectors = [];
         },
@@ -145,6 +145,9 @@ export default {
         },
         setClassToElement(el,className) {
             el.addClass(className);
+        },
+        removeClassFromElement(el, className) {
+            el.removeClass(className);
         },
         disableHighlightOnCells() {
             for (let i = 0; i < this.rowsCount; i++) {
