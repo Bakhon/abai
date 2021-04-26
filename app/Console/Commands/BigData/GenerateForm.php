@@ -5,6 +5,7 @@ namespace App\Console\Commands\BigData;
 use App\Rules\ClassName;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
@@ -28,6 +29,23 @@ class GenerateForm extends Command
 
     public function handle()
     {
+        $date = \Carbon\Carbon::now()->subMonth();
+
+        while ($date <= \Carbon\Carbon::now()) {
+            $date->addDay();
+            DB::connection('tbd')
+                ->table('prod.well_telemetry')
+                ->insert(
+                    [
+                        'well' => 1011,
+                        'metric' => 1,
+                        'dbeg' => (clone $date)->addHours(rand(0, 23))->addMinutes(rand(0, 59)),
+                        'value_double' => rand(110, 130)
+                    ]
+                );
+        }
+        die();
+
         $this->formType = $this->choice('Выберите тип формы', array_keys($this->formTypes));
         $this->formCode = $this->askFormCode();
         $this->formName = $this->ask('Укажите название формы');
