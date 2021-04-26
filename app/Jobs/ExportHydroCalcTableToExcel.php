@@ -102,7 +102,7 @@ class ExportHydroCalcTableToExcel implements ShouldQueue
             }
         }
 
-        if (!$isErrors) {
+        if ($isErrors) {
             $this->setOutput(
                 [
                     'error' => trans('monitoring.hydro_calculation.error.not-enough-data')
@@ -144,7 +144,7 @@ class ExportHydroCalcTableToExcel implements ShouldQueue
         $filePath = 'public/export/'.$fileName;
         Excel::store(new PipeLineCalcExport($data), $filePath);
 
-        if ($isErrors AND isset($this->input['date'])) {
+        if (!$isErrors AND isset($this->input['date'])) {
 
             $fileurl = env('APP_URL').Storage::url($filePath);
             $url = env('HYDRO_CALC_SERVICE_URL').'url_file/?url='.$fileurl;
