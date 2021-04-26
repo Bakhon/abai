@@ -18,34 +18,67 @@
 
                         <div class="directory">
                         <div class="custom-directory">
-                                <ul id="myUL">
-                                    <img src="/img/bd/pointer-solid.svg" class="pointer"><li><span class="caret"></span><span class="parent">КПД Заместителя председателя Правления по разведке и добыче <span class="names">(Марабаев Ж.Н.)</span></span>
-                                        <ul class="nested">
-                                        <li><span class="caret-child"></span><span class="child">Прирост извлекаемых запасов нефти и конденсата</span></li>
-                                        <img src="/img/bd/pointer-solid.svg" class="pointer"><li><span class="caret"></span><span class="parent">Исполнение бизнес- инициатив</span>
-                                            <ul class="nested">
-                                            <li><span class="caret-child"></span><span class="child">МРП ОМГ</span></li>
-                                            <li><span class="caret-child"></span><span class="child">МРП КБМ</span></li>
-                                            <li><span class="caret-child"></span><span class="child">Заводнение ОМГ</span></li>
-                                            <li><span class="caret-child"></span><span class="child">Внедрение модулей ИС ABAI</span></li>
-                                            <img src="/img/bd/pointer-solid.svg" class="pointer"><li><span class="caret"></span><span class="parent">Реализация инвестиционных проектов</span>
-                                                <ul class="nested">
-                                                <li><span class="caret-child"></span><span class="child">Проект «Женис» - строительство разведочной скважины</span></li>
-                                                <li><span class="caret-child"></span><span class="child">Проект «Урихтау» – ввод 5-ти скважин Центр. Урихтау и разработка концепции Фазы 2</span></li>
-                                                <li><span class="caret-child"></span><span class="child">Проект «Рожковское» – мероприятия по опытно-промышленной эксплуатации на 2021 год</span></li>
-                                                <li><span class="caret-child"></span><span class="child">СПБУ - Получение контракта на бурение</span></li>
-                                                </ul>
-                                            </li>
-                                            <li><span class="caret-child"></span><span class="child">Чистый денежный поток в КЦ КМГ от дивизиона</span></li>
-                                            <li><span class="caret-child"></span><span class="child">Операционные и капитальные затраты по ДЗО дивизиона</span></li>
-                                            </ul>
-                                        </li>  
-                                        </ul>
+                             <ul id="myUL">
+                                <li><p>
+                                        <img src="/img/bd/pointer-solid.svg" alt="">
+                                        <span class="caret">КПД Заместителя председателя Правления по разведке и добыче 
+                                            <span class="names">(Марабаев Ж.Н.)</span>
+                                        </span>
+                                    </p>
+                                    <ul class="nested">
+                                    <li>
+                                        <p> <span class="file">Прирост извлекаемых запасов нефти и конденсата</span></p>
                                     </li>
+                                    <li>
+                                        <p>
+                                            <span class="caret">Исполнение бизнес- инициатив</span></p>        
+                                    <ul class="nested">
+                                        <li>
+                                            <p><span class="file"> МРП ОМГ </span></p>
+                                        </li>
+                                        <li>
+                                            <p><span class="file">МРП КБМ</span></p>
+                                        </li>
+                                        <li>
+                                            <p><span class="file"> Заводнение ОМГ </span></p>
+                                        </li>
+                                        <li>
+                                            <p><span class="file"> Внедрение модулей ИС ABAI </span></p>
+                                        </li>
+                                        <ul class="nested">
+                                            <li>
+                                                <span class="caret"><p>Реализация инвестиционных проектов</p></span>
+                                            </li>
+                                        <li>
+                                            <p><span class="file"> Проект «Женис» - строительство разведочной скважины </span></p>
+                                        </li>
+                                        <li>
+                                            <p><span class="file"> Проект «Урихтау» – ввод 5-ти скважин Центр. Урихтау и разработка концепции Фазы 2 </span></p>
+                                        </li>
+                                        <li>
+                                            <p><span class="file"> Проект «Рожковское» – мероприятия по опытно-промышленной эксплуатации на 2021 год</span></p>
+                                        </li>
+                                        <li>
+                                            <p><span class="file"> СПБУ - Получение контракта на бурение </span></p>
+                                        </li>
+                                        </ul>
+                                        
+                                    </ul>
+                                    </li>  
                                 </ul>
+                                </li>
+                                <li>
+                                    <p><span class="file"> Чистый денежный поток в КЦ КМГ от дивизиона  </span></p>
+                                </li>
+                                <li>
+                                    <p><span class="file">  <b> Операционные и капитальные затраты по ДЗО дивизиона </b></span></p>
+                                </li>
+                              
+
+                             </ul>
+
                         </div>                        
                         </div>
-
                     </div>
                 </div>
         </div>
@@ -940,21 +973,45 @@ this.classList.toggle("caret-down");
 
 <style scoped lang="scss">
 .custom-directory{
-    color: white;
-    ul{
-        padding-inline-start: 20px;
-        list-style-type: none;
-    } 
-    li{
-        padding-left: 10px;
-    }
-    #myUL {
-    list-style-type: none;
-  //  border-left: 1px dashed #555BA6;
-    }
-    #myUL {
+    ul, li { 
+    color:white;
+    list-style: none;
     margin: 0;
-    padding: 0;
+    padding: 0; 
+    }
+    ul .nested{
+    border-top: 1px dashed #555BA6;
+    border-left: 0px;
+    }
+    ul {
+    padding-left: 1em; 
+    border:0px;
+    }
+    li {
+    border: 1px dashed #555BA6;
+    padding-left: 1em;
+    border-width: 0 0 1px 1px; 
+    }
+    li p { 
+    margin: 0;
+    background: #272953;
+    position: relative;
+    bottom: 0.6em; 
+    }
+    li ul { 
+    margin-left: -1em;     
+    padding-left: 2em; 
+    }
+    ul li:last-child ul {
+    border-bottom: 0px;
+    margin-left: -17px;
+    }
+    li:last-child {
+    border-bottom: 0px
+    }
+
+    ul, #myUL {
+    list-style-type: none;
     }
     .caret {
     cursor: pointer;
@@ -962,54 +1019,44 @@ this.classList.toggle("caret-down");
     -moz-user-select: none; /* Firefox 2+ */
     -ms-user-select: none; /* IE 10+ */
     user-select: none;
-        &::before {
-        content: URL(/img/bd/folder.svg);
-        color: black;
-        display: inline-block;
-        margin-right: 6px;
-        }
+    margin-right: auto;
     }
-        .caret-down{
-            ::before {
-            -ms-transform: rotate(90deg); /* IE 9 */
-            -webkit-transform: rotate(90deg); /* Safari */
-            transform: rotate(90deg);  
-            }
-        }
+    .file {
+    cursor: pointer;
+    padding-left: 0px;
+    -webkit-user-select: none; /* Safari 3.1+ */
+    -moz-user-select: none; /* Firefox 2+ */
+    -ms-user-select: none; /* IE 10+ */
+    user-select: none;
+    margin-right: auto;
+    }
+    .file::before {
+    content: URL(/img/bd/file.svg);
+    color: white;
+    display: inline-block;
+    padding-right: 10px;
+    }
+    .caret::before {
+    content:  URL(/img/bd/folder.svg);
+    color: white;
+    display: inline-block;
+    padding-right: 10px;
+    }
+
+    .caret-down::before {
+    color:white;
+    background:white;
+    //-ms-transform: rotate(90deg); /* IE 9 */
+    //-webkit-transform: rotate(90deg); /* Safari */
+    //transform: rotate(90deg);  
+    }
+
     .nested {
-    display: block;
-    border-left: 1px dashed #555BA6;
-    &::before{
-        content: random($limit: 1);
-    }
+    // display: none;
     }
 
     .active {
-    display: none;
-    }
-    .caret-parent{
-
-    }
-    .caret-child{
-        margin-right: 6px;
-        content: URL(/img/bd/file.svg);
-    }
-    .parent{
-    font-size: 14px;
-    font-family: Harmonia Sans Pro Cyr;
-    font-weight: 700;
-    line-height: 20px;
-    color: white;
-    padding-right: 20px;
-    }
-    .child{
-    display: inline;
-    font-size: 14px;
-    font-family: Harmonia Sans Pro Cyr;
-    font-weight: 700;
-    line-height: 20px;
-    color: white;
-    padding-right: 20px;
+    display: block;
     }
 }
 h4{
@@ -1035,6 +1082,37 @@ h4{
             height: 100%;
             background: url(/img/bd/ierarhy.svg) 50% 50% no-repeat;
             padding: 0 15px 0 10px;
+        }
+    }
+    .new-directory{
+        color: whitesmoke;
+        ul, li { 
+            list-style: none; margin: 0; padding: 0; 
+            }
+        ul { padding-left: 1em; }
+        li { padding-left: 1em;
+        border: 1px dotted white;
+        border-width: 0 0 1px 1px; 
+        }
+        li.container { border-bottom: 0px; }
+        li.empty { font-style: italic;
+        color: silver;
+        border-color: silver;
+        }
+        li p { margin: 0;
+       // background: white;
+        position: relative;
+        bottom: 1em; 
+        background: #20274F;
+        }
+        li ul { 
+        border-top: 1px dotted white; 
+        margin-left: -1em;     
+        padding-left: 2em; 
+        }
+        ul li:last-child ul {
+        border-left: 0px solid white;
+        margin-left: -17px;
         }
     }
     .directory{
@@ -1073,10 +1151,6 @@ h4{
             width: 10px;
             margin-bottom: auto;
             }
-        .file{
-            padding-left: 35px;
-            display: flex;
-        }
         &:first-child{
             border-top: 1px solid #555BA6;
         }
