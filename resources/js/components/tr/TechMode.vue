@@ -3692,7 +3692,6 @@ export default {
         "http://172.20.103.187:7576/api/techregime/tr_parameter_filters/"
       )
       .then((response) => {
-        this.$store.commit("globalloading/SET_LOADING", false);
         let data = response.data;
         if (data) {
           
