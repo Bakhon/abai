@@ -734,7 +734,7 @@
         </div>
       </div>
     </div>
-    <div class="b-popup" style="display:none;">
+    <div class="b-popup" style="display:block;">
       <div class="b-container bg-dark">
         <div class="row">
           <div class="col">
@@ -760,12 +760,12 @@
             <form class="search-form">
               <input type="text" placeholder="Номер скважины" class="search-input">
               <div class="flex">
-                <input type="date" id="date" name="trip-start" value="2018-07-22">
-                <input type="time" required id="time">
+                <input type="date" class="b-date" id="date" name="trip-start" value="2021-04-07" required>
+                <input type="time" class="b-time" id="time" required>
               </div>
-              <div class="b-title-block">
-                <button id="ok">Применить</button>
-                <button id="cansel">Отмена</button>
+              <div class="b-button-container">
+                <button id="ok" class="accept">Применить</button>
+                <button id="undo" class="cancel">Отмена</button>
               </div>
             </form>
           </div>
@@ -841,14 +841,6 @@ for (i = 0; i < toggler.length; i++) {
       margin-right: 7px;
     }
 
-    #ok {
-      background: #2E50E9;
-    }
-
-    #cansel {
-      background: #132152;
-      color: #ABADB8;
-    }
   }
 
   .search-form {
@@ -859,7 +851,7 @@ for (i = 0; i < toggler.length; i++) {
       BACKGROUND: url(/img/bd/search.svg) 1% no-repeat #4F5979;
     }
 
-    #date {
+    .b-date {
       height: 40px;
       font-size: 14px;
       FLEX-DIRECTION: row-reverse;
@@ -870,7 +862,7 @@ for (i = 0; i < toggler.length; i++) {
       margin-right: 7px;
     }
 
-    #time {
+    .b-time {
       height: 40px;
       font-size: 14px;
       margin-left: 7px;
@@ -881,6 +873,34 @@ for (i = 0; i < toggler.length; i++) {
       margin-left: auto;
     }
 
+  }
+  .b-button-container{
+    display: flex;
+    margin-left: auto;
+    margin-right: auto;
+    button {
+      margin-top: 30px;
+      height: 40px;
+      font-size: 14px;
+      FLEX-DIRECTION: row-reverse;
+      BACKGROUND: #4F5979;
+      WIDTH: 130px;
+      BORDER-RADIUS: 10PX;
+      color: white;
+      margin-right: 7px;
+    }
+    .accept {
+      background: #2E50E9;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .cancel {
+      margin-left: auto;
+      margin-right: auto;
+      background: #132152;
+      color: #ABADB8;
+    }
   }
 }
 
