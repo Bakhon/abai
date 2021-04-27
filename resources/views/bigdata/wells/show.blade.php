@@ -1,4 +1,4 @@
-@extends('layouts.monitor')
+@extends('layouts.db')
 
 @section('content')
     <div class="row" id="app">

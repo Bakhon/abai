@@ -3483,8 +3483,8 @@
 
                     :page-count="pageCount"
                     :click-handler="pageChangeHandler"
-                    :prev-text="'Назад'"
-                    :next-text="'Вперед'"
+                    :prev-text="trans('tr.previous')"
+                    :next-text="trans('tr.next')"
                     :container-class="'pagination'">
                   </paginate>
 

@@ -1,10 +1,11 @@
 const showToast = {
     methods: {
-        showToast(message, title, variant) {
+        showToast(message, title, variant, delay = 5000) {
             this.$bvToast.toast(message, {
                 title: title,
                 variant: variant,
-                solid: true
+                solid: true,
+                autoHideDelay: delay,
             });
         }
     }

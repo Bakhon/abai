@@ -56,6 +56,9 @@ Route::group(
                     'bigdata.form.save.field'
                 );
 
+                Route::get('forms/{form}/results', 'Api\DB\FormsController@getResults');
+                Route::delete('forms/{form}/{row}', 'Api\DB\FormsController@delete');
+
                 Route::get('wells/{well}', 'Api\DB\WellsController@get');
             }
         );

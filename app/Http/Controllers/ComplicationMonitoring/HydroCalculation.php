@@ -6,8 +6,10 @@ use App\Filters\HydroCalcFilter;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Traits\WithFieldsValidation;
 use App\Http\Requests\IndexTableRequest;
-use App\Http\Resources\HydroCalcListResource;
+use App\Http\Resources\HydroCalcCalculatedListResource;
+use App\Http\Resources\HydroCalcPrepareListResource;
 use App\Jobs\ExportHydroCalcTableToExcel;
+use App\Models\ComplicationMonitoring\HydroCalcResult;
 use App\Models\ComplicationMonitoring\OmgNGDU;
 use App\Models\ComplicationMonitoring\TrunklinePoint;
 use Illuminate\Database\Eloquent\Collection;
@@ -151,8 +153,9 @@ class HydroCalculation extends Controller
             ],
         ];
 
-        $params['links']['export'] = route($this->modelName.'.export');
-        $params['links']['date'] = route($this->modelName.'.export');
+        $params['links']['calc']['export'] = false;
+        $params['links']['calc']['link'] = route($this->modelName.'.calculate');
+        $params['links']['date'] = true;
 
         return view('hydro_calc.index', compact('params'));
     }
@@ -160,7 +163,29 @@ class HydroCalculation extends Controller
     public function list (IndexTableRequest $request)
     {
         $input = $request->validated();
+        $points = null;
 
+        if (isset($input['date'])) {
+            $points = $this->getCalculatedData($input['date']);
+            $list = json_decode(HydroCalcCalculatedListResource::collection($points)->toJson());
+        }
+
+        if (!$points || !$points->total()) {
+            $prepairedData = $this->getPrepairedData($input);
+            $points = $prepairedData['points'];
+            $alerts = $prepairedData['alerts'];
+            $list = json_decode(HydroCalcPrepareListResource::collection($points)->toJson());
+
+            if (count($alerts)) {
+                $list->alerts = $alerts;
+            }
+        }
+
+        return response()->json($list);
+    }
+
+    public function getPrepairedData (array $input) :array
+    {
         $query = TrunklinePoint::query()
             ->with('map_pipe.pipeType', 'map_pipe.firstCoords', 'map_pipe.lastCoords', 'gu', 'trunkline_end_point');
 
@@ -234,16 +259,17 @@ class HydroCalculation extends Controller
         }
 
         $points = $this->paginate($points, 25, (int)$input['page']);
-
-        $list = json_decode(HydroCalcListResource::collection($points)->toJson());
-        if (count($alerts)) {
-            $list->alerts = $alerts;
-        }
-
-        return response()->json($list);
+        return ['points' => $points, 'alerts' => $alerts];
     }
 
-    public function exportExcel(IndexTableRequest $request)
+    public function getCalculatedData (string $date)
+    {
+        return HydroCalcResult::with('map_pipe.pipeType')
+            ->where('date', $date)
+            ->paginate(25);
+    }
+
+    public function calculate(IndexTableRequest $request)
     {
         $job = new ExportHydroCalcTableToExcel($request->validated());
         $this->dispatch($job);

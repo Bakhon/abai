@@ -46,7 +46,6 @@ Vue.component('paginate', Paginate);
 
 //Mixins
 import showToast from './mixins/showToast';
-
 Vue.mixin(showToast);
 
 
@@ -89,10 +88,6 @@ Vue.component('economic-data-component', require('./components/Economic/data/ind
 Vue.component('tech-data-component', require('./components/technical_forecast/productionDataIndex.vue').default);
 
 Vue.component('economic-component', require('./components/Economic/main.vue').default);
-Vue.component('chart1-component', require('./components/Economic/chart1.vue').default);
-Vue.component('chart2-component', require('./components/Economic/chart2.vue').default);
-Vue.component('chart3-component', require('./components/Economic/chart3.vue').default);
-Vue.component('chart4-component', require('./components/Economic/chart4.vue').default);
 Vue.component('gno-table', require('./components/gno/Table.vue').default);
 Vue.component('inclinometria', require('./components/gno/components/Inclinometria.vue').default);
 Vue.component('prs-crs', require('./components/gno/components/PrsCrs.vue').default);

@@ -4,7 +4,7 @@
         <span class="menu-collapsed companyName d-none"></span>
     </div>
 </a>
-<a href="{{route('bigdata.protoform')}}" class="bg-dark-new list-group-item list-group-item-action">
+<a href="{{route('bigdata.wells.index')}}" class="bg-dark-new list-group-item list-group-item-action">
     <div class="d-flex w-100 justify-content-start align-items-center">
         <svg width="22" height="20" viewBox="0 0 22 20" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path fill-rule="evenodd" clip-rule="evenodd"
