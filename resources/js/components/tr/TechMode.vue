@@ -579,7 +579,7 @@
         <div class="table-outer"> 
           <div class="table-inner abat_tr">
                   <el-table
-                    :data="wells"
+                    :data="pageData"
                     height="calc(100vh - 205px)"
                     style="width: 100%"
                     :header-cell-class-name="getHeaderCellClassName"
@@ -3479,6 +3479,15 @@
                       </el-table-column>
                     </el-table-column>
                   </el-table>
+                  <paginate
+
+                    :page-count="pageCount"
+                    :click-handler="pageChangeHandler"
+                    :prev-text="'Назад'"
+                    :next-text="'Вперед'"
+                    :container-class="'pagination'">
+                  </paginate>
+
           </div>
         </div>
       </div>
@@ -3498,12 +3507,14 @@ import SearchFormRefresh from "../ui-kit/SearchFormRefresh.vue";
 import { fields } from "./constants.js";
 import TrMultiselect from "./TrMultiselect.vue";
 import { isString } from "lodash";
+import paginationMixin from "~/mixins/pagination.mixin.js";
 
 Vue.use(NotifyPlugin);
 Vue.use(ElementUI); 
 locale.use(lang)
 export default {
   name: "TrPage",
+  mixins: [paginationMixin],
   components: {
     TrTable,
     TrFullTable,
@@ -3669,6 +3680,7 @@ export default {
         // this.isloading = false;
         if (data) {
           this.wells = data.data;
+          this.setupPagination(this.wells);
           this.fullWells = data.data;
         } else {
           console.log("No data");
@@ -3751,6 +3763,7 @@ export default {
       , "el-table_1_column_315", "el-table_1_column_319", "el-table_1_column_323", "el-table_1_column_327", "el-table_1_column_331", "el-table_1_column_335", 
       "el-table_1_column_339", "el-table_1_column_343", "el-table_1_column_347", "el-table_1_column_351", "el-table_1_column_355", "el-table_1_column_359", "el-table_1_column_363"], 
       filter_column: [], 
+      
     };
     
 
@@ -3764,6 +3777,7 @@ export default {
     },
   },
   methods: {
+    
     getHeaderCellClassName({column}) {
       if(column.property === "fake") {
         return 'no_border';
@@ -3813,10 +3827,10 @@ export default {
             //   return index === rowId ? response.data.data[0] :   currentRow;
             // });
 
-            this.wells = [
-              ...this.wells.slice(0, rowId),
+            this.pageData = [
+              ...this.pageData.slice(0, rowId),
               response.data.data[0],
-              ...this.wells.slice(rowId + 1),
+              ...this.pageData.slice(rowId + 1),
             ];
             this.editedWells = this.editedWells.filter(
               (item) => item.well !== response.data.data[0].well
@@ -4648,6 +4662,10 @@ table::-webkit-scrollbar-corner {
 .cell-with-comment:hover .cell-comment {
     display: flex;
     opacity: 1;
+}
+.pagination {
+    justify-content: center;
+    background: #fff;
 }
 
 </style>
