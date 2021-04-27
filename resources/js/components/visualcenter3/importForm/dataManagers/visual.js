@@ -4,6 +4,7 @@ export default {
     data: function () {
         return {
             isChemistryNeeded: true,
+            isWellsWorkoverNeeded: true,
             columns: [
                 {
                     prop: "column1",
@@ -106,6 +107,9 @@ export default {
     methods: {
         changeButtonVisibility() {
             this.isChemistryNeeded = !this.isChemistryNeeded;
+        },
+        changeWellBlockVisibility() {
+            this.isWellsWorkoverNeeded = !this.isWellsWorkoverNeeded;
         },
         turnOffErrorHighlight() {
             let self = this;
