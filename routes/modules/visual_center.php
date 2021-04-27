@@ -64,6 +64,8 @@ Route::group(
 
                 Route::get('/get-dzo-today-data', 'VisCenter\ExcelForm\ExcelFormController@getDzoCurrentData');
                 Route::post('/dzo-excel-otm', 'VisCenter\ExcelForm\ExcelFormOtmController@store');
+                Route::get('/get-dzo-current-chemistry', 'VisCenter\ExcelForm\ExcelFormChemistryController@getDzoCurrentChemistry');
+                Route::get('/get-dzo-current-otm', 'VisCenter\ExcelForm\ExcelFormOtmController@getDzoCurrentOtm');
             }
         );
     }

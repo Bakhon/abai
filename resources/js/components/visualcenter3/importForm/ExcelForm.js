@@ -178,8 +178,7 @@ export default {
         this.selectedDzo.plans = this.getSelectedDzoPlans();
         await this.sleep(2000);
         this.setTableFormat();
-        this.todayData = await this.getDzoTodayData();
-        this.processTodayData();
+        await this.updateCurrentData();
         this.addListeners();
     },
     methods: {

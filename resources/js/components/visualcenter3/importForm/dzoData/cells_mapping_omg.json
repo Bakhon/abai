@@ -50,11 +50,10 @@
   "otmDzo": {
     "fields": [
       "otm_wells_commissioning_from_drilling_fact",
-      "otm_drilling_fact",
-      "otm_underground_workover"
+      "otm_drilling_fact"
     ],
     "rowIndex": 19,
-    "rowLength": 3
+    "rowLength": 2
   },
   "operatingFond": {
     "fields": [
