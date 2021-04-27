@@ -13,7 +13,11 @@ class EconomicDataExport implements FromView
         'uwi',
         'status',
         'profitability',
+        'profitability_kbm',
+        'profitability_kbm_date',
         'profitability_v_prostoe',
+        'profitability_kbm_v_prostoe',
+        'profitability_kbm_date_v_prostoe',
     ];
 
     const COLUMNS_SUM = [
