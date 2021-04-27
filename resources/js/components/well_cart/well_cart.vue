@@ -550,7 +550,6 @@
           </div>
         </div>
         <div class="info-element">
-          <!-- Elemtnt start -->
           <div class="row">
             <div class="col">
               <p>
@@ -563,8 +562,6 @@
               </p>
             </div>
           </div>
-          <!-- Element end -->
-          <!-- Elemtnt start -->
           <div class="row">
             <div class="col">
               <p>
@@ -577,8 +574,6 @@
               </p>
             </div>
           </div>
-          <!-- Element end -->
-          <!-- Elemtnt start -->
           <div class="row">
             <div class="col">
               <p>
@@ -591,8 +586,6 @@
               </p>
             </div>
           </div>
-          <!-- Element end -->
-          <!-- Elemtnt start -->
           <div class="row">
             <div class="col">
               <p>
@@ -605,8 +598,6 @@
               </p>
             </div>
           </div>
-          <!-- Element end -->
-          <!-- Elemtnt start -->
           <div class="row">
             <div class="col">
               <p>
@@ -619,8 +610,6 @@
               </p>
             </div>
           </div>
-          <!-- Element end -->
-          <!-- Elemtnt start -->
           <div class="row">
             <div class="col">
               <p>
@@ -633,8 +622,6 @@
               </p>
             </div>
           </div>
-          <!-- Element end -->
-          <!-- Elemtnt start -->
           <div class="row">
             <div class="col">
               <p>
@@ -647,8 +634,6 @@
               </p>
             </div>
           </div>
-          <!-- Element end -->
-          <!-- Elemtnt start -->
           <div class="row">
             <div class="col">
               <p>
@@ -661,8 +646,6 @@
               </p>
             </div>
           </div>
-          <!-- Element end -->
-          <!-- Elemtnt start -->
           <div class="row">
             <div class="col">
               <p>
@@ -675,8 +658,6 @@
               </p>
             </div>
           </div>
-          <!-- Element end -->
-          <!-- Elemtnt start -->
           <div class="row">
             <div class="col">
               <p>
@@ -689,8 +670,6 @@
               </p>
             </div>
           </div>
-          <!-- Element end -->
-          <!-- Elemtnt start -->
           <div class="row">
             <div class="col">
               <p>
@@ -703,8 +682,6 @@
               </p>
             </div>
           </div>
-          <!-- Element end -->
-          <!-- Elemtnt start -->
           <div class="row">
             <div class="col">
               <p>
@@ -717,8 +694,6 @@
               </p>
             </div>
           </div>
-          <!-- Element end -->
-          <!-- Elemtnt start -->
           <div class="row">
             <div class="col">
               <p>
@@ -874,10 +849,12 @@ for (i = 0; i < toggler.length; i++) {
     }
 
   }
-  .b-button-container{
+
+  .b-button-container {
     display: flex;
     margin-left: auto;
     margin-right: auto;
+
     button {
       margin-top: 30px;
       height: 40px;
@@ -889,6 +866,7 @@ for (i = 0; i < toggler.length; i++) {
       color: white;
       margin-right: 7px;
     }
+
     .accept {
       background: #2E50E9;
       margin-left: auto;
@@ -911,6 +889,7 @@ for (i = 0; i < toggler.length; i++) {
   overflow: hidden;
   position: fixed;
   top: 0px;
+  display: block;
 }
 
 .b-popup .b-popup-content {
@@ -1483,7 +1462,7 @@ h4 {
   margin-right: auto;
 
   h2 {
-    margin: none;
+    margin: 0px;
     padding: 20px;
   }
 }
