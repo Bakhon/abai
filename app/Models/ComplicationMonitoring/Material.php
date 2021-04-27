@@ -2,17 +2,18 @@
 
 namespace App\Models\ComplicationMonitoring;
 
+use App\Models\Pipes\MapPipe;
 use Illuminate\Database\Eloquent\Model;
 
 class Material extends Model
 {
     public function pipe()
     {
-        return $this->hasOne(Pipe::class)->withDefault();
+        return $this->hasMany(Pipe::class)->withDefault();
     }
 
-    public function pipeType()
+    public function map_pipe()
     {
-        return $this->hasOne(PipeType::class);
+        return $this->hasMany(MapPipe::class);
     }
 }

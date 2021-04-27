@@ -4,6 +4,7 @@ namespace App\Console\Commands\Import;
 
 use App\Imports\Ngdu4WellsImport;
 use App\Imports\TrunklineImport;
+use App\Models\ComplicationMonitoring\PipeType;
 use App\Models\Pipes\MapPipe;
 use App\Models\Pipes\PipeCoord;
 use App\Models\Refs\Well;
@@ -47,8 +48,6 @@ class Wells extends Command
      */
     public function handle(): void
     {
-        DB::table('map_pipes')->delete();
-        DB::statement("ALTER TABLE map_pipes AUTO_INCREMENT = 1;");
         PipeCoord::truncate();
 
         $files = [
@@ -66,5 +65,6 @@ class Wells extends Command
         $this->importExcel(new TrunklineImport($this), public_path('imports/trunkline.xlsx'));
 
         DB::raw('UPDATE zus SET name = UPPER(name)');
+        PipeType::doesntHave('map_pipe')->delete();
     }
 }

@@ -151,4 +151,15 @@ class PipeTypesController extends CrudController
     {
         return (new PipeTypeFilter($query, $filter))->filter();
     }
+
+    public function test ()
+    {
+        PipeType::doesntHave('map_pipe')->delete();
+        $pipeTypes = PipeType::get();
+        foreach ($pipeTypes as $pipeType) {
+            $pipeType->name = (int)$pipeType->outside_diameter.'x'.(int)$pipeType->thickness;
+            $pipeType->save();
+        }
+        dump($pipeTypes);
+    }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Imports;
 
+use App\Models\ComplicationMonitoring\Material;
 use App\Models\ComplicationMonitoring\PipeType;
 use App\Models\Pipes\MapPipe;
 use App\Models\Pipes\PipeCoord;
@@ -152,6 +153,10 @@ class Ngdu4WellsImport implements ToCollection, WithEvents, WithColumnLimit, Wit
             if (!empty($row[self::PIPE_START_NAME])) {
                 $pipe_type = $this->createPipeType($row);
 
+                $roughness = str_replace(',', '.', $row[self::ROUGHNESS]);
+                $roughness = floatval($roughness);
+                $material = Material::where('roughness', $roughness)->first();
+
                 $this->command->info('Create Pipe ' . $row[self::PIPE_NAME]);
                 $pipe = MapPipe::firstOrCreate(
                     [
@@ -162,6 +167,7 @@ class Ngdu4WellsImport implements ToCollection, WithEvents, WithColumnLimit, Wit
                 );
                 PipeCoord::where('map_pipe_id', $pipe->id)->delete();
                 $pipe->type_id = $pipe_type->id;
+                $pipe->material_id = $material->id;
 
                 $between_points = $this->getPipeType($row);
 
@@ -282,17 +288,21 @@ class Ngdu4WellsImport implements ToCollection, WithEvents, WithColumnLimit, Wit
     private function createPipeType($row): PipeType
     {
         $this->command->info('Create Pipe Type');
-        $roughness = str_replace(',', '.', $row[self::ROUGHNESS]);
-        $roughness = floatval($roughness);
+        $thickness = ($row[self::OUTSIDE_DIAMETER] - $row[self::INNER_DIAMETER])/2;
 
-        return PipeType::firstOrCreate(
+
+        $pipeType =  PipeType::firstOrCreate(
             [
                 'outside_diameter' => $row[self::OUTSIDE_DIAMETER],
                 'inner_diameter' => $row[self::INNER_DIAMETER],
-                'thickness' => ($row[self::OUTSIDE_DIAMETER] - $row[self::INNER_DIAMETER])/2,
-                'roughness' => $roughness
+                'thickness' => $thickness
             ]
         );
+
+        $pipeType->name = (int)$row[self::OUTSIDE_DIAMETER].'x'.(int)$thickness;
+        $pipeType->save();
+
+        return $pipeType;
     }
 
     private function createWell($row): Well

@@ -77,8 +77,6 @@ class PipesPointsImport implements ToCollection, WithEvents, WithColumnLimit, Wi
     {
         $collection = $collection->skip(1);
 
-        TrunklinePoint::truncate();
-
         foreach ($collection as $row) {
 
             $coords = json_decode($row[self::COORDS]);
