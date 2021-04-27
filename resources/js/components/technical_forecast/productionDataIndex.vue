@@ -1,9 +1,13 @@
 <template>
   <div class="container-fluid economic-wrap">
+    <cat-loader v-show="loading"/>
+
     <div class="row justify-content-between">
       <select-source
           :loading="loading"
           :form="form"
+          @loading="loading = true"
+          @loaded="loading = false"
           @change="getTechData"/>
 
       <vue-table-dynamic
@@ -17,6 +21,7 @@
 <script>
 import VModal from 'vue-js-modal'
 import VueTableDynamic from 'vue-table-dynamic'
+import CatLoader from "../ui-kit/CatLoader";
 import SelectSource from "./components/SelectSource";
 
 Vue.use(VModal, {dynamicDefault: {draggable: true, resizable: true}});
@@ -25,6 +30,7 @@ export default {
   name: "tech-data-component",
   components: {
     VueTableDynamic,
+    CatLoader,
     SelectSource
   },
   data: () => ({
@@ -60,15 +66,19 @@ export default {
         {column: 12, width: 80},
       ]
     },
-    loading: false
+    loading: true
   }),
   methods: {
     async getTechData() {
+      this.loading = true
+
       this.params.data = []
 
       const {data} = await this.axios.get(this.localeUrl('/tech_data_json'), {params: this.form})
 
       this.params.data = data.tech_data
+
+      this.loading = false
     },
   }
 };

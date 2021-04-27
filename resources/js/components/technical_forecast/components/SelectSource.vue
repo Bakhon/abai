@@ -17,10 +17,6 @@
 export default {
   name: "SelectSource",
   props: {
-    loading: {
-      required: false,
-      type: Boolean
-    },
     form: {
       required: true,
       type: Object
@@ -34,13 +30,20 @@ export default {
   },
   methods: {
     async getSources() {
-      this.loading = true
+      this.$emit('loading')
+
+      this.form.source_id = null
+
+      this.sources = [{
+        id: null,
+        name: this.trans('economic_reference.select_item')
+      }]
 
       const {data} = await this.axios.get(this.localeUrl('/tech_struct_sources'))
 
-      this.sources = data.sources
+      this.sources = [...this.sources, ...data.sources]
 
-      this.loading = false
+      this.$emit('loaded')
     },
   }
 }
