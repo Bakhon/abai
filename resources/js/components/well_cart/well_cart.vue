@@ -1220,6 +1220,12 @@ h4 {
   min-width: 244px;
   margin-right: 0.25em;
   margin-bottom: 0.25em;
+  .txt5{
+    font-family: Roboto;
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 17px;
+  }
 }
 
 .transparent-select {
@@ -1344,9 +1350,11 @@ h4 {
 .dropdown-menu.show {
   background: #40467E;
   color: white;
-  width: 300px;
+  width: 350px;
   padding: 18px 31px 0px 31px;
-
+  .container{
+    margin: 0px;
+  }
   li {
     display: flex;
     width: 100%;
@@ -1362,15 +1370,18 @@ h4 {
   }
 
   .flag {
+    margin-top: 15px;
     margin-bottom: auto;
-    padding-right: 9px;
+    padding-right: 10px;
     content: URL(/img/bd/check-marker.svg);
   }
 
   .bottom-border {
     border-bottom: 1px solid rgba(196, 222, 242, 0.3);
     padding-bottom: 15px;
+    padding-top: 15px;
     margin-bottom: 15px;
+    width: 100%;
   }
 
   .container {
@@ -1393,6 +1404,8 @@ h4 {
     background-color: #656A8A;
     border-radius: 6px;
     border: 2px solid #237DEB;
+    margin-bottom: auto;
+    margin-top: auto;
   }
 
   .container:hover input ~ .checkmark {
