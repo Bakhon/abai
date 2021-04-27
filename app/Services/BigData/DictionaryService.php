@@ -15,8 +15,9 @@ use App\Models\BigData\Dictionaries\Brigade;
 use App\Models\BigData\Dictionaries\GtmType;
 use App\Models\BigData\Dictionaries\NoBtmReason;
 use App\Models\BigData\Dictionaries\RepairWorkType;
-use App\Models\BigData\Dictionaries\WellCondition;
+use App\Models\BigData\Dictionaries\WellStatus;
 use App\Models\BigData\Dictionaries\EquipFailReasonType;
+use App\Models\BigData\Dictionaries\TechConditionOfWells;
 use Carbon\Carbon;
 use Illuminate\Cache\Repository;
 use Illuminate\Support\Facades\DB;
@@ -58,19 +59,23 @@ class DictionaryService
         ],
         'brigadiers' => [
             'class' => Brigadier::class,
-            'name_field' => 'full_name'
+            'name_field' => 'name_ru'
         ],
         'no_btm_reasons' => [
             'class' => NoBtmReason::class,
             'name_field' => 'name_ru'
         ],
         'well_statuses' => [
-            'class' => WellCondition::class,
+            'class' => WellStatus::class,
             'name_field' => 'name_ru'
         ],
         'fail_reason_types' => [
             'class' => EquipFailReasonType::class,
             'name_field' => 'equil_fail_reason_type'
+        ],
+        'wells_tech_conditions' => [
+            'class' => TechConditionOfWells::class,
+            'name_field' => ''
         ]
     ];
 

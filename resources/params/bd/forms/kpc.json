@@ -1,5 +1,5 @@
 {
-  "table": "well_workover",
+  "table": "prod.well_workover",
   "tabs": [
     {
       "title": "request",
@@ -191,7 +191,7 @@
               "type": "dict",
               "title": "machine_technical_condition",
               "validation": "required|exists:",
-              "dict": ""
+              "dict": "wells_tech_conditions"
             },
             {
               "code": "no_change_tech_state",
@@ -230,7 +230,7 @@
               "type": "dict",
               "title": "hardware_failure_cause",
               "validation": "required|exists:tbd.dict.reason, id",
-              "dict": "no_btm_reason"
+              "dict": "no_btm_reasons"
             },
             {
               "code": "equipment_failure_type",
@@ -244,7 +244,7 @@
               "type": "dict",
               "title": "stopping_reason",
               "validation": "required|exists:tbd.dict.reason, id",
-              "dict": "no_btm_reason"
+              "dict": "no_btm_reasons"
             }
           ]
         }
