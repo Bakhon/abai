@@ -580,7 +580,7 @@
           <div class="table-inner abat_tr">
                   <el-table
                     :data="pageData"
-                    height="calc(100vh - 205px)"
+                    height="calc(100vh - 230px)"
                     style="width: 100%"
                     :header-cell-class-name="getHeaderCellClassName"
                     >
@@ -3484,7 +3484,7 @@
                     :page-count="pageCount"
                     @current-change="pageChangeHandler"
                     layout="prev, pager, next"
-                    :container-class="'pagination'">
+                    :class="'pagination'">
                   </el-pagination>
 
           </div>
@@ -4126,28 +4126,6 @@ export default {
     handlerFilter(filter) {
       this.filter = filter;
     },
-    // deleteOrSave() {
-    //   if(this.lonelywell[0].is_saved === "Не сохранено"){
-    //         this.is_save=true
-    //   }
-    //   else{
-    //     return this.is_save=false
-    //   }
-    // },
-    // Отправка данных с модалки в бэк
-
-    // deleteOrSave() {
-    //   if(this.lonelywell.length === 1){
-    //     this.save_check = !this.show_add;
-    //   }
-    //   else{
-    //     this.show_add = this.show_add;
-    //   }
-    // },
-
-
-
-
 
     saveadd() {
       console.log(this.$refs.editTable);
@@ -4241,19 +4219,15 @@ export default {
           let data = response.data;
           if (data) {
             console.log(data);
-            // this.wells = data.data;
             this.fullWells = data.data;
           } else {
-            // this.wells = [];
             this.fullWells = [];
             console.log("No data");
           }
         })
         .catch((error) => {
-          // this.wells = [];
           this.searched = searchParam ? true : false;
           this.$store.commit("globalloading/SET_LOADING", false);
-          // this.isloading = false;
           this.fullWells = [];
           console.log("search error = ", error);
         });
@@ -4289,7 +4263,7 @@ export default {
 };
 </script>
 <style scoped>
-/* @import "element-variables"; */
+
 body {
   color: white !important;
 }
@@ -4316,7 +4290,6 @@ body {
 }
 .input-group-prepend {
   padding-top: 3px !important;
-  /* margin-right: 0px!important; */
 }
 a:hover {
   color: white !important;
