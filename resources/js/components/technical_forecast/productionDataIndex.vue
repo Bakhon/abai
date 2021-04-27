@@ -2,6 +2,7 @@
   <div class="container-fluid economic-wrap">
     <div class="row justify-content-between">
       <select-source
+          :loading="loading"
           :form="form"
           @change="getTechData"/>
 
@@ -65,7 +66,7 @@ export default {
     async getTechData() {
       this.params.data = []
 
-      const {data} = await this.axios.get(this.localeUrl('/tech_data_json', {params: this.form}))
+      const {data} = await this.axios.get(this.localeUrl('/tech_data_json'), {params: this.form})
 
       this.params.data = data.tech_data
     },

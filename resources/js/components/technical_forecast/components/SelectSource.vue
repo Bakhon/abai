@@ -17,6 +17,10 @@
 export default {
   name: "SelectSource",
   props: {
+    loading: {
+      required: false,
+      type: Boolean
+    },
     form: {
       required: true,
       type: Object
@@ -30,9 +34,13 @@ export default {
   },
   methods: {
     async getSources() {
+      this.loading = true
+
       const {data} = await this.axios.get(this.localeUrl('/tech_struct_sources'))
 
       this.sources = data.sources
+
+      this.loading = false
     },
   }
 }
