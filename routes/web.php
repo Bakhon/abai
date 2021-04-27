@@ -99,6 +99,7 @@ Route::group(
                 Route::post('/getkormass', 'ComplicationMonitoring\OmgNGDUController@getKormass');
                 Route::resource('ecorefsempper', 'Refs\EcoRefsEmpPerController');
                 Route::resource('ecorefsscfa', 'Refs\EcoRefsScFaController');
+                Route::get('eco_refs_sc_fas', 'Refs\EcoRefsScFaController@getScFas');
                 Route::get('ecorefslist', 'Refs\EcoRefsScFaController@refsList')->name('eco_refs_list');
 
                 // economic tech data

@@ -8,12 +8,13 @@
           :form="form"
           @loading="loading = true"
           @loaded="loading = false"
-          @change="getTechData"/>
+          @change="getData"/>
 
-      <vue-table-dynamic
-          v-if="form.source_id"
-          :params="params"
-          ref="table"/>
+      <vue-table-dynamic v-if="form.source_id" :params="params" ref="table">
+        <a slot="column-11" slot-scope="{ props }" :href="props.cellData">
+          {{ trans('app.edit') }}
+        </a>
+      </vue-table-dynamic>
     </div>
   </div>
 </template>
@@ -21,8 +22,8 @@
 <script>
 import VModal from 'vue-js-modal'
 import VueTableDynamic from 'vue-table-dynamic'
-import CatLoader from "../ui-kit/CatLoader";
-import SelectSource from "./components/SelectSource";
+import CatLoader from "../../ui-kit/CatLoader";
+import SelectSource from "./../components/SelectSource";
 
 Vue.use(VModal, {dynamicDefault: {draggable: true, resizable: true}});
 
@@ -69,7 +70,7 @@ export default {
     loading: true
   }),
   methods: {
-    async getTechData() {
+    async getData() {
       this.loading = true
 
       this.params.data = []
