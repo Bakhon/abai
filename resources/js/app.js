@@ -26,8 +26,6 @@ import VueSimpleAlert from "vue-simple-alert";
 import PerfectScrollbar from "vue2-perfect-scrollbar";
 import "vue2-perfect-scrollbar/dist/vue2-perfect-scrollbar.css";
 import columnSortable from 'vue-column-sortable';
-//Mixins
-import showToast from './mixins/showToast';
 
 require('./bootstrap');
 window.Vue = require('vue');
