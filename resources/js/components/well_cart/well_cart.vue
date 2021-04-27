@@ -37,7 +37,7 @@
                     <li>
                       <p>
                         <img src="/img/bd/pointer-solid.svg" alt="">
-                                            <span class="caret">
+                        <span class="caret">
                                                 Исполнение бизнес- инициатив</span></p>
                       <ul class="nested">
                         <li>
@@ -56,7 +56,7 @@
                           <li>
                             <p>
                               <img src="/img/bd/pointer-solid.svg" alt="">
-                                                    <span class="caret">
+                              <span class="caret">
                                                     Реализация инвестиционных проектов
                                                     </span>
                             </p>
@@ -251,7 +251,7 @@
                       </svg>
                     </div>
                     <div style="display:flex">
-                      <div class="txt5">Гксплуатационные показатели</div>
+                      <div class="txt5">Эксплуатационные показатели</div>
                       <div class="icon-pointer" style="margin-left:auto"></div>
                     </div>
                   </div>
@@ -327,7 +327,7 @@
       <div class="row">
         <div class="col-md-12 bg-dark-transparent">
           <div class="row">
-            <div class="col" style="padding: 10px">
+            <div class="col table-wrapper">
               <div class="table-container">
                 <div class="table-container-header">
                   <div class="row">
@@ -364,21 +364,23 @@
                     <div class="col-md-2 table-border element-position"><p>19.13</p></div>
                     <div class="col-md-2 table-border element-position"><p>7.21</p></div>
                     <div class="col-md-2 table-border element-position">
-                      <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path
-                            d="M3 11.4998L1.55336 16.322C1.53048 16.3983 1.6016 16.4694 1.67788 16.4465L6.5 14.9998M3 11.4998C3 11.4998 11.0603 3.4393 12.7227 1.77708C12.8789 1.62091 13.1257 1.6256 13.2819 1.78177C13.8372 2.33702 15.1144 3.61422 16.2171 4.71697C16.3733 4.87322 16.3788 5.12103 16.2226 5.27726C14.5597 6.9399 6.5 14.9998 6.5 14.9998M3 11.4998L3.64727 10.8525L7.14727 14.3525L6.5 14.9998"
-                            stroke="white" stroke-width="1.4"/>
-                      </svg>
-                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M14.5 8L1.5 8" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
-                        <path d="M8 1.5V14.5" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
-                      </svg>
-                      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M12.6574 12.6575L1.34367 1.34383" stroke="white" stroke-width="1.4"
-                              stroke-linecap="round"/>
-                        <path d="M12.6563 1.34383L1.34262 12.6575" stroke="white" stroke-width="1.4"
-                              stroke-linecap="round"/>
-                      </svg>
+                      <div class="table-container-svg">
+                        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path
+                              d="M3 11.4998L1.55336 16.322C1.53048 16.3983 1.6016 16.4694 1.67788 16.4465L6.5 14.9998M3 11.4998C3 11.4998 11.0603 3.4393 12.7227 1.77708C12.8789 1.62091 13.1257 1.6256 13.2819 1.78177C13.8372 2.33702 15.1144 3.61422 16.2171 4.71697C16.3733 4.87322 16.3788 5.12103 16.2226 5.27726C14.5597 6.9399 6.5 14.9998 6.5 14.9998M3 11.4998L3.64727 10.8525L7.14727 14.3525L6.5 14.9998"
+                              stroke="white" stroke-width="1.4"/>
+                        </svg>
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M14.5 8L1.5 8" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                          <path d="M8 1.5V14.5" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                        </svg>
+                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M12.6574 12.6575L1.34367 1.34383" stroke="white" stroke-width="1.4"
+                                stroke-linecap="round"/>
+                          <path d="M12.6563 1.34383L1.34262 12.6575" stroke="white" stroke-width="1.4"
+                                stroke-linecap="round"/>
+                        </svg>
+                      </div>
                     </div>
                   </div>
 
@@ -387,21 +389,23 @@
                     <div class="col-md-2 table-border element-position"><p>56.06</p></div>
                     <div class="col-md-2 table-border element-position"><p>5.77</p></div>
                     <div class="col-md-2 table-border element-position">
-                      <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path
-                            d="M3 11.4998L1.55336 16.322C1.53048 16.3983 1.6016 16.4694 1.67788 16.4465L6.5 14.9998M3 11.4998C3 11.4998 11.0603 3.4393 12.7227 1.77708C12.8789 1.62091 13.1257 1.6256 13.2819 1.78177C13.8372 2.33702 15.1144 3.61422 16.2171 4.71697C16.3733 4.87322 16.3788 5.12103 16.2226 5.27726C14.5597 6.9399 6.5 14.9998 6.5 14.9998M3 11.4998L3.64727 10.8525L7.14727 14.3525L6.5 14.9998"
-                            stroke="white" stroke-width="1.4"/>
-                      </svg>
-                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M14.5 8L1.5 8" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
-                        <path d="M8 1.5V14.5" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
-                      </svg>
-                      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M12.6574 12.6575L1.34367 1.34383" stroke="white" stroke-width="1.4"
-                              stroke-linecap="round"/>
-                        <path d="M12.6563 1.34383L1.34262 12.6575" stroke="white" stroke-width="1.4"
-                              stroke-linecap="round"/>
-                      </svg>
+                      <div class="table-container-svg">
+                        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path
+                              d="M3 11.4998L1.55336 16.322C1.53048 16.3983 1.6016 16.4694 1.67788 16.4465L6.5 14.9998M3 11.4998C3 11.4998 11.0603 3.4393 12.7227 1.77708C12.8789 1.62091 13.1257 1.6256 13.2819 1.78177C13.8372 2.33702 15.1144 3.61422 16.2171 4.71697C16.3733 4.87322 16.3788 5.12103 16.2226 5.27726C14.5597 6.9399 6.5 14.9998 6.5 14.9998M3 11.4998L3.64727 10.8525L7.14727 14.3525L6.5 14.9998"
+                              stroke="white" stroke-width="1.4"/>
+                        </svg>
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M14.5 8L1.5 8" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                          <path d="M8 1.5V14.5" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                        </svg>
+                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M12.6574 12.6575L1.34367 1.34383" stroke="white" stroke-width="1.4"
+                                stroke-linecap="round"/>
+                          <path d="M12.6563 1.34383L1.34262 12.6575" stroke="white" stroke-width="1.4"
+                                stroke-linecap="round"/>
+                        </svg>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -905,10 +909,10 @@ for (i = 0; i < toggler.length; i++) {
 }
 
 .custom-directory {
-  img{
+  img {
     padding-bottom: 5px;
   }
-  
+
   ul, li {
     color: white;
     list-style: none;
@@ -1017,7 +1021,8 @@ h4 {
   width: 100%;
   display: flex;
   padding: 15px 19px;
-  .border-bottom{
+
+  .border-bottom {
     display: flex;
     border-bottom: 1px solid #555BA6 !important;
   }
@@ -1217,10 +1222,13 @@ h4 {
 }
 
 .small-select {
-  min-width: 244px;
+  width: 200px;
+  height: 45px;
   margin-right: 0.25em;
   margin-bottom: 0.25em;
-  .txt5{
+  white-space: pre-line;
+
+  .txt5 {
     font-family: Roboto;
     font-weight: 700;
     font-size: 14px;
@@ -1263,6 +1271,10 @@ h4 {
   .table-container-element {
     height: 340px;
     background-color: #272953;
+
+    .table-container-svg {
+      display: flex;
+    }
 
     .element-position {
       padding: 13px 13px 13px 23px;
@@ -1352,9 +1364,11 @@ h4 {
   color: white;
   width: 350px;
   padding: 18px 31px 0px 31px;
-  .container{
+
+  .container {
     margin: 0px;
   }
+
   li {
     display: flex;
     width: 100%;
@@ -1452,7 +1466,8 @@ h4 {
   border-radius: 10px;
   cursor: pointer;
   padding: 7px;
-  .icon-all{
+
+  .icon-all {
     height: 100%;
     width: auto;
   }
@@ -1531,5 +1546,10 @@ h4 {
   &:end {
     background: URL("/img/bd/scroll-array-end.svg") no-repeat 50% #485499;
   }
+}
+.table-wrapper{
+  margin: 10px 20px;
+  padding: 0px;
+
 }
 </style>
