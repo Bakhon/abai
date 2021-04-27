@@ -3479,14 +3479,13 @@
                       </el-table-column>
                     </el-table-column>
                   </el-table>
-                  <paginate
-
+                  <el-pagination
+                    round
                     :page-count="pageCount"
-                    :click-handler="pageChangeHandler"
-                    :prev-text="trans('tr.previous')"
-                    :next-text="trans('tr.next')"
+                    @current-change="pageChangeHandler"
+                    layout="prev, pager, next"
                     :container-class="'pagination'">
-                  </paginate>
+                  </el-pagination>
 
           </div>
         </div>
