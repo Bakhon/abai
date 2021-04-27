@@ -10,7 +10,7 @@ use App\Models\Refs\Gu;
 use App\Models\Refs\Well;
 use App\Models\ComplicationMonitoring\PipeType;
 
-class MapPipe extends Model
+class OilPipe extends Model
 {
     protected $guarded = ['id'];
     protected $hidden = [

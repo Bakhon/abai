@@ -2,7 +2,7 @@
 
 namespace App\Models\ComplicationMonitoring;
 
-use App\Models\Pipes\MapPipe;
+use App\Models\Pipes\OilPipe;
 use Illuminate\Database\Eloquent\Model;
 
 class Material extends Model
@@ -12,8 +12,8 @@ class Material extends Model
         return $this->hasMany(Pipe::class)->withDefault();
     }
 
-    public function map_pipe()
+    public function oilPipes()
     {
-        return $this->hasMany(MapPipe::class);
+        return $this->hasMany(OilPipe::class);
     }
 }

@@ -4,7 +4,7 @@ namespace App\Imports;
 
 use App\Models\ComplicationMonitoring\Material;
 use App\Models\ComplicationMonitoring\PipeType;
-use App\Models\Pipes\MapPipe;
+use App\Models\Pipes\OilPipe;
 use App\Models\Pipes\PipeCoord;
 use App\Models\Refs\Ngdu;
 use App\Models\Refs\Zu;
@@ -82,7 +82,7 @@ class Ngdu4WellsImport implements ToCollection, WithEvents, WithColumnLimit, Wit
                 }
 
                 $this->ngdu = Ngdu::where('name', 'НГДУ-4')->first();
-                MapPipe::where('ngdu_id', $this->ngdu->id)->whereIn('between_points', self::BETWEEN_POINTS_ARRAY)->delete();
+                OilPipe::where('ngdu_id', $this->ngdu->id)->whereIn('between_points', self::BETWEEN_POINTS_ARRAY)->delete();
                 Well::where('ngdu_id', $this->ngdu->id)->delete();
 
                 $this->command->line(' ');
@@ -158,7 +158,7 @@ class Ngdu4WellsImport implements ToCollection, WithEvents, WithColumnLimit, Wit
                 $material = Material::where('roughness', $roughness)->first();
 
                 $this->command->info('Create Pipe ' . $row[self::PIPE_NAME]);
-                $pipe = MapPipe::firstOrCreate(
+                $pipe = OilPipe::firstOrCreate(
                     [
                         'name' => $row[self::PIPE_NAME],
                         'ngdu_id' => $this->ngdu->id,
@@ -254,7 +254,7 @@ class Ngdu4WellsImport implements ToCollection, WithEvents, WithColumnLimit, Wit
                     $pipe_names = explode('&', $pipe->name);
 
                     foreach ($pipe_names as $pipe_name) {
-                        $temp_pipe = MapPipe::where('name', $pipe_name)->first();
+                        $temp_pipe = OilPipe::where('name', $pipe_name)->first();
 
                         if ($temp_pipe) {
                             $zu = Zu::find($temp_pipe->zu_id);

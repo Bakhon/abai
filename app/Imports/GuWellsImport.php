@@ -4,7 +4,7 @@ namespace App\Imports;
 
 use App\Models\ComplicationMonitoring\Material;
 use App\Models\ComplicationMonitoring\PipeType;
-use App\Models\Pipes\MapPipe;
+use App\Models\Pipes\OilPipe;
 use App\Models\Pipes\PipeCoord;
 use App\Models\Refs\Ngdu;
 use App\Models\Refs\Zu;
@@ -163,7 +163,7 @@ class GuWellsImport implements ToCollection, WithEvents, WithColumnLimit, WithSt
                 $material = Material::where('roughness', $roughness)->first();
 
                 $this->command->info('Create Pipe '.$row[self::PIPE_NAME]);
-                $pipe = MapPipe::firstOrCreate(
+                $pipe = OilPipe::firstOrCreate(
                     [
                         'name' => $row[self::PIPE_NAME],
                         'ngdu_id' => $this->ngdu->id,
@@ -323,7 +323,7 @@ class GuWellsImport implements ToCollection, WithEvents, WithColumnLimit, WithSt
                     $pipe->save();
 
                     foreach ($pipe_names as $pipe_name) {
-                        $temp_pipe = MapPipe::where('name', $pipe_name)->
+                        $temp_pipe = OilPipe::where('name', $pipe_name)->
                             where('ngdu_id', $this->ngdu->id)->
                             where('gu_id', $this->gu->id)->first();
 

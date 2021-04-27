@@ -4,7 +4,7 @@ namespace App\Models\Pipes;
 
 
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Pipes\MapPipe;
+use App\Models\Pipes\OilPipe;
 
 class PipeCoord extends Model
 {
@@ -15,8 +15,8 @@ class PipeCoord extends Model
         'updated_at'
     ];
 
-    public function mapPipe()
+    public function oilPipes()
     {
-        return $this->belongsTo(MapPipe::class);
+        return $this->belongsTo(OilPipe::class);
     }
 }

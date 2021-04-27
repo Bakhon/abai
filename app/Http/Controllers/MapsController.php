@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\ComplicationMonitoring\PipeType;
-use App\Models\Pipes\MapPipe;
+use App\Models\Pipes\OilPipe;
 use App\Models\Pipes\PipeCoord;
 use App\Models\Refs\Ngdu;
 use Illuminate\Http\Request;
@@ -46,7 +46,7 @@ class MapsController extends Controller
 
     public function mapData(Request $request, DruidService $druidService): array
     {
-        $pipes = MapPipe::with('coords', 'pipeType')->get();
+        $pipes = OilPipe::with('coords', 'pipeType')->get();
 
         $center = [52.854602599069, 43.426262258809];
 
@@ -88,10 +88,10 @@ class MapsController extends Controller
 
     private function getPipesWithCoords(array &$coordinates): \Illuminate\Database\Eloquent\Collection
     {
-        $map_pipes = MapPipe::with('coords', 'pipeType')->get();
+        $oilPipes = OilPipe::with('coords', 'pipeType')->get();
         $coords = [];
 
-        $map_pipes->map(
+        $oilPipes->map(
             function ($map_pipe) use (&$coordinates, &$coords) {
                 $map_pipe->coords->map(
                     function ($coord) use (&$coordinates, &$map_pipe, &$coords) {
@@ -114,7 +114,7 @@ class MapsController extends Controller
             }
         );
 
-        return $map_pipes;
+        return $oilPipes;
     }
 
     private function getWellOilInfo(DruidService $druidService): array
@@ -196,7 +196,7 @@ class MapsController extends Controller
     public function storePipe(Request $request): \Symfony\Component\HttpFoundation\Response
     {
         $pipe_input = $request->input('pipe');
-        $pipe = new MapPipe;
+        $pipe = new OilPipe;
         $pipe->fill($pipe_input);
         $pipe->save();
 
@@ -207,7 +207,7 @@ class MapsController extends Controller
             $pipe_coord->save();
         }
 
-        $pipe = MapPipe::with('coords', 'pipeType')->find($pipe->id);
+        $pipe = OilPipe::with('coords', 'pipeType')->find($pipe->id);
 
         return response()->json(
             [
@@ -281,7 +281,7 @@ class MapsController extends Controller
         );
     }
 
-    public function updatePipe(Request $request, MapPipe $pipe): \Symfony\Component\HttpFoundation\Response
+    public function updatePipe(Request $request, OilPipe $pipe): \Symfony\Component\HttpFoundation\Response
     {
         $pipe_input = $request->input('pipe');
         $pipe->fill($pipe_input);
@@ -293,7 +293,7 @@ class MapsController extends Controller
             $pipe_coord->save();
         }
 
-        $pipe = MapPipe::with('coords', 'pipeType')->find($pipe->id);
+        $pipe = OilPipe::with('coords', 'pipeType')->find($pipe->id);
 
         return response()->json(
             [
@@ -336,7 +336,7 @@ class MapsController extends Controller
         );
     }
 
-    public function deletePipe(MapPipe $pipe): \Symfony\Component\HttpFoundation\Response
+    public function deletePipe(OilPipe $pipe): \Symfony\Component\HttpFoundation\Response
     {
         PipeCoord::where('map_pipe_id', $pipe->id)->delete();
         $pipe->delete();

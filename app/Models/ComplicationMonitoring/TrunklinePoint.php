@@ -2,7 +2,7 @@
 
 namespace App\Models\ComplicationMonitoring;
 
-use App\Models\Pipes\MapPipe;
+use App\Models\Pipes\OilPipe;
 use App\Models\Refs\Gu;
 use App\Models\Refs\Ngdu;
 use Illuminate\Database\Eloquent\Model;
@@ -22,9 +22,9 @@ class TrunklinePoint extends Model
         return $this->belongsTo(Ngdu::class);
     }
 
-    public function map_pipe()
+    public function oilPipes()
     {
-        return $this->belongsTo(MapPipe::class);
+        return $this->belongsTo(OilPipe::class);
     }
 
     public function trunkline_end_point()

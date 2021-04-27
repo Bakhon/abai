@@ -5,7 +5,7 @@ namespace App\Imports;
 use App\Console\Commands\Import\Wells;
 use App\Models\ComplicationMonitoring\Material;
 use App\Models\ComplicationMonitoring\PipeType;
-use App\Models\Pipes\MapPipe;
+use App\Models\Pipes\OilPipe;
 use App\Models\Pipes\PipeCoord;
 use App\Models\Refs\Ngdu;
 use Illuminate\Support\Collection;
@@ -75,7 +75,7 @@ class TrunklineImport implements ToCollection, WithEvents, WithColumnLimit, With
                         $between_points[] = $key;
                     }
 
-                    MapPipe::where('ngdu_id', $this->ngdu->id)->whereIn('between_points', $between_points)->delete();
+                    OilPipe::where('ngdu_id', $this->ngdu->id)->whereIn('between_points', $between_points)->delete();
                 }
 
                 if (strpos($this->sheetName, 'НГДУ') !== 0) {
@@ -134,7 +134,7 @@ class TrunklineImport implements ToCollection, WithEvents, WithColumnLimit, With
                 $material = Material::where('roughness', $roughness)->first();
 
                 $this->command->info('Create Pipe '.$row[self::PIPE_START_NAME]);
-                $pipe = MapPipe::firstOrCreate(
+                $pipe = OilPipe::firstOrCreate(
                     [
                         'name' => $row[self::PIPE_START_NAME],
                         'ngdu_id' => $this->ngdu->id
