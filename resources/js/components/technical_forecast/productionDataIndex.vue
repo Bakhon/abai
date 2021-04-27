@@ -1,11 +1,14 @@
 <template>
   <div class="container-fluid economic-wrap">
     <div class="row justify-content-between">
-      <vue-table-dynamic :params="params" ref="table">
-        <a slot="column-11" slot-scope="scope" :href="scope.cellData">
-          {{ trans('app.edit') }}
-        </a>
-      </vue-table-dynamic>
+      <select-source
+          :form="form"
+          @change="getTechData"/>
+
+      <vue-table-dynamic
+          v-if="form.source_id"
+          :params="params"
+          ref="table"/>
     </div>
   </div>
 </template>
@@ -13,6 +16,7 @@
 <script>
 import VModal from 'vue-js-modal'
 import VueTableDynamic from 'vue-table-dynamic'
+import SelectSource from "./components/SelectSource";
 
 Vue.use(VModal, {dynamicDefault: {draggable: true, resizable: true}});
 
@@ -20,8 +24,12 @@ export default {
   name: "tech-data-component",
   components: {
     VueTableDynamic,
+    SelectSource
   },
   data: () => ({
+    form: {
+      source_id: null
+    },
     sources: [],
     params: {
       data: [],
@@ -53,18 +61,11 @@ export default {
     },
     loading: false
   }),
-  created() {
-    this.getTechData()
-  },
   methods: {
-    async getSources() {
-      const {data} = await this.axios.get(this.localeUrl('/tech_source_data_json'))
-
-      this.sources = data.tech_source_data
-    },
-
     async getTechData() {
-      const {data} = await this.axios.get(this.localeUrl('/tech_data_json'))
+      this.params.data = []
+
+      const {data} = await this.axios.get(this.localeUrl('/tech_data_json', {params: this.form}))
 
       this.params.data = data.tech_data
     },

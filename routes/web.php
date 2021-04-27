@@ -103,6 +103,7 @@ Route::group(
                 // economic tech data
                 Route::get('tech_data_list', 'Refs\TechnicalDataController@refsList')->name('tech_data_list');
                 Route::resource('tech_struct_source', 'Refs\TechnicalStructureSourceController');
+                Route::get('tech_struct_sources', 'Refs\TechnicalStructureSourceController@getSources');
                 Route::resource('tech_struct_company', 'Refs\TechnicalStructureCompanyController');
                 Route::resource('tech_struct_field', 'Refs\TechnicalStructureFieldController');
                 Route::resource('tech_struct_ngdu', 'Refs\TechnicalStructureNgduController');
@@ -112,7 +113,6 @@ Route::group(
                 Route::resource('tech_data_forecast', 'Refs\TechnicalDataForecastController');
                 Route::resource('tech_data_log', 'Refs\TechnicalDataLogController');
                 Route::get('tech_data_json', 'Refs\TechnicalDataForecastController@techDataJson');
-                Route::get('tech_source_data_json', 'Refs\TechnicalStructureSourceController@sourceDataJson');
                 Route::get('technical_forecast/upload_excel', 'Refs\TechnicalDataController@uploadExcel')->name('tech_refs_upload');
                 Route::post('technical_forecast/import_excel', 'Refs\TechnicalDataController@importExcel')->name('tech_refs_import');
 

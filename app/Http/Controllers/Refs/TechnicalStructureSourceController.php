@@ -12,10 +12,10 @@ class TechnicalStructureSourceController extends TechnicalStructureController
     protected $controller_name = 'source';
     protected $index_route = "tech_struct_source.index";
 
-    public function sourceDataJson(): array
+    public function getSources(): array
     {
         return [
-            'tech_source_data' => TechnicalStructureSource::all()
+            'sources' => TechnicalStructureSource::all()
         ];
     }
 }
