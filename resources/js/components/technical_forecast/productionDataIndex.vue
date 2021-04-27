@@ -60,7 +60,7 @@ export default {
     async getSources() {
       const {data} = await this.axios.get(this.localeUrl('/tech_source_data_json'))
 
-      this.sources = data.sources
+      this.sources = data.tech_source_data
     },
 
     async getTechData() {

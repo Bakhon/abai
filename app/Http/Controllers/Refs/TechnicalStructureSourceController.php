@@ -15,7 +15,7 @@ class TechnicalStructureSourceController extends TechnicalStructureController
     public function sourceDataJson(): array
     {
         return [
-            'sources' => TechnicalStructureSource::all()
+            'tech_source_data' => TechnicalStructureSource::all()
         ];
     }
 }
