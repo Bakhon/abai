@@ -412,8 +412,9 @@ export default {
                     accident: _.sumBy(dzo, 'accident'),
                     restrictions: _.sumBy(dzo, 'restrictions'),
                     otheraccidents: _.sumBy(dzo, 'otheraccidents'),
-                    productionFactForMonth: _.round(_.sumBy(dzo, factFieldName), 0),
-                    productionPlanForMonth: _.round(_.sumBy(dzo, planFieldName), 0),
+                    factMonth: _.round(_.sumBy(dzo, factFieldName), 0),
+                    planMonth: _.round(_.sumBy(dzo, planFieldName), 0),
+                    dzoMonth: id,
                 }))
                 .value();
 
@@ -935,6 +936,10 @@ export default {
     watch: {
         bigTable: function () {
             this.dzoCompanySummary = this.bigTable;
+            this.calculateDzoCompaniesSummary();
+        },
+        tables: function() {
+            this.dzoCompanySummary = this.tables;
             this.calculateDzoCompaniesSummary();
         },
         dzoCompaniesSummaryForChart: function () {
