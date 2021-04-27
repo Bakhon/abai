@@ -56,7 +56,7 @@ class FieldCalcController extends MainController
             $company['ecorefsemppers'] = $company->getCompanyBarrelPriceByDirection(1, 2)->get()->toArray();
             $company['eco_refs_prep_elect_prs_brig_costs'] = $company->compRas(2)->get();
             $company['opiu'] = SubholdingCompany::whereName($company->name)->first();
-            if($company['opiu']){
+            if($company['opiu']) {
                 $handbook = HandbookRepTt::where('parent_id', 0)->with('childHandbookItems')->get()->toArray();
                 $companyRepTtValues = $company['opiu']->statsByDate($currentYear)->get()->toArray();
                 $company['opiu']['values'] = $this->recursiveSetValueToHandbookByType($handbook, $companyRepTtValues, $currentYear, $previousYear, $dateFrom, $dateTo);
@@ -71,8 +71,11 @@ class FieldCalcController extends MainController
             'BZ7001850000', 'B72186000000', 'BZ7001880000', 'BZ7001900500', 'B72190070000',
             'B72190080000'
             ];
-        dd(FieldCalcHelper::sumOverTree($companies[0]['opiu']));
+        $opiuValues = $companies[0]['opiu']['values'];
 
+        FieldCalcHelper::sumOverTree($opiuValues, $currentYear);
+        $showData = FieldCalcHelper::getShowDataOnTree($opiuNames, $opiuValues);
+        dd($showData);
     }
 
 }
