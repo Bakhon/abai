@@ -10,7 +10,7 @@
           @loaded="loading = false"
           @change="getData"/>
 
-      <vue-table-dynamic v-if="form.source_id" :params="params" ref="table">
+      <vue-table-dynamic v-if="form.sc_fa" :params="params" ref="table">
         <a slot="column-16" slot-scope="{ props }" :href="props.cellData">
           {{ trans('app.edit') }}
         </a>

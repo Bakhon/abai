@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Refs;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Refs\StoreTechnicalDataForecastRequest;
-use App\Http\Requests\Refs\TechnicalDataForecastRequest;
+use App\Http\Requests\Technical\StoreTechnicalDataForecastRequest;
+use App\Http\Requests\Technical\TechnicalDataForecastRequest;
 use App\Models\Refs\TechnicalDataForecast;
 use App\Models\Refs\TechnicalStructureGu;
 use App\Models\Refs\TechnicalStructureSource;

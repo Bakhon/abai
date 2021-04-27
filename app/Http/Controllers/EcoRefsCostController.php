@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\EcoRefs\Cost\EcoRefsCostRequest;
 use App\Imports\EconomicIbrahimImport;
 use App\Models\EcoRefsCompaniesId;
 use App\Models\EcoRefsCost;
@@ -22,7 +23,7 @@ class EcoRefsCostController extends Controller
         return view('ecorefscost.index', compact('ecorefscost'));
     }
 
-    public function economicDataJson(Request $request): array
+    public function economicDataJson(EcoRefsCostRequest $request): array
     {
         $economicData = EcoRefsCost::query()
             ->whereScFa($request->sc_fa)
