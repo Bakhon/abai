@@ -31,13 +31,13 @@
                 </p>
                   <ul class="nested">
                     <li>
-                      <p><img src="/img/bd/pointer-solid.svg" alt="">
+                      <p>
                         <span class="file">Прирост извлекаемых запасов нефти и конденсата</span></p>
                     </li>
                     <li>
                       <p>
+                        <img src="/img/bd/pointer-solid.svg" alt="">
                                             <span class="caret">
-                                                <img src="/img/bd/pointer-solid.svg" alt="">
                                                 Исполнение бизнес- инициатив</span></p>
                       <ul class="nested">
                         <li>
@@ -55,8 +55,8 @@
                         <ul class="nested">
                           <li>
                             <p>
+                              <img src="/img/bd/pointer-solid.svg" alt="">
                                                     <span class="caret">
-                                                    <img src="/img/bd/pointer-solid.svg" alt="">
                                                     Реализация инвестиционных проектов
                                                     </span>
                             </p>
@@ -905,6 +905,10 @@ for (i = 0; i < toggler.length; i++) {
 }
 
 .custom-directory {
+  img{
+    padding-bottom: 5px;
+  }
+  
   ul, li {
     color: white;
     list-style: none;
