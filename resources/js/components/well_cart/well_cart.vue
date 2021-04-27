@@ -5,15 +5,17 @@
         <div class="row">
           <div class="col">
             <div class="well-deal">
-              <div class="icon-ierarchy"></div>
-              <h2>Дело скважины</h2>
-              <div class="icon-all" style="margin-left: auto;">
-                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M11 1L5.8053 6L11 11" stroke="white" stroke-width="1.2" stroke-linecap="round"
-                        stroke-linejoin="round"/>
-                  <path d="M6.19472 1L1 6L6.19472 11" stroke="white" stroke-width="1.2" stroke-linecap="round"
-                        stroke-linejoin="round"/>
-                </svg>
+              <div class="border-bottom">
+                <div class="icon-ierarchy"></div>
+                <h2>Дело скважины</h2>
+                <div class="icon-all" style="margin-left: auto;">
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M11 1L5.8053 6L11 11" stroke="white" stroke-width="1.2" stroke-linecap="round"
+                          stroke-linejoin="round"/>
+                    <path d="M6.19472 1L1 6L6.19472 11" stroke="white" stroke-width="1.2" stroke-linecap="round"
+                          stroke-linejoin="round"/>
+                  </svg>
+                </div>
               </div>
             </div>
           </div>
@@ -709,7 +711,7 @@
         </div>
       </div>
     </div>
-    <div class="b-popup" style="display:block;">
+    <div class="b-popup">
       <div class="b-container bg-dark">
         <div class="row">
           <div class="col">
@@ -889,7 +891,7 @@ for (i = 0; i < toggler.length; i++) {
   overflow: hidden;
   position: fixed;
   top: 0px;
-  display: block;
+  display: none;
 }
 
 .b-popup .b-popup-content {
@@ -1010,7 +1012,11 @@ h4 {
 .well-deal {
   width: 100%;
   display: flex;
-  padding: 10px 25px;
+  padding: 15px 19px;
+  .border-bottom{
+    display: flex;
+    border-bottom: 1px solid #555BA6 !important;
+  }
 
   h2 {
     font-size: 20px;
@@ -1428,6 +1434,11 @@ h4 {
   overflow: hidden;
   border-radius: 10px;
   cursor: pointer;
+  padding: 7px;
+  .icon-all{
+    height: 100%;
+    width: auto;
+  }
 }
 
 .icon-pointer {
