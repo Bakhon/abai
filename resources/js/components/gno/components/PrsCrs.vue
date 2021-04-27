@@ -91,7 +91,7 @@ mounted() {
         this.numberRepairs = nno['prs']
         this.numberNNO = nno['NNO'].toFixed(0)
         this.krsTable = JSON.parse(krs)["data"]
-        
+        console.log(nno)
     })
     
     var wi = this.wellIncl.split('_');

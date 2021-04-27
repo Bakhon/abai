@@ -262,14 +262,32 @@ export default {
       buildModel(){
         this.hPumpFromIncl = this.$store.getters.getHpump
         var wi = this.wellIncl.split('_');
-        let uri = "http://172.20.103.187:7575/api/pgno/" + wi[0] + "/" + wi[1] + "/incl";
+        let uri = "http://172.20.103.187:7573/api/pgno/incl";
         this.$emit('update:isLoading', true);
         this.hPumpFromIncl = this.$store.getters.getHpump
 
-        this.axios.get(uri).then((response) => {
+        if (this.expChoose=='ШГН'){
+          this.lift_method="ШГН"
+          this.step=10
+        } else {
+          this.lift_method="ЭЦН"
+          this.step=20
+        }
+
+        let jsonData = JSON.stringify(
+          {"well_number": wi[1],
+            "lift_method": this.lift_method,
+            "field": wi[0],
+            "glubina":this.hPumpFromIncl.substring(0,4) * 1,
+            "step":this.step,
+          }
+        )
+       
+        this.axios.post(uri,jsonData).then((response) => {
           var data = JSON.parse(response.data.InclData)
           if (data.data) {
             this.data = data.data
+            console.log(this.data)
             this.dxArray = this.data.map((r) => Math.abs(r.dx * 1))
             this.dyArray = this.data.map((r) => Math.abs(r.dy * 1))
             this.dzArray = this.data.map((r) => Math.abs(r.md * 1))
@@ -278,60 +296,15 @@ export default {
             this.zArr = this.data.map((r) => (r.md * -1))
             this.hVal = this.hPumpFromIncl.substring(0,4) * 1
             this.indexZ = this.closestVal(this.hVal, this.zArr)
-            this.ecnColor=this.data.map((r) => r.dls_color)
+            this.kraska=this.data.map((r) => r.dls_color)
             this.dls=this.data.map((r) => Math.round(Math.abs(r.dls * 100))/100)
             this.incl=this.data.map((r) =>Math.round(Math.abs(r.incl * 100))/100)
 
-            if (this.expChoose=='ШГН'){
-              this.glubina=this.hVal+10
-              this.index1 = this.closestVal(this.hVal, this.zArr)
-              this.index2 = this.closestVal(this.glubina, this.zArr)
-            } else {
-              this.glubina=this.hVal+20
-              this.index1 = this.closestVal(this.hVal, this.zArr)
-              this.index2 = this.closestVal(this.glubina, this.zArr)
-            }
-
-            if(!this.dzArray.includes(this.hVal) && this.dzArray[this.index1]>this.hVal){
-              this.index1=this.index1-1
-            }
-            if (!this.dzArray.includes(this.glubina) && this.dzArray[this.index2]<this.glubina){
-              this.index2=this.index2+1
-            }
-
-            this.dlsGlubina=Math.max(...this.dls.slice(this.index1+1,this.index2+1))
-            this.inclGlubina=Math.max(...this.incl.slice(this.index1+1,this.index2+1))
-            this.maxDls=Math.max(...this.dls.slice(0,this.index2+1))
-            this.maxIncl=Math.max(...this.incl.slice(0,this.index2+1))
-
-            for (const i in this.ecnColor){
-              this.tmp=this.dzArray[this.closestVal(this.dzArray[i] + 20, this.zArr)]
-              this.tmp2=Math.max(...this.dls.slice(Number(i)+1,this.closestVal(this.dzArray[i] + 20, this.zArr)+1))
-              this.tmp3=Math.max(...this.dls.slice(Number(i)+1,this.closestVal(this.dzArray[i] + 20, this.zArr)+2))
-              if (this.tmp>=this.dzArray[i] + 20){
-                if (this.tmp2>0.3){
-                  this.ecnColor[i]='red'
-                } else if (this.tmp2<=0.3 && this.tmp2>0.05) {
-                  this.ecnColor[i]='yellow'
-                } else {
-                  this.ecnColor[i]='green'
-                }
-              } else {
-                if (this.tmp3>0.3){
-                  this.ecnColor[i]='red'
-                } else if (this.tmp3<=0.3 && this.tmp3>0.05) {
-                  this.ecnColor[i]='yellow'
-                } else {
-                  this.ecnColor[i]='green'
-                }
-              }
-            }
-          
-            if (this.expChoose=='ШГН'){
-              this.kraska= this.data.map((r) => r.dls_color)
-            } else {
-              this.kraska=this.ecnColor
-            }
+            this.data2=response.data.CenterData
+            this.dlsGlubina=this.data2[0]
+            this.maxDls=this.data2[1]
+            this.inclGlubina=this.data2[2]
+            this.maxIncl=this.data2[3]
 
             this.pointZ = this.zArr[this.indexZ]
             this.pointX = this.xArr[this.indexZ]
@@ -379,6 +352,9 @@ export default {
             }
             ],
             this.point = []
+
+            
+
           } else this.data = [];
         }).finally(() => {
           this.$emit('update:isLoading', false);
