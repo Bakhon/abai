@@ -3680,7 +3680,8 @@ export default {
         // this.isloading = false;
         if (data) {
           this.wells = data.data;
-          this.setupPagination(this.wells);
+          this.setupPagination(data.data);
+          
           this.fullWells = data.data;
         } else {
           console.log("No data");
