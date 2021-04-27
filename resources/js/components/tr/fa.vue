@@ -130,7 +130,7 @@
       />
       <a
         class="but-nav__link but"
-        :href="isChartLink"
+        :href="chartLink"
         @click="pushBign('chart')"
         style="background: #272953"
         ><svg
@@ -211,10 +211,10 @@
             <span>{{trans('tr.operation_method')}}</span>
           </td>
           <td v-show= isHide class="colspan" :colspan= colsize7 style="background: #2c3379">
-            {{fa_table_header}}
+            {{faTableHeader}}
           </td>
           <td v-show= isHide class="colspan" :colspan= colsize7 style="background: #1a2370">
-            {{fa_table_header2}}
+            {{faTableHeader2}}
           </td>
           <td class="colspan" colspan="1" style="background: #12135C">
             {{trans('tr.q_oil_deviation')}}
@@ -1023,7 +1023,6 @@ export default {
   },
   data: function () {
     return {
-
       faHeader: null,
       wells: [],
       searchString: "",
@@ -1042,8 +1041,8 @@ export default {
       workDaysHeader: this.trans('tr.work_day'),
       waterCutHeader: this.trans('tr.water_cut'),
       pLayerHeader: this.trans('tr.p_layer'),
-      workDaysMeasure: this.trans('tr.day'),
-      isChartLink: "fa_weekly_chart",
+      workDaysMeasure: this.trans('tr.t'),
+      chartLink: "faWeeklyChart",
       filter: [...fields],
       fieldFilterOptions: [
         {
@@ -1063,119 +1062,12 @@ export default {
       factorsMeasure: this.trans('tr.t'),
       qLiquidMeasure: this.trans('tr.m3'),
       prodIndexMeasure: this.trans('tr.m3_day_atm'),
-      fa_table_header: null,
-      fa_table_header2: null,
+      faTableHeader: null,
+      faTableHeader2: null,
       firstWeekDate: null,
       firstWeekDate2: null,
       secWeekDate: null,
       secWeekDate2: null,
-      chartBarOptions: {
-        chart: {
-          height: 350,
-          type: "bar",
-        },
-        plotOptions: {
-          bar: {
-            dataLabels: {
-              position: "bottom",
-            },
-          },
-        },
-        dataLabels: {
-          enabled: true,
-          formatter: function (val) {
-            return val;
-          },
-          offsetY: -20,
-          style: {
-            fontSize: "12px",
-            colors: ["#304758"],
-          },
-        },
-
-        xaxis: {
-          categories: [
-            this.trans('tr.failure_to_reach_the_rated_P_bottomhole'),
-            this.trans('tr.water_cut_increase'),
-            this.trans('tr.p_layer_decrease'),
-            this.trans('tr.decrease_productivity_index'),
-          ],
-          position: "bottom",
-          axisBorder: {
-            show: false,
-          },
-          axisTicks: {
-            show: false,
-          },
-          crosshairs: {
-            fill: {
-              type: "gradient",
-              gradient: {
-                colorFrom: "#D8E3F0",
-                colorTo: "#BED1E6",
-                stops: [0, 100],
-                opacityFrom: 0.4,
-                opacityTo: 0.5,
-              },
-            },
-          },
-          tooltip: {
-            enabled: true,
-          },
-        },
-        yaxis: {
-          axisBorder: {
-            show: false,
-          },
-          axisTicks: {
-            show: false,
-          },
-          labels: {
-            show: true,
-            formatter: function (val) {
-              return val;
-            },
-          },
-        },
-      },
-      chartOptions: {
-        labels: [
-          this.trans('tr.failure_to_reach_the_rated_P_bottomhole'),
-          this.trans('tr.water_cut_increase'),
-          this.trans('tr.p_layer_decrease'),
-          this.trans('tr.decrease_productivity_index'),
-        ],
-        chart: {
-          type: "pie",
-        },
-        dataLabels: {
-          enabled: false,
-        } /*убирается подсветка процентов на круге*/,
-        /*tooltip: {
-        enabled: false},*/
-        legend: {
-          show: false,
-        } /*убирается навигация рядом с кругом*/,
-        colors: ["#330000", "#804d00", "#00004d", "#999900"],
-        plotOptions: {
-          pie: {
-            expandOnClick: true,
-          },
-        },
-        responsive: [
-          {
-            breakpoint: 480,
-            options: {
-              chart: {
-                width: 200,
-              },
-              legend: {
-                position: "bottom",
-              },
-            },
-          },
-        ],
-      },
     };
   },
   watch: {
@@ -1264,7 +1156,7 @@ export default {
       this.colsize2= 2;
       this.isDynamic = true;
       this.isGenHide = true;
-      this.isChartLink = "fa_weekly_chart"
+      this.chartLink = "faWeeklyChart"
       this.$store.commit("fa/SET_IS_DYNAMIC", true);
       this.$store.commit("globalloading/SET_LOADING", true);
       this.$store.commit("fa/SET_MONTH", mm);
@@ -1313,14 +1205,14 @@ export default {
           this.prodIndexMeasure = this.trans('tr.m3_day_atm');     
           this.dt = dd + "." + mm + "." + yyyy;
           this.secWeekDate = prdd + "." + prmm + "." + pryyyy;
-          this.fa_table_header = this.trans('tr.period_of_act_data') + this.firstWeekDate2 + '-' + this.dt;
-          this.fa_table_header2 = this.trans('tr.period_of_act_data') + this.dt2 + '-' + this.secWeekDate;
+          this.faTableHeader = this.trans('tr.period_of_act_data') + this.firstWeekDate2 + '-' + this.dt;
+          this.faTableHeader2 = this.trans('tr.period_of_act_data') + this.dt2 + '-' + this.secWeekDate;
           this.faHeader = this.trans('tr.fa') + ' ' + this.dt2 + '-' + this.dt;
           this.pbhHeader = this.trans('tr.bottomhole_pressure');
           this.workDaysHeader = this.trans('tr.work_day');
           this.waterCutHeader = this.trans('tr.water_cut');
           this.pLayerHeader = this.trans('tr.p_layer');
-          this.workDaysMeasure = this.trans('tr.day');
+          this.workDaysMeasure = this.trans('tr.t');
 
         });
     },
@@ -1333,7 +1225,7 @@ export default {
       const prMm = choosenSecDt[1];
       const yyyy = choosenDt[0];
       const pryyyy = choosenSecDt[0];
-      this.isChartLink = "trfa"
+      this.chartLink = "trfa"
       if (choosenDt[1] <= choosenSecDt[1] && choosenDt[0] === choosenSecDt[0]) {
         Vue.prototype.$notifyError(this.trans('tr.fa_alarm'));
       } else {
@@ -1390,8 +1282,8 @@ export default {
             this.prodIndexMeasure = this.trans('tr.t_day_atm');
             this.qLiquidMeasure = this.trans('tr.m3_day');
             this.factorsMeasure = this.trans('tr.t_day');  
-            this.fa_table_header = this.trans('tr.period_of_act_data') + this.dt;
-            this.fa_table_header2 = this.trans('tr.period_of_act_data') + this.dt2;
+            this.faTableHeader = this.trans('tr.period_of_act_data') + this.dt;
+            this.faTableHeader2 = this.trans('tr.period_of_act_data') + this.dt2;
             this.faHeader = this.trans('tr.fa') + ' ' + this.dt2 + '-' + this.dt;
             this.pbhHeader = this.trans('tr.failure_to_reach_the_rated_P_bottomhole');
             this.workDaysHeader = this.trans('tr.exp_coefficient');
@@ -1411,14 +1303,6 @@ export default {
       } else {
         this.wells = fullWells.filter((e) => filter.indexOf(e.field) !== -1);
       }
-    },
-    pushBign(bign) {
-      switch (bign) {
-        case "bign1":
-          this.params.data = this.wellsList;
-          break;
-      }
-      this.$modal.show(bign);
     },
     getColor(status, ...values) {
       if (status < "0" && status === Math.min(status, ...values))
@@ -1441,7 +1325,6 @@ export default {
     },
     toogle() {
       this.isHide = !this.isHide;
-
     },
     calendarDynamic() {
       this.isDatepicker1 = !this.isDatepicker1
@@ -1547,7 +1430,7 @@ export default {
     this.isGenHide= true;
     this.colsize7 = 7;
     this.colsize2 = 2;
-    this.isChartLink = "fa_weekly_chart"
+    this.chartLink = "faWeeklyChart"
     var weekd1 = yyyy + "-" + mm + "-" + dd;
     var weekd2 = pryyyy + "-" + prmm + "-" + prdd;
     this.$store.commit("fa/SET_IS_DYNAMIC", true);
@@ -1587,8 +1470,8 @@ export default {
         }
         this.date1 = weekd1;
         this.date2 = weekd2;
-        this.fa_table_header = this.trans('tr.period_of_act_data') + this.firstWeekDate2 + '-' + this.firstWeekDate;
-        this.fa_table_header2 = this.trans('tr.period_of_act_data') + this.secWeekDate2 + '-' + this.secWeekDate;
+        this.faTableHeader = this.trans('tr.period_of_act_data') + this.firstWeekDate2 + '-' + this.firstWeekDate;
+        this.faTableHeader2 = this.trans('tr.period_of_act_data') + this.secWeekDate2 + '-' + this.secWeekDate;
         this.faHeader = this.trans('tr.fa') + ' ' + this.secWeekDate2 + '-' + this.firstWeekDate;
       });
   },
