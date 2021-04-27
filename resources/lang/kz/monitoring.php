@@ -143,8 +143,6 @@ return array (
       'bsw' => 'Сулану, %',
       'surge_tank_pressure' => 'Буферлік сыйымдылық қысымы, кгс\\см2',
       'pump_discharge_pressure' => 'Сораптың шығыс қысымы, кгс\\см2',
-      'heater_inlet_pressure' => 'Пештің кіріс температурасы, С',
-      'heater_output_pressure' => 'Пештің шығыс температурасы, С',
       'temperature' => 'Пештің кіріс температурасы, С',
       'heater_inlet_temperature' => 'Пештің кіріс температурасы, С',
       'heater_output_temperature' => 'Пештің шығыс температурасы, С',
@@ -213,24 +211,25 @@ return array (
     ),
   ),
   'corrosion_name' => 'Коррозия',
-  'pipe' => 
-  array (
-    'menu' => 'Құбырлар',
-    'title' => 'Құбырлар дерекқоры',
-    'create_title' => 'Құбырлар бойынша деректерді енгізу',
-    'edit_title' => 'Құбырлар бойынша түзетулерді енгізу',
-    'fields' => 
-    array (
-      'length' => 'Ұзындық',
-      'outside_diameter' => 'Сыртқы диаметр, мм',
-      'inner_diameter' => 'Ішкі диаметр',
-      'thickness' => 'Қабырға қалыңдығы, мм',
-      'roughness' => 'Кедір-бұдырлық',
-      'material' => 'Материал',
-      'plot' => 'Бөлшегі',
-    ),
-  ),
-  'inhibitor' => 
+    'pipe' =>
+        array (
+            'menu' => 'Құбырлар',
+            'title' => 'Құбырлар дерекқоры',
+            'create_title' => 'Құбырлар бойынша деректерді енгізу',
+            'edit_title' => 'Құбырлар бойынша түзетулерді енгізу',
+            'gu' => 'ТҚ',
+            'fields' =>
+                array (
+                    'length' => 'Ұзындық',
+                    'outside_diameter' => 'Сыртқы диаметр, мм',
+                    'inner_diameter' => 'Ішкі диаметр',
+                    'thickness' => 'Қабырға қалыңдығы, мм',
+                    'roughness' => 'Кедір-бұдырлық',
+                    'material' => 'Материал',
+                    'plot' => 'Бөлшегі',
+                ),
+        ),
+    'inhibitor' =>
   array (
     'title' => 'Ингибитор анықтамалығы',
     'create_title' => 'Ингибитор енгізу',
@@ -255,9 +254,9 @@ return array (
   array (
     'zu' => 'ӨҚ',
   ),
-  'well' => 'Ұңғы',
   'gu' => 
   array (
+    'gu' => 'ТҚ',
     'fields' => 
     array (
       'surge_tank_pressure' => 'Буферлік сыйымдылық қысымы',
@@ -268,25 +267,7 @@ return array (
   array (
     'well' => 'Ұңғы',
   ),
-  'pipe' => 
-  array (
-    'fields' => 
-    array (
-      'inner_diameter' => 'Ішкі диаметр',
-      'length' => 'Ұзындық',
-      'material' => 'Материал',
-      'outside_diameter' => 'Сыртқы диаметр',
-      'plot' => 'Бөлшегі',
-      'roughness' => 'Кедір-бұдырлық',
-      'thickness' => 'Қабырға қалыңдығы',
-    ),
-    'edit_title' => 'Құбырлар бойынша түзетулерді енгізу',
-    'title' => 'Құбырлар дерекқоры',
-    'menu' => 'Құбырлар',
-    'create_title' => 'Құбырлар бойынша деректерді енгізу',
-    'gu' => 'ТҚ',
-  ),
-  'pipe_types' => 
+    'pipe_types' =>
   array (
     'fields' => 
     array (
