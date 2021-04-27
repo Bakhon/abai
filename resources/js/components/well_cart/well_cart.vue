@@ -954,9 +954,9 @@ for (i = 0; i < toggler.length; i++) {
 
   .caret {
     cursor: pointer;
-    -webkit-user-select: none; /* Safari 3.1+ */
-    -moz-user-select: none; /* Firefox 2+ */
-    -ms-user-select: none; /* IE 10+ */
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
     user-select: none;
     margin-right: auto;
   }
@@ -964,8 +964,8 @@ for (i = 0; i < toggler.length; i++) {
   .file {
     cursor: pointer;
     padding-left: 0px;
-    -webkit-user-select: none; /* Safari 3.1+ */
-    -moz-user-select: none; /* Firefox 2+ */
+    -webkit-user-select: none;
+    -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
     margin-right: auto;
