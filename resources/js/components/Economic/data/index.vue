@@ -81,7 +81,7 @@ export default {
 
       const {data} = await this.axios.get(this.localeUrl('/economic_data_json'), {params: this.form})
 
-      this.params.data = data.economic_data
+      this.params.data = data.data
 
       this.loading = false
     },

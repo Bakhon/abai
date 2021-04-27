@@ -55,7 +55,7 @@ class TechnicalDataForecastController extends Controller
         }
 
         return [
-            'tech_data' => $response
+            'data' => $response
         ];
     }
 

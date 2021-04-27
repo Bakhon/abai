@@ -77,7 +77,7 @@ export default {
 
       const {data} = await this.axios.get(this.localeUrl('/tech_data_json'), {params: this.form})
 
-      this.params.data = data.tech_data
+      this.params.data = data.data
 
       this.loading = false
     },

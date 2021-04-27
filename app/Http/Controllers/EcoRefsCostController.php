@@ -67,7 +67,7 @@ class EcoRefsCostController extends Controller
         }
 
         return [
-            'economic_data' => $response
+            'data' => $response
         ];
     }
 
