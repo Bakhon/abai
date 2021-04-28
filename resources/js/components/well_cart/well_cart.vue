@@ -124,7 +124,7 @@
                             fill="#237DEB"/>
                       </svg>
                     </div>
-                    <div style="display:flex">
+                    <div class="text-wrapper">
                       <div class="txt5">Фонд</div>
                       <div class="icon-pointer" style="margin-left:auto"></div>
                     </div>
@@ -181,7 +181,7 @@
                             fill="#237DEB"/>
                       </svg>
                     </div>
-                    <div style="display:flex">
+                    <div class="text-wrapper">
                       <div class="txt5">График замеров</div>
                       <div class="icon-pointer" style="margin-left:auto"></div>
                     </div>
@@ -251,7 +251,7 @@
                             fill="#237DEB"/>
                       </svg>
                     </div>
-                    <div style="display:flex">
+                    <div class="text-wrapper">
                       <div class="txt5">Эксплуатационные показатели</div>
                       <div class="icon-pointer" style="margin-left:auto"></div>
                     </div>
@@ -422,7 +422,7 @@
                     <div class="button1-vc-inner">
                       <div class="icon-all ">
                       </div>
-                      <div style="display:flex">
+                      <div class="text-wrapper">
                         <div class="txt5">Нефть, жикость</div>
                         <div class="icon-pointer" style="margin-left:auto"></div>
                       </div>
@@ -1252,6 +1252,8 @@ h4 {
     font-weight: 700;
     font-size: 14px;
     line-height: 17px;
+    margin-top: auto;
+    margin-bottom: auto;
   }
 }
 
@@ -1378,15 +1380,23 @@ h4 {
 }
 
 .button1-vc-inner {
-  display: inline-block;
+  display: flex;
   float: left;
   width: 100%;
-  .icon-all{
+
+  .icon-all {
     height: 100%;
-    .txt5{
+
+    .txt5 {
       margin-bottom: auto;
       margin-top: auto;
+      width: 100%;
     }
+  }
+
+  .text-wrapper {
+    display: flex;
+    width: 100%;
   }
 }
 
@@ -1516,6 +1526,8 @@ h4 {
   white-space: nowrap;
   background: url(/img/bd/pointer.svg) 50% 100% no-repeat;
   margin-left: auto;
+  margin-top: auto;
+  margin-bottom: auto;
 }
 
 .col {
@@ -1610,15 +1622,18 @@ h4 {
   margin-right: 0px;
   margin-left: 0px;
 }
-.left-column{
+
+.left-column {
   max-width: 398px !important;
   min-width: 398px !important;
 }
-.right-column{
+
+.right-column {
   max-width: 348px !important;
   min-width: 348px !important;
 }
-.buttons-no-wrap{
+
+.buttons-no-wrap {
   min-width: 150px !important;
 }
 </style>
