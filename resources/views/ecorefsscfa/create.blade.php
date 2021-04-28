@@ -30,7 +30,6 @@
                                         <input id="is_fact"
                                                name="is_fact"
                                                type="checkbox"
-                                               value="0"
                                                class="form-check-input">
 
                                         <label for="is_fact"
