@@ -3,24 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\EcoRefs\Cost\EcoRefsCostRequest;
+use App\Http\Requests\EcoRefs\Cost\ImportExcelEcoRefsCostRequest;
+use App\Http\Requests\EcoRefs\Cost\StoreEcoRefsCostRequest;
 use App\Imports\EconomicIbrahimImport;
 use App\Models\EcoRefsCompaniesId;
 use App\Models\EcoRefsCost;
 use App\Models\Refs\EcoRefsScFa;
-use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 
 class EcoRefsCostController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        $ecorefscost = EcoRefsCost::latest()->with('scfa')->with('company')->paginate(5);
-        return view('ecorefscost.index', compact('ecorefscost'));
+        return view('ecorefscost.index');
     }
 
     public function economicDataJson(EcoRefsCostRequest $request): array
@@ -37,12 +32,13 @@ class EcoRefsCostController extends Controller
             __('economic_reference.fix'), __('economic_reference.gaoverheads'),
             __('economic_reference.wr_nopayroll'), __('economic_reference.wr_payroll'),
             __('economic_reference.wo'), __('economic_reference.net_back'),
-            __('economic_reference.comment'),
+            __('economic_reference.amort'), __('economic_reference.comment'),
             __('economic_reference.added_date_author'), __('economic_reference.changed_date_author'),
             __('economic_reference.edit'), __('economic_reference.id_of_add')];
 
         $response = [$columns];
 
+        /** @var EcoRefsCost $item */
         foreach ($economicData as $item) {
             $response[] = [
                 $item->scfa->name,
@@ -58,6 +54,7 @@ class EcoRefsCostController extends Controller
                 $item->wr_payroll,
                 $item->wo,
                 $item->net_back,
+                $item->amort,
                 $item->comment,
                 $item->author ? "{$item->created_at} {$item->author->name}" : "",
                 $item->editor ? "{$item->updated_at} {$item->editor->name}" : "",
@@ -71,104 +68,44 @@ class EcoRefsCostController extends Controller
         ];
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function store(StoreEcoRefsCostRequest $request)
     {
-        $request->validate([
-            'sc_fa' => 'required',
-            'company_id' => 'required',
-            'date' => 'required',
-            'variable' => 'nullable|numeric',
-            'fix_noWRpayroll' => 'nullable|numeric',
-            'fix_nopayroll' => 'nullable|numeric',
-            'fix' => 'nullable|numeric',
-            'gaoverheads' => 'nullable|numeric',
-            'wr_nopayroll' => 'nullable|numeric',
-            'wr_payroll' => 'nullable|numeric',
-            'wo' => 'nullable|numeric',
-            'net_back' => 'nullable|numeric',
-        ]);
+        EcoRefsCost::create($request->validated());
 
-        EcoRefsCost::create($request->all());
-
-        return redirect()->route('ecorefscost.index')->with('success', __('app.created'));
+        return redirect()
+            ->route('ecorefscost.index')
+            ->with('success', __('app.created'));
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function edit(int $id)
     {
-        //
+        $ecoRefsCost = EcoRefsCost::findOrFail($id);
+
+        $scFas = EcoRefsScFa::get();
+
+        $companies = EcoRefsCompaniesId::get();
+
+        return view('ecorefscost.edit', compact('ecoRefsCost', 'scFas', 'companies'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    public function update(StoreEcoRefsCostRequest $request, int $id)
     {
-        $eco_refs_cost = EcoRefsCost::find($id);
-        $sc_fa = EcoRefsScFa::get();
-        $company = EcoRefsCompaniesId::get();
+        $EcoRefsCost = EcoRefsCost::findOrFail($id);
 
-        return view('ecorefscost.edit', compact('sc_fa', 'eco_refs_cost', 'company'));
+        $EcoRefsCost->update($request->validated());
 
+        return redirect()
+            ->route('ecorefscost.index')
+            ->with('success', __('app.updated'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function destroy(int $id)
     {
-        $EcoRefsCost = EcoRefsCost::find($id);
-        $request->validate([
-            'sc_fa' => 'required',
-            'company_id' => 'required',
-            'date' => 'required',
-            'variable' => 'nullable|numeric',
-            'fix_noWRpayroll' => 'nullable|numeric',
-            'fix_nopayroll' => 'nullable|numeric',
-            'fix' => 'nullable|numeric',
-            'gaoverheads' => 'nullable|numeric',
-            'wr_nopayroll' => 'nullable|numeric',
-            'wr_payroll' => 'nullable|numeric',
-            'wo' => 'nullable|numeric',
-            'net_back' => 'nullable|numeric',
-        ]);
+        EcoRefsCost::query()->whereId($id)->delete();
 
-        $EcoRefsCost->update($request->all());
-
-        return redirect()->route('ecorefscost.index')->with('success', __('app.updated'));
-
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        $row = EcoRefsCost::find($id);
-        $row->delete();
-
-        return redirect()->route('ecorefscost.index')->with('success', __('app.deleted'));
+        return redirect()
+            ->route('ecorefscost.index')
+            ->with('success', __('app.deleted'));
     }
 
     public function uploadExcel()
@@ -176,12 +113,12 @@ class EcoRefsCostController extends Controller
         return view('ecorefscost.import_excel');
     }
 
-    public function importExcel(Request $request)
+    public function importExcel(ImportExcelEcoRefsCostRequest $request)
     {
-        $user_id = auth()->id();
-        $file_name = $request->select_file->getClientOriginalName();
-        $file_name = pathinfo($file_name, PATHINFO_FILENAME);
-        Excel::import(new EconomicIbrahimImport($user_id, $file_name), $request->select_file);
-        return back()->with('success', 'Загрузка прошла успешно.');
+        $fileName = pathinfo($request->file->getClientOriginalName(), PATHINFO_FILENAME);
+
+        Excel::import(new EconomicIbrahimImport(auth()->id(), $fileName), $request->file);
+
+        return back()->with('success', __('app.success'));
     }
 }

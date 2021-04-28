@@ -37,7 +37,7 @@
                             <label>{{ __('economic_reference.choose_excel_file') }}</label>
                         </td>
                         <td width="30">
-                            <input type="file" name="select_file"/>
+                            <input type="file" name="file"/>
                         </td>
                         <td width="30%" align="left">
                             <input type="submit" name="upload" class="btn btn-primary"
