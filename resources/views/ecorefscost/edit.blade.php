@@ -131,7 +131,7 @@
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
                                         <strong>{{ __('economic_reference.amort') }}:</strong>
-                                        <input type="float" name="net_back" class="form-control"
+                                        <input type="float" name="amort" class="form-control"
                                                value="{{$ecoRefsCost->amort}}">
                                     </div>
                                 </div>
