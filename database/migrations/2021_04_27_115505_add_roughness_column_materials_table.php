@@ -35,11 +35,19 @@ class AddRoughnessColumnMaterialsTable extends Migration
 
     public function seed()
     {
-        $material = Material::where('name', 'Сталь')->first();
+        $material = Material::firstOrCreate(
+            [
+                'name' => 'Сталь'
+            ]
+        );
         $material->roughness = 0.2;
         $material->save();
 
-        $material = Material::where('name', 'Полипропилен')->first();
+        $material = Material::firstOrCreate(
+            [
+                'name' => 'Полипропилен'
+            ]
+        );
         $material->roughness = 0.005;
         $material->save();
 
