@@ -1352,7 +1352,7 @@ h4 {
       margin: 0px;
       font-family: Harmonia Sans Pro Cyr;
       font-weight: 400;
-      font-size: 14px;
+      font-size: 16px;
     }
   }
 
