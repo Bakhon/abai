@@ -43,7 +43,7 @@ Vue.use(VueSimpleAlert);
 Vue.use(BootstrapVue);
 
 //Mixins
-import showToast from './mixins/showToast';
+import showToast from '~/mixins/showToast';
 Vue.mixin(showToast);
 
 /**
