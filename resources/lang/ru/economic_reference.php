@@ -75,4 +75,5 @@ return array (
   'course_prices' => 'Курс доллара',
   'add' => 'Добавить',
   'name' => 'Название',
+  'optimization_percents' => 'Проценты оптимизации',
 );

@@ -30,7 +30,7 @@
 
       <delete-button
           class="ml-2"
-          @click.native="deleteOilPrice(index)"/>
+          @click.native="deleteRelation(index, 'oil_prices')"/>
     </div>
 
     <add-button @click.native="addOilPrice"/>
@@ -48,10 +48,32 @@
 
       <delete-button
           class="ml-2"
-          @click.native="deleteCoursePrice(index)"/>
+          @click.native="deleteRelation(index, 'course_prices')"/>
     </div>
 
     <add-button @click.native="addCoursePrice"/>
+
+    <h5 class="text-secondary mt-3">
+      {{ trans('economic_reference.optimization_percents') }}
+    </h5>
+
+    <div v-for="(optimization, index) in form.optimizations"
+         :key="`optimization_${index}`"
+         class="form-group d-flex">
+      <input v-model="optimization.value1"
+             type="numeric"
+             class="form-control">
+
+      <input v-model="optimization.value2"
+             type="numeric"
+             class="form-control ml-2">
+
+      <delete-button
+          class="ml-2"
+          @click.native="deleteRelation(index, 'optimizations')"/>
+    </div>
+
+    <add-button @click.native="addOptimization"/>
 
     <div class="text-center">
       <save-button @click.native="saveForm"/>
@@ -87,16 +109,14 @@ export default {
       this.form.course_prices.push({value: 0})
     },
 
-    deleteOilPrice(index) {
-      if (this.form.oil_prices.length < 2) return
-
-      this.form.oil_prices.splice(index, 1)
+    addOptimization() {
+      this.form.optimizations.push({value1: 0, value2: 0})
     },
 
-    deleteCoursePrice(index) {
-      if (this.form.course_prices.length < 2) return
+    deleteRelation(index, key) {
+      if (this.form[key].length < 2) return
 
-      this.form.course_prices.splice(index, 1)
+      this.form[key].splice(index, 1)
     },
 
     saveForm() {
