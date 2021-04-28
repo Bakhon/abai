@@ -19,7 +19,7 @@ class ZuHistoryObserver extends EditHistoryObserver
 
         $history = [];
         $fields = [
-            'gu_id' => 'monitoring.gu',
+            'gu_id' => 'monitoring.gu.gu',
             'name' => 'app.param_name',
             'lat' => 'app.lat',
             'lon' => 'app.lon',

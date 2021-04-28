@@ -2,8 +2,9 @@
 
 namespace App\Imports;
 
+use App\Models\ComplicationMonitoring\Material;
 use App\Models\ComplicationMonitoring\PipeType;
-use App\Models\Pipes\MapPipe;
+use App\Models\Pipes\OilPipe;
 use App\Models\Pipes\PipeCoord;
 use App\Models\Refs\Ngdu;
 use App\Models\Refs\Zu;
@@ -156,14 +157,21 @@ class GuWellsImport implements ToCollection, WithEvents, WithColumnLimit, WithSt
 
                 $pipe_type = $this->createPipeType($row);
 
+                $roughness = str_replace(',', '.', $row[self::ROUGHNESS]);
+                $roughness = floatval($roughness);
+
+                $material = Material::where('roughness', $roughness)->first();
+
                 $this->command->info('Create Pipe '.$row[self::PIPE_NAME]);
-                $pipe = MapPipe::firstOrCreate(
+                $pipe = OilPipe::firstOrCreate(
                     [
                         'name' => $row[self::PIPE_NAME],
                         'ngdu_id' => $this->ngdu->id,
                         'gu_id' => $this->gu->id
                     ]
                 );
+
+                $pipe->material_id = $material->id;
                 $pipe->type_id = $pipe_type->id;
 
                 $between_points = $this->getPipeType($row);
@@ -193,10 +201,12 @@ class GuWellsImport implements ToCollection, WithEvents, WithColumnLimit, WithSt
 
                 if ($between_points == 'zu-zu_coll') {
                     $zu = Zu::where('lat', $row[self::LAT])->where('lon', $row[self::LON])->first();
+
                     if ($zu) {
                         $pipe->start_point = $zu->name;
                         $pipe->zu_id = $zu->id;
                     }
+
                     $pipe->end_point = $row[self::PIPE_START_NAME];
                 }
 
@@ -257,10 +267,11 @@ class GuWellsImport implements ToCollection, WithEvents, WithColumnLimit, WithSt
 
                             $this->errors[] = $message;
 
-                            PipeCoord::where('map_pipe_id', $pipe->id)->delete();
+                            PipeCoord::where('oil_pipe_id', $pipe->id)->delete();
                             $pipe->delete();
 
                             $zu = $well = $pipe = $between_points = null;
+                            $is_new_pipe = true;
                             continue;
                         } else {
                             $row[self::FINISH_POINT] = $zu->name;
@@ -315,7 +326,7 @@ class GuWellsImport implements ToCollection, WithEvents, WithColumnLimit, WithSt
                     $pipe->save();
 
                     foreach ($pipe_names as $pipe_name) {
-                        $temp_pipe = MapPipe::where('name', $pipe_name)->
+                        $temp_pipe = OilPipe::where('name', $pipe_name)->
                             where('ngdu_id', $this->ngdu->id)->
                             where('gu_id', $this->gu->id)->first();
 
@@ -373,17 +384,21 @@ class GuWellsImport implements ToCollection, WithEvents, WithColumnLimit, WithSt
     private function createPipeType($row): PipeType
     {
         $this->command->info('Create Pipe Type');
-        $roughness = str_replace(',', '.', $row[self::ROUGHNESS]);
-        $roughness = floatval($roughness);
+        $thickness = ($row[self::OUTSIDE_DIAMETER] - $row[self::INNER_DIAMETER])/2;
 
-        return PipeType::firstOrCreate(
+
+        $pipeType =  PipeType::firstOrCreate(
             [
                 'outside_diameter' => $row[self::OUTSIDE_DIAMETER],
                 'inner_diameter' => $row[self::INNER_DIAMETER],
-                'thickness' => ($row[self::OUTSIDE_DIAMETER] - $row[self::INNER_DIAMETER])/2,
-                'roughness' => $roughness
+                'thickness' => $thickness
             ]
         );
+
+        $pipeType->name = (int)$row[self::OUTSIDE_DIAMETER].'x'.(int)$thickness;
+        $pipeType->save();
+
+        return $pipeType;
     }
 
     private function createWell($row): Well
@@ -406,27 +421,29 @@ class GuWellsImport implements ToCollection, WithEvents, WithColumnLimit, WithSt
     private function createZu($row): Zu
     {
         $this->command->info('Create Zu '.$row[self::FINISH_POINT]);
+        $name = str_replace("СЏ", "СП", strtoupper($row[self::FINISH_POINT]));
+        $name = str_replace("Ѐ", "А", $name);
+
         $zu = Zu::firstOrNew(
             [
-                'name' => strtoupper($row[self::FINISH_POINT]),
                 'ngdu_id' => $this->ngdu->id,
-                'gu_id' => $this->gu->id
+                'gu_id' => $this->gu->id,
+                'name' => $name
             ]
         );
 
         $zu->lat = $row[self::LAT];
         $zu->lon = $row[self::LON];
-        $zu->elevation = $row[self::ELEVATION];
 
         $zu->save();
 
         return $zu;
     }
 
-    private function createPipeCoord($row, int $map_pipe_id): void
+    private function createPipeCoord($row, int $oilPipeId): void
     {
         $pipe_coords = new PipeCoord;
-        $pipe_coords->map_pipe_id = $map_pipe_id;
+        $pipe_coords->oil_pipe_id = $oilPipeId;
         $pipe_coords->lat = $row[self::LAT];
         $pipe_coords->lon = $row[self::LON];
         $pipe_coords->elevation = $row[self::ELEVATION];

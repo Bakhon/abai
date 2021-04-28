@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\EconomicCostsResource;
+use App\Http\Requests\EcoRefs\Cost\EcoRefsCostRequest;
 use App\Imports\EconomicIbrahimImport;
 use App\Models\EcoRefsCompaniesId;
 use App\Models\EcoRefsCost;
 use App\Models\Refs\EcoRefsScFa;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -24,12 +23,14 @@ class EcoRefsCostController extends Controller
         return view('ecorefscost.index', compact('ecorefscost'));
     }
 
-    public function economicDataJson(): JsonResponse
+    public function economicDataJson(EcoRefsCostRequest $request): array
     {
-        $economic_data = EconomicCostsResource::collection(EcoRefsCost::all());
+        $economicData = EcoRefsCost::query()
+            ->whereScFa($request->sc_fa)
+            ->with(['scfa', 'company', 'author', 'editor'])
+            ->get();
 
-        $economic_data_array = [];
-        $column_names = [__('economic_reference.source_data'),
+        $columns = [__('economic_reference.source_data'),
             __('economic_reference.company'), __('economic_reference.month-year'),
             __('economic_reference.variable'), __('economic_reference.fix_noWRpayroll'),
             __('economic_reference.fix_payroll'), __('economic_reference.fix_nopayroll'),
@@ -40,12 +41,10 @@ class EcoRefsCostController extends Controller
             __('economic_reference.added_date_author'), __('economic_reference.changed_date_author'),
             __('economic_reference.edit'), __('economic_reference.id_of_add')];
 
-        array_push($economic_data_array, $column_names);
+        $response = [$columns];
 
-        foreach ($economic_data as $item) {
-            $edit_url = route("ecorefscost.edit", $item->id);
-
-            $row = [
+        foreach ($economicData as $item) {
+            $response[] = [
                 $item->scfa->name,
                 $item->company->name,
                 date('Y-m', strtotime($item->date)),
@@ -62,16 +61,14 @@ class EcoRefsCostController extends Controller
                 $item->comment,
                 $item->author ? "{$item->created_at} {$item->author->name}" : "",
                 $item->editor ? "{$item->updated_at} {$item->editor->name}" : "",
-                $edit_url,
+                route("ecorefscost.edit", $item->id),
                 $item->log_id,
             ];
-
-            array_push($economic_data_array, $row);
         }
 
-        return response()->json([
-            'economic_data' => $economic_data_array
-        ]);
+        return [
+            'data' => $response
+        ];
     }
 
     /**
