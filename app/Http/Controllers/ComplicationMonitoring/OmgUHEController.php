@@ -290,7 +290,6 @@ class OmgUHEController extends CrudController
                                         ->orderByDesc('date')
                                         ->first();
 
-//        dump($result);
         $ddng = OmgCA::where('gu_id', $request->gu_id)
                         ->where('date', Carbon::parse($request->date)->year . "-01-01")
                         ->first();
