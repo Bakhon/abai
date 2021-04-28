@@ -211,25 +211,7 @@ return array (
     ),
   ),
   'corrosion_name' => 'Коррозия',
-    'pipe' =>
-        array (
-            'menu' => 'Құбырлар',
-            'title' => 'Құбырлар дерекқоры',
-            'create_title' => 'Құбырлар бойынша деректерді енгізу',
-            'edit_title' => 'Құбырлар бойынша түзетулерді енгізу',
-            'gu' => 'ТҚ',
-            'fields' =>
-                array (
-                    'length' => 'Ұзындық',
-                    'outside_diameter' => 'Сыртқы диаметр, мм',
-                    'inner_diameter' => 'Ішкі диаметр',
-                    'thickness' => 'Қабырға қалыңдығы, мм',
-                    'roughness' => 'Кедір-бұдырлық',
-                    'material' => 'Материал',
-                    'plot' => 'Бөлшегі',
-                ),
-        ),
-    'inhibitor' =>
+  'inhibitor' => 
   array (
     'title' => 'Ингибитор анықтамалығы',
     'create_title' => 'Ингибитор енгізу',
@@ -267,7 +249,25 @@ return array (
   array (
     'well' => 'Ұңғы',
   ),
-    'pipe_types' =>
+  'pipe' => 
+  array (
+    'fields' => 
+    array (
+      'inner_diameter' => 'Ішкі диаметр',
+      'length' => 'Ұзындық',
+      'material' => 'Материал',
+      'outside_diameter' => 'Сыртқы диаметр',
+      'plot' => 'Бөлшегі',
+      'roughness' => 'Кедір-бұдырлық',
+      'thickness' => 'Қабырға қалыңдығы',
+    ),
+    'edit_title' => 'Құбырлар бойынша түзетулерді енгізу',
+    'title' => 'Құбырлар дерекқоры',
+    'menu' => 'Құбырлар',
+    'create_title' => 'Құбырлар бойынша деректерді енгізу',
+    'gu' => 'ТҚ',
+  ),
+  'pipe_types' => 
   array (
     'fields' => 
     array (
