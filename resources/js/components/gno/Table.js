@@ -458,7 +458,8 @@ export default {
           "sep_value": this.sep_value,
           "mech_sep": this.mech_sep,
           "mech_sep_value": this.mech_sep_value,
-          "nat_sep": this.nat_sep
+          "nat_sep": this.nat_sep,
+          "nkt": this.nkt,
         });
       let uri = "http://172.20.103.187:7575/api/pgno/"+ this.field + "/" + this.wellNumber + "/download";
       this.axios.post(uri, jsonData,{responseType: "blob"}).then((response) => {
