@@ -14,23 +14,24 @@ class AddYieldPointRoughnessAndDataToMaterials extends Migration
     public function up()
     {
         Schema::table('materials', function (Blueprint $table) {
-            Schema::table('materials', function (Blueprint $table) {
-                $table->integer('yield_point');
-                $table->float('roughness');
-            });
-    
-            DB::Table('materials') -> insert(array(
-                'name' => 'Ст.20',
-                'yield_point' => '245',
-                'roughness' => '0.2'
-            ));
-    
-            DB::Table('materials') -> insert(array(
-                'name' => 'СПТ',
-                'yield_point' => '27',
-                'roughness' => '0.05'
-            ));
+            $table->integer('yield_point');
         });
+
+        $material = Material::firstOrCreate(
+            [
+                'name' => 'Ст.20'
+            ]
+        );
+        $material->yield_point = 245;
+        $material->save();
+
+        $material = Material::firstOrCreate(
+            [
+                'name' => 'СПТ'
+            ]
+        );
+        $material->yield_point = 27;
+        $material->save();
     }
 
     /**
@@ -41,10 +42,7 @@ class AddYieldPointRoughnessAndDataToMaterials extends Migration
     public function down()
     {
         Schema::table('materials', function (Blueprint $table) {
-            $table->dropColumn(['yield_point', 'roughness']);
-            DB::table('materials')->where('name','=','СТ.20')->delete();
-            DB::table('materials')->where('name','=','СПТ')->delete();
-
+            $table->dropColumn(['yield_point']);
         });
     }
 }
