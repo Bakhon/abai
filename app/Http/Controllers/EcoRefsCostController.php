@@ -9,6 +9,7 @@ use App\Imports\EconomicIbrahimImport;
 use App\Models\EcoRefsCompaniesId;
 use App\Models\EcoRefsCost;
 use App\Models\Refs\EcoRefsScFa;
+use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 
 class EcoRefsCostController extends Controller
@@ -115,9 +116,11 @@ class EcoRefsCostController extends Controller
 
     public function importExcel(ImportExcelEcoRefsCostRequest $request)
     {
-        $fileName = pathinfo($request->file->getClientOriginalName(), PATHINFO_FILENAME);
+        DB::transaction(function () use ($request) {
+            $fileName = pathinfo($request->file->getClientOriginalName(), PATHINFO_FILENAME);
 
-        Excel::import(new EconomicIbrahimImport(auth()->id(), $fileName), $request->file);
+            Excel::import(new EconomicIbrahimImport(auth()->id(), $fileName), $request->file);
+        });
 
         return back()->with('success', __('app.success'));
     }
