@@ -81,13 +81,42 @@ export default {
 
       this.params.data = []
 
-      const {data} = await this.axios.get(this.localeUrl('/economic_data_json'), {params: this.form})
+      const {data} = await this.axios.get(this.localeUrl('/eco_refs_cost_data'), {params: this.form})
 
-      this.params.data = data.data
+      this.params.data = [...[this.headers], ...data.data]
 
       this.loading = false
     },
   },
+  computed: {
+    headers() {
+      return this.columns.map(column => this.trans(`economic_reference.${column}`))
+    },
+
+    columns() {
+      return [
+        'source_data',
+        'company',
+        'month-year',
+        'variable',
+        'fix_noWRpayroll',
+        'fix_payroll',
+        'fix_nopayroll',
+        'fix',
+        'gaoverheads',
+        'wr_nopayroll',
+        'wr_payroll',
+        'wo',
+        'net_back',
+        'amort',
+        'comment',
+        'added_date_author',
+        'changed_date_author',
+        'edit',
+        'id_of_add'
+      ]
+    },
+  }
 };
 </script>
 <style lang="scss" scoped>
