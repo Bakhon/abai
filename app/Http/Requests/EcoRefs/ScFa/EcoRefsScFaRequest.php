@@ -1,15 +1,14 @@
 <?php
 
-namespace App\Http\Requests\EcoRefs\Cost;
+namespace App\Http\Requests\EcoRefs\ScFa;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ImportExcelEcoRefsCostRequest extends FormRequest
+class EcoRefsScFaRequest extends FormRequest
 {
     public function rules()
     {
         return [
-            'file' => 'required|file|mimetypes:.xls,.xslx',
             'is_fact' => 'nullable|boolean'
         ];
     }

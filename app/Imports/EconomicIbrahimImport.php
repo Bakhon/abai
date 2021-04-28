@@ -22,20 +22,25 @@ class EconomicIbrahimImport implements ToModel, WithBatchInserts, WithChunkReadi
 
     const CHUNK = 1000;
 
-    const ORG_ROW = 'org';
+    const ORG_COLUMN = 'org';
 
-    function __construct(int $userId, string $fileName)
+    function __construct(int $userId, string $fileName, bool $isFact)
     {
         $this->userId = $userId;
 
-        $this->logId = EconomicDataLog::create(['author_id' => $userId])->id;
+        $this->logId = EconomicDataLog::create([
+            'author_id' => $userId
+        ])->id;
 
-        $this->scFaId = EcoRefsScFa::firstOrCreate(['name' => $fileName])->id;
+        $this->scFaId = EcoRefsScFa::firstOrCreate(
+            ['name' => $fileName],
+            ['is_fact' => $isFact],
+        )->id;
     }
 
-    public function model(array $row)
+    public function model(array $row): ?EcoRefsCost
     {
-        if (!isset($row[0]) or ($row[0] == self::ORG_ROW)) {
+        if (!isset($row[0]) or ($row[0] == self::ORG_COLUMN)) {
             return null;
         }
 

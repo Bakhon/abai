@@ -21,7 +21,7 @@
                                 <th>Сценарий/Факт:</th>
                                 <th width="220px">{{__('app.action')}}</th>
                             </tr>
-                            @foreach ($ecorefsscfa as $item)
+                            @foreach ($scFas as $item)
                                 <tr>
                                     <td>{{ $item->id }}</td>
                                     <td>{{ $item->name }}</td>
@@ -36,7 +36,7 @@
                                 </tr>
                             @endforeach
                         </table>
-                        {!! $ecorefsscfa->links() !!}
+                        {!! $scFas->links() !!}
                     </div>
                 </div>
             </div>

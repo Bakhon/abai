@@ -91,9 +91,10 @@ class EcoRefsCostController extends Controller
 
     public function update(StoreEcoRefsCostRequest $request, int $id)
     {
-        $EcoRefsCost = EcoRefsCost::findOrFail($id);
+        /** @var EcoRefsCost $ecoRefsCost */
+        $ecoRefsCost = EcoRefsCost::findOrFail($id);
 
-        $EcoRefsCost->update($request->validated());
+        $ecoRefsCost->update($request->validated());
 
         return redirect()
             ->route('ecorefscost.index')
@@ -117,9 +118,18 @@ class EcoRefsCostController extends Controller
     public function importExcel(ImportExcelEcoRefsCostRequest $request)
     {
         DB::transaction(function () use ($request) {
-            $fileName = pathinfo($request->file->getClientOriginalName(), PATHINFO_FILENAME);
+            $fileName = pathinfo(
+                $request->file->getClientOriginalName(),
+                PATHINFO_FILENAME
+            );
 
-            Excel::import(new EconomicIbrahimImport(auth()->id(), $fileName), $request->file);
+            $import = new EconomicIbrahimImport(
+                auth()->id(),
+                $fileName,
+                (bool)$request->is_fact
+            );
+
+            Excel::import($import, $request->file);
         });
 
         return back()->with('success', __('app.success'));
