@@ -9,6 +9,7 @@
             </a>
         </div>
     </div>
+
     <div class="container my-4">
         <div class="row justify-content-center">
             <div class="col-md-4">
@@ -26,6 +27,7 @@
             </div>
         </div>
     </div>
+
     <div class="col p-4 bg-light" id="app">
         <economic-data-component></economic-data-component>
     </div>

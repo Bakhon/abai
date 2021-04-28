@@ -45,7 +45,7 @@ export default {
 
       const {data} = await this.axios.get(this.localeUrl('/eco_refs_sc_fas'), {params: this.fetchParams})
 
-      this.scFas = [...this.scFas, ...data.sc_fas]
+      this.scFas = [...this.scFas, ...data.data]
 
       this.$emit('loaded')
     },

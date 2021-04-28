@@ -606,10 +606,8 @@ class EcoRefsScFaController extends Controller
             $query->whereIsFact($request->is_fact);
         }
 
-        $scFas = $query->get();
-
         return [
-            'sc_fas' => $scFas
+            'data' => $query->get()
         ];
     }
 }
