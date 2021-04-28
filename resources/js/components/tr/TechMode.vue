@@ -3636,8 +3636,7 @@
                                             @change="editrow(scope.row,scope.$index)"
                                             v-model="scope.row.planned_wct[0]"
                                             :disabled="!edit">
-                                          </el-input>
-                                          
+                                          </el-input>  
                                 </div>   
                               </el-tooltip> 
                             </template>
@@ -3655,7 +3654,46 @@
                             </template>
                           </el-table-column>
                         </el-table-column>
+                        <el-table-column :label="trans('tr.work_days')">
+                          <el-table-column
+                            prop="planned_month_days"
+                            width="130"
+                            sortable
+                            >
+                            <template slot-scope="scope">
+                              <el-tooltip class="item" effect="dark"  v-bind:content="haveTooltip(scope.$index, `planned_month_days`)" :placement="isPlacement(scope.$index, `planned_month_days`)">
+                                <div v-if="!edit" :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`planned_month_days`)}" >
+                                          <span
+                                            :class="{
+                                              'circle-err': isCircleErrClass(scope.$index,`planned_month_days`)}"
+                                            :style="`background :${getColor(
+                                              wells[scope.$index].planned_month_days[1][0]
+                                            )}`"
+                                          >
+                                            </span><span>{{scope.row.planned_month_days[0] }}
+                                    </span>
 
+                                </div>
+                                <div v-if="edit" :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`planned_month_days`)}" >
+                                          <span
+                                            :class="{
+                                              'circle-err': isCircleErrClass(scope.$index,`planned_month_days`)}"
+                                            :style="`background :${getColor(
+                                              wells[scope.$index].planned_wct[1][0]
+                                            )}`"
+                                          >
+                                          </span>
+                                          <el-input
+                                            class="input_edit"
+                                            @change="editrow(scope.row,scope.$index)"
+                                            v-model="scope.row.planned_month_days[0]"
+                                            :disabled="!edit">
+                                          </el-input>  
+                                </div>   
+                              </el-tooltip> 
+                            </template>
+                          </el-table-column>
+                        </el-table-column>
                       </el-table-column>
                     </el-table-column>
                   </el-table>
@@ -4400,15 +4438,16 @@ export default {
           if (data) {
             console.log(data);
             this.fullWells = data.data;
+            this.setupPagination(data.data);
           } else {
-            this.fullWells = [];
+            this.pageData = [];
             console.log("No data");
           }
         })
         .catch((error) => {
           this.searched = searchParam ? true : false;
           this.$store.commit("globalloading/SET_LOADING", false);
-          this.fullWells = [];
+          this.pageData = [];
           console.log("search error = ", error);
         });
     },
