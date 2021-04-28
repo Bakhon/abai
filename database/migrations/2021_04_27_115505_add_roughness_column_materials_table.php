@@ -16,9 +16,11 @@ class AddRoughnessColumnMaterialsTable extends Migration
     {
         Schema::table('materials', function (Blueprint $table) {
             $table->float('roughness', 8, 4)->nullable();
+
+            $this->seed();
         });
 
-        $this->seed();
+
     }
 
     /**
