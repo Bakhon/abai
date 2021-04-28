@@ -3478,6 +3478,186 @@
                         </el-table-column>
                       </el-table-column>
                     </el-table-column>
+
+                    <!-- Намечаемый режим -->
+                    <el-table-column :label="trans('tr.intended_mode')">
+                      <el-table-column label="">
+                        <el-table-column :label="trans('tr.choke_diameter')">
+                          <el-table-column
+                            prop="planned_choke"
+                            width="130"
+                            sortable
+                            >
+                            <template slot-scope="scope">
+                              <el-tooltip class="item" effect="dark"  v-bind:content="haveTooltip(scope.$index, `planned_choke`)" :placement="isPlacement(scope.$index, `planned_choke`)">
+                                <div v-if="!edit" :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`planned_choke`)}" >
+                                          <span
+                                            :class="{
+                                              'circle-err': isCircleErrClass(scope.$index,`planned_choke`)}"
+                                            :style="`background :${getColor(
+                                              wells[scope.$index].planned_choke[1][0]
+                                            )}`"
+                                          >
+                                            </span><span v-if="scope.row.planned_choke[0] != null">{{scope.row.planned_choke[0]}}</span>
+                                </div>
+                                <div v-if="edit" :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`planned_choke`)}" >
+                                          <span
+                                            :class="{
+                                              'circle-err': isCircleErrClass(scope.$index,`planned_choke`)}"
+                                            :style="`background :${getColor(
+                                              wells[scope.$index].planned_choke[1][0]
+                                            )}`"
+                                          >
+                                            </span>
+                                            <el-input
+                                              class="input_edit"
+                                              @change="editrow(scope.row,scope.$index)"
+                                              v-model="scope.row.planned_choke[0]"
+                                              :disabled="!edit">
+                                            </el-input>
+
+                                </div>   
+                              </el-tooltip> 
+                            </template>
+                          </el-table-column>
+                        </el-table-column>
+                        <el-table-column :label="trans('tr.q_oil')">
+                          <el-table-column
+                            prop="planned_oil"
+                            width="130"
+                            sortable
+                            >
+                            <template slot-scope="scope">
+                              <el-tooltip class="item" effect="dark"  v-bind:content="haveTooltip(scope.$index, `planned_oil`)" :placement="isPlacement(scope.$index, `planned_oil`)">
+                                <div v-if="!edit" :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`planned_oil`)}" >
+                                          <span
+                                            :class="{
+                                              'circle-err': isCircleErrClass(scope.$index,`planned_oil`)}"
+                                            :style="`background :${getColor(
+                                              wells[scope.$index].planned_oil[1][0]
+                                            )}`"
+                                          >
+                                            </span><span v-if="scope.row.planned_oil[0] != null">
+                                            {{_.round(scope.row.planned_oil[0], 1)}}
+                                          </span>
+                                </div>  
+                              </el-tooltip> 
+                            </template>
+                          </el-table-column>
+                        </el-table-column>
+                        <el-table-column :label="trans('tr.q_liquid')">
+                          <el-table-column
+                            prop="planned_liq"
+                            width="130"
+                            sortable
+                            >
+                            <template slot-scope="scope">
+                              <el-tooltip class="item" effect="dark"  v-bind:content="haveTooltip(scope.$index, `planned_liq`)" :placement="isPlacement(scope.$index, `planned_liq`)">
+                                <div v-if="!edit" :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`planned_liq`)}" >
+                                          <span
+                                            :class="{
+                                              'circle-err': isCircleErrClass(scope.$index,`planned_liq`)}"
+                                            :style="`background :${getColor(
+                                              wells[scope.$index].planned_liq[1][0]
+                                            )}`"
+                                          >
+                                            </span><span v-if="scope.row.planned_liq[0] != null">
+                                          {{_.round(scope.row.planned_liq[0], 1)}}
+                                    </span>
+
+                                </div>
+                                <div v-if="edit" :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`planned_liq`)}" >
+                                          <span
+                                            :class="{
+                                              'circle-err': isCircleErrClass(scope.$index,`planned_liq`)}"
+                                            :style="`background :${getColor(
+                                              wells[scope.$index].planned_liq[1][0]
+                                            )}`"
+                                          >
+                                          </span>
+                                          <el-input
+                                            class="input_edit"
+                                            @change="editrow(scope.row,scope.$index)"
+                                            v-model="scope.row.planned_liq[0]"
+                                            :disabled="!edit">
+                                          </el-input>
+                                          
+                                </div>   
+                              </el-tooltip> 
+                            </template>
+                          </el-table-column>
+                        </el-table-column>
+                        <el-table-column :label="trans('tr.q_gas')">
+                          <el-table-column
+                            prop="planned_gas"
+                            width="130"
+                            sortable
+                            >
+                            <template slot-scope="scope">
+                              <span>
+                                  {{ Math.round(scope.row.planned_gas * 10) / 10 }}
+                              </span>
+                            </template>
+                          </el-table-column>
+                        </el-table-column>
+
+                        <el-table-column :label="trans('tr.water_cut')">
+                          <el-table-column
+                            prop="planned_wct"
+                            width="130"
+                            sortable
+                            >
+                            <template slot-scope="scope">
+                              <el-tooltip class="item" effect="dark"  v-bind:content="haveTooltip(scope.$index, `planned_wct`)" :placement="isPlacement(scope.$index, `planned_wct`)">
+                                <div v-if="!edit" :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`planned_wct`)}" >
+                                          <span
+                                            :class="{
+                                              'circle-err': isCircleErrClass(scope.$index,`planned_wct`)}"
+                                            :style="`background :${getColor(
+                                              wells[scope.$index].planned_wct[1][0]
+                                            )}`"
+                                          >
+                                            </span><span v-if="scope.row.planned_wct[0] != null">
+                                          {{_.round(scope.row.planned_wct[0], 1)}}
+                                    </span>
+
+                                </div>
+                                <div v-if="edit" :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`planned_wct`)}" >
+                                          <span
+                                            :class="{
+                                              'circle-err': isCircleErrClass(scope.$index,`planned_wct`)}"
+                                            :style="`background :${getColor(
+                                              wells[scope.$index].planned_wct[1][0]
+                                            )}`"
+                                          >
+                                          </span>
+                                          <el-input
+                                            class="input_edit"
+                                            @change="editrow(scope.row,scope.$index)"
+                                            v-model="scope.row.planned_wct[0]"
+                                            :disabled="!edit">
+                                          </el-input>
+                                          
+                                </div>   
+                              </el-tooltip> 
+                            </template>
+                          </el-table-column>
+                        </el-table-column>
+                        <el-table-column :label="trans('tr.gas_factor')">
+                          <el-table-column
+                            prop="planned_gor"
+                            width="130"
+                            sortable
+                            >
+                            <template slot-scope="scope">
+                              <div v-if="!edit">{{ Math.round(scope.row.planned_gor * 10) / 10 }}</div>
+                              <div v-if="edit"><el-input v-model="scope.row.planned_gor" @change="editrow(scope.row,scope.$index)" :disabled="!edit" class="input_edit"></el-input></div>
+                            </template>
+                          </el-table-column>
+                        </el-table-column>
+
+                      </el-table-column>
+                    </el-table-column>
                   </el-table>
                   <el-pagination
                     round
@@ -3760,7 +3940,8 @@ export default {
       "el-table_1_column_187",  "el-table_1_column_191",  "el-table_1_column_195",  "el-table_1_column_199", "el-table_1_column_279", "el-table_1_column_283", , "el-table_1_column_287"
       , "el-table_1_column_291", , "el-table_1_column_295", "el-table_1_column_299", "el-table_1_column_303", "el-table_1_column_303", "el-table_1_column_307", "el-table_1_column_311"
       , "el-table_1_column_315", "el-table_1_column_319", "el-table_1_column_323", "el-table_1_column_327", "el-table_1_column_331", "el-table_1_column_335", 
-      "el-table_1_column_339", "el-table_1_column_343", "el-table_1_column_347", "el-table_1_column_351", "el-table_1_column_355", "el-table_1_column_359", "el-table_1_column_363"], 
+      "el-table_1_column_339", "el-table_1_column_343", "el-table_1_column_347", "el-table_1_column_351", "el-table_1_column_355", "el-table_1_column_359", "el-table_1_column_363",
+      "el-table_1_column_397"], 
       filter_column: [], 
       
     };
