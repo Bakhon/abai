@@ -6,6 +6,7 @@
       <select-sc-fa
           :loading="loading"
           :form="form"
+          :fetch-params="{is_fact: 1}"
           @loading="loading = true"
           @loaded="loading = false"
           @change="getData"/>

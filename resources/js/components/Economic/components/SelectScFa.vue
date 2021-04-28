@@ -21,6 +21,10 @@ export default {
       required: true,
       type: Object
     },
+    fetchParams: {
+      required: false,
+      type: Object
+    }
   },
   data: () => ({
     scFas: []
@@ -39,7 +43,7 @@ export default {
         name: this.trans('economic_reference.select_item')
       }]
 
-      const {data} = await this.axios.get(this.localeUrl('/eco_refs_sc_fas'))
+      const {data} = await this.axios.get(this.localeUrl('/eco_refs_sc_fas'), {params: this.fetchParams})
 
       this.scFas = [...this.scFas, ...data.sc_fas]
 
