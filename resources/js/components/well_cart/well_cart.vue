@@ -1159,7 +1159,7 @@ h4 {
     padding: 10px 5px 10px 20px;
     border-radius: 10px;
     height: 40px;
-    background: url(/img/bd/search.svg) 1% #272953;
+    background: url(/img/bd/search.svg) 10% 45% #272953;
     border: 1px solid #3b4a84;
     background-size: contain;
     background-repeat: no-repeat;
@@ -1168,6 +1168,7 @@ h4 {
     font-size: 14px;
     font-family: Roboto;
     font-weight: 400;
+    background-size: auto;
 
     &::placeholder {
       padding: 0px;
