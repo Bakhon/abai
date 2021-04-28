@@ -78,8 +78,8 @@ class EconomicController extends Controller
         $granularity = $request->granularity;
         $granularityFormat = self::granularityFormat($granularity);
 
-        $profitabilityKey = $request->profitability;
-        list($profitabilityValues, $profitless) = self::profitabilityValues($profitabilityKey);
+        $profitabilityType = $request->profitability;
+        list($profitabilities, $profitless) = self::getProfitabilities($profitabilityType);
 
         $builder1 = $this
             ->druidClient
@@ -102,7 +102,7 @@ class EconomicController extends Controller
 
         foreach ($buildersProfitability as &$builder) {
             /** @var QueryBuilder $builder */
-            $builder->where($profitabilityKey, '=', $profitless);
+            $builder->where($profitabilityType, '=', $profitless);
         }
 
         $builder7 = $this
@@ -122,7 +122,7 @@ class EconomicController extends Controller
             ->select('__time', 'dt', function (ExtractionBuilder $extBuilder) use ($granularityFormat) {
                 $extBuilder->timeFormat($granularityFormat);
             })
-            ->select($profitabilityKey)
+            ->select($profitabilityType)
             ->sum('liquid')
             ->sum('bsw')
             ->sum('oil')
@@ -150,8 +150,8 @@ class EconomicController extends Controller
         $buildersProfitabilityCount = [];
 
         $statuses = [
-            $profitabilityKey => self::STATUS_ACTIVE,
-            $profitabilityKey . '_v_prostoe' => self::STATUS_PAUSE
+            $profitabilityType => self::STATUS_ACTIVE,
+            $profitabilityType . '_v_prostoe' => self::STATUS_PAUSE
         ];
 
         foreach ($statuses as $column => $status) {
@@ -165,7 +165,7 @@ class EconomicController extends Controller
                 ->select($column)
                 ->count('count')
                 ->where('status', '=', $status)
-                ->whereIn($column, $profitabilityValues);
+                ->whereIn($column, $profitabilities);
         }
 
 
@@ -211,8 +211,8 @@ class EconomicController extends Controller
 
         $dataChart1 = ['dt' => []];
 
-        foreach ($profitabilityValues as $value) {
-            $dataChart1[$value] = [];
+        foreach ($profitabilities as $profitability) {
+            $dataChart1[$profitability] = [];
         }
 
         $dataChart2 = $dataChart1;
@@ -250,9 +250,9 @@ class EconomicController extends Controller
         foreach ($result[self::BUILDER_OIL_PRODUCTION] as &$item) {
             $dataChart2['dt'][$item['dt']] = 1;
 
-            $dataChart2[$item[$profitabilityKey]][] = $item['oil'] / 1000;
+            $dataChart2[$item[$profitabilityType]][] = $item['oil'] / 1000;
 
-            $dataChart4[$item[$profitabilityKey]][] = self::profitabilityFormat($item);
+            $dataChart4[$item[$profitabilityType]][] = self::profitabilityFormat($item);
         }
 
         $dataChart2['dt'] = array_keys($dataChart2['dt']);
@@ -261,7 +261,7 @@ class EconomicController extends Controller
         foreach ($result[self::STATUS_ACTIVE] as &$item) {
             $dataChart1['dt'][$item['dt']] = 1;
 
-            $dataChart1[$item[$profitabilityKey]][] = $item['count'];
+            $dataChart1[$item[$profitabilityType]][] = $item['count'];
         }
 
         $dataChart1['dt'] = array_keys($dataChart1['dt']);
@@ -269,7 +269,7 @@ class EconomicController extends Controller
         foreach ($result[self::STATUS_PAUSE] as &$item) {
             $dataChart5['dt'][$item['dt']] = 1;
 
-            $dataChart5[$item[$profitabilityKey . '_v_prostoe']][] = $item['count'];
+            $dataChart5[$item[$profitabilityType . '_v_prostoe']][] = $item['count'];
         }
 
         $dataChart5['dt'] = array_keys($dataChart5['dt']);
@@ -379,9 +379,9 @@ class EconomicController extends Controller
         return $last ? 100 : 0;
     }
 
-    static function profitabilityValues(string $profitabilityKey): array
+    static function getProfitabilities(string $profitabilityType): array
     {
-        if ($profitabilityKey === self::PROFITABILITY_FULL) {
+        if ($profitabilityType === self::PROFITABILITY_FULL) {
             return [
                 [
                     self::PROFITABILITY_PROFITABLE,
