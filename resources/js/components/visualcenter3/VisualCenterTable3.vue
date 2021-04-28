@@ -723,7 +723,7 @@
                                     :disabled="dzoCompaniesAssets['isAllAssets']"
                                     :checked="dzoCompaniesAssets['isAllAssets']"
                                     type="checkbox"
-                                    @click="`${selectDzoCompanies()}`"
+                                    @click="`${selectAllDzoCompanies()}`"
                             ></input>
                             {{trans("visualcenter.dzoAllCompany")}}
                             <div class="dzocompanies-dropdown__divider"></div>

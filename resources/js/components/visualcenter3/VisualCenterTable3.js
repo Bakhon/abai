@@ -323,6 +323,7 @@ export default {
                     } else {
                         this.processDataForSpecificCompany(data, timestampToday, timestampEnd, start, end, this.factFieldName, this.planFieldName, this.chartHeadName, metricName, chartSecondaryName);
                     }
+
                     this.setColorToMainMenuButtons(planFieldName);
                     this.getProductionOilandGas(data);
                     this.getProductionOilandGasPercent(data);
@@ -591,7 +592,7 @@ export default {
 
             if (this.dzoCompaniesAssets['isNonOperating']) {
                 productionPlanAndFactMonth = this.getFilteredData(productionPlanAndFactMonth, 'isOperating');
-                data = this.getFilteredData(dataWithMay, 'isOperating');
+                data = this.getFilteredData(data, 'isOperating');
             }
 
             if (this.dzoCompaniesAssets['isRegion']) {
