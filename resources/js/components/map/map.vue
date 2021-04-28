@@ -13,6 +13,33 @@
         >
         </v-select>
       </div>
+
+      <div class="gu-map__filters mt-15px">
+        <v-select
+            v-model="activeFilter"
+            @input="selectFilter"
+            :options="mapFilters"
+            :reduce="option => option.id"
+            label="name"
+            :placeholder="trans('monitoring.map.select_filter')"
+        >
+        </v-select>
+      </div>
+
+      <div class="gu-map__datetime-picker mt-15px">
+        <datetime
+            type="date"
+            v-model="selectedDate"
+            input-class="form-control date"
+            value-zone="Asia/Almaty"
+            zone="Asia/Almaty"
+            :format="{ year: 'numeric', month: 'long', day: 'numeric' }"
+            :phrases="{ok: trans('app.choose'), cancel: trans('app.cancel')}"
+            :week-start="1"
+            auto
+        >
+        </datetime>
+      </div>
     </div>
 
     <div class="legend">
@@ -151,6 +178,7 @@ import {guMapState, guMapMutations, guMapActions} from '@store/helpers';
 import mapContextMenu from "./mapContextMenu";
 import pipeColors from '~/json/pipe_colors.json'
 import axios from "axios";
+import moment from "moment";
 
 
 export default {
@@ -197,7 +225,12 @@ export default {
       firstCentered: false,
       layers: [],
       pipes: [],
-      mapColorsMode: 'default'
+      mapColorsMode: 'default',
+      selectedDate: null,
+      activeFilter: null,
+      mapFilters: [
+
+      ]
     };
   },
   created() {
@@ -934,6 +967,13 @@ export default {
           return {}
           break;
       }
+    },
+    formatDate(date) {
+      if (!date) return null
+      return moment.parseZone(date).format('YYYY-MM-DD')
+    },
+    selectFilter(){
+
     }
   }
 }
@@ -967,6 +1007,10 @@ h1 {
     .vs__dropdown-toggle {
       padding-bottom: 0;
     }
+  }
+
+  &__datetime-picker {
+    min-width: 260px;
   }
 
   #map {
