@@ -30,3 +30,9 @@
         <economic-data-component></economic-data-component>
     </div>
 @endsection
+
+<style>
+    .container-main {
+        overflow-x: auto;
+    }
+</style>
