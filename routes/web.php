@@ -99,11 +99,13 @@ Route::group(
                 Route::post('/getkormass', 'ComplicationMonitoring\OmgNGDUController@getKormass');
                 Route::resource('ecorefsempper', 'Refs\EcoRefsEmpPerController');
                 Route::resource('ecorefsscfa', 'Refs\EcoRefsScFaController');
+                Route::get('eco_refs_sc_fas', 'Refs\EcoRefsScFaController@getScFas');
                 Route::get('ecorefslist', 'Refs\EcoRefsScFaController@refsList')->name('eco_refs_list');
 
                 // economic tech data
                 Route::get('tech_data_list', 'Refs\TechnicalDataController@refsList')->name('tech_data_list');
                 Route::resource('tech_struct_source', 'Refs\TechnicalStructureSourceController');
+                Route::get('tech_struct_sources', 'Refs\TechnicalStructureSourceController@getSources');
                 Route::resource('tech_struct_company', 'Refs\TechnicalStructureCompanyController');
                 Route::resource('tech_struct_field', 'Refs\TechnicalStructureFieldController');
                 Route::resource('tech_struct_ngdu', 'Refs\TechnicalStructureNgduController');

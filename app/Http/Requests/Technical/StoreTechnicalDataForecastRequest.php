@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Refs;
+namespace App\Http\Requests\Technical;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class TechnicalForecastDataRequest extends FormRequest
+class StoreTechnicalDataForecastRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
