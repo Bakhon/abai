@@ -18,7 +18,7 @@
                         <table class="table table-bordered">
                             <tr>
                                 <th>#</th>
-                                <th>Сценарий/Факт:</th>
+                                <th>{{__('economic_reference.source_data')}}:</th>
                                 <th width="220px">{{__('app.action')}}</th>
                             </tr>
                             @foreach ($scFas as $item)
@@ -27,7 +27,8 @@
                                     <td>{{ $item->name }}</td>
                                     <td>
                                         <form action="{{ route('ecorefsscfa.destroy',$item->id) }}" method="POST">
-                                            <a class="btn btn-primary" href="{{ route('ecorefsscfa.edit',$item->id) }}">{{__('app.edit')}}</a>
+                                            <a class="btn btn-primary"
+                                               href="{{ route('ecorefsscfa.edit',$item->id) }}">{{__('app.edit')}}</a>
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-danger">{{__('app.delete')}}</button>

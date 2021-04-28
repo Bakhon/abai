@@ -25,11 +25,13 @@ use Illuminate\Http\Request;
 
 class EcoRefsScFaController extends Controller
 {
+    const PAGINATION = 12;
+
     public function index()
     {
         $scFas = EcoRefsScFa::query()
             ->latest()
-            ->paginate(12);
+            ->paginate(self::PAGINATION);
 
         return view('ecorefsscfa.index', compact('scFas'));
     }
