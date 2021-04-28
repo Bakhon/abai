@@ -44,7 +44,6 @@ export default {
             return {};
         },
         async processCurrentData(inputData,localData) {
-            let self = this;
             _.forEach(Object.keys(localData), function(key) {
                 localData[key] = inputData[key];
             });

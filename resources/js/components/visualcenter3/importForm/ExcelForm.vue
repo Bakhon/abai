@@ -48,7 +48,7 @@
             <div class="vert-line"></div>
             <div
                     id="chemistryButton"
-                    :class="[!isChemistryButtonVisible ? 'menu__button_disabled' : 'chemistry-button_animation','col-12 status-block status-block_little menu__button ml-1']"
+                    :class="[!isChemistryButtonVisible ? 'menu__button_disabled' : 'rainbow','col-12 status-block status-block_little menu__button ml-1']"
                     @click="changeButtonVisibility()"
             >
                 {{trans('visualcenter.importForm.enterChemistryButton')}}
@@ -87,7 +87,7 @@
                 </div>
             </div>
             <div
-                    :class="[!isChemistryButtonVisible ? 'menu__button_disabled' : 'chemistry-button_animation','col-12 status-block status-block_little menu__button ml-1 mt-3']"
+                    :class="[!isChemistryButtonVisible ? 'menu__button_disabled' : 'rainbow','col-12 status-block status-block_little menu__button ml-1 mt-3']"
                     @click="changeWellBlockVisibility()"
             >
                 {{trans('visualcenter.importForm.wellWorkover')}}
