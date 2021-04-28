@@ -9,7 +9,7 @@ class Material extends Model
 {
     public function pipe()
     {
-        return $this->hasMany(Pipe::class)->withDefault();
+        return $this->hasMany(Pipe::class);
     }
 
     public function oilPipes()
