@@ -74,4 +74,5 @@ return array (
   'oil_prices' => 'Цены на нефть',
   'course_prices' => 'Курс доллара',
   'add' => 'Добавить',
+  'name' => 'Название',
 );

@@ -3,7 +3,7 @@
     <cat-loader v-show="loading"/>
 
     <div class="container-fluid bg-light p-4 mb-4">
-      <scenario-form/>
+      <scenario-form @update="addScenario"/>
     </div>
 
     <div class="container-fluid bg-light p-4">
@@ -64,6 +64,10 @@ export default {
 
       this.loading = false
     },
+
+    addScenario(form) {
+      this.scFas.push(form)
+    }
   },
   computed: {
     params() {

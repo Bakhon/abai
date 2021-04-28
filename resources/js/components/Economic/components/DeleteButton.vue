@@ -1,14 +1,14 @@
 <template>
   <button
       type="button"
-      class="ml-2 btn btn-danger">
+      class="btn btn-danger">
     {{ trans('app.delete') }}
   </button>
 </template>
 
 <script>
 export default {
-  name: "DeleteButton"
+  name: "DeleteButton",
 }
 </script>
 

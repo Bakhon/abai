@@ -1,7 +1,7 @@
 <template>
   <div class="border-dark">
     <h5 class="text-secondary">
-      Название
+      {{ trans('economic_reference.name') }}
     </h5>
 
     <div class="form-group">
@@ -28,7 +28,9 @@
              type="numeric"
              class="form-control">
 
-      <delete-button @click.native="deleteOilPrice(index)"/>
+      <delete-button
+          class="ml-2"
+          @click.native="deleteOilPrice(index)"/>
     </div>
 
     <add-button @click.native="addOilPrice"/>
@@ -44,13 +46,15 @@
              type="numeric"
              class="form-control">
 
-      <delete-button @click.native="deleteCoursePrice(index)"/>
+      <delete-button
+          class="ml-2"
+          @click.native="deleteCoursePrice(index)"/>
     </div>
 
     <add-button @click.native="addCoursePrice"/>
 
     <div class="text-center">
-      <save-button/>
+      <save-button @click.native="saveForm"/>
     </div>
   </div>
 </template>
@@ -61,12 +65,7 @@ import AddButton from "./AddButton";
 import DeleteButton from "./DeleteButton";
 import SaveButton from "./SaveButton";
 
-let scenarioForm = {
-  name: null,
-  sc_fa: null,
-  oil_prices: [],
-  course_prices: [],
-}
+import {EcoRefsScenarioModel} from "../models/EcoRefsScenarioModel";
 
 export default {
   name: "ScenarioForm",
@@ -77,27 +76,33 @@ export default {
     SaveButton
   },
   data: () => ({
-    form: scenarioForm
+    form: new EcoRefsScenarioModel().form
   }),
   methods: {
     addOilPrice() {
-      this.form.oil_prices.push({value: null})
+      this.form.oil_prices.push({value: 0})
     },
 
     addCoursePrice() {
-      this.form.course_prices.push({value: null})
+      this.form.course_prices.push({value: 0})
     },
 
     deleteOilPrice(index) {
+      if (this.form.oil_prices.length < 2) return
+
       this.form.oil_prices.splice(index, 1)
     },
 
     deleteCoursePrice(index) {
+      if (this.form.course_prices.length < 2) return
+
       this.form.course_prices.splice(index, 1)
     },
 
     saveForm() {
-      this.form = scenarioForm
+      this.$emit('update', this.form)
+
+      this.form = new EcoRefsScenarioModel().form
     }
   }
 }

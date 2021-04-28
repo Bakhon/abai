@@ -19,11 +19,6 @@ class EcoRefsCostController extends Controller
         return view('eco_refs_cost.index');
     }
 
-    public function indexScenario()
-    {
-        return view('eco_refs_cost_scenario.index');
-    }
-
     public function edit(int $id)
     {
         $ecoRefsCost = EcoRefsCost::findOrFail($id);
