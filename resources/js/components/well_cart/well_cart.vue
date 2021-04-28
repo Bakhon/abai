@@ -1,6 +1,6 @@
 <template>
   <div class="row">
-    <div class="col-md-3">
+    <div class="col-md-3 left-column">
       <div class="bg-dark">
         <div class="row">
           <div class="col">
@@ -108,8 +108,8 @@
               </select>
             </div>
           </div>
-          <div class="col">
-            <div class="row vertical-wrapper">
+          <div class="row">
+            <div class="col-4 buttons-no-wrap">
               <div class="dropdown small-select">
                 <button class="btn btn-secondary select-button" type="button" id="dropdownMenuButton"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -165,8 +165,8 @@
                   </form>
                 </div>
               </div>
-
-
+            </div>
+            <div class="col-4 buttons-no-wrap">
               <div class="dropdown small-select">
                 <button class="btn btn-secondary select-button" type="button" id="dropdownMenuButton_2"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -235,7 +235,8 @@
                   </form>
                 </div>
               </div>
-
+            </div>
+            <div class="col-4 buttons-no-wrap">
               <div class="dropdown small-select">
                 <button class="btn btn-secondary select-button" type="button" id="dropdownMenuButton_3"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -453,7 +454,6 @@
                     </form>
                   </div>
                 </div>
-                <!-- Место для графика -->
               </div>
             </div>
           </div>
@@ -461,7 +461,7 @@
       </div>
     </div>
 
-    <div class="col-md-3 passport">
+    <div class="col-md-3 passport right-column">
       <div class="bg-dark-transparent">
         <div class="row">
           <div class="col">
@@ -1096,6 +1096,7 @@ h4 {
 .graphics {
   .select-button {
     background: #272953;
+    width: 230px !important;
 
   }
 
@@ -1159,7 +1160,7 @@ h4 {
   padding: 5px 10px;
 
   .search-input {
-    padding: 10px 5px 10px 20px;
+    padding: 10px 5px 10px 30px;
     border-radius: 10px;
     height: 40px;
     background: url(/img/bd/search.svg) 10% 45% #272953;
@@ -1239,7 +1240,7 @@ h4 {
 }
 
 .small-select {
-  width: 200px;
+  width: 100%;
   height: 45px;
   margin-right: auto;
   margin-left: auto;
@@ -1380,6 +1381,13 @@ h4 {
   display: inline-block;
   float: left;
   width: 100%;
+  .icon-all{
+    height: 100%;
+    .txt5{
+      margin-bottom: auto;
+      margin-top: auto;
+    }
+  }
 }
 
 .btn:not(:disabled):not(.disabled) {
@@ -1493,7 +1501,7 @@ h4 {
   border-radius: 10px;
   cursor: pointer;
   padding: 7px;
-  height: 50px;
+  height: 40px;
 
   .icon-all {
     height: 100%;
@@ -1546,8 +1554,9 @@ h4 {
   background-color: rgba(39, 41, 83, 0.85);
   padding-bottom: 20px;
   margin-bottom: 20px;
-  .graphics{
-    height: 289px;
+
+  .graphics {
+    height: 333px;
     width: 100%;
   }
 }
@@ -1600,5 +1609,16 @@ h4 {
   width: 100%;
   margin-right: 0px;
   margin-left: 0px;
+}
+.left-column{
+  max-width: 398px !important;
+  min-width: 398px !important;
+}
+.right-column{
+  max-width: 348px !important;
+  min-width: 348px !important;
+}
+.buttons-no-wrap{
+  min-width: 150px !important;
 }
 </style>
