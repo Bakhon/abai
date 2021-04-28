@@ -2147,34 +2147,4 @@ background-position: right 5px top 50%;
 .table-pgno-one {
   height: 200px;
 }
-
-.table__centrators {
-  border: 1px solid #1C6EA4;
-  background-color: #2c335d;
-  width: 100%;
-  text-align: left;
-  border-collapse: collapse;
-}
-
-.table__centrators .table__cell {
-  border: 1px solid #454d7d;
-  padding: 3px 0px;
-}
-
-.table__centrators .table__body .table__cell {
-  font-size: 13px;
-}
-
-.table__centrators .table__row:nth-child(even) {
-  background: #2c335d;
-}
-
-.title__centrator {
-  text-align: center;
-}
-
-.table__centrators{ display: table; }
-.table__row { display: table-row; }
-.table__cell { display: table-cell;}
-.table__body { display: table-row-group;}
 </style>

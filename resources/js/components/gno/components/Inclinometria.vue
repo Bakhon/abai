@@ -264,7 +264,6 @@ export default {
         var wi = this.wellIncl.split('_');
         let uri = "http://172.20.103.187:7575/api/pgno/" + wi[0] + "/" + wi[1] + "/incl";
         this.$emit('update:isLoading', true);
-        console.log(this.data)
         this.hPumpFromIncl = this.$store.getters.getHpump
 
         this.axios.get(uri).then((response) => {
