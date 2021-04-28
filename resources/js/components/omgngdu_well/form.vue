@@ -219,7 +219,7 @@ export default {
     ]),
     formatedDate() {
       if (this.formFields.date) {
-        return moment(this.formFields.date).format('Y-m-d')
+        return moment.parseZone(this.formFields.date).format('Y-m-d')
       }
       return null
     },

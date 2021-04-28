@@ -27,8 +27,8 @@
       "associated_gas_production_fact",
       "associated_gas_delivery_fact",
       "associated_gas_expenses_for_own_fact",
-      "natural_gas_processing_fact",
-      "natural_gas_flaring_fact",
+      "associated_gas_processing_fact",
+      "associated_gas_flaring_fact",
       "associated_gas_receive_kaspiy_aral_fact",
       "associated_gas_raw_fact"
     ],
@@ -37,20 +37,19 @@
   },
   "agentUploadDzo": {
     "fields": [
-      "agent_upload_total_water_injection_fact"
+      "agent_upload_total_water_injection_fact",
+      "agent_upload_tech_water_injection_fact"
     ],
     "rowIndex": 21,
-    "rowLength": 1
+    "rowLength": 2
   },
   "otmDzo": {
     "fields": [
       "otm_wells_commissioning_from_drilling_fact",
-      "otm_drilling_fact",
-      "otm_well_workover_fact",
-      "otm_underground_workover"
+      "otm_drilling_fact"
     ],
     "rowIndex": 26,
-    "rowLength": 4
+    "rowLength": 2
   },
   "operatingFond": {
     "fields": [
@@ -175,8 +174,8 @@
           "associated_gas_production_fact",
           "associated_gas_delivery_fact",
           "associated_gas_expenses_for_own_fact",
-          "natural_gas_processing_fact",
-          "natural_gas_flaring_fact",
+          "associated_gas_processing_fact",
+          "associated_gas_flaring_fact",
           "associated_gas_receive_kaspiy_aral_fact",
           "associated_gas_raw_fact"
         ],
@@ -186,12 +185,12 @@
       "Кожасай": {
         "fields": [
           "associated_gas_production_fact",
+          "associated_gas_delivery_fact",
+          "associated_gas_expenses_for_own_fact",
+          "associated_gas_processing_fact",
+          "associated_gas_flaring_fact",
           "associated_gas_receive_kaspiy_aral_fact",
-          "associated_gas_raw_fact",
-          "associated_gas_delivery_commercial_gas_fact",
-          "associated_gas_expenses_for_own_losses_fact",
-          "natural_gas_processing_fact",
-          "natural_gas_flaring_fact"
+          "associated_gas_raw_fact"
         ],
         "rowIndex": 18,
         "rowLength": 7
@@ -200,39 +199,37 @@
     "agentUpload": {
       "Алибекмола": {
         "fields": [
-          "agent_upload_total_water_injection_fact"
+          "agent_upload_total_water_injection_fact",
+          "agent_upload_tech_water_injection_fact"
         ],
         "rowIndex": 22,
-        "rowLength": 1
+        "rowLength": 2
       },
       "Кожасай": {
         "fields": [
-          "agent_upload_total_water_injection_fact"
+          "agent_upload_total_water_injection_fact",
+          "agent_upload_tech_water_injection_fact"
         ],
         "rowIndex": 23,
-        "rowLength": 1
+        "rowLength": 2
       }
     },
     "otm": {
       "Алибекмола": {
         "fields": [
           "otm_wells_commissioning_from_drilling_fact",
-          "otm_drilling_fact",
-          "otm_well_workover_fact",
-          "otm_underground_workover"
+          "otm_drilling_fact"
         ],
         "rowIndex": 27,
-        "rowLength": 4
+        "rowLength": 2
       },
       "Кожасай": {
         "fields": [
           "otm_wells_commissioning_from_drilling_fact",
-          "otm_drilling_fact",
-          "otm_well_workover_fact",
-          "otm_underground_workover"
+          "otm_drilling_fact"
         ],
         "rowIndex": 28,
-        "rowLength": 4
+        "rowLength": 2
       }
     }
   },

@@ -2,7 +2,7 @@
 
 namespace App\Models\Refs;
 
-use App\Models\Pipes\MapPipe;
+use App\Models\Pipes\OilPipe;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\ComplicationMonitoring\OmgCA;
 use App\Models\ComplicationMonitoring\OmgNGDU;
@@ -108,9 +108,9 @@ class Gu extends Model
         return $this->hasMany(Pipe::class);
     }
 
-    public function mapPipes()
+    public function oilPipes()
     {
-        return $this->hasMany(MapPipe::class);
+        return $this->hasMany(OilPipe::class);
     }
 
     public function zuPipes()

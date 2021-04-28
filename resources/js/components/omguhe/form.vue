@@ -367,10 +367,11 @@ export default {
           .then((response) => {
             let data = response.data;
 
-            if (data) {
+            if (data.status == 'success') {
               this.prevData = data.level;
               this.qv = (data.qv * 1000) / 365;
             } else {
+              this.showToast(data.message, this.trans('app.error'), 'danger');
               this.prevData = null;
             }
 

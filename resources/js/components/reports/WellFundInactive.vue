@@ -111,8 +111,8 @@ export default {
         period: 'days',
         dzo: this.org,
         category: this.category,
-        report_date_start: formatDate.formatToMinOfDay(this.end_date),
-        report_date_end: formatDate.formatToMaxOfDay(this.end_date)
+        report_date_start: formatDate.getMinOfDayFormatted(this.end_date),
+        report_date_end: formatDate.getMaxOfDayFormatted(this.end_date)
       };
 
       let json_data = JSON.stringify(data);

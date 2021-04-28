@@ -41,6 +41,7 @@
 </template>
 <script>
 import mainMenu from './main_menu.json'
+import {paegtmMapActions} from '@store/helpers';
 export default {
     props: {
         parentType: String,
@@ -54,6 +55,9 @@ export default {
         };
     },
     methods: {
+        ...paegtmMapActions([
+            'changeDisplayShadowBlock',
+        ]),
         menuClick (childComponent) {
             this.$emit('menuClick', childComponent);
             this.menuItemMouseLeave();
@@ -61,11 +65,11 @@ export default {
         menuItemMouseOver (id) {
             this.currentItemId = id;
             this.$emit('closeTree');
-            this.$store.commit('changeTheDisplayShadowBlock', true);
+            this.changeDisplayShadowBlock(true);
         },
         menuItemMouseLeave () {
             this.currentItemId = -1;
-            this.$store.commit('changeTheDisplayShadowBlock', false);
+            this.changeDisplayShadowBlock(false);
         },
     },
 }

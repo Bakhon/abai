@@ -934,13 +934,6 @@ export default {
           return {}
           break;
       }
-    },
-    showToast(message, title, variant) {
-      this.$bvToast.toast(message, {
-        title: title,
-        variant: variant,
-        solid: true
-      });
     }
   }
 }
