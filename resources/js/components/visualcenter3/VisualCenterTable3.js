@@ -179,7 +179,6 @@ export default {
                 var timestampToday = this.timestampToday;
                 var timestampEnd = this.timestampEnd;
                 var company = this.company;
-                let self = this;
                 data = this.getFilteredCompaniesList(data);
 
                 var quantityRange = this.quantityRange;
