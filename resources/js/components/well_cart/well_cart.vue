@@ -414,8 +414,9 @@
           </div>
           <div class="row">
             <div class="col">
+              <div class="bg-dark graphics">
               <div class="dropdown small-select">
-                <button class="btn btn-secondary select-button" type="button" id="dropdownMenuButton"
+                <button class="btn btn-secondary select-button" type="button" id="OilDropdown"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <div class="button1-vc-inner">
                     <div class="icon-all ">
@@ -432,18 +433,18 @@
                     <ul>
                       <li>
                         <div class="flag"></div>
-                        <label class="container" for="tech_structire">
+                        <label class="container" for="oil">
                           <span class="bottom-border">Нефть, жидкость</span>
-                          <input type="checkbox" id="tech_structire" name="tech_structire" value="tech_structire"
+                          <input type="checkbox" id="oil" name="tech_structire" value="tech_structire"
                                  class="dropdown-item">
                           <span class="checkmark"></span>
                         </label>
                       </li>
                       <li>
                         <div class="flag"></div>
-                        <label class="container" for="tech_structire_1">
+                        <label class="container" for="water_percent">
                           <span class="bottom-border">Обводненность, Н дин</span>
-                          <input type="checkbox" id="tech_structire_1" name="tech_structire_1" value="tech_structire"
+                          <input type="checkbox" id="water_percent" name="tech_structire_1" value="tech_structire"
                                  class="dropdown-item">
                           <span class="checkmark"></span>
                         </label>
@@ -457,6 +458,7 @@
           </div>
         </div>
       </div>
+    </div>
     </div>
 
     <div class="col-md-3">
@@ -1089,7 +1091,18 @@ h4 {
     margin-left: -17px;
   }
 }
-
+.graphics{
+  .select-button{
+    background: #272953;
+    height: 40px;
+  }
+  .dropdown :focus{
+    background: #5670BF;
+  }
+  .bg-dark{
+    width: 100%;
+  }
+}
 .directory {
   display: block;
   width: 100%;
@@ -1266,7 +1279,8 @@ h4 {
     text-align: center;
     background-color: #505684;
     height: 50px;
-    .row{
+
+    .row {
       height: 100%;
     }
   }
@@ -1280,10 +1294,12 @@ h4 {
     }
 
     .element-position {
-      padding: 13px 13px 13px 23px;
+      padding: 5px 13px 5px 23px;
 
       p {
         float: right;
+        margin-top: auto;
+        margin-bottom: auto;
       }
 
       svg {
@@ -1292,6 +1308,8 @@ h4 {
     }
 
     .row {
+      min-height: 40px;
+
       &:nth-child(2n) {
         background-color: #31355E;
       }
@@ -1553,7 +1571,8 @@ h4 {
     background: URL("/img/bd/scroll-array-end.svg") no-repeat 50% #485499;
   }
 }
-.table-wrapper{
+
+.table-wrapper {
   margin: 10px 20px;
   padding: 0px;
 
