@@ -4,7 +4,7 @@ namespace App\Http\Requests\EcoRefs\Cost;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreEcoRefsCostRequest extends FormRequest
+class UpdateEcoRefsCostRequest extends FormRequest
 {
     public function rules()
     {

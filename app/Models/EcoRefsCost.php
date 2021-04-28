@@ -12,6 +12,11 @@ class EcoRefsCost extends Model
         'comment', 'author_id', 'log_id', 'net_back', 'amort'
     ];
 
+    const FILLABLE_FLOAT_KEYS = [
+        'variable', 'fix_noWRpayroll', 'fix_payroll', 'fix_nopayroll', 'fix',
+        'gaoverheads', 'wr_nopayroll', 'wr_payroll', 'wo', 'net_back', 'amort',
+    ];
+
     public function scfa()
     {
         return $this->hasOne('App\Models\Refs\EcoRefsScFa', 'id', 'sc_fa')->withDefault();

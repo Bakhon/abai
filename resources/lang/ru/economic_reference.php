@@ -70,4 +70,5 @@ return array (
   'profitability_direct_from_date' => 'По прямым затрат от определенной даты',
   'amort' => 'Амортизация, тенге/тонна',
   'factual_data' => 'Фактические данные',
+  'eco_refs_cost' => 'Входные параметры для модуля Ibrahim',
 );

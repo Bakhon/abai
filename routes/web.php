@@ -82,9 +82,9 @@ Route::group(
                 Route::resource('ecorefsequipid', 'EcoRefsEquipIdController');
                 Route::resource('ecorefsannualprodvolume', 'EcoRefsAnnualProdVolumeController');
                 Route::resource('ecorefsrenttax', 'EcoRefsRentTaxController');
-                Route::resource('ecorefsavgmarketprice', 'EcoRefsAvgMarketPriceController');
+                Route::resource('ecoreecorefscostfsavgmarketprice', 'EcoRefsAvgMarketPriceController');
                 Route::resource('ecorefsdiscontcoefbar', 'EcoRefsDiscontCoefBarController');
-                Route::resource('ecorefscost', 'EcoRefsCostController');
+                Route::resource('eco_refs_cost', 'EcoRefsCostController');
                 Route::get('economic_data_json', 'EcoRefsCostController@economicDataJson');
                 Route::get('economic_data/upload_excel', 'EcoRefsCostController@uploadExcel')->name('economic_data_upload');
                 Route::post('economic_data/import_excel', 'EcoRefsCostController@importExcel')->name('economic_data_import');

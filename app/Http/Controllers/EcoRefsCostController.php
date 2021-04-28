@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\EcoRefs\Cost\EcoRefsCostRequest;
 use App\Http\Requests\EcoRefs\Cost\ImportExcelEcoRefsCostRequest;
-use App\Http\Requests\EcoRefs\Cost\StoreEcoRefsCostRequest;
+use App\Http\Requests\EcoRefs\Cost\UpdateEcoRefsCostRequest;
 use App\Imports\EconomicIbrahimImport;
 use App\Models\EcoRefsCompaniesId;
 use App\Models\EcoRefsCost;
@@ -16,7 +16,7 @@ class EcoRefsCostController extends Controller
 {
     public function index()
     {
-        return view('ecorefscost.index');
+        return view('eco_refs_cost.index');
     }
 
     public function economicDataJson(EcoRefsCostRequest $request): array
@@ -59,7 +59,7 @@ class EcoRefsCostController extends Controller
                 $item->comment,
                 $item->author ? "{$item->created_at} {$item->author->name}" : "",
                 $item->editor ? "{$item->updated_at} {$item->editor->name}" : "",
-                route("ecorefscost.edit", $item->id),
+                route("eco_refs_cost.edit", $item->id),
                 $item->log_id,
             ];
         }
@@ -67,15 +67,6 @@ class EcoRefsCostController extends Controller
         return [
             'data' => $response
         ];
-    }
-
-    public function store(StoreEcoRefsCostRequest $request)
-    {
-        EcoRefsCost::create($request->validated());
-
-        return redirect()
-            ->route('ecorefscost.index')
-            ->with('success', __('app.created'));
     }
 
     public function edit(int $id)
@@ -86,10 +77,10 @@ class EcoRefsCostController extends Controller
 
         $companies = EcoRefsCompaniesId::get();
 
-        return view('ecorefscost.edit', compact('ecoRefsCost', 'scFas', 'companies'));
+        return view('eco_refs_cost.edit', compact('ecoRefsCost', 'scFas', 'companies'));
     }
 
-    public function update(StoreEcoRefsCostRequest $request, int $id)
+    public function update(UpdateEcoRefsCostRequest $request, int $id)
     {
         /** @var EcoRefsCost $ecoRefsCost */
         $ecoRefsCost = EcoRefsCost::findOrFail($id);
@@ -97,7 +88,7 @@ class EcoRefsCostController extends Controller
         $ecoRefsCost->update($request->validated());
 
         return redirect()
-            ->route('ecorefscost.index')
+            ->route('eco_refs_cost.index')
             ->with('success', __('app.updated'));
     }
 
@@ -106,13 +97,13 @@ class EcoRefsCostController extends Controller
         EcoRefsCost::query()->whereId($id)->delete();
 
         return redirect()
-            ->route('ecorefscost.index')
+            ->route('eco_refs_cost.index')
             ->with('success', __('app.deleted'));
     }
 
     public function uploadExcel()
     {
-        return view('ecorefscost.import_excel');
+        return view('eco_refs_cost.import_excel');
     }
 
     public function importExcel(ImportExcelEcoRefsCostRequest $request)
