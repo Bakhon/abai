@@ -352,9 +352,9 @@
                 <div class="table-container-column-header">
                   <div class="row">
                     <div class="col-md-6 table-border"></div>
-                    <div class="col-md-2 table-border">Начало периода</div>
-                    <div class="col-md-2 table-border">Конец периода</div>
-                    <div class="col-md-2 table-border">Управление</div>
+                    <div class="col-md-2 table-border flex"><p class="title">Начало периода</p></div>
+                    <div class="col-md-2 table-border flex"><p class="title">Конец периода</p></div>
+                    <div class="col-md-2 table-border flex"><p class="title">Управление</p></div>
                   </div>
                 </div>
                 <div class="table-container-element">
