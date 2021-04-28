@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\ComplicationMonitoring\Material;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -14,7 +15,7 @@ class AddYieldPointRoughnessAndDataToMaterials extends Migration
     public function up()
     {
         Schema::table('materials', function (Blueprint $table) {
-            $table->integer('yield_point');
+            $table->integer('yield_point')->nullable();
         });
 
         $material = Material::firstOrCreate(

@@ -170,7 +170,7 @@ Route::group(
                 Route::get('/hydro-calc/calculate', 'ComplicationMonitoring\HydroCalculation@calculate')->name('hydro_calculation.calculate');
                 Route::resource('hydro-calc', 'ComplicationMonitoring\HydroCalculation');
 
-                Route::get('materials/list', 'ComplicationMonitoring\MaterialsСontroller@list')->name('materials.list');
+                Route::get('materials/list', 'ComplicationMonitoring\MaterialsController@list')->name('materials.list');
                 Route::resource('materials', 'ComplicationMonitoring\MaterialsController');
             }
         );

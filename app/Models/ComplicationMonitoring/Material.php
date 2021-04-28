@@ -12,6 +12,8 @@ class Material extends Model
 
     use WithHistory;
 
+    protected $fillable = ['name', 'yield_point', 'roughness'];
+
     public function material()
     {
         return $this->belongsTo(Material::class)->withDefault();
