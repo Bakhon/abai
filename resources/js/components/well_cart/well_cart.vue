@@ -359,12 +359,12 @@
                 </div>
                 <div class="table-container-element">
                   <div class="row">
-                    <div class="col-md-6 table-border element-position">1НИИ/АО “РД “КазМунайГаз”/АО
-                      “Озенмунайгаз”/НГДУ-З/ППД-З
+                    <div class="col-md-6 table-border element-position">
+                      <p class="title">1НИИ/АО “РД “КазМунайГаз”/АО “Озенмунайгаз”/НГДУ-З/ППД-З</p>
                     </div>
                     <div class="col-md-2 table-border element-position"><p>19.13</p></div>
                     <div class="col-md-2 table-border element-position"><p>7.21</p></div>
-                    <div class="col-md-2 table-border element-position">
+                    <div class="col-md-2 table-border svg-element">
                       <div class="table-container-svg">
                         <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                           <path
@@ -386,10 +386,10 @@
                   </div>
 
                   <div class="row">
-                    <div class="col-md-6 table-border element-position">56.06</div>
+                    <div class="col-md-6 table-border element-position"><p class="title">56.06</p></div>
                     <div class="col-md-2 table-border element-position"><p>56.06</p></div>
                     <div class="col-md-2 table-border element-position"><p>5.77</p></div>
-                    <div class="col-md-2 table-border element-position">
+                    <div class="col-md-2 table-border svg-element">
                       <div class="table-container-svg">
                         <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                           <path
@@ -1301,16 +1301,31 @@ h4 {
     .table-container-svg {
       display: flex;
     }
+    .svg-element{
+      padding: 5px 13px 5px 23px;
+      display: grid;
+      svg{
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: auto;
+        margin-bottom: auto;
+      }
+    }
 
     .element-position {
       padding: 5px 13px 5px 23px;
+      display: flex;
 
       p {
         float: right;
         margin-top: auto;
         margin-bottom: auto;
+        margin-left: auto;
       }
-
+      .title{
+        margin-left: unset !important;
+        margin-right: auto !important;
+      }
       svg {
         margin: auto;
       }
@@ -1334,8 +1349,10 @@ h4 {
     border-left: 1px solid #464D7A;
     border-bottom: hidden;
     border-right: hidden;
-    margin-top: auto;
-    margin-bottom: auto;
+    p {
+      margin-top: auto;
+      margin-bottom: auto;
+    }
   }
 }
 
