@@ -1217,10 +1217,8 @@ export default {
       let urlForIncl = "http://172.20.103.187:7573/api/pgno/incl";
       if (this.expChoose == 'ЭЦН') {
         (this.liftValue = 'ЭЦН') && (this.stepValue = 20);
-        console.log(this.liftValue, this.stepValue);
       } else {
         (this.liftValue = 'ШГН') && (this.stepValue = 10);
-        console.log(this.liftValue, this.stepValue);
       }
 
       let centratorsData = JSON.stringify(
