@@ -15,7 +15,7 @@ class PipeCoord extends Model
         'updated_at'
     ];
 
-    public function oilPipes()
+    public function oilPipe()
     {
         return $this->belongsTo(OilPipe::class);
     }

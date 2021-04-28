@@ -187,7 +187,7 @@ class HydroCalculation extends Controller
     public function getPrepairedData (array $input) :array
     {
         $query = TrunklinePoint::query()
-            ->with('map_pipe.pipeType', 'map_pipe.firstCoords', 'map_pipe.lastCoords', 'gu', 'trunkline_end_point');
+            ->with('oilPipe.pipeType', 'oilPipe.firstCoords', 'oilPipe.lastCoords', 'gu', 'trunkline_end_point');
 
         $points = $this
             ->getFilteredQuery($input, $query)
@@ -264,7 +264,7 @@ class HydroCalculation extends Controller
 
     public function getCalculatedData (string $date)
     {
-        return HydroCalcResult::with('map_pipe.pipeType')
+        return HydroCalcResult::with('oilPipe.pipeType')
             ->where('date', $date)
             ->paginate(25);
     }

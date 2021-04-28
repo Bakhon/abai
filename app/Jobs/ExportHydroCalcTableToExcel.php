@@ -69,7 +69,7 @@ class ExportHydroCalcTableToExcel implements ShouldQueue
      */
     public function handle()
     {
-        $points = TrunklinePoint::with('map_pipe.pipeType', 'map_pipe.firstCoords', 'map_pipe.lastCoords', 'gu', 'trunkline_end_point')->get();
+        $points = TrunklinePoint::with('oilPipe.pipeType', 'oilPipe.firstCoords', 'oilPipe.lastCoords', 'gu', 'trunkline_end_point')->get();
         $isErrors = false;
 
         foreach($points as $key => $point) {
@@ -208,7 +208,7 @@ class ExportHydroCalcTableToExcel implements ShouldQueue
             $hydroCalcResult->temperature_end = $row[self::TEMPERATURE_END];
             $hydroCalcResult->start_point = $row[self::START_POINT];
             $hydroCalcResult->end_point = $row[self::END_POINT];
-            $hydroCalcResult->map_pipe_id = $trunkline_point->map_pipe_id;
+            $hydroCalcResult->oil_pipe_id = $trunkline_point->oil_pipe_id;
             $hydroCalcResult->mix_speed_avg = $row[self::MIX_SPEED_AVERAGE];
             $hydroCalcResult->fluid_speed = $row[self::FLUID_SPEED];
             $hydroCalcResult->gaz_speed = $row[self::GAS_SPEED];

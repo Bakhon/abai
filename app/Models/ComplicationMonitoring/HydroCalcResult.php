@@ -18,7 +18,7 @@ class HydroCalcResult extends Model
         return $this->belongsTo(TrunklinePoint::class,'id','trunkline_point_id');
     }
 
-    public function oilPipes()
+    public function oilPipe()
     {
         return $this->belongsTo(OilPipe::class);
     }

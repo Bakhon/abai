@@ -92,25 +92,25 @@ class MapsController extends Controller
         $coords = [];
 
         $oilPipes->map(
-            function ($map_pipe) use (&$coordinates, &$coords) {
-                $map_pipe->coords->map(
-                    function ($coord) use (&$coordinates, &$map_pipe, &$coords) {
+            function ($oilPipe) use (&$coordinates, &$coords) {
+                $oilPipe->coords->map(
+                    function ($coord) use (&$coordinates, &$oilPipe, &$coords) {
                         $coords[] = [$coord->lon, $coord->lat];
 
                         return $coord;
                     }
                 );
 
-                if (!isset($coordinates[$map_pipe->gu_id])) {
-                    $coordinates[$map_pipe->gu_id] = [];
+                if (!isset($coordinates[$oilPipe->gu_id])) {
+                    $coordinates[$oilPipe->gu_id] = [];
                 }
 
-                $coordinates[$map_pipe->gu_id] = array_merge(
-                    $coordinates[$map_pipe->gu_id],
+                $coordinates[$oilPipe->gu_id] = array_merge(
+                    $coordinates[$oilPipe->gu_id],
                     $coords
                 );
 
-                return $map_pipe;
+                return $oilPipe;
             }
         );
 
@@ -203,7 +203,7 @@ class MapsController extends Controller
         foreach ($pipe_input['coords'] as $coord) {
             $pipe_coord = new PipeCoord;
             $pipe_coord->fill($coord);
-            $pipe_coord->map_pipe_id = $pipe->id;
+            $pipe_coord->oil_pipe_id = $pipe->id;
             $pipe_coord->save();
         }
 
@@ -338,7 +338,7 @@ class MapsController extends Controller
 
     public function deletePipe(OilPipe $pipe): \Symfony\Component\HttpFoundation\Response
     {
-        PipeCoord::where('map_pipe_id', $pipe->id)->delete();
+        PipeCoord::where('oil_pipe_id', $pipe->id)->delete();
         $pipe->delete();
 
         return response()->json(

@@ -197,10 +197,10 @@ class TrunklineImport implements ToCollection, WithEvents, WithColumnLimit, With
     }
 
 
-    private function createPipeCoord($row, int $map_pipe_id): void
+    private function createPipeCoord($row, int $oilPipeId): void
     {
         $pipe_coords = new PipeCoord;
-        $pipe_coords->map_pipe_id = $map_pipe_id;
+        $pipe_coords->oil_pipe_id = $oilPipeId;
         $pipe_coords->lat = $row[self::LAT];
         $pipe_coords->lon = $row[self::LON];
         $pipe_coords->elevation = $row[self::ELEVATION];

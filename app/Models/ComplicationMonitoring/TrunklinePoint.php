@@ -22,7 +22,7 @@ class TrunklinePoint extends Model
         return $this->belongsTo(Ngdu::class);
     }
 
-    public function oilPipes()
+    public function oilPipe()
     {
         return $this->belongsTo(OilPipe::class);
     }

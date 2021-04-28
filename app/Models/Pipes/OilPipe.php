@@ -40,7 +40,7 @@ class OilPipe extends Model
 
     public function coords()
     {
-        return $this->hasMany(PipeCoord::class);
+        return $this->hasMany(PipeCoord::class, 'oil_pipe_id', 'id');
     }
 
     public function firstCoords()

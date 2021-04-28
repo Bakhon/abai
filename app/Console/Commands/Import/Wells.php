@@ -7,6 +7,7 @@ use App\Imports\TrunklineImport;
 use App\Models\ComplicationMonitoring\PipeType;
 use App\Models\Pipes\OilPipe;
 use App\Models\Pipes\PipeCoord;
+use App\Models\Refs\Zu;
 use Illuminate\Console\Command;
 use App\Imports\GuWellsImport;
 use Illuminate\Support\Facades\DB;
@@ -62,7 +63,6 @@ class Wells extends Command
 
         $this->importExcel(new TrunklineImport($this), public_path('imports/trunkline.xlsx'));
 
-        DB::raw('UPDATE zus SET name = UPPER(name)');
-        PipeType::doesntHave('map_pipe')->delete();
+        PipeType::doesntHave('oilPipes')->delete();
     }
 }

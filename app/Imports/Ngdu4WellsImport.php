@@ -165,7 +165,7 @@ class Ngdu4WellsImport implements ToCollection, WithEvents, WithColumnLimit, Wit
                         'gu_id' => $this->gu->id
                     ]
                 );
-                PipeCoord::where('map_pipe_id', $pipe->id)->delete();
+                PipeCoord::where('oil_pipe_id', $pipe->id)->delete();
                 $pipe->type_id = $pipe_type->id;
                 $pipe->material_id = $material->id;
 
@@ -209,7 +209,7 @@ class Ngdu4WellsImport implements ToCollection, WithEvents, WithColumnLimit, Wit
 
                             $this->errors[] = $message;
 
-                            PipeCoord::where('map_pipe_id', $pipe->id)->delete();
+                            PipeCoord::where('oil_pipe_id', $pipe->id)->delete();
                             $pipe->delete();
 
                             $zu = $well = $pipe = $pipe_coords = $between_points = null;
@@ -323,34 +323,32 @@ class Ngdu4WellsImport implements ToCollection, WithEvents, WithColumnLimit, Wit
         return $well;
     }
 
-    private function createZu($row, int $gu_id): Zu
+    private function createZu($row): Zu
     {
-        $this->command->info('Create Zu ' . $row[self::ZU]);
+        $this->command->info('Create Zu '.$row[self::ZU]);
+        $name = str_replace("СЏ", "СП", strtoupper($row[self::ZU]));
+        $name = str_replace("Ѐ", "А", $name);
+
         $zu = Zu::firstOrNew(
             [
-                'name' => strtoupper($row[self::ZU]),
                 'ngdu_id' => $this->ngdu->id,
-                'gu_id' => $this->gu->id
+                'gu_id' => $this->gu->id,
+                'name' => $name
             ]
         );
 
-        if (!$zu->lat || !$zu->lon || !$zu->elevation) {
-            $zu->lat = $row[self::LAT];
-            $zu->lon = $row[self::LON];
-            $zu->elevation = $row[self::ELEVATION];
-        }
-
-        $zu->gu_id = $gu_id;
+        $zu->lat = $row[self::LAT];
+        $zu->lon = $row[self::LON];
 
         $zu->save();
 
         return $zu;
     }
 
-    private function createPipeCoord($row, int $map_pipe_id): void
+    private function createPipeCoord($row, int $oilPipeId): void
     {
         $pipe_coords = new PipeCoord;
-        $pipe_coords->map_pipe_id = $map_pipe_id;
+        $pipe_coords->oil_pipe_id = $oilPipeId;
         $pipe_coords->lat = $row[self::LAT];
         $pipe_coords->lon = $row[self::LON];
         $pipe_coords->elevation = $row[self::ELEVATION];

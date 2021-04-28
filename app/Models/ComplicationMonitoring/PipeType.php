@@ -22,6 +22,6 @@ class PipeType extends Model
 
     public function oilPipes()
     {
-        return $this->belongsTo(OilPipe::class, 'id', 'type_id');
+        return $this->hasMany(OilPipe::class, 'type_id', 'id');
     }
 }
