@@ -11,7 +11,7 @@
                     <div class="row">
                       <td class="col-4 col-lg-4 d-flex">
                         <div class="first-td-header">
-                          <div class="row oil-block">
+                          <div class="row oil-block col-6 col-md-12">
                             <div class="number">
                               {{ formatDigitToThousand(productionParams.oil_fact) }}
                             </div>
@@ -75,7 +75,7 @@
                       </td>
                       <td class="col-4 col-lg-4 d-flex">
                         <div class="first-td-header">
-                          <div class="row oil-block">
+                          <div class="row oil-block col-6 col-md-12">
                             <div class="number">
                               {{ formatDigitToThousand(productionParams.oil_dlv_fact) }}
                             </div>
@@ -139,7 +139,7 @@
                       </td>
                       <td class="col-4 col-sm-4 d-flex">
                         <div class="first-td-header">
-                          <div class="row oil-block">
+                          <div class="row oil-block col-6 col-md-12">
                             <div class="number">
                               {{ formatDigitToThousand(productionParams.gas_fact) }}
                             </div>
