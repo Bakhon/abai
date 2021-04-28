@@ -298,7 +298,7 @@
             </div>
           </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-4 col-no-right-padding">
           <div class="bg-dark-transparent">
             <div class="row">
               <div class="col">
@@ -1576,5 +1576,8 @@ h4 {
   margin: 10px 20px;
   padding: 0px;
 
+}
+.col-no-right-padding{
+  padding-right: 0px;
 }
 </style>
