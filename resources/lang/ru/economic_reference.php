@@ -28,6 +28,7 @@ return array (
   'delete_wrong_uploaded_data' => 'Удалить ошибочные загруженные файлы',
   'upload_excel' => 'Добавить данные в Excel',
   'upload' => 'Загрузить данные',
+  'net_back' => 'NetBack',
   'million' => 'млн',
   'billion' => 'млрд',
   'thousand_tons' => 'тыс. тонн',
@@ -64,4 +65,8 @@ return array (
   'wells_profitable' => 'Рентабельные скважины',
   'wells_profitless_cat_2' => 'Условно-рентабельные скважины',
   'wells_profitless_cat_1' => 'Нерентабельные скважины',
+  'profitability_full' => 'По полным затратам',
+  'profitability_direct' => 'По прямым затратам',
+  'profitability_direct_from_date' => 'По прямым затрат от определенной даты',
+  'amort' => 'Амортизация, тенге/тонна',
 );

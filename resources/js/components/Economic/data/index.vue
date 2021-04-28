@@ -11,7 +11,7 @@
           @change="getData"/>
 
       <vue-table-dynamic v-if="form.sc_fa" :params="params" ref="table">
-        <a slot="column-16" slot-scope="{ props }" :href="props.cellData">
+        <a slot="column-17" slot-scope="{ props }" :href="props.cellData">
           {{ trans('app.edit') }}
         </a>
       </vue-table-dynamic>
@@ -68,7 +68,8 @@ export default {
         {column: 13, width: 150},
         {column: 14, width: 150},
         {column: 15, width: 120},
-        {column: 16, width: 80},
+        {column: 16, width: 120},
+        {column: 17, width: 80},
       ]
     },
     loading: false
