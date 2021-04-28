@@ -1224,8 +1224,9 @@ h4 {
 .small-select {
   width: 200px;
   height: 45px;
-  margin-right: 0.25em;
-  margin-bottom: 0.25em;
+  margin-right: auto;
+  margin-left: auto;
+  margin-bottom: 1em;
   white-space: pre-line;
 
   .txt5 {
@@ -1250,7 +1251,7 @@ h4 {
 
 .table-container {
   background-color: #272953;
-  overflow-y: scroll;
+  overflow-y: auto;
   overflow-x: hidden;
   width: 100%;
   color: white;
@@ -1265,7 +1266,9 @@ h4 {
     text-align: center;
     background-color: #505684;
     height: 50px;
-
+    .row{
+      height: 100%;
+    }
   }
 
   .table-container-element {
@@ -1304,12 +1307,14 @@ h4 {
     border-left: 1px solid #464D7A;
     border-bottom: hidden;
     border-right: hidden;
+    margin-top: auto;
+    margin-bottom: auto;
   }
 }
 
 .info {
   height: 650px;
-  overflow-y: scroll;
+  overflow-y: auto;
   overflow-x: hidden;
 
   .row {
@@ -1466,6 +1471,7 @@ h4 {
   border-radius: 10px;
   cursor: pointer;
   padding: 7px;
+  height: 50px;
 
   .icon-all {
     height: 100%;
