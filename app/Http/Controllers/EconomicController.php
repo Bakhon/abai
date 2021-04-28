@@ -19,7 +19,7 @@ class EconomicController extends Controller
     const INTERVAL_LAST_MONTH = '2020-12-01T00:00:00/2021-01-01T00:00:00';
     const INTERVAL_LAST_2_MONTHS = '2020-11-01T00:00:00/2021-01-01T00:00:00';
 
-    const DATA_SOURCE = 'economic_2020v17_test';
+    const DATA_SOURCE = 'economic_2020v18_test';
 
     const GRANULARITY_DAILY_FORMAT = 'yyyy-MM-dd';
     const GRANULARITY_MONTHLY_FORMAT = 'MM-yyyy';
@@ -40,10 +40,6 @@ class EconomicController extends Controller
 
     const BUILDER_SUM_OPERATING_PROFIT_AND_PRS1_LAST_YEAR = 'builder1';
     const BUILDER_SUM_OPERATING_PROFIT_AND_COUNT_UWI_LAST_2_MONTHS = 'builder2';
-    const BUILDER_DATA_CAT_1_LAST_MONTH = 'builder3';
-    const BUILDER_DATA_OPERATING_PROFIT_MONTH = 'builder4';
-    const BUILDER_DATA_OPERATING_PROFIT_YEAR = 'builder5';
-    const BUILDER_DATA_PRS_1_YEAR = 'builder6';
     const BUILDER_SUM_OPERATING_PROFIT_TOP_LAST_YEAR = 'builder7';
     const BUILDER_OIL_PRODUCTION = 'builder8';
     const BUILDER_SUM_LAST_2_MONTHS = 'builder9';
@@ -99,49 +95,9 @@ class EconomicController extends Controller
             ->sum("Operating_profit")
             ->distinctCount('uwi');
 
-        $builder3 = $this
-            ->druidClient
-            ->query(self::DATA_SOURCE, Granularity::MONTH)
-            ->interval($intervalMonths)
-            ->select("uwi")
-            ->sum("oil")
-            ->sum("liquid")
-            ->sum("Revenue_total")
-            ->sum("NetBack_bf_pr_exp")
-            ->sum("Operating_profit");
-
-        $builder4 = $this
-            ->druidClient
-            ->query(self::DATA_SOURCE, $granularity)
-            ->interval($intervalMonths)
-            ->sum("oil")
-            ->sum("liquid")
-            ->sum("Operating_profit");
-
-        $builder5 = $this
-            ->druidClient
-            ->query(self::DATA_SOURCE, Granularity::MONTH)
-            ->interval($intervalMonths)
-            ->sum("oil")
-            ->sum("liquid")
-            ->sum("Operating_profit");
-
-        $builder6 = $this
-            ->druidClient
-            ->query(self::DATA_SOURCE, Granularity::YEAR)
-            ->interval($intervalMonths)
-            ->select("uwi")
-            ->sum("prs1")
-            ->orderBy('prs1', 'desc')
-            ->where('prs1', '>', '0');
-
         $buildersProfitability = [
             $builder1,
             $builder2,
-            $builder3,
-            $builder4,
-            $builder5,
-            $builder6,
         ];
 
         foreach ($buildersProfitability as &$builder) {
@@ -216,10 +172,6 @@ class EconomicController extends Controller
         $builders = [
             self::BUILDER_SUM_OPERATING_PROFIT_AND_PRS1_LAST_YEAR => $builder1,
             self::BUILDER_SUM_OPERATING_PROFIT_AND_COUNT_UWI_LAST_2_MONTHS => $builder2,
-            self::BUILDER_DATA_CAT_1_LAST_MONTH => $builder3,
-            self::BUILDER_DATA_OPERATING_PROFIT_MONTH => $builder4,
-            self::BUILDER_DATA_OPERATING_PROFIT_YEAR => $builder5,
-            self::BUILDER_DATA_PRS_1_YEAR => $builder6,
             self::BUILDER_SUM_OPERATING_PROFIT_TOP_LAST_YEAR => $builder7,
             self::BUILDER_OIL_PRODUCTION => $builder8,
             self::BUILDER_SUM_LAST_2_MONTHS => $builder9,
@@ -249,8 +201,6 @@ class EconomicController extends Controller
             $timeseries = [
                 self::BUILDER_SUM_OPERATING_PROFIT_AND_COUNT_UWI_LAST_2_MONTHS,
                 self::BUILDER_SUM_OPERATING_PROFIT_AND_PRS1_LAST_YEAR,
-                self::BUILDER_DATA_OPERATING_PROFIT_MONTH,
-                self::BUILDER_DATA_OPERATING_PROFIT_YEAR,
                 self::BUILDER_SUM_LAST_2_MONTHS
             ];
 
@@ -258,29 +208,6 @@ class EconomicController extends Controller
                 ? $builder->timeseries()->data()
                 : $builder->groupBy()->data();
         }
-
-        $data = [
-            'cat1_month' => [[
-                trans('economic_reference.well'),
-                trans('economic_reference.oil_production'),
-                trans('economic_reference.liquid_production'),
-                'Revenue_total',
-                'NetBack_bf_pr_exp',
-                'Operating_profit'
-            ]],
-            'prs1' => [[
-                trans('economic_reference.well'),
-                trans('economic_reference.count_prs'),
-            ]],
-            'Operating_profit_month' => [[
-                trans('app.date'),
-                trans('economic_reference.oil_production'),
-                trans('economic_reference.liquid_production'),
-                'Operating_profit'
-            ]]
-        ];
-
-        $data['Operating_profit_year'] = $data['Operating_profit_month'];
 
         $dataChart1 = ['dt' => []];
 
@@ -296,39 +223,6 @@ class EconomicController extends Controller
             'uwi' => [],
             'Operating_profit' => []
         ];
-
-        foreach ($result[self::BUILDER_DATA_CAT_1_LAST_MONTH] as &$item) {
-            $data['cat1_month'][] = [
-                $item['uwi'],
-                $item['oil'],
-                $item['liquid'],
-                $item['Revenue_total'],
-                $item['NetBack_bf_pr_exp'],
-                $item['Operating_profit']
-            ];
-        }
-
-        foreach ($result[self::BUILDER_DATA_OPERATING_PROFIT_MONTH] as &$item) {
-            $data['Operating_profit_month'][] = [
-                date('d-m-Y', strtotime($item['timestamp'])),
-                $item['oil'],
-                $item['liquid'],
-                $item['Operating_profit']
-            ];
-        }
-
-        foreach ($result[self::BUILDER_DATA_OPERATING_PROFIT_YEAR] as &$item) {
-            $data['Operating_profit_year'][] = [
-                date('m-Y', strtotime($item['timestamp'])),
-                $item['oil'],
-                $item['liquid'],
-                $item['Operating_profit']
-            ];
-        }
-
-        foreach ($result[self::BUILDER_DATA_PRS_1_YEAR] as &$item) {
-            $data['prs1'][] = [$item['uwi'], $item['prs1']];
-        }
 
         $operatingProfitTopHighest = array_slice(
             $result[self::BUILDER_SUM_OPERATING_PROFIT_TOP_LAST_YEAR],
@@ -387,7 +281,6 @@ class EconomicController extends Controller
 
         $resLastMonth = [
             'Operating_profit' => [
-                'data' => $data['Operating_profit_month'],
                 'sum' => [
                     'value_prev' => self::moneyFormat($prevMonth["Operating_profit"]),
                     'value' => self::moneyFormat($lastMonth["Operating_profit"]),
@@ -395,7 +288,6 @@ class EconomicController extends Controller
                 ],
             ],
             'cat1' => [
-                'data' => $data['cat1_month'],
                 'count' => [
                     'value_prev' => (int)$prevMonth['uwi'],
                     'value' => (int)$lastMonth['uwi'],
@@ -423,13 +315,11 @@ class EconomicController extends Controller
         return [
             'lastYear' => [
                 'Operating_profit' => [
-                    'data' => $data['Operating_profit_year'],
                     'sum' => [
                         'value' => self::moneyFormat($result[self::BUILDER_SUM_OPERATING_PROFIT_AND_PRS1_LAST_YEAR][0]["Operating_profit"])
                     ],
                 ],
                 'prs1' => [
-                    'data' => $data['prs1'],
                     'count' => [
                         'value' => round($result[self::BUILDER_SUM_OPERATING_PROFIT_AND_PRS1_LAST_YEAR][0]["prs1"])
                     ]

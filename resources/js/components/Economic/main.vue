@@ -4,18 +4,8 @@
 
     <div class="row">
       <div class="col-9">
-        <modal
-            v-for="bignKey in bignKeys"
-            :key="bignKey"
-            :name="bignKey"
-            :width="1150"
-            :height="400"
-            adaptive>
-          <vue-table-dynamic ref="table" :params="params"/>
-        </modal>
-
         <div class="row justify-content-between text-white bg-blue-dark text-wrap">
-          <economic-col @click.native="pushBign('bign1')">
+          <economic-col>
             <economic-title>
               <span>{{ res.lastMonth.cat1.count.value.toLocaleString() }}</span>
 
@@ -27,7 +17,7 @@
             </subtitle>
           </economic-col>
 
-          <economic-col @click.native="pushBign('bign2')">
+          <economic-col>
             <divider/>
 
             <economic-title>
@@ -42,7 +32,7 @@
             </subtitle>
           </economic-col>
 
-          <economic-col @click.native="pushBign('bign3')">
+          <economic-col>
             <divider/>
 
             <economic-title>
@@ -62,7 +52,7 @@
             </subtitle>
           </economic-col>
 
-          <economic-col @click.native="pushBign('bign4')">
+          <economic-col>
             <divider/>
 
             <economic-title>
@@ -180,8 +170,6 @@
 <script>
 const fileDownload = require("js-file-download");
 
-import VModal from 'vue-js-modal'
-import VueTableDynamic from 'vue-table-dynamic'
 import CatLoader from '../ui-kit/CatLoader'
 import Divider from "./components/Divider";
 import EconomicCol from "./components/EconomicCol";
@@ -194,8 +182,6 @@ import SelectGranularity, {GRANULARITY_DAY} from "./components/SelectGranularity
 import SelectOrganization from "./components/SelectOrganization";
 import SelectField from "./components/SelectField";
 import SelectProfitability, {PROFITABILITY_FULL} from "./components/SelectProfitability";
-
-Vue.use(VModal, {dynamicDefault: {draggable: true, resizable: true}});
 
 const economicRes = {
   lastYear: {
@@ -286,7 +272,6 @@ const economicRes = {
 export default {
   name: "economic-component",
   components: {
-    VueTableDynamic,
     CatLoader,
     Divider,
     EconomicCol,
@@ -365,15 +350,6 @@ export default {
         ],
       ]
     },
-
-    bignKeys() {
-      return [
-        'bign1',
-        'bign2',
-        'bign3',
-        'bign4',
-      ]
-    },
   },
   methods: {
     calcSubBlockBg(percent, reversePercent) {
@@ -438,25 +414,6 @@ export default {
         }
       }, 2000)
     },
-
-    pushBign(bign) {
-      switch (bign) {
-        case 'bign1':
-          this.params.data = this.res.lastMonth.cat1.data;
-          break;
-        case 'bign2':
-          this.params.data = this.res.lastYear.Operating_profit.data;
-          break;
-        case 'bign3':
-          this.params.data = this.res.lastMonth.Operating_profit.data;
-          break;
-        case 'bign4':
-          this.params.data = this.res.lastYear.prs1.data;
-          break;
-      }
-
-      this.$modal.show(bign);
-    }
   }
 };
 </script>
