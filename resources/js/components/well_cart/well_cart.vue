@@ -461,7 +461,7 @@
     </div>
     </div>
 
-    <div class="col-md-3">
+    <div class="col-md-3 passport">
       <div class="bg-dark-transparent">
         <div class="row">
           <div class="col">
@@ -1214,7 +1214,7 @@ h4 {
 
   .icon-container {
     width: 100%;
-    margin: 10px;
+    margin: 30px 10px;
   }
 }
 
@@ -1580,5 +1580,10 @@ h4 {
 }
 .col-no-right-padding{
   padding-right: 0px;
+}
+.passport{
+  .bg-dark-transparent{
+    padding-bottom: 0px;
+  }
 }
 </style>
