@@ -108,6 +108,7 @@ Route::group(
                 );
                 Route::resource('pipe_types', 'ComplicationMonitoring\PipeTypesController');
 
+
                 Route::get('inhibitors/list', 'InhibitorsController@list')->name('inhibitors.list');
                 Route::resource('inhibitors', 'InhibitorsController');
 
@@ -169,6 +170,11 @@ Route::group(
                 Route::get('/hydro-calc/list', 'ComplicationMonitoring\HydroCalculcation@list')->name('hydro_calculcation.list');
                 Route::get('/hydro-calc/export', 'ComplicationMonitoring\HydroCalculcation@exportExcel')->name('hydro_calculcation.export');
                 Route::resource('hydro-calc', 'ComplicationMonitoring\HydroCalculcation');
+
+
+                Route::get('materials/list', 'ComplicationMonitoring\MaterialsСontroller@list')->name('materials.list');
+                Route::resource('materials', 'ComplicationMonitoring\MaterialsController');
+                
             }
         );
     }
