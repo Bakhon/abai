@@ -27,12 +27,9 @@
 </template>
 
 <script>
-import VModal from 'vue-js-modal'
 import VueTableDynamic from 'vue-table-dynamic'
 import CatLoader from "../../ui-kit/CatLoader";
 import SelectScFa from "../components/SelectScFa";
-
-Vue.use(VModal, {dynamicDefault: {draggable: true, resizable: true}});
 
 export default {
   name: "economic-data-component",
