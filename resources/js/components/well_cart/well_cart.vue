@@ -109,7 +109,7 @@
             </div>
           </div>
           <div class="col">
-            <div class="row">
+            <div class="row vertical-wrapper">
               <div class="dropdown small-select">
                 <button class="btn btn-secondary select-button" type="button" id="dropdownMenuButton"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -131,7 +131,7 @@
 
                   </div>
                 </button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton_1">
                   <form>
                     <ul>
                       <li>
@@ -168,7 +168,7 @@
 
 
               <div class="dropdown small-select">
-                <button class="btn btn-secondary select-button" type="button" id="dropdownMenuButton"
+                <button class="btn btn-secondary select-button" type="button" id="dropdownMenuButton_2"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <div class="button1-vc-inner">
                     <div class="icon-all ">
@@ -237,7 +237,7 @@
               </div>
 
               <div class="dropdown small-select">
-                <button class="btn btn-secondary select-button" type="button" id="dropdownMenuButton"
+                <button class="btn btn-secondary select-button" type="button" id="dropdownMenuButton_3"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <div class="button1-vc-inner">
                     <div class="icon-all ">
@@ -261,33 +261,33 @@
                     <ul>
                       <li>
                         <div class="flag"></div>
-                        <label class="container" for="t1_1">
+                        <label class="container" for="tech">
                           <span class="bottom-border">Технологическая структура</span>
-                          <input type="checkbox" id="t1_1" name="t1_1" value="t1_1" class="dropdown-item">
+                          <input type="checkbox" id="tech" name="tech" value="tech" class="dropdown-item">
                           <span class="checkmark"></span>
                         </label>
                       </li>
                       <li>
                         <div class="flag"></div>
-                        <label class="container" for="t1_2">
+                        <label class="container" for="substation">
                           <span class="bottom-border">Распределительная подстанция</span>
-                          <input type="checkbox" id="t1_2" name="t1_2" value="t1_2" class="dropdown-item">
+                          <input type="checkbox" id="substation" value="" class="dropdown-item">
                           <span class="checkmark"></span>
                         </label>
                       </li>
                       <li>
                         <div class="flag"></div>
-                        <label class="container" for="t1_3">
+                        <label class="container" for="querry_category">
                           <span class="bottom-border">Категория запасов</span>
-                          <input type="checkbox" id="t1_3" name="t1_3" value="t1_3" class="dropdown-item">
+                          <input type="checkbox" id="querry_category" name="t1_3" value="" class="dropdown-item">
                           <span class="checkmark"></span>
                         </label>
                       </li>
                       <li>
                         <div class="flag"></div>
-                        <label class="container" for="t1_4">
+                        <label class="container" for="production_wells">
                           <span class="bottom-border">Добывающие скважины</span>
-                          <input type="checkbox" id="t1_4" name="t1_4" value="t1_4" class="dropdown-item">
+                          <input type="checkbox" id="production_wells" name="t1_4" value="" class="dropdown-item">
                           <span class="checkmark"></span>
                         </label>
                       </li>
@@ -415,50 +415,50 @@
           <div class="row">
             <div class="col">
               <div class="bg-dark graphics">
-              <div class="dropdown small-select">
-                <button class="btn btn-secondary select-button" type="button" id="OilDropdown"
-                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <div class="button1-vc-inner">
-                    <div class="icon-all ">
-                    </div>
-                    <div style="display:flex">
-                      <div class="txt5">Нефть, жикость</div>
-                      <div class="icon-pointer" style="margin-left:auto"></div>
-                    </div>
+                <div class="dropdown small-select">
+                  <button class="btn btn-secondary select-button" type="button" id="OilDropdown"
+                          data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <div class="button1-vc-inner">
+                      <div class="icon-all ">
+                      </div>
+                      <div style="display:flex">
+                        <div class="txt5">Нефть, жикость</div>
+                        <div class="icon-pointer" style="margin-left:auto"></div>
+                      </div>
 
+                    </div>
+                  </button>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <form>
+                      <ul>
+                        <li>
+                          <div class="flag"></div>
+                          <label class="container" for="oil">
+                            <span class="bottom-border">Нефть, жидкость</span>
+                            <input type="checkbox" id="oil" name="tech_structire" value="tech_structire"
+                                   class="dropdown-item">
+                            <span class="checkmark"></span>
+                          </label>
+                        </li>
+                        <li>
+                          <div class="flag"></div>
+                          <label class="container" for="water_percent">
+                            <span class="bottom-border">Обводненность, Н дин</span>
+                            <input type="checkbox" id="water_percent" name="tech_structire_1" value="tech_structire"
+                                   class="dropdown-item">
+                            <span class="checkmark"></span>
+                          </label>
+                        </li>
+                      </ul>
+                    </form>
                   </div>
-                </button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                  <form>
-                    <ul>
-                      <li>
-                        <div class="flag"></div>
-                        <label class="container" for="oil">
-                          <span class="bottom-border">Нефть, жидкость</span>
-                          <input type="checkbox" id="oil" name="tech_structire" value="tech_structire"
-                                 class="dropdown-item">
-                          <span class="checkmark"></span>
-                        </label>
-                      </li>
-                      <li>
-                        <div class="flag"></div>
-                        <label class="container" for="water_percent">
-                          <span class="bottom-border">Обводненность, Н дин</span>
-                          <input type="checkbox" id="water_percent" name="tech_structire_1" value="tech_structire"
-                                 class="dropdown-item">
-                          <span class="checkmark"></span>
-                        </label>
-                      </li>
-                    </ul>
-                  </form>
                 </div>
+                <!-- Место для графика -->
               </div>
-              <!-- Место для графика -->
             </div>
           </div>
         </div>
       </div>
-    </div>
     </div>
 
     <div class="col-md-3 passport">
@@ -1025,6 +1025,7 @@ h4 {
   padding: 15px 19px;
 
   .border-bottom {
+    width: 100%;
     display: flex;
     border-bottom: 1px solid #555BA6 !important;
   }
@@ -1091,23 +1092,25 @@ h4 {
     margin-left: -17px;
   }
 }
-.graphics{
-  .select-button{
+
+.graphics {
+  .select-button {
     background: #272953;
-    height: 40px;
+
   }
-  .dropdown :focus{
+
+  .dropdown :focus {
     background: #5670BF;
   }
-  .bg-dark{
-    width: 100%;
-  }
+
 }
+
 .directory {
   display: block;
   width: 100%;
   padding: 10px;
   margin: 10px 40px 10px 25px;
+  height: 888px;
 
   col {
     display: flex;
@@ -1266,7 +1269,7 @@ h4 {
 .table-container {
   background-color: #272953;
   overflow-y: auto;
-  overflow-x: hidden;
+  overflow-x: auto;
   width: 100%;
   color: white;
 
@@ -1332,7 +1335,7 @@ h4 {
 }
 
 .info {
-  height: 650px;
+  height: 600px;
   overflow-y: auto;
   overflow-x: hidden;
 
@@ -1543,6 +1546,10 @@ h4 {
   background-color: rgba(39, 41, 83, 0.85);
   padding-bottom: 20px;
   margin-bottom: 20px;
+  .graphics{
+    height: 289px;
+    width: 100%;
+  }
 }
 
 .blue-section {
@@ -1578,12 +1585,20 @@ h4 {
   padding: 0px;
 
 }
-.col-no-right-padding{
+
+.col-no-right-padding {
   padding-right: 0px;
 }
-.passport{
-  .bg-dark-transparent{
+
+.passport {
+  .bg-dark-transparent {
     padding-bottom: 0px;
   }
+}
+
+.vertical-wrapper {
+  width: 100%;
+  margin-right: 0px;
+  margin-left: 0px;
 }
 </style>
