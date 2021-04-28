@@ -25,7 +25,7 @@ use Illuminate\Http\Request;
 
 class EcoRefsScFaController extends Controller
 {
-    const PAGINATION = 12;
+    const PAGINATION = 20;
 
     public function index()
     {
@@ -69,7 +69,7 @@ class EcoRefsScFaController extends Controller
             ->with('success', __('app.updated'));
     }
 
-    public function destroy($id)
+    public function destroy(int $id)
     {
         EcoRefsScFa::query()->whereId($id)->delete();
 
