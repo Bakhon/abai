@@ -2,6 +2,7 @@
 
 namespace App\Models\EconomyKenzhe;
 
+use App\Models\EcoRefsAvgPrs;
 use App\Models\EcoRefsPrepElectPrsBrigCost;
 use App\Models\EcoRefsRoute;
 use Illuminate\Database\Eloquent\Model;
@@ -25,6 +26,10 @@ class FieldCalcCompany extends Model
     //Стоимость 1 сутки бригады ПРС, тенге:
     public function compRas($scenario_fact)
     {
-        return $this->belongsTo(EcoRefsPrepElectPrsBrigCost::class, 'company_id', 'id')->where('sc_fa', '=', $scenario_fact);
+        return $this->hasMany(EcoRefsPrepElectPrsBrigCost::class, 'company_id', 'id')->where('sc_fa', '=', $scenario_fact);
+    }
+
+    public function averagePrs(){
+        return $this->hasMany(EcoRefsAvgPrs::class, 'company_id', 'id');
     }
 }

@@ -12,7 +12,7 @@ class MainController extends Controller
 
     public function company(Request $request)
     {
-        $companyId = 116;
+        $companyId = 181;
         $dateTo = date('Y-m-d', strtotime('-1 year'));
         $dateFrom = date("Y-m-d", strtotime($dateTo . "-3 months"));
 
