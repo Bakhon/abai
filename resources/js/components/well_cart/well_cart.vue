@@ -217,6 +217,14 @@
                       </li>
                       <li>
                         <div class="flag"></div>
+                        <label class="container" for="t1_3">
+                          <span class="bottom-border">Категория запасов</span>
+                          <input type="checkbox" id="t1_3" name="t1_3" value="t1_3" class="dropdown-item">
+                          <span class="checkmark"></span>
+                        </label>
+                      </li>
+                      <li>
+                        <div class="flag"></div>
                         <label class="container" for="t1_4">
                           <span class="bottom-border">Добывающие скважины</span>
                           <input type="checkbox" id="t1_4" name="t1_4" value="t1_4" class="dropdown-item">
@@ -481,14 +489,16 @@
           <div class="col">
             <div class="icon-all pointer-large-icon inline-table">
               <svg width="14" height="22" viewBox="0 0 14 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12.2882 0.739231L12.9888 1.43312C13.2073 1.65145 13.3278 1.94178 13.3278 2.25253C13.3278 2.56251 13.2073 2.85363 12.9888 3.07196L5.05502 10.9858L12.9977 18.9089C13.2162 19.1269 13.3365 19.4176 13.3365 19.728C13.3365 20.0383 13.2162 20.3291 12.9977 20.5474L12.3013 21.2413C11.8489 21.693 11.1117 21.693 10.659 21.2413L1.16833 11.808C0.949852 11.59 0.795898 11.2997 0.795898 10.9866V10.9827C0.795898 10.6724 0.950238 10.382 1.16833 10.1637L10.6335 0.739231C10.852 0.520899 11.1518 0.401142 11.4629 0.400757C11.7741 0.400757 12.0701 0.520899 12.2882 0.739231Z" fill="#656A8A"/>
+                <path
+                    d="M12.2882 0.739231L12.9888 1.43312C13.2073 1.65145 13.3278 1.94178 13.3278 2.25253C13.3278 2.56251 13.2073 2.85363 12.9888 3.07196L5.05502 10.9858L12.9977 18.9089C13.2162 19.1269 13.3365 19.4176 13.3365 19.728C13.3365 20.0383 13.2162 20.3291 12.9977 20.5474L12.3013 21.2413C11.8489 21.693 11.1117 21.693 10.659 21.2413L1.16833 11.808C0.949852 11.59 0.795898 11.2997 0.795898 10.9866V10.9827C0.795898 10.6724 0.950238 10.382 1.16833 10.1637L10.6335 0.739231C10.852 0.520899 11.1518 0.401142 11.4629 0.400757C11.7741 0.400757 12.0701 0.520899 12.2882 0.739231Z"
+                    fill="#656A8A"/>
               </svg>
             </div>
             <div class="file-container">
               <div class="row">
                 <div class="col">
                   <div class="file-size">
-                  <p> 233 MB</p>
+                    <p> 233 MB</p>
                   </div>
                 </div>
               </div>
@@ -548,7 +558,9 @@
             </div>
             <div class="icon-all pointer-large-icon inline-table">
               <svg width="14" height="22" viewBox="0 0 14 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M1.99418 0.739231L1.2935 1.43312C1.07503 1.65145 0.954697 1.94178 0.954697 2.25253C0.954697 2.56251 1.07503 2.85363 1.2935 3.07196L9.22732 10.9858L1.28461 18.9089C1.06613 19.1269 0.945801 19.4176 0.945801 19.728C0.945801 20.0383 1.06613 20.3291 1.28461 20.5474L1.98107 21.2413C2.43346 21.693 3.1706 21.693 3.62338 21.2413L13.114 11.808C13.3325 11.59 13.4865 11.2997 13.4865 10.9866V10.9827C13.4865 10.6724 13.3321 10.382 13.114 10.1637L3.64886 0.739231C3.43038 0.520899 3.13053 0.401142 2.81941 0.400757C2.5083 0.400757 2.21228 0.520899 1.99418 0.739231Z" fill="#656A8A"/>
+                <path
+                    d="M1.99418 0.739231L1.2935 1.43312C1.07503 1.65145 0.954697 1.94178 0.954697 2.25253C0.954697 2.56251 1.07503 2.85363 1.2935 3.07196L9.22732 10.9858L1.28461 18.9089C1.06613 19.1269 0.945801 19.4176 0.945801 19.728C0.945801 20.0383 1.06613 20.3291 1.28461 20.5474L1.98107 21.2413C2.43346 21.693 3.1706 21.693 3.62338 21.2413L13.114 11.808C13.3325 11.59 13.4865 11.2997 13.4865 10.9866V10.9827C13.4865 10.6724 13.3321 10.382 13.114 10.1637L3.64886 0.739231C3.43038 0.520899 3.13053 0.401142 2.81941 0.400757C2.5083 0.400757 2.21228 0.520899 1.99418 0.739231Z"
+                    fill="#656A8A"/>
               </svg>
 
             </div>
@@ -788,7 +800,8 @@ for (i = 0; i < toggler.length; i++) {
 .flex {
   display: flex;
 }
-.inline-table{
+
+.inline-table {
   display: inline-table;
 }
 
@@ -1118,10 +1131,6 @@ h4 {
 
   }
 
-  .dropdown :focus {
-    background: #5670BF;
-  }
-
 }
 
 .directory {
@@ -1219,7 +1228,8 @@ h4 {
   margin-right: auto;
   width: 200px;
   height: 250px;
-  :first-child .col{
+
+  :first-child .col {
     height: 51.1px;
   }
 
@@ -1229,7 +1239,8 @@ h4 {
     background: url(/img/bd/file-large.svg) no-repeat;
     height: 158.21px;
     width: 120px;
-    .well-name{
+
+    .well-name {
       padding-right: 30.03px;
       margin-top: 114.67px;
       margin-left: 11.6px;
@@ -1238,14 +1249,16 @@ h4 {
       font-weight: 400;
       font-size: 10px;
       line-height: 12px;
-    p{
-      background: none;
-      font-family: 'Harmonia Sans Pro Cyr', 'Harmonia-Sans', 'Robato';
-      font-weight: 400;
-      font-size: 10px;
-      line-height: 12px;
-    }
-      .well-own-name{
+
+      p {
+        background: none;
+        font-family: 'Harmonia Sans Pro Cyr', 'Harmonia-Sans', 'Robato';
+        font-weight: 400;
+        font-size: 10px;
+        line-height: 12px;
+      }
+
+      .well-own-name {
         font-weight: 700;
         font-size: 14px;
         line-height: 16.8px;
@@ -1303,6 +1316,16 @@ h4 {
     line-height: 17px;
     margin-top: auto;
     margin-bottom: auto;
+  }
+
+  :focus {
+    background: #2E50E9;
+    border: 0px;
+  }
+
+  :visited {
+    background: #2E50E9;
+    border: 0px;;
   }
 }
 
@@ -1454,6 +1477,7 @@ h4 {
   display: flex;
   float: left;
   width: 100%;
+  height: 100%;
 
   .icon-all {
     height: 100%;
@@ -1463,6 +1487,10 @@ h4 {
       margin-top: auto;
       width: 100%;
     }
+  }
+
+  .icon-pointer {
+    margin-bottom: auto;
   }
 
   .text-wrapper {
@@ -1478,8 +1506,15 @@ h4 {
 .dropdown-menu.show {
   background: #40467E;
   color: white;
-  width: 350px;
-  padding: 18px 31px 0px 31px;
+  width: 100%;
+  padding: 0px 7px 0px 16px;
+  border: 1px solid #2E50E9;
+  border-radius: 8px;
+  margin-top: 7px;
+
+  ul:last-child li:last-child .bottom-border {
+    border-bottom: 0px;
+  }
 
   .container {
     margin: 0px;
@@ -1494,13 +1529,10 @@ h4 {
       margin-left: auto;
     }
 
-    :last-child {
-      border-bottom: 0px;
-    }
   }
 
   .flag {
-    margin-top: 15px;
+    margin-top: auto;
     margin-bottom: auto;
     padding-right: 10px;
     content: URL(/img/bd/check-marker.svg);
@@ -1510,7 +1542,6 @@ h4 {
     border-bottom: 1px solid rgba(196, 222, 242, 0.3);
     padding-bottom: 15px;
     padding-top: 15px;
-    margin-bottom: 15px;
     width: 100%;
   }
 
@@ -1531,7 +1562,6 @@ h4 {
   .checkmark {
     height: 20px;
     width: 20px;
-    background-color: #656A8A;
     border-radius: 6px;
     border: 2px solid #237DEB;
     margin-bottom: auto;
@@ -1549,7 +1579,7 @@ h4 {
 
   .checkmark:after {
     content: "";
-    position: relative;
+    position: absolute;
     display: none;
   }
 
@@ -1560,6 +1590,7 @@ h4 {
   .container .checkmark:after {
     width: 5px;
     height: 10px;
+    bottom: 10px;
     border: solid white;
     border-width: 0 3px 3px 0;
     -webkit-transform: rotate(45deg);
@@ -1715,20 +1746,24 @@ h4 {
 .buttons-no-wrap {
   min-width: 150px !important;
 }
-.calc-width{
+
+.calc-width {
   flex: calc(100% - 250px);
   max-width: calc(100% - 250px);
 
 }
-.mid-col{
+
+.mid-col {
   max-width: calc(100% - 348px - 398px);
   flex: calc(100% - 348px - 398px);
   min-width: 500px;
 }
-.file-size{
+
+.file-size {
   margin-left: auto;
   margin-bottom: auto;
-  p{
+
+  p {
     padding: 2.59px 5px 5px 5.55px;
     font-size: 14px;
     font-weight: 700;
