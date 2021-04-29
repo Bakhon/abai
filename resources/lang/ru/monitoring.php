@@ -129,6 +129,10 @@ return array (
       'fill' => 'Заправка',
       'yearly_inhibitor_rate' => 'Годовой расход ингибитора кг',
     ),
+    'errors' => 
+    array (
+      'no-ddng-data-on-date' => 'Нет данных по ДДНГ на',
+    ),
   ),
   'omgngdu' => 
   array (
@@ -234,6 +238,11 @@ return array (
   array (
     'title' => 'Карта',
     'select_gu' => 'Выберите ГУ',
+    'select_filter' => 'Выберите фильтр',
+    'filters' => 
+    array (
+      'speed-flow-filter' => 'Скорость потока',
+    ),
   ),
   'module_name' => 'Мониторинг осложнений',
   'tech_map_prototype' => 'Техкарта прототип',
@@ -261,7 +270,6 @@ return array (
             'name' => 'Имя Скважины',
             'well' => 'Скважина',
         ),
-
     'pipe' =>
   array (
     'updated' => 'Трубовровод изменен',
@@ -398,18 +406,6 @@ return array (
     'error' => 
     array (
       'not-enough-data' => 'Не достаточно данных для расчета',
-    ),
-  ),
-  'monitor' => 
-  array (
-    'errors' => 
-    array (
-      'ngdu' => 'Нет данных по ОМГДУ ГУ !',
-      'oilGas' => 'Нет данных по нефти и газу !',
-      'pipe' => 'Нет данных по трубопроводу !',
-      'pump_discharge_pressure' => 'Выходное давление не должно быть равно 0 !',
-      'surge_tank_pressure' => 'Давление в буферной емкости не должно быть равно 0 !',
-      'hydrogen_sulfide' => 'Значение H₂S в газе не должно быть равно 0 !',
     ),
   ),
   'monitor' => 

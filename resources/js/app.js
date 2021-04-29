@@ -26,6 +26,7 @@ import VueSimpleAlert from "vue-simple-alert";
 import PerfectScrollbar from "vue2-perfect-scrollbar";
 import "vue2-perfect-scrollbar/dist/vue2-perfect-scrollbar.css";
 import columnSortable from 'vue-column-sortable';
+import Paginate from 'vuejs-paginate';
 
 require('./bootstrap');
 window.Vue = require('vue');
@@ -41,10 +42,12 @@ Vue.use(PerfectScrollbar);
 Vue.use(columnSortable);
 Vue.use(VueSimpleAlert);
 Vue.use(BootstrapVue);
+Vue.component('paginate', Paginate);
 
 //Mixins
 import showToast from '~/mixins/showToast';
 Vue.mixin(showToast);
+
 
 /**
  * The following block of code may be used to automatically register your
