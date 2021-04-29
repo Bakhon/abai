@@ -176,6 +176,52 @@ export default {
             if (i < 0) return "arrow";
             if (i > 0) return "arrow2";
         },
+
+        getDataOrderedByAsc(data) {
+            return _.orderBy(data,
+                ["__time"],
+                ["asc"]
+            );
+        },
+
+        getCovidData(data) {
+            return _.reduce(data, function (memo, item) {
+                return memo + item['tb_covid_total'];
+            }, 0);
+        },
+
+        getFilteredData(data, type) {
+            _.forEach(this.dzoType[type], function (dzoName) {
+                data = _.reject(data, _.iteratee({dzo: dzoName}));
+            });
+            return data;
+        },
+
+        disableDzoRegions() {
+            _.forEach(this.dzoRegionsMapping, function(region) {
+                _.set(region, 'isActive', false);
+            });
+        },
+
+        getProductionDataInPeriodRange(data, periodStart, periodEnd) {
+            let self = this;
+            return _.filter(data, function (item) {
+                return _.every([
+                    _.inRange(
+                        item.__time,
+                        periodStart,
+                        periodEnd
+                    ),
+                ]);
+            });
+        },
+
+        getFilteredDataByOneDay(filteredDataByCompanies) {
+            let temporaryPeriodStart = moment(new Date(this.timestampToday)).subtract(2, 'days');
+            let temporaryPeriodEnd = moment(new Date(this.timestampToday)).add(1, 'days');
+            let filteredDataByOneDay = this.getProductionDataInPeriodRange(filteredDataByCompanies,this.timestampToday,this.timestampEnd);
+            return this.getDataOrderedByAsc(filteredDataByOneDay);
+        },
     },
     computed: {
         periodSelectFunc() {

@@ -85,6 +85,11 @@ export default {
         };
     },
     methods: {
+        setPreviousPeriod() {
+            this.previousPeriodStart = moment(new Date(this.timestampToday)).subtract(this.quantityRange, 'days').format('DD.MM.YYYY');
+            this.previousPeriodEnd = moment(new Date(this.timestampToday)).subtract(1, 'days').format('DD.MM.YYYY');
+        },
+
         isOneDatePeriodSelected() {
             let periodStart = new Date(this.timestampToday);
             let periodEnd = new Date(this.timestampEnd);
