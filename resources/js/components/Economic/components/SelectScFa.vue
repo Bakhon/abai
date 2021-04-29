@@ -1,6 +1,6 @@
 <template>
   <select
-      v-model="form.sc_fa"
+      v-model="form[formKey]"
       class="form-control"
       @change="$emit('change')"
   >
@@ -21,6 +21,15 @@ export default {
       required: true,
       type: Object
     },
+    formKey: {
+      required: false,
+      type: String,
+      default: () => 'sc_fa_id'
+    },
+    forecast: {
+      required: false,
+      type: Boolean
+    }
   },
   data: () => ({
     scFas: []
@@ -39,9 +48,13 @@ export default {
         name: this.trans('economic_reference.select_item')
       }]
 
-      const {data} = await this.axios.get(this.localeUrl('/eco_refs_sc_fas'))
+      let params = {
+        is_forecast: +this.forecast
+      }
 
-      this.scFas = [...this.scFas, ...data.sc_fas]
+      const {data} = await this.axios.get(this.localeUrl('/eco_refs_sc_fas'), {params: params})
+
+      this.scFas = [...this.scFas, ...data.data]
 
       this.$emit('loaded')
     },

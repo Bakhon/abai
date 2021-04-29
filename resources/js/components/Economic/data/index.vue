@@ -1,17 +1,24 @@
 <template>
-  <div class="container-fluid economic-wrap">
+  <div class="container-fluid">
     <cat-loader v-show="loading"/>
 
     <div class="row justify-content-between">
       <select-sc-fa
           :loading="loading"
           :form="form"
+          form-key="sc_fa"
           @loading="loading = true"
           @loaded="loading = false"
           @change="getData"/>
 
-      <vue-table-dynamic v-if="form.sc_fa" :params="params" ref="table">
-        <a slot="column-16" slot-scope="{ props }" :href="props.cellData">
+      <vue-table-dynamic
+          v-if="form.sc_fa"
+          ref="table"
+          :params="params"
+          class="height-fit-content">
+        <a :slot="`column-${columnEditIndex}`"
+           slot-scope="{ props }"
+           :href="props.cellData">
           {{ trans('app.edit') }}
         </a>
       </vue-table-dynamic>
@@ -20,12 +27,9 @@
 </template>
 
 <script>
-import VModal from 'vue-js-modal'
 import VueTableDynamic from 'vue-table-dynamic'
 import CatLoader from "../../ui-kit/CatLoader";
 import SelectScFa from "../components/SelectScFa";
-
-Vue.use(VModal, {dynamicDefault: {draggable: true, resizable: true}});
 
 export default {
   name: "economic-data-component",
@@ -38,55 +42,79 @@ export default {
     form: {
       sc_fa: null
     },
-    params: {
-      data: [],
-      enableSearch: true,
-      whiteSpace: 'normal',
-      header: 'row',
-      border: true,
-      stripe: true,
-      pagination: true,
-      sort: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13],
-      pageSize: 12,
-      pageSizes: [12, 24, 48],
-      headerHeight: 120,
-      rowHeight: 50,
-      columnWidth: [
-        {column: 0, width: 100},
-        {column: 1, width: 120},
-        {column: 2, width: 80},
-        {column: 3, width: 80},
-        {column: 4, width: 150},
-        {column: 5, width: 120},
-        {column: 6, width: 120},
-        {column: 7, width: 120},
-        {column: 8, width: 120},
-        {column: 9, width: 100},
-        {column: 10, width: 100},
-        {column: 11, width: 100},
-        {column: 12, width: 100},
-        {column: 13, width: 150},
-        {column: 14, width: 150},
-        {column: 15, width: 120},
-        {column: 16, width: 80},
-      ]
-    },
+    data: [],
     loading: false
   }),
   methods: {
     async getData() {
+      if (!this.form.sc_fa) return
+
       this.loading = true
 
-      this.params.data = []
+      this.data = []
 
-      const {data} = await this.axios.get(this.localeUrl('/economic_data_json'), {params: this.form})
+      const {data} = await this.axios.get(this.localeUrl('/eco_refs_costs'), {params: this.form})
 
-      this.params.data = data.data
+      this.data = [...[this.headers], ...data.data]
 
       this.loading = false
     },
   },
+  computed: {
+    params() {
+      return {
+        data: this.data,
+        enableSearch: true,
+        whiteSpace: 'normal',
+        header: 'row',
+        border: true,
+        stripe: true,
+        pagination: true,
+        sort: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13],
+        pageSize: 12,
+        pageSizes: [12, 24, 48],
+        headerHeight: 120,
+        rowHeight: 50,
+        columnWidth: this.columns.map((col, index) => ({column: index, width: 150}))
+      }
+    },
+
+    headers() {
+      return this.columns.map(col => this.trans(`economic_reference.${col}`))
+    },
+
+    columnEditIndex() {
+      return this.columns.findIndex(col => col === 'edit')
+    },
+
+    columns() {
+      return [
+        'source_data',
+        'company',
+        'month-year',
+        'variable',
+        'fix_noWRpayroll',
+        'fix_payroll',
+        'fix_nopayroll',
+        'fix',
+        'gaoverheads',
+        'wr_nopayroll',
+        'wr_payroll',
+        'wo',
+        'net_back',
+        'amort',
+        'comment',
+        'added_date_author',
+        'changed_date_author',
+        'edit',
+        'id_of_add'
+      ]
+    },
+  }
 };
 </script>
-<style lang="scss" scoped>
+<style scoped>
+.height-fit-content >>> .v-table-body {
+  height: fit-content !important;
+}
 </style>

@@ -84,8 +84,10 @@ Route::group(
                 Route::resource('ecorefsrenttax', 'EcoRefsRentTaxController');
                 Route::resource('ecorefsavgmarketprice', 'EcoRefsAvgMarketPriceController');
                 Route::resource('ecorefsdiscontcoefbar', 'EcoRefsDiscontCoefBarController');
-                Route::resource('ecorefscost', 'EcoRefsCostController');
-                Route::get('economic_data_json', 'EcoRefsCostController@economicDataJson');
+                Route::resource('eco_refs_cost', 'EcoRefsCostController');
+                Route::get('eco_refs_costs', 'EcoRefsCostController@getData');
+                Route::resource('eco_refs_scenario', 'Refs\EcoRefsScenarioController');
+                Route::get('eco_refs_scenarios', 'Refs\EcoRefsScenarioController@getData');
                 Route::get('economic_data/upload_excel', 'EcoRefsCostController@uploadExcel')->name('economic_data_upload');
                 Route::post('economic_data/import_excel', 'EcoRefsCostController@importExcel')->name('economic_data_import');
                 Route::resource('economic_data_log', 'Refs\EconomicDataLogController');
@@ -99,7 +101,7 @@ Route::group(
                 Route::post('/getkormass', 'ComplicationMonitoring\OmgNGDUController@getKormass');
                 Route::resource('ecorefsempper', 'Refs\EcoRefsEmpPerController');
                 Route::resource('ecorefsscfa', 'Refs\EcoRefsScFaController');
-                Route::get('eco_refs_sc_fas', 'Refs\EcoRefsScFaController@getScFas');
+                Route::get('eco_refs_sc_fas', 'Refs\EcoRefsScFaController@getData');
                 Route::get('ecorefslist', 'Refs\EcoRefsScFaController@refsList')->name('eco_refs_list');
 
                 // economic tech data
@@ -132,19 +134,18 @@ Route::group(
                 Route::get('fields', 'FieldController@index')->name('fields');
 
                 Route::get('profile', 'UserController@profile')->name('profile');
-                Route::post('modulerequest','ModuleController@moduleRequest')->name('modulerequest');
+                Route::post('modulerequest', 'ModuleController@moduleRequest')->name('modulerequest');
                 Route::post('/update_avatar', 'UserController@update_avatar')->name('update_avatar');
                 Route::post('/delete_avatar', 'UserController@delete_avatar')->name('delete_avatar');
 
                 Route::get('anticrisis', 'AntiCrisisController@index')->name('anticrisis');
 
 
-
                 Route::get('/module_economy', 'EconomyKenzhe\MainController@index');
                 Route::get('/module_economy/company/', 'EconomyKenzhe\MainController@company')->name('company');
                 Route::get('/module_economy/companies', 'EconomyKenzhe\MainController@companies');
-                Route::match(['GET','POST'],'/import_rep', 'EconomyKenzhe\ImportController@importRepTtValues')->name('import_rep');
-                Route::match(['GET','POST'],'/import_reptt_titles', 'EconomyKenzhe\ImportController@importRepTtTitlesTree')->name('import_reptt_titles');
+                Route::match(['GET', 'POST'], '/import_rep', 'EconomyKenzhe\ImportController@importRepTtValues')->name('import_rep');
+                Route::match(['GET', 'POST'], '/import_reptt_titles', 'EconomyKenzhe\ImportController@importRepTtTitlesTree')->name('import_reptt_titles');
 
                 Route::get('/paegtm', 'GTM\GTMController@index')->name('gtm');
                 Route::get('/paegtm/accum_oil_prod_data', 'GTM\GTMController@getAccumOilProd')->name('gtm');
@@ -152,8 +153,8 @@ Route::group(
 
                 Route::post('dzo_excel_form', 'VisCenter\ExcelForm\ExcelFormController@store');
                 Route::post('dzo_chemistry_excel_form', 'VisCenter\ExcelForm\ExcelFormChemistryController@store');
-                Route::get('/proactive-factors', 'EconomyKenzhe\proactiveFactorsController@proactiveFactors')->name('proactiveFactors');          
-                
+                Route::get('/proactive-factors', 'EconomyKenzhe\proactiveFactorsController@proactiveFactors')->name('proactiveFactors');
+
             }
         );
         Auth::routes(
