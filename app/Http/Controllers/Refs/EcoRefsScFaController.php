@@ -23,7 +23,6 @@ use App\Models\Refs\EcoRefsEmpPer;
 use App\Models\Refs\EcoRefsScFa;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Collection;
 use Illuminate\View\View;
 
 class EcoRefsScFaController extends Controller
@@ -601,7 +600,7 @@ class EcoRefsScFaController extends Controller
 
     }
 
-    public function getData(EcoRefsScFaRequest $request): Collection
+    public function getData(EcoRefsScFaRequest $request): array
     {
         $query = EcoRefsScFa::query();
 
@@ -609,6 +608,8 @@ class EcoRefsScFaController extends Controller
             $query->whereIsForecast($request->is_forecast);
         }
 
-        return $query->get();
+        return [
+            'data' => $query->latest('id')->get()
+        ];
     }
 }

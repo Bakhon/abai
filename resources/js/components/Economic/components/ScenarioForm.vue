@@ -1,5 +1,5 @@
 <template>
-  <div class="border-dark">
+  <div>
     <cat-loader v-show="loading"/>
 
     <h5 class="text-secondary">
@@ -17,74 +17,80 @@
       {{ trans('economic_reference.scenario') }}
     </h5>
 
-    <select-sc-fa
-        :form="form"
-        forecast/>
+    <select-sc-fa :form="form" forecast/>
 
-    <h5 class="text-secondary mt-3">
-      {{ trans('economic_reference.oil_prices') }}
-    </h5>
+    <div v-if="form.sc_fa_id">
+      <h5 class="text-secondary mt-3">
+        {{ trans('economic_reference.oil_prices') }}
+      </h5>
 
-    <div v-for="(price, index) in form.params.oil_prices"
-         :key="`oil_${index}`"
-         class="form-group d-flex">
-      <input v-model="price.value"
-             type="numeric"
-             class="form-control">
-
-      <delete-button
-          class="ml-2"
-          @click.native="deleteRelation(index, 'oil_prices')"/>
-    </div>
-
-    <add-button @click.native="addOilPrice"/>
-
-    <h5 class="text-secondary mt-3">
-      {{ trans('economic_reference.course_prices') }}
-    </h5>
-
-    <div v-for="(price, index) in form.params.course_prices"
-         :key="`course_${index}`"
-         class="form-group d-flex">
-      <input v-model="price.value"
-             type="numeric"
-             class="form-control">
-
-      <delete-button
-          class="ml-2"
-          @click.native="deleteRelation(index, 'course_prices')"/>
-    </div>
-
-    <add-button @click.native="addCoursePrice"/>
-
-    <h5 class="text-secondary mt-3">
-      {{ trans('economic_reference.optimization_percents') }}
-    </h5>
-
-    <div v-for="(optimization, index) in form.params.optimizations"
-         :key="`optimization_${index}`"
-         class="form-group d-flex align-items-end">
-      <div v-for="optimizationKey in EcoRefsScenarioModel.optimizationKeys"
-           :key="optimizationKey"
-           class="flex-grow-1 mr-2">
-        <label :for="`optimization_${index}_${optimizationKey}`"
-               class="text-secondary">
-          {{ optimizationKey }}
-        </label>
-        <input v-model="optimization[optimizationKey]"
-               :id="`optimization_${index}_${optimizationKey}`"
+      <div v-for="(price, index) in form.params.oil_prices"
+           :key="`oil_${index}`"
+           class="form-group d-flex">
+        <input v-model="price.value"
                type="numeric"
+               min="0"
+               max="1"
                class="form-control">
+
+        <delete-button
+            class="ml-2"
+            @click.native="deleteRelation(index, 'oil_prices')"/>
       </div>
 
-      <delete-button
-          @click.native="deleteRelation(index, 'optimizations')"/>
-    </div>
+      <add-button @click.native="addOilPrice"/>
 
-    <add-button @click.native="addOptimization"/>
+      <h5 class="text-secondary mt-3">
+        {{ trans('economic_reference.course_prices') }}
+      </h5>
 
-    <div class="text-center">
-      <save-button @click.native="saveForm"/>
+      <div v-for="(price, index) in form.params.course_prices"
+           :key="`course_${index}`"
+           class="form-group d-flex">
+        <input v-model="price.value"
+               type="numeric"
+               min="0"
+               max="1"
+               class="form-control">
+
+        <delete-button
+            class="ml-2"
+            @click.native="deleteRelation(index, 'course_prices')"/>
+      </div>
+
+      <add-button @click.native="addCoursePrice"/>
+
+      <h5 class="text-secondary mt-3">
+        {{ trans('economic_reference.optimization_percents') }}
+      </h5>
+
+      <div v-for="(optimization, index) in form.params.optimizations"
+           :key="`optimization_${index}`"
+           class="form-group d-flex align-items-end">
+        <div v-for="optimizationKey in EcoRefsScenarioModel.optimizationKeys"
+             :key="optimizationKey"
+             class="flex-grow-1 mr-2">
+          <label :for="`optimization_${index}_${optimizationKey}`"
+                 class="text-secondary">
+            {{ optimizationKey }}
+          </label>
+          <input v-model="optimization[optimizationKey]"
+                 :id="`optimization_${index}_${optimizationKey}`"
+                 type="numeric"
+                 min="0"
+                 max="1"
+                 class="form-control">
+        </div>
+
+        <delete-button
+            @click.native="deleteRelation(index, 'optimizations')"/>
+      </div>
+
+      <add-button @click.native="addOptimization"/>
+
+      <div class="text-center">
+        <save-button @click.native="saveForm"/>
+      </div>
     </div>
   </div>
 </template>

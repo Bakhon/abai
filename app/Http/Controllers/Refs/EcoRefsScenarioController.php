@@ -7,7 +7,6 @@ namespace App\Http\Controllers\Refs;
 use App\EcoRefsScenario;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\EcoRefs\Scenario\StoreEcoRefsScenarioRequest;
-use Illuminate\Support\Collection;
 use Illuminate\View\View;
 
 class EcoRefsScenarioController extends Controller
@@ -19,7 +18,11 @@ class EcoRefsScenarioController extends Controller
 
     public function store(StoreEcoRefsScenarioRequest $request): EcoRefsScenario
     {
-        return EcoRefsScenario::create($request->validated());
+        $scenario = EcoRefsScenario::create($request->validated());
+
+        $scenario->load('scFa');
+
+        return $scenario;
     }
 
     public function destroy(int $id): int
@@ -27,8 +30,30 @@ class EcoRefsScenarioController extends Controller
         return (int)EcoRefsScenario::query()->whereId($id)->delete();
     }
 
-    public function getData(): Collection
+    public function getData(): array
     {
-        return EcoRefsScenario::query()->with('sc_fa')->get();
+        $data = EcoRefsScenario::query()
+            ->with('scFa')
+            ->latest('id')
+            ->get();
+
+        $response = [];
+
+        /** @var EcoRefsScenario $item */
+        foreach ($data as $item) {
+            $response[] = [
+                $item->id,
+                $item->name,
+                $item->scFa->name ?? '',
+                $item->params['oil_prices'],
+                $item->params['course_prices'],
+                $item->params['optimizations'],
+                $item->created_at
+            ];
+        }
+
+        return [
+            'data' => $response
+        ];
     }
 }
