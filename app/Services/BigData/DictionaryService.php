@@ -10,6 +10,14 @@ use App\Models\BigData\Dictionaries\WellCategory;
 use App\Models\BigData\Dictionaries\WellType;
 use App\Models\BigData\Dictionaries\Equip;
 use App\Models\BigData\Dictionaries\CasingType;
+use App\Models\BigData\Dictionaries\Brigadier;
+use App\Models\BigData\Dictionaries\Brigade;
+use App\Models\BigData\Dictionaries\GtmType;
+use App\Models\BigData\Dictionaries\NoBtmReason;
+use App\Models\BigData\Dictionaries\RepairWorkType;
+use App\Models\BigData\Dictionaries\WellStatus;
+use App\Models\BigData\Dictionaries\EquipFailReasonType;
+use App\Models\BigData\Dictionaries\TechConditionOfWells;
 use Carbon\Carbon;
 use Illuminate\Cache\Repository;
 use Illuminate\Support\Facades\DB;
@@ -27,7 +35,7 @@ class DictionaryService
         ],
         'companies' => [
             'class' => Company::class,
-            'name_field' => 'name'
+            'name_field' => 'name_ru'
         ],
         'equips' => [
             'class' => Equip::class,
@@ -36,6 +44,38 @@ class DictionaryService
         'casings' => [
             'class' => CasingType::class,
             'name_field' => 'CONCAT(\'Условный диаметр трубы(мм): \', od, \', Толщина стенки с норм. резьбой(мм):\', wt, \', Внутренний диаметр трубы с норм. резьбой (мм)\' , vd, \', Группа прочности: \', sg)'
+        ],
+        'repair_work_types' => [
+            'class' => RepairWorkType::class,
+            'name_field' => 'name_ru'
+        ],
+        'gtm_types' => [
+            'class' => GtmType::class,
+            'name_field' => 'name_ru'
+        ],
+        'brigades' => [
+            'class' => Brigade::class,
+            'name_field' => 'name_ru'
+        ],
+        'brigadiers' => [
+            'class' => Brigadier::class,
+            'name_field' => 'name_ru'
+        ],
+        'no_btm_reasons' => [
+            'class' => NoBtmReason::class,
+            'name_field' => 'name_ru'
+        ],
+        'well_statuses' => [
+            'class' => WellStatus::class,
+            'name_field' => 'name_ru'
+        ],
+        'fail_reason_types' => [
+            'class' => EquipFailReasonType::class,
+            'name_field' => 'equil_fail_reason_type'
+        ],
+        'wells_tech_conditions' => [
+            'class' => TechConditionOfWells::class,
+            'name_field' => ''
         ]
     ];
 

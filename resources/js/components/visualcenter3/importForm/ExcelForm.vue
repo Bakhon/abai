@@ -48,7 +48,7 @@
             <div class="vert-line"></div>
             <div
                     id="chemistryButton"
-                    :class="[!isChemistryButtonVisible ? 'menu__button_disabled' : 'chemistry-button_animation','col-12 status-block status-block_little menu__button']"
+                    :class="[!isChemistryButtonVisible ? 'menu__button_disabled' : 'rainbow','col-12 status-block status-block_little menu__button ml-1']"
                     @click="changeButtonVisibility()"
             >
                 {{trans('visualcenter.importForm.enterChemistryButton')}}
@@ -86,9 +86,32 @@
                     {{trans('visualcenter.saveButton')}}
                 </div>
             </div>
-            <div class="col-12 mt-3 status-block status-block_little">
-                &nbsp;
+            <div
+                    :class="[!isChemistryButtonVisible ? 'menu__button_disabled' : 'rainbow','col-12 status-block status-block_little menu__button ml-1 mt-3']"
+                    @click="changeWellBlockVisibility()"
+            >
+                {{trans('visualcenter.importForm.wellWorkover')}}
             </div>
+            <div :class="[isWellsWorkoverNeeded ? 'chemistry-disabled' : '','chemistry-block well-workover-block row col-12 p-2']">
+                <h4 class="col-12">{{trans("visualcenter.importForm.wellWorkover")}}</h4>
+                <div class="col-12 d-flex">
+                    <span class="col-7">{{trans("visualcenter.undergroundRepairFond")}}</span>
+                    <input v-model="wellWorkover.otm_underground_workover" class="col-5"></input>
+                </div>
+                <div class="col-12 d-flex">
+                    <span class="col-7">{{trans("visualcenter.overhaulFond")}}</span>
+                    <input v-model="wellWorkover.otm_well_workover_fact" class="col-5"></input>
+                </div>
+                <div class="col-6"></div>
+                <div class="col-8 mt-2"></div>
+                <div
+                        class="status-block status-block_little col-4 mt-2 menu__button"
+                        @click="wellWorkoverSave()"
+                >
+                    {{trans('visualcenter.saveButton')}}
+                </div>
+            </div>
+
             <div class="col-12 mt-3 status-block status-block_little">
                 &nbsp;
             </div>
@@ -122,7 +145,7 @@
         color: white;
         position: absolute;
         z-index: 9999;
-        margin-top: 160px;
+        margin-top: 30px;
     }
     .chemistry-disabled {
         display: none;
@@ -275,5 +298,8 @@
         margin-left: -10px;
         height: 90%;
         margin-top: 1vh;
+    }
+    .well-workover-block {
+        margin-top: 75px;
     }
 </style>
