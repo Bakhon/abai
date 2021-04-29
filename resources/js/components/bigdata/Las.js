@@ -161,6 +161,7 @@ export default {
         },
         resetFileUploadFields() {
             this.input.filename.mnemonics = []
+            this.input.filename.well = ''
         },
         setExperimentUserFileName() {
             this.filenameParameters.specific[this.currentFileInfoNum]['userFilename'] = this.filenameByParameters
@@ -180,6 +181,8 @@ export default {
                 return
             }
             this.input.filename.recordingDepth = experiment.recordingDepths[0] + this.recordingDepthDelimiter + experiment.recordingDepths[1]
+            this.input.field = experiment.field
+            this.input.well = experiment.well
         },
         fetchStatistics() {
             this.$store.commit('globalloading/SET_LOADING', true);

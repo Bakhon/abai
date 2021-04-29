@@ -7,7 +7,8 @@
           <div v-if="isFilesUploadedOnPreApproval && !isLastFileProcessed">
 
             <div class="row">
-              <label class="col-11 section-text">Укажите данные для LAS файла: {{ files[currentFileInfoNum].name }} | файл
+              <label class="col-11 section-text">Укажите данные для LAS файла: {{ files[currentFileInfoNum].name }} |
+                файл
                 {{ currentFileInfoNum + 1 }} из {{ files.length }}</label>
 
               <button class="col btn get-report-button" id="refreshExperimentInfo"
@@ -18,10 +19,18 @@
             </div>
             <div class="row">
 
-              <input class="col form-control filter-input mr-2 mb-2" v-model="input.well" placeholder="id скважины">
-              <input class="col form-control filter-input mr-2 mb-2" v-model="input.field"
-                     placeholder="id месторождения">
-              <input class="col form-control filter-input mr-2 mb-2" v-model="input.comment" placeholder="комментарий">
+              <div class="col">
+                <label class="subsection-text">скважина</label>
+                <input class="form-control filter-input mr-2 mb-2" v-model="input.well">
+              </div>
+              <div class="col">
+                <label class="subsection-text">месторождение</label>
+                <input class="form-control filter-input mr-2 mb-2" v-model="input.field">
+              </div>
+              <div class="col">
+                <label class="subsection-text">комментарий</label>
+                <input class="form-control filter-input mr-2 mb-2" v-model="input.comment">
+              </div>
             </div>
             <div class="row">
               <label class="label-text">Укажите происхождение файла</label>
@@ -180,7 +189,8 @@
             </div>
             <div class="row">
               <div class="col-3">
-                <label class="label-text">Глубина записи ({{ filenameParameters.specific[currentFileInfoNum].recordingStep }}):</label>
+                <label class="label-text">Глубина записи
+                  ({{ filenameParameters.specific[currentFileInfoNum].recordingStep }}):</label>
               </div>
               <div class="col-3">
                 <input class="col form-control filter-input mr-2 mb-2" v-model="input.filename.recordingDepth" required>
