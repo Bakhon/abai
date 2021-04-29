@@ -444,7 +444,8 @@
                             'gas_plan',
                             'gas_fact',
                             trans('visualcenter.meterCubicWithSpace'),
-                            trans('visualcenter.getgaz'))"
+                            trans('visualcenter.getgaz'),
+                            'gasProductionButton')"
                   >
                     <div class="icon-all icons3"></div>
                     <div class="txt5">
@@ -890,10 +891,10 @@
                       <th v-if="buttonMonthlyTab" >
                         {{ trans("visualcenter.dzoMonthlyPlan") }}
                         <div v-if="currentDzoList !== 'daily'">
-                          {{ trans("visualcenter.dzoThousandTon") }}
+                          {{ getThousandMetricNameByCategorySelected() }}
                         </div>
                         <div v-if="currentDzoList === 'daily'">
-                          {{ trans("visualcenter.chemistryMetricTon") }}
+                          {{ getMetricNameByCategorySelected() }}
                         </div>
                         <div v-if="isOpecFilterActive">
                           {{ trans("visualcenter.dzoOpec") }}
@@ -902,10 +903,10 @@
                       <th v-if="buttonYearlyTab">
                         {{ trans("visualcenter.dzoYearlyPlan") }}
                         <div v-if="currentDzoList !== 'daily'">
-                          {{ trans("visualcenter.dzoThousandTon") }}
+                          {{ getThousandMetricNameByCategorySelected() }}
                         </div>
                         <div v-if="currentDzoList === 'daily'">
-                          {{ trans("visualcenter.chemistryMetricTon") }}
+                          {{ getMetricNameByCategorySelected() }}
                         </div>
                         <div v-if="isOpecFilterActive">
                           {{ trans("visualcenter.dzoOpec") }}
@@ -914,10 +915,10 @@
                       <th>
                         {{ trans("visualcenter.plan") }}
                         <div v-if="currentDzoList !== 'daily'">
-                          {{ trans("visualcenter.dzoThousandTon") }}
+                          {{ getThousandMetricNameByCategorySelected() }}
                         </div>
                         <div v-if="currentDzoList === 'daily'">
-                          {{ trans("visualcenter.chemistryMetricTon") }}
+                          {{ getMetricNameByCategorySelected() }}
                         </div>
                         <div v-if="isOpecFilterActive">
                           {{ trans("visualcenter.dzoOpec") }}
@@ -926,19 +927,19 @@
                       <th>
                         {{ trans("visualcenter.fact") }}
                         <div v-if="currentDzoList !== 'daily'">
-                          {{ trans("visualcenter.dzoThousandTon") }}
+                          {{ getThousandMetricNameByCategorySelected() }}
                         </div>
                         <div v-if="currentDzoList === 'daily'">
-                          {{ trans("visualcenter.chemistryMetricTon") }}
+                          {{ getMetricNameByCategorySelected() }}
                         </div>
                       </th>
                       <th>
                         {{ trans("visualcenter.dzoDifference") }}
                         <div v-if="currentDzoList !== 'daily'">
-                          {{ trans("visualcenter.dzoThousandTon") }}
+                          {{ getThousandMetricNameByCategorySelected() }}
                         </div>
                         <div v-if="currentDzoList === 'daily'">
-                          {{ trans("visualcenter.chemistryMetricTon") }}
+                          {{ getMetricNameByCategorySelected() }}
                         </div>
                       </th>
                       <th v-if="!isFilterTargetPlanActive">
@@ -947,7 +948,7 @@
                       <th v-if="isFilterTargetPlanActive">
                         {{ trans("visualcenter.dzoTargetPlan") }}
                         <br>
-                        {{ trans("visualcenter.dzoThousandTon") }}
+                        {{ getThousandMetricNameByCategorySelected() }}
                       </th>
                       <th v-if="exactDateSelected">
                         {{ trans("visualcenter.dzoOpec") }}
