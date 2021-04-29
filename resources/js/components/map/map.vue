@@ -1,5 +1,6 @@
 <template>
   <div class="gu-map">
+    <cat-loader v-show="loading"/>
     <div class="gu-map__controls">
       <h1>{{ trans('monitoring.map.title') }}</h1>
       <div v-if="guPoints" class="d-flex">
@@ -20,6 +21,7 @@
             :options="mapFilters"
             :reduce="option => option.key"
             label="name"
+            @input="filterChanged"
             :placeholder="trans('monitoring.map.select_filter')"
         >
         </v-select>
@@ -179,6 +181,7 @@ import mapContextMenu from "./mapContextMenu";
 import pipeColors from '~/json/pipe_colors.json'
 import axios from "axios";
 import moment from "moment";
+import CatLoader from '../ui-kit/CatLoader'
 
 
 export default {
@@ -189,7 +192,8 @@ export default {
     'map-zu-form': mapZuForm,
     'map-well-form': mapWellForm,
     'map-pipe-form': mapPipeForm,
-    'map-context-menu': mapContextMenu
+    'map-context-menu': mapContextMenu,
+    CatLoader
   },
   data() {
     return {
@@ -233,7 +237,8 @@ export default {
           name: this.trans('monitoring.map.filters.speed-flow-filter'),
           key: 'speedFlow'
         }
-      ]
+      ],
+      loading: false,
     };
   },
   created() {
@@ -274,6 +279,7 @@ export default {
       'getSpeedFlowData'
     ]),
     async initMap() {
+      this.loading = true;
       this.pipes = await this.getMapData(this.gu);
 
       this.viewState = {
@@ -348,6 +354,8 @@ export default {
         this.deck.setProps({
           layers: this.layers
         });
+
+        this.loading = false;
       });
     },
     getGuTooltipHtml(guParams) {
@@ -470,7 +478,7 @@ export default {
           });
           return path_coords;
         },
-        getColor: d => pipeColors[this.mapColorsMode][d.between_points],
+        getColor: d => this.getPipeColor(d),
         getWidth: d => 3,
         onClick: (info) => {
           info.type = 'pipe';
@@ -481,6 +489,36 @@ export default {
           depthTest: false
         }
       });
+    },
+    getPipeColor(pipe) {
+      if (this.activeFilter) {
+        switch (this.activeFilter) {
+          case 'speedFlow':
+            return this.speedFlowColorFilter(pipe);
+            break;
+        }
+      } else {
+        return pipeColors[this.mapColorsMode][pipe.between_points]
+      }
+    },
+    speedFlowColorFilter (pipe) {
+      switch (true) {
+        case pipe.speed_flow == null:
+          return pipeColors[this.mapColorsMode].no_data;
+          break;
+
+        case pipe.speed_flow.fluid_speed < 0.5:
+          return pipeColors[this.mapColorsMode].danger;
+          break;
+
+        case pipe.speed_flow.fluid_speed >= 0.5 && pipe.speed_flow.fluid_speed < 0.9:
+          return pipeColors[this.mapColorsMode].warning;
+          break;
+
+        case pipe.speed_flow.fluid_speed > 0.9:
+          return pipeColors[this.mapColorsMode].good;
+          break;
+      }
     },
     addMapLayer(layerId) {
       this.updateLayers();
@@ -561,7 +599,7 @@ export default {
       this[method](option);
     },
     getColorByBetweenPoints(between_points) {
-      return this.colorArrayToRgb(pipeColors[this.mapColorsMode][between_points])
+      return this.colorArrayToRgb(pipeColors.default[between_points])
     },
     colorArrayToRgb(colorArr) {
       return 'rgb(' + colorArr[0] + ', ' + colorArr[1] + ', ' + colorArr[2] + ')';
@@ -976,16 +1014,27 @@ export default {
       if (!date) return null
       return moment.parseZone(date).format('YYYY-MM-DD')
     },
-    applyFilter () {
-      console.log('this.activeFilter', this.activeFilter);
+    async applyFilter () {
+      this.mapColorsMode = this.activeFilter;
       switch (this.activeFilter) {
         case 'speedFlow':
-          return this.getSpeedFlowData(this.formatDate(this.selectedDate));
+          this.loading = true;
+          this.pipes = await this.getSpeedFlowData(this.formatDate(this.selectedDate));
+          this.layerRedraw('path-layer', 'pipe', this.pipes);
+          this.loading = false;
           break;
 
         default:
+          this.mapColorsMode = 'default';
           return false
           break;
+      }
+    },
+    filterChanged () {
+      if (!this.activeFilter) {
+        this.mapColorsMode = 'default';
+        this.selectedDate = null;
+        this.layerRedraw('path-layer', 'pipe', this.pipes);
       }
     }
   }

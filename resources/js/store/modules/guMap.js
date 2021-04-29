@@ -221,20 +221,7 @@ const guMap = {
 
         async getSpeedFlowData ({commit}, date) {
             return await axios.get(this._vm.localeUrl("/gu-map/speed-flow-data"), {params: {date: date}}).then((response) => {
-                console.log(response.data);
-
-                // commit('SET_ZU_POINTS', response.data.zuPoints);
-                // commit('SET_WELL_POINTS', response.data.wellPoints);
-                // commit('SET_GU_POINTS', response.data.guPoints);
-                // commit('SET_PIPE_TYPES', response.data.pipeTypes);
-                // commit('SET_NGDUS', response.data.ngdus);
-                // commit('SET_CDNGS', response.data.cdngs);
-                // commit('SET_MAP_CENTER', {
-                //     latitude: response.data.center[1],
-                //     longitude: response.data.center[0]
-                // });
-                // dispatch('indexingGuPoints');
-                // return response.data.pipes;
+                return response.data.pipes;
             })
         }
     },

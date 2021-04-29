@@ -360,6 +360,9 @@ class MapsController extends Controller
                 }
             ]
         )->get();
-        dd($pipes);
+
+        return [
+            'pipes' => $pipes
+        ];
     }
 }
