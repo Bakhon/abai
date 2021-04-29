@@ -116,7 +116,7 @@ export default {
             return workday.subtract(diff, 'days').endOf('day').format();
         },
 
-        formatVisTableNumber3(a, b) {
+        getPercentDifference(a, b) {
             if (a && b) {
                 return new Intl.NumberFormat("ru-RU").format(Math.abs(((a - b) / b) * 100).toFixed(1))
             } else {
@@ -221,6 +221,24 @@ export default {
             let temporaryPeriodEnd = moment(new Date(this.timestampToday)).add(1, 'days');
             let filteredDataByOneDay = this.getProductionDataInPeriodRange(filteredDataByCompanies,this.timestampToday,this.timestampEnd);
             return this.getDataOrderedByAsc(filteredDataByOneDay);
+        },
+
+        getFormattedNumberToThousand(plan,fact) {
+            let formattedPlan = this.formatDigitToThousand(plan);
+            let formattedFact = this.formatDigitToThousand(fact);
+            if (formattedPlan) {
+                formattedPlan = this.getNumberFromString(formattedPlan);
+            }
+            if (formattedFact) {
+                formattedFact = this.getNumberFromString(formattedFact);
+            }
+            let diff = formattedPlan - formattedFact;
+            let formattedNumber = Math.abs(Math.round(diff));
+            return new Intl.NumberFormat("ru-RU").format(formattedNumber);
+        },
+
+        getNumberFromString(inputString) {
+            return parseInt(inputString.replace(/\s/g, ''));
         },
     },
     computed: {

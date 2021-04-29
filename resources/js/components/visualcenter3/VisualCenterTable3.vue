@@ -1016,17 +1016,13 @@
                         <div
                           v-if="item.factMonth"
                           :class="
-                            item.factMonth - item.planMonth < 0 ?
+                            item.planMonth - item.factMonth < 0 ?
                             'triangle fall-indicator-production-data' :
                             'triangle growth-indicator-production-data'
                           "
                         ></div>
                         <div class="font dynamic" >
-                          {{
-                          formatDigitToThousand(
-                              Math.abs(item.factMonth - item.planMonth)
-                            )
-                          }}
+                          {{getFormattedNumberToThousand(item.planMonth,item.factMonth)}}
                         </div>
                       </td>
                       <td
@@ -1036,16 +1032,14 @@
                         <div
                           v-if="item.factMonth"
                           :class="
-                            ((item.factMonth - item.planMonth) /
+                            ((item.planMonth - item.factMonth) /
                             item.planMonth) * 100 < 0 ?
                             'triangle fall-indicator-production-data' :
                             'triangle growth-indicator-production-data'
                           "
                         ></div>
                         <div class="font dynamic">
-                          {{
-                          formatVisTableNumber3 (item.factMonth , item.planMonth)
-                          }}
+                          {{getPercentDifference (item.planMonth , item.factMonth)}}
                         </div>
                       </td>
                       <td
