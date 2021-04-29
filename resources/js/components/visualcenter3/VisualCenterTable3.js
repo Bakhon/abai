@@ -177,7 +177,7 @@ export default {
         getProductionOilandGasPercent(data) {
             data = this.getFilteredCompaniesList(data);
             let filteredDataByPeriodRange = this.getProductionFilteredDataByLastPeriod(data);
-            this.setPreviousDates();
+            this.setPreviousPeriod();
             let productionSummary = this.getProductionSummary(filteredDataByPeriodRange);
             this.updateProductionSummary(productionSummary,this.productionPercentParams);
         },
@@ -196,19 +196,17 @@ export default {
             });
         },
 
-        setPreviousDates() {
+        setPreviousPeriod() {
             this.previousPeriodStart = moment(new Date(this.timestampToday)).subtract(this.quantityRange, 'days').format('DD.MM.YYYY');
             this.previousPeriodEnd = moment(new Date(this.timestampToday)).subtract(1, 'days').format('DD.MM.YYYY');
         },
 
         updateProductionData(planFieldName, factFieldName, chartHeadName, metricName, chartSecondaryName) {
+            this.$store.commit('globalloading/SET_LOADING', true);
             if (this.isMainMenuItemChanged) {
                 this.mainMenuButtonElementOptions = _.cloneDeep(mainMenuConfiguration);
             }
-
-            this.$store.commit('globalloading/SET_LOADING', true);
-            this.oneDate = this.isOneDatePeriodSelected();
-
+            this.isOneDateSelected = this.isOneDatePeriodSelected();
             this.updateNamesParams(planFieldName,factFieldName,chartHeadName,metricName,chartSecondaryName);
 
             let oilProductionFieldsNames = ['oil_plan','oil_opek_plan'];
@@ -218,30 +216,7 @@ export default {
                 this.isOpecFilterActive = false;
                 this.isKmgParticipationFilterActive = false;
             }
-
-            if (this.company === null) {
-                alert("Сначала выберите название компании");
-            }
-
-            let uri = this.localeUrl("/visualcenter3GetData?timestampToday=") + this.timestampToday + "&timestampEnd=" + this.timestampEnd + " ";
-
-            this.axios.get(uri).then((response) => {
-                let data = response.data;
-                if (data && Object.keys(data).length > 0) {
-                    if (this.company === "all") {
-                        data = this.processDataForAllCompanies(data, this.chartHeadName);
-                    } else {
-                        this.processDataForSpecificCompany(data, metricName, chartSecondaryName);
-                    }
-
-                    this.setColorToMainMenuButtons(planFieldName);
-                    this.getProductionOilandGas(data);
-                    this.getProductionOilandGasPercent(data);
-                } else {
-                    console.log("No data");
-                }
-                this.$store.commit('globalloading/SET_LOADING', false);
-            });
+            this.processProductionData();
         },
 
         updateNamesParams(planFieldName,factFieldName,chartHeadName,metricName,chartSecondaryName) {
@@ -250,6 +225,35 @@ export default {
             this.chartHeadName = chartHeadName;
             this.metricName = metricName;
             this.chartSecondaryName = chartSecondaryName;
+        },
+
+        async processProductionData() {
+            let uri = this.localeUrl("/visualcenter3GetData?timestampToday=") + this.timestampToday + "&timestampEnd=" + this.timestampEnd + " ";
+            let productionData = await this.getProductionData();
+            if (productionData && Object.keys(productionData).length > 0) {
+                this.processProductionDataByCompanies(productionData);
+            }
+            this.$store.commit('globalloading/SET_LOADING', false);
+        },
+
+        async getProductionData() {
+            let uri = this.localeUrl("/visualcenter3GetData?timestampToday=") + this.timestampToday + "&timestampEnd=" + this.timestampEnd + " ";
+            const response = await axios.get(uri);
+            if (response.status === 200) {
+                return response.data;
+            }
+            return {};
+        },
+
+        processProductionDataByCompanies(productionData) {
+            if (this.company === "all") {
+                productionData = this.getProcessedDataForAllCompanies(productionData);
+            } else {
+                this.processDataForSpecificCompany(productionData, metricName, chartSecondaryName);
+            }
+            this.setColorToMainMenuButtons();
+            this.getProductionOilandGas(productionData);
+            this.getProductionOilandGasPercent(productionData);
         },
 
         processDataForSpecificCompany(data, metricName, chartSecondaryName) {
@@ -292,7 +296,7 @@ export default {
             this.chemistryData = this.getChemistryData(dataWithMay)
             this.chemistryChartData = this.getChemistryChartData(dataWithMay)
 
-            if (this.oneDate) {
+            if (this.isOneDateSelected) {
                 let dataWithMay2 = new Array();
                 dataWithMay2 = _.filter(arrdata, function (item) {
                     return _.every([
@@ -351,7 +355,7 @@ export default {
             return data;
         },
 
-        processDataForAllCompanies(data) {
+        getProcessedDataForAllCompanies(data) {
             let self = this;
             var dzo = [];
             var factYear = [];
@@ -374,7 +378,7 @@ export default {
                 ["__time"],
                 ["asc"]
             );
-            if (this.oneDate) {
+            if (this.isOneDateSelected) {
                 let dataWithMay2 = new Array();
                 dataWithMay2 = _.filter(data, function (item) {
                     return _.every([
@@ -871,7 +875,7 @@ export default {
             'yearlyPlan'
         ]),
         exactDateSelected() {
-            return ((this.factFieldName === 'oil_fact' || this.factFieldName === 'oil_div_fact') && this.oneDate);
+            return ((this.factFieldName === 'oil_fact' || this.factFieldName === 'oil_div_fact') && this.isOneDateSelected);
         },
     },
 };

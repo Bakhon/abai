@@ -100,10 +100,10 @@ export default {
             }
         },
 
-        setColorToMainMenuButtons(productionPlan) {
+        setColorToMainMenuButtons() {
             let self = this;
             _.forEach(Object.keys(this.mainMenuButtonElementOptions), function (button) {
-                self[button] = self.getButtonClassForMainMenu(productionPlan, button);
+                self[button] = self.getButtonClassForMainMenu(self.planFieldName, button);
             });
         },
 

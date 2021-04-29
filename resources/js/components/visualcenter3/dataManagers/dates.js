@@ -5,7 +5,7 @@ export default {
         return {
             previousPeriodStart: '',
             previousPeriodEnd: '',
-            oneDate: true,
+            isOneDateSelected: true,
             timeSelectOld: '',
             range: {},
             modelConfig: {

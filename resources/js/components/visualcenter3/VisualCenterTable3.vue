@@ -16,7 +16,7 @@
                               {{ formatDigitToThousand(productionParams.oil_fact) }}
                             </div>
                             <div
-                                    v-if="!buttonDailyTab && (oneDate !== 1)"
+                                    v-if="!buttonDailyTab && !isOneDateSelected"
                                     class="unit-vc ml-2"
                             >
                               {{ trans("visualcenter.thousand") }}{{ trans('visualcenter.tonWithSpace') }}
@@ -64,7 +64,7 @@
                             </div>
                             <div class="txt3">
                               vs
-                              <span v-if="oneDate"> {{ previousPeriodEnd }}</span>
+                              <span v-if="isOneDateSelected"> {{ previousPeriodEnd }}</span>
                               <span v-else> {{ previousPeriodStart }} - {{ previousPeriodEnd }}</span>
                             </div>
                           </div>
@@ -80,7 +80,7 @@
                               {{ formatDigitToThousand(productionParams.oil_dlv_fact) }}
                             </div>
                             <div
-                                    v-if="!buttonDailyTab && (oneDate !== 1)"
+                                    v-if="!buttonDailyTab && !isOneDateSelected"
                                     class="unit-vc ml-2"
                             >
                               {{ trans("visualcenter.thousand") }}{{ trans('visualcenter.tonWithSpace') }}
@@ -128,7 +128,7 @@
                             </div>
                             <div class="txt3">
                               vs
-                              <span v-if="oneDate"> {{ previousPeriodEnd }}</span>
+                              <span v-if="isOneDateSelected"> {{ previousPeriodEnd }}</span>
                               <span v-else> {{ previousPeriodStart }} - {{ previousPeriodEnd }}</span>
                             </div>
                           </div>
@@ -144,7 +144,7 @@
                               {{ formatDigitToThousand(productionParams.gas_fact) }}
                             </div>
                             <div
-                                    v-if="!buttonDailyTab && (oneDate !== 1)"
+                                    v-if="!buttonDailyTab && !isOneDateSelected"
                                     class="unit-vc ml-2"
                             >
                               {{ trans("visualcenter.thousand") }}{{ trans('visualcenter.meterCubicWithSpace') }}
@@ -199,7 +199,7 @@
                             </div>
                             <div class="txt3">
                               vs
-                              <span v-if="oneDate"> {{ previousPeriodEnd }}</span>
+                              <span v-if="isOneDateSelected"> {{ previousPeriodEnd }}</span>
                               <span v-else> {{ previousPeriodStart }} - {{ previousPeriodEnd }}</span>
                             </div>
                           </div>
@@ -844,16 +844,11 @@
                           :class="[`${buttonPeriodTab}`,'button2']"
                           @click="changeMenu2('period')"
                   >
-                    <span v-if="oneDate">
-                      <!-- Дата  -->{{ trans("visualcenter.date") }} [{{
-                        timeSelect
-                      }}]</span
+                    <span v-if="isOneDateSelected">
+                      {{ trans("visualcenter.date") }} [{{timeSelect}}]</span
                     >
                     <span v-else>
-                      <!-- Период  -->{{ trans("visualcenter.period") }} [{{
-                        timeSelect
-                      }}
-                      - {{ timeSelectOld }}]</span
+                      {{ trans("visualcenter.period") }} [{{timeSelect}} - {{ timeSelectOld }}]</span
                     >
                   </div>
                   <ul class="center-menu2 right-indent">
@@ -883,7 +878,7 @@
             <div class="row mh-60 mt-3 px-4">
               <div
                       class="col-sm-7 vis-table"
-                      :class="oneDate ? 'main-table__scroll' : ''"
+                      :class="isOneDateSelected ? 'main-table__scroll' : ''"
               >
                 <table
                         v-if="bigTable.length"
@@ -1299,7 +1294,7 @@
                   ((planFieldName != 'oil_plan' &&
                     planFieldName != 'oil_dlv_plan' &&
                     planFieldName != 'oil_opek_plan') ||
-                  oneDate != 1) && !buttonDailyTab
+                  !isOneDateSelected) && !buttonDailyTab
                 "
               >
                 <div class="name-chart-left">
@@ -1391,7 +1386,7 @@
                             :class="[`${buttonPeriodTab}`,'button2 side-tables__main-menu-button']"
                             @click="changeMenu2('period')"
                     >
-                      <span v-if="oneDate">
+                      <span v-if="isOneDateSelected">
                         {{ trans("visualcenter.date") }} [{{
                           timeSelect
                         }}]</span
@@ -1549,7 +1544,7 @@
                             :class="[`${buttonPeriodTab}`,'button2 side-tables__main-menu-button']"
                             @click="changeMenu2('period')"
                     >
-                      <span v-if="oneDate">
+                      <span v-if="isOneDateSelected">
                         {{ trans("visualcenter.date") }} [{{
                           timeSelect
                         }}]
@@ -1711,7 +1706,7 @@
                             :class="[`${buttonPeriodTab}`,'button2 side-tables__main-menu-button']"
                             @click="changeMenu2('period')"
                     >
-                      <span v-if="oneDate">
+                      <span v-if="isOneDateSelected">
                         {{ trans("visualcenter.date") }} [{{
                           timeSelect
                         }}]</span
@@ -1884,7 +1879,7 @@
                             :class="[`${buttonPeriodTab}`,'button2 side-tables__main-menu-button']"
                             @click="changeMenu2('period')"
                     >
-                      <span v-if="oneDate">
+                      <span v-if="isOneDateSelected">
                         {{ trans("visualcenter.date") }} [{{
                           timeSelect
                         }}]
@@ -2276,7 +2271,7 @@
                       </div>
                       <div class="in-idle">
                         vs
-                        <span v-if="oneDate"> {{ previousPeriodEnd }}</span>
+                        <span v-if="isOneDateSelected"> {{ previousPeriodEnd }}</span>
                         <span v-else> {{ previousPeriodStart }} - {{ previousPeriodEnd }}</span>
                       </div>
                     </div>
