@@ -15,15 +15,11 @@ use App\Models\EcoRefsPrepElectPrsBrigCost;
 use App\Models\EcoRefsProcDob;
 use App\Models\EcoRefsRentEquipElectServCost;
 use App\Models\EcoRefsRentTax;
-use App\Models\EcoRefsRoutesId;
 use App\Models\EcoRefsServiceTime;
 use App\Models\EcoRefsTarifyTn;
 use App\Models\Refs\EcoRefsEmpPer;
 use App\Models\Refs\EcoRefsScFa;
 use Illuminate\Http\Request;
-use Maatwebsite\Excel\Exporter;
-
-use function Complex\ln;
 
 class EcoRefsScFaController extends Controller
 {
@@ -658,4 +654,10 @@ class EcoRefsScFaController extends Controller
 
     }
 
+    public function getScFas(): array
+    {
+        return [
+            'sc_fas' => EcoRefsScFa::all()
+        ];
+    }
 }

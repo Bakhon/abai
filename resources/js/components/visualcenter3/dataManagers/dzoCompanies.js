@@ -213,6 +213,12 @@ export default {
             _.forEach(dzoCompaniesInitial, function(item) {
                 self.dzoType[item.type].push(item.ticker)
             });
-        }
+        },
+        getFilteredCompaniesList(data) {
+            let self = this;
+            return _.filter(data, function (item) {
+                return self.selectedDzoCompanies.includes(item.dzo);
+            });
+        },
     },
 }

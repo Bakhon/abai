@@ -1252,11 +1252,11 @@
        
                     </div>
 
-                    <div class="block__centrators">
+                      <div class="block__centrators">
                         <h6 class="main__title__block_centrators"><b>{{trans('pgno.interval_centrators')}}:</b></h6>
-                        <h6 class="title__block__centrators">{{trans('pgno.recommended')}}: 0-280, 350-450, 550-580</h6>
-                        <h6 class="title__block__centrators">{{trans('pgno.required')}}: 320-330, 650-760, 990-1030</h6>
+                        <h6 class="title__block__centrators">{{trans('pgno.required')}}: <span v-for="item in centratorsRequiredValue">{{ item }}</span></h6>
                       </div>
+
                     <button class="button-pdf col-12" @click="createPDF()">
                       {{trans('pgno.sozdanie_otcheta')}}
                     </button>
@@ -2010,7 +2010,7 @@
   background-color:#272953;
   align-items: center;
   border-radius:6px;
-  border:2px solid #666;
+  border:2px solid #454d7d;
   display:inline-block;
   cursor:pointer;
   color:#ffffff;
@@ -2019,9 +2019,7 @@
   padding:1px 15px;
   text-decoration:none;
   text-shadow:0px 1px 0px #144079;
-  width: 550px;
-  height: 75px;
-  bottom: 60px;
+  width: 100%;
   word-spacing: 4px;
 }
 
@@ -2080,6 +2078,7 @@ background-position: right 5px top 50%;
 
 .main__title__block_centrators {
   text-align: center;
+  margin-bottom: 0;
 }
 
 

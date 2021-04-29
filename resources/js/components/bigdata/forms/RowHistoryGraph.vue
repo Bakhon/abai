@@ -4,36 +4,38 @@
       <div class="bd-popup__inner">
         <a class="bd-popup__close" href="#" @click.prevent="$emit('close')">{{ trans('bd.close') }}</a>
         <p class="bd-popup__title">{{ title }}</p>
-        <div class="table-page table-page_fixed scrollable">
-          <table class="table">
-            <thead>
-            <tr>
-              <th>{{ trans('bd.date') }}</th>
-              <th v-for="column in tableColumns">
-                {{ column.title }}
-              </th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr v-for="(fields, date) in params.table.rows">
-              <td>{{ fields[tableColumns[0].code] === null ? date : fields[tableColumns[0].code].time }}</td>
-              <td v-for="column in tableColumns">
-                {{ fields[column.code] === null ? '' : fields[column.code].value }}
-              </td>
-            </tr>
-            </tbody>
-          </table>
-        </div>
-        <div class="graph">
-          <Plotly
-              v-for="(data, index) in graphData"
-              :key="`plot_${index}`"
-              :data="Object.values(data)"
-              :display-mode-bar="true"
-              :displaylogo="false"
-              :layout="layout"
-              :mode-bar-buttons-to-remove="buttonsToRemove"
-          />
+        <div class="bd-popup__content">
+          <div class="graph">
+            <Plotly
+                v-for="(data, index) in graphData"
+                :key="`plot_${index}`"
+                :data="Object.values(data)"
+                :display-mode-bar="true"
+                :displaylogo="false"
+                :layout="layout"
+                :mode-bar-buttons-to-remove="buttonsToRemove"
+            />
+          </div>
+          <div class="table-page table-page_fixed scrollable">
+            <table class="table">
+              <thead>
+              <tr>
+                <th>{{ trans('bd.date') }}</th>
+                <th v-for="column in tableColumns">
+                  {{ column.title }}
+                </th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr v-for="(fields, date) in params.table.rows">
+                <td>{{ fields[tableColumns[0].code] === null ? date : fields[tableColumns[0].code].time }}</td>
+                <td v-for="column in tableColumns">
+                  {{ fields[column.code] === null ? '' : fields[column.code].value }}
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
@@ -233,6 +235,11 @@ export default {
 }
 </script>
 <style lang="scss">
+.selector-rect {
+  fill: #2E50E9 !important;
+}
+</style>
+<style lang="scss" scoped>
 .bd-popup {
   &_wide {
     .bd-popup__inner {
@@ -242,8 +249,10 @@ export default {
   }
 
   .table-page {
+    width: 30%;
+
     &.table-page_fixed {
-      height: 200px;
+      height: 410px;
       overflow: auto;
     }
 
@@ -254,10 +263,13 @@ export default {
 
   .graph {
     margin-top: 15px;
+    width: 65%;
 
-    .selector-rect {
-      fill: #2E50E9 !important;
-    }
+  }
+
+  &__content {
+    display: flex;
+    justify-content: space-between;
   }
 }
 </style>

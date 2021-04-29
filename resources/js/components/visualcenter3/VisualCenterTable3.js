@@ -126,9 +126,7 @@ export default {
 
         getProductionOilandGas(data) {
             let self = this;
-            data = _.filter(data, function (item) {
-                return self.selectedDzoCompanies.includes(item.dzo);
-            });
+            data = this.getFilteredCompaniesList(data);
             let productionDataInPeriodRange = this.getProductionDataInPeriodRange(data);
             let productionSummary = this.getProductionSummary(productionDataInPeriodRange);
             this.updateProductionSummary(productionSummary);
@@ -181,9 +179,7 @@ export default {
                 var timestampToday = this.timestampToday;
                 var timestampEnd = this.timestampEnd;
                 var company = this.company;
-                if (company != "all") {
-                    data = _.filter(data, _.iteratee({dzo: company}));
-                }
+                data = this.getFilteredCompaniesList(data);
 
                 var quantityRange = this.quantityRange;
 
@@ -323,6 +319,7 @@ export default {
                     } else {
                         this.processDataForSpecificCompany(data, timestampToday, timestampEnd, start, end, this.factFieldName, this.planFieldName, this.chartHeadName, metricName, chartSecondaryName);
                     }
+
                     this.setColorToMainMenuButtons(planFieldName);
                     this.getProductionOilandGas(data);
                     this.getProductionOilandGasPercent(data);
@@ -334,8 +331,7 @@ export default {
         },
 
         processDataForSpecificCompany(data, timestampToday, timestampEnd, start, end, factFieldName, planFieldName, chartHeadName, metricName, chartSecondaryName) {
-            var arrdata = new Array();
-            arrdata = _.filter(data, _.iteratee({dzo: this.company}));
+            let arrdata = this.getFilteredCompaniesList(data);
 
             var dataWithMay = new Array();
             dataWithMay = _.filter(arrdata, function (item) {
@@ -400,9 +396,7 @@ export default {
             this.getProductionPercentWells(arrdata);
             this.exportDzoCompaniesSummaryForChart();
 
-            let accident = this.filterDzoInputForSeparateCompany(dataWithMay, this.company);
-
-            let summForTables = _(accident)
+            let summForTables = _(dataWithMay)
                 .groupBy("dzo")
                 .map((dzo, id) => ({
                     dzo: id,
@@ -412,8 +406,9 @@ export default {
                     accident: _.sumBy(dzo, 'accident'),
                     restrictions: _.sumBy(dzo, 'restrictions'),
                     otheraccidents: _.sumBy(dzo, 'otheraccidents'),
-                    productionFactForMonth: _.round(_.sumBy(dzo, factFieldName), 0),
-                    productionPlanForMonth: _.round(_.sumBy(dzo, planFieldName), 0),
+                    factMonth: _.round(_.sumBy(dzo, factFieldName), 0),
+                    planMonth: _.round(_.sumBy(dzo, planFieldName), 0),
+                    dzoMonth: id,
                 }))
                 .value();
 
@@ -590,17 +585,14 @@ export default {
 
             if (this.dzoCompaniesAssets['isNonOperating']) {
                 productionPlanAndFactMonth = this.getFilteredData(productionPlanAndFactMonth, 'isOperating');
-                data = this.getFilteredData(dataWithMay, 'isOperating');
+                data = this.getFilteredData(data, 'isOperating');
             }
 
             if (this.dzoCompaniesAssets['isRegion']) {
                 let self = this;
-                productionPlanAndFactMonth = _.filter(productionPlanAndFactMonth, function(row) {
-                    return self.selectedDzoCompanies.includes(row.dzo);
-                });
-                data = _.filter(data, function(row) {
-                    return self.selectedDzoCompanies.includes(row.dzo);
-                });
+
+                productionPlanAndFactMonth = this.getFilteredCompaniesList(productionPlanAndFactMonth);
+                data = this.getFilteredCompaniesList(data);
             }
 
             if (this.isKmgParticipationFilterActive) {
@@ -829,7 +821,7 @@ export default {
         },
 
         getProductionForChart(data) {
-            let summary = data.filter(row => this.selectedDzoCompanies.includes(row.dzo));
+            let summary = this.getFilteredCompaniesList(data);
             if (summary.length === 0) {
                 summary = data;
             }
@@ -935,6 +927,10 @@ export default {
     watch: {
         bigTable: function () {
             this.dzoCompanySummary = this.bigTable;
+            this.calculateDzoCompaniesSummary();
+        },
+        tables: function() {
+            this.dzoCompanySummary = this.tables;
             this.calculateDzoCompaniesSummary();
         },
         dzoCompaniesSummaryForChart: function () {
