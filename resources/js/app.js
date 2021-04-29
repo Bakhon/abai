@@ -45,7 +45,7 @@ Vue.use(BootstrapVue);
 Vue.component('paginate', Paginate);
 
 //Mixins
-import showToast from './mixins/showToast';
+import showToast from '~/mixins/showToast';
 Vue.mixin(showToast);
 
 
