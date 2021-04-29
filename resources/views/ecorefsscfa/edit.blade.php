@@ -29,15 +29,15 @@
                                     </div>
 
                                     <div class="form-check">
-                                        <input id="is_fact"
-                                               name="is_fact"
+                                        <input id="is_forecast"
+                                               name="is_forecast"
                                                type="checkbox"
-                                               {{$scFa->is_fact ? 'checked' : ''}}
+                                               {{$scFa->is_forecast ? 'checked' : ''}}
                                                class="form-check-input">
 
-                                        <label for="is_fact"
+                                        <label for="is_forecast"
                                                class="form-check-label text-black-50">
-                                            {{__('economic_reference.factual_data')}}
+                                            {{__('economic_reference.scenario')}}
                                         </label>
                                     </div>
                                 </div>

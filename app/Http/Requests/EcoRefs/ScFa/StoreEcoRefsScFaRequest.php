@@ -8,14 +8,14 @@ class StoreEcoRefsScFaRequest extends FormRequest
 {
     protected function prepareForValidation()
     {
-        $this['is_fact'] = (bool)request()->input('is_fact');
+        $this['is_forecast'] = (bool)request()->input('is_forecast');
     }
 
     public function rules()
     {
         return [
             'name' => 'required|string',
-            'is_fact' => 'required|boolean'
+            'is_forecast' => 'required|boolean'
         ];
     }
 }
