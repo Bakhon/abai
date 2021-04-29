@@ -144,7 +144,7 @@ export default {
       try {
         const {data} = await this.axios.post(this.localeUrl('/eco_refs_scenario'), this.form)
 
-        this.$emit('created', data)
+        this.$emit('created', data.data)
 
         this.form = new EcoRefsScenarioModel().form
       } catch (e) {

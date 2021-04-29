@@ -12,25 +12,24 @@
           :params="params"
           class="height-fit-content height-unset">
         <div slot="column-3" slot-scope="{ props }">
-          <span v-for="(oil_price, index) in props.cellData"
-                :key="index"
-                class="mr-1">
-            {{ oil_price.value }};
-          </span>
+          <div v-for="(oil_price, index) in props.cellData"
+               :key="index"
+               class="mr-1">
+            {{ oil_price.value }}
+          </div>
         </div>
 
         <div slot="column-4" slot-scope="{ props }">
-          <span v-for="(course_price, index) in props.cellData"
-                :key="index"
-                class="mr-1">
-            {{ course_price.value }};
-          </span>
+          <div v-for="(course_price, index) in props.cellData"
+               :key="index">
+            {{ course_price.value }}
+          </div>
         </div>
 
         <div slot="column-5" slot-scope="{ props }">
           <div v-for="(optimization, index) in props.cellData"
                :key="index">
-            <span class="mr-1">{{ optimization.fixed_nopayroll }}</span>,
+            <span class="mr-1">{{ optimization.fixed_nopayroll }},</span>
             <span>{{ optimization.fixed_payroll }}</span>
           </div>
         </div>
@@ -82,7 +81,7 @@ export default {
       try {
         await this.axios.delete(this.localeUrl(`/eco_refs_scenario/${id}`))
 
-        let index = this.data.findIndex(x => x.id === id)
+        let index = this.data.findIndex(x => x[0] === id)
 
         if (index !== -1) {
           this.data.splice(index, 1)
@@ -92,8 +91,8 @@ export default {
       }
     },
 
-    addScenario(form) {
-      this.data.unshift(form)
+    addScenario(model) {
+      this.data.push(model)
     }
   },
   computed: {
@@ -146,5 +145,6 @@ export default {
 
 .height-unset >>> .v-table-row {
   height: unset !important;
+  padding: 5px 0;
 }
 </style>
