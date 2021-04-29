@@ -23,9 +23,7 @@ class CreateEcoRefsScenariosTable extends Migration
 
             $table->string('name');
 
-            $table->json('oil_prices');
-            $table->json('course_prices');
-            $table->json('optimizations');
+            $table->json('params');
 
             $table->timestamps();
         });

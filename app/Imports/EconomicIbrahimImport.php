@@ -24,7 +24,7 @@ class EconomicIbrahimImport implements ToModel, WithBatchInserts, WithChunkReadi
 
     const ORG_COLUMN = 'org';
 
-    function __construct(int $userId, string $fileName, bool $isFact)
+    function __construct(int $userId, string $fileName, bool $isForecast)
     {
         $this->userId = $userId;
 
@@ -32,10 +32,10 @@ class EconomicIbrahimImport implements ToModel, WithBatchInserts, WithChunkReadi
             'author_id' => $userId
         ])->id;
 
-        $this->scFaId = EcoRefsScFa::firstOrCreate(
-            ['name' => $fileName],
-            ['is_fact' => $isFact],
-        )->id;
+        $this->scFaId = EcoRefsScFa::firstOrCreate([
+            'name' => $fileName,
+            'is_forecast' => $isForecast
+        ])->id;
     }
 
     public function model(array $row): ?EcoRefsCost
@@ -67,6 +67,7 @@ class EconomicIbrahimImport implements ToModel, WithBatchInserts, WithChunkReadi
             "wr_nopayroll" => round($row[10], 2),
             "wr_payroll" => round($row[11], 2),
             "wo" => round($row[12], 2),
+            "amort" => isset($round[13]) ? round($row[13], 2) : null,
             "author_id" => $this->userId,
             "log_id" => $this->logId
         ]);

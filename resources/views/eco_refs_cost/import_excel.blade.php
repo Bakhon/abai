@@ -3,7 +3,9 @@
 @section('content')
     <div class="container">
         <div class="row justify-content-center">
-            <a href="{{ route('eco_refs_cost.index') }}"
+            <a href="{{ request()->query('is_forecast')
+                     ? route('eco_refs_scenario.index')
+                     : route('eco_refs_cost.index') }}"
                class="btn btn-info">
                 {{ __('economic_reference.return_menu') }}
             </a>
@@ -42,6 +44,11 @@
               action="{{ route('economic_data_import') }}">
             {{ csrf_field() }}
             <div class="form-group">
+                <input type="checkbox"
+                       name="is_forecast"
+                       {{request()->query('is_forecast') ? 'checked' : ''}}
+                       hidden>
+
                 <input type="file"
                        name="file"
                        accept="{{\App\Http\Requests\EcoRefs\Cost\ImportExcelEcoRefsCostRequest::MIME_TYPES}}"

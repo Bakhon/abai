@@ -76,4 +76,5 @@ return array (
   'add' => 'Добавить',
   'name' => 'Название',
   'optimization_percents' => 'Проценты оптимизации',
+  'scenario' => 'Сценарий',
 );

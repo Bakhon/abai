@@ -6,7 +6,7 @@
       <select-sc-fa
           :loading="loading"
           :form="form"
-          :fetch-params="{is_fact: 1}"
+          form-key="sc_fa"
           @loading="loading = true"
           @loaded="loading = false"
           @change="getData"/>
@@ -47,6 +47,8 @@ export default {
   }),
   methods: {
     async getData() {
+      if (!this.form.sc_fa) return
+
       this.loading = true
 
       this.data = []

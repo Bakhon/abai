@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddIsFactToEcoRefsScFas extends Migration
+class AddIsForecastToEcoRefsScFas extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,7 @@ class AddIsFactToEcoRefsScFas extends Migration
     public function up()
     {
         Schema::table('eco_refs_sc_fas', function (Blueprint $table) {
-            $table->boolean('is_fact')->default(0);
+            $table->boolean('is_forecast')->default(0);
         });
     }
 
@@ -26,7 +26,7 @@ class AddIsFactToEcoRefsScFas extends Migration
     public function down()
     {
         Schema::table('eco_refs_sc_fas', function (Blueprint $table) {
-            $table->dropColumn(['is_fact']);
+            $table->dropColumn(['is_forecast']);
         });
     }
 }

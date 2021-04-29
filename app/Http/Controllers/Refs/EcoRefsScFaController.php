@@ -21,13 +21,15 @@ use App\Models\EcoRefsServiceTime;
 use App\Models\EcoRefsTarifyTn;
 use App\Models\Refs\EcoRefsEmpPer;
 use App\Models\Refs\EcoRefsScFa;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class EcoRefsScFaController extends Controller
 {
     const PAGINATION = 20;
 
-    public function index()
+    public function index(): View
     {
         $scFas = EcoRefsScFa::query()
             ->latest()
@@ -36,12 +38,12 @@ class EcoRefsScFaController extends Controller
         return view('ecorefsscfa.index', compact('scFas'));
     }
 
-    public function create()
+    public function create(): View
     {
         return view('ecorefsscfa.create');
     }
 
-    function store(StoreEcoRefsScFaRequest $request)
+    function store(StoreEcoRefsScFaRequest $request): RedirectResponse
     {
         EcoRefsScFa::create($request->validated());
 
@@ -50,14 +52,14 @@ class EcoRefsScFaController extends Controller
             ->with('success', __('app.created'));
     }
 
-    public function edit(int $id)
+    public function edit(int $id): View
     {
         $scFa = EcoRefsScFa::findOrFail($id);
 
         return view('ecorefsscfa.edit', compact('scFa'));
     }
 
-    public function update(StoreEcoRefsScFaRequest $request, int $id)
+    public function update(StoreEcoRefsScFaRequest $request, int $id): RedirectResponse
     {
         /** @var EcoRefsScFa $scFa */
         $scFa = EcoRefsScFa::findOrFail($id);
@@ -69,7 +71,7 @@ class EcoRefsScFaController extends Controller
             ->with('success', __('app.updated'));
     }
 
-    public function destroy(int $id)
+    public function destroy(int $id): RedirectResponse
     {
         EcoRefsScFa::query()->whereId($id)->delete();
 
@@ -78,7 +80,7 @@ class EcoRefsScFaController extends Controller
             ->with('success', __('app.deleted'));
     }
 
-    public function refsList()
+    public function refsList(): View
     {
         return view('ecorefsscfa.list');
     }
@@ -602,8 +604,8 @@ class EcoRefsScFaController extends Controller
     {
         $query = EcoRefsScFa::query();
 
-        if (isset($request->is_fact)) {
-            $query->whereIsFact($request->is_fact);
+        if ($request->is_forecast) {
+            $query->whereIsForecast($request->is_forecast);
         }
 
         return [

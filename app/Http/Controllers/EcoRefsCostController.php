@@ -9,17 +9,19 @@ use App\Imports\EconomicIbrahimImport;
 use App\Models\EcoRefsCompaniesId;
 use App\Models\EcoRefsCost;
 use App\Models\Refs\EcoRefsScFa;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
+use Illuminate\View\View;
 use Maatwebsite\Excel\Facades\Excel;
 
 class EcoRefsCostController extends Controller
 {
-    public function index()
+    public function index(): View
     {
         return view('eco_refs_cost.index');
     }
 
-    public function edit(int $id)
+    public function edit(int $id): View
     {
         $ecoRefsCost = EcoRefsCost::findOrFail($id);
 
@@ -30,7 +32,7 @@ class EcoRefsCostController extends Controller
         return view('eco_refs_cost.edit', compact('ecoRefsCost', 'scFas', 'companies'));
     }
 
-    public function update(UpdateEcoRefsCostRequest $request, int $id)
+    public function update(UpdateEcoRefsCostRequest $request, int $id): RedirectResponse
     {
         /** @var EcoRefsCost $ecoRefsCost */
         $ecoRefsCost = EcoRefsCost::findOrFail($id);
@@ -42,7 +44,7 @@ class EcoRefsCostController extends Controller
             ->with('success', __('app.updated'));
     }
 
-    public function destroy(int $id)
+    public function destroy(int $id): RedirectResponse
     {
         EcoRefsCost::query()->whereId($id)->delete();
 
@@ -90,12 +92,12 @@ class EcoRefsCostController extends Controller
         ];
     }
 
-    public function uploadExcel()
+    public function uploadExcel(): View
     {
         return view('eco_refs_cost.import_excel');
     }
 
-    public function importExcel(ImportExcelEcoRefsCostRequest $request)
+    public function importExcel(ImportExcelEcoRefsCostRequest $request): RedirectResponse
     {
         DB::transaction(function () use ($request) {
             $fileName = pathinfo(
@@ -106,7 +108,7 @@ class EcoRefsCostController extends Controller
             $import = new EconomicIbrahimImport(
                 auth()->id(),
                 $fileName,
-                (bool)$request->is_fact
+                (bool)$request->is_forecast
             );
 
             Excel::import($import, $request->file);

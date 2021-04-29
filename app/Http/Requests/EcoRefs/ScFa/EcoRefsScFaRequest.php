@@ -9,7 +9,7 @@ class EcoRefsScFaRequest extends FormRequest
     public function rules()
     {
         return [
-            'is_fact' => 'nullable|boolean'
+            'is_forecast' => 'nullable|boolean'
         ];
     }
 }

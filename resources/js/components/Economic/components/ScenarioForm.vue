@@ -12,16 +12,18 @@
     </div>
 
     <h5 class="text-secondary mt-3">
-      {{ trans('economic_reference.source_data') }}
+      {{ trans('economic_reference.scenario') }}
     </h5>
 
-    <select-sc-fa :form="form"/>
+    <select-sc-fa
+        :form="form"
+        forecast/>
 
     <h5 class="text-secondary mt-3">
       {{ trans('economic_reference.oil_prices') }}
     </h5>
 
-    <div v-for="(price, index) in form.oil_prices"
+    <div v-for="(price, index) in form.params.oil_prices"
          :key="`oil_${index}`"
          class="form-group d-flex">
       <input v-model="price.value"
@@ -39,7 +41,7 @@
       {{ trans('economic_reference.course_prices') }}
     </h5>
 
-    <div v-for="(price, index) in form.course_prices"
+    <div v-for="(price, index) in form.params.course_prices"
          :key="`course_${index}`"
          class="form-group d-flex">
       <input v-model="price.value"
@@ -57,7 +59,7 @@
       {{ trans('economic_reference.optimization_percents') }}
     </h5>
 
-    <div v-for="(optimization, index) in form.optimizations"
+    <div v-for="(optimization, index) in form.params.optimizations"
          :key="`optimization_${index}`"
          class="form-group d-flex">
       <input v-model="optimization.value1"
@@ -102,21 +104,21 @@ export default {
   }),
   methods: {
     addOilPrice() {
-      this.form.oil_prices.push({value: 0})
+      this.form.params.oil_prices.push(new EcoRefsScenarioModel().oil_price)
     },
 
     addCoursePrice() {
-      this.form.course_prices.push({value: 0})
+      this.form.params.course_prices.push(new EcoRefsScenarioModel().course_price)
     },
 
     addOptimization() {
-      this.form.optimizations.push({value1: 0, value2: 0})
+      this.form.params.optimizations.push(new EcoRefsScenarioModel().optimization)
     },
 
     deleteRelation(index, key) {
-      if (this.form[key].length < 2) return
+      if (this.form.params[key].length < 2) return
 
-      this.form[key].splice(index, 1)
+      this.form.params[key].splice(index, 1)
     },
 
     saveForm() {

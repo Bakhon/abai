@@ -7,12 +7,13 @@ use App\Http\Controllers\Controller;
 use App\Models\EcoRefsCost;
 use App\Models\Refs\EconomicDataLog;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 
 class EconomicDataLogController extends Controller
 {
-    const PAGINATION = 5;
+    const PAGINATION = 10;
 
-    public function index()
+    public function index(): View
     {
         $economicDataLog = EconomicDataLog::query()
             ->latest()
