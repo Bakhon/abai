@@ -2,7 +2,7 @@
 
 namespace App\Models\ComplicationMonitoring;
 
-use App\Models\Pipes\MapPipe;
+use App\Models\Pipes\OilPipe;
 use Illuminate\Database\Eloquent\Model;
 
 class HydroCalcResult extends Model
@@ -18,8 +18,8 @@ class HydroCalcResult extends Model
         return $this->belongsTo(TrunklinePoint::class,'id','trunkline_point_id');
     }
 
-    public function map_pipe()
+    public function oilPipe()
     {
-        return $this->belongsTo(MapPipe::class);
+        return $this->belongsTo(OilPipe::class);
     }
 }

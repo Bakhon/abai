@@ -10,8 +10,8 @@
     @foreach($data['results'] as $key => $item)
     <tr>
         <td>{{ $item->id }}</td>
-        <td>{{ $item->map_pipe->pipeType->outside_diameter }}</td>
-        <td>{{ $item->map_pipe->pipeType->thickness  }}</td>
+        <td>{{ $item->oilPipe->pipeType->outside_diameter }}</td>
+        <td>{{ $item->oilPipe->pipeType->thickness  }}</td>
         <td>{{ $item->length }}</td>
         <td>{{ $item->qliq }}</td>
         <td>{{ $item->bsw }}</td>
@@ -22,7 +22,7 @@
         <td>{{ $item->temperature_end }}</td>
         <td>{{ $item->start_point }}</td>
         <td>{{ $item->end_point }}</td>
-        <td>{{ $item->map_pipe->name }}</td>
+        <td>{{ $item->oilPipe->name }}</td>
         <td>{{ $item->mix_speed_avg }}</td>
         <td>{{ $item->fluid_speed }}</td>
         <td>{{ $item->gaz_speed }}</td>

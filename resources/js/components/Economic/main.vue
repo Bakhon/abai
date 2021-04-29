@@ -4,48 +4,38 @@
 
     <div class="row">
       <div class="col-9">
-        <modal
-            v-for="bignKey in bignKeys"
-            :key="bignKey"
-            :name="bignKey"
-            :width="1150"
-            :height="400"
-            adaptive>
-          <vue-table-dynamic ref="table" :params="params"/>
-        </modal>
-
         <div class="row justify-content-between text-white bg-blue-dark text-wrap">
-          <economic-col @click.native="pushBign('bign1')">
-            <title>
+          <economic-col>
+            <economic-title>
               <span>{{ res.lastMonth.cat1.count.value.toLocaleString() }}</span>
 
               <percent-badge :percent="-res.lastMonth.cat1.count.percent"/>
-            </title>
+            </economic-title>
 
             <subtitle>
               {{ trans('economic_reference.count_unprofitable_well_last_month') }}
             </subtitle>
           </economic-col>
 
-          <economic-col @click.native="pushBign('bign2')">
+          <economic-col>
             <divider/>
 
-            <title>
+            <economic-title>
               <span>{{ res.lastYear.Operating_profit.sum.value[0].toLocaleString() }}</span>
               <span class="font-size-16px line-height-20px text-blue">
                 {{ res.lastYear.Operating_profit.sum.value[1] }}
               </span>
-            </title>
+            </economic-title>
 
             <subtitle>
               {{ trans('economic_reference.operating_profit_last_year') }}
             </subtitle>
           </economic-col>
 
-          <economic-col @click.native="pushBign('bign3')">
+          <economic-col>
             <divider/>
 
-            <title>
+            <economic-title>
               <span>
                 {{ res.lastMonth.Operating_profit.sum.value[0].toLocaleString() }}
               </span>
@@ -55,19 +45,19 @@
               </span>
 
               <percent-badge :percent="-res.lastMonth.Operating_profit.sum.percent"/>
-            </title>
+            </economic-title>
 
             <subtitle>
               {{ trans('economic_reference.operating_profit_last_month') }}
             </subtitle>
           </economic-col>
 
-          <economic-col @click.native="pushBign('bign4')">
+          <economic-col>
             <divider/>
 
-            <title>
+            <economic-title>
               {{ res.lastYear.prs1.count.value.toLocaleString() }}
-            </title>
+            </economic-title>
 
             <subtitle>
               {{ trans('economic_reference.count_prs_per_nrs_last_year') }}
@@ -78,7 +68,8 @@
         <charts
             v-if="!loading"
             :charts="res"
-            :granularity="form.granularity"/>
+            :granularity="form.granularity"
+            :profitability="form.profitability"/>
       </div>
 
       <div class="col-3">
@@ -149,6 +140,11 @@
               class="mb-3"
               @change="getEconomicData"/>
 
+          <select-profitability
+              :form="form"
+              class="mb-3"
+              @change="getEconomicData"/>
+
           <select-organization
               :form="form"
               class="mb-3"
@@ -174,21 +170,18 @@
 <script>
 const fileDownload = require("js-file-download");
 
-import VModal from 'vue-js-modal'
-import VueTableDynamic from 'vue-table-dynamic'
 import CatLoader from '../ui-kit/CatLoader'
 import Divider from "./components/Divider";
 import EconomicCol from "./components/EconomicCol";
 import Charts from "./components/Charts";
-import Title from "./components/Title";
+import EconomicTitle from "./components/EconomicTitle";
 import Subtitle from "./components/Subtitle";
+import PercentBadge from "./components/PercentBadge";
 import SelectInterval from "./components/SelectInterval";
 import SelectGranularity, {GRANULARITY_DAY} from "./components/SelectGranularity";
 import SelectOrganization from "./components/SelectOrganization";
 import SelectField from "./components/SelectField";
-import PercentBadge from "./components/PercentBadge";
-
-Vue.use(VModal, {dynamicDefault: {draggable: true, resizable: true}});
+import SelectProfitability, {PROFITABILITY_FULL} from "./components/SelectProfitability";
 
 const economicRes = {
   lastYear: {
@@ -279,27 +272,28 @@ const economicRes = {
 export default {
   name: "economic-component",
   components: {
-    VueTableDynamic,
     CatLoader,
     Divider,
     EconomicCol,
     Charts,
-    Title,
+    EconomicTitle,
     Subtitle,
+    PercentBadge,
     SelectInterval,
     SelectGranularity,
     SelectOrganization,
     SelectField,
-    PercentBadge
+    SelectProfitability,
   },
   data: () => ({
     activeTab: 0,
     form: {
       org_id: null,
       field_id: null,
-      granularity: GRANULARITY_DAY,
       interval_start: null,
-      interval_end: null
+      interval_end: null,
+      granularity: GRANULARITY_DAY,
+      profitability: PROFITABILITY_FULL,
     },
     res: economicRes,
     params: {
@@ -354,15 +348,6 @@ export default {
             reversePercent: true
           },
         ],
-      ]
-    },
-
-    bignKeys() {
-      return [
-        'bign1',
-        'bign2',
-        'bign3',
-        'bign4',
       ]
     },
   },
@@ -429,25 +414,6 @@ export default {
         }
       }, 2000)
     },
-
-    pushBign(bign) {
-      switch (bign) {
-        case 'bign1':
-          this.params.data = this.res.lastMonth.cat1.data;
-          break;
-        case 'bign2':
-          this.params.data = this.res.lastYear.Operating_profit.data;
-          break;
-        case 'bign3':
-          this.params.data = this.res.lastMonth.Operating_profit.data;
-          break;
-        case 'bign4':
-          this.params.data = this.res.lastYear.prs1.data;
-          break;
-      }
-
-      this.$modal.show(bign);
-    }
   }
 };
 </script>

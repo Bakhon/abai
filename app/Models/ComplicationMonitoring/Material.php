@@ -2,17 +2,30 @@
 
 namespace App\Models\ComplicationMonitoring;
 
+use App\Models\Pipes\OilPipe;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Traits\WithHistory;
+
 
 class Material extends Model
 {
-    public function pipe()
+
+    use WithHistory;
+
+    protected $fillable = ['name', 'yield_point', 'roughness'];
+
+    public function material()
     {
-        return $this->hasOne(Pipe::class)->withDefault();
+        return $this->belongsTo(Material::class)->withDefault();
     }
 
-    public function pipeType()
+    public function pipe()
     {
-        return $this->hasOne(PipeType::class);
+        return $this->hasMany(Pipe::class);
+    }
+
+    public function oilPipes()
+    {
+        return $this->hasMany(OilPipe::class);
     }
 }
