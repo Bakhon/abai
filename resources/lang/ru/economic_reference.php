@@ -71,6 +71,7 @@ return array (
   'amort' => 'Амортизация, тенге/тонна',
   'factual_data' => 'Фактические данные',
   'eco_refs_cost' => 'Входные параметры для модуля Ibrahim',
+  'eco_refs_scenario' => 'Входные сценарные параметры для модуля Ibrahim',
   'oil_prices' => 'Цены на нефть',
   'course_prices' => 'Курс доллара',
   'add' => 'Добавить',

@@ -34,6 +34,10 @@
                        class="list-group-item list-group-item-action">
                         {{__('economic_reference.eco_refs_cost')}}
                     </a>
+                    <a href="{{ route('eco_refs_scenario.index') }}"
+                       class="list-group-item list-group-item-action">
+                        {{__('economic_reference.eco_refs_scenario')}}
+                    </a>
                 </div>
             </div>
         </div>
