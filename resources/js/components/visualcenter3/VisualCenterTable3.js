@@ -180,15 +180,14 @@ export default {
         },
 
         async processProductionData(metricName,chartSecondaryName) {
-            let uri = this.localeUrl("/visualcenter3GetData?timestampToday=") + this.timestampToday + "&timestampEnd=" + this.timestampEnd + " ";
-            let productionData = await this.getProductionData();
+            let productionData = await this.getProductionDataByPeriod();
             if (productionData && Object.keys(productionData).length > 0) {
                 this.processProductionDataByCompanies(productionData,metricName,chartSecondaryName);
             }
             this.$store.commit('globalloading/SET_LOADING', false);
         },
 
-        async getProductionData() {
+        async getProductionDataByPeriod() {
             let uri = this.localeUrl("/visualcenter3GetData?timestampToday=") + this.timestampToday + "&timestampEnd=" + this.timestampEnd + " ";
             const response = await axios.get(uri);
             if (response.status === 200) {
@@ -726,7 +725,7 @@ export default {
             'yearlyPlan'
         ]),
         exactDateSelected() {
-            return ((this.factFieldName === 'oil_fact' || this.factFieldName === 'oil_div_fact') && this.isOneDateSelected);
+            return ((this.factFieldName === 'oil_fact' || this.factFieldName === 'oil_dlv_fact') && this.isOneDateSelected);
         },
     },
 };

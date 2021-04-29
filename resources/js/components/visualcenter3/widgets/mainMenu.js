@@ -19,7 +19,7 @@ export default {
     },
     methods: {
         switchCategory(planFieldName, factFieldName, metricName, categoryName, parentButton, childButton) {
-            this.changeTargetCompanyFilter();
+            this.disableTargetCompanyFilter();
             if (!childButton) {
                 this.mainMenuButtonElementOptions = _.cloneDeep(mainMenuConfiguration);
                 this.disableOilFilters();
@@ -39,7 +39,7 @@ export default {
         },
 
         switchMainMenu(parentButton, childButton) {
-            this.changeTargetCompanyFilter();
+            this.disableTargetCompanyFilter();
             let self = this;
             this.isMainMenuItemChanged = false;
             let currentFilterOptions = this.mainMenuButtonElementOptions[parentButton].childItems[childButton];
