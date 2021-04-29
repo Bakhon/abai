@@ -348,7 +348,7 @@ class MapsController extends Controller
         );
     }
 
-    public function speedFlowData(Request $request)
+    public function getSpeedFlow(Request $request)
     {
         $date = $request->input('date');
         $pipes = OilPipe::with(

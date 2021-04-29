@@ -219,8 +219,8 @@ const guMap = {
             });
         },
 
-        async getSpeedFlowData ({commit}, date) {
-            return await axios.get(this._vm.localeUrl("/gu-map/speed-flow-data"), {params: {date: date}}).then((response) => {
+        async getSpeedFlow ({commit}, date) {
+            return await axios.get(this._vm.localeUrl("/gu-map/speed-flow"), {params: {date: date}}).then((response) => {
                 return response.data.pipes;
             })
         }

@@ -130,7 +130,7 @@ Route::group(
 
                 Route::get('/gu-map', 'MapsController@guMap')->name('maps.gu');
                 Route::get('/gu-map/mapdata', 'MapsController@mapData')->name('maps.gu_pipes');
-                Route::get('/gu-map/speed-flow-data', 'MapsController@speedFlowData')->name('maps.speed_flow_data');
+                Route::get('/gu-map/speed-flow', 'MapsController@getSpeedFlow')->name('maps.speed_flow');
 
                 Route::post('/gu-map/gu', 'MapsController@storeGu')->name('maps.store_gu');
                 Route::post('/gu-map/zu', 'MapsController@storeZu')->name('maps.store_zu');

@@ -276,7 +276,7 @@ export default {
       'deleteZu',
       'deleteWell',
       'getElevationByCoords',
-      'getSpeedFlowData'
+      'getSpeedFlow'
     ]),
     async initMap() {
       this.loading = true;
@@ -492,16 +492,14 @@ export default {
     },
     getPipeColor(pipe) {
       if (this.activeFilter) {
-        switch (this.activeFilter) {
-          case 'speedFlow':
-            return this.speedFlowColorFilter(pipe);
-            break;
+        if (this.activeFilter === 'speedFlow') {
+          return this.getColorByFlowSpeed(pipe);
         }
-      } else {
-        return pipeColors[this.mapColorsMode][pipe.between_points]
       }
+
+      return pipeColors[this.mapColorsMode][pipe.between_points]
     },
-    speedFlowColorFilter (pipe) {
+    getColorByFlowSpeed (pipe) {
       switch (true) {
         case pipe.speed_flow == null:
           return pipeColors[this.mapColorsMode].no_data;
@@ -1019,7 +1017,7 @@ export default {
       switch (this.activeFilter) {
         case 'speedFlow':
           this.loading = true;
-          this.pipes = await this.getSpeedFlowData(this.formatDate(this.selectedDate));
+          this.pipes = await this.getSpeedFlow(this.formatDate(this.selectedDate));
           this.layerRedraw('path-layer', 'pipe', this.pipes);
           this.loading = false;
           break;
