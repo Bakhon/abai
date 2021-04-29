@@ -56,16 +56,16 @@
                           </div>
                           <div class="col-12 mt-4">
                             <div
-                              :class="`${getColor2(getDiffProcentLastP(productionParams.oil_fact, oil_factDayPercent))}`"
+                              :class="`${getColor2(getDiffProcentLastP(productionParams.oil_fact, productionPercentParams.oil_fact))}`"
                             ></div>
 
                             <div class="txt2-2">
-                              {{Math.abs(getDiffProcentLastP(oil_factDayPercent, productionParams.oil_fact))}}%
+                              {{Math.abs(getDiffProcentLastP(productionPercentParams.oil_fact, productionParams.oil_fact))}}%
                             </div>
                             <div class="txt3">
                               vs
-                              <span v-if="oneDate"> {{ lastDate2 }}</span>
-                              <span v-else> {{ lastDate1 }} - {{ lastDate2 }}</span>
+                              <span v-if="oneDate"> {{ previousPeriodEnd }}</span>
+                              <span v-else> {{ previousPeriodStart }} - {{ previousPeriodEnd }}</span>
                             </div>
                           </div>
                         </div>
@@ -120,16 +120,16 @@
                           <br />
                           <div class="col-12 mt-2">
                             <div
-                              :class="`${getColor2(getDiffProcentLastP(productionParams.oil_dlv_fact,oil_dlv_factDayPercent))}`"
+                              :class="`${getColor2(getDiffProcentLastP(productionParams.oil_dlv_fact,productionPercentParams.oil_dlv_fact))}`"
                             ></div>
 
                             <div class="txt2-2">
-                              {{Math.abs(getDiffProcentLastP(oil_dlv_factDayPercent,productionParams.oil_dlv_fact))}}%
+                              {{Math.abs(getDiffProcentLastP(productionPercentParams.oil_dlv_fact,productionParams.oil_dlv_fact))}}%
                             </div>
                             <div class="txt3">
                               vs
-                              <span v-if="oneDate"> {{ lastDate2 }}</span>
-                              <span v-else> {{ lastDate1 }} - {{ lastDate2 }}</span>
+                              <span v-if="oneDate"> {{ previousPeriodEnd }}</span>
+                              <span v-else> {{ previousPeriodStart }} - {{ previousPeriodEnd }}</span>
                             </div>
                           </div>
                         </div>
@@ -186,21 +186,21 @@
                           <div class="col-12 mt-2">
                             <div
                               :class="`${getColor2(
-                                getDiffProcentLastP(productionParams.gas_fact, gas_factDayPercent)
+                                getDiffProcentLastP(productionParams.gas_fact, productionPercentParams.gas_fact)
                               )}`"
                             ></div>
 
                             <div class="txt2-2">
                               {{
                                 Math.abs(
-                                  getDiffProcentLastP(gas_factDayPercent, productionParams.gas_fact)
+                                  getDiffProcentLastP(productionPercentParams.gas_fact, productionParams.gas_fact)
                                 )
                               }}%
                             </div>
                             <div class="txt3">
                               vs
-                              <span v-if="oneDate"> {{ lastDate2 }}</span>
-                              <span v-else> {{ lastDate1 }} - {{ lastDate2 }}</span>
+                              <span v-if="oneDate"> {{ previousPeriodEnd }}</span>
+                              <span v-else> {{ previousPeriodStart }} - {{ previousPeriodEnd }}</span>
                             </div>
                           </div>
                         </div>
@@ -883,7 +883,8 @@
             <div class="row mh-60 mt-3 px-4">
               <div
                       class="col-sm-7 vis-table"
-                      :class="scroll">
+                      :class="oneDate ? 'main-table__scroll' : ''"
+              >
                 <table
                         v-if="bigTable.length"
                         :class="buttonDailyTab ? 'table4 w-100' : 'table4 w-100 mh-30'"
@@ -2275,8 +2276,8 @@
                       </div>
                       <div class="in-idle">
                         vs
-                        <span v-if="oneDate"> {{ lastDate2 }}</span>
-                        <span v-else> {{ lastDate1 }} - {{ lastDate2 }}</span>
+                        <span v-if="oneDate"> {{ previousPeriodEnd }}</span>
+                        <span v-else> {{ previousPeriodStart }} - {{ previousPeriodEnd }}</span>
                       </div>
                     </div>
                   </td>

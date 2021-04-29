@@ -3,7 +3,9 @@ import moment from "moment";
 export default {
     data: function () {
         return {
-            oneDate: '',
+            previousPeriodStart: '',
+            previousPeriodEnd: '',
+            oneDate: true,
             timeSelectOld: '',
             range: {},
             modelConfig: {
@@ -83,6 +85,12 @@ export default {
         };
     },
     methods: {
+        isOneDatePeriodSelected() {
+            let periodStart = new Date(this.timestampToday);
+            let periodEnd = new Date(this.timestampEnd);
+            return this.formatDateWithoutTimezone(periodStart) === this.formatDateWithoutTimezone(periodEnd);
+        },
+
         dayClicked() {
             this.changeMenu2('period');
         },
