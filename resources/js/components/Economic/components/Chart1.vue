@@ -24,9 +24,6 @@ export default {
       type: String,
     }
   },
-  created() {
-    window.economic_reference_chart1_tooltipText = this.tooltipText || ''
-  },
   methods: {
     tooltipFormatter(y) {
       if (y === undefined) {
