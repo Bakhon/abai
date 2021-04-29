@@ -1301,10 +1301,12 @@ h4 {
     .table-container-svg {
       display: flex;
     }
-    .svg-element{
+
+    .svg-element {
       padding: 5px 13px 5px 23px;
       display: grid;
-      svg{
+
+      svg {
         margin-left: auto;
         margin-right: auto;
         margin-top: auto;
@@ -1322,10 +1324,12 @@ h4 {
         margin-bottom: auto;
         margin-left: auto;
       }
-      .title{
+
+      .title {
         margin-left: unset !important;
         margin-right: auto !important;
       }
+
       svg {
         margin: auto;
       }
@@ -1349,6 +1353,7 @@ h4 {
     border-left: 1px solid #464D7A;
     border-bottom: hidden;
     border-right: hidden;
+
     p {
       margin-top: auto;
       margin-bottom: auto;
