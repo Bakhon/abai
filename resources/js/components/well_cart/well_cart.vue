@@ -36,10 +36,10 @@
         </div>
       </div>
     </div>
-    <div class="col-md-6">
+    <div class="col-md-6 mid-col">
       <div class="row">
 
-        <div class="col-md-8 bg-dark-transparent">
+        <div class="col-md-8 bg-dark-transparent calc-width">
           <div class="row">
             <div class="col">
               <select class="transparent-select" id="">
@@ -144,6 +144,14 @@
                         <label class="container" for="t1_2">
                           <span class="bottom-border">Распределительная подстанция</span>
                           <input type="checkbox" id="t1_2" name="t1_2" value="t1_2" class="dropdown-item">
+                          <span class="checkmark"></span>
+                        </label>
+                      </li>
+                      <li>
+                        <div class="flag"></div>
+                        <label class="container" for="t1_3">
+                          <span class="bottom-border">Категория запасов</span>
+                          <input type="checkbox" id="t1_3" name="t1_3" value="t1_3" class="dropdown-item">
                           <span class="checkmark"></span>
                         </label>
                       </li>
@@ -440,18 +448,29 @@
         </div>
         <div class="row">
           <div class="col">
-            <div class="icon-all pointer-large-icon">
-              <img src="/img/bd/pointer-large.svg">
+            <div class="icon-all pointer-large-icon inline-table">
+              <svg width="14" height="22" viewBox="0 0 14 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path
+                    d="M12.2882 0.739231L12.9888 1.43312C13.2073 1.65145 13.3278 1.94178 13.3278 2.25253C13.3278 2.56251 13.2073 2.85363 12.9888 3.07196L5.05502 10.9858L12.9977 18.9089C13.2162 19.1269 13.3365 19.4176 13.3365 19.728C13.3365 20.0383 13.2162 20.3291 12.9977 20.5474L12.3013 21.2413C11.8489 21.693 11.1117 21.693 10.659 21.2413L1.16833 11.808C0.949852 11.59 0.795898 11.2997 0.795898 10.9866V10.9827C0.795898 10.6724 0.950238 10.382 1.16833 10.1637L10.6335 0.739231C10.852 0.520899 11.1518 0.401142 11.4629 0.400757C11.7741 0.400757 12.0701 0.520899 12.2882 0.739231Z"
+                    fill="#656A8A"/>
+              </svg>
             </div>
             <div class="file-container">
               <div class="row">
                 <div class="col">
-                  <p> 233 MB</p>
+                  <div class="file-size">
+                    <p> 233 MB</p>
+                  </div>
                 </div>
               </div>
               <div class="row">
                 <div class="col">
-                  <div class="file-icon-large"></div>
+                  <div class="file-icon-large">
+                    <p class="well-name">
+                      Скважина
+                      <span class="well-own-name">UZN_6067</span>
+                    </p>
+                  </div>
                 </div>
               </div>
               <div class="row">
@@ -498,7 +517,13 @@
                 </div>
               </div>
             </div>
-            <div class="icon-all pointer-large-icon"><img src="/img/bd/pointer-large.svg" style="transform: scale(-1);">
+            <div class="icon-all pointer-large-icon inline-table">
+              <svg width="14" height="22" viewBox="0 0 14 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path
+                    d="M1.99418 0.739231L1.2935 1.43312C1.07503 1.65145 0.954697 1.94178 0.954697 2.25253C0.954697 2.56251 1.07503 2.85363 1.2935 3.07196L9.22732 10.9858L1.28461 18.9089C1.06613 19.1269 0.945801 19.4176 0.945801 19.728C0.945801 20.0383 1.06613 20.3291 1.28461 20.5474L1.98107 21.2413C2.43346 21.693 3.1706 21.693 3.62338 21.2413L13.114 11.808C13.3325 11.59 13.4865 11.2997 13.4865 10.9866V10.9827C13.4865 10.6724 13.3321 10.382 13.114 10.1637L3.64886 0.739231C3.43038 0.520899 3.13053 0.401142 2.81941 0.400757C2.5083 0.400757 2.21228 0.520899 1.99418 0.739231Z"
+                    fill="#656A8A"/>
+              </svg>
+
             </div>
           </div>
         </div>
@@ -774,6 +799,10 @@ export default {
 <style scoped lang="scss">
 .flex {
   display: flex;
+}
+
+.inline-table {
+  display: inline-table;
 }
 
 .b-container {
@@ -1106,10 +1135,6 @@ h4 {
 
   }
 
-  .dropdown :focus {
-    background: #5670BF;
-  }
-
 }
 
 .directory {
@@ -1194,7 +1219,7 @@ h4 {
   line-height: 18px;
   font-weight: 700;
   display: flex;
-  padding: 11px 0px 32px 13px;
+  padding: 11.26px 0px 32px 13.96px;
 
   p {
     margin: 0px;
@@ -1208,12 +1233,43 @@ h4 {
   width: 200px;
   height: 250px;
 
+  :first-child .col {
+    height: 51.1px;
+  }
+
   .file-icon-large {
     margin-left: auto;
     margin-right: auto;
     background: url(/img/bd/file-large.svg) no-repeat;
-    height: 150px;
+    height: 158.21px;
     width: 120px;
+
+    .well-name {
+      padding-right: 30.03px;
+      margin-top: 114.67px;
+      margin-left: 11.6px;
+      background: none;
+      font-family: 'Harmonia Sans Pro Cyr', 'Harmonia-Sans', 'Robato';
+      font-weight: 400;
+      font-size: 10px;
+      line-height: 12px;
+
+      p {
+        background: none;
+        font-family: 'Harmonia Sans Pro Cyr', 'Harmonia-Sans', 'Robato';
+        font-weight: 400;
+        font-size: 10px;
+        line-height: 12px;
+      }
+
+      .well-own-name {
+        font-weight: 700;
+        font-size: 14px;
+        line-height: 16.8px;
+        color: #82BAFF;
+
+      }
+    }
   }
 
   p {
@@ -1224,7 +1280,10 @@ h4 {
 
   .icon-container {
     width: 100%;
-    margin: 30px 10px;
+    margin-top: 8.68px;
+    margin-left: 12.82px;
+    margin-right: 15.48px;
+    margin-bottom: 9.64px;
   }
 }
 
@@ -1247,6 +1306,7 @@ h4 {
 
 .small-select {
   width: 100%;
+  max-width: 400px;
   height: 45px;
   margin-right: auto;
   margin-left: auto;
@@ -1260,6 +1320,16 @@ h4 {
     line-height: 17px;
     margin-top: auto;
     margin-bottom: auto;
+  }
+
+  :focus {
+    background: #2E50E9;
+    border: 0px;
+  }
+
+  :visited {
+    background: #2E50E9;
+    border: 0px;;
   }
 }
 
@@ -1376,7 +1446,7 @@ h4 {
 
   .heading {
     padding: 11px 0px 15px 13px;
-    font-family: Harmonia Sans Pro Cyr;
+    font-family: 'Harmonia Sans Pro Cyr', 'Harmonia-Sans', 'Robato';
     font-weight: 700;
   }
 
@@ -1384,7 +1454,7 @@ h4 {
     p {
       padding: 10px 10px 12px 14px;
       margin: 0px;
-      font-family: Harmonia Sans Pro Cyr;
+      font-family: 'Harmonia Sans Pro Cyr', 'Harmonia-Sans', 'Robato';
       font-weight: 400;
       font-size: 16px;
     }
@@ -1411,6 +1481,7 @@ h4 {
   display: flex;
   float: left;
   width: 100%;
+  height: 100%;
 
   .icon-all {
     height: 100%;
@@ -1420,6 +1491,10 @@ h4 {
       margin-top: auto;
       width: 100%;
     }
+  }
+
+  .icon-pointer {
+    margin-bottom: auto;
   }
 
   .text-wrapper {
@@ -1435,8 +1510,15 @@ h4 {
 .dropdown-menu.show {
   background: #40467E;
   color: white;
-  width: 350px;
-  padding: 18px 31px 0px 31px;
+  width: 100%;
+  padding: 0px 7px 0px 16px;
+  border: 1px solid #2E50E9;
+  border-radius: 8px;
+  margin-top: 7px;
+
+  ul:last-child li:last-child .bottom-border {
+    border-bottom: 0px;
+  }
 
   .container {
     margin: 0px;
@@ -1451,13 +1533,10 @@ h4 {
       margin-left: auto;
     }
 
-    :last-child {
-      border-bottom: 0px;
-    }
   }
 
   .flag {
-    margin-top: 15px;
+    margin-top: auto;
     margin-bottom: auto;
     padding-right: 10px;
     content: URL(/img/bd/check-marker.svg);
@@ -1467,7 +1546,6 @@ h4 {
     border-bottom: 1px solid rgba(196, 222, 242, 0.3);
     padding-bottom: 15px;
     padding-top: 15px;
-    margin-bottom: 15px;
     width: 100%;
   }
 
@@ -1488,7 +1566,6 @@ h4 {
   .checkmark {
     height: 20px;
     width: 20px;
-    background-color: #656A8A;
     border-radius: 6px;
     border: 2px solid #237DEB;
     margin-bottom: auto;
@@ -1506,7 +1583,7 @@ h4 {
 
   .checkmark:after {
     content: "";
-    position: relative;
+    position: absolute;
     display: none;
   }
 
@@ -1517,6 +1594,7 @@ h4 {
   .container .checkmark:after {
     width: 5px;
     height: 10px;
+    bottom: 10px;
     border: solid white;
     border-width: 0 3px 3px 0;
     -webkit-transform: rotate(45deg);
@@ -1529,7 +1607,7 @@ h4 {
 }
 
 .dropdown-menu :last-child {
-  border-bottom: 0px !important;
+  border-bottom: 0px;
 }
 
 .select-button {
@@ -1568,7 +1646,7 @@ h4 {
   margin-left: auto;
   margin-top: 15px;
   margin-bottom: auto;
-  margin-right: 20px;
+  margin-right: 11.19px;
 }
 
 .bg-dark {
@@ -1582,7 +1660,11 @@ h4 {
 
   h2 {
     margin: 0px;
-    padding: 20px;
+    padding: 22px 25px;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 24px;
+    font-family: 'Harmonia Sans Pro Cyr', 'Harmonia-Sans', 'Robato';
   }
 }
 
@@ -1637,6 +1719,10 @@ h4 {
 
 .col-no-right-padding {
   padding-right: 0px;
+  width: 250px;
+  max-width: 250px;
+  min-width: 250px;
+  margin-left: auto;
 }
 
 .passport {
@@ -1663,5 +1749,30 @@ h4 {
 
 .buttons-no-wrap {
   min-width: 150px !important;
+}
+
+.calc-width {
+  flex: calc(100% - 250px);
+  max-width: calc(100% - 250px);
+
+}
+
+.mid-col {
+  max-width: calc(100% - 348px - 398px);
+  flex: calc(100% - 348px - 398px);
+  min-width: 500px;
+}
+
+.file-size {
+  margin-left: auto;
+  margin-bottom: auto;
+
+  p {
+    padding: 2.59px 5px 5px 5.55px;
+    font-size: 14px;
+    font-weight: 700;
+    font-family: 'Harmonia Sans Pro Cyr', 'Harmonia-Sans', 'Robato';
+    line-height: 16px;
+  }
 }
 </style>
