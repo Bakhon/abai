@@ -328,8 +328,10 @@ export default {
             var p = [];
             var getMonthBigTable = [];
 
+            let dzoPlansMapping = {};
 
             _.forEach(dataWithMay, function (item) {
+                self.updateDzoPlans(item,dzoPlansMapping);
                 e = {dzo2: item.dzo};
                 f = {factMonth: Math.ceil(item[self.factFieldName])};
                 p = {planMonth: Math.ceil(item[self.planFieldName])};
@@ -337,6 +339,8 @@ export default {
                 oil_plan = {oil_plan: item.oil_plan};
                 getMonthBigTable.push([e, f, p, oil_fact, oil_plan]);
             });
+
+            let dzoListWithoutOpec = this.getDzoListWithoutOpec(dzoPlansMapping);
 
             var factMonth = _.reduce(
                 factMonth,
@@ -598,7 +602,12 @@ export default {
                     return tmpArrayToSort.indexOf(this.getNameDzoFull(a.dzoMonth)) > tmpArrayToSort.indexOf(this.getNameDzoFull(b.dzoMonth)) ? 1 : -1
                 });
 
-            this.bigTable = bigTable.filter(row => row.factMonth > 0 || row.planMonth > 0)
+            bigTable = bigTable.filter(row => row.factMonth > 0 || row.planMonth > 0);
+            if (this.isOpecFilterActive) {
+                bigTable = bigTable.filter(item => dzoListWithoutOpec.includes(item.dzoMonth));
+            }
+
+            this.bigTable = bigTable;
             this.clearNullAccidentCases();
             this.exportDzoCompaniesSummaryForChart();
 
@@ -635,6 +644,27 @@ export default {
                 ["dzo"],
                 ["desc"]
             );
+        },
+
+        updateDzoPlans(item,dzoPlansMapping) {
+            if (!dzoPlansMapping[item.dzo]) {
+                dzoPlansMapping[item.dzo] = {
+                    plan: 0,
+                    opecPlan: 0
+                };
+            }
+            dzoPlansMapping[item.dzo].plan += item['oil_plan'];
+            dzoPlansMapping[item.dzo].opecPlan += item['oil_opek_plan'];
+        },
+
+        getDzoListWithoutOpec(dzoPlanMapping) {
+            let dzoList = [];
+            _.forEach(Object.keys(dzoPlanMapping), function(key) {
+                if (dzoPlanMapping[key].plan !== dzoPlanMapping[key].opecPlan) {
+                    dzoList.push(key);
+                }
+            });
+            return dzoList;
         },
     },
     mixins: [
