@@ -82,7 +82,7 @@ Route::group(
                 Route::resource('ecorefsequipid', 'EcoRefsEquipIdController');
                 Route::resource('ecorefsannualprodvolume', 'EcoRefsAnnualProdVolumeController');
                 Route::resource('ecorefsrenttax', 'EcoRefsRentTaxController');
-                Route::resource('ecoreecorefscostfsavgmarketprice', 'EcoRefsAvgMarketPriceController');
+                Route::resource('ecorefsavgmarketprice', 'EcoRefsAvgMarketPriceController');
                 Route::resource('ecorefsdiscontcoefbar', 'EcoRefsDiscontCoefBarController');
                 Route::resource('eco_refs_cost', 'EcoRefsCostController');
                 Route::get('eco_refs_costs', 'EcoRefsCostController@getData');
