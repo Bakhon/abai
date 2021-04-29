@@ -2,7 +2,9 @@
 
 namespace App;
 
+use App\Models\Refs\EcoRefsScFa;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class EcoRefsScenario extends Model
 {
@@ -13,4 +15,12 @@ class EcoRefsScenario extends Model
         'course_prices' => 'array',
         'optimizations' => 'array',
     ];
+
+    /**
+     * @return BelongsTo|EcoRefsScFa
+     */
+    public function scFa()
+    {
+        return $this->belongsTo(EcoRefsScFa::class, 'sc_fa_id');
+    }
 }

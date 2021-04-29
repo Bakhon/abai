@@ -3,7 +3,7 @@
     <cat-loader v-show="loading"/>
 
     <div class="container-fluid bg-light p-4 mb-4">
-      <scenario-form @update="addScenario"/>
+      <scenario-form @created="addScenario"/>
     </div>
 
     <div class="container-fluid bg-light p-4">
@@ -30,37 +30,20 @@ export default {
     ScenarioForm
   },
   data: () => ({
-    form: {
-      sc_fa: null
-    },
-    scFas: [],
-    data: [],
+    scenarios: [],
     loading: false
   }),
-  created() {
-    this.getScFas()
-  },
   methods: {
-    async getScFas() {
+    async getScenarios() {
       this.loading = true
 
-      let params = {is_fact: 0}
+      try {
+        const {data} = await this.axios.get(this.localeUrl('/eco_refs_scenarios'))
 
-      const {data} = await this.axios.get(this.localeUrl('/eco_refs_sc_fas'), {params: params})
-
-      this.scFas = data.data
-
-      this.loading = false
-    },
-
-    async getData() {
-      this.loading = true
-
-      this.data = []
-
-      const {data} = await this.axios.get(this.localeUrl('/eco_refs_cost_data'), {params: this.form})
-
-      this.data = [...[this.headers], ...data.data]
+        this.scFas = data.data
+      } catch (e) {
+        console.log(e)
+      }
 
       this.loading = false
     },

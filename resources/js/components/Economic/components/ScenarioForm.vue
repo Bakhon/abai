@@ -100,6 +100,7 @@ export default {
     SaveButton
   },
   data: () => ({
+    loading: false,
     form: new EcoRefsScenarioModel().form
   }),
   methods: {
@@ -121,10 +122,21 @@ export default {
       this.form.params[key].splice(index, 1)
     },
 
-    saveForm() {
-      this.$emit('update', this.form)
+    async saveForm() {
 
-      this.form = new EcoRefsScenarioModel().form
+      this.loading = true
+
+      try {
+        const {data} = await this.axios.post(this.localeUrl('/eco_refs_scenario'), this.form)
+
+        this.$emit('created', data)
+
+        this.form = new EcoRefsScenarioModel().form
+      } catch (e) {
+        console.log(e)
+      }
+
+      this.loading = false
     }
   }
 }

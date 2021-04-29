@@ -85,8 +85,9 @@ Route::group(
                 Route::resource('ecoreecorefscostfsavgmarketprice', 'EcoRefsAvgMarketPriceController');
                 Route::resource('ecorefsdiscontcoefbar', 'EcoRefsDiscontCoefBarController');
                 Route::resource('eco_refs_cost', 'EcoRefsCostController');
-                Route::get('eco_refs_cost_data', 'EcoRefsCostController@getData');
+                Route::get('eco_refs_costs', 'EcoRefsCostController@getData');
                 Route::resource('eco_refs_scenario', 'Refs\EcoRefsScenarioController');
+                Route::get('eco_refs_scenarios', 'Refs\EcoRefsScenarioController@getData');
                 Route::get('economic_data/upload_excel', 'EcoRefsCostController@uploadExcel')->name('economic_data_upload');
                 Route::post('economic_data/import_excel', 'EcoRefsCostController@importExcel')->name('economic_data_import');
                 Route::resource('economic_data_log', 'Refs\EconomicDataLogController');
@@ -100,7 +101,7 @@ Route::group(
                 Route::post('/getkormass', 'ComplicationMonitoring\OmgNGDUController@getKormass');
                 Route::resource('ecorefsempper', 'Refs\EcoRefsEmpPerController');
                 Route::resource('ecorefsscfa', 'Refs\EcoRefsScFaController');
-                Route::get('eco_refs_sc_fas', 'Refs\EcoRefsScFaController@getScFas');
+                Route::get('eco_refs_sc_fas', 'Refs\EcoRefsScFaController@getData');
                 Route::get('ecorefslist', 'Refs\EcoRefsScFaController@refsList')->name('eco_refs_list');
 
                 // economic tech data
