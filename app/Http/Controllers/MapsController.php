@@ -347,4 +347,19 @@ class MapsController extends Controller
             ]
         );
     }
+
+    public function speedFlowData(Request $request)
+    {
+        $date = $request->input('date');
+        $pipes = OilPipe::with(
+            [
+                'coords',
+                'pipeType',
+                'speedFlow' => function ($query) use ($date) {
+                    $query->where('date', $date);
+                }
+            ]
+        )->get();
+        dd($pipes);
+    }
 }

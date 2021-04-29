@@ -17,16 +17,15 @@
       <div class="gu-map__filters mt-15px">
         <v-select
             v-model="activeFilter"
-            @input="selectFilter"
             :options="mapFilters"
-            :reduce="option => option.id"
+            :reduce="option => option.key"
             label="name"
             :placeholder="trans('monitoring.map.select_filter')"
         >
         </v-select>
       </div>
 
-      <div class="gu-map__datetime-picker mt-15px">
+      <div class="gu-map__datetime-picker mt-15px" v-show="activeFilter">
         <datetime
             type="date"
             v-model="selectedDate"
@@ -36,6 +35,7 @@
             :format="{ year: 'numeric', month: 'long', day: 'numeric' }"
             :phrases="{ok: trans('app.choose'), cancel: trans('app.cancel')}"
             :week-start="1"
+            @input="applyFilter"
             auto
         >
         </datetime>
@@ -229,7 +229,10 @@ export default {
       selectedDate: null,
       activeFilter: null,
       mapFilters: [
-
+        {
+          name: this.trans('monitoring.map.filters.speed-flow-filter'),
+          key: 'speedFlow'
+        }
       ]
     };
   },
@@ -267,7 +270,8 @@ export default {
       'deleteGu',
       'deleteZu',
       'deleteWell',
-      'getElevationByCoords'
+      'getElevationByCoords',
+      'getSpeedFlowData'
     ]),
     async initMap() {
       this.pipes = await this.getMapData(this.gu);
@@ -972,8 +976,17 @@ export default {
       if (!date) return null
       return moment.parseZone(date).format('YYYY-MM-DD')
     },
-    selectFilter(){
+    applyFilter () {
+      console.log('this.activeFilter', this.activeFilter);
+      switch (this.activeFilter) {
+        case 'speedFlow':
+          return this.getSpeedFlowData(this.formatDate(this.selectedDate));
+          break;
 
+        default:
+          return false
+          break;
+      }
     }
   }
 }
