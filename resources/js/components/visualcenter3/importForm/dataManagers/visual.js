@@ -4,6 +4,7 @@ export default {
     data: function () {
         return {
             isChemistryNeeded: true,
+            isWellsWorkoverNeeded: true,
             columns: [
                 {
                     prop: "column1",
@@ -84,9 +85,8 @@ export default {
             stringColumns: [1,2],
             errorSelectors: [],
             currentDate: moment().tz('Asia/Almaty').subtract(1, 'days').format('DD-MM-YYYY'),
-            weekendsDays: [6,7],
             limitForEnteringData: {
-                hours: 7,
+                hours: 8,
                 minutes: 0,
             },
             isChemistryButtonVisible: false,
@@ -95,9 +95,6 @@ export default {
     },
     created() {
         let almatyCurrentDate = moment().tz('Asia/Almaty');
-        if (this.weekendsDays.includes(almatyCurrentDate.day())) {
-            this.hourLimitForEnteringData.hours = 8;
-        }
         if (almatyCurrentDate.hour() >= this.limitForEnteringData.hours && almatyCurrentDate.minutes() > this.limitForEnteringData.minutes) {
             this.currentDate = almatyCurrentDate.format('DD-MM-YYYY');
             this.currentDateDetailed = almatyCurrentDate.format("YYYY-MM-DD HH:mm:ss");
@@ -106,6 +103,9 @@ export default {
     methods: {
         changeButtonVisibility() {
             this.isChemistryNeeded = !this.isChemistryNeeded;
+        },
+        changeWellBlockVisibility() {
+            this.isWellsWorkoverNeeded = !this.isWellsWorkoverNeeded;
         },
         turnOffErrorHighlight() {
             let self = this;
