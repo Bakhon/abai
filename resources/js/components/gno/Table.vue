@@ -1254,7 +1254,7 @@
 
                       <div class="block__centrators">
                         <h6 class="main__title__block_centrators"><b>{{trans('pgno.interval_centrators')}}:</b></h6>
-                        <h6 class="title__block__centrators">{{trans('pgno.required')}}: <span v-for="item in centratorsRequiredValue">{{ item }}</span></h6>
+                        <h6 class="title__block__centrators">{{trans('pgno.required')}}: <b v-for="item in centratorsRequiredValue">{{ item }}</b></h6>
                       </div>
 
                     <button class="button-pdf col-12" @click="createPDF()">
@@ -1495,7 +1495,7 @@
 
                               <div class="col-2">
                                 <label class="label-for-celevoi" >Ø{{trans('pgno.nkt')}}</label>
-                                  <select class="input-box-gno podbor" v-model="nkt" @change="postCurveData()">
+                                  <select class="input-box-gno podbor long__box" v-model="nkt" @change="postCurveData()">
                                     <option v-for="(nkts, index) in nkt_choose" :value="nkts.for_calc_value" :key="index" >
                                     {{nkts.show_value}}
                                     </option>
@@ -2021,6 +2021,11 @@
   text-shadow:0px 1px 0px #144079;
   width: 100%;
   word-spacing: 4px;
+}
+
+.long__box {
+  width: 60px !important;
+  padding-left: 0px !important;
 }
 
 .select-download-button {
