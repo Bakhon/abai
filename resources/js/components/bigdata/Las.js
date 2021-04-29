@@ -24,6 +24,7 @@ export default {
             localization: 'ru',
             filenameParameters: null,
             filenameDelimiter: '_',
+            recordingDepthDelimiter: '-',
             filenameParametersForName: [
                 'field', 'well', 'stemType', 'stemSection', 'recordingMethod',
                 'mnemonics', 'date', 'fileStatus', 'recordingDepth',
@@ -149,7 +150,8 @@ export default {
             }).then((response) => {
                 if (response.data) {
                     this.setExperimentId(response.data.experimentId)
-                    this.updateExperimentInfo()
+                    this.resetFileUploadFields()
+                    this.setNextExperimentInfo()
                 }
             }).catch((error) => console.log(error)
             ).finally(() => this.$store.commit('globalloading/SET_LOADING', false));
@@ -157,10 +159,13 @@ export default {
         setExperimentId(experimentId) {
             this.filenameParameters.specific[this.currentFileInfoNum]['experimentId'] = experimentId
         },
+        resetFileUploadFields() {
+            this.input.filename.mnemonics = []
+        },
         setExperimentUserFileName() {
             this.filenameParameters.specific[this.currentFileInfoNum]['userFilename'] = this.filenameByParameters
         },
-        updateExperimentInfo() {
+        setNextExperimentInfo() {
             if (this.currentFileInfoNum >= this.files.length - 1) {
                 this.isLastFileProcessed = true
                 return
@@ -171,10 +176,10 @@ export default {
         setExperimentFileParameters() {
             let experiment = this.filenameParameters.specific[this.currentFileInfoNum]
             if ('experimentId' in experiment && experiment['experimentId'] !== null) {
-                this.updateExperimentInfo()
+                this.setNextExperimentInfo()
                 return
             }
-            this.input.filename.recordingDepth = experiment.recordingDepths[0] + this.filenameDelimiter + experiment.recordingDepths[1]
+            this.input.filename.recordingDepth = experiment.recordingDepths[0] + this.recordingDepthDelimiter + experiment.recordingDepths[1]
         },
         fetchStatistics() {
             this.$store.commit('globalloading/SET_LOADING', true);
@@ -243,6 +248,11 @@ export default {
             if ((_.isArray(content) && content.length === 0) || (content === '')) {
                 return this.input.defaultsForFilename[field]
             }
+            if (field === 'recordingDepth') {
+                return this.input.filename.recordingDepth.replaceAll(
+                    this.recordingDepthDelimiter, this.filenameDelimiter
+                )
+            }
             return content
         },
         formatDate(date) {
@@ -297,6 +307,23 @@ export default {
                 }
             }
             return true
+        },
+        refreshGenericUploadParams() {
+
+            let uri = this.baseUrl + "generic_upload_params/";
+            this.$store.commit('globalloading/SET_LOADING', true);
+            this.axios.get(uri, {
+                responseType: 'json',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }).then((response) => {
+                if (response.data) {
+                    this.filenameParameters.generic = response.data
+                    this.setExperimentFileParameters()
+                }
+            }).catch((error) => console.log(error)
+            ).finally(() => this.$store.commit('globalloading/SET_LOADING', false));
         },
     }
 }
