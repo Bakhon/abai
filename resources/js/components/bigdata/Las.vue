@@ -180,7 +180,7 @@
             </div>
             <div class="row">
               <div class="col-3">
-                <label class="label-text">Глубина записи:</label>
+                <label class="label-text">Глубина записи ({{ filenameParameters.specific[currentFileInfoNum].recordingStep }}):</label>
               </div>
               <div class="col-3">
                 <input class="col form-control filter-input mr-2 mb-2" v-model="input.filename.recordingDepth" required>
