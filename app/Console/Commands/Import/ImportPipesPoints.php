@@ -4,6 +4,7 @@ namespace App\Console\Commands\Import;
 
 use App\Imports\PipesPointsImport;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\DB;
 
 class ImportPipesPoints extends Command
 {
@@ -40,6 +41,11 @@ class ImportPipesPoints extends Command
      */
     public function handle(): void
     {
+        DB::table('hydro_calc_results')->delete();
+        DB::statement("ALTER TABLE hydro_calc_results AUTO_INCREMENT = 1;");
+
+        DB::table('trunkline_points')->delete();
+        DB::statement("ALTER TABLE trunkline_points AUTO_INCREMENT = 1;");
         $this->importExcel(new PipesPointsImport($this), public_path('imports/thunkline_points.xlsx'));
     }
 }

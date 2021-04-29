@@ -3,6 +3,7 @@
 namespace App\Models\Refs;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Field extends Model
 {
@@ -24,5 +25,13 @@ class Field extends Model
     public function omguhe()
     {
         return $this->hasMany(\App\Models\ComplicationMonitoring\OmgUHE::class);
+    }
+
+    /**
+     * @return BelongsTo|Org
+     */
+    public function org()
+    {
+        return $this->belongsTo(Org::class, 'org_id');
     }
 }

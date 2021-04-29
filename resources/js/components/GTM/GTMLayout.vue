@@ -18,9 +18,11 @@
 </template>
 <script>
 
+import {paegtmMapActions} from '@store/helpers';
+
 export default {
     data: function () {
-        this.$store.commit('changeTheDisplayShadowBlock',false);
+        this.changeDisplayShadowBlock(false);
         return {
             mainContent: {
                 name: "main-component",
@@ -31,15 +33,23 @@ export default {
         };
     },
     methods: {
+        ...paegtmMapActions([
+            'changeDisplayShadowBlock',
+            'changeDisplayMainComponent',
+            'changeTreeSettingComponent',
+            'changeTreeChildrenComponent',
+            'changeDateStart',
+            'changeDateEnd',
+        ]),
         menuClick (data) {
             this.mainContent = data;
             this.parentType = data.parentType;
         },
         closeTree () {
-            this.$store.commit('changeTheDisplayShadowBlock',false);
-            this.$store.commit('changeTheDisplayMainComponent',false);
-            this.$store.commit('changeTreeSettingComponent',null);
-            this.$store.commit('changeTreeChildrenComponent',null);
+            this.changeDisplayShadowBlock(false);
+            this.changeTreeSettingComponent(null);
+            this.changeTreeChildrenComponent(null);
+            this.changeDisplayMainComponent(false);
         },
     },
     computed: {

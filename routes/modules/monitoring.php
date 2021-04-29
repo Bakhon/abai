@@ -166,9 +166,9 @@ Route::group(
 
                 Route::get('/monitor/{gu?}', 'DruidController@monitor')->name('monitor');
 
-                Route::get('/hydro-calc/list', 'ComplicationMonitoring\HydroCalculcation@list')->name('hydro_calculcation.list');
-                Route::get('/hydro-calc/export', 'ComplicationMonitoring\HydroCalculcation@exportExcel')->name('hydro_calculcation.export');
-                Route::resource('hydro-calc', 'ComplicationMonitoring\HydroCalculcation');
+                Route::get('/hydro-calc/list', 'ComplicationMonitoring\HydroCalculation@list')->name('hydro_calculation.list');
+                Route::get('/hydro-calc/calculate', 'ComplicationMonitoring\HydroCalculation@calculate')->name('hydro_calculation.calculate');
+                Route::resource('hydro-calc', 'ComplicationMonitoring\HydroCalculation');
             }
         );
     }

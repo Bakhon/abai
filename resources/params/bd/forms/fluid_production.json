@@ -45,7 +45,7 @@
     {
       "title": "debit_fluid_tech",
       "code": "debit_fluid_tech",
-      "table": "prod.tech_mode",
+      "table": "prod.tech_mode_prod_oil",
       "column": "liquid",
       "type": "float",
       "is_editable": false
@@ -53,7 +53,7 @@
     {
       "title": "debit_oil_tech",
       "code": "debit_oil_tech",
-      "table": "prod.tech_mode",
+      "table": "prod.tech_mode_prod_oil",
       "column": "oil",
       "type": "float",
       "is_editable": false
@@ -61,7 +61,7 @@
     {
       "title": "bsw_tech",
       "code": "bsw_tech",
-      "table": "prod.tech_mode",
+      "table": "prod.tech_mode_prod_oil",
       "column": "wcut",
       "type": "float",
       "is_editable": false

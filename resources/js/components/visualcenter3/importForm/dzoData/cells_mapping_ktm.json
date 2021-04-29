@@ -37,12 +37,10 @@
   "otmDzo": {
     "fields": [
       "otm_wells_commissioning_from_drilling_fact",
-      "otm_drilling_fact",
-      "otm_well_workover_fact",
-      "otm_underground_workover"
+      "otm_drilling_fact"
     ],
     "rowIndex": 21,
-    "rowLength": 4
+    "rowLength": 2
   },
   "operatingFond": {
     "fields": [
@@ -197,22 +195,18 @@
       "ЦДНГ №1 (месторождения: Западный Елемес, Восточное Сазтобе, Юго-Восточное Сазтобе, Северо-Восточное Сазтобе, ПСН Опорная)": {
         "fields": [
           "otm_wells_commissioning_from_drilling_fact",
-          "otm_drilling_fact",
-          "otm_well_workover_fact",
-          "otm_underground_workover"
+          "otm_drilling_fact"
         ],
         "rowIndex": 22,
-        "rowLength": 4
+        "rowLength": 2
       },
       "ЦДНГ №2 (месторождения: Лактыбай, Южное Каратобе, ГНПС Кенкияк)": {
         "fields": [
           "otm_wells_commissioning_from_drilling_fact",
-          "otm_drilling_fact",
-          "otm_well_workover_fact",
-          "otm_underground_workover"
+          "otm_drilling_fact"
         ],
         "rowIndex": 23,
-        "rowLength": 4
+        "rowLength": 2
       }
     }
   },
