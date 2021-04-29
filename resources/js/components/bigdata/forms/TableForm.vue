@@ -407,6 +407,8 @@ export default {
                 this.rowHistoryGraph = data
 
                 row[column.copy.to].value = row[column.copy.from].value
+                row[column.copy.to].old_value = null
+                row[column.copy.to].date = null
                 this.$set(this.rows, rowIndex, row)
                 this.$nextTick()
 

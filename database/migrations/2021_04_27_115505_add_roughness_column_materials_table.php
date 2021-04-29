@@ -37,7 +37,7 @@ class AddRoughnessColumnMaterialsTable extends Migration
     {
         $material = Material::firstOrCreate(
             [
-                'name' => 'Сталь'
+                'name' => 'Ст.20'
             ]
         );
         $material->roughness = 0.2;
@@ -45,7 +45,7 @@ class AddRoughnessColumnMaterialsTable extends Migration
 
         $material = Material::firstOrCreate(
             [
-                'name' => 'Полипропилен'
+                'name' => 'СПТ'
             ]
         );
         $material->roughness = 0.005;

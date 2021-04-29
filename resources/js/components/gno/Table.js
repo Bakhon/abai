@@ -295,6 +295,11 @@ export default {
       ao: null,
       orgs: null,
       nkt: null,
+      liftValue: "ШГН",
+      stepValue: 10,
+      centratorsInfo: null,
+      centratorsRequiredValue: null,
+      centratorsRecommendedValue: null,
       nkt_choose: [
         {
           for_calc_value: 50.3,
@@ -420,6 +425,8 @@ export default {
         })
     },
     downloadExcel() {
+      this.isLoading = true;
+
       if (this.CelButton == 'ql') {
         this.CelValue = this.qlCelValue
       } else if (this.CelButton == 'bhp') {
@@ -464,8 +471,11 @@ export default {
       let uri = "http://172.20.103.187:7575/api/pgno/"+ this.field + "/" + this.wellNumber + "/download";
       this.axios.post(uri, jsonData,{responseType: "blob"}).then((response) => {
         fileDownload(response.data, "ПГНО_" + this.field + "_" + this.wellNumber + ".xlsx")
-      }
-      )
+      }).catch(function (error) {
+        console.error('oops, something went wrong!', error);
+      }).finally(() => {
+        this.isLoading = false;
+    });
     },
 
     updateWellNum(event) {
@@ -1202,7 +1212,33 @@ export default {
 
     },
 
+    fetchBlockCentrators() {
+      let fieldInfo = this.wellIncl.split('_');
+      let urlForIncl = "http://172.20.103.187:7573/api/pgno/incl";
+      if (this.expChoose == 'ЭЦН') {
+        (this.liftValue = 'ЭЦН') && (this.stepValue = 20);
+      } else {
+        (this.liftValue = 'ШГН') && (this.stepValue = 10);
+      }
+
+      let centratorsData = JSON.stringify(
+        { 
+          "well_number": fieldInfo[1],
+          "lift_method": this.liftValue,
+          "field": fieldInfo[0],
+          "glubina": this.hPumpValue.substring(0,4) * 1,
+          "step": this.stepValue,
+        }
+      )
+
+      this.axios.post(urlForIncl, centratorsData).then((response) => {
+        this.centratorsInfo = response.data
+        this.centratorsRequiredValue = this.centratorsInfo["CenterRange"]["red"]
+      })
+    },
+
     postCurveData() {
+      this.fetchBlockCentrators();
       this.isVisibleChart = true;
       let uri = this.url + this.field + "/" + this.wellNumber + "/";
       if (this.CelButton == 'ql') {
