@@ -13,7 +13,7 @@ class FieldCalcCompany extends Model
 
     public function getCompanyBarrelPriceByDirection($direction, $scenario_fact)
     {
-        return $this->hasMany(CompanyRealizationPercent::class, 'company_id', 'id')->where('sc_fa', '=', $scenario_fact)->with(['scfa', 'getCompanyDiscontСoefficientBarrel','direction'])->whereYear('date','=','2021')->whereDirectionId($direction);
+        return $this->hasMany(CompanyRealizationPercent::class, 'company_id', 'id')->where('sc_fa', '=', $scenario_fact)->with(['scfa', 'getCompanyDiscontСoefficientBarrel','direction', 'route'])->whereYear('date','=','2021')->whereDirectionId($direction);
     }
 
     public function routes()
