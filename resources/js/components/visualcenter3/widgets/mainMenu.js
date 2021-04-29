@@ -15,18 +15,15 @@ export default {
             flagOff: '<svg width="15" height="19" viewBox="0 0 15 19" fill="none" xmlns="http://www.w3.org/2000/svg"> \n' +
                 '<path fill-rule="evenodd" clip-rule="evenodd" d="M12.8448 0.286987H2.68496C1.56713 0.286987 0.663191 1.20167 0.663191 2.31911L0.652832 18.5754L7.76489 15.5272L14.877 18.5754V2.31911C14.877 1.20167 13.9627 0.286987 12.8448 0.286987Z" fill="#656A8A"/>' +
                 '</svg>',
-            isGasButtonActive: false,
         };
     },
     methods: {
         switchCategory(planFieldName, factFieldName, metricName, categoryName, parentButton, childButton) {
             this.disableTargetCompanyFilter();
-            this.isGasButtonActive = this.getGasButtonStatus(parentButton);
             if (!childButton) {
                 this.mainMenuButtonElementOptions = _.cloneDeep(mainMenuConfiguration);
                 this.disableOilFilters();
             }
-
             this.chartSecondaryName = categoryName;
             this.dzoCompaniesAssets['assetTitle'] = this.trans("visualcenter.summaryAssets");
             this.planFieldName = planFieldName;
@@ -41,14 +38,9 @@ export default {
             this.changeDate();
         },
 
-        getGasButtonStatus(parentButton) {
-            return parentButton === 'gasProductionButton';
-        },
-
         switchMainMenu(parentButton, childButton) {
             this.disableTargetCompanyFilter();
             let self = this;
-            this.isGasButtonActive = this.getGasButtonStatus(parentButton);
             this.isMainMenuItemChanged = false;
             let currentFilterOptions = this.mainMenuButtonElementOptions[parentButton].childItems[childButton];
             if (this.categoryMenuPreviousParent !== parentButton || !this.isOilProductionMenu(parentButton,childButton)) {
@@ -132,7 +124,7 @@ export default {
         },
 
         getThousandMetricNameByCategorySelected() {
-            if (this.isGasButtonActive) {
+            if (this.gasProductionButton) {
                 return this.trans('visualcenter.thousand') + this.trans('visualcenter.meterCubicWithSpace');
             } else {
                 return this.trans("visualcenter.dzoThousandTon");
@@ -140,7 +132,7 @@ export default {
         },
 
         getMetricNameByCategorySelected() {
-            if (this.isGasButtonActive) {
+            if (this.gasProductionButton) {
                 return this.trans('visualcenter.meterCubicWithSpace');
             } else {
                 return this.trans("visualcenter.chemistryMetricTon");
