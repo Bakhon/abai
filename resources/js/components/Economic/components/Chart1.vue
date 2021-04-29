@@ -27,6 +27,18 @@ export default {
   created() {
     window.economic_reference_chart1_tooltipText = this.tooltipText || ''
   },
+  methods: {
+    tooltipFormatter(y) {
+      if (y === undefined) {
+        return y
+      }
+
+      return new Intl.NumberFormat(
+          'en-IN',
+          {maximumSignificantDigits: 3}
+      ).format(y.toFixed(0)) + ` ${this.tooltipText || ''}`;
+    }
+  },
   computed: {
     options() {
       return {
@@ -46,16 +58,7 @@ export default {
             shared: true,
             intersect: false,
             y: {
-              formatter(y) {
-                if (y === undefined) {
-                  return y
-                }
-
-                return new Intl.NumberFormat(
-                    'en-IN',
-                    {maximumSignificantDigits: 3}
-                ).format(y.toFixed(0)) + ` ${window.economic_reference_chart1_tooltipText}`;
-              }
+              formatter: (y) => this.tooltipFormatter(y)
             }
           }
         }
