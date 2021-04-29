@@ -96,10 +96,10 @@
         </div>
       </div>
     </div>
-    <div class="col-md-6">
+    <div class="col-md-6 mid-col">
       <div class="row">
 
-        <div class="col-md-8 bg-dark-transparent">
+        <div class="col-md-8 bg-dark-transparent calc-width">
           <div class="row">
             <div class="col">
               <select class="transparent-select" id="">
@@ -1633,6 +1633,10 @@ h4 {
 
 .col-no-right-padding {
   padding-right: 0px;
+  width: 250px;
+  max-width: 250px;
+  min-width: 250px;
+  margin-left: auto;
 }
 
 .passport {
@@ -1659,5 +1663,15 @@ h4 {
 
 .buttons-no-wrap {
   min-width: 150px !important;
+}
+.calc-width{
+  flex: calc(100% - 250px);
+  max-width: calc(100% - 250px);
+
+}
+.mid-col{
+  max-width: calc(100% - 348px - 398px);
+  flex: calc(100% - 348px - 398px);
+  min-width: 500px;
 }
 </style>
