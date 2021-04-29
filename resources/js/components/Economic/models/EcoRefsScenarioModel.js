@@ -19,4 +19,11 @@ export class EcoRefsScenarioModel {
             }
         }
     }
+
+    static get optimizationKeys() {
+        return [
+            'fixed_nopayroll',
+            'fixed_payroll',
+        ]
+    }
 }

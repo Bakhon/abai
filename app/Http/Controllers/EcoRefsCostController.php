@@ -108,7 +108,7 @@ class EcoRefsCostController extends Controller
             $import = new EconomicIbrahimImport(
                 auth()->id(),
                 $fileName,
-                (bool)$request->is_forecast
+                $request->is_forecast
             );
 
             Excel::import($import, $request->file);

@@ -1,5 +1,7 @@
 <template>
   <div class="border-dark">
+    <cat-loader v-show="loading"/>
+
     <h5 class="text-secondary">
       {{ trans('economic_reference.name') }}
     </h5>
@@ -61,17 +63,21 @@
 
     <div v-for="(optimization, index) in form.params.optimizations"
          :key="`optimization_${index}`"
-         class="form-group d-flex">
-      <input v-model="optimization.value1"
-             type="numeric"
-             class="form-control">
-
-      <input v-model="optimization.value2"
-             type="numeric"
-             class="form-control ml-2">
+         class="form-group d-flex align-items-end">
+      <div v-for="optimizationKey in EcoRefsScenarioModel.optimizationKeys"
+           :key="optimizationKey"
+           class="flex-grow-1 mr-2">
+        <label :for="`optimization_${index}_${optimizationKey}`"
+               class="text-secondary">
+          {{ optimizationKey }}
+        </label>
+        <input v-model="optimization[optimizationKey]"
+               :id="`optimization_${index}_${optimizationKey}`"
+               type="numeric"
+               class="form-control">
+      </div>
 
       <delete-button
-          class="ml-2"
           @click.native="deleteRelation(index, 'optimizations')"/>
     </div>
 
@@ -84,6 +90,7 @@
 </template>
 
 <script>
+import CatLoader from "../../ui-kit/CatLoader";
 import SelectScFa from "./SelectScFa";
 import AddButton from "./AddButton";
 import DeleteButton from "./DeleteButton";
@@ -94,12 +101,14 @@ import {EcoRefsScenarioModel} from "../models/EcoRefsScenarioModel";
 export default {
   name: "ScenarioForm",
   components: {
+    CatLoader,
     SelectScFa,
     AddButton,
     DeleteButton,
     SaveButton
   },
   data: () => ({
+    EcoRefsScenarioModel,
     loading: false,
     form: new EcoRefsScenarioModel().form
   }),
