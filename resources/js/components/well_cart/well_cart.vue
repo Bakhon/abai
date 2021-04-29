@@ -1,5 +1,6 @@
 <template>
   <div class="row">
+    <cat-loader v-show="loading"/>
     <div class="col-md-3 left-column">
       <div class="bg-dark">
         <div class="row">
@@ -23,72 +24,11 @@
           <div class="directory">
             <div class="custom-directory">
               <ul id="myUL">
-                <li><p>
-                  <img src="/img/bd/pointer-solid.svg" alt="">
-                  <span class="caret">КПД Заместителя председателя Правления по разведке и добыче
-                                            <span class="names">(Марабаев Ж.Н.)</span>
-                                        </span>
-                </p>
-                  <ul class="nested">
-                    <li>
-                      <p>
-                        <span class="file">Прирост извлекаемых запасов нефти и конденсата</span></p>
-                    </li>
-                    <li>
-                      <p>
-                        <img src="/img/bd/pointer-solid.svg" alt="">
-                        <span class="caret">
-                                                Исполнение бизнес- инициатив</span></p>
-                      <ul class="nested">
-                        <li>
-                          <p><span class="file"> МРП ОМГ </span></p>
-                        </li>
-                        <li>
-                          <p><span class="file">МРП КБМ</span></p>
-                        </li>
-                        <li>
-                          <p><span class="file"> Заводнение ОМГ </span></p>
-                        </li>
-                        <li>
-                          <p><span class="file"> Внедрение модулей ИС ABAI </span></p>
-                        </li>
-                        <ul class="nested">
-                          <li>
-                            <p>
-                              <img src="/img/bd/pointer-solid.svg" alt="">
-                              <span class="caret">
-                                                    Реализация инвестиционных проектов
-                                                    </span>
-                            </p>
-                          </li>
-                          <li>
-                            <p><span class="file"> Проект «Женис» - строительство разведочной скважины </span></p>
-                          </li>
-                          <li>
-                            <p><span class="file"> Проект «Урихтау» – ввод 5-ти скважин Центр. Урихтау и разработка концепции Фазы 2 </span>
-                            </p>
-                          </li>
-                          <li>
-                            <p><span class="file"> Проект «Рожковское» – мероприятия по опытно-промышленной эксплуатации на 2021 год</span>
-                            </p>
-                          </li>
-                          <li>
-                            <p><span class="file"> СПБУ - Получение контракта на бурение </span></p>
-                          </li>
-                        </ul>
-
-                      </ul>
-                    </li>
-                  </ul>
+                <li :class="{'selected': activeFormCode === 'well_design'}" @click="setForm('well_design')">
+                  <p>
+                    <span class="file">Конструкция скважины по проекту</span>
+                  </p>
                 </li>
-                <li>
-                  <p><span class="file"> Чистый денежный поток в КЦ КМГ от дивизиона  </span></p>
-                </li>
-                <li>
-                  <p><span class="file">  <b> Операционные и капитальные затраты по ДЗО дивизиона </b></span></p>
-                </li>
-
-
               </ul>
 
             </div>
@@ -318,6 +258,14 @@
             <div class="row">
               <div class="col">
                 <form class="search-form">
+                  <v-select :filterable="false" :options="options" @input="selectWell" @search="onSearch">
+                    <template slot="no-options">
+                      Введите номер скважины
+                    </template>
+                    <template slot="option" slot-scope="option">
+                      <span>{{ option.name }}</span>
+                    </template>
+                  </v-select>
                   <input type="text" placeholder="Номер скважины" class="search-input">
                 </form>
               </div>
@@ -327,6 +275,13 @@
       </div>
       <div class="row">
         <div class="col-md-12 bg-dark-transparent">
+          <div class="row">
+            <div class="col table-wrapper">
+              <template v-if="well && activeFormCode">
+                <BigDataPlainFormResult :code="activeFormCode" :well-id="well.id"></BigDataPlainFormResult>
+              </template>
+            </div>
+          </div>
           <div class="row">
             <div class="col table-wrapper">
               <div class="table-container">
@@ -366,16 +321,19 @@
                     <div class="col-md-2 table-border element-position"><p>7.21</p></div>
                     <div class="col-md-2 table-border svg-element">
                       <div class="table-container-svg">
-                        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <svg fill="none" height="18" viewBox="0 0 18 18" width="18"
+                             xmlns="http://www.w3.org/2000/svg">
                           <path
                               d="M3 11.4998L1.55336 16.322C1.53048 16.3983 1.6016 16.4694 1.67788 16.4465L6.5 14.9998M3 11.4998C3 11.4998 11.0603 3.4393 12.7227 1.77708C12.8789 1.62091 13.1257 1.6256 13.2819 1.78177C13.8372 2.33702 15.1144 3.61422 16.2171 4.71697C16.3733 4.87322 16.3788 5.12103 16.2226 5.27726C14.5597 6.9399 6.5 14.9998 6.5 14.9998M3 11.4998L3.64727 10.8525L7.14727 14.3525L6.5 14.9998"
                               stroke="white" stroke-width="1.4"/>
                         </svg>
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <svg fill="none" height="16" viewBox="0 0 16 16" width="16"
+                             xmlns="http://www.w3.org/2000/svg">
                           <path d="M14.5 8L1.5 8" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
                           <path d="M8 1.5V14.5" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
                         </svg>
-                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <svg fill="none" height="14" viewBox="0 0 14 14" width="14"
+                             xmlns="http://www.w3.org/2000/svg">
                           <path d="M12.6574 12.6575L1.34367 1.34383" stroke="white" stroke-width="1.4"
                                 stroke-linecap="round"/>
                           <path d="M12.6563 1.34383L1.34262 12.6575" stroke="white" stroke-width="1.4"
@@ -391,16 +349,19 @@
                     <div class="col-md-2 table-border element-position"><p>5.77</p></div>
                     <div class="col-md-2 table-border svg-element">
                       <div class="table-container-svg">
-                        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <svg fill="none" height="18" viewBox="0 0 18 18" width="18"
+                             xmlns="http://www.w3.org/2000/svg">
                           <path
                               d="M3 11.4998L1.55336 16.322C1.53048 16.3983 1.6016 16.4694 1.67788 16.4465L6.5 14.9998M3 11.4998C3 11.4998 11.0603 3.4393 12.7227 1.77708C12.8789 1.62091 13.1257 1.6256 13.2819 1.78177C13.8372 2.33702 15.1144 3.61422 16.2171 4.71697C16.3733 4.87322 16.3788 5.12103 16.2226 5.27726C14.5597 6.9399 6.5 14.9998 6.5 14.9998M3 11.4998L3.64727 10.8525L7.14727 14.3525L6.5 14.9998"
                               stroke="white" stroke-width="1.4"/>
                         </svg>
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <svg fill="none" height="16" viewBox="0 0 16 16" width="16"
+                             xmlns="http://www.w3.org/2000/svg">
                           <path d="M14.5 8L1.5 8" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
                           <path d="M8 1.5V14.5" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
                         </svg>
-                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <svg fill="none" height="14" viewBox="0 0 14 14" width="14"
+                             xmlns="http://www.w3.org/2000/svg">
                           <path d="M12.6574 12.6575L1.34367 1.34383" stroke="white" stroke-width="1.4"
                                 stroke-linecap="round"/>
                           <path d="M12.6563 1.34383L1.34262 12.6575" stroke="white" stroke-width="1.4"
@@ -413,7 +374,7 @@
               </div>
             </div>
           </div>
-          <div class="row">
+          <div v-if="graph" class="row">
             <div class="col">
               <div class="bg-dark graphics">
                 <div class="dropdown small-select">
@@ -461,7 +422,7 @@
       </div>
     </div>
 
-    <div class="col-md-3 passport right-column">
+    <div v-if="well" class="col-md-3 passport right-column">
       <div class="bg-dark-transparent">
         <div class="row">
           <div class="col">
@@ -544,7 +505,7 @@
         <div class="row">
           <div class="col">
             <div class="center">
-              <h2>UZN_6067</h2>
+              <h2>{{ well.uwi }}</h2>
             </div>
           </div>
         </div>
@@ -566,7 +527,7 @@
             </div>
             <div class="col">
               <p>
-                UZN_6057
+                {{ well.uwi }}
               </p>
             </div>
           </div>
@@ -760,14 +721,53 @@
 
 </template>
 <script>
-// Служит для сокрытия/показа файловой системы
-var toggler = document.getElementsByClassName("caret");
-var i;
-for (i = 0; i < toggler.length; i++) {
-  toggler[i].addEventListener("click", function () {
-    this.parentElement.querySelector(".nested").classList.toggle("active");
-    this.classList.toggle("caret-down");
-  });
+import BigDataPlainFormResult from '../bigdata/forms/PlainFormResults'
+import vSelect from "vue-select"
+import axios from "axios";
+
+export default {
+  components: {
+    BigDataPlainFormResult,
+    vSelect
+  },
+  data() {
+    return {
+      options: [],
+      well: null,
+      graph: null,
+      activeFormCode: null,
+      loading: false
+    }
+  },
+  mounted() {
+
+  },
+  methods: {
+    onSearch(search, loading) {
+      if (search.length) {
+        loading(true);
+        this.search(loading, search, this);
+      }
+    },
+    search: _.debounce((loading, search, vm) => {
+          axios.get(vm.localeUrl('/api/bigdata/wells/search'), {params: {query: escape(search)}}).then(({data}) => {
+            vm.options = data.items;
+            loading(false);
+          })
+        },
+        350
+    ),
+    selectWell(well) {
+      this.loading = true
+      this.axios.get(this.localeUrl(`/api/bigdata/wells/${well.id}`)).then(({data}) => {
+        this.well = data.well
+        this.loading = false
+      })
+    },
+    setForm(formCode) {
+      this.activeFormCode = formCode
+    }
+  }
 }
 </script>
 
@@ -936,6 +936,10 @@ for (i = 0; i < toggler.length; i++) {
     border: 1px dashed #555BA6;
     padding-left: 1em;
     border-width: 0 0 1px 1px;
+
+    &.selected {
+      font-weight: bold;
+    }
   }
 
   li p {
@@ -1301,10 +1305,12 @@ h4 {
     .table-container-svg {
       display: flex;
     }
-    .svg-element{
+
+    .svg-element {
       padding: 5px 13px 5px 23px;
       display: grid;
-      svg{
+
+      svg {
         margin-left: auto;
         margin-right: auto;
         margin-top: auto;
@@ -1322,10 +1328,12 @@ h4 {
         margin-bottom: auto;
         margin-left: auto;
       }
-      .title{
+
+      .title {
         margin-left: unset !important;
         margin-right: auto !important;
       }
+
       svg {
         margin: auto;
       }
@@ -1349,6 +1357,7 @@ h4 {
     border-left: 1px solid #464D7A;
     border-bottom: hidden;
     border-right: hidden;
+
     p {
       margin-top: auto;
       margin-bottom: auto;
