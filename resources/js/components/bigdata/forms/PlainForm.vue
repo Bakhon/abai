@@ -209,18 +209,19 @@ export default {
       })
 
     },
-    validateField(e, formItem) {
-
-      this.$nextTick(() => {
-        this.getValidationErrors({formCode: this.params.code, fieldCode: formItem.code, values: this.formValues})
-            .then(data => {
-              Vue.set(this.errors, formItem.code, null)
-            })
-            .catch(error => {
-              Vue.set(this.errors, formItem.code, error.response.data.errors)
-            })
-      })
-    }
+    validateField: _.debounce(function (e, formItem) {
+          this.$nextTick(() => {
+            this.getValidationErrors({formCode: this.params.code, fieldCode: formItem.code, values: this.formValues})
+                .then(data => {
+                  Vue.set(this.errors, formItem.code, null)
+                })
+                .catch(error => {
+                  Vue.set(this.errors, formItem.code, error.response.data.errors)
+                })
+          })
+        },
+        350
+    )
   },
 };
 </script>
