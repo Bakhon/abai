@@ -91,7 +91,7 @@ mounted() {
         this.numberRepairs = nno['prs']
         this.numberNNO = nno['NNO'].toFixed(0)
         this.krsTable = JSON.parse(krs)["data"]
-        console.log(nno)
+        
     })
     
     var wi = this.wellIncl.split('_');
@@ -99,7 +99,6 @@ mounted() {
     this.$emit('update:isLoading', true);
     this.axios.get(uri).then((response) => {
     this.prs = response['data']['prs']['data']
-    
     for(let key of Object.keys(this.prs)){
       if(this.prs[key].length!=undefined){
         for(let val of this.prs[key]){
@@ -125,11 +124,9 @@ mounted() {
                         text: nno_days,
                         textposition: 'auto',
                         hoverinfo: 'none',})
-                      
       }
-      
     }
-    
+  
     this.layout= {
         showlegend: true,
         legend: {"orientation": "h"},

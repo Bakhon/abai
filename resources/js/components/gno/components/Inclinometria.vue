@@ -262,7 +262,7 @@ export default {
       buildModel(){
         this.hPumpFromIncl = this.$store.getters.getHpump
         var wi = this.wellIncl.split('_');
-        let uri = "http://172.20.103.187:7573/api/pgno/incl";
+        let uri = "http://172.20.103.187:7575/api/pgno/incl";
         this.$emit('update:isLoading', true);
         this.hPumpFromIncl = this.$store.getters.getHpump
 
@@ -310,7 +310,6 @@ export default {
             this.pointX = this.xArr[this.indexZ]
             this.pointY = this.yArr[this.indexZ]
           
-
             if (Math.max(...this.dxArray) < 50 && Math.max(...this.dyArray) < 50) {
               this.layout['scene']['xaxis']['range'][0] = 50
               this.layout['scene']['xaxis']['range'][1] = -50
@@ -352,8 +351,6 @@ export default {
             }
             ],
             this.point = []
-
-            
 
           } else this.data = [];
         }).finally(() => {
