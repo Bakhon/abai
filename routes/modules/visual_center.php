@@ -60,9 +60,7 @@ Route::group(
                 Route::get('/import_excel', 'VisCenter\ImportForms\DZOdailyController@importExcel');
                 Route::resource('/dzodaily', 'VisCenter\ImportForms\DZOdailyCrudController');
 
-                Route::post('/import', 'VisCenter\ImportForms\DZOdailyController@import')->name('import');
-                Route::post('get-data-hive', 'VisCenter\GetDataHiveController@getHiveData');            
-                Route::get('data-hive-page', 'VisCenter\GetDataHiveController@dataHivePage')->name('GetDataHive'); 
+                Route::post('/import', 'VisCenter\ImportForms\DZOdailyController@import')->name('import');    
             }
         );
     }
