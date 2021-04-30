@@ -124,6 +124,7 @@ export default {
       this.updateResults()
     },
     wellId() {
+      this.rows = null
       this.updateResults()
     },
   },
@@ -175,6 +176,7 @@ export default {
     },
     showForm() {
       this.formParams = this.forms.find(form => form.code === this.code)
+      this.formValues = null
       this.isFormOpened = true
     },
     editRow(row) {
