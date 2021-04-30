@@ -61,9 +61,8 @@ Route::group(
                 Route::resource('/dzodaily', 'VisCenter\ImportForms\DZOdailyCrudController');
 
                 Route::post('/import', 'VisCenter\ImportForms\DZOdailyController@import')->name('import');
-                Route::post('get-data-hive', 'VisCenter\GetDataHiveController@getData');
-                Route::get('get-data-hive2', 'VisCenter\GetDataHiveController@getData');
-                Route::get('get-data-hive-page', 'VisCenter\GetDataHiveController@GetDataHive')->name('GetDataHive'); 
+                Route::post('get-data-hive', 'VisCenter\GetDataHiveController@getHiveData');            
+                Route::get('data-hive-page', 'VisCenter\GetDataHiveController@dataHivePage')->name('GetDataHive'); 
             }
         );
     }

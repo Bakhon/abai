@@ -1,17 +1,41 @@
 <?php
 
-namespace App\Http\Controllers\VisCenter;
+namespace App\Console\Commands;
 
-use App\Http\Controllers\Controller;
 use App\Models\VisCenter\ExcelForm\DzoImportData;
 use Carbon\Carbon;
+use Illuminate\Console\Command;
 use Illuminate\Http\Request;
 
-class getDataHiveController extends Controller
+class GetHiveData extends Command
 {
-    public function getHiveData(Request $request)
-    {
+    /**
+     * The name and signature of the console command.
+     *
+     * @var string
+     */
+    protected $signature = 'get-hive:cron';
 
+    /**
+     * The console command description.
+     *
+     * @var string
+     */
+    protected $description = 'This command is designed to copy some fields from hive';
+
+
+    /**
+     * Create a new command instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
+    public function getHiveData()
+    {
         require_once public_path() . '\php-thrift-sql\ThriftSQL.phar';
 
         $date = Carbon::yesterday();
@@ -33,17 +57,24 @@ class getDataHiveController extends Controller
             $liqPlan += $row[9];
         }
 
-        $hive->disconnect();     
-        $alldata = new DzoImportData;
+        $hive->disconnect();
+        $alldata = new DzoImportData();
         $alldata->date = $date;
         $alldata->dzo_name = 'КГМ';
-        $alldata->oil_production_fact = $oilFact;    
+        $alldata->oil_production_fact = $oilFact;  
         $alldata->agent_upload_total_water_injection_fact = $liqFact;
         $alldata->save();
     }
 
-    public function HiveTestPage()
+
+    /**
+     * Execute the console command.
+     *
+     * @return mixed
+     */
+
+    public function handle()
     {
-        return view('visualcenter.dataHivePage');
+        $this->getHiveData();
     }
 }
