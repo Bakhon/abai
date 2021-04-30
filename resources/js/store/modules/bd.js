@@ -9,7 +9,7 @@ const bd = {
 
     actions: {
         getGeoDictByDZO({commit}, params) {
-            axios.get(this._vm.localeUrl(`/bigdata/dict/geos/${params.dzo}`)).then(({data}) => {
+            axios.get(this._vm.localeUrl(`/api/bigdata/dict/geos/${params.dzo}`)).then(({data}) => {
                 commit("SAVE_DICT", {
                     code: params.code,
                     items: data

@@ -124,7 +124,7 @@ export default {
               '<path d="M21.875 7H18.375V23.625H21.875V7Z" fill="#3366FF"/>\n' +
               '<path d="M28 10.5H24.5V23.625H28V10.5Z" fill="#3366FF"/>\n' +
               '</svg>\n',
-          url: this.localeUrl('/economic')
+          url: this.localeUrl('/economic/nrs')
         }
       ]
     }

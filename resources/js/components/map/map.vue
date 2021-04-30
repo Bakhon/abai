@@ -1,5 +1,6 @@
 <template>
   <div class="gu-map">
+    <cat-loader v-show="loading"/>
     <div class="gu-map__controls">
       <h1>{{ trans('monitoring.map.title') }}</h1>
       <div v-if="guPoints" class="d-flex">
@@ -12,6 +13,34 @@
             :placeholder="trans('monitoring.map.select_gu')"
         >
         </v-select>
+      </div>
+
+      <div class="gu-map__filters mt-15px">
+        <v-select
+            v-model="activeFilter"
+            :options="mapFilters"
+            :reduce="option => option.key"
+            label="name"
+            @input="filterChanged"
+            :placeholder="trans('monitoring.map.select_filter')"
+        >
+        </v-select>
+      </div>
+
+      <div class="gu-map__datetime-picker mt-15px" v-show="activeFilter">
+        <datetime
+            type="date"
+            v-model="selectedDate"
+            input-class="form-control date"
+            value-zone="Asia/Almaty"
+            zone="Asia/Almaty"
+            :format="{ year: 'numeric', month: 'long', day: 'numeric' }"
+            :phrases="{ok: trans('app.choose'), cancel: trans('app.cancel')}"
+            :week-start="1"
+            @input="applyFilter"
+            auto
+        >
+        </datetime>
       </div>
     </div>
 
@@ -151,6 +180,8 @@ import {guMapState, guMapMutations, guMapActions} from '@store/helpers';
 import mapContextMenu from "./mapContextMenu";
 import pipeColors from '~/json/pipe_colors.json'
 import axios from "axios";
+import moment from "moment";
+import CatLoader from '../ui-kit/CatLoader'
 
 
 export default {
@@ -161,7 +192,8 @@ export default {
     'map-zu-form': mapZuForm,
     'map-well-form': mapWellForm,
     'map-pipe-form': mapPipeForm,
-    'map-context-menu': mapContextMenu
+    'map-context-menu': mapContextMenu,
+    CatLoader
   },
   data() {
     return {
@@ -197,7 +229,16 @@ export default {
       firstCentered: false,
       layers: [],
       pipes: [],
-      mapColorsMode: 'default'
+      mapColorsMode: 'default',
+      selectedDate: null,
+      activeFilter: null,
+      mapFilters: [
+        {
+          name: this.trans('monitoring.map.filters.speed-flow-filter'),
+          key: 'speedFlow'
+        }
+      ],
+      loading: false,
     };
   },
   created() {
@@ -234,9 +275,11 @@ export default {
       'deleteGu',
       'deleteZu',
       'deleteWell',
-      'getElevationByCoords'
+      'getElevationByCoords',
+      'getSpeedFlow'
     ]),
     async initMap() {
+      this.loading = true;
       this.pipes = await this.getMapData(this.gu);
 
       this.viewState = {
@@ -311,6 +354,8 @@ export default {
         this.deck.setProps({
           layers: this.layers
         });
+
+        this.loading = false;
       });
     },
     getGuTooltipHtml(guParams) {
@@ -433,7 +478,7 @@ export default {
           });
           return path_coords;
         },
-        getColor: d => pipeColors[this.mapColorsMode][d.between_points],
+        getColor: d => this.getPipeColor(d),
         getWidth: d => 3,
         onClick: (info) => {
           info.type = 'pipe';
@@ -444,6 +489,34 @@ export default {
           depthTest: false
         }
       });
+    },
+    getPipeColor(pipe) {
+      if (this.activeFilter) {
+        if (this.activeFilter === 'speedFlow') {
+          return this.getColorByFlowSpeed(pipe);
+        }
+      }
+
+      return pipeColors[this.mapColorsMode][pipe.between_points]
+    },
+    getColorByFlowSpeed (pipe) {
+      switch (true) {
+        case pipe.speed_flow == null:
+          return pipeColors[this.mapColorsMode].no_data;
+          break;
+
+        case pipe.speed_flow.fluid_speed < 0.5:
+          return pipeColors[this.mapColorsMode].danger;
+          break;
+
+        case pipe.speed_flow.fluid_speed >= 0.5 && pipe.speed_flow.fluid_speed < 0.9:
+          return pipeColors[this.mapColorsMode].warning;
+          break;
+
+        case pipe.speed_flow.fluid_speed > 0.9:
+          return pipeColors[this.mapColorsMode].good;
+          break;
+      }
     },
     addMapLayer(layerId) {
       this.updateLayers();
@@ -524,7 +597,7 @@ export default {
       this[method](option);
     },
     getColorByBetweenPoints(between_points) {
-      return this.colorArrayToRgb(pipeColors[this.mapColorsMode][between_points])
+      return this.colorArrayToRgb(pipeColors.default[between_points])
     },
     colorArrayToRgb(colorArr) {
       return 'rgb(' + colorArr[0] + ', ' + colorArr[1] + ', ' + colorArr[2] + ')';
@@ -935,12 +1008,32 @@ export default {
           break;
       }
     },
-    showToast(message, title, variant) {
-      this.$bvToast.toast(message, {
-        title: title,
-        variant: variant,
-        solid: true
-      });
+    formatDate(date) {
+      if (!date) return null
+      return moment.parseZone(date).format('YYYY-MM-DD')
+    },
+    async applyFilter () {
+      this.mapColorsMode = this.activeFilter;
+      switch (this.activeFilter) {
+        case 'speedFlow':
+          this.loading = true;
+          this.pipes = await this.getSpeedFlow(this.formatDate(this.selectedDate));
+          this.layerRedraw('path-layer', 'pipe', this.pipes);
+          this.loading = false;
+          break;
+
+        default:
+          this.mapColorsMode = 'default';
+          return false
+          break;
+      }
+    },
+    filterChanged () {
+      if (!this.activeFilter) {
+        this.mapColorsMode = 'default';
+        this.selectedDate = null;
+        this.layerRedraw('path-layer', 'pipe', this.pipes);
+      }
     }
   }
 }
@@ -974,6 +1067,10 @@ h1 {
     .vs__dropdown-toggle {
       padding-bottom: 0;
     }
+  }
+
+  &__datetime-picker {
+    min-width: 260px;
   }
 
   #map {

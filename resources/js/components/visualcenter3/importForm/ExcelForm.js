@@ -25,8 +25,10 @@ import cellsMappingYO from './dzoData/cells_mapping_yo.json';
 import cellsMappingEMG from './dzoData/cells_mapping_emg.json';
 import moment from "moment";
 import Visual from "./dataManagers/visual";
+import TodayDzoData from "./dataManagers/todayDzoData";
+import InputDataOperations from "./dataManagers/inputDataOperations";
 
-const defaultDzoTicker = "ОМГ";
+const defaultDzoTicker = "КТМ";
 
 export default {
     data: function () {
@@ -142,6 +144,10 @@ export default {
                 corrosion_inhibitor: 0,
                 scale_inhibitor: 0
             },
+            wellWorkover: {
+                otm_well_workover_fact: 0,
+                otm_underground_workover: 0
+            },
             chemistryDataMapping: {
                 demulsifier: this.trans("visualcenter.chemProdZakackaDemulg"),
                 bactericide: this.trans("visualcenter.chemProdZakackaBakteracid"),
@@ -172,6 +178,8 @@ export default {
         this.selectedDzo.plans = this.getSelectedDzoPlans();
         await this.sleep(2000);
         this.setTableFormat();
+        await this.updateCurrentData();
+        this.addListeners();
     },
     methods: {
         addColumnsToGrid() {
@@ -221,6 +229,11 @@ export default {
             this.disableHighlightOnCells();
             this.setTableFormat();
         },
+        async wellWorkoverSave() {
+            if (parseFloat(this.wellWorkover.otm_well_workover_fact) > 0 && parseFloat(this.wellWorkover.otm_underground_workover) > 0) {
+                await this.storeWellWorkoverData();
+            }
+        },
         async chemistrySave() {
             this.chemistryErrorFields = [];
             let self = this;
@@ -237,6 +250,20 @@ export default {
                 return false;
             }
             return true;
+        },
+        storeWellWorkoverData() {
+            this.wellWorkover['dzo_name'] = this.selectedDzo.ticker;
+            this.wellWorkover['date'] = moment().format("YYYY-MM-DD HH:mm:ss");
+            let uri = this.localeUrl("/dzo-excel-otm");
+
+            this.axios.post(uri, this.wellWorkover).then((response) => {
+                if (response.status === 200) {
+                    this.isWellsWorkoverNeeded = !this.isWellsWorkoverNeeded;
+                    this.status = this.trans("visualcenter.importForm.status.dataSaved");
+                } else {
+                    this.status = this.trans("visualcenter.importForm.status.dataIsNotValid");
+                }
+            });
         },
         storeChemistryData() {
             this.chemistryData['dzo_name'] = this.selectedDzo.ticker;
@@ -276,7 +303,6 @@ export default {
             this.isDataReady = false;
             this.turnOffErrorHighlight();
             this.processTableData();
-
             if (!this.isValidateError) {
                 this.isDataExist = false;
                 this.isDataReady = true;
@@ -350,10 +376,17 @@ export default {
             this.excelData[category][groupName][fieldName] = cellValue;
         },
         isNumberCellValid(inputData,selector) {
-            if (inputData.trim().length > 0 && (isNaN(parseFloat(inputData)) || parseFloat(inputData) < 0)) {
-                return false;
+            if (inputData.trim().length > 0) {
+                return this.isNumber(inputData);
             }
             return true;
+        },
+        isNumber(inputData) {
+             return !isNaN(parseFloat(inputData)) && parseFloat(inputData) >= 0 && !this.isContainsLetter(inputData);
+        },
+        isContainsLetter(inputData) {
+            let regExp = /[a-zA-Zа-яА-Я]/g;
+            return inputData.match(regExp) !== null;
         },
         turnErrorForCell(selector) {
             this.setClassToElement($(selector),'cell__color-red');
@@ -392,13 +425,9 @@ export default {
                 }
             });
         },
-        beforeRangeEdit(e) {
-            this.setTableFormat();
-            this.isDataExist = true;
-        },
     },
     components: {
         VGrid,
     },
-    mixins: [Visual],
+    mixins: [Visual,TodayDzoData,InputDataOperations],
 };

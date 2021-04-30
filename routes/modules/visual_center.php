@@ -60,7 +60,12 @@ Route::group(
                 Route::get('/import_excel', 'VisCenter\ImportForms\DZOdailyController@importExcel');
                 Route::resource('/dzodaily', 'VisCenter\ImportForms\DZOdailyCrudController');
 
-                Route::post('/import', 'VisCenter\ImportForms\DZOdailyController@import')->name('import');    
+                Route::post('/import', 'VisCenter\ImportForms\DZOdailyController@import')->name('import');
+
+                Route::get('/get-dzo-today-data', 'VisCenter\ExcelForm\ExcelFormController@getDzoCurrentData');
+                Route::post('/dzo-excel-otm', 'VisCenter\ExcelForm\ExcelFormOtmController@store');
+                Route::get('/get-dzo-current-chemistry', 'VisCenter\ExcelForm\ExcelFormChemistryController@getDzoCurrentChemistry');
+                Route::get('/get-dzo-current-otm', 'VisCenter\ExcelForm\ExcelFormOtmController@getDzoCurrentOtm');
             }
         );
     }

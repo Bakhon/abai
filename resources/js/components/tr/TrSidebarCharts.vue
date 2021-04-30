@@ -21,7 +21,7 @@
                 </div>
                 <div class="dropdown-menu graphic_dropdown_menu">
                     <div class="move-menu">
-                        <li class="left-menu-li tr-sidebar__page"> <a class="tr-sidebar__link" :href="localeUrl('/fa')">{{trans('tr.hfa')}}</a></li>
+                        <li class="left-menu-li tr-sidebar__page"> <a class="tr-sidebar__link" :href="localeUrl('/fa')">{{trans('tr.fa')}}</a></li>
                         <li
                           v-for="(item, index) in chartNamesFA"
                           :key="item"
@@ -30,7 +30,7 @@
                           <a class="tr-sidebar__link" :href="localeUrl('/trfa')" @click="() => setChartFa(index)">{{ item }}</a>
                         </li>
                         <li class="left-menu-li">
-                          <a class="tr-sidebar__link tr-sidebar__page" :href="localeUrl('/tr')">{{trans('tr.btr')}}</a>
+                          <a class="tr-sidebar__link tr-sidebar__page" :href="localeUrl('/tr')">{{trans('tr.tr')}}</a>
                         </li>
                         <li
                           v-for="(item, index) in chartNames"
@@ -81,7 +81,6 @@ export default {
   },
 };
 </script>
-
 
 <style  scoped>
 .tr-sidebar__link {

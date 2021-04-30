@@ -14,13 +14,13 @@
                 "type": "dict",
                 "title": "column_type",
                 "dict": "equips",
-                "validation": "nullable|exists:tbd.dict.equip_type,id"
+                "validation": "required|exists:tbd.dict.equip_type,id"
               },
               {
                 "code": "depth",
                 "type": "numeric",
                 "title": "casing_running_depth",
-                "validation": "numeric"
+                "validation": "required|numeric"
               },
               {
                 "code": "sidetrack",
@@ -32,25 +32,25 @@
                 "type": "dict",
                 "title": "casing_type",
                 "dict": "casings",
-                "validation": "nullable|exists:tbd.dict.tube_nom,id"
+                "validation": "required|exists:tbd.dict.tube_nom,id"
               },
               {
                 "code": "tube_count",
                 "type": "numeric",
                 "title": "number_of_pipes",
-                "validation": "numeric"
+                "validation": "required|numeric"
               },
               {
                 "code": "cem_volume",
                 "type": "numeric",
                 "title": "poured_cement_volume",
-                "validation": "numeric"
+                "validation": "required|numeric"
               },
               {
                 "code": "cem_height",
                 "type": "numeric",
                 "title": "cement_lifting_height",
-                "validation": "numeric"
+                "validation": "required|numeric"
               }      
             ]
           }
