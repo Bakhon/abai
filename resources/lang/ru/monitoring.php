@@ -129,7 +129,10 @@ return array (
       'fill' => 'Заправка',
       'yearly_inhibitor_rate' => 'Годовой расход ингибитора кг',
     ),
-    'no-ddng-data-on-date' => 'Нет данных по ДДНГ на',
+    'errors' => 
+    array (
+      'no-ddng-data-on-date' => 'Нет данных по ДДНГ на',
+    ),
   ),
   'omgngdu' => 
   array (
@@ -235,6 +238,11 @@ return array (
   array (
     'title' => 'Карта',
     'select_gu' => 'Выберите ГУ',
+    'select_filter' => 'Выберите фильтр',
+    'filters' => 
+    array (
+      'speed-flow-filter' => 'Скорость потока',
+    ),
   ),
   'module_name' => 'Мониторинг осложнений',
   'tech_map_prototype' => 'Техкарта прототип',
@@ -251,18 +259,8 @@ return array (
     'edit_title' => 'Редактирование ЗУ',
   ),
   'close' => 'Закрыть',
-    'well' =>
-        array (
-            'create_title' => 'Ввод данных по скважине',
-            'edit_title' => 'Редактирование скважины',
-            'added' => 'Скважина добавлена',
-            'updated' => 'Скважина изменена',
-            'deleted' => 'Скважина удалена',
-            'deleting_error' => 'Ошибка при удалении Скважины',
-            'name' => 'Имя Скважины',
-            'well' => 'Скважина',
-        ),
-    'pipe' =>
+  'well' => 'Скважина',
+  'pipe' => 
   array (
     'updated' => 'Трубовровод изменен',
     'deleted' => 'Трубопровод удален',

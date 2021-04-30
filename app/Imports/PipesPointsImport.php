@@ -5,14 +5,6 @@ namespace App\Imports;
 use App\Console\Commands\Import\ImportPipesPoints;
 use App\Models\ComplicationMonitoring\TrunklinePoint;
 use App\Models\Pipes\PipeCoord;
-use App\Models\Refs\Cdng;
-use App\Models\Refs\HydrocarbonOxidizingBacteria;
-use App\Models\Refs\Ngdu;
-use App\Models\Refs\SulphateReducingBacteria;
-use App\Models\Refs\ThionicBacteria;
-use App\Models\Refs\WaterTypeBySulin;
-use App\Models\Refs\Zu;
-use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\ToCollection;
@@ -20,9 +12,7 @@ use Maatwebsite\Excel\Concerns\WithColumnLimit;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\WithCalculatedFormulas;
 use Maatwebsite\Excel\Events\BeforeSheet;
-use App\Models\Refs\Well;
 use App\Models\Refs\Gu;
-use PhpOffice\PhpSpreadsheet\Shared\Date;
 
 class PipesPointsImport implements ToCollection, WithEvents, WithColumnLimit, WithCalculatedFormulas
 {
