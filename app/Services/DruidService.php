@@ -2,8 +2,6 @@
 
 namespace App\Services;
 
-use Illuminate\Http\JsonResponse;
-use DateTime;
 use Level23\Druid\DruidClient;
 use Level23\Druid\Extractions\ExtractionBuilder;
 use Level23\Druid\Types\Granularity;
@@ -83,6 +81,7 @@ class DruidService
         $builder->sum('work_time');
         $builder->floatSum('add_prod_12m');
         $builder->floatSum('plan_add_prod_12m');
+        $builder->where('dzo_short',  'ММГ');
         $result = $builder->groupBy();
 
         return $result->data();
