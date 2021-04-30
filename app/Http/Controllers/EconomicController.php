@@ -71,9 +71,16 @@ class EconomicController extends Controller
             ? $org->fields()->whereId($request->field_id)->firstOrFail()->druid_id
             : null;
 
-        $intervalYear = self::intervalYears($request->interval_start, $request->interval_end);
+        $intervalYear = self::calcIntervalYears($request->interval_start, $request->interval_end);
 
-        $intervalMonths = self::intervalMonths($request->interval_start, $request->interval_end);
+        /** @var Carbon $intervalMonthsStart */
+        /** @var Carbon $intervalMonthsEnd */
+        list($intervalMonthsStart, $intervalMonthsEnd) = self::calcIntervalMonthsStartEnd(
+            $request->interval_start,
+            $request->interval_end
+        );
+
+        $intervalMonths = self::intervalFormat($intervalMonthsStart->copy(), $intervalMonthsEnd->copy());
 
         $granularity = $request->granularity;
         $granularityFormat = self::granularityFormat($granularity);
@@ -261,7 +268,12 @@ class EconomicController extends Controller
         foreach ($result[self::STATUS_ACTIVE] as &$item) {
             $dataChart1['dt'][$item['dt']] = 1;
 
-            $dataChart1[$item[$profitabilityType]][] = $item['count'];
+            $dataChart1[$item[$profitabilityType]][] = self::calcProfitabilityCount(
+                $item,
+                $granularity,
+                $intervalMonthsStart,
+                $intervalMonthsEnd,
+            );
         }
 
         $dataChart1['dt'] = array_keys($dataChart1['dt']);
@@ -269,7 +281,12 @@ class EconomicController extends Controller
         foreach ($result[self::STATUS_PAUSE] as &$item) {
             $dataChart5['dt'][$item['dt']] = 1;
 
-            $dataChart5[$item[$profitabilityType . '_v_prostoe']][] = $item['count'];
+            $dataChart5[$item[$profitabilityType . '_v_prostoe']][] = self::calcProfitabilityCount(
+                $item,
+                $granularity,
+                $intervalMonthsStart,
+                $intervalMonthsEnd,
+            );
         }
 
         $dataChart5['dt'] = array_keys($dataChart5['dt']);
@@ -408,7 +425,15 @@ class EconomicController extends Controller
             : self::GRANULARITY_DAILY_FORMAT;
     }
 
-    static function intervalYears(string $start = null, string $end = null, int $count = 1)
+    static function intervalFormat(Carbon $start, Carbon $end): string
+    {
+        return $start->format('Y-m-d')
+            . "T00:00:00+00:00/"
+            . $end->format('Y-m-d')
+            . "T00:00:00+00:00";
+    }
+
+    static function calcIntervalYears(string $start = null, string $end = null, int $count = 1): string
     {
         $end = Carbon::parse($end ?? now());
 
@@ -419,7 +444,7 @@ class EconomicController extends Controller
         return self::intervalFormat($start, $end);
     }
 
-    static function intervalMonths(string $start = null, string $end = null, int $count = 6): string
+    static function calcIntervalMonthsStartEnd(string $start = null, string $end = null, int $count = 6): array
     {
         $end = Carbon::parse($end ?? now());
 
@@ -435,15 +460,37 @@ class EconomicController extends Controller
             $start = $end->copy()->subMonths($count)->setDay(1);
         }
 
-        return self::intervalFormat($start, $end);
+        return [$start, $end];
     }
 
-    static function intervalFormat(Carbon $start, Carbon $end): string
+    static function calcProfitabilityCount(
+        array $profitability,
+        string $granularity,
+        Carbon $intervalStart,
+        Carbon $intervalEnd
+    ): int
     {
-        return $start->format('Y-m-d')
-            . "T00:00:00+00:00/"
-            . $end->format('Y-m-d')
-            . "T00:00:00+00:00";
+        if ($granularity === Granularity::DAY) {
+            return $profitability['count'];
+        }
+
+        $date = Carbon::createFromFormat('m-Y', $profitability['dt']);
+
+        $count = $profitability['count'];
+
+        if ($date->isSameMonth($intervalStart)) {
+            $diffInDays = $date->diffInDays($intervalStart);
+
+            return $diffInDays > 0 ? round($count / $diffInDays) : $count;
+        }
+
+        if ($date->isSameMonth($intervalEnd)) {
+            $diffInDays = $date->diffInDays($intervalEnd);
+
+            return $diffInDays > 0 ? round($count / $diffInDays) : $count;
+        }
+
+        return round($count / $date->daysInMonth);
     }
 
     static function profitabilityFormat(array $item): string

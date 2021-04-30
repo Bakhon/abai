@@ -118,7 +118,7 @@
 
         </div>
 
-        <div class="table-form col-10 mt-3 ml-1">
+        <div class="table-form col-12 mt-3 ml-1">
             <v-grid
                     theme="material"
                     :source="rows"
@@ -161,7 +161,7 @@
         font-family: HarmoniaSansProCyr-Regular, Harmonia-sans;
     }
     .table-form {
-        max-width: 1800px;
+        max-width: 99.8%;
         background-color: white;
     }
     .menu__button_disabled {

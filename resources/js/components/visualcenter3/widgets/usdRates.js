@@ -19,15 +19,11 @@ export default {
     methods: {
         getCurrencyNow(dates) {
             let uri = this.localeUrl("/getcurrency?fdate=") + dates + "";
-
             this.axios.get(uri).then((response) => {
                 let data = response.data;
-
-
                 if (data) {
                     this.currencyNow = parseInt(data.description * 10) / 10;
                     this.currencyNowUsd = parseInt(data.description * 10) / 10;
-                    this.dailyCurrencyChangeUsd = Math.abs(parseFloat(data.change));
                     this.dailyCurrencyChangeIndexUsd = data.index;
                 } else {
                     console.log("No data");
