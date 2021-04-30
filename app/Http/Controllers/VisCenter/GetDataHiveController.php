@@ -42,7 +42,7 @@ class getDataHiveController extends Controller
         $alldata->save();
     }
 
-    public function HiveTestPage()
+    public function dataHivePage()
     {
         return view('visualcenter.dataHivePage');
     }
