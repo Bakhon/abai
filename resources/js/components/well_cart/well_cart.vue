@@ -1,8 +1,8 @@
 <template>
-  <div class="row">
+  <div class="row well-cart__wrapper">
     <cat-loader v-show="loading"/>
     <div class="col-md-3 left-column">
-      <div class="bg-dark">
+      <div class="bg-dark left-column__inner">
         <div class="row">
           <div class="col">
             <div class="well-deal">
@@ -38,13 +38,11 @@
     </div>
     <div class="col-md-6 mid-col">
       <div class="row">
-
         <div class="col-md-8 bg-dark-transparent calc-width">
           <div class="row">
             <div class="col">
-              <select class="transparent-select" id="">
+              <select class="transparent-select">
                 <option>Дело скважины</option>
-                <option>Option 2</option>
               </select>
             </div>
           </div>
@@ -266,23 +264,25 @@
             <div class="row">
               <div class="col">
                 <form class="search-form">
-                  <v-select :filterable="false" :options="options" @input="selectWell" @search="onSearch">
-                    <template slot="no-options">
-                      Введите номер скважины
-                    </template>
+                  <v-select
+                      :filterable="false"
+                      :options="options"
+                      placeholder="Номер скважины"
+                      @input="selectWell"
+                      @search="onSearch"
+                  >
                     <template slot="option" slot-scope="option">
                       <span>{{ option.name }}</span>
                     </template>
                   </v-select>
-                  <input type="text" placeholder="Номер скважины" class="search-input">
                 </form>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div class="row">
-        <div class="col-md-12 bg-dark-transparent">
+      <div class="row mid-col__main">
+        <div class="col-md-12 mid-col__main-inner bg-dark-transparent">
           <div class="row">
             <div class="col table-wrapper">
               <template v-if="well && activeFormCode">
@@ -290,99 +290,7 @@
               </template>
             </div>
           </div>
-          <div class="row">
-            <div class="col table-wrapper">
-              <div class="table-container">
-                <div class="table-container-header">
-                  <div class="row">
-                    <div class="col">
-                      <h4>
-                        Текущая оргструктура: <span class="blue-section">НИИ/АО “РД “КазМунайГаз”/АО “Озенмунайгаз”/НГДУ-З/ППД-З</span>
-                      </h4>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col">
-                      <h4>
-                        Начало периода: 01.01.1980
-                      </h4>
-                      <h4>
-                        Конец периода: ...
-                      </h4>
-                    </div>
-                  </div>
-                </div>
-                <div class="table-container-column-header">
-                  <div class="row">
-                    <div class="col-md-6 table-border"></div>
-                    <div class="col-md-2 table-border flex"><p class="title">Начало периода</p></div>
-                    <div class="col-md-2 table-border flex"><p class="title">Конец периода</p></div>
-                    <div class="col-md-2 table-border flex"><p class="title">Управление</p></div>
-                  </div>
-                </div>
-                <div class="table-container-element">
-                  <div class="row">
-                    <div class="col-md-6 table-border element-position">
-                      <p class="title">1НИИ/АО “РД “КазМунайГаз”/АО “Озенмунайгаз”/НГДУ-З/ППД-З</p>
-                    </div>
-                    <div class="col-md-2 table-border element-position"><p>19.13</p></div>
-                    <div class="col-md-2 table-border element-position"><p>7.21</p></div>
-                    <div class="col-md-2 table-border svg-element">
-                      <div class="table-container-svg">
-                        <svg fill="none" height="18" viewBox="0 0 18 18" width="18"
-                             xmlns="http://www.w3.org/2000/svg">
-                          <path
-                              d="M3 11.4998L1.55336 16.322C1.53048 16.3983 1.6016 16.4694 1.67788 16.4465L6.5 14.9998M3 11.4998C3 11.4998 11.0603 3.4393 12.7227 1.77708C12.8789 1.62091 13.1257 1.6256 13.2819 1.78177C13.8372 2.33702 15.1144 3.61422 16.2171 4.71697C16.3733 4.87322 16.3788 5.12103 16.2226 5.27726C14.5597 6.9399 6.5 14.9998 6.5 14.9998M3 11.4998L3.64727 10.8525L7.14727 14.3525L6.5 14.9998"
-                              stroke="white" stroke-width="1.4"/>
-                        </svg>
-                        <svg fill="none" height="16" viewBox="0 0 16 16" width="16"
-                             xmlns="http://www.w3.org/2000/svg">
-                          <path d="M14.5 8L1.5 8" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
-                          <path d="M8 1.5V14.5" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
-                        </svg>
-                        <svg fill="none" height="14" viewBox="0 0 14 14" width="14"
-                             xmlns="http://www.w3.org/2000/svg">
-                          <path d="M12.6574 12.6575L1.34367 1.34383" stroke="white" stroke-width="1.4"
-                                stroke-linecap="round"/>
-                          <path d="M12.6563 1.34383L1.34262 12.6575" stroke="white" stroke-width="1.4"
-                                stroke-linecap="round"/>
-                        </svg>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="row">
-                    <div class="col-md-6 table-border element-position"><p class="title">56.06</p></div>
-                    <div class="col-md-2 table-border element-position"><p>56.06</p></div>
-                    <div class="col-md-2 table-border element-position"><p>5.77</p></div>
-                    <div class="col-md-2 table-border svg-element">
-                      <div class="table-container-svg">
-                        <svg fill="none" height="18" viewBox="0 0 18 18" width="18"
-                             xmlns="http://www.w3.org/2000/svg">
-                          <path
-                              d="M3 11.4998L1.55336 16.322C1.53048 16.3983 1.6016 16.4694 1.67788 16.4465L6.5 14.9998M3 11.4998C3 11.4998 11.0603 3.4393 12.7227 1.77708C12.8789 1.62091 13.1257 1.6256 13.2819 1.78177C13.8372 2.33702 15.1144 3.61422 16.2171 4.71697C16.3733 4.87322 16.3788 5.12103 16.2226 5.27726C14.5597 6.9399 6.5 14.9998 6.5 14.9998M3 11.4998L3.64727 10.8525L7.14727 14.3525L6.5 14.9998"
-                              stroke="white" stroke-width="1.4"/>
-                        </svg>
-                        <svg fill="none" height="16" viewBox="0 0 16 16" width="16"
-                             xmlns="http://www.w3.org/2000/svg">
-                          <path d="M14.5 8L1.5 8" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
-                          <path d="M8 1.5V14.5" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
-                        </svg>
-                        <svg fill="none" height="14" viewBox="0 0 14 14" width="14"
-                             xmlns="http://www.w3.org/2000/svg">
-                          <path d="M12.6574 12.6575L1.34367 1.34383" stroke="white" stroke-width="1.4"
-                                stroke-linecap="round"/>
-                          <path d="M12.6563 1.34383L1.34262 12.6575" stroke="white" stroke-width="1.4"
-                                stroke-linecap="round"/>
-                        </svg>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div v-if="graph" class="row">
+          <div v-if="graph" class="mid-col__main row">
             <div class="col">
               <div class="bg-dark graphics">
                 <div class="dropdown small-select">
@@ -430,278 +338,148 @@
       </div>
     </div>
 
-    <div v-if="well" class="col-md-3 passport right-column">
-      <div class="bg-dark-transparent">
-        <div class="row">
-          <div class="col">
-            <div class="heading">
-              <p>Паспорт скважины</p>
-            </div>
-            <div class="sheare-icon">
-              <svg width="13" height="12" viewBox="0 0 13 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path fill-rule="evenodd" clip-rule="evenodd"
-                      d="M2.15108 1.67037V10.0779H10.5791V7.57345C10.5791 6.4918 12.155 6.48024 12.155 7.57345V10.83C12.155 11.3117 11.8157 11.6502 11.3328 11.6502H1.39717C0.914278 11.6502 0.574951 11.3117 0.574951 10.83V0.91834C0.574951 0.436621 0.914278 0.0981445 1.39717 0.0981445H4.78901C5.87368 0.0981445 5.88526 1.67037 4.78901 1.67037H2.15108ZM10.5794 2.80054L9.02811 4.32156C8.59501 4.75437 7.2806 6.28694 6.70546 6.28694C6.10677 6.28694 5.95124 5.91689 5.95124 5.39898C5.95124 4.99466 7.5975 3.54026 7.95378 3.18523L9.44653 1.66999C9.0999 1.66961 8.75397 1.6696 8.40734 1.67037C7.77236 1.67191 6.97219 1.73738 6.97219 0.850182C6.97219 0.41082 7.37128 0.0981445 7.79395 0.0981445H11.3328C11.8157 0.0981445 12.155 0.436621 12.155 0.91834V4.44863C12.155 4.92997 11.8157 5.26844 11.3328 5.26844C10.494 5.26844 10.5783 4.34697 10.5791 3.76937C10.5794 3.4463 10.5794 3.12323 10.5794 2.80054Z"
-                      fill="#82BAFF"/>
-              </svg>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col">
-            <div class="icon-all pointer-large-icon inline-table">
-              <svg width="14" height="22" viewBox="0 0 14 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path
-                    d="M12.2882 0.739231L12.9888 1.43312C13.2073 1.65145 13.3278 1.94178 13.3278 2.25253C13.3278 2.56251 13.2073 2.85363 12.9888 3.07196L5.05502 10.9858L12.9977 18.9089C13.2162 19.1269 13.3365 19.4176 13.3365 19.728C13.3365 20.0383 13.2162 20.3291 12.9977 20.5474L12.3013 21.2413C11.8489 21.693 11.1117 21.693 10.659 21.2413L1.16833 11.808C0.949852 11.59 0.795898 11.2997 0.795898 10.9866V10.9827C0.795898 10.6724 0.950238 10.382 1.16833 10.1637L10.6335 0.739231C10.852 0.520899 11.1518 0.401142 11.4629 0.400757C11.7741 0.400757 12.0701 0.520899 12.2882 0.739231Z"
-                    fill="#656A8A"/>
-              </svg>
-            </div>
-            <div class="file-container">
-              <div class="row">
-                <div class="col">
-                  <div class="file-size">
-                    <p> 233 MB</p>
-                  </div>
+    <div class="col-md-3 passport right-column">
+      <template v-if="well">
+        <div class="bg-dark-transparent">
+          <template>
+            <div class="row">
+              <div class="col">
+                <div class="heading">
+                  <p>Паспорт скважины</p>
                 </div>
-              </div>
-              <div class="row">
-                <div class="col">
-                  <div class="file-icon-large">
-                    <p class="well-name">
-                      Скважина
-                      <span class="well-own-name">UZN_6067</span>
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col">
-                  <div class="icon-container">
-                    <svg style="float:left" width="25" height="23" viewBox="0 0 25 23" fill="none"
-                         xmlns="http://www.w3.org/2000/svg">
-                      <path fill-rule="evenodd" clip-rule="evenodd"
-                            d="M3.46183 0.00268555C2.00545 0.00268555 0.824219 1.18058 0.824219 2.63344V19.7331C0.824219 21.1863 2.00545 22.3639 3.46183 22.3639H21.921C23.3774 22.3639 24.5585 21.1863 24.5585 19.7331V5.26422C24.5585 3.81098 23.3774 2.63344 21.921 2.63344H10.0543C10.0543 1.18058 8.8734 0.00268555 7.41741 0.00268555H3.46183Z"
-                            fill="white"/>
-                    </svg>
-
-                    <svg style="margin-left:20px" width="24" height="23" viewBox="0 0 24 23" fill="none"
-                         xmlns="http://www.w3.org/2000/svg">
-                      <path fill-rule="evenodd" clip-rule="evenodd"
-                            d="M3.51517 9.72488C3.26582 9.72488 3.01655 9.62976 2.82626 9.43992C2.44528 9.05986 2.44528 8.44533 2.82626 8.06527L9.55673 1.35125C9.93771 0.970807 10.5539 0.970807 10.9348 1.35125C11.3158 1.73131 11.3158 2.34588 10.9348 2.72594L4.20423 9.43992C4.01432 9.62976 3.76491 9.72488 3.51517 9.72488Z"
-                            fill="white"/>
-                      <path fill-rule="evenodd" clip-rule="evenodd"
-                            d="M11.5551 4.86371C11.3652 4.86371 11.178 4.78979 11.0387 4.64963L7.62743 1.24681C7.41783 1.03888 7.35571 0.725045 7.46881 0.452805C7.58191 0.180564 7.84858 0.00268555 8.14388 0.00268555H11.5551C11.9589 0.00268555 12.2863 0.329208 12.2863 0.7316V4.13442C12.2863 4.42899 12.1079 4.69546 11.835 4.80828C11.7442 4.84525 11.6497 4.86371 11.5551 4.86371Z"
-                            fill="white"/>
-                      <path fill-rule="evenodd" clip-rule="evenodd"
-                            d="M7.41382 13.8571V19.4475H1.56641V13.8571C1.56641 13.1859 2.11177 12.6418 2.78456 12.6418H6.19566C6.86807 12.6418 7.41382 13.1863 7.41382 13.8571Z"
-                            fill="white"/>
-                      <path fill-rule="evenodd" clip-rule="evenodd"
-                            d="M15.2104 9.96794V19.4475H9.36279V9.96794C9.36279 9.29715 9.90831 8.75269 10.5811 8.75269H13.9921C14.6645 8.75269 15.2104 9.29715 15.2104 9.96794Z"
-                            fill="white"/>
-                      <path fill-rule="evenodd" clip-rule="evenodd"
-                            d="M23.0072 6.07906V19.4474H17.1592V6.07906C17.1592 5.40828 17.705 4.86377 18.3778 4.86377H21.789C22.4614 4.86377 23.0072 5.40828 23.0072 6.07906Z"
-                            fill="white"/>
-                      <path fill-rule="evenodd" clip-rule="evenodd"
-                            d="M23.2504 22.3638H1.32199C0.918623 22.3638 0.591309 22.0372 0.591309 21.6345C0.591309 21.232 0.918623 20.9055 1.32199 20.9055H23.2504C23.6538 20.9055 23.9816 21.232 23.9816 21.6345C23.9816 22.0372 23.6538 22.3638 23.2504 22.3638Z"
-                            fill="white"/>
-                    </svg>
-
-                    <svg style="float:right" width="23" height="23" viewBox="0 0 23 23" fill="none"
-                         xmlns="http://www.w3.org/2000/svg">
-                      <path fill-rule="evenodd" clip-rule="evenodd"
-                            d="M12.5546 0V12.4246H17.5359L11.3684 18.6364L5.08203 12.4246H10.0634V0H12.5546Z"
-                            fill="#A18F47"/>
-                      <path fill-rule="evenodd" clip-rule="evenodd"
-                            d="M22.5176 19.8789H0.0996094V22.3638H22.5176V19.8789Z" fill="#A18F47"/>
-                    </svg>
-                  </div>
+                <div class="sheare-icon">
+                  <svg fill="none" height="12" viewBox="0 0 13 12" width="13" xmlns="http://www.w3.org/2000/svg">
+                    <path clip-rule="evenodd"
+                          d="M2.15108 1.67037V10.0779H10.5791V7.57345C10.5791 6.4918 12.155 6.48024 12.155 7.57345V10.83C12.155 11.3117 11.8157 11.6502 11.3328 11.6502H1.39717C0.914278 11.6502 0.574951 11.3117 0.574951 10.83V0.91834C0.574951 0.436621 0.914278 0.0981445 1.39717 0.0981445H4.78901C5.87368 0.0981445 5.88526 1.67037 4.78901 1.67037H2.15108ZM10.5794 2.80054L9.02811 4.32156C8.59501 4.75437 7.2806 6.28694 6.70546 6.28694C6.10677 6.28694 5.95124 5.91689 5.95124 5.39898C5.95124 4.99466 7.5975 3.54026 7.95378 3.18523L9.44653 1.66999C9.0999 1.66961 8.75397 1.6696 8.40734 1.67037C7.77236 1.67191 6.97219 1.73738 6.97219 0.850182C6.97219 0.41082 7.37128 0.0981445 7.79395 0.0981445H11.3328C11.8157 0.0981445 12.155 0.436621 12.155 0.91834V4.44863C12.155 4.92997 11.8157 5.26844 11.3328 5.26844C10.494 5.26844 10.5783 4.34697 10.5791 3.76937C10.5794 3.4463 10.5794 3.12323 10.5794 2.80054Z"
+                          fill="#82BAFF"
+                          fill-rule="evenodd"/>
+                  </svg>
                 </div>
               </div>
             </div>
-            <div class="icon-all pointer-large-icon inline-table">
-              <svg width="14" height="22" viewBox="0 0 14 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path
-                    d="M1.99418 0.739231L1.2935 1.43312C1.07503 1.65145 0.954697 1.94178 0.954697 2.25253C0.954697 2.56251 1.07503 2.85363 1.2935 3.07196L9.22732 10.9858L1.28461 18.9089C1.06613 19.1269 0.945801 19.4176 0.945801 19.728C0.945801 20.0383 1.06613 20.3291 1.28461 20.5474L1.98107 21.2413C2.43346 21.693 3.1706 21.693 3.62338 21.2413L13.114 11.808C13.3325 11.59 13.4865 11.2997 13.4865 10.9866V10.9827C13.4865 10.6724 13.3321 10.382 13.114 10.1637L3.64886 0.739231C3.43038 0.520899 3.13053 0.401142 2.81941 0.400757C2.5083 0.400757 2.21228 0.520899 1.99418 0.739231Z"
-                    fill="#656A8A"/>
-              </svg>
+            <div class="row">
+              <div class="col">
+                <div class="icon-all pointer-large-icon inline-table">
+                  <svg fill="none" height="22" viewBox="0 0 14 22" width="14" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M12.2882 0.739231L12.9888 1.43312C13.2073 1.65145 13.3278 1.94178 13.3278 2.25253C13.3278 2.56251 13.2073 2.85363 12.9888 3.07196L5.05502 10.9858L12.9977 18.9089C13.2162 19.1269 13.3365 19.4176 13.3365 19.728C13.3365 20.0383 13.2162 20.3291 12.9977 20.5474L12.3013 21.2413C11.8489 21.693 11.1117 21.693 10.659 21.2413L1.16833 11.808C0.949852 11.59 0.795898 11.2997 0.795898 10.9866V10.9827C0.795898 10.6724 0.950238 10.382 1.16833 10.1637L10.6335 0.739231C10.852 0.520899 11.1518 0.401142 11.4629 0.400757C11.7741 0.400757 12.0701 0.520899 12.2882 0.739231Z"
+                        fill="#656A8A"/>
+                  </svg>
+                </div>
+                <div class="file-container">
+                  <div class="row">
+                    <div class="col">
+                      <div v-if="well.file_size" class="file-size">
+                        <p> 233 MB</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col">
+                      <div class="file-icon-large">
+                        <p class="well-name">
+                          Скважина
+                          <span class="well-own-name">{{ well.uwi }}</span>
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col">
+                      <div class="icon-container">
+                        <svg fill="none" height="23" style="float:left" viewBox="0 0 25 23" width="25"
+                             xmlns="http://www.w3.org/2000/svg">
+                          <path clip-rule="evenodd"
+                                d="M3.46183 0.00268555C2.00545 0.00268555 0.824219 1.18058 0.824219 2.63344V19.7331C0.824219 21.1863 2.00545 22.3639 3.46183 22.3639H21.921C23.3774 22.3639 24.5585 21.1863 24.5585 19.7331V5.26422C24.5585 3.81098 23.3774 2.63344 21.921 2.63344H10.0543C10.0543 1.18058 8.8734 0.00268555 7.41741 0.00268555H3.46183Z"
+                                fill="white"
+                                fill-rule="evenodd"/>
+                        </svg>
 
+                        <svg fill="none" height="23" style="margin-left:20px" viewBox="0 0 24 23" width="24"
+                             xmlns="http://www.w3.org/2000/svg">
+                          <path clip-rule="evenodd"
+                                d="M3.51517 9.72488C3.26582 9.72488 3.01655 9.62976 2.82626 9.43992C2.44528 9.05986 2.44528 8.44533 2.82626 8.06527L9.55673 1.35125C9.93771 0.970807 10.5539 0.970807 10.9348 1.35125C11.3158 1.73131 11.3158 2.34588 10.9348 2.72594L4.20423 9.43992C4.01432 9.62976 3.76491 9.72488 3.51517 9.72488Z"
+                                fill="white"
+                                fill-rule="evenodd"/>
+                          <path clip-rule="evenodd"
+                                d="M11.5551 4.86371C11.3652 4.86371 11.178 4.78979 11.0387 4.64963L7.62743 1.24681C7.41783 1.03888 7.35571 0.725045 7.46881 0.452805C7.58191 0.180564 7.84858 0.00268555 8.14388 0.00268555H11.5551C11.9589 0.00268555 12.2863 0.329208 12.2863 0.7316V4.13442C12.2863 4.42899 12.1079 4.69546 11.835 4.80828C11.7442 4.84525 11.6497 4.86371 11.5551 4.86371Z"
+                                fill="white"
+                                fill-rule="evenodd"/>
+                          <path clip-rule="evenodd"
+                                d="M7.41382 13.8571V19.4475H1.56641V13.8571C1.56641 13.1859 2.11177 12.6418 2.78456 12.6418H6.19566C6.86807 12.6418 7.41382 13.1863 7.41382 13.8571Z"
+                                fill="white"
+                                fill-rule="evenodd"/>
+                          <path clip-rule="evenodd"
+                                d="M15.2104 9.96794V19.4475H9.36279V9.96794C9.36279 9.29715 9.90831 8.75269 10.5811 8.75269H13.9921C14.6645 8.75269 15.2104 9.29715 15.2104 9.96794Z"
+                                fill="white"
+                                fill-rule="evenodd"/>
+                          <path clip-rule="evenodd"
+                                d="M23.0072 6.07906V19.4474H17.1592V6.07906C17.1592 5.40828 17.705 4.86377 18.3778 4.86377H21.789C22.4614 4.86377 23.0072 5.40828 23.0072 6.07906Z"
+                                fill="white"
+                                fill-rule="evenodd"/>
+                          <path clip-rule="evenodd"
+                                d="M23.2504 22.3638H1.32199C0.918623 22.3638 0.591309 22.0372 0.591309 21.6345C0.591309 21.232 0.918623 20.9055 1.32199 20.9055H23.2504C23.6538 20.9055 23.9816 21.232 23.9816 21.6345C23.9816 22.0372 23.6538 22.3638 23.2504 22.3638Z"
+                                fill="white"
+                                fill-rule="evenodd"/>
+                        </svg>
+
+                        <svg fill="none" height="23" style="float:right" viewBox="0 0 23 23" width="23"
+                             xmlns="http://www.w3.org/2000/svg">
+                          <path clip-rule="evenodd"
+                                d="M12.5546 0V12.4246H17.5359L11.3684 18.6364L5.08203 12.4246H10.0634V0H12.5546Z"
+                                fill="#A18F47"
+                                fill-rule="evenodd"/>
+                          <path clip-rule="evenodd" d="M22.5176 19.8789H0.0996094V22.3638H22.5176V19.8789Z"
+                                fill="#A18F47" fill-rule="evenodd"/>
+                        </svg>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="icon-all pointer-large-icon inline-table">
+                  <svg fill="none" height="22" viewBox="0 0 14 22" width="14" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M1.99418 0.739231L1.2935 1.43312C1.07503 1.65145 0.954697 1.94178 0.954697 2.25253C0.954697 2.56251 1.07503 2.85363 1.2935 3.07196L9.22732 10.9858L1.28461 18.9089C1.06613 19.1269 0.945801 19.4176 0.945801 19.728C0.945801 20.0383 1.06613 20.3291 1.28461 20.5474L1.98107 21.2413C2.43346 21.693 3.1706 21.693 3.62338 21.2413L13.114 11.808C13.3325 11.59 13.4865 11.2997 13.4865 10.9866V10.9827C13.4865 10.6724 13.3321 10.382 13.114 10.1637L3.64886 0.739231C3.43038 0.520899 3.13053 0.401142 2.81941 0.400757C2.5083 0.400757 2.21228 0.520899 1.99418 0.739231Z"
+                        fill="#656A8A"/>
+                  </svg>
+
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <div class="center">
+                  <h2>{{ well.uwi }}</h2>
+                </div>
+              </div>
+            </div>
+          </template>
+        </div>
+        <div class="bg-dark info">
+          <div class="row">
+            <div class="col">
+              <div class="heading">
+                <p>Общая информация</p>
+              </div>
+            </div>
+          </div>
+          <div class="info-element">
+            <div class="row">
+              <div class="col">
+                <p>
+                  Скважина
+                </p>
+              </div>
+              <div class="col">
+                <p>
+                  {{ well.uwi }}
+                </p>
+              </div>
             </div>
           </div>
         </div>
-        <div class="row">
-          <div class="col">
-            <div class="center">
-              <h2>{{ well.uwi }}</h2>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="bg-dark info">
-        <div class="row">
-          <div class="col">
-            <div class="heading">
-              <p>Общая информация</p>
-            </div>
-          </div>
-        </div>
-        <div class="info-element">
-          <div class="row">
-            <div class="col">
-              <p>
-                Скважина
-              </p>
-            </div>
-            <div class="col">
-              <p>
-                {{ well.uwi }}
-              </p>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col">
-              <p>
-                Вид скважины
-              </p>
-            </div>
-            <div class="col">
-              <p>
-                Вертикальная
-              </p>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col">
-              <p>
-                Месторождение
-              </p>
-            </div>
-            <div class="col">
-              <p>
-                Узень
-              </p>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col">
-              <p>
-                Блок
-              </p>
-            </div>
-            <div class="col">
-              <p>
-                Основной свод
-              </p>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col">
-              <p>
-                Горизонт
-              </p>
-            </div>
-            <div class="col">
-              <p>
-                14
-              </p>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col">
-              <p>
-                Тех. структура
-              </p>
-            </div>
-            <div class="col">
-              <p>
-                ЦПГ
-              </p>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col">
-              <p>
-                Орг. структура
-              </p>
-            </div>
-            <div class="col">
-              <p>
-                КазМунайГаз
-              </p>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col">
-              <p>
-                Зоны скважины
-              </p>
-            </div>
-            <div class="col">
-              <p>
-                3-13-14
-              </p>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col">
-              <p>
-                Альтитуда устья скважины
-              </p>
-            </div>
-            <div class="col">
-              <p>
-                242.1
-              </p>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col">
-              <p>
-                Координаты Х (устья)
-              </p>
-            </div>
-            <div class="col">
-              <p>
-                52.94
-              </p>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col">
-              <p>
-                Координаты Y (устья)
-              </p>
-            </div>
-            <div class="col">
-              <p>
-                43.94
-              </p>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col">
-              <p>
-                Координаты забоя Х
-              </p>
-            </div>
-            <div class="col">
-              <p>
-                52.94
-              </p>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col">
-              <p>
-                Координаты забоя Y
-              </p>
-            </div>
-            <div class="col">
-              <p>
-                43.94
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
+      </template>
+      <div v-else class="right-column__inner bg-dark"></div>
     </div>
     <div class="b-popup">
       <div class="b-container bg-dark">
@@ -797,6 +575,12 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.well-cart {
+  &__wrapper {
+    height: calc(100vh - 90px);
+  }
+}
+
 .flex {
   display: flex;
 }
@@ -877,7 +661,6 @@ export default {
     .b-time {
       height: 40px;
       font-size: 14px;
-      margin-left: 7px;
       FLEX-DIRECTION: row-reverse;
       BACKGROUND: #4F5979;
       BORDER-RADIUS: 10PX;
@@ -925,18 +708,18 @@ export default {
   background-color: rgba(0, 0, 0, 0.5);
   overflow: hidden;
   position: fixed;
-  top: 0px;
+  top: 0;
   display: none;
 }
 
 .b-popup .b-popup-content {
-  margin: 40px auto 0px auto;
+  margin: 40px auto 0 auto;
   width: 100px;
   height: 40px;
   padding: 10px;
   background-color: #c5c5c5;
   border-radius: 5px;
-  box-shadow: 0px 0px 10px #000;
+  box-shadow: 0 0 10px #000;
 }
 
 .custom-directory {
@@ -953,12 +736,12 @@ export default {
 
   ul .nested {
     border-top: 1px dashed #555BA6;
-    border-left: 0px;
+    border-left: 0;
   }
 
   ul {
     padding-left: 1em;
-    border: 0px;
+    border: 0;
   }
 
   li {
@@ -984,12 +767,12 @@ export default {
   }
 
   ul li:last-child ul {
-    border-bottom: 0px;
+    border-bottom: 0;
     margin-left: -17px;
   }
 
   li:last-child {
-    border-bottom: 0px
+    border-bottom: 0
   }
 
   ul, #myUL {
@@ -1007,7 +790,7 @@ export default {
 
   .file {
     cursor: pointer;
-    padding-left: 0px;
+    padding-left: 0;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
@@ -1066,7 +849,7 @@ h4 {
   h2 {
     font-size: 20px;
     line-height: 24px;
-    margin: 0px;
+    margin: 0;
     padding: 10px 5px;
   }
 
@@ -1098,7 +881,7 @@ h4 {
   }
 
   li.container {
-    border-bottom: 0px;
+    border-bottom: 0;
   }
 
   li.empty {
@@ -1121,7 +904,7 @@ h4 {
   }
 
   ul li:last-child ul {
-    border-left: 0px solid white;
+    border-left: 0 solid white;
     margin-left: -17px;
   }
 }
@@ -1142,7 +925,6 @@ h4 {
   width: 100%;
   padding: 10px;
   margin: 10px 40px 10px 25px;
-  height: 888px;
 
   col {
     display: flex;
@@ -1190,39 +972,24 @@ h4 {
   width: 100%;
   padding: 5px 10px;
 
-  .search-input {
-    padding: 10px 5px 10px 30px;
-    border-radius: 10px;
-    height: 40px;
-    background: url(/img/bd/search.svg) 10% 45% #272953;
+  .v-select {
+    background: url(/img/bd/search.svg) 20px 45% #272953 no-repeat;
     border: 1px solid #3b4a84;
-    background-size: contain;
-    background-repeat: no-repeat;
-    text-indent: 20px;
-    width: 100%;
-    font-size: 14px;
-    font-family: Roboto;
-    font-weight: 400;
-    background-size: auto;
-
-    &::placeholder {
-      padding: 0px;
-      color: white;
-    }
+    min-width: 0;
   }
 }
 
 .heading {
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   color: white;
   font-size: 16px;
   line-height: 18px;
   font-weight: 700;
   display: flex;
-  padding: 11.26px 0px 32px 13.96px;
+  padding: 11.26px 0 32px 13.96px;
 
   p {
-    margin: 0px;
+    margin: 0;
   }
 }
 
@@ -1324,12 +1091,12 @@ h4 {
 
   :focus {
     background: #2E50E9;
-    border: 0px;
+    border: 0;
   }
 
   :visited {
     background: #2E50E9;
-    border: 0px;;
+    border: 0;;
   }
 }
 
@@ -1354,7 +1121,7 @@ h4 {
 
   .table-container-header {
     text-align: center;
-    padding: 14px 20px 0px 20px;
+    padding: 14px 20px 0 20px;
     background-color: #32346C;
   }
 
@@ -1368,7 +1135,7 @@ h4 {
     }
   }
 
-  .table-container-element {
+  &-element {
     height: 340px;
     background-color: #272953;
 
@@ -1410,6 +1177,7 @@ h4 {
     }
 
     .row {
+      flex-wrap: nowrap;
       min-height: 40px;
 
       &:nth-child(2n) {
@@ -1419,7 +1187,7 @@ h4 {
   }
 
   .row {
-    margin-right: 0px;
+    margin-right: 0;
   }
 
   .table-border {
@@ -1436,7 +1204,8 @@ h4 {
 }
 
 .info {
-  height: 600px;
+  height: calc(100vh - 490px);
+  margin-bottom: 0 !important;
   overflow-y: auto;
   overflow-x: hidden;
 
@@ -1445,7 +1214,7 @@ h4 {
   }
 
   .heading {
-    padding: 11px 0px 15px 13px;
+    padding: 11px 0 15px 13px;
     font-family: 'Harmonia Sans Pro Cyr', 'Harmonia-Sans', 'Robato';
     font-weight: 700;
   }
@@ -1453,7 +1222,7 @@ h4 {
   .info-element {
     p {
       padding: 10px 10px 12px 14px;
-      margin: 0px;
+      margin: 0;
       font-family: 'Harmonia Sans Pro Cyr', 'Harmonia-Sans', 'Robato';
       font-weight: 400;
       font-size: 16px;
@@ -1511,17 +1280,17 @@ h4 {
   background: #40467E;
   color: white;
   width: 100%;
-  padding: 0px 7px 0px 16px;
+  padding: 0 7px 0 16px;
   border: 1px solid #2E50E9;
   border-radius: 8px;
   margin-top: 7px;
 
   ul:last-child li:last-child .bottom-border {
-    border-bottom: 0px;
+    border-bottom: 0;
   }
 
   .container {
-    margin: 0px;
+    margin: 0;
   }
 
   li {
@@ -1550,7 +1319,7 @@ h4 {
   }
 
   .container {
-    padding: 0px;
+    padding: 0;
     display: flex;
     position: relative;
     cursor: pointer;
@@ -1607,7 +1376,7 @@ h4 {
 }
 
 .dropdown-menu :last-child {
-  border-bottom: 0px;
+  border-bottom: 0;
 }
 
 .select-button {
@@ -1616,10 +1385,12 @@ h4 {
   overflow: hidden;
   border-radius: 10px;
   cursor: pointer;
-  padding: 7px;
+  padding: 0 7px;
   height: 40px;
 
   .icon-all {
+    align-items: center;
+    display: flex;
     height: 100%;
     width: auto;
   }
@@ -1659,7 +1430,7 @@ h4 {
   margin-right: auto;
 
   h2 {
-    margin: 0px;
+    margin: 0;
     padding: 22px 25px;
     font-size: 20px;
     font-weight: 400;
@@ -1713,12 +1484,12 @@ h4 {
 
 .table-wrapper {
   margin: 10px 20px;
-  padding: 0px;
+  padding: 0;
 
 }
 
 .col-no-right-padding {
-  padding-right: 0px;
+  padding-right: 0;
   width: 250px;
   max-width: 250px;
   min-width: 250px;
@@ -1727,24 +1498,32 @@ h4 {
 
 .passport {
   .bg-dark-transparent {
-    padding-bottom: 0px;
+    padding-bottom: 0;
   }
 }
 
 .vertical-wrapper {
   width: 100%;
-  margin-right: 0px;
-  margin-left: 0px;
+  margin-right: 0;
+  margin-left: 0;
 }
 
 .left-column {
   max-width: 398px !important;
   min-width: 398px !important;
+
+  &__inner {
+    height: 100%;
+  }
 }
 
 .right-column {
   max-width: 348px !important;
   min-width: 348px !important;
+
+  &__inner {
+    height: 100%;
+  }
 }
 
 .buttons-no-wrap {
@@ -1761,6 +1540,14 @@ h4 {
   max-width: calc(100% - 348px - 398px);
   flex: calc(100% - 348px - 398px);
   min-width: 500px;
+
+  &__main {
+    height: calc(100% - 150px);
+
+    &-inner {
+      margin-bottom: 0;
+    }
+  }
 }
 
 .file-size {
@@ -1773,6 +1560,34 @@ h4 {
     font-weight: 700;
     font-family: 'Harmonia Sans Pro Cyr', 'Harmonia-Sans', 'Robato';
     line-height: 16px;
+  }
+}
+</style>
+<style lang="scss">
+.search-form {
+  .v-select {
+    border-radius: 10px;
+
+    .vs__search {
+      font-family: Roboto, sans-serif;
+      font-size: 14px;
+      font-weight: 400;
+      margin-top: 0;
+      padding-left: 45px;
+    }
+
+    .vs__actions {
+      padding: 0 5px;
+
+      .vs__clear, .vs__open-indicator {
+        display: none;
+      }
+
+      .vs__spinner, .vs__spinner:after {
+        border-color: rgba(238, 238, 238, 0.7);
+        border-left-color: rgba(170, 170, 170, 0.7);
+      }
+    }
   }
 }
 </style>

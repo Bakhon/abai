@@ -48,7 +48,7 @@
         <button type="button" class="btn btn-success" @click="submit">
           {{ trans('app.save') }}
         </button>
-        <button type="reset" class="btn btn-info">
+        <button class="btn btn-info" type="reset" @click="cancel">
           {{ trans('app.cancel') }}
         </button>
       </div>
@@ -140,6 +140,8 @@ export default {
             })
             this.$refs.form.reset()
             Vue.prototype.$notifySuccess('Ваша форма успешно отправлена')
+            this.$emit('change')
+            this.$emit('close')
           })
           .catch(error => {
             this.errors = error.response.data.errors
@@ -157,7 +159,9 @@ export default {
               }
             }
           })
-
+    },
+    cancel() {
+      this.$emit('close')
     },
     changeTab(index) {
       this.activeTab = index
@@ -207,14 +211,15 @@ export default {
     },
     validateField(e, formItem) {
 
-      this.getValidationErrors({formCode: this.params.code, fieldCode: formItem.code, values: this.formValues})
-          .then(data => {
-            Vue.set(this.errors, formItem.code, null)
-          })
-          .catch(error => {
-            Vue.set(this.errors, formItem.code, error.response.data.errors)
-          })
-
+      this.$nextTick(() => {
+        this.getValidationErrors({formCode: this.params.code, fieldCode: formItem.code, values: this.formValues})
+            .then(data => {
+              Vue.set(this.errors, formItem.code, null)
+            })
+            .catch(error => {
+              Vue.set(this.errors, formItem.code, error.response.data.errors)
+            })
+      })
     }
   },
 };
