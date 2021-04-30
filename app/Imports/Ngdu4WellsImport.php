@@ -181,16 +181,6 @@ class Ngdu4WellsImport implements ToCollection, WithEvents, WithColumnLimit, Wit
                 if ($between_points == 'zu-gu' || $between_points == 'zu-zu_coll') {
                     $zu = Zu::where('lat', $row[self::LAT])->where('lon', $row[self::LON])->first();
 
-//                    if (strripos($row[self::PIPE_START_NAME], 'ЗУ-107д_ГУ') !== false) {
-//                        $error = 'error блеать';
-//                        dump($between_points);
-//                        dump($row);
-//                        dump($zu);
-//                        $this->command->error($error);
-////                    die;
-//                    }
-
-
                     if ($zu) {
                         $pipe->zu_id = $zu->id;
                         $pipe->start_point = $zu->name;
@@ -210,15 +200,6 @@ class Ngdu4WellsImport implements ToCollection, WithEvents, WithColumnLimit, Wit
             }
 
             if ($row[self::END_PIPE]) {
-
-//                if (strripos($pipe->name, 'ЗУ-107д_ГУ') !== false) {
-//                    $error = 'error блеать';
-//                    dump($row);
-//                    dump($zu);
-//                    $this->command->error($error);
-//                    die;
-//                }
-
 
                 if ($between_points == 'well-zu') {
                     if (!$row[self::ZU]) {
@@ -249,14 +230,6 @@ class Ngdu4WellsImport implements ToCollection, WithEvents, WithColumnLimit, Wit
                         $well->zu_id = $zu->id;
                         $well->save();
 
-//                        if (strripos($this->gu->name, '107') !== false AND strripos($zu->name, '103') !== false) {
-//                            $error = 'error блеать';
-//                            dump($row);
-//                            $this->command->error($error);
-//                            die;
-//                        }
-
-
                         $pipe->zu_id = $zu->id;
                         $pipe->well_id = $well->id;
                         $pipe->start_point = $well->name;
@@ -283,15 +256,6 @@ class Ngdu4WellsImport implements ToCollection, WithEvents, WithColumnLimit, Wit
                     $pipe->start_point = $row[self::ZU];
                     $pipe->end_point = $this->gu->name;
                     $pipe->save();
-
-//                    if ($pipe->name == 'ЗУ-24г_ЗУ-24д-ГУ') {
-//                        $error = 'error блеать';
-//                        dump($row[self::ZU]);
-//                        dump($row);
-//                        dump($pipe);
-//                        $this->command->error($error);
-//                        die;
-//                    }
                 }
 
                 if ($between_points == 'fl-gu' || $between_points == 'gu-gu') {
