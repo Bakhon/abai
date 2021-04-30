@@ -164,7 +164,7 @@ export default {
       hPumpFromIncl: null,
       isButtonHpump: false,
       hVal: null,
-      kraska:null,
+      color:null,
       tmp: null,
       tmp2: null,
       tmp3: null,
@@ -247,7 +247,6 @@ export default {
         var curr = arr[0],
         diff = Math.abs(num * -1 - curr),
         index = 0;
-
           for (var val = 0; val < arr.length; val++) {
             let newdiff = Math.abs(num * -1 - arr[val]);
               if (newdiff < diff) {
@@ -266,7 +265,7 @@ export default {
         this.$emit('update:isLoading', true);
         this.hPumpFromIncl = this.$store.getters.getHpump
 
-        if (this.expChoose=='ШГН'){
+        if (this.expChoose == 'ШГН'){
           this.lift_method="ШГН"
           this.step=10
         } else {
@@ -278,8 +277,8 @@ export default {
           {"well_number": wi[1],
             "lift_method": this.lift_method,
             "field": wi[0],
-            "glubina":this.hPumpFromIncl.substring(0,4) * 1,
-            "step":this.step,
+            "glubina": this.hPumpFromIncl.substring(0,4) * 1,
+            "step": this.step,
           }
         )
        
@@ -287,7 +286,6 @@ export default {
           var data = JSON.parse(response.data.InclData)
           if (data.data) {
             this.data = data.data
-            console.log(this.data)
             this.dxArray = this.data.map((r) => Math.abs(r.dx * 1))
             this.dyArray = this.data.map((r) => Math.abs(r.dy * 1))
             this.dzArray = this.data.map((r) => Math.abs(r.md * 1))
@@ -296,15 +294,15 @@ export default {
             this.zArr = this.data.map((r) => (r.md * -1))
             this.hVal = this.hPumpFromIncl.substring(0,4) * 1
             this.indexZ = this.closestVal(this.hVal, this.zArr)
-            this.kraska=this.data.map((r) => r.dls_color)
-            this.dls=this.data.map((r) => Math.round(Math.abs(r.dls * 100))/100)
-            this.incl=this.data.map((r) =>Math.round(Math.abs(r.incl * 100))/100)
+            this.color = this.data.map((r) => r.dls_color)
+            this.dls = this.data.map((r) => Math.round(Math.abs(r.dls * 100))/100)
+            this.incl = this.data.map((r) =>Math.round(Math.abs(r.incl * 100))/100)
 
-            this.data2=response.data.CenterData
-            this.dlsGlubina=this.data2[0]
-            this.maxDls=this.data2[1]
-            this.inclGlubina=this.data2[2]
-            this.maxIncl=this.data2[3]
+            this.data2 = response.data.CenterData
+            this.dlsGlubina = this.data2[0]
+            this.maxDls = this.data2[1]
+            this.inclGlubina = this.data2[2]
+            this.maxIncl = this.data2[3]
 
             this.pointZ = this.zArr[this.indexZ]
             this.pointX = this.xArr[this.indexZ]
@@ -334,7 +332,7 @@ export default {
               opacity: 1,
               line: {
                 width: 12,
-                color: this.kraska.map((r) => r),
+                color: this.color.map((r) => r),
                 colorscale: [[0, 'rgb(0,0,255)'], [1, 'rgb(255,0,0)']],
                 type: 'heatmap'
               },
