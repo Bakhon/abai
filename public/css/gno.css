@@ -2002,13 +2002,7 @@ input.checkbox-q-liquid {
         padding:1px 0px;
     };
 
-    .title__block__centrators {
-        font-size: 9.8px;   
-    }
-
-    .main__title__block_centrators {
-        font-size: 9.8px;
-    }
+    
 }
 
 @media (max-width: 1090px) {

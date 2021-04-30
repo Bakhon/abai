@@ -2024,7 +2024,7 @@
 }
 
 .long__box {
-  width: 60px !important;
+  width: 60px;
   padding-left: 0px !important;
 }
 
