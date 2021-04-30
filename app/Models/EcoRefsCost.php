@@ -9,7 +9,12 @@ class EcoRefsCost extends Model
     protected $fillable = [
         'sc_fa', 'company_id', 'date', 'variable', 'fix_noWRpayroll', 'fix_payroll',
         'fix_nopayroll', 'fix', 'gaoverheads', 'wr_nopayroll', 'wr_payroll', 'wo',
-        'comment', 'author_id', 'log_id', 'net_back'
+        'comment', 'author_id', 'log_id', 'net_back', 'amort'
+    ];
+
+    const FILLABLE_FLOAT_KEYS = [
+        'variable', 'fix_noWRpayroll', 'fix_payroll', 'fix_nopayroll', 'fix',
+        'gaoverheads', 'wr_nopayroll', 'wr_payroll', 'wo', 'net_back', 'amort',
     ];
 
     public function scfa()

@@ -104,7 +104,7 @@ class PipesPointsImport implements ToCollection, WithEvents, WithColumnLimit, Wi
             )[0]->oil_pipe_id;
 
             $pipe_coords_start = PipeCoord::where('lat', $start_coords[self::LAT])
-                ->where('lon', $oil_pipe_id[self::LON])
+                ->where('lon', $start_coords[self::LON])
                 ->where('oil_pipe_id', $oil_pipe_id)
                 ->where('m_distance', 0)
                 ->first();
