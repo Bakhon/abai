@@ -1203,6 +1203,7 @@ export default {
           }
           this.$emit('LineData', this.curveLineData)
           this.$emit('PointsData', this.curvePointsData)
+          
         }
       ).finally((response) => {
         this.isLoading = false;
@@ -1238,7 +1239,6 @@ export default {
     },
 
     postCurveData() {
-      this.fetchBlockCentrators();
       this.isVisibleChart = true;
       let uri = this.url + this.field + "/" + this.wellNumber + "/";
       if (this.CelButton == 'ql') {
@@ -1512,6 +1512,7 @@ export default {
 
             this.axios.post(uri, jsonData).then((response) => {
               let data = JSON.parse(response.data);
+              this.fetchBlockCentrators();
               if(data) {
                 if (data["error"] == "NoIntersection") {
                   this.$notify({
