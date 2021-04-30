@@ -57,9 +57,19 @@ export default {
           fill: {
             opacity: 1
           },
+          tooltip: {
+            custom: ({seriesIndex, dataPointIndex}) => this.customTooltip(seriesIndex, dataPointIndex)
+          }
         }
       }
     }
   },
+  methods: {
+    customTooltip(seriesIndex, dataPointIndex) {
+      return '<div class="arrow_box">' +
+          '<span>' + this.data.uwi[seriesIndex + dataPointIndex * 2] + '</span>' +
+          '</div>'
+    }
+  }
 }
 </script>
