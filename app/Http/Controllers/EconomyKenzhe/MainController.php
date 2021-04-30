@@ -12,8 +12,9 @@ class MainController extends Controller
 
     public function company(Request $request)
     {
-        $companyId = 181;
-        $dateTo = date('Y-m-d', strtotime('-1 year'));
+        $companyId = 178;
+//        $dateTo = date('Y-m-d', strtotime('-1 year'));
+        $dateTo = date('Y-m-d');
         $dateFrom = date("Y-m-d", strtotime($dateTo . "-3 months"));
 
         if($request->company){
@@ -31,7 +32,8 @@ class MainController extends Controller
             $dateFrom = date("Y-m-d", strtotime(date('Y').'-'.$request->quarterValue . '-01' . "-3 months"));
             $dateTo = date("Y-m-d", strtotime(date('Y').'-'.$request->quarterValue . '-01'));
         }
-        $currentYear = date('Y', strtotime('-1 year'));
+//        $currentYear = date('Y', strtotime('-1 year'));
+        $currentYear = date('Y');
         $previousYear = (string) $currentYear - 1;
         $handbook = HandbookRepTt::where('parent_id', 0)->with('childHandbookItems')->get()->toArray();
         $companies = SubholdingCompany::all();

@@ -24,77 +24,39 @@ class FieldCalcHelper
 
     public static function sumOverTree(&$items, $year, &$parent = null)
     {
-        foreach ($items as &$item){
-            if(count($item['handbook_items'])> 0){
-                $item['handbook_items'] = self::sumOverTree($item['handbook_items'], $year, $item);
-            }
-            if($parent != null){
-                $values = array_column($parent['handbook_items'], 'plan_value');
-                $parent['value'] = 0;
-                foreach ($values as $value){
-                    $parent['value'] += $value[$year];
+        if(is_array($items)){
+            foreach ($items as &$item){
+                if(count($item['handbook_items'])> 0){
+                    $item['handbook_items'] = self::sumOverTree($item['handbook_items'], $year, $item);
+                }
+                if($parent != null){
+                    $values = array_column($parent['handbook_items'], 'plan_value');
+                    foreach ($values as $value){
+                        if($value[$year]<0){
+                            $value[$year] = $value[$year]* -1;
+                        }
+                        $parent['plan_value'][$year] += $value[$year];
+                    }
                 }
             }
+            return $items;
         }
-        return $items;
+
     }
 
     public static function getShowDataOnTree($names, &$values, &$result = []){
-        foreach ($values as $value){
-            if(count($value['handbook_items'])>0){
-                $result = self::getShowDataOnTree($names, $value['handbook_items'], $result);
+        if(is_array($values)){
+            foreach ($values as $value){
+                if(count($value['handbook_items'])>0){
+                    $result = self::getShowDataOnTree($names, $value['handbook_items'], $result);
+                }
+                if(in_array($value['num'], $names)){
+                    $result[] = $value;
+                }
             }
-            if(in_array($value['num'], $names)){
-                $result[] = $value;
-            }
+            return $result;
         }
-        return $result;
+
     }
-
-//    public static function sumOverTree(&$arr, $year)
-//    {
-////        array_reduce($arr, 'recursive', $year);
-//        $sum = 0;
-//        foreach ($arr as $v) {
-//            if (is_array($v)) {
-//                $sum += sumOverTree($v);
-//            } elseif (is_integer($v)) {
-//                $sum += $v;
-//            }
-//        }
-//        return $sum;
-//    }
-
-
-//    function array_walk_recursive_rewrite(array $data) {
-//        $sum = 0;
-//        foreach ($data as $v) {
-//            if (is_array($v)) {
-//                $sum += array_walk_recursive_rewrite($v);
-//            } elseif (is_integer($v)) {
-//                $sum += $v;
-//            }
-//        }
-//        return $sum;
-//    }
-
-
-
-
-
-//    public static function sumOverTree(&$arr, $year)
-//    {
-//        array_reduce($arr, function($accumulator, $item) use ($year){
-//            $hasChild = count($item['handbook_items'])>0;
-//            $yearValue = $item['plan_value'][$year];
-//            if($yearValue<0){
-//                $item['plan_value'][$year] = $yearValue * -1;
-//            }
-//            if($hasChild){
-//                $item['plan_value'][$year] = ;
-//            }
-//            return $accumulator + $item['plan_value'][$year];
-//        });
-//    }
 
 }

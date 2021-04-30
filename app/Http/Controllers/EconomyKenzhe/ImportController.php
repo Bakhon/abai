@@ -6,11 +6,14 @@ use App\Imports\HandbookRepTtTitlesImport;
 use App\Imports\HandbookRepTtValueImport;
 use App\Models\EconomyKenzhe\HandbookRepTt;
 use App\Http\Controllers\Controller;
+use App\Models\EconomyKenzhe\SubholdingCompany;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 
 class ImportController extends Controller
 {
+    public $type = null;
+
     public function importRepTtValues(Request $request)
     {
         if ($request->isMethod('GET')) {
@@ -28,21 +31,30 @@ class ImportController extends Controller
             return view('economy_kenzhe.import_reptt_titles');
         }
         if ($request->isMethod('POST')) {
-            $type = $request->importExcelType;
+            $this->type = $request->importExcelType;
             $rows = Excel::toCollection(new HandbookRepTtTitlesImport(), $request->select_file)[0];
             $titles = [];
+
             foreach ($rows as $row) {
                 $parent_id = $this->getHandbookParentId($row[1], $titles);
+                if(!$parent_id){
+                    $parent_id = 0;
+                }
                 $data = [
                     'num' => $row[0],
                     'chapter' => $row[1],
                     'name' => $row[2],
                     'parent_chapter' => substr($row[1], 0, -3),
+                    'level' => count(explode('.', $row[1])),
                     'parent_id' => $parent_id,
-                    'type' => $type,
+                    'type' => $this->type,
                 ];
                 $titles[] = $data;
-                HandbookRepTt::create($data);
+                if($request->importExcelType == 'companies'){
+                    SubholdingCompany::create($data);
+                }else{
+                    HandbookRepTt::create($data);
+                }
             }
             return back()->with('success', 'Загрузка прошла успешно.');
         }
@@ -58,8 +70,15 @@ class ImportController extends Controller
         $parent_chapter = substr($row, 0, -3);
         foreach ($titles as $title) {
             if ($title['chapter'] == $parent_chapter) {
-                $handbookItem = HandbookRepTt::whereNum($title['num'])->first();
-                return $handbookItem->id;
+                if($this->type == 'companies'){
+                    $handbookItem = SubholdingCompany::whereNum($title['num'])->first();
+                }else{
+                    $handbookItem = HandbookRepTt::whereNum($title['num'])->first();
+                }
+                if($handbookItem){
+                    return $handbookItem->id;
+                }
+
             }
         }
     }
