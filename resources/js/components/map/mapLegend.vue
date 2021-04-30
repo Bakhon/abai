@@ -35,8 +35,8 @@ export default {
     getMapLegends () {
       return mapLegends[this.variant];
     },
-    getColorArray(colorVariant) {
-      return this.colorArrayToRgb(pipeColors[this.variant][colorVariant])
+    getColorArray(color) {
+      return this.colorArrayToRgb(pipeColors[this.variant][color])
     },
     colorArrayToRgb(colorArr) {
       return 'rgb(' + colorArr[0] + ', ' + colorArr[1] + ', ' + colorArr[2] + ')';
