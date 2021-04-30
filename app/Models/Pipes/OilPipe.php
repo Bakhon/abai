@@ -3,6 +3,8 @@
 namespace App\Models\Pipes;
 
 
+use App\Models\ComplicationMonitoring\HydroCalcResult;
+use App\Models\ComplicationMonitoring\ReverseCalculation;
 use App\Models\Pipes\PipeCoord;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Refs\Zu;
@@ -51,6 +53,16 @@ class OilPipe extends Model
     public function lastCoords()
     {
         return $this->hasOne(PipeCoord::class)->orderByDesc('m_distance');
+    }
+
+    public function speedFlowGuUpsv()
+    {
+        return $this->hasOne(HydroCalcResult::class);
+    }
+
+    public function speedFlowWellGu()
+    {
+        return $this->hasOne(ReverseCalculation::class);
     }
 
     public static function boot() {

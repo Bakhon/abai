@@ -85,6 +85,7 @@ Vue.component('vc-upstream-table', require('./components/visualcenter3/UpstreamT
 Vue.component('visual-center-menu', require('./components/visualcenter/VisualCenterMenu.vue').default);
 
 Vue.component('economic-data-component', require('./components/Economic/data/index.vue').default);
+Vue.component('economic-data-scenario-component', require('./components/Economic/data/scenario.vue').default);
 Vue.component('tech-data-component', require('./components/technical_forecast/data/index.vue').default);
 
 Vue.component('economic-component', require('./components/Economic/main.vue').default);
@@ -154,6 +155,7 @@ Vue.component('pagination', require('laravel-vue-pagination'));
 Vue.component('report-export', require('./components/reports/export.vue').default);
 Vue.component('tr_mode-table', require('./components/tr/TechMode.vue').default);
 Vue.component('fa_weekly_chart', require('./components/tr/FaWeeklyChart.vue').default);
+Vue.component('well_cart', require('./components/well_cart/well_cart.vue').default);
 
 
 

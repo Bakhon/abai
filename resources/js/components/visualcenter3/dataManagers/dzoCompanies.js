@@ -135,11 +135,9 @@ export default {
                     summary.targetPlan = parseInt(summary.targetPlan) + parseInt(company.targetPlan);
                 }
             });
-            summary.difference = this.formatDigitToThousand(
-                summary.plan - summary.fact);
-            summary.percent = new Intl.NumberFormat("ru-RU")
-                .format(((summary.plan - summary.fact) /
-                    summary.fact * 100).toFixed(1));
+            summary.difference = this.getFormattedNumberToThousand(
+                summary.plan,summary.fact);
+            summary.percent = this.getPercentDifference(summary.plan,summary.fact);
             summary.plan = this.formatDigitToThousand(summary.plan);
             summary.fact = this.formatDigitToThousand(summary.fact);
             summary.periodPlan = this.formatDigitToThousand(summary.periodPlan);

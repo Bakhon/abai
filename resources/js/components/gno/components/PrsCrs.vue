@@ -99,7 +99,6 @@ mounted() {
     this.$emit('update:isLoading', true);
     this.axios.get(uri).then((response) => {
     this.prs = response['data']['prs']['data']
-    
     for(let key of Object.keys(this.prs)){
       if(this.prs[key].length!=undefined){
         for(let val of this.prs[key]){
@@ -118,16 +117,16 @@ mounted() {
         let nno_days = this.prs[key]['nno_size']
         let isNull = (this.prs[key]['text'] !== "");
         this.data.push({x: [key], 
-                      y: [nno_days*1], 
-                      name: this.prs[key]['text'], 
-                      showlegend: isNull,
-                      type: 'bar', 
-                      text: nno_days,
-                      textposition: 'auto',
-                      hoverinfo: 'none',})
+                        y: [nno_days*1], 
+                        name: this.prs[key]['text'], 
+                        showlegend: isNull,
+                        type: 'bar', 
+                        text: nno_days,
+                        textposition: 'auto',
+                        hoverinfo: 'none',})
       }
-      
     }
+  
     this.layout= {
         showlegend: true,
         legend: {"orientation": "h"},
@@ -145,7 +144,7 @@ mounted() {
                 height: 450,
                 title: this.trans('pgno.history_prs'),
                 barmode: 'group',
-                bargap: 4
+                bargap: 2
         }
   }).catch()
   
