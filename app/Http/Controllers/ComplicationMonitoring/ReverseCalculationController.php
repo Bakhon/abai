@@ -5,11 +5,11 @@ namespace App\Http\Controllers\ComplicationMonitoring;
 use App\Filters\ReverseCalculationFilter;
 use App\Http\Requests\IndexTableRequest;
 use App\Http\Controllers\CrudController;
-use App\Http\Controllers\Controller;
 use App\Http\Resources\ReverseCalculationResource;
+use App\Models\ComplicationMonitoring\ReverseCalculation;
 use Illuminate\Support\Facades\Session;
 
-class ReverseCalculation extends CrudController
+class ReverseCalculationController extends CrudController
 {
     protected $modelName = 'reverse_calculation';
 
@@ -25,6 +25,10 @@ class ReverseCalculation extends CrudController
                     'title' => '№',
                     'type' => 'numeric',
                 ],
+                'date' => [
+                    'title' => trans('app.date'),
+                    'type' => 'date',
+                ],
                 'out_dia' => [
                     'title' => trans('monitoring.pipe_types.fields.outside_diameter'),
                     'type' => 'numeric',
@@ -38,7 +42,7 @@ class ReverseCalculation extends CrudController
                     'title' => trans('monitoring.hydro_calculation.fields.length'),
                     'type' => 'numeric',
                 ],
-                'qliq' => [
+                'daily_fluid_production' => [
                     'title' => trans('monitoring.units.q_zh').', '.trans('measurements.m3/day'),
                     'type' => 'numeric',
                 ],
@@ -46,15 +50,15 @@ class ReverseCalculation extends CrudController
                     'title' => trans('monitoring.gu.fields.bsw').', '.trans('measurements.percent'),
                     'type' => 'numeric',
                 ],
-                'gazf' => [
+                'gas_factor' => [
                     'title' => trans('monitoring.omgngdu.fields.gas_factor'),
                     'type' => 'numeric',
                 ],
-                'press_start' => [
+                'pressure_start' => [
                     'title' => trans('monitoring.hydro_calculation.fields.pressure_start'),
                     'type' => 'numeric',
                 ],
-                'press_end' => [
+                'pressure_end' => [
                     'title' => trans('monitoring.hydro_calculation.fields.pressure_end'),
                     'type' => 'numeric',
                 ],
@@ -109,14 +113,12 @@ class ReverseCalculation extends CrudController
             ],
         ];
 
-        $params['links']['date'] = true;
-
         return view('reverse_calc.index', compact('params'));
     }
 
     public function list(IndexTableRequest $request)
     {
-        $query = ReverseCalculation::query();
+        $query = ReverseCalculation::with('oilPipe.pipeType');
 
         $reverse_calculations = $this
             ->getFilteredQuery($request->validated(), $query)

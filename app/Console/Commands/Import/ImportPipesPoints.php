@@ -3,6 +3,8 @@
 namespace App\Console\Commands\Import;
 
 use App\Imports\PipesPointsImport;
+use App\Models\ComplicationMonitoring\HydroCalcResult;
+use App\Models\ComplicationMonitoring\TrunklinePoint;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 
@@ -41,11 +43,13 @@ class ImportPipesPoints extends Command
      */
     public function handle(): void
     {
-        DB::table('hydro_calc_results')->delete();
-        DB::statement("ALTER TABLE hydro_calc_results AUTO_INCREMENT = 1;");
+        DB::statement('SET FOREIGN_KEY_CHECKS=0');
 
-        DB::table('trunkline_points')->delete();
-        DB::statement("ALTER TABLE trunkline_points AUTO_INCREMENT = 1;");
+        HydroCalcResult::truncate();
+        TrunklinePoint::truncate();
+
+        DB::statement('SET FOREIGN_KEY_CHECKS=1');
+
         $this->importExcel(new PipesPointsImport($this), public_path('imports/thunkline_points.xlsx'));
     }
 }

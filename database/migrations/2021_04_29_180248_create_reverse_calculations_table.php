@@ -29,6 +29,7 @@ class CreateReverseCalculationsTable extends Migration
             $table->string('start_point')->nullable();
             $table->string('end_point')->nullable();
             $table->string('name')->nullable();
+            $table->unsignedBigInteger('oil_pipe_id')->nullable();
             $table->float('mix_speed_avg', 8, 6)->nullable();
             $table->float('fluid_speed', 8, 6)->nullable();
             $table->float('gaz_speed', 8, 6)->nullable();
@@ -37,6 +38,10 @@ class CreateReverseCalculationsTable extends Migration
             $table->integer('break_qty')->nullable();
             $table->float('height_drop', 8, 4)->nullable();
             $table->timestamps();
+        });
+
+        Schema::table('reverse_calculations', function (Blueprint $table) {
+            $table->foreign('oil_pipe_id')->references('id')->on('oil_pipes')->onDelete('set null');
         });
     }
 

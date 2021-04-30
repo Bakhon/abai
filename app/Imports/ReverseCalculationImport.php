@@ -4,6 +4,7 @@ namespace App\Imports;
 
 use App\Console\Commands\Import\ImportReverseCalculation;
 use App\Models\ComplicationMonitoring\ReverseCalculation;
+use App\Models\Pipes\OilPipe;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithColumnLimit;
@@ -94,6 +95,18 @@ class ReverseCalculationImport implements ToCollection, WithEvents, WithColumnLi
             $calculation->temperature_end = $row[self::TEMPERATURE_END];
             $calculation->start_point = $row[self::START_POINT];
             $calculation->end_point = $row[self::END_POINT];
+
+            $oilPipe = OilPipe::where('start_point', $row[self::START_POINT])
+                ->where('end_point', $row[self::END_POINT])
+                ->first();
+
+            if (!$oilPipe) {
+                $message = 'There no pipe. Start Point :'.$row[self::START_POINT].', End Point '.$row[self::END_POINT];
+                $this->command->error($message);
+                break;
+            }
+
+            $calculation->oil_pipe_id = $oilPipe->id;
             $calculation->name = $row[self::NAME];
             $calculation->mix_speed_avg = $row[self::MIX_SPEED_AVERAGE];
             $calculation->fluid_speed = $row[self::FLUID_SPEED];

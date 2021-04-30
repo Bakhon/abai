@@ -170,8 +170,8 @@ Route::group(
                 Route::get('/hydro-calc/calculate', 'ComplicationMonitoring\HydroCalculation@calculate')->name('hydro_calculation.calculate');
                 Route::resource('hydro-calc', 'ComplicationMonitoring\HydroCalculation');
 
-//                Route::get('/reverse-calc/list', 'ComplicationMonitoring\ReverseCalculation@list')->name('reverse-calc.list');
-//                Route::get('/reverse-calc', 'ComplicationMonitoring\ReverseCalculation')->name('reverse-calc.index');
+                Route::get('/reverse-calc/list', 'ComplicationMonitoring\ReverseCalculationController@list')->name('reverse_calculation.list');
+                Route::get('/reverse-calc', 'ComplicationMonitoring\ReverseCalculationController@index')->name('reverse_calculation.index');
             }
         );
     }

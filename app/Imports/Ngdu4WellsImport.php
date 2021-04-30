@@ -52,7 +52,8 @@ class Ngdu4WellsImport implements ToCollection, WithEvents, WithColumnLimit, Wit
         'well-collector',
         'gu',
         'zu-gu',
-        'sp-gu'
+        'sp-gu',
+        'zu-zu_coll'
     ];
 
     public function __construct(Wells $command)
@@ -157,10 +158,10 @@ class Ngdu4WellsImport implements ToCollection, WithEvents, WithColumnLimit, Wit
                 $roughness = floatval($roughness);
                 $material = Material::where('roughness', $roughness)->first();
 
-                $this->command->info('Create Pipe ' . $row[self::PIPE_NAME]);
+                $this->command->info('Create Pipe ' . $row[self::PIPE_START_NAME]);
                 $pipe = OilPipe::firstOrCreate(
                     [
-                        'name' => $row[self::PIPE_NAME],
+                        'name' => $row[self::PIPE_START_NAME],
                         'ngdu_id' => $this->ngdu->id,
                         'gu_id' => $this->gu->id
                     ]
@@ -175,8 +176,21 @@ class Ngdu4WellsImport implements ToCollection, WithEvents, WithColumnLimit, Wit
                     $well = $this->createWell($row);
                 }
 
-                if ($between_points == 'zu-gu') {
+
+
+                if ($between_points == 'zu-gu' || $between_points == 'zu-zu_coll') {
                     $zu = Zu::where('lat', $row[self::LAT])->where('lon', $row[self::LON])->first();
+
+//                    if (strripos($row[self::PIPE_START_NAME], 'ЗУ-107д_ГУ') !== false) {
+//                        $error = 'error блеать';
+//                        dump($between_points);
+//                        dump($row);
+//                        dump($zu);
+//                        $this->command->error($error);
+////                    die;
+//                    }
+
+
                     if ($zu) {
                         $pipe->zu_id = $zu->id;
                         $pipe->start_point = $zu->name;
@@ -196,6 +210,15 @@ class Ngdu4WellsImport implements ToCollection, WithEvents, WithColumnLimit, Wit
             }
 
             if ($row[self::END_PIPE]) {
+
+//                if (strripos($pipe->name, 'ЗУ-107д_ГУ') !== false) {
+//                    $error = 'error блеать';
+//                    dump($row);
+//                    dump($zu);
+//                    $this->command->error($error);
+//                    die;
+//                }
+
 
                 if ($between_points == 'well-zu') {
                     if (!$row[self::ZU]) {
@@ -222,9 +245,16 @@ class Ngdu4WellsImport implements ToCollection, WithEvents, WithColumnLimit, Wit
                     if (preg_match('/ГУ/i', $row[self::ZU])) {
                         $between_points = 'zu-gu';
                     } else {
-                        $zu = $this->createZu($row, $this->gu->id);
+                        $zu = $this->createZu($row);
                         $well->zu_id = $zu->id;
                         $well->save();
+
+//                        if (strripos($this->gu->name, '107') !== false AND strripos($zu->name, '103') !== false) {
+//                            $error = 'error блеать';
+//                            dump($row);
+//                            $this->command->error($error);
+//                            die;
+//                        }
 
 
                         $pipe->zu_id = $zu->id;
@@ -242,6 +272,26 @@ class Ngdu4WellsImport implements ToCollection, WithEvents, WithColumnLimit, Wit
                     $this->gu->save();
                     $pipe->end_point = $this->gu->name;
                     $pipe->save();
+                }
+
+                if ($between_points == 'zu-zu_coll') {
+                    $pipe->end_point = $row[self::ZU];
+                    $pipe->save();
+                }
+
+                if ($between_points == 'zu_coll-gu') {
+                    $pipe->start_point = $row[self::ZU];
+                    $pipe->end_point = $this->gu->name;
+                    $pipe->save();
+
+//                    if ($pipe->name == 'ЗУ-24г_ЗУ-24д-ГУ') {
+//                        $error = 'error блеать';
+//                        dump($row[self::ZU]);
+//                        dump($row);
+//                        dump($pipe);
+//                        $this->command->error($error);
+//                        die;
+//                    }
                 }
 
                 if ($between_points == 'fl-gu' || $between_points == 'gu-gu') {
@@ -307,10 +357,20 @@ class Ngdu4WellsImport implements ToCollection, WithEvents, WithColumnLimit, Wit
 
     private function createWell($row): Well
     {
-        $this->command->info('Create Well ' . $row[self::WELL_NAME]);
+        $name = strtoupper($row[self::PIPE_START_NAME]);
+        $length = strlen($name);
+
+        for ($i = 0; $i < (4 - $length); $i++) {
+            $name = '0'.$name;
+        }
+
+        $name = 'UZN_'.$name;
+
+        $this->command->info('Create Well ' . $name);
+
         $well = Well::firstOrNew(
             [
-                'name' => strtoupper($row[self::WELL_NAME]),
+                'name' => $name,
                 'ngdu_id' => $this->ngdu->id,
                 'gu_id' => $this->gu->id
             ]
@@ -339,6 +399,7 @@ class Ngdu4WellsImport implements ToCollection, WithEvents, WithColumnLimit, Wit
 
         $zu->lat = $row[self::LAT];
         $zu->lon = $row[self::LON];
+        $zu->elevation = $row[self::ELEVATION];
 
         $zu->save();
 
@@ -364,6 +425,13 @@ class Ngdu4WellsImport implements ToCollection, WithEvents, WithColumnLimit, Wit
             return 'well-zu';
         }
 
+        if (preg_match('/ЗУ-КОЛЛ/i', $row[self::PIPE_START_NAME])) {
+            return 'zu-zu_coll';
+        }
+
+        if (preg_match('/ЗУ.+ЗУ.+ГУ/i', $row[self::PIPE_START_NAME])) {
+            return 'zu_coll-gu';
+        }
         if (preg_match('/СП/i', $row[self::PIPE_START_NAME])) {
             return 'sp-gu';
         }

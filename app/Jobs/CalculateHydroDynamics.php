@@ -3,7 +3,6 @@
 namespace App\Jobs;
 
 use App\Exports\PipeLineCalcExport;
-use App\Exports\PipeLineResultExport;
 use App\Imports\HydroCalcResultImport;
 use App\Models\ComplicationMonitoring\HydroCalcResult;
 use App\Models\ComplicationMonitoring\OmgNGDU;
@@ -19,7 +18,7 @@ use Imtigger\LaravelJobStatus\Trackable;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Http;
 
-class ExportHydroCalcTableToExcel implements ShouldQueue
+class CalculateHydroDynamics implements ShouldQueue
 {
     use Dispatchable;
     use InteractsWithQueue;

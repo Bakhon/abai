@@ -384,7 +384,7 @@ return array (
       'break_qty' => 'Количество порывов',
       'height_drop' => 'Перепад высот, м',
     ),
-    'table_title' => 'Таблица расчета гидравлики',
+    'table_title' => 'Таблица расчета гидравлики ГУ - УПСВ',
     'message' => 
     array (
       'no-omgdu-data' => 'нет данных ОМГДУ',
@@ -409,5 +409,9 @@ return array (
       'surge_tank_pressure' => 'Давление в буферной емкости не должно быть равно 0 !',
       'hydrogen_sulfide' => 'Значение H₂S в газе не должно быть равно 0 !',
     ),
+  ),
+  'reverse_calculation' => 
+  array (
+    'table_title' => 'Таблица расчета гидравлики Скважина - ГУ',
   ),
 );

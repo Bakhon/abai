@@ -8,7 +8,7 @@ use App\Http\Controllers\Traits\WithFieldsValidation;
 use App\Http\Requests\IndexTableRequest;
 use App\Http\Resources\HydroCalcCalculatedListResource;
 use App\Http\Resources\HydroCalcPrepareListResource;
-use App\Jobs\ExportHydroCalcTableToExcel;
+use App\Jobs\CalculateHydroDynamics;
 use App\Models\ComplicationMonitoring\HydroCalcResult;
 use App\Models\ComplicationMonitoring\OmgNGDU;
 use App\Models\ComplicationMonitoring\TrunklinePoint;
@@ -271,7 +271,7 @@ class HydroCalculation extends Controller
 
     public function calculate(IndexTableRequest $request)
     {
-        $job = new ExportHydroCalcTableToExcel($request->validated());
+        $job = new CalculateHydroDynamics($request->validated());
         $this->dispatch($job);
 
         return response()->json(
