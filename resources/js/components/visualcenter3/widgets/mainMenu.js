@@ -19,7 +19,7 @@ export default {
     },
     methods: {
         switchCategory(planFieldName, factFieldName, metricName, categoryName, parentButton, childButton) {
-            this.changeTargetCompanyFilter();
+            this.disableTargetCompanyFilter();
             if (!childButton) {
                 this.mainMenuButtonElementOptions = _.cloneDeep(mainMenuConfiguration);
                 this.disableOilFilters();
@@ -39,7 +39,7 @@ export default {
         },
 
         switchMainMenu(parentButton, childButton) {
-            this.changeTargetCompanyFilter();
+            this.disableTargetCompanyFilter();
             let self = this;
             this.isMainMenuItemChanged = false;
             let currentFilterOptions = this.mainMenuButtonElementOptions[parentButton].childItems[childButton];
@@ -100,10 +100,10 @@ export default {
             }
         },
 
-        setColorToMainMenuButtons(productionPlan) {
+        setColorToMainMenuButtons() {
             let self = this;
             _.forEach(Object.keys(this.mainMenuButtonElementOptions), function (button) {
-                self[button] = self.getButtonClassForMainMenu(productionPlan, button);
+                self[button] = self.getButtonClassForMainMenu(self.planFieldName, button);
             });
         },
 
@@ -121,6 +121,22 @@ export default {
             }
             let buttonOptions = this.mainMenuButtonElementOptions[parentButton].childItems[childButton];
             return this[buttonOptions.flag];
+        },
+
+        getThousandMetricNameByCategorySelected() {
+            if (this.gasProductionButton) {
+                return this.trans('visualcenter.thousand') + this.trans('visualcenter.meterCubicWithSpace');
+            } else {
+                return this.trans("visualcenter.dzoThousandTon");
+            }
+        },
+
+        getMetricNameByCategorySelected() {
+            if (this.gasProductionButton) {
+                return this.trans('visualcenter.meterCubicWithSpace');
+            } else {
+                return this.trans("visualcenter.chemistryMetricTon");
+            }
         },
     },
 }
