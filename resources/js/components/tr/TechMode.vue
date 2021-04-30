@@ -578,7 +578,7 @@
 
         <div class="table-outer"> 
           <div class="table-inner abat_tr">
-                  <TechMode :wells="wells" @onSort="sortBy" v-if="show_first" />
+                  <TechModeSmall :wells="wells" @onSort="sortBy" v-if="show_first" />
                   <el-table
                     :data="pageData"
                     height="calc(100vh - 230px)"
@@ -3929,6 +3929,7 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import lang from 'element-ui/lib/locale/lang/ru-RU';
 import locale from 'element-ui/lib/locale';
+import TechModeSmall from "./TechModeSmall";
 import TrTable from "./table";
 import TrFullTable from "./tablefull";
 import SearchFormRefresh from "../ui-kit/SearchFormRefresh.vue";
@@ -3945,6 +3946,7 @@ export default {
   mixins: [paginationMixin],
   components: {
     TrTable,
+    TechModeSmall,
     TrFullTable,
     SearchFormRefresh,
     TrMultiselect,
