@@ -81,7 +81,7 @@ class DruidService
         $builder->sum('work_time');
         $builder->floatSum('add_prod_12m');
         $builder->floatSum('plan_add_prod_12m');
-        $builder->where('dzo_short', '=', 'ММГ');
+        $builder->where('dzo_short',  'ММГ');
         $result = $builder->groupBy();
 
         return $result->data();
