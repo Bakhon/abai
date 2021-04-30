@@ -27,6 +27,12 @@ class DBController extends Controller
         return view('reports.las');
     }
 
+
+    public function well_cart()
+    {
+        return view('reports.well_cart');
+    }
+
     public function geoDataReferenceBook()
     {
         return view('reports.geo_data_reference_book');

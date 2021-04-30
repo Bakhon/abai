@@ -36,10 +36,14 @@ class ExportEconomicDataToExcel implements ShouldQueue
 
     public function handle()
     {
-        $interval = EconomicController::intervalMonths(
+        /** @var Carbon $intervalStart */
+        /** @var Carbon $intervalEnd */
+        list($intervalStart, $intervalEnd) = EconomicController::calcIntervalMonthsStartEnd(
             $this->params['interval_start'] ?? null,
             $this->params['interval_end'] ?? null
         );
+
+        $interval = EconomicController::intervalFormat($intervalStart, $intervalEnd);
 
         $druid = new DruidClient(config('druid'));
 

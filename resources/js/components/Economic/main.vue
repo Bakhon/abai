@@ -9,7 +9,15 @@
             <economic-title>
               <span>{{ res.lastMonth.cat1.count.value.toLocaleString() }}</span>
 
-              <percent-badge :percent="-res.lastMonth.cat1.count.percent"/>
+              <div class="d-flex align-items-center">
+                <percent-badge
+                    :percent="-res.lastMonth.cat1.count.percent"
+                    class="flex-shrink-0"/>
+
+                <div class="flex-grow-1 text-blue font-size-12px line-height-20px text-right">
+                  {{ trans('economic_reference.compare_to_prev_month') }}
+                </div>
+              </div>
             </economic-title>
 
             <subtitle>
@@ -44,7 +52,13 @@
                 {{ res.lastMonth.Operating_profit.sum.value[1] }}
               </span>
 
-              <percent-badge :percent="-res.lastMonth.Operating_profit.sum.percent"/>
+              <div class="d-flex align-items-center">
+                <percent-badge :percent="-res.lastMonth.Operating_profit.sum.percent"/>
+
+                <div class="flex-grow-1 text-blue font-size-12px line-height-20px text-right">
+                  {{ trans('economic_reference.compare_to_prev_month') }}
+                </div>
+              </div>
             </economic-title>
 
             <subtitle>
