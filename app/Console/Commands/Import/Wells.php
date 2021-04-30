@@ -51,9 +51,6 @@ class Wells extends Command
         DB::statement('SET FOREIGN_KEY_CHECKS=0');
 
         PipeCoord::truncate();
-        OilPipe::truncate();
-        Zu::truncate();
-        Well::truncate();
 
         DB::statement('SET FOREIGN_KEY_CHECKS=1');
 
