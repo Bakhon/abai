@@ -84,7 +84,6 @@ class GetHiveData extends Command
         $alldata->oil_delivery_fact = $oilDeliveryFact;
         $alldata->associated_gas_delivery_fact = $associatedGasDeliveryFact;
         $alldata->stock_of_goods_delivery_fact = $stockOfGoodsDeliveryFactTotal;
-        //dd($alldata);
         $alldata->save();
     }
 
