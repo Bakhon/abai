@@ -367,6 +367,11 @@ class Ngdu4WellsImport implements ToCollection, WithEvents, WithColumnLimit, Wit
 
         $zu->save();
 
+        if ($zu->name == 'ЗУ-103Е') {
+            dump($zu);
+            dump($row);
+        }
+
         return $zu;
     }
 
