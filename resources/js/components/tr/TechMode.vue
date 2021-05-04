@@ -583,7 +583,7 @@
                     :data="pageData"
                     height="calc(100vh - 230px)"
                     style="width: 100%"
-                    :class="zb"
+                    
                     
                     :header-cell-class-name="getHeaderCellClassName"
                     >
@@ -5026,7 +5026,7 @@ table::-webkit-scrollbar-corner {
 .el-table__header-wrapper th div {
     background: rgb(51, 57, 117);
     height: auto;
-    padding: 0px 0;
+    padding: 0px 0px 0px 0px;
     color: #fff;
     font-size: 14px;
     font-family: "Harmonia-sans", sans-serif;
