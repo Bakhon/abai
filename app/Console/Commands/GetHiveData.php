@@ -51,9 +51,7 @@ class GetHiveData extends Command
         $dataOilAndGas =  $this->getHiveData('KMG_I_PRD_AREA_VIEW', $date);
         $dataWater =  $this->getHiveData('KMG_I_MTR_INJ_VIEW', $date);
         $dataOilDelivery =  $this->getHiveData('KMG_I_MTR_PROD_VIEW', $date);
-        $dataOilDelivery2 =  $this->getHiveData('KMG_I_MTR_PROD_VIEW', $date);
-        $dataOilDelivery3 =  $this->getHiveData('KMG_I_MTR_PROD_VIEW', $date);
-        $dataOilDelivery4 =  $this->getHiveData('KMG_I_MTR_PROD_VIEW', $date);
+        $dataOilDeliveryMass = $this->getDataFromMassive2($dataOilDelivery);
         $dataGasMore =  $this->getHiveData('KMG_I_MTR_GAS_VIEW', $date);
 
         $oilFact  = 0;
@@ -64,15 +62,12 @@ class GetHiveData extends Command
         }
 
 
-
         $agentUploadTotalWaterInjectionFact = $this->getDataFromMassive($dataWater, 'KGM_INJ_TOTAL', 10);
-        $oilDeliveryFact = $this->getDataFromMassive($dataOilDelivery, 'KGM_DELIVERY', 10);
-
-        $stockOfGoodsDeliveryFactAsy = $this->getDataFromMassive($dataOilDelivery2, 'ASY_D', 10);
-        $stockOfGoodsDeliveryFactAksh = $this->getDataFromMassive($dataOilDelivery3, 'AKSH_D', 10);
-        $stockOfGoodsDeliveryFactNur = $this->getDataFromMassive($dataOilDelivery4, 'NUR_D', 10);
+        $oilDeliveryFact = $this->getDataFromMassive($dataOilDeliveryMass, 'KGM_DELIVERY', 10);
+        $stockOfGoodsDeliveryFactAsy = $this->getDataFromMassive($dataOilDeliveryMass, 'ASY_D', 10);
+        $stockOfGoodsDeliveryFactAksh = $this->getDataFromMassive($dataOilDeliveryMass, 'AKSH_D', 10);
+        $stockOfGoodsDeliveryFactNur = $this->getDataFromMassive($dataOilDeliveryMass, 'NUR_D', 10);
         $stockOfGoodsDeliveryFactTotal =  $stockOfGoodsDeliveryFactAksh + $stockOfGoodsDeliveryFactAsy + $stockOfGoodsDeliveryFactNur;
-
         $associatedGasDeliveryFact = $this->getDataFromMassive($dataGasMore, 'KGM_TRANS', 10);
 
         $alldata = new DzoImportData();
@@ -84,6 +79,7 @@ class GetHiveData extends Command
         $alldata->oil_delivery_fact = $oilDeliveryFact;
         $alldata->associated_gas_delivery_fact = $associatedGasDeliveryFact;
         $alldata->stock_of_goods_delivery_fact = $stockOfGoodsDeliveryFactTotal;
+        dd($alldata);
         $alldata->save();
     }
 
@@ -96,6 +92,17 @@ class GetHiveData extends Command
             }
         }
     }
+
+
+    public function    getDataFromMassive2($data)
+    {
+        foreach ($data as $rowNum => $row) {
+            $dataMass[] = array_merge($row);
+        }
+        return $dataMass;
+    }
+
+
 
     /**
      * Execute the console command.
