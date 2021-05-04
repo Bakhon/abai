@@ -5,7 +5,6 @@ namespace App\Console\Commands;
 use App\Models\VisCenter\ExcelForm\DzoImportData;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
-use Illuminate\Http\Request;
 
 class GetHiveData extends Command
 {
