@@ -41,6 +41,14 @@ const bdform = {
                 this._vm.localeUrl(`/api/bigdata/forms/${params.formCode}/validate/${params.fieldCode}`),
                 params.values
             )
+        },
+        loadDict({}, code) {
+            axios.get(this._vm.localeUrl(`/api/bigdata/dict/${code}`)).then(data => {
+                commit("bd/SAVE_DICT", {
+                    code: code,
+                    items: data.data
+                });
+            })
         }
     },
 
