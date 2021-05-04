@@ -43,12 +43,7 @@
           <p class="title">{{ row.id }}</p>
         </td>
         <td v-for="column in columns" class="table-border element-position">
-          <p v-if="typeof dictFields[column.code] !== 'undefined' && typeof getDict(dictFields[column.code])[row[column.code]] !== 'undefined'">
-            {{ getDict(dictFields[column.code])[row[column.code]].name }}
-          </p>
-          <p v-else>
-            {{ row[column.code] }}
-          </p>
+          <p>{{ getCellValue(row, column) }}</p>
         </td>
         <td class="table-border element-position">
           <div class="table-container-svg">
@@ -91,6 +86,7 @@
 <script>
 import forms from '../../../json/bd/forms.json'
 import BigDataPlainForm from './PlainForm'
+import {bdFormActions} from '@store/helpers'
 
 export default {
   name: "BigdataPlainFormResults",
@@ -132,6 +128,9 @@ export default {
     this.updateResults()
   },
   methods: {
+    ...bdFormActions([
+      'loadDict'
+    ]),
     updateResults() {
 
       this.axios.get(this.localeUrl(`/api/bigdata/forms/${this.code}`)).then(({data}) => {
@@ -163,12 +162,7 @@ export default {
     loadDictionaries() {
       Object.values(this.dictFields).forEach(code => {
         if (this.getDict(code)) return
-        this.axios.get(this.localeUrl(`/api/bigdata/dict/${code}`)).then(data => {
-          this.$store.commit("bd/SAVE_DICT", {
-            code: code,
-            items: data.data
-          });
-        })
+        this.loadDict(code)
       })
     },
     getDict(code) {
@@ -196,6 +190,22 @@ export default {
               })
             }
           })
+    },
+    getCellValue(row, column) {
+      if (
+          typeof this.dictFields[column.code] !== 'undefined'
+          && typeof this.getDict(this.dictFields[column.code]) !== 'undefined'
+      ) {
+        let dict = this.getDict(this.dictFields[column.code])
+
+        let value = dict.find(item => item.id === row[column.code])
+        if (value) {
+          return value.name
+        }
+
+      }
+
+      return row[column.code]
     }
   }
 }
@@ -213,7 +223,7 @@ export default {
 
     th {
       font-weight: normal;
-      padding: 5px 0;
+      padding: 5px 13px;
       vertical-align: middle;
 
       p {

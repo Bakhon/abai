@@ -1,15 +1,20 @@
 <template>
   <div class="row well-cart__wrapper">
     <cat-loader v-show="loading"/>
-    <div class="col-md-3 left-column">
+    <div
+        :class="{'left-column_folded': isLeftColumnFolded}"
+        class="left-column"
+    >
       <div class="bg-dark left-column__inner">
         <div class="row">
           <div class="col">
             <div class="well-deal">
-              <div class="border-bottom">
-                <div class="icon-ierarchy"></div>
-                <h2>Дело скважины</h2>
-                <div class="icon-all" style="margin-left: auto;">
+              <div class="well-deal__header">
+                <div class="title">
+                  <div class="icon-ierarchy"></div>
+                  <h2>Дело скважины</h2>
+                </div>
+                <div class="icon-all" style="margin-left: auto;" @click="isLeftColumnFolded = !isLeftColumnFolded">
                   <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M11 1L5.8053 6L11 11" stroke="white" stroke-width="1.2" stroke-linecap="round"
                           stroke-linejoin="round"/>
@@ -338,7 +343,7 @@
       </div>
     </div>
 
-    <div class="col-md-3 passport right-column">
+    <div class="passport right-column">
       <template v-if="well">
         <div class="bg-dark-transparent">
           <template>
@@ -539,7 +544,8 @@ export default {
       well: null,
       graph: null,
       activeFormCode: null,
-      loading: false
+      loading: false,
+      isLeftColumnFolded: false
     }
   },
   mounted() {
@@ -575,6 +581,11 @@ export default {
 </script>
 
 <style scoped lang="scss">
+$leftColumnWidth: 398px;
+$leftColumnFoldedWidth: 84px;
+$rightColumnWidth: 348px;
+
+
 .well-cart {
   &__wrapper {
     height: calc(100vh - 90px);
@@ -840,10 +851,15 @@ h4 {
   display: flex;
   padding: 15px 19px;
 
-  .border-bottom {
-    width: 100%;
+  &__header {
+    border-bottom: 1px solid #555BA6;
     display: flex;
-    border-bottom: 1px solid #555BA6 !important;
+    height: 45px;
+    width: 100%;
+
+    .title {
+      display: flex;
+    }
   }
 
   h2 {
@@ -1509,8 +1525,31 @@ h4 {
 }
 
 .left-column {
-  max-width: 398px !important;
-  min-width: 398px !important;
+  min-width: $leftColumnWidth;
+  width: $leftColumnWidth;
+  padding: 0 15px;
+
+  &_folded {
+    min-width: $leftColumnFoldedWidth;
+    width: $leftColumnFoldedWidth;
+
+    .icon-all {
+      transform: rotate(180deg);
+    }
+
+    .well-deal__header {
+      border: none;
+    }
+
+    .title, .directory {
+      display: none;
+    }
+
+    & + .mid-col {
+      min-width: calc(100% - #{$leftColumnFoldedWidth} - #{$rightColumnWidth} - 11px);
+    }
+
+  }
 
   &__inner {
     height: 100%;
@@ -1518,8 +1557,8 @@ h4 {
 }
 
 .right-column {
-  max-width: 348px !important;
-  min-width: 348px !important;
+  min-width: $rightColumnWidth;
+  padding-left: 15px;
 
   &__inner {
     height: 100%;
@@ -1537,9 +1576,8 @@ h4 {
 }
 
 .mid-col {
-  max-width: calc(100% - 348px - 398px);
-  flex: calc(100% - 348px - 398px);
-  min-width: 500px;
+  min-width: calc(100% - #{$leftColumnWidth} - #{$rightColumnWidth} - 11px);
+  padding: 0 15px;
 
   &__main {
     height: calc(100% - 150px);
