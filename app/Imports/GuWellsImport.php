@@ -403,9 +403,18 @@ class GuWellsImport implements ToCollection, WithEvents, WithColumnLimit, WithSt
 
     private function createWell($row): Well
     {
+        $name = strtoupper($row[self::PIPE_START_NAME]);
+        $length = strlen($name);
+
+        for ($i = 0; $i < (4 - $length); $i++) {
+            $name = '0'.$name;
+        }
+
+        $name = 'UZN_'.$name;
+
         $well = Well::firstOrNew(
             [
-                'name' => strtoupper($row[self::START_POINT]),
+                'name' => $name,
                 'ngdu_id' => $this->ngdu->id,
                 'gu_id' => $this->gu->id
             ]
@@ -434,6 +443,7 @@ class GuWellsImport implements ToCollection, WithEvents, WithColumnLimit, WithSt
 
         $zu->lat = $row[self::LAT];
         $zu->lon = $row[self::LON];
+        $zu->elevation = $row[self::ELEVATION];
 
         $zu->save();
 

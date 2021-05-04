@@ -19,7 +19,7 @@
                     </a>
                     <a href="{{url('/')}}/ru/ecorefsequipid"
                        class="list-group-item list-group-item-action">
-                        {{__('economic_reference.equipment')}}
+                        {{__('economic_reference.equipment_name')}}
                     </a>
                     <a href="{{url('/')}}/ru/ecorefsrouteid"
                        class="list-group-item list-group-item-action">
