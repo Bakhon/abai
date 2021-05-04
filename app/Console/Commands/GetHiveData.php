@@ -40,8 +40,10 @@ class GetHiveData extends Command
 
         $hive = new \ThriftSQL\Hive('172.20.103.38', 10000, 'hive', 'hive');
         $hiveTables = $hive->connect()->getIterator("select * from kazger." . $table . " where start_datetime like '" . $date . "%'");
-
-        return $hiveTables;
+        foreach ($hiveTables as $rowNum => $row) {
+            $dataMass[] = array_merge($row);
+        }
+        return $dataMass;
     }
 
     public function saveHiveData()
@@ -51,7 +53,6 @@ class GetHiveData extends Command
         $dataOilAndGas =  $this->getHiveData('KMG_I_PRD_AREA_VIEW', $date);
         $dataWater =  $this->getHiveData('KMG_I_MTR_INJ_VIEW', $date);
         $dataOilDelivery =  $this->getHiveData('KMG_I_MTR_PROD_VIEW', $date);
-        $dataOilDeliveryMass = $this->getDataFromMassive2($dataOilDelivery);
         $dataGasMore =  $this->getHiveData('KMG_I_MTR_GAS_VIEW', $date);
 
         $oilFact  = 0;
@@ -63,10 +64,10 @@ class GetHiveData extends Command
 
 
         $agentUploadTotalWaterInjectionFact = $this->getDataFromMassive($dataWater, 'KGM_INJ_TOTAL', 10);
-        $oilDeliveryFact = $this->getDataFromMassive($dataOilDeliveryMass, 'KGM_DELIVERY', 10);
-        $stockOfGoodsDeliveryFactAsy = $this->getDataFromMassive($dataOilDeliveryMass, 'ASY_D', 10);
-        $stockOfGoodsDeliveryFactAksh = $this->getDataFromMassive($dataOilDeliveryMass, 'AKSH_D', 10);
-        $stockOfGoodsDeliveryFactNur = $this->getDataFromMassive($dataOilDeliveryMass, 'NUR_D', 10);
+        $oilDeliveryFact = $this->getDataFromMassive($dataOilDelivery, 'KGM_DELIVERY', 10);
+        $stockOfGoodsDeliveryFactAsy = $this->getDataFromMassive($dataOilDelivery, 'ASY_D', 10);
+        $stockOfGoodsDeliveryFactAksh = $this->getDataFromMassive($dataOilDelivery, 'AKSH_D', 10);
+        $stockOfGoodsDeliveryFactNur = $this->getDataFromMassive($dataOilDelivery, 'NUR_D', 10);
         $stockOfGoodsDeliveryFactTotal =  $stockOfGoodsDeliveryFactAksh + $stockOfGoodsDeliveryFactAsy + $stockOfGoodsDeliveryFactNur;
         $associatedGasDeliveryFact = $this->getDataFromMassive($dataGasMore, 'KGM_TRANS', 10);
 
@@ -92,16 +93,6 @@ class GetHiveData extends Command
             }
         }
     }
-
-
-    public function    getDataFromMassive2($data)
-    {
-        foreach ($data as $rowNum => $row) {
-            $dataMass[] = array_merge($row);
-        }
-        return $dataMass;
-    }
-
 
 
     /**
