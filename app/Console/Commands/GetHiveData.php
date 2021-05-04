@@ -84,7 +84,7 @@ class GetHiveData extends Command
     }
 
 
-    public function    getDataFromMassive($data, $field, $column)
+    public function getDataFromMassive($data, $field, $column)
     {
         foreach ($data as $rowNum => $row) {
             if ($row[4] == $field) {
