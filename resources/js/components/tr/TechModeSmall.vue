@@ -1558,7 +1558,7 @@ export default {
     name: "TechModeSmall",
     mixins: [paginationMixin],
     props: {
-        wells: Array
+        pageData: Array
     },
     data: function () {
         return {

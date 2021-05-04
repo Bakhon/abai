@@ -578,12 +578,13 @@
 
         <div class="table-outer"> 
           <div class="table-inner abat_tr">
-                  <TechModeSmall :wells="wells" @onSort="sortBy" v-if="show_first" />
+                  
                   <el-table
                     :data="pageData"
                     height="calc(100vh - 230px)"
                     style="width: 100%"
-                    v-if="show_second"
+                    :class="zb"
+                    
                     :header-cell-class-name="getHeaderCellClassName"
                     >
                     <el-table-column 
