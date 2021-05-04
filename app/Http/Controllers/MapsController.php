@@ -355,7 +355,10 @@ class MapsController extends Controller
             [
                 'coords',
                 'pipeType',
-                'speedFlow' => function ($query) use ($date) {
+                'speedFlowGuUpsv' => function ($query) use ($date) {
+                    $query->where('date', $date);
+                },
+                'speedFlowWellGu' => function ($query) use ($date) {
                     $query->where('date', $date);
                 }
             ]

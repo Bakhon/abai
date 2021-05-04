@@ -7,6 +7,7 @@ use App\Imports\TrunklineImport;
 use App\Models\ComplicationMonitoring\PipeType;
 use App\Models\Pipes\OilPipe;
 use App\Models\Pipes\PipeCoord;
+use App\Models\Refs\Well;
 use App\Models\Refs\Zu;
 use Illuminate\Console\Command;
 use App\Imports\GuWellsImport;
@@ -47,7 +48,11 @@ class Wells extends Command
      */
     public function handle(): void
     {
+        DB::statement('SET FOREIGN_KEY_CHECKS=0');
+
         PipeCoord::truncate();
+
+        DB::statement('SET FOREIGN_KEY_CHECKS=1');
 
         $files = [
             'ngdu-1.xlsx',
