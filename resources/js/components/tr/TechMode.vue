@@ -5026,16 +5026,19 @@ table::-webkit-scrollbar-corner {
 .el-table__header-wrapper th div {
     background: rgb(51, 57, 117);
     height: auto;
-    padding: 20px 0;
+    padding: 0px 0;
     color: #fff;
     font-size: 14px;
+    font-family: "Harmonia-sans", sans-serif;
 }
 .el-table thead.is-group th {
     background: rgb(51, 57, 117);
 }
 .el-table th, .el-table tr {
     background-color: #454D7D;
-    color: #fff
+    color: #fff;
+    font-family: "Harmonia-sans", sans-serif;
+    
 }
 
 .no_border.no_border  {
