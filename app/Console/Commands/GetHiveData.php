@@ -34,38 +34,69 @@ class GetHiveData extends Command
         parent::__construct();
     }
 
-    public function getHiveData()
+    public function getHiveData($table, $date)
     {
         require_once public_path() . '\php-thrift-sql\ThriftSQL.phar';
 
-        $date = Carbon::yesterday();
         $hive = new \ThriftSQL\Hive('172.20.103.38', 10000, 'hive', 'hive');
-        $hiveTables = $hive->connect()->getIterator("select * from kazger.KMG_I_PRD_AREA_VIEW where start_datetime >= '" . $date . "'");
+        $hiveTables = $hive->connect()->getIterator("select * from kazger." . $table . " where start_datetime like '" . $date . "%'");
+
+        return $hiveTables;
+    }
+
+    public function saveHiveData()
+    {
+        require_once public_path() . '\php-thrift-sql\ThriftSQL.phar';
+        $date = Carbon::yesterday();
+        $dataOilAndGas =  $this->getHiveData('KMG_I_PRD_AREA_VIEW', $date);
+        $dataWater =  $this->getHiveData('KMG_I_MTR_INJ_VIEW', $date);
+        $dataOilDelivery =  $this->getHiveData('KMG_I_MTR_PROD_VIEW', $date);
+        $dataOilDelivery2 =  $this->getHiveData('KMG_I_MTR_PROD_VIEW', $date);
+        $dataOilDelivery3 =  $this->getHiveData('KMG_I_MTR_PROD_VIEW', $date);
+        $dataOilDelivery4 =  $this->getHiveData('KMG_I_MTR_PROD_VIEW', $date);
+        $dataGasMore =  $this->getHiveData('KMG_I_MTR_GAS_VIEW', $date);
+
         $oilFact  = 0;
-        $oilPlan  = 0;
         $gasFact  = 0;
-        $gasPlan  = 0;
-        $liqFact  = 0;
-        $liqPlan  = 0;
-        foreach ($hiveTables as $rowNum => $row) {
-            $hiveData[] = array_merge($row);
+        foreach ($dataOilAndGas as $rowNum => $row) {
             $oilFact += $row[4];
-            $oilPlan += $row[5];
             $gasFact += $row[6];
-            $gasPlan += $row[7];
-            $liqFact += $row[8];
-            $liqPlan += $row[9];
         }
 
-        $hive->disconnect();
+
+
+        $agentUploadTotalWaterInjectionFact = $this->getDataFromMassive($dataWater, 'KGM_INJ_TOTAL', 10);
+        $oilDeliveryFact = $this->getDataFromMassive($dataOilDelivery, 'KGM_DELIVERY', 10);
+
+        $stockOfGoodsDeliveryFactAsy = $this->getDataFromMassive($dataOilDelivery2, 'ASY_D', 10);
+        $stockOfGoodsDeliveryFactAksh = $this->getDataFromMassive($dataOilDelivery3, 'AKSH_D', 10);
+        $stockOfGoodsDeliveryFactNur = $this->getDataFromMassive($dataOilDelivery4, 'NUR_D', 10);
+        $stockOfGoodsDeliveryFactTotal =  $stockOfGoodsDeliveryFactAksh + $stockOfGoodsDeliveryFactAsy + $stockOfGoodsDeliveryFactNur;
+
+        $associatedGasDeliveryFact = $this->getDataFromMassive($dataGasMore, 'KGM_TRANS', 10);
+
         $alldata = new DzoImportData();
         $alldata->date = $date;
         $alldata->dzo_name = 'КГМ';
-        $alldata->oil_production_fact = $oilFact;  
-        $alldata->agent_upload_total_water_injection_fact = $liqFact;
+        $alldata->oil_production_fact = $oilFact;
+        $alldata->associated_gas_production_fact = $gasFact;
+        $alldata->agent_upload_total_water_injection_fact = $agentUploadTotalWaterInjectionFact;
+        $alldata->oil_delivery_fact = $oilDeliveryFact;
+        $alldata->associated_gas_delivery_fact = $associatedGasDeliveryFact;
+        $alldata->stock_of_goods_delivery_fact = $stockOfGoodsDeliveryFactTotal;
+        //dd($alldata);
         $alldata->save();
     }
 
+
+    public function    getDataFromMassive($data, $field, $column)
+    {
+        foreach ($data as $rowNum => $row) {
+            if ($row[4] == $field) {
+                return  $row[$column];
+            }
+        }
+    }
 
     /**
      * Execute the console command.
@@ -75,6 +106,6 @@ class GetHiveData extends Command
 
     public function handle()
     {
-        $this->getHiveData();
+        $this->saveHiveData();
     }
 }
