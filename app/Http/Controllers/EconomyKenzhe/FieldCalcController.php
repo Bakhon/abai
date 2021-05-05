@@ -368,66 +368,48 @@ class FieldCalcController extends MainController
                 $kpnResult = 0;
             }
 
+            $chistayaPribyl = $operPrib - $kpnResult;
+            $svobodDenPotok = $chistayaPribyl - $buyCostResult + $amortizaciyaResult;
+            $godovoiLiquid = $godovoiLiquid + $this->liquid;
+            $godovoiOil = $godovoiOil + $oil;
+            $godovoiEmpper = $godovoiEmpper + $empper;
+            $godovoiWorkday = $godovoiWorkday + $workday;
+            $godovoiNdo = $godovoiNdo + $exportsResultsTotal + $insideResultsTotal;
+            $godovoiDohod = $godovoiDohod + $exportsDiscontResultsTotal + $insideDiscontResultsTotal;
+            $godovoiNdnpi = $godovoiNdnpi + $exportsNdpiResultsTotal + $insideNdpiResultsTotal;
+            $godovoiRent = $godovoiRent + $exportsRentTaxResultsTotal;
+            $godovoiEtp = $godovoiEtp + $exportsEtpResultsTotal;
+            $godovoiTrans = $godovoiTrans + $exportsTarTnResultsTotal + $insideTarTnResultsTotal;
+            $godovoiZatrElectrShgn = $godovoiZatrElectrShgn + $zatrElectResults[1];
+            $godovoiZatrElectrEcn = $godovoiZatrElectrEcn + $zatrElectResults[2];
+            $godovoiZatrPrep = $godovoiZatrPrep + $zatrPrepResults;
+            $godovoiZatrPrs = $godovoiZatrPrs + $this->prsCostResults;
+            $godovoiZatrSutObs = $godovoiZatrSutObs + $expDayResults[1];
+            $godovoiArenda = $godovoiArenda + $rentCostResult;
+            $godovoiAmortizacia = $godovoiAmortizacia + $amortizaciyaResult;
+            $godovoiOperPryb = $godovoiOperPryb + $operPrib;
+            $godovoiKpn = $godovoiKpn + $kpnResult;
+            $godovoiChistPryb = $godovoiChistPryb + $chistayaPribyl;
+            $godovoiKvl = $godovoiKvl + $buyCostResult;
+            $godovoiSvobPot = $godovoiSvobPot + $svobodDenPotok;
+            $godovoiShgnParam = $godovoiShgnParam + $shgnParam * $this->liq * $workday;
+            $godovoiEcnParam = $godovoiEcnParam + $ecnParam * $this->liq * $workday;
 
-            $data[$company->name][$this->year]['Чистая прибыль'] += $operPrib - $kpnResult;
-            $data[$company->name][$this->year]['Свободный денежный поток'] += $data[$company->name][$this->year]['Чистая прибыль'] - $buyCostResult + $amortizaciyaResult;
-            $data[$company->name][$this->year]['Добыча жидкости'] += $godovoiLiquid + $this->liquid;
-            $data[$company->name][$this->year]['oil'] +=  $godovoiOil + $oil;
-            $data[$company->name][$this->year]['empper'] += $godovoiEmpper + $empper;
-            $data[$company->name][$this->year]['Рабочих дней'] += $godovoiWorkday + $workday;
-            $data[$company->name][$this->year]['kolichestvoPrs'] += $prsResult;
-            $data[$company->name][$this->year]['Срдн. ПРС'] += $avgprsday;
-            $data[$company->name][$this->year]['Годовой НДО'] += $godovoiNdo + $exportsResultsTotal + $insideResultsTotal;
-            $data[$company->name][$this->year]['Доход'] += $godovoiDohod + $exportsDiscontResultsTotal + $insideDiscontResultsTotal;
-            $data[$company->name][$this->year]['НДПИ всего'] += $godovoiNdnpi + $exportsNdpiResultsTotal + $insideNdpiResultsTotal;
-            $data[$company->name][$this->year]['godovoiRent'] += $godovoiRent + $exportsRentTaxResultsTotal;
-            $data[$company->name][$this->year]['godovoiEtp'] += $godovoiEtp;
-            $data[$company->name][$this->year]['godovoiTrans'] += $godovoiTrans;
-            $data[$company->name][$this->year]['godovoiZatrElectShgn'] +=  $godovoiZatrElectrShgn + $zatrElectResults[1];
-            $data[$company->name][$this->year]['godovoiZatrElectEcn'] += $godovoiZatrElectrEcn + $zatrElectResults[2];
-            $data[$company->name][$this->year]['godovoiZatrPrep'] +=  $godovoiZatrPrep + $zatrPrepResults;
-            $data[$company->name][$this->year]['godovoiZatrPrs'] += $godovoiZatrPrs + $this->prsCostResults;
-            $data[$company->name][$this->year]['godovoiZatrSutObs'] += $godovoiZatrSutObs + $expDayResults[1];
-            $data[$company->name][$this->year]['godovoiArenda'] += $godovoiArenda + $rentCostResult;
-            $data[$company->name][$this->year]['godovoiAmortizacia'] += $godovoiAmortizacia + $amortizaciyaResult;
-            $data[$company->name][$this->year]['godovoiOperPryb'] += $godovoiOperPryb + $operPrib;
-            $data[$company->name][$this->year]['godovoiKpn'] += $godovoiKpn + $kpnResult;
-            $data[$company->name][$this->year]['godovoiChistPryb'] += $godovoiChistPryb + $data[$company->name][$this->year]['Чистая прибыль'];
-            $data[$company->name][$this->year]['godovoiKvl'] += $godovoiKvl + $buyCostResult;
-            $data[$company->name][$this->year]['godovoiSvobPot'] += $godovoiSvobPot + $data[$company->name][$this->year]['Свободный денежный поток'];
-            $data[$company->name][$this->year]['npv'] += $npv + $data[$company->name][$this->year]['Свободный денежный поток'];
-            $data[$company->name][$this->year]['godovoiShgnParam'] += $godovoiShgnParam + $shgnParam * $this->liq * $workday;
-            $data[$company->name][$this->year]['godovoiEcnParam'] += $godovoiEcnParam + $ecnParam * $this->liq * $workday;
+            $nakoplSvobPotok = $nakoplSvobPotok + $svobodDenPotok;
+            $discSvobPotok = $discSvobPotok + $nakoplSvobPotok;
+            $nakopDiscSvodPotok = $nakopDiscSvodPotok + $discSvobPotok;
+            $npv = $npv + $svobodDenPotok;
 
-//            $chistayaPribyl = $operPrib - $kpnResult;
-//            $svobodDenPotok = $chistayaPribyl - $buyCostResult + $amortizaciyaResult;
-//            $godovoiEmpper = $godovoiEmpper + $empper;
-//            $godovoiWorkday = $godovoiWorkday + $workday;
-//            $godovoiNdo = $godovoiNdo + $exportsResultsTotal + $insideResultsTotal;
-//            $godovoiDohod = $godovoiDohod + $exportsDiscontResultsTotal + $insideDiscontResultsTotal;
-//            $godovoiNdnpi = $godovoiNdnpi + $exportsNdpiResultsTotal + $insideNdpiResultsTotal;
-//            $godovoiRent = $godovoiRent + $exportsRentTaxResultsTotal;
-//            $godovoiEtp = $godovoiEtp + $exportsEtpResultsTotal;
-//            $godovoiTrans = $godovoiTrans + $exportsTarTnResultsTotal + $insideTarTnResultsTotal;
-//            $godovoiZatrElectrShgn = $godovoiZatrElectrShgn + $zatrElectResults[1];
-//            $godovoiZatrElectrEcn = $godovoiZatrElectrEcn + $zatrElectResults[2];
-//            $godovoiZatrPrep = $godovoiZatrPrep + $zatrPrepResults;
-//            $godovoiZatrPrs = $godovoiZatrPrs + $this->prsCostResults;
-//            $godovoiZatrSutObs = $godovoiZatrSutObs + $expDayResults[1];
-//            $godovoiArenda = $godovoiArenda + $rentCostResult;
-//            $godovoiAmortizacia = $godovoiAmortizacia + $amortizaciyaResult;
-//            $godovoiOperPryb = $godovoiOperPryb + $operPrib;
-//            $godovoiKpn = $godovoiKpn + $kpnResult;
-//            $godovoiChistPryb = $godovoiChistPryb + $chistayaPribyl;
-//            $godovoiKvl = $godovoiKvl + $buyCostResult;
-//            $godovoiSvobPot = $godovoiSvobPot + $svobodDenPotok;
-//            $godovoiShgnParam = $godovoiShgnParam + $shgnParam * $this->liq * $workday;
-//            $godovoiEcnParam = $godovoiEcnParam + $ecnParam * $this->liq * $workday;
-//
-//            $nakoplSvobPotok = $nakoplSvobPotok + $svobodDenPotok;
-//            $discSvobPotok = $discSvobPotok + $nakoplSvobPotok;
-//            $nakopDiscSvodPotok = $nakopDiscSvodPotok + $discSvobPotok;
-//            $npv = $npv + $svobodDenPotok;
+
+            $exportTransportationValue = [];
+            foreach ($exportsTarTnResults as $id => $exportsResult) {
+                $exportTransportationValue[$this->getRoute($id)] = $exportsResult;
+            }
+
+            $insideTransportationValue = [];
+            foreach ($insideTarTnResults as $id => $insideValue) {
+                $insideTransportationValue[$this->getRoute($id)] = $insideValue;
+            }
 
             $exportProduction = [];
             foreach ($exportsResults as $id => $exportsResult) {
@@ -452,6 +434,12 @@ class FieldCalcController extends MainController
                     'routes' => $insideMarket,
                     'total' => $insideResultsTotal
                 ],
+                'Расходы по погрузке, транспортировке ЭКСПОРТ' => [
+                    'routes' => $exportTransportationValue,
+                ],
+                'Расходы по погрузке, транспортировке ВНУТ.РЫНОК' => [
+                    'routes' => $insideTransportationValue
+                ]
             ];
 
 //                $vdata2 = [
@@ -501,6 +489,39 @@ class FieldCalcController extends MainController
 //                ];
 //                array_push($result, $vdata2);
         }
+
+        $data[$company->name][$this->year] = [
+            'Чистая прибыль' => $chistayaPribyl,
+            'Свободный денежный поток' => $svobodDenPotok,
+            'Добыча жидкости' => $godovoiLiquid,
+            'oil' => $godovoiOil,
+            'empper' => $godovoiEmpper,
+            'Рабочих дней' => $godovoiWorkday,
+            'Количество ПРС' => $prsResult,
+            'Средний ПРС' => $avgprsday,
+            'godovoiNdo' => $godovoiNdo,
+            'Годовой доход' => $godovoiDohod,
+            'godovoiNdpi' => $godovoiNdnpi,
+            'Расчет Рентного налога' => $godovoiRent,
+            'Расчет ЭТП' => $godovoiEtp,
+            'Расчет Расходов по транспортировке нефти' => $godovoiTrans,
+            'godovoiZatrElectShgn' => $godovoiZatrElectrShgn,
+            'godovoiZatrElectEcn' => $godovoiZatrElectrEcn,
+            'godovoiZatrPrep' => $godovoiZatrPrep,
+            'godovoiZatrPrs' => $godovoiZatrPrs,
+            'godovoiZatrSutObs' => $godovoiZatrSutObs,
+            'godovoiArenda' => $godovoiArenda,
+            'godovoiAmortizacia' => $godovoiAmortizacia,
+            'Операционная прибыль' => $godovoiOperPryb,
+            'КПН' => $godovoiKpn,
+            'godovoiChistPryb' => $godovoiChistPryb,
+            'godovoiKvl' => $godovoiKvl,
+            'godovoiSvobPot' => $godovoiSvobPot,
+            'npv' => $npv,
+            'godovoiShgnParam' => $godovoiShgnParam,
+            'godovoiEcnParam' => $godovoiEcnParam,
+        ];
+
         $opiuOilNames = [];
         $this->getShowDataOnTree($this->opiuOilNames, $opiuValues, $opiuOilNames);
         foreach ($opiuOilNames as $oilName){
