@@ -266,7 +266,7 @@ export default {
       param_eco:null,
       param_org:null,
       param_fact:null,
-
+      wellData: null,
       field: null,
       wellIncl: null,
       dataNNO:"2020-11-01",
@@ -391,37 +391,40 @@ export default {
     prepareData() {
       this.postdata = JSON.stringify(
         {
-          "curveSelect": this.curveSelect,
-          "presValue": this.pResInput.split(' ')[0],
-          "piValue": this.piInput.split(' ')[0],
-          "qlValue": this.qLInput.split(' ')[0],
-          "bhpValue": this.bhpInput.split(' ')[0],
-          "hdynValue": [this.hDynInput.split(' ')[0], this.pAnnularInput.split(' ')[0]],
-          "pmanomValue": [this.pManomInput.split(' ')[0], this.hPumpManomInput.split(' ')[0]],
-          "whpValue": this.whpInput.split(' ')[0],
-          "wctValue": this.wctInput.split(' ')[0],
-          "gorValue": this.gorInput.split(' ')[0],
-          "expSelect": this.expChoose,
-          "hPumpValue": this.hPumpValue.split(' ')[0],
-          "celSelect": this.CelButton,
-          "celValue": this.CelValue.split(' ')[0],
-          "menu": this.menu,
-          "well_age": this.isYoungAge,
-          "grp_skin": this.hasGrp,
-          "analysisBox1": this.isAnalysisBoxValue1,
-          "analysisBox2": this.isAnalysisBoxValue2,
-          "analysisBox3": this.isAnalysisBoxValue3,
-          "analysisBox4": this.isAnalysisBoxValue4,
-          "analysisBox5": this.isAnalysisBoxValue5,
-          "analysisBox6": this.isAnalysisBoxValue6,
-          "analysisBox7": this.isAnalysisBoxValue7,
-          "analysisBox8": this.isAnalysisBoxValue8,
-          "sep_meth": this.sep_meth,
-          "sep_value": this.sep_value,
-          "mech_sep": this.mech_sep,
-          "mech_sep_value": this.mech_sep_value,
-          "nat_sep": this.nat_sep,
-          "nkt": this.nkt,
+          "welldata": this.wellData,
+          "settings" : {
+            "curveSelect": this.curveSelect,
+            "presValue": this.pResInput.split(' ')[0],
+            "piValue": this.piInput.split(' ')[0],
+            "qlValue": this.qLInput.split(' ')[0],
+            "bhpValue": this.bhpInput.split(' ')[0],
+            "hdynValue": [this.hDynInput.split(' ')[0], this.pAnnularInput.split(' ')[0]],
+            "pmanomValue": [this.pManomInput.split(' ')[0], this.hPumpManomInput.split(' ')[0]],
+            "whpValue": this.whpInput.split(' ')[0],
+            "wctValue": this.wctInput.split(' ')[0],
+            "gorValue": this.gorInput.split(' ')[0],
+            "expSelect": this.expChoose,
+            "hPumpValue": this.hPumpValue.split(' ')[0],
+            "celSelect": this.CelButton,
+            "celValue": this.CelValue.split(' ')[0],
+            "menu": this.menu,
+            "well_age": this.isYoungAge,
+            "grp_skin": this.hasGrp,
+            "analysisBox1": this.isAnalysisBoxValue1,
+            "analysisBox2": this.isAnalysisBoxValue2,
+            "analysisBox3": this.isAnalysisBoxValue3,
+            "analysisBox4": this.isAnalysisBoxValue4,
+            "analysisBox5": this.isAnalysisBoxValue5,
+            "analysisBox6": this.isAnalysisBoxValue6,
+            "analysisBox7": this.isAnalysisBoxValue7,
+            "analysisBox8": this.isAnalysisBoxValue8,
+            "sep_meth": this.sep_meth,
+            "sep_value": this.sep_value,
+            "mech_sep": this.mech_sep,
+            "mech_sep_value": this.mech_sep_value,
+            "nat_sep": this.nat_sep,
+            "nkt": this.nkt,
+          }
         })
     },
     downloadExcel() {
@@ -434,42 +437,9 @@ export default {
       } else if (this.CelButton == 'pin') {
         this.CelValue = this.piCelValue
       }
-      let jsonData = JSON.stringify(
-        {
-          "curveSelect": this.curveSelect,
-          "presValue": this.pResInput.split(' ')[0],
-          "piValue": this.piInput.split(' ')[0],
-          "qlValue": this.qLInput.split(' ')[0],
-          "bhpValue": this.bhpInput.split(' ')[0],
-          "hdynValue": [this.hDynInput.split(' ')[0], this.pAnnularInput.split(' ')[0]],
-          "pmanomValue": [this.pManomInput.split(' ')[0], this.hPumpManomInput.split(' ')[0]],
-          "whpValue": this.whpInput.split(' ')[0],
-          "wctValue": this.wctInput.split(' ')[0],
-          "gorValue": this.gorInput.split(' ')[0],
-          "expSelect": this.expChoose,
-          "hPumpValue": this.hPumpValue.split(' ')[0],
-          "celSelect": this.CelButton,
-          "celValue": this.CelValue.split(' ')[0],
-          "menu": this.menu,
-          "well_age": this.isYoungAge,
-          "grp_skin": this.hasGrp,
-          "analysisBox1": this.isAnalysisBoxValue1,
-          "analysisBox2": this.isAnalysisBoxValue2,
-          "analysisBox3": this.isAnalysisBoxValue3,
-          "analysisBox4": this.isAnalysisBoxValue4,
-          "analysisBox5": this.isAnalysisBoxValue5,
-          "analysisBox6": this.isAnalysisBoxValue6,
-          "analysisBox7": this.isAnalysisBoxValue7,
-          "analysisBox8": this.isAnalysisBoxValue8,
-          "sep_meth": this.sep_meth,
-          "sep_value": this.sep_value,
-          "mech_sep": this.mech_sep,
-          "mech_sep_value": this.mech_sep_value,
-          "nat_sep": this.nat_sep,
-          "nkt": this.nkt,
-        });
+      this.prepareData()
       let uri = "http://172.20.103.187:7575/api/pgno/"+ this.field + "/" + this.wellNumber + "/download";
-      this.axios.post(uri, jsonData,{responseType: "blob"}).then((response) => {
+      this.axios.post(uri, postdata,{responseType: "blob"}).then((response) => {
         fileDownload(response.data, "ПГНО_" + this.field + "_" + this.wellNumber + ".xlsx")
       }).catch(function (error) {
         console.error('oops, something went wrong!', error);
@@ -999,7 +969,7 @@ export default {
 
       this.axios.get(uri).then((response) => {
           let data = response.data;
-          
+          this.wellData = data
           this.method = 'MainMenu'
           if (data["Error"] == "NoData" || data["Error"] == 'data_error'){
             if(data["Error"] == "NoData") {
