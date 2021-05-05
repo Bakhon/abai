@@ -1,0 +1,21 @@
+[
+    {
+        "option": "exportSalesPercentage.name"
+    },
+    {
+        "value": 1,
+        "option": "exportSalesPercentage.option1"
+    },
+    {
+        "value": 2,
+        "option": "exportSalesPercentage.option2"
+    },
+    {
+        "value": 3,
+        "option": "exportSalesPercentage.option3"
+    },
+    {
+        "value": 4,
+        "option": "exportSalesPercentage.option4"
+    }
+]

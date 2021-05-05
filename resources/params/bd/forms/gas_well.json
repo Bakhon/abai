@@ -1,0 +1,68 @@
+{
+  "type": "plain",
+  "table": "",
+  "tabs": [
+    {
+      "title": "main",
+      "blocks": [
+        [
+          {
+            "title": "mode_parameters",
+            "items": [
+              {
+                "code": "field1",
+                "type": "date",
+                "title": "date_start",
+                "validation": "required|date"
+              },
+              {
+                "code": "field2",
+                "type": "date",
+                "title": "date_end",
+                "validation": "required|date"
+              }
+            ]
+          },
+          {
+            "title":"tech_modes_gas_well",
+            "items":[
+              {
+                "code":"field3",
+                "type":"numeric",
+                "title":"gas_flow_rate",
+                "validation":"required|numeric"
+              }
+            ]
+          },
+          {
+            "title":"planned_events",
+            "items":[
+              {
+                "code":"field4",
+                "type":"table",
+                "title":"",
+                "table":"",
+                "parent_column":"",
+                "columns":[
+                  {
+                    "code":"field5",
+                    "type":"dict",
+                    "title":"event",
+                    "dict":"",
+                    "validation":"required"
+                  },
+                  {
+                    "code":"field6",
+                    "type":"date",
+                    "title":"planned_month",
+                    "validation":"required|date"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      ]
+    }
+  ]
+}

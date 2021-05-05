@@ -3,11 +3,7 @@
 namespace App\Http\Controllers\tr;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use Level23\Druid\DruidClient;
-use Level23\Druid\Types\Granularity;
-use Level23\Druid\Extractions\ExtractionBuilder;
-use App\Models\DZO\DZOdaily;
+
 
 
 class TrController extends Controller
@@ -15,11 +11,13 @@ class TrController extends Controller
     
     public function __construct()
     {
-        $this->middleware('can:tr view main')->only('tr', 'fa', 'trfa', 'tr_charts', 'TechMode');
+        $this->middleware('can:tr view main')->only('tr', 'fa', 'trfa', 'tr_charts', 'TechMode', 'TechModeSmall');
     }
     public function tr()
     {
-        return view('tr.tr');
+        $permissionNames = auth()->user()->getAllPermissions()->pluck('name')->toArray();       
+        
+        return view('tr.tr', compact('permissionNames'));
     }   
     public function fa()
     {
@@ -36,6 +34,10 @@ class TrController extends Controller
     public function TechMode()
     {
         return view('TechMode.TechMode');
+    }
+    public function TechModeSmall()
+    {
+        return view('TechModeSmall.TechModeSmall');
     }
     public function FaWeeklyChart()
     {

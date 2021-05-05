@@ -25,7 +25,7 @@ class MainController extends Controller
             'previousYear' => $previousYear
         ];
         $data = json_encode($data);
-        return $data; //view('economy_kenzhe.company')->with(compact('data'));
+        return $data;
     }
 
     public function recursiveSetValueToHandbookByType(&$items, $companyRepTtValues, $currentYear, $previousYear, $dateFrom, $dateTo)
@@ -33,7 +33,7 @@ class MainController extends Controller
         $companyValuesRepTtIds = array_column($companyRepTtValues, 'rep_id');
         foreach ($items as $repttIndex => $reptt) {
             $handbookKeys = ['plan_value', 'fact_value', 'intermediate_plan_value', 'intermediate_fact_value'];
-            foreach ($handbookKeys as $key){
+            foreach ($handbookKeys as $key) {
                 $this->setItemsDefaultValue($key, $items[$repttIndex], $currentYear, $previousYear);
             }
             if (count($reptt['handbook_items']) > 0) {
@@ -90,7 +90,7 @@ class MainController extends Controller
     {
         $item[$attribute][$year] += $value;
         if (strtotime($dateFrom) <= $currentItemDate && strtotime($dateTo) >= $currentItemDate) {
-            $item['intermediate_'.$attribute][$year] += $value;
+            $item['intermediate_' . $attribute][$year] += $value;
         }
     }
 }

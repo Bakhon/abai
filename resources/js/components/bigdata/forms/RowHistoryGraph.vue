@@ -4,34 +4,38 @@
       <div class="bd-popup__inner">
         <a class="bd-popup__close" href="#" @click.prevent="$emit('close')">{{ trans('bd.close') }}</a>
         <p class="bd-popup__title">{{ title }}</p>
-        <div class="table-page table-page_fixed scrollable">
-          <table class="table">
-            <thead>
-            <tr>
-              <th>{{ trans('bd.date') }}</th>
-              <th v-for="column in tableColumns">
-                {{ column.title }}
-              </th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr v-for="(fields, date) in params.table.rows">
-              <td>{{ fields[tableColumns[0].code] === null ? date : fields[tableColumns[0].code].time }}</td>
-              <td v-for="column in tableColumns">
-                {{ fields[column.code] === null ? '' : fields[column.code].value }}
-              </td>
-            </tr>
-            </tbody>
-          </table>
-        </div>
-        <div class="graph">
-          <Plotly :data="graphData"
-                  :display-mode-bar="true"
-                  :displaylogo="false"
-                  :mode-bar-buttons-to-remove="buttonsToRemove"
-                  :layout="layout"
-                  :options="options"
-          />
+        <div class="bd-popup__content">
+          <div class="graph">
+            <Plotly
+                v-for="(data, index) in graphData"
+                :key="`plot_${index}`"
+                :data="Object.values(data)"
+                :display-mode-bar="true"
+                :displaylogo="false"
+                :layout="layout"
+                :mode-bar-buttons-to-remove="buttonsToRemove"
+            />
+          </div>
+          <div class="table-page table-page_fixed scrollable">
+            <table class="table">
+              <thead>
+              <tr>
+                <th>{{ trans('bd.date') }}</th>
+                <th v-for="column in tableColumns">
+                  {{ column.title }}
+                </th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr v-for="(fields, date) in params.table.rows">
+                <td>{{ fields[tableColumns[0].code] === null ? date : fields[tableColumns[0].code].time }}</td>
+                <td v-for="column in tableColumns">
+                  {{ fields[column.code] === null ? '' : fields[column.code].value }}
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
@@ -66,7 +70,6 @@ export default {
         'toggleSpikelines'
       ],
       layout: {
-        grid: {rows: 2, columns: 1, pattern: 'independent'},
         bargap: 0.05,
         bargroupgap: 0.2,
         barmode: "overlay",
@@ -77,6 +80,7 @@ export default {
           b: 0,
           t: 30
         },
+        showlegend: true,
         xaxis: {
           title: '',
           gridcolor: "#454D7D",
@@ -124,6 +128,36 @@ export default {
           linecolor: "#454D7D",
           fixedrange: true
         },
+        yaxis2: {
+          title: '',
+          showline: true,
+          gridcolor: "#454D7D",
+          linewidth: 1,
+          linecolor: "#454D7D",
+          fixedrange: true,
+          overlaying: 'y',
+          side: 'right'
+        },
+        yaxis3: {
+          title: '',
+          showline: true,
+          gridcolor: "#454D7D",
+          linewidth: 1,
+          linecolor: "#454D7D",
+          fixedrange: true,
+          overlaying: 'y',
+          side: 'right'
+        },
+        yaxis4: {
+          title: '',
+          showline: true,
+          gridcolor: "#454D7D",
+          linewidth: 1,
+          linecolor: "#454D7D",
+          fixedrange: true,
+          overlaying: 'y',
+          side: 'right'
+        },
         paper_bgcolor: "#272953",
         plot_bgcolor: "#272953",
         font: {color: "#fff"}
@@ -142,34 +176,70 @@ export default {
     },
     graphData() {
 
-      let result = {};
-      this.formParams.columns.filter(item => this.params.graph.columns.indexOf(item.code) > -1).forEach(column => {
-        result[column.code] = {
-          name: this.trans(column.title),
-          type: 'line',
-          x: [],
-          y: []
-        }
+      let columnCodes = []
+      this.params.graph.columns.forEach(block => {
+        columnCodes = [...columnCodes, ...Object.keys(block)]
       })
 
-      for (let date in this.params.graph.rows) {
-        this.params.graph.columns.forEach(column => {
-          if (this.params.graph.rows[date][column]) {
-            result[column].x.push(moment(date, 'DD.MM.YYYY').format('YYYY-MM-DD'))
-            result[column].y.push(this.params.graph.rows[date][column].value)
+      let plots = {}
+      let plotIndex = 1
+      this.params.graph.columns.forEach(block => {
+        plots[plotIndex] = {}
+        let yAxisIndex = 0
+        for (let columnCode in block) {
+          let column = this.formParams.columns.find(item => item.code === columnCode)
+
+          if (block[columnCode].axis) {
+            yAxisIndex++
           }
-        })
-      }
-      return Object.values(result)
+
+          let data = {
+            name: this.trans(column.title),
+            type: 'line',
+            x: [],
+            y: []
+          }
+
+          if (yAxisIndex > 0) {
+            data.yaxis = `y${yAxisIndex}`
+          }
+
+          plots[plotIndex][column.code] = data
+        }
+        plotIndex++
+      })
+      return this.fillValues(plots)
     },
     title() {
       let column = this.formParams.columns.find(item => item.code === this.params.selectedColumn)
       return column.history_popup.title
     }
+  },
+  methods: {
+    fillValues(plots) {
+      for (let date in this.params.graph.rows) {
+        let plotIndex = 1;
+        this.params.graph.columns.forEach(block => {
+          for (let columnCode in block) {
+            if (this.params.graph.rows[date][columnCode]) {
+              plots[plotIndex][columnCode].x.push(moment(date, 'DD.MM.YYYY').format('YYYY-MM-DD'))
+              plots[plotIndex][columnCode].y.push(this.params.graph.rows[date][columnCode].value)
+            }
+          }
+          plotIndex++
+        })
+      }
+      return plots
+    }
   }
 }
 </script>
 <style lang="scss">
+.selector-rect {
+  fill: #2E50E9 !important;
+}
+</style>
+<style lang="scss" scoped>
 .bd-popup {
   &_wide {
     .bd-popup__inner {
@@ -179,8 +249,10 @@ export default {
   }
 
   .table-page {
+    width: 30%;
+
     &.table-page_fixed {
-      height: 200px;
+      height: 410px;
       overflow: auto;
     }
 
@@ -191,10 +263,13 @@ export default {
 
   .graph {
     margin-top: 15px;
+    width: 65%;
 
-    .selector-rect {
-      fill: #2E50E9 !important;
-    }
+  }
+
+  &__content {
+    display: flex;
+    justify-content: space-between;
   }
 }
 </style>

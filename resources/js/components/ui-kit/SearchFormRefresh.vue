@@ -37,12 +37,12 @@
         type="text"
         @input="onInput($event)"
         class="form-control fix-rounded-right"
-        :placeholder="placeholder || `${this.trans('tr.trsrchw')}`"
+        :placeholder="placeholder || `${this.trans('tr.search_well')}`"
         v-model="searchStringModel"
       />
     </div>
-    <clear-icon v-if="clear" @clear-click="clearClick()" background="#393d75" placeholder="Сбросить поиск"/>
-    <button type="submit" class="input-submit-button">{{trans('tr.trsrch')}}</button>
+    <clear-icon v-if="clear" @clear-click="clearClick()" background="#393d75" v-bind:placeholder="trans('tr.reset_search')"/>
+    <button type="submit" class="input-submit-button">{{trans('tr.search')}}</button>
   </form>
 </template>
 

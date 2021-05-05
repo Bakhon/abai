@@ -87,6 +87,8 @@ return array (
     'reset_filter' => 'Сбросить фильтр',
     'export_error' => 'Ошибка экспорта',
     'management' => 'Управление',
+    'calc_result' => 'Расчитать результат',
+    'calc_result_export' => 'Выгрузить результаты',
   ),
   'selection_node' => 'Узел отбора',
   'omgca' => 
@@ -127,6 +129,10 @@ return array (
       'fill' => 'Заправка',
       'yearly_inhibitor_rate' => 'Годовой расход ингибитора кг',
     ),
+    'errors' => 
+    array (
+      'no-ddng-data-on-date' => 'Нет данных по ДДНГ на',
+    ),
   ),
   'omgngdu' => 
   array (
@@ -149,6 +155,8 @@ return array (
       'heater_output_temperature' => 'Температура на выходе из печи, С',
       'heater_inlet_temperature' => 'Температура на входе в печь, С',
       'gas_factor' => 'Газовый фактор, м3/м3',
+      'heater_inlet_pressure' => 'Температура на входе в печь, С',
+      'heater_output_pressure' => 'Температура на выходе из печи, С',
     ),
   ),
   'all_gus' => 'Все ГУ',
@@ -230,30 +238,39 @@ return array (
   array (
     'title' => 'Карта',
     'select_gu' => 'Выберите ГУ',
+    'select_filter' => 'Выберите фильтр',
+    'filters' => 
+    array (
+      'speed-flow-filter' => 'Скорость потока',
+    ),
   ),
   'module_name' => 'Мониторинг осложнений',
   'tech_map_prototype' => 'Техкарта прототип',
   'gus' => 
   array (
     'title' => 'База данных ГУ',
+    'create_title' => 'Ввод данных по ГУ',
+    'edit_title' => 'Редактирование ГУ',
   ),
   'zus' => 
   array (
     'title' => 'База данных ЗУ',
+    'create_title' => 'Ввод данных по ЗУ',
+    'edit_title' => 'Редактирование ЗУ',
   ),
   'close' => 'Закрыть',
-  'well' => 
-  array (
-    'create_title' => 'Ввод данных по скважине',
-    'edit_title' => 'Редактирование скважины',
-    'added' => 'Скважина добавлена',
-    'updated' => 'Скважина изменена',
-    'deleted' => 'Скважина удалена',
-    'deleting_error' => 'Ошибка при удалении Скважины',
-    'name' => 'Имя Скважины',
-    'well' => 'Скважина',
-  ),
-  'pipe' => 
+    'well' =>
+        array (
+            'create_title' => 'Ввод данных по скважине',
+            'edit_title' => 'Редактирование скважины',
+            'added' => 'Скважина добавлена',
+            'updated' => 'Скважина изменена',
+            'deleted' => 'Скважина удалена',
+            'deleting_error' => 'Ошибка при удалении Скважины',
+            'name' => 'Имя Скважины',
+            'well' => 'Скважина',
+        ),
+    'pipe' =>
   array (
     'updated' => 'Трубовровод изменен',
     'deleted' => 'Трубопровод удален',
@@ -266,7 +283,7 @@ return array (
     'fields' => 
     array (
       'inner_diameter' => 'Внутренний диаметр',
-      'length' => 'Длина',
+      'length' => 'Длина, м',
       'material' => 'Материал',
       'outside_diameter' => 'Внешний диаметр',
       'plot' => 'Участок',
@@ -324,15 +341,15 @@ return array (
   ),
   'pipe_types' => 
   array (
-    'menu' => 'Типы труб',
-    'title' => 'БД Типов труб',
+    'menu' => 'Справочник тип размеров трубопроводов',
+    'title' => 'Справочник тип размеров трубопроводов',
     'fields' => 
     array (
-      'name' => 'Наименование',
-      'outside_diameter' => 'Внешний диаметр',
-      'inner_diameter' => 'Внутренний диаметр',
-      'thickness' => 'Толщина стенок',
-      'roughness' => 'Жесткость',
+      'name' => 'Тип размер',
+      'outside_diameter' => 'Внешний диаметр, мм',
+      'inner_diameter' => 'Внутренний диаметр, мм',
+      'thickness' => 'Толщина стенки, мм',
+      'roughness' => 'Шероховатость',
       'material' => 'Материал',
       'plot' => 'Участок',
     ),
@@ -356,5 +373,55 @@ return array (
     'title' => 'База данных ОМГ НГДУ Скважина',
     'create_title' => 'Ввод данных ОМГ НГДУ ЗУ - Скважина',
     'edit_title' => 'Редактирование данных ОМГ НГДУ Скважина',
+  ),
+  'hydro_calculation' => 
+  array (
+    'fields' => 
+    array (
+      'length' => 'Протяженность, м',
+      'pressure_start' => 'Давление начальное, ата',
+      'pressure_end' => 'Давление конечное, ата',
+      'temperature_start' => 'Температура начальная, °С',
+      'temperature_end' => 'Температура конечная, °С',
+      'start_point' => 'Начальная точка',
+      'end_point' => 'Конечная точка',
+      'pipe_name' => 'Трубопровод',
+      'mix_speed_avg' => 'Средняя скорость смеси, м/с',
+      'fluid_speed' => 'Скорость жидкости, м/с',
+      'gaz_speed' => 'Скорость газа, м/с',
+      'flow_type' => 'Режим течения',
+      'press_change' => 'Перепад давления, атм/км',
+      'break_qty' => 'Количество порывов',
+      'height_drop' => 'Перепад высот, м',
+    ),
+    'table_title' => 'Таблица расчета гидравлики ГУ - УПСВ',
+    'message' => 
+    array (
+      'no-omgdu-data' => 'нет данных ОМГДУ',
+      'pressure-0' => 'давление 0 !',
+      'no-pressure-data' => 'нет данных по давлению !',
+      'no-daily-fluid-data' => 'нет данных по cуточной добычи жидкости !',
+      'no-bsw-data' => 'нет данных по обводненности !',
+    ),
+    'error' => 
+    array (
+      'not-enough-data' => 'Не достаточно данных для расчета',
+    ),
+  ),
+  'monitor' => 
+  array (
+    'errors' => 
+    array (
+      'ngdu' => 'Нет данных по ОМГДУ ГУ !',
+      'oilGas' => 'Нет данных по нефти и газу !',
+      'pipe' => 'Нет данных по трубопроводу !',
+      'pump_discharge_pressure' => 'Выходное давление не должно быть равно 0 !',
+      'surge_tank_pressure' => 'Давление в буферной емкости не должно быть равно 0 !',
+      'hydrogen_sulfide' => 'Значение H₂S в газе не должно быть равно 0 !',
+    ),
+  ),
+  'reverse_calculation' => 
+  array (
+    'table_title' => 'Таблица расчета гидравлики Скважина - ГУ',
   ),
 );

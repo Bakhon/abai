@@ -1,4 +1,5 @@
-<a href="{{route('mainpage')}}" class="bg-dark-new list-group-item list-group-item-action flex-column align-items-start">
+<a href="{{route('mainpage')}}"
+   class="bg-dark-new list-group-item list-group-item-action flex-column align-items-start">
     <div class="d-flex w-100 justify-content-start align-items-center">
         <img src="/img/gno/home.png" width="25" height="25" class="companyLogo">
         <span class="menu-collapsed companyName d-none"></span>
@@ -31,14 +32,13 @@
         <div class="move-menu">
             <li class="left-menu-li"><a href="{{route('bigdata')}}">Модуль "Прототип БД ABAI"</a></li>
             @if(auth()->user()->can('visualcenter view main'))
-            <li class="left-menu-li"><a href="{{route('visualcenter3')}}">Модуль "Центр визуализации"</a></li>
+                <li class="left-menu-li"><a href="{{route('visualcenter3')}}">Модуль "Центр визуализации"</a></li>
             @endif
-            
             @if(auth()->user()->can('tr view main'))
-            <li class="left-menu-li"><a href="{{route('tr')}}">Модуль "Технологический режим"</a></li>
+                <li class="left-menu-li"><a href="{{route('tr')}}">Модуль "Технологический режим"</a></li>
             @endif
             @if(auth()->user()->can('podborGno view main'))
-            <li class="left-menu-li"><a href="{{route('gno')}}">Модуль "Подбор ГНО"</a></li>
+                <li class="left-menu-li"><a href="{{route('gno')}}">Модуль "Подбор ГНО"</a></li>
             @endif
             <li class="left-menu-li"><a href="{{route('monitor')}}">Модуль "Мониторинг осложнений"</a>
                 <ul class="dropdown-child">
@@ -155,6 +155,24 @@
                         </a>
                     </li>
                 </ul>
+            </li>
+        </div>
+    </div>
+</div>
+
+<div class="dropright">
+    <div data-toggle="dropdown">
+        <a href="#" class="bg-dark-new list-group-item list-group-item-action">
+            <div class="d-flex w-100 justify-content-start align-items-center">
+                <img src="/img/economic/stat.svg" width="25" height="25" class="companyLogo">
+                <span class="menu-collapsed companyName d-none"></span>
+            </div>
+        </a>
+    </div>
+    <div class="dropdown-menu">
+        <div class="move-menu">
+            <li class="left-menu-li">
+                <a href="{{route('economic')}}">HPC</a>
             </li>
         </div>
     </div>

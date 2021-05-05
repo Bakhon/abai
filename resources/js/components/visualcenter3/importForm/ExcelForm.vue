@@ -1,108 +1,131 @@
 <template>
-    <div class="row">
-        <div class="col-4 row">
-            <div class="data-status col-12">
-                <span class="label">{{trans('visualcenter.importForm.yesterdayDate')}}</span>
-                <span>{{currentDate}}</span>
+    <div class="row main-layout">
+        <div class="col-2 row mt-3 ml-1">
+            <div class="col-12 status-block currentdate-label status-label">
+                <span>{{trans('visualcenter.importForm.yesterdayDate')}}</span><br>
+                <span class="dzo-name">{{currentDate}}</span><br>
             </div>
-            <div class="data-status col-12">
-                <span class="label">{{trans('visualcenter.importForm.selectedDZO')}}</span>
-                <select
-                        class="dzo-select col-6 ml-3"
-                        disabled
-                        :value="selectedDzo.ticker"
-                >
-                    <option v-for="dzo in dzoCompanies" :value="dzo.ticker">
-                        {{dzo.name}}
-                    </option>
-                </select>
+            <div class="col-12 status-block dzoname-label status-label">
+                <span class="dzo-name">{{selectedDzo.name}}</span>
             </div>
         </div>
-        <div class="col-5">
-            <div class="data-status col-12">
-                <span class="label">{{trans('visualcenter.importForm.statusLabel')}}</span>
-                <span :class="[isValidateError ? 'status-error' : '','']">{{status}}</span>
+
+        <div class="col-2 row mt-3 ml-1">
+            <div
+                    class="col-12 status-block status-block_little menu__button rainbow"
+                    @click="pasteClipboardContent()"
+            >
+                {{trans('visualcenter.importForm.pasteData')}}
             </div>
             <div
-                    :class="[!isDataExist ? 'menu__button_disabled' : '','menu__button col-6 m-2']"
+                    :class="[!isDataExist ? 'menu__button_disabled' : '','col-12 status-block status-block_little menu__button mt-3']"
                     @click="handleValidate()"
             >
                 {{trans('visualcenter.validateButton')}}
             </div>
             <div
-                    :class="[!isDataReady ? 'menu__button_disabled' : '','menu__button col-6 m-2']"
+                    :class="[!isDataReady ? 'menu__button_disabled' : '','status-block status-block_little menu__button col-12 mt-3']"
                     @click="handleSave()"
             >
                 {{trans('visualcenter.saveButton')}}
             </div>
         </div>
-        <div class="col-3 p-0">
-            <div class="chemistry-container col-12 p-0">
-                <div class="data-status col-12">
-                    <span
-                            v-if="!isChemistryButtonVisible"
-                            class="label chemistry-label"
-                    >
-                        {{trans('visualcenter.importForm.chemistryNotNeeded')}}
-                    </span>
-                    <span
-                            v-if="isChemistryButtonVisible"
-                            class="label chemistry-label"
-                    >
-                        {{trans('visualcenter.importForm.chemistryNeeded')}}
-                    </span>
-                </div>
-                <div
-                        id="chemistryButton"
-                        :class="[!isChemistryButtonVisible ? 'menu__button_disabled' : 'chemistry-button_animation','chemistry-button menu__button col-8 col-lg-8 m-2']"
-                        @click="changeButtonVisibility()"
-                >
-                    {{trans('visualcenter.importForm.enterChemistryButton')}}
-                </div>
-                <div :class="[isChemistryNeeded ? 'chemistry-disabled' : '','chemistry-block row col-12 m-2 p-3']">
-                    <h4 class="col-12">{{trans("visualcenter.importForm.chemistry")}}</h4>
-                    <div class="col-12 d-flex">
-                        <span class="col-7">{{trans("visualcenter.chemProdZakackaDemulg")}}</span>
-                        <input v-model="chemistryData.demulsifier" class="col-5"></input>
-                    </div>
-                    <div class="col-12 d-flex">
-                        <span class="col-7">{{trans("visualcenter.chemProdZakackaBakteracid")}}</span>
-                        <input v-model="chemistryData.bactericide" class="col-5"></input>
-                    </div>
-                    <div class="col-12 d-flex">
-                        <span class="col-7">{{trans("visualcenter.chemProdZakackaIngibatorKorrozin")}}</span>
-                        <input v-model="chemistryData.corrosion_inhibitor" class="col-5"></input>
-                    </div>
-                    <div class="col-12 d-flex">
-                        <span class="col-7">{{trans("visualcenter.chemProdZakackaIngibatorSoleotloj")}}</span>
-                        <input v-model="chemistryData.scale_inhibitor" class="col-5"></input>
-                    </div>
-                    <div v-if="chemistryErrorFields.length > 0" class="col-12 d-flex">
-                        <span class="col-12 status-error">{{trans("visualcenter.errors")}}:</span>
-                    </div>
-                    <div v-if="chemistryErrorFields.length > 0" class="col-12 d-flex">
-                        <span class="col-12 data-status">{{chemistryErrorFields.toString()}}</span>
-                    </div>
-                    <div class="col-6"></div>
-                    <div
-                            class="menu__button col-12 mt-2"
-                            @click="chemistrySave()"
-                    >
-                        {{trans('visualcenter.saveButton')}}
-                    </div>
-                </div>
+        <div class="col-4 mt-3 row ml-1"></div>
+        <div class="col-2 row mt-3 ml-1">
+            <div class="col-12 status-block status-block_little status-label">
+                <span>{{trans('visualcenter.importForm.statusLabel')}}</span>
+                <span :class="[isValidateError ? 'status-error' : '','label']">&nbsp;{{status}}</span>
+            </div>
+            <div class="col-12 mt-3 status-block status-block_little">
+                &nbsp;
+            </div>
+            <div class="col-12 mt-3 status-block status-block_little">
+                &nbsp;
             </div>
         </div>
 
+        <div class="col-2 row mt-3 ml-1">
+            <div class="vert-line"></div>
+            <div
+                    id="chemistryButton"
+                    :class="[!isChemistryButtonVisible ? 'menu__button_disabled' : 'rainbow','col-12 status-block status-block_little menu__button ml-1']"
+                    @click="changeButtonVisibility()"
+            >
+                {{trans('visualcenter.importForm.enterChemistryButton')}}
+            </div>
+            <div :class="[isChemistryNeeded ? 'chemistry-disabled' : '','chemistry-block row col-12 p-2']">
+                <h4 class="col-12">{{trans("visualcenter.importForm.chemistry")}}</h4>
+                <div class="col-12 d-flex">
+                    <span class="col-7">{{trans("visualcenter.chemProdZakackaDemulg")}}</span>
+                    <input v-model="chemistryData.demulsifier" class="col-5"></input>
+                </div>
+                <div class="col-12 d-flex">
+                    <span class="col-7">{{trans("visualcenter.chemProdZakackaBakteracid")}}</span>
+                    <input v-model="chemistryData.bactericide" class="col-5"></input>
+                </div>
+                <div class="col-12 d-flex">
+                    <span class="col-7">{{trans("visualcenter.chemProdZakackaIngibatorKorrozin")}}</span>
+                    <input v-model="chemistryData.corrosion_inhibitor" class="col-5"></input>
+                </div>
+                <div class="col-12 d-flex">
+                    <span class="col-7">{{trans("visualcenter.chemProdZakackaIngibatorSoleotloj")}}</span>
+                    <input v-model="chemistryData.scale_inhibitor" class="col-5"></input>
+                </div>
+                <div v-if="chemistryErrorFields.length > 0" class="col-12 d-flex">
+                    <span class="col-12 status-error">{{trans("visualcenter.errors")}}:</span>
+                </div>
+                <div v-if="chemistryErrorFields.length > 0" class="col-12 d-flex">
+                    <span class="col-12">{{chemistryErrorFields.toString()}}</span>
+                </div>
+                <div class="col-6"></div>
+                <div class="col-8 mt-2"></div>
+                <div
+                        class="status-block status-block_little col-4 mt-2 menu__button"
+                        @click="chemistrySave()"
+                >
+                    {{trans('visualcenter.saveButton')}}
+                </div>
+            </div>
+            <div
+                    :class="[!isChemistryButtonVisible ? 'menu__button_disabled' : 'rainbow','col-12 status-block status-block_little menu__button ml-1 mt-3']"
+                    @click="changeWellBlockVisibility()"
+            >
+                {{trans('visualcenter.importForm.wellWorkover')}}
+            </div>
+            <div :class="[isWellsWorkoverNeeded ? 'chemistry-disabled' : '','chemistry-block well-workover-block row col-12 p-2']">
+                <h4 class="col-12">{{trans("visualcenter.importForm.wellWorkover")}}</h4>
+                <div class="col-12 d-flex">
+                    <span class="col-7">{{trans("visualcenter.undergroundRepairFond")}}</span>
+                    <input v-model="wellWorkover.otm_underground_workover" class="col-5"></input>
+                </div>
+                <div class="col-12 d-flex">
+                    <span class="col-7">{{trans("visualcenter.overhaulFond")}}</span>
+                    <input v-model="wellWorkover.otm_well_workover_fact" class="col-5"></input>
+                </div>
+                <div class="col-6"></div>
+                <div class="col-8 mt-2"></div>
+                <div
+                        class="status-block status-block_little col-4 mt-2 menu__button"
+                        @click="wellWorkoverSave()"
+                >
+                    {{trans('visualcenter.saveButton')}}
+                </div>
+            </div>
 
+            <div class="col-12 mt-3 status-block status-block_little">
+                &nbsp;
+            </div>
 
-        <div class="table-form col-10">
+        </div>
+
+        <div class="table-form col-12 mt-3 ml-1">
             <v-grid
                     theme="material"
                     :source="rows"
                     :columns="columns"
                     :rowSize="30"
                     @beforeRangeEdit="beforeRangeEdit"
+                    @beforeEdit="beforeRangeEdit"
                     :frameSize="72"
             ></v-grid>
         </div>
@@ -117,23 +140,12 @@
     .status-error {
         color: red;
     }
-    .dzo-select {
-        align-self: center;
-        height: 24px;
-    }
     .chemistry-block {
         background-color: #20274F;
         color: white;
         position: absolute;
         z-index: 9999;
-    }
-    .data-status {
-        color: white;
-        font-size: 18px;
-    }
-    .data-status .label {
-        font-size: 26px;
-        color: rgba(19, 176, 98, 0.8);
+        margin-top: 30px;
     }
     .chemistry-disabled {
         display: none;
@@ -149,21 +161,8 @@
         font-family: HarmoniaSansProCyr-Regular, Harmonia-sans;
     }
     .table-form {
-        max-width: 1800px;
+        max-width: 99.8%;
         background-color: white;
-    }
-    .menu__button {
-        font-size: 16px;
-        font-weight: bold;
-        position: relative;
-        padding: 15px 15px;
-        height: 24px;
-        background: rgba(19, 176, 98, 0.8);
-        border-radius: 8px;
-        text-align: center;
-        margin-bottom: 0;
-        line-height: 0px;
-        cursor: pointer;
     }
     .menu__button_disabled {
         pointer-events: none;
@@ -174,20 +173,133 @@
             max-width: 1270px;
         }
     }
-    .chemistry-container {
-        position: relative;
-    }
-    .chemistry-button {
-        float: right;
-    }
     .chemistry-button_animation {
-        animation: pulse 2s linear infinite alternate;
-    }
-    .chemistry-label {
-        float: right;
+        animation: pulse 5s linear infinite alternate;
     }
     @keyframes pulse {
-        from {background-color: #34bf49}
+        from {background-color: #FFD700}
         to {background-color: #ff4c4c}
+    }
+    .status-block {
+        font-family: HarmoniaSansProCyr-Regular, Harmonia-sans;
+        font-size: 24px;
+        color: white;
+        text-align: center;
+        border-radius: 8px;
+    }
+    .status-block_little {
+        font-size: 16px;
+        justify-content: center;
+        align-items: center;
+        display: flex;
+    }
+    .status-block_little .label {
+        font-size: 13px;
+        color: #82BAFF;
+    }
+    .status-block .dzo-name {
+        font-size: 22px;
+        color: #82BAFF;
+    }
+    .button-block {
+        background: #656A8A;
+        font-family: HarmoniaSansProCyr-Regular, Harmonia-sans;
+        font-size: 14px;
+        text-align: center;
+        border-radius: 8px;
+        font-weight: bold;
+        font-weight: bold;
+    }
+    .main-layout {
+        background: #272953;
+    }
+    .menu__button {
+        background: #656A8A;
+        font-weight: 500;
+        cursor: pointer;
+    }
+    .status-label {
+        border: 1px solid #656A8A;
+    }
+    .dzoname-label {
+        bottom: 0;
+        position: absolute;
+        width: 90%;
+        font-size: 16px;
+        span.dzo-name {
+            font-size: 16px;
+        }
+    }
+    .currentdate-label {
+        position: absolute;
+        width: 90%;
+        height: 65%;
+        span.dzo-name {
+            bottom: 0;
+            position: absolute;
+            left: 27%;
+        }
+    }
+    @keyframes rotate {
+        0% {
+            transform:scaleX(0);
+            transform-origin: left;
+        }
+        50%
+        {
+            transform:scaleX(1);
+            transform-origin: left;
+        }
+        50.1%
+        {
+            transform:scaleX(1);
+            transform-origin: right;
+        }
+        100%
+        {
+            transform:scaleX(0);
+            transform-origin: right;
+        }
+    }
+
+    .rainbow {
+        position: relative;
+        z-index: 0;
+        overflow: hidden;
+        &::before {
+            content: '';
+            position: absolute;
+            z-index: -2;
+            left: -50%;
+            top: -50%;
+            width: 200%;
+            height: 200%;
+            background-color: #82BAFF;
+            background-repeat: no-repeat;
+            background-size: 50% 50%, 50% 50%;
+            background-position: 0 0, 100% 0, 100% 100%, 0 100%;
+            animation: rotate 10s linear infinite;
+        }
+        &::after {
+            content: '';
+            position: absolute;
+            z-index: -1;
+            left: 6px;
+            top: 6px;
+            background: #656A8A;
+            border-radius: 1px;
+        }
+    }
+
+    .vert-line {
+        background: url(/img/visualcenter3/line.png) no-repeat;
+        position: absolute;
+        width: 1px;
+        margin-left: -10px;
+        height: 90%;
+        margin-top: 1vh;
+    }
+    .well-workover-block {
+        margin-top: 75px;
     }
 </style>

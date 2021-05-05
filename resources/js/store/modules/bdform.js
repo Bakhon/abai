@@ -10,7 +10,7 @@ const bdform = {
 
     actions: {
         getGeoDictByDZO({commit}, params) {
-            axios.get(this._vm.localeUrl(`/bigdata/dict/geos/${params.dzo}`)).then(({data}) => {
+            axios.get(this._vm.localeUrl(`/api/bigdata/dict/geos/${params.dzo}`)).then(({data}) => {
                 commit("SAVE_DICT", {
                     code: params.code,
                     items: data
@@ -18,16 +18,19 @@ const bdform = {
             })
         },
         updateForm({commit}, formCode) {
-            return axios.get(this._vm.localeUrl(`/bigdata/form/${formCode}`)).then(({data}) => {
+            return axios.get(this._vm.localeUrl(`/api/bigdata/forms/${formCode}`)).then(({data}) => {
                 commit("SAVE_FORM_PARAMS", data.params)
                 return data
             })
         },
         submitForm({}, params) {
-            return axios.post(this._vm.localeUrl(`/bigdata/form/${params.code}`), params.values)
+            return axios.post(this._vm.localeUrl(`/api/bigdata/forms/${params.code}`), {
+                ...params.values,
+                well: params.wellId
+            })
         },
         getWellPrefix({}, params) {
-            return axios.get(this._vm.localeUrl(`/bigdata/form/${params.code}/well-prefix`), {
+            return axios.get(this._vm.localeUrl(`/api/bigdata/forms/${params.code}/well-prefix`), {
                 params: {
                     geo: params.geo
                 }
@@ -35,9 +38,17 @@ const bdform = {
         },
         getValidationErrors({}, params) {
             return axios.post(
-                this._vm.localeUrl(`/bigdata/form/${params.formCode}/validate/${params.fieldCode}`),
+                this._vm.localeUrl(`/api/bigdata/forms/${params.formCode}/validate/${params.fieldCode}`),
                 params.values
             )
+        },
+        loadDict({}, code) {
+            axios.get(this._vm.localeUrl(`/api/bigdata/dict/${code}`)).then(data => {
+                commit("bd/SAVE_DICT", {
+                    code: code,
+                    items: data.data
+                });
+            })
         }
     },
 

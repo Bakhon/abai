@@ -11,7 +11,14 @@ export default {
                 yearly: ['companyName', 'yearlyPlan', 'plan', 'fact', 'difference', 'percent'],
             },
             currentDzoList: 'daily',
-            dzoCompaniesAssets: {},
+            dzoCompaniesAssets: {
+                isAllAssets: true,
+                isOperating: false,
+                isNonOperating: false,
+                isOpecRestriction: false,
+                isRegion: false,
+                assetTitle: this.trans("visualcenter.summaryAssets"),
+            },
             dzoCompaniesAssetsInitial: {
                 isAllAssets: true,
                 isOperating: false,
@@ -48,7 +55,7 @@ export default {
             },
             selectedDzoCompanies: [],
             company: "all",
-            dzoCompanies: dzoCompaniesInitial,
+            dzoCompanies: _.cloneDeep(dzoCompaniesInitial),
             dzoCompanySummary: this.bigTable,
             dzoCompaniesSummaryInitial: {
                 plan: 0,
@@ -72,6 +79,11 @@ export default {
                 return _.cloneDeep(dzoCompaniesInitial).filter(company => company[category] === type).map(company => company.ticker);
             }
             this.dzoRegionsMapping[regionName].isActive = !this.dzoRegionsMapping[regionName].isActive;
+            if (regionName === 'zhambul') {
+                category = regionName;
+                type = type.toLowerCase().replace('is','');
+                return ['АГ'];
+            }
             if (this.dzoRegionsMapping[regionName].isActive) {
                 category = regionName;
                 type = type.toLowerCase().replace('is','');
@@ -123,11 +135,9 @@ export default {
                     summary.targetPlan = parseInt(summary.targetPlan) + parseInt(company.targetPlan);
                 }
             });
-            summary.difference = this.formatDigitToThousand(
-                summary.plan - summary.fact);
-            summary.percent = new Intl.NumberFormat("ru-RU")
-                .format(((summary.plan - summary.fact) /
-                    summary.fact * 100).toFixed(1));
+            summary.difference = this.getFormattedNumberToThousand(
+                summary.plan,summary.fact);
+            summary.percent = this.getPercentDifference(summary.plan,summary.fact);
             summary.plan = this.formatDigitToThousand(summary.plan);
             summary.fact = this.formatDigitToThousand(summary.fact);
             summary.periodPlan = this.formatDigitToThousand(summary.periodPlan);
@@ -140,6 +150,7 @@ export default {
 
         selectAllDzoCompanies() {
             this.selectDzoCompanies();
+            this.dzoCompanies = _.cloneDeep(dzoCompaniesInitial);
         },
 
         selectDzoCompanies() {
@@ -149,9 +160,6 @@ export default {
             this.disableDzoRegions();
             this.selectedDzoCompanies = this.getAllDzoCompanies();
             this.buttonDzoDropdown = "";
-            _.map(this.dzoCompanies, function (company) {
-                company.selected = true;
-            });
             this.dzoCompanySummary = this.bigTable;
             this.calculateDzoCompaniesSummary();
         },
@@ -164,11 +172,16 @@ export default {
         selectDzoCompany(companyTicker) {
             this.disableDzoRegions();
             this.selectCompany(companyTicker);
-            this.selectedDzoCompanies = [companyTicker];
+
             this.dzoCompaniesAssets['isAllAssets'] = false;
             this.buttonDzoDropdown = this.highlightedButton;
             this.switchDzoCompaniesVisibility(companyTicker,'ticker');
             this.isMultipleDzoCompaniesSelected = this.dzoCompanySummary.length > 1;
+            if (this.isMultipleDzoCompaniesSelected) {
+                this.selectedDzoCompanies.push(companyTicker);
+            } else {
+                this.selectedDzoCompanies = [companyTicker];
+            }
             this.calculateDzoCompaniesSummary();
         },
 
@@ -198,10 +211,12 @@ export default {
             _.forEach(dzoCompaniesInitial, function(item) {
                 self.dzoType[item.type].push(item.ticker)
             });
-        }
+        },
+        getFilteredCompaniesList(data) {
+            let self = this;
+            return _.filter(data, function (item) {
+                return self.selectedDzoCompanies.includes(item.dzo);
+            });
+        },
     },
-    async mounted() {
-        this.dzoCompaniesAssets = _.cloneDeep(this.dzoCompaniesAssetsInitial);
-        this.sortDzoList();
-    }
 }

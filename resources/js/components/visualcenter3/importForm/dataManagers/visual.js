@@ -4,6 +4,7 @@ export default {
     data: function () {
         return {
             isChemistryNeeded: true,
+            isWellsWorkoverNeeded: true,
             columns: [
                 {
                     prop: "column1",
@@ -73,6 +74,8 @@ export default {
             ],
             rowsCount: 85,
             columnsCountForHighlight: {
+                eightColumns: [0,1,2,3,4,5,6,7],
+                sevenColumns: [0,1,2,3,4,5,6],
                 sixColumns: [0,1,2,3,4,5],
                 fiveColumns: [0,1,2,3,4],
                 fourColumns: [0,1,2,3],
@@ -82,9 +85,8 @@ export default {
             stringColumns: [1,2],
             errorSelectors: [],
             currentDate: moment().tz('Asia/Almaty').subtract(1, 'days').format('DD-MM-YYYY'),
-            weekendsDays: [6,7],
             limitForEnteringData: {
-                hours: 7,
+                hours: 8,
                 minutes: 0,
             },
             isChemistryButtonVisible: false,
@@ -93,9 +95,6 @@ export default {
     },
     created() {
         let almatyCurrentDate = moment().tz('Asia/Almaty');
-        if (this.weekendsDays.includes(almatyCurrentDate.day())) {
-            this.hourLimitForEnteringData.hours = 8;
-        }
         if (almatyCurrentDate.hour() >= this.limitForEnteringData.hours && almatyCurrentDate.minutes() > this.limitForEnteringData.minutes) {
             this.currentDate = almatyCurrentDate.format('DD-MM-YYYY');
             this.currentDateDetailed = almatyCurrentDate.format("YYYY-MM-DD HH:mm:ss");
@@ -105,10 +104,13 @@ export default {
         changeButtonVisibility() {
             this.isChemistryNeeded = !this.isChemistryNeeded;
         },
+        changeWellBlockVisibility() {
+            this.isWellsWorkoverNeeded = !this.isWellsWorkoverNeeded;
+        },
         turnOffErrorHighlight() {
             let self = this;
             _.forEach(this.errorSelectors, function(selector) {
-                self.setClassToElement($(selector),'cell__color-normal');
+                self.removeClassFromElement($(selector),'cell__color-red');
             });
             this.errorSelectors = [];
         },
@@ -143,6 +145,9 @@ export default {
         },
         setClassToElement(el,className) {
             el.addClass(className);
+        },
+        removeClassFromElement(el, className) {
+            el.removeClass(className);
         },
         disableHighlightOnCells() {
             for (let i = 0; i < this.rowsCount; i++) {

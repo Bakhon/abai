@@ -8,8 +8,3 @@
 </svg>
 @endsection
 @section('module_title', 'Экономика')
-<style scoped lang="scss">
-    svg.svg-menu-margin {
-        margin: -6px;
-    }
-</style>

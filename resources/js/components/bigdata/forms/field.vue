@@ -38,6 +38,16 @@
         <label :for="`${item.code}_${value}`">{{ value }}</label>
       </div>
     </template>
+    <template v-else-if="item.type === 'checkbox'">
+       <label :for="`${item.code}`"></label>
+        <input
+            :name="item.code"
+            type="checkbox"
+            :id="`${item.code}`"
+            v-bind:checked="value"
+            v-on:input="$emit('input', $event.target.checked); $emit('change', $event.target.checked)"
+        >
+    </template>
     <template v-else-if="item.type === 'dict'">
       <v-select
           :value="formatedValue"
@@ -109,6 +119,7 @@ import Treeselect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 import 'vue-select/dist/vue-select.css'
 import BigdataTableField from './fields/Table'
+import {bdFormActions} from '@store/helpers'
 
 export default {
   name: "BigdataFormField",
@@ -144,25 +155,22 @@ export default {
       this.formatedValue = this.getFormatedValue(newValue)
     }
   },
-  mounted() {
+  created() {
     if (['dict', 'dict_tree'].indexOf(this.item.type) > -1) {
-      this.loadDict()
+      if (typeof this.dict === 'undefined') {
+        this.loadDict(this.item.dict)
+      }
     }
 
     this.formatedValue = this.getFormatedValue(this.value)
   },
   methods: {
-    loadDict() {
-      this.axios.get(this.localeUrl('/bigdata/dict/' + this.item.dict)).then(data => {
-        this.$store.commit("bd/SAVE_DICT", {
-          code: this.item.dict,
-          items: data.data
-        });
-      })
-    },
+    ...bdFormActions([
+      'loadDict',
+    ]),
     changeDate(date) {
       if (date) {
-        let formatedDate = moment(date).format('YYYY-MM-DD HH:MM:SS')
+        let formatedDate = moment.parseZone(date).format('YYYY-MM-DD HH:MM:SS')
         this.updateValue(formatedDate)
       }
     },
@@ -250,7 +258,9 @@ export default {
       font-size: 14px;
       font-weight: normal;
       height: 28px;
+      line-height: 1;
       margin-top: 0;
+      max-width: 95%;
     }
 
     .vs__dropdown-menu {

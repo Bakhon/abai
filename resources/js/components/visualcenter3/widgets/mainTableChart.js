@@ -24,6 +24,10 @@ export default {
         };
     },
     methods: {
+        isGrouppingFilterActive() {
+          return (this.dzoCompaniesAssets.isOperating || this.dzoCompaniesAssets.isNonOperating || this.dzoCompaniesAssets.isRegion);
+        },
+
         setDzoYearlyPlan(dzoGroupedMonthlyPlans) {
             this.dzoYearlyData.plan =  _.sumBy(dzoGroupedMonthlyPlans, 'monthlyPlan');
         },
@@ -38,13 +42,14 @@ export default {
         },
 
         changeTargetCompanyFilter() {
+            this.$refs.targetPlan.classList.remove('show');
             this.isFilterTargetPlanActive = !this.isFilterTargetPlanActive;
             if (!this.buttonTargetPlan) {
                 this.buttonTargetPlan = "";
             } else {
                 this.buttonTargetPlan = "button-tab-highlighted";
             }
-            this.changeMenu2(3);
+            this.changeMenu2('yearly');
         },
 
         getMonthlyPlansInYear(summaryForChart,dzoName) {
@@ -150,6 +155,31 @@ export default {
                 }
             });
             return targetPlan;
+        },
+
+        getProductionForChart(data) {
+            let summary = this.getFilteredCompaniesList(data);
+            if (summary.length === 0) {
+                summary = data;
+            }
+
+            let summaryForChart = _(summary)
+                .groupBy("__time")
+                .map((__time, id) => ({
+                    time: id,
+                    dzo: 'dzo',
+                    productionFactForChart: _.round(_.sumBy(__time, this.factFieldName), 0),
+                    productionPlanForChart: _.round(_.sumBy(__time, this.planFieldName), 0),
+                    productionPlanForChart2: _.round(_.sumBy(__time, this.opecFieldNameForChart), 0),
+                }))
+                .value();
+
+            if (this.isFilterTargetPlanActive) {
+                let monthlyPlansInYear = this.getMonthlyPlansInYear(summaryForChart);
+                summaryForChart = monthlyPlansInYear;
+            }
+
+            return summaryForChart;
         },
     }
 }

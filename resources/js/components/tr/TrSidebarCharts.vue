@@ -21,7 +21,7 @@
                 </div>
                 <div class="dropdown-menu graphic_dropdown_menu">
                     <div class="move-menu">
-                        <li class="left-menu-li tr-sidebar__page"> <a class="tr-sidebar__link" :href="localeUrl('/fa')">{{trans('tr.hfa')}}</a></li>
+                        <li class="left-menu-li tr-sidebar__page"> <a class="tr-sidebar__link" :href="localeUrl('/fa')">{{trans('tr.fa')}}</a></li>
                         <li
                           v-for="(item, index) in chartNamesFA"
                           :key="item"
@@ -30,7 +30,7 @@
                           <a class="tr-sidebar__link" :href="localeUrl('/trfa')" @click="() => setChartFa(index)">{{ item }}</a>
                         </li>
                         <li class="left-menu-li">
-                          <a class="tr-sidebar__link tr-sidebar__page" :href="localeUrl('/tr')">{{trans('tr.btr')}}</a>
+                          <a class="tr-sidebar__link tr-sidebar__page" :href="localeUrl('/tr')">{{trans('tr.tr')}}</a>
                         </li>
                         <li
                           v-for="(item, index) in chartNames"
@@ -51,20 +51,20 @@ export default {
   data() {
     return {
       chartNames: [
-        `${this.trans('tr.trchn1')}`,
-        `${this.trans('tr.trchn2')}`,
-        `${this.trans('tr.trchn3')}`,
-        `${this.trans('tr.trchn4')}`,
-        `${this.trans('tr.trchn5')}`,
-        `${this.trans('tr.trchn6')}`,
-        `${this.trans('tr.trchn7')}`,
-        `${this.trans('tr.trchn8')}`,
-        `${this.trans('tr.trchn9')}`,
-        `${this.trans('tr.trchn10')}`,
+        this.trans('tr.analysis_of_reservoir_depth_pump_run_and_dynamic_level'),
+        this.trans('tr.top_30_wells_oil_production_growth_potential'),
+        this.trans('tr.top_30_wells_oil_production_growth_potential_water_cut'),
+        this.trans('tr.top_30_wells_oil_production_growth_potential_gas_factor'),
+        this.trans('tr.top_30_wells_liquid_production_growth_potential'),
+        this.trans('tr.total_oil_and_liquid_production_rate'),
+        this.trans('tr.distribution_of_productivity_index'),
+        this.trans('tr.distribution_of_wells_by_oil_production_rate'),
+        this.trans('tr.distribution_of_wells_by_water_cut'),
+        this.trans('tr.distribution_of_wells_by_fluid_flow_rate'),
       ],
       chartNamesFA: [
-        `${this.trans('tr.trsbg1')}`,
-        `${this.trans('tr.trsbg2')}`,
+        this.trans('tr.distribution_of_the_well_stock_due_to_the_main_reason_for_the_decline_in_oil_production'),
+        this.trans('tr.distribution_of_total_TP_deviations_by_factors'),
       ],
     };
   },
@@ -82,16 +82,7 @@ export default {
 };
 </script>
 
-
-
-
 <style  scoped>
-/* .tr-sidebar__chart-menu {
-  margin: 0;
-  padding: 0;
-  width: 520px;
-  max-width: 80vw;
-} */
 .tr-sidebar__link {
   color: #FFF;
 
@@ -100,12 +91,8 @@ export default {
   font-weight: bold;
   font-size: 18px;
   padding: 3px 20px;
-  /* background: #3A3D7C; */
 }
-/* .tr-sidebar__graph {
-  background: #40467e;
-  padding: 3px 20px;
-} */
+
 .dropright.dropright {
   z-index: 5000;
 }

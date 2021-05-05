@@ -3,7 +3,7 @@
         <div class="row mx-0 mt-lg-2 gtm">
             <div class="gtm-dark col-lg-10 p-0">
                 <div class="row col-12 p-0 m-0">
-                    <div class="col-6 d-none d-lg-block p-0 pl-1 gtm-map-block">
+                    <div class="col-6 d-none d-lg-block p-0 pl-1">
                         <div class="h-100">
                             <div class="block-header pb-0 pl-2 pt-1">
                                 {{ trans('paegtm.accumulatedOilProdTitle') }}
@@ -13,18 +13,19 @@
                                     v-if="loaded"
                                     :chartdata="{labels: accumOilProdLabels, datasets: accumOilProdData}"
                                     :options="lineChartOptions"
-                                    :height="360">
+                                    :height="360"
+                                >
                                 </gtm-line-chart>
                             </div>
                         </div>
                     </div>
-                    <div class="col-6 d-none d-lg-block p-0 gtm-map-block">
+                    <div class="col-6 d-none d-lg-block p-0">
                         <div class="h-100">
                             <div class="block-header pb-0 pl-2 pt-1">
                                 {{ trans('paegtm.comparisonIndicatorsTitle') }}
                             </div>
-                            <div class="p-1 pl-2">
-                                <table class="table text-center text-white podbor-middle-table h-75">
+                            <div class="p-1 pl-2 h-75">
+                                <table class="table text-center text-white podbor-middle-table h-100">
                                     <thead>
                                     <tr>
                                         <th class="align-middle" rowspan="2">{{ trans('paegtm.gtmType') }}</th>
@@ -50,7 +51,7 @@
                     </div>
                 </div>
                 <div class="row col-12 p-0 m-0">
-                    <div class="col-6 d-none d-lg-block p-0 pl-1 gtm-map-block">
+                    <div class="col-6 d-none d-lg-block p-0 pl-1">
                         <div class="h-100">
                             <div class="block-header pb-0 pl-2">
                                 {{ trans('paegtm.profitabilityIndexTitle') }}
@@ -60,7 +61,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-6 d-none d-lg-block p-0 gtm-map-block">
+                    <div class="col-6 d-none d-lg-block p-0">
                         <div class="h-100 pb-2">
                             <div class="block-header pb-0 pl-2">
                                 {{ trans('paegtm.plannedGrowthReasonsTitle') }}
@@ -87,24 +88,8 @@
                         </table>
                     </div>
                 </div>
-                <div class="mt-2 row m-0">
-                    <div class="col-5 p-0">
-                        <div class="calendar-filter-block d-flex align-items-center">
-                            01.08.2018
-                            <img class="calendar-icon" src="/img/GTM/calendar_icon.svg">
-                        </div>
-                    </div>
-                    <div class="col-5 p-0">
-                        <div class="ml-1 calendar-filter-block d-flex align-items-center">
-                            01.08.2018
-                            <img class="calendar-icon" src="/img/GTM/calendar_icon.svg">
-                        </div>
-                    </div>
-                    <div class="col-1 p-0">
-                        <div class="ml-1 calendar-filter-block d-flex align-items-center">
-                            <img class="gear-icon m-auto" src="/img/GTM/gear.svg">
-                        </div>
-                    </div>
+                <div class="mt-2">
+                    <gtm-date-picker @dateChanged="getData"></gtm-date-picker>
                 </div>
                 <div class="gtm-dark mt-2">
                     <div class="block-header text-center p-2">
@@ -265,11 +250,8 @@ export default {
             ],
             comparisonIndicators: [],
             accumOilProdLabels: [],
-            accumOilProdData: [],
-            accumOilProdNewData: {
-                accumOilProdFactData: [],
-                accumOilProdPlanData: [],
-            },
+            accumOilProdFactData: [],
+            accumOilProdPlanData: [],
             lineChartOptions: {
                 responsive: true,
                 maintainAspectRatio: false,
@@ -304,71 +286,78 @@ export default {
             loaded: false,
         };
     },
-    watch: {
-        accumOilProdNewData (newData) {
-            this.accumOilProdData = [
-                {
-                    label: this.trans('paegtm.fact'),
-                    borderColor: "#F27E31",
-                    backgroundColor: '#F27E31',
-                    data: newData.accumOilProdFactData,
-                    fill: false,
-                    showLine: true,
-                    pointRadius: 4,
-                    pointBorderColor: "#FFFFFF",
-                },
-                {
-                    label: this.trans('paegtm.plan'),
-                    borderColor: "#82BAFF",
-                    backgroundColor: '#82BAFF',
-                    data: newData.accumOilProdPlanData,
-                    fill: false,
-                    showLine: true,
-                    pointRadius: 4,
-                    pointBorderColor: "#FFFFFF",
+    computed: {
+            accumOilProdData: function () {
+                return [
+                    {
+                        label: this.trans('paegtm.fact'),
+                        borderColor: "#F27E31",
+                        backgroundColor: '#F27E31',
+                        data: this.accumOilProdFactData,
+                        fill: false,
+                        showLine: true,
+                        pointRadius: 4,
+                        pointBorderColor: "#FFFFFF",
+                    },
+                    {
+                        label: this.trans('paegtm.plan'),
+                        borderColor: "#82BAFF",
+                        backgroundColor: '#82BAFF',
+                        data: this.accumOilProdPlanData,
+                        fill: false,
+                        showLine: true,
+                        pointRadius: 4,
+                        pointBorderColor: "#FFFFFF",
+                    }
+                ]
+            }
+    },
+    methods: {
+        getData() {
+            this.$store.commit('globalloading/SET_LOADING',true);
+            this.axios.get(
+                this.localeUrl('/paegtm/accum_oil_prod_data'),
+                {params: {dateStart: this.$store.state.dateStart, dateEnd: this.$store.state.dateEnd}}
+            ).then((response) => {
+                let data = response.data;
+                if (data) {
+                    let accumOilProdFactData = [];
+                    let accumOilProdPlanData = [];
+                    this.accumOilProdLabels = [];
+                    data.forEach((item) => {
+                        this.accumOilProdLabels.push(item.date)
+                        accumOilProdFactData.push(Math.round(item.accumOilProdFactData))
+                        accumOilProdPlanData.push(Math.round(item.accumOilProdPlanData))
+                    });
+                    this.accumOilProdFactData = accumOilProdFactData;
+                    this.accumOilProdPlanData = accumOilProdPlanData;
                 }
-            ]
+                this.loaded = true;
+            });
+            this.axios.get(
+                this.localeUrl('/paegtm/comparison_indicators_data'),
+                {params: {dateStart: this.$store.state.dateStart, dateEnd: this.$store.state.dateEnd}}
+            ).then((response) => {
+                let data = response.data;
+                if (data) {
+                    this.comparisonIndicators = [];
+                    data.forEach((item) => {
+                        this.comparisonIndicators.push([
+                            item.gtm_kind,
+                            item.wellsCount,
+                            Math.round(item.avgDebitPlan * 100) / 100,
+                            Math.round(item.avgDebitFact * 100) / 100,
+                            Math.round(item.plan_add_prod_12m),
+                            Math.round(item.add_prod_12m),
+                        ])
+                    });
+                }
+            });
+            this.$store.commit('globalloading/SET_LOADING',false);
         }
     },
-    created() {
-        this.$store.commit('globalloading/SET_LOADING',true);
+    mounted() {
+        this.getData();
     },
-    async mounted () {
-        this.axios.get(this.localeUrl('/paegtm') + '/accum_oil_prod_data').then((response) => {
-            let data = response.data;
-            if (data) {
-                let accumOilProdFactData = [];
-                let accumOilProdPlanData = [];
-                this.accumOilProdLabels = [];
-                this.accumOilProdNewData = {};
-                data.forEach((item) => {
-                    this.accumOilProdLabels.push(item.date)
-                    accumOilProdFactData.push(Math.round(item.accumOilProdFactData))
-                    accumOilProdPlanData.push(Math.round(item.accumOilProdPlanData))
-                });
-                this.accumOilProdNewData.accumOilProdFactData = accumOilProdFactData;
-                this.accumOilProdNewData.accumOilProdPlanData = accumOilProdPlanData;
-            }
-            this.loaded = true
-        });
-        this.axios.get(this.localeUrl('/paegtm') + '/comparison_indicators_data').then((response) => {
-            let data = response.data;
-            if (data) {
-                this.comparisonIndicators = [];
-                data.forEach((item) => {
-                    this.comparisonIndicators.push([
-                        item.gtm_kind,
-                        item.wellsCount,
-                        Math.round(item.avgDebitPlan * 100) / 100,
-                        Math.round(item.avgDebitFact * 100) / 100,
-                        Math.round(item.plan_add_prod_12m),
-                        Math.round(item.add_prod_12m),
-                    ])
-                });
-            }
-            this.$store.commit('globalloading/SET_LOADING',false);
-            this.loaded = true
-        });
-    }
 }
 </script>

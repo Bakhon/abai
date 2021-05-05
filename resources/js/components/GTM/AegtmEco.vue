@@ -3,7 +3,7 @@
         <div class="row mx-0 mt-lg-2 gtm">
             <div class="gtm-dark col-lg-10 p-0">
                 <div class="row col-12 p-0 m-0">
-                    <div class="col-6 d-none d-lg-block p-0 pl-1 gtm-map-block">
+                    <div class="col-6 d-none d-lg-block p-0 pl-1">
                         <div class="h-100">
                             <div class="block-header pb-0 pl-2">
                                 Доходы от дополнительной добычи нефти
@@ -13,7 +13,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-6 d-none d-lg-block p-0 gtm-map-block">
+                    <div class="col-6 d-none d-lg-block p-0">
                         <div class="h-100">
                             <div class="block-header pb-0 pl-2 pt-1">
                                 Свободные денежные потоки (FCF) 2020г
@@ -25,7 +25,7 @@
                     </div>
                 </div>
                 <div class="row col-12 p-0 m-0">
-                    <div class="col-6 d-none d-lg-block p-0 pl-1 gtm-map-block">
+                    <div class="col-6 d-none d-lg-block p-0 pl-1">
                         <div class="h-100">
                             <div class="block-header pb-0 pl-2">
                                 Расходы на ГТМ
@@ -35,7 +35,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-6 d-none d-lg-block p-0 gtm-map-block">
+                    <div class="col-6 d-none d-lg-block p-0">
                         <div class="h-100">
                             <div class="block-header pb-0 pl-2 pt-1">
                                 Бурение скважин за 9 месяцев  2020г
@@ -63,23 +63,7 @@
                     </div>
                 </div>
                 <div class="mt-2 row m-0">
-                    <div class="col-5 p-0">
-                        <div class="calendar-filter-block d-flex align-items-center">
-                            01.08.2018
-                            <img class="calendar-icon" src="/img/GTM/calendar_icon.svg">
-                        </div>
-                    </div>
-                    <div class="col-5 p-0">
-                        <div class="ml-1 calendar-filter-block d-flex align-items-center">
-                            01.08.2018
-                            <img class="calendar-icon" src="/img/GTM/calendar_icon.svg">
-                        </div>
-                    </div>
-                    <div class="col-1 p-0">
-                        <div class="ml-1 calendar-filter-block d-flex align-items-center">
-                            <img class="gear-icon m-auto" src="/img/GTM/gear.svg">
-                        </div>
-                    </div>
+                    <gtm-date-picker @dateChanged="getData"></gtm-date-picker>
                 </div>
                 <div class="gtm-dark mt-2">
                     <div class="block-header text-center p-2">
@@ -283,6 +267,10 @@ export default {
                 }
             ],
         };
+    },
+    methods: {
+        getData: function () {
+        }
     }
 }
 </script>

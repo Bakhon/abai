@@ -13,8 +13,18 @@ export default {
             default: null
         }
     },
+    methods: {
+        renderLineChart: function () {
+            this.renderChart(this.chartdata, this.options);
+        }
+    },
+    watch: {
+        chartdata: function () {
+            this.renderLineChart();
+        }
+    },
     mounted () {
-        this.renderChart(this.chartdata, this.options)
-    }
+        this.renderLineChart();
+    },
 }
 </script>

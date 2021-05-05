@@ -71,7 +71,7 @@ export default {
             if (change == "1") {
                 this.Table1 = "display:block";
                 this.tableHover1 = buttonHover2;
-                this.changeMenu2(1);
+                this.changeMenu2('daily');
             } else if (change == "2") {
                 this.Table2 = "display:block";
                 this.tableHover2 = buttonHover2;
@@ -112,9 +112,11 @@ export default {
             this.buttonMonthlyTab = "";
             this.buttonYearlyTab = "";
             this.buttonPeriodTab = "";
-            this.isFilterTargetPlanActive = false;
+            if (change !== 'yearly') {
+                this.isFilterTargetPlanActive = false;
+            }
 
-            if (change === 1) {
+            if (change === 'daily') {
                 this.currentDzoList = 'daily';
                 this.buttonDailyTab = this.highlightedButton;
                 this.range = {
@@ -126,7 +128,7 @@ export default {
                 this.calculateDzoCompaniesSummary();
             }
 
-            if (change === 2) {
+            if (change === 'monthly') {
                 let minimalDaysPeriodForChart = 2;
                 this.buttonMonthlyTab = this.highlightedButton;
                 this.currentDzoList = 'monthly';
@@ -146,7 +148,7 @@ export default {
                 this.changeDate();
             }
 
-            if (change === 3) {
+            if (change === 'yearly') {
                 this.buttonYearlyTab = this.highlightedButton;
                 this.currentDzoList = 'yearly';
                 this.range = {
@@ -157,8 +159,9 @@ export default {
                 this.changeDate();
             }
 
-            if (change === 4) {
+            if (change === 'period') {
                 this.buttonPeriodTab = this.highlightedButton;
+                this.currentDzoList = 'daily';
             }
         },
 
