@@ -15,7 +15,7 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         \App\Console\Commands\UsdParse::class,
         \App\Console\Commands\OilParse::class,
-        \App\Console\Commands\hiveDataFromAvoset::class,
+        \App\Console\Commands\HiveDataFromAvoset::class,
     ];
 
     /**

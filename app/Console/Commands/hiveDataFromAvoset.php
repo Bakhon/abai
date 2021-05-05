@@ -6,7 +6,7 @@ use App\Models\VisCenter\ExcelForm\DzoImportData;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 
-class hiveDataFromAvoset extends Command
+class HiveDataFromAvoset extends Command
 {
     /**
      * The name and signature of the console command.
