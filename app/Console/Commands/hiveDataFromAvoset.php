@@ -70,7 +70,6 @@ class hiveDataFromAvoset extends Command
         $associatedGasDeliveryFact = $this->valueFromArray($dataGasMore, 'KGM_TRANS', 10);
         $associatedGasDeliveryFact = $this->valueFromArray($dataGasMore, 'KGM_TRANS', 10);
 
-
         $alldata = new DzoImportData();
         $alldata->date = $date;
         $alldata->dzo_name = 'КГМ';
@@ -82,7 +81,6 @@ class hiveDataFromAvoset extends Command
         $alldata->stock_of_goods_delivery_fact = $stockOfGoodsDeliveryFactTotal;
         $alldata->save();
     }
-
 
     public function valueFromArray($data, $field, $column)
     {
