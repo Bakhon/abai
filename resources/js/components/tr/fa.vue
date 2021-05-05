@@ -1042,7 +1042,7 @@ export default {
       waterCutHeader: this.trans('tr.water_cut'),
       pLayerHeader: this.trans('tr.p_layer'),
       workDaysMeasure: this.trans('tr.t'),
-      chartLink: "faWeeklyChart",
+      chartLink: "fa_weekly_chart",
       filter: [...fields],
       fieldFilterOptions: [
         {
@@ -1156,7 +1156,7 @@ export default {
       this.colsize2= 2;
       this.isDynamic = true;
       this.isGenHide = true;
-      this.chartLink = "faWeeklyChart"
+      this.chartLink = "fa_weekly_chart"
       this.$store.commit("fa/SET_IS_DYNAMIC", true);
       this.$store.commit("globalloading/SET_LOADING", true);
       this.$store.commit("fa/SET_MONTH", mm);
@@ -1430,7 +1430,7 @@ export default {
     this.isGenHide= true;
     this.colsize7 = 7;
     this.colsize2 = 2;
-    this.chartLink = "faWeeklyChart"
+    this.chartLink = "fa_weekly_chart"
     var weekd1 = yyyy + "-" + mm + "-" + dd;
     var weekd2 = pryyyy + "-" + prmm + "-" + prdd;
     this.$store.commit("fa/SET_IS_DYNAMIC", true);
