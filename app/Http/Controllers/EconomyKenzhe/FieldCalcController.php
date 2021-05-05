@@ -161,7 +161,7 @@ class FieldCalcController extends MainController
             }
         }
 
-        $data[$company->name][$this->year]['opiu'] = $opiuTree;
+        $data[$this->year]['opiu'] = $opiuTree;
 
         for ($month = 1; $month <= 12; $month++) {
             if ($month > 9) {
@@ -212,17 +212,18 @@ class FieldCalcController extends MainController
             $workday = $lastDay * $procent;
             $this->liquid = $this->fluidProduction * $workday;
             $oil = $this->qoil * (1 - exp(log(1 - $this->razrab / 100) / self::ONE_YEAR * $workday)) / -(log(1 - $this->razrab / 100) / self::ONE_YEAR);
-            $perreal = EcoRefsProcDob::where('company_id', $this->companyId)->first();
-            if ($perreal) {
-                $perreal = $perreal->proc_dob;
+            $percentRealization = EcoRefsProcDob::where('company_id', $this->companyId)->first();
+            if ($percentRealization) {
+                $percentRealization = $percentRealization->proc_dob;
             }
-            $empper = $oil - $oil * $perreal;
+            $empper = $oil - $oil * $percentRealization;
 
             $ecnParam = 95.343 * pow($this->liq, -0.607);
             $shgnParam = 108.29 * pow($this->liq, -0.743);
 
             foreach ($emppersExp as $item) {
                 $exportsResults[$item->route_id] = $empper * $item->emp_per;
+                $ndoByRoute[$this->getRoute($item->route_id)] = $exportsResults[$item->route_id];
             }
             $exportsResultsTotal = array_sum($exportsResults);
 
@@ -232,10 +233,10 @@ class FieldCalcController extends MainController
 
             foreach ($equipRas as $item) {
                 $electCost = EcoRefsPrepElectPrsBrigCost::where('company_id', '=', $item->company_id)->first();
-                if ($item->equip_id == 1) {
-                    $zatrElectResults[$item->equip_id] = $workday * $this->liq * $shgnParam * $electCost->elect_cost;
+                if ($item->equip_id == 1) {  // тип оборудования
+                    $zatrElectResults[$item->equip_id] = $workday * $this->liq * $shgnParam * $electCost->elect_cost; // Затраты на электроэнергию
                 } else {
-                    $zatrElectResults[$item->equip_id] = $workday * $this->liq * $ecnParam * $electCost->elect_cost;
+                    $zatrElectResults[$item->equip_id] = $workday * $this->liq * $ecnParam * $electCost->elect_cost;//Затраты на электроэнергию
                 }
             }
 
@@ -289,7 +290,7 @@ class FieldCalcController extends MainController
             $stavki = EcoRefsNdoRates::where('company_id', '=', $item->company_id)->first(); //Ставки для НДО
             foreach ($discontExp as $item) {
                 $exportsNdpiResults[$item->route_id] = $exportsResults[$item->route_id] * $item->barr_coef * $item->macro * $stavki->ndo_rates * $rate->ex_rate_dol;
-                $data[$company->name][$lastDateOfMonth]['НДПИ нефть на экспорт'] = $exportsNdpiResults[$item->route_id];
+                $data[$company->name][$lastDateOfMonth]['НДПИ нефть на экспорт'][] = $exportsNdpiResults[$item->route_id];
             }
             $exportsNdpiResultsTotal = array_sum($exportsNdpiResults);
 
@@ -307,7 +308,6 @@ class FieldCalcController extends MainController
             // Export END
 
             // Inside BEGIN
-
             $emppersIns = EcoRefsEmpPer::whereIn('direction_id', $this->insideMarketDirections)->where('sc_fa', $scenarioFact)->where('company_id', $this->companyId)->where('date', $firstDateOfMonth)->get();
             $discontIns = EcoRefsDiscontCoefBar::whereIn('direction_id', $this->insideMarketDirections)->where('sc_fa', $scenarioFact)->where('company_id', $this->companyId)->where('date', $firstDateOfMonth)->get();
 
@@ -400,7 +400,6 @@ class FieldCalcController extends MainController
             $nakopDiscSvodPotok = $nakopDiscSvodPotok + $discSvobPotok;
             $npv = $npv + $svobodDenPotok;
 
-
             $exportTransportationValue = [];
             foreach ($exportsTarTnResults as $id => $exportsResult) {
                 $exportTransportationValue[$this->getRoute($id)] = $exportsResult;
@@ -421,7 +420,17 @@ class FieldCalcController extends MainController
                 $insideMarket[$this->getRoute($id)] = $insideResult;
             }
 
-            $data[$company->name][$lastDateOfMonth] = [
+            $exportNdpiCalculationResult = [];
+            foreach ($exportsNdpiResults as $id => $exportNdpi) {
+                $exportNdpiCalculationResult[$this->getRoute($id)] = $insideResult;
+            }
+            $insideNdpiCalculationResult = [];
+            foreach ($insideNdpiResults as $id => $insideNdpi) {
+                $insideNdpiCalculationResult[$this->getRoute($id)] = $insideResult;
+            }
+
+
+            $data[$company->name][$lastDateOfMonth]  = [
                 'Доп. добыча нефти, тыс.т' => $oil,
                 'Количество отработанных дней' => $workday,
                 'Количество ПРС' => array_sum($prsResult) / 12,
@@ -439,7 +448,10 @@ class FieldCalcController extends MainController
                 ],
                 'Расходы по погрузке, транспортировке ВНУТ.РЫНОК' => [
                     'routes' => $insideTransportationValue
-                ]
+                ],
+                'Расчет НДПИ (Экспорт)'=> $exportNdpiCalculationResult,
+                'Расчет НДПИ (Внт. рынок)'=> $insideNdpiCalculationResult,
+                'Распределение по направлениям реализации НДО' => $ndoByRoute
             ];
 
 //                $vdata2 = [
@@ -494,9 +506,9 @@ class FieldCalcController extends MainController
             'Чистая прибыль' => $chistayaPribyl,
             'Свободный денежный поток' => $svobodDenPotok,
             'Добыча жидкости' => $godovoiLiquid,
-            'oil' => $godovoiOil,
+            'добыча нефти, тыс.т' => $godovoiOil,
             'empper' => $godovoiEmpper,
-            'Рабочих дней' => $godovoiWorkday,
+            'Количество отработанных дней' => $godovoiWorkday,
             'Количество ПРС' => $prsResult,
             'Средний ПРС' => $avgprsday,
             'godovoiNdo' => $godovoiNdo,
@@ -522,11 +534,11 @@ class FieldCalcController extends MainController
             'godovoiEcnParam' => $godovoiEcnParam,
         ];
 
-        $opiuOilNames = [];
-        $this->getShowDataOnTree($this->opiuOilNames, $opiuValues, $opiuOilNames);
-        foreach ($opiuOilNames as $oilName){
-            $data[$this->year]['opiu'][$oilName['name']] = $oilName['value']/$godovoiOil*$oil;
-        }
+//        $opiuOilNames = [];
+//        $this->getShowDataOnTree($this->opiuOilNames, $opiuValues, $opiuOilNames);
+//        foreach ($opiuOilNames as $oilName){
+//            $data[$this->year]['opiu'][$oilName['name']] = $oilName['value']/$godovoiOil*$oil;
+//        }
 
         dd($data);
     }
