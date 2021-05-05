@@ -588,9 +588,9 @@
                     :header-cell-class-name="getHeaderCellClassName"
                     >
                     <el-table-column 
-                      :label="trans('tr.ngdu_field')" 
+                      label=""
                       >
-                      <el-table-column label="" prop="fake" >
+                      <el-table-column :label="trans('tr.ngdu_field')"   prop="fake" >
                         <el-table-column label="" >
                           <el-table-column
                             prop="field"
@@ -599,16 +599,15 @@
                             sortable
                             :filters="filter_column.field"
                             :filter-method="filterHandler"
-        
                             >
                           </el-table-column>
                         </el-table-column>
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
-                      :label="trans('tr.well_number')"
+                      label=""
                       >
-                      <el-table-column label="" prop="fake" >
+                      <el-table-column :label="trans('tr.well_number')"   prop="fake" >
                         <el-table-column label="" >
                           <el-table-column
                             prop="rus_wellname"
@@ -621,10 +620,10 @@
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
-                      :label="trans('tr.well_type')"
+                       label=""
                       >
-                      <el-table-column label="" prop="fake" >
-                        <el-table-column label="" >
+                      <el-table-column  :label="trans('tr.well_type')" prop="fake" >
+                        <el-table-column  label="">
                           <el-table-column
                             prop="well_type"
                             label=""
@@ -653,9 +652,9 @@
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
-                      :label="trans('tr.horizon')"
+                       label="" 
                       >
-                      <el-table-column label="" prop="fake" >
+                      <el-table-column :label="trans('tr.horizon')" prop="fake" >
                         <el-table-column label="" >
                           <el-table-column
                             prop="horizon"
@@ -684,9 +683,9 @@
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
-                      :label="trans('tr.object')"
+                       label=""
                       >
-                      <el-table-column label="" prop="fake" >
+                      <el-table-column :label="trans('tr.object')" prop="fake" >
                         <el-table-column label="" >
                           <el-table-column
                             prop="object"
@@ -701,9 +700,9 @@
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
-                      :label="trans('tr.block')"
+                       label=""
                       >
-                      <el-table-column label="" prop="fake" >
+                      <el-table-column :label="trans('tr.block')" prop="fake" >
                         <el-table-column label="" >
                           <el-table-column
                             prop="block"
@@ -733,9 +732,9 @@
                     </el-table-column>
 
                     <el-table-column
-                      :label="trans('tr.r_feed_loop')"
+                       label=""
                       >
-                      <el-table-column label="" prop="fake" >
+                      <el-table-column :label="trans('tr.r_feed_loop')"  prop="fake" >
                         <el-table-column label="" >
                           <el-table-column
                             prop="r_con"
@@ -783,9 +782,9 @@
                     </el-table-column>
 
                     <el-table-column
-                      :label="trans('tr.outer_diameter_producing_casing')"
+                       label=""
                       >
-                      <el-table-column label="" prop="fake" >
+                      <el-table-column :label="trans('tr.outer_diameter_producing_casing')" prop="fake" >
                         <el-table-column label="" >
                           <el-table-column
                             prop="cas_OD"
@@ -814,9 +813,9 @@
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
-                      :label="trans('tr.inner_diameter_producing_casing')"
+                       label=""
                       >
-                      <el-table-column label="" prop="fake" >
+                      <el-table-column :label="trans('tr.inner_diameter_producing_casing')" prop="fake" >
                         <el-table-column label="" >
                           <el-table-column
                             prop="cas_ID"
@@ -830,9 +829,9 @@
                     </el-table-column>
 
                     <el-table-column
-                      :label="trans('tr.outer_diameter_nkt')"
+                       label=""
                       >
-                      <el-table-column label="" prop="fake" >
+                      <el-table-column :label="trans('tr.outer_diameter_nkt')" prop="fake" >
                         <el-table-column label="" >
                           <el-table-column
                             prop="tub_OD"
@@ -859,9 +858,9 @@
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
-                      :label="trans('tr.inner_diameter_nkt')"
+                       label=""
                       >
-                      <el-table-column label="" prop="fake" >
+                      <el-table-column :label="trans('tr.inner_diameter_nkt')"  prop="fake" >
                         <el-table-column label="" >
                           <el-table-column
                             prop="tub_ID"
@@ -874,9 +873,9 @@
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
-                      :label="trans('tr.choke_diameter')"
+                       label=""
                       >
-                      <el-table-column label="" prop="fake" >
+                      <el-table-column :label="trans('tr.choke_diameter')" prop="fake" >
                         <el-table-column label="" >
                           <el-table-column
                             prop="choke_d"
@@ -903,9 +902,9 @@
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
-                      :label="trans('tr.h_water_permeability')"
+                       label=""
                       >
-                      <el-table-column label="" prop="fake" >
+                      <el-table-column :label="trans('tr.h_water_permeability')" prop="fake" >
                         <el-table-column label="" >
                           <el-table-column
                             prop="h_up_perf_md"
@@ -932,10 +931,10 @@
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
-                      :label="trans('tr.h_water_permeability_extension')"
+                       label=""
                       >
-                      <el-table-column label="" prop="fake" >
-                        <el-table-column label="" >
+                      <el-table-column   :label="trans('tr.h_water_permeability_extension')" prop="fake" >
+                        <el-table-column  label="">
                           <el-table-column
                             prop="h_up_perf_ext"
                             label=""
