@@ -35,7 +35,7 @@ class HiveDataFromAvoset extends Command
 
     public function hiveDataFromAvoset($table, $date)
     {
-        require_once public_path() . '\php-thrift-sql\ThriftSQL.phar';
+        require_once app_path() . '\libs\php-thrift-sql\ThriftSQL.phar';
 
         $hive = new \ThriftSQL\Hive('172.20.103.38', 10000, 'hive', 'hive');
         $hiveTables = $hive->connect()->getIterator("select * from kazger." . $table . " where start_datetime like '" . $date . "%'");
@@ -47,7 +47,6 @@ class HiveDataFromAvoset extends Command
 
     public function saveHiveDataFromAvoset()
     {
-        require_once public_path() . '\php-thrift-sql\ThriftSQL.phar';
         $date = Carbon::yesterday();
         $dataOilAndGas =  $this->hiveDataFromAvoset('KMG_I_PRD_AREA_VIEW', $date);
         $dataWater =  $this->hiveDataFromAvoset('KMG_I_MTR_INJ_VIEW', $date);
