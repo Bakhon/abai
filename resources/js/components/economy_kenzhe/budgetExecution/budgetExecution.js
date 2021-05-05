@@ -278,10 +278,10 @@ export default {
     },
   },
   watch: {
-    dzoSelect: function (newValue, oldValue) {
+    dzoSelect: function () {
       this.refreshData()
     },
-    fromBeginOfYearSelect: function (newValue, oldValue) {
+    fromBeginOfYearSelect: function (newValue) {
       if (newValue !== 0) {
         let dateStart = new Date(2020, 0, 1);
         let dateEnd = new Date(2020, newValue, 1);
@@ -291,7 +291,7 @@ export default {
         this.byMonthSelect = this.quarterSelect = this.actualMonthSelect = 0;
       }
     },
-    byMonthSelect: function (newValue, oldValue) {
+    byMonthSelect: function (newValue) {
       if (newValue !== 0) {
         let dateStart = new Date(2020, newValue - 1, 1);
         let dateEnd = new Date(2020, newValue, 1);
@@ -301,7 +301,7 @@ export default {
         this.fromBeginOfYearSelect = this.quarterSelect = this.actualMonthSelect = 0;
       }
     },
-    quarterSelect: function (newValue, oldValue) {
+    quarterSelect: function (newValue) {
       if (newValue !== 0) {
         let dateStart = new Date(2020, newValue - 1, 1);
         let dateEnd = new Date(2020, newValue + 2, 1);
@@ -311,7 +311,7 @@ export default {
         this.fromBeginOfYearSelect = this.byMonthSelect = this.actualMonthSelect = 0;
       }
     },
-    actualMonthSelect: function (newValue, oldValue) {
+    actualMonthSelect: function (newValue) {
       if (newValue !== 0) {
         let dateStart = new Date(2020, this.actualMonth, 1);
         let dateEnd = new Date(2020, this.actualMonth + 1, 1);
