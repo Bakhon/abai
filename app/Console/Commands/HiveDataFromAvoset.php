@@ -38,7 +38,7 @@ class HiveDataFromAvoset extends Command
         require_once app_path() . '\libs\php-thrift-sql\ThriftSQL.phar';
 
 
-        $hive = new \ThriftSQL\Hive(env('SERVER_HIVE_FROM_AVOCET','172.20.103.38'), 10000, 'hive', 'hive');
+        $hive = new \ThriftSQL\Hive(env('SERVER_HIVE_FROM_AVOCET', '172.20.103.38'), 10000, 'hive', 'hive');
         $hiveTables = $hive->connect()->getIterator("select * from kazger." . $table . " where start_datetime like '" . $date . "%'");
         foreach ($hiveTables as $rowNum => $row) {
             $dataMass[] = array_merge($row);
@@ -53,6 +53,7 @@ class HiveDataFromAvoset extends Command
         $dataWater =  $this->hiveDataFromAvoset('KMG_I_MTR_INJ_VIEW', $date);
         $dataOilDelivery =  $this->hiveDataFromAvoset('KMG_I_MTR_PROD_VIEW', $date);
         $dataGasMore =  $this->hiveDataFromAvoset('KMG_I_MTR_GAS_VIEW', $date);
+        $productionFonds  =  $this->hiveDataFromAvoset('KMG_I_WELL_STOCK_VIEW', $date);
 
         $oilFact  = 0;
         $gasFact  = 0;
@@ -69,6 +70,9 @@ class HiveDataFromAvoset extends Command
         $stockOfGoodsDeliveryFactTotal =  $stockOfGoodsDeliveryFactAksh + $stockOfGoodsDeliveryFactAsy + $stockOfGoodsDeliveryFactNur;
         $associatedGasDeliveryFact = $this->valueFromArray($dataGasMore, 'KGM_TRANS', 10);
         $associatedGasDeliveryFact = $this->valueFromArray($dataGasMore, 'KGM_TRANS', 10);
+        $operatingProductionFond = $this->quantityOfArray($productionFonds, 'PRODUCING'); //operating_production_fond 
+
+
 
         $alldata = new DzoImportData();
         $alldata->date = $date;
@@ -79,6 +83,7 @@ class HiveDataFromAvoset extends Command
         $alldata->oil_delivery_fact = $oilDeliveryFact;
         $alldata->associated_gas_delivery_fact = $associatedGasDeliveryFact;
         $alldata->stock_of_goods_delivery_fact = $stockOfGoodsDeliveryFactTotal;
+        dd($operatingProductionFond);
         $alldata->save();
     }
 
@@ -90,6 +95,21 @@ class HiveDataFromAvoset extends Command
             }
         }
     }
+
+    public function quantityOfArray($data, $field)
+    {
+
+        $summ = [];
+
+        foreach ($data as $rowNum => $row) {
+
+            if ($row[5] == $field) {
+                $summ[] = array_merge($row);
+            }
+        }
+        return count($summ);
+    }
+
 
 
 
