@@ -72,14 +72,14 @@ class HiveDataFromAvoset extends Command
         $associatedGasDeliveryFact = $this->valueFromArray($dataGasMore, 'KGM_TRANS', 10);
 
         $productionFond='PRODUCTION';        
-        $inWorkProductionFond = $this->quantityOfArray($fonds, 'PRODUCING',$productionFond);//in_work_production_fond	В работе
-        $inIdleProductionFond = $this->quantityOfArray($fonds, 'SHUT_IN',$productionFond);//in_idle_production_fond	В простое
-        $inactiveProductionFond = $this->quantityOfArray($fonds, 'IDLE',$productionFond);//inactive_production_fond	Бездействующий фонд скважин
-        $developingProductionFond = $this->quantityOfArray($fonds, 'DEVELOPMENT',$productionFond);//developing_production_fond	Освоение
-        $pendingLiquidationProductionFond = $this->quantityOfArray($fonds, 'ABANDON',$productionFond);//pending_liquidation_production_fond	Ожидание физической ликвидации скважин
-        $operatingProductionFond = $inWorkProductionFond+$inIdleProductionFond+$developingProductionFond;  //operating_production_fond  Эксплуатационный фонд
-        $activeProductionFond = $inWorkProductionFond+$inIdleProductionFond; //active_production_fond	Действующий фонд 
-        $inConservationProductionFond=$this->quantityOfArray($fonds, 'SUSPENDED',$productionFond);//  in_conservation_production_fond Консервация
+        $inWorkProductionFond = $this->quantityOfArray($fonds, 'PRODUCING',$productionFond);
+        $inIdleProductionFond = $this->quantityOfArray($fonds, 'SHUT_IN',$productionFond);
+        $inactiveProductionFond = $this->quantityOfArray($fonds, 'IDLE',$productionFond);
+        $developingProductionFond = $this->quantityOfArray($fonds, 'DEVELOPMENT',$productionFond);
+        $pendingLiquidationProductionFond = $this->quantityOfArray($fonds, 'ABANDON',$productionFond);
+        $operatingProductionFond = $inWorkProductionFond+$inIdleProductionFond+$developingProductionFond;
+        $activeProductionFond = $inWorkProductionFond+$inIdleProductionFond;
+        $inConservationProductionFond=$this->quantityOfArray($fonds, 'SUSPENDED',$productionFond);
 
         $injectionFond='INJECTION';
         $inWorkInjectionFond = $this->quantityOfArray($fonds, 'PRODUCING',$injectionFond);
@@ -101,13 +101,13 @@ class HiveDataFromAvoset extends Command
         $alldata->associated_gas_delivery_fact = $associatedGasDeliveryFact;
         $alldata->stock_of_goods_delivery_fact = $stockOfGoodsDeliveryFactTotal;
 
-        $alldata->in_work_production_fond = $inWorkProductionFond; // 	В работе
-        $alldata->in_idle_production_fond = $inIdleProductionFond; // В простое
-        $alldata->inactive_production_fond = $inactiveProductionFond; // Бездействующий фонд скважин
-        $alldata->developing_production_fond = $developingProductionFond; //Освоение
-        $alldata->pending_liquidation_production_fond = $pendingLiquidationProductionFond; // 	Ожидание физической ликвидации скважин
-        $alldata-> operating_production_fond = $operatingProductionFond; //Эксплуатационный фонд
-        $alldata-> active_production_fond= $activeProductionFond; // 	Действующий фонд 
+        $alldata->in_work_production_fond = $inWorkProductionFond;
+        $alldata->in_idle_production_fond = $inIdleProductionFond; 
+        $alldata->inactive_production_fond = $inactiveProductionFond; 
+        $alldata->developing_production_fond = $developingProductionFond; 
+        $alldata->pending_liquidation_production_fond = $pendingLiquidationProductionFond;
+        $alldata-> operating_production_fond = $operatingProductionFond;
+        $alldata-> active_production_fond= $activeProductionFond;
 
         $alldata->in_work_injection_fond = $inWorkInjectionFond; 
         $alldata->in_idle_injection_fond = $inIdleInjectionFond; 
@@ -142,9 +142,6 @@ class HiveDataFromAvoset extends Command
         }}
         return count($summ);
     }
-
-
-
 
     /**
      * Execute the console command.
