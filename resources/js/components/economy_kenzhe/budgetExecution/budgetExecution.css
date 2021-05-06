@@ -15,11 +15,6 @@ td.reptt-column ,td.reptt-column-zero  {
   font-size: 14px;
 }
 
-/*
-tr.black>td div {
-  text-align:left;
-}
-*/
 td.reptt-column-zero .cell{
   text-align:left;
   color: #fff;
@@ -35,8 +30,6 @@ td.reptt-cell .el-table__expand-icon {
 
 td.reptt-cell {
   font-size: 14px;
-  /* border: 1px solid #454D7D; */
-  /* background-color: #272953; */
   text-align: left;
 }
 
