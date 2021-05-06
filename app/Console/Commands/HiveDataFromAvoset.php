@@ -38,23 +38,54 @@ class HiveDataFromAvoset extends Command
         require_once app_path() . '\libs\php-thrift-sql\ThriftSQL.phar';
 
 
-        $hive = new \ThriftSQL\Hive(env('SERVER_HIVE_FROM_AVOCET', '172.20.103.38'), 10000, 'hive', 'hive');
-        $hiveTables = $hive->connect()->getIterator("select * from kazger." . $table . " where start_datetime like '" . $date . "%'");
+       //$hive = new \ThriftSQL\Hive(env('SERVER_HIVE_FROM_AVOCET', '172.20.103.38'), 10000, 'hive', 'hive');
+     
+       //$hiveTables = $hive->connect()->getIterator("select * from kazger." . $table . " where start_datetime >= '2021-04-05 %' and category3 like'%ПРС%' or category4 like '%ПРС%'");
+    //$hiveTables = $hive->connect()->getIterator("select * from kazger." . $table . " where start_datetime >= '2021-04-05 %'and category3 like'%КРС%' or category4 like '%КРС%'");
+  
+  
+  
+     //$hiveTables = $hive->connect()->getIterator("select * from kazger." . $table . " where start_datetime BETWEEN '2019-01-30' and '2021-05-05' and category4 like '%ОПРС%'");
+    //$hiveTables = $hive->connect()->getIterator("select * from kazger." . $table . " where start_datetime BETWEEN '2019-01-30' and '2021-05-05' and category4 like '%КРС%'");
+    
+    
+    
+    //$hiveTables = $hive->connect()->getIterator("select * from kazger." . $table . " where start_datetime BETWEEN '2019-01-30' and '2021-05-05' and details like '%ПРС.%'");
+    //$hiveTables = $hive->connect()->getIterator("select * from kazger." . $table . " where start_datetime BETWEEN '2019-01-30' and '2021-05-05' and details like '%КРС%'");
+    //$hiveTables = $hive->connect()->getIterator("select * from kazger." . $table . " where start_datetime BETWEEN '2019-01-30' and '2021-05-05' and details like '%ОПРС%'");
+    //$hiveTables = $hive->connect()->getIterator("select * from kazger." . $table . " where start_datetime BETWEEN '2021-05-04' and '2021-05-05' and details like '%Остановка%'");//простой
+    //$hiveTables = $hive->connect()->getIterator("select * from kazger." . $table . " where start_datetime BETWEEN '2021-01-04' and '2021-05-05' and category4 like '%Прочие%'");
+    
+    //$hiveTables = $hive->connect()->getIterator( "select *  from  kazger.KMG_I_WELL_STOCK_VIEW wt left outer join kazger.OFM_MASTER as mast on mast.WELLNAME = wt.WELLNAME where wt.START_DATETIME like '2021-04-27%' ");
+  //$hiveTables = $hive->connect()->getIterator( "select distinct STATUS, STATUS_TEXT from kazger.KMG_I_WELL_STOCK_VIEW where start_datetime BETWEEN '2021-01-04' and '2021-05-05'");
+
+
+   $impala = new \ThriftSQL\Impala( '172.20.103.38', 10000, 'hive', 'hive' );
+   $hiveTables = $impala
+  ->connect()
+  ->setOption( 'MEM_LIMIT', '1gb' ) 
+  ->getIterator( "select * from kazger.OFM_DOWNTIME_VIEW where start_datetime BETWEEN '2021-01-04' and '2021-05-05' and category4 like '%Прочие%'");
+  
         foreach ($hiveTables as $rowNum => $row) {
             $dataMass[] = array_merge($row);
         }
         return $dataMass;
+        //print_r( $dataMass );
+        dd($dataMass);
+        
     }
-
+ 
     public function saveHiveDataFromAvoset()
     {
         $date = Carbon::yesterday();
-        $dataOilAndGas =  $this->hiveDataFromAvoset('KMG_I_PRD_AREA_VIEW', $date);
+       /* $dataOilAndGas =  $this->hiveDataFromAvoset('KMG_I_PRD_AREA_VIEW', $date);
         $dataWater =  $this->hiveDataFromAvoset('KMG_I_MTR_INJ_VIEW', $date);
         $dataOilDelivery =  $this->hiveDataFromAvoset('KMG_I_MTR_PROD_VIEW', $date);
         $dataGasMore =  $this->hiveDataFromAvoset('KMG_I_MTR_GAS_VIEW', $date);
-        $fonds  =  $this->hiveDataFromAvoset('KMG_I_WELL_STOCK_VIEW', $date);
-
+        $fonds  =  $this->hiveDataFromAvoset('KMG_I_WELL_STOCK_VIEW', $date);*/
+        $downtime  =  $this->hiveDataFromAvoset('OFM_DOWNTIME_VIEW', '%');
+dd($downtime);
+        
         $oilFact  = 0;
         $gasFact  = 0;
         foreach ($dataOilAndGas as $rowNum => $row) {
