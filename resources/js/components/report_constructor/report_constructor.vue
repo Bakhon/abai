@@ -1,7 +1,20 @@
 <template>
+  <div class="row">
+    <div class="col-md-3">
 
+    </div>
+    <div class="col-md-9">
+      <div class="row">
+
+      </div>
+      <div class="row">
+
+      </div>
+    </div>
+  </div>
 </template>
 
 <style scoped lang="scss">
 
 </style>
+
