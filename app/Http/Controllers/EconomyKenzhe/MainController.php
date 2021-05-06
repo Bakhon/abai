@@ -33,7 +33,7 @@ class MainController extends Controller
         $companyValuesRepTtIds = array_column($companyRepTtValues, 'rep_id');
         foreach ($items as $repttIndex => $reptt) {
             $handbookKeys = ['plan_value', 'fact_value', 'intermediate_plan_value', 'intermediate_fact_value'];
-            foreach ($handbookKeys as $key) {
+            foreach ($handbookKeys as $key){
                 $this->setItemsDefaultValue($key, $items[$repttIndex], $currentYear, $previousYear);
             }
             if (count($reptt['handbook_items']) > 0) {
