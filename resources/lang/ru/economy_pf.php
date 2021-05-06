@@ -1,28 +1,9 @@
 <?php
 
 return array (
-  'controlPanel' => 'Панель управления факторов',
-  'selectFilterOption1' => 'Значение 1',
-  'selectFilterOption2' => 'Значение 2',
-  'exportSalesPercentage' => 
-  array (
-    'name' => '% реализации на экспорт',
-    'option1' => 'По принятому плану (указать %)',
-    'option2' => 'Экспорт 30%',
-    'option3' => 'Экспорт 50%',
-    'option4' => 'Экспорт 70%',
-  ),
   'budgetExecution' => 'Исполнение бюджета',
   'proactiveFactors' => 'Упреждающие факторы',
   'valuationOfTheCompany' => 'Оценка стоимости компании',
-  'versionBp' => 
-  array (
-    'option1' => 'Осн. план на 2021-2025 г.',
-    'option2' => 'Корр. 1 на 2021-2025 г.',
-    'option3' => 'Корр. 2 на 2021-2025 г.',
-    'option4' => 'Корр. 6 на 2021-2025 г.',
-    'name' => 'Версия БП',
-  ),
   'company' => 
   array (
     'name' => 'Компании',
@@ -33,6 +14,17 @@ return array (
     'koa' => 'ТОО "Казахойл Актобе"',
     'ktm' => 'ТОО "Казахтуркмунай"',
     'kgm' => 'ТОО "КазГерМунай"',
+  ),
+  'controlPanel' => 'Панель управления факторов',
+  'selectFilterOption1' => 'Значение 1',
+  'selectFilterOption2' => 'Значение 2',
+  'versionBp' => 
+  array (
+    'option1' => 'Осн. план на 2021-2025 г.',
+    'option2' => 'Корр. 1 на 2021-2025 г.',
+    'option3' => 'Корр. 2 на 2021-2025 г.',
+    'option4' => 'Корр. 6 на 2021-2025 г.',
+    'name' => 'Версия БП',
   ),
   'priceBrent' => 
   array (
@@ -58,6 +50,7 @@ return array (
     'option3' => 'Корр. 1 на 2021-2025 г. 450-450-450-450-450',
     'option4' => 'Корр. 1 на 2021-2025 г. 480-480-480-480-480',
   ),
+  'Capex' => 'Capex',
   'getOil' => 
   array (
     'name' => 'Добыча нефти',
@@ -69,6 +62,14 @@ return array (
     'option6' => 'Увеличение на 2%',
     'option7' => 'Увеличение на 3%',
     'option8' => 'Увеличение на 5%',
+  ),
+  'exportSalesPercentage' => 
+  array (
+    'name' => '% реализации на экспорт',
+    'option1' => 'По принятому плану (указать %)',
+    'option2' => 'Экспорт 30%',
+    'option3' => 'Экспорт 50%',
+    'option4' => 'Экспорт 70%',
   ),
   'costAllocationBase' => 
   array (
@@ -99,4 +100,5 @@ return array (
     'unit' => 'Ед. изм.',
     'fact' => 'Факт',
   ),
+  'economy' => 'Экономика',
 );

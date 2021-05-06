@@ -22,42 +22,14 @@
           >
             <option :value="0" :selected="'selected'">
               {{ trans("visualcenter.yearBegin") }}
-            </option>
-            <option :value="1">
-              {{ trans("visualcenter.jan2020") }}
-            </option>
-            <option :value="2" :disabled="actualMonth < 1">
-              {{ trans("visualcenter.janFeb2020") }}
-            </option>
-            <option :value="3" :disabled="actualMonth < 2">
-              {{ trans("visualcenter.janMar2020") }}
-            </option>
-            <option :value="4" :disabled="actualMonth < 3">
-              {{ trans("visualcenter.janApr2020") }}
-            </option>
-            <option :value="5" :disabled="actualMonth < 4">
-              {{ trans("visualcenter.janMay2020") }}
-            </option>
-            <option :value="6" :disabled="actualMonth < 5">
-              {{ trans("visualcenter.janJune2020") }}
-            </option>
-            <option :value="7" :disabled="actualMonth < 6">
-              {{ trans("visualcenter.janJuly2020") }}
-            </option>
-            <option :value="8" :disabled="actualMonth < 7">
-              {{ trans("visualcenter.janAug2020") }}
-            </option>
-            <option :value="9" :disabled="actualMonth < 8">
-              {{ trans("visualcenter.janSept2020") }}
-            </option>
-            <option :value="10" :disabled="actualMonth < 9">
-              {{ trans("visualcenter.janOct2020") }}
-            </option>
-            <option :value="11" :disabled="actualMonth < 10">
-              {{ trans("visualcenter.janNov2020") }}
-            </option>
-            <option :value="12" :disabled="actualMonth < 11">
-              {{ trans("visualcenter.janDec2020") }}
+            </option>       
+            <option
+              v-for="i in numbersOfMonths"
+              :value="i + 1"
+              :disabled="actualMonth < i"
+            >
+              {{ trans(`economy_be.months.0`) }} -
+              {{ trans(`economy_be.months.${i}`) }} 2020
             </option>
           </select>
         </div>
@@ -73,10 +45,11 @@
             <option
               v-for="company in fullCompanyNames"
               v-bind:value="company.code"
-              >{{ company.title }}</option
             >
+              {{ company.title }}
+            </option>
           </select>
-          <div class="w-100 d-flex" style="margin-top: 14px;">
+          <div class="w-100 d-flex" style="margin-top: 14px">
             <select
               class="w-50 p-2 mr-3"
               :style="{ background: '#2A2E5C', color: 'white' }"
@@ -85,41 +58,12 @@
               <option :value="0" :selected="'selected'">
                 {{ trans("visualcenter.monthZa") }}
               </option>
-              <option :value="1">
-                {{ trans("visualcenter.jan2020") }}
-              </option>
-              <option :value="2" :disabled="actualMonth < 1">
-                {{ trans("visualcenter.feb2020") }}
-              </option>
-              <option :value="3" :disabled="actualMonth < 2">
-                {{ trans("visualcenter.mar2020") }}
-              </option>
-              <option :value="4" :disabled="actualMonth < 3">
-                {{ trans("visualcenter.apr2020") }}
-              </option>
-              <option :value="5" :disabled="actualMonth < 4">
-                {{ trans("visualcenter.may2020") }}
-              </option>
-              <option :value="6" :disabled="actualMonth < 5">
-                {{ trans("visualcenter.june2020") }}
-              </option>
-              <option :value="7" :disabled="actualMonth < 6">
-                {{ trans("visualcenter.july2020") }}
-              </option>
-              <option :value="8" :disabled="actualMonth < 7">
-                {{ trans("visualcenter.aug2020") }}
-              </option>
-              <option :value="9" :disabled="actualMonth < 8">
-                {{ trans("visualcenter.sept2020") }}
-              </option>
-              <option :value="10" :disabled="actualMonth < 9">
-                {{ trans("visualcenter.oct2020") }}
-              </option>
-              <option :value="11" :disabled="actualMonth < 10">
-                {{ trans("visualcenter.nov2020") }}
-              </option>
-              <option :value="12" :disabled="actualMonth < 11">
-                {{ trans("visualcenter.dec2020") }}
+              <option
+                v-for="i in numbersOfMonths"
+                :value="i + 1"
+                :disabled="actualMonth < i"
+              >
+                {{ trans(`economy_be.months.${i}`) }} 2020
               </option>
             </select>
             <select
@@ -183,7 +127,7 @@
                     </th>
                     <th scope="col" class="column-all-macro-table">
                       {{ trans("visualcenter.Fact") }} <br />
-                      2019г.
+                      2019 {{ trans("economy_be.year") }}
                     </th>
                     <th scope="col" class="column-all-macro-table">
                       <br />
@@ -192,24 +136,36 @@
                     </th>
                     <th scope="col" class="column-all-macro-table">
                       {{ trans("economics.planNa") }} <br />
-                      2020 год
+                      2020  {{ trans("economy_be.year") }}
                     </th>
 
-                    <th scope="col" class="column-all-macro-table reptt-column-blue">
+                    <th
+                      scope="col"
+                      class="column-all-macro-table reptt-column-blue"
+                    >
                       {{ trans("visualcenter.Plan") }}<br />
                       {{ trans("economics.sinceTheBeginningOfTheYear") }}
                     </th>
 
-                    <th scope="col" class="column-all-macro-table reptt-column-blue">
+                    <th
+                      scope="col"
+                      class="column-all-macro-table reptt-column-blue"
+                    >
                       {{ trans("visualcenter.Fact") }}
                       <br />{{ trans("economics.sinceTheBeginningOfTheYear") }}
                     </th>
-                    <th scope="col" class="column-all-macro-table reptt-column-blue">
+                    <th
+                      scope="col"
+                      class="column-all-macro-table reptt-column-blue"
+                    >
                       {{ trans("visualcenter.deviationAbs") }}
                       <br />
                       {{ trans("economics.sinceTheBeginningOfTheYear") }}, +/-
                     </th>
-                    <th scope="col" class="column-all-macro-table reptt-column-blue">
+                    <th
+                      scope="col"
+                      class="column-all-macro-table reptt-column-blue"
+                    >
                       {{ trans("visualcenter.deviationOtn") }}
                       <br />
                       {{ trans("economics.sinceTheBeginningOfTheYear") }}%
