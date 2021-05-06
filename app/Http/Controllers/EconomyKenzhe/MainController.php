@@ -90,7 +90,7 @@ class MainController extends Controller
     {
         $item[$attribute][$year] += $value;
         if (strtotime($dateFrom) <= $currentItemDate && strtotime($dateTo) >= $currentItemDate) {
-            $item['intermediate_' . $attribute][$year] += $value;
+            $item['intermediate_'.$attribute][$year] += $value;
         }
     }
 }
