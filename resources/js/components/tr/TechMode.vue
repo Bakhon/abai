@@ -960,9 +960,9 @@
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
-                      :label="trans('tr.operation_method')"
+                       label=""
                       >
-                      <el-table-column label="" prop="fake" >
+                      <el-table-column :label="trans('tr.operation_method')" prop="fake" >
                         <el-table-column label="" >
                           <el-table-column
                             prop="exp_meth"
@@ -989,9 +989,9 @@
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
-                      :label="trans('tr.pump_type')"
+                       label=""
                       >
-                      <el-table-column label="" prop="fake" >
+                      <el-table-column :label="trans('tr.pump_type')" prop="fake" >
                         <el-table-column label="" >
                           <el-table-column
                             prop="pump_type"
@@ -1019,9 +1019,9 @@
                     </el-table-column>
 
                     <el-table-column
-                      :label="trans('tr.sk_type')"
+                       label=""
                       >
-                      <el-table-column label="" prop="fake" >
+                      <el-table-column :label="trans('tr.sk_type')" prop="fake" >
                         <el-table-column label="" >
                           <el-table-column
                             prop="type_sr"
@@ -1035,9 +1035,9 @@
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
-                      :label="trans('tr.swing_number')"
+                       label=""
                       >
-                      <el-table-column label="" prop="fake" >
+                      <el-table-column :label="trans('tr.swing_number')" prop="fake" >
                         <el-table-column label="" >
                           <el-table-column
                             prop="spm"
@@ -1064,9 +1064,9 @@
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
-                      :label="trans('tr.stroke_length')"
+                       label=""
                       >
-                      <el-table-column label="" prop="fake" >
+                      <el-table-column :label="trans('tr.stroke_length')" prop="fake" >
                         <el-table-column label="" >
                           <el-table-column
                             prop="stroke_len"
@@ -1093,9 +1093,9 @@
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
-                      :label="trans('tr.q_theor')"
+                       label=""
                       >
-                      <el-table-column label="" prop="fake" >
+                      <el-table-column :label="trans('tr.q_theor')" prop="fake" >
                         <el-table-column label="" >
                           <el-table-column
                             prop="q_theor"
@@ -1122,9 +1122,9 @@
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
-                      :label="trans('tr.pump_frequency_or_speed')"
+                       label=""
                       >
-                      <el-table-column label="" prop="fake" >
+                      <el-table-column :label="trans('tr.pump_frequency_or_speed')" prop="fake" >
                         <el-table-column label="" >
                           <el-table-column
                             prop="freq"
