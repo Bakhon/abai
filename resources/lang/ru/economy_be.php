@@ -17,4 +17,18 @@ return array (
     0 => 'Январь',
   ),
   'year' => 'год',
+  'secondTable' => 
+  array (
+    'operatingIncome' => 'Выручка от основной деятельности',
+    'costs' => 'Расходы',
+    'costPrice' => 'Себестоимость',
+    'implementationCosts' => 'Расходы по реализации',
+    'generalAdministrativeIssues' => 'Общие административные вопросы',
+    'ebitdaMargin' => 'EBITDA margin (Без СП)',
+    'netProfit' => 'Чистая прибыль',
+    'capitalInvestments' => 'Капитальные вложения',
+    'freeCashFlow' => 'Свободный денежный поток',
+    'exchangeRate' => 'Обменный курс',
+    'priceBrent' => 'Цена Brent',
+  ),
 );

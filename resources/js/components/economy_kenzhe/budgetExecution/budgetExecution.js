@@ -145,7 +145,7 @@ export default {
             oilPricePrevYear = item.oil_price_fact;
           });
           this.dzoData.push({
-            title: this.trans('visualcenter.eco1'),
+            title: this.trans('economy_be.secondTable.operatingIncome'),
             // 'Выручка от основной деятельности',
             units: 'млрд.тг.',
             dataPlan: dataPlan,
@@ -155,7 +155,7 @@ export default {
             divider: 1000000,
           });
           this.dzoData.push({
-            title: this.trans('visualcenter.eco2'), 
+            title: this.trans('economy_be.secondTable.costs'), 
             // 'Расходы',
             units: 'млрд.тг.',
             dataPlan: spendingPlan,
@@ -165,7 +165,7 @@ export default {
             divider: 1000000,
           });
           this.dzoData.push({
-            title: this.trans('visualcenter.eco3'),  
+            title: this.trans('economy_be.secondTable.costPrice'),  
             // 'Себестоимость',
             units: 'млрд.тг.',
             dataPlan: costPlan,
@@ -175,7 +175,7 @@ export default {
             divider: 1000000,
           });
           this.dzoData.push({
-            title: this.trans('visualcenter.eco4'),  
+            title: this.trans('economy_be.secondTable.implementationCosts'),  
             // 'Расходы по реализации',
             units: 'млрд.тг.',
             dataPlan: rlzSpendingPlan,
@@ -185,7 +185,7 @@ export default {
             divider: 1000000,
           });
           this.dzoData.push({
-            title: this.trans('visualcenter.eco5'),  
+            title: this.trans('economy_be.secondTable.generalAdministrativeIssues'),  
             // 'Общие административные вопросы',
             units: 'млрд.тг.',
             dataPlan: admSpendingPlan,
@@ -195,7 +195,7 @@ export default {
             divider: 1000000,
           });
           this.dzoData.push({
-            title: this.trans('visualcenter.eco6'), 
+            title: this.trans('economy_be.secondTable.ebitdaMargin'), 
             // 'EBITDA margin (Без СП)',
             units: '%',
             dataPlan: ebitdaMarginPlan,
@@ -214,7 +214,7 @@ export default {
             divider: 1000000,
           });
           this.dzoData.push({
-            title: this.trans('visualcenter.eco7'),  
+            title: this.trans('economy_be.secondTable.netProfit'),  
             // 'Чистая прибыль*',
             units: 'млрд.тг.',
             dataPlan: netProfitPlan,
@@ -224,7 +224,7 @@ export default {
             divider: 1000000,
           });
           this.dzoData.push({
-            title: this.trans('visualcenter.eco8'), 
+            title: this.trans('economy_be.secondTable.capitalInvestments'), 
             // 'Капитальные вложения',
             units: 'млрд.тг.',
             dataPlan: capitalInvPlan,
@@ -234,7 +234,7 @@ export default {
             divider: 1000000,
           });
           this.dzoData.push({
-            title: this.trans('visualcenter.eco9'),  
+            title: this.trans('economy_be.secondTable.freeCashFlow'),  
             // 'Свободный денежный поток',
             units: 'млрд.тг.',
             dataPlan: cashFlowPlan,
@@ -244,7 +244,7 @@ export default {
             divider: 1000000,
           });
           this.macroData.push({
-            title: this.trans('visualcenter.eco10'), 
+            title: this.trans('economy_be.secondTable.exchangeRate'), 
             // 'Обменный курс',
             units: 'Тенге/$',
             dataPlan: kursPlan,
@@ -253,7 +253,7 @@ export default {
             plan2020: kursPlan2020,
           });
           this.macroData.push({
-            title: this.trans('visualcenter.eco11'),  
+            title: this.trans('economy_be.secondTable.priceBrent'),  
             // 'Цена Brent',
             units: '$/бар.',
             dataPlan: oilPricePlan,
