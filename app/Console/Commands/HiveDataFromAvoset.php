@@ -69,8 +69,8 @@ class HiveDataFromAvoset extends Command
         $stockOfGoodsDeliveryFactNur = $this->valueFromArray($dataOilDelivery, 'NUR_D', 10);
         $stockOfGoodsDeliveryFactTotal =  $stockOfGoodsDeliveryFactAksh + $stockOfGoodsDeliveryFactAsy + $stockOfGoodsDeliveryFactNur;
         $associatedGasDeliveryFact = $this->valueFromArray($dataGasMore, 'KGM_TRANS', 10);
-        $associatedGasDeliveryFact = $this->valueFromArray($dataGasMore, 'KGM_TRANS', 10);
-
+        $associatedGasExpensesForOwnFact = $this->valueFromArray($dataGasMore, 'KGM_UTIL', 10);
+      
         $productionFond='PRODUCTION';        
         $inWorkProductionFond = $this->quantityOfArray($fonds, 'PRODUCING',$productionFond);
         $inIdleProductionFond = $this->quantityOfArray($fonds, 'SHUT_IN',$productionFond);
@@ -99,6 +99,7 @@ class HiveDataFromAvoset extends Command
         $alldata->agent_upload_total_water_injection_fact = $agentUploadTotalWaterInjectionFact;
         $alldata->oil_delivery_fact = $oilDeliveryFact;
         $alldata->associated_gas_delivery_fact = $associatedGasDeliveryFact;
+        $alldata->associated_gas_expenses_for_own_fact = $associatedGasExpensesForOwnFact;
         $alldata->stock_of_goods_delivery_fact = $stockOfGoodsDeliveryFactTotal;
 
         $alldata->in_work_production_fond = $inWorkProductionFond;
