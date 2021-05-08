@@ -67,62 +67,62 @@
               </form>
             </div>
           </div>
+
+
           <div class="row">
-            <div class="left-section-table">
-              <div class="col">
-                <div class="row">
-                  <div class="left-section-table-title">
-                    <div class="table-col">
-                      <div class="text">
-                        Выбор
-                      </div>
-                    </div>
-                    <div class="table-col">
-                      <div class="text">
-                        Объект
-                      </div>
-                    </div>
+            <div class="col table-wrapper">
+              <div class="table-container">
+                <div class="table-container-column-header">
+                  <div class="row">
+                    <div class="my-table-border col-md-2"><div class="centered">12</div></div>
+                    <div class="my-table-border col-md-10"><div class="centered">12</div></div>
                   </div>
+                </div>
+                <div class="table-container-element">
+                  <div class="row">
+                    <div class="my-table-border col-md-1"><div class="centered">12</div></div>
+                    <div class="my-table-border col-md-1"><div class="centered">12</div></div>
+                    <div class="my-table-border col-md-10"><div class="centered">12</div></div>
+                    </div>
+                  <div class="row">
+                    <div class="my-table-border col-md-1"><div class="centered">12</div></div>
+                    <div class="my-table-border col-md-1"><div class="centered">12</div></div>
+                    <div class="my-table-border col-md-10"><div class="centered">12</div></div>
+                  </div>
+
+
+
+
+                  </div>
+
+
                 </div>
               </div>
             </div>
           </div>
 
-          <div class="row">
-            <div class="left-section-table">
-              <div class="col">
-                <div class="row">
-                  <div class="left-section-table-content">
-                    <div class="table-col">123</div>
-                    <div class="table-col">123</div>
-                    <div class="table-col">123</div>
-                  </div>
-                </div>
-              </div>
-            </div>
+
+        </div>
+      </div>
+    <div class="section-main">
+      <div class="col">
+        <div class="row">
+          <div class="col">
+            <section class="section-top  bg-dark">Right TOP</section>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="row">
+          <div class="col">
+            <section class="section-content bg-dark">
+              RIGHT MAIN
+            </section>
           </div>
         </div>
       </div>
     </div>
-      <div class="section-main">
-        <div class="col">
-          <div class="row">
-            <div class="col">
-              <section class="section-top  bg-dark">Right TOP</section>
-            </div>
-          </div>
-        </div>
-        <div class="col">
-          <div class="row">
-            <div class="col">
-              <section class="section-content bg-dark">
-                RIGHT MAIN
-              </section>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+  </div>
 </template>
 
 <style scoped lang="scss">
@@ -214,49 +214,101 @@ body {
     }
   }
 
-  .left-section-table {
-    display: flex;
+
+  .table-container {
+    background-color: #272953;
+    overflow-y: auto;
+    overflow-x: auto;
+    width: 100%;
+    color: white;
     border: 1px solid #454D7D;
-    width: 421px;
-    margin-left: 10px;
-    margin-right: 10px;
 
-    .col {
-      padding-right: 0px;
-    }
-
-    .text {
+    .centered{
       margin: auto;
     }
+    .col-md-1{
+      padding: 0px;
+    }
+    .table-container-header {
+      text-align: center;
+      padding: 14px 20px 0px 20px;
+      background-color: #32346C;
+    }
 
-    .left-section-table-title {
-      display: flex;
-      background: #323370;
+    .table-container-column-header {
+      text-align: center;
+      background-color: #323370;
       height: 38px;
 
-      .table-col {
-        font-family: $HarmoniaSansProCyr;
-        font-weight: 700;
-        font-size: 16px;
-        line-height: 19px;
-        color: white;
+      .row {
         height: 100%;
+      }
+    }
+
+
+    .table-container-element {
+      height: 340px;
+      background-color: #272953;
+      border: 1px solid #454D7D;
+
+      .table-container-svg {
+        display: flex;
+      }
+
+      .svg-element {
+        padding: 5px 13px 5px 23px;
+        display: grid;
+
+        svg {
+          margin-left: auto;
+          margin-right: auto;
+          margin-top: auto;
+          margin-bottom: auto;
+        }
+      }
+
+      .element-position {
+        padding: 5px 13px 5px 23px;
         display: flex;
 
-        &:first-child {
-          width: 70px;
+        p {
+          float: right;
+          margin-top: auto;
+          margin-bottom: auto;
+          margin-left: auto;
         }
 
-        &:last-child {
-          width: 350px;
+        .title {
+          margin-left: unset;
+          margin-right: auto;
+        }
+
+        svg {
+          margin: auto;
+        }
+      }
+
+      .row {
+        min-height: 38px;
+
+        &:nth-child(2n) {
+          background-color: rgba(69, 77, 125, 0.5);
         }
       }
     }
 
-    .table-col {
-      display: flex;
+    .row {
+      margin-right: 0px;
+    }
+
+    .my-table-border{
       border: 1px solid #454D7D;
-      height: 38px;
+      display: flex;
+
+      p {
+        margin-top: auto;
+        margin-bottom: auto;
+      }
     }
   }
 }
