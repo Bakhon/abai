@@ -36,58 +36,93 @@
           </div>
           <div class="row">
             <div class="left-section-select-area">
-            <svg width="16" height="11" viewBox="0 0 16 11" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path fill-rule="evenodd" clip-rule="evenodd"
-                    d="M6.38408 10.6943H9.64355V9.06421H6.38408V10.6943ZM0.679688 0.91512V2.54525H15.3479V0.91512H0.679688ZM3.12422 6.61955H12.9034V4.98983H3.12422V6.61955Z"
-                    fill="white"/>
-            </svg>
+              <svg width="16" height="11" viewBox="0 0 16 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" clip-rule="evenodd"
+                      d="M6.38408 10.6943H9.64355V9.06421H6.38408V10.6943ZM0.679688 0.91512V2.54525H15.3479V0.91512H0.679688ZM3.12422 6.61955H12.9034V4.98983H3.12422V6.61955Z"
+                      fill="white"/>
+              </svg>
 
-            <div class="dropdown">
-              <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
-                      data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <div class="dropdown-inner-text">
-                  Выбор объкта
+              <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <div class="dropdown-inner-text">
+                    Выбор объкта
+                  </div>
+                  <div class="icon-pointer"></div>
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <a class="dropdown-item" href="#">Action</a>
+                  <a class="dropdown-item" href="#">Another action</a>
+                  <a class="dropdown-item" href="#">Something else here</a>
                 </div>
-                <div class="icon-pointer"></div>
-              </button>
-              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="#">Action</a>
-                <a class="dropdown-item" href="#">Another action</a>
-                <a class="dropdown-item" href="#">Something else here</a>
               </div>
-            </div>
-            <svg class="last-element" width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M0 0.000249982L4.66665 5.3335V10.6667L7.33335 12V5.33325L12 0H6.00012L0 0.000249982Z"
-                    fill="white" fill-opacity="0.3"/>
-            </svg>
+              <svg class="last-element" width="12" height="12" viewBox="0 0 12 12" fill="none"
+                   xmlns="http://www.w3.org/2000/svg">
+                <path d="M0 0.000249982L4.66665 5.3335V10.6667L7.33335 12V5.33325L12 0H6.00012L0 0.000249982Z"
+                      fill="white" fill-opacity="0.3"/>
+              </svg>
               <form>
                 <input type="text" placeholder="Выбор параметров" id="parametr-search">
                 </input>
               </form>
             </div>
           </div>
-        </div>
-      </div>
-    </div>
-    <div class="section-main">
-      <div class="col">
-        <div class="row">
-          <div class="col">
-            <section class="section-top  bg-dark">Right TOP</section>
+          <div class="row">
+            <div class="left-section-table">
+              <div class="col">
+                <div class="row">
+                  <div class="left-section-table-title">
+                    <div class="table-col">
+                      <div class="text">
+                        Выбор
+                      </div>
+                    </div>
+                    <div class="table-col">
+                      <div class="text">
+                        Объект
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="left-section-table">
+              <div class="col">
+                <div class="row">
+                  <div class="left-section-table-content">
+                    <div class="table-col">123</div>
+                    <div class="table-col">123</div>
+                    <div class="table-col">123</div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-      <div class="col">
-        <div class="row">
-          <div class="col">
-            <section class="section-content bg-dark">
-              RIGHT MAIN
-            </section>
+    </div>
+      <div class="section-main">
+        <div class="col">
+          <div class="row">
+            <div class="col">
+              <section class="section-top  bg-dark">Right TOP</section>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="row">
+            <div class="col">
+              <section class="section-content bg-dark">
+                RIGHT MAIN
+              </section>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
 </template>
 
 <style scoped lang="scss">
@@ -137,6 +172,7 @@ body {
       background: url(/img/bd/pointer.svg) 50% 100% no-repeat;
       margin: auto 10px auto auto;
     }
+
     .dropdown-inner-text {
       text-align: left;
       color: #B6BAD9;
@@ -146,20 +182,24 @@ body {
   .dropdown-toggle::after {
     display: none;
   }
-  .left-section-select-area{
+
+  .left-section-select-area {
     margin: 20px 10px;
     width: 100%;
     display: flex;
-    .last-element{
+
+    .last-element {
       margin-left: auto;
     }
-    svg{
+
+    svg {
       margin-right: 10px;
       margin-top: auto;
       margin-bottom: auto;
     }
-    form{
-      input[type="text"]{
+
+    form {
+      input[type="text"] {
         width: 159px;
         background: rgba(60, 66, 128, 0.3);
         padding: 6px 8px 5px 9px;
@@ -170,7 +210,72 @@ body {
         font-size: 16px;
         border-radius: 6px;
         border: 0px;
+      }
     }
+  }
+
+  .left-section-table {
+    display: flex;
+    border: 1px solid #454D7D;
+    width: 421px;
+    margin-left: 10px;
+    margin-right: 10px;
+
+    .col {
+      padding-right: 0px;
+    }
+
+    .text {
+      margin: auto;
+    }
+
+    .left-section-table-title {
+      display: flex;
+      background: #323370;
+      height: 38px;
+
+      .table-col {
+        font-family: $HarmoniaSansProCyr;
+        font-weight: 700;
+        font-size: 16px;
+        line-height: 19px;
+        color: white;
+        height: 100%;
+        display: flex;
+
+        &:first-child {
+          width: 70px;
+        }
+
+        &:last-child {
+          width: 350px;
+        }
+      }
+    }
+
+    .table-col {
+      display: flex;
+      border: 1px solid #454D7D;
+      height: 38px;
+    }
+  }
+}
+
+.left-section-table-content {
+  display: flex;
+
+  .table-col {
+
+    &:first-child {
+      width: 35px;
+    }
+
+    &:nth-child(2) {
+      width: 35px;
+    }
+
+    &:nth-child(3) {
+      width: 350px;
     }
   }
 }
@@ -191,6 +296,24 @@ body {
 .row {
   display: flex;
   color: white;
+}
+
+::-webkit-scrollbar-track {
+  background: #272953;
+
+}
+
+::-webkit-scrollbar-thumb {
+  background: URL("/img/bd/scroll-img.svg") no-repeat 50% #374178;
+  height: 10px;
+}
+
+::-webkit-scrollbar-button {
+  background: URL("/img/bd/scroll-array.svg") no-repeat 50% #485499;
+
+  &:end {
+    background: URL("/img/bd/scroll-array-end.svg") no-repeat 50% #485499;
+  }
 }
 
 </style>
