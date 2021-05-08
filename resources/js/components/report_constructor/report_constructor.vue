@@ -35,6 +35,7 @@
             </svg>
           </div>
           <div class="row">
+            <div class="left-section-select-area">
             <svg width="16" height="11" viewBox="0 0 16 11" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path fill-rule="evenodd" clip-rule="evenodd"
                     d="M6.38408 10.6943H9.64355V9.06421H6.38408V10.6943ZM0.679688 0.91512V2.54525H15.3479V0.91512H0.679688ZM3.12422 6.61955H12.9034V4.98983H3.12422V6.61955Z"
@@ -55,11 +56,15 @@
                 <a class="dropdown-item" href="#">Something else here</a>
               </div>
             </div>
-            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <svg class="last-element" width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M0 0.000249982L4.66665 5.3335V10.6667L7.33335 12V5.33325L12 0H6.00012L0 0.000249982Z"
                     fill="white" fill-opacity="0.3"/>
             </svg>
-
+              <form>
+                <input type="text" placeholder="Выбор параметров" id="parametr-search">
+                </input>
+              </form>
+            </div>
           </div>
         </div>
       </div>
@@ -87,7 +92,8 @@
 
 <style scoped lang="scss">
 $dark-font: #1F2142;
-$HarmoniaSansProCyr: "Harmonia Sans Pro Cyr", "Harmonia-sans";;
+$HarmoniaSansProCyr: "Harmonia Sans Pro Cyr", "Harmonia-sans";
+;
 body {
 
   color: white;
@@ -123,24 +129,49 @@ body {
     font-family: $HarmoniaSansProCyr;
     line-height: 19px;
     display: flex;
-  .icon-pointer{
-    margin-left: 10px;
-    width: 10px;
-    height: 10px;
-    white-space: nowrap;
-    background: url(/img/bd/pointer.svg) 50% 100% no-repeat;
-    margin-left: auto;
-    margin-top: auto;
-    margin-bottom: auto;
-  }
 
-
-    .dropdown-inner-text{
+    .icon-pointer {
+      width: 10px;
+      height: 10px;
+      white-space: nowrap;
+      background: url(/img/bd/pointer.svg) 50% 100% no-repeat;
+      margin: auto 10px auto auto;
+    }
+    .dropdown-inner-text {
       text-align: left;
+      color: #B6BAD9;
     }
   }
-  .dropdown-toggle::after{
+
+  .dropdown-toggle::after {
     display: none;
+  }
+  .left-section-select-area{
+    margin: 20px 10px;
+    width: 100%;
+    display: flex;
+    .last-element{
+      margin-left: auto;
+    }
+    svg{
+      margin-right: 10px;
+      margin-top: auto;
+      margin-bottom: auto;
+    }
+    form{
+      input[type="text"]{
+        width: 159px;
+        background: rgba(60, 66, 128, 0.3);
+        padding: 6px 8px 5px 9px;
+        color: rgba(255, 255, 255, 0.2);
+        font-family: $HarmoniaSansProCyr;
+        font-weight: 400;
+        line-height: 19px;
+        font-size: 16px;
+        border-radius: 6px;
+        border: 0px;
+    }
+    }
   }
 }
 
