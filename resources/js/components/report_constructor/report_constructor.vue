@@ -70,40 +70,294 @@
 
 
           <div class="row">
-            <div class="col table-wrapper">
+            <div class="table-wrapper col">
               <div class="table-container">
                 <div class="table-container-column-header">
                   <div class="row">
-                    <div class="my-table-border col-md-2"><div class="centered">12</div></div>
-                    <div class="my-table-border col-md-10"><div class="centered">12</div></div>
+                    <div class="my-table-border col-md-2" style="padding:0px">
+                      <div class="centered">Выбор</div>
+                    </div>
+                    <div class="my-table-border col-md-10">
+                      <div class="centered">Объект</div>
+                    </div>
                   </div>
                 </div>
                 <div class="table-container-element">
+                  <!-- !!!! -->
                   <div class="row">
-                    <div class="my-table-border col-md-1"><div class="centered">12</div></div>
-                    <div class="my-table-border col-md-1"><div class="centered">12</div></div>
-                    <div class="my-table-border col-md-10"><div class="centered">12</div></div>
+                    <div class="my-table-border col-md-1">
+                      <div class="centered">
+                        <svg width="15" height="14" viewBox="0 0 15 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path fill-rule="evenodd" clip-rule="evenodd"
+                                d="M0.279297 9.99967V4.00008C0.279297 1.79088 2.06996 8.10623e-05 4.27916 8.10623e-05H10.2788C12.4878 8.10623e-05 14.279 1.79088 14.279 4.00008V9.99967C14.279 12.2087 12.4878 13.9995 10.2788 13.9995H4.27916C2.06996 13.9995 0.279297 12.2087 0.279297 9.99967Z"
+                                fill="white"/>
+                        </svg>
+                      </div>
                     </div>
+                    <div class="my-table-border col-md-1">
+                      <div class="centered">
+                        <svg width="11" height="6" viewBox="0 0 11 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path fill-rule="evenodd" clip-rule="evenodd"
+                                d="M0.226562 0.387777H10.2258L5.22617 5.46753L0.226562 0.387777Z" fill="#868BB2"/>
+                        </svg>
+                      </div>
+                    </div>
+                    <div class="my-table-border col-md-10">
+                      <div class="centered">АО ЭМБА МУНАЙ ГАЗ</div>
+                    </div>
+                  </div>
+                  <!-- !!!! -->
+                  <!-- !!!! -->
                   <div class="row">
-                    <div class="my-table-border col-md-1"><div class="centered">12</div></div>
-                    <div class="my-table-border col-md-1"><div class="centered">12</div></div>
-                    <div class="my-table-border col-md-10"><div class="centered">12</div></div>
+                    <div class="my-table-border col-md-1">
+                      <div class="centered">
+                        <svg width="15" height="14" viewBox="0 0 15 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path fill-rule="evenodd" clip-rule="evenodd"
+                                d="M0.279297 9.99967V4.00008C0.279297 1.79088 2.06996 8.10623e-05 4.27916 8.10623e-05H10.2788C12.4878 8.10623e-05 14.279 1.79088 14.279 4.00008V9.99967C14.279 12.2087 12.4878 13.9995 10.2788 13.9995H4.27916C2.06996 13.9995 0.279297 12.2087 0.279297 9.99967Z"
+                                fill="white"/>
+                        </svg>
+                      </div>
+                    </div>
+                    <div class="my-table-border col-md-1">
+                      <div class="centered">
+                        <svg width="11" height="6" viewBox="0 0 11 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path fill-rule="evenodd" clip-rule="evenodd"
+                                d="M0.226562 0.387777H10.2258L5.22617 5.46753L0.226562 0.387777Z" fill="#868BB2"/>
+                        </svg>
+                      </div>
+                    </div>
+                    <div class="my-table-border col-md-10">
+                      <div class="centered">АО ЭМБА МУНАЙ ГАЗ</div>
+                    </div>
                   </div>
-
-
-
-
+                  <!-- !!!! -->
+                  <!-- !!!! -->
+                  <div class="row">
+                    <div class="my-table-border col-md-1">
+                      <div class="centered">
+                        <svg width="15" height="14" viewBox="0 0 15 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path fill-rule="evenodd" clip-rule="evenodd"
+                                d="M0.279297 9.99967V4.00008C0.279297 1.79088 2.06996 8.10623e-05 4.27916 8.10623e-05H10.2788C12.4878 8.10623e-05 14.279 1.79088 14.279 4.00008V9.99967C14.279 12.2087 12.4878 13.9995 10.2788 13.9995H4.27916C2.06996 13.9995 0.279297 12.2087 0.279297 9.99967Z"
+                                fill="white"/>
+                        </svg>
+                      </div>
+                    </div>
+                    <div class="my-table-border col-md-1">
+                      <div class="centered">
+                        <svg width="11" height="6" viewBox="0 0 11 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path fill-rule="evenodd" clip-rule="evenodd"
+                                d="M0.226562 0.387777H10.2258L5.22617 5.46753L0.226562 0.387777Z" fill="#868BB2"/>
+                        </svg>
+                      </div>
+                    </div>
+                    <div class="my-table-border col-md-10">
+                      <div class="centered">АО ЭМБА МУНАЙ ГАЗ</div>
+                    </div>
                   </div>
+                  <!-- !!!! -->
+                  <!-- !!!! -->
+                  <div class="row">
+                    <div class="my-table-border col-md-1">
+                      <div class="centered">
+                        <svg width="15" height="14" viewBox="0 0 15 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path fill-rule="evenodd" clip-rule="evenodd"
+                                d="M0.279297 9.99967V4.00008C0.279297 1.79088 2.06996 8.10623e-05 4.27916 8.10623e-05H10.2788C12.4878 8.10623e-05 14.279 1.79088 14.279 4.00008V9.99967C14.279 12.2087 12.4878 13.9995 10.2788 13.9995H4.27916C2.06996 13.9995 0.279297 12.2087 0.279297 9.99967Z"
+                                fill="white"/>
+                        </svg>
+                      </div>
+                    </div>
+                    <div class="my-table-border col-md-1">
+                      <div class="centered">
+                        <svg width="11" height="6" viewBox="0 0 11 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path fill-rule="evenodd" clip-rule="evenodd"
+                                d="M0.226562 0.387777H10.2258L5.22617 5.46753L0.226562 0.387777Z" fill="#868BB2"/>
+                        </svg>
+                      </div>
+                    </div>
+                    <div class="my-table-border col-md-10">
+                      <div class="centered">АО ЭМБА МУНАЙ ГАЗ</div>
+                    </div>
+                  </div>
+                  <!-- !!!! -->
+                  <!-- !!!! -->
+                  <div class="row">
+                    <div class="my-table-border col-md-1">
+                      <div class="centered">
+                        <svg width="15" height="14" viewBox="0 0 15 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path fill-rule="evenodd" clip-rule="evenodd"
+                                d="M0.279297 9.99967V4.00008C0.279297 1.79088 2.06996 8.10623e-05 4.27916 8.10623e-05H10.2788C12.4878 8.10623e-05 14.279 1.79088 14.279 4.00008V9.99967C14.279 12.2087 12.4878 13.9995 10.2788 13.9995H4.27916C2.06996 13.9995 0.279297 12.2087 0.279297 9.99967Z"
+                                fill="white"/>
+                        </svg>
+                      </div>
+                    </div>
+                    <div class="my-table-border col-md-1">
+                      <div class="centered">
+                        <svg width="11" height="6" viewBox="0 0 11 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path fill-rule="evenodd" clip-rule="evenodd"
+                                d="M0.226562 0.387777H10.2258L5.22617 5.46753L0.226562 0.387777Z" fill="#868BB2"/>
+                        </svg>
+                      </div>
+                    </div>
+                    <div class="my-table-border col-md-10">
+                      <div class="centered">АО ЭМБА МУНАЙ ГАЗ</div>
+                    </div>
+                  </div>
+                  <!-- !!!! -->
+                  <!-- !!!! -->
+                  <div class="row">
+                    <div class="my-table-border col-md-1">
+                      <div class="centered">
+                        <svg width="15" height="14" viewBox="0 0 15 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path fill-rule="evenodd" clip-rule="evenodd"
+                                d="M0.279297 9.99967V4.00008C0.279297 1.79088 2.06996 8.10623e-05 4.27916 8.10623e-05H10.2788C12.4878 8.10623e-05 14.279 1.79088 14.279 4.00008V9.99967C14.279 12.2087 12.4878 13.9995 10.2788 13.9995H4.27916C2.06996 13.9995 0.279297 12.2087 0.279297 9.99967Z"
+                                fill="white"/>
+                        </svg>
+                      </div>
+                    </div>
+                    <div class="my-table-border col-md-1">
+                      <div class="centered">
+                        <svg width="11" height="6" viewBox="0 0 11 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path fill-rule="evenodd" clip-rule="evenodd"
+                                d="M0.226562 0.387777H10.2258L5.22617 5.46753L0.226562 0.387777Z" fill="#868BB2"/>
+                        </svg>
+                      </div>
+                    </div>
+                    <div class="my-table-border col-md-10">
+                      <div class="centered">АО ЭМБА МУНАЙ ГАЗ</div>
+                    </div>
+                  </div>
+                  <!-- !!!! -->
+                  <!-- !!!! -->
+                  <div class="row">
+                    <div class="my-table-border col-md-1">
+                      <div class="centered">
+                        <svg width="15" height="14" viewBox="0 0 15 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path fill-rule="evenodd" clip-rule="evenodd"
+                                d="M0.279297 9.99967V4.00008C0.279297 1.79088 2.06996 8.10623e-05 4.27916 8.10623e-05H10.2788C12.4878 8.10623e-05 14.279 1.79088 14.279 4.00008V9.99967C14.279 12.2087 12.4878 13.9995 10.2788 13.9995H4.27916C2.06996 13.9995 0.279297 12.2087 0.279297 9.99967Z"
+                                fill="white"/>
+                        </svg>
+                      </div>
+                    </div>
+                    <div class="my-table-border col-md-1">
+                      <div class="centered">
+                        <svg width="11" height="6" viewBox="0 0 11 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path fill-rule="evenodd" clip-rule="evenodd"
+                                d="M0.226562 0.387777H10.2258L5.22617 5.46753L0.226562 0.387777Z" fill="#868BB2"/>
+                        </svg>
+                      </div>
+                    </div>
+                    <div class="my-table-border col-md-10">
+                      <div class="centered">АО ЭМБА МУНАЙ ГАЗ</div>
+                    </div>
+                  </div>
+                  <!-- !!!! -->
+                  <!-- !!!! -->
+                  <div class="row">
+                    <div class="my-table-border col-md-1">
+                      <div class="centered">
+                        <svg width="15" height="14" viewBox="0 0 15 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path fill-rule="evenodd" clip-rule="evenodd"
+                                d="M0.279297 9.99967V4.00008C0.279297 1.79088 2.06996 8.10623e-05 4.27916 8.10623e-05H10.2788C12.4878 8.10623e-05 14.279 1.79088 14.279 4.00008V9.99967C14.279 12.2087 12.4878 13.9995 10.2788 13.9995H4.27916C2.06996 13.9995 0.279297 12.2087 0.279297 9.99967Z"
+                                fill="white"/>
+                        </svg>
+                      </div>
+                    </div>
+                    <div class="my-table-border col-md-1">
+                      <div class="centered">
+                        <svg width="11" height="6" viewBox="0 0 11 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path fill-rule="evenodd" clip-rule="evenodd"
+                                d="M0.226562 0.387777H10.2258L5.22617 5.46753L0.226562 0.387777Z" fill="#868BB2"/>
+                        </svg>
+                      </div>
+                    </div>
+                    <div class="my-table-border col-md-10">
+                      <div class="centered">АО ЭМБА МУНАЙ ГАЗ</div>
+                    </div>
+                  </div>
+                  <!-- !!!! -->
+                  <!-- !!!! -->
+                  <div class="row">
+                    <div class="my-table-border col-md-1">
+                      <div class="centered">
+                        <svg width="15" height="14" viewBox="0 0 15 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path fill-rule="evenodd" clip-rule="evenodd"
+                                d="M0.279297 9.99967V4.00008C0.279297 1.79088 2.06996 8.10623e-05 4.27916 8.10623e-05H10.2788C12.4878 8.10623e-05 14.279 1.79088 14.279 4.00008V9.99967C14.279 12.2087 12.4878 13.9995 10.2788 13.9995H4.27916C2.06996 13.9995 0.279297 12.2087 0.279297 9.99967Z"
+                                fill="white"/>
+                        </svg>
+                      </div>
+                    </div>
+                    <div class="my-table-border col-md-1">
+                      <div class="centered">
+                        <svg width="11" height="6" viewBox="0 0 11 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path fill-rule="evenodd" clip-rule="evenodd"
+                                d="M0.226562 0.387777H10.2258L5.22617 5.46753L0.226562 0.387777Z" fill="#868BB2"/>
+                        </svg>
+                      </div>
+                    </div>
+                    <div class="my-table-border col-md-10">
+                      <div class="centered">АО ЭМБА МУНАЙ ГАЗ</div>
+                    </div>
+                  </div>
+                  <!-- !!!! -->
+                  <!-- !!!! -->
+                  <div class="row">
+                    <div class="my-table-border col-md-1">
+                      <div class="centered">
+                        <svg width="15" height="14" viewBox="0 0 15 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path fill-rule="evenodd" clip-rule="evenodd"
+                                d="M0.279297 9.99967V4.00008C0.279297 1.79088 2.06996 8.10623e-05 4.27916 8.10623e-05H10.2788C12.4878 8.10623e-05 14.279 1.79088 14.279 4.00008V9.99967C14.279 12.2087 12.4878 13.9995 10.2788 13.9995H4.27916C2.06996 13.9995 0.279297 12.2087 0.279297 9.99967Z"
+                                fill="white"/>
+                        </svg>
+                      </div>
+                    </div>
+                    <div class="my-table-border col-md-1">
+                      <div class="centered">
+                        <svg width="11" height="6" viewBox="0 0 11 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path fill-rule="evenodd" clip-rule="evenodd"
+                                d="M0.226562 0.387777H10.2258L5.22617 5.46753L0.226562 0.387777Z" fill="#868BB2"/>
+                        </svg>
+                      </div>
+                    </div>
+                    <div class="my-table-border col-md-10">
+                      <div class="centered">АО ЭМБА МУНАЙ ГАЗ</div>
+                    </div>
+                  </div>
+                  <!-- !!!! -->
+                  <!-- !!!! -->
+                  <div class="row">
+                    <div class="my-table-border col-md-1">
+                      <div class="centered">
+                        <svg width="15" height="14" viewBox="0 0 15 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path fill-rule="evenodd" clip-rule="evenodd"
+                                d="M0.279297 9.99967V4.00008C0.279297 1.79088 2.06996 8.10623e-05 4.27916 8.10623e-05H10.2788C12.4878 8.10623e-05 14.279 1.79088 14.279 4.00008V9.99967C14.279 12.2087 12.4878 13.9995 10.2788 13.9995H4.27916C2.06996 13.9995 0.279297 12.2087 0.279297 9.99967Z"
+                                fill="white"/>
+                        </svg>
+                      </div>
+                    </div>
+                    <div class="my-table-border col-md-1">
+                      <div class="centered">
+                        <svg width="11" height="6" viewBox="0 0 11 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path fill-rule="evenodd" clip-rule="evenodd"
+                                d="M0.226562 0.387777H10.2258L5.22617 5.46753L0.226562 0.387777Z" fill="#868BB2"/>
+                        </svg>
+                      </div>
+                    </div>
+                    <div class="my-table-border col-md-10">
+                      <div class="centered">АО ЭМБА МУНАЙ ГАЗ</div>
+                    </div>
+                  </div>
+                  <!-- !!!! -->
 
 
                 </div>
               </div>
             </div>
           </div>
-
-
         </div>
+
+
       </div>
+    </div>
     <div class="section-main">
       <div class="col">
         <div class="row">
@@ -128,9 +382,21 @@
 <style scoped lang="scss">
 $dark-font: #1F2142;
 $HarmoniaSansProCyr: "Harmonia Sans Pro Cyr", "Harmonia-sans";
-;
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #1A214A;
+}
+::-webkit-scrollbar-thumb {
+  background: #656A8A;
+  border-radius: 4px;
+  border: 3px solid #1A214A;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
 body {
-
   color: white;
 }
 
@@ -214,6 +480,9 @@ body {
     }
   }
 
+  .table-wrapper {
+    padding: 0px 10px;
+  }
 
   .table-container {
     background-color: #272953;
@@ -222,13 +491,22 @@ body {
     width: 100%;
     color: white;
     border: 1px solid #454D7D;
+    height: 821px;
+    margin-bottom: 20px;
 
-    .centered{
+    .row {
+      margin-right: 0px;
+      margin-left: 0px;
+    }
+
+    .centered {
       margin: auto;
     }
-    .col-md-1{
+
+    .col-md-1 {
       padding: 0px;
     }
+
     .table-container-header {
       text-align: center;
       padding: 14px 20px 0px 20px;
@@ -239,6 +517,10 @@ body {
       text-align: center;
       background-color: #323370;
       height: 38px;
+      font-size: 16px;
+      font-weight: 700;
+      line-height: 19px;
+      font-family: $HarmoniaSansProCyr;
 
       .row {
         height: 100%;
@@ -247,9 +529,12 @@ body {
 
 
     .table-container-element {
-      height: 340px;
       background-color: #272953;
       border: 1px solid #454D7D;
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 19px;
+      font-family: $HarmoniaSansProCyr;
 
       .table-container-svg {
         display: flex;
@@ -301,7 +586,7 @@ body {
       margin-right: 0px;
     }
 
-    .my-table-border{
+    .my-table-border {
       border: 1px solid #454D7D;
       display: flex;
 
@@ -348,24 +633,6 @@ body {
 .row {
   display: flex;
   color: white;
-}
-
-::-webkit-scrollbar-track {
-  background: #272953;
-
-}
-
-::-webkit-scrollbar-thumb {
-  background: URL("/img/bd/scroll-img.svg") no-repeat 50% #374178;
-  height: 10px;
-}
-
-::-webkit-scrollbar-button {
-  background: URL("/img/bd/scroll-array.svg") no-repeat 50% #485499;
-
-  &:end {
-    background: URL("/img/bd/scroll-array-end.svg") no-repeat 50% #485499;
-  }
 }
 
 </style>
