@@ -538,6 +538,7 @@ body {
       display: flex;
       width: 100%;
       color: white;
+      pointer-events: none;
 
       a {
         color: white;
@@ -554,8 +555,16 @@ body {
     border-radius: 6px;
     border: 0px;
 
+    :hover{
+      border: 1px solid #3366FF;
+      border-radius: 6px;
+    }
+
+
+
     .dropdown-item:hover, .dropdown-item:focus {
       background: rgba(51, 102, 255, 0.5);
+      border: 0px;
     }
 
     svg {
@@ -606,12 +615,19 @@ body {
   .dropdown-toggle:focus {
     box-shadow: none;
     border: 1px solid #3366FF;
+    .icon-pointer{
+      transform: scale(-1);
+    }
   }
+
 
   .dropdown-toggle:active {
     box-shadow: none;
     background: #1F2142;
     border: 1px solid #3366FF;
+    .icon-pointer{
+      transform: scale(-1);
+    }
   }
 
   .left-section-select-area {
