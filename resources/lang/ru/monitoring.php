@@ -129,7 +129,10 @@ return array (
       'fill' => 'Заправка',
       'yearly_inhibitor_rate' => 'Годовой расход ингибитора кг',
     ),
-    'no-ddng-data-on-date' => 'Нет данных по ДДНГ на',
+    'errors' => 
+    array (
+      'no-ddng-data-on-date' => 'Нет данных по ДДНГ на',
+    ),
   ),
   'omgngdu' => 
   array (
@@ -235,6 +238,11 @@ return array (
   array (
     'title' => 'Карта',
     'select_gu' => 'Выберите ГУ',
+    'select_filter' => 'Выберите фильтр',
+    'filters' => 
+    array (
+      'speed-flow-filter' => 'Скорость потока',
+    ),
   ),
   'module_name' => 'Мониторинг осложнений',
   'tech_map_prototype' => 'Техкарта прототип',
@@ -384,8 +392,8 @@ return array (
       'break_qty' => 'Количество порывов',
       'height_drop' => 'Перепад высот, м',
     ),
-    'table_title' => 'Таблица расчета гидравлики',
-    'message' =>
+    'table_title' => 'Таблица расчета гидравлики ГУ - УПСВ',
+    'message' => 
     array (
       'no-omgdu-data' => 'нет данных ОМГДУ',
       'pressure-0' => 'давление 0 !',
@@ -421,5 +429,8 @@ return array (
     ),
     'edit_title' => 'Редактирование материалов трубопровода',
     'create_title' => 'Добавить материал трубопровода',
-  ),
+  'reverse_calculation' => 
+  array (
+    'table_title' => 'Таблица расчета гидравлики Скважина - ГУ',
+  )),
 );

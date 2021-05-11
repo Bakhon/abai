@@ -5,14 +5,6 @@ namespace App\Imports;
 use App\Console\Commands\Import\ImportPipesPoints;
 use App\Models\ComplicationMonitoring\TrunklinePoint;
 use App\Models\Pipes\PipeCoord;
-use App\Models\Refs\Cdng;
-use App\Models\Refs\HydrocarbonOxidizingBacteria;
-use App\Models\Refs\Ngdu;
-use App\Models\Refs\SulphateReducingBacteria;
-use App\Models\Refs\ThionicBacteria;
-use App\Models\Refs\WaterTypeBySulin;
-use App\Models\Refs\Zu;
-use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\ToCollection;
@@ -20,9 +12,7 @@ use Maatwebsite\Excel\Concerns\WithColumnLimit;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\WithCalculatedFormulas;
 use Maatwebsite\Excel\Events\BeforeSheet;
-use App\Models\Refs\Well;
 use App\Models\Refs\Gu;
-use PhpOffice\PhpSpreadsheet\Shared\Date;
 
 class PipesPointsImport implements ToCollection, WithEvents, WithColumnLimit, WithCalculatedFormulas
 {
@@ -104,7 +94,7 @@ class PipesPointsImport implements ToCollection, WithEvents, WithColumnLimit, Wi
             )[0]->oil_pipe_id;
 
             $pipe_coords_start = PipeCoord::where('lat', $start_coords[self::LAT])
-                ->where('lon', $oil_pipe_id[self::LON])
+                ->where('lon', $start_coords[self::LON])
                 ->where('oil_pipe_id', $oil_pipe_id)
                 ->where('m_distance', 0)
                 ->first();

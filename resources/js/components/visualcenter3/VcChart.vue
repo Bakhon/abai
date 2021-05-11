@@ -98,6 +98,8 @@
                 if (chartSummary.isOpecFilterActive) {
                     chartColors.plan = _.cloneDeep(this.initialChartColors).opecPlan;
                     chartColors.opecPlan = _.cloneDeep(this.initialChartColors).plan;
+                    chartLabels.plan = _.cloneDeep(this.initialChartLabels).opecPlan;
+                    chartLabels.opecPlan = _.cloneDeep(this.initialChartLabels).plan;
                 }
 
                 let planChartOptions = {

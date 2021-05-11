@@ -1203,6 +1203,7 @@ export default {
           }
           this.$emit('LineData', this.curveLineData)
           this.$emit('PointsData', this.curvePointsData)
+          
         }
       ).finally((response) => {
         this.isLoading = false;
@@ -1214,7 +1215,7 @@ export default {
 
     fetchBlockCentrators() {
       let fieldInfo = this.wellIncl.split('_');
-      let urlForIncl = "http://172.20.103.187:7573/api/pgno/incl";
+      let urlForIncl = "http://172.20.103.187:7575/api/pgno/incl";
       if (this.expChoose == 'ЭЦН') {
         (this.liftValue = 'ЭЦН') && (this.stepValue = 20);
       } else {
@@ -1238,7 +1239,6 @@ export default {
     },
 
     postCurveData() {
-      this.fetchBlockCentrators();
       this.isVisibleChart = true;
       let uri = this.url + this.field + "/" + this.wellNumber + "/";
       if (this.CelButton == 'ql') {
@@ -1512,6 +1512,7 @@ export default {
 
             this.axios.post(uri, jsonData).then((response) => {
               let data = JSON.parse(response.data);
+              this.fetchBlockCentrators();
               if(data) {
                 if (data["error"] == "NoIntersection") {
                   this.$notify({
