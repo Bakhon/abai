@@ -23,7 +23,7 @@
                 "dict":"well_statuses"
               },
               {
-                "code":"reason_downtime",
+                "code":"reason_dowtime",
                 "type":"text",
                 "title":"reason_downtime",
                 "validation":"required|string"
