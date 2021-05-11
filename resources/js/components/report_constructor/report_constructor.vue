@@ -374,16 +374,23 @@
         <div class="row">
           <div class="col">
             <section class="section-top  bg-dark">
+
               <div class="vertical-centered">
-                <span>Дата</span>
-                <form>
-                  <input type="datetime-local">
-                </form>
-                <span class="calendar">Сегодня</span>
-                <span class="calendar">Сутки</span>
-                <span class="calendar">Неделя</span>
-                <span class="calendar">Месяц</span>
-                <span class="calendar">Год</span>
+                <div class="row">
+                  <span class="col">Дата</span>
+                  <form>
+                    <input type="date">
+                  </form>
+                  <span class="calendar col">Сегодня</span>
+                  <span class="calendar col">Сутки</span>
+                  <span class="calendar col">Неделя</span>
+                  <span class="calendar col">Месяц</span>
+                  <span class="calendar col">Год</span>
+                  <div class="col btn-container">
+                    <button class="btn-disabled" disabled>Создать отчет</button>
+                    <button class="">Выбрать шаблон</button>
+                  </div>
+                </div>
               </div>
             </section>
           </div>
@@ -430,6 +437,11 @@ body {
 .left-section {
   width: 441px;
   margin-left: 15px;
+
+  @media(max-width: 800px) {
+    margin-top: 10px;
+    width: 100%;
+  }
 
   :after {
     margin: 0px;
@@ -653,6 +665,10 @@ body {
         display: flex;
       }
 
+      .col-md-1 {
+        max-width: 40px;
+      }
+
       .svg-element {
         padding: 5px 13px 5px 23px;
         display: grid;
@@ -758,20 +774,49 @@ body {
   max-width: calc(100% - 460px);
   width: 100%;
 
+  @media(max-width: 800px) {
+    max-width: 100%;
+    margin-top: 10px;
+  }
+
   .section-top {
+    min-width: 250px;
     display: flex;
-    height: 52px;
+    min-height: 52px;
     width: 100%;
     margin-bottom: 10px;
-    padding: 11px 14px;
+    padding: 11px 0px 11px 14px;
+
+    button {
+      background: #3C4280;
+      color: white;
+      border: 1px solid #3C4280;
+      border-radius: 6px;
+      font-weight: 700;
+      font-family: $HarmoniaSansProCyr;
+      font-size: 16px;
+      line-height: 19px;
+      padding: 8px 33px 6px 32px;
+      margin-right: 18px;
+    }
+
+    .btn-disabled {
+      background: rgba(60, 66, 128, 0.6);
+      color: rgba(255, 255, 255, 0.6);
+    }
+    .btn-container{
+      display: contents;
+      margin-left: auto;
+    }
 
     span {
       font-family: $HarmoniaSansProCyr;
-      font-weight: 700;
-      font-size: 16px;
+      font-weight: 400;
+      font-size: 14px;
       line-height: 19px;
     }
-    input[type="datetime-local"]{
+
+    input[type="date"] {
       width: 142px;
       margin-right: 35px;
       background: #1F2142;
@@ -779,11 +824,19 @@ body {
       border-radius: 4px;
       border: 0.5px solid #454FA1;
       padding: 0px 0px 0px 15px;
-      background-image: url(/img/bd/date-time.svg) 1% no-repeat;
+      font-size: 16px;
+      font-weight: 400;
+      font-family: $HarmoniaSansProCyr;
+
+      &::-webkit-calendar-picker-indicator {
+        background: url(/img/bd/webkit-calendar.svg) 50% 50% no-repeat #363B68;
+        width: 30px;
+        height: 30px;
+        padding: 0px;
+        margin: 0px;
+      }
     }
-    :first-child span{
-      padding-right: 15px;
-    }
+
   }
 
   .section-content {
@@ -859,6 +912,13 @@ body {
 .vertical-centered {
   width: 100%;
   display: flex;
+
+  .row{
+    width: 100%;
+  }
+  :first-child .row{
+    margin: 0px;
+  }
 
   :nth-child(1n) {
     margin-top: auto;
