@@ -16,6 +16,10 @@
           <proactive-factors-select-filter
             v-bind:selectFilter="selectFilterCompany"
           ></proactive-factors-select-filter>    
+
+          <proactive-factors-select-filter
+            v-bind:selectFilter="selectFilterField"
+          ></proactive-factors-select-filter>
                 
           <proactive-factors-select-filter
             v-bind:selectFilter="selectFilterVersionBp"
@@ -48,6 +52,7 @@
           <proactive-factors-select-filter
             v-bind:selectFilter="costAllocationBase"
           ></proactive-factors-select-filter>
+      
            <button type="button" class="btn btn-primary btn_color mt-2 w-100">{{trans('economy_pf.applySettings')}}</button>
         </div>
       </div>
@@ -64,11 +69,12 @@ import selectFilterCapex from "./selectFilterData/capex.json";
 import selectFilterGetOil from "./selectFilterData/getOil.json";
 import selectFilterExportSalesPercentage from "./selectFilterData/exportSalesPercentage.json";
 import costAllocationBase from "./selectFilterData/costAllocationBase.json";
+import selectFilterField from "./selectFilterData/field.json";
 
 export default {
   data: function () {
-    return { 
-      companyData:'',
+    return {
+      companyData: "",
       selectFilterCompany: selectFilterCompany,
       selectFilterVersionBp: selectFilterVersionBp,
       selectFilterPriceBrent: selectFilterPriceBrent,
@@ -78,19 +84,21 @@ export default {
       selectFilterGetOil: selectFilterGetOil,
       selectFilterExportSalesPercentage: selectFilterExportSalesPercentage,
       costAllocationBase: costAllocationBase,
+      selectFilterField: selectFilterField,
     };
   },
-   methods: {
+  methods: {
     getCompany() {
       let uri = this.localeUrl("/module_economy/company");
       this.axios.get(uri).then((response) => {
         let data = response.data;
         this.companyData = data;
-        });
-    }},
-    created() {  
+      });
+    },
+  },
+  created() {
     this.getCompany();
-    }
+  },
 };
 </script>
 

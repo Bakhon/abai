@@ -1,0 +1,21 @@
+[
+    {
+        "option": "field.name"
+    },
+    {
+        "value": 1,
+        "option": "field.option1"
+    },
+    {
+        "value": 2,
+        "option": "field.option2"
+    },
+    {
+        "value": 3,
+        "option": "field.option3"
+    },
+    {
+        "value": 4,
+        "option": "field.option4"
+    }
+]
