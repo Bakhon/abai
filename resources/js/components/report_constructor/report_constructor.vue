@@ -174,7 +174,7 @@
             <div class="table-container">
               <div class="table-container-column-header">
                 <div class="row">
-                  <div class="my-table-border col-md-2" style="padding:0px">
+                  <div class="my-table-border col-md-2" style="padding:0px;">
                     <div class="centered">Выбор</div>
                   </div>
                   <div class="my-table-border col-md-10">
@@ -183,7 +183,7 @@
                 </div>
               </div>
               <div class="table-container-element">
-                <!--Table-elemtnt start -->
+                <!--Parent table-elemtnt start -->
                 <div class="row">
                   <div class="my-table-border col-md-1">
                     <div class="centered">
@@ -200,10 +200,10 @@
                     </div>
                   </div>
                   <div class="my-table-border col-md-1">
-                    <div class="centered">
+                    <div class="centered pointer" style="transform: scale(-1);">
                       <svg width="11" height="6" viewBox="0 0 11 6" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path fill-rule="evenodd" clip-rule="evenodd"
-                              d="M0.226562 0.387777H10.2258L5.22617 5.46753L0.226562 0.387777Z" fill="#868BB2"/>
+                              d="M0.226562 0.387777H10.2258L5.22617 5.46753L0.226562 0.387777Z" style="fill:white"/>
                       </svg>
                     </div>
                   </div>
@@ -211,9 +211,9 @@
                     <div class="centered no-left-margin">АО ЭМБА МУНАЙ ГАЗ</div>
                   </div>
                 </div>
-                <!-- Table-elemtnt end -->
-                <!--Table-elemtnt start -->
-                <div class="row">
+                <!-- Parent table-elemtnt end -->
+                <!--Child table-elemtnt start -->
+                <div class="row child-row">
                   <div class="my-table-border col-md-1">
                     <div class="centered">
                     </div>
@@ -233,7 +233,7 @@
                     </div>
                   </div>
                   <div class="my-table-border col-md-10">
-                    <div class="centered">
+                    <div class="pointer-child">
                       <svg width="11" height="6" viewBox="0 0 11 6" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path fill-rule="evenodd" clip-rule="evenodd"
                               d="M0.226562 0.387777H10.2258L5.22617 5.46753L0.226562 0.387777Z" fill="#868BB2"/>
@@ -242,8 +242,127 @@
                     <div class="centered no-left-margin">АО ЭМБА МУНАЙ ГАЗ</div>
                   </div>
                 </div>
-                <!-- Table-elemtnt end -->
-
+                <!-- Child table-elemtnt end -->
+                <!--Child table-elemtnt start -->
+                <div class="row child-row">
+                  <div class="my-table-border col-md-1">
+                    <div class="centered">
+                    </div>
+                  </div>
+                  <div class="my-table-border col-md-1">
+                    <div class="centered">
+                      <div class="custom-checkbox">
+                        <form>
+                          <label class="container" for="element-child">
+                            <span class="bottom-border"></span>
+                            <input type="checkbox" id="element-child" name="tech_structire" value="tech_structire"
+                                   class="dropdown-item">
+                            <span class="checkmark"></span>
+                          </label>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="my-table-border col-md-10">
+                    <div class="pointer-child">
+                      <svg width="11" height="6" viewBox="0 0 11 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd"
+                              d="M0.226562 0.387777H10.2258L5.22617 5.46753L0.226562 0.387777Z" fill="#868BB2"/>
+                      </svg>
+                    </div>
+                    <div class="centered no-left-margin">АО ЭМБА МУНАЙ ГАЗ</div>
+                  </div>
+                </div>
+                <!-- Child table-elemtnt end -->
+                <!--Child table-elemtnt start -->
+                <div class="row child-row">
+                  <div class="my-table-border col-md-1">
+                    <div class="centered">
+                    </div>
+                  </div>
+                  <div class="my-table-border col-md-1">
+                    <div class="centered">
+                      <div class="custom-checkbox">
+                        <form>
+                          <label class="container" for="element-child">
+                            <span class="bottom-border"></span>
+                            <input type="checkbox" id="element-child" name="tech_structire" value="tech_structire"
+                                   class="dropdown-item">
+                            <span class="checkmark"></span>
+                          </label>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="my-table-border col-md-10">
+                    <div class="pointer-child">
+                      <svg width="11" height="6" viewBox="0 0 11 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd"
+                              d="M0.226562 0.387777H10.2258L5.22617 5.46753L0.226562 0.387777Z" fill="#868BB2"/>
+                      </svg>
+                    </div>
+                    <div class="centered no-left-margin">АО ЭМБА МУНАЙ ГАЗ</div>
+                  </div>
+                </div>
+                <!-- Child table-elemtnt end -->
+                <!--Parent table-elemtnt start -->
+                <div class="row">
+                  <div class="my-table-border col-md-1">
+                    <div class="centered">
+                      <div class="custom-checkbox">
+                        <form>
+                          <label class="container" for="oil">
+                            <span class="bottom-border"></span>
+                            <input type="checkbox" id="oil" name="tech_structire" value="tech_structire"
+                                   class="dropdown-item">
+                            <span class="checkmark"></span>
+                          </label>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="my-table-border col-md-1">
+                    <div class="centered pointer">
+                      <svg width="11" height="6" viewBox="0 0 11 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd"
+                              d="M0.226562 0.387777H10.2258L5.22617 5.46753L0.226562 0.387777Z" fill="white"/>
+                      </svg>
+                    </div>
+                  </div>
+                  <div class="my-table-border col-md-10">
+                    <div class="centered no-left-margin">АО ЭМБА МУНАЙ ГАЗ</div>
+                  </div>
+                </div>
+                <!-- Parent table-elemtnt end -->
+                <!--Parent table-elemtnt start -->
+                <div class="row">
+                  <div class="my-table-border col-md-1">
+                    <div class="centered">
+                      <div class="custom-checkbox">
+                        <form>
+                          <label class="container" for="oil">
+                            <span class="bottom-border"></span>
+                            <input type="checkbox" id="oil" name="tech_structire" value="tech_structire"
+                                   class="dropdown-item">
+                            <span class="checkmark"></span>
+                          </label>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="my-table-border col-md-1">
+                    <div class="centered pointer">
+                      <svg width="11" height="6" viewBox="0 0 11 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd"
+                              d="M0.226562 0.387777H10.2258L5.22617 5.46753L0.226562 0.387777Z" fill="white"/>
+                      </svg>
+                    </div>
+                  </div>
+                  <div class="my-table-border col-md-10">
+                    <div class="centered no-left-margin">АО ЭМБА МУНАЙ ГАЗ</div>
+                  </div>
+                </div>
+                <!-- Parent table-elemtnt end -->
               </div>
             </div>
           </div>
@@ -564,6 +683,16 @@ body {
 
         &:nth-child(2n) {
           background-color: rgba(69, 77, 125, 0.5);
+
+        }
+      }
+
+      .child-row {
+        background: #363f77;
+
+        &:nth-child(2n) {
+          background-color: #282f64;
+
         }
       }
     }
@@ -579,6 +708,20 @@ body {
       p {
         margin-top: auto;
         margin-bottom: auto;
+      }
+    }
+
+    .pointer-child {
+      margin: auto 15px auto 20px;
+    }
+
+    .pointer {
+      transform: scale(1);
+
+      svg {
+        path {
+          fill: #868BB2;
+        }
       }
     }
   }
