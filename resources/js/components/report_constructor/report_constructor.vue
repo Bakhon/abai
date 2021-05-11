@@ -368,15 +368,23 @@
           </div>
         </div>
       </div>
-
-
     </div>
     <div class="section-main">
       <div class="col">
         <div class="row">
           <div class="col">
             <section class="section-top  bg-dark">
-              RIGHT TOP
+              <div class="vertical-centered">
+                <span>Дата</span>
+                <form>
+                  <input type="datetime-local">
+                </form>
+                <span class="calendar">Сегодня</span>
+                <span class="calendar">Сутки</span>
+                <span class="calendar">Неделя</span>
+                <span class="calendar">Месяц</span>
+                <span class="calendar">Год</span>
+              </div>
             </section>
           </div>
         </div>
@@ -712,7 +720,7 @@ body {
     }
 
     .pointer-child {
-      margin: auto 15px auto 20px;
+      margin: auto 25px auto 20px;
     }
 
     .pointer {
@@ -747,15 +755,40 @@ body {
 }
 
 .section-main {
-  width: -webkit-fill-available;
-  max-width: calc(100% - 500px);
+  max-width: calc(100% - 460px);
+  width: 100%;
 
   .section-top {
-    display: table-cell;
+    display: flex;
+    height: 52px;
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 11px 14px;
+
+    span {
+      font-family: $HarmoniaSansProCyr;
+      font-weight: 700;
+      font-size: 16px;
+      line-height: 19px;
+    }
+    input[type="datetime-local"]{
+      width: 142px;
+      margin-right: 35px;
+      background: #1F2142;
+      color: #B6BAD9;
+      border-radius: 4px;
+      border: 0.5px solid #454FA1;
+      padding: 0px 0px 0px 15px;
+      background-image: url(/img/bd/date-time.svg) 1% no-repeat;
+    }
+    :first-child span{
+      padding-right: 15px;
+    }
   }
 
   .section-content {
-    display: table-cell;
+    display: block;
+    height: 913px;
   }
 }
 
@@ -818,6 +851,20 @@ body {
   }
 }
 
+.calendar {
+  background: url(/img/bd/date-time.svg) 1% no-repeat;
+  padding: 0px 30px;
+}
+
+.vertical-centered {
+  width: 100%;
+  display: flex;
+
+  :nth-child(1n) {
+    margin-top: auto;
+    margin-bottom: auto;
+  }
+}
 
 </style>
 
