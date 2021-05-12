@@ -172,7 +172,7 @@ class FieldCalcController extends MainController
             $zatrElectResults = [];
             $expDayResults = [];
 
-            if ($month > 9) {
+            if ($month > 9){
                 $monthname = $month;
             } else {
                 $monthname = '0' . $month;
@@ -180,7 +180,7 @@ class FieldCalcController extends MainController
             $lastDateOfMonth = date("Y-m-t", strtotime($this->year . '-' . $monthname . '-01'));
             $firstDateOfMonth = date("Y-m-d", strtotime($this->year . '-' . $monthname . '-01'));
             $lastDay = date("d", strtotime($lastDateOfMonth));
-
+            $rate = EcoRefsMacro::where('date', '=', $firstDateOfMonth)->first(); // Курс доллара/Курс рубля/Инфляция, в % на конец периода/Стоимость барреля нефти
             $emppersExp = EcoRefsEmpPer::whereIn('direction_id', $this->exportDirections)->where('sc_fa', $scenarioFact)->where('company_id', $this->companyId)->where('date', $firstDateOfMonth)->get(); // процент реализации
             $discontExp = EcoRefsDiscontCoefBar::whereIn('direction_id', $this->exportDirections)->where('sc_fa', $scenarioFact)->where('company_id', $this->companyId)->where('date', $firstDateOfMonth)->get(); // Коэффициент баррелизации, Дисконт, Стоимость нефти
             $electricityCosts = EcoRefsPrepElectPrsBrigCost::where('company_id', $this->companyId)->where('sc_fa', $scenarioFact)->where('date', $firstDateOfMonth)->get(); // Стоимость транспортировки и подготовки, Стоимость 1 сутки бригады, Стоимость электроэнергии,
@@ -203,12 +203,12 @@ class FieldCalcController extends MainController
 
             $avgprsday = EcoRefsAvgPrs::where('company_id', $this->companyId)->first();
             if ($avgprsday) {
-                $avgprsday = $avgprsday->avg_prs;
+                $avgprsday = $avgprsday->avg_prs; // Средняя продолжительность 1 ПРС, сут
             }
 
             $workday = $lastDay * ((self::ONE_YEAR - array_sum($prsResult) * $avgprsday) / self::ONE_YEAR); // Количество отработанных дней
             $this->liquid = $this->fluidProduction * $workday; // Доп. добыча жидкости, тыс.т
-            $oil = $this->qoil * (1 - exp(log(1 - $this->razrab / 100) / self::ONE_YEAR * $workday)) / -(log(1 - $this->razrab / 100) / self::ONE_YEAR); // добыча нефти
+            $oil = $this->qoil * (1 - exp(log(1 - $this->razrab / 100) / self::ONE_YEAR * $workday)) / -(log(1 - $this->razrab / 100) / self::ONE_YEAR); // добыча нефти всего ?
 
             $percentRealization = EcoRefsProcDob::where('company_id', $this->companyId)->where('date', $firstDateOfMonth)->first(); // Процент от добычи на реализацию
             if ($percentRealization) {
@@ -248,29 +248,15 @@ class FieldCalcController extends MainController
             $rentCostResult = 0;
 
             if ($this->equipIdRequest != 1) {
-                $rentCostResult = EcoRefsRentEquipElectServCost::where('equip_id', '=', $this->equipIdRequest)->first()->rent_cost;
+                $rentCostResult = EcoRefsRentEquipElectServCost::where('equip_id', '=', $this->equipIdRequest)->first()->rent_cost; // Стоимость оборудования/Стоимость аренды/Расход электроэнергии/Стоимость суточного обслуживания
             }
 
-            $buyCostResult = EcoRefsRentEquipElectServCost::where('equip_id', '=', $this->equipIdRequest)->where('company_id', $this->companyId)->first()->equip_cost;
+            $buyCostResult = EcoRefsRentEquipElectServCost::where('equip_id', '=', $this->equipIdRequest)->where('company_id', $this->companyId)->first()->equip_cost; // Стоимость оборудования/Стоимость аренды/Расход электроэнергии/Стоимость суточного обслуживания
 
-            $rate = EcoRefsMacro::where('date', '=', $firstDateOfMonth)->first(); // Курс доллара/Курс рубля/Инфляция, в % на конец периода/Стоимость барреля нефти
-
-            // TO DO
-            foreach ($exportsResults as $route_id => $value) {
-                $tarifTnExp = EcoRefsTarifyTn::where('route_id', $route_id)->where('sc_fa', $scenarioFact)->where('company_id', $this->companyId)->get();
-                $tarifTnItemValue = 0;
-                foreach ($tarifTnExp as $row) {
-                    if ($row->exc_id == 1) {
-                        $tarifTnItemValue += $value * $row->tn_rate;
-                    } elseif ($row->exc_id == 2) {
-                        $tarifTnItemValue += $value * $row->tn_rate * $rate->ex_rate_dol;
-                    } else {
-                        $tarifTnItemValue += $value * $row->tn_rate * $rate->ex_rate_rub;
-                    }
-                }
+            foreach ($exportsResults as $route_id => $oilValume) {
+                $tarifTnItemValue = $this->totalTransportationCostYear($route_id, $scenarioFact, $this->companyId, $oilValume, $rate);
                 $exportsTarTnResults[$route_id] = $tarifTnItemValue / 12;
             }
-
             $exportsTarTnResultsTotal = array_sum($exportsTarTnResults);
 
 
@@ -282,8 +268,8 @@ class FieldCalcController extends MainController
 
             $stavki = EcoRefsNdoRates::where('company_id', '=', $item->company_id)->first(); // Средняя ставка НДПИ по НДО
             foreach ($discontExp as $item) {
-                $exportsNdpiResults[$item->route_id] = $exportsResults[$item->route_id] * $item->barr_coef * $item->macro * $stavki->ndo_rates * $rate->ex_rate_dol;
-                $exportsNdpiResultsRub = $exportsResults[$item->route_id] * $item->barr_coef * $item->macro * $stavki->ndo_rates * $rate->ex_rate_rub;
+                $exportsNdpiResults[$item->route_id] = $exportsResults[$item->route_id] * $item->barr_coef * $item->macro  * $rate->ex_rate_dol * $stavki->ndo_rates;
+                $exportsNdpiResultsRub = $exportsResults[$item->route_id] * $item->barr_coef * $item->macro * $rate->ex_rate_rub * $stavki->ndo_rates;
                 $data[$company->name][$lastDateOfMonth]['НДПИ нефть на экспорт USD'][] = $exportsNdpiResults[$item->route_id];
                 $data[$company->name][$lastDateOfMonth]['НДПИ нефть на экспорт RUB'][] = $exportsNdpiResultsRub;
             }
@@ -295,11 +281,11 @@ class FieldCalcController extends MainController
             }
             $exportsRentTaxResultsTotal = array_sum($exportsRentTaxResults);
 
-            $etp = EcoRefsAvgMarketPrice::where('avg_market_price_beg', '>=', $item->macro)->where('avg_market_price_end', '>', $item->macro)->first(); // Ставки - ЭТП (Среднемесячная рыночная цена ($/баррель), от && Среднемесячная рыночная цена ($/баррель), до)
             foreach ($discontExp as $item) {
-                $exportsEtpResults[$item->route_id] = $exportsResults[$item->route_id] * $etp->exp_cust_duty_rate * $rate->ex_rate_dol;
+                $etpRate = EcoRefsAvgMarketPrice::where('avg_market_price_beg', '>=', $item->macro)->where('avg_market_price_end', '>', $item->macro)->first(); // Ставки - ЭТП (Среднемесячная рыночная цена ($/баррель), от && Среднемесячная рыночная цена ($/баррель), до)
+                $exportsEtpResults[$item->route_id] = $this->calculationETP($exportsResults[$item->route_id], $etpRate->exp_cust_duty_rate, $rate->ex_rate_dol); // Расчет ЭТП (экспорт)
             }
-            $exportsEtpResultsTotal = array_sum($exportsEtpResults);
+            $exportsEtpResultsTotal = array_sum($exportsEtpResults); //Расчет ЭТП (Экспорт) всего
             // Export END
 
             // Inside BEGIN
@@ -325,23 +311,13 @@ class FieldCalcController extends MainController
                 $insideNdpiResults[$item->route_id] = $insideResults[$item->route_id] * $item->macro * $stavki->ndo_rates * 0.5;
             }
             $insideNdpiResultsTotal = array_sum($insideNdpiResults);
-            // Inside END
 
-            foreach ($insideResults as $key => $value) {
-                $tarifTnIns = EcoRefsTarifyTn::where('route_id', '=', $key)->where('sc_fa', $scenarioFact)->where('company_id', $this->companyId)->get();
-                $tarifTnItemValue = 0;
-                foreach ($tarifTnIns as $row) {
-                    if ($row->exc_id == 1) {
-                        $tarifTnItemValue += $value * $row->tn_rate;
-                    } elseif ($row->exc_id == 2) {
-                        $tarifTnItemValue += $value * $row->tn_rate * $rate->ex_rate_dol;
-                    } else {
-                        $tarifTnItemValue += $value * $row->tn_rate * $rate->ex_rate_rub;
-                    }
-                }
-                $insideTarTnResults[$key] = $tarifTnItemValue / 12;
+            foreach ($insideResults as $route_id => $oilValume) {
+                $tarifTnItemValue = $this->totalTransportationCostYear($route_id, $scenarioFact, $this->companyId, $oilValume, $rate);
+                $insideTarTnResults[$route_id] = $tarifTnItemValue / 12;
             }
             $insideTarTnResultsTotal = array_sum($insideTarTnResults);
+            // Inside END
 
             if ($this->equipIdRequest == 1) {
                 $srokSluzhby = EcoRefsServiceTime::where('equip_id', '=', $this->equipIdRequest)->where('company_id', '=', $this->companyId)->first();
@@ -502,8 +478,6 @@ class FieldCalcController extends MainController
         }
 
         $data[$company->name][$this->year] = [
-            'Чистая прибыль' => $chistayaPribyl,
-            'Свободный денежный поток' => $svobodDenPotok,
             'Добыча жидкости' => $godovoiLiquid,
             'добыча нефти, тыс.т' => $godovoiOil,
             'Процент реализации' => $godovoiEmpper,
@@ -516,28 +490,28 @@ class FieldCalcController extends MainController
             'Расчет Рентного налога' => $godovoiRent,
             'Расчет ЭТП' => $godovoiEtp,
             'Расчет Расходов по транспортировке нефти' => $godovoiTrans,
-            'godovoiZatrElectShgn' => $godovoiZatrElectrShgn,
-            'godovoiZatrElectEcn' => $godovoiZatrElectrEcn,
+            'Тип насоса ШГН' => $godovoiZatrElectrShgn,
+            'Тип насоса УЭЦН' => $godovoiZatrElectrEcn,
             'godovoiZatrPrep' => $godovoiZatrPrep,
-            'godovoiZatrPrs' => $godovoiZatrPrs,
-            'godovoiZatrSutObs' => $godovoiZatrSutObs,
-            'godovoiArenda' => $godovoiArenda,
-            'godovoiAmortizacia' => $godovoiAmortizacia,
+            'Затраты на ПРС' => $godovoiZatrPrs,
+            'Затраты за суточное обслуживание' => $godovoiZatrSutObs,
+            'Стоимость аренды оборудования' => $godovoiArenda,
+            'Амортизация' => $godovoiAmortizacia,
             'Операционная прибыль' => $godovoiOperPryb,
             'КПН' => $godovoiKpn,
-            'godovoiChistPryb' => $godovoiChistPryb,
-            'godovoiKvl' => $godovoiKvl,
-            'godovoiSvobPot' => $godovoiSvobPot,
+            'Чистая прибыль' => $godovoiChistPryb,
+            'КВЛ' => $godovoiKvl,
+            'Свободный денежный поток' => $godovoiSvobPot,
             'npv' => $npv,
             'godovoiShgnParam' => $godovoiShgnParam,
             'godovoiEcnParam' => $godovoiEcnParam,
         ];
 
-//        $opiuOilNames = [];
-//        $this->getShowDataOnTree($this->opiuOilNames, $opiuValues, $opiuOilNames);
-//        foreach ($opiuOilNames as $oilName){
-//            $data[$this->year]['opiu'][$oilName['name']] = $oilName['value']/$godovoiOil*$oil;
-//        }
+        $opiuOilNames = [];
+        $this->getShowDataOnTree($this->opiuOilNames, $opiuValues, $opiuOilNames);
+        foreach ($opiuOilNames as $oilName){
+            $data[$this->year]['opiu'][$oilName['name']] = $oilName['value']/$godovoiOil*$oil;
+        }
 
         dd($data);
     }
@@ -571,6 +545,27 @@ class FieldCalcController extends MainController
     }
 
     public function getOpiuName($num){
+
+    }
+
+    public function calculationETP($realizationNDO, $rate, $dollar){
+        return $realizationNDO * $rate * $dollar;
+    }
+
+    public function totalTransportationCostYear($route, $scenarioFact, $companyId, $oilValume, $rate){
+        $tarifTn = EcoRefsTarifyTn::where('route_id', $route)->where('sc_fa', $scenarioFact)->where('company_id', $companyId)->get();
+        $data = 0;
+        foreach ($tarifTn as $tarif) {
+            if ($tarif->exc_id == 1) { // Валюта
+                $data += $oilValume * $tarif->tn_rate;
+            } elseif ($tarif->exc_id == 2) { // Валюта
+                $data += $oilValume * $tarif->tn_rate * $rate->ex_rate_dol;
+            } else {
+                $data += $oilValume * $tarif->tn_rate * $rate->ex_rate_rub;
+            }
+        }
+
+        return $data;
 
     }
 
