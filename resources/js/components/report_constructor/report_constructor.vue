@@ -404,7 +404,150 @@
         <div class="row">
           <div class="col">
             <section class="section-content bg-dark">
-              RIGHT MAIN
+              <div class="row">
+                <div class="content-top col">
+                  <div class="content-top-element">
+                    <svg width="22" height="27" viewBox="0 0 22 27" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path fill-rule="evenodd" clip-rule="evenodd"
+                            d="M9.45012 13.3545C9.58318 13.3545 9.71625 13.3013 9.79598 13.1947L11.3403 11.0917L12.6446 12.0502C12.7247 12.1299 12.8577 12.1564 12.9644 12.13C13.0705 12.1032 13.1772 12.0503 13.2304 11.9701L14.7744 9.89355L15.2004 10.2131C15.2805 10.2932 15.4134 10.2932 15.5201 10.2398C15.6262 10.1865 15.6796 10.08 15.7064 9.97347L15.7597 8.26961C15.7597 8.16308 15.7064 8.08328 15.6262 8.00342C15.5465 7.95022 15.44 7.92374 15.3337 7.95028L13.7361 8.5092C13.63 8.536 13.5498 8.64225 13.5233 8.74878C13.4965 8.85545 13.5499 8.96201 13.6564 9.04175L14.0824 9.36108L12.778 11.1182L11.4733 10.1597C11.3936 10.1068 11.2605 10.0536 11.154 10.08C11.0474 10.1068 10.9408 10.1597 10.8875 10.2398L9.07748 12.6625C8.94414 12.8489 8.97088 13.1149 9.15715 13.248C9.26381 13.3281 9.36998 13.3545 9.45012 13.3545Z"
+                            fill="white"/>
+                      <path fill-rule="evenodd" clip-rule="evenodd"
+                            d="M9.31795 16.2832H10.4895C10.649 16.2832 10.7825 16.1502 10.7825 15.9907V14.4465C10.7825 14.2866 10.649 14.1535 10.4895 14.1535H9.31795C9.15835 14.1535 9.02539 14.2866 9.02539 14.4465V15.9907C9.02539 16.1502 9.15835 16.2832 9.31795 16.2832Z"
+                            fill="white"/>
+                      <path fill-rule="evenodd" clip-rule="evenodd"
+                            d="M11.9273 13.0087C11.7679 13.0087 11.6348 13.1421 11.6348 13.3017V15.9907C11.6348 16.1502 11.7679 16.2832 11.9273 16.2832H13.099C13.2585 16.2832 13.3918 16.1502 13.3918 15.9907V13.3017C13.3918 13.1421 13.2585 13.0087 13.099 13.0087H11.9273Z"
+                            fill="white"/>
+                      <path fill-rule="evenodd" clip-rule="evenodd"
+                            d="M14.5096 11.8642C14.3497 11.8642 14.2168 11.9973 14.2168 12.1567V15.9907C14.2168 16.1502 14.3497 16.2832 14.5096 16.2832H15.681C15.8409 16.2832 15.9739 16.1502 15.9739 15.9907V12.1567C15.9739 11.9973 15.8409 11.8642 15.681 11.8642H14.5096Z"
+                            fill="white"/>
+                      <path fill-rule="evenodd" clip-rule="evenodd"
+                            d="M20.2863 4.78223H16.9584V1.45435C16.9584 1.08168 16.6391 0.761963 16.2664 0.761963H0.692057C0.319391 0.761963 0 1.08168 0 1.45435V21.3415C0 21.7141 0.319391 22.0334 0.692057 22.0334H4.01986V25.3613C4.01986 25.734 4.33934 26.0537 4.7124 26.0537H20.3131C20.6857 26.0537 21.005 25.734 21.005 25.3613V5.47428C20.9786 5.10162 20.6858 4.78223 20.2863 4.78223ZM4.01986 5.47428V20.649H1.38444V2.1464H15.5743V4.78223H4.7124C4.3128 4.78223 4.01986 5.10162 4.01986 5.47428ZM19.5943 24.6693H5.40438V6.16667H19.5943V24.6693Z"
+                            fill="white"/>
+                      <path fill-rule="evenodd" clip-rule="evenodd"
+                            d="M8.4401 19.4512H16.5331C16.9062 19.4512 17.2256 19.1314 17.2256 18.7587C17.2256 18.386 16.9062 18.0667 16.5331 18.0667H8.4401C8.06744 18.0667 7.74805 18.386 7.74805 18.7587C7.74805 19.1582 8.06744 19.4512 8.4401 19.4512Z"
+                            fill="white"/>
+                      <path fill-rule="evenodd" clip-rule="evenodd"
+                            d="M8.4401 22.5664H16.5331C16.9062 22.5664 17.2256 22.247 17.2256 21.8743C17.2256 21.5017 16.9062 21.182 16.5331 21.182H8.4401C8.06744 21.182 7.74805 21.5017 7.74805 21.8743C7.74805 22.247 8.06744 22.5664 8.4401 22.5664Z"
+                            fill="white"/>
+                    </svg>
+                  </div>
+                  <div class="content-top-element">
+                    Отчет
+                  </div>
+                  <div class="share">
+                    <svg width="13" height="14" viewBox="0 0 13 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path fill-rule="evenodd" clip-rule="evenodd"
+                            d="M1.76383 2.38468V11.8153H11.1945V9.00618C11.1945 7.79285 12.9585 7.78005 12.9585 9.00618V12.6593C12.9585 13.1995 12.5785 13.5793 12.0384 13.5793H0.919759C0.379892 13.5793 0 13.1995 0 12.6593V1.54085C0 1.00072 0.379892 0.62085 0.919759 0.62085H4.71566C5.92926 0.62085 5.94259 2.38468 4.71566 2.38468H1.76383ZM11.1953 3.65202L9.45931 5.3584C8.97451 5.84413 7.50379 7.56307 6.86019 7.56307C6.19006 7.56307 6.01628 7.14802 6.01628 6.56722C6.01628 6.11322 7.85847 4.48198 8.257 4.08358L9.92773 2.38403C9.53933 2.38363 9.15292 2.38362 8.76465 2.38468C8.05412 2.38628 7.15869 2.45964 7.15869 1.46444C7.15869 0.971637 7.60556 0.62085 8.07796 0.62085H12.0384C12.5785 0.62085 12.9585 1.00072 12.9585 1.54085V5.50138C12.9585 6.04112 12.5785 6.42057 12.0384 6.42057C11.0995 6.42057 11.1941 5.3868 11.1945 4.73893C11.1953 4.37653 11.1953 4.01415 11.1953 3.65202Z"
+                            fill="#82BAFF"/>
+                    </svg>
+                  </div>
+                </div>
+              </div>
+              <!--              Table element-->
+              <div class="row">
+                <div class="table-wrapper col">
+                  <div class="table-container">
+                    <div class="table-container-column-header">
+                      <div class="row">
+                        <div class="my-table-border col col-tb-1">
+                          <div class="centered">№</div>
+                        </div>
+                        <div class="my-table-border col col-tb-2">
+                          <div class="centered">Объект оргструктуры</div>
+                        </div>
+                        <div class="my-table-border col col-tb-3">
+                          <div class="centered">Объект геоструктуры</div>
+                        </div>
+                        <div class="col" style="display: grid; padding:0px;">
+                          <div class="nested-border row">
+                            <div class="col-md-12 centered" style="padding-top:10px">Параметры объекта</div>
+                          </div>
+                          <div class="row nested">
+                            <div class="col">
+                              <div class="centered">Параметры скважин</div>
+                            </div>
+                            <div class="col">
+                              <div class="centered">Параметры по добыче</div>
+                            </div>
+                            <div class="col">
+                              <div class="centered">Параметры фонда</div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="table-container-element">
+                      <!--Parent table-elemtnt start -->
+                      <div class="row">
+                        <div class="my-table-border col col-tb-1">
+                          <div class="centered">1</div>
+                        </div>
+                        <div class="my-table-border col col-tb-2">
+                          <div class="centered">ГУ-16</div>
+                        </div>
+                        <div class="my-table-border col col-tb-3">
+                          <div class="centered"></div>
+                        </div>
+                        <div class="my-table-border col">
+                          <div class="centered"></div>
+                        </div>
+                        <div class="my-table-border col">
+                          <div class="centered"></div>
+                        </div>
+                        <div class="my-table-border col">
+                          <div class="centered"></div>
+                        </div>
+                      </div>
+                      <!-- Parent table-elemtnt end -->
+                      <!--Parent table-elemtnt start -->
+                      <div class="row">
+                        <div class="my-table-border col col-tb-1">
+                          <div class="centered"></div>
+                        </div>
+                        <div class="my-table-border col col-tb-2">
+                          <div class="centered">АКШ-316</div>
+                        </div>
+                        <div class="my-table-border col col-tb-3">
+                          <div class="centered"></div>
+                        </div>
+                        <div class="my-table-border col">
+                          <div class="centered"></div>
+                        </div>
+                        <div class="my-table-border col">
+                          <div class="centered"></div>
+                        </div>
+                        <div class="my-table-border col">
+                          <div class="centered"></div>
+                        </div>
+                      </div>
+                      <!-- Parent table-elemtnt end -->
+                      <!--Parent table-elemtnt start -->
+                      <div class="row">
+                        <div class="my-table-border col col-tb-1">
+                          <div class="centered"></div>
+                        </div>
+                        <div class="my-table-border col col-tb-2">
+                          <div class="centered">АКШ-216</div>
+                        </div>
+                        <div class="my-table-border col col-tb-3">
+                          <div class="centered"></div>
+                        </div>
+                        <div class="my-table-border col">
+                          <div class="centered"></div>
+                        </div>
+                        <div class="my-table-border col">
+                          <div class="centered"></div>
+                        </div>
+                        <div class="my-table-border col">
+                          <div class="centered"></div>
+                        </div>
+                      </div>
+                      <!-- Parent table-elemtnt end -->
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!--              Table element-->
             </section>
           </div>
         </div>
@@ -608,151 +751,6 @@ body {
   .table-wrapper {
     padding: 0px 10px;
   }
-
-  .table-container {
-    background-color: #272953;
-    overflow-y: auto;
-    overflow-x: auto;
-    width: 100%;
-    color: white;
-    border: 1px solid #454D7D;
-    height: 821px;
-    margin-bottom: 20px;
-
-    .row {
-      margin-right: 0px;
-      margin-left: 0px;
-    }
-
-    .centered {
-      margin: auto;
-    }
-
-    .no-left-margin {
-      margin-left: unset;
-    }
-
-    .col-md-1 {
-      padding: 0px;
-    }
-
-    .table-container-header {
-      text-align: center;
-      padding: 14px 20px 0px 20px;
-      background-color: #32346C;
-    }
-
-    .table-container-column-header {
-      text-align: center;
-      background-color: #323370;
-      height: 38px;
-      font-size: 16px;
-      font-weight: 700;
-      line-height: 19px;
-      font-family: $HarmoniaSansProCyr;
-
-      .row {
-        height: 100%;
-      }
-    }
-
-
-    .table-container-element {
-      background-color: #272953;
-      border: 1px solid #454D7D;
-      font-size: 16px;
-      font-weight: 400;
-      line-height: 19px;
-      font-family: $HarmoniaSansProCyr;
-
-      .table-container-svg {
-        display: flex;
-      }
-
-      .col-md-1 {
-        max-width: 40px;
-      }
-
-      .svg-element {
-        padding: 5px 13px 5px 23px;
-        display: grid;
-
-        svg {
-          margin-left: auto;
-          margin-right: auto;
-          margin-top: auto;
-          margin-bottom: auto;
-        }
-      }
-
-      .element-position {
-        padding: 5px 13px 5px 23px;
-        display: flex;
-
-        p {
-          float: right;
-          margin-top: auto;
-          margin-bottom: auto;
-          margin-left: auto;
-        }
-
-        .title {
-          margin-left: unset;
-          margin-right: auto;
-        }
-
-        svg {
-          margin: auto;
-        }
-      }
-
-      .row {
-        min-height: 38px;
-
-        &:nth-child(2n) {
-          background-color: rgba(69, 77, 125, 0.5);
-
-        }
-      }
-
-      .child-row {
-        background: #363f77;
-
-        &:nth-child(2n) {
-          background-color: #282f64;
-
-        }
-      }
-    }
-
-    .row {
-      margin-right: 0px;
-    }
-
-    .my-table-border {
-      border: 1px solid #454D7D;
-      display: flex;
-
-      p {
-        margin-top: auto;
-        margin-bottom: auto;
-      }
-    }
-
-    .pointer-child {
-      margin: auto 25px auto 20px;
-    }
-
-    .pointer {
-      transform: scale(1);
-
-      svg {
-        path {
-          fill: #868BB2;
-        }
-      }
-    }
-  }
 }
 
 .left-section-table-content {
@@ -842,17 +840,114 @@ body {
         margin: 0px;
       }
     }
-    .date-container{
-      &:first-child span{
+
+    .date-container {
+      &:first-child span {
         margin-right: 17px;
       }
     }
-
   }
 
   .section-content {
     display: block;
     height: 913px;
+
+    .content-top {
+      display: inline-flex;
+      margin: 12px 14px;
+
+      .share {
+        float: right;
+        margin: 7px 1px 7px auto;
+      }
+
+      .content-top-element {
+        padding-right: 15px;
+        font-family: $HarmoniaSansProCyr;
+        font-weight: 700;
+        font-size: 16px;
+        line-height: 19px;
+        margin-top: auto;
+        margin-bottom: auto;
+      }
+    }
+
+    .table-wrapper {
+      margin: 0px 14px;
+
+      .table-container {
+        height: 750px;
+      }
+
+      .my-table-border {
+        border-top: 1px solid #454D7D;
+        border-right: 1px solid #454D7D;
+        border-bottom: 0px;
+        border-left: 1px solid #454D7D;
+      }
+
+      .col-tb-1 {
+        max-width: 40px;
+        padding: 0px;
+        height: 80px;
+      }
+
+      .col-tb-2 {
+        max-width: 250px;
+        height: 80px;
+      }
+
+      .col-tb-3 {
+        max-width: 250px;
+        height: 80px;
+      }
+
+      .col-tb-4 {
+        max-width: calc(100% - 40px - 250px - 250px);
+        min-width: 350px;
+        display: inline-grid;
+        height: 80px;
+      }
+
+      .table-container-column-header {
+        height: 80px;
+
+        .nested {
+          :nth-child(1n) {
+            padding: 0px;
+            min-width: 100px;
+            margin: 0px;
+
+            .centered {
+              padding-top: 10px;
+              border-right: 1px solid #454D7D;
+              height: 100%;
+            }
+          }
+        }
+
+        .nested-border {
+          border-top: 0px;
+          border-right: 0px;
+          border-bottom: 1px solid #454D7D;
+          border-left: 0px;
+        }
+      }
+
+      .table-container-element {
+        .col-tb-1 {
+          height: auto;
+        }
+
+        .col-tb-2 {
+          height: auto;
+        }
+
+        .col-tb-3 {
+          height: auto;
+        }
+      }
+    }
   }
 }
 
@@ -945,7 +1040,152 @@ body {
 
 .inline-flex {
   display: inline-flex;
+  flex-wrap: wrap;
 }
 
+.table-container {
+  background-color: #272953;
+  overflow-y: auto;
+  overflow-x: auto;
+  width: 100%;
+  color: white;
+  border: 1px solid #454D7D;
+  height: 821px;
+  margin-bottom: 20px;
+
+  .row {
+    margin-right: 0px;
+    margin-left: 0px;
+  }
+
+  .centered {
+    margin: auto;
+  }
+
+  .no-left-margin {
+    margin-left: unset;
+  }
+
+  .col-md-1 {
+    padding: 0px;
+  }
+
+  .table-container-header {
+    text-align: center;
+    padding: 14px 20px 0px 20px;
+    background-color: #32346C;
+  }
+
+  .table-container-column-header {
+    text-align: center;
+    background-color: #323370;
+    height: 38px;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 19px;
+    font-family: $HarmoniaSansProCyr;
+
+    .row {
+      height: 100%;
+    }
+  }
+
+
+  .table-container-element {
+    background-color: #272953;
+    border: 1px solid #454D7D;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 19px;
+    font-family: $HarmoniaSansProCyr;
+
+    .table-container-svg {
+      display: flex;
+    }
+
+    .col-md-1 {
+      max-width: 40px;
+    }
+
+    .svg-element {
+      padding: 5px 13px 5px 23px;
+      display: grid;
+
+      svg {
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: auto;
+        margin-bottom: auto;
+      }
+    }
+
+    .element-position {
+      padding: 5px 13px 5px 23px;
+      display: flex;
+
+      p {
+        float: right;
+        margin-top: auto;
+        margin-bottom: auto;
+        margin-left: auto;
+      }
+
+      .title {
+        margin-left: unset;
+        margin-right: auto;
+      }
+
+      svg {
+        margin: auto;
+      }
+    }
+
+    .row {
+      min-height: 38px;
+
+      &:nth-child(2n) {
+        background-color: rgba(69, 77, 125, 0.5);
+
+      }
+    }
+
+    .child-row {
+      background: #363f77;
+
+      &:nth-child(2n) {
+        background-color: #282f64;
+
+      }
+    }
+  }
+
+  .row {
+    margin-right: 0px;
+  }
+
+  .my-table-border {
+    border: 1px solid #454D7D;
+    display: flex;
+
+    p {
+      margin-top: auto;
+      margin-bottom: auto;
+    }
+  }
+
+  .pointer-child {
+    margin: auto 25px auto 20px;
+  }
+
+  .pointer {
+    transform: scale(1);
+
+    svg {
+      path {
+        fill: #868BB2;
+      }
+    }
+  }
+}
 </style>
 
