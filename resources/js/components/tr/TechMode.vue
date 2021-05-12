@@ -1152,9 +1152,9 @@
                     </el-table-column>
 
                     <el-table-column
-                      :label="trans('tr.h_pump_set')"
+                       label=""
                       >
-                      <el-table-column label="" prop="fake" >
+                      <el-table-column :label="trans('tr.h_pump_set')" prop="fake" >
                         <el-table-column label="" >
                           <el-table-column
                             prop="h_pump_set"
@@ -1197,9 +1197,9 @@
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
-                      :label="trans('tr.p_buffer')"
+                       label=""
                       >
-                      <el-table-column label="" prop="fake" >
+                      <el-table-column :label="trans('tr.p_buffer')" prop="fake" >
                         <el-table-column label="" >
                           <el-table-column
                             prop="whp"
@@ -1226,9 +1226,9 @@
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
-                      :label="trans('tr.p_linear')"
+                       label=""
                       >
-                      <el-table-column label="" prop="fake" >
+                      <el-table-column :label="trans('tr.p_linear')" prop="fake" >
                         <el-table-column label="" >
                           <el-table-column
                             prop="line_p"
@@ -1255,9 +1255,9 @@
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
-                      :label="trans('tr.p_layer')"
+                       label=""
                       >
-                      <el-table-column label="" prop="fake" >
+                      <el-table-column :label="trans('tr.p_layer')" prop="fake" >
                         <el-table-column label="" >
                           <el-table-column
                             prop="p_res"
@@ -1284,9 +1284,9 @@
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
-                      :label="trans('tr.h_dynamic')"
+                       label=""
                       >
-                      <el-table-column label="" prop="fake" >
+                      <el-table-column :label="trans('tr.h_dynamic')" prop="fake" >
                         <el-table-column label="" >
                           <el-table-column
                             prop="h_dyn"
@@ -1329,9 +1329,9 @@
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
-                      :label="trans('tr.annular_pressure')"
+                       label=""
                       >
-                      <el-table-column label="" prop="fake" >
+                      <el-table-column :label="trans('tr.annular_pressure')" prop="fake" >
                         <el-table-column label="" >
                           <el-table-column
                             prop="p_annular"
@@ -1377,9 +1377,9 @@
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
-                      :label="trans('tr.p_intake')"
+                       label=""
                       >
-                      <el-table-column label="" prop="fake" >
+                      <el-table-column :label="trans('tr.p_intake')" prop="fake" >
                         <el-table-column label="" >
                           <el-table-column
                             prop="p_intake"
@@ -1698,9 +1698,9 @@
                     </el-table-column>
           
                     <el-table-column
-                      :label="trans('tr.state_at_the_end_of_the_month')"
+                       label=""
                       >
-                      <el-table-column label="" prop="fake" >
+                      <el-table-column :label="trans('tr.state_at_the_end_of_the_month')" prop="fake" >
                         <el-table-column label="" >
                           <el-table-column 
                             prop="well_status_last_day"
@@ -1727,8 +1727,8 @@
                       </el-table-column>
                     </el-table-column>
 
-                    <el-table-column :label="trans('tr.p_saturation')">
-                      <el-table-column label="" prop="fake" >
+                    <el-table-column  label="">
+                      <el-table-column :label="trans('tr.p_saturation')" prop="fake" >
                         <el-table-column label="" >
                           <el-table-column
                             prop="P_bubble_point"
@@ -1753,9 +1753,9 @@
                         </el-table-column>
                       </el-table-column>
                     </el-table-column>
-                    <el-table-column :label="trans('tr.t_layer')">
-                      <el-table-column label="" prop="fake" >
-                        <el-table-column label="" >
+                    <el-table-column  label="">
+                      <el-table-column :label="trans('tr.t_layer')" prop="fake" >
+                        <el-table-column label="">
                           <el-table-column
                             prop="t_res"
                             width="130"
@@ -1779,8 +1779,8 @@
                         </el-table-column>
                       </el-table-column>
                     </el-table-column>
-                    <el-table-column :label="trans('tr.t_mouth')">
-                      <el-table-column label="" prop="fake" >
+                    <el-table-column  label="">
+                      <el-table-column :label="trans('tr.t_mouth')" prop="fake" >
                         <el-table-column label="" >
                           <el-table-column
                             prop="wht"
@@ -1894,8 +1894,8 @@
                         </el-table-column>
                       </el-table-column>
                     </el-table-column>
-                    <el-table-column :label="trans('tr.oil_viscosity_in_reservoir_conditions')">
-                      <el-table-column label="" prop="fake" >
+                    <el-table-column  label="">
+                      <el-table-column :label="trans('tr.oil_viscosity_in_reservoir_conditions')" prop="fake" >
                         <el-table-column label="" >
                           <el-table-column
                             prop="visc_oil_rc"
@@ -1920,8 +1920,8 @@
                         </el-table-column>
                       </el-table-column>
                     </el-table-column>
-                    <el-table-column :label="trans('tr.water_viscosity_at_reservoir_conditions')">
-                      <el-table-column label="" prop="fake" >
+                    <el-table-column  label="">
+                      <el-table-column :label="trans('tr.water_viscosity_at_reservoir_conditions')" prop="fake" >
                         <el-table-column label="" >
                           <el-table-column
                             prop="visc_wat_rc"
@@ -1946,8 +1946,8 @@
                         </el-table-column>
                       </el-table-column>
                     </el-table-column>
-                    <el-table-column :label="trans('tr.liquid_viscosity')">
-                      <el-table-column label="" prop="fake" >
+                    <el-table-column  label="">
+                      <el-table-column :label="trans('tr.liquid_viscosity')" prop="fake" >
                         <el-table-column label="" >
                           <el-table-column
                             prop="visc_liq_rc"
@@ -1972,8 +1972,8 @@
                         </el-table-column>
                       </el-table-column>
                     </el-table-column>
-                    <el-table-column :label="trans('tr.b_oil')">
-                      <el-table-column label="" prop="fake" >
+                    <el-table-column  label="">
+                      <el-table-column :label="trans('tr.b_oil')" prop="fake" >
                         <el-table-column label="" >
                           <el-table-column
                             prop="bo"
@@ -1998,8 +1998,8 @@
                         </el-table-column>
                       </el-table-column>
                     </el-table-column>
-                    <el-table-column :label="trans('tr.oil_density')">
-                      <el-table-column label="" prop="fake" >
+                    <el-table-column  label="">
+                      <el-table-column :label="trans('tr.oil_density')" prop="fake" >
                         <el-table-column label="" >
                           <el-table-column
                             prop="dens_oil"
@@ -2024,8 +2024,8 @@
                         </el-table-column>
                       </el-table-column>
                     </el-table-column>
-                    <el-table-column :label="trans('tr.water_density')">
-                      <el-table-column label="" prop="fake" >
+                    <el-table-column  label="">
+                      <el-table-column :label="trans('tr.water_density')" prop="fake" >
                         <el-table-column label="" >
                           <el-table-column
                             prop="dens_liq"
@@ -2050,8 +2050,8 @@
                         </el-table-column>
                       </el-table-column>
                     </el-table-column>
-                    <el-table-column :label="trans('tr.h_up_perf_md')">
-                      <el-table-column label="" prop="fake" >
+                    <el-table-column  label="">
+                      <el-table-column :label="trans('tr.h_up_perf_md')" prop="fake" >
                         <el-table-column label="" >
                           <el-table-column
                             prop="h_perf"
@@ -2065,8 +2065,8 @@
                         </el-table-column>
                       </el-table-column>
                     </el-table-column>
-                    <el-table-column label="k">
-                      <el-table-column label="" prop="fake" >
+                    <el-table-column label="">
+                      <el-table-column label="k" prop="fake" >
                         <el-table-column label="" >
                           <el-table-column
                             prop="k"
@@ -2091,8 +2091,8 @@
                         </el-table-column>
                       </el-table-column>
                     </el-table-column>
-                    <el-table-column label="KH">
-                      <el-table-column label="" prop="fake" >
+                    <el-table-column label="">
+                      <el-table-column label="KH" prop="fake" >
                         <el-table-column label="" >
                           <el-table-column
                             prop="kh"
@@ -2117,8 +2117,8 @@
                         </el-table-column>
                       </el-table-column>
                     </el-table-column>
-                    <el-table-column :label="trans('tr.pi')">
-                      <el-table-column label="" prop="fake" >
+                    <el-table-column  label="">
+                      <el-table-column  prop="fake" >
                         <el-table-column label="" >
                           <el-table-column
                             prop="pi"
@@ -4909,7 +4909,6 @@ table::-webkit-scrollbar-thumb:hover {
   background: #656A8A;
   
 }
-
 table::-webkit-scrollbar-corner {
   background: #333975;
 }
@@ -4920,7 +4919,6 @@ table::-webkit-scrollbar-corner {
   background: #334296;
   color: #fff;
 }
-
 </style>
 <style>
 .tr-field-filter.tr-field-filter {
@@ -4944,7 +4942,6 @@ table::-webkit-scrollbar-corner {
 .faheadhight {
   height: 40px;
 }
-
 .button_form.button_form {
   background: #333975;
   border: 0px;
@@ -4957,7 +4954,6 @@ table::-webkit-scrollbar-corner {
   display: flex;
   flex-direction: column;
 }
-
 .header_mod {
     display: -webkit-box;
     display: -webkit-flex;
@@ -4987,15 +4983,12 @@ table::-webkit-scrollbar-corner {
   margin: 16px 0;
   text-align: center;
 }
-.el-table__body-wrapper {}
-
 .el-table__body-wrapper td {
     height: auto;
     margin: 0;
     padding: 0;
     background: transparent;
 }
-
 .el-table__body-wrapper td .cell {
     line-height: 1.3;
     padding: 12px 0;
@@ -5004,7 +4997,6 @@ table::-webkit-scrollbar-corner {
     width: 100%;
     background: transparent;
 }
-
 .el-table__body-wrapper tr:nth-child(even) {
     background: #202b6b!important;
 }
@@ -5021,7 +5013,6 @@ table::-webkit-scrollbar-corner {
     padding: 0;
     height: auto;
 }
-
 .el-table__header-wrapper th div {
     background: rgb(51, 57, 117);
     height: auto;
@@ -5029,6 +5020,7 @@ table::-webkit-scrollbar-corner {
     color: #fff;
     font-size: 14px;
     font-family: "Harmonia-sans", sans-serif;
+    white-space: pre-wrap  !important;
 }
 .el-table thead.is-group th {
     background: rgb(51, 57, 117);
@@ -5037,12 +5029,9 @@ table::-webkit-scrollbar-corner {
     background-color: #454D7D;
     color: #fff;
     font-family: "Harmonia-sans", sans-serif;
-    
 }
-
 .no_border.no_border  {
   border-bottom: none;
-  
 }
 .cell-comment {
     display: none;
@@ -5075,5 +5064,7 @@ table::-webkit-scrollbar-corner {
     justify-content: center;
     background: #fff;
 }
-
+.el-table__empty-block {
+  background: rgb(13, 30, 99);
+}
 </style>
