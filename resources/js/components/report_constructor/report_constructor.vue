@@ -377,16 +377,20 @@
 
               <div class="vertical-centered">
                 <div class="row">
-                  <span class="col">Дата</span>
-                  <form>
-                    <input type="date">
-                  </form>
-                  <span class="calendar col">Сегодня</span>
-                  <span class="calendar col">Сутки</span>
-                  <span class="calendar col">Неделя</span>
-                  <span class="calendar col">Месяц</span>
-                  <span class="calendar col">Год</span>
-                  <div class="col btn-container">
+                  <div class="inline-flex date-container">
+                    <span class="">Дата</span>
+                    <form class="">
+                      <input type="date">
+                    </form>
+                  </div>
+                  <div class="inline-flex">
+                    <span class="calendar">Сегодня</span>
+                    <span class="calendar">Сутки</span>
+                    <span class="calendar">Неделя</span>
+                    <span class="calendar">Месяц</span>
+                    <span class="calendar">Год</span>
+                  </div>
+                  <div class="btn-container">
                     <button class="btn-disabled" disabled>Создать отчет</button>
                     <button class="">Выбрать шаблон</button>
                   </div>
@@ -798,20 +802,22 @@ body {
       line-height: 19px;
       padding: 8px 33px 6px 32px;
       margin-right: 18px;
+      float: right;
     }
 
     .btn-disabled {
       background: rgba(60, 66, 128, 0.6);
       color: rgba(255, 255, 255, 0.6);
     }
-    .btn-container{
-      display: contents;
+
+    .btn-container {
+      display: flex;
       margin-left: auto;
     }
 
     span {
       font-family: $HarmoniaSansProCyr;
-      font-weight: 400;
+      font-weight: 700;
       font-size: 14px;
       line-height: 19px;
     }
@@ -834,6 +840,11 @@ body {
         height: 30px;
         padding: 0px;
         margin: 0px;
+      }
+    }
+    .date-container{
+      &:first-child span{
+        margin-right: 17px;
       }
     }
 
@@ -906,17 +917,19 @@ body {
 
 .calendar {
   background: url(/img/bd/date-time.svg) 1% no-repeat;
-  padding: 0px 30px;
+  padding: 0px 35px;
 }
 
 .vertical-centered {
   width: 100%;
   display: flex;
 
-  .row{
+  .row {
     width: 100%;
+    margin: 0px;
   }
-  :first-child .row{
+
+  :first-child .row {
     margin: 0px;
   }
 
@@ -924,6 +937,14 @@ body {
     margin-top: auto;
     margin-bottom: auto;
   }
+
+  .col {
+    display: flex;
+  }
+}
+
+.inline-flex {
+  display: inline-flex;
 }
 
 </style>
