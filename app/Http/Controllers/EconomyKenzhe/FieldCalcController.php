@@ -94,16 +94,20 @@ class FieldCalcController extends MainController
 
     public function index(Request $request)
     {
+        $companies = SubholdingCompany::where('parent_id','!=', 0)->get();
+        $scenarioFact = 3;
+        if(isset($request->scenario)){
+            $scenarioFact = $request->scenario;
+        }
         $this->year = $request->date ?? '2021';
         $this->fluidProduction = 91.3;
-        $this->qoil = $request->qo;
+        $this->qoil = $request->oil;
         $this->reqDay = 365;
         $this->reqecn = $request->reqecn;
         $this->param = $request->param;
         $this->liq = $request->liq;
         $this->companyId = $request->company;// id компании
         $this->equipIdRequest = $request->equip; // id оборудования
-        $scenarioFact = 3;
         $typesOfEquipment = EcoRefsEquipId::pluck('id'); // id виды оборудования
         $company = EcoRefsCompaniesId::find($this->companyId)->first();
         $godovoiLiquid = null;
@@ -148,8 +152,9 @@ class FieldCalcController extends MainController
             $companyRepTtValues = $opiuValues->statsByDate($this->year)->get()->toArray();
             $opiuValues = $this->recursiveSetValueToHandbookByType($handbook, $companyRepTtValues, $this->year, $this->year - 1, $this->year . '-01-01', $this->year . '-12-01');
         }
-
         FieldCalcHelper::sumOverTree($opiuValues, $this->year); // суммирование по дереву
+
+
         $result = [];
         $this->getShowDataOnTree($this->opiuNames, $opiuValues, $result);
         $opiuTree = [];
@@ -508,10 +513,12 @@ class FieldCalcController extends MainController
         ];
 
         $opiuOilNames = [];
-        $this->getShowDataOnTree($this->opiuOilNames, $opiuValues, $opiuOilNames);
-        foreach ($opiuOilNames as $oilName){
-            $data[$this->year]['opiu'][$oilName['name']] = $oilName['value']/$godovoiOil*$oil;
-        }
+//        $this->getShowDataOnTree($this->opiuOilNames, $opiuValues, $opiuOilNames);
+//        foreach ($opiuOilNames as $oilName){
+//            $data[$this->year]['opiu'][$oilName['name']] = $oilName['value']/$godovoiOil*$oil;
+//        }
+
+        return view('economy_kenzhe.field_calculation.index')->with(compact('companies', 'data'));
 
         dd($data);
     }
