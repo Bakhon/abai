@@ -436,7 +436,8 @@
                       <div class="content-top-element" style="width: 100%; padding-right: 0px; margin-right:0px;">
                         Отчет: <span class="width-400">Оргструктура - АО “ЭмбаМунайГаз” > НГДУ “Жылыоймунайгаз” > Цех добычи 1 > ГУ-16</span>
                         <div class="share">
-                          <svg width="13" height="14" viewBox="0 0 13 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <svg width="13" height="14" viewBox="0 0 13 14" fill="none"
+                               xmlns="http://www.w3.org/2000/svg">
                             <path fill-rule="evenodd" clip-rule="evenodd"
                                   d="M1.76383 2.38468V11.8153H11.1945V9.00618C11.1945 7.79285 12.9585 7.78005 12.9585 9.00618V12.6593C12.9585 13.1995 12.5785 13.5793 12.0384 13.5793H0.919759C0.379892 13.5793 0 13.1995 0 12.6593V1.54085C0 1.00072 0.379892 0.62085 0.919759 0.62085H4.71566C5.92926 0.62085 5.94259 2.38468 4.71566 2.38468H1.76383ZM11.1953 3.65202L9.45931 5.3584C8.97451 5.84413 7.50379 7.56307 6.86019 7.56307C6.19006 7.56307 6.01628 7.14802 6.01628 6.56722C6.01628 6.11322 7.85847 4.48198 8.257 4.08358L9.92773 2.38403C9.53933 2.38363 9.15292 2.38362 8.76465 2.38468C8.05412 2.38628 7.15869 2.45964 7.15869 1.46444C7.15869 0.971637 7.60556 0.62085 8.07796 0.62085H12.0384C12.5785 0.62085 12.9585 1.00072 12.9585 1.54085V5.50138C12.9585 6.04112 12.5785 6.42057 12.0384 6.42057C11.0995 6.42057 11.1941 5.3868 11.1945 4.73893C11.1953 4.37653 11.1953 4.01415 11.1953 3.65202Z"
                                   fill="#82BAFF"/>
@@ -677,41 +678,74 @@
         </div>
       </div>
     </div>
-  </div>
-<!--
-  <div class="b-popup">
-    <div class="b-container bg-dark">
+    <div class="b-popup">
       <div class="row">
-        <div class="col">
-          <div class="b-title-block">
-            <h6>Скважины</h6>
+        <div class="col-md-2">
+        </div>
+        <div class="col-md-8 bg-dark b-container">
+          <div class="row">
+            <div class="col">
+              <p>Параметры объекта</p>
+            </div>
+            <div class="col">
+              <button>
+                Закрыть
+              </button>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <table>
+                <tr>
+                  <th class="heading">Company</th>
+                  <th class="heading">Contact</th>
+                  <th class="heading"></th>
+                </tr>
+                <tr>
+                  <td>Alfreds Futterkiste</td>
+                  <td>Maria Anders</td>
+                  <td>Germany</td>
+                </tr>
+                <tr>
+                  <td>Centro comercial Moctezuma</td>
+                  <td>Francisco Chang</td>
+                  <td>Mexico</td>
+                </tr>
+                <tr>
+                  <td>Ernst Handel</td>
+                  <td>Roland Mendel</td>
+                  <td>Austria</td>
+                </tr>
+                <tr>
+                  <td>Island Trading</td>
+                  <td>Helen Bennett</td>
+                  <td>UK</td>
+                </tr>
+                <tr>
+                  <td>Laughing Bacchus Winecellars</td>
+                  <td>Yoshi Tannamuri</td>
+                  <td>Canada</td>
+                </tr>
+                <tr>
+                  <td>Magazzini Alimentari Riuniti</td>
+                  <td>Giovanni Rovelli</td>
+                  <td>Italy</td>
+                </tr>
+              </table>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <button class="btn-accept">ОК</button>
+              <button class="btn-dismiss">Отмена</button>
+            </div>
           </div>
         </div>
       </div>
-      <div class="row">
-        <div class="col">
-          <p>
-            Поиск скважины по номеру
-          </p>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col">
-          <form class="search-form">
-            <input type="text" placeholder="Номер скважины" class="search-input">
-            <div class="flex">
-              <input type="date" class="b-date" id="date" name="trip-start" value="2021-04-07" required>
-              <input type="time" class="b-time" id="time" required>
-            </div>
-            <div class="b-button-container">
-              <button id="ok" class="accept">Применить</button>
-              <button id="undo" class="cancel">Отмена</button>
-            </div>
-          </form>
-        </div>
-      </div>
+      <div class="col-md-2"></div>
     </div>
-  </div>-->
+  </div>
+
 </template>
 
 <style scoped lang="scss">
@@ -1443,14 +1477,68 @@ body {
     color: rgba(255, 255, 255, 0.6);
   }
 }
+
 .b-popup {
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
   overflow: hidden;
-  position: fixed;
-  top: 0;
+  position: absolute;
   display: block;
+  z-index: 1000;
+
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    border-right: 0.75px solid #3C4270;
+    border-bottom: 0.75px solid #3C4270;
+    max-height: 850px;
+
+    td, th {
+      height: 31px;
+      text-align: left;
+      padding: 8px;
+    }
+
+    .heading {
+      background-color: #2b40a9;
+
+      &:first-child {
+        background: #293787;
+      }
+    }
+
+    tr {
+      background-color: #343868;
+    }
+
+    tr:nth-child(2n) {
+      background-color: #2b2e5e;
+    }
+  }
+
+
+  .b-container {
+    padding: 22px 22px;
+
+    buttton {
+      color: white;
+      border-radius: 7px;
+      box-shadow: none;
+    }
+
+    .btn-accept {
+      background: #2E50E9;
+      width: 175px;
+      height: 42px;
+    }
+
+    .btn-dismiss {
+      background: #656A8A;
+      width: 175px;
+      height: 42px;
+    }
+  }
 }
 
 .b-popup .b-popup-content {
@@ -1462,6 +1550,7 @@ body {
   border-radius: 5px;
   box-shadow: 0 0 10px #000;
 }
+
 
 </style>
 
