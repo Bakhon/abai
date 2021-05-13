@@ -44,17 +44,24 @@
                         <div class="col-12">
                             <label for="">Цена на нефть Brent</label>
                             <select name="oil" id="oil" class="form-control" onchange="$('#calc').submit()">
-                                <option value="30, 40, 50, 50">на 2021-2025 г. 30-40-50-50-50</option>
-                                <option value="30, 40, 50, 50">на 2021-2025 г. 40-50-50-50-50</option>
-                                <option value="30, 40, 50, 50">на 2021-2025 г. 30-40-60-60-60</option>
+                                <option value="30, 40, 50, 50, 50">на 2021-2025 г. 30-40-50-50-50</option>
+                                <option value="30, 40, 50, 55, 60">на 2021-2025 г. 40-50-50-50-50</option>
+                                <option value="30, 40, 50, 60, 60">на 2021-2025 г. 30-40-60-60-60</option>
                             </select>
                         </div>
                         <div class="col-12">
                             <label for="">Курс $/Тенге</label>
-                            <select name="rate" id="rate" class="form-control"  onchange="$('#calc').submit()">
+                            <select name="rates" id="rates" class="form-control"  onchange="$('#calc').submit()">
                                 <option value="430,430,430,430,430">Корр. 1 на 2021-2025 г. 430-430-430-430-430</option>
                                 <option value="450,450,450,450,450">Корр. 1 на 2021-2025 г. 450-450-450-450-450</option>
                                 <option value="480,480,480,480,480">Корр. 1 на 2021-2025 г. 480-480-480-480-480</option>
+                            </select>
+                        </div>
+                        <div class="col-12">
+                            <label for="">База распределения затрат</label>
+                            <select name="cost_allocation_base" id="wells" class="form-control"  onchange="$('#calc').submit()">
+                                <option value="1">По раздельному учету</option>
+                                <option value="2">По скважинам</option>
                             </select>
                         </div>
                     </form>

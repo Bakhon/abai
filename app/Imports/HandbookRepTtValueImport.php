@@ -29,18 +29,20 @@ class HandbookRepTtValueImport implements ToModel, WithStartRow, WithBatchInsert
      */
     public function model(array $row)
     {
-        $company = SubholdingCompany::whereNum(trim($row[4]))->first();
-        $repTt = HandbookRepTt::whereNum(trim($row[3]))->first();
-        $date = Carbon::createFromFormat('Y.m.d', $row[11].'.01');
+        $company = SubholdingCompany::whereNum(trim($row[5]))->first();
+        $repTt = HandbookRepTt::whereNum(trim($row[13]))->first();
+        $date = Carbon::createFromFormat('Y.m.d', $row[6].'.01')->format('Y-m-d');
+        $type = trim($row[15]);
+        $type = $type == 'ACTUAL_Y0' ? 'fact': 'plan';
         if($company and $repTt){
             return new HandbookRepTtValue([
                 'company_id'=> $company->id,
                 'rep_id'=> $repTt->id,
-                'value'=>$row[13],
+                'value'=>$row[17],
                 'date'=>$date,
-                'type'=>$this->importFyleType,
-                'rep_tt'=>$row[3],
-                'company'=>$row[4],
+                'type'=>$type,
+                'rep_tt'=>$row[13],
+                'company'=>$row[5],
             ]);
         }
     }

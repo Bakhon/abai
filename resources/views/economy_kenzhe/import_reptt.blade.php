@@ -28,12 +28,12 @@
                     <td width="30">
                         <input type="file" name="select_file"/>
                     </td>
-                    <td width="20%">
-                        <select name="importExcelType" id="" class="form-control">
-                            <option value="plan">План</option>
-                            <option value="fact">факт</option>
-                        </select>
-                    </td>
+                    {{--                    <td width="20%">--}}
+                    {{--                        <select name="importExcelType" id="" class="form-control">--}}
+                    {{--                            <option value="plan">План</option>--}}
+                    {{--                            <option value="fact">факт</option>--}}
+                    {{--                        </select>--}}
+                    {{--                    </td>--}}
                     <td width="30%" align="left">
                         <input type="submit" name="upload" class="btn btn-primary" value="Загрузить">
                     </td>
