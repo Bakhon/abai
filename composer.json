@@ -11,9 +11,12 @@
         "php": "^7.3",
         "ext-json": "*",
         "adldap2/adldap2-laravel": "^6.0",
+        "amirsanni/php-ews-wrapper": "^1.1",
         "barryvdh/laravel-translation-manager": "^0.5.7",
+        "ddeboer/imap": "^1.12",
         "doctrine/dbal": "^2.0",
         "fideloper/proxy": "^4.0",
+        "garethp/php-ews": "^0.10.0",
         "guzzlehttp/guzzle": "6.5",
         "imtigger/laravel-job-status": "^1.2",
         "jenssegers/agent": "^2.6",
@@ -23,6 +26,8 @@
         "laravel/ui": "^1.1",
         "level23/druid-client": "^1.0",
         "maatwebsite/excel": "^3.1",
+        "php-ews/php-ews": "^1.0",
+        "shuchkin/simplexls": "^0.9.9",
         "spatie/laravel-permission": "^3.13"
     },
     "require-dev": {
