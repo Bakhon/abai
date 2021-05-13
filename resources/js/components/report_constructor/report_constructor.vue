@@ -431,134 +431,306 @@
                             fill="white"/>
                     </svg>
                   </div>
-                  <div class="content-top-element">
-                    Отчет
-                  </div>
-                  <div class="share">
-                    <svg width="13" height="14" viewBox="0 0 13 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path fill-rule="evenodd" clip-rule="evenodd"
-                            d="M1.76383 2.38468V11.8153H11.1945V9.00618C11.1945 7.79285 12.9585 7.78005 12.9585 9.00618V12.6593C12.9585 13.1995 12.5785 13.5793 12.0384 13.5793H0.919759C0.379892 13.5793 0 13.1995 0 12.6593V1.54085C0 1.00072 0.379892 0.62085 0.919759 0.62085H4.71566C5.92926 0.62085 5.94259 2.38468 4.71566 2.38468H1.76383ZM11.1953 3.65202L9.45931 5.3584C8.97451 5.84413 7.50379 7.56307 6.86019 7.56307C6.19006 7.56307 6.01628 7.14802 6.01628 6.56722C6.01628 6.11322 7.85847 4.48198 8.257 4.08358L9.92773 2.38403C9.53933 2.38363 9.15292 2.38362 8.76465 2.38468C8.05412 2.38628 7.15869 2.45964 7.15869 1.46444C7.15869 0.971637 7.60556 0.62085 8.07796 0.62085H12.0384C12.5785 0.62085 12.9585 1.00072 12.9585 1.54085V5.50138C12.9585 6.04112 12.5785 6.42057 12.0384 6.42057C11.0995 6.42057 11.1941 5.3868 11.1945 4.73893C11.1953 4.37653 11.1953 4.01415 11.1953 3.65202Z"
-                            fill="#82BAFF"/>
-                    </svg>
+                  <div class="col">
+                    <div class="row" style="width: 100%; padding-right: 0px;">
+                      <div class="content-top-element" style="width: 100%; padding-right: 0px; margin-right:0px;">
+                        Отчет: <span class="width-400">Оргструктура - АО “ЭмбаМунайГаз” > НГДУ “Жылыоймунайгаз” > Цех добычи 1 > ГУ-16</span>
+                        <div class="share">
+                          <svg width="13" height="14" viewBox="0 0 13 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                  d="M1.76383 2.38468V11.8153H11.1945V9.00618C11.1945 7.79285 12.9585 7.78005 12.9585 9.00618V12.6593C12.9585 13.1995 12.5785 13.5793 12.0384 13.5793H0.919759C0.379892 13.5793 0 13.1995 0 12.6593V1.54085C0 1.00072 0.379892 0.62085 0.919759 0.62085H4.71566C5.92926 0.62085 5.94259 2.38468 4.71566 2.38468H1.76383ZM11.1953 3.65202L9.45931 5.3584C8.97451 5.84413 7.50379 7.56307 6.86019 7.56307C6.19006 7.56307 6.01628 7.14802 6.01628 6.56722C6.01628 6.11322 7.85847 4.48198 8.257 4.08358L9.92773 2.38403C9.53933 2.38363 9.15292 2.38362 8.76465 2.38468C8.05412 2.38628 7.15869 2.45964 7.15869 1.46444C7.15869 0.971637 7.60556 0.62085 8.07796 0.62085H12.0384C12.5785 0.62085 12.9585 1.00072 12.9585 1.54085V5.50138C12.9585 6.04112 12.5785 6.42057 12.0384 6.42057C11.0995 6.42057 11.1941 5.3868 11.1945 4.73893C11.1953 4.37653 11.1953 4.01415 11.1953 3.65202Z"
+                                  fill="#82BAFF"/>
+                          </svg>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="content-top-element">
+                        Геоструктура <span class="width-400">- АО “ЭмбаМунайГаз” > Макат Восточный</span>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
-              <!--              Table element-->
+              <!-- New TAble -->
               <div class="row">
                 <div class="table-wrapper col">
                   <div class="table-container">
-                    <div class="table-container-column-header">
-                      <div class="row">
-                        <div class="my-table-border col col-tb-1">
-                          <div class="centered">№</div>
-                        </div>
-                        <div class="my-table-border col col-tb-2">
-                          <div class="centered">Объект оргструктуры</div>
-                        </div>
-                        <div class="my-table-border col col-tb-3">
-                          <div class="centered">Объект геоструктуры</div>
-                        </div>
-                        <div class="col" style="display: grid; padding:0px;">
-                          <div class="nested-border row">
-                            <div class="col-md-12 centered" style="padding-top:10px">Параметры объекта</div>
+                    <table>
+                      <tbody>
+                      <tr>
+                        <td rowspan="2" class="cell-num heading">
+                          <div class="centered">
+                            №
                           </div>
-                          <div class="row nested">
-                            <div class="col">
-                              <div class="centered">Параметры скважин</div>
-                            </div>
-                            <div class="col">
-                              <div class="centered">Параметры по добыче</div>
-                            </div>
-                            <div class="col">
-                              <div class="centered">Параметры фонда</div>
-                            </div>
+                        </td>
+                        <td rowspan="2" class="heading">
+                          <div class="centered">
+                            Объект оргструктуры
                           </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="table-container-element">
-                      <!--Parent table-elemtnt start -->
-                      <div class="row">
-                        <div class="my-table-border col col-tb-1">
+                        </td>
+                        <td rowspan="2" class="heading">
+                          <div class="centered">
+                            Объект геоструктуры
+                          </div>
+                        </td>
+                        <td colspan="3" class="heading">
+                          <div class="centered">
+                            Параметры объекта
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="heading-child">
+                          <div class="centered ">Параметры скважин</div>
+                        </td>
+                        <td class="heading-child">
+                          <div class="centered">Параметры по добыче</div>
+                        </td>
+                        <td class="heading-child">
+                          <div class="centered">Параметры фонда</div>
+                        </td>
+                      </tr>
+                      <!-- table-element -->
+                      <tr>
+                        <td class="table-body">
                           <div class="centered">1</div>
-                        </div>
-                        <div class="my-table-border col col-tb-2">
+                        </td>
+                        <td class="table-body">
                           <div class="centered">ГУ-16</div>
-                        </div>
-                        <div class="my-table-border col col-tb-3">
+                        </td>
+                        <td class="table-body ">
+                          <div class="centered">Макат Восточный</div>
+                        </td>
+                        <td class="table-body">
+                          <div class="centered">
+                            <button>Действующие скважины</button>
+                          </div>
+                        </td>
+                        <td class="table-body">
+                          <div class="centered">
+                            <button>МРП < 100</button>
+                          </div>
+                        </td>
+                        <td class="table-body">
+                          <div class="centered">
+                            <button>Действующий фонд</button>
+                          </div>
+                        </td>
+                      </tr>
+                      <!-- table-element -->
+                      <!-- table-element -->
+                      <tr>
+                        <td class="table-body">
                           <div class="centered"></div>
-                        </div>
-                        <div class="my-table-border col">
+                        </td>
+                        <td class="table-body selected">
+                          <div class="centered">АКШ-16</div>
+                        </td>
+                        <td class="table-body selected">
+                          <div class="centered">Макат Восточный</div>
+                        </td>
+                        <td class="table-body">
+                          <div class="centered">
+                            Действующие скважины
+                          </div>
+                        </td>
+                        <td class="table-body">
+                          <div class="centered">
+                            100
+                          </div>
+                        </td>
+                        <td class="table-body">
+                          <div class="centered">
+                            Действующий фонд
+                          </div>
+                        </td>
+                      </tr>
+                      <!-- table-element -->
+                      <!-- table-element -->
+                      <tr>
+                        <td class="table-body">
                           <div class="centered"></div>
-                        </div>
-                        <div class="my-table-border col">
+                        </td>
+                        <td class="table-body selected">
+                          <div class="centered">АКШ-16</div>
+                        </td>
+                        <td class="table-body selected">
+                          <div class="centered">Макат Восточный</div>
+                        </td>
+                        <td class="table-body">
+                          <div class="centered">
+                            Действующие скважины
+                          </div>
+                        </td>
+                        <td class="table-body">
+                          <div class="centered">
+                            100
+                          </div>
+                        </td>
+                        <td class="table-body">
+                          <div class="centered">
+                            Действующий фонд
+                          </div>
+                        </td>
+                      </tr>
+                      <!-- table-element -->
+                      <!-- table-element -->
+                      <tr>
+                        <td class="table-body">
                           <div class="centered"></div>
-                        </div>
-                        <div class="my-table-border col">
+                        </td>
+                        <td class="table-body selected">
+                          <div class="centered">АКШ-16</div>
+                        </td>
+                        <td class="table-body selected">
+                          <div class="centered">Макат Восточный</div>
+                        </td>
+                        <td class="table-body">
+                          <div class="centered">
+                            Действующие скважины
+                          </div>
+                        </td>
+                        <td class="table-body">
+                          <div class="centered">
+                            100
+                          </div>
+                        </td>
+                        <td class="table-body">
+                          <div class="centered">
+                            Действующий фонд
+                          </div>
+                        </td>
+                      </tr>
+                      <!-- table-element -->
+                      <!-- table-element -->
+                      <tr>
+                        <td class="table-body">
                           <div class="centered"></div>
-                        </div>
-                      </div>
-                      <!-- Parent table-elemtnt end -->
-                      <!--Parent table-elemtnt start -->
-                      <div class="row">
-                        <div class="my-table-border col col-tb-1">
+                        </td>
+                        <td class="table-body selected">
+                          <div class="centered">АКШ-16</div>
+                        </td>
+                        <td class="table-body selected">
+                          <div class="centered">Макат Восточный</div>
+                        </td>
+                        <td class="table-body">
+                          <div class="centered">
+                            Действующие скважины
+                          </div>
+                        </td>
+                        <td class="table-body">
+                          <div class="centered">
+                            100
+                          </div>
+                        </td>
+                        <td class="table-body">
+                          <div class="centered">
+                            Действующий фонд
+                          </div>
+                        </td>
+                      </tr>
+                      <!-- table-element -->
+                      <!-- table-element -->
+                      <tr>
+                        <td class="table-body">
                           <div class="centered"></div>
-                        </div>
-                        <div class="my-table-border col col-tb-2">
-                          <div class="centered">АКШ-316</div>
-                        </div>
-                        <div class="my-table-border col col-tb-3">
-                          <div class="centered"></div>
-                        </div>
-                        <div class="my-table-border col">
-                          <div class="centered"></div>
-                        </div>
-                        <div class="my-table-border col">
-                          <div class="centered"></div>
-                        </div>
-                        <div class="my-table-border col">
-                          <div class="centered"></div>
-                        </div>
-                      </div>
-                      <!-- Parent table-elemtnt end -->
-                      <!--Parent table-elemtnt start -->
-                      <div class="row">
-                        <div class="my-table-border col col-tb-1">
-                          <div class="centered"></div>
-                        </div>
-                        <div class="my-table-border col col-tb-2">
-                          <div class="centered">АКШ-216</div>
-                        </div>
-                        <div class="my-table-border col col-tb-3">
-                          <div class="centered"></div>
-                        </div>
-                        <div class="my-table-border col">
-                          <div class="centered"></div>
-                        </div>
-                        <div class="my-table-border col">
-                          <div class="centered"></div>
-                        </div>
-                        <div class="my-table-border col">
-                          <div class="centered"></div>
-                        </div>
-                      </div>
-                      <!-- Parent table-elemtnt end -->
-                    </div>
+                        </td>
+                        <td class="table-body selected">
+                          <div class="centered">АКШ-16</div>
+                        </td>
+                        <td class="table-body selected">
+                          <div class="centered">Макат Восточный</div>
+                        </td>
+                        <td class="table-body">
+                          <div class="centered">
+                            Действующие скважины
+                          </div>
+                        </td>
+                        <td class="table-body">
+                          <div class="centered">
+                            100
+                          </div>
+                        </td>
+                        <td class="table-body">
+                          <div class="centered">
+                            Действующий фонд
+                          </div>
+                        </td>
+                      </tr>
+                      <!-- table-element -->
+                      </tbody>
+                    </table>
                   </div>
                 </div>
               </div>
-              <!--              Table element-->
+              <!-- New TAble -->
+
+              <div class="row">
+                <div class="btn-container">
+                  <button disabled>Скачать отчет</button>
+                  <button>Сохранить как шаблон</button>
+                </div>
+              </div>
             </section>
           </div>
         </div>
       </div>
     </div>
   </div>
+<!--
+  <div class="b-popup">
+    <div class="b-container bg-dark">
+      <div class="row">
+        <div class="col">
+          <div class="b-title-block">
+            <h6>Скважины</h6>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <p>
+            Поиск скважины по номеру
+          </p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <form class="search-form">
+            <input type="text" placeholder="Номер скважины" class="search-input">
+            <div class="flex">
+              <input type="date" class="b-date" id="date" name="trip-start" value="2021-04-07" required>
+              <input type="time" class="b-time" id="time" required>
+            </div>
+            <div class="b-button-container">
+              <button id="ok" class="accept">Применить</button>
+              <button id="undo" class="cancel">Отмена</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>-->
 </template>
 
 <style scoped lang="scss">
 $dark-font: #1F2142;
 $HarmoniaSansProCyr: "Harmonia Sans Pro Cyr", "Harmonia-sans";
+@mixin st-font-16-700 {
+  font-family: $HarmoniaSansProCyr;
+  font-size: 16px;
+  line-height: 19px;
+  font-weight: 700;
+}
+
+@mixin st-font-16-400 {
+  font-family: $HarmoniaSansProCyr;
+  font-size: 16px;
+  line-height: 19px;
+  font-weight: 400;
+}
+
 ::-webkit-scrollbar {
   width: 10px;
 }
@@ -789,30 +961,6 @@ body {
     margin-bottom: 10px;
     padding: 11px 0px 11px 14px;
 
-    button {
-      background: #3C4280;
-      color: white;
-      border: 1px solid #3C4280;
-      border-radius: 6px;
-      font-weight: 700;
-      font-family: $HarmoniaSansProCyr;
-      font-size: 16px;
-      line-height: 19px;
-      padding: 8px 33px 6px 32px;
-      margin-right: 18px;
-      float: right;
-    }
-
-    .btn-disabled {
-      background: rgba(60, 66, 128, 0.6);
-      color: rgba(255, 255, 255, 0.6);
-    }
-
-    .btn-container {
-      display: flex;
-      margin-left: auto;
-    }
-
     span {
       font-family: $HarmoniaSansProCyr;
       font-weight: 700;
@@ -867,8 +1015,12 @@ body {
         font-weight: 700;
         font-size: 16px;
         line-height: 19px;
-        margin-top: auto;
+        //margin-top: auto;
         margin-bottom: auto;
+
+        .width-400 {
+          font-weight: 400;
+        }
       }
     }
 
@@ -877,6 +1029,75 @@ body {
 
       .table-container {
         height: 750px;
+
+        table {
+          color: white;
+          border-collapse: collapse;
+          border: 1px solid #454D7D;
+          width: 100%;
+
+          .centered {
+            display: table;
+            margin: auto;
+          }
+
+          .cell-num {
+            width: 40px;
+          }
+
+          .heading {
+            background-color: #323370;
+            @include st-font-16-700;
+          }
+
+          .heading-child {
+            background-color: #323370;
+            @include st-font-16-400;
+          }
+
+          .table-body {
+            @include st-font-16-400;
+
+            button {
+              height: 30px;
+              border-radius: 6px;
+              background: #3C4280;
+              color: white;
+              padding: 6px 43px 3px 8px;
+
+              &::after {
+                content: url(/img/bd/cansel.svg);
+                height: 16px;
+                width: 16px;
+                margin-top: -1px;
+                position: absolute;
+                margin-left: 10px;
+              }
+            }
+          }
+
+          .selected {
+            background-color: #282c5c;
+          }
+
+          tr:nth-child(2n) .selected {
+            background-color: #32386a;
+          }
+        }
+
+        td, th {
+          border: 1px solid #454D7D;
+          text-align: left;
+          padding: 8px;
+        }
+
+        tr {
+          background-color: rgba(39, 41, 83, 1);
+        }
+
+        tr:nth-child(2n) {
+          background-color: rgba(54, 59, 104, 0.7);
+        }
       }
 
       .my-table-border {
@@ -889,28 +1110,29 @@ body {
       .col-tb-1 {
         max-width: 40px;
         padding: 0px;
-        height: 80px;
+        height: auto;
       }
 
       .col-tb-2 {
         max-width: 250px;
-        height: 80px;
+        height: auto;
       }
 
       .col-tb-3 {
         max-width: 250px;
-        height: 80px;
+        height: auto;
       }
 
       .col-tb-4 {
         max-width: calc(100% - 40px - 250px - 250px);
         min-width: 350px;
         display: inline-grid;
-        height: 80px;
+        height: auto;
       }
 
       .table-container-column-header {
-        height: 80px;
+        height: auto;
+        min-height: 80px;
 
         .nested {
           :nth-child(1n) {
@@ -947,6 +1169,11 @@ body {
           height: auto;
         }
       }
+    }
+
+    .btn-container {
+      margin-right: auto;
+      margin-left: auto;
     }
   }
 }
@@ -1187,5 +1414,54 @@ body {
     }
   }
 }
+
+.btn-container {
+  display: flex;
+  margin-left: auto;
+
+  button {
+    background: #3C4280;
+    color: white;
+    border: 1px solid #3C4280;
+    border-radius: 6px;
+    font-weight: 700;
+    font-family: $HarmoniaSansProCyr;
+    font-size: 16px;
+    line-height: 19px;
+    padding: 8px 33px 6px 32px;
+    margin-right: 18px;
+    float: right;
+
+    &:hover {
+      background: #3366FF;
+      color: white;
+    }
+  }
+
+  button:disabled {
+    background: rgba(60, 66, 128, 0.6);
+    color: rgba(255, 255, 255, 0.6);
+  }
+}
+.b-popup {
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+  position: fixed;
+  top: 0;
+  display: block;
+}
+
+.b-popup .b-popup-content {
+  margin: 40px auto 0 auto;
+  width: 100px;
+  height: 40px;
+  padding: 10px;
+  background-color: #c5c5c5;
+  border-radius: 5px;
+  box-shadow: 0 0 10px #000;
+}
+
 </style>
 
