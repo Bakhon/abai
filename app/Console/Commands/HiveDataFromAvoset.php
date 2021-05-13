@@ -35,18 +35,9 @@ class HiveDataFromAvoset extends Command
 
     public function hiveDataFromAvoset($table, $date)
     {
-        require_once app_path() . '\libs\php-thrift-sql\ThriftSQL.phar';
+        require_once app_path() . '\Libs\php-thrift-sql\ThriftSQL.phar';
    $hive = new \ThriftSQL\Hive(env('SERVER_HIVE_FROM_AVOCET', '172.20.103.38'), 10000, 'hive', 'hive');
    $hiveTables = $hive->connect()->getIterator("select * from kazger." . $table . " where start_datetime like '" . $date . "%'");
- /* 'select
-*
-from
-KMG_I_WELL_STOCK_VIEW
-where START_DATETIME = '2021-05-10'
-and TYPE = 'PRODUCTION'
-and STATUS = 'SHUT_IN'
-and cattegory_code = 'P_WORK_W_1'*/
-
    $dataMass=[];
         foreach ($hiveTables as $rowNum => $row) {
             $dataMass[] = array_merge($row);
@@ -62,8 +53,8 @@ and cattegory_code = 'P_WORK_W_1'*/
         $dataOilDelivery =  $this->hiveDataFromAvoset('KMG_I_MTR_PROD_VIEW', $date);
         $dataGasMore =  $this->hiveDataFromAvoset('KMG_I_MTR_GAS_VIEW', $date);
         $fonds  =  $this->hiveDataFromAvoset('KMG_I_WELL_STOCK_VIEW', $date);
-        $downtime  =  $this->hiveDataFromAvoset('OFM_WORKOVER', '%','');
-dd($downtime);
+        $downtime  =  $this->hiveDataFromAvoset('OFM_WORKOVER', '%');
+
         
         $oilFact  = 0;
         $gasFact  = 0;
@@ -127,7 +118,7 @@ dd($downtime);
         $alldata->pending_liquidation_injection_fond = $pendingLiquidationInjectionFond; 
         $alldata-> operating_injection_fond = $operatingInjectionFond; 
         $alldata-> active_injection_fond= $activeInjectionFond;
-
+  
         $alldata->save();
     }
 
