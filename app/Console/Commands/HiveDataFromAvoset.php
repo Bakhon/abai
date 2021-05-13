@@ -27,7 +27,7 @@ class HiveDataFromAvoset extends Command
      * Create a new command instance.
      *
      * @return void
-     */
+     */    
     public function __construct()
     {
         parent::__construct();
@@ -35,26 +35,27 @@ class HiveDataFromAvoset extends Command
 
     public function hiveDataFromAvoset($table, $date)
     {
-        require_once app_path() . '\libs\php-thrift-sql\ThriftSQL.phar';
-
-
-        $hive = new \ThriftSQL\Hive(env('SERVER_HIVE_FROM_AVOCET', '172.20.103.38'), 10000, 'hive', 'hive');
-        $hiveTables = $hive->connect()->getIterator("select * from kazger." . $table . " where start_datetime like '" . $date . "%'");
+        require_once app_path() . '\Libs\php-thrift-sql\ThriftSQL.phar';
+   $hive = new \ThriftSQL\Hive(env('SERVER_HIVE_FROM_AVOCET', '172.20.103.38'), 10000, 'hive', 'hive');
+   $hiveTables = $hive->connect()->getIterator("select * from kazger." . $table . " where start_datetime like '" . $date . "%'");
+   $dataMass=[];
         foreach ($hiveTables as $rowNum => $row) {
             $dataMass[] = array_merge($row);
         }
-        return $dataMass;
+        return $dataMass;          
     }
-
+ 
     public function saveHiveDataFromAvoset()
     {
         $date = Carbon::yesterday();
-        $dataOilAndGas =  $this->hiveDataFromAvoset('KMG_I_PRD_AREA_VIEW', $date);
+       $dataOilAndGas =  $this->hiveDataFromAvoset('KMG_I_PRD_AREA_VIEW', $date);
         $dataWater =  $this->hiveDataFromAvoset('KMG_I_MTR_INJ_VIEW', $date);
         $dataOilDelivery =  $this->hiveDataFromAvoset('KMG_I_MTR_PROD_VIEW', $date);
         $dataGasMore =  $this->hiveDataFromAvoset('KMG_I_MTR_GAS_VIEW', $date);
         $fonds  =  $this->hiveDataFromAvoset('KMG_I_WELL_STOCK_VIEW', $date);
+        $downtime  =  $this->hiveDataFromAvoset('OFM_WORKOVER', '%');
 
+        
         $oilFact  = 0;
         $gasFact  = 0;
         foreach ($dataOilAndGas as $rowNum => $row) {
@@ -117,7 +118,7 @@ class HiveDataFromAvoset extends Command
         $alldata->pending_liquidation_injection_fond = $pendingLiquidationInjectionFond; 
         $alldata-> operating_injection_fond = $operatingInjectionFond; 
         $alldata-> active_injection_fond= $activeInjectionFond;
-
+  
         $alldata->save();
     }
 
