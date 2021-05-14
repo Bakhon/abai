@@ -15,7 +15,7 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         \App\Console\Commands\UsdParse::class,
         \App\Console\Commands\OilParse::class,
-        \App\Console\Commands\HiveDataFromAvoset::class,
+        \App\Console\Commands\HiveDataFromAvocet::class,
     ];
 
     /**
@@ -26,8 +26,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('hive-data-from-avoset:cron')->dailyAt('08:10')->timezone('Asia/Almaty');
-        $schedule->command('hive-data-from-avoset:cron')->dailyAt('19:00')->timezone('Asia/Almaty');
+        $schedule->command('hive-data-from-avocet:cron')->dailyAt('08:10')->timezone('Asia/Almaty');
+        $schedule->command('hive-data-from-avocet:cron')->dailyAt('19:00')->timezone('Asia/Almaty');
         $schedule->command('parse-usd:cron')->dailyAt('16:20')->timezone('Asia/Almaty');
         $schedule->command('parse-usd:cron')->dailyAt('18:30')->timezone('Asia/Almaty');
         $schedule->command('parse-oil:cron')->dailyAt('08:10')->timezone('Asia/Almaty');
