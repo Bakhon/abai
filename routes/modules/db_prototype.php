@@ -9,6 +9,7 @@ Route::group(
                 Route::get('/', 'bd\DBController@bigdata')->name('bigdata');
                 Route::get('/las', 'bd\DBController@las')->name('las');
                 Route::get('/well_cart', 'bd\DBController@well_cart')->name('well_cart');
+                Route::get('/report_constructor', 'bd\DBController@report_constructor')->name('report_constructor');
                 Route::get('/user_reports', 'bd\DBController@userReports')->name('userReports');
 
                 Route::get('/geo-data-reference-book', 'bd\DBController@geoDataReferenceBook')->name('bigdata.geoDataReferenceBook');
