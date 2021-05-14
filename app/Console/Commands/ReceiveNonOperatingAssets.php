@@ -42,8 +42,6 @@ class receiveNonOperatingAssets extends Command
      * @var string
      */
     protected $signature = 'receive-non-operating-email:cron';
-    protected $username = "dailyreports@kmg.kz";
-    protected $password = "z2hr4kGhyp+";
     protected $server = "mail.kmg.kz";
     protected $isDataAvailable = true;
     protected $ews;
@@ -82,7 +80,7 @@ class receiveNonOperatingAssets extends Command
 
     public function assignMessageOptions()
     {
-        $ews = new Client($this->server, $this->username, $this->password);
+        $ews = new Client($this->server, env('VISCENTER_EMAIL_ADDRESS', ''), env('VISCENTER_EMAIL_PASSWORD', ''));
         $ews->setCurlOptions(array(CURLOPT_SSL_VERIFYPEER => false));
         $this->ews = $ews;
         $request = $this->getRequestParams();
