@@ -678,8 +678,8 @@
         </div>
       </div>
     </div>
-    <div class="b-popup">
-      <div class="row">
+    <div class="b-popup" style="display: none">
+      <div class="row" style="margin-top: 10%">
         <div class="col-md-2">
         </div>
         <div class="col-md-8 bg-dark b-container">
@@ -698,30 +698,75 @@
               <div class="table-container">
                 <table>
                   <tr>
-                    <th class="heading">Company</th>
-                    <th class="heading">Contact</th>
+                    <th class="heading">
+                      Параметр
+                    </th>
+                    <th class="heading">
+                      Фильтры
+                    </th>
                     <th class="heading"></th>
                   </tr>
                   <tr>
-                    <td>Alfreds Futterkiste</td>
-                    <td class="b-table-middle-column">Maria Anders</td>
-                    <td>Germany</td>
-                  </tr>
-                  <tr>
-                    <td>Centro comercial Moctezuma</td>
-                    <td class="b-table-middle-column">Francisco Chang</td>
-                    <td>Mexico</td>
-                  </tr>
-                  <tr>
-                    <td>Ernst Handel</td>
-                    <td class="b-table-middle-column">МРП >
-                      <form>
-                        <input type="text"></input>
-                        <input type="button"></input>
-                        <input type="checkbox"></input>
-                      </form>
+                    <td>Параметры скважин</td>
+                    <td class="b-table-middle-column">
+                      <div class="flex">
+                        МРП >
+                        <form>
+                          <input type="number"></input>
+                          <input type="button" class="btn-plus"></input>
+                          <input type="button" class="btn-ok">
+                          </input>
+                        </form>
+                      </div>
                     </td>
-                    <td>Austria</td>
+                    <td>
+                      <div class="flex">
+                      Бездействующие скважины
+                      <form>
+                        <input type="button" class="btn-plus"></input>
+                      </form>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Параметры скважин</td>
+                    <td class="b-table-middle-column">
+                      <div class="flex">
+                        МРП >
+                        <form>
+                          <input type="button" class="btn-plus">
+                          </input>
+                        </form>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="flex">
+                      Бездействующие скважины
+                      <form>
+                        <input type="button" class="btn-plus"></input>
+                      </form>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Параметры скважин</td>
+                    <td class="b-table-middle-column">
+                      <div class="flex">
+                        МРП >
+                        <form>
+                          <input type="button" class="btn-plus">
+                          </input>
+                        </form>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="flex">
+                      Бездействующие скважины
+                      <form>
+                        <input type="button" class="btn-plus"></input>
+                      </form>
+                      </div>
+                    </td>
                   </tr>
                 </table>
               </div>
@@ -739,6 +784,9 @@
     </div>
     <div class="col-md-2"></div>
   </div>
+
+
+
 
 
 </template>
@@ -1487,6 +1535,43 @@ body {
   z-index: 1000;
   @include st-font-16-700;
 
+  form {
+    input[type=number] {
+      background: #1F2142;
+      color: white;
+      width: 126px;
+      height: 23px;
+      border: none;
+      padding: 4px 5px 0px;
+    }
+
+    .btn-plus {
+      background: url(/img/icons/plus.svg) 50% 50% no-repeat;
+      height: 16px;
+      width: 16px;
+      border: 1px solid white;
+      border-radius: 3px;
+      margin: 0px 13px;
+      position: absolute;
+    }
+
+    .btn-ok {
+      height: 16px;
+      width: 16px;
+      border-radius: 3.5px;
+      border: 1px solid #237DEB;
+      margin-bottom: auto;
+      margin-top: auto;
+      background: url(/img/bd/ok.svg) 50% 50% no-repeat #237DEB;
+      margin-left: 43px;
+    }
+  }
+
+  .centered {
+    display: table;
+    margin: auto;
+  }
+
   table {
     border-collapse: collapse;
     width: 100%;
@@ -1514,7 +1599,8 @@ body {
         width: 37.5%;
       }
     }
-    .b-table-middle-column{
+
+    .b-table-middle-column {
       background: rgba(255, 255, 255, 0.04);
     }
 
@@ -1534,12 +1620,13 @@ body {
     border-top: 0px;
     height: 350px;
   }
-  .b-top{
+
+  .b-top {
     margin-bottom: 21px;
   }
 
 
-  .b-content{
+  .b-content {
     margin-bottom: 24%;
   }
 
@@ -1580,7 +1667,8 @@ body {
       margin-left: 10px;
       color: white;
     }
-    .btn-exit{
+
+    .btn-exit {
       background: #656A8A;
       border: 1px solid #656A8A;
       padding: 6px 17px 4px 17px;
