@@ -87,7 +87,6 @@ class HiveDataFromAvocet extends Command
         $operatingProductionFond = $inWorkProductionFond + $inIdleProductionFond + $developingProductionFond;
         $activeProductionFond = $inWorkProductionFond + $inIdleProductionFond;
         $inConservationProductionFond = $this->quantityOfArray($fonds, 'SUSPENDED', $productionFond, '');
-
         
         $injectionFond = 'INJECTION';
         $inWorkInjectionFond = $this->quantityOfArray($fonds, 'PRODUCING', $injectionFond, '');
