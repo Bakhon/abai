@@ -683,68 +683,63 @@
         <div class="col-md-2">
         </div>
         <div class="col-md-8 bg-dark b-container">
-          <div class="row">
+          <div class="row b-top">
             <div class="col">
               <p>Параметры объекта</p>
             </div>
-            <div class="col">
-              <button>
+            <div class="col flex">
+              <button class="btn-exit">
                 Закрыть
               </button>
             </div>
           </div>
-          <div class="row">
+          <div class="row b-content">
             <div class="col">
-              <table>
-                <tr>
-                  <th class="heading">Company</th>
-                  <th class="heading">Contact</th>
-                  <th class="heading"></th>
-                </tr>
-                <tr>
-                  <td>Alfreds Futterkiste</td>
-                  <td>Maria Anders</td>
-                  <td>Germany</td>
-                </tr>
-                <tr>
-                  <td>Centro comercial Moctezuma</td>
-                  <td>Francisco Chang</td>
-                  <td>Mexico</td>
-                </tr>
-                <tr>
-                  <td>Ernst Handel</td>
-                  <td>Roland Mendel</td>
-                  <td>Austria</td>
-                </tr>
-                <tr>
-                  <td>Island Trading</td>
-                  <td>Helen Bennett</td>
-                  <td>UK</td>
-                </tr>
-                <tr>
-                  <td>Laughing Bacchus Winecellars</td>
-                  <td>Yoshi Tannamuri</td>
-                  <td>Canada</td>
-                </tr>
-                <tr>
-                  <td>Magazzini Alimentari Riuniti</td>
-                  <td>Giovanni Rovelli</td>
-                  <td>Italy</td>
-                </tr>
-              </table>
+              <div class="table-container">
+                <table>
+                  <tr>
+                    <th class="heading">Company</th>
+                    <th class="heading">Contact</th>
+                    <th class="heading"></th>
+                  </tr>
+                  <tr>
+                    <td>Alfreds Futterkiste</td>
+                    <td class="b-table-middle-column">Maria Anders</td>
+                    <td>Germany</td>
+                  </tr>
+                  <tr>
+                    <td>Centro comercial Moctezuma</td>
+                    <td class="b-table-middle-column">Francisco Chang</td>
+                    <td>Mexico</td>
+                  </tr>
+                  <tr>
+                    <td>Ernst Handel</td>
+                    <td class="b-table-middle-column">МРП >
+                      <form>
+                        <input type="text"></input>
+                        <input type="button"></input>
+                        <input type="checkbox"></input>
+                      </form>
+                    </td>
+                    <td>Austria</td>
+                  </tr>
+                </table>
+              </div>
             </div>
           </div>
           <div class="row">
-            <div class="col">
+            <div class="col flex">
+              <div class="btn-wrapper"
               <button class="btn-accept">ОК</button>
               <button class="btn-dismiss">Отмена</button>
             </div>
           </div>
         </div>
       </div>
-      <div class="col-md-2"></div>
     </div>
+    <div class="col-md-2"></div>
   </div>
+
 
 </template>
 
@@ -785,6 +780,10 @@ $HarmoniaSansProCyr: "Harmonia Sans Pro Cyr", "Harmonia-sans";
 
 body {
   color: white;
+}
+
+.flex {
+  display: flex;
 }
 
 .left-section {
@@ -1093,7 +1092,7 @@ body {
             @include st-font-16-400;
 
             button {
-              height: 30px;
+              min-height: 30px;
               border-radius: 6px;
               background: #3C4280;
               color: white;
@@ -1486,12 +1485,11 @@ body {
   position: absolute;
   display: block;
   z-index: 1000;
+  @include st-font-16-700;
 
   table {
     border-collapse: collapse;
     width: 100%;
-    border-right: 0.75px solid #3C4270;
-    border-bottom: 0.75px solid #3C4270;
     max-height: 850px;
 
     td, th {
@@ -1505,7 +1503,19 @@ body {
 
       &:first-child {
         background: #293787;
+        width: 25%;
       }
+
+      &:nth-child(2) {
+        width: 37.5%;
+      }
+
+      &:nth-child(3) {
+        width: 37.5%;
+      }
+    }
+    .b-table-middle-column{
+      background: rgba(255, 255, 255, 0.04);
     }
 
     tr {
@@ -1517,26 +1527,70 @@ body {
     }
   }
 
+  .table-container {
+    border-right: 0.75px solid #3C4270;
+    border-bottom: 0.75px solid #3C4270;
+    border-left: 0px;
+    border-top: 0px;
+    height: 350px;
+  }
+  .b-top{
+    margin-bottom: 21px;
+  }
+
+
+  .b-content{
+    margin-bottom: 24%;
+  }
 
   .b-container {
     padding: 22px 22px;
+    border-radius: 10px;
+
+    .btn-wrapper {
+      margin-top: 190px;
+      display: flex;
+    }
 
     buttton {
       color: white;
       border-radius: 7px;
       box-shadow: none;
+      color: white;
     }
 
     .btn-accept {
       background: #2E50E9;
+      border: 1px solid #2E50E9;
       width: 175px;
       height: 42px;
+      border-radius: 6px;
+      margin-right: 10px;
+      margin-left: auto;
+      color: white;
     }
 
     .btn-dismiss {
       background: #656A8A;
+      border: 1px solid #656A8A;
       width: 175px;
       height: 42px;
+      border-radius: 6px;
+      margin-right: auto;
+      margin-left: 10px;
+      color: white;
+    }
+    .btn-exit{
+      background: #656A8A;
+      border: 1px solid #656A8A;
+      padding: 6px 17px 4px 17px;
+      border-radius: 9px;
+      margin-left: auto;
+      font-family: $HarmoniaSansProCyr;
+      font-size: 14px;
+      font-weight: 400;
+      color: white;
+      line-height: 14px;
     }
   }
 }
@@ -1547,7 +1601,7 @@ body {
   height: 40px;
   padding: 10px;
   background-color: #c5c5c5;
-  border-radius: 5px;
+  border-radius: 10px;
   box-shadow: 0 0 10px #000;
 }
 
