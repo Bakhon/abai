@@ -3,42 +3,35 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use Ddeboer\Imap\Server;
-use Ddeboer\Imap\SearchExpression;
-use Ddeboer\Imap\Search\Flag\Unseen;
 use SimpleXLS;
 use App\Models\VisCenter\ExcelForm\DzoImportData;
 use Carbon\Carbon;
 use \jamesiarmes\PhpEws\Client;
 use \jamesiarmes\PhpEws\Request\FindItemType;
-use \jamesiarmes\PhpEws\ArrayType\NonEmptyArrayOfBaseFolderIdsType;
+use \jamesiarmes\PhpEws\Request\GetAttachmentType;
+use \jamesiarmes\PhpEws\Request\GetItemType;
+use \jamesiarmes\PhpEws\Request\UpdateItemType;
 
 use \jamesiarmes\PhpEws\Enumeration\DefaultShapeNamesType;
 use \jamesiarmes\PhpEws\Enumeration\DistinguishedFolderIdNameType;
 use \jamesiarmes\PhpEws\Enumeration\ResponseClassType;
-use \jamesiarmes\PhpEws\Enumeration\UnindexedFieldURIType;
 
-use \jamesiarmes\PhpEws\Type\AndType;
 use \jamesiarmes\PhpEws\Type\ConstantValueType;
 use \jamesiarmes\PhpEws\Type\DistinguishedFolderIdType;
 use \jamesiarmes\PhpEws\Type\FieldURIOrConstantType;
-use \jamesiarmes\PhpEws\Type\IsGreaterThanOrEqualToType;
-use \jamesiarmes\PhpEws\Type\IsLessThanOrEqualToType;
-use \jamesiarmes\PhpEws\Type\IsEqualToType;
 use \jamesiarmes\PhpEws\Type\ItemResponseShapeType;
 use \jamesiarmes\PhpEws\Type\PathToUnindexedFieldType;
 use \jamesiarmes\PhpEws\Type\RestrictionType;
-use \jamesiarmes\PhpEws\Request\GetAttachmentType;
-use \jamesiarmes\PhpEws\Request\GetItemType;
-use \jamesiarmes\PhpEws\ArrayType\NonEmptyArrayOfBaseItemIdsType;
-use \jamesiarmes\PhpEws\ArrayType\NonEmptyArrayOfRequestAttachmentIdsType;
-use \jamesiarmes\PhpEws\Type\ItemIdType;
-use \jamesiarmes\PhpEws\Type\RequestAttachmentIdType;
-use amirsanni\phpewswrapper\PhpEwsWrapper;
-use \jamesiarmes\PhpEws\Request\UpdateItemType;
 use \jamesiarmes\PhpEws\Type\MessageType;
 use \jamesiarmes\PhpEws\Type\ItemChangeType;
 use \jamesiarmes\PhpEws\Type\SetItemFieldType;
+use \jamesiarmes\PhpEws\Type\ItemIdType;
+use \jamesiarmes\PhpEws\Type\IsEqualToType;
+use \jamesiarmes\PhpEws\Type\RequestAttachmentIdType;
+
+use \jamesiarmes\PhpEws\ArrayType\NonEmptyArrayOfBaseItemIdsType;
+use \jamesiarmes\PhpEws\ArrayType\NonEmptyArrayOfRequestAttachmentIdsType;
+use \jamesiarmes\PhpEws\ArrayType\NonEmptyArrayOfBaseFolderIdsType;
 use \jamesiarmes\PhpEws\ArrayType\NonEmptyArrayOfItemChangeDescriptionsType;
 
 class receiveNonOperatingAssets extends Command
@@ -78,8 +71,8 @@ class receiveNonOperatingAssets extends Command
     public function processInboundEmail()
     {
         $this->assignMessageOptions();
-        $this->markAsRead($messageOptions);
-        $this->saveAttachment();
+        $this->markAsRead();
+        $this->processMessages();
         $this->scrapDocument();
     }
 
@@ -145,7 +138,7 @@ class receiveNonOperatingAssets extends Command
         $this->ews->UpdateItem($request);
    }
 
-   public function saveAttachment()
+   public function processMessages()
    {
         $this->deleteExistingFile();
         $request = new GetItemType();
@@ -160,7 +153,12 @@ class receiveNonOperatingAssets extends Command
         $response = $this->ews->GetItem($request);
 
         $response_messages = $response->ResponseMessages->GetItemResponseMessage;
-        foreach ($response_messages as $response_message) {
+        $this->processAttachments($response_messages);
+    }
+
+    public function processAttachments($messages)
+    {
+        foreach ($messages as $response_message) {
             if ($response_message->ResponseClass != ResponseClassType::SUCCESS) {
                 continue;
             }
@@ -192,13 +190,18 @@ class receiveNonOperatingAssets extends Command
                 }
 
                 $attachments = $attachment_response_message->Attachments->FileAttachment;
-                foreach ($attachments as $attachment) {
-                    file_put_contents(
-                        'public/test2.xls',
-                        $attachment->Content
-                    );
-                }
+                $this->saveAttachment($attachments);
             }
+        }
+    }
+
+    public function saveAttachment($attachments)
+    {
+        foreach ($attachments as $attachment) {
+            file_put_contents(
+                'public/test2.xls',
+                $attachment->Content
+            );
         }
     }
 
