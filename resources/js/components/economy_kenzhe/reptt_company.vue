@@ -152,9 +152,9 @@
         this.repttData.reptt.reduce(function x(r, a) {
           let hasChild = a.handbook_items.length > 0;
           let yearValue = a[attributeName][year];
-          if(yearValue < 0){
-            a[attributeName][year] = yearValue * -1
-          }
+          // if(yearValue < 0){
+          //   a[attributeName][year] = yearValue * -1
+          // }
           if(hasChild){
             a[attributeName][year] = a.handbook_items.reduce(x, 0)
           }
@@ -179,7 +179,7 @@
         return result;
       },
       updateData(attributeName){
-          axios.get('/ru/module_economy/company?'+attributeName+'='+this[attributeName]).then(response => {
+          axios.get('/ru/module_economy/company?'+attributeName+'='+this[attributeName]+'&company='+this.company).then(response => {
               this.repttData = response.data;
               this.recalculate();
           });

@@ -13,8 +13,8 @@ class MainController extends Controller
     public function company(Request $request)
     {
         $companyId = 178;
-//        $dateTo = date('Y-m-d', strtotime('-1 year'));
-        $dateTo = date('Y-m-d');
+        $dateTo = date('Y-m-d', strtotime('-1 year'));
+//        $dateTo = date('Y-m-d');
         $dateFrom = date("Y-m-d", strtotime($dateTo . "-3 months"));
 
         if($request->company){
@@ -39,6 +39,7 @@ class MainController extends Controller
         $companies = SubholdingCompany::all();
         $companyRepTtValues = SubholdingCompany::find($companyId)->statsByDate($currentYear)->get()->toArray();
         $repTtReportValues = $this->recursiveSetValueToHandbookByType($handbook, $companyRepTtValues, $currentYear, $previousYear, $dateFrom, $dateTo);
+
         $data = [
             'reptt' => $repTtReportValues,
             'currentYear' => $currentYear,
@@ -113,9 +114,9 @@ class MainController extends Controller
 
     public function sumValuesByItemType(&$item, $attribute, $value, $dateFrom, $dateTo, $year, $currentItemDate)
     {
-        $item[$attribute][$year] += $value;
+        $item[$attribute][$year] += (float) $value;
         if (strtotime($dateFrom) <= $currentItemDate && strtotime($dateTo) >= $currentItemDate) {
-            $item['intermediate_' . $attribute][$year] += $value;
+            $item['intermediate_' . $attribute][$year] += (float) $value;
         }
     }
 }
