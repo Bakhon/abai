@@ -167,8 +167,6 @@
             </form>
           </div>
         </div>
-
-
         <div class="row">
           <div class="table-wrapper col">
             <div class="table-container">
@@ -183,7 +181,6 @@
                 </div>
               </div>
               <div class="table-container-element">
-                <!--Parent table-elemtnt start -->
                 <div class="row">
                   <div class="my-table-border col-md-1">
                     <div class="centered">
@@ -211,8 +208,6 @@
                     <div class="centered no-left-margin">АО ЭМБА МУНАЙ ГАЗ</div>
                   </div>
                 </div>
-                <!-- Parent table-elemtnt end -->
-                <!--Child table-elemtnt start -->
                 <div class="row child-row">
                   <div class="my-table-border col-md-1">
                     <div class="centered">
@@ -242,8 +237,6 @@
                     <div class="centered no-left-margin">АО ЭМБА МУНАЙ ГАЗ</div>
                   </div>
                 </div>
-                <!-- Child table-elemtnt end -->
-                <!--Child table-elemtnt start -->
                 <div class="row child-row">
                   <div class="my-table-border col-md-1">
                     <div class="centered">
@@ -253,9 +246,9 @@
                     <div class="centered">
                       <div class="custom-checkbox">
                         <form>
-                          <label class="container" for="element-child">
+                          <label class="container" for="element-child_1">
                             <span class="bottom-border"></span>
-                            <input type="checkbox" id="element-child" name="tech_structire" value="tech_structire"
+                            <input type="checkbox" id="element-child_1" name="tech_structire" value="tech_structire"
                                    class="dropdown-item">
                             <span class="checkmark"></span>
                           </label>
@@ -273,8 +266,6 @@
                     <div class="centered no-left-margin">АО ЭМБА МУНАЙ ГАЗ</div>
                   </div>
                 </div>
-                <!-- Child table-elemtnt end -->
-                <!--Child table-elemtnt start -->
                 <div class="row child-row">
                   <div class="my-table-border col-md-1">
                     <div class="centered">
@@ -284,9 +275,9 @@
                     <div class="centered">
                       <div class="custom-checkbox">
                         <form>
-                          <label class="container" for="element-child">
+                          <label class="container" for="element-child_2">
                             <span class="bottom-border"></span>
-                            <input type="checkbox" id="element-child" name="tech_structire" value="tech_structire"
+                            <input type="checkbox" id="element-child_2" name="tech_structire" value="tech_structire"
                                    class="dropdown-item">
                             <span class="checkmark"></span>
                           </label>
@@ -304,16 +295,14 @@
                     <div class="centered no-left-margin">АО ЭМБА МУНАЙ ГАЗ</div>
                   </div>
                 </div>
-                <!-- Child table-elemtnt end -->
-                <!--Parent table-elemtnt start -->
                 <div class="row">
                   <div class="my-table-border col-md-1">
                     <div class="centered">
                       <div class="custom-checkbox">
                         <form>
-                          <label class="container" for="oil">
+                          <label class="container" for="oil_1">
                             <span class="bottom-border"></span>
-                            <input type="checkbox" id="oil" name="tech_structire" value="tech_structire"
+                            <input id="oil_1" type="checkbox" name="tech_structire" value="tech_structire"
                                    class="dropdown-item">
                             <span class="checkmark"></span>
                           </label>
@@ -333,8 +322,6 @@
                     <div class="centered no-left-margin">АО ЭМБА МУНАЙ ГАЗ</div>
                   </div>
                 </div>
-                <!-- Parent table-elemtnt end -->
-                <!--Parent table-elemtnt start -->
                 <div class="row">
                   <div class="my-table-border col-md-1">
                     <div class="centered">
@@ -342,7 +329,7 @@
                         <form>
                           <label class="container" for="oil">
                             <span class="bottom-border"></span>
-                            <input type="checkbox" id="oil" name="tech_structire" value="tech_structire"
+                            <input id="oil_2" type="checkbox" name="tech_structire" value="tech_structire"
                                    class="dropdown-item">
                             <span class="checkmark"></span>
                           </label>
@@ -362,7 +349,6 @@
                     <div class="centered no-left-margin">АО ЭМБА МУНАЙ ГАЗ</div>
                   </div>
                 </div>
-                <!-- Parent table-elemtnt end -->
               </div>
             </div>
           </div>
@@ -374,7 +360,6 @@
         <div class="row">
           <div class="col">
             <section class="section-top  bg-dark">
-
               <div class="vertical-centered">
                 <div class="row">
                   <div class="inline-flex date-container">
@@ -453,7 +438,6 @@
                   </div>
                 </div>
               </div>
-              <!-- New TAble -->
               <div class="row">
                 <div class="table-wrapper col">
                   <div class="table-container">
@@ -492,7 +476,6 @@
                           <div class="centered">Параметры фонда</div>
                         </td>
                       </tr>
-                      <!-- table-element -->
                       <tr>
                         <td class="table-body">
                           <div class="centered">1</div>
@@ -519,8 +502,6 @@
                           </div>
                         </td>
                       </tr>
-                      <!-- table-element -->
-                      <!-- table-element -->
                       <tr>
                         <td class="table-body">
                           <div class="centered"></div>
@@ -547,8 +528,6 @@
                           </div>
                         </td>
                       </tr>
-                      <!-- table-element -->
-                      <!-- table-element -->
                       <tr>
                         <td class="table-body">
                           <div class="centered"></div>
@@ -575,8 +554,6 @@
                           </div>
                         </td>
                       </tr>
-                      <!-- table-element -->
-                      <!-- table-element -->
                       <tr>
                         <td class="table-body">
                           <div class="centered"></div>
@@ -603,8 +580,6 @@
                           </div>
                         </td>
                       </tr>
-                      <!-- table-element -->
-                      <!-- table-element -->
                       <tr>
                         <td class="table-body">
                           <div class="centered"></div>
@@ -631,8 +606,6 @@
                           </div>
                         </td>
                       </tr>
-                      <!-- table-element -->
-                      <!-- table-element -->
                       <tr>
                         <td class="table-body">
                           <div class="centered"></div>
@@ -659,14 +632,11 @@
                           </div>
                         </td>
                       </tr>
-                      <!-- table-element -->
                       </tbody>
                     </table>
                   </div>
                 </div>
               </div>
-              <!-- New TAble -->
-
               <div class="row">
                 <div class="btn-container">
                   <button disabled>Скачать отчет</button>
@@ -678,7 +648,7 @@
         </div>
       </div>
     </div>
-    <div class="b-popup" style="display: none">
+    <div class="b-popup" style="display: none;">
       <div class="row" style="margin-top: 10%">
         <div class="col-md-2">
         </div>
@@ -721,10 +691,10 @@
                     </td>
                     <td>
                       <div class="flex">
-                      Бездействующие скважины
-                      <form>
-                        <input type="button" class="btn-plus"></input>
-                      </form>
+                        Бездействующие скважины
+                        <form>
+                          <input type="button" class="btn-plus"></input>
+                        </form>
                       </div>
                     </td>
                   </tr>
@@ -741,10 +711,10 @@
                     </td>
                     <td>
                       <div class="flex">
-                      Бездействующие скважины
-                      <form>
-                        <input type="button" class="btn-plus"></input>
-                      </form>
+                        Бездействующие скважины
+                        <form>
+                          <input type="button" class="btn-plus"></input>
+                        </form>
                       </div>
                     </td>
                   </tr>
@@ -761,10 +731,10 @@
                     </td>
                     <td>
                       <div class="flex">
-                      Бездействующие скважины
-                      <form>
-                        <input type="button" class="btn-plus"></input>
-                      </form>
+                        Бездействующие скважины
+                        <form>
+                          <input type="button" class="btn-plus"></input>
+                        </form>
                       </div>
                     </td>
                   </tr>
@@ -774,7 +744,6 @@
           </div>
           <div class="row">
             <div class="col flex">
-              <div class="btn-wrapper"
               <button class="btn-accept">ОК</button>
               <button class="btn-dismiss">Отмена</button>
             </div>
@@ -783,12 +752,151 @@
       </div>
     </div>
     <div class="col-md-2"></div>
+    <div class="b-popup" style="display: none">
+      <div class="row" style="margin-top: 10%">
+        <div class="col-md-3">
+        </div>
+        <div class="col-md-6 bg-dark b-container">
+          <div class="row b-top">
+            <div class="col b-title">
+              <div class="b-top-element">
+                Оргструктура - <span class="width-400">АО “ЭмбаМунайГаз”</span> > НГДУ <span class="width-400">“Жылыоймунайгаз”</span>
+                > <span class="width-400">Цех добычи 1</span> > <span class="width-400">ГУ-16 </span>
+              </div>
+              <div class="b-top-element">
+                Геоструктура - <span class="width-400">АО “ЭмбаМунайГаз”</span> > <span class="width-400">Макат Восточный</span>
+              </div>
+              <div class="b-progress">
+                41%
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <div class="progress-bar-container">
+                <div class="progress-bar" style="width: 41%;">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col flex">
+              <div class="b-title-format">
+                Выберите формат отчета:
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col flex">
+              <div class="icon-set">
+                <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path
+                      d="M10 0C8.625 0 7.5 1.125 7.5 2.5V37.5C7.5 38.875 8.625 40 10 40H35C36.375 40 37.5 38.875 37.5 37.5V10L27.5 0H10Z"
+                      fill="#E2E5E7"/>
+                  <path d="M30 10H37.5L27.5 0V7.5C27.5 8.875 28.625 10 30 10Z" fill="#B0B7BD"/>
+                  <path d="M37.5 17.5L30 10H37.5V17.5Z" fill="#CAD1D8"/>
+                  <path
+                      d="M32.5 32.5C32.5 33.1875 31.9375 33.75 31.25 33.75H3.75C3.0625 33.75 2.5 33.1875 2.5 32.5V20C2.5 19.3125 3.0625 18.75 3.75 18.75H31.25C31.9375 18.75 32.5 19.3125 32.5 20V32.5Z"
+                      fill="#F15642"/>
+                  <path
+                      d="M7.94775 23.6837C7.94775 23.3537 8.20775 22.9937 8.6265 22.9937H10.9353C12.2353 22.9937 13.4053 23.8637 13.4053 25.5312C13.4053 27.1112 12.2353 27.9912 10.9353 27.9912H9.2665V29.3112C9.2665 29.7512 8.9865 29.9999 8.6265 29.9999C8.2965 29.9999 7.94775 29.7512 7.94775 29.3112V23.6837ZM9.2665 24.2524V26.7424H10.9353C11.6053 26.7424 12.1353 26.1512 12.1353 25.5312C12.1353 24.8324 11.6053 24.2524 10.9353 24.2524H9.2665Z"
+                      fill="white"/>
+                  <path
+                      d="M15.3619 29.9997C15.0319 29.9997 14.6719 29.8197 14.6719 29.381V23.7035C14.6719 23.3447 15.0319 23.0835 15.3619 23.0835H17.6506C22.2181 23.0835 22.1181 29.9997 17.7406 29.9997H15.3619ZM15.9919 24.3035V28.781H17.6506C20.3494 28.781 20.4694 24.3035 17.6506 24.3035H15.9919Z"
+                      fill="white"/>
+                  <path
+                      d="M23.7396 24.384V25.9728H26.2884C26.6484 25.9728 27.0084 26.3328 27.0084 26.6815C27.0084 27.0115 26.6484 27.2815 26.2884 27.2815H23.7396V29.3803C23.7396 29.7303 23.4909 29.999 23.1409 29.999C22.7009 29.999 22.4321 29.7303 22.4321 29.3803V23.7028C22.4321 23.344 22.7021 23.0828 23.1409 23.0828H26.6496C27.0896 23.0828 27.3496 23.344 27.3496 23.7028C27.3496 24.0228 27.0896 24.3828 26.6496 24.3828H23.7396V24.384Z"
+                      fill="white"/>
+                  <path
+                      d="M31.25 33.75H7.5V35H31.25C31.9375 35 32.5 34.4375 32.5 33.75V32.5C32.5 33.1875 31.9375 33.75 31.25 33.75Z"
+                      fill="#CAD1D8"/>
+                </svg>
+                <svg width="41" height="40" viewBox="0 0 41 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <g clip-path="url(#clip0)">
+                    <path
+                        d="M23.1758 1.01666C22.9781 0.856036 22.7177 0.79463 22.4692 0.850021L0.802517 5.85002C0.421189 5.93768 0.152127 6.27877 0.155799 6.67002V35.0034C0.155955 35.4146 0.456033 35.7642 0.862439 35.8267L22.5291 39.1601C22.984 39.23 23.4095 38.918 23.4794 38.4631C23.4858 38.4213 23.4891 38.3791 23.4891 38.3368V1.67002C23.4899 1.41588 23.3745 1.17533 23.1758 1.01666Z"
+                        fill="#4CAF50"/>
+                    <path
+                        d="M39.3219 35.8363H22.6551C22.1949 35.8363 21.8218 35.4632 21.8218 35.003C21.8218 34.5427 22.1949 34.1696 22.6551 34.1696H38.4885V5.83632H22.6551C22.1949 5.83632 21.8218 5.46319 21.8218 5.00296C21.8218 4.54272 22.1949 4.16968 22.6551 4.16968H39.3218C39.782 4.16968 40.1551 4.5428 40.1551 5.00304V35.003C40.1551 35.4633 39.7821 35.8363 39.3219 35.8363Z"
+                        fill="#4CAF50"/>
+                    <path
+                        d="M15.9912 27.5045C15.7038 27.5045 15.4368 27.3564 15.2845 27.1128L6.95115 13.7794C6.69498 13.3971 6.79732 12.8794 7.17967 12.6233C7.56201 12.3671 8.07967 12.4694 8.33584 12.8518C8.34592 12.8668 8.35545 12.8821 8.36451 12.8977L16.6979 26.2311C16.9408 26.622 16.821 27.1358 16.4301 27.3788C16.2983 27.4607 16.1463 27.5042 15.9912 27.5045Z"
+                        fill="#FAFAFA"/>
+                    <path
+                        d="M7.66026 27.503C7.20002 27.502 6.82768 27.1282 6.82862 26.668C6.82893 26.5123 6.87283 26.3599 6.95526 26.228L15.2886 12.8946C15.5194 12.4964 16.0293 12.3607 16.4274 12.5915C16.8257 12.8223 16.9614 13.3322 16.7306 13.7303C16.7215 13.7459 16.712 13.7612 16.7019 13.7762L8.36862 27.1096C8.21643 27.3544 7.94854 27.5032 7.66026 27.503Z"
+                        fill="#FAFAFA"/>
+                    <path
+                        d="M29.3226 35.8366C28.8624 35.8366 28.4893 35.4635 28.4893 35.0033V5.00328C28.4893 4.54305 28.8624 4.16992 29.3226 4.16992C29.7829 4.16992 30.156 4.54305 30.156 5.00328V35.0033C30.1559 35.4636 29.7829 35.8366 29.3226 35.8366Z"
+                        fill="#4CAF50"/>
+                    <path
+                        d="M39.3233 30.8366H22.6566C22.1964 30.8366 21.8232 30.4635 21.8232 30.0033C21.8232 29.543 22.1964 29.1699 22.6566 29.1699H39.3232C39.7835 29.1699 40.1566 29.543 40.1566 30.0033C40.1566 30.4636 39.7836 30.8366 39.3233 30.8366Z"
+                        fill="#4CAF50"/>
+                    <path
+                        d="M39.3233 25.8366H22.6566C22.1964 25.8366 21.8232 25.4635 21.8232 25.0033C21.8232 24.543 22.1964 24.1699 22.6566 24.1699H39.3232C39.7835 24.1699 40.1566 24.543 40.1566 25.0033C40.1566 25.4636 39.7836 25.8366 39.3233 25.8366Z"
+                        fill="#4CAF50"/>
+                    <path
+                        d="M39.3233 20.8366H22.6566C22.1964 20.8366 21.8232 20.4635 21.8232 20.0033C21.8232 19.543 22.1964 19.1699 22.6566 19.1699H39.3232C39.7835 19.1699 40.1566 19.543 40.1566 20.0033C40.1566 20.4636 39.7836 20.8366 39.3233 20.8366Z"
+                        fill="#4CAF50"/>
+                    <path
+                        d="M39.3233 15.8366H22.6566C22.1964 15.8366 21.8232 15.4635 21.8232 15.0033C21.8232 14.543 22.1964 14.1699 22.6566 14.1699H39.3232C39.7835 14.1699 40.1566 14.543 40.1566 15.0033C40.1566 15.4635 39.7836 15.8366 39.3233 15.8366Z"
+                        fill="#4CAF50"/>
+                    <path
+                        d="M39.3233 10.8366H22.6566C22.1964 10.8366 21.8232 10.4635 21.8232 10.0033C21.8232 9.54305 22.1964 9.16992 22.6566 9.16992H39.3232C39.7835 9.16992 40.1566 9.54305 40.1566 10.0033C40.1566 10.4636 39.7836 10.8366 39.3233 10.8366Z"
+                        fill="#4CAF50"/>
+                  </g>
+                  <defs>
+                    <clipPath id="clip0">
+                      <rect width="40" height="40" fill="white" transform="translate(0.156738)"/>
+                    </clipPath>
+                  </defs>
+                </svg>
+                <svg width="41" height="40" viewBox="0 0 41 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <g clip-path="url(#clip0)">
+                    <path
+                        d="M23.3321 1.01666C23.1343 0.856036 22.874 0.79463 22.6254 0.850021L0.958768 5.85002C0.577439 5.93768 0.308377 6.27877 0.312049 6.67002V35.0034C0.312205 35.4145 0.612283 35.7642 1.01869 35.8267L22.6853 39.1601C23.1403 39.23 23.5657 38.918 23.6356 38.4631C23.6421 38.4213 23.6453 38.3791 23.6453 38.3368V1.67002C23.6461 1.41588 23.5307 1.17533 23.3321 1.01666Z"
+                        fill="#1565C0"/>
+                    <path
+                        d="M39.4796 35.8371H22.8129C22.3526 35.8371 21.9795 35.4639 21.9795 35.0037C21.9795 34.5435 22.3526 34.1703 22.8129 34.1703H38.6462V5.83705H22.8129C22.3526 5.83705 21.9795 5.46393 21.9795 5.00369C21.9795 4.54346 22.3526 4.17041 22.8129 4.17041H39.4795C39.9397 4.17041 40.3129 4.54354 40.3129 5.00377V35.0038C40.3129 35.464 39.9398 35.8371 39.4796 35.8371Z"
+                        fill="#1565C0"/>
+                    <path
+                        d="M14.4808 27.5034C14.1095 27.503 13.7833 27.2569 13.6808 26.9L11.1474 18.0367L8.61408 26.9C8.43112 27.3423 7.92424 27.5525 7.4819 27.3696C7.26924 27.2816 7.10033 27.1127 7.01237 26.9L3.67909 15.2334C3.53955 14.7948 3.78205 14.3262 4.22065 14.1867C4.65924 14.0471 5.12784 14.2896 5.26737 14.7282C5.27229 14.7437 5.27674 14.7593 5.2808 14.775L7.81409 23.6367L10.3474 14.7734C10.5304 14.3311 11.0373 14.1209 11.4796 14.3038C11.6923 14.3918 11.8612 14.5607 11.9492 14.7734L14.4808 23.6367L17.0142 14.7751C17.1341 14.3365 17.5869 14.0781 18.0255 14.1981C18.0317 14.1998 18.0379 14.2016 18.0442 14.2034C18.4864 14.3301 18.7422 14.7911 18.6158 15.2334L15.2824 26.9C15.1798 27.2575 14.8527 27.5037 14.4808 27.5034Z"
+                        fill="#FAFAFA"/>
+                    <path
+                        d="M36.1467 10.8366H22.8133C22.3531 10.8366 21.98 10.4635 21.98 10.0033C21.98 9.54305 22.3531 9.16992 22.8133 9.16992H36.1467C36.6069 9.16992 36.9801 9.54305 36.9801 10.0033C36.9801 10.4636 36.6069 10.8366 36.1467 10.8366Z"
+                        fill="#1565C0"/>
+                    <path
+                        d="M36.1467 15.8366H22.8133C22.3531 15.8366 21.98 15.4635 21.98 15.0033C21.98 14.543 22.3531 14.1699 22.8133 14.1699H36.1467C36.6069 14.1699 36.9801 14.543 36.9801 15.0033C36.9801 15.4635 36.6069 15.8366 36.1467 15.8366Z"
+                        fill="#1565C0"/>
+                    <path
+                        d="M36.1467 20.8366H22.8133C22.3531 20.8366 21.98 20.4635 21.98 20.0033C21.98 19.543 22.3531 19.1699 22.8133 19.1699H36.1467C36.6069 19.1699 36.9801 19.543 36.9801 20.0033C36.9801 20.4636 36.6069 20.8366 36.1467 20.8366Z"
+                        fill="#1565C0"/>
+                    <path
+                        d="M36.1467 25.8366H22.8133C22.3531 25.8366 21.98 25.4635 21.98 25.0033C21.98 24.543 22.3531 24.1699 22.8133 24.1699H36.1467C36.6069 24.1699 36.9801 24.543 36.9801 25.0033C36.9801 25.4636 36.6069 25.8366 36.1467 25.8366Z"
+                        fill="#1565C0"/>
+                    <path
+                        d="M36.1467 30.8366H22.8133C22.3531 30.8366 21.98 30.4635 21.98 30.0033C21.98 29.543 22.3531 29.1699 22.8133 29.1699H36.1467C36.6069 29.1699 36.9801 29.543 36.9801 30.0033C36.9801 30.4636 36.6069 30.8366 36.1467 30.8366Z"
+                        fill="#1565C0"/>
+                  </g>
+                  <defs>
+                    <clipPath id="clip0">
+                      <rect width="40" height="40" fill="white" transform="translate(0.312988)"/>
+                    </clipPath>
+                  </defs>
+                </svg>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col flex">
+              <button class="btn-accept">Скачать</button>
+              <button class="btn-dismiss">Отмена</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3"></div>
   </div>
-
-
-
-
-
 </template>
 
 <style scoped lang="scss">
@@ -1080,6 +1188,11 @@ body {
   .section-content {
     display: block;
     height: 913px;
+    padding: 0px 14px;
+
+    .table-wrapper {
+      margin: 0px;
+    }
 
     .content-top {
       display: inline-flex;
@@ -1096,7 +1209,6 @@ body {
         font-weight: 700;
         font-size: 16px;
         line-height: 19px;
-        //margin-top: auto;
         margin-bottom: auto;
 
         .width-400 {
@@ -1151,7 +1263,7 @@ body {
                 height: 16px;
                 width: 16px;
                 margin-top: -1px;
-                position: absolute;
+                position: relative;
                 margin-left: 10px;
               }
             }
@@ -1535,6 +1647,68 @@ body {
   z-index: 1000;
   @include st-font-16-700;
 
+  .b-top-element {
+    padding-right: 15px;
+    font-family: $HarmoniaSansProCyr;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 19px;
+    margin-bottom: auto;
+    margin-left: auto;
+    margin-right: auto;
+
+    .width-400 {
+      font-weight: 400;
+    }
+  }
+
+  .b-progress {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 36px;
+    font-family: $HarmoniaSansProCyr;
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 28.8px;
+    color: #3366FF;
+  }
+
+  .b-title-format {
+    margin: 62px auto 25px auto;
+    font-family: $HarmoniaSansProCyr;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 21.4px;
+  }
+
+  .icon-set {
+    margin: auto;
+    margin-bottom: 49px;
+
+    &:nth-child(1n) svg {
+      margin-right: 29px;
+      margin-left: 29px;
+    }
+  }
+
+  .progress-bar-container {
+    height: 22px;
+    border: 5px solid #3366FF;
+    border-radius: 15px;
+    display: flex;
+    max-width: 445px;
+    margin-left: auto;
+    margin-right: auto;
+
+    .progress-bar {
+      height: 8px;
+      margin-top: auto;
+      margin-bottom: auto;
+      border-bottom-left-radius: 20px;
+      border-top-left-radius: 20px;
+    }
+  }
+
   form {
     input[type=number] {
       background: #1F2142;
@@ -1546,7 +1720,7 @@ body {
     }
 
     .btn-plus {
-      background: url(/img/icons/plus.svg) 50% 50% no-repeat;
+      background: url(/img/icons/plus.svg) 50% 40% no-repeat;
       height: 16px;
       width: 16px;
       border: 1px solid white;
@@ -1639,6 +1813,15 @@ body {
       display: flex;
     }
 
+    .b-title {
+      display: grid;
+      margin-top: 2px;
+
+      &:first-child .b-top-element {
+        margin-bottom: 20px;
+      }
+    }
+
     buttton {
       color: white;
       border-radius: 7px;
@@ -1679,6 +1862,7 @@ body {
       font-weight: 400;
       color: white;
       line-height: 14px;
+      max-height: 26px;
     }
   }
 }
