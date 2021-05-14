@@ -45,6 +45,7 @@ class receiveNonOperatingAssets extends Command
     protected $username = "dailyreports@kmg.kz";
     protected $password = "z2hr4kGhyp+";
     protected $server = "mail.kmg.kz";
+    protected $isDataAvailable = true;
     protected $ews;
     protected $messageOptions = array(
           'id' => '',
@@ -71,6 +72,9 @@ class receiveNonOperatingAssets extends Command
     public function processInboundEmail()
     {
         $this->assignMessageOptions();
+        if (!$this->isDataAvailable) {
+            return;
+        }
         $this->markAsRead();
         $this->processMessages();
         $this->scrapDocument();
@@ -84,9 +88,14 @@ class receiveNonOperatingAssets extends Command
         $request = $this->getRequestParams();
         $response = $this->ews->FindItem($request);
         $response_messages = $response->ResponseMessages->FindItemResponseMessage;
+
         foreach ($response_messages as $response_message) {
             if ($response_message->ResponseClass != ResponseClassType::SUCCESS) {
                 continue;
+            }
+            if (count($response_message->RootFolder->Items->Message) === 0) {
+                $this->isDataAvailable = false;
+                return;
             }
             $items = $response_message->RootFolder->Items->Message;
             $this->messageOptions['id'] = $items[0]->ItemId->Id;
