@@ -9,7 +9,7 @@ use Illuminate\Console\Command;
 
 class HiveDataFromAvocet extends Command
 {
-   
+
     /**
      * The name and signature of the console command.
      *
@@ -55,7 +55,6 @@ class HiveDataFromAvocet extends Command
         $dataOilDelivery = $this->hiveDataFromAvocet('KMG_I_MTR_PROD_VIEW', $date);
         $dataGasMore = $this->hiveDataFromAvocet('KMG_I_MTR_GAS_VIEW', $date);
         $fonds = $this->hiveDataFromAvocet('KMG_I_WELL_STOCK_VIEW', $date);
-        $downtime = $this->hiveDataFromAvocet('OFM_WORKOVER', '%'); 
 
         $oilFact = 0;
         $gasFact = 0;
@@ -72,30 +71,30 @@ class HiveDataFromAvocet extends Command
         $stockOfGoodsDeliveryFactTotal = $stockOfGoodsDeliveryFactAksh + $stockOfGoodsDeliveryFactAsy + $stockOfGoodsDeliveryFactNur;
         $associatedGasDeliveryFact = $this->valueFromArray($dataGasMore, 'KGM_TRANS', 10);
         $associatedGasExpensesForOwnFact = $this->valueFromArray($dataGasMore, 'KGM_UTIL', 10);
-        
+
         $productionFond = 'PRODUCTION';
         $inWorkProductionFond = $this->quantityOfArray($fonds, 'PRODUCING', $productionFond, '');
-        $inIdleProductionFond = $this->quantityOfArray($fonds, 'SHUT_IN', $productionFond, '');              
-        $inactiveProductionPrsFond = $this->quantityOfArray($fonds, 'SHUT_IN', $productionFond, 'P_WORK_W_1'); 
-        $inactiveProductionOprsFond = $this->quantityOfArray($fonds, 'SHUT_IN', $productionFond, 'N_DOWN_T_1'); 
-        $inactiveProductionKrsFond = $this->quantityOfArray($fonds, 'SHUT_IN', $productionFond, 'P_WORK_W_2'); 
+        $inIdleProductionFond = $this->quantityOfArray($fonds, 'SHUT_IN', $productionFond, '');
+        $inactiveProductionPrsFond = $this->quantityOfArray($fonds, 'SHUT_IN', $productionFond, 'P_WORK_W_1');
+        $inactiveProductionOprsFond = $this->quantityOfArray($fonds, 'SHUT_IN', $productionFond, 'N_DOWN_T_1');
+        $inactiveProductionKrsFond = $this->quantityOfArray($fonds, 'SHUT_IN', $productionFond, 'P_WORK_W_2');
         $inactiveProductionOkrsFond = $this->quantityOfArray($fonds, 'SHUT_IN', $productionFond, 'N_DOWN_T_2');
         $inactiveProductionOtherFond = $this->quantityOfArray($fonds, 'SHUT_IN', $productionFond, 'N_D_D_1');
-        $inactiveProductionFond = $this->quantityOfArray($fonds, 'IDLE',$productionFond,'');      
+        $inactiveProductionFond = $this->quantityOfArray($fonds, 'IDLE', $productionFond, '');
         $developingProductionFond = $this->quantityOfArray($fonds, 'DEVELOPMENT', $productionFond, '');
         $pendingLiquidationProductionFond = $this->quantityOfArray($fonds, 'ABANDON', $productionFond, '');
         $operatingProductionFond = $inWorkProductionFond + $inIdleProductionFond + $developingProductionFond;
         $activeProductionFond = $inWorkProductionFond + $inIdleProductionFond;
         $inConservationProductionFond = $this->quantityOfArray($fonds, 'SUSPENDED', $productionFond, '');
-        
+
         $injectionFond = 'INJECTION';
         $inWorkInjectionFond = $this->quantityOfArray($fonds, 'PRODUCING', $injectionFond, '');
         $inIdleInjectionFond = $this->quantityOfArray($fonds, 'SHUT_IN', $injectionFond, '');
-        $inactiveInjectionPrsFond = $this->quantityOfArray($fonds, 'SHUT_IN', $injectionFond, 'P_WORK_W_1'); 
-        $inactiveInjectionOprsFond = $this->quantityOfArray($fonds, 'SHUT_IN', $injectionFond, 'N_DOWN_T_1'); 
-        $inactiveInjectionKrsFond = $this->quantityOfArray($fonds, 'SHUT_IN', $injectionFond, 'P_WORK_W_2'); 
+        $inactiveInjectionPrsFond = $this->quantityOfArray($fonds, 'SHUT_IN', $injectionFond, 'P_WORK_W_1');
+        $inactiveInjectionOprsFond = $this->quantityOfArray($fonds, 'SHUT_IN', $injectionFond, 'N_DOWN_T_1');
+        $inactiveInjectionKrsFond = $this->quantityOfArray($fonds, 'SHUT_IN', $injectionFond, 'P_WORK_W_2');
         $inactiveInjectionOkrsFond = $this->quantityOfArray($fonds, 'SHUT_IN', $injectionFond, 'N_DOWN_T_2');
-        $inactiveInjectionOtherFond = $this->quantityOfArray($fonds, 'SHUT_IN', $injectionFond, 'N_D_D_1');  
+        $inactiveInjectionOtherFond = $this->quantityOfArray($fonds, 'SHUT_IN', $injectionFond, 'N_D_D_1');
         $inactiveInjectionFond = $this->quantityOfArray($fonds, 'IDLE', $injectionFond, '');
         $developingInjectionFond = $this->quantityOfArray($fonds, 'DEVELOPMENT', $injectionFond, '');
         $pendingLiquidationInjectionFond = $this->quantityOfArray($fonds, 'ABANDON', $injectionFond, '');
@@ -104,7 +103,7 @@ class HiveDataFromAvocet extends Command
         $inConservationInjectionFond = $this->quantityOfArray($fonds, 'SUSPENDED', $injectionFond, '');
 
         $dzoImportData = new DzoImportData();
-        $dzoImportData->date = $date;       
+        $dzoImportData->date = $date;
         $dzoImportData->dzo_name = 'КГМ';
         $dzoImportData->oil_production_fact = $oilFact;
         $dzoImportData->associated_gas_production_fact = $gasFact;
@@ -128,42 +127,68 @@ class HiveDataFromAvocet extends Command
         $dzoImportData->developing_injection_fond = $developingInjectionFond;
         $dzoImportData->pending_liquidation_injection_fond = $pendingLiquidationInjectionFond;
         $dzoImportData->operating_injection_fond = $operatingInjectionFond;
-        $dzoImportData->active_injection_fond = $activeInjectionFond;            
+        $dzoImportData->active_injection_fond = $activeInjectionFond;
+        $dzoImportData->otm_underground_workover = $inactiveProductionPrsFond;
+        $dzoImportData->otm_well_workover_fact = $inactiveInjectionKrsFond;
+
         $dzoImportData->save();
 
-        $downtimeReason = new DzoImportDowntimeReason ();     
-        $downtimeReason->dzo_import_data_id=$dzo_summary_last_record['id']+1;
-        $downtimeReason->prs_downtime_production_wells_count =  $inactiveProductionPrsFond;      
-        $downtimeReason->krs_downtime_production_wells_count=$inactiveProductionKrsFond;  
-        $downtimeReason->other_downtime_production_wells_count =$inactiveProductionOtherFond; 
-        $downtimeReason->save();     
-          
+        $downtimeReason = new DzoImportDowntimeReason();
+        $downtimeReason->dzo_import_data_id = $dzo_summary_last_record['id'] + 1;
+
+        $downtimeReason->prs_downtime_production_wells_count = $inactiveProductionPrsFond;
+        $downtimeReason->krs_downtime_production_wells_count = $inactiveProductionKrsFond;
+        $downtimeReason->other_downtime_production_wells_count = $inactiveProductionOtherFond;
+        $downtimeReason-> prs_wait_downtime_production_wells_count = $inactiveProductionOprsFond;
+        $downtimeReason->krs_wait_downtime_production_wells_count = $inactiveProductionOkrsFond;
+        $downtimeReason->well_survey_downtime_production_wells_count = $this->valueFromArrayWellSurvey($fonds, $productionFond);
+
+        $downtimeReason->prs_downtime_injection_wells_count = $inactiveInjectionPrsFond;
+        $downtimeReason->krs_downtime_injection_wells_count = $inactiveInjectionKrsFond;
+        $downtimeReason->other_downtime_injection_wells_count = $inactiveInjectionOtherFond; 
+        $downtimeReason->prs_wait_downtime_injection_wells_count = $inactiveInjectionOprsFond;      
+        $downtimeReason->krs_wait_downtime_injection_wells_count = $inactiveInjectionOkrsFond;           
+        $downtimeReason->well_survey_downtime_injection_wells_count = $this->valueFromArrayWellSurvey($fonds, $injectionFond);
+        $downtimeReason->save();
     }
 
-    public function valueFromArray($data, $field, $column)
+    public function valueFromArray($data, $column1, $column2)
     {
         foreach ($data as $rowNum => $row) {
-            if ($row[4] == $field) {
-                return $row[$column];
+            if ($row[4] == $column1) {
+                return $row[$column2];
             }
         }
     }
 
-    public function quantityOfArray($data, $field, $field2, $field3)
+    public function quantityOfArray($data, $column1, $column2, $column3)
     {
 
         $summ = [];
 
         foreach ($data as $rowNum => $row) {
-            if ($row[3] == $field2) {
-                if ($row[5] == $field) {
+            if ($row[3] == $column2) {
+                if ($row[5] == $column1) {
 
-                    if (!isset($row[17])) {
-                        if ($row[17] == $field3) {                      
+                    if (!empty($row[17])) {
+                        if ($row[17] == $column3) {
                             $summ[] = array_merge($row);}
-                    } else {$summ[] = array_merge($row);}
+                    } else { $summ[] = array_merge($row);}
                 }
             }}
+        return count($summ);
+    }
+
+    public function valueFromArrayWellSurvey($data, $column1)
+    {
+        $summ = [];
+
+        foreach ($data as $rowNum => $row) {
+            if ($row[3] == $column1) {
+                if ($row[14] == 'Исследование') {
+                    $summ[] = array_merge($row);
+                }}
+        }
         return count($summ);
     }
 
