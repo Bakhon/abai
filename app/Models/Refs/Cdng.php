@@ -6,9 +6,21 @@ use Illuminate\Database\Eloquent\Model;
 
 class Cdng extends Model
 {
+    protected $fillable = ['name'];
+
     public function gu()
     {
         return $this->hasMany(Gu::class);
+    }
+
+    public function zus()
+    {
+        return $this->hasManyThrough(Zu::class, Gu::class);
+    }
+
+    public function ngdu()
+    {
+        return $this->belongsTo(Ngdu::class);
     }
 
     public function omgngdu()

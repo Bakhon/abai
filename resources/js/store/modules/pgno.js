@@ -5,7 +5,9 @@ const pgno = {
         wells: [],
         // wellType: '',
         wellNum: '',
-        wellNumber: ''
+        wellNumber: '',
+        hPump: null,
+        buttonHpump: false
     },
     
     mutations: {
@@ -15,6 +17,12 @@ const pgno = {
       SET_WELLS_NUM(state, payload) {
         payload = state.wellNum
       },
+      UPDATE_HPUMP(state, payload) {
+        state.hPump = payload
+      },
+      UPDATE_HPUMP_BUTTON(state, payload) {
+        state.buttonHpump = payload
+      }
       // SET_WELLS_TYPE(state, wellType) {
       //   state.wellType = wellType
       // }
@@ -32,12 +40,19 @@ const pgno = {
                 .catch(error => {
                     console.log(error);
                 })
+        },
+        getHpumpValue({commit}) {
+          commit = this.hPump
+        },
+        getHpumpButton({commit}) {
+          commit = this.buttonHpump
         }
         
     },
     
     getters: {
-    
+      getHpump: (state) => state.hPump,
+      getHpumpButton: (state) => state.buttonHpump
     },
 }
 

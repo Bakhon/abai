@@ -17,7 +17,7 @@ class OmgUHEUpdateRequest extends FormRequest
             'field_id' => 'nullable|numeric',
             'gu_id' => 'nullable|numeric',
             'date' => 'date',
-            'out_of_service_оf_dosing' => 'nullable|numeric',
+            'out_of_service_of_dosing' => 'nullable|boolean',
             'reason' => 'nullable|string',
             'ngdu_id' => 'nullable|numeric',
             'zu_id' => 'nullable|numeric',
@@ -28,6 +28,7 @@ class OmgUHEUpdateRequest extends FormRequest
             'current_dosage' => 'nullable|numeric',
             'cdng_id' => 'nullable|numeric',
             'well_id' => 'nullable|numeric',
+            'consumption' => 'nullable|numeric'
         ];
     }
 }

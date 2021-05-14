@@ -3,14 +3,15 @@
     <cat-loader v-show="loading"/>
     <div class="filter-bg" v-if="filterOpened" @click="hideFilters"></div>
     <div class="float-right table-page__links">
-      <a v-if="params.links.create" class="table-page__links-item table-page__links-item_add" :href="params.links.create">
+      <a v-if="params.links.create" class="table-page__links-item table-page__links-item_add"
+         :href="params.links.create">
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path fill-rule="evenodd" clip-rule="evenodd" d="M16 9.6H9.6V16H6.4V9.6H0V6.4H6.4V0H9.6V6.4H16V9.6Z"
                 fill="white"/>
         </svg>
       </a>
       <a v-if="params.links.export" class="table-page__links-item table-page__links-item_excel"
-         @click.prevent="exportExcel" href="#">
+         @click.prevent="runJob(params.links.export)" href="#">
         <svg width="16" height="20" viewBox="0 0 16 20" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path
               d="M14.7071 5.70711L10.293 1.2929C10.1055 1.10536 9.8511 1 9.58588 1L2.00028 1.00002C1.448 1.00002 1.00029 1.44774 1.00029 2.00002L1.00029 18C1.00029 18.5523 1.448 19 2.00029 19L14 19C14.5523 19 15 18.5523 15 18L15 6.41421C15 6.14899 14.8946 5.89464 14.7071 5.70711Z"
@@ -23,6 +24,38 @@
         </svg>
         <span>{{ trans('monitoring.table.export_excel') }}</span>
       </a>
+      <b-form-checkbox
+          class="table-page__links-item table-page__links-item_result_export"
+          v-if="this.params.links.calc && params.links.calc.export"
+          v-model="calcExport"
+          name="calc-export"
+      >
+        {{ trans('monitoring.table.calc_result_export') }}
+      </b-form-checkbox>
+      <a v-if="params.links.calc" class="table-page__links-item table-page__links-item_excel"
+         @click.prevent="runJob(params.links.calc.link)" href="#">
+        <i class="fas fa-calculator"></i>
+        <span>{{ trans('monitoring.table.calc_result') }}</span>
+      </a>
+      <a v-if="params.links.date" class="table-page__links-item table-page__links-item_date"
+         @click.prevent="() => {return  false;}" href="#">
+        <i class="far fa-calendar-alt"></i>
+        <div class="datetime-picker">
+          <datetime
+              type="date"
+              v-model="selectedDate"
+              input-class="form-control date"
+              value-zone="Asia/Almaty"
+              zone="Asia/Almaty"
+              :format="{ year: 'numeric', month: 'long', day: 'numeric' }"
+              :phrases="{ok: trans('app.choose'), cancel: trans('app.cancel')}"
+              :week-start="1"
+              @input="loadData"
+              auto
+          >
+          </datetime>
+        </div>
+      </a>
       <a class="table-page__links-item table-page__links-item_add" @click.prevent="resetFilters" href="#"
          v-if="activeFilters">
         {{ trans('monitoring.table.reset_filter') }}
@@ -34,8 +67,11 @@
       <button type="button" class="close" data-dismiss="alert">&times;</button>
       <p>{{ params.success }}</p>
     </div>
+    <b-alert v-for="(alert, index) in alerts" :key="index" :variant="alert.variant" show dismissible>
+      {{ alert.message }}
+    </b-alert>
     <div class="table-page__wrapper">
-      <table class="table">
+      <table class="table table-bordered table-dark" :class="tableClass">
         <thead>
         <tr v-if="params.table_header">
           <th v-for="(colspan, header) in params.table_header" :colspan="colspan">{{ header }}</th>
@@ -84,7 +120,7 @@
                       class="filter-input"
                       type="text"
                       @click="calendarFromShow = !calendarFromShow"
-                      v-bind:value="formatDate(filters[code].value.from)"
+                      :value="formatDate(filters[code].value.from)"
                       readonly
                   >
                   <date-picker
@@ -103,7 +139,7 @@
                       class="filter-input"
                       type="text"
                       @click="calendarToShow = !calendarToShow"
-                      v-bind:value="formatDate(filters[code].value.to)"
+                      :value="formatDate(filters[code].value.to)"
                       readonly
                   >
                   <date-picker
@@ -132,6 +168,7 @@
               </template>
             </div>
             <span
+                v-if="isShowSort(code)"
                 class="arrows"
                 :class="{
                             'asc': sort.by === code && sort.desc === false,
@@ -153,7 +190,8 @@
               <a v-if="row.links.edit" class="links__item links__item_edit" :href="row.links.edit"></a>
               <a v-if="row.links.show" class="links__item links__item_view" :href="row.links.show"></a>
               <a v-if="row.links.history" class="links__item links__item_history" :href="row.links.history"></a>
-              <a v-if="row.links.delete" href="#" class="links__item links__item_delete" @click.prevent="deleteItem(row)"></a>
+              <a v-if="row.links.delete" href="#" class="links__item links__item_delete"
+                 @click.prevent="deleteItem(row)"></a>
             </div>
           </td>
         </tr>
@@ -170,20 +208,31 @@
 </template>
 
 <script>
+import Vue from "vue";
 import moment from "moment"
 import vSelect from 'vue-select'
 import CatLoader from '../ui-kit/CatLoader'
 import 'vue-select/dist/vue-select.css'
+import {Datetime} from 'vue-datetime'
+import 'vue-datetime/dist/vue-datetime.css'
+Vue.use(Datetime)
 
 export default {
   name: "view-table",
   components: {
     vSelect,
-    CatLoader
+    CatLoader,
   },
-  props: [
-    'params'
-  ],
+  props: {
+    params: {
+      type: Object,
+      required: true
+    },
+    isResponsive: {
+      type: Boolean,
+      default: false
+    }
+  },
   data() {
     return {
       omgca: null,
@@ -196,7 +245,11 @@ export default {
       filters: {},
       calendarFromShow: false,
       calendarToShow: false,
-      filterOpened: false
+      filterOpened: false,
+      isSelectDate: false,
+      selectedDate: null,
+      alerts: [],
+      calcExport: true,
     }
   },
   mounted() {
@@ -214,12 +267,22 @@ export default {
 
       })
       return activeFilter
+    },
+    tableClass() {
+      return {
+        "table-responsive": this.isResponsive,
+        'with-pagination': this.omgca && this.omgca.total > this.omgca.per_page
+      }
     }
   },
   methods: {
     showFilter(code) {
       this.filters[code].show = true
       this.filterOpened = true
+    },
+    isShowSort(code){
+      return typeof this.params.fields[code].sortable == 'undefined'
+          || (typeof this.params.fields[code].sortable != 'undefined' && this.params.fields[code].sortable);
     },
     hideFilters() {
       this.filterOpened = false
@@ -236,7 +299,7 @@ export default {
     },
     formatDate(date) {
       if (!date) return null
-      return moment(date).format('YYYY-MM-DD')
+      return moment.parseZone(date).format('YYYY-MM-DD')
     },
     prepareQueryParams() {
       let queryParams = {
@@ -256,20 +319,34 @@ export default {
 
         })
       }
+
+      if (this.filters.date && this.filters.date.value) {
+        this.filters.date.value.to = this.formatDate(this.filters.date.value.to);
+        this.filters.date.value.from = this.formatDate(this.filters.date.value.from);
+      }
+
+      if (this.params.links.date && this.selectedDate) {
+        queryParams.date = this.formatDate(this.selectedDate);
+      }
+
+      if (this.params.links.calc && this.params.links.calc.export) {
+        queryParams.calc_export = this.calcExport;
+      }
+
       return queryParams
     },
     changePage(page = 1) {
       this.currentPage = page
       this.loadData()
     },
-    loadData() {
-
+    loadData: _.debounce(function (e) {
       this.hideFilters()
 
       this.loading = true
 
       this.axios.get(this.params.links.list, {params: this.prepareQueryParams()}).then(response => {
-        this.omgca = response.data
+        this.omgca = response.data;
+        this.alerts = response.data.alerts;
       }).catch(e => {
 
       }).finally(() => {
@@ -279,7 +356,7 @@ export default {
           behavior: 'smooth'
         });
       });
-    },
+    }, 500),
     sortBy(field) {
       if (this.sort.by === field) {
         this.sort.desc = !this.sort.desc
@@ -290,22 +367,36 @@ export default {
       this.loadData()
     },
     deleteItem(item) {
-      if(window.confirm('Вы действительно хотите удалить запись?')) {
+      if (window.confirm('Вы действительно хотите удалить запись?')) {
         this.axios.delete(item.links.delete).then(response => {
           this.loadData()
           this.params.success = this.trans('app.deleted')
         })
       }
     },
-    exportExcel() {
+    runJob(url) {
       this.loading = true
-      this.axios.get(this.params.links.export, {params: this.prepareQueryParams()}).then((response) => {
+      this.axios.get(url, {params: this.prepareQueryParams()}).then((response) => {
         let interval = setInterval(() => {
           this.axios.get('/ru/jobs/status', {params: {id: response.data.id}}).then((response) => {
             if (response.data.job.status === 'finished') {
               this.loading = false
               clearInterval(interval)
-              document.location.href = response.data.job.output.filename
+
+              if (response.data.job.output) {
+                if (response.data.job.output.filename) {
+                  document.location.href = response.data.job.output.filename
+                }
+
+                if (response.data.job.output.error) {
+                  this.showToast(response.data.job.output.error, this.trans('app.error'),'danger');
+                }
+              }
+
+              if (this.params.links.calc) {
+                this.loadData();
+              }
+
             } else if (response.data.job.status === 'failed') {
               this.loading = false
               clearInterval(interval)
@@ -335,6 +426,34 @@ export default {
 };
 </script>
 <style lang="scss">
+
+
+/* width */
+table::-webkit-scrollbar {
+  width: 13px;
+}
+
+/* Track */
+table::-webkit-scrollbar-track {
+  background: #333975;
+}
+
+/* Handle */
+table::-webkit-scrollbar-thumb {
+  background: #656A8A;
+
+}
+
+/* Handle on hover */
+table::-webkit-scrollbar-thumb:hover {
+  background: #656A8A;
+
+}
+
+table::-webkit-scrollbar-corner {
+  background: #333975;
+}
+
 .table-page {
   background: #272953;
   padding: 16px 24px 20px 19px;
@@ -343,6 +462,7 @@ export default {
     min-height: 400px;
     overflow-x: auto;
     position: relative;
+    max-width: calc(100vw - 137px);
   }
 
   h1 {
@@ -377,6 +497,36 @@ export default {
 
         span {
           margin-left: 9px;
+        }
+      }
+
+      &_date {
+        padding: 0 17px 0 20px;
+
+        i {
+          margin-right: 9px;
+          font-size: 18px;
+        }
+
+        input.vdatetime-input {
+          max-height: 20px;
+        }
+      }
+
+      &_result_export {
+        &.custom-control.custom-checkbox {
+          line-height: 30px;
+          background: none;
+        }
+
+        .custom-control-label::before {
+          top: 7px;
+          left: -30px;
+        }
+
+        .custom-control-label::after {
+          top: 7px;
+          left: -30px;
         }
       }
     }
@@ -516,6 +666,15 @@ export default {
     border: 1px solid #454D7D;
     color: white !important;
     margin-bottom: 28px;
+
+    &.table-responsive {
+      overflow: scroll;
+      height: calc(100vh - 205px);
+
+      &.with-pagination {
+        height: calc(100vh - 258px);
+      }
+    }
 
     th {
       background: #333975;
@@ -669,7 +828,8 @@ export default {
     top: 0;
     right: 0;
     bottom: 0;
-    .v-spinner{
+
+    .v-spinner {
       top: 250px;
     }
   }

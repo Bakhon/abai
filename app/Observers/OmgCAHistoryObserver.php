@@ -20,7 +20,7 @@ class OmgCAHistoryObserver extends EditHistoryObserver
         $history = [];
         $fields = [
             'year' => 'app.year',
-            'gu_id' => 'monitoring.gu',
+            'gu_id' => 'monitoring.gu.gu',
             'plan_dosage' => 'monitoring.omgca.fields.plan_dosage',
             'q_v' => 'monitoring.omgca.fields.q_v'
         ];

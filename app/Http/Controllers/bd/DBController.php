@@ -9,8 +9,7 @@ class DBController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('can:bigdata view main')->only('bigdata', 'form');
-    
+      $this->middleware('can:bigdata view main')->only('bigdata', 'form', 'las', 'userReports', 'geoDataReferenceBook');
     }
 
     public function mzdn()
@@ -26,6 +25,27 @@ class DBController extends Controller
     public function las()
     {
         return view('reports.las');
+    }
+
+
+    public function well_cart()
+    {
+        return view('reports.well_cart');
+    }
+
+    public function report_constructor()
+    {
+        return view('reports.report_constructor');
+    }
+
+    public function geoDataReferenceBook()
+    {
+        return view('reports.geo_data_reference_book');
+    }
+
+    public function userReports()
+    {
+        return view('reports.user_reports');
     }
 
     public function constructor()

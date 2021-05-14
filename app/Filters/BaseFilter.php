@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Filters;
 
 use Illuminate\Database\Eloquent\Builder;
+use Carbon\Carbon;
 
 abstract class BaseFilter
 {
@@ -52,7 +53,7 @@ abstract class BaseFilter
         return 'filter_'.$field;
     }
 
-    abstract protected function sort(string $field, bool $desc);
+    abstract protected function sort(string $field, bool $isDescending);
 
     protected function filter_field($guId)
     {
@@ -128,8 +129,8 @@ abstract class BaseFilter
 
         $dates = json_decode($dates);
         try{
-            $dateFrom = $dates->from ? \Carbon\Carbon::parse($dates->from) : null;
-            $dateTo = $dates->to ? \Carbon\Carbon::parse($dates->to) : null;
+            $dateFrom = $dates->from ? Carbon::parse($dates->from) : null;
+            $dateTo = $dates->to ? Carbon::parse($dates->to) : null;
         }
         catch(\Exception $e) {
             return;

@@ -23,13 +23,17 @@ class OmgUHEListResource extends CrudListResource
                 'cdng' => $this->cdng->name,
                 'gu' => $this->gu->name,
                 'zu' => $this->zu->name,
+                'level' => $this->level,
+                'fill' => $this->fill,
                 'well' => $this->well->name,
                 'date' => $this->date->format('d.m.Y H:i'),
                 'inhibitor' => $this->inhibitor->name,
                 'current_dosage' => $this->current_dosage,
                 'daily_inhibitor_flowrate' => $this->daily_inhibitor_flowrate,
-                'out_of_service_оf_dosing' => $this->out_of_service_оf_dosing ? 'Был простой' : 'Не было простоя',
+                'out_of_service_of_dosing' => $this->out_of_service_of_dosing ? 'Был простой' : 'Не было простоя',
                 'reason' => $this->reason,
+                'consumption' => $this->consumption,
+                'yearly_inhibitor_flowrate' => $this->yearly_inhibitor_flowrate
             ],
         ];
 

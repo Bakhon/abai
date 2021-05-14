@@ -10,6 +10,7 @@ class OmgNGDU extends Model
     use WithHistory;
 
     protected $guarded = ['id'];
+    protected $table = 'omg_n_g_d_u_s_1';
 
     public function ngdu()
     {
@@ -39,5 +40,10 @@ class OmgNGDU extends Model
     public function field()
     {
         return $this->hasOne('App\Models\Refs\Field','id','field_id')->withDefault();
+    }
+
+    public function getDailyWaterProductionAttribute()
+    {
+        return round (($this->daily_fluid_production *  $this->bsw)/100 , 2);
     }
 }

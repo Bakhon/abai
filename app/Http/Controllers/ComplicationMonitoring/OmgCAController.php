@@ -38,7 +38,7 @@ class OmgCAController extends CrudController
             ],
             'fields' => [
                 'gu' => [
-                    'title' => __('monitoring.gu'),
+                    'title' => __('monitoring.gu.gu'),
                     'type' => 'select',
                     'filter' => [
                         'values' => \App\Models\Refs\Gu::whereHas('omgca')
@@ -162,7 +162,7 @@ class OmgCAController extends CrudController
      */
     public function show($id)
     {
-        $omgca = OmgCA::where('id', '=', $id)
+        $omgca = OmgCA::where('id', $id)
             ->with('ngdu')
             ->with('cdng')
             ->with('gu')
@@ -233,8 +233,8 @@ class OmgCAController extends CrudController
 
     public function checkDublicate(Request $request)
     {
-        $query = OmgCA::where('date', '=', $request->dt)
-            ->where('gu_id', '=', $request->gu);
+        $query = OmgCA::where('date', $request->dt)
+            ->where('gu_id', $request->gu);
 
         if ($request->id) {
             $query->where('id', '!=', $request->id);

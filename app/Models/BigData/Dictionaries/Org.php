@@ -2,6 +2,7 @@
 
 namespace App\Models\BigData\Dictionaries;
 
+use App\Models\BigData\Well;
 use App\Models\TBDModel;
 use Illuminate\Support\Facades\DB;
 
@@ -13,7 +14,17 @@ class Org extends TBDModel
 
     public function parentOrg()
     {
-        return $this->belongsTo(Org::class, 'parent');
+        return $this->belongsTo(Org::class, 'parent_id');
+    }
+
+    public function wells()
+    {
+        return $this->belongsToMany(Well::class, 'prod.well_org', 'org', 'well');
+    }
+
+    public function type()
+    {
+        return $this->belongsTo(OrgType::class, 'type_id');
     }
 
 

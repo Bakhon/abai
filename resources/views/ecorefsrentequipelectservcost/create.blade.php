@@ -59,25 +59,25 @@
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
-                                        <strong>Стоимость аренды:</strong>
+                                        <strong>Стоимость аренды, тенге:</strong>
                                         <input type="number" name="rent_cost" class="form-control" placeholder="Пример: 55000">
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
-                                        <strong>Стоимость оборудования:</strong>
+                                        <strong>Стоимость оборудования, тенге:</strong>
                                         <input type="number" name="equip_cost" class="form-control" placeholder="Пример: 8500000">
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
-                                        <strong>Расход электроэнергии:</strong>
+                                        <strong>Расход электроэнергии, кВт*ч:</strong>
                                         <input type="number" name="elect_cons" class="form-control" placeholder="Пример: 50">
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
-                                        <strong>Стоимость суточного обслуживания:</strong>
+                                        <strong>Стоимость суточного обслуживания, тенге:</strong>
                                         <input type="number" name="dayli_serv_cost" class="form-control" placeholder="Пример: 10000">
                                     </div>
                                 </div>

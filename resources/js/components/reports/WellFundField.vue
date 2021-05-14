@@ -25,7 +25,7 @@
           v-model="geoStructure"
       >
         <option disabled value="">Выберите геоструктуру</option>
-        <template v-for="(fields, dzo) in filtersData" >
+        <template v-for="(fields, dzo) in filtersData">
           <option v-if="org===dzo" v-for="field in fields" :value="field">{{ field }}</option>
         </template>
       </select>
@@ -111,15 +111,14 @@ export default {
       this.resultLink = response.data.report_link
     },
     updateData() {
-      let uri = "http://172.20.103.157:8082/generic/";
-      // let uri = "http://0.0.0.0:8090/generic/";
+      let uri = "http://172.20.103.187:8082/generic/";
       let data = {
         type: 'well_fund_field',
         period: 'days',
         geo_structure: this.geoStructure,
         dzo: this.org,
-        report_date_start: formatDate.formatToMinOfDay(this.end_date),
-        report_date_end: formatDate.formatToMaxOfDay(this.end_date)
+        report_date_start: formatDate.getMinOfDayFormatted(this.end_date),
+        report_date_end: formatDate.getMaxOfDayFormatted(this.end_date)
       };
 
       let json_data = JSON.stringify(data);

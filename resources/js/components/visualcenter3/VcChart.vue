@@ -21,6 +21,19 @@
                     this.trans("visualcenter.nov"),
                     this.trans("visualcenter.dec"),
                 ],
+                initialChartColors: {
+                    plan: "#2E50E9",
+                    opecPlan: "#fff",
+                    fact: "#9EA4C9",
+                    monthlyPlan: '#009846',
+                },
+                initialChartLabels: {
+                    plan: this.trans("visualcenter.Plan") + " " + this.trans("visualcenter.utv"),
+                    opecPlan: this.trans("visualcenter.planOPEK"),
+                    monthlyPlan: this.trans("visualcenter.requiredDailyPlan"),
+                    fact: this.trans("visualcenter.Fact"),
+                    deviation: this.trans("visualcenter.deviation"),
+                },
             }
         },
         methods: {
@@ -30,12 +43,12 @@
                 let color2;
                 let plan1;
                 let plan2;
-                let datasets;
 
                 let formattedChartSummary = {
                     plan: [],
                     fact: [],
                     planOpec: [],
+                    monthlyPlan: [],
                     labels: []
                 };
                 let self = this;
@@ -44,6 +57,7 @@
                     formattedChartSummary.plan.push(item.productionPlanForChart);
                     formattedChartSummary.fact.push(item.productionFactForChart);
                     formattedChartSummary.planOpec.push(item.productionPlanForChart2);
+                    formattedChartSummary.monthlyPlan.push(item.monthlyPlan);
                 });
 
                 let canvas = document.getElementById("line-chart");
@@ -79,30 +93,18 @@
                     return ctx.createPattern(tmpCanvas, "repeat");
                 })();
 
-                if (opec === "ОПЕК+") {
-                    color1 = "#fff";
-                    color2 = "#2E50E9";
-                    plan1 = this.trans("visualcenter.planOPEK");
-                    // "План ОПЕК+";
-                    plan2 =
-                        this.trans("visualcenter.Plan") +
-                        " " +
-                        this.trans("visualcenter.utv");
-                    // "План утв.";
-                } else {
-                    color1 = "#2E50E9";
-                    color2 = "#fff";
-                    plan1 =
-                        this.trans("visualcenter.Plan") +
-                        " " +
-                        this.trans("visualcenter.utv");
-                    // "План утв.";
-                    plan2 = this.trans("visualcenter.planOPEK");
-                    // "План ОПЕК+";
+                let chartColors = _.cloneDeep(this.initialChartColors);
+                let chartLabels = _.cloneDeep(this.initialChartLabels);
+                if (chartSummary.isOpecFilterActive) {
+                    chartColors.plan = _.cloneDeep(this.initialChartColors).opecPlan;
+                    chartColors.opecPlan = _.cloneDeep(this.initialChartColors).plan;
+                    chartLabels.plan = _.cloneDeep(this.initialChartLabels).opecPlan;
+                    chartLabels.opecPlan = _.cloneDeep(this.initialChartLabels).plan;
                 }
+
                 let planChartOptions = {
-                    label: plan1,
-                    borderColor: color1,
+                    label: chartLabels.plan,
+                    borderColor: chartColors.plan,
                     fill: 1,
                     backgroundColor: fillPattern,
                     showLine: true,
@@ -110,9 +112,8 @@
                     pointRadius: 0,
                 };
                 let factChartOptions = {
-                    label: this.trans("visualcenter.Fact"),
-                    // "Факт",
-                    borderColor: "#9EA4C9",
+                    label: chartLabels.fact,
+                    borderColor: chartColors.fact,
                     fill: false,
                     showLine: true,
                     data: formattedChartSummary.fact,
@@ -120,19 +121,30 @@
                 };
 
                 let planOpecChartOptions = {
-                    label: plan2,
-                    borderColor: color2,
+                    label: chartLabels.opecPlan,
+                    borderColor: chartColors.opecPlan,
                     fill: false,
                     backgroundColor: fillPattern,
                     showLine: true,
                     data: formattedChartSummary.planOpec,
                     pointRadius: 0,
                 };
+                let monthlyPlan = {
+                    label: chartLabels.monthlyPlan,
+                    borderColor: chartColors.monthlyPlan,
+                    fill: false,
+                    backgroundColor: fillPattern,
+                    showLine: true,
+                    data: formattedChartSummary.monthlyPlan,
+                    pointRadius: 0,
+                };
 
-                if (opec === "ОПЕК+") {
-                    datasets = [planChartOptions, factChartOptions, planOpecChartOptions];
-                } else {
-                    datasets = [planChartOptions, factChartOptions];
+                let datasets = [planChartOptions, factChartOptions];
+                if (chartSummary.isOpecFilterActive) {
+                    datasets.push(planOpecChartOptions);
+                }
+                if (chartSummary.isFilterTargetPlanActive) {
+                    datasets.push(monthlyPlan);
                 }
 
                 this.renderChart(
@@ -160,7 +172,6 @@
                                         });
                                         returnData.push({
                                             text: this.trans("visualcenter.deviation"),
-                                            // "Отклонение",
                                             fillStyle: fillPattern,
                                         });
 

@@ -33,13 +33,13 @@
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
-                                        <strong>Курс доллара:</strong>
+                                        <strong>Курс доллара, тенге:</strong>
                                         <input type="integer" name="ex_rate_dol" class="form-control" placeholder="Пример: 430">
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
-                                        <strong>Курс рубля:</strong>
+                                        <strong>Курс рубля, тенге:</strong>
                                         <input type="integer" name="ex_rate_rub" class="form-control" placeholder="Пример: 6">
                                     </div>
                                 </div>
@@ -47,6 +47,12 @@
                                     <div class="form-group">
                                         <strong>Инфляция, в % на конец периода:</strong>
                                         <input type="integer" name="inf_end" class="form-control" placeholder="Пример: 0.15">
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-12 col-md-12">
+                                    <div class="form-group">
+                                        <strong>Мировая стоимость барреля нефти, доллар:</strong>
+                                        <input type="number" step="0.01" name="barrel_world_price" class="form-control" placeholder="Пример: 45">
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12 text-center">

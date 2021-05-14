@@ -1,0 +1,365 @@
+{
+  "columns": [
+    {
+      "title": "uwi_number",
+      "code": "uwi",
+      "type": "link",
+      "is_editable": false
+    },
+    {
+      "title": "other_uwi",
+      "code": "other_uwi",
+      "type": "text",
+      "is_editable": false
+    },
+    {
+      "title": "worktime",
+      "code": "worktime",
+      "table": "prod.well_status",
+      "column": "well_status_type_id",
+      "type": "text",
+      "is_editable": false
+    },
+    {
+      "title": "exp_type",
+      "code": "exp_type",
+      "table": "prod.well_expl",
+      "column": "name",
+      "type": "text",
+      "is_editable": false
+    },
+    {
+      "title": "lease",
+      "code": "lease",
+      "table": "prod.well_tech",
+      "column": "tap",
+      "type": "integer",
+      "is_editable": false
+    },
+    {
+      "title": "geostructure",
+      "code": "geo",
+      "type": "text",
+      "is_editable": false
+    },
+    {
+      "title": "debit_fluid_tech",
+      "code": "debit_fluid_tech",
+      "table": "prod.tech_mode_prod_oil",
+      "column": "liquid",
+      "type": "float",
+      "is_editable": false
+    },
+    {
+      "title": "debit_oil_tech",
+      "code": "debit_oil_tech",
+      "table": "prod.tech_mode_prod_oil",
+      "column": "oil",
+      "type": "float",
+      "is_editable": false
+    },
+    {
+      "title": "bsw_tech",
+      "code": "bsw_tech",
+      "table": "prod.tech_mode_prod_oil",
+      "column": "wcut",
+      "type": "float",
+      "is_editable": false
+    },
+    {
+      "title": "liquid_val",
+      "code": "liquid_val",
+      "type": "calc",
+      "formula": "$liquid_debit$ * $worktime$",
+      "is_editable": false
+    },
+    {
+      "title": "oil_val",
+      "code": "oil_val",
+      "type": "calc",
+      "formula": "$oil_debit$ * $worktime$",
+      "is_editable": false
+    },
+    {
+      "title": "liquid_debit",
+      "code": "liquid_debit",
+      "table": "prod.meas_liq",
+      "column": "liquid",
+      "type": "float",
+      "is_editable": true,
+      "validation": "numeric|gt:0",
+      "validate_deviation": true
+    },
+    {
+      "title": "mark",
+      "code": "mark",
+      "type": "copy",
+      "copy": {
+        "from": "liquid_telemetry",
+        "to": "liquid_debit"
+      },
+      "table": "prod.well_telemetry",
+      "column": "copied",
+      "additional_filter": {
+        "metric": "1"
+      },
+      "is_editable": false
+    },
+    {
+      "title": "liquid_telemetry",
+      "code": "telemetry",
+      "type": "history_graph",
+      "table": "prod.well_telemetry",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": "1"
+      },
+      "fields": [
+        {
+          "liquid_telemetry": {},
+          "telemetry_source": {}
+        }
+      ],
+      "graph_fields": [
+        {
+          "liquid_telemetry": {}
+        }
+      ],
+      "history_popup": {
+        "title": "telemetry_data"
+      },
+      "is_editable": false
+    },
+    {
+      "title": "bsw",
+      "code": "bsw",
+      "table": "prod.meas_water_cut",
+      "column": "water_cut",
+      "type": "float",
+      "is_editable": true,
+      "validation": "numeric|gte:0|lte:100",
+      "validate_deviation": true
+    },
+    {
+      "title": "oil_debit",
+      "code": "oil_debit",
+      "type": "calc",
+      "formula": "$liquid_debit$ * (1 - $bsw_tech$/100) * $density_oil$",
+      "is_editable": false
+    },
+    {
+      "title": "contamination",
+      "code": "contamination",
+      "table": "prod.lab_research_value",
+      "column": "value_text",
+      "additional_filter": {
+        "param": 258
+      },
+      "type": "float",
+      "is_editable": false,
+      "date_field": "dt"
+    },
+    {
+      "title": "pipe_diameter",
+      "code": "pipe_diameter",
+      "table": "prod.well_equip",
+      "column": "value_double",
+      "additional_filter": {
+        "dict.equip.equip_type": "1",
+        "dict.equip_factory_param.prm": 313
+      },
+      "type": "float",
+      "is_editable": false
+    },
+    {
+      "title": "p_buf",
+      "code": "p_buf",
+      "table": "prod.meas_well",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": "314",
+        "activity": "1",
+        "value_type": "1"
+      },
+      "type": "float",
+      "is_editable": true,
+      "validation": "numeric|gt:0",
+      "validate_deviation": true
+    },
+    {
+      "title": "Рзатр",
+      "code": "p_zatr",
+      "table": "prod.meas_well",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": "315",
+        "activity": "1",
+        "value_type": "1"
+      },
+      "type": "float",
+      "is_editable": true,
+      "validation": "numeric|gt:0",
+      "validate_deviation": true
+    },
+    {
+      "title": "p_buf_b",
+      "code": "p_buf_b",
+      "table": "prod.meas_well",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": "316",
+        "activity": "1",
+        "value_type": "1"
+      },
+      "type": "float",
+      "is_editable": true,
+      "validation": "numeric|gt:0",
+      "validate_deviation": true
+    },
+    {
+      "title": "p_buf_a",
+      "code": "p_buf_a",
+      "table": "prod.meas_well",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": "317",
+        "activity": "1",
+        "value_type": "1"
+      },
+      "type": "float",
+      "is_editable": true,
+      "validation": "numeric|gt:0",
+      "validate_deviation": true
+    },
+    {
+      "title": "cycle_per_minute",
+      "code": "cycle_per_minute",
+      "table": "prod.gdis_current_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": "318",
+        "activity": "1",
+        "value_type": "1"
+      },
+      "type": "float",
+      "is_editable": false
+    },
+    {
+      "title": "length_stroke",
+      "code": "length_stroke",
+      "table": "prod.gdis_current_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": "319",
+        "activity": "1",
+        "value_type": "1"
+      },
+      "type": "float",
+      "is_editable": false
+    },
+    {
+      "title": "reciprotating_speed",
+      "code": "reciprotating_speed",
+      "table": "prod.gdis_current_value",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": "320",
+        "activity": "1",
+        "value_type": "1"
+      },
+      "type": "float",
+      "is_editable": false
+    },
+    {
+      "title": "downtime_reason",
+      "code": "downtime_reason",
+      "table": "prod.well_status",
+      "column": "reason",
+      "additional_filter": {
+        "status": "4"
+      },
+      "type": "text",
+      "is_editable": false
+    },
+    {
+      "title": "gas_factor",
+      "code": "gas_factor",
+      "table": "prod.meas_well",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": "321",
+        "activity": "1",
+        "value_type": "1"
+      },
+      "type": "float",
+      "is_editable": true,
+      "validation": "numeric|gt:0",
+      "validate_deviation": true
+    },
+    {
+      "title": "gas_output",
+      "code": "gas_output",
+      "type": "calc",
+      "formula": "$gas_factor$ * $worktime$",
+      "is_editable": false
+    },
+    {
+      "title": "note",
+      "code": "note",
+      "table": "prod.meas_liq",
+      "column": "note",
+      "type": "text",
+      "is_editable": true
+    },
+    {
+      "title": "prod_decline_reason",
+      "code": "prod_decline_reason",
+      "table": "prod.meas_liq",
+      "column": "reason_decline",
+      "type": "text",
+      "is_editable": true
+    },
+    {
+      "title": "measure_last_month",
+      "code": "measure_last_month",
+      "type": "history",
+      "fields": [
+        {
+          "liquid_debit": {},
+          "bsw": {},
+          "oil_debit": {},
+          "worktime": {}
+        }
+      ],
+      "is_editable": false
+    },
+    {
+      "title": "Плотность нефти",
+      "code": "density_oil",
+      "type": "hidden",
+      "is_editable": false
+    },
+    {
+      "title": "Данные телеметрии",
+      "code": "liquid_telemetry",
+      "type": "hidden",
+      "table": "prod.well_telemetry",
+      "column": "value_double",
+      "additional_filter": {
+        "metric": "1"
+      },
+      "is_editable": false
+    },
+    {
+      "title": "Источник телеметрии",
+      "code": "telemetry_source",
+      "type": "hidden",
+      "table": "prod.well_telemetry",
+      "column": "source",
+      "additional_filter": {
+        "metric": "1"
+      },
+      "is_editable": false
+    }
+  ]
+}

@@ -19,7 +19,7 @@ class ZuHistoryObserver extends EditHistoryObserver
 
         $history = [];
         $fields = [
-            'gu_id' => 'monitoring.gu',
+            'gu_id' => 'monitoring.gu.gu',
             'name' => 'app.param_name',
             'lat' => 'app.lat',
             'lon' => 'app.lon',
@@ -29,10 +29,21 @@ class ZuHistoryObserver extends EditHistoryObserver
             switch ($field) {
                 case 'gu_id':
                     $classname = self::$classNames[$field];
-                    $oldValue = $original[$field] ? $classname::find($original[$field])->name : null;
-                    $newValue = isset($changes[$field]) ? $classname::find(
-                        $changes[$field]
-                    )->name : $oldValue;
+                    $oldValue = null;
+                    if ($original[$field]) {
+                        $classModel = $classname::find($original[$field]);
+                        if ($classModel) {
+                            $oldValue = $classModel->name;
+                        }
+                    }
+                    $newValue = $oldValue;
+
+                    if (isset($changes[$field])) {
+                        $classModel = $classname::find($changes[$field]);
+                        if ($classModel) {
+                            $newValue = $classModel->name;
+                        }
+                    }
                     break;
                 default:
                     $oldValue = $original[$field];

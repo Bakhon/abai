@@ -1,7 +1,7 @@
 @extends('layouts.monitor')
 
 @section('content')
-    <div class="row" id="app">
+    <div id="app">
         <div class="col-md-12">
             @if ($message = Session::get('success'))
                 <div class="alert alert-success">
@@ -23,9 +23,3 @@
         </div>
     </div>
 @endsection
-<style>
-    body{color: white !important;}
-    .table{
-        color: white !important;
-    }
-</style>

@@ -91,14 +91,13 @@ export default {
       this.resultLink = response.data.report_link
     },
     updateData() {
-      let uri = "http://172.20.103.157:8082/generic/";
-      // let uri = "http://0.0.0.0:8090/generic/";
+      let uri = "http://172.20.103.187:8082/generic/";
       let data = {
         type: 'daily_dynamic_well_production',
         period: 'days',
         dzo: this.org,
-        report_date_start: formatDate.formatToFirstDayOfMonth(this.end_date),
-        report_date_end: formatDate.formatToMaxOfDay(this.end_date)
+        report_date_start: formatDate.getFirstDayOfMonthFormatted(this.end_date),
+        report_date_end: formatDate.getMaxOfDayFormatted(this.end_date)
       };
 
       let json_data = JSON.stringify(data);

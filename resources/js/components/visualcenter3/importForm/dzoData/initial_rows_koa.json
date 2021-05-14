@@ -1,0 +1,650 @@
+[
+  {
+    "column1": "Нефть, т/сут",
+    "column2": "Добыча",
+    "column3": "Сдача",
+    "column4": "",
+    "column5": "",
+    "column6": ""
+  },
+  {
+    "column1": "ТОО \"Казахойл Актобе\"",
+    "column2": "",
+    "column3": "",
+    "column4": "",
+    "column5": "",
+    "column6": ""
+  },
+  {
+    "column1": "Алибекмола",
+    "column2": "",
+    "column3": "",
+    "column4": "",
+    "column5": "",
+    "column6": ""
+  },
+  {
+    "column1": "Кожасай",
+    "column2": "",
+    "column3": "",
+    "column4": "",
+    "column5": "",
+    "column6": ""
+  },
+  {
+    "column1": "",
+    "column2": "",
+    "column3": "",
+    "column4": "",
+    "column5": "",
+    "column6": ""
+  },
+  {
+    "column1": "Конденсат, т/сут",
+    "column2": "Добыча",
+    "column3": "Сдача",
+    "column4": "",
+    "column5": "",
+    "column6": ""
+  },
+  {
+    "column1": "ТОО \"Казахойл Актобе\"",
+    "column2": "",
+    "column3": "",
+    "column4": "",
+    "column5": "",
+    "column6": ""
+  },
+  {
+    "column1": "Алибекмола",
+    "column2": "",
+    "column3": "",
+    "column4": "",
+    "column5": "",
+    "column6": ""
+  },
+  {
+    "column1": "Кожасай",
+    "column2": "",
+    "column3": "",
+    "column4": "",
+    "column5": "",
+    "column6": ""
+  },
+  {
+    "column1": "",
+    "column2": "",
+    "column3": "",
+    "column4": "",
+    "column5": "",
+    "column6": ""
+  },
+  {
+    "column1": "Товарный остаток",
+    "column2": " нефти, т/сут",
+    "column3": "",
+    "column4": ""
+  },
+  {
+    "column1": "ТОО \"Казахойл Актобе\"",
+    "column2": "",
+    "column3": "",
+    "column4": "",
+    "column5": "",
+    "column6": ""
+  },
+  {
+    "column1": "Алибекмола",
+    "column2": "",
+    "column3": "",
+    "column4": "",
+    "column5": "",
+    "column6": ""
+  },
+  {
+    "column1": "Кожасай",
+    "column2": "",
+    "column3": "",
+    "column4": "",
+    "column5": "",
+    "column6": ""
+  },
+  {
+    "column1": "",
+    "column2": "",
+    "column3": "",
+    "column4": "",
+    "column5": "",
+    "column6": ""
+  },
+  {
+    "column1": "Попутный газ, тыс.куб.м/сут",
+    "column2": "Добыча",
+    "column3": "Сдача товарного газа в МГ",
+    "column4": "Расход на собственные нужды, в т.ч. тех. потери",
+    "column5": "Переработка",
+    "column6": "Сжигание на факелах",
+    "column7": "Прием газа с АО \"Каспий нефть ТМЕ\" и ТОО \"Арал Петролиум\"",
+    "column8": "Сырой газ в КТГ"
+  },
+  {
+    "column1": "ТОО \"Казахойл Актобе\"",
+    "column2": "",
+    "column3": "",
+    "column4": "",
+    "column5": "",
+    "column6": "",
+    "column7": "",
+    "column8": ""
+  },
+  {
+    "column1": "Алибекмола",
+    "column2": "",
+    "column3": "",
+    "column4": "",
+    "column5": "",
+    "column6": "",
+    "column7": "",
+    "column8": ""
+  },
+  {
+    "column1": "Кожасай",
+    "column2": "",
+    "column3": "",
+    "column4": "",
+    "column5": "",
+    "column6": "",
+    "column7": "",
+    "column8": ""
+  },
+  {
+    "column1": "",
+    "column2": "",
+    "column3": "",
+    "column4": "",
+    "column5": "",
+    "column6": "",
+    "column7": "",
+    "column8": ""
+  },
+  {
+    "column1": "Закачка агента, куб.м/сут",
+    "column2": "Общая закачка воды",
+    "column3": "Закачка технической и подтоварной воды",
+    "column4": "",
+    "column5": "",
+    "column6": ""
+  },
+  {
+    "column1": "ТОО \"Казахойл Актобе\"",
+    "column2": "",
+    "column3": "",
+    "column4": "",
+    "column5": "",
+    "column6": ""
+  },
+  {
+    "column1": "Алибекмола",
+    "column2": "",
+    "column3": "",
+    "column4": "",
+    "column5": "",
+    "column6": ""
+  },
+  {
+    "column1": "Кожасай",
+    "column2": "",
+    "column3": "",
+    "column4": "",
+    "column5": "",
+    "column6": ""
+  },
+  {
+    "column1": "",
+    "column2": "",
+    "column3": "",
+    "column4": "",
+    "column5": "",
+    "column6": ""
+  },
+  {
+    "column1": "Организационно-технические мероприятия",
+    "column2": "Ввод скважин из бурения, ед./сут",
+    "column3": "Проходка бурением, м/сут",
+    "column4": "",
+    "column5": "",
+    "column6": ""
+  },
+  {
+    "column1": "ТОО \"Казахойл Актобе\"",
+    "column2": "",
+    "column3": "",
+    "column4": "",
+    "column5": "",
+    "column6": ""
+  },
+  {
+    "column1": "Алибекмола",
+    "column2": "",
+    "column3": "",
+    "column4": "",
+    "column5": "",
+    "column6": ""
+  },
+  {
+    "column1": "Кожасай",
+    "column2": "",
+    "column3": "",
+    "column4": "",
+    "column5": "",
+    "column6": ""
+  },
+  {
+    "column1": "",
+    "column2": "",
+    "column3": "",
+    "column4": "",
+    "column5": "",
+    "column6": ""
+  },
+  {
+    "column1": "Причины простоя добывающих/нагнетательных скважин",
+    "column2": "Простой добывающих скважин",
+    "column3": "",
+    "column4": "Простой нагнетательных скважин",
+    "column5": "",
+    "column6": ""
+  },
+  {
+    "column1": "",
+    "column2": "Количество скважин, ед.",
+    "column3": "Потеря нефти, тонн",
+    "column4": "Количество скважин, ед.",
+    "column5": "",
+    "column6": ""
+  },
+  {
+    "column1": "1. В ПРС",
+    "column2": "",
+    "column3": "",
+    "column4": "",
+    "column5": "",
+    "column6": ""
+  },
+  {
+    "column1": "2. Ожидание ПРС",
+    "column2": "",
+    "column3": "",
+    "column4": "",
+    "column5": "",
+    "column6": ""
+  },
+  {
+    "column1": "4. В КРС",
+    "column2": "",
+    "column3": "",
+    "column4": "",
+    "column5": "",
+    "column6": ""
+  },
+  {
+    "column1": "3. Ожидание КРС",
+    "column2": "",
+    "column3": "",
+    "column4": "",
+    "column5": "",
+    "column6": ""
+  },
+  {
+    "column1": "5. Исследование скважин",
+    "column2": "",
+    "column3": "",
+    "column4": "",
+    "column5": "",
+    "column6": ""
+  },
+  {
+    "column1": "6. Прочие",
+    "column2": "",
+    "column3": "",
+    "column4": "",
+    "column5": "",
+    "column6": ""
+  },
+  {
+    "column1": "6а. Из них в ожидании насоса",
+    "column2": "",
+    "column3": "",
+    "column4": "",
+    "column5": "",
+    "column6": ""
+  },
+  {
+    "column1": "   6.1 Затоваривание",
+    "column2": "",
+    "column3": "",
+    "column4": "",
+    "column5": "",
+    "column6": ""
+  },
+  {
+    "column1": "   6.2 Порыв в/л,замена в/л",
+    "column2": "",
+    "column3": "",
+    "column4": "",
+    "column5": "",
+    "column6": ""
+  },
+  {
+    "column1": "   6.3 По эл.части.",
+    "column2": "",
+    "column3": "",
+    "column4": "",
+    "column5": "",
+    "column6": ""
+  },
+  {
+    "column1": "   6.4 Ремонт наземного оборудования",
+    "column2": "",
+    "column3": "",
+    "column4": "",
+    "column5": "",
+    "column6": ""
+  },
+  {
+    "column1": "   6.5 Периодические",
+    "column2": "",
+    "column3": "",
+    "column4": "",
+    "column5": "",
+    "column6": ""
+  },
+  {
+    "column1": "   6.6 В ожидании свабирования",
+    "column2": "",
+    "column3": "",
+    "column4": "",
+    "column5": "",
+    "column6": ""
+  },
+  {
+    "column1": "   6.7 Ограничение по добыче",
+    "column2": "",
+    "column3": "",
+    "column4": "",
+    "column5": "",
+    "column6": ""
+  },
+  {
+    "column1": "   6.8 Обработки скважин (ВУВЭ - водоуглеводородная эмульсия, ЭКВ - эмульсия комплексного воздействия, ВУС - вязкоупругий состав и т.д.)",
+    "column2": "",
+    "column3": "",
+    "column4": "",
+    "column5": "",
+    "column6": ""
+  },
+  {
+    "column1": "   6.9 Высокообводненные",
+    "column2": "",
+    "column3": "",
+    "column4": "",
+    "column5": "",
+    "column6": ""
+  },
+  {
+    "column1": "   6.10 Ограничение закачки из-за ограничения добычи нефти",
+    "column2": "",
+    "column3": "",
+    "column4": "",
+    "column5": "",
+    "column6": ""
+  },
+  {
+    "column1": "   6.11 Выравнивание профиля приемистости",
+    "column2": "",
+    "column3": "",
+    "column4": "",
+    "column5": "",
+    "column6": ""
+  },
+  {
+    "column1": "   6.12 Промывка забоя (коилтюбинг)",
+    "column2": "",
+    "column3": "",
+    "column4": "",
+    "column5": "",
+    "column6": ""
+  },
+  {
+    "column1": "   6.13 Ограничение с ЧРФ",
+    "column2": "",
+    "column3": "",
+    "column4": "",
+    "column5": "",
+    "column6": ""
+  },
+  {
+    "column1": "   6.14 Нерентабельные",
+    "column2": "",
+    "column3": "",
+    "column4": "",
+    "column5": "",
+    "column6": ""
+  },
+  {
+    "column1": "   6.15 Ограничение из-за бурения",
+    "column2": "",
+    "column3": "",
+    "column4": "",
+    "column5": "",
+    "column6": ""
+  },
+  {
+    "column1": "  6.16 Остановлены для регулирования закачки",
+    "column2": "",
+    "column3": "",
+    "column4": "",
+    "column5": "",
+    "column6": ""
+  },
+  {
+    "column1": "  6.17 Ожидание  ППР; переобвязка; плановая остановка,ремонтные работы МПГУ и СПГУ, (нагнетательные скважины)",
+    "column2": "",
+    "column3": "",
+    "column4": "",
+    "column5": "",
+    "column6": ""
+  },
+  {
+    "column1": "  6.18 Влияние ПРС;КРС;бурения; освоения,влияние грифона",
+    "column2": "",
+    "column3": "",
+    "column4": "",
+    "column5": "",
+    "column6": ""
+  },
+  {
+    "column1": "  6.19 Остановка из-за МКД",
+    "column2": "",
+    "column3": "",
+    "column4": "",
+    "column5": "",
+    "column6": ""
+  },
+  {
+    "column1": "  7 Технологический простой, из них: ",
+    "column2": "",
+    "column3": "",
+    "column4": "",
+    "column5": "",
+    "column6": ""
+  },
+  {
+    "column1": "  7.1 ПНС",
+    "column2": "",
+    "column3": "",
+    "column4": "",
+    "column5": "",
+    "column6": ""
+  },
+  {
+    "column1": "  7.2 ВНС",
+    "column2": "",
+    "column3": "",
+    "column4": "",
+    "column5": "",
+    "column6": ""
+  },
+  {
+    "column1": "",
+    "column2": "",
+    "column3": "",
+    "column4": "",
+    "column5": "",
+    "column6": ""
+  },
+  {
+    "column1": "Состояние фонда (динамика фонда скважин)",
+    "column2": "Нефтедобывающий фонд",
+    "column3": "Нагнетательный фонд",
+    "column4": "",
+    "column5": "",
+    "column6": ""
+  },
+  {
+    "column1": "Эксплуатационный",
+    "column2": "",
+    "column3": "",
+    "column4": "",
+    "column5": "",
+    "column6": ""
+  },
+  {
+    "column1": "Действующий",
+    "column2": "",
+    "column3": "",
+    "column4": "",
+    "column5": "",
+    "column6": ""
+  },
+  {
+    "column1": "В работе",
+    "column2": "",
+    "column3": "",
+    "column4": "",
+    "column5": "",
+    "column6": ""
+  },
+  {
+    "column1": "В простое",
+    "column2": "",
+    "column3": "",
+    "column4": "",
+    "column5": "",
+    "column6": ""
+  },
+  {
+    "column1": "В бездействии",
+    "column2": "",
+    "column3": "",
+    "column4": "",
+    "column5": "",
+    "column6": ""
+  },
+  {
+    "column1": "Освоение",
+    "column2": "",
+    "column3": "",
+    "column4": "",
+    "column5": "",
+    "column6": ""
+  },
+  {
+    "column1": "Ожидание физической ликвидации скважины",
+    "column2": "",
+    "column3": "",
+    "column4": "",
+    "column5": "",
+    "column6": ""
+  },
+  {
+    "column1": "В консервации",
+    "column2": "",
+    "column3": "",
+    "column4": "",
+    "column5": "",
+    "column6": ""
+  },
+  {
+    "column1": "",
+    "column2": "",
+    "column3": "",
+    "column4": "",
+    "column5": "",
+    "column6": ""
+  },
+  {
+    "column1": "Причины отклонения/снижения добычи нефти:",
+    "column2": "Пояснения причин",
+    "column3": "Принимаемые меры",
+    "column4": "Количество скважин, ед.",
+    "column5": "Время простоя, час",
+    "column6": "Потери по нефти, тонн"
+  },
+  {
+    "column1": "ОПЕК+",
+    "column2": "",
+    "column3": "",
+    "column4": "",
+    "column5": "",
+    "column6": ""
+  },
+  {
+    "column1": "Порывы трубопроводов/выкидных линий",
+    "column2": "",
+    "column3": "",
+    "column4": "",
+    "column5": "",
+    "column6": ""
+  },
+  {
+    "column1": "Посадка/отключение ЭЭ",
+    "column2": "",
+    "column3": "",
+    "column4": "",
+    "column5": "",
+    "column6": ""
+  },
+  {
+    "column1": "Авария в системе сбор и подготовки нефти",
+    "column2": "",
+    "column3": "",
+    "column4": "",
+    "column5": "",
+    "column6": ""
+  },
+  {
+    "column1": "Ограничение АО \"КазТрансОйл\"",
+    "column2": "",
+    "column3": "",
+    "column4": "",
+    "column5": "",
+    "column6": ""
+  },
+  {
+    "column1": "Ограничение по газу",
+    "column2": "",
+    "column3": "",
+    "column4": "",
+    "column5": "",
+    "column6": ""
+  },
+  {
+    "column1": "Прочие",
+    "column2": "",
+    "column3": "",
+    "column4": "",
+    "column5": "",
+    "column6": ""
+  }
+]

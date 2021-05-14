@@ -1,0 +1,25 @@
+revo-grid .header-wrapper {
+    display: none;
+}
+.cell-title {
+    background-color: rgba(31, 78, 121);
+    color: white !important;
+    text-align: center;
+    line-height: 30px;
+    font-size: 14px;
+    font-weight: bold;
+}
+.cell-subtitle {
+    background-color: rgba(31, 78, 121);
+    color: white !important;
+    text-align: center;
+    line-height: 30px;
+    font-size: 14px;
+    font-weight: bold;
+}
+.cell__color-red {
+    background-color: red;
+}
+.cell__color-normal {
+    background-color: white;
+}

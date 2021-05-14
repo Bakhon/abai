@@ -1,0 +1,462 @@
+{
+  "oilDzo": {
+    "fields": [
+      "oil_production_fact",
+      "oil_delivery_fact"
+    ],
+    "rowIndex": 1,
+    "rowLength": 2
+  },
+  "condensateDzo": {
+    "fields": [
+      "condensate_production_fact",
+      "condensate_delivery_fact"
+    ],
+    "rowIndex": 6,
+    "rowLength": 2
+  },
+  "stockOfGoodsDzo": {
+    "fields": [
+      "stock_of_goods_delivery_fact"
+    ],
+    "rowIndex": 11,
+    "rowLength": 1
+  },
+  "associatedGasDzo": {
+    "fields": [
+      "associated_gas_production_fact",
+      "associated_gas_delivery_fact",
+      "associated_gas_expenses_for_own_fact",
+      "associated_gas_processing_fact",
+      "associated_gas_flaring_fact",
+      "associated_gas_receive_kaspiy_aral_fact",
+      "associated_gas_raw_fact"
+    ],
+    "rowIndex": 16,
+    "rowLength": 7
+  },
+  "agentUploadDzo": {
+    "fields": [
+      "agent_upload_total_water_injection_fact",
+      "agent_upload_tech_water_injection_fact"
+    ],
+    "rowIndex": 21,
+    "rowLength": 2
+  },
+  "otmDzo": {
+    "fields": [
+      "otm_wells_commissioning_from_drilling_fact",
+      "otm_drilling_fact"
+    ],
+    "rowIndex": 26,
+    "rowLength": 2
+  },
+  "operatingFond": {
+    "fields": [
+      "operating_production_fond",
+      "operating_injection_fond"
+    ],
+    "rowIndex": 63,
+    "rowLength": 2
+  },
+  "activeFond": {
+    "fields": [
+      "active_production_fond",
+      "active_injection_fond"
+    ],
+    "rowIndex": 64,
+    "rowLength": 2
+  },
+  "inWorkFond": {
+    "fields": [
+      "in_work_production_fond",
+      "in_work_injection_fond"
+    ],
+    "rowIndex": 65,
+    "rowLength": 2
+  },
+  "inIdleFond": {
+    "fields": [
+      "in_idle_production_fond",
+      "in_idle_injection_fond"
+    ],
+    "rowIndex": 66,
+    "rowLength": 2
+  },
+  "inactiveFond": {
+    "fields": [
+      "inactive_production_fond",
+      "inactive_injection_fond"
+    ],
+    "rowIndex": 67,
+    "rowLength": 2
+  },
+  "developingFond": {
+    "fields": [
+      "developing_production_fond",
+      "developing_injection_fond"
+    ],
+    "rowIndex": 68,
+    "rowLength": 2
+  },
+  "pendingLiquidationFond": {
+    "fields": [
+      "pending_liquidation_production_fond",
+      "pending_liquidation_injection_fond"
+    ],
+    "rowIndex": 69,
+    "rowLength": 2
+  },
+  "inConservationFond": {
+    "fields": [
+      "in_conservation_production_fond",
+      "in_conservation_injection_fond"
+    ],
+    "rowIndex": 70,
+    "rowLength": 2
+  },
+  "fields": {
+    "oil": {
+      "Алибекмола": {
+        "fields": [
+          "oil_production_fact",
+          "oil_delivery_fact"
+        ],
+        "rowIndex": 2,
+        "rowLength": 2
+      },
+      "Кожасай": {
+        "fields": [
+          "oil_production_fact",
+          "oil_delivery_fact"
+        ],
+        "rowIndex": 3,
+        "rowLength": 2
+      }
+    },
+    "condensate": {
+      "Алибекмола": {
+        "fields": [
+          "condensate_production_fact",
+          "condensate_delivery_fact"
+        ],
+        "rowIndex": 7,
+        "rowLength": 2
+      },
+      "Кожасай": {
+        "fields": [
+          "condensate_production_fact",
+          "condensate_delivery_fact"
+        ],
+        "rowIndex": 8,
+        "rowLength": 2
+      }
+    },
+    "stockOfGoods": {
+      "Алибекмола": {
+        "fields": [
+          "stock_of_goods_delivery_fact"
+        ],
+        "rowIndex": 12,
+        "rowLength": 1
+      },
+      "Кожасай": {
+        "fields": [
+          "stock_of_goods_delivery_fact"
+        ],
+        "rowIndex": 13,
+        "rowLength": 1
+      }
+    },
+    "associatedGas": {
+      "Алибекмола": {
+        "fields": [
+          "associated_gas_production_fact",
+          "associated_gas_delivery_fact",
+          "associated_gas_expenses_for_own_fact",
+          "associated_gas_processing_fact",
+          "associated_gas_flaring_fact",
+          "associated_gas_receive_kaspiy_aral_fact",
+          "associated_gas_raw_fact"
+        ],
+        "rowIndex": 17,
+        "rowLength": 7
+      },
+      "Кожасай": {
+        "fields": [
+          "associated_gas_production_fact",
+          "associated_gas_delivery_fact",
+          "associated_gas_expenses_for_own_fact",
+          "associated_gas_processing_fact",
+          "associated_gas_flaring_fact",
+          "associated_gas_receive_kaspiy_aral_fact",
+          "associated_gas_raw_fact"
+        ],
+        "rowIndex": 18,
+        "rowLength": 7
+      }
+    },
+    "agentUpload": {
+      "Алибекмола": {
+        "fields": [
+          "agent_upload_total_water_injection_fact",
+          "agent_upload_tech_water_injection_fact"
+        ],
+        "rowIndex": 22,
+        "rowLength": 2
+      },
+      "Кожасай": {
+        "fields": [
+          "agent_upload_total_water_injection_fact",
+          "agent_upload_tech_water_injection_fact"
+        ],
+        "rowIndex": 23,
+        "rowLength": 2
+      }
+    },
+    "otm": {
+      "Алибекмола": {
+        "fields": [
+          "otm_wells_commissioning_from_drilling_fact",
+          "otm_drilling_fact"
+        ],
+        "rowIndex": 27,
+        "rowLength": 2
+      },
+      "Кожасай": {
+        "fields": [
+          "otm_wells_commissioning_from_drilling_fact",
+          "otm_drilling_fact"
+        ],
+        "rowIndex": 28,
+        "rowLength": 2
+      }
+    }
+  },
+  "downtimeReason": {
+    "prs": {
+      "fields": ["prs_downtime_production_wells_count","prs_downtime_production_wells_oil_loss"],
+      "rowIndex": 32,
+      "rowLength": 2
+    },
+    "prsWait": {
+      "fields": ["prs_wait_downtime_production_wells_count","prs_wait_downtime_production_wells_oil_loss"],
+      "rowIndex": 33,
+      "rowLength": 2
+    },
+    "krs": {
+      "fields": ["krs_downtime_production_wells_count","krs_downtime_production_wells_oil_loss"],
+      "rowIndex": 34,
+      "rowLength": 2
+    },
+    "krsWait": {
+      "fields": ["krs_wait_downtime_production_wells_count","krs_wait_downtime_production_wells_oil_loss"],
+      "rowIndex": 35,
+      "rowLength": 2
+    },
+    "wellSurvey": {
+      "fields": ["well_survey_downtime_production_wells_count","well_survey_downtime_production_wells_oil_loss"],
+      "rowIndex": 36,
+      "rowLength": 2
+    },
+    "other": {
+      "fields": ["other_downtime_production_wells_count","other_downtime_production_wells_oil_loss"],
+      "rowIndex": 37,
+      "rowLength": 2
+    },
+    "waitingPump": {
+      "fields": ["waiting_pump_downtime_production_wells_count","waiting_pump_production_wells_oil_loss"],
+      "rowIndex": 38,
+      "rowLength": 2
+    },
+    "glut": {
+      "fields": ["glut_downtime_production_wells_count","glut_downtime_production_wells_oil_loss"],
+      "rowIndex": 39,
+      "rowLength": 2
+    },
+    "impulse": {
+      "fields": ["impulse_replacement_downtime_production_wells_count","impulse_replacement_downtime_production_wells_oil_loss"],
+      "rowIndex": 40,
+      "rowLength": 2
+    },
+    "electricalPart": {
+      "fields": ["electrical_part_downtime_production_wells_count","electrical_part_downtime_production_wells_oil_loss"],
+      "rowIndex": 41,
+      "rowLength": 2
+    },
+    "groundRepair": {
+      "fields": ["ground_repair_downtime_production_wells_count","ground_repair_downtime_production_wells_oil_loss"],
+      "rowIndex": 42,
+      "rowLength": 2
+    },
+    "periodicDowntime": {
+      "fields": ["periodic_downtime_production_wells_count","periodic_downtime_production_wells_oil_loss"],
+      "rowIndex": 43,
+      "rowLength": 2
+    },
+    "swabbingWaiting": {
+      "fields": ["waiting_swabbing_downtime_production_wells_count","waiting_swabbing_production_wells_oil_loss"],
+      "rowIndex": 44,
+      "rowLength": 2
+    },
+    "productionRestriction": {
+      "fields": ["production_restriction_downtime_production_wells_count","production_restriction_downtime_production_wells_oil_loss"],
+      "rowIndex": 45,
+      "rowLength": 2
+    },
+    "wellTreatment": {
+      "fields": ["well_treatment_downtime_production_wells_count","well_treatment_downtime_production_wells_oil_loss"],
+      "rowIndex": 46,
+      "rowLength": 2
+    },
+    "highlyWatered": {
+      "fields": ["highly_watered_downtime_production_wells_count","highly_watered_downtime_production_wells_oil_loss"],
+      "rowIndex": 47,
+      "rowLength": 2
+    },
+    "limitedDownload": {
+      "fields": ["limited_download_downtime_production_wells_count","limited_download_downtime_production_wells_oil_loss"],
+      "rowIndex": 48,
+      "rowLength": 2
+    },
+    "profileAlignment": {
+      "fields": ["profile_alignment_downtime_production_wells_count","profile_alignment_downtime_production_wells_oil_loss"],
+      "rowIndex": 49,
+      "rowLength": 2
+    },
+    "coiltubing": {
+      "fields": ["coiltubing_downtime_production_wells_count","coiltubing_downtime_production_wells_oil_loss"],
+      "rowIndex": 50,
+      "rowLength": 2
+    },
+    "chrfRestriction": {
+      "fields": ["chrf_restriction_downtime_production_wells_count","chrf_restriction_downtime_production_wells_oil_loss"],
+      "rowIndex": 51,
+      "rowLength": 2
+    },
+    "unprofitable": {
+      "fields": ["unprofitable_downtime_production_wells_count","unprofitable_downtime_production_wells_oil_loss"],
+      "rowIndex": 52,
+      "rowLength": 2
+    },
+    "drillingRestriction": {
+      "fields": ["drilling_restriction_downtime_production_wells_count","drilling_restriction_downtime_production_wells_oil_loss"],
+      "rowIndex": 53,
+      "rowLength": 2
+    },
+    "stoppedForRegulate": {
+      "fields": ["regulate_stopped_downtime_production_wells_count","regulate_stopped_production_wells_oil_loss"],
+      "rowIndex": 54,
+      "rowLength": 2
+    },
+    "waitingPPR": {
+      "fields": ["waiting_ppr_downtime_production_wells_count","waiting_ppr_production_wells_oil_loss"],
+      "rowIndex": 55,
+      "rowLength": 2
+    },
+    "impactPRS": {
+      "fields": ["impact_prs_downtime_production_wells_count","impact_prs_production_wells_oil_loss"],
+      "rowIndex": 56,
+      "rowLength": 2
+    },
+    "mkdStop": {
+      "fields": ["mkd_stop_downtime_production_wells_count","mkd_stop_production_wells_oil_loss"],
+      "rowIndex": 57,
+      "rowLength": 2
+    },
+    "technologicalDowntime": {
+      "fields": ["technological_downtime_downtime_production_wells_count","technological_downtime_production_wells_oil_loss"],
+      "rowIndex": 58,
+      "rowLength": 2
+    },
+    "pns": {
+      "fields": ["pns_production_wells_count","pns_production_wells_oil_loss"],
+      "rowIndex": 59,
+      "rowLength": 2
+    },
+    "vns": {
+      "fields": ["vns_production_wells_count","vns_production_wells_oil_loss"],
+      "rowIndex": 60,
+      "rowLength": 2
+    }
+  },
+  "decreaseReason": {
+    "opec": {
+      "fields": [
+        "opec_explanation_reasons",
+        "opec_measures_taken",
+        "opec_wells_number",
+        "opec_downtime",
+        "opec_oil_losses"
+      ],
+      "rowIndex": 73,
+      "rowLength": 5
+    },
+    "impulse": {
+      "fields": [
+        "impulse_explanation_reasons",
+        "impulse_measures_taken",
+        "impulse_wells_number",
+        "impulse_downtime",
+        "impulse_oil_losses"
+      ],
+      "rowIndex": 74,
+      "rowLength": 5
+    },
+    "shutdown": {
+      "fields": [
+        "shutdown_explanation_reasons",
+        "shutdown_measures_taken",
+        "shutdown_wells_number",
+        "shutdown_downtime",
+        "shutdown_oil_losses"
+      ],
+      "rowIndex": 75,
+      "rowLength": 5
+    },
+    "accident": {
+      "fields": [
+        "accident_explanation_reasons",
+        "accident_measures_taken",
+        "accident_wells_number",
+        "accident_downtime",
+        "accident_oil_losses"
+      ],
+      "rowIndex": 76,
+      "rowLength": 5
+    },
+    "restrictionKto": {
+      "fields": [
+        "restriction_kto_explanation_reasons",
+        "restriction_kto_measures_taken",
+        "restriction_kto_wells_number",
+        "restriction_kto_downtime",
+        "restriction_kto_oil_losses"
+      ],
+      "rowIndex": 77,
+      "rowLength": 5
+    },
+    "gasRestriction": {
+      "fields": [
+        "gas_restriction_explanation_reasons",
+        "gas_restriction_measures_taken",
+        "gas_restriction_wells_number",
+        "gas_restriction_downtime",
+        "gas_restriction_oil_losses"
+      ],
+      "rowIndex": 78,
+      "rowLength": 5
+    },
+    "other": {
+      "fields": [
+        "other_explanation_reasons",
+        "other_measures_taken",
+        "other_wells_number",
+        "other_downtime",
+        "other_oil_losses"
+      ],
+      "rowIndex": 79,
+      "rowLength": 5
+    }
+  }
+}

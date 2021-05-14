@@ -105,15 +105,14 @@ export default {
       this.resultLink = response.data.report_link
     },
     updateData() {
-      let uri = "http://172.20.103.157:8082/generic/";
-      // let uri = "http://0.0.0.0:8090/generic/";
+      let uri = "http://172.20.103.187:8082/generic/";
       let data = {
         type: 'inactive_fund_stat',
         period: 'days',
         dzo: this.org,
         category: this.category,
-        report_date_start: formatDate.formatToMinOfDay(this.end_date),
-        report_date_end: formatDate.formatToMaxOfDay(this.end_date)
+        report_date_start: formatDate.getMinOfDayFormatted(this.end_date),
+        report_date_end: formatDate.getMaxOfDayFormatted(this.end_date)
       };
 
       let json_data = JSON.stringify(data);

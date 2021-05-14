@@ -54,25 +54,25 @@
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
                                         <strong>Дата:</strong>
-                                        <input type="date" name="date" value={{$row->date}} class="form-control">
+                                        <input type="date" name="date" value="{{$row->date}}" class="form-control">
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
                                         <strong>Прирост извлекаемых запасов нефти и конденсата по категории А:</strong>
-                                        <input type="float" name="A_category" value={{$row->A_category}} class="form-control">
+                                        <input type="float" name="A_category" value="{{$row->A_category}}" class="form-control">
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
                                         <strong>Прирост извлекаемых запасов нефти и конденсата по категории B:</strong>
-                                        <input type="float" name="B_category" value={{$row->B_category}} class="form-control">
+                                        <input type="float" name="B_category" value="{{$row->B_category}}" class="form-control">
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
                                         <strong>Прирост извлекаемых запасов нефти и конденсата по категории C1:</strong>
-                                        <input type="float" name="C1_category" value={{$row->C1_category}} class="form-control">
+                                        <input type="float" name="C1_category" value="{{$row->C1_category}}" class="form-control">
                                     </div>
                                 </div>
                                 

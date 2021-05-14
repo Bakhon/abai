@@ -18,7 +18,7 @@
               fill="white"
             /></svg
         ></i>
-        {{trans('tr.btr')}}</a
+        {{trans('tr.tr')}}</a
       >
 
       <div class="col dropdown" style="padding: 0px; margin: 0 13px">
@@ -45,59 +45,74 @@
               />
             </svg>
           </i>
-          {{trans('tr.fadt')}}
+          {{trans('tr.choose_date_y')}}
         </button>
 
-        <div
-          class="dropdown-menu fadropmenu"
-          style="background: #40467E; margin-top: 4px;"
+        <div v-if="isDatepicker1"
+          class="dropdown-menu fadropmenu newmenu"
           aria-labelledby="dropdownMenuLink"
         >
+          <td class="calheader">{{trans('tr.weekly_fa')}}</td>
           <!-- <form class="form-group but-nav__link"> -->
-          <label for="inputDate" style="margin-left: 8px;">{{trans('tr.fadt1')}}:</label>
+          <label for="inputDate" class="calinput_date">{{trans('tr.enter_reference_date')}}:</label>
           <input type="date" class="form-control" v-model="date1" />
-          <!-- <form class="form-group but-nav__link"> -->
-          <label for="inputDate" style="margin-left: 8px;">{{trans('tr.fadt2')}}:</label>
+          <label for="inputDate" class="calinput_date">{{trans('tr.enter_compare_date')}}:</label>
           <input type="date" class="form-control" v-model="date2" />
-          <a href="#" class="btn btn-sm button_form" @click.prevent="chooseDt"
-            >{{trans('tr.sf')}}</a
-          >
+          <div class="fix_calendar">
+                  <a href="#" @click.prevent="chooseSecDt"  class="btn btn-sm button_form caldate"
+                    >{{trans('tr.form')}}</a
+                  >
+                  <a  class="butchange" @click="calendarDynamic" @click.prevent.stop="() => {}" >
+                    <svg 
+                      width="32" 
+                      height="28" 
+                      viewBox="0 0 32 28" 
+                      fill="none" 
+                      xmlns="http://www.w3.org/2000/svg">
+                      <path d="M0.5 6C0.5 2.96243 2.96243 0.5 6 0.5H26C29.0376 0.5 31.5 2.96243 31.5 6V22C31.5 25.0376 29.0376 27.5 26 27.5H6C2.96243 27.5 0.5 25.0376 0.5 22V6Z" fill="#333975" stroke="#333975"/>
+                      <path d="M9 14.7282V13.3003C9 10.9807 10.8804 9.10034 13.2 9.10034H22.2999V9.10034" stroke="#D6D7E3" stroke-width="1.4" stroke-linecap="round"/>
+                      <path d="M20.8997 7L22.9289 9.02927C22.968 9.06832 22.968 9.13164 22.9289 9.17069L20.8997 11.2" stroke="#D6D7E3" stroke-width="1.4" stroke-linecap="round"/>
+                      <path d="M22.9996 13.2861V14.7141C22.9996 17.0336 21.1192 18.914 18.7996 18.914H9.69971V18.914" stroke="#D6D7E3" stroke-width="1.4" stroke-linecap="round"/>
+                      <path d="M11.1 21L9.07071 18.9707C9.03166 18.9317 9.03166 18.8684 9.07071 18.8293L11.1 16.8" stroke="#D6D7E3" stroke-width="1.4" stroke-linecap="round"/>
+                    </svg></a>
+                </div>
+        </div>
+
+
+        <div v-if="isDatepicker2"
+          class="dropdown-menu fadropmenu newmenu"
+          aria-labelledby="dropdownMenuLink"
+        >
+          <td class="calheader">{{trans('tr.monthly_fa')}}</td>
+          <label for="inputDate" class="calinput_date">{{trans('tr.enter_reference_date')}}:</label>
+          <input type="date" class="form-control" v-model="date1" />
+          <label for="inputDate" class="calinput_date">{{trans('tr.enter_compare_date')}}:</label>
+          <input type="date" class="form-control" v-model="date2" />
+          <div class="fix_calendar">
+                  <a href="#" @click.prevent="chooseDt"  class="btn btn-sm button_form caldate"
+                    >{{trans('tr.form')}}</a
+                  >
+                  <a  class="butchange" @click="calendarDynamic" @click.prevent.stop="() => {}" >
+                    <svg 
+                      width="32" 
+                      height="28" 
+                      viewBox="0 0 32 28" 
+                      fill="none" 
+                      xmlns="http://www.w3.org/2000/svg">
+                      <path d="M0.5 6C0.5 2.96243 2.96243 0.5 6 0.5H26C29.0376 0.5 31.5 2.96243 31.5 6V22C31.5 25.0376 29.0376 27.5 26 27.5H6C2.96243 27.5 0.5 25.0376 0.5 22V6Z" fill="#333975" stroke="#333975"/>
+                      <path d="M9 14.7282V13.3003C9 10.9807 10.8804 9.10034 13.2 9.10034H22.2999V9.10034" stroke="#D6D7E3" stroke-width="1.4" stroke-linecap="round"/>
+                      <path d="M20.8997 7L22.9289 9.02927C22.968 9.06832 22.968 9.13164 22.9289 9.17069L20.8997 11.2" stroke="#D6D7E3" stroke-width="1.4" stroke-linecap="round"/>
+                      <path d="M22.9996 13.2861V14.7141C22.9996 17.0336 21.1192 18.914 18.7996 18.914H9.69971V18.914" stroke="#D6D7E3" stroke-width="1.4" stroke-linecap="round"/>
+                      <path d="M11.1 21L9.07071 18.9707C9.03166 18.9317 9.03166 18.8684 9.07071 18.8293L11.1 16.8" stroke="#D6D7E3" stroke-width="1.4" stroke-linecap="round"/>
+                    </svg></a>
+                </div>
         </div>
       </div>
-      <!-- <button type="button" class="btn btn-primary">Главный</button> -->
-
-      <!-- <form class="form-group but-nav__link">
-                        <label for="inputDate">Введите дату:</label>
-                        <input type="date" class="form-control" v-model="date1">
-                </form>
-                <form class="form-group but-nav__link">
-                        <label for="inputDate">Выбор даты 2:</label>
-                        <input type="date" class="form-control" v-model="date2">
-                </form>
-                <a href="#" class="but-nav__link but" @click.prevent="chooseDt">Сформировать</a> -->
-      <!-- <a href="#" class="but-nav__link but">Редактировать</a> -->
-      <!-- <a class="but-nav__link but " @click="pushBign('chart')">Графики</a> -->
-      <!-- <a href="http://172.20.103.51:7576/api/techregime/factor/download" download="Факторный анализ.xlsx" class="but-nav__link but">Экспорт</a> -->
-      <!-- <div class="col">
-        <div class="input-group input-group-sm fasearch">
-          <input
-            type="text"
-            placeholder="Поиск"
-            class="form-control fix-rounded-right"
-            required
-          />
-          <div class="input-group-prepend fainputgr">
-            <button class="input-group-text" style="font-size: 14px">
-              Поиск
-            </button>
-          </div>
-        </div>
-      </div> -->
       <div class="big-data-input-container">
         <search-form-refresh
           @input="handlerSearch"
           @start-search="searchWell()"
-          :clear="searched"
+          :clear="isSearched"
         />
       </div>
     </div>
@@ -105,7 +120,7 @@
       class="tech tr-table-header"
       style="display: flex; background: #272953; margin-left: 0px !important"
     >
-      <h3 style="margin-left: 14px">{{trans('tr.hfa')}}</h3>
+      <h3 style="margin-left: 14px">{{faHeader}}</h3>
       <tr-multiselect
         :filter="filter"
         :selectedAllTag="true"
@@ -115,7 +130,7 @@
       />
       <a
         class="but-nav__link but"
-        href="trfa"
+        :href="chartLink"
         @click="pushBign('chart')"
         style="background: #272953"
         ><svg
@@ -132,147 +147,137 @@
             stroke-linecap="round"
           /></svg
       ></a>
+      <div v-if= isGenHide>
+      <button
+            class="trgraph"
+            id="bt1"
+            @click="toogle"
+            :title="isHide ? trans('tr.short_version') : trans('tr.full_version')"
+            data-toggle="tooltip"
+            data-placement="top"
+          >
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              v-if="isHide"
+            >
+              <path
+                d="M9.23235 6H6.18359C5.63131 6 5.18359 6.44772 5.18359 7V18C5.18359 18.5523 5.63131 19 6.18359 19H17.342C17.8943 19 18.342 18.5523 18.342 18V15"
+                stroke="white"
+                stroke-width="1.4"
+                stroke-linecap="round"
+              />
+              <path
+                d="M18 6L12 12M12 12V7.6M12 12H16.4"
+                stroke="white"
+                stroke-width="1.4"
+                stroke-linecap="round"
+              />
+            </svg>
+
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              v-if="!isHide"
+            >
+              <path
+                d="M9 6H6C5.44772 6 5 6.44772 5 7V18C5 18.5523 5.44772 19 6 19H17C17.5523 19 18 18.5523 18 18V15M11.5 12.5L19 5M19 5V10.5M19 5H13.5"
+                stroke="white"
+                stroke-width="1.4"
+                stroke-linecap="round"
+              />
+            </svg>
+          </button>
+          </div>
     </div>
-    <div style="position: relative">
-      <!-- <div class="fadee" v-if="isloading">
-        <fade-loader :loading="isloading"></fade-loader>
-      </div> -->
+    <div class="fatable">
       <table
         class="table table-bordered table-dark table-responsive fakrtableborderedtable"
-        style="background: #0d1e63"
       >
         <tr class="headerColumn">
-          <td rowspan="3" style="background: #12135c"><span>{{trans('tr.fa1')}}</span></td>
+          <td rowspan="3" style="background: #12135c"><span>{{trans('tr.well')}}</span></td>
           <td rowspan="3" style="background: #12135c; min-width: 120px;">
-            <span>{{trans('tr.fa2')}}</span>
+            <span>{{trans('tr.field')}}</span>
           </td>
-          <td rowspan="3" style="background: #12135c"><span>{{trans('tr.tr3')}}</span></td>
-          <td rowspan="3" style="background: #12135c"><span>{{trans('tr.tr4')}}</span></td>
+          <td rowspan="3" style="background: #12135c"><span>{{trans('tr.u_horizon')}}</span></td>
+          <td rowspan="3" style="background: #12135c"><span>{{trans('tr.u_object')}}</span></td>
           <td rowspan="3" style="background: #12135c">
-            <span>{{trans('tr.tr10')}}</span>
+            <span>{{trans('tr.operation_method')}}</span>
           </td>
-          <td class="colspan" colspan="6" style="background: #2c3379">
-            {{trans('tr.fa3')}} {{ dt }}
+          <td v-show= isHide class="colspan" :colspan= colsize7 style="background: #2c3379">
+            {{faTableHeader}}
           </td>
-          <td class="colspan" colspan="6" style="background: #1a2370">
-            {{trans('tr.fa3')}} {{ dt2 }}
-          </td>
-          <td class="colspan" colspan="1" style="background: #12135C">
-            {{trans('tr.fa4')}}
+          <td v-show= isHide class="colspan" :colspan= colsize7 style="background: #1a2370">
+            {{faTableHeader2}}
           </td>
           <td class="colspan" colspan="1" style="background: #12135C">
-            {{trans('tr.fa5')}}
+            {{trans('tr.q_oil_deviation')}}
+          </td>
+          <td class="colspan" :colspan= colsize2 style="background: #12135C">
+            {{trans('tr.technological')}}
           </td>
           <td class="colspan" colspan="3" style="background: #12135C">
-            {{trans('tr.fa6')}}
+            {{trans('tr.geological')}}
           </td>
           <td rowspan="3" style="background: #12135C
 ; min-width:248px;">
-            <span>{{trans('tr.fa7')}}</span>
+            <span>{{trans('tr.tr_main_deviation')}}</span>
+          </td>
+          <td v-if= isGenHide rowspan="3" style="background: #12135C
+; min-width:248px;">
+            <span>{{trans('tr.choke_changing')}}</span>
+          </td>
+          <td v-if= isGenHide rowspan="3" style="background: #12135C
+; min-width:248px;">
+            <span>{{trans('tr.pump_operating_mode_changes')}}</span>
           </td>
         </tr>
         <tr class="headerColumn">
-          <td rowspan="2" style="background: #2c3379"><span>{{trans('tr.tr22')}}</span></td>
-          <td rowspan="2" style="background: #2c3379"><span>{{trans('tr.tr21')}}</span></td>
-          <td rowspan="2" style="background: #2c3379">
-            <span>{{trans('tr.tr23')}}</span>
+          <td v-show= isHide rowspan="2" style="background: #2c3379"><span>{{trans('tr.q_liquid')}}</span></td>
+          <td v-show= isHide rowspan="2" style="background: #2c3379"><span>{{trans('tr.q_oil')}}</span></td>
+          <td v-show= isHide rowspan="2" style="background: #2c3379">
+            <span>{{trans('tr.water_cut')}}</span>
           </td>
-          <td rowspan="2" style="background: #2c3379"><span>{{trans('tr.tr20')}}</span></td>
-          <td rowspan="2" style="background: #2c3379"><span>{{trans('tr.tr14')}}</span></td>
-          <td rowspan="2" style="background: #2c3379"><span>{{trans('tr.tr26')}}</span></td>
-          <td rowspan="2" style="background: #1a2370"><span>{{trans('tr.tr22')}}</span></td>
-          <td rowspan="2" style="background: #1a2370"><span>{{trans('tr.tr21')}}</span></td>
-          <td rowspan="2" style="background: #1a2370">
-            <span>{{trans('tr.tr23')}}</span>
+          <td v-show= isHide rowspan="2" style="background: #2c3379"><span>{{trans('tr.bottomhole_pressure')}}</span></td>
+          <td v-show= isHide rowspan="2" style="background: #2c3379"><span>{{trans('tr.p_layer')}}</span></td>
+          <td v-show= isHide rowspan="2" style="background: #2c3379"><span>{{trans('tr.productivity_index')}}</span></td>
+          <td v-if= isGenHide v-show= isHide rowspan="2" style="background: #2c3379"><span>{{trans('tr.work_day')}}</span></td>
+          <td v-show= isHide rowspan="2" style="background: #1a2370"><span>{{trans('tr.q_liquid')}}</span></td>
+          <td v-show= isHide rowspan="2" style="background: #1a2370"><span>{{trans('tr.q_oil')}}</span></td>
+          <td v-show= isHide rowspan="2" style="background: #1a2370">
+            <span>{{trans('tr.water_cut')}}</span>
           </td>
-          <td rowspan="2" style="background: #1a2370"><span>{{trans('tr.tr20')}}</span></td>
-          <td rowspan="2" style="background: #1a2370"><span>{{trans('tr.tr14')}}</span></td>
-          <td rowspan="2" style="background: #1a2370"><span>{{trans('tr.tr26')}}</span></td>
-          <td rowspan="2" style="background: #12135C"><span>{{trans('tr.fa8')}}</span></td>
+          <td v-show= isHide rowspan="2" style="background: #1a2370"><span>{{trans('tr.bottomhole_pressure')}}</span></td>
+          <td v-show= isHide rowspan="2" style="background: #1a2370"><span>{{trans('tr.p_layer')}}</span></td>
+          <td v-show= isHide rowspan="2" style="background: #1a2370"><span>{{trans('tr.productivity_index')}}</span></td>
+          <td v-if= isGenHide v-show= isHide rowspan="2" style="background: #1a2370"><span>{{trans('tr.work_day')}}</span></td>
+          <td rowspan="2" style="background: #12135C"><span>{{trans('tr.d_q_oil')}}</span></td>
           <td rowspan="2" style="background: #12135C">
-            <span>{{trans('tr.fa9')}}</span>
+            <span>{{pbhHeader}}</span>
+          </td>
+          <td v-if= isGenHide rowspan="2" style="background: #12135C">
+            <span>{{workDaysHeader}}</span>
           </td>
           <td rowspan="2" style="background: #12135C">
-            <span>{{trans('tr.fa10')}}</span>
+            <span>{{waterCutHeader}}</span>
           </td>
           <td rowspan="2" style="background: #12135C">
-            <span>{{trans('tr.fa11')}}</span>
+            <span>{{pLayerHeader}}</span>
           </td>
           <td rowspan="2" style="background: #12135C">
-            <span>{{trans('tr.trs58')}}</span>
+            <span>{{trans('tr.k_prod')}}</span>
           </td>
+
         </tr>
         <tr></tr>
         <tr class="subHeaderColumn" style="cursor: pointer">
-          <!-- <td @click="sortBy('well')" style="background: #12135c">
-            <i class="fa fa-fw fa-sort"></i>
-          </td>
-          <td @click="sortBy('field')" style="background: #12135c">
-            <i class="fa fa-fw fa-sort"></i>
-          </td>
-          <td @click="sortBy('horizon')" style="background: #12135c">
-            <i class="fa fa-fw fa-sort"></i>
-          </td>
-          <td @click="sortBy('exp_meth')" style="background: #12135c">
-            <i class="fa fa-fw fa-sort"></i>
-          </td>
-          <td @click="sortBy('q_l_1')" style="background: #2c3379">
-            <i class="fa fa-fw fa-sort"></i>м3/сут
-          </td>
-          <td @click="sortBy('q_o_1')" style="background: #2c3379">
-            <i class="fa fa-fw fa-sort"></i>м3/сут
-          </td>
-          <td @click="sortBy('wct_1')" style="background: #2c3379">
-            <i class="fa fa-fw fa-sort"></i>
-          </td>
-          <td @click="sortBy('bhp_1')" style="background: #2c3379">
-            <i class="fa fa-fw fa-sort"></i>ат
-          </td>
-          <td @click="sortBy('p_res_1')" style="background: #2c3379">
-            <i class="fa fa-fw fa-sort"></i>ат
-          </td>
-          <td @click="sortBy('pi_1')" style="background: #2c3379">
-            <i class="fa fa-fw fa-sort"></i>м3/сут/ат
-          </td>
-          <td @click="sortBy('q_l_2')" style="background: #1a2370">
-            <i class="fa fa-fw fa-sort"></i>м3/сут
-          </td>
-          <td @click="sortBy('q_o_2')" style="background: #1a2370">
-            <i class="fa fa-fw fa-sort"></i>м3/сут
-          </td>
-          <td @click="sortBy('wct_2')" style="background: #1a2370">
-            <i class="fa fa-fw fa-sort"></i>
-          </td>
-          <td @click="sortBy('bhp_2')" style="background: #1a2370">
-            <i class="fa fa-fw fa-sort"></i>ат
-          </td>
-          <td @click="sortBy('p_res_2')" style="background: #1a2370">
-            <i class="fa fa-fw fa-sort"></i>ат
-          </td>
-          <td @click="sortBy('pi_2')" style="background: #1a2370">
-            <i class="fa fa-fw fa-sort"></i>м3/сут/ат
-          </td>
-          <td @click="sortBy('dqn')" style="background: #e50303">
-            <i class="fa fa-fw fa-sort"></i>т/сут
-          </td>
-          <td @click="sortBy('Pbh')" style="background: #f08143">
-            <i class="fa fa-fw fa-sort"></i>
-          </td>
-          <td @click="sortBy('wct')" style="background: #4fb26a">
-            <i class="fa fa-fw fa-sort"></i>
-          </td>
-          <td @click="sortBy('p_res')" style="background: #4fb26a">
-            <i class="fa fa-fw fa-sort"></i>
-          </td>
-          <td @click="sortBy('PI')" style="background: #4fb26a">
-            <i class="fa fa-fw fa-sort"></i>
-          </td>
-          <td @click="sortBy('Main_problem')" style="background: #272953">
-            <i class="fa fa-fw fa-sort"></i>
-          </td> -->
-          <td @click="sortBy('rus_wellname')"  style="background: #12135c" class="sortik">
-            <!-- <i class="fas fa-sort-down" v-if="issorttobig"></i>
-            <i class="fas fa-sort-up" v-if="!issorttobig"></i> -->
+           <td @click="sortBy('rus_wellname')"  style="background: #12135c" class="sortik">
             <i class="fa fa-fw fa-sort"></i>
           </td>
           <td @click="sortBy('field')" style="background: #12135c; min-width: 120px;">
@@ -287,58 +292,73 @@
           <td @click="sortBy('exp_meth')" style="background: #12135c">
             <i class="fa fa-fw fa-sort"></i>
           </td>
-          <td @click="sortBy('q_l_1')" style="background: #2c3379">
-            <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr2')}}
+          <td v-show= isHide @click="sortBy('q_l_1')" style="background: #2c3379">
+            <i class="fa fa-fw fa-sort"></i>{{qLiquidMeasure}}
           </td>
-          <td @click="sortBy('q_o_1')" style="background: #2c3379">
-            <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr3')}}
+          <td v-show= isHide @click="sortBy('q_o_1')" style="background: #2c3379">
+            <i class="fa fa-fw fa-sort"></i>{{factorsMeasure}}
           </td>
-          <td @click="sortBy('wct_1')" style="background: #2c3379">
+          <td v-show= isHide @click="sortBy('wct_1')" style="background: #2c3379">
             <i class="fa fa-fw fa-sort"></i>%
           </td>
-          <td @click="sortBy('bhp_1')" style="background: #2c3379">
-            <i class="fa fa-fw fa-sort"></i>атм
+          <td v-show= isHide @click="sortBy('bhp_1')" style="background: #2c3379">
+            <i class="fa fa-fw fa-sort"></i>{{trans('tr.atm')}}
           </td>
-          <td @click="sortBy('p_res_1')" style="background: #2c3379">
-            <i class="fa fa-fw fa-sort"></i>атм
+          <td v-show= isHide @click="sortBy('p_res_1')" style="background: #2c3379">
+            <i class="fa fa-fw fa-sort"></i>{{trans('tr.atm')}}
           </td>
-          <td @click="sortBy('pi_1')" style="background: #2c3379">
-            <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtrfa1')}}
+          <td v-show= isHide @click="sortBy('pi_1')" style="background: #2c3379">
+            <i class="fa fa-fw fa-sort"></i>{{prodIndexMeasure}}
           </td>
-          <td @click="sortBy('q_l_2')" style="background: #1a2370">
-            <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr2')}}
+          <td v-if= isGenHide v-show= isHide @click="sortBy('prod_days_1')" style="background: #2c3379">
+            <i class="fa fa-fw fa-sort"></i>{{trans('tr.day')}}
           </td>
-          <td @click="sortBy('q_o_2')" style="background: #1a2370">
-            <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr3')}}
+          <td v-show= isHide @click="sortBy('q_l_2')" style="background: #1a2370">
+            <i class="fa fa-fw fa-sort"></i>{{qLiquidMeasure}}
           </td>
-          <td @click="sortBy('wct_2')" style="background: #1a2370">
+          <td v-show= isHide @click="sortBy('q_o_2')" style="background: #1a2370">
+            <i class="fa fa-fw fa-sort"></i>{{factorsMeasure}}
+          </td>
+          <td v-show= isHide @click="sortBy('wct_2')" style="background: #1a2370">
             <i class="fa fa-fw fa-sort"></i>%
           </td>
-          <td @click="sortBy('bhp_2')" style="background: #1a2370">
-            <i class="fa fa-fw fa-sort"></i>атм
+          <td v-show= isHide @click="sortBy('bhp_2')" style="background: #1a2370">
+            <i class="fa fa-fw fa-sort"></i>{{trans('tr.atm')}}
           </td>
-          <td @click="sortBy('p_res_2')" style="background: #1a2370">
-            <i class="fa fa-fw fa-sort"></i>атм
+          <td v-show= isHide @click="sortBy('p_res_2')" style="background: #1a2370">
+            <i class="fa fa-fw fa-sort"></i>{{trans('tr.atm')}}
           </td>
-          <td @click="sortBy('pi_2')" style="background: #1a2370">
-            <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtrfa1')}}
+          <td v-show= isHide @click="sortBy('pi_2')" style="background: #1a2370">
+            <i class="fa fa-fw fa-sort"></i>{{prodIndexMeasure}}
+          </td>
+          <td v-if= isGenHide v-show= isHide @click="sortBy('prod_days_2')" style="background: #1a2370">
+            <i class="fa fa-fw fa-sort"></i>{{trans('tr.day')}}
           </td>
           <td @click="sortBy('dqn')" style="background: #12135C">
-            <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr3')}}
+            <i class="fa fa-fw fa-sort"></i>{{factorsMeasure}}
           </td>
           <td @click="sortBy('Pbh')" style="background: #12135C">
-            <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr3')}}
+            <i class="fa fa-fw fa-sort"></i>{{factorsMeasure}}
+          </td>
+          <td v-if= isGenHide @click="sortBy('prod_days')" style="background: #12135C">
+            <i class="fa fa-fw fa-sort"></i>{{workDaysMeasure}}
           </td>
           <td @click="sortBy('wct')" style="background: #12135C">
-            <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr3')}}
+            <i class="fa fa-fw fa-sort"></i>{{factorsMeasure}}
           </td>
           <td @click="sortBy('p_res')" style="background: #12135C">
-            <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr3')}}
+            <i class="fa fa-fw fa-sort"></i>{{factorsMeasure}}
           </td>
           <td @click="sortBy('PI')" style="background: #12135C">
-            <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr3')}}
+            <i class="fa fa-fw fa-sort"></i>{{factorsMeasure}}
           </td>
           <td @click="sortBy('Main_problem')" style="background: #12135C; min-width:248px;">
+            <i class="fa fa-fw fa-sort"></i>
+          </td>
+          <td v-if= isGenHide @click="sortBy('choke_d_diff')" style="background: #12135C; min-width:248px;">
+            <i class="fa fa-fw fa-sort"></i>
+          </td>
+          <td v-if= isGenHide @click="sortBy('freq_diff')" style="background: #12135C; min-width:248px;">
             <i class="fa fa-fw fa-sort"></i>
           </td>
         </tr>
@@ -349,7 +369,7 @@
           <td style="background: #12135c">{{ row.object }}</td>
           <td style="background: #12135c">{{ row.exp_meth }}</td>
 
-          <td
+          <td v-show= isHide
             style="background: #2c3379;"
             :class="{
               'cell-with-comment':
@@ -378,8 +398,7 @@
             </span>
           </td>
 
-          <!-- <td>{{Math.round(row.q_o_1*10)/10}}</td> -->
-          <td
+          <td v-show= isHide
             style="background: #2c3379"
             :class="{
               'cell-with-comment':
@@ -406,8 +425,7 @@
             </span>
           </td>
 
-          <!-- <td>{{Math.round(row.wct_1*10)/10}}</td> -->
-          <td
+          <td v-show= isHide
             style="background: #2c3379"
             :class="{
               'cell-with-comment':
@@ -434,8 +452,7 @@
             </span>
           </td>
 
-          <!-- <td>{{Math.round(row.bhp_1*10)/10}}</td> -->
-          <td
+          <td v-show= isHide
             style="background: #2c3379"
             :class="{
               'cell-with-comment':
@@ -462,8 +479,7 @@
             </span>
           </td>
 
-          <!-- <td>{{Math.round(row.p_res_1*10)/10}}</td> -->
-          <td
+          <td v-show= isHide
             style="background: #2c3379"
             :class="{
               'cell-with-comment':
@@ -490,8 +506,7 @@
             </span>
           </td>
 
-          <!-- <td>{{Math.round(row.pi_1*10)/10}}</td> -->
-          <td
+          <td v-show= isHide
             style="background: #2c3379"
             :class="{
               'cell-with-comment':
@@ -516,8 +531,31 @@
             </span>
           </td>
 
-          <!-- <td>{{Math.round(row.q_l_2*10)/10}}</td> -->
-          <td
+          <td v-if= isGenHide v-show= isHide
+            style="background: #2c3379"
+            :class="{
+              'cell-with-comment':
+                wells &&
+                wells[row_index] &&
+                wells[row_index].prod_days_1[1][0] !== '0',
+            }"
+          >
+            <span
+              :class="{
+                'circle-err':
+                  wells &&
+                  wells[row_index] &&
+                  wells[row_index].prod_days_1[1][0] !== '0',
+              }"
+              :style="`background :${getColorTwo(wells[row_index].prod_days_1[1][0])}`"
+            >
+            </span>
+            <span v-if="row.prod_days_1[0] != null">{{ Math.round(row.prod_days_1[0] * 10) / 10 }}</span>
+            <span v-if="wells && wells[row_index]" class="cell-comment">
+              {{ wells[row_index].prod_days_1[1][1] }}
+            </span>
+          </td>
+          <td v-show= isHide
             style="background: #1a2370"
             :class="{
               'cell-with-comment':
@@ -544,8 +582,7 @@
             </span>
           </td>
 
-          <!-- <td>{{Math.round(row.q_o_2*10)/10}}</td> -->
-          <td
+          <td v-show= isHide
             style="background: #1a2370"
             :class="{
               'cell-with-comment':
@@ -572,8 +609,7 @@
             </span>
           </td>
 
-          <!-- <td>{{Math.round(row.wct_2*10)/10}}</td> -->
-          <td
+          <td v-show= isHide
             style="background: #1a2370"
             :class="{
               'cell-with-comment':
@@ -600,8 +636,7 @@
             </span>
           </td>
 
-          <!-- <td>{{Math.round(row.bhp_2*10)/10}}</td> -->
-          <td
+          <td v-show= isHide
             style="background: #1a2370"
             :class="{
               'cell-with-comment':
@@ -628,8 +663,7 @@
             </span>
           </td>
 
-          <!-- <td>{{Math.round(row.p_res_2*10)/10}}</td> -->
-          <td
+          <td v-show= isHide
             style="background: #1a2370"
             :class="{
               'cell-with-comment':
@@ -656,8 +690,7 @@
             </span>
           </td>
 
-          <!-- <td>{{Math.round(row.pi_2*10)/10}}</td> -->
-          <td
+          <td v-show= isHide
             style="background: #1a2370"
             :class="{
               'cell-with-comment':
@@ -682,15 +715,30 @@
             </span>
           </td>
 
-          <!-- <td>{{Math.round(row.dqo*10)/10}}</td> -->
-          <!-- :style="`background :${Two(Math.round(row.dqo*10)/10)}`" -->
-          <!-- <td
-                        :style="{
-                            background: getColorone(Math.round(row.dqn*10)/10),
-                        }"
-                    >
-                        <span> {{Math.round(row.dqn*10)/10}} </span>
-                    </td> -->
+          <td v-if= isGenHide v-show= isHide
+            style="background: #1a2370"
+            :class="{
+              'cell-with-comment':
+                wells &&
+                wells[row_index] &&
+                wells[row_index].prod_days_2[1][0] !== '0',
+            }"
+          >
+            <span
+              :class="{
+                'circle-err':
+                  wells &&
+                  wells[row_index] &&
+                  wells[row_index].prod_days_2[1][0] !== '0',
+              }"
+              :style="`background :${getColorTwo(wells[row_index].prod_days_2[1][0])}`"
+            >
+            </span>
+            <span v-if="row.prod_days_2[0] != null">{{ Math.round(row.prod_days_2[0] * 10) / 10 }}</span>
+            <span v-if="wells && wells[row_index]" class="cell-comment">
+              {{ wells[row_index].prod_days_2[1][1] }}
+            </span>
+          </td>
 
           <td
             :style="{
@@ -717,17 +765,10 @@
             </span>
           </td>
 
-          <!-- <td>{{Math.round(row.Pbh*10)/10}}</td> -->
-          <!-- <td :style="`background :${getColor(
-                        Math.round(row.Pbh*10)/10,
-                        Math.round(row.wct*10)/10,
-                        Math.round(row.p_res*10)/10,
-                        Math.round(row.PI*10)/10)}`">
-                        <span> {{Math.round(row.Pbh*10)/10}} </span>
-                    </td> -->
           <td
             :style="`background :${getColor(
               Math.round(row.Pbh[0] * 10) / 10,
+              Math.round(row.prod_days[0] * 10) / 10,
               Math.round(row.wct[0] * 10) / 10,
               Math.round(row.p_res[0] * 10) / 10,
               Math.round(row.PI[0] * 10) / 10
@@ -753,17 +794,41 @@
             </span>
           </td>
 
-          <!-- <td>{{Math.round(row.wct*10)/10}}</td> -->
-          <!-- <td :style="`background :${getColor(
-                        Math.round(row.wct*10)/10,
-                        Math.round(row.Pbh*10)/10,
-                        Math.round(row.p_res*10)/10,
-                        Math.round(row.PI*10)/10)}`">
-                        <span> {{Math.round(row.wct*10)/10}} </span>
-                    </td> -->
+
+          <td v-if= isGenHide
+            :style="`background :${getColor(
+              Math.round(row.prod_days[0] * 10) / 10,
+              Math.round(row.Pbh[0] * 10) / 10,
+              Math.round(row.wct[0] * 10) / 10,
+              Math.round(row.p_res[0] * 10) / 10,
+              Math.round(row.PI[0] * 10) / 10
+            )}`"
+            :class="{
+              'cell-with-comment':
+                wells && wells[row_index] && wells[row_index].prod_days[1][0] !== '0',
+            }"
+          >
+            <span
+              :class="{
+                'circle-err':
+                  wells &&
+                  wells[row_index] &&
+                  wells[row_index].prod_days[1][0] !== '0',
+              }"
+              :style="`background :${getColorTwo(wells[row_index].prod_days[1][0])}`"
+            >
+            </span>
+            <span v-if="row.prod_days[0] != null">{{ Math.round(row.prod_days[0] * 10) / 10 }}</span>
+            <span v-if="wells && wells[row_index]" class="cell-comment">
+              {{ wells[row_index].prod_days[1][1] }}
+            </span>
+          </td>
+
+
           <td
             :style="`background :${getColor(
               Math.round(row.wct[0] * 10) / 10,
+              Math.round(row.prod_days[0] * 10) / 10,
               Math.round(row.Pbh[0] * 10) / 10,
               Math.round(row.p_res[0] * 10) / 10,
               Math.round(row.PI[0] * 10) / 10
@@ -789,17 +854,10 @@
             </span>
           </td>
 
-          <!-- <td>{{Math.round(row.p_res*10)/10}}</td> -->
-          <!-- <td :style="`background :${getColor(
-                        Math.round(row.p_res*10)/10,
-                        Math.round(row.Pbh*10)/10,
-                        Math.round(row.wct*10)/10,
-                        Math.round(row.PI*10)/10)}`">
-                        <span> {{Math.round(row.p_res*10)/10}} </span>
-                    </td> -->
           <td
             :style="`background :${getColor(
               Math.round(row.p_res[0] * 10) / 10,
+              Math.round(row.prod_days[0] * 10) / 10,
               Math.round(row.Pbh[0] * 10) / 10,
               Math.round(row.wct[0] * 10) / 10,
               Math.round(row.PI[0] * 10) / 10
@@ -829,17 +887,11 @@
             </span>
           </td>
 
-          <!-- <td :style="`background :${getColor(
-                        Math.round(row.PI*10)/10,
-                        Math.round(row.Pbh*10)/10,
-                        Math.round(row.wct*10)/10,
-                        Math.round(row.p_res*10)/10)}`">
-                        <span> {{Math.round(row.PI*10)/10}} </span>
-                    </td> -->
           <td
             :style="`background :${getColor(
               Math.round(row.PI[0] * 10) / 10,
               Math.round(row.Pbh[0] * 10) / 10,
+              Math.round(row.prod_days[0] * 10) / 10,
               Math.round(row.wct[0] * 10) / 10,
               Math.round(row.p_res[0] * 10) / 10
             )}`"
@@ -864,8 +916,6 @@
             </span>
           </td>
 
-          <!-- <td>{{Math.round(row.PI*10)/10}}</td> -->
-          <!-- <td>{{row.Main_problem}}</td> -->
           <td
             style="background: #12135C; min-width:248px;"
             :class="{
@@ -892,6 +942,61 @@
               {{ wells[row_index].Main_problem[1][1] }}
             </span>
           </td>
+
+
+          <td v-if= isGenHide
+            style="background: #12135C; min-width:248px;"
+            :class="{
+              'cell-with-comment':
+                wells &&
+                wells[row_index] &&
+                wells[row_index].choke_d_diff[1][0] !== '0',
+            }"
+          >
+            <span
+              :class="{
+                'circle-err':
+                  wells &&
+                  wells[row_index] &&
+                  wells[row_index].choke_d_diff[1][0] !== '0',
+              }"
+              :style="`background :${getColorTwo(
+                wells[row_index].choke_d_diff[1][0]
+              )}`"
+            >
+            </span>
+            <span>{{ row.choke_d_diff[0] }}</span>
+            <span v-if="wells && wells[row_index]" class="cell-comment">
+              {{ wells[row_index].choke_d_diff[1][1] }}
+            </span>
+          </td>
+
+          <td v-if= isGenHide
+            style="background: #12135C; min-width:248px;"
+            :class="{
+              'cell-with-comment':
+                wells &&
+                wells[row_index] &&
+                wells[row_index].freq_diff[1][0] !== '0',
+            }"
+          >
+            <span
+              :class="{
+                'circle-err':
+                  wells &&
+                  wells[row_index] &&
+                  wells[row_index].freq_diff[1][0] !== '0',
+              }"
+              :style="`background :${getColorTwo(
+                wells[row_index].freq_diff[1][0]
+              )}`"
+            >
+            </span>
+            <span>{{ row.freq_diff[0] }}</span>
+            <span v-if="wells && wells[row_index]" class="cell-comment">
+              {{ wells[row_index].freq_diff[1][1] }}
+            </span>
+          </td>
         </tr>
       </table>
     </div>
@@ -906,7 +1011,6 @@ import moment from "moment";
 import Vue from "vue";
 import SearchFormRefresh from "../ui-kit/SearchFormRefresh.vue";
 import columnSortable from 'vue-column-sortable'
-// import FadeLoader from "vue-spinner/src/FadeLoader.vue";
 import { fields } from "./constants.js";
 import TrMultiselect from "./TrMultiselect.vue";
 
@@ -914,17 +1018,15 @@ Vue.use(NotifyPlugin, VueMomentLib);
 export default {
   name: "FaPage",
   components: {
-    // FadeLoader,
     SearchFormRefresh,
     TrMultiselect,
   },
   data: function () {
     return {
-      // issorttobig: false,
-      pieChartRerender: true,
+      faHeader: null,
       wells: [],
       searchString: "",
-      searched: false,
+      isSearched: false,
       sortParam: "",
       sortType: "asc",
       dt: null,
@@ -932,11 +1034,19 @@ export default {
       date1: null,
       date2: null,
       fullWells: [],
-      // filter: "Все месторождения",
+      isDynamic: true,
+      colsize7: null,
+      colsize2: null,
+      pbhHeader: this.trans('tr.bottomhole_pressure'),
+      workDaysHeader: this.trans('tr.work_day'),
+      waterCutHeader: this.trans('tr.water_cut'),
+      pLayerHeader: this.trans('tr.p_layer'),
+      workDaysMeasure: this.trans('tr.t'),
+      chartLink: "fa_weekly_chart",
       filter: [...fields],
       fieldFilterOptions: [
         {
-          group: "Все месторождения",
+          group: this.trans('tr.all_wells'),
           fields: [...fields],
         },
       ],
@@ -944,114 +1054,20 @@ export default {
       editdty: null,
       editdtprevm: null,
       editdtprevy: null,
-      // isloading: true,
-      chartBarOptions: {
-        chart: {
-          height: 350,
-          type: "bar",
-        },
-        plotOptions: {
-          bar: {
-            dataLabels: {
-              position: "bottom", // top, center, bottom
-            },
-          },
-        },
-        dataLabels: {
-          enabled: true,
-          formatter: function (val) {
-            return val;
-          },
-          offsetY: -20,
-          style: {
-            fontSize: "12px",
-            colors: ["#304758"],
-          },
-        },
-
-        xaxis: {
-          categories: [
-            "Недостижение режимного Pзаб",
-            "Рост обводненности",
-            "Снижение Pпл",
-            "Снижение Kпрод",
-          ],
-          position: "bottom",
-          axisBorder: {
-            show: false,
-          },
-          axisTicks: {
-            show: false,
-          },
-          crosshairs: {
-            fill: {
-              type: "gradient",
-              gradient: {
-                colorFrom: "#D8E3F0",
-                colorTo: "#BED1E6",
-                stops: [0, 100],
-                opacityFrom: 0.4,
-                opacityTo: 0.5,
-              },
-            },
-          },
-          tooltip: {
-            enabled: true,
-          },
-        },
-        yaxis: {
-          axisBorder: {
-            show: false,
-          },
-          axisTicks: {
-            show: false,
-          },
-          labels: {
-            show: true,
-            formatter: function (val) {
-              return val;
-            },
-          },
-        },
-      },
-      chartOptions: {
-        labels: [
-          "Недостижение режимного Pзаб",
-          "Рост обводненности",
-          "Снижение Pпл",
-          "Снижение Kпрод",
-        ],
-        chart: {
-          type: "pie",
-        },
-        dataLabels: {
-          enabled: false,
-        } /*убирается подсветка процентов на круге*/,
-        /*tooltip: {
-        enabled: false},*/
-        legend: {
-          show: false,
-        } /*убирается навигация рядом с кругом*/,
-        colors: ["#330000", "#804d00", "#00004d", "#999900"],
-        plotOptions: {
-          pie: {
-            expandOnClick: true,
-          },
-        },
-        responsive: [
-          {
-            breakpoint: 480,
-            options: {
-              chart: {
-                width: 200,
-              },
-              legend: {
-                position: "bottom",
-              },
-            },
-          },
-        ],
-      },
+      isHide: false,
+      isGenHide: true,
+      isDatepicker1: true,
+      isDatepicker2: false,
+      firstWeekDate: null,
+      factorsMeasure: this.trans('tr.t'),
+      qLiquidMeasure: this.trans('tr.m3'),
+      prodIndexMeasure: this.trans('tr.m3_day_atm'),
+      faTableHeader: null,
+      faTableHeader2: null,
+      firstWeekDate: null,
+      firstWeekDate2: null,
+      secWeekDate: null,
+      secWeekDate2: null,
     };
   },
   watch: {
@@ -1119,10 +1135,88 @@ export default {
     },
     getColorTwo(status) {
       if (status === "1") return "#ff0000";
-      return "#ff0000";
+    },
+    chooseSecDt() {
+      const { date1, date2 } = this;
+      var dynamic_date = date1.split("-");
+      var prdynamic_date = date2.split("-");
+      const dd = dynamic_date[2];
+      const mm = dynamic_date[1];
+      const yyyy = dynamic_date[0];
+      const prdd = prdynamic_date[2];
+      const prmm = prdynamic_date[1];
+      const pryyyy = prdynamic_date[0];
+      var firstWeekDate2 = new Date(date1)
+      this.firstWeekDate2 = firstWeekDate2.setDate(firstWeekDate2.getDate()-6);
+      this.firstWeekDate2 = firstWeekDate2.toLocaleDateString();
+      var dt2 = new Date(date2)
+      this.dt2 = dt2.setDate(dt2.getDate()-6);
+      this.dt2 = dt2.toLocaleDateString();
+      this.colsize7= 7;
+      this.colsize2= 2;
+      this.isDynamic = true;
+      this.isGenHide = true;
+      this.chartLink = "fa_weekly_chart"
+      this.$store.commit("fa/SET_IS_DYNAMIC", true);
+      this.$store.commit("globalloading/SET_LOADING", true);
+      this.$store.commit("fa/SET_MONTH", mm);
+      this.$store.commit("fa/SET_YEAR", yyyy);
+      this.$store.commit("fa/SET_PR_MONTH", prmm);
+      this.$store.commit("fa/SET_PR_YEAR", pryyyy);
+      this.$store.commit("fa/SET_DAY", dd);
+      this.$store.commit("fa/SET_PR_DAY", prdd);
+      this.$store.commit("fa/SET_GEN_HIDE", true);
+      this.axios
+      .get(
+        "http://172.20.103.187:7576/api/techregime/factor_weekly/" +
+          yyyy +
+          "/" +
+          mm +
+          "/" +
+          dd +
+          "/" +
+          pryyyy +
+          "/" +
+          prmm +
+          "/" +
+          prdd +
+          "/"
+        )
+        .then((response) => {
+          this.isSearched = false;
+          this.$store.commit("globalloading/SET_LOADING", false);   
+          let data = response.data;
+          if (data) {
+            this.$store.commit("fa/SET_SORTPARAM", "");
+            this.$store.commit("fa/SET_SEARCH", "");
+            this.sortParam = "";
+            this.searchString = "";
+            console.log(data);
+            this.wells = data.data;
+            this.fullWells = data.data;
+            this.isHide = false;
+            this.isGenHide= true;
+          } 
+          else {
+            console.log("No data");
+          }
+          this.factorsMeasure = this.trans('tr.t');
+          this.qLiquidMeasure = this.trans('tr.m3');
+          this.prodIndexMeasure = this.trans('tr.m3_day_atm');     
+          this.dt = dd + "." + mm + "." + yyyy;
+          this.secWeekDate = prdd + "." + prmm + "." + pryyyy;
+          this.faTableHeader = this.trans('tr.period_of_act_data') + this.firstWeekDate2 + '-' + this.dt;
+          this.faTableHeader2 = this.trans('tr.period_of_act_data') + this.dt2 + '-' + this.secWeekDate;
+          this.faHeader = this.trans('tr.fa') + ' ' + this.dt2 + '-' + this.dt;
+          this.pbhHeader = this.trans('tr.bottomhole_pressure');
+          this.workDaysHeader = this.trans('tr.work_day');
+          this.waterCutHeader = this.trans('tr.water_cut');
+          this.pLayerHeader = this.trans('tr.p_layer');
+          this.workDaysMeasure = this.trans('tr.t');
+
+        });
     },
     chooseDt() {
-      // this.isloading = true;
       const { date1, date2 } = this;
       console.log("dt1-", date1, " dt2-", date2);
       var choosenDt = date1.split("-");
@@ -1131,20 +1225,20 @@ export default {
       const prMm = choosenSecDt[1];
       const yyyy = choosenDt[0];
       const pryyyy = choosenSecDt[0];
-      //   this.$store.commit('fa/SET_MONTH', prMm);
-      //   this.$store.commit('fa/SET_YEAR', yyyy);
-      //   this.$store.commit('fa/SET_PR_MONTH', prPrMm);
-      //   this.$store.commit('fa/SET_PR_YEAR', pryyyy);
-      //   console.log('date1', prMm, yyyy, 'date2', prPrMm, pryyyy)
+      this.chartLink = "trfa"
       if (choosenDt[1] <= choosenSecDt[1] && choosenDt[0] === choosenSecDt[0]) {
-        Vue.prototype.$notifyError("Дата 2 должна быть меньше чем Дата 1");
+        Vue.prototype.$notifyError(this.trans('tr.fa_alarm'));
       } else {
         this.$store.commit("globalloading/SET_LOADING", true);
         this.$store.commit("fa/SET_MONTH", mm);
         this.$store.commit("fa/SET_YEAR", yyyy);
         this.$store.commit("fa/SET_PR_MONTH", prMm);
         this.$store.commit("fa/SET_PR_YEAR", pryyyy);
-        console.log("date1", mm, yyyy, "date2", prMm, pryyyy);
+        this.$store.commit("fa/SET_IS_DYNAMIC", false);
+        this.$store.commit("fa/SET_COLSIZE7", 6);
+        this.$store.commit("fa/SET_COLSIZE2", 1);
+        this.$store.commit("fa/SET_GEN_HIDE", false);
+        this.$store.commit("fa/SET_HIDE", false);
         this.axios
           .get(
             "http://172.20.103.187:7576/api/techregime/factor/" +
@@ -1158,15 +1252,16 @@ export default {
               "/"
           )
           .then((response) => {
-            this.searched = false;
+            this.isSearched = false;
             this.$store.commit("globalloading/SET_LOADING", false);
-            
-            // this.isloading = false;
             let data = response.data;
             this.editdtm = choosenDt[1];
             this.editdty = choosenDt[0];
             this.editdtprevm = choosenSecDt[1];
             this.editdtprevy = choosenSecDt[0];
+            this.isDynamic = false;
+            this.isGenHide = false;
+            this.isHide = true;
 
             if (data) {
               this.$store.commit("fa/SET_SORTPARAM", "");
@@ -1181,26 +1276,27 @@ export default {
             }
             this.dt = "01" + "." + this.editdtm + "." + this.editdty;
             this.dt2 = "01" + "." + this.editdtprevm + "." + this.editdtprevy;
+            this.isGenHide= false;
+            this.colsize7= 6;
+            this.colsize2= 1;
+            this.prodIndexMeasure = this.trans('tr.t_day_atm');
+            this.qLiquidMeasure = this.trans('tr.m3_day');
+            this.factorsMeasure = this.trans('tr.t_day');  
+            this.faTableHeader = this.trans('tr.period_of_act_data') + this.dt;
+            this.faTableHeader2 = this.trans('tr.period_of_act_data') + this.dt2;
+            this.faHeader = this.trans('tr.fa') + ' ' + this.dt2 + '-' + this.dt;
+            this.pbhHeader = this.trans('tr.failure_to_reach_the_rated_P_bottomhole');
+            this.workDaysHeader = this.trans('tr.exp_coefficient');
+            this.waterCutHeader = this.trans('tr.water_cut_increase');
+            this.pLayerHeader = this.trans('tr.p_layer_decrease');
+            this.workDaysMeasure = this.trans('tr.t_day');
           });
       }
     },
-    // chooseField() {
-    //   const { filter, fullWells } = this;
-    //   console.log(filter);
-    //   console.log(fullWells);
-    //   // if (!filter || filter == "Казгермунай") {
-    //   this.$store.commit("fa/SET_FILTER", filter);
-    //   if (!filter || filter == "Все месторождения") {
-    //     this.wells = fullWells;
-    //   } else {
-    //     this.wells = fullWells.filter((e) => e.field === filter);
-    //   }
-    // },
     chooseField() {
       const { filter, fullWells } = this;
       console.log("filter = ", filter);
       console.log(fullWells);
-      // if (!filter || filter == "Казгермунай") {
       this.$store.commit("fa/SET_FILTER", filter);
       if (!filter) {
         this.wells = fullWells;
@@ -1208,17 +1304,6 @@ export default {
         this.wells = fullWells.filter((e) => filter.indexOf(e.field) !== -1);
       }
     },
-    pushBign(bign) {
-      switch (bign) {
-        case "bign1":
-          this.params.data = this.wellsList;
-          break;
-      }
-      this.$modal.show(bign);
-    },
-    // swap() {
-    //   this.issorttobig = !this.issorttobig;
-    // },
     getColor(status, ...values) {
       if (status < "0" && status === Math.min(status, ...values))
         return "#CD5C5C";
@@ -1238,15 +1323,24 @@ export default {
     handlerFilter(filter) {
       this.filter = filter;
     },
+    toogle() {
+      this.isHide = !this.isHide;
+    },
+    calendarDynamic() {
+      this.isDatepicker1 = !this.isDatepicker1
+      this.isDatepicker2 = !this.isDatepicker2
+    },
     searchWell() {
       this.$store.commit("globalloading/SET_LOADING", true);
-      // this.isloading = true;
       this.$store.commit("fa/SET_SORTPARAM", "");
       this.sortParam = "";
       const mm = this.$store.getters["fa/month"];
       const prMm = this.$store.getters["fa/prmonth"];
+      const dd = this.$store.getters["fa/day"];
       const yyyy = this.$store.getters["fa/year"];
       const pryyyy = this.$store.getters["fa/pryear"];
+      const prdd = this.$store.getters["fa/prday"];
+      const dynamic = this.$store.getters["fa/isDynamic"];
       const searchParam = this.searchString
         ? `search/${this.searchString}/`
         : "";
@@ -1257,16 +1351,21 @@ export default {
             "/" +
             mm +
             "/" +
+            dd + 
+            "/" +
             pryyyy +
             "/" +
             prMm +
             "/" +
+            prdd +
+            "/" + 
+            dynamic +
+            "/" +
             searchParam
         )
         .then((response) => {
-          this.searched = searchParam ? true : false;
+          this.isSearched = searchParam ? true : false;
           this.$store.commit("globalloading/SET_LOADING", false);
-          // this.isloading = false;
           console.log("search resp = ", response.data);
           this.$store.commit("fa/SET_SEARCH", this.searchString);
           let data = response.data;
@@ -1279,11 +1378,22 @@ export default {
             this.fullWells = [];
             console.log("No data");
           }
+          if (dynamic == true){
+            this.isHide = false;
+            this.isGenHide= true;
+            this.colsize7= 7;
+            this.colsize2= 2;
+          }
+          else {
+            this.isHide = true;
+            this.isGenHide= false;
+            this.colsize7= 6;
+            this.colsize2= 1;          
+          }
         })
         .catch((error) => {
-          this.searched = searchParam ? true : false;
+          this.isSearched = searchParam ? true : false;
           this.$store.commit("globalloading/SET_LOADING", false);
-          // this.isloading = false;
           this.wells = [];
           this.fullWells = [];
           console.log("search error = ", error);
@@ -1291,101 +1401,78 @@ export default {
     },
   },
   created: function () {
-    this.$store.commit("globalloading/SET_LOADING", true);
+    this.$store.commit("globalloading/SET_LOADING", true); 
     this.$store.commit("fa/SET_SORTTYPE", this.sortType);
     this.$store.commit("fa/SET_SORTPARAM", this.sortParam);
     this.$store.commit("fa/SET_SEARCH", this.searchString);
     this.$store.commit("fa/SET_FILTER", this.filter);
-    console.log("dt1-month", this.$store.getters["tr/month"]);
-    console.log("dt1-year", this.$store.getters["tr/year"]);
-    var today = new Date();
-    var dd = today.getDate();
-    const mm = this.$store.getters["tr/month"]
-      ? this.$store.getters["tr/month"]
-      : today.getMonth() + 1;
-    var yyyy = this.$store.getters["tr/year"]
-      ? this.$store.getters["tr/year"]
-      : today.getFullYear();
-    var prMm = mm;
-
-
-    if(dd > 25 && mm < 12 && mm != 1 && prMm < 12) {
-      var mm1 = today.getMonth() + 2;
-      var yyyy1 = today.getFullYear();
-      var pryyyy1 = today.getFullYear();
-      var prMm1 = today.getMonth() + 1;
-    }
-    else if(dd > 25 && mm === 12){
-      var mm1 = 1;
-      var yyyy1 = today.getFullYear() + 1;
-      var pryyyy1 = today.getFullYear();
-      var prMm1 = 12;
-    }
-    else if(dd >25 && mm === 1 && prMm === 12){
-      var mm1 = 2;
-      var yyyy1 = today.getFullYear();
-      var pryyyy1 = today.getFullYear()-1;
-      var prMm1 = 12;
-    }
-    else{
-      var mm1 = today.getMonth() + 1;
-      var yyyy1 = today.getFullYear();
-      var pryyyy1 = today.getFullYear();
-      var prMm1 = today.getMonth();
-    }
-
-    if (mm == 1) {
-      var prMm = 12;
-      var pryyyy = yyyy - 1;
-    } else {
-      var prMm = mm - 1;
-      var pryyyy = yyyy;
-    }
+    var secWeekDate = new Date();
+    this.secWeekDate = secWeekDate.setDate(secWeekDate.getDate()-8);
+    this.secWeekDate = secWeekDate.toLocaleDateString();
+    var secWeekDate2 = new Date();
+    this.secWeekDate2 = secWeekDate2.setDate(secWeekDate2.getDate()-14);
+    this.secWeekDate2 = secWeekDate2.toLocaleDateString();
+    var dynamic_date2 = this.secWeekDate.split(".");
+    const prdd = dynamic_date2[0];
+    const prmm = dynamic_date2[1];
+    const pryyyy = dynamic_date2[2];
+    this.isDynamic = true;
+    var firstWeekDate = new Date();
+    this.firstWeekDate = firstWeekDate.setDate(firstWeekDate.getDate()-1);
+    this.firstWeekDate = firstWeekDate.toLocaleDateString();
+    var firstWeekDate2 = new Date();
+    this.firstWeekDate2 = firstWeekDate2.setDate(firstWeekDate2.getDate()-7);
+    this.firstWeekDate2 = firstWeekDate2.toLocaleDateString(); 
+    var dynamic_date1 = this.firstWeekDate.split(".");
+    const dd = dynamic_date1[0];
+    const mm = dynamic_date1[1];
+    const yyyy = dynamic_date1[2];
+    this.isGenHide= true;
+    this.colsize7 = 7;
+    this.colsize2 = 2;
+    this.chartLink = "fa_weekly_chart"
+    var weekd1 = yyyy + "-" + mm + "-" + dd;
+    var weekd2 = pryyyy + "-" + prmm + "-" + prdd;
+    this.$store.commit("fa/SET_IS_DYNAMIC", true);
     this.$store.commit("fa/SET_MONTH", mm);
     this.$store.commit("fa/SET_YEAR", yyyy);
-    this.$store.commit("fa/SET_PR_MONTH", prMm);
+    this.$store.commit("fa/SET_DAY", dd);
+    this.$store.commit("fa/SET_PR_MONTH", prmm);
     this.$store.commit("fa/SET_PR_YEAR", pryyyy);
+    this.$store.commit("fa/SET_PR_DAY", prdd);
     this.axios
       .get(
-        "http://172.20.103.187:7576/api/techregime/factor/" +
+        "http://172.20.103.187:7576/api/techregime/factor_weekly/" +
           yyyy +
           "/" +
           mm +
           "/" +
+          dd +
+          "/" +
           pryyyy +
           "/" +
-          prMm +
+          prmm +
+          "/" +
+          prdd +
           "/"
       )
       .then((response) => {
         let data = response.data;
-        this.editdtm = mm1;
-        console.log(this.editdtm);
-        this.editdty = yyyy1;
-        console.log(this.editdty);
-        this.editdtprevm = prMm1;
-        console.log(this.editdtprevm);
-        this.editdtprevy = pryyyy1;
-        console.log(this.editdtprevy);
         this.$store.commit("globalloading/SET_LOADING", false);
-        // this.isloading = false;
         if (data) {
           console.log(data);
           this.wells = data.data;
           this.fullWells = data.data;
+          this.dt = this.firstWeekDate;
+          this.dt2 = this.secWeekDate2;
         } else {
           console.log("No data");
         }
-        if (this.editdtm < 10) {
-          this.dt = "01" + ".0" + this.editdtm + "." + this.editdty;
-        } else {
-          this.dt = "01" + "." + this.editdtm + "." + this.editdty;
-        }
-        if (this.editdtprevm < 10) {
-          this.dt2 = "01" + ".0" + this.editdtprevm + "." + this.editdtprevy;
-        } else {
-          this.dt2 = "01" + "." + this.editdtprevm + "." + this.editdtprevy;
-        }
+        this.date1 = weekd1;
+        this.date2 = weekd2;
+        this.faTableHeader = this.trans('tr.period_of_act_data') + this.firstWeekDate2 + '-' + this.firstWeekDate;
+        this.faTableHeader2 = this.trans('tr.period_of_act_data') + this.secWeekDate2 + '-' + this.secWeekDate;
+        this.faHeader = this.trans('tr.fa') + ' ' + this.secWeekDate2 + '-' + this.firstWeekDate;
       });
   },
   mounted: function () {
@@ -1410,6 +1497,8 @@ body {
 }
 #app .multiselect {
   max-width: 300px;
+  padding-right:6px;
+  
 }
 .but-nav__link {
   font-weight: inherit;
@@ -1506,8 +1595,9 @@ body {
 }
 
 .fakrtableborderedtable {
-  font-size: 9px;
+  font-size: 12px;
   padding: unset;
+  background: #0d1e63
 }
 
 /* width */
@@ -1535,7 +1625,9 @@ table::-webkit-scrollbar-corner {
   background: #333975;
 }
 .fadropmenu {
-width: 70%;
+width: calc(100% - 1px);
+background: #1627c4; 
+margin-top: 4px;
 }
 .button_form.button_form {
   background: #333975;
@@ -1547,5 +1639,42 @@ width: 70%;
 
 }
 
+.fix_calendar {
+  display:flex; 
+  justify-content: center; 
+  color: white;
+}
+
+.btn .btn-sm .button_form .caldate {
+  width: 80%;
+  
+  
+}
+.calheader {
+margin-left: 8px; 
+color: white; 
+font-size: large;
+}
+.calinput_date {
+margin-left: 8px;
+}
+.dropdown-menu .fadropmenu.newmenu {
+background: #1627c4; 
+margin-top: 4px;
+width: calc(100% - 26px);
+}
+.butchange {
+padding-top: 5px; 
+cursor: pointer;
+}
+.trgraph {
+background: #272953;
+color: white;
+border: none;
+padding-right: 8px;
+}
+.fatable {
+position: relative;
+}
 
 </style>

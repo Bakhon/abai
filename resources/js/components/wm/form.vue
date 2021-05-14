@@ -8,7 +8,7 @@
           <option v-for="row in otherObjects" v-bind:value="row.id">{{ row.name }}</option>
         </select>
       </div>
-      <label>{{ trans('monitoring.gu') }}</label>
+      <label>{{ trans('monitoring.gu.gu') }}</label>
       <div class="form-label-group">
         <select class="form-control" name="gu_id" v-model="formFields.gu_id" @change="chooseGu()">
           <option v-for="row in gus" v-bind:value="row.id">{{ row.name }}</option>
@@ -23,7 +23,7 @@
             value-zone="Asia/Almaty"
             zone="Asia/Almaty"
             :format="{ year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: '2-digit', timeZoneName: 'short' }"
-            :phrases="{ok: 'Выбрать', cancel: 'Выход'}"
+            :phrases="{ok: trans('app.choose'), cancel: trans('app.cancel')}"
             :hour-step="1"
             :minute-step="5"
             :week-start="1"
@@ -133,7 +133,7 @@
           <option v-for="row in ngdus" v-bind:value="row.id">{{ row.name }}</option>
         </select>
       </div>
-      <label>{{ trans('monitoring.zu') }}</label>
+      <label>{{ trans('monitoring.zu.zu') }}</label>
       <div class="form-label-group">
         <select class="form-control" name="zu_id" v-model="formFields.zu_id" @change="chooseZu()">
           <option v-for="row in zus" v-bind:value="row.id">{{ row.name }}</option>
@@ -257,7 +257,7 @@
           <option v-for="row in cndgs" v-bind:value="row.id">{{ row.name }}</option>
         </select>
       </div>
-      <label>{{ trans('monitoring.well') }}</label>
+      <label>{{ trans('monitoring.well.well') }}</label>
       <div class="form-label-group">
         <select class="form-control" name="well_id" v-model="formFields.well_id">
           <option v-for="row in wells" v-bind:value="row.id">{{ row.name }}</option>
@@ -440,7 +440,7 @@ export default {
   computed: {
     formatedDate() {
       if (this.formFields.date) {
-        return moment(this.formFields.date).format('YYYY-MM-DD HH:mm')
+        return moment.parseZone(this.formFields.date).format('YYYY-MM-DD HH:mm')
       }
       return null
     }
@@ -505,7 +505,7 @@ export default {
         }
       });
 
-      this.axios.post(this.localeUrl("/getgucdngngdufield"), {
+      this.axios.post(this.localeUrl("/get-gu-cdng-ngdu-field"), {
         gu_id: this.formFields.gu_id,
       }).then((response) => {
         let data = response.data;

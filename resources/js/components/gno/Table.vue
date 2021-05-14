@@ -10,9 +10,9 @@
               <div class="choosing-well-data  col-7">{{trans('pgno.mestorozhdenie')}}</div>
               <div class="choosing-well-data table-border-gno cell4-gno-second  col-5">
                 <select class="select-gno2" v-model="field">
-                  <option value="UZN">Узень</option>
-                  <option value="KMB">Карамандыбас</option>
-                  <option value="JET">Жетыбай</option>
+                  <option v-for="org in this.orgs" :value="org.short_name" :key="org.id">
+                  {{org.full_name}}
+                  </option>
                 </select>
               </div>
               <div class="choosing-well-data table-border-gno-top  col-7">
@@ -20,15 +20,14 @@
               </div>
               <div class="choosing-well-data table-border-gno table-border-gno-top cell4-gno-second  col-5">
                 <input v-model="wellNumber" onfocus="this.value=''" type="text"  @change="getWellNumber(wellNumber)" class="square2" />
-                <!-- <input :value="wellNum" type="text"  @change="updateWellNum" class="square2" /> -->
               </div>
               <div class="choosing-well-data table-border-gno-top  col-7">
                 {{trans('pgno.new_well')}}
-                <input :checked="age === true" v-model="age" class="checkbox0" type="checkbox" />
+                <input :checked="isYoungAge" v-model="isYoungAge" class="checkbox0" type="checkbox" />
               </div>
               <div class="choosing-well-data table-border-gno table-border-gno-top cell4-gno-second  col-5">
                 {{trans('pgno.grp')}}
-                <input class="checkbox0" v-model="grp_skin" :disabled="!age" type="checkbox" />
+                <input class="checkbox0" v-model="hasGrp" :disabled="!isYoungAge" type="checkbox" />
               </div>
 
               <div class="choosing-well-data table-border-gno-top  col-7">{{trans('pgno.horizon')}}</div>
@@ -56,7 +55,9 @@
                 {{ ngdu }}
               </div>
               <div class="choosing-well-data cell4-gno-second  col-5" >
-                <div v-if="ngdu">АО "ОМГ"</div>
+                <div>
+                  {{ao}}
+                </div>
               </div>
             </div>
             <!-- Выбор скважины end -->
@@ -66,35 +67,35 @@
               <div class="construction no-gutter col-12"><b>{{trans('pgno.construction')}}</b></div>
               <div class="construction-data no-gutter col-7">{{trans('pgno.naruznii_diametr_ex_col')}}</div>
               <div class="construction-data table-border-gno cell4-gno-second no-gutter col-5">
-                {{ casOD }} мм
+                {{ casOD }} {{trans('measurements.mm')}}
               </div>
 
               <div class="construction-data table-border-gno-top no-gutter col-7">
                 {{trans('pgno.vnutrenii_diametr_ex_col')}}
               </div>
               <div class="construction-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
-                {{ casID }} мм
+                {{ casID }} {{trans('measurements.mm')}}
               </div>
 
               <div class="construction-data table-border-gno-top no-gutter col-7">
                 {{trans('pgno.glubina_perf')}}
               </div>
               <div class="construction-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
-                {{ hPerf }} м
+                {{ hPerf }} {{trans('measurements.m')}}
               </div>
 
               <div class="construction-data table-border-gno-top no-gutter col-7">
                 {{trans('pgno.udlinenie_perf')}}
               </div>
               <div class="construction-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
-                {{ udl }} м
+                {{ udl }} {{trans('measurements.m')}}
               </div>
 
               <div class="construction-data table-border-gno-top no-gutter col-7">
                 {{trans('pgno.tekushii_zaboi')}}
               </div>
               <div class="construction-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
-                {{ curr }} м
+                {{ curr }} {{trans('measurements.m')}}
               </div>
             </div>
             <!-- Конструкция end -->
@@ -105,10 +106,11 @@
 
             <div class="spoiler"
                  :class="{ 'opened': activeRightTabName === 'devices' }">
-              <input style="width: 845px; height: 45px;" type="checkbox"
-                     tabindex="-1"
-                     :checked="activeRightTabName === 'devices'"
-                     @change="setActiveRightTabName($event, 'devices')"/>
+              <input class="checkbox-devices" 
+                type="checkbox"
+                tabindex="-1"
+                :checked="activeRightTabName === 'devices'"
+                @change="setActiveRightTabName($event, 'devices')"/>
               <div class="right-side-box">
                 <div class="select-well no-gutter col-12">
                   <div class="devices-title"><b>{{trans('pgno.devices')}}</b></div>
@@ -136,16 +138,17 @@
                     {{ sk }}
                   </div>
 
-                  <div class="hide-block"  v-show="!hideStrokeLength">
+                  <div class="hide-block"  v-show="!hasStrokeLength">
                     <div class="devices-data table-border-gno-top no-gutter col-7">
                     {{trans('pgno.dlina_hoda')}}
                   </div>
                   <div class="devices-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
-                    {{strokeLenDev}} м
+                    {{strokeLenDev}} {{trans('measurements.m')}}
                   </div>
                   </div>
 
                   <div v-if="expChoose">
+                    <div v-if="expChoose ? 'ШГН' : 'ЭЦН' && 'УЭЦН'"></div>
                     <div class="devices-data table-border-gno-top no-gutter col-7">
                     {{ freq }}
                   </div>
@@ -157,29 +160,28 @@
                     {{ dNasosa }}
                   </div>
                   <div class="devices-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
-                    {{ pumpType }} м³/сут
+                    {{ pumpType }}
                   </div>
                   </div>
                   
-
                   <div class="devices-data table-border-gno-top no-gutter col-7">
                     {{trans('pgno.h_spuska')}}
                   </div>
                   <div class="devices-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
-                    {{ hPumpSet }} м
+                    {{ hPumpSet }} {{trans('measurements.m')}}
                   </div>
 
                   <div class="devices-data table-border-gno-top no-gutter col-7">
                     {{trans('pgno.naruzhnii_nkt')}}
                   </div>
                   <div class="devices-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
-                    {{ tubOD }} мм
+                    {{ tubOD }} {{trans('measurements.mm')}}
                   </div>
                   <div class="devices-data table-border-gno-top no-gutter col-7">
                     {{trans('pgno.vnutrenii_nkt')}}
                   </div>
                   <div class="devices-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
-                    {{ tubID }} мм
+                    {{ tubID }} {{trans('measurements.mm')}}
                   </div>
                   <div class="devices-data table-border-gno-top no-gutter col-7">
                     {{trans('pgno.data_zapuska')}}
@@ -194,14 +196,14 @@
 
             <div class="spoiler"
                  :class="{ 'opened': activeRightTabName === 'pvt' }">
-              <input style="width: 845px; height: 45px;"
+              <input class="checkbox-devices"
                      type="checkbox"
                      tabindex="-1"
                      :checked="activeRightTabName === 'pvt'"
                      @change="setActiveRightTabName($event, 'pvt')"/>
               <div class="right-side-box">
                 <div class="select-well no-gutter col-12">
-                  <div class="pvt-title">PVT</div>
+                  <div class="pvt-title">{{trans('pgno.pvt')}}</div>
                 </div>
                 <span class="closer">
                   <svg width="12" height="7" viewBox="0 0 12 7" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -222,44 +224,44 @@
                 <div class="right-block-details" v-show="activeRightTabName === 'pvt'">
                   <div class="pvt-data no-gutter col-7">{{trans('pgno.p_nas')}}</div>
                   <div class="pvt-data table-border-gno cell4-gno-second no-gutter col-5">
-                    {{ PBubblePoint }} атм
+                    {{ PBubblePoint }} {{trans('measurements.atm')}}
                   </div>
 
                   <div class="pvt-data table-border-gno-top no-gutter col-7">{{trans('pgno.gf')}}</div>
                   <div class="pvt-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
-                    {{ gor }} м³/т
+                    {{ gor }} {{trans('measurements.m3/t')}}
                   </div>
 
                   <div class="pvt-data table-border-gno-top no-gutter col-7">{{trans('pgno.t_pl')}}</div>
                   <div class="pvt-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
-                    {{ tRes }} ℃
+                    {{ tRes }} {{trans('measurements.celsius')}}
                   </div>
 
                   <div class="pvt-data table-border-gno-top no-gutter col-7">
                     {{trans('pgno.vyazkost_nefti')}}
                   </div>
                   <div class="pvt-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
-                    {{ viscOilRc }} сПз
+                    {{ viscOilRc }} {{trans('measurements.spz')}}
                   </div>
 
                   <div class="pvt-data table-border-gno-top no-gutter col-7">
                     {{trans('pgno.vyazkost_vody')}}
                   </div>
                   <div class="pvt-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
-                    {{ viscWaterRc }} сПз
+                    {{ viscWaterRc }} {{trans('measurements.spz')}}
                   </div>
 
                   <div class="pvt-data table-border-gno-top no-gutter col-7">
                     {{trans('pgno.plotnost_nefti')}}
                   </div>
                   <div class="pvt-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
-                    {{ densOil }} г/cм³
+                    {{ densOil }} {{trans('measurements.g/sm3')}}
                   </div>
                   <div class="pvt-data table-border-gno-top no-gutter col-7">
                     {{trans('pgno.plotnost_vody')}}
                   </div>
                   <div class="pvt-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
-                    {{ densWater }} г/cм³
+                    {{ densWater }} {{trans('measurements.g/sm3')}}
                   </div>
                 </div>
               </div>
@@ -282,44 +284,44 @@
                   v-show="activeRightTabName === 'technological-mode' || (windowWidth <= 1300 && windowWidth > 991)">
                   <div class="tech-data no-gutter col-7">{{trans('pgno.q_zhidkosti')}}</div>
                   <div class="tech-data table-border-gno cell4-gno-second no-gutter col-5">
-                    {{ qL }} м³/сут
+                    {{ qL }} {{trans('measurements.m3/day')}}
                   </div>
 
                   <div class="tech-data table-border-gno-top no-gutter col-7">{{trans('pgno.q_nefti')}}</div>
                   <div class="tech-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
-                    {{ qO }} т/сут
+                    {{ qO }} {{trans('measurements.t/d')}}
                   </div>
 
                   <div class="tech-data table-border-gno-top no-gutter col-7">{{trans('pgno.obvodnenost')}}</div>
                   <div class="tech-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
-                    {{ wct }} %
+                    {{ wct }} {{trans('measurements.percent')}}
                   </div>
 
                   <div class="tech-data table-border-gno-top no-gutter col-7">{{trans('pgno.p_zab')}}</div>
                   <div class="tech-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
-                    {{ bhp }} атм
+                    {{ bhp }} {{trans('measurements.atm')}}
                   </div>
 
                   <div class="tech-data table-border-gno-top no-gutter col-7">{{trans('pgno.p_pl')}}</div>
                   <div class="tech-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
-                    {{ pRes }} ат
+                    {{ pRes }} {{trans('measurements.at')}}
                   </div>
 
                   <div class="tech-data table-border-gno-top no-gutter col-7">{{trans('pgno.h_dyn')}}</div>
                   <div class="tech-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
-                    {{ hDyn }} м
+                    {{ hDyn }} {{trans('measurements.m')}}
                   </div>
                   <div class="tech-data table-border-gno-top no-gutter col-7">{{trans('pgno.p_zat')}}</div>
                   <div class="tech-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
-                    {{ pAnnular }} атм
+                    {{ pAnnular }} {{trans('measurements.atm')}}
                   </div>
                   <div class="tech-data table-border-gno-top no-gutter col-7">{{trans('pgno.p_buf')}}</div>
                   <div class="tech-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
-                    {{ whp }} атм
+                    {{ whp }} {{trans('measurements.atm')}}
                   </div>
                   <div class="tech-data table-border-gno-top no-gutter col-7">{{trans('pgno.p_lin')}}</div>
                   <div class="tech-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
-                    {{ lineP }} атм
+                    {{ lineP }} {{trans('measurements.atm')}}
                   </div>
                 </div>
               </div>
@@ -330,33 +332,84 @@
         <div class="no-gutter col-lg-9 order-md-1 first-column container-fluid no-gutter">
           <div class="no-gutter col-md-12 first-column-curve-block">
             <div class="background">
-              <modal class="modal-bign-wrapper" name="modalIncl" :width="1150" :height="600"
+              <modal class="modal-bign-wrapper" name="modalIncl" :draggable="false" :width="1300" :height="700"
                 style="background: transparent;" :adaptive="true">
                 <div class="modal-bign modal-bign-container">
                   <div class="modal-bign-header">
                     <div class="modal-bign-title">{{trans('pgno.inclinometria')}}</div>
 
-                    <button type="button" class="modal-bign-button" @click="closeModal('modalIncl')">
+                    <button type="button" class="modal-bign-button" @click="closeInclModal()">
                       {{trans('pgno.zakrit')}}
                     </button>
                   </div>
 
                   <div class="Table" align="center" x:publishsource="Excel">
-                    <inclinometria :wellNumber="wellNumber" :wellIncl="wellIncl" :is-loading.sync="isLoading">
+                    <inclinometria @update-hpump="setHpumpValueFromIncl($event)" :isButtonHpump="isButtonHpump" :wellNumber="wellNumber" :expChoose="expChoose" :wellIncl="wellIncl" :is-loading.sync="isLoading">
                     </inclinometria>
                   </div>
                 </div>
               </modal>
 
-              <modal class="modal-bign-wrapper" name="modalOldWell" :width="1080" :height="450" :adaptive="true">
+               <modal class="modal-bign-wrapper" name="modalSeparation" :draggable="false" :width="1000" :height="500"
+                style="background: transparent;" :adaptive="true">
+                <div class="modal-bign modal-bign-container">
+                  <div class="modal-bign-header">
+                    <div class="modal-bign-title"></div>
+
+                    <button type="button" class="modal-bign-button" @click="closeModal('modalSeparation')">
+                      {{trans('pgno.zakrit')}}
+                    </button>
+                  </div>
+
+                  <div class="Table" align="center" x:publishsource="Excel">
+                    <tabs></tabs>
+                  </div>
+                </div>
+              </modal>
+
+              <modal class="modal-bign-wrapper" name="modal-prs" :draggable="true" :width="1263" :height="612"
+                style="background: transparent;" :adaptive="true">
+                <div class="modal-bign modal-bign-container">
+                  <div class="modal-bign-header">
+                    <div class="modal-bign-title">{{trans('pgno.istoria_remontov')}} {{wellNumber}}</div>
+
+                    <button type="button" class="modal-bign-button" @click="closeModal('modal-prs')">
+                      {{trans('pgno.zakrit')}}
+                    </button>
+                  </div>
+
+                  <div class="Table" align="center" x:publishsource="Excel">
+                    <prs-crs :wellNumber="wellNumber" :wellIncl="wellIncl" :field="field" :is-loading.sync="isLoading"></prs-crs>
+                  </div>
+                </div>
+              </modal>
+
+              <modal class="modal-bign-wrapper" name="modalOldWell" :draggable="true" :width="1080" :height="450" :adaptive="true">
                 <div class="modal-bign modal-bign-container">
                   <div class="modal-bign-header">
                     <div class="modal-bign-title">
                       {{trans('pgno.analis_potenciala')}}
                     </div>
-                    <div style="position: absolute; margin-left: 200px; margin-top: 0px;">
-                      <svg style="fill: white;" @click="takePhotoOldNewWell()" height="30px" version="1.1" viewBox="0 0 32 32" width="32px" xmlns="http://www.w3.org/2000/svg" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns" xmlns:xlink="http://www.w3.org/1999/xlink"><title/><desc/><defs/><g fill="none" fill-rule="evenodd" id="Page-1" stroke="none" stroke-width="1"><g fill="#929292" id="icon-57-document-download"><path d="M16,25.049999 L12.75,21.799999 L12,22.549999 L16.5,27.049999 L21,22.549999 L20.25,21.799999 L17,25.049999 L17,14 L16,14 L16,25.049999 L16,25.049999 Z M19.5,3 L9.00276013,3 C7.89666625,3 7,3.89833832 7,5.00732994 L7,27.9926701 C7,29.1012878 7.89092539,30 8.99742191,30 L24.0025781,30 C25.1057238,30 26,29.1017876 26,28.0092049 L26,10.5 L26,10 L20,3 L19.5,3 L19.5,3 L19.5,3 Z M19,4 L8.9955775,4 C8.44573523,4 8,4.45526288 8,4.99545703 L8,28.004543 C8,28.5543187 8.45470893,29 8.9999602,29 L24.0000398,29 C24.5523026,29 25,28.5550537 25,28.0066023 L25,11 L20.9979131,11 C19.8944962,11 19,10.1134452 19,8.99408095 L19,4 L19,4 Z M20,4.5 L20,8.99121523 C20,9.54835167 20.4506511,10 20.9967388,10 L24.6999512,10 L20,4.5 L20,4.5 Z" id="document-download"/></g></g></svg>
+                   
+                <div class="download-button-excel">
+                  <div class="dropdown">
+                    <button class="download-curve-button" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M4.16699 11.1538V14.5C4.16699 14.7761 4.39085 15 4.66699 15H15.667C15.9431 15 16.167 14.7761 16.167 14.5V11.1538" stroke="white" stroke-linecap="round"/>
+                      <path d="M10.1667 5V11.1539" stroke="white" stroke-linecap="round"/>
+                      <path d="M7.5957 9.61572L10.1671 11.9234L12.7386 9.61572" stroke="white" stroke-linecap="round"/>
+                      </svg>
+                      {{trans('pgno.download')}}
+                      <svg width="12" height="6" viewBox="0 0 12 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M1.5 1L5.93356 4.94095C5.97145 4.97462 6.02855 4.97462 6.06644 4.94095L10.5 1" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
+                      </svg>
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                      <a class="dropdown-item" href="#" @click="takePhotoOldNewWell()">Photo</a>
+                      <a class="dropdown-item" href="#" @click="downloadExcel()">MS Excel</a>
                     </div>
+                  </div>
+                </div>
 
                     <button type="button" class="modal-bign-button" @click="closeModal('modalOldWell')">
                      {{trans('pgno.zakrit')}}
@@ -371,30 +424,29 @@
 
                     <div class="modal-analysis-menu">
                       <div class="form-check">
-                        <input v-model="analysisBox1" class="checkbox-modal-analysis-menu" @change="postAnalysisOld()"
+                        <input v-model="isAnalysisBoxValue1" class="checkbox-modal-analysis-menu" @change="postAnalysisOld()"
                           type="checkbox" />
-                        <label for="checkbox1" class="checkbox-modal-analysis-menu-label">Рпл = Рнач</label>
+                        <label for="checkbox1" class="checkbox-modal-analysis-menu-label">{{trans('pgno.ppl_equal_pnach')}}</label>
                       </div>
                       <div class="form-check">
-                        <input v-model="analysisBox2" class="checkbox-modal-analysnauryzbekis-menu"
+                        <input v-model="isAnalysisBoxValue2" class="checkbox-modal-analysnauryzbekis-menu"
                           @change="postAnalysisOld()" type="checkbox" />
-                        <label for="checkbox1" class="checkbox-modal-analysis-menu-label">Н дин = Ндин мин</label>
+                        <label for="checkbox1" class="checkbox-modal-analysis-menu-label">{{trans('pgno.hdin_equal_hdin_min')}}</label>
                       </div>
                       <div class="form-check">
-                        <input v-model="analysisBox3" class="checkbox-modal-analysnauryzbekis-menu"
+                        <input v-model="isAnalysisBoxValue3" class="checkbox-modal-analysnauryzbekis-menu"
                           @change="postAnalysisOld()" type="checkbox" />
-                        <label for="checkbox1" class="checkbox-modal-analysis-menu-label">Рзаб пот >= 0,75 *
-                          Рнас</label>
+                        <label for="checkbox1" class="checkbox-modal-analysis-menu-label">{{trans('pgno.p_zab_more_p_nas')}}</label>
                       </div>
                       <div class="form-check">
-                        <input v-model="analysisBox4" class="checkbox-modal-analysis-menu" @change="postAnalysisOld()"
+                        <input v-model="isAnalysisBoxValue4" class="checkbox-modal-analysis-menu" @change="postAnalysisOld()"
                           type="checkbox" />
-                        <label for="checkbox1" class="checkbox-modal-analysis-menu-label">Qж = Qж АСМА</label>
+                        <label for="checkbox1" class="checkbox-modal-analysis-menu-label">{{trans('pgno.q_liq_equal_q_liq')}}</label>
                       </div>
                       <div class="form-check">
-                        <input v-model="analysisBox5" class="checkbox-modal-analysis-menu" @change="postAnalysisOld()"
+                        <input v-model="isAnalysisBoxValue5" class="checkbox-modal-analysis-menu" @change="postAnalysisOld()"
                           type="checkbox" />
-                        <label for="checkbox1" class="checkbox-modal-analysis-menu-label">Обв = Обв АСМА</label>
+                        <label for="checkbox1" class="checkbox-modal-analysis-menu-label">{{trans('pgno.obv_obv_acma')}}</label>
                       </div>
                       <button type="button" class="old_well_button" @click="setGraphOld()">
                         {{trans('pgno.primenit_korrektirovki')}}
@@ -404,16 +456,32 @@
                 </div>
               </modal>
 
-              <modal class="modal-bign-wrapper" name="modalNewWell" :width="1150" :height="450" :adaptive="true">
+              <modal class="modal-bign-wrapper" name="modalNewWell" :draggable="true" :width="1150" :height="450" :adaptive="true">
                 <div class="modal-bign modal-bign-container">
                   <div class="modal-bign-header">
                     <div class="modal-bign-title">
                       {{trans('pgno.analis_potenciala')}}
                     </div>
 
-                    <div style="position: absolute; margin-left: 200px; margin-top: 0px;">
-                      <svg style="fill: white;" @click="takePhotoOldNewWell()" height="30px" version="1.1" viewBox="0 0 32 32" width="32px" xmlns="http://www.w3.org/2000/svg" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns" xmlns:xlink="http://www.w3.org/1999/xlink"><title/><desc/><defs/><g fill="none" fill-rule="evenodd" id="Page-1" stroke="none" stroke-width="1"><g fill="#929292" id="icon-57-document-download"><path d="M16,25.049999 L12.75,21.799999 L12,22.549999 L16.5,27.049999 L21,22.549999 L20.25,21.799999 L17,25.049999 L17,14 L16,14 L16,25.049999 L16,25.049999 Z M19.5,3 L9.00276013,3 C7.89666625,3 7,3.89833832 7,5.00732994 L7,27.9926701 C7,29.1012878 7.89092539,30 8.99742191,30 L24.0025781,30 C25.1057238,30 26,29.1017876 26,28.0092049 L26,10.5 L26,10 L20,3 L19.5,3 L19.5,3 L19.5,3 Z M19,4 L8.9955775,4 C8.44573523,4 8,4.45526288 8,4.99545703 L8,28.004543 C8,28.5543187 8.45470893,29 8.9999602,29 L24.0000398,29 C24.5523026,29 25,28.5550537 25,28.0066023 L25,11 L20.9979131,11 C19.8944962,11 19,10.1134452 19,8.99408095 L19,4 L19,4 Z M20,4.5 L20,8.99121523 C20,9.54835167 20.4506511,10 20.9967388,10 L24.6999512,10 L20,4.5 L20,4.5 Z" id="document-download"/></g></g></svg>
+                    <div class="download-button-excel">
+                  <div class="dropdown">
+                    <button class="download-curve-button" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M4.16699 11.1538V14.5C4.16699 14.7761 4.39085 15 4.66699 15H15.667C15.9431 15 16.167 14.7761 16.167 14.5V11.1538" stroke="white" stroke-linecap="round"/>
+                      <path d="M10.1667 5V11.1539" stroke="white" stroke-linecap="round"/>
+                      <path d="M7.5957 9.61572L10.1671 11.9234L12.7386 9.61572" stroke="white" stroke-linecap="round"/>
+                      </svg>
+                      {{trans('pgno.download')}}
+                      <svg width="12" height="6" viewBox="0 0 12 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M1.5 1L5.93356 4.94095C5.97145 4.97462 6.02855 4.97462 6.06644 4.94095L10.5 1" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
+                      </svg>
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                      <a class="dropdown-item" href="#" @click="takePhotoOldNewWell()">Photo</a>
+                      <a class="dropdown-item" href="#" @click="downloadExcel()">MS Excel</a>
                     </div>
+                  </div>
+                </div>
 
 
                     <button type="button" class="modal-bign-button" @click="closeModal('modalNewWell')">
@@ -427,30 +495,28 @@
                     </div>
                     <div class="modal-analysis-menu">
                       <div class="form-check-new">
-                        <input v-model="analysisBox6" class="new-checkbox-modal-analysis-menu"
+                        <input v-model="isAnalysisBoxValue6" class="new-checkbox-modal-analysis-menu"
                           @change="postAnalysisNew()" type="checkbox" />
-                        <label for="checkbox1" class="new-checkbox-modal-analysis-menu-label">Pпл = Р изобар</label>
+                        <label for="checkbox1" class="new-checkbox-modal-analysis-menu-label">{{trans('pgno.p_pl_p_izobar')}}</label>
                       </div>
                       <div class="form-check-new">
-                        <input v-model="analysisBox7" class="new-checkbox-modal-analysis-menu"
+                        <input v-model="isAnalysisBoxValue7" class="new-checkbox-modal-analysis-menu"
                           @change="postAnalysisNew()" type="checkbox" />
-                        <label for="checkbox1" class="new-checkbox-modal-analysis-menu-label">К пр = К по окр.</label>
+                        <label for="checkbox1" class="new-checkbox-modal-analysis-menu-label">{{trans('pgno.k_pr_k_po_okr')}}</label>
                       </div>
                       <div class="form-check-new">
-                        <label for="checkbox1" class="new-checkbox-modal-analysis-menu-label">Обв по окр. =
-                        </label>
+                        <label for="checkbox1" class="new-checkbox-modal-analysis-menu-label">{{trans('obv_po_okr')}}</label>
                         <label for="checkbox1">{{ wctOkr }}%</label>
                       </div>
                       <div class="form-check-new">
-                        <input v-model="analysisBox8" class="new-checkbox-modal-analysis-menu"
+                        <input v-model="isAnalysisBoxValue8" class="new-checkbox-modal-analysis-menu"
                           @change="postAnalysisNew()" type="checkbox" />
-                        <label for="checkbox1" class="new-checkbox-modal-analysis-menu-label">Рзаб пот = 0.75 *
-                          Рнас</label>
+                        <label for="checkbox1" class="new-checkbox-modal-analysis-menu-label">{{trans('pgno.p_zab_more_p_nas')}}</label>
                       </div>
                       <div class="form-check-new">
-                        <input v-model="grp_skin" class="new-checkbox-modal-analysis-menu" @change="postAnalysisNew()"
+                        <input v-model="hasGrp" class="new-checkbox-modal-analysis-menu" @change="postAnalysisNew()"
                           type="checkbox" />
-                        <label for="checkbox1" class="new-checkbox-modal-analysis-menu-label">с ГРП</label>
+                        <label for="checkbox1" class="new-checkbox-modal-analysis-menu-label">{{trans('pgno.s_grp')}}</label>
                       </div>
                       <div class="icon-for-table" @click="onOpenTable()">
                         <svg width="31" height="35" viewBox="0 0 31 35" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -466,7 +532,7 @@
                 </div>
               </modal>
 
-              <modal class="" name="modalNearWells" :width="1150" :height="450" :adaptive="true">
+              <modal class="" name="modalNearWells" :draggable="true" :width="1150" :height="450" :adaptive="true">
                 <div class="modal-bign modal-bign-container">
                   <div class="modal-bign-header">
                     <div class="modal-bign-title">
@@ -487,37 +553,37 @@
                               № п/п
                             </td>
                             <td>
-                              Номер скважины
+                              {{trans('pgno.number_of_well')}}
                             </td>
                             <td>
-                              Расстояние, м
+                              {{trans('pgno.distance')}}, {{trans('measurements.m')}}
                             </td>
                             <td>
-                              Коэффициент влияния
+                             {{trans('pgno.influence_factor')}}
                             </td>
                             <td>
-                              Кпрод, (м³/сут)/атм
+                              {{trans('pgno.k_prod')}}, {{trans('measurements.m3/d/atm')}}
                             </td>
                             <td>
-                              kh
+                              {{trans('pgno.kh')}}
                             </td>
                             <td>
-                              Скин-фактор
+                              {{trans('pgno.skin_factor')}}
                             </td>
                             <td>
-                              Рпл, атм
+                              {{trans('pgno.p_pl')}}, {{trans('measurements.atm')}}
                             </td>
                             <td>
-                              Рзаб, атм
+                              {{trans('pgno.p_zab')}}, {{trans('measurements.atm')}}
                             </td>
                             <td>
-                              Qж, м³/сут
+                              {{trans('pgno.q_liq')}}, {{trans('measurements.m3/day')}}
                             </td>
                             <td>
-                              WC, %
+                              {{trans('pgno.wc')}}, {{trans('measurements.percent')}}
                             </td>
                             <td>
-                              Qн, т/сут
+                                {{trans('pgno.q_nefti')}}, {{trans('measurements.t/d')}}
                             </td>
                           </tr>
                         </thead>
@@ -558,75 +624,14 @@
                 </div>
               </modal>
 
-              <modal class="" name="modal-prs" :width="1150" :height="470" :adaptive="true">
-                <div class="modal-bign modal-bign-container">
-                  <div class="modal-bign-header">
-                    <div class="modal-bign-title">
-                      {{trans('pgno.istoria_remontov')}} {{wellNumber}}
-                    </div>
 
-                    <button type="button" class="modal-bign-button" @click="closeModal('modal-prs')">
-                      {{trans('pgno.zakrit')}}
-                    </button>
-                  </div>
-                  <div class="container-fluid">
-	                  <div class="row">
-	                  	<div class="col-12">
-		                   	<div class="row">
-				                  
-                          <div class="col-6">
-                            <h6 style="text-align: center;">{{trans('pgno.prichini_prs')}}</h6>
-			                      <prs-crs :wellNumber="wellNumber" :wellIncl="wellIncl" :field="field" :is-loading.sync="isLoading"></prs-crs>
-                            <h6>{{trans('pgno.kolichestvo_remontov')}}: {{numberRepairs}}</h6>
-                            <h6>ННО: {{numberNNO + ' сут'}}</h6>
-                        	</div>
-  
-                          <div class="col-6">
-                            <h6 style="text-align: center;">{{trans('pgno.info_po_krs')}}</h6>
-				                     <div class="table-fix no-gutter">
-                              <perfect-scrollbar>
-                                <table class="gno-table-with-header pgno" style="height: initial;">
-                                  <thead>
-                                    <tr height="10" style="height: 10pt;">
-                                      <td>
-                                        {{trans('pgno.data_nachala_rabot')}}
-                                      </td>
-                                      <td>
-                                        {{trans('pgno.data_okonchania')}}
-                                      </td>
-                                      <td>
-                                        {{trans('pgno.vid_remontnih_rabot')}}
-                                      </td>
-                            
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-                                    <tr v-for="(row, row_index) in this.krsTable" :key="row_index" style="font-weight: bold;">
-                                      <td>{{row.dbeg.substring(0, 10)}}</td>
-                                      <td>{{row.dend.substring(0, 10)}}</td>
-                                      <td>{{row.krs_name}}</td>
-                                    </tr>
-                                  </tbody>
-                                </table>
-                              </perfect-scrollbar>
-                            </div>
-                          </div>
-			                  
-                        </div>
-		                  </div>
-	                  </div>
-                  </div>
-                  
-                </div>
-              </modal>
-
-              <modal class="modal-bign-wrapper chart" name="modalExpAnalysis" :width="1300" :height="550"
+              <modal class="modal-bign-wrapper chart" name="modalExpAnalysis" :draggable="true" :width="1300" :height="550"
                 :adaptive="true">
                 <div class="modal-bign modal-bign-container">
                   <div class="modal-bign-header">
                     <div class="modal-bign-title">
-                      {{trans('pgno.techniko_econom_god')}}
-                    </div>
+                      
+                    </div> 
 
                     <button type="button" class="modal-bign-button" @click="closeModal('modalExpAnalysis')">
                       {{trans('pgno.zakrit')}}
@@ -658,7 +663,7 @@
                 </div>
               </modal>
 
-              <modal class="modal-bign-wrapper chart" name="tablePGNO" :width="500" :height="550" :adaptive="true">
+              <modal class="modal-bign-wrapper chart" :draggable="true" name="tablePGNO" :width="500" :height="550" :adaptive="true">
                 <div class="modal-bign modal-bign-container no-padding">
                   <div class="modal-bign-header with-padding">
                     <div class="modal-bign-title">
@@ -726,10 +731,10 @@
                           <tr>
                             <td>{{trans('pgno.srednee_prod_prs')}}</td>
                             <td>
-                              {{ Math.round(expAnalysisData.npvTable1.sredniiPrs) }}
+                              {{ expAnalysisData.npvTable1.sredniiPrs }}
                             </td>
                             <td>
-                              {{ Math.round(expAnalysisData.npvTable2.sredniiPrs) }}
+                              {{ expAnalysisData.npvTable2.sredniiPrs }}
                             </td>
                           </tr>
                           <tr>
@@ -739,14 +744,14 @@
                             <td>
                               {{
                               Math.round(
-                                expAnalysisData.npvTable1.godovoiNdo / 1000
+                                expAnalysisData.npvTable1.godovoiNdo 
                               )
                             }}
                             </td>
                             <td>
                               {{
                               Math.round(
-                                expAnalysisData.npvTable2.godovoiNdo / 1000
+                                expAnalysisData.npvTable2.godovoiNdo
                               )
                             }}
                             </td>
@@ -1044,39 +1049,47 @@
                 </div>
               </modal>
 
-              <modal name="modalPGNO" :width="1150" :height="400" :adaptive="true">
+              <modal name="modalPGNO" :draggable="true" :width="1150" :height="400" :adaptive="true">
                 <div class="modal-bign3"></div>
               </modal> 
 
-              <div class="gno-line-chart"  v-if="visibleChart">
-                <div style="position: absolute; margin-left: 175px; margin-top: 5px;">
-                  <!-- <button class="download-curve-button" @click="takePhoto()">Скачать фото</button>
-                  <select class="select-download-button">
-                    <option hidden value="default">Скачать</option>
-                    <option>MS-Excel</option>
-                    <option>Photo</option>
-                  </select> -->
+              <modal name="paramSep" :draggable="true" :width="1150" :height="400" :adaptive="true">
+                <div class="modal-bign modal-bign-container">
+                  <div class="modal-bign-header">
+                    <div class="modal-bign-title">
+                      {{trans('pgno.analis_potenciala')}}
+                    </div>
+
+                    <button type="button" class="modal-bign-button" @click="closeModal('modalNearWells')">
+                      {{trans('pgno.zakrit')}}
+                    </button>
+
+                  </div>
+                  <div class="tablePgno no-gutter">
+                    
+                  </div>
+                </div>
+              </modal>
+
+              <div class="gno-line-chart"  v-if="isVisibleChart">
+                <div class="download-button-excel-1">
                   <div class="dropdown">
                     <button class="download-curve-button" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      
-                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M4.16699 11.1538V14.5C4.16699 14.7761 4.39085 15 4.66699 15H15.667C15.9431 15 16.167 14.7761 16.167 14.5V11.1538" stroke="white" stroke-linecap="round"/>
-                        <path d="M10.1667 5V11.1539" stroke="white" stroke-linecap="round"/>
-                        <path d="M7.5957 9.61572L10.1671 11.9234L12.7386 9.61572" stroke="white" stroke-linecap="round"/>
-                        </svg>
-                      Скачать
-                      
+                      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M4.16699 11.1538V14.5C4.16699 14.7761 4.39085 15 4.66699 15H15.667C15.9431 15 16.167 14.7761 16.167 14.5V11.1538" stroke="white" stroke-linecap="round"/>
+                      <path d="M10.1667 5V11.1539" stroke="white" stroke-linecap="round"/>
+                      <path d="M7.5957 9.61572L10.1671 11.9234L12.7386 9.61572" stroke="white" stroke-linecap="round"/>
+                      </svg>
+                      {{trans('pgno.download')}}
                       <svg width="12" height="6" viewBox="0 0 12 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M1.5 1L5.93356 4.94095C5.97145 4.97462 6.02855 4.97462 6.06644 4.94095L10.5 1" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
-</svg>
-
+                      <path d="M1.5 1L5.93356 4.94095C5.97145 4.97462 6.02855 4.97462 6.06644 4.94095L10.5 1" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
+                      </svg>
                     </button>
-  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-    <a class="dropdown-item" href="#" @click="takePhoto()">Photo</a>
-    <a class="dropdown-item" href="#">MS Excel</a>
-  </div>
-</div>
-                  <!-- <svg style="fill: white;" @click="takePhoto()" height="30px" version="1.1" viewBox="0 0 32 32" width="32px" xmlns="http://www.w3.org/2000/svg" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns" xmlns:xlink="http://www.w3.org/1999/xlink"><title/><desc/><defs/><g fill="none" fill-rule="evenodd" id="Page-1" stroke="none" stroke-width="1"><g fill="#929292" id="icon-57-document-download"><path d="M16,25.049999 L12.75,21.799999 L12,22.549999 L16.5,27.049999 L21,22.549999 L20.25,21.799999 L17,25.049999 L17,14 L16,14 L16,25.049999 L16,25.049999 Z M19.5,3 L9.00276013,3 C7.89666625,3 7,3.89833832 7,5.00732994 L7,27.9926701 C7,29.1012878 7.89092539,30 8.99742191,30 L24.0025781,30 C25.1057238,30 26,29.1017876 26,28.0092049 L26,10.5 L26,10 L20,3 L19.5,3 L19.5,3 L19.5,3 Z M19,4 L8.9955775,4 C8.44573523,4 8,4.45526288 8,4.99545703 L8,28.004543 C8,28.5543187 8.45470893,29 8.9999602,29 L24.0000398,29 C24.5523026,29 25,28.5550537 25,28.0066023 L25,11 L20.9979131,11 C19.8944962,11 19,10.1134452 19,8.99408095 L19,4 L19,4 Z M20,4.5 L20,8.99121523 C20,9.54835167 20.4506511,10 20.9967388,10 L24.6999512,10 L20,4.5 L20,4.5 Z" id="document-download"/></g></g></svg> -->
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                      <a class="dropdown-item" href="#" @click="takePhoto()">Photo</a>
+                      <a class="dropdown-item" href="#" @click="downloadExcel()">MS Excel</a>
+                    </div>
+                  </div>
                 </div>
                 <inflow-curve>
                 </inflow-curve>
@@ -1084,41 +1097,44 @@
               </div>
 
 
-              <div class="gno-shgn-wrapper" v-if="!visibleChart">
+              <div class="gno-shgn-wrapper" v-if="!isVisibleChart">
                 <div class="gno-shgn-block-title">
                   {{trans('pgno.komponovka_shgn')}}
                 </div>
 
                 <div class="podbor-gno">
                   <div class="image-data col-3">
-                    <div class="shgn-image-text image-text-1">{{trans('pgno.eks_kolonna')}} {{ this.casID }}мм</div>
-                    <div class="shgn-image-text image-text-2">{{trans('pgno.nkt')}} {{ this.tubOD }}мм</div>
-                    <div class="shgn-image-text image-text-3">{{trans('pgno.shtangi')}} {{ this.shgnS1D }}мм 0-{{ this.shgnS1L }}м</div>
+                    <div class="shgn-image-text image-text-1">{{trans('pgno.eks_kolonna')}} {{ this.casID }}{{trans('measurements.mm')}}</div>
+                    <div class="shgn-image-text image-text-2">{{trans('pgno.nkt')}} {{ this.tubOD }}{{trans('measurements.mm')}}</div>
+                    <div class="shgn-image-text image-text-3">{{trans('pgno.shtangi')}} {{ this.shgnS1D }}{{trans('measurements.mm')}} 0-{{ this.shgnS1L }}{{trans('measurements.m')}}</div>
                     <div class="shgn-image-text image-text-4">
-                      {{trans('pgno.shtangi')}} {{ this.shgnS2D }}мм {{ this.shgnS1L }}-{{
+                      {{trans('pgno.shtangi')}} {{ this.shgnS2D }}{{trans('measurements.mm')}} {{ this.shgnS1L }}-{{
                         this.shgnS1L * 1 + this.shgnS2L * 1
-                      }}м
+                      }}{{trans('measurements.m')}}
                     </div>
                     <div class="shgn-image-text image-text-5">
-                      {{trans('pgno.shtangi')}} {{ this.shgnS1D }}мм
+                      {{trans('pgno.shtangi')}} {{ this.shgnS1D }}{{trans('measurements.mm')}}
                       {{ this.shgnS1L * 1 + this.shgnS2L * 1 }}-{{
                         this.shgnS1L * 1 + this.shgnS2L * 1 + this.shgnTNL * 1
-                      }}м
+                      }}{{trans('measurements.m')}}
                     </div>
-                    <div class="shgn-image-text image-text-6">{{trans('pgno.nasos')}} {{ this.shgnPumpType }}мм</div>
+                    <div class="shgn-image-text image-text-6">{{trans('pgno.nasos')}} {{ this.shgnPumpType }}{{trans('measurements.mm')}}</div>
                     <div class="shgn-image-text image-text-7">
                       {{trans('pgno.interval_perf')}} <br> {{ this.hPerf }}-{{
                         this.hPerf * 1 + this.hPerfND * 1
-                      }}м
+                      }}{{trans('measurements.m')}}
                     </div>
-                    <div class="shgn-image-text image-text-8">{{trans('pgno.tekushii_zaboi')}} {{ this.curr }}м</div>
+                    <div class="shgn-image-text image-text-8">{{trans('pgno.tekushii_zaboi')}} {{ this.curr }}{{trans('measurements.m')}}</div>
 
                     <img class="podborgnoimg"
                          src="./images/shgn.png"
                          alt="podbor-gno"/>
                   </div>
 
-                  <div class="table-pgno-button gno-shgn-table-section col-9">
+                      
+
+                  <div class="table-pgno-button gno-shgn-table-section col-9" >
+                    
                     <div class="shgn-tables-wrapper">
                       <div class="table-pgno-one">
                         <table class="table-pgno shgn-table">
@@ -1131,27 +1147,27 @@
                           </thead>
                           <tbody>
                             <tr>
-                              <td class="td-pgno" rowspan="1">Qж</td>
+                              <td class="td-pgno" rowspan="1">{{trans('pgno.q_liq')}}</td>
                               <td class="td-pgno" rowspan="1">
                                 {{ qlCelValue }}
                               </td>
                             </tr>
                             <tr>
-                              <td class="td-pgno" rowspan="1">Qн</td>
-                              <td class="td-pgno" rowspan="1">{{ qOil }} т/сут</td>
+                              <td class="td-pgno" rowspan="1">{{trans('pgno.q_nefti')}}</td>
+                              <td class="td-pgno" rowspan="1">{{ qOil }} {{trans('measurements.t/d')}}</td>
                             </tr>
                             <tr>
-                              <td class="td-pgno" rowspan="1">Обв</td>
+                              <td class="td-pgno" rowspan="1">{{trans('pgno.obvodnenost')}}</td>
                               <td class="td-pgno" rowspan="1">{{ wctInput }}</td>
                             </tr>
                             <tr>
-                              <td class="td-pgno" rowspan="1">Рзаб</td>
+                              <td class="td-pgno" rowspan="1">{{trans('pgno.p_zab')}}</td>
                               <td class="td-pgno" rowspan="1">
                                 {{ bhpCelValue }}
                               </td>
                             </tr>
                             <tr>
-                              <td class="td-pgno" rowspan="1">Рпр</td>
+                              <td class="td-pgno" rowspan="1">{{trans('p_pr')}}</td>
                               <td class="td-pgno" rowspan="1">{{ piCelValue }}</td>
                             </tr>
                           </tbody>
@@ -1171,16 +1187,16 @@
                             <tr>
                               <td class="td-pgno" rowspan="1">Ø {{trans('pgno.nasosa')}}</td>
                               <td class="td-pgno" rowspan="1">
-                                {{ shgnPumpType }} мм
+                                {{ shgnPumpType }} {{trans('measurements.mm')}}
                               </td>
                             </tr>
                             <tr>
                               <td class="td-pgno" rowspan="1">{{trans('pgno.chislo_kachanii')}}</td>
-                              <td class="td-pgno" rowspan="1">{{ shgnSPM }} мин-1</td>
+                              <td class="td-pgno" rowspan="1">{{ shgnSPM }} {{trans('measurements.min-1')}}</td>
                             </tr>
                             <tr>
                               <td class="td-pgno" rowspan="1">{{trans('pgno.dlina_hoda')}}</td>
-                              <td class="td-pgno" rowspan="1">{{ shgnLen }} м</td>
+                              <td class="td-pgno" rowspan="1">{{ shgnLen }} {{trans('measurements.m')}}</td>
                             </tr>
                             <tr>
                               <td class="td-pgno" rowspan="1">{{trans('pgno.typ_sk')}}</td>
@@ -1188,10 +1204,10 @@
                             </tr>
                             <tr>
                               <td class="td-pgno" rowspan="1">Ø {{trans('pgno.nkt')}}</td>
-                              <td class="td-pgno" rowspan="1">{{ shgnTubOD }} мм</td>
+                              <td class="td-pgno" rowspan="1">{{ shgnTubOD }} {{trans('measurements.mm')}}</td>
                             </tr>
                             <tr>
-                              <td class="td-pgno" rowspan="1">Нсп насоса</td>
+                              <td class="td-pgno" rowspan="1">{{trans('pgno.h_spuska')}}</td>
                               <td class="td-pgno" rowspan="1">{{ hPumpValue }}</td>
                             </tr>
                           </tbody>
@@ -1206,11 +1222,11 @@
                                 {{trans('pgno.shtangi')}}
                               </td>
                               <td class="td-pgno" rowspan="1">
-                                Ø, мм
+                                Ø, {{trans('measurements.mm')}}
                               </td>
 
                               <td class="td-pgno" rowspan="1">
-                                {{trans('pgno.dlina')}}, м
+                                {{trans('pgno.dlina')}}, {{trans('measurements.m')}}
                               </td>
                             </tr>
                           </thead>
@@ -1233,7 +1249,13 @@
                           </tbody>
                         </table>
                       </div>
+       
                     </div>
+
+                      <div class="block__centrators">
+                        <h6 class="main__title__block_centrators"><b>{{trans('pgno.interval_centrators')}}:</b></h6>
+                        <h6 class="title__block__centrators">{{trans('pgno.required')}}: <b v-for="item in centratorsRequiredValue">{{ item }}</b></h6>
+                      </div>
 
                     <button class="button-pdf col-12" @click="createPDF()">
                       {{trans('pgno.sozdanie_otcheta')}}
@@ -1244,7 +1266,7 @@
             </div>
           </div>
 
-          <modal name="table" :width="1150" :height="385" :adaptive="true"></modal>
+          <modal name="table" :draggable="true" :width="1150" :height="385" :adaptive="true"></modal>
 
           <div class="no-gutter col-md-12 first-column-params-block">
             <div class="container-fluid d-sm-block">
@@ -1263,8 +1285,7 @@
                                 <div class="row">
                                   <div class="col-2 px-0 pt-1 ic-min-block1">
                                     <div class="table-border-gno-right py-1 ml-3">
-                                      Рпл
-                                      <!-- {{trans('pgno.p_pl')}} -->
+                                      {{trans('pgno.p_pl')}}
                                     </div>
                                   </div>
                                   <div class="col-5  px-1">
@@ -1297,7 +1318,7 @@
                                         <label for="">
                                           <input v-model="curveSelect" class="checkbox-k-prod" value="pi" type="radio"
                                             name="set" @change="postCurveData()" />
-                                          Кпрод
+                                          {{trans('pgno.k_prod')}}
                                         </label>
 
                                       </div>
@@ -1312,7 +1333,7 @@
                                 </div>
                                 <div class="col-2 px-0">
                                   <div class="table-border-gno-right ic-ar pt-1">
-                                    ГФ.
+                                    {{trans('pgno.gf_s')}}
                                   </div>
                                 </div>
                                 <div class="col-2  py-1 pl-2 pr-0">
@@ -1331,7 +1352,7 @@
                                       <div class="table-border-gno-right">
                                         <label for="">
                                           <input v-model="QhydCurveSelect" class="checkbox-q-liquid" value="hdyn"
-                                            type="radio" @change="postCurveData()" name="set" /> Qж</label>
+                                            type="radio" @change="postCurveData()" name="set" />{{trans('pgno.q_liq')}}</label>
                                       </div>
                                     </div>
                                     <div class="col-5 py-1 px-1">
@@ -1350,7 +1371,7 @@
                                   <label for="" class="text-ellipsis">
                                     <input v-model="curveSelect" value="bhp" :disabled="curveSelect == 'pi'"
                                       class="checkbox-k-prod" type="radio" @change="postCurveData()" name="set2" />
-                                    Рзаб</label>
+                                   {{trans('pgno.p_zab')}}</label>
                                 </div>
                                 <div class="col-6 pt-1 pb-1">
                                   <input :disabled="curveSelect != 'bhp'" v-model="bhpInput" @change="postCurveData()"
@@ -1365,7 +1386,7 @@
                                   <label for="" class="text-ellipsis">
                                     <input v-model="curveSelect" value="hdyn" :disabled="curveSelect == 'pi'"
                                       class="checkbox-k-prod" type="radio" @change="postCurveData()" name="set2" />
-                                    Ндин</label>
+                                    {{trans('pgno.h_dyn')}}</label>
                                 </div>
                                 <div class="col-6 table-border-gno-right table-border-gno-right-second pt-1 pb-1">
                                   <input :disabled="curveSelect != 'hdyn'" v-model="hDynInput" @change="postCurveData()"
@@ -1376,7 +1397,7 @@
                               <div class="col-sm-6 col-xs-12 no-margin no-padding row">
                                 <div class="col-6 table-border-gno-right pt-1 pb-1">
                                   <div class="tech-data curve text-ellipsis">
-                                    Рзат
+                                    {{trans('pgno.p_zat')}}
                                   </div>
                                 </div>
                                 <div class="col-6 pt-1 pb-1">
@@ -1392,7 +1413,7 @@
                                   <label for="" class="text-ellipsis">
                                     <input v-model="curveSelect" value="pmanom" :disabled="curveSelect == 'pi'"
                                       class="checkbox-k-prod" type="radio" @change="postCurveData()" name="set2" />
-                                    Рманом</label>
+                                    {{trans('pgno.p_manom')}}</label>
                                 </div>
                                 <div class="col-6 table-border-gno-right table-border-gno-right-second pt-1 pb-1">
                                   <input :disabled="curveSelect != 'pmanom'" v-model="pManomInput"
@@ -1403,7 +1424,7 @@
                               <div class="col-sm-6 col-xs-12 no-margin no-padding row">
                                 <div class="col-6 table-border-gno-right pt-1 pb-1">
                                   <div class="tech-data curve text-ellipsis">
-                                    Нсп маном
+                                    {{trans('pgno.h_sp_manom')}}
                                   </div>
                                 </div>
                                 <div class="col-6 pt-1 pb-1">
@@ -1419,7 +1440,7 @@
                                   <label for="" class="text-ellipsis">
                                     <input v-model="curveSelect" value="whp" :disabled="curveSelect == 'pi'"
                                       class="checkbox-k-prod" type="radio" @change="postCurveData()" name="set2" />
-                                    Рбуф(ФЭ)</label>
+                                    {{trans('pgno.p_buf')}}</label>
                                 </div>
                                 <div class="col-6 pt-1 pb-1">
                                   <input :disabled="curveSelect != 'whp'" v-model="whpInput" @change="postCurveData()"
@@ -1429,7 +1450,7 @@
                             </div>
                           </div>
 
-                          <div class="tables-string-gno5 col-12" @click="PotAnalysisMenu()">
+                          <div class="tables-string-gno5 col-12" @click="updateAnalysisMenu()">
                             {{trans('pgno.analis_potenciala_skvazhini')}}
                           </div>
                         </div>
@@ -1441,97 +1462,91 @@
                             <div class="row">
                               <div style="height: 5px;"></div>
                             </div>
-                            <div class="row pt-2" style="height: 50px;">
+                            <div class="row pt-3" style="height: 50px;">
                               <div class="col-2 pr-0">
                                 <div>
                                   <label class="label-for-celevoi">
                                     <input class="checkbox3" value="ШГН" v-model="expChoose" @change="postCurveData()"
-                                      :checked="expChoose === 'ШГН'" type="radio" name="gno10" />ШГН</label>
+                                      :checked="expChoose === 'ШГН'" type="radio" name="gno10" />{{trans('pgno.shgn')}}</label>
                                 </div>
                               </div>
-
-                              <div class="col-2  pr-0">
+                              <div class="col-2 pr-0">
                                 <div>
                                   <label class="label-for-celevoi"><input class="checkbox3" value="ЭЦН"
                                       v-model="expChoose" @change="postCurveData()" :checked="expChoose === 'ЭЦН'"
-                                      type="radio" name="gno10" />ЭЦН</label>
+                                      type="radio" name="gno10" />{{trans('pgno.ecn')}}</label>
                                 </div>
                               </div>
 
                                <div class="col-2 pr-0">
                                 <div>
                                   <label class="label-for-celevoi">
-                                    <input class="checkbox3" value="ШГН"
-                                       type="radio" name="gno10" />ФОН</label>
+                                    <input class="checkbox3" value="ФОН"
+                                      v-model="expChoose" @change="postCurveData()" :checked="expChoose === 'ФОН'"
+                                       type="radio" name="gno10" />{{trans('pgno.fon')}}</label>
                                 </div>
                               </div>
 
                               <div class="table-border-gno col-2">
-                                <label class="label-for-celevoi">Рбуф</label>
-                                <input type="text" onfocus="this.value=''" 
-                                  class="input-box-gno podbor" />
+                                <label class="label-for-celevoi">{{trans('pgno.p_buf')}}</label>
+                                <input type="text" v-model="pBuf" onfocus="this.value=''" 
+                                  class="input-box-gno podbor" :disabled="expChoose != 'ФОН'"/>
                               </div>
 
                               <div class="col-2">
-                                <label class="label-for-celevoi">ØНКТ</label>
-                                <input  type="text" onfocus="this.value=''" 
-                                  class="input-box-gno podbor" />
+                                <label class="label-for-celevoi" >Ø{{trans('pgno.nkt')}}</label>
+                                  <select class="input-box-gno podbor long__box" v-model="nkt" @change="postCurveData()">
+                                    <option v-for="(nkts, index) in nkt_choose" :value="nkts.for_calc_value" :key="index" >
+                                    {{nkts.show_value}}
+                                    </option>
+                                  </select>
                               </div>
 
                               <div class="col-2">
-                                <label class="label-for-celevoi">Нсп</label>
+                                <label class="label-for-celevoi">{{trans('pgno.h_spuska')}}</label>
                                 <input v-model="hPumpValue" @change="postCurveData()" type="text" onfocus="this.value=''" 
                                   class="input-box-gno podbor" />
                               </div>
 
-                            </div>
+                              <div class="gear-icon" @click="onChangeParams()">
+                                <svg id="gear-icon" width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M17.4556 7.37945L15.7922 6.82498C15.6712 6.45197 15.52 6.08401 15.3436 5.73621L16.1249 4.16858C16.1753 4.06273 16.2055 3.95183 16.2055 3.8359C16.2055 3.63932 16.1249 3.44777 15.9838 3.30664L14.6934 2.01624C14.5522 1.87511 14.3607 1.79446 14.1641 1.79446C14.0482 1.79446 13.9373 1.8247 13.8314 1.87511L12.2638 2.62111C11.916 2.43965 11.548 2.28843 11.175 2.1725L10.6206 0.509101C10.5197 0.201625 10.2375 0 9.91487 0C9.89975 0 9.88967 0 9.87455 0H8.09017C7.76757 0 7.4853 0.201624 7.37945 0.504061L6.83002 2.1725C6.45197 2.28843 6.08905 2.43965 5.73621 2.62111L4.16858 1.87511C4.06777 1.8247 3.95183 1.79446 3.84094 1.79446C3.63932 1.79446 3.45281 1.87511 3.31168 2.01624L2.01624 3.30664C1.88015 3.44777 1.7995 3.63932 1.7995 3.8359C1.7995 3.95183 1.8247 4.06273 1.87511 4.16858L2.62616 5.73621C2.44469 6.08401 2.29348 6.45197 2.17754 6.82498L0.509101 7.37945C0.206665 7.48026 0 7.76253 0 8.08513V9.90983C0 9.91991 0 9.93503 0 9.95015C0 10.2677 0.206665 10.555 0.509101 10.6558L2.17754 11.2103C2.29348 11.5833 2.44469 11.9513 2.62111 12.2991L1.87511 13.8667C1.8247 13.9726 1.7995 14.0835 1.7995 14.1994C1.7995 14.396 1.88015 14.5875 2.01624 14.7286L3.31168 16.019C3.45281 16.1602 3.63932 16.2358 3.84094 16.2358C3.95183 16.2358 4.06777 16.2106 4.16858 16.1602L5.73621 15.3738C6.08905 15.5553 6.45197 15.7065 6.83002 15.8225L7.37945 17.4909C7.4853 17.7933 7.76757 18 8.09017 18H9.91487C9.92495 18 9.94007 18 9.95015 18C10.2728 18 10.555 17.7933 10.6609 17.4909L11.2103 15.8225C11.5884 15.7065 11.9513 15.5553 12.3041 15.3789L13.8717 16.1602C13.9726 16.2106 14.0885 16.2358 14.1994 16.2358C14.401 16.2358 14.5875 16.1602 14.7286 16.019L16.0241 14.7286C16.1602 14.5875 16.2408 14.396 16.2408 14.1994C16.2408 14.0835 16.2156 13.9726 16.1652 13.8667L15.3789 12.2991C15.5603 11.9513 15.7116 11.5833 15.8275 11.2103L17.4909 10.6558C17.7984 10.555 18 10.2677 18 9.95015C18 9.93503 18 9.91991 18 9.90983V8.08513C17.995 7.75749 17.7732 7.46514 17.4556 7.37945ZM9.00252 12.7326C6.94091 12.7326 5.26743 11.0591 5.26743 8.99748C5.26743 6.93587 6.94091 5.26239 9.00252 5.26239C11.0641 5.26239 12.7376 6.93587 12.7376 8.99748C12.7376 11.0591 11.0641 12.7326 9.00252 12.7326Z" fill="white"/>
+                                </svg>
+                              </div>
 
+
+                            </div>
                             <div class="row">
-                              <div style="height: 20px; padding-left: 15px;">Общий коэффициент сепарации</div>
+                              <div style="height: 20px; padding-left: 15px;">{{trans('pgno.total_separation')}}</div>
                             </div>
 
-                            <div class="row" style="padding-top: 3px;">
-                              <!-- <div class="col-2 pr-0" style="padding-top: 10px;">
-                                  <label style="width: 100px; padding-left: 15px; " class="label-for-celevoi">
-                                    <input class="checkbox3" checked="true" type="radio" name="gno10"/>
-                                    Расчет
-                                  </label>
-                              </div>
-
-                              <div class="col-2  pr-0">
-                                <div style="padding-top: 10px; padding-left: 15px;">
-                                  <label style="width: 100px;" class="label-for-celevoi"><input class="checkbox3" value="ЭЦН"
-                                       checked="true"
-                                      type="radio" name="gno10"/><input type="text" onfocus="this.value=''" 
-                                  class="input-box-gno podbor" /></label>
-                                </div>
-                              </div>
-
-                              <div class="row">
-                                <div class="col-12">
-                                  asdasd
-                                </div>
-                              </div> -->
+                            <div class="row" style="padding-top: 3px;"> 
 
                               <div class="col-4">
                                 <label style="width: 100px;" class="label-for-celevoi">
-                                    <input class="checkbox3" checked="true" type="radio" name="gno10"/>
-                                    Расчет
+                                    <input value="calc_value" v-model="sep_meth" @change="postCurveData()" class="checkbox34" checked="true" type="radio" name="gno20" :disabled="expChoose === 'ФОН'"/>
+                                    {{trans('pgno.separation_calc')}}
                                 </label>
                               </div>
-                              <div class="col-8 table-border-gno"><input type="checkbox" checked>Естественная сепарация</div>
-                              
+                              <div class="col-8 table-border-gno">
+                                <input v-model="nat_sep" @change="postCurveData()" type="checkbox" checked="true" :disabled="sep_meth ==='input_value' || expChoose === 'ФОН'">{{trans('pgno.separation_nat')}}</div>
 
-                            
                             </div>
 
                             <div class="row">
+
                               <div class="col-4">
                                 <label style="width: 100px;" class="label-for-celevoi">
-                                  <input class="checkbox3" value="ЭЦН" checked="true" type="radio" name="gno10"/>
-                                  <input type="text" onfocus="this.value=''" class="input-box-gno podbor" /></label>
+                                  <input class="checkbox3" v-model="sep_meth" @change="postCurveData()" value="input_value" checked="true" type="radio" name="gno20" :disabled="expChoose === 'ФОН'"/>
+                                  <input v-model="sep_value" @change="postCurveData()" type="text" onfocus="this.value=''" class="input-box-gno podbor" 
+                                  :disabled="expChoose === 'ФОН' || sep_meth !='input_value'"/></label>
                               </div>
-                              <div class="col-8 table-border-gno"><input type="checkbox">Механизированная сепарация<input type="text" style="margin-left: 3px; margin-bottom: 0px;" onfocus="this.value=''" class="input-box-gno podbor" /></div>
+
+                              <div class="col-8 table-border-gno">
+                                <input checked="true" @change="postCurveData()" :disabled="sep_meth ==='input_value' || expChoose === 'ФОН'" 
+                              type="checkbox" v-model="mech_sep">{{trans('pgno.separation_mech')}}
+                              <input v-model="mech_sep_value" type="text" style="margin-left: 3px; margin-bottom: 0px;" 
+                              :disabled="sep_meth ==='input_value' || expChoose === 'ФОН' ||  mech_sep === false" onfocus="this.value=''" class="input-box-gno podbor" /></div>
                             </div>
                               
 
@@ -1554,7 +1569,7 @@
                                 <div class="table-border-gno-right pdo-bottom-cell">
                                   <label class="label-for-celevoi">
                                     <input v-model="CelButton" class="checkbox3" value="ql" type="radio"
-                                      name="gno11" />Qж</label>
+                                      name="gno11" />{{trans('pgno.q_nefti')}}</label>
                                   <input v-model="qlCelValue" @change="postCurveData()" :disabled="CelButton != 'ql'"
                                     onfocus="this.value=''" type="text" class="square3 podbor" />
                                 </div>
@@ -1562,7 +1577,7 @@
                               <div class="col-4 pr-0">
                                 <div class="table-border-gno-right pdo-bottom-cell">
                                   <label class="label-for-celevoi"><input v-model="CelButton" class="checkbox3"
-                                      value="bhp" type="radio" name="gno11" />Рзаб</label>
+                                      value="bhp" type="radio" name="gno11" />{{trans('pgno.p_zab')}}</label>
 
                                   <input v-model="bhpCelValue" @change="postCurveData()" :disabled="CelButton != 'bhp'"
                                     type="text" onfocus="this.value=''" class="square3 podbor" />
@@ -1570,22 +1585,22 @@
                               </div>
                               <div class="col-4 pdo-bottom-cell">
                                 <label class="label-for-celevoi">
-                                  <input v-model="CelButton" class="checkbox3" value="pin" type="radio"
-                                    name="gno11" />Pnp
+                                  <input v-model="CelButton" class="checkbox3" value="pin" type="radio" :disabled="expChoose === 'ФОН'"
+                                    name="gno11" />{{trans('pgno.p_pr')}}
                                 </label>
-                                <input v-model="piCelValue" @change="postCurveData()" :disabled="CelButton != 'pin'"
+                                <input v-model="piCelValue" @change="postCurveData()" :disabled="CelButton != 'pin' || expChoose === 'ФОН'"
                                   type="text" onfocus="this.value=''" class="square3 podbor" />
                               </div>
                             </div>
                           </div>
 
-                          <div class="tables-string-gno55 col-12" @click="ExpAnalysisMenu()">
+                          <div class="tables-string-gno55 col-12" @click="setExpAnalysisMenu()">
                              {{trans('pgno.analis_effect_sposoba_exp')}}
                           </div>
                         </div>
                         <div class="col-12 px-2 gno-main-green-button">
-                          <div class="tables-string-gno6 col-12" @click="onPgnoClick()">
-                            {{ getOnPgnoButtonTitle }}
+                          <div class="button-podbor-gno col-12" @click="onPgnoClick()">
+                            {{ isVisibleChart ? podborGnoTitle : inflowCurveTitle }}
                           </div>
                         </div>
                       </div>
@@ -1598,24 +1613,19 @@
           <!-- Конец блока -->
         </div>
       </div>
-
-<!-- style="position: absolute; left: -9999px; height: 0; overflow: hidden;"
-       style="position: absolute; margin-left: 175px; margin-top: 2000px;"
- -->
-      
       <div style="position: absolute; left: -9999px; height: 0; overflow: hidden;">
-        <div class="gno-line-chart-clone" ref="gno-chart" v-if="visibleChart" style="background-color: #272953;">
+        <div class="gno-line-chart-clone" ref="gno-chart" v-if="isVisibleChart" style="background-color: #272953;">
                 <div>
-                  <div style="font-weight: bold; font-size: 20px; margin-left: 16px;  padding-top: 10px;">Скважина: {{field}}-{{wellNumber}}</div>
-                  <div style="font-weight: bold; font-size: 20px; margin-left: 16px;  padding-top: 10px;">Дата формирования: {{new Date().toJSON().slice(0,10).replace(/-/g,'/')}}</div>
+                  <div style="font-weight: bold; font-size: 20px; margin-left: 16px;  padding-top: 10px;">{{trans('pgno.well')}}: {{field}}-{{wellNumber}}</div>
+                  <div style="font-weight: bold; font-size: 20px; margin-left: 16px;  padding-top: 10px;">{{trans('pgno.data_form')}}: {{new Date().toJSON().slice(0,10).replace(/-/g,'/')}}</div>
                 </div>
                 <inflow-curve></inflow-curve>
               </div>
 
-        <div class="gno-line-chart-well-old-clone" ref="gno-chart-new-old-well" v-if="visibleChart" style="background-color: #272953;">
+        <div class="gno-line-chart-well-old-clone" ref="gno-chart-new-old-well" v-if="isVisibleChart" style="background-color: #272953;">
                 <div>
-                  <div style="font-weight: bold; font-size: 20px; margin-left: 16px;  padding-top: 10px;">Анализ потенциала cкважины: {{field}}-{{wellNumber}}</div>
-                  <div style="font-weight: bold; font-size: 20px; margin-left: 16px;  padding-top: 10px;">Дата формирования: {{new Date().toJSON().slice(0,10).replace(/-/g,'/')}}</div>
+                  <div style="font-weight: bold; font-size: 20px; margin-left: 16px;  padding-top: 10px;">{{trans('pgno.analis_potenciala_skvazhini')}}: {{field}}-{{wellNumber}}</div>
+                  <div style="font-weight: bold; font-size: 20px; margin-left: 16px;  padding-top: 10px;">{{trans('pgno.data_form')}}: {{new Date().toJSON().slice(0,10).replace(/-/g,'/')}}</div>
                 </div>
                 <Plotly :data="data" :layout="layout" :display-mode-bar="false"></Plotly>
               </div>
@@ -1624,47 +1634,42 @@
           <div class="row">
             <div class="col-10" style="background-color: #20274f; width: 1500px; left: 76px; margin: 0;">
               <div class="logo" style="top: 0px;"></div>
-              <div style="left: 90px; color: white; padding-top: 10px; font-size: 20px;">ИС ABAI. Модуль Подбор ГНО.</div>
+              <div style="left: 90px; color: white; padding-top: 10px; font-size: 20px;">{{trans('pgno.is_Abai_modul_gno')}}</div>
             </div>
           </div>
-        <!-- <div class="title-report col-10" style="background-color: #20274f; left: 76px;">
-          <div class="logo" style="top: 0px;"></div>
-          <h3 style="left: 90px; color: white; padding-bottom: 5px;">ИС ABAI. Модуль Подбор ГНО.</h3>
-        </div> -->
-
         <div class="first-report-block row">
           <div class="report-block-title col-5">
-            Отчет по подбору ГНО
+            {{trans('pgno.otchet_pgno')}}
           </div>
           <div class="report-block-title col-5">
-            СКВАЖИНА {{wellNumber}}
+            {{trans('pgno.well')}} {{wellNumber}}
           </div>
         </div>
 
         <div class="first-report-block-data row">
           <div class="report-block-data col-5">
-            Дата формирования: {{new Date().toJSON().slice(0,10).replace(/-/g,'/')}}
+            {{trans('pgno.data_form')}}: {{new Date().toJSON().slice(0,10).replace(/-/g,'/')}}
           </div>
           <div class="report-block-data col-5">
-            Месторождение: {{field}}
-          </div>
-        </div>
-
-        <div class="first-report-block-data row">
-          <div class="report-block-data col-5">
-            Выполнил технолог: КМГИ
-          </div>
-          <div class="report-block-data col-5">
-            Горизонт: {{horizon}}
+            {{trans('pgno.mestorozhdenie')}}: {{field}}
           </div>
         </div>
 
         <div class="first-report-block-data row">
           <div class="report-block-data col-5">
+            {{trans('pgno.technolog_kmgi')}}
+          </div>
+          <div class="report-block-data col-5">
+            {{trans('pgno.horizon')}}: {{horizon}}
+          </div>
+        </div>
+
+        <div class="first-report-block-data row">
+          <div class="report-block-data col-5">
 
           </div>
           <div class="report-block-data col-5">
-            Способ эксплуатации: {{ expMeth }}
+            {{trans('pgno.method_of_operation')}}: {{ expMeth }}
           </div>
         </div>
 
@@ -1673,19 +1678,19 @@
 
           </div>
           <div class="report-block-data-second-bottom col-5">
-            Орг.структура: {{ ngdu }}
+            {{trans('pgno.org_struktura')}}: {{ ngdu }}
           </div>
         </div>
 
         <div class="second-report-block row">
           <div class="second-report-block-title-main col-10" style="border-bottom: 2px solid #8c8caf">
-            ДАННЫЕ ДЛЯ РАСЧЕТА
+            {{trans('pgno.data_for_raschet')}}
           </div>
         </div>
 
         <div class="first-report-block row">
           <div class="second-report-block-title col-5">
-            Конструкция
+            {{trans('pgno.construction')}}
           </div>
           <div class="second-report-block-title col-5">
             PVT
@@ -1694,46 +1699,46 @@
 
         <div class="first-report-block-data row">
           <div class="report-block-data-second-top col-5">
-            Наружный Ø ЭК: {{casOD + ' мм'}}
+            {{trans('pgno.naruznii_diametr_ex_col')}}: {{casOD}} {{trans('measurements.mm')}}
           </div>
           <div class="report-block-data-second-top col-5">
-            Рнас: {{PBubblePoint + ' атм'}}
-          </div>
-        </div>
-
-        <div class="first-report-block-data row">
-          <div class="report-block-data-second-top col-5">
-            Внутренний Ø ЭК: {{casID}}
-          </div>
-          <div class="report-block-data-second-top col-5">
-            Газовый фактор: {{gorInput}}
+             {{trans('pgno.p_nas')}}: {{PBubblePoint}} {{trans('measurements.atm')}}
           </div>
         </div>
 
         <div class="first-report-block-data row">
           <div class="report-block-data-second-top col-5">
-            Нперф (ВДП): {{hPerf + ' м'}}
+            {{trans('pgno.vnutrenii_diametr_ex_col')}}: {{casID}}
           </div>
           <div class="report-block-data-second-top col-5">
-            Температура пласта: {{tRes + ' ℃'}}
-          </div>
-        </div>
-
-        <div class="first-report-block-data row">
-          <div class="report-block-data-second-top col-5">
-            Удл.на Нперф: {{udl + ' м'}}
-          </div>
-          <div class="report-block-data-second-top col-5">
-            Вязкость нефти (пл.усл.): {{viscOilRc + ' сПз'}}
+            {{trans('pgno.gaz_faktor')}}: {{gorInput}}
           </div>
         </div>
 
         <div class="first-report-block-data row">
           <div class="report-block-data-second-top col-5">
-            Текущий забой: {{curr + ' м'}}
+            {{trans('pgno.glubina_perf')}}: {{hPerf}} {{trans('measurements.m')}}
           </div>
           <div class="report-block-data-second-top col-5">
-            Вязкость воды (пл.усл.): {{viscWaterRc + ' г/cм³'}}
+            {{trans('pgno.temp_plasta')}}: {{tRes}} {{trans('measurements.celsius')}}
+          </div>
+        </div>
+
+        <div class="first-report-block-data row">
+          <div class="report-block-data-second-top col-5">
+            {{trans('pgno.udlinenie_perf')}}: {{udl}} {{trans('measurements.m')}}
+          </div>
+          <div class="report-block-data-second-top col-5">
+            {{trans('pgno.vyazkost_nefti')}}: {{viscOilRc}} {{trans('measurements.spz')}}
+          </div>
+        </div>
+
+        <div class="first-report-block-data row">
+          <div class="report-block-data-second-top col-5">
+            {{trans('pgno.tekushii_zaboi')}}: {{curr}} {{trans('measurements.m')}}
+          </div>
+          <div class="report-block-data-second-top col-5">
+            {{trans('pgno.vyazkost_vody')}}: {{viscWaterRc}} {{trans('measurements.g/sm3')}}
           </div>
         </div>
 
@@ -1742,7 +1747,7 @@
 
           </div>
           <div class="report-block-data-second-top col-5">
-            Плотность нефти: {{densOil + ' г/cм³'}}
+            {{trans('pgno.plotnost_nefti')}}: {{densOil}} {{trans('measurements.g/sm3')}}
           </div>
         </div>
 
@@ -1751,49 +1756,49 @@
 
           </div>
           <div class="report-block-data-second-bottom-2 col-5">
-            Плотность воды: {{densWater + ' г/cм³'}}
+            {{trans('pgno.plotnost_vody')}}: {{densWater}} {{trans('measurements.g/sm3')}}
           </div>
         </div>
 
         <div class="second-report-block row">
           <div class="second-report-block-title-main-2 col-10" style="border-bottom: 2px solid #8c8caf">
-            Технологический режим:
+            {{trans('pgno.technologicheskii_rezhim')}}:
           </div>
         </div>
 
         <div class="first-report-block-data row">
           <div class="report-block-data-second-top col-5">
-            Qж: {{qL + ' м³/сут'}}
+            {{trans('pgno.q_liq')}}: {{qL}} {{trans('measurements.m3/day')}}
           </div>
           <div class="report-block-data-second-top col-5">
-            Pзаб: {{bhp + ' атм'}}
-          </div>
-        </div>
-
-        <div class="first-report-block-data row">
-          <div class="report-block-data-second-top col-5">
-            Обв: {{wct + ' %'}}
-          </div>
-          <div class="report-block-data-second-top col-5">
-            Qн: {{qO + ' т/сут '}}
+            {{trans('pgno.p_zab')}}: {{bhp}} {{trans('measurements.atm')}}
           </div>
         </div>
 
         <div class="first-report-block-data row">
           <div class="report-block-data-second-top col-5">
-            Ндин: {{hDyn + ' м'}}
+            {{trans('pgno.obvodnenost')}}: {{wct}} {{trans('measurements.percent')}}
           </div>
           <div class="report-block-data-second-top col-5">
-            Рзатр: {{pAnnular + ' атм'}}
+            {{trans('pgno.q_nefti')}}: {{qO}} {{trans('measurements.t/d')}}
+          </div>
+        </div>
+
+        <div class="first-report-block-data row">
+          <div class="report-block-data-second-top col-5">
+            {{trans('pgno.h_dyn')}}: {{hDyn}} {{trans('measurements.m')}}
+          </div>
+          <div class="report-block-data-second-top col-5">
+            {{trans('pgno.p_zat')}}: {{pAnnular}} {{trans('measurements.atm')}}
           </div>
         </div>
 
         <div class="first-report-block-data row">
           <div class="report-block-data-third-bottom col-5">
-            Гф: {{gor + ' м³/т'}}
+            {{trans('pgno.gf')}}: {{gor}} {{trans('measurements.m3/t')}}
           </div>
           <div class="report-block-data-third-bottom col-5">
-            Рпл: {{pRes + ' атм'}}
+            {{trans('pgno.p_pl')}}: {{pRes}} {{trans('measurements.atm')}}
           </div>
         </div>
 
@@ -1802,7 +1807,7 @@
         </div>
 
         <div class="title-page-2 col-10">
-          <h2>РЕЗУЛЬТАТЫ ПОДБОРА ГНО</h2>
+          <h2>{{trans('pgno.result_podbora_gno')}}</h2>
         </div>
 
         <div class="block-results row">
@@ -1810,27 +1815,27 @@
             <div class="block-results row">
               <div class="image-data-clone col-4">
 
-                <div class="shgn-image-text image-text-1">Экс.колонна {{ this.casID }}мм</div>
-                    <div class="shgn-image-text image-text-2">НКТ {{ this.tubOD }}мм</div>
-                    <div class="shgn-image-text image-text-3">Штанги {{ this.shgnS1D }}мм 0-{{ this.shgnS1L }}м</div>
+                <div class="shgn-image-text image-text-1">{{trans('pgno.eks_kolonna')}} {{ this.casID }}{{trans('measurements.mm')}}</div>
+                    <div class="shgn-image-text image-text-2">{{trans('pgno.nkt')}} {{ this.tubOD }}{{trans('measurements.mm')}}</div>
+                    <div class="shgn-image-text image-text-3">{{trans('pgno.shtangi')}} {{ this.shgnS1D }}{{trans('measurements.mm')}} 0-{{ this.shgnS1L }}{{trans('measurements.m')}}</div>
                     <div class="shgn-image-text image-text-4">
-                      Штанги {{ this.shgnS2D }}мм {{ this.shgnS1L }}-{{
+                      {{trans('pgno.shtangi')}} {{ this.shgnS2D }}{{trans('measurements.mm')}} {{ this.shgnS1L }}-{{
                         this.shgnS1L * 1 + this.shgnS2L * 1
-                      }}м
+                      }}{{trans('measurements.m')}}
                     </div>
                     <div class="shgn-image-text image-text-5">
-                      Штанги {{ this.shgnS1D }}мм
+                      {{trans('pgno.shtangi')}} {{ this.shgnS1D }}{{trans('measurements.mm')}}
                       {{ this.shgnS1L * 1 + this.shgnS2L * 1 }}-{{
                         this.shgnS1L * 1 + this.shgnS2L * 1 + this.shgnTNL * 1
-                      }}м
+                      }}{{trans('measurements.m')}}
                     </div>
-                    <div class="shgn-image-text image-text-6">Насос {{ this.shgnPumpType }}мм</div>
+                    <div class="shgn-image-text image-text-6">{{trans('pgno.nasos')}} {{ this.shgnPumpType }}{{trans('measurements.mm')}}</div>
                     <div class="shgn-image-text image-text-7">
-                      Интервал перфорации <br> {{ this.hPerf }}-{{
+                      {{trans('pgno.interval_perf')}} <br> {{ this.hPerf }}-{{
                         this.hPerf * 1 + this.hPerfND * 1
-                      }}м
+                      }}{{trans('measurements.m')}}
                     </div>
-                    <div class="shgn-image-text image-text-8">Текущий забой {{ this.curr }}м</div>
+                    <div class="shgn-image-text image-text-8">{{trans('pgno.tekushii_zaboi')}} {{ this.curr }}{{trans('measurements.m')}}</div>
                 
                 <img class="podborgnoimg"
                          src="./images/shgn.png"
@@ -1843,31 +1848,31 @@
                   <div class="col-12">
                     <div class="col-12"
                       style="margin-left: -15px; background-color: #656a8a; width: 513px; max-width: 1000px; font-size: 20px; color: white; height: 50px; padding-top: 10px; font-weight: bold;">
-                      Расчетный режим:
+                      {{trans('pgno.raschetnii_rezhim')}}:
                     </div>
 
                     <div class="row">
                       <div class="col-6"
                         style="background-color: white; color: black; border-right: 2px solid #8c8caf; border-bottom: 2px solid #8c8caf; border-left: 2px solid #8c8caf;">
-                        Qж: {{qLInput}}
+                        {{trans('pgno.q_liq')}}: {{qLInput}}
                       </div>
                       <div class="col-6"
                         style="background-color: white; color: black; border-bottom: 2px solid #8c8caf; border-right: 2px solid #8c8caf;">
-                        Qн: {{qO}}
+                        {{trans('pgno.q_nefti')}}: {{qO}}
                       </div>
 
                       <div class="col-6"
                         style="background-color: white; color: black; border-right: 2px solid #8c8caf; border-bottom: 2px solid #8c8caf; border-left: 2px solid #8c8caf;">
-                        %обв: {{wctInput}}
+                        {{trans('pgno.obvodnenost')}}: {{wctInput}}
                       </div>
                       <div class="col-6"
                         style="background-color: white; color: black; border-bottom: 2px solid #8c8caf; border-right: 2px solid #8c8caf;">
-                        Рзаб: {{bhpInput}}
+                        {{trans('pgno.p_zab')}}: {{bhpInput}}
                       </div>
 
                       <div class="col-6"
                         style="background-color: white; color: black; border-bottom: 2px solid #8c8caf; border-left: 2px solid #8c8caf;">
-                        Рпр: {{piCelValue}}
+                        {{trans('pgno.p_pr')}}: {{piCelValue}}
                       </div>
                       <div class="col-6"
                         style="background-color: white; color: black; border-bottom: 2px solid #8c8caf; border-right: 2px solid #8c8caf;">
@@ -1878,82 +1883,80 @@
                   </div>
 
                   <div class="col-12">
-
-                    <!-- <h3 style="background-color: #656a8a; padding: 0; margin: 0; height: 50px; font-size: 20px; padding-top: 10px;">Компоновка ШГН</h3> -->
                     <div class="col-12"
                       style="margin-left: -15px; background-color: #656a8a; width: 513px; max-width: 1000px; font-size: 20px; color: white; height: 50px; padding-top: 10px; font-weight: bold;">
-                      Компоновка ШГН
+                      {{trans('pgno.komponovka_shgn')}}
                     </div>
                     <div class="col-12"
                       style="margin-left: -15px; background-color: #c1c3d0; width: 513px; max-width: 1000px; font-size: 20px; color: black; height: 50px; padding-top: 10px;">
-                      Диаметр насоса:
+                      {{trans('pgno.diametr_nasosa')}}:
                     </div>
                     <div class="row">
                       <div class="col-6"
                         style="background-color: white; color: black; border-right: 2px solid #8c8caf; border-bottom: 2px solid #8c8caf; border-left: 2px solid #8c8caf;">
-                        Нсп: {{hPumpManomInput}}
+                        {{trans('pgno.h_spuska')}}: {{hPumpManomInput}}
                       </div>
                       <div class="col-6"
                         style="background-color: white; color: black; border-bottom: 2px solid #8c8caf; border-right: 2px solid #8c8caf;">
-                        Тип СК: {{sk}}
+                        {{trans('pgno.typ_sk')}}: {{sk}}
                       </div>
 
                       <div class="col-6"
                         style="background-color: white; color: black; border-right: 2px solid #8c8caf; border-bottom: 2px solid #8c8caf; border-left: 2px solid #8c8caf;">
-                        Длина хода: {{strokeLenDev + ' м'}}
+                        {{trans('pgno.dlina_hoda')}}: {{strokeLenDev}} {{trans('measurements.m')}}
                       </div>
                       <div class="col-6"
                         style="background-color: white; color: black; border-bottom: 2px solid #8c8caf; border-right: 2px solid #8c8caf;">
-                        Число качаний: {{spmDev + ' 1/мин'}}
+                        {{trans('pgno.chislo_kachanii')}}: {{spmDev}} {{trans('measurements.1/min')}}
                       </div>
 
                     </div>
 
                     <div class="col-12"
                       style="margin-left: -15px; background-color: #c1c3d0; width: 513px; max-width: 1000px; font-size: 20px; color: black; height: 50px; padding-top: 10px; font-weight: bold;">
-                      Колонна штанг:
+                      {{trans('pgno.kolonna_shtang')}}:
                     </div>
                     <div class="row">
                       <div class="col-4"
                         style="background-color: white; color: black; border-bottom: 2px solid #8c8caf; border-left: 2px solid #8c8caf; height: 29px;">
-                        Секция 1
+                        {{trans('pgno.sekcia')}} 1
                       </div>
                       <div class="col-4"
                         style="background-color: white; color: black; border-right: 2px solid #8c8caf; border-bottom: 2px solid #8c8caf; border-left: 2px solid #8c8caf; height: 29px;">
-                        диаметр: {{shgnS1D + ' мм'}}
+                        {{trans('measurements.diameter')}}: {{shgnS1D}} {{trans('measurements.mm')}}
                       </div>
 
                       <div class="col-4"
                         style="background-color: white; color: black; border-right: 2px solid #8c8caf; border-bottom: 2px solid #8c8caf; height: 29px;">
-                        длина: {{shgnS1L + ' м'}}
+                        {{trans('measurements.dlina')}}: {{shgnS1L}} {{trans('measurements.m')}}
                       </div>
 
                       <div class="col-4"
                         style="background-color: white; color: black;  border-bottom: 2px solid #8c8caf; border-left: 2px solid #8c8caf; height: 29px;">
-                        Секция 2
+                        {{trans('pgno.sekcia')}} 2
                       </div>
                       <div class="col-4"
                         style="background-color: white; color: black; border-right: 2px solid #8c8caf; border-bottom: 2px solid #8c8caf; border-left: 2px solid #8c8caf; height: 29px;">
-                        диаметр: {{shgnS2D + ' мм'}}
+                        {{trans('measurements.diameter')}}: {{shgnS2D}} {{trans('measurements.mm')}}
                       </div>
 
                       <div class="col-4"
                         style="background-color: white; color: black; border-right: 2px solid #8c8caf; border-bottom: 2px solid #8c8caf; height: 29px;">
-                        длина: {{shgnS2L + ' м'}}
+                        {{trans('measurements.dlina')}}: {{shgnS2L}} {{trans('measurements.m')}}
                       </div>
 
                       <div class="col-4"
                         style="background-color: white; color: black; border-bottom: 2px solid #8c8caf; border-left: 2px solid #8c8caf; height: 29px;">
-                        ТН
+                        {{trans('pgno.tn')}}
                       </div>
                       <div class="col-4"
                         style="background-color: white; color: black; border-right: 2px solid #8c8caf; border-bottom: 2px solid #8c8caf; border-left: 2px solid #8c8caf; height: 29px;">
-                        диаметр: {{shgnS1D + ' мм'}}
+                        {{trans('measurements.diameter')}}: {{shgnS1D}} {{trans('measurements.mm')}}
                       </div>
 
                       <div class="col-4"
                         style="background-color: white; color: black; border-right: 2px solid #8c8caf; border-bottom: 2px solid #8c8caf; height: 29px;">
-                        длина: {{shgnTNL + ' м'}}
+                        {{trans('measurements.dlina')}}: {{shgnTNL}} {{trans('measurements.m')}}
                       </div>
 
                     </div>
@@ -1972,1712 +1975,59 @@
   </div>
 </template>
 
-<script>
-import {mapMutations, mapState} from 'vuex'
-import { Plotly } from "vue-plotly";
-import { eventBus } from "../../event-bus.js";
-import NotifyPlugin from "vue-easy-notify";
-import 'vue-easy-notify/dist/vue-easy-notify.css';
-import { VueMomentLib }from "vue-moment-lib";
-import moment from "moment";
-import {PerfectScrollbar} from "vue2-perfect-scrollbar";
-import "vue2-perfect-scrollbar/dist/vue2-perfect-scrollbar.css";
-import Vue from 'vue';
-import FullPageLoader from '../ui-kit/FullPageLoader';
-import * as htmlToImage from 'html-to-image';
-import { toPng, toJpeg, toBlob, toPixelData, toSvg } from 'html-to-image';
-import jsPDF from 'jspdf';
-
-Vue.prototype.$eventBus = new Vue();
-
-
-Vue.use(NotifyPlugin,VueMomentLib);
-Vue.component("Plotly", Plotly);
-
-
-export default {
-  components: { PerfectScrollbar, FullPageLoader },
-  data: function () {
-    return {
-      isLoading: false,
-      activeRightTabName: 'technological-mode',
-      layout: {
-        shapes: [{
-          type: 'line',
-          yref: 'paper',
-          x0: 20,
-          y0: 0,
-          x1: 20,
-          y1: 1,
-          line: {
-            color: 'orange',
-            width: 1,
-            dash: 'dot'
-          }
-        }],
-        // width: 800,
-        height: 360,
-        showlegend: true,
-        margin: {
-          l: 50,
-          r: 50,
-          b: 80,
-          t: 30
-        },
-        xaxis: {
-          title: "",
-          hoverformat: ".1f",
-          //  showline: true,
-          zeroline: false,
-          // showgrid: true,
-          // mirror:true,
-          // ticklen: 4,
-          gridcolor: "#123E73",
-          //tickfont: {size: 10},
-        },
-        yaxis: {
-          title: "",
-          hoverformat: ".1f",
-          showlegend: true,
-          // showline: true,
-          zeroline: false,
-          //showgrid: true,
-          // mirror:true,
-          // ticklen: 4,
-          gridcolor: "#123E73",
-          //tickfont: {size: 10},
-        },
-
-        //   scene:{ gridcolor: '#ffffff',},
-        paper_bgcolor: "#2B2E5E",
-        plot_bgcolor: "#2B2E5E",
-        font: { color: "#fff" },
-
-        legend: {
-          orientation: "h",
-          y: -0.3,
-          font: {
-            size: 9.3,
-            color: "#fff",
-          },
-        },
-      },
-
-      data: [
-        {
-          name: "IPR (кривая притока)",
-          x: [0,1,3],
-          y: [0,1,3],
-
-          marker: {
-            size: "15",
-            color: "#FF0D18",
-          },
-        },
-      ],
-      nameKPP: "Кривая притока (пользователь)",
-      nameKPA: "Кривая притока (анализ)",
-      nameTR: "Текущий режим",
-      namePR: "Потенциальный режим",
-      titleXRu: "Дебит жидкости, м³/сут.",
-      titleXKz: "Сұйықтық дебиті, м³/тәул.",
-      titleXEn: "Liquid flow rate, м³/d.",
-      titleYRu: "Давление, атм/газосодержание, %",
-      titleYKz: "Қысым, атм / газ құрамы, %",
-      titleYEn: "Pressure, atm/gas saturation, %",
-      hovertemplateKPP: "<b>Кривая притока (пользователь)</b><br>" +
-            "Qж = %{x:.1f} м³/сут<br>" +
-            "Qн = %{text:.1f} т/сут<br>" +
-            "Pзаб = %{y:.1f} атм<extra></extra>",
-      hovertemplateKPA: "<b>Кривая притока (анализ)</b><br>" +
-            "Qж = %{x:.1f} м³/сут<br>" +
-            "Qн = %{text:.1f} т/сут<br>" +
-            "Pзаб = %{y:.1f} атм<extra></extra>",
-      hovertemplateTR: "<b>Текущий режим</b><br>" +
-            "Qж = %{x:.1f} м³/сут<br>" +
-            "Qн = %{text:.1f} т/сут<br>" +
-            "Pзаб = %{y:.1f} атм<extra></extra>",
-      hovertemplatePR: "<b>Потенциальный режим</b><br>" +
-            "Qж = %{x:.1f} м³/сут<br>" +
-            "Qн = %{text:.1f} т/сут<br>" +
-            "Pзаб = %{y:.1f} атм<extra></extra>",
-      bhpPot: null,
-      qlPot: null,
-      pinPot: null,
-      visibleChart: true,
-      stroke_len: null,
-      qOil: null,
-      shgnPumpType: null,
-      shgnSPM: null,
-      shgnLen: null,
-      shgnS1D: null,
-      shgnS2D: null,
-      shgnS1L: null,
-      shgnS2L: null,
-      shgnTNL: null,
-      hPerfND: null,
-      type: String,
-      required: true,
-      wellNumber: null,
-      age: false,
-      horizon: null,
-      x: null,
-      y: null,
-      wctOkr: null,
-      expMeth: null,
-      tseh: null,
-      gu: null,
-      casOD: null,
-      casID: null,
-      hPerf: null,
-      udl: null,
-      pumpType: null,
-      hPumpSet: null,
-      tubOD: null,
-      tubID: null,
-      stopDate: null,
-      PBubblePoint: null,
-      gor:null,
-      tRes: null,
-      viscOilRc: null,
-      viscWaterRc: null,
-      densOil: null,
-      densWater: null,
-      qO: null,
-      wct: null,
-      bhp: null,
-      pRes: null,
-      hDyn: null,
-      pAnnular: null,
-      whp: null,
-      lineP: null,
-      piInput: null,
-      pplInput: null,
-      pResInput: null,
-      qLInput: null,
-      wctInput: null,
-      gorInput: null,
-      bhpInput: null,
-      hDynInput: null,
-      pAnnularInput: null,
-      pManomInput: null,
-      hPumpManomInput: null,
-      whpInput: null,
-      hPumpValue: null,
-      curveSelect: 'pi',
-      curveValue: '',
-      QhydCurveSelect: null,
-      curr: null,
-      expChoose: null,
-      CelButton: 'ql',
-      bhpCurveButton: '',
-      qL: null,
-      qlCelValue: null,
-      bhpCelValue: null,
-      piCelValue: null,
-      expID: null,
-      CelValue: null,
-      analysisBox1: true,
-      analysisBox2: true,
-      analysisBox3: true,
-      analysisBox4: true,
-      analysisBox5: true,
-      analysisBox6: true,
-      analysisBox7: true,
-
-      analysisBox8: true,
-      shgnTubOD: null,
-      menu: "MainMenu",
-      ngdu: null,
-      sk: null,
-      grp_skin: false,
-      newData: null,
-      strokeLenDev: null,
-      spmDev: '1/мин',
-      expAnalysisData:{
-        NNO1:null,
-        NNO2:null,
-        fieldNNO1:null,
-        fieldNNO2:null,
-        prs1:null,
-        prs2:null,
-        qoilEcn:null,
-        qoilShgn:null,
-        shgnParam:null,
-        ecnParam:null,
-        ecnNpv:null,
-        shgnNpv:null,
-        npvTable1:{},
-        npvTable2:{},
-        nno1:null,
-        nno2:null,
-      },
-
-      qZhExpEcn:null,
-      qOilExpEcn:null,
-      qZhExpShgn:null,
-      qOilExpShgn:null,
-      param_eco:null,
-      potMenu: false,
-
-      field: "UZN",
-      wellIncl: null,
-      dataNNO:"2020-11-01",
-      nearWells: [],
-      windowWidth: null,
-
-      wellOkr: null,
-      piOkr: null,
-      khOkr: null,
-      skinOkr: null,
-      presOkr: null,
-      stanokKachalka: null,
-      freq: 'Число качаний',
-      dNasosa: 'Диаметр насоса',
-      hideStrokeLength: false,
-      krsTable: [],
-      numberRepairs: null,
-      numberNNO: null,
-      langUrl: '',
-    };
-
-  },
-
-  watch: {
-    curveSelect(newVal) {
-      if (newVal === 'pi') {
-        this.QhydCurveSelect = null;
-      } else {
-        this.QhydCurveSelect = 'hdyn';
-      }
-    },
-    QhydCurveSelect(newVal) {
-      if (newVal === 'hdyn') {
-        this.curveSelect = 'hdyn';
-      }
-    },
-  },
-
-  computed: {
-    getOnPgnoButtonTitle() {
-     var langUrl = `${window.location.pathname}`.slice(1, 3);
-      if (this.visibleChart) {
-        if(langUrl === 'ru') {
-          return 'Подбор ГНО'
-        } else if(langUrl === 'kz') {
-          return 'Терең сорғы жабдықтарын таңдау'
-        } else {
-          return 'Selection of downhole pumping equipment'
-        }
-        
-      } else {
-        if(langUrl === 'ru') {
-          return 'Кривая притока'
-        } else if(langUrl === 'kz') {
-          return 'Ағын қисығы'
-        } else {
-          return 'Inflow curve'
-        }
-      }
-    },
-    
-  },
-  created() {
-    window.addEventListener("resize", () => {
-      this.windowWidth = window.innerWidth;
-    });
-  },
-  mounted() {
-    
-
-    this.windowWidth = window.innerWidth;
-
-    if (this.windowWidth <= 1300 && this.windowWidth > 991) {
-      this.activeRightTabName = 'devices';
-    }
-  },
-  computed: {
-    wellNum() {
-      return this.$store.state.wellNum
-    },
-    // wellType() {
-    //   return this.$store.state.wellType
-    // },
-    // ...mapMutations([wellNum]),
-    ...mapState(['wells'])
-  },
-  methods: {
-    updateWellNum(event) {
-      this.$store.commit('UPDATE_MESSAGE', event.target.value)
-      this.$store.dispatch('loadWells')
-    },
-    closeModal(modalName) {
-      this.$modal.hide(modalName)
-    },
-    closeEconomicModal() {
-      this.$modal.hide('tablePGNO')
-      this.$modal.show('modalExpAnalysis')
-    },
-    setData: function(data) {
-      if (this.method == "CurveSetting") {
-        this.pResInput = data["Well Data"]["p_res"][0] + ' атм'
-        this.piInput = data["Well Data"]["pi"][0].toFixed(2) + ' м³/сут/атм'
-        this.qLInput = data["Well Data"]["q_l"][0].toFixed(0) + ' м³/сут'
-        this.wctInput = data["Well Data"]["wct"][0] + ' %'
-        this.hPumpValue = data["Well Data"]["h_pump_set"][0].toFixed(0) + ' м'
-        this.gorInput = data["Well Data"]["gor"][0] + ' м³/т'
-        this.bhpInput = data["Well Data"]["bhp"][0].toFixed(0) + ' атм'
-        this.hDynInput = data["Well Data"]["h_dyn"][0].toFixed(0) + ' м'
-        this.pAnnularInput = data["Well Data"]["p_annular"][0].toFixed(0) + ' атм'
-        this.qlCelValue = JSON.parse(data.PointsData)["data"][2]["q_l"].toFixed(0) + ' м³/сут'
-        this.bhpCelValue = JSON.parse(data.PointsData)["data"][2]["p"].toFixed(0) + ' атм'
-        this.piCelValue = JSON.parse(data.PointsData)["data"][2]["pin"].toFixed(0) + ' атм'
-        this.whpInput = data["Well Data"]["whp"][0].toFixed(0) + ' атм'
-        this.pManomInput = data["Well Data"]["p_intake"][0] + ' атм'
-        if(this.curveSelect == 'pmanom') {
-          this.hPumpManomInput = data["Well Data"]["h_pump_point"][0] + ' м'
-        }
-        this.curveLineData = JSON.parse(data.LineData)["data"]
-        this.curvePointsData = JSON.parse(data.PointsData)["data"]
-        this.qOil = this.curvePointsData[2]["q_oil"].toFixed(0)
-        this.bhpPot = this.curvePointsData[1]["p"].toFixed(0)
-        this.qlPot = this.curvePointsData[1]["q_l"].toFixed(0)
-        this.pinPot = this.curvePointsData[1]["pin"].toFixed(0)
-      } else {
-        this.ngdu = data["Well Data"]["ngdu"][0]
-        this.sk = data["Well Data"]["sk_type"][0]
-        this.wellNumber = data["Well Data"]["well"][0].split("_")[1]
-        this.age = data["Age"]
-        this.horizon = data["Well Data"]["horizon"][0]
-        this.expMeth = data["Well Data"]["exp_meth"][0]
-        this.tseh = data["Well Data"]["tseh"][0]
-        this.gu = data["Well Data"]["gu"][0]
-        this.stroke_len = data["Well Data"]["stroke_len"][0]
-        this.casOD = data["Well Data"]["cas_OD"][0]
-        this.casID = data["Well Data"]["cas_ID"][0]
-        this.hPerf = data["Well Data"]["h_up_perf_vd"][0]
-        this.udl = data["udl"].toFixed(1)
-        this.hPumpSet = data["Well Data"]["h_pump_set"][0]
-        this.tubOD = data["Well Data"]["tub_OD"][0]
-        this.tubID = data["Well Data"]["tub_ID"][0]
-        this.stopDate = data["Well Data"]["stop_date"][0]
-        this.pumpType = data["Well Data"]["pump_type"][0]
-        this.PBubblePoint = data["Well Data"]["P_bubble_point"][0].toFixed(2)
-        this.gor = data["Well Data"]["gor"][0].toFixed(0)
-        this.tRes = data["Well Data"]["t_res"][0].toFixed(2)
-        this.viscOilRc = data["Well Data"]["visc_oil_rc"][0].toFixed(2)
-        this.viscWaterRc = data["Well Data"]["visc_wat_rc"][0].toFixed(2)
-        this.densOil = data["Well Data"]["dens_oil"][0].toFixed(2)
-        this.densWater = data["Well Data"]["dens_liq"][0].toFixed(2)
-        this.qL = data["Well Data"]["q_l"][0].toFixed(0)
-        this.qO = data["Well Data"]["q_o"][0].toFixed(0)
-        this.wct = data["Well Data"]["wct"][0].toFixed(0)
-        this.bhp = data["Well Data"]["bhp"][0].toFixed(0)
-        this.pRes = data["Well Data"]["p_res"][0].toFixed(0)
-        this.hDyn = data["Well Data"]["h_dyn"][0].toFixed(0)
-        this.pAnnular = data["Well Data"]["p_annular"][0].toFixed(0)
-        this.whp = data["Well Data"]["whp"][0].toFixed(0)
-        this.lineP = data["Well Data"]["line_p"][0].toFixed(0)
-        this.piInput = data["Well Data"]["pi"][0].toFixed(2) + ' м³/сут/ат'
-        this.curr = data["Well Data"]["curr_bh"][0].toFixed(0)
-        this.piCelValue = JSON.parse(data.PointsData)["data"][0]["pin"].toFixed(0) + ' атм'
-        this.bhpCelValue = JSON.parse(data.PointsData)["data"][0]["p"].toFixed(0) + ' атм'
-        this.wellIncl = data["Well Data"]["well"][0]
-        this.hPerfND = data["Well Data"]["h_perf"][0]
-        this.strokeLenDev = data["Well Data"]["stroke_len"][0]
-        var langUrl = `${window.location.pathname}`.slice(1, 3);
-        if (this.expMeth == 'ШГН') {
-          if(langUrl === 'ru') {
-            this.dNasosa = 'Диаметр насоса'
-            this.freq = 'Число качаний'
-          } else if(langUrl === 'kz') {
-            this.dNasosa = "Сораптың диаметрі"
-            this.freq = "Тербеліс саны"
-          } else {
-            this.dNasosa = "Pump diameter"
-            this.freq = "Pump rate"
-          }
-          this.spmDev = data["Well Data"]["spm"][0] + ' 1/мин'
-        } else {
-          if(langUrl === 'ru') {
-            this.dNasosa = 'Номинальная подача'
-            this.freq = 'Частота'
-          } else if(langUrl === 'kz') {
-            this.dNasosa = "Номиналды беру"
-            this.freq = "Жиілігі"
-          } else {
-            this.dNasosa = "Nominal feed"
-            this.freq = "Frequency"
-          }
-          this.spmDev = data["Well Data"]["freq"][0] + ' Гц'
-        }
-        if (this.expMeth == 'УЭЦН') {
-        this.hideStrokeLength = true
-        } else
-
-
-        this.stopDate = this.stopDate.substring(0, 10)
-        this.pResInput = this.pRes + ' атм'
-        this.qLInput = this.qL  + ' м³/сут'
-        this.wctInput = this.wct + ' %'
-        this.gorInput = this.gor + ' м³/т'
-        this.bhpInput = this.bhp + ' атм'
-        this.hDynInput = this.hDyn + ' м'
-        this.pAnnularInput = this.pAnnular + ' атм'
-        this.pManomInput = data["Well Data"]["p_intake"][0] + ' атм'
-        this.hPumpManomInput = data["Well Data"]["h_pump_set"][0] + ' м'
-        this.whpInput = this.whp + ' атм'
-        this.qlCelButton = true
-        this.qlCelValue = this.qLInput
-        this.hPumpValue = this.hPumpSet + ' м'
-
-
-        if (this.expMeth == "ШГН") {
-          this.expChoose = "ШГН"
-        } else {
-          this.expChoose = "ЭЦН"
-        }
-        if (this.age === true) {
-          this.curveSelect = 'pi'
-        } else {
-          this.curveSelect = 'hdyn'
-        }
-
-        this.piButton = true
-        this.curveLineData = JSON.parse(data.LineData)["data"]
-        this.curvePointsData = JSON.parse(data.PointsData)["data"]
-        this.qOil = this.curvePointsData[2]["q_oil"].toFixed(0)
-        this.bhpPot = this.curvePointsData[1]["p"].toFixed(0)
-        this.qlPot = this.curvePointsData[1]["q_l"].toFixed(0)
-        this.pinPot = this.curvePointsData[1]["pin"].toFixed(0)
-      }
-    },
-    setLine: function (value) {
-      var ipr_points = [];
-      var qo_points = [];
-      var value2 = [];
-      var ipr_points2 = [];
-      var qo_points2 = [];
-      var q_oil = [];
-      var q_oil2 = [];
-
-
-      _.forEach(value, function (values) {
-        ipr_points = values.ipr_points;
-        qo_points = values.qo_points;
-        q_oil = values.q_oil
-        ipr_points2.push(ipr_points);
-        qo_points2.push("" + qo_points + "");
-        q_oil2.push(q_oil);
-      });
-
-      this.data = [
-        {
-          name: this.nameKPP,
-          legendgroup: 1,
-          x: qo_points2,
-          y: ipr_points2,
-          text: q_oil2,
-          hovertemplate: this.hovertemplateKPP, 
-          marker: {
-            size: "15",
-            color: "#FF0D18",
-          },
-        },
-        {
-          name: this.nameTR,
-          legendgroup: 2,
-          x: [],
-          y: [],
-          text: [],
-          mode: "markers",
-          hovertemplate: this.hovertemplateTR,
-          marker: {
-            size: "15",
-            color: "#00A0E3",
-          },
-        },
-
-        {
-          name: this.namePR,
-          legendgroup: 3,
-          x: [],
-          y: [],
-          text: [],
-          mode: "markers",
-          hovertemplate: this.hovertemplatePR,
-          marker: {
-            size: "8",
-            color: "#FBA409",
-          },
-        },
-        {
-          name: this.nameKPA,
-          legendgroup: 4,
-          x: [],
-          y: [],
-          text: [],
-          hovertemplate: this.hovertemplateKPA,
-
-          marker: {
-            size: "15",
-            color: "#237DEB",
-          },
-        },
-      ];
-      this.chartOptions = {
-        labels: qo_points2,
-      };
-    },
-    updateLine:  function (value) {
-      var ipr_points = [];
-      var qo_points = [];
-      var ipr_points2 = [];
-      var qo_points2 = [];
-      var q_oil = [];
-      var q_oil2 = [];
-
-      _.forEach(value, function (values) {
-        ipr_points = values.ipr_points;
-        qo_points = values.qo_points;
-        q_oil = values.q_oil
-        ipr_points2.push(ipr_points);
-        qo_points2.push("" + qo_points + "");
-        q_oil2.push(q_oil)
-      });
-      this.data[3]['x'] = qo_points2
-      this.data[3]['y'] = ipr_points2
-      this.data[3]['text'] = q_oil2
-      if (JSON.stringify(this.data[0]['x']) == JSON.stringify(this.data[3]['x']) && JSON.stringify(this.data[0]['y']) == JSON.stringify(this.data[3]['y'])) {
-        this.data[3]['x'] = []
-        this.data[3]['y'] = []
-        this.data[3]['text'] = []
-      }
-    },
-    setPoints: function (value) {
-      this.data[1]['x'][0] = value[0]["q_l"]
-      this.data[1]['y'][0] = value[0]["p"]
-      this.data[1]['text'][0] = value[0]["q_oil"]
-      this.data[2]['x'][0] = value[1]["q_l"]
-      this.data[2]['y'][0] = value[1]["p"]
-      this.data[2]['text'][0] = value[1]["q_oil"]
-      this.layout['shapes'][0]['x0'] = value[1]['q_l']
-      this.layout['shapes'][0]['x1'] = value[1]['q_l']
-
-    },
-    PotAnalysisMenu() {
-      this.postCurveData()
-      this.setLine(this.curveLineData)
-      this.setPoints(this.curvePointsData)
-      if (this.age) {
-        this.postAnalysisNew();
-        this.$modal.show('modalNewWell');
-      } else {
-        this.postAnalysisOld();
-        this.$modal.show('modalOldWell');
-      }
-    },
-
-    async ExpAnalysisMenu(){
-      await this.NnoCalc()
-      var langUrl = `${window.location.pathname}`.slice(1, 3);
-
-      if(this.casOD < 127) {
-        if(langUrl === 'ru') {
-        Vue.prototype.$notifyError('В ЭК Ø127 мм и ниже, применение УЭЦН с габаритами 5 и 5А невозможно')
-        } else if(langUrl === 'kz') {
-        Vue.prototype.$notifyError('Пайдалану колоннасында (ПК) 127 мм және одан төмен  ЭОТСҚ (Электрлік орталықтан тепкіш copaп қондырғысы) қолданылмайды2')
-        } else {
-        Vue.prototype.$notifyError('The using of ESP units with dimensions 5 and 5A is not possible in a production casing with a diameter of 127 mm and below')
-       }
-      }
-      
-
-      if (this.qlCelValue.split(' ')[0] < 28) {
-        if(langUrl === 'ru') {
-         Vue.prototype.$notifyWarning("Применение УЭЦН не рекомендуется на низкодебитных скважинах");
-        } else if(langUrl === 'kz') {
-         Vue.prototype.$notifyWarning('ЭОТСҚ қолдану төмен дебитті ұңғымаларда болмайды')
-        } else {
-         Vue.prototype.$notifyWarning('ESP application is not recommended for low-rate wells')
-       }
-      }
-
-      if (this.qlCelValue.split(' ')[0] > 106) {
-        if(langUrl === 'ru') {
-         Vue.prototype.$notifyWarning("Применение ШГН на высокодебитных скважинах ограничивает потенциал добычи");
-        } else if(langUrl === 'kz') {
-         Vue.prototype.$notifyWarning("Аз дебитті бұрғылау ұңғымаларын пайдалану өндіріс әлеуетін шектейді");
-        } else {
-         Vue.prototype.$notifyWarning("The use of sucker-rod pumping units in high-flow wells limits production potential")
-       }
-      } 
-
-      this.qZhExpEcn=this.qlCelValue.split(' ')[0]
-      this.qOilExpEcn=this.qlCelValue.split(' ')[0]*(1-(this.wctInput.split(' ')[0]/100))*this.densOil
-
-      if (this.qlCelValue.split(' ')[0] < 106){
-        this.qZhExpShgn=this.qlCelValue.split(' ')[0]
-        this.qOilExpShgn=this.qlCelValue.split(' ')[0]*(1-(this.wctInput.split(' ')[0]/100))*this.densOil
-
-      } else {
-        this.qZhExpShgn=106
-        this.qOilExpShgn=106*(1-(this.wctInput.split(' ')[0]/100))*this.densOil
-      }
-
-      this.expAnalysisData.qoilShgn=this.qOilExpShgn
-      this.expAnalysisData.qoilEcn=this.qOilExpEcn
-
-      if(this.expAnalysisData.NNO1!=null) {
-        await this.EconomParam();
-      }
-      
-      
-
-
-    },
-    async EconomParam(){
-      var prs1 = this.expAnalysisData.prs1;
-      var prs2 = this.expAnalysisData.prs2;
-
-      var nnoDayUp=moment(this.dataNNO, 'YYYY-MM-DD').toDate();
-      var nnoDayFrom=moment(this.stopDate, 'YYYY-MM-DD').toDate();
-
-      var date_diff=(nnoDayUp-nnoDayFrom)/(1000*3600*24);
-
-      if (date_diff<365){
-        date_diff=365;
-      }
-
-
-
-      if (prs1!=0 && prs2!=0){
-        this.param_eco=1;
-        await this.EconomCalc();
-      } else if (prs1==0 && prs2==0){
-        if(this.age){
-          this.param_eco=1;
-          await this.EconomCalc();
-        } else {
-          if(this.expMeth=="ШГН"){
-            this.expAnalysisData.NNO1=date_diff;
-            this.param_eco=1;
-            await this.EconomCalc();
-          }else{
-            this.expAnalysisData.NNO2=date_diff;
-            this.param_eco=1;
-            await this.EconomCalc();
-          }
-        }
-      } else if (prs1==0 && prs2!=0){
-        this.param_eco=2;
-        await this.EconomCalc();
-      } else {
-        this.param_eco=3;
-        await this.EconomCalc();
-      }
-    },
-    async EconomCalc(){
-
-
-
-      let uri2=this.localeUrl("/nnoeco?equip=1&org=5&param=")+this.param_eco+"&qo="+this.qOilExpShgn+"&qzh="+this.qZhExpShgn+"&reqd="+this.expAnalysisData.NNO1+"&reqecn="+this.expAnalysisData.prs1+"&scfa=%D0%A4%D0%B0%D0%BA%D1%82&start=2021-01-21";
-      let uri3=this.localeUrl("/nnoeco?equip=2&org=5&param=")+this.param_eco+"&qo="+this.qOilExpEcn+"&qzh="+this.qZhExpEcn+"&reqd="+this.expAnalysisData.NNO2+"&reqecn="+this.expAnalysisData.prs2+"&scfa=%D0%A4%D0%B0%D0%BA%D1%82&start=2021-01-21";
-
-      this.isLoading = true;
-
-      const responses = await Promise.all([ this.axios.get(uri2), this.axios.get(uri3) ]).finally(() => {
-        this.isLoading = false;
-      });
-
-
-      let data = responses[0].data;
-      if(data) {
-
-        this.expAnalysisData.shgnParam=data[12].godovoiShgnParam;
-        this.expAnalysisData.shgnNpv=data[12].npv;
-        this.expAnalysisData.npvTable1=data[12];
-      }
-      else {
-        console.log('No data');
-      }
-
-
-
-      let data2 = responses[1].data;
-      if (data2) {
-
-        this.expAnalysisData.ecnParam=data2[12].godovoiEcnParam;
-        this.expAnalysisData.ecnNpv=data2[12].npv;
-        this.expAnalysisData.npvTable2=data2[12];
-
-        if(this.qOilExpShgn!=null && this.qOilExpEcn!=null && this.expAnalysisData.NNO1!=null && this.expAnalysisData.NNO2!=null && this.expAnalysisData.shgnParam!=null && this.expAnalysisData.shgnNpv!=null && this.expAnalysisData.ecnParam!=null && this.expAnalysisData.ecnNpv!=null ){
-          this.$modal.show("modalExpAnalysis");
-        }
-
-      }
-      else {
-        console.log('No data');
-      }
-    },
-    async NnoCalc(){
-      let uri = "http://172.20.103.187:7575/api/nno/";
-
-      this.eco_param=null;
-
-      this.qZhExpEcn=this.qlCelValue.split(' ')[0]
-      this.qOilExpEcn=this.qlCelValue.split(' ')[0]*(1-(this.wctInput.split(' ')[0]/100))*this.densOil
-
-      if (this.qlCelValue.split(' ')[0]<106){
-        this.qZhExpShgn=this.qlCelValue.split(' ')[0]
-        this.qOilExpShgn=this.qlCelValue.split(' ')[0]*(1-(this.wctInput.split(' ')[0]/100))*this.densOil
-
-      } else {
-        this.qZhExpShgn=106
-        this.qOilExpShgn=106*(1-(this.wctInput.split(' ')[0]/100))*this.densOil
-      }
-
-      if(this.wellNumber!=null){
-        let jsonData = JSON.stringify(
-          {"well_number": this.wellNumber,
-            "exp_meth": "ШГН",
-            "field": this.field,
-          }
-        )
-
-        let jsonData2 = JSON.stringify(
-          {"well_number": this.wellNumber,
-            "exp_meth": "ЭЦН",
-            "field": this.field,
-          }
-        )
-
-        this.isLoading = true;
-
-        const responses = await Promise.all([ this.axios.post(uri, jsonData), this.axios.post(uri, jsonData2) ])
-            .finally(() => {
-              this.isLoading = false;
-            });
-        //microservise na SHGN NNO
-
-
-        var data = JSON.parse(responses[0].data.Result)
-        if (data) {
-          this.expAnalysisData.NNO1=data.NNO
-          this.expAnalysisData.qoilShgn=this.qOilExpShgn
-          this.expAnalysisData.prs1=data.prs
-          this.expAnalysisData.fieldNNO1=data.fieldNNO
-        } else {
-          console.log("No data");
-        }
-
-        var data2 = JSON.parse(responses[1].data.Result)
-        if (data2) {
-          this.expAnalysisData.NNO2=data2.NNO
-          this.expAnalysisData.qoilEcn=this.qOilExpEcn
-          this.expAnalysisData.prs2=data2.prs
-          this.expAnalysisData.fieldNNO2=data.fieldNNO
-        } else {
-          console.log("No data");
-        }
-
-
-
-      }
-    },
-
-    onOpenTable() {
-      this.$modal.show("modalNearWells");
-    },
-
-    InclMenu() {
-      
-      if (this.age === true) {
-        var langUrl = `${window.location.pathname}`.slice(1, 3);
-        if(langUrl === 'ru') {
-          Vue.prototype.$notifyWarning("Данные инклинометрии новой скважины отсутствуют");
-        } else if(langUrl === 'kz') {
-          Vue.prototype.$notifyWarning("Ұңғыманын инклинометрия жоқ")
-        } else {
-          Vue.prototype.$notifyWarning("New well inclinometry data not available")
-        }
-        
-
-      } else {
-        this.$modal.show('modalIncl')
-      }
-    },
-
-    getWellNumber(wellnumber) {
-      this.visibleChart = true;
-      let uri = "http://172.20.103.187:7575/api/pgno/"+ this.field + "/" + wellnumber + "/";
-      this.isLoading = true;
-
-      this.axios.get(uri).then((response) => {
-          var data = response.data;
-          this.method = 'MainMenu'
-          if (data["Error"] == "NoData" || data["Error"] == 'data_error'){
-            if(data["Error"] == "NoData") {
-              var langUrl = `${window.location.pathname}`.slice(1, 3);
-              if(langUrl === 'ru'){
-                Vue.prototype.$notifyError("Указанная скважина отсутствует");
-              } else if(langUrl === 'kz') {
-                Vue.prototype.$notifyError("Көрсетілген ұңғыма жоқ");
-              } else {
-                Vue.prototype.$notifyError("The specified well is missing");
-              }
-              
-            } else if(data["Error"] == 'data_error') {
-              if(langUrl === 'ru') {
-                Vue.prototype.$notifyError("Данные тех режима по скважине некорректны");
-              } else if(langUrl === 'kz') {
-                Vue.prototype.$notifyError("Kz")
-              } else {
-                Vue.prototype.$notifyError("Well operating practices data is incorrect")
-              }
-              
-            }
-
-            this.curveLineData = JSON.parse(data.LineData)["data"]
-            this.curvePointsData = JSON.parse(data.PointsData)["data"]
-            this.ngdu = 0
-            this.sk = 0
-
-            //Выбор скважины
-            this.horizon = 0;
-            this.expMeth = 0;
-            this.tseh = 0;
-            this.gu = 0;
-            this.curr = 0;
-
-            // Конструкция
-            this.casOD = 0;
-            this.casID = 0;
-            this.hPerf = 0;
-            this.udl = 0;
-
-            //PVT
-            this.PBubblePoint = 0;
-            this.gor = 0;
-            this.tRes = 0;
-            this.densOil = 0;
-            this.viscOilRc = 0;
-            this.viscWaterRc = 0;
-            this.densWater = 0;
-            this.hdynValue = [this.hDynInput = 0, this.pAnnularInput = 0];
-
-            //Оборудование
-            this.pumpType = 0;
-            this.hPumpSet = 0;
-            this.tubOD = 0;
-            this.tubID = 0;
-            this.stopDate = 0;
-
-            //Технологический  режим
-            this.qL = 0;
-            this.qO = 0;
-            this.wct = 0;
-            this.bhp = 0;
-            this.pRes = 0;
-            this.hDyn = 0;
-            this.pAnnular = 0;
-            this.whp = 0;
-            this.lineP = 0;
-
-            //Настройка кривой притока
-            this.pResInput = 0;
-            this.piInput = 0;
-            this.qLInput = 0;
-            this.bhpInput = 0;
-            this.wctInput = 0;
-            this.gorInput = 0;
-            this.hDynInput = 0;
-            this.pAnnularInput = 0;
-            this.hPumpManomInput = 0;
-            this.whpInput = 0;
-
-            //Параметры подбора
-            this.hPumpValue = 0;
-            this.qlCelValue = 0;
-            this.bhpCelValue = 0;
-            this.piCelValue = 0;
-
-
-          } else if(data["Age"] === true) {
-
-
-            this.curveLineData = JSON.parse(data.LineData)["data"]
-            this.curvePointsData = JSON.parse(data.PointsData)["data"]
-            this.horizon = data["Well Data"]["horizon"][0]
-            this.curveSelect = 'pi'
-            this.age = data["Age"]
-
-
-            this.PBubblePoint = data["Well Data"]["P_bubble_point"][0].toFixed(1)
-            this.gor = data["Well Data"]["gor"][0].toFixed(1)
-            this.tRes = data["Well Data"]["t_res"][0].toFixed(1)
-            this.viscOilRc = data["Well Data"]["visc_oil_rc"][0].toFixed(1)
-            this.viscWaterRc = data["Well Data"]["visc_wat_rc"][0].toFixed(1)
-            this.densOil = data["Well Data"]["dens_oil"][0].toFixed(1)
-            this.densWater = data["Well Data"]["dens_liq"][0].toFixed(1)
-            this.hPumpValue = data["Well Data"]["h_pump_set"][0].toFixed(0) + ' м'
-            var langUrl = `${window.location.pathname}`.slice(1, 3);
-
-            if(langUrl === 'ru') {
-              Vue.prototype.$notifyWarning("Нсп установлено на 150м выше ВДП по умолчанию")
-            } else if(langUrl === 'kz') {
-              Vue.prototype.$notifyWarning("Түсу тереңдігі әдепкі қалпы бойынша перфорацияның жоғарғы тесіктерінен 150 м жоғары орнатылған")
-            } else {
-              Vue.prototype.$notifyWarning("Pump run depth is set 150 meters above the top perforation holes by default")
-            }
-            
-
-
-
-            if(langUrl === 'ru') {
-              Vue.prototype.$notifyWarning("Новая скважина");
-            } else if(langUrl === 'kz') {
-              Vue.prototype.$notifyWarning("Жаңа ұңғыма")
-            } else {
-              Vue.prototype.$notifyWarning("New well")
-            }
-            
-
-            this.ngdu = 0
-            this.sk = 0
-
-            //Выбор скважины
-            this.expMeth = 0;
-            this.tseh = 0;
-            this.gu = 0;
-            this.curr = 0;
-
-            // Конструкция
-            this.casOD = 168;
-            this.casID = 150;
-            this.hPerf = data["Well Data"]["h_up_perf_vd"][0].toFixed(0);
-            this.udl = 0;
-
-            //Оборудование
-            this.pumpType = 0;
-            this.hPumpSet = 0
-            this.tubOD = 73;
-            this.tubID = 62;
-            this.stopDate = 0;
-            this.stroke_len = 0;
-            this.spmDev = 0;
-
-            //Технологический  режим
-            this.qL = 0;
-            this.qO = 0;
-            this.wct = 0;
-            this.bhp = 0;
-            this.pRes = 0;
-            this.hDyn = 0;
-            this.pAnnular = 0;
-            this.whp = 0;
-            this.lineP = 0;
-
-            //Настройка кривой притока
-            this.pResInput = 0 + ' атм';
-            this.piInput = 0 + ' м³/сут/ат';
-            this.qLInput = 0 + ' м³/сут';
-            this.bhpInput = 0 + ' атм';
-            this.wctInput = 0 + ' %';
-            this.gorInput = this.gor + ' м³/т';
-            this.hDynInput = 0 + ' м';
-            this.pAnnularInput = 0 + ' атм';
-            this.hPumpManomInput = 0 + ' атм';
-            this.whpInput = 0 + ' атм';
-            this.pManomInput = 0 + ' атм'
-            this.expChoose = 'ШГН'
-
-            //Параметры подбора
-            this.qlCelValue = 0 + ' м³/сут';
-            this.bhpCelValue = 0 + ' атм';
-            this.piCelValue = 0 + ' атм';
-
-          } else if (data["Age"] === false){
-            this.setData(data)
-            if(data["error_len"] == "error_len") {
-              if(langUrl === 'ru') {
-                Vue.prototype.$notifyWarning("Тип СК на скважине не соответствует текущей длине хода")
-              } else if(langUrl === 'kz') {
-                Vue.prototype.$notifyWarning("Ұңғымадағы тербелмелі білдегінің (ТБ) түрі жүрістің ағымдағы ұзындығына сәйкес келмейді")
-              } else {
-                Vue.prototype.$notifyWarning("The pumping unit type on the well does not match the current stroke length")
-              }
-            }
-            if(data["error_spm"] == "error_spm") {
-              if(langUrl === 'ru') {
-              Vue.prototype.$notifyWarning("Тип СК на скважине не соответствует текущему числу качании")
-              } else if(langUrl === 'kz') {
-              Vue.prototype.$notifyWarning("Ұңғымадағы ТБ түрі тербелістердің ағымдағы санына сәйкес келмейді")
-              } else {
-              Vue.prototype.$notifyWarning("The type of pumping unit on the well does not correspond to the current pump rate")
-              }
-            }
-          }
-          this.$emit('LineData', this.curveLineData)
-          this.$emit('PointsData', this.curvePointsData)
-          //this.NnoCalc();
-        }
-      ).finally((response) => {
-        this.isLoading = false;
-      });
-
-
-
-    },
-
-    postCurveData() {
-      this.visibleChart = true;
-      let uri = "http://172.20.103.187:7575/api/pgno/"+ this.field + "/" + this.wellNumber + "/";
-      var langUrl = `${window.location.pathname}`.slice(1, 3);
-      // api/pgno/UZN/
-      // KMB
-      if (this.CelButton == 'ql') {
-        this.CelValue = this.qlCelValue
-      } else if (this.CelButton == 'bhp') {
-        this.CelValue = this.bhpCelValue
-      } else if (this.CelButton == 'pin') {
-        this.CelValue = this.piCelValue
-      }
-
-
-
-      let jsonData = JSON.stringify(
-        {
-          "curveSelect": this.curveSelect,
-          "presValue": this.pResInput.split(' ')[0],
-          "piValue": this.piInput.split(' ')[0],
-          "qlValue": this.qLInput.split(' ')[0],
-          "bhpValue": this.bhpInput.split(' ')[0],
-          "hdynValue": [this.hDynInput.split(' ')[0], this.pAnnularInput.split(' ')[0]],
-          "pmanomValue": [this.pManomInput.split(' ')[0], this.hPumpManomInput.split(' ')[0]],
-          "whpValue": this.whpInput.split(' ')[0],
-          "wctValue": this.wctInput.split(' ')[0],
-          "gorValue": this.gorInput.split(' ')[0],
-          "expSelect": this.expChoose,
-          "hPumpValue": this.hPumpValue.split(' ')[0],
-          "celSelect": this.CelButton,
-          "celValue": this.CelValue.split(' ')[0],
-          "menu": "MainMenu",
-          "well_age": this.age,
-          "grp_skin": this.grp_skin,
-          "analysisBox1": this.analysisBox1,
-          "analysisBox2": this.analysisBox2,
-          "analysisBox3": this.analysisBox3,
-          "analysisBox4": this.analysisBox4,
-          "analysisBox5": this.analysisBox5,
-          "analysisBox6": this.analysisBox6,
-          "analysisBox7": this.analysisBox7,
-          "analysisBox8": this.analysisBox8
-        }
-      )
-
-      if(this.pResInput.split(' ')[0] * 1 <= this.bhpInput.split(' ')[0] * 1 || this.pResInput.split(' ')[0] * 1 <= this.bhpCelValue.split(' ')[0] * 1) {
-        Vue.prototype.$notifyError("Pзаб не должно быть больше чем Рпл");
-      } else {
-        this.isLoading = true;
-
-      if(this.casOD < 127) {
-        if(langUrl === 'ru') {
-         Vue.prototype.$notifyError('В ЭК Ø127 мм и ниже, применение УЭЦН с габаритами 5 и 5А невозможно')
-        } else if(langUrl === 'kz') {
-          Vue.prototype.$notifyError('Пайдалану колоннасында (ПК) 127 мм және одан төмен  ЭОТСҚ (Электрлік орталықтан тепкіш copaп қондырғысы) қолданылмайды')
-        } else {
-          Vue.prototype.$notifyError('The using of ESP units with dimensions 5 and 5A is not possible in a production casing with a diameter of 127 mm and below')
-        }
-      }
-
-      if (this.qlCelValue.split(' ')[0] < 28) {
-        if(langUrl === 'ru') {
-          Vue.prototype.$notifyWarning("Применение УЭЦН не рекомендуется на низкодебитных скважинах");
-        } else if(langUrl === 'kz') {
-          Vue.prototype.$notifyWarning("ЭОТСҚ қолдану төмен дебитті ұңғымаларда болмайды")
-        } else {
-          Vue.prototype.$notifyWarning("ESP application is not recommended for low-rate wells")
-        }
-        
-      }
-      if (this.qlCelValue.split(' ')[0] > 106) {
-        if(langUrl === 'ru') {
-          Vue.prototype.$notifyWarning("Применение ШГН на высокодебитных скважинах ограничивает потенциал добычи");
-        } else if(langUrl === 'kz') {
-          Vue.prototype.$notifyWarning("Kz")
-        } else {
-          Vue.prototype.$notifyWarning("The use of sucker-rod pumping units in high-flow wells limits production potential")
-        }
-
-      }
-
-        this.axios.post(uri, jsonData).then((response) => {
-          var data = response.data;
-          if (data) {
-            this.method = "CurveSetting"
-            if(data["Well Data"]["pi"][0] * 1 < 0) {
-              if(langUrl === 'ru') {
-                Vue.prototype.$notifyWarning("Pзаб не должно быть больше чем Рпл")
-              } else if(langUrl === 'kz') {
-                Vue.prototype.$notifyWarning("Кенжар қысымы қабаттық қысымнан артық болмауы тиіс")
-              } else {
-                Vue.prototype.$notifyWarning("Bottomhole pressure should not be more than reservoir pressure")
-              }
-              
-            } else {
-              if(this.hPumpValue.split(' ')[0] * 1 > this.hPerf * 1){
-                if(langUrl === 'ru') {
-                  Vue.prototype.$notifyWarning("Насос установлен ниже перфорации")
-                } else if(langUrl === 'kz') {
-                  Vue.prototype.$notifyWarning("Сорғы перфорациядан төмен орнатылған")
-                } else {
-                  Vue.prototype.$notifyWarning("The pump is installed below the perforation")
-                }
-                
-              }
-              this.setData(data)
-              this.$emit('LineData', this.curveLineData)
-              this.$emit('PointsData', this.curvePointsData)
-              if(this.qlPot * 1 < this.qlCelValue.split(' ')[0] * 1 && this.CelButton == 'ql'){
-                Vue.prototype.$notifyError("Целевой режим превышает тех. потенциал")
-              } else if(this.bhpPot * 1  > this.bhpCelValue.split(' ')[0] * 1  && this.CelButton == 'bhp'){
-                Vue.prototype.$notifyError("Целевой режим превышает тех. потенциал")
-              } else if(this.pinPot * 1  > this.piCelValue.split(' ')[0] * 1  && this.CelButton == 'pin'){
-                Vue.prototype.$notifyError("Целевой режим превышает тех. потенциал")
-              }
-            }
-
-          } else {
-          }
-        }).finally(() => {
-          this.isLoading = false;
-        });
-      }
-
-    },
-
-    postAnalysisOld() {
-      this.visibleChart = true;
-      let uri = "http://172.20.103.187:7575/api/pgno/" + this.field + "/" + this.wellNumber + "/";
-      if (this.CelButton == 'ql') {
-        this.CelValue = this.qlCelValue
-      } else if (this.CelButton == 'bhp') {
-        this.CelValue = this.bhpCelValue
-      } else if (this.CelButton == 'pin') {
-        this.CelValue = this.piCelValue
-      }
-
-      let jsonData = JSON.stringify(
-        {
-          "curveSelect": this.curveSelect,
-          "presValue": this.pResInput.split(' ')[0],
-          "piValue": this.piInput.split(' ')[0],
-          "qlValue": this.qLInput.split(' ')[0],
-          "bhpValue": this.bhpInput.split(' ')[0],
-          "hdynValue": [this.hDynInput.split(' ')[0], this.pAnnularInput.split(' ')[0]],
-          "pmanomValue": [this.pManomInput.split(' ')[0], this.hPumpManomInput.split(' ')[0]],
-          "whpValue": this.whpInput.split(' ')[0],
-          "wctValue": this.wctInput.split(' ')[0],
-          "gorValue": this.gorInput.split(' ')[0],
-          "expSelect": this.expChoose,
-          "hPumpValue": this.hPumpValue.split(' ')[0],
-          "celSelect": this.CelButton,
-          "celValue": this.CelValue.split(' ')[0],
-          "menu": "PotencialAnalysis",
-          "well_age": this.age,
-          "grp_skin": this.grp_skin,
-          "analysisBox1": this.analysisBox1,
-          "analysisBox2": this.analysisBox2,
-          "analysisBox3": this.analysisBox3,
-          "analysisBox4": this.analysisBox4,
-          "analysisBox5": this.analysisBox5,
-          "analysisBox6": this.analysisBox6,
-          "analysisBox7": this.analysisBox7,
-          "analysisBox8": this.analysisBox8
-        }
-      )
-
-      this.isLoading = true;
-
-      this.axios.post(uri, jsonData).then((response) => {
-        var data = response.data;
-        if (data) {
-          this.method = "CurveSetting"
-          this.newData = data["Well Data"]
-          // this.setData(data)
-          this.newCurveLineData = JSON.parse(data.LineData)["data"]
-          this.newPointsData = JSON.parse(data.PointsData)["data"]
-          this.updateLine(this.newCurveLineData)
-          this.setPoints(this.newPointsData)
-          // this.$emit('LineData', this.curveLineData)
-          // this.$emit('PointsData', this.curvePointsData)
-        } else {
-        }
-      }).finally(() => {
-        this.isLoading = false;
-      });
-    },
-
-    postAnalysisNew() {
-      this.visibleChart = true;
-      let uri = "http://172.20.103.187:7575/api/pgno/"+ this.field + "/" + this.wellNumber + "/";
-      if (this.CelButton == 'ql') {
-        this.CelValue = this.qlCelValue
-      } else if (this.CelButton == 'bhp') {
-        this.CelValue = this.bhpCelValue
-      } else if (this.CelButton == 'pin') {
-        this.CelValue = this.piCelValue
-      }
-
-      let jsonData = JSON.stringify(
-        {
-          "curveSelect": this.curveSelect,
-          "presValue": this.pResInput.split(' ')[0],
-          "piValue": this.piInput.split(' ')[0],
-          "qlValue": this.qLInput.split(' ')[0],
-          "bhpValue": this.bhpInput.split(' ')[0],
-          "hdynValue": [this.hDynInput.split(' ')[0], this.pAnnularInput.split(' ')[0]],
-          "pmanomValue": [this.pManomInput.split(' ')[0], this.hPumpManomInput.split(' ')[0]],
-          "whpValue": this.whpInput.split(' ')[0],
-          "wctValue": this.wctInput.split(' ')[0],
-          "gorValue": this.gorInput.split(' ')[0],
-          "expSelect": this.expChoose,
-          "hPumpValue": this.hPumpValue.split(' ')[0],
-          "celSelect": this.CelButton,
-          "celValue": this.CelValue.split(' ')[0],
-          "menu": "PotencialAnalysis",
-          "well_age": this.age,
-          "grp_skin": this.grp_skin,
-          "analysisBox1": this.analysisBox1,
-          "analysisBox2": this.analysisBox2,
-          "analysisBox3": this.analysisBox3,
-          "analysisBox4": this.analysisBox4,
-          "analysisBox5": this.analysisBox5,
-          "analysisBox6": this.analysisBox6,
-          "analysisBox7": this.analysisBox7,
-          "analysisBox8": this.analysisBox8
-        }
-      )
-
-      this.isLoading = true;
-
-      this.axios.post(uri, jsonData).then((response) => {
-        var data = response.data;
-        if (data) {
-          this.newData = data["Well Data"]
-          this.method = "CurveSetting"
-          this.newCurveLineData = JSON.parse(data.LineData)["data"]
-          this.newPointsData = JSON.parse(data.PointsData)["data"]
-          this.nearWells = JSON.parse(data.NearWells)["data"]
-          this.updateLine(this.newCurveLineData)
-          this.setPoints(this.newPointsData)
-          this.wellOkr = data["Well Data"]["well"][0]
-          this.piOkr = data["Well Data"]["pi"][0].toFixed(2)
-          this.khOkr = data["Well Data"]["kh"][0].toFixed(1)
-          this.skinOkr = data["Well Data"]["skin"][0].toFixed(1)
-          this.presOkr = data["Well Data"]["p_res"][0].toFixed(0)
-          this.wctOkr = data["Well Data"]["wct"][0].toFixed(0)
-          // this.$emit('LineData', this.curveLineData)
-          // this.$emit('PointsData', this.curvePointsData)
-        } else {
-        }
-      }).finally(() => {
-        this.isLoading = false;
-      });
-    },
-    setGraphOld() {
-      this.updateLine(this.newCurveLineData)
-      this.setPoints(this.newPointsData)
-      this.$modal.hide('modalOldWell');
-      this.$eventBus.$emit('newCurveLineData', this.newCurveLineData)
-      this.$eventBus.$emit('newPointsData', this.newPointsData)
-      this.pResInput = this.newData["p_res"][0].toFixed(0) + ' атм'
-      this.piInput = this.newData["pi"][0].toFixed(2) + ' м³/сут/ат'
-      this.qLInput = this.newData["q_l"][0].toFixed(0) + ' м³/сут'
-      this.bhpInput = this.newData["bhp"][0].toFixed(0) + ' атм'
-      this.hDynInput = this.newData["h_dyn"][0].toFixed(0) + ' м'
-      this.pAnnularInput = this.newData["p_annular"][0].toFixed(0) + ' атм'
-      this.pManomInput = this.newData["p_intake"][0].toFixed(0) + ' атм'
-      this.hPumpManomInput = this.newData["h_pump_set"][0].toFixed(0) + ' м'
-      this.whpInput = this.newData["whp"][0].toFixed(0) + ' атм'
-      this.wctInput = this.newData["wct"][0].toFixed(0) + ' %'
-      this.qlCelValue = this.newPointsData[0]["q_l"].toFixed(0) + ' м³/сут'
-      this.bhpCelValue = this.newPointsData[0]["p"].toFixed(0) + ' атм'
-      this.piCelValue = this.newPointsData[0]["pin"].toFixed(0) + ' атм'
-    },
-
-    setGraphNew() {
-      var langUrl = `${window.location.pathname}`.slice(1, 3);
-      if(langUrl === 'ru') {
-        Vue.prototype.$notifyWarning("Нсп установлено на 150м выше ВДП по умолчанию")
-      } else if(langUrl === 'kz') {
-        Vue.prototype.$notifyWarning("Түсу тереңдігі әдепкі қалпы бойынша перфорацияның жоғарғы тесіктерінен 150 м жоғары орнатылған")
-      } else {
-        Vue.prototype.$notifyWarning("Pump run depth is set 150 meters above the top perforation holes by default")
-      }
-      
-      this.updateLine(this.newCurveLineData)
-      this.setPoints(this.newPointsData)
-      this.$modal.hide('modalNewWell');
-      this.$eventBus.$emit('newCurveLineData', this.newCurveLineData)
-      this.$eventBus.$emit('newPointsData', this.newPointsData)
-      this.pResInput = this.newData["p_res"][0].toFixed(0) + ' атм'
-      this.piInput = this.newData["pi"][0].toFixed(2) + ' м³/сут/ат'
-      this.wctInput = this.newData["wct"][0].toFixed(0) + ' %'
-      this.hPumpValue = this.newData["h_pump_set"][0].toFixed(0) + ' м'
-    },
-
-    onCompareNpv() {
-      if(this.expAnalysisData.ecnNpv > this.expAnalysisData.shgnNpv) {
-        this.expChoose = "ЭЦН"
-      } else {
-        this.expChoose = "ШГН"
-      }
-      this.$modal.hide("modalExpAnalysis");
-      this.postCurveData();
-    },
-
-    onShowTable() {
-      this.$modal.hide("modalExpAnalysis");
-      this.$modal.show("tablePGNO")
-    },
-
-    onPgnoClick() {
-      var langUrl = `${window.location.pathname}`.slice(1, 3);
-
-      if(this.qlPot * 1 < this.qlCelValue.split(' ')[0] * 1 && this.CelButton == 'ql'){
-        Vue.prototype.$notifyError("Целевой режим превышает тех. потенциал")
-      } else if(this.bhpPot * 1  > this.bhpCelValue.split(' ')[0] * 1  && this.CelButton == 'bhp'){
-        Vue.prototype.$notifyError("Целевой режим превышает тех. потенциал")
-      } else if(this.pinPot * 1  > this.piCelValue.split(' ')[0] * 1  && this.CelButton == 'pin'){
-        Vue.prototype.$notifyError("Целевой режим превышает тех. потенциал")
-      } else {
-        if(this.expChoose == 'ШГН'){
-          if(this.visibleChart) {
-            let uri = "http://172.20.103.187:7575/api/pgno/shgn";
-            let jsonData = JSON.stringify(
-              {
-                "ql_cel": this.qlCelValue.split(' ')[0],
-                "h_pump_set": this.hPumpValue.split(' ')[0],
-                "sk_type": this.sk,
-                "dens_oil": this.densOil,
-                "dens_water": this.densWater,
-                "wct": this.wctInput.split(' ')[0],
-                "stroke_len": this.stroke_len,
-                "pin_cel_value": this.piCelValue.split(' ')[0]
-              }
-            )
-
-            this.isLoading = true;
-
-            this.axios.post(uri, jsonData).then((response) => {
-              var data = JSON.parse(response.data);
-              if(data) {
-                if (data["error"] == "NoIntersection") {
-                  if(langUrl === 'ru') {
-                   Vue.prototype.$notifyWarning("По выбранным параметрам насос подобрать не удалось, попробуйте изменить глубину спуска или ожидаемый дебит");
-                  } else if(langUrl === 'kz') {
-                    Vue.prototype.$notifyWarning("Таңдалған параметрлер бойынша сорғыны таңдау мүмкін болмады, түсу тереңдігін немесе күтілетін дебитті өзгертуге тырысыңыз")
-                  } else {
-                    Vue.prototype.$notifyWarning("It was not possible to pick up the pump according to the selected parameters, try changing the lowering depth or the expected flow rate")
-                  }
-                } else {
-                  if(this.sk == "ПШГН" || this.sk == "0") {
-                    if(langUrl === 'ru') {
-                      Vue.prototype.$notifyWarning("Тип СК на скважине не определен")
-                    } else if(langUrl === 'kz') {
-                      Vue.prototype.$notifyWarning("Ұңғымадағы ТБ түрі анықталмаған")
-                    } else {
-                      Vue.prototype.$notifyWarning("The type of pumping unit on the well is not defined")
-                    }
-                    
-                  }
-                  this.shgnPumpType = data["pump_type"]
-                  if(this.shgnPumpType == 70) {
-                    this.shgnTubOD = 89
-                  } else {
-                    this.shgnTubOD = this.tubOD
-                  }
-                  if(this.shgnPumpType == 70 && this.casOD * 1 < 115) {
-                    if(langUrl === 'ru') {
-                      Vue.prototype.$notifyWarning('Применение НСН-70 на НКТ 89 мм ограничено в ЭК 114мм')
-                    } else if(langUrl === 'kz') {
-                      Vue.prototype.$notifyWarning('89 мм сорғы компрессорлық құбырларында НСН - 70 қолдану 114 мм пайдалану бағанасында шектелген')
-                    } else {
-                      Vue.prototype.$notifyWarning('Eng')
-                    }
-                    
-                    if(langUrl === 'ru') {
-                      Vue.prototype.$notifyWarning("По выбранным параметрам насос подобрать не удалось, попробуйте изменить глубину спуска или ожидаемый дебит");
-                    } else if(langUrl === 'kz') {
-                      Vue.prototype.$notifyWarning("Таңдалған параметрлер бойынша сорғыны таңдау мүмкін болмады, түсу тереңдігін немесе күтілетін дебитті өзгертуге тырысыңыз")
-                    } else {
-                      Vue.prototype.$notifyWarning("It was not possible to pick up the pump according to the selected parameters, try changing the lowering depth or the expected flow rate")
-                    }
-                    
-                  } else {
-
-                    if(langUrl === 'ru') {
-                      Vue.prototype.$notifyWarning("Раздел 'Подбор ШГН' находится в разработке")
-                    } else if(langUrl === 'kz') {
-                      Vue.prototype.$notifyWarning("ШТС таңдау бөлімі әзірлену үстінде")
-                    } else {
-                      Vue.prototype.$notifyWarning("Section 'Selection of sucker rod pumps' is under development")
-                    }
-                    
-                    this.shgnSPM = data["spm"].toFixed(0)
-                    this.shgnLen = data["stroke_len"]
-                    this.shgnS1D = data["s1d"].toFixed(0)
-                    this.shgnS2D = data["s2d"].toFixed(0)
-                    this.shgnS1L = data["s1l"].toFixed(0)
-                    this.shgnS2L = data["s2l"].toFixed(0)
-                    this.shgnTN = data["tn"]
-                    this.shgnTNL = data["tn_l"]
-                    this.visibleChart = !this.visibleChart
-                  }
-
-                }
-              } else {
-              }
-            }).finally(() => {
-              this.isLoading = false;
-            })
-          } else {
-            this.visibleChart = !this.visibleChart
-            this.postCurveData()
-
-          }
-        } else {
-
-          if(langUrl === 'ru') {
-            Vue.prototype.$notifyWarning("Раздел 'Подбор УЭЦН' не разработан")
-          } else if(langUrl === 'kz') {
-            Vue.prototype.$notifyWarning("ЭОТЦҚ таңдау бөлімі әзірленбеген")
-          } else {
-            Vue.prototype.$notifyWarning("The section 'ESP selection' is not developed")
-          }
-          
-        }
-
-      }
-    },
-    setActiveRightTabName: function (e, val) {
-      if (val === this.activeRightTabName && (this.windowWidth > 1300 || this.windowWidth <= 991)) {
-        this.activeRightTabName = 'technological-mode';
-        return;
-      }
-
-      if (val === this.activeRightTabName && this.windowWidth <= 1300 && this.windowWidth > 991) {
-        this.activeRightTabName = 'devices';
-        return;
-      }
-
-      if (val === 'technological-mode' && this.windowWidth <= 1300 && this.windowWidth > 991) {
-        return;
-      }
-
-      this.activeRightTabName = val;
-    },
-
-    onPrsButtonClick() {
-      this.$modal.show('modal-prs')
-      let krsTable = [];
-      let uriPrsKrs = "http://172.20.103.187:7575/api/nno/history/"+ this.field + "/" + this.wellNumber + "/";
-      this.axios.get(uriPrsKrs).then((response) => {
-        let krs = response['data']['krs']
-        this.numberRepairs = response['data']['prs']['prs']
-        this.numberNNO = response['data']['prs']['nno'].toFixed(0)
-        this.krsTable = JSON.parse(krs)["data"]
-        console.log(this.krsTable);
-    })
-    },
-
-    createPDF() {
-
-      this.isLoading = true;
-
-      htmlToImage.toPng(this.$refs['gno-page'])
-        .then(function (dataUrl) {
-          let img = new Image();
-          let pdf = new jsPDF({
-            orientation: 'p',
-            unit: 'mm',
-            format: 'a4'
-          })
-          img.src = dataUrl;
-
-          // let link = document.createElement('a');
-          // link.setAttribute('href', dataUrl);
-          // link.setAttribute('download','download');
-          // link.click();
-          // link.remove();
-
-          pdf.addImage(dataUrl, 'png', 10, 1, 180, 300);
-          pdf.save('test.pdf')
-          // document.body.appendChild(img);
-        })
-        .catch(function (error) {
-          console.error('oops, something went wrong!', error);
-        }).finally(() => {
-            this.isLoading = false;
-      });
-    },
-
-    takePDF() {
-      this.isLoading = true;
-
-      htmlToImage.toPng(this.$refs['gno-chart'])
-        .then(function (dataUrl) {
-          let img = new Image();
-          let pdf = new jsPDF({
-            orientation: 'p',
-            unit: 'mm',
-            format: 'a4'
-          })
-          img.src = dataUrl;
-
-          // let link = document.createElement('a');
-          // link.setAttribute('href', dataUrl);
-          // link.setAttribute('download','download');
-          // link.click();
-          // link.remove();
-
-          pdf.addImage(dataUrl, 'png', 10, 1, 180, 80);
-          pdf.save('test.pdf')
-          // document.body.appendChild(img);
-        })
-        .catch(function (error) {
-          console.error('oops, something went wrong!', error);
-        }).finally(() => {
-            this.isLoading = false;
-      });
-    },
-
-    takePhoto() {
-     this.isLoading = true;
-
-      htmlToImage.toPng(this.$refs['gno-chart'])
-        .then(function (dataUrl) {
-          // let img = new Image();
-          // img.src = dataUrl;
-
-          let link = document.createElement('a');
-          link.setAttribute('href', dataUrl);
-          link.setAttribute('download','download');
-          link.click();
-          link.remove();
-
-          // document.body.appendChild(img);
-        })
-        .catch(function (error) {
-          console.error('oops, something went wrong!', error);
-        }).finally(() => {
-            this.isLoading = false;
-      });
-
-    },
-
-    takePhotoOldNewWell() {
-     this.isLoading = true;
-      
-      htmlToImage.toPng(this.$refs['gno-chart-new-old-well'])
-        .then(function (dataUrl) {
-          // let img = new Image();
-          // img.src = dataUrl;
-
-          let link = document.createElement('a');
-          link.setAttribute('href', dataUrl);
-          link.setAttribute('download','download');
-          link.click();
-          link.remove();
-
-          // document.body.appendChild(img);
-        })
-        .catch(function (error) {
-          console.error('oops, something went wrong!', error);
-        }).finally(() => {
-            this.isLoading = false;
-      });
-
-    },
-
-    
-
-    downloadImg() {
-      $('#btnExport').click(function(){
-        //var title = $("<p>Image Here</p>");
-        //$("#content").append(title);
-        var divGraph = $('#graph');
-        Plotly.toImage('graph', { format: 'png', width: 800, height: 600 }).then(function (dataURL) {
-          img_png.attr("src", dataURL);
-        });
-      });
-    },
-  },
-  created() {
-    var langUrl = `${window.location.pathname}`.slice(1, 3);
-    if(langUrl === 'ru') {
-      this.layout.xaxis.title = this.titleXRu
-      this.layout.yaxis.title = this.titleYRu
-    } else if(langUrl === 'kz') {  
-      this.layout.xaxis.title = this.titleXKz
-      this.layout.yaxis.title = this.titleYKz
-      this.nameKPP = "Ағын қисығы (қолданушы)"
-      this.nameKPA = "Ағын қисығы (талдау)"
-      this.namePN = "Сорғының қабылдау қысымы"
-      this.nameGN = "Газ құрамы"
-      this.nameTR = "Ағымдағы  режим"
-      this.nameCR = "Мақсатты режим"
-      this.namePR = "Потенциалдық  режим"
-      this.hovertemplateKPP = "<b>Ағын қисығы (қолданушы)</b><br>" +
-            "Qж = %{x:.1f} м³/сут<br>" +
-            "Qн = %{text:.1f} т/сут<br>" +
-            "Pзаб = %{y:.1f} атм<extra></extra>",
-      this.hovertemplateKPA = "<b>Ағын қисығы (талдау)</b><br>" +
-            "Qж = %{x:.1f} м³/сут<br>" +
-            "Qн = %{text:.1f} т/сут<br>" +
-            "Pзаб = %{y:.1f} атм<extra></extra>",
-      this.hovertemplateTR = "<b>Ағымдағы  режим</b><br>" +
-            "Qж = %{x:.1f} м³/сут<br>" +
-            "Qн = %{text:.1f} т/сут<br>" +
-            "Pзаб = %{y:.1f} атм<extra></extra>",
-      this.hovertemplatePR = "<b>Потенциалдық  режим</b><br>" +
-            "Qж = %{x:.1f} м³/сут<br>" +
-            "Qн = %{text:.1f} т/сут<br>" +
-            "Pзаб = %{y:.1f} атм<extra></extra>"
-    } else {
-      this.layout.xaxis.title = this.titleXEn
-      this.layout.yaxis.title = this.titleYEn
-      this.nameKPP = "Inflow curve (user)"
-      this.nameKPA = "Inflow curve (analys)"
-      this.namePN = "Intake pressure"
-      this.nameGN = "Gas saturation"
-      this.nameTR = "Current mode"
-      this.nameCR = "Target mode"
-      this.namePR = "Potential mode",
-      this.hovertemplateKPP = "<b>Inflow curve (user)</b><br>" +
-            "Qж = %{x:.1f} м³/сут<br>" +
-            "Qн = %{text:.1f} т/сут<br>" +
-            "Pзаб = %{y:.1f} атм<extra></extra>",
-      this.hovertemplateKPA = "<b>Inflow curve (analys)</b><br>" +
-            "Qж = %{x:.1f} м³/сут<br>" +
-            "Qн = %{text:.1f} т/сут<br>" +
-            "Pзаб = %{y:.1f} атм<extra></extra>",
-      this.hovertemplateTR = "<b>Current mode</b><br>" +
-            "Qж = %{x:.1f} м³/сут<br>" +
-            "Qн = %{text:.1f} т/сут<br>" +
-            "Pзаб = %{y:.1f} атм<extra></extra>",
-      this.hovertemplatePR = "<b>Potential mode</b><br>" +
-            "Qж = %{x:.1f} м³/сут<br>" +
-            "Qн = %{text:.1f} т/сут<br>" +
-            "Pзаб = %{y:.1f} атм<extra></extra>"
-    }
-  }
-};
-</script>
+<script src="./Table.js"></script>
 
 <style scoped>
+.gear-icon {
+  right: 12px;
+  top: 35px;
+  position: absolute;
+}
+
+@keyframes gear-icon {
+  50% { left: 0;}
+  90% { left: 300px;}
+}
+  
+.checkbox-devices {
+  width: 845px;
+  height: 45px;
+}
+
+.download-button-excel {
+  position: absolute;
+  margin-left: 175px;
+  margin-top: 0px;
+}
+
+.download-button-excel-1 {
+  position: absolute;
+  margin-left: 175px;
+  margin-top: 5px;
+}
+
+.block__centrators {
+  background-color:#272953;
+  align-items: center;
+  border-radius:6px;
+  border:2px solid #454d7d;
+  display:inline-block;
+  cursor:pointer;
+  color:#ffffff;
+  font-family:Arial;
+  font-size:14px;
+  padding:1px 15px;
+  text-decoration:none;
+  text-shadow:0px 1px 0px #144079;
+  width: 100%;
+  word-spacing: 4px;
+}
+
+.long__box {
+  width: 60px;
+  padding-left: 0px !important;
+}
+
 .select-download-button {
 outline: none;
 text-align: center;
@@ -3727,6 +2077,15 @@ background: #494aa5 url("data:image/svg+xml;utf8,<svg viewBox='0 0 140 140' widt
 background-position: right 5px top 50%;
 }
 
+.title__block__centrators {
+  margin-bottom: 2px; 
+}
+
+.main__title__block_centrators {
+  text-align: center;
+  margin-bottom: 0;
+}
+
 
 .input-box-gno {
     background: #494AA5;
@@ -3752,8 +2111,45 @@ background-position: right 5px top 50%;
 }
 
 .input-box-gno.podbor {
-    width: 50px;
+    width: 57px;
     margin-bottom: 10px;
 }
 
+.button-podbor-gno {
+    float: left;
+    font-size: 16px;
+    font-weight: bold;
+    position: relative;
+    padding: 15px 15px;
+    height: 44px;
+    background: rgba(19, 176, 98, 0.8);
+    border-radius: 8px;
+    text-align: center;
+    margin-bottom: 0;
+    line-height: 18px;
+    cursor: pointer;
+}
+
+.button-podbor-gno:active {
+    background-color: #144079;
+    box-shadow: 0 2px #666;
+    transform: translateY(0.02px);
+    filter: blur(0.3px);
+}
+
+.button-podbor-gno:hover {
+    background-color: #484749;
+}
+
+.table-pgno-four {
+  height: 100px;
+}
+
+.table-pgno-two {
+  height: 200px;
+}
+
+.table-pgno-one {
+  height: 200px;
+}
 </style>
