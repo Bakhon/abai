@@ -343,28 +343,28 @@
           <monitor-chart
               :title="trans('monitoring.action_substance_of_co2')"
               :measurement="trans('measurements.mg/dm3')"
-              :data="chart1Data" />
+              :data="chart1Data"/>
         </div>
         <div class="monitor__charts-item">
           <p class="monitor__charts-item-title">{{ trans('monitoring.action_substance_of_h2s') }}</p>
           <monitor-chart
               :title="trans('monitoring.action_substance_of_h2s')"
               :measurement="trans('measurements.mg/dm3')"
-              :data="chart2Data" />
+              :data="chart2Data"/>
         </div>
         <div class="monitor__charts-item">
           <p class="monitor__charts-item-title">{{ trans('monitoring.actual_corrosion_speed') }}</p>
           <monitor-chart
               :title="trans('monitoring.actual_corrosion_speed')"
               :measurement="trans('measurements.mm/g')"
-              :data="chart3Data" />
+              :data="chart3Data"/>
         </div>
         <div class="monitor__charts-item">
           <p class="monitor__charts-item-title">{{ trans('monitoring.actual_inhibitor_level') }}</p>
           <monitor-chart
               :title="trans('monitoring.actual_inhibitor_level')"
               :measurement="trans('measurements.g/m3')"
-              :data="chart4Data" />
+              :data="chart4Data"/>
         </div>
       </div>
       <div class="col-8 monitor__schema">
@@ -660,7 +660,36 @@ export default {
       chart3Data: null,
       chart4Data: null,
       problemGus: [],
-      economicCurrentDays: null
+      economicCurrentDays: null,
+      validation: [
+        {
+          key: 'ngdu',
+          error: this.trans('monitoring.monitor.errors.ngdu')
+        },
+        {
+          key: 'oilGas',
+          error: this.trans('monitoring.monitor.errors.oilGas')
+        },
+        {
+          key: 'pipe',
+          error: this.trans('monitoring.monitor.errors.pipe')
+        },
+        {
+          key: 'pump_discharge_pressure',
+          error: this.trans('monitoring.monitor.errors.pump_discharge_pressure')
+        },
+        {
+          key: 'surge_tank_pressure',
+          error: this.trans('monitoring.monitor.errors.surge_tank_pressure')
+        },
+        {
+          key: 'wmLastH2S.hydrogen_sulfide',
+          error: this.trans('monitoring.monitor.errors.hydrogen_sulfide')
+        },
+
+      ],
+      isDataValidated: false,
+      validationErrors: [],
     };
   },
   computed: {
@@ -765,6 +794,8 @@ export default {
           })
           .then((response) => {
             let data = response.data;
+            this.isDataValidated = false;
+
             if (data) {
               this.ngdu = data.ngdu
               this.uhe = data.uhe
@@ -776,7 +807,7 @@ export default {
               this.surge_tank_pressure = data.ngdu ? data.ngdu.surge_tank_pressure : null
               this.heater_inlet_temperature = data.ngdu ? data.ngdu.heater_inlet_temperature : null
               this.heater_output_temperature = data.ngdu ? data.ngdu.heater_output_temperature : null
-              this.daily_fluid_production =  data.ngdu ? data.ngdu.daily_fluid_production : null
+              this.daily_fluid_production = data.ngdu ? data.ngdu.daily_fluid_production : null
 
               if (data.uhe && data.ca) {
                 this.signalizator = (data.uhe.current_dosage - data.ca.plan_dosage) * 100 / data.ca.plan_dosage
@@ -797,19 +828,47 @@ export default {
               let background_corrosion = this.lastCorrosion.background_corrosion_velocity;
               this.corrosionVelocity = corrosion_with_inhibitor ? corrosion_with_inhibitor : background_corrosion;
 
-              if (this.ngdu &&
-                  this.oilGas &&
-                  this.pipe &&
-                  this.pump_discharge_pressure &&
-                  this.surge_tank_pressure)
-              {
-                this.calc()
+              if (this.isValidData()) {
+                this.calc();
               }
+
+              this.displayErrors();
 
             } else {
               console.log("No data");
             }
           });
+    },
+    validateData() {
+      this.validationErrors = [];
+      
+      this.validation.forEach((rule) => {
+        let ruleKeys = rule.key.split('.');
+
+        let value = 'empty';
+        for (let i = 0; i < ruleKeys.length; i++) {
+          if (value !== 'empty') {
+            value = value[ruleKeys[i]]
+          } else {
+            value = this[ruleKeys[i]];
+          }
+        }
+        if (!value || value == 'empty') {
+          this.validationErrors.push(rule.error);
+        }
+      });
+      this.isDataValidated = true;
+    },
+    isValidData() {
+      if (!this.isDataValidated) {
+        this.validateData()
+      }
+      return this.validationErrors.length === 0;
+    },
+    displayErrors() {
+      this.validationErrors.forEach((error) => {
+        this.showToast(error, this.trans('app.error'), 'danger', 10000);
+      });
     },
     calc() {
       this.axios
@@ -839,8 +898,7 @@ export default {
             rhog: this.oilGas.gas_density_at_20,
             mul: this.oilGas.oil_viscosity_at_20,
             mug: this.oilGas.gas_viscosity_at_20,
-            q_o: this.ngdu.daily_oil_production,
-            h2s_in_gas: this.oilGas.hydrogen_sulfide_in_gas
+            q_o: this.ngdu.daily_oil_production
           })
           .then((response) => {
             let data = response.data;
