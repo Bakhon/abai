@@ -422,12 +422,20 @@ class DruidController extends Controller
         // *********************************/
         //    GENERAL CORROSION POINT A    /
         // *********************************/
-        $p = $P_bufer * 100; // from bar to kPa
+        $p = $P_bufer; // bar
         $t_heater_inlet = $request->t_inlet_heater; // БД ОМГ НГДУ temperature  before heater taken from database in Celsius
         $t = $t_heater_inlet;  //temperature in C
         //H2S concentration
-        $conH2S = $request->conH2S; // БД Лаборатория жидкости, mg/l soluble in water previous was mole fraction ex: 0.0001
-        $conH2S_frac = $conH2S * 0.07055; // from mg/l => volumetric fraction
+
+
+        //TODO
+        //oilgas->hydrogen_sulfide_in_gas, ppm 
+        //var from front h2s_in_gas
+        $conH2S = $request->h2s_in_gas; // БД Лаборатория жидкости, mg/l soluble in water previous was mole fraction ex: 0.0001
+        //TODO
+
+
+        $conH2S_frac = $conH2S / 10000; // from ppm => volumetric fraction
         //CO2 concentraiton
         $conCO2 = $request->conCO2; // БД Лаборатория жидкости, mg/l soluble in water previous was mole fraction ex: 0.0001
         $conCO2_frac = $conCO2 * 0.05464; // from mg/l => volumetric fraction
@@ -447,10 +455,10 @@ class DruidController extends Controller
         // // 1 mol/kg of CO2 => 44 g/l or 44000 mg/l assuming that 1l = 1kg the partial pressure equals:
         // $pCO2 = $CO2 / $kCO2 / 44000;   //kPa
         //print("pCO2 [kPa] = ", pCO2)
-        $pCO2 = $conCO2_frac / 100 * $p; // measured in kPa as per formula
+        $pCO2 = $conCO2_frac / 100 * $p; // measured in bar as per formula
 
         //convert data to proper type
-        $co2 = $pCO2 / 1000; //convert partial pressure CO2 from kPa => MPa
+        $co2 = $pCO2 / 10; //convert partial pressure CO2 from bar => MPa
 
         //def corrosion_rate(co2,t):
 
@@ -496,7 +504,7 @@ class DruidController extends Controller
         // // Converting from % to ppm
         // $ppmH2S = $conH2S * 10000;
         // $pH2S = $pH2S / 1000;  #convert to float type and MPa
-        $pH2S = $p * $conH2S_frac / 100; // partial pressure H2S in kPa
+        $pH2S = $p * $conH2S_frac / 100; // partial pressure H2S in bar
         $ratio = $pCO2 / $pH2S;
 
         /*if ($pCO2 / $pH2S >= 20) {
@@ -514,7 +522,7 @@ class DruidController extends Controller
         //return $r;
 
         if ($gu->name == "ГУ-24") {
-            if ($pCO2 / $pH2S >= 20) {
+            if ($ratio >= 20) {
                 //if ($pH2S < 0.3){// in kPa
                 $x = 7.96 - 2320 / ($t + 273);
                 $y = $t * 5.55 * pow(10, -3);
@@ -529,12 +537,12 @@ class DruidController extends Controller
                 //return $r;
             } //r = pow(10, (7.96 - 2320 / (t + 273) - 5.55 * 10**(-3) * t + 0.67 * math.log10(co2))
             else {
-                if ($pCO2 / $pH2S < 20) {
+                if ($ratio < 20) {
                     //else if ($pH2S > 0.3){
                     //$r_a = -0.6274 + 0.01318 * $conCO2 + 0.02397 * $conH2S;
                     //Скорость корр = -0,6274+16,9875*p(H2S)+12,0596*p(CO2)
                     //$r_a = -0.6274 + 16.9875 * $pH2S / 100 + 12.0596 * $pCO2 / 100; // Partial pressure was calculated in bar
-                    $r_a = -0.6274 - 1.313 + 16.9875 * $pH2S / 100 + 12.0596 * $pCO2 / 100; //updated formula GU24 case 15.12.2020
+                    $r_a = -0.6274 - 1.313 + 16.9875 * $pH2S + 12.0596 * $pCO2; //updated formula GU24 case 15.12.2020
                     ob_start(); //Start output buffer
 //                    echo "H2S+CO2";
                     //$environment_a = "H2S+CO2";
@@ -543,6 +551,34 @@ class DruidController extends Controller
                     //return $r;
                 }
             }
+        }
+
+        elseif ($gu->name == "ГУ-22") {
+            //else if ($pH2S > 0.3){
+            //$r_a = -0.6274 + 0.01318 * $conCO2 + 0.02397 * $conH2S;
+            //Скорость корр = -0,6274+16,9875*p(H2S)+12,0596*p(CO2)
+            //$r_a = -0.6274 + 16.9875 * $pH2S / 100 + 12.0596 * $pCO2 / 100; // Partial pressure was calculated in bar
+            $r_a = 0.3242 - 0.3512 * $pCO2 + 689.7732 * $pH2S; //updated formula GU22 case 15.12.2020
+            ob_start(); //Start output buffer
+//                    echo "H2S+CO2";
+            //$environment_a = "H2S+CO2";
+            $output_a = ob_get_contents(); //Grab output
+            ob_end_clean(); //Discard output buffer
+            //return $r;
+        }
+
+        elseif ($gu->name == "ГУ-107") {
+                    //else if ($pH2S > 0.3){
+                    //$r_a = -0.6274 + 0.01318 * $conCO2 + 0.02397 * $conH2S;
+                    //Скорость корр = -0,6274+16,9875*p(H2S)+12,0596*p(CO2)
+                    //$r_a = -0.6274 + 16.9875 * $pH2S / 100 + 12.0596 * $pCO2 / 100; // Partial pressure was calculated in bar
+                    $r_a = 18.2438 - 18.4743 * $pCO2 + 10648.7658 * $pH2S; //updated formula GU107 case 15.12.2020
+                    ob_start(); //Start output buffer
+//                    echo "H2S+CO2";
+                    //$environment_a = "H2S+CO2";
+                    $output_a = ob_get_contents(); //Grab output
+                    ob_end_clean(); //Discard output buffer
+                    //return $r;
         }
         //r = pow(10, (7.96 - 2320 / (t + 273) - 5.55 * 10**(-3) * t + 0.67 * math.log10(co2))
         /*else if ($pCO2 / $pH2S < 20) {
@@ -988,10 +1024,10 @@ class DruidController extends Controller
             'flow_velocity_meter_per_sec' => round($v_lo, 1),
             'm_dot' => round($m_dot, 2),
             'final_pressure_bar_point_F' => round($P_final, 2),
-            'corrosion_rate_mm_per_y_point_A' => round($r_a, 1),
+            'corrosion_rate_mm_per_y_point_A' => round($r_a, 2),
             'corrosion_rate_mm_per_y_point_E' => round($r_e, 1),
             'corrosion_rate_mm_per_y_point_F' => round($r_f, 1),
-            'dose_mg_per_l_point_A' => round($dose_a, 1),
+            'dose_mg_per_l_point_A' => round($dose_a, 2),
             'dose_mg_per_l_point_E' => round($dose_e, 1),
             'dose_mg_per_l_point_F' => round($dose_f, 1),
             'max_dose' => round($max_dose, 1),
