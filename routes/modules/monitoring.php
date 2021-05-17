@@ -169,6 +169,12 @@ Route::group(
                 Route::get('/hydro-calc/list', 'ComplicationMonitoring\HydroCalculation@list')->name('hydro_calculation.list');
                 Route::get('/hydro-calc/export', 'ComplicationMonitoring\HydroCalculation@exportExcel')->name('hydro_calculation.export');
                 Route::resource('hydro-calc', 'ComplicationMonitoring\HydroCalculation');
+
+                Route::get('economical_effect/list', 'ComplicationMonitoring\EconomicalEffectController@list')->name(
+                    'economical_effect.list'
+                );
+                Route::resource('economical_effect', 'ComplicationMonitoring\EconomicalEffectController');
+                Route::get('testcron', 'ComplicationMonitoring\EconomicalEffectController@testCronCalc');
             }
         );
     }
