@@ -180,4 +180,6 @@ return array (
   'required' => 'Міндетті',
   'economic' => 'Экономика',
   'develop' => 'Дамуы',
+  'nno' => 'ННО',
+  'power_consumption' => 'Қуат тұтыну',
 );

@@ -99,7 +99,7 @@ export default {
       titleXEn: "Liquid flow rate, м³/d.",
       titleYRu: "Давление, атм/газосодержание, %",
       titleYKz: "Қысым, атм / газ құрамы, %",
-      titleYEn: "Pressure, atm/gas saturation, %",
+      titleYEn: "Pressure, atm/GVF, %",
       hovertemplateKPP: "<b>Кривая притока (пользователь)</b><br>" +
             "Qж = %{x:.1f} м³/сут<br>" +
             "Qн = %{text:.1f} т/сут<br>" +
@@ -373,7 +373,6 @@ export default {
     }
   },
   computed: {
-  
     wellNum() {
       return this.$store.state.wellNum
     },
@@ -383,6 +382,9 @@ export default {
     ...mapState(['wells'])
   },
   methods: {
+    updateWellNumber(e) {
+      this.$store.commit('updateWellNumber', e.target.value)
+    },
     setHpumpValueFromIncl() {
       this.$modal.hide('modalIncl')
       this.hPumpValue = this.$store.getters.getHpump
@@ -1215,7 +1217,7 @@ export default {
 
     fetchBlockCentrators() {
       let fieldInfo = this.wellIncl.split('_');
-      let urlForIncl = "http://172.20.103.187:7573/api/pgno/incl";
+      let urlForIncl = "http://172.20.103.187:7575/api/pgno/incl";
       if (this.expChoose == 'ЭЦН') {
         (this.liftValue = 'ЭЦН') && (this.stepValue = 20);
       } else {
