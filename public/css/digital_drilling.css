@@ -1266,3 +1266,94 @@ th.verticalText {
     width: 100%;
     margin: 20px 0 0;
 }
+.digital_drilling .contentBlock .digitalDrillingWindow .windowBody .bodyContent .dropdown .dropdown-menu {
+    max-height: 500px;
+    overflow-y: scroll;
+}
+
+.digital_drilling .contentBlock .digitalDrillingWindow .windowBody .bodyContent .dropdown .dropdown-menu::-webkit-scrollbar-thumb{
+    background-color: #000000;
+    border: 2px solid #ffffff;
+}
+.digital_drilling .contentBlock .digitalDrillingWindow .windowBody .bodyContent .dropdown .dropdown-menu::-webkit-scrollbar{
+    width:4px;
+}
+.digital_drilling .contentBlock .digitalDrillingWindow .windowBody .bodyContent .dropdown .dropdown-menu a {
+    width: 100%;
+    white-space: unset;
+    padding: 8px;
+}
+.digital_drilling .contentBlock .digitalDrillingWindow .windowBody .bodyContent table.defaultTable tr td.green {
+    background: #92D050;
+}
+.container-fluid.col.pt-md-10px.mx-md-10px.px-0.container-main {
+    max-width: 95.95%;
+}
+input.rangeInput {
+    background: linear-gradient(to right, #3C4270 0%, #3C4270 50%, #3C4270 50%, #3C4270 100%);
+    height: 8px;
+    width: 100%;
+    outline: none;
+    transition: all 450ms ease-in;
+    -webkit-appearance: none;
+    padding: 15px;
+    border-radius: 2px;
+}
+
+input.rangeInput::-webkit-slider-thumb {
+    display: none;
+}
+input.rangeInput {
+}
+
+.techNumsBlock {
+    padding: 15px;
+}
+
+.techNumsBlock .lineBlock {
+    position: relative;
+    width: 100%;
+    display: block;
+}
+.techNumsBlock p.name {
+    display: table;
+    margin: 0!important;
+    padding: 0!important;
+    color: #fff;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.techNumsBlock label {
+    display: table;
+    margin: 18px 0 8px;
+    font-size: 16px;
+}
+
+.techNumsBlock .lineBlock {
+    display: table;
+    margin: 0;
+    position: relative;
+}
+
+.techNumsBlock .lineBlock p {
+    position: absolute;
+    top: 8px;
+    left: 15px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #fff;
+}
+
+input.rangeInput {
+    padding: 20px;
+}
+.digital_drilling .contentBlock .digitalDrillingWindow .windowBody .bodyContent table tr.blue th {
+    background: #333C8E;
+}
+.digital_drilling .contentBlock .digitalDrillingWindow .windowBody .bodyContent table.defaultTable tr td.blueTd {
+    background: #323370;
+    border: 1px solid #3B4380;
+    border-left: none;
+    border-bottom: none;
+}
