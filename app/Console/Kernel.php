@@ -33,7 +33,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('parse-oil:cron')->dailyAt('08:10')->timezone('Asia/Almaty');
 
         $schedule->command('form:calc_field_limits')->dailyAt('02:00')->timezone('Asia/Almaty');
-        $schedule->command('receive-non-operating-email:cron')->dailyAt('12:57')->timezone('Asia/Almaty');
+        $schedule->command('receive-non-operating-email:cron')->dailyAt('08:15')->timezone('Asia/Almaty');
     }
 
     /**
