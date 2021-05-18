@@ -18,6 +18,9 @@ use App\Models\BigData\Dictionaries\RepairWorkType;
 use App\Models\BigData\Dictionaries\WellStatus;
 use App\Models\BigData\Dictionaries\EquipFailReasonType;
 use App\Models\BigData\Dictionaries\TechConditionOfWells;
+use App\Models\BigData\Dictionaries\PumpType;
+use App\Models\BigData\Dictionaries\DrillChisel;
+use App\Models\BigData\Dictionaries\DrillColumnType;
 use Carbon\Carbon;
 use Illuminate\Cache\Repository;
 use Illuminate\Support\Facades\DB;
@@ -76,6 +79,18 @@ class DictionaryService
         'wells_tech_conditions' => [
             'class' => TechConditionOfWells::class,
             'name_field' => ''
+        ],
+        'pump_types' => [
+            'class' => PumpType::class,
+            'name_field' => 'name_ru'
+        ],
+        'drill_chisels' => [
+            'class' => DrillChisel::class,
+            'name_field' => 'name_ru'
+        ],
+        'drill_column_types' => [
+            'class' => DrillColumnType::class,
+            'name_field' => 'name_ru'
         ]
     ];
 

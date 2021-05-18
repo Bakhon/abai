@@ -898,7 +898,8 @@ export default {
             rhog: this.oilGas.gas_density_at_20,
             mul: this.oilGas.oil_viscosity_at_20,
             mug: this.oilGas.gas_viscosity_at_20,
-            q_o: this.ngdu.daily_oil_production
+            q_o: this.ngdu.daily_oil_production,
+            h2s_in_gas: this.oilGas.hydrogen_sulfide_in_gas
           })
           .then((response) => {
             let data = response.data;
