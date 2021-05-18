@@ -4797,7 +4797,6 @@ tr:nth-child(even) {
 .trcol {
   padding-right: 0;
 }
-
 .trgraph {
   margin: 0 10px;
   background: #272953;
