@@ -392,7 +392,7 @@ export default {
       }
     },
     formatDate(date) {
-      return moment(date).format('YYYY-MM-DD HH:MM:SS')
+      return moment.parseZone(date).format('YYYY-MM-DD HH:MM:SS')
     },
     onChangeFillStatus () {
       this.formFields.fill = this.fill_status ? this.formFields.fill : null;
