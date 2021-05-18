@@ -7,10 +7,47 @@ export default {
             tablesMapping: {
                 'downtimeReason': 'import_downtime_reason',
                 'decreaseReason': 'import_decrease_reason'
+            },
+            currentChemistry: {},
+            currentOtm: {},
+            todayDataOptions: {
+                otm: {
+                    url: this.localeUrl("/get-dzo-current-otm"),
+                    name: 'wellWorkover'
+                },
+                chemistry: {
+                    url: this.localeUrl("/get-dzo-current-chemistry"),
+                    name: 'chemistryData'
+                },
             }
         };
     },
     methods: {
+        async updateCurrentData() {
+            let self = this;
+            _.forEach(Object.keys(this.todayDataOptions), async function(key) {
+                let uri = self.todayDataOptions[key]['url'] + '?dzoName=' + self.selectedDzo.ticker;
+                let inputData = await self.getCurrentData(uri);
+                if (Object.keys(inputData).length > 0) {
+                    let dataset = self[self.todayDataOptions[key]['name']];
+                    self.processCurrentData(inputData,dataset);
+                }
+            });
+            this.todayData = await this.getDzoTodayData();
+            this.processTodayData();
+        },
+        async getCurrentData(uri) {
+            const response = await axios.get(uri);
+            if (response.status === 200) {
+                return response.data;
+            }
+            return {};
+        },
+        async processCurrentData(inputData,localData) {
+            _.forEach(Object.keys(localData), function(key) {
+                localData[key] = inputData[key];
+            });
+        },
         async getDzoTodayData() {
             let uri = this.localeUrl("/get-dzo-today-data") + '?dzoName=' + this.selectedDzo.ticker;
             const response = await axios.get(uri);
@@ -67,6 +104,6 @@ export default {
             _.forEach(Object.keys(fieldsBlock), function (key) {
                 self.processDataBlock(fieldsBlock[key],categoryName,self.todayData[categoryName][key]);
             });
-        }
+        },
     }
 }

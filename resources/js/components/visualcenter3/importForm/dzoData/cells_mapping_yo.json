@@ -28,12 +28,10 @@
   "otmDzo": {
     "fields": [
       "otm_wells_commissioning_from_drilling_fact",
-      "otm_drilling_fact",
-      "otm_well_workover_fact",
-      "otm_underground_workover"
+      "otm_drilling_fact"
     ],
     "rowIndex": 17,
-    "rowLength": 4
+    "rowLength": 2
   },
   "operatingFond": {
     "fields": [
@@ -182,32 +180,26 @@
       "Восточный Урихтау": {
         "fields": [
           "otm_wells_commissioning_from_drilling_fact",
-          "otm_drilling_fact",
-          "otm_well_workover_fact",
-          "otm_underground_workover"
+          "otm_drilling_fact"
         ],
         "rowIndex": 18,
-        "rowLength": 4
+        "rowLength": 2
       },
       "Центральный Урихтау": {
         "fields": [
           "otm_wells_commissioning_from_drilling_fact",
-          "otm_drilling_fact",
-          "otm_well_workover_fact",
-          "otm_underground_workover"
+          "otm_drilling_fact"
         ],
         "rowIndex": 19,
-        "rowLength": 4
+        "rowLength": 2
       },
       "Южный Урихтау": {
         "fields": [
           "otm_wells_commissioning_from_drilling_fact",
-          "otm_drilling_fact",
-          "otm_well_workover_fact",
-          "otm_underground_workover"
+          "otm_drilling_fact"
         ],
         "rowIndex": 20,
-        "rowLength": 4
+        "rowLength": 2
       }
     }
   },

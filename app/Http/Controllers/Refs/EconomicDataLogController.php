@@ -7,25 +7,29 @@ use App\Http\Controllers\Controller;
 use App\Models\EcoRefsCost;
 use App\Models\Refs\EconomicDataLog;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 
 class EconomicDataLogController extends Controller
 {
-    protected $index_route = "economic_data_log.index";
+    const PAGINATION = 10;
 
-    public function index()
+    public function index(): View
     {
-        $economicDataLog = EconomicDataLog::latest()->paginate(5);
-        return view('ecorefscost.log.index',compact('economicDataLog'));
+        $economicDataLog = EconomicDataLog::query()
+            ->latest()
+            ->paginate(self::PAGINATION);
+
+        return view('eco_refs_cost.log.index', compact('economicDataLog'));
     }
 
     public function destroy(int $id): RedirectResponse
     {
-        $economicRefsCost = EcoRefsCost::where('log_id', '=', $id);
-        $economicRefsCost->delete();
+        EcoRefsCost::query()->whereLogId($id)->delete();
 
-        $economicDataLog = EconomicDataLog::find($id);
-        $economicDataLog->delete();
+        EconomicDataLog::query()->whereId($id)->delete();
 
-        return redirect()->route($this->index_route)->with('success',__('app.deleted'));
+        return redirect()
+            ->route("economic_data_log.index")
+            ->with('success', __('app.deleted'));
     }
 }

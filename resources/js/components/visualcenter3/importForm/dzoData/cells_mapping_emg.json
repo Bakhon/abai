@@ -58,12 +58,10 @@
   "otmDzo": {
     "fields": [
       "otm_wells_commissioning_from_drilling_fact",
-      "otm_drilling_fact",
-      "otm_well_workover_fact",
-      "otm_underground_workover"
+      "otm_drilling_fact"
     ],
     "rowIndex": 43,
-    "rowLength": 4
+    "rowLength": 2
   },
   "operatingFond": {
     "fields": [
@@ -358,42 +356,34 @@
       "НГДУ \"Жаикмунайгаз\"": {
         "fields": [
           "otm_wells_commissioning_from_drilling_fact",
-          "otm_drilling_fact",
-          "otm_well_workover_fact",
-          "otm_underground_workover"
+          "otm_drilling_fact"
         ],
         "rowIndex": 44,
-        "rowLength": 4
+        "rowLength": 2
       },
       "НГДУ \"Жылоймунайгаз\"": {
         "fields": [
           "otm_wells_commissioning_from_drilling_fact",
-          "otm_drilling_fact",
-          "otm_well_workover_fact",
-          "otm_underground_workover"
+          "otm_drilling_fact"
         ],
         "rowIndex": 45,
-        "rowLength": 4
+        "rowLength": 2
       },
       "НГДУ \"Доссормунайгаз\"": {
         "fields": [
           "otm_wells_commissioning_from_drilling_fact",
-          "otm_drilling_fact",
-          "otm_well_workover_fact",
-          "otm_underground_workover"
+          "otm_drilling_fact"
         ],
         "rowIndex": 46,
-        "rowLength": 4
+        "rowLength": 2
       },
       "НГДУ \"Кайнармунайгаз\"": {
         "fields": [
           "otm_wells_commissioning_from_drilling_fact",
-          "otm_drilling_fact",
-          "otm_well_workover_fact",
-          "otm_underground_workover"
+          "otm_drilling_fact"
         ],
         "rowIndex": 47,
-        "rowLength": 4
+        "rowLength": 2
       }
     }
   },

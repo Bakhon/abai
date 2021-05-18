@@ -143,8 +143,6 @@ return array (
       'bsw' => 'Сулану, %',
       'surge_tank_pressure' => 'Буферлік сыйымдылық қысымы, кгс\\см2',
       'pump_discharge_pressure' => 'Сораптың шығыс қысымы, кгс\\см2',
-      'heater_inlet_pressure' => 'Пештің кіріс температурасы, С',
-      'heater_output_pressure' => 'Пештің шығыс температурасы, С',
       'temperature' => 'Пештің кіріс температурасы, С',
       'heater_inlet_temperature' => 'Пештің кіріс температурасы, С',
       'heater_output_temperature' => 'Пештің шығыс температурасы, С',
@@ -213,23 +211,6 @@ return array (
     ),
   ),
   'corrosion_name' => 'Коррозия',
-  'pipe' => 
-  array (
-    'menu' => 'Құбырлар',
-    'title' => 'Құбырлар дерекқоры',
-    'create_title' => 'Құбырлар бойынша деректерді енгізу',
-    'edit_title' => 'Құбырлар бойынша түзетулерді енгізу',
-    'fields' => 
-    array (
-      'length' => 'Ұзындық',
-      'outside_diameter' => 'Сыртқы диаметр, мм',
-      'inner_diameter' => 'Ішкі диаметр',
-      'thickness' => 'Қабырға қалыңдығы, мм',
-      'roughness' => 'Кедір-бұдырлық',
-      'material' => 'Материал',
-      'plot' => 'Бөлшегі',
-    ),
-  ),
   'inhibitor' => 
   array (
     'title' => 'Ингибитор анықтамалығы',
@@ -255,9 +236,9 @@ return array (
   array (
     'zu' => 'ӨҚ',
   ),
-  'well' => 'Ұңғы',
   'gu' => 
   array (
+    'gu' => 'ТҚ',
     'fields' => 
     array (
       'surge_tank_pressure' => 'Буферлік сыйымдылық қысымы',
@@ -275,10 +256,10 @@ return array (
       'inner_diameter' => 'Ішкі диаметр',
       'length' => 'Ұзындық',
       'material' => 'Материал',
-      'outside_diameter' => 'Сыртқы диаметр',
+      'outside_diameter' => 'Сыртқы диаметр, мм',
       'plot' => 'Бөлшегі',
       'roughness' => 'Кедір-бұдырлық',
-      'thickness' => 'Қабырға қалыңдығы',
+      'thickness' => 'Қабырға қалыңдығы, мм',
     ),
     'edit_title' => 'Құбырлар бойынша түзетулерді енгізу',
     'title' => 'Құбырлар дерекқоры',

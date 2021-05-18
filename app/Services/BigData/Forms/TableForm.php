@@ -47,8 +47,13 @@ abstract class TableForm extends BaseForm
         $rowData = $this->fetchRowData($tables, (array)$wellId, $date);
 
         $copyValue = $rowData[$columnFrom['table']]->get($wellId)->first()->{$columnFrom['column']};
-        $this->saveSingleFieldInDB($column['code'], $wellId, Carbon::parse($date), 1);
-        $this->saveSingleFieldInDB($columnTo['code'], $wellId, Carbon::parse($date), $copyValue);
+        $this->saveSingleFieldInDB($column['code'], $wellId, Carbon::parse($date)->timezone('Asia/Almaty'), 1);
+        $this->saveSingleFieldInDB(
+            $columnTo['code'],
+            $wellId,
+            Carbon::parse($date)->timezone('Asia/Almaty'),
+            $copyValue
+        );
 
 
         return [];

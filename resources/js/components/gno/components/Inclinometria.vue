@@ -164,22 +164,19 @@ export default {
       hPumpFromIncl: null,
       isButtonHpump: false,
       hVal: null,
-      kraska:null,
+      color: null,
       tmp: null,
       tmp2: null,
       tmp3: null,
       dzArray: null,
       dxArray: null,
       dyArray: null,
-      ecnColor: null,
-      dls:null,
-      incl:null,
-      index1:null,
-      index2:null,
-      maxDls:null,
-      maxIncl:null,
-      dlsGlubina:null,
-      inclGlubina:null,
+      dls: null,
+      incl: null,
+      maxDls: null,
+      maxIncl: null,
+      dlsGlubina: null,
+      inclGlubina: null,
       xArr: null,
       yArr: null,
       zArr: null,
@@ -247,7 +244,6 @@ export default {
         var curr = arr[0],
         diff = Math.abs(num * -1 - curr),
         index = 0;
-
           for (var val = 0; val < arr.length; val++) {
             let newdiff = Math.abs(num * -1 - arr[val]);
               if (newdiff < diff) {
@@ -262,11 +258,28 @@ export default {
       buildModel(){
         this.hPumpFromIncl = this.$store.getters.getHpump
         var wi = this.wellIncl.split('_');
-        let uri = "http://172.20.103.187:7575/api/pgno/" + wi[0] + "/" + wi[1] + "/incl";
+        let uri = "http://172.20.103.187:7575/api/pgno/incl";
         this.$emit('update:isLoading', true);
         this.hPumpFromIncl = this.$store.getters.getHpump
 
-        this.axios.get(uri).then((response) => {
+        if (this.expChoose == 'ШГН'){
+          this.lift_method="ШГН"
+          this.step=10
+        } else {
+          this.lift_method="ЭЦН"
+          this.step=20
+        }
+
+        let jsonData = JSON.stringify(
+          {"well_number": wi[1],
+            "lift_method": this.lift_method,
+            "field": wi[0],
+            "glubina": this.hPumpFromIncl.substring(0,4) * 1,
+            "step": this.step,
+          }
+        )
+       
+        this.axios.post(uri,jsonData).then((response) => {
           var data = JSON.parse(response.data.InclData)
           if (data.data) {
             this.data = data.data
@@ -278,66 +291,20 @@ export default {
             this.zArr = this.data.map((r) => (r.md * -1))
             this.hVal = this.hPumpFromIncl.substring(0,4) * 1
             this.indexZ = this.closestVal(this.hVal, this.zArr)
-            this.ecnColor=this.data.map((r) => r.dls_color)
-            this.dls=this.data.map((r) => Math.round(Math.abs(r.dls * 100))/100)
-            this.incl=this.data.map((r) =>Math.round(Math.abs(r.incl * 100))/100)
+            this.color = this.data.map((r) => r.dls_color)
+            this.dls = this.data.map((r) => Math.round(Math.abs(r.dls * 100))/100)
+            this.incl = this.data.map((r) =>Math.round(Math.abs(r.incl * 100))/100)
 
-            if (this.expChoose=='ШГН'){
-              this.glubina=this.hVal+10
-              this.index1 = this.closestVal(this.hVal, this.zArr)
-              this.index2 = this.closestVal(this.glubina, this.zArr)
-            } else {
-              this.glubina=this.hVal+20
-              this.index1 = this.closestVal(this.hVal, this.zArr)
-              this.index2 = this.closestVal(this.glubina, this.zArr)
-            }
-
-            if(!this.dzArray.includes(this.hVal) && this.dzArray[this.index1]>this.hVal){
-              this.index1=this.index1-1
-            }
-            if (!this.dzArray.includes(this.glubina) && this.dzArray[this.index2]<this.glubina){
-              this.index2=this.index2+1
-            }
-
-            this.dlsGlubina=Math.max(...this.dls.slice(this.index1+1,this.index2+1))
-            this.inclGlubina=Math.max(...this.incl.slice(this.index1+1,this.index2+1))
-            this.maxDls=Math.max(...this.dls.slice(0,this.index2+1))
-            this.maxIncl=Math.max(...this.incl.slice(0,this.index2+1))
-
-            for (const i in this.ecnColor){
-              this.tmp=this.dzArray[this.closestVal(this.dzArray[i] + 20, this.zArr)]
-              this.tmp2=Math.max(...this.dls.slice(Number(i)+1,this.closestVal(this.dzArray[i] + 20, this.zArr)+1))
-              this.tmp3=Math.max(...this.dls.slice(Number(i)+1,this.closestVal(this.dzArray[i] + 20, this.zArr)+2))
-              if (this.tmp>=this.dzArray[i] + 20){
-                if (this.tmp2>0.3){
-                  this.ecnColor[i]='red'
-                } else if (this.tmp2<=0.3 && this.tmp2>0.05) {
-                  this.ecnColor[i]='yellow'
-                } else {
-                  this.ecnColor[i]='green'
-                }
-              } else {
-                if (this.tmp3>0.3){
-                  this.ecnColor[i]='red'
-                } else if (this.tmp3<=0.3 && this.tmp3>0.05) {
-                  this.ecnColor[i]='yellow'
-                } else {
-                  this.ecnColor[i]='green'
-                }
-              }
-            }
-          
-            if (this.expChoose=='ШГН'){
-              this.kraska= this.data.map((r) => r.dls_color)
-            } else {
-              this.kraska=this.ecnColor
-            }
+            this.data2 = response.data.CenterData
+            this.dlsGlubina = this.data2[0]
+            this.maxDls = this.data2[1]
+            this.inclGlubina = this.data2[2]
+            this.maxIncl = this.data2[3]
 
             this.pointZ = this.zArr[this.indexZ]
             this.pointX = this.xArr[this.indexZ]
             this.pointY = this.yArr[this.indexZ]
           
-
             if (Math.max(...this.dxArray) < 50 && Math.max(...this.dyArray) < 50) {
               this.layout['scene']['xaxis']['range'][0] = 50
               this.layout['scene']['xaxis']['range'][1] = -50
@@ -362,7 +329,7 @@ export default {
               opacity: 1,
               line: {
                 width: 12,
-                color: this.kraska.map((r) => r),
+                color: this.color.map((r) => r),
                 colorscale: [[0, 'rgb(0,0,255)'], [1, 'rgb(255,0,0)']],
                 type: 'heatmap'
               },
@@ -379,6 +346,7 @@ export default {
             }
             ],
             this.point = []
+
           } else this.data = [];
         }).finally(() => {
           this.$emit('update:isLoading', false);

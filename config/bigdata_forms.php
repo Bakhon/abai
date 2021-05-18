@@ -9,4 +9,5 @@
   'well_design' => '\\App\\Services\\BigData\\Forms\\WellDesign',
   'prs' => '\\App\\Services\\BigData\\Forms\\Prs',
   'gas_well' => '\\App\\Services\\BigData\\Forms\\GasWell',
+  'daily_drill' => '\\App\\Services\\BigData\\Forms\\DailyDrill',
 );
