@@ -23,8 +23,6 @@
         "laravel/ui": "^1.1",
         "level23/druid-client": "^1.0",
         "maatwebsite/excel": "^3.1",
-        "php-ews/php-ews": "~1.0.0",
-        "shuchkin/simplexls": "~0.9.9",
         "spatie/laravel-permission": "^3.13"
     },
     "require-dev": {
