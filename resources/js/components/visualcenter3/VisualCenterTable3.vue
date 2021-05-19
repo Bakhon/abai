@@ -1017,7 +1017,7 @@
                         <div
                           v-if="item.factMonth"
                           :class="
-                            item.planMonth - item.factMonth < 0 ?
+                            item.planMonth > item.factMonth ?
                             'triangle fall-indicator-production-data' :
                             'triangle growth-indicator-production-data'
                           "
@@ -1033,8 +1033,7 @@
                         <div
                           v-if="item.factMonth"
                           :class="
-                            ((item.planMonth - item.factMonth) /
-                            item.planMonth) * 100 < 0 ?
+                            item.planMonth > item.factMonth ?
                             'triangle fall-indicator-production-data' :
                             'triangle growth-indicator-production-data'
                           "
