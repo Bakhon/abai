@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6d78d710af4085ac57fcf90fa710b748",
+    "content-hash": "f148f859a25aed10f9bf2dd762cb4898",
     "packages": [
         {
             "name": "adldap2/adldap2",
@@ -1675,6 +1675,52 @@
             "time": "2020-09-19T16:43:44+00:00"
         },
         {
+            "name": "jamesiarmes/php-ntlm",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/jamesiarmes/php-ntlm.git",
+                "reference": "08fa988af7506b8dc366737b06c86633ba8cecbc"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/jamesiarmes/php-ntlm/zipball/08fa988af7506b8dc366737b06c86633ba8cecbc",
+                "reference": "08fa988af7506b8dc366737b06c86633ba8cecbc",
+                "shasum": ""
+            },
+            "require": {
+                "ext-soap": "*",
+                "php": ">=5.3.9"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "jamesiarmes\\PhpNtlm\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "James Armes",
+                    "email": "jamesiarmes@gmail.com"
+                }
+            ],
+            "description": "Library for communicating with Microsoft services using NTLM authentication.",
+            "support": {
+                "issues": "https://github.com/jamesiarmes/php-ntlm/issues",
+                "source": "https://github.com/jamesiarmes/php-ntlm/tree/master"
+            },
+            "time": "2017-10-04T01:14:17+00:00"
+        },
+        {
             "name": "jaybizzle/crawler-detect",
             "version": "v1.2.105",
             "source": {
@@ -3284,6 +3330,57 @@
             "time": "2018-07-02T15:55:56+00:00"
         },
         {
+            "name": "php-ews/php-ews",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/jamesiarmes/php-ews.git",
+                "reference": "405f03cb679eff59c84f223962c9cadf14b38450"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/jamesiarmes/php-ews/zipball/405f03cb679eff59c84f223962c9cadf14b38450",
+                "reference": "405f03cb679eff59c84f223962c9cadf14b38450",
+                "shasum": ""
+            },
+            "require": {
+                "ext-soap": "*",
+                "jamesiarmes/php-ntlm": "~1.0",
+                "php": ">=5.3.9"
+            },
+            "require-dev": {
+                "mustache/mustache": "~2.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "jamesiarmes\\PhpEws\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "James Armes",
+                    "email": "jamesiarmes@gmail.com"
+                }
+            ],
+            "description": "Library for communicating with Exchange Web Services.",
+            "homepage": "http://jamesarmes.com/php-ews/",
+            "support": {
+                "issues": "https://github.com/jamesiarmes/php-ews/issues",
+                "source": "https://github.com/jamesiarmes/php-ews/tree/master"
+            },
+            "time": "2017-10-04T01:18:36+00:00"
+        },
+        {
             "name": "phpoffice/phpspreadsheet",
             "version": "1.16.0",
             "source": {
@@ -4070,6 +4167,55 @@
                 "source": "https://github.com/rize/UriTemplate/tree/0.3.3"
             },
             "time": "2021-02-22T15:03:38+00:00"
+        },
+        {
+            "name": "shuchkin/simplexls",
+            "version": "0.9.9",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/shuchkin/simplexls.git",
+                "reference": "64af23b61d99fecef81a3daffcd688885df061ff"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/shuchkin/simplexls/zipball/64af23b61d99fecef81a3daffcd688885df061ff",
+                "reference": "64af23b61d99fecef81a3daffcd688885df061ff",
+                "shasum": ""
+            },
+            "require": {
+                "ext-mbstring": "*"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src/SimpleXLS.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Sergey Shuchkin (SMSPILOT)",
+                    "email": "sergey.shuchkin@gmail.com",
+                    "homepage": "http://www.shuchkin.ru/"
+                }
+            ],
+            "description": "Parse and retrieve data from old format Excel XLS files. MS Excel 97 workbooks PHP reader.",
+            "homepage": "https://github.com/shuchkin/simplexls",
+            "keywords": [
+                "backend",
+                "excel",
+                "parser",
+                "php",
+                "xls"
+            ],
+            "support": {
+                "issues": "https://github.com/shuchkin/simplexls/issues",
+                "source": "https://github.com/shuchkin/simplexls/tree/0.9.9"
+            },
+            "time": "2021-03-04T15:00:23+00:00"
         },
         {
             "name": "spatie/laravel-permission",
