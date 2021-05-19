@@ -542,6 +542,7 @@ export default {
     return {
       options: [],
       well: null,
+      tech: null,
       graph: null,
       activeFormCode: null,
       loading: false,
@@ -569,8 +570,9 @@ export default {
     selectWell(well) {
       this.loading = true
       this.axios.get(this.localeUrl(`/api/bigdata/wells/${well.id}`)).then(({data}) => {
-        this.well = data.well
-        this.loading = false
+        /*this.well = data.well
+        this.loading = false*/
+        console.log(data)
       })
     },
     setForm(formCode) {

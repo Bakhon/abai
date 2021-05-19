@@ -9,9 +9,11 @@ use Illuminate\Http\Request;
 
 class WellsController extends Controller
 {
-    public function get(Well $well): array
+    public function get(Well $well)
     {
-        return ['well' => $well];
+        /*return ['well' => $well];*/
+        $wellInfo = Well::where('id', $well->id)->with('category', 'status')->get();
+        return $wellInfo;
     }
 
     public function search(Request $request): array
