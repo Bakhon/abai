@@ -266,7 +266,7 @@ export default {
       param_eco:null,
       param_org:null,
       param_fact:null,
-
+      wellData: null,
       field: null,
       wellIncl: null,
       dataNNO:"2020-11-01",
@@ -295,6 +295,11 @@ export default {
       ao: null,
       orgs: null,
       nkt: null,
+      liftValue: "ШГН",
+      stepValue: 10,
+      centratorsInfo: null,
+      centratorsRequiredValue: null,
+      centratorsRecommendedValue: null,
       nkt_choose: [
         {
           for_calc_value: 50.3,
@@ -417,9 +422,12 @@ export default {
           "mech_sep_value": this.mech_sep_value,
           "nat_sep": this.nat_sep,
           "nkt": this.nkt,
+
         })
     },
     downloadExcel() {
+      this.isLoading = true;
+
       if (this.CelButton == 'ql') {
         this.CelValue = this.qlCelValue
       } else if (this.CelButton == 'bhp') {
@@ -427,44 +435,15 @@ export default {
       } else if (this.CelButton == 'pin') {
         this.CelValue = this.piCelValue
       }
-      let jsonData = JSON.stringify(
-        {
-          "curveSelect": this.curveSelect,
-          "presValue": this.pResInput.split(' ')[0],
-          "piValue": this.piInput.split(' ')[0],
-          "qlValue": this.qLInput.split(' ')[0],
-          "bhpValue": this.bhpInput.split(' ')[0],
-          "hdynValue": [this.hDynInput.split(' ')[0], this.pAnnularInput.split(' ')[0]],
-          "pmanomValue": [this.pManomInput.split(' ')[0], this.hPumpManomInput.split(' ')[0]],
-          "whpValue": this.whpInput.split(' ')[0],
-          "wctValue": this.wctInput.split(' ')[0],
-          "gorValue": this.gorInput.split(' ')[0],
-          "expSelect": this.expChoose,
-          "hPumpValue": this.hPumpValue.split(' ')[0],
-          "celSelect": this.CelButton,
-          "celValue": this.CelValue.split(' ')[0],
-          "menu": this.menu,
-          "well_age": this.isYoungAge,
-          "grp_skin": this.hasGrp,
-          "analysisBox1": this.isAnalysisBoxValue1,
-          "analysisBox2": this.isAnalysisBoxValue2,
-          "analysisBox3": this.isAnalysisBoxValue3,
-          "analysisBox4": this.isAnalysisBoxValue4,
-          "analysisBox5": this.isAnalysisBoxValue5,
-          "analysisBox6": this.isAnalysisBoxValue6,
-          "analysisBox7": this.isAnalysisBoxValue7,
-          "analysisBox8": this.isAnalysisBoxValue8,
-          "sep_meth": this.sep_meth,
-          "sep_value": this.sep_value,
-          "mech_sep": this.mech_sep,
-          "mech_sep_value": this.mech_sep_value,
-          "nat_sep": this.nat_sep
-        });
+      this.prepareData()
       let uri = "http://172.20.103.187:7575/api/pgno/"+ this.field + "/" + this.wellNumber + "/download";
-      this.axios.post(uri, jsonData,{responseType: "blob"}).then((response) => {
+      this.axios.post(uri, this.postdata,{responseType: "blob"}).then((response) => {
         fileDownload(response.data, "ПГНО_" + this.field + "_" + this.wellNumber + ".xlsx")
-      }
-      )
+      }).catch(function (error) {
+        console.error('oops, something went wrong!', error);
+      }).finally(() => {
+        this.isLoading = false;
+    });
     },
 
     updateWellNum(event) {
@@ -988,7 +967,7 @@ export default {
 
       this.axios.get(uri).then((response) => {
           let data = response.data;
-          
+          this.wellData = data
           this.method = 'MainMenu'
           if (data["Error"] == "NoData" || data["Error"] == 'data_error'){
             if(data["Error"] == "NoData") {
@@ -1192,6 +1171,7 @@ export default {
           }
           this.$emit('LineData', this.curveLineData)
           this.$emit('PointsData', this.curvePointsData)
+          
         }
       ).finally((response) => {
         this.isLoading = false;
@@ -1199,6 +1179,31 @@ export default {
 
 
 
+    },
+
+    fetchBlockCentrators() {
+      let fieldInfo = this.wellIncl.split('_');
+      let urlForIncl = "http://172.20.103.187:7575/api/pgno/incl";
+      if (this.expChoose == 'ЭЦН') {
+        (this.liftValue = 'ЭЦН') && (this.stepValue = 20);
+      } else {
+        (this.liftValue = 'ШГН') && (this.stepValue = 10);
+      }
+
+      let centratorsData = JSON.stringify(
+        { 
+          "well_number": fieldInfo[1],
+          "lift_method": this.liftValue,
+          "field": fieldInfo[0],
+          "glubina": this.hPumpValue.substring(0,4) * 1,
+          "step": this.stepValue,
+        }
+      )
+
+      this.axios.post(urlForIncl, centratorsData).then((response) => {
+        this.centratorsInfo = response.data
+        this.centratorsRequiredValue = this.centratorsInfo["CenterRange"]["red"]
+      })
     },
 
     postCurveData() {
@@ -1475,6 +1480,7 @@ export default {
 
             this.axios.post(uri, jsonData).then((response) => {
               let data = JSON.parse(response.data);
+              this.fetchBlockCentrators();
               if(data) {
                 if (data["error"] == "NoIntersection") {
                   this.$notify({

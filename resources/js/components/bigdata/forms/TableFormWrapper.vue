@@ -102,133 +102,7 @@ body.fixed {
   overflow: hidden;
 }
 
-.bd-popup {
-  background: rgba(0, 0, 0, 0.7);
-  height: 100%;
-  left: 0;
-  overflow: auto;
-  position: fixed;
-  top: 0;
-  width: 100%;
-  z-index: 1000;
-
-  &__inner {
-    background: #272953;
-    border: 2px solid #656a8a;
-    border-radius: 8px;
-    color: #fff;
-    left: 50%;
-    min-width: 730px;
-    padding: 20px 25px;
-    position: absolute;
-    top: 100px;
-    transform: translateX(-50%);
-    z-index: 1001;
-  }
-
-  &__close {
-    background: #656A8A;
-    border-radius: 7px;
-    color: #fff;
-    font-size: 14px;
-    font-weight: bold;
-    height: 26px;
-    line-height: 26px;
-    position: absolute;
-    right: 19px;
-    text-align: center;
-    top: 14px;
-    width: 87px;
-
-    &:hover {
-      color: #fff;
-      text-decoration: none;
-    }
-  }
-
-  &__title {
-    font-size: 18px;
-    margin-bottom: 30px;
-  }
-
-  .table {
-    th {
-      background: #2b2e5e;
-      padding: 10px 5px;
-
-      &:nth-child(2n + 1) {
-        background: #2b40a9;
-      }
-    }
-
-    tbody {
-      tr {
-        td {
-          background: #2b2e5e;
-          border: none;
-
-          &:nth-child(2n + 1) {
-            background: #343868;
-          }
-
-          a {
-            color: #82BAFF;
-          }
-        }
-
-        &:nth-child(2n + 1) {
-          td {
-            background: #343868;
-
-            &:nth-child(2n + 1) {
-              background: #383d6d;
-            }
-          }
-        }
-      }
-    }
-  }
-
-}
-
 .bd-main-block {
-  &__date {
-    align-items: center;
-    display: flex;
-    margin-bottom: 10px;
-
-    &-title {
-      color: #fff;
-      margin-right: 10px;
-    }
-
-    &-input {
-      position: relative;
-
-      &:after {
-        background: url(/img/bd/calendar.svg) no-repeat;
-        content: "";
-        height: 28px;
-        position: absolute;
-        right: 0;
-        top: 0;
-        width: 28px;
-      }
-
-      input[type="text"] {
-        background: #1a1d46;
-        border-radius: 4px;
-        border: none;
-        color: #fff;
-        font-size: 14px;
-        font-weight: bold;
-        height: 28px;
-        width: 124px;
-      }
-    }
-
-  }
-
   &__body {
     align-items: stretch;
     background: #363B68;
@@ -240,26 +114,6 @@ body.fixed {
 
     &-history {
       width: 100%;
-    }
-  }
-
-  &__tree {
-    background: #272953;
-    margin-right: 8px;
-    min-width: 310px;
-    overflow-y: auto;
-    padding: 17px 25px;
-    width: 310px;
-
-    .tree-view {
-      .tree-node-label {
-        color: #fff;
-
-        &:hover {
-          color: #fff;
-          background: none;
-        }
-      }
     }
   }
 
@@ -412,4 +266,155 @@ body.fixed {
     display: none;
   }
 }
+</style>
+<style lang="scss">
+.bd-main-block {
+
+  &__date {
+    align-items: center;
+    display: flex;
+    margin-bottom: 10px;
+
+    &-title {
+      color: #fff;
+      margin-right: 10px;
+    }
+
+    &-input {
+      position: relative;
+
+      &:after {
+        background: url(/img/bd/calendar.svg) no-repeat;
+        content: "";
+        height: 28px;
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: 28px;
+      }
+
+      input[type="text"] {
+        background: #1a1d46;
+        border-radius: 4px;
+        border: none;
+        color: #fff;
+        font-size: 14px;
+        font-weight: bold;
+        height: 28px;
+        width: 124px;
+      }
+    }
+
+  }
+
+  &__tree {
+    background: #272953;
+    margin-right: 8px;
+    min-width: 310px;
+    overflow-y: auto;
+    padding: 17px 25px;
+    width: 310px;
+
+    .tree-view {
+      .tree-node-label {
+        color: #fff;
+
+        &:hover {
+          color: #fff;
+          background: none;
+        }
+      }
+    }
+  }
+}
+
+.bd-popup {
+  background: rgba(0, 0, 0, 0.7);
+  height: 100%;
+  left: 0;
+  overflow: auto;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+
+  &__inner {
+    background: #272953;
+    border: 2px solid #656a8a;
+    border-radius: 8px;
+    color: #fff;
+    left: 50%;
+    min-width: 730px;
+    padding: 20px 25px;
+    position: absolute;
+    top: 100px;
+    transform: translateX(-50%);
+    z-index: 1001;
+  }
+
+  &__close {
+    background: #656A8A;
+    border-radius: 7px;
+    color: #fff;
+    font-size: 14px;
+    font-weight: bold;
+    height: 26px;
+    line-height: 26px;
+    position: absolute;
+    right: 19px;
+    text-align: center;
+    top: 14px;
+    width: 87px;
+
+    &:hover {
+      color: #fff;
+      text-decoration: none;
+    }
+  }
+
+  &__title {
+    font-size: 18px;
+    margin-bottom: 30px;
+  }
+
+  .table {
+    th {
+      background: #2b2e5e;
+      padding: 10px 5px;
+
+      &:nth-child(2n + 1) {
+        background: #2b40a9;
+      }
+    }
+
+    tbody {
+      tr {
+        td {
+          background: #2b2e5e;
+          border: none;
+
+          &:nth-child(2n + 1) {
+            background: #343868;
+          }
+
+          a {
+            color: #82BAFF;
+          }
+        }
+
+        &:nth-child(2n + 1) {
+          td {
+            background: #343868;
+
+            &:nth-child(2n + 1) {
+              background: #383d6d;
+            }
+          }
+        }
+      }
+    }
+  }
+
+}
+
 </style>

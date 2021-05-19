@@ -71,9 +71,6 @@ abstract class PlainForm extends BaseForm
                 ->where('well', $wellId)
                 ->orderBy('id', 'desc');
 
-            if (isset($this->params()['table_fields'])) {
-                $query->select(array_merge(['id'], $this->params()['table_fields']));
-            }
             $rows = $query->get();
 
             $columns = $this->getFields()->filter(
