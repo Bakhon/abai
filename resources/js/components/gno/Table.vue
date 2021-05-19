@@ -1545,7 +1545,7 @@
                               <div class="col-8 table-border-gno">
                                 <input checked="true" @change="postCurveData()" :disabled="sep_meth ==='input_value' || expChoose === 'ФОН'" 
                               type="checkbox" v-model="mech_sep">{{trans('pgno.separation_mech')}}
-                              <input v-model="mech_sep_value" type="text" style="margin-left: 3px; margin-bottom: 0px;" 
+                              <input v-model="mech_sep_value" @change="postCurveData()" type="text" style="margin-left: 3px; margin-bottom: 0px;" 
                               :disabled="sep_meth ==='input_value' || expChoose === 'ФОН' ||  mech_sep === false" onfocus="this.value=''" class="input-box-gno podbor" /></div>
                             </div>
                               
@@ -1569,7 +1569,7 @@
                                 <div class="table-border-gno-right pdo-bottom-cell">
                                   <label class="label-for-celevoi">
                                     <input v-model="CelButton" class="checkbox3" value="ql" type="radio"
-                                      name="gno11" />{{trans('pgno.q_nefti')}}</label>
+                                      name="gno11" />{{trans('pgno.q_liq')}}</label>
                                   <input v-model="qlCelValue" @change="postCurveData()" :disabled="CelButton != 'ql'"
                                     onfocus="this.value=''" type="text" class="square3 podbor" />
                                 </div>
