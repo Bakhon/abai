@@ -30,7 +30,6 @@ class FieldCalcController extends MainController
     const  ONE_YEAR = 365;
     const  SERVICE_TIME = 12;
     public $razrab = 5;
-    public $prs = null;
     public $year = null;
     public $qZhidkosti = null;
     public $qoil = null;
@@ -41,8 +40,6 @@ class FieldCalcController extends MainController
     public $company = null;
     public $insideMarketDirections = null;
     public $equipIdRequest = null;
-    public $fluidProduction = null;
-    public $prsCostResults = [];
     public $scorfa = null;
     public $companyId = null;
     public $exportDirections = [];
@@ -76,7 +73,7 @@ class FieldCalcController extends MainController
          'BZ7001870000', 'BZ7001060000', 'BZ7001070000', 'BZ7001080000', 'BZ7101090000',
          'BZ7101100000', 'BZ7101110000', 'BZ7101120000', 'BZ7101130000', 'BZ7001020000',
          'BZ7001021000', 'BZ7001700100', 'BZ7001700201', 'BZ7001700202', 'BZ7001700203',
-         'BZ7001700299', 'BZ7001700301', 'BZ7001700399', 'BZ7001700302', 'BZ7001800000'];// то что отмечено голубым
+         'BZ7001700299', 'BZ7001700301', 'BZ7001700399', 'BZ7001700302', 'BZ7001800000'];// то что отмечено голубым (ДОХОДЫ)
 
     public $opiuOilNames = [
         'BZ7001010100',
@@ -85,7 +82,7 @@ class FieldCalcController extends MainController
         'BZ7001015000',
         'BZ7001019900',
         'BZ7001050000'
-    ];
+    ]; // Сырье, материалы и полуфабрикаты, Энергия (тепло-, электроэнергия)
 
     public $opiuLiqiudNames = [
         'B71190010000','B71190030000','B71190050000','B71190990000','B71101000000',
@@ -133,7 +130,7 @@ class FieldCalcController extends MainController
         'B75000000000','B91110301100','B91110301200','B91110300000','B77001010000',
         'B77001020000','B77001030000','B77001040000','B77002010000','B77002030000',
         'B77002040000','BZF402010000'
-    ];
+    ]; // РАСХОДЫ ПО РЕАЛИЗАЦИИ ГОТОВОЙ ПРОДУКЦИИ И ОКАЗАНИЯ УСЛУГ
 
     public function __construct()
     {
@@ -147,18 +144,11 @@ class FieldCalcController extends MainController
     public function index(Request $request)
     {
         $companies = SubholdingCompany::where('parent_id','!=', 0)->get();
-        $scenarioFact = 3;
+        $scenarioFact = 3; // id сценария (Корр. 6 на 2021-2025)
         if(isset($request->scenario)){
             $scenarioFact = $request->scenario;
         }
 
-//        if(isset($request->oil)){
-//            $oils = explode(',', $request->oil);
-//            foreach($oils as $year => $oil){
-//                $oils['202'.$year+1] = $oil;
-//                unset($oils[$year]);
-//            }
-//        }
         if(isset($request->rates)){
             $rates = explode(',', $request->rates);
             foreach($rates as $year => $rate){
@@ -212,25 +202,25 @@ class FieldCalcController extends MainController
 
         $totalWells = 3421; // Средний действующий фонд, скв (Всего)
         $activeWells = [
-            1 => '3',
-            3 => '4',
+            1 => '3', // id марщрута => ср. действ. фонд скв
+            3 => '4',// id марщрута => ср. действ. фонд скв
         ]; // Средний действующий фонд, скв по маршрутам (route_id => count)
 
-        $opiuValues = SubholdingCompany::whereName($company->name)->first();
+        $opiuValues = SubholdingCompany::whereName($company->name)->first(); // компания из справочника по названию
         if ($opiuValues) {
             $handbook = HandbookRepTt::where('parent_id', 0)->with('childHandbookItems')->get()->toArray();
             $companyRepTtValues = $opiuValues->statsByDate($this->year)->get()->toArray();
             $opiuValues = $this->recursiveSetValueToHandbookByType($handbook, $companyRepTtValues, $this->year, $this->year - 1, $this->year . '-01-01', $this->year . '-12-01');
         }
-        FieldCalcHelper::sumOverTree($opiuValues, $this->year); // суммирование по дереву
+        FieldCalcHelper::sumOverTree($opiuValues, $this->year); // суммирование по дереву к родителю
 
 
         $result = [];
-        $this->getShowDataOnTree($this->opiuNames, $opiuValues, $result);
+        $this->getShowDataOnTree($this->opiuNames, $opiuValues, $result); // данные на отображение
         $opiuTree = [];
         foreach($activeWells as $routeId => $activeWell){
             foreach($result as $opiu){
-                $opiuTree[$this->getRoute($routeId)][$opiu['name']] = $opiu['value']/$totalWells*$activeWell;
+                $opiuTree[$this->getRoute($routeId)][$opiu['name']] = $opiu['value']/$totalWells*$activeWell; // расчет  ДОХОДЫ(ОПИУ) по скважинам
             }
         }
 
@@ -264,7 +254,7 @@ class FieldCalcController extends MainController
 
             $prsResult = [];
             foreach ($electricityCosts as $cost) {
-                $avgprsday = EcoRefsAvgPrs::where('company_id', $cost->company_id)->where('date', $firstDateOfMonth)->first();
+                $avgprsday = EcoRefsAvgPrs::where('company_id', $cost->company_id)->where('date', $firstDateOfMonth)->first(); //Средняя продолжительность 1 ПРС, сут:
                 if ($avgprsday) {
                     $avgprsday = $avgprsday->avg_prs;
                 }
@@ -275,9 +265,9 @@ class FieldCalcController extends MainController
                 }
             } // Количество ПРС
 
-            $avgprsday = EcoRefsAvgPrs::where('company_id', $this->companyId)->first();
+            $avgprsday = EcoRefsAvgPrs::where('company_id', $this->companyId)->first(); //Средняя продолжительность 1 ПРС, сут:
             if ($avgprsday) {
-                $avgprsday = $avgprsday->avg_prs; // Средняя продолжительность 1 ПРС, сут
+                $avgprsday = $avgprsday->avg_prs;
             }
 
             $workday = $lastDay * ((self::ONE_YEAR - array_sum($prsResult) * $avgprsday) / self::ONE_YEAR); // Количество отработанных дней
@@ -294,7 +284,7 @@ class FieldCalcController extends MainController
             $shgnParam = 108.29 * pow($this->liq, -0.743);
 
             foreach ($emppersExp as $item) {
-                $exportsResults[$item->route_id] = $empper * $item->emp_per; // Объем реализации нефти по маршрутам
+                $exportsResults[$item->route_id] = $empper * $item->emp_per; // Объем реализации нефти по маршрутам (Экспорт)
             }
             $exportsResultsTotal = array_sum($exportsResults); //Объем реализации нефти на экспорт, всего
 
@@ -371,12 +361,12 @@ class FieldCalcController extends MainController
             $insideTarTnResults = [];
 
             foreach ($emppersIns as $item) {
-                $insideResults[$item->route_id] = $empper * $item->emp_per;
+                $insideResults[$item->route_id] = $empper * $item->emp_per; // Объем реализации нефти по маршрутам (втн. рынок)
             }
             $insideResultsTotal = array_sum($insideResults);
 
             foreach ($discontIns as $item) {
-                $insideDiscontResults[$item->route_id] = $insideResults[$item->route_id] * $item->macro;
+                $insideDiscontResults[$item->route_id] = $insideResults[$item->route_id] * $item->macro; // дисконт на втнр. рынок
             }
             $insideDiscontResultsTotal = array_sum($insideDiscontResults);
 
@@ -443,6 +433,8 @@ class FieldCalcController extends MainController
             $nakopDiscSvodPotok += $discSvobPotok;
             $npv += $svobodDenPotok;
 
+
+            // для отображения
             $exportTransportationValue = [];
             foreach ($exportsTarTnResults as $id => $exportsResult) {
                 $exportTransportationValue[$this->getRoute($id)] = $exportsResult;
@@ -476,7 +468,7 @@ class FieldCalcController extends MainController
             foreach ($exportsDiscontPrice as $id => $price) {
                 $discontPrices[$this->getRoute($id)] = $price;
             }
-
+            // end для отображения
 
             $data[$company->name][$lastDateOfMonth]  = [
                 'Цена на экспорт с учетом дисконта'=> $exportsDiscontResults,
@@ -599,7 +591,7 @@ class FieldCalcController extends MainController
         return array_search($id, $this->exportDirections);
     }
 
-    public function getRoute($id)
+    public function getRoute($id) // получить название маршрута по id
     {
         return array_search($id, $this->routes);
     }
@@ -634,9 +626,9 @@ class FieldCalcController extends MainController
         $tarifTn = EcoRefsTarifyTn::where('route_id', $route)->where('sc_fa', $scenarioFact)->where('company_id', $companyId)->get();
         $data = 0;
         foreach ($tarifTn as $tarif) {
-            if ($tarif->exc_id == 1) { // Валюта
+            if ($tarif->exc_id == 1) { // Валюта тг
                 $data += $oilValume * $tarif->tn_rate;
-            } elseif ($tarif->exc_id == 2) { // Валюта
+            } elseif ($tarif->exc_id == 2) { // Валюта доллар
                 $data += $oilValume * $tarif->tn_rate * $rate->ex_rate_dol;
             } else {
                 $data += $oilValume * $tarif->tn_rate * $rate->ex_rate_rub;

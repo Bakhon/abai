@@ -13,32 +13,32 @@ class MainController extends Controller
     public function company(Request $request)
     {
         $companyId = 178;
-        $dateTo = date('Y-m-d', strtotime('-1 year'));
+        $dateTo = date('Y-m-d', strtotime('-1 year')); // тут нужно будет убрать "-1 year" когда будут данные за 2021 год
 //        $dateTo = date('Y-m-d');
         $dateFrom = date("Y-m-d", strtotime($dateTo . "-3 months"));
 
         if($request->company){
             $companyId = $request->company;
         }
-        if ($request->betweenMonthsValue) {
-            $dateFrom = date('Y-m-d', strtotime(date('Y').'-01-01  -1 year'));
-            $dateTo = date('Y-m-d', strtotime(date('Y').'-'.$request->betweenMonthsValue . '-01 -1 year'));
+        if ($request->betweenMonthsValue) { // фильтр промежуточные данные по месяцам
+            $dateFrom = date('Y-m-d', strtotime(date('Y').'-01-01  -1 year')); // тут нужно будет убрать "-1 year" когда будут данные за 2021 год
+            $dateTo = date('Y-m-d', strtotime(date('Y').'-'.$request->betweenMonthsValue . '-01 -1 year')); // тут нужно будет убрать "-1 year" когда будут данные за 2021 год
         }
-        if ($request->monthsValue) {
+        if ($request->monthsValue) { // фильтр по месяцам
             $dateFrom = date("Y-m-d", strtotime(date('Y').'-'.$request->monthsValue . '-01'));
             $dateTo = date("Y-m-d", strtotime(date('Y').'-'.$request->monthsValue . '-31'));
         }
-        if ($request->quarterValue) {
+        if ($request->quarterValue) { // фильтр для квартальных данных
             $dateFrom = date("Y-m-d", strtotime(date('Y').'-'.$request->quarterValue . '-01' . "-3 months"));
             $dateTo = date("Y-m-d", strtotime(date('Y').'-'.$request->quarterValue . '-01'));
         }
 //        $currentYear = date('Y', strtotime('-1 year'));
         $currentYear = date('Y');
         $previousYear = (string) $currentYear - 1;
-        $handbook = HandbookRepTt::where('parent_id', 0)->with('childHandbookItems')->get()->toArray();
+        $handbook = HandbookRepTt::where('parent_id', 0)->with('childHandbookItems')->get()->toArray(); // справочник с учетом вложенности
         $companies = SubholdingCompany::all();
         $companyRepTtValues = SubholdingCompany::find($companyId)->statsByDate($currentYear)->get()->toArray();
-        $repTtReportValues = $this->recursiveSetValueToHandbookByType($handbook, $companyRepTtValues, $currentYear, $previousYear, $dateFrom, $dateTo);
+        $repTtReportValues = $this->recursiveSetValueToHandbookByType($handbook, $companyRepTtValues, $currentYear, $previousYear, $dateFrom, $dateTo); // рекрусивная функция суммирования значении
 
         $data = [
             'reptt' => $repTtReportValues,
@@ -115,7 +115,7 @@ class MainController extends Controller
     public function sumValuesByItemType(&$item, $attribute, $value, $dateFrom, $dateTo, $year, $currentItemDate)
     {
         $item[$attribute][$year] += (float) $value;
-        if (strtotime($dateFrom) <= $currentItemDate && strtotime($dateTo) >= $currentItemDate) {
+        if (strtotime($dateFrom) <= $currentItemDate && strtotime($dateTo) >= $currentItemDate) { // для фильтрации данных по промежуткам дат
             $item['intermediate_' . $attribute][$year] += (float) $value;
         }
     }
