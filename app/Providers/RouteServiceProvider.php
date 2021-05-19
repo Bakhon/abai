@@ -110,7 +110,7 @@ class RouteServiceProvider extends ServiceProvider
             'paegtm',
             'ndo',
             'digital_drilling',
-            'plastfluids'
+            'plast_fluids'
     
         ];
 
