@@ -39,6 +39,7 @@ export default {
     },
     data: function () {
         return {
+            currentCompany: '',
             accidentTotal: '',
             noData: '',
             personalFact: '',
@@ -687,6 +688,7 @@ export default {
         secondaryParams
     ],
     async mounted() {
+        this.currentCompany='КГМ';
         this.getOpecDataForYear();
         this.chartHeadName = this.oilChartHeadName;
 
