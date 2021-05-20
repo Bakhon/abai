@@ -99,7 +99,7 @@ export default {
       titleXEn: "Liquid flow rate, м³/d.",
       titleYRu: "Давление, атм/газосодержание, %",
       titleYKz: "Қысым, атм / газ құрамы, %",
-      titleYEn: "Pressure, atm/gas saturation, %",
+      titleYEn: "Pressure, atm/GVF, %",
       hovertemplateKPP: "<b>Кривая притока (пользователь)</b><br>" +
             "Qж = %{x:.1f} м³/сут<br>" +
             "Qн = %{text:.1f} т/сут<br>" +
@@ -373,7 +373,6 @@ export default {
     }
   },
   computed: {
-  
     wellNum() {
       return this.$store.state.wellNum
     },
@@ -383,6 +382,9 @@ export default {
     ...mapState(['wells'])
   },
   methods: {
+    updateWellNumber(e) {
+      this.$store.commit('updateWellNumber', e.target.value)
+    },
     setHpumpValueFromIncl() {
       this.$modal.hide('modalIncl')
       this.hPumpValue = this.$store.getters.getHpump
