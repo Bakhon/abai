@@ -1,4 +1,5 @@
 <template>
+<div class="forms-display">  
   <div class="bd-forms col">
     <div class="row">
       <div class="col-12 blueblock one">
@@ -43,16 +44,49 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-12 blueblock three">
+      <div class="col-12 ">
         <div v-if="activeForm" class="col-12 blueblock three">
           <BigDataPlainFormWrapper v-if="activeForm.type === 'plain'" :params="activeForm"
                                    :well-id="wellId"></BigDataPlainFormWrapper>
+          
           <BigDataTableFormWrapper v-else-if="activeForm.type === 'table'"
                                    :params="activeForm"></BigDataTableFormWrapper>
         </div>
       </div>
     </div>
   </div>
+  <!-- adding filter container  -->
+  <div class="forms-filter-container bg-dark">
+      <div class="forms-filter-content-wrapper">
+        <div class="forms-filter-title">
+          <div>
+            Фильтр            
+          </div>                   
+        </div>  
+        <!-- example of list -->
+        <ul>
+          <li>AAA</li>
+          <li>AAA</li>
+          <li>AAA</li>
+          <li>AAA</li>
+          <li>AAA</li>
+          <li>AAA</li>
+          <li>AAA</li>
+          <li>AAA</li>
+          <li>AAA</li>
+          <li>AAA</li>
+          <li>AAA</li>
+          <li>AAA</li>
+          <li>AAA</li>
+          <li>AAA</li>
+          <li>AAA</li>
+        </ul>
+        <div class="forms-filter-button">
+            Сформировать
+        </div>       
+      </div>
+    </div> 
+</div>
 </template>
 
 <script>
@@ -105,6 +139,9 @@ export default {
 }
 </script>
 <style lang="scss">
+.forms-display{
+  display: flex;
+}
 .bd-forms {
 
   .blueblock {
@@ -112,7 +149,12 @@ export default {
     margin: 7px;
 
     &.one {
-      padding: 16px 24px 10px;
+      padding: 16px 24px 10px;      
+      width: 1290px;
+      left: 0.6%;
+      right: 20.21%;
+      top: 3.44%;
+      bottom: 71.67%;
     }
 
     &__buttons {
@@ -136,10 +178,13 @@ export default {
   }
 
   .three {
-    padding: 0 24px 15px;
-    @media (max-width: 1200px) {
-      height: auto;
-    }
+    height: max-content;
+    padding: 0px 20px 0px;
+    position: absolute;
+    left: 0.6%;
+    right: 20.21%;
+    top: 95.63%;
+    bottom: 0%;
   }
 
   .protobutton {
@@ -354,6 +399,41 @@ export default {
     span {
       margin-left: 5px;
     }
+  }
+}
+.forms-filter{
+  &-container {
+    position: absolute;
+    left: 81.90%;
+    right: 1.04%;
+    top: 2.44%;
+    bottom: 1.67%;
+    width: 300px;    
+    color: white;
+    padding: 15px;
+
+    // height: calc(100% - 14px);
+}
+  &-content-wrapper{
+    // width: 100%;
+    // height: 100%;
+    color: white;
+    padding: 20px 15px 15px;
+    position: relative;
+  }
+  &-title{
+    font-size: 22px;
+    font-weight: bold;
+    margin: -18px 0px 10px;
+  }
+  &-button{
+    background: #2C44BD !important;
+    border-radius: 4px;
+    width: auto;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 }
 </style>
