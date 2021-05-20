@@ -217,7 +217,7 @@ export default {
             for(let i = 0; i < content.length; i++) {
                 for(let j = 0; j < content[i].curve.length; j++) {
                     // Check string value is a number
-                    if( !content[i].curve[j] || isNaN(content[i].curve[j]) ) continue;
+                    if(isNaN(content[i].curve[j]) || content[i].curve[j].indexOf('.') == -1) continue;
 
                     // Precision up to 3 digits after the dot
                     content[i].curve[j] = parseFloat(content[i].curve[j]).toFixed(3);
