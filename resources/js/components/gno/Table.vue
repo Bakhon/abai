@@ -350,7 +350,7 @@
                 </div>
               </modal>
 
-               <modal class="modal-bign-wrapper" name="modalSeparation" :draggable="false" :width="1000" :height="500"
+               <modal class="modal-bign-wrapper" name="modalSeparation" :draggable="false" :width="1000" :height="650"
                 style="background: transparent;" :adaptive="true">
                 <div class="modal-bign modal-bign-container">
                   <div class="modal-bign-header">
@@ -1252,11 +1252,11 @@
        
                     </div>
 
-                    <div class="block__centrators">
+                      <div class="block__centrators">
                         <h6 class="main__title__block_centrators"><b>{{trans('pgno.interval_centrators')}}:</b></h6>
-                        <h6 class="title__block__centrators">{{trans('pgno.recommended')}}: 0-280, 350-450, 550-580</h6>
-                        <h6 class="title__block__centrators">{{trans('pgno.required')}}: 320-330, 650-760, 990-1030</h6>
+                        <h6 class="title__block__centrators">{{trans('pgno.required')}}: <b v-for="item in centratorsRequiredValue">{{ item }}</b></h6>
                       </div>
+
                     <button class="button-pdf col-12" @click="createPDF()">
                       {{trans('pgno.sozdanie_otcheta')}}
                     </button>
@@ -1495,7 +1495,7 @@
 
                               <div class="col-2">
                                 <label class="label-for-celevoi" >Ø{{trans('pgno.nkt')}}</label>
-                                  <select class="input-box-gno podbor" v-model="nkt" @change="postCurveData()">
+                                  <select class="input-box-gno podbor long__box" v-model="nkt" @change="postCurveData()">
                                     <option v-for="(nkts, index) in nkt_choose" :value="nkts.for_calc_value" :key="index" >
                                     {{nkts.show_value}}
                                     </option>
@@ -1545,7 +1545,7 @@
                               <div class="col-8 table-border-gno">
                                 <input checked="true" @change="postCurveData()" :disabled="sep_meth ==='input_value' || expChoose === 'ФОН'" 
                               type="checkbox" v-model="mech_sep">{{trans('pgno.separation_mech')}}
-                              <input v-model="mech_sep_value" type="text" style="margin-left: 3px; margin-bottom: 0px;" 
+                              <input v-model="mech_sep_value" @change="postCurveData()" type="text" style="margin-left: 3px; margin-bottom: 0px;" 
                               :disabled="sep_meth ==='input_value' || expChoose === 'ФОН' ||  mech_sep === false" onfocus="this.value=''" class="input-box-gno podbor" /></div>
                             </div>
                               
@@ -1569,7 +1569,7 @@
                                 <div class="table-border-gno-right pdo-bottom-cell">
                                   <label class="label-for-celevoi">
                                     <input v-model="CelButton" class="checkbox3" value="ql" type="radio"
-                                      name="gno11" />{{trans('pgno.q_nefti')}}</label>
+                                      name="gno11" />{{trans('pgno.q_liq')}}</label>
                                   <input v-model="qlCelValue" @change="postCurveData()" :disabled="CelButton != 'ql'"
                                     onfocus="this.value=''" type="text" class="square3 podbor" />
                                 </div>
@@ -2010,7 +2010,7 @@
   background-color:#272953;
   align-items: center;
   border-radius:6px;
-  border:2px solid #666;
+  border:2px solid #454d7d;
   display:inline-block;
   cursor:pointer;
   color:#ffffff;
@@ -2019,10 +2019,13 @@
   padding:1px 15px;
   text-decoration:none;
   text-shadow:0px 1px 0px #144079;
-  width: 550px;
-  height: 75px;
-  bottom: 60px;
+  width: 100%;
   word-spacing: 4px;
+}
+
+.long__box {
+  width: 60px;
+  padding-left: 0px !important;
 }
 
 .select-download-button {
@@ -2080,6 +2083,7 @@ background-position: right 5px top 50%;
 
 .main__title__block_centrators {
   text-align: center;
+  margin-bottom: 0;
 }
 
 

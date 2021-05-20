@@ -60,12 +60,10 @@
   "otmDzo": {
     "fields": [
       "otm_wells_commissioning_from_drilling_fact",
-      "otm_drilling_fact",
-      "otm_well_workover_fact",
-      "otm_underground_workover"
+      "otm_drilling_fact"
     ],
     "rowIndex": 37,
-    "rowLength": 4
+    "rowLength": 2
   },
   "operatingFond": {
     "fields": [
@@ -322,32 +320,26 @@
       "Акшабулак": {
         "fields": [
           "otm_wells_commissioning_from_drilling_fact",
-          "otm_drilling_fact",
-          "otm_well_workover_fact",
-          "otm_underground_workover"
+          "otm_drilling_fact"
         ],
         "rowIndex": 38,
-        "rowLength": 4
+        "rowLength": 2
       },
       "Нуралы": {
         "fields": [
           "otm_wells_commissioning_from_drilling_fact",
-          "otm_drilling_fact",
-          "otm_well_workover_fact",
-          "otm_underground_workover"
+          "otm_drilling_fact"
         ],
         "rowIndex": 39,
-        "rowLength": 4
+        "rowLength": 2
       },
       "Аксай": {
         "fields": [
           "otm_wells_commissioning_from_drilling_fact",
-          "otm_drilling_fact",
-          "otm_well_workover_fact",
-          "otm_underground_workover"
+          "otm_drilling_fact"
         ],
         "rowIndex": 40,
-        "rowLength": 4
+        "rowLength": 2
       }
     }
   },

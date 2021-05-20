@@ -8,6 +8,8 @@ Route::group(
             function () {
                 Route::get('/', 'bd\DBController@bigdata')->name('bigdata');
                 Route::get('/las', 'bd\DBController@las')->name('las');
+                Route::get('/well_cart', 'bd\DBController@well_cart')->name('well_cart');
+                Route::get('/report_constructor', 'bd\DBController@report_constructor')->name('report_constructor');
                 Route::get('/user_reports', 'bd\DBController@userReports')->name('userReports');
 
                 Route::get('/geo-data-reference-book', 'bd\DBController@geoDataReferenceBook')->name('bigdata.geoDataReferenceBook');
@@ -56,6 +58,10 @@ Route::group(
                     'bigdata.form.save.field'
                 );
 
+                Route::get('forms/{form}/results', 'Api\DB\FormsController@getResults');
+                Route::delete('forms/{form}/{row}', 'Api\DB\FormsController@delete');
+
+                Route::get('wells/search', 'Api\DB\WellsController@search');
                 Route::get('wells/{well}', 'Api\DB\WellsController@get');
             }
         );

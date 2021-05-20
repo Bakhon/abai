@@ -119,6 +119,7 @@ import Treeselect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 import 'vue-select/dist/vue-select.css'
 import BigdataTableField from './fields/Table'
+import {bdFormActions} from '@store/helpers'
 
 export default {
   name: "BigdataFormField",
@@ -156,20 +157,17 @@ export default {
   },
   created() {
     if (['dict', 'dict_tree'].indexOf(this.item.type) > -1) {
-      this.loadDict()
+      if (typeof this.dict === 'undefined') {
+        this.loadDict(this.item.dict)
+      }
     }
 
     this.formatedValue = this.getFormatedValue(this.value)
   },
   methods: {
-    loadDict() {
-      this.axios.get(this.localeUrl('/bigdata/dict/' + this.item.dict)).then(data => {
-        this.$store.commit("bd/SAVE_DICT", {
-          code: this.item.dict,
-          items: data.data
-        });
-      })
-    },
+    ...bdFormActions([
+      'loadDict',
+    ]),
     changeDate(date) {
       if (date) {
         let formatedDate = moment.parseZone(date).format('YYYY-MM-DD HH:MM:SS')

@@ -18,7 +18,7 @@ class PipeLineResultExport implements FromView, ShouldAutoSize
 
     public function view(): View
     {
-        $results = HydroCalcResult::where('date', $this->date)->with('map_pipe.pipeType')->get();
+        $results = HydroCalcResult::where('date', $this->date)->with('oilPipe.pipeType')->get();
 
         $columnNames = [
             '№',

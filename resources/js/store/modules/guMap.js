@@ -217,6 +217,12 @@ const guMap = {
 
                 return Math.max(...elevations);
             });
+        },
+
+        async getSpeedFlow ({commit}, date) {
+            return await axios.get(this._vm.localeUrl("/gu-map/speed-flow"), {params: {date: date}}).then((response) => {
+                return response.data.pipes;
+            })
         }
     },
 

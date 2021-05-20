@@ -87,6 +87,8 @@ return array (
     'reset_filter' => 'Сбросить фильтр',
     'export_error' => 'Ошибка экспорта',
     'management' => 'Управление',
+    'calc_result' => 'Расчитать результат',
+    'calc_result_export' => 'Выгрузить результаты',
   ),
   'selection_node' => 'Узел отбора',
   'omgca' => 
@@ -126,6 +128,10 @@ return array (
       'reason' => 'Причина',
       'fill' => 'Заправка',
       'yearly_inhibitor_rate' => 'Годовой расход ингибитора кг',
+    ),
+    'errors' => 
+    array (
+      'no-ddng-data-on-date' => 'Нет данных по ДДНГ на',
     ),
   ),
   'omgngdu' => 
@@ -232,6 +238,11 @@ return array (
   array (
     'title' => 'Карта',
     'select_gu' => 'Выберите ГУ',
+    'select_filter' => 'Выберите фильтр',
+    'filters' => 
+    array (
+      'speed-flow-filter' => 'Скорость потока',
+    ),
   ),
   'module_name' => 'Мониторинг осложнений',
   'tech_map_prototype' => 'Техкарта прототип',
@@ -248,18 +259,18 @@ return array (
     'edit_title' => 'Редактирование ЗУ',
   ),
   'close' => 'Закрыть',
-  'well' => 
-  array (
-    'create_title' => 'Ввод данных по скважине',
-    'edit_title' => 'Редактирование скважины',
-    'added' => 'Скважина добавлена',
-    'updated' => 'Скважина изменена',
-    'deleted' => 'Скважина удалена',
-    'deleting_error' => 'Ошибка при удалении Скважины',
-    'name' => 'Имя Скважины',
-    'well' => 'Скважина',
-  ),
-  'pipe' => 
+    'well' =>
+        array (
+            'create_title' => 'Ввод данных по скважине',
+            'edit_title' => 'Редактирование скважины',
+            'added' => 'Скважина добавлена',
+            'updated' => 'Скважина изменена',
+            'deleted' => 'Скважина удалена',
+            'deleting_error' => 'Ошибка при удалении Скважины',
+            'name' => 'Имя Скважины',
+            'well' => 'Скважина',
+        ),
+    'pipe' =>
   array (
     'updated' => 'Трубовровод изменен',
     'deleted' => 'Трубопровод удален',
@@ -338,7 +349,7 @@ return array (
       'outside_diameter' => 'Внешний диаметр, мм',
       'inner_diameter' => 'Внутренний диаметр, мм',
       'thickness' => 'Толщина стенки, мм',
-      'roughness' => 'Шерховатость',
+      'roughness' => 'Шероховатость',
       'material' => 'Материал',
       'plot' => 'Участок',
     ),
@@ -383,7 +394,7 @@ return array (
       'break_qty' => 'Количество порывов',
       'height_drop' => 'Перепад высот, м',
     ),
-    'table_title' => 'Таблица расчета гидравлики',
+    'table_title' => 'Таблица расчета гидравлики ГУ - УПСВ',
     'message' => 
     array (
       'no-omgdu-data' => 'нет данных ОМГДУ',
@@ -392,6 +403,26 @@ return array (
       'no-daily-fluid-data' => 'нет данных по cуточной добычи жидкости !',
       'no-bsw-data' => 'нет данных по обводненности !',
     ),
+    'error' => 
+    array (
+      'not-enough-data' => 'Не достаточно данных для расчета',
+    ),
+  ),
+  'monitor' => 
+  array (
+    'errors' => 
+    array (
+      'ngdu' => 'Нет данных по ОМГДУ ГУ !',
+      'oilGas' => 'Нет данных по нефти и газу !',
+      'pipe' => 'Нет данных по трубопроводу !',
+      'pump_discharge_pressure' => 'Выходное давление не должно быть равно 0 !',
+      'surge_tank_pressure' => 'Давление в буферной емкости не должно быть равно 0 !',
+      'hydrogen_sulfide' => 'Значение H₂S в газе не должно быть равно 0 !',
+    ),
+  ),
+  'reverse_calculation' => 
+  array (
+    'table_title' => 'Таблица расчета гидравлики Скважина - ГУ',
   ),
    'economical_effect_title' => 'Мониторинг потерянной выгоды',
    'difference' => 'Разница закачки ИК, г/м3',

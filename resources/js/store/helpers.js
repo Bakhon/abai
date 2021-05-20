@@ -72,3 +72,9 @@ export const paegtmMapActions = arrNames => ({
     ]),
 });
 
+export const paegtmMapGetters = arrNames => ({
+    ...mapGetters('paegtmMap', [
+        ...arrNames,
+    ]),
+});
+

@@ -1,5 +1,6 @@
 <template>
   <div class="gu-map">
+    <cat-loader v-show="loading"/>
     <div class="gu-map__controls">
       <h1>{{ trans('monitoring.map.title') }}</h1>
       <div v-if="guPoints" class="d-flex">
@@ -13,84 +14,37 @@
         >
         </v-select>
       </div>
+
+      <div class="gu-map__filters mt-15px">
+        <v-select
+            v-model="activeFilter"
+            :options="mapFilters"
+            :reduce="option => option.key"
+            label="name"
+            @input="filterChanged"
+            :placeholder="trans('monitoring.map.select_filter')"
+        >
+        </v-select>
+      </div>
+
+      <div class="gu-map__datetime-picker mt-15px" v-show="activeFilter">
+        <datetime
+            type="date"
+            v-model="selectedDate"
+            input-class="form-control date"
+            value-zone="Asia/Almaty"
+            zone="Asia/Almaty"
+            :format="{ year: 'numeric', month: 'long', day: 'numeric' }"
+            :phrases="{ok: trans('app.choose'), cancel: trans('app.cancel')}"
+            :week-start="1"
+            @input="applyFilter"
+            auto
+        >
+        </datetime>
+      </div>
     </div>
 
-    <div class="legend">
-      <b-button v-b-toggle.legend variant="main2">Легенда</b-button>
-      <b-collapse id="legend" class="mt-2">
-        <b-card class="bg-main1 text-light">
-          <div class="legend-item">
-            <div class="icon-box bg-well-icon"></div>
-            <span>Скважина</span>
-          </div>
-          <div class="legend-item">
-            <div class="icon-box bg-zu-icon"></div>
-            <span>ЗУ</span>
-          </div>
-          <div class="legend-item">
-            <div class="icon-box bg-gu-icon"></div>
-            <span>ГУ</span>
-          </div>
-          <div class="legend-item">
-            <div class="color-box" :style="{backgroundColor: getColorByBetweenPoints('zu-gu')}"></div>
-            <span>Труба ЗУ - ГУ</span>
-          </div>
-          <div class="legend-item">
-            <div class="color-box" :style="{backgroundColor: getColorByBetweenPoints('well-zu')}"></div>
-            <span>Труба Скважина - ЗУ</span>
-          </div>
-          <div class="legend-item">
-            <div class="color-box" :style="{backgroundColor: getColorByBetweenPoints('fl-gu')}"></div>
-            <span>Труба ФЛ - ГУ</span>
-          </div>
-          <div class="legend-item">
-            <div class="color-box" :style="{backgroundColor: getColorByBetweenPoints('gu-gu')}"></div>
-            <span>Труба ГУ - ГУ</span>
-          </div>
-          <div class="legend-item">
-            <div class="color-box" :style="{backgroundColor: getColorByBetweenPoints('fl-koll')}"></div>
-            <span>Труба ФЛ - Коллектор</span>
-          </div>
-          <div class="legend-item">
-            <div class="color-box" :style="{backgroundColor: getColorByBetweenPoints('gu-koll')}"></div>
-            <span>Труба ГУ - Коллектор</span>
-          </div>
-          <div class="legend-item">
-            <div class="color-box" :style="{backgroundColor: getColorByBetweenPoints('mgu-koll')}"></div>
-            <span>Труба МГУ - Коллектор</span>
-          </div>
-          <div class="legend-item">
-            <div class="color-box" :style="{backgroundColor: getColorByBetweenPoints('koll-bg')}"></div>
-            <span>Труба Коллектор - БГ</span>
-          </div>
-          <div class="legend-item">
-            <div class="color-box" :style="{backgroundColor: getColorByBetweenPoints('os-st')}"></div>
-            <span>Труба ОС - СТ</span>
-          </div>
-          <div class="legend-item">
-            <div class="color-box" :style="{backgroundColor: getColorByBetweenPoints('bg')}"></div>
-            <span>Труба БГ</span>
-          </div>
-          <div class="legend-item">
-            <div class="color-box" :style="{backgroundColor: getColorByBetweenPoints('bg-gu')}"></div>
-            <span>Труба БГ - ГУ</span>
-          </div>
-          <div class="legend-item">
-            <div class="color-box" :style="{backgroundColor: getColorByBetweenPoints('koll-koll')}"></div>
-            <span>Труба Коллектор - Коллектор</span>
-          </div>
-          <div class="legend-item">
-            <div class="color-box" :style="{backgroundColor: getColorByBetweenPoints('st-koll')}"></div>
-            <span>Труба СТ - Коллектор</span>
-          </div>
-          <div class="legend-item">
-            <div class="color-box" :style="{backgroundColor: getColorByBetweenPoints('spt-koll')}"></div>
-            <span>Труба СПТ - Коллектор</span>
-          </div>
-
-        </b-card>
-      </b-collapse>
-    </div>
+    <map-legend :variant="mapColorsMode" />
 
     <div id="map"></div>
 
@@ -143,6 +97,7 @@ import {Deck} from '@deck.gl/core';
 import {PathLayer, IconLayer} from '@deck.gl/layers';
 import {MapboxLayer} from '@deck.gl/mapbox';
 import vSelect from "vue-select";
+import mapLegend from "./mapLegend";
 import mapGuForm from "./mapGuForm";
 import mapZuForm from "./mapZuForm";
 import mapWellForm from "./mapWellForm";
@@ -151,6 +106,8 @@ import {guMapState, guMapMutations, guMapActions} from '@store/helpers';
 import mapContextMenu from "./mapContextMenu";
 import pipeColors from '~/json/pipe_colors.json'
 import axios from "axios";
+import moment from "moment";
+import CatLoader from '../ui-kit/CatLoader'
 
 
 export default {
@@ -161,7 +118,9 @@ export default {
     'map-zu-form': mapZuForm,
     'map-well-form': mapWellForm,
     'map-pipe-form': mapPipeForm,
-    'map-context-menu': mapContextMenu
+    'map-context-menu': mapContextMenu,
+    CatLoader,
+    mapLegend
   },
   data() {
     return {
@@ -197,7 +156,16 @@ export default {
       firstCentered: false,
       layers: [],
       pipes: [],
-      mapColorsMode: 'default'
+      mapColorsMode: 'default',
+      selectedDate: null,
+      activeFilter: null,
+      mapFilters: [
+        {
+          name: this.trans('monitoring.map.filters.speed-flow-filter'),
+          key: 'speedFlow'
+        }
+      ],
+      loading: false,
     };
   },
   created() {
@@ -234,9 +202,11 @@ export default {
       'deleteGu',
       'deleteZu',
       'deleteWell',
-      'getElevationByCoords'
+      'getElevationByCoords',
+      'getSpeedFlow'
     ]),
     async initMap() {
+      this.loading = true;
       this.pipes = await this.getMapData(this.gu);
 
       this.viewState = {
@@ -311,6 +281,8 @@ export default {
         this.deck.setProps({
           layers: this.layers
         });
+
+        this.loading = false;
       });
     },
     getGuTooltipHtml(guParams) {
@@ -433,7 +405,7 @@ export default {
           });
           return path_coords;
         },
-        getColor: d => pipeColors[this.mapColorsMode][d.between_points],
+        getColor: d => this.getPipeColor(d),
         getWidth: d => 3,
         onClick: (info) => {
           info.type = 'pipe';
@@ -444,6 +416,35 @@ export default {
           depthTest: false
         }
       });
+    },
+    getPipeColor(pipe) {
+      if (this.activeFilter) {
+        if (this.activeFilter === 'speedFlow') {
+          return this.getColorByFlowSpeed(pipe);
+        }
+      }
+
+      return pipeColors[this.mapColorsMode][pipe.between_points]
+    },
+    getColorByFlowSpeed (pipe) {
+      let speed_flow = pipe.speed_flow_well_gu ? pipe.speed_flow_well_gu : (pipe.speed_flow_gu_upsv ? pipe.speed_flow_gu_upsv : null);
+      switch (true) {
+        case speed_flow == null:
+          return pipeColors[this.mapColorsMode].no_data;
+          break;
+
+        case speed_flow.fluid_speed < 0.5:
+          return pipeColors[this.mapColorsMode].danger;
+          break;
+
+        case speed_flow.fluid_speed >= 0.5 && speed_flow.fluid_speed < 0.9:
+          return pipeColors[this.mapColorsMode].warning;
+          break;
+
+        case speed_flow.fluid_speed > 0.9:
+          return pipeColors[this.mapColorsMode].good;
+          break;
+      }
     },
     addMapLayer(layerId) {
       this.updateLayers();
@@ -522,12 +523,6 @@ export default {
 
       let method = 'on' + option.type.charAt(0).toUpperCase() + option.type.slice(1);
       this[method](option);
-    },
-    getColorByBetweenPoints(between_points) {
-      return this.colorArrayToRgb(pipeColors[this.mapColorsMode][between_points])
-    },
-    colorArrayToRgb(colorArr) {
-      return 'rgb(' + colorArr[0] + ', ' + colorArr[1] + ', ' + colorArr[2] + ')';
     },
     colorToRGBArray(color) {
 
@@ -934,6 +929,39 @@ export default {
           return {}
           break;
       }
+    },
+    formatDate(date) {
+      if (!date) return null
+      return moment.parseZone(date).format('YYYY-MM-DD')
+    },
+    async applyFilter () {
+      this.mapColorsMode = this.activeFilter;
+      switch (this.activeFilter) {
+        case 'speedFlow':
+          this.loading = true;
+          this.pipes = await this.getSpeedFlow(this.formatDate(this.selectedDate));
+          this.mapRedraw();
+          this.loading = false;
+          break;
+
+        default:
+          this.mapColorsMode = 'default';
+          return false
+          break;
+      }
+    },
+    filterChanged () {
+      if (!this.activeFilter) {
+        this.mapColorsMode = 'default';
+        this.selectedDate = null;
+        this.mapRedraw();
+      }
+    },
+    mapRedraw() {
+      this.layerRedraw('path-layer', 'pipe', this.pipes);
+      this.layerRedraw('icon-layer-well', 'well', this.wellPoints);
+      this.layerRedraw('icon-layer-zu', 'zu', this.zuPoints);
+      this.layerRedraw('icon-layer-gu', 'gu', this.guPoints);
     }
   }
 }
@@ -969,6 +997,10 @@ h1 {
     }
   }
 
+  &__datetime-picker {
+    min-width: 260px;
+  }
+
   #map {
     bottom: 0;
     left: 0;
@@ -986,38 +1018,6 @@ h1 {
 
   .mapboxgl-canvas {
     width: 100% !important;
-  }
-
-  .legend {
-    position: relative;
-    z-index: 10;
-    max-width: 275px;
-    padding: 15px 0 0 15px;
-
-    .btn {
-      width: 100%;
-      border: 1px solid rgba(60, 60, 60, .26);
-      border-radius: 5px;
-      height: 40px;
-    }
-
-    .legend-item {
-      display: flex;
-      margin-bottom: 15px;
-
-      .color-box {
-        width: 20px;
-        height: 20px;
-      }
-
-      span {
-        margin-left: 15px;
-      }
-
-      &:last-child {
-        margin-bottom: 0px;
-      }
-    }
   }
 
   .icon-box {

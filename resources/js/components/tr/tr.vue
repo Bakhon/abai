@@ -843,7 +843,7 @@
                   <td @click="sortBy('well_type')" class="th">
                     <i class="fa fa-fw fa-sort"></i>
                   </td>
-                  <td @click="sortBy('horizon')" class="th">
+                  <td @click="sortBy('horizon')" class="th" >
                     <i class="fa fa-fw fa-sort"></i>
                   </td>
                   <td @click="sortBy('object')" class="th">

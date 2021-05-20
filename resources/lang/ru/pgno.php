@@ -39,7 +39,7 @@ return array (
   'plotnost_vody' => 'Плотность воды',
   'technologicheskii_rezhim' => 'Технологический режим',
   'q_zhidkosti' => 'Qж',
-  'q_nefti' => 'Qн',
+  'q_nefti' => 'Qж',
   'obvodnenost' => 'Обв',
   'p_zab' => 'Pзаб',
   'p_pl' => 'Рпл',
@@ -180,4 +180,6 @@ return array (
   'recommended' => 'Рекомендуемые',
   'economic' => 'Экономика',
   'develop' => 'Разработка',
+  'nno' => 'ННО',
+  'power_consumption' => 'Потребляемая мощность',
 );
