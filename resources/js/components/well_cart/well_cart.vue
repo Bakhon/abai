@@ -344,7 +344,7 @@
     </div>
 
     <div class="passport right-column">
-      <template v-if="well">
+      <template v-if="allData">
         <div class="bg-dark-transparent">
           <template>
             <div class="row">
@@ -374,7 +374,7 @@
                 <div class="file-container">
                   <div class="row">
                     <div class="col">
-                      <div v-if="well.file_size" class="file-size">
+                      <div v-if="allData.file_size" class="file-size">
                         <p> 233 MB</p>
                       </div>
                     </div>
@@ -384,7 +384,7 @@
                       <div class="file-icon-large">
                         <p class="well-name">
                           Скважина
-                          <span class="well-own-name">{{ well.uwi }}</span>
+                          <span class="well-own-name">{{ allData.uwi }}</span>
                         </p>
                       </div>
                     </div>
@@ -454,7 +454,7 @@
             <div class="row">
               <div class="col">
                 <div class="center">
-                  <h2>{{ well.uwi }}</h2>
+                  <h2>{{ allData.uwi }}</h2>
                 </div>
               </div>
             </div>
@@ -477,7 +477,309 @@
               </div>
               <div class="col">
                 <p>
-                  {{ well.uwi }}
+                  {{ allData.uwi }}
+                </p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <p>
+                  Вид скважины
+                </p>
+              </div>
+              <div class="col">
+                <p>
+<!--                  no data yet-->
+                </p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <p>
+                  Месторождение
+                </p>
+              </div>
+              <div class="col">
+                <p>
+                  <!--                  no data yet-->
+                </p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <p>
+                  Горизонт / Pнас, атм
+                </p>
+              </div>
+              <div class="col">
+                <p>
+                  <!--                  no data yet-->
+                </p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <p>
+                  H ротора
+                </p>
+              </div>
+              <div class="col">
+                <p>
+                  <!--                  no data yet-->
+                </p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <p>
+                  Тех. структура
+                </p>
+              </div>
+              <div class="col">
+                <p>
+                  {{ tech[0].name_ru }}
+                </p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <p>
+                  Отвод
+                </p>
+              </div>
+              <div class="col">
+                <p>
+                  <!--                  no data yet-->
+                </p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <p>
+                  ГУ/Ряд
+                </p>
+              </div>
+              <div class="col">
+                <p>
+                  <!--                  no data yet-->
+                </p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <p>
+                  Орг. структура
+                </p>
+              </div>
+              <div class="col">
+                <p>
+                  <span v-for="value in org">
+                    {{ value.name_ru+"/"}}
+                  </span>
+                </p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <p>
+                  Зона скважины
+                </p>
+              </div>
+              <div class="col">
+                <p>
+                  <!--                  no data yet-->
+                </p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <p>
+                  Влияющие скважины
+                </p>
+              </div>
+              <div class="col">
+                <p>
+                  <!--                  no data yet-->
+                </p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <p>
+                  Категория
+                </p>
+              </div>
+              <div class="col">
+                <p>
+                  <!--                  no data yet-->
+                </p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <p>
+                  Период бурения
+                </p>
+              </div>
+              <div class="col">
+                <p>
+                  <!--                  no data yet-->
+                </p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <p>
+                  Дата ввода в эксплуатацию
+                </p>
+              </div>
+              <div class="col">
+                <p>
+                  {{ tech[0].dbeg }}
+                </p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <p>
+                  Состояние
+                </p>
+              </div>
+              <div class="col">
+                <p>
+                  <!--                  no data yet-->
+                </p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <p>
+                  Способ эксплуатации
+                </p>
+              </div>
+              <div class="col">
+                <p>
+                  <!--                  no data yet-->
+                </p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <p>
+                  Тип УО / наличие эксц.болта
+                </p>
+              </div>
+              <div class="col">
+                <p>
+                  <!--                  no data yet-->
+                </p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <p>
+                  Диаметр экспл.колонны/доп. экспл.колонны,мм
+                </p>
+              </div>
+              <div class="col">
+                <p>
+                  <!--                  no data yet-->
+                </p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <p>
+                  Тип колонной головки / размеры
+                </p>
+              </div>
+              <div class="col">
+                <p>
+                  <!--                  no data yet-->
+                </p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <p>
+                  глубина спуска насоса (м)
+                </p>
+              </div>
+              <div class="col">
+                <p>
+                  <!--                  no data yet-->
+                </p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <p>
+                  Код насоса
+                </p>
+              </div>
+              <div class="col">
+                <p>
+                  <!--                  no data yet-->
+                </p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <p>
+                  Диаметр насоса (мм)
+                </p>
+              </div>
+              <div class="col">
+                <p>
+                  <!--                  no data yet-->
+                </p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <p>
+                  Глубина спуска пакера
+                </p>
+              </div>
+              <div class="col">
+                <p>
+                  <!--                  no data yet-->
+                </p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <p>
+                  Тип СК
+                </p>
+              </div>
+              <div class="col">
+                <p>
+                  <!--                  no data yet-->
+                </p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <p>
+                  длина хода (м)
+                </p>
+              </div>
+              <div class="col">
+                <p>
+                  <!--                  no data yet-->
+                </p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <p>
+                  число качаний (об/мин)
+                </p>
+              </div>
+              <div class="col">
+                <p>
+                  <!--                  no data yet-->
                 </p>
               </div>
             </div>
@@ -542,10 +844,14 @@ export default {
     return {
       options: [],
       well: null,
+      tech: null,
+      org: null,
+      geo:null,
       graph: null,
       activeFormCode: null,
       loading: false,
-      isLeftColumnFolded: false
+      isLeftColumnFolded: false,
+      allData: null
     }
   },
   mounted() {
@@ -569,7 +875,11 @@ export default {
     selectWell(well) {
       this.loading = true
       this.axios.get(this.localeUrl(`/api/bigdata/wells/${well.id}`)).then(({data}) => {
-        this.well = data.well
+        this.tech = data[0].techs
+        this.org = data[0].orgs
+        this.geo = data[0].geo
+        this.allData = data[0]
+        console.log(data[0])
         this.loading = false
       })
     },
@@ -1559,6 +1869,7 @@ h4 {
 .right-column {
   min-width: $rightColumnWidth;
   padding-left: 15px;
+  flex: 0 0 5%;
 
   &__inner {
     height: 100%;
