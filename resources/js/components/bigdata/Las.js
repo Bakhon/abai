@@ -205,10 +205,26 @@ export default {
             ).then((response) => {
                 if (response.data) {
                     this.experimentInfo = response.data;
+                    this.formatCurveValues();
                 }
             }).catch((error) => console.log(error)
             ).finally(() => this.$store.commit('globalloading/SET_LOADING', false));
 
+        },
+        formatCurveValues() {
+            let content = this.experimentInfo.curves;
+
+            for(let i = 0; i < content.length; i++) {
+                for(let j = 0; j < content[i].curve.length; j++) {
+                    // Check string value is a float number
+                    if( !(/^\d+\.\d+$/.test(content[i].curve[j])) ) continue;
+
+                    // Precision up to 3 digits after the dot
+                    content[i].curve[j] = parseFloat(content[i].curve[j]).toFixed(3);
+                }
+            }
+
+            this.experimentInfo.curves = content;
         },
         getOriginalLas(experimentsInfo) {
             let content = JSON.stringify({

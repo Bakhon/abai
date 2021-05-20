@@ -25,7 +25,6 @@
               </div>
             </div>
           </div>
-
           <div class="directory">
             <div class="custom-directory">
               <ul id="myUL">
@@ -45,19 +44,27 @@
         <div class="col-md-12 mid-col__main-inner bg-dark-transparent">
           <div class="row">
             <div class="col">
-              <select class="transparent-select">
-                <option>Дело скважины {{ well.uwi }}</option>
-              </select>
+              <button class="transparent-select">
+                Дело скважины
+              </button>
+            </div>
+            <div class="col">
+              <form class="search-form">
+                <v-select
+                    :filterable="false"
+                    :options="options"
+                    placeholder="Номер скважины"
+                    @input="selectWell"
+                    @search="onSearch"
+                >
+                  <template slot="option" slot-scope="option">
+                    <span>{{ option.name }}</span>
+                  </template>
+                </v-select>
+              </form>
             </div>
           </div>
-          <div class="row">
-            <div class="col table-wrapper">
-              <template v-if="well && activeFormCode">
-                <BigDataPlainFormResult :code="activeFormCode" :well-id="well.id"></BigDataPlainFormResult>
-              </template>
-            </div>
-          </div>
-          <div v-if="graph" class="mid-col__main row">
+          <div v-if="allData" class="mid-col__main row">
             <div class="col">
               <div class="graphics">
                 <div class="row">
@@ -78,10 +85,17 @@
                   <div class="col">
                     <div class="well-info">
                       <div class="title">Основное</div>
-                      <p>Номер скважины:<span>{{ well.uwi }}}</span></p>
-                      <p>Категория скважины: <span>01.01.2020</span></p>
+                      <p>Номер скважины:<span>{{allData.uwi}}</span></p>
+                      <p>Категория скважины: <span></span></p>
                       <div class="title">Привязка</div>
-                      <p>Оргструктура: <span>ЦДНГ-02</span></p>
+                      <p>Оргструктура: <span></span></p>
+                      <div class="title">Координаты устья</div>
+                      <p>Оргструктура: <span></span></p>
+                      <p>Координаты устья X:<span></span></p>
+                      <p>Координаты устья Y:<span></span></p>
+                      <div class="title">Координаты забоя</div>
+                      <p>Координаты устья X:<span></span></p>
+                      <p>Координаты устья Y:<span></span></p>
                     </div>
                   </div>
                 </div>
@@ -93,7 +107,7 @@
     </div>
 
     <div class="passport right-column">
-      <template v-if="well">
+      <template v-if="allData">
         <div class="bg-dark-transparent">
           <template>
             <div class="row">
@@ -138,12 +152,141 @@
                     <tr>
                       <td>1</td>
                       <td>Скважина</td>
-                      <td>{{ well.uwi }}</td>
+                      <td>{{ allData.uwi }}</td>
                     </tr>
                     <tr>
                       <td>2</td>
+                      <td>Вид скважины</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>3</td>
                       <td>Месторождение</td>
-                      <td>Каламкас</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>4</td>
+                      <td> Горизонт / Pнас, атм</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>5</td>
+                      <td> H ротора</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>6</td>
+                      <td>Тех. структура</td>
+                      <td>{{ tech[0].name_ru }}</td>
+                    </tr>
+                    <tr>
+                      <td>7</td>
+                      <td>Отвод</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>8</td>
+                      <td>ГУ/Ряд</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>9</td>
+                      <td>Орг. структура</td>
+                      <td>
+                        <span v-for="value in org">
+                          {{ value.name_ru + "/" }}
+                        </span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>10</td>
+                      <td>Зона скважины</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>11</td>
+                      <td>Влияющие скважины</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>12</td>
+                      <td>Категория</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>13</td>
+                      <td>Период бурения</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>14</td>
+                      <td>Дата ввода в эксплуатацию</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>15</td>
+                      <td>Дата ввода в эксплуатацию</td>
+                      <td>{{ tech[0].dbeg }}</td>
+                    </tr>
+                    <tr>
+                      <td>16</td>
+                      <td>Состояние</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>17</td>
+                      <td>Способ эксплуатации</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>18</td>
+                      <td>Тип УО / наличие эксц.болта</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>19</td>
+                      <td>Диаметр экспл.колонны/доп. экспл.колонны,мм</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>20</td>
+                      <td>Тип колонной головки / размеры</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>21</td>
+                      <td>глубина спуска насоса (м)</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>22</td>
+                      <td>Код насоса</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>23</td>
+                      <td>Диаметр насоса (мм)</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>24</td>
+                      <td>Глубина спуска пакера</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>25</td>
+                      <td>Тип СК</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>26</td>
+                      <td>длина хода (м)</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>27</td>
+                      <td>число качаний (об/мин)</td>
+                      <td></td>
                     </tr>
                   </table>
                 </div>
@@ -205,7 +348,6 @@
           </div>
           <div class="row">
             <div class="col">
-              <div class
               <button v-on:click="popup = false">Применить</button>
               <button v-on:click="popup = false">Отмена</button>
             </div>
@@ -214,8 +356,6 @@
       </div>
     </template>
   </div>
-
-
 </template>
 <script>
 import BigDataPlainFormResult from '../bigdata/forms/PlainFormResults'
@@ -230,14 +370,16 @@ export default {
   data() {
     return {
       options: [],
-      well: {
-        uwi: "test"
-      },
-      graph: {test: "test"},
+      well: null,
+      tech: null,
+      org: null,
+      geo: null,
+      graph: null,
       activeFormCode: null,
       loading: false,
       isLeftColumnFolded: false,
-      popup: true
+      allData: null,
+      popup: false
     }
   },
   mounted() {
@@ -261,7 +403,11 @@ export default {
     selectWell(well) {
       this.loading = true
       this.axios.get(this.localeUrl(`/api/bigdata/wells/${well.id}`)).then(({data}) => {
-        this.well = data.well
+        this.tech = data[0].techs
+        this.org = data[0].orgs
+        this.geo = data[0].geo
+        this.allData = data[0]
+        console.log(data[0])
         this.loading = false
       })
     },
@@ -712,8 +858,9 @@ h4 {
 }
 
 .search-form {
-  width: 100%;
-  padding: 5px 10px;
+  width: 280px;
+  padding: 10px 10px;
+  margin-left: auto;
 
   .v-select {
     background: url(/img/bd/search.svg) 20px 45% #272953 no-repeat;
@@ -1319,6 +1466,7 @@ h4 {
 .right-column {
   min-width: $rightColumnWidth;
   padding-left: 15px;
+  flex: 0 0 5%;
 
   &__inner {
     height: 100%;
