@@ -11,7 +11,6 @@ class WellsController extends Controller
 {
     public function get(Well $well)
     {
-        /*return ['well' => $well]*/
         $wellInfo = Well::where('id', $well->id)->with('category', 'techs', 'geo', 'orgs', 'status')->get();
         return $wellInfo;
     }
