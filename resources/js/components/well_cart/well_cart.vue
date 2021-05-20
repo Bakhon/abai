@@ -1869,6 +1869,7 @@ h4 {
 .right-column {
   min-width: $rightColumnWidth;
   padding-left: 15px;
+  flex: 0 0 5%;
 
   &__inner {
     height: 100%;
