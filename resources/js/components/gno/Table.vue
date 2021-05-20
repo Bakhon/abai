@@ -350,7 +350,7 @@
                 </div>
               </modal>
 
-               <modal class="modal-bign-wrapper" name="modalSeparation" :draggable="false" :width="1000" :height="500"
+               <modal class="modal-bign-wrapper" name="modalSeparation" :draggable="false" :width="1000" :height="650"
                 style="background: transparent;" :adaptive="true">
                 <div class="modal-bign modal-bign-container">
                   <div class="modal-bign-header">
