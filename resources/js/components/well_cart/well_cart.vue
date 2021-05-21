@@ -118,7 +118,7 @@
             <div class="row">
               <div class="col">
                 <div class="heading">
-                  <div class="icon-all">
+                  <div class="icon-all" @click="isRightColumnFolded = !isRightColumnFolded">
                     <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M1.0001 1L6.19482 6L1.0001 11" stroke="white" stroke-width="1.2" stroke-linecap="round"
                             stroke-linejoin="round"/>
@@ -302,21 +302,22 @@
           </div>
         </div>
       </template>
-      <div v-else class="right-column__inner bg-dark">
-        <div class="row">
-          <div class="col">
-            <div class="heading">
-              <div class="icon-all">
-                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M1.0001 1L6.19482 6L1.0001 11" stroke="white" stroke-width="1.2" stroke-linecap="round"
-                        stroke-linejoin="round"/>
-                  <path d="M5.80528 1L11 6L5.80528 11" stroke="white" stroke-width="1.2" stroke-linecap="round"
-                        stroke-linejoin="round"/>
-                </svg>
+
+      <div v-else :class="{'right-column_folded': isRightColumnFolded}" class="right-column__inner bg-dark">
+          <div class="row">
+            <div class="col">
+              <div class="heading">
+                <div class="icon-all" @click="isRightColumnFolded = !isRightColumnFolded">
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M1.0001 1L6.19482 6L1.0001 11" stroke="white" stroke-width="1.2" stroke-linecap="round"
+                          stroke-linejoin="round"/>
+                    <path d="M5.80528 1L11 6L5.80528 11" stroke="white" stroke-width="1.2" stroke-linecap="round"
+                          stroke-linejoin="round"/>
+                  </svg>
+                </div>
               </div>
             </div>
           </div>
-        </div>
       </div>
     </div>
   </div>
@@ -343,6 +344,7 @@ export default {
       activeFormCode: null,
       loading: false,
       isLeftColumnFolded: false,
+      isRightColumnFolded: false,
       allData: null,
       popup: false
     }
@@ -1444,6 +1446,16 @@ h4 {
 
   &__inner {
     height: 100%;
+  }
+  &_folded {
+    min-width: $leftColumnFoldedWidth;
+    width: $leftColumnFoldedWidth;
+    max-width: $leftColumnFoldedWidth;
+    margin-left: auto;
+
+    .icon-all {
+      transform: rotate(180deg);
+    }
   }
 }
 
