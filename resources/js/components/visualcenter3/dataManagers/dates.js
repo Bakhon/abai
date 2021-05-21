@@ -120,7 +120,8 @@ export default {
 
         changeDate() {
             this.selectedDay = 0;
-            this.timestampToday = this.formatDateWithoutTimezone(new Date(this.range.start));
+            this.timestampToday = this.formatDateWithoutTimezone(new Date('2021-05-17T00:00:00+06:00'));
+           // this.timestampToday = this.formatDateWithoutTimezone(new Date(this.range.start));
             this.timestampEnd = new Date(this.range.end).getTime();
             let differenceBetweenDates = this.timestampEnd - this.timestampToday;
             this.quantityRange = Math.trunc((Math.abs(differenceBetweenDates) / 86400000) + 1);
