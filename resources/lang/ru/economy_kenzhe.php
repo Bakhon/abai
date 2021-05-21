@@ -9,4 +9,5 @@ return [
     'companies' => 'Компании',
     'balance' => 'Баланс',
     'kvl' => 'КВЛ',
+    'dds' => 'ДДС',
 ];

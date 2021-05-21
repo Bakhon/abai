@@ -5,9 +5,25 @@
             <div class="col-9">
                 <table class="table table-responsive ">
                     <tbody class="w-100">
-                    @foreach($data['2021']['opiu'] as $key=> $value)
+                    @foreach($datas as $key=> $value)
                         @if(is_array($value))
-                            @foreach($value as $k=> $v)
+                                <tr>
+                                    <td style="color: white;">{{$value['name']}}</td>
+                                    <td style="color: white;">{{$value['value']}}</td>
+                                </tr>
+                        @else
+                            <tr>
+                                <td  style="color: white;">{{$key}}</td>
+                                <td  style="color: white;">{{$value}}</td>
+                            </tr>
+                        @endif
+                    @endforeach
+                    @foreach($data as $key=> $value)
+                        <tr>
+                            <td colspan="2">{{$key}}</td>
+                        </tr>
+                        @if(is_array($value))
+                            @foreach($value as $k => $v)
                                 <tr>
                                     <td style="color: white;">{{$k}}</td>
                                     <td style="color: white;">{{$v}}</td>
@@ -20,6 +36,21 @@
                             </tr>
                         @endif
                     @endforeach
+{{--                    @foreach($data['2021']['opiu'] as $key=> $value)--}}
+{{--                        @if(is_array($value))--}}
+{{--                            @foreach($value as $k=> $v)--}}
+{{--                                <tr>--}}
+{{--                                    <td style="color: white;">{{$k}}</td>--}}
+{{--                                    <td style="color: white;">{{$v}}</td>--}}
+{{--                                </tr>--}}
+{{--                            @endforeach--}}
+{{--                        @else--}}
+{{--                            <tr>--}}
+{{--                                <td  style="color: white;">{{$key}}</td>--}}
+{{--                                <td  style="color: white;">{{$value}}</td>--}}
+{{--                            </tr>--}}
+{{--                        @endif--}}
+{{--                    @endforeach--}}
                     </tbody>
                 </table>
             </div>

@@ -204,6 +204,10 @@ class FieldCalcController extends MainController
             $opiuValues = $this->recursiveSetValueToHandbookByType($handbook, $companyRepTtValues, $this->year, $this->year - 1, $this->year . '-01-01', $this->year . '-12-01');
         }
         FieldCalcHelper::sumOverTree($opiuValues, $this->year); // суммирование по дереву к родителю
+        $this->getShowDataOnTree($this->opiuOilNames, $opiuValues, $dt);
+        $this->getShowDataOnTree($this->opiuLiquidNames, $opiuValues, $dt);
+        $this->getShowDataOnTree($this->opiuRaspMestor, $opiuValues, $dt);
+        $datas = $dt;
         
 //        foreach($oils as $year => $oil){
         $year = '2021';
@@ -258,13 +262,15 @@ class FieldCalcController extends MainController
             if ($percentRealization) {
                 $percentRealization = $percentRealization->proc_dob;
             }
-            $empper = $oil - $oil * $percentRealization;
+            $empper = $oil - $oil * $percentRealization; // % от добычи на реализацию
+            $data[$lastDateOfMonth]['% от добычи на реализацию'] = $empper;
 
             $ecnParam = 95.343 * pow($this->liq, -0.607);
             $shgnParam = 108.29 * pow($this->liq, -0.743);
 
             foreach ($emppersExp as $item) {
-                $exportsResults[$item->route_id] = $empper * $item->emp_per; // Объем реализации нефти по маршрутам (Экспорт)
+                $exportsResults[$item->route_id] = $empper * $item->emp_per; //  добычи на реализацию (Экспорт)
+                $data[$lastDateOfMonth]['добычи на реализацию (Экспорт) '.$this->getRoute($item->route_id)] = $empper * $item->emp_per; // Объем реализации нефти по маршрутам (Экспорт)
             }
             $exportsResultsTotal = array_sum($exportsResults); //Объем реализации нефти на экспорт, всего
 
@@ -299,29 +305,43 @@ class FieldCalcController extends MainController
             foreach ($exportsResults as $route_id => $oilValume) {
                 $tarifTnItemValue = $this->totalTransportationCostYear($route_id, $scenarioFact, $this->companyId, $oilValume, $rate);
                 $exportsTarTnResults[$route_id] = $tarifTnItemValue / 12;
+                $data[$lastDateOfMonth]['Транспортировка нефти '.$this->getRoute($route_id)] = $tarifTnItemValue / 12;
             }
             $exportsTarTnResultsTotal = array_sum($exportsTarTnResults); // Расчет Расходов по транспортировке нефти
 
             foreach ($discontExp as $item) {
+                if(!$item->barr_coef){
+                    $item->barr_coef  = 7.23;
+                }
                 $exportsDiscontResults[$item->route_id] = $exportsResults[$item->route_id] * $item->barr_coef * (($item->macro - $item->discont) * $rate->ex_rate_dol); // доход от реализации
+                $data[$lastDateOfMonth]['Доход от реализации '.$this->getRoute($route_id)] = $exportsDiscontResults[$item->route_id];
             }
             $exportsDiscontResultsTotal = array_sum($exportsDiscontResults);
 
             foreach ($discontExp as $item) {
+                if(!$item->barr_coef){
+                    $item->barr_coef  = 7.23;
+                }
                 $stavki = EcoRefsNdoRates::where('company_id', '=', $item->company_id)->first(); // Средняя ставка НДПИ по НДО
                 $exportsNdpiResults[$item->route_id] = $exportsResults[$item->route_id] * $item->barr_coef * $item->macro  * $rate->ex_rate_dol * $stavki->ndo_rates; //НДПИ нефть на экспорт USD
+                $data[$lastDateOfMonth]['НДПИ нефть на экспорт USD '.$this->getRoute($item->route_id)] = $exportsNdpiResults[$item->route_id];
             }
             $exportsNdpiResultsTotal = array_sum($exportsNdpiResults);
 
             foreach ($discontExp as $item) {
+                if(!$item->barr_coef){
+                    $item->barr_coef  = 7.23;
+                }
                 $rent = EcoRefsRentTax::where('world_price_beg', '<', $item->macro)->where('world_price_end', '<=', $item->macro)->first(); // Ставки - Рентный налог
                 $exportsRentTaxResults[$item->route_id] = $exportsResults[$item->route_id] * $item->barr_coef * $item->macro * $rent->rate * $rate->ex_rate_dol; // Расчет Рентного налога
+                $data[$lastDateOfMonth]['Рентный налог '.$this->getRoute($item->route_id)] = $exportsRentTaxResults[$item->route_id];
             }
             $exportsRentTaxResultsTotal = array_sum($exportsRentTaxResults);
 
             foreach ($discontExp as $item) {
                 $etpRate = EcoRefsAvgMarketPrice::where('avg_market_price_beg', '>=', $item->macro)->where('avg_market_price_end', '>', $item->macro)->first(); // Ставки - ЭТП (Среднемесячная рыночная цена ($/баррель), от && Среднемесячная рыночная цена ($/баррель), до)
                 $exportsEtpResults[$item->route_id] = $this->calculationETP($exportsResults[$item->route_id], $etpRate->exp_cust_duty_rate, $rate->ex_rate_dol); // Расчет ЭТП (экспорт)
+                $data[$lastDateOfMonth]['ЭТП (экспорт) '.$this->getRoute($item->route_id)] = $exportsEtpResults[$item->route_id];
             }
             $exportsEtpResultsTotal = array_sum($exportsEtpResults); //Расчет ЭТП (Экспорт) всего
             // Export END
@@ -337,22 +357,27 @@ class FieldCalcController extends MainController
 
             foreach ($emppersIns as $item) {
                 $insideResults[$item->route_id] = $empper * $item->emp_per; // Объем реализации нефти по маршрутам (втн. рынок)
+                $data[$lastDateOfMonth]['Процент реализации '.$this->getRoute($item->route_id)] = $item->emp_per; //Процент реализации
+                $data[$lastDateOfMonth]['Объем реализации нефти (втн. рынок) '.$this->getRoute($item->route_id)] = $empper * $item->emp_per; // Объем реализации нефти по маршрутам (втн. рынок)
             }
             $insideResultsTotal = array_sum($insideResults);
 
             foreach ($discontIns as $item) {
-                $insideDiscontResults[$item->route_id] = $insideResults[$item->route_id] * $item->macro; // дисконт на втнр. рынок
+                $insideDiscontResults[$item->route_id] = $insideResults[$item->route_id] * $item->macro; // доход от реализации
+                $data[$lastDateOfMonth]['доход от реализации '.$this->getRoute($item->route_id)] = $insideDiscontResults[$item->route_id];
             }
             $insideDiscontResultsTotal = array_sum($insideDiscontResults);
 
             foreach ($discontIns as $item) {
                 $insideNdpiResults[$item->route_id] = $insideResults[$item->route_id] * $item->macro * $stavki->ndo_rates * 0.5;
+                $data[$lastDateOfMonth]['НДПИ внтр. рынок '. $this->getRoute($item->route_id)] = $insideNdpiResults[$item->route_id];
             }
             $insideNdpiResultsTotal = array_sum($insideNdpiResults);
 
             foreach ($insideResults as $route_id => $oilValume) {
                 $tarifTnItemValue = $this->totalTransportationCostYear($route_id, $scenarioFact, $this->companyId, $oilValume, $rate);
                 $insideTarTnResults[$route_id] = $tarifTnItemValue / 12;
+                $data[$lastDateOfMonth]['Транспортировка нефти '.$this->getRoute($route_id)] = $insideTarTnResults[$route_id];
             }
             $insideTarTnResultsTotal = array_sum($insideTarTnResults);
             // Inside END
@@ -376,6 +401,25 @@ class FieldCalcController extends MainController
             } else {
                 $kpnResult = 0;
             }
+            $data[$lastDateOfMonth]['Курс доллара'] = $rate->ex_rate_dol;
+
+            foreach ($emppersExp as $emp){
+                if(!$emp->barr_coef){
+                    $emp->barr_coef  = 7.23;
+                }
+                $data[$lastDateOfMonth]['Дисконт '. $this->getRoute($emp->route_id)] = $item->discont;
+                $data[$lastDateOfMonth]['Коэффициент баррелизации '.$this->getRoute($emp->route_id)] = $emp->barr_coef;
+            }
+
+            foreach ($discontExp as $item) {
+                if(!$item->barr_coef){
+                    $item->barr_coef  = 7.23;
+                }
+                $data[$lastDateOfMonth]['Дисконт '. $this->getRoute($emp->route_id)] = $item->discont;
+                $data[$lastDateOfMonth]['Коэффициент баррелизации ' . $this->getRoute($emp->route_id)] = $item->barr_coef;
+            }
+
+            $data[$lastDateOfMonth]['Добыча нефти'] = $oil;
 
             $chistayaPribyl = $operPrib - $kpnResult;
             $svobodDenPotok = $chistayaPribyl - $buyCostResult + $amortizaciyaResult;
@@ -432,14 +476,13 @@ class FieldCalcController extends MainController
         //ДОХОД/(УБЫТОК) ДО НАЛОГООБЛОЖЕНИЯ
 //        $data['ЧИСТЫЙ ДОХОД/(УБЫТОК)'] = $data['ОПЕРАЦИОННАЯ ПРИБЫЛЬ(+)/ УБЫТОК (-)'] - $godovoiKpn;
 
-        $data[$this->year]['opiu'] = $opiuRaspMestor;
-        $data[$this->year]['opiu']['ДОХОДЫ ОТ РЕАЛИЗАЦИИ ТОВАРОВ, РАБОТ, УСЛУГ'] = $godovoiDohod;
-        $data[$this->year]['opiu']['Налог на добычу полезных ископаемых (НДПИ)'] = $godovoiNdnpi;
-        $data[$this->year]['opiu']['Рентный налог на экспортир.сырую нефть, газовый конденсат'] = $godovoiRent;
-        $data[$this->year]['opiu']['РЭкспортная таможенная пошлина ( ЭТП)'] = $godovoiEtp;
-        $data[$this->year]['opiu']['Расходы по погрузке, транспортировке и хранению'] = $godovoiTrans;
-
-        return view('economy_kenzhe.field_calculation.index')->with(compact('companies', 'data'));
+        $data['opiu_result'] = $opiuRaspMestor;
+        $data['opiu_result']['ДОХОДЫ ОТ РЕАЛИЗАЦИИ ТОВАРОВ, РАБОТ, УСЛУГ'] = $godovoiDohod;
+        $data['opiu_result']['Налог на добычу полезных ископаемых (НДПИ)'] = $godovoiNdnpi;
+        $data['opiu_result']['Рентный налог на экспортир.сырую нефть, газовый конденсат'] = $godovoiRent;
+        $data['opiu_result']['РЭкспортная таможенная пошлина ( ЭТП)'] = $godovoiEtp;
+        $data['opiu_result']['Расходы по погрузке, транспортировке и хранению'] = $godovoiTrans;
+        return view('economy_kenzhe.field_calculation.index')->with(compact('companies', 'data', 'datas'));
 
     }
 
