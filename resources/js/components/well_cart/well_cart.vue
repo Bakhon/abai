@@ -45,9 +45,10 @@
           <div class="row">
             <div class="col">
               <button class="transparent-select">
-                Дело скважины
+                Скважина: <span v-if="allData">{{ allData.uwi }}</span>
                 <svg width="14" height="8" viewBox="0 0 14 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M1 1L7 7L13 1" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M1 1L7 7L13 1" stroke="white" stroke-width="1.6" stroke-linecap="round"
+                        stroke-linejoin="round"/>
                 </svg>
               </button>
             </div>
@@ -59,6 +60,7 @@
                     placeholder="Номер скважины"
                     @input="selectWell"
                     @search="onSearch"
+                    v-model="wellName"
                 >
                   <template slot="option" slot-scope="option">
                     <span>{{ option.name }}</span>
@@ -88,7 +90,7 @@
                   <div class="col">
                     <div class="well-info">
                       <div class="title">Основное</div>
-                      <p>Номер скважины:<span>{{allData.uwi}}</span></p>
+                      <p>Номер скважины:<span>{{ allData.uwi }}</span></p>
                       <p>Категория скважины: <span></span></p>
                       <div class="title">Привязка</div>
                       <p>Оргструктура: <span></span></p>
@@ -334,6 +336,7 @@ export default {
       options: [],
       well: null,
       tech: null,
+      wellName: null,
       org: null,
       geo: null,
       graph: null,
@@ -368,6 +371,7 @@ export default {
         this.tech = data[0].techs
         this.org = data[0].orgs
         this.geo = data[0].geo
+        this.wellName = data[0].uwi
         this.allData = data[0]
         console.log(data[0])
         this.loading = false
@@ -962,6 +966,10 @@ h4 {
   color: white;
   background: none;
   border: none;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 19px;
+  font-family: 'Harmonia Sans Pro Cyr', 'Harmonia-Sans', 'Robato';
 
   &:focus {
     color: white;
@@ -1118,7 +1126,8 @@ h4 {
   border-radius: 15px;
   margin-top: auto;
   margin-bottom: auto;
-  :hover{
+
+  :hover {
     cursor: pointer;
   }
 }
@@ -1480,6 +1489,14 @@ h4 {
     border-radius: 10px;
 
     .vs__search {
+      font-family: Roboto, sans-serif;
+      font-size: 14px;
+      font-weight: 400;
+      margin-top: 0;
+      padding-left: 45px;
+    }
+
+    .vs__selected {
       font-family: Roboto, sans-serif;
       font-size: 14px;
       font-weight: 400;
