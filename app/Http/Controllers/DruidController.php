@@ -514,11 +514,15 @@ class DruidController extends Controller
         //return $r;
 
         if ($gu->name == "ГУ-24") {
+            if($request->current_dosage > 0){
+                $r_a = 0.2507-0.0013*$request->current_dosage-1.2097*$pCO2+3790.4045*$pH2S; //updated formula GU24 case 15.12.2020
+            }else{
+                $r_a = 0.3376+1.2748*$pCO2+1705.5680*$pH2S;
+            }
             //else if ($pH2S > 0.3){
             //$r_a = -0.6274 + 0.01318 * $conCO2 + 0.02397 * $conH2S;
             //Скорость корр = -0,6274+16,9875*p(H2S)+12,0596*p(CO2)
             //$r_a = -0.6274 + 16.9875 * $pH2S / 100 + 12.0596 * $pCO2 / 100; // Partial pressure was calculated in bar
-            $r_a = 0.8744+11.7859*$pH2S+3.44699*$pCO2; //updated formula GU24 case 15.12.2020
             ob_start(); //Start output buffer
 //                    echo "H2S+CO2";
             //$environment_a = "H2S+CO2";
@@ -527,11 +531,16 @@ class DruidController extends Controller
             //return $r;
         }        
         elseif ($gu->name == "ГУ-22") {
+            if($request->current_dosage > 0){
+                $r_a = 0.3651+0.001705*$request->current_dosage-1.4529*$pCO2+1015.4313*$pH2S; //updated formula GU22 case 15.12.2020
+            }else{
+                $r_a = 0.3242 - 0.3512 * $pCO2 + 689.7732 * $pH2S; 
+            }
             //else if ($pH2S > 0.3){
             //$r_a = -0.6274 + 0.01318 * $conCO2 + 0.02397 * $conH2S;
             //Скорость корр = -0,6274+16,9875*p(H2S)+12,0596*p(CO2)
             //$r_a = -0.6274 + 16.9875 * $pH2S / 100 + 12.0596 * $pCO2 / 100; // Partial pressure was calculated in bar
-            $r_a = 0.3242 - 0.3512 * $pCO2 + 689.7732 * $pH2S; //updated formula GU22 case 15.12.2020
+            //updated formula GU22 case 15.12.2020
             ob_start(); //Start output buffer
 //                    echo "H2S+CO2";
             //$environment_a = "H2S+CO2";
