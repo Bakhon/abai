@@ -447,7 +447,7 @@ class DruidController extends Controller
         // // 1 mol/kg of CO2 => 44 g/l or 44000 mg/l assuming that 1l = 1kg the partial pressure equals:
         // $pCO2 = $CO2 / $kCO2 / 44000;   //kPa
         //print("pCO2 [kPa] = ", pCO2)
-        $pCO2 = $conCO2_frac / 100 * $p; // measured in bar as per formula
+        $pCO2 = $conCO2_frac * $p / 100 ; // measured in bar as per formula
 
         //convert data to proper type
         $co2 = $pCO2 / 10; //convert partial pressure CO2 from bar => MPa
