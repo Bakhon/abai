@@ -2154,6 +2154,247 @@
             </div>
 
             <div class="first-string first-string2">
+            <div>
+              <table class="table">
+                <tr class="d-flex">
+                 <td class="col-6">
+                    <div class="number">{{ staff }}</div>
+                    <div class="in-idle2">
+                 {{ timeSelect }}
+                    </div>
+                  </td>
+
+                  <td class="col-6">
+                    <div class="d-flex">
+                      <div class="col-12">
+                        <div
+                          :class="`${getColor2(
+                            getDiffProcentLastP(staffPercent, staff)
+                          )}`"
+                        ></div>
+                        <div class="txt2-2">
+                          {{ Math.abs(getDiffProcentLastP(staffPercent, staff)) }}%
+                        </div>
+                      </div>
+                    </div>
+                    <div>
+                      <div class="in-idle">
+                        {{ getDiffProcentLastP(staffPercent, staff, "1") }}
+                      </div>
+                      <div class="in-idle">
+                        vs {{ quarter2[0] }}
+                        {{ trans("visualcenter.quarter") }}
+                        {{ quarter2[1] }}г.
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+                <tr class="d-flex">
+                  <td class="col-12">
+                    <div class="txt2">                    
+                       Бурение скважин
+                    </div>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+
+
+
+
+ <div class="first-string first-string2">
+            <div>
+              <table class="table">
+                <tr class="d-flex">
+                 <td class="col-6">
+                    <div class="number">0</div>
+                    <div class="in-idle2">
+                 {{ timeSelect }}
+                    </div>
+                  </td>
+
+                  <td class="col-6">
+                    <div class="d-flex">
+                      <div class="col-12">
+                        <div
+                          :class="`${getColor2(
+                            getDiffProcentLastP(staffPercent, staff)
+                          )}`"
+                        ></div>
+                        <div class="txt2-2">
+                          {{ Math.abs(getDiffProcentLastP(staffPercent, staff)) }}%
+                        </div>
+                      </div>
+                    </div>
+                    <div>
+                      <div class="in-idle">
+                        {{ getDiffProcentLastP(staffPercent, staff, "1") }}
+                      </div>
+                      <div class="in-idle">
+                        vs {{ quarter2[0] }}
+                        {{ trans("visualcenter.quarter") }}
+                        {{ quarter2[1] }}г.
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+                <tr class="d-flex">
+                  <td class="col-12">
+                    <div class="txt2">                    
+                       Ожидаемая добыча
+                    </div>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+
+
+          <div class="first-string first-string2">
+            <div>
+              <table class="table">
+                <tr class="d-flex">
+                 <td class="col-6">
+                    <div class="number">0</div>
+                    <div class="in-idle2">
+                 {{ timeSelect }}
+                    </div>
+                  </td>
+
+                  <td class="col-6">
+                    <div class="d-flex">
+                      <div class="col-12">
+                        <div
+                          :class="`${getColor2(
+                            getDiffProcentLastP(staffPercent, staff)
+                          )}`"
+                        ></div>
+                        <div class="txt2-2">
+                          {{ Math.abs(getDiffProcentLastP(staffPercent, staff)) }}%
+                        </div>
+                      </div>
+                    </div>
+                    <div>
+                      <div class="in-idle">
+                        {{ getDiffProcentLastP(staffPercent, staff, "1") }}
+                      </div>
+                      <div class="in-idle">
+                        vs {{ quarter2[0] }}
+                        {{ trans("visualcenter.quarter") }}
+                        {{ quarter2[1] }}г.
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+                <tr class="d-flex">
+                  <td class="col-12">
+                    <div class="txt2">                    
+                       Количество КРС
+                    </div>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+
+
+          <div class="first-string first-string2">
+            <div>
+              <table class="table">
+                <tr class="d-flex">
+                 <td class="col-6">
+                    <div class="number">0</div>
+                    <div class="in-idle2">
+                 {{ timeSelect }}
+                    </div>
+                  </td>
+
+                  <td class="col-6">
+                    <div class="d-flex">
+                      <div class="col-12">
+                        <div
+                          :class="`${getColor2(
+                            getDiffProcentLastP(staffPercent, staff)
+                          )}`"
+                        ></div>
+                        <div class="txt2-2">
+                          {{ Math.abs(getDiffProcentLastP(staffPercent, staff)) }}%
+                        </div>
+                      </div>
+                    </div>
+                    <div>
+                      <div class="in-idle">
+                        {{ getDiffProcentLastP(staffPercent, staff, "1") }}
+                      </div>
+                      <div class="in-idle">
+                        vs {{ quarter2[0] }}
+                        {{ trans("visualcenter.quarter") }}
+                        {{ quarter2[1] }}г.
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+                <tr class="d-flex">
+                  <td class="col-12">
+                    <div class="txt2">                    
+                       Количество ПРС
+                    </div>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+
+
+          <div class="first-string first-string2">
+            <div>
+              <table class="table">
+                <tr class="d-flex">
+                 <td class="col-6">
+                    <div class="number">0</div>
+                    <div class="in-idle2">
+                 {{ timeSelect }}
+                    </div>
+                  </td>
+
+                  <td class="col-6">
+                    <div class="d-flex">
+                      <div class="col-12">
+                        <div
+                          :class="`${getColor2(
+                            getDiffProcentLastP(staffPercent, staff)
+                          )}`"
+                        ></div>
+                        <div class="txt2-2">
+                          {{ Math.abs(getDiffProcentLastP(staffPercent, staff)) }}%
+                        </div>
+                      </div>
+                    </div>
+                    <div>
+                      <div class="in-idle">
+                        {{ getDiffProcentLastP(staffPercent, staff, "1") }}
+                      </div>
+                      <div class="in-idle">
+                        vs {{ quarter2[0] }}
+                        {{ trans("visualcenter.quarter") }}
+                        {{ quarter2[1] }}г.
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+                <tr class="d-flex">
+                  <td class="col-12">
+                    <div class="txt2">                    
+                       Химизация
+                    </div>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+
+            <div class="first-string first-string2">
               <div>
                 <table class="table table5">
                   <tr class="cursor-pointer d-flex">
@@ -2346,37 +2587,37 @@
 
 <script src="./VisualCenterTable3.js"></script>
 <style scoped lang="scss">
-  .dzocompanies-dropdown__divider {
-    border-bottom: 2px solid #656A8A;
-  }
-  .middle-block__list-x-scroll {
-    overflow-x: inherit;
-  }
-  .rates-block {
-    border-left: 10px solid #0f1430;
-  }
-  .oil-block {
-    align-items: baseline;
-  }
-  .additional-header {
-    margin-left: -15px;
-  }
+.dzocompanies-dropdown__divider {
+  border-bottom: 2px solid #656a8a;
+}
+.middle-block__list-x-scroll {
+  overflow-x: inherit;
+}
+.rates-block {
+  border-left: 10px solid #0f1430;
+}
+.oil-block {
+  align-items: baseline;
+}
+.additional-header {
+  margin-left: -15px;
+}
 
-  .visualcenter-page-container {
-    flex-wrap: wrap;
-    margin: 0 !important;
-  }
-  .visualcenter-page-wrapper {
-    position: relative;
-  }
-  .second-column-container {
-    padding-left: 10px;
-    padding-right: 0;
-  }
-  .middle-block-columns {
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-  }
+.visualcenter-page-container {
+  flex-wrap: wrap;
+  margin: 0 !important;
+}
+.visualcenter-page-wrapper {
+  position: relative;
+}
+.second-column-container {
+  padding-left: 10px;
+  padding-right: 0;
+}
+.middle-block-columns {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
 .vis-table {
   overflow-y: auto;
   &::-webkit-scrollbar {
@@ -2450,7 +2691,7 @@
       }
     }
     tr:after {
-      content: ' ';
+      content: " ";
       display: block;
       visibility: hidden;
       clear: both;
@@ -2470,7 +2711,7 @@
       width: 81px;
       position: sticky;
       font-size: 12px;
-      background: #353EA1;
+      background: #353ea1;
       text-align: center;
       &:first-child {
         width: 322px;
@@ -2517,251 +2758,250 @@
 }
 
 .row-name_width_40 {
-    width: 40%;
-  }
-  .width-20 {
-    width: 20%;
+  width: 40%;
+}
+.width-20 {
+  width: 20%;
+}
+
+.data-metrics {
+  font-style: normal;
+  font-family: "HarmoniaSansProCyr-Regular";
+  font-size: 10px;
+  margin-left: 2%;
+}
+.triangle-responsive {
+  border: 6px solid transparent;
+  height: 6px;
+  margin-right: 5px;
+  width: 6px;
+  float: left;
+}
+.data-pointer {
+  cursor: pointer;
+  font-size: 30px;
+}
+.growth-indicator {
+  margin-top: 6px;
+  border-bottom: 6px solid #009846;
+}
+.fall-indicator {
+  margin-top: 13px;
+  border-top: 6px solid #e31e24;
+}
+.growth-indicator-production-data {
+  border-bottom: 6px solid #009846;
+}
+.fall-indicator-production-data {
+  margin-top: 8px;
+  border-top: 6px solid #e31e24;
+}
+
+.accident-triangle {
+  border-top: 6px solid rgb(227, 30, 36);
+  margin-left: 30%;
+}
+.no-accident-triangle {
+  position: relative;
+  width: 14px;
+  height: 5px;
+  background: #9da0b7;
+  border: unset;
+  margin-left: 30%;
+}
+.button-tab-highlighted {
+  border: none;
+  background: #2e50e9;
+  color: white;
+}
+
+.dzo-dropdown {
+  height: 450px;
+}
+
+.dzo-company-list ul {
+  margin: 10px 0 0 0;
+  position: absolute;
+  left: -0.5px;
+  background: #40467e;
+  top: 3em;
+  padding: 5px;
+  list-style: none;
+  z-index: 999;
+  cursor: pointer;
+  color: white;
+  border-radius: inherit;
+  overflow: auto;
+  &::-webkit-scrollbar {
+    width: 3px;
   }
 
-  .data-metrics {
-    font-style: normal;
-    font-family: "HarmoniaSansProCyr-Regular";
-    font-size: 10px;
-    margin-left: 2%;
-  }
-  .triangle-responsive {
-    border: 6px solid transparent;
-    height: 6px;
-    margin-right: 5px;
-    width: 6px;
-    float: left;
-  }
-  .data-pointer {
-    cursor: pointer;
-    font-size: 30px;
-  }
-  .growth-indicator {
-    margin-top: 6px;
-    border-bottom: 6px solid #009846;
-  }
-  .fall-indicator {
-    margin-top: 13px;
-    border-top: 6px solid #e31e24;
-  }
-  .growth-indicator-production-data {
-    border-bottom: 6px solid #009846;
-  }
-  .fall-indicator-production-data {
-    margin-top: 8px;
-    border-top: 6px solid #e31e24;
+  &::-webkit-scrollbar-track {
+    background: #333975;
   }
 
-  .accident-triangle {
-    border-top: 6px solid rgb(227, 30, 36);
-    margin-left: 30%;
+  &::-webkit-scrollbar-thumb {
+    background: #1f213e;
   }
-  .no-accident-triangle {
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: #1f213e;
+  }
+
+  &::-webkit-scrollbar-corner {
+    background: #333975;
+  }
+}
+.show-company-list {
+  display: block;
+}
+.hide-company-list {
+  display: none;
+}
+.dzo-company-list li {
+  text-align: left;
+  background: #40467e;
+  font-style: normal;
+  font-size: 14px;
+  line-height: 27px;
+  padding: 3px;
+}
+.arrow-down {
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid #9ea4c9;
+  display: inline-block;
+  cursor: pointer;
+  float: right;
+  margin-top: 20px;
+  margin-right: 15px;
+}
+.dzo-company-reason {
+  background: rgb(54, 59, 104);
+  min-height: 60%;
+  width: 100%;
+  border-top: 5px solid #272953;
+}
+.mh-60 {
+  min-height: 60%;
+}
+.mh-30 {
+  min-height: 30%;
+}
+.chemistry-table {
+  height: calc(100% - 20px);
+}
+.cursor-pointer {
+  cursor: pointer;
+}
+.main-table__scroll {
+  flex: unset;
+  max-height: 80%;
+  max-width: 100%;
+  overflow: auto;
+}
+@media (max-width: 400px) {
+  .upper-block {
+    max-width: 380px;
+  }
+  .rates-block {
+    border-left: 0;
+    border-top: 10px solid #0f1430 !important;
+    &:last-child {
+      border-left: 10px solid #0f1430 !important;
+    }
+  }
+  .middle-block__list-x-scroll {
+    flex-wrap: unset;
+    overflow-x: scroll;
+  }
+  .second-column-container {
+    padding-left: 10px;
+    padding-right: 10px;
+    border-top: 10px solid #0f1430;
+  }
+  .table4 {
+    min-width: 0 !important;
+    font-size: 10px !important;
+    th {
+      font-size: inherit !important;
+      width: 5% !important;
+    }
+    tr td {
+      width: 100%;
+      min-width: 62px !important;
+      font-size: inherit !important;
+      .font {
+        font-size: inherit !important;
+      }
+    }
+  }
+  .middle-block-columns {
+    border-top: 10px solid #0f1430;
+  }
+  .side-tables__main-menu-button {
+    line-height: 20px;
+  }
+  .middle-block__table {
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+  .first-string {
     position: relative;
-    width: 14px;
-    height: 5px;
-    background: #9da0b7;
-    border: unset;
-    margin-left: 30%;
   }
-  .button-tab-highlighted {
-    border: none;
-    background: #2E50E9;
-    color:white;
+  .dropdown {
+    position: static;
   }
-
-  .dzo-dropdown {
-    height: 450px;
+  .dzocompanylist__button {
+    position: static;
   }
-
-  .dzo-company-list ul {
-    margin: 10px 0 0 0;
-    position: absolute;
-    left: -0.5px;
-    background: #40467E;
-    top: 3em;
-    padding: 5px;
-    list-style: none;
-    z-index: 999;
-    cursor: pointer;
-    color:white;
-    border-radius: inherit;
-    overflow: auto;
-    &::-webkit-scrollbar {
-      width: 3px;
-    }
-
-    &::-webkit-scrollbar-track {
-      background: #333975;
-    }
-
-    &::-webkit-scrollbar-thumb {
-      background: #1f213e;
-    }
-
-    &::-webkit-scrollbar-thumb:hover {
-      background: #1f213e;
-    }
-
-    &::-webkit-scrollbar-corner {
-      background: #333975;
-    }
-  }
-  .show-company-list {
-    display: block;
-  }
-  .hide-company-list {
-    display: none;
+}
+.rates-block__row {
+  height: 100%;
+}
+@media (max-width: 1400px) {
+  .rates-block__row {
+    height: auto;
   }
   .dzo-company-list li {
-    text-align: left;
-    background: #40467E;
-    font-style: normal;
-    font-size: 14px;
-    line-height: 27px;
-    padding: 3px;
+    font-size: 12px;
   }
-  .arrow-down {
-    width: 0;
-    height: 0;
-    border-left: 5px solid transparent;
-    border-right: 5px solid transparent;
-    border-top: 5px solid #9EA4C9;
-    display: inline-block;
-    cursor: pointer;
-    float: right;
-    margin-top: 20px;
-    margin-right: 15px;
+  .vis-table .table4 {
+    min-width: 0;
   }
-  .dzo-company-reason {
-    background: rgb(54, 59, 104);
-    min-height: 60%;
-    width: 100%;
-    border-top: 5px solid #272953;
+  .mt-20 {
+    margin-top: 20%;
   }
-  .mh-60 {
-    min-height: 60%;
+  .year-period-dropdown {
+    min-width: 0;
   }
-  .mh-30 {
-    min-height: 30%;
-  }
-  .chemistry-table {
-    height: calc(100% - 20px);
-  }
-  .cursor-pointer {
-    cursor: pointer;
-  }
-  .main-table__scroll {
-    flex: unset;
-    max-height: 80%;
-    max-width: 100%;
-    overflow: auto;
-  }
-  @media (max-width:400px) {
-    .upper-block {
-      max-width: 380px;
-    }
-    .rates-block {
-      border-left: 0;
-      border-top: 10px solid #0f1430 !important;
-      &:last-child {
-        border-left: 10px solid #0f1430 !important;
-      }
-    }
-    .middle-block__list-x-scroll {
-      flex-wrap: unset;
-      overflow-x: scroll;
-    }
-    .second-column-container {
-      padding-left: 10px;
-      padding-right: 10px;
-      border-top: 10px solid #0f1430;
-    }
-    .table4 {
-      min-width: 0 !important;
-      font-size: 10px !important;
-      th {
-        font-size: inherit !important;
-        width: 5% !important;
-      }
-      tr td {
-        width: 100%;
-        min-width: 62px !important;
-        font-size: inherit !important;
-        .font {
-          font-size: inherit !important;
-        }
-      }
-
-    }
-    .middle-block-columns {
-      border-top: 10px solid #0f1430;
-    }
-    .side-tables__main-menu-button {
-      line-height: 20px;
-    }
-    .middle-block__table {
-      margin-left: 10px;
-      margin-right: 10px;
-    }
-    .first-string {
-      position: relative;
-    }
-    .dropdown {
-      position: static;
-    }
-    .dzocompanylist__button {
-      position: static;
+}
+@media (max-width: 2000px) {
+  .table4 {
+    tr td {
+      min-width: 5.3em !important;
     }
   }
-  .rates-block__row {
-    height: 100%;
+  .row-name_width_40 {
+    width: 80%;
   }
-  @media (max-width:1400px) {
-    .rates-block__row {
-      height: auto;
-    }
-    .dzo-company-list li {
-      font-size: 12px;
-    }
-    .vis-table .table4 {
-      min-width: 0;
-    }
-    .mt-20 {
-      margin-top: 20%;
-    }
-    .year-period-dropdown {
-      min-width: 0;
-    }
+  .year-period-dropdown {
+    min-width: 290px;
+    height: 45px;
   }
-  @media (max-width:2000px) {
-    .table4 {
-      tr td {
-        min-width: 5.3em !important;
-      }
-    }
-    .row-name_width_40 {
-      width: 80%;
-    }
-    .year-period-dropdown {
-      min-width: 290px;
-      height: 45px;
-    }
-  }
-  .dzocompanies__button_position {
-    margin-top: 0.7em;
-  }
-  .side-blocks__dzo-companies-dropdown {
-    position: relative;
-    background-color: #333975;
-    height: 40px;
-    text-align: center;
-    line-height: 40px;
-    color: #9EA4C9;
-    border: none;
-  }
+}
+.dzocompanies__button_position {
+  margin-top: 0.7em;
+}
+.side-blocks__dzo-companies-dropdown {
+  position: relative;
+  background-color: #333975;
+  height: 40px;
+  text-align: center;
+  line-height: 40px;
+  color: #9ea4c9;
+  border: none;
+}
 </style>
