@@ -2250,8 +2250,46 @@
             </div>
           </div>
 
+          
+     <div class="first-string first-string2">
+              <div>
+                <table class="table table5">
+                  <tr class="cursor-pointer d-flex">
+                    <td
+                      class="col-6"
+                      @click="changeTable('6')"
+                      :style="`${tableHover6}`"
+                    >
+                      <div class="mt-1 float-right">
+                      
+                      </div>
+                      <div class="otm"></div>
+                      <div class="txt2">
+                    КРС
+                      </div>
+                    </td>
 
-          <div class="first-string first-string2">
+                    <td
+                      class="col-6"
+                      @click="changeTable('7')"
+                      :style="`${tableHover7}`"
+                    >
+                      <div class="mt-1 float-right">
+                  
+                      </div>
+                      <div class="him"></div>
+                      <div class="txt2">
+                      ПРС
+                      </div>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+
+
+          <!--<div class="first-string first-string2">
             <div>
               <table class="table">
                 <tr class="d-flex">
@@ -2344,7 +2382,7 @@
                 </tr>
               </table>
             </div>
-          </div>
+          </div>-->
 
 
           <div class="first-string first-string2">
