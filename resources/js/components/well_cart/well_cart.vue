@@ -111,8 +111,8 @@
       </div>
     </div>
 
-    <div class="passport right-column">
-      <template v-if="allData">
+    <template v-if="allData">
+      <div :class="{'right-column_folded': isRightColumnFolded}" class="right-column__inner bg-dark">
         <div class="bg-dark-transparent">
           <template>
             <div class="row">
@@ -146,8 +146,6 @@
               </div>
             </div>
           </template>
-
-
           <div class="info">
             <div class="info-element">
               <div class="row">
@@ -301,26 +299,50 @@
             </div>
           </div>
         </div>
-      </template>
+      </div>
+    </template>
 
-      <div v-else :class="{'right-column_folded': isRightColumnFolded}" class="right-column__inner bg-dark">
-          <div class="row">
-            <div class="col">
-              <div class="heading">
-                <div class="icon-all" @click="isRightColumnFolded = !isRightColumnFolded">
-                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M1.0001 1L6.19482 6L1.0001 11" stroke="white" stroke-width="1.2" stroke-linecap="round"
-                          stroke-linejoin="round"/>
-                    <path d="M5.80528 1L11 6L5.80528 11" stroke="white" stroke-width="1.2" stroke-linecap="round"
-                          stroke-linejoin="round"/>
-                  </svg>
+    <template v-else>
+      <div :class="{'right-column_folded': isRightColumnFolded}" class="right-column__inner bg-dark">
+        <div class="bg-dark-transparent">
+            <div class="row">
+              <div class="col">
+                <div class="heading">
+                  <div class="icon-all" @click="isRightColumnFolded = !isRightColumnFolded">
+                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M1.0001 1L6.19482 6L1.0001 11" stroke="white" stroke-width="1.2" stroke-linecap="round"
+                            stroke-linejoin="round"/>
+                      <path d="M5.80528 1L11 6L5.80528 11" stroke="white" stroke-width="1.2" stroke-linecap="round"
+                            stroke-linejoin="round"/>
+                    </svg>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+        </div>
       </div>
-    </div>
+    </template>
+
+
   </div>
+
+<!--    <div v-else :class="{'right-column_folded': isRightColumnFolded}" class="right-column__inner bg-dark">-->
+<!--      <div class="row">-->
+<!--        <div class="col">-->
+<!--          <div class="heading">-->
+<!--            <div class="icon-all" @click="isRightColumnFolded = !isRightColumnFolded">-->
+<!--              <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">-->
+<!--                <path d="M1.0001 1L6.19482 6L1.0001 11" stroke="white" stroke-width="1.2" stroke-linecap="round"-->
+<!--                      stroke-linejoin="round"/>-->
+<!--                <path d="M5.80528 1L11 6L5.80528 11" stroke="white" stroke-width="1.2" stroke-linecap="round"-->
+<!--                      stroke-linejoin="round"/>-->
+<!--              </svg>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+
 </template>
 <script>
 import BigDataPlainFormResult from '../bigdata/forms/PlainFormResults'
@@ -390,7 +412,7 @@ export default {
 $leftColumnWidth: 398px;
 $leftColumnFoldedWidth: 84px;
 $rightColumnWidth: 348px;
-
+$rightColumnFoldedWidth: 84px;
 
 .well-cart {
   &__wrapper {
@@ -1444,18 +1466,28 @@ h4 {
   padding-left: 15px;
   flex: 0 0 5%;
 
+
   &__inner {
     height: 100%;
+    margin-left: 15px;
+    min-width: 340px;
+    max-width: 340px;
   }
+
   &_folded {
     min-width: $leftColumnFoldedWidth;
     width: $leftColumnFoldedWidth;
     max-width: $leftColumnFoldedWidth;
     margin-left: auto;
 
+    & + .mid-col {
+      min-width: calc(100% - #{$leftColumnWidth} - #{$rightColumnFoldedWidth} - 11px);
+    }
+
     .icon-all {
       transform: rotate(180deg);
     }
+
   }
 }
 
