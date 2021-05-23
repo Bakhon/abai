@@ -15,7 +15,8 @@
                     <div class="icon-ierarchy"></div>
                     <h2>Дело скважины</h2>
                   </div>
-                  <div class="icon-all" style="margin-left: auto;" @click="isLeftColumnFolded = !isLeftColumnFolded">
+                  <div class="icon-all" style="margin-left: auto;"
+                       @click="onLeftColumnFoldingEvent(isLeftColumnFolded, isRightColumnFolded, isBothColumnFolded)">
                     <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M11 1L5.8053 6L11 11" stroke="white" stroke-width="1.2" stroke-linecap="round"
                             stroke-linejoin="round"/>
@@ -40,6 +41,10 @@
           </div>
         </div>
       </div>
+      <div :class="{'right-column_folded': isRightColumnFolded}"
+           class="right-column__inner bg-dark" style="display:none"></div>
+      <div :class="{'both-pressed_folded' : isBothColumnFolded}"
+           class="right-column__inner bg-dark" style="display:none"></div>
       <div class="col-md-6 mid-col">
         <div class="row mid-col__main">
           <div class="col-md-12 mid-col__main-inner bg-dark-transparent">
@@ -117,7 +122,7 @@
             <div class="row">
               <div class="col">
                 <div class="heading">
-                  <div class="icon-all" @click="isRightColumnFolded = !isRightColumnFolded">
+                  <div class="icon-all" @click="onRightColumnFoldingEvent(isLeftColumnFolded, isRightColumnFolded, isBothColumnFolded)">
                     <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M1.0001 1L6.19482 6L1.0001 11" stroke="white" stroke-width="1.2" stroke-linecap="round"
                             stroke-linejoin="round"/>
@@ -328,6 +333,7 @@ export default {
       loading: false,
       isLeftColumnFolded: false,
       isRightColumnFolded: false,
+      isBothColumnFolded: false,
       allData: null,
       popup: false
     }
@@ -336,6 +342,26 @@ export default {
 
   },
   methods: {
+    onLeftColumnFoldingEvent(isLeftColumnFolded, isRightColumnFolded, isBothColumnFolded) {
+      //method check the isLeftColumnFolded & isRightColumnFolded var and returns isBothColumnFolded if true
+      this.isLeftColumnFolded = !isLeftColumnFolded;
+      if (this.isLeftColumnFolded === true && this.isRightColumnFolded === true) {
+        this.isBothColumnFolded = !isBothColumnFolded;
+        this.isBothColumnFolded=true;
+      } else {
+        this.isBothColumnFolded=false;
+      }
+    },
+    onRightColumnFoldingEvent(isLeftColumnFolded, isRightColumnFolded, isBothColumnFolded) {
+      //method check the isLeftColumnFolded & isRightColumnFolded var and returns isBothColumnFolded if true
+      this.isRightColumnFolded = !isRightColumnFolded;
+      if (this.isLeftColumnFolded === true && this.isRightColumnFolded === true) {
+        this.isBothColumnFolded = !isBothColumnFolded;
+        this.isBothColumnFolded=true;
+      } else {
+        this.isBothColumnFolded=false;
+      }
+    },
     onSearch(search, loading) {
       if (search.length) {
         loading(true);
@@ -1389,6 +1415,39 @@ h4 {
   margin-left: 0;
 }
 
+.both-pressed {
+  min-width: $leftColumnWidth;
+  width: $leftColumnWidth;
+  padding: 0 15px;
+  margin-bottom: 15px;
+
+  &_folded {
+    min-width: $leftColumnFoldedWidth;
+    width: $leftColumnFoldedWidth;
+
+    .icon-all {
+      transform: rotate(180deg);
+    }
+
+    .well-deal__header {
+      border: none;
+    }
+
+    .title, .directory {
+      display: none;
+    }
+
+    & ~ .mid-col {
+      min-width: calc(100% - #{$leftColumnFoldedWidth} - #{$rightColumnFoldedWidth} - 11px) !important;
+    }
+
+  }
+
+  &__inner {
+    height: 100%;
+  }
+}
+
 .left-column {
   min-width: $leftColumnWidth;
   width: $leftColumnWidth;
@@ -1411,7 +1470,7 @@ h4 {
       display: none;
     }
 
-    & + .mid-col {
+    & ~ .mid-col {
       min-width: calc(100% - #{$leftColumnFoldedWidth} - #{$rightColumnWidth} - 11px);
     }
 
@@ -1445,19 +1504,22 @@ h4 {
     max-width: $leftColumnFoldedWidth;
     margin-left: auto;
 
-    & + .mid-col {
+    & ~ .mid-col {
       min-width: calc(100% - #{$leftColumnWidth} - 84px - 11px);
     }
 
     .icon-all {
       transform: rotate(180deg);
     }
-    p{
+
+    p {
       display: none;
     }
-    table{
+
+    table {
       display: none;
     }
+
     .title-container {
       display: none;
     }
