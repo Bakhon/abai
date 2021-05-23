@@ -120,7 +120,8 @@
             <div class="row">
               <div class="col">
                 <div class="heading">
-                  <div class="icon-all" @click="onRightColumnFoldingEvent(isLeftColumnFolded, isRightColumnFolded, isBothColumnFolded)">
+                  <div class="icon-all"
+                       @click="onRightColumnFoldingEvent(isLeftColumnFolded, isRightColumnFolded, isBothColumnFolded)">
                     <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M1.0001 1L6.19482 6L1.0001 11" stroke="white" stroke-width="1.2" stroke-linecap="round"
                             stroke-linejoin="round"/>
@@ -345,9 +346,9 @@ export default {
       this.isLeftColumnFolded = !isLeftColumnFolded;
       if (this.isLeftColumnFolded === true && this.isRightColumnFolded === true) {
         this.isBothColumnFolded = !isBothColumnFolded;
-        this.isBothColumnFolded=true;
+        this.isBothColumnFolded = true;
       } else {
-        this.isBothColumnFolded=false;
+        this.isBothColumnFolded = false;
       }
     },
     onRightColumnFoldingEvent(isLeftColumnFolded, isRightColumnFolded, isBothColumnFolded) {
@@ -355,9 +356,9 @@ export default {
       this.isRightColumnFolded = !isRightColumnFolded;
       if (this.isLeftColumnFolded === true && this.isRightColumnFolded === true) {
         this.isBothColumnFolded = !isBothColumnFolded;
-        this.isBothColumnFolded=true;
+        this.isBothColumnFolded = true;
       } else {
-        this.isBothColumnFolded=false;
+        this.isBothColumnFolded = false;
       }
     },
     onSearch(search, loading) {
