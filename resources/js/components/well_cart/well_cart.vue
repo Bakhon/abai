@@ -41,9 +41,7 @@
           </div>
         </div>
       </div>
-      <div :class="{'right-column_folded': isRightColumnFolded}"
-           class="right-column__inner bg-dark" style="display:none"></div>
-      <div :class="{'both-pressed_folded' : isBothColumnFolded}"
+      <div :class="{'right-column_folded': isRightColumnFolded, 'both-pressed_folded' : isBothColumnFolded}"
            class="right-column__inner bg-dark" style="display:none"></div>
       <div class="col-md-6 mid-col">
         <div class="row mid-col__main">
