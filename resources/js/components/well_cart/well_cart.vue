@@ -476,9 +476,9 @@ $rightColumnFoldedWidth: 84px;
     .b-time {
       height: 40px;
       font-size: 14px;
-      FLEX-DIRECTION: row-reverse;
-      BACKGROUND: #4F5979;
-      BORDER-RADIUS: 10PX;
+      flex-direction: row-reverse;
+      background: #4F5979;
+      border-radius: 10PX;
       color: white;
       margin-left: auto;
     }
