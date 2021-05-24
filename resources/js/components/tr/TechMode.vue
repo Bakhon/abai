@@ -170,19 +170,7 @@
                         <h5>Добавление скважин</h5>
                         <button type="button" class="modal-bign-button" @click="closeModal('add_well')">Закрыть</button>
 
-                        <!-- <a class="modal-close" title="Close" @click.prevent="reRender" style="cursor: pointer;"> -->
-                          <!-- <svg 
-                            width="24" 
-                            height="24" 
-                            viewBox="0 0 24 24" 
-                            fill="none" 
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path d="M17.6567 17.6575L6.34294 6.34383" 
-                              stroke="white" stroke-width="1.4" stroke-linecap="round"/>
-                            <path d="M17.6556 6.34383L6.34188 17.6575" 
-                              stroke="white" stroke-width="1.4" stroke-linecap="round"/>
-                          </svg>
-                        </a> -->
+ 
                     </div>
                     
                     <div class="body" style="background: #272953; display:flex; justify-content: center; padding-top: 6px; padding-bottom: 7px;">
@@ -499,7 +487,6 @@
               />
             </svg>
           </a>
-
           <a
             v-if="!edit"
             v-bind:title="trans('tr.trtlp2')"
@@ -4077,7 +4064,7 @@ export default {
   },
   beforeCreate: function () {},
   created() {
-    this.$store.commit("globalloading/SET_LOADING", true);
+    this.$store.commit("globalloading/SET_LOADING", false);
     this.$store.commit("tr/SET_SORTPARAM", this.sortParam);
     this.$store.commit("tr/SET_SEARCH", this.searchString);
     this.$store.commit("tr/SET_FILTER", this.filter);
@@ -4100,7 +4087,7 @@ export default {
     this.$store.commit("tr/SET_MONTH", mm);
     this.$store.commit("tr/SET_YEAR", yyyy);
     this.axios
-      .get("http://172.20.103.187:7576/api/techregime/" + yyyy + "/" + mm + "/")
+      .get("http://172.20.103.187:7576/api/techregime_totals_test_2/" + yyyy + "/" + mm + "/")
       .then((response) => {
         let data = response.data;
         this.year = yyyy;
@@ -4111,7 +4098,7 @@ export default {
         if (data) {
           this.wells = data.data;
           this.setupPagination(data.data);
-          
+          console.log(this.lastEmittedPage)
           this.fullWells = data.data;
         } else {
           console.log("No data");
@@ -4193,10 +4180,10 @@ export default {
       , "el-table_1_column_315", "el-table_1_column_319", "el-table_1_column_323", "el-table_1_column_327", "el-table_1_column_331", "el-table_1_column_335", 
       "el-table_1_column_339", "el-table_1_column_343", "el-table_1_column_347", "el-table_1_column_351", "el-table_1_column_355", "el-table_1_column_359", "el-table_1_column_363",
        "el-table_1_column_377", "el-table_1_column_381", "el-table_1_column_385", "el-table_1_column_389", "el-table_1_column_393"], 
-      filter_column: [], 
+      filter_column: [],
+      baseUrl: 'http://172.20.103.187:7576/api/',
       
     };
-    
 
   },
   watch: {
@@ -4320,7 +4307,6 @@ export default {
       this.Filter_well_type = undefined;
       this.Filter_well = undefined;
       this.Filter_field = undefined;
-      
     },
     reRenderAll() {
       this.$store.commit("globalloading/SET_LOADING", true);
@@ -4340,7 +4326,6 @@ export default {
         var mm1 = today.getMonth() + 1;
         var yyyy1 = today.getFullYear();
       }
-
       this.axios
         .get("http://172.20.103.187:7576/api/techregime/" + yyyy + "/" + mm + "/")
         .then((response) => {
@@ -4356,7 +4341,6 @@ export default {
             console.log("No data");
             
           }
-
         });
     },
     showWells() {
@@ -4392,60 +4376,63 @@ export default {
       this.$modal.hide(modalName)
     },
    
-    sortBy(type) {
-      this.sortParam = type;
+    // sortBy(type) {
+    //   this.sortParam = type;
+    //   this.$store.commit("tr/SET_SORTTYPE", this.sortType);
+    //   this.$store.commit("tr/SET_SORTPARAM", type);
+    //   let { wells, sortType } = this;
+    //   console.log(type, sortType);
+    //   this.axios
+    //     .post("http://172.20.103.187:7576/api/techregime/" + yyyy + "/" + mm + "/")
+    //     .then((response) => {
+    //       let data = response.data;
+
+    //       this.$store.commit("globalloading/SET_LOADING", false);
+    //       if (data) {
+    //         console.log(data);
+    //         this.wells = data.data;
+    //         this.fullWells = data.data;
+    //       } else {
+    //         console.log("No data");
+            
+    //       }
+    //     });
+    // },
+
+    postData(){
+      return {
+          year: this.$store.getters["techMode/year"],
+          month: this.$store.getters["techMode/month"],
+          searchString: this.$store.getters["techMode/searchString"],
+          filterType: this.$store.getters["techMode/filterType"],
+          filterParam: this.$store.getters["techMode/filterParam"],
+          sortType: this.$store.getters["techMode/sortType"],
+          sortParam: this.$store.getters["techMode/sortParam"],
+          page: this.$store.getters["techMode/page"],
+        };
+    },
+    sortBy() {
+      let { wells, sortType } = this; 
       this.$store.commit("tr/SET_SORTTYPE", this.sortType);
       this.$store.commit("tr/SET_SORTPARAM", type);
-      let { wells, sortType } = this;
-      console.log(type, sortType);
-      if (sortType === "asc") {
-        this.wells = wells.sort((a, b) => {
-          let aVal = a[type];
-          let bVal = b[type];
-          if (Array.isArray(aVal)) {
-            if (typeof aVal[0] === "string") {
-              return aVal[0].localeCompare(bVal[0]);
-            } else {
-              if (Number(aVal[0]) > Number(bVal[0])) return 1;
-              else if (Number(aVal[0]) < Number(bVal[0])) return -1;
-              else return 0;
-            }
-          } else {
-            if (typeof aVal === "string") {
-              return aVal.localeCompare(bVal);
-            } else {
-              if (Number(aVal) > Number(bVal)) return 1;
-              else if (Number(aVal) < Number(bVal)) return -1;
-              else return 0;
-            }
-          }
-        });
-        this.sortType = "desc";
-      } else {
-        this.wells = wells.sort((a, b) => {
-          let aVal = a[type];
-          let bVal = b[type];
-          if (Array.isArray(aVal)) {
-            if (typeof aVal[0] === "string" && isNaN(Number(aVal[0]))) {
-              return bVal[0].localeCompare(aVal[0]);
-            } else {
-              if (Number(aVal[0]) > Number(bVal[0])) return -1;
-              else if (Number(aVal[0]) < Number(bVal[0])) return 1;
-              else return 0;
-            }
-          } else {
-            if (typeof aVal === "string" && isNaN(Number(aVal))) {
-              return aVal.localeCompare(bVal);
-            } else {
-              if (Number(aVal) > Number(bVal)) return -1;
-              else if (Number(aVal) < Number(bVal)) return 1;
-              else return 0;
-            }
-          }
-        });
-        this.sortType = "asc";
-      }
+      this.paginationParams();
     },
+    filtering() {
+      let { wells, sortType } = this; 
+      this.$store.commit("tr/SET_FILTERTYPE", this.sortType);
+      this.$store.commit("tr/SET_FILTERPARAM", type);
+      this.paginationParams();
+    },
+    paginationParams() {
+      this.$store.commit("globalloading/SET_LOADING", true);
+      this.axios
+        .post(
+          "http://172.20.103.187:7576/api/techregime_test/",
+          this.postData,
+          
+        )
+    },
+
     onChangeMonth(event) {
       this.$store.commit("tr/SET_MONTH", event.target.value);
     },
@@ -4488,7 +4475,6 @@ export default {
           }
         });
     },
-
     wellAdd() {
       this.$store.commit("globalloading/SET_LOADING", true);
       // this.isloading = true;
@@ -4516,7 +4502,6 @@ export default {
           
         });
     },
-
     chooseField() {
       const { filter, fullWells } = this;
       console.log("filter = ", filter);
@@ -4532,9 +4517,7 @@ export default {
       this.show_first = !this.show_first;
       this.show_second = !this.show_second;
       this.isfulltable = !this.isfulltable;
-
     },
-
     getColor(status) {
       if (status === "1") return "#ffff00";
       return "#ff0000";
