@@ -448,6 +448,7 @@ class DruidController extends Controller
         // $pCO2 = $CO2 / $kCO2 / 44000;   //kPa
         //print("pCO2 [kPa] = ", pCO2)
         $pCO2 = $conCO2_frac * $p / 100 ; // measured in bar as per formula
+        $pCO2pointA = $pCO2;
 
         //convert data to proper type
         $co2 = $pCO2 / 10; //convert partial pressure CO2 from bar => MPa
@@ -497,6 +498,7 @@ class DruidController extends Controller
         // $ppmH2S = $conH2S * 10000;
         // $pH2S = $pH2S / 1000;  #convert to float type and MPa
         $pH2S = $p * $conH2S_frac / 100; // partial pressure H2S in bar
+        $pH2SpointA = $pH2S;
         $ratio = $pCO2 / $pH2S;
 
         /*if ($pCO2 / $pH2S >= 20) {
@@ -1045,6 +1047,8 @@ class DruidController extends Controller
             'papavinasam_corrosion_mm_per_y_point_A' => round($PCR_A, 1),
             'papavinasam_corrosion_mm_per_y_point_E' => round($PCR_E, 1),
             'papavinasam_corrosion_mm_per_y_point_F' => round($PCR_F, 1),
+            'pCO2_point_A' => $pCO2pointA,
+            'pH2S_point_A' => $pH2SpointA
         ];
 
 
