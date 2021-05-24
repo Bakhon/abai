@@ -630,7 +630,6 @@
                                             )}`"
                                           >
                                           </span><span>{{ scope.row.well_type[0] }}</span>  
-
                                 </div>   
                               </el-tooltip> 
                             </template>
