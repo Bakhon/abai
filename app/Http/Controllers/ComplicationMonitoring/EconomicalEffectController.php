@@ -203,9 +203,9 @@ class EconomicalEffectController extends CrudController
         foreach($ecoonicalEffect as $key=>$row){
             foreach($row as $item){
                 if(!empty($total[$key])){
-                    $total[$key] += $item->economical_effect; 
+                    $total[$key][Carbon::parse($item->date)->year] += $item->economical_effect; 
                 }else{
-                    $total[$key] = $item->economical_effect; 
+                    $total[$key][Carbon::parse($item->date)->year] = $item->economical_effect; 
                 }
                 EconomicalEffect::where('id',$item->id)->update(['economical_effect_sum'=>$total[$key]]);
                 echo $item->gu_id." | ".$item->date." | ".$item->id." | ".$item->economical_effect." | ".$total[$key]."<br>";
