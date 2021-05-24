@@ -745,7 +745,6 @@
                                             v-model="scope.row.r_con[0]"
                                             :disabled="!edit">
                                           </el-input>
-                                          
                                 </div>
                                 <div v-else :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`r_con`)}" >
                                           <span
@@ -4097,7 +4096,7 @@ export default {
         if (data) {
           this.wells = data.data;
           this.setupPagination(data.data);
-          console.log(this.lastEmittedPage)
+          
           this.fullWells = data.data;
         } else {
           console.log("No data");
@@ -4375,28 +4374,6 @@ export default {
       this.$modal.hide(modalName)
     },
    
-    // sortBy(type) {
-    //   this.sortParam = type;
-    //   this.$store.commit("tr/SET_SORTTYPE", this.sortType);
-    //   this.$store.commit("tr/SET_SORTPARAM", type);
-    //   let { wells, sortType } = this;
-    //   console.log(type, sortType);
-    //   this.axios
-    //     .post("http://172.20.103.187:7576/api/techregime/" + yyyy + "/" + mm + "/")
-    //     .then((response) => {
-    //       let data = response.data;
-
-    //       this.$store.commit("globalloading/SET_LOADING", false);
-    //       if (data) {
-    //         console.log(data);
-    //         this.wells = data.data;
-    //         this.fullWells = data.data;
-    //       } else {
-    //         console.log("No data");
-            
-    //       }
-    //     });
-    // },
 
     postData(){
       return {
