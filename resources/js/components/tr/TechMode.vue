@@ -745,6 +745,7 @@
                                             v-model="scope.row.r_con[0]"
                                             :disabled="!edit">
                                           </el-input>
+
                                 </div>
                                 <div v-else :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`r_con`)}" >
                                           <span
@@ -4096,10 +4097,9 @@ export default {
         if (data) {
           this.wells = data.data;
           this.setupPagination(data.data);
-          
           this.fullWells = data.data;
         } else {
-          console.log("No data");
+          Vue.prototype.$notifyError(this.trans('tr.fa_alarm'))
           
         }
       });
@@ -4332,11 +4332,10 @@ export default {
           this.$store.commit("globalloading/SET_LOADING", false);
           // this.isloading = false;
           if (data) {
-            console.log(data);
             this.wells = data.data;
             this.fullWells = data.data;
           } else {
-            console.log("No data");
+            Vue.prototype.$notifyError(this.trans('tr.fa_alarm'))
             
           }
         });
