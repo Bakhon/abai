@@ -154,6 +154,7 @@ Route::group(
                 Route::post('dzo_excel_form', 'VisCenter\ExcelForm\ExcelFormController@store');
                 Route::post('dzo_chemistry_excel_form', 'VisCenter\ExcelForm\ExcelFormChemistryController@store');
                 Route::get('/proactive-factors', 'EconomyKenzhe\proactiveFactorsController@proactiveFactors')->name('proactiveFactors');
+                Route::get('/company-valuation', 'EconomyKenzhe\companyValuationController@companyValuation')->name('companyValuation');
                 Route::get('hive-data-from-avocet', function() {
                     Artisan::call('hive-data-from-avocet:cron');
                 });
