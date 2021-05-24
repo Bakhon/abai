@@ -6,7 +6,7 @@ return array (
   'valuationOfTheCompany' => 'Оценка стоимости компании',
   'company' => 
   array (
-    'name' => 'Компании',
+    'name' => 'Компания / Месторождения',
     'omg' => 'АО "ОзенМунайГаз"',
     'emg' => 'АО "Эмбамунайгаз"',
     'kbm' => 'АО "Каражанбасмунай"',
@@ -16,6 +16,7 @@ return array (
     'kgm' => 'ТОО "КазГерМунай"',
   ),
   'controlPanel' => 'Панель управления факторов',
+  'controlPanelCompanyValuation' => 'Панель управления входных параметров',
   'selectFilterOption1' => 'Значение 1',
   'selectFilterOption2' => 'Значение 2',
   'versionBp' => 
