@@ -2063,7 +2063,7 @@
                     @click="changeTable('4')"
                     :style="`${tableHover4}`"
                   >
-                    <div class="txt2">
+                    <div class="txt1">
                       {{ trans("visualcenter.prodWells") }}
                     </div>
                   </td>
@@ -2144,7 +2144,7 @@
                       @click="changeTable('5')"
                       :style="`${tableHover5}`"
                     >
-                      <div class="txt2">
+                      <div class="txt1">
                         {{ trans("visualcenter.idleWells") }}
                       </div>
                     </td>
@@ -2157,41 +2157,17 @@
             <div>
               <table class="table">
                 <tr class="d-flex">
-                 <td class="col-6">
-                    <div class="number">{{ staff }}</div>
+                 <td>
+                    <div class="number">{{this.otmData[0]['fact']}}</div>
                     <div class="in-idle2">
-                 {{ timeSelect }}
-                    </div>
-                  </td>
-
-                  <td class="col-6">
-                    <div class="d-flex">
-                      <div class="col-12">
-                        <div
-                          :class="`${getColor2(
-                            getDiffProcentLastP(staffPercent, staff)
-                          )}`"
-                        ></div>
-                        <div class="txt2-2">
-                          {{ Math.abs(getDiffProcentLastP(staffPercent, staff)) }}%
-                        </div>
-                      </div>
-                    </div>
-                    <div>
-                      <div class="in-idle">
-                        {{ getDiffProcentLastP(staffPercent, staff, "1") }}
-                      </div>
-                      <div class="in-idle">
-                        vs {{ quarter2[0] }}
-                        {{ trans("visualcenter.quarter") }}
-                        {{ quarter2[1] }}г.
-                      </div>
+                 <span v-if="isOneDateSelected"> {{ previousPeriodEnd }}</span>
+                 <span v-else> {{ previousPeriodStart }} - {{ previousPeriodEnd }}</span>
                     </div>
                   </td>
                 </tr>
                 <tr class="d-flex">
                   <td class="col-12">
-                    <div class="txt2">                    
+                    <div class="txt1">                    
                        Бурение скважин
                     </div>
                   </td>
@@ -2199,9 +2175,6 @@
               </table>
             </div>
           </div>
-
-
-
 
  <div class="first-string first-string2">
             <div>
@@ -2212,36 +2185,11 @@
                     <div class="in-idle2">
                  {{ timeSelect }}
                     </div>
-                  </td>
-
-                  <td class="col-6">
-                    <div class="d-flex">
-                      <div class="col-12">
-                        <div
-                          :class="`${getColor2(
-                            getDiffProcentLastP(staffPercent, staff)
-                          )}`"
-                        ></div>
-                        <div class="txt2-2">
-                          {{ Math.abs(getDiffProcentLastP(staffPercent, staff)) }}%
-                        </div>
-                      </div>
-                    </div>
-                    <div>
-                      <div class="in-idle">
-                        {{ getDiffProcentLastP(staffPercent, staff, "1") }}
-                      </div>
-                      <div class="in-idle">
-                        vs {{ quarter2[0] }}
-                        {{ trans("visualcenter.quarter") }}
-                        {{ quarter2[1] }}г.
-                      </div>
-                    </div>
-                  </td>
+                  </td>                  
                 </tr>
                 <tr class="d-flex">
                   <td class="col-12">
-                    <div class="txt2">                    
+                    <div class="txt1">                    
                        Ожидаемая добыча
                     </div>
                   </td>
@@ -2249,12 +2197,11 @@
               </table>
             </div>
           </div>
-
           
      <div class="first-string first-string2">
               <div>
                 <table class="table table5">
-                  <tr class="cursor-pointer d-flex">
+                  <tr class="d-flex">
                     <td
                       class="col-6"
                       @click="changeTable('6')"
@@ -2263,360 +2210,65 @@
                       <div class="mt-1 float-right">
                       
                       </div>
-                      <div class="otm"></div>
-                      <div class="txt2">
-                    КРС
+                        <div class="number">{{this.otmData[2]['fact']}}</div>
+                    <div class="in-idle2">
+                 <span v-if="isOneDateSelected"> {{ previousPeriodEnd }}<br><br></span>
+                 <span v-else> {{ previousPeriodStart }} - {{ previousPeriodEnd }}</span>
+                    </div>
+                <br>
+                      <div class="txt1">
+                           КРС
                       </div>
                     </td>
 
                     <td
                       class="col-6"
-                      @click="changeTable('7')"
-                      :style="`${tableHover7}`"
                     >
                       <div class="mt-1 float-right">
                   
                       </div>
-                      <div class="him"></div>
-                      <div class="txt2">
-                      ПРС
+                         <div class="number">{{this.otmData[3]['fact']}}</div>
+                    <div class="in-idle2">
+                 <span v-if="isOneDateSelected"> {{ previousPeriodEnd }}<br><br></span>
+                 <span v-else> {{ previousPeriodStart }} - {{ previousPeriodEnd }}</span>
+                    </div>
+                      <br>
+                      <div class="txt1">
+                          ПРС
                       </div>
                     </td>
                   </tr>
                 </table>
               </div>
             </div>
-          </div>
+          </div>     
 
-
-          <!--<div class="first-string first-string2">
+          <div class="first-string first-string2 cursor-pointer"          
+                      @click="changeTable('7')"
+                      :style="`${tableHover7}`"
+          >
             <div>
               <table class="table">
                 <tr class="d-flex">
-                 <td class="col-6">
-                    <div class="number">0</div>
+                 <td>
+                    <div class="number">{{this.chemistryData[0]['fact']+this.chemistryData[1]['fact']+this.chemistryData[2]['fact']+this.chemistryData[3]['fact']}}</div>
                     <div class="in-idle2">
-                 {{ timeSelect }}
-                    </div>
-                  </td>
-
-                  <td class="col-6">
-                    <div class="d-flex">
-                      <div class="col-12">
-                        <div
-                          :class="`${getColor2(
-                            getDiffProcentLastP(staffPercent, staff)
-                          )}`"
-                        ></div>
-                        <div class="txt2-2">
-                          {{ Math.abs(getDiffProcentLastP(staffPercent, staff)) }}%
-                        </div>
-                      </div>
-                    </div>
-                    <div>
-                      <div class="in-idle">
-                        {{ getDiffProcentLastP(staffPercent, staff, "1") }}
-                      </div>
-                      <div class="in-idle">
-                        vs {{ quarter2[0] }}
-                        {{ trans("visualcenter.quarter") }}
-                        {{ quarter2[1] }}г.
-                      </div>
+                  <span v-if="isOneDateSelected"> {{ previousPeriodEnd }}</span>
+                 <span v-else> {{ previousPeriodStart }} - {{ previousPeriodEnd }}</span>
                     </div>
                   </td>
                 </tr>
                 <tr class="d-flex">
                   <td class="col-12">
-                    <div class="txt2">                    
-                       Количество КРС
-                    </div>
-                  </td>
-                </tr>
-              </table>
-            </div>
-          </div>
-
-
-          <div class="first-string first-string2">
-            <div>
-              <table class="table">
-                <tr class="d-flex">
-                 <td class="col-6">
-                    <div class="number">0</div>
-                    <div class="in-idle2">
-                 {{ timeSelect }}
-                    </div>
-                  </td>
-
-                  <td class="col-6">
-                    <div class="d-flex">
-                      <div class="col-12">
-                        <div
-                          :class="`${getColor2(
-                            getDiffProcentLastP(staffPercent, staff)
-                          )}`"
-                        ></div>
-                        <div class="txt2-2">
-                          {{ Math.abs(getDiffProcentLastP(staffPercent, staff)) }}%
-                        </div>
-                      </div>
-                    </div>
-                    <div>
-                      <div class="in-idle">
-                        {{ getDiffProcentLastP(staffPercent, staff, "1") }}
-                      </div>
-                      <div class="in-idle">
-                        vs {{ quarter2[0] }}
-                        {{ trans("visualcenter.quarter") }}
-                        {{ quarter2[1] }}г.
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-                <tr class="d-flex">
-                  <td class="col-12">
-                    <div class="txt2">                    
-                       Количество ПРС
-                    </div>
-                  </td>
-                </tr>
-              </table>
-            </div>
-          </div>-->
-
-
-          <div class="first-string first-string2">
-            <div>
-              <table class="table">
-                <tr class="d-flex">
-                 <td class="col-6">
-                    <div class="number">0</div>
-                    <div class="in-idle2">
-                 {{ timeSelect }}
-                    </div>
-                  </td>
-
-                  <td class="col-6">
-                    <div class="d-flex">
-                      <div class="col-12">
-                        <div
-                          :class="`${getColor2(
-                            getDiffProcentLastP(staffPercent, staff)
-                          )}`"
-                        ></div>
-                        <div class="txt2-2">
-                          {{ Math.abs(getDiffProcentLastP(staffPercent, staff)) }}%
-                        </div>
-                      </div>
-                    </div>
-                    <div>
-                      <div class="in-idle">
-                        {{ getDiffProcentLastP(staffPercent, staff, "1") }}
-                      </div>
-                      <div class="in-idle">
-                        vs {{ quarter2[0] }}
-                        {{ trans("visualcenter.quarter") }}
-                        {{ quarter2[1] }}г.
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-                <tr class="d-flex">
-                  <td class="col-12">
-                    <div class="txt2">                    
+                    <div class="txt1">                    
                        Химизация
                     </div>
                   </td>
                 </tr>
               </table>
-            </div>
-          </div>
-
-            <div class="first-string first-string2">
-              <div>
-                <table class="table table5">
-                  <tr class="cursor-pointer d-flex">
-                    <td
-                      class="col-6"
-                      @click="changeTable('6')"
-                      :style="`${tableHover6}`"
-                    >
-                      <div class="mt-1 float-right">
-                        <img data-v-3712f8d4="" src="/img/icons/link.svg" />
-                      </div>
-                      <div class="otm"></div>
-                      <div class="txt2">
-                        {{ trans("visualcenter.otm") }}
-                      </div>
-                    </td>
-
-                    <td
-                      class="col-6"
-                      @click="changeTable('7')"
-                      :style="`${tableHover7}`"
-                    >
-                      <div class="mt-1 float-right">
-                        <img data-v-3712f8d4="" src="/img/icons/link.svg" />
-                      </div>
-                      <div class="him"></div>
-                      <div class="txt2">
-                        {{ trans("visualcenter.chem") }}
-                      </div>
-                    </td>
-                  </tr>
-                </table>
-              </div>
-            </div>
-          </div>
-
-          <div class="first-string first-string2">
-            <div>
-              <table class="table">
-                <tr class="d-flex">
-                  <td class="col-6">
-                    <div class="number">{{ staff }}</div>
-                    <div class="in-idle2">
-                      {{ quarter1[0] }}
-                      {{ trans("visualcenter.quarter") }}
-                      {{ quarter1[1] }} г.
-                    </div>
-                  </td>
-
-                  <td class="col-6">
-                    <div class="d-flex">
-                      <div class="col-12">
-                        <div
-                          :class="`${getColor2(
-                            getDiffProcentLastP(staffPercent, staff)
-                          )}`"
-                        ></div>
-                        <div class="txt2-2">
-                          {{ Math.abs(getDiffProcentLastP(staffPercent, staff)) }}%
-                        </div>
-                      </div>
-                    </div>
-                    <div>
-                      <div class="in-idle">
-                        {{ getDiffProcentLastP(staffPercent, staff, "1") }}
-                      </div>
-                      <div class="in-idle">
-                        vs {{ quarter2[0] }}
-                        {{ trans("visualcenter.quarter") }}
-                        {{ quarter2[1] }}г.
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-                <tr class="d-flex">
-                  <td class="col-12">
-                    <div class="txt2">
-                      {{trans("visualcenter.personal")}}
-                    </div>
-                  </td>
-                </tr>
-              </table>
-            </div>
-          </div>
-
-          <div class="first-string first-string2">
-            <div>
-              <table class="table">
-                <tr class="d-flex">
-                  <td class="col-6 px-2">
-                    <div class="number">{{ covid }}</div>
-                    <div class="in-idle2">{{ timeSelect }}</div>
-                  </td>
-
-                  <td class="col-6">
-                    <div class="d-flex">
-                      <div
-                        :class="`${getColor2(
-                          getDiffProcentLastP(covidPercent, covid)
-                        )}`"
-                      ></div>
-                      <div class="txt2-2">
-                        {{ Math.abs(getDiffProcentLastP(covidPercent, covid)) }}%
-                      </div>
-                    </div>
-                    <div>
-                      <div class="in-idle">
-                        {{ getDiffProcentLastP(covidPercent, covid, "1") }}
-                      </div>
-                      <div class="in-idle">
-                        vs
-                        <span v-if="isOneDateSelected"> {{ previousPeriodEnd }}</span>
-                        <span v-else> {{ previousPeriodStart }} - {{ previousPeriodEnd }}</span>
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td class="col-12">
-                    <div class="txt2">COVID-19</div>
-                  </td>
-                </tr>
-              </table>
-            </div>
-          </div>
-
-          <div class="first-string first-string2">
-            <div>
-              <table class="table table1-2">
-                <tr>
-                  <td class="d-flex">
-                    <div class="number col-6">{{ accidentTotal }}</div>
-                    <div class="col-6">
-                      <div>
-                        <div class="in-idle">
-                          <!-- с начала -->{{ trans("visualcenter.fromBegin") }}
-                        </div>
-                        <div class="in-idle">
-                          <!-- года -->{{ trans("visualcenter.year") }}
-                        </div>
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td class="d-flex">
-                    <div class="txt2 col-12">
-                      <!-- Несчастные случаи -->{{ trans("visualcenter.accident") }}
-                    </div>
-                  </td>
-                </tr>
-              </table>
-            </div>
-          </div>
-
-          <div class="first-string first-string2">
-          <div>
-            <table class="table">
-              <tr>
-                <td class="d-flex">
-                  <div class="number col-6">0</div>
-                  <div class="col-6">
-                    <div class="in-idle">
-                      <!-- Прирост -->{{ trans("visualcenter.increase") }}
-                    </div>
-                    <div class="in-idle">
-                      <!-- с начала месяца -->{{
-                      trans("visualcenter.monthBegin")
-                      }}
-                    </div>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td colspan="2">
-                  <div class="txt2">
-                    <!-- Смертельные случаи -->
-                    {{ trans("visualcenter.death") }}
-                  </div>
-                </td>
-              </tr>
-            </table>
-          </div>
-        </div>
+            </div>           
+          </div>      
+     
         </div>
     </div>
     </div>
