@@ -277,7 +277,7 @@ class OmgNGDUController extends CrudController
             ->orderByDesc('date')
             ->first();
 
-        $uhe = OmgUHE::where('date', '=', $request->dt)
+        $uhe = OmgUHE::where('date', '<=', $request->dt." 23:59:59")
             ->where('gu_id', $request->gu_id)
             ->whereNotNull('id')
             ->orderByDesc('date')
