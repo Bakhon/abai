@@ -68,7 +68,8 @@ class FieldCalcController extends MainController
          'BZ7001870000', 'BZ7001060000', 'BZ7001070000', 'BZ7001080000', 'BZ7101090000',
          'BZ7101100000', 'BZ7101110000', 'BZ7101120000', 'BZ7101130000', 'BZ7001020000',
          'BZ7001021000', 'BZ7001700100', 'BZ7001700201', 'BZ7001700202', 'BZ7001700203',
-         'BZ7001700299', 'BZ7001700301', 'BZ7001700399', 'BZ7001700302', 'BZ7001800000'];// (ДОХОДЫ) расчет по скважинам или расп. местор.
+         'BZ7001700299', 'BZ7001700301', 'BZ7001700399', 'BZ7001700302', 'BZ7001800000'
+    ]; // (ДОХОДЫ) расчет по скважинам или расп. местор.
 
     public $opiuLiquidNames = [
         'BZ7001010100',
@@ -343,7 +344,7 @@ class FieldCalcController extends MainController
                 $exportsEtpResults[$item->route_id] = $this->calculationETP($exportsResults[$item->route_id], $etpRate->exp_cust_duty_rate, $rate->ex_rate_dol); // Расчет ЭТП (экспорт)
                 $data[$lastDateOfMonth]['ЭТП (экспорт) '.$this->getRoute($item->route_id)] = $exportsEtpResults[$item->route_id];
             }
-            $exportsEtpResultsTotal = array_sum($exportsEtpResults); //Расчет ЭТП (Экспорт) всего
+            $exportsEtpResultsTotal = array_sum($exportsEtpResults); // Расчет ЭТП (Экспорт) всего
             // Export END
 
             // Inside BEGIN
@@ -456,20 +457,32 @@ class FieldCalcController extends MainController
         $opiuOilNames = [];
         $this->getShowDataOnTree($this->opiuOilNames, $opiuValues, $opiuOilNames);
         foreach ($opiuOilNames as $oilName){
-            $opiuOilNames['opiu'][$oilName['name']] = $oilName['value']/64000*$godovoiOil;
+            $opiuOilNames['opiu'][] = [
+                'value'=>$oilName['value']/64000*$godovoiOil,
+                'num'=>$oilName['num'],
+                'name' => $oilName['name']
+            ];
         }
 
         $opiuLiquidNames = [];
         $this->getShowDataOnTree($this->opiuLiquidNames, $opiuValues, $opiuLiquidNames);
         foreach ($opiuLiquidNames as $opiuLiquid){
-            $opiuLiquidNames['opiu'][$opiuLiquid['name']] = $opiuLiquid['value']/337000*$godovoiLiquid;
+            $opiuLiquidNames['opiu'][] = [
+                'value'=> $opiuLiquid['value']/337000*$godovoiLiquid,
+                'num'=>$opiuLiquid['num'],
+                'name' => $opiuLiquid['name']
+            ];
         }
 
         $result = [];
         $this->getShowDataOnTree($this->opiuRaspMestor, $opiuValues, $result); // данные на отображение
         $opiuRaspMestor = [];
         foreach($result as $opiu){
-            $opiuRaspMestor[$opiu['name']] = $opiu['value']/$totalWells*$activeWells; // расчет  ДОХОДЫ(ОПИУ) по скважинам
+            $opiuRaspMestor[$opiu['name']][] = [
+                'value'=> $opiu['value']/$totalWells*$activeWells, // расчет  ДОХОДЫ(ОПИУ) по скважинам
+                'num'=>$opiu['num'],
+                'name' => $opiu['name']
+            ];
         }
 
 //        $data['ОПЕРАЦИОННАЯ ПРИБЫЛЬ(+)/ УБЫТОК (-)'] = $godovoiDohod - (array_sum($opiuOilNames) + array_sum($opiuLiquid) + array_sum($opiuRaspMestor) + $godovoiRent + $godovoiNdnpi + $godovoiEtp + $godovoiTrans);
@@ -482,6 +495,10 @@ class FieldCalcController extends MainController
         $data['opiu_result']['Рентный налог на экспортир.сырую нефть, газовый конденсат'] = $godovoiRent;
         $data['opiu_result']['РЭкспортная таможенная пошлина ( ЭТП)'] = $godovoiEtp;
         $data['opiu_result']['Расходы по погрузке, транспортировке и хранению'] = $godovoiTrans;
+        $data['opiu_result']['Добыча нефти за год'] = $godovoiOil;
+        $data['opiu_result']['Добыча жидкости за год'] = $godovoiLiquid;
+        $data['opiu_result']['Добыча нефти, тыс. т (условное значение)'] = 64000;
+        $data['opiu_result']['Добыча жидкости, тыс. т (условное значение)'] = 337000;
         return view('economy_kenzhe.field_calculation.index')->with(compact('companies', 'data', 'datas'));
 
     }
@@ -505,6 +522,7 @@ class FieldCalcController extends MainController
                 }
                 if (in_array($value['num'], $names)) {
                     $result[] = [
+                        'num' => $value['num'],
                         'name' => $value['name'],
                         'value' => $value['plan_value'][2021],
                     ];
@@ -534,9 +552,7 @@ class FieldCalcController extends MainController
                 $data += $oilValume * $tarif->tn_rate * $rate->ex_rate_rub;
             }
         }
-
         return $data;
-
     }
 
 }

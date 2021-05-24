@@ -8,6 +8,7 @@
                     @foreach($datas as $key=> $value)
                         @if(is_array($value))
                                 <tr>
+                                    <td style="color: white;">{{$value['num']}}</td>
                                     <td style="color: white;">{{$value['name']}}</td>
                                     <td style="color: white;">{{$value['value']}}</td>
                                 </tr>
@@ -24,10 +25,27 @@
                         </tr>
                         @if(is_array($value))
                             @foreach($value as $k => $v)
-                                <tr>
-                                    <td style="color: white;">{{$k}}</td>
-                                    <td style="color: white;">{{$v}}</td>
-                                </tr>
+                                @if(is_array($v))
+                                    @foreach($v as $k => $vs)
+                                    @if(array_key_exists('num', $vs))
+                                        <tr>
+                                            <td style="color: white;">{{$vs['num']}}</td>
+                                            <td style="color: white;">{{$vs['name']}}</td>
+                                            <td style="color: white;">{{$vs['value']}}</td>
+                                        </tr>
+                                    @else
+                                        <tr>
+                                            <td style="color: white;">{{$k}}</td>
+                                            <td style="color: white;">{{$v}}</td>
+                                        </tr>
+                                    @endif
+                                    @endforeach
+                                @else
+                                    <tr>
+                                        <td style="color: white;">{{$k}}</td>
+                                        <td style="color: white;">{{$v}}</td>
+                                    </tr>
+                                @endif
                             @endforeach
                         @else
                             <tr>
@@ -36,6 +54,14 @@
                             </tr>
                         @endif
                     @endforeach
+                    <tr>
+                        <td>Средний действующий фонд, скв (Всего)</td>
+                        <td>3421</td>
+                    </tr>
+                    <tr>
+                        <td>Средний действующий фонд, скв (Всего)</td>
+                        <td>35</td>
+                    </tr>
 {{--                    @foreach($data['2021']['opiu'] as $key=> $value)--}}
 {{--                        @if(is_array($value))--}}
 {{--                            @foreach($value as $k=> $v)--}}
