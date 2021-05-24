@@ -6,12 +6,12 @@
     <div v-else class="row no-margin col-12 no-padding relative gno-incl-content-wrapper">
       
       <div class="plot-block col-8 gno-plotly-graph">
-        <h5>{{trans('pgno.prichini_prs_god')}}</h5>
+        <h5>{{trans('pgno.prichini_prs')}}</h5>
        <Plotly style="width: 784px;" :data="data" :layout="layout" :display-mode-bar="false"></Plotly>
        <div class="row">
         <div class="col-6">
           <h5 class="title-plot">
-            {{trans('pgno.number_of_repair')}}: {{numberRepairs}}
+            {{trans('pgno.kol_prs')}}: {{numberRepairs}}
           </h5>
        </div>
        <div class="col-6">

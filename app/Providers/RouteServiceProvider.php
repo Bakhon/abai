@@ -109,7 +109,9 @@ class RouteServiceProvider extends ServiceProvider
             'monitoring',
             'paegtm',
             'ndo',
-            'digital_drilling'
+            'digital_drilling',
+            'plast_fluids'
+    
         ];
 
         foreach ($modules as $module) {

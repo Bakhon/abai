@@ -350,7 +350,7 @@
                 </div>
               </modal>
 
-               <modal class="modal-bign-wrapper" name="modalSeparation" :draggable="false" :width="1000" :height="500"
+               <modal class="modal-bign-wrapper" name="modalSeparation" :draggable="false" :width="1000" :height="650"
                 style="background: transparent;" :adaptive="true">
                 <div class="modal-bign modal-bign-container">
                   <div class="modal-bign-header">
@@ -505,7 +505,7 @@
                         <label for="checkbox1" class="new-checkbox-modal-analysis-menu-label">{{trans('pgno.k_pr_k_po_okr')}}</label>
                       </div>
                       <div class="form-check-new">
-                        <label for="checkbox1" class="new-checkbox-modal-analysis-menu-label">{{trans('obv_po_okr')}}</label>
+                        <label for="checkbox1" class="new-checkbox-modal-analysis-menu-label">{{trans('pgno.obv_po_okr')}}</label>
                         <label for="checkbox1">{{ wctOkr }}%</label>
                       </div>
                       <div class="form-check-new">
@@ -1545,7 +1545,7 @@
                               <div class="col-8 table-border-gno">
                                 <input checked="true" @change="postCurveData()" :disabled="sep_meth ==='input_value' || expChoose === 'ФОН'" 
                               type="checkbox" v-model="mech_sep">{{trans('pgno.separation_mech')}}
-                              <input v-model="mech_sep_value" type="text" style="margin-left: 3px; margin-bottom: 0px;" 
+                              <input v-model="mech_sep_value" @change="postCurveData()" type="text" style="margin-left: 3px; margin-bottom: 0px;" 
                               :disabled="sep_meth ==='input_value' || expChoose === 'ФОН' ||  mech_sep === false" onfocus="this.value=''" class="input-box-gno podbor" /></div>
                             </div>
                               
@@ -1569,7 +1569,7 @@
                                 <div class="table-border-gno-right pdo-bottom-cell">
                                   <label class="label-for-celevoi">
                                     <input v-model="CelButton" class="checkbox3" value="ql" type="radio"
-                                      name="gno11" />{{trans('pgno.q_nefti')}}</label>
+                                      name="gno11" />{{trans('pgno.q_liq')}}</label>
                                   <input v-model="qlCelValue" @change="postCurveData()" :disabled="CelButton != 'ql'"
                                     onfocus="this.value=''" type="text" class="square3 podbor" />
                                 </div>
