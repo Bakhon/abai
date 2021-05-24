@@ -899,7 +899,7 @@ export default {
             mul: this.oilGas.oil_viscosity_at_20,
             mug: this.oilGas.gas_viscosity_at_20,
             q_o: this.ngdu.daily_oil_production,
-            h2s_in_gas: this.oilGas.hydrogen_sulfide_in_gas
+            current_dosage: this.current_dosage
           })
           .then((response) => {
             let data = response.data;

@@ -16,7 +16,7 @@ class Kernel extends ConsoleKernel
         \App\Console\Commands\UsdParse::class,
         \App\Console\Commands\OilParse::class,
         \App\Console\Commands\HiveDataFromAvocet::class,
-        \App\Console\Commands\receiveNonOperatingAssets::class,
+        \App\Console\Commands\ReceiveNonOperatingAssets::class,
     ];
 
     /**
