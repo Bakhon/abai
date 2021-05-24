@@ -262,6 +262,10 @@ class receiveNonOperatingAssets extends Command
                 $data = $this->getCollectedData($row,$k,'НКО',$sheet,$r,false);
                 $this->insertDataToDB($data);
             }
+            if ($trimmedColumn === '"Амангелді Газ" ЖШС/ ТОО "Амангельды Газ"') {
+                $data = $this->getCondensateData($row,$k,'АГ');
+                $this->insertDataToDB($data);
+            }
         }
     }
 
@@ -293,6 +297,21 @@ class receiveNonOperatingAssets extends Command
                 'date' => Carbon::yesterday('Asia/Almaty')
             );
         }
+        return $data;
+    }
+
+    public function getCondensateData($row, $columnIndex, $dzoName)
+    {
+        $columnMapping = array(
+            'condensateProduction' => 5,
+            'condensateDelivery' => 12
+        );
+        $data = array (
+            'condensate_production_fact' => $row[$columnMapping['condensateProduction']],
+            'condensate_delivery_fact' => $row[$columnMapping['condensateDelivery']],
+            'dzo_name' => $dzoName,
+            'date' => Carbon::yesterday('Asia/Almaty')
+        );
         return $data;
     }
 

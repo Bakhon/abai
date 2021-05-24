@@ -28,13 +28,17 @@ export default {
       titleXEn: "Liquid flow rate, м³/d.",
       titleYRu: "Давление, атм/газосодержание, %",
       titleYKz: "Қысым, атм / газ құрамы, %",
-      titleYEn: "Pressure, atm/gas saturation, %",
+      titleYEn: "Pressure, atm/GVF, %",
       nameKP: "Кривая притока" ,
       namePN: "Давление на приёме насоса",
       nameGN: "Газосодержание в насосе",
       nameTR: "Текущий режим",
       nameCR: "Целевой режим",
       namePR: "Потенциальный режим",
+      hovertemplateCR: "<b>Целевой режим</b><br>" +
+                          "Qж = %{x:.1f} м³/сут<br>" +
+                          "Qн = %{text:.1f} т/сут<br>" +
+                          "Pзаб = %{y:.1f} атм<extra></extra>",
       hovertemplateKP: "<b>Кривая притока</b><br>" +
                           "Qж = %{x:.1f} м³/сут<br>" +
                           "Qн = %{text:.1f} т/сут<br>" +
@@ -44,10 +48,6 @@ export default {
                           "Qж = %{x:.1f} м³/сут<br>" +
                           "Qн = %{text:.1f} т/сут<br>" +
                           "Pзаб = %{y:.1f} атм",
-      hovertemplateCR: "<b>Целевой режим</b><br>" +
-                          "Qж = %{x:.1f} м³/сут<br>" +
-                          "Qн = %{text:.1f} т/сут<br>" +
-                          "Pзаб = %{y:.1f} атм<extra></extra>",
       hovertemplatePR: "<b>Потенциальный режим</b><br>" +
                           "Qж = %{x:.1f} м³/сут<br>" +
                           "Qн = %{text:.1f} т/сут<br>" +
@@ -245,7 +245,7 @@ export default {
           mode: "markers",
           hovertemplate: this.hovertemplateCR,
           marker: {
-            size: "15",
+            size: "8",
             color: "#13B062",
           },
         },
