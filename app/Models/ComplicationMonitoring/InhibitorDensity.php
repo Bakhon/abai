@@ -1,6 +1,6 @@
 <?php
 
-namespace App\ComplicationMonitoring;
+namespace App\Models\ComplicationMonitoring;
 
 use Illuminate\Database\Eloquent\Model;
 

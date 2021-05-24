@@ -207,8 +207,8 @@ class EconomicalEffectController extends CrudController
                 }else{
                     $total[$key][Carbon::parse($item->date)->year] = $item->economical_effect; 
                 }
-                EconomicalEffect::where('id',$item->id)->update(['economical_effect_sum'=>$total[$key]]);
-                echo $item->gu_id." | ".$item->date." | ".$item->id." | ".$item->economical_effect." | ".$total[$key]."<br>";
+                EconomicalEffect::where('id',$item->id)->update(['economical_effect_sum'=>$total[$key][Carbon::parse($item->date)->year]]);
+                echo $item->gu_id." | ".$item->date." | ".$item->id." | ".$item->economical_effect." | ".$total[$key][Carbon::parse($item->date)->year]."<br>";
             }
         }
     }
