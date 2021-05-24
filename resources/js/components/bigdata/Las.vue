@@ -351,8 +351,8 @@
     <div class="container  container-main info pt-5" v-if="statisticsInput.mnemonics.length > 0">
       <div class="row mb-2">
         <label class="col label-text">Мнемоника</label>
-        <label class="col label-text">Max</label>
         <label class="col label-text">Min</label>
+        <label class="col label-text">Max</label>
         <label class="col label-text">Average</label>
         <label class="col label-text">Steps</label>
         <label class="col label-text">Frames</label>
@@ -361,8 +361,8 @@
         <div class="row mb-2"
              v-if="statisticsInput.mnemonics.includes(mnemonics) || statisticsInput.mnemonics.includes('all')">
           <label class="col label-text">{{ mnemonics }}</label>
-          <label class="col label-text">{{ statistics.max }}</label>
           <label class="col label-text">{{ statistics.min }}</label>
+          <label class="col label-text">{{ statistics.max }}</label>
           <label class="col label-text">{{ statistics.average }}</label>
           <label class="col label-text">{{ statistics.steps }}</label>
           <label class="col label-text">{{ statistics.frames }}</label>
