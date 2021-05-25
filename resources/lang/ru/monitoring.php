@@ -10,10 +10,10 @@ return array (
   'pipes' => 'Трубопроводы',
   'inhibitors' => 'Ингибиторы',
   'tech_map' => 'Техкарта',
-  'action_substance_of_co2' => 'Фактическое содержание углекислого газа мг/дм³',
-  'action_substance_of_h2s' => 'Фактическое содержание сероводорода мг/дм³',
-  'actual_corrosion_speed' => 'Фактическая скорость коррозии мм/г',
-  'actual_inhibitor_level' => 'Фактическая закачка ингибитора коррозии г/м3',
+  'action_substance_of_co2' => 'Фактическое содержание углекислого газа, мг/дм³',
+  'action_substance_of_h2s' => 'Фактическое содержание сероводорода, мг/дм³',
+  'actual_corrosion_speed' => 'Фактическая скорость коррозии, мм/г',
+  'actual_inhibitor_level' => 'Фактическая закачка ингибитора коррозии, г/м3',
   'units' => 
   array (
     'p_kon' => 'P кон.',
@@ -33,7 +33,7 @@ return array (
     'mm_year' => 'мм/год',
   ),
   'kormass' => 'Кормасс',
-  'ik_recommend' => 'Рекомендованная дозировка ИК',
+  'ik_recommend' => 'Рекомендованная дозировка ИК, г/м3',
   'economic_effect' => 'Экономический эффект',
   'corrosion_simulator' => 'Гидравлический симулятор коррозии',
   'problem_gu_list' => 'Список проблемных ГУ',
@@ -72,15 +72,15 @@ return array (
       'avg_speed' => 'Средняя скорость коррозии, мм/г',
     ),
   ),
-  'fact_common_corrosion_speed' => 'Фактическая общая скорость коррозии',
+  'fact_common_corrosion_speed' => 'Фактическая общая скорость коррозии, мм/г',
   'test_coupons' => 'тест купоны',
   'corrosion_inhibitor' => 'Ингибитор коррозии',
   'recommended_dosage' => 'Рекомендуемая дозировка',
   'max_recommended_dosage' => 'Максимальная рекомендуемая дозировка',
   'fact_dosage' => 'Фактическая дозировка',
   'plan_dosage' => 'Плановая дозировка',
-  'calc_common_corrosion_speed' => 'Расчетная общая скорость коррозии',
-  'calc_local_corrosion_speed' => 'Расчетная локальная скорость коррозии',
+  'calc_common_corrosion_speed' => 'Расчетная общая скорость коррозии, мм/г',
+  'calc_local_corrosion_speed' => 'Расчетная локальная скорость коррозии, мм/г',
   'table' => 
   array (
     'export_excel' => 'Выгрузить в excel',
@@ -424,4 +424,10 @@ return array (
   array (
     'table_title' => 'Таблица расчета гидравлики Скважина - ГУ',
   ),
+   'economical_effect_title' => 'Мониторинг потерянной выгоды',
+   'difference' => 'Разница закачки ИК, г/м3',
+   'inhibitor_price' => 'Стоимость ингибитора, тенге/кг',
+   'economical_effect' => 'Суточная потерянная выгода, тыс. тенге/сут',
+   'economical_effect_sum' => 'Накопленная потерянная выгода, тыс. тенге',
+
 );
