@@ -12,6 +12,8 @@ Route::group(
                 Route::get('/report_constructor', 'bd\DBController@report_constructor')->name('report_constructor');
                 Route::get('/user_reports', 'bd\DBController@userReports')->name('userReports');
 
+                Route::resource('/file_status', 'Refs\FileStatusController');
+
                 Route::get('/geo-data-reference-book', 'bd\DBController@geoDataReferenceBook')->name('bigdata.geoDataReferenceBook');
 
                 Route::get('/reports', 'bd\DBController@reports')->name('bigdata.reports');
