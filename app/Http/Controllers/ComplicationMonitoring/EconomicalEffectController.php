@@ -108,8 +108,6 @@ class EconomicalEffectController extends CrudController
         $currentDosage = OmgUHE::whereNotNull('current_dosage')->get();
         
         EconomicalEffect::truncate();
-
-        $result = [];
         
         foreach($currentDosage as $item){
 
@@ -168,7 +166,8 @@ class EconomicalEffectController extends CrudController
                     "rhog" => $guDataByDay->oilGas->gas_density_at_20,
                     "mul" => $guDataByDay->oilGas->oil_viscosity_at_20,
                     "mug" => $guDataByDay->oilGas->gas_viscosity_at_20,
-                    "q_o" => $guDataByDay->ngdu->daily_oil_production
+                    "q_o" => $guDataByDay->ngdu->daily_oil_production,
+                    "current_dosage" => $item->current_dosage
                 ];
 
                 $post = new POSTCaller(
@@ -185,11 +184,7 @@ class EconomicalEffectController extends CrudController
                 $ecomonicalEffect->gu_id = $item->gu_id;
                 $ecomonicalEffect->date = $item->date;
                 $ecomonicalEffect->сorrosion = $corrosion->corrosion_rate_mm_per_y_point_A;
-
-                //TODO
                 $ecomonicalEffect->actual_inhibitor_injection = $item->current_dosage;
-                //use plan dosage
-
                 $ecomonicalEffect->recommended_inhibitor_injection = $corrosion->dose_mg_per_l_point_A;
                 $ecomonicalEffect->difference = $item->current_dosage - $corrosion->dose_mg_per_l_point_A;
                 $ecomonicalEffect->inhibitor_price = $inhibitorPrice;
@@ -198,9 +193,9 @@ class EconomicalEffectController extends CrudController
             }
         }
 
-        $ecoonicalEffect = EconomicalEffect::orderBy('date')->get()->groupBy('gu_id');
+        $economicalEffect = EconomicalEffect::orderBy('date')->get()->groupBy('gu_id');
         $total = [];
-        foreach($ecoonicalEffect as $key=>$row){
+        foreach($economicalEffect as $key=>$row){
             foreach($row as $item){
                 if(!empty($total[$key])){
                     $total[$key][Carbon::parse($item->date)->year] += $item->economical_effect; 
