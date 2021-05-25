@@ -197,7 +197,7 @@ class EconomicalEffectController extends CrudController
         $total = [];
         foreach($economicalEffect as $key=>$row){
             foreach($row as $item){
-                if(!empty($total[$key])){
+                if(!empty($total[$key][Carbon::parse($item->date)->year])){
                     $total[$key][Carbon::parse($item->date)->year] += $item->economical_effect; 
                 }else{
                     $total[$key][Carbon::parse($item->date)->year] = $item->economical_effect; 
