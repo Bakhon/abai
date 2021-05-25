@@ -505,7 +505,7 @@
                         <label for="checkbox1" class="new-checkbox-modal-analysis-menu-label">{{trans('pgno.k_pr_k_po_okr')}}</label>
                       </div>
                       <div class="form-check-new">
-                        <label for="checkbox1" class="new-checkbox-modal-analysis-menu-label">{{trans('obv_po_okr')}}</label>
+                        <label for="checkbox1" class="new-checkbox-modal-analysis-menu-label">{{trans('pgno.obv_po_okr')}}</label>
                         <label for="checkbox1">{{ wctOkr }}%</label>
                       </div>
                       <div class="form-check-new">
