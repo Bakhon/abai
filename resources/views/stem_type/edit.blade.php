@@ -10,12 +10,13 @@
                 </div>
             @endif
             <div class="x_panel">
-            <h1>{{ trans('monitoring.stem_section.create_title') }}</h1>
+            <h1>{{ trans('monitoring.stem_type.edit_title') }}</h1>
             <a class="btn btn-primary float-left" href="{{ url()->previous() }}"><i class="fas fa-arrow-left"></i></a>
-                <form action="{{ route('stem_section.store') }}" method="POST">
+                <form action="{{ route('stem_type.update', ['stem_type' => $stem_type->id]) }}" method="PUT">
+                    @method('patch')
                     @csrf
                     <div class="row">
-                        <file-status-form :validation-params='@json($validationParams)'></file-status-form>
+                        <file-status-form :is-editing="true" :file-status='@json($stem_type)' :validation-params='@json($validationParams)'></file-status-form>
                     </div>
                 </form>
             </div>

@@ -10,7 +10,7 @@
                 </div>
             @endif
             <div class="x_panel">
-            <h1>{{ trans('monitoring.recording_state.edit_title') }}</h1>
+            <h1>{{ trans('monitoring.stem_section.edit_title') }}</h1>
             <a class="btn btn-primary float-left" href="{{ url()->previous() }}"><i class="fas fa-arrow-left"></i></a>
                 <form action="{{ route('stem_section.update', ['stem_section' => $stem_section->id]) }}" method="PUT">
                     @method('patch')
