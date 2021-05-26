@@ -7,6 +7,7 @@ use App\Models\BigData\Dictionaries\Org;
 use App\Models\BigData\Dictionaries\Tech;
 use App\Models\BigData\Dictionaries\WellCategory;
 use App\Models\BigData\Dictionaries\WellStatus;
+use App\Models\BigData\Dictionaries\WellType;
 use App\Models\TBDModel;
 
 class Well extends TBDModel
@@ -46,6 +47,11 @@ class Well extends TBDModel
     public function category()
     {
         return $this->belongsToMany(WellCategory::class, 'prod.well_category', 'well', 'category');
+    }
+
+    public function well_type()
+    {
+        return $this->belongsToMany(WellType::class, 'dict.well', 'id', 'well_type');
     }
 
 

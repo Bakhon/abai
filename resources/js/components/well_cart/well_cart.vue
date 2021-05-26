@@ -163,32 +163,44 @@
                     <tr>
                       <td>1</td>
                       <td>Скважина</td>
-                      <td>{{ allData.uwi }}</td>
+                      <td>
+                        <span v-if="allData">{{ allData.uwi }}</span>
+                      </td>
                     </tr>
                     <tr>
                       <td>2</td>
                       <td>Вид скважины</td>
-                      <td></td>
+                      <td>
+                        <span v-if="wellType">{{ wellType }}</span>
+                      </td>
                     </tr>
                     <tr>
                       <td>3</td>
                       <td>Месторождение</td>
-                      <td></td>
+                      <td>
+                        <span v-if="geo">{{ geo[0].name_ru }}</span>
+                      </td>
                     </tr>
                     <tr>
                       <td>4</td>
                       <td> Горизонт / Pнас, атм</td>
-                      <td></td>
+                      <td>
+                        <span v-if="geo">{{ geo[0].name_ru  }}</span>
+                      </td>
                     </tr>
                     <tr>
                       <td>5</td>
                       <td> H ротора</td>
-                      <td></td>
+                      <td>
+                        <span v-if="allData">{{ allData.rte  }}</span>
+                      </td>
                     </tr>
                     <tr>
                       <td>6</td>
                       <td>Тех. структура</td>
-                      <td>{{ tech[0].name_ru }}</td>
+                      <td>
+                        <span v-if="tech">{{ tech[0].name_ru }}</span>
+                      </td>
                     </tr>
                     <tr>
                       <td>7</td>
@@ -203,7 +215,7 @@
                     <tr>
                       <td>9</td>
                       <td>Орг. структура</td>
-                      <td>
+                      <td v-if="org">
                         <span v-for="value in org">
                           {{ value.name_ru + "/" }}
                         </span>
@@ -237,7 +249,9 @@
                     <tr>
                       <td>15</td>
                       <td>Дата ввода в эксплуатацию</td>
-                      <td>{{ tech[0].dbeg }}</td>
+                      <td>
+                        <span v-if="tech">{{ tech[0].dbeg }}</span>
+                      </td>
                     </tr>
                     <tr>
                       <td>16</td>
@@ -326,6 +340,7 @@ export default {
       well: null,
       tech: null,
       wellName: null,
+      wellType: null,
       org: null,
       geo: null,
       graph: null,
@@ -383,8 +398,10 @@ export default {
         this.org = data[0].orgs
         this.geo = data[0].geo
         this.wellName = data[0].uwi
+        this.wellType = data[0].well_type[0].name_ru
         this.allData = data[0]
-        console.log(data[0])
+
+        // console.log(data[0])
         this.loading = false
       })
     },
