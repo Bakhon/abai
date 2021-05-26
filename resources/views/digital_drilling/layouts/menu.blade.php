@@ -25,7 +25,9 @@
                 <a class="dropdown-item" href="{{ route('digital-drilling-rasters') }}"><img src="/img/digital-drilling/menu14.svg" alt="">Буровые растворы</a>
                 <a class="dropdown-item" href="{{ route('digital-drilling-deepening') }}"><img src="/img/digital-drilling/menu15.svg" alt="">Углубление скважины</a>
                 <a class="dropdown-item" href="{{ route('digital-drilling-fastening') }}"><img src="/img/digital-drilling/menu12.svg" alt="">Крепление</a>
-                <a class="dropdown-item"><img src="/img/digital-drilling/menu16.svg" alt="">Формирование отчета</a>
+                <a class="dropdown-item"><img src="/img/digital-drilling/menu24.svg" alt="">Продолжительность строительства</a>
+                <a class="dropdown-item"><img src="/img/digital-drilling/menu25.svg" alt="">Ресурсная смета</a>
+                {{--<a class="dropdown-item"><img src="/img/digital-drilling/menu16.svg" alt="">Формирование отчета</a>--}}
             </div>
         </div>
     </div>
