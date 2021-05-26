@@ -25,7 +25,7 @@ export default {
   components: { PerfectScrollbar, FullPageLoader, Tabs },
   data: function () {
     return {
-      url: "http://127.0.0.1:7575/api/pgno/",
+      url: "http://172.20.103.187:7575/api/pgno/",
       isLoading: false,
       activeRightTabName: 'technological-mode',
       layout: {
@@ -379,7 +379,7 @@ export default {
       }
     })
 
-    this.axios.get("http://127.0.0.1:7575/api/status/").then(res => {
+    this.axios.get("http://172.20.103.187:7575/api/status/").then(res => {
       if (res.status !== 200) {
         this.serviceOffline = true;
       } 
@@ -489,7 +489,7 @@ export default {
         this.CelValue = this.piCelValue
       }
       this.prepareData()
-      let uri = "http://127.0.0.1:7575/api/pgno/"+ this.field + "/" + this.wellNumber + "/download";
+      let uri = "http://172.20.103.187:7575/api/pgno/"+ this.field + "/" + this.wellNumber + "/download";
       this.axios.post(uri, this.postdata).then((response) => {
         fileDownload(response.data, "ПГНО_" + this.field + "_" + this.wellNumber + ".xlsx")
       }).catch(function (error) {
@@ -930,7 +930,7 @@ export default {
       }
     },
     async NnoCalc(){
-      let uri = "http://127.0.0.1:7575/api/nno/";
+      let uri = "http://172.20.103.187:7575/api/nno/";
 
       this.eco_param=null;
 
@@ -1258,7 +1258,7 @@ export default {
 
     fetchBlockCentrators() {
       let fieldInfo = this.wellIncl.split('_');
-      let urlForIncl = "http://127.0.0.1:7575/api/pgno/incl";
+      let urlForIncl = "http://172.20.103.187:7575/api/pgno/incl";
       if (this.expChoose == 'ЭЦН') {
         (this.liftValue = 'ЭЦН') && (this.stepValue = 20);
       } else {
@@ -1543,7 +1543,7 @@ export default {
             this.CelValue = this.piCelValue
           }
           if(this.isVisibleChart) {
-            let uri = "http://127.0.0.1:7575/api/pgno/shgn";
+            let uri = "http://172.20.103.187:7575/api/pgno/shgn";
             this.prepareData()
             console.log(this.postdata)
             this.axios.post(uri, this.postdata).then((response) => {
