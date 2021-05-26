@@ -1,7 +1,6 @@
 <template>
 
 	<div class="flex-container">
-		{{ inDevelopNotify() }}
 		<div class="flex__item__block__1">
 			<div class="title__block">Число качаний</div>
 
@@ -481,17 +480,6 @@ export default {
 			this.$emit('on-submit-params');
 			this.$modal.show('tabs');
 		},
-		inDevelopNotify() {
-      		setTimeout(this.inDeveloping, 1000)
-    	},
-		inDeveloping() {
-			this.$notify({
-          	message: this.trans('Находится в разработке'),
-          	type: 'error',
-          	size: 'sm',
-          	timeout: 8000
-        })
-		}
 	},
 	created: function() {
 		this.spmMin = this.$store.getters.spmMin
