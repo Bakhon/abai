@@ -152,6 +152,7 @@
             </div>
           </template>
           <div class="info">
+            <div v-if="isRightColumnFolded" class="rotate">Паспорт скважины</div>
             <div class="info-element">
               <div class="row">
                 <div class="col">
@@ -1121,6 +1122,16 @@ h4 {
     }
   }
 
+  .rotate {
+    transform: rotate(-90deg);
+    margin-top: 100px;
+    margin-bottom: 10px;
+    display: flex;
+    white-space: nowrap;
+    font-family: 'Harmonia Sans Pro Cyr', 'Harmonia-Sans', 'Robato';
+    font-weight: 700;
+    font-size: 16px;
+  }
 }
 
 .full-size-icon {
@@ -1510,6 +1521,7 @@ h4 {
 
     .icon-all {
       transform: rotate(180deg);
+      padding-bottom: 25px;
     }
 
     p {
@@ -1549,7 +1561,8 @@ h4 {
       margin-bottom: 0;
     }
   }
-  .col-md-12{
+
+  .col-md-12 {
     height: 100%;
   }
 }
