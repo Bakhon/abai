@@ -1260,6 +1260,7 @@ export default {
         this.axios.post(uri, this.postdata).then((response) => {
           let data = response.data;
           if (data) {
+            this.wellData = data["Well Data"]
             this.method = "CurveSetting"
             if(data["Well Data"]["pi"][0] * 1 < 0) {
               this.$notify({
@@ -1333,6 +1334,7 @@ export default {
       this.axios.post(uri, this.postdata).then((response) => {
         let data = response.data;
         if (data) {
+          this.wellData = data["Well Data"]
           this.method = "CurveSetting"
           this.newData = data["Well Data"]
           this.newCurveLineData = JSON.parse(data.LineData)["data"]
