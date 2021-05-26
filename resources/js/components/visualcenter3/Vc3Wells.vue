@@ -178,7 +178,7 @@ export default {
         return [
           {
             type: "bar",
-            name: "Количество",
+            name: this.trans("visualcenter.Fact"),
             stroke: {
               show: false,
             },
