@@ -24,7 +24,9 @@ class DBController extends Controller
 
     public function las()
     {
-        return view('reports.las');
+        $permissionNames = auth()->user()->getAllPermissions()->pluck('name')->toArray();       
+        
+        return view('reports.las', compact('permissionNames'));
     }
 
 

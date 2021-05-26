@@ -6,6 +6,9 @@ import Vue from "vue";
 Vue.use(Datetime)
 
 export default {
+    props: [
+      'params'
+    ],
     components: {},
     data() {
         return {
@@ -70,6 +73,8 @@ export default {
             loadProvenance: null,
             provenances: null,
             isLoading: false,
+            permissionName: 'bigdata load_las',
+            isPermission: false,
         }
     },
     mounted: function () {
@@ -344,5 +349,8 @@ export default {
             }).catch((error) => console.log(error)
             ).finally(() => this.$store.commit('globalloading/SET_LOADING', false));
         },
+    },
+    created() {
+        this.isPermission = this.params.includes(this.permissionName);
     }
 }
