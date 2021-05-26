@@ -426,39 +426,6 @@ export default {
 				],
 				}
 	},
-	computed: {
-		// spmMin: {
-		// 	get() {
-		// 		return this.$store.state.spmMin
-		// 	},
-		// },
-		// spmMax: {
-		// 	get() {
-		// 		return this.$store.state.spmMax
-		// 	},
-		// 	set(spmMax) {
-		// 		this.$store.commit("UPDATE_SPM_MAX", spmMax)
-		// 	}
-		// },
-		// lenMin: {
-		// 	get() {
-		// 		return this.$store.state.lenMin
-		// 	},
-		// 	set(lenMin) {
-		// 		this.$store.commit("UPDATE_LEN_MIN", lenMin)
-		// 	}
-		// },
-		// lenMax: {
-		// 	get() {
-		// 		return this.$store.state.lenMax
-		// 	},
-		// 	set(lenMax) {
-		// 		this.$store.commit("UPDATE_LEN_MAX", lenMax)
-		// 	}
-		// },
-		// ...mapState(["spmMin", "spmMax", "lenMin", "lenMax"]),
-      	// ...mapGetters(["myVal"])
-	},
 	methods: {
 		onChangeSpmMin(event) {
 			this.$store.commit("UPDATE_SPM_MIN", event.target.value)
