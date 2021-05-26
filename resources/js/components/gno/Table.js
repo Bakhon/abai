@@ -25,7 +25,7 @@ export default {
   components: { PerfectScrollbar, FullPageLoader, Tabs },
   data: function () {
     return {
-      url: "http://127.0.0.1:7575/api/pgno/",
+      url: "http://172.20.103.187:7575/api/pgno/",
       isLoading: false,
       activeRightTabName: 'technological-mode',
       layout: {
@@ -933,7 +933,7 @@ export default {
       }
     },
     async NnoCalc(){
-      let uri = "http://127.0.0.1:7575/api/nno/";
+      let uri = "http://172.20.103.187:7575/api/nno/";
 
       this.eco_param=null;
 
@@ -1261,7 +1261,7 @@ export default {
 
     fetchBlockCentrators() {
       let fieldInfo = this.wellIncl.split('_');
-      let urlForIncl = "http://127.0.0.1:7575/api/pgno/incl";
+      let urlForIncl = "http://172.20.103.187:7575/api/pgno/incl";
       if (this.expChoose == 'ЭЦН') {
         (this.liftValue = 'ЭЦН') && (this.stepValue = 20);
       } else {
