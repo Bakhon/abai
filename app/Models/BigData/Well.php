@@ -54,6 +54,11 @@ class Well extends TBDModel
         return $this->belongsToMany(WellType::class, 'dict.well', 'id', 'well_type');
     }
 
+//    public function zone()
+//    {
+//        return $this->belongsToMany(WellType::class, 'dict.well', 'id', 'well_type');
+//    }
+
 
     public function scopeActive($query, $date)
     {
