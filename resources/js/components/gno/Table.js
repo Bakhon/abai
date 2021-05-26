@@ -297,6 +297,20 @@ export default {
       nkt: null,
       liftValue: "ШГН",
       stepValue: 10,
+      strokeLenMin: null,
+      strokeLenMax: null,
+      spmMin: null,
+      spmMax: null,
+      pump27: null,
+      pump32: null,
+      pump38: null,
+      pump44: null,
+      pump50: null,
+      pump57: null,
+      pump60: null,
+      pump70: null,
+      pump95: null,
+      kpod_min: null,
       centratorsInfo: null,
       centratorsRequiredValue: null,
       centratorsRecommendedValue: null,
@@ -329,7 +343,8 @@ export default {
       isButtonHpump: false,
       postdata: null,
       inflowCurveTitle: this.trans('pgno.krivaya_pritoka'),
-      podborGnoTitle: this.trans('pgno.podbor_gno')
+      podborGnoTitle: this.trans('pgno.podbor_gno'),
+      serviceOffline: false,
     };
 
   },
@@ -363,6 +378,12 @@ export default {
         this.orgs = this.mmg_fields
       }
     })
+
+    this.axios.get("http://172.20.103.187:7575/api/status/").then(res => {
+      if (res.status !== 200) {
+        this.serviceOffline = true;
+      } 
+    })
     
   },
   mounted() {
@@ -389,8 +410,38 @@ export default {
       this.postCurveData();
     },
     prepareData() {
+      this.spmMin = this.$store.getters.spmMin
+      this.spmMax = this.$store.getters.spmMax
+      this.strokeLenMin = this.$store.getters.strokeLenMin
+      this.strokeLenMax = this.$store.getters.strokeLenMax
+      this.kpod_min = this.$store.getters.kpod_min
+      this.pump27 = this.$store.getters.pump27
+      this.pump32 = this.$store.getters.pump32
+      this.pump38 = this.$store.getters.pump38
+      this.pump44 = this.$store.getters.pump44
+      this.pump50 = this.$store.getters.pump50
+      this.pump57 = this.$store.getters.pump57
+      this.pump60 = this.$store.getters.pump60
+      this.pump70 = this.$store.getters.pump70
+      this.pump95 = this.$store.getters.pump95
       this.postdata = JSON.stringify(
         {
+          "pgno_setings":{
+            "strokelen_min": this.strokeLenMin,
+            "strokelen_max": this.strokeLenMax,
+            "spm_min": this.spmMin,
+            "spm_max": this.spmMax,
+            "pump27": this.pump27,
+            "pump32": this.pump32,
+            "pump38": this.pump38,
+            "pump44": this.pump44,
+            "pump50": this.pump50,
+            "pump57": this.pump57,
+            "pump60": this.pump60,
+            "pump70": this.pump70,
+            "pump95": this.pump95,
+            "kpod_min": this.kpod_min
+          },
           "welldata": this.wellData,
           "settings" : {
             "curveSelect": this.curveSelect,
@@ -439,7 +490,7 @@ export default {
       }
       this.prepareData()
       let uri = "http://172.20.103.187:7575/api/pgno/"+ this.field + "/" + this.wellNumber + "/download";
-      this.axios.post(uri, postdata,{responseType: "blob"}).then((response) => {
+      this.axios.post(uri, this.postdata).then((response) => {
         fileDownload(response.data, "ПГНО_" + this.field + "_" + this.wellNumber + ".xlsx")
       }).catch(function (error) {
         console.error('oops, something went wrong!', error);
@@ -448,12 +499,20 @@ export default {
     });
     },
 
+    onSubmitParams() {
+      this.$modal.hide('modalTabs')
+    },
+
     updateWellNum(event) {
       this.$store.commit('UPDATE_MESSAGE', event.target.value)
       this.$store.dispatch('loadWells')
     },
     closeModal(modalName) {
       this.$modal.hide(modalName)
+    },
+
+    closeTabModal(value) {
+      console.log('work in parent');
     },
 
     closeInclModal() {
@@ -466,7 +525,7 @@ export default {
     },
 
     onChangeParams() {
-      this.$modal.show('modalSeparation')
+      this.$modal.show('modalTabs')
     },
     
     setData: function(data) {
@@ -958,6 +1017,20 @@ export default {
     },
 
     getWellNumber(wellnumber) {
+      this.$store.commit("UPDATE_SPM_MIN", 3)
+    	this.$store.commit("UPDATE_SPM_MAX", 8)
+    	this.$store.commit("UPDATE_LEN_MIN", 2)
+    	this.$store.commit("UPDATE_LEN_MAX", 3)
+    	this.$store.commit("UPDATE_KPOD", 0.6)
+    	this.$store.commit("UPDATE_PUMP_27", false)
+    	this.$store.commit("UPDATE_PUMP_32", true)
+    	this.$store.commit("UPDATE_PUMP_38", true)
+    	this.$store.commit("UPDATE_PUMP_44", true)
+    	this.$store.commit("UPDATE_PUMP_50", false)
+    	this.$store.commit("UPDATE_PUMP_57", true)
+    	this.$store.commit("UPDATE_PUMP_60", false)
+    	this.$store.commit("UPDATE_PUMP_70", true)
+    	this.$store.commit("UPDATE_PUMP_95", false)
       if(this.field == "JET") {
               this.ao = 'АО "ММГ"'
             } else {
@@ -1482,6 +1555,13 @@ export default {
                 if (data["error"] == "NoIntersection") {
                   this.$notify({
                     message: this.trans('pgno.notify_change_depth_descent'),
+                    type: 'warning',
+                    size: 'sm',
+                    timeout: 8000
+                  }) 
+                } else if (data["error"] == "KpodError" ) {
+                  this.$notify({
+                    message: "Расчетный Кпод < Установленного в Настройках",
                     type: 'warning',
                     size: 'sm',
                     timeout: 8000
