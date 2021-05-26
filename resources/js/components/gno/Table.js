@@ -381,7 +381,6 @@ export default {
 
     this.axios.get("http://172.20.103.187:7575/api/status/").then(res => {
       if (res.status !== 200) {
-        console.log('asd');
         this.serviceOffline = true;
       } 
     })
