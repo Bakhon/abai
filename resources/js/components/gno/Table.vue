@@ -1210,7 +1210,7 @@
                               </td>
                             </tr>
                             <tr>
-                              <td class="td-pgno" rowspan="1">{{trans('p_pr')}}</td>
+                              <td class="td-pgno" rowspan="1">{{trans('pgno.p_pr')}}</td>
                               <td class="td-pgno" rowspan="1">{{ piCelValue }}</td>
                             </tr>
                           </tbody>
