@@ -185,14 +185,14 @@
                       <td>4</td>
                       <td> Горизонт / Pнас, атм</td>
                       <td>
-                        <span v-if="geo">{{ geo[0].name_ru  }}</span>
+                        <span v-if="geo">{{ geo[0].name_ru }}</span>
                       </td>
                     </tr>
                     <tr>
                       <td>5</td>
                       <td> H ротора</td>
                       <td>
-                        <span v-if="allData">{{ allData.rte  }}</span>
+                        <span v-if="allData">{{ allData.rte }}</span>
                       </td>
                     </tr>
                     <tr>
@@ -239,7 +239,10 @@
                     <tr>
                       <td>13</td>
                       <td>Период бурения</td>
-                      <td></td>
+                      <td>
+                        <span
+                            v-if="allData.drill_start_date">{{ allData.drill_start_date }} - {{ allData.drill_end_date }}</span>
+                      </td>
                     </tr>
                     <tr>
                       <td>14</td>
@@ -394,20 +397,28 @@ export default {
     selectWell(well) {
       this.loading = true
       this.axios.get(this.localeUrl(`/api/bigdata/wells/${well.id}`)).then(({data}) => {
-        this.tech = data[0].techs
-        this.org = data[0].orgs
-        this.geo = data[0].geo
-        this.wellName = data[0].uwi
-        this.wellType = data[0].well_type[0].name_ru
-        this.allData = data[0]
+        try {
+          // В некоторых случиях возникает ошибка получения данных пердположительно при отсутствии ключа в одном из справочников
+          // AKG_124 конфликтный случай
+          this.tech = data[0].techs
+          this.org = data[0].orgs
+          this.geo = data[0].geo
+          this.wellName = data[0].uwi
+          this.wellType = data[0].well_type[0].name_ru
+          this.allData = data[0]
 
-        // console.log(data[0])
-        this.loading = false
+
+          this.loading = false
+        } catch (e) {
+          this.loading = false
+          //пока прекращает cat loader
+        }
       })
-    },
-    setForm(formCode) {
-      this.activeFormCode = formCode
     }
+  }
+  ,
+  setForm(formCode) {
+    this.activeFormCode = formCode
   }
 }
 </script>
