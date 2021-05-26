@@ -223,6 +223,20 @@ export default {
         },
 
         {
+          name: this.nameCR,
+          legendgroup: "group5",
+          x: [],
+          y: [],
+          text: [],
+          mode: "markers",
+          hovertemplate: this.hovertemplateCR,
+          marker: {
+            size: "15",
+            color: "#13B062",
+          },
+        },
+
+        {
           name: this.nameTR,
           legendgroup: "group4",
           x: [],
@@ -233,20 +247,6 @@ export default {
           marker: {
             size: "15",
             color: "#00A0E3",
-          },
-        },
-
-        {
-          name: this.nameCR,
-          legendgroup: "group5",
-          x: [],
-          y: [],
-          text: [],
-          mode: "markers",
-          hovertemplate: this.hovertemplateCR,
-          marker: {
-            size: "8",
-            color: "#13B062",
           },
         },
 
