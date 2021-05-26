@@ -1138,6 +1138,7 @@ export default {
             this.horizon = data["Well Data"]["horizon"]
             this.curveSelect = 'pi'
             this.isYoungAge = data["Age"]
+            this.nkt = 62
 
 
             this.PBubblePoint = data["Well Data"]["P_bubble_point"].toFixed(1)
