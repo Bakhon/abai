@@ -114,7 +114,7 @@
           </div>
         </div>
       </div>
-      <div :class="{'right-column_folded': isRightColumnFolded}" class="right-column__inner bg-dark">
+      <div :class="{'right-column_folded': isRightColumnFolded}" class="right-column__inner">
         <div class="bg-dark-transparent">
           <template>
             <div class="row">
@@ -1079,7 +1079,7 @@ h4 {
 }
 
 .info {
-  height: calc(100vh - 100px);
+  height: calc(100vh - 160px);
   margin-bottom: 0 !important;
   overflow-y: auto;
   overflow-x: hidden;
@@ -1437,7 +1437,7 @@ h4 {
     }
 
     & ~ .mid-col {
-      min-width: calc(100% - #{$leftColumnFoldedWidth} - #{$rightColumnFoldedWidth} - 11px) !important;
+      min-width: calc(100% - #{$leftColumnFoldedWidth} - #{$rightColumnFoldedWidth} - 9px) !important;
     }
 
   }
@@ -1451,7 +1451,7 @@ h4 {
   min-width: $leftColumnWidth;
   width: $leftColumnWidth;
   padding: 0 15px;
-  margin-bottom: 15px;
+  margin-bottom: 0px;
 
   &_folded {
     min-width: $leftColumnFoldedWidth;
@@ -1470,7 +1470,7 @@ h4 {
     }
 
     & ~ .mid-col {
-      min-width: calc(100% - #{$leftColumnFoldedWidth} - #{$rightColumnWidth} - 11px);
+      min-width: calc(100% - #{$leftColumnFoldedWidth} - #{$rightColumnWidth} - 9px);
     }
 
   }
@@ -1501,10 +1501,11 @@ h4 {
     min-width: $leftColumnFoldedWidth;
     width: $leftColumnFoldedWidth;
     max-width: $leftColumnFoldedWidth;
-    margin-left: auto;
+    margin: 0px;
+    padding: 0px 15px;
 
     & ~ .mid-col {
-      min-width: calc(100% - #{$leftColumnWidth} - 84px - 11px);
+      min-width: calc(100% - #{$leftColumnWidth} - #{$rightColumnFoldedWidth} - 9px);
     }
 
     .icon-all {
@@ -1536,15 +1537,20 @@ h4 {
 }
 
 .mid-col {
-  min-width: calc(100% - #{$leftColumnWidth} - #{$rightColumnWidth} - 11px);
+  min-width: calc(100% - #{$leftColumnWidth} - #{$rightColumnWidth} - 9px);
   padding: 0 15px;
+  height: calc(100vh - 90px);
 
   &__main {
-    height: calc(100vh - 123px);
+    height: 100%;
+    overflow: hidden;
 
     &-inner {
       margin-bottom: 0;
     }
+  }
+  .col-md-12{
+    height: 100%;
   }
 }
 
