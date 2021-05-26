@@ -424,7 +424,6 @@ export default {
       this.pump60 = this.$store.getters.pump60
       this.pump70 = this.$store.getters.pump70
       this.pump95 = this.$store.getters.pump95
-      console.log(this.kpod_min);
       this.postdata = JSON.stringify(
         {
           "pgno_setings":{
@@ -501,7 +500,6 @@ export default {
     },
 
     onSubmitParams() {
-      console.log('params submited')
       this.$modal.hide('modalTabs')
     },
 
@@ -1557,6 +1555,13 @@ export default {
                 if (data["error"] == "NoIntersection") {
                   this.$notify({
                     message: this.trans('pgno.notify_change_depth_descent'),
+                    type: 'warning',
+                    size: 'sm',
+                    timeout: 8000
+                  }) 
+                } else if (data["error"] == "KpodError" ) {
+                  this.$notify({
+                    message: "Расчетный Кпод < Установленного в Настройках",
                     type: 'warning',
                     size: 'sm',
                     timeout: 8000
