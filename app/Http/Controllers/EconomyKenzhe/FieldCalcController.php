@@ -70,7 +70,8 @@ class FieldCalcController extends MainController
          'BZ7001870000', 'BZ7001060000', 'BZ7001070000', 'BZ7001080000', 'BZ7101090000',
          'BZ7101100000', 'BZ7101110000', 'BZ7101120000', 'BZ7101130000', 'BZ7001020000',
          'BZ7001021000', 'BZ7001700100', 'BZ7001700201', 'BZ7001700202', 'BZ7001700203',
-         'BZ7001700299', 'BZ7001700301', 'BZ7001700399', 'BZ7001700302', 'BZ7001800000'
+         'BZ7001700299', 'BZ7001700301', 'BZ7001700399', 'BZ7001700302', 'BZ7001800000',
+        'B73000000000'
     ]; // (ДОХОДЫ) расчет по скважинам или расп. местор.
 
     public $opiuLiquidNames = [
@@ -216,6 +217,7 @@ class FieldCalcController extends MainController
         
 //        foreach($oils as $year => $oil){
         $year = '2021';
+        $datat = [];
         for ($month = 1; $month <= 12; $month++) {
             $exportsResults = [];
             $exportsDiscontResults = [];
@@ -324,8 +326,9 @@ class FieldCalcController extends MainController
                     $item->barr_coef  = 7.23;
                 }
                 $exportsDiscontResults[$item->route_id] = $exportsResults[$item->route_id] * $item->barr_coef * (($item->macro - $item->discont) * $rate->ex_rate_dol); // доход от реализации
-                $data[$lastDateOfMonth]['Доход от реализации тг '.$this->getRoute($item->route_id)] = $exportsDiscontResults[$item->route_id];
-
+                $datat[$lastDateOfMonth]['Доход от реализацииs '.$this->getRoute($item->route_id)] = $exportsResults[$item->route_id] .'*'. $item->barr_coef .'*'. (($item->macro .'-'. $item->discont) .'*'. $rate->ex_rate_dol); // доход от реализации
+                $data[$lastDateOfMonth]['цена на экспорт '.$this->getRoute($item->route_id)] = $item->macro;
+                $datat[$lastDateOfMonth]['Доход от реализации тг '.$this->getRoute($item->route_id)] = $exportsDiscontResults[$item->route_id];
             }
             $exportsDiscontResultsTotal = array_sum($exportsDiscontResults);
 
@@ -375,6 +378,7 @@ class FieldCalcController extends MainController
 
             foreach ($discontIns as $item) {
                 $insideDiscontResults[$item->route_id] = $insideResults[$item->route_id] * $item->macro; // доход от реализации
+                $data[$lastDateOfMonth]['цена на внтр. рынок '.$this->getRoute($item->route_id)] = $item->macro;
                 $data[$lastDateOfMonth]['доход от реализации '.$this->getRoute($item->route_id)] = $insideDiscontResults[$item->route_id];
             }
             $insideDiscontResultsTotal = array_sum($insideDiscontResults);
@@ -465,55 +469,65 @@ class FieldCalcController extends MainController
             $nakopDiscSvodPotok += $discSvobPotok;
             $npv += $svobodDenPotok;
         }
+        $dds1 = ['BZF311010000', 'BZF311020000', 'BZF311050000', 'BZF311090000', 'BZF331990000'];
+        $dds2 = ['BZF312050000', 'BZF311020000', 'BZF311050000', 'BZF311090000', 'BZF331990000']; // + $kpn
+//        return view('economy_kenzhe.field_calculation.tarif')->with(compact('datat'));
+        for ($month = 1; $month <= 12; $month++) {
+            if ($month > 9){
+                $monthname = $month;
+            } else {
+                $monthname = '0' . $month;
+            }
+            $lastDateOfMonth = date("Y-m-t", strtotime($year . '-' . $monthname . '-01'));
+            $opiuOilNames = [];
+            $this->getShowDataOnTree($this->opiuOilNames, $opiuValues, $opiuOilNames);
+            foreach ($opiuOilNames as $oilName) {
+                $opiuOilNames[] = [
+                    'value' => $oilName['value'] / $godovoiOil * $data[$lastDateOfMonth]['Добыча нефти'],
+                    'num' => $oilName['num'],
+                    'name' => $oilName['name']
+                ];
+            }
 
-//        for ($month = 1; $month <= 12; $month++) {
-//            if ($month > 9){
-//                $monthname = $month;
-//            } else {
-//                $monthname = '0' . $month;
-//            }
-//            $lastDateOfMonth = date("Y-m-t", strtotime($year . '-' . $monthname . '-01'));
-//            $opiuOilNames = [];
-//            $this->getShowDataOnTree($this->opiuOilNames, $opiuValues, $opiuOilNames);
-//            foreach ($opiuOilNames as $oilName) {
-//                $opiuOilNames[] = [
-//                    'value' => $oilName['value'] / $godovoiOil * $data[$lastDateOfMonth]['Добыча нефти'],
-//                    'num' => $oilName['num'],
-//                    'name' => $oilName['name']
-//                ];
-//            }
-//
-//            $opiuLiquidNames = [];
-//            $this->getShowDataOnTree($this->opiuLiquidNames, $opiuValues, $opiuLiquidNames);
-//            foreach ($opiuLiquidNames as $opiuLiquid) {
-//                $opiuLiquidNames[] = [
-//                    'value' => $opiuLiquid['value'] / $godovoiLiquid * $data[$lastDateOfMonth]['добыча жидкости'],
-//                    'num' => $opiuLiquid['num'],
-//                    'name' => $opiuLiquid['name']
-//                ];
-//            }
-//
-//            $result = [];
-//            $this->getShowDataOnTree($this->opiuRaspMestor, $opiuValues, $result); // данные на отображение
-//            $opiuRaspMestor = [];
-//            foreach ($result as $opiu) {
-//                $opiuRaspMestor[] = [
-//                    'value' => $opiu['value'] / $totalWells * $activeWells, // расчет  ДОХОДЫ(ОПИУ) по скважинам
-//                    'num' => $opiu['num'],
-//                    'name' => $opiu['name']
-//                ];
-//            }
-//            array_push($data[$lastDateOfMonth], $opiuOilNames);
-//            array_push($data[$lastDateOfMonth], $opiuLiquidNames);
-//            array_push($data[$lastDateOfMonth], $opiuRaspMestor);
-//        }
+            $opiuLiquidNames = [];
+            $this->getShowDataOnTree($this->opiuLiquidNames, $opiuValues, $opiuLiquidNames);
+            foreach ($opiuLiquidNames as $opiuLiquid) {
+                $opiuLiquidNames[] = [
+                    'value' => $opiuLiquid['value'] / $godovoiLiquid * $data[$lastDateOfMonth]['добыча жидкости'],
+                    'num' => $opiuLiquid['num'],
+                    'name' => $opiuLiquid['name']
+                ];
+            }
+
+            $result = [];
+            $this->getShowDataOnTree($this->opiuRaspMestor, $opiuValues, $result); // данные на отображение
+            $opiuRaspMestor = [];
+            $financeRashod = 0;
+            foreach ($result as $opiu) {
+                $opiuRaspMestor[] = [
+                    'value' => $opiu['value'] / $totalWells * $activeWells, // расчет  ДОХОДЫ(ОПИУ) по скважинам
+                    'num' => $opiu['num'],
+                    'name' => $opiu['name']
+                ];
+                if($opiu['num'] =='B73000000000'){
+                    $financeRashod += $opiu['value'] / $totalWells * $activeWells;
+                }
+            }
+            $data[$lastDateOfMonth]['ОПЕРАЦИОННАЯ ПРИБЫЛЬ(+)/ УБЫТОК (-)'] = $operPrib - ($financeRashod + array_sum(array_column($opiuLiquidNames, 'value'))  + array_sum(array_column($opiuOilNames, 'value')));
+            $data[$lastDateOfMonth]['ДОХОД/(УБЫТОК) ДО НАЛОГООБЛОЖЕНИЯ'] = $operPrib - (array_sum(array_column($opiuRaspMestor, 'value')) + array_sum(array_column($opiuLiquidNames, 'value'))  + array_sum(array_column($opiuOilNames, 'value')));
+            $data[$lastDateOfMonth]['ЧИСТЫЙ ДОХОД/(УБЫТОК)'] = $data[$lastDateOfMonth]['ДОХОД/(УБЫТОК) ДО НАЛОГООБЛОЖЕНИЯ'] - $kpnResult;
+            $data[$lastDateOfMonth]['ЧИСТЫЙ ДОХОД/(УБЫТОК)'] = $data[$lastDateOfMonth]['Чистая сумма ДС по операционной деятельности'] - $kpnResult;
+
+            array_push($data[$lastDateOfMonth], $opiuOilNames);
+            array_push($data[$lastDateOfMonth], $opiuLiquidNames);
+            array_push($data[$lastDateOfMonth], $opiuRaspMestor);
+        }
 
 
 
 //        $data['ОПЕРАЦИОННАЯ ПРИБЫЛЬ(+)/ УБЫТОК (-)'] = $godovoiDohod - (array_sum($opiuOilNames) + array_sum($opiuLiquid) + array_sum($opiuRaspMestor) + $godovoiRent + $godovoiNdnpi + $godovoiEtp + $godovoiTrans);
         //ДОХОД/(УБЫТОК) ДО НАЛОГООБЛОЖЕНИЯ
 //        $data['ЧИСТЫЙ ДОХОД/(УБЫТОК)'] = $data['ОПЕРАЦИОННАЯ ПРИБЫЛЬ(+)/ УБЫТОК (-)'] - $godovoiKpn;
-
 //        $data['opiu_result'] = $opiuRaspMestor;
         $data['opiu_result']['ДОХОДЫ ОТ РЕАЛИЗАЦИИ ТОВАРОВ, РАБОТ, УСЛУГ'] = $godovoiDohod;
         $data['opiu_result']['Налог на добычу полезных ископаемых (НДПИ)'] = $godovoiNdnpi;
