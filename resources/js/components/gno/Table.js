@@ -297,6 +297,19 @@ export default {
       nkt: null,
       liftValue: "ШГН",
       stepValue: 10,
+      strokeLenMin: null,
+      strokeLenMax: null,
+      spmMin: null,
+      spmMax: null,
+      pump1: null,
+      pump2: null,
+      pump3: null,
+      pump4: null,
+      pump5: null,
+      pump6: null,
+      pump7: null,
+      pump8: null,
+      pump9: null,
       centratorsInfo: null,
       centratorsRequiredValue: null,
       centratorsRecommendedValue: null,
@@ -329,7 +342,8 @@ export default {
       isButtonHpump: false,
       postdata: null,
       inflowCurveTitle: this.trans('pgno.krivaya_pritoka'),
-      podborGnoTitle: this.trans('pgno.podbor_gno')
+      podborGnoTitle: this.trans('pgno.podbor_gno'),
+      serviceOffline: false,
     };
 
   },
@@ -349,6 +363,10 @@ export default {
     },      
   },
   beforeCreate: function () {
+    this.$store.state.spmMin = 3
+    this.$store.state.spmMax = 8
+    this.$store.state.strokeLenMin = 2
+    this.$store.state.strokeLenMax = 3
     this.axios.get('/ru/organizations').then(({data}) => {
       if (data.organizations.length == 0) {
         this.organization = "НК КазМунайГаз"
@@ -362,6 +380,13 @@ export default {
       } else if (this.organization == "АО «Мангистаумунайгаз»"){
         this.orgs = this.mmg_fields
       }
+    })
+
+    this.axios.get("http://172.20.103.187:7575/api/status/").then(res => {
+      if (res.status !== 200) {
+        console.log('asd');
+        this.serviceOffline = true;
+      } 
     })
     
   },
@@ -389,8 +414,31 @@ export default {
       this.postCurveData();
     },
     prepareData() {
+      this.spmMin = this.$store.getters.spmMin
+      this.spmMax = this.$store.getters.spmMax
+      this.strokeLenMin = this.$store.getters.strokeLenMin
+      this.strokeLenMax = this.$store.getters.strokeLenMax
+      this.pump1 = this.$store.getters.pump27
+      this.pump2 = this.$store.getters.pump32
+      this.pump3 = this.$store.getters.pump38
+      this.pump4 = this.$store.getters.pump44
+      this.pump5 = this.$store.getters.pump50
+      this.pump6 = this.$store.getters.pump57
+      this.pump7 = this.$store.getters.pump60
+      this.pump8 = this.$store.getters.pump70
+      this.pump9 = this.$store.getters.pump95
+      console.log(this.spmMin);
+      console.log(this.strokeLenMax);
       this.postdata = JSON.stringify(
         {
+          "pgno_setings":{
+            "strokelen_min": this.strokeLenMin,
+            "strokelen_max": this.strokeLenMax,
+            "spm_min": this.spmMin,
+            "spm_max": this.spmMax,
+            "diameters" :[],
+            "kpod_min": this.kpodMin
+          },
           "welldata": this.wellData,
           "settings" : {
             "curveSelect": this.curveSelect,
@@ -448,12 +496,21 @@ export default {
     });
     },
 
+    onSubmitParams() {
+      console.log('params submited')
+      this.$modal.hide('modalTabs')
+    },
+
     updateWellNum(event) {
       this.$store.commit('UPDATE_MESSAGE', event.target.value)
       this.$store.dispatch('loadWells')
     },
     closeModal(modalName) {
       this.$modal.hide(modalName)
+    },
+
+    closeTabModal(value) {
+      console.log('work in parent');
     },
 
     closeInclModal() {
@@ -466,7 +523,7 @@ export default {
     },
 
     onChangeParams() {
-      this.$modal.show('modalSeparation')
+      this.$modal.show('modalTabs')
     },
     
     setData: function(data) {

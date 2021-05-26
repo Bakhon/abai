@@ -19,7 +19,7 @@
       </ul>
 
     <div v-if="currentTab == 1">
-        <shgn></shgn>
+        <shgn @on-submit-params="onPushParams()"></shgn>
     </div>
 
     <div v-if="currentTab == 2">
@@ -60,6 +60,9 @@ export default {
     methods: {
         selectTab(selectedTab) {
             this.currentTab = selectedTab
+        },
+        onPushParams() {
+            this.$emit('onPushParams')
         }
     }
 }
