@@ -411,7 +411,7 @@ export default {
           this.loading = false
         } catch (e) {
           this.loading = false
-          //пока прекращает cat loader
+          //пока прекращает cat loadetr
         }
       })
     }
