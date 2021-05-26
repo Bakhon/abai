@@ -350,7 +350,7 @@
                 </div>
               </modal>
 
-               <modal class="modal-bign-wrapper" name="modalSeparation" :draggable="false" :width="1000" :height="500"
+               <modal class="modal-bign-wrapper" name="modalSeparation" :draggable="false" :width="1000" :height="650"
                 style="background: transparent;" :adaptive="true">
                 <div class="modal-bign modal-bign-container">
                   <div class="modal-bign-header">
@@ -505,7 +505,7 @@
                         <label for="checkbox1" class="new-checkbox-modal-analysis-menu-label">{{trans('pgno.k_pr_k_po_okr')}}</label>
                       </div>
                       <div class="form-check-new">
-                        <label for="checkbox1" class="new-checkbox-modal-analysis-menu-label">{{trans('obv_po_okr')}}</label>
+                        <label for="checkbox1" class="new-checkbox-modal-analysis-menu-label">{{trans('pgno.obv_po_okr')}}</label>
                         <label for="checkbox1">{{ wctOkr }}%</label>
                       </div>
                       <div class="form-check-new">

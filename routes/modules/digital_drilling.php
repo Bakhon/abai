@@ -88,5 +88,106 @@ Route::group(
                     return view('digital_drilling.project.fastening-page7');
                 })->name('digital-drilling-fastening-page7');
             });
+            // Online
+            Route::group(['prefix' => '/online'], function () {
+                Route::get('/alarm', function () {
+                    return view('digital_drilling.online.alarm');
+                })->name('digital-drilling-alarm');
+                Route::get('/geo-first', function () {
+                    return view('digital_drilling.online.geo-first');
+                })->name('digital-drilling-geo-first');
+                Route::get('/geo-second', function () {
+                    return view('digital_drilling.online.geo-second');
+                })->name('digital-drilling-geo-second');
+                Route::get('/geo-third', function () {
+                    return view('digital_drilling.online.geo-third');
+                })->name('digital-drilling-geo-third');
+                Route::get('/sector', function () {
+                    return view('digital_drilling.online.sector');
+                })->name('digital-drilling-sector');
+                Route::get('/visual', function () {
+                    return view('digital_drilling.online.visual');
+                })->name('digital-drilling-visual');
+                Route::get('/report1', function () {
+                    return view('digital_drilling.online.report1');
+                })->name('digital-drilling-report1');
+                Route::get('/report2', function () {
+                    return view('digital_drilling.online.report2');
+                })->name('digital-drilling-report2');
+            });
+            // Online
+            Route::group(['prefix' => '/supervising'], function () {
+                Route::get('/reports', function () {
+                    return view('digital_drilling.supervising.reports');
+                })->name('digital-drilling-reports');
+                Route::get('/balance', function () {
+                    return view('digital_drilling.supervising.balance');
+                })->name('digital-drilling-balance');
+                Route::get('/balance', function () {
+                    return view('digital_drilling.supervising.balance');
+                })->name('digital-drilling-balance');
+                Route::get('/balance-second', function () {
+                    return view('digital_drilling.supervising.balance-graph-first');
+                })->name('digital-drilling-balance-second');
+                Route::get('/balance-third', function () {
+                    return view('digital_drilling.supervising.balance-graph-second');
+                })->name('digital-drilling-balance-third');
+                Route::get('/fact', function () {
+                    return view('digital_drilling.supervising.fact');
+                })->name('digital-drilling-fact');
+                Route::get('/npv', function () {
+                    return view('digital_drilling.supervising.npv');
+                })->name('digital-drilling-npv');
+                Route::get('/akc', function () {
+                    return view('digital_drilling.supervising.akc');
+                })->name('digital-drilling-akc');
+            });
+            // Online
+            Route::group(['prefix' => '/analytics'], function () {
+                Route::get('/deepening-inclino', function () {
+                    return view('digital_drilling.analytics.deepening');
+                })->name('digital-drilling-analytics-deepening-inclino');
+                Route::get('/deepening-visual', function () {
+                    return view('digital_drilling.analytics.deepening-visual');
+                })->name('digital-drilling-analytics-deepening-visual');
+                Route::get('/deepening-knbk', function () {
+                    return view('digital_drilling.analytics.deepening-knbk');
+                })->name('digital-drilling-analytics-deepening-knbk');
+                Route::get('/deepening-params', function () {
+                    return view('digital_drilling.analytics.deepening-params');
+                })->name('digital-drilling-analytics-deepening-params');
+                Route::get('/deepening-bur', function () {
+                    return view('digital_drilling.analytics.deepening-bur');
+                })->name('digital-drilling-analytics-deepening-bur');
+                Route::get('/deepening-gidro', function () {
+                    return view('digital_drilling.analytics.deepening-gidro');
+                })->name('digital-drilling-analytics-deepening-gidro');
+                Route::get('/deepening-sorting', function () {
+                    return view('digital_drilling.analytics.deepening-sorting');
+                })->name('digital-drilling-analytics-deepening-sorting');
+                Route::get('/deepening-selection', function () {
+                    return view('digital_drilling.analytics.deepening-selection');
+                })->name('digital-drilling-analytics-deepening-selection');
+
+                Route::get('/fastening-first', function () {
+                    return view('digital_drilling.analytics.fastening-first');
+                })->name('digital-drilling-analytics-fastening-first');
+                Route::get('/fastening-second', function () {
+                    return view('digital_drilling.analytics.fastening-second');
+                })->name('digital-drilling-analytics-fastening-second');
+                Route::get('/fastening-third', function () {
+                    return view('digital_drilling.analytics.fastening-third');
+                })->name('digital-drilling-analytics-fastening-third');
+
+                Route::get('/complications', function () {
+                    return view('digital_drilling.analytics.complications');
+                })->name('digital-drilling-analytics-complications');
+                Route::get('/akc', function () {
+                    return view('digital_drilling.analytics.akc');
+                })->name('digital-drilling-analytics-akc');
+                Route::get('/balance', function () {
+                    return view('digital_drilling.analytics.balance');
+                })->name('digital-drilling-analytics-balance');
+            });
         });
     });

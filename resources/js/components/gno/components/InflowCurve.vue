@@ -28,13 +28,17 @@ export default {
       titleXEn: "Liquid flow rate, м³/d.",
       titleYRu: "Давление, атм/газосодержание, %",
       titleYKz: "Қысым, атм / газ құрамы, %",
-      titleYEn: "Pressure, atm/gas saturation, %",
+      titleYEn: "Pressure, atm/GVF, %",
       nameKP: "Кривая притока" ,
       namePN: "Давление на приёме насоса",
       nameGN: "Газосодержание в насосе",
       nameTR: "Текущий режим",
       nameCR: "Целевой режим",
       namePR: "Потенциальный режим",
+      hovertemplateCR: "<b>Целевой режим</b><br>" +
+                          "Qж = %{x:.1f} м³/сут<br>" +
+                          "Qн = %{text:.1f} т/сут<br>" +
+                          "Pзаб = %{y:.1f} атм<extra></extra>",
       hovertemplateKP: "<b>Кривая притока</b><br>" +
                           "Qж = %{x:.1f} м³/сут<br>" +
                           "Qн = %{text:.1f} т/сут<br>" +
@@ -44,10 +48,6 @@ export default {
                           "Qж = %{x:.1f} м³/сут<br>" +
                           "Qн = %{text:.1f} т/сут<br>" +
                           "Pзаб = %{y:.1f} атм",
-      hovertemplateCR: "<b>Целевой режим</b><br>" +
-                          "Qж = %{x:.1f} м³/сут<br>" +
-                          "Qн = %{text:.1f} т/сут<br>" +
-                          "Pзаб = %{y:.1f} атм<extra></extra>",
       hovertemplatePR: "<b>Потенциальный режим</b><br>" +
                           "Qж = %{x:.1f} м³/сут<br>" +
                           "Qн = %{text:.1f} т/сут<br>" +
@@ -80,10 +80,7 @@ export default {
             dash: 'dot'
           }
         }],
-        // width:  1200,
         height: 410,
-        // autosize: true,
-        // showlegend: true,
         margin: {
           l: 100,
           r: 100,
@@ -93,19 +90,8 @@ export default {
         xaxis: {
           title: '',
           hoverformat: ".1f",
-          // showline: true,
-          // autorange: false,
-          // showgrid: true,
-          // showline: true,
-          // mirror: 'ticks',
-          // range: [0,100],
-          // zeroline: false,
           rangemode: 'nonnegative',
-          // showgrid: true,
-          // mirror:true,
-          // ticklen: 4,
           gridcolor: "#454D7D",
-          // tickfont: {size: 10},
           linewidth: 1,
           linecolor: "#454D7D"
         },
@@ -114,23 +100,13 @@ export default {
           hoverformat: ".1f",
           rangemode: 'nonnegative',
           showline: true,
-          // range: [0,100],
-          // zeroline: false,
-          // showgrid: true,
-          // mirror: 'ticks',
-          // mirror:true,
-          // ticklen: 4,
           gridcolor: "#454D7D",
-          // tickfont: {size: 10},
           linewidth: 1,
           linecolor: "#454D7D"
         },
-
-        //   scene:{ gridcolor: '#ffffff',},
         paper_bgcolor: "#272953",
         plot_bgcolor: "#272953",
         font: { color: "#fff" },
-
         legend: {
           orientation: "h",
           y: -0.3,
@@ -147,7 +123,6 @@ export default {
   methods: {
 
     setLine: function (value) {
-      // console.log(value)
       var ipr_points = [];
       var pintake_points = [];
       var freegas_points = [];
@@ -166,8 +141,6 @@ export default {
         freegas_points = values.freegas_points;
         qo_points = values.qo_points;
         q_oil = values.q_oil;
-
-        //if (freegas_points==0) {freegas_points=0};
         if (freegas_points == "nan") {
           freegas_points = null;
         }
@@ -223,20 +196,6 @@ export default {
         },
 
         {
-          name: this.nameTR,
-          legendgroup: "group4",
-          x: [],
-          y: [],
-          text: [],
-          mode: "markers",
-          hovertemplate: this.hovertemplateTR,
-          marker: {
-            size: "15",
-            color: "#00A0E3",
-          },
-        },
-
-        {
           name: this.nameCR,
           legendgroup: "group5",
           x: [],
@@ -247,6 +206,20 @@ export default {
           marker: {
             size: "15",
             color: "#13B062",
+          },
+        },
+
+        {
+          name: this.nameTR,
+          legendgroup: "group4",
+          x: [],
+          y: [],
+          text: [],
+          mode: "markers",
+          hovertemplate: this.hovertemplateTR,
+          marker: {
+            size: "15",
+            color: "#00A0E3",
           },
         },
 
@@ -265,12 +238,8 @@ export default {
         },
       ];
       this.chartOptions = {
-        // ["10", "20", "3", "4", "5", "6", "7", "8", "9", "10"],
         labels: qo_points2,
       };
-     /////////
-
-     /////////
     },
     setPoints: function (value) {
       this.data[3]['x'][0] = value[0]["q_l"]
@@ -285,19 +254,11 @@ export default {
       this.data[4]['y'][0] = value[2]["p"]
       this.data[4]['text'][0] = value[2]["q_oil"]
     },
-    // resize() {
-    //   console.log(window.innerWidth);
-    // }
   },
   mounted() {},
   created: function () {
     this.$parent.$on("LineData", this.setLine);
     this.$parent.$on("PointsData", this.setPoints);
-    // window.addEventListener("resize", this.resize);
-
-    // this.$on("LineData", this.setLine);
-    // this.$on("PointsData", this.setPoints);
-
     if (window.innerWidth <= 1300) {
       this.layout.margin = {
         l: 60,
