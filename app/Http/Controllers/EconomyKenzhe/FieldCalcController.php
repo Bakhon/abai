@@ -469,6 +469,9 @@ class FieldCalcController extends MainController
             $nakopDiscSvodPotok += $discSvobPotok;
             $npv += $svobodDenPotok;
         }
+
+        $kvl = ['BZ8050710400'];
+
         $dds1 = ['BZF311010000', 'BZF311020000', 'BZF311050000', 'BZF311090000', 'BZF331990000'];
         $dds2 = ['BZF312050000', 'BZF311020000', 'BZF311050000', 'BZF311090000', 'BZF331990000']; // + $kpn
 //        return view('economy_kenzhe.field_calculation.tarif')->with(compact('datat'));
@@ -516,7 +519,7 @@ class FieldCalcController extends MainController
             $data[$lastDateOfMonth]['ОПЕРАЦИОННАЯ ПРИБЫЛЬ(+)/ УБЫТОК (-)'] = $operPrib - ($financeRashod + array_sum(array_column($opiuLiquidNames, 'value'))  + array_sum(array_column($opiuOilNames, 'value')));
             $data[$lastDateOfMonth]['ДОХОД/(УБЫТОК) ДО НАЛОГООБЛОЖЕНИЯ'] = $operPrib - (array_sum(array_column($opiuRaspMestor, 'value')) + array_sum(array_column($opiuLiquidNames, 'value'))  + array_sum(array_column($opiuOilNames, 'value')));
             $data[$lastDateOfMonth]['ЧИСТЫЙ ДОХОД/(УБЫТОК)'] = $data[$lastDateOfMonth]['ДОХОД/(УБЫТОК) ДО НАЛОГООБЛОЖЕНИЯ'] - $kpnResult;
-            $data[$lastDateOfMonth]['ЧИСТЫЙ ДОХОД/(УБЫТОК)'] = $data[$lastDateOfMonth]['Чистая сумма ДС по операционной деятельности'] - $kpnResult;
+//            $data[$lastDateOfMonth]['Чистая сумма ДС по операционной деятельности'] = $dds1 - $dds2;
 
             array_push($data[$lastDateOfMonth], $opiuOilNames);
             array_push($data[$lastDateOfMonth], $opiuLiquidNames);
