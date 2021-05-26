@@ -2159,6 +2159,9 @@
                 <tr class="d-flex">
                  <td>
                     <div class="number">{{this.otmData[0]['fact']}}</div>
+                    <div class="unit-vc ml-2">
+                      {{ trans('visualcenter.skv') }}                           
+                           </div> 
                     <div class="in-idle2">
                  <span v-if="isOneDateSelected"> {{ previousPeriodEnd }}</span>
                  <span v-else> {{ previousPeriodStart }} - {{ previousPeriodEnd }}</span>
@@ -2167,8 +2170,8 @@
                 </tr>
                 <tr class="d-flex">
                   <td class="col-12">
-                    <div class="txt1">                    
-                       Бурение скважин
+                    <div class="txt1"> 
+                      {{ trans('visualcenter.drillingWells') }}
                     </div>
                   </td>
                 </tr>
@@ -2181,7 +2184,9 @@
               <table class="table">
                 <tr class="d-flex">
                  <td class="col-6">
-                    <div class="number">0</div>
+                    <div class="number">0</div>    <div class="unit-vc ml-2">
+                     {{ trans('visualcenter.chemistryMetricTon') }}                         
+                          </div>  
                     <div class="in-idle2">
                  {{ timeSelect }}
                     </div>
@@ -2189,8 +2194,8 @@
                 </tr>
                 <tr class="d-flex">
                   <td class="col-12">
-                    <div class="txt1">                    
-                       Ожидаемая добыча
+                    <div class="txt1">
+                      {{ trans('visualcenter.expectedProduction') }}
                     </div>
                   </td>
                 </tr>
@@ -2210,14 +2215,16 @@
                       <div class="mt-1 float-right">
                       
                       </div>
-                        <div class="number">{{this.otmData[2]['fact']}}</div>
+                        <div class="number">{{this.otmData[2]['fact']}}</div><div class="unit-vc ml-2">
+                      {{ trans('visualcenter.skv') }}                           
+                           </div>
                     <div class="in-idle2">
                  <span v-if="isOneDateSelected"> {{ previousPeriodEnd }}<br><br></span>
                  <span v-else> {{ previousPeriodStart }} - {{ previousPeriodEnd }}</span>
                     </div>
                 <br>
                       <div class="txt1">
-                           КРС
+                           {{ trans('visualcenter.otmKrsSkv') }}
                       </div>
                     </td>
 
@@ -2227,14 +2234,16 @@
                       <div class="mt-1 float-right">
                   
                       </div>
-                         <div class="number">{{this.otmData[3]['fact']}}</div>
+                         <div class="number">{{this.otmData[3]['fact']}}</div><div class="unit-vc ml-2">
+                      {{ trans('visualcenter.skv') }}                           
+                           </div>
                     <div class="in-idle2">
                  <span v-if="isOneDateSelected"> {{ previousPeriodEnd }}<br><br></span>
                  <span v-else> {{ previousPeriodStart }} - {{ previousPeriodEnd }}</span>
                     </div>
                       <br>
                       <div class="txt1">
-                          ПРС
+                          {{ trans('visualcenter.otmPrsSkv') }}
                       </div>
                     </td>
                   </tr>
@@ -2252,7 +2261,10 @@
                 <tr class="d-flex">
                  <td>
                     <div class="number">{{this.chemistryData[0]['fact']+this.chemistryData[1]['fact']+this.chemistryData[2]['fact']+this.chemistryData[3]['fact']}}</div>
-                    <div class="in-idle2">
+                 <div class="unit-vc ml-2">
+                     {{ trans('visualcenter.chemistryMetricTon') }}                         
+                          </div>              
+                                 <div class="in-idle2">
                   <span v-if="isOneDateSelected"> {{ previousPeriodEnd }}</span>
                  <span v-else> {{ previousPeriodStart }} - {{ previousPeriodEnd }}</span>
                     </div>
@@ -2260,9 +2272,9 @@
                 </tr>
                 <tr class="d-flex">
                   <td class="col-12">
-                    <div class="txt1">                    
-                       Химизация
-                    </div>
+                    <div class="txt1"> 
+                     {{ trans('visualcenter.chemistryCategory') }}                 
+                      </div>
                   </td>
                 </tr>
               </table>
