@@ -16,7 +16,7 @@
                     <h2>Дело скважины</h2>
                   </div>
                   <div class="icon-all" style="margin-left: auto;"
-                       @click="onLeftColumnFoldingEvent(isLeftColumnFolded, isRightColumnFolded, isBothColumnFolded)">
+                       @click="onColumnFoldingEvent(isLeftColumnFolded, isRightColumnFolded, isBothColumnFolded, 'left')">
                     <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M11 1L5.8053 6L11 11" stroke="white" stroke-width="1.2" stroke-linecap="round"
                             stroke-linejoin="round"/>
@@ -121,7 +121,7 @@
               <div class="col">
                 <div class="heading">
                   <div class="icon-all"
-                       @click="onRightColumnFoldingEvent(isLeftColumnFolded, isRightColumnFolded, isBothColumnFolded)">
+                       @click="onColumnFoldingEvent(isLeftColumnFolded, isRightColumnFolded, isBothColumnFolded, 'right')">
                     <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M1.0001 1L6.19482 6L1.0001 11" stroke="white" stroke-width="1.2" stroke-linecap="round"
                             stroke-linejoin="round"/>
@@ -241,7 +241,9 @@
                       <td>Период бурения</td>
                       <td>
                         <span
-                            v-if="allData.drill_start_date">{{ allData.drill_start_date }} - {{ allData.drill_end_date }}</span>
+                            v-if="allData.drill_start_date">{{ allData.drill_start_date }} - {{
+                            allData.drill_end_date
+                          }}</span>
                       </td>
                     </tr>
                     <tr>
@@ -360,24 +362,24 @@ export default {
 
   },
   methods: {
-    onLeftColumnFoldingEvent(isLeftColumnFolded, isRightColumnFolded, isBothColumnFolded) {
-      //method check the isLeftColumnFolded & isRightColumnFolded var and returns isBothColumnFolded if true
-      this.isLeftColumnFolded = !isLeftColumnFolded;
-      if (this.isLeftColumnFolded === true && this.isRightColumnFolded === true) {
-        this.isBothColumnFolded = !isBothColumnFolded;
-        this.isBothColumnFolded = true;
+    onColumnFoldingEvent(isLeftColumnFolded, isRightColumnFolded, isBothColumnFolded, method) {
+      //method allows to fold left or right column depending on method variable
+      if (method === 'left') {
+        this.isLeftColumnFolded = !isLeftColumnFolded;
+        if (this.isLeftColumnFolded === true && this.isRightColumnFolded === true) {
+          this.isBothColumnFolded = !isBothColumnFolded;
+          this.isBothColumnFolded = true;
+        } else {
+          this.isBothColumnFolded = false;
+        }
       } else {
-        this.isBothColumnFolded = false;
-      }
-    },
-    onRightColumnFoldingEvent(isLeftColumnFolded, isRightColumnFolded, isBothColumnFolded) {
-      //method check the isLeftColumnFolded & isRightColumnFolded var and returns isBothColumnFolded if true
-      this.isRightColumnFolded = !isRightColumnFolded;
-      if (this.isLeftColumnFolded === true && this.isRightColumnFolded === true) {
-        this.isBothColumnFolded = !isBothColumnFolded;
-        this.isBothColumnFolded = true;
-      } else {
-        this.isBothColumnFolded = false;
+        this.isRightColumnFolded = !isRightColumnFolded;
+        if (this.isLeftColumnFolded === true && this.isRightColumnFolded === true) {
+          this.isBothColumnFolded = !isBothColumnFolded;
+          this.isBothColumnFolded = true;
+        } else {
+          this.isBothColumnFolded = false;
+        }
       }
     },
     onSearch(search, loading) {
@@ -404,14 +406,13 @@ export default {
           this.org = data[0].orgs
           this.geo = data[0].geo
           this.wellName = data[0].uwi
-          this.wellType = data[0].well_type[0].name_ru
           this.allData = data[0]
-
+          this.wellType = data[0].well_type[0].name_ru
 
           this.loading = false
         } catch (e) {
           this.loading = false
-          //пока прекращает cat loadetr
+          //пока прекращает cat loader
         }
       })
     }
