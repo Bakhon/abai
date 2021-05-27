@@ -2,7 +2,7 @@
   "type": "plain",
   "table": "prod.well_constr",
   "table_fields": [
-    "casing_nom",
+    "equip_type",
     "depth",
     "casing_type"
   ],
@@ -33,10 +33,10 @@
                 "title": "side_barrel"
               },
               {
-                "code": "tube_nom",
+                "code": "model",
                 "type": "dict",
                 "title": "tube_nom",
-                "dict": "dict",
+                "dict": "tube_nom",
                 "validation": "required|exists:tbd.dict.tube_nom,id"
               },
               {
