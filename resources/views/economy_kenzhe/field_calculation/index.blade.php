@@ -5,20 +5,6 @@
             <div class="col-9">
                 <table class="table table-responsive ">
                     <tbody class="w-100">
-{{--                    @foreach($datas as $key=> $value)--}}
-{{--                        @if(is_array($value))--}}
-{{--                            <tr>--}}
-{{--                                <td style="color: white;">{{$value['num']}}</td>--}}
-{{--                                <td style="color: white;">{{$value['name']}}</td>--}}
-{{--                                <td style="color: white;">{{$value['value']}}</td>--}}
-{{--                            </tr>--}}
-{{--                        @else--}}
-{{--                            <tr>--}}
-{{--                                <td  style="color: white;">{{$key}}</td>--}}
-{{--                                <td  style="color: white;">{{$value}}</td>--}}
-{{--                            </tr>--}}
-{{--                        @endif--}}
-{{--                    @endforeach--}}
                     @foreach($data as $key=> $value)
                         <tr>
                             <td colspan="2">{{$key}}</td>
@@ -62,21 +48,6 @@
                         <td>Средний действующий фонд, скв (Всего)</td>
                         <td>35</td>
                     </tr>
-{{--                    @foreach($data['2021']['opiu'] as $key=> $value)--}}
-{{--                        @if(is_array($value))--}}
-{{--                            @foreach($value as $k=> $v)--}}
-{{--                                <tr>--}}
-{{--                                    <td style="color: white;">{{$k}}</td>--}}
-{{--                                    <td style="color: white;">{{$v}}</td>--}}
-{{--                                </tr>--}}
-{{--                            @endforeach--}}
-{{--                        @else--}}
-{{--                            <tr>--}}
-{{--                                <td  style="color: white;">{{$key}}</td>--}}
-{{--                                <td  style="color: white;">{{$value}}</td>--}}
-{{--                            </tr>--}}
-{{--                        @endif--}}
-{{--                    @endforeach--}}
                     </tbody>
                 </table>
             </div>

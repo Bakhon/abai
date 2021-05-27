@@ -17,32 +17,30 @@ class MainController extends Controller
     public function company(Request $request)
     {
         $this->companyId = 178;
-        $this->dateTo = date('Y-m-d', strtotime(' -1 year'));
-//        $this->dateTo = date('Y-m-d');
+        $this->dateTo = date('Y-m-d');
         $this->dateFrom = date("Y-m-d", strtotime($this->dateTo . " -3 months"));
 
         if($request->company){
             $this->companyId = $request->company;
         }
-        if ($request->betweenMonthsValue) { // фильтр промежуточные данные по месяцам
+        if ($request->betweenMonthsValue) {
             $this->dateFrom = date('Y-m-d', strtotime(date('Y', strtotime($this->dateTo)).'-01-01'));
             $this->dateTo = date('Y-m-d', strtotime(date('Y', strtotime($this->dateTo)).'-'.$request->betweenMonthsValue));
         }
-        if ($request->monthsValue) { // фильтр по месяцам
+        if ($request->monthsValue) {
             $this->dateFrom = date("Y-m-d", strtotime(date('Y', strtotime($this->dateTo)).'-'.$request->monthsValue . '-01'));
             $this->dateTo = date("Y-m-d", strtotime(date('Y', strtotime($this->dateTo)).'-'.$request->monthsValue . '-31'));
         }
-        if ($request->quarterValue) { // фильтр для квартальных данных
+        if ($request->quarterValue) {
             $this->dateTo = date("Y-m-d", strtotime(date('Y', strtotime($this->dateTo)).'-'.$request->quarterValue . '-01'));
             $this->dateFrom = date("Y-m-d", strtotime($this->dateTo . " -3 months"));
         }
-//        $currentYear = date('Y', strtotime('-1 year'));
         $currentYear = date('Y', strtotime($this->dateTo));
         $previousYear = (string) $currentYear - 1;
-        $handbook = HandbookRepTt::where('parent_id', 0)->with('childHandbookItems')->get()->toArray(); // справочник с учетом вложенности
+        $handbook = HandbookRepTt::where('parent_id', 0)->with('childHandbookItems')->get()->toArray();
         $companies = SubholdingCompany::all();
         $companyRepTtValues = SubholdingCompany::find($this->companyId)->statsByDate($currentYear)->get()->toArray();
-        $repTtReportValues = $this->recursiveSetValueToHandbookByType($handbook, $companyRepTtValues, $currentYear, $previousYear, $this->dateFrom, $this->dateTo); // рекрусивная функция суммирования значении
+        $repTtReportValues = $this->recursiveSetValueToHandbookByType($handbook, $companyRepTtValues, $currentYear, $previousYear, $this->dateFrom, $this->dateTo);
 
         $data = [
             'reptt' => $repTtReportValues,
