@@ -294,7 +294,7 @@
                     <tr>
                       <td>20</td>
                       <td>Состояние</td>
-                      <td></td>
+                      <td v-if="wellStatus">{{wellStatus.name_ru}}</td>
                     </tr>
                     <tr>
                       <td>21</td>
@@ -564,19 +564,20 @@ export default {
       this.loading = true
       this.axios.get(this.localeUrl(`/api/bigdata/wells/${well.id}`)).then(({data}) => {
         try {
+          console.log.data
           // В некоторых случиях возникает ошибка получения данных пердположительно при отсутствии ключа в одном из справочников
           // AKG_124 конфликтный случай
-          this.tech = data[0].techs[0]
-          this.org = data[0].orgs
-          this.geo = data[0].geo[0]
-          this.wellName = data[0].uwi
-          this.allData = data[0]
-          this.wellType = data[0].well_type[0].name_ru
-          //this.wellStatus = data[0].status  уточнить, какой именно статус взять
-          this.wellExpl = data[0].well_expl[0]
-          this.tubeTom = data[0].tube_nom[0]
-          this.wellCategory = data[0].category[0]
-          this.well = data[0].well[0]
+          this.tech = data.techs
+          this.org = data.orgs
+          this.geo = data.geo[0]
+          this.wellName = data.uwi
+          this.allData = data
+          this.wellType = data.well_type[0].name_ru
+          this.wellStatus = data.status[data.status.length-1] // уточнить, какой именно статус взять
+          this.wellExpl = data.well_expl[0]
+          this.tubeTom = data.tube_nom[0]
+          this.wellCategory = data.category[0]
+          this.well = data.well[0]
 
           this.loading = false
         } catch (e) {
