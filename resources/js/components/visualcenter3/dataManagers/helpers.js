@@ -116,7 +116,7 @@ export default {
             return workday.subtract(diff, 'days').endOf('day').format();
         },
 
-        formatVisTableNumber3(a, b) {
+        getPercentDifference(a, b) {
             if (a && b) {
                 return new Intl.NumberFormat("ru-RU").format(Math.abs(((a - b) / b) * 100).toFixed(1))
             } else {
@@ -164,9 +164,81 @@ export default {
             }
         },
 
+        getColorClassBySelectedPeriod(index) {
+            if (this.buttonMonthlyTab || this.buttonYearlyTab) {
+                return this.getLighterClass(index);
+            } else {
+                return this.getDarkerClass(index);
+            }
+        },
+
         getColor2(i) {
             if (i < 0) return "arrow";
             if (i > 0) return "arrow2";
+        },
+
+        getDataOrderedByAsc(data) {
+            return _.orderBy(data,
+                ["__time"],
+                ["asc"]
+            );
+        },
+
+        getCovidData(data) {
+            return _.reduce(data, function (memo, item) {
+                return memo + item['tb_covid_total'];
+            }, 0);
+        },
+
+        getFilteredData(data, type) {
+            _.forEach(this.dzoType[type], function (dzoName) {
+                data = _.reject(data, _.iteratee({dzo: dzoName}));
+            });
+            return data;
+        },
+
+        disableDzoRegions() {
+            _.forEach(this.dzoRegionsMapping, function(region) {
+                _.set(region, 'isActive', false);
+            });
+        },
+
+        getProductionDataInPeriodRange(data, periodStart, periodEnd) {
+            let self = this;
+            return _.filter(data, function (item) {
+                return _.every([
+                    _.inRange(
+                        item.__time,
+                        periodStart,
+                        periodEnd
+                    ),
+                ]);
+            });
+        },
+
+        getFilteredDataByOneDay(filteredDataByCompanies) {
+            let temporaryPeriodStart = moment(new Date(this.timestampToday)).subtract(2, 'days');
+            let temporaryPeriodEnd = moment(new Date(this.timestampToday)).add(1, 'days');
+            let filteredDataByOneDay = this.getProductionDataInPeriodRange(filteredDataByCompanies,this.timestampToday,this.timestampEnd);
+            return this.getDataOrderedByAsc(filteredDataByOneDay);
+        },
+
+        getFormattedNumberToThousand(plan,fact) {
+            let formattedPlan = this.formatDigitToThousand(plan);
+            let formattedFact = this.formatDigitToThousand(fact);
+            if (formattedPlan) {
+                formattedPlan = this.getNumberFromString(formattedPlan);
+            }
+            if (formattedFact) {
+                formattedFact = this.getNumberFromString(formattedFact);
+            }
+            let diff = formattedPlan - formattedFact;
+            let formattedNumber = Math.abs(Math.round(diff));
+            return new Intl.NumberFormat("ru-RU").format(formattedNumber);
+        },
+
+        getNumberFromString(inputString) {
+            return parseInt(inputString.replace(/\s/g, ''));
         },
     },
     computed: {

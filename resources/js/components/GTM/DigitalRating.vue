@@ -3,7 +3,7 @@
         <div class="row mx-0 mt-lg-2 gtm">
             <div class="col-lg-10 p-0">
                 <div class="row col-12 p-0 m-0">
-                    <div class="col-6 d-none d-lg-block p-0 pl-1 gtm-map-block">
+                    <div class="col-6 d-none d-lg-block p-0 pl-1">
                         <div class="gtm-dark h-100">
                             <div class="block-header pb-0 pl-2">
                                 Настройка сетки
@@ -24,7 +24,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-6 d-none d-lg-block p-0 gtm-map-block">
+                    <div class="col-6 d-none d-lg-block p-0">
                         <div class="gtm-dark h-100">
                             <div class="block-header pb-0 pl-2 pt-1">
                                 Планшет по скважинам
@@ -52,7 +52,7 @@
                     </div>
                 </div>
                 <div class="row col-12 p-0 m-0 pb-2">
-                    <div class="col-6 d-none d-lg-block p-0 pl-1 gtm-map-block">
+                    <div class="col-6 d-none d-lg-block p-0 pl-1">
                         <div class="gtm-dark h-100">
                             <div class="block-header pb-0 pl-2">
                                 Настройка секторов
@@ -124,7 +124,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-6 d-none d-lg-block p-0 gtm-map-block">
+                    <div class="col-6 d-none d-lg-block p-0">
                         <div class="gtm-dark h-100">
                             <div class="block-header pb-0 pl-2 pt-1">
                                 Статистика
@@ -238,7 +238,7 @@ export default {
                 ['', '', 'Ю-6'],
                 ['', '', ''],
                 ['', '', ''],
-                ['', 'Аскар', ''],
+                ['', 'Асар', ''],
                 ['', 'Каламкас', ''],
             ],
         };

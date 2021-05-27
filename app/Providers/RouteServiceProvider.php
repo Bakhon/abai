@@ -107,7 +107,13 @@ class RouteServiceProvider extends ServiceProvider
             'gno',
             'tech',
             'monitoring',
-            'economy_kenzhe'
+            'economy_kenzhe',
+            'tr',
+            'monitoring',
+            'paegtm',
+            'ndo',
+            'digital_drilling',
+            'plast_fluids'
         ];
 
         foreach ($modules as $module) {

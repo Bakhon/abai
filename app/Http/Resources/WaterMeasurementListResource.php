@@ -2,6 +2,8 @@
 
 namespace App\Http\Resources;
 
+use Carbon\Carbon;
+
 class WaterMeasurementListResource extends CrudListResource
 {
 
@@ -18,7 +20,7 @@ class WaterMeasurementListResource extends CrudListResource
         $result = [
             'id' => $this->id,
             'fields' => [
-                'date' => $this->date,
+                'date' => Carbon::parse($this->date)->format('Y-d-m'),
                 'other_objects' => $this->other_objects->name,
                 'ngdu' => $this->ngdu->name,
                 'cdng' => $this->cdng->name,

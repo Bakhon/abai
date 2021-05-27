@@ -1,0 +1,21 @@
+[
+    {
+        "option": "versionBp.name"
+    },
+    {
+        "value": 1,
+        "option": "versionBp.option1"
+    },
+    {
+        "value": 2,
+        "option": "versionBp.option2"
+    },
+    {
+        "value": 1,
+        "option": "versionBp.option3"
+    },
+    {
+        "value": 2,
+        "option": "versionBp.option4"
+    }
+]

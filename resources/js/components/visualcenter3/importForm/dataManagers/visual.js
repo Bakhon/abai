@@ -1,13 +1,14 @@
-
+import moment from "moment-timezone";
 
 export default {
     data: function () {
         return {
             isChemistryNeeded: true,
+            isWellsWorkoverNeeded: true,
             columns: [
                 {
                     prop: "column1",
-                    size: 440,
+                    size: 400,
                     cellProperties: ({prop, model, data, column}) => {
                         return {
                             style: {
@@ -29,7 +30,7 @@ export default {
                 },
                 {
                     prop: "column3",
-                    size: 330,
+                    size: 260,
                     cellProperties: ({prop, model, data, column}) => {
                         return {
                             style: {
@@ -61,7 +62,7 @@ export default {
                     },
                 },{
                     prop: "column6",
-                    size: 280,
+                    size: 220,
                     cellProperties: ({prop, model, data, column}) => {
                         return {
                             style: {
@@ -73,6 +74,8 @@ export default {
             ],
             rowsCount: 85,
             columnsCountForHighlight: {
+                eightColumns: [0,1,2,3,4,5,6,7],
+                sevenColumns: [0,1,2,3,4,5,6],
                 sixColumns: [0,1,2,3,4,5],
                 fiveColumns: [0,1,2,3,4],
                 fourColumns: [0,1,2,3],
@@ -81,16 +84,33 @@ export default {
             },
             stringColumns: [1,2],
             errorSelectors: [],
+            currentDate: moment().tz('Asia/Almaty').subtract(1, 'days').format('DD-MM-YYYY'),
+            limitForEnteringData: {
+                hours: 8,
+                minutes: 0,
+            },
+            isChemistryButtonVisible: false,
+            daysWhenChemistryNeeded: [5,6,7,8,9,10,25,26,27,28,29,30],
         };
+    },
+    created() {
+        let almatyCurrentDate = moment().tz('Asia/Almaty');
+        if (almatyCurrentDate.hour() >= this.limitForEnteringData.hours && almatyCurrentDate.minutes() > this.limitForEnteringData.minutes) {
+            this.currentDate = almatyCurrentDate.format('DD-MM-YYYY');
+            this.currentDateDetailed = almatyCurrentDate.format("YYYY-MM-DD HH:mm:ss");
+        }
     },
     methods: {
         changeButtonVisibility() {
             this.isChemistryNeeded = !this.isChemistryNeeded;
         },
+        changeWellBlockVisibility() {
+            this.isWellsWorkoverNeeded = !this.isWellsWorkoverNeeded;
+        },
         turnOffErrorHighlight() {
             let self = this;
             _.forEach(this.errorSelectors, function(selector) {
-                self.setClassToElement($(selector),'cell__color-normal');
+                self.removeClassFromElement($(selector),'cell__color-red');
             });
             this.errorSelectors = [];
         },
@@ -125,6 +145,9 @@ export default {
         },
         setClassToElement(el,className) {
             el.addClass(className);
+        },
+        removeClassFromElement(el, className) {
+            el.removeClass(className);
         },
         disableHighlightOnCells() {
             for (let i = 0; i < this.rowsCount; i++) {

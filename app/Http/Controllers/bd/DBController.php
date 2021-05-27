@@ -9,7 +9,7 @@ class DBController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('can:bigdata view main')->only('bigdata', 'form', 'las', 'userReports');
+      $this->middleware('can:bigdata view main')->only('bigdata', 'form', 'las', 'userReports', 'geoDataReferenceBook');
     }
 
     public function mzdn()
@@ -24,7 +24,25 @@ class DBController extends Controller
 
     public function las()
     {
-        return view('reports.las');
+        $permissionNames = auth()->user()->getAllPermissions()->pluck('name')->toArray();       
+        
+        return view('reports.las', compact('permissionNames'));
+    }
+
+
+    public function well_cart()
+    {
+        return view('reports.well_cart');
+    }
+
+    public function report_constructor()
+    {
+        return view('reports.report_constructor');
+    }
+
+    public function geoDataReferenceBook()
+    {
+        return view('reports.geo_data_reference_book');
     }
 
     public function userReports()

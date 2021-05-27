@@ -1,0 +1,81 @@
+{
+  "type": "plain",
+  "table": "prod.gtm",
+  "tabs": [
+    {
+      "title": "Gtm_start",
+      "blocks": [
+        [
+          {
+            "title": "Gtm_start",
+            "items": [
+              {
+                "code": "dbeg",
+                "type": "datetime",
+                "title": "date_gtm_start",
+                "validation": "required|date"
+              },
+              {
+                "code": "gtm_type",
+                "type": "dict",
+                "title": "gtm_name",
+                "dict":"gtm_types",
+                "validation": "required|exists:tbd.dict.gtm_type,id"
+              },
+              {
+                "code":"new_technology",
+                "type":"checkbox",
+                "title":"new_technologies",
+                "validation":"boolean"
+              },
+              {
+                "code":"field4",
+                "type":"checkbox",
+                "title":"own_forces",
+                "validation":""
+              },
+              {
+                "code":"company",
+                "type":"dict",
+                "title":"contractor",
+                "dict":"companies",
+                "validation":"required|exists:tbd.dict.company,id"
+              }
+            ]
+          }
+        ]
+      ]
+    },
+    {
+      "title":"Gtm_end",
+      "blocks":[
+        [
+          {
+            "title":"Gtm_end",
+            "items":[
+              {
+                "code":"dend",
+                "type":"date",
+                "title":"date_gtm_end",
+                "validation":"required|date"
+              },
+              {
+                "code":"params_result",
+                "type":"text",
+                "title": "gtm_parameters_results",
+                "validation": "required|string"
+              },
+              {
+                "code":"well_status_type",
+                "type":"dict",
+                "title":"status",
+                "dict":"well_statuses",
+                "validation":"required|exists:tbd.dict.well_status_type,id"
+              }
+            ]
+          }
+        ]
+      ]
+    }
+  ]
+}

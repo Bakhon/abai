@@ -179,10 +179,10 @@ class OmgUHEController extends CrudController
 
         $input['yearly_inhibitor_flowrate'] = $dailyInhibitorFlowrate + $input['daily_inhibitor_flowrate'];
 
-        $omgohe = new OmgUHE;
-        $omgohe->fill($input);
-        $omgohe->cruser_id = auth()->id();
-        $omgohe->save();
+        $omguhe = new OmgUHE;
+        $omguhe->fill($input);
+        $omguhe->cruser_id = auth()->id();
+        $omguhe->save();
 
         Session::flash('message', __('app.created'));
 
@@ -289,10 +289,12 @@ class OmgUHEController extends CrudController
                                         ->where('out_of_service_of_dosing', '!=', '1')
                                         ->orderByDesc('date')
                                         ->first();
+
         $ddng = OmgCA::where('gu_id', $request->gu_id)
                         ->where('date', Carbon::parse($request->date)->year . "-01-01")
                         ->first();
 
+        $res = [];
         if ($result && $ddng && $request->gu_id) {
             if ($result->fill) {
                 $res = [
@@ -306,10 +308,13 @@ class OmgUHEController extends CrudController
                 ];
             }
 
-            return response()->json($res);
+            $res['status'] = config('response.status.success');
+        } else {
+            $res['status'] = config('response.status.error');
+            $res['message'] = trans('monitoring.omguhe.no-ddng-data-on-date').' '.Carbon::parse($request->date)->year;
         }
 
-        return response()->json(null);
+        return response()->json($res);
     }
 
     protected function getFilteredQuery($filter, $query = null)

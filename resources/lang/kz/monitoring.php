@@ -128,7 +128,7 @@ return array (
   ),
   'omgngdu' => 
   array (
-    'menu' => 'ӨМГ МжГӨБ',
+    'menu' => 'ӨМГ МжГӨБ ГУ',
     'name' => 'ӨМГ МжГӨБ',
     'title' => 'ӨМГ МжГӨБ дерекқоры',
     'create_title' => 'ӨМГ МжГӨБ деректер енгізу',
@@ -146,6 +146,8 @@ return array (
       'temperature' => 'Пештің кіріс температурасы, С',
       'heater_inlet_temperature' => 'Пештің кіріс температурасы, С',
       'heater_output_temperature' => 'Пештің шығыс температурасы, С',
+      'heater_inlet_pressure' => 'Пештің кіріс температурасы, С',
+      'heater_output_pressure' => 'Пештің шығыс температурасы, С',
     ),
   ),
   'all_gus' => 'Барлық ТҚ',
@@ -209,23 +211,6 @@ return array (
     ),
   ),
   'corrosion_name' => 'Коррозия',
-  'pipe' => 
-  array (
-    'create_title' => 'Құбырлар бойынша деректерді енгізу',
-    'fields' => 
-    array (
-      'inner_diameter' => 'Ішкі диаметр',
-      'length' => 'Ұзындық',
-      'material' => 'Материал',
-      'outside_diameter' => 'Сыртқы диаметр',
-      'plot' => 'Бөлшегі',
-      'roughness' => 'Кедір-бұдырлық',
-      'thickness' => 'Қабырға қалыңдығы',
-    ),
-    'edit_title' => 'Құбырлар бойынша түзетулерді енгізу',
-    'title' => 'Құбырлар дерекқоры',
-    'menu' => 'Құбырлар',
-  ),
   'inhibitor' => 
   array (
     'title' => 'Ингибитор анықтамалығы',
@@ -263,5 +248,35 @@ return array (
   'well' => 
   array (
     'well' => 'Ұңғы',
+  ),
+  'pipe' => 
+  array (
+    'fields' => 
+    array (
+      'inner_diameter' => 'Ішкі диаметр',
+      'length' => 'Ұзындық',
+      'material' => 'Материал',
+      'outside_diameter' => 'Сыртқы диаметр, мм',
+      'plot' => 'Бөлшегі',
+      'roughness' => 'Кедір-бұдырлық',
+      'thickness' => 'Қабырға қалыңдығы, мм',
+    ),
+    'edit_title' => 'Құбырлар бойынша түзетулерді енгізу',
+    'title' => 'Құбырлар дерекқоры',
+    'menu' => 'Құбырлар',
+    'create_title' => 'Құбырлар бойынша деректерді енгізу',
+    'gu' => 'ТҚ',
+  ),
+  'pipe_types' => 
+  array (
+    'fields' => 
+    array (
+      'inner_diameter' => 'Ішкі диаметр, мм',
+      'material' => 'Материал',
+      'outside_diameter' => 'Сыртқы диаметр',
+      'roughness' => 'Кедір-бұдырлық',
+      'thickness' => 'Қабырға қалыңдығы',
+      'plot' => 'Бөлшегі',
+    ),
   ),
 );

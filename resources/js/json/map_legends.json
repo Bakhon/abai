@@ -1,0 +1,111 @@
+{
+    "default": [
+        {
+            "type": "icon-box",
+            "icon": "bg-well-icon",
+            "name": "Скважина"
+        },
+        {
+            "type": "icon-box",
+            "icon": "bg-zu-icon",
+            "name": "ЗУ"
+        },
+        {
+            "type": "icon-box",
+            "icon": "bg-gu-icon",
+            "name": "ГУ"
+        },
+        {
+            "type": "color-box",
+            "color": "zu-gu",
+            "name": "Труба ЗУ - ГУ"
+        },
+        {
+            "type": "color-box",
+            "color": "well-zu",
+            "name": "Труба Скважина - ЗУ"
+        },
+        {
+            "type": "color-box",
+            "color": "fl-gu",
+            "name": "Труба ФЛ - ГУ"
+        },
+        {
+            "type": "color-box",
+            "color": "gu-gu",
+            "name": "Труба ГУ - ГУ"
+        },
+        {
+            "type": "color-box",
+            "color": "fl-koll",
+            "name": "Труба ФЛ - Коллектор"
+        },
+        {
+            "type": "color-box",
+            "color": "gu-koll",
+            "name": "Труба ГУ - Коллектор"
+        },
+        {
+            "type": "color-box",
+            "color": "mgu-koll",
+            "name": "Труба МГУ - Коллектор"
+        },
+        {
+            "type": "color-box",
+            "color": "koll-bg",
+            "name": "Труба Коллектор - БГ"
+        },
+        {
+            "type": "color-box",
+            "color": "os-st",
+            "name": "Труба ОС - СТ"
+        },
+        {
+            "type": "color-box",
+            "color": "bg",
+            "name": "Труба БГ"
+        },
+        {
+            "type": "color-box",
+            "color": "bg-gu",
+            "name": "Труба БГ - ГУ"
+        },
+        {
+            "type": "color-box",
+            "color": "koll-koll",
+            "name": "Труба Коллектор - Коллектор"
+        },
+        {
+            "type": "color-box",
+            "color": "st-koll",
+            "name": "Труба СТ - Коллектор"
+        },
+        {
+            "type": "color-box",
+            "color": "spt-koll",
+            "name": "Труба СПТ - Коллектор"
+        }
+    ],
+    "speedFlow": [
+        {
+            "type": "color-box",
+            "color": "danger",
+            "name": "Скорость потока < 0.5"
+        },
+        {
+            "type": "color-box",
+            "color": "warning",
+            "name": "Скорость потока < 0.9"
+        },
+        {
+            "type": "color-box",
+            "color": "good",
+            "name": "Скорость потока > 0.9"
+        },
+        {
+            "type": "color-box",
+            "color": "no_data",
+            "name": "Нет данных"
+        }
+    ]
+}

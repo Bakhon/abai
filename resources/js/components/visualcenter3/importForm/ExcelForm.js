@@ -25,10 +25,13 @@ import cellsMappingYO from './dzoData/cells_mapping_yo.json';
 import cellsMappingEMG from './dzoData/cells_mapping_emg.json';
 import moment from "moment";
 import Visual from "./dataManagers/visual";
+import TodayDzoData from "./dataManagers/todayDzoData";
+import InputDataOperations from "./dataManagers/inputDataOperations";
+
+const defaultDzoTicker = "КТМ";
 
 export default {
     data: function () {
-        let defaultDzoTicker = "ЕМГ";
         return {
             dzoMapping : {
                 "КОА" : {
@@ -73,7 +76,7 @@ export default {
                     cells: cellsMappingYO,
                     id: 111
                 },
-                "ЕМГ" : {
+                "ЭМГ" : {
                     rows: initialRowsEMG,
                     format: formatMappingEMG,
                     cells: cellsMappingEMG,
@@ -82,7 +85,7 @@ export default {
             },
             dzoCompanies: [
                 {
-                    ticker: 'ЕМГ',
+                    ticker: 'ЭМГ',
                     name: 'АО "Эмбамунайгаз"'
                 },
                 {
@@ -116,6 +119,7 @@ export default {
             ],
             selectedDzo: {
                 ticker: defaultDzoTicker,
+                name: 'ТОО "Казахтуркмунай"',
                 plans: [],
             },
             status: this.trans("visualcenter.importForm.status.waitForData"),
@@ -140,6 +144,10 @@ export default {
                 corrosion_inhibitor: 0,
                 scale_inhibitor: 0
             },
+            wellWorkover: {
+                otm_well_workover_fact: 0,
+                otm_underground_workover: 0
+            },
             chemistryDataMapping: {
                 demulsifier: this.trans("visualcenter.chemProdZakackaDemulg"),
                 bactericide: this.trans("visualcenter.chemProdZakackaBakteracid"),
@@ -147,21 +155,50 @@ export default {
                 scale_inhibitor: this.trans("visualcenter.chemProdZakackaIngibatorSoleotloj"),
             },
             chemistryErrorFields: [],
+            currentDateDetailed: moment().subtract(1, 'days').format("YYYY-MM-DD HH:mm:ss"),
         };
     },
     props: ['userId'],
     async mounted() {
+        let currentDayNumber = moment().date();
+        if (this.daysWhenChemistryNeeded.includes(currentDayNumber)) {
+            this.isChemistryButtonVisible = true;
+        }
         this.selectedDzo.ticker = this.getDzoTicker();
         if (!this.selectedDzo.ticker) {
             this.selectedDzo.ticker = defaultDzoTicker;
         }
+        if ( this.selectedDzo.ticker === 'КОА') {
+            this.addColumnsToGrid();
+        }
+
+        this.selectedDzo.name = this.getDzoName();
         this.changeDefaultDzo();
         this.dzoPlans = await this.getDzoMonthlyPlans();
         this.selectedDzo.plans = this.getSelectedDzoPlans();
         await this.sleep(2000);
         this.setTableFormat();
+        await this.updateCurrentData();
+        this.addListeners();
     },
     methods: {
+        addColumnsToGrid() {
+            for (let i = 7; i < 9; i++) {
+                this.columns.push(
+                    {
+                        prop: "column" + i,
+                        size: 280,
+                        cellProperties: ({prop, model, data, column}) => {
+                            return {
+                                style: {
+                                    border: '1px solid #F4F4F6'
+                                },
+                            };
+                        },
+                    }
+                );
+            }
+        },
         getDzoTicker() {
             let dzoTicker = '';
             let self = this;
@@ -172,6 +209,16 @@ export default {
             });
             return dzoTicker;
         },
+        getDzoName() {
+            let dzoName = '';
+            let self = this;
+            _.forEach(this.dzoCompanies, function(dzo) {
+                if (dzo.ticker === self.selectedDzo.ticker) {
+                    dzoName = dzo.name;
+                }
+            });
+            return dzoName;
+        },
         async changeDefaultDzo() {
             this.cellsMapping = _.cloneDeep(this.dzoMapping[this.selectedDzo.ticker].cells);
             this.rowsFormatMapping = _.cloneDeep(this.dzoMapping[this.selectedDzo.ticker].format.rowsFormatMapping);
@@ -181,6 +228,11 @@ export default {
             await this.sleep(100);
             this.disableHighlightOnCells();
             this.setTableFormat();
+        },
+        async wellWorkoverSave() {
+            if (parseFloat(this.wellWorkover.otm_well_workover_fact) > 0 && parseFloat(this.wellWorkover.otm_underground_workover) > 0) {
+                await this.storeWellWorkoverData();
+            }
         },
         async chemistrySave() {
             this.chemistryErrorFields = [];
@@ -198,6 +250,20 @@ export default {
                 return false;
             }
             return true;
+        },
+        storeWellWorkoverData() {
+            this.wellWorkover['dzo_name'] = this.selectedDzo.ticker;
+            this.wellWorkover['date'] = moment().format("YYYY-MM-DD HH:mm:ss");
+            let uri = this.localeUrl("/dzo-excel-otm");
+
+            this.axios.post(uri, this.wellWorkover).then((response) => {
+                if (response.status === 200) {
+                    this.isWellsWorkoverNeeded = !this.isWellsWorkoverNeeded;
+                    this.status = this.trans("visualcenter.importForm.status.dataSaved");
+                } else {
+                    this.status = this.trans("visualcenter.importForm.status.dataIsNotValid");
+                }
+            });
         },
         storeChemistryData() {
             this.chemistryData['dzo_name'] = this.selectedDzo.ticker;
@@ -237,7 +303,6 @@ export default {
             this.isDataReady = false;
             this.turnOffErrorHighlight();
             this.processTableData();
-
             if (!this.isValidateError) {
                 this.isDataExist = false;
                 this.isDataReady = true;
@@ -260,7 +325,7 @@ export default {
             let self = this;
             _.forEach(Object.keys(block), function(key) {
                 if (category === self.inputDataCategories[1]) {
-                    self.processStringCells(block[key],category);
+                    self.processDecreaseReasonCells(block[key],category);
                 } else if (category === self.inputDataCategories[2]) {
                     self.processFieldsBlock(block[key],category,key);
                 } else {
@@ -277,10 +342,16 @@ export default {
         processNumberCells(row,category,fieldCategoryName) {
             for (let columnIndex = 1; columnIndex <= row.rowLength; columnIndex++) {
                 let selector = 'div[data-col="'+ columnIndex + '"][data-row="' + row.rowIndex + '"]';
-                let cellValue = parseFloat($(selector).text());
+                let cellValue = $(selector).text();
                 if (!this.isNumberCellValid(cellValue,selector)) {
                     this.turnErrorForCell(selector);
                     continue;
+                }
+                if (cellValue.trim().length === 0) {
+                    cellValue = null;
+                }
+                if (cellValue) {
+                    cellValue = this.getFormattedNumber(cellValue);
                 }
                 if (fieldCategoryName) {
                     this.setNumberValueForCategories(category,row.fields[columnIndex-1],cellValue,fieldCategoryName);
@@ -305,46 +376,36 @@ export default {
             this.excelData[category][groupName][fieldName] = cellValue;
         },
         isNumberCellValid(inputData,selector) {
-            if (isNaN(inputData) || inputData < 0) {
-                return false;
+            if (inputData.trim().length > 0) {
+                return this.isNumber(inputData);
             }
             return true;
+        },
+        isNumber(inputData) {
+             return !isNaN(parseFloat(inputData)) && parseFloat(inputData) >= 0 && !this.isContainsLetter(inputData);
+        },
+        isContainsLetter(inputData) {
+            let regExp = /[a-zA-Zа-яА-Я]/g;
+            return inputData.match(regExp) !== null;
         },
         turnErrorForCell(selector) {
             this.setClassToElement($(selector),'cell__color-red');
             this.errorSelectors.push(selector);
             this.isValidateError = true;
         },
-        processStringCells(row,category) {
+        processDecreaseReasonCells(row,category) {
             for (let columnIndex = 1; columnIndex <= row.rowLength; columnIndex++) {
                 let selector = 'div[data-col="'+ columnIndex + '"][data-row="' + row.rowIndex + '"]';
                 let cellValue = $(selector).text().trim();
-                if (this.isStringCell(columnIndex) && this.checkErrorsStringCell(cellValue,selector)) {
-                    this.excelData[category][row.fields[columnIndex-1]] = cellValue;
-                    continue;
+                if (cellValue && !this.stringColumns.includes(columnIndex)) {
+                    cellValue = this.getFormattedNumber(cellValue);
                 }
-                if (!this.isNumberCellValid(cellValue,selector)) {
-                    this.turnErrorForCell(selector);
-                    continue;
-                }
-                this.setNumberValueForCategories(category,row.fields[columnIndex-1],cellValue);
+                this.excelData[category][row.fields[columnIndex-1]] = cellValue;
             }
         },
-        isStringCell(rowIndex) {
-            return this.stringColumns.includes(rowIndex);
-        },
-        checkErrorsStringCell(cellValue,selector) {
-          if (!this.isStringCellValid(cellValue,selector)) {
-              this.turnErrorForCell(selector);
-              return false;
-          }
-          return true;
-        },
-        isStringCellValid(inputData,selector) {
-            if (!inputData || typeof(inputData) === 'number' || inputData.length < 6) {
-                return false;
-            }
-            return true;
+        getFormattedNumber(cellValue) {
+            cellValue = cellValue.replace(',', '.');
+            return parseFloat(cellValue);
         },
         async handleSave() {
             await this.storeData();
@@ -352,7 +413,7 @@ export default {
         },
         storeData() {
             this.excelData['dzo_name'] = this.selectedDzo.ticker;
-            this.excelData['date'] = moment().format("YYYY-MM-DD HH:mm:ss");
+            this.excelData['date'] = this.currentDateDetailed;
 
             let uri = this.localeUrl("/dzo_excel_form");
 
@@ -364,13 +425,9 @@ export default {
                 }
             });
         },
-        beforeRangeEdit(e) {
-            this.setTableFormat();
-            this.isDataExist = true;
-        },
     },
     components: {
         VGrid,
     },
-    mixins: [Visual],
+    mixins: [Visual,TodayDzoData,InputDataOperations],
 };

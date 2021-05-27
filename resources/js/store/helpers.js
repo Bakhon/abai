@@ -48,3 +48,33 @@ export const dzoMapActions = arrNames => ({
     ]),
 });
 
+export const complicationMonitoringState = arrNames => ({
+    ...mapState('complicationMonitoring', [
+        ...arrNames,
+    ]),
+});
+
+export const complicationMonitoringMutations = arrNames => ({
+    ...mapMutations('complicationMonitoring', [
+        ...arrNames,
+    ]),
+});
+
+export const complicationMonitoringActions = arrNames => ({
+    ...mapActions('complicationMonitoring', [
+        ...arrNames,
+    ]),
+});
+
+export const paegtmMapActions = arrNames => ({
+    ...mapActions('paegtmMap', [
+        ...arrNames,
+    ]),
+});
+
+export const paegtmMapGetters = arrNames => ({
+    ...mapGetters('paegtmMap', [
+        ...arrNames,
+    ]),
+});
+

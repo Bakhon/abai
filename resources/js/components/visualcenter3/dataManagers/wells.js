@@ -61,7 +61,7 @@ export default {
         },
 
         WellsData(arr) {
-            var productionPlanAndFactMonthWells = _(arr)
+            let productionPlanAndFactMonthWells = _(arr)
                 .groupBy("data")
                 .map((__time, id) => ({
                     __time: id,
@@ -71,13 +71,11 @@ export default {
                     prod_wells_idle: (_.sumBy(__time, 'prod_wells_idle')) / this.quantityRange,
                 }))
                 .value();
-            var productionPlanAndFactMonthWellsName = [];
 
             this.inj_wells_idle = productionPlanAndFactMonthWells[0]['inj_wells_idle'];
             this.inj_wells_work = productionPlanAndFactMonthWells[0]['inj_wells_work'];
-            this.prod_wells_work = productionPlanAndFactMonthWells[0]['prod_wells_work'];
+            this.prod_wells_work = parseInt(productionPlanAndFactMonthWells[0]['prod_wells_work']);
             this.prod_wells_idle = productionPlanAndFactMonthWells[0]['prod_wells_idle'];
-
         },
 
         getSummaryWells(inputData, isIdleActive, fondsName) {
@@ -94,6 +92,17 @@ export default {
                 productionFondsForIterations = fonds.splice(0,halfOfProductionFondsLength);
             } else {
                 productionFondsForIterations = fonds.splice(halfOfProductionFondsLength,fonds.length);
+            }
+
+            if (fondsName === 'productionFonds') {
+                productionFondsForIterations = this.getUpdatedByPrsFond(isIdleActive, productionFondsForIterations);
+            }
+
+            if (productionPlanAndFactMonthWells[0]['fond_neftedob_df']) {
+                productionPlanAndFactMonthWells[0]['fond_neftedob_df'] = Math.round(this.prod_wells_work) + Math.round(this.prod_wells_idle);
+            }
+            if (productionPlanAndFactMonthWells[0]['fond_nagnetat_df']) {
+                productionPlanAndFactMonthWells[0]['fond_nagnetat_df'] = Math.round(this.inj_wells_work) + Math.round(this.inj_wells_idle);
             }
 
             _.forEach(productionFondsForIterations, function(fondName) {
@@ -117,6 +126,15 @@ export default {
                 summaryWells[fond] = (_.sumBy(time, fond)) / self.quantityRange;
             });
             return summaryWells;
+        },
+
+        getUpdatedByPrsFond(isIdleActive,productionFondsForIterations) {
+            if (!isIdleActive) {
+                productionFondsForIterations.splice(-1,1);
+            } else {
+                productionFondsForIterations.push('fond_neftedob_prs');
+            }
+            return productionFondsForIterations;
         },
     },
 }

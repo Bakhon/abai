@@ -1,0 +1,1359 @@
+canvas#foo {
+    width: 100%;
+    margin-bottom: 50px;
+}
+.digital_drilling .col-sm-10.leftBlock {
+    max-width: 79.5%;
+    padding-right: 0;
+    padding-left: 14px;
+}
+
+.digital_drilling .col-sm-2.rightBlock {
+    flex: 0 0 20%;
+    max-width: 20%;
+    padding: 0 5px 0 10px;
+}
+
+.digital_drilling .col-sm-12.centerBlock {
+    padding: 0 10px;
+}
+.digital_drilling .controlBlock {
+    display: table;
+    width: 100%;
+    margin: 0 0 15px;
+}
+
+.digital_drilling .controlBlock .block {
+    display: inline-table;
+    width: 20%;
+}
+
+.digital_drilling .controlBlock .block .dropdown {
+    width: 100%;
+}
+
+.digital_drilling .controlBlock .block .dropdown button {
+    width: 99%;
+    background: #333975;
+    font-size: 16px;
+    position: relative;
+    text-align: left;
+    border: none;
+    margin: 0 auto;
+}
+
+.digital_drilling .controlBlock .block .dropdown button:after {
+    display: none;
+}
+
+.digital_drilling .controlBlock .block .dropdown button i {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.digital_drilling .controlBlock .block .dropdown.active button {
+    background: #2E50E9;
+}
+.digital_drilling .controlBlock .block .dropdown .dropdown-menu {
+    width: 98%;
+    background: #333975;
+    padding: 0;
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.25);
+    margin: 3px 0 0;
+}
+
+.digital_drilling .controlBlock .block .dropdown .dropdown-menu a {
+    color: #fff;
+    font-size: 16px;
+    font-weight: unset;
+    padding: 10px;
+    border-top: 0.2646px solid #454D7D;
+}
+
+.digital_drilling .controlBlock .block .dropdown .dropdown-menu a:first-child {
+    border: none;
+}
+
+.digital_drilling .controlBlock .block .dropdown button {
+    box-shadow: none!important;
+    width: 98%;
+    display: table;
+}
+
+.digital_drilling .controlBlock .block .dropdown .dropdown-menu a:hover {
+    background: #20274f;
+    cursor: pointer;
+    transition: .2s linear;
+}
+
+.digital_drilling .controlBlock .block .dropdown button:hover {
+    background: #2E50E9;
+}
+.digital_drilling .controlBlock .block .dropdown button img {
+    display: inline-table;
+    height: 16px;
+    vertical-align: middle;
+    margin: 0 10px 0 0;
+}
+
+.digital_drilling .controlBlock .block .dropdown .dropdown-menu a img {
+    display: inline-table;
+    height: 18px;
+    vertical-align: middle;
+    margin-right: 10px;
+}
+.digital_drilling .controlBlock {
+    width: 100%;
+    margin: 0 0 10px;
+}
+.digital_drilling .resultsBlock {
+    width: 100%;
+    display: table;
+    background: #272953;
+    border-radius: 3px;
+}
+
+.digital_drilling .resultsBlock ul {
+    display: table;
+    width: 100%;
+    margin: 0;
+}
+
+.digital_drilling .resultsBlock ul li {
+    display: inline-table;
+    width: 25%;
+    margin: 0;
+    padding: 0;
+    border-right: 0.5669px solid #454D7D;
+}
+
+.digital_drilling .resultsBlock ul li .block {
+    display: table;
+    width: 100%;
+    margin: 0 auto;
+    width: 85%;
+    padding: 15px 0;
+}
+
+.digital_drilling .resultsBlock ul li .block p.num {
+    display: table;
+    margin: 0;
+}
+.digital_drilling .resultsBlock ul li .block p.num span {
+    display: inline-table;
+    vertical-align: bottom;
+    font-size: 16px;
+    color: #82BAFF;
+    margin: 0 0 0 10px;
+}
+.digital_drilling .resultsBlock ul li .block p.num span.big {
+    margin: 0;
+    color: #fff;
+    font-size: 58px;
+    line-height: 0.9;
+    font-weight: 600;
+}
+
+
+
+.digital_drilling .resultsBlock ul li .block p.title {
+    display: table;
+    margin: 15px 0 0;
+    color: #fff;
+    font-size: 16px;
+    border-bottom: 3px solid transparent;
+    padding-bottom: 3px;
+}
+
+.digital_drilling .resultsBlock ul li .block p.title.green {
+    border-color: #00963F;
+}
+
+.digital_drilling .resultsBlock ul li .block p.title.yellow {
+    border-color: #FFEC08;
+}
+
+.digital_drilling .resultsBlock ul li .block p.title.red {
+    border-color: #E3000F;
+}
+
+.digital_drilling .resultsBlock ul li .block p.percent {
+    display: table;
+    margin: 15px 0 0;
+    color: #82BAFF;
+    font-size: 14px;
+}
+
+.digital_drilling .resultsBlock ul li .block p.percent span {
+    font-weight: 600;
+    color: #fff;
+    font-size: 14px;
+    margin: 0 4px;
+}
+
+.digital_drilling .resultsBlock ul li:last-child {
+    border: none;
+}
+
+.digital_drilling .analyticsBlock {
+    background: #272953;
+    border-radius: 3px;
+    display: table;
+    width: 100%;
+    margin: 0 0 10px;
+}
+
+.digital_drilling .analyticsBlock .mspBlock {
+    display: table;
+    width: 100%;
+    padding: 0 20px 20px;
+}
+
+.digital_drilling .analyticsBlock .mspBlock .graphicBlock {
+    display: table;
+    margin: 10px auto;
+    max-width: 100%;
+}
+
+.digital_drilling .analyticsBlock .mspBlock .graphicBlock img {
+    display: table;
+    max-width: 100%;
+}
+
+.digital_drilling .analyticsBlock .mspBlock p {
+    display: table;
+    margin: 15px 0 0;
+    color: #fff;
+    font-size: 16px;
+    width: 100%;
+}
+
+.digital_drilling .analyticsBlock .mspBlock p span:last-child {
+    width: 40%;
+    text-align: right;
+    vertical-align: bottom;
+    font-size: 22px;
+    font-weight: 600;
+    color: #fff;
+    opacity: 1;
+}
+
+.digital_drilling .analyticsBlock .mspBlock p span {
+    display: inline-table;
+    margin: 0;
+    width: 60%;
+}
+
+.digital_drilling .analyticsBlock .mspBlock p span:last-child {}
+
+.digital_drilling .analyticsBlock p.num {
+    display: table;
+    margin: 0 0 30px;
+    width: 100%;
+    padding: 20px 18px 0;
+    color: #82BAFF;
+    font-size: 16px;
+}
+
+.digital_drilling .analyticsBlock p.num span {
+    display: table;
+    color: #fff;
+    font-size: 64px;
+    font-weight: 600;
+    line-height: 1;
+}
+
+.digital_drilling .analyticsBlock p.name {
+    display: table;
+    width: 100%;
+    padding: 0 18px 20px;
+    margin: 0;
+}
+
+.digital_drilling .analyticsBlock p.name span {
+    display: inline-table;
+    vertical-align: middle;
+    margin: 0;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.digital_drilling .analyticsBlock p.name img {
+    display: inline-table;
+    vertical-align: middle;
+    margin: 0 12px 0 0;
+}
+
+.digital_drilling button.alarm {
+    display: table;
+    width: 100%;
+    padding: 15px;
+    background: #C63E4B;
+    color: #fff;
+    font-size: 18px;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    transition: .2s linear;
+}
+
+.row.digital_drilling {
+    padding-bottom: 20px;
+}
+
+.digital_drilling button.alarm:hover {
+    background: #c75f6a;
+}
+.digital_drilling .contentBlock {
+    width: 100%;
+    display: block;
+    margin: 10px 0 0;
+}
+
+.digital_drilling .contentBlock .digitalDrillingWindow {
+    display: table;
+    width: 100%;
+    margin: 0;
+    border-radius: 3px;
+    overflow: hidden;
+    position: relative;
+}
+
+.digital_drilling .contentBlock .digitalDrillingWindow .windowHead {
+    display: table;
+    width: 100%;
+    background: #333975;
+    padding: 10px 15px;
+    position: relative;
+}
+
+.digital_drilling .contentBlock .digitalDrillingWindow .windowHead p.headTitle {
+    display: table;
+    color: #fff;
+    margin: 0;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.digital_drilling .contentBlock .digitalDrillingWindow .windowHead .controlBlock {
+    position: absolute;
+    right: 15px;
+    top: 13px;
+    width: auto;
+}
+
+.digital_drilling .contentBlock .digitalDrillingWindow .windowHead .controlBlock a {
+    display: inline-table;
+    margin: 0 5px;
+}
+
+.digital_drilling .contentBlock .digitalDrillingWindow .windowBody {
+    display: table;
+    margin: 0;
+    width: 100%;
+    overflow: hidden;
+    background: #272953;
+}
+
+.digital_drilling .contentBlock .digitalDrillingWindow .windowBody img {
+    display: table;
+    width: 105%;
+    height: 105%;
+    margin: -2.5% 0 0 -2.5%;
+    object-fit: cover;
+    object-position: center;
+}
+
+.digital_drilling .contentBlock .digitalDrillingWindow .windowFooter {
+    display: table;
+    margin: 0;
+    width: 100%;
+    background: #333975;
+    padding: 10px 0;
+}
+
+.digital_drilling .contentBlock .digitalDrillingWindow .windowFooter .footBlock {
+    display: table;
+    width: 100%;
+    text-align: center;
+    margin: 0;
+}
+
+.digital_drilling .contentBlock .digitalDrillingWindow .windowFooter .footBlock p {
+    display: inline-table;
+    color: #fff;
+    margin: 0 20px;
+}
+
+.digital_drilling .contentBlock .digitalDrillingWindow .windowFooter .footBlock p img {
+    display: inline-table;
+    margin: 0 10px 0 0;
+}
+
+.digital_drilling .contentBlock .digitalDrillingWindow .windowFooter .row {
+    margin: 0;
+}
+
+.digital_drilling .contentBlock .digitalDrillingWindow .windowFooter .borderRightGrey {
+    border-right: 2px solid #616060;
+}
+.digital_drilling .contentBlock .digitalDrillingWindow .windowBody .bodyContent {
+    padding: 15px;
+}
+
+.digital_drilling .contentBlock .digitalDrillingWindow .windowBody .bodyContent .bigTitle {
+    display: table;
+    margin: 0 auto 20px;
+    color: #fff;
+    font-size: 22px;
+    font-weight: bolder;
+}
+
+.digital_drilling .contentBlock .digitalDrillingWindow .windowBody .bodyContent table {
+    width: 100%;
+    border: 1px solid #3B4380;
+    border-top: none;
+}
+
+.digital_drilling .contentBlock .digitalDrillingWindow .windowBody .bodyContent table tr {
+    width: 100%;
+    border: none;
+    color: #fff;
+}
+
+.digital_drilling .contentBlock .digitalDrillingWindow .windowBody .bodyContent table tr:nth-child(odd) {background: rgba(69, 77, 125, 0.7);}
+
+.digital_drilling .contentBlock .digitalDrillingWindow .windowBody .bodyContent table tr th {
+    background: #323370;
+    border: none;
+    text-align: center;
+    font-size: 16px;
+    font-weight: normal;
+}
+
+.digital_drilling .contentBlock .digitalDrillingWindow .windowBody .bodyContent table tr td {
+    border: none;
+    border-right: 1px solid #3B4380;
+    font-size: 14px;
+}
+
+.digital_drilling .contentBlock .digitalDrillingWindow .windowBody .bodyContent table tr td:last-child {
+    border: none;
+}
+
+.digital_drilling .contentBlock .digitalDrillingWindow .windowBody .bodyContent table.firstTable tr td:first-child {
+    width: 60%;
+    font-weight: bolder;
+}
+
+.digital_drilling .contentBlock .digitalDrillingWindow .windowBody .bodyContent table.firstTable tr td:last-child {
+    width: 40%;
+}
+
+.digital_drilling .contentBlock .digitalDrillingWindow .windowBody .bodyContent table.secondTable tr td:first-child {
+    font-weight: bold;
+    width: 5%;
+    text-align: center;
+}
+
+.digital_drilling .contentBlock .digitalDrillingWindow .windowBody .bodyContent table.secondTable tr td:nth-child(2) {
+    font-weight: bolder;
+    width: 40%;
+}
+
+.digital_drilling .contentBlock .digitalDrillingWindow .windowBody .bodyContent table.secondTable tr td:last-child {
+    width: 55%;
+}
+div#map {
+    margin: 25px auto!important;
+}
+.digital_drilling .col-sm-10.leftBlock {
+    max-width: 79.5%;
+    padding-right: 0;
+    padding-left: 14px;
+}
+
+.digital_drilling .col-sm-2.rightBlock {
+    flex: 0 0 20%;
+    max-width: 20%;
+    padding: 0 5px 0 10px;
+}
+
+.digital_drilling .col-sm-12.centerBlock {
+    padding: 0 10px;
+}
+.digital_drilling .controlBlock {
+    display: table;
+    width: 100%;
+    margin: 0 0 15px;
+}
+
+.digital_drilling .controlBlock .block {
+    display: inline-table;
+    width: 20%;
+}
+
+.digital_drilling .controlBlock .block .dropdown {
+    width: 100%;
+}
+
+.digital_drilling .controlBlock .block .dropdown button {
+    width: 99%;
+    background: #333975;
+    font-size: 16px;
+    position: relative;
+    text-align: left;
+    border: none;
+    margin: 0 auto;
+}
+
+.digital_drilling .controlBlock .block .dropdown button:after {
+    display: none;
+}
+
+.digital_drilling .controlBlock .block .dropdown button i {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.digital_drilling .controlBlock .block .dropdown.active button {
+    background: #2E50E9;
+}
+.digital_drilling .controlBlock .block .dropdown .dropdown-menu {
+    width: 98%;
+    background: #333975;
+    padding: 0;
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.25);
+    margin: 3px 0 0;
+}
+
+.digital_drilling .controlBlock .block .dropdown .dropdown-menu a {
+    color: #fff;
+    font-size: 16px;
+    font-weight: unset;
+    padding: 10px;
+    border-top: 0.2646px solid #454D7D;
+}
+
+.digital_drilling .controlBlock .block .dropdown .dropdown-menu a:first-child {
+    border: none;
+}
+
+.digital_drilling .controlBlock .block .dropdown button {
+    box-shadow: none!important;
+    width: 98%;
+    display: table;
+}
+
+.digital_drilling .controlBlock .block .dropdown .dropdown-menu a:hover {
+    background: #20274f;
+    cursor: pointer;
+    transition: .2s linear;
+}
+
+.digital_drilling .controlBlock .block .dropdown button:hover {
+    background: #2E50E9;
+}
+.digital_drilling .controlBlock .block .dropdown button img {
+    display: inline-table;
+    height: 16px;
+    vertical-align: middle;
+    margin: 0 10px 0 0;
+}
+
+.digital_drilling .controlBlock .block .dropdown .dropdown-menu a img {
+    display: inline-table;
+    height: 18px;
+    vertical-align: middle;
+    margin-right: 10px;
+}
+.digital_drilling .controlBlock {
+    width: 100%;
+    margin: 0 0 10px;
+}
+.digital_drilling .resultsBlock {
+    width: 100%;
+    display: table;
+    background: #272953;
+    border-radius: 3px;
+}
+
+.digital_drilling .resultsBlock ul {
+    display: table;
+    width: 100%;
+    margin: 0;
+}
+
+.digital_drilling .resultsBlock ul li {
+    display: inline-table;
+    width: 25%;
+    margin: 0;
+    padding: 0;
+    border-right: 0.5669px solid #454D7D;
+}
+
+.digital_drilling .resultsBlock ul li .block {
+    display: table;
+    width: 100%;
+    margin: 0 auto;
+    width: 85%;
+    padding: 15px 0;
+}
+
+.digital_drilling .resultsBlock ul li .block p.num {
+    display: table;
+    margin: 0;
+}
+.digital_drilling .resultsBlock ul li .block p.num span {
+    display: inline-table;
+    vertical-align: bottom;
+    font-size: 16px;
+    color: #82BAFF;
+    margin: 0 0 0 10px;
+}
+.digital_drilling .resultsBlock ul li .block p.num span.big {
+    margin: 0;
+    color: #fff;
+    font-size: 58px;
+    line-height: 0.9;
+    font-weight: 600;
+}
+
+
+
+.digital_drilling .resultsBlock ul li .block p.title {
+    display: table;
+    margin: 15px 0 0;
+    color: #fff;
+    font-size: 16px;
+    border-bottom: 3px solid transparent;
+    padding-bottom: 3px;
+}
+
+.digital_drilling .resultsBlock ul li .block p.title.green {
+    border-color: #00963F;
+}
+
+.digital_drilling .resultsBlock ul li .block p.title.yellow {
+    border-color: #FFEC08;
+}
+
+.digital_drilling .resultsBlock ul li .block p.title.red {
+    border-color: #E3000F;
+}
+
+.digital_drilling .resultsBlock ul li .block p.percent {
+    display: table;
+    margin: 15px 0 0;
+    color: #82BAFF;
+    font-size: 14px;
+}
+
+.digital_drilling .resultsBlock ul li .block p.percent span {
+    font-weight: 600;
+    color: #fff;
+    font-size: 14px;
+    margin: 0 4px;
+}
+
+.digital_drilling .resultsBlock ul li:last-child {
+    border: none;
+}
+
+.digital_drilling .analyticsBlock {
+    background: #272953;
+    border-radius: 3px;
+    display: table;
+    width: 100%;
+    margin: 0 0 10px;
+}
+
+.digital_drilling .analyticsBlock .mspBlock {
+    display: table;
+    width: 100%;
+    padding: 0 20px 20px;
+}
+
+.digital_drilling .analyticsBlock .mspBlock .graphicBlock {
+    display: table;
+    margin: 10px auto;
+    max-width: 100%;
+}
+
+.digital_drilling .analyticsBlock .mspBlock .graphicBlock img {
+    display: table;
+    max-width: 100%;
+}
+
+.digital_drilling .analyticsBlock .mspBlock p {
+    display: table;
+    margin: 15px 0 0;
+    color: #fff;
+    font-size: 16px;
+    width: 100%;
+}
+
+.digital_drilling .analyticsBlock .mspBlock p span:last-child {
+    width: 40%;
+    text-align: right;
+    vertical-align: bottom;
+    font-size: 22px;
+    font-weight: 600;
+    color: #fff;
+    opacity: 1;
+}
+
+.digital_drilling .analyticsBlock .mspBlock p span {
+    display: inline-table;
+    margin: 0;
+    width: 60%;
+}
+
+.digital_drilling .analyticsBlock .mspBlock p span:last-child {}
+
+.digital_drilling .analyticsBlock p.num {
+    display: table;
+    margin: 0 0 30px;
+    width: 100%;
+    padding: 20px 18px 0;
+    color: #82BAFF;
+    font-size: 16px;
+}
+
+.digital_drilling .analyticsBlock p.num span {
+    display: table;
+    color: #fff;
+    font-size: 64px;
+    font-weight: 600;
+    line-height: 1;
+}
+
+.digital_drilling .analyticsBlock p.name {
+    display: table;
+    width: 100%;
+    padding: 0 18px 20px;
+    margin: 0;
+}
+
+.digital_drilling .analyticsBlock p.name span {
+    display: inline-table;
+    vertical-align: middle;
+    margin: 0;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.digital_drilling .analyticsBlock p.name img {
+    display: inline-table;
+    vertical-align: middle;
+    margin: 0 12px 0 0;
+}
+
+.digital_drilling button.alarm {
+    display: table;
+    width: 100%;
+    padding: 15px;
+    background: #C63E4B;
+    color: #fff;
+    font-size: 18px;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    transition: .2s linear;
+}
+
+.row.digital_drilling {
+    padding-bottom: 20px;
+}
+
+.digital_drilling button.alarm:hover {
+    background: #c75f6a;
+}
+.digital_drilling .contentBlock {
+    width: 100%;
+    display: block;
+    margin: 10px 0 0;
+}
+
+.digital_drilling .contentBlock .digitalDrillingWindow {
+    display: table;
+    width: 100%;
+    margin: 0;
+    border-radius: 3px;
+    overflow: hidden;
+    position: relative;
+}
+
+.digital_drilling .contentBlock .digitalDrillingWindow .windowHead {
+    display: table;
+    width: 100%;
+    background: #333975;
+    padding: 10px 15px;
+    position: relative;
+}
+
+.digital_drilling .contentBlock .digitalDrillingWindow .windowHead p.headTitle {
+    display: table;
+    color: #fff;
+    margin: 0;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.digital_drilling .contentBlock .digitalDrillingWindow .windowHead .controlBlock {
+    position: absolute;
+    right: 15px;
+    top: 13px;
+    width: auto;
+}
+
+.digital_drilling .contentBlock .digitalDrillingWindow .windowHead .controlBlock a {
+    display: inline-table;
+    margin: 0 5px;
+}
+
+.digital_drilling .contentBlock .digitalDrillingWindow .windowBody {
+    display: table;
+    margin: 0;
+    width: 100%;
+    overflow: hidden;
+}
+
+.digital_drilling .contentBlock .digitalDrillingWindow .windowBody img {
+    display: table;
+    width: 105%;
+    height: 105%;
+    margin: -2.5% 0 0 -2.5%;
+    object-fit: cover;
+    object-position: center;
+}
+
+.digital_drilling .contentBlock .digitalDrillingWindow .windowFooter {
+    display: table;
+    margin: 0;
+    width: 100%;
+    background: #333975;
+    padding: 10px 0;
+}
+
+.digital_drilling .contentBlock .digitalDrillingWindow .windowFooter .footBlock {
+    display: table;
+    width: 100%;
+    text-align: center;
+    margin: 0;
+}
+
+.digital_drilling .contentBlock .digitalDrillingWindow .windowFooter .footBlock p {
+    display: inline-table;
+    color: #fff;
+    margin: 0 20px;
+}
+
+.digital_drilling .contentBlock .digitalDrillingWindow .windowFooter .footBlock p img {
+    display: inline-table;
+    margin: 0 10px 0 0;
+}
+
+.digital_drilling .contentBlock .digitalDrillingWindow .windowFooter .row {
+    margin: 0;
+}
+
+.digital_drilling .contentBlock .digitalDrillingWindow .windowFooter .borderRightGrey {
+    border-right: 2px solid #616060;
+}
+.digital_drilling .analyticsBlock .mspBlock p.numm {
+    display: table;
+    font-size: 36px;
+    font-weight: 600;
+    position: relative;
+    margin: 15px 0 80px;
+}
+
+.digital_drilling .analyticsBlock .mspBlock p.numm:before {content: '';width: 12px;height: 12px;display: inline-table;border-radius: 50%;background: #ffec08;vertical-align: middle;margin: 0 15px 0 0;}
+
+.digital_drilling .analyticsBlock .mspBlock.bigBlock .graphicBlock {
+    margin-bottom: 80px;
+}
+
+.digital_drilling .analyticsBlock .mspBlock p.bigNum {
+    display: table;
+    margin: 0 0 100px;
+    font-size: 54px;
+    font-weight: 600;
+    text-align: left;
+}
+
+.digital_drilling .analyticsBlock .mspBlock p.bigNum span {
+    display: table;
+    margin: 0;
+    font-size: 18px;
+    text-align: left;
+    width: auto;
+    font-weight: 400;
+    border-bottom: 3px solid #ffec08;
+    padding-bottom: 6px;
+}
+
+.digital_drilling .analyticsBlock .mspBlock p.percent {
+    display: table;
+    margin: 15px 0 0;
+    color: #82BAFF;
+    font-size: 16px;
+    width: 100%;
+    text-align: left;
+}
+
+.digital_drilling .analyticsBlock .mspBlock p.percent span {
+    font-size: 16px;
+    width: auto;
+    margin: 0 5px 0 0;
+}
+div#map_zoom {
+    display: none;
+}
+.digital_drilling .contentBlock .digitalDrillingWindow .windowBody .controlButtons {
+    position: absolute;
+    right: 35px;
+    bottom: 25px;
+}
+
+.digital_drilling .contentBlock .digitalDrillingWindow .windowBody {
+    position: relative;
+}
+
+.digital_drilling .contentBlock .digitalDrillingWindow .windowBody .controlButtons button {
+    margin: 0 0 1.5px;
+    display: table;
+    width: 30px;
+    height: 30px;
+    line-height: 0;
+    font-size: 20px;
+    padding: 0 0 5px;
+    border: none;
+    color: #fff;
+    background: #656A8A;
+    transition: .2s linear;
+    border-radius: 3px 3px 0 0;
+}
+
+.digital_drilling .contentBlock .digitalDrillingWindow .windowBody .controlButtons button:last-child {
+    border-radius: 0 0 3px 3px;
+}
+
+.digital_drilling .contentBlock .digitalDrillingWindow .windowBody .controlButtons button:hover {
+    background: #3366FF;
+}
+.digital_drilling .contentBlock .digitalDrillingWindow .windowBody .bodyContent table.gisTable tr td:first-child {
+    width: 5%;
+}
+
+.digital_drilling .contentBlock .digitalDrillingWindow .windowBody .bodyContent table.gisTable tr td:nth-child(2),.digital_drilling .contentBlock .digitalDrillingWindow .windowBody .bodyContent table.gisTable tr td:nth-child(3) {
+    width: 25%;
+}
+
+.digital_drilling .contentBlock .digitalDrillingWindow .windowBody .bodyContent table.gisTable tr td {
+    width: 15%;
+}
+
+.digital_drilling .contentBlock .digitalDrillingWindow .windowBody .bodyContent table tr td p.inter {
+    display: block;
+    width: 100%;
+    position: relative;
+    text-align: center;
+    margin: 0;
+    padding: 8px 0;
+    border-bottom: 1px solid #576097;
+}
+
+.digital_drilling .contentBlock .digitalDrillingWindow .windowBody .bodyContent table tr td p.inter span.first {
+    left: 0;
+}
+
+.digital_drilling .contentBlock .digitalDrillingWindow .windowBody .bodyContent table tr td p.inter span.second {
+    right: 0;
+}
+
+.digital_drilling .contentBlock .digitalDrillingWindow .windowBody .bodyContent table tr td p.inter.red {
+    color: #C63E4B;
+}
+
+.digital_drilling .contentBlock .digitalDrillingWindow .windowBody .bodyContent table tr td p.inter.blue {
+    color: #82BAFF;
+}
+
+.digital_drilling .contentBlock .digitalDrillingWindow .windowBody .bodyContent table tr td p.inter.orange {
+    color: #FBA409;
+}
+
+.digital_drilling .contentBlock .digitalDrillingWindow .windowBody .bodyContent table tr td p.inter span {
+    color: #fff;
+    position: absolute;
+    bottom: 6px;
+    font-size: 12px;
+}
+
+.digital_drilling .contentBlock .digitalDrillingWindow .windowBody .bodyContent table tr td p.inter i {
+    display: inline-table;
+    margin: 0;
+    border-bottom: 1px solid;
+    font-style: unset;
+}
+
+.digital_drilling .contentBlock .digitalDrillingWindow .windowBody .bodyContent table tr td p.inter i.bold {
+    display: inline-block;
+    width: 40px;
+    background: #ccc;
+    border-width: 2px;
+}
+
+.digital_drilling .contentBlock .digitalDrillingWindow .windowBody .bodyContent table tr td p {
+    display: table;
+    margin: 0;
+    text-align: center;
+    width: 100%;
+}
+
+.digital_drilling .contentBlock .digitalDrillingWindow .windowBody .bodyContent table tr td p.inter:last-child {
+    border: none;
+}
+
+.digital_drilling .contentBlock .digitalDrillingWindow .windowBody .bodyContent table.gisTable tr td {
+    vertical-align: bottom;
+}
+
+.digital_drilling .contentBlock .digitalDrillingWindow .windowBody .bodyContent table.gisTable tr td:first-child {
+    vertical-align: middle;
+}
+
+.digital_drilling .contentBlock .digitalDrillingWindow .windowBody .bodyContent table.gisTable tr td p.graphText {
+    margin: 15px 0;
+}
+
+.digital_drilling .contentBlock .digitalDrillingWindow .windowBody .bodyContent table.defaultTable tr:nth-child(even) {
+    background: rgba(69, 77, 125, 0.7);
+}
+
+.digital_drilling .contentBlock .digitalDrillingWindow .windowBody .bodyContent table.defaultTable tr {
+    background: transparent;
+}
+.digital_drilling .contentBlock .digitalDrillingWindow .windowBody .bodyContent table.defaultTable tr th {
+    font-size: 14px;
+}
+.digital_drilling .contentBlock .digitalDrillingWindow .windowBody .bodyContent table.defaultTable tr td {
+    text-align: center;
+}
+.digital_drilling .contentBlock .digitalDrillingWindow .windowBody .bodyContent .bigTitle.left {
+    display: inline-table;
+    width: 30%;
+}
+
+.digital_drilling .contentBlock .digitalDrillingWindow .windowBody .bodyContent .dropdown {
+    display: inline-table;
+    width: 40%;
+}
+
+.digital_drilling .contentBlock .digitalDrillingWindow .windowBody .bodyContent .dropdown button {
+    display: table;
+    width: 100%;
+    background: #2A2E5C;
+    border: 1px solid #454FA1;
+    border-radius: 0;
+}
+
+.digital_drilling .contentBlock .digitalDrillingWindow .windowBody .bodyContent .dropdown button:after {
+    display: none;
+}
+
+.digital_drilling .contentBlock .digitalDrillingWindow .windowBody .bodyContent .dropdown button i {
+    float: right;
+    margin: 4px 0 0;
+}
+
+.digital_drilling .contentBlock .digitalDrillingWindow .windowBody .bodyContent .dropdown .dropdown-menu {
+    border-radius: 0;
+    width: 100%;
+    background: transparent;
+    border: 1px solid #454FA1;
+    padding: 0;
+}
+
+.digital_drilling .contentBlock .digitalDrillingWindow .windowBody .bodyContent .dropdown .dropdown-menu a {
+    display: table;
+    width: 100%;
+    color: #fff;
+    text-align: center;
+    padding: 8px 0;
+    background: #2A2E5C;
+}
+.digital_drilling .contentBlock .digitalDrillingWindow .windowBody .bodyContent .dropdown button[aria-expanded="true"] i {
+    transform: rotate(180deg);
+}
+.digital_drilling .contentBlock .digitalDrillingWindow .windowBody .bodyContent table.defaultTable {
+    max-height: 600px;
+    position: relative;
+    display: block;
+    width: 100%;
+    overflow-x: scroll;
+}
+
+.digital_drilling .contentBlock .digitalDrillingWindow .windowBody .bodyContent table.defaultTable tbody {
+    width: 100%;
+    display: table;
+}
+
+.digital_drilling .contentBlock .digitalDrillingWindow .windowBody .bodyContent table.defaultTable::-webkit-scrollbar-thumb{
+    background-color: #000000;
+    border: 2px solid #ffffff;
+}
+.digital_drilling .contentBlock .digitalDrillingWindow .windowBody .bodyContent table.defaultTable::-webkit-scrollbar{
+    width:4px;
+}
+.digital_drilling .contentBlock .digitalDrillingWindow .windowBody .bodyContent table.defaultTable tr th {
+    border: 0.6px solid #3B4380;
+    border-left: none;
+}
+table.table.defaultTable.rastersParams th {
+    vertical-align: middle;
+}
+th.verticalText span {
+    transform: rotate(-90deg);
+    display: table;
+}
+
+th.verticalText {
+    height: 140px;
+}
+.digital_drilling .contentBlock .digitalDrillingWindow .windowHead .controlBlock .searchBlock {
+    display: inline-table;
+    margin: 0 15px 0 0;
+    position: relative;
+}
+
+.digital_drilling .contentBlock .digitalDrillingWindow .windowHead .controlBlock .searchBlock label {
+    display: inline-table;
+    margin: 0;
+    background: rgba(123, 132, 173, 0.639216);
+    color: #fff;
+    padding: 5px 10px;
+}
+
+.digital_drilling .contentBlock .digitalDrillingWindow .windowHead .controlBlock .searchBlock input {
+    display: inline-table;
+    padding: 5px 15px;
+    border: none;
+    min-width: 200px;
+    background: rgba(95, 104, 186, 0.329412);
+    color: #fff;
+}
+
+.digital_drilling .contentBlock .digitalDrillingWindow .windowHead .controlBlock .searchBlock button {
+    position: absolute;
+    top: 7px;
+    right: 7px;
+    background: transparent;
+    border: none;
+    color: #9EA4C9;
+    font-size: 18px;
+}
+
+.digital_drilling .contentBlock .digitalDrillingWindow .windowHead .controlBlock .searchBlock button i {
+    color: #9EA4C9;
+}
+
+.digital_drilling .contentBlock .digitalDrillingWindow .windowHead .controlBlock {
+    top: 7px;
+}
+.digital_drilling .contentBlock .digitalDrillingWindow {
+    display: block;
+}
+
+.digital_drilling .contentBlock .digitalDrillingWindow .windowBody {
+    display: block;
+}
+.fasteningBlock {
+    display: table;
+    border: 1px solid #4F5991;
+}
+
+.fasteningBlock .head {
+    display: table;
+    width: 100%;
+    background: #333975;
+}
+
+.fasteningBlock .head p.name {
+    display: table;
+    margin: 0 auto;
+    color: #fff;
+    padding: 12px 0;
+    font-size: 16px;
+}
+
+.fasteningBlock .foot {
+    display: table;
+    width: 100%;
+    background: #333975;
+}
+
+.fasteningBlock .foot p.legend {
+    display: table;
+    margin: 0 auto 10px;
+    color: #fff;
+    padding: 12px 0;
+    font-size: 16px;
+}
+
+.fasteningBlock .foot img {
+    display: table!important;
+    margin: 0 auto 10px!important;
+    width: 80%!important;
+}
+
+.fasteningBlock .body {
+    background: #20245E;
+    padding: 15px;
+}
+
+.fasteningBlock .body .title {
+    display: table;
+    color: #fff;
+    text-align: center;
+    font-size: 16px;
+    line-height: 1.3;
+}
+
+.fasteningBlock .body .second {
+    display: inline-table;
+    width: 49%;
+    text-align: center;
+    color: #fff;
+    margin: 0 0 20px;
+}
+
+.fasteningBlock .body img {
+    display: table!important;
+    width: 100%!important;
+    margin: 0 auto!important;
+    object-fit: contain!important;
+    height: auto!important;
+}
+.digital_drilling .contentBlock .digitalDrillingWindow .windowBody img.structure-img{
+    max-width: 30%;
+    height: auto;
+    margin: 50px auto;
+}
+.digital_drilling .contentBlock .digitalDrillingWindow .windowBody img.inclino-img{
+    height: auto;
+    width: 100%;
+    margin: 20px 0 0;
+}
+.digital_drilling .contentBlock .digitalDrillingWindow .windowBody img.calculation-img{
+    height: auto;
+    width: 50%;
+    margin: 30px auto 50px;
+}
+.digital_drilling .contentBlock .digitalDrillingWindow .windowBody img.deepening-img{
+    height: auto;
+    width: 50%;
+    margin: 30px auto 50px;
+}
+.digital_drilling .contentBlock .digitalDrillingWindow .windowBody img.well-img{
+    height: auto;
+    width: 100%;
+    margin: 20px 0 0;
+}
+.digital_drilling .contentBlock .digitalDrillingWindow .windowBody .bodyContent .dropdown .dropdown-menu {
+    max-height: 500px;
+    overflow-y: scroll;
+}
+
+.digital_drilling .contentBlock .digitalDrillingWindow .windowBody .bodyContent .dropdown .dropdown-menu::-webkit-scrollbar-thumb{
+    background-color: #000000;
+    border: 2px solid #ffffff;
+}
+.digital_drilling .contentBlock .digitalDrillingWindow .windowBody .bodyContent .dropdown .dropdown-menu::-webkit-scrollbar{
+    width:4px;
+}
+.digital_drilling .contentBlock .digitalDrillingWindow .windowBody .bodyContent .dropdown .dropdown-menu a {
+    width: 100%;
+    white-space: unset;
+    padding: 8px;
+}
+.digital_drilling .contentBlock .digitalDrillingWindow .windowBody .bodyContent table.defaultTable tr td.green {
+    background: #92D050;
+}
+.container-fluid.col.pt-md-10px.mx-md-10px.px-0.container-main {
+    max-width: 95.95%;
+}
+input.rangeInput {
+    background: linear-gradient(to right, #3C4270 0%, #3C4270 50%, #3C4270 50%, #3C4270 100%);
+    height: 8px;
+    width: 100%;
+    outline: none;
+    transition: all 450ms ease-in;
+    -webkit-appearance: none;
+    padding: 15px;
+    border-radius: 2px;
+}
+
+input.rangeInput::-webkit-slider-thumb {
+    display: none;
+}
+input.rangeInput {
+}
+
+.techNumsBlock {
+    padding: 15px;
+}
+
+.techNumsBlock .lineBlock {
+    position: relative;
+    width: 100%;
+    display: block;
+}
+.techNumsBlock p.name {
+    display: table;
+    margin: 0!important;
+    padding: 0!important;
+    color: #fff;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.techNumsBlock label {
+    display: table;
+    margin: 18px 0 8px;
+    font-size: 16px;
+}
+
+.techNumsBlock .lineBlock {
+    display: table;
+    margin: 0;
+    position: relative;
+}
+
+.techNumsBlock .lineBlock p {
+    position: absolute;
+    top: 8px;
+    left: 15px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #fff;
+}
+
+input.rangeInput {
+    padding: 20px;
+}
+.digital_drilling .contentBlock .digitalDrillingWindow .windowBody .bodyContent table tr.blue th {
+    background: #333C8E;
+}
+.digital_drilling .contentBlock .digitalDrillingWindow .windowBody .bodyContent table.defaultTable tr td.blueTd {
+    background: #323370;
+    border: 1px solid #3B4380;
+    border-left: none;
+    border-bottom: none;
+}

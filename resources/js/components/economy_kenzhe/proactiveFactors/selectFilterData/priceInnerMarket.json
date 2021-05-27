@@ -1,0 +1,21 @@
+[
+    {
+        "option": "priceInnerMarket.name"
+    },
+    {
+        "value": 1,
+        "option": "priceInnerMarket.option1"
+    },
+    {
+        "value": 2,
+        "option": "priceInnerMarket.option2"
+    },
+    {
+        "value": 3,
+        "option": "priceInnerMarket.option3"
+    },
+    {
+        "value": 4,
+        "option": "priceInnerMarket.option4"
+    }
+]

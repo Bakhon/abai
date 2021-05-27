@@ -50,10 +50,7 @@ class MainController extends Controller
         ];
         $data = json_encode($data);
 
-        if($request->ajax()){
-            return $data;
-        }
-        return view('economy_kenzhe.company')->with(compact('data'));
+        return $data;
     }
 
     public function recursiveSetValueToHandbookByType(&$items, $companyRepTtValues, $currentYear, $previousYear, $dateFrom, $dateTo)

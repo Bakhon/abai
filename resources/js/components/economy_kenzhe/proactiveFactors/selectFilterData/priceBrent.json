@@ -1,0 +1,21 @@
+[
+    {
+        "option": "priceBrent.name"
+    },
+    {
+        "value": 1,
+        "option": "priceBrent.option1"
+    },
+    {
+        "value": 2,
+        "option": "priceBrent.option2"
+    },
+    {
+        "value": 3,
+        "option": "priceBrent.option3"
+    },
+    {
+        "value": 4,
+        "option": "priceBrent.option4"
+    }
+]

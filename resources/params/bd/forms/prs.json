@@ -1,0 +1,176 @@
+{
+  "table": "prod.well_workover",
+  "tabs": [
+    {
+      "title": "delivery_cert",
+      "blocks": [
+        [
+          {
+            "title": "repair",
+            "items": [
+              {
+                "code": "dbeg",
+                "type": "date",
+                "title": "start_date",
+                "validation": "nullable|date|before_or_equal:today"
+              },
+              {
+                "code": "name_ru",
+                "type": "dict",
+                "title": "type_rep_work",
+                "validation": "required|exists:tbd.dict.repair_work_type, id",
+                "dict": "dict.repair_work_type"
+              },
+              {
+                "code": "work_plan",
+                "type": "text",
+                "title": "planned_works_list"
+              },
+              {
+                "code": "by_ourselves",
+                "type": "checkbox",
+                "title": "gtm_dublicate"
+              },
+              {
+                "code": "name_ru",
+                "type": "dict",
+                "title": "contractor",
+                "validation": "required|exists:tbd.dict.company, id",
+                "dict": "dict.company"
+              },
+              {
+                "code": "name_ru",
+                "type": "dict",
+                "title": "brigade",
+                "validation": "required|exists:tbd.dict.brigade, id",
+                "dict": "dict.brigade"
+              },
+              {
+                "code": "full_name",
+                "type": "dict",
+                "title": "brigade_master",
+                "validation": "required|exists:tbd.dict.brigadier, id",
+                "dict": "dict.brigadier"
+              },
+              {
+                "code": "gtm_dublicate",
+                "type": "checkbox",
+                "title": "dublicate_to_gtm"
+              }
+            ]
+          }
+        ]
+      ]
+    },
+    {
+      "title": "acceptance_cert",
+      "blocks": [
+        [
+          {
+            "title": "repair",
+            "items": [
+              {
+                "code": "dend",
+                "type": "date",
+                "title": "completion_date",
+                "validation": "nullable|date|before_or_equal:today"
+              },
+              {
+                "code": "work_list",
+                "type": "text",
+                "title": "desc_done"
+              },
+              {
+                "code": "prs_repair_type",
+                "type": "dict",
+                "title": "rep_type",
+                "validation": "required",
+                "dict": "prod.well_workover"
+              },
+              {
+                "code": "out_of_plan",
+                "type": "checkbox",
+                "title": "owt_of_plan",
+                "validation": "required"
+              },
+              {
+                "code": "cnl_new",
+                "type": "text",
+                "title": "nkt_new"
+              },
+              {
+                "code": "cnl_used",
+                "type": "text",
+                "title": "nkt_used"
+              },
+              {
+                "code": "td",
+                "type": "text",
+                "title": "actual_bh",
+                "validation": ""
+              },
+              {
+                "code": "name_ru",
+                "type": "dict",
+                "title": "tech_condition",
+                "dict": "dict.tech_state_casing"
+              },
+              {
+                "code": "no_change_tech_status",
+                "type": "checkbox",
+                "title": "do_not_chenge_teckh_condition",
+                "dict": "dict.tech_state_casing",
+                "validation": "required|exists:tbd.dict.tech_state_casing, id"
+              },
+              {
+                "code": "name_ru",
+                "type": "dict",
+                "title": "new_condition",
+                "validation": "required|exists:tbd.dict.well_status, id",
+                "dict": "dict.well_status"
+              },
+              {
+                "code": "no_change_state",
+                "type": "checkbox",
+                "title": "do_not_chenge_condition"
+              }
+            ]
+          }
+        ]
+      ]
+    },
+    {
+      "title": "rej_reason",
+      "blocks": [
+        [
+          {
+            "title": "repair",
+            "items": [
+              {
+                "code": "name_ru",
+                "type": "dict",
+                "title": "cause_h_failure",
+                "validation": "required|exists:tbd.dict.reason, id",
+                "dict": "dict.reason"
+              },
+              {
+                "code": "equil_fail_reason_type",
+                "type": "dict",
+                "title": "reason_type",
+                "validation": "required|exists:tbd.prod.well_workover, id",
+                "dict": "prod.well_workover"
+              },
+              {
+                "code": "name_ru",
+                "type": "dict",
+                "title": "reason_stopping",
+                "validation": "required|exists:tbd.dict.reason, id",
+                "dict": "dict.reason"
+              }
+            ]
+          }
+        ]
+      ]
+    }
+  ]
+}

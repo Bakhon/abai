@@ -2,13 +2,15 @@
 
 namespace App\Models\Refs;
 
-use App\Models\Pipes\MapPipe;
+use App\Models\Pipes\OilPipe;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\ComplicationMonitoring\OmgCA;
 use App\Models\ComplicationMonitoring\OmgNGDU;
 use App\Models\ComplicationMonitoring\WaterMeasurement;
 use App\Models\ComplicationMonitoring\OilGas;
 use App\Models\ComplicationMonitoring\Corrosion;
+use App\Models\ComplicationMonitoring\EconomicalEffect;
+use App\Models\ComplicationMonitoring\LostProfits;
 use App\Models\ComplicationMonitoring\OmgUHE;
 use App\Models\ComplicationMonitoring\Pipe;
 use App\Models\Pipes\GuZuPipe;
@@ -26,6 +28,11 @@ class Gu extends Model
     public function cdng()
     {
         return $this->belongsTo(Cdng::class);
+    }
+
+    public function ngdu()
+    {
+        return $this->belongsTo(Ngdu::class);
     }
 
     public function zus()
@@ -103,9 +110,9 @@ class Gu extends Model
         return $this->hasMany(Pipe::class);
     }
 
-    public function mapPipes()
+    public function oilPipes()
     {
-        return $this->hasMany(MapPipe::class);
+        return $this->hasMany(OilPipe::class);
     }
 
     public function zuPipes()
@@ -116,5 +123,15 @@ class Gu extends Model
     public function wellPipes()
     {
         return $this->hasMany(ZuWellPipe::class);
+    }
+
+    public function economical_effect()
+    {
+        return $this->hasMany(EconomicalEffect::class);
+    }
+
+    public function lost_profits()
+    {
+        return $this->hasMany(LostProfits::class);
     }
 }

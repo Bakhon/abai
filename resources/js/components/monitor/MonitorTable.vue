@@ -1,63 +1,5 @@
 <template>
   <div>
-    <modal class="modal-bign-wrapper" name="economicmodal" :width="1200" :height="600" :adaptive="true">
-      <div class="modal-bign modal-bign-container">
-        <div class="modal-bign-header">
-          <p class="title"></p>
-          <button type="button" class="modal-bign-button" @click="$modal.hide('economicmodal')">
-            {{ trans('monitoring.close') }}
-          </button>
-        </div>
-
-        <div class="container-fluid economicModal" style="width: 100%; height: 100%; overflow-y: auto;">
-          <div class="row">
-            <div class="col-12">
-              <h3 class="economicHeader">{{ trans('monitoring.economic_effect') }} {{ nextYear }}</h3>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-12">
-              <table class="table table-bordered economicModalTable">
-                <tbody>
-                <tr v-for="row in economicNextYear">
-                  <td>{{ row[0] }}</td>
-                  <td>{{ row[1] }}</td>
-                  <td>{{ row[2] }}</td>
-                  <td>{{ row[3] }}</td>
-                  <td>{{ row[4] }}</td>
-                  <td>{{ row[5] }}</td>
-                  <td>{{ row[6] }}</td>
-                  <td>{{ row[7] }}</td>
-                  <td>{{ row[8] }}</td>
-                </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-12">
-              <h3 class="economicHeader">{{ trans('monitoring.economic_effect') }} {{ currentYear }}</h3>
-              <h4 class="economicHeader" v-if="economicCurrentDays">{{ trans('monitoring.days_count') }}:
-                {{ economicCurrentDays }}</h4>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-12">
-              <table class="table table-bordered economicModalTable">
-                <tbody>
-                <tr v-for="row in economicCurrentYear">
-                  <td>{{ row[0] }}</td>
-                  <td>{{ row[1] }}</td>
-                  <td>{{ row[2] }}</td>
-                  <td>{{ row[3] }}</td>
-                </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
-    </modal>
 
     <modal class="modal-bign-wrapper" name="corrosion" :width="1200" :height="800" :adaptive="true">
       <div class="modal-bign modal-bign-container">
@@ -343,28 +285,28 @@
           <monitor-chart
               :title="trans('monitoring.action_substance_of_co2')"
               :measurement="trans('measurements.mg/dm3')"
-              :data="chart1Data" />
+              :data="chart1Data"/>
         </div>
         <div class="monitor__charts-item">
           <p class="monitor__charts-item-title">{{ trans('monitoring.action_substance_of_h2s') }}</p>
           <monitor-chart
               :title="trans('monitoring.action_substance_of_h2s')"
               :measurement="trans('measurements.mg/dm3')"
-              :data="chart2Data" />
+              :data="chart2Data"/>
         </div>
         <div class="monitor__charts-item">
           <p class="monitor__charts-item-title">{{ trans('monitoring.actual_corrosion_speed') }}</p>
           <monitor-chart
               :title="trans('monitoring.actual_corrosion_speed')"
               :measurement="trans('measurements.mm/g')"
-              :data="chart3Data" />
+              :data="chart3Data"/>
         </div>
         <div class="monitor__charts-item">
           <p class="monitor__charts-item-title">{{ trans('monitoring.actual_inhibitor_level') }}</p>
           <monitor-chart
               :title="trans('monitoring.actual_inhibitor_level')"
               :measurement="trans('measurements.g/m3')"
-              :data="chart4Data" />
+              :data="chart4Data"/>
         </div>
       </div>
       <div class="col-8 monitor__schema">
@@ -564,10 +506,6 @@
             </div>
           </div>
         </div>
-        <button type="button" class="btn btn-info" @click="pushBtn" :disabled="economicCurrentYear.length < 1">
-          {{ trans('monitoring.economic_effect') }}
-        </button
-        >
         <button type="button" class="btn btn-info" @click="pushBtn2" :disabled="!dose">
           {{ trans('monitoring.corrosion_simulator') }}
         </button>
@@ -651,16 +589,40 @@ export default {
       corF: null,
       dose: 0,
       result: {},
-      economicNextYear: [],
-      economicCurrentYear: [],
-      currentYear: new Date().getFullYear(),
-      nextYear: new Date(new Date().setFullYear(new Date().getFullYear() + 1)).getFullYear(),
       chart1Data: null,
       chart2Data: null,
       chart3Data: null,
       chart4Data: null,
       problemGus: [],
-      economicCurrentDays: null
+      validation: [
+        {
+          key: 'ngdu',
+          error: this.trans('monitoring.monitor.errors.ngdu')
+        },
+        {
+          key: 'oilGas',
+          error: this.trans('monitoring.monitor.errors.oilGas')
+        },
+        {
+          key: 'pipe',
+          error: this.trans('monitoring.monitor.errors.pipe')
+        },
+        {
+          key: 'pump_discharge_pressure',
+          error: this.trans('monitoring.monitor.errors.pump_discharge_pressure')
+        },
+        {
+          key: 'surge_tank_pressure',
+          error: this.trans('monitoring.monitor.errors.surge_tank_pressure')
+        },
+        {
+          key: 'wmLastH2S.hydrogen_sulfide',
+          error: this.trans('monitoring.monitor.errors.hydrogen_sulfide')
+        },
+
+      ],
+      isDataValidated: false,
+      validationErrors: [],
     };
   },
   computed: {
@@ -720,7 +682,6 @@ export default {
               this.pipeab = data.pipeab
               this.lastCorrosion = data.lastCorrosion
               this.constantsValues = data.constantsValues
-              this.getEconomicData(event.target.value);
             } else {
               console.log("No data");
             }
@@ -765,6 +726,8 @@ export default {
           })
           .then((response) => {
             let data = response.data;
+            this.isDataValidated = false;
+
             if (data) {
               this.ngdu = data.ngdu
               this.uhe = data.uhe
@@ -776,7 +739,7 @@ export default {
               this.surge_tank_pressure = data.ngdu ? data.ngdu.surge_tank_pressure : null
               this.heater_inlet_temperature = data.ngdu ? data.ngdu.heater_inlet_temperature : null
               this.heater_output_temperature = data.ngdu ? data.ngdu.heater_output_temperature : null
-              this.daily_fluid_production =  data.ngdu ? data.ngdu.daily_fluid_production : null
+              this.daily_fluid_production = data.ngdu ? data.ngdu.daily_fluid_production : null
 
               if (data.uhe && data.ca) {
                 this.signalizator = (data.uhe.current_dosage - data.ca.plan_dosage) * 100 / data.ca.plan_dosage
@@ -797,19 +760,47 @@ export default {
               let background_corrosion = this.lastCorrosion.background_corrosion_velocity;
               this.corrosionVelocity = corrosion_with_inhibitor ? corrosion_with_inhibitor : background_corrosion;
 
-              if (this.ngdu &&
-                  this.oilGas &&
-                  this.pipe &&
-                  this.pump_discharge_pressure &&
-                  this.surge_tank_pressure)
-              {
-                this.calc()
+              if (this.isValidData()) {
+                this.calc();
               }
+
+              this.displayErrors();
 
             } else {
               console.log("No data");
             }
           });
+    },
+    validateData() {
+      this.validationErrors = [];
+      
+      this.validation.forEach((rule) => {
+        let ruleKeys = rule.key.split('.');
+
+        let value = 'empty';
+        for (let i = 0; i < ruleKeys.length; i++) {
+          if (value !== 'empty') {
+            value = value[ruleKeys[i]]
+          } else {
+            value = this[ruleKeys[i]];
+          }
+        }
+        if (!value || value == 'empty') {
+          this.validationErrors.push(rule.error);
+        }
+      });
+      this.isDataValidated = true;
+    },
+    isValidData() {
+      if (!this.isDataValidated) {
+        this.validateData()
+      }
+      return this.validationErrors.length === 0;
+    },
+    displayErrors() {
+      this.validationErrors.forEach((error) => {
+        this.showToast(error, this.trans('app.error'), 'danger', 10000);
+      });
     },
     calc() {
       this.axios
@@ -839,7 +830,8 @@ export default {
             rhog: this.oilGas.gas_density_at_20,
             mul: this.oilGas.oil_viscosity_at_20,
             mug: this.oilGas.gas_viscosity_at_20,
-            q_o: this.ngdu.daily_oil_production
+            q_o: this.ngdu.daily_oil_production,
+            current_dosage: this.current_dosage
           })
           .then((response) => {
             let data = response.data;
@@ -847,7 +839,7 @@ export default {
               this.corA = data.corrosion_rate_mm_per_y_point_A
               this.corE = data.corrosion_rate_mm_per_y_point_E
               this.corF = data.corrosion_rate_mm_per_y_point_F
-              this.dose = this.corA < 2 ? 0 : data.max_dose;
+              this.dose = this.corA < 0.15 ? 0 : data.max_dose;
               this.result = data
               this.t_final_celsius_point_F = data.t_final_celsius_point_F.toFixed(1)
               this.final_pressure = data.final_pressure_bar_point_F.toFixed(2)
@@ -857,39 +849,8 @@ export default {
             }
           });
     },
-    pushBtn() {
-      this.$modal.show("economicmodal");
-    },
     pushBtn2() {
       this.$modal.show("corrosion");
-    },
-    getEconomicData(gu) {
-      this.axios
-          .post(this.localeUrl("/vcoreconomic"), {
-            gu: this.localGu,
-          })
-          .then((response) => {
-            let data = response.data;
-            if (data) {
-              this.economicNextYear = data;
-            } else {
-              console.log("No data");
-            }
-          });
-
-      this.axios
-          .post(this.localeUrl("/vcoreconomiccurrent"), {
-            gu: this.localGu,
-          })
-          .then((response) => {
-            let data = response.data;
-            if (data) {
-              this.economicCurrentYear = data.tableData;
-              this.economicCurrentDays = data.daysEcoCurrent;
-            } else {
-              console.log("No data");
-            }
-          });
     }
   }
 };

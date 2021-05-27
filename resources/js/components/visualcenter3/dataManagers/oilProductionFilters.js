@@ -139,5 +139,11 @@ export default {
             this.changeOilProductionFilters();
             this.isKmgParticipationFilterActive = false;
         },
+
+        disableTargetCompanyFilter() {
+            this.$refs.targetPlan.classList.remove('show');
+            this.isFilterTargetPlanActive = false;
+            this.buttonTargetPlan = "";
+        },
     },
 }
