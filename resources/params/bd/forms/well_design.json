@@ -15,10 +15,10 @@
             "title": "",
             "items": [
               {
-                "code": "casing_nom",
+                "code": "name_ru",
                 "type": "dict",
                 "title": "column_type",
-                "dict": "equips",
+                "dict": "equip_type",
                 "validation": "required|exists:tbd.dict.equip_type,id"
               },
               {
@@ -33,10 +33,10 @@
                 "title": "side_barrel"
               },
               {
-                "code": "casing_type",
+                "code": "tube_nom",
                 "type": "dict",
-                "title": "casing_type",
-                "dict": "casings",
+                "title": "tube_nom",
+                "dict": "dict",
                 "validation": "required|exists:tbd.dict.tube_nom,id"
               },
               {
