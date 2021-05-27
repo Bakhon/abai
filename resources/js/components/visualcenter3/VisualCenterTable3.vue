@@ -2154,7 +2154,8 @@
             </div>
 
             <div class="first-string first-string2">
-            <div>
+            <div      @click="changeTable('6')"
+                      :style="`${tableHover6}`">
               <table class="table">
                 <tr class="d-flex">
                  <td>
@@ -2230,6 +2231,8 @@
 
                     <td
                       class="col-6"
+                         @click="changeTable('6')"
+                      :style="`${tableHover6}`"
                     >
                       <div class="mt-1 float-right">
                   
