@@ -5,6 +5,7 @@ namespace App\Models\BigData;
 use App\Models\BigData\Dictionaries\Geo;
 use App\Models\BigData\Dictionaries\Org;
 use App\Models\BigData\Dictionaries\Tech;
+use App\Models\BigData\Dictionaries\TubeNom;
 use App\Models\BigData\Dictionaries\WellCategory;
 use App\Models\BigData\Dictionaries\WellExplType;
 use App\Models\BigData\Dictionaries\WellStatus;
@@ -58,6 +59,10 @@ class Well extends TBDModel
     public function well_expl()
     {
         return $this->belongsToMany(WellExplType::class, 'prod.well_expl', 'well', 'expl');
+    }
+    public function tube_nom()
+    {
+        return $this->belongsToMany(TubeNom::class, 'prod.well_constr', 'well', 'casing_nom');
     }
 
 

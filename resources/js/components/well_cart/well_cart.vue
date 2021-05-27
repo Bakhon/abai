@@ -233,11 +233,41 @@
                     </tr>
                     <tr>
                       <td>12</td>
-                      <td>Категория</td>
+                      <td>Координаты X (устья)</td>
                       <td></td>
                     </tr>
                     <tr>
                       <td>13</td>
+                      <td>Координаты X (устья)</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>14</td>
+                      <td>Координаты забоя X</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>15</td>
+                      <td>Координаты забоя Y</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>16</td>
+                      <td>Назначение скважин по проекту</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>16</td>
+                      <td>Назначение скважин по проекту</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>17</td>
+                      <td>Категория</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>18</td>
                       <td>Период бурения</td>
                       <td>
                         <span
@@ -247,77 +277,197 @@
                       </td>
                     </tr>
                     <tr>
-                      <td>14</td>
-                      <td>Дата ввода в эксплуатацию</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>15</td>
+                      <td>19</td>
                       <td>Дата ввода в эксплуатацию</td>
                       <td>
                         <span v-if="tech">{{ tech.dbeg }}</span>
                       </td>
                     </tr>
                     <tr>
-                      <td>16</td>
+                      <td>20</td>
                       <td>Состояние</td>
                       <td></td>
                     </tr>
                     <tr>
-                      <td>17</td>
+                      <td>21</td>
                       <td>Способ эксплуатации</td>
                       <td>
                         <span v-if="wellExpl">{{wellExpl.name_ru}}</span>
                       </td>
                     </tr>
                     <tr>
-                      <td>18</td>
+                      <td>22</td>
                       <td>Тип УО / наличие эксц.болта</td>
                       <td></td>
                     </tr>
                     <tr>
-                      <td>19</td>
+                      <td>23</td>
                       <td>Диаметр экспл.колонны/доп. экспл.колонны,мм</td>
                       <td></td>
                     </tr>
                     <tr>
-                      <td>20</td>
+                      <td>24</td>
                       <td>Тип колонной головки / размеры</td>
                       <td></td>
                     </tr>
                     <tr>
-                      <td>21</td>
-                      <td>глубина спуска насоса (м)</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>22</td>
-                      <td>Код насоса</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>23</td>
-                      <td>Диаметр насоса (мм)</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>24</td>
-                      <td>Глубина спуска пакера</td>
-                      <td></td>
-                    </tr>
-                    <tr>
                       <td>25</td>
-                      <td>Тип СК</td>
+                      <td>Глубина спуска насоса (м)</td>
                       <td></td>
                     </tr>
                     <tr>
                       <td>26</td>
-                      <td>длина хода (м)</td>
+                      <td>Код насоса</td>
                       <td></td>
                     </tr>
                     <tr>
                       <td>27</td>
+                      <td>Диаметр насоса (мм)</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>28</td>
+                      <td>Глубина спуска пакера</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>29</td>
+                      <td>Тип СК</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>30</td>
+                      <td>Длина хода (м)</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>31</td>
                       <td>число качаний (об/мин)</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>32</td>
+                      <td>Фактический забой/(дата отбивки)</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>33</td>
+                      <td>Искусственный забой</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>34</td>
+                      <td>Отбитый забой</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>35</td>
+                      <td>Дата перфорации</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>36</td>
+                      <td>Действующие интервалы перфорации</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>37</td>
+                      <td>Дебит жидкости, м3/сут (режим/факт)</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>38</td>
+                      <td>Обводненность, % (режим/факт)</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>39</td>
+                      <td>Дебит нефти, т/сут (режим/факт)</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>40</td>
+                      <td>Дата последнего КРС</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>41</td>
+                      <td>Дата проведения ПФП нагн. скважины</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>42</td>
+                      <td>Дата проведения ГРП</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>43</td>
+                      <td>Дата последнего ПРС</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>44</td>
+                      <td>Дата последнего ГИС</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>45</td>
+                      <td>Дата последнего ГДИС</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>46</td>
+                      <td>Результат ГДМ</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>47</td>
+                      <td>Длина хода при проведении ГДМ</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>48</td>
+                      <td>Число качаний при проведении ГДМ</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>49</td>
+                      <td>Динамический уровень</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>50</td>
+                      <td>Статический уровень</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>51</td>
+                      <td>Рпл/(дата замера)</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>52</td>
+                      <td>Рпл (Сл. ГДИС)/(дата замера)</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>53</td>
+                      <td>Рзаб/(дата замера)</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>54</td>
+                      <td>Рзатр(дин), атм</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>55</td>
+                      <td>Рзатр(стат)</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>56</td>
+                      <td>Примечание</td>
                       <td></td>
                     </tr>
                   </table>
@@ -349,6 +499,7 @@ export default {
       wellName: null,
       wellType: null,
       wellExpl: null,
+      tubeTom: null,
       org: null,
       geo: null,
       wellStatus:null,
@@ -414,9 +565,10 @@ export default {
           this.wellType = data[0].well_type[0].name_ru
           //this.wellStatus = data[0].status  уточнить, какой именно статус взять
           this.wellExpl = data[0].well_expl[0]
+          this.tubeTom = data[0].tube_nom[0]
 
 
-          this.loading = false
+              this.loading = false
         } catch (e) {
           this.loading = false
           //пока прекращает cat loader
