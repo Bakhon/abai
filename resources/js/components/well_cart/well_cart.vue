@@ -94,7 +94,7 @@
                     <div class="col">
                       <div class="well-info">
                         <div class="title">Основное</div>
-                        <p>Номер скважины:<span>{{ allData.uwi }}</span></p>
+                        <p>Номер скважины: <span>{{ allData.uwi }}</span></p>
                         <p>Категория скважины: <span></span></p>
                         <div class="title">Привязка</div>
                         <p>Оргструктура: <span></span></p>
@@ -178,14 +178,14 @@
                       <td>3</td>
                       <td>Месторождение</td>
                       <td>
-                        <span v-if="geo">{{ geo[0].name_ru }}</span>
+                        <span v-if="geo">{{ geo.name_ru }}</span>
                       </td>
                     </tr>
                     <tr>
                       <td>4</td>
                       <td> Горизонт / Pнас, атм</td>
                       <td>
-                        <span v-if="geo">{{ geo[0].name_ru }}</span>
+                        <span v-if="geo">{{ geo.name_ru }}</span>
                       </td>
                     </tr>
                     <tr>
@@ -199,7 +199,7 @@
                       <td>6</td>
                       <td>Тех. структура</td>
                       <td>
-                        <span v-if="tech">{{ tech[0].name_ru }}</span>
+                        <span v-if="tech">{{ tech.name_ru }}</span>
                       </td>
                     </tr>
                     <tr>
@@ -255,7 +255,7 @@
                       <td>15</td>
                       <td>Дата ввода в эксплуатацию</td>
                       <td>
-                        <span v-if="tech">{{ tech[0].dbeg }}</span>
+                        <span v-if="tech">{{ tech.dbeg }}</span>
                       </td>
                     </tr>
                     <tr>
@@ -402,9 +402,9 @@ export default {
         try {
           // В некоторых случиях возникает ошибка получения данных пердположительно при отсутствии ключа в одном из справочников
           // AKG_124 конфликтный случай
-          this.tech = data[0].techs
+          this.tech = data[0].techs[0]
           this.org = data[0].orgs
-          this.geo = data[0].geo
+          this.geo = data[0].geo[0]
           this.wellName = data[0].uwi
           this.allData = data[0]
           this.wellType = data[0].well_type[0].name_ru
