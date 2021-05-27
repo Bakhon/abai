@@ -95,9 +95,13 @@
                       <div class="well-info">
                         <div class="title">Основное</div>
                         <p>Номер скважины: <span>{{ allData.uwi }}</span></p>
-                        <p>Категория скважины: <span></span></p>
+                        <p>Категория скважины: <span v-if="wellCategory">{{ wellCategory.name_ru }}</span></p>
                         <div class="title">Привязка</div>
-                        <p>Оргструктура: <span></span></p>
+                        <p>Оргструктура: <span>
+                          <span v-for="value in org">
+                            {{ value.name_ru + "/" }}
+                          </span>
+                        </span></p>
                         <div class="title">Координаты устья</div>
                         <p>Оргструктура: <span></span></p>
                         <p>Координаты устья X:<span></span></p>
@@ -210,7 +214,9 @@
                     <tr>
                       <td>8</td>
                       <td>ГУ/Ряд</td>
-                      <td></td>
+                      <td>
+                        <span v-if="tech">{{tech.name_ru}}</span>
+                      </td>
                     </tr>
                     <tr>
                       <td>9</td>
@@ -264,7 +270,9 @@
                     <tr>
                       <td>17</td>
                       <td>Категория</td>
-                      <td></td>
+                      <td>
+                        <span v-if="wellCategory">{{ wellCategory.name_ru }}</span>
+                      </td>
                     </tr>
                     <tr>
                       <td>18</td>
@@ -292,7 +300,7 @@
                       <td>21</td>
                       <td>Способ эксплуатации</td>
                       <td>
-                        <span v-if="wellExpl">{{wellExpl.name_ru}}</span>
+                        <span v-if="wellExpl">{{ wellExpl.name_ru }}</span>
                       </td>
                     </tr>
                     <tr>
@@ -499,10 +507,11 @@ export default {
       wellName: null,
       wellType: null,
       wellExpl: null,
+      wellCategory: null,
       tubeTom: null,
       org: null,
       geo: null,
-      wellStatus:null,
+      wellStatus: null,
       graph: null,
       activeFormCode: null,
       loading: false,
@@ -566,9 +575,10 @@ export default {
           //this.wellStatus = data[0].status  уточнить, какой именно статус взять
           this.wellExpl = data[0].well_expl[0]
           this.tubeTom = data[0].tube_nom[0]
+          this.wellCategory = data[0].category[0]
+          this.well = data[0].well[0]
 
-
-              this.loading = false
+          this.loading = false
         } catch (e) {
           this.loading = false
           //пока прекращает cat loader
