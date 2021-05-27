@@ -266,7 +266,7 @@ export default {
       param_eco:null,
       param_org:null,
       param_fact:null,
-      wellData: null,
+      welldata: null,
       field: null,
       wellIncl: null,
       dataNNO:"2020-11-01",
@@ -442,7 +442,7 @@ export default {
             "pump95": this.pump95,
             "kpod_min": this.kpod_min
           },
-          "welldata": this.wellData,
+          "welldata": this.welldata,
           "settings" : {
             "curveSelect": this.curveSelect,
             "presValue": this.pResInput.split(' ')[0],
@@ -1042,7 +1042,7 @@ export default {
 
       this.axios.get(uri).then((response) => {
           let data = response.data;
-          this.wellData = data["Well Data"]
+          this.welldata = data["Well Data"]
           this.method = 'MainMenu'
           if (data["Error"] == "NoData" || data["Error"] == 'data_error'){
             if(data["Error"] == "NoData") {
@@ -1138,6 +1138,7 @@ export default {
             this.horizon = data["Well Data"]["horizon"]
             this.curveSelect = 'pi'
             this.isYoungAge = data["Age"]
+            this.nkt = 62
 
 
             this.PBubblePoint = data["Well Data"]["P_bubble_point"].toFixed(1)
@@ -1294,7 +1295,7 @@ export default {
       this.menu = "MainMenu"
       this.prepareData()
 
-      if(this.pResInput.split(' ')[0] * 1 <= this.bhpInput.split(' ')[0] * 1 || this.pResInput.split(' ')[0] * 1 <= this.bhpCelValue.split(' ')[0] * 1) {
+      if(this.Age ==true &&(this.pResInput.split(' ')[0] * 1 <= this.bhpInput.split(' ')[0] * 1 || this.pResInput.split(' ')[0] * 1 <= this.bhpCelValue.split(' ')[0] * 1)) {
         this.$notify({
             message: this.trans('pgno.notify_p_zab_more_p_pl'),
             type: 'error',
@@ -1313,7 +1314,7 @@ export default {
               }) 
       }
 
-      if (this.qlCelValue.split(' ')[0] < 28) {
+      if (this.qlCelValue.split(' ')[0] < 28 && this.expChoose == "ЭЦН") {
         this.$notify({
           message: this.trans('pgno.notify_uecn_not_recommended'),
           type: 'warning',
@@ -1333,7 +1334,7 @@ export default {
         this.axios.post(uri, this.postdata).then((response) => {
           let data = response.data;
           if (data) {
-            this.wellData = data["Well Data"]
+            this.welldata = data["Well Data"]
             this.method = "CurveSetting"
             if(data["Well Data"]["pi"][0] * 1 < 0) {
               this.$notify({
@@ -1407,7 +1408,7 @@ export default {
       this.axios.post(uri, this.postdata).then((response) => {
         let data = response.data;
         if (data) {
-          this.wellData = data["Well Data"]
+          this.welldata = data["Well Data"]
           this.method = "CurveSetting"
           this.newData = data["Well Data"]
           this.newCurveLineData = JSON.parse(data.LineData)["data"]
@@ -1453,6 +1454,10 @@ export default {
           this.skinOkr = data["Well Data"]["skin"].toFixed(1)
           this.presOkr = data["Well Data"]["p_res"].toFixed(0)
           this.wctOkr = data["Well Data"]["wct"].toFixed(0)
+          this.qlCelValue = data["Well Data"]["ql_cel"].toFixed(0) + " " +  this.trans('measurements.m3/day');
+          this.bhpCelValue = data["Well Data"]["p_cel"].toFixed(0) + " " +  this.trans('measurements.atm');
+          this.piCelValue = data["Well Data"]["pin_cel"].toFixed(0) + " " +  this.trans('measurements.atm');
+          this.welldata = this.newData
         } else {
         }
       }).finally(() => {
@@ -1481,13 +1486,6 @@ export default {
     },
 
     setGraphNew() {
-       this.$notify({
-        message: this.trans('pgno.notify_150_hpump'),
-        type: 'warning',
-        size: 'sm',
-        timeout: 8000
-      }) 
-      
       this.updateLine(this.newCurveLineData)
       this.setPoints(this.newPointsData)
       this.$modal.hide('modalNewWell');
@@ -1548,9 +1546,10 @@ export default {
           if(this.isVisibleChart) {
             let uri = "http://172.20.103.187:7575/api/pgno/shgn";
             this.prepareData()
+            console.log(this.postdata)
             this.axios.post(uri, this.postdata).then((response) => {
               let data = JSON.parse(response.data);
-              this.fetchBlockCentrators();
+              if (this.Age==true) {this.fetchBlockCentrators()}
               if(data) {
                 if (data["error"] == "NoIntersection") {
                   this.$notify({
