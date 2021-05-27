@@ -77,7 +77,7 @@
 
     td.reptt-column-blue,
     th.reptt-column-blue .cell {
-        background: #12135c !important;
+        background: #1a2370 !important;
     }
 
     td.reptt-column-blue-lighter,
