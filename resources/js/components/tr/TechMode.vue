@@ -2248,14 +2248,6 @@
                               </el-table-column>
                             </el-table-column>
                         </el-table-column>
-
-
-
-
-
-
-
-
                         <el-table-column :label="trans('tr.jd_opt')" prop="fake">
                           <el-table-column label="">
                               <el-table-column
@@ -2420,10 +2412,6 @@
                               </el-table-column>
                           </el-table-column>
                         </el-table-column>
-
-
-
-
                         <el-table-column :label="trans('tr.tp_idn_q_oil_inc_perc')" prop="fake">
                           <el-table-column label="">
                             <el-table-column
