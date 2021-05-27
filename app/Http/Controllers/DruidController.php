@@ -448,6 +448,7 @@ class DruidController extends Controller
         // $pCO2 = $CO2 / $kCO2 / 44000;   //kPa
         //print("pCO2 [kPa] = ", pCO2)
         $pCO2 = $conCO2_frac * $p / 100 ; // measured in bar as per formula
+        $pCO2pointA = $pCO2;
 
         //convert data to proper type
         $co2 = $pCO2 / 10; //convert partial pressure CO2 from bar => MPa
@@ -497,6 +498,7 @@ class DruidController extends Controller
         // $ppmH2S = $conH2S * 10000;
         // $pH2S = $pH2S / 1000;  #convert to float type and MPa
         $pH2S = $p * $conH2S_frac / 100; // partial pressure H2S in bar
+        $pH2SpointA = $pH2S;
         $ratio = $pCO2 / $pH2S;
 
         /*if ($pCO2 / $pH2S >= 20) {
@@ -515,9 +517,9 @@ class DruidController extends Controller
 
         if ($gu->name == "ГУ-24") {
             if($request->current_dosage > 0){
-                $r_a = 0.2507-0.0013*$request->current_dosage-1.2097*$pCO2+3790.4045*$pH2S; //updated formula GU24 case 15.12.2020
+                $r_a = 0.045375-0.0004*$request->current_dosage-0.18198*$pCO2+438.4723*$pH2S; //updated formula GU24 case 15.12.2020
             }else{
-                $r_a = 0.3376+1.2748*$pCO2+1705.5680*$pH2S;
+                $r_a = -0.15107+1.146195*$pCO2-854.1*$pH2S;
             }
             //else if ($pH2S > 0.3){
             //$r_a = -0.6274 + 0.01318 * $conCO2 + 0.02397 * $conH2S;
@@ -1045,6 +1047,8 @@ class DruidController extends Controller
             'papavinasam_corrosion_mm_per_y_point_A' => round($PCR_A, 1),
             'papavinasam_corrosion_mm_per_y_point_E' => round($PCR_E, 1),
             'papavinasam_corrosion_mm_per_y_point_F' => round($PCR_F, 1),
+            'pCO2_point_A' => $pCO2pointA,
+            'pH2S_point_A' => $pH2SpointA
         ];
 
 
