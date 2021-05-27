@@ -24,16 +24,21 @@ export default {
             });
             let filteredDataByPeriod = this.getProductionDataInPeriodRange(filteredDataByCompanies,this.timestampToday,this.timestampEnd);
             this.covid = this.getCovidData(filteredDataByPeriod);
-            this.WellsDataAll = this.WellsData(filteredDataByPeriod);
-            this.injectionWells = this.getSummaryWells(filteredDataByPeriod,this.wellStockIdleButtons.isInjectionIdleButtonActive,'injectionFonds');
-            this.innerWellsChartData = this.getSummaryInjectionWellsForChart(filteredDataByPeriod);
-            this.productionWells = this.getSummaryWells(filteredDataByPeriod, this.wellStockIdleButtons.isProductionIdleButtonActive,'productionFonds');
-            this.innerWells2ChartData = this.getSummaryProductionWellsForChart(filteredDataByPeriod);
+            if (this.selectedSecondaryOption == 'injection') {
+                this.updateWellsWidgetData(filteredDataByPeriod,'inj_wells_work','inj_wells_idle');
+                this.injectionWells = this.getSummaryWells(filteredDataByPeriod,this.wellStockIdleButtons.isInjectionIdleButtonActive,'injectionFonds');
+                this.innerWellsChartData = this.getSummaryInjectionWellsForChart(filteredDataByPeriod);
+            }
+            if (this.selectedSecondaryOption == 'production') {
+                this.updateWellsWidgetData(filteredDataByPeriod,'prod_wells_work','prod_wells_idle');
+                this.productionWells = this.getSummaryWells(filteredDataByPeriod, this.wellStockIdleButtons.isProductionIdleButtonActive,'productionFonds');
+                this.innerWells2ChartData = this.getSummaryProductionWellsForChart(filteredDataByPeriod);
+            }
             this.otmData = this.getOtmData(filteredDataByPeriod);
             this.otmChartData = this.getOtmChartData(filteredDataByPeriod);
             this.chemistryData = this.getChemistryData(filteredDataByPeriod);
             this.chemistryChartData = this.getChemistryChartData(filteredDataByPeriod);
-            this.getProductionPercentWells(filteredDataByCompanies);
+            this.updateWellsWidgetPercentData(filteredDataByCompanies);
         },
 
         clearNullAccidentCases() {

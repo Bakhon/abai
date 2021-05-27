@@ -306,8 +306,7 @@ export default {
             }
 
             let productionPlanAndFactMonth = this.getProductionPlanAndFactForMonth(dataWithMay);
-
-            this.WellsDataAll = this.WellsData(dataWithMay);
+            this.updateWellsWidgetDataForAllCompanies(dataWithMay);
             this.injectionWells = this.getSummaryWells(dataWithMay,this.wellStockIdleButtons.isInjectionIdleButtonActive,'injectionFonds');
             this.innerWellsChartData = this.getSummaryInjectionWellsForChart(dataWithMay);
             this.productionWells = this.getSummaryWells(dataWithMay, this.wellStockIdleButtons.isProductionIdleButtonActive,'productionFonds');
@@ -404,7 +403,7 @@ export default {
                 planDay.push(p);
             });
 
-            this.getProductionPercentWells(data);
+            this.updateWellsWidgetPercentData(data);
 
 
             var dzoMonth = [];

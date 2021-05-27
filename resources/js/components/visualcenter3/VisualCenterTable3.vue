@@ -1427,7 +1427,7 @@
                   <div class="col">
                     <select
                       class="side-blocks__dzo-companies-dropdown w-100"
-                      @change="innerWellsNagMetOnChange($event)"
+                      @change="innerWellsNagMetOnChange($event, 'injection')"
                     >
                       <option v-for="dzo in injectionWellsOptions" :value="dzo.ticker">
                         {{dzo.name}}
@@ -1587,7 +1587,7 @@
                   <div class="col pr-2">
                     <select
                       class="side-blocks__dzo-companies-dropdown w-100"
-                      @change="innerWellsProdMetOnChange($event)"
+                      @change="innerWellsProdMetOnChange($event, 'production')"
                     >
                       <option v-for="dzo in injectionWellsOptions" :value="dzo.ticker">
                         {{dzo.name}}
