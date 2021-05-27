@@ -108,7 +108,8 @@ class RouteServiceProvider extends ServiceProvider
             'tr',
             'monitoring',
             'paegtm',
-            'ndo'
+            'ndo',
+            'economy_kenzhe'
         ];
 
         foreach ($modules as $module) {
