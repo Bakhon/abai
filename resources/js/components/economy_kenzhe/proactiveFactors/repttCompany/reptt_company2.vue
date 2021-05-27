@@ -104,5 +104,4 @@
 .el-table .hidden-row {
   display: none;
 }
-
 </style>
