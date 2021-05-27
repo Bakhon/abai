@@ -240,6 +240,16 @@ export default {
         getNumberFromString(inputString) {
             return parseInt(inputString.replace(/\s/g, ''));
         },
+
+        getArrowClassForFoundations(i) {
+            let arrowClass = '';
+            if (i < 0) {
+                arrowClass = "fond-indicator-grow";
+            } else if (i > 0) {
+                arrowClass = "fond-indicator-fall";
+            }
+            return arrowClass;
+        },
     },
     computed: {
         periodSelectFunc() {

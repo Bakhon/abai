@@ -2039,7 +2039,7 @@
                       {{ trans("visualcenter.inIdle") }}
                     </div>
                     <div
-                      :class="`${getColor2(
+                      :class="`${getArrowClassForFoundations(
                         getDiffProcentLastP(prod_wells_idle, prod_wells_idlePercent)
                       )}`"
                     ></div>
@@ -2120,7 +2120,7 @@
                         {{ trans("visualcenter.inIdle") }}
                       </div>
                       <div
-                        :class="`${getColor2(
+                        :class="`${getArrowClassForFoundations(
                           getDiffProcentLastP(inj_wells_idle, inj_wells_idlePercent)
                         )}`"
                       ></div>
@@ -2764,4 +2764,26 @@
     color: #9EA4C9;
     border: none;
   }
+  .fond-indicator-grow {
+    background: url(/img/visualcenter3/red-arrow-grow.svg) no-repeat;
+    height: 15px;
+    width: 15px;
+    background-size: contain;
+    float: left;
+    margin-top: 5px;
+    margin-right: 5px;
+    overflow: hidden;
+  }
+
+  .fond-indicator-fall {
+    background: url(/img/visualcenter3/green-arrow-fall.svg) no-repeat;
+    height: 15px;
+    width: 15px;
+    background-size: contain;
+    float: left;
+    margin-top: 5px;
+    margin-right: 5px;
+    overflow: hidden;
+  }
+
 </style>
