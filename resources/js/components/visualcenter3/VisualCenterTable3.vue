@@ -242,7 +242,8 @@
                             v-if="dailyOilPriceChange === 'DOWN'"
                           ></div>
                           <div class="txt2-2">
-                            {{ Math.abs(getDifferentPercentBetweenLastValues(prices['oil']['previous'], prices['oil']['current'])) }} %
+                            {{Math.abs(getDifferentPercentBetweenLastValues(prices['oil']['previous'], prices['oil']['current']))}}
+                            {{trans("visualcenter.dzoPercent")}}
                           </div>
                           <div class="txt3">
                             {{ trans("visualcenter.vsSeparator") }}
@@ -279,7 +280,10 @@
                           class="arrow2"
                           v-if="dailyCurrencyChangeIndexUsd === 'DOWN'"
                         ></div>
-                        <div class="txt2-2">{{ dailyCurrencyChangeUsd }} {{trans("visualcenter.dzoPercent")}}</div>
+                        <div class="txt2-2">
+                          {{ Math.abs(getDifferentPercentBetweenLastValues(prices['usd']['previous'], prices['usd']['current'])) }}
+                          {{trans("visualcenter.dzoPercent")}}
+                        </div>
                         <div class="txt3">
                           {{ trans("visualcenter.vsSeparator") }}
                           {{ new Date(prices['usd']['previousFetchDate']).toLocaleDateString() }}
