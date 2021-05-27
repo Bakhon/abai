@@ -123,7 +123,7 @@ return array (
   'notify_no_incl' => 'New well inclinometry data not available',
   'notify_well_doesnt_exist' => 'The specified well is missing',
   'notify_well_data_not_correct' => 'Well operating practices data is incorrect',
-  'notify_150_hpump' => 'Pump run depth is set 150 meters above the top perforation holes by default',
+  'notify_150_hpump' => 'Pump run depth is set 1200 meters by default',
   'notify_no_sk_for_length' => 'The pumping unit type on the well does not match the current stroke length',
   'notify_ek_127_down' => 'The using of ESP units with dimensions 5 and 5A is not possible in a production casing with a diameter of 127 mm and below',
   'notify_no_sk_for_num_kach' => 'The type of pumping unit on the well does not correspond to the current pump rate',
