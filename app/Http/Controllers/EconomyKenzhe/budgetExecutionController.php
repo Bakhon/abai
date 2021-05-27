@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\EconomyKenzhe;
 
 use App\Http\Controllers\Controller;
-class budgetExecutionController extends Controller
+class BudgetExecutionController extends Controller
 {
 
     public function budgetExecution()

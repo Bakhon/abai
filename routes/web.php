@@ -153,7 +153,7 @@ Route::group(
 
                 Route::post('dzo_excel_form', 'VisCenter\ExcelForm\ExcelFormController@store');
                 Route::post('dzo_chemistry_excel_form', 'VisCenter\ExcelForm\ExcelFormChemistryController@store');
-                Route::get('/budgetexecution', 'EconomyKenzhe\budgetExecutionController@budgetExecution')->name('budgetExecution');              
+                Route::get('/budgetexecution', 'EconomyKenzhe\BudgetExecutionController@budgetExecution')->name('budgetExecution');              
                 Route::get('/proactive-factors', 'EconomyKenzhe\proactiveFactorsController@proactiveFactors')->name('proactiveFactors');
 
             }
