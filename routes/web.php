@@ -39,10 +39,8 @@ Route::group(
                     }
                 )->name('mainpage');
                 Route::get('/druid', 'DruidController@index');
-                Route::get('/oilprice', 'DruidController@getOilPrice');
-                Route::get('/getnkkmg', 'DruidController@getNkKmg');
-                Route::get('/getwelldailyoil', 'DruidController@getWellDailyOil');
-                Route::get('/getnkkmgyear', 'DruidController@getNkKmgYear');
+                Route::get('/oilprice', 'DruidController@getOilPrice');               
+                Route::get('/getwelldailyoil', 'DruidController@getWellDailyOil');                
                 Route::get('/economic/nrs', 'EconomicController@index')->name('economic');
                 Route::get('/economicpivot', 'EconomicController@economicPivot')->name('economicpivot');
                 Route::get('/oilpivot', 'EconomicController@oilPivot')->name('oilpivot');
