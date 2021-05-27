@@ -39,10 +39,8 @@ Route::group(
                     }
                 )->name('mainpage');
                 Route::get('/druid', 'DruidController@index');
-                Route::get('/oilprice', 'DruidController@getOilPrice');
-                Route::get('/getnkkmg', 'DruidController@getNkKmg');
-                Route::get('/getwelldailyoil', 'DruidController@getWellDailyOil');
-                Route::get('/getnkkmgyear', 'DruidController@getNkKmgYear');
+                Route::get('/oilprice', 'DruidController@getOilPrice');               
+                Route::get('/getwelldailyoil', 'DruidController@getWellDailyOil');                
                 Route::get('/economic/nrs', 'EconomicController@index')->name('economic');
                 Route::get('/economicpivot', 'EconomicController@economicPivot')->name('economicpivot');
                 Route::get('/oilpivot', 'EconomicController@oilPivot')->name('oilpivot');
@@ -139,27 +137,11 @@ Route::group(
                 Route::post('/delete_avatar', 'UserController@delete_avatar')->name('delete_avatar');
 
                 Route::get('anticrisis', 'AntiCrisisController@index')->name('anticrisis');
-
-
-                Route::get('/module_economy', 'EconomyKenzhe\MainController@index');
-                Route::get('/module_economy/company/', 'EconomyKenzhe\MainController@company')->name('company');
-                Route::get('/module_economy/companies', 'EconomyKenzhe\MainController@companies');
-                Route::match(['GET', 'POST'], '/import_rep', 'EconomyKenzhe\ImportController@importRepTtValues')->name('import_rep');
-                Route::match(['GET', 'POST'], '/import_reptt_titles', 'EconomyKenzhe\ImportController@importRepTtTitlesTree')->name('import_reptt_titles');
-
+                              
                 Route::get('/paegtm', 'GTM\GTMController@index')->name('gtm');
                 Route::get('/paegtm/accum_oil_prod_data', 'GTM\GTMController@getAccumOilProd')->name('gtm');
-                Route::get('/paegtm/comparison_indicators_data', 'GTM\GTMController@getComparisonIndicators')->name('gtm');
-
-                Route::post('dzo_excel_form', 'VisCenter\ExcelForm\ExcelFormController@store');
-                Route::post('dzo_chemistry_excel_form', 'VisCenter\ExcelForm\ExcelFormChemistryController@store');
-                Route::get('/budgetexecution', 'EconomyKenzhe\BudgetExecutionController@budgetExecution')->name('budgetExecution');              
-                Route::get('/proactive-factors', 'EconomyKenzhe\proactiveFactorsController@proactiveFactors')->name('proactiveFactors');
-                Route::get('hive-data-from-avocet', function() {
-                    Artisan::call('hive-data-from-avocet:cron');
-                });
-
-            }
+                Route::get('/paegtm/comparison_indicators_data', 'GTM\GTMController@getComparisonIndicators')->name('gtm');                  
+                          }
         );
         Auth::routes(
             [
