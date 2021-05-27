@@ -67,23 +67,11 @@ export default {
             }
         },
 
-        getDiffProcentLastP(a, b, c) {
-            if (c) {
-                if (a > b) {
-                    return 'Снижение'
-                } else if (a < b) {
-                    return 'Рост'
-                }
-                ;
+        getDifferentPercentBetweenLastValues(previous, current) {
+            if (previous != '' && previous !== 0) {
+                return ((current / previous - 1) * 100).toFixed(2);
             } else {
-                if (b == 0) {
-                    return 0
-                } else if (a == 0) {
-                    return 0
-                }
-                {
-                    if (a != '') return ((b / a - 1) * 100).toFixed(2)
-                }
+                return 0;
             }
         },
 
@@ -172,9 +160,13 @@ export default {
             }
         },
 
-        getColor2(i) {
-            if (i < 0) return "arrow";
-            if (i > 0) return "arrow2";
+        getIndicatorClassForNormalParams(i) {
+            if (i < 0) {
+                return "arrow";
+            }
+            if (i > 0) {
+                return "arrow2";
+            }
         },
 
         getDataOrderedByAsc(data) {
@@ -241,7 +233,7 @@ export default {
             return parseInt(inputString.replace(/\s/g, ''));
         },
 
-        getArrowClassForFoundations(i) {
+        getIndicatorClassForReverseParams(i) {
             let arrowClass = '';
             if (i < 0) {
                 arrowClass = "fond-indicator-grow";
@@ -249,6 +241,13 @@ export default {
                 arrowClass = "fond-indicator-fall";
             }
             return arrowClass;
+        },
+        getIndicatorForStaffCovidParams(previosValue,currentValue) {
+            if (previosValue > currentValue) {
+                return 'Снижение';
+            } else if (previosValue < currentValue) {
+                return 'Рост';
+            }
         },
     },
     computed: {
