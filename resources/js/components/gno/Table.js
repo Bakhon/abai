@@ -490,7 +490,7 @@ export default {
       }
       this.prepareData()
       let uri = "http://172.20.103.187:7575/api/pgno/"+ this.field + "/" + this.wellNumber + "/download";
-      this.axios.post(uri, this.postdata).then((response) => {
+      this.axios.post(uri, this.postdata,{responseType: "blob"}).then((response) => {
         fileDownload(response.data, "ПГНО_" + this.field + "_" + this.wellNumber + ".xlsx")
       }).catch(function (error) {
         console.error('oops, something went wrong!', error);
