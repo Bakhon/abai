@@ -266,7 +266,9 @@
                     <tr>
                       <td>17</td>
                       <td>Способ эксплуатации</td>
-                      <td></td>
+                      <td>
+                        <span v-if="wellExpl">{{wellExpl.name_ru}}</span>
+                      </td>
                     </tr>
                     <tr>
                       <td>18</td>
@@ -346,8 +348,10 @@ export default {
       tech: null,
       wellName: null,
       wellType: null,
+      wellExpl: null,
       org: null,
       geo: null,
+      wellStatus:null,
       graph: null,
       activeFormCode: null,
       loading: false,
@@ -408,6 +412,9 @@ export default {
           this.wellName = data[0].uwi
           this.allData = data[0]
           this.wellType = data[0].well_type[0].name_ru
+          //this.wellStatus = data[0].status  уточнить, какой именно статус взять
+          this.wellExpl = data[0].well_expl[0]
+
 
           this.loading = false
         } catch (e) {
