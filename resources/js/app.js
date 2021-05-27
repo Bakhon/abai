@@ -185,6 +185,9 @@ Vue.component('proactive-factors', require('./components/economy_kenzhe/proactiv
 Vue.component('proactive-factors-select-filter', require('./components/economy_kenzhe/proactiveFactors/selectFilter.vue').default);
 Vue.component('reptt-company2', require('./components/economy_kenzhe/proactiveFactors/repttCompany/reptt_company2.vue').default);
 Vue.component('company-valuation', require('./components/economy_kenzhe/companyValuation/companyValuation.vue').default);
+Vue.component('main-factors-chart', require('./components/economy_kenzhe/companyValuation/charts/mainFactorsChart.vue').default);
+Vue.component('cash-flow-dynamics-chart', require('./components/economy_kenzhe/companyValuation/charts/cashFlowDynamicsChart.vue').default);
+Vue.component('sensitivity-npv-chart', require('./components/economy_kenzhe/companyValuation/charts/sensitivityNpvChart.vue').default);
 
 Vue.prototype.trans = string => _.get(window.i18n, string) || string;
 Vue.prototype.localeUrl = string => `/${window.current_lang}/${string[0] === '/' ? string.substr(1) : string}`;
