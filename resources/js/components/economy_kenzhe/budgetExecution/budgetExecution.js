@@ -47,8 +47,7 @@ export default {
       let uri = this.localeUrl("/module_economy/company");
       this.axios.get(uri).then((response) => {
         let data = response.data;
-        this.getCompanyData = data;
-        console.log(this.getCompanyData);
+        this.getCompanyData = data;       
       });
     },
     refreshData() {
@@ -288,16 +287,17 @@ export default {
             dataFact: kursFact,
             dataFactPrevYear: kursPrevYear,
             plan2020: kursPlan2020,
-          });
-          this.macroData.push({
+          },
+          {
             title: this.trans('economy_be.secondTable.priceBrent'),  
             // 'Цена Brent',
             units: '$/бар.',
             dataPlan: oilPricePlan,
             dataFact: oilPriceFact,
             dataFactPrevYear: oilPricePrevYear,
-            plan2020: oilPricePlan2020,
-          }); console.log(this.macroData);
+            plan2020: oilPricePlan2020,          
+          });
+        
           this.dzoData = this.dzoData.map((item) => {
             return {
               title: item.title,
