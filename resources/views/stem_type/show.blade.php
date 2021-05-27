@@ -1,4 +1,4 @@
-@extends('layouts.monitor')
+@extends('layouts.db')
 
 @section('content')
     <div class="row">
@@ -18,7 +18,7 @@
                     </tr>
                     <tr>
                         <td>{{ trans('monitoring.stem_type.fields.name') }}</td>
-                        <td>{{$stem_type->name}}</td>
+                        <td>{{$stem_type->name_ru}}</td>
                     </tr>
                 </table>
                 <a class="btn btn-primary" href="{{ route('stem_type.index') }}">{{__('app.back')}}</a>

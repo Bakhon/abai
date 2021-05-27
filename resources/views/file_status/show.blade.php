@@ -1,4 +1,4 @@
-@extends('layouts.monitor')
+@extends('layouts.db')
 
 @section('content')
     <div class="row">
@@ -18,7 +18,7 @@
                     </tr>
                     <tr>
                         <td>{{ trans('monitoring.file_status.fields.name') }}</td>
-                        <td>{{$file_status->name}}</td>
+                        <td>{{$file_status->name_ru}}</td>
                     </tr>
                 </table>
                 <a class="btn btn-primary" href="{{ route('file_status.index') }}">{{__('app.back')}}</a>

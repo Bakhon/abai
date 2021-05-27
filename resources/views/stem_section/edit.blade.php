@@ -1,4 +1,4 @@
-@extends('layouts.monitor')
+@extends('layouts.db')
 
 @section('content')
     <div id="app">
@@ -16,7 +16,7 @@
                     @method('patch')
                     @csrf
                     <div class="row">
-                        <file-status-form :is-editing="true" :file-status='@json($stem_section)' :validation-params='@json($validationParams)'></file-status-form>
+                        <stem-section-form :is-editing="true" :stem-section='@json($stem_section)' :validation-params='@json($validationParams)'></stem-section-form>
                     </div>
                 </form>
             </div>

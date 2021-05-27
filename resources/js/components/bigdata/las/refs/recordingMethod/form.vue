@@ -1,12 +1,12 @@
 <template>
   <div class="col-xs-12 col-sm-12 col-md-12 row">
     <div class="col-xs-12 col-sm-4 col-md-4">
-      <label>{{ trans('monitoring.file_status.fields.name') }}</label>
+      <label>{{ trans('monitoring.recording_method.fields.name') }}</label>
       <div class="form-label-group">
         <input
-            v-model="formFields.name"
+            v-model="formFields.name_ru"
             type="text"
-            name="name"
+            name="name_ru"
             class="form-control"
             placeholder=""
         >
@@ -24,18 +24,18 @@ import {Settings} from 'luxon'
 Settings.defaultLocale = 'ru'
 
 const defaultFormFields = {
-  name: null
+  name_ru: null
 };
 
 export default {
-  name: "file-status-form",
+  name: "recording-method-form",
   props: {
-    fileStatus: {
+    recordingMethod: {
       type: Object,
       default: null
     },
     validationParams: {
-      type: Object,
+      type: Array,
       required: true,
     },
     isEditing: {
@@ -46,9 +46,8 @@ export default {
   data: function () {
     return {
       formFields: defaultFormFields,
-      materials: {},
       requiredFields: [
-        'name'
+        'name_ru',
       ]
     }
   },
@@ -58,7 +57,7 @@ export default {
           [this.requestMethod](this.requestUrl, this.formFields)
           .then((response) => {
             if (response.data.status == 'success') {
-              window.location.replace(this.localeUrl("/file_status"));
+              window.location.replace(this.localeUrl("bigdata/recording_method"));
             }
           });
     }
@@ -73,24 +72,14 @@ export default {
       return true
     },
     requestUrl () {
-      return this.isEditing ? this.localeUrl("/file_status/" + this.fileStatus.id) : this.localeUrl("/file_status");
+      return this.isEditing ? this.localeUrl("bigdata/recording_method/" + this.recordingMethod.id) : this.localeUrl("bigdata/recording_method");
     },
     requestMethod () {
       return this.isEditing ? "put" : "post";
     }
   },
-  beforeCreate: function () {
-    this.axios.get(this.localeUrl("/getmaterials")).then((response) => {
-      let data = response.data;
-      if (data) {
-        this.materials = data.data;
-      } else {
-        console.log('No data');
-      }
-    });
-  },
   mounted() {
-    this.formFields = this.fileStatus ? this.fileStatus : defaultFormFields;
+    this.formFields = this.recordingMethod ? this.recordingMethod : defaultFormFields;
   },
 };
 </script>

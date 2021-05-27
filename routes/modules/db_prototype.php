@@ -12,7 +12,23 @@ Route::group(
                 Route::get('/report_constructor', 'bd\DBController@report_constructor')->name('report_constructor');
                 Route::get('/user_reports', 'bd\DBController@userReports')->name('userReports');
 
+                Route::get('file_status/list', 'Refs\FileStatusController@list')->name('file_status.list');
                 Route::resource('/file_status', 'Refs\FileStatusController');
+
+                Route::get('file_type/list', 'Refs\FileTypeController@list')->name('file_type.list');
+                Route::resource('/file_type', 'Refs\FileTypeController');
+
+                Route::get('recording_method/list', 'Refs\RecordingMethodController@list')->name('recording_method.list');
+                Route::resource('/recording_method', 'Refs\RecordingMethodController');
+
+                Route::get('recording_state/list', 'Refs\RecordingStateController@list')->name('recording_state.list');
+                Route::resource('/recording_state', 'Refs\RecordingStateController');
+
+                Route::get('stem_section/list', 'Refs\StemSectionController@list')->name('stem_section.list');
+                Route::resource('/stem_section', 'Refs\StemSectionController');
+
+                Route::get('stem_type/list', 'Refs\StemTypeController@list')->name('stem_type.list');
+                Route::resource('/stem_type', 'Refs\StemTypeController');
 
                 Route::get('/geo-data-reference-book', 'bd\DBController@geoDataReferenceBook')->name('bigdata.geoDataReferenceBook');
 

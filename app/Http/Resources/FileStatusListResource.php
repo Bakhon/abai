@@ -17,7 +17,7 @@ class FileStatusListResource extends CrudListResource
         $result = [
             'id' => $this->id,
             'fields' => [
-                'name' => $this->name
+                'name' => $this->name_ru
             ]
         ];
 

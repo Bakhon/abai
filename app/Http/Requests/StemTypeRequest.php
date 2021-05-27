@@ -14,7 +14,7 @@ class StemTypeRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|string'
+            'name_ru' => 'required|string'
         ];
     }
 }

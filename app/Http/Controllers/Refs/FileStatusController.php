@@ -45,7 +45,6 @@ class FileStatusController extends CrudController
     public function list(IndexTableRequest $request)
     {
         $query = FileStatus::query();
-
         $file_status = $this
             ->getFilteredQuery($request->validated(), $query)
             ->paginate(25);

@@ -1,4 +1,4 @@
-@extends('layouts.monitor')
+@extends('layouts.db')
 
 @section('content')
     <div class="row">
@@ -18,7 +18,7 @@
                     </tr>
                     <tr>
                         <td>{{ trans('monitoring.recording_method.fields.name') }}</td>
-                        <td>{{$recording_method->name}}</td>
+                        <td>{{$recording_method->name_ru}}</td>
                     </tr>
                 </table>
                 <a class="btn btn-primary" href="{{ route('recording_method.index') }}">{{__('app.back')}}</a>

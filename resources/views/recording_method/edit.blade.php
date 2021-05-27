@@ -1,4 +1,4 @@
-@extends('layouts.monitor')
+@extends('layouts.db')
 
 @section('content')
     <div id="app">
@@ -16,7 +16,7 @@
                     @method('patch')
                     @csrf
                     <div class="row">
-                        <file-status-form :is-editing="true" :file-status='@json($recording_method)' :validation-params='@json($validationParams)'></file-status-form>
+                        <recording-method-form :is-editing="true" :recording-method='@json($recording_method)' :validation-params='@json($validationParams)'></recording-method-form>
                     </div>
                 </form>
             </div>

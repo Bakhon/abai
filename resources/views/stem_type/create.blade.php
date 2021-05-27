@@ -1,4 +1,4 @@
-@extends('layouts.monitor')
+@extends('layouts.db')
 
 @section('content')
     <div id="app">
@@ -15,7 +15,7 @@
                 <form action="{{ route('stem_type.store') }}" method="POST">
                     @csrf
                     <div class="row">
-                        <file-status-form :validation-params='@json($validationParams)'></file-status-form>
+                        <stem-type-form :validation-params='@json($validationParams)'></stem-type-form>
                     </div>
                 </form>
             </div>

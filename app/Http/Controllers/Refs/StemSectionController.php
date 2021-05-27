@@ -13,7 +13,7 @@ use App\Http\Controllers\CrudController;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Session;
 
-class FileStatusController extends CrudController
+class StemSectionController extends CrudController
 {
     use WithFieldsValidation;
 
