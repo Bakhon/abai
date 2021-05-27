@@ -75,11 +75,7 @@ export default {
             color: "#fff",
           },
         },
-        chart: {
-              toolbar: {
-            show: true,
-            Color: "#fff",
-          },
+        chart: {           
         },
         plotOptions: {
           bar: {
@@ -119,10 +115,7 @@ export default {
           categories: [
             "2011-01-01",
             "2011-02-01",            
-          ],
-          style: {
-              colors: '#fff',
-          },          
+          ],          
           labels: {
             rotate: -90,
           },
