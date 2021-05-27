@@ -17,7 +17,12 @@ export default {
             this.chartSecondaryName = chartSecondaryName;
         },
 
-        updateSecondaryParams(filteredDataByPeriod,filteredDataByCompanies) {
+        updateSecondaryParams(inputData) {
+            let self = this;
+            let filteredDataByCompanies = _.filter(inputData, function (item) {
+                return self.company == item.dzo;
+            });
+            let filteredDataByPeriod = this.getProductionDataInPeriodRange(filteredDataByCompanies,this.timestampToday,this.timestampEnd);
             this.covid = this.getCovidData(filteredDataByPeriod);
             this.WellsDataAll = this.WellsData(filteredDataByPeriod);
             this.injectionWells = this.getSummaryWells(filteredDataByPeriod,this.wellStockIdleButtons.isInjectionIdleButtonActive,'injectionFonds');

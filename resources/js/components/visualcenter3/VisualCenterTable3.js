@@ -214,7 +214,7 @@ export default {
             filteredDataByPeriod = this.getDataOrderedByAsc(filteredDataByPeriod);
 
             this.getProductionPercentCovid(filteredDataByPeriod);
-            this.updateSecondaryParams(filteredDataByPeriod,filteredDataByCompanies);
+            this.updateSecondaryParams(data);
 
             if (this.isOneDateSelected) {
                 let filteredDataByOneDay = this.getFilteredDataByOneDay(filteredDataByCompanies);
