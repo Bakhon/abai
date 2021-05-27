@@ -26,6 +26,7 @@ import VueSimpleAlert from "vue-simple-alert";
 import PerfectScrollbar from "vue2-perfect-scrollbar";
 import "vue2-perfect-scrollbar/dist/vue2-perfect-scrollbar.css";
 import columnSortable from 'vue-column-sortable';
+import Paginate from 'vuejs-paginate';
 
 require('./bootstrap');
 window.Vue = require('vue');
@@ -41,10 +42,12 @@ Vue.use(PerfectScrollbar);
 Vue.use(columnSortable);
 Vue.use(VueSimpleAlert);
 Vue.use(BootstrapVue);
+Vue.component('paginate', Paginate);
 
 //Mixins
-import showToast from './mixins/showToast';
+import showToast from '~/mixins/showToast';
 Vue.mixin(showToast);
+
 
 /**
  * The following block of code may be used to automatically register your
@@ -82,13 +85,10 @@ Vue.component('vc-upstream-table', require('./components/visualcenter3/UpstreamT
 Vue.component('visual-center-menu', require('./components/visualcenter/VisualCenterMenu.vue').default);
 
 Vue.component('economic-data-component', require('./components/Economic/data/index.vue').default);
-Vue.component('tech-data-component', require('./components/technical_forecast/productionDataIndex.vue').default);
+Vue.component('economic-data-scenario-component', require('./components/Economic/data/scenario.vue').default);
+Vue.component('tech-data-component', require('./components/technical_forecast/data/index.vue').default);
 
 Vue.component('economic-component', require('./components/Economic/main.vue').default);
-Vue.component('chart1-component', require('./components/Economic/chart1.vue').default);
-Vue.component('chart2-component', require('./components/Economic/chart2.vue').default);
-Vue.component('chart3-component', require('./components/Economic/chart3.vue').default);
-Vue.component('chart4-component', require('./components/Economic/chart4.vue').default);
 Vue.component('gno-table', require('./components/gno/Table.vue').default);
 Vue.component('inclinometria', require('./components/gno/components/Inclinometria.vue').default);
 Vue.component('prs-crs', require('./components/gno/components/PrsCrs.vue').default);
@@ -154,9 +154,13 @@ Vue.component('cat-loader', require('./components/ui-kit/CatLoader.vue').default
 Vue.component('pagination', require('laravel-vue-pagination'));
 Vue.component('report-export', require('./components/reports/export.vue').default);
 Vue.component('tr_mode-table', require('./components/tr/TechMode.vue').default);
+Vue.component('tr_mode-table-small', require('./components/tr/TechModeSmall.vue').default);
 Vue.component('fa_weekly_chart', require('./components/tr/FaWeeklyChart.vue').default);
+Vue.component('well_cart', require('./components/well_cart/well_cart.vue').default);
+Vue.component('report_constructor', require('./components/report_constructor/report_constructor.vue').default);
 
-
+Vue.component('pf-main', require('./components/PlastFluids/views/MainPage.vue').default);
+Vue.component('pf-template_pvt_plast_oil', require('./components/PlastFluids/views/SuperTemplatePvtPlastOil.vue').default);
 
 Vue.component('viscenter2-create', require('./components/visualcenter/viscenter2/create.vue').default);
 Vue.component('visualcenter3-excelform', require('./components/visualcenter3/importForm/ExcelForm.vue').default);

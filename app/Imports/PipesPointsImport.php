@@ -5,14 +5,6 @@ namespace App\Imports;
 use App\Console\Commands\Import\ImportPipesPoints;
 use App\Models\ComplicationMonitoring\TrunklinePoint;
 use App\Models\Pipes\PipeCoord;
-use App\Models\Refs\Cdng;
-use App\Models\Refs\HydrocarbonOxidizingBacteria;
-use App\Models\Refs\Ngdu;
-use App\Models\Refs\SulphateReducingBacteria;
-use App\Models\Refs\ThionicBacteria;
-use App\Models\Refs\WaterTypeBySulin;
-use App\Models\Refs\Zu;
-use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\ToCollection;
@@ -20,9 +12,7 @@ use Maatwebsite\Excel\Concerns\WithColumnLimit;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\WithCalculatedFormulas;
 use Maatwebsite\Excel\Events\BeforeSheet;
-use App\Models\Refs\Well;
 use App\Models\Refs\Gu;
-use PhpOffice\PhpSpreadsheet\Shared\Date;
 
 class PipesPointsImport implements ToCollection, WithEvents, WithColumnLimit, WithCalculatedFormulas
 {
@@ -77,8 +67,6 @@ class PipesPointsImport implements ToCollection, WithEvents, WithColumnLimit, Wi
     {
         $collection = $collection->skip(1);
 
-        TrunklinePoint::truncate();
-
         foreach ($collection as $row) {
 
             $coords = json_decode($row[self::COORDS]);
@@ -86,12 +74,12 @@ class PipesPointsImport implements ToCollection, WithEvents, WithColumnLimit, Wi
             $end_coords = end($coords);
 
 
-            $map_pipe_id = DB::select(
+            $oil_pipe_id = DB::select(
                 DB::raw(
-                    "SELECT pipe_coords.map_pipe_id FROM `pipe_coords`
+                    "SELECT pipe_coords.oil_pipe_id FROM `pipe_coords`
                 LEFT JOIN (SELECT * FROM `pipe_coords` 
                     WHERE `lon` LIKE :end_coords_lon AND `lat` LIKE :end_coords_lat) end_coords 
-                    ON end_coords.`map_pipe_id` = pipe_coords.map_pipe_id
+                    ON end_coords.`oil_pipe_id` = pipe_coords.oil_pipe_id
                 WHERE pipe_coords.`lat` LIKE :start_coords_lat
                             AND pipe_coords.`lon` LIKE :start_coords_lon
                             AND pipe_coords.id IS NOT NULL
@@ -103,15 +91,15 @@ class PipesPointsImport implements ToCollection, WithEvents, WithColumnLimit, Wi
                     'start_coords_lat' => $start_coords[self::LAT],
                     'start_coords_lon' => $start_coords[self::LON]
                 )
-            )[0]->map_pipe_id;
+            )[0]->oil_pipe_id;
 
             $pipe_coords_start = PipeCoord::where('lat', $start_coords[self::LAT])
                 ->where('lon', $start_coords[self::LON])
-                ->where('map_pipe_id', $map_pipe_id)
+                ->where('oil_pipe_id', $oil_pipe_id)
                 ->where('m_distance', 0)
                 ->first();
 
-            $pipe_coords_end = PipeCoord::where('map_pipe_id', $map_pipe_id)
+            $pipe_coords_end = PipeCoord::where('oil_pipe_id', $oil_pipe_id)
                 ->orderByDesc('m_distance')
                 ->first();
 
@@ -125,7 +113,7 @@ class PipesPointsImport implements ToCollection, WithEvents, WithColumnLimit, Wi
                 ]
             );
 
-            $trunkline_end_point->map_pipe_id = $map_pipe_id;
+            $trunkline_end_point->oil_pipe_id = $oil_pipe_id;
             $trunkline_end_point->save();
 
             $trunkline_start_point = TrunklinePoint::firstOrCreate(
@@ -139,7 +127,7 @@ class PipesPointsImport implements ToCollection, WithEvents, WithColumnLimit, Wi
                 ]
             );
 
-            $trunkline_start_point->map_pipe_id = $map_pipe_id;
+            $trunkline_start_point->oil_pipe_id = $oil_pipe_id;
 
             if (strpos($trunkline_start_point->name, 'ГУ') !== false) {
                 $gu = Gu::where('name', $trunkline_start_point->name)->first();

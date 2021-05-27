@@ -18,25 +18,32 @@
                         <table class="table table-bordered">
                             <tr>
                                 <th>#</th>
-                                <th>Сценарий/Факт:</th>
+                                <th>{{__('economic_reference.source_data')}}</th>
                                 <th width="220px">{{__('app.action')}}</th>
                             </tr>
-                            @foreach ($ecorefsscfa as $item)
+                            @foreach ($scFas as $item)
                                 <tr>
                                     <td>{{ $item->id }}</td>
                                     <td>{{ $item->name }}</td>
                                     <td>
-                                        <form action="{{ route('ecorefsscfa.destroy',$item->id) }}" method="POST">
-                                            <a class="btn btn-primary" href="{{ route('ecorefsscfa.edit',$item->id) }}">{{__('app.edit')}}</a>
+                                        <form action="{{ route('ecorefsscfa.destroy', $item->id) }}"
+                                              method="POST">
+                                            <a href="{{ route('ecorefsscfa.edit', $item->id) }}"
+                                               class="btn btn-primary">
+                                                {{__('app.edit')}}
+                                            </a>
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-danger">{{__('app.delete')}}</button>
+                                            <button type="submit"
+                                                    class="btn btn-danger">
+                                                {{__('app.delete')}}
+                                            </button>
                                         </form>
                                     </td>
                                 </tr>
                             @endforeach
                         </table>
-                        {!! $ecorefsscfa->links() !!}
+                        {!! $scFas->links() !!}
                     </div>
                 </div>
             </div>

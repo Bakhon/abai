@@ -85,7 +85,6 @@ export default {
                 .groupBy("data")
                 .map((__time, id) => (this.$_getSummaryFonds(fonds,__time,id)))
                 .value();
-
             let halfOfProductionFondsLength = Math.ceil(fonds.length / 2);
             let productionFondsForIterations = [];
             let productionFondsSummary = [];
@@ -93,6 +92,10 @@ export default {
                 productionFondsForIterations = fonds.splice(0,halfOfProductionFondsLength);
             } else {
                 productionFondsForIterations = fonds.splice(halfOfProductionFondsLength,fonds.length);
+            }
+
+            if (fondsName === 'productionFonds') {
+                productionFondsForIterations = this.getUpdatedByPrsFond(isIdleActive, productionFondsForIterations);
             }
 
             if (productionPlanAndFactMonthWells[0]['fond_neftedob_df']) {
@@ -123,6 +126,15 @@ export default {
                 summaryWells[fond] = (_.sumBy(time, fond)) / self.quantityRange;
             });
             return summaryWells;
+        },
+
+        getUpdatedByPrsFond(isIdleActive,productionFondsForIterations) {
+            if (!isIdleActive) {
+                productionFondsForIterations.splice(-1,1);
+            } else {
+                productionFondsForIterations.push('fond_neftedob_prs');
+            }
+            return productionFondsForIterations;
         },
     },
 }

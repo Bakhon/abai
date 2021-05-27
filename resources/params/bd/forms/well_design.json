@@ -1,6 +1,11 @@
 {
   "type": "plain",
   "table": "prod.well_constr",
+  "table_fields": [
+    "equip_type",
+    "depth",
+    "casing_type"
+  ],
   "tabs": [
     {
       "title": "well_design_project",
@@ -10,10 +15,10 @@
             "title": "",
             "items": [
               {
-                "code": "casing_nom",
+                "code": "name_ru",
                 "type": "dict",
                 "title": "column_type",
-                "dict": "equips",
+                "dict": "equip_type",
                 "validation": "required|exists:tbd.dict.equip_type,id"
               },
               {
@@ -28,10 +33,10 @@
                 "title": "side_barrel"
               },
               {
-                "code": "casing_type",
+                "code": "model",
                 "type": "dict",
-                "title": "casing_type",
-                "dict": "casings",
+                "title": "tube_nom",
+                "dict": "tube_nom",
                 "validation": "required|exists:tbd.dict.tube_nom,id"
               },
               {

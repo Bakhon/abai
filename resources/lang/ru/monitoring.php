@@ -10,10 +10,10 @@ return array (
   'pipes' => 'Трубопроводы',
   'inhibitors' => 'Ингибиторы',
   'tech_map' => 'Техкарта',
-  'action_substance_of_co2' => 'Фактическое содержание углекислого газа мг/дм³',
-  'action_substance_of_h2s' => 'Фактическое содержание сероводорода мг/дм³',
-  'actual_corrosion_speed' => 'Фактическая скорость коррозии мм/г',
-  'actual_inhibitor_level' => 'Фактическая закачка ингибитора коррозии г/м3',
+  'action_substance_of_co2' => 'Фактическое содержание углекислого газа, мг/дм³',
+  'action_substance_of_h2s' => 'Фактическое содержание сероводорода, мг/дм³',
+  'actual_corrosion_speed' => 'Фактическая скорость коррозии, мм/г',
+  'actual_inhibitor_level' => 'Фактическая закачка ингибитора коррозии, г/м3',
   'units' => 
   array (
     'p_kon' => 'P кон.',
@@ -33,7 +33,7 @@ return array (
     'mm_year' => 'мм/год',
   ),
   'kormass' => 'Кормасс',
-  'ik_recommend' => 'Рекомендованная дозировка ИК',
+  'ik_recommend' => 'Рекомендованная дозировка ИК, г/м3',
   'economic_effect' => 'Экономический эффект',
   'corrosion_simulator' => 'Гидравлический симулятор коррозии',
   'problem_gu_list' => 'Список проблемных ГУ',
@@ -72,21 +72,23 @@ return array (
       'avg_speed' => 'Средняя скорость коррозии, мм/г',
     ),
   ),
-  'fact_common_corrosion_speed' => 'Фактическая общая скорость коррозии',
+  'fact_common_corrosion_speed' => 'Фактическая общая скорость коррозии, мм/г',
   'test_coupons' => 'тест купоны',
   'corrosion_inhibitor' => 'Ингибитор коррозии',
   'recommended_dosage' => 'Рекомендуемая дозировка',
   'max_recommended_dosage' => 'Максимальная рекомендуемая дозировка',
   'fact_dosage' => 'Фактическая дозировка',
   'plan_dosage' => 'Плановая дозировка',
-  'calc_common_corrosion_speed' => 'Расчетная общая скорость коррозии',
-  'calc_local_corrosion_speed' => 'Расчетная локальная скорость коррозии',
+  'calc_common_corrosion_speed' => 'Расчетная общая скорость коррозии, мм/г',
+  'calc_local_corrosion_speed' => 'Расчетная локальная скорость коррозии, мм/г',
   'table' => 
   array (
     'export_excel' => 'Выгрузить в excel',
     'reset_filter' => 'Сбросить фильтр',
     'export_error' => 'Ошибка экспорта',
     'management' => 'Управление',
+    'calc_result' => 'Расчитать результат',
+    'calc_result_export' => 'Выгрузить результаты',
   ),
   'selection_node' => 'Узел отбора',
   'omgca' => 
@@ -127,6 +129,10 @@ return array (
       'fill' => 'Заправка',
       'yearly_inhibitor_rate' => 'Годовой расход ингибитора кг',
     ),
+    'errors' => 
+    array (
+      'no-ddng-data-on-date' => 'Нет данных по ДДНГ на',
+    ),
   ),
   'omgngdu' => 
   array (
@@ -145,8 +151,6 @@ return array (
       'bsw' => 'Обводненность, %',
       'surge_tank_pressure' => 'Давление в буферной емкости, кгс\\см2',
       'pump_discharge_pressure' => 'Давление на выходе насоса, кгс\\см2',
-      'heater_inlet_pressure' => 'Температура на входе в печь, С',
-      'heater_output_pressure' => 'Температура на выходе из печи, С',
       'temperature' => 'Температура на входе в печь, С',
       'heater_output_temperature' => 'Температура на выходе из печи, С',
       'heater_inlet_temperature' => 'Температура на входе в печь, С',
@@ -216,32 +220,6 @@ return array (
     ),
   ),
   'corrosion_name' => 'Коррозия',
-  'pipe' => 
-  array (
-    'menu' => 'Трубопроводы',
-    'title' => 'Трубопроводы ГУ кармасс',
-    'create_title' => 'Ввод данных по трубопроводу',
-    'edit_title' => 'Редактирование данных по трубопроводу',
-    'fields' => 
-    array (
-      'length' => 'Длина',
-      'outside_diameter' => 'Внешний диаметр, мм',
-      'inner_diameter' => 'Внутренний диаметр',
-      'thickness' => 'Толщина стенки, мм',
-      'roughness' => 'Жесткость',
-      'material' => 'Материал',
-      'plot' => 'Участок',
-    ),
-    'updated' => 'Трубовровод изменен',
-    'deleted' => 'Трубопровод удален',
-    'deleting_error' => 'Ошибка при удалении трубопровода',
-    'coords' => 'Координаты трубопровода',
-    'add' => 'Добавить трубовровод',
-    'type' => 'Тип трубопровода',
-    'params' => 'Параметры трубопровода',
-    'name' => 'Наименование трубопровода',
-    'pipe' => 'Трубопровод',
-  ),
   'inhibitor' => 
   array (
     'title' => 'Справочник ингибиторов',
@@ -260,6 +238,11 @@ return array (
   array (
     'title' => 'Карта',
     'select_gu' => 'Выберите ГУ',
+    'select_filter' => 'Выберите фильтр',
+    'filters' => 
+    array (
+      'speed-flow-filter' => 'Скорость потока',
+    ),
   ),
   'module_name' => 'Мониторинг осложнений',
   'tech_map_prototype' => 'Техкарта прототип',
@@ -276,18 +259,18 @@ return array (
     'edit_title' => 'Редактирование ЗУ',
   ),
   'close' => 'Закрыть',
-  'well' => 
-  array (
-    'create_title' => 'Ввод данных по скважине',
-    'edit_title' => 'Редактирование скважины',
-    'added' => 'Скважина добавлена',
-    'updated' => 'Скважина изменена',
-    'deleted' => 'Скважина удалена',
-    'deleting_error' => 'Ошибка при удалении Скважины',
-    'name' => 'Имя Скважины',
-    'well' => 'Скважина',
-  ),
-  'pipe' => 
+    'well' =>
+        array (
+            'create_title' => 'Ввод данных по скважине',
+            'edit_title' => 'Редактирование скважины',
+            'added' => 'Скважина добавлена',
+            'updated' => 'Скважина изменена',
+            'deleted' => 'Скважина удалена',
+            'deleting_error' => 'Ошибка при удалении Скважины',
+            'name' => 'Имя Скважины',
+            'well' => 'Скважина',
+        ),
+    'pipe' =>
   array (
     'updated' => 'Трубовровод изменен',
     'deleted' => 'Трубопровод удален',
@@ -313,8 +296,6 @@ return array (
     'title' => 'База данных по трубопроводам',
     'create_title' => 'Ввод данных по трубопроводу',
   ),
-
-  'well' => 'Скважина',
   'gu' => 
   array (
     'deleted' => 'ГУ удален',
@@ -322,6 +303,7 @@ return array (
     'name' => 'Имя ГУ',
     'create_title' => 'Ввод данных по ГУ',
     'edit_title' => 'Редактирование ГУ',
+    'gu' => 'ГУ',
     'params' => 'Параметры ГУ',
     'fields' => 
     array (
@@ -337,7 +319,6 @@ return array (
       'daily_gas_production_in_sib' => 'Количество газа в СИБ',
     ),
     'redirect-to' => 'Перейти на',
-    'gu' => 'ГУ',
   ),
   'zu' => 
   array (
@@ -374,7 +355,6 @@ return array (
     ),
     'edit_title' => 'Редактирование типа трубы',
     'create_title' => 'Ввод данных по типу трубы',
-    'title' => 'Справочник тип размеров трубопроводов',
   ),
   'omgngdu_well' => 
   array (
@@ -414,7 +394,7 @@ return array (
       'break_qty' => 'Количество порывов',
       'height_drop' => 'Перепад высот, м',
     ),
-    'table_title' => 'Таблица расчета гидравлики',
+    'table_title' => 'Таблица расчета гидравлики ГУ - УПСВ',
     'message' => 
     array (
       'no-omgdu-data' => 'нет данных ОМГДУ',
@@ -422,6 +402,10 @@ return array (
       'no-pressure-data' => 'нет данных по давлению !',
       'no-daily-fluid-data' => 'нет данных по cуточной добычи жидкости !',
       'no-bsw-data' => 'нет данных по обводненности !',
+    ),
+    'error' => 
+    array (
+      'not-enough-data' => 'Не достаточно данных для расчета',
     ),
   ),
   'monitor' => 
@@ -436,4 +420,14 @@ return array (
       'hydrogen_sulfide' => 'Значение H₂S в газе не должно быть равно 0 !',
     ),
   ),
+  'reverse_calculation' => 
+  array (
+    'table_title' => 'Таблица расчета гидравлики Скважина - ГУ',
+  ),
+   'economical_effect_title' => 'Мониторинг потерянной выгоды',
+   'difference' => 'Разница закачки ИК, г/м3',
+   'inhibitor_price' => 'Стоимость ингибитора, тенге/кг',
+   'economical_effect' => 'Суточная потерянная выгода, тыс. тенге/сут',
+   'economical_effect_sum' => 'Накопленная потерянная выгода, тыс. тенге',
+
 );

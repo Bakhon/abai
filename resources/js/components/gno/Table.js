@@ -266,7 +266,7 @@ export default {
       param_eco:null,
       param_org:null,
       param_fact:null,
-
+      welldata: null,
       field: null,
       wellIncl: null,
       dataNNO:"2020-11-01",
@@ -295,6 +295,25 @@ export default {
       ao: null,
       orgs: null,
       nkt: null,
+      liftValue: "ШГН",
+      stepValue: 10,
+      strokeLenMin: null,
+      strokeLenMax: null,
+      spmMin: null,
+      spmMax: null,
+      pump27: null,
+      pump32: null,
+      pump38: null,
+      pump44: null,
+      pump50: null,
+      pump57: null,
+      pump60: null,
+      pump70: null,
+      pump95: null,
+      kpod_min: null,
+      centratorsInfo: null,
+      centratorsRequiredValue: null,
+      centratorsRecommendedValue: null,
       nkt_choose: [
         {
           for_calc_value: 50.3,
@@ -324,7 +343,8 @@ export default {
       isButtonHpump: false,
       postdata: null,
       inflowCurveTitle: this.trans('pgno.krivaya_pritoka'),
-      podborGnoTitle: this.trans('pgno.podbor_gno')
+      podborGnoTitle: this.trans('pgno.podbor_gno'),
+      serviceOffline: false,
     };
 
   },
@@ -358,6 +378,12 @@ export default {
         this.orgs = this.mmg_fields
       }
     })
+
+    this.axios.get("http://172.20.103.187:7575/api/status/").then(res => {
+      if (res.status !== 200) {
+        this.serviceOffline = true;
+      } 
+    })
     
   },
   mounted() {
@@ -384,42 +410,77 @@ export default {
       this.postCurveData();
     },
     prepareData() {
+      this.spmMin = this.$store.getters.spmMin
+      this.spmMax = this.$store.getters.spmMax
+      this.strokeLenMin = this.$store.getters.strokeLenMin
+      this.strokeLenMax = this.$store.getters.strokeLenMax
+      this.kpod_min = this.$store.getters.kpod_min
+      this.pump27 = this.$store.getters.pump27
+      this.pump32 = this.$store.getters.pump32
+      this.pump38 = this.$store.getters.pump38
+      this.pump44 = this.$store.getters.pump44
+      this.pump50 = this.$store.getters.pump50
+      this.pump57 = this.$store.getters.pump57
+      this.pump60 = this.$store.getters.pump60
+      this.pump70 = this.$store.getters.pump70
+      this.pump95 = this.$store.getters.pump95
       this.postdata = JSON.stringify(
         {
-          "curveSelect": this.curveSelect,
-          "presValue": this.pResInput.split(' ')[0],
-          "piValue": this.piInput.split(' ')[0],
-          "qlValue": this.qLInput.split(' ')[0],
-          "bhpValue": this.bhpInput.split(' ')[0],
-          "hdynValue": [this.hDynInput.split(' ')[0], this.pAnnularInput.split(' ')[0]],
-          "pmanomValue": [this.pManomInput.split(' ')[0], this.hPumpManomInput.split(' ')[0]],
-          "whpValue": this.whpInput.split(' ')[0],
-          "wctValue": this.wctInput.split(' ')[0],
-          "gorValue": this.gorInput.split(' ')[0],
-          "expSelect": this.expChoose,
-          "hPumpValue": this.hPumpValue.split(' ')[0],
-          "celSelect": this.CelButton,
-          "celValue": this.CelValue.split(' ')[0],
-          "menu": this.menu,
-          "well_age": this.isYoungAge,
-          "grp_skin": this.hasGrp,
-          "analysisBox1": this.isAnalysisBoxValue1,
-          "analysisBox2": this.isAnalysisBoxValue2,
-          "analysisBox3": this.isAnalysisBoxValue3,
-          "analysisBox4": this.isAnalysisBoxValue4,
-          "analysisBox5": this.isAnalysisBoxValue5,
-          "analysisBox6": this.isAnalysisBoxValue6,
-          "analysisBox7": this.isAnalysisBoxValue7,
-          "analysisBox8": this.isAnalysisBoxValue8,
-          "sep_meth": this.sep_meth,
-          "sep_value": this.sep_value,
-          "mech_sep": this.mech_sep,
-          "mech_sep_value": this.mech_sep_value,
-          "nat_sep": this.nat_sep,
-          "nkt": this.nkt,
+          "pgno_setings":{
+            "strokelen_min": this.strokeLenMin,
+            "strokelen_max": this.strokeLenMax,
+            "spm_min": this.spmMin,
+            "spm_max": this.spmMax,
+            "pump27": this.pump27,
+            "pump32": this.pump32,
+            "pump38": this.pump38,
+            "pump44": this.pump44,
+            "pump50": this.pump50,
+            "pump57": this.pump57,
+            "pump60": this.pump60,
+            "pump70": this.pump70,
+            "pump95": this.pump95,
+            "kpod_min": this.kpod_min
+          },
+          "welldata": this.welldata,
+          "settings" : {
+            "curveSelect": this.curveSelect,
+            "presValue": this.pResInput.split(' ')[0],
+            "piValue": this.piInput.split(' ')[0],
+            "qlValue": this.qLInput.split(' ')[0],
+            "bhpValue": this.bhpInput.split(' ')[0],
+            "hdynValue": [this.hDynInput.split(' ')[0], this.pAnnularInput.split(' ')[0]],
+            "pmanomValue": [this.pManomInput.split(' ')[0], this.hPumpManomInput.split(' ')[0]],
+            "whpValue": this.whpInput.split(' ')[0],
+            "wctValue": this.wctInput.split(' ')[0],
+            "gorValue": this.gorInput.split(' ')[0],
+            "expSelect": this.expChoose,
+            "hPumpValue": this.hPumpValue.split(' ')[0],
+            "celSelect": this.CelButton,
+            "celValue": this.CelValue.split(' ')[0],
+            "menu": this.menu,
+            "well_age": this.isYoungAge,
+            "grp_skin": this.hasGrp,
+            "analysisBox1": this.isAnalysisBoxValue1,
+            "analysisBox2": this.isAnalysisBoxValue2,
+            "analysisBox3": this.isAnalysisBoxValue3,
+            "analysisBox4": this.isAnalysisBoxValue4,
+            "analysisBox5": this.isAnalysisBoxValue5,
+            "analysisBox6": this.isAnalysisBoxValue6,
+            "analysisBox7": this.isAnalysisBoxValue7,
+            "analysisBox8": this.isAnalysisBoxValue8,
+            "sep_meth": this.sep_meth,
+            "sep_value": this.sep_value,
+            "mech_sep": this.mech_sep,
+            "mech_sep_value": this.mech_sep_value,
+            "nat_sep": this.nat_sep,
+            "nkt": this.nkt,
+          }
         })
     },
     downloadExcel() {
+      this.isLoading = true;
+
       if (this.CelButton == 'ql') {
         this.CelValue = this.qlCelValue
       } else if (this.CelButton == 'bhp') {
@@ -427,44 +488,19 @@ export default {
       } else if (this.CelButton == 'pin') {
         this.CelValue = this.piCelValue
       }
-      let jsonData = JSON.stringify(
-        {
-          "curveSelect": this.curveSelect,
-          "presValue": this.pResInput.split(' ')[0],
-          "piValue": this.piInput.split(' ')[0],
-          "qlValue": this.qLInput.split(' ')[0],
-          "bhpValue": this.bhpInput.split(' ')[0],
-          "hdynValue": [this.hDynInput.split(' ')[0], this.pAnnularInput.split(' ')[0]],
-          "pmanomValue": [this.pManomInput.split(' ')[0], this.hPumpManomInput.split(' ')[0]],
-          "whpValue": this.whpInput.split(' ')[0],
-          "wctValue": this.wctInput.split(' ')[0],
-          "gorValue": this.gorInput.split(' ')[0],
-          "expSelect": this.expChoose,
-          "hPumpValue": this.hPumpValue.split(' ')[0],
-          "celSelect": this.CelButton,
-          "celValue": this.CelValue.split(' ')[0],
-          "menu": this.menu,
-          "well_age": this.isYoungAge,
-          "grp_skin": this.hasGrp,
-          "analysisBox1": this.isAnalysisBoxValue1,
-          "analysisBox2": this.isAnalysisBoxValue2,
-          "analysisBox3": this.isAnalysisBoxValue3,
-          "analysisBox4": this.isAnalysisBoxValue4,
-          "analysisBox5": this.isAnalysisBoxValue5,
-          "analysisBox6": this.isAnalysisBoxValue6,
-          "analysisBox7": this.isAnalysisBoxValue7,
-          "analysisBox8": this.isAnalysisBoxValue8,
-          "sep_meth": this.sep_meth,
-          "sep_value": this.sep_value,
-          "mech_sep": this.mech_sep,
-          "mech_sep_value": this.mech_sep_value,
-          "nat_sep": this.nat_sep
-        });
+      this.prepareData()
       let uri = "http://172.20.103.187:7575/api/pgno/"+ this.field + "/" + this.wellNumber + "/download";
-      this.axios.post(uri, jsonData,{responseType: "blob"}).then((response) => {
+      this.axios.post(uri, this.postdata,{responseType: "blob"}).then((response) => {
         fileDownload(response.data, "ПГНО_" + this.field + "_" + this.wellNumber + ".xlsx")
-      }
-      )
+      }).catch(function (error) {
+        console.error('oops, something went wrong!', error);
+      }).finally(() => {
+        this.isLoading = false;
+    });
+    },
+
+    onSubmitParams() {
+      this.$modal.hide('modalTabs')
     },
 
     updateWellNum(event) {
@@ -473,6 +509,10 @@ export default {
     },
     closeModal(modalName) {
       this.$modal.hide(modalName)
+    },
+
+    closeTabModal(value) {
+      console.log('work in parent');
     },
 
     closeInclModal() {
@@ -485,28 +525,28 @@ export default {
     },
 
     onChangeParams() {
-      this.$modal.show('modalSeparation')
+      this.$modal.show('modalTabs')
     },
     
     setData: function(data) {
       if (this.method == "CurveSetting") {
-        this.pResInput = data["Well Data"]["p_res"][0] + " " + this.trans('measurements.atm')
-        this.piInput = data["Well Data"]["pi"][0].toFixed(2)  + " " +  this.trans('measurements.m3/d/atm')
-        this.qLInput = data["Well Data"]["q_l"][0].toFixed(0)  + " " +  this.trans('measurements.m3/day')
-        this.wctInput = data["Well Data"]["wct"][0]  + " " +  this.trans('measurements.percent')
-        this.hPumpValue = data["Well Data"]["h_pump_set"][0].toFixed(0)  + " " +  this.trans('measurements.m')
-        this.gorInput = data["Well Data"]["gor"][0]  + " " +  this.trans('measurements.m3/t')
-        this.bhpInput = data["Well Data"]["bhp"][0].toFixed(0)  + " " +  this.trans('measurements.atm')
-        this.hDynInput = data["Well Data"]["h_dyn"][0].toFixed(0)  + " " + this.trans('measurements.m')
-        this.pAnnularInput = data["Well Data"]["p_annular"][0].toFixed(0)  + " " +  this.trans('measurements.atm')
+        this.pResInput = data["Well Data"]["p_res"] + " " + this.trans('measurements.atm')
+        this.piInput = data["Well Data"]["pi"].toFixed(2)  + " " +  this.trans('measurements.m3/d/atm')
+        this.qLInput = data["Well Data"]["q_l"].toFixed(0)  + " " +  this.trans('measurements.m3/day')
+        this.wctInput = data["Well Data"]["wct"]  + " " +  this.trans('measurements.percent')
+        this.hPumpValue = data["Well Data"]["h_pump_set"].toFixed(0)  + " " +  this.trans('measurements.m')
+        this.gorInput = data["Well Data"]["gor"]  + " " +  this.trans('measurements.m3/t')
+        this.bhpInput = data["Well Data"]["bhp"].toFixed(0)  + " " +  this.trans('measurements.atm')
+        this.hDynInput = data["Well Data"]["h_dyn"].toFixed(0)  + " " + this.trans('measurements.m')
+        this.pAnnularInput = data["Well Data"]["p_annular"].toFixed(0)  + " " +  this.trans('measurements.atm')
         this.qlCelValue = JSON.parse(data.PointsData)["data"][2]["q_l"].toFixed(0)  + " " +  this.trans('measurements.m3/day')
         this.bhpCelValue = JSON.parse(data.PointsData)["data"][2]["p"].toFixed(0)  + " " +  this.trans('measurements.atm')
         this.piCelValue = JSON.parse(data.PointsData)["data"][2]["pin"].toFixed(0)  + " " +  this.trans('measurements.atm')
-        this.whpInput = data["Well Data"]["whp"][0].toFixed(0)  + " " +  this.trans('measurements.atm')
-        this.pManomInput = data["Well Data"]["p_intake"][0]  + " " +  this.trans('measurements.atm')
-        this.sep_value = (data["Well Data"]["es"][0]* 100).toFixed(0)
+        this.whpInput = data["Well Data"]["whp"].toFixed(0)  + " " +  this.trans('measurements.atm')
+        this.pManomInput = data["Well Data"]["p_intake"]  + " " +  this.trans('measurements.atm')
+        this.sep_value = (data["Well Data"]["es"]* 100).toFixed(0)
         if(this.curveSelect == 'pmanom') {
-          this.hPumpManomInput = data["Well Data"]["h_pump_point"][0]  + " " + this.trans('measurements.m')
+          this.hPumpManomInput = data["Well Data"]["h_pump_set"]  + " " + this.trans('measurements.m')
         }
         this.curveLineData = JSON.parse(data.LineData)["data"]
         this.curvePointsData = JSON.parse(data.PointsData)["data"]
@@ -515,49 +555,49 @@ export default {
         this.qlPot = this.curvePointsData[1]["q_l"].toFixed(0)
         this.pinPot = this.curvePointsData[1]["pin"].toFixed(0)
       } else {
-        this.ngdu = data["Well Data"]["ngdu"][0]
-        this.sk = data["Well Data"]["sk_type"][0]
-        this.wellNumber = data["Well Data"]["well"][0].split("_")[1]
+        this.ngdu = data["Well Data"]["ngdu"]
+        this.sk = data["Well Data"]["sk_type"]
+        this.wellNumber = data["Well Data"]["well"].split("_")[1]
         this.isYoungAge = data["Age"]
-        this.horizon = data["Well Data"]["horizon"][0]
-        this.expMeth = data["Well Data"]["exp_meth"][0]
-        this.tseh = data["Well Data"]["tseh"][0]
-        this.gu = data["Well Data"]["gu"][0]
-        this.stroke_len = data["Well Data"]["stroke_len"][0]
-        this.casOD = data["Well Data"]["cas_OD"][0]
-        this.casID = data["Well Data"]["cas_ID"][0]
-        this.hPerf = data["Well Data"]["h_up_perf_vd"][0]
+        this.horizon = data["Well Data"]["horizon"]
+        this.expMeth = data["Well Data"]["exp_meth"]
+        this.tseh = data["Well Data"]["tseh"]
+        this.gu = data["Well Data"]["gu"]
+        this.stroke_len = data["Well Data"]["stroke_len"]
+        this.casOD = data["Well Data"]["cas_OD"]
+        this.casID = data["Well Data"]["cas_ID"]
+        this.hPerf = data["Well Data"]["h_up_perf_vd"]
         this.udl = data["udl"].toFixed(1)
-        this.hPumpSet = data["Well Data"]["h_pump_set"][0]
-        this.tubOD = data["Well Data"]["tub_OD"][0]
-        this.tubID = data["Well Data"]["tub_ID"][0]
-        this.stopDate = data["Well Data"]["stop_date"][0]
-        this.pumpType = data["Well Data"]["pump_type"][0]
-        this.PBubblePoint = data["Well Data"]["P_bubble_point"][0].toFixed(2)
-        this.gor = data["Well Data"]["gor"][0].toFixed(0)
-        this.tRes = data["Well Data"]["t_res"][0].toFixed(2)
-        this.viscOilRc = data["Well Data"]["visc_oil_rc"][0].toFixed(2)
-        this.viscWaterRc = data["Well Data"]["visc_wat_rc"][0].toFixed(2)
-        this.densOil = data["Well Data"]["dens_oil"][0].toFixed(2)
-        this.densWater = data["Well Data"]["dens_liq"][0].toFixed(2)
-        this.qL = data["Well Data"]["q_l"][0].toFixed(0)
-        this.qO = data["Well Data"]["q_o"][0].toFixed(0)
-        this.wct = data["Well Data"]["wct"][0].toFixed(0)
-        this.bhp = data["Well Data"]["bhp"][0].toFixed(0)
-        this.pRes = data["Well Data"]["p_res"][0].toFixed(0)
-        this.hDyn = data["Well Data"]["h_dyn"][0].toFixed(0)
-        this.pAnnular = data["Well Data"]["p_annular"][0].toFixed(0)
-        this.whp = data["Well Data"]["whp"][0].toFixed(0)
-        this.pBuf = data["Well Data"]["whp"][0].toFixed(0)
-        this.lineP = data["Well Data"]["line_p"][0].toFixed(0)
-        this.piInput = data["Well Data"]["pi"][0].toFixed(2) + ' м³/сут/ат'
-        this.curr = data["Well Data"]["curr_bh"][0].toFixed(0)
+        this.hPumpSet = data["Well Data"]["h_pump_set"]
+        this.tubOD = data["Well Data"]["tub_OD"]
+        this.tubID = data["Well Data"]["tub_ID"]
+        this.stopDate = data["Well Data"]["stop_date"]
+        this.pumpType = data["Well Data"]["pump_type"]
+        this.PBubblePoint = data["Well Data"]["P_bubble_point"].toFixed(2)
+        this.gor = data["Well Data"]["gor"].toFixed(0)
+        this.tRes = data["Well Data"]["t_res"].toFixed(2)
+        this.viscOilRc = data["Well Data"]["visc_oil_rc"].toFixed(2)
+        this.viscWaterRc = data["Well Data"]["visc_wat_rc"].toFixed(2)
+        this.densOil = data["Well Data"]["dens_oil"].toFixed(2)
+        this.densWater = data["Well Data"]["dens_liq"].toFixed(2)
+        this.qL = data["Well Data"]["q_l"].toFixed(0)
+        this.qO = data["Well Data"]["q_o"].toFixed(0)
+        this.wct = data["Well Data"]["wct"].toFixed(0)
+        this.bhp = data["Well Data"]["bhp"].toFixed(0)
+        this.pRes = data["Well Data"]["p_res"].toFixed(0)
+        this.hDyn = data["Well Data"]["h_dyn"].toFixed(0)
+        this.pAnnular = data["Well Data"]["p_annular"].toFixed(0)
+        this.whp = data["Well Data"]["whp"].toFixed(0)
+        this.pBuf = data["Well Data"]["whp"].toFixed(0)
+        this.lineP = data["Well Data"]["line_p"].toFixed(0)
+        this.piInput = data["Well Data"]["pi"].toFixed(2) + ' м³/сут/ат'
+        this.curr = data["Well Data"]["curr_bh"].toFixed(0)
         this.piCelValue = JSON.parse(data.PointsData)["data"][0]["pin"].toFixed(0)  + " " +  this.trans('measurements.atm')
         this.bhpCelValue = JSON.parse(data.PointsData)["data"][0]["p"].toFixed(0)  + " " +  this.trans('measurements.atm')
-        this.wellIncl = data["Well Data"]["well"][0]
-        this.hPerfND = data["Well Data"]["h_perf"][0]
-        this.strokeLenDev = data["Well Data"]["stroke_len"][0]
-        this.sep_value = (data["Well Data"]["es"][0]* 100).toFixed(0)
+        this.wellIncl = data["Well Data"]["well"]
+        this.hPerfND = data["Well Data"]["h_perf"]
+        this.strokeLenDev = data["Well Data"]["stroke_len"]
+        this.sep_value = (data["Well Data"]["es"]* 100).toFixed(0)
         this.nkt = this.tubID
         let langUrl = `${window.location.pathname}`.slice(1, 3);
         if (this.expMeth == 'ШГН') {
@@ -571,7 +611,7 @@ export default {
             this.dNasosa = "Pump diameter"
             this.freq = "Pump rate"
           }
-          this.spmDev = data["Well Data"]["spm"][0]  + " " +  this.trans('measurements.1/min')
+          this.spmDev = data["Well Data"]["spm"]  + " " +  this.trans('measurements.1/min')
           this.pumpType = this.pumpType  + " " +  this.trans('measurements.mm')
         } else {
           if(langUrl === 'ru') {
@@ -584,7 +624,7 @@ export default {
             this.dNasosa = "Nominal feed"
             this.freq = "Frequency"
           }
-          this.spmDev = data["Well Data"]["freq"][0]  + " " +  this.trans('measurements.gc')
+          this.spmDev = data["Well Data"]["freq"]  + " " +  this.trans('measurements.gc')
           this.pumpType = this.pumpType  + " " +  this.trans('measurements.m3/day')
         }
         if (this.expMeth == 'УЭЦН') {
@@ -600,8 +640,8 @@ export default {
         this.bhpInput = this.bhp  + " " +  this.trans('measurements.atm')
         this.hDynInput = this.hDyn  + " " +  this.trans('measurements.m')
         this.pAnnularInput = this.pAnnular + " " + this.trans('measurements.atm')
-        this.pManomInput = data["Well Data"]["p_intake"][0]  + " " +  this.trans('measurements.atm')
-        this.hPumpManomInput = data["Well Data"]["h_pump_set"][0]  + " " +  this.trans('measurements.m')
+        this.pManomInput = data["Well Data"]["p_intake"]  + " " +  this.trans('measurements.atm')
+        this.hPumpManomInput = data["Well Data"]["h_pump_set"]  + " " +  this.trans('measurements.m')
         this.whpInput = this.whp  + " " +  this.trans('measurements.atm')
         this.qlCelButton = true
         this.qlCelValue = this.qLInput
@@ -977,6 +1017,20 @@ export default {
     },
 
     getWellNumber(wellnumber) {
+      this.$store.commit("UPDATE_SPM_MIN", 3)
+    	this.$store.commit("UPDATE_SPM_MAX", 8)
+    	this.$store.commit("UPDATE_LEN_MIN", 2)
+    	this.$store.commit("UPDATE_LEN_MAX", 3)
+    	this.$store.commit("UPDATE_KPOD", 0.6)
+    	this.$store.commit("UPDATE_PUMP_27", false)
+    	this.$store.commit("UPDATE_PUMP_32", true)
+    	this.$store.commit("UPDATE_PUMP_38", true)
+    	this.$store.commit("UPDATE_PUMP_44", true)
+    	this.$store.commit("UPDATE_PUMP_50", false)
+    	this.$store.commit("UPDATE_PUMP_57", true)
+    	this.$store.commit("UPDATE_PUMP_60", false)
+    	this.$store.commit("UPDATE_PUMP_70", true)
+    	this.$store.commit("UPDATE_PUMP_95", false)
       if(this.field == "JET") {
               this.ao = 'АО "ММГ"'
             } else {
@@ -988,7 +1042,7 @@ export default {
 
       this.axios.get(uri).then((response) => {
           let data = response.data;
-          
+          this.welldata = data["Well Data"]
           this.method = 'MainMenu'
           if (data["Error"] == "NoData" || data["Error"] == 'data_error'){
             if(data["Error"] == "NoData") {
@@ -1081,19 +1135,20 @@ export default {
 
             this.curveLineData = JSON.parse(data.LineData)["data"]
             this.curvePointsData = JSON.parse(data.PointsData)["data"]
-            this.horizon = data["Well Data"]["horizon"][0]
+            this.horizon = data["Well Data"]["horizon"]
             this.curveSelect = 'pi'
             this.isYoungAge = data["Age"]
+            this.nkt = 62
 
 
-            this.PBubblePoint = data["Well Data"]["P_bubble_point"][0].toFixed(1)
-            this.gor = data["Well Data"]["gor"][0].toFixed(1)
-            this.tRes = data["Well Data"]["t_res"][0].toFixed(1)
-            this.viscOilRc = data["Well Data"]["visc_oil_rc"][0].toFixed(1)
-            this.viscWaterRc = data["Well Data"]["visc_wat_rc"][0].toFixed(1)
-            this.densOil = data["Well Data"]["dens_oil"][0].toFixed(1)
-            this.densWater = data["Well Data"]["dens_liq"][0].toFixed(1)
-            this.hPumpValue = data["Well Data"]["h_pump_set"][0].toFixed(0)  + " " +  this.trans('measurements.m')
+            this.PBubblePoint = data["Well Data"]["P_bubble_point"].toFixed(1)
+            this.gor = data["Well Data"]["gor"].toFixed(1)
+            this.tRes = data["Well Data"]["t_res"].toFixed(1)
+            this.viscOilRc = data["Well Data"]["visc_oil_rc"].toFixed(1)
+            this.viscWaterRc = data["Well Data"]["visc_wat_rc"].toFixed(1)
+            this.densOil = data["Well Data"]["dens_oil"].toFixed(1)
+            this.densWater = data["Well Data"]["dens_liq"].toFixed(1)
+            this.hPumpValue = data["Well Data"]["h_pump_set"].toFixed(0)  + " " +  this.trans('measurements.m')
 
             this.$notify({
                   message: this.trans('pgno.notify_150_hpump'),
@@ -1122,7 +1177,7 @@ export default {
             // Конструкция
             this.casOD = 168;
             this.casID = 150;
-            this.hPerf = data["Well Data"]["h_up_perf_vd"][0].toFixed(0);
+            this.hPerf = data["Well Data"]["h_up_perf_vd"].toFixed(0);
             this.udl = 0;
 
             //Оборудование
@@ -1192,6 +1247,7 @@ export default {
           }
           this.$emit('LineData', this.curveLineData)
           this.$emit('PointsData', this.curvePointsData)
+          
         }
       ).finally((response) => {
         this.isLoading = false;
@@ -1199,6 +1255,31 @@ export default {
 
 
 
+    },
+
+    fetchBlockCentrators() {
+      let fieldInfo = this.wellIncl.split('_');
+      let urlForIncl = "http://172.20.103.187:7575/api/pgno/incl";
+      if (this.expChoose == 'ЭЦН') {
+        (this.liftValue = 'ЭЦН') && (this.stepValue = 20);
+      } else {
+        (this.liftValue = 'ШГН') && (this.stepValue = 10);
+      }
+
+      let centratorsData = JSON.stringify(
+        { 
+          "well_number": fieldInfo[1],
+          "lift_method": this.liftValue,
+          "field": fieldInfo[0],
+          "glubina": this.hPumpValue.substring(0,4) * 1,
+          "step": this.stepValue,
+        }
+      )
+
+      this.axios.post(urlForIncl, centratorsData).then((response) => {
+        this.centratorsInfo = response.data
+        this.centratorsRequiredValue = this.centratorsInfo["CenterRange"]["red"]
+      })
     },
 
     postCurveData() {
@@ -1214,7 +1295,7 @@ export default {
       this.menu = "MainMenu"
       this.prepareData()
 
-      if(this.pResInput.split(' ')[0] * 1 <= this.bhpInput.split(' ')[0] * 1 || this.pResInput.split(' ')[0] * 1 <= this.bhpCelValue.split(' ')[0] * 1) {
+      if(!this.isYoungAge &&(this.pResInput.split(' ')[0] * 1 <= this.bhpInput.split(' ')[0] * 1 || this.pResInput.split(' ')[0] * 1 <= this.bhpCelValue.split(' ')[0] * 1)) {
         this.$notify({
             message: this.trans('pgno.notify_p_zab_more_p_pl'),
             type: 'error',
@@ -1233,7 +1314,7 @@ export default {
               }) 
       }
 
-      if (this.qlCelValue.split(' ')[0] < 28) {
+      if (this.qlCelValue.split(' ')[0] < 28 && this.expChoose == "ЭЦН") {
         this.$notify({
           message: this.trans('pgno.notify_uecn_not_recommended'),
           type: 'warning',
@@ -1253,6 +1334,7 @@ export default {
         this.axios.post(uri, this.postdata).then((response) => {
           let data = response.data;
           if (data) {
+            this.welldata = data["Well Data"]
             this.method = "CurveSetting"
             if(data["Well Data"]["pi"][0] * 1 < 0) {
               this.$notify({
@@ -1326,6 +1408,7 @@ export default {
       this.axios.post(uri, this.postdata).then((response) => {
         let data = response.data;
         if (data) {
+          this.welldata = data["Well Data"]
           this.method = "CurveSetting"
           this.newData = data["Well Data"]
           this.newCurveLineData = JSON.parse(data.LineData)["data"]
@@ -1365,12 +1448,16 @@ export default {
           this.nearWells = JSON.parse(data.NearWells)["data"]
           this.updateLine(this.newCurveLineData)
           this.setPoints(this.newPointsData)
-          this.wellOkr = data["Well Data"]["well"][0]
-          this.piOkr = data["Well Data"]["pi"][0].toFixed(2)
-          this.khOkr = data["Well Data"]["kh"][0].toFixed(1)
-          this.skinOkr = data["Well Data"]["skin"][0].toFixed(1)
-          this.presOkr = data["Well Data"]["p_res"][0].toFixed(0)
-          this.wctOkr = data["Well Data"]["wct"][0].toFixed(0)
+          this.wellOkr = data["Well Data"]["well"]
+          this.piOkr = data["Well Data"]["pi"].toFixed(2)
+          this.khOkr = data["Well Data"]["kh"].toFixed(1)
+          this.skinOkr = data["Well Data"]["skin"].toFixed(1)
+          this.presOkr = data["Well Data"]["p_res"].toFixed(0)
+          this.wctOkr = data["Well Data"]["wct"].toFixed(0)
+          this.qlCelValue = data["Well Data"]["ql_cel"].toFixed(0) + " " +  this.trans('measurements.m3/day');
+          this.bhpCelValue = data["Well Data"]["p_cel"].toFixed(0) + " " +  this.trans('measurements.atm');
+          this.piCelValue = data["Well Data"]["pin_cel"].toFixed(0) + " " +  this.trans('measurements.atm');
+          this.welldata = this.newData
         } else {
         }
       }).finally(() => {
@@ -1383,38 +1470,31 @@ export default {
       this.$modal.hide('modalOldWell');
       this.$eventBus.$emit('newCurveLineData', this.newCurveLineData)
       this.$eventBus.$emit('newPointsData', this.newPointsData)
-      this.pResInput = this.newData["p_res"][0].toFixed(0)  + " " +  this.trans('measurements.atm');
-      this.piInput = this.newData["pi"][0].toFixed(2)  + " " +  this.trans('measurements.m3/d/atm');
-      this.qLInput = this.newData["q_l"][0].toFixed(0)  + " " +  this.trans('measurements.m3/day');
-      this.bhpInput = this.newData["bhp"][0].toFixed(0)  + " " +  this.trans('measurements.atm');
-      this.hDynInput = this.newData["h_dyn"][0].toFixed(0) + " " +  this.trans('measurements.m');
-      this.pAnnularInput = this.newData["p_annular"][0].toFixed(0)  + " " +  this.trans('measurements.atm');
-      this.pManomInput = this.newData["p_intake"][0].toFixed(0)  + " " +  this.trans('measurements.atm');
-      this.hPumpManomInput = this.newData["h_pump_set"][0].toFixed(0)  + " " +  this.trans('measurements.m');
-      this.whpInput = this.newData["whp"][0].toFixed(0)  + " " +  this.trans('measurements.atm');
-      this.wctInput = this.newData["wct"][0].toFixed(0)  + " " +  this.trans('measurements.percent');
+      this.pResInput = this.newData["p_res"].toFixed(0)  + " " +  this.trans('measurements.atm');
+      this.piInput = this.newData["pi"].toFixed(2)  + " " +  this.trans('measurements.m3/d/atm');
+      this.qLInput = this.newData["q_l"].toFixed(0)  + " " +  this.trans('measurements.m3/day');
+      this.bhpInput = this.newData["bhp"].toFixed(0)  + " " +  this.trans('measurements.atm');
+      this.hDynInput = this.newData["h_dyn"].toFixed(0) + " " +  this.trans('measurements.m');
+      this.pAnnularInput = this.newData["p_annular"].toFixed(0)  + " " +  this.trans('measurements.atm');
+      this.pManomInput = this.newData["p_intake"].toFixed(0)  + " " +  this.trans('measurements.atm');
+      this.hPumpManomInput = this.newData["h_pump_set"].toFixed(0)  + " " +  this.trans('measurements.m');
+      this.whpInput = this.newData["whp"].toFixed(0)  + " " +  this.trans('measurements.atm');
+      this.wctInput = this.newData["wct"].toFixed(0)  + " " +  this.trans('measurements.percent');
       this.qlCelValue = this.newPointsData[0]["q_l"].toFixed(0)  + " " +  this.trans('measurements.m3/day');
       this.bhpCelValue = this.newPointsData[0]["p"].toFixed(0)  + " " +  this.trans('measurements.atm');
       this.piCelValue = this.newPointsData[0]["pin"].toFixed(0)  + " " +  this.trans('measurements.atm');
     },
 
     setGraphNew() {
-       this.$notify({
-        message: this.trans('pgno.notify_150_hpump'),
-        type: 'warning',
-        size: 'sm',
-        timeout: 8000
-      }) 
-      
       this.updateLine(this.newCurveLineData)
       this.setPoints(this.newPointsData)
       this.$modal.hide('modalNewWell');
       this.$eventBus.$emit('newCurveLineData', this.newCurveLineData)
       this.$eventBus.$emit('newPointsData', this.newPointsData)
-      this.pResInput = this.newData["p_res"][0].toFixed(0)  + " " +  this.trans('measurements.atm');
-      this.piInput = this.newData["pi"][0].toFixed(2)  + " " +  this.trans('measurements.m3/d/at');
-      this.wctInput = this.newData["wct"][0].toFixed(0)  + " " +  this.trans('measurements.percent');
-      this.hPumpValue = this.newData["h_pump_set"][0].toFixed(0)  + " " +  this.trans('measurements.m');
+      this.pResInput = this.newData["p_res"].toFixed(0)  + " " +  this.trans('measurements.atm');
+      this.piInput = this.newData["pi"].toFixed(2)  + " " +  this.trans('measurements.m3/d/at');
+      this.wctInput = this.newData["wct"].toFixed(0)  + " " +  this.trans('measurements.percent');
+      this.hPumpValue = this.newData["h_pump_set"].toFixed(0)  + " " +  this.trans('measurements.m');
     },
 
     onCompareNpv() {
@@ -1456,29 +1536,35 @@ export default {
         }) 
       } else {
         if(this.expChoose == 'ШГН'){
+          if (this.CelButton == 'ql') {
+            this.CelValue = this.qlCelValue
+          } else if (this.CelButton == 'bhp') {
+            this.CelValue = this.bhpCelValue
+          } else if (this.CelButton == 'pin') {
+            this.CelValue = this.piCelValue
+          }
           if(this.isVisibleChart) {
             let uri = "http://172.20.103.187:7575/api/pgno/shgn";
-            let jsonData = JSON.stringify(
-              {
-                "ql_cel": this.qlCelValue.split(' ')[0],
-                "h_pump_set": this.hPumpValue.split(' ')[0],
-                "sk_type": this.sk,
-                "dens_oil": this.densOil,
-                "dens_water": this.densWater,
-                "wct": this.wctInput.split(' ')[0],
-                "stroke_len": this.stroke_len,
-                "pin_cel_value": this.piCelValue.split(' ')[0]
-              }
-            )
-
-            this.isLoading = true;
-
-            this.axios.post(uri, jsonData).then((response) => {
+            this.prepareData()
+            console.log(this.postdata)
+            this.axios.post(uri, this.postdata).then((response) => {
               let data = JSON.parse(response.data);
+              if (!this.isYoungAge) {
+                this.fetchBlockCentrators()
+              } else {
+                this.centratorsRequiredValue = []
+              }
               if(data) {
                 if (data["error"] == "NoIntersection") {
                   this.$notify({
                     message: this.trans('pgno.notify_change_depth_descent'),
+                    type: 'warning',
+                    size: 'sm',
+                    timeout: 8000
+                  }) 
+                } else if (data["error"] == "KpodError" ) {
+                  this.$notify({
+                    message: "Расчетный Кпод < Установленного в Настройках",
                     type: 'warning',
                     size: 'sm',
                     timeout: 8000

@@ -3,8 +3,9 @@
 namespace App\Imports;
 
 use App\Console\Commands\Import\Wells;
+use App\Models\ComplicationMonitoring\Material;
 use App\Models\ComplicationMonitoring\PipeType;
-use App\Models\Pipes\MapPipe;
+use App\Models\Pipes\OilPipe;
 use App\Models\Pipes\PipeCoord;
 use App\Models\Refs\Ngdu;
 use Illuminate\Support\Collection;
@@ -74,7 +75,7 @@ class TrunklineImport implements ToCollection, WithEvents, WithColumnLimit, With
                         $between_points[] = $key;
                     }
 
-                    MapPipe::where('ngdu_id', $this->ngdu->id)->whereIn('between_points', $between_points)->delete();
+                    OilPipe::where('ngdu_id', $this->ngdu->id)->whereIn('between_points', $between_points)->delete();
                 }
 
                 if (strpos($this->sheetName, 'НГДУ') !== 0) {
@@ -128,8 +129,12 @@ class TrunklineImport implements ToCollection, WithEvents, WithColumnLimit, With
             if (!empty($row[self::PIPE_START_NAME])) {
                 $pipe_type = $this->createPipeType($row);
 
+                $roughness = str_replace(',', '.', $row[self::ROUGHNESS]);
+                $roughness = floatval($roughness);
+                $material = Material::where('roughness', $roughness)->first();
+
                 $this->command->info('Create Pipe '.$row[self::PIPE_START_NAME]);
-                $pipe = MapPipe::firstOrCreate(
+                $pipe = OilPipe::firstOrCreate(
                     [
                         'name' => $row[self::PIPE_START_NAME],
                         'ngdu_id' => $this->ngdu->id
@@ -137,6 +142,7 @@ class TrunklineImport implements ToCollection, WithEvents, WithColumnLimit, With
                 );
 
                 $pipe->type_id = $pipe_type->id;
+                $pipe->material_id = $material->id;
                 $pipe->between_points = $this->getPipeType($row);
                 $pipe->save();
             }
@@ -173,24 +179,28 @@ class TrunklineImport implements ToCollection, WithEvents, WithColumnLimit, With
     private function createPipeType($row): PipeType
     {
         $this->command->info('Create Pipe Type');
-        $roughness = str_replace(',', '.', $row[self::ROUGHNESS]);
-        $roughness = floatval($roughness);
+        $thickness = ($row[self::OUTSIDE_DIAMETER] - $row[self::INNER_DIAMETER])/2;
 
-        return PipeType::firstOrCreate(
+
+        $pipeType =  PipeType::firstOrCreate(
             [
                 'outside_diameter' => $row[self::OUTSIDE_DIAMETER],
                 'inner_diameter' => $row[self::INNER_DIAMETER],
-                'thickness' => ($row[self::OUTSIDE_DIAMETER] - $row[self::INNER_DIAMETER])/2,
-                'roughness' => $roughness
+                'thickness' => $thickness
             ]
         );
+
+        $pipeType->name = (int)$row[self::OUTSIDE_DIAMETER].'x'.(int)$thickness;
+        $pipeType->save();
+
+        return $pipeType;
     }
 
 
-    private function createPipeCoord($row, int $map_pipe_id): void
+    private function createPipeCoord($row, int $oilPipeId): void
     {
         $pipe_coords = new PipeCoord;
-        $pipe_coords->map_pipe_id = $map_pipe_id;
+        $pipe_coords->oil_pipe_id = $oilPipeId;
         $pipe_coords->lat = $row[self::LAT];
         $pipe_coords->lon = $row[self::LON];
         $pipe_coords->elevation = $row[self::ELEVATION];

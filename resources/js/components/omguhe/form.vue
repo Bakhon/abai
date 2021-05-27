@@ -367,10 +367,11 @@ export default {
           .then((response) => {
             let data = response.data;
 
-            if (data) {
+            if (data.status == 'success') {
               this.prevData = data.level;
               this.qv = (data.qv * 1000) / 365;
             } else {
+              this.showToast(data.message, this.trans('app.error'), 'danger');
               this.prevData = null;
             }
 
@@ -391,7 +392,7 @@ export default {
       }
     },
     formatDate(date) {
-      return moment(date).format('YYYY-MM-DD HH:MM:SS')
+      return moment.parseZone(date).format('YYYY-MM-DD HH:MM:SS')
     },
     onChangeFillStatus () {
       this.formFields.fill = this.fill_status ? this.formFields.fill : null;

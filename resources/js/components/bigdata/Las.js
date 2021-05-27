@@ -6,6 +6,9 @@ import Vue from "vue";
 Vue.use(Datetime)
 
 export default {
+    props: [
+      'params'
+    ],
     components: {},
     data() {
         return {
@@ -24,6 +27,7 @@ export default {
             localization: 'ru',
             filenameParameters: null,
             filenameDelimiter: '_',
+            recordingDepthDelimiter: '-',
             filenameParametersForName: [
                 'field', 'well', 'stemType', 'stemSection', 'recordingMethod',
                 'mnemonics', 'date', 'fileStatus', 'recordingDepth',
@@ -69,6 +73,8 @@ export default {
             loadProvenance: null,
             provenances: null,
             isLoading: false,
+            permissionName: 'bigdata load_las',
+            isPermission: false,
         }
     },
     mounted: function () {
@@ -149,7 +155,8 @@ export default {
             }).then((response) => {
                 if (response.data) {
                     this.setExperimentId(response.data.experimentId)
-                    this.updateExperimentInfo()
+                    this.resetFileUploadFields()
+                    this.setNextExperimentInfo()
                 }
             }).catch((error) => console.log(error)
             ).finally(() => this.$store.commit('globalloading/SET_LOADING', false));
@@ -157,10 +164,14 @@ export default {
         setExperimentId(experimentId) {
             this.filenameParameters.specific[this.currentFileInfoNum]['experimentId'] = experimentId
         },
+        resetFileUploadFields() {
+            this.input.filename.mnemonics = []
+            this.input.filename.well = ''
+        },
         setExperimentUserFileName() {
             this.filenameParameters.specific[this.currentFileInfoNum]['userFilename'] = this.filenameByParameters
         },
-        updateExperimentInfo() {
+        setNextExperimentInfo() {
             if (this.currentFileInfoNum >= this.files.length - 1) {
                 this.isLastFileProcessed = true
                 return
@@ -171,10 +182,12 @@ export default {
         setExperimentFileParameters() {
             let experiment = this.filenameParameters.specific[this.currentFileInfoNum]
             if ('experimentId' in experiment && experiment['experimentId'] !== null) {
-                this.updateExperimentInfo()
+                this.setNextExperimentInfo()
                 return
             }
-            this.input.filename.recordingDepth = experiment.recordingDepths[0] + this.filenameDelimiter + experiment.recordingDepths[1]
+            this.input.filename.recordingDepth = experiment.recordingDepths[0] + this.recordingDepthDelimiter + experiment.recordingDepths[1]
+            this.input.field = experiment.field
+            this.input.well = experiment.well
         },
         fetchStatistics() {
             this.$store.commit('globalloading/SET_LOADING', true);
@@ -197,10 +210,26 @@ export default {
             ).then((response) => {
                 if (response.data) {
                     this.experimentInfo = response.data;
+                    this.formatCurveValues();
                 }
             }).catch((error) => console.log(error)
             ).finally(() => this.$store.commit('globalloading/SET_LOADING', false));
 
+        },
+        formatCurveValues() {
+            let content = this.experimentInfo.curves;
+
+            for(let i = 0; i < content.length; i++) {
+                for(let j = 0; j < content[i].curve.length; j++) {
+                    // Check string value is a number
+                    if(isNaN(content[i].curve[j]) || content[i].curve[j].indexOf('.') == -1) continue;
+
+                    // Precision up to 3 digits after the dot
+                    content[i].curve[j] = parseFloat(content[i].curve[j]).toFixed(3);
+                }
+            }
+
+            this.experimentInfo.curves = content;
         },
         getOriginalLas(experimentsInfo) {
             let content = JSON.stringify({
@@ -242,6 +271,11 @@ export default {
             }
             if ((_.isArray(content) && content.length === 0) || (content === '')) {
                 return this.input.defaultsForFilename[field]
+            }
+            if (field === 'recordingDepth') {
+                return this.input.filename.recordingDepth.replaceAll(
+                    this.recordingDepthDelimiter, this.filenameDelimiter
+                )
             }
             return content
         },
@@ -298,5 +332,25 @@ export default {
             }
             return true
         },
+        refreshGenericUploadParams() {
+
+            let uri = this.baseUrl + "generic_upload_params/";
+            this.$store.commit('globalloading/SET_LOADING', true);
+            this.axios.get(uri, {
+                responseType: 'json',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }).then((response) => {
+                if (response.data) {
+                    this.filenameParameters.generic = response.data
+                    this.setExperimentFileParameters()
+                }
+            }).catch((error) => console.log(error)
+            ).finally(() => this.$store.commit('globalloading/SET_LOADING', false));
+        },
+    },
+    created() {
+        this.isPermission = this.params.includes(this.permissionName);
     }
 }
