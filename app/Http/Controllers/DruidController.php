@@ -517,9 +517,9 @@ class DruidController extends Controller
 
         if ($gu->name == "ГУ-24") {
             if($request->current_dosage > 0){
-                $r_a = 0.2507-0.0013*$request->current_dosage-1.2097*$pCO2+3790.4045*$pH2S; //updated formula GU24 case 15.12.2020
+                $r_a = 0.045375-0.0004*$request->current_dosage-0.18198*$pCO2+438.4723*$pH2S; //updated formula GU24 case 15.12.2020
             }else{
-                $r_a = -0.3376+1.2748*$pCO2+1705.5680*$pH2S;
+                $r_a = -0.15107+1.146195*$pCO2-854.1*$pH2S;
             }
             //else if ($pH2S > 0.3){
             //$r_a = -0.6274 + 0.01318 * $conCO2 + 0.02397 * $conH2S;
