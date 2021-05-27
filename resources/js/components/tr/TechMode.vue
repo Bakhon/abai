@@ -4097,7 +4097,7 @@ export default {
           this.wells = data.data;
           this.setupPagination(data.data);
           this.fullWells = data.data;
-          console.log(this.internalCurrentPage);
+          
         } else {
           Vue.prototype.$notifyError(this.trans('tr.fa_alarm'))
           
