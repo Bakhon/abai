@@ -210,19 +210,6 @@ return [
             'drill_column_type'=>'Виды компонентов низа бурильной колонны:',
             'value'=>'Значение:'
         ],
-        'well_treat'=>[
-            'obrabotka' => 'Обработка',
-            'treat_type' => 'Вид обработки',
-            'volume' => 'Объем, м3',
-            'pretreat_pressure' => 'Рагр.пред., атм',
-            'postreat_pressure' => 'Рагр.посл., атм',
-            'temp' => 'Температура, С',
-            'pretreat_buff_prs' => 'Р буф. перед',
-            'postreat_buff_prs' => 'Р буф. после',
-            'chemical_reag' => 'Химический реагент',
-            'treat_reason' => 'Причины обработки',
-            'scraper_income' => 'Доход скребка',
-            'date' => 'Дата'
         'well_constr'=>[
             "well_constructor" => "Конструкция скважины",
             "column_type" => "Вид колонны",
