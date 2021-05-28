@@ -21,6 +21,9 @@ use App\Models\BigData\Dictionaries\TechConditionOfWells;
 use App\Models\BigData\Dictionaries\PumpType;
 use App\Models\BigData\Dictionaries\DrillChisel;
 use App\Models\BigData\Dictionaries\DrillColumnType;
+use App\Models\BigData\Dictionaries\WellTreatType;
+use App\Models\BigData\Dictionaries\ChemicalReagentType;
+use App\Models\BigData\Dictionaries\TreatReason;
 use Carbon\Carbon;
 use Illuminate\Cache\Repository;
 use Illuminate\Support\Facades\DB;
@@ -90,6 +93,18 @@ class DictionaryService
         ],
         'drill_column_types' => [
             'class' => DrillColumnType::class,
+            'name_field' => 'name_ru'
+        ],
+        'treat_type' => [
+            'class' => WellTreatType::class,
+            'name_field' => 'name_ru'
+        ],
+        'chemical_reagent_type' => [
+            'class' => ChemicalReagentType::class,
+            'name_field' => 'name_ru'
+        ],
+        'treat_reason' => [
+            'class' => TreatReason::class,
             'name_field' => 'name_ru'
         ]
     ];
