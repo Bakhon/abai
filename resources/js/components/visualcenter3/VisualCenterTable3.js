@@ -107,7 +107,8 @@ export default {
                 oil_fact: 0,
                 oil_dlv_fact: 0,
                 gas_fact: 0
-            }
+            },
+            chemistryDataFactSumm: 0,
         };
     },
     methods: {
@@ -314,6 +315,15 @@ export default {
             this.otmData = this.getOtmData(dataWithMay)
             this.otmChartData = this.getOtmChartData(dataWithMay)
             this.chemistryData = this.getChemistryData(dataWithMay)
+            if (this.chemistryData.length != 0) {
+                this.chemistryDataFactSumm= _.reduce(
+                    this.chemistryData,
+                    function (memo, item) {
+                        return memo + item.fact;
+                    },
+                    0
+                );
+            }
             this.chemistryChartData = this.getChemistryChartData(dataWithMay)
 
             var dzo2 = [];

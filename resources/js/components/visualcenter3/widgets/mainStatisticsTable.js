@@ -68,7 +68,7 @@ export default {
             this.tableHover5 = "";
             this.tableHover6 = "";
             this.tableHover7 = "";
-            var buttonHover2 = " background: #0d2792";
+            var buttonHover2 = "button_hover";
 
             if (change == "1") {
                 this.Table1 = "display:block";
