@@ -120,8 +120,14 @@
                 {{ casID }} {{trans('measurements.mm')}}
               </div>
 
-              <div class="construction-data table-border-gno-top no-gutter col-7">
+              <div class="construction-data hperf table-border-gno-top no-gutter col-7">
                 {{trans('pgno.glubina_perf')}}
+                <template>
+                  <div v-if="noneCentrators"></div>
+                  <div class="descr" v-else>
+                    Центраторы: <b v-for="item in centratorsRequiredValue">{{ item }}</b>
+                  </div>
+                </template> 
               </div>
               <div class="construction-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
                 {{ hPerf }} {{trans('measurements.m')}}
@@ -2021,6 +2027,38 @@
 <script src="./Table.js"></script>
 
 <style scoped>
+.descr{
+    display: none;
+    position:absolute;
+    top: -85px;
+    left: 140px;
+    width: 190px;
+    font-size: 12px;
+    padding-left: 3px;
+    background:#494aa5;
+    border-radius: 4px;
+    height: auto;
+    top: -85px;
+    z-index:9999;
+    box-shadow: 0 0 5px black ;
+}
+
+.hperf:hover .descr{
+    font-size: 12px;
+    display: block;
+    position:absolute;
+    top: -85px;
+    left: 140px;
+    width: 190px;
+    padding-left: 3px;
+    background:#494aa5;
+    border-radius: 4px;
+    height: auto;
+    top: -85px;
+    z-index:9999;
+    box-shadow: 0 0 5px black ;
+}
+
 .gear-icon {
   right: 12px;
   top: 35px;

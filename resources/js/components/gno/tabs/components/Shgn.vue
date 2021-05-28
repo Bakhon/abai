@@ -210,7 +210,7 @@
 			<div class="title__block__4__1">Коррозионность добываемой продукции</div>
 			<div class="flex__item__block__fourth__block">
 				<select class="input-box-gno podbor long__box" v-model="markShtang">
-                  <option v-for="(mark, index) in markShtang" :value="mark.mValue" :key="index">
+                  <option selected v-for="mark in markShtangs" :key="mark.tempValue" :value="markShtangs.mValue">
                   {{mark.tempValue}}
                   </option>
                 </select>
@@ -377,7 +377,8 @@ export default {
 				},
 
 				],
-			markShtang: [
+			markShtang: null,
+			markShtangs: [
         		{
           		mValue: 1,
           		tempValue: "40 (Н)",
