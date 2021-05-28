@@ -22,13 +22,7 @@ use App\Models\BigData\Dictionaries\TechConditionOfWells;
 use App\Models\BigData\Dictionaries\PumpType;
 use App\Models\BigData\Dictionaries\DrillChisel;
 use App\Models\BigData\Dictionaries\DrillColumnType;
-<<<<<<< HEAD
-use App\Models\BigData\Dictionaries\WellTreatType;
-use App\Models\BigData\Dictionaries\ChemicalReagentType;
-use App\Models\BigData\Dictionaries\TreatReason;
-=======
 use App\TybeNom;
->>>>>>> ba55b2e78c8ac0de2a57276d57454816d6da8091
 use Carbon\Carbon;
 use Illuminate\Cache\Repository;
 use Illuminate\Support\Facades\DB;
@@ -100,17 +94,6 @@ class DictionaryService
             'class' => DrillColumnType::class,
             'name_field' => 'name_ru'
         ],
-        'treat_type' => [
-            'class' => WellTreatType::class,
-            'name_field' => 'name_ru'
-        ],
-        'chemical_reagent_type' => [
-            'class' => ChemicalReagentType::class,
-            'name_field' => 'name_ru'
-        ],
-        'treat_reason' => [
-            'class' => TreatReason::class,
-            'name_field' => 'name_ru'
         'tube_nom' => [
             'class' => TybeNom::class,
             'name_field' => 'model'
