@@ -74,6 +74,14 @@ export default {
             this[idleFieldName] = data[0][idleFieldName];
             this[workFieldName] = data[0][workFieldName];
         },
+        updateWellsPercentWidgetData(data, workFieldName, idleFieldName, workParameterName, idleParameterName) {
+            let periodStartTimestamp = this.timestampToday - this.quantityRange * 86400000;
+            let filteredDataByPeriod = this.getProductionDataInPeriodRange(data,periodStartTimestamp,this.timestampToday);
+            let groupedWellsData = this.getGroupedWellsData(filteredDataByPeriod);
+
+            this[idleParameterName] = groupedWellsData[0][idleFieldName];
+            this[workParameterName] = groupedWellsData[0][workFieldName];
+        },
 
         getGroupedWellsData(data) {
               return _(data)

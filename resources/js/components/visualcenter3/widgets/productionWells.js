@@ -41,13 +41,8 @@ export default {
             this.inj_wells_workPercent = groupedWellsData[0]['inj_wells_work'];
             this.prod_wells_workPercent = groupedWellsData[0]['prod_wells_work'];
             this.prod_wells_idlePercent = groupedWellsData[0]['prod_wells_idle'];
-            // console.log('--percent--')
-            // console.log(this.inj_wells_idlePercent)
-            // console.log(this.inj_wells_workPercent)
-            // console.log(this.prod_wells_workPercent)
-            // console.log(this.prod_wells_idlePercent)
-            // console.log('--percent-end-')
         },
+
     },
     computed: {
         innerWellsProd2DataForChart() {

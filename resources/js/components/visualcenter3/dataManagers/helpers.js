@@ -67,7 +67,7 @@ export default {
             }
         },
 
-        getDifferentPercentBetweenLastValues(previous, current) {
+        getDifferentPercentBetweenLastValues(previous,current) {
             if (previous != '' && previous !== 0) {
                 return ((current / previous - 1) * 100).toFixed(2);
             } else {
@@ -161,10 +161,10 @@ export default {
         },
 
         getIndicatorClassForNormalParams(i) {
-            if (i < 0) {
+            if (parseFloat(i) < 0) {
                 return "arrow";
             }
-            if (i > 0) {
+            if (parseFloat(i) > 0) {
                 return "arrow2";
             }
         },
