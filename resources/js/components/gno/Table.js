@@ -395,11 +395,7 @@ export default {
     }
   },
   computed: {
-    onHoverCentrators() {
-      return {
-        'none': this.noCentrators
-      }
-    },
+
     wellNum() {
       return this.$store.state.wellNum
     },

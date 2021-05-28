@@ -2027,21 +2027,6 @@
 <script src="./Table.js"></script>
 
 <style scoped>
-.descr{
-    display: none;
-    position:absolute;
-    top: -85px;
-    left: 140px;
-    width: 190px;
-    font-size: 12px;
-    padding-left: 3px;
-    background:#494aa5;
-    border-radius: 4px;
-    height: auto;
-    top: -85px;
-    z-index:9999;
-    box-shadow: 0 0 5px black ;
-}
 
 .hperf:hover .descr{
     font-size: 12px;
