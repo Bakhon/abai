@@ -1,6 +1,6 @@
 <template>
   <div class="d-flex flex-column flex-sm-row justify-content-between mb-1 mb-sm-2">
-    <budgetexecution-indicator
+    <budget-execution-indicator
         v-bind:title="trans('visualcenter.getoil')"
         v-bind:indicatorValue="oilFact"
         v-bind:units="trans('visualcenter.thousand') + ' ' + 'тонн'"
@@ -9,8 +9,8 @@
         v-bind:progressMax="oilPlan"
         v-bind:prevPeriodValue="prevOilFact"
         v-bind:percents="oilPercents"
-    ></budgetexecution-indicator>
-    <budgetexecution-indicator
+    ></budget-execution-indicator>
+    <budget-execution-indicator
         v-bind:title="trans('visualcenter.ecoBlock1')"
         v-bind:indicatorValue="dataFact"
         v-bind:units="'млрд. тенге'"
@@ -19,8 +19,8 @@
         v-bind:progressMax="dataPlan"
         v-bind:prevPeriodValue="prevDataFact"
         v-bind:percents="dataPercents"
-    ></budgetexecution-indicator>
-    <budgetexecution-indicator
+    ></budget-execution-indicator>
+    <budget-execution-indicator
         v-bind:title="trans('visualcenter.eco2')"
         v-bind:indicatorValue="spendingFact"
         v-bind:units="'млрд. тенге'"
@@ -29,8 +29,8 @@
         v-bind:progressMax="spendingPlan"
         v-bind:prevPeriodValue="prevSpendingFact"
         v-bind:percents="spendingPercents"
-    ></budgetexecution-indicator>
-    <budgetexecution-indicator
+    ></budget-execution-indicator>
+    <budget-execution-indicator
         v-bind:title="trans('visualcenter.ecoBlock2')"
         v-bind:indicatorValue="netProfitFact"
         v-bind:units="'млрд. тенге'"
@@ -39,8 +39,8 @@
         v-bind:progressMax="netProfitPlan"
         v-bind:prevPeriodValue="prevNetProfitFact"
         v-bind:percents="netProfitPercents"
-    ></budgetexecution-indicator>
-    <budgetexecution-indicator
+    ></budget-execution-indicator>
+    <budget-execution-indicator
         v-bind:title="trans('visualcenter.ecoBlock3')"
         v-bind:indicatorValue="capitalInvFact"
         v-bind:units="'млрд. тенге'"
@@ -49,8 +49,8 @@
         v-bind:progressMax="capitalInvPlan"
         v-bind:prevPeriodValue="prevCapitalInvFact"
         v-bind:percents="capitalInvPercents"
-    ></budgetexecution-indicator>
-    <budgetexecution-indicator
+    ></budget-execution-indicator>
+    <budget-execution-indicator
         v-bind:title="trans('visualcenter.eco9')"
         v-bind:indicatorValue="cashFlowFact"
         v-bind:units="'млрд. тенге'"
@@ -59,8 +59,8 @@
         v-bind:progressMax="cashFlowPlan"
         v-bind:prevPeriodValue="prevCashFlowFact"
         v-bind:percents="cashFlowPercents"
-    ></budgetexecution-indicator>
-    <budgetexecution-indicator
+    ></budget-execution-indicator>
+    <budget-execution-indicator
         v-bind:title="trans('visualcenter.oilPrice')"
         v-bind:indicatorValue="oilNow"
         v-bind:units="'$ / bbl'"
@@ -70,8 +70,8 @@
         v-bind:tableToChange="'2'"
         @changeTable="tableToChange => $emit('changeTable', tableToChange)"
         v-bind:percents="oilPercents"
-    ></budgetexecution-indicator>
-    <budgetexecution-indicator
+    ></budget-execution-indicator>
+    <budget-execution-indicator
         v-bind:title="trans('visualcenter.usdKurs')"
         v-bind:indicatorValue="currencyNow"
         v-bind:units="'kzt / $'"
@@ -82,7 +82,7 @@
         @changeTable="tableToChange => $emit('changeTable', tableToChange)"
         v-bind:percents="oilPercents"
         v-bind:isLastBlock="true"
-    ></budgetexecution-indicator>
+    ></budget-execution-indicator>
   </div>
 </template>
 <script src="./HorizontalIndicators.js"></script>

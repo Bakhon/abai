@@ -183,11 +183,11 @@ Vue.component('reptt', require('./components/economy_kenzhe/reptt.vue').default)
 Vue.component('budget-execution', require('./components/economy_kenzhe/budgetExecution/budgetExecution.vue').default);
 Vue.component('reptt-company', require('./components/economy_kenzhe/reptt_company.vue').default);
 
-Vue.component('budgetexecution-indicator', require('./components/economy_kenzhe/budgetExecution/budgetExecutionComponents/Indicator.vue').default);
-Vue.component('budgetexecution-wide-indicator', require('./components/economy_kenzhe/budgetExecution/budgetExecutionComponents/WideIndicator.vue').default);
-Vue.component('budgetexecution-simple-indicator', require('./components/economy_kenzhe/budgetExecution/budgetExecutionComponents/SimpleIndicator.vue').default);
-Vue.component('budgetexecution-horizontal-indicators', require('./components/economy_kenzhe/budgetExecution/budgetExecutionComponents/HorizontalIndicators.vue').default);
-Vue.component('budgetexecution-vertical-indicators', require('./components/economy_kenzhe/budgetExecution/budgetExecutionComponents/VerticalIndicators.vue').default);
+Vue.component('budget-execution-indicator', require('./components/economy_kenzhe/budgetExecution/budgetExecutionComponents/Indicator.vue').default);
+Vue.component('budget-execution-wide-indicator', require('./components/economy_kenzhe/budgetExecution/budgetExecutionComponents/WideIndicator.vue').default);
+Vue.component('budget-execution-simple-indicator', require('./components/economy_kenzhe/budgetExecution/budgetExecutionComponents/SimpleIndicator.vue').default);
+Vue.component('budget-execution-horizontal-indicators', require('./components/economy_kenzhe/budgetExecution/budgetExecutionComponents/HorizontalIndicators.vue').default);
+Vue.component('budget-execution-vertical-indicators', require('./components/economy_kenzhe/budgetExecution/budgetExecutionComponents/VerticalIndicators.vue').default);
 Vue.component('proactive-factors', require('./components/economy_kenzhe/proactiveFactors/proactiveFactors.vue').default);
 Vue.component('proactive-factors-select-filter', require('./components/economy_kenzhe/proactiveFactors/selectFilter.vue').default);
 Vue.component('reptt-company2', require('./components/economy_kenzhe/proactiveFactors/repttCompany/reptt_company2.vue').default);
