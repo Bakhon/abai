@@ -269,7 +269,7 @@ export default {
             this.chemistryData['dzo_name'] = this.selectedDzo.ticker;
             this.chemistryData['date'] = moment().format("YYYY-MM-DD HH:mm:ss");
 
-            let uri = this.localeUrl("/dzo_chemistry_excel_form");
+            let uri = this.localeUrl("/dzo-chemistry-excel-form");
 
             this.axios.post(uri, this.chemistryData).then((response) => {
                 if (response.status === 200) {
@@ -415,7 +415,7 @@ export default {
             this.excelData['dzo_name'] = this.selectedDzo.ticker;
             this.excelData['date'] = this.currentDateDetailed;
 
-            let uri = this.localeUrl("/dzo_excel_form");
+            let uri = this.localeUrl("/dzo-excel-form");
 
             this.axios.post(uri, this.excelData).then((response) => {
                 if (response.status === 200) {
