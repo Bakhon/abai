@@ -162,10 +162,10 @@ export default {
 
         getIndicatorClassForNormalParams(i) {
             if (parseFloat(i) < 0) {
-                return "arrow";
+                return "indicator-grow";
             }
             if (parseFloat(i) > 0) {
-                return "arrow2";
+                return "indicator-fall";
             }
         },
 
@@ -246,8 +246,15 @@ export default {
             if (previosValue > currentValue) {
                 return this.trans("visualcenter.indicatorFall");
             } else if (previosValue < currentValue) {
-                return this.trans("visualcenter.indicatorGrow");;
+                return this.trans("visualcenter.indicatorGrow");
             }
+        },
+
+        getFilteredDataByOneCompany(data) {
+            let self = this;
+            return _.filter(data, function (item) {
+                return self.company == item.dzo;
+            });
         },
     },
     computed: {

@@ -234,11 +234,11 @@
                         <br />
                         <div class="percent-currency col-12 p-0">
                           <div
-                            class="arrow"
+                            class="indicator-grow"
                             v-if="dailyOilPriceChange === 'UP'"
                           ></div>
                           <div
-                            class="arrow2"
+                            class="indicator-fall"
                             v-if="dailyOilPriceChange === 'DOWN'"
                           ></div>
                           <div class="txt2-2">
@@ -273,11 +273,11 @@
                       <br />
                       <div class="percent-currency col-12 mt-20">
                         <div
-                          class="arrow"
+                          class="indicator-grow"
                           v-if="dailyCurrencyChangeIndexUsd === 'UP'"
                         ></div>
                         <div
-                          class="arrow2"
+                          class="indicator-fall"
                           v-if="dailyCurrencyChangeIndexUsd === 'DOWN'"
                         ></div>
                         <div class="txt2-2">
@@ -2759,6 +2759,28 @@
 
   .fond-indicator-fall {
     background: url(/img/visualcenter3/green-arrow-fall.svg) no-repeat;
+    height: 15px;
+    width: 15px;
+    background-size: contain;
+    float: left;
+    margin-top: 5px;
+    margin-right: 5px;
+    overflow: hidden;
+  }
+
+  .indicator-grow {
+    background: url(/img/visualcenter3/green-arrow.svg) no-repeat;
+    height: 15px;
+    width: 15px;
+    background-size: contain;
+    float: left;
+    margin-top: 5px;
+    margin-right: 5px;
+    overflow: hidden;
+  }
+
+  .indicator-fall {
+    background: url(/img/visualcenter3/red-arrow.svg) no-repeat;
     height: 15px;
     width: 15px;
     background-size: contain;
