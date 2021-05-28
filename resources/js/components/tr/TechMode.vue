@@ -2248,7 +2248,6 @@
                               </el-table-column>
                             </el-table-column>
                         </el-table-column>
-
                         <el-table-column :label="trans('tr.jd_opt')" prop="fake">
                           <el-table-column label="">
                               <el-table-column
@@ -4063,7 +4062,7 @@ export default {
   },
   beforeCreate: function () {},
   created() {
-    this.$store.commit("globalloading/SET_LOADING", false);
+    this.$store.commit("globalloading/SET_LOADING", true);
     this.$store.commit("tr/SET_SORTPARAM", this.sortParam);
     this.$store.commit("tr/SET_SEARCH", this.searchString);
     this.$store.commit("tr/SET_FILTER", this.filter);
@@ -4098,6 +4097,7 @@ export default {
           this.wells = data.data;
           this.setupPagination(data.data);
           this.fullWells = data.data;
+          
         } else {
           Vue.prototype.$notifyError(this.trans('tr.fa_alarm'))
           
