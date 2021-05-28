@@ -31,7 +31,6 @@ class FieldCalcController extends MainController
     const  ONE_YEAR = 365;
     const  SERVICE_TIME = 12;
     public $razrab = 5;
-    public $year = null;
     public $qoil = null;
     public $param = null;
     public $liq = null;
@@ -141,8 +140,8 @@ class FieldCalcController extends MainController
         $this->routesTn = EcoRefsRouteTnId::pluck('id', 'name')->toArray();
         $this->rates = EcoRefsExc::pluck('id', 'name')->toArray();
         $this->scenarios = EcoRefsScFa::pluck('id', 'name')->toArray();
-        $this->exportDirections = EcoRefsDirectionId::where('name', '=', 'Экспорт')->pluck('id', 'name');
-        $this->insideMarketDirections = EcoRefsDirectionId::where('name', '=', 'Внутренний рынок')->pluck('id', 'name');
+        $this->exportDirections = EcoRefsDirectionId::where('name', 'Экспорт')->pluck('id', 'name');
+        $this->insideMarketDirections = EcoRefsDirectionId::where('name', 'Внутренний рынок')->pluck('id', 'name');
         $this->opiuHandbook = HandbookRepTt::pluck('name', 'num');
     }
 
@@ -151,17 +150,10 @@ class FieldCalcController extends MainController
         $companies = SubholdingCompany::where('parent_id','!=', 0)->get();
         $scenarioFact = 3;
         $reqDay = 365;
+        $year = date('Y');
         if(isset($request->scenario)){
             $scenarioFact = $request->scenario;
         }
-        if(isset($request->rates)){
-            $rates = explode(',', $request->rates);
-            foreach($rates as $year => $rate){
-                $rates['202'.$year+1] = $rate;
-                unset($rates[$year]);
-            }
-        }
-        $this->year = $request->date ?? '2021';
         $this->qoil = 3.697;
         $this->reqecn = $request->reqecn;
         $this->param = $request->param;
@@ -207,15 +199,13 @@ class FieldCalcController extends MainController
 
         if ($opiuValues) {
             $handbook = HandbookRepTt::where('parent_id', 0)->with('childHandbookItems')->get()->toArray();
-            $companyRepTtValues = $opiuValues->statsByDate($this->year)->get()->toArray();
-            $opiuValues = $this->recursiveSetValueToHandbookByType($handbook, $companyRepTtValues, $this->year, $this->year - 1, $this->year . '-01-01', $this->year . '-12-01');
+            $companyRepTtValues = $opiuValues->statsByDate($year)->get()->toArray();
+            $opiuValues = $this->recursiveSetValueToHandbookByType($handbook, $companyRepTtValues, $year, $year - 1, $year . '-01-01', $year . '-12-01');
         }
-        $this->sumOverTree($opiuValues, $this->year);
+        $this->sumOverTree($opiuValues, $year);
 
-        $year = '2021';
         $ecnParam = 95.343 * pow($this->liq, -0.607);
         $shgnParam = 108.29 * pow($this->liq, -0.743);
-        $datat = [];
         for ($month = 1; $month <= 12; $month++) {
             $exportsResults = [];
             $exportsDiscontResults = [];
@@ -322,7 +312,7 @@ class FieldCalcController extends MainController
                     $item->barr_coef  = 7.23;
                 }
                 $exportsDiscontResults[$item->route_id] = $exportsResults[$item->route_id] * $item->barr_coef * (($item->macro - $item->discont) * $rate->ex_rate_dol);
-                $datat[$lastDateOfMonth]['цена на экспорт '.$this->getRoute($item->route_id)] = $item->macro;
+                $data[$lastDateOfMonth]['цена на экспорт '.$this->getRoute($item->route_id)] = $item->macro;
                 $data[$lastDateOfMonth]['Доход от реализации тг '.$this->getRoute($item->route_id)] = $exportsDiscontResults[$item->route_id];
             }
             $exportsDiscontResultsTotal = array_sum($exportsDiscontResults);
@@ -371,7 +361,7 @@ class FieldCalcController extends MainController
 
             foreach ($discontIns as $item) {
                 $insideDiscontResults[$item->route_id] = $insideResults[$item->route_id] * $item->macro;
-                $datat[$lastDateOfMonth]['цена на внтр. рынок '.$this->getRoute($item->route_id)] = $item->macro;
+                $data[$lastDateOfMonth]['цена на внтр. рынок '.$this->getRoute($item->route_id)] = $item->macro;
                 $data[$lastDateOfMonth]['доход от реализации '.$this->getRoute($item->route_id)] = $insideDiscontResults[$item->route_id];
             }
             $insideDiscontResultsTotal = array_sum($insideDiscontResults);
@@ -550,8 +540,8 @@ class FieldCalcController extends MainController
                     ];
                 }
             }
-            return $result;
         }
+        return $result;
     }
 
     public function getRateName($id){

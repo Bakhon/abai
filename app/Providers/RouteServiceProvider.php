@@ -105,7 +105,6 @@ class RouteServiceProvider extends ServiceProvider
             'db_prototype',
             'visual_center',
             'gno',
-            'tech',
             'monitoring',
             'economy_kenzhe',
             'tr',

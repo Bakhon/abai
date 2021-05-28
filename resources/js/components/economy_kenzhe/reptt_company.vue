@@ -179,7 +179,7 @@
         return result;
       },
       updateData(attributeName){
-          axios.get('/ru/module_economy/company?'+attributeName+'='+this[attributeName]+'&company='+this.company).then(response => {
+          axios.get('/module_economy/company?'+attributeName+'='+this[attributeName]+'&company='+this.company).then(response => {
               this.repttData = response.data;
               this.recalculate();
           });

@@ -8,15 +8,6 @@ Route::group(
                 Route::get('/', 'EconomyKenzhe\MainController@index');
                 Route::get('/company/', 'EconomyKenzhe\MainController@company')->name('company');
                 Route::get('/companies', 'EconomyKenzhe\MainController@companies');
-<<<<<<< HEAD
-                Route::get('/field_calculation', 'EconomyKenzhe\FieldCalcController@index');
-                Route::match(['GET', 'POST'], '/import_rep', 'EconomyKenzhe\ImportController@importRepTtValues')->name('import_rep');
-                Route::match(['GET', 'POST'], '/import_reptt_titles', 'EconomyKenzhe\ImportController@importRepTtTitlesTree')->name('import_reptt_titles');
-            });
-    }
-);
-
-=======
                 Route::get('/field-calculation', 'EconomyKenzhe\FieldCalcController@index');
                 Route::match(['GET', 'POST'], '/import_rep', 'EconomyKenzhe\ImportController@importRepTtValues')->name('import_rep');
                 Route::match(['GET', 'POST'], '/import_reptt_titles', 'EconomyKenzhe\ImportController@importRepTtTitlesTree')->name('import_reptt_titles');
@@ -24,4 +15,3 @@ Route::group(
             });
     }
 );
->>>>>>> configuration/KE-47/change_paths_web

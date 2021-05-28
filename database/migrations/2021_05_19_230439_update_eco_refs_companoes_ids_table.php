@@ -13,7 +13,6 @@ class UpdateEcoRefsCompanoesIdsTable extends Migration
      */
     public function up()
     {
-        //
         Schema::table('eco_refs_companies_ids', function (Blueprint $table) {
             $table->string('num')->after('id');
             $table->integer('level')->after('name');
