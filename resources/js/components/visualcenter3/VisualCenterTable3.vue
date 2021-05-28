@@ -211,7 +211,7 @@
                       <td
                         class="vc-select-table col-6 col-lg-6 rates-block"
                         @click="changeTable('2')"
-                        :class="`${tableHover2}`"
+                        :class="tableHover2"
                       >
                         <div>
                           <div class="number d-flex">
@@ -250,7 +250,7 @@
                       <td
                       class="vc-select-table col-6 col-lg-6 rates-block"
                       @click="changeTable('3')"
-                      :class="`${tableHover3}`"
+                      :class="tableHover3"
                     >
                       <div>
                         <div class="number d-flex">
@@ -2002,7 +2002,7 @@
                   <td
                     class="col-6"
                     @click="changeTable('4')"
-                    :class="`${tableHover4}`"
+                    :class="tableHover4"
                   >
                     <div class="txt4">
                       {{ getFormattedNumber(prod_wells_work) }}
@@ -2022,7 +2022,7 @@
                   <td
                     class="col-6"
                     @click="changeTable('4')"
-                    :class="`${tableHover4}`"
+                    :class="tableHover4"
                   >
                     <div class="txt4 d-flex">
                       <div class="col-10 col-lg-9">
@@ -2051,7 +2051,7 @@
                   <td
                     class="col-12"
                     @click="changeTable('4')"
-                    :class="`${tableHover4}`"
+                    :class="tableHover4"
                   >
                     <div class="right-column_header">
                       {{ trans("visualcenter.prodWells") }}
@@ -2067,7 +2067,7 @@
                     <td
                       class="col-6"
                       @click="changeTable('5')"
-                      :class="`${tableHover5}`"
+                      :class="tableHover5"
                     >
                       <div class="txt4">
                         {{getFormattedNumber(inj_wells_work)}}
@@ -2087,7 +2087,7 @@
                     <td
                       class="col-6"
                       @click="changeTable('5')"
-                      :class="`${tableHover5}`"
+                      :class="tableHover5"
                     >
                       <div class="txt4 d-flex">
                         <div class="col-10 col-lg-9">
@@ -2116,7 +2116,7 @@
                     <td
                       class="col-12"
                       @click="changeTable('5')"
-                      :class="`${tableHover5}`"
+                      :class="tableHover5"
                     >
                       <div class="right-column_header">
                         {{ trans("visualcenter.idleWells") }}
@@ -2129,7 +2129,7 @@
 
             <div class="first-string first-string2">
             <div      @click="changeTable('6')"
-                      :class="`${tableHover6}`">
+                      :class="tableHover6">
               <table class="table">
                 <tr class="d-flex">
                  <td>
@@ -2185,7 +2185,7 @@
                     <td
                       class="col-6"
                       @click="changeTable('6')"
-                      :class="`${tableHover6}`"
+                      :class="tableHover6"
                     >
                       <div class="mt-1 float-right">
                       
@@ -2206,7 +2206,7 @@
                     <td
                       class="col-6"
                          @click="changeTable('6')"
-                      :class="`${tableHover6}`"
+                      :class="tableHover6"
                     >
                       <div class="mt-1 float-right">
                   
@@ -2231,7 +2231,7 @@
 
           <div class="first-string first-string2 cursor-pointer"          
                       @click="changeTable('7')"
-                      :class="`${tableHover7}`"
+                      :class="tableHover7"
           >
             <div>
               <table class="table">
