@@ -319,4 +319,6 @@ return array (
   'dzoTargetPlan' => 'Целевой уровень',
   'targetPlanFilter' => 'С учетом ср/сут уровня',
   'chemistryCategory' => 'Химизация',
+  'indicatorGrow' => 'Рост',
+  'indicatorFall' => 'Снижение'
 );

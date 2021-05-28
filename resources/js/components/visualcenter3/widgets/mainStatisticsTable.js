@@ -48,6 +48,8 @@ export default {
     },
     methods: {
         changeTable(change) {
+            this.selectedSecondaryOption = '';
+            this.selectedDzo = 'all';
             this.isFilterTargetPlanActive = false;
             this.buttonTargetPlan = "";
             this.company = "all";
