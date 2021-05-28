@@ -16,7 +16,7 @@
                     <h2>Дело скважины</h2>
                   </div>
                   <div class="icon-all" style="margin-left: auto;"
-                       @click="onColumnFoldingEvent(isLeftColumnFolded, isRightColumnFolded, isBothColumnFolded, 'left')">
+                       @click="onColumnFoldingEvent('left')">
                     <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M11 1L5.8053 6L11 11" stroke="white" stroke-width="1.2" stroke-linecap="round"
                             stroke-linejoin="round"/>
@@ -125,7 +125,7 @@
               <div class="col">
                 <div class="heading">
                   <div class="icon-all"
-                       @click="onColumnFoldingEvent(isLeftColumnFolded, isRightColumnFolded, isBothColumnFolded, 'right')">
+                       @click="onColumnFoldingEvent('right')">
                     <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M1.0001 1L6.19482 6L1.0001 11" stroke="white" stroke-width="1.2" stroke-linecap="round"
                             stroke-linejoin="round"/>
@@ -215,7 +215,7 @@
                       <td>8</td>
                       <td>ГУ/Ряд</td>
                       <td>
-                        <span v-if="tech">{{tech.name_ru}}</span>
+                        <span v-if="tech">{{ tech.name_ru }}</span>
                       </td>
                     </tr>
                     <tr>
@@ -294,7 +294,7 @@
                     <tr>
                       <td>20</td>
                       <td>Состояние</td>
-                      <td v-if="wellStatus">{{wellStatus.name_ru}}</td>
+                      <td v-if="wellStatus">{{ wellStatus.name_ru }}</td>
                     </tr>
                     <tr>
                       <td>21</td>
@@ -526,24 +526,16 @@ export default {
 
   },
   methods: {
-    onColumnFoldingEvent(isLeftColumnFolded, isRightColumnFolded, isBothColumnFolded, method) {
-      //method allows to fold left or right column depending on method variable
+    onColumnFoldingEvent(method) {
       if (method === 'left') {
-        this.isLeftColumnFolded = !isLeftColumnFolded;
-        if (this.isLeftColumnFolded === true && this.isRightColumnFolded === true) {
-          this.isBothColumnFolded = !isBothColumnFolded;
-          this.isBothColumnFolded = true;
-        } else {
-          this.isBothColumnFolded = false;
-        }
+        this.isLeftColumnFolded = !this.isLeftColumnFolded;
       } else {
-        this.isRightColumnFolded = !isRightColumnFolded;
-        if (this.isLeftColumnFolded === true && this.isRightColumnFolded === true) {
-          this.isBothColumnFolded = !isBothColumnFolded;
-          this.isBothColumnFolded = true;
-        } else {
-          this.isBothColumnFolded = false;
-        }
+        this.isRightColumnFolded = !this.isRightColumnFolded;
+      }
+      if (this.isLeftColumnFolded === true && this.isRightColumnFolded === true) {
+        this.isBothColumnFolded = true;
+      } else {
+        this.isBothColumnFolded = false;
       }
     },
     onSearch(search, loading) {
@@ -564,16 +556,13 @@ export default {
       this.loading = true
       this.axios.get(this.localeUrl(`/api/bigdata/wells/${well.id}`)).then(({data}) => {
         try {
-          console.log.data
-          // В некоторых случиях возникает ошибка получения данных пердположительно при отсутствии ключа в одном из справочников
-          // AKG_124 конфликтный случай
           this.tech = data.techs
           this.org = data.orgs
           this.geo = data.geo[0]
           this.wellName = data.uwi
           this.allData = data
           this.wellType = data.well_type[0].name_ru
-          this.wellStatus = data.status[data.status.length-1] // уточнить, какой именно статус взять
+          this.wellStatus = data.status[data.status.length - 1] // уточнить, какой именно статус взять
           this.wellExpl = data.well_expl[0]
           this.tubeTom = data.tube_nom[0]
           this.wellCategory = data.category[0]
@@ -582,12 +571,10 @@ export default {
           this.loading = false
         } catch (e) {
           this.loading = false
-          //пока прекращает cat loader
         }
       })
     }
-  }
-  ,
+  },
   setForm(formCode) {
     this.activeFormCode = formCode
   }
