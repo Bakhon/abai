@@ -6,15 +6,12 @@
         <p v-if="well" class="bd-main-block__header-title">Скважина {{ well.uwi }}</p>
         <p class="bd-main-block__header-title">{{ params.title }}</p>
       </div>
-      <div>
-        <a v-if="isFormShowed" href="#" @click="isFormShowed = false">Закрыть</a>
-        <a v-else href="#" @click="openCreateForm">Добавить запись</a>
-      </div>
     </div>
     <BigdataPlainForm v-if="isFormShowed" :params="params" :values="formValues" :well-id="wellId"></BigdataPlainForm>
     <BigdataPlainFormResults
         v-else
         :params="params"
+        :code="params.code"
         :well-id="wellId"
         @edit="openEditForm"
     >
