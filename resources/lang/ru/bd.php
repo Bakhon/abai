@@ -204,7 +204,21 @@ return [
             'knbk_full'=>'Компонент низа бурильной колонны',
             'drill_column_type'=>'Виды компонентов низа бурильной колонны:',
             'value'=>'Значение:'
-        ]
+        ],
+        'obrabotka'=>[
+            'obrabotka' => 'Обработка',
+            'treat_type' => 'Вид обработки',
+            'volume' => 'Объем, м3',
+            'pretreat_pressure' => 'Рагр.пред., атм',
+            'postreat_pressure' => 'Рагр.посл., атм',
+            'temp' => 'Температура, С',
+            'pretreat_buff_prs' => 'Р буф. перед',
+            'postreat_buff_prs' => 'Р буф. после',
+            'chemical_reag' => 'Химический реагент',
+            'treat_reason' => 'Причины обработки',
+            'scraper_income' => 'Доход скребка',
+            'date' => 'Дата'
+        ],
     ],
     'close' => 'Закрыть',
     'value_outside' => 'Данное значение выходит за ограничения',

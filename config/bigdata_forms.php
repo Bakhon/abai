@@ -10,4 +10,5 @@
   'prs' => '\\App\\Services\\BigData\\Forms\\Prs',
   'gas_well' => '\\App\\Services\\BigData\\Forms\\GasWell',
   'daily_drill' => '\\App\\Services\\BigData\\Forms\\DailyDrill',
+  'obrabotka' => '\\App\\Services\\BigData\\Forms\\Obrabotka',
 );

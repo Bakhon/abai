@@ -1,0 +1,87 @@
+{
+  "type": "plain",
+  "table": "prod.well_treat",
+  "tabs": [
+    {
+      "title": "obrabotka",
+      "blocks": [
+        [
+          {
+            "title": "",
+            "items": [
+              {
+                "code": "treat_type",
+                "type": "dict",
+                "dict": "treat_type",
+                "title": "treat_type",
+                "validation": ""
+              },
+              {
+                "code": "volume",
+                "type": "numeric",
+                "title": "volume",
+                "validation": "required"
+              },
+              {
+                "code": "pretreat_pressure",
+                "type": "numeric",
+                "title": "pretreat_pressure",
+                "validation": "required"
+              },
+              {
+                "code": "postreat_pressure",
+                "type": "numeric",
+                "title": "postreat_pressure",
+                "validation": "required"
+              },
+              {
+                "code": "temperature",
+                "type": "numeric",
+                "title": "temp",
+                "validation": "required"
+              },
+              {
+                "code": "pretreat_buff_pressure",
+                "type": "numeric",
+                "title": "pretreat_buff_prs",
+                "validation": "required"
+              },
+              {
+                "code": "posttreat_buff_pressure",
+                "type": "numeric",
+                "title": "postreat_buff_prs",
+                "validation": "required"
+              },
+              {
+                "code": "chemical_reagent_type",
+                "type": "dict",
+                "dict": "chemical_reagent_type",
+                "title": "chemical_reag",
+                "validation": "required|exists:tbd.dict.chemical_reagent_type,id"
+              },
+              {
+                "code": "reason",
+                "type": "dict",
+                "dict": "treat_reason",
+                "title": "treat_reason",
+                "validation": "required|prod.well_treat.treat_reason = dict.treat_reason.id"
+              },
+              {
+                "code": "scraper_income",
+                "type": "numeric",
+                "title": "scraper_income",
+                "validation": "required"
+              },
+              {
+                "code": "data",
+                "type": "date",
+                "title": "date",
+                "validation": "required"
+              }
+            ]
+          }
+        ]
+      ]
+    }
+  ]
+}
