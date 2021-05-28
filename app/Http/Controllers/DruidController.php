@@ -5,87 +5,22 @@ namespace App\Http\Controllers;
 use App\Models\Refs\Gu;
 use Illuminate\Http\Request;
 use Level23\Druid\DruidClient;
-use Level23\Druid\Types\Granularity;
-use Level23\Druid\Extractions\ExtractionBuilder;
-use App\Models\DZO\DZOdaily;
-use App\Models\VisCenter\ImportForms\DZOdaily as ImportFormsDZOdaily;
-use App\Models\VisCenter\ImportForms\DZOstaff;
 
 class DruidController extends Controller
 {
-    // public function __construct()
-    // {
-    //     $this->middleware('can:visualcenter3 dobycha')->only('visualcenter3');
-    //     $this->middleware('can:visualcenter4 corpKPI')->only('visualcenter4');
-    //     $this->middleware('can:visualcenter5 economic')->only('visualcenter5');
-    //     $this->middleware('can:visualcenter6 strategyKPI')->only('visualcenter6');
-    //     $this->middleware('can:visualcenter7 dobychaKPI')->only('visualcenter7');
-    // }
-
     protected $druidClient;
 
     public function __construct(DruidClient $druidClient)
     {
         $this->middleware('can:monitoring view main', ['only' => ['monitor']]);
 
-        $this->middleware('can:visualcenter view main')->only(
-            'visualcenter3',
-            'visualcenter4',
-            'visualcenter5',
-            'visualcenter6',
-            'visualcenter7'
-        );
-        // $this->middleware('can:visualcenter4 corpKPI')->only('visualcenter4');
-        // $this->middleware('can:visualcenter5 economic')->only('visualcenter5');
-        // $this->middleware('can:visualcenter6 strategyKPI')->only('visualcenter6');
-        // $this->middleware('can:visualcenter7 dobychaKPI')->only('visualcenter7');
-
         $this->druidClient = $druidClient;
     }
 
-    public function index()
+    public function facilities()
     {
-        $response = $this->druidClient->query('month_meter_prod_oil_v02', Granularity::MONTH)
-            ->interval('2014-01-01 20:00:00', '2020-10-20 22:00:00')
-            ->count('totalNrRecords')
-            ->execute();
-        return $response;
+        return view('facilities.main');
     }
-
-    public function getOilPrice(Request $request)
-    {
-        if ($request->has('start_date') && $request->has('end_date')) {
-            $curl = curl_init();
-
-            curl_setopt_array(
-                $curl,
-                array(
-                    CURLOPT_URL => "https://www.quandl.com/api/v3/datasets/OPEC/ORB?start_date=" . $request->start_date . "&end_date=" . $request->end_date . "&api_key=1GucjdFKWYXnEejZ-xEC",
-                    CURLOPT_RETURNTRANSFER => true,
-                    CURLOPT_ENCODING => "",
-                    CURLOPT_MAXREDIRS => 10,
-                    CURLOPT_TIMEOUT => 0,
-                    CURLOPT_FOLLOWLOCATION => true,
-                    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-                    CURLOPT_CUSTOMREQUEST => "GET",
-                )
-            );
-
-            $response = curl_exec($curl);
-            curl_close($curl);
-
-            return ($response);
-        } else {
-            return "Error. Invalid url";
-        }
-    }
-
-
-    public function production()
-    {
-        return view('production.main');
-    }
-
 
     public function gtmscor()
     {
@@ -97,92 +32,9 @@ class DruidController extends Controller
         return view('production.mfond');
     }
 
-    public function oil()
-    {
-        return view('facilities.oil');
-    }
-
-    public function facilities()
-    {
-        return view('facilities.main');
-    }
-
-    public function liquid()
-    {
-        return view('facilities.liquid');
-    }
-
-    public function hydraulics()
-    {
-        return view('facilities.hydraulics');
-    }
-
-    public function complications()
-    {
-        return view('facilities.complications');
-    }
-
-    public function tabs()
-    {
-        return view('dev.tabs');
-    }
-
-    public function getNkKmg()
-    {
-        $response = $this->druidClient->query('nk_kmg', Granularity::ALL)
-            ->interval('1901-01-01T00:00:00+00:00/2020-07-31T18:02:55+00:00')
-            ->execute();
-
-        return response()->json($response->data());
-    }
-
-    public function getNkKmgYear()
-    {
-        $response = $this->druidClient->query('nk_kmg_year', Granularity::ALL)
-            ->interval('1901-01-01T00:00:00+00:00/2020-07-31T18:02:55+00:00')
-            ->execute();
-
-
-        return response()->json($response->data());
-    }
-
-    public function getWellDailyOil()
-    {
-        $builder = $this->druidClient->query('well_daily_oil2_v10', Granularity::DAY);
-
-        $builder
-            ->interval('2020-01-01T00:00:00+00:00/2020-01-02T00:00:00+00:00')
-            ->select(
-                '__time',
-                'dt',
-                function (ExtractionBuilder $extractionBuilder) {
-                    $extractionBuilder->timeFormat('yyyy-MM-dd');
-                }
-            )
-            ->select('surfx')
-            ->select('surfy')
-            ->select('well_uwi')
-            ->select('org');
-
-
-        $result = $builder->groupBy();
-
-        return response()->json($result->data());
-    }
-
-    public function maps()
-    {
-        return view('maps.maps');
-    }
-
     public function map()
     {
         return view('production.map');
-    }
-
-    public function mzdn()
-    {
-        return view('reports.mzdn');
     }
 
     public function bigdata()
