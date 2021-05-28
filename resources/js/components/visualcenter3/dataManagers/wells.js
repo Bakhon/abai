@@ -30,7 +30,8 @@ export default {
                 'fond_nagnetat_ef': 'exploitationFond',
                 'fond_neftedob_nrs': 'unprofitableFond',
             },
-            selectedSecondaryOption: ''
+            selectedSecondaryOption: '',
+            selectedDzo: 'all',
         };
     },
     methods: {

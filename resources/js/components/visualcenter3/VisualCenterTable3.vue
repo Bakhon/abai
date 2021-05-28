@@ -1428,6 +1428,7 @@
                     <select
                       class="side-blocks__dzo-companies-dropdown w-100"
                       @change="innerWellsNagMetOnChange($event, 'injection')"
+                      v-model="selectedDzo"
                     >
                       <option v-for="dzo in injectionWellsOptions" :value="dzo.ticker">
                         {{dzo.name}}
@@ -1588,6 +1589,7 @@
                     <select
                       class="side-blocks__dzo-companies-dropdown w-100"
                       @change="innerWellsProdMetOnChange($event, 'production')"
+                      v-model="selectedDzo"
                     >
                       <option v-for="dzo in injectionWellsOptions" :value="dzo.ticker">
                         {{dzo.name}}
@@ -1748,6 +1750,7 @@
                     <select
                       class="side-blocks__dzo-companies-dropdown w-100"
                       @change="innerWellsProdMetOnChange($event)"
+                      v-model="selectedDzo"
                     >
                       <option v-for="dzo in injectionWellsOptions" :value="dzo.ticker">
                         {{dzo.name}}
@@ -1923,6 +1926,7 @@
                     <select
                       class="side-blocks__dzo-companies-dropdown w-100"
                       @change="innerWellsProdMetOnChange($event)"
+                      v-model="selectedDzo"
                     >
                       <option v-for="dzo in injectionWellsOptions" :value="dzo.ticker">
                         {{dzo.name}}
