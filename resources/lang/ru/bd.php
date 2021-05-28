@@ -205,7 +205,7 @@ return [
             'drill_column_type'=>'Виды компонентов низа бурильной колонны:',
             'value'=>'Значение:'
         ],
-        'obrabotka'=>[
+        'well_treat'=>[
             'obrabotka' => 'Обработка',
             'treat_type' => 'Вид обработки',
             'volume' => 'Объем, м3',

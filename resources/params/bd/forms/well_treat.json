@@ -14,7 +14,7 @@
                 "type": "dict",
                 "dict": "treat_type",
                 "title": "treat_type",
-                "validation": ""
+                "validation": "required|exists:tbd.dict.treat_type.id"
               },
               {
                 "code": "volume",
@@ -64,7 +64,7 @@
                 "type": "dict",
                 "dict": "treat_reason",
                 "title": "treat_reason",
-                "validation": "required|prod.well_treat.treat_reason = dict.treat_reason.id"
+                "validation": "required|exists:tbd.dict.treat_reason,id"
               },
               {
                 "code": "scraper_income",

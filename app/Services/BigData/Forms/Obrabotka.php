@@ -6,5 +6,5 @@ namespace App\Services\BigData\Forms;
 
 class Obrabotka extends PlainForm
 {
-    protected $configurationFileName = 'obrabotka';
+    protected $configurationFileName = 'well_treat';
 }
