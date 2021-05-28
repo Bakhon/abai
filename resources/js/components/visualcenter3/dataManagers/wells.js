@@ -62,13 +62,13 @@ export default {
             return result;
         },
 
-        updateWellsWidgetDataForAllCompanies(arr) {
-            let groupedWellsData = this.getGroupedWellsData(arr);
+        updateWellsWidgetsForAllCompanies(arr) {
+            let wells = this.getGroupedWells(arr);
 
-            this.inj_wells_idle = groupedWellsData[0]['inj_wells_idle'];
-            this.inj_wells_work = groupedWellsData[0]['inj_wells_work'];
-            this.prod_wells_work = parseInt(groupedWellsData[0]['prod_wells_work']);
-            this.prod_wells_idle = groupedWellsData[0]['prod_wells_idle'];
+            this.inj_wells_idle = wells[0]['inj_wells_idle'];
+            this.inj_wells_work = wells[0]['inj_wells_work'];
+            this.prod_wells_work = parseInt(wells[0]['prod_wells_work']);
+            this.prod_wells_idle = wells[0]['prod_wells_idle'];
         },
 
         updateWellsWidgetData(data, workFieldName, idleFieldName) {
@@ -78,13 +78,13 @@ export default {
         updateWellsPercentWidgetData(data, workFieldName, idleFieldName, workParameterName, idleParameterName) {
             let periodStartTimestamp = this.timestampToday - this.quantityRange * 86400000;
             let filteredDataByPeriod = this.getProductionDataInPeriodRange(data,periodStartTimestamp,this.timestampToday);
-            let groupedWellsData = this.getGroupedWellsData(filteredDataByPeriod);
+            let groupedWellsData = this.getGroupedWells(filteredDataByPeriod);
 
             this[idleParameterName] = groupedWellsData[0][idleFieldName];
             this[workParameterName] = groupedWellsData[0][workFieldName];
         },
 
-        getGroupedWellsData(data) {
+        getGroupedWells(data) {
               return _(data)
                   .groupBy("data")
                   .map((__time, id) => ({
