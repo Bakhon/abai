@@ -29,7 +29,10 @@
             <span v-else>Развернуть</span>
           </div>
         </div>
-        <div class="blueblock__buttons d-flex flex-wrap scrollable">
+        <div
+            :class="{'blueblock__buttons_full': formsListExpanded}"
+            class="blueblock__buttons d-flex flex-wrap scrollable"
+        >
           <div v-for="form in filteredForms" class="blueblock__buttons-button" @click="loadForm(form.code)">
             <div
                 :class="{'active': activeForm === form}"
@@ -123,6 +126,10 @@ export default {
       margin: 12px 0 0;
       overflow: hidden;
       padding: 18px 35px 16px;
+
+      &_full {
+        height: auto;
+      }
 
       &-button {
         margin-bottom: 20px;

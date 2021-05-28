@@ -214,7 +214,7 @@ export default {
             filteredDataByPeriod = this.getDataOrderedByAsc(filteredDataByPeriod);
 
             this.getProductionPercentCovid(filteredDataByPeriod);
-            this.updateSecondaryParams(filteredDataByPeriod,filteredDataByCompanies);
+            this.updateSecondaryParams(data);
 
             if (this.isOneDateSelected) {
                 let filteredDataByOneDay = this.getFilteredDataByOneDay(filteredDataByCompanies);
@@ -306,8 +306,7 @@ export default {
             }
 
             let productionPlanAndFactMonth = this.getProductionPlanAndFactForMonth(dataWithMay);
-
-            this.WellsDataAll = this.WellsData(dataWithMay);
+            this.updateWellsWidgetsForAllCompanies(dataWithMay);
             this.injectionWells = this.getSummaryWells(dataWithMay,this.wellStockIdleButtons.isInjectionIdleButtonActive,'injectionFonds');
             this.innerWellsChartData = this.getSummaryInjectionWellsForChart(dataWithMay);
             this.productionWells = this.getSummaryWells(dataWithMay, this.wellStockIdleButtons.isProductionIdleButtonActive,'productionFonds');
@@ -404,7 +403,7 @@ export default {
                 planDay.push(p);
             });
 
-            this.getProductionPercentWells(data);
+            this.updateWellsWidgetPercentData(data);
 
 
             var dzoMonth = [];
