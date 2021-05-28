@@ -56,11 +56,11 @@
                           </div>
                           <div class="col-12 mt-4">
                             <div
-                              :class="`${getIndicatorClassForNormalParams(getDifferentPercentBetweenLastValues(productionParams.oil_fact, productionPercentParams.oil_fact))}`"
+                              :class="`${getGrowthIndicatorByDifference(productionParams.oil_fact, productionPercentParams.oil_fact)}`"
                             ></div>
 
                             <div class="txt2-2">
-                              {{Math.abs(getDifferentPercentBetweenLastValues(productionPercentParams.oil_fact, productionParams.oil_fact))}}%
+                              {{Math.abs(getDifferencePercentBetweenLastValues(productionPercentParams.oil_fact, productionParams.oil_fact))}}%
                             </div>
                             <div class="txt3">
                               vs
@@ -120,13 +120,11 @@
                           <br />
                           <div class="col-12 mt-2">
                             <div
-                              :class="`${getIndicatorClassForNormalParams(
-                                      getDifferentPercentBetweenLastValues(productionParams.oil_dlv_fact,productionPercentParams.oil_dlv_fact)
-                                      )}`"
+                              :class="`${getGrowthIndicatorByDifference(productionParams.oil_dlv_fact,productionPercentParams.oil_dlv_fact)}`"
                             ></div>
 
                             <div class="txt2-2">
-                              {{Math.abs(getDifferentPercentBetweenLastValues(productionPercentParams.oil_dlv_fact,productionParams.oil_dlv_fact))}}%
+                              {{Math.abs(getDifferencePercentBetweenLastValues(productionPercentParams.oil_dlv_fact,productionParams.oil_dlv_fact))}}%
                             </div>
                             <div class="txt3">
                               vs
@@ -187,15 +185,13 @@
                           <br />
                           <div class="col-12 mt-2">
                             <div
-                              :class="`${getIndicatorClassForNormalParams(
-                                getDifferentPercentBetweenLastValues(productionParams.gas_fact, productionPercentParams.gas_fact)
-                              )}`"
+                              :class="`${getGrowthIndicatorByDifference(productionParams.gas_fact, productionPercentParams.gas_fact)}`"
                             ></div>
 
                             <div class="txt2-2">
                               {{
                                 Math.abs(
-                              getDifferentPercentBetweenLastValues(productionPercentParams.gas_fact, productionParams.gas_fact)
+                              getDifferencePercentBetweenLastValues(productionPercentParams.gas_fact, productionParams.gas_fact)
                                 )
                               }}%
                             </div>
@@ -242,7 +238,7 @@
                             v-if="dailyOilPriceChange === 'DOWN'"
                           ></div>
                           <div class="txt2-2">
-                            {{Math.abs(getDifferentPercentBetweenLastValues(prices['oil']['previous'], prices['oil']['current']))}}
+                            {{Math.abs(getDifferencePercentBetweenLastValues(prices['oil']['previous'], prices['oil']['current']))}}
                             {{trans("visualcenter.dzoPercent")}}
                           </div>
                           <div class="txt3">
@@ -281,7 +277,7 @@
                           v-if="dailyCurrencyChangeIndexUsd === 'DOWN'"
                         ></div>
                         <div class="txt2-2">
-                          {{ Math.abs(getDifferentPercentBetweenLastValues(prices['usd']['previous'], prices['usd']['current'])) }}
+                          {{ Math.abs(getDifferencePercentBetweenLastValues(prices['usd']['previous'], prices['usd']['current'])) }}
                           {{trans("visualcenter.dzoPercent")}}
                         </div>
                         <div class="txt3">
@@ -2015,13 +2011,11 @@
                       {{ trans("visualcenter.inWork") }}
                     </div>
                     <div
-                      :class="`${getIndicatorClassForNormalParams(
-                        getDifferentPercentBetweenLastValues(prod_wells_work, prod_wells_workPercent)
-                      )}`"
+                      :class="`${getGrowthIndicatorByDifference(prod_wells_work, prod_wells_workPercent)}`"
                     ></div>
 
                     <div class="txt2-2">
-                      {{Math.abs(getDifferentPercentBetweenLastValues(prod_wells_work,prod_wells_workPercent))}}%
+                      {{Math.abs(getDifferencePercentBetweenLastValues(prod_wells_work,prod_wells_workPercent))}}%
                     </div>
                   </td>
 
@@ -2043,12 +2037,12 @@
                     </div>
                     <div
                       :class="`${getIndicatorClassForReverseParams(
-                        getDifferentPercentBetweenLastValues(prod_wells_idle, prod_wells_idlePercent)
+                        getDifferencePercentBetweenLastValues(prod_wells_idle, prod_wells_idlePercent)
                       )}`"
                     ></div>
 
                     <div class="txt2-2">
-                      {{Math.abs(getDifferentPercentBetweenLastValues(prod_wells_idle,prod_wells_idlePercent))}}%
+                      {{Math.abs(getDifferencePercentBetweenLastValues(prod_wells_idle,prod_wells_idlePercent))}}%
                     </div>
                     <br />
                   </td>
@@ -2082,13 +2076,11 @@
                         {{ trans("visualcenter.inWork") }}
                       </div>
                       <div
-                        :class="`${getIndicatorClassForNormalParams(
-                          getDifferentPercentBetweenLastValues(inj_wells_work, inj_wells_workPercent)
-                        )}`"
+                        :class="`${getGrowthIndicatorByDifference(inj_wells_work, inj_wells_workPercent)}`"
                       ></div>
 
                       <div class="txt2-2">
-                        {{Math.abs(getDifferentPercentBetweenLastValues(inj_wells_work,inj_wells_workPercent))}}%
+                        {{Math.abs(getDifferencePercentBetweenLastValues(inj_wells_work,inj_wells_workPercent))}}%
                       </div>
                     </td>
 
@@ -2110,12 +2102,12 @@
                       </div>
                       <div
                         :class="`${getIndicatorClassForReverseParams(
-                          getDifferentPercentBetweenLastValues(inj_wells_idle, inj_wells_idlePercent)
+                          getDifferencePercentBetweenLastValues(inj_wells_idle, inj_wells_idlePercent)
                         )}`"
                       ></div>
 
                       <div class="txt2-2">
-                        {{Math.abs(getDifferentPercentBetweenLastValues(inj_wells_idle,inj_wells_idlePercent))}}%
+                        {{Math.abs(getDifferencePercentBetweenLastValues(inj_wells_idle,inj_wells_idlePercent))}}%
                       </div>
                       <br />
                     </td>
@@ -2189,12 +2181,10 @@
                     <div class="d-flex">
                       <div class="col-12">
                         <div
-                          :class="`${getIndicatorClassForNormalParams(
-                            getDifferentPercentBetweenLastValues(staffPercent, staff)
-                          )}`"
+                          :class="`${getGrowthIndicatorByDifference(staffPercent, staff)}`"
                         ></div>
                         <div class="txt2-2">
-                          {{ Math.abs(getDifferentPercentBetweenLastValues(staffPercent, staff)) }}%
+                          {{ Math.abs(getDifferencePercentBetweenLastValues(staffPercent, staff)) }}%
                         </div>
                       </div>
                     </div>
@@ -2233,12 +2223,10 @@
                   <td class="col-6">
                     <div class="d-flex">
                       <div
-                        :class="`${getIndicatorClassForNormalParams(
-                          getDifferentPercentBetweenLastValues(covidPercent, covid)
-                        )}`"
+                        :class="`${getGrowthIndicatorByDifference(covidPercent, covid)}`"
                       ></div>
                       <div class="txt2-2">
-                        {{ Math.abs(getDifferentPercentBetweenLastValues(covidPercent, covid)) }}%
+                        {{ Math.abs(getDifferencePercentBetweenLastValues(covidPercent, covid)) }}%
                       </div>
                     </div>
                     <div>

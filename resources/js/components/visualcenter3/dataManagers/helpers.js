@@ -67,11 +67,9 @@ export default {
             }
         },
 
-        getDifferentPercentBetweenLastValues(previous,current) {
+        getDifferencePercentBetweenLastValues(previous,current) {
             if (previous != '' && previous !== 0) {
                 return ((current / previous - 1) * 100).toFixed(2);
-            } else {
-                return 0;
             }
         },
 
@@ -160,11 +158,12 @@ export default {
             }
         },
 
-        getIndicatorClassForNormalParams(i) {
-            if (parseFloat(i) < 0) {
+        getGrowthIndicatorByDifference(previous,current) {
+            let difference = this.getDifferencePercentBetweenLastValues(previous,current);
+            if (difference < 0) {
                 return "indicator-grow";
             }
-            if (parseFloat(i) > 0) {
+            if (difference > 0) {
                 return "indicator-fall";
             }
         },
