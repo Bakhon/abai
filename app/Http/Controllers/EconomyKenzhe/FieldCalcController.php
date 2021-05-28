@@ -215,7 +215,7 @@ class FieldCalcController extends MainController
         $year = '2021';
         $ecnParam = 95.343 * pow($this->liq, -0.607);
         $shgnParam = 108.29 * pow($this->liq, -0.743);
-
+        $datat = [];
         for ($month = 1; $month <= 12; $month++) {
             $exportsResults = [];
             $exportsDiscontResults = [];
@@ -322,7 +322,7 @@ class FieldCalcController extends MainController
                     $item->barr_coef  = 7.23;
                 }
                 $exportsDiscontResults[$item->route_id] = $exportsResults[$item->route_id] * $item->barr_coef * (($item->macro - $item->discont) * $rate->ex_rate_dol);
-                $data[$lastDateOfMonth]['цена на экспорт '.$this->getRoute($item->route_id)] = $item->macro;
+                $datat[$lastDateOfMonth]['цена на экспорт '.$this->getRoute($item->route_id)] = $item->macro;
                 $data[$lastDateOfMonth]['Доход от реализации тг '.$this->getRoute($item->route_id)] = $exportsDiscontResults[$item->route_id];
             }
             $exportsDiscontResultsTotal = array_sum($exportsDiscontResults);
@@ -371,7 +371,7 @@ class FieldCalcController extends MainController
 
             foreach ($discontIns as $item) {
                 $insideDiscontResults[$item->route_id] = $insideResults[$item->route_id] * $item->macro;
-                $data[$lastDateOfMonth]['цена на внтр. рынок '.$this->getRoute($item->route_id)] = $item->macro;
+                $datat[$lastDateOfMonth]['цена на внтр. рынок '.$this->getRoute($item->route_id)] = $item->macro;
                 $data[$lastDateOfMonth]['доход от реализации '.$this->getRoute($item->route_id)] = $insideDiscontResults[$item->route_id];
             }
             $insideDiscontResultsTotal = array_sum($insideDiscontResults);

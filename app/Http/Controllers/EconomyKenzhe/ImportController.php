@@ -7,6 +7,7 @@ use App\Imports\HandbookRepTtValueImport;
 use App\Models\EconomyKenzhe\HandbookRepTt;
 use App\Http\Controllers\Controller;
 use App\Models\EconomyKenzhe\SubholdingCompany;
+use App\Models\EcoRefsCompaniesId;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -51,7 +52,7 @@ class ImportController extends Controller
                 ];
                 $titles[] = $data;
                 if($request->importExcelType == 'companies'){
-                    SubholdingCompany::create($data);
+                    EcoRefsCompaniesId::create($data);
                 }else{
                     HandbookRepTt::create($data);
                 }

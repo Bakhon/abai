@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\EconomyKenzhe;
 
 use App\Models\EconomyKenzhe\HandbookRepTt;
-use App\Models\EconomyKenzhe\SubholdingCompany;
 use App\Http\Controllers\Controller;
+use App\Models\EcoRefsCompaniesId;
 use Illuminate\Http\Request;
 
 class MainController extends Controller
@@ -17,7 +17,7 @@ class MainController extends Controller
     public function company(Request $request)
     {
         $this->companyId = 178;
-        $this->dateTo = date('Y-m-d');
+        $this->dateTo = date('Y-m-d', strtotime(' -1 year'));
         $this->dateFrom = date("Y-m-d", strtotime($this->dateTo . " -3 months"));
 
         if($request->company){
@@ -38,8 +38,8 @@ class MainController extends Controller
         $currentYear = date('Y', strtotime($this->dateTo));
         $previousYear = (string) $currentYear - 1;
         $handbook = HandbookRepTt::where('parent_id', 0)->with('childHandbookItems')->get()->toArray();
-        $companies = SubholdingCompany::all();
-        $companyRepTtValues = SubholdingCompany::find($this->companyId)->statsByDate($currentYear)->get()->toArray();
+        $companies = EcoRefsCompaniesId::all();
+        $companyRepTtValues = EcoRefsCompaniesId::find($this->companyId)->statsByDate($currentYear)->get()->toArray();
         $repTtReportValues = $this->recursiveSetValueToHandbookByType($handbook, $companyRepTtValues, $currentYear, $previousYear, $this->dateFrom, $this->dateTo);
 
         $data = [
@@ -114,7 +114,7 @@ class MainController extends Controller
     public function sumValuesByItemType(&$item, $attribute, $value, $dateFrom, $dateTo, $year, $currentItemDate)
     {
         $item[$attribute][$year] += (float) $value;
-        if (strtotime($dateFrom) <= $currentItemDate && strtotime($dateTo) >= $currentItemDate) { // для фильтрации данных по промежуткам дат
+        if (strtotime($dateFrom) <= $currentItemDate && strtotime($dateTo) >= $currentItemDate) {
             $item['intermediate_' . $attribute][$year] += (float) $value;
         }
     }
