@@ -132,7 +132,7 @@ return [
             "casing_type" => "Вид обсадной трубы",
             "number_of_pipes" => "Количество труб",
             "poured_cement_volume" => "Объем залитого цемента",
-            "cement_lifting_height" => "Высота подъема цемента" 
+            "cement_lifting_height" => "Высота подъема цемента",
         ],
         'prs' => [
             'repair' => 'Ремонт',
@@ -204,7 +204,18 @@ return [
             'knbk_full'=>'Компонент низа бурильной колонны',
             'drill_column_type'=>'Виды компонентов низа бурильной колонны:',
             'value'=>'Значение:'
-        ]
+        ],
+        'well_constr'=>[
+            "well_constructor" => "Конструкция скважины",
+            "column_type" => "Вид колонны",
+            "casing_running_depth" => "Глубина спуска колонны",
+            "side_barrel" => "Боковой ствол",
+            "casing_type" => "Вид обсадной трубы",
+            "number_of_pipes" => "Количество труб",
+            "poured_cement_volume" => "Объем залитого цемента",
+            "cement_lifting_height" => "Высота подъема цемента",
+            "landing_date" => "Дата спуска" 
+        ],
     ],
     'close' => 'Закрыть',
     'value_outside' => 'Данное значение выходит за ограничения',
