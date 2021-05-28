@@ -5,6 +5,7 @@ namespace App\Services\BigData;
 
 use App\Exceptions\DictionaryNotFound;
 use App\Models\BigData\Dictionaries\Company;
+use App\Models\BigData\Dictionaries\EquipType;
 use App\Models\BigData\Dictionaries\Org;
 use App\Models\BigData\Dictionaries\WellCategory;
 use App\Models\BigData\Dictionaries\WellType;
@@ -21,9 +22,13 @@ use App\Models\BigData\Dictionaries\TechConditionOfWells;
 use App\Models\BigData\Dictionaries\PumpType;
 use App\Models\BigData\Dictionaries\DrillChisel;
 use App\Models\BigData\Dictionaries\DrillColumnType;
+<<<<<<< HEAD
 use App\Models\BigData\Dictionaries\WellTreatType;
 use App\Models\BigData\Dictionaries\ChemicalReagentType;
 use App\Models\BigData\Dictionaries\TreatReason;
+=======
+use App\TybeNom;
+>>>>>>> ba55b2e78c8ac0de2a57276d57454816d6da8091
 use Carbon\Carbon;
 use Illuminate\Cache\Repository;
 use Illuminate\Support\Facades\DB;
@@ -47,9 +52,9 @@ class DictionaryService
             'class' => Equip::class,
             'name_field' => 'name_ru'
         ],
-        'casings' => [
-            'class' => CasingType::class,
-            'name_field' => 'CONCAT(\'Условный диаметр трубы(мм): \', od, \', Толщина стенки с норм. резьбой(мм):\', wt, \', Внутренний диаметр трубы с норм. резьбой (мм)\' , vd, \', Группа прочности: \', sg)'
+        'equip_type' => [
+            'class' => EquipType::class,
+            'name_field' => 'name_ru'
         ],
         'repair_work_types' => [
             'class' => RepairWorkType::class,
@@ -106,6 +111,9 @@ class DictionaryService
         'treat_reason' => [
             'class' => TreatReason::class,
             'name_field' => 'name_ru'
+        'tube_nom' => [
+            'class' => TybeNom::class,
+            'name_field' => 'model'
         ]
     ];
 

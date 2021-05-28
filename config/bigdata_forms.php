@@ -11,4 +11,5 @@
   'gas_well' => '\\App\\Services\\BigData\\Forms\\GasWell',
   'daily_drill' => '\\App\\Services\\BigData\\Forms\\DailyDrill',
   'well_treat' => '\\App\\Services\\BigData\\Forms\\WellTreat',
+  'well_constr' => '\\App\\Services\\BigData\\Forms\\WellConstr',
 );
