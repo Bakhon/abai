@@ -211,7 +211,7 @@
                       <td
                         class="vc-select-table col-6 col-lg-6 rates-block"
                         @click="changeTable('2')"
-                        :style="`${tableHover2}`"
+                        :class="`${tableHover2}`"
                       >
                         <div>
                           <div class="number d-flex">
@@ -250,7 +250,7 @@
                       <td
                       class="vc-select-table col-6 col-lg-6 rates-block"
                       @click="changeTable('3')"
-                      :style="`${tableHover3}`"
+                      :class="`${tableHover3}`"
                     >
                       <div>
                         <div class="number d-flex">
@@ -2002,7 +2002,7 @@
                   <td
                     class="col-6"
                     @click="changeTable('4')"
-                    :style="`${tableHover4}`"
+                    :class="`${tableHover4}`"
                   >
                     <div class="txt4">
                       {{ getFormattedNumber(prod_wells_work) }}
@@ -2022,7 +2022,7 @@
                   <td
                     class="col-6"
                     @click="changeTable('4')"
-                    :style="`${tableHover4}`"
+                    :class="`${tableHover4}`"
                   >
                     <div class="txt4 d-flex">
                       <div class="col-10 col-lg-9">
@@ -2051,9 +2051,9 @@
                   <td
                     class="col-12"
                     @click="changeTable('4')"
-                    :style="`${tableHover4}`"
+                    :class="`${tableHover4}`"
                   >
-                    <div class="txt1">
+                    <div class="right-column_header">
                       {{ trans("visualcenter.prodWells") }}
                     </div>
                   </td>
@@ -2067,7 +2067,7 @@
                     <td
                       class="col-6"
                       @click="changeTable('5')"
-                      :style="`${tableHover5}`"
+                      :class="`${tableHover5}`"
                     >
                       <div class="txt4">
                         {{getFormattedNumber(inj_wells_work)}}
@@ -2087,7 +2087,7 @@
                     <td
                       class="col-6"
                       @click="changeTable('5')"
-                      :style="`${tableHover5}`"
+                      :class="`${tableHover5}`"
                     >
                       <div class="txt4 d-flex">
                         <div class="col-10 col-lg-9">
@@ -2116,9 +2116,9 @@
                     <td
                       class="col-12"
                       @click="changeTable('5')"
-                      :style="`${tableHover5}`"
+                      :class="`${tableHover5}`"
                     >
-                      <div class="txt1">
+                      <div class="right-column_header">
                         {{ trans("visualcenter.idleWells") }}
                       </div>
                     </td>
@@ -2129,7 +2129,7 @@
 
             <div class="first-string first-string2">
             <div      @click="changeTable('6')"
-                      :style="`${tableHover6}`">
+                      :class="`${tableHover6}`">
               <table class="table">
                 <tr class="d-flex">
                  <td>
@@ -2145,7 +2145,7 @@
                 </tr>
                 <tr class="d-flex">
                   <td class="col-12">
-                    <div class="txt1"> 
+                    <div class="right-column_header"> 
                       {{ trans('visualcenter.drillingWells') }}
                     </div>
                   </td>
@@ -2169,7 +2169,7 @@
                 </tr>
                 <tr class="d-flex">
                   <td class="col-12">
-                    <div class="txt1">
+                    <div class="right-column_header">
                       {{ trans('visualcenter.expectedProduction') }}
                     </div>
                   </td>
@@ -2185,7 +2185,7 @@
                     <td
                       class="col-6"
                       @click="changeTable('6')"
-                      :style="`${tableHover6}`"
+                      :class="`${tableHover6}`"
                     >
                       <div class="mt-1 float-right">
                       
@@ -2198,7 +2198,7 @@
                  <span v-else> {{ previousPeriodStart }} - {{ previousPeriodEnd }}</span>
                     </div>
                 <br>
-                      <div class="txt1">
+                      <div class="right-column_header">
                            {{ trans('visualcenter.otmKrsSkv') }}
                       </div>
                     </td>
@@ -2206,7 +2206,7 @@
                     <td
                       class="col-6"
                          @click="changeTable('6')"
-                      :style="`${tableHover6}`"
+                      :class="`${tableHover6}`"
                     >
                       <div class="mt-1 float-right">
                   
@@ -2219,7 +2219,7 @@
                  <span v-else> {{ previousPeriodStart }} - {{ previousPeriodEnd }}</span>
                     </div>
                       <br>
-                      <div class="txt1">
+                      <div class="right-column_header">
                           {{ trans('visualcenter.otmPrsSkv') }}
                       </div>
                     </td>
@@ -2231,13 +2231,13 @@
 
           <div class="first-string first-string2 cursor-pointer"          
                       @click="changeTable('7')"
-                      :style="`${tableHover7}`"
+                      :class="`${tableHover7}`"
           >
             <div>
               <table class="table">
                 <tr class="d-flex">
                  <td>
-                    <div class="number">{{this.chemistryData[0]['fact']+this.chemistryData[1]['fact']+this.chemistryData[2]['fact']+this.chemistryData[3]['fact']}}</div>
+                    <div class="number">{{this.chemistryDataFactSumm}}</div>
                  <div class="unit-vc ml-2">
                      {{ trans('visualcenter.chemistryMetricTon') }}                         
                           </div>              
@@ -2249,7 +2249,7 @@
                 </tr>
                 <tr class="d-flex">
                   <td class="col-12">
-                    <div class="txt1"> 
+                    <div class="right-column_header"> 
                      {{ trans('visualcenter.chemistryCategory') }}                 
                       </div>
                   </td>
@@ -2640,6 +2640,9 @@
 .rates-block__row {
   height: 100%;
 }
+.button_hover{
+  background: #0d2792
+}
 @media (max-width: 1400px) {
   .rates-block__row {
     height: auto;
@@ -2655,6 +2658,10 @@
   }
   .year-period-dropdown {
     min-width: 0;
+  }
+  .right-column_header{
+    font-family: Bold;   
+    font-size: 0.8rem;    
   }
 }
 @media (max-width: 2000px) {
@@ -2682,5 +2689,9 @@
   line-height: 40px;
   color: #9ea4c9;
   border: none;
+}
+.right-column_header{
+  font-family: Bold;   
+  font-size: 0.9rem;    
 }
 </style>
