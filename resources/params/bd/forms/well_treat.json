@@ -14,7 +14,7 @@
                 "type": "dict",
                 "dict": "treat_type",
                 "title": "treat_type",
-                "validation": "required|exists:tbd.dict.treat_type.id"
+                "validation": "required|exists:tbd.dict.treat_type,id"
               },
               {
                 "code": "volume",
