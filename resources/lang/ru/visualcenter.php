@@ -321,4 +321,7 @@ return array (
   'targetPlanFilter' => 'С учетом ср/сут уровня',
   'drillingWells' => 'Бурение скважин',
   'expectedProduction' => 'Ожидаемая добыча',
+  'chemistryCategory' => 'Химизация',
+  'indicatorGrow' => 'Рост',
+  'indicatorFall' => 'Снижение'
 );

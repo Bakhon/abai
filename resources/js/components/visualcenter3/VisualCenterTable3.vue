@@ -56,11 +56,11 @@
                           </div>
                           <div class="col-12 mt-4">
                             <div
-                              :class="`${getColor2(getDiffProcentLastP(productionParams.oil_fact, productionPercentParams.oil_fact))}`"
+                              :class="`${getGrowthIndicatorByDifference(productionParams.oil_fact, productionPercentParams.oil_fact)}`"
                             ></div>
 
                             <div class="txt2-2">
-                              {{Math.abs(getDiffProcentLastP(productionPercentParams.oil_fact, productionParams.oil_fact))}}%
+                              {{Math.abs(getDifferencePercentBetweenLastValues(productionPercentParams.oil_fact, productionParams.oil_fact))}}%
                             </div>
                             <div class="txt3">
                               vs
@@ -120,11 +120,11 @@
                           <br />
                           <div class="col-12 mt-2">
                             <div
-                              :class="`${getColor2(getDiffProcentLastP(productionParams.oil_dlv_fact,productionPercentParams.oil_dlv_fact))}`"
+                              :class="`${getGrowthIndicatorByDifference(productionParams.oil_dlv_fact,productionPercentParams.oil_dlv_fact)}`"
                             ></div>
 
                             <div class="txt2-2">
-                              {{Math.abs(getDiffProcentLastP(productionPercentParams.oil_dlv_fact,productionParams.oil_dlv_fact))}}%
+                              {{Math.abs(getDifferencePercentBetweenLastValues(productionPercentParams.oil_dlv_fact,productionParams.oil_dlv_fact))}}%
                             </div>
                             <div class="txt3">
                               vs
@@ -185,15 +185,13 @@
                           <br />
                           <div class="col-12 mt-2">
                             <div
-                              :class="`${getColor2(
-                                getDiffProcentLastP(productionParams.gas_fact, productionPercentParams.gas_fact)
-                              )}`"
+                              :class="`${getGrowthIndicatorByDifference(productionParams.gas_fact, productionPercentParams.gas_fact)}`"
                             ></div>
 
                             <div class="txt2-2">
                               {{
                                 Math.abs(
-                                  getDiffProcentLastP(productionPercentParams.gas_fact, productionParams.gas_fact)
+                              getDifferencePercentBetweenLastValues(productionPercentParams.gas_fact, productionParams.gas_fact)
                                 )
                               }}%
                             </div>
@@ -232,15 +230,16 @@
                         <br />
                         <div class="percent-currency col-12 p-0">
                           <div
-                            class="arrow"
+                            class="indicator-grow"
                             v-if="dailyOilPriceChange === 'UP'"
                           ></div>
                           <div
-                            class="arrow2"
+                            class="indicator-fall"
                             v-if="dailyOilPriceChange === 'DOWN'"
                           ></div>
                           <div class="txt2-2">
-                            {{ Math.abs(getDiffProcentLastP(prices['oil']['previous'], prices['oil']['current'])) }} %
+                            {{Math.abs(getDifferencePercentBetweenLastValues(prices['oil']['previous'], prices['oil']['current']))}}
+                            {{trans("visualcenter.dzoPercent")}}
                           </div>
                           <div class="txt3">
                             {{ trans("visualcenter.vsSeparator") }}
@@ -270,14 +269,17 @@
                       <br />
                       <div class="percent-currency col-12 mt-20">
                         <div
-                          class="arrow"
+                          class="indicator-grow"
                           v-if="dailyCurrencyChangeIndexUsd === 'UP'"
                         ></div>
                         <div
-                          class="arrow2"
+                          class="indicator-fall"
                           v-if="dailyCurrencyChangeIndexUsd === 'DOWN'"
                         ></div>
-                        <div class="txt2-2">{{ dailyCurrencyChangeUsd }} {{trans("visualcenter.dzoPercent")}}</div>
+                        <div class="txt2-2">
+                          {{ Math.abs(getDifferencePercentBetweenLastValues(prices['usd']['previous'], prices['usd']['current'])) }}
+                          {{trans("visualcenter.dzoPercent")}}
+                        </div>
                         <div class="txt3">
                           {{ trans("visualcenter.vsSeparator") }}
                           {{ new Date(prices['usd']['previousFetchDate']).toLocaleDateString() }}
@@ -1421,7 +1423,8 @@
                   <div class="col">
                     <select
                       class="side-blocks__dzo-companies-dropdown w-100"
-                      @change="innerWellsNagMetOnChange($event)"
+                      @change="innerWellsNagMetOnChange($event, 'injection')"
+                      v-model="selectedDzo"
                     >
                       <option v-for="dzo in injectionWellsOptions" :value="dzo.ticker">
                         {{dzo.name}}
@@ -1581,7 +1584,8 @@
                   <div class="col pr-2">
                     <select
                       class="side-blocks__dzo-companies-dropdown w-100"
-                      @change="innerWellsProdMetOnChange($event)"
+                      @change="innerWellsProdMetOnChange($event, 'production')"
+                      v-model="selectedDzo"
                     >
                       <option v-for="dzo in injectionWellsOptions" :value="dzo.ticker">
                         {{dzo.name}}
@@ -1742,6 +1746,7 @@
                     <select
                       class="side-blocks__dzo-companies-dropdown w-100"
                       @change="innerWellsProdMetOnChange($event)"
+                      v-model="selectedDzo"
                     >
                       <option v-for="dzo in injectionWellsOptions" :value="dzo.ticker">
                         {{dzo.name}}
@@ -1917,6 +1922,7 @@
                     <select
                       class="side-blocks__dzo-companies-dropdown w-100"
                       @change="innerWellsProdMetOnChange($event)"
+                      v-model="selectedDzo"
                     >
                       <option v-for="dzo in injectionWellsOptions" :value="dzo.ticker">
                         {{dzo.name}}
@@ -2005,20 +2011,11 @@
                       {{ trans("visualcenter.inWork") }}
                     </div>
                     <div
-                      :class="`${getColor2(
-                        getDiffProcentLastP(prod_wells_work, prod_wells_workPercent)
-                      )}`"
+                      :class="`${getGrowthIndicatorByDifference(prod_wells_work, prod_wells_workPercent)}`"
                     ></div>
 
                     <div class="txt2-2">
-                      {{
-                        Math.abs(
-                          getDiffProcentLastP(
-                            prod_wells_work,
-                            prod_wells_workPercent
-                          )
-                        )
-                      }}%
+                      {{Math.abs(getDifferencePercentBetweenLastValues(prod_wells_work,prod_wells_workPercent))}}%
                     </div>
                   </td>
 
@@ -2039,20 +2036,13 @@
                       {{ trans("visualcenter.inIdle") }}
                     </div>
                     <div
-                      :class="`${getColor2(
-                        getDiffProcentLastP(prod_wells_idle, prod_wells_idlePercent)
+                      :class="`${getIndicatorClassForReverseParams(
+                        getDifferencePercentBetweenLastValues(prod_wells_idle, prod_wells_idlePercent)
                       )}`"
                     ></div>
 
                     <div class="txt2-2">
-                      {{
-                        Math.abs(
-                          getDiffProcentLastP(
-                            prod_wells_idle,
-                            prod_wells_idlePercent
-                          )
-                        )
-                      }}%
+                      {{Math.abs(getDifferencePercentBetweenLastValues(prod_wells_idle,prod_wells_idlePercent))}}%
                     </div>
                     <br />
                   </td>
@@ -2086,20 +2076,11 @@
                         {{ trans("visualcenter.inWork") }}
                       </div>
                       <div
-                        :class="`${getColor2(
-                          getDiffProcentLastP(inj_wells_work, inj_wells_workPercent)
-                        )}`"
+                        :class="`${getGrowthIndicatorByDifference(inj_wells_work, inj_wells_workPercent)}`"
                       ></div>
 
                       <div class="txt2-2">
-                        {{
-                          Math.abs(
-                            getDiffProcentLastP(
-                              inj_wells_work,
-                              inj_wells_workPercent
-                            )
-                          )
-                        }}%
+                        {{Math.abs(getDifferencePercentBetweenLastValues(inj_wells_work,inj_wells_workPercent))}}%
                       </div>
                     </td>
 
@@ -2120,20 +2101,13 @@
                         {{ trans("visualcenter.inIdle") }}
                       </div>
                       <div
-                        :class="`${getColor2(
-                          getDiffProcentLastP(inj_wells_idle, inj_wells_idlePercent)
+                        :class="`${getIndicatorClassForReverseParams(
+                          getDifferencePercentBetweenLastValues(inj_wells_idle, inj_wells_idlePercent)
                         )}`"
                       ></div>
 
                       <div class="txt2-2">
-                        {{
-                          Math.abs(
-                            getDiffProcentLastP(
-                              inj_wells_idle,
-                              inj_wells_idlePercent
-                            )
-                          )
-                        }}%
+                        {{Math.abs(getDifferencePercentBetweenLastValues(inj_wells_idle,inj_wells_idlePercent))}}%
                       </div>
                       <br />
                     </td>
