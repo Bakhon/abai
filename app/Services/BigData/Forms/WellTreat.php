@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services\BigData\Forms;
 
-class Obrabotka extends PlainForm
+class WellTreat extends PlainForm
 {
     protected $configurationFileName = 'well_treat';
 }
