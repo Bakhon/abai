@@ -244,9 +244,9 @@ export default {
         },
         getIndicatorForStaffCovidParams(previosValue,currentValue) {
             if (previosValue > currentValue) {
-                return 'Снижение';
+                return this.trans("visualcenter.indicatorFall");
             } else if (previosValue < currentValue) {
-                return 'Рост';
+                return this.trans("visualcenter.indicatorGrow");;
             }
         },
     },
