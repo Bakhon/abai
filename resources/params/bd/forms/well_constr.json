@@ -1,6 +1,6 @@
 {
   "type": "plain",
-  "table": "prod.well_constr",
+  "table":   "prod.well_constr",
   "tabs": [
     {
       "title": "well_constructor",
