@@ -16,7 +16,7 @@
                     <h2>Дело скважины</h2>
                   </div>
                   <div class="icon-all" style="margin-left: auto;"
-                       @click="onLeftColumnFoldingEvent(isLeftColumnFolded, isRightColumnFolded, isBothColumnFolded)">
+                       @click="onColumnFoldingEvent('left')">
                     <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M11 1L5.8053 6L11 11" stroke="white" stroke-width="1.2" stroke-linecap="round"
                             stroke-linejoin="round"/>
@@ -94,10 +94,14 @@
                     <div class="col">
                       <div class="well-info">
                         <div class="title">Основное</div>
-                        <p>Номер скважины:<span>{{ allData.uwi }}</span></p>
-                        <p>Категория скважины: <span></span></p>
+                        <p>Номер скважины: <span>{{ allData.uwi }}</span></p>
+                        <p>Категория скважины: <span v-if="wellCategory">{{ wellCategory.name_ru }}</span></p>
                         <div class="title">Привязка</div>
-                        <p>Оргструктура: <span></span></p>
+                        <p>Оргструктура: <span>
+                          <span v-for="value in org">
+                            {{ value.name_ru + "/" }}
+                          </span>
+                        </span></p>
                         <div class="title">Координаты устья</div>
                         <p>Оргструктура: <span></span></p>
                         <p>Координаты устья X:<span></span></p>
@@ -114,14 +118,14 @@
           </div>
         </div>
       </div>
-      <div :class="{'right-column_folded': isRightColumnFolded}" class="right-column__inner bg-dark">
+      <div :class="{'right-column_folded': isRightColumnFolded}" class="right-column__inner">
         <div class="bg-dark-transparent">
           <template>
             <div class="row">
               <div class="col">
                 <div class="heading">
                   <div class="icon-all"
-                       @click="onRightColumnFoldingEvent(isLeftColumnFolded, isRightColumnFolded, isBothColumnFolded)">
+                       @click="onColumnFoldingEvent('right')">
                     <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M1.0001 1L6.19482 6L1.0001 11" stroke="white" stroke-width="1.2" stroke-linecap="round"
                             stroke-linejoin="round"/>
@@ -152,6 +156,7 @@
             </div>
           </template>
           <div class="info">
+            <div v-if="isRightColumnFolded" class="rotate">Паспорт скважины</div>
             <div class="info-element">
               <div class="row">
                 <div class="col">
@@ -162,32 +167,44 @@
                     <tr>
                       <td>1</td>
                       <td>Скважина</td>
-                      <td>{{ allData.uwi }}</td>
+                      <td>
+                        <span v-if="allData">{{ allData.uwi }}</span>
+                      </td>
                     </tr>
                     <tr>
                       <td>2</td>
                       <td>Вид скважины</td>
-                      <td></td>
+                      <td>
+                        <span v-if="wellType">{{ wellType }}</span>
+                      </td>
                     </tr>
                     <tr>
                       <td>3</td>
                       <td>Месторождение</td>
-                      <td></td>
+                      <td>
+                        <span v-if="geo">{{ geo.name_ru }}</span>
+                      </td>
                     </tr>
                     <tr>
                       <td>4</td>
                       <td> Горизонт / Pнас, атм</td>
-                      <td></td>
+                      <td>
+                        <span v-if="geo">{{ geo.name_ru }}</span>
+                      </td>
                     </tr>
                     <tr>
                       <td>5</td>
                       <td> H ротора</td>
-                      <td></td>
+                      <td>
+                        <span v-if="allData">{{ allData.rte }}</span>
+                      </td>
                     </tr>
                     <tr>
                       <td>6</td>
                       <td>Тех. структура</td>
-                      <td>{{ tech[0].name_ru }}</td>
+                      <td>
+                        <span v-if="tech">{{ tech.name_ru }}</span>
+                      </td>
                     </tr>
                     <tr>
                       <td>7</td>
@@ -197,12 +214,14 @@
                     <tr>
                       <td>8</td>
                       <td>ГУ/Ряд</td>
-                      <td></td>
+                      <td>
+                        <span v-if="tech">{{ tech.name_ru }}</span>
+                      </td>
                     </tr>
                     <tr>
                       <td>9</td>
                       <td>Орг. структура</td>
-                      <td>
+                      <td v-if="org">
                         <span v-for="value in org">
                           {{ value.name_ru + "/" }}
                         </span>
@@ -220,82 +239,243 @@
                     </tr>
                     <tr>
                       <td>12</td>
-                      <td>Категория</td>
+                      <td>Координаты X (устья)</td>
                       <td></td>
                     </tr>
                     <tr>
                       <td>13</td>
-                      <td>Период бурения</td>
+                      <td>Координаты X (устья)</td>
                       <td></td>
                     </tr>
                     <tr>
                       <td>14</td>
-                      <td>Дата ввода в эксплуатацию</td>
+                      <td>Координаты забоя X</td>
                       <td></td>
                     </tr>
                     <tr>
                       <td>15</td>
-                      <td>Дата ввода в эксплуатацию</td>
-                      <td>{{ tech[0].dbeg }}</td>
+                      <td>Координаты забоя Y</td>
+                      <td></td>
                     </tr>
                     <tr>
                       <td>16</td>
-                      <td>Состояние</td>
+                      <td>Назначение скважин по проекту</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>16</td>
+                      <td>Назначение скважин по проекту</td>
                       <td></td>
                     </tr>
                     <tr>
                       <td>17</td>
-                      <td>Способ эксплуатации</td>
-                      <td></td>
+                      <td>Категория</td>
+                      <td>
+                        <span v-if="wellCategory">{{ wellCategory.name_ru }}</span>
+                      </td>
                     </tr>
                     <tr>
                       <td>18</td>
+                      <td>Период бурения</td>
+                      <td>
+                        <span
+                            v-if="allData.drill_start_date">{{ allData.drill_start_date }} - {{
+                            allData.drill_end_date
+                          }}</span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>19</td>
+                      <td>Дата ввода в эксплуатацию</td>
+                      <td>
+                        <span v-if="tech">{{ tech.dbeg }}</span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>20</td>
+                      <td>Состояние</td>
+                      <td v-if="wellStatus">{{ wellStatus.name_ru }}</td>
+                    </tr>
+                    <tr>
+                      <td>21</td>
+                      <td>Способ эксплуатации</td>
+                      <td>
+                        <span v-if="wellExpl">{{ wellExpl.name_ru }}</span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>22</td>
                       <td>Тип УО / наличие эксц.болта</td>
                       <td></td>
                     </tr>
                     <tr>
-                      <td>19</td>
+                      <td>23</td>
                       <td>Диаметр экспл.колонны/доп. экспл.колонны,мм</td>
                       <td></td>
                     </tr>
                     <tr>
-                      <td>20</td>
+                      <td>24</td>
                       <td>Тип колонной головки / размеры</td>
                       <td></td>
                     </tr>
                     <tr>
-                      <td>21</td>
-                      <td>глубина спуска насоса (м)</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>22</td>
-                      <td>Код насоса</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>23</td>
-                      <td>Диаметр насоса (мм)</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>24</td>
-                      <td>Глубина спуска пакера</td>
-                      <td></td>
-                    </tr>
-                    <tr>
                       <td>25</td>
-                      <td>Тип СК</td>
+                      <td>Глубина спуска насоса (м)</td>
                       <td></td>
                     </tr>
                     <tr>
                       <td>26</td>
-                      <td>длина хода (м)</td>
+                      <td>Код насоса</td>
                       <td></td>
                     </tr>
                     <tr>
                       <td>27</td>
+                      <td>Диаметр насоса (мм)</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>28</td>
+                      <td>Глубина спуска пакера</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>29</td>
+                      <td>Тип СК</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>30</td>
+                      <td>Длина хода (м)</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>31</td>
                       <td>число качаний (об/мин)</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>32</td>
+                      <td>Фактический забой/(дата отбивки)</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>33</td>
+                      <td>Искусственный забой</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>34</td>
+                      <td>Отбитый забой</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>35</td>
+                      <td>Дата перфорации</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>36</td>
+                      <td>Действующие интервалы перфорации</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>37</td>
+                      <td>Дебит жидкости, м3/сут (режим/факт)</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>38</td>
+                      <td>Обводненность, % (режим/факт)</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>39</td>
+                      <td>Дебит нефти, т/сут (режим/факт)</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>40</td>
+                      <td>Дата последнего КРС</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>41</td>
+                      <td>Дата проведения ПФП нагн. скважины</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>42</td>
+                      <td>Дата проведения ГРП</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>43</td>
+                      <td>Дата последнего ПРС</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>44</td>
+                      <td>Дата последнего ГИС</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>45</td>
+                      <td>Дата последнего ГДИС</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>46</td>
+                      <td>Результат ГДМ</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>47</td>
+                      <td>Длина хода при проведении ГДМ</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>48</td>
+                      <td>Число качаний при проведении ГДМ</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>49</td>
+                      <td>Динамический уровень</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>50</td>
+                      <td>Статический уровень</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>51</td>
+                      <td>Рпл/(дата замера)</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>52</td>
+                      <td>Рпл (Сл. ГДИС)/(дата замера)</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>53</td>
+                      <td>Рзаб/(дата замера)</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>54</td>
+                      <td>Рзатр(дин), атм</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>55</td>
+                      <td>Рзатр(стат)</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>56</td>
+                      <td>Примечание</td>
                       <td></td>
                     </tr>
                   </table>
@@ -325,8 +505,13 @@ export default {
       well: null,
       tech: null,
       wellName: null,
+      wellType: null,
+      wellExpl: null,
+      wellCategory: null,
+      tubeTom: null,
       org: null,
       geo: null,
+      wellStatus: null,
       graph: null,
       activeFormCode: null,
       loading: false,
@@ -341,21 +526,13 @@ export default {
 
   },
   methods: {
-    onLeftColumnFoldingEvent(isLeftColumnFolded, isRightColumnFolded, isBothColumnFolded) {
-      //method check the isLeftColumnFolded & isRightColumnFolded var and returns isBothColumnFolded if true
-      this.isLeftColumnFolded = !isLeftColumnFolded;
-      if (this.isLeftColumnFolded === true && this.isRightColumnFolded === true) {
-        this.isBothColumnFolded = !isBothColumnFolded;
-        this.isBothColumnFolded = true;
+    onColumnFoldingEvent(method) {
+      if (method === 'left') {
+        this.isLeftColumnFolded = !this.isLeftColumnFolded;
       } else {
-        this.isBothColumnFolded = false;
+        this.isRightColumnFolded = !this.isRightColumnFolded;
       }
-    },
-    onRightColumnFoldingEvent(isLeftColumnFolded, isRightColumnFolded, isBothColumnFolded) {
-      //method check the isLeftColumnFolded & isRightColumnFolded var and returns isBothColumnFolded if true
-      this.isRightColumnFolded = !isRightColumnFolded;
       if (this.isLeftColumnFolded === true && this.isRightColumnFolded === true) {
-        this.isBothColumnFolded = !isBothColumnFolded;
         this.isBothColumnFolded = true;
       } else {
         this.isBothColumnFolded = false;
@@ -378,18 +555,28 @@ export default {
     selectWell(well) {
       this.loading = true
       this.axios.get(this.localeUrl(`/api/bigdata/wells/${well.id}`)).then(({data}) => {
-        this.tech = data[0].techs
-        this.org = data[0].orgs
-        this.geo = data[0].geo
-        this.wellName = data[0].uwi
-        this.allData = data[0]
-        console.log(data[0])
-        this.loading = false
+        try {
+          this.tech = data.techs
+          this.org = data.orgs
+          this.geo = data.geo[0]
+          this.wellName = data.uwi
+          this.allData = data
+          this.wellType = data.well_type[0].name_ru
+          this.wellStatus = data.status[data.status.length - 1] // уточнить, какой именно статус взять
+          this.wellExpl = data.well_expl[0]
+          this.tubeTom = data.tube_nom[0]
+          this.wellCategory = data.category[0]
+          this.well = data.well[0]
+
+          this.loading = false
+        } catch (e) {
+          this.loading = false
+        }
       })
-    },
-    setForm(formCode) {
-      this.activeFormCode = formCode
     }
+  },
+  setForm(formCode) {
+    this.activeFormCode = formCode
   }
 }
 </script>
@@ -1079,7 +1266,7 @@ h4 {
 }
 
 .info {
-  height: calc(100vh - 100px);
+  height: calc(100vh - 160px);
   margin-bottom: 0 !important;
   overflow-y: auto;
   overflow-x: hidden;
@@ -1121,6 +1308,16 @@ h4 {
     }
   }
 
+  .rotate {
+    transform: rotate(-90deg);
+    margin-top: 100px;
+    margin-bottom: 10px;
+    display: flex;
+    white-space: nowrap;
+    font-family: 'Harmonia Sans Pro Cyr', 'Harmonia-Sans', 'Robato';
+    font-weight: 700;
+    font-size: 16px;
+  }
 }
 
 .full-size-icon {
@@ -1437,7 +1634,7 @@ h4 {
     }
 
     & ~ .mid-col {
-      min-width: calc(100% - #{$leftColumnFoldedWidth} - #{$rightColumnFoldedWidth} - 11px) !important;
+      min-width: calc(100% - #{$leftColumnFoldedWidth} - #{$rightColumnFoldedWidth} - 9px) !important;
     }
 
   }
@@ -1451,7 +1648,7 @@ h4 {
   min-width: $leftColumnWidth;
   width: $leftColumnWidth;
   padding: 0 15px;
-  margin-bottom: 15px;
+  margin-bottom: 0px;
 
   &_folded {
     min-width: $leftColumnFoldedWidth;
@@ -1470,7 +1667,7 @@ h4 {
     }
 
     & ~ .mid-col {
-      min-width: calc(100% - #{$leftColumnFoldedWidth} - #{$rightColumnWidth} - 11px);
+      min-width: calc(100% - #{$leftColumnFoldedWidth} - #{$rightColumnWidth} - 9px);
     }
 
   }
@@ -1501,14 +1698,16 @@ h4 {
     min-width: $leftColumnFoldedWidth;
     width: $leftColumnFoldedWidth;
     max-width: $leftColumnFoldedWidth;
-    margin-left: auto;
+    margin: 0px;
+    padding: 0px 15px;
 
     & ~ .mid-col {
-      min-width: calc(100% - #{$leftColumnWidth} - 84px - 11px);
+      min-width: calc(100% - #{$leftColumnWidth} - #{$rightColumnFoldedWidth} - 9px);
     }
 
     .icon-all {
       transform: rotate(180deg);
+      padding-bottom: 25px;
     }
 
     p {
@@ -1536,15 +1735,21 @@ h4 {
 }
 
 .mid-col {
-  min-width: calc(100% - #{$leftColumnWidth} - #{$rightColumnWidth} - 11px);
+  min-width: calc(100% - #{$leftColumnWidth} - #{$rightColumnWidth} - 9px);
   padding: 0 15px;
+  height: calc(100vh - 90px);
 
   &__main {
-    height: calc(100vh - 123px);
+    height: 100%;
+    overflow: hidden;
 
     &-inner {
       margin-bottom: 0;
     }
+  }
+
+  .col-md-12 {
+    height: 100%;
   }
 }
 

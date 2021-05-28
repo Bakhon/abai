@@ -1,0 +1,69 @@
+{
+  "type": "plain",
+  "table": "well_constr",
+  "tabs": [
+    {
+      "title": "well_constructor",
+      "blocks": [
+        [
+          {
+            "title": "",
+            "items": [
+              {
+                "code": "casing_type",
+                "type": "dict",
+                "title": "column_type",
+                "dict": "equips",
+                "validation": "required"
+              },
+              {
+                "code": "depth",
+                "type": "numeric",
+                "title": "casing_running_depth",
+                "validation": "required"
+              },
+              {
+                "code": "sidetrack",
+                "type": "checkbox",
+                "title": "side_barrel",
+                "validation": "required"
+              },
+              {
+                "code": "casing_nom",
+                "type": "dict",
+                "title": "casing_type",
+                "dict": "casings",
+                "validation": "required"
+              },
+              {
+                "code": "tube_count",
+                "type": "numeric",
+                "title": "number_of_pipes",
+                "validation": "required"
+              },
+              {
+                "code": "cem_volume",
+                "type": "numeric",
+                "title": "poured_cement_volume",
+                "validation": "required"
+              },
+              {
+                "code": "cem_height",
+                "type": "numeric",
+                "title": "cement_lifting_height",
+                "validation": "required"
+              },
+              {
+                "code": "landing_date",
+                "type": "date",
+                "title": "landing_date",
+                "validation": "required"
+              }
+              
+            ]
+          }
+        ]
+      ]
+    }
+  ]
+}
