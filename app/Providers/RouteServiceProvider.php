@@ -112,6 +112,7 @@ class RouteServiceProvider extends ServiceProvider
             'monitoring',
             'paegtm',
             'ndo',
+            'economy_kenzhe',
             'digital_drilling',
             'plast_fluids'
         ];
