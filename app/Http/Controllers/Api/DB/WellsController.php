@@ -11,7 +11,10 @@ class WellsController extends Controller
 {
     public function get(Well $well)
     {
+
         $wellInfo = Well::where('id', $well->id)->with('category', 'techs', 'geo', 'orgs', 'status', 'well_type', 'well_expl', 'tube_nom')->first();
+       // $result =[];
+      //  foreach ()
         return $wellInfo;
     }
 
