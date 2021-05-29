@@ -5,9 +5,9 @@
   },
   "columnsFormatMapping": {
     "twoColumns": [5],
-    "threeColumns": [15,57],
+    "threeColumns": [15,20,57],
     "fourColumns": [0,25,26,35,36],
-    "fiveColumns": [20],
+    "fiveColumns": [],
     "sixColumns": [10,67]
   }
 }

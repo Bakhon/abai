@@ -1,62 +1,65 @@
 {
   "type": "plain",
-  "table": "prod.well_constr",
-  "table_fields": [
-    "equip_type",
-    "depth",
-    "casing_type"
-  ],
+  "table":   "prod.well_constr",
   "tabs": [
     {
-      "title": "well_design_project",
+      "title": "well_constructor",
       "blocks": [
         [
           {
             "title": "",
             "items": [
               {
-                "code": "name_ru",
+                "code": "casing_type",
                 "type": "dict",
                 "title": "column_type",
-                "dict": "equip_type",
+                "dict": "equips",
                 "validation": "required|exists:tbd.dict.equip_type,id"
               },
               {
                 "code": "depth",
                 "type": "numeric",
                 "title": "casing_running_depth",
-                "validation": "required|numeric"
+                "validation": "required"
               },
               {
                 "code": "sidetrack",
                 "type": "checkbox",
-                "title": "side_barrel"
+                "title": "side_barrel",
+                "validation": "required"
               },
               {
-                "code": "model",
+                "code": "casing_nom",
                 "type": "dict",
-                "title": "tube_nom",
-                "dict": "tube_nom",
+                "title": "casing_type",
+                "dict": "casings",
                 "validation": "required|exists:tbd.dict.tube_nom,id"
               },
               {
                 "code": "tube_count",
                 "type": "numeric",
                 "title": "number_of_pipes",
-                "validation": "required|numeric"
+                "validation": "required"
               },
               {
                 "code": "cem_volume",
                 "type": "numeric",
                 "title": "poured_cement_volume",
-                "validation": "required|numeric"
+                "validation": "required"
               },
               {
                 "code": "cem_height",
                 "type": "numeric",
                 "title": "cement_lifting_height",
-                "validation": "required|numeric"
-              }      
+                "validation": "required"
+              },
+              {
+                "code": "landing_date",
+                "type": "date",
+                "title": "landing_date",
+                "validation": "required"
+              }
+              
             ]
           }
         ]

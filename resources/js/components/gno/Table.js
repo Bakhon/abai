@@ -1295,7 +1295,7 @@ export default {
       this.menu = "MainMenu"
       this.prepareData()
 
-      if(this.Age ==true &&(this.pResInput.split(' ')[0] * 1 <= this.bhpInput.split(' ')[0] * 1 || this.pResInput.split(' ')[0] * 1 <= this.bhpCelValue.split(' ')[0] * 1)) {
+      if(!this.isYoungAge &&(this.pResInput.split(' ')[0] * 1 <= this.bhpInput.split(' ')[0] * 1 || this.pResInput.split(' ')[0] * 1 <= this.bhpCelValue.split(' ')[0] * 1)) {
         this.$notify({
             message: this.trans('pgno.notify_p_zab_more_p_pl'),
             type: 'error',
@@ -1549,7 +1549,11 @@ export default {
             console.log(this.postdata)
             this.axios.post(uri, this.postdata).then((response) => {
               let data = JSON.parse(response.data);
-              if (this.Age==true) {this.fetchBlockCentrators()}
+              if (!this.isYoungAge) {
+                this.fetchBlockCentrators()
+              } else {
+                this.centratorsRequiredValue = []
+              }
               if(data) {
                 if (data["error"] == "NoIntersection") {
                   this.$notify({

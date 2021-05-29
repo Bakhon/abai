@@ -56,11 +56,11 @@
                           </div>
                           <div class="col-12 mt-4">
                             <div
-                              :class="`${getColor2(getDiffProcentLastP(productionParams.oil_fact, productionPercentParams.oil_fact))}`"
+                              :class="`${getGrowthIndicatorByDifference(productionParams.oil_fact, productionPercentParams.oil_fact)}`"
                             ></div>
 
                             <div class="txt2-2">
-                              {{Math.abs(getDiffProcentLastP(productionPercentParams.oil_fact, productionParams.oil_fact))}}%
+                              {{Math.abs(getDifferencePercentBetweenLastValues(productionPercentParams.oil_fact, productionParams.oil_fact))}}%
                             </div>
                             <div class="txt3">
                               vs
@@ -120,11 +120,11 @@
                           <br />
                           <div class="col-12 mt-2">
                             <div
-                              :class="`${getColor2(getDiffProcentLastP(productionParams.oil_dlv_fact,productionPercentParams.oil_dlv_fact))}`"
+                              :class="`${getGrowthIndicatorByDifference(productionParams.oil_dlv_fact,productionPercentParams.oil_dlv_fact)}`"
                             ></div>
 
                             <div class="txt2-2">
-                              {{Math.abs(getDiffProcentLastP(productionPercentParams.oil_dlv_fact,productionParams.oil_dlv_fact))}}%
+                              {{Math.abs(getDifferencePercentBetweenLastValues(productionPercentParams.oil_dlv_fact,productionParams.oil_dlv_fact))}}%
                             </div>
                             <div class="txt3">
                               vs
@@ -185,15 +185,13 @@
                           <br />
                           <div class="col-12 mt-2">
                             <div
-                              :class="`${getColor2(
-                                getDiffProcentLastP(productionParams.gas_fact, productionPercentParams.gas_fact)
-                              )}`"
+                              :class="`${getGrowthIndicatorByDifference(productionParams.gas_fact, productionPercentParams.gas_fact)}`"
                             ></div>
 
                             <div class="txt2-2">
                               {{
                                 Math.abs(
-                                  getDiffProcentLastP(productionPercentParams.gas_fact, productionParams.gas_fact)
+                              getDifferencePercentBetweenLastValues(productionPercentParams.gas_fact, productionParams.gas_fact)
                                 )
                               }}%
                             </div>
@@ -213,7 +211,7 @@
                       <td
                         class="vc-select-table col-6 col-lg-6 rates-block"
                         @click="changeTable('2')"
-                        :style="`${tableHover2}`"
+                        :class="tableHover2"
                       >
                         <div>
                           <div class="number d-flex">
@@ -232,15 +230,16 @@
                         <br />
                         <div class="percent-currency col-12 p-0">
                           <div
-                            class="arrow"
+                            class="indicator-grow"
                             v-if="dailyOilPriceChange === 'UP'"
                           ></div>
                           <div
-                            class="arrow2"
+                            class="indicator-fall"
                             v-if="dailyOilPriceChange === 'DOWN'"
                           ></div>
                           <div class="txt2-2">
-                            {{ Math.abs(getDiffProcentLastP(prices['oil']['previous'], prices['oil']['current'])) }} %
+                            {{Math.abs(getDifferencePercentBetweenLastValues(prices['oil']['previous'], prices['oil']['current']))}}
+                            {{trans("visualcenter.dzoPercent")}}
                           </div>
                           <div class="txt3">
                             {{ trans("visualcenter.vsSeparator") }}
@@ -251,7 +250,7 @@
                       <td
                       class="vc-select-table col-6 col-lg-6 rates-block"
                       @click="changeTable('3')"
-                      :style="`${tableHover3}`"
+                      :class="tableHover3"
                     >
                       <div>
                         <div class="number d-flex">
@@ -270,14 +269,17 @@
                       <br />
                       <div class="percent-currency col-12 mt-20">
                         <div
-                          class="arrow"
+                          class="indicator-grow"
                           v-if="dailyCurrencyChangeIndexUsd === 'UP'"
                         ></div>
                         <div
-                          class="arrow2"
+                          class="indicator-fall"
                           v-if="dailyCurrencyChangeIndexUsd === 'DOWN'"
                         ></div>
-                        <div class="txt2-2">{{ dailyCurrencyChangeUsd }} {{trans("visualcenter.dzoPercent")}}</div>
+                        <div class="txt2-2">
+                          {{ Math.abs(getDifferencePercentBetweenLastValues(prices['usd']['previous'], prices['usd']['current'])) }}
+                          {{trans("visualcenter.dzoPercent")}}
+                        </div>
                         <div class="txt3">
                           {{ trans("visualcenter.vsSeparator") }}
                           {{ new Date(prices['usd']['previousFetchDate']).toLocaleDateString() }}
@@ -1421,7 +1423,8 @@
                   <div class="col">
                     <select
                       class="side-blocks__dzo-companies-dropdown w-100"
-                      @change="innerWellsNagMetOnChange($event)"
+                      @change="innerWellsNagMetOnChange($event, 'injection')"
+                      v-model="selectedDzo"
                     >
                       <option v-for="dzo in injectionWellsOptions" :value="dzo.ticker">
                         {{dzo.name}}
@@ -1581,7 +1584,8 @@
                   <div class="col pr-2">
                     <select
                       class="side-blocks__dzo-companies-dropdown w-100"
-                      @change="innerWellsProdMetOnChange($event)"
+                      @change="innerWellsProdMetOnChange($event, 'production')"
+                      v-model="selectedDzo"
                     >
                       <option v-for="dzo in injectionWellsOptions" :value="dzo.ticker">
                         {{dzo.name}}
@@ -1742,6 +1746,7 @@
                     <select
                       class="side-blocks__dzo-companies-dropdown w-100"
                       @change="innerWellsProdMetOnChange($event)"
+                      v-model="selectedDzo"
                     >
                       <option v-for="dzo in injectionWellsOptions" :value="dzo.ticker">
                         {{dzo.name}}
@@ -1917,6 +1922,7 @@
                     <select
                       class="side-blocks__dzo-companies-dropdown w-100"
                       @change="innerWellsProdMetOnChange($event)"
+                      v-model="selectedDzo"
                     >
                       <option v-for="dzo in injectionWellsOptions" :value="dzo.ticker">
                         {{dzo.name}}
@@ -1996,7 +2002,7 @@
                   <td
                     class="col-6"
                     @click="changeTable('4')"
-                    :style="`${tableHover4}`"
+                    :class="tableHover4"
                   >
                     <div class="txt4">
                       {{ getFormattedNumber(prod_wells_work) }}
@@ -2005,27 +2011,18 @@
                       {{ trans("visualcenter.inWork") }}
                     </div>
                     <div
-                      :class="`${getColor2(
-                        getDiffProcentLastP(prod_wells_work, prod_wells_workPercent)
-                      )}`"
+                      :class="`${getGrowthIndicatorByDifference(prod_wells_work, prod_wells_workPercent)}`"
                     ></div>
 
                     <div class="txt2-2">
-                      {{
-                        Math.abs(
-                          getDiffProcentLastP(
-                            prod_wells_work,
-                            prod_wells_workPercent
-                          )
-                        )
-                      }}%
+                      {{Math.abs(getDifferencePercentBetweenLastValues(prod_wells_work,prod_wells_workPercent))}}%
                     </div>
                   </td>
 
                   <td
                     class="col-6"
                     @click="changeTable('4')"
-                    :style="`${tableHover4}`"
+                    :class="tableHover4"
                   >
                     <div class="txt4 d-flex">
                       <div class="col-10 col-lg-9">
@@ -2039,20 +2036,13 @@
                       {{ trans("visualcenter.inIdle") }}
                     </div>
                     <div
-                      :class="`${getColor2(
-                        getDiffProcentLastP(prod_wells_idle, prod_wells_idlePercent)
+                      :class="`${getIndicatorClassForReverseParams(
+                        getDifferencePercentBetweenLastValues(prod_wells_idle, prod_wells_idlePercent)
                       )}`"
                     ></div>
 
                     <div class="txt2-2">
-                      {{
-                        Math.abs(
-                          getDiffProcentLastP(
-                            prod_wells_idle,
-                            prod_wells_idlePercent
-                          )
-                        )
-                      }}%
+                      {{Math.abs(getDifferencePercentBetweenLastValues(prod_wells_idle,prod_wells_idlePercent))}}%
                     </div>
                     <br />
                   </td>
@@ -2061,9 +2051,9 @@
                   <td
                     class="col-12"
                     @click="changeTable('4')"
-                    :style="`${tableHover4}`"
+                    :class="tableHover4"
                   >
-                    <div class="txt2">
+                    <div class="right-column_header">
                       {{ trans("visualcenter.prodWells") }}
                     </div>
                   </td>
@@ -2077,7 +2067,7 @@
                     <td
                       class="col-6"
                       @click="changeTable('5')"
-                      :style="`${tableHover5}`"
+                      :class="tableHover5"
                     >
                       <div class="txt4">
                         {{getFormattedNumber(inj_wells_work)}}
@@ -2086,27 +2076,18 @@
                         {{ trans("visualcenter.inWork") }}
                       </div>
                       <div
-                        :class="`${getColor2(
-                          getDiffProcentLastP(inj_wells_work, inj_wells_workPercent)
-                        )}`"
+                        :class="`${getGrowthIndicatorByDifference(inj_wells_work, inj_wells_workPercent)}`"
                       ></div>
 
                       <div class="txt2-2">
-                        {{
-                          Math.abs(
-                            getDiffProcentLastP(
-                              inj_wells_work,
-                              inj_wells_workPercent
-                            )
-                          )
-                        }}%
+                        {{Math.abs(getDifferencePercentBetweenLastValues(inj_wells_work,inj_wells_workPercent))}}%
                       </div>
                     </td>
 
                     <td
                       class="col-6"
                       @click="changeTable('5')"
-                      :style="`${tableHover5}`"
+                      :class="tableHover5"
                     >
                       <div class="txt4 d-flex">
                         <div class="col-10 col-lg-9">
@@ -2120,20 +2101,13 @@
                         {{ trans("visualcenter.inIdle") }}
                       </div>
                       <div
-                        :class="`${getColor2(
-                          getDiffProcentLastP(inj_wells_idle, inj_wells_idlePercent)
+                        :class="`${getIndicatorClassForReverseParams(
+                          getDifferencePercentBetweenLastValues(inj_wells_idle, inj_wells_idlePercent)
                         )}`"
                       ></div>
 
                       <div class="txt2-2">
-                        {{
-                          Math.abs(
-                            getDiffProcentLastP(
-                              inj_wells_idle,
-                              inj_wells_idlePercent
-                            )
-                          )
-                        }}%
+                        {{Math.abs(getDifferencePercentBetweenLastValues(inj_wells_idle,inj_wells_idlePercent))}}%
                       </div>
                       <br />
                     </td>
@@ -2142,9 +2116,9 @@
                     <td
                       class="col-12"
                       @click="changeTable('5')"
-                      :style="`${tableHover5}`"
+                      :class="tableHover5"
                     >
-                      <div class="txt2">
+                      <div class="right-column_header">
                         {{ trans("visualcenter.idleWells") }}
                       </div>
                     </td>
@@ -2154,190 +2128,136 @@
             </div>
 
             <div class="first-string first-string2">
+            <div      @click="changeTable('6')"
+                      :class="tableHover6">
+              <table class="table">
+                <tr class="d-flex">
+                 <td>
+                    <div class="number">{{this.otmData[0]['fact']}}</div>
+                    <div class="unit-vc ml-2">
+                      {{ trans('visualcenter.skv') }}                           
+                           </div> 
+                    <div class="in-idle2">
+                 <span v-if="isOneDateSelected"> {{ previousPeriodEnd }}</span>
+                 <span v-else> {{ previousPeriodStart }} - {{ previousPeriodEnd }}</span>
+                    </div>
+                  </td>
+                </tr>
+                <tr class="d-flex">
+                  <td class="col-12">
+                    <div class="right-column_header"> 
+                      {{ trans('visualcenter.drillingWells') }}
+                    </div>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+
+ <div class="first-string first-string2">
+            <div>
+              <table class="table">
+                <tr class="d-flex">
+                 <td class="col-6">
+                    <div class="number">0</div>    <div class="unit-vc ml-2">
+                     {{ trans('visualcenter.chemistryMetricTon') }}                         
+                          </div>  
+                    <div class="in-idle2">
+                 {{ timeSelect }}
+                    </div>
+                  </td>                  
+                </tr>
+                <tr class="d-flex">
+                  <td class="col-12">
+                    <div class="right-column_header">
+                      {{ trans('visualcenter.expectedProduction') }}
+                    </div>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+          
+     <div class="first-string first-string2">
               <div>
                 <table class="table table5">
-                  <tr class="cursor-pointer d-flex">
+                  <tr class="d-flex">
                     <td
                       class="col-6"
                       @click="changeTable('6')"
-                      :style="`${tableHover6}`"
+                      :class="tableHover6"
                     >
                       <div class="mt-1 float-right">
-                        <img data-v-3712f8d4="" src="/img/icons/link.svg" />
+                      
                       </div>
-                      <div class="otm"></div>
-                      <div class="txt2">
-                        {{ trans("visualcenter.otm") }}
+                        <div class="number">{{this.otmData[2]['fact']}}</div><div class="unit-vc ml-2">
+                      {{ trans('visualcenter.skv') }}                           
+                           </div>
+                    <div class="in-idle2">
+                 <span v-if="isOneDateSelected"> {{ previousPeriodEnd }}<br><br></span>
+                 <span v-else> {{ previousPeriodStart }} - {{ previousPeriodEnd }}</span>
+                    </div>
+                <br>
+                      <div class="right-column_header">
+                           {{ trans('visualcenter.otmKrsSkv') }}
                       </div>
                     </td>
 
                     <td
                       class="col-6"
-                      @click="changeTable('7')"
-                      :style="`${tableHover7}`"
+                         @click="changeTable('6')"
+                      :class="tableHover6"
                     >
                       <div class="mt-1 float-right">
-                        <img data-v-3712f8d4="" src="/img/icons/link.svg" />
+                  
                       </div>
-                      <div class="him"></div>
-                      <div class="txt2">
-                        {{ trans("visualcenter.chem") }}
+                         <div class="number">{{this.otmData[3]['fact']}}</div><div class="unit-vc ml-2">
+                      {{ trans('visualcenter.skv') }}                           
+                           </div>
+                    <div class="in-idle2">
+                 <span v-if="isOneDateSelected"> {{ previousPeriodEnd }}<br><br></span>
+                 <span v-else> {{ previousPeriodStart }} - {{ previousPeriodEnd }}</span>
+                    </div>
+                      <br>
+                      <div class="right-column_header">
+                          {{ trans('visualcenter.otmPrsSkv') }}
                       </div>
                     </td>
                   </tr>
                 </table>
               </div>
             </div>
-          </div>
+          </div>     
 
-          <div class="first-string first-string2">
+          <div class="first-string first-string2 cursor-pointer"          
+                      @click="changeTable('7')"
+                      :class="tableHover7"
+          >
             <div>
               <table class="table">
                 <tr class="d-flex">
-                  <td class="col-6">
-                    <div class="number">{{ staff }}</div>
-                    <div class="in-idle2">
-                      {{ quarter1[0] }}
-                      {{ trans("visualcenter.quarter") }}
-                      {{ quarter1[1] }} г.
-                    </div>
-                  </td>
-
-                  <td class="col-6">
-                    <div class="d-flex">
-                      <div class="col-12">
-                        <div
-                          :class="`${getColor2(
-                            getDiffProcentLastP(staffPercent, staff)
-                          )}`"
-                        ></div>
-                        <div class="txt2-2">
-                          {{ Math.abs(getDiffProcentLastP(staffPercent, staff)) }}%
-                        </div>
-                      </div>
-                    </div>
-                    <div>
-                      <div class="in-idle">
-                        {{ getDiffProcentLastP(staffPercent, staff, "1") }}
-                      </div>
-                      <div class="in-idle">
-                        vs {{ quarter2[0] }}
-                        {{ trans("visualcenter.quarter") }}
-                        {{ quarter2[1] }}г.
-                      </div>
+                 <td>
+                    <div class="number">{{this.chemistryDataFactSumm}}</div>
+                 <div class="unit-vc ml-2">
+                     {{ trans('visualcenter.chemistryMetricTon') }}                         
+                          </div>              
+                                 <div class="in-idle2">
+                  <span v-if="isOneDateSelected"> {{ previousPeriodEnd }}</span>
+                 <span v-else> {{ previousPeriodStart }} - {{ previousPeriodEnd }}</span>
                     </div>
                   </td>
                 </tr>
                 <tr class="d-flex">
                   <td class="col-12">
-                    <div class="txt2">
-                      {{trans("visualcenter.personal")}}
-                    </div>
+                    <div class="right-column_header"> 
+                     {{ trans('visualcenter.chemistryCategory') }}                 
+                      </div>
                   </td>
                 </tr>
               </table>
-            </div>
-          </div>
-
-          <div class="first-string first-string2">
-            <div>
-              <table class="table">
-                <tr class="d-flex">
-                  <td class="col-6 px-2">
-                    <div class="number">{{ covid }}</div>
-                    <div class="in-idle2">{{ timeSelect }}</div>
-                  </td>
-
-                  <td class="col-6">
-                    <div class="d-flex">
-                      <div
-                        :class="`${getColor2(
-                          getDiffProcentLastP(covidPercent, covid)
-                        )}`"
-                      ></div>
-                      <div class="txt2-2">
-                        {{ Math.abs(getDiffProcentLastP(covidPercent, covid)) }}%
-                      </div>
-                    </div>
-                    <div>
-                      <div class="in-idle">
-                        {{ getDiffProcentLastP(covidPercent, covid, "1") }}
-                      </div>
-                      <div class="in-idle">
-                        vs
-                        <span v-if="isOneDateSelected"> {{ previousPeriodEnd }}</span>
-                        <span v-else> {{ previousPeriodStart }} - {{ previousPeriodEnd }}</span>
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td class="col-12">
-                    <div class="txt2">COVID-19</div>
-                  </td>
-                </tr>
-              </table>
-            </div>
-          </div>
-
-          <div class="first-string first-string2">
-            <div>
-              <table class="table table1-2">
-                <tr>
-                  <td class="d-flex">
-                    <div class="number col-6">{{ accidentTotal }}</div>
-                    <div class="col-6">
-                      <div>
-                        <div class="in-idle">
-                          <!-- с начала -->{{ trans("visualcenter.fromBegin") }}
-                        </div>
-                        <div class="in-idle">
-                          <!-- года -->{{ trans("visualcenter.year") }}
-                        </div>
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td class="d-flex">
-                    <div class="txt2 col-12">
-                      <!-- Несчастные случаи -->{{ trans("visualcenter.accident") }}
-                    </div>
-                  </td>
-                </tr>
-              </table>
-            </div>
-          </div>
-
-          <div class="first-string first-string2">
-          <div>
-            <table class="table">
-              <tr>
-                <td class="d-flex">
-                  <div class="number col-6">0</div>
-                  <div class="col-6">
-                    <div class="in-idle">
-                      <!-- Прирост -->{{ trans("visualcenter.increase") }}
-                    </div>
-                    <div class="in-idle">
-                      <!-- с начала месяца -->{{
-                      trans("visualcenter.monthBegin")
-                      }}
-                    </div>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td colspan="2">
-                  <div class="txt2">
-                    <!-- Смертельные случаи -->
-                    {{ trans("visualcenter.death") }}
-                  </div>
-                </td>
-              </tr>
-            </table>
-          </div>
-        </div>
+            </div>           
+          </div>      
+     
         </div>
     </div>
     </div>
@@ -2346,37 +2266,37 @@
 
 <script src="./VisualCenterTable3.js"></script>
 <style scoped lang="scss">
-  .dzocompanies-dropdown__divider {
-    border-bottom: 2px solid #656A8A;
-  }
-  .middle-block__list-x-scroll {
-    overflow-x: inherit;
-  }
-  .rates-block {
-    border-left: 10px solid #0f1430;
-  }
-  .oil-block {
-    align-items: baseline;
-  }
-  .additional-header {
-    margin-left: -15px;
-  }
+.dzocompanies-dropdown__divider {
+  border-bottom: 2px solid #656a8a;
+}
+.middle-block__list-x-scroll {
+  overflow-x: inherit;
+}
+.rates-block {
+  border-left: 10px solid #0f1430;
+}
+.oil-block {
+  align-items: baseline;
+}
+.additional-header {
+  margin-left: -15px;
+}
 
-  .visualcenter-page-container {
-    flex-wrap: wrap;
-    margin: 0 !important;
-  }
-  .visualcenter-page-wrapper {
-    position: relative;
-  }
-  .second-column-container {
-    padding-left: 10px;
-    padding-right: 0;
-  }
-  .middle-block-columns {
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-  }
+.visualcenter-page-container {
+  flex-wrap: wrap;
+  margin: 0 !important;
+}
+.visualcenter-page-wrapper {
+  position: relative;
+}
+.second-column-container {
+  padding-left: 10px;
+  padding-right: 0;
+}
+.middle-block-columns {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
 .vis-table {
   overflow-y: auto;
   &::-webkit-scrollbar {
@@ -2450,7 +2370,7 @@
       }
     }
     tr:after {
-      content: ' ';
+      content: " ";
       display: block;
       visibility: hidden;
       clear: both;
@@ -2470,7 +2390,7 @@
       width: 81px;
       position: sticky;
       font-size: 12px;
-      background: #353EA1;
+      background: #353ea1;
       text-align: center;
       &:first-child {
         width: 322px;
@@ -2517,251 +2437,261 @@
 }
 
 .row-name_width_40 {
-    width: 40%;
-  }
-  .width-20 {
-    width: 20%;
+  width: 40%;
+}
+.width-20 {
+  width: 20%;
+}
+
+.data-metrics {
+  font-style: normal;
+  font-family: "HarmoniaSansProCyr-Regular";
+  font-size: 10px;
+  margin-left: 2%;
+}
+.triangle-responsive {
+  border: 6px solid transparent;
+  height: 6px;
+  margin-right: 5px;
+  width: 6px;
+  float: left;
+}
+.data-pointer {
+  cursor: pointer;
+  font-size: 30px;
+}
+.growth-indicator {
+  margin-top: 6px;
+  border-bottom: 6px solid #009846;
+}
+.fall-indicator {
+  margin-top: 13px;
+  border-top: 6px solid #e31e24;
+}
+.growth-indicator-production-data {
+  border-bottom: 6px solid #009846;
+}
+.fall-indicator-production-data {
+  margin-top: 8px;
+  border-top: 6px solid #e31e24;
+}
+
+.accident-triangle {
+  border-top: 6px solid rgb(227, 30, 36);
+  margin-left: 30%;
+}
+.no-accident-triangle {
+  position: relative;
+  width: 14px;
+  height: 5px;
+  background: #9da0b7;
+  border: unset;
+  margin-left: 30%;
+}
+.button-tab-highlighted {
+  border: none;
+  background: #2e50e9;
+  color: white;
+}
+
+.dzo-dropdown {
+  height: 450px;
+}
+
+.dzo-company-list ul {
+  margin: 10px 0 0 0;
+  position: absolute;
+  left: -0.5px;
+  background: #40467e;
+  top: 3em;
+  padding: 5px;
+  list-style: none;
+  z-index: 999;
+  cursor: pointer;
+  color: white;
+  border-radius: inherit;
+  overflow: auto;
+  &::-webkit-scrollbar {
+    width: 3px;
   }
 
-  .data-metrics {
-    font-style: normal;
-    font-family: "HarmoniaSansProCyr-Regular";
-    font-size: 10px;
-    margin-left: 2%;
-  }
-  .triangle-responsive {
-    border: 6px solid transparent;
-    height: 6px;
-    margin-right: 5px;
-    width: 6px;
-    float: left;
-  }
-  .data-pointer {
-    cursor: pointer;
-    font-size: 30px;
-  }
-  .growth-indicator {
-    margin-top: 6px;
-    border-bottom: 6px solid #009846;
-  }
-  .fall-indicator {
-    margin-top: 13px;
-    border-top: 6px solid #e31e24;
-  }
-  .growth-indicator-production-data {
-    border-bottom: 6px solid #009846;
-  }
-  .fall-indicator-production-data {
-    margin-top: 8px;
-    border-top: 6px solid #e31e24;
+  &::-webkit-scrollbar-track {
+    background: #333975;
   }
 
-  .accident-triangle {
-    border-top: 6px solid rgb(227, 30, 36);
-    margin-left: 30%;
+  &::-webkit-scrollbar-thumb {
+    background: #1f213e;
   }
-  .no-accident-triangle {
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: #1f213e;
+  }
+
+  &::-webkit-scrollbar-corner {
+    background: #333975;
+  }
+}
+.show-company-list {
+  display: block;
+}
+.hide-company-list {
+  display: none;
+}
+.dzo-company-list li {
+  text-align: left;
+  background: #40467e;
+  font-style: normal;
+  font-size: 14px;
+  line-height: 27px;
+  padding: 3px;
+}
+.arrow-down {
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid #9ea4c9;
+  display: inline-block;
+  cursor: pointer;
+  float: right;
+  margin-top: 20px;
+  margin-right: 15px;
+}
+.dzo-company-reason {
+  background: rgb(54, 59, 104);
+  min-height: 60%;
+  width: 100%;
+  border-top: 5px solid #272953;
+}
+.mh-60 {
+  min-height: 60%;
+}
+.mh-30 {
+  min-height: 30%;
+}
+.chemistry-table {
+  height: calc(100% - 20px);
+}
+.cursor-pointer {
+  cursor: pointer;
+}
+.main-table__scroll {
+  flex: unset;
+  max-height: 80%;
+  max-width: 100%;
+  overflow: auto;
+}
+@media (max-width: 400px) {
+  .upper-block {
+    max-width: 380px;
+  }
+  .rates-block {
+    border-left: 0;
+    border-top: 10px solid #0f1430 !important;
+    &:last-child {
+      border-left: 10px solid #0f1430 !important;
+    }
+  }
+  .middle-block__list-x-scroll {
+    flex-wrap: unset;
+    overflow-x: scroll;
+  }
+  .second-column-container {
+    padding-left: 10px;
+    padding-right: 10px;
+    border-top: 10px solid #0f1430;
+  }
+  .table4 {
+    min-width: 0 !important;
+    font-size: 10px !important;
+    th {
+      font-size: inherit !important;
+      width: 5% !important;
+    }
+    tr td {
+      width: 100%;
+      min-width: 62px !important;
+      font-size: inherit !important;
+      .font {
+        font-size: inherit !important;
+      }
+    }
+  }
+  .middle-block-columns {
+    border-top: 10px solid #0f1430;
+  }
+  .side-tables__main-menu-button {
+    line-height: 20px;
+  }
+  .middle-block__table {
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+  .first-string {
     position: relative;
-    width: 14px;
-    height: 5px;
-    background: #9da0b7;
-    border: unset;
-    margin-left: 30%;
   }
-  .button-tab-highlighted {
-    border: none;
-    background: #2E50E9;
-    color:white;
+  .dropdown {
+    position: static;
   }
-
-  .dzo-dropdown {
-    height: 450px;
+  .dzocompanylist__button {
+    position: static;
   }
-
-  .dzo-company-list ul {
-    margin: 10px 0 0 0;
-    position: absolute;
-    left: -0.5px;
-    background: #40467E;
-    top: 3em;
-    padding: 5px;
-    list-style: none;
-    z-index: 999;
-    cursor: pointer;
-    color:white;
-    border-radius: inherit;
-    overflow: auto;
-    &::-webkit-scrollbar {
-      width: 3px;
-    }
-
-    &::-webkit-scrollbar-track {
-      background: #333975;
-    }
-
-    &::-webkit-scrollbar-thumb {
-      background: #1f213e;
-    }
-
-    &::-webkit-scrollbar-thumb:hover {
-      background: #1f213e;
-    }
-
-    &::-webkit-scrollbar-corner {
-      background: #333975;
-    }
-  }
-  .show-company-list {
-    display: block;
-  }
-  .hide-company-list {
-    display: none;
+}
+.rates-block__row {
+  height: 100%;
+}
+.button_hover{
+  background: #0d2792
+}
+@media (max-width: 1400px) {
+  .rates-block__row {
+    height: auto;
   }
   .dzo-company-list li {
-    text-align: left;
-    background: #40467E;
-    font-style: normal;
-    font-size: 14px;
-    line-height: 27px;
-    padding: 3px;
+    font-size: 12px;
   }
-  .arrow-down {
-    width: 0;
-    height: 0;
-    border-left: 5px solid transparent;
-    border-right: 5px solid transparent;
-    border-top: 5px solid #9EA4C9;
-    display: inline-block;
-    cursor: pointer;
-    float: right;
-    margin-top: 20px;
-    margin-right: 15px;
+  .vis-table .table4 {
+    min-width: 0;
   }
-  .dzo-company-reason {
-    background: rgb(54, 59, 104);
-    min-height: 60%;
-    width: 100%;
-    border-top: 5px solid #272953;
+  .mt-20 {
+    margin-top: 20%;
   }
-  .mh-60 {
-    min-height: 60%;
+  .year-period-dropdown {
+    min-width: 0;
   }
-  .mh-30 {
-    min-height: 30%;
+  .right-column_header{
+    font-family: Bold;   
+    font-size: 0.8rem;    
   }
-  .chemistry-table {
-    height: calc(100% - 20px);
-  }
-  .cursor-pointer {
-    cursor: pointer;
-  }
-  .main-table__scroll {
-    flex: unset;
-    max-height: 80%;
-    max-width: 100%;
-    overflow: auto;
-  }
-  @media (max-width:400px) {
-    .upper-block {
-      max-width: 380px;
-    }
-    .rates-block {
-      border-left: 0;
-      border-top: 10px solid #0f1430 !important;
-      &:last-child {
-        border-left: 10px solid #0f1430 !important;
-      }
-    }
-    .middle-block__list-x-scroll {
-      flex-wrap: unset;
-      overflow-x: scroll;
-    }
-    .second-column-container {
-      padding-left: 10px;
-      padding-right: 10px;
-      border-top: 10px solid #0f1430;
-    }
-    .table4 {
-      min-width: 0 !important;
-      font-size: 10px !important;
-      th {
-        font-size: inherit !important;
-        width: 5% !important;
-      }
-      tr td {
-        width: 100%;
-        min-width: 62px !important;
-        font-size: inherit !important;
-        .font {
-          font-size: inherit !important;
-        }
-      }
-
-    }
-    .middle-block-columns {
-      border-top: 10px solid #0f1430;
-    }
-    .side-tables__main-menu-button {
-      line-height: 20px;
-    }
-    .middle-block__table {
-      margin-left: 10px;
-      margin-right: 10px;
-    }
-    .first-string {
-      position: relative;
-    }
-    .dropdown {
-      position: static;
-    }
-    .dzocompanylist__button {
-      position: static;
+}
+@media (max-width: 2000px) {
+  .table4 {
+    tr td {
+      min-width: 5.3em !important;
     }
   }
-  .rates-block__row {
-    height: 100%;
+  .row-name_width_40 {
+    width: 80%;
   }
-  @media (max-width:1400px) {
-    .rates-block__row {
-      height: auto;
-    }
-    .dzo-company-list li {
-      font-size: 12px;
-    }
-    .vis-table .table4 {
-      min-width: 0;
-    }
-    .mt-20 {
-      margin-top: 20%;
-    }
-    .year-period-dropdown {
-      min-width: 0;
-    }
+  .year-period-dropdown {
+    min-width: 290px;
+    height: 45px;
   }
-  @media (max-width:2000px) {
-    .table4 {
-      tr td {
-        min-width: 5.3em !important;
-      }
-    }
-    .row-name_width_40 {
-      width: 80%;
-    }
-    .year-period-dropdown {
-      min-width: 290px;
-      height: 45px;
-    }
-  }
-  .dzocompanies__button_position {
-    margin-top: 0.7em;
-  }
-  .side-blocks__dzo-companies-dropdown {
-    position: relative;
-    background-color: #333975;
-    height: 40px;
-    text-align: center;
-    line-height: 40px;
-    color: #9EA4C9;
-    border: none;
-  }
+}
+.dzocompanies__button_position {
+  margin-top: 0.7em;
+}
+.side-blocks__dzo-companies-dropdown {
+  position: relative;
+  background-color: #333975;
+  height: 40px;
+  text-align: center;
+  line-height: 40px;
+  color: #9ea4c9;
+  border: none;
+}
+.right-column_header{
+  font-family: Bold;   
+  font-size: 0.9rem;    
+}
 </style>
