@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Refs;
 
-use App\Filters\FileStatusFilter;
+use App\Filters\LasDictionariesFilter;
 use App\Http\Controllers\Traits\WithFieldsValidation;
 use App\Http\Requests\IndexTableRequest;
 use App\Http\Requests\FileStatusRequest;
@@ -139,6 +139,6 @@ class LasDictionariesController extends CrudController
 
     protected function getFilteredQuery($filter, $query = null)
     {
-        return (new FileStatusFilter($query, $filter))->filter();
+        return (new LasDictionariesFilter($query, $filter))->filter();
     }
 }

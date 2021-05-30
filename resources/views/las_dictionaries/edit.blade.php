@@ -16,7 +16,7 @@
                     @method('patch')
                     @csrf
                     <div class="row">
-                        <las-dictionaries-form :model-name='@json($model_name)' :is-editing="true" :file-status='@json($data)' :validation-params='@json($validationParams)'></las-dictionaries-form>
+                        <las-dictionaries-form :model-name='@json($model_name)' :is-editing="true" :dict-data='@json($data)' :validation-params='@json($validationParams)'></las-dictionaries-form>
                     </div>
                 </form>
             </div>

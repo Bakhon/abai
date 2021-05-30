@@ -34,7 +34,7 @@ export default {
       type: String,
       required: true,
     },
-    fileStatus: {
+    dictData: {
       type: Object,
       default: null
     },
@@ -76,14 +76,14 @@ export default {
       return true
     },
     requestUrl () {
-      return this.isEditing ? this.localeUrl(`bigdata/${this.modelName}/` + this.fileStatus.id) : this.localeUrl(`bigdata/${this.modelName}`);
+      return this.isEditing ? this.localeUrl(`bigdata/${this.modelName}/` + this.dictData.id) : this.localeUrl(`bigdata/${this.modelName}`);
     },
     requestMethod () {
       return this.isEditing ? "put" : "post";
     }
   },
   mounted() {
-    this.formFields = this.fileStatus ? this.fileStatus : defaultFormFields;
+    this.formFields = this.dictData ? this.dictData : defaultFormFields;
   },
 };
 </script>

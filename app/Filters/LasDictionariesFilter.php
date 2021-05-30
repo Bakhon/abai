@@ -2,7 +2,7 @@
 
 namespace App\Filters;
 
-class FileStatusFilter extends BaseFilter
+class LasDictionariesFilter extends BaseFilter
 {
     protected function sort(string $field, bool $isDescending)
     {
