@@ -61,54 +61,6 @@
                 <label class="form-check-label"
                        for="permission_{{$permissions->get('monitoring view pipes map')->id}}">Просмотр карты</label>
             </div>
-            <div class="form-check mb-4">
-                <input
-                        class="form-check-input"
-                        id="permission_{{$permissions->get('monitoring create file_status')->id}}"
-                        type="checkbox"
-                        name="permissions[]"
-                        value="{{$permissions->get('monitoring create file_status')->id}}"
-                        {{!empty($role) && $role->permissions->where('id', $permissions->get('monitoring create file_status')->id)->isNotEmpty() ? 'checked' : ''}}
-                >
-                <label class="form-check-label"
-                       for="permission_{{$permissions->get('monitoring create file_status')->id}}">Просмотр карты</label>
-            </div>
-            <div class="form-check mb-4">
-                <input
-                        class="form-check-input"
-                        id="permission_{{$permissions->get('monitoring list file_status')->id}}"
-                        type="checkbox"
-                        name="permissions[]"
-                        value="{{$permissions->get('monitoring list file_status')->id}}"
-                        {{!empty($role) && $role->permissions->where('id', $permissions->get('monitoring list file_status')->id)->isNotEmpty() ? 'checked' : ''}}
-                >
-                <label class="form-check-label"
-                       for="permission_{{$permissions->get('monitoring list file_status')->id}}">Просмотр карты</label>
-            </div>
-            <div class="form-check mb-4">
-                <input
-                        class="form-check-input"
-                        id="permission_{{$permissions->get('monitoring update file_status')->id}}"
-                        type="checkbox"
-                        name="permissions[]"
-                        value="{{$permissions->get('monitoring update file_status')->id}}"
-                        {{!empty($role) && $role->permissions->where('id', $permissions->get('monitoring update file_status')->id)->isNotEmpty() ? 'checked' : ''}}
-                >
-                <label class="form-check-label"
-                       for="permission_{{$permissions->get('monitoring update file_status')->id}}">Просмотр карты</label>
-            </div>
-            <div class="form-check mb-4">
-                <input
-                        class="form-check-input"
-                        id="permission_{{$permissions->get('monitoring delete file_status')->id}}"
-                        type="checkbox"
-                        name="permissions[]"
-                        value="{{$permissions->get('monitoring delete file_status')->id}}"
-                        {{!empty($role) && $role->permissions->where('id', $permissions->get('monitoring delete file_status')->id)->isNotEmpty() ? 'checked' : ''}}
-                >
-                <label class="form-check-label"
-                       for="permission_{{$permissions->get('monitoring delete file_status')->id}}">Просмотр карты</label>
-            </div>
             @foreach($sections as $code => $name)
                 <div class="section mb-4">
                     <h5>{{$name}}</h5>
