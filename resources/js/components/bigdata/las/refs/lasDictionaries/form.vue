@@ -1,7 +1,7 @@
 <template>
   <div class="col-xs-12 col-sm-12 col-md-12 row">
     <div class="col-xs-12 col-sm-4 col-md-4">
-      <label>{{ trans('monitoring.recording_method.fields.name') }}</label>
+      <label>{{ trans(`monitoring.${this.modelName}.fields.name`) }}</label>
       <div class="form-label-group">
         <input
             v-model="formFields.name_ru"
@@ -28,9 +28,13 @@ const defaultFormFields = {
 };
 
 export default {
-  name: "recording-method-form",
+  name: "las-dictionaries-form",
   props: {
-    recordingMethod: {
+    modelName: {
+      type: String,
+      required: true,
+    },
+    fileStatus: {
       type: Object,
       default: null
     },
@@ -57,7 +61,7 @@ export default {
           [this.requestMethod](this.requestUrl, this.formFields)
           .then((response) => {
             if (response.data.status == 'success') {
-              window.location.replace(this.localeUrl("bigdata/recording_method"));
+              window.location.replace(this.localeUrl(`bigdata/${this.modelName}`));
             }
           });
     }
@@ -72,14 +76,14 @@ export default {
       return true
     },
     requestUrl () {
-      return this.isEditing ? this.localeUrl("bigdata/recording_method/" + this.recordingMethod.id) : this.localeUrl("bigdata/recording_method");
+      return this.isEditing ? this.localeUrl(`bigdata/${this.modelName}/` + this.fileStatus.id) : this.localeUrl(`bigdata/${this.modelName}`);
     },
     requestMethod () {
       return this.isEditing ? "put" : "post";
     }
   },
   mounted() {
-    this.formFields = this.recordingMethod ? this.recordingMethod : defaultFormFields;
+    this.formFields = this.fileStatus ? this.fileStatus : defaultFormFields;
   },
 };
 </script>

@@ -10,12 +10,12 @@
                 </div>
             @endif
             <div class="x_panel">
-            <h1>{{ trans('monitoring.file_status.create_title') }}</h1>
+            <h1>{{ trans('monitoring.'.$model_name.'.create_title') }}</h1>
             <a class="btn btn-primary float-left" href="{{ url()->previous() }}"><i class="fas fa-arrow-left"></i></a>
-                <form action="{{ route('file_status.store') }}" method="POST">
+                <form action="{{ route($model_name.'.store') }}" method="POST">
                     @csrf
                     <div class="row">
-                        <file-status-form :validation-params='@json($validationParams)'></file-status-form>
+                        <las-dictionaries-form :model-name='@json($model_name)' :validation-params='@json($validationParams)'></las-dictionaries-form>
                     </div>
                 </form>
             </div>

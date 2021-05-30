@@ -10,13 +10,13 @@
                 </div>
             @endif
             <div class="x_panel">
-            <h1>{{ trans('monitoring.file_type.edit_title') }}</h1>
+            <h1>{{ trans('monitoring.'.$model_name.'.edit_title') }}</h1>
             <a class="btn btn-primary float-left" href="{{ url()->previous() }}"><i class="fas fa-arrow-left"></i></a>
-                <form action="{{ route('file_type.update', ['file_type' => $file_type->id]) }}" method="PUT">
+                <form action="{{ route($model_name.'.update', [$model_name => $data->id]) }}" method="PUT">
                     @method('patch')
                     @csrf
                     <div class="row">
-                        <file-type-form :is-editing="true" :file-type='@json($file_type)' :validation-params='@json($validationParams)'></file-type-form>
+                        <las-dictionaries-form :model-name='@json($model_name)' :is-editing="true" :file-status='@json($data)' :validation-params='@json($validationParams)'></las-dictionaries-form>
                     </div>
                 </form>
             </div>
