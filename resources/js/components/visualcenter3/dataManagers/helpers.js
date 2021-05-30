@@ -71,6 +71,7 @@ export default {
             if (previous != '' && previous !== 0) {
                 return ((current / previous - 1) * 100).toFixed(2);
             }
+            return 0;
         },
 
         pad(n) {
