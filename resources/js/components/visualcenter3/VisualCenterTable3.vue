@@ -2133,7 +2133,7 @@
               <table class="table">
                 <tr class="d-flex">
                  <td>
-                    <div class="number">{{this.otmData[0]['fact']}}</div>
+                    <div class="number">{{drillingWells}}</div>
                     <div class="unit-vc ml-2">
                       {{ trans('visualcenter.skv') }}                           
                            </div> 
@@ -2190,7 +2190,7 @@
                       <div class="mt-1 float-right">
                       
                       </div>
-                        <div class="number">{{this.otmData[2]['fact']}}</div><div class="unit-vc ml-2">
+                        <div class="number">{{otmKrsSkv}}</div><div class="unit-vc ml-2">
                       {{ trans('visualcenter.skv') }}                           
                            </div>
                     <div class="in-idle2">
@@ -2211,7 +2211,7 @@
                       <div class="mt-1 float-right">
                   
                       </div>
-                         <div class="number">{{this.otmData[3]['fact']}}</div><div class="unit-vc ml-2">
+                         <div class="number">{{otmPrsSkv}}</div><div class="unit-vc ml-2">
                       {{ trans('visualcenter.skv') }}                           
                            </div>
                     <div class="in-idle2">
@@ -2237,7 +2237,7 @@
               <table class="table">
                 <tr class="d-flex">
                  <td>
-                    <div class="number">{{this.chemistryDataFactSumm}}</div>
+                    <div class="number">{{chemistryDataFactSumm}}</div>
                  <div class="unit-vc ml-2">
                      {{ trans('visualcenter.chemistryMetricTon') }}                         
                           </div>              
