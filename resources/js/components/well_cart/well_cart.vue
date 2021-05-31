@@ -164,319 +164,12 @@
                     <tr>
                       <th colspan="3">Общая информация</th>
                     </tr>
-                    <tr>
-                      <td>1</td>
-                      <td>Скважина</td>
+                    <tr v-for="(item, index) in this.tableData">
+                      <td>{{ index+1 }}</td>
+                      <td>{{item.name}}</td>
                       <td>
-                        <span v-if="allData">{{ allData.uwi }}</span>
+                        <span>{{item.data}}</span>
                       </td>
-                    </tr>
-                    <tr>
-                      <td>2</td>
-                      <td>Вид скважины</td>
-                      <td>
-                        <span v-if="wellType">{{ wellType }}</span>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>3</td>
-                      <td>Месторождение</td>
-                      <td>
-                        <span v-if="geo">{{ geo.name_ru }}</span>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>4</td>
-                      <td> Горизонт / Pнас, атм</td>
-                      <td>
-                        <span v-if="geo">{{ geo.name_ru }}</span>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>5</td>
-                      <td> H ротора</td>
-                      <td>
-                        <span v-if="allData">{{ allData.rte }}</span>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>6</td>
-                      <td>Тех. структура</td>
-                      <td>
-                        <span v-if="tech">{{ tech.name_ru }}</span>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>7</td>
-                      <td>Отвод</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>8</td>
-                      <td>ГУ/Ряд</td>
-                      <td>
-                        <span v-if="tech">{{ tech.name_ru }}</span>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>9</td>
-                      <td>Орг. структура</td>
-                      <td v-if="org">
-                        <span v-for="value in org">
-                          {{ value.name_ru + "/" }}
-                        </span>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>10</td>
-                      <td>Зона скважины</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>11</td>
-                      <td>Влияющие скважины</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>12</td>
-                      <td>Координаты X (устья)</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>13</td>
-                      <td>Координаты X (устья)</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>14</td>
-                      <td>Координаты забоя X</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>15</td>
-                      <td>Координаты забоя Y</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>16</td>
-                      <td>Назначение скважин по проекту</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>16</td>
-                      <td>Назначение скважин по проекту</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>17</td>
-                      <td>Категория</td>
-                      <td>
-                        <span v-if="wellCategory">{{ wellCategory.name_ru }}</span>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>18</td>
-                      <td>Период бурения</td>
-                      <td>
-                        <span
-                            v-if="allData.drill_start_date">{{ allData.drill_start_date }} - {{
-                            allData.drill_end_date
-                          }}</span>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>19</td>
-                      <td>Дата ввода в эксплуатацию</td>
-                      <td>
-                        <span v-if="tech">{{ tech.dbeg }}</span>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>20</td>
-                      <td>Состояние</td>
-                      <td v-if="wellStatus">{{ wellStatus.name_ru }}</td>
-                    </tr>
-                    <tr>
-                      <td>21</td>
-                      <td>Способ эксплуатации</td>
-                      <td>
-                        <span v-if="wellExpl">{{ wellExpl.name_ru }}</span>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>22</td>
-                      <td>Тип УО / наличие эксц.болта</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>23</td>
-                      <td>Диаметр экспл.колонны/доп. экспл.колонны,мм</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>24</td>
-                      <td>Тип колонной головки / размеры</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>25</td>
-                      <td>Глубина спуска насоса (м)</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>26</td>
-                      <td>Код насоса</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>27</td>
-                      <td>Диаметр насоса (мм)</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>28</td>
-                      <td>Глубина спуска пакера</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>29</td>
-                      <td>Тип СК</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>30</td>
-                      <td>Длина хода (м)</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>31</td>
-                      <td>число качаний (об/мин)</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>32</td>
-                      <td>Фактический забой/(дата отбивки)</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>33</td>
-                      <td>Искусственный забой</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>34</td>
-                      <td>Отбитый забой</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>35</td>
-                      <td>Дата перфорации</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>36</td>
-                      <td>Действующие интервалы перфорации</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>37</td>
-                      <td>Дебит жидкости, м3/сут (режим/факт)</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>38</td>
-                      <td>Обводненность, % (режим/факт)</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>39</td>
-                      <td>Дебит нефти, т/сут (режим/факт)</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>40</td>
-                      <td>Дата последнего КРС</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>41</td>
-                      <td>Дата проведения ПФП нагн. скважины</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>42</td>
-                      <td>Дата проведения ГРП</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>43</td>
-                      <td>Дата последнего ПРС</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>44</td>
-                      <td>Дата последнего ГИС</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>45</td>
-                      <td>Дата последнего ГДИС</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>46</td>
-                      <td>Результат ГДМ</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>47</td>
-                      <td>Длина хода при проведении ГДМ</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>48</td>
-                      <td>Число качаний при проведении ГДМ</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>49</td>
-                      <td>Динамический уровень</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>50</td>
-                      <td>Статический уровень</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>51</td>
-                      <td>Рпл/(дата замера)</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>52</td>
-                      <td>Рпл (Сл. ГДИС)/(дата замера)</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>53</td>
-                      <td>Рзаб/(дата замера)</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>54</td>
-                      <td>Рзатр(дин), атм</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>55</td>
-                      <td>Рзатр(стат)</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>56</td>
-                      <td>Примечание</td>
-                      <td></td>
                     </tr>
                   </table>
                 </div>
@@ -519,7 +212,14 @@ export default {
       isRightColumnFolded: false,
       isBothColumnFolded: false,
       allData: null,
-      popup: false
+      popup: false,
+      tableData: [
+          {
+            'description': 'this.wellExpl.name_ru',
+            'name': 'wellExpl',
+            'data': null
+          }
+      ]
     }
   },
   mounted() {
@@ -562,17 +262,26 @@ export default {
           this.wellName = data.uwi
           this.allData = data
           this.wellType = data.well_type[0].name_ru
-          this.wellStatus = data.status[data.status.length - 1] // уточнить, какой именно статус взять
+          this.wellStatus = data.status[data.status.length - 1]
           this.wellExpl = data.well_expl[0]
           this.tubeTom = data.tube_nom[0]
           this.wellCategory = data.category[0]
-          this.well = data.well[0]
+          this.onDataTransform
+
 
           this.loading = false
         } catch (e) {
           this.loading = false
+          console.log(e)
         }
       })
+    },
+  },
+  computed: {
+    onDataTransform: function () {
+      for(let i = 0; i < this.tableData.length; i++){
+        this.tableData[i].data = (eval(eval('this.tableData[i].description')))
+      }
     }
   },
   setForm(formCode) {
