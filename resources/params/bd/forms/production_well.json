@@ -1,5 +1,5 @@
 {
-  "table": "bigdata_wells",
+  "table": "prod.tech_mode_prod_oil",
   "tabs": [
     {
       "title": "Основное",
@@ -9,13 +9,13 @@
             "title": "Tech_modes_indicators",
             "items": [
               {
-                "code": "date_start",
+                "code": "dbeg",
                 "type": "date",
                 "title": "date_start",
                 "validation": "nullable|date|before_or_equal:today"
               },
               {
-                "code": "date_end",
+                "code": "dend",
                 "type": "date",
                 "title": "date_end",
                 "validation": "nullable|date|before_or_equal:today|after:date_start_drilling"
@@ -51,10 +51,28 @@
                 "validation": "numeric"
               },
               {
-                "code": "water_cut",
+                "code": "wcut",
                 "type": "numeric",
                 "title": "water_cut",
                 "validation": "numeric|min:0|max:100"
+              }
+            ]
+          },
+          {
+            "title": "Planned_events_tech_modes",
+            "items": [
+              {
+                "code": "name_ru",
+                "type": "dict",
+                "title": "event",
+                "dict": "well_activity",
+                "validation": "required|exists:tbd.dict.well_activity,id"              
+              },
+              {
+                "code": "plan_month",
+                "type": "date",
+                "title": "planned_month",
+                "validation": "required|date"
               }
             ]
           }
