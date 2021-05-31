@@ -2133,7 +2133,7 @@
               <table class="table">
                 <tr class="d-flex">
                  <td>
-                    <div class="number">{{drillingWells}}</div>
+                    <div class="number">{{otmVariables.drillingWells}}</div>
                     <div class="unit-vc ml-2">
                       {{ trans('visualcenter.skv') }}                           
                            </div> 
@@ -2190,9 +2190,12 @@
                       <div class="mt-1 float-right">
                       
                       </div>
-                        <div class="number">{{otmKrsSkv}}</div><div class="unit-vc ml-2">
-                      {{ trans('visualcenter.skv') }}                           
-                           </div>
+                        <div class="number">
+                          {{ otmVariables.KrsSkv }}
+                        </div>
+                        <div class="unit-vc ml-2">
+                          {{ trans("visualcenter.skv") }}
+                        </div>
                     <div class="in-idle2">
                  <span v-if="isOneDateSelected"> {{ previousPeriodEnd }}<br><br></span>
                  <span v-else> {{ previousPeriodStart }} - {{ previousPeriodEnd }}</span>
@@ -2211,9 +2214,10 @@
                       <div class="mt-1 float-right">
                   
                       </div>
-                         <div class="number">{{otmPrsSkv}}</div><div class="unit-vc ml-2">
-                      {{ trans('visualcenter.skv') }}                           
-                           </div>
+                          <div class="number">{{ otmVariables.PrsSkv }}</div>
+                          <div class="unit-vc ml-2">
+                            {{ trans("visualcenter.skv") }}
+                          </div>
                     <div class="in-idle2">
                  <span v-if="isOneDateSelected"> {{ previousPeriodEnd }}<br><br></span>
                  <span v-else> {{ previousPeriodStart }} - {{ previousPeriodEnd }}</span>
@@ -2422,7 +2426,7 @@
 .vis-table-small2 {
   max-width: 46% !important;
   tr {
-    // line-height: 4.2rem !important;
+    
     font-size: 1.2rem !important;
     font-family: Bold !important;
   }
@@ -2640,8 +2644,8 @@
 .rates-block__row {
   height: 100%;
 }
-.button_hover{
-  background: #0d2792
+.button_hover {
+  background: #0d2792;
 }
 @media (max-width: 1400px) {
   .rates-block__row {
@@ -2659,9 +2663,9 @@
   .year-period-dropdown {
     min-width: 0;
   }
-  .right-column_header{
-    font-family: Bold;   
-    font-size: 0.8rem;    
+  .right-column_header {
+    font-family: Bold;
+    font-size: 0.8rem;
   }
 }
 @media (max-width: 2000px) {
@@ -2690,52 +2694,51 @@
   color: #9ea4c9;
   border: none;
 }
-.right-column_header{
-  font-family: Bold;   
-  font-size: 0.9rem;    
+.right-column_header {
+  font-family: Bold;
+  font-size: 0.9rem;
 }
 .fond-indicator-grow {
-    background: url(/img/visualcenter3/red-arrow-grow.svg) no-repeat;
-    height: 15px;
-    width: 15px;
-    background-size: contain;
-    float: left;
-    margin-top: 5px;
-    margin-right: 5px;
-    overflow: hidden;
-  }
+  background: url(/img/visualcenter3/red-arrow-grow.svg) no-repeat;
+  height: 15px;
+  width: 15px;
+  background-size: contain;
+  float: left;
+  margin-top: 5px;
+  margin-right: 5px;
+  overflow: hidden;
+}
 
-  .fond-indicator-fall {
-    background: url(/img/visualcenter3/green-arrow-fall.svg) no-repeat;
-    height: 15px;
-    width: 15px;
-    background-size: contain;
-    float: left;
-    margin-top: 5px;
-    margin-right: 5px;
-    overflow: hidden;
-  }
+.fond-indicator-fall {
+  background: url(/img/visualcenter3/green-arrow-fall.svg) no-repeat;
+  height: 15px;
+  width: 15px;
+  background-size: contain;
+  float: left;
+  margin-top: 5px;
+  margin-right: 5px;
+  overflow: hidden;
+}
 
-  .indicator-grow {
-    background: url(/img/visualcenter3/green-arrow.svg) no-repeat;
-    height: 15px;
-    width: 15px;
-    background-size: contain;
-    float: left;
-    margin-top: 5px;
-    margin-right: 5px;
-    overflow: hidden;
-  }
+.indicator-grow {
+  background: url(/img/visualcenter3/green-arrow.svg) no-repeat;
+  height: 15px;
+  width: 15px;
+  background-size: contain;
+  float: left;
+  margin-top: 5px;
+  margin-right: 5px;
+  overflow: hidden;
+}
 
-  .indicator-fall {
-    background: url(/img/visualcenter3/red-arrow.svg) no-repeat;
-    height: 15px;
-    width: 15px;
-    background-size: contain;
-    float: left;
-    margin-top: 5px;
-    margin-right: 5px;
-    overflow: hidden;
-  }
-
+.indicator-fall {
+  background: url(/img/visualcenter3/red-arrow.svg) no-repeat;
+  height: 15px;
+  width: 15px;
+  background-size: contain;
+  float: left;
+  margin-top: 5px;
+  margin-right: 5px;
+  overflow: hidden;
+}
 </style>

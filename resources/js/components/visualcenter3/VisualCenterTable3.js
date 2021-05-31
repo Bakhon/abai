@@ -39,9 +39,11 @@ export default {
     },
     data: function () {
         return {
-            drillingWells: 0,
-            otmKrsSkv: 0,
-            otmPrsSkv: 0,
+            otmVariables: [
+                {drillingWells: 0},
+                {KrsSkv: 0},
+                {PrsSkv: 0}
+            ],
             accidentTotal: '',
             noData: '',
             personalFact: '',
@@ -316,10 +318,10 @@ export default {
             this.productionWells = this.getSummaryWells(dataWithMay, this.wellStockIdleButtons.isProductionIdleButtonActive,'productionFonds');
             this.innerWells2ChartData = this.getSummaryProductionWellsForChart(dataWithMay);
             this.otmData = this.getOtmData(dataWithMay)
-            if (otmData.length > 4) {
-            this.drillingWells=this.otmData[0]['fact'];
-            this.otmKrsSkv=this.otmData[2]['fact'];
-            this.otmPrsSkv=this.otmData[3]['fact'];
+            if (this.otmData.length >= 4) {
+                this.otmVariables.drillingWells=this.otmData[0]['fact'];
+                this.otmVariables.KrsSkv=this.otmData[2]['fact'];
+                this.otmVariables.PrsSkv=this.otmData[3]['fact'];
             }
 
             this.otmChartData = this.getOtmChartData(dataWithMay)
