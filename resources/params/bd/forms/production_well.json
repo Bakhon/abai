@@ -69,7 +69,7 @@
                 "parent_column":"",
                 "columns":[
                   {
-                    "code":"event_type",
+                    "code":"well_activity",
                     "type":"dict",
                     "title":"event",
                     "dict":"well_activity",
