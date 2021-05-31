@@ -345,7 +345,7 @@ export default {
       inflowCurveTitle: this.trans('pgno.krivaya_pritoka'),
       podborGnoTitle: this.trans('pgno.podbor_gno'),
       serviceOffline: false,
-      noneCentrators: true,
+      isCentrators: false,
     };
 
   },
@@ -393,16 +393,6 @@ export default {
     if (this.windowWidth <= 1300 && this.windowWidth > 991) {
       this.activeRightTabName = 'devices';
     }
-  },
-  computed: {
-
-    wellNum() {
-      return this.$store.state.wellNum
-    },
-    wellType() {
-      return this.$store.state.wellType
-    },
-    ...mapState(['wells'])
   },
   methods: {
     setHpumpValueFromIncl() {
@@ -1514,7 +1504,7 @@ export default {
     },
 
     onPgnoClick() {
-      this.noneCentrators = false;
+      this.isCentrators = true;
       if(this.qlPot * 1 < this.qlCelValue.split(' ')[0] * 1 && this.CelButton == 'ql'){
         this.$notify({
           message: this.trans('pgno.notify_cel_rezhim_more_perf'),
