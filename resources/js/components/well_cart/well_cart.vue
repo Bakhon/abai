@@ -95,13 +95,11 @@
                       <div class="well-info">
                         <div class="title">Основное</div>
                         <p>Номер скважины: <span>{{ allData.uwi }}</span></p>
-                        <p>Категория скважины: <span v-if="wellCategory">{{ wellCategory.name_ru }}</span></p>
+                        <p>Категория скважины:
+<!--                          <span v-if="wellCategory">{{ wellCategory.name_ru }}</span>-->
+                        </p>
                         <div class="title">Привязка</div>
-                        <p>Оргструктура: <span>
-                          <span v-for="value in org">
-                            {{ value.name_ru + "/" }}
-                          </span>
-                        </span></p>
+
                         <div class="title">Координаты устья</div>
                         <p>Оргструктура: <span></span></p>
                         <p>Координаты устья X:<span></span></p>
@@ -165,10 +163,10 @@
                       <th colspan="3">Общая информация</th>
                     </tr>
                     <tr v-for="(item, index) in this.tableData">
-                      <td>{{ index+1 }}</td>
-                      <td>{{item.name}}</td>
+                      <td>{{ index + 1 }}</td>
+                      <td>{{ item.name }}</td>
                       <td>
-                        <span>{{item.data}}</span>
+                        <span v-for="value in  item.data">{{ value + ' / ' }}</span>
                       </td>
                     </tr>
                   </table>
@@ -195,16 +193,6 @@ export default {
   data() {
     return {
       options: [],
-      well: null,
-      tech: null,
-      wellName: null,
-      wellType: null,
-      wellExpl: null,
-      wellCategory: null,
-      tubeTom: null,
-      org: null,
-      geo: null,
-      wellStatus: null,
       graph: null,
       activeFormCode: null,
       loading: false,
@@ -214,11 +202,25 @@ export default {
       allData: null,
       popup: false,
       tableData: [
-          {
-            'description': 'this.wellExpl.name_ru',
-            'name': 'wellExpl',
-            'data': null
-          }
+        {
+          'description': 'this.allData.uwi',
+          'multiplyValues': false,
+          'name': 'Скважина',
+          'data': null
+        },
+        {
+          'description': 'this.allData.techs[0].name_ru',
+          'multiplyValues': false,
+          'name': 'Тех. структура',
+          'data': null
+        },
+        {
+          'description': 'this.allData.orgs',
+          'multiplyValues': true,
+          'multiplyValueName': 'name_ru',
+          'name': 'Тех. структура',
+          'data': null
+        }
       ]
     }
   },
@@ -236,6 +238,17 @@ export default {
         this.isBothColumnFolded = true;
       } else {
         this.isBothColumnFolded = false;
+      }
+    },
+    setTableData() {
+      for (let i = 0; i < this.tableData.length; i++) {
+        if (this.tableData[i].multiplyValues === true) {
+          for (let k = 0; k < (eval(this.tableData[i].description)).length; k++) {
+            console.log(eval(eval('this.tableData[i].description')+'[k].dbeg'))
+          }
+        } else {
+          this.tableData[i].data = (eval(this.tableData[i].description))
+        }
       }
     },
     onSearch(search, loading) {
@@ -256,18 +269,8 @@ export default {
       this.loading = true
       this.axios.get(this.localeUrl(`/api/bigdata/wells/${well.id}`)).then(({data}) => {
         try {
-          this.tech = data.techs
-          this.org = data.orgs
-          this.geo = data.geo[0]
-          this.wellName = data.uwi
           this.allData = data
-          this.wellType = data.well_type[0].name_ru
-          this.wellStatus = data.status[data.status.length - 1]
-          this.wellExpl = data.well_expl[0]
-          this.tubeTom = data.tube_nom[0]
-          this.wellCategory = data.category[0]
-          this.onDataTransform
-
+          this.setTableData()
 
           this.loading = false
         } catch (e) {
@@ -277,13 +280,7 @@ export default {
       })
     },
   },
-  computed: {
-    onDataTransform: function () {
-      for(let i = 0; i < this.tableData.length; i++){
-        this.tableData[i].data = (eval(eval('this.tableData[i].description')))
-      }
-    }
-  },
+  computed: {},
   setForm(formCode) {
     this.activeFormCode = formCode
   }
