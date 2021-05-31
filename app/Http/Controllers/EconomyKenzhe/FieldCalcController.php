@@ -37,10 +37,10 @@ class FieldCalcController extends MainController
     public $equipIdRequest = null;
     public $companyId = null;
     public $exportDirections = [];
-    public $firstDateOfMonth = null;
     public $workday = 0;
     public $totalWells = 0;
     public $activeWells = 0;
+    public $firstDateOfMonth = 0;
 
     public $opiuHandbook = [];
 
@@ -221,30 +221,25 @@ class FieldCalcController extends MainController
                 $monthname = '0' . $month;
             }
             $lastDateOfMonth = date("Y-m-t", strtotime($year . '-' . $monthname . '-01'));
-            $firstDateOfMonth = date("Y-m-d", strtotime($year . '-' . $monthname . '-01'));
+            $this->firstDateOfMonth = date("Y-m-d", strtotime($year . '-' . $monthname . '-01'));
             $lastDay = date("d", strtotime($lastDateOfMonth));
-            $rate = EcoRefsMacro::where('date', '=', $firstDateOfMonth)->first();
-            $emppersExp = EcoRefsEmpPer::whereIn('direction_id', $this->exportDirections)->where('sc_fa', $scenarioFact)->where('company_id', $this->companyId)->where('date', $firstDateOfMonth)->get();
-            $discontExp = EcoRefsDiscontCoefBar::whereIn('direction_id', $this->exportDirections)->where('sc_fa', $scenarioFact)->where('company_id', $this->companyId)->where('date', $firstDateOfMonth)->get();
-            $electricityCosts = EcoRefsPrepElectPrsBrigCost::where('company_id', $this->companyId)->where('sc_fa', $scenarioFact)->where('date', $firstDateOfMonth)->get();
+            $rate = EcoRefsMacro::where('date', '=', $this->firstDateOfMonth)->first();
+            $emppersExp = EcoRefsEmpPer::whereIn('direction_id', $this->exportDirections)->where('sc_fa', $scenarioFact)->where('company_id', $this->companyId)->where('date', $this->firstDateOfMonth)->get();
+            $discontExp = EcoRefsDiscontCoefBar::whereIn('direction_id', $this->exportDirections)->where('sc_fa', $scenarioFact)->where('company_id', $this->companyId)->where('date', $this->firstDateOfMonth)->get();
+            $electricityCosts = EcoRefsPrepElectPrsBrigCost::where('company_id', $this->companyId)->where('sc_fa', $scenarioFact)->where('date', $this->firstDateOfMonth)->get();
             $equipmentCosts = EcoRefsRentEquipElectServCost::whereIn('equip_id', $typesOfEquipment)->where('sc_fa', $scenarioFact)->where('company_id', $this->companyId)->whereYear('date', $year)->get();
             $buyCostResult = EcoRefsRentEquipElectServCost::where('equip_id', '=', $this->equipIdRequest)->where('company_id', $this->companyId)->first()->equip_cost;
-            $prsResult = $this->getPrs($electricityCosts, $firstDateOfMonth, $reqDay);
-            $avgprsday = EcoRefsAvgPrs::where('company_id', $this->companyId)->where('date', $firstDateOfMonth)->first();
+            $prsResult = $this->getPrs($electricityCosts, $reqDay);
+            $avgprsday = $this->getAveragePrsDay($this->firstDateOfMonth);
 
-            if ($avgprsday) {
-                $avgprsday = $avgprsday->avg_prs;
-            }
 
             $this->workday = $lastDay * ((self::ONE_YEAR - array_sum($prsResult) * $avgprsday) / self::ONE_YEAR);
             $liquid = $this->liq * $this->workday;
             $oil = $this->getOilProduction();
 
-            $percentRealization = EcoRefsProcDob::where('company_id', $this->companyId)->where('date', $firstDateOfMonth)->first();
+            $percentRealization = $this->getPercentRealization();
 
-            if ($percentRealization) {
-                $percentRealization = $percentRealization->proc_dob;
-            }
+
             $empper = $oil - $oil * $percentRealization;
             $data[$lastDateOfMonth]['production_on_realization']['full'] = $empper;
             $data[$lastDateOfMonth]['fluid_production'] = $liquid;
@@ -319,8 +314,8 @@ class FieldCalcController extends MainController
             }
             $exportsEtpResultsTotal = array_sum($exportsEtpResults);
 
-            $emppersIns = EcoRefsEmpPer::whereIn('direction_id', $this->insideMarketDirections)->where('sc_fa', $scenarioFact)->where('company_id', $this->companyId)->where('date', $firstDateOfMonth)->get();
-            $discontIns = EcoRefsDiscontCoefBar::whereIn('direction_id', $this->insideMarketDirections)->where('sc_fa', $scenarioFact)->where('company_id', $this->companyId)->where('date', $firstDateOfMonth)->get();
+            $emppersIns = EcoRefsEmpPer::whereIn('direction_id', $this->insideMarketDirections)->where('sc_fa', $scenarioFact)->where('company_id', $this->companyId)->where('date', $this->firstDateOfMonth)->get();
+            $discontIns = EcoRefsDiscontCoefBar::whereIn('direction_id', $this->insideMarketDirections)->where('sc_fa', $scenarioFact)->where('company_id', $this->companyId)->where('date', $this->firstDateOfMonth)->get();
 
             $insideResults = [];
             $insideDiscontResults = [];
@@ -403,34 +398,22 @@ class FieldCalcController extends MainController
             $lastDateOfMonth = date("Y-m-t", strtotime($year . '-' . $monthname . '-01'));
             $opiuOilNames = [];
             $this->getShowDataOnTree($this->opiuOilNames, $repTtValues, $opiuOilNames);
-            foreach ($opiuOilNames as $oilName) {
-                $opiuOilNames[] = [
-                    'value' => $oilName['value'] / $yearOil * $data[$lastDateOfMonth]['oil_production'],
-                    'num' => $oilName['num'],
-                    'name' => $oilName['name']
-                ];
-            }
+            $this->getRepTtByOilCalc($opiuOilNames, $yearOil, $data[$lastDateOfMonth]['oil_production']);
 
             $opiuLiquidNames = [];
             $this->getShowDataOnTree($this->opiuLiquidNames, $repTtValues, $opiuLiquidNames);
-            foreach ($opiuLiquidNames as $opiuLiquid) {
-                $opiuLiquidNames[] = [
-                    'value' => $opiuLiquid['value'] / $yearLiquid * $data[$lastDateOfMonth]['fluid_production'],
-                    'num' => $opiuLiquid['num'],
-                    'name' => $opiuLiquid['name']
-                ];
-            }
+            $opiuLiquidNames = $this->getRepTtByLiquidCalc($opiuLiquidNames, $data[$lastDateOfMonth]['fluid_production'], $yearLiquid);
 
-            $result = [];
-            $this->getShowDataOnTree($this->opiuRaspMestor, $repTtValues, $result);
+            $distributionOilField = [];
+            $this->getShowDataOnTree($this->opiuRaspMestor, $repTtValues, $distributionOilField);
+            $distributionOilField = $this->getFieldDistributionCalc($distributionOilField);
 
-            $fieldDestribution = $this->getFieldDistribution($result);
-            $data[$lastDateOfMonth]['operation_profit'] = $operPrib - ($fieldDestribution['finance_costs'] + array_sum(array_column($opiuLiquidNames, 'value'))  + array_sum(array_column($opiuOilNames, 'value')));
-            $data[$lastDateOfMonth]['income_before_tax'] = $operPrib - (array_sum(array_column($fieldDestribution['field_distribution'], 'value')) + array_sum(array_column($opiuLiquidNames, 'value'))  + array_sum(array_column($opiuOilNames, 'value')));
+            $data[$lastDateOfMonth]['operation_profit'] = $operPrib - ($distributionOilField['finance_costs'] + array_sum(array_column($opiuLiquidNames, 'value'))  + array_sum(array_column($opiuOilNames, 'value')));
+            $data[$lastDateOfMonth]['income_before_tax'] = $operPrib - (array_sum(array_column($distributionOilField['field_distribution'], 'value')) + array_sum(array_column($opiuLiquidNames, 'value'))  + array_sum(array_column($opiuOilNames, 'value')));
             $data[$lastDateOfMonth]['net_income'] = $data[$lastDateOfMonth]['income_before_tax'] - $kpnResult;
             array_push($data[$lastDateOfMonth], $opiuOilNames);
             array_push($data[$lastDateOfMonth], $opiuLiquidNames);
-            array_push($data[$lastDateOfMonth], $fieldDestribution['field_distribution']);
+            array_push($data[$lastDateOfMonth], $distributionOilField['field_distribution']);
         }
 
         $data['income_from_realization_products_services'] = $yearDohod;
@@ -464,7 +447,53 @@ class FieldCalcController extends MainController
         return array_search($id, $this->rates);
     }
 
-    public function getFieldDistribution(array $result) : array
+    public function getPercentRealization() : float
+    {
+        $percentRealization = EcoRefsProcDob::where('company_id', $this->companyId)->where('date', $this->firstDateOfMonth)->first();
+
+        if ($percentRealization) {
+            $percentRealization = $percentRealization->proc_dob;
+        }
+        return $percentRealization;
+    }
+
+    public function getAveragePrsDay() : float
+    {
+        $avgprsday = EcoRefsAvgPrs::where('company_id', $this->companyId)->where('date', $this->firstDateOfMonth)->first();
+
+        if ($avgprsday) {
+            $avgprsday = $avgprsday->avg_prs;
+        }else{
+            $avgprsday = 0;
+        }
+        return $avgprsday;
+    }
+
+    public function getRepTtByOilCalc(array $opiuOilNames, float $yearOil, float $monthOil) : array
+    {
+        foreach ($opiuOilNames as $oilName) {
+            $opiuOilNames[] = [
+                'value' => $oilName['value'] / $yearOil * $monthOil,
+                'num' => $oilName['num'],
+                'name' => $oilName['name']
+            ];
+        }
+        return $opiuOilNames;
+    }
+
+    public function getRepTtByLiquidCalc(array $opiuLiquidNames, float $fluid_production, float $yearLiquid) : array
+    {
+        foreach ($opiuLiquidNames as $opiuLiquid) {
+            $opiuLiquidNames[] = [
+                'value' => $opiuLiquid['value'] / $yearLiquid * $fluid_production,
+                'num' => $opiuLiquid['num'],
+                'name' => $opiuLiquid['name']
+            ];
+        }
+        return $opiuLiquidNames;
+    }
+
+    public function getFieldDistributionCalc(array $result) : array
     {
         $data = [];
         $data['finance_costs'] = 0;
@@ -489,10 +518,10 @@ class FieldCalcController extends MainController
         return $opiuValues;
     }
 
-    public function getPrs(Object $electricityCosts, string $firstDateOfMonth, int $reqDay) : array
+    public function getPrs(Object $electricityCosts, int $reqDay) : array
     {
         foreach ($electricityCosts as $cost) {
-            $avgprsday = EcoRefsAvgPrs::where('company_id', $cost->company_id)->where('date', $firstDateOfMonth)->first();
+            $avgprsday = EcoRefsAvgPrs::where('company_id', $cost->company_id)->where('date', $this->firstDateOfMonth)->first();
             if ($avgprsday) {
                 $avgprsday = $avgprsday->avg_prs;
             }
