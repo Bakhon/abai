@@ -2127,7 +2127,7 @@
               </div>
             </div>
 
-            <div class="first-string first-string2">
+            <div class="first-string first-string2 cursor-pointer">            
             <div      @click="changeTable('6')"
                       :class="tableHover6">
               <table class="table">
@@ -2154,7 +2154,7 @@
             </div>
           </div>
 
- <div class="first-string first-string2">
+ <div class="first-string first-string2 cursor-pointer">
             <div>
               <table class="table">
                 <tr class="d-flex">
@@ -2183,7 +2183,7 @@
                 <table class="table table5">
                   <tr class="d-flex">
                     <td
-                      class="col-6"
+                      class="col-6 cursor-pointer"
                       @click="changeTable('6')"
                       :class="tableHover6"
                     >
@@ -2204,7 +2204,7 @@
                     </td>
 
                     <td
-                      class="col-6"
+                      class="col-6 cursor-pointer"
                          @click="changeTable('6')"
                       :class="tableHover6"
                     >
@@ -2694,4 +2694,48 @@
   font-family: Bold;   
   font-size: 0.9rem;    
 }
+.fond-indicator-grow {
+    background: url(/img/visualcenter3/red-arrow-grow.svg) no-repeat;
+    height: 15px;
+    width: 15px;
+    background-size: contain;
+    float: left;
+    margin-top: 5px;
+    margin-right: 5px;
+    overflow: hidden;
+  }
+
+  .fond-indicator-fall {
+    background: url(/img/visualcenter3/green-arrow-fall.svg) no-repeat;
+    height: 15px;
+    width: 15px;
+    background-size: contain;
+    float: left;
+    margin-top: 5px;
+    margin-right: 5px;
+    overflow: hidden;
+  }
+
+  .indicator-grow {
+    background: url(/img/visualcenter3/green-arrow.svg) no-repeat;
+    height: 15px;
+    width: 15px;
+    background-size: contain;
+    float: left;
+    margin-top: 5px;
+    margin-right: 5px;
+    overflow: hidden;
+  }
+
+  .indicator-fall {
+    background: url(/img/visualcenter3/red-arrow.svg) no-repeat;
+    height: 15px;
+    width: 15px;
+    background-size: contain;
+    float: left;
+    margin-top: 5px;
+    margin-right: 5px;
+    overflow: hidden;
+  }
+
 </style>
