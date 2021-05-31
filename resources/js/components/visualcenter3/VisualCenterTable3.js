@@ -39,7 +39,11 @@ export default {
     },
     data: function () {
         return {
-            otmWidgetData: {drillingWells: 0, krsWells: 0, prsWells: 0},            
+            otmWidgetData: {
+                drillingWells: 0,
+                krsWells: 0,
+                prsWells: 0
+            },            
             accidentTotal: '',
             noData: '',
             personalFact: '',
