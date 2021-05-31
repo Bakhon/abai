@@ -59,20 +59,29 @@
             ]
           },
           {
-            "title": "Planned_events_tech_modes",
-            "items": [
+            "title":"Planned_events_tech_modes",
+            "items":[
               {
-                "code": "name_ru",
-                "type": "dict",
-                "title": "event",
-                "dict": "well_activity",
-                "validation": "required|exists:tbd.dict.well_activity,id"              
-              },
-              {
-                "code": "plan_month",
-                "type": "date",
-                "title": "planned_month",
-                "validation": "required|date"
+                "code":"field4",
+                "type":"table",
+                "title":"",
+                "table":"tech_mode_event",
+                "parent_column":"",
+                "columns":[
+                  {
+                    "code":"event_type",
+                    "type":"dict",
+                    "title":"event",
+                    "dict":"well_activity",
+                    "validation":"required|exists:tbd.dict.well_activity,id"
+                  },
+                  {
+                    "code":"plan_month",
+                    "type":"date",
+                    "title":"planned_month",
+                    "validation":"required|date"
+                  }
+                ]
               }
             ]
           }
