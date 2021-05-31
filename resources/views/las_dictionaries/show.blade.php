@@ -17,11 +17,11 @@
                         <th><b>{{ trans('app.param_value') }}</b></th>
                     </tr>
                     <tr>
-                        <td>{{ trans('monitoring.'.$model_name.'.fields.name') }}</td>
+                        <td>{{ trans('monitoring.'.$modelName.'.fields.name') }}</td>
                         <td>{{$data->name_ru}}</td>
                     </tr>
                 </table>
-                <a class="btn btn-primary" href="{{ route($model_name.'.index') }}">{{__('app.back')}}</a>
+                <a class="btn btn-primary" href="{{ route($modelName.'.index') }}">{{__('app.back')}}</a>
             </div>
         </div>
     </div>

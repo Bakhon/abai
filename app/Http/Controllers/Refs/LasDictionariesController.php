@@ -21,23 +21,23 @@ class LasDictionariesController extends CrudController
 
     public function index()
     {
-        $model_name = $this->modelName;
+        $modelName = $this->modelName;
         $params = [
             'success' => Session::get('success'),
             'links' => [
-                'list' => route($model_name.'.list'),
+                'list' => route($modelName.'.list'),
             ],
-            'title' => trans('monitoring.'.$model_name.'.title'),
+            'title' => trans('monitoring.'.$modelName.'.title'),
             'fields' => [
                 'name' => [
-                    'title' => trans('monitoring.'.$model_name.'.fields.name'),
+                    'title' => trans('monitoring.'.$modelName.'.fields.name'),
                     'type' => 'string',
                 ]
             ]
         ];
         
-        if(auth()->user()->can('monitoring create '.$model_name)) {
-            $params['links']['create'] = route($model_name.'.create');
+        if(auth()->user()->can('monitoring create '.$modelName)) {
+            $params['links']['create'] = route($modelName.'.create');
         }
 
         return view('las_dictionaries.index', compact('params'));
@@ -58,9 +58,9 @@ class LasDictionariesController extends CrudController
      */
     public function create(): \Illuminate\View\View
     {
-        $model_name = $this->modelName;
+        $modelName = $this->modelName;
         $validationParams = $this->getValidationParams('data');
-        return view('las_dictionaries.create', compact('model_name', 'validationParams'));
+        return view('las_dictionaries.create', compact('modelName', 'validationParams'));
     }
 
     /**
@@ -86,9 +86,9 @@ class LasDictionariesController extends CrudController
      */
     public function show(int $id): \Illuminate\View\View
     {
-        $model_name = $this->modelName;
+        $modelName = $this->modelName;
         $data = $this->model::find($id);
-        return view('las_dictionaries.show', compact('model_name', 'data'));
+        return view('las_dictionaries.show', compact('modelName', 'data'));
     }
 
     /**
@@ -98,8 +98,8 @@ class LasDictionariesController extends CrudController
     {
         $data = $this->model::find($id);
         $validationParams = $this->getValidationParams('data');
-        $model_name = $this->modelName;
-        return view('las_dictionaries.edit', compact('model_name', 'data', 'validationParams'));
+        $modelName = $this->modelName;
+        return view('las_dictionaries.edit', compact('modelName', 'data', 'validationParams'));
     }
 
     /**
@@ -133,7 +133,7 @@ class LasDictionariesController extends CrudController
             return response()->json([], Response::HTTP_NO_CONTENT);
         }
         else {
-            return redirect()->route($this->model_name.'.index')->with('success', __('app.deleted'));
+            return redirect()->route($this->modelName.'.index')->with('success', __('app.deleted'));
         }
     }
 
