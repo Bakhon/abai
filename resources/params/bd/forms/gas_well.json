@@ -45,7 +45,7 @@
                 "parent_column":"",
                 "columns":[
                   {
-                    "code":"name_ru",
+                    "code":"well_action",
                     "type":"dict",
                     "title":"event",
                     "dict":"well_action",
