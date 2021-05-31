@@ -41,6 +41,7 @@ class FieldCalcController extends MainController
     public $totalWells = 0;
     public $activeWells = 0;
     public $firstDateOfMonth = 0;
+    public $year = null;
 
     public $opiuHandbook = [];
 
@@ -153,7 +154,7 @@ class FieldCalcController extends MainController
         $companies = EcoRefsCompaniesId::where('parent_id','!=', 0)->get();
         $scenarioFact = 3;
         $reqDay = 365;
-        $year = date('Y');
+        $this->year = date('Y');
         if(isset($request->scenario)){
             $scenarioFact = $request->scenario;
         }
@@ -199,9 +200,9 @@ class FieldCalcController extends MainController
         $this->activeWells = 35;
 
         if ($company) {
-            $repTtValues = $this->getRepTtValues($company, $year);
+            $repTtValues = $this->getRepTtValues($company);
         }
-        $this->sumOverTree($repTtValues, $year);
+        $this->sumOverTree($repTtValues);
 
         $ecnParam = 95.343 * pow($this->liq, -0.607);
         $shgnParam = 108.29 * pow($this->liq, -0.743);
@@ -220,15 +221,15 @@ class FieldCalcController extends MainController
             } else {
                 $monthname = '0' . $month;
             }
-            $lastDateOfMonth = date("Y-m-t", strtotime($year . '-' . $monthname . '-01'));
-            $this->firstDateOfMonth = date("Y-m-d", strtotime($year . '-' . $monthname . '-01'));
+            $lastDateOfMonth = date("Y-m-t", strtotime($this->year . '-' . $monthname . '-01'));
+            $this->firstDateOfMonth = date("Y-m-d", strtotime($this->year . '-' . $monthname . '-01'));
             $lastDay = date("d", strtotime($lastDateOfMonth));
             $rate = EcoRefsMacro::where('date', '=', $this->firstDateOfMonth)->first();
             $emppersExp = EcoRefsEmpPer::whereIn('direction_id', $this->exportDirections)->where('sc_fa', $scenarioFact)->where('company_id', $this->companyId)->where('date', $this->firstDateOfMonth)->get();
             $discontExp = EcoRefsDiscontCoefBar::whereIn('direction_id', $this->exportDirections)->where('sc_fa', $scenarioFact)->where('company_id', $this->companyId)->where('date', $this->firstDateOfMonth)->get();
             $electricityCosts = EcoRefsPrepElectPrsBrigCost::where('company_id', $this->companyId)->where('sc_fa', $scenarioFact)->where('date', $this->firstDateOfMonth)->get();
-            $equipmentCosts = EcoRefsRentEquipElectServCost::whereIn('equip_id', $typesOfEquipment)->where('sc_fa', $scenarioFact)->where('company_id', $this->companyId)->whereYear('date', $year)->get();
-            $buyCostResult = EcoRefsRentEquipElectServCost::where('equip_id', '=', $this->equipIdRequest)->where('company_id', $this->companyId)->first()->equip_cost;
+            $equipmentCosts = EcoRefsRentEquipElectServCost::whereIn('equip_id', $typesOfEquipment)->where('sc_fa', $scenarioFact)->where('company_id', $this->companyId)->whereYear('date', $this->year)->get();
+            $buyCostResult = EcoRefsRentEquipElectServCost::where('equip_id', $this->equipIdRequest)->where('company_id', $this->companyId)->first()->equip_cost;
             $prsResult = $this->getPrs($electricityCosts, $reqDay);
             $avgprsday = $this->getAveragePrsDay($this->firstDateOfMonth);
 
@@ -310,7 +311,7 @@ class FieldCalcController extends MainController
             foreach ($discontExp as $item) {
                 $etpRate = EcoRefsAvgMarketPrice::where('avg_market_price_beg', '>=', $item->macro)->where('avg_market_price_end', '>', $item->macro)->first();
                 $exportsEtpResults[$item->route_id] = $this->calculationETP($exportsResults[$item->route_id], $etpRate->exp_cust_duty_rate, $rate->ex_rate_dol);
-                $data[$lastDateOfMonth]['ЭТП (экспорт) '.$this->getRoute($item->route_id) . ' KZT'] = $exportsEtpResults[$item->route_id];
+                $data[$lastDateOfMonth]['etp'][$this->getRoute($item->route_id)] = $exportsEtpResults[$item->route_id];
             }
             $exportsEtpResultsTotal = array_sum($exportsEtpResults);
 
@@ -336,13 +337,13 @@ class FieldCalcController extends MainController
 
             foreach ($discontIns as $item) {
                 $insideNdpiResults[$item->route_id] = $insideResults[$item->route_id] * $item->macro * $stavki->ndo_rates * 0.5;
-                $data[$lastDateOfMonth]['ndpi_oil_inside_market'. $this->getRoute($item->route_id) .' KZT'] = $insideNdpiResults[$item->route_id];
+                $data[$lastDateOfMonth]['ndpi_oil_inside_market'][$this->getRoute($item->route_id)] = $insideNdpiResults[$item->route_id];
             }
             $insideNdpiResultsTotal = array_sum($insideNdpiResults);
             foreach ($insideResults as $route_id => $oilValume) {
                 $tarifTnItemValue = $this->totalTransportationCostYear($route_id, $scenarioFact, $this->companyId, $oilValume, $rate);
                 $insideTarTnResults[$route_id] = $tarifTnItemValue['value'] / 12;
-                $data[$lastDateOfMonth]['Транспортировка нефти '.$this->getRoute($route_id)] = $insideTarTnResults[$route_id]/ 12;
+                $data[$lastDateOfMonth]['oil_transportation'][$this->getRoute($route_id)] = $insideTarTnResults[$route_id]/ 12;
             }
             $insideTarTnResultsTotal = array_sum($insideTarTnResults);
 
@@ -395,7 +396,7 @@ class FieldCalcController extends MainController
             } else {
                 $monthname = '0' . $month;
             }
-            $lastDateOfMonth = date("Y-m-t", strtotime($year . '-' . $monthname . '-01'));
+            $lastDateOfMonth = date("Y-m-t", strtotime($this->year . '-' . $monthname . '-01'));
             $opiuOilNames = [];
             $this->getShowDataOnTree($this->opiuOilNames, $repTtValues, $opiuOilNames);
             $this->getRepTtByOilCalc($opiuOilNames, $yearOil, $data[$lastDateOfMonth]['oil_production']);
@@ -510,11 +511,11 @@ class FieldCalcController extends MainController
         return $data;
     }
 
-    public function getRepTtValues(EcoRefsCompaniesId  $company, $year) : array
+    public function getRepTtValues(EcoRefsCompaniesId $company) : array
     {
         $handbook = HandbookRepTt::where('parent_id', 0)->with('childHandbookItems')->get()->toArray();
-        $companyRepTtValues = $company->statsByDate($year)->get()->toArray();
-        $opiuValues = $this->recursiveSetValueToHandbookByType($handbook, $companyRepTtValues, $year, $year - 1, $year . '-01-01', $year . '-12-01');
+        $companyRepTtValues = $company->statsByDate($this->year)->get()->toArray();
+        $opiuValues = $this->recursiveSetValueToHandbookByType($handbook, $companyRepTtValues, $this->year, $this->year - 1, $this->year . '-01-01', $this->year . '-12-01');
         return $opiuValues;
     }
 
@@ -545,7 +546,7 @@ class FieldCalcController extends MainController
                     $result[] = [
                         'num' => $value['num'],
                         'name' => $value['name'],
-                        'value' => $value['plan_value'][2021],
+                        'value' => $value['plan_value'][$this->year],
                     ];
                 }
             }
@@ -613,20 +614,20 @@ class FieldCalcController extends MainController
         return $data;
     }
 
-    public function sumOverTree(array &$items, int $year, array &$parent = null) : array
+    public function sumOverTree(array &$items, array &$parent = null) : array
     {
         if(is_array($items)){
             foreach ($items as &$item){
                 if(count($item['handbook_items'])> 0){
-                    $item['handbook_items'] = self::sumOverTree($item['handbook_items'], $year, $item);
+                    $item['handbook_items'] = self::sumOverTree($item['handbook_items'],  $item);
                 }
                 if($parent != null){
                     $values = array_column($parent['handbook_items'], 'plan_value');
                     foreach ($values as $value){
-                        if($value[$year]<0){
-                            $value[$year] = $value[$year]* -1;
+                        if($value[$this->year]<0){
+                            $value[$this->year] = $value[$this->year] * -1;
                         }
-                        $parent['plan_value'][$year] += $value[$year];
+                        $parent['plan_value'][$this->year] += $value[$this->year];
                     }
                 }
             }

@@ -9,6 +9,8 @@ return array (
   'companies' => 'Компании',
   'balance' => 'Баланс',
   'kvl' => 'КВЛ',
+  'full' => 'всего',
+  'dds' => 'добыча жидкости',
   'oil_production' => 'Добыча нефти',
   'ndpi_oil_export' => 'НДПИ нефть на экспорт',
   'fluid_production' => 'добыча жидкости',
@@ -24,4 +26,5 @@ return array (
   'loading_transport_storage' => 'Расходы по погрузке, транспортировке и хранению',
   'operation_profit' => 'ОПЕРАЦИОННАЯ ПРИБЫЛЬ(+)/ УБЫТОК (-)',
   'income_before_tax' => 'ДОХОД/(УБЫТОК) ДО НАЛОГООБЛОЖЕНИЯ',
+  'net_income' => 'чистый доход',
 );
