@@ -10,29 +10,30 @@ use Illuminate\Http\Request;
 class MainController extends Controller
 {
     public $companyId = 0;
-    public $dateTo = '2021-12-01';
-    public $dateFrom = '2021-01-01';
-
+    public $dateTo = null;
+    public $dateFrom = null;
+    public $defaultCompanyId = 1;
 
     public function company(Request $request)
     {
-        $this->companyId = 178;
         $this->dateTo = date('Y-m-d', strtotime(' -1 year'));
         $this->dateFrom = date("Y-m-d", strtotime($this->dateTo . " -3 months"));
 
-        if($request->company){
+        if ($request->company) {
             $this->companyId = $request->company;
+        }else{
+            $this->companyId = $this->defaultCompanyId;
         }
         if ($request->betweenMonthsValue) {
-            $this->dateFrom = date('Y-m-d', strtotime(date('Y', strtotime($this->dateTo)).'-01-01'));
-            $this->dateTo = date('Y-m-d', strtotime(date('Y', strtotime($this->dateTo)).'-'.$request->betweenMonthsValue));
+            $this->dateFrom = date('Y-m-d', strtotime(date('Y', strtotime($this->dateTo)) . '-01-01'));
+            $this->dateTo = date('Y-m-d', strtotime(date('Y', strtotime($this->dateTo)) . '-' . $request->betweenMonthsValue));
         }
         if ($request->monthsValue) {
-            $this->dateFrom = date("Y-m-d", strtotime(date('Y', strtotime($this->dateTo)).'-'.$request->monthsValue . '-01'));
-            $this->dateTo = date("Y-m-d", strtotime(date('Y', strtotime($this->dateTo)).'-'.$request->monthsValue . '-31'));
+            $this->dateFrom = date("Y-m-d", strtotime(date('Y', strtotime($this->dateTo)) . '-' . $request->monthsValue . '-01'));
+            $this->dateTo = date("Y-m-d", strtotime(date('Y', strtotime($this->dateTo)) . '-' . $request->monthsValue . '-31'));
         }
         if ($request->quarterValue) {
-            $this->dateTo = date("Y-m-d", strtotime(date('Y', strtotime($this->dateTo)).'-'.$request->quarterValue . '-01'));
+            $this->dateTo = date("Y-m-d", strtotime(date('Y', strtotime($this->dateTo)) . '-' . $request->quarterValue . '-01'));
             $this->dateFrom = date("Y-m-d", strtotime($this->dateTo . " -3 months"));
         }
         $currentYear = date('Y', strtotime($this->dateTo));
@@ -113,9 +114,9 @@ class MainController extends Controller
 
     public function sumValuesByItemType(&$item, $attribute, $value, $dateFrom, $dateTo, $year, $currentItemDate)
     {
-        $item[$attribute][$year] += (float) $value;
+        $item[$attribute][$year] += (float)$value;
         if (strtotime($dateFrom) <= $currentItemDate && strtotime($dateTo) >= $currentItemDate) {
-            $item['intermediate_' . $attribute][$year] += (float) $value;
+            $item['intermediate_' . $attribute][$year] += (float)$value;
         }
     }
 }

@@ -17,6 +17,16 @@ class HandbookRepTtValueImport implements ToModel, WithStartRow, WithBatchInsert
 
     protected $importFyleType = 'plan';
 
+    const HANDBOOK_COMPANY_NUM = 5;
+
+    const HANDBOOK_REPTT_NUM = 13;
+
+    const HANDBOOK_DATE = 6;
+
+    const HANDBOOK_TYPE = 15;
+
+    const HANDBOOK_VALUE = 15;
+
     function __construct($importExcelType)
     {
         $this->importFyleType = $importExcelType;
@@ -29,20 +39,20 @@ class HandbookRepTtValueImport implements ToModel, WithStartRow, WithBatchInsert
      */
     public function model(array $row)
     {
-        $company = SubholdingCompany::whereNum(trim($row[5]))->first();
-        $repTt = HandbookRepTt::whereNum(trim($row[13]))->first();
-        $date = Carbon::createFromFormat('Y.m.d', $row[6].'.01')->format('Y-m-d');
-        $type = trim($row[15]);
+        $company = SubholdingCompany::whereNum(trim($row[self::HANDBOOK_NUM]))->first();
+        $repTt = HandbookRepTt::whereNum(trim($row[self::HANDBOOK_REPTT_NUM]))->first();
+        $date = Carbon::createFromFormat('Y.m.d', $row[HANDBOOK_DATE].'.01')->format('Y-m-d');
+        $type = trim($row[self::HANDBOOK_TYPE]);
         $type = $type == 'ACTUAL_Y0' ? 'fact': 'plan';
         if($company and $repTt){
             return new HandbookRepTtValue([
                 'company_id'=> $company->id,
                 'rep_id'=> $repTt->id,
-                'value'=>$row[17],
+                'value'=>$row[self::HANDBOOK_VALUE],
                 'date'=>$date,
                 'type'=>$type,
-                'rep_tt'=>$row[13],
-                'company'=>$row[5],
+                'rep_tt'=>$row[self::HANDBOOK_REPTT_NUM],
+                'company'=>$row[self::HANDBOOK_COMPANY_NUM],
             ]);
         }
     }

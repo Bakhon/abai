@@ -1,13 +1,27 @@
-<?php 
+<?php
 
-return [
-    'import_reptt' => 'Импорт Отчета REP TT значении из Excel в базу данных MySQL',
-    'import_reptt_titles' => 'Импорт наименовании статей из Excel в базу данных MySQL',
-    'chose_file' => 'Выберите Excel файл',
-    'opiu' => 'ОПиУ',
-    'production' => 'Производство',
-    'companies' => 'Компании',
-    'balance' => 'Баланс',
-    'kvl' => 'КВЛ',
-    'dds' => 'ДДС',
-];
+return array (
+  'import_reptt' => 'Импорт Отчета REP TT значении из Excel в базу данных MySQL',
+  'chose_file' => 'Выберите Excel файл',
+  'import_reptt_titles' => 'Импорт наименовании статей из Excel в базу данных MySQL',
+  'opiu' => 'ОПиУ',
+  'production' => 'Производство',
+  'companies' => 'Компании',
+  'balance' => 'Баланс',
+  'kvl' => 'КВЛ',
+  'oil_production' => 'Добыча нефти',
+  'ndpi_oil_export' => 'НДПИ нефть на экспорт',
+  'fluid_production' => 'добыча жидкости',
+  'ndpi_oil_inside_market' => 'НДПИ внтр. рынок',
+  'production_on_realization' => 'добычи на реализацию',
+  'income_from_realization' => 'Доход от реализации',
+  'oil_transportation' => 'Транспортировка нефти',
+  'ndpi' => 'НДПИ',
+  'etp' => 'ЭТП',
+  'oil_production_year' => 'Добыча нефти за год',
+  'liquid_production_year' => 'Добыча жидкости за год',
+  'rent_tax_export_crude_oil' => 'Рентный налог на экспортир.сырую нефть, газовый конденсат',
+  'loading_transport_storage' => 'Расходы по погрузке, транспортировке и хранению',
+  'operation_profit' => 'ОПЕРАЦИОННАЯ ПРИБЫЛЬ(+)/ УБЫТОК (-)',
+  'income_before_tax' => 'ДОХОД/(УБЫТОК) ДО НАЛОГООБЛОЖЕНИЯ',
+);

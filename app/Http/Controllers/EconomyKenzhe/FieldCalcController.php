@@ -2,9 +2,7 @@
 
 namespace App\Http\Controllers\EconomyKenzhe;
 
-use App\Http\Controllers\Controller;
 use App\Models\EconomyKenzhe\HandbookRepTt;
-use App\Models\EconomyKenzhe\SubholdingCompany;
 use App\Models\EcoRefsAvgMarketPrice;
 use App\Models\EcoRefsAvgPrs;
 use App\Models\EcoRefsCompaniesId;
@@ -31,6 +29,7 @@ class FieldCalcController extends MainController
     const  ONE_YEAR = 365;
     const  SERVICE_TIME = 12;
     public $razrab = 5;
+    public $defaultCooefBarr = 7.23;
     public $qoil = null;
     public $param = null;
     public $liq = null;
@@ -38,6 +37,10 @@ class FieldCalcController extends MainController
     public $equipIdRequest = null;
     public $companyId = null;
     public $exportDirections = [];
+    public $firstDateOfMonth = null;
+    public $workday = 0;
+    public $totalWells = 0;
+    public $activeWells = 0;
 
     public $opiuHandbook = [];
 
@@ -147,7 +150,7 @@ class FieldCalcController extends MainController
 
     public function index(Request $request)
     {
-        $companies = SubholdingCompany::where('parent_id','!=', 0)->get();
+        $companies = EcoRefsCompaniesId::where('parent_id','!=', 0)->get();
         $scenarioFact = 3;
         $reqDay = 365;
         $year = date('Y');
@@ -190,31 +193,26 @@ class FieldCalcController extends MainController
         $discSvobPotok = null;
         $nakopDiscSvodPotok = null;
         $npv = null;
-        $data = [];
 
-        $totalWells = 3421;
-        $activeWells = 35;
 
-        $opiuValues = SubholdingCompany::whereName($company->name)->first();
+        $this->totalWells = 3421;
+        $this->activeWells = 35;
 
-        if ($opiuValues) {
-            $handbook = HandbookRepTt::where('parent_id', 0)->with('childHandbookItems')->get()->toArray();
-            $companyRepTtValues = $opiuValues->statsByDate($year)->get()->toArray();
-            $opiuValues = $this->recursiveSetValueToHandbookByType($handbook, $companyRepTtValues, $year, $year - 1, $year . '-01-01', $year . '-12-01');
+        if ($company) {
+            $repTtValues = $this->getRepTtValues($company, $year);
         }
-        $this->sumOverTree($opiuValues, $year);
+        $this->sumOverTree($repTtValues, $year);
 
         $ecnParam = 95.343 * pow($this->liq, -0.607);
         $shgnParam = 108.29 * pow($this->liq, -0.743);
+
         for ($month = 1; $month <= 12; $month++) {
             $exportsResults = [];
-            $exportsDiscontResults = [];
             $exportsNdpiResults = [];
             $exportsRentTaxResults = [];
             $exportsEtpResults = [];
             $exportsTarTnResults = [];
             $zatrPrepResults = [];
-            $zatrElectResults = [];
             $expDayResults = [];
 
             if ($month > 9){
@@ -230,65 +228,46 @@ class FieldCalcController extends MainController
             $discontExp = EcoRefsDiscontCoefBar::whereIn('direction_id', $this->exportDirections)->where('sc_fa', $scenarioFact)->where('company_id', $this->companyId)->where('date', $firstDateOfMonth)->get();
             $electricityCosts = EcoRefsPrepElectPrsBrigCost::where('company_id', $this->companyId)->where('sc_fa', $scenarioFact)->where('date', $firstDateOfMonth)->get();
             $equipmentCosts = EcoRefsRentEquipElectServCost::whereIn('equip_id', $typesOfEquipment)->where('sc_fa', $scenarioFact)->where('company_id', $this->companyId)->whereYear('date', $year)->get();
+            $buyCostResult = EcoRefsRentEquipElectServCost::where('equip_id', '=', $this->equipIdRequest)->where('company_id', $this->companyId)->first()->equip_cost;
+            $prsResult = $this->getPrs($electricityCosts, $firstDateOfMonth, $reqDay);
+            $avgprsday = EcoRefsAvgPrs::where('company_id', $this->companyId)->where('date', $firstDateOfMonth)->first();
 
-            $prsResult = [];
-            foreach ($electricityCosts as $cost) {
-                $avgprsday = EcoRefsAvgPrs::where('company_id', $cost->company_id)->where('date', $firstDateOfMonth)->first();
-                if ($avgprsday) {
-                    $avgprsday = $avgprsday->avg_prs;
-                }
-                if ($this->param == 1 && $reqDay >= self::ONE_YEAR) {
-                    $prsResult[$cost->company_id] = self::ONE_YEAR / ($reqDay);
-                } else {
-                    $prsResult[$cost->company_id] = self::ONE_YEAR / ($reqDay + $avgprsday);
-                }
-            }
-
-            $avgprsday = EcoRefsAvgPrs::where('company_id', $this->companyId)->first();
             if ($avgprsday) {
                 $avgprsday = $avgprsday->avg_prs;
             }
 
-            $workday = $lastDay * ((self::ONE_YEAR - array_sum($prsResult) * $avgprsday) / self::ONE_YEAR);
-            $liquid = $this->liq * $workday;
-            $oil = $this->qoil * (1 - exp(log(1 - $this->razrab / 100) / self::ONE_YEAR * $workday)) / -(log(1 - $this->razrab / 100) / self::ONE_YEAR);
+            $this->workday = $lastDay * ((self::ONE_YEAR - array_sum($prsResult) * $avgprsday) / self::ONE_YEAR);
+            $liquid = $this->liq * $this->workday;
+            $oil = $this->getOilProduction();
 
             $percentRealization = EcoRefsProcDob::where('company_id', $this->companyId)->where('date', $firstDateOfMonth)->first();
 
             if ($percentRealization) {
                 $percentRealization = $percentRealization->proc_dob;
-                $data[$lastDateOfMonth]['Процент от добычи на реализацию'] = $percentRealization;
             }
             $empper = $oil - $oil * $percentRealization;
-            $data[$lastDateOfMonth]['добычи на реализацию'] = $empper;
-            $data[$lastDateOfMonth]['добыча жидкости'] = $liquid;
+            $data[$lastDateOfMonth]['production_on_realization']['full'] = $empper;
+            $data[$lastDateOfMonth]['fluid_production'] = $liquid;
 
 
             foreach ($emppersExp as $item) {
                 $exportsResults[$item->route_id] = $empper * $item->emp_per;
-                $data[$lastDateOfMonth]['Процент реализации '.$this->getRoute($item->route_id)] = $item->emp_per;
-                $data[$lastDateOfMonth]['добычи на реализацию (Экспорт) '.$this->getRoute($item->route_id)] = $empper * $item->emp_per;
+                $data[$lastDateOfMonth]['production_on_realization'][$this->getRoute($item->route_id)] = $empper * $item->emp_per;
             }
             $exportsResultsTotal = array_sum($exportsResults);
 
             foreach ($electricityCosts as $item) {
                 $zatrPrepResults = $liquid * $item->trans_prep_cost;
             }
-            foreach ($equipmentCosts as $item) {
-                $electCost = EcoRefsPrepElectPrsBrigCost::where('company_id', '=', $item->company_id)->first();
-                if ($item->equip_id == 1) {
-                    $zatrElectResults[$item->equip_id] = $workday * $this->liq * $shgnParam * $electCost->elect_cost;
-                } else {
-                    $zatrElectResults[$item->equip_id] = $workday * $this->liq * $ecnParam * $electCost->elect_cost;
-                }
-            }
+
+            $zatrElectResults = $this->getElectricityCostsByEquipment($equipmentCosts, $shgnParam, $ecnParam);
 
             foreach ($electricityCosts as $item) {
                 $prsCostResults = array_sum($prsResult) / 12 * $avgprsday * $item->prs_brigade_cost;
             }
 
             foreach ($equipmentCosts as $item) {
-                $expDayResults[$item->equip_id] = $workday * $item->dayli_serv_cost;
+                $expDayResults[$item->equip_id] = $this->workday * $item->dayli_serv_cost;
             }
 
             $rentCostResult = 0;
@@ -297,43 +276,39 @@ class FieldCalcController extends MainController
                 $rentCostResult = EcoRefsRentEquipElectServCost::where('equip_id', '=', $this->equipIdRequest)->first()->rent_cost;
             }
 
-            $buyCostResult = EcoRefsRentEquipElectServCost::where('equip_id', '=', $this->equipIdRequest)->where('company_id', $this->companyId)->first()->equip_cost;
-            $d = [];
+
             foreach ($exportsResults as $route_id => $oilValume) {
                 $tarifTnItemValue = $this->totalTransportationCostYear($route_id, $scenarioFact, $this->companyId, $oilValume, $rate);
                 $exportsTarTnResults[$route_id] = $tarifTnItemValue['value'] / 12;
-                $data[$lastDateOfMonth]['Транспортировка нефти тг '.$this->getRoute($route_id)] = $tarifTnItemValue['value'] / 12;
-                array_push($d, $tarifTnItemValue['tarif']);
+                $data[$lastDateOfMonth]['oil_transportation'][$this->getRoute($route_id)] = $tarifTnItemValue['value'] / 12;
             }
 
             $exportsTarTnResultsTotal = array_sum($exportsTarTnResults);
-            foreach ($discontExp as $item) {
-                if(!$item->barr_coef){
-                    $item->barr_coef  = 7.23;
-                }
-                $exportsDiscontResults[$item->route_id] = $exportsResults[$item->route_id] * $item->barr_coef * (($item->macro - $item->discont) * $rate->ex_rate_dol);
-                $data[$lastDateOfMonth]['цена на экспорт '.$this->getRoute($item->route_id)] = $item->macro;
-                $data[$lastDateOfMonth]['Доход от реализации тг '.$this->getRoute($item->route_id)] = $exportsDiscontResults[$item->route_id];
-            }
-            $exportsDiscontResultsTotal = array_sum($exportsDiscontResults);
 
             foreach ($discontExp as $item) {
                 if(!$item->barr_coef){
-                    $item->barr_coef  = 7.23;
+                    $item->barr_coef  = $this->defaultCooefBarr;
+                }
+                $data[$lastDateOfMonth]['income_from_realization'][$item->route_id] = $exportsResults[$item->route_id] * $item->barr_coef * (($item->macro - $item->discont) * $rate->ex_rate_dol);
+            }
+            $exportsDiscontResultsTotal = array_sum($data[$lastDateOfMonth]['income_from_realization']);
+
+            foreach ($discontExp as $item) {
+                if(!$item->barr_coef){
+                    $item->barr_coef  = $this->defaultCooefBarr;
                 }
                 $stavki = EcoRefsNdoRates::where('company_id', '=', $item->company_id)->first();
                 $exportsNdpiResults[$item->route_id] = $exportsResults[$item->route_id] * $item->barr_coef * $item->macro  * $rate->ex_rate_dol * $stavki->ndo_rates;
-                $data[$lastDateOfMonth]['НДПИ нефть на экспорт '.$this->getRoute($item->route_id) .' KZT'] = $exportsNdpiResults[$item->route_id];
+                $data[$lastDateOfMonth]['ndpi_oil_export'] = $exportsNdpiResults[$item->route_id];
             }
             $exportsNdpiResultsTotal = array_sum($exportsNdpiResults);
 
             foreach ($discontExp as $item) {
                 if(!$item->barr_coef){
-                    $item->barr_coef  = 7.23;
+                    $item->barr_coef  = $this->defaultCooefBarr;
                 }
                 $rent = EcoRefsRentTax::where('world_price_beg', '<', $item->macro)->where('world_price_end', '<=', $item->macro)->first();
                 $exportsRentTaxResults[$item->route_id] = $exportsResults[$item->route_id] * $item->barr_coef * $item->macro * $rent->rate * $rate->ex_rate_dol;
-                $data[$lastDateOfMonth]['Рентный налог тг '.$this->getRoute($item->route_id) . ' %'] = $exportsRentTaxResults[$item->route_id];
             }
             $exportsRentTaxResultsTotal = array_sum($exportsRentTaxResults);
 
@@ -354,43 +329,29 @@ class FieldCalcController extends MainController
 
             foreach ($emppersIns as $item) {
                 $insideResults[$item->route_id] = $empper * $item->emp_per;
-                $data[$lastDateOfMonth]['Процент реализации '.$this->getRoute($item->route_id)] = $item->emp_per;
-                $data[$lastDateOfMonth]['добычи на реализацию (втн. рынок) '.$this->getRoute($item->route_id)] = $empper * $item->emp_per;
+                $data[$lastDateOfMonth]['production_on_realization'][$this->getRoute($item->route_id)] = $empper * $item->emp_per;
             }
             $insideResultsTotal = array_sum($insideResults);
 
             foreach ($discontIns as $item) {
                 $insideDiscontResults[$item->route_id] = $insideResults[$item->route_id] * $item->macro;
-                $data[$lastDateOfMonth]['цена на внтр. рынок '.$this->getRoute($item->route_id)] = $item->macro;
-                $data[$lastDateOfMonth]['доход от реализации '.$this->getRoute($item->route_id)] = $insideDiscontResults[$item->route_id];
+                $data[$lastDateOfMonth]['income_from_realization'][$this->getRoute($item->route_id)] = $insideDiscontResults[$item->route_id];
             }
             $insideDiscontResultsTotal = array_sum($insideDiscontResults);
 
             foreach ($discontIns as $item) {
                 $insideNdpiResults[$item->route_id] = $insideResults[$item->route_id] * $item->macro * $stavki->ndo_rates * 0.5;
-                $data[$lastDateOfMonth]['НДПИ внтр. рынок '. $this->getRoute($item->route_id) .' KZT'] = $insideNdpiResults[$item->route_id];
+                $data[$lastDateOfMonth]['ndpi_oil_inside_market'. $this->getRoute($item->route_id) .' KZT'] = $insideNdpiResults[$item->route_id];
             }
             $insideNdpiResultsTotal = array_sum($insideNdpiResults);
-            $d = [];
             foreach ($insideResults as $route_id => $oilValume) {
                 $tarifTnItemValue = $this->totalTransportationCostYear($route_id, $scenarioFact, $this->companyId, $oilValume, $rate);
                 $insideTarTnResults[$route_id] = $tarifTnItemValue['value'] / 12;
                 $data[$lastDateOfMonth]['Транспортировка нефти '.$this->getRoute($route_id)] = $insideTarTnResults[$route_id]/ 12;
-                array_push($d, $tarifTnItemValue['tarif']);
             }
             $insideTarTnResultsTotal = array_sum($insideTarTnResults);
 
-            if ($this->equipIdRequest == 1) {
-                $srokSluzhby = EcoRefsServiceTime::where('equip_id', '=', $this->equipIdRequest)->where('company_id', '=', $this->companyId)->first();
-                $equipCost = EcoRefsRentEquipElectServCost::where('equip_id', '=', $this->equipIdRequest)->where('company_id', '=', $this->companyId)->first();
-                if ($srokSluzhby->avg_serv_life > self::SERVICE_TIME) {
-                    $amortizaciyaResult = $equipCost->equip_cost / $srokSluzhby->avg_serv_life;
-                } else {
-                    $amortizaciyaResult = 0;
-                }
-            } else {
-                $amortizaciyaResult = 0;
-            }
+            $amortizaciyaResult = $this->depreciationResult();
 
             $operPrib = ($exportsDiscontResultsTotal + $insideDiscontResultsTotal) - ($exportsNdpiResultsTotal + $insideNdpiResultsTotal) - $exportsRentTaxResultsTotal - $exportsEtpResultsTotal - ($exportsTarTnResultsTotal + $insideTarTnResultsTotal) - ($zatrElectResults[$this->equipIdRequest] + $zatrPrepResults + $prsCostResults + $expDayResults[$this->equipIdRequest] + $rentCostResult + $amortizaciyaResult);
 
@@ -399,32 +360,15 @@ class FieldCalcController extends MainController
             } else {
                 $kpnResult = 0;
             }
-            $data[$lastDateOfMonth]['Курс доллара'] = $rate->ex_rate_dol;
 
-            foreach ($emppersExp as $emp){
-                if(!$emp->barr_coef){
-                    $emp->barr_coef  = 7.23;
-                }
-                $data[$lastDateOfMonth]['Дисконт '. $this->getRoute($emp->route_id)] = $item->discont;
-                $data[$lastDateOfMonth]['Коэффициент баррелизации '.$this->getRoute($emp->route_id)] = $emp->barr_coef;
-            }
-
-            foreach ($discontExp as $item) {
-                if(!$item->barr_coef){
-                    $item->barr_coef  = 7.23;
-                }
-                $data[$lastDateOfMonth]['Дисконт '. $this->getRoute($emp->route_id)] = $item->discont;
-                $data[$lastDateOfMonth]['Коэффициент баррелизации ' . $this->getRoute($emp->route_id)] = $item->barr_coef;
-            }
-
-            $data[$lastDateOfMonth]['Добыча нефти'] = $oil;
+            $data[$lastDateOfMonth]['oil_production'] = $oil;
 
             $chistayaPribyl = $operPrib - $kpnResult;
             $svobodDenPotok = $chistayaPribyl - $buyCostResult + $amortizaciyaResult;
             $yearLiquid += $liquid;
             $yearOil += $oil;
             $yearEmpper += $empper;
-            $yearWorkday += $workday;
+            $yearWorkday += $this->workday;
             $yearNdo = $yearNdo + $exportsResultsTotal + $insideResultsTotal;
             $yearDohod += $exportsDiscontResultsTotal + $insideDiscontResultsTotal;
             $yearNdnpi += $exportsNdpiResultsTotal + $insideNdpiResultsTotal;
@@ -443,14 +387,13 @@ class FieldCalcController extends MainController
             $yearChistPryb += $chistayaPribyl;
             $yearKvl += $buyCostResult;
             $yearSvobPot += $svobodDenPotok;
-            $yearShgnParam += $shgnParam * $this->liq * $workday;
-            $yearEcnParam += $ecnParam * $this->liq * $workday;
+            $yearShgnParam += $shgnParam * $this->liq * $this->workday;
+            $yearEcnParam += $ecnParam * $this->liq * $this->workday;
             $nakoplSvobPotok += $svobodDenPotok;
             $discSvobPotok += $nakoplSvobPotok;
             $nakopDiscSvodPotok += $discSvobPotok;
             $npv += $svobodDenPotok;
         }
-
         for ($month = 1; $month <= 12; $month++) {
             if ($month > 9){
                 $monthname = $month;
@@ -459,73 +402,110 @@ class FieldCalcController extends MainController
             }
             $lastDateOfMonth = date("Y-m-t", strtotime($year . '-' . $monthname . '-01'));
             $opiuOilNames = [];
-            $this->getShowDataOnTree($this->opiuOilNames, $opiuValues, $opiuOilNames);
+            $this->getShowDataOnTree($this->opiuOilNames, $repTtValues, $opiuOilNames);
             foreach ($opiuOilNames as $oilName) {
                 $opiuOilNames[] = [
-                    'value' => $oilName['value'] / $yearOil * $data[$lastDateOfMonth]['Добыча нефти'],
+                    'value' => $oilName['value'] / $yearOil * $data[$lastDateOfMonth]['oil_production'],
                     'num' => $oilName['num'],
                     'name' => $oilName['name']
                 ];
             }
 
             $opiuLiquidNames = [];
-            $this->getShowDataOnTree($this->opiuLiquidNames, $opiuValues, $opiuLiquidNames);
+            $this->getShowDataOnTree($this->opiuLiquidNames, $repTtValues, $opiuLiquidNames);
             foreach ($opiuLiquidNames as $opiuLiquid) {
                 $opiuLiquidNames[] = [
-                    'value' => $opiuLiquid['value'] / $yearLiquid * $data[$lastDateOfMonth]['добыча жидкости'],
+                    'value' => $opiuLiquid['value'] / $yearLiquid * $data[$lastDateOfMonth]['fluid_production'],
                     'num' => $opiuLiquid['num'],
                     'name' => $opiuLiquid['name']
                 ];
             }
 
             $result = [];
-            $this->getShowDataOnTree($this->opiuRaspMestor, $opiuValues, $result);
-            $opiuRaspMestor = [];
-            $financeRashod = 0;
-            foreach ($result as $opiu) {
-                $opiuRaspMestor[] = [
-                    'value' => $opiu['value'] / $totalWells * $activeWells,
-                    'num' => $opiu['num'],
-                    'name' => $opiu['name']
-                ];
-                if($opiu['num'] =='B73000000000'){
-                    $financeRashod += $opiu['value'] / $totalWells * $activeWells;
-                }
-            }
-            $data[$lastDateOfMonth]['ОПЕРАЦИОННАЯ ПРИБЫЛЬ(+)/ УБЫТОК (-)'] = $operPrib - ($financeRashod + array_sum(array_column($opiuLiquidNames, 'value'))  + array_sum(array_column($opiuOilNames, 'value')));
-            $data[$lastDateOfMonth]['ДОХОД/(УБЫТОК) ДО НАЛОГООБЛОЖЕНИЯ'] = $operPrib - (array_sum(array_column($opiuRaspMestor, 'value')) + array_sum(array_column($opiuLiquidNames, 'value'))  + array_sum(array_column($opiuOilNames, 'value')));
-            $data[$lastDateOfMonth]['ЧИСТЫЙ ДОХОД/(УБЫТОК)'] = $data[$lastDateOfMonth]['ДОХОД/(УБЫТОК) ДО НАЛОГООБЛОЖЕНИЯ'] - $kpnResult;
+            $this->getShowDataOnTree($this->opiuRaspMestor, $repTtValues, $result);
+
+            $fieldDestribution = $this->getFieldDistribution($result);
+            $data[$lastDateOfMonth]['operation_profit'] = $operPrib - ($fieldDestribution['finance_costs'] + array_sum(array_column($opiuLiquidNames, 'value'))  + array_sum(array_column($opiuOilNames, 'value')));
+            $data[$lastDateOfMonth]['income_before_tax'] = $operPrib - (array_sum(array_column($fieldDestribution['field_distribution'], 'value')) + array_sum(array_column($opiuLiquidNames, 'value'))  + array_sum(array_column($opiuOilNames, 'value')));
+            $data[$lastDateOfMonth]['net_income'] = $data[$lastDateOfMonth]['income_before_tax'] - $kpnResult;
             array_push($data[$lastDateOfMonth], $opiuOilNames);
             array_push($data[$lastDateOfMonth], $opiuLiquidNames);
-            array_push($data[$lastDateOfMonth], $opiuRaspMestor);
+            array_push($data[$lastDateOfMonth], $fieldDestribution['field_distribution']);
         }
 
-        $data['opiu_result']['ДОХОДЫ ОТ РЕАЛИЗАЦИИ ТОВАРОВ, РАБОТ, УСЛУГ'] = $yearDohod;
-        $data['opiu_result']['Налог на добычу полезных ископаемых (НДПИ)'] = $yearNdnpi;
-        $data['opiu_result']['Рентный налог на экспортир.сырую нефть, газовый конденсат'] = $yearRent;
-        $data['opiu_result']['РЭкспортная таможенная пошлина ( ЭТП)'] = $yearEtp;
-        $data['opiu_result']['Расходы по погрузке, транспортировке и хранению'] = $yearTrans;
-        $data['opiu_result']['Добыча нефти за год'] = $yearOil;
-        $data['opiu_result']['Добыча жидкости за год'] = $yearLiquid;
+        $data['income_from_realization_products_services'] = $yearDohod;
+        $data['ndpi'] = $yearNdnpi;
+        $data['rent_tax_export_crude_oil'] = $yearRent;
+        $data['etp'] = $yearEtp;
+        $data['loading_transport_storage'] = $yearTrans;
+        $data['oil_production_year'] = $yearOil;
+        $data['liquid_production_year'] = $yearLiquid;
         return view('economy_kenzhe.field_calculation.index')->with(compact('companies', 'data'));
     }
 
-    public function getDirectionName($id)
+
+    public function getDirectionName(int $id) : string
     {
         return array_search($id, $this->exportDirections);
     }
 
-    public function getRoute($id)
+    public function getRoute(int $id) : string
     {
         return array_search($id, $this->routes);
     }
 
-    public function getTnRoute($id)
+    public function getTnRoute(int $id) : string
     {
         return array_search($id, $this->routesTn);
     }
 
-    public function getShowDataOnTree($names, &$values, &$result = [])
+    public function getRateName(int $id) : string
+    {
+        return array_search($id, $this->rates);
+    }
+
+    public function getFieldDistribution(array $result) : array
+    {
+        $data = [];
+        $data['finance_costs'] = 0;
+        foreach ($result as $opiu) {
+            $data['field_distribution'][] = [
+                'value' => $opiu['value'] / $this->totalWells * $this->activeWells,
+                'num' => $opiu['num'],
+                'name' => $opiu['name']
+            ];
+            if($opiu['num'] =='B73000000000'){
+                $data['finance_costs'] += $opiu['value'] / $this->totalWells * $this->activeWells;
+            }
+        }
+        return $data;
+    }
+
+    public function getRepTtValues(EcoRefsCompaniesId  $company, $year) : array
+    {
+        $handbook = HandbookRepTt::where('parent_id', 0)->with('childHandbookItems')->get()->toArray();
+        $companyRepTtValues = $company->statsByDate($year)->get()->toArray();
+        $opiuValues = $this->recursiveSetValueToHandbookByType($handbook, $companyRepTtValues, $year, $year - 1, $year . '-01-01', $year . '-12-01');
+        return $opiuValues;
+    }
+
+    public function getPrs(Object $electricityCosts, string $firstDateOfMonth, int $reqDay) : array
+    {
+        foreach ($electricityCosts as $cost) {
+            $avgprsday = EcoRefsAvgPrs::where('company_id', $cost->company_id)->where('date', $firstDateOfMonth)->first();
+            if ($avgprsday) {
+                $avgprsday = $avgprsday->avg_prs;
+            }
+            if ($this->param == 1 && $reqDay >= self::ONE_YEAR) {
+                $prsResult[$cost->company_id] = self::ONE_YEAR / ($reqDay);
+            } else {
+                $prsResult[$cost->company_id] = self::ONE_YEAR / ($reqDay + $avgprsday);
+            }
+        }
+        return $prsResult;
+    }
+
+    public function getShowDataOnTree(array $names, array &$values,  array &$result = []) : array
     {
         if (is_array($values)) {
             foreach ($values as $value) {
@@ -544,15 +524,47 @@ class FieldCalcController extends MainController
         return $result;
     }
 
-    public function getRateName($id){
-        return array_search($id, $this->rates);
+    public function depreciationResult() : float
+    {
+        if ($this->equipIdRequest == 1) {
+            $srokSluzhby = EcoRefsServiceTime::where('equip_id', '=', $this->equipIdRequest)->where('company_id', '=', $this->companyId)->first();
+            $equipCost = EcoRefsRentEquipElectServCost::where('equip_id', '=', $this->equipIdRequest)->where('company_id', '=', $this->companyId)->first();
+            if ($srokSluzhby->avg_serv_life > self::SERVICE_TIME) {
+                $amortizaciyaResult = $equipCost->equip_cost / $srokSluzhby->avg_serv_life;
+            } else {
+                $amortizaciyaResult = 0;
+            }
+        } else {
+            $amortizaciyaResult = 0;
+        }
+        return $amortizaciyaResult;
     }
 
-    public function calculationETP($realizationNDO, $rate, $dollar){
+    public function getOilProduction() : float
+    {
+        return $this->qoil * (1 - exp(log(1 - $this->razrab / 100) / self::ONE_YEAR * $this->workday)) / -(log(1 - $this->razrab / 100) / self::ONE_YEAR);
+    }
+
+    public function calculationETP(float $realizationNDO, int $rate, int $dollar) : float
+    {
         return $realizationNDO * $rate * $dollar;
     }
 
-    public function totalTransportationCostYear($route, $scenarioFact, $companyId, $oilValume, $rate){
+    public function getElectricityCostsByEquipment($equipmentCosts, $shgnParam, $ecnParam) : array
+    {
+        foreach ($equipmentCosts as $item) {
+            $electCost = EcoRefsPrepElectPrsBrigCost::where('company_id', '=', $item->company_id)->first();
+            if ($item->equip_id == 1) {
+                $zatrElectResults[$item->equip_id] = $this->workday * $this->liq * $shgnParam * $electCost->elect_cost;
+            } else {
+                $zatrElectResults[$item->equip_id] = $this->workday * $this->liq * $ecnParam * $electCost->elect_cost;
+            }
+        }
+        return $zatrElectResults;
+    }
+
+    public function totalTransportationCostYear(int $route, int $scenarioFact, int $companyId, float $oilValume, Object $rate) : array
+    {
         $tarifTn = EcoRefsTarifyTn::where('route_id', $route)->where('sc_fa', $scenarioFact)->where('company_id', $companyId)->get();
         $data = [];
         $value = 0;
@@ -572,7 +584,7 @@ class FieldCalcController extends MainController
         return $data;
     }
 
-    public function sumOverTree(&$items, $year, &$parent = null)
+    public function sumOverTree(array &$items, int $year, array &$parent = null) : array
     {
         if(is_array($items)){
             foreach ($items as &$item){
