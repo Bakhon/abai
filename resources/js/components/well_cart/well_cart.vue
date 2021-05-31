@@ -96,7 +96,7 @@
                         <div class="title">Основное</div>
                         <p>Номер скважины: <span>{{ allData.uwi }}</span></p>
                         <p>Категория скважины:
-<!--                          <span v-if="wellCategory">{{ wellCategory.name_ru }}</span>-->
+                          <!--                          <span v-if="wellCategory">{{ wellCategory.name_ru }}</span>-->
                         </p>
                         <div class="title">Привязка</div>
 
@@ -166,7 +166,7 @@
                       <td>{{ index + 1 }}</td>
                       <td>{{ item.name }}</td>
                       <td>
-                        <span v-for="value in  item.data">{{ value + ' / ' }}</span>
+                        <span>{{ item.data }}</span>
                       </td>
                     </tr>
                   </table>
@@ -201,26 +201,147 @@ export default {
       isBothColumnFolded: false,
       allData: null,
       popup: false,
+      wellStatus: null,
       tableData: [
         {
           'description': 'this.allData.uwi',
-          'multiplyValues': false,
+          'method': null,
           'name': 'Скважина',
-          'data': null
+          'data': ''
         },
         {
-          'description': 'this.allData.techs[0].name_ru',
-          'multiplyValues': false,
+          'description': 'this.allData.well_type[0].name_ru',
+          'method': null,
+          'name': 'Вид скважины',
+          'data': ''
+        },
+        {
+          'description': 'this.allData.geo',
+          'method': 'multiplyValues',
+          'multiplyValueName': 'name_ru',
+          'name': 'Месторождение',
+          'data': ''
+        },
+        {
+          'description': 'this.allData.geo',
+          'method': 'multiplyValues',
+          'multiplyValueName': 'name_ru',
+          'name': 'Горизонт / Pнас, атм',
+          'data': ''
+        },
+        {
+          'description': 'this.allData.rte',
+          'method': null,
+          'name': 'H ротора',
+          'data': ''
+        },
+        {
+          'description': 'this.allData.techs',
+          'method': 'multiplyValues',
+          'multiplyValueName': 'name_ru',
           'name': 'Тех. структура',
-          'data': null
+          'data': ''
+        },
+        {
+          'description': null,
+          'method': null,
+          'name': 'Отвод',
+          'data': ''
+        },
+        {
+          'description': 'this.allData.techs',
+          'method': 'multiplyValues',
+          'multiplyValueName': 'name_ru',
+          'name': 'ГУ/Ряд',
+          'data': ''
         },
         {
           'description': 'this.allData.orgs',
-          'multiplyValues': true,
+          'method': 'multiplyValues',
           'multiplyValueName': 'name_ru',
-          'name': 'Тех. структура',
-          'data': null
-        }
+          'name': 'Орг. структура',
+          'data': ''
+        },
+        {
+          'description': null,
+          'method': null,
+          'name': 'Влияющие скважины',
+          'data': ''
+        },
+        {
+          'description': null,
+          'method': null,
+          'name': 'Координаты X (устья)',
+          'data': ''
+        },
+        {
+          'description': null,
+          'method': null,
+          'name': 'Координаты Y (устья)',
+          'data': ''
+        },
+        {
+          'description': null,
+          'method': null,
+          'name': 'Координаты забоя X',
+          'data': ''
+        },
+        {
+          'description': null,
+          'method': null,
+          'name': 'Координаты забоя Y',
+          'data': ''
+        },
+        {
+          'description': null,
+          'method': null,
+          'name': 'Назначение скважин по проекту',
+          'data': ''
+        },
+        {
+          'description': 'this.allData.category[0].name_ru',
+          'method': null,
+          'name': 'Категория',
+          'data': ''
+        },
+        {
+          'description': null,
+          'method': null,
+          'name': 'Период бурения',
+          'data': ''
+        },
+        {
+          'description': 'this.allData.techs[0].dbeg ',
+          'method': null,
+          'name': 'Дата ввода в эксплуатацию',
+          'data': ''
+        },
+        {
+          'description': 'this.wellStatus.name_ru',
+          'method': null,
+          'name': 'Состояние',
+          'data': ''
+        },
+        {
+          'description': 'this.allData.well_expl',
+          'method': 'multiplyValues',
+          'multiplyValueName': 'name_ru',
+          'name': 'Способ эксплуатации',
+          'data': ''
+        },
+        {
+          'description': 'this.well_expl[0].name_ru',
+          'method': null,
+          'name': 'Тип УО / наличие эксц. болта',
+          'data': ''
+        },
+        {
+          'description': 'this.allData.tube_nom',
+          'method': 'multiplyValues',
+          'multiplyValueName': 'od',
+          'name': 'Диаметр экспл. колонны / доп. экспл. колонны, мм',
+          'data': ''
+        },
       ]
     }
   },
@@ -242,12 +363,23 @@ export default {
     },
     setTableData() {
       for (let i = 0; i < this.tableData.length; i++) {
-        if (this.tableData[i].multiplyValues === true) {
-          for (let k = 0; k < (eval(this.tableData[i].description)).length; k++) {
-            console.log(eval(eval('this.tableData[i].description')+'[k].dbeg'))
+        if (this.tableData[i].method === 'multiplyValues') {
+          try {
+            for (let k = 0; k < (eval(this.tableData[i].description)).length; k++) {
+              this.tableData[i].data += (eval(eval('this.tableData[i].description') + '[k].' + eval('this.tableData[i].multiplyValueName')))
+              if (k + 1 != (eval(this.tableData[i].description)).length) {
+                this.tableData[i].data += ' / '
+              }
+            }
+          } catch (e) {
+            this.tableData[i].data += '';
           }
         } else {
-          this.tableData[i].data = (eval(this.tableData[i].description))
+          try {
+            this.tableData[i].data = (eval(this.tableData[i].description))
+          } catch (e) {
+            this.tableData[i].data = ''
+          }
         }
       }
     },
@@ -270,6 +402,7 @@ export default {
       this.axios.get(this.localeUrl(`/api/bigdata/wells/${well.id}`)).then(({data}) => {
         try {
           this.allData = data
+          this.wellStatus = data.status[data.status.length - 1]
           this.setTableData()
 
           this.loading = false
