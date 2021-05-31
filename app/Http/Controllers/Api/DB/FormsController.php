@@ -12,6 +12,7 @@ use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\File;
 
 class FormsController extends Controller
 {
@@ -25,7 +26,7 @@ class FormsController extends Controller
 
     public function getMobileFormValues(): array
     {
-        if (!\Illuminate\Support\Facades\File::exists($this->file)) {
+        if (!File::exists($this->file)) {
             $values = [
                 'casing_pressure' => 1.12,
                 'wellhead_pressure' => 1,
@@ -34,17 +35,17 @@ class FormsController extends Controller
                 'casing_pressure2' => 1.12,
                 'wellhead_pressure2' => 1.12,
             ];
-            \Illuminate\Support\Facades\File::put($this->file, json_encode($values));
+            File::put($this->file, json_encode($values));
         }
 
-        return json_decode(\Illuminate\Support\Facades\File::get($this->file), 1);
+        return json_decode(File::get($this->file), 1);
     }
 
     public function saveMobileForm(Request $request): void
     {
         $values = $this->getMobileFormValues();
         $values[$request->get('code')] = $request->get('value');
-        \Illuminate\Support\Facades\File::put($this->file, json_encode($values));
+        File::put($this->file, json_encode($values));
     }
 
     public function getParams(string $formName): JsonResponse
@@ -149,6 +150,12 @@ class FormsController extends Controller
     {
         $form = $this->getForm($formName);
         return $form->getResults($request->get('well_id'));
+    }
+
+    public function calcFields(Request $request, string $form): JsonResponse
+    {
+        $form = $this->getForm($form);
+        return response()->json($form->calcFields($request->get('well_id'), $request->get('values')));
     }
 
     public function delete(Request $request, string $form, int $row): JsonResponse

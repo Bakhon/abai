@@ -108,6 +108,9 @@
     <template v-else-if="item.type === 'table'">
       <BigdataTableField :params="item" v-on:change="updateValue($event)"></BigdataTableField>
     </template>
+    <template v-else-if="item.type === 'calc'">
+      <label>{{ value }}</label>
+    </template>
     <div v-if="error" class="text-danger error" v-html="showError(error)"></div>
   </div>
 </template>

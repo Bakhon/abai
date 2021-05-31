@@ -1,5 +1,6 @@
 <template>
   <div class="bd-main-block">
+    <cat-loader v-if="isLoading"></cat-loader>
     <notifications position="top"></notifications>
     <div class="bd-main-block__header">
       <p class="bd-main-block__header-title">{{ params.title }}</p>
@@ -86,7 +87,8 @@ export default {
       errors: {},
       activeTab: 0,
       formValues: {},
-      well: null
+      well: null,
+      isLoading: false
     }
   },
   computed: {
@@ -175,6 +177,23 @@ export default {
       }
     },
     //callbacks
+    fillCalculatedFields(triggerFieldCode) {
+      this.isLoading = true
+      axios.post(
+          this.localeUrl(`/api/bigdata/forms/${this.params.code}/calc-fields`),
+          {
+            values: this.formValues,
+            well_id: this.wellId
+          }
+      ).then(({data}) => {
+        for (let key in data) {
+          this.formValues[key] = data[key]
+        }
+      }).finally(() => {
+        this.isLoading = false
+      })
+
+    },
     setWellPrefix(triggerFieldCode, changeFieldCode) {
       this.getWellPrefix({code: this.params.code, geo: this.formValues[triggerFieldCode]})
           .then(({data}) => {
