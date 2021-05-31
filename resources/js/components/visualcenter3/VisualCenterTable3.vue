@@ -2133,7 +2133,7 @@
               <table class="table">
                 <tr class="d-flex">
                  <td>
-                    <div class="number">{{otmVariables.drillingWells}}</div>
+                    <div class="number">{{otmWidgetData.drillingWells}}</div>
                     <div class="unit-vc ml-2">
                       {{ trans('visualcenter.skv') }}                           
                            </div> 
@@ -2191,7 +2191,7 @@
                       
                       </div>
                         <div class="number">
-                          {{ otmVariables.KrsSkv }}
+                          {{ otmWidgetData.krsWells }}
                         </div>
                         <div class="unit-vc ml-2">
                           {{ trans("visualcenter.skv") }}
@@ -2214,7 +2214,7 @@
                       <div class="mt-1 float-right">
                   
                       </div>
-                          <div class="number">{{ otmVariables.PrsSkv }}</div>
+                          <div class="number">{{ otmWidgetData.prsWells }}</div>
                           <div class="unit-vc ml-2">
                             {{ trans("visualcenter.skv") }}
                           </div>
