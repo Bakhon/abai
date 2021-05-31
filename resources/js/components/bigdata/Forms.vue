@@ -46,13 +46,11 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-12 blueblock three">
-        <div v-if="activeForm" class="col-12 blueblock three">
-          <BigDataPlainFormWrapper v-if="activeForm.type === 'plain'" :params="activeForm"
-                                   :well-id="wellId"></BigDataPlainFormWrapper>
-          <BigDataTableFormWrapper v-else-if="activeForm.type === 'table'"
-                                   :params="activeForm"></BigDataTableFormWrapper>
-        </div>
+      <div v-if="activeForm" class="col-12 blueblock three">
+        <BigDataPlainFormWrapper v-if="activeForm.type === 'plain'" :params="activeForm"
+                                 :well-id="wellId"></BigDataPlainFormWrapper>
+        <BigDataTableFormWrapper v-else-if="activeForm.type === 'table'"
+                                 :params="activeForm"></BigDataTableFormWrapper>
       </div>
     </div>
   </div>
@@ -362,5 +360,12 @@ export default {
       margin-left: 5px;
     }
   }
+
+  .bd-main-block {
+    .table-container {
+      height: calc(100vh - 360px);
+    }
+  }
+
 }
 </style>

@@ -306,7 +306,6 @@ export default {
       }
 
       &-content {
-        overflow-y: auto;
         padding: 20px 55px 10px 43px;
         @media (max-width: 767px) {
           height: auto;
