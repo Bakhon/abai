@@ -316,9 +316,12 @@ export default {
             this.productionWells = this.getSummaryWells(dataWithMay, this.wellStockIdleButtons.isProductionIdleButtonActive,'productionFonds');
             this.innerWells2ChartData = this.getSummaryProductionWellsForChart(dataWithMay);
             this.otmData = this.getOtmData(dataWithMay)
+            if (otmData.length > 3) {
             this.drillingWells=this.otmData[0]['fact'];
             this.otmKrsSkv=this.otmData[2]['fact'];
             this.otmPrsSkv=this.otmData[3]['fact'];
+            }
+
             this.otmChartData = this.getOtmChartData(dataWithMay)
             this.chemistryData = this.getChemistryData(dataWithMay)
             if (this.chemistryData.length != 0) {
