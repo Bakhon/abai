@@ -1,6 +1,6 @@
 {
   "type": "plain",
-  "table": "",
+  "table": "prod.tech_mode_prod_gas",
   "tabs": [
     {
       "title": "main",
@@ -10,13 +10,13 @@
             "title": "mode_parameters",
             "items": [
               {
-                "code": "field1",
+                "code": "dbeg",
                 "type": "date",
                 "title": "date_start",
                 "validation": "required|date"
               },
               {
-                "code": "field2",
+                "code": "dend",
                 "type": "date",
                 "title": "date_end",
                 "validation": "required|date"
@@ -27,7 +27,7 @@
             "title":"tech_modes_gas_well",
             "items":[
               {
-                "code":"field3",
+                "code":"gas",
                 "type":"numeric",
                 "title":"gas_flow_rate",
                 "validation":"required|numeric"
@@ -41,18 +41,18 @@
                 "code":"field4",
                 "type":"table",
                 "title":"",
-                "table":"",
+                "table":"prod.tech_mode_event",
                 "parent_column":"",
                 "columns":[
                   {
-                    "code":"field5",
+                    "code":"name_ru",
                     "type":"dict",
                     "title":"event",
-                    "dict":"",
-                    "validation":"required"
+                    "dict":"well_action",
+                    "validation":"required|exists:tbd.dict.well_action,id"
                   },
                   {
-                    "code":"field6",
+                    "code":"plan_month",
                     "type":"date",
                     "title":"planned_month",
                     "validation":"required|date"
