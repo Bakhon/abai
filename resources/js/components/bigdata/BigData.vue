@@ -35,7 +35,6 @@
         <div class="col">
           <div class="row pading-b-40">
             <div class="col btn-clk"
-                 v-if="favorites.length > 0"
                  @click="showFavoriteReports()"
             >
               <div class="section">
