@@ -49,7 +49,7 @@
             <div class="row">
               <div class="col">
                 <button class="transparent-select">
-                  Скважина: <span v-if="allData">{{ allData.uwi }}</span>
+                  Скважина: <span v-if="well">{{ well.uwi }}</span>
                   <svg width="14" height="8" viewBox="0 0 14 8" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M1 1L7 7L13 1" stroke="white" stroke-width="1.6" stroke-linecap="round"
                           stroke-linejoin="round"/>
@@ -64,7 +64,6 @@
                       placeholder="Номер скважины"
                       @input="selectWell"
                       @search="onSearch"
-                      v-model="wellName"
                   >
                     <template slot="option" slot-scope="option">
                       <span>{{ option.name }}</span>
@@ -73,7 +72,7 @@
                 </form>
               </div>
             </div>
-            <div v-if="allData" class="mid-col__main row">
+            <div v-if="well" class="mid-col__main row">
               <div class="col">
                 <div class="graphics">
                   <div class="row">
@@ -94,7 +93,7 @@
                     <div class="col">
                       <div class="well-info">
                         <div class="title">Основное</div>
-                        <p>Номер скважины: <span>{{ allData.uwi }}</span></p>
+                        <p>Номер скважины: <span>{{ well.uwi }}</span></p>
                         <p>Категория скважины:
                           <!--                          <span v-if="wellCategory">{{ wellCategory.name_ru }}</span>-->
                         </p>
@@ -131,10 +130,10 @@
                             stroke-linejoin="round"/>
                     </svg>
                   </div>
-                  <p v-if="allData">Паспорт скважины</p>
+                  <p v-if="well">Паспорт скважины</p>
                 </div>
                 <div class="title-container">
-                  <div class="sheare-icon" v-if="allData">
+                  <div class="sheare-icon" v-if="well">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path
                           d="M17.5443 8.3734L13.9393 4.79071C13.752 4.60451 13.4986 4.5 13.2344 4.5L7.10023 4.50002C6.54794 4.50002 6.10023 4.94773 6.10023 5.50002L6.10023 18.5C6.10023 19.0523 6.54795 19.5 7.10023 19.5H16.8394C17.3916 19.5 17.8394 19.0523 17.8394 18.5L17.8394 9.0827C17.8394 8.81641 17.7331 8.56111 17.5443 8.3734Z"
@@ -146,7 +145,7 @@
                           fill="white"/>
                     </svg>
                   </div>
-                  <div class="sheare-text" v-if="allData">
+                  <div class="sheare-text" v-if="well">
                     Скачать в MS-Excel
                   </div>
                 </div>
@@ -158,7 +157,7 @@
             <div class="info-element">
               <div class="row">
                 <div class="col">
-                  <table v-if="allData">
+                  <table v-if="well">
                     <tr>
                       <th colspan="3">Общая информация</th>
                     </tr>
@@ -194,50 +193,49 @@ export default {
     return {
       options: [],
       graph: null,
-      statusData: null,
       activeFormCode: null,
       loading: false,
       isLeftColumnFolded: false,
       isRightColumnFolded: false,
       isBothColumnFolded: false,
-      allData: null,
+      well: null,
       popup: false,
       wellStatus: null,
       tableData: [
         {
-          'description': 'this.allData.uwi',
+          'description': 'this.well.uwi',
           'method': null,
           'name': 'Скважина',
           'data': ''
         },
         {
-          'description': 'this.allData.well_type[0].name_ru',
+          'description': 'this.well.well_type[0].name_ru',
           'method': null,
           'name': 'Вид скважины',
           'data': ''
         },
         {
-          'description': 'this.allData.geo',
+          'description': 'this.well.geo',
           'method': 'multiplyValues',
           'multiplyValueName': 'name_ru',
           'name': 'Месторождение',
           'data': ''
         },
         {
-          'description': 'this.allData.geo',
+          'description': 'this.well.geo',
           'method': 'multiplyValues',
           'multiplyValueName': 'name_ru',
           'name': 'Горизонт / Pнас, атм',
           'data': ''
         },
         {
-          'description': 'this.allData.rte',
+          'description': 'this.well.rte',
           'method': null,
           'name': 'H ротора',
           'data': ''
         },
         {
-          'description': 'this.allData.techs',
+          'description': 'this.well.techs',
           'method': 'multiplyValues',
           'multiplyValueName': 'name_ru',
           'name': 'Тех. структура',
@@ -250,14 +248,14 @@ export default {
           'data': ''
         },
         {
-          'description': 'this.allData.techs',
+          'description': 'this.well.techs',
           'method': 'multiplyValues',
           'multiplyValueName': 'name_ru',
           'name': 'ГУ/Ряд',
           'data': ''
         },
         {
-          'description': 'this.allData.orgs',
+          'description': 'this.well.orgs',
           'method': 'multiplyValues',
           'multiplyValueName': 'name_ru',
           'name': 'Орг. структура',
@@ -300,7 +298,7 @@ export default {
           'data': ''
         },
         {
-          'description': 'this.allData.category[0].name_ru',
+          'description': 'this.well.category[0].name_ru',
           'method': null,
           'name': 'Категория',
           'data': ''
@@ -312,7 +310,7 @@ export default {
           'data': ''
         },
         {
-          'description': 'this.allData.techs[0].dbeg ',
+          'description': 'this.well.techs[0].dbeg',
           'method': null,
           'name': 'Дата ввода в эксплуатацию',
           'data': ''
@@ -324,7 +322,7 @@ export default {
           'data': ''
         },
         {
-          'description': 'this.allData.well_expl',
+          'description': 'this.well.well_expl',
           'method': 'multiplyValues',
           'multiplyValueName': 'name_ru',
           'name': 'Способ эксплуатации',
@@ -337,7 +335,7 @@ export default {
           'data': ''
         },
         {
-          'description': 'this.allData.tube_nom',
+          'description': 'this.well.tube_nom',
           'method': 'multiplyValues',
           'multiplyValueName': 'od',
           'name': 'Диаметр экспл. колонны / доп. экспл. колонны, мм',
@@ -362,6 +360,37 @@ export default {
         this.isBothColumnFolded = false;
       }
     },
+    onSearch(search, loading) {
+      if (search.length) {
+        loading(true);
+        this.search(loading, search, this);
+      }
+    },
+    search: _.debounce((loading, search, vm) => {
+          axios.get(vm.localeUrl('/api/bigdata/wells/search'), {params: {query: escape(search)}}).then(({data}) => {
+            vm.options = data.items;
+            loading(false);
+          })
+        },
+        350
+    ),
+    selectWell(well) {
+      this.loading = true
+      this.axios.get(this.localeUrl(`/api/bigdata/wells/${well.id}/status/`)).then(({data}) => {
+        this.wellStatus = data
+      }),
+          this.axios.get(this.localeUrl(`/api/bigdata/wells/${well.id}`)).then(({data}) => {
+            try {
+              this.well = data
+              this.setTableData()
+
+              this.loading = false
+            } catch (e) {
+              this.loading = false
+              console.log(e)
+            }
+          })
+    },
     setTableData() {
       for (let i = 0; i < this.tableData.length; i++) {
         if (this.tableData[i].method === 'multiplyValues') {
@@ -384,43 +413,7 @@ export default {
         }
       }
     },
-    onSearch(search, loading) {
-      if (search.length) {
-        loading(true);
-        this.search(loading, search, this);
-      }
-    },
-    search: _.debounce((loading, search, vm) => {
-          axios.get(vm.localeUrl('/api/bigdata/wells/search'), {params: {query: escape(search)}}).then(({data}) => {
-            vm.options = data.items;
-            loading(false);
-          })
-        },
-        350
-    ),
-    selectWell(well) {
-      this.loading = true
-      this.axios.get(this.localeUrl(`/api/bigdata/wells/${well.id}`)).then(({data}) => {
-        try {
-          this.allData = data
-          this.wellStatus = data.status[data.status.length - 1]
-          this.setTableData()
-          this.getStatus(well)
-
-          this.loading = false
-        } catch (e) {
-          this.loading = false
-          console.log(e)
-        }
-      })
-    },
-    getStatus(well){
-      this.axios.get(this.localeUrl(`/api/bigdata/wells/${well.id}/status/`)).then(({data}) =>{
-        this.statusData = data
-      })
-    }
   },
-  computed: {},
   setForm(formCode) {
     this.activeFormCode = formCode
   }

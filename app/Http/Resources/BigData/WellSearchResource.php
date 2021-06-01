@@ -6,13 +6,11 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class WellSearchResource extends JsonResource
 {
-
     public function toArray($request)
     {
-
         return [
             'id' => $this->id,
-            'name_ru' => $this-> name_ru,
+            'name' => $this->uwi
         ];
     }
 }

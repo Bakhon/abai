@@ -44,8 +44,6 @@ class Well extends TBDModel
 
     public function status()
     {
-        $yesterday =Carbon::yesterday();
-        $beforeYesterday = Carbon::now()->subDays(30);
         return $this->belongsToMany(WellStatus::class, 'prod.well_status', 'well', 'status');
     }
 
