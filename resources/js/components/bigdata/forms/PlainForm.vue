@@ -176,7 +176,6 @@ export default {
         this[callback](formItem.code, formItem.callbacks[callback])
       }
     },
-    //callbacks
     fillCalculatedFields(triggerFieldCode) {
       this.isLoading = true
       axios.post(
