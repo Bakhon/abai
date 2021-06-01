@@ -15,8 +15,6 @@ class WellInfoResource extends JsonResource
     public function toArray($request)
     {
         return[
-//            'dbeg' => $this -> dbeg,
-//            'dend' => $this -> dend,
             'name_ru' => $this -> name_ru,
         ];
     }

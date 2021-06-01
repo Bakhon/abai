@@ -26,9 +26,6 @@ class WellsController extends Controller
             ->wherePivot('dbeg', '<>', $today)
             ->withPivot('dend', 'dbeg')
             ->orderBy('pivot_dbeg', 'desc')->first();
-//        return [
-//            'status' => new WellInfoResource($status)
-//        ];
        return $status;
     }
 
