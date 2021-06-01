@@ -123,9 +123,9 @@
               <div class="construction-data hperf table-border-gno-top no-gutter col-7">
                 {{trans('pgno.glubina_perf')}}
                 <template>
-                  <div v-if="!isCentrators"></div>
+                  <div v-if="!isIntervals"></div>
                   <div class="descr" v-else>
-                    Центраторы: <b v-for="item in centratorsRequiredValue">{{ item }}</b>
+                    {{trans('pgno.interval_perf')}}: <b v-for="item in centratorsRequiredValue">{{ item }}</b>
                   </div>
                 </template> 
               </div>
