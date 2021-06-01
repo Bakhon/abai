@@ -113,6 +113,11 @@ abstract class PlainForm extends BaseForm
         }
     }
 
+    public function calcFields(int $wellId, array $values): array
+    {
+        return [];
+    }
+
     public function delete(int $rowId)
     {
         DB::connection('tbd')
