@@ -1,6 +1,6 @@
 {
   "type": "plain",
-  "table": "",
+  "table": "prod.tech_mode_inj",
   "tabs": [
     {
       "title": "Main",
@@ -10,13 +10,13 @@
             "title": "Mode_parameters",
             "items": [
               {
-                "code": "field1",
+                "code": "dbeg",
                 "type": "date",
                 "title": "date_start",
                 "validation": "required|date"
               },
               {
-                "code": "field2",
+                "code": "dend",
                 "type": "date",
                 "title": "date_end",
                 "validation": "required|date"
@@ -29,36 +29,36 @@
             "title": "Tech_modes_of_injection_wells",
             "items": [
               {
-                "code": "field3",
+                "code": "agent_vol",
                 "type": "numeric",
                 "title": "agent_volume",
                 "validation": "required|numeric",
                 "prefix": ""
               },
               {
-                "code": "field4",
-                "type": "dict_tree",
+                "code": "inj_agent_type",
+                "type": "dict",
                 "title": "agent_type",
-                "validation": "required",
-                "dict": "",
+                "validation": "required|exists:tbd.dict.inj_agent_type,id",
+                "dict": "inj_agent_type",
                 "callbacks": {}
               },
               {
-                "code": "field5",
+                "code": "agent_temp",
                 "type": "numeric",
                 "title": "agent_temperature",
                 "validation": "required|numeric",
                 "prefix": ""
               },
               {
-                "code": "field6",
+                "code": "inj_pressure",
                 "type": "numeric",
                 "title": "injection_pressure",
                 "validation": "required|numeric",
                 "prefix": ""
               },
               {
-                "code": "field7",
+                "code": "q_max_intake",
                 "type": "numeric",
                 "title": "qmax_reception",
                 "validation": "required|numeric",
@@ -77,15 +77,15 @@
             "title": "Planned_events_tech_modes",
             "items": [
               {
-                "code": "field8",
-                "type": "dict_tree",
+                "code": "well_activity",
+                "type": "dict",
                 "title": "event",
-                "validation": "required",
-                "dict": "",
+                "validation": "required|exists:tbd.dict.well_activity,id",
+                "dict": "well_activity",
                 "callbacks": {}
               },
               {
-                "code": "field9",
+                "code": "plan_month",
                 "type": "date",
                 "title": "planned_month",
                 "validation": "required|date"
