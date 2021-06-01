@@ -248,18 +248,15 @@ class FieldCalcController extends MainController
             $zatrElectResults = $this->getElectricityCostsByEquipment($equipmentCosts, $shgnParam, $ecnParam);
             $expDayResults = $this->getExpDayResutl($equipmentCosts);
 
-
             $rentCostResult = 0;
-
             if ($this->equipIdRequest != 1) {
                 $rentCostResult = EcoRefsRentEquipElectServCost::where('equip_id', '=', $this->equipIdRequest)->first()->rent_cost;
             }
 
-            foreach ($exportsResults as $route_id => $oilValume) {
-                $tarifTnItemValue = $this->totalTransportationCostYear($route_id, $scenarioFact, $this->companyId, $oilValume, $rate);
-                $exportsTarTnResults[$route_id] = $tarifTnItemValue['value'] / 12;
-                $data[$lastDateOfMonth]['oil_transportation'][$this->getRoute($route_id)] = $tarifTnItemValue['value'] / 12;
-            }
+            $result = $this->getTransportationData($scenarioFact, $exportsResults, $rate);
+            $exportsTarTnResults = $result['TarTnResults'];
+            $data[$lastDateOfMonth]['oil_transportation'] = $result['oil_transportation'];
+
             $exportsTarTnResultsTotal = array_sum($exportsTarTnResults);
 
             foreach ($discontExp as $item) {
@@ -269,7 +266,7 @@ class FieldCalcController extends MainController
                 $data[$lastDateOfMonth]['income_from_realization'][$item->route_id] = $exportsResults[$item->route_id] * $item->barr_coef * (($item->macro - $item->discont) * $rate->ex_rate_dol);
                 $stavki = EcoRefsNdoRates::where('company_id', $item->company_id)->first();
                 $exportsNdpiResults[$item->route_id] = $exportsResults[$item->route_id] * $item->barr_coef * $item->macro * $rate->ex_rate_dol * $stavki->ndo_rates;
-                $data[$lastDateOfMonth]['ndpi_oil_export'] = $exportsNdpiResults[$item->route_id];
+                $data[$lastDateOfMonth]['ndpi_oil_export'][$this->getRoute($item->route_id)] = $exportsNdpiResults[$item->route_id];
                 $rent = EcoRefsRentTax::where('world_price_beg', '<', $item->macro)->where('world_price_end', '<=', $item->macro)->first();
                 $exportsRentTaxResults[$item->route_id] = $exportsResults[$item->route_id] * $item->barr_coef * $item->macro * $rent->rate * $rate->ex_rate_dol;
                 $etpRate = EcoRefsAvgMarketPrice::where('avg_market_price_beg', '>=', $item->macro)->where('avg_market_price_end', '>', $item->macro)->first();
@@ -286,11 +283,10 @@ class FieldCalcController extends MainController
 
             $insideDiscontResults = [];
             $insideNdpiResults = [];
-            $insideTarTnResults = [];
 
             $result = $this->getProductionOnRealization($emppersIns, $empper);
             $insideResults = $result['exportsResults'];
-            $data[$lastDateOfMonth]['production_on_realization'] = $result['production_on_realization'];
+            array_push($data[$lastDateOfMonth]['production_on_realization'], $result['production_on_realization']);
             $insideResultsTotal = array_sum($insideResults);
 
             foreach ($discontIns as $item) {
@@ -302,11 +298,10 @@ class FieldCalcController extends MainController
             $insideDiscontResultsTotal = array_sum($insideDiscontResults);
             $insideNdpiResultsTotal = array_sum($insideNdpiResults);
 
-            foreach ($insideResults as $route_id => $oilValume) {
-                $tarifTnItemValue = $this->totalTransportationCostYear($route_id, $scenarioFact, $this->companyId, $oilValume, $rate);
-                $insideTarTnResults[$route_id] = $tarifTnItemValue['value'] / 12;
-                $data[$lastDateOfMonth]['oil_transportation'][$this->getRoute($route_id)] = $insideTarTnResults[$route_id] / 12;
-            }
+            $result = $this->getTransportationData($scenarioFact, $insideResults, $rate);
+            $insideTarTnResults = $result['TarTnResults'];
+            array_push($data[$lastDateOfMonth]['oil_transportation'], $result['oil_transportation']);
+
             $insideTarTnResultsTotal = array_sum($insideTarTnResults);
 
             $amortizaciyaResult = $this->depreciationResult();
@@ -406,6 +401,17 @@ class FieldCalcController extends MainController
     public function getRateName(int $id): string
     {
         return array_search($id, $this->rates);
+    }
+
+    public function getTransportationData(int $scenarioFact, array $insideResults, Object $rate) : array
+    {
+        $data = [];
+        foreach ($insideResults as $route_id => $oilValume) {
+            $tarifTnItemValue = $this->totalTransportationCostYear($route_id, $scenarioFact, $this->companyId, $oilValume, $rate);
+            $data['TarTnResults'][$route_id] = $tarifTnItemValue['value'] / 12;
+            $data['oil_transportation'][$this->getRoute($route_id)] = $data['TarTnResults'][$route_id] / 12;
+        }
+        return $data;
     }
 
     public function getExpDayResutl(Object $equipmentCosts) : array
