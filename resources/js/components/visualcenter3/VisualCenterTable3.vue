@@ -2127,13 +2127,13 @@
               </div>
             </div>
 
-            <div class="first-string first-string2">
+            <div class="first-string first-string2 cursor-pointer">            
             <div      @click="changeTable('6')"
                       :class="tableHover6">
               <table class="table">
                 <tr class="d-flex">
                  <td>
-                    <div class="number">{{this.otmData[0]['fact']}}</div>
+                    <div class="number">{{otmWidgetData.drillingWells}}</div>
                     <div class="unit-vc ml-2">
                       {{ trans('visualcenter.skv') }}                           
                            </div> 
@@ -2154,7 +2154,7 @@
             </div>
           </div>
 
- <div class="first-string first-string2">
+ <div class="first-string first-string2 cursor-pointer">
             <div>
               <table class="table">
                 <tr class="d-flex">
@@ -2183,16 +2183,19 @@
                 <table class="table table5">
                   <tr class="d-flex">
                     <td
-                      class="col-6"
+                      class="col-6 cursor-pointer"
                       @click="changeTable('6')"
                       :class="tableHover6"
                     >
                       <div class="mt-1 float-right">
                       
                       </div>
-                        <div class="number">{{this.otmData[2]['fact']}}</div><div class="unit-vc ml-2">
-                      {{ trans('visualcenter.skv') }}                           
-                           </div>
+                        <div class="number">
+                          {{ otmWidgetData.krsWells }}
+                        </div>
+                        <div class="unit-vc ml-2">
+                          {{ trans("visualcenter.skv") }}
+                        </div>
                     <div class="in-idle2">
                  <span v-if="isOneDateSelected"> {{ previousPeriodEnd }}<br><br></span>
                  <span v-else> {{ previousPeriodStart }} - {{ previousPeriodEnd }}</span>
@@ -2204,16 +2207,17 @@
                     </td>
 
                     <td
-                      class="col-6"
+                      class="col-6 cursor-pointer"
                          @click="changeTable('6')"
                       :class="tableHover6"
                     >
                       <div class="mt-1 float-right">
                   
                       </div>
-                         <div class="number">{{this.otmData[3]['fact']}}</div><div class="unit-vc ml-2">
-                      {{ trans('visualcenter.skv') }}                           
-                           </div>
+                          <div class="number">{{ otmWidgetData.prsWells }}</div>
+                          <div class="unit-vc ml-2">
+                            {{ trans("visualcenter.skv") }}
+                          </div>
                     <div class="in-idle2">
                  <span v-if="isOneDateSelected"> {{ previousPeriodEnd }}<br><br></span>
                  <span v-else> {{ previousPeriodStart }} - {{ previousPeriodEnd }}</span>
@@ -2237,7 +2241,7 @@
               <table class="table">
                 <tr class="d-flex">
                  <td>
-                    <div class="number">{{this.chemistryDataFactSumm}}</div>
+                    <div class="number">{{chemistryDataFactSumm}}</div>
                  <div class="unit-vc ml-2">
                      {{ trans('visualcenter.chemistryMetricTon') }}                         
                           </div>              
@@ -2422,7 +2426,7 @@
 .vis-table-small2 {
   max-width: 46% !important;
   tr {
-    // line-height: 4.2rem !important;
+    
     font-size: 1.2rem !important;
     font-family: Bold !important;
   }
@@ -2640,8 +2644,8 @@
 .rates-block__row {
   height: 100%;
 }
-.button_hover{
-  background: #0d2792
+.button_hover {
+  background: #0d2792;
 }
 @media (max-width: 1400px) {
   .rates-block__row {
@@ -2659,9 +2663,9 @@
   .year-period-dropdown {
     min-width: 0;
   }
-  .right-column_header{
-    font-family: Bold;   
-    font-size: 0.8rem;    
+  .right-column_header {
+    font-family: Bold;
+    font-size: 0.8rem;
   }
 }
 @media (max-width: 2000px) {
@@ -2690,8 +2694,51 @@
   color: #9ea4c9;
   border: none;
 }
-.right-column_header{
-  font-family: Bold;   
-  font-size: 0.9rem;    
+.right-column_header {
+  font-family: Bold;
+  font-size: 0.9rem;
+}
+.fond-indicator-grow {
+  background: url(/img/visualcenter3/red-arrow-grow.svg) no-repeat;
+  height: 15px;
+  width: 15px;
+  background-size: contain;
+  float: left;
+  margin-top: 5px;
+  margin-right: 5px;
+  overflow: hidden;
+}
+
+.fond-indicator-fall {
+  background: url(/img/visualcenter3/green-arrow-fall.svg) no-repeat;
+  height: 15px;
+  width: 15px;
+  background-size: contain;
+  float: left;
+  margin-top: 5px;
+  margin-right: 5px;
+  overflow: hidden;
+}
+
+.indicator-grow {
+  background: url(/img/visualcenter3/green-arrow.svg) no-repeat;
+  height: 15px;
+  width: 15px;
+  background-size: contain;
+  float: left;
+  margin-top: 5px;
+  margin-right: 5px;
+  overflow: hidden;
+}
+
+.indicator-fall {
+  background: url(/img/visualcenter3/red-arrow.svg) no-repeat;
+  height: 15px;
+  width: 15px;
+  background-size: contain;
+  float: left;
+  margin-top: 5px;
+  margin-right: 5px;
+  overflow: hidden;
 }
 </style>
