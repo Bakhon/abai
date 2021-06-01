@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\DB;
 
+use App\Exceptions\BigData\SubmitFormException;
 use App\Exceptions\ParseJsonException;
 use App\Http\Controllers\Controller;
 use App\Models\BigData\Dictionaries\Geo;
@@ -77,10 +78,14 @@ class FormsController extends Controller
         $form->saveSingleField($field);
     }
 
-    public function submit(string $formName): array
+    public function submit(string $formName)
     {
         $form = $this->getForm($formName);
-        return $form->send();
+        try {
+            return $form->send();
+        } catch (SubmitFormException $exception) {
+            return response()->json(['message' => 'Form sending error'], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
     public function getRows(string $formName): array

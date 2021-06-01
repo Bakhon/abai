@@ -190,7 +190,7 @@ export default {
           text: selected.name
         }
       }
-      if (this.item.type === 'date') {
+      if (['date', 'datetime'].includes(this.item.type)) {
 
         return {
           text: value ? moment(value).format('YYYY-MM-DD HH:MM:SS') : null,
