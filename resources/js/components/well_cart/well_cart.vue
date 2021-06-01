@@ -31,7 +31,7 @@
               <div class="custom-directory">
                 <ul id="myUL">
                   <li v-for="form in forms" :class="{'selected': activeFormCode === form.code}"
-                      @click="setForm(form.code)">
+                      @click="switchFormByCode(form.code)">
                     <p>
                       <span class="file" v-html="form.name"></span>
                     </p>
@@ -522,7 +522,6 @@ export default {
       isRightColumnFolded: false,
       isBothColumnFolded: false,
       allData: null,
-      popup: false,
       forms: forms
     }
   },
@@ -578,7 +577,7 @@ export default {
         }
       })
     },
-    setForm(formCode) {
+    switchFormByCode(formCode) {
       this.activeFormCode = formCode
     }
   }
