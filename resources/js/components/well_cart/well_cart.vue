@@ -201,6 +201,7 @@ export default {
       well: null,
       popup: false,
       wellStatus: null,
+      wellCategory: null,
       tableData: [
         {
           'description': 'this.well.uwi',
@@ -379,6 +380,9 @@ export default {
       this.axios.get(this.localeUrl(`/api/bigdata/wells/${well.id}/status/`)).then(({data}) => {
         this.wellStatus = data
       }),
+          this.axios.get(this.localeUrl(`/api/bigdata/wells/${well.id}/category/`)).then(({data}) => {
+            this.wellCategory = data
+          }),
           this.axios.get(this.localeUrl(`/api/bigdata/wells/${well.id}`)).then(({data}) => {
             try {
               this.well = data

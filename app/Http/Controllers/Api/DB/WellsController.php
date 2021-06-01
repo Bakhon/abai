@@ -14,7 +14,7 @@ class WellsController extends Controller
 {
     public function get(Well $well)
     {
-        $wellInfo = Well::where('id', $well->id)->with('category', 'techs', 'geo', 'orgs', 'well_type', 'well_expl', 'tube_nom')->first();
+        $wellInfo = Well::where('id', $well->id)->with('techs', 'geo', 'orgs', 'well_type', 'well_expl', 'tube_nom')->first();
         return $wellInfo;
     }
 
@@ -27,6 +27,16 @@ class WellsController extends Controller
             ->withPivot('dend', 'dbeg')
             ->orderBy('pivot_dbeg', 'desc')->first();
        return $status;
+    }
+    public function category(Well $well)
+    {
+        $today = Carbon::today();
+        $category = $well->category()
+            ->wherePivot('dend', '<>', $today)
+            ->wherePivot('dbeg', '<>', $today)
+            ->withPivot('dend', 'dbeg')
+            ->orderBy('pivot_dbeg', 'desc')->first();
+        return $category;
     }
 
     public function search(Request $request): array
