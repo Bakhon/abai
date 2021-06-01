@@ -194,6 +194,7 @@ export default {
     return {
       options: [],
       graph: null,
+      statusData: null,
       activeFormCode: null,
       loading: false,
       isLeftColumnFolded: false,
@@ -404,6 +405,7 @@ export default {
           this.allData = data
           this.wellStatus = data.status[data.status.length - 1]
           this.setTableData()
+          this.getStatus(well)
 
           this.loading = false
         } catch (e) {
@@ -412,6 +414,11 @@ export default {
         }
       })
     },
+    getStatus(well){
+      this.axios.get(this.localeUrl(`/api/bigdata/wells/${well.id}/status/`)).then(({data}) =>{
+        this.statusData = data
+      })
+    }
   },
   computed: {},
   setForm(formCode) {

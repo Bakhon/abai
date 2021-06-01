@@ -63,6 +63,7 @@ Route::group(
 
                 Route::get('wells/search', 'Api\DB\WellsController@search');
                 Route::get('wells/{well}', 'Api\DB\WellsController@get');
+                Route::get('wells/{well}/status', 'Api\DB\WellsController@status');
             }
         );
     }
