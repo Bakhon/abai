@@ -211,7 +211,6 @@ class FieldCalcController extends MainController
             $exportsNdpiResults = [];
             $exportsRentTaxResults = [];
             $exportsEtpResults = [];
-            $exportsTarTnResults = [];
 
             if ($month > 9) {
                 $monthname = $month;
