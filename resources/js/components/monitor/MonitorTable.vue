@@ -1,63 +1,5 @@
 <template>
   <div>
-    <modal class="modal-bign-wrapper" name="economicmodal" :width="1200" :height="600" :adaptive="true">
-      <div class="modal-bign modal-bign-container">
-        <div class="modal-bign-header">
-          <p class="title"></p>
-          <button type="button" class="modal-bign-button" @click="$modal.hide('economicmodal')">
-            {{ trans('monitoring.close') }}
-          </button>
-        </div>
-
-        <div class="container-fluid economicModal" style="width: 100%; height: 100%; overflow-y: auto;">
-          <div class="row">
-            <div class="col-12">
-              <h3 class="economicHeader">{{ trans('monitoring.economic_effect') }} {{ nextYear }}</h3>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-12">
-              <table class="table table-bordered economicModalTable">
-                <tbody>
-                <tr v-for="row in economicNextYear">
-                  <td>{{ row[0] }}</td>
-                  <td>{{ row[1] }}</td>
-                  <td>{{ row[2] }}</td>
-                  <td>{{ row[3] }}</td>
-                  <td>{{ row[4] }}</td>
-                  <td>{{ row[5] }}</td>
-                  <td>{{ row[6] }}</td>
-                  <td>{{ row[7] }}</td>
-                  <td>{{ row[8] }}</td>
-                </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-12">
-              <h3 class="economicHeader">{{ trans('monitoring.economic_effect') }} {{ currentYear }}</h3>
-              <h4 class="economicHeader" v-if="economicCurrentDays">{{ trans('monitoring.days_count') }}:
-                {{ economicCurrentDays }}</h4>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-12">
-              <table class="table table-bordered economicModalTable">
-                <tbody>
-                <tr v-for="row in economicCurrentYear">
-                  <td>{{ row[0] }}</td>
-                  <td>{{ row[1] }}</td>
-                  <td>{{ row[2] }}</td>
-                  <td>{{ row[3] }}</td>
-                </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
-    </modal>
 
     <modal class="modal-bign-wrapper" name="corrosion" :width="1200" :height="800" :adaptive="true">
       <div class="modal-bign modal-bign-container">
@@ -564,10 +506,6 @@
             </div>
           </div>
         </div>
-        <button type="button" class="btn btn-info" @click="pushBtn" :disabled="economicCurrentYear.length < 1">
-          {{ trans('monitoring.economic_effect') }}
-        </button
-        >
         <button type="button" class="btn btn-info" @click="pushBtn2" :disabled="!dose">
           {{ trans('monitoring.corrosion_simulator') }}
         </button>
@@ -651,16 +589,11 @@ export default {
       corF: null,
       dose: 0,
       result: {},
-      economicNextYear: [],
-      economicCurrentYear: [],
-      currentYear: new Date().getFullYear(),
-      nextYear: new Date(new Date().setFullYear(new Date().getFullYear() + 1)).getFullYear(),
       chart1Data: null,
       chart2Data: null,
       chart3Data: null,
       chart4Data: null,
       problemGus: [],
-      economicCurrentDays: null,
       validation: [
         {
           key: 'ngdu',
@@ -749,7 +682,6 @@ export default {
               this.pipeab = data.pipeab
               this.lastCorrosion = data.lastCorrosion
               this.constantsValues = data.constantsValues
-              this.getEconomicData(event.target.value);
             } else {
               console.log("No data");
             }
@@ -898,7 +830,8 @@ export default {
             rhog: this.oilGas.gas_density_at_20,
             mul: this.oilGas.oil_viscosity_at_20,
             mug: this.oilGas.gas_viscosity_at_20,
-            q_o: this.ngdu.daily_oil_production
+            q_o: this.ngdu.daily_oil_production,
+            current_dosage: this.current_dosage
           })
           .then((response) => {
             let data = response.data;
@@ -916,39 +849,8 @@ export default {
             }
           });
     },
-    pushBtn() {
-      this.$modal.show("economicmodal");
-    },
     pushBtn2() {
       this.$modal.show("corrosion");
-    },
-    getEconomicData(gu) {
-      this.axios
-          .post(this.localeUrl("/vcoreconomic"), {
-            gu: this.localGu,
-          })
-          .then((response) => {
-            let data = response.data;
-            if (data) {
-              this.economicNextYear = data;
-            } else {
-              console.log("No data");
-            }
-          });
-
-      this.axios
-          .post(this.localeUrl("/vcoreconomiccurrent"), {
-            gu: this.localGu,
-          })
-          .then((response) => {
-            let data = response.data;
-            if (data) {
-              this.economicCurrentYear = data.tableData;
-              this.economicCurrentDays = data.daysEcoCurrent;
-            } else {
-              console.log("No data");
-            }
-          });
     }
   }
 };

@@ -39,6 +39,11 @@ export default {
     },
     data: function () {
         return {
+            otmWidgetData: {
+                drillingWells: 0,
+                krsWells: 0,
+                prsWells: 0
+            },            
             accidentTotal: '',
             noData: '',
             personalFact: '',
@@ -107,7 +112,8 @@ export default {
                 oil_fact: 0,
                 oil_dlv_fact: 0,
                 gas_fact: 0
-            }
+            },
+            chemistryDataFactSumm: 0,
         };
     },
     methods: {
@@ -214,7 +220,7 @@ export default {
             filteredDataByPeriod = this.getDataOrderedByAsc(filteredDataByPeriod);
 
             this.getProductionPercentCovid(filteredDataByPeriod);
-            this.updateSecondaryParams(filteredDataByPeriod,filteredDataByCompanies);
+            this.updateSecondaryParams(data);
 
             if (this.isOneDateSelected) {
                 let filteredDataByOneDay = this.getFilteredDataByOneDay(filteredDataByCompanies);
@@ -306,15 +312,29 @@ export default {
             }
 
             let productionPlanAndFactMonth = this.getProductionPlanAndFactForMonth(dataWithMay);
-
-            this.WellsDataAll = this.WellsData(dataWithMay);
+            this.updateWellsWidgetsForAllCompanies(dataWithMay);
             this.injectionWells = this.getSummaryWells(dataWithMay,this.wellStockIdleButtons.isInjectionIdleButtonActive,'injectionFonds');
             this.innerWellsChartData = this.getSummaryInjectionWellsForChart(dataWithMay);
             this.productionWells = this.getSummaryWells(dataWithMay, this.wellStockIdleButtons.isProductionIdleButtonActive,'productionFonds');
             this.innerWells2ChartData = this.getSummaryProductionWellsForChart(dataWithMay);
             this.otmData = this.getOtmData(dataWithMay)
+            if (this.otmData.length >= 4) {
+                this.otmWidgetData.drillingWells=this.otmData[0]['fact'];
+                this.otmWidgetData.krsWells=this.otmData[2]['fact'];
+                this.otmWidgetData.prsWells=this.otmData[3]['fact'];
+            }
+
             this.otmChartData = this.getOtmChartData(dataWithMay)
             this.chemistryData = this.getChemistryData(dataWithMay)
+            if (this.chemistryData.length != 0) {
+                this.chemistryDataFactSumm= _.reduce(
+                    this.chemistryData,
+                    function (memo, item) {
+                        return memo + item.fact;
+                    },
+                    0
+                );
+            }
             this.chemistryChartData = this.getChemistryChartData(dataWithMay)
 
             var dzo2 = [];
@@ -404,7 +424,7 @@ export default {
                 planDay.push(p);
             });
 
-            this.getProductionPercentWells(data);
+            this.updateWellsWidgetPercentData(data);
 
 
             var dzoMonth = [];
@@ -573,20 +593,19 @@ export default {
             let tmpArrayToSort = [
                 'АО "Озенмунайгаз"',
                 'АО "Эмбамунайгаз"',
-                'АО "Каражанбасмунай"',
-                'ТОО "Казгермунай"',
-                'АО ПетроКазахстан Инк',
-                'АО ПетроКазахстан Кумколь Ресорсиз',
-                '"ПетроКазахстан Инк."',
-                'АО "Тургай-Петролеум"',
-                '"Амангельды Газ"',
-                "ТОО «Тенгизшевройл»",
                 'АО "Мангистаумунайгаз"',
-                'ТОО "Казахойл Актобе"',
+                'АО "Каражанбасмунай"',
+                'ТОО "СП "Казгермунай"',
                 'ТОО "Казахтуркмунай"',
-                "«Карачаганак Петролеум Оперейтинг б.в.»",
-                "«Норт Каспиан Оперейтинг Компани н.в.»",
-                'Урихтау Оперейтинг',
+                'ТОО "Казахойл Актобе"',
+                'ТОО "Урихтау Оперейтинг"',
+                'ТОО "Тенгизшевройл"',
+                '"Норт Каспиан Оперейтинг Компани н.в."',
+                '"Карачаганак Петролеум Оперейтинг б.в."',
+                'АО "ПетроКазахстан Кумколь Ресорсиз"',
+                'АО "ПетроКазахстан Инк."',
+                'АО "Тургай-Петролеум"',
+                'ТОО "Амангельды Газ"',
             ]
 
             bigTable = _.orderBy(

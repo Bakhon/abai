@@ -132,7 +132,7 @@ return [
             "casing_type" => "Вид обсадной трубы",
             "number_of_pipes" => "Количество труб",
             "poured_cement_volume" => "Объем залитого цемента",
-            "cement_lifting_height" => "Высота подъема цемента" 
+            "cement_lifting_height" => "Высота подъема цемента",
         ],
         'prs' => [
             'repair' => 'Ремонт',
@@ -155,7 +155,12 @@ return [
             'nkt_used' => 'Кол-во спущенных НКТ, б/у',
             'actual_bh' => 'Фактический забой, м',
             'tech_condition' => 'Техническое состояние скважин',
-            'new_condition' => 'Новое состояние'
+            'new_condition' => 'Новое состояние',
+            'dublicate_to_gtm' => 'Дублировать в ГТМ',
+            'by_your_own' => 'Дублировать в ГТМ',
+            'owt_of_plan' => 'Вне плана',
+            'do_not_chenge_teckh_condition' => 'Не менять техническое состояние',
+            'do_not_chenge_condition' => 'Не менять состояние'
         ],
         'gas_well'=>[
             'main' => 'Основное',
@@ -204,7 +209,18 @@ return [
             'knbk_full'=>'Компонент низа бурильной колонны',
             'drill_column_type'=>'Виды компонентов низа бурильной колонны:',
             'value'=>'Значение:'
-        ]
+        ],
+        'well_constr'=>[
+            "well_constructor" => "Конструкция скважины",
+            "column_type" => "Вид колонны",
+            "casing_running_depth" => "Глубина спуска колонны",
+            "side_barrel" => "Боковой ствол",
+            "casing_type" => "Вид обсадной трубы",
+            "number_of_pipes" => "Количество труб",
+            "poured_cement_volume" => "Объем залитого цемента",
+            "cement_lifting_height" => "Высота подъема цемента",
+            "landing_date" => "Дата спуска" 
+        ],
     ],
     'close' => 'Закрыть',
     'value_outside' => 'Данное значение выходит за ограничения',

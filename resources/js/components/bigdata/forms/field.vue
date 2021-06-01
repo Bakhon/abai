@@ -147,7 +147,7 @@ export default {
   },
   computed: {
     dict() {
-      return this.$store.getters['bd/dict'](this.item.dict);
+      return this.$store.getters['bdform/dict'](this.item.dict);
     },
   },
   watch: {
