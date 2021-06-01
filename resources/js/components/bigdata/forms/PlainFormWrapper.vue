@@ -1,6 +1,5 @@
 <template>
   <div class="bd-main-block">
-    <notifications position="top"></notifications>
     <div class="bd-main-block__header">
       <div>
         <p v-if="well" class="bd-main-block__header-title">Скважина {{ well.uwi }}</p>

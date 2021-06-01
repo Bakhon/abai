@@ -144,19 +144,29 @@ export default {
             this.$emit('close')
           })
           .catch(error => {
-            this.errors = error.response.data.errors
 
-            Vue.prototype.$notifyWarning('Некоторые поля заполнены некорректно')
+            if (error.response.status === 500) {
+              Vue.prototype.$notifyError(error.response.data.message)
+              return false
+            }
 
-            for (const [tabIndex, tab] of Object.entries(this.formParams.tabs)) {
-              for (const block of tab.blocks) {
-                for (const item of block.items) {
-                  if (typeof this.errors[item.code] !== 'undefined') {
-                    this.activeTab = parseInt(tabIndex)
-                    return false
+            if (error.response.status === 422) {
+
+              this.errors = error.response.data.errors
+
+              Vue.prototype.$notifyWarning('Некоторые поля заполнены некорректно')
+
+              for (const [tabIndex, tab] of Object.entries(this.formParams.tabs)) {
+                for (const block of tab.blocks) {
+                  for (const item of block.items) {
+                    if (typeof this.errors[item.code] !== 'undefined') {
+                      this.activeTab = parseInt(tabIndex)
+                      return false
+                    }
                   }
                 }
               }
+
             }
           })
     },
