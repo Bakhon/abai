@@ -1399,7 +1399,7 @@ export default {
       this.axios.post(uri, this.postdata).then((response) => {
         let data = response.data;
         if (data) {
-          this.welldata = data["Well Data"]
+          this.newData = data["Well Data"]
           this.method = "CurveSetting"
           this.newData = data["Well Data"]
           this.newCurveLineData = JSON.parse(data.LineData)["data"]
@@ -1448,7 +1448,6 @@ export default {
           this.qlCelValue = data["Well Data"]["ql_cel"].toFixed(0) + " " +  this.trans('measurements.m3/day');
           this.bhpCelValue = data["Well Data"]["p_cel"].toFixed(0) + " " +  this.trans('measurements.atm');
           this.piCelValue = data["Well Data"]["pin_cel"].toFixed(0) + " " +  this.trans('measurements.atm');
-          this.welldata = this.newData
         } else {
         }
       }).finally(() => {

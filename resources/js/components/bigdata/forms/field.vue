@@ -108,6 +108,9 @@
     <template v-else-if="item.type === 'table'">
       <BigdataTableField :params="item" v-on:change="updateValue($event)"></BigdataTableField>
     </template>
+    <template v-else-if="item.type === 'calc'">
+      <label>{{ value }}</label>
+    </template>
     <div v-if="error" class="text-danger error" v-html="showError(error)"></div>
   </div>
 </template>
@@ -190,7 +193,7 @@ export default {
           text: selected.name
         }
       }
-      if (this.item.type === 'date') {
+      if (['date', 'datetime'].includes(this.item.type)) {
 
         return {
           text: value ? moment(value).format('YYYY-MM-DD HH:MM:SS') : null,

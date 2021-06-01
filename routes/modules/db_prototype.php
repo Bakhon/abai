@@ -58,6 +58,8 @@ Route::group(
                     'bigdata.form.save.field'
                 );
 
+                Route::post('forms/{form}/calc-fields', 'Api\DB\FormsController@calcFields');
+
                 Route::get('forms/{form}/results', 'Api\DB\FormsController@getResults');
                 Route::delete('forms/{form}/{row}', 'Api\DB\FormsController@delete');
 
