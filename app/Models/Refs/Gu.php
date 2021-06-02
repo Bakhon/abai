@@ -9,6 +9,8 @@ use App\Models\ComplicationMonitoring\OmgNGDU;
 use App\Models\ComplicationMonitoring\WaterMeasurement;
 use App\Models\ComplicationMonitoring\OilGas;
 use App\Models\ComplicationMonitoring\Corrosion;
+use App\Models\ComplicationMonitoring\EconomicalEffect;
+use App\Models\ComplicationMonitoring\LostProfits;
 use App\Models\ComplicationMonitoring\OmgUHE;
 use App\Models\ComplicationMonitoring\Pipe;
 use App\Models\Pipes\GuZuPipe;
@@ -121,5 +123,15 @@ class Gu extends Model
     public function wellPipes()
     {
         return $this->hasMany(ZuWellPipe::class);
+    }
+
+    public function economical_effect()
+    {
+        return $this->hasMany(EconomicalEffect::class);
+    }
+
+    public function lost_profits()
+    {
+        return $this->hasMany(LostProfits::class);
     }
 }
