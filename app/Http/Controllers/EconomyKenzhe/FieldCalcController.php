@@ -551,7 +551,7 @@ class FieldCalcController extends MainController
     public function depreciationResult(): float
     {
         if ($this->equipIdRequest == 1) {
-            $srokSluzhby = EcoRefsServiceTime::where('equip_id', '=', $this->equipIdRequest)->where('company_id', '=', $this->companyId)->first();
+            $srokSluzhby = EcoRefsServiceTime::where('equip_id', $this->equipIdRequest)->where('company_id', $this->companyId)->first();
             $equipCost = EcoRefsRentEquipElectServCost::where('equip_id', '=', $this->equipIdRequest)->where('company_id', '=', $this->companyId)->first();
             if ($srokSluzhby->avg_serv_life > self::SERVICE_TIME) {
                 $amortizaciyaResult = $equipCost->equip_cost / $srokSluzhby->avg_serv_life;

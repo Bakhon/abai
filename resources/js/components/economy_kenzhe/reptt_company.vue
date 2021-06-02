@@ -33,39 +33,39 @@
         border
         :row-class-name="hideEmptyValues"
     >
-      <el-table-column prop="name" label="Наименование" min-width="400" :key="Math.random()">
+      <el-table-column prop="name" :label="trans('economy_pf.repttTable.name')" min-width="400" :key="Math.random()">
       </el-table-column>
-      <el-table-column prop="fact_value" :label="'Факт за '+ previousYear +' год'" width="200" :key="Math.random()">
+      <el-table-column prop="fact_value" :label="trans('economy_pf.repttTable.factZa')+ previousYear +trans('economy_pf.repttTable.year')" width="200" :key="Math.random()">
         <template slot-scope="scope" v-if="scope.row">
           {{ scope.row.fact_value[previousYear] }}
         </template>
       </el-table-column>
-      <el-table-column prop="plan_value" label="Факт за 30.01.19" width="200" :key="Math.random()">
+      <el-table-column prop="plan_value" :label="trans('economy_pf.repttTable.factZa') + '30.01.19'" width="200" :key="Math.random()">
         <template slot-scope="scope" v-if="scope.row">
           {{ scope.row.intermediate_fact_value[previousYear] }}
         </template>
       </el-table-column>
-      <el-table-column prop="fact_value" :label="'План на '+ currentYear +' год'" width="200" :key="Math.random()">
+      <el-table-column prop="fact_value" :label="trans('economy_pf.repttTable.planNa')+ currentYear +trans('economy_pf.repttTable.year')" width="200" :key="Math.random()">
         <template slot-scope="scope" v-if="scope.row">
           {{ scope.row.plan_value[currentYear] }}
         </template>
       </el-table-column>
-      <el-table-column prop="plan_value" label="План сначала года" width="200" :key="Math.random()">
+      <el-table-column prop="plan_value" :label="trans('economy_pf.repttTable.plan') + trans('economy_pf.repttTable.sinceTheBeginningOfTheYear')" width="200" :key="Math.random()">
         <template slot-scope="scope" v-if="scope.row">
           {{ scope.row.intermediate_plan_value[currentYear] }}
         </template>
       </el-table-column>
-      <el-table-column prop="fact_value" label="Факт" width="200" :key="Math.random()">
+      <el-table-column prop="fact_value" :label="trans('economy_pf.repttTable.fact')" width="200" :key="Math.random()">
         <template slot-scope="scope" v-if="scope.row">
           {{ scope.row.intermediate_fact_value[currentYear] }}
         </template>
       </el-table-column>
-      <el-table-column label="Абс. откл. за. отч. период, +/-">
+      <el-table-column :label="trans('economy_pf.repttTable.absDeviation')  + trans('economy_pf.repttTable.sinceTheBeginningOfTheYear') + ', +/-'">
         <template slot-scope="scope" v-if="scope.row">
           {{ absoluteDeviation(scope.row.plan_value[currentYear], scope.row.fact_value[currentYear]) }}
         </template>
       </el-table-column>
-      <el-table-column label="Отн. откл. за. отч. период, %">
+      <el-table-column :label="trans('economy_pf.repttTable.relativeDeviation') + trans('economy_pf.repttTable.sinceTheBeginningOfTheYear') + ', %'">
         <template slot-scope="scope" v-if="scope.row">
           {{ relativeDeviation(scope.row.plan_value[currentYear], scope.row.fact_value[currentYear]) }}
         </template>
@@ -90,10 +90,10 @@
         },
         tableHeader: [
           {
-            label: 'Наименование',
+            label: this.trans('economy_pf.repttTable.name'),
             prop: 'name'
           }, {
-            label: 'План на январь',
+            label: this.trans('economy_pf.repttTable.planNa') + this.trans('economy_pf.repttTable.january'),
             prop: 'value'
           }
         ],
@@ -102,40 +102,40 @@
         quarterValue: '01',
         company: '116',
           betweenMonths:[
-              {title:'С началао года ', value: '01'},
-              {title:'Январь - Февраль ', value: '02'},
-              {title:'Январь - Март ', value: '03'},
-              {title:'Январь - Апрель ', value: '04'},
-              {title:'Январь - Май ', value: '05'},
-              {title:'Январь - Июнь ', value: '06'},
-              {title:'Январь - Июль ', value: '07'},
-              {title:'Январь - Август ', value: '08'},
-              {title:'Январь - Сентябрь ', value: '09'},
-              {title:'Январь - Октябрь ', value: '10'},
-              {title:'Январь - Ноябрь ', value: '11'},
-              {title:'Январь - Декабрь ', value: '12'},
+              {title: this.trans('economy_pf.repttTable.sinceTheBeginningOfTheYear'), value: '01'},
+              {title: this.trans('economy_pf.months.0')+' - '+this.trans('economy_pf.months.1'), value: '02'},
+              {title: this.trans('economy_pf.months.0')+' - '+this.trans('economy_pf.months.2'), value: '03'},
+              {title: this.trans('economy_pf.months.0')+' - '+this.trans('economy_pf.months.3'), value: '04'},
+              {title: this.trans('economy_pf.months.0')+' - '+this.trans('economy_pf.months.4'), value: '05'},
+              {title: this.trans('economy_pf.months.0')+' - '+this.trans('economy_pf.months.5'), value: '06'},
+              {title: this.trans('economy_pf.months.0')+' - '+this.trans('economy_pf.months.6'), value: '07'},
+              {title: this.trans('economy_pf.months.0')+' - '+this.trans('economy_pf.months.7'), value: '08'},
+              {title: this.trans('economy_pf.months.0')+' - '+this.trans('economy_pf.months.8'), value: '09'},
+              {title: this.trans('economy_pf.months.0')+' - '+this.trans('economy_pf.months.9'), value: '10'},
+              {title: this.trans('economy_pf.months.0')+' - '+this.trans('economy_pf.months.10'), value: '11'},
+              {title: this.trans('economy_pf.months.0')+' - '+this.trans('economy_pf.months.11'), value: '12'},
           ],
           months:[
-              {title:'За месяц ', value: '00'},
-              {title:'Январь ', value: '01'},
-              {title:'Февраль ', value: '02'},
-              {title:'Март ', value: '03'},
-              {title:'Апрель ', value: '04'},
-              {title:'Май ', value: '05'},
-              {title:'Июнь ', value: '06'},
-              {title:'Июль ', value: '07'},
-              {title:'Август ', value: '08'},
-              {title:'Сентябрь ', value: '09'},
-              {title:'Октябрь ', value: '10'},
-              {title:'Ноябрь ', value: '11'},
-              {title:'Декабрь ', value: '12'},
+              {title: this.trans('economy_pf.perMonth'), value: '00'},
+              {title: this.trans('economy_pf.months.0'), value: '01'},
+              {title: this.trans('economy_pf.months.1'), value: '02'},
+              {title: this.trans('economy_pf.months.2'), value: '03'},
+              {title: this.trans('economy_pf.months.3'), value: '04'},
+              {title: this.trans('economy_pf.months.4'), value: '05'},
+              {title: this.trans('economy_pf.months.5'), value: '06'},
+              {title: this.trans('economy_pf.months.6'), value: '07'},
+              {title: this.trans('economy_pf.months.7'), value: '08'},
+              {title: this.trans('economy_pf.months.8'), value: '09'},
+              {title: this.trans('economy_pf.months.9'), value: '10'},
+              {title: this.trans('economy_pf.months.10'), value: '11'},
+              {title: this.trans('economy_pf.months.11'), value: '12'},
           ],
           quarter: [
-              {title:'Квартал ', value: '01'},
-              {title:'Январь - Март ', value: '03'},
-              {title:'Апрель - Июнь ', value: '06'},
-              {title:'Июль - Сентябрь ', value: '9'},
-              {title:'Октябрь - Декабрь ', value: '12'},
+              {title: this.trans('economy_pf.quarter'), value: '01'},
+              {title: this.trans('economy_pf.months.0')+' - '+this.trans('economy_pf.months.2'), value: '03'},
+              {title: this.trans('economy_pf.months.3')+' - '+this.trans('economy_pf.months.5'), value: '06'},
+              {title: this.trans('economy_pf.months.6')+' - '+this.trans('economy_pf.months.8'), value: '09'},
+              {title: this.trans('economy_pf.months.9')+' - '+this.trans('economy_pf.months.11'), value: '12'},        
           ]
       };
     },
@@ -194,6 +194,7 @@
     },
     mounted() {
       this.recalculate();
+      console.log(this.dataReptt);
     },
   };
 </script>
