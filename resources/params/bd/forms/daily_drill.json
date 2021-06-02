@@ -195,10 +195,10 @@
             "title":"knbk",
             "items":[
               {
-                "code":"field",
+                "code":"drill_column_type",
                 "type":"table",
                 "title":"knbk_full",
-                "table":"",
+                "table":"well_daily_drill",
                 "parent_column":"",
                 "columns":[
                   {

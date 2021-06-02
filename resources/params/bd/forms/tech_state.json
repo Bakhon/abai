@@ -1,0 +1,46 @@
+{
+  "type": "plain",
+  "table": "prod.well_tech_state",
+  "tabs": [
+    {
+      "title": "tech_state",
+      "blocks": [
+        [
+          {
+            "title": "",
+            "items": [
+              {
+                "code": "dbeg",
+                "type": "date",
+                "title": "date_start",
+                "validation": "date",
+                "callbacks": {
+                  "fillCalculatedFields": ""
+                }
+              },
+              {
+                "code": "old_state",
+                "type": "calc",
+                "visible": true,
+                "title": "old_state"
+              },
+              {
+                "code": "current_category",
+                "type": "calc",
+                "visible": true,
+                "title": "current_category"
+              },
+              {
+                "code": "state",
+                "type": "text",
+                "dict": "well_tech_state_type",
+                "title": "state",
+                "validation": "required|exists:tbd.dict.well_tech_state_type,id"
+              }
+            ]
+          }
+        ]
+      ]
+    }
+  ]
+}

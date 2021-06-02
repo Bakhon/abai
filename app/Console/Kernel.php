@@ -16,7 +16,7 @@ class Kernel extends ConsoleKernel
         \App\Console\Commands\UsdParse::class,
         \App\Console\Commands\OilParse::class,
         \App\Console\Commands\HiveDataFromAvocet::class,
-        \App\Console\Commands\receiveNonOperatingAssets::class,
+        \App\Console\Commands\ReceiveNonOperatingAssets::class,
     ];
 
     /**
@@ -31,9 +31,9 @@ class Kernel extends ConsoleKernel
         $schedule->command('parse-usd:cron')->dailyAt('16:20')->timezone('Asia/Almaty');
         $schedule->command('parse-usd:cron')->dailyAt('18:30')->timezone('Asia/Almaty');
         $schedule->command('parse-oil:cron')->dailyAt('08:10')->timezone('Asia/Almaty');
-
         $schedule->command('form:calc_field_limits')->dailyAt('02:00')->timezone('Asia/Almaty');
         $schedule->command('receive-non-operating-email:cron')->dailyAt('08:15')->timezone('Asia/Almaty');
+        $schedule->command('receive-non-operating-email:cron')->dailyAt('09:20')->timezone('Asia/Almaty');
     }
 
     /**
