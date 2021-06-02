@@ -1,0 +1,39 @@
+{
+  "type": "plain",
+  "table": "prod.well_zone",
+  "tabs": [
+    {
+      "title": "w_zone",
+      "blocks": [
+        [
+          {
+            "title": "main",
+            "items": [
+              {
+                "code": "dbeg",
+                "type": "date",
+                "title": "date_start",
+                "validation": "required|date"
+              },
+              {
+                "code": "zone",
+                "type": "calc",
+                "formula": "$zone$",
+                "is_editable": false,
+                "title": "ch_zone",
+                "validation": "required"
+              },
+              {
+                "code": "zone",
+                "type": "dict",
+                "dict": "zone",
+                "title": "new_zone",
+                "validation": "required|exists:tbd.dict.zone,id"
+              }              
+            ]
+          }
+        ]
+      ]
+    }
+  ]
+}
