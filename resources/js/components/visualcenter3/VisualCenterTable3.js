@@ -802,8 +802,7 @@ export default {
         bigTable: function () {    
             if (this.selectedDzo.ticker!=0){      
             this.selectOneDzoCompany(this.selectedDzo.ticker);
-        } else
-        {
+        }   else {
             this.dzoCompanySummary = this.bigTable;
             this.calculateDzoCompaniesSummary();
         }
