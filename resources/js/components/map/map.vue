@@ -108,6 +108,7 @@ import pipeColors from '~/json/pipe_colors.json'
 import axios from "axios";
 import moment from "moment";
 import CatLoader from '../ui-kit/CatLoader'
+import 'vue-datetime/dist/vue-datetime.css';
 
 
 export default {
@@ -120,7 +121,7 @@ export default {
     'map-pipe-form': mapPipeForm,
     'map-context-menu': mapContextMenu,
     CatLoader,
-    mapLegend
+    mapLegend,
   },
   data() {
     return {

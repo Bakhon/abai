@@ -29,18 +29,30 @@ public/test1.php
 public/test.php
 public/js/json/gno/line_points — копия.json
 
-public/0.js
-public/1.js
-public/2.js
-public/3.js
-public/4.js
-public/5.js
-public/6.js
-public/7.js
+#public/0.js
+#public/1.js
+#public/2.js
+#public/3.js
+#public/4.js
+#public/5.js
+#public/6.js
+#public/7.js
+public/[0-9]*.js
+public/js/[0-9]*.js
 public/vendors~polyfills-core-js.js
 public/vendors~polyfills-dom.js
 /public/js/app.js
 /public/css/app.css
+public/js/resources*
+public/js/node_modules*
+public/css/vue-components.css
+public/js/manifest.js
+public/js/vendor.js
+public/vendors~/
+public/js/vendor.js.LICENSE.txt
+
+
+
 #IDE file
 kmg-dashboard.iml
 .DS_Store

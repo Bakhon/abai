@@ -159,14 +159,9 @@
 </template>
 
 <script>
-import Vue from 'vue'
-import {Datetime} from 'vue-datetime'
 import moment from 'moment'
-import 'vue-datetime/dist/vue-datetime.css'
 import {complicationMonitoringState, complicationMonitoringActions} from '@store/helpers';
 import CatLoader from '../ui-kit/CatLoader'
-
-Vue.use(Datetime)
 
 const averageOilDensity = 853;
 
@@ -187,7 +182,8 @@ export default {
     },
   },
   components: {
-    CatLoader
+    CatLoader,
+    // 'datetime': Datetime,
   },
   data: function () {
     return {

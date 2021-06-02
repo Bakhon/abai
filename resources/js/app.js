@@ -4,10 +4,10 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
+import Vue from 'vue';
 import VueAxios from 'vue-axios';
 import axios from 'axios';
 import VueTableDynamic from 'vue-table-dynamic';
-import Vue from 'vue';
 
 import BootstrapVue from 'bootstrap-vue';
 
@@ -15,6 +15,8 @@ import 'bootstrap-table/dist/bootstrap-table.js';
 import 'bootstrap-table/dist/locale/bootstrap-table-ru-RU.js'
 import 'bootstrap-table/dist/extensions/export/bootstrap-table-export.js';
 import 'bootstrap-table/dist/extensions/fixed-columns/bootstrap-table-fixed-columns.js';
+
+import 'vue-select/dist/vue-select.css'
 import 'bootstrap-select/dist/js/bootstrap-select.min.js';
 
 import VueMomentLib from 'vue-moment-lib';
@@ -27,6 +29,11 @@ import PerfectScrollbar from "vue2-perfect-scrollbar";
 import "vue2-perfect-scrollbar/dist/vue2-perfect-scrollbar.css";
 import columnSortable from 'vue-column-sortable';
 import Paginate from 'vuejs-paginate';
+import {Datetime} from 'vue-datetime';
+import 'vue-select/dist/vue-select.css'
+
+import Calendar from "v-calendar/lib/components/calendar.umd";
+import DatePicker from "v-calendar/lib/components/date-picker.umd";
 
 require('./bootstrap');
 window.Vue = require('vue');
@@ -42,7 +49,21 @@ Vue.use(PerfectScrollbar);
 Vue.use(columnSortable);
 Vue.use(VueSimpleAlert);
 Vue.use(BootstrapVue);
+Vue.use(Datetime);
+
+//TODO: need replace with b-modal from bootstrap
+import VModal from 'vue-js-modal'
+Vue.use(VModal, {dynamicDefault: {draggable: true, resizable: true},  componentName: 'modal'});
+
+//TODO: need replace with showToast
+import NotifyPlugin from "vue-easy-notify";
+Vue.use(NotifyPlugin);
+Vue.component(NotifyPlugin);
+
+Vue.component('datetime', Datetime);
 Vue.component('paginate', Paginate);
+Vue.component("calendar", Calendar);
+Vue.component("date-picker", DatePicker);
 
 //Mixins
 import showToast from '~/mixins/showToast';
@@ -57,133 +78,135 @@ Vue.mixin(showToast);
  * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
  */
 
-Vue.component('edit-history', require('./components/common/EditHistory.vue').default);
-Vue.component('visual-center-chart-area-oil', require('./components/visualcenter/VisualCenterChartAreaOil.vue').default);
-Vue.component('visual-center-chart-area-usd', require('./components/visualcenter/VisualCenterChartAreaUSD.vue').default);
-Vue.component('visual-center-chart-area-center', require('./components/visualcenter/VisualCenterChartAreaCenter.vue').default);
-Vue.component('visual-center-chart-bar-bottom', require('./components/visualcenter/VisualCenterChartBarBottom.vue').default);
-Vue.component('visual-center-chart-donut-right1', require('./components/visualcenter/VisualCenterChartDonutRight1.vue').default);
-Vue.component('visual-center-chart-donut-right2', require('./components/visualcenter/VisualCenterChartDonutRight2.vue').default);
-Vue.component('visual-center3-wells', require('./components/visualcenter3/Vc3Wells.vue').default);
-Vue.component('visual-center-table', require('./components/visualcenter/VisualCenterTable.vue').default);
-Vue.component('visual-center-table3', require('./components/visualcenter3/VisualCenterTable3.vue').default);
-Vue.component('visual-center-table4', require('./components/visualcenter3/VisualCenterTable4.vue').default);
-Vue.component('visual-center-table5', require('./components/visualcenter3/VisualCenterTable5.vue').default);
-Vue.component('visual-center-table6', require('./components/visualcenter3/VisualCenterTable6.vue').default);
-Vue.component('visual-center-table7', require('./components/visualcenter3/VisualCenterTable7.vue').default);
-Vue.component('visual-center-chart-area-usd3', require('./components/visualcenter3/VisualCenterChartAreaUSD.vue').default);
-Vue.component('visual-center-usd-table', require('./components/visualcenter3/VisualCenterUsdTable.vue').default);
-Vue.component('visual-center-speedometer', require('./components/visualcenter3/VCSpeedometer.vue').default);
-Vue.component('vc-chart', require('./components/visualcenter3/VcChart.vue').default);
-Vue.component('indicator', require('./components/visualcenter3/Indicator.vue').default);
-Vue.component('wide-indicator', require('./components/visualcenter3/WideIndicator.vue').default);
-Vue.component('simple-indicator', require('./components/visualcenter3/SimpleIndicator.vue').default);
-Vue.component('vc-speedometer-block', require('./components/visualcenter3/VCSpeedometerBlock.vue').default);
-Vue.component('horizontal-indicators', require('./components/visualcenter3/HorizontalIndicators.vue').default);
-Vue.component('vertical-indicators', require('./components/visualcenter3/VerticalIndicators.vue').default);
-Vue.component('vc-upstream-table', require('./components/visualcenter3/UpstreamTable.vue').default);
-Vue.component('visual-center-menu', require('./components/visualcenter/VisualCenterMenu.vue').default);
 
-Vue.component('economic-data-component', require('./components/Economic/data/index.vue').default);
-Vue.component('economic-data-scenario-component', require('./components/Economic/data/scenario.vue').default);
-Vue.component('tech-data-component', require('./components/technical_forecast/data/index.vue').default);
+Vue.component('edit-history', () => import(/* webpackChunkName : "edit-history" */ './components/common/EditHistory.vue'));
 
-Vue.component('economic-component', require('./components/Economic/main.vue').default);
-Vue.component('gno-table', require('./components/gno/Table.vue').default);
-Vue.component('inclinometria', require('./components/gno/components/Inclinometria.vue').default);
-Vue.component('prs-crs', require('./components/gno/components/PrsCrs.vue').default);
-Vue.component('inflow-curve', require('./components/gno/components/InflowCurve.vue').default);
-Vue.component('economic', require('./components/gno/components/Economic.vue').default);
-Vue.component('monitor-table', require('./components/monitor/MonitorTable.vue').default);
-Vue.component('monitor-chart', require('./components/monitor/chart.vue').default);
-Vue.component('monitor-chart-radialbar', require('./components/monitor/MonitorChartRadialBar.vue').default);
-Vue.component('wm-form', require('./components/wm/form.vue').default);
-Vue.component('omgca-form', require('./components/omgca/form.vue').default);
-Vue.component('omguhe-form', require('./components/omguhe/form.vue').default);
-Vue.component('omgngdu-form', require('./components/omgngdu/form.vue').default);
-Vue.component('omgngdu-well-form', require('./components/omgngdu_well/form.vue').default);
-Vue.component('gu-form', require('./components/gu/form.vue').default);
-Vue.component('zu-form', require('./components/zu/form.vue').default);
+Vue.component('visual-center-chart-area-oil', () => import(/* webpackChunkName : "visual-center-chart-area-oil" */ './components/visualcenter/VisualCenterChartAreaOil.vue'));
+Vue.component('visual-center-chart-area-usd', () => import(/* webpackChunkName : "visual-center-chart-area-usd" */ './components/visualcenter/VisualCenterChartAreaUSD.vue'));
+Vue.component('visual-center-chart-area-center', () => import(/* webpackChunkName : "visual-center-chart-area-center" */ './components/visualcenter/VisualCenterChartAreaCenter.vue'));
+Vue.component('visual-center-chart-bar-bottom', () => import(/* webpackChunkName : 'visual-center-chart-bar-bottom' */  './components/visualcenter/VisualCenterChartBarBottom.vue'));
+Vue.component('visual-center-chart-donut-right1', () => import(/* webpackChunkName : 'visual-center-chart-donut-right1' */  './components/visualcenter/VisualCenterChartDonutRight1.vue'));
+Vue.component('visual-center-chart-donut-right2', () => import(/* webpackChunkName : 'visual-center-chart-donut-right2' */  './components/visualcenter/VisualCenterChartDonutRight2.vue'));
+Vue.component('visual-center3-wells', () => import(/* webpackChunkName : 'visual-center3-wells' */  './components/visualcenter3/Vc3Wells.vue'));
+Vue.component('visual-center-table', () => import(/* webpackChunkName : 'visual-center-table' */  './components/visualcenter/VisualCenterTable.vue'));
+Vue.component('visual-center-table3', () => import(/* webpackChunkName : 'visual-center-table3' */  './components/visualcenter3/VisualCenterTable3.vue'));
+Vue.component('visual-center-table4', () => import(/* webpackChunkName : 'visual-center-table4' */  './components/visualcenter3/VisualCenterTable4.vue'));
+Vue.component('visual-center-table5', () => import(/* webpackChunkName : 'visual-center-table5' */  './components/visualcenter3/VisualCenterTable5.vue'));
+Vue.component('visual-center-table6', () => import(/* webpackChunkName : 'visual-center-table6' */  './components/visualcenter3/VisualCenterTable6.vue'));
+Vue.component('visual-center-table7', () => import(/* webpackChunkName : 'visual-center-table7' */  './components/visualcenter3/VisualCenterTable7.vue'));
+Vue.component('visual-center-chart-area-usd3', () => import(/* webpackChunkName : 'visual-center-chart-area-usd3' */  './components/visualcenter3/VisualCenterChartAreaUSD.vue'));
+Vue.component('visual-center-usd-table', () => import(/* webpackChunkName : 'visual-center-usd-table' */  './components/visualcenter3/VisualCenterUsdTable.vue'));
+Vue.component('visual-center-speedometer', () => import(/* webpackChunkName : 'visual-center-speedometer' */  './components/visualcenter3/VCSpeedometer.vue'));
 
-Vue.component('gtm-main', require('./components/GTM/GTMLayout.vue').default);
-Vue.component('gtm-main-page', require('./components/GTM/Main.vue').default);
-Vue.component('gtm-main-indicator', require('./components/GTM/MainIndicator.vue').default);
-Vue.component('gtm-aegtm', require('./components/GTM/Aegtm.vue').default);
-Vue.component('gtm-aegtm-eco', require('./components/GTM/AegtmEco.vue').default);
-Vue.component('gtm-podbor-gtm', require('./components/GTM/PodborGTM.vue').default);
-Vue.component('gtm-digital-rating-gtm', require('./components/GTM/DigitalRating.vue').default);
-Vue.component('gtm-etu', require('./components/GTM/Etu.vue').default);
-Vue.component('gtm-main-menu', require('./components/GTM/MainMenu.vue').default);
-Vue.component('gtm-bar-chart', require('./components/GTM/BarChart.vue').default);
-Vue.component('gtm-line-chart', require('./components/GTM/LineChart.vue').default);
-Vue.component('gtm-tree', require('./components/GTM/Tree.vue').default);
-Vue.component('gtm-node-tree', require('./components/GTM/NodeTree.vue').default);
-Vue.component('gtm-date-picker', require('./components/GTM/DatePicker.vue').default);
+Vue.component('vc-chart', () => import(/* webpackChunkName : 'vc-chart' */  './components/visualcenter3/VcChart.vue'));
+Vue.component('indicator', () => import(/* webpackChunkName : 'indicator' */  './components/visualcenter3/Indicator.vue'));
+Vue.component('wide-indicator', () => import(/* webpackChunkName : 'wide-indicator' */  './components/visualcenter3/WideIndicator.vue'));
+Vue.component('simple-indicator', () => import(/* webpackChunkName : 'simple-indicator' */  './components/visualcenter3/SimpleIndicator.vue'));
+Vue.component('vc-speedometer-block', () => import(/* webpackChunkName : 'vc-speedometer-block' */  './components/visualcenter3/VCSpeedometerBlock.vue'));
+Vue.component('horizontal-indicators', () => import(/* webpackChunkName : 'horizontal-indicators' */  './components/visualcenter3/HorizontalIndicators.vue'));
+Vue.component('vertical-indicators', () => import(/* webpackChunkName : 'vertical-indicators' */  './components/visualcenter3/VerticalIndicators.vue'));
+Vue.component('vc-upstream-table', () => import(/* webpackChunkName : 'vc-upstream-table' */  './components/visualcenter3/UpstreamTable.vue'));
+Vue.component('visual-center-menu', () => import(/* webpackChunkName : 'visual-center-menu' */  './components/visualcenter/VisualCenterMenu.vue'));
+Vue.component('economic-data-component', () => import(/* webpackChunkName : 'economic-data-component' */  './components/Economic/data/index.vue'));
+Vue.component('economic-data-scenario-component', () => import(/* webpackChunkName : 'economic-data-scenario-component' */  './components/Economic/data/scenario.vue'));
+Vue.component('tech-data-component', () => import(/* webpackChunkName : 'tech-data-component' */  './components/technical_forecast/data/index.vue'));
+Vue.component('economic-component', () => import(/* webpackChunkName : 'economic-component' */  './components/Economic/main.vue'));
+Vue.component('gno-table', () => import(/* webpackChunkName : 'gno-table' */  './components/gno/Table.vue'));
+Vue.component('inclinometria', () => import(/* webpackChunkName : 'inclinometria' */  './components/gno/components/Inclinometria.vue'));
+Vue.component('prs-crs', () => import(/* webpackChunkName : 'prs-crs' */  './components/gno/components/PrsCrs.vue'));
+Vue.component('inflow-curve', () => import(/* webpackChunkName : 'inflow-curve' */  './components/gno/components/InflowCurve.vue'));
+Vue.component('economic', () => import(/* webpackChunkName : 'economic' */  './components/gno/components/Economic.vue'));
 
-Vue.component('reports-table2', require('./components/reportsGTM/ReportsGTMTable.vue').default);
-Vue.component('reports-table3', require('./components/reportDob/RepDobTable.vue').default);
-Vue.component('monthly-production', require('./components/reports/MonthlyProduction.vue').default);
-Vue.component('daily-production', require('./components/reports/DailyProduction.vue').default);
-Vue.component('daily-injection', require('./components/reports/DailyInjection.vue').default);
-Vue.component('monthly-injection', require('./components/reports/MonthlyInjection.vue').default);
-Vue.component('analyze-gtm', require('./components/reports/AnalyzeGtm.vue').default);
-Vue.component('dynamics-indicators', require('./components/reports/DynamicsIndicators.vue').default);
-Vue.component('well-fund', require('./components/reports/WellFund.vue').default);
-Vue.component('well-fund-block', require('./components/reports/WellFundBlock.vue').default);
-Vue.component('well-fund-field', require('./components/reports/WellFundField.vue').default);
-Vue.component('well-fund-inactive', require('./components/reports/WellFundInactive.vue').default);
-Vue.component('well-fund-revision-field', require('./components/reports/WellFundRevisionField.vue').default);
-Vue.component('well-fund-revision', require('./components/reports/WellFundRevision.vue').default);
-Vue.component('view-table', require('./components/omgca/table.vue').default);
-Vue.component('oilgas-form', require('./components/complicationMonitoring/oilGas/form.vue').default);
-Vue.component('pipe-form', require('./components/pipes/form.vue').default);
-Vue.component('pipe-type-form', require('./components/pipeTypes/form.vue').default);
-Vue.component('inhibitor-create', require('./components/inhibitor/create.vue').default);
-Vue.component('inhibitor-edit', require('./components/inhibitor/edit.vue').default);
-Vue.component('corrosion-form', require('./components/complicationMonitoring/corrosion/form.vue').default);
-Vue.component('gu-map', require('./components/map/map.vue').default);
-Vue.component('field-settings', require('./components/settings/fields.vue').default);
+Vue.component('monitor-table', () => import(/* webpackChunkName : 'monitor-table' */  './components/monitor/MonitorTable.vue'));
+Vue.component('monitor-chart', () => import(/* webpackChunkName : 'monitor-chart' */  './components/monitor/chart.vue'));
+Vue.component('monitor-chart-radialbar', () => import(/* webpackChunkName : 'monitor-chart-radialbar' */  './components/monitor/MonitorChartRadialBar.vue'));
+Vue.component('wm-form', () => import(/* webpackChunkName : 'wm-form' */  './components/wm/form.vue'));
+Vue.component('omgca-form', () => import(/* webpackChunkName : 'omgca-form' */  './components/omgca/form.vue'));
+Vue.component('omguhe-form', () => import(/* webpackChunkName : 'omguhe-form' */  './components/omguhe/form.vue'));
+Vue.component('omgngdu-form', () => import(/* webpackChunkName : 'omgngdu-form' */  './components/omgngdu/form.vue'));
+Vue.component('omgngdu-well-form', () => import(/* webpackChunkName : 'omgngdu-well-form' */  './components/omgngdu_well/form.vue'));
+Vue.component('gu-form', () => import(/* webpackChunkName : 'gu-form' */  './components/gu/form.vue'));
+Vue.component('zu-form', () => import(/* webpackChunkName : 'zu-form' */  './components/zu/form.vue'));
 
-Vue.component('fa-table', require('./components/tr/fa.vue').default);
-Vue.component('tr-table', require('./components/tr/tr.vue').default);
-Vue.component('trfa-table', require('./components/tr/trfa.vue').default);
-Vue.component('tr-charts-table', require('./components/tr/tr_charts.vue').default);
-Vue.component('tr-sidebar-charts', require('./components/tr/TrSidebarCharts.vue').default);
-Vue.component('tr-sidebar-export', require('./components/tr/TrSidebarExport.vue').default);
-Vue.component('cat-loader', require('./components/ui-kit/CatLoader.vue').default);
-Vue.component('pagination', require('laravel-vue-pagination'));
-Vue.component('report-export', require('./components/reports/export.vue').default);
-Vue.component('tr_mode-table', require('./components/tr/TechMode.vue').default);
-Vue.component('tr_mode-table-small', require('./components/tr/TechModeSmall.vue').default);
-Vue.component('fa_weekly_chart', require('./components/tr/FaWeeklyChart.vue').default);
-Vue.component('well_cart', require('./components/well_cart/well_cart.vue').default);
-Vue.component('report_constructor', require('./components/report_constructor/report_constructor.vue').default);
+Vue.component('gtm-main', () => import(/* webpackChunkName : 'gtm-main' */  './components/GTM/GTMLayout.vue'));
+Vue.component('gtm-main-page', () => import(/* webpackChunkName : 'gtm-main-page' */  './components/GTM/Main.vue'));
+Vue.component('gtm-main-indicator', () => import(/* webpackChunkName : 'gtm-main-indicator' */  './components/GTM/MainIndicator.vue'));
+Vue.component('gtm-aegtm', () => import(/* webpackChunkName : 'gtm-aegtm' */  './components/GTM/Aegtm.vue'));
+Vue.component('gtm-aegtm-eco', () => import(/* webpackChunkName : 'gtm-aegtm-eco' */  './components/GTM/AegtmEco.vue'));
+Vue.component('gtm-podbor-gtm', () => import(/* webpackChunkName : 'gtm-podbor-gtm' */  './components/GTM/PodborGTM.vue'));
+Vue.component('gtm-digital-rating-gtm', () => import(/* webpackChunkName : 'gtm-digital-rating-gtm' */  './components/GTM/DigitalRating.vue'));
+Vue.component('gtm-etu', () => import(/* webpackChunkName : 'gtm-etu' */  './components/GTM/Etu.vue'));
+Vue.component('gtm-main-menu', () => import(/* webpackChunkName : 'gtm-main-menu' */  './components/GTM/MainMenu.vue'));
+Vue.component('gtm-bar-chart', () => import(/* webpackChunkName : 'gtm-bar-chart' */  './components/GTM/BarChart.vue'));
+Vue.component('gtm-line-chart', () => import(/* webpackChunkName : 'gtm-line-chart' */  './components/GTM/LineChart.vue'));
+Vue.component('gtm-tree', () => import(/* webpackChunkName : 'gtm-tree' */  './components/GTM/Tree.vue'));
+Vue.component('gtm-node-tree', () => import(/* webpackChunkName : 'gtm-node-tree' */  './components/GTM/NodeTree.vue'));
+Vue.component('gtm-date-picker', () => import(/* webpackChunkName : 'gtm-date-picker' */  './components/GTM/DatePicker.vue'));
 
-Vue.component('pf-main', require('./components/PlastFluids/views/MainPage.vue').default);
-Vue.component('pf-template_pvt_plast_oil', require('./components/PlastFluids/views/SuperTemplatePvtPlastOil.vue').default);
+Vue.component('reports-table2', () => import(/* webpackChunkName : 'reports-table2' */  './components/reportsGTM/ReportsGTMTable.vue'));
+Vue.component('reports-table3', () => import(/* webpackChunkName : 'reports-table3' */  './components/reportDob/RepDobTable.vue'));
+Vue.component('monthly-production', () => import(/* webpackChunkName : 'monthly-production' */  './components/reports/MonthlyProduction.vue'));
+Vue.component('daily-production', () => import(/* webpackChunkName : 'daily-production' */  './components/reports/DailyProduction.vue'));
+Vue.component('daily-injection', () => import(/* webpackChunkName : 'daily-injection' */  './components/reports/DailyInjection.vue'));
+Vue.component('monthly-injection', () => import(/* webpackChunkName : 'monthly-injection' */  './components/reports/MonthlyInjection.vue'));
+Vue.component('analyze-gtm', () => import(/* webpackChunkName : 'analyze-gtm' */  './components/reports/AnalyzeGtm.vue'));
+Vue.component('dynamics-indicators', () => import(/* webpackChunkName : 'dynamics-indicators' */  './components/reports/DynamicsIndicators.vue'));
 
-Vue.component('viscenter2-create', require('./components/visualcenter/viscenter2/create.vue').default);
-Vue.component('visualcenter3-excelform', require('./components/visualcenter3/importForm/ExcelForm.vue').default);
+Vue.component('well-fund', () => import(/* webpackChunkName : 'well-fund' */  './components/reports/WellFund.vue'));
+Vue.component('well-fund-block', () => import(/* webpackChunkName : 'well-fund-block' */  './components/reports/WellFundBlock.vue'));
+Vue.component('well-fund-field', () => import(/* webpackChunkName : 'well-fund-field' */  './components/reports/WellFundField.vue'));
+Vue.component('well-fund-inactive', () => import(/* webpackChunkName : 'well-fund-inactive' */  './components/reports/WellFundInactive.vue'));
+Vue.component('well-fund-revision-field', () => import(/* webpackChunkName : 'well-fund-revision-field' */  './components/reports/WellFundRevisionField.vue'));
+Vue.component('well-fund-revision', () => import(/* webpackChunkName : 'well-fund-revision' */  './components/reports/WellFundRevision.vue'));
 
-Vue.component('big-data', require('./components/bigdata/BigData.vue').default);
-Vue.component('las', require('./components/bigdata/Las.vue').default);
-Vue.component('geo-data-reference-book', require('./components/bigdata/GeoDataReferenceBook.vue').default);
-Vue.component('user-reports', require('./components/bigdata/UserReports.vue').default);
-Vue.component('proto-form', require('./components/bigdata/Forms.vue').default);
-Vue.component('bigdata-form-mobile', require('./components/bigdata/FormMobile.vue').default);
-Vue.component('search-form', require('./components/ui-kit/SearchForm.vue').default);
-Vue.component('bigdata-report-button', require('./components/bigdata/BigDataReportButton.vue').default);
-Vue.component('full-page-loader', require('./components/ui-kit/FullPageLoader.vue').default);
+Vue.component('view-table', () => import(/* webpackChunkName : 'view-table' */  './components/omgca/table.vue'));
+Vue.component('oilgas-form', () => import(/* webpackChunkName : 'oilgas-form' */  './components/complicationMonitoring/oilGas/form.vue'));
+Vue.component('pipe-form', () => import(/* webpackChunkName : 'pipe-form' */  './components/pipes/form.vue'));
+Vue.component('pipe-type-form', () => import(/* webpackChunkName : 'pipe-type-form' */  './components/pipeTypes/form.vue'));
+Vue.component('inhibitor-create', () => import(/* webpackChunkName : 'inhibitor-create' */  './components/inhibitor/create.vue'));
+Vue.component('inhibitor-edit', () => import(/* webpackChunkName : 'inhibitor-edit' */  './components/inhibitor/edit.vue'));
+Vue.component('corrosion-form', () => import(/* webpackChunkName : 'corrosion-form' */  './components/complicationMonitoring/corrosion/form.vue'));
+Vue.component('gu-map', () => import(/* webpackChunkName : 'gu-map' */  './components/map/map.vue'));
+Vue.component('field-settings', () => import(/* webpackChunkName : 'field-settings' */  './components/settings/fields.vue'));
 
-Vue.component('main-page', require('./components/mainpage.vue').default);
+Vue.component('fa-table', () => import(/* webpackChunkName : 'fa-table' */  './components/tr/fa.vue'));
+Vue.component('tr-table', () => import(/* webpackChunkName : 'tr-table' */  './components/tr/tr.vue'));
+Vue.component('trfa-table', () => import(/* webpackChunkName : 'trfa-table' */  './components/tr/trfa.vue'));
+Vue.component('tr-charts-table', () => import(/* webpackChunkName : 'tr-charts-table' */  './components/tr/tr_charts.vue'));
+Vue.component('tr-sidebar-charts', () => import(/* webpackChunkName : 'tr-sidebar-charts' */  './components/tr/TrSidebarCharts.vue'));
+Vue.component('tr-sidebar-export', () => import(/* webpackChunkName : 'tr-sidebar-export' */  './components/tr/TrSidebarExport.vue'));
 
-Vue.component('profile', require('./components/profile/Profile.vue').default);
+Vue.component('cat-loader', () => import(/* webpackChunkName : 'cat-loader' */  './components/ui-kit/CatLoader.vue'));
+Vue.component('pagination', () => import(/* webpackChunkName : 'pagination' */  'laravel-vue-pagination'));
+Vue.component('report-export', () => import(/* webpackChunkName : 'report-export' */  './components/reports/export.vue'));
+Vue.component('tr_mode-table', () => import(/* webpackChunkName : 'tr_mode-table' */  './components/tr/TechMode.vue'));
+Vue.component('tr_mode-table-small', () => import(/* webpackChunkName : 'tr_mode-table-small' */  './components/tr/TechModeSmall.vue'));
+Vue.component('fa_weekly_chart', () => import(/* webpackChunkName : 'fa_weekly_chart' */  './components/tr/FaWeeklyChart.vue'));
+Vue.component('well_cart', () => import(/* webpackChunkName : 'well_cart' */  './components/well_cart/well_cart.vue'));
+Vue.component('report_constructor', () => import(/* webpackChunkName : 'report_constructor' */  './components/report_constructor/report_constructor.vue'));
+Vue.component('pf-main', () => import(/* webpackChunkName : 'pf-main' */  './components/PlastFluids/views/MainPage.vue'));
+Vue.component('pf-template_pvt_plast_oil', () => import(/* webpackChunkName : 'pf-template_pvt_plast_oil' */  './components/PlastFluids/views/SuperTemplatePvtPlastOil.vue'));
 
-Vue.component('reptt', require('./components/economy_kenzhe/reptt.vue').default);
-Vue.component('reptt-company', require('./components/economy_kenzhe/reptt_company.vue').default);
-Vue.component('proactive-factors', require('./components/economy_kenzhe/proactiveFactors/proactiveFactors.vue').default);
-Vue.component('proactive-factors-select-filter', require('./components/economy_kenzhe/proactiveFactors/selectFilter.vue').default);
-Vue.component('reptt-company2', require('./components/economy_kenzhe/proactiveFactors/repttCompany/reptt_company2.vue').default);
+Vue.component('viscenter2-create', () => import(/* webpackChunkName : 'viscenter2-create' */  './components/visualcenter/viscenter2/create.vue'));
+Vue.component('visualcenter3-excelform', () => import(/* webpackChunkName : 'visualcenter3-excelform' */  './components/visualcenter3/importForm/ExcelForm.vue'));
+Vue.component('big-data', () => import(/* webpackChunkName : 'big-data' */  './components/bigdata/BigData.vue'));
+Vue.component('las', () => import(/* webpackChunkName : 'las' */  './components/bigdata/Las.vue'));
+Vue.component('geo-data-reference-book', () => import(/* webpackChunkName : 'geo-data-reference-book' */  './components/bigdata/GeoDataReferenceBook.vue'));
+
+Vue.component('user-reports', () => import(/* webpackChunkName : 'user-reports' */  './components/bigdata/UserReports.vue'));
+Vue.component('proto-form', () => import(/* webpackChunkName : 'proto-form' */  './components/bigdata/Forms.vue'));
+Vue.component('bigdata-form-mobile', () => import(/* webpackChunkName : 'bigdata-form-mobile' */  './components/bigdata/FormMobile.vue'));
+Vue.component('search-form', () => import(/* webpackChunkName : 'search-form' */  './components/ui-kit/SearchForm.vue'));
+Vue.component('bigdata-report-button', () => import(/* webpackChunkName : 'bigdata-report-button' */  './components/bigdata/BigDataReportButton.vue'));
+Vue.component('full-page-loader', () => import(/* webpackChunkName : 'full-page-loader' */  './components/ui-kit/FullPageLoader.vue'));
+Vue.component('main-page', () => import(/* webpackChunkName : 'main-page' */  './components/mainpage.vue'));
+Vue.component('profile', () => import(/* webpackChunkName : 'profile' */  './components/profile/Profile.vue'));
+
+Vue.component('reptt', () => import(/* webpackChunkName : 'reptt' */  './components/economy_kenzhe/reptt.vue'));
+Vue.component('reptt-company', () => import(/* webpackChunkName : 'reptt-company' */  './components/economy_kenzhe/reptt_company.vue'));
+Vue.component('proactive-factors', () => import(/* webpackChunkName : 'proactive-factors' */  './components/economy_kenzhe/proactiveFactors/proactiveFactors.vue'));
+Vue.component('proactive-factors-select-filter', () => import(/* webpackChunkName : 'proactive-factors-select-filter' */  './components/economy_kenzhe/proactiveFactors/selectFilter.vue'));
+Vue.component('reptt-company2', () => import(/* webpackChunkName : 'reptt-company2' */  './components/economy_kenzhe/proactiveFactors/repttCompany/reptt_company2.vue'));
 
 Vue.prototype.trans = string => _.get(window.i18n, string) || string;
 Vue.prototype.localeUrl = string => `/${window.current_lang}/${string[0] === '/' ? string.substr(1) : string}`;

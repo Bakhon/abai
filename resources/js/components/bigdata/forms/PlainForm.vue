@@ -58,14 +58,12 @@
 
 <script>
 import BigdataFormField from './field'
-import BigdataPlainFormResults from './PlainFormResults'
 import {bdFormActions, bdFormState} from '@store/helpers'
 
 export default {
   name: "BigDataPlainForm",
   components: {
     BigdataFormField,
-    BigdataPlainFormResults
   },
   props: {
     params: {

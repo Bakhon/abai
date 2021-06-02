@@ -208,14 +208,10 @@
 </template>
 
 <script>
-import Vue from "vue";
 import moment from "moment"
 import vSelect from 'vue-select'
-import CatLoader from '../ui-kit/CatLoader'
-import 'vue-select/dist/vue-select.css'
-import {Datetime} from 'vue-datetime'
-import 'vue-datetime/dist/vue-datetime.css'
-Vue.use(Datetime)
+import CatLoader from '../ui-kit/CatLoader';
+import 'vue-datetime/dist/vue-datetime.css';
 
 export default {
   name: "view-table",
@@ -418,7 +414,7 @@ export default {
             show: false,
             value: field.type === 'date' ? {from: null, to: null} : null
           }
-          Vue.set(this.filters, code, filter)
+          this.$set(this.filters, code, filter)
         })
       }
     }
