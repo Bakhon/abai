@@ -1,0 +1,36 @@
+{
+  "type": "plain",
+  "table": "prod.bottom_hole",
+  "tabs": [
+    {
+      "title": "bottom_h",
+      "blocks": [
+        [
+          {
+            "title": "main",
+            "items": [
+              {
+                "code": "data",
+                "type": "date",
+                "title": "data",
+                "validation": "required|date"
+              },
+              {
+                "code": "depth",
+                "type": "numeric",
+                "title": "bottom_h_m",
+                "validation": "required|numeric"
+              },
+              {
+                "code": "comment",
+                "type": "text",
+                "title": "comment",
+                "validation": ""
+              }
+            ]
+          }
+        ]
+      ]
+    }
+  ]
+}
