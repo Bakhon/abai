@@ -183,7 +183,6 @@ export default {
   },
   components: {
     CatLoader,
-    // 'datetime': Datetime,
   },
   data: function () {
     return {
