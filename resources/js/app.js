@@ -15,8 +15,6 @@ import 'bootstrap-table/dist/bootstrap-table.js';
 import 'bootstrap-table/dist/locale/bootstrap-table-ru-RU.js'
 import 'bootstrap-table/dist/extensions/export/bootstrap-table-export.js';
 import 'bootstrap-table/dist/extensions/fixed-columns/bootstrap-table-fixed-columns.js';
-
-import 'vue-select/dist/vue-select.css'
 import 'bootstrap-select/dist/js/bootstrap-select.min.js';
 
 import VueMomentLib from 'vue-moment-lib';
