@@ -19,7 +19,7 @@ class WellsController extends Controller
 
     public function get(Well $well)
     {
-        $wellInfo = Well::where('id', $well->id)->with('orgs', 'tube_nom')->first();
+        $wellInfo = Well::where('id', $well->id)->with('tube_nom', 'spital_object')->first();
         return $wellInfo;
     }
 
@@ -55,11 +55,11 @@ class WellsController extends Controller
 
     public function well_expl(Well $well)
     {
-        $well_type = $well->well_expl()
+        $well_expl = $well->well_expl()
             ->where('dend', '<>', $this->getToday())
             ->where('dbeg', '<>', $this->getToday())
             ->orderBy('dbeg', 'desc')->first();
-        return $well_type;
+        return $well_expl;
     }
 
     public function techs(Well $well)
@@ -75,6 +75,15 @@ class WellsController extends Controller
     {
         $well_type = $well->well_type()->first();
         return $well_type;
+    }
+
+    public function org(Well $well)
+    {
+        $org = $well->orgs()
+            ->wherePivot('dend', '>', $this->getToday())
+            ->withPivot('dend', 'dbeg')
+            ->orderBy('pivot_dbeg', 'desc')->get();
+        return $org;
     }
 
     public function search(Request $request): array

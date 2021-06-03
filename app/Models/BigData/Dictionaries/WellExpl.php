@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Models\BigData;
+namespace App\Models\BigData\Dictionaries;
 
 use App\Models\TBDModel;
 
-class well_expl extends TBDModel
+class WellExpl extends TBDModel
 {
     protected $table = prod.well_expl;
 }

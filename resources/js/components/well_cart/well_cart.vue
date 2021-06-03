@@ -206,8 +206,11 @@ export default {
       wellExpl: null,
       wellType: null,
       wellTechs: null,
+      wellTech: null,
       wellUwi: null,
       wellGeo: null,
+      WellTech: null,
+      wellOrg: null,
       tableData: [
         {
           'description': 'this.well.uwi',
@@ -247,7 +250,7 @@ export default {
           'data': ''
         },
         {
-          'description': null,
+          'description': 'WellTech.tap',
           'method': null,
           'name': 'Отвод',
           'data': ''
@@ -260,7 +263,7 @@ export default {
           'data': ''
         },
         {
-          'description': 'this.well.orgs',
+          'description': 'this.wellOrg',
           'method': 'multiplyValues',
           'multiplyValueName': 'name_ru',
           'name': 'Орг. структура',
@@ -395,6 +398,9 @@ export default {
           }),
           this.axios.get(this.localeUrl(`/api/bigdata/wells/${well.id}/well_type/`)).then(({data}) => {
             this.wellType = data
+          }),
+          this.axios.get(this.localeUrl(`/api/bigdata/wells/${well.id}/org/`)).then(({data}) => {
+            this.wellOrg = data
           }),
           this.axios.get(this.localeUrl(`/api/bigdata/wells/${well.id}/geo/`)).then(({data}) => {
             this.wellGeo = data
