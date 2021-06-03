@@ -18,7 +18,7 @@ use App\Models\ComplicationMonitoring\Pipe;
 use App\Models\ComplicationMonitoring\WaterMeasurement;
 use App\Models\Refs\Cdng;
 use App\Models\Refs\Field;
-use App\Models\Refs\Gu;
+use App\Models\ComplicationMonitoring\Gu;
 use App\Models\Refs\HydrocarbonOxidizingBacteria;
 use App\Models\Refs\Ngdu;
 use App\Models\Refs\OtherObjects;

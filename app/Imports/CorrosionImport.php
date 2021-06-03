@@ -5,7 +5,7 @@ namespace App\Imports;
 use App\Models\ComplicationMonitoring\Corrosion;
 use App\Models\Refs\Cdng;
 use App\Models\Refs\Field;
-use App\Models\Refs\Gu;
+use App\Models\ComplicationMonitoring\Gu;
 use App\Models\Refs\Ngdu;
 use Maatwebsite\Excel\Concerns\ToModel;
 use PhpOffice\PhpSpreadsheet\Shared\Date;

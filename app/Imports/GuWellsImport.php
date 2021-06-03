@@ -4,7 +4,7 @@ namespace App\Imports;
 
 use App\Models\ComplicationMonitoring\Material;
 use App\Models\ComplicationMonitoring\PipeType;
-use App\Models\Pipes\OilPipe;
+use App\Models\ComplicationMonitoring\OilPipe;
 use App\Models\Pipes\PipeCoord;
 use App\Models\Refs\Ngdu;
 use App\Models\Refs\Zu;
@@ -17,7 +17,7 @@ use Maatwebsite\Excel\Concerns\WithStartRow;
 use Maatwebsite\Excel\Concerns\WithCalculatedFormulas;
 use Maatwebsite\Excel\Events\BeforeSheet;
 use App\Models\Refs\Well;
-use App\Models\Refs\Gu;
+use App\Models\ComplicationMonitoring\Gu;
 use App\Console\Commands\Import\Wells;
 
 class GuWellsImport implements ToCollection, WithEvents, WithColumnLimit, WithStartRow, WithCalculatedFormulas

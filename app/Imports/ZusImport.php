@@ -2,7 +2,7 @@
 
 namespace App\Imports;
 
-use App\Models\Refs\Gu;
+use App\Models\ComplicationMonitoring\Gu;
 use App\Models\Refs\Zu;
 use Maatwebsite\Excel\Concerns\ToModel;
 

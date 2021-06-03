@@ -2,8 +2,6 @@
 
 namespace App\Models\ComplicationMonitoring;
 
-use App\Models\Pipes\OilPipe;
-use App\Models\Refs\Gu;
 use App\Models\Refs\Ngdu;
 use Illuminate\Database\Eloquent\Model;
 

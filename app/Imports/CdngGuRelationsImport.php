@@ -4,7 +4,7 @@ namespace App\Imports;
 
 use App\Console\Commands\Import\ImportCdngGuRelations;
 use App\Models\Refs\Cdng;
-use App\Models\Refs\Gu;
+use App\Models\ComplicationMonitoring\Gu;
 use App\Models\Refs\Ngdu;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToCollection;

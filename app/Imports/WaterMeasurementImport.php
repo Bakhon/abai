@@ -21,7 +21,7 @@ use Maatwebsite\Excel\Concerns\WithStartRow;
 use Maatwebsite\Excel\Concerns\WithCalculatedFormulas;
 use Maatwebsite\Excel\Events\BeforeSheet;
 use App\Models\Refs\Well;
-use App\Models\Refs\Gu;
+use App\Models\ComplicationMonitoring\Gu;
 use PhpOffice\PhpSpreadsheet\Shared\Date;
 
 class WaterMeasurementImport implements ToCollection, WithEvents, WithColumnLimit, WithStartRow, WithCalculatedFormulas

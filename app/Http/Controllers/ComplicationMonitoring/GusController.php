@@ -14,7 +14,7 @@ use App\Http\Resources\GuListResource;
 use App\Jobs\ExportOmgCAToExcel;
 use App\Models\ComplicationMonitoring\OmgNGDU;
 use App\Models\ComplicationMonitoring\TrunklinePoint;
-use App\Models\Refs\Gu;
+use App\Models\ComplicationMonitoring\Gu;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;

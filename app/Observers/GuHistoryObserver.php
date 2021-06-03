@@ -2,7 +2,7 @@
 
 namespace App\Observers;
 
-use App\Models\Refs\Gu;
+use App\Models\ComplicationMonitoring\Gu;
 
 class GuHistoryObserver extends EditHistoryObserver
 {

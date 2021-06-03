@@ -1,14 +1,15 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\ComplicationMonitoring;
 
 use App\Models\ComplicationMonitoring\PipeType;
-use App\Models\Pipes\OilPipe;
+use App\Models\ComplicationMonitoring\OilPipe;
+use App\Http\Controllers\Controller;
 use App\Models\Pipes\PipeCoord;
 use App\Models\Refs\Ngdu;
 use Illuminate\Http\Request;
 use App\Services\MapService;
-use App\Models\Refs\Gu;
+use App\Models\ComplicationMonitoring\Gu;
 use App\Models\Refs\Zu;
 use App\Models\Refs\Cdng;
 use App\Models\Refs\Well;

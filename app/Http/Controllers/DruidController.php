@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Refs\Gu;
+use App\Models\ComplicationMonitoring\Gu;
 use Illuminate\Http\Request;
 use Level23\Druid\DruidClient;
 

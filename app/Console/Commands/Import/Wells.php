@@ -5,7 +5,7 @@ namespace App\Console\Commands\Import;
 use App\Imports\Ngdu4WellsImport;
 use App\Imports\TrunklineImport;
 use App\Models\ComplicationMonitoring\PipeType;
-use App\Models\Pipes\OilPipe;
+use App\Models\ComplicationMonitoring\OilPipe;
 use App\Models\Pipes\PipeCoord;
 use App\Models\Refs\Well;
 use App\Models\Refs\Zu;

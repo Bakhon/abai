@@ -5,7 +5,7 @@ namespace App\Imports;
 use App\Console\Commands\Import\Wells;
 use App\Models\ComplicationMonitoring\Material;
 use App\Models\ComplicationMonitoring\PipeType;
-use App\Models\Pipes\OilPipe;
+use App\Models\ComplicationMonitoring\OilPipe;
 use App\Models\Pipes\PipeCoord;
 use App\Models\Refs\Ngdu;
 use Illuminate\Support\Collection;

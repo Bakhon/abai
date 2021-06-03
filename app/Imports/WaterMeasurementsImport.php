@@ -3,7 +3,7 @@
 namespace App\Imports;
 
 use App\Models\Refs\Cdng;
-use App\Models\Refs\Gu;
+use App\Models\ComplicationMonitoring\Gu;
 use App\Models\Refs\HydrocarbonOxidizingBacteria;
 use App\Models\Refs\Ngdu;
 use App\Models\Refs\OtherObjects;
