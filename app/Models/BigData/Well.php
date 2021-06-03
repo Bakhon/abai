@@ -11,7 +11,6 @@ use App\Models\BigData\Dictionaries\WellExplType;
 use App\Models\BigData\Dictionaries\WellStatus;
 use App\Models\BigData\Dictionaries\WellType;
 use App\Models\TBDModel;
-use Carbon\Carbon;
 
 class Well extends TBDModel
 {
