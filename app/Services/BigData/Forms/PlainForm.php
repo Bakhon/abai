@@ -57,9 +57,11 @@ abstract class PlainForm extends BaseForm
 
             if (!empty($tableFields)) {
                 foreach ($tableFields as $field) {
-                    foreach ($this->request->get($field['code']) as $data) {
-                        $data[$field['parent_column']] = $id;
-                        DB::connection('tbd')->table($field['table'])->insert($data);
+                    if (!empty($this->request->get($field['code']))) {
+                        foreach ($this->request->get($field['code']) as $data) {
+                            $data[$field['parent_column']] = $id;
+                            DB::connection('tbd')->table($field['table'])->insert($data);
+                        }
                     }
                 }
             }
