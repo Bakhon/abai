@@ -32,7 +32,7 @@
 			<div class="flex__item__block__first__block__1">
 				
 				<div class="block__text__4">{{trans('pgno.minimum')}}</div>
-				<input v-model="kpod_min" @change="onChangeKpod"  class="square2 block__1__input__1" type="text">
+				<input v-model="kpodMin" @change="onChangeKpod"  class="square2 block__1__input__1" type="text">
 
 			</div>
 		</div>
@@ -97,23 +97,23 @@
 
 			<div class="flex__item__block__third__block">
 				<label for="" class="block__third__block__radio">1
-					<input value="1" class="third__block__radio" type="radio" name="posad1" v-model="groupPosad"/>
+					<input value="1" @change="onChangeGroupPosad" class="third__block__radio" type="radio" name="posad1" v-model="groupPosad"/>
 				</label>
 
 				<label for="" class="block__third__block__radio__1">2
-					<input value="2" class="third__block__radio" type="radio" name="posad1" v-model="groupPosad"/>
+					<input value="2" @change="onChangeGroupPosad" class="third__block__radio" type="radio" name="posad1" v-model="groupPosad"/>
 				</label>
 
 				<label for="" class="block__third__block__radio__2">3
-					<input value="3" class="third__block__radio" type="radio" name="posad1" v-model="groupPosad"/>
+					<input value="3" @change="onChangeGroupPosad" class="third__block__radio" type="radio" name="posad1" v-model="groupPosad"/>
 				</label>
 
 				<label for="" class="block__third__block__radio__3">4
-					<input value="4" class="third__block__radio" type="radio" name="posad1" v-model="groupPosad"/>
+					<input value="4" @change="onChangeGroupPosad" class="third__block__radio" type="radio" name="posad1" v-model="groupPosad"/>
 				</label>
 
 				<label for="" class="block__third__block__radio__4">5
-					<input value="5" class="third__block__radio" type="radio" name="posad1" v-model="groupPosad"/>
+					<input value="5" @change="onChangeGroupPosad" class="third__block__radio" type="radio" name="posad1" v-model="groupPosad"/>
 				</label>
 
 				<label for="" class="block__third__block__radio__5">{{trans('pgno.podbor')}}
@@ -127,17 +127,17 @@
 			<div class="flex__item__block__second__block__4__1">
 				<div class="form__checkbox block__checkbox__1">
 					<div class="block__checkbox__text">
-						<input type="checkbox" />
+						<input type="checkbox" @change="onChangeYakor" v-model="yakor" />
 						<label for="checkbox1">{{trans('pgno.yakor_truboderzhatel')}}</label>
 					</div>
 						
 					<div class="block__checkbox__1__text">
-						<input type="checkbox" />
+						<input type="checkbox" @change="onChangePaker" v-model="paker" />
 						<label for="checkbox1">{{trans('pgno.paker')}}</label>
 					</div>
 						
 					<div class="block__checkbox__2__text">
-						<input type="checkbox" v-model="hvostovik"/>
+						<input type="checkbox" @change="onChangeHvostovik" v-model="hvostovik"/>
 						<label for="checkbox1">{{trans('pgno.hvostovik')}}</label>
 					</div>
 							
@@ -153,7 +153,7 @@
 			</div>
 			<div class="title__block__3__2">{{trans('pgno.dm_shtang')}}, , {{trans('measurements.mm')}}</div>
 			<div class="title__block__3__3">{{trans('pgno.marki_stali_shtang')}}
-			<svg style="padding-left: 4px;" @click="onClick()" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+			<svg style="padding-left: 4px;" @click="onClickI1()" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
 			<path fill-rule="evenodd" clip-rule="evenod" d="M12 15.9998C14.2092 15.9998 16 14.209 16 11.9998V4C16 1.79086 14.2092 -7.25981e-06 12 0L4.00035 2.62892e-05C1.79129 3.35488e-05 0.000467376 1.79078 0.000366244 3.99984L4.28319e-09 11.9997C-0.00010113 14.2089 1.79079 15.9998 4 15.9998H12ZM9.96388 4.21331C9.96388 4.83186 9.41469 5.3333 8.73722 5.3333C8.05976 5.3333 7.51057 4.83186 7.51057 4.21331C7.51057 3.59476 8.05976 3.09332 8.73722 3.09332C9.41469 3.09332 9.96388 3.59476 9.96388 4.21331ZM5.60064 7.36004L5.72864 6.8214L6.60376 6.50669L6.9106 6.42998C7.06133 6.3923 7.21494 6.3673 7.36984 6.35523L7.41538 6.35168C7.54958 6.34122 7.68445 6.34271 7.81839 6.35613L7.85353 6.35965C7.94465 6.36878 8.03495 6.38481 8.12364 6.40762L8.18305 6.4229C8.30295 6.45373 8.41808 6.50078 8.52526 6.56274L8.55485 6.57985C8.65442 6.63741 8.74468 6.70975 8.82254 6.79439L8.8313 6.80391C8.91016 6.88963 8.97434 6.98778 9.02125 7.0944C9.05215 7.16462 9.07532 7.23799 9.09037 7.31322L9.09378 7.33027C9.11191 7.42093 9.11967 7.51336 9.11689 7.60578L9.11251 7.75195C9.10756 7.91693 9.08628 8.08102 9.04897 8.24181L8.9504 8.66669L8.75307 9.33335L8.44907 10.4L8.33707 10.9333L8.31512 11.2011C8.31199 11.2394 8.31319 11.2778 8.31869 11.3158L8.32229 11.3407C8.3477 11.516 8.46981 11.662 8.63788 11.718C8.66837 11.7282 8.69982 11.7352 8.73174 11.7389L8.82514 11.7498C8.9437 11.7637 9.06356 11.7621 9.18171 11.7451L9.25563 11.7344C9.35953 11.7195 9.46205 11.6962 9.5622 11.6648L9.81973 11.584L9.67039 12.1333L8.73707 12.4693L8.46883 12.5326C8.30138 12.5721 8.13053 12.5955 7.95863 12.6026L7.93826 12.6034C7.77785 12.61 7.61717 12.6011 7.45847 12.5768L7.36839 12.563C7.28545 12.5503 7.20378 12.5305 7.12429 12.5037L7.08161 12.4893C6.90742 12.4305 6.74837 12.3339 6.61586 12.2065L6.60737 12.1983C6.56238 12.1551 6.52112 12.1081 6.48404 12.0578C6.35347 11.881 6.27843 11.6694 6.26845 11.4499L6.26357 11.3423C6.25926 11.2477 6.26417 11.1528 6.27823 11.0591L6.33709 10.6667L6.87042 8.80003L7.02509 8.13737L7.056 7.87718C7.06732 7.7819 7.0635 7.68544 7.04469 7.59136L7.02946 7.51521C7.02302 7.48303 7.01214 7.4519 6.99713 7.42271C6.95049 7.33203 6.86703 7.26586 6.76811 7.24113L6.66762 7.21601C6.62518 7.2054 6.58168 7.1996 6.53794 7.19872L6.33709 7.19471C6.15985 7.20887 5.98467 7.24231 5.81466 7.29443L5.60064 7.36004Z" fill="white"/>
 			</svg>
 			</div>
@@ -211,7 +211,7 @@
 
 		<div class="flex__item__block__4">
 			<div class="title__block__4__1">{{trans('pgno.korozinost_dob_prod')}}
-			<svg style="padding-left: 4px;" @click="onClick()" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+			<svg style="padding-left: 4px;" @click="onClickI2()" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
 			<path fill-rule="evenodd" clip-rule="evenod" d="M12 15.9998C14.2092 15.9998 16 14.209 16 11.9998V4C16 1.79086 14.2092 -7.25981e-06 12 0L4.00035 2.62892e-05C1.79129 3.35488e-05 0.000467376 1.79078 0.000366244 3.99984L4.28319e-09 11.9997C-0.00010113 14.2089 1.79079 15.9998 4 15.9998H12ZM9.96388 4.21331C9.96388 4.83186 9.41469 5.3333 8.73722 5.3333C8.05976 5.3333 7.51057 4.83186 7.51057 4.21331C7.51057 3.59476 8.05976 3.09332 8.73722 3.09332C9.41469 3.09332 9.96388 3.59476 9.96388 4.21331ZM5.60064 7.36004L5.72864 6.8214L6.60376 6.50669L6.9106 6.42998C7.06133 6.3923 7.21494 6.3673 7.36984 6.35523L7.41538 6.35168C7.54958 6.34122 7.68445 6.34271 7.81839 6.35613L7.85353 6.35965C7.94465 6.36878 8.03495 6.38481 8.12364 6.40762L8.18305 6.4229C8.30295 6.45373 8.41808 6.50078 8.52526 6.56274L8.55485 6.57985C8.65442 6.63741 8.74468 6.70975 8.82254 6.79439L8.8313 6.80391C8.91016 6.88963 8.97434 6.98778 9.02125 7.0944C9.05215 7.16462 9.07532 7.23799 9.09037 7.31322L9.09378 7.33027C9.11191 7.42093 9.11967 7.51336 9.11689 7.60578L9.11251 7.75195C9.10756 7.91693 9.08628 8.08102 9.04897 8.24181L8.9504 8.66669L8.75307 9.33335L8.44907 10.4L8.33707 10.9333L8.31512 11.2011C8.31199 11.2394 8.31319 11.2778 8.31869 11.3158L8.32229 11.3407C8.3477 11.516 8.46981 11.662 8.63788 11.718C8.66837 11.7282 8.69982 11.7352 8.73174 11.7389L8.82514 11.7498C8.9437 11.7637 9.06356 11.7621 9.18171 11.7451L9.25563 11.7344C9.35953 11.7195 9.46205 11.6962 9.5622 11.6648L9.81973 11.584L9.67039 12.1333L8.73707 12.4693L8.46883 12.5326C8.30138 12.5721 8.13053 12.5955 7.95863 12.6026L7.93826 12.6034C7.77785 12.61 7.61717 12.6011 7.45847 12.5768L7.36839 12.563C7.28545 12.5503 7.20378 12.5305 7.12429 12.5037L7.08161 12.4893C6.90742 12.4305 6.74837 12.3339 6.61586 12.2065L6.60737 12.1983C6.56238 12.1551 6.52112 12.1081 6.48404 12.0578C6.35347 11.881 6.27843 11.6694 6.26845 11.4499L6.26357 11.3423C6.25926 11.2477 6.26417 11.1528 6.27823 11.0591L6.33709 10.6667L6.87042 8.80003L7.02509 8.13737L7.056 7.87718C7.06732 7.7819 7.0635 7.68544 7.04469 7.59136L7.02946 7.51521C7.02302 7.48303 7.01214 7.4519 6.99713 7.42271C6.95049 7.33203 6.86703 7.26586 6.76811 7.24113L6.66762 7.21601C6.62518 7.2054 6.58168 7.1996 6.53794 7.19872L6.33709 7.19471C6.15985 7.20887 5.98467 7.24231 5.81466 7.29443L5.60064 7.36004Z" fill="white"/>
 			</svg>
 			</div>
@@ -332,6 +332,61 @@
 				</div>
 			</div>
 		</modal>
+
+		<modal name="modalTable3" :draggable="true" :width="1000" :height="550"
+			:adaptive="true">
+			<div class="modal-bign modal-bign-container">
+				<div class="modal-bign-header">
+					<div class="modal-bign-title">
+
+					</div>
+
+					<button type="button" class="modal-bign-button" @click="closeModal('modalTable3')">
+						{{trans('pgno.zakrit')}}
+					</button>
+				</div>
+
+				<div>
+
+					<div class="nno-modal-button-wrapper">
+						<div class="nno-modal-buttons-container" style="overflow:auto;">
+							<div class="title__table__1"></div>
+								<!-- small table -->
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</modal>
+
+		<modal name="modalTable2" :draggable="true" :width="1000" :height="550"
+			:adaptive="true">
+			<div class="modal-bign modal-bign-container">
+				<div class="modal-bign-header">
+					<div class="modal-bign-title">
+
+					</div>
+
+					<button type="button" class="modal-bign-button" @click="closeModal('modalTable2')">
+						{{trans('pgno.zakrit')}}
+					</button>
+				</div>
+
+				<div>
+
+					<div class="nno-modal-button-wrapper">
+						<div class="nno-modal-buttons-container" style="overflow:auto;">
+							<div class="title__table__1"></div>
+
+								
+
+								<!-- big table -->
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</modal>
 	</div>
 
 
@@ -347,7 +402,10 @@ export default {
 	data: function()  {
 		return {
 			davMin: '30атм',
-			groupPosad: '2',
+			groupPosad: 2,
+			yakor: false,
+			paker: false,
+			hvostovik: false,
 			heavyDown: 'heavy_down',
 			stup: '2',
 			dlinaPolki: '10м',
@@ -371,7 +429,7 @@ export default {
 			lenMax: 3,
 			spmMin: 3,
 			spmMax: 8,
-			kpod_min: 0.6,
+			kpodMin: 0.6,
 			isModal: false,
 			pumpCheckboxes: [
 				{
@@ -491,6 +549,19 @@ export default {
 		onChangePump95(event) {
 			this.$store.commit("UPDATE_PUMP_95", event.target.checked)
 		},
+		// 
+		onChangeGroupPosad(event) {
+			this.$store.commit("UPDATE_GROUP_POSAD", event.target.value)
+		},
+		onChangeYakor(event) {
+			this.$store.commit("UPDATE_YAKOR", event.target.value)
+		},
+		onChangePaker(event) {
+			this.$store.commit("UPDATE_PAKER", event.target.value)
+		},
+		onChangeHvostovik(event) {
+			this.$store.commit("UPDATE_HVOSTOVIK", event.target.value)
+		},
 		
 
 		onClick() {
@@ -498,6 +569,12 @@ export default {
 			this.isModal = true;
 			this.$emit('myEvent', this.isModal);
       		this.$modal.hide('modalTable')
+		},
+		onClickI1() {
+			this.$modal.show('modalTable2')
+		},
+		onClickI2() {
+			this.$modal.show('modalTable3')
 		},
 		onSubmitParams() {
 			this.$emit('on-submit-params');
@@ -509,7 +586,7 @@ export default {
     	this.spmMax = this.$store.getters.spmMax
     	this.strokeLenMin = this.$store.getters.strokeLenMin
     	this.strokeLenMax = this.$store.getters.strokeLenMax
-    	this.kpod_min = this.$store.getters.kpod_min
+    	this.kpodMin = this.$store.getters.kpodMin
     	this.pump27 = this.$store.getters.pump27
     	this.pump32 = this.$store.getters.pump32
     	this.pump38 = this.$store.getters.pump38
@@ -519,6 +596,10 @@ export default {
     	this.pump60 = this.$store.getters.pump60
     	this.pump70 = this.$store.getters.pump70
     	this.pump95 = this.$store.getters.pump95
+		this.groupPosad= this.$store.getters.groupPosad
+    	this.hvostovik = this.$store.getters.hvostovik
+    	this.paker = this.$store.getters.paker
+		this.yakor = this.$store.getters.yakor
 	}
 }
 </script>

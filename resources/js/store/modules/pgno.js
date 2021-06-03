@@ -2,16 +2,16 @@ import axios from 'axios'
 
 const pgno = {
     state: {
-        wells: [],
-        wellType: '',
-        wellNumber: '',
         hPump: null,
-        buttonHpump: false,
         spmMin: null,
         spmMax: null,
         strokeLenMin: null,
         strokeLenMax: null,
-        kpod_min: null,
+        kpodMin: null,
+        groupPosad: null,
+        yakor: false,
+        paker: false,
+        hvostovik: false,
         pump27: false,
         pump32: false,
         pump38: false,
@@ -37,7 +37,7 @@ const pgno = {
         state.strokeLenMax = val
       },
       UPDATE_KPOD: (state, val) => {
-        state.kpod_min = val
+        state.kpodMin = val
       },
 
       UPDATE_PUMP_27: (state, val) => {
@@ -67,62 +67,26 @@ const pgno = {
       UPDATE_PUMP_95: (state, val) => {
         state.pump95 = val
       },
-      
+      UPDATE_GROUP_POSAD(state, val) {
+        state.groupPosad = val
+      },
+      UPDATE_YAKOR(state, val) {
+        state.yakor = val
+      },
+      UPDATE_PAKER(state, val) {
+        state.paker = val
+      },
+      UPDATE_HVOSTOVIK(state, val) {
+        state.hvostovik = val
+      },
 
-      UPDATE_MESSAGE(state, payload) {
-        state.wells = payload
-      },
-      SET_WELL_NUMBER(state, payload) {
-        state.wellNumber = payload
-      },
+      
       UPDATE_HPUMP(state, payload) {
         state.hPump = payload
       },
-      UPDATE_HPUMP_BUTTON(state, payload) {
-        state.buttonHpump = payload
-      },
-      SET_WELLS_TYPE(state, wellType) {
-        state.wellType = wellType
-      },
-      SET_WELL_NUM(state, wellType) {
-        state.wellType = wellType
-      },
-      updateWellNumber(state, wellNumber) {
-        state.obj.wellNumber = wellNumber
-        console.log(wellNumber);
-      }
     },
     
-    actions: {
-        loadWells({commit}) {
-          commit('SET_WELLS_NUMBER', wellNumber)
-          if(this.wellNumber) {
-            axios
-                .get('http://172.20.103.187:7575/api/pgno/UZN/' + this.wellNumber)
-                .then(data => {
-                    console.log(data.data, 'vuex work');
-                    // let wells = data.data
-                    // commit('SET_WELLS_TYPE', wells)
-                    // commit('SET_WELLS_NUM', getWellNumber)
-                })
-                .catch(error => {
-                    console.log(error);
-                })
-          } else {
-            return console.log('no number')
-          }
-        },
-        getHpumpValue({commit}) {
-          commit = this.hPump
-        },
-        getHpumpButton({commit}) {
-          commit = this.buttonHpump
-        },
-        getWellNumber({commit}) {
-          commit = this.wellNumber
-        }
-        
-    },
+    actions: {},
     
     getters: {
       pump27: (state) => state.pump27,
@@ -134,15 +98,16 @@ const pgno = {
       pump60: (state) => state.pump60,
       pump70: (state) => state.pump70,
       pump95: (state) => state.pump95,
-      kpod_min: (state) => state.kpod_min,
+      kpodMin: (state) => state.kpodMin,
       spmMin: (state) => state.spmMin,
       spmMax: (state) => state.spmMax,
       strokeLenMin: (state) => state.strokeLenMin,
       strokeLenMax: (state) => state.strokeLenMax,
-      getWellNumber: (state) => state.wellNumber,
-      WELLDATA: (state) => state.wellData,
-      getHpump: (state) => state.hPump,
-      getHpumpButton: (state) => state.buttonHpump
+      groupPosad: (state) => state.groupPosad,
+      yakor: (state) => state.yakor,
+      paker: (state) => state.paker,
+      hvostovik: (state) => state.hvostovik,
+      hPump: (state) => state.hPump,
     },
 }
 

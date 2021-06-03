@@ -310,7 +310,11 @@ export default {
       pump60: null,
       pump70: null,
       pump95: null,
-      kpod_min: null,
+      kpodMin: null,
+      groupPosad: null,
+      yakor: null,
+      paker: null,
+      hvostovik: null,
       centratorsInfo: null,
       centratorsRequiredValue: null,
       centratorsRecommendedValue: null,
@@ -397,7 +401,7 @@ export default {
   methods: {
     setHpumpValueFromIncl() {
       this.$modal.hide('modalIncl')
-      this.hPumpValue = this.$store.getters.getHpump
+      this.hPumpValue = this.$store.getters.hPump
       this.postCurveData();
     },
     prepareData() {
@@ -405,7 +409,7 @@ export default {
       this.spmMax = this.$store.getters.spmMax
       this.strokeLenMin = this.$store.getters.strokeLenMin
       this.strokeLenMax = this.$store.getters.strokeLenMax
-      this.kpod_min = this.$store.getters.kpod_min
+      this.kpodMin = this.$store.getters.kpodMin
       this.pump27 = this.$store.getters.pump27
       this.pump32 = this.$store.getters.pump32
       this.pump38 = this.$store.getters.pump38
@@ -415,6 +419,10 @@ export default {
       this.pump60 = this.$store.getters.pump60
       this.pump70 = this.$store.getters.pump70
       this.pump95 = this.$store.getters.pump95
+      this.groupPosad = this.$store.getters.groupPosad
+      this.yakor = this.$store.getters.yakor
+      this.paker = this.$store.getters.paker
+      this.hvostovik = this.$store.getters.hvostovik
       this.postdata = JSON.stringify(
         {
           "pgno_setings":{
@@ -431,7 +439,11 @@ export default {
             "pump60": this.pump60,
             "pump70": this.pump70,
             "pump95": this.pump95,
-            "kpod_min": this.kpod_min
+            "kpod_min": this.kpodMin,
+            "group_posad": this.groupPosad,
+            "yakor": this.yakor,
+            "paker": this.paker,
+            "hvostovik": this.hvostovik
           },
           "welldata": this.welldata,
           "settings" : {

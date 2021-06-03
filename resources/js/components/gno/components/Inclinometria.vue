@@ -269,12 +269,10 @@ export default {
         },
 
       buildModel(){
-        this.hPumpFromIncl = this.$store.getters.getHpump
+        this.hPumpFromIncl = this.$store.getters.hPump
         var wi = this.wellIncl.split('_');
         let uri = "http://172.20.103.187:7575/api/pgno/incl";
         this.$emit('update:isLoading', true);
-        this.hPumpFromIncl = this.$store.getters.getHpump
-
         if (this.expChoose == 'ШГН'){
           this.lift_method="ШГН"
           this.step=10
