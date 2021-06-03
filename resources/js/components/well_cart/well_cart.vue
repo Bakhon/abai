@@ -64,6 +64,7 @@
                       placeholder="Номер скважины"
                       @input="selectWell"
                       @search="onSearch"
+                      v-model="wellUwi"
                   >
                     <template slot="option" slot-scope="option">
                       <span>{{ option.name }}</span>
@@ -202,6 +203,11 @@ export default {
       popup: false,
       wellStatus: null,
       wellCategory: null,
+      wellExpl: null,
+      wellType: null,
+      wellTechs: null,
+      wellUwi: null,
+      wellGeo: null,
       tableData: [
         {
           'description': 'this.well.uwi',
@@ -210,22 +216,20 @@ export default {
           'data': ''
         },
         {
-          'description': 'this.well.well_type[0].name_ru',
+          'description': 'this.wellType.name_ru',
           'method': null,
           'name': 'Вид скважины',
           'data': ''
         },
         {
-          'description': 'this.well.geo',
-          'method': 'multiplyValues',
-          'multiplyValueName': 'name_ru',
+          'description': 'this.wellGeo.name_ru',
+          'method': null,
           'name': 'Месторождение',
           'data': ''
         },
         {
-          'description': 'this.well.geo',
-          'method': 'multiplyValues',
-          'multiplyValueName': 'name_ru',
+          'description': 'this.wellGeo.name_ru',
+          'method': null,
           'name': 'Горизонт / Pнас, атм',
           'data': ''
         },
@@ -236,7 +240,7 @@ export default {
           'data': ''
         },
         {
-          'description': 'this.well.techs',
+          'description': 'this.wellTechs',
           'method': 'multiplyValues',
           'multiplyValueName': 'name_ru',
           'name': 'Тех. структура',
@@ -249,7 +253,7 @@ export default {
           'data': ''
         },
         {
-          'description': 'this.well.techs',
+          'description': 'this.wellTechs',
           'method': 'multiplyValues',
           'multiplyValueName': 'name_ru',
           'name': 'ГУ/Ряд',
@@ -311,7 +315,7 @@ export default {
           'data': ''
         },
         {
-          'description': 'this.well.techs[0].dbeg',
+          'description': 'this.wellTechs.dbeg',
           'method': null,
           'name': 'Дата ввода в эксплуатацию',
           'data': ''
@@ -383,9 +387,22 @@ export default {
           this.axios.get(this.localeUrl(`/api/bigdata/wells/${well.id}/category/`)).then(({data}) => {
             this.wellCategory = data
           }),
+          this.axios.get(this.localeUrl(`/api/bigdata/wells/${well.id}/well_expl/`)).then(({data}) => {
+            this.wellExpl = data
+          }),
+          this.axios.get(this.localeUrl(`/api/bigdata/wells/${well.id}/techs/`)).then(({data}) => {
+            this.wellTechs = data
+          }),
+          this.axios.get(this.localeUrl(`/api/bigdata/wells/${well.id}/well_type/`)).then(({data}) => {
+            this.wellType = data
+          }),
+          this.axios.get(this.localeUrl(`/api/bigdata/wells/${well.id}/geo/`)).then(({data}) => {
+            this.wellGeo = data
+          }),
           this.axios.get(this.localeUrl(`/api/bigdata/wells/${well.id}`)).then(({data}) => {
             try {
               this.well = data
+              this.wellUwi = data.uwi
               this.setTableData()
 
               this.loading = false
@@ -407,6 +424,8 @@ export default {
             }
           } catch (e) {
             this.tableData[i].data += '';
+            console.log(e)
+            console.log(eval('this.tableData[i].description') + '[k].' + eval('this.tableData[i].multiplyValueName'))
           }
         } else {
           try {

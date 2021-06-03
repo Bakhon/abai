@@ -12,31 +12,69 @@ use Carbon\Carbon;
 
 class WellsController extends Controller
 {
+    public function getToday(): Carbon
+    {
+        return Carbon::today();
+    }
+
     public function get(Well $well)
     {
-        $wellInfo = Well::where('id', $well->id)->with('techs', 'geo', 'orgs', 'well_type', 'well_expl', 'tube_nom')->first();
+        $wellInfo = Well::where('id', $well->id)->with('orgs', 'tube_nom')->first();
         return $wellInfo;
     }
 
     public function status(Well $well)
     {
-        $today = Carbon::today();
         $status = $well->status()
-            ->wherePivot('dend', '<>', $today)
-            ->wherePivot('dbeg', '<>', $today)
+            ->wherePivot('dend', '<>', $this->getToday())
+            ->wherePivot('dbeg', '<>', $this->getToday())
             ->withPivot('dend', 'dbeg')
             ->orderBy('pivot_dbeg', 'desc')->first();
-       return $status;
+        return $status;
     }
+
     public function category(Well $well)
     {
-        $today = Carbon::today();
         $category = $well->category()
-            ->wherePivot('dend', '<>', $today)
-            ->wherePivot('dbeg', '<>', $today)
+            ->wherePivot('dend', '<>', $this->getToday())
+            ->wherePivot('dbeg', '<>', $this->getToday())
             ->withPivot('dend', 'dbeg')
             ->orderBy('pivot_dbeg', 'desc')->first();
         return $category;
+    }
+
+    public function geo(Well $well)
+    {
+        $geo = $well->geo()
+            ->wherePivot('dend', '<>', $this->getToday())
+            ->wherePivot('dbeg', '<>', $this->getToday())
+            ->withPivot('dend', 'dbeg')
+            ->orderBy('pivot_dbeg', 'desc')->first();
+        return $geo;
+    }
+
+    public function well_expl(Well $well)
+    {
+        $well_type = $well->well_expl()
+            ->where('dend', '<>', $this->getToday())
+            ->where('dbeg', '<>', $this->getToday())
+            ->orderBy('dbeg', 'desc')->first();
+        return $well_type;
+    }
+
+    public function techs(Well $well)
+    {
+        $techs = $well->techs()
+            ->wherePivot('dend', '>', $this->getToday())
+            ->withPivot('dend', 'dbeg')
+            ->orderBy('pivot_dbeg', 'desc')->get();
+        return $techs;
+    }
+
+    public function well_type(Well $well)
+    {
+        $well_type = $well->well_type()->first();
+        return $well_type;
     }
 
     public function search(Request $request): array
