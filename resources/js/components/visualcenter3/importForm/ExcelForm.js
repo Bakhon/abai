@@ -161,9 +161,7 @@ export default {
     props: ['userId'],
     async mounted() {
         let currentDayNumber = moment().date();
-        if (this.daysWhenChemistryNeeded.includes(currentDayNumber)) {
-            this.isChemistryButtonVisible = true;
-        }
+        this.isChemistryButtonVisible = true;
         this.selectedDzo.ticker = this.getDzoTicker();
         if (!this.selectedDzo.ticker) {
             this.selectedDzo.ticker = defaultDzoTicker;

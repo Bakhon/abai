@@ -4,24 +4,25 @@
 namespace App\Services\BigData;
 
 use App\Exceptions\DictionaryNotFound;
-use App\Models\BigData\Dictionaries\Company;
-use App\Models\BigData\Dictionaries\EquipType;
-use App\Models\BigData\Dictionaries\Org;
-use App\Models\BigData\Dictionaries\WellCategory;
-use App\Models\BigData\Dictionaries\WellType;
-use App\Models\BigData\Dictionaries\Equip;
-use App\Models\BigData\Dictionaries\CasingType;
-use App\Models\BigData\Dictionaries\Brigadier;
 use App\Models\BigData\Dictionaries\Brigade;
-use App\Models\BigData\Dictionaries\GtmType;
-use App\Models\BigData\Dictionaries\NoBtmReason;
-use App\Models\BigData\Dictionaries\RepairWorkType;
-use App\Models\BigData\Dictionaries\WellStatus;
-use App\Models\BigData\Dictionaries\EquipFailReasonType;
-use App\Models\BigData\Dictionaries\TechConditionOfWells;
-use App\Models\BigData\Dictionaries\PumpType;
+use App\Models\BigData\Dictionaries\Brigadier;
+use App\Models\BigData\Dictionaries\Company;
 use App\Models\BigData\Dictionaries\DrillChisel;
 use App\Models\BigData\Dictionaries\DrillColumnType;
+use App\Models\BigData\Dictionaries\Equip;
+use App\Models\BigData\Dictionaries\EquipFailReasonType;
+use App\Models\BigData\Dictionaries\EquipType;
+use App\Models\BigData\Dictionaries\GtmType;
+use App\Models\BigData\Dictionaries\NoBtmReason;
+use App\Models\BigData\Dictionaries\Org;
+use App\Models\BigData\Dictionaries\PumpType;
+use App\Models\BigData\Dictionaries\RepairWorkType;
+use App\Models\BigData\Dictionaries\TechConditionOfWells;
+use App\Models\BigData\Dictionaries\TechStateType;
+use App\Models\BigData\Dictionaries\WellCategory;
+use App\Models\BigData\Dictionaries\WellStatus;
+use App\Models\BigData\Dictionaries\WellType;
+use App\Models\BigData\Dictionaries\Block;
 use App\TybeNom;
 use Carbon\Carbon;
 use Illuminate\Cache\Repository;
@@ -97,6 +98,14 @@ class DictionaryService
         'tube_nom' => [
             'class' => TybeNom::class,
             'name_field' => 'model'
+        ],
+        'well_tech_state_type' => [
+            'class' => TechStateType::class,
+            'name_field' => 'name_ru'
+        ],
+        'blocks' => [
+            'class' => Block::class,
+            'name_field' => 'name_ru'
         ]
     ];
 
