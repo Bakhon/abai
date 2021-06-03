@@ -131,7 +131,7 @@ export default {
             }
 
             if (change === 'monthly') {
-                let minimalDaysPeriodForChart = 2;
+                let minimalDaysPeriodForChart = 1;
                 this.buttonMonthlyTab = this.highlightedButton;
                 this.currentDzoList = 'monthly';
                 let periodStart = moment().startOf('month').format();

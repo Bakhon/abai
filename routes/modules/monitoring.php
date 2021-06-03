@@ -180,6 +180,8 @@ Route::group(
                     'lost_profits.list'
                 );
                 Route::resource('lost_profits', 'ComplicationMonitoring\LostProfitsController');
+                Route::get('/facilities', 'DruidController@facilities')->name('facilities');
+
             }
         );
     }
