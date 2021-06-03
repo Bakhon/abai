@@ -147,7 +147,7 @@
                         {{!empty($role) && $role->permissions->where('id', $permissions->get('bigdata view main')->id)->isNotEmpty() ? 'checked' : ''}}>
                 <label class="form-check-label" for="permission_{{$permissions->get('bigdata view main')->id}}">Просмотр главной</label>
             </div>
-            <div class="form-check">
+            <div class="form-check mb-4">
                 <input
                         class="form-check-input"
                         id="permission_{{$permissions->get('bigdata load_las')->id}}"
@@ -157,6 +157,38 @@
                         {{!empty($role) && $role->permissions->where('id', $permissions->get('bigdata load_las')->id)->isNotEmpty() ? 'checked' : ''}}>
                 <label class="form-check-label" for="permission_{{$permissions->get('bigdata load_las')->id}}">Загрузка las</label>
             </div>
+            @foreach([
+                'file_status' => 'Справочник статус файла',
+                'file_type' => 'Справочник тип файла',
+                'recording_method' => 'Справочник метод записи',
+                'recording_state' => 'Справочник статус записи',
+                'stem_section' => 'Справочник секция ствола',
+                'stem_type' => 'Справочник тип ствола',
+            ] as $code => $name)
+                <div class="section mb-4">
+                    <h5>{{$name}}</h5>
+                    @foreach([
+                        'list' => 'Просмотр списка',
+                        'create' => 'Создание',
+                        'read' => 'Просмотр',
+                        'update' => 'Изменение',
+                        'delete' => 'Удаление',
+                    ] as $fieldCode => $fieldName)
+                        <div class="form-check">
+                            <input
+                                    class="form-check-input"
+                                    id="permission_{{$permissions->get('bigdata '.$fieldCode.' '.$code)->id}}"
+                                    type="checkbox"
+                                    name="permissions[]"
+                                    value="{{$permissions->get('bigdata '.$fieldCode.' '.$code)->id}}"
+                                    {{!empty($role) && $role->permissions->where('id', $permissions->get('bigdata '.$fieldCode.' '.$code)->id)->isNotEmpty() ? 'checked' : ''}}
+                            >
+                            <label class="form-check-label"
+                                   for="permission_{{$permissions->get('bigdata '.$fieldCode.' '.$code)->id}}">{{$fieldName}}</label>
+                        </div>
+                    @endforeach
+                </div>
+            @endforeach
         </div>
         <div class="tabs tab-tr">
             <div class="form-check">
