@@ -278,19 +278,21 @@ class receiveNonOperatingAssets extends Command
             'oilDelivery' => 12,
             'stockOfGoods' => 17,
             'idle' => 18,
-            'oilLosses' => 19
+            'oilLosses' => 19,
+            'KPOoilProduction' => 8,
+            'KPOoilDelivery' => 15
         );
-        if (!$isSplittedData) {
+        $data = array (
+            'oil_production_fact' => $row[$columnMapping['oilProduction']],
+            'oil_delivery_fact' => $row[$columnMapping['oilDelivery']],
+            'dzo_name' => $dzoName,
+            'date' => Carbon::yesterday('Asia/Almaty')
+        );
+        if ($isSplittedData) {
+            $yesterdayFact = $this->getYesterdayFact($dzoName);
             $data = array (
-                'oil_production_fact' => $row[$columnMapping['oilProduction']],
-                'oil_delivery_fact' => $row[$columnMapping['oilDelivery']],
-                'dzo_name' => $dzoName,
-                'date' => Carbon::yesterday('Asia/Almaty')
-            );
-        } else {
-            $data = array (
-                'oil_production_fact' => $sheet->rows()[$rowIndex + 1][$columnMapping['oilProduction']],
-                'condensate_production_fact' => $sheet->rows()[$rowIndex + 2][$columnMapping['oilProduction']],
+                'oil_production_fact' => $this->getUpdatedFactForRecord($dzoName,$row[$columnMapping['KPOoilProduction']],$yesterdayFact,'oilProduction'),
+                'condensate_production_fact' => $this->getUpdatedFactForRecord($dzoName,$row[$columnMapping['KPOoilDelivery']],$yesterdayFact,'oilDelivery'),
                 'oil_delivery_fact' => $sheet->rows()[$rowIndex + 1][$columnMapping['oilDelivery']],
                 'condensate_delivery_fact' => $sheet->rows()[$rowIndex + 2][$columnMapping['oilDelivery']],
                 'dzo_name' => $dzoName,
@@ -298,6 +300,27 @@ class receiveNonOperatingAssets extends Command
             );
         }
         return $data;
+    }
+
+    public function getYesterdayFact($dzoName)
+    {
+        $data = array (
+            'oilProduction' => 0,
+            'oilDelivery' => 0
+        );
+        $dzoYesterdayData = DzoImportData::query()
+            ->whereDate('date',Carbon::now()->subDays(2))
+            ->where('dzo_name',$dzoName)
+            ->first();
+        if (!is_null($dzoYesterdayData)) {
+            $data['oilProduction'] = $dzoYesterdayData->oil_production_fact;
+            $data['oilDelivery'] = $dzoYesterdayData->oil_delivery_fact;
+        }
+        return $data;
+    }
+
+    public function getUpdatedFactForRecord($dzoName,$currentFact,$yesterdayFact,$fieldName) {
+        return ($currentFact - $yesterdayFact[$fieldName]) * 0.9;
     }
 
     public function getCondensateData($row, $columnIndex, $dzoName)
