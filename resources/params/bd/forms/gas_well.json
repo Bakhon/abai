@@ -45,11 +45,11 @@
                 "parent_column":"",
                 "columns":[
                   {
-                    "code":"well_action",
+                    "code":"well_activity",
                     "type":"dict",
                     "title":"event",
-                    "dict":"well_action",
-                    "validation":"required|exists:tbd.dict.well_action,id"
+                    "dict":"well_activity",
+                    "validation":"required|exists:tbd.dict.well_activity,id"
                   },
                   {
                     "code":"plan_month",

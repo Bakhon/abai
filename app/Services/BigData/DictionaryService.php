@@ -21,7 +21,6 @@ use App\Models\BigData\Dictionaries\TechConditionOfWells;
 use App\Models\BigData\Dictionaries\PumpType;
 use App\Models\BigData\Dictionaries\DrillChisel;
 use App\Models\BigData\Dictionaries\DrillColumnType;
-use App\Models\BigData\Dictionaries\WellAction;
 use App\Models\BigData\Dictionaries\TechStateType;
 use App\Models\BigData\Dictionaries\WellCategory;
 use App\Models\BigData\Dictionaries\WellStatus;
@@ -98,10 +97,6 @@ class DictionaryService
             'class' => DrillColumnType::class,
             'name_field' => 'name_ru'
         ],
-        'well_action' => [
-            'class' => WellAction::class,
-            'name_field' => 'name_ru'
-        ]
         'tube_nom' => [
             'class' => TybeNom::class,
             'name_field' => 'model'
