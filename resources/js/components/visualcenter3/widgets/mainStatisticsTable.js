@@ -44,6 +44,7 @@ export default {
             gasProductionButton: "",
             condensateProductionButton: "",
             displayChart: "display: none;",
+            minimalDaysCountInPeriodForChart: 1,
         };
     },
     methods: {
@@ -131,13 +132,12 @@ export default {
             }
 
             if (change === 'monthly') {
-                let minimalDaysPeriodForChart = 1;
                 this.buttonMonthlyTab = this.highlightedButton;
                 this.currentDzoList = 'monthly';
                 let periodStart = moment().startOf('month').format();
                 let periodEnd = moment().subtract(1, "days").endOf('day').format();
                 let daysDifference = moment(periodEnd).diff(moment(periodStart), 'days');
-                if (periodStart > periodEnd || daysDifference < minimalDaysPeriodForChart) {
+                if (periodStart > periodEnd || daysDifference < this.minimalDaysCountInPeriodForChart) {
                     periodEnd = moment(periodStart).endOf('day').format();
                     periodStart = this.getPreviousWorkday();
                 }
