@@ -169,8 +169,19 @@ Route::group(
                 Route::get('/hydro-calc/calculate', 'ComplicationMonitoring\HydroCalculation@calculate')->name('hydro_calculation.calculate');
                 Route::resource('hydro-calc', 'ComplicationMonitoring\HydroCalculation');
 
+                Route::get('economical_effect/list', 'ComplicationMonitoring\EconomicalEffectController@list')->name(
+                    'economical_effect.list'
+                );
+                Route::resource('economical_effect', 'ComplicationMonitoring\EconomicalEffectController');
+                Route::get('testcron', 'ComplicationMonitoring\EconomicalEffectController@testCronCalc');
                 Route::get('/reverse-calc/list', 'ComplicationMonitoring\ReverseCalculationController@list')->name('reverse_calculation.list');
                 Route::get('/reverse-calc', 'ComplicationMonitoring\ReverseCalculationController@index')->name('reverse_calculation.index');
+                Route::get('lost_profits/list', 'ComplicationMonitoring\LostProfitsController@list')->name(
+                    'lost_profits.list'
+                );
+                Route::resource('lost_profits', 'ComplicationMonitoring\LostProfitsController');
+                Route::get('/facilities', 'DruidController@facilities')->name('facilities');
+
             }
         );
     }

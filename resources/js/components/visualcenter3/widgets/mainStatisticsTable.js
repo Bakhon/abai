@@ -48,6 +48,8 @@ export default {
     },
     methods: {
         changeTable(change) {
+            this.selectedSecondaryOption = '';
+            this.selectedDzo = 'all';
             this.isFilterTargetPlanActive = false;
             this.buttonTargetPlan = "";
             this.company = "all";
@@ -66,7 +68,7 @@ export default {
             this.tableHover5 = "";
             this.tableHover6 = "";
             this.tableHover7 = "";
-            var buttonHover2 = " background: #0d2792";
+            var buttonHover2 = "button_hover";
 
             if (change == "1") {
                 this.Table1 = "display:block";
@@ -129,7 +131,7 @@ export default {
             }
 
             if (change === 'monthly') {
-                let minimalDaysPeriodForChart = 2;
+                let minimalDaysPeriodForChart = 1;
                 this.buttonMonthlyTab = this.highlightedButton;
                 this.currentDzoList = 'monthly';
                 let periodStart = moment().startOf('month').format();

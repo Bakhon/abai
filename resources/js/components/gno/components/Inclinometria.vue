@@ -1,7 +1,8 @@
 <template>
   <div>
     <div v-if="!data" class="gno-modal-loading-label">{{trans('pgno.zagruzka')}}</div>
-    <div v-else-if="data.length === 0" class="gno-modal-loading-label">{{trans('pgno.no_data')}}</div>
+    <div v-else-if="data.length === 0" class="gno-modal-loading-label">{{trans('pgno.no_data')}}
+    </div>
 
     <div v-else
          class="row no-margin col-12 no-padding relative gno-incl-content-wrapper">
@@ -134,8 +135,7 @@
 
 
       </div>
-
-      
+      <notifications position="top"></notifications>
     </div>
   </div>
 </template>
@@ -146,9 +146,11 @@ import {Plotly} from "vue-plotly";
 import {PerfectScrollbar} from "vue2-perfect-scrollbar";
 import "vue2-perfect-scrollbar/dist/vue2-perfect-scrollbar.css";
 import { mapState } from 'vuex';
+import NotifyPlugin from "vue-easy-notify";
 
 
 Vue.component("Plotly", Plotly);
+Vue.use(NotifyPlugin);
 
 export default {
   components: { PerfectScrollbar },
@@ -240,6 +242,17 @@ export default {
   },
 
   methods: {
+    noDataNotify() {
+      setTimeout(this.noDataNotifyMethod, 2000)
+    },
+    noDataNotifyMethod() {
+        this.$notify({
+          message: this.trans('pgno.no_data'),
+          type: 'error',
+          size: 'sm',
+          timeout: 8000
+        })
+      },
     closestVal(num, arr) {
         var curr = arr[0],
         diff = Math.abs(num * -1 - curr),
@@ -336,6 +349,10 @@ export default {
             },{
               type: 'scatter3d',
               mode: 'markers',
+              hovertemplate:
+                "Насос <br>" +
+                "MD = %{z:.1f} м<br>",
+              name: '',
               x: [this.pointX],
               y: [this.pointY],
               z: [this.pointZ],

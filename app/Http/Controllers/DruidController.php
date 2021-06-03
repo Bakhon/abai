@@ -5,87 +5,22 @@ namespace App\Http\Controllers;
 use App\Models\Refs\Gu;
 use Illuminate\Http\Request;
 use Level23\Druid\DruidClient;
-use Level23\Druid\Types\Granularity;
-use Level23\Druid\Extractions\ExtractionBuilder;
-use App\Models\DZO\DZOdaily;
-use App\Models\VisCenter\ImportForms\DZOdaily as ImportFormsDZOdaily;
-use App\Models\VisCenter\ImportForms\DZOstaff;
 
 class DruidController extends Controller
 {
-    // public function __construct()
-    // {
-    //     $this->middleware('can:visualcenter3 dobycha')->only('visualcenter3');
-    //     $this->middleware('can:visualcenter4 corpKPI')->only('visualcenter4');
-    //     $this->middleware('can:visualcenter5 economic')->only('visualcenter5');
-    //     $this->middleware('can:visualcenter6 strategyKPI')->only('visualcenter6');
-    //     $this->middleware('can:visualcenter7 dobychaKPI')->only('visualcenter7');
-    // }
-
     protected $druidClient;
 
     public function __construct(DruidClient $druidClient)
     {
         $this->middleware('can:monitoring view main', ['only' => ['monitor']]);
 
-        $this->middleware('can:visualcenter view main')->only(
-            'visualcenter3',
-            'visualcenter4',
-            'visualcenter5',
-            'visualcenter6',
-            'visualcenter7'
-        );
-        // $this->middleware('can:visualcenter4 corpKPI')->only('visualcenter4');
-        // $this->middleware('can:visualcenter5 economic')->only('visualcenter5');
-        // $this->middleware('can:visualcenter6 strategyKPI')->only('visualcenter6');
-        // $this->middleware('can:visualcenter7 dobychaKPI')->only('visualcenter7');
-
         $this->druidClient = $druidClient;
     }
 
-    public function index()
+    public function facilities()
     {
-        $response = $this->druidClient->query('month_meter_prod_oil_v02', Granularity::MONTH)
-            ->interval('2014-01-01 20:00:00', '2020-10-20 22:00:00')
-            ->count('totalNrRecords')
-            ->execute();
-        return $response;
+        return view('facilities.main');
     }
-
-    public function getOilPrice(Request $request)
-    {
-        if ($request->has('start_date') && $request->has('end_date')) {
-            $curl = curl_init();
-
-            curl_setopt_array(
-                $curl,
-                array(
-                    CURLOPT_URL => "https://www.quandl.com/api/v3/datasets/OPEC/ORB?start_date=" . $request->start_date . "&end_date=" . $request->end_date . "&api_key=1GucjdFKWYXnEejZ-xEC",
-                    CURLOPT_RETURNTRANSFER => true,
-                    CURLOPT_ENCODING => "",
-                    CURLOPT_MAXREDIRS => 10,
-                    CURLOPT_TIMEOUT => 0,
-                    CURLOPT_FOLLOWLOCATION => true,
-                    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-                    CURLOPT_CUSTOMREQUEST => "GET",
-                )
-            );
-
-            $response = curl_exec($curl);
-            curl_close($curl);
-
-            return ($response);
-        } else {
-            return "Error. Invalid url";
-        }
-    }
-
-
-    public function production()
-    {
-        return view('production.main');
-    }
-
 
     public function gtmscor()
     {
@@ -97,92 +32,9 @@ class DruidController extends Controller
         return view('production.mfond');
     }
 
-    public function oil()
-    {
-        return view('facilities.oil');
-    }
-
-    public function facilities()
-    {
-        return view('facilities.main');
-    }
-
-    public function liquid()
-    {
-        return view('facilities.liquid');
-    }
-
-    public function hydraulics()
-    {
-        return view('facilities.hydraulics');
-    }
-
-    public function complications()
-    {
-        return view('facilities.complications');
-    }
-
-    public function tabs()
-    {
-        return view('dev.tabs');
-    }
-
-    public function getNkKmg()
-    {
-        $response = $this->druidClient->query('nk_kmg', Granularity::ALL)
-            ->interval('1901-01-01T00:00:00+00:00/2020-07-31T18:02:55+00:00')
-            ->execute();
-
-        return response()->json($response->data());
-    }
-
-    public function getNkKmgYear()
-    {
-        $response = $this->druidClient->query('nk_kmg_year', Granularity::ALL)
-            ->interval('1901-01-01T00:00:00+00:00/2020-07-31T18:02:55+00:00')
-            ->execute();
-
-
-        return response()->json($response->data());
-    }
-
-    public function getWellDailyOil()
-    {
-        $builder = $this->druidClient->query('well_daily_oil2_v10', Granularity::DAY);
-
-        $builder
-            ->interval('2020-01-01T00:00:00+00:00/2020-01-02T00:00:00+00:00')
-            ->select(
-                '__time',
-                'dt',
-                function (ExtractionBuilder $extractionBuilder) {
-                    $extractionBuilder->timeFormat('yyyy-MM-dd');
-                }
-            )
-            ->select('surfx')
-            ->select('surfy')
-            ->select('well_uwi')
-            ->select('org');
-
-
-        $result = $builder->groupBy();
-
-        return response()->json($result->data());
-    }
-
-    public function maps()
-    {
-        return view('maps.maps');
-    }
-
     public function map()
     {
         return view('production.map');
-    }
-
-    public function mzdn()
-    {
-        return view('reports.mzdn');
     }
 
     public function bigdata()
@@ -422,12 +274,12 @@ class DruidController extends Controller
         // *********************************/
         //    GENERAL CORROSION POINT A    /
         // *********************************/
-        $p = $P_bufer * 100; // from bar to kPa
+        $p = $P_bufer; // bar
         $t_heater_inlet = $request->t_inlet_heater; // БД ОМГ НГДУ temperature  before heater taken from database in Celsius
         $t = $t_heater_inlet;  //temperature in C
         //H2S concentration
-        $conH2S = $request->conH2S; // БД Лаборатория жидкости, mg/l soluble in water previous was mole fraction ex: 0.0001
-        $conH2S_frac = $conH2S * 0.07055; // from mg/l => volumetric fraction
+        $conH2S = $request->conH2S;
+        $conH2S_frac = $conH2S * 0.07; // from mg/l => volumetric fraction
         //CO2 concentraiton
         $conCO2 = $request->conCO2; // БД Лаборатория жидкости, mg/l soluble in water previous was mole fraction ex: 0.0001
         $conCO2_frac = $conCO2 * 0.05464; // from mg/l => volumetric fraction
@@ -447,10 +299,11 @@ class DruidController extends Controller
         // // 1 mol/kg of CO2 => 44 g/l or 44000 mg/l assuming that 1l = 1kg the partial pressure equals:
         // $pCO2 = $CO2 / $kCO2 / 44000;   //kPa
         //print("pCO2 [kPa] = ", pCO2)
-        $pCO2 = $conCO2_frac / 100 * $p; // measured in kPa as per formula
+        $pCO2 = $conCO2_frac * $p / 100 ; // measured in bar as per formula
+        $pCO2pointA = $pCO2;
 
         //convert data to proper type
-        $co2 = $pCO2 / 1000; //convert partial pressure CO2 from kPa => MPa
+        $co2 = $pCO2 / 10; //convert partial pressure CO2 from bar => MPa
 
         //def corrosion_rate(co2,t):
 
@@ -496,7 +349,8 @@ class DruidController extends Controller
         // // Converting from % to ppm
         // $ppmH2S = $conH2S * 10000;
         // $pH2S = $pH2S / 1000;  #convert to float type and MPa
-        $pH2S = $p * $conH2S_frac / 100; // partial pressure H2S in kPa
+        $pH2S = $p * $conH2S_frac / 100; // partial pressure H2S in bar
+        $pH2SpointA = $pH2S;
         $ratio = $pCO2 / $pH2S;
 
         /*if ($pCO2 / $pH2S >= 20) {
@@ -514,35 +368,52 @@ class DruidController extends Controller
         //return $r;
 
         if ($gu->name == "ГУ-24") {
-            if ($pCO2 / $pH2S >= 20) {
-                //if ($pH2S < 0.3){// in kPa
-                $x = 7.96 - 2320 / ($t + 273);
-                $y = $t * 5.55 * pow(10, -3);
-                $z = 0.67 * log10($co2);
-                $omega = $x - $y + $z;
-                $r_a = pow(10, $omega);
-                ob_start(); //Start output buffer
-//                echo "CO2";
-                $environment_a = "CO2";
-                $output_a = ob_get_contents(); //Grab output
-                ob_end_clean(); //Discard output buffer
-                //return $r;
-            } //r = pow(10, (7.96 - 2320 / (t + 273) - 5.55 * 10**(-3) * t + 0.67 * math.log10(co2))
-            else {
-                if ($pCO2 / $pH2S < 20) {
-                    //else if ($pH2S > 0.3){
-                    //$r_a = -0.6274 + 0.01318 * $conCO2 + 0.02397 * $conH2S;
-                    //Скорость корр = -0,6274+16,9875*p(H2S)+12,0596*p(CO2)
-                    //$r_a = -0.6274 + 16.9875 * $pH2S / 100 + 12.0596 * $pCO2 / 100; // Partial pressure was calculated in bar
-                    $r_a = -0.6274 - 1.313 + 16.9875 * $pH2S / 100 + 12.0596 * $pCO2 / 100; //updated formula GU24 case 15.12.2020
-                    ob_start(); //Start output buffer
-//                    echo "H2S+CO2";
-                    //$environment_a = "H2S+CO2";
-                    $output_a = ob_get_contents(); //Grab output
-                    ob_end_clean(); //Discard output buffer
-                    //return $r;
-                }
+            if($request->current_dosage > 0){
+                $r_a = 0.045375-0.0004*$request->current_dosage-0.18198*$pCO2+438.4723*$pH2S; //updated formula GU24 case 15.12.2020
+            }else{
+                $r_a = -0.15107+1.146195*$pCO2-854.1*$pH2S;
             }
+            //else if ($pH2S > 0.3){
+            //$r_a = -0.6274 + 0.01318 * $conCO2 + 0.02397 * $conH2S;
+            //Скорость корр = -0,6274+16,9875*p(H2S)+12,0596*p(CO2)
+            //$r_a = -0.6274 + 16.9875 * $pH2S / 100 + 12.0596 * $pCO2 / 100; // Partial pressure was calculated in bar
+            ob_start(); //Start output buffer
+//                    echo "H2S+CO2";
+            //$environment_a = "H2S+CO2";
+            $output_a = ob_get_contents(); //Grab output
+            ob_end_clean(); //Discard output buffer
+            //return $r;
+        }        
+        elseif ($gu->name == "ГУ-22") {
+            if($request->current_dosage > 0){
+                $r_a = 0.3651+0.001705*$request->current_dosage-1.4529*$pCO2+1015.4313*$pH2S; //updated formula GU22 case 15.12.2020
+            }else{
+                $r_a = 0.3242 - 0.3512 * $pCO2 + 689.7732 * $pH2S; 
+            }
+            //else if ($pH2S > 0.3){
+            //$r_a = -0.6274 + 0.01318 * $conCO2 + 0.02397 * $conH2S;
+            //Скорость корр = -0,6274+16,9875*p(H2S)+12,0596*p(CO2)
+            //$r_a = -0.6274 + 16.9875 * $pH2S / 100 + 12.0596 * $pCO2 / 100; // Partial pressure was calculated in bar
+            //updated formula GU22 case 15.12.2020
+            ob_start(); //Start output buffer
+//                    echo "H2S+CO2";
+            //$environment_a = "H2S+CO2";
+            $output_a = ob_get_contents(); //Grab output
+            ob_end_clean(); //Discard output buffer
+            //return $r;
+        }
+        elseif ($gu->name == "ГУ-107") {
+            //else if ($pH2S > 0.3){
+            //$r_a = -0.6274 + 0.01318 * $conCO2 + 0.02397 * $conH2S;
+            //Скорость корр = -0,6274+16,9875*p(H2S)+12,0596*p(CO2)
+            //$r_a = -0.6274 + 16.9875 * $pH2S / 100 + 12.0596 * $pCO2 / 100; // Partial pressure was calculated in bar
+            $r_a = 0.0401 + 0.000032408 * $pCO2 - 1.2192 * $pH2S; //updated formula GU107 case 15.12.2020
+            ob_start(); //Start output buffer
+            //echo "H2S+CO2";
+            //$environment_a = "H2S+CO2";
+            $output_a = ob_get_contents(); //Grab output
+            ob_end_clean(); //Discard output buffer
+            //return $r;
         }
         //r = pow(10, (7.96 - 2320 / (t + 273) - 5.55 * 10**(-3) * t + 0.67 * math.log10(co2))
         /*else if ($pCO2 / $pH2S < 20) {
@@ -988,10 +859,10 @@ class DruidController extends Controller
             'flow_velocity_meter_per_sec' => round($v_lo, 1),
             'm_dot' => round($m_dot, 2),
             'final_pressure_bar_point_F' => round($P_final, 2),
-            'corrosion_rate_mm_per_y_point_A' => round($r_a, 1),
+            'corrosion_rate_mm_per_y_point_A' => round($r_a, 2),
             'corrosion_rate_mm_per_y_point_E' => round($r_e, 1),
             'corrosion_rate_mm_per_y_point_F' => round($r_f, 1),
-            'dose_mg_per_l_point_A' => round($dose_a, 1),
+            'dose_mg_per_l_point_A' => round($dose_a, 2),
             'dose_mg_per_l_point_E' => round($dose_e, 1),
             'dose_mg_per_l_point_F' => round($dose_f, 1),
             'max_dose' => round($max_dose, 1),
@@ -1028,6 +899,8 @@ class DruidController extends Controller
             'papavinasam_corrosion_mm_per_y_point_A' => round($PCR_A, 1),
             'papavinasam_corrosion_mm_per_y_point_E' => round($PCR_E, 1),
             'papavinasam_corrosion_mm_per_y_point_F' => round($PCR_F, 1),
+            'pCO2_point_A' => $pCO2pointA,
+            'pH2S_point_A' => $pH2SpointA
         ];
 
 

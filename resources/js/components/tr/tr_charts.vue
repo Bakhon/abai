@@ -770,7 +770,7 @@ export default {
           ),
         },
         {
-          name: this.trans('tr.h_water_permeability '),
+          name: this.trans('tr.h_water_permeability'),
           type: "area",
           data: filteredResult.map((item) =>
             this.getStringOrFirstItem(item, "h_up_perf_md")
