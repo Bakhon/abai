@@ -23,19 +23,6 @@
             ]
           },
           {
-            "title": "calculated_fields",
-            "items": [
-              {
-                "code": "oil_density",
-                "type": "numeric",
-                "title": "oil_density",
-                "validation": "numeric"
-              }
-            ]
-          }
-        ],
-        [
-          {
             "title": "Intended_production_regime",
             "items": [
               {
@@ -55,6 +42,17 @@
                 "type": "numeric",
                 "title": "water_cut",
                 "validation": "numeric|min:0|max:100"
+              }
+            ]
+          },
+          {
+            "title": "calculated_fields",
+            "items": [
+              {
+                "code": "oil_density",
+                "type": "numeric",
+                "title": "oil_density",
+                "validation": "numeric"
               }
             ]
           },
