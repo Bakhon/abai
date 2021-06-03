@@ -15,35 +15,35 @@ class AddPermissionForRecordingMethod extends Migration
     {
         $ids[] = DB::table('permissions')->insertGetId(
             [
-                'name' => 'monitoring list recording_method',
+                'name' => 'bigdata list recording_method',
                 'guard_name' => 'web'
             ]
         );
 
         $ids[] = DB::table('permissions')->insertGetId(
             [
-                'name' => 'monitoring create recording_method',
+                'name' => 'bigdata create recording_method',
                 'guard_name' => 'web'
             ]
         );
 
         $ids[] = DB::table('permissions')->insertGetId(
             [
-                'name' => 'monitoring read recording_method',
+                'name' => 'bigdata read recording_method',
                 'guard_name' => 'web'
             ]
         );
 
         $ids[] = DB::table('permissions')->insertGetId(
             [
-                'name' => 'monitoring update recording_method',
+                'name' => 'bigdata update recording_method',
                 'guard_name' => 'web'
             ]
         );
 
         $ids[] = DB::table('permissions')->insertGetId(
             [
-                'name' => 'monitoring delete recording_method',
+                'name' => 'bigdata delete recording_method',
                 'guard_name' => 'web'
             ]
         );

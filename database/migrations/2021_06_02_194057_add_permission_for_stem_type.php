@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddPermissionForRecordingState extends Migration
+class AddPermissionForStemType extends Migration
 {
     /**
      * Run the migrations.
@@ -15,35 +15,35 @@ class AddPermissionForRecordingState extends Migration
     {
         $ids[] = DB::table('permissions')->insertGetId(
             [
-                'name' => 'monitoring list recording_state',
+                'name' => 'bigdata list stem_type',
                 'guard_name' => 'web'
             ]
         );
 
         $ids[] = DB::table('permissions')->insertGetId(
             [
-                'name' => 'monitoring create recording_state',
+                'name' => 'bigdata create stem_type',
                 'guard_name' => 'web'
             ]
         );
 
         $ids[] = DB::table('permissions')->insertGetId(
             [
-                'name' => 'monitoring read recording_state',
+                'name' => 'bigdata read stem_type',
                 'guard_name' => 'web'
             ]
         );
 
         $ids[] = DB::table('permissions')->insertGetId(
             [
-                'name' => 'monitoring update recording_state',
+                'name' => 'bigdata update stem_type',
                 'guard_name' => 'web'
             ]
         );
 
         $ids[] = DB::table('permissions')->insertGetId(
             [
-                'name' => 'monitoring delete recording_state',
+                'name' => 'bigdata delete stem_type',
                 'guard_name' => 'web'
             ]
         );
@@ -68,7 +68,7 @@ class AddPermissionForRecordingState extends Migration
      */
     public function down()
     {
-        $peermissionIds = DB::table('permissions')->where('name', 'like', '%recording_state%')->pluck('id')->toArray();
+        $peermissionIds = DB::table('permissions')->where('name', 'like', '%stem_type%')->pluck('id')->toArray();
         DB::table('permissions')->whereIn('id', $peermissionIds)->delete();
     }
 }

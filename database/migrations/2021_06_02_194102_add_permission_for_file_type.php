@@ -15,35 +15,35 @@ class AddPermissionForFileType extends Migration
     {
         $ids[] = DB::table('permissions')->insertGetId(
             [
-                'name' => 'monitoring list file_type',
+                'name' => 'bigdata list file_type',
                 'guard_name' => 'web'
             ]
         );
 
         $ids[] = DB::table('permissions')->insertGetId(
             [
-                'name' => 'monitoring create file_type',
+                'name' => 'bigdata create file_type',
                 'guard_name' => 'web'
             ]
         );
 
         $ids[] = DB::table('permissions')->insertGetId(
             [
-                'name' => 'monitoring read file_type',
+                'name' => 'bigdata read file_type',
                 'guard_name' => 'web'
             ]
         );
 
         $ids[] = DB::table('permissions')->insertGetId(
             [
-                'name' => 'monitoring update file_type',
+                'name' => 'bigdata update file_type',
                 'guard_name' => 'web'
             ]
         );
 
         $ids[] = DB::table('permissions')->insertGetId(
             [
-                'name' => 'monitoring delete file_type',
+                'name' => 'bigdata delete file_type',
                 'guard_name' => 'web'
             ]
         );

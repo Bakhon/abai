@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddPermissionForStemType extends Migration
+class AddPermissionForFileStatus extends Migration
 {
     /**
      * Run the migrations.
@@ -15,35 +15,35 @@ class AddPermissionForStemType extends Migration
     {
         $ids[] = DB::table('permissions')->insertGetId(
             [
-                'name' => 'monitoring list stem_type',
+                'name' => 'bigdata list file_status',
                 'guard_name' => 'web'
             ]
         );
 
         $ids[] = DB::table('permissions')->insertGetId(
             [
-                'name' => 'monitoring create stem_type',
+                'name' => 'bigdata create file_status',
                 'guard_name' => 'web'
             ]
         );
 
         $ids[] = DB::table('permissions')->insertGetId(
             [
-                'name' => 'monitoring read stem_type',
+                'name' => 'bigdata read file_status',
                 'guard_name' => 'web'
             ]
         );
 
         $ids[] = DB::table('permissions')->insertGetId(
             [
-                'name' => 'monitoring update stem_type',
+                'name' => 'bigdata update file_status',
                 'guard_name' => 'web'
             ]
         );
 
         $ids[] = DB::table('permissions')->insertGetId(
             [
-                'name' => 'monitoring delete stem_type',
+                'name' => 'bigdata delete file_status',
                 'guard_name' => 'web'
             ]
         );
@@ -68,7 +68,7 @@ class AddPermissionForStemType extends Migration
      */
     public function down()
     {
-        $peermissionIds = DB::table('permissions')->where('name', 'like', '%stem_type%')->pluck('id')->toArray();
+        $peermissionIds = DB::table('permissions')->where('name', 'like', '%file_status%')->pluck('id')->toArray();
         DB::table('permissions')->whereIn('id', $peermissionIds)->delete();
     }
 }

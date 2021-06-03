@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddPermissionForFileStatus extends Migration
+class AddPermissionForStemSection extends Migration
 {
     /**
      * Run the migrations.
@@ -15,35 +15,35 @@ class AddPermissionForFileStatus extends Migration
     {
         $ids[] = DB::table('permissions')->insertGetId(
             [
-                'name' => 'monitoring list file_status',
+                'name' => 'bigdata list stem_section',
                 'guard_name' => 'web'
             ]
         );
 
         $ids[] = DB::table('permissions')->insertGetId(
             [
-                'name' => 'monitoring create file_status',
+                'name' => 'bigdata create stem_section',
                 'guard_name' => 'web'
             ]
         );
 
         $ids[] = DB::table('permissions')->insertGetId(
             [
-                'name' => 'monitoring read file_status',
+                'name' => 'bigdata read stem_section',
                 'guard_name' => 'web'
             ]
         );
 
         $ids[] = DB::table('permissions')->insertGetId(
             [
-                'name' => 'monitoring update file_status',
+                'name' => 'bigdata update stem_section',
                 'guard_name' => 'web'
             ]
         );
 
         $ids[] = DB::table('permissions')->insertGetId(
             [
-                'name' => 'monitoring delete file_status',
+                'name' => 'bigdata delete stem_section',
                 'guard_name' => 'web'
             ]
         );
@@ -68,7 +68,7 @@ class AddPermissionForFileStatus extends Migration
      */
     public function down()
     {
-        $peermissionIds = DB::table('permissions')->where('name', 'like', '%file_status%')->pluck('id')->toArray();
+        $peermissionIds = DB::table('permissions')->where('name', 'like', '%stem_section%')->pluck('id')->toArray();
         DB::table('permissions')->whereIn('id', $peermissionIds)->delete();
     }
 }

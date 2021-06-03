@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Refs;
+namespace App\Http\Controllers\Refs\bigdata\las;
 
 use App\Filters\LasDictionariesFilter;
 use App\Http\Controllers\Traits\WithFieldsValidation;
@@ -18,6 +18,18 @@ class LasDictionariesController extends CrudController
     protected $modelName = '';
     protected $model = '';
     protected $resource = '';
+    protected $link = '';
+
+    public function __construct()
+    {
+        $this->middleware('can:bigdata list '.$this->modelName, ['only' => ['index','list']]);
+        $this->middleware('can:bigdata create '.$this->modelName, ['only' => ['create','store']]);
+        $this->middleware('can:bigdata read '.$this->modelName, ['only' => ['show']]);
+        $this->middleware('can:bigdata update '.$this->modelName, ['only' => ['edit','update']]);
+        $this->middleware('can:bigdata delete '.$this->modelName, ['only' => ['destroy']]);
+        $this->middleware('can:bigdata export '.$this->modelName, ['only' => ['export']]);
+        $this->middleware('can:bigdata view history '.$this->modelName, ['only' => ['history']]);
+    }
 
     public function index()
     {
@@ -25,22 +37,23 @@ class LasDictionariesController extends CrudController
         $params = [
             'success' => Session::get('success'),
             'links' => [
-                'list' => route($modelName.'.list'),
+                'list' => route($this->link.'.list'),
             ],
-            'title' => trans('monitoring.'.$modelName.'.title'),
+            'title' => trans('bd.forms.'.$modelName.'.title'),
             'fields' => [
                 'name' => [
-                    'title' => trans('monitoring.'.$modelName.'.fields.name'),
+                    'title' => trans('bd.forms.'.$modelName.'.fields.name'),
                     'type' => 'string',
                 ]
             ]
         ];
         
-        if(auth()->user()->can('monitoring create '.$modelName)) {
-            $params['links']['create'] = route($modelName.'.create');
+        if(auth()->user()->can('bigdata create '.$modelName)) {
+            $params['links']['create'] = route($this->link.'.create');
         }
-
-        return view('las_dictionaries.index', compact('params'));
+        $permissions = auth()->user()->getAllPermissions()->pluck('name')->toArray();
+        // dd($permissions);
+        return view('bigdata.las_dictionaries.index', compact('params'));
     }
 
     public function list(IndexTableRequest $request)
@@ -59,8 +72,9 @@ class LasDictionariesController extends CrudController
     public function create(): \Illuminate\View\View
     {
         $modelName = $this->modelName;
+        $link = $this -> link;
         $validationParams = $this->getValidationParams('data');
-        return view('las_dictionaries.create', compact('modelName', 'validationParams'));
+        return view('bigdata.las_dictionaries.create', compact('link', 'modelName', 'validationParams'));
     }
 
     /**
@@ -88,7 +102,8 @@ class LasDictionariesController extends CrudController
     {
         $modelName = $this->modelName;
         $data = $this->model::find($id);
-        return view('las_dictionaries.show', compact('modelName', 'data'));
+        $link = $this -> link;
+        return view('bigdata.las_dictionaries.show', compact('link', 'modelName', 'data'));
     }
 
     /**
@@ -99,7 +114,8 @@ class LasDictionariesController extends CrudController
         $data = $this->model::find($id);
         $validationParams = $this->getValidationParams('data');
         $modelName = $this->modelName;
-        return view('las_dictionaries.edit', compact('modelName', 'data', 'validationParams'));
+        $link = $this -> link;
+        return view('bigdata.las_dictionaries.edit', compact('link', 'modelName', 'data', 'validationParams'));
     }
 
     /**
@@ -133,7 +149,7 @@ class LasDictionariesController extends CrudController
             return response()->json([], Response::HTTP_NO_CONTENT);
         }
         else {
-            return redirect()->route($this->modelName.'.index')->with('success', __('app.deleted'));
+            return redirect()->route($this->link.'.index')->with('success', __('app.deleted'));
         }
     }
 

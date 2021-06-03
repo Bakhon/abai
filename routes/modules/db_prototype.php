@@ -12,23 +12,23 @@ Route::group(
                 Route::get('/report_constructor', 'bd\DBController@report_constructor')->name('report_constructor');
                 Route::get('/user_reports', 'bd\DBController@userReports')->name('userReports');
 
-                Route::get('file_status/list', 'Refs\FileStatusController@list')->name('file_status.list');
-                Route::resource('/file_status', 'Refs\FileStatusController');
+                Route::get('file-status/list', 'Refs\bigdata\las\FileStatusController@list')->name('file-status.list');
+                Route::resource('/file-status', 'Refs\bigdata\las\FileStatusController');
 
-                Route::get('file_type/list', 'Refs\FileTypeController@list')->name('file_type.list');
-                Route::resource('/file_type', 'Refs\FileTypeController');
+                Route::get('file-type/list', 'Refs\bigdata\las\FileTypeController@list')->name('file-type.list');
+                Route::resource('/file-type', 'Refs\bigdata\las\FileTypeController');
 
-                Route::get('recording_method/list', 'Refs\RecordingMethodController@list')->name('recording_method.list');
-                Route::resource('/recording_method', 'Refs\RecordingMethodController');
+                Route::get('recording-method/list', 'Refs\bigdata\las\RecordingMethodController@list')->name('recording-method.list');
+                Route::resource('/recording-method', 'Refs\bigdata\las\RecordingMethodController');
 
-                Route::get('recording_state/list', 'Refs\RecordingStateController@list')->name('recording_state.list');
-                Route::resource('/recording_state', 'Refs\RecordingStateController');
+                Route::get('recording-state/list', 'Refs\bigdata\las\RecordingStateController@list')->name('recording-state.list');
+                Route::resource('/recording-state', 'Refs\bigdata\las\RecordingStateController');
 
-                Route::get('stem_section/list', 'Refs\StemSectionController@list')->name('stem_section.list');
-                Route::resource('/stem_section', 'Refs\StemSectionController');
+                Route::get('stem-section/list', 'Refs\bigdata\las\StemSectionController@list')->name('stem-section.list');
+                Route::resource('/stem-section', 'Refs\bigdata\las\StemSectionController');
 
-                Route::get('stem_type/list', 'Refs\StemTypeController@list')->name('stem_type.list');
-                Route::resource('/stem_type', 'Refs\StemTypeController');
+                Route::get('/stem-type/list', 'Refs\bigdata\las\StemTypeController@list')->name('stem-type.list');
+                Route::resource('/stem-type', 'Refs\bigdata\las\StemTypeController');
 
                 Route::get('/geo-data-reference-book', 'bd\DBController@geoDataReferenceBook')->name('bigdata.geoDataReferenceBook');
 

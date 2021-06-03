@@ -10,13 +10,13 @@
                 </div>
             @endif
             <div class="x_panel">
-            <h1>{{ trans('monitoring.'.$modelName.'.edit_title') }}</h1>
+            <h1>{{ trans('bd.forms.'.$modelName.'.edit_title') }}</h1>
             <a class="btn btn-primary float-left" href="{{ url()->previous() }}"><i class="fas fa-arrow-left"></i></a>
-                <form action="{{ route($modelName.'.update', [$modelName => $data->id]) }}" method="PUT">
+                <form action="{{ route($link.'.update', [$modelName => $data->id]) }}" method="PUT">
                     @method('patch')
                     @csrf
                     <div class="row">
-                        <las-dictionaries-form :model-name='@json($modelName)' :is-editing="true" :dict-data='@json($data)' :validation-params='@json($validationParams)'></las-dictionaries-form>
+                        <las-dictionaries-form :link = '@json($link)' :model-name='@json($modelName)' :is-editing="true" :dict-data='@json($data)' :validation-params='@json($validationParams)'></las-dictionaries-form>
                     </div>
                 </form>
             </div>

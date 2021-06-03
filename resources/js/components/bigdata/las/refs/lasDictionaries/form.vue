@@ -1,7 +1,7 @@
 <template>
   <div class="col-xs-12 col-sm-12 col-md-12 row">
     <div class="col-xs-12 col-sm-4 col-md-4">
-      <label>{{ trans(`monitoring.${this.modelName}.fields.name`) }}</label>
+      <label>{{ trans(`bd.forms.${this.modelName}.fields.name`) }}</label>
       <div class="form-label-group">
         <input
             v-model="formFields.name_ru"
@@ -30,6 +30,10 @@ const defaultFormFields = {
 export default {
   name: "las-dictionaries-form",
   props: {
+    link: {
+      type: String,
+      required: true,
+    },
     modelName: {
       type: String,
       required: true,
@@ -61,7 +65,7 @@ export default {
           [this.requestMethod](this.requestUrl, this.formFields)
           .then((response) => {
             if (response.data.status == 'success') {
-              window.location.replace(this.localeUrl(`bigdata/${this.modelName}`));
+              window.location.replace(this.localeUrl(`bigdata/${this.link}`));
             }
           });
     }
@@ -76,7 +80,7 @@ export default {
       return true
     },
     requestUrl () {
-      return this.isEditing ? this.localeUrl(`bigdata/${this.modelName}/` + this.dictData.id) : this.localeUrl(`bigdata/${this.modelName}`);
+      return this.isEditing ? this.localeUrl(`bigdata/${this.link}/` + this.dictData.id) : this.localeUrl(`bigdata/${this.link}`);
     },
     requestMethod () {
       return this.isEditing ? "put" : "post";

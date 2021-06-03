@@ -10,18 +10,18 @@
                 </div>
             @endif
             <div class="container">
-                <h1>{{ trans('monitoring.show_title') }}</h1>
+                <h1>{{ trans('bd.forms.'.$modelName.'.show_title') }}</h1>
                 <table class="table table-bordered">
                     <tr>
                         <th><b>{{ trans('app.param_name') }}</b></th>
                         <th><b>{{ trans('app.param_value') }}</b></th>
                     </tr>
                     <tr>
-                        <td>{{ trans('monitoring.'.$modelName.'.fields.name') }}</td>
+                        <td>{{ trans('bd.forms.'.$modelName.'.fields.name') }}</td>
                         <td>{{$data->name_ru}}</td>
                     </tr>
                 </table>
-                <a class="btn btn-primary" href="{{ route($modelName.'.index') }}">{{__('app.back')}}</a>
+                <a class="btn btn-primary" href="{{ route($link.'.index') }}">{{__('app.back')}}</a>
             </div>
         </div>
     </div>
