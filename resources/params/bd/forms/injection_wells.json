@@ -22,9 +22,7 @@
                 "validation": "required|date"
               }
             ]
-          }
-        ],
-        [
+          },
           {
             "title": "Tech_modes_of_injection_wells",
             "items": [
@@ -65,14 +63,7 @@
                 "prefix": ""
               }
             ]
-          }
-        ]
-      ]
-    },
-    {
-      "title": "Planned_event",
-      "blocks": [
-        [
+          },
           {
             "title":"Planned_events_tech_modes",
             "items":[
@@ -99,7 +90,7 @@
                 ]
               }
             ]
-          }         
+          }
         ]
       ]
     }
