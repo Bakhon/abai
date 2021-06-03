@@ -1,11 +1,22 @@
 <template>
   <div class="row m-0 p-0">
+    <cat-loader v-show="isloading"/>
     <div class="col col-9 p-0">
-      <proto-form :wellId="0"></proto-form>
+      <proto-form :wellId="wellId"></proto-form>
     </div>
     <div class="col col-3 p-0">
-      <proto-wells-select></proto-wells-select>
+      <proto-org-select-tree
+          @modalChangeVisible="(value) => modalChangeVisible(value)"
+          @wellIdChange="wellIdChange"
+          @changeOrgSelector="(data) => changeOrgSelector(data)">
+      </proto-org-select-tree>
     </div>
+    <proto-wells-select-modal
+        v-if="isModalShow"
+        :wellsSelectorData="wellsSelectorData"
+        @wellIdChange="(id) => wellIdChange(id)"
+        @close="modalChangeVisible(false)">
+    </proto-wells-select-modal>
   </div>
 </template>
 
@@ -14,8 +25,29 @@
 export default {
   data() {
     return {
+      wellId: 0,
+      isModalShow: false,
+      isloading: false,
+      wellsSelectorData: [],
     }
   },
+  methods: {
+    wellIdChange(wellId) {
+      this.wellId = wellId;
+      this.modalChangeVisible(false)
+    },
+    modalChangeVisible(value) {
+      if (this.wellsSelectorData.length > 0) {
+        this.isModalShow = value;
+      }
+    },
+    changeOrgSelector(data) {
+      this.wellsSelectorData = '';
+      if (data.length > 0) {
+        this.wellsSelectorData = data;
+      }
+    }
+  }
 }
 </script>
 
@@ -280,6 +312,5 @@ export default {
       height: calc(100vh - 360px);
     }
   }
-
 }
 </style>
