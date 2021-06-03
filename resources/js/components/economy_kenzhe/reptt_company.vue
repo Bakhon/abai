@@ -10,17 +10,17 @@
     <div class="row">
       <div class="col-sm-4">
         <select name="dateTo" v-model="betweenMonthsValue" @change="updateData('betweenMonthsValue')" class="form-control mb-3">
-          <option v-for="month in betweenMonths" :value="month.value">{{month.title + currentYear}}</option>
+          <option v-for="month in betweenMonths" :value="month.value">{{month.title + ' ' +currentYear}}</option>
         </select>
       </div>
       <div class="col-sm-4">
         <select name="dateTo" v-model="monthsValue"  @change="updateData('monthsValue')"  class="form-control mb-3">
-          <option v-for="month in months" :value="month.value">{{month.title + currentYear}}</option>
+          <option v-for="month in months" :value="month.value">{{month.title + ' ' + currentYear}}</option>
         </select>
       </div>
       <div class="col-sm-4">
         <select name="dateTo" v-model="quarterValue"  @change="updateData( 'quarterValue')"  class="form-control mb-3">
-          <option v-for="month in quarter" :value="month.value">{{month.title + currentYear}}</option>
+          <option v-for="month in quarter" :value="month.value">{{month.title + ' ' + currentYear}}</option>
         </select>
       </div>
     </div>
@@ -35,22 +35,22 @@
     >
       <el-table-column prop="name" :label="trans('economy_pf.repttTable.name')" min-width="400" :key="Math.random()">
       </el-table-column>
-      <el-table-column prop="fact_value" :label="trans('economy_pf.repttTable.factZa')+ previousYear +trans('economy_pf.repttTable.year')" width="200" :key="Math.random()">
+      <el-table-column prop="fact_value" :label="trans('economy_pf.repttTable.factZa')+' '+previousYear +trans('economy_pf.repttTable.year')" width="200" :key="Math.random()">
         <template slot-scope="scope" v-if="scope.row">
           {{ scope.row.fact_value[previousYear] }}
         </template>
       </el-table-column>
-      <el-table-column prop="plan_value" :label="trans('economy_pf.repttTable.factZa') + '30.01.19'" width="200" :key="Math.random()">
+      <el-table-column prop="plan_value" :label="trans('economy_pf.repttTable.factZa') + ' ' + '30.01.19'" width="200" :key="Math.random()">
         <template slot-scope="scope" v-if="scope.row">
           {{ scope.row.intermediate_fact_value[previousYear] }}
         </template>
       </el-table-column>
-      <el-table-column prop="fact_value" :label="trans('economy_pf.repttTable.planNa')+ currentYear +trans('economy_pf.repttTable.year')" width="200" :key="Math.random()">
+      <el-table-column prop="fact_value" :label="trans('economy_pf.repttTable.planNa') + ' ' + currentYear +trans('economy_pf.repttTable.year')" width="200" :key="Math.random()">
         <template slot-scope="scope" v-if="scope.row">
           {{ scope.row.plan_value[currentYear] }}
         </template>
       </el-table-column>
-      <el-table-column prop="plan_value" :label="trans('economy_pf.repttTable.plan') + trans('economy_pf.repttTable.sinceTheBeginningOfTheYear')" width="200" :key="Math.random()">
+      <el-table-column prop="plan_value" :label="trans('economy_pf.repttTable.plan') + ' ' + trans('economy_pf.repttTable.sinceTheBeginningOfTheYear')" width="200" :key="Math.random()">
         <template slot-scope="scope" v-if="scope.row">
           {{ scope.row.intermediate_plan_value[currentYear] }}
         </template>
@@ -60,12 +60,12 @@
           {{ scope.row.intermediate_fact_value[currentYear] }}
         </template>
       </el-table-column>
-      <el-table-column :label="trans('economy_pf.repttTable.absDeviation')  + trans('economy_pf.repttTable.sinceTheBeginningOfTheYear') + ', +/-'">
+      <el-table-column :label="trans('economy_pf.repttTable.absDeviation')  +' '+ trans('economy_pf.repttTable.sinceTheBeginningOfTheYear') + ', +/-'">
         <template slot-scope="scope" v-if="scope.row">
           {{ absoluteDeviation(scope.row.plan_value[currentYear], scope.row.fact_value[currentYear]) }}
         </template>
       </el-table-column>
-      <el-table-column :label="trans('economy_pf.repttTable.relativeDeviation') + trans('economy_pf.repttTable.sinceTheBeginningOfTheYear') + ', %'">
+      <el-table-column :label="trans('economy_pf.repttTable.relativeDeviation') +' '+ trans('economy_pf.repttTable.sinceTheBeginningOfTheYear') + ', %'">
         <template slot-scope="scope" v-if="scope.row">
           {{ relativeDeviation(scope.row.plan_value[currentYear], scope.row.fact_value[currentYear]) }}
         </template>

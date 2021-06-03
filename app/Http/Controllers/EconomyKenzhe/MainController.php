@@ -12,7 +12,7 @@ class MainController extends Controller
     public $companyId = 0;
     public $dateTo = null;
     public $dateFrom = null;
-    public $defaultCompanyId = 1;
+    public $defaultCompanyId = 7;
 
     public function company(Request $request)
     {
@@ -51,7 +51,7 @@ class MainController extends Controller
         ];
         $data = json_encode($data);
 
-        return $data;
+        return view('economy_kenzhe.company')->with(compact('data'));
     }
 
     public function recursiveSetValueToHandbookByType(&$items, $companyRepTtValues, $currentYear, $previousYear, $dateFrom, $dateTo)
