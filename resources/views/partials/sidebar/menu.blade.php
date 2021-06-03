@@ -42,22 +42,16 @@
                                         {{ trans('monitoring.omgca.menu') }}
                                     </a>
                                 </li>
-                            @endif
-                            @if(auth()->user()->can('monitoring view main'))
                                 <li class="left-menu-li">
                                     <a href="{{route('omguhe.index')}}">
                                         {{ trans('monitoring.omguhe.menu') }}
                                     </a>
                                 </li>
-                            @endif
-                            @if(auth()->user()->can('monitoring view main'))
                                 <li class="left-menu-li">
                                     <a href="{{route('omgngdu.index')}}">
                                         {{ trans('monitoring.omgngdu.menu') }}
                                     </a>
                                 </li>
-                            @endif
-                            @if(auth()->user()->can('monitoring view main'))
                                 <li class="left-menu-li">
                                     <a href="{{route('omgngdu_well.index')}}">
                                         {{ trans('monitoring.omgngdu_well.menu') }}
@@ -98,9 +92,24 @@
                                         </a>
                                     </li>
                                 @endif
+                                @if(auth()->user()->can('monitoring list hydro_calculation'))
+                                    <li class="left-menu-li">
+                                        <a href="{{route('hydro_calculation.index')}}">
+                                            {{ trans('monitoring.hydro_calculation.menu') }}
+                                        </a>
+                                    </li>
+                                @endif
+                                @if(auth()->user()->can('monitoring list reverse_calculation'))
+                                    <li class="left-menu-li">
+                                        <a href="{{route('reverse_calculation.index')}}">
+                                            {{ trans('monitoring.reverse_calculation.menu') }}
+                                        </a>
+                                    </li>
+                                @endif
                             </ul>
                         </li>
                     @endif
+
                     @if(
                         auth()->user()->can('monitoring list pipes')
                         || auth()->user()->can('monitoring list inhibitors')
