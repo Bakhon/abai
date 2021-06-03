@@ -345,6 +345,7 @@ export default {
       inflowCurveTitle: this.trans('pgno.krivaya_pritoka'),
       podborGnoTitle: this.trans('pgno.podbor_gno'),
       serviceOffline: false,
+      isIntervals: false,
     };
 
   },
@@ -392,16 +393,6 @@ export default {
     if (this.windowWidth <= 1300 && this.windowWidth > 991) {
       this.activeRightTabName = 'devices';
     }
-  },
-  computed: {
-  
-    wellNum() {
-      return this.$store.state.wellNum
-    },
-    wellType() {
-      return this.$store.state.wellType
-    },
-    ...mapState(['wells'])
   },
   methods: {
     setHpumpValueFromIncl() {
@@ -1512,6 +1503,7 @@ export default {
     },
 
     onPgnoClick() {
+      this.isIntervals = true;
       if(this.qlPot * 1 < this.qlCelValue.split(' ')[0] * 1 && this.CelButton == 'ql'){
         this.$notify({
           message: this.trans('pgno.notify_cel_rezhim_more_perf'),
@@ -1545,7 +1537,6 @@ export default {
           if(this.isVisibleChart) {
             let uri = "http://172.20.103.187:7575/api/pgno/shgn";
             this.prepareData()
-            console.log(this.postdata)
             this.axios.post(uri, this.postdata).then((response) => {
               let data = JSON.parse(response.data);
               if (!this.isYoungAge) {

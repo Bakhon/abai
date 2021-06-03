@@ -27,6 +27,7 @@ use App\Models\BigData\Dictionaries\TechStateType;
 use App\Models\BigData\Dictionaries\WellCategory;
 use App\Models\BigData\Dictionaries\WellStatus;
 use App\Models\BigData\Dictionaries\WellType;
+use App\Models\BigData\Dictionaries\Block;
 use App\TybeNom;
 use Carbon\Carbon;
 use Illuminate\Cache\Repository;
@@ -116,6 +117,10 @@ class DictionaryService
             'class' => TechStateType::class,
             'name_field' => 'name_ru'
         ],
+        'blocks' => [
+            'class' => Block::class,
+            'name_field' => 'name_ru'
+        ]
     ];
 
     const TREE_DICTIONARIES = [
