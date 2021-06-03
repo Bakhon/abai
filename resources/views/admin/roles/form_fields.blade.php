@@ -164,9 +164,9 @@
                 'recording_state' => 'Справочник статус записи',
                 'stem_section' => 'Справочник секция ствола',
                 'stem_type' => 'Справочник тип ствола',
-            ] as $code => $name)
+            ] as $dictCode => $dictName)
                 <div class="section mb-4">
-                    <h5>{{$name}}</h5>
+                    <h5>{{$dictName}}</h5>
                     @foreach([
                         'list' => 'Просмотр списка',
                         'create' => 'Создание',
@@ -177,14 +177,14 @@
                         <div class="form-check">
                             <input
                                     class="form-check-input"
-                                    id="permission_{{$permissions->get('bigdata '.$fieldCode.' '.$code)->id}}"
+                                    id="permission_{{$permissions->get('bigdata '.$fieldCode.' '.$dictCode)->id}}"
                                     type="checkbox"
                                     name="permissions[]"
-                                    value="{{$permissions->get('bigdata '.$fieldCode.' '.$code)->id}}"
-                                    {{!empty($role) && $role->permissions->where('id', $permissions->get('bigdata '.$fieldCode.' '.$code)->id)->isNotEmpty() ? 'checked' : ''}}
+                                    value="{{$permissions->get('bigdata '.$fieldCode.' '.$dictCode)->id}}"
+                                    {{!empty($role) && $role->permissions->where('id', $permissions->get('bigdata '.$fieldCode.' '.$dictCode)->id)->isNotEmpty() ? 'checked' : ''}}
                             >
                             <label class="form-check-label"
-                                   for="permission_{{$permissions->get('bigdata '.$fieldCode.' '.$code)->id}}">{{$fieldName}}</label>
+                                   for="permission_{{$permissions->get('bigdata '.$fieldCode.' '.$dictCode)->id}}">{{$fieldName}}</label>
                         </div>
                     @endforeach
                 </div>
