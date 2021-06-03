@@ -145,9 +145,17 @@
                         name="permissions[]"
                         value="{{$permissions->get('bigdata view main')->id}}"
                         {{!empty($role) && $role->permissions->where('id', $permissions->get('bigdata view main')->id)->isNotEmpty() ? 'checked' : ''}}>
-                <label class="form-check-label"
-                       for="permission_{{$permissions->get('bigdata view main')->id}}">Просмотр главной
-                       for="permission_{{$permissions->get('bigdata view main')->id}}">Просмотр главной</label>
+                <label class="form-check-label" for="permission_{{$permissions->get('bigdata view main')->id}}">Просмотр главной</label>
+            </div>
+            <div class="form-check">
+                <input
+                        class="form-check-input"
+                        id="permission_{{$permissions->get('bigdata load_las')->id}}"
+                        type="checkbox"
+                        name="permissions[]"
+                        value="{{$permissions->get('bigdata load_las')->id}}"
+                        {{!empty($role) && $role->permissions->where('id', $permissions->get('bigdata load_las')->id)->isNotEmpty() ? 'checked' : ''}}>
+                <label class="form-check-label" for="permission_{{$permissions->get('bigdata load_las')->id}}">Загрузка las</label>
             </div>
         </div>
         <div class="tabs tab-tr">

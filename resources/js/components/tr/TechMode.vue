@@ -170,19 +170,7 @@
                         <h5>Добавление скважин</h5>
                         <button type="button" class="modal-bign-button" @click="closeModal('add_well')">Закрыть</button>
 
-                        <!-- <a class="modal-close" title="Close" @click.prevent="reRender" style="cursor: pointer;"> -->
-                          <!-- <svg 
-                            width="24" 
-                            height="24" 
-                            viewBox="0 0 24 24" 
-                            fill="none" 
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path d="M17.6567 17.6575L6.34294 6.34383" 
-                              stroke="white" stroke-width="1.4" stroke-linecap="round"/>
-                            <path d="M17.6556 6.34383L6.34188 17.6575" 
-                              stroke="white" stroke-width="1.4" stroke-linecap="round"/>
-                          </svg>
-                        </a> -->
+ 
                     </div>
                     
                     <div class="body" style="background: #272953; display:flex; justify-content: center; padding-top: 6px; padding-bottom: 7px;">
@@ -499,7 +487,6 @@
               />
             </svg>
           </a>
-
           <a
             v-if="!edit"
             v-bind:title="trans('tr.trtlp2')"
@@ -643,7 +630,6 @@
                                             )}`"
                                           >
                                           </span><span>{{ scope.row.well_type[0] }}</span>  
-
                                 </div>   
                               </el-tooltip> 
                             </template>
@@ -759,7 +745,7 @@
                                             v-model="scope.row.r_con[0]"
                                             :disabled="!edit">
                                           </el-input>
-                                          
+
                                 </div>
                                 <div v-else :class="{'cell-with-comment': isCellWithCommentClass(scope.$index,`r_con`)}" >
                                           <span
@@ -960,9 +946,9 @@
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
-                      :label="trans('tr.operation_method')"
+                       label=""
                       >
-                      <el-table-column label="" prop="fake" >
+                      <el-table-column :label="trans('tr.operation_method')" prop="fake" >
                         <el-table-column label="" >
                           <el-table-column
                             prop="exp_meth"
@@ -989,9 +975,9 @@
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
-                      :label="trans('tr.pump_type')"
+                       label=""
                       >
-                      <el-table-column label="" prop="fake" >
+                      <el-table-column :label="trans('tr.pump_type')" prop="fake" >
                         <el-table-column label="" >
                           <el-table-column
                             prop="pump_type"
@@ -1019,9 +1005,9 @@
                     </el-table-column>
 
                     <el-table-column
-                      :label="trans('tr.sk_type')"
+                       label=""
                       >
-                      <el-table-column label="" prop="fake" >
+                      <el-table-column :label="trans('tr.sk_type')" prop="fake" >
                         <el-table-column label="" >
                           <el-table-column
                             prop="type_sr"
@@ -1035,9 +1021,9 @@
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
-                      :label="trans('tr.swing_number')"
+                       label=""
                       >
-                      <el-table-column label="" prop="fake" >
+                      <el-table-column :label="trans('tr.swing_number')" prop="fake" >
                         <el-table-column label="" >
                           <el-table-column
                             prop="spm"
@@ -1064,9 +1050,9 @@
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
-                      :label="trans('tr.stroke_length')"
+                       label=""
                       >
-                      <el-table-column label="" prop="fake" >
+                      <el-table-column :label="trans('tr.stroke_length')" prop="fake" >
                         <el-table-column label="" >
                           <el-table-column
                             prop="stroke_len"
@@ -1093,9 +1079,9 @@
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
-                      :label="trans('tr.q_theor')"
+                       label=""
                       >
-                      <el-table-column label="" prop="fake" >
+                      <el-table-column :label="trans('tr.q_theor')" prop="fake" >
                         <el-table-column label="" >
                           <el-table-column
                             prop="q_theor"
@@ -1122,9 +1108,9 @@
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
-                      :label="trans('tr.pump_frequency_or_speed')"
+                       label=""
                       >
-                      <el-table-column label="" prop="fake" >
+                      <el-table-column :label="trans('tr.pump_frequency_or_speed')" prop="fake" >
                         <el-table-column label="" >
                           <el-table-column
                             prop="freq"
@@ -1152,9 +1138,9 @@
                     </el-table-column>
 
                     <el-table-column
-                      :label="trans('tr.h_pump_set')"
+                       label=""
                       >
-                      <el-table-column label="" prop="fake" >
+                      <el-table-column :label="trans('tr.h_pump_set')" prop="fake" >
                         <el-table-column label="" >
                           <el-table-column
                             prop="h_pump_set"
@@ -1197,9 +1183,9 @@
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
-                      :label="trans('tr.p_buffer')"
+                       label=""
                       >
-                      <el-table-column label="" prop="fake" >
+                      <el-table-column :label="trans('tr.p_buffer')" prop="fake" >
                         <el-table-column label="" >
                           <el-table-column
                             prop="whp"
@@ -1226,9 +1212,9 @@
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
-                      :label="trans('tr.p_linear')"
+                       label=""
                       >
-                      <el-table-column label="" prop="fake" >
+                      <el-table-column :label="trans('tr.p_linear')" prop="fake" >
                         <el-table-column label="" >
                           <el-table-column
                             prop="line_p"
@@ -1255,9 +1241,9 @@
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
-                      :label="trans('tr.p_layer')"
+                       label=""
                       >
-                      <el-table-column label="" prop="fake" >
+                      <el-table-column :label="trans('tr.p_layer')" prop="fake" >
                         <el-table-column label="" >
                           <el-table-column
                             prop="p_res"
@@ -1284,9 +1270,9 @@
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
-                      :label="trans('tr.h_dynamic')"
+                       label=""
                       >
-                      <el-table-column label="" prop="fake" >
+                      <el-table-column :label="trans('tr.h_dynamic')" prop="fake" >
                         <el-table-column label="" >
                           <el-table-column
                             prop="h_dyn"
@@ -1329,9 +1315,9 @@
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
-                      :label="trans('tr.annular_pressure')"
+                       label=""
                       >
-                      <el-table-column label="" prop="fake" >
+                      <el-table-column :label="trans('tr.annular_pressure')" prop="fake" >
                         <el-table-column label="" >
                           <el-table-column
                             prop="p_annular"
@@ -1377,9 +1363,9 @@
                       </el-table-column>
                     </el-table-column>
                     <el-table-column
-                      :label="trans('tr.p_intake')"
+                       label=""
                       >
-                      <el-table-column label="" prop="fake" >
+                      <el-table-column :label="trans('tr.p_intake')" prop="fake" >
                         <el-table-column label="" >
                           <el-table-column
                             prop="p_intake"
@@ -1698,9 +1684,9 @@
                     </el-table-column>
           
                     <el-table-column
-                      :label="trans('tr.state_at_the_end_of_the_month')"
+                       label=""
                       >
-                      <el-table-column label="" prop="fake" >
+                      <el-table-column :label="trans('tr.state_at_the_end_of_the_month')" prop="fake" >
                         <el-table-column label="" >
                           <el-table-column 
                             prop="well_status_last_day"
@@ -1727,8 +1713,8 @@
                       </el-table-column>
                     </el-table-column>
 
-                    <el-table-column :label="trans('tr.p_saturation')">
-                      <el-table-column label="" prop="fake" >
+                    <el-table-column  label="">
+                      <el-table-column :label="trans('tr.p_saturation')" prop="fake" >
                         <el-table-column label="" >
                           <el-table-column
                             prop="P_bubble_point"
@@ -1753,9 +1739,9 @@
                         </el-table-column>
                       </el-table-column>
                     </el-table-column>
-                    <el-table-column :label="trans('tr.t_layer')">
-                      <el-table-column label="" prop="fake" >
-                        <el-table-column label="" >
+                    <el-table-column  label="">
+                      <el-table-column :label="trans('tr.t_layer')" prop="fake" >
+                        <el-table-column label="">
                           <el-table-column
                             prop="t_res"
                             width="130"
@@ -1779,8 +1765,8 @@
                         </el-table-column>
                       </el-table-column>
                     </el-table-column>
-                    <el-table-column :label="trans('tr.t_mouth')">
-                      <el-table-column label="" prop="fake" >
+                    <el-table-column  label="">
+                      <el-table-column :label="trans('tr.t_mouth')" prop="fake" >
                         <el-table-column label="" >
                           <el-table-column
                             prop="wht"
@@ -1894,8 +1880,8 @@
                         </el-table-column>
                       </el-table-column>
                     </el-table-column>
-                    <el-table-column :label="trans('tr.oil_viscosity_in_reservoir_conditions')">
-                      <el-table-column label="" prop="fake" >
+                    <el-table-column  label="">
+                      <el-table-column :label="trans('tr.oil_viscosity_in_reservoir_conditions')" prop="fake" >
                         <el-table-column label="" >
                           <el-table-column
                             prop="visc_oil_rc"
@@ -1920,8 +1906,8 @@
                         </el-table-column>
                       </el-table-column>
                     </el-table-column>
-                    <el-table-column :label="trans('tr.water_viscosity_at_reservoir_conditions')">
-                      <el-table-column label="" prop="fake" >
+                    <el-table-column  label="">
+                      <el-table-column :label="trans('tr.water_viscosity_at_reservoir_conditions')" prop="fake" >
                         <el-table-column label="" >
                           <el-table-column
                             prop="visc_wat_rc"
@@ -1946,8 +1932,8 @@
                         </el-table-column>
                       </el-table-column>
                     </el-table-column>
-                    <el-table-column :label="trans('tr.liquid_viscosity')">
-                      <el-table-column label="" prop="fake" >
+                    <el-table-column  label="">
+                      <el-table-column :label="trans('tr.liquid_viscosity')" prop="fake" >
                         <el-table-column label="" >
                           <el-table-column
                             prop="visc_liq_rc"
@@ -1972,8 +1958,8 @@
                         </el-table-column>
                       </el-table-column>
                     </el-table-column>
-                    <el-table-column :label="trans('tr.b_oil')">
-                      <el-table-column label="" prop="fake" >
+                    <el-table-column  label="">
+                      <el-table-column :label="trans('tr.b_oil')" prop="fake" >
                         <el-table-column label="" >
                           <el-table-column
                             prop="bo"
@@ -1998,8 +1984,8 @@
                         </el-table-column>
                       </el-table-column>
                     </el-table-column>
-                    <el-table-column :label="trans('tr.oil_density')">
-                      <el-table-column label="" prop="fake" >
+                    <el-table-column  label="">
+                      <el-table-column :label="trans('tr.oil_density')" prop="fake" >
                         <el-table-column label="" >
                           <el-table-column
                             prop="dens_oil"
@@ -2024,8 +2010,8 @@
                         </el-table-column>
                       </el-table-column>
                     </el-table-column>
-                    <el-table-column :label="trans('tr.water_density')">
-                      <el-table-column label="" prop="fake" >
+                    <el-table-column  label="">
+                      <el-table-column :label="trans('tr.water_density')" prop="fake" >
                         <el-table-column label="" >
                           <el-table-column
                             prop="dens_liq"
@@ -2050,8 +2036,8 @@
                         </el-table-column>
                       </el-table-column>
                     </el-table-column>
-                    <el-table-column :label="trans('tr.h_up_perf_md')">
-                      <el-table-column label="" prop="fake" >
+                    <el-table-column  label="">
+                      <el-table-column :label="trans('tr.h_up_perf_md')" prop="fake" >
                         <el-table-column label="" >
                           <el-table-column
                             prop="h_perf"
@@ -2065,8 +2051,8 @@
                         </el-table-column>
                       </el-table-column>
                     </el-table-column>
-                    <el-table-column label="k">
-                      <el-table-column label="" prop="fake" >
+                    <el-table-column label="">
+                      <el-table-column label="k" prop="fake" >
                         <el-table-column label="" >
                           <el-table-column
                             prop="k"
@@ -2091,8 +2077,8 @@
                         </el-table-column>
                       </el-table-column>
                     </el-table-column>
-                    <el-table-column label="KH">
-                      <el-table-column label="" prop="fake" >
+                    <el-table-column label="">
+                      <el-table-column label="KH" prop="fake" >
                         <el-table-column label="" >
                           <el-table-column
                             prop="kh"
@@ -2117,8 +2103,8 @@
                         </el-table-column>
                       </el-table-column>
                     </el-table-column>
-                    <el-table-column :label="trans('tr.pi')">
-                      <el-table-column label="" prop="fake" >
+                    <el-table-column  label="">
+                      <el-table-column  prop="fake" >
                         <el-table-column label="" >
                           <el-table-column
                             prop="pi"
@@ -2262,7 +2248,6 @@
                               </el-table-column>
                             </el-table-column>
                         </el-table-column>
-
                         <el-table-column :label="trans('tr.jd_opt')" prop="fake">
                           <el-table-column label="">
                               <el-table-column
@@ -4100,7 +4085,7 @@ export default {
     this.$store.commit("tr/SET_MONTH", mm);
     this.$store.commit("tr/SET_YEAR", yyyy);
     this.axios
-      .get("http://172.20.103.187:7576/api/techregime/" + yyyy + "/" + mm + "/")
+      .get("http://172.20.103.187:7576/api/techregime_totals_test_2/" + yyyy + "/" + mm + "/")
       .then((response) => {
         let data = response.data;
         this.year = yyyy;
@@ -4111,10 +4096,10 @@ export default {
         if (data) {
           this.wells = data.data;
           this.setupPagination(data.data);
-          
           this.fullWells = data.data;
+          
         } else {
-          console.log("No data");
+          Vue.prototype.$notifyError(this.trans('tr.fa_alarm'))
           
         }
       });
@@ -4193,10 +4178,10 @@ export default {
       , "el-table_1_column_315", "el-table_1_column_319", "el-table_1_column_323", "el-table_1_column_327", "el-table_1_column_331", "el-table_1_column_335", 
       "el-table_1_column_339", "el-table_1_column_343", "el-table_1_column_347", "el-table_1_column_351", "el-table_1_column_355", "el-table_1_column_359", "el-table_1_column_363",
        "el-table_1_column_377", "el-table_1_column_381", "el-table_1_column_385", "el-table_1_column_389", "el-table_1_column_393"], 
-      filter_column: [], 
+      filter_column: [],
+      baseUrl: 'http://172.20.103.187:7576/api/',
       
     };
-    
 
   },
   watch: {
@@ -4320,7 +4305,6 @@ export default {
       this.Filter_well_type = undefined;
       this.Filter_well = undefined;
       this.Filter_field = undefined;
-      
     },
     reRenderAll() {
       this.$store.commit("globalloading/SET_LOADING", true);
@@ -4340,7 +4324,6 @@ export default {
         var mm1 = today.getMonth() + 1;
         var yyyy1 = today.getFullYear();
       }
-
       this.axios
         .get("http://172.20.103.187:7576/api/techregime/" + yyyy + "/" + mm + "/")
         .then((response) => {
@@ -4349,14 +4332,12 @@ export default {
           this.$store.commit("globalloading/SET_LOADING", false);
           // this.isloading = false;
           if (data) {
-            console.log(data);
             this.wells = data.data;
             this.fullWells = data.data;
           } else {
-            console.log("No data");
+            Vue.prototype.$notifyError(this.trans('tr.fa_alarm'))
             
           }
-
         });
     },
     showWells() {
@@ -4392,60 +4373,41 @@ export default {
       this.$modal.hide(modalName)
     },
    
-    sortBy(type) {
-      this.sortParam = type;
+
+    postData(){
+      return {
+          year: this.$store.getters["techMode/year"],
+          month: this.$store.getters["techMode/month"],
+          searchString: this.$store.getters["techMode/searchString"],
+          filterType: this.$store.getters["techMode/filterType"],
+          filterParam: this.$store.getters["techMode/filterParam"],
+          sortType: this.$store.getters["techMode/sortType"],
+          sortParam: this.$store.getters["techMode/sortParam"],
+          page: this.$store.getters["techMode/page"],
+        };
+    },
+    sortBy() {
+      let { wells, sortType } = this; 
       this.$store.commit("tr/SET_SORTTYPE", this.sortType);
       this.$store.commit("tr/SET_SORTPARAM", type);
-      let { wells, sortType } = this;
-      console.log(type, sortType);
-      if (sortType === "asc") {
-        this.wells = wells.sort((a, b) => {
-          let aVal = a[type];
-          let bVal = b[type];
-          if (Array.isArray(aVal)) {
-            if (typeof aVal[0] === "string") {
-              return aVal[0].localeCompare(bVal[0]);
-            } else {
-              if (Number(aVal[0]) > Number(bVal[0])) return 1;
-              else if (Number(aVal[0]) < Number(bVal[0])) return -1;
-              else return 0;
-            }
-          } else {
-            if (typeof aVal === "string") {
-              return aVal.localeCompare(bVal);
-            } else {
-              if (Number(aVal) > Number(bVal)) return 1;
-              else if (Number(aVal) < Number(bVal)) return -1;
-              else return 0;
-            }
-          }
-        });
-        this.sortType = "desc";
-      } else {
-        this.wells = wells.sort((a, b) => {
-          let aVal = a[type];
-          let bVal = b[type];
-          if (Array.isArray(aVal)) {
-            if (typeof aVal[0] === "string" && isNaN(Number(aVal[0]))) {
-              return bVal[0].localeCompare(aVal[0]);
-            } else {
-              if (Number(aVal[0]) > Number(bVal[0])) return -1;
-              else if (Number(aVal[0]) < Number(bVal[0])) return 1;
-              else return 0;
-            }
-          } else {
-            if (typeof aVal === "string" && isNaN(Number(aVal))) {
-              return aVal.localeCompare(bVal);
-            } else {
-              if (Number(aVal) > Number(bVal)) return -1;
-              else if (Number(aVal) < Number(bVal)) return 1;
-              else return 0;
-            }
-          }
-        });
-        this.sortType = "asc";
-      }
+      this.paginationParams();
     },
+    filtering() {
+      let { wells, sortType } = this; 
+      this.$store.commit("tr/SET_FILTERTYPE", this.sortType);
+      this.$store.commit("tr/SET_FILTERPARAM", type);
+      this.paginationParams();
+    },
+    paginationParams() {
+      this.$store.commit("globalloading/SET_LOADING", true);
+      this.axios
+        .post(
+          "http://172.20.103.187:7576/api/techregime_test/",
+          this.postData,
+          
+        )
+    },
+
     onChangeMonth(event) {
       this.$store.commit("tr/SET_MONTH", event.target.value);
     },
@@ -4488,7 +4450,6 @@ export default {
           }
         });
     },
-
     wellAdd() {
       this.$store.commit("globalloading/SET_LOADING", true);
       // this.isloading = true;
@@ -4516,7 +4477,6 @@ export default {
           
         });
     },
-
     chooseField() {
       const { filter, fullWells } = this;
       console.log("filter = ", filter);
@@ -4532,9 +4492,7 @@ export default {
       this.show_first = !this.show_first;
       this.show_second = !this.show_second;
       this.isfulltable = !this.isfulltable;
-
     },
-
     getColor(status) {
       if (status === "1") return "#ffff00";
       return "#ff0000";
@@ -4797,7 +4755,6 @@ tr:nth-child(even) {
 .trcol {
   padding-right: 0;
 }
-
 .trgraph {
   margin: 0 10px;
   background: #272953;
@@ -4909,7 +4866,6 @@ table::-webkit-scrollbar-thumb:hover {
   background: #656A8A;
   
 }
-
 table::-webkit-scrollbar-corner {
   background: #333975;
 }
@@ -4920,7 +4876,6 @@ table::-webkit-scrollbar-corner {
   background: #334296;
   color: #fff;
 }
-
 </style>
 <style>
 .tr-field-filter.tr-field-filter {
@@ -4944,7 +4899,6 @@ table::-webkit-scrollbar-corner {
 .faheadhight {
   height: 40px;
 }
-
 .button_form.button_form {
   background: #333975;
   border: 0px;
@@ -4957,7 +4911,6 @@ table::-webkit-scrollbar-corner {
   display: flex;
   flex-direction: column;
 }
-
 .header_mod {
     display: -webkit-box;
     display: -webkit-flex;
@@ -4987,15 +4940,12 @@ table::-webkit-scrollbar-corner {
   margin: 16px 0;
   text-align: center;
 }
-.el-table__body-wrapper {}
-
 .el-table__body-wrapper td {
     height: auto;
     margin: 0;
     padding: 0;
     background: transparent;
 }
-
 .el-table__body-wrapper td .cell {
     line-height: 1.3;
     padding: 12px 0;
@@ -5004,7 +4954,6 @@ table::-webkit-scrollbar-corner {
     width: 100%;
     background: transparent;
 }
-
 .el-table__body-wrapper tr:nth-child(even) {
     background: #202b6b!important;
 }
@@ -5021,7 +4970,6 @@ table::-webkit-scrollbar-corner {
     padding: 0;
     height: auto;
 }
-
 .el-table__header-wrapper th div {
     background: rgb(51, 57, 117);
     height: auto;
@@ -5029,6 +4977,7 @@ table::-webkit-scrollbar-corner {
     color: #fff;
     font-size: 14px;
     font-family: "Harmonia-sans", sans-serif;
+    white-space: pre-wrap  !important;
 }
 .el-table thead.is-group th {
     background: rgb(51, 57, 117);
@@ -5037,12 +4986,9 @@ table::-webkit-scrollbar-corner {
     background-color: #454D7D;
     color: #fff;
     font-family: "Harmonia-sans", sans-serif;
-    
 }
-
 .no_border.no_border  {
   border-bottom: none;
-  
 }
 .cell-comment {
     display: none;
@@ -5075,5 +5021,7 @@ table::-webkit-scrollbar-corner {
     justify-content: center;
     background: #fff;
 }
-
+.el-table__empty-block {
+  background: rgb(13, 30, 99);
+}
 </style>

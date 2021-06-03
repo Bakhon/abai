@@ -138,6 +138,7 @@ Vue.component('view-table', require('./components/omgca/table.vue').default);
 Vue.component('oilgas-form', require('./components/complicationMonitoring/oilGas/form.vue').default);
 Vue.component('pipe-form', require('./components/pipes/form.vue').default);
 Vue.component('pipe-type-form', require('./components/pipeTypes/form.vue').default);
+Vue.component('las-dictionaries-form', require('./components/bigdata/las/refs/lasDictionaries/form.vue').default);
 Vue.component('inhibitor-create', require('./components/inhibitor/create.vue').default);
 Vue.component('inhibitor-edit', require('./components/inhibitor/edit.vue').default);
 Vue.component('corrosion-form', require('./components/complicationMonitoring/corrosion/form.vue').default);
@@ -159,7 +160,8 @@ Vue.component('fa_weekly_chart', require('./components/tr/FaWeeklyChart.vue').de
 Vue.component('well_cart', require('./components/well_cart/well_cart.vue').default);
 Vue.component('report_constructor', require('./components/report_constructor/report_constructor.vue').default);
 
-
+Vue.component('pf-main', require('./components/PlastFluids/views/MainPage.vue').default);
+Vue.component('pf-template_pvt_plast_oil', require('./components/PlastFluids/views/SuperTemplatePvtPlastOil.vue').default);
 
 Vue.component('viscenter2-create', require('./components/visualcenter/viscenter2/create.vue').default);
 Vue.component('visualcenter3-excelform', require('./components/visualcenter3/importForm/ExcelForm.vue').default);
