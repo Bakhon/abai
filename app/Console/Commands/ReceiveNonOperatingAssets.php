@@ -49,6 +49,14 @@ class receiveNonOperatingAssets extends Command
           'id' => '',
           'changeKey' => ''
     );
+    private $dzoMapping = array (
+        'ТШО' => '"Теңізшевройл" ЖШС / ТОО "Тенгизшевройл"',
+        'ПКК' => '"Петро Қазақстан Құмкөл Ресорсиз" АҚ / АО "Петро Казахстан Кумколь Ресорсиз"',
+        'ТП' => '"Торғай Петролеум" АҚ / АО "Тургай Петролеум"',
+        'ПКИ' => '"Петро Казахстан Венчерс Инк."',
+        'НКО' => '"Норт Каспиан Оперейтинг Компани Б.В."',
+        'АГ' => '"Амангелді Газ" ЖШС/ ТОО "Амангельды Газ"'
+    );
 
     /**
      * The console command description.
@@ -236,15 +244,7 @@ class receiveNonOperatingAssets extends Command
 
     public function processCompanies($inputCompanyName,$row)
     {
-        $dzoMapping = array (
-            'ТШО' => '"Теңізшевройл" ЖШС / ТОО "Тенгизшевройл"',
-            'ПКК' => '"Петро Қазақстан Құмкөл Ресорсиз" АҚ / АО "Петро Казахстан Кумколь Ресорсиз"',
-            'ТП' => '"Торғай Петролеум" АҚ / АО "Тургай Петролеум"',
-            'ПКИ' => '"Петро Казахстан Венчерс Инк."',
-            'НКО' => '"Норт Каспиан Оперейтинг Компани Б.В."',
-            'АГ' => '"Амангелді Газ" ЖШС/ ТОО "Амангельды Газ"'
-        );
-        foreach($dzoMapping as $companyTicker => $companyName) {
+        foreach($this->dzoMapping as $companyTicker => $companyName) {
             if ($inputCompanyName === $companyName) {
                 $data = $this->getCollectedData($row,$companyTicker);
                 $this->insertDataToDB($data);
