@@ -266,13 +266,19 @@ class receiveNonOperatingAssets extends Command
 
     public function getCollectedData($row, $dzoName)
     {
+        $productionFieldName = 'oil_production_fact';
+        $deliveryFieldName = 'oil_delivery_fact';
+        if ($dzoName === 'АГ') {
+            $productionFieldName = 'condensate_production_fact';
+            $deliveryFieldName = 'condensate_delivery_fact';
+        }
         $columnMapping = array(
             'oilProduction' => 5,
             'oilDelivery' => 12
         );
         return array (
-            'oil_production_fact' => $row[$columnMapping['oilProduction']],
-            'oil_delivery_fact' => $row[$columnMapping['oilDelivery']],
+            $productionFieldName => $row[$columnMapping['oilProduction']],
+            $deliveryFieldName => $row[$columnMapping['oilDelivery']],
             'dzo_name' => $dzoName,
             'date' => Carbon::yesterday('Asia/Almaty')
         );
