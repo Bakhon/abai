@@ -203,7 +203,9 @@ export default {
       popup: false,
       wellStatus: null,
       wellCategory: null,
+      wellCategory_last: null,
       wellExpl: null,
+      tubeNom: null,
       wellType: null,
       wellTechs: null,
       wellTech: null,
@@ -276,49 +278,51 @@ export default {
           'data': ''
         },
         {
-          'description': null,
+          'description': 'well.spital_object.coord_point',
           'method': null,
           'name': 'Координаты X (устья)',
           'data': ''
         },
         {
-          'description': null,
+          'description': 'well.spital_object.coord_point',
           'method': null,
           'name': 'Координаты Y (устья)',
           'data': ''
         },
         {
-          'description': null,
+          'description': 'well.spital_object.coord_point',
           'method': null,
           'name': 'Координаты забоя X',
           'data': ''
         },
         {
-          'description': null,
+          'description': 'well.spital_object.coord_point',
           'method': null,
           'name': 'Координаты забоя Y',
           'data': ''
         },
         {
-          'description': null,
+          'description': 'this.wellCategory.name_ru',
           'method': null,
           'name': 'Назначение скважин по проекту',
           'data': ''
         },
         {
-          'description': 'this.well.category[0].name_ru',
+          'description': 'this.wellCategory_last.name_ru',
           'method': null,
           'name': 'Категория',
           'data': ''
         },
         {
-          'description': null,
-          'method': null,
+          'description': 'this.well',
+          'method': 'neighbors',
+          'neigbor_1': 'drill_start_date',
+          'neigbor_2': 'drill_end_date',
           'name': 'Период бурения',
           'data': ''
         },
         {
-          'description': 'this.wellTechs.dbeg',
+          'description': 'this.wellExpl.pivot.dbeg',
           'method': null,
           'name': 'Дата ввода в эксплуатацию',
           'data': ''
@@ -337,13 +341,13 @@ export default {
           'data': ''
         },
         {
-          'description': 'this.well_expl[0].name_ru',
+          'description': '',
           'method': null,
           'name': 'Тип УО / наличие эксц. болта',
           'data': ''
         },
         {
-          'description': 'this.well.tube_nom',
+          'description': 'this.tubeNom.od',
           'method': 'multiplyValues',
           'multiplyValueName': 'od',
           'name': 'Диаметр экспл. колонны / доп. экспл. колонны, мм',
@@ -390,6 +394,9 @@ export default {
           this.axios.get(this.localeUrl(`/api/bigdata/wells/${well.id}/category/`)).then(({data}) => {
             this.wellCategory = data
           }),
+          this.axios.get(this.localeUrl(`/api/bigdata/wells/${well.id}/category_last/`)).then(({data}) => {
+            this.wellCategory_last = data
+          }),
           this.axios.get(this.localeUrl(`/api/bigdata/wells/${well.id}/well_expl/`)).then(({data}) => {
             this.wellExpl = data
           }),
@@ -404,6 +411,9 @@ export default {
           }),
           this.axios.get(this.localeUrl(`/api/bigdata/wells/${well.id}/geo/`)).then(({data}) => {
             this.wellGeo = data
+          }),
+          this.axios.get(this.localeUrl(`/api/bigdata/wells/${well.id}/tube_nom/`)).then(({data}) => {
+            this.tubeNom = data
           }),
           this.axios.get(this.localeUrl(`/api/bigdata/wells/${well.id}`)).then(({data}) => {
             try {
@@ -432,6 +442,14 @@ export default {
             this.tableData[i].data += '';
             console.log(e)
             console.log(eval('this.tableData[i].description') + '[k].' + eval('this.tableData[i].multiplyValueName'))
+          }
+        } else if (this.tableData[i].method === 'neighbors') {
+          try {
+            if (eval(eval('this.tableData[i].description') + '.' + eval('this.tableData[i].neigbor_1')) != null) {
+              this.tableData[i].data += (eval(eval('this.tableData[i].description') + '.' + eval('this.tableData[i].neigbor_1'))) + ' - '
+              this.tableData[i].data += (eval(eval('this.tableData[i].description') + '.' + eval('this.tableData[i].neigbor_2')))
+            }
+          } catch (e) {
           }
         } else {
           try {

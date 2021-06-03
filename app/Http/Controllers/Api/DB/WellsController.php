@@ -19,7 +19,7 @@ class WellsController extends Controller
 
     public function get(Well $well)
     {
-        $wellInfo = Well::where('id', $well->id)->with('tube_nom', 'spital_object')->first();
+        $wellInfo = Well::where('id', $well->id)->with('spital_object')->first();
         return $wellInfo;
     }
 
@@ -33,7 +33,24 @@ class WellsController extends Controller
         return $status;
     }
 
+    public function tube_nom(Well $well)
+    {
+        $tube_nom = $well->tube_nom()
+            ->withPivot('project_drill', 'casing_type')->get();
+        return $tube_nom;
+    }
+
     public function category(Well $well)
+    {
+        $category = $well->category()
+            ->wherePivot('dend', '<>', $this->getToday())
+            ->wherePivot('dbeg', '<>', $this->getToday())
+            ->withPivot('dend', 'dbeg')
+            ->orderBy('pivot_dbeg')->first();
+        return $category;
+    }
+
+    public function category_last(Well $well)
     {
         $category = $well->category()
             ->wherePivot('dend', '<>', $this->getToday())
@@ -49,7 +66,7 @@ class WellsController extends Controller
             ->wherePivot('dend', '<>', $this->getToday())
             ->wherePivot('dbeg', '<>', $this->getToday())
             ->withPivot('dend', 'dbeg')
-            ->orderBy('pivot_dbeg', 'desc')->first();
+            ->orderBy('pivot_dbeg')->first();
         return $geo;
     }
 
@@ -58,6 +75,7 @@ class WellsController extends Controller
         $well_expl = $well->well_expl()
             ->where('dend', '<>', $this->getToday())
             ->where('dbeg', '<>', $this->getToday())
+            ->withPivot('dend', 'dbeg')
             ->orderBy('dbeg', 'desc')->first();
         return $well_expl;
     }

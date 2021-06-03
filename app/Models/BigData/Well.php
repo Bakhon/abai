@@ -4,11 +4,13 @@ namespace App\Models\BigData;
 
 use App\Models\BigData\Dictionaries\Geo;
 use App\Models\BigData\Dictionaries\Org;
+use App\Models\BigData\Dictionaries\SpitalObject;
 use App\Models\BigData\Dictionaries\Tech;
 use App\Models\BigData\Dictionaries\TubeNom;
 use App\Models\BigData\Dictionaries\WellCategory;
 use App\Models\BigData\Dictionaries\WellExplType;
 use App\Models\BigData\Dictionaries\WellStatus;
+use App\Models\BigData\Dictionaries\WellTech;
 use App\Models\BigData\Dictionaries\WellType;
 use App\Models\TBDModel;
 
@@ -60,12 +62,21 @@ class Well extends TBDModel
     {
         return $this->belongsToMany(WellExplType::class, 'prod.well_expl', 'well', 'expl');
     }
+
     public function tube_nom()
     {
         return $this->belongsToMany(TubeNom::class, 'prod.well_constr', 'well', 'casing_nom');
     }
 
+//    public function well_tech()
+//    {
+//        return $this->belongsToMany(WellTech::class, 'dict.well', 'id', 'well');
+//    }
 
+    public function spital_object()
+    {
+        return $this->belongsToMany(SpitalObject::class, 'dict.well', 'id', 'bottom_coord');
+    }
 
     public function scopeActive($query, $date)
     {
