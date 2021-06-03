@@ -52,7 +52,6 @@ class LasDictionariesController extends CrudController
             $params['links']['create'] = route($this->link.'.create');
         }
         $permissions = auth()->user()->getAllPermissions()->pluck('name')->toArray();
-        // dd($permissions);
         return view('bigdata.las_dictionaries.index', compact('params'));
     }
 
