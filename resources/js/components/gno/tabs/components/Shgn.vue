@@ -179,12 +179,12 @@
 			<div class="flex__item__block__third__block__2">
 				<div class="form__checkbox block__checkbox__1 table-border-gno-right">
 					<label for="checkbox1" class="checkbox__block__label__1">13</label>
-					<input class="checkbox__block__1" type="checkbox" />
+					<input class="checkbox__block__1" type="checkbox" v-model="dmShtang13" />
 				</div>
 
 				<div class="form__checkbox block__checkbox__2 table-border-gno-right">
 					<label for="checkbox1" class="checkbox__block__label__1">16</label>
-					<input class="checkbox__block__1" type="checkbox" />
+					<input class="checkbox__block__1" type="checkbox" v-model="dmShtang16" />
 				</div>
 
 				<div class="form__checkbox block__checkbox__3 table-border-gno-right">
@@ -204,7 +204,7 @@
 
 				<div class="form__checkbox block__checkbox__6__spec">
 					<label for="checkbox1" class="checkbox__block__label__1">29</label>
-					<input class="checkbox__block__1" type="checkbox" />
+					<input class="checkbox__block__1" type="checkbox" v-model="dmShtang29" />
 				</div>
 			</div>
 		</div>
@@ -333,55 +333,38 @@
 			</div>
 		</modal>
 
-		<modal name="modalTable3" :draggable="true" :width="1000" :height="550"
+		<modal name="modalTable3" :draggable="true" :width="900" :height="640"
 			:adaptive="true">
 			<div class="modal-bign modal-bign-container">
 				<div class="modal-bign-header">
-					<div class="modal-bign-title">
-
-					</div>
-
+					<div class="modal-bign-title"></div>
 					<button type="button" class="modal-bign-button" @click="closeModal('modalTable3')">
 						{{trans('pgno.zakrit')}}
 					</button>
 				</div>
-
 				<div>
-
 					<div class="nno-modal-button-wrapper">
-						<div class="nno-modal-buttons-container" style="overflow:auto;">
-							<div class="title__table__1"></div>
-								<!-- small table -->
-
+						<div class="svg__image">
+							<img :src="svgTableN1"/>
 						</div>
 					</div>
 				</div>
 			</div>
 		</modal>
 
-		<modal name="modalTable2" :draggable="true" :width="1000" :height="550"
+		<modal name="modalTable2" :draggable="true" :width="1050" :height="650"
 			:adaptive="true">
 			<div class="modal-bign modal-bign-container">
 				<div class="modal-bign-header">
-					<div class="modal-bign-title">
-
-					</div>
-
+					<div class="modal-bign-title"></div>
 					<button type="button" class="modal-bign-button" @click="closeModal('modalTable2')">
 						{{trans('pgno.zakrit')}}
 					</button>
 				</div>
-
 				<div>
-
-					<div class="nno-modal-button-wrapper">
-						<div class="nno-modal-buttons-container" style="overflow:auto;">
-							<div class="title__table__1"></div>
-
-								
-
-								<!-- big table -->
-
+					<div class="nno-modal-button-wrapper" style="overflow: auto;">
+						<div class="svg__image">
+							<img :src="svgTableN2"/>
 						</div>
 					</div>
 				</div>
@@ -401,6 +384,8 @@ Vue.use(NotifyPlugin);
 export default {
 	data: function()  {
 		return {
+			svgTableN1: require('../../images/tableN1.svg'),
+			svgTableN2: require('../../images/tableN2.svg'),
 			davMin: '30атм',
 			groupPosad: 2,
 			yakor: false,
@@ -411,9 +396,12 @@ export default {
 			dlinaPolki: '10м',
 			gasMax: '10%',
 			hvostovik: true,
+			dmShtang13: false,
+			dmShtang16: false,
 			dmShtang19: true,
 			dmShtang22: true,
 			dmShtang25: true,
+			dmShtang29: false,
 			koroz: 'srednekor',
 			h2s: false,
 			pump27: false,
@@ -605,6 +593,17 @@ export default {
 </script>
 
 <style scoped>
+.nno-modal-buttons-container {
+	margin-left: 35px;
+	width: 100%;
+	height: 100%;
+} 
+
+.svg__image {
+	width: 100%;
+	height: 100%;
+}
+
 .flex-container {
   padding: 0;
   margin: 0;
