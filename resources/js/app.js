@@ -158,7 +158,7 @@ Vue.component('tr_mode-table', require('./components/tr/TechMode.vue').default);
 Vue.component('tr_mode-table-small', require('./components/tr/TechModeSmall.vue').default);
 Vue.component('fa_weekly_chart', require('./components/tr/FaWeeklyChart.vue').default);
 Vue.component('well_cart', require('./components/well_cart/well_cart.vue').default);
-Vue.component('report_constructor', require('./components/report_constructor/report_constructor.vue').default);
+Vue.component('report-constructor', require('./components/reportConstructor/ReportConstructor.vue').default);
 
 Vue.component('pf-main', require('./components/PlastFluids/views/MainPage.vue').default);
 Vue.component('pf-template_pvt_plast_oil', require('./components/PlastFluids/views/SuperTemplatePvtPlastOil.vue').default);
