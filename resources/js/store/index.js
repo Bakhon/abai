@@ -6,15 +6,25 @@ import modules from './modules';
 Vue.use(Vuex);
 
 export default new Vuex.Store({
-  modules,
+    modules,
 
-  state: {
-  },
-  getters: {
-  },
-  mutations: {
-  },
-  actions: {
-  },
-  plugins: [createPersistedState()],
+    state: {},
+    getters: {},
+    mutations: {},
+    actions: {},
+    plugins: [createPersistedState({
+        paths: [
+            'bd',
+            'complicationMonitoring',
+            'dzoMap',
+            'fa',
+            'globalloading',
+            'guMap',
+            'index',
+            'paegtmMap',
+            'pgno',
+            'techMode',
+            'tr'
+        ]
+    })],
 });
