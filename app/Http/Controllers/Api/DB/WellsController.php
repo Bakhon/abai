@@ -19,7 +19,8 @@ class WellsController extends Controller
 
     public function get(Well $well)
     {
-        $wellInfo = Well::where('id', $well->id)->with('spital_object')->first();
+        $wellInfo = Well::where('id', $well->id)->with('spital_object')
+            ->first();
         return $wellInfo;
     }
 
@@ -29,7 +30,7 @@ class WellsController extends Controller
             ->wherePivot('dend', '<>', $this->getToday())
             ->wherePivot('dbeg', '<>', $this->getToday())
             ->withPivot('dend', 'dbeg')
-            ->orderBy('pivot_dbeg', 'desc')->first();
+            ->orderBy('pivot_dbeg', 'desc')->first(['name_ru']);
         return $status;
     }
 
@@ -49,7 +50,7 @@ class WellsController extends Controller
             ->wherePivot('dend', '<>', $this->getToday())
             ->wherePivot('dbeg', '<>', $this->getToday())
             ->withPivot('dend', 'dbeg')
-            ->orderBy('pivot_dbeg')->first();
+            ->orderBy('pivot_dbeg')->first(['name_ru']);
         return $category;
     }
 
@@ -59,7 +60,7 @@ class WellsController extends Controller
             ->wherePivot('dend', '<>', $this->getToday())
             ->wherePivot('dbeg', '<>', $this->getToday())
             ->withPivot('dend', 'dbeg')
-            ->orderBy('pivot_dbeg', 'desc')->first();
+            ->orderBy('pivot_dbeg', 'desc')->first(['name_ru']);
         return $category;
     }
 
@@ -69,7 +70,7 @@ class WellsController extends Controller
             ->wherePivot('dend', '<>', $this->getToday())
             ->wherePivot('dbeg', '<>', $this->getToday())
             ->withPivot('dend', 'dbeg')
-            ->orderBy('pivot_dbeg')->first();
+            ->orderBy('pivot_dbeg')->first(['name_ru']);
         return $geo;
     }
 
@@ -79,7 +80,7 @@ class WellsController extends Controller
             ->where('dend', '<>', $this->getToday())
             ->where('dbeg', '<>', $this->getToday())
             ->withPivot('dend', 'dbeg')
-            ->orderBy('dbeg', 'desc')->first();
+            ->orderBy('dbeg', 'desc')->first(['name_ru']);
         return $well_expl;
     }
 
@@ -87,14 +88,14 @@ class WellsController extends Controller
     {
         $techs = $well->techs()
             ->wherePivot('dend', '>', $this->getToday())
-            ->withPivot('dend', 'dbeg')
+            ->withPivot('dend', 'dbeg', 'tap')
             ->orderBy('pivot_dbeg', 'desc')->get();
         return $techs;
     }
 
     public function well_type(Well $well)
     {
-        $well_type = $well->well_type()->first();
+        $well_type = $well->well_type()->first(['name_ru']);
         return $well_type;
     }
 

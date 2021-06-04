@@ -72,11 +72,6 @@ class Well extends TBDModel
         return $this->belongsToMany(SpitalObject::class, 'dict.well', 'id', 'bottom_coord');
     }
 
-//    public function well_tech()
-//    {
-//        return $this->belongsToMany(WellTech::class, 'dict.well', 'id', 'well');
-//    }
-
     public function scopeActive($query, $date)
     {
         $query->whereHas(

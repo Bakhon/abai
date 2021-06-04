@@ -208,7 +208,6 @@ export default {
       tubeNom: null,
       wellType: null,
       wellTechs: null,
-      wellTech: null,
       wellUwi: null,
       wellGeo: null,
       WellTech: null,
@@ -252,8 +251,9 @@ export default {
           'data': ''
         },
         {
-          'description': 'WellTech.tap',
-          'method': null,
+          'description': 'this.wellTechs',
+          'method': 'multiplyValues',
+          'multiplyValueName': 'pivot.tap',
           'name': 'Отвод',
           'data': ''
         },
@@ -432,7 +432,7 @@ export default {
         if (this.tableData[i].method === 'multiplyValues') {
           try {
             for (let k = 0; k < (eval(this.tableData[i].description)).length; k++) {
-              this.tableData[i].data += (eval(eval('this.tableData[i].description') + '[k].' + eval('this.tableData[i].multiplyValueName')))
+              this.tableData[i].data += (eval(eval('this.tableData[i].description') + '[k].' + eval('this.tableData[i].multiplyValueName'))) + ' '
               if (k + 1 != (eval(this.tableData[i].description)).length) {
                 this.tableData[i].data += ' / '
               }
