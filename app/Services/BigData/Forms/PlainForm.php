@@ -46,6 +46,9 @@ abstract class PlainForm extends BaseForm
                 ->toArray();
 
             $data = $this->request->except($tableFieldCodes);
+            if (!empty($this->params()['default_values'])) {
+                $data = array_merge($this->params()['default_values'], $data);
+            }
 
             $dbQuery = DB::connection('tbd')->table($this->params()['table']);
 
@@ -57,9 +60,11 @@ abstract class PlainForm extends BaseForm
 
             if (!empty($tableFields)) {
                 foreach ($tableFields as $field) {
-                    foreach ($this->request->get($field['code']) as $data) {
-                        $data[$field['parent_column']] = $id;
-                        DB::connection('tbd')->table($field['table'])->insert($data);
+                    if (!empty($this->request->get($field['code']))) {
+                        foreach ($this->request->get($field['code']) as $data) {
+                            $data[$field['parent_column']] = $id;
+                            DB::connection('tbd')->table($field['table'])->insert($data);
+                        }
                     }
                 }
             }
