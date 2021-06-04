@@ -1,6 +1,9 @@
 {
   "type": "plain",
   "table":   "prod.well_constr",
+  "default_values": {
+    "well_constr.project_drill": false
+  },
   "tabs": [
     {
       "title": "well_constructor",
