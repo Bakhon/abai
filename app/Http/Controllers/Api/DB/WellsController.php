@@ -36,7 +36,10 @@ class WellsController extends Controller
     public function tube_nom(Well $well)
     {
         $tube_nom = $well->tube_nom()
-            ->withPivot('project_drill', 'casing_type')->get();
+            ->wherePivot('project_drill', '=', 'false')
+            ->wherePivot('casing_type', '=', '8', 'or')
+            ->WherePivot('casing_type', '=', '9')
+            ->get(['od']);
         return $tube_nom;
     }
 

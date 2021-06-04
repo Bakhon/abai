@@ -9,7 +9,7 @@ class WellInfoResource extends JsonResource
     public function toArray($request)
     {
         return[
-            'name_ru' => $this -> name_ru,
+            'od' => $this -> od,
         ];
     }
 }

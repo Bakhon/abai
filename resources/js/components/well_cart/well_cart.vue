@@ -323,7 +323,7 @@ export default {
         },
         {
           'description': 'this.wellExpl.pivot.dbeg',
-          'method': null,
+          'method': 'trimToDate',
           'name': 'Дата ввода в эксплуатацию',
           'data': ''
         },
@@ -334,9 +334,8 @@ export default {
           'data': ''
         },
         {
-          'description': 'this.well.well_expl',
-          'method': 'multiplyValues',
-          'multiplyValueName': 'name_ru',
+          'description': 'this.wellExpl.name_ru',
+          'method': null,
           'name': 'Способ эксплуатации',
           'data': ''
         },
@@ -347,7 +346,7 @@ export default {
           'data': ''
         },
         {
-          'description': 'this.tubeNom.od',
+          'description': 'this.tubeNom',
           'method': 'multiplyValues',
           'multiplyValueName': 'od',
           'name': 'Диаметр экспл. колонны / доп. экспл. колонны, мм',
@@ -450,6 +449,12 @@ export default {
               this.tableData[i].data += (eval(eval('this.tableData[i].description') + '.' + eval('this.tableData[i].neigbor_2')))
             }
           } catch (e) {
+          }
+        } else if (this.tableData[i].method === 'trimToDate') {
+          try {
+            this.tableData[i].data = (eval(this.tableData[i].description)).substring(0, 10)
+          } catch (e) {
+            this.tableData[i].data = ''
           }
         } else {
           try {
