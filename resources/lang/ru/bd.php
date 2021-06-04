@@ -226,6 +226,7 @@ return [
             "landing_date" => "Дата спуска"
         ],
         'tech_state' => [
+            'main' => 'Основное',
             'date_start' => 'Дата начала',
             'old_state' => 'Сменяемое техническое состояние',
             'current_category' => 'Категория на дату',
