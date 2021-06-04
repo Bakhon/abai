@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services\BigData\Forms;
 
+use App\Exceptions\BigData\SubmitFormException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
@@ -30,37 +31,50 @@ abstract class PlainForm extends BaseForm
 
     public function submit(): array
     {
-        $tableFields = $this->getFields()
-            ->filter(
-                function ($item) {
-                    return $item['type'] === 'table';
-                }
-            );
+        DB::beginTransaction();
 
-        $tableFieldCodes = $tableFields
-            ->pluck('code')
-            ->toArray();
+        try {
+            $tableFields = $this->getFields()
+                ->filter(
+                    function ($item) {
+                        return $item['type'] === 'table';
+                    }
+                );
 
-        $data = $this->request->except($tableFieldCodes);
+            $tableFieldCodes = $tableFields
+                ->pluck('code')
+                ->toArray();
 
-        $dbQuery = DB::connection('tbd')->table($this->params()['table']);
+            $data = $this->request->except($tableFieldCodes);
+            if (!empty($this->params()['default_values'])) {
+                $data = array_merge($this->params()['default_values'], $data);
+            }
 
-        if (!empty($data['id'])) {
-            $id = $dbQuery->where('id', $data['id'])->update($data);
-        } else {
-            $id = $dbQuery->insertGetId($data);
-        }
+            $dbQuery = DB::connection('tbd')->table($this->params()['table']);
 
-        if (!empty($tableFields)) {
-            foreach ($tableFields as $field) {
-                foreach ($this->request->get($field['code']) as $data) {
-                    $data[$field['parent_column']] = $id;
-                    DB::connection('tbd')->table($field['table'])->insert($data);
+            if (!empty($data['id'])) {
+                $id = $dbQuery->where('id', $data['id'])->update($data);
+            } else {
+                $id = $dbQuery->insertGetId($data);
+            }
+
+            if (!empty($tableFields)) {
+                foreach ($tableFields as $field) {
+                    if (!empty($this->request->get($field['code']))) {
+                        foreach ($this->request->get($field['code']) as $data) {
+                            $data[$field['parent_column']] = $id;
+                            DB::connection('tbd')->table($field['table'])->insert($data);
+                        }
+                    }
                 }
             }
-        }
 
-        return (array)DB::connection('tbd')->table($this->params()['table'])->where('id', $id)->first();
+            DB::commit();
+            return (array)DB::connection('tbd')->table($this->params()['table'])->where('id', $id)->first();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            throw new SubmitFormException();
+        }
     }
 
     public function getResults(int $wellId): JsonResponse
@@ -102,6 +116,11 @@ abstract class PlainForm extends BaseForm
                 Response::HTTP_INTERNAL_SERVER_ERROR
             );
         }
+    }
+
+    public function calcFields(int $wellId, array $values): array
+    {
+        return [];
     }
 
     public function delete(int $rowId)

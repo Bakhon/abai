@@ -2,12 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Exports\MonthlyMeteredOilProductionExport;
-use Illuminate\Http\Request;
-use Maatwebsite\Excel\Facades\Excel;
-use Level23\Druid\DruidClient;
-use Level23\Druid\Types\Granularity;
-
 class HomeController extends Controller
 {
     /**
@@ -29,10 +23,4 @@ class HomeController extends Controller
     {
         return view('home');
     }
-
-    public function export()
-    {
-        return Excel::download(new MonthlyMeteredOilProductionExport, 'report.xlsx');
-    }
-
 }

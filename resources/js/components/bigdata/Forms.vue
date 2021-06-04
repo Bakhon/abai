@@ -29,7 +29,10 @@
             <span v-else>Развернуть</span>
           </div>
         </div>
-        <div class="blueblock__buttons d-flex flex-wrap scrollable">
+        <div
+            :class="{'blueblock__buttons_full': formsListExpanded}"
+            class="blueblock__buttons d-flex flex-wrap scrollable"
+        >
           <div v-for="form in filteredForms" class="blueblock__buttons-button" @click="loadForm(form.code)">
             <div
                 :class="{'active': activeForm === form}"
@@ -43,13 +46,11 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-12 blueblock three">
-        <div v-if="activeForm" class="col-12 blueblock three">
-          <BigDataPlainFormWrapper v-if="activeForm.type === 'plain'" :params="activeForm"
-                                   :well-id="wellId"></BigDataPlainFormWrapper>
-          <BigDataTableFormWrapper v-else-if="activeForm.type === 'table'"
-                                   :params="activeForm"></BigDataTableFormWrapper>
-        </div>
+      <div v-if="activeForm" class="col-12 blueblock three">
+        <BigDataPlainFormWrapper v-if="activeForm.type === 'plain'" :params="activeForm"
+                                 :well-id="wellId"></BigDataPlainFormWrapper>
+        <BigDataTableFormWrapper v-else-if="activeForm.type === 'table'"
+                                 :params="activeForm"></BigDataTableFormWrapper>
       </div>
     </div>
   </div>
@@ -123,6 +124,10 @@ export default {
       margin: 12px 0 0;
       overflow: hidden;
       padding: 18px 35px 16px;
+
+      &_full {
+        height: auto;
+      }
 
       &-button {
         margin-bottom: 20px;
@@ -355,5 +360,12 @@ export default {
       margin-left: 5px;
     }
   }
+
+  .bd-main-block {
+    .table-container {
+      height: calc(100vh - 360px);
+    }
+  }
+
 }
 </style>
