@@ -39,6 +39,11 @@
               </div>
             </div>
           </div>
+          <div v-if="isLeftColumnFolded" class="row">
+            <div style="color: white" class="rotate">
+              Дело скважины
+            </div>
+          </div>
         </div>
       </div>
       <div :class="{'right-column_folded': isRightColumnFolded, 'both-pressed_folded' : isBothColumnFolded}"
@@ -1649,6 +1654,18 @@ h4 {
   width: $leftColumnWidth;
   padding: 0 15px;
   margin-bottom: 0px;
+
+  .rotate {
+    color: white;
+    white-space: nowrap;
+    transform: rotate(-90deg);
+    display: flex;
+    padding-bottom: 50px;
+    padding-right: 20px;
+    font-family: "Harmonia Sans Pro Cyr", "Harmonia-Sans", "Robato";
+    font-weight: 700;
+    font-size: 16px;
+  }
 
   &_folded {
     min-width: $leftColumnFoldedWidth;
