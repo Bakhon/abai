@@ -1140,9 +1140,20 @@ td {
 }
 
 .choosing-well-title {
+    float: left;
+    height: 24px;
     font-size: 20px;
     font-weight: bold;
     bottom: 4%;
+}
+
+.choosing-well-edit {
+    float: left;
+    height: 24px;
+    font-size: 20px;
+    font-weight: bold;
+    bottom: 4%;
+    text-align: end;
 }
 
 .choosing-well-data {
