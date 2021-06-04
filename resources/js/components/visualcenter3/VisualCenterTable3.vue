@@ -710,8 +710,8 @@
             </div>
             <div class="row px-4 mt-3 middle-block__list-x-scroll">
               <div class="col-8 col-lg dropdown pr-1">
-                <div class="button2 dzocompanylist__button">
-                  <div class="button2 dzocompanylist__button">
+                <div v-if="selectedDzo.ticker==0" class="button2 dzocompanylist__button">
+                  <div  class="button2 dzocompanylist__button">
                     {{ trans("visualcenter.dzoAllCompany") }}
                     <button
                             type="button"
@@ -789,8 +789,11 @@
                         </li>
                       </ul>
                     </div>
-                  </div>
+                  </div>                 
                 </div>
+                <div v-else class="button3">
+                    {{ trans("visualcenter.dzoAllCompany") }}
+                </div>                
               </div>
               <div class="col-8 col-lg px-1">
                 <div
