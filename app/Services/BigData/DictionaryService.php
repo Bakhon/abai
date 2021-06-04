@@ -15,7 +15,6 @@ use App\Models\BigData\Dictionaries\EquipType;
 use App\Models\BigData\Dictionaries\GtmType;
 use App\Models\BigData\Dictionaries\NoBtmReason;
 use App\Models\BigData\Dictionaries\Org;
-use App\Models\BigData\Dictionaries\PumpType;
 use App\Models\BigData\Dictionaries\RepairWorkType;
 use App\Models\BigData\Dictionaries\TechConditionOfWells;
 use App\Models\BigData\Dictionaries\PumpType;
