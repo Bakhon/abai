@@ -94,16 +94,16 @@ Vue.component('inclinometria', require('./components/gno/components/Inclinometri
 Vue.component('prs-crs', require('./components/gno/components/PrsCrs.vue').default);
 Vue.component('inflow-curve', require('./components/gno/components/InflowCurve.vue').default);
 Vue.component('economic', require('./components/gno/components/Economic.vue').default);
-Vue.component('monitor-table', require('./components/monitor/MonitorTable.vue').default);
-Vue.component('monitor-chart', require('./components/monitor/chart.vue').default);
-Vue.component('monitor-chart-radialbar', require('./components/monitor/MonitorChartRadialBar.vue').default);
+Vue.component('monitor-table', require('./components/complicationMonitoring/monitor/MonitorTable.vue').default);
+Vue.component('monitor-chart', require('./components/complicationMonitoring/monitor/chart.vue').default);
+Vue.component('monitor-chart-radialbar', require('./components/complicationMonitoring/monitor/MonitorChartRadialBar.vue').default);
 Vue.component('wm-form', require('./components/wm/form.vue').default);
-Vue.component('omgca-form', require('./components/omgca/form.vue').default);
-Vue.component('omguhe-form', require('./components/omguhe/form.vue').default);
-Vue.component('omgngdu-form', require('./components/omgngdu/form.vue').default);
-Vue.component('omgngdu-well-form', require('./components/omgngdu_well/form.vue').default);
-Vue.component('gu-form', require('./components/gu/form.vue').default);
-Vue.component('zu-form', require('./components/zu/form.vue').default);
+Vue.component('omgca-form', require('./components/complicationMonitoring/omgca/form.vue').default);
+Vue.component('omguhe-form', require('./components/complicationMonitoring/omguhe/form.vue').default);
+Vue.component('omgngdu-form', require('./components/complicationMonitoring/omgngdu/form.vue').default);
+Vue.component('omgngdu-well-form', require('./components/complicationMonitoring/omgngdu_well/form.vue').default);
+Vue.component('gu-form', require('./components/complicationMonitoring/gu/form.vue').default);
+Vue.component('zu-form', require('./components/complicationMonitoring/zu/form.vue').default);
 
 Vue.component('gtm-main', require('./components/GTM/GTMLayout.vue').default);
 Vue.component('gtm-main-page', require('./components/GTM/Main.vue').default);
@@ -134,15 +134,15 @@ Vue.component('well-fund-field', require('./components/reports/WellFundField.vue
 Vue.component('well-fund-inactive', require('./components/reports/WellFundInactive.vue').default);
 Vue.component('well-fund-revision-field', require('./components/reports/WellFundRevisionField.vue').default);
 Vue.component('well-fund-revision', require('./components/reports/WellFundRevision.vue').default);
-Vue.component('view-table', require('./components/omgca/table.vue').default);
+Vue.component('view-table', require('./components/complicationMonitoring/omgca/table.vue').default);
 Vue.component('oilgas-form', require('./components/complicationMonitoring/oilGas/form.vue').default);
-Vue.component('pipe-form', require('./components/pipes/form.vue').default);
-Vue.component('pipe-type-form', require('./components/pipeTypes/form.vue').default);
+Vue.component('pipe-form', require('./components/complicationMonitoring/pipes/form.vue').default);
+Vue.component('pipe-type-form', require('./components/complicationMonitoring/pipeTypes/form.vue').default);
 Vue.component('las-dictionaries-form', require('./components/bigdata/las/refs/lasDictionaries/form.vue').default);
 Vue.component('inhibitor-create', require('./components/inhibitor/create.vue').default);
 Vue.component('inhibitor-edit', require('./components/inhibitor/edit.vue').default);
 Vue.component('corrosion-form', require('./components/complicationMonitoring/corrosion/form.vue').default);
-Vue.component('gu-map', require('./components/map/map.vue').default);
+Vue.component('gu-map', require('./components/complicationMonitoring/map/map.vue').default);
 Vue.component('field-settings', require('./components/settings/fields.vue').default);
 
 Vue.component('fa-table', require('./components/tr/fa.vue').default);

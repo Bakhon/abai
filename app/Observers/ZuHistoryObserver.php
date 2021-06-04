@@ -2,7 +2,7 @@
 
 namespace App\Observers;
 
-use App\Models\Refs\Zu;
+use App\Models\ComplicationMonitoring\Zu;
 
 class ZuHistoryObserver extends EditHistoryObserver
 {

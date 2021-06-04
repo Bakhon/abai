@@ -3,13 +3,14 @@
 namespace App\Http\Controllers\Refs;
 
 use App\Models\Refs\TechnicalStructureCompany;
+use App\Models\Refs\TechnicalStructureField;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class TechnicalStructureFieldController extends TechnicalStructureController
 {
-    protected $model = "App\Models\Refs\TechnicalStructureField";
+    protected $model = TechnicalStructureField::class;
 
     protected $controller_name = 'field';
     protected $index_route = "tech_struct_field.index";

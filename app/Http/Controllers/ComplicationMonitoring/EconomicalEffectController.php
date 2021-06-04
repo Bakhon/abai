@@ -10,7 +10,7 @@ use App\Http\Requests\POSTCaller;
 use App\Http\Resources\EconomicalEffectListResource;
 use App\Models\ComplicationMonitoring\EconomicalEffect;
 use App\Models\ComplicationMonitoring\OmgUHE;
-use App\Models\Refs\Gu;
+use App\Models\ComplicationMonitoring\Gu;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;

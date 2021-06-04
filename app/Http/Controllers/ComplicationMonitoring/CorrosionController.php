@@ -8,7 +8,9 @@ use App\Http\Controllers\Traits\WithFieldsValidation;
 use App\Http\Requests\CorrosionCreateRequest;
 use App\Http\Requests\CorrosionUpdateRequest;
 use App\Http\Requests\IndexTableRequest;
+use App\Jobs\ExportCorrosionToExcel;
 use App\Models\ComplicationMonitoring\Corrosion;
+use App\Models\ComplicationMonitoring\Gu;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Session;
@@ -35,7 +37,7 @@ class CorrosionController extends CrudController
                     'title' => trans('monitoring.gu.gu'),
                     'type' => 'select',
                     'filter' => [
-                        'values' => \App\Models\Refs\Gu::whereHas('corrosion')
+                        'values' => Gu::whereHas('corrosion')
                             ->orderBy('name', 'asc')
                             ->get()
                             ->map(
@@ -124,7 +126,7 @@ class CorrosionController extends CrudController
 
     public function export(IndexTableRequest $request)
     {
-        $job = new \App\Jobs\ExportCorrosionToExcel($request->validated());
+        $job = new ExportCorrosionToExcel($request->validated());
         $this->dispatch($job);
 
         return response()->json(

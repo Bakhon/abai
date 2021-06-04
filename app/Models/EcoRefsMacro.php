@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Refs\EcoRefsScFa;
 use Illuminate\Database\Eloquent\Model;
 
 class EcoRefsMacro extends Model
@@ -11,6 +12,6 @@ class EcoRefsMacro extends Model
     ];
     public function scfa()
     {
-        return $this->hasOne('App\Models\Refs\EcoRefsScFa','id','sc_fa')->withDefault();
+        return $this->hasOne(EcoRefsScFa::class,'id','sc_fa')->withDefault();
     }
 }

@@ -2,6 +2,8 @@
 
 namespace App\Models\ComplicationMonitoring;
 
+use App\Models\Inhibitor;
+use App\Models\Refs\Field;
 use App\Models\Traits\WithHistory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -25,36 +27,36 @@ class OmgUHE extends Model
 
     public function ngdu()
     {
-        return $this->belongsTo(\App\Models\Refs\Ngdu::class)->withDefault();
+        return $this->belongsTo(Ngdu::class)->withDefault();
     }
 
     public function cdng()
     {
-        return $this->belongsTo(\App\Models\Refs\Cdng::class)->withDefault();
+        return $this->belongsTo(Cdng::class)->withDefault();
     }
 
     public function gu()
     {
-        return $this->belongsTo(\App\Models\Refs\Gu::class)->withDefault();
+        return $this->belongsTo(Gu::class)->withDefault();
     }
 
     public function zu()
     {
-        return $this->belongsTo(\App\Models\Refs\Zu::class)->withDefault();
+        return $this->belongsTo(Zu::class)->withDefault();
     }
 
     public function well()
     {
-        return $this->belongsTo(\App\Models\Refs\Well::class)->withDefault();
+        return $this->belongsTo(Well::class)->withDefault();
     }
 
     public function field()
     {
-        return $this->belongsTo(\App\Models\Refs\Field::class)->withDefault();
+        return $this->belongsTo(Field::class)->withDefault();
     }
 
     public function inhibitor()
     {
-        return $this->belongsTo(\App\Models\Inhibitor::class)->withDefault();
+        return $this->belongsTo(Inhibitor::class)->withDefault();
     }
 }

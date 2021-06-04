@@ -1,18 +1,8 @@
 <?php
 
-namespace App\Models\Refs;
+namespace App\Models\ComplicationMonitoring;
 
-use App\Models\Pipes\OilPipe;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\ComplicationMonitoring\OmgCA;
-use App\Models\ComplicationMonitoring\OmgNGDU;
-use App\Models\ComplicationMonitoring\WaterMeasurement;
-use App\Models\ComplicationMonitoring\OilGas;
-use App\Models\ComplicationMonitoring\Corrosion;
-use App\Models\ComplicationMonitoring\EconomicalEffect;
-use App\Models\ComplicationMonitoring\LostProfits;
-use App\Models\ComplicationMonitoring\OmgUHE;
-use App\Models\ComplicationMonitoring\Pipe;
 use App\Models\Pipes\GuZuPipe;
 use App\Models\Pipes\ZuWellPipe;
 
