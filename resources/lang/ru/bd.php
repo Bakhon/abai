@@ -126,6 +126,9 @@ return [
             'Gtm_end' => 'Окончание ГТМ',
             'date_gtm_end' => 'Дата окончания ГТМ',
             'gtm_parameters_results' => 'Параметры ГТМ/результаты',
+            'well_previous_status' => 'Статус до выбранной даты',
+            'well_previous_category' => 'Категория до выбранной даты',
+            'well_current_status' => 'Новое состояние',
             'status' => 'Состояние'
         ],
         'well_design' => [
