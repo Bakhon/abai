@@ -14,4 +14,5 @@
   'tech_state' => '\\App\\Services\\BigData\\Forms\\TechState',
   'well_block' => '\\App\\Services\\BigData\\Forms\\WellBlock',
   'bottom_hole2' => '\\App\\Services\\BigData\\Forms\\BottomHole2',
+  'bottom_hole' => '\\App\\Services\\BigData\\Forms\\BottomHole'
 );
