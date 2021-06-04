@@ -1,6 +1,5 @@
 <template>
   <div class="bd-main-block">
-    <cat-loader v-if="isLoading"></cat-loader>
     <notifications position="top"></notifications>
     <div class="bd-main-block__header">
       <p class="bd-main-block__header-title">{{ params.title }}</p>
@@ -87,8 +86,7 @@ export default {
       errors: {},
       activeTab: 0,
       formValues: {},
-      well: null,
-      isLoading: false
+      well: null
     }
   },
   computed: {
@@ -187,7 +185,7 @@ export default {
       }
     },
     fillCalculatedFields(triggerFieldCode) {
-      this.isLoading = true
+      this.$store.commit('globalloading/SET_LOADING', true);
       axios.post(
           this.localeUrl(`/api/bigdata/forms/${this.params.code}/calc-fields`),
           {
@@ -199,7 +197,7 @@ export default {
           this.formValues[key] = data[key]
         }
       }).finally(() => {
-        this.isLoading = false
+        this.$store.commit('globalloading/SET_LOADING', false);
       })
 
     },
