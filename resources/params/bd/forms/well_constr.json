@@ -20,13 +20,13 @@
                 "code": "depth",
                 "type": "numeric",
                 "title": "casing_running_depth",
-                "validation": "required"
+                "validation": "required|numeric"
               },
               {
                 "code": "sidetrack",
                 "type": "checkbox",
                 "title": "side_barrel",
-                "validation": "required"
+                "validation": ""
               },
               {
                 "code": "casing_nom",
@@ -39,25 +39,25 @@
                 "code": "tube_count",
                 "type": "numeric",
                 "title": "number_of_pipes",
-                "validation": "required"
+                "validation": "required|numeric"
               },
               {
                 "code": "cem_volume",
                 "type": "numeric",
                 "title": "poured_cement_volume",
-                "validation": "required"
+                "validation": "required|numeric"
               },
               {
                 "code": "cem_height",
                 "type": "numeric",
                 "title": "cement_lifting_height",
-                "validation": "required"
+                "validation": "required|numeric"
               },
               {
                 "code": "landing_date",
                 "type": "date",
                 "title": "landing_date",
-                "validation": "required"
+                "validation": "required|date"
               }
               
             ]
