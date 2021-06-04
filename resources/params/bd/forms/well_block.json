@@ -1,0 +1,38 @@
+{
+  "type": "plain",
+  "table": "prod.well_block",
+  "tabs": [
+    {
+      "title": "w_block",
+      "blocks": [
+        [
+          {
+            "title": "main",
+            "items": [
+              {
+                "code": "dbeg",
+                "type": "date",
+                "title": "date",
+                "validation": "required|date"
+              },
+              {
+                "code": "block",
+                "type": "calc",
+                "title": "ch_block",
+                "is_editable": false,
+                "validation": ""
+              },
+              {
+                "code": "block",
+                "type": "dict",
+                "title": "new_block",
+                "dict": "blocks",
+                "validation": "required|exists:tbd.dict.block,id"
+              }
+            ]
+          }
+        ]
+      ]
+    }
+  ]
+}

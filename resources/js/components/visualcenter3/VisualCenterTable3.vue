@@ -916,10 +916,10 @@
                       </th>
                       <th>
                         {{ trans("visualcenter.plan") }}
-                        <div v-if="currentDzoList !== 'daily'">
+                        <div v-if="currentDzoList !== 'daily' || quantityRange > 1">
                           {{ getThousandMetricNameByCategorySelected() }}
                         </div>
-                        <div v-if="currentDzoList === 'daily'">
+                        <div v-else>
                           {{ getMetricNameByCategorySelected() }}
                         </div>
                         <div v-if="isOpecFilterActive">
@@ -928,19 +928,19 @@
                       </th>
                       <th>
                         {{ trans("visualcenter.fact") }}
-                        <div v-if="currentDzoList !== 'daily'">
+                        <div v-if="currentDzoList !== 'daily' || quantityRange > 1">
                           {{ getThousandMetricNameByCategorySelected() }}
                         </div>
-                        <div v-if="currentDzoList === 'daily'">
+                        <div v-else>
                           {{ getMetricNameByCategorySelected() }}
                         </div>
                       </th>
                       <th>
                         {{ trans("visualcenter.dzoDifference") }}
-                        <div v-if="currentDzoList !== 'daily'">
+                        <div v-if="currentDzoList !== 'daily' || quantityRange > 1">
                           {{ getThousandMetricNameByCategorySelected() }}
                         </div>
-                        <div v-if="currentDzoList === 'daily'">
+                        <div v-else>
                           {{ getMetricNameByCategorySelected() }}
                         </div>
                       </th>
