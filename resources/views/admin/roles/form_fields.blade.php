@@ -157,23 +157,10 @@
                         {{!empty($role) && $role->permissions->where('id', $permissions->get('bigdata load_las')->id)->isNotEmpty() ? 'checked' : ''}}>
                 <label class="form-check-label" for="permission_{{$permissions->get('bigdata load_las')->id}}">Загрузка las</label>
             </div>
-            @foreach([
-                'file_status' => 'Справочник статус файла',
-                'file_type' => 'Справочник тип файла',
-                'recording_method' => 'Справочник метод записи',
-                'recording_state' => 'Справочник статус записи',
-                'stem_section' => 'Справочник секция ствола',
-                'stem_type' => 'Справочник тип ствола',
-            ] as $dictCode => $dictName)
+            @foreach($dictCodes as $dictCode)
                 <div class="section mb-4">
-                    <h5>{{$dictName}}</h5>
-                    @foreach([
-                        'list' => 'Просмотр списка',
-                        'create' => 'Создание',
-                        'read' => 'Просмотр',
-                        'update' => 'Изменение',
-                        'delete' => 'Удаление',
-                    ] as $fieldCode => $fieldName)
+                    <h5>{{ trans('bd.forms.'.$dictCode.'.title') }}</h5>
+                    @foreach($fieldCodes as $fieldCode)
                         <div class="form-check">
                             <input
                                     class="form-check-input"
@@ -184,7 +171,7 @@
                                     {{!empty($role) && $role->permissions->where('id', $permissions->get('bigdata '.$fieldCode.' '.$dictCode)->id)->isNotEmpty() ? 'checked' : ''}}
                             >
                             <label class="form-check-label"
-                                   for="permission_{{$permissions->get('bigdata '.$fieldCode.' '.$dictCode)->id}}">{{$fieldName}}</label>
+                                   for="permission_{{$permissions->get('bigdata '.$fieldCode.' '.$dictCode)->id}}">{{trans('bd.'.$fieldCode)}}</label>
                         </div>
                     @endforeach
                 </div>
