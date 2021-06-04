@@ -45,7 +45,6 @@
             name="pump_discharge_pressure"
             class="form-control"
             placeholder=""
-            :disabled="!formFields.editable"
         >
       </div>
       <label>{{ trans('monitoring.omgngdu.fields.bsw') }}</label>
