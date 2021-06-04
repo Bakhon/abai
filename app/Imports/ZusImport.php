@@ -3,7 +3,7 @@
 namespace App\Imports;
 
 use App\Models\ComplicationMonitoring\Gu;
-use App\Models\Refs\Zu;
+use App\Models\ComplicationMonitoring\Zu;
 use Maatwebsite\Excel\Concerns\ToModel;
 
 class ZusImport implements ToModel

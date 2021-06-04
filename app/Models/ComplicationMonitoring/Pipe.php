@@ -13,7 +13,7 @@ class Pipe extends Model
 
     public function gu()
     {
-        return $this->belongsTo(\App\Models\Refs\Gu::class)->withDefault();
+        return $this->belongsTo(Gu::class)->withDefault();
     }
 
     public function material()

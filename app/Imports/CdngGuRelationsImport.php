@@ -3,9 +3,9 @@
 namespace App\Imports;
 
 use App\Console\Commands\Import\ImportCdngGuRelations;
-use App\Models\Refs\Cdng;
+use App\Models\ComplicationMonitoring\Cdng;
 use App\Models\ComplicationMonitoring\Gu;
-use App\Models\Refs\Ngdu;
+use App\Models\ComplicationMonitoring\Ngdu;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithCalculatedFormulas;

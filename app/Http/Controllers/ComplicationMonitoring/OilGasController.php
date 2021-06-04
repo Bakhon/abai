@@ -3,18 +3,23 @@
 namespace App\Http\Controllers\ComplicationMonitoring;
 
 use App\Filters\OilGasFilter;
-use App\Http\Controllers\Controller;
 use App\Http\Controllers\CrudController;
 use App\Http\Controllers\Traits\WithFieldsValidation;
 use App\Http\Requests\IndexTableRequest;
 use App\Http\Requests\OilGasCreateRequest;
 use App\Http\Requests\OilGasUpdateRequest;
+use App\Http\Resources\OilGasListResource;
+use App\Jobs\ExportOilGasToExcel;
+use App\Models\ComplicationMonitoring\Cdng;
 use App\Models\ComplicationMonitoring\Corrosion;
+use App\Models\ComplicationMonitoring\Gu;
+use App\Models\ComplicationMonitoring\Ngdu;
 use App\Models\ComplicationMonitoring\OilGas;
-use App\Models\ComplicationMonitoring\OmgCA;
 use App\Models\ComplicationMonitoring\WaterMeasurement;
+use App\Models\ComplicationMonitoring\Well;
+use App\Models\ComplicationMonitoring\Zu;
+use App\Models\Refs\OtherObjects;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 
 class OilGasController extends CrudController
@@ -36,7 +41,7 @@ class OilGasController extends CrudController
                     'title' => trans('monitoring.other_objects'),
                     'type' => 'select',
                     'filter' => [
-                        'values' => \App\Models\Refs\OtherObjects::whereHas('oilgas')
+                        'values' => OtherObjects::whereHas('oilgas')
                             ->orderBy('name', 'asc')
                             ->get()
                             ->map(
@@ -54,7 +59,7 @@ class OilGasController extends CrudController
                     'title' => trans('monitoring.ngdu'),
                     'type' => 'select',
                     'filter' => [
-                        'values' => \App\Models\Refs\Ngdu::whereHas('oilgas')
+                        'values' => Ngdu::whereHas('oilgas')
                             ->orderBy('name', 'asc')
                             ->get()
                             ->map(
@@ -72,7 +77,7 @@ class OilGasController extends CrudController
                     'title' => trans('monitoring.cdng'),
                     'type' => 'select',
                     'filter' => [
-                        'values' => \App\Models\Refs\Cdng::whereHas('oilgas')
+                        'values' => Cdng::whereHas('oilgas')
                             ->orderBy('name', 'asc')
                             ->get()
                             ->map(
@@ -90,7 +95,7 @@ class OilGasController extends CrudController
                     'title' => trans('monitoring.gu.gu'),
                     'type' => 'select',
                     'filter' => [
-                        'values' => \App\Models\Refs\Gu::whereHas('oilgas')
+                        'values' => Gu::whereHas('oilgas')
                             ->orderBy('name', 'asc')
                             ->get()
                             ->map(
@@ -108,7 +113,7 @@ class OilGasController extends CrudController
                     'title' => trans('monitoring.zu.zu'),
                     'type' => 'select',
                     'filter' => [
-                        'values' => \App\Models\Refs\Zu::whereHas('oilgas')
+                        'values' => Zu::whereHas('oilgas')
                             ->orderBy('name', 'asc')
                             ->get()
                             ->map(
@@ -126,7 +131,7 @@ class OilGasController extends CrudController
                     'title' => trans('monitoring.well.well'),
                     'type' => 'select',
                     'filter' => [
-                        'values' => \App\Models\Refs\Well::whereHas('oilgas')
+                        'values' => Well::whereHas('oilgas')
                             ->orderBy('name', 'asc')
                             ->get()
                             ->map(
@@ -211,12 +216,12 @@ class OilGasController extends CrudController
             ->getFilteredQuery($request->validated(), $query)
             ->paginate(25);
 
-        return response()->json(json_decode(\App\Http\Resources\OilGasListResource::collection($oilgas)->toJson()));
+        return response()->json(json_decode(OilGasListResource::collection($oilgas)->toJson()));
     }
 
     public function export(IndexTableRequest $request)
     {
-        $job = new \App\Jobs\ExportOilGasToExcel($request->validated());
+        $job = new ExportOilGasToExcel($request->validated());
         $this->dispatch($job);
 
         return response()->json(

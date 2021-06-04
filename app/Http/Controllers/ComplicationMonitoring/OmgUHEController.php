@@ -8,6 +8,8 @@ use App\Http\Controllers\Traits\WithFieldsValidation;
 use App\Http\Requests\IndexTableRequest;
 use App\Http\Requests\OmgUHECreateRequest;
 use App\Http\Requests\OmgUHEUpdateRequest;
+use App\Jobs\ExportOmgUHEToExcel;
+use App\Models\ComplicationMonitoring\Gu;
 use App\Models\ComplicationMonitoring\OmgCA;
 use App\Models\ComplicationMonitoring\OmgUHE;
 use Carbon\Carbon;
@@ -42,7 +44,7 @@ class OmgUHEController extends CrudController
                     'title' => trans('monitoring.gu.gu'),
                     'type' => 'select',
                     'filter' => [
-                        'values' => \App\Models\Refs\Gu::whereHas('omguhe')
+                        'values' => Gu::whereHas('omguhe')
                             ->orderBy('name', 'asc')
                             ->get()
                             ->map(
@@ -140,7 +142,7 @@ class OmgUHEController extends CrudController
 
     public function export(IndexTableRequest $request)
     {
-        $job = new \App\Jobs\ExportOmgUHEToExcel($request->validated());
+        $job = new ExportOmgUHEToExcel($request->validated());
         $this->dispatch($job);
 
         return response()->json(

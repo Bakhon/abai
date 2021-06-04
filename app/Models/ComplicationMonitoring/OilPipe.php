@@ -4,8 +4,8 @@ namespace App\Models\ComplicationMonitoring;
 
 use App\Models\Pipes\PipeCoord;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Refs\Zu;
-use App\Models\Refs\Well;
+use App\Models\ComplicationMonitoring\Zu;
+use App\Models\ComplicationMonitoring\Well;
 
 class OilPipe extends Model
 {

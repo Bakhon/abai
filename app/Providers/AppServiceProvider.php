@@ -3,6 +3,24 @@
 namespace App\Providers;
 
 use App\Http\Middleware\LocaleMiddleware;
+use App\Models\ComplicationMonitoring\Corrosion;
+use App\Models\ComplicationMonitoring\Gu;
+use App\Models\ComplicationMonitoring\OilGas;
+use App\Models\ComplicationMonitoring\OmgCA;
+use App\Models\ComplicationMonitoring\OmgNGDU;
+use App\Models\ComplicationMonitoring\OmgUHE;
+use App\Models\ComplicationMonitoring\Pipe;
+use App\Models\ComplicationMonitoring\WaterMeasurement;
+use App\Models\ComplicationMonitoring\Zu;
+use App\Observers\CorrosionHistoryObserver;
+use App\Observers\GuHistoryObserver;
+use App\Observers\OilGasHistoryObserver;
+use App\Observers\OmgCAHistoryObserver;
+use App\Observers\OmgNGDUHistoryObserver;
+use App\Observers\OmgUHEHistoryObserver;
+use App\Observers\PipeHistoryObserver;
+use App\Observers\WaterMeasurementHistoryObserver;
+use App\Observers\ZuHistoryObserver;
 use Illuminate\Support\ServiceProvider;
 use Level23\Druid\DruidClient;
 
@@ -36,49 +54,49 @@ class AppServiceProvider extends ServiceProvider
 
     private function observers()
     {
-        \App\Models\ComplicationMonitoring\OmgCA::observe(
+        OmgCA::observe(
             [
-                \App\Observers\OmgCAHistoryObserver::class
+                OmgCAHistoryObserver::class
             ]
         );
-        \App\Models\ComplicationMonitoring\OmgNGDU::observe(
+        OmgNGDU::observe(
             [
-                \App\Observers\OmgNGDUHistoryObserver::class
+                OmgNGDUHistoryObserver::class
             ]
         );
-        \App\Models\ComplicationMonitoring\WaterMeasurement::observe(
+        WaterMeasurement::observe(
             [
-                \App\Observers\WaterMeasurementHistoryObserver::class
+                WaterMeasurementHistoryObserver::class
             ]
         );
-        \App\Models\ComplicationMonitoring\OilGas::observe(
+        OilGas::observe(
             [
-                \App\Observers\OilGasHistoryObserver::class
+                OilGasHistoryObserver::class
             ]
         );
-        \App\Models\ComplicationMonitoring\Corrosion::observe(
+        Corrosion::observe(
             [
-                \App\Observers\CorrosionHistoryObserver::class
+                CorrosionHistoryObserver::class
             ]
         );
-        \App\Models\ComplicationMonitoring\OmgUHE::observe(
+        OmgUHE::observe(
             [
-                \App\Observers\OmgUHEHistoryObserver::class
+                OmgUHEHistoryObserver::class
             ]
         );
-        \App\Models\ComplicationMonitoring\Pipe::observe(
+        Pipe::observe(
             [
-                \App\Observers\PipeHistoryObserver::class
+                PipeHistoryObserver::class
             ]
         );
-        \App\Models\Refs\Gu::observe(
+        Gu::observe(
             [
-                \App\Observers\GuHistoryObserver::class
+                GuHistoryObserver::class
             ]
         );
-        \App\Models\Refs\Zu::observe(
+        Zu::observe(
             [
-                \App\Observers\ZuHistoryObserver::class
+                ZuHistoryObserver::class
             ]
         );
     }

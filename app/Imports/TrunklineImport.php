@@ -7,7 +7,7 @@ use App\Models\ComplicationMonitoring\Material;
 use App\Models\ComplicationMonitoring\PipeType;
 use App\Models\ComplicationMonitoring\OilPipe;
 use App\Models\Pipes\PipeCoord;
-use App\Models\Refs\Ngdu;
+use App\Models\ComplicationMonitoring\Ngdu;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithColumnLimit;

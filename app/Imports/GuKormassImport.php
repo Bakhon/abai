@@ -4,7 +4,7 @@ namespace App\Imports;
 
 use App\Models\ComplicationMonitoring\GuKormass;
 use App\Models\ComplicationMonitoring\Kormass;
-use App\Models\Refs\Cdng;
+use App\Models\ComplicationMonitoring\Cdng;
 use App\Models\ComplicationMonitoring\Gu;
 use Maatwebsite\Excel\Concerns\ToModel;
 
