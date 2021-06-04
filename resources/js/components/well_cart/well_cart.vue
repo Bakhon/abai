@@ -406,6 +406,7 @@ export default {
             this.wellType = data
           }),
           this.axios.get(this.localeUrl(`/api/bigdata/wells/${well.id}/org/`)).then(({data}) => {
+            console.log(data)
             this.wellOrg = data
           }),
           this.axios.get(this.localeUrl(`/api/bigdata/wells/${well.id}/geo/`)).then(({data}) => {
@@ -430,6 +431,7 @@ export default {
     setTableData() {
       for (let i = 0; i < this.tableData.length; i++) {
         if (this.tableData[i].method === 'multiplyValues') {
+          this.tableData[i].data = ''
           try {
             for (let k = 0; k < (eval(this.tableData[i].description)).length; k++) {
               this.tableData[i].data += (eval(eval('this.tableData[i].description') + '[k].' + eval('this.tableData[i].multiplyValueName'))) + ' '
