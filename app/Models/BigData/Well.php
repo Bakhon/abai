@@ -10,7 +10,6 @@ use App\Models\BigData\Dictionaries\TubeNom;
 use App\Models\BigData\Dictionaries\WellCategory;
 use App\Models\BigData\Dictionaries\WellExplType;
 use App\Models\BigData\Dictionaries\WellStatus;
-use App\Models\BigData\Dictionaries\WellTech;
 use App\Models\BigData\Dictionaries\WellType;
 use App\Models\TBDModel;
 
