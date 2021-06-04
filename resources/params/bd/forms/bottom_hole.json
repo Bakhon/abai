@@ -1,6 +1,9 @@
 {
   "type": "plain",
   "table": "prod.bottom_hole",
+  "default_values": {
+    "bottom_hole_type": 1
+  },
   "tabs": [
     {
       "title": "bottom_h",
