@@ -25,6 +25,7 @@ import oilProductionFilters from './dataManagers/oilProductionFilters';
 import mainTableChart from './widgets/mainTableChart.js';
 import secondaryParams from './dataManagers/secondaryParams';
 
+const defaultDzoTicker = 0;
 
 Vue.component("calendar", Calendar);
 Vue.component("date-picker", DatePicker);
@@ -39,6 +40,38 @@ export default {
     },
     data: function () {
         return {
+            dzoMapping : {
+                "КОА" : {                 
+                   // id: 110
+                   id: 15
+                },
+                "КТМ" : {
+                    id: 107
+                },
+                "КБМ" : {
+                    id: 106
+                },
+                "КГМ" : {
+                    id: 108
+                },
+                "ММГ" : {
+                    id: 109
+                },
+                "ОМГ" : {
+                    id: 112
+                },
+                "УО" : {
+                    id: 111
+                },
+                "ЭМГ" : {
+                    id: 113
+                },
+            },
+            selectedDzo: {
+                ticker: defaultDzoTicker,
+                name: 'ТОО "Казахтуркмунай"',
+                plans: [],
+            },          
             otmWidgetData: {
                 drillingWells: 0,
                 krsWells: 0,
@@ -685,6 +718,17 @@ export default {
             });
             return dzoList;
         },
+       
+        getDzoTicker() {
+            let dzoTicker = '';
+            let self = this;
+            _.forEach(Object.keys(this.dzoMapping), function(key) {
+               if (parseInt(self.dzoMapping[key].id) === parseInt(self.userId)) {
+                   dzoTicker = key;
+               }
+            });
+            return dzoTicker;
+        },
     },
     mixins: [
         mainMenu,
@@ -705,7 +749,12 @@ export default {
         mainTableChart,
         secondaryParams
     ],
+    props: ['userId'],
     async mounted() {
+        this.selectedDzo.ticker = this.getDzoTicker();
+        if (!this.selectedDzo.ticker) {
+            this.selectedDzo.ticker = defaultDzoTicker;
+        }     
         this.getOpecDataForYear();
         this.chartHeadName = this.oilChartHeadName;
 
@@ -749,10 +798,14 @@ export default {
         this.selectedDzoCompanies = this.getAllDzoCompanies();
         this.dailyCurrencyChangeUsd = Math.abs(parseFloat(this.usdRatesData.for_table[1].change));
     },
-    watch: {
-        bigTable: function () {
+    watch: {       
+        bigTable: function () {    
+            if (this.selectedDzo.ticker!=0){      
+            this.selectOneDzoCompany(this.selectedDzo.ticker);
+        }   else {
             this.dzoCompanySummary = this.bigTable;
             this.calculateDzoCompaniesSummary();
+        }
         },
         tables: function() {
             this.dzoCompanySummary = this.tables;
