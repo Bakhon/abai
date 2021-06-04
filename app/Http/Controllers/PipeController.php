@@ -7,11 +7,14 @@ use App\Http\Controllers\Traits\WithFieldsValidation;
 use App\Http\Requests\IndexTableRequest;
 use App\Http\Requests\PipeCreateRequest;
 use App\Http\Requests\PipeUpdateRequest;
+use App\Http\Resources\PipeListResource;
+use App\Jobs\ExportPipesToExcel;
+use App\Models\ComplicationMonitoring\Gu;
+use App\Models\ComplicationMonitoring\Material;
 use App\Models\ComplicationMonitoring\Pipe;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Session;
-use Maatwebsite\Excel\Facades\Excel;
 
 class PipeController extends CrudController
 {
@@ -32,7 +35,7 @@ class PipeController extends CrudController
                     'title' => trans('monitoring.gu.gu'),
                     'type' => 'select',
                     'filter' => [
-                        'values' => \App\Models\Refs\Gu::whereHas('pipe')
+                        'values' => Gu::whereHas('pipe')
                             ->orderBy('name', 'asc')
                             ->get()
                             ->map(
@@ -70,7 +73,7 @@ class PipeController extends CrudController
                     'title' => trans('monitoring.pipe.fields.material'),
                     'type' => 'select',
                     'filter' => [
-                        'values' => \App\Models\ComplicationMonitoring\Material::whereHas('pipe')
+                        'values' => Material::whereHas('pipe')
                             ->orderBy('name', 'asc')
                             ->get()
                             ->map(
@@ -110,12 +113,12 @@ class PipeController extends CrudController
             ->getFilteredQuery($request->validated(), $query)
             ->paginate(25);
 
-        return response()->json(json_decode(\App\Http\Resources\PipeListResource::collection($pipe)->toJson()));
+        return response()->json(json_decode(PipeListResource::collection($pipe)->toJson()));
     }
 
     public function export(IndexTableRequest $request)
     {
-        $job = new \App\Jobs\ExportPipesToExcel($request->validated());
+        $job = new ExportPipesToExcel($request->validated());
         $this->dispatch($job);
 
         return response()->json(

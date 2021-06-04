@@ -12,7 +12,7 @@ use Maatwebsite\Excel\Concerns\WithColumnLimit;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\WithCalculatedFormulas;
 use Maatwebsite\Excel\Events\BeforeSheet;
-use App\Models\Refs\Gu;
+use App\Models\ComplicationMonitoring\Gu;
 
 class PipesPointsImport implements ToCollection, WithEvents, WithColumnLimit, WithCalculatedFormulas
 {

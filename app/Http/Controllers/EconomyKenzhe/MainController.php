@@ -3,29 +3,55 @@
 namespace App\Http\Controllers\EconomyKenzhe;
 
 use App\Models\EconomyKenzhe\HandbookRepTt;
-use App\Models\EconomyKenzhe\SubholdingCompany;
 use App\Http\Controllers\Controller;
+use App\Models\EcoRefsCompaniesId;
+use Illuminate\Http\Request;
 
 class MainController extends Controller
 {
+    public $companyId = 0;
+    public $dateTo = null;
+    public $dateFrom = null;
+    public $defaultCompanyId = 7;
 
-    public function company()
+    public function company(Request $request)
     {
-        $companyId = 116;
-        $dateTo = date('Y-m-d', strtotime('-1 year'));
-        $dateFrom = date("Y-m-d", strtotime($dateTo . "-3 months"));
-        $currentYear = date('Y', strtotime('-1 year'));
-        $previousYear = (string)$currentYear - 1;
+        $this->dateTo = date('Y-m-d', strtotime(' -1 year'));
+        $this->dateFrom = date("Y-m-d", strtotime($this->dateTo . " -3 months"));
+
+        if ($request->company) {
+            $this->companyId = $request->company;
+        }else{
+            $this->companyId = $this->defaultCompanyId;
+        }
+        if ($request->betweenMonthsValue) {
+            $this->dateFrom = date('Y-m-d', strtotime(date('Y', strtotime($this->dateTo)) . '-01-01'));
+            $this->dateTo = date('Y-m-d', strtotime(date('Y', strtotime($this->dateTo)) . '-' . $request->betweenMonthsValue));
+        }
+        if ($request->monthsValue) {
+            $this->dateFrom = date("Y-m-d", strtotime(date('Y', strtotime($this->dateTo)) . '-' . $request->monthsValue . '-01'));
+            $this->dateTo = date("Y-m-d", strtotime(date('Y', strtotime($this->dateTo)) . '-' . $request->monthsValue . '-31'));
+        }
+        if ($request->quarterValue) {
+            $this->dateTo = date("Y-m-d", strtotime(date('Y', strtotime($this->dateTo)) . '-' . $request->quarterValue . '-01'));
+            $this->dateFrom = date("Y-m-d", strtotime($this->dateTo . " -3 months"));
+        }
+        $currentYear = date('Y', strtotime($this->dateTo));
+        $previousYear = (string) $currentYear - 1;
         $handbook = HandbookRepTt::where('parent_id', 0)->with('childHandbookItems')->get()->toArray();
-        $companyRepTtValues = SubholdingCompany::find($companyId)->statsByDate($currentYear)->get()->toArray();
-        $repTtReportValues = $this->recursiveSetValueToHandbookByType($handbook, $companyRepTtValues, $currentYear, $previousYear, $dateFrom, $dateTo);
+        $companies = EcoRefsCompaniesId::all();
+        $companyRepTtValues = EcoRefsCompaniesId::find($this->companyId)->statsByDate($currentYear)->get()->toArray();
+        $repTtReportValues = $this->recursiveSetValueToHandbookByType($handbook, $companyRepTtValues, $currentYear, $previousYear, $this->dateFrom, $this->dateTo);
+
         $data = [
             'reptt' => $repTtReportValues,
             'currentYear' => $currentYear,
-            'previousYear' => $previousYear
+            'previousYear' => $previousYear,
+            'companies' => $companies,
         ];
         $data = json_encode($data);
-        return $data;
+
+        return view('economy_kenzhe.company')->with(compact('data'));
     }
 
     public function recursiveSetValueToHandbookByType(&$items, $companyRepTtValues, $currentYear, $previousYear, $dateFrom, $dateTo)
@@ -33,7 +59,7 @@ class MainController extends Controller
         $companyValuesRepTtIds = array_column($companyRepTtValues, 'rep_id');
         foreach ($items as $repttIndex => $reptt) {
             $handbookKeys = ['plan_value', 'fact_value', 'intermediate_plan_value', 'intermediate_fact_value'];
-            foreach ($handbookKeys as $key){
+            foreach ($handbookKeys as $key) {
                 $this->setItemsDefaultValue($key, $items[$repttIndex], $currentYear, $previousYear);
             }
             if (count($reptt['handbook_items']) > 0) {
@@ -88,9 +114,9 @@ class MainController extends Controller
 
     public function sumValuesByItemType(&$item, $attribute, $value, $dateFrom, $dateTo, $year, $currentItemDate)
     {
-        $item[$attribute][$year] += $value;
+        $item[$attribute][$year] += (float)$value;
         if (strtotime($dateFrom) <= $currentItemDate && strtotime($dateTo) >= $currentItemDate) {
-            $item['intermediate_'.$attribute][$year] += $value;
+            $item['intermediate_' . $attribute][$year] += (float)$value;
         }
     }
 }

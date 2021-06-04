@@ -4,7 +4,7 @@ namespace App\Models\Pipes;
 
 
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Pipes\OilPipe;
+use App\Models\ComplicationMonitoring\OilPipe;
 
 class PipeCoord extends Model
 {

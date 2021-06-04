@@ -6,10 +6,12 @@ use App\Filters\UserFilter;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\UserUpdateRequest;
 use App\Http\Requests\IndexTableRequest;
+use App\Http\Resources\Admin\UserListResource;
+use App\Models\Refs\Org;
 use App\User;
 use App\Module;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use \Spatie\Permission\Models\Role;
 
 class UsersController extends Controller
 {
@@ -59,7 +61,7 @@ class UsersController extends Controller
             ->getFilteredQuery($request->validated(), $query)
             ->paginate(25);
 
-        return response()->json(json_decode(\App\Http\Resources\Admin\UserListResource::collection($users)->toJson()));
+        return response()->json(json_decode(UserListResource::collection($users)->toJson()));
     }
 
     /**
@@ -81,8 +83,8 @@ class UsersController extends Controller
      */
     public function edit(User $user)
     {
-        $roles = \Spatie\Permission\Models\Role::all();
-        $orgs = \App\Models\Refs\Org::all();
+        $roles = Role::all();
+        $orgs = Org::all();
         $modules = Module::all();
 
         return view('admin.users.edit', compact('user', 'roles', 'orgs','modules'));

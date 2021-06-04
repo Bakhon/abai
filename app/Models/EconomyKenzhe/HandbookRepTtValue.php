@@ -2,6 +2,7 @@
 
 namespace App\Models\EconomyKenzhe;
 
+use App\Models\EcoRefsCompaniesId;
 use Illuminate\Database\Eloquent\Model;
 
 class HandbookRepTtValue extends Model
@@ -12,7 +13,7 @@ class HandbookRepTtValue extends Model
 
     public function company()
     {
-        return $this->belongsTo(SubholdingCompany::class, 'company_id', 'id');
+        return $this->belongsTo(EcoRefsCompaniesId::class, 'company_id', 'id');
     }
 
     public function rept()

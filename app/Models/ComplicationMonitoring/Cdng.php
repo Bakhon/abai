@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Refs;
+namespace App\Models\ComplicationMonitoring;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -25,26 +25,26 @@ class Cdng extends Model
 
     public function omgngdu()
     {
-        return $this->hasMany(\App\Models\ComplicationMonitoring\OmgNGDU::class);
+        return $this->hasMany(OmgNGDU::class);
     }
 
     public function watermeasurement()
     {
-        return $this->hasMany(\App\Models\ComplicationMonitoring\WaterMeasurement::class);
+        return $this->hasMany(WaterMeasurement::class);
     }
 
     public function oilgas()
     {
-        return $this->hasMany(\App\Models\ComplicationMonitoring\OilGas::class);
+        return $this->hasMany(OilGas::class);
     }
 
     public function corrosion()
     {
-        return $this->hasMany(\App\Models\ComplicationMonitoring\Corrosion::class);
+        return $this->hasMany(Corrosion::class);
     }
 
     public function omguhe()
     {
-        return $this->hasMany(\App\Models\ComplicationMonitoring\OmgUHE::class);
+        return $this->hasMany(OmgUHE::class);
     }
 }

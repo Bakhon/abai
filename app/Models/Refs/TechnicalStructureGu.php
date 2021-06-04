@@ -2,6 +2,7 @@
 
 namespace App\Models\Refs;
 
+use App\User;
 use Illuminate\Database\Eloquent\Model;
 
 class TechnicalStructureGu extends Model
@@ -12,11 +13,11 @@ class TechnicalStructureGu extends Model
 
     public function user()
     {
-        return $this->belongsTo('App\User', 'user_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function cdng()
     {
-        return $this->belongsTo('App\Models\Refs\TechnicalStructureCdng', 'cdng_id');
+        return $this->belongsTo(TechnicalStructureCdng::class, 'cdng_id');
     }
 }

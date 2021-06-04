@@ -9,7 +9,7 @@ use Illuminate\Http\RedirectResponse;
 
 class TechnicalDataLogController extends TechnicalStructureController
 {
-    protected $model = "App\Models\Refs\TechnicalDataLog";
+    protected $model = TechnicalDataLog::class;
 
     protected $controller_name = 'log';
     protected $index_route = "tech_data_log.index";

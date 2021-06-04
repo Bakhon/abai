@@ -51,7 +51,7 @@ class LasDictionariesController extends CrudController
         if(auth()->user()->can('bigdata create '.$modelName)) {
             $params['links']['create'] = route($this->link.'.create');
         }
-        $permissions = auth()->user()->getAllPermissions()->pluck('name')->toArray();
+
         return view('bigdata.las_dictionaries.index', compact('params'));
     }
 
