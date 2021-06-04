@@ -4,20 +4,26 @@
 namespace App\Services\BigData;
 
 use App\Exceptions\DictionaryNotFound;
-use App\Models\BigData\Dictionaries\Company;
-use App\Models\BigData\Dictionaries\Org;
-use App\Models\BigData\Dictionaries\WellCategory;
-use App\Models\BigData\Dictionaries\WellType;
-use App\Models\BigData\Dictionaries\Equip;
-use App\Models\BigData\Dictionaries\CasingType;
-use App\Models\BigData\Dictionaries\Brigadier;
 use App\Models\BigData\Dictionaries\Brigade;
+use App\Models\BigData\Dictionaries\Brigadier;
+use App\Models\BigData\Dictionaries\Company;
+use App\Models\BigData\Dictionaries\DrillChisel;
+use App\Models\BigData\Dictionaries\DrillColumnType;
+use App\Models\BigData\Dictionaries\Equip;
+use App\Models\BigData\Dictionaries\EquipFailReasonType;
+use App\Models\BigData\Dictionaries\EquipType;
 use App\Models\BigData\Dictionaries\GtmType;
 use App\Models\BigData\Dictionaries\NoBtmReason;
+use App\Models\BigData\Dictionaries\Org;
+use App\Models\BigData\Dictionaries\PumpType;
 use App\Models\BigData\Dictionaries\RepairWorkType;
-use App\Models\BigData\Dictionaries\WellStatus;
-use App\Models\BigData\Dictionaries\EquipFailReasonType;
 use App\Models\BigData\Dictionaries\TechConditionOfWells;
+use App\Models\BigData\Dictionaries\TechStateType;
+use App\Models\BigData\Dictionaries\WellCategory;
+use App\Models\BigData\Dictionaries\WellStatus;
+use App\Models\BigData\Dictionaries\WellType;
+use App\Models\BigData\Dictionaries\Block;
+use App\TybeNom;
 use Carbon\Carbon;
 use Illuminate\Cache\Repository;
 use Illuminate\Support\Facades\DB;
@@ -41,9 +47,9 @@ class DictionaryService
             'class' => Equip::class,
             'name_field' => 'name_ru'
         ],
-        'casings' => [
-            'class' => CasingType::class,
-            'name_field' => 'CONCAT(\'Условный диаметр трубы(мм): \', od, \', Толщина стенки с норм. резьбой(мм):\', wt, \', Внутренний диаметр трубы с норм. резьбой (мм)\' , vd, \', Группа прочности: \', sg)'
+        'equip_type' => [
+            'class' => EquipType::class,
+            'name_field' => 'name_ru'
         ],
         'repair_work_types' => [
             'class' => RepairWorkType::class,
@@ -76,6 +82,30 @@ class DictionaryService
         'wells_tech_conditions' => [
             'class' => TechConditionOfWells::class,
             'name_field' => ''
+        ],
+        'pump_types' => [
+            'class' => PumpType::class,
+            'name_field' => 'name_ru'
+        ],
+        'drill_chisels' => [
+            'class' => DrillChisel::class,
+            'name_field' => 'name_ru'
+        ],
+        'drill_column_types' => [
+            'class' => DrillColumnType::class,
+            'name_field' => 'name_ru'
+        ],
+        'tube_nom' => [
+            'class' => TybeNom::class,
+            'name_field' => 'model'
+        ],
+        'well_tech_state_type' => [
+            'class' => TechStateType::class,
+            'name_field' => 'name_ru'
+        ],
+        'blocks' => [
+            'class' => Block::class,
+            'name_field' => 'name_ru'
         ]
     ];
 

@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers\Refs;
 
+use App\Models\Refs\TechnicalStructureCompany;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 
 class TechnicalStructureCompanyController extends TechnicalStructureController
 {
-    protected $model = "App\Models\Refs\TechnicalStructureCompany";
+    protected $model = TechnicalStructureCompany::class;
 
     protected $controller_name = 'company';
     protected $index_route = "tech_struct_company.index";

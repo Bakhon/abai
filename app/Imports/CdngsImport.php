@@ -2,8 +2,8 @@
 
 namespace App\Imports;
 
-use App\Models\Refs\Cdng;
-use App\Models\Refs\Ngdu;
+use App\Models\ComplicationMonitoring\Cdng;
+use App\Models\ComplicationMonitoring\Ngdu;
 use Maatwebsite\Excel\Concerns\ToModel;
 
 class CdngsImport implements ToModel

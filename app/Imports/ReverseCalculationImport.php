@@ -4,7 +4,7 @@ namespace App\Imports;
 
 use App\Console\Commands\Import\ImportReverseCalculation;
 use App\Models\ComplicationMonitoring\ReverseCalculation;
-use App\Models\Pipes\OilPipe;
+use App\Models\ComplicationMonitoring\OilPipe;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithColumnLimit;

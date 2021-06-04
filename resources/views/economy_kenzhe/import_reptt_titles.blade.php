@@ -31,6 +31,7 @@
                     <td width="20%">
                         <select name="importExcelType" id="" class="form-control">
                             <option value="opiu">{{trans('economy_kenzhe.opiu')}}</option>
+                            <option value="dds">{{trans('economy_kenzhe.dds')}}</option>
                             <option value="production">{{trans('economy_kenzhe.production')}}</option>
                             <option value="companies">{{trans('economy_kenzhe.companies')}}</option>
                             <option value="balance">{{trans('economy_kenzhe.balance')}}</option>

@@ -7,7 +7,7 @@ use App\Http\Controllers\ComplicationMonitoring\WaterMeasurementController;
 use App\Http\Controllers\DruidController;
 use App\Http\Requests\POSTCaller;
 use App\Models\ComplicationMonitoring\CalculatedCorrosion;
-use App\Models\Refs\Gu;
+use App\Models\ComplicationMonitoring\Gu;
 use Carbon\CarbonPeriod;
 use Illuminate\Console\Command;
 use Illuminate\Http\Request;

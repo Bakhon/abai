@@ -1,272 +1,62 @@
 <template>
-  <div class="row well-cart__wrapper">
-    <cat-loader v-show="loading"/>
-    <div
-        :class="{'left-column_folded': isLeftColumnFolded}"
-        class="left-column"
-    >
-      <div class="bg-dark left-column__inner">
-        <div class="row">
-          <div class="col">
-            <div class="well-deal">
-              <div class="well-deal__header">
-                <div class="title">
-                  <div class="icon-ierarchy"></div>
-                  <h2>Дело скважины</h2>
-                </div>
-                <div class="icon-all" style="margin-left: auto;" @click="isLeftColumnFolded = !isLeftColumnFolded">
-                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M11 1L5.8053 6L11 11" stroke="white" stroke-width="1.2" stroke-linecap="round"
-                          stroke-linejoin="round"/>
-                    <path d="M6.19472 1L1 6L6.19472 11" stroke="white" stroke-width="1.2" stroke-linecap="round"
-                          stroke-linejoin="round"/>
-                  </svg>
+  <div class="all-contents">
+    <div class="row well-cart__wrapper">
+      <cat-loader v-show="loading"/>
+      <div
+          :class="{'left-column_folded': isLeftColumnFolded}"
+          class="left-column"
+      >
+        <div class="bg-dark left-column__inner">
+          <div class="row">
+            <div class="col">
+              <div class="well-deal">
+                <div class="well-deal__header">
+                  <div class="title">
+                    <div class="icon-ierarchy"></div>
+                    <h2>Дело скважины</h2>
+                  </div>
+                  <div class="icon-all" style="margin-left: auto;"
+                       @click="onColumnFoldingEvent('left')">
+                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M11 1L5.8053 6L11 11" stroke="white" stroke-width="1.2" stroke-linecap="round"
+                            stroke-linejoin="round"/>
+                      <path d="M6.19472 1L1 6L6.19472 11" stroke="white" stroke-width="1.2" stroke-linecap="round"
+                            stroke-linejoin="round"/>
+                    </svg>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-
-          <div class="directory">
-            <div class="custom-directory">
-              <ul id="myUL">
-                <li :class="{'selected': activeFormCode === 'well_design'}" @click="setForm('well_design')">
-                  <p>
-                    <span class="file">Конструкция скважины по проекту</span>
-                  </p>
-                </li>
-              </ul>
-
+            <div class="directory">
+              <div class="custom-directory">
+                <ul id="myUL">
+                  <li v-for="form in forms" :class="{'selected': activeFormCode === form.code}"
+                      @click="switchFormByCode(form.code)">
+                    <p>
+                      <span class="file" v-html="form.name"></span>
+                    </p>
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-    <div class="col-md-6 mid-col">
-      <div class="row">
-        <div class="col-md-8 bg-dark-transparent calc-width">
-          <div class="row">
-            <div class="col">
-              <select class="transparent-select">
-                <option>Дело скважины</option>
-              </select>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-4 buttons-no-wrap">
-              <div class="dropdown small-select">
-                <button class="btn btn-secondary select-button" type="button" id="dropdownMenuButton"
-                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <div class="button1-vc-inner">
-                    <div class="icon-all ">
-                      <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path fill-rule="evenodd" clip-rule="evenodd"
-                              d="M15.5708 0H10.4567C4.80802 0 0.228516 4.56843 0.228516 10.2035V15.3052C0.228516 20.9403 4.80802 25.5087 10.4567 25.5087H15.5708C21.2196 25.5087 25.7991 20.9403 25.7991 15.3052V10.2035C25.7991 4.56843 21.2196 0 15.5708 0Z"
-                              fill="#FEFEFE"/>
-                        <path
-                            d="M12.6738 19.9728C9.63312 19.9728 7.34045 18.6828 7.34045 16.9728V9.30609H7.37179C7.60493 8.43959 8.23036 7.73225 9.06179 7.39476C10.1926 6.87128 11.428 6.61294 12.6738 6.63942C15.7145 6.63942 18.0071 7.92942 18.0071 9.63942C18.0065 9.75126 17.9957 9.86282 17.9751 9.97276H18.0071V16.9728C18.0071 18.6828 15.7145 19.9728 12.6738 19.9728ZM8.52512 11.5688V16.9728C8.52512 17.6521 10.1405 18.6394 12.6738 18.6394C15.2071 18.6394 16.8218 17.6521 16.8218 16.9728V11.5688C15.5719 12.3196 14.1309 12.6914 12.6738 12.6394C11.2164 12.6914 9.77532 12.3194 8.52512 11.5688ZM12.6738 7.97276C10.1405 7.97276 8.52512 8.96009 8.52512 9.63942C8.52512 10.3188 10.1405 11.3061 12.6738 11.3061C15.2071 11.3061 16.8218 10.3188 16.8218 9.63942C16.8218 8.96009 15.2071 7.97276 12.6738 7.97276Z"
-                            fill="#237DEB"/>
-                      </svg>
-                    </div>
-                    <div class="text-wrapper">
-                      <div class="txt5">Фонд</div>
-                      <div class="icon-pointer" style="margin-left:auto"></div>
-                    </div>
-
-                  </div>
-                </button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton_1">
-                  <form>
-                    <ul>
-                      <li>
-                        <div class="flag"></div>
-                        <label class="container" for="tech_structire">
-                          <span class="bottom-border">Технологическая структура</span>
-                          <input type="checkbox" id="tech_structire" name="tech_structire" value="tech_structire"
-                                 class="dropdown-item">
-                          <span class="checkmark"></span>
-                        </label>
-                      </li>
-                      <li>
-                        <div class="flag"></div>
-                        <label class="container" for="tech_structire_1">
-                          <span class="bottom-border">Распределительная подстанция</span>
-                          <input type="checkbox" id="tech_structire_1" name="tech_structire_1" value="tech_structire"
-                                 class="dropdown-item">
-                          <span class="checkmark"></span>
-                        </label>
-                      </li>
-                      <li>
-                        <div class="flag"></div>
-                        <label class="container" for="tech_structire_2">
-                          <span class="bottom-border">Распределительная подстанция</span>
-                          <input type="checkbox" id="tech_structire_2" name="tech_structire_2" value="tech_structire_2"
-                                 class="dropdown-item">
-                          <span class="checkmark"></span>
-                        </label>
-                      </li>
-                    </ul>
-                  </form>
-                </div>
-              </div>
-            </div>
-            <div class="col-4 buttons-no-wrap">
-              <div class="dropdown small-select">
-                <button class="btn btn-secondary select-button" type="button" id="dropdownMenuButton_2"
-                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <div class="button1-vc-inner">
-                    <div class="icon-all ">
-                      <svg width="27" height="26" viewBox="0 0 27 26" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path fill-rule="evenodd" clip-rule="evenodd"
-                              d="M16.2447 0H11.1306C5.48184 0 0.902344 4.56843 0.902344 10.2035V15.3052C0.902344 20.9403 5.48184 25.5087 11.1306 25.5087H16.2447C21.8934 25.5087 26.473 20.9403 26.473 15.3052V10.2035C26.473 4.56843 21.8934 0 16.2447 0Z"
-                              fill="#FEFEFE"/>
-                        <path
-                            d="M13.3164 18.9729C9.63623 18.9688 6.65382 15.9864 6.64978 12.3062V12.1729C6.72307 8.50923 9.73951 5.59151 13.4036 5.64013C17.0676 5.68875 20.0056 8.68547 19.9816 12.3497C19.9577 16.0141 16.9808 18.9721 13.3164 18.9729ZM13.3164 6.97287C10.3721 6.97581 7.98605 9.3619 7.98311 12.3062H13.3164V6.97287Z"
-                            fill="#237DEB"/>
-                      </svg>
-                    </div>
-                    <div class="text-wrapper">
-                      <div class="txt5">График замеров</div>
-                      <div class="icon-pointer" style="margin-left:auto"></div>
-                    </div>
-
-                  </div>
-                </button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                  <form>
-                    <ul>
-                      <li>
-                        <div class="flag"></div>
-                        <label class="container" for="t1_1">
-                          <span class="bottom-border">Технологическая структура</span>
-                          <input type="checkbox" id="t1_1" name="t1_1" value="t1_1" class="dropdown-item">
-                          <span class="checkmark"></span>
-                        </label>
-                      </li>
-                      <li>
-                        <div class="flag"></div>
-                        <label class="container" for="t1_2">
-                          <span class="bottom-border">Распределительная подстанция</span>
-                          <input type="checkbox" id="t1_2" name="t1_2" value="t1_2" class="dropdown-item">
-                          <span class="checkmark"></span>
-                        </label>
-                      </li>
-                      <li>
-                        <div class="flag"></div>
-                        <label class="container" for="t1_3">
-                          <span class="bottom-border">Категория запасов</span>
-                          <input type="checkbox" id="t1_3" name="t1_3" value="t1_3" class="dropdown-item">
-                          <span class="checkmark"></span>
-                        </label>
-                      </li>
-                      <li>
-                        <div class="flag"></div>
-                        <label class="container" for="t1_3">
-                          <span class="bottom-border">Категория запасов</span>
-                          <input type="checkbox" id="t1_3" name="t1_3" value="t1_3" class="dropdown-item">
-                          <span class="checkmark"></span>
-                        </label>
-                      </li>
-                      <li>
-                        <div class="flag"></div>
-                        <label class="container" for="t1_4">
-                          <span class="bottom-border">Добывающие скважины</span>
-                          <input type="checkbox" id="t1_4" name="t1_4" value="t1_4" class="dropdown-item">
-                          <span class="checkmark"></span>
-                        </label>
-                      </li>
-                      <li>
-                        <div class="flag"></div>
-                        <label class="container" for="t1_5">
-                          <span class="bottom-border"> Поглощающие скважины</span>
-                          <input type="checkbox" id="t1_5" name="t1_5" value="t1_5" class="dropdown-item">
-                          <span class="checkmark"></span>
-                        </label>
-                      </li>
-                    </ul>
-                  </form>
-                </div>
-              </div>
-            </div>
-            <div class="col-4 buttons-no-wrap">
-              <div class="dropdown small-select">
-                <button class="btn btn-secondary select-button" type="button" id="dropdownMenuButton_3"
-                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <div class="button1-vc-inner">
-                    <div class="icon-all ">
-                      <svg width="27" height="27" viewBox="0 0 27 27" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path fill-rule="evenodd" clip-rule="evenodd"
-                              d="M16.2451 0.590454H11.1306C5.48188 0.590454 0.902344 5.15888 0.902344 10.7939V15.8957C0.902344 21.5308 5.48188 26.0992 11.1306 26.0992H16.2451C21.8939 26.0992 26.4734 21.5308 26.4734 15.8957V10.7939C26.4734 5.15888 21.8939 0.590454 16.2451 0.590454Z"
-                              fill="#FEFEFE"/>
-                        <path
-                            d="M14.3874 14.8393C14.5124 14.9644 14.6819 15.0346 14.8587 15.0346H15.2494C15.4262 15.0346 15.5957 14.9644 15.7207 14.8393L18.8587 11.7013L20.3874 13.23V9.22998H16.3874L17.9161 10.7586L15.0541 13.6206L13.0541 11.6206C12.9291 11.4956 12.7595 11.4254 12.5827 11.4253H12.1921C12.0153 11.4254 11.8457 11.4956 11.7207 11.6206L7.24939 16.092L8.19206 17.0346L12.3874 12.8393L14.3874 14.8393Z"
-                            fill="#237DEB"/>
-                      </svg>
-                    </div>
-                    <div class="text-wrapper">
-                      <div class="txt5">Эксплуатационные показатели</div>
-                      <div class="icon-pointer" style="margin-left:auto"></div>
-                    </div>
-                  </div>
-                </button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                  <form>
-                    <ul>
-                      <li>
-                        <div class="flag"></div>
-                        <label class="container" for="tech">
-                          <span class="bottom-border">Технологическая структура</span>
-                          <input type="checkbox" id="tech" name="tech" value="tech" class="dropdown-item">
-                          <span class="checkmark"></span>
-                        </label>
-                      </li>
-                      <li>
-                        <div class="flag"></div>
-                        <label class="container" for="substation">
-                          <span class="bottom-border">Распределительная подстанция</span>
-                          <input type="checkbox" id="substation" value="" class="dropdown-item">
-                          <span class="checkmark"></span>
-                        </label>
-                      </li>
-                      <li>
-                        <div class="flag"></div>
-                        <label class="container" for="querry_category">
-                          <span class="bottom-border">Категория запасов</span>
-                          <input type="checkbox" id="querry_category" name="t1_3" value="" class="dropdown-item">
-                          <span class="checkmark"></span>
-                        </label>
-                      </li>
-                      <li>
-                        <div class="flag"></div>
-                        <label class="container" for="production_wells">
-                          <span class="bottom-border">Добывающие скважины</span>
-                          <input type="checkbox" id="production_wells" name="t1_4" value="" class="dropdown-item">
-                          <span class="checkmark"></span>
-                        </label>
-                      </li>
-                    </ul>
-                  </form>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4 col-no-right-padding">
-          <div class="bg-dark-transparent">
+      <div :class="{'right-column_folded': isRightColumnFolded, 'both-pressed_folded' : isBothColumnFolded}"
+           class="right-column__inner bg-dark" style="display:none"></div>
+      <div class="col-md-6 mid-col">
+        <div class="row mid-col__main">
+          <div class="col-md-12 mid-col__main-inner bg-dark-transparent">
             <div class="row">
               <div class="col">
-                <div class="heading">
-                  <p>Поиск скважины</p>
-                </div>
-                <div class="sheare-icon">
-                  <svg width="13" height="12" viewBox="0 0 13 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path fill-rule="evenodd" clip-rule="evenodd"
-                          d="M2.15108 1.67037V10.0779H10.5791V7.57345C10.5791 6.4918 12.155 6.48024 12.155 7.57345V10.83C12.155 11.3117 11.8157 11.6502 11.3328 11.6502H1.39717C0.914278 11.6502 0.574951 11.3117 0.574951 10.83V0.91834C0.574951 0.436621 0.914278 0.0981445 1.39717 0.0981445H4.78901C5.87368 0.0981445 5.88526 1.67037 4.78901 1.67037H2.15108ZM10.5794 2.80054L9.02811 4.32156C8.59501 4.75437 7.2806 6.28694 6.70546 6.28694C6.10677 6.28694 5.95124 5.91689 5.95124 5.39898C5.95124 4.99466 7.5975 3.54026 7.95378 3.18523L9.44653 1.66999C9.0999 1.66961 8.75397 1.6696 8.40734 1.67037C7.77236 1.67191 6.97219 1.73738 6.97219 0.850182C6.97219 0.41082 7.37128 0.0981445 7.79395 0.0981445H11.3328C11.8157 0.0981445 12.155 0.436621 12.155 0.91834V4.44863C12.155 4.92997 11.8157 5.26844 11.3328 5.26844C10.494 5.26844 10.5783 4.34697 10.5791 3.76937C10.5794 3.4463 10.5794 3.12323 10.5794 2.80054Z"
-                          fill="#82BAFF"/>
+                <button class="transparent-select">
+                  Скважина: <span v-if="allData">{{ allData.uwi }}</span>
+                  <svg width="14" height="8" viewBox="0 0 14 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M1 1L7 7L13 1" stroke="white" stroke-width="1.6" stroke-linecap="round"
+                          stroke-linejoin="round"/>
                   </svg>
-                </div>
+                </button>
               </div>
-            </div>
-            <div class="row">
               <div class="col">
                 <form class="search-form">
                   <v-select
@@ -275,6 +65,7 @@
                       placeholder="Номер скважины"
                       @input="selectWell"
                       @search="onSearch"
+                      v-model="wellName"
                   >
                     <template slot="option" slot-scope="option">
                       <span>{{ option.name }}</span>
@@ -283,57 +74,45 @@
                 </form>
               </div>
             </div>
-          </div>
-        </div>
-      </div>
-      <div class="row mid-col__main">
-        <div class="col-md-12 mid-col__main-inner bg-dark-transparent">
-          <div class="row">
-            <div class="col table-wrapper">
-              <template v-if="well && activeFormCode">
-                <BigDataPlainFormResult :code="activeFormCode" :well-id="well.id"></BigDataPlainFormResult>
-              </template>
-            </div>
-          </div>
-          <div v-if="graph" class="mid-col__main row">
-            <div class="col">
-              <div class="bg-dark graphics">
-                <div class="dropdown small-select">
-                  <button class="btn btn-secondary select-button" type="button" id="OilDropdown"
-                          data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <div class="button1-vc-inner">
-                      <div class="icon-all ">
-                      </div>
-                      <div class="text-wrapper">
-                        <div class="txt5">Нефть, жикость</div>
-                        <div class="icon-pointer" style="margin-left:auto"></div>
-                      </div>
-
+            <div v-if="allData" class="mid-col__main_row">
+              <div v-if="activeFormCode" class="col table-wrapper">
+                <BigDataPlainFormResult :code="activeFormCode" :well-id="allData.id"></BigDataPlainFormResult>
+              </div>
+              <div v-else class="col graphics">
+                <div class="row">
+                  <div class="col" style="max-width: 64px; display: grid; padding: 0px;">
+                    <svg fill="none" height="42" style="margin: 12px 0px 0px 24px;" viewBox="0 0 42 42" width="42"
+                         xmlns="http://www.w3.org/2000/svg">
+                      <path
+                          d="M20.9993 0.999999C25.0498 0.999999 31.5236 0.999999 36.0037 0.999999C38.7652 0.999999 41 3.23536 41 5.99678C41 10.9694 41 18.2449 41 21C41 24.4924 41 31.3063 41 36.0027C41 38.7641 38.7632 40.9999 36.0018 40.9999C31.2512 40.9999 24.3497 41 20.9993 41C17.1648 41 10.5605 41 5.99621 41C3.23481 41 1.00023 38.763 1.00018 36.0016C1.0001 31.1169 1 23.9922 1 21C1 17.6496 1.0001 10.7485 1.00018 5.99813C1.00022 3.23674 3.23602 0.999999 5.99741 0.999999C10.6937 0.999999 17.5075 0.999999 20.9993 0.999999Z"
+                          stroke="#2E50E9" stroke-miterlimit="22.9256"/>
+                      <path
+                          d="M20.9994 2.99996C24.7981 2.99996 30.9653 2.99996 35.0024 2.99996C37.2115 2.99996 39 4.79063 39 6.99977C39 11.4726 39 18.4269 39 21C39 24.2698 39 30.7748 39 35.0039C39 37.213 37.2127 38.9999 35.0036 38.9999C30.7266 39 24.135 39 20.9994 39C17.4055 39 11.1085 39 6.99658 39C4.78747 39 3.00021 37.2109 3.00017 35.0018C3.0001 30.6063 3 23.7971 3 21C3 17.8643 3.0001 11.2731 3.00017 6.9963C3.00021 4.78719 4.78713 2.99996 6.99624 2.99996C11.2252 2.99996 17.73 2.99996 20.9994 2.99996Z"
+                          fill="#323370"/>
+                      <path
+                          d="M14.7029 25L13.5829 20.472C13.4656 19.96 13.3536 19.4053 13.2469 18.808H13.1829C13.0763 19.5333 12.9483 20.1947 12.7989 20.792L11.7749 25H10.1269L8.11094 17.336H9.39094L10.5909 22.392C10.7189 22.9573 10.8256 23.464 10.9109 23.912H10.9749C11.0283 23.624 11.1509 23.0907 11.3429 22.312L12.5429 17.336H13.9189L15.1669 22.376C15.2736 22.8133 15.3856 23.3253 15.5029 23.912H15.5509C15.6256 23.3787 15.7216 22.872 15.8389 22.392L17.0709 17.336H18.3349L16.3189 25H14.7029ZM22.9856 17.08C23.6469 17.08 24.2336 17.208 24.7456 17.464C25.2576 17.72 25.6522 18.0507 25.9296 18.456C26.2176 18.8613 26.4309 19.288 26.5696 19.736C26.7082 20.1733 26.7776 20.616 26.7776 21.064C26.7776 21.2667 26.7669 21.4213 26.7456 21.528H20.4896C20.4896 22.2213 20.7616 22.8347 21.3056 23.368C21.8496 23.8907 22.4842 24.152 23.2096 24.152C23.9989 24.152 24.6549 23.8427 25.1776 23.224H26.6336C26.3349 23.7893 25.8976 24.2747 25.3216 24.68C24.7562 25.0747 24.0629 25.272 23.2416 25.272C22.0362 25.272 21.0549 24.872 20.2976 24.072C19.5509 23.272 19.1776 22.2693 19.1776 21.064C19.1776 19.9653 19.5296 19.0267 20.2336 18.248C20.9376 17.4693 21.8549 17.08 22.9856 17.08ZM22.9856 18.184C22.2922 18.184 21.7216 18.4133 21.2736 18.872C20.8256 19.32 20.5696 19.8533 20.5056 20.472H25.4496C25.3856 19.8427 25.1242 19.304 24.6656 18.856C24.2176 18.408 23.6576 18.184 22.9856 18.184ZM28.4556 25V13.48H29.7196V25H28.4556ZM31.9243 25V13.48H33.1883V25H31.9243Z"
+                          fill="white"/>
+                    </svg>
+                  </div>
+                  <div class="col">
+                    <div class="well-info">
+                      <div class="title">Основное</div>
+                      <p>Номер скважины: <span>{{ allData.uwi }}</span></p>
+                      <p>Категория скважины: <span v-if="wellCategory">{{ wellCategory.name_ru }}</span></p>
+                      <div class="title">Привязка</div>
+                      <p>Оргструктура: <span>
+                          <span v-for="value in org">
+                            {{ value.name_ru + "/" }}
+                          </span>
+                        </span></p>
+                      <div class="title">Координаты устья</div>
+                      <p>Оргструктура: <span></span></p>
+                      <p>Координаты устья X:<span></span></p>
+                      <p>Координаты устья Y:<span></span></p>
+                      <div class="title">Координаты забоя</div>
+                      <p>Координаты устья X:<span></span></p>
+                      <p>Координаты устья Y:<span></span></p>
                     </div>
-                  </button>
-                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <form>
-                      <ul>
-                        <li>
-                          <div class="flag"></div>
-                          <label class="container" for="oil">
-                            <span class="bottom-border">Нефть, жидкость</span>
-                            <input type="checkbox" id="oil" name="tech_structire" value="tech_structire"
-                                   class="dropdown-item">
-                            <span class="checkmark"></span>
-                          </label>
-                        </li>
-                        <li>
-                          <div class="flag"></div>
-                          <label class="container" for="water_percent">
-                            <span class="bottom-border">Обводненность, Н дин</span>
-                            <input type="checkbox" id="water_percent" name="tech_structire_1" value="tech_structire"
-                                   class="dropdown-item">
-                            <span class="checkmark"></span>
-                          </label>
-                        </li>
-                      </ul>
-                    </form>
                   </div>
                 </div>
               </div>
@@ -341,197 +120,382 @@
           </div>
         </div>
       </div>
-    </div>
-
-    <div class="passport right-column">
-      <template v-if="well">
+      <div :class="{'right-column_folded': isRightColumnFolded}" class="right-column__inner">
         <div class="bg-dark-transparent">
           <template>
             <div class="row">
               <div class="col">
                 <div class="heading">
-                  <p>Паспорт скважины</p>
-                </div>
-                <div class="sheare-icon">
-                  <svg fill="none" height="12" viewBox="0 0 13 12" width="13" xmlns="http://www.w3.org/2000/svg">
-                    <path clip-rule="evenodd"
-                          d="M2.15108 1.67037V10.0779H10.5791V7.57345C10.5791 6.4918 12.155 6.48024 12.155 7.57345V10.83C12.155 11.3117 11.8157 11.6502 11.3328 11.6502H1.39717C0.914278 11.6502 0.574951 11.3117 0.574951 10.83V0.91834C0.574951 0.436621 0.914278 0.0981445 1.39717 0.0981445H4.78901C5.87368 0.0981445 5.88526 1.67037 4.78901 1.67037H2.15108ZM10.5794 2.80054L9.02811 4.32156C8.59501 4.75437 7.2806 6.28694 6.70546 6.28694C6.10677 6.28694 5.95124 5.91689 5.95124 5.39898C5.95124 4.99466 7.5975 3.54026 7.95378 3.18523L9.44653 1.66999C9.0999 1.66961 8.75397 1.6696 8.40734 1.67037C7.77236 1.67191 6.97219 1.73738 6.97219 0.850182C6.97219 0.41082 7.37128 0.0981445 7.79395 0.0981445H11.3328C11.8157 0.0981445 12.155 0.436621 12.155 0.91834V4.44863C12.155 4.92997 11.8157 5.26844 11.3328 5.26844C10.494 5.26844 10.5783 4.34697 10.5791 3.76937C10.5794 3.4463 10.5794 3.12323 10.5794 2.80054Z"
-                          fill="#82BAFF"
-                          fill-rule="evenodd"/>
-                  </svg>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col">
-                <div class="icon-all pointer-large-icon inline-table">
-                  <svg fill="none" height="22" viewBox="0 0 14 22" width="14" xmlns="http://www.w3.org/2000/svg">
-                    <path
-                        d="M12.2882 0.739231L12.9888 1.43312C13.2073 1.65145 13.3278 1.94178 13.3278 2.25253C13.3278 2.56251 13.2073 2.85363 12.9888 3.07196L5.05502 10.9858L12.9977 18.9089C13.2162 19.1269 13.3365 19.4176 13.3365 19.728C13.3365 20.0383 13.2162 20.3291 12.9977 20.5474L12.3013 21.2413C11.8489 21.693 11.1117 21.693 10.659 21.2413L1.16833 11.808C0.949852 11.59 0.795898 11.2997 0.795898 10.9866V10.9827C0.795898 10.6724 0.950238 10.382 1.16833 10.1637L10.6335 0.739231C10.852 0.520899 11.1518 0.401142 11.4629 0.400757C11.7741 0.400757 12.0701 0.520899 12.2882 0.739231Z"
-                        fill="#656A8A"/>
-                  </svg>
-                </div>
-                <div class="file-container">
-                  <div class="row">
-                    <div class="col">
-                      <div v-if="well.file_size" class="file-size">
-                        <p> 233 MB</p>
-                      </div>
-                    </div>
+                  <div class="icon-all"
+                       @click="onColumnFoldingEvent('right')">
+                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M1.0001 1L6.19482 6L1.0001 11" stroke="white" stroke-width="1.2" stroke-linecap="round"
+                            stroke-linejoin="round"/>
+                      <path d="M5.80528 1L11 6L5.80528 11" stroke="white" stroke-width="1.2" stroke-linecap="round"
+                            stroke-linejoin="round"/>
+                    </svg>
                   </div>
-                  <div class="row">
-                    <div class="col">
-                      <div class="file-icon-large">
-                        <p class="well-name">
-                          Скважина
-                          <span class="well-own-name">{{ well.uwi }}</span>
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col">
-                      <div class="icon-container">
-                        <svg fill="none" height="23" style="float:left" viewBox="0 0 25 23" width="25"
-                             xmlns="http://www.w3.org/2000/svg">
-                          <path clip-rule="evenodd"
-                                d="M3.46183 0.00268555C2.00545 0.00268555 0.824219 1.18058 0.824219 2.63344V19.7331C0.824219 21.1863 2.00545 22.3639 3.46183 22.3639H21.921C23.3774 22.3639 24.5585 21.1863 24.5585 19.7331V5.26422C24.5585 3.81098 23.3774 2.63344 21.921 2.63344H10.0543C10.0543 1.18058 8.8734 0.00268555 7.41741 0.00268555H3.46183Z"
-                                fill="white"
-                                fill-rule="evenodd"/>
-                        </svg>
-
-                        <svg fill="none" height="23" style="margin-left:20px" viewBox="0 0 24 23" width="24"
-                             xmlns="http://www.w3.org/2000/svg">
-                          <path clip-rule="evenodd"
-                                d="M3.51517 9.72488C3.26582 9.72488 3.01655 9.62976 2.82626 9.43992C2.44528 9.05986 2.44528 8.44533 2.82626 8.06527L9.55673 1.35125C9.93771 0.970807 10.5539 0.970807 10.9348 1.35125C11.3158 1.73131 11.3158 2.34588 10.9348 2.72594L4.20423 9.43992C4.01432 9.62976 3.76491 9.72488 3.51517 9.72488Z"
-                                fill="white"
-                                fill-rule="evenodd"/>
-                          <path clip-rule="evenodd"
-                                d="M11.5551 4.86371C11.3652 4.86371 11.178 4.78979 11.0387 4.64963L7.62743 1.24681C7.41783 1.03888 7.35571 0.725045 7.46881 0.452805C7.58191 0.180564 7.84858 0.00268555 8.14388 0.00268555H11.5551C11.9589 0.00268555 12.2863 0.329208 12.2863 0.7316V4.13442C12.2863 4.42899 12.1079 4.69546 11.835 4.80828C11.7442 4.84525 11.6497 4.86371 11.5551 4.86371Z"
-                                fill="white"
-                                fill-rule="evenodd"/>
-                          <path clip-rule="evenodd"
-                                d="M7.41382 13.8571V19.4475H1.56641V13.8571C1.56641 13.1859 2.11177 12.6418 2.78456 12.6418H6.19566C6.86807 12.6418 7.41382 13.1863 7.41382 13.8571Z"
-                                fill="white"
-                                fill-rule="evenodd"/>
-                          <path clip-rule="evenodd"
-                                d="M15.2104 9.96794V19.4475H9.36279V9.96794C9.36279 9.29715 9.90831 8.75269 10.5811 8.75269H13.9921C14.6645 8.75269 15.2104 9.29715 15.2104 9.96794Z"
-                                fill="white"
-                                fill-rule="evenodd"/>
-                          <path clip-rule="evenodd"
-                                d="M23.0072 6.07906V19.4474H17.1592V6.07906C17.1592 5.40828 17.705 4.86377 18.3778 4.86377H21.789C22.4614 4.86377 23.0072 5.40828 23.0072 6.07906Z"
-                                fill="white"
-                                fill-rule="evenodd"/>
-                          <path clip-rule="evenodd"
-                                d="M23.2504 22.3638H1.32199C0.918623 22.3638 0.591309 22.0372 0.591309 21.6345C0.591309 21.232 0.918623 20.9055 1.32199 20.9055H23.2504C23.6538 20.9055 23.9816 21.232 23.9816 21.6345C23.9816 22.0372 23.6538 22.3638 23.2504 22.3638Z"
-                                fill="white"
-                                fill-rule="evenodd"/>
-                        </svg>
-
-                        <svg fill="none" height="23" style="float:right" viewBox="0 0 23 23" width="23"
-                             xmlns="http://www.w3.org/2000/svg">
-                          <path clip-rule="evenodd"
-                                d="M12.5546 0V12.4246H17.5359L11.3684 18.6364L5.08203 12.4246H10.0634V0H12.5546Z"
-                                fill="#A18F47"
-                                fill-rule="evenodd"/>
-                          <path clip-rule="evenodd" d="M22.5176 19.8789H0.0996094V22.3638H22.5176V19.8789Z"
-                                fill="#A18F47" fill-rule="evenodd"/>
-                        </svg>
-                      </div>
-                    </div>
-                  </div>
+                  <p v-if="allData">Паспорт скважины</p>
                 </div>
-                <div class="icon-all pointer-large-icon inline-table">
-                  <svg fill="none" height="22" viewBox="0 0 14 22" width="14" xmlns="http://www.w3.org/2000/svg">
-                    <path
-                        d="M1.99418 0.739231L1.2935 1.43312C1.07503 1.65145 0.954697 1.94178 0.954697 2.25253C0.954697 2.56251 1.07503 2.85363 1.2935 3.07196L9.22732 10.9858L1.28461 18.9089C1.06613 19.1269 0.945801 19.4176 0.945801 19.728C0.945801 20.0383 1.06613 20.3291 1.28461 20.5474L1.98107 21.2413C2.43346 21.693 3.1706 21.693 3.62338 21.2413L13.114 11.808C13.3325 11.59 13.4865 11.2997 13.4865 10.9866V10.9827C13.4865 10.6724 13.3321 10.382 13.114 10.1637L3.64886 0.739231C3.43038 0.520899 3.13053 0.401142 2.81941 0.400757C2.5083 0.400757 2.21228 0.520899 1.99418 0.739231Z"
-                        fill="#656A8A"/>
-                  </svg>
-
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col">
-                <div class="center">
-                  <h2>{{ well.uwi }}</h2>
+                <div class="title-container">
+                  <div class="sheare-icon" v-if="allData">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path
+                          d="M17.5443 8.3734L13.9393 4.79071C13.752 4.60451 13.4986 4.5 13.2344 4.5L7.10023 4.50002C6.54794 4.50002 6.10023 4.94773 6.10023 5.50002L6.10023 18.5C6.10023 19.0523 6.54795 19.5 7.10023 19.5H16.8394C17.3916 19.5 17.8394 19.0523 17.8394 18.5L17.8394 9.0827C17.8394 8.81641 17.7331 8.56111 17.5443 8.3734Z"
+                          stroke="white" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+                      <path d="M12.9067 4.5V8.51961C12.9067 9.07189 13.3545 9.51961 13.9067 9.51961H17.8391"
+                            stroke="white" stroke-width="1.4" stroke-linejoin="round"/>
+                      <path
+                          d="M8.23505 15.02C8.52838 15.02 8.76705 15.1147 8.95105 15.304C9.13505 15.4907 9.22705 15.7347 9.22705 16.036C9.22705 16.0947 9.22438 16.148 9.21905 16.196H7.87505C7.87505 16.3053 7.91238 16.3987 7.98705 16.476C8.06171 16.5507 8.15371 16.588 8.26305 16.588C8.41238 16.588 8.51771 16.528 8.57905 16.408H9.20305C9.13638 16.608 9.02438 16.768 8.86705 16.888C8.70971 17.008 8.50438 17.068 8.25105 17.068C7.96571 17.068 7.72305 16.9733 7.52305 16.784C7.32571 16.5947 7.22705 16.3453 7.22705 16.036C7.22705 15.7427 7.31505 15.5 7.49105 15.308C7.66971 15.116 7.91771 15.02 8.23505 15.02ZM8.22705 15.456C8.12838 15.456 8.04838 15.4867 7.98705 15.548C7.92571 15.6067 7.88971 15.68 7.87905 15.768H8.57505C8.56438 15.6773 8.52705 15.6027 8.46305 15.544C8.40171 15.4853 8.32305 15.456 8.22705 15.456ZM9.29055 17L9.97855 16.044L9.32655 15.084H10.0705L10.2585 15.424C10.2905 15.4827 10.3199 15.552 10.3465 15.632H10.3625C10.3999 15.52 10.4239 15.4533 10.4345 15.432L10.6065 15.084H11.3465L10.6985 16.032L11.3665 17H10.5945L10.4105 16.66C10.3652 16.572 10.3399 16.5 10.3345 16.444H10.3185C10.3025 16.5027 10.2732 16.576 10.2305 16.664L10.0465 17H9.29055ZM12.4348 15.02C12.6908 15.02 12.9015 15.0987 13.0668 15.256C13.2322 15.4107 13.3308 15.5933 13.3628 15.804H12.7108C12.6975 15.7373 12.6642 15.684 12.6108 15.644C12.5602 15.604 12.4988 15.584 12.4268 15.584C12.3095 15.584 12.2228 15.6267 12.1668 15.712C12.1135 15.7973 12.0868 15.9067 12.0868 16.04C12.0868 16.1733 12.1162 16.284 12.1748 16.372C12.2335 16.4573 12.3215 16.5 12.4388 16.5C12.5135 16.5 12.5762 16.4787 12.6268 16.436C12.6802 16.3907 12.7162 16.3333 12.7348 16.264H13.3988C13.3402 16.5067 13.2282 16.7013 13.0628 16.848C12.9002 16.9947 12.6882 17.068 12.4268 17.068C12.1415 17.068 11.8988 16.9733 11.6988 16.784C11.5015 16.5947 11.4028 16.3453 11.4028 16.036C11.4028 15.748 11.4962 15.5067 11.6828 15.312C11.8695 15.1173 12.1202 15.02 12.4348 15.02ZM14.6218 15.02C14.9151 15.02 15.1538 15.1147 15.3378 15.304C15.5218 15.4907 15.6138 15.7347 15.6138 16.036C15.6138 16.0947 15.6111 16.148 15.6058 16.196H14.2618C14.2618 16.3053 14.2991 16.3987 14.3738 16.476C14.4484 16.5507 14.5404 16.588 14.6498 16.588C14.7991 16.588 14.9044 16.528 14.9658 16.408H15.5898C15.5231 16.608 15.4111 16.768 15.2538 16.888C15.0964 17.008 14.8911 17.068 14.6378 17.068C14.3524 17.068 14.1098 16.9733 13.9098 16.784C13.7124 16.5947 13.6138 16.3453 13.6138 16.036C13.6138 15.7427 13.7018 15.5 13.8778 15.308C14.0564 15.116 14.3044 15.02 14.6218 15.02ZM14.6138 15.456C14.5151 15.456 14.4351 15.4867 14.3738 15.548C14.3124 15.6067 14.2764 15.68 14.2658 15.768H14.9618C14.9511 15.6773 14.9138 15.6027 14.8498 15.544C14.7884 15.4853 14.7098 15.456 14.6138 15.456ZM15.9683 17V14.12H16.6443V17H15.9683Z"
+                          fill="white"/>
+                    </svg>
+                  </div>
+                  <div class="sheare-text" v-if="allData">
+                    Скачать в MS-Excel
+                  </div>
                 </div>
               </div>
             </div>
           </template>
-        </div>
-        <div class="bg-dark info">
-          <div class="row">
-            <div class="col">
-              <div class="heading">
-                <p>Общая информация</p>
+          <div class="info">
+            <div v-if="isRightColumnFolded" class="rotate">Паспорт скважины</div>
+            <div class="info-element">
+              <div class="row">
+                <div class="col">
+                  <table v-if="allData">
+                    <tr>
+                      <th colspan="3">Общая информация</th>
+                    </tr>
+                    <tr>
+                      <td>1</td>
+                      <td>Скважина</td>
+                      <td>
+                        <span v-if="allData">{{ allData.uwi }}</span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>2</td>
+                      <td>Вид скважины</td>
+                      <td>
+                        <span v-if="wellType">{{ wellType }}</span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>3</td>
+                      <td>Месторождение</td>
+                      <td>
+                        <span v-if="geo">{{ geo.name_ru }}</span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>4</td>
+                      <td> Горизонт / Pнас, атм</td>
+                      <td>
+                        <span v-if="geo">{{ geo.name_ru }}</span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>5</td>
+                      <td> H ротора</td>
+                      <td>
+                        <span v-if="allData">{{ allData.rte }}</span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>6</td>
+                      <td>Тех. структура</td>
+                      <td>
+                        <span v-if="tech">{{ tech.name_ru }}</span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>7</td>
+                      <td>Отвод</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>8</td>
+                      <td>ГУ/Ряд</td>
+                      <td>
+                        <span v-if="tech">{{ tech.name_ru }}</span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>9</td>
+                      <td>Орг. структура</td>
+                      <td v-if="org">
+                        <span v-for="value in org">
+                          {{ value.name_ru + "/" }}
+                        </span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>10</td>
+                      <td>Зона скважины</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>11</td>
+                      <td>Влияющие скважины</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>12</td>
+                      <td>Координаты X (устья)</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>13</td>
+                      <td>Координаты X (устья)</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>14</td>
+                      <td>Координаты забоя X</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>15</td>
+                      <td>Координаты забоя Y</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>16</td>
+                      <td>Назначение скважин по проекту</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>16</td>
+                      <td>Назначение скважин по проекту</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>17</td>
+                      <td>Категория</td>
+                      <td>
+                        <span v-if="wellCategory">{{ wellCategory.name_ru }}</span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>18</td>
+                      <td>Период бурения</td>
+                      <td>
+                        <span
+                            v-if="allData.drill_start_date">{{ allData.drill_start_date }} - {{
+                            allData.drill_end_date
+                          }}</span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>19</td>
+                      <td>Дата ввода в эксплуатацию</td>
+                      <td>
+                        <span v-if="tech">{{ tech.dbeg }}</span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>20</td>
+                      <td>Состояние</td>
+                      <td v-if="wellStatus">{{ wellStatus.name_ru }}</td>
+                    </tr>
+                    <tr>
+                      <td>21</td>
+                      <td>Способ эксплуатации</td>
+                      <td>
+                        <span v-if="wellExpl">{{ wellExpl.name_ru }}</span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>22</td>
+                      <td>Тип УО / наличие эксц.болта</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>23</td>
+                      <td>Диаметр экспл.колонны/доп. экспл.колонны,мм</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>24</td>
+                      <td>Тип колонной головки / размеры</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>25</td>
+                      <td>Глубина спуска насоса (м)</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>26</td>
+                      <td>Код насоса</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>27</td>
+                      <td>Диаметр насоса (мм)</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>28</td>
+                      <td>Глубина спуска пакера</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>29</td>
+                      <td>Тип СК</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>30</td>
+                      <td>Длина хода (м)</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>31</td>
+                      <td>число качаний (об/мин)</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>32</td>
+                      <td>Фактический забой/(дата отбивки)</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>33</td>
+                      <td>Искусственный забой</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>34</td>
+                      <td>Отбитый забой</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>35</td>
+                      <td>Дата перфорации</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>36</td>
+                      <td>Действующие интервалы перфорации</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>37</td>
+                      <td>Дебит жидкости, м3/сут (режим/факт)</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>38</td>
+                      <td>Обводненность, % (режим/факт)</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>39</td>
+                      <td>Дебит нефти, т/сут (режим/факт)</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>40</td>
+                      <td>Дата последнего КРС</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>41</td>
+                      <td>Дата проведения ПФП нагн. скважины</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>42</td>
+                      <td>Дата проведения ГРП</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>43</td>
+                      <td>Дата последнего ПРС</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>44</td>
+                      <td>Дата последнего ГИС</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>45</td>
+                      <td>Дата последнего ГДИС</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>46</td>
+                      <td>Результат ГДМ</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>47</td>
+                      <td>Длина хода при проведении ГДМ</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>48</td>
+                      <td>Число качаний при проведении ГДМ</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>49</td>
+                      <td>Динамический уровень</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>50</td>
+                      <td>Статический уровень</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>51</td>
+                      <td>Рпл/(дата замера)</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>52</td>
+                      <td>Рпл (Сл. ГДИС)/(дата замера)</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>53</td>
+                      <td>Рзаб/(дата замера)</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>54</td>
+                      <td>Рзатр(дин), атм</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>55</td>
+                      <td>Рзатр(стат)</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>56</td>
+                      <td>Примечание</td>
+                      <td></td>
+                    </tr>
+                  </table>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="info-element">
-            <div class="row">
-              <div class="col">
-                <p>
-                  Скважина
-                </p>
-              </div>
-              <div class="col">
-                <p>
-                  {{ well.uwi }}
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </template>
-      <div v-else class="right-column__inner bg-dark"></div>
-    </div>
-    <div class="b-popup">
-      <div class="b-container bg-dark">
-        <div class="row">
-          <div class="col">
-            <div class="b-title-block">
-              <svg width="35" height="36" viewBox="0 0 35 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path fill-rule="evenodd" clip-rule="evenodd"
-                      d="M17.9676 27.2673L21.6393 32.3344C21.827 32.6303 22.057 32.8869 22.2575 33.1805C22.3944 33.3803 22.807 33.8905 22.8595 34.0711L13.07 34.0704L13.9561 32.7783C14.0436 32.6448 14.1727 32.5086 14.2739 32.365C14.6153 31.882 17.7799 27.4311 17.9676 27.2673ZM6.59072 27.2437L6.59443 27.5888L6.58299 28.7147C6.58534 28.8701 6.62571 28.9979 6.54129 29.1022L5.34841 29.1045L5.05651 29.1059L4.81537 29.1048L4.79217 21.6423L6.59139 21.6358L6.59072 27.2437ZM7.57913 26.9989L7.57274 26.7665L7.57341 21.3393C7.55693 20.4726 6.98924 20.8173 6.18581 20.7201V18.2311C6.48613 18.0468 7.04945 17.8107 7.41703 17.6493L11.1988 15.9019C11.7063 15.6557 16.0819 13.6123 16.2793 13.6073L11.0585 34.0667L10.3782 34.0663L9.7567 30.1868C9.74795 30.0031 9.70053 29.7785 9.65815 29.5824C9.60905 29.3534 9.58922 29.278 9.39013 29.1798C9.28587 29.0463 8.8174 29.1082 8.60183 29.1035L7.57172 29.1022L7.58484 28.1639L7.57913 26.9989ZM28.2148 8.42246C28.2228 8.54723 28.1784 8.54217 28.2888 8.50854L28.4354 8.84485C28.5346 9.05975 29.414 10.5644 29.5059 10.633L29.5734 10.7171C29.5512 10.8788 29.5388 10.791 29.6242 10.828C29.6404 10.9726 29.6037 10.8613 29.6851 11.007C29.7177 11.0658 29.7668 11.1176 29.8119 11.1916C29.9027 11.3409 29.899 11.395 30.0382 11.5413C30.0782 11.696 31.0081 13.2531 31.1329 13.4156L31.8354 13.4441L31.8351 34.0707L24.8739 34.069L19.6225 13.463C20.2951 13.0685 20.8706 12.4255 20.997 11.3681L26.2652 8.96154C26.8601 8.68644 27.4268 8.41339 28.008 8.15746L28.2148 8.42246ZM18.8272 26.065L20.1142 24.2429C20.2581 24.0458 20.4152 23.8504 20.5531 23.6607L22.4586 31.0867C22.1606 30.7665 21.8179 30.2476 21.5415 29.8585C21.3975 29.656 21.258 29.4654 21.1016 29.2545L18.8272 26.065ZM13.4971 31.084L15.3642 23.6739C15.5233 23.7754 15.6225 23.9718 15.7325 24.1222L17.0656 25.9799C17.1598 26.1706 16.3943 27.0655 16.1828 27.3628L15.2069 28.7369C14.6852 29.4697 13.9682 30.362 13.4971 31.084ZM17.9676 13.923C18.1088 13.9832 18.0184 13.9113 18.095 14.033C18.1192 14.0707 18.1458 14.1793 18.1583 14.2304L19.977 21.3756C20.1472 22.0061 20.2111 21.7822 19.5983 22.6199C19.337 22.9771 19.0542 23.3712 18.7922 23.7492C18.6678 23.9288 18.059 24.7857 17.9676 24.8529L15.9524 22.1107C15.755 21.8333 15.8492 21.7889 15.9407 21.4156C16.0661 20.903 16.1902 20.4137 16.3298 19.9052L17.6736 14.6347C17.7813 14.2076 17.7624 14.0075 17.9676 13.923ZM17.6232 9.95869C19.3747 9.50401 20.1075 11.9876 18.3012 12.3939C17.0569 12.674 16.125 11.4233 16.8154 10.4931C17.0296 10.2045 17.148 10.0825 17.6232 9.95869ZM26.5376 5.65501L24.8292 6.45406C24.2598 6.71638 23.6753 6.9723 23.105 7.25177C22.5077 7.54402 21.9659 7.76903 21.379 8.04681C19.0602 9.14384 19.9619 8.87177 18.9284 8.55396C18.1374 8.31081 17.1564 8.40464 16.469 8.76852C16.2941 8.86101 15.9938 9.07691 15.8953 9.1556C15.3061 9.62643 15.0427 10.3004 14.9271 11.0376C14.5699 11.1472 12.7538 12.0391 12.1966 12.2822C11.5421 12.5681 4.26484 15.9772 3.98638 16.0451C4.07113 16.3162 4.35599 16.7793 4.4969 17.0244C5.23912 18.3169 5.20279 18.0024 5.20279 19.279C5.20279 19.7465 5.18296 20.2513 5.20818 20.714C4.84665 20.7779 4.28704 20.6454 4.00858 20.8351C3.7234 21.0298 3.81049 21.4623 3.81049 21.8427L3.80747 29.1072C1.41097 29.1072 1.8115 28.6946 1.43047 31.7116C1.34034 32.4265 1.22196 33.1425 1.13318 33.8568C1.06995 34.367 0.821086 35.573 0.862115 36.0004L34.4354 35.9984L34.4405 34.0956L32.8104 34.0701L32.8097 13.4859L33.48 13.502C33.6814 11.7808 33.7638 10.3764 33.2943 8.69049C32.7428 6.71033 32.1489 5.66676 31.1009 4.09218C30.9109 3.80666 30.7065 3.59043 30.5127 3.32206C30.3227 3.05874 30.0944 2.81559 29.8835 2.58489C29.6491 2.32829 29.4275 2.07706 29.183 1.86351C28.5164 1.28136 26.9052 0.0172016 25.3353 0.0555403L24.623 1.49255C24.3631 2.01685 24.2672 1.84367 24.9318 2.90841L26.5376 5.65501Z"
-                      fill="#82BAFF"/>
-              </svg>
-              <h6>Скважины</h6>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col">
-            <p>
-              Поиск скважины по номеру
-            </p>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col">
-            <form class="search-form">
-              <input type="text" placeholder="Номер скважины" class="search-input">
-              <div class="flex">
-                <input type="date" class="b-date" id="date" name="trip-start" value="2021-04-07" required>
-                <input type="time" class="b-time" id="time" required>
-              </div>
-              <div class="b-button-container">
-                <button id="ok" class="accept">Применить</button>
-                <button id="undo" class="cancel">Отмена</button>
-              </div>
-            </form>
           </div>
         </div>
       </div>
     </div>
   </div>
-
-
 </template>
+
 <script>
 import BigDataPlainFormResult from '../bigdata/forms/PlainFormResults'
-import vSelect from "vue-select"
-import axios from "axios";
+import forms from '../../json/bd/forms.json'
+import vSelect from 'vue-select'
+import axios from 'axios'
 
 export default {
   components: {
@@ -542,16 +506,41 @@ export default {
     return {
       options: [],
       well: null,
+      tech: null,
+      wellName: null,
+      wellType: null,
+      wellExpl: null,
+      wellCategory: null,
+      tubeTom: null,
+      org: null,
+      geo: null,
+      wellStatus: null,
       graph: null,
       activeFormCode: null,
       loading: false,
-      isLeftColumnFolded: false
+      isLeftColumnFolded: false,
+      isRightColumnFolded: false,
+      isBothColumnFolded: false,
+      allData: null,
+      forms: forms
     }
   },
   mounted() {
 
   },
   methods: {
+    onColumnFoldingEvent(method) {
+      if (method === 'left') {
+        this.isLeftColumnFolded = !this.isLeftColumnFolded;
+      } else {
+        this.isRightColumnFolded = !this.isRightColumnFolded;
+      }
+      if (this.isLeftColumnFolded === true && this.isRightColumnFolded === true) {
+        this.isBothColumnFolded = true;
+      } else {
+        this.isBothColumnFolded = false;
+      }
+    },
     onSearch(search, loading) {
       if (search.length) {
         loading(true);
@@ -569,11 +558,26 @@ export default {
     selectWell(well) {
       this.loading = true
       this.axios.get(this.localeUrl(`/api/bigdata/wells/${well.id}`)).then(({data}) => {
-        this.well = data.well
-        this.loading = false
+        try {
+          this.tech = data.techs
+          this.org = data.orgs
+          this.geo = data.geo[0]
+          this.wellName = data.uwi
+          this.allData = data
+          this.wellType = data.well_type[0].name_ru
+          this.wellStatus = data.status[data.status.length - 1] // уточнить, какой именно статус взять
+          this.wellExpl = data.well_expl[0]
+          this.tubeTom = data.tube_nom[0]
+          this.wellCategory = data.category[0]
+          this.well = data.well[0]
+
+          this.loading = false
+        } catch (e) {
+          this.loading = false
+        }
       })
     },
-    setForm(formCode) {
+    switchFormByCode(formCode) {
       this.activeFormCode = formCode
     }
   }
@@ -584,7 +588,7 @@ export default {
 $leftColumnWidth: 398px;
 $leftColumnFoldedWidth: 84px;
 $rightColumnWidth: 348px;
-
+$rightColumnFoldedWidth: 84px;
 
 .well-cart {
   &__wrapper {
@@ -602,7 +606,7 @@ $rightColumnWidth: 348px;
 
 .b-container {
   font-family: Roboto;
-  width: 404px;
+  width: 480px;
   margin: 200px auto auto auto;
   padding: 10px;
   font-size: 30px;
@@ -627,7 +631,7 @@ $rightColumnWidth: 348px;
     font-weight: 400;
     font-size: 24px;
     padding-left: 20px;
-    margin-top: 50px;
+    margin-top: 30px;
     margin-bottom: 20px;
   }
 
@@ -636,35 +640,25 @@ $rightColumnWidth: 348px;
     padding-left: 40px;
     display: flex;
 
-    button {
-      margin-top: 30px;
-      height: 40px;
-      font-size: 14px;
-      FLEX-DIRECTION: row-reverse;
-      BACKGROUND: #4F5979;
-      WIDTH: 65%;
-      BORDER-RADIUS: 10PX;
-      color: white;
-      margin-right: 7px;
-    }
-
   }
 
   .search-form {
-
     .search-input {
       width: 100%;
       margin-bottom: 20px;
-      BACKGROUND: url(/img/bd/search.svg) 1% no-repeat #4F5979;
+      background: url(/img/bd/search.svg) 1% no-repeat #4F5979;
+      font-size: 16px;
+      padding: 10px 0px 10px 30px;
+      border-radius: 10px;
     }
 
     .b-date {
       height: 40px;
       font-size: 14px;
-      FLEX-DIRECTION: row-reverse;
-      BACKGROUND: #4F5979;
-      WIDTH: 65%;
-      BORDER-RADIUS: 10PX;
+      flex-direction: row-reverse;
+      background: #4F5979;
+      width: 65%;
+      border-radius: 10PX;
       color: white;
       margin-right: 7px;
     }
@@ -672,9 +666,9 @@ $rightColumnWidth: 348px;
     .b-time {
       height: 40px;
       font-size: 14px;
-      FLEX-DIRECTION: row-reverse;
-      BACKGROUND: #4F5979;
-      BORDER-RADIUS: 10PX;
+      flex-direction: row-reverse;
+      background: #4F5979;
+      border-radius: 10PX;
       color: white;
       margin-left: auto;
     }
@@ -690,10 +684,10 @@ $rightColumnWidth: 348px;
       margin-top: 30px;
       height: 40px;
       font-size: 14px;
-      FLEX-DIRECTION: row-reverse;
-      BACKGROUND: #4F5979;
-      WIDTH: 130px;
-      BORDER-RADIUS: 10PX;
+      flex-direction: row-reverse;
+      background: #4F5979;
+      width: 130px;
+      border-radius: 10PX;
       color: white;
       margin-right: 7px;
     }
@@ -720,7 +714,21 @@ $rightColumnWidth: 348px;
   overflow: hidden;
   position: fixed;
   top: 0;
-  display: none;
+  display: block;
+  z-index: 800;
+
+  button {
+    margin-top: 30px;
+    height: 40px;
+    font-size: 14px;
+    flex-direction: row-reverse;
+    background: #4F5979;
+    width: 130px;
+    border-radius: 10PX;
+    color: white;
+    margin-right: 7px;
+  }
+
 }
 
 .b-popup .b-popup-content {
@@ -926,14 +934,45 @@ h4 {
 }
 
 .graphics {
+  color: white;
+  background: rgb(39, 41, 83);
+
   .select-button {
     background: #272953;
     width: 230px !important;
     margin-top: 14px;
     margin-left: 10px;
-
   }
 
+  .title {
+    font-family: 'Harmonia Sans Pro Cyr', 'Harmonia-Sans', 'Robato';
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 17px;
+    border-bottom: 1px solid #2D43B4;
+    padding-bottom: 8px;
+  }
+
+  p {
+    font-family: 'Harmonia Sans Pro Cyr', 'Harmonia-Sans', 'Robato';
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 17px;
+    margin: 0px;
+  }
+
+  span {
+    font-weight: 600;
+    color: #82BAFF;
+  }
+
+  .well-info {
+    margin: 12px;
+
+    :nth-child(1n) {
+      margin: 4px 0px;
+    }
+  }
 }
 
 .directory {
@@ -985,8 +1024,9 @@ h4 {
 }
 
 .search-form {
-  width: 100%;
-  padding: 5px 10px;
+  width: 280px;
+  padding: 10px 10px;
+  margin-left: auto;
 
   .v-select {
     background: url(/img/bd/search.svg) 20px 45% #272953 no-repeat;
@@ -996,16 +1036,20 @@ h4 {
 }
 
 .heading {
-  font-family: Roboto, sans-serif;
+  margin-left: 11.19px;
+  font-family: 'Harmonia Sans Pro Cyr', 'Harmonia-Sans', 'Robato';
   color: white;
   font-size: 16px;
   line-height: 18px;
   font-weight: 700;
   display: flex;
-  padding: 11.26px 0 32px 13.96px;
+  height: 48px;
 
   p {
-    margin: 0;
+    margin: auto;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 19px;
   }
 }
 
@@ -1097,6 +1141,7 @@ h4 {
   white-space: pre-line;
 
   .txt5 {
+    padding-right: 15px;
     font-family: Roboto;
     font-weight: 700;
     font-size: 14px;
@@ -1112,7 +1157,7 @@ h4 {
 
   :visited {
     background: #2E50E9;
-    border: 0;;
+    border: 0;
   }
 }
 
@@ -1121,6 +1166,10 @@ h4 {
   color: white;
   background: none;
   border: none;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 19px;
+  font-family: 'Harmonia Sans Pro Cyr', 'Harmonia-Sans', 'Robato';
 
   &:focus {
     color: white;
@@ -1220,13 +1269,30 @@ h4 {
 }
 
 .info {
-  height: calc(100vh - 490px);
+  height: calc(100vh - 160px);
   margin-bottom: 0 !important;
   overflow-y: auto;
   overflow-x: hidden;
 
-  .row {
-    border-bottom: 1px solid #30358F;
+  table {
+    margin: 0px 10px;
+    font-family: 'Harmonia Sans Pro Cyr', 'Harmonia-Sans', 'Robato';
+    border-collapse: collapse;
+    width: 100%;
+
+    th {
+      background: #333975;
+    }
+  }
+
+  td, th {
+    border: 1px solid #454D7D;
+    text-align: left;
+    padding: 8px;
+  }
+
+  tr:nth-child(2n) {
+    background-color: #2B2E5E;
   }
 
   .heading {
@@ -1245,6 +1311,16 @@ h4 {
     }
   }
 
+  .rotate {
+    transform: rotate(-90deg);
+    margin-top: 100px;
+    margin-bottom: 10px;
+    display: flex;
+    white-space: nowrap;
+    font-family: 'Harmonia Sans Pro Cyr', 'Harmonia-Sans', 'Robato';
+    font-weight: 700;
+    font-size: 16px;
+  }
 }
 
 .full-size-icon {
@@ -1260,6 +1336,10 @@ h4 {
   border-radius: 15px;
   margin-top: auto;
   margin-bottom: auto;
+
+  :hover {
+    cursor: pointer;
+  }
 }
 
 .button1-vc-inner {
@@ -1418,9 +1498,10 @@ h4 {
   height: 10px;
   white-space: nowrap;
   background: url(/img/bd/pointer.svg) 50% 100% no-repeat;
-  margin-left: auto;
+  margin-left: 0px;
   margin-top: auto;
   margin-bottom: auto;
+  margin-right: auto;
 }
 
 .col {
@@ -1431,9 +1512,18 @@ h4 {
 
 .sheare-icon {
   margin-left: auto;
-  margin-top: 15px;
+  margin-top: auto;
   margin-bottom: auto;
-  margin-right: 11.19px;
+  display: inline-flex;
+}
+
+.sheare-text {
+  font-family: 'Harmonia Sans Pro Cyr', 'Harmonia-Sans', 'Robato';
+  color: white;
+  margin: auto 11.19px auto 0px;
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 14px;
 }
 
 .bg-dark {
@@ -1491,17 +1581,21 @@ h4 {
 }
 
 ::-webkit-scrollbar-button {
-  background: URL("/img/bd/scroll-array.svg") no-repeat 50% #485499;
+  &:vertical {
+    background: URL("/img/bd/scroll-array.svg") no-repeat 50% #485499;
 
-  &:end {
-    background: URL("/img/bd/scroll-array-end.svg") no-repeat 50% #485499;
+    &:end {
+      background: URL("/img/bd/scroll-array-end.svg") no-repeat 50% #485499;
+    }
   }
 }
 
 .table-wrapper {
   margin: 10px 20px;
+  max-height: calc(100vh - 175px);
+  overflow: auto;
   padding: 0;
-
+  width: auto;
 }
 
 .col-no-right-padding {
@@ -1524,10 +1618,11 @@ h4 {
   margin-left: 0;
 }
 
-.left-column {
+.both-pressed {
   min-width: $leftColumnWidth;
   width: $leftColumnWidth;
   padding: 0 15px;
+  margin-bottom: 15px;
 
   &_folded {
     min-width: $leftColumnFoldedWidth;
@@ -1545,8 +1640,8 @@ h4 {
       display: none;
     }
 
-    & + .mid-col {
-      min-width: calc(100% - #{$leftColumnFoldedWidth} - #{$rightColumnWidth} - 11px);
+    & ~ .mid-col {
+      min-width: calc(100% - #{$leftColumnFoldedWidth} - #{$rightColumnFoldedWidth} - 9px) !important;
     }
 
   }
@@ -1556,12 +1651,83 @@ h4 {
   }
 }
 
-.right-column {
-  min-width: $rightColumnWidth;
-  padding-left: 15px;
+.left-column {
+  min-width: $leftColumnWidth;
+  width: $leftColumnWidth;
+  padding: 0 15px;
+  margin-bottom: 0px;
+
+  &_folded {
+    min-width: $leftColumnFoldedWidth;
+    width: $leftColumnFoldedWidth;
+
+    .icon-all {
+      transform: rotate(180deg);
+    }
+
+    .well-deal__header {
+      border: none;
+    }
+
+    .title, .directory {
+      display: none;
+    }
+
+    & ~ .mid-col {
+      min-width: calc(100% - #{$leftColumnFoldedWidth} - #{$rightColumnWidth} - 9px);
+    }
+
+  }
 
   &__inner {
     height: 100%;
+  }
+}
+
+.title-container {
+  display: flex;
+}
+
+.right-column {
+  min-width: $rightColumnWidth;
+  padding-left: 15px;
+  flex: 0 0 5%;
+
+
+  &__inner {
+    height: 100%;
+    margin-left: 15px;
+    min-width: 340px;
+    max-width: 340px;
+  }
+
+  &_folded {
+    min-width: $leftColumnFoldedWidth;
+    width: $leftColumnFoldedWidth;
+    max-width: $leftColumnFoldedWidth;
+    margin: 0px;
+    padding: 0px 15px;
+
+    & ~ .mid-col {
+      min-width: calc(100% - #{$leftColumnWidth} - #{$rightColumnFoldedWidth} - 9px);
+    }
+
+    .icon-all {
+      transform: rotate(180deg);
+      padding-bottom: 25px;
+    }
+
+    p {
+      display: none;
+    }
+
+    table {
+      display: none;
+    }
+
+    .title-container {
+      display: none;
+    }
   }
 }
 
@@ -1576,15 +1742,21 @@ h4 {
 }
 
 .mid-col {
-  min-width: calc(100% - #{$leftColumnWidth} - #{$rightColumnWidth} - 11px);
+  min-width: calc(100% - #{$leftColumnWidth} - #{$rightColumnWidth} - 9px);
   padding: 0 15px;
+  height: calc(100vh - 90px);
 
   &__main {
-    height: calc(100% - 150px);
+    height: 100%;
+    overflow: hidden;
 
     &-inner {
       margin-bottom: 0;
     }
+  }
+
+  .col-md-12 {
+    height: 100%;
   }
 }
 
@@ -1614,6 +1786,14 @@ h4 {
       padding-left: 45px;
     }
 
+    .vs__selected {
+      font-family: Roboto, sans-serif;
+      font-size: 14px;
+      font-weight: 400;
+      margin-top: 0;
+      padding-left: 45px;
+    }
+
     .vs__actions {
       padding: 0 5px;
 
@@ -1625,6 +1805,18 @@ h4 {
         border-color: rgba(238, 238, 238, 0.7);
         border-left-color: rgba(170, 170, 170, 0.7);
       }
+    }
+  }
+}
+
+.block {
+  display: block;
+}
+
+.custom-directory {
+  .file {
+    br {
+      display: none;
     }
   }
 }

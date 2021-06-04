@@ -3,14 +3,14 @@
 namespace App\Imports;
 
 use App\Models\ComplicationMonitoring\WaterMeasurement;
-use App\Models\Refs\Cdng;
+use App\Models\ComplicationMonitoring\Cdng;
 use App\Models\Refs\HydrocarbonOxidizingBacteria;
-use App\Models\Refs\Ngdu;
+use App\Models\ComplicationMonitoring\Ngdu;
 use App\Models\Refs\OtherObjects;
 use App\Models\Refs\SulphateReducingBacteria;
 use App\Models\Refs\ThionicBacteria;
 use App\Models\Refs\WaterTypeBySulin;
-use App\Models\Refs\Zu;
+use App\Models\ComplicationMonitoring\Zu;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
@@ -20,8 +20,8 @@ use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\WithStartRow;
 use Maatwebsite\Excel\Concerns\WithCalculatedFormulas;
 use Maatwebsite\Excel\Events\BeforeSheet;
-use App\Models\Refs\Well;
-use App\Models\Refs\Gu;
+use App\Models\ComplicationMonitoring\Well;
+use App\Models\ComplicationMonitoring\Gu;
 use PhpOffice\PhpSpreadsheet\Shared\Date;
 
 class WaterMeasurementImport implements ToCollection, WithEvents, WithColumnLimit, WithStartRow, WithCalculatedFormulas

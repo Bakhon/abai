@@ -2,6 +2,7 @@
 
 namespace App\Models\Refs;
 
+use App\User;
 use Illuminate\Database\Eloquent\Model;
 
 class TechnicalDataForecast extends Model
@@ -22,26 +23,26 @@ class TechnicalDataForecast extends Model
 
     public function source()
     {
-        return $this->belongsTo('App\Models\Refs\TechnicalStructureSource', 'source_id');
+        return $this->belongsTo(TechnicalStructureSource::class, 'source_id');
     }
 
     public function author()
     {
-        return $this->belongsTo('App\User', 'author_id');
+        return $this->belongsTo(User::class, 'author_id');
     }
 
     public function editor()
     {
-        return $this->belongsTo('App\User', 'editor_id');
+        return $this->belongsTo(User::class, 'editor_id');
     }
 
     public function gu()
     {
-        return $this->belongsTo('App\Models\Refs\TechnicalStructureGu', 'gu_id');
+        return $this->belongsTo(TechnicalStructureGu::class, 'gu_id');
     }
 
     public function log()
     {
-        return $this->belongsTo('App\Models\Refs\TechnicalDataLog', 'log_id');
+        return $this->belongsTo(TechnicalDataLog::class, 'log_id');
     }
 }

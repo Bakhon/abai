@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\Refs\Well;
+use App\Models\ComplicationMonitoring\Well;
 use Illuminate\Database\Migrations\Migration;
 
 class ClearOldUnusedWells extends Migration

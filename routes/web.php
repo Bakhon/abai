@@ -37,12 +37,7 @@ Route::group(
                     function () {
                         return view('welcome');
                     }
-                )->name('mainpage');
-                Route::get('/druid', 'DruidController@index');
-                Route::get('/oilprice', 'DruidController@getOilPrice');
-                Route::get('/getnkkmg', 'DruidController@getNkKmg');
-                Route::get('/getwelldailyoil', 'DruidController@getWellDailyOil');
-                Route::get('/getnkkmgyear', 'DruidController@getNkKmgYear');
+                )->name('mainpage');                           
                 Route::get('/economic/nrs', 'EconomicController@index')->name('economic');
                 Route::get('/economicpivot', 'EconomicController@economicPivot')->name('economicpivot');
                 Route::get('/oilpivot', 'EconomicController@oilPivot')->name('oilpivot');
@@ -52,26 +47,14 @@ Route::group(
                 Route::get('/getoilpivotdata', 'EconomicController@getOilPivotData')->name('getoilpivotdata');
 
                 Route::get('/podborgno', 'gno\GNOController@index')->name('gno');
-                Route::get('/production', 'DruidController@production')->name('production');
                 Route::get('/gtmscor', 'DruidController@gtmscor')->name('gtmscor');
                 Route::get('/calcgtm', 'DruidController@calcGtm')->name('calcgtm');
                 Route::get('/mfond', 'DruidController@mfond')->name('mfond');
                 Route::get('/map', 'DruidController@map')->name('map');
-                Route::get('/oil', 'DruidController@oil')->name('oil');
-                Route::get('/facilities', 'DruidController@facilities')->name('facilities');
-                Route::get('/liquid', 'DruidController@liquid')->name('liquid');
-                Route::get('/hydraulics', 'DruidController@hydraulics')->name('hydraulics');
-                Route::get('/complications', 'DruidController@complications')->name('complications');
-                Route::get('/tabs', 'DruidController@tabs')->name('tabs');
                 Auth::routes();
                 Route::get('/home', 'HomeController@index')->name('home');
-                Route::get('/maps', 'DruidController@maps')->name('maps');
-                Route::get('/mzdn', 'DruidController@mzdn')->name('mzdn');
                 Route::get('/gtm', 'DruidController@gtm')->name('gtm');
                 Route::get('/dob', 'DruidController@dob')->name('dob');
-                Route::post('/protodata', 'ProtoDBController@getProtoOtchet1')->name('protodata');
-                Route::post('/gtm1', 'DBgtmController@gtm1')->name('gtm1');
-                Route::post('/dob1', 'DBdobController@dob1')->name('dob1');
                 Route::get('/constructor', 'DruidController@constructor')->name('constructor');
 
                 //gno economic
@@ -140,22 +123,10 @@ Route::group(
 
                 Route::get('anticrisis', 'AntiCrisisController@index')->name('anticrisis');
 
-
-                Route::get('/module_economy', 'EconomyKenzhe\MainController@index');
-                Route::get('/module_economy/company/', 'EconomyKenzhe\MainController@company')->name('company');
-                Route::get('/module_economy/companies', 'EconomyKenzhe\MainController@companies');
-                Route::match(['GET', 'POST'], '/import_rep', 'EconomyKenzhe\ImportController@importRepTtValues')->name('import_rep');
-                Route::match(['GET', 'POST'], '/import_reptt_titles', 'EconomyKenzhe\ImportController@importRepTtTitlesTree')->name('import_reptt_titles');
-
                 Route::get('/paegtm', 'GTM\GTMController@index')->name('gtm');
                 Route::get('/paegtm/accum_oil_prod_data', 'GTM\GTMController@getAccumOilProd')->name('gtm');
-                Route::get('/paegtm/comparison_indicators_data', 'GTM\GTMController@getComparisonIndicators')->name('gtm');
-
-                Route::post('dzo_excel_form', 'VisCenter\ExcelForm\ExcelFormController@store');
-                Route::post('dzo_chemistry_excel_form', 'VisCenter\ExcelForm\ExcelFormChemistryController@store');
-                Route::get('/proactive-factors', 'EconomyKenzhe\proactiveFactorsController@proactiveFactors')->name('proactiveFactors');
-
-            }
+                Route::get('/paegtm/comparison_indicators_data', 'GTM\GTMController@getComparisonIndicators')->name('gtm');                  
+                          }
         );
         Auth::routes(
             [

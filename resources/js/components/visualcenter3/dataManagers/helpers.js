@@ -67,24 +67,11 @@ export default {
             }
         },
 
-        getDiffProcentLastP(a, b, c) {
-            if (c) {
-                if (a > b) {
-                    return 'Снижение'
-                } else if (a < b) {
-                    return 'Рост'
-                }
-                ;
-            } else {
-                if (b == 0) {
-                    return 0
-                } else if (a == 0) {
-                    return 0
-                }
-                {
-                    if (a != '') return ((b / a - 1) * 100).toFixed(2)
-                }
+        getDifferencePercentBetweenLastValues(previous,current) {
+            if (previous != '' && previous !== 0) {
+                return ((current / previous - 1) * 100).toFixed(2);
             }
+            return 0;
         },
 
         pad(n) {
@@ -172,9 +159,14 @@ export default {
             }
         },
 
-        getColor2(i) {
-            if (i < 0) return "arrow";
-            if (i > 0) return "arrow2";
+        getGrowthIndicatorByDifference(previous,current) {
+            let difference = this.getDifferencePercentBetweenLastValues(previous,current);
+            if (difference < 0) {
+                return "indicator-grow";
+            }
+            if (difference > 0) {
+                return "indicator-fall";
+            }
         },
 
         getDataOrderedByAsc(data) {
@@ -239,6 +231,30 @@ export default {
 
         getNumberFromString(inputString) {
             return parseInt(inputString.replace(/\s/g, ''));
+        },
+
+        getIndicatorClassForReverseParams(i) {
+            let arrowClass = '';
+            if (i < 0) {
+                arrowClass = "fond-indicator-grow";
+            } else if (i > 0) {
+                arrowClass = "fond-indicator-fall";
+            }
+            return arrowClass;
+        },
+        getIndicatorForStaffCovidParams(previosValue,currentValue) {
+            if (previosValue > currentValue) {
+                return this.trans("visualcenter.indicatorFall");
+            } else if (previosValue < currentValue) {
+                return this.trans("visualcenter.indicatorGrow");
+            }
+        },
+
+        getFilteredDataByOneCompany(data) {
+            let self = this;
+            return _.filter(data, function (item) {
+                return self.company == item.dzo;
+            });
         },
     },
     computed: {

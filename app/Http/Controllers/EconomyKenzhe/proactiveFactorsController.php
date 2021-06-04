@@ -4,7 +4,7 @@ namespace App\Http\Controllers\EconomyKenzhe;
 
 use App\Http\Controllers\Controller;
 
-class proactiveFactorsController extends Controller
+class ProactiveFactorsController extends Controller
 {
     public function proactiveFactors()
     {

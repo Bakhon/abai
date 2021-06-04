@@ -144,19 +144,29 @@ export default {
             this.$emit('close')
           })
           .catch(error => {
-            this.errors = error.response.data.errors
 
-            Vue.prototype.$notifyWarning('Некоторые поля заполнены некорректно')
+            if (error.response.status === 500) {
+              Vue.prototype.$notifyError(error.response.data.message)
+              return false
+            }
 
-            for (const [tabIndex, tab] of Object.entries(this.formParams.tabs)) {
-              for (const block of tab.blocks) {
-                for (const item of block.items) {
-                  if (typeof this.errors[item.code] !== 'undefined') {
-                    this.activeTab = parseInt(tabIndex)
-                    return false
+            if (error.response.status === 422) {
+
+              this.errors = error.response.data.errors
+
+              Vue.prototype.$notifyWarning('Некоторые поля заполнены некорректно')
+
+              for (const [tabIndex, tab] of Object.entries(this.formParams.tabs)) {
+                for (const block of tab.blocks) {
+                  for (const item of block.items) {
+                    if (typeof this.errors[item.code] !== 'undefined') {
+                      this.activeTab = parseInt(tabIndex)
+                      return false
+                    }
                   }
                 }
               }
+
             }
           })
     },
@@ -174,7 +184,23 @@ export default {
         this[callback](formItem.code, formItem.callbacks[callback])
       }
     },
-    //callbacks
+    fillCalculatedFields(triggerFieldCode) {
+      this.$store.commit('globalloading/SET_LOADING', true);
+      axios.post(
+          this.localeUrl(`/api/bigdata/forms/${this.params.code}/calc-fields`),
+          {
+            values: this.formValues,
+            well_id: this.wellId
+          }
+      ).then(({data}) => {
+        for (let key in data) {
+          this.formValues[key] = data[key]
+        }
+      }).finally(() => {
+        this.$store.commit('globalloading/SET_LOADING', false);
+      })
+
+    },
     setWellPrefix(triggerFieldCode, changeFieldCode) {
       this.getWellPrefix({code: this.params.code, geo: this.formValues[triggerFieldCode]})
           .then(({data}) => {
@@ -306,7 +332,6 @@ export default {
       }
 
       &-content {
-        overflow-y: auto;
         padding: 20px 55px 10px 43px;
         @media (max-width: 767px) {
           height: auto;

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Refs\EcoRefsScFa;
 use Illuminate\Database\Eloquent\Model;
 
 class EcoRefsRentEquipElectServCost extends Model
@@ -12,14 +13,14 @@ class EcoRefsRentEquipElectServCost extends Model
 
     public function scfa()
     {
-        return $this->hasOne('App\Models\Refs\EcoRefsScFa','id','sc_fa')->withDefault();
+        return $this->hasOne(EcoRefsScFa::class,'id','sc_fa')->withDefault();
     }
     public function company()
     {
-        return $this->hasOne('App\Models\EcoRefsCompaniesId','id','company_id')->withDefault();
+        return $this->hasOne(EcoRefsCompaniesId::class,'id','company_id')->withDefault();
     }
     public function equip()
     {
-        return $this->hasOne('App\Models\EcoRefsEquipId','id','equip_id')->withDefault();
+        return $this->hasOne(EcoRefsEquipId::class,'id','equip_id')->withDefault();
     }
 }

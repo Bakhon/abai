@@ -2,9 +2,7 @@
 
 namespace App\Models\ComplicationMonitoring;
 
-use App\Models\Pipes\OilPipe;
-use App\Models\Refs\Gu;
-use App\Models\Refs\Ngdu;
+use App\Models\ComplicationMonitoring\Ngdu;
 use Illuminate\Database\Eloquent\Model;
 
 class TrunklinePoint extends Model

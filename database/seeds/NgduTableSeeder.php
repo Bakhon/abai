@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\ComplicationMonitoring\Ngdu;
 use Illuminate\Database\Seeder;
 
 class NgduTableSeeder extends Seeder
@@ -11,22 +12,22 @@ class NgduTableSeeder extends Seeder
      */
     public function run()
     {
-        \App\Models\Refs\Ngdu::create([
+        Ngdu::create([
             'name' => 'НГДУ-1',
             'org_id' => 1
         ]);
 
-        \App\Models\Refs\Ngdu::create([
+        Ngdu::create([
             'name' => 'НГДУ-2',
             'org_id' => 1
         ]);
 
-        \App\Models\Refs\Ngdu::create([
+        Ngdu::create([
             'name' => 'НГДУ-3',
             'org_id' => 1
         ]);
 
-        \App\Models\Refs\Ngdu::create([
+        Ngdu::create([
             'name' => 'НГДУ-4',
             'org_id' => 1
         ]);

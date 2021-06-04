@@ -1,6 +1,6 @@
 {
   "type": "plain",
-  "table": "",
+  "table": "prod.gtm",
   "tabs": [
     {
       "title": "Gtm_start",
@@ -10,23 +10,23 @@
             "title": "Gtm_start",
             "items": [
               {
-                "code": "field1",
+                "code": "dbeg",
                 "type": "datetime",
                 "title": "date_gtm_start",
-                "validation": "required"
-              },
-              {
-                "code": "field2",
-                "type": "dict",
-                "title": "gtm_name",
-                "dict":"",
                 "validation": "required|date"
               },
               {
-                "code":"field3",
+                "code": "gtm_type",
+                "type": "dict",
+                "title": "gtm_name",
+                "dict":"gtm_types",
+                "validation": "required|exists:tbd.dict.gtm_type,id"
+              },
+              {
+                "code":"new_technology",
                 "type":"checkbox",
                 "title":"new_technologies",
-                "validation":""
+                "validation":"boolean"
               },
               {
                 "code":"field4",
@@ -35,11 +35,11 @@
                 "validation":""
               },
               {
-                "code":"field5",
+                "code":"company",
                 "type":"dict",
                 "title":"contractor",
-                "dict":"",
-                "validation":"required"
+                "dict":"companies",
+                "validation":"required|exists:tbd.dict.company,id"
               }
             ]
           }
@@ -54,23 +54,23 @@
             "title":"Gtm_end",
             "items":[
               {
-                "code":"field6",
+                "code":"dend",
                 "type":"date",
                 "title":"date_gtm_end",
                 "validation":"required|date"
               },
               {
-                "code":"field7",
-                "type":"text",
+                "code": "param_result",
+                "type": "text",
                 "title": "gtm_parameters_results",
                 "validation": "required|string"
               },
               {
-                "code":"field8",
+                "code":"well_status_type",
                 "type":"dict",
                 "title":"status",
-                "dict":"",
-                "validation":"required"
+                "dict":"well_statuses",
+                "validation":"required|exists:tbd.dict.well_status_type,id"
               }
             ]
           }

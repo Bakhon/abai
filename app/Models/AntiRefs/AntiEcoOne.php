@@ -2,6 +2,8 @@
 
 namespace App\Models\AntiRefs;
 
+use App\Models\EcoRefsCompaniesId;
+use App\Models\Refs\EcoRefsScFa;
 use Illuminate\Database\Eloquent\Model;
 
 class AntiEcoOne extends Model
@@ -16,11 +18,11 @@ class AntiEcoOne extends Model
 
     public function scfa()
     {
-        return $this->hasOne('App\Models\Refs\EcoRefsScFa','id','sc_fa')->withDefault();
+        return $this->hasOne(EcoRefsScFa::class,'id','sc_fa')->withDefault();
     }
 
     public function company()
     {
-        return $this->hasOne('App\Models\EcoRefsCompaniesId','id','company_id')->withDefault();
+        return $this->hasOne(EcoRefsCompaniesId::class,'id','company_id')->withDefault();
     }
 }

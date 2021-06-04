@@ -2,7 +2,8 @@
 
 namespace App\Console\Commands\Import;
 
-use Carbon\Carbon;
+use App\Models\ComplicationMonitoring\Well;
+use App\Services\DruidService;
 use Illuminate\Console\Command;
 
 class WellCoordinates extends Command
@@ -36,9 +37,9 @@ class WellCoordinates extends Command
      *
      * @return mixed
      */
-    public function handle(\App\Services\DruidService $druidService)
+    public function handle(DruidService $druidService)
     {
-        $wells = \App\Models\Refs\Well::query()
+        $wells = Well::query()
             ->get()
             ->keyBy('name');
 
