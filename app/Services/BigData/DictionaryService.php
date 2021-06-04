@@ -108,7 +108,7 @@ class DictionaryService
         'well_activity' => [
             'class' => WellActivity::class,
             'name_field' => 'name_ru'
-        ]
+        ],
         'tube_nom' => [
             'class' => TybeNom::class,
             'name_field' => 'model'
