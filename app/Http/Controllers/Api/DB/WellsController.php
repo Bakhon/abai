@@ -19,7 +19,7 @@ class WellsController extends Controller
 
     public function get(Well $well)
     {
-        $wellInfo = Well::where('id', $well->id)->with('spital_object')
+        $wellInfo = Well::where('id', $well->id)->with('spatial_object')
             ->first();
         return $wellInfo;
     }

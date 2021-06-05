@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Models\BigData\Dictionaries;
+namespace App\Models\BigData;
 
 use App\Models\TBDModel;
 
-class SpitalObject extends TBDModel
+class SpatialObject extends TBDModel
 {
     protected $table = 'geo.spatial_object';
 }

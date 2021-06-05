@@ -4,7 +4,6 @@ namespace App\Models\BigData;
 
 use App\Models\BigData\Dictionaries\Geo;
 use App\Models\BigData\Dictionaries\Org;
-use App\Models\BigData\Dictionaries\SpitalObject;
 use App\Models\BigData\Dictionaries\Tech;
 use App\Models\BigData\Dictionaries\TubeNom;
 use App\Models\BigData\Dictionaries\WellCategory;
@@ -67,9 +66,9 @@ class Well extends TBDModel
         return $this->belongsToMany(TubeNom::class, 'prod.well_constr', 'well', 'casing_nom');
     }
 
-    public function spital_object()
+    public function spatial_object()
     {
-        return $this->belongsToMany(SpitalObject::class, 'dict.well', 'id', 'bottom_coord');
+        return $this->belongsToMany(SpatialObject::class, 'dict.well', 'id', 'whc');
     }
 
     public function scopeActive($query, $date)
