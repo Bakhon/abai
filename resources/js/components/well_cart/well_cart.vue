@@ -212,6 +212,7 @@ export default {
       wellGeo: null,
       WellTech: null,
       wellOrg: null,
+      wellSaptialObject: null,
       tableData: [
         {
           'description': 'this.well.uwi',
@@ -278,14 +279,16 @@ export default {
           'data': ''
         },
         {
-          'description': 'well.spital_object.coord_point',
-          'method': null,
+          'description': 'this.wellSaptialObject.coord_point',
+          'method': 'coordPoint',
+          'point': 'X',
           'name': 'Координаты X (устья)',
           'data': ''
         },
         {
-          'description': 'well.spital_object.coord_point',
-          'method': null,
+          'description': 'this.wellSaptialObject.coord_point',
+          'method': 'coordPoint',
+          'point': 'Y',
           'name': 'Координаты Y (устья)',
           'data': ''
         },
@@ -406,7 +409,6 @@ export default {
             this.wellType = data
           }),
           this.axios.get(this.localeUrl(`/api/bigdata/wells/${well.id}/org/`)).then(({data}) => {
-            console.log(data)
             this.wellOrg = data
           }),
           this.axios.get(this.localeUrl(`/api/bigdata/wells/${well.id}/geo/`)).then(({data}) => {
@@ -414,6 +416,9 @@ export default {
           }),
           this.axios.get(this.localeUrl(`/api/bigdata/wells/${well.id}/tube_nom/`)).then(({data}) => {
             this.tubeNom = data
+          }),
+          this.axios.get(this.localeUrl(`/api/bigdata/wells/${well.id}/spatial_object/`)).then(({data}) => {
+            this.wellSaptialObject = data
           }),
           this.axios.get(this.localeUrl(`/api/bigdata/wells/${well.id}`)).then(({data}) => {
             try {
@@ -424,7 +429,6 @@ export default {
               this.loading = false
             } catch (e) {
               this.loading = false
-              console.log(e)
             }
           })
     },
@@ -457,6 +461,17 @@ export default {
             this.tableData[i].data = (eval(this.tableData[i].description)).substring(0, 10)
           } catch (e) {
             this.tableData[i].data = ''
+          }
+        } else if (this.tableData[i].method === 'coordPoint') {
+          try {
+            let points = (eval(this.tableData[i].description)).replace('(', '').replace(')', '')
+            points = points.split(',')
+            if (this.tableData[i].point === 'X' || this.tableData[i].point === 'x') {
+              this.tableData[i].data = points[0]
+            } else {
+              this.tableData[i].data = points[1]
+            }
+          } catch (e) {
           }
         } else {
           try {

@@ -72,6 +72,7 @@ Route::group(
                 Route::get('wells/{well}/geo', 'Api\DB\WellsController@geo');
                 Route::get('wells/{well}/org', 'Api\DB\WellsController@org');
                 Route::get('wells/{well}/tube_nom', 'Api\DB\WellsController@tube_nom');
+                Route::get('wells/{well}/spatial_object', 'Api\DB\WellsController@spatial_object');
             }
         );
     }

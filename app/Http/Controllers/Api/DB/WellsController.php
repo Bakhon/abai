@@ -19,101 +19,97 @@ class WellsController extends Controller
 
     public function get(Well $well)
     {
-        $wellInfo = Well::where('id', $well->id)->with('spatial_object')
-            ->first();
-        return $wellInfo;
+        return Well::where('id', $well->id)->first();
     }
 
     public function status(Well $well)
     {
-        $status = $well->status()
+        return $well->status()
             ->wherePivot('dend', '<>', $this->getToday())
             ->wherePivot('dbeg', '<>', $this->getToday())
             ->withPivot('dend', 'dbeg')
             ->orderBy('pivot_dbeg', 'desc')
             ->first(['name_ru']);
-        return $status;
     }
 
     public function tube_nom(Well $well)
     {
-        $tube_nom = $well->tube_nom()
+        return $well->tube_nom()
             ->wherePivot('project_drill', '=', 'false')
             ->wherePivot('casing_type', '=', '8', 'or')
             ->WherePivot('casing_type', '=', '9')
             ->get(['od']);
-        return $tube_nom;
     }
 
     public function category(Well $well)
     {
-        $category = $well->category()
+        return $well->category()
             ->wherePivot('dend', '<>', $this->getToday())
             ->wherePivot('dbeg', '<>', $this->getToday())
             ->withPivot('dend', 'dbeg')
             ->orderBy('pivot_dbeg')
             ->first(['name_ru']);
-        return $category;
     }
 
     public function category_last(Well $well)
     {
-        $category = $well->category()
+        return $well->category()
             ->wherePivot('dend', '<>', $this->getToday())
             ->wherePivot('dbeg', '<>', $this->getToday())
             ->withPivot('dend', 'dbeg')
             ->orderBy('pivot_dbeg', 'desc')
             ->first(['name_ru']);
-        return $category;
     }
 
     public function geo(Well $well)
     {
-        $geo = $well->geo()
+        return $well->geo()
             ->wherePivot('dend', '<>', $this->getToday())
             ->wherePivot('dbeg', '<>', $this->getToday())
             ->withPivot('dend', 'dbeg')
             ->orderBy('pivot_dbeg')
             ->first(['name_ru']);
-        return $geo;
     }
 
     public function well_expl(Well $well)
     {
-        $well_expl = $well->well_expl()
+        return $well->well_expl()
             ->where('dend', '<>', $this->getToday())
             ->where('dbeg', '<>', $this->getToday())
             ->withPivot('dend', 'dbeg')
             ->orderBy('dbeg', 'desc')
             ->first(['name_ru']);
-        return $well_expl;
     }
 
     public function techs(Well $well)
     {
-        $techs = $well->techs()
+        return $well->techs()
             ->wherePivot('dend', '>', $this->getToday())
             ->withPivot('dend', 'dbeg', 'tap')
             ->orderBy('pivot_dbeg', 'desc')
             ->get();
-        return $techs;
     }
 
     public function well_type(Well $well)
     {
-        $well_type = $well->well_type()
+        return $well->well_type()
             ->first(['name_ru']);
-        return $well_type;
     }
 
     public function org(Well $well)
     {
-        $org = $well->orgs()
+        return $well->orgs()
             ->wherePivot('dend', '>', $this->getToday())
             ->withPivot('dend', 'dbeg')
             ->orderBy('pivot_dbeg', 'desc')
             ->get();
-        return $org;
+    }
+
+    public function spatial_object(Well $well)
+    {
+        return $well->spatial_object()
+            ->where('spatial_object_type', '=', '1')
+            ->first(['coord_point']);
     }
 
     public function search(Request $request): array
