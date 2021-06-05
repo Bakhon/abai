@@ -112,6 +112,13 @@ class WellsController extends Controller
             ->first(['coord_point']);
     }
 
+    public function spatial_object_bottom(Well $well)
+    {
+        return $well->spatial_object_bottom()
+            ->where('spatial_object_type', '=', '1')
+            ->first(['coord_point']);
+    }
+
     public function search(Request $request): array
     {
         if (empty($request->get('query'))) {

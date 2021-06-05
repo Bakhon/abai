@@ -213,6 +213,7 @@ export default {
       WellTech: null,
       wellOrg: null,
       wellSaptialObject: null,
+      wellSaptialObjectBottom: null,
       tableData: [
         {
           'description': 'this.well.uwi',
@@ -293,14 +294,16 @@ export default {
           'data': ''
         },
         {
-          'description': 'well.spital_object.coord_point',
-          'method': null,
+          'description': 'this.wellSaptialObjectBottom.coord_point',
+          'method': 'coordPoint',
+          'point': 'X',
           'name': 'Координаты забоя X',
           'data': ''
         },
         {
-          'description': 'well.spital_object.coord_point',
-          'method': null,
+          'description': 'this.wellSaptialObjectBottom.coord_point',
+          'method': 'coordPoint',
+          'point': 'Y',
           'name': 'Координаты забоя Y',
           'data': ''
         },
@@ -419,6 +422,9 @@ export default {
           }),
           this.axios.get(this.localeUrl(`/api/bigdata/wells/${well.id}/spatial_object/`)).then(({data}) => {
             this.wellSaptialObject = data
+          }),
+          this.axios.get(this.localeUrl(`/api/bigdata/wells/${well.id}/spatial_object_bottom/`)).then(({data}) => {
+            this.wellSaptialObjectBottom = data
           }),
           this.axios.get(this.localeUrl(`/api/bigdata/wells/${well.id}`)).then(({data}) => {
             try {
