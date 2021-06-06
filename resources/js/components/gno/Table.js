@@ -301,23 +301,12 @@ export default {
       strokeLenMax: null,
       spmMin: null,
       spmMax: null,
-      pump27: null,
-      pump32: null,
-      pump38: null,
-      pump44: null,
-      pump50: null,
-      pump57: null,
-      pump60: null,
-      pump70: null,
-      pump95: null,
       kpodMin: null,
       groupPosad: null,
-      yakor: null,
-      paker: null,
-      hvostovik: null,
       centratorsInfo: null,
       centratorsRequiredValue: null,
       centratorsRecommendedValue: null,
+      hPerfRangeInfo: null,
       nkt_choose: [
         {
           for_calc_value: 50.3,
@@ -410,40 +399,20 @@ export default {
       this.strokeLenMin = this.$store.getters.strokeLenMin
       this.strokeLenMax = this.$store.getters.strokeLenMax
       this.kpodMin = this.$store.getters.kpodMin
-      this.pump27 = this.$store.getters.pump27
-      this.pump32 = this.$store.getters.pump32
-      this.pump38 = this.$store.getters.pump38
-      this.pump44 = this.$store.getters.pump44
-      this.pump50 = this.$store.getters.pump50
-      this.pump57 = this.$store.getters.pump57
-      this.pump60 = this.$store.getters.pump60
-      this.pump70 = this.$store.getters.pump70
-      this.pump95 = this.$store.getters.pump95
+      this.dmPumps = this.$store.getters.dmPumps
+      this.dmRods = this.$store.getters.dmRods
       this.groupPosad = this.$store.getters.groupPosad
-      this.yakor = this.$store.getters.yakor
-      this.paker = this.$store.getters.paker
-      this.hvostovik = this.$store.getters.hvostovik
+      this.komponovka = this.$store.getters.komponovka
       this.postdata = JSON.stringify(
         {
           "pgno_setings":{
             "strokelen_min": this.strokeLenMin,
             "strokelen_max": this.strokeLenMax,
-            "spm_min": this.spmMin,
-            "spm_max": this.spmMax,
-            "pump27": this.pump27,
-            "pump32": this.pump32,
-            "pump38": this.pump38,
-            "pump44": this.pump44,
-            "pump50": this.pump50,
-            "pump57": this.pump57,
-            "pump60": this.pump60,
-            "pump70": this.pump70,
-            "pump95": this.pump95,
+            "pump_types": this.dmPumps,
+            "dm_rods" : this.dmRods,
             "kpod_min": this.kpodMin,
             "group_posad": this.groupPosad,
-            "yakor": this.yakor,
-            "paker": this.paker,
-            "hvostovik": this.hvostovik
+            "komponovka": this.komponovka,
           },
           "welldata": this.welldata,
           "settings" : {
@@ -1025,15 +994,10 @@ export default {
     	this.$store.commit("UPDATE_LEN_MIN", 2)
     	this.$store.commit("UPDATE_LEN_MAX", 3)
     	this.$store.commit("UPDATE_KPOD", 0.6)
-    	this.$store.commit("UPDATE_PUMP_27", false)
-    	this.$store.commit("UPDATE_PUMP_32", true)
-    	this.$store.commit("UPDATE_PUMP_38", true)
-    	this.$store.commit("UPDATE_PUMP_44", true)
-    	this.$store.commit("UPDATE_PUMP_50", false)
-    	this.$store.commit("UPDATE_PUMP_57", true)
-    	this.$store.commit("UPDATE_PUMP_60", false)
-    	this.$store.commit("UPDATE_PUMP_70", true)
-    	this.$store.commit("UPDATE_PUMP_95", false)
+      this.$store.commit("UPDATE_KOMPONOVKA", ["hvostovik"])
+      this.$store.commit("UPDATE_DMPUMPS", ["32", "38", "44", "57", "70"])
+      this.$store.commit("UPDATE_DMRODS", ["19", "22", "25"])
+
       if(this.field == "JET") {
               this.ao = 'АО "ММГ"'
             } else {
@@ -1258,6 +1222,10 @@ export default {
 
 
 
+    },
+
+    fetchBlockHperfRange() {
+      // code for fetching data
     },
 
     fetchBlockCentrators() {
@@ -1553,6 +1521,7 @@ export default {
               let data = JSON.parse(response.data);
               if (!this.isYoungAge) {
                 this.fetchBlockCentrators()
+                this.fetchBlockHperfRange()
               } else {
                 this.centratorsRequiredValue = []
               }

@@ -125,7 +125,7 @@
                 <template>
                   <div v-if="!isIntervals"></div>
                   <div class="descr" v-else>
-                    {{trans('pgno.interval_perf')}}: <b v-for="item in centratorsRequiredValue">{{ item }}</b>
+                    {{trans('pgno.interval_perf')}}: <b v-for="item in hPerfRangeInfo">{{ item }}</b>
                   </div>
                 </template> 
               </div>

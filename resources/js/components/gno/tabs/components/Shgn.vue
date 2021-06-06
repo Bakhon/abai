@@ -40,53 +40,52 @@
 		<div class="flex__item__block__1__2">
 			<div class="title__block__4">{{trans('pgno.diametr_nasosov')}}, {{trans('measurements.mm')}}</div>
 				<div class="flex__item__block__second__block__4">
-					<div>
 
-					</div>
 					<div class="form__checkbox block__checkbox__1 table-border-gno-right">
 						<label class="checkbox__block__label__1">27</label>
-						<input class="checkbox__block__1" v-model="pump27" @change="onChangePump27" type="checkbox" />
+						<input class="checkbox__block__1" v-model="dmPumps" type="checkbox" value="27"/>
 					</div>			
 
 					<div class="form__checkbox block__checkbox__2 table-border-gno-right">
 						<label class="checkbox__block__label__1">32</label>
-						<input class="checkbox__block__1" v-model="pump32" @change="onChangePump32" type="checkbox" />
+						<input class="checkbox__block__1" v-model="dmPumps"  type="checkbox" value="32" />
 					</div>
 
 					<div class="form__checkbox block__checkbox__3 table-border-gno-right">
 						<label class="checkbox__block__label__1">38</label>
-						<input class="checkbox__block__1" v-model="pump38" @change="onChangePump38" type="checkbox" />
+						<input class="checkbox__block__1" v-model="dmPumps" type="checkbox" value="38" />
 					</div>
 
 					<div class="form__checkbox block__checkbox__4 table-border-gno-right">
 						<label class="checkbox__block__label__1">44</label>
-						<input class="checkbox__block__1" v-model="pump44" @change="onChangePump44" type="checkbox" />
+						<input class="checkbox__block__1" v-model="dmPumps" type="checkbox" value="44" />
 					</div>
 
 					<div class="form__checkbox block__checkbox__5 table-border-gno-right">
 						<label class="checkbox__block__label__1">50</label>
-						<input class="checkbox__block__1" v-model="pump50" @change="onChangePump50" type="checkbox" />
+						<input class="checkbox__block__1" v-model="dmPumps" type="checkbox" value="50" />
 					</div>
 
 					<div class="form__checkbox block__checkbox__6 table-border-gno-right">
 						<label class="checkbox__block__label__1">57</label>
-						<input class="checkbox__block__1" v-model="pump57" @change="onChangePump57" type="checkbox" />
+						<input class="checkbox__block__1" v-model="dmPumps" type="checkbox" value="57" />
 					</div>
 
 					<div class="form__checkbox block__checkbox__7 table-border-gno-right">
 						<label class="checkbox__block__label__1">60</label>
-						<input class="checkbox__block__1" v-model="pump60" @change="onChangePump60" type="checkbox" />
+						<input class="checkbox__block__1" v-model="dmPumps" type="checkbox" value="60" />
 					</div>
 
 					<div class="form__checkbox block__checkbox__8 table-border-gno-right">
 						<label class="checkbox__block__label__1">70</label>
-						<input class="checkbox__block__1" v-model="pump70" @change="onChangePump70" type="checkbox" />
+						<input class="checkbox__block__1" v-model="dmPumps" type="checkbox" value="70" />
 					</div>
 
 					<div class="form__checkbox block__checkbox__9">
 						<label class="checkbox__block__label__1">95 </label>
-						<input class="checkbox__block__1" v-model="pump95" @change="onChangePump95" type="checkbox" />
+						<input class="checkbox__block__1" v-model="dmPumps" type="checkbox" value="95" />
 					</div>
+					
 				</div>
 		</div>
 
@@ -127,17 +126,17 @@
 			<div class="flex__item__block__second__block__4__1">
 				<div class="form__checkbox block__checkbox__1">
 					<div class="block__checkbox__text">
-						<input type="checkbox" @change="onChangeYakor" v-model="yakor" />
+						<input type="checkbox" v-model="komponovka" value="yakor" />
 						<label for="checkbox1">{{trans('pgno.yakor_truboderzhatel')}}</label>
 					</div>
 						
 					<div class="block__checkbox__1__text">
-						<input type="checkbox" @change="onChangePaker" v-model="paker" />
+						<input type="checkbox" v-model="komponovka" value="paker" />
 						<label for="checkbox1">{{trans('pgno.paker')}}</label>
 					</div>
 						
 					<div class="block__checkbox__2__text">
-						<input type="checkbox" @change="onChangeHvostovik" v-model="hvostovik"/>
+						<input type="checkbox" v-model="komponovka" value="hvostovik" />
 						<label for="checkbox1">{{trans('pgno.hvostovik')}}</label>
 					</div>
 							
@@ -151,7 +150,7 @@
 		<div class="flex__item__block__3">
 			<div class="title__block__3__1">{{trans('pgno.kon_kolony_shtang')}}
 			</div>
-			<div class="title__block__3__2">{{trans('pgno.dm_shtang')}}, , {{trans('measurements.mm')}}</div>
+			<div class="title__block__3__2">{{trans('pgno.dm_shtang')}}, {{trans('measurements.mm')}}</div>
 			<div class="title__block__3__3">{{trans('pgno.marki_stali_shtang')}}
 			<svg style="padding-left: 4px;" @click="onClickI1()" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
 			<path fill-rule="evenodd" clip-rule="evenod" d="M12 15.9998C14.2092 15.9998 16 14.209 16 11.9998V4C16 1.79086 14.2092 -7.25981e-06 12 0L4.00035 2.62892e-05C1.79129 3.35488e-05 0.000467376 1.79078 0.000366244 3.99984L4.28319e-09 11.9997C-0.00010113 14.2089 1.79079 15.9998 4 15.9998H12ZM9.96388 4.21331C9.96388 4.83186 9.41469 5.3333 8.73722 5.3333C8.05976 5.3333 7.51057 4.83186 7.51057 4.21331C7.51057 3.59476 8.05976 3.09332 8.73722 3.09332C9.41469 3.09332 9.96388 3.59476 9.96388 4.21331ZM5.60064 7.36004L5.72864 6.8214L6.60376 6.50669L6.9106 6.42998C7.06133 6.3923 7.21494 6.3673 7.36984 6.35523L7.41538 6.35168C7.54958 6.34122 7.68445 6.34271 7.81839 6.35613L7.85353 6.35965C7.94465 6.36878 8.03495 6.38481 8.12364 6.40762L8.18305 6.4229C8.30295 6.45373 8.41808 6.50078 8.52526 6.56274L8.55485 6.57985C8.65442 6.63741 8.74468 6.70975 8.82254 6.79439L8.8313 6.80391C8.91016 6.88963 8.97434 6.98778 9.02125 7.0944C9.05215 7.16462 9.07532 7.23799 9.09037 7.31322L9.09378 7.33027C9.11191 7.42093 9.11967 7.51336 9.11689 7.60578L9.11251 7.75195C9.10756 7.91693 9.08628 8.08102 9.04897 8.24181L8.9504 8.66669L8.75307 9.33335L8.44907 10.4L8.33707 10.9333L8.31512 11.2011C8.31199 11.2394 8.31319 11.2778 8.31869 11.3158L8.32229 11.3407C8.3477 11.516 8.46981 11.662 8.63788 11.718C8.66837 11.7282 8.69982 11.7352 8.73174 11.7389L8.82514 11.7498C8.9437 11.7637 9.06356 11.7621 9.18171 11.7451L9.25563 11.7344C9.35953 11.7195 9.46205 11.6962 9.5622 11.6648L9.81973 11.584L9.67039 12.1333L8.73707 12.4693L8.46883 12.5326C8.30138 12.5721 8.13053 12.5955 7.95863 12.6026L7.93826 12.6034C7.77785 12.61 7.61717 12.6011 7.45847 12.5768L7.36839 12.563C7.28545 12.5503 7.20378 12.5305 7.12429 12.5037L7.08161 12.4893C6.90742 12.4305 6.74837 12.3339 6.61586 12.2065L6.60737 12.1983C6.56238 12.1551 6.52112 12.1081 6.48404 12.0578C6.35347 11.881 6.27843 11.6694 6.26845 11.4499L6.26357 11.3423C6.25926 11.2477 6.26417 11.1528 6.27823 11.0591L6.33709 10.6667L6.87042 8.80003L7.02509 8.13737L7.056 7.87718C7.06732 7.7819 7.0635 7.68544 7.04469 7.59136L7.02946 7.51521C7.02302 7.48303 7.01214 7.4519 6.99713 7.42271C6.95049 7.33203 6.86703 7.26586 6.76811 7.24113L6.66762 7.21601C6.62518 7.2054 6.58168 7.1996 6.53794 7.19872L6.33709 7.19471C6.15985 7.20887 5.98467 7.24231 5.81466 7.29443L5.60064 7.36004Z" fill="white"/>
@@ -179,32 +178,32 @@
 			<div class="flex__item__block__third__block__2">
 				<div class="form__checkbox block__checkbox__1 table-border-gno-right">
 					<label for="checkbox1" class="checkbox__block__label__1">13</label>
-					<input class="checkbox__block__1" type="checkbox" v-model="dmShtang13" />
+					<input class="checkbox__block__1" type="checkbox" v-model="dmRods" value="13"/>
 				</div>
 
 				<div class="form__checkbox block__checkbox__2 table-border-gno-right">
 					<label for="checkbox1" class="checkbox__block__label__1">16</label>
-					<input class="checkbox__block__1" type="checkbox" v-model="dmShtang16" />
+					<input class="checkbox__block__1" type="checkbox" v-model="dmRods" value="16"/>
 				</div>
 
 				<div class="form__checkbox block__checkbox__3 table-border-gno-right">
 					<label for="checkbox1" class="checkbox__block__label__1">19</label>
-					<input class="checkbox__block__1" type="checkbox" v-model="dmShtang19" />
+					<input class="checkbox__block__1" type="checkbox" v-model="dmRods" value="19" />
 				</div>
 
 				<div class="form__checkbox block__checkbox__4 table-border-gno-right">
 					<label for="checkbox1" class="checkbox__block__label__1">22</label>
-					<input class="checkbox__block__1" type="checkbox" v-model="dmShtang22" />
+					<input class="checkbox__block__1" type="checkbox" v-model="dmRods" value="22"/>
 				</div>
 
 				<div class="form__checkbox block__checkbox__5 table-border-gno-right">
 					<label for="checkbox1" class="checkbox__block__label__1">25</label>
-					<input class="checkbox__block__1" type="checkbox" v-model="dmShtang25" />
+					<input class="checkbox__block__1" type="checkbox" v-model="dmRods" value="25"/>
 				</div>
 
 				<div class="form__checkbox block__checkbox__6__spec">
 					<label for="checkbox1" class="checkbox__block__label__1">29</label>
-					<input class="checkbox__block__1" type="checkbox" v-model="dmShtang29" />
+					<input class="checkbox__block__1" type="checkbox" v-model="dmRods" value="29"/>
 				</div>
 			</div>
 		</div>
@@ -375,222 +374,7 @@
 
 
 </template>
-
-<script>
-import { mapGetters, mapState } from 'vuex';
-import NotifyPlugin from "vue-easy-notify";
-
-Vue.use(NotifyPlugin);
-export default {
-	data: function()  {
-		return {
-			svgTableN1: require('../../images/tableN1.svg'),
-			svgTableN2: require('../../images/tableN2.svg'),
-			davMin: '30атм',
-			groupPosad: 2,
-			yakor: false,
-			paker: false,
-			hvostovik: false,
-			heavyDown: 'heavy_down',
-			stup: '2',
-			dlinaPolki: '10м',
-			gasMax: '10%',
-			hvostovik: true,
-			dmShtang13: false,
-			dmShtang16: false,
-			dmShtang19: true,
-			dmShtang22: true,
-			dmShtang25: true,
-			dmShtang29: false,
-			koroz: 'srednekor',
-			h2s: false,
-			pump27: false,
-			pump32: true,
-			pump38: true,
-			pump44: true,
-			pump50: false,
-			pump57: true,
-			pump60: false,
-			pump70: true,
-			pump95: false,
-			lenMin: 2,
-			lenMax: 3,
-			spmMin: 3,
-			spmMax: 8,
-			kpodMin: 0.6,
-			isModal: false,
-			pumpCheckboxes: [
-				{
-					id: 1,
-					value: 27
-				},
-				{
-					id: 2,
-					value: 32
-				},
-				{
-					id: 3,
-					value: 38
-				},
-				{
-					id: 4,
-					value: 44
-				},
-				{
-					id: 5,
-					value: 50
-				},
-
-				],
-			markShtang: null,
-			markShtangs: [
-        		{
-          		mValue: 1,
-          		tempValue: "40 (Н)",
-        		},
-        		{
-          		mValue: 2,
-          		tempValue: "40 (НсУ)",
-        		},
-        		{
-          		mValue: 3,
-          		tempValue: "14Х3ГМЮ (НВО)",
-        		},
-        		{
-          		mValue: 4,
-          		tempValue: "15НЗМА (Н)",
-        		},
-        		{
-          		mValue: 5,
-          		tempValue: "15НЗМА (НсУ)",
-        		},
-        		{
-          		mValue: 6,
-          		tempValue: "15Х2ГМФ (НВО)",
-        		},
-				{
-          		mValue: 7,
-          		tempValue: "15Х2НМФ (НВО)",
-        		},
-				{
-          		mValue: 8,
-          		tempValue: "20Н2М (Н)",
-        		},
-				{
-          		mValue: 9,
-          		tempValue: "20Н2М (НсУ)",
-        		},
-				{
-          		mValue: 10,
-          		tempValue: "30ХМ(А) (НсУ)",
-        		},
-				{
-          		mValue: 11,
-          		tempValue: "АЦ28ХГНЗФТ (О)",
-        		},
-				],
-				}
-	},
-	methods: {
-		closeModal(modalName) {
-      		this.$modal.hide(modalName)
-    	},
-		onChangeSpmMin(event) {
-			this.$store.commit("UPDATE_SPM_MIN", event.target.value)
-		},
-		onChangeSpmMax(event) {
-			this.$store.commit("UPDATE_SPM_MAX", event.target.value)
-		},
-		onChangeLenMin(event) {
-			this.$store.commit("UPDATE_LEN_MIN", event.target.value)
-		},
-		onChangeLenMax(event) {
-			this.$store.commit("UPDATE_LEN_MAX", event.target.value)
-		},
-		onChangeKpod(event) {
-			this.$store.commit("UPDATE_KPOD", event.target.value)
-		},
-		onChangePump27(event) {
-			this.$store.commit("UPDATE_PUMP_27", event.target.checked)
-		},
-		onChangePump32(event) {
-			this.$store.commit("UPDATE_PUMP_32", event.target.checked)
-		},
-		onChangePump38(event) {
-			this.$store.commit("UPDATE_PUMP_38", event.target.checked)
-		},
-		onChangePump44(event) {
-			this.$store.commit("UPDATE_PUMP_44", event.target.checked)
-		},
-		onChangePump50(event) {
-			this.$store.commit("UPDATE_PUMP_50", event.target.checked)
-		},
-		onChangePump57(event) {
-			this.$store.commit("UPDATE_PUMP_57", event.target.checked)
-		},
-		onChangePump60(event) {
-			this.$store.commit("UPDATE_PUMP_60", event.target.checked)
-		},
-		onChangePump70(event) {
-			this.$store.commit("UPDATE_PUMP_70", event.target.checked)
-		},
-		onChangePump95(event) {
-			this.$store.commit("UPDATE_PUMP_95", event.target.checked)
-		},
-		// 
-		onChangeGroupPosad(event) {
-			this.$store.commit("UPDATE_GROUP_POSAD", event.target.value)
-		},
-		onChangeYakor(event) {
-			this.$store.commit("UPDATE_YAKOR", event.target.value)
-		},
-		onChangePaker(event) {
-			this.$store.commit("UPDATE_PAKER", event.target.value)
-		},
-		onChangeHvostovik(event) {
-			this.$store.commit("UPDATE_HVOSTOVIK", event.target.value)
-		},
-		
-
-		onClick() {
-			this.$modal.show('modalTable')
-			this.isModal = true;
-			this.$emit('myEvent', this.isModal);
-      		this.$modal.hide('modalTable')
-		},
-		onClickI1() {
-			this.$modal.show('modalTable2')
-		},
-		onClickI2() {
-			this.$modal.show('modalTable3')
-		},
-		onSubmitParams() {
-			this.$emit('on-submit-params');
-			this.$modal.show('tabs');
-		},
-	},
-	created: function() {
-		this.spmMin = this.$store.getters.spmMin
-    	this.spmMax = this.$store.getters.spmMax
-    	this.strokeLenMin = this.$store.getters.strokeLenMin
-    	this.strokeLenMax = this.$store.getters.strokeLenMax
-    	this.kpodMin = this.$store.getters.kpodMin
-    	this.pump27 = this.$store.getters.pump27
-    	this.pump32 = this.$store.getters.pump32
-    	this.pump38 = this.$store.getters.pump38
-    	this.pump44 = this.$store.getters.pump44
-    	this.pump50 = this.$store.getters.pump50
-    	this.pump57 = this.$store.getters.pump57
-    	this.pump60 = this.$store.getters.pump60
-    	this.pump70 = this.$store.getters.pump70
-    	this.pump95 = this.$store.getters.pump95
-		this.groupPosad= this.$store.getters.groupPosad
-    	this.hvostovik = this.$store.getters.hvostovik
-    	this.paker = this.$store.getters.paker
-		this.yakor = this.$store.getters.yakor
-	}
-}
-</script>
+<script src="./js/Shgn"></script>
 
 <style scoped>
 .nno-modal-buttons-container {
@@ -967,7 +751,7 @@ export default {
 
 .block__third__block__radio__5 {
 	display: block;
-	width: 70px;
+	width: 75px;
 	height: 20px;
 	position: relative;
 	top: -125px;
