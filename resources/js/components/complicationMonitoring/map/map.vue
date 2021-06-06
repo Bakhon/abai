@@ -107,7 +107,7 @@ import mapContextMenu from "./mapContextMenu";
 import pipeColors from '~/json/pipe_colors.json'
 import axios from "axios";
 import moment from "moment";
-import CatLoader from '../ui-kit/CatLoader'
+import CatLoader from '../../ui-kit/CatLoader'
 
 
 export default {

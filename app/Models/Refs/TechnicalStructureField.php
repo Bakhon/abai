@@ -2,6 +2,7 @@
 
 namespace App\Models\Refs;
 
+use App\User;
 use Illuminate\Database\Eloquent\Model;
 
 class TechnicalStructureField extends Model
@@ -12,11 +13,11 @@ class TechnicalStructureField extends Model
 
     public function user()
     {
-        return $this->belongsTo('App\User', 'user_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function company()
     {
-        return $this->belongsTo('App\Models\Refs\TechnicalStructureCompany', 'company_id');
+        return $this->belongsTo(TechnicalStructureCompany::class, 'company_id');
     }
 }
