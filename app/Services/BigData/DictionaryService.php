@@ -4,8 +4,10 @@
 namespace App\Services\BigData;
 
 use App\Exceptions\DictionaryNotFound;
+use App\Models\BigData\Dictionaries\Block;
 use App\Models\BigData\Dictionaries\Brigade;
 use App\Models\BigData\Dictionaries\Brigadier;
+use App\Models\BigData\Dictionaries\CasingType;
 use App\Models\BigData\Dictionaries\Company;
 use App\Models\BigData\Dictionaries\DrillChisel;
 use App\Models\BigData\Dictionaries\DrillColumnType;
@@ -22,7 +24,6 @@ use App\Models\BigData\Dictionaries\TechStateType;
 use App\Models\BigData\Dictionaries\WellCategory;
 use App\Models\BigData\Dictionaries\WellStatus;
 use App\Models\BigData\Dictionaries\WellType;
-use App\Models\BigData\Dictionaries\Block;
 use App\TybeNom;
 use Carbon\Carbon;
 use Illuminate\Cache\Repository;
@@ -50,6 +51,10 @@ class DictionaryService
         'equip_type' => [
             'class' => EquipType::class,
             'name_field' => 'name_ru'
+        ],
+        'casings' => [
+            'class' => CasingType::class,
+            'name_field' => 'CONCAT(\'Условный диаметр трубы(мм): \', od, \', Толщина стенки с норм. резьбой(мм):\', wt, \', Внутренний диаметр трубы с норм. резьбой (мм)\' , vd, \', Группа прочности: \', sg)'
         ],
         'repair_work_types' => [
             'class' => RepairWorkType::class,
