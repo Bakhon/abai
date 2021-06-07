@@ -1,12 +1,7 @@
 <?php
 
-namespace App\Models\Refs;
+namespace App\Models\ComplicationMonitoring;
 
-use App\Models\ComplicationMonitoring\OilGas;
-use App\Models\ComplicationMonitoring\OmgNGDU;
-use App\Models\ComplicationMonitoring\OmgNGDUWell;
-use App\Models\ComplicationMonitoring\OmgUHE;
-use App\Models\ComplicationMonitoring\WaterMeasurement;
 use Illuminate\Database\Eloquent\Model;
 
 class Well extends Model

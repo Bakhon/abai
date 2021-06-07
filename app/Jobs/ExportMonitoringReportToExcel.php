@@ -2,7 +2,14 @@
 
 namespace App\Jobs;
 
+use App\Exports\MonitoringReportExport;
+use App\Models\ComplicationMonitoring\Corrosion;
+use App\Models\ComplicationMonitoring\Gu;
 use App\Models\ComplicationMonitoring\OilGas;
+use App\Models\ComplicationMonitoring\OmgCA;
+use App\Models\ComplicationMonitoring\OmgNGDU;
+use App\Models\ComplicationMonitoring\OmgUHE;
+use App\Models\ComplicationMonitoring\WaterMeasurement;
 use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -47,7 +54,7 @@ class ExportMonitoringReportToExcel implements ShouldQueue
     public function handle()
     {
 
-        $gus = \App\Models\Refs\Gu::query()
+        $gus = Gu::query()
             ->leftJoin('cdngs', 'cdngs.id', '=', 'gus.cdng_id')
             ->leftJoin('ngdus', 'ngdus.id', '=', 'cdngs.ngdu_id')
             ->select('gus.id', 'gus.name as gu_name', 'cdngs.name as cdng_name', 'ngdus.name as ngdu_name')
@@ -55,7 +62,7 @@ class ExportMonitoringReportToExcel implements ShouldQueue
             ->keyBy('id');
 
         if(in_array('omgca', $this->sections)) {
-            $omgCas = \App\Models\ComplicationMonitoring\OmgCA::query()
+            $omgCas = OmgCA::query()
                 ->where('date', '>=', (clone $this->dateFrom)->startOfYear())
                 ->where('date', '<=', (clone $this->dateTo)->startOfYear())
                 ->select('plan_dosage', 'q_v')
@@ -65,7 +72,7 @@ class ExportMonitoringReportToExcel implements ShouldQueue
         }
 
         if(in_array('omgngdu', $this->sections)) {
-            $omgNgdus = \App\Models\ComplicationMonitoring\OmgNGDU::query()
+            $omgNgdus = OmgNGDU::query()
                 ->whereNotNull('gu_id')
                 ->whereBetween('date', [$this->dateFrom, $this->dateTo])
                 ->get()
@@ -82,7 +89,7 @@ class ExportMonitoringReportToExcel implements ShouldQueue
         }
 
         if(in_array('omguhe', $this->sections)) {
-            $omgUhes = \App\Models\ComplicationMonitoring\OmgUHE::query()
+            $omgUhes = OmgUHE::query()
                 ->whereNotNull('gu_id')
                 ->whereBetween('date', [$this->dateFrom, $this->dateTo])
                 ->get()
@@ -99,7 +106,7 @@ class ExportMonitoringReportToExcel implements ShouldQueue
         }
 
         if(in_array('watermeasurement', $this->sections)) {
-            $watermeasurements = \App\Models\ComplicationMonitoring\WaterMeasurement::query()
+            $watermeasurements = WaterMeasurement::query()
                 ->whereNotNull('gu_id')
                 ->whereBetween('date', [$this->dateFrom, $this->dateTo])
                 ->get()
@@ -116,7 +123,7 @@ class ExportMonitoringReportToExcel implements ShouldQueue
         }
 
         if(in_array('oilgas', $this->sections)) {
-            $oilgases = \App\Models\ComplicationMonitoring\OilGas::query()
+            $oilgases = OilGas::query()
                 ->whereNotNull('gu_id')
                 ->whereBetween('date', [$this->dateFrom, $this->dateTo])
                 ->get()
@@ -133,7 +140,7 @@ class ExportMonitoringReportToExcel implements ShouldQueue
         }
 
         if(in_array('corrosions', $this->sections)) {
-            $corrosions = \App\Models\ComplicationMonitoring\Corrosion::query()
+            $corrosions = Corrosion::query()
                 ->whereNotNull('gu_id')
                 ->where('start_date_of_corrosion_velocity_with_inhibitor_measure', '<=', $this->dateTo)
                 ->where('final_date_of_corrosion_velocity_with_inhibitor_measure', '>=', $this->dateFrom)
@@ -261,7 +268,7 @@ class ExportMonitoringReportToExcel implements ShouldQueue
         }
 
         $fileName = '/export/monitoring_report_' . Carbon::now()->format('YmdHis') . '.xlsx';
-        Excel::store(new \App\Exports\MonitoringReportExport($reportData, $this->sections), 'public'.$fileName);
+        Excel::store(new MonitoringReportExport($reportData, $this->sections), 'public'.$fileName);
 
         $this->setOutput(
             [
