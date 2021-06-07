@@ -20,6 +20,8 @@ use App\Models\BigData\Dictionaries\Org;
 use App\Models\BigData\Dictionaries\PumpType;
 use App\Models\BigData\Dictionaries\RepairWorkType;
 use App\Models\BigData\Dictionaries\TechConditionOfWells;
+use App\Models\BigData\Dictionaries\InjAgentType;
+use App\Models\BigData\Dictionaries\WellActivity;
 use App\Models\BigData\Dictionaries\TechStateType;
 use App\Models\BigData\Dictionaries\WellCategory;
 use App\Models\BigData\Dictionaries\WellStatus;
@@ -28,6 +30,7 @@ use App\TybeNom;
 use Carbon\Carbon;
 use Illuminate\Cache\Repository;
 use Illuminate\Support\Facades\DB;
+
 
 class DictionaryService
 {
@@ -98,6 +101,14 @@ class DictionaryService
         ],
         'drill_column_types' => [
             'class' => DrillColumnType::class,
+            'name_field' => 'name_ru'
+        ],
+        'inj_agent_types' => [
+            'class' => InjAgentType::class,
+            'name_field' => 'name_ru'
+        ],
+        'well_activity' => [
+            'class' => WellActivity::class,
             'name_field' => 'name_ru'
         ],
         'tube_nom' => [
