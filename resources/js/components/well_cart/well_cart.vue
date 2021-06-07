@@ -214,6 +214,7 @@ export default {
       wellOrg: null,
       wellSaptialObject: null,
       wellSaptialObjectBottom: null,
+      actualBottomHole: null,
       tableData: [
         {
           'description': 'this.well.uwi',
@@ -425,6 +426,9 @@ export default {
           }),
           this.axios.get(this.localeUrl(`/api/bigdata/wells/${well.id}/spatial_object_bottom/`)).then(({data}) => {
             this.wellSaptialObjectBottom = data
+          }),
+          this.axios.get(this.localeUrl(`/api/bigdata/wells/${well.id}/actual_bottom_hole/`)).then(({data}) => {
+            this.actualBottomHole = data
           }),
           this.axios.get(this.localeUrl(`/api/bigdata/wells/${well.id}`)).then(({data}) => {
             try {

@@ -24,12 +24,13 @@ class WellsController extends Controller
 
     public function status(Well $well)
     {
-        return $well->status()
+        $status = $well->status()
             ->wherePivot('dend', '<>', $this->getToday())
             ->wherePivot('dbeg', '<>', $this->getToday())
             ->withPivot('dend', 'dbeg')
             ->orderBy('pivot_dbeg', 'desc')
             ->first(['name_ru']);
+        return ($status);
     }
 
     public function tube_nom(Well $well)
@@ -117,6 +118,13 @@ class WellsController extends Controller
         return $well->spatial_object_bottom()
             ->where('spatial_object_type', '=', '1')
             ->first(['coord_point']);
+    }
+
+    public function actual_bottom_hole(Well $well)
+    {
+        return $well->bottom_hole()
+            ->where('bottom_hole_type', '=', '1')
+            ->first();
     }
 
     public function search(Request $request): array
