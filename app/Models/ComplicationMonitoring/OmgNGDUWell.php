@@ -13,12 +13,12 @@ class OmgNGDUWell extends Model
 
     public function zu()
     {
-        return $this->hasOne('App\Models\Refs\Zu','id','zu_id')->withDefault();
+        return $this->hasOne(Zu::class,'id','zu_id')->withDefault();
     }
 
     public function well()
     {
-        return $this->hasOne('App\Models\Refs\Well','id','well_id')->withDefault();
+        return $this->hasOne(Well::class,'id','well_id')->withDefault();
     }
 
     public function getDailyWaterProductionAttribute()

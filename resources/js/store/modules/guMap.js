@@ -138,10 +138,9 @@ const guMap = {
                         return guPoint.id == gu.id;
                     });
                     commit('UPDATE_GU_POINT', {index: guIndex, gu: response.data.gu});
-                    return response.data.gu;
-                } else {
-                    console.log('error update Gu in DB');
                 }
+
+                return response.data;
             });
         },
 
@@ -152,10 +151,9 @@ const guMap = {
                         return zuPoint.id == zu.id;
                     });
                     commit('UPDATE_ZU_POINT', {zu: response.data.zu, index: zuIndex});
-                    return response.data.zu;
-                } else {
-                    console.log('error update Zu in DB');
                 }
+
+                return response.data;
             });
         },
 
@@ -166,10 +164,9 @@ const guMap = {
                         return wellPoint.id == well.id;
                     });
                     commit('UPDATE_WELL_POINT', {well: response.data.well, index: wellIndex});
-                    return response.data.well;
-                } else {
-                    console.log('error update Well in DB');
                 }
+
+                return response.data;
             });
         },
 
@@ -177,30 +174,27 @@ const guMap = {
             return axios.delete(this._vm.localeUrl("/gu-map/gu/" + gu.id)).then((response) => {
                 if (response.data.status == 'success') {
                     commit('DELETE_GU', gu.index);
-                    return response.data.status
-                } else {
-                    console.log('error in delete Gu');
                 }
+
+                return response.data;
             });
         },
         deleteZu({commit}, zu) {
             return axios.delete(this._vm.localeUrl("/gu-map/zu/" + zu.id)).then((response) => {
                 if (response.data.status == 'success') {
                     commit('DELETE_ZU', zu.index);
-                    return response.data.status
-                } else {
-                    console.log('error in delete Zu');
                 }
+
+                return response.data;
             });
         },
         deleteWell({commit}, well) {
             return axios.delete(this._vm.localeUrl("/gu-map/well/" + well.id)).then((response) => {
                 if (response.data.status == 'success') {
                     commit('DELETE_WELL', well.index);
-                    return response.data.status
-                } else {
-                    console.log('error in delete Well');
                 }
+
+                return response.data;
             });
         },
 
