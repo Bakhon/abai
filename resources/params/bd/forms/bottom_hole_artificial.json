@@ -19,7 +19,7 @@
                 "validation": "required"
               },
               {
-                "code": "b_hole",
+                "code": "depth",
                 "type": "numeric",
                 "title": "b_hole_m",
                 "validation": "required|numeric"

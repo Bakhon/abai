@@ -55,7 +55,6 @@ return [
             'water_cut' => 'Обводненность (%)',
             'calculated_fields' => 'Рассчитываемые поля',
             'oil_density' => 'Плотность нефти (Т/М3)',
-            'water_cut' => 'Обводненность (%)',
             'Planned_events_tech_modes' => 'Намечаемые мероприятия',
             'event' => 'Мероприятие',
             'planned_month' => 'Планируемый месяц'
