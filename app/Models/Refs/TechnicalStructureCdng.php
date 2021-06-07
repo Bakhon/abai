@@ -17,6 +17,6 @@ class TechnicalStructureCdng extends Model
 
     public function ngdu()
     {
-        return $this->belongsTo('App\Models\Refs\TechnicalStructureNgdu', 'ngdu_id');
+        return $this->belongsTo(TechnicalStructureNgdu::class, 'ngdu_id');
     }
 }
