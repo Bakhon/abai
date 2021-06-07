@@ -1,4 +1,5 @@
 import axios from 'axios'
+import Vue from 'vue'
 
 const guMap = {
     namespaced: true,
@@ -101,10 +102,9 @@ const guMap = {
                 if (response.data.status == 'success') {
                     commit('ADD_GU_POINT', response.data.gu);
                     commit('ADD_GU_POINT_INDEX', response.data.gu.id);
-                    return response.data.gu;
-                } else {
-                    console.log('error save Gu in DB');
                 }
+
+                return response.data;
             });
         },
 
@@ -112,10 +112,9 @@ const guMap = {
             return axios.post(this._vm.localeUrl("/gu-map/zu"), {zu: objectData}).then((response) => {
                 if (response.data.status == 'success') {
                     commit('ADD_ZU_POINT', response.data.zu);
-                    return response.data.zu;
-                } else {
-                    console.log('error save Zu in DB');
                 }
+
+                return response.data;
             });
         },
 
@@ -123,10 +122,9 @@ const guMap = {
             return axios.post(this._vm.localeUrl("/gu-map/well"), {well: objectData}).then((response) => {
                 if (response.data.status == 'success') {
                     commit('ADD_WELL_POINT', response.data.well);
-                    return response.data.well;
-                } else {
-                    console.log('error save Well in DB');
                 }
+
+                return response.data;
             });
         },
 

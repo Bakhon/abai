@@ -41,13 +41,10 @@
 
 <script>
 import moment from 'moment'
-import {Datetime} from 'vue-datetime'
-import 'vue-datetime/dist/vue-datetime.css'
+import 'vue-datetime/dist/vue-datetime.css';
 import {bTreeView} from 'bootstrap-vue-treeview'
 import {bdFormActions} from '@store/helpers'
 import BigDataTableForm from './TableForm'
-
-Vue.use(Datetime)
 
 export default {
   name: "BigDataTableFormWrapper",

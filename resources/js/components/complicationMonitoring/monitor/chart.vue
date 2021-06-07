@@ -12,6 +12,7 @@
 
 
 <script>
+import Vue from "vue";
 var ru = require("apexcharts/dist/locales/ru.json");
 import VueApexCharts from 'vue-apexcharts'
 
