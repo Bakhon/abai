@@ -1,6 +1,0 @@
-
-  @font-face {
-    font-family: Harmonia sans light;
-    src: url('{{ public_path('fonts/HarmoniaSansProCyr-Light.ttf') }}');
-        
-}
