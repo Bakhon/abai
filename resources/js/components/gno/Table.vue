@@ -85,17 +85,17 @@
               <div class="choosing-well-data table-border-gno table-border-gno-top cell4-gno-second  col-5" v-if="!isEditing">
                 {{ horizon }}
               </div>
-              <input v-if="isEditing" v-model="horizon" class="choosing-well-data table-border-gno table-border-gno-top cell4-gno-second  col-5" 
+              <input v-if="isEditing" v-model="horizon" class="choosing-well-data table-border-gno table-border-gno-top cell4-gno-second  col-5 square_editing" 
                 type="text" @change="changeValue('horizon', horizon)"/>
 
               <div class="choosing-well-data table-border-gno-top  col-7">
                 {{trans('pgno.method_of_operation')}}
               </div>
-              <div class="choosing-well-data table-border-gno table-border-gno-top cell4-gno-second  col-5">
-
+              <div v-if="!isEditing" class="choosing-well-data table-border-gno table-border-gno-top cell4-gno-second  col-5">
                 {{ expMeth }}
-
               </div>
+              <input v-if="isEditing" v-model="expMeth" class="choosing-well-data table-border-gno table-border-gno-top cell4-gno-second  col-5 square_editing" 
+                type="text" @change="changeValue('exp_meth', expMeth)"/>
 
               <div class="choosing-well-data table-border-gno-top  col-7">
                 {{ tseh }}
@@ -119,16 +119,20 @@
             <div class="tables-string-gno1-1">
               <div class="construction no-gutter col-12"><b>{{trans('pgno.construction')}}</b></div>
               <div class="construction-data no-gutter col-7">{{trans('pgno.naruznii_diametr_ex_col')}}</div>
-              <div class="construction-data table-border-gno cell4-gno-second no-gutter col-5">
+              <div v-if="!isEditing"  class="construction-data table-border-gno cell4-gno-second no-gutter col-5">
                 {{ casOD }} {{trans('measurements.mm')}}
               </div>
+              <input v-if="isEditing" v-model="casOD" class="construction-data table-border-gno cell4-gno-second no-gutter col-5 square_editing" 
+                type="text" @change="changeValue('cas_OD', casOD)"/>
 
               <div class="construction-data table-border-gno-top no-gutter col-7">
                 {{trans('pgno.vnutrenii_diametr_ex_col')}}
               </div>
-              <div class="construction-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
+              <div v-if="!isEditing" class="construction-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
                 {{ casID }} {{trans('measurements.mm')}}
               </div>
+              <input v-if="isEditing" v-model="casID" class="construction-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5 square_editing" 
+                type="text" @change="changeValue('cas_ID', casID)"/>
 
               <div class="construction-data hperf table-border-gno-top no-gutter col-7">
                 {{trans('pgno.glubina_perf')}}
@@ -139,23 +143,29 @@
                   </div>
                 </template> 
               </div>
-              <div class="construction-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
+              <div v-if="!isEditing" class="construction-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
                 {{ hPerf }} {{trans('measurements.m')}}
               </div>
+              <input v-if="isEditing" v-model="hPerf" class="construction-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5 square_editing" 
+                type="text" @change="changeValue('h_perf', hPerf)"/>
 
               <div class="construction-data table-border-gno-top no-gutter col-7">
                 {{trans('pgno.udlinenie_perf')}}
               </div>
-              <div class="construction-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
+              <div v-if="!isEditing" class="construction-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
                 {{ udl }} {{trans('measurements.m')}}
               </div>
+              <input v-if="isEditing" v-model="udl" class="construction-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5 square_editing" 
+                type="text" @change="changeValue('udl', udl)"/>
 
               <div class="construction-data table-border-gno-top no-gutter col-7">
                 {{trans('pgno.tekushii_zaboi')}}
               </div>
-              <div class="construction-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
+              <div v-if="!isEditing" class="construction-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
                 {{ curr }} {{trans('measurements.m')}}
               </div>
+              <input v-if="isEditing" v-model="curr" class="construction-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5 square_editing" 
+                type="text" @change="changeValue('curr_bh', curr)"/>
             </div>
             <!-- Конструкция end -->
 
@@ -193,55 +203,71 @@
                   <div class="devices-data no-gutter col-7">
                     {{trans('pgno.stanok_kachalka')}}
                   </div>
-                  <div class="devices-data table-border-gno cell4-gno-second no-gutter col-5">
+                  <div v-if="!isEditing" class="devices-data table-border-gno cell4-gno-second no-gutter col-5">
                     {{ sk }}
                   </div>
+                  <input v-if="isEditing" v-model="sk" class="devices-data table-border-gno cell4-gno-second no-gutter col-5 square_editing" 
+                    type="text" @change="changeValue('sk_type', sk)"/>
 
                   <div class="hide-block"  v-show="!hasStrokeLength">
                     <div class="devices-data table-border-gno-top no-gutter col-7">
-                    {{trans('pgno.dlina_hoda')}}
-                  </div>
-                  <div class="devices-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
-                    {{strokeLenDev}} {{trans('measurements.m')}}
-                  </div>
+                      {{trans('pgno.dlina_hoda')}}
+                    </div>
+                    <div v-if="!isEditing" class="devices-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
+                      {{strokeLenDev}} {{trans('measurements.m')}}
+                    </div>
+                    <input v-if="isEditing" v-model="strokeLenDev" class="devices-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5 square_editing" 
+                    type="text" @change="changeValue('stroke_len', strokeLenDev)"/>
                   </div>
 
                   <div v-if="expChoose">
                     <div v-if="expChoose ? 'ШГН' : 'ЭЦН' && 'УЭЦН'"></div>
-                    <div class="devices-data table-border-gno-top no-gutter col-7">
-                    {{ freq }}
-                  </div>
-                  <div class="devices-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
-                    {{spmDev}} 
-                  </div>
+                      <div class="devices-data table-border-gno-top no-gutter col-7">
+                        {{ freq }}
+                      </div>
+                      <div v-if="!isEditing" class="devices-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
+                        {{spmDev}} 
+                      </div>
+                      <input v-if="isEditing" v-model="spmDev" class="devices-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5 square_editing" 
+                        type="text" @change="changeValue('spm', spmDev)"/>
 
-                  <div class="devices-data table-border-gno-top no-gutter col-7">
-                    {{ dNasosa }}
-                  </div>
-                  <div class="devices-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
-                    {{ pumpType }}
-                  </div>
+                      <div class="devices-data table-border-gno-top no-gutter col-7">
+                        {{ dNasosa }}
+                      </div>
+                      <div v-if="!isEditing" class="devices-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
+                        {{ pumpType }}
+                      </div>
+                      <input v-if="isEditing" v-model="pumpType" class="devices-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5 square_editing" 
+                        type="text" @change="changeValue('pump_type', pumpType)"/>
                   </div>
                   
                   <div class="devices-data table-border-gno-top no-gutter col-7">
                     {{trans('pgno.h_spuska')}}
                   </div>
-                  <div class="devices-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
+                  <div v-if="!isEditing" class="devices-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
                     {{ hPumpSet }} {{trans('measurements.m')}}
                   </div>
+                  <input v-if="isEditing" v-model="hPumpSet" class="devices-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5 square_editing" 
+                    type="text" @change="changeValue('h_pump_set', hPumpSet)"/>
 
                   <div class="devices-data table-border-gno-top no-gutter col-7">
                     {{trans('pgno.naruzhnii_nkt')}}
                   </div>
-                  <div class="devices-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
+                  <div v-if="!isEditing" class="devices-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
                     {{ tubOD }} {{trans('measurements.mm')}}
                   </div>
+                  <input v-if="isEditing" v-model="tubOD" class="devices-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5 square_editing" 
+                    type="text" @change="changeValue('tub_OD', tubOD)"/>
+
                   <div class="devices-data table-border-gno-top no-gutter col-7">
                     {{trans('pgno.vnutrenii_nkt')}}
                   </div>
-                  <div class="devices-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
+                  <div v-if="!isEditing" class="devices-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
                     {{ tubID }} {{trans('measurements.mm')}}
                   </div>
+                  <input v-if="isEditing" v-model="tubID" class="devices-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5 square_editing" 
+                    type="text" @change="changeValue('tub_ID', tubID)"/>
+
                   <div class="devices-data table-border-gno-top no-gutter col-7">
                     {{trans('pgno.data_zapuska')}}
                   </div>
@@ -285,47 +311,58 @@
                   <div v-if="!isEditing" class="pvt-data table-border-gno cell4-gno-second no-gutter col-5">
                     {{ PBubblePoint }} {{trans('measurements.atm')}}
                   </div>
-                  <input v-if="isEditing" v-model="PBubblePoint" class="pvt-data table-border-gno cell4-gno-second no-gutter col-5" 
+                  <input v-if="isEditing" v-model="PBubblePoint" class="pvt-data table-border-gno cell4-gno-second no-gutter col-5 square_editing" 
                     type="text" @change="changeValue('P_bubble_point', PBubblePoint)"/>
 
                   <div class="pvt-data table-border-gno-top no-gutter col-7">{{trans('pgno.gf')}}</div>
                   <div v-if="!isEditing" class="pvt-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
                     {{ gor }} {{trans('measurements.m3/t')}}
                   </div>
-                  <input v-if="isEditing" v-model="gor" class="pvt-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5" 
+                  <input v-if="isEditing" v-model="gor" class="pvt-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5 square_editing" 
                     type="text" @change="changeValue('gor', gor)"/>
 
                   <div class="pvt-data table-border-gno-top no-gutter col-7">{{trans('pgno.t_pl')}}</div>
-                  <div class="pvt-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
+                  <div v-if="!isEditing" class="pvt-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
                     {{ tRes }} {{trans('measurements.celsius')}}
                   </div>
+                  <input v-if="isEditing" v-model="tRes" class="pvt-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5 square_editing" 
+                    type="text" @change="changeValue('t_res', tRes)"/>
 
                   <div class="pvt-data table-border-gno-top no-gutter col-7">
                     {{trans('pgno.vyazkost_nefti')}}
                   </div>
-                  <div class="pvt-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
+                  <div v-if="!isEditing" class="pvt-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
                     {{ viscOilRc }} {{trans('measurements.spz')}}
                   </div>
+                  <input v-if="isEditing" v-model="viscOilRc" class="pvt-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5 square_editing" 
+                    type="text" @change="changeValue('visc_oil_rc', viscOilRc)"/>
 
                   <div class="pvt-data table-border-gno-top no-gutter col-7">
                     {{trans('pgno.vyazkost_vody')}}
                   </div>
-                  <div class="pvt-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
+                  <div v-if="!isEditing" class="pvt-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
                     {{ viscWaterRc }} {{trans('measurements.spz')}}
                   </div>
+                  <input v-if="isEditing" v-model="viscWaterRc" class="pvt-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5 square_editing" 
+                    type="text" @change="changeValue('visc_wat_rc', viscWaterRc)"/>
 
                   <div class="pvt-data table-border-gno-top no-gutter col-7">
                     {{trans('pgno.plotnost_nefti')}}
                   </div>
-                  <div class="pvt-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
+                  <div v-if="!isEditing" class="pvt-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
                     {{ densOil }} {{trans('measurements.g/sm3')}}
                   </div>
+                  <input v-if="isEditing" v-model="densOil" class="pvt-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5 square_editing" 
+                    type="text" @change="changeValue('dens_oil', densOil)"/>
+                    
                   <div class="pvt-data table-border-gno-top no-gutter col-7">
                     {{trans('pgno.plotnost_vody')}}
                   </div>
-                  <div class="pvt-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
+                  <div v-if="!isEditing" class="pvt-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
                     {{ densWater }} {{trans('measurements.g/sm3')}}
                   </div>
+                  <input v-if="isEditing" v-model="densWater" class="pvt-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5 square_editing" 
+                    type="text" @change="changeValue('dens_liq', densWater)"/>
                 </div>
               </div>
             </div>
