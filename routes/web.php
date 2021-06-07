@@ -126,7 +126,15 @@ Route::group(
                 Route::get('/paegtm', 'GTM\GTMController@index')->name('gtm');
                 Route::get('/paegtm/accum_oil_prod_data', 'GTM\GTMController@getAccumOilProd')->name('gtm');
                 Route::get('/paegtm/comparison_indicators_data', 'GTM\GTMController@getComparisonIndicators')->name('gtm');                  
-                          }
+                          
+
+                //geology module
+                Route::group(['prefix' => 'geology', 'namespace'=>'Geology'], function () {
+                    Route::resource('gis', 'GisController');
+;                   Route::resource('core', 'CoreController');
+                });
+
+            }
         );
         Auth::routes(
             [
