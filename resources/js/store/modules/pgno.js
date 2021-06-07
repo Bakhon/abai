@@ -8,13 +8,16 @@ const pgno = {
         strokeLenMin: null,
         strokeLenMax: null,
         kpodMin: null,
+        davMin: null,
+        gasMax: null,
+        dlinaPolki: null,
         groupPosad: null,
-        yakor: false,
-        paker: false,
-        hvostovik: false,
+        h2s: false,
+        koroz: "srednekor",
         dmPumps: ["32", "38", "44", "57", "70"],
         dmRods: ["19", "22", "25"],
         komponovka: ["hvostovik"],
+        stupColumns: ["2"],
         selectedMarkShtang: [],
         markShtangs: [
           {
@@ -85,6 +88,21 @@ const pgno = {
       UPDATE_LEN_MAX: (state, val) => {
         state.strokeLenMax = val
       },
+      UPDATE_DAV_MIN: (state, val) => {
+        state.davMin = val
+      },
+      UPDATE_GAS_MAX: (state, val) => {
+        state.gasMax = val
+      },
+      UPDATE_DLINA_POLKI: (state, val) => {
+        state.dlinaPolki = val
+      },
+      UPDATE_H2S: (state, val) => {
+        state.h2s = val
+      },
+      UPDATE_STUP_COLUMNS: (state, val) => {
+        state.stupColumns = val
+      },
       UPDATE_KPOD: (state, val) => {
         state.kpodMin = val
       },
@@ -97,6 +115,9 @@ const pgno = {
       UPDATE_HPUMP(state, payload) {
         state.hPump = payload
       },
+      UPDATE_KOROZ(state, payload) {
+        state.koroz = payload
+      }
     },
     
     actions: {
@@ -108,6 +129,9 @@ const pgno = {
       },
       setKomponovka({commit}, value) {
         commit('UPDATE_KOMPONOVKA', value)
+      },
+      setH2S({commit}, value) {
+        commit('UPDATE_H2S', value)
       },
       selectedMarkShtang({commit}, value) {
         commit('UPDATE_MARKSHTANG', value)
@@ -124,8 +148,14 @@ const pgno = {
       spmMax: (state) => state.spmMax,
       strokeLenMin: (state) => state.strokeLenMin,
       strokeLenMax: (state) => state.strokeLenMax,
+      davMin: (state) => state.davMin,
+      gasMax: (state) => state.gasMax,
+      dlinaPolki: (state) => state.dlinaPolki,
       groupPosad: (state) => state.groupPosad,
       hPump: (state) => state.hPump,
+      koroz: (state) => state.koroz,
+      stupColumns: (state) => state.stupColumns,
+      h2s: (state) => state.h2s
     },
 }
 

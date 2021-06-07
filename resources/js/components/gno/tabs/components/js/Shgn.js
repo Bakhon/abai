@@ -6,18 +6,14 @@ export default {
 		return {
 			svgTableN1: require('../../../images/tableN1.svg'),
 			svgTableN2: require('../../../images/tableN2.svg'),
-			davMin: '30атм',
+			davMin: 30,
 			groupPosad: 2,
-			yakor: false,
-			paker: false,
-			hvostovik: false,
 			heavyDown: 'heavy_down',
 			stup: '2',
-			dlinaPolki: '10м',
-			gasMax: '10%',
+			dlinaPolki: 10,
+			gasMax: 10,
 			hvostovik: true,
 			koroz: 'srednekor',
-			h2s: false,
 			lenMin: 2,
 			lenMax: 3,
 			spmMin: 3,
@@ -121,6 +117,14 @@ export default {
 				this.$store.dispatch('setKomponovka', val)
 			}
 		},
+		h2s: {
+			get() {
+				return this.$store.getters.h2s
+			},
+			set(val) {
+				this.$store.dispatch('setH2S', val)
+			}
+		}
 	},
 	methods: {
 		setActiveOption(val) {
@@ -129,9 +133,7 @@ export default {
 		onChangePump(event) {
 			this.$store.commit("update", event.target.value)
 		},
-		closeModal(modalName) {
-      		this.$modal.hide(modalName)
-    	},
+		
 		onChangeSpmMin(event) {
 			this.$store.commit("UPDATE_SPM_MIN", event.target.value)
 		},
@@ -144,11 +146,26 @@ export default {
 		onChangeLenMax(event) {
 			this.$store.commit("UPDATE_LEN_MAX", event.target.value)
 		},
+		onChangeDavMin(event) {
+			this.$store.commit("UPDATE_DAV_MIN", event.target.value)
+		},
+		onChangeGasMax(event) {
+			this.$store.commit("UPDATE_GAS_MAX", event.target.value)
+		},
+		onChangeDlinaPolki(event) {
+			this.$store.commit("UPDATE_DLINA_POLKI", event.target.value)
+		},
 		onChangeKpod(event) {
 			this.$store.commit("UPDATE_KPOD", event.target.value)
 		},
 		onChangeGroupPosad(event) {
 			this.$store.commit("UPDATE_GROUP_POSAD", event.target.value)
+		},
+		onChangeKoroz(event) {
+			this.$store.commit("UPDATE_KOROZ", event.target.value)
+		},
+		onChangeStupColumns(event) {
+			this.$store.commit("UPDATE_STUP_COLUMNS", event.target.value)
 		},
 		
 
@@ -158,6 +175,9 @@ export default {
 			this.$emit('myEvent', this.isModal);
       		this.$modal.hide('modalTable')
 		},
+		closeModal(modalName) {
+			this.$modal.hide(modalName)
+	  	},
 		onClickI1() {
 			this.$modal.show('modalTable2')
 		},
@@ -178,5 +198,11 @@ export default {
 		this.groupPosad = this.$store.getters.groupPosad
 		this.komponovka = this.$store.getters.komponovka
 		this.dmRods = this.$store.getters.dmRods
+		this.stupColumns = this.$store.getters.stupColumns
+		this.h2s = this.$store.getters.h2s
+		this.koroz = this.$store.getters.koroz
+		this.davMin = this.$store.getters.davMin
+		this.gasMax = this.$store.getters.gasMax
+		this.dlinaPolki = this.$store.getters.dlinaPolki
 	}
 }

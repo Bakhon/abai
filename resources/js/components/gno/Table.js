@@ -399,6 +399,9 @@ export default {
       this.strokeLenMin = this.$store.getters.strokeLenMin
       this.strokeLenMax = this.$store.getters.strokeLenMax
       this.kpodMin = this.$store.getters.kpodMin
+      this.davMin = this.$store.getters.davMin
+      this.gasMax = this.$store.getters.gasMax
+      this.dlinaPolki = this.$store.getters.dlinaPolki
       this.dmPumps = this.$store.getters.dmPumps
       this.dmRods = this.$store.getters.dmRods
       this.groupPosad = this.$store.getters.groupPosad
@@ -413,6 +416,9 @@ export default {
             "kpod_min": this.kpodMin,
             "group_posad": this.groupPosad,
             "komponovka": this.komponovka,
+            "dav_min": this.davMin,
+            "gas_max": this.gasMax,
+            "dlina_polki": this.dlinaPolki
           },
           "welldata": this.welldata,
           "settings" : {
@@ -997,6 +1003,13 @@ export default {
       this.$store.commit("UPDATE_KOMPONOVKA", ["hvostovik"])
       this.$store.commit("UPDATE_DMPUMPS", ["32", "38", "44", "57", "70"])
       this.$store.commit("UPDATE_DMRODS", ["19", "22", "25"])
+      this.$store.commit("UPDATE_H2S", false)
+      this.$store.commit("UPDATE_DAV_MIN", 30)
+      this.$store.commit("UPDATE_GAS_MAX", 10)
+      this.$store.commit("UPDATE_DLINA_POLKI", 10)
+      this.$store.commit("UPDATE_KOROZ", "srednekor")
+      this.$store.commit("UPDATE_GROUP_POSAD", "2")
+      
 
       if(this.field == "JET") {
               this.ao = 'АО "ММГ"'

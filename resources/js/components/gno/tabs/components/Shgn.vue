@@ -116,7 +116,7 @@
 				</label>
 
 				<label for="" class="block__third__block__radio__5">{{trans('pgno.podbor')}}
-					<input value="bhp" class="third__block__radio" type="radio" name="posad1" />
+					<input value="podbor" @change="onChangeGroupPosad" class="third__block__radio" type="radio" name="posad1" />
 				</label>
 			</div>
 		</div>
@@ -159,15 +159,15 @@
 
 			<div class="flex__item__block__third__block__1">
 				<label for="" class="block__third__block__1__radio">1 {{trans('pgno.stup')}}
-					<input value="1" class="third__block__radio" type="radio" name="kor1" v-model="stup" />
+					<input value="1" class="third__block__radio" type="radio" name="kor1" v-model="stup" @change="onChangeStupColumns"/>
 				</label>
 
 				<label for="" class="block__third__block__1__radio__1">2 {{trans('pgno.stup')}}
-					<input value="2" class="third__block__radio" type="radio" name="kor1" v-model="stup" />
+					<input value="2" class="third__block__radio" type="radio" name="kor1" v-model="stup" @change="onChangeStupColumns"/>
 				</label>
 
 				<label for="" class="block__third__block__1__radio__2">3 {{trans('pgno.stup')}}
-					<input value="3" class="third__block__radio" type="radio" name="kor1" v-model="stup" />
+					<input value="3" class="third__block__radio" type="radio" name="kor1" v-model="stup" @change="onChangeStupColumns"/>
 				</label>
 
 				<label for="" class="block__third__block__1__radio__3">{{trans('pgno.heavy_down')}}
@@ -224,19 +224,19 @@
 
 				<div class="flex__item__block__fifth__block">
 					<label for="" class="block__fourth__block__radio">{{trans('pgno.nekorozionnaya')}}
-						<input value="nekor" class="third__block__radio" type="radio" name="korprod1" v-model="koroz"/>
+						<input value="nekor" class="third__block__radio" type="radio" name="korprod1" v-model="koroz" @change="onChangeKoroz"/>
 					</label>
 
 					<label for="" class="block__fourth__block__radio__1">{{trans('pgno.srenekorozionnaya')}}
-						<input value="srednekor" class="third__block__radio" type="radio" name="korprod1" checked v-model="koroz"/>
+						<input value="srednekor" class="third__block__radio" type="radio" name="korprod1" checked v-model="koroz" @change="onChangeKoroz"/>
 					</label>
 
 					<label for="" class="block__fourth__block__radio__2">{{trans('pgno.visokorozionnaya')}}
-						<input value="visokor" class="third__block__radio" type="radio" name="korprod1" v-model="koroz"/>
+						<input value="visokor" class="third__block__radio" type="radio" name="korprod1" v-model="koroz" @change="onChangeKoroz"/>
 					</label>
 
 					<label for="" class="block__fourth__block__radio__3">{{trans('pgno.h2s')}}
-						<input class="third__block__radio" type="checkbox" name="korprod1" v-model="h2s"/>
+						<input v-model="h2s" class="third__block__radio" type="checkbox" name="korprod1" />
 					</label>
 				</div>
 			
@@ -249,10 +249,10 @@
 
 				<div class="flex__item__block__sixth__block">
 					<div class="block__text__5">{{trans('pgno.dav_nasos_minim')}}</div>
-					<input v-model="davMin" class="square2 block__6__input" type="text">
+					<input v-model="davMin" class="square2 block__6__input" type="text" @change="onChangeDavMin">
 
 					<div class="block__text__6">{{trans('pgno.gs_nasos_maks')}}</div>
-					<input v-model="gasMax" class="square2 block__7__input" type="text">
+					<input v-model="gasMax" class="square2 block__7__input" type="text" @change="onChangeGasMax">
 				</div>
 
 			
@@ -264,7 +264,7 @@
 	
 				<div class="flex__item__block__fifth__block__1">
 					<div class="block__text__4__end">{{trans('pgno.dlina_polki')}}</div>
-					<input v-model="dlinaPolki" class="square2 block__5__input" type="text">
+					<input v-model="dlinaPolki" class="square2 block__5__input" type="text" @change="onChangeDlinaPolki">
 				</div>
 
 				<button type="button" class="submit_button" @click="onSubmitParams()">
@@ -804,10 +804,10 @@
 
 .block__fourth__block__radio__1 {
 	display: block;
-	width: 170px;
+	width: 171px;
 	height: 20px;
 	position: relative;
-	top: -15px;
+	top: -13px;
 	left: 160px;
 }
 
@@ -816,7 +816,7 @@
 	width: 170px;
 	height: 20px;
 	position: relative;
-	top: -42px;
+	top: -40px;
 	left: 350px;
 }
 
@@ -825,7 +825,7 @@
 	width: 170px;
 	height: 20px;
 	position: relative;
-	top: -70px;
+	top: -68px;
 	left: 520px;
 }
 
