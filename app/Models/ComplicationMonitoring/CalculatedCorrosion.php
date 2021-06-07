@@ -3,7 +3,6 @@
 namespace App\Models\ComplicationMonitoring;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Refs\Gu;
 
 class CalculatedCorrosion extends Model
 {

@@ -1,17 +1,18 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\ComplicationMonitoring;
 
 use App\Models\ComplicationMonitoring\PipeType;
-use App\Models\Pipes\OilPipe;
+use App\Models\ComplicationMonitoring\OilPipe;
+use App\Http\Controllers\Controller;
 use App\Models\Pipes\PipeCoord;
-use App\Models\Refs\Ngdu;
+use App\Models\ComplicationMonitoring\Ngdu;
 use Illuminate\Http\Request;
 use App\Services\MapService;
-use App\Models\Refs\Gu;
-use App\Models\Refs\Zu;
-use App\Models\Refs\Cdng;
-use App\Models\Refs\Well;
+use App\Models\ComplicationMonitoring\Gu;
+use App\Models\ComplicationMonitoring\Zu;
+use App\Models\ComplicationMonitoring\Cdng;
+use App\Models\ComplicationMonitoring\Well;
 use App\Services\DruidService;
 
 class MapsController extends Controller
@@ -128,6 +129,15 @@ class MapsController extends Controller
 
     public function storeGu(Request $request): \Symfony\Component\HttpFoundation\Response
     {
+        if (!auth()->user()->hasPermissionTo('monitoring create gu', 'map-admin')) {
+            return response()->json(
+                [
+                    'status' => config('response.status.error'),
+                    'message' => trans('app.no_permissions_rights')
+                ]
+            );
+        }
+
         $gu_input = $request->input('gu');
         $gu = new Gu;
 
@@ -163,6 +173,15 @@ class MapsController extends Controller
 
     public function storeZu(Request $request): \Symfony\Component\HttpFoundation\Response
     {
+        if (!auth()->user()->hasPermissionTo('monitoring create zu', 'map-admin')) {
+            return response()->json(
+                [
+                    'status' => config('response.status.error'),
+                    'message' => trans('app.no_permissions_rights')
+                ]
+            );
+        }
+
         $zu_input = $request->input('zu');
         $zu = new Zu;
 
@@ -179,6 +198,15 @@ class MapsController extends Controller
 
     public function storeWell(Request $request, DruidService $druidService): \Symfony\Component\HttpFoundation\Response
     {
+        if (!auth()->user()->hasPermissionTo('monitoring create well', 'map-admin')) {
+            return response()->json(
+                [
+                    'status' => config('response.status.error'),
+                    'message' => trans('app.no_permissions_rights')
+                ]
+            );
+        }
+
         $well_input = $request->input('well');
         $well = new Well;
 
@@ -195,6 +223,15 @@ class MapsController extends Controller
 
     public function storePipe(Request $request): \Symfony\Component\HttpFoundation\Response
     {
+        if (!auth()->user()->hasPermissionTo('monitoring create pipe', 'map-admin')) {
+            return response()->json(
+                [
+                    'status' => config('response.status.error'),
+                    'message' => trans('app.no_permissions_rights')
+                ]
+            );
+        }
+
         $pipe_input = $request->input('pipe');
         $pipe = new OilPipe;
         $pipe->fill($pipe_input);
@@ -219,6 +256,15 @@ class MapsController extends Controller
 
     public function updateGu(Request $request, Gu $gu): \Symfony\Component\HttpFoundation\Response
     {
+        if (!auth()->user()->hasPermissionTo('monitoring update gu', 'map-admin')) {
+            return response()->json(
+                [
+                    'status' => config('response.status.error'),
+                    'message' => trans('app.no_permissions_rights')
+                ]
+            );
+        }
+
         $gu_input = $request->input('gu');
 
         $gu->fill($gu_input);
@@ -253,6 +299,15 @@ class MapsController extends Controller
 
     public function updateZu(Request $request, Zu $zu): \Symfony\Component\HttpFoundation\Response
     {
+        if (!auth()->user()->hasPermissionTo('monitoring update zu', 'map-admin')) {
+            return response()->json(
+                [
+                    'status' => config('response.status.error'),
+                    'message' => trans('app.no_permissions_rights')
+                ]
+            );
+        }
+
         $zu_input = $request->input('zu');
 
         $zu->fill($zu_input);
@@ -268,6 +323,15 @@ class MapsController extends Controller
 
     public function updateWell(Request $request, Well $well): \Symfony\Component\HttpFoundation\Response
     {
+        if (!auth()->user()->hasPermissionTo('monitoring update well', 'map-admin')) {
+            return response()->json(
+                [
+                    'status' => config('response.status.error'),
+                    'message' => trans('app.no_permissions_rights')
+                ]
+            );
+        }
+
         $well_input = $request->input('well');
 
         $well->fill($well_input);
@@ -283,6 +347,15 @@ class MapsController extends Controller
 
     public function updatePipe(Request $request, OilPipe $pipe): \Symfony\Component\HttpFoundation\Response
     {
+        if (!auth()->user()->hasPermissionTo('monitoring update pipe', 'map-admin')) {
+            return response()->json(
+                [
+                    'status' => config('response.status.error'),
+                    'message' => trans('app.no_permissions_rights')
+                ]
+            );
+        }
+
         $pipe_input = $request->input('pipe');
         $pipe->fill($pipe_input);
         $pipe->save();
@@ -305,6 +378,15 @@ class MapsController extends Controller
 
     public function deleteGu(Gu $gu): \Symfony\Component\HttpFoundation\Response
     {
+        if (!auth()->user()->hasPermissionTo('monitoring delete gu', 'map-admin')) {
+            return response()->json(
+                [
+                    'status' => config('response.status.error'),
+                    'message' => trans('app.no_permissions_rights')
+                ]
+            );
+        }
+
         $gu->delete();
 
         return response()->json(
@@ -316,6 +398,15 @@ class MapsController extends Controller
 
     public function deleteZu(Zu $zu): \Symfony\Component\HttpFoundation\Response
     {
+        if (!auth()->user()->hasPermissionTo('monitoring delete zu', 'map-admin')) {
+            return response()->json(
+                [
+                    'status' => config('response.status.error'),
+                    'message' => trans('app.no_permissions_rights')
+                ]
+            );
+        }
+
         $zu->delete();
 
         return response()->json(
@@ -327,6 +418,15 @@ class MapsController extends Controller
 
     public function deleteWell(Well $well): \Symfony\Component\HttpFoundation\Response
     {
+        if (!auth()->user()->hasPermissionTo('monitoring delete well', 'map-admin')) {
+            return response()->json(
+                [
+                    'status' => config('response.status.error'),
+                    'message' => trans('app.no_permissions_rights')
+                ]
+            );
+        }
+
         $well->delete();
 
         return response()->json(
@@ -338,6 +438,15 @@ class MapsController extends Controller
 
     public function deletePipe(OilPipe $pipe): \Symfony\Component\HttpFoundation\Response
     {
+        if (!auth()->user()->hasPermissionTo('monitoring delete pipe', 'map-admin')) {
+            return response()->json(
+                [
+                    'status' => config('response.status.error'),
+                    'message' => trans('app.no_permissions_rights')
+                ]
+            );
+        }
+
         PipeCoord::where('oil_pipe_id', $pipe->id)->delete();
         $pipe->delete();
 
