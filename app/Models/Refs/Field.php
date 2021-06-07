@@ -2,6 +2,10 @@
 
 namespace App\Models\Refs;
 
+use App\Models\ComplicationMonitoring\Corrosion;
+use App\Models\ComplicationMonitoring\OmgNGDU;
+use App\Models\ComplicationMonitoring\OmgUHE;
+use App\Models\ComplicationMonitoring\WaterMeasurement;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -9,22 +13,22 @@ class Field extends Model
 {
     public function omgngdu()
     {
-        return $this->hasMany(\App\Models\ComplicationMonitoring\OmgNGDU::class);
+        return $this->hasMany(OmgNGDU::class);
     }
 
     public function watermeasurement()
     {
-        return $this->hasMany(\App\Models\ComplicationMonitoring\WaterMeasurement::class);
+        return $this->hasMany(WaterMeasurement::class);
     }
 
     public function corrosion()
     {
-        return $this->hasMany(\App\Models\ComplicationMonitoring\Corrosion::class);
+        return $this->hasMany(Corrosion::class);
     }
 
     public function omguhe()
     {
-        return $this->hasMany(\App\Models\ComplicationMonitoring\OmgUHE::class);
+        return $this->hasMany(OmgUHE::class);
     }
 
     /**

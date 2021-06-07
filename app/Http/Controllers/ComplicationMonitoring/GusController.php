@@ -12,9 +12,10 @@ use App\Http\Requests\GuUpdateRequest;
 use App\Http\Requests\IndexTableRequest;
 use App\Http\Resources\GuListResource;
 use App\Jobs\ExportOmgCAToExcel;
+use App\Models\ComplicationMonitoring\Cdng;
 use App\Models\ComplicationMonitoring\OmgNGDU;
 use App\Models\ComplicationMonitoring\TrunklinePoint;
-use App\Models\Refs\Gu;
+use App\Models\ComplicationMonitoring\Gu;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -44,7 +45,7 @@ class GusController extends CrudController
                     'title' => __('monitoring.cdng'),
                     'type' => 'select',
                     'filter' => [
-                        'values' => \App\Models\Refs\Cdng::whereHas('gu')
+                        'values' => Cdng::whereHas('gu')
                             ->orderBy('name', 'asc')
                             ->get()
                             ->map(
