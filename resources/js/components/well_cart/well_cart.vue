@@ -368,11 +368,58 @@ export default {
           'name': 'Диаметр экспл. колонны / доп. экспл. колонны, мм',
           'data': ''
         },
+        {
+          'description': '',
+          'method': null,
+          'name': 'Тип колонной головки / размеры',
+          'data': ''
+        },
+        {
+          'description': '',
+          'method': null,
+          'name': 'Глубина спуска насоса (м)',
+          'data': ''
+        },
+        {
+          'description': '',
+          'method': null,
+          'name': 'Код насоса',
+          'data': ''
+        },
+        {
+          'description': '',
+          'method': null,
+          'name': 'Диаметр насоса (мм)',
+          'data': ''
+        },
+        {
+          'description': '',
+          'method': null,
+          'name': 'Глубина спуска пакера',
+          'data': ''
+        },
+        {
+          'description': '',
+          'method': null,
+          'name': 'Тип СК',
+          'data': ''
+        },
+        {
+          'description': '',
+          'method': null,
+          'name': 'длина хода (м)',
+          'data': ''
+        },
+        {
+          'description': 'this.actualBottomHole.pivot.depth',
+          'method': null,
+          'name': 'Фактический забой/(дата отбивки)',
+          'data': ''
+        },
       ]
     }
   },
   mounted() {
-
   },
   methods: {
     onColumnFoldingEvent(method) {
