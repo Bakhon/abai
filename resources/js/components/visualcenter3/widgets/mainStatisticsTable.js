@@ -45,7 +45,7 @@ export default {
             condensateProductionButton: "",
             displayChart: "display: none;",
             minimalDaysCountInPeriodForChart: 1,
-            oilCondensateProductionButton: ""
+            oilCondensateProductionButton: "button-tab-highlighted"
         };
     },
     methods: {

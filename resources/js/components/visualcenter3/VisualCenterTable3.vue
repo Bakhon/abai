@@ -296,7 +296,6 @@
         <div class="first-table big-area" :style="`${Table1}`">
           <div class="first-string first-string2">
             <div class="row px-4 mt-3 middle-block__list-x-scroll">
-              <!-- TODO-->
               <div class="col-12 col-lg dropdown dropdown4 font-weight pr-1">
                 <div :class="[`${oilCondensateProductionButton}`, 'button1']">
                   <div class="button1-vc-inner">
@@ -345,7 +344,6 @@
                   </div>
                 </div>
               </div>
-              <!-- -->
               <div class="col-12 col-lg dropdown dropdown4 font-weight pr-1">
                 <div :class="[`${oilProductionButton}`, 'button1']">
                   <div class="button1-vc-inner">
@@ -983,8 +981,20 @@
                         {{ getMetricNameByCategorySelected() }}
                       </div>
                     </th>
-                    <th v-if="!isFilterTargetPlanActive">
+                    <th v-if="!isFilterTargetPlanActive && oilCondensateProductionButton.length === 0">
                       {{ trans("visualcenter.dzoPercent") }}
+                    </th>
+                    <th v-if="!isFilterTargetPlanActive && oilCondensateProductionButton.length > 0">
+                      {{ trans("visualcenter.dzoDifference") }}
+                      <div v-if="currentDzoList !== 'daily' || quantityRange > 1">
+                        {{ getThousandMetricNameByCategorySelected() }}
+                      </div>
+                      <div v-else>
+                        {{ getMetricNameByCategorySelected() }}
+                      </div>
+                      <div>
+                        {{ trans("visualcenter.dzoOpec") }}
+                      </div>
                     </th>
                     <th v-if="isFilterTargetPlanActive">
                       {{ trans("visualcenter.dzoTargetPlan") }}
@@ -1068,7 +1078,7 @@
                       </div>
                     </td>
                     <td
-                            v-if="!isFilterTargetPlanActive"
+                            v-if="!isFilterTargetPlanActive && oilCondensateProductionButton.length === 0"
                             :class="`${getDzoColumnsClass(index,'percent')}`"
                     >
                       <div
@@ -1081,6 +1091,14 @@
                       ></div>
                       <div class="font dynamic">
                         {{getPercentDifference (item.planMonth , item.factMonth)}}
+                      </div>
+                    </td>
+                    <td
+                            v-if="!isFilterTargetPlanActive && oilCondensateProductionButton.length > 0"
+                            :class="`${getDzoColumnsClass(index,'percent')}`">
+
+                      <div class="font">
+                        {{ formatDigitToThousand(item.opekPlan) }}
                       </div>
                     </td>
                     <td
@@ -1251,7 +1269,15 @@
                       </div>
                     </td>
                     <td
-                            v-else
+                            v-if="!isFilterTargetPlanActive && oilCondensateProductionButton.length > 0"
+                            :class="`${getColorClassBySelectedPeriod(index)}`"
+                    >
+                      <div class="font">
+                        {{dzoCompaniesSummary.opekPlan}}
+                      </div>
+                    </td>
+                    <td
+                            v-if="!isFilterTargetPlanActive && oilCondensateProductionButton.length === 0"
                             :class="`${getColorClassBySelectedPeriod(index)}`"
                     >
                       <div
