@@ -57,7 +57,7 @@ export default {
           },
         },
         tooltip: {
-          enabled: false,
+          enabled: true,
           enabledOnSeries: undefined,
           shared: true,
           followCursor: false,
@@ -178,7 +178,7 @@ export default {
         return [
           {
             type: "bar",
-           // name: "Фактическая закачка ингибитора коррозии",
+            name: this.trans("visualcenter.Fact"),
             stroke: {
               show: false,
             },

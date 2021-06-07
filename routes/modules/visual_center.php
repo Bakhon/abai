@@ -66,6 +66,11 @@ Route::group(
                 Route::post('/dzo-excel-otm', 'VisCenter\ExcelForm\ExcelFormOtmController@store');
                 Route::get('/get-dzo-current-chemistry', 'VisCenter\ExcelForm\ExcelFormChemistryController@getDzoCurrentChemistry');
                 Route::get('/get-dzo-current-otm', 'VisCenter\ExcelForm\ExcelFormOtmController@getDzoCurrentOtm');
+                Route::get('hive-data-from-avocet', function() {
+                    Artisan::call('hive-data-from-avocet:cron');
+                });
+                Route::post('dzo-excel-form', 'VisCenter\ExcelForm\ExcelFormController@store');
+                Route::post('dzo-chemistry-excel-form', 'VisCenter\ExcelForm\ExcelFormChemistryController@store');  
             }
         );
     }

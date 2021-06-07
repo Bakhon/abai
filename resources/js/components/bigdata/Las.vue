@@ -1,7 +1,7 @@
 <template>
   <div class="table-container">
     <cat-loader/>
-    <div class="container container-main">
+    <div class="container container-main" v-if="isPermission">
       <transition name="fade">
         <div>
           <div v-if="isFilesUploadedOnPreApproval && !isLastFileProcessed">

@@ -30,6 +30,8 @@ export default {
                 'fond_nagnetat_ef': 'exploitationFond',
                 'fond_neftedob_nrs': 'unprofitableFond',
             },
+            selectedSecondaryOption: '',
+            selectedDzo: 'all',
         };
     },
     methods: {
@@ -60,22 +62,39 @@ export default {
             return result;
         },
 
-        WellsData(arr) {
-            let productionPlanAndFactMonthWells = _(arr)
-                .groupBy("data")
-                .map((__time, id) => ({
-                    __time: id,
-                    inj_wells_idle: (_.sumBy(__time, 'inj_wells_idle')) / this.quantityRange,
-                    inj_wells_work: (_.sumBy(__time, 'inj_wells_work')) / this.quantityRange,
-                    prod_wells_work: (_.sumBy(__time, 'prod_wells_work')) / this.quantityRange,
-                    prod_wells_idle: (_.sumBy(__time, 'prod_wells_idle')) / this.quantityRange,
-                }))
-                .value();
+        updateWellsWidgetsForAllCompanies(arr) {
+            let wells = this.getGroupedWells(arr);
 
-            this.inj_wells_idle = productionPlanAndFactMonthWells[0]['inj_wells_idle'];
-            this.inj_wells_work = productionPlanAndFactMonthWells[0]['inj_wells_work'];
-            this.prod_wells_work = parseInt(productionPlanAndFactMonthWells[0]['prod_wells_work']);
-            this.prod_wells_idle = productionPlanAndFactMonthWells[0]['prod_wells_idle'];
+            this.inj_wells_idle = wells[0]['inj_wells_idle'];
+            this.inj_wells_work = wells[0]['inj_wells_work'];
+            this.prod_wells_work = parseInt(wells[0]['prod_wells_work']);
+            this.prod_wells_idle = wells[0]['prod_wells_idle'];
+        },
+
+        updateWellsWidgetData(data, workFieldName, idleFieldName) {
+            this[idleFieldName] = data[0][idleFieldName];
+            this[workFieldName] = data[0][workFieldName];
+        },
+        updateWellsPercentWidgetData(data, workFieldName, idleFieldName, workParameterName, idleParameterName) {
+            let periodStartTimestamp = this.timestampToday - this.quantityRange * 86400000;
+            let filteredDataByPeriod = this.getProductionDataInPeriodRange(data,periodStartTimestamp,this.timestampToday);
+            let groupedWellsData = this.getGroupedWells(filteredDataByPeriod);
+
+            this[idleParameterName] = groupedWellsData[0][idleFieldName];
+            this[workParameterName] = groupedWellsData[0][workFieldName];
+        },
+
+        getGroupedWells(data) {
+              return _(data)
+                  .groupBy("data")
+                  .map((__time, id) => ({
+                      __time: id,
+                      inj_wells_idle: (_.sumBy(__time, 'inj_wells_idle')) / this.quantityRange,
+                      inj_wells_work: (_.sumBy(__time, 'inj_wells_work')) / this.quantityRange,
+                      prod_wells_work: (_.sumBy(__time, 'prod_wells_work')) / this.quantityRange,
+                      prod_wells_idle: (_.sumBy(__time, 'prod_wells_idle')) / this.quantityRange,
+                  }))
+                  .value();
         },
 
         getSummaryWells(inputData, isIdleActive, fondsName) {

@@ -407,6 +407,7 @@ return array (
     array (
       'not-enough-data' => 'Не достаточно данных для расчета',
     ),
+    'menu' => 'Расчет гидравлики ГУ - УПСВ',
   ),
   'monitor' => 
   array (
@@ -423,5 +424,11 @@ return array (
   'reverse_calculation' => 
   array (
     'table_title' => 'Таблица расчета гидравлики Скважина - ГУ',
+    'menu' => 'Расчет гидравлики Скважина - ГУ',
   ),
+  'economical_effect_title' => 'Мониторинг потерянной выгоды',
+  'difference' => 'Разница закачки ИК, г/м3',
+  'inhibitor_price' => 'Стоимость ингибитора, тенге/кг',
+  'economical_effect' => 'Суточная потерянная выгода, тыс. тенге/сут',
+  'economical_effect_sum' => 'Накопленная потерянная выгода, тыс. тенге',
 );

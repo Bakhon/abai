@@ -190,8 +190,8 @@
       <div class="maintable-level2" style="position: relative">
         <div class="techbt1 tr-table-header">
           <div class="tech" style="margin-left: 14px; color: white">
-            <h5 v-if="date_fix">{{trans('tr.tr_to')}} {{ dt }}</h5>
-            <h5 v-if="!date_fix">{{trans('tr.tr')}} {{ dt3 }}</h5>
+            <h5>{{trans('tr.tr_to')}} {{ dt }}</h5>
+            
           </div>
 
           <tr-multiselect
@@ -831,7 +831,7 @@
                   class="subHeaderColumn"
                   style="background: #333975; cursor: pointer"
                 >
-                  <td @click="sortBy('gu')" class="th">
+                  <td @click="sortBy('rus_wellname')" class="th">
                     <i class="fa fa-fw fa-sort"></i>
                   </td>
                   <td @click="sortBy('field')" class="th">
@@ -7177,9 +7177,9 @@ export default {
               console.log("No data");
             }
             if (this.month < 10) {
-              this.dt3 = '(' + prdd + "." + prMm+ "." + pryyyy + ' - ' + dd+ "." + mm+ "." + yyyy + ')';
+              this.dt = '(' + prdd + "." + prMm+ "." + pryyyy + ' - ' + dd+ "." + mm+ "." + yyyy + ')';
             } else {
-              this.dt3 = '(' + prdd + "." + prMm+ "." + pryyyy + ' - ' + dd+ "." + mm+ "." + yyyy + ')';
+              this.dt = '(' + prdd + "." + prMm+ "." + pryyyy + ' - ' + dd+ "." + mm+ "." + yyyy + ')';
             }
           });
         }

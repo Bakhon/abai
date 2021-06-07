@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Refs\EcoRefsScFa;
 use Illuminate\Database\Eloquent\Model;
 
 class EcoRefsTarifyTn extends Model
@@ -12,31 +13,31 @@ class EcoRefsTarifyTn extends Model
 
     public function scfa()
     {
-        return $this->hasOne('App\Models\Refs\EcoRefsScFa','id','sc_fa')->withDefault();
+        return $this->hasOne(EcoRefsScFa::class,'id','sc_fa')->withDefault();
     }
     public function branch()
     {
-        return $this->hasOne('App\Models\EcoRefsBranchId','id','branch_id')->withDefault();
+        return $this->hasOne(EcoRefsBranchId::class,'id','branch_id')->withDefault();
     }
    public function company()
     {
-        return $this->hasOne('App\Models\EcoRefsCompaniesId','id','company_id')->withDefault();
+        return $this->hasOne(EcoRefsCompaniesId::class,'id','company_id')->withDefault();
     }
     public function direction()
     {
-        return $this->hasOne('App\Models\EcoRefsDirectionId','id','direction_id')->withDefault();
+        return $this->hasOne(EcoRefsDirectionId::class,'id','direction_id')->withDefault();
     }
     public function route()
     {
-        return $this->hasOne('App\Models\EcoRefsRoutesId','id','route_id')->withDefault();
+        return $this->hasOne(EcoRefsRoutesId::class,'id','route_id')->withDefault();
     }
     public function routetn()
     {
-        return $this->hasOne('App\Models\EcoRefsRouteTnId','id','route_tn_id')->withDefault();
+        return $this->hasOne(EcoRefsRouteTnId::class,'id','route_tn_id')->withDefault();
     }
     public function exc()
     {
-        return $this->hasOne('App\Models\EcoRefsExc','id','exc_id')->withDefault();
+        return $this->hasOne(EcoRefsExc::class,'id','exc_id')->withDefault();
     }
 
 }

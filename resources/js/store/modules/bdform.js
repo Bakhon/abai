@@ -42,9 +42,9 @@ const bdform = {
                 params.values
             )
         },
-        loadDict({}, code) {
+        loadDict({commit}, code) {
             axios.get(this._vm.localeUrl(`/api/bigdata/dict/${code}`)).then(data => {
-                commit("bd/SAVE_DICT", {
+                commit("SAVE_DICT", {
                     code: code,
                     items: data.data
                 });

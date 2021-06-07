@@ -70,7 +70,7 @@
                             <thead>
                             <tr>
                                 <th class="align-middle" rowspan="2">ДЗО</th>
-                                <th colspan="3">Дополнительная добыча ВРС, тонн</th>
+                                <th colspan="3">Дополнительная добыча ВНС, тонн</th>
                                 <th colspan="3">Дополнительная добыча ГТМ, тонн</th>
                                 <th colspan="3">Базовая добыча</th>
                             </tr>

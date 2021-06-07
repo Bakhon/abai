@@ -84,14 +84,14 @@
               "code": "contractor",
               "type": "dict",
               "title": "contractor",
-              "validation": "required|exists:tbd.dict.company, id",
+              "validation": "required|exists:tbd.dict.company,id",
               "dict": "companies"
             },
             {
               "code": "brigade",
               "type": "dict",
               "title": "brigade",
-              "validation": "required|exists:tbd.dict.brigade, id",
+              "validation": "required|exists:tbd.dict.brigade,id",
               "dict": "brigades"
             },
             {
@@ -176,7 +176,7 @@
               "code": "no_slaughter_reason",
               "type": "dict",
               "title": "no_slaughter_reason",
-              "validation": "required|exists:tbd.dict.reason, id",
+              "validation": "required|exists:tbd.dict.reason,id",
               "dict": "no_btm_reasons"
             },
             {
@@ -229,7 +229,7 @@
               "code": "hardware_failure_cause",
               "type": "dict",
               "title": "hardware_failure_cause",
-              "validation": "required|exists:tbd.dict.reason, id",
+              "validation": "required|exists:tbd.dict.reason,id",
               "dict": "no_btm_reasons"
             },
             {
@@ -243,7 +243,7 @@
               "code": "stopping_reason",
               "type": "dict",
               "title": "stopping_reason",
-              "validation": "required|exists:tbd.dict.reason, id",
+              "validation": "required|exists:tbd.dict.reason,id",
               "dict": "no_btm_reasons"
             }
           ]
