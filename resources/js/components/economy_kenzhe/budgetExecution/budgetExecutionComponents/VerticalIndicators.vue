@@ -48,11 +48,11 @@
             v-bind:hidePercents="true"
         ></budget-execution-wide-indicator>
         <!-- 'Фактическая эффективность бурения' -->
-        <budget-execution-simple-indicator
+        <simple-indicator
             v-bind:title="trans('visualcenter.ecoBlock9')"
             v-bind:units="'млн.тенге'"
             v-bind:value="fines"
-        ></budget-execution-simple-indicator>
+        ></simple-indicator>
         <!-- 'Штрафы и пени' -->
     </div>
 </template>

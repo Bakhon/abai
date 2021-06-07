@@ -1,11 +1,11 @@
 <template>
   <div class="row visualcenter-page-container">
     <div class="col-lg-10 middle-block-columns pr-2">
-      <budget-execution-horizontal-indicators
+      <horizontal-indicators
         v-bind:dateStart="dateStart"
         v-bind:dateEnd="dateEnd"
         v-bind:dzo="dzoSelect"
-      ></budget-execution-horizontal-indicators>
+      ></horizontal-indicators>
       <div class="d-flex flex-column background-color-table flex-sm-row">
         <div class="col-sm-3 p-3 flex-column">
           <h5>
