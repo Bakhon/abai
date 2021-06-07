@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Services\BigData\Forms;
 
-use App\Exceptions\BigData\SubmitFormException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
@@ -31,19 +30,19 @@ abstract class PlainForm extends BaseForm
 
     public function submit(): array
     {
-        DB::beginTransaction();
+//        DB::beginTransaction();
+//
+//        try {
+        $tableFields = $this->getFields()
+            ->filter(
+                function ($item) {
+                    return $item['type'] === 'table';
+                }
+            );
 
-        try {
-            $tableFields = $this->getFields()
-                ->filter(
-                    function ($item) {
-                        return $item['type'] === 'table';
-                    }
-                );
-
-            $tableFieldCodes = $tableFields
-                ->pluck('code')
-                ->toArray();
+        $tableFieldCodes = $tableFields
+            ->pluck('code')
+            ->toArray();
 
             $data = $this->request->except($tableFieldCodes);
             if (!empty($this->params()['default_values'])) {
@@ -69,12 +68,12 @@ abstract class PlainForm extends BaseForm
                 }
             }
 
-            DB::commit();
-            return (array)DB::connection('tbd')->table($this->params()['table'])->where('id', $id)->first();
-        } catch (\Exception $e) {
-            DB::rollBack();
-            throw new SubmitFormException();
-        }
+//            DB::commit();
+        return (array)DB::connection('tbd')->table($this->params()['table'])->where('id', $id)->first();
+//        } catch (\Exception $e) {
+//            DB::rollBack();
+//            throw new SubmitFormException();
+//        }
     }
 
     public function getResults(int $wellId): JsonResponse
