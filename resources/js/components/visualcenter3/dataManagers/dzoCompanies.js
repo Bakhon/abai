@@ -139,15 +139,17 @@ export default {
                     summary.opekPlan = parseInt(summary.plan) + parseInt(company.opekPlan);
                 }
             });
+            if (self.oilCondensateProductionButton.length > 0) {
+                summary.opekDifference = this.getFormattedNumberToThousand(
+                    summary.opekPlan,summary.fact);
+                summary.opekPlan = this.formatDigitToThousand(summary.opekPlan);
+            }
             summary.difference = this.getFormattedNumberToThousand(
                 summary.plan,summary.fact);
             summary.percent = this.getPercentDifference(summary.plan,summary.fact);
             summary.plan = this.formatDigitToThousand(summary.plan);
             summary.fact = this.formatDigitToThousand(summary.fact);
             summary.periodPlan = this.formatDigitToThousand(summary.periodPlan);
-            if (self.oilCondensateProductionButton.length > 0) {
-                summary.opekPlan = this.formatDigitToThousand(summary.opekPlan);
-            }
             this.dzoCompaniesSummary = summary;
         },
 

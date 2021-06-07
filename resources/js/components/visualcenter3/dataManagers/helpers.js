@@ -256,6 +256,10 @@ export default {
                 return self.company == item.dzo;
             });
         },
+
+        getDzoName(acronym) {
+            return this.dzoNameMapping[acronym];
+        },
     },
     computed: {
         periodSelectFunc() {
