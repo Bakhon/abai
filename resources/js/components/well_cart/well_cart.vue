@@ -520,9 +520,7 @@ export default {
               }
             }
           } catch (e) {
-            this.tableData[i].data += '';
-            console.log(e)
-            console.log(eval('this.tableData[i].description') + '[k].' + eval('this.tableData[i].multiplyValueName'))
+            this.tableData[i].data += ''
           }
         } else if (this.tableData[i].method === 'neighbors') {
           try {
