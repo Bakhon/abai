@@ -34,12 +34,13 @@
                 "prefix": ""
               },
               {
-                "code": "inj_agent_type",
+                "code": "agent_type",
                 "type": "dict",
                 "title": "agent_type",
                 "validation": "required|exists:tbd.dict.inj_agent_type,id",
                 "dict": "inj_agent_types",
                 "callbacks": {}
+                
               },
               {
                 "code": "agent_temp",
