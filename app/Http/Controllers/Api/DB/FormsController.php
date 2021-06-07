@@ -85,7 +85,7 @@ class FormsController extends Controller
         try {
             return $form->send();
         } catch (SubmitFormException $exception) {
-            return response()->json(['message' => 'Form sending error'], Response::HTTP_INTERNAL_SERVER_ERROR);
+            return response()->json(['message' => $exception->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
