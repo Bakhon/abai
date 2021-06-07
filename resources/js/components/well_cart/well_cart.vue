@@ -96,17 +96,28 @@
                         <div class="title">Основное</div>
                         <p>Номер скважины: <span>{{ well.uwi }}</span></p>
                         <p>Категория скважины:
-                          <!--                          <span v-if="wellCategory">{{ wellCategory.name_ru }}</span>-->
+                          <span v-if="wellCategory.name_ru">
+                            {{ wellCategory.name_ru }}</span>
                         </p>
                         <div class="title">Привязка</div>
-
                         <div class="title">Координаты устья</div>
                         <p>Оргструктура: <span></span></p>
-                        <p>Координаты устья X:<span></span></p>
-                        <p>Координаты устья Y:<span></span></p>
+                        <p>Координаты устья X:
+                          <span v-if="wellSaptialObjectX">{{ wellSaptialObjectX }}</span>
+                        </p>
+                        <p>Координаты устья Y:
+                          <span v-if="wellSaptialObjectY">
+                          {{ wellSaptialObjectY }}
+                        </span></p>
                         <div class="title">Координаты забоя</div>
-                        <p>Координаты устья X:<span></span></p>
-                        <p>Координаты устья Y:<span></span></p>
+                        <p>Координаты устья X:
+                          <span v-if="wellSaptialObjectBottomX">
+                            {{ wellSaptialObjectBottomX }}
+                        </span></p>
+                        <p>Координаты устья Y:
+                          <span v-if="wellSaptialObjectBottomY">
+                            {{ wellSaptialObjectBottomY }}
+                          </span></p>
                       </div>
                     </div>
                   </div>
@@ -212,8 +223,10 @@ export default {
       wellGeo: null,
       WellTech: null,
       wellOrg: null,
-      wellSaptialObject: null,
-      wellSaptialObjectBottom: null,
+      wellSaptialObjectX: null,
+      wellSaptialObjectY: null,
+      wellSaptialObjectBottomX: null,
+      wellSaptialObjectBottomY: null,
       actualBottomHole: null,
       tableData: [
         {
@@ -281,30 +294,26 @@ export default {
           'data': ''
         },
         {
-          'description': 'this.wellSaptialObject.coord_point',
-          'method': 'coordPoint',
-          'point': 'X',
+          'description': 'this.wellSaptialObjectX',
+          'method': null,
           'name': 'Координаты X (устья)',
           'data': ''
         },
         {
-          'description': 'this.wellSaptialObject.coord_point',
-          'method': 'coordPoint',
-          'point': 'Y',
+          'description': 'this.wellSaptialObjectY',
+          'method': null,
           'name': 'Координаты Y (устья)',
           'data': ''
         },
         {
-          'description': 'this.wellSaptialObjectBottom.coord_point',
-          'method': 'coordPoint',
-          'point': 'X',
+          'description': 'this.wellSaptialObjectBottomX',
+          'method': null,
           'name': 'Координаты забоя X',
           'data': ''
         },
         {
-          'description': 'this.wellSaptialObjectBottom.coord_point',
-          'method': 'coordPoint',
-          'point': 'Y',
+          'description': 'this.wellSaptialObjectBottomY',
+          'method': null,
           'name': 'Координаты забоя Y',
           'data': ''
         },
@@ -422,10 +431,20 @@ export default {
             this.tubeNom = data
           }),
           this.axios.get(this.localeUrl(`/api/bigdata/wells/${well.id}/spatial_object/`)).then(({data}) => {
-            this.wellSaptialObject = data
+            if (data.coord_point != null) {
+              data = data.coord_point.replace('(', '').replace(')', '')
+              data = data.split(',')
+              this.wellSaptialObjectX = data[0]
+              this.wellSaptialObjectY = data[1]
+            }
           }),
           this.axios.get(this.localeUrl(`/api/bigdata/wells/${well.id}/spatial_object_bottom/`)).then(({data}) => {
-            this.wellSaptialObjectBottom = data
+            if (data.coord_point != null) {
+              data = data.coord_point.replace('(', '').replace(')', '')
+              data = data.split(',')
+              this.wellSaptialObjectBottomX = data[0]
+              this.wellSaptialObjectBottomY = data[1]
+            }
           }),
           this.axios.get(this.localeUrl(`/api/bigdata/wells/${well.id}/actual_bottom_hole/`)).then(({data}) => {
             this.actualBottomHole = data
@@ -471,17 +490,6 @@ export default {
             this.tableData[i].data = (eval(this.tableData[i].description)).substring(0, 10)
           } catch (e) {
             this.tableData[i].data = ''
-          }
-        } else if (this.tableData[i].method === 'coordPoint') {
-          try {
-            let points = (eval(this.tableData[i].description)).replace('(', '').replace(')', '')
-            points = points.split(',')
-            if (this.tableData[i].point === 'X' || this.tableData[i].point === 'x') {
-              this.tableData[i].data = points[0]
-            } else {
-              this.tableData[i].data = points[1]
-            }
-          } catch (e) {
           }
         } else {
           try {

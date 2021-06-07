@@ -124,6 +124,7 @@ class WellsController extends Controller
     {
         return $well->bottom_hole()
             ->where('bottom_hole_type', '=', '1')
+            ->withPivot('depth')
             ->first();
     }
 
