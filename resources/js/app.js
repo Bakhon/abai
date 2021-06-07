@@ -160,6 +160,7 @@ Vue.component('well_cart', require('./components/well_cart/well_cart.vue').defau
 Vue.component('report_constructor', require('./components/report_constructor/report_constructor.vue').default);
 
 Vue.component('pf-main', require('./components/PlastFluids/views/MainPage.vue').default);
+Vue.component('pf-upload_monitoring', require('./components/PlastFluids/views/UploadMonitoring.vue').default);
 Vue.component('pf-template_pvt_plast_oil', require('./components/PlastFluids/views/SuperTemplatePvtPlastOil.vue').default);
 
 Vue.component('viscenter2-create', require('./components/visualcenter/viscenter2/create.vue').default);

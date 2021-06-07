@@ -18,7 +18,7 @@
         grid-template-rows: 1fr 975fr 1fr;
         grid-template-columns: 5fr 1467fr 10fr 355fr 5fr;
         background:#0f1430;
-        weight:100%;
+        width :100%;
         height: 100%;
     }
 
