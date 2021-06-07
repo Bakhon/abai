@@ -323,4 +323,6 @@ return array (
   'expectedProduction' => 'Ожидаемая добыча',
   'indicatorGrow' => 'Рост',
   'indicatorFall' => 'Снижение',
+  'oilCondensateProduction' => 'Добыча нефти и конденсата',
+  'withoutKmgParticipation' => 'Без учета доли участия КМГ'
 );
