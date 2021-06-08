@@ -113,7 +113,8 @@ class RouteServiceProvider extends ServiceProvider
             'ndo',
             'economy_kenzhe',
             'digital_drilling',
-            'plast_fluids'
+            'plast_fluids',
+            'geology'
         ];
 
         foreach ($modules as $module) {
