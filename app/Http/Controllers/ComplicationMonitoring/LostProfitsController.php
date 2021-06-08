@@ -7,7 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\IndexTableRequest;
 use App\Http\Resources\LostProfitsListResource;
 use App\Models\ComplicationMonitoring\LostProfits;
-use App\Models\Refs\Gu;
+use App\Models\ComplicationMonitoring\Gu;
 use Illuminate\Support\Facades\Session;
 
 class LostProfitsController extends Controller

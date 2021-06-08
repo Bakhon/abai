@@ -1,13 +1,8 @@
 <?php
 
-namespace App\Models\Refs;
+namespace App\Models\ComplicationMonitoring;
 
-use App\Models\ComplicationMonitoring\OmgNGDUWell;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\ComplicationMonitoring\OmgNGDU;
-use App\Models\ComplicationMonitoring\WaterMeasurement;
-use App\Models\ComplicationMonitoring\OilGas;
-use App\Models\ComplicationMonitoring\OmgUHE;
 
 class Zu extends Model
 {
