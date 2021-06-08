@@ -15,7 +15,7 @@
         </div>
         <div class="ml-0 ml-sm-3 mr-0 mr-sm-3 pb-3">
             <div class="w-100">
-                <table class="table pl-2 table-striped table-borderless economics-table-border">
+                <table class="table pl-2 table-striped table-borderless economics-table-border economics-table_color">
                     <thead class="economics-table-color text-center">
                     <tr>
                         <th class="text-left" scope="col">Наименование</th>

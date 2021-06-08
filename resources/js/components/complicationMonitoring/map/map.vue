@@ -108,6 +108,7 @@ import pipeColors from '~/json/pipe_colors.json'
 import axios from "axios";
 import moment from "moment";
 import CatLoader from '../../ui-kit/CatLoader'
+import 'vue-datetime/dist/vue-datetime.css';
 
 
 export default {
@@ -572,108 +573,164 @@ export default {
       this[method]();
     },
     async addGu() {
-      let gu = await this.storeGu(this.objectData);
-      let layerId = 'icon-layer-gu';
-      this.gu = gu;
-      this.$bvModal.hide('object-modal');
+      let result = await this.storeGu(this.objectData);
+      let message = '';
 
-      this.layerRedraw(layerId, 'gu', this.guPoints);
-      this.centerTo(gu);
-      this.resetForm();
+      if (result.status == 'success') {
+        let layerId = 'icon-layer-gu';
+        this.gu = result.gu;
+        this.$bvModal.hide('object-modal');
 
-      let $message = this.trans('monitoring.gu.gu') + ' ' + this.trans('app.added');
-      this.showToast($message, this.trans('app.success'), 'success');
+        this.layerRedraw(layerId, 'gu', this.guPoints);
+        this.centerTo(this.gu);
+        this.resetForm();
+
+        message = this.trans('monitoring.gu.gu') + ' ' + this.trans('app.added');
+      } else {
+        message = result.message;
+      }
+
+      this.showToast(message, this.trans('app.' + result.status), variant);
     },
     async addZu() {
-      let zu = await this.storeZu(this.objectData);
-      let layerId = 'icon-layer-zu';
-      this.$bvModal.hide('object-modal');
+      let result = await this.storeZu(this.objectData);
+      let message = '';
 
-      this.layerRedraw(layerId, 'zu', this.zuPoints);
-      this.centerTo(zu);
-      this.resetForm();
+      if (result.status == 'success') {
+        let layerId = 'icon-layer-zu';
+        this.$bvModal.hide('object-modal');
 
-      let $message = this.trans('monitoring.zu.zu') + ' ' + this.trans('app.added');
-      this.showToast($message, this.trans('app.success'), 'success');
+        this.layerRedraw(layerId, 'zu', this.zuPoints);
+        this.centerTo(result.zu);
+        this.resetForm();
+        message = this.trans('monitoring.zu.zu') + ' ' + this.trans('app.added');
+      } else {
+        message = result.message;
+      }
+
+      this.showToast(message, this.trans('app.' + result.status), variant);
     },
     async addWell() {
-      let well = await this.storeWell(this.objectData);
-      let layerId = 'icon-layer-well';
-      this.$bvModal.hide('object-modal');
+      let result = await this.storeWell(this.objectData);
+      let message = '';
 
-      this.layerRedraw(layerId, 'well', this.wellPoints);
-      this.centerTo(well);
-      this.resetForm();
+      if (result.status == 'success') {
+        let layerId = 'icon-layer-well';
+        this.$bvModal.hide('object-modal');
 
-      let $message = this.trans('monitoring.well.added');
-      this.showToast($message, this.trans('app.success'), 'success');
+        this.layerRedraw(layerId, 'well', this.wellPoints);
+        this.centerTo(result.well);
+        this.resetForm();
+        message = this.trans('monitoring.well.added');
+      } else {
+        message = result.message;
+      }
+
+      this.showToast(message, this.trans('app.' + result.status), variant);
     },
     async addPipe() {
-      await this.storePipe();
-      this.$bvModal.hide('object-modal');
-      this.resetForm();
-      this.removeTempPipeLayer();
-      this.layerRedraw('path-layer', 'pipe', this.pipes);
+      let result = await this.storePipe();
+      let message = '';
 
-      let $message = this.trans('monitoring.pipe.pipe') + ' ' + this.trans('app.added');
-      this.showToast($message, this.trans('app.success'), 'success');
+      if (result.status == 'success') {
+        this.$bvModal.hide('object-modal');
+        this.resetForm();
+        this.removeTempPipeLayer();
+        this.layerRedraw('path-layer', 'pipe', this.pipes);
+        message = this.trans('monitoring.pipe.pipe') + ' ' + this.trans('app.added');
+      } else {
+        message = result.message;
+      }
+
+      let variant = result.status == 'success' ? 'success' : 'danger';
+      this.showToast(message, this.trans('app.' + result.status), variant);
     },
     async storePipe() {
       return this.axios.post(this.localeUrl("/gu-map/pipe"), {pipe: this.pipeObject}).then((response) => {
         if (response.data.status == 'success') {
           this.pipes.push(response.data.pipe);
-        } else {
-          let $message = 'Error update Pipe in DB';
-          this.showToast($message, this.trans('app.error'), 'danger');
         }
+
+        return response.data;
       });
     },
     async editGu() {
-      this.gu = await this.updateGu(this.objectData);
-      this.$bvModal.hide('object-modal');
-      let layerId = 'icon-layer-gu';
+      let result  = await this.updateGu(this.objectData);
+      let message = '';
 
+      if (result.status == 'success') {
+        this.gu = result.gu;
+        this.$bvModal.hide('object-modal');
+        let layerId = 'icon-layer-gu';
 
-      this.layerRedraw(layerId, 'gu', this.guPoints);
-      this.centerTo(this.gu);
-      this.resetForm();
+        this.layerRedraw(layerId, 'gu', this.guPoints);
+        this.centerTo(this.gu);
+        this.resetForm();
 
-      let $message = this.trans('monitoring.gu.gu') + ' ' + this.trans('app.updated');
-      this.showToast($message, this.trans('app.success'), 'success');
+        message = this.trans('monitoring.gu.gu') + ' ' + this.trans('app.updated');
+      } else {
+        message = result.message;
+      }
+
+      let variant = result.status == 'success' ? 'success' : 'danger';
+      this.showToast(message, this.trans('app.' + result.status), variant);
     },
     async editZu() {
-      let zu = await this.updateZu(this.objectData);
-      let layerId = 'icon-layer-zu';
-      this.$bvModal.hide('object-modal');
+      let result  = await this.updateZu(this.objectData);
+      let message = '';
 
-      this.layerRedraw(layerId, 'zu', this.zuPoints);
-      this.centerTo(zu);
-      this.resetForm();
+      if (result.status == 'success') {
+        let layerId = 'icon-layer-zu';
+        this.$bvModal.hide('object-modal');
 
-      let $message = this.trans('monitoring.zu.zu') + ' ' + this.trans('app.updated');
-      this.showToast($message, this.trans('app.success'), 'success');
+        this.layerRedraw(layerId, 'zu', this.zuPoints);
+        this.centerTo(result.zu);
+        this.resetForm();
+
+        message = this.trans('monitoring.zu.zu') + ' ' + this.trans('app.updated');
+      } else {
+        message = result.message;
+      }
+
+      let variant = result.status == 'success' ? 'success' : 'danger';
+      this.showToast(message, this.trans('app.' + result.status), variant);
     },
     async editWell() {
-      let well = await this.updateWell(this.objectData);
-      let layerId = 'icon-layer-well';
-      this.$bvModal.hide('object-modal');
+      let result = await this.updateWell(this.objectData);
+      let message = '';
 
-      this.layerRedraw(layerId, 'well', this.wellPoints);
-      this.centerTo(well);
-      this.resetForm();
+      if (result.status == 'success') {
+        let layerId = 'icon-layer-well';
+        this.$bvModal.hide('object-modal');
 
-      let $message = this.trans('monitoring.well.updated');
-      this.showToast($message, this.trans('app.success'), 'success');
+        this.layerRedraw(layerId, 'well', this.wellPoints);
+        this.centerTo(result.well);
+        this.resetForm();
+
+        message = this.trans('monitoring.well.updated');
+      } else {
+        message = result.message;
+      }
+
+      let variant = result.status == 'success' ? 'success' : 'danger';
+      this.showToast(message, this.trans('app.' + result.status), variant);
     },
     async editPipe() {
-      await this.updatePipe();
-      this.$bvModal.hide('object-modal');
+      let result = await this.updatePipe();
+      let message = '';
 
-      this.layerRedraw('path-layer', 'pipe', this.pipes);
-      this.resetForm();
+      if (result.status == 'success') {
+        this.$bvModal.hide('object-modal');
+        this.layerRedraw('path-layer', 'pipe', this.pipes);
+        this.resetForm();
 
-      let $message = this.trans('monitoring.pipe.updated');
-      this.showToast($message, this.trans('app.success'), 'success');
+        message = this.trans('monitoring.pipe.updated');
+      } else {
+        message = result.message;
+      }
+
+      let variant = result.status == 'success' ? 'success' : 'danger';
+      this.showToast(message, this.trans('app.' + result.status), variant);
     },
     async updatePipe() {
       return this.axios.put(this.localeUrl("/gu-map/pipe/" + this.pipeObject.id), {pipe: this.pipeObject}).then((response) => {
@@ -682,82 +739,90 @@ export default {
             return pipeItem.id == this.pipeObject.id;
           });
           this.$set(this.pipes, pipeIndex, response.data.pipe);
-        } else {
-          let $message = 'error update Pipe in DB';
-          this.showToast($message, this.trans('app.error'), 'danger');
         }
+
+        return response.data;
       });
     },
     async removeGu() {
       let result = await this.deleteGu(this.objectData);
-      if (result == 'success') {
+      let message = '';
+
+      if (result.status == 'success') {
         this.gu = null;
 
         let layerId = 'icon-layer-gu';
         this.resetForm();
         this.layerRedraw(layerId, 'gu', this.guPoints);
 
-        let $message = this.trans('monitoring.gu.deleted');
-        this.showToast($message, this.trans('app.success'), 'success');
+        message = this.trans('monitoring.gu.deleted');
       } else {
-        let $message = this.trans('monitoring.gu.deleting_error');
-        this.showToast($message, this.trans('app.error'), 'danger');
+        message = result.message;
       }
+
+      let variant = result.status == 'success' ? 'success' : 'danger';
+      this.showToast(message, this.trans('app.' + result.status), variant);
     },
     async removeZu() {
       let result = await this.deleteZu(this.objectData);
-      if (result == 'success') {
+      let message = '';
+
+      if (result.status == 'success') {
         let layerId = 'icon-layer-zu';
 
         this.resetForm();
         this.layerRedraw(layerId, 'zu', this.zuPoints);
 
-        let $message = this.trans('monitoring.zu.deleted');
-        this.showToast($message, this.trans('app.success'), 'success');
+        message = this.trans('monitoring.zu.deleted');
       } else {
-        let $message = this.trans('monitoring.zu.deleting_error');
-        this.showToast($message, this.trans('app.error'), 'danger');
+        message = result.message;
       }
+
+      let variant = result.status == 'success' ? 'success' : 'danger';
+      this.showToast(message, this.trans('app.' + result.status), variant);
     },
     async removeWell() {
       let result = await this.deleteWell(this.objectData);
-      if (result == 'success') {
+      let message = '';
+
+      if (result.status == 'success') {
         let layerId = 'icon-layer-well';
 
         this.resetForm();
         this.layerRedraw(layerId, 'well', this.wellPoints);
 
-        let $message = this.trans('monitoring.well.deleted');
-        this.showToast($message, this.trans('app.success'), 'success');
+        message = this.trans('monitoring.well.deleted');
       } else {
-        let $message = this.trans('monitoring.well.deleting_error');
-        this.showToast($message, this.trans('app.error'), 'danger');
+        message = result.message;
       }
+
+      let variant = result.status == 'success' ? 'success' : 'danger';
+      this.showToast(message, this.trans('app.' + result.status), variant);
     },
     async removePipe() {
       let result = await this.deletePipe();
+      let message = '';
 
-      if (result == 'success') {
+      if (result.status == 'success') {
         this.layerRedraw('path-layer', 'pipe', this.pipes);
         this.resetForm();
 
-        let $message = this.trans('monitoring.pipe.deleted');
-        this.showToast($message, this.trans('app.success'), 'success');
+        message = this.trans('monitoring.pipe.deleted');
       } else {
-        let $message = this.trans('monitoring.pipe.deleting_error');
-        this.showToast($message, this.trans('app.error'), 'danger');
+        message = result.message;
       }
+
+      let variant = result.status == 'success' ? 'success' : 'danger';
+      this.showToast(message, this.trans('app.' + result.status), variant);
     },
     async deletePipe() {
       return this.axios.delete(this.localeUrl("/gu-map/pipe/" + this.pipeObject.id))
           .then((response) => {
             if (response.data.status == 'success') {
               this.pipes.splice(this.pipeObject.index, 1);
-              return response.data.status;
-            } else {
-              let $message = this.trans('Error in delete Pipe');
-              this.showToast($message, this.trans('app.error'), 'danger');
             }
+
+            return response.data;
           });
     },
     layerRedraw(layerId, type, data) {

@@ -1,9 +1,6 @@
 import download from "downloadjs";
 import moment from 'moment';
-import {Datetime} from 'vue-datetime';
-import Vue from "vue";
-
-Vue.use(Datetime)
+import 'vue-datetime/dist/vue-datetime.css';
 
 export default {
     props: [

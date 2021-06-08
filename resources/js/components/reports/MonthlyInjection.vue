@@ -83,12 +83,8 @@
 </template>
 
 <script>
-
-import {Datetime} from 'vue-datetime';
 import 'vue-datetime/dist/vue-datetime.css';
-
-Vue.use(Datetime)
-import {formatDate} from './FormatDate.js'
+import {formatDate} from './FormatDate.js';
 
 export default {
   components: {},

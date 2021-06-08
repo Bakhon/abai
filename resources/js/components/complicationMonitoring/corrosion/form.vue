@@ -199,12 +199,8 @@
 </template>
 
 <script>
-import Vue from 'vue'
-import {Datetime} from 'vue-datetime'
-import 'vue-datetime/dist/vue-datetime.css'
+import 'vue-datetime/dist/vue-datetime.css';
 import moment from "moment"
-
-Vue.use(Datetime)
 
 export default {
   name: "corrosion-form",
