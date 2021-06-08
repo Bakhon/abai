@@ -69,7 +69,7 @@ export default {
 
         getUpdatedByDzoOptions(updatedData,inputData,filteredInitialData) {
             let self = this;
-            let dzoOptions = this.getDzoOptions();
+            let dzoOptions = this.getDzoOptions(inputData,filteredInitialData);
 
             let pkiSummary = {
                 'factMonth': 0,
@@ -98,9 +98,9 @@ export default {
             _.forEach(dzoOptions, function(item) {
                 temporaryData.push({
                     'dzoMonth' : item.dzoMonth,
-                    'factMonth' : item.fact,
-                    'opekPlan' : item.opekPlan,
-                    'planMonth' : item.plan,
+                    'factMonth' : item.formula(item.factMonth,item.dzoName),
+                    'opekPlan' : item.formula(item.opekMonth,item.dzoName),
+                    'planMonth' : item.formula(item.planMonth,item.dzoName),
                 });
                 if (['ПКК','КГМ','ТП'].includes(item.dzoName)) {
                     self.updateDzoCompaniesSummary(item,pkiSummary);
@@ -137,7 +137,8 @@ export default {
             return temporaryData;
         },
 
-        getDzoOptions() {
+        getDzoOptions(inputData,filteredInitialData) {
+            let self = this;
             return [
                 {
                     'dzoMonth': 'ОМГК',
