@@ -502,13 +502,14 @@ export default {
           this.tableData[i].data = ''
           try {
             for (let k = 0; k < (eval(this.tableData[i].description)).length; k++) {
-              this.tableData[i].data += (eval(eval('this.tableData[i].description') + '[k].' + eval('this.tableData[i].multiplyValueName'))) + ' '
+              this.tableData[i].data = (eval(eval('this.tableData[i].description') + '[k].' + eval('this.tableData[i].multiplyValueName')))
+              this.tableData[i].data.join(' ')
               if (k + 1 != (eval(this.tableData[i].description)).length) {
-                this.tableData[i].data += ' / '
+                this.tableData[i].data.join(' / ')
               }
             }
           } catch (e) {
-            this.tableData[i].data += ''
+            this.tableData[i].data += '-'
           }
         } else if (this.tableData[i].method === 'neighbors') {
           try {
