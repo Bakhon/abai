@@ -121,7 +121,7 @@ const pgno = {
     },
     
     actions: {
-      setDefault() {
+      setDefault({commit}) {
         commit("UPDATE_SPM_MIN", 3)
         commit("UPDATE_SPM_MAX", 8)
         commit("UPDATE_LEN_MIN", 2)
