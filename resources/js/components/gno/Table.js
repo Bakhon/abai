@@ -1,4 +1,5 @@
 import {mapMutations, mapState} from 'vuex'
+import {pgnoMapMutations, pgnoMapActions} from '@store/helpers';
 import { Plotly } from "vue-plotly";
 import { eventBus } from "../../event-bus.js";
 import NotifyPlugin from "vue-easy-notify";
@@ -18,11 +19,10 @@ Vue.prototype.$eventBus = new Vue();
 
 
 Vue.use(NotifyPlugin,VueMomentLib);
-Vue.component("Plotly", Plotly);
 
 
 export default {
-  components: { PerfectScrollbar, FullPageLoader, Tabs },
+  components: { PerfectScrollbar, FullPageLoader, Tabs, Plotly },
   data: function () {
     return {
       url: "http://172.20.103.187:7575/api/pgno/",
@@ -301,19 +301,12 @@ export default {
       strokeLenMax: null,
       spmMin: null,
       spmMax: null,
-      pump27: null,
-      pump32: null,
-      pump38: null,
-      pump44: null,
-      pump50: null,
-      pump57: null,
-      pump60: null,
-      pump70: null,
-      pump95: null,
-      kpod_min: null,
+      kpodMin: null,
+      groupPosad: null,
       centratorsInfo: null,
       centratorsRequiredValue: null,
       centratorsRecommendedValue: null,
+      hPerfRangeInfo: null,
       nkt_choose: [
         {
           for_calc_value: 50.3,
@@ -395,9 +388,12 @@ export default {
     }
   },
   methods: {
+    ...pgnoMapActions([
+      'setDefault'
+    ]),
     setHpumpValueFromIncl() {
       this.$modal.hide('modalIncl')
-      this.hPumpValue = this.$store.getters.getHpump
+      this.hPumpValue = this.$store.getters.hPump
       this.postCurveData();
     },
     prepareData() {
@@ -405,33 +401,27 @@ export default {
       this.spmMax = this.$store.getters.spmMax
       this.strokeLenMin = this.$store.getters.strokeLenMin
       this.strokeLenMax = this.$store.getters.strokeLenMax
-      this.kpod_min = this.$store.getters.kpod_min
-      this.pump27 = this.$store.getters.pump27
-      this.pump32 = this.$store.getters.pump32
-      this.pump38 = this.$store.getters.pump38
-      this.pump44 = this.$store.getters.pump44
-      this.pump50 = this.$store.getters.pump50
-      this.pump57 = this.$store.getters.pump57
-      this.pump60 = this.$store.getters.pump60
-      this.pump70 = this.$store.getters.pump70
-      this.pump95 = this.$store.getters.pump95
+      this.kpodMin = this.$store.getters.kpodMin
+      this.davMin = this.$store.getters.davMin
+      this.gasMax = this.$store.getters.gasMax
+      this.dlinaPolki = this.$store.getters.dlinaPolki
+      this.dmPumps = this.$store.getters.dmPumps
+      this.dmRods = this.$store.getters.dmRods
+      this.groupPosad = this.$store.getters.groupPosad
+      this.komponovka = this.$store.getters.komponovka
       this.postdata = JSON.stringify(
         {
           "pgno_setings":{
             "strokelen_min": this.strokeLenMin,
             "strokelen_max": this.strokeLenMax,
-            "spm_min": this.spmMin,
-            "spm_max": this.spmMax,
-            "pump27": this.pump27,
-            "pump32": this.pump32,
-            "pump38": this.pump38,
-            "pump44": this.pump44,
-            "pump50": this.pump50,
-            "pump57": this.pump57,
-            "pump60": this.pump60,
-            "pump70": this.pump70,
-            "pump95": this.pump95,
-            "kpod_min": this.kpod_min
+            "pump_types": this.dmPumps,
+            "dm_rods" : this.dmRods,
+            "kpod_min": this.kpodMin,
+            "group_posad": this.groupPosad,
+            "komponovka": this.komponovka,
+            "dav_min": this.davMin,
+            "gas_max": this.gasMax,
+            "dlina_polki": this.dlinaPolki
           },
           "welldata": this.welldata,
           "settings" : {
@@ -1008,20 +998,8 @@ export default {
     },
 
     getWellNumber(wellnumber) {
-      this.$store.commit("UPDATE_SPM_MIN", 3)
-    	this.$store.commit("UPDATE_SPM_MAX", 8)
-    	this.$store.commit("UPDATE_LEN_MIN", 2)
-    	this.$store.commit("UPDATE_LEN_MAX", 3)
-    	this.$store.commit("UPDATE_KPOD", 0.6)
-    	this.$store.commit("UPDATE_PUMP_27", false)
-    	this.$store.commit("UPDATE_PUMP_32", true)
-    	this.$store.commit("UPDATE_PUMP_38", true)
-    	this.$store.commit("UPDATE_PUMP_44", true)
-    	this.$store.commit("UPDATE_PUMP_50", false)
-    	this.$store.commit("UPDATE_PUMP_57", true)
-    	this.$store.commit("UPDATE_PUMP_60", false)
-    	this.$store.commit("UPDATE_PUMP_70", true)
-    	this.$store.commit("UPDATE_PUMP_95", false)
+      this.setDefault()      
+
       if(this.field == "JET") {
               this.ao = 'АО "ММГ"'
             } else {
@@ -1741,6 +1719,7 @@ export default {
     window.addEventListener("resize", () => {
       this.windowWidth = window.innerWidth;
     });
+    
 
     let langUrl = `${window.location.pathname}`.slice(1, 3);
     if(langUrl === 'ru') {

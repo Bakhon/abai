@@ -54,23 +54,44 @@
             "title":"Gtm_end",
             "items":[
               {
-                "code":"dend",
-                "type":"date",
-                "title":"date_gtm_end",
-                "validation":"required|date"
+                "code": "dend",
+                "type": "date",
+                "title": "date_gtm_end",
+                "validation": "nullable|date",
+                "callbacks": {
+                  "fillCalculatedFields": ""
+                }
               },
               {
                 "code": "param_result",
                 "type": "text",
                 "title": "gtm_parameters_results",
-                "validation": "required|string"
+                "validation": "nullable|string"
               },
               {
-                "code":"well_status_type",
-                "type":"dict",
-                "title":"status",
-                "dict":"well_statuses",
-                "validation":"required|exists:tbd.dict.well_status_type,id"
+                "code": "well_previous_status_type",
+                "type": "calc",
+                "visible": true,
+                "title": "well_previous_status"
+              },
+              {
+                "code": "well_previous_category",
+                "type": "calc",
+                "visible": true,
+                "title": "well_previous_category"
+              },
+              {
+                "code": "well_current_status_type",
+                "type": "calc",
+                "visible": true,
+                "title": "well_current_status"
+              },
+              {
+                "code": "well_status_type",
+                "type": "dict",
+                "title": "status",
+                "dict": "well_statuses",
+                "validation": "nullable|exists:tbd.dict.well_status_type,id"
               }
             ]
           }

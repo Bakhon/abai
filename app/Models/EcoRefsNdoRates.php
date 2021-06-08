@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Refs\EcoRefsScFa;
 use Illuminate\Database\Eloquent\Model;
 
 class EcoRefsNdoRates extends Model
@@ -12,10 +13,10 @@ class EcoRefsNdoRates extends Model
 
     public function scfa()
     {
-        return $this->hasOne('App\Models\Refs\EcoRefsScFa','id','sc_fa')->withDefault();
+        return $this->hasOne(EcoRefsScFa::class,'id','sc_fa')->withDefault();
     }
     public function company()
     {
-        return $this->hasOne('App\Models\EcoRefsCompaniesId','id','company_id')->withDefault();
+        return $this->hasOne(EcoRefsCompaniesId::class,'id','company_id')->withDefault();
     }
 }

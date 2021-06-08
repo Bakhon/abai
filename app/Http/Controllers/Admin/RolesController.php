@@ -27,6 +27,23 @@ class RolesController extends Controller
             'well' => 'Скважины',
         ];
 
+    static protected $dictCodes = [
+        'file_status',
+        'file_type',
+        'recording_method',
+        'recording_state',
+        'stem_section',
+        'stem_type',
+    ];
+
+    static protected $fieldCodes = [
+        'list',
+        'create',
+        'read',
+        'update',
+        'delete',
+    ];
+
     public function index()
     {
         $params = [
@@ -77,8 +94,10 @@ class RolesController extends Controller
             ->keyBy('name');
 
         $sections = self::$sections;
+        $fieldCodes = self::$fieldCodes;
+        $dictCodes = self::$dictCodes;
 
-        return view('admin.roles.create', compact('permissions', 'sections'));
+        return view('admin.roles.create', compact('permissions', 'sections', 'fieldCodes', 'dictCodes'));
     }
 
     /**
@@ -113,8 +132,10 @@ class RolesController extends Controller
             ->keyBy('name');
 
         $sections = self::$sections;
+        $fieldCodes = self::$fieldCodes;
+        $dictCodes = self::$dictCodes;
 
-        return view('admin.roles.edit', compact('role', 'permissions', 'sections'));
+        return view('admin.roles.edit', compact('role', 'permissions', 'sections', 'fieldCodes', 'dictCodes'));
     }
 
     /**
