@@ -1,6 +1,5 @@
 <template>
   <div class="bd-main-block">
-    <cat-loader v-if="isLoading"></cat-loader>
     <notifications position="top"></notifications>
     <div class="bd-main-block__header">
       <p class="bd-main-block__header-title">{{ params.title }}</p>
@@ -87,38 +86,13 @@ export default {
       errors: {},
       activeTab: 0,
       formValues: {},
-      well: null,
-      isLoading: false
+      well: null
     }
   },
   computed: {
     ...bdFormState([
       'formParams'
     ]),
-    formFields() {
-      if (typeof this.formParams === 'undefined' || typeof this.formParams.tabs === 'undefined') return []
-
-      let fields = []
-      for (const tab of this.formParams.tabs) {
-        for (const blocks of tab.blocks) {
-          blocks.forEach(block => {
-            for (const item of block.items) {
-              fields.push(item)
-            }
-          })
-        }
-      }
-      return fields
-    },
-    formValuesToSubmit() {
-      let values = {}
-      for (let key in this.formValues) {
-        let field = this.formFields.find(field => field.code === key)
-        if (field && field.type === 'calc') continue
-        values[key] = this.formValues[key]
-      }
-      return values
-    }
   },
   watch: {
     params() {
@@ -150,12 +124,6 @@ export default {
       if (this.values) {
         this.formValues = this.values
       }
-
-      let calculatedFields = this.formFields.filter(field => field.type === 'calc')
-      if (calculatedFields.length > 0) {
-        this.fillCalculatedFields()
-      }
-
     },
     submit() {
 
@@ -163,7 +131,7 @@ export default {
           .submitForm({
             code: this.params.code,
             wellId: this.wellId,
-            values: this.formValuesToSubmit
+            values: this.formValues
           })
           .then(data => {
             this.errors = []
@@ -189,17 +157,16 @@ export default {
               Vue.prototype.$notifyWarning('Некоторые поля заполнены некорректно')
 
               for (const [tabIndex, tab] of Object.entries(this.formParams.tabs)) {
-                for (const blocks of tab.blocks) {
-                  blocks.forEach(block => {
-                    for (const item of block.items) {
-                      if (typeof this.errors[item.code] !== 'undefined') {
-                        this.activeTab = parseInt(tabIndex)
-                        return false
-                      }
+                for (const block of tab.blocks) {
+                  for (const item of block.items) {
+                    if (typeof this.errors[item.code] !== 'undefined') {
+                      this.activeTab = parseInt(tabIndex)
+                      return false
                     }
-                  })
+                  }
                 }
               }
+
             }
           })
     },
@@ -217,8 +184,8 @@ export default {
         this[callback](formItem.code, formItem.callbacks[callback])
       }
     },
-    fillCalculatedFields(triggerFieldCode = null) {
-      this.isLoading = true
+    fillCalculatedFields(triggerFieldCode) {
+      this.$store.commit('globalloading/SET_LOADING', true);
       axios.post(
           this.localeUrl(`/api/bigdata/forms/${this.params.code}/calc-fields`),
           {
@@ -230,7 +197,7 @@ export default {
           this.formValues[key] = data[key]
         }
       }).finally(() => {
-        this.isLoading = false
+        this.$store.commit('globalloading/SET_LOADING', false);
       })
 
     },
@@ -252,12 +219,15 @@ export default {
 
       let dictName
       this.formValues[changeFieldCode] = null
-
-      this.formFields.forEach(field => {
-        if (field.code === changeFieldCode) {
-          dictName = field.dict
+      for (const tab of this.formParams.tabs) {
+        for (const block of tab.blocks) {
+          for (const item of block.items) {
+            if (item.code === changeFieldCode) {
+              dictName = item.dict
+            }
+          }
         }
-      })
+      }
 
       this.getGeoDictByDZO({
         dzo: this.formValues[triggerFieldCode],

@@ -3,7 +3,7 @@
   "table": "prod.well_tech_state",
   "tabs": [
     {
-      "title": "tech_state",
+      "title": "main",
       "blocks": [
         [
           {
@@ -13,7 +13,7 @@
                 "code": "dbeg",
                 "type": "date",
                 "title": "date_start",
-                "validation": "date",
+                "validation": "required|date",
                 "callbacks": {
                   "fillCalculatedFields": ""
                 }
@@ -32,7 +32,7 @@
               },
               {
                 "code": "state",
-                "type": "text",
+                "type": "dict",
                 "dict": "well_tech_state_type",
                 "title": "state",
                 "validation": "required|exists:tbd.dict.well_tech_state_type,id"
