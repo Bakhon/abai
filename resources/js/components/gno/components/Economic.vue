@@ -13,12 +13,12 @@
 <script>
 import VueApexCharts from "vue-apexcharts";
 
+Vue.component("apexchart", VueApexCharts);
+Vue.prototype.$eventBus = new Vue();
+
 export default {
   name: "mix-chart",
   props:["data"],
-  components: {
-    apexchart: VueApexCharts
-  },
   data: function () {
     return {
       nno1:null,

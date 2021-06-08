@@ -43,6 +43,7 @@ export default {
       },
     },
     nameAlias: {
+      type: String,
       default() {
         return [`${this.trans('tr.ecn_quantity')}`, `${this.trans('tr.shgn_quantity')}`, `${this.trans('tr.fountain_quantity')}`, `${this.trans('tr.p_lift_quantity')}`];
       },
