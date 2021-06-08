@@ -1,4 +1,5 @@
 import {mapMutations, mapState} from 'vuex'
+import {pgnoMapMutations, pgnoMapActions} from '@store/helpers';
 import { Plotly } from "vue-plotly";
 import { eventBus } from "../../event-bus.js";
 import NotifyPlugin from "vue-easy-notify";
@@ -387,6 +388,9 @@ export default {
     }
   },
   methods: {
+    ...pgnoMapActions([
+      'setDefault'
+    ]),
     setHpumpValueFromIncl() {
       this.$modal.hide('modalIncl')
       this.hPumpValue = this.$store.getters.hPump
@@ -994,21 +998,7 @@ export default {
     },
 
     getWellNumber(wellnumber) {
-      this.$store.commit("UPDATE_SPM_MIN", 3)
-    	this.$store.commit("UPDATE_SPM_MAX", 8)
-    	this.$store.commit("UPDATE_LEN_MIN", 2)
-    	this.$store.commit("UPDATE_LEN_MAX", 3)
-    	this.$store.commit("UPDATE_KPOD", 0.6)
-      this.$store.commit("UPDATE_KOMPONOVKA", ["hvostovik"])
-      this.$store.commit("UPDATE_DMPUMPS", ["32", "38", "44", "57", "70"])
-      this.$store.commit("UPDATE_DMRODS", ["19", "22", "25"])
-      this.$store.commit("UPDATE_H2S", false)
-      this.$store.commit("UPDATE_DAV_MIN", 30)
-      this.$store.commit("UPDATE_GAS_MAX", 10)
-      this.$store.commit("UPDATE_DLINA_POLKI", 10)
-      this.$store.commit("UPDATE_KOROZ", "srednekor")
-      this.$store.commit("UPDATE_GROUP_POSAD", "2")
-      
+      this.setDefault()      
 
       if(this.field == "JET") {
               this.ao = 'АО "ММГ"'
@@ -1729,6 +1719,7 @@ export default {
     window.addEventListener("resize", () => {
       this.windowWidth = window.innerWidth;
     });
+    
 
     let langUrl = `${window.location.pathname}`.slice(1, 3);
     if(langUrl === 'ru') {

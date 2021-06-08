@@ -78,3 +78,14 @@ export const paegtmMapGetters = arrNames => ({
     ]),
 });
 
+export const pgnoMapGetters = arrNames => ({
+    ...mapGetters('pgno', [
+        ...arrNames,
+    ]),
+});
+
+export const pgnoMapActions = arrNames => ({
+    ...mapActions('pgno', [
+        ...arrNames,
+    ]),
+});
