@@ -14,8 +14,9 @@ class WellsController extends Controller
 {
     public function wellInfo(well $well)
     {
-        return array('well' => $this->status($well),
-            'status' => $this->get($well),
+        return array(
+            'well' => $this->get($well),
+            'status' => $this->status($well),
             'tube_nom' => $this->tube_nom($well),
             'category' => $this->category($well),
             'category_last' => $this->category_last($well),
@@ -37,7 +38,7 @@ class WellsController extends Controller
 
     public function get(Well $well)
     {
-        return Well::where('id', $well->id)->first();
+        return $well;
     }
 
     public function status(Well $well)
