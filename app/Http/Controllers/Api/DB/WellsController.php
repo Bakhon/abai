@@ -17,17 +17,17 @@ class WellsController extends Controller
         return array(
             'well' => $this->get($well),
             'status' => $this->status($well),
-            'tube_nom' => $this->tube_nom($well),
+            'tube_nom' => $this->tubeNom($well),
             'category' => $this->category($well),
-            'category_last' => $this->category_last($well),
+            'category_last' => $this->categoryLast($well),
             'geo' => $this->geo($well),
-            'well_expl' => $this->well_expl($well),
+            'well_expl' => $this->wellExpl($well),
             'techs' => $this->techs($well),
-            'well_type' => $this->well_type($well),
+            'well_type' => $this->wellType($well),
             'org' => $this->org($well),
-            'spatial_object' => $this->spatial_object($well),
-            'spatial_object_bottom' => $this->spatial_object_bottom($well),
-            'actual_bottom_hole' => $this->actual_bottom_hole($well),
+            'spatial_object' => $this->spatialObject($well),
+            'spatial_object_bottom' => $this->spatialObjectBottom($well),
+            'actual_bottom_hole' => $this->actualBottomHole($well),
         );
     }
 
@@ -52,7 +52,7 @@ class WellsController extends Controller
         return ($status);
     }
 
-    public function tube_nom(Well $well)
+    public function tubeNom(Well $well)
     {
         return $well->tube_nom()
             ->wherePivot('project_drill', '=', 'false')
@@ -71,7 +71,7 @@ class WellsController extends Controller
             ->first(['name_ru']);
     }
 
-    public function category_last(Well $well)
+    public function categoryLast(Well $well)
     {
         return $well->category()
             ->wherePivot('dend', '<>', $this->getToday())
@@ -91,7 +91,7 @@ class WellsController extends Controller
             ->first(['name_ru']);
     }
 
-    public function well_expl(Well $well)
+    public function wellExpl(Well $well)
     {
         return $well->well_expl()
             ->where('dend', '<>', $this->getToday())
@@ -110,7 +110,7 @@ class WellsController extends Controller
             ->get();
     }
 
-    public function well_type(Well $well)
+    public function wellType(Well $well)
     {
         return $well->well_type()
             ->first(['name_ru']);
@@ -125,21 +125,21 @@ class WellsController extends Controller
             ->get();
     }
 
-    public function spatial_object(Well $well)
+    public function spatialObject(Well $well)
     {
         return $well->spatial_object()
             ->where('spatial_object_type', '=', '1')
             ->first(['coord_point']);
     }
 
-    public function spatial_object_bottom(Well $well)
+    public function spatialObjectBottom(Well $well)
     {
         return $well->spatial_object_bottom()
             ->where('spatial_object_type', '=', '1')
             ->first(['coord_point']);
     }
 
-    public function actual_bottom_hole(Well $well)
+    public function actualBottomHole(Well $well)
     {
         return $well->bottom_hole()
             ->where('bottom_hole_type', '=', '1')
