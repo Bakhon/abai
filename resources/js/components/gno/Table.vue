@@ -49,8 +49,14 @@
           <div class="col-md-12 second-column-container">
             <!-- Выбор скважины start -->
             <div class="tables-string-gno col-12">
-              <div class="choosing-well-title col-9">{{trans('pgno.choose_well')}}</div>
-              <div v-if="isPermission" class="choosing-well-edit col-3" @click="editPage" style="cursor: pointer;">
+              <div class="choosing-well-title col-10">{{trans('pgno.choose_well')}}</div>
+              <div v-bind:title="trans('pgno.refresh')" class="choosing-well-edit col-1" @click="getWellNumber(wellNumber)" style="cursor: pointer;">
+              <svg class="gear-icon-svg" width="23" height="23" viewBox="0 0 66 57" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M63 28.2631L53.5968 37.6662C53.5578 37.7053 53.4945 37.7053 53.4554 37.6662L44.0522 28.2631" stroke="white" stroke-width="3" stroke-linecap="round"/>
+                <path d="M28.2637 53.5273C14.3109 53.5273 3 42.2164 3 28.2637C3 14.3109 14.3109 3 28.2637 3C42.2164 3 53.5273 14.3109 53.5273 28.2637V34.5796" stroke="white" stroke-width="3" stroke-linecap="round"/>
+              </svg>
+              </div>
+              <div v-bind:title="trans('pgno.edit')" v-if="isPermission" class="choosing-well-edit col-1" @click="editPage" style="cursor: pointer;">
                 <svg width="23" height="23" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" >
                   <path d="M3 11.5L1.55336 16.3221C1.53048 16.3984 1.6016 16.4695 1.67788 16.4466L6.5 15M3 11.5C3 11.5 11.0603 3.43942 12.7227 1.7772C12.8789 1.62104 13.1257 1.62572 13.2819 1.78189C13.8372 2.33714 15.1144 3.61434 16.2171 4.71709C16.3733 4.87334 16.3788 5.12115 16.2226 5.27738C14.5597 6.94002 6.5 15 6.5 15M3 11.5L3.64727 10.8527L7.14727 14.3527L6.5 15" 
                     stroke="white"
