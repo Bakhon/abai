@@ -1237,10 +1237,6 @@ export default {
 
     },
 
-    fetchBlockHperfRange() {
-      // code for fetching data
-    },
-
     fetchBlockCentrators() {
       let fieldInfo = this.wellIncl.split('_');
       let urlForIncl = "http://172.20.103.187:7575/api/pgno/incl";
@@ -1534,7 +1530,6 @@ export default {
               let data = JSON.parse(response.data);
               if (!this.isYoungAge) {
                 this.fetchBlockCentrators()
-                this.fetchBlockHperfRange()
               } else {
                 this.centratorsRequiredValue = []
               }

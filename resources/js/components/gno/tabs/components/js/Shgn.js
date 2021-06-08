@@ -1,4 +1,5 @@
 import NotifyPlugin from "vue-easy-notify";
+import Vue from "vue";
 
 Vue.use(NotifyPlugin);
 export default {
