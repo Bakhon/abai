@@ -37,5 +37,24 @@
     "ТП": "visualcenter.consolidatedDzoNameMappingWithoutKMG.TP",
     "АГ": "visualcenter.consolidatedDzoNameMappingWithoutKMG.AG",
     "ПКК": "visualcenter.consolidatedDzoNameMappingWithoutKMG.PKK"
+  },
+  "normalNames": {
+    "ОМГ": "visualcenter.omg",
+    "ЭМГ": "visualcenter.emg",
+    "КБМ": "visualcenter.kbm",
+    "КГМ": "visualcenter.kgm",
+    "ТШ": "visualcenter.tsho",
+    "ТШО": "visualcenter.tsho",
+    "ММГ": "visualcenter.mmg",
+    "КТМ": "visualcenter.ktm",
+    "КОА": "visualcenter.koa",
+    "ПКИ": "visualcenter.pki",
+    "АМГ": "visualcenter.ag",
+    "АГ": "visualcenter.ag",
+    "КПО": "visualcenter.kpo",
+    "НКО": "visualcenter.nko",
+    "ТП": "visualcenter.tp",
+    "УО": "visualcenter.uo",
+    "ПКК": "visualcenter.pkk"
   }
 }

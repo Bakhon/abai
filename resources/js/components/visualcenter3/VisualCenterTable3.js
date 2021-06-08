@@ -756,7 +756,7 @@ export default {
     watch: {
         bigTable: function () {
             this.dzoCompanySummary = this.bigTable;
-            if (this.oilCondensateProductionButton.length > 0) {
+            if (this.oilCondensateProductionButton.length > 0 && this.currentDzoList === 'daily') {
                 this.productionParamsWidget.yesterdayOldFact = this.productionPercentParams['oil_fact'];
                 this.dzoCompanySummary = this.getConsolidatedOilCondensate();
             }

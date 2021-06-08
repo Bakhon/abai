@@ -28,7 +28,7 @@ return array (
   'period' => 'Период',
   'opek' => 'С учётом ограничения ОПЕК+',
   'allkmg' => 'Все активы КМГ',
-  'plan' => 'Текущий план',
+  'plan' => 'Текущий план,',
   'fact' => 'Текущий факт',
   'close' => 'Закрыть',
   'allCompany' => 'Все компании',
@@ -184,7 +184,7 @@ return array (
   'vsSeparator' => 'vs',
   'otmMetricSystemMeter' => 'м.',
   'otmMetricSystemWells' => 'Скв.',
-  'chemistryMetricTon' => 'тонн',
+  'chemistryMetricTon' => 'тонн/сут',
   'dzoMonthlyPlan' => 'План месячный',
   'dzoYearlyPlan' => 'План годовой',
   'dzoDifference' => '+/-',
@@ -222,7 +222,7 @@ return array (
   'othersFond' => 'Прочие',
   'exploitationFond' => 'Эксплуатационный фонд',
   'tonWithSpace' => ' тонн',
-  'meterCubicWithSpace' => ' м³',
+  'meterCubicWithSpace' => ' м³/сут',
   'requiredDailyPlan' => 'Необходимый ср/сут уровень',
   'dzoRegions' => 
   array (

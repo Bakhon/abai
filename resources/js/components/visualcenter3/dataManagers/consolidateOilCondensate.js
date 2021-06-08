@@ -7,6 +7,7 @@ export default {
             productionTableData: [],
             dzoNameMapping: _.cloneDeep(dzoCompaniesNameMapping.dzoNameMapping),
             dzoNameMappingWithoutKMG: _.cloneDeep(dzoCompaniesNameMapping.dzoNameMappingWithoutKMG),
+            dzoNameMappingNormal: _.cloneDeep(dzoCompaniesNameMapping.normalNames),
             sortingOrder: [
                 'ОМГ','ОМГК','ММГ','ЭМГ','КБМ',
                 'КГМ','КТМ','КОА','УО','ТШО','НКО','КПО','ПКИ',

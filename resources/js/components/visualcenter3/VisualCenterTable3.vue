@@ -965,18 +965,18 @@
                     </th>
                     <th v-if="!buttonYearlyTab && !buttonMonthlyTab && oilCondensateProductionButton.length > 0">
                       {{ trans("visualcenter.plan") }}
+                      <div>
+                        {{ trans("visualcenter.dzoOpec") }},
+                      </div>
                       <div v-if="currentDzoList !== 'daily' || quantityRange > 1">
                         {{ getThousandMetricNameByCategorySelected() }}
                       </div>
                       <div v-else>
                         {{ getMetricNameByCategorySelected() }}
                       </div>
-                      <div>
-                        {{ trans("visualcenter.dzoOpec") }}
-                      </div>
                     </th>
                     <th>
-                      {{ trans("visualcenter.fact") }}
+                      {{ trans("visualcenter.fact") }},
                       <div v-if="currentDzoList !== 'daily' || quantityRange > 1">
                         {{ getThousandMetricNameByCategorySelected() }}
                       </div>
@@ -998,14 +998,14 @@
                     </th>
                     <th v-if="!isFilterTargetPlanActive && !buttonYearlyTab && !buttonMonthlyTab && oilCondensateProductionButton.length > 0">
                       {{ trans("visualcenter.dzoDifference") }}
+                      <div>
+                        {{ trans("visualcenter.dzoOpec") }},
+                      </div>
                       <div v-if="currentDzoList !== 'daily' || quantityRange > 1">
                         {{ getThousandMetricNameByCategorySelected() }}
                       </div>
                       <div v-else>
                         {{ getMetricNameByCategorySelected() }}
-                      </div>
-                      <div>
-                        {{ trans("visualcenter.dzoOpec") }}
                       </div>
                     </th>
                     <th v-if="isFilterTargetPlanActive">
@@ -1041,12 +1041,16 @@
                             :class="index % 2 === 0 ? 'tdStyle' : ''"
                             style="cursor: pointer"
                     >
-                      <span v-if="oilCondensateProductionButton.length === 0">
+                      <span v-if="oilCondensateProductionButton.length === 0 && currentDzoList === 'daily'">
                         {{ getNameDzoFull(item.dzoMonth) }}
                         <img src="/img/icons/link.svg" />
                       </span>
                       <span v-else-if="oilCondensateProductionButton.length > 0 && !isWithoutKMGFilterActive">
                         {{ getDzoName(item.dzoMonth,dzoNameMappingWithoutKMG) }}
+                        <img src="/img/icons/link.svg" />
+                      </span>
+                      <span v-else-if="oilCondensateProductionButton.length > 0 && currentDzoList !== 'daily'">
+                        {{ getDzoName(item.dzoMonth,dzoNameMappingNormal) }}
                         <img src="/img/icons/link.svg" />
                       </span>
                       <span v-else>
