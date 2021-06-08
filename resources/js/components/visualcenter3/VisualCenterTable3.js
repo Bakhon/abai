@@ -25,13 +25,6 @@ import oilProductionFilters from './dataManagers/oilProductionFilters';
 import mainTableChart from './widgets/mainTableChart.js';
 import secondaryParams from './dataManagers/secondaryParams';
 
-
-Vue.component("calendar", Calendar);
-Vue.component("date-picker", DatePicker);
-import Vue from "vue";
-
-
-
 export default {
     components: {
         Calendar,
