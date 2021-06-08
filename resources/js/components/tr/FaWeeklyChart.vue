@@ -105,12 +105,15 @@
   </div>
 </template>
 <script>
-import Vue from "vue";
-import TrMultiselect from "./TrMultiselect.vue";
-import { getFilterText } from "./helpers.js";
+import trHelper from '~/mixins/trHelper';
 import VueApexCharts from "vue-apexcharts";
+
 export default {
   name: "Trfa",
+  mixins: [trHelper],
+  components: {
+    apexchart: VueApexCharts
+  },
   computed: {
     subtitleText() {
       return [

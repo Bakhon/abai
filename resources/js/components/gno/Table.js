@@ -18,11 +18,9 @@ Vue.prototype.$eventBus = new Vue();
 
 
 Vue.use(NotifyPlugin,VueMomentLib);
-Vue.component("Plotly", Plotly);
-
 
 export default {
-  components: { PerfectScrollbar, FullPageLoader, Tabs },
+  components: { PerfectScrollbar, FullPageLoader, Tabs, Plotly },
   data: function () {
     return {
       url: "http://172.20.103.187:7575/api/pgno/",
