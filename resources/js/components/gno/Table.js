@@ -18,14 +18,10 @@ Vue.prototype.$eventBus = new Vue();
 
 
 Vue.use(NotifyPlugin,VueMomentLib);
-Vue.component("Plotly", Plotly);
 
 
 export default {
-  components: { PerfectScrollbar, FullPageLoader, Tabs },
-  props: [
-    'params'
-  ],
+  components: { PerfectScrollbar, FullPageLoader, Tabs, Plotly },
   data: function () {
     return {
       perms: this.params,

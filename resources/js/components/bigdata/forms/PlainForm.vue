@@ -57,6 +57,7 @@
 </template>
 
 <script>
+import Vue from "vue";
 import BigdataFormField from './field'
 import BigdataPlainFormResults from './PlainFormResults'
 import {bdFormActions, bdFormState} from '@store/helpers'
