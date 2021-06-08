@@ -139,6 +139,8 @@ export default {
                     summary.opekPlan = parseInt(summary.plan) + parseInt(company.opekPlan);
                 }
             });
+            this.productionParamsWidget.oilFact = summary.fact;
+            this.productionParamsWidget.oilPlan = summary.plan;
             if (self.oilCondensateProductionButton.length > 0) {
                 summary.opekDifference = this.getFormattedNumberToThousand(
                     summary.opekPlan,summary.fact);
@@ -151,6 +153,9 @@ export default {
             summary.fact = this.formatDigitToThousand(summary.fact);
             summary.periodPlan = this.formatDigitToThousand(summary.periodPlan);
             this.dzoCompaniesSummary = summary;
+            if (this.oilCondensateProductionButton.length > 0) {
+                this.updateProductionTotalFact();
+            }
         },
 
         getAllDzoCompanies() {

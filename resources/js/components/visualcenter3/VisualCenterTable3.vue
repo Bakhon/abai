@@ -28,7 +28,14 @@
                               {{ trans('visualcenter.tonWithSpace') }}
                             </div>
                           </div>
-                          <div class="additional-header txt1 col-6 col-md-12">
+                          <div
+                                  v-if="oilCondensateProductionButton.length > 0"
+                                  class="additional-header txt1 col-6 col-md-12">
+                            {{ trans("visualcenter.oilCondensateProduction") }}
+                          </div>
+                          <div
+                                  v-else
+                                  class="additional-header txt1 col-6 col-md-12">
                             {{ trans("visualcenter.getoil") }}
                           </div>
                           <br />
@@ -323,14 +330,7 @@
                     >
                       <li
                               class="center-li row px-4"
-                              @click="switchCategory(
-                                      'oilCondensateProductionButton',
-                                      'oil_plan',
-                                      'oil_fact',
-                                      trans('visualcenter.tonWithSpace'),
-                                      trans('visualcenter.oilCondensateProduction'),
-                                      'oilCondensateProductionButton',
-                                      'withoutKmgParticipation')"
+                              @click="switchFilterConsolidatedOilCondensate()"
                       >
                         <div
                                 class="col-1 mt-2"
@@ -1041,14 +1041,18 @@
                             :class="index % 2 === 0 ? 'tdStyle' : ''"
                             style="cursor: pointer"
                     >
-                        <span v-if="oilCondensateProductionButton.length === 0">
-                          {{ getNameDzoFull(item.dzoMonth) }}
-                          <img src="/img/icons/link.svg" />
-                        </span>
+                      <span v-if="oilCondensateProductionButton.length === 0">
+                        {{ getNameDzoFull(item.dzoMonth) }}
+                        <img src="/img/icons/link.svg" />
+                      </span>
+                      <span v-else-if="oilCondensateProductionButton.length > 0 && !isWithoutKMGFilterActive">
+                        {{ getDzoName(item.dzoMonth,dzoNameMappingWithoutKMG) }}
+                        <img src="/img/icons/link.svg" />
+                      </span>
                       <span v-else>
-                          {{ getDzoName(item.dzoMonth) }}
-                          <img src="/img/icons/link.svg" />
-                        </span>
+                        {{ getDzoName(item.dzoMonth,dzoNameMapping) }}
+                        <img src="/img/icons/link.svg" />
+                      </span>
                     </td>
                     <td
                             v-if="buttonYearlyTab"

@@ -1,0 +1,41 @@
+{
+  "dzoNameMapping": {
+    "ОМГ": "visualcenter.consolidatedDzoNameMapping.OMG",
+    "ОМГК": "visualcenter.consolidatedDzoNameMapping.OMGK",
+    "ММГ": "visualcenter.consolidatedDzoNameMapping.MMG",
+    "ЭМГ": "visualcenter.consolidatedDzoNameMapping.EMG",
+    "КБМ": "visualcenter.consolidatedDzoNameMapping.KBM",
+    "КГМ": "visualcenter.consolidatedDzoNameMapping.KGM",
+    "КТМ": "visualcenter.consolidatedDzoNameMapping.KTM",
+    "КОА": "visualcenter.consolidatedDzoNameMapping.KOA",
+    "УО": "visualcenter.consolidatedDzoNameMapping.YO",
+    "ТШ": "visualcenter.consolidatedDzoNameMapping.TSH",
+    "ТШО": "visualcenter.consolidatedDzoNameMapping.TSH",
+    "НКО": "visualcenter.consolidatedDzoNameMapping.NKO",
+    "КПО": "visualcenter.consolidatedDzoNameMapping.KPO",
+    "ПКИ": "visualcenter.consolidatedDzoNameMapping.PKI",
+    "ПККР": "visualcenter.consolidatedDzoNameMapping.PKKR",
+    "КГМКМГ": "visualcenter.consolidatedDzoNameMapping.KGMKMG",
+    "ТП": "visualcenter.consolidatedDzoNameMapping.TP",
+    "АГ": "visualcenter.consolidatedDzoNameMapping.AG",
+    "НКОН": "visualcenter.consolidatedDzoNameMapping.NKON",
+    "НКОС": "visualcenter.consolidatedDzoNameMapping.NKOS"
+  },
+  "dzoNameMappingWithoutKMG": {
+    "ОМГ": "visualcenter.consolidatedDzoNameMappingWithoutKMG.OMG",
+    "ОМГК": "visualcenter.consolidatedDzoNameMappingWithoutKMG.OMGK",
+    "ММГ": "visualcenter.consolidatedDzoNameMappingWithoutKMG.MMG",
+    "ЭМГ": "visualcenter.consolidatedDzoNameMappingWithoutKMG.EMG",
+    "КБМ": "visualcenter.consolidatedDzoNameMappingWithoutKMG.KBM",
+    "КГМ": "visualcenter.consolidatedDzoNameMappingWithoutKMG.KGM",
+    "КТМ": "visualcenter.consolidatedDzoNameMappingWithoutKMG.KTM",
+    "КОА": "visualcenter.consolidatedDzoNameMappingWithoutKMG.KOA",
+    "УО": "visualcenter.consolidatedDzoNameMappingWithoutKMG.YO",
+    "ТШО": "visualcenter.consolidatedDzoNameMappingWithoutKMG.TSH",
+    "НКО": "visualcenter.consolidatedDzoNameMappingWithoutKMG.NKO",
+    "КПО": "visualcenter.consolidatedDzoNameMappingWithoutKMG.KPO",
+    "ТП": "visualcenter.consolidatedDzoNameMappingWithoutKMG.TP",
+    "АГ": "visualcenter.consolidatedDzoNameMappingWithoutKMG.AG",
+    "ПКК": "visualcenter.consolidatedDzoNameMappingWithoutKMG.PKK"
+  }
+}
