@@ -520,7 +520,7 @@ export default {
           }
         } else if (this.tableData[i].method === 'trimToDate') {
           try {
-            this.tableData[i].data = (eval(this.tableData[i].description)).substring(0, 10)
+            this.tableData[i].data = (eval(this.tableData[i].description)) | moment("dddd, MMMM Do YYYY")
           } catch (e) {
             this.tableData[i].data = ''
           }
