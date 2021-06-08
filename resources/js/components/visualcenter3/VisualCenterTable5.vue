@@ -177,7 +177,7 @@
           <div class="ml-0 ml-sm-3 mr-0 mr-sm-3 pb-3 table-scroll">
             <div class="w-100">
               <table
-                class="table table-economics pl-2 table-striped table-borderless text-right economics-table-border"
+                class="table table-economics pl-2 table-striped table-borderless text-right economics-table-border economics-table_color"
               >
                 <thead class="economics-table-color">
                   <tr>
@@ -293,7 +293,7 @@
           <div class="ml-0 ml-sm-3 mr-0 mr-sm-3 pb-3 table-scroll">
             <div class="w-100">
               <table
-                class="table table-economics pl-2 table-striped table-borderless text-right economics-table-border"
+                class="table table-economics pl-2 table-striped table-borderless text-right economics-table-border economics-table_color"
               >
                 <thead class="economics-table-color">
                   <tr>
