@@ -2,15 +2,13 @@
   <div class="bd-forms col-12 p-0 pl-2 h-100">
     <div class="blueblock h-100 m-0">
       <div class="wells-select-block m-0 p-3">
-        <b-tree-view
-            v-if="filterTree.length"
-            :contextMenu="false"
-            :contextMenuItems="[]"
-            :data="filterTree"
-            :renameNodeOnDblClick="false"
-            nodeLabelProp="name"
-            v-on:nodeSelect="filterForm"
-        ></b-tree-view>
+        <tree-view
+            v-for="treeData in filterTree"
+            :ref="'child_' + treeData.id"
+            :node="treeData"
+            :handle-click="nodeClick"
+            :get-wells="getWells"
+        ></tree-view>
       </div>
     </div>
   </div>
@@ -20,12 +18,10 @@
 import forms from '../../json/bd/forms.json'
 import moment from "moment";
 import {bdFormActions} from '@store/helpers'
-import {bTreeView} from 'bootstrap-vue-treeview'
 import BigDataTableForm from "./forms/TableForm";
 
 export default {
   components: {
-    bTreeView,
     BigDataTableForm
   },
   data() {
@@ -48,43 +44,38 @@ export default {
     ...bdFormActions([
       'updateForm'
     ]),
-    filterForm(item, isSelected) {
-      if (isSelected) {
-        if (item.data.type === 'org') return false
-        this.$store.commit('globalloading/SET_LOADING', true);
-        this.tech = item.data.id
-        this.axios.get(this.localeUrl(`/api/bigdata/forms/${this.activeForm.code}/rows`), {
-          params: {
-            date: this.date,
-            tech: this.tech
-          }
-        }).then((data) => {
-          this.$emit('changeOrgSelector', data.data)
-        }).finally(() => {
-          this.$emit('modalChangeVisible', true)
-          this.$store.commit('globalloading/SET_LOADING', false);
-        })
-      }
-    },
     init() {
-      this.$store.commit('globalloading/SET_LOADING', true);
       this.updateForm(this.activeForm.code).then(data => {
         this.filterTree = data.filterTree
-        this.$store.commit('globalloading/SET_LOADING', false);
       })
+    },
+    nodeClick(node) {
+      this.$emit('wellIdChange', node.id)
+    },
+    getWells: function (child) {
+      let node = child.node;
+      this.axios.get(this.localeUrl(`/api/bigdata/tech/wells`), {
+        params: {
+          'techId': node.id
+        }
+      }).then((data) => {
+        if (data.data.length > 0) {
+          let newChildren = [];
+          if (typeof node.children === "undefined") {
+            node.children = [];
+          }
+          newChildren = node.children.filter((child) => {
+            return child.type !== 'well';
+          });
+          data.data.forEach((well) => {
+            newChildren.push({id: well.id, name: well.uwi, type: 'well'});
+          });
+          node.children = newChildren;
+        }
+      }).finally(() => {
+        child.isLoading = false;
+      });
     },
   },
 }
 </script>
-
-<style>
-.wells-select-block .tree-node-label {
-  font-size: 14px;
-  color: #fff;
-  white-space: nowrap;
-}
-
-.wells-select-block .tree-node-icon {
-  color: #fff;
-}
-</style>

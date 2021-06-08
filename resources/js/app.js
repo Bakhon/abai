@@ -58,6 +58,7 @@ Vue.mixin(showToast);
  */
 
 Vue.component('edit-history', require('./components/common/EditHistory.vue').default);
+Vue.component('tree-view', require('./components/common/TreeView.vue').default);
 Vue.component('visual-center-chart-area-oil', require('./components/visualcenter/VisualCenterChartAreaOil.vue').default);
 Vue.component('visual-center-chart-area-usd', require('./components/visualcenter/VisualCenterChartAreaUSD.vue').default);
 Vue.component('visual-center-chart-area-center', require('./components/visualcenter/VisualCenterChartAreaCenter.vue').default);
@@ -172,7 +173,6 @@ Vue.component('geo-data-reference-book', require('./components/bigdata/GeoDataRe
 Vue.component('user-reports', require('./components/bigdata/UserReports.vue').default);
 Vue.component('proto-form', require('./components/bigdata/Forms.vue').default);
 Vue.component('proto-form-wrapper', require('./components/bigdata/FormsWrapper.vue').default);
-Vue.component('proto-wells-select-modal', require('./components/bigdata/WellsSelectModal.vue').default);
 Vue.component('proto-org-select-tree', require('./components/bigdata/OrgSelectTree.vue').default);
 Vue.component('bigdata-form-mobile', require('./components/bigdata/FormMobile.vue').default);
 Vue.component('search-form', require('./components/ui-kit/SearchForm.vue').default);
