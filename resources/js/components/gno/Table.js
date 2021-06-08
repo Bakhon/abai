@@ -23,9 +23,15 @@ Vue.component("Plotly", Plotly);
 
 export default {
   components: { PerfectScrollbar, FullPageLoader, Tabs },
+  props: [
+    'params'
+  ],
   data: function () {
     return {
+      perms: this.params,
+      isPermission: false,
       isEditing: false,
+      permissionName: 'podborGno edit main',
       url: "http://127.0.0.1:7575/api/pgno/",
       isLoading: false,
       activeRightTabName: 'technological-mode',
@@ -1746,6 +1752,7 @@ export default {
     },
   },
   created() {
+    this.isPermission = this.perms.includes(this.permissionName);
     window.addEventListener("resize", () => {
       this.windowWidth = window.innerWidth;
     });
