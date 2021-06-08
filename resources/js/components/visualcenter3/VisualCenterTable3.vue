@@ -1075,27 +1075,27 @@
                         {{ formatDigitToThousand(item.periodPlan) }}
                       </div>
                     </td>
-                    <td
-                            v-if="!isFilterTargetPlanActive && !buttonYearlyTab && !buttonMonthlyTab && oilCondensateProductionButton.length > 0"
-                            :class="`${getDzoColumnsClass(index,'plan')}`">
-                      <div class="font">
-                        {{ formatDigitToThousand(item.opekPlan) }}
-                      </div>
-                    </td>
-
                     <td :class="`${getDzoColumnsClass(index,'plan')}`">
 
                       <div class="font">
                         {{ formatDigitToThousand(item.planMonth) }}
                       </div>
                     </td>
-
-                    <td :class="[`${getDzoColumnsClass(index,'fact')}`,'fact']">
+                    <td
+                            v-if="!isFilterTargetPlanActive && !buttonYearlyTab && !buttonMonthlyTab && oilCondensateProductionButton.length > 0"
+                            :class="currentDzoList === 'daily' ? getDzoColumnsClass(index,'companyName') : getDzoColumnsClass(index,'plan')">
+                      <div class="font">
+                        {{ formatDigitToThousand(item.opekPlan) }}
+                      </div>
+                    </td>
+                    <td :class="currentDzoList === 'daily' && oilCondensateProductionButton.length > 0 ?
+                            getDzoColumnsClass(index,'plan') : getDzoColumnsClass(index,'fact')">
                       <div class="font">
                         {{ formatDigitToThousand(item.factMonth) }}
                       </div>
                     </td>
-                    <td :class="`${getDzoColumnsClass(index,'difference')}`">
+                    <td :class="currentDzoList === 'daily' && oilCondensateProductionButton.length > 0 ?
+                            getDzoColumnsClass(index,'fact') : getDzoColumnsClass(index,'difference')">
                       <div
                               v-if="item.factMonth"
                               :class="
@@ -1126,7 +1126,8 @@
                     </td>
                     <td
                             v-if="!isFilterTargetPlanActive && !buttonYearlyTab && !buttonMonthlyTab && oilCondensateProductionButton.length > 0"
-                            :class="`${getDzoColumnsClass(index,'percent')}`"
+                            :class="currentDzoList === 'daily' && oilCondensateProductionButton.length > 0 ?
+                            getDzoColumnsClass(index,'difference') : getDzoColumnsClass(index,'percent')"
                     >
                       <div
                               v-if="item.factMonth"
@@ -1150,42 +1151,48 @@
                     </td>
                     <td
                             v-if="exactDateSelected"
-                            :class="`${getLightColorClass(index)}`"
+                            :class="currentDzoList === 'daily' && oilCondensateProductionButton.length > 0 ?
+                            getDarkColorClass(index) : getLightColorClass(index)"
                     >
                       <div :class="item.opec ? 'accident-triangle triangle' : 'no-accident-triangle triangle'">
                       </div>
                     </td>
                     <td
                             v-if="exactDateSelected"
-                            :class="`${getDarkColorClass(index)}`"
+                            :class="currentDzoList === 'daily' && oilCondensateProductionButton.length > 0 ?
+                            getLightColorClass(index) : getDarkColorClass(index)"
                     >
                       <div :class="item.impulses ? 'accident-triangle triangle' : 'no-accident-triangle triangle'">
                       </div>
                     </td>
                     <td
                             v-if="exactDateSelected"
-                            :class="`${getLightColorClass(index)}`"
+                            :class="currentDzoList === 'daily' && oilCondensateProductionButton.length > 0 ?
+                            getDarkColorClass(index) : getLightColorClass(index)"
                     >
                       <div :class="item.landing ? 'accident-triangle triangle' : 'no-accident-triangle triangle'">
                       </div>
                     </td>
                     <td
                             v-if="exactDateSelected"
-                            :class="`${getDarkColorClass(index)}`"
+                            :class="currentDzoList === 'daily' && oilCondensateProductionButton.length > 0 ?
+                            getLightColorClass(index) : getDarkColorClass(index)"
                     >
                       <div :class="item.accident ? 'accident-triangle triangle' : 'no-accident-triangle triangle'">
                       </div>
                     </td>
                     <td
                             v-if="exactDateSelected"
-                            :class="`${getLightColorClass(index)}`"
+                            :class="currentDzoList === 'daily' && oilCondensateProductionButton.length > 0 ?
+                            getDarkColorClass(index) : getLightColorClass(index)"
                     >
                       <div :class="item.restrictions ? 'accident-triangle triangle' : 'no-accident-triangle triangle'">
                       </div>
                     </td>
                     <td
                             v-if="exactDateSelected"
-                            :class="`${getDarkColorClass(index)}`"
+                            :class="currentDzoList === 'daily' && oilCondensateProductionButton.length > 0 ?
+                            getLightColorClass(index) : getDarkColorClass(index)"
                     >
                       <div :class="item.otheraccidents ? 'accident-triangle triangle' : 'no-accident-triangle triangle'">
                       </div>
@@ -1262,7 +1269,8 @@
                     </td>
                     <td
                             v-else
-                            :class="index % 2 === 0 ? `${getDarkerClass(index)}` : `${getLighterClass(index)}`"
+                            :class="currentDzoList === 'daily' && oilCondensateProductionButton.length > 0 ?
+                            getLighterClass(index) : getDarkerClass(index)"
                     >
                       <div class="font">
                         {{dzoCompaniesSummary.fact}}
@@ -1292,7 +1300,8 @@
                     </td>
                     <td
                             v-else
-                            :class="index % 2 === 0 ? `${getLighterClass(index)}` : `${getDarkerClass(index)}`"
+                            :class="currentDzoList === 'daily' && oilCondensateProductionButton.length > 0 ?
+                            getDarkerClass(index) : getLighterClass(index)"
                     >
                       <div
                               v-if="factMonthSumm"
@@ -1319,7 +1328,8 @@
                     </td>
                     <td
                             v-if="!isFilterTargetPlanActive && !buttonYearlyTab && !buttonMonthlyTab && oilCondensateProductionButton.length > 0"
-                            :class="`${getColorClassBySelectedPeriod(index)}`"
+                            :class="currentDzoList === 'daily' ?
+                            getLighterClass(index) : getDarkerClass(index)"
                     >
                       <div
                               v-if="factMonthSumm"
@@ -1351,28 +1361,34 @@
                     </td>
 
                     <td
-                            :class="`${getLighterClass(index)}`"
+                            :class="currentDzoList === 'daily' && oilCondensateProductionButton.length > 0 ?
+                            getDarkerClass(index) : getLighterClass(index)"
                             v-if="exactDateSelected"
                     >
                     </td>
                     <td
-                            :class="`${getDarkerClass(index)}`"
+                            :class="currentDzoList === 'daily' && oilCondensateProductionButton.length > 0 ?
+                            getLighterClass(index) : getDarkerClass(index)"
                             v-if="exactDateSelected"
                     ></td>
                     <td
-                            :class="`${getLighterClass(index)}`"
+                            :class="currentDzoList === 'daily' && oilCondensateProductionButton.length > 0 ?
+                            getDarkerClass(index) : getLighterClass(index)"
                             v-if="exactDateSelected"
                     ></td>
                     <td
-                            :class="`${getDarkerClass(index)}`"
+                            :class="currentDzoList === 'daily' && oilCondensateProductionButton.length > 0 ?
+                            getLighterClass(index) : getDarkerClass(index)"
                             v-if="exactDateSelected"
                     ></td>
                     <td
-                            :class="`${getLighterClass(index)}`"
+                            :class="currentDzoList === 'daily' && oilCondensateProductionButton.length > 0 ?
+                            getDarkerClass(index) : getLighterClass(index)"
                             v-if="exactDateSelected"
                     ></td>
                     <td
-                            :class="`${getDarkerClass(index)}`"
+                            :class="currentDzoList === 'daily' && oilCondensateProductionButton.length > 0 ?
+                            getLighterClass(index) : getDarkerClass(index)"
                             v-if="exactDateSelected"
                     ></td>
                   </tr>
