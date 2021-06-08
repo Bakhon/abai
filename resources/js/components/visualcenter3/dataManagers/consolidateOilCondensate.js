@@ -45,8 +45,9 @@ export default {
                 item.opekPlan = self.getOpekPlanForCompany(item.dzoMonth,filteredDataByPeriod);
             });
             let calculatedData = this.getCalculatedParticipations(initialData,filteredDataByPeriod,filteredInitialData);
-            console.log(calculatedData);
-            return initialData;
+            let sortedData = this.getSorted(calculatedData);
+            console.log(sortedData);
+            return sortedData;
         },
 
         getOpekPlanForCompany(dzoName,data) {
@@ -61,97 +62,66 @@ export default {
         },
 
         getCalculatedParticipations(summaryData,inputData,filteredInitialData) {
-            let self = this;
             let updatedData = summaryData;
-            updatedData.push({
-                'dzoMonth': 'ОМГК',
-                'factMonth': this.getValueFromInput('gk_fact','ОМГ',inputData),
-                'opekPlan' : this.getValueFromInput('gk_plan','ОМГ',inputData),
-                'planMonth': this.getValueFromInput('gk_plan','ОМГ',inputData),
-            });
-            updatedData.push({
-                'dzoMonth': 'ПККР',
-                'factMonth': Math.round(this.getValueFromInput('oil_fact','ПКК',inputData) * 0.33),
-                'opekPlan' : Math.round(this.getValueFromInput('oil_opek_plan','ПКК',inputData) * 0.33),
-                'planMonth': Math.round(this.getValueFromInput('oil_plan','ПКК',inputData) * 0.33),
-            });
-            updatedData.push({
-                'dzoMonth': 'КГМКМГ',
-                'factMonth': Math.round(this.getValueFromInput('oil_fact','КГМ',inputData) * 0.5 * 0.33),
-                'opekPlan' : Math.round(this.getValueFromInput('oil_opek_plan','КГМ',inputData) * 0.5 * 0.33),
-                'planMonth': Math.round(this.getValueFromInput('oil_plan','КГМ',inputData) * 0.5 * 0.33),
-            });
-            updatedData.push({
-                'dzoMonth': 'ТП',
-                'factMonth': Math.round(this.getValueFromInput('oil_fact','ТП',inputData) * 0.5 * 0.33),
-                'opekPlan' : Math.round(this.getValueFromInput('oil_opek_plan','ТП',inputData) * 0.5 * 0.33),
-                'planMonth': Math.round(this.getValueFromInput('oil_plan','ТП',inputData) * 0.5 * 0.33),
-            });
-            updatedData.push({
-                'dzoMonth': 'АГ',
-                'factMonth': this.getValueFromInput('gk_fact','АГ',filteredInitialData),
-                'opekPlan' : this.getValueFromInput('gk_plan','АГ',filteredInitialData),
-                'planMonth': this.getValueFromInput('gk_plan','АГ',filteredInitialData),
-            });
-            updatedData.push({
-                'dzoMonth': 'НКОН',
-                'factMonth': (this.getValueFromInput('oil_fact','НКО',inputData) - this.getValueFromInput('oil_fact','НКО',inputData) * 0.019) * 241 / 1428,
-                'opekPlan' : (this.getValueFromInput('oil_opek_plan','НКО',inputData) - this.getValueFromInput('oil_opek_plan','НКО',inputData) * 0.019) * 241 / 1428,
-                'planMonth': (this.getValueFromInput('oil_plan','НКО',inputData) - this.getValueFromInput('oil_plan','НКО',inputData) * 0.019) * 241 / 1428,
-            });
+            updatedData = this.getUpdatedByDzoOptions(updatedData,inputData,filteredInitialData);
+            return updatedData;
+        },
+
+        getUpdatedByDzoOptions(updatedData,inputData,filteredInitialData) {
+            let self = this;
+            let dzoOptions = this.getDzoOptions();
+
             let pkiSummary = {
-                'factMonth': Math.round(this.getValueFromInput('oil_fact','ПКК',inputData) * 0.33) +
-                  Math.round(this.getValueFromInput('oil_fact','КГМ',inputData) * 0.5 * 0.33) +
-                  Math.round(this.getValueFromInput('oil_fact','ТП',inputData) * 0.5 * 0.33),
-                'planMonth': Math.round(this.getValueFromInput('oil_plan','ПКК',inputData) * 0.33) +
-                    Math.round(this.getValueFromInput('oil_plan','КГМ',inputData) * 0.5 * 0.33) +
-                    Math.round(this.getValueFromInput('oil_plan','ТП',inputData) * 0.5 * 0.33),
-                'opekPlan': Math.round(this.getValueFromInput('oil_opek_plan','ПКК',inputData) * 0.33) +
-                    Math.round(this.getValueFromInput('oil_opek_plan','КГМ',inputData) * 0.5 * 0.33) +
-                    Math.round(this.getValueFromInput('oil_opek_plan','ТП',inputData) * 0.5 * 0.33),
+                'factMonth': 0,
+                'planMonth': 0,
+                'opekPlan': 0
             };
             let nkoSummary = {
-                'factMonth': (this.getValueFromInput('oil_fact','НКО',inputData) - this.getValueFromInput('oil_fact','НКО',inputData) * 0.019) * 241 / 1428,
-                'planMonth': (this.getValueFromInput('oil_plan','НКО',inputData) - this.getValueFromInput('oil_plan','НКО',inputData) * 0.019) * 241 / 1428,
-                'opekPlan' : (this.getValueFromInput('oil_opek_plan','НКО',inputData) - this.getValueFromInput('oil_opek_plan','НКО',inputData) * 0.019) * 241 / 1428
+                'factMonth': 0,
+                'planMonth': 0,
+                'opekPlan': 0
+            };
+            let factorOptions = {
+                'ММГ': 0.5,
+                'КБМ': 0.5,
+                'КГМ': 0.5,
+                'КОА': 0.5,
+                'ТШО': 0.2,
+                'КПО': 0.1,
             }
-            updatedData.push({
+            let temporaryData = updatedData;
+            let tpIndex = temporaryData.findIndex(element => element.dzoMonth === 'ТП');
+            let pkkIndex = temporaryData.findIndex(element => element.dzoMonth === 'ПКК');
+            temporaryData.splice(tpIndex, 1);
+            temporaryData.splice(pkkIndex, 1);
+
+            _.forEach(dzoOptions, function(item) {
+                temporaryData.push({
+                    'dzoMonth' : item.dzoMonth,
+                    'factMonth' : item.fact,
+                    'opekPlan' : item.opekPlan,
+                    'planMonth' : item.plan,
+                });
+                if (['ПКК','КГМ','ТП'].includes(item.dzoName)) {
+                    self.updateDzoCompaniesSummary(item,pkiSummary);
+                }
+                if (item.dzoName === 'НКО') {
+                    self.updateDzoCompaniesSummary(item,nkoSummary);
+                }
+            });
+
+            temporaryData.push({
                 'dzoMonth': 'НКОС',
                 'factMonth': nkoSummary.factMonth / 2,
                 'opekPlan' : nkoSummary.opekPlan / 2,
                 'planMonth': nkoSummary.planMonth / 2,
             });
-            let pkkIndex = 0;
-            _.forEach(updatedData, function(item, index) {
-                if (item.dzoMonth === 'ММГ') {
-                    item.factMonth = item.factMonth * 0.5;
-                    item.opekPlan = item.opekPlan * 0.5;
-                    item.planMonth = item.planMonth * 0.5;
-                }
-                if (item.dzoMonth === 'КБМ') {
-                    item.factMonth = item.factMonth * 0.5;
-                    item.opekPlan = item.opekPlan * 0.5;
-                    item.planMonth = item.planMonth * 0.5;
-                }
-                if (item.dzoMonth === 'КГМ') {
-                    item.factMonth = item.factMonth * 0.5;
-                    item.opekPlan = item.opekPlan * 0.5;
-                    item.planMonth = item.planMonth * 0.5;
-                }
-                if (item.dzoMonth === 'КОА') {
-                    item.factMonth = item.factMonth * 0.5;
-                    item.opekPlan = item.opekPlan * 0.5;
-                    item.planMonth = item.planMonth * 0.5;
-                }
-                if (item.dzoMonth === 'ТШО') {
-                    item.factMonth = item.factMonth * 0.2;
-                    item.opekPlan = item.opekPlan * 0.2;
-                    item.planMonth = item.planMonth * 0.2;
-                }
-                if (item.dzoMonth === 'КПО') {
-                    item.factMonth = item.factMonth * 0.1;
-                    item.opekPlan = item.opekPlan * 0.1;
-                    item.planMonth = item.planMonth * 0.1;
+
+            _.forEach(temporaryData, function(item, index) {
+                if (factorOptions[item.dzoMonth]) {
+                    item.factMonth *= factorOptions[item.dzoMonth];
+                    item.opekPlan *= factorOptions[item.dzoMonth];
+                    item.planMonth *= factorOptions[item.dzoMonth];
                 }
                 if (item.dzoMonth === 'ПКИ') {
                     item.factMonth = pkiSummary.factMonth;
@@ -163,15 +133,80 @@ export default {
                     item.opekPlan = nkoSummary.opekPlan / 2;
                     item.planMonth = nkoSummary.planMonth / 2;
                 }
-                if (item.dzoMonth === 'ПКК') {
-                    pkkIndex = index;
-                }
             });
-            updatedData.splice(pkkIndex, 1);
-            return updatedData;
+            return temporaryData;
         },
 
-        getValueFromInput(fieldName, dzoName, data) {
+        getDzoOptions() {
+            return [
+                {
+                    'dzoMonth': 'ОМГК',
+                    'dzoName' : 'ОМГ',
+                    'factMonth': 'gk_fact',
+                    'opekMonth': 'gk_plan',
+                    'planMonth': 'gk_plan',
+                    'formula': (fieldName, dzoName) => {
+                        return Math.round(self.getInitialFromInputData(fieldName,dzoName,inputData));
+                    }
+                },
+                {
+                    'dzoMonth': 'ПККР',
+                    'dzoName' : 'ПКК',
+                    'factMonth': 'oil_fact',
+                    'opekMonth': 'oil_opek_plan',
+                    'planMonth': 'oil_plan',
+                    'formula': (fieldName, dzoName) => {
+                        let parameter = self.getInitialFromInputData(fieldName,dzoName,inputData);
+                        return Math.round(parameter * 0.33);
+                    }
+                },
+                {
+                    'dzoMonth': 'КГМКМГ',
+                    'dzoName' : 'КГМ',
+                    'factMonth': 'oil_fact',
+                    'opekMonth': 'oil_opek_plan',
+                    'planMonth': 'oil_plan',
+                    'formula': (fieldName, dzoName) => {
+                        let parameter = self.getInitialFromInputData(fieldName,dzoName,inputData);
+                        return Math.round(parameter * 0.5 * 0.33);
+                    }
+                },
+                {
+                    'dzoMonth': 'ТП',
+                    'dzoName' : 'ТП',
+                    'factMonth': 'oil_fact',
+                    'opekMonth': 'oil_opek_plan',
+                    'planMonth': 'oil_plan',
+                    'formula': (fieldName, dzoName) => {
+                        let parameter = self.getInitialFromInputData(fieldName,dzoName,inputData);
+                        return Math.round(parameter * 0.5 * 0.33);
+                    }
+                },
+                {
+                    'dzoMonth': 'АГ',
+                    'dzoName' : 'АГ',
+                    'factMonth': 'gk_fact',
+                    'opekMonth': 'gk_plan',
+                    'planMonth': 'gk_plan',
+                    'formula': (fieldName, dzoName) => {
+                        return self.getInitialFromInputData(fieldName,dzoName,filteredInitialData);
+                    }
+                },
+                {
+                    'dzoMonth': 'НКОН',
+                    'dzoName' : 'НКО',
+                    'factMonth': 'oil_fact',
+                    'opekMonth': 'oil_opek_plan',
+                    'planMonth': 'oil_plan',
+                    'formula': (fieldName, dzoName) => {
+                        let parameter = self.getInitialFromInputData(fieldName,dzoName,inputData);
+                        return Math.round((parameter - parameter * 0.019) * 241 / 1428);
+                    }
+                },
+            ];
+        },
+
+        getInitialFromInputData(fieldName, dzoName, data) {
             let updatedValue = 0;
             _.forEach(data, function(item) {
                 if (item.dzo === dzoName) {
@@ -179,6 +214,24 @@ export default {
                 }
             });
             return updatedValue;
+        },
+
+        updateDzoCompaniesSummary(item,summary) {
+            summary.factMonth += item.formula(item.factMonth,item.dzoName);
+            summary.planMonth += item.formula(item.planMonth,item.dzoName);
+            summary.opekPlan += item.formula(item.opekMonth,item.dzoName);
+        },
+
+        getSorted(inputData) {
+            let sorted = [];
+            let sortingOrder = ['ОМГ','ОМГК','ММГ','ЭМГ','КБМ',
+                'КГМ','КТМ','КОА','УО','ТШО','НКО','КПО','ПКИ',
+                'ПККР','КГМКМГ','ТП','АГ','НКОН','НКОС'];
+            _.forEach(sortingOrder, function (key) {
+                let itemIndex = inputData.findIndex(element => element.dzoMonth === key);
+                sorted.push(inputData[itemIndex]);
+            });
+            return sorted;
         },
     }
 }
