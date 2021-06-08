@@ -24,9 +24,11 @@
 <script>
 import VueApexCharts from "vue-apexcharts";
 
-Vue.component("apexchart", VueApexCharts);
 export default {
   name: "mix-chart",
+  components: {
+    "apexchart": VueApexCharts
+  },
   props: ["wells2"],
   data: function () {
     return {

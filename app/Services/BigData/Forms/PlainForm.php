@@ -73,7 +73,7 @@ abstract class PlainForm extends BaseForm
             return (array)DB::connection('tbd')->table($this->params()['table'])->where('id', $id)->first();
         } catch (\Exception $e) {
             DB::rollBack();
-            throw new SubmitFormException();
+            throw new SubmitFormException($e->getMessage());
         }
     }
 

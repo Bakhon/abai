@@ -1,0 +1,33 @@
+{
+  "type": "plain",
+  "table": "prod.bottom_hole",
+  "default_values": {
+    "bottom_hole_type": 2
+  },
+  "tabs": [
+    {
+      "title": "b_hole",
+      "blocks": [
+        [
+          {
+            "title": "main",
+            "items": [
+              {
+                "code": "data",
+                "type": "date",
+                "title": "data",
+                "validation": "required"
+              },
+              {
+                "code": "depth",
+                "type": "numeric",
+                "title": "b_hole_m",
+                "validation": "required|numeric"
+              }
+            ]
+          }
+        ]
+      ]
+    }
+  ]
+}

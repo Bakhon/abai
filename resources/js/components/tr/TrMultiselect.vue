@@ -45,13 +45,14 @@
 
 <script>
 import Multiselect from "vue-multiselect";
-import { declOfNum } from "./helpers.js";
+import trHelper from '~/mixins/trHelper';
 
 export default {
   name: "TrMultiselect",
   components: {
     Multiselect,
   },
+  mixins: [trHelper],
   props: {
     filter: {
       type: Array,
@@ -92,7 +93,7 @@ export default {
     getFieldFilterText() {
       if (!this.fieldFilterOptions[0] || !this.fieldFilterOptions[0].fields) return "Нет опций"
       if (this.selectedAllTag && this.fieldFilterOptions[0].fields.length === this.filter.length) return `${this.trans('tr.all_wells_selected')}`;
-      return `${this.filter.length} ${this.trans(`${declOfNum(this.filter.length, this.textFormsRow)}`)}`;
+      return `${this.filter.length} ${this.trans(`${this.declOfNum(this.filter.length, this.textFormsRow)}`)}`;
     },
   },
 };

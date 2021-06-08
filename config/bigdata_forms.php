@@ -12,6 +12,7 @@
   'daily_drill' => '\\App\\Services\\BigData\\Forms\\DailyDrill',
   'well_constr' => '\\App\\Services\\BigData\\Forms\\WellConstr',
   'tech_state' => '\\App\\Services\\BigData\\Forms\\TechState',
-  'bottom_hole' => '\\App\\Services\\BigData\\Forms\\BottomHole',
-  'well_block' => '\\App\\Services\\BigData\\Forms\\WellBlock'
+  'well_block' => '\\App\\Services\\BigData\\Forms\\WellBlock',
+  'bottom_hole_artificial' => '\\App\\Services\\BigData\\Forms\\BottomHoleArtificial',
+  'bottom_hole' => '\\App\\Services\\BigData\\Forms\\BottomHole'
 );
