@@ -22,6 +22,9 @@ Vue.use(NotifyPlugin,VueMomentLib);
 
 export default {
   components: { PerfectScrollbar, FullPageLoader, Tabs, Plotly },
+  props: [
+    'params'
+  ],
   data: function () {
     return {
       perms: this.params,
