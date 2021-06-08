@@ -95,6 +95,7 @@ Route::group(
                 Route::get('wells/{well}/spatial_object', 'Api\DB\WellsController@spatial_object');
                 Route::get('wells/{well}/spatial_object_bottom', 'Api\DB\WellsController@spatial_object_bottom');
                 Route::get('wells/{well}/actual_bottom_hole', 'Api\DB\WellsController@actual_bottom_hole');
+                Route::get('wells/{well}/wellInfo', 'Api\DB\WellsController@wellInfo');
             }
         );
     }

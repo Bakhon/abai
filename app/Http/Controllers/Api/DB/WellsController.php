@@ -12,6 +12,24 @@ use Carbon\Carbon;
 
 class WellsController extends Controller
 {
+    public function wellInfo(well $well)
+    {
+        return array('well' => $this->status($well),
+            'status' => $this->get($well),
+            'tube_nom' => $this->tube_nom($well),
+            'category' => $this->category($well),
+            'category_last' => $this->category_last($well),
+            'geo' => $this->geo($well),
+            'well_expl' => $this->well_expl($well),
+            'techs' => $this->techs($well),
+            'well_type' => $this->well_type($well),
+            'org' => $this->org($well),
+            'spatial_object' => $this->spatial_object($well),
+            'spatial_object_bottom' => $this->spatial_object_bottom($well),
+            'actual_bottom_hole' => $this->actual_bottom_hole($well),
+        );
+    }
+
     public function getToday(): Carbon
     {
         return Carbon::today();
