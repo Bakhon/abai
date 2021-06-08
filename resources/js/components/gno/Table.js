@@ -387,7 +387,7 @@ export default {
       } 
     })
 
-    this.axios.get("http://127.0.0.1:7575/api/pgno/sk_types").then(response => {
+    this.axios.get("http://12172.20.103.187:7575/api/pgno/sk_types").then(response => {
       this.skTypes = response.data
     })
   },
