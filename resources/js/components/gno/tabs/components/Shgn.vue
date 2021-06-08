@@ -339,7 +339,6 @@
 </template>
 
 <script>
-import Vue from 'vue';
 import { mapGetters, mapState } from 'vuex';
 import NotifyPlugin from "vue-easy-notify";
 

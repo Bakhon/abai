@@ -20,7 +20,6 @@
 </template>
 
 <script>
-import Vue from 'vue';
 import VModal from 'vue-js-modal'
 import VueTableDynamic from 'vue-table-dynamic'
 import CatLoader from "../../ui-kit/CatLoader";

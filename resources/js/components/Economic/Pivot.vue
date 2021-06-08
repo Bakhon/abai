@@ -6,7 +6,6 @@
 </template>
 
 <script>
-import Vue from 'vue';
 import { PivotViewPlugin, FieldList } from "@syncfusion/ej2-vue-pivotview";
 
 Vue.use(PivotViewPlugin);
