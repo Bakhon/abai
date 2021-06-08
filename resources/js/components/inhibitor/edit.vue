@@ -66,13 +66,16 @@
 
 <script>
 import {Settings} from 'luxon'
-import 'vue-datetime/dist/vue-datetime.css';
+import {Datetime} from 'vue-datetime'
 import moment from 'moment'
 
 Settings.defaultLocale = 'ru'
 
 export default {
   name: "inhibitor-edit",
+  components: {
+    Datetime
+  },
   props: [
     'inhibitor',
     'validationParams'

@@ -13,7 +13,6 @@
 </template>
 
 <script>
-import Vue from "vue";
 import { Plotly } from "vue-plotly";
 
 Vue.prototype.$eventBus = new Vue();

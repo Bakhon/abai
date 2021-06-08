@@ -169,7 +169,6 @@
 </template>
 
 <script>
-import Vue from "vue";
 import {paegtmMapActions, paegtmMapGetters} from '@store/helpers';
 import moment from "moment";
 Vue.component("gtm-modal", {
