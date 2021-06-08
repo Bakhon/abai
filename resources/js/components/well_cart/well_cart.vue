@@ -81,7 +81,7 @@
             </div>
             <div v-if="well" class="mid-col__main_row">
               <div v-if="activeFormCode" class="col table-wrapper">
-                <BigDataPlainFormResult :code="activeFormCode" :well-id="allData.id"></BigDataPlainFormResult>
+                <BigDataPlainFormResult :code="activeFormCode" :well-id="this.well.id"></BigDataPlainFormResult>
               </div>
               <div v-else class="col graphics">
                 <div class="row">
@@ -103,27 +103,27 @@
                     <div class="well-info">
                       <div class="title">Основное</div>
                       <p>Номер скважины: <span>{{ well.uwi }}</span></p>
-                        <p>Категория скважины:
-                          <span v-if="wellCategory.name_ru">
+                      <p>Категория скважины:
+                        <span v-if="wellCategory.name_ru">
                             {{ wellCategory.name_ru }}</span>
-                        </p>
-                        <div class="title">Привязка</div>
-                        <div class="title">Координаты устья</div>
-                        <p>Оргструктура: <span></span></p>
-                        <p>Координаты устья X:
-                          <span v-if="wellSaptialObjectX">{{ wellSaptialObjectX }}</span>
-                        </p>
-                        <p>Координаты устья Y:
-                          <span v-if="wellSaptialObjectY">
+                      </p>
+                      <div class="title">Привязка</div>
+                      <div class="title">Координаты устья</div>
+                      <p>Оргструктура: <span></span></p>
+                      <p>Координаты устья X:
+                        <span v-if="wellSaptialObjectX">{{ wellSaptialObjectX }}</span>
+                      </p>
+                      <p>Координаты устья Y:
+                        <span v-if="wellSaptialObjectY">
                           {{ wellSaptialObjectY }}
                         </span></p>
-                        <div class="title">Координаты забоя</div>
-                        <p>Координаты устья X:
-                          <span v-if="wellSaptialObjectBottomX">
+                      <div class="title">Координаты забоя</div>
+                      <p>Координаты устья X:
+                        <span v-if="wellSaptialObjectBottomX">
                             {{ wellSaptialObjectBottomX }}
                         </span></p>
-                        <p>Координаты устья Y:
-                          <span v-if="wellSaptialObjectBottomY">
+                      <p>Координаты устья Y:
+                        <span v-if="wellSaptialObjectBottomY">
                             {{ wellSaptialObjectBottomY }}
                           </span></p>
 
@@ -426,7 +426,7 @@ export default {
           'data': ''
         },
       ],
-      forms: forms
+      forms: forms,
     }
   },
   mounted() {
@@ -512,20 +512,14 @@ export default {
               this.wellUwi = data.uwi
               this.setTableData()
 
-          this.loading = false
-        } catch (e) {
-          this.loading = false
-        }
-      })
-    },
-    switchFormByCode(formCode) {
-      this.activeFormCode = formCode
-    }
               this.loading = false
             } catch (e) {
               this.loading = false
             }
           })
+    },
+    switchFormByCode(formCode) {
+      this.activeFormCode = formCode
     },
     setTableData() {
       for (let i = 0; i < this.tableData.length; i++) {
@@ -564,10 +558,10 @@ export default {
         }
       }
     },
+    setForm(formCode) {
+      this.activeFormCode = formCode
+    }
   },
-  setForm(formCode) {
-    this.activeFormCode = formCode
-  }
 }
 </script>
 
