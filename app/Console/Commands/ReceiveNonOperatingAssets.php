@@ -49,6 +49,14 @@ class receiveNonOperatingAssets extends Command
           'id' => '',
           'changeKey' => ''
     );
+    private $dzoMapping = array (
+        'ТШО' => '"Теңізшевройл" ЖШС / ТОО "Тенгизшевройл"',
+        'ПКК' => '"Петро Қазақстан Құмкөл Ресорсиз" АҚ / АО "Петро Казахстан Кумколь Ресорсиз"',
+        'ТП' => '"Торғай Петролеум" АҚ / АО "Тургай Петролеум"',
+        'ПКИ' => '"Петро Казахстан Венчерс Инк."',
+        'НКО' => '"Норт Каспиан Оперейтинг Компани Б.В."',
+        'АГ' => '"Амангелді Газ" ЖШС/ ТОО "Амангельды Газ"'
+    );
 
     /**
      * The console command description.
@@ -234,85 +242,86 @@ class receiveNonOperatingAssets extends Command
       }
     }
 
+    public function processCompanies($inputCompanyName,$row)
+    {
+        foreach($this->dzoMapping as $companyTicker => $companyName) {
+            if ($inputCompanyName === $companyName) {
+                $data = $this->getCollectedData($row,$companyTicker);
+                $this->insertDataToDB($data);
+            }
+        }
+    }
+
     public function processColumns($row,$sheet,$r)
     {
         foreach($row as $k => $col) {
             $trimmedColumn = trim($col);
-            if ($trimmedColumn === '"Теңізшевройл" ЖШС / ТОО "Тенгизшевройл"') {
-                $data = $this->getCollectedData($row,$k,'ТШО',$sheet,$r,false);
-                $this->insertDataToDB($data);
-            }
-            if ($trimmedColumn === '"Петро Қазақстан Құмкөл Ресорсиз" АҚ / АО "Петро Казахстан Кумколь Ресорсиз"') {
-                $data = $this->getCollectedData($row,$k,'ПКК',$sheet,$r,false);
-                $this->insertDataToDB($data);
-            }
-            if ($trimmedColumn === '"Торғай Петролеум" АҚ / АО "Тургай Петролеум"') {
-                $data = $this->getCollectedData($row,$k,'ТП',$sheet,$r,false);
-                $this->insertDataToDB($data);
-            }
+            $this->processCompanies($trimmedColumn,$row);
             if ($trimmedColumn === '"Қарашығанақ Петролеум Опер.Б.В." / "Карачаганак Петролеум Опер. Б.В."') {
-                $data = $this->getCollectedData($row,$k,'КПО',$sheet,$r,true);
-                $this->insertDataToDB($data);
-            }
-            if ($trimmedColumn === '"Петро Казахстан Венчерс Инк."') {
-                $data = $this->getCollectedData($row,$k,'ПКИ',$sheet,$r,false);
-                $this->insertDataToDB($data);
-            }
-            if ($trimmedColumn === '"Норт Каспиан Оперейтинг Компани Б.В."') {
-                $data = $this->getCollectedData($row,$k,'НКО',$sheet,$r,false);
-                $this->insertDataToDB($data);
-            }
-            if ($trimmedColumn === '"Амангелді Газ" ЖШС/ ТОО "Амангельды Газ"') {
-                $data = $this->getCondensateData($row,$k,'АГ');
+                $data = $this->getKPOData($row,'КПО',$sheet,$r);
                 $this->insertDataToDB($data);
             }
         }
     }
 
-
-
-    public function getCollectedData($row, $columnIndex, $dzoName, $sheet, $rowIndex, $isSplittedData)
+    public function getCollectedData($row, $dzoName)
     {
+        $productionFieldName = 'oil_production_fact';
+        $deliveryFieldName = 'oil_delivery_fact';
+        if ($dzoName === 'АГ') {
+            $productionFieldName = 'condensate_production_fact';
+            $deliveryFieldName = 'condensate_delivery_fact';
+        }
         $columnMapping = array(
             'oilProduction' => 5,
-            'oilDelivery' => 12,
-            'stockOfGoods' => 17,
-            'idle' => 18,
-            'oilLosses' => 19
+            'oilDelivery' => 12
         );
-        if (!$isSplittedData) {
-            $data = array (
-                'oil_production_fact' => $row[$columnMapping['oilProduction']],
-                'oil_delivery_fact' => $row[$columnMapping['oilDelivery']],
-                'dzo_name' => $dzoName,
-                'date' => Carbon::yesterday('Asia/Almaty')
-            );
-        } else {
-            $data = array (
-                'oil_production_fact' => $sheet->rows()[$rowIndex + 1][$columnMapping['oilProduction']],
-                'condensate_production_fact' => $sheet->rows()[$rowIndex + 2][$columnMapping['oilProduction']],
-                'oil_delivery_fact' => $sheet->rows()[$rowIndex + 1][$columnMapping['oilDelivery']],
-                'condensate_delivery_fact' => $sheet->rows()[$rowIndex + 2][$columnMapping['oilDelivery']],
-                'dzo_name' => $dzoName,
-                'date' => Carbon::yesterday('Asia/Almaty')
-            );
-        }
-        return $data;
-    }
-
-    public function getCondensateData($row, $columnIndex, $dzoName)
-    {
-        $columnMapping = array(
-            'condensateProduction' => 5,
-            'condensateDelivery' => 12
-        );
-        $data = array (
-            'condensate_production_fact' => $row[$columnMapping['condensateProduction']],
-            'condensate_delivery_fact' => $row[$columnMapping['condensateDelivery']],
+        return array (
+            $productionFieldName => $row[$columnMapping['oilProduction']],
+            $deliveryFieldName => $row[$columnMapping['oilDelivery']],
             'dzo_name' => $dzoName,
             'date' => Carbon::yesterday('Asia/Almaty')
         );
+    }
+
+    public function getKPOData($row, $dzoName, $sheet, $rowIndex)
+    {
+        $columnMapping = array(
+            'condensateProduction' => 5,
+            'condensateDelivery' => 12,
+            'KPOoilProduction' => 8,
+            'KPOoilDelivery' => 15
+        );
+        $yesterdayFact = $this->getYesterdayFact($dzoName);
+        return array (
+            'oil_production_fact' => $this->getUpdatedFactForRecord($dzoName,$row[$columnMapping['KPOoilProduction']],$yesterdayFact,'oilProduction'),
+            'oil_delivery_fact' => $this->getUpdatedFactForRecord($dzoName,$row[$columnMapping['KPOoilDelivery']],$yesterdayFact,'oilDelivery'),
+            'condensate_production_fact' => $sheet->rows()[$rowIndex + 1][$columnMapping['condensateProduction']],
+            'condensate_delivery_fact' => $sheet->rows()[$rowIndex + 2][$columnMapping['condensateDelivery']],
+            'dzo_name' => $dzoName,
+            'date' => Carbon::yesterday('Asia/Almaty')
+        );
+    }
+
+    public function getYesterdayFact($dzoName)
+    {
+        $data = array (
+            'oilProduction' => 0,
+            'oilDelivery' => 0
+        );
+        $dzoYesterdayData = DzoImportData::query()
+            ->whereDate('date',Carbon::now()->subDays(2))
+            ->where('dzo_name',$dzoName)
+            ->first();
+        if (!is_null($dzoYesterdayData)) {
+            $data['oilProduction'] = $dzoYesterdayData->oil_production_fact;
+            $data['oilDelivery'] = $dzoYesterdayData->oil_delivery_fact;
+        }
         return $data;
+    }
+
+    public function getUpdatedFactForRecord($dzoName,$currentFact,$yesterdayFact,$fieldName) {
+        return ($currentFact - $yesterdayFact[$fieldName]) * 0.9;
     }
 
     public function insertDataToDB ($data)

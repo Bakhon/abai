@@ -3,7 +3,6 @@ import moment from "moment";
 export default {
     data: function () {
         return {
-            WellsDataAll: '',
             inj_wells_idlePercent: 0,
             inj_wells_workPercent: 0,
             innerWellsSelectedRow: 'fond_nagnetat_ef',
@@ -84,12 +83,14 @@ export default {
             return result;
         },
 
-        innerWellsNagMetOnChange($event) {
+        innerWellsNagMetOnChange($event, currentOption) {
+            this.selectedSecondaryOption = currentOption;
             this.company = $event.target.value;
             this.updateProductionData(this.planFieldName, this.factFieldName, this.chartHeadName, this.metricName, this.chartSecondaryName);
         },
 
-        innerWellsProdMetOnChange($event) {
+        innerWellsProdMetOnChange($event, currentOption) {
+            this.selectedSecondaryOption = currentOption;
             this.company = $event.target.value;
             this.updateProductionData(this.planFieldName, this.factFieldName, this.chartHeadName, this.metricName, this.chartSecondaryName);
         },

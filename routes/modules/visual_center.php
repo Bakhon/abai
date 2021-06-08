@@ -69,8 +69,8 @@ Route::group(
                 Route::get('hive-data-from-avocet', function() {
                     Artisan::call('hive-data-from-avocet:cron');
                 });
-                Route::post('dzo_excel_form', 'VisCenter\ExcelForm\ExcelFormController@store');
-                Route::post('dzo_chemistry_excel_form', 'VisCenter\ExcelForm\ExcelFormChemistryController@store');  
+                Route::post('dzo-excel-form', 'VisCenter\ExcelForm\ExcelFormController@store');
+                Route::post('dzo-chemistry-excel-form', 'VisCenter\ExcelForm\ExcelFormChemistryController@store');  
             }
         );
     }

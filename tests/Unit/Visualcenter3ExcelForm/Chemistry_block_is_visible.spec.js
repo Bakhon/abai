@@ -7,7 +7,7 @@ let wrapper = null;
 beforeEach( () => {
     wrapper = mount(ExcelForm, {
         mocks: {
-            localeUrl: () => {'/dzo_chemistry_excel_form'},
+            localeUrl: () => {'/dzo-chemistry-excel-form'},
         }
     });
 });

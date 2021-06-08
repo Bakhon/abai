@@ -16,7 +16,7 @@
                     <h2>Дело скважины</h2>
                   </div>
                   <div class="icon-all" style="margin-left: auto;"
-                       @click="onLeftColumnFoldingEvent(isLeftColumnFolded, isRightColumnFolded, isBothColumnFolded)">
+                       @click="onColumnFoldingEvent('left')">
                     <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M11 1L5.8053 6L11 11" stroke="white" stroke-width="1.2" stroke-linecap="round"
                             stroke-linejoin="round"/>
@@ -30,13 +30,19 @@
             <div class="directory">
               <div class="custom-directory">
                 <ul id="myUL">
-                  <li :class="{'selected': activeFormCode === 'well_design'}" @click="setForm('well_design')">
+                  <li v-for="form in forms" :class="{'selected': activeFormCode === form.code}"
+                      @click="switchFormByCode(form.code)">
                     <p>
-                      <span class="file">Конструкция скважины по проекту</span>
+                      <span class="file" v-html="form.name"></span>
                     </p>
                   </li>
                 </ul>
               </div>
+            </div>
+          </div>
+          <div v-if="isLeftColumnFolded" class="row">
+            <div style="color: white" class="rotate">
+              Дело скважины
             </div>
           </div>
         </div>
@@ -73,39 +79,44 @@
                 </form>
               </div>
             </div>
-            <div v-if="allData" class="mid-col__main row">
-              <div class="col">
-                <div class="graphics">
-                  <div class="row">
-                    <div class="col" style="max-width: 64px; display: grid; padding: 0px;">
-                      <svg width="42" height="42" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg"
-                           style="margin: 12px 0px 0px 24px;">
-                        <path
-                            d="M20.9993 0.999999C25.0498 0.999999 31.5236 0.999999 36.0037 0.999999C38.7652 0.999999 41 3.23536 41 5.99678C41 10.9694 41 18.2449 41 21C41 24.4924 41 31.3063 41 36.0027C41 38.7641 38.7632 40.9999 36.0018 40.9999C31.2512 40.9999 24.3497 41 20.9993 41C17.1648 41 10.5605 41 5.99621 41C3.23481 41 1.00023 38.763 1.00018 36.0016C1.0001 31.1169 1 23.9922 1 21C1 17.6496 1.0001 10.7485 1.00018 5.99813C1.00022 3.23674 3.23602 0.999999 5.99741 0.999999C10.6937 0.999999 17.5075 0.999999 20.9993 0.999999Z"
-                            stroke="#2E50E9" stroke-miterlimit="22.9256"/>
-                        <path
-                            d="M20.9994 2.99996C24.7981 2.99996 30.9653 2.99996 35.0024 2.99996C37.2115 2.99996 39 4.79063 39 6.99977C39 11.4726 39 18.4269 39 21C39 24.2698 39 30.7748 39 35.0039C39 37.213 37.2127 38.9999 35.0036 38.9999C30.7266 39 24.135 39 20.9994 39C17.4055 39 11.1085 39 6.99658 39C4.78747 39 3.00021 37.2109 3.00017 35.0018C3.0001 30.6063 3 23.7971 3 21C3 17.8643 3.0001 11.2731 3.00017 6.9963C3.00021 4.78719 4.78713 2.99996 6.99624 2.99996C11.2252 2.99996 17.73 2.99996 20.9994 2.99996Z"
-                            fill="#323370"/>
-                        <path
-                            d="M14.7029 25L13.5829 20.472C13.4656 19.96 13.3536 19.4053 13.2469 18.808H13.1829C13.0763 19.5333 12.9483 20.1947 12.7989 20.792L11.7749 25H10.1269L8.11094 17.336H9.39094L10.5909 22.392C10.7189 22.9573 10.8256 23.464 10.9109 23.912H10.9749C11.0283 23.624 11.1509 23.0907 11.3429 22.312L12.5429 17.336H13.9189L15.1669 22.376C15.2736 22.8133 15.3856 23.3253 15.5029 23.912H15.5509C15.6256 23.3787 15.7216 22.872 15.8389 22.392L17.0709 17.336H18.3349L16.3189 25H14.7029ZM22.9856 17.08C23.6469 17.08 24.2336 17.208 24.7456 17.464C25.2576 17.72 25.6522 18.0507 25.9296 18.456C26.2176 18.8613 26.4309 19.288 26.5696 19.736C26.7082 20.1733 26.7776 20.616 26.7776 21.064C26.7776 21.2667 26.7669 21.4213 26.7456 21.528H20.4896C20.4896 22.2213 20.7616 22.8347 21.3056 23.368C21.8496 23.8907 22.4842 24.152 23.2096 24.152C23.9989 24.152 24.6549 23.8427 25.1776 23.224H26.6336C26.3349 23.7893 25.8976 24.2747 25.3216 24.68C24.7562 25.0747 24.0629 25.272 23.2416 25.272C22.0362 25.272 21.0549 24.872 20.2976 24.072C19.5509 23.272 19.1776 22.2693 19.1776 21.064C19.1776 19.9653 19.5296 19.0267 20.2336 18.248C20.9376 17.4693 21.8549 17.08 22.9856 17.08ZM22.9856 18.184C22.2922 18.184 21.7216 18.4133 21.2736 18.872C20.8256 19.32 20.5696 19.8533 20.5056 20.472H25.4496C25.3856 19.8427 25.1242 19.304 24.6656 18.856C24.2176 18.408 23.6576 18.184 22.9856 18.184ZM28.4556 25V13.48H29.7196V25H28.4556ZM31.9243 25V13.48H33.1883V25H31.9243Z"
-                            fill="white"/>
-                      </svg>
-                    </div>
-                    <div class="col">
-                      <div class="well-info">
-                        <div class="title">Основное</div>
-                        <p>Номер скважины:<span>{{ allData.uwi }}</span></p>
-                        <p>Категория скважины: <span></span></p>
-                        <div class="title">Привязка</div>
-                        <p>Оргструктура: <span></span></p>
-                        <div class="title">Координаты устья</div>
-                        <p>Оргструктура: <span></span></p>
-                        <p>Координаты устья X:<span></span></p>
-                        <p>Координаты устья Y:<span></span></p>
-                        <div class="title">Координаты забоя</div>
-                        <p>Координаты устья X:<span></span></p>
-                        <p>Координаты устья Y:<span></span></p>
-                      </div>
+            <div v-if="allData" class="mid-col__main_row">
+              <div v-if="activeFormCode" class="col table-wrapper">
+                <BigDataPlainFormResult :code="activeFormCode" :well-id="allData.id"></BigDataPlainFormResult>
+              </div>
+              <div v-else class="col graphics">
+                <div class="row">
+                  <div class="col" style="max-width: 64px; display: grid; padding: 0px;">
+                    <svg fill="none" height="42" style="margin: 12px 0px 0px 24px;" viewBox="0 0 42 42" width="42"
+                         xmlns="http://www.w3.org/2000/svg">
+                      <path
+                          d="M20.9993 0.999999C25.0498 0.999999 31.5236 0.999999 36.0037 0.999999C38.7652 0.999999 41 3.23536 41 5.99678C41 10.9694 41 18.2449 41 21C41 24.4924 41 31.3063 41 36.0027C41 38.7641 38.7632 40.9999 36.0018 40.9999C31.2512 40.9999 24.3497 41 20.9993 41C17.1648 41 10.5605 41 5.99621 41C3.23481 41 1.00023 38.763 1.00018 36.0016C1.0001 31.1169 1 23.9922 1 21C1 17.6496 1.0001 10.7485 1.00018 5.99813C1.00022 3.23674 3.23602 0.999999 5.99741 0.999999C10.6937 0.999999 17.5075 0.999999 20.9993 0.999999Z"
+                          stroke="#2E50E9" stroke-miterlimit="22.9256"/>
+                      <path
+                          d="M20.9994 2.99996C24.7981 2.99996 30.9653 2.99996 35.0024 2.99996C37.2115 2.99996 39 4.79063 39 6.99977C39 11.4726 39 18.4269 39 21C39 24.2698 39 30.7748 39 35.0039C39 37.213 37.2127 38.9999 35.0036 38.9999C30.7266 39 24.135 39 20.9994 39C17.4055 39 11.1085 39 6.99658 39C4.78747 39 3.00021 37.2109 3.00017 35.0018C3.0001 30.6063 3 23.7971 3 21C3 17.8643 3.0001 11.2731 3.00017 6.9963C3.00021 4.78719 4.78713 2.99996 6.99624 2.99996C11.2252 2.99996 17.73 2.99996 20.9994 2.99996Z"
+                          fill="#323370"/>
+                      <path
+                          d="M14.7029 25L13.5829 20.472C13.4656 19.96 13.3536 19.4053 13.2469 18.808H13.1829C13.0763 19.5333 12.9483 20.1947 12.7989 20.792L11.7749 25H10.1269L8.11094 17.336H9.39094L10.5909 22.392C10.7189 22.9573 10.8256 23.464 10.9109 23.912H10.9749C11.0283 23.624 11.1509 23.0907 11.3429 22.312L12.5429 17.336H13.9189L15.1669 22.376C15.2736 22.8133 15.3856 23.3253 15.5029 23.912H15.5509C15.6256 23.3787 15.7216 22.872 15.8389 22.392L17.0709 17.336H18.3349L16.3189 25H14.7029ZM22.9856 17.08C23.6469 17.08 24.2336 17.208 24.7456 17.464C25.2576 17.72 25.6522 18.0507 25.9296 18.456C26.2176 18.8613 26.4309 19.288 26.5696 19.736C26.7082 20.1733 26.7776 20.616 26.7776 21.064C26.7776 21.2667 26.7669 21.4213 26.7456 21.528H20.4896C20.4896 22.2213 20.7616 22.8347 21.3056 23.368C21.8496 23.8907 22.4842 24.152 23.2096 24.152C23.9989 24.152 24.6549 23.8427 25.1776 23.224H26.6336C26.3349 23.7893 25.8976 24.2747 25.3216 24.68C24.7562 25.0747 24.0629 25.272 23.2416 25.272C22.0362 25.272 21.0549 24.872 20.2976 24.072C19.5509 23.272 19.1776 22.2693 19.1776 21.064C19.1776 19.9653 19.5296 19.0267 20.2336 18.248C20.9376 17.4693 21.8549 17.08 22.9856 17.08ZM22.9856 18.184C22.2922 18.184 21.7216 18.4133 21.2736 18.872C20.8256 19.32 20.5696 19.8533 20.5056 20.472H25.4496C25.3856 19.8427 25.1242 19.304 24.6656 18.856C24.2176 18.408 23.6576 18.184 22.9856 18.184ZM28.4556 25V13.48H29.7196V25H28.4556ZM31.9243 25V13.48H33.1883V25H31.9243Z"
+                          fill="white"/>
+                    </svg>
+                  </div>
+                  <div class="col">
+                    <div class="well-info">
+                      <div class="title">Основное</div>
+                      <p>Номер скважины: <span>{{ allData.uwi }}</span></p>
+                      <p>Категория скважины: <span v-if="wellCategory">{{ wellCategory.name_ru }}</span></p>
+                      <div class="title">Привязка</div>
+                      <p>Оргструктура: <span>
+                          <span v-for="value in org">
+                            {{ value.name_ru + "/" }}
+                          </span>
+                        </span></p>
+                      <div class="title">Координаты устья</div>
+                      <p>Оргструктура: <span></span></p>
+                      <p>Координаты устья X:<span></span></p>
+                      <p>Координаты устья Y:<span></span></p>
+                      <div class="title">Координаты забоя</div>
+                      <p>Координаты устья X:<span></span></p>
+                      <p>Координаты устья Y:<span></span></p>
                     </div>
                   </div>
                 </div>
@@ -114,14 +125,14 @@
           </div>
         </div>
       </div>
-      <div :class="{'right-column_folded': isRightColumnFolded}" class="right-column__inner bg-dark">
+      <div :class="{'right-column_folded': isRightColumnFolded}" class="right-column__inner">
         <div class="bg-dark-transparent">
           <template>
             <div class="row">
               <div class="col">
                 <div class="heading">
                   <div class="icon-all"
-                       @click="onRightColumnFoldingEvent(isLeftColumnFolded, isRightColumnFolded, isBothColumnFolded)">
+                       @click="onColumnFoldingEvent('right')">
                     <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M1.0001 1L6.19482 6L1.0001 11" stroke="white" stroke-width="1.2" stroke-linecap="round"
                             stroke-linejoin="round"/>
@@ -152,6 +163,7 @@
             </div>
           </template>
           <div class="info">
+            <div v-if="isRightColumnFolded" class="rotate">Паспорт скважины</div>
             <div class="info-element">
               <div class="row">
                 <div class="col">
@@ -162,32 +174,44 @@
                     <tr>
                       <td>1</td>
                       <td>Скважина</td>
-                      <td>{{ allData.uwi }}</td>
+                      <td>
+                        <span v-if="allData">{{ allData.uwi }}</span>
+                      </td>
                     </tr>
                     <tr>
                       <td>2</td>
                       <td>Вид скважины</td>
-                      <td></td>
+                      <td>
+                        <span v-if="wellType">{{ wellType }}</span>
+                      </td>
                     </tr>
                     <tr>
                       <td>3</td>
                       <td>Месторождение</td>
-                      <td></td>
+                      <td>
+                        <span v-if="geo">{{ geo.name_ru }}</span>
+                      </td>
                     </tr>
                     <tr>
                       <td>4</td>
                       <td> Горизонт / Pнас, атм</td>
-                      <td></td>
+                      <td>
+                        <span v-if="geo">{{ geo.name_ru }}</span>
+                      </td>
                     </tr>
                     <tr>
                       <td>5</td>
                       <td> H ротора</td>
-                      <td></td>
+                      <td>
+                        <span v-if="allData">{{ allData.rte }}</span>
+                      </td>
                     </tr>
                     <tr>
                       <td>6</td>
                       <td>Тех. структура</td>
-                      <td>{{ tech[0].name_ru }}</td>
+                      <td>
+                        <span v-if="tech">{{ tech.name_ru }}</span>
+                      </td>
                     </tr>
                     <tr>
                       <td>7</td>
@@ -197,12 +221,14 @@
                     <tr>
                       <td>8</td>
                       <td>ГУ/Ряд</td>
-                      <td></td>
+                      <td>
+                        <span v-if="tech">{{ tech.name_ru }}</span>
+                      </td>
                     </tr>
                     <tr>
                       <td>9</td>
                       <td>Орг. структура</td>
-                      <td>
+                      <td v-if="org">
                         <span v-for="value in org">
                           {{ value.name_ru + "/" }}
                         </span>
@@ -220,82 +246,243 @@
                     </tr>
                     <tr>
                       <td>12</td>
-                      <td>Категория</td>
+                      <td>Координаты X (устья)</td>
                       <td></td>
                     </tr>
                     <tr>
                       <td>13</td>
-                      <td>Период бурения</td>
+                      <td>Координаты X (устья)</td>
                       <td></td>
                     </tr>
                     <tr>
                       <td>14</td>
-                      <td>Дата ввода в эксплуатацию</td>
+                      <td>Координаты забоя X</td>
                       <td></td>
                     </tr>
                     <tr>
                       <td>15</td>
-                      <td>Дата ввода в эксплуатацию</td>
-                      <td>{{ tech[0].dbeg }}</td>
+                      <td>Координаты забоя Y</td>
+                      <td></td>
                     </tr>
                     <tr>
                       <td>16</td>
-                      <td>Состояние</td>
+                      <td>Назначение скважин по проекту</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>16</td>
+                      <td>Назначение скважин по проекту</td>
                       <td></td>
                     </tr>
                     <tr>
                       <td>17</td>
-                      <td>Способ эксплуатации</td>
-                      <td></td>
+                      <td>Категория</td>
+                      <td>
+                        <span v-if="wellCategory">{{ wellCategory.name_ru }}</span>
+                      </td>
                     </tr>
                     <tr>
                       <td>18</td>
+                      <td>Период бурения</td>
+                      <td>
+                        <span
+                            v-if="allData.drill_start_date">{{ allData.drill_start_date }} - {{
+                            allData.drill_end_date
+                          }}</span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>19</td>
+                      <td>Дата ввода в эксплуатацию</td>
+                      <td>
+                        <span v-if="tech">{{ tech.dbeg }}</span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>20</td>
+                      <td>Состояние</td>
+                      <td v-if="wellStatus">{{ wellStatus.name_ru }}</td>
+                    </tr>
+                    <tr>
+                      <td>21</td>
+                      <td>Способ эксплуатации</td>
+                      <td>
+                        <span v-if="wellExpl">{{ wellExpl.name_ru }}</span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>22</td>
                       <td>Тип УО / наличие эксц.болта</td>
                       <td></td>
                     </tr>
                     <tr>
-                      <td>19</td>
+                      <td>23</td>
                       <td>Диаметр экспл.колонны/доп. экспл.колонны,мм</td>
                       <td></td>
                     </tr>
                     <tr>
-                      <td>20</td>
+                      <td>24</td>
                       <td>Тип колонной головки / размеры</td>
                       <td></td>
                     </tr>
                     <tr>
-                      <td>21</td>
-                      <td>глубина спуска насоса (м)</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>22</td>
-                      <td>Код насоса</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>23</td>
-                      <td>Диаметр насоса (мм)</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>24</td>
-                      <td>Глубина спуска пакера</td>
-                      <td></td>
-                    </tr>
-                    <tr>
                       <td>25</td>
-                      <td>Тип СК</td>
+                      <td>Глубина спуска насоса (м)</td>
                       <td></td>
                     </tr>
                     <tr>
                       <td>26</td>
-                      <td>длина хода (м)</td>
+                      <td>Код насоса</td>
                       <td></td>
                     </tr>
                     <tr>
                       <td>27</td>
+                      <td>Диаметр насоса (мм)</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>28</td>
+                      <td>Глубина спуска пакера</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>29</td>
+                      <td>Тип СК</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>30</td>
+                      <td>Длина хода (м)</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>31</td>
                       <td>число качаний (об/мин)</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>32</td>
+                      <td>Фактический забой/(дата отбивки)</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>33</td>
+                      <td>Искусственный забой</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>34</td>
+                      <td>Отбитый забой</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>35</td>
+                      <td>Дата перфорации</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>36</td>
+                      <td>Действующие интервалы перфорации</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>37</td>
+                      <td>Дебит жидкости, м3/сут (режим/факт)</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>38</td>
+                      <td>Обводненность, % (режим/факт)</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>39</td>
+                      <td>Дебит нефти, т/сут (режим/факт)</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>40</td>
+                      <td>Дата последнего КРС</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>41</td>
+                      <td>Дата проведения ПФП нагн. скважины</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>42</td>
+                      <td>Дата проведения ГРП</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>43</td>
+                      <td>Дата последнего ПРС</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>44</td>
+                      <td>Дата последнего ГИС</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>45</td>
+                      <td>Дата последнего ГДИС</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>46</td>
+                      <td>Результат ГДМ</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>47</td>
+                      <td>Длина хода при проведении ГДМ</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>48</td>
+                      <td>Число качаний при проведении ГДМ</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>49</td>
+                      <td>Динамический уровень</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>50</td>
+                      <td>Статический уровень</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>51</td>
+                      <td>Рпл/(дата замера)</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>52</td>
+                      <td>Рпл (Сл. ГДИС)/(дата замера)</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>53</td>
+                      <td>Рзаб/(дата замера)</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>54</td>
+                      <td>Рзатр(дин), атм</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>55</td>
+                      <td>Рзатр(стат)</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>56</td>
+                      <td>Примечание</td>
                       <td></td>
                     </tr>
                   </table>
@@ -311,8 +498,9 @@
 
 <script>
 import BigDataPlainFormResult from '../bigdata/forms/PlainFormResults'
-import vSelect from "vue-select"
-import axios from "axios";
+import forms from '../../json/bd/forms.json'
+import vSelect from 'vue-select'
+import axios from 'axios'
 
 export default {
   components: {
@@ -325,8 +513,13 @@ export default {
       well: null,
       tech: null,
       wellName: null,
+      wellType: null,
+      wellExpl: null,
+      wellCategory: null,
+      tubeTom: null,
       org: null,
       geo: null,
+      wellStatus: null,
       graph: null,
       activeFormCode: null,
       loading: false,
@@ -334,28 +527,20 @@ export default {
       isRightColumnFolded: false,
       isBothColumnFolded: false,
       allData: null,
-      popup: false
+      forms: forms
     }
   },
   mounted() {
 
   },
   methods: {
-    onLeftColumnFoldingEvent(isLeftColumnFolded, isRightColumnFolded, isBothColumnFolded) {
-      //method check the isLeftColumnFolded & isRightColumnFolded var and returns isBothColumnFolded if true
-      this.isLeftColumnFolded = !isLeftColumnFolded;
-      if (this.isLeftColumnFolded === true && this.isRightColumnFolded === true) {
-        this.isBothColumnFolded = !isBothColumnFolded;
-        this.isBothColumnFolded = true;
+    onColumnFoldingEvent(method) {
+      if (method === 'left') {
+        this.isLeftColumnFolded = !this.isLeftColumnFolded;
       } else {
-        this.isBothColumnFolded = false;
+        this.isRightColumnFolded = !this.isRightColumnFolded;
       }
-    },
-    onRightColumnFoldingEvent(isLeftColumnFolded, isRightColumnFolded, isBothColumnFolded) {
-      //method check the isLeftColumnFolded & isRightColumnFolded var and returns isBothColumnFolded if true
-      this.isRightColumnFolded = !isRightColumnFolded;
       if (this.isLeftColumnFolded === true && this.isRightColumnFolded === true) {
-        this.isBothColumnFolded = !isBothColumnFolded;
         this.isBothColumnFolded = true;
       } else {
         this.isBothColumnFolded = false;
@@ -378,16 +563,26 @@ export default {
     selectWell(well) {
       this.loading = true
       this.axios.get(this.localeUrl(`/api/bigdata/wells/${well.id}`)).then(({data}) => {
-        this.tech = data[0].techs
-        this.org = data[0].orgs
-        this.geo = data[0].geo
-        this.wellName = data[0].uwi
-        this.allData = data[0]
-        console.log(data[0])
-        this.loading = false
+        try {
+          this.tech = data.techs
+          this.org = data.orgs
+          this.geo = data.geo[0]
+          this.wellName = data.uwi
+          this.allData = data
+          this.wellType = data.well_type[0].name_ru
+          this.wellStatus = data.status[data.status.length - 1] // уточнить, какой именно статус взять
+          this.wellExpl = data.well_expl[0]
+          this.tubeTom = data.tube_nom[0]
+          this.wellCategory = data.category[0]
+          this.well = data.well[0]
+
+          this.loading = false
+        } catch (e) {
+          this.loading = false
+        }
       })
     },
-    setForm(formCode) {
+    switchFormByCode(formCode) {
       this.activeFormCode = formCode
     }
   }
@@ -1079,7 +1274,7 @@ h4 {
 }
 
 .info {
-  height: calc(100vh - 100px);
+  height: calc(100vh - 160px);
   margin-bottom: 0 !important;
   overflow-y: auto;
   overflow-x: hidden;
@@ -1121,6 +1316,16 @@ h4 {
     }
   }
 
+  .rotate {
+    transform: rotate(-90deg);
+    margin-top: 100px;
+    margin-bottom: 10px;
+    display: flex;
+    white-space: nowrap;
+    font-family: 'Harmonia Sans Pro Cyr', 'Harmonia-Sans', 'Robato';
+    font-weight: 700;
+    font-size: 16px;
+  }
 }
 
 .full-size-icon {
@@ -1381,17 +1586,21 @@ h4 {
 }
 
 ::-webkit-scrollbar-button {
-  background: URL("/img/bd/scroll-array.svg") no-repeat 50% #485499;
+  &:vertical {
+    background: URL("/img/bd/scroll-array.svg") no-repeat 50% #485499;
 
-  &:end {
-    background: URL("/img/bd/scroll-array-end.svg") no-repeat 50% #485499;
+    &:end {
+      background: URL("/img/bd/scroll-array-end.svg") no-repeat 50% #485499;
+    }
   }
 }
 
 .table-wrapper {
   margin: 10px 20px;
+  max-height: calc(100vh - 175px);
+  overflow: auto;
   padding: 0;
-
+  width: auto;
 }
 
 .col-no-right-padding {
@@ -1437,7 +1646,7 @@ h4 {
     }
 
     & ~ .mid-col {
-      min-width: calc(100% - #{$leftColumnFoldedWidth} - #{$rightColumnFoldedWidth} - 11px) !important;
+      min-width: calc(100% - #{$leftColumnFoldedWidth} - #{$rightColumnFoldedWidth} - 9px) !important;
     }
 
   }
@@ -1451,7 +1660,19 @@ h4 {
   min-width: $leftColumnWidth;
   width: $leftColumnWidth;
   padding: 0 15px;
-  margin-bottom: 15px;
+  margin-bottom: 0px;
+
+  .rotate {
+    color: white;
+    white-space: nowrap;
+    transform: rotate(-90deg);
+    display: flex;
+    padding-bottom: 50px;
+    padding-right: 20px;
+    font-family: "Harmonia Sans Pro Cyr", "Harmonia-Sans", "Robato";
+    font-weight: 700;
+    font-size: 16px;
+  }
 
   &_folded {
     min-width: $leftColumnFoldedWidth;
@@ -1470,7 +1691,7 @@ h4 {
     }
 
     & ~ .mid-col {
-      min-width: calc(100% - #{$leftColumnFoldedWidth} - #{$rightColumnWidth} - 11px);
+      min-width: calc(100% - #{$leftColumnFoldedWidth} - #{$rightColumnWidth} - 9px);
     }
 
   }
@@ -1501,14 +1722,16 @@ h4 {
     min-width: $leftColumnFoldedWidth;
     width: $leftColumnFoldedWidth;
     max-width: $leftColumnFoldedWidth;
-    margin-left: auto;
+    margin: 0px;
+    padding: 0px 15px;
 
     & ~ .mid-col {
-      min-width: calc(100% - #{$leftColumnWidth} - 84px - 11px);
+      min-width: calc(100% - #{$leftColumnWidth} - #{$rightColumnFoldedWidth} - 9px);
     }
 
     .icon-all {
       transform: rotate(180deg);
+      padding-bottom: 25px;
     }
 
     p {
@@ -1536,15 +1759,21 @@ h4 {
 }
 
 .mid-col {
-  min-width: calc(100% - #{$leftColumnWidth} - #{$rightColumnWidth} - 11px);
+  min-width: calc(100% - #{$leftColumnWidth} - #{$rightColumnWidth} - 9px);
   padding: 0 15px;
+  height: calc(100vh - 90px);
 
   &__main {
-    height: calc(100vh - 123px);
+    height: 100%;
+    overflow: hidden;
 
     &-inner {
       margin-bottom: 0;
     }
+  }
+
+  .col-md-12 {
+    height: 100%;
   }
 }
 
@@ -1599,5 +1828,13 @@ h4 {
 
 .block {
   display: block;
+}
+
+.custom-directory {
+  .file {
+    br {
+      display: none;
+    }
+  }
 }
 </style>
