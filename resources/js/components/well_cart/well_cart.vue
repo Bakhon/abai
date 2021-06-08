@@ -460,63 +460,38 @@ export default {
     ),
     selectWell(well) {
       this.loading = true
-      this.axios.get(this.localeUrl(`/api/bigdata/wells/${well.id}/status/`)).then(({data}) => {
-        this.wellStatus = data
-      }),
-          this.axios.get(this.localeUrl(`/api/bigdata/wells/${well.id}/category/`)).then(({data}) => {
-            this.wellCategory = data
-          }),
-          this.axios.get(this.localeUrl(`/api/bigdata/wells/${well.id}/category_last/`)).then(({data}) => {
-            this.wellCategory_last = data
-          }),
-          this.axios.get(this.localeUrl(`/api/bigdata/wells/${well.id}/well_expl/`)).then(({data}) => {
-            this.wellExpl = data
-          }),
-          this.axios.get(this.localeUrl(`/api/bigdata/wells/${well.id}/techs/`)).then(({data}) => {
-            this.wellTechs = data
-          }),
-          this.axios.get(this.localeUrl(`/api/bigdata/wells/${well.id}/well_type/`)).then(({data}) => {
-            this.wellType = data
-          }),
-          this.axios.get(this.localeUrl(`/api/bigdata/wells/${well.id}/org/`)).then(({data}) => {
-            this.wellOrg = data
-          }),
-          this.axios.get(this.localeUrl(`/api/bigdata/wells/${well.id}/geo/`)).then(({data}) => {
-            this.wellGeo = data
-          }),
-          this.axios.get(this.localeUrl(`/api/bigdata/wells/${well.id}/tube_nom/`)).then(({data}) => {
-            this.tubeNom = data
-          }),
-          this.axios.get(this.localeUrl(`/api/bigdata/wells/${well.id}/spatial_object/`)).then(({data}) => {
-            if (data.coord_point != null) {
-              data = data.coord_point.replace('(', '').replace(')', '')
-              data = data.split(',')
-              this.wellSaptialObjectX = data[0]
-              this.wellSaptialObjectY = data[1]
-            }
-          }),
-          this.axios.get(this.localeUrl(`/api/bigdata/wells/${well.id}/spatial_object_bottom/`)).then(({data}) => {
-            if (data.coord_point != null) {
-              data = data.coord_point.replace('(', '').replace(')', '')
-              data = data.split(',')
-              this.wellSaptialObjectBottomX = data[0]
-              this.wellSaptialObjectBottomY = data[1]
-            }
-          }),
-          this.axios.get(this.localeUrl(`/api/bigdata/wells/${well.id}/actual_bottom_hole/`)).then(({data}) => {
-            this.actualBottomHole = data
-          }),
-          this.axios.get(this.localeUrl(`/api/bigdata/wells/${well.id}`)).then(({data}) => {
-            try {
-              this.well = data
-              this.wellUwi = data.uwi
-              this.setTableData()
-
-              this.loading = false
-            } catch (e) {
-              this.loading = false
-            }
-          })
+      this.axios.get(this.localeUrl(`/api/bigdata/wells/${well.id}/wellInfo`)).then(({data}) => {
+        this.wellStatus = data.status
+        this.wellCategory = data.category
+        this.wellCategory_last = data.category_last
+        this.wellExpl = data.well_expl
+        this.wellTechs = data.techs
+        this.wellType = data.well_type
+        this.wellOrg = data.org
+        this.wellGeo = data.geo
+        this.tubeNom = data.tube_nom
+        this.actualBottomHole = data.actual_bottom_hole
+        this.well = data.well
+        this.wellUwi = data.well.uwi
+        try {
+          if (data.spatial_object.coord_point != null) {
+            data = data.spatial_object.coord_point.replace('(', '').replace(')', '')
+            data = data.split(',')
+            this.wellSaptialObjectX = data[0]
+            this.wellSaptialObjectY = data[1]
+          }
+          if (data.spatial_object_bottom.coord_point != null) {
+            data = data.spatial_object_bottom.coord_point.replace('(', '').replace(')', '')
+            data = data.split(',')
+            this.wellSaptialObjectBottomX = data[0]
+            this.wellSaptialObjectBottomY = data[1]
+          }
+        } catch (e) {
+          this.loading = false
+        }
+        this.setTableData()
+        this.loading = false
+      })
     },
     switchFormByCode(formCode) {
       this.activeFormCode = formCode

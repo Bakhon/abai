@@ -83,18 +83,6 @@ Route::group(
 
                 Route::get('wells/search', 'Api\DB\WellsController@search');
                 Route::get('wells/{well}', 'Api\DB\WellsController@get');
-                Route::get('wells/{well}/status', 'Api\DB\WellsController@status');
-                Route::get('wells/{well}/category', 'Api\DB\WellsController@category');
-                Route::get('wells/{well}/category_last', 'Api\DB\WellsController@category_last');
-                Route::get('wells/{well}/well_expl', 'Api\DB\WellsController@well_expl');
-                Route::get('wells/{well}/well_type', 'Api\DB\WellsController@well_type');
-                Route::get('wells/{well}/techs', 'Api\DB\WellsController@techs');
-                Route::get('wells/{well}/geo', 'Api\DB\WellsController@geo');
-                Route::get('wells/{well}/org', 'Api\DB\WellsController@org');
-                Route::get('wells/{well}/tube_nom', 'Api\DB\WellsController@tube_nom');
-                Route::get('wells/{well}/spatial_object', 'Api\DB\WellsController@spatial_object');
-                Route::get('wells/{well}/spatial_object_bottom', 'Api\DB\WellsController@spatial_object_bottom');
-                Route::get('wells/{well}/actual_bottom_hole', 'Api\DB\WellsController@actual_bottom_hole');
                 Route::get('wells/{well}/wellInfo', 'Api\DB\WellsController@wellInfo');
             }
         );
