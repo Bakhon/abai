@@ -222,15 +222,17 @@
 import VueApexCharts from "vue-apexcharts";
 import BigNumbers from "./BigNumbers.vue";
 import TrMultiselect from "./TrMultiselect.vue";
-import { getFilterText } from "./helpers.js";
+import trHelper from '~/mixins/trHelper';
 import ClearIcon from "../ui-kit/ClearIcon.vue";
 
 export default {
   name: "TrCharts",
+  mixins: [trHelper],
   components: {
     TrMultiselect,
     ClearIcon,
     BigNumbers,
+    apexchart: VueApexCharts
   },
   computed: {
     titleText() {
