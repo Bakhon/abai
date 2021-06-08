@@ -22,7 +22,7 @@
             {{ trans("plast_fluids.sections") }}
           </div>
         </div>
-        <div class="menu">Шаблоны выбор</div>
+        <div class="menu"></div>
       </div>
       <div class="monitoring_wrapper">
         <div class="monitoring_select">
