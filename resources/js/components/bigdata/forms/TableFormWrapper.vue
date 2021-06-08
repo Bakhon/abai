@@ -40,6 +40,7 @@
 </template>
 
 <script>
+import Vue from "vue";
 import moment from 'moment'
 import {Datetime} from 'vue-datetime'
 import 'vue-datetime/dist/vue-datetime.css'
