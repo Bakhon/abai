@@ -208,10 +208,14 @@
 </template>
 
 <script>
+import Vue from "vue";
 import moment from "moment"
 import vSelect from 'vue-select'
-import CatLoader from '../../ui-kit/CatLoader';
-import 'vue-datetime/dist/vue-datetime.css';
+import CatLoader from '../../ui-kit/CatLoader'
+import 'vue-select/dist/vue-select.css'
+import {Datetime} from 'vue-datetime'
+import 'vue-datetime/dist/vue-datetime.css'
+Vue.use(Datetime)
 
 export default {
   name: "view-table",

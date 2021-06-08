@@ -192,8 +192,12 @@
 </template>
 
 <script>
-import 'vue-datetime/dist/vue-datetime.css';
-import moment from 'moment';
+import Vue from 'vue'
+import {Datetime} from 'vue-datetime'
+import moment from 'moment'
+import 'vue-datetime/dist/vue-datetime.css'
+
+Vue.use(Datetime)
 
 export default {
   name: "omgngdu-form",

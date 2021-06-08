@@ -200,11 +200,16 @@
 </template>
 
 <script>
-import 'vue-datetime/dist/vue-datetime.css';
+import Vue from 'vue'
+import {Datetime} from 'vue-datetime'
+// You need a specific loader for CSS files
+import 'vue-datetime/dist/vue-datetime.css'
 import {Settings} from 'luxon'
 import moment from "moment";
 
 Settings.defaultLocale = 'ru'
+
+Vue.use(Datetime)
 
 export default {
     name: "oilgas-form",

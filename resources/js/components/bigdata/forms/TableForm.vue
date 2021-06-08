@@ -113,10 +113,13 @@
 </template>
 
 <script>
-import 'vue-datetime/dist/vue-datetime.css';
+import {Datetime} from 'vue-datetime'
+import 'vue-datetime/dist/vue-datetime.css'
 import {bdFormActions, bdFormState} from '@store/helpers'
 import BigDataHistory from './history'
 import RowHistoryGraph from './RowHistoryGraph'
+
+Vue.use(Datetime)
 
 export default {
   name: "BigDataTableForm",
@@ -301,7 +304,7 @@ export default {
                 this.recalculateCells()
               })
               .catch(error => {
-                this.$set(this.errors, column.code, error.response.data.errors)
+                Vue.set(this.errors, column.code, error.response.data.errors)
               })
               .finally(() => {
                 this.isloading = false

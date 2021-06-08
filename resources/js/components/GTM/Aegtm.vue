@@ -122,7 +122,6 @@
 </template>
 
 <script>
-import Vue from "vue";
 import VueChartJs from 'vue-chartjs'
 Vue.component('bar-chart', {
     extends: VueChartJs.Bar,
