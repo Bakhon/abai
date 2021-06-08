@@ -49,7 +49,7 @@
           <div class="col-md-12 second-column-container">
             <!-- Выбор скважины start -->
             <div class="tables-string-gno col-12">
-              <div class="choosing-well-title col-10">{{trans('pgno.choose_well')}}</div>
+              <div class="choosing-well-title col-9">{{trans('pgno.choose_well')}}</div>
               <div v-bind:title="trans('pgno.refresh')" class="choosing-well-edit col-1" @click="getWellNumber(wellNumber)" style="cursor: pointer;">
               <svg class="gear-icon-svg" width="23" height="23" viewBox="0 0 66 57" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M63 28.2631L53.5968 37.6662C53.5578 37.7053 53.4945 37.7053 53.4554 37.6662L44.0522 28.2631" stroke="white" stroke-width="3" stroke-linecap="round"/>
@@ -212,9 +212,9 @@
                   <div v-if="!isEditing" class="devices-data table-border-gno cell4-gno-second no-gutter col-5">
                     {{ sk }}
                   </div>
-                  <select v-if="isEditing && isPermission" class="devices-data table-border-gno cell4-gno-second no-gutter col-5 select_editing" v-model="field">
-                    <option v-for="org in this.orgs" :value="org.short_name" :key="org.id">
-                      {{org.full_name}}
+                  <select v-if="isEditing && isPermission" class="devices-data table-border-gno cell4-gno-second no-gutter col-5 select_editing" v-model="sk">
+                    <option v-for="sk in this.skTypes" :value="sk.sk_value" :key="sk.id">
+                      {{sk.sk_name}}
                     </option>
                   </select>
 

@@ -346,6 +346,7 @@ export default {
       podborGnoTitle: this.trans('pgno.podbor_gno'),
       serviceOffline: false,
       isIntervals: false,
+      skTypes: null,
     };
 
   },
@@ -384,6 +385,10 @@ export default {
       if (res.status !== 200) {
         this.serviceOffline = true;
       } 
+    })
+
+    this.axios.get("http://127.0.0.1:7575/api/pgno/sk_types").then(response => {
+      this.skTypes = response.data
     })
   },
   mounted() {

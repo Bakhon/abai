@@ -3,7 +3,7 @@
 use Illuminate\Database\Seeder;
 use \Spatie\Permission\Models\Permission;
 
-class PgnoEditSeeder extends Seeder
+class PGNOEditSeeder extends Seeder
 {
     /**
      * Run the database seeds.
