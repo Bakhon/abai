@@ -5,10 +5,23 @@
       <div class="table-container-header">
 
         <template v-if="form && form.actions && form.actions.length > 0">
-          <div v-for="action in form.actions">
-            <span v-if="action.action === 'create'" href="#" @click="showForm(action.form)">{{ action.title }}</span>
-            <span v-else-if="action.action === 'edit'" href="#"
-                  @click="editRow(selectedRow, action.form)">{{ action.title }}</span>
+          <div class="dropdown">
+            <button id="dropdownMenuButton" aria-expanded="false" aria-haspopup="true" class="download-curve-button"
+                    data-toggle="dropdown" type="button">
+              {{ trans('bd.actions') }}
+              <svg fill="none" height="6" viewBox="0 0 12 6" width="12" xmlns="http://www.w3.org/2000/svg">
+                <path d="M1.5 1L5.93356 4.94095C5.97145 4.97462 6.02855 4.97462 6.06644 4.94095L10.5 1" stroke="white"
+                      stroke-linecap="round" stroke-width="1.4"/>
+              </svg>
+            </button>
+            <div aria-labelledby="dropdownMenuButton" class="dropdown-menu">
+              <template v-for="action in form.actions">
+                <a v-if="action.action === 'create'" class="dropdown-item" href="#"
+                   @click="showForm(action.form)">{{ action.title }}</a>
+                <a v-else-if="action.action === 'edit'" class="dropdown-item" href="#"
+                   @click="editRow(selectedRow, action.form)">{{ action.title }}</a>
+              </template>
+            </div>
           </div>
         </template>
         <svg v-else fill="none" height="16" viewBox="0 0 16 16" width="16" xmlns="http://www.w3.org/2000/svg"
@@ -44,7 +57,7 @@
             <th class="table-border"><p class="title">ID</p></th>
             <th v-for="column in columns" class="table-border"><p class="title">{{ column.title }}</p>
             </th>
-            <th class="table-border"><p class="title">Управление</p></th>
+            <th v-if="!form.actions" class="table-border"><p class="title">Управление</p></th>
           </tr>
           </thead>
           <tbody class="table-container-element">
@@ -59,7 +72,7 @@
             <td v-for="column in columns" class="table-border element-position">
               <p>{{ getCellValue(row, column) }}</p>
             </td>
-            <td class="table-border element-position">
+            <td v-if="!form.actions" class="table-border element-position">
               <div class="table-container-svg">
                 <svg fill="none" height="18" viewBox="0 0 18 18" width="18" xmlns="http://www.w3.org/2000/svg"
                      @click.prevent.stop="editRow(row)">
@@ -210,6 +223,7 @@ export default {
       this.isFormOpened = true
     },
     editRow(row, formCode = null) {
+      if (!row) return false
       this.formParams = this.forms.find(form => form.code === (formCode || this.code))
       this.formValues = row
       this.isFormOpened = true
@@ -267,9 +281,19 @@ export default {
       }
     }
 
-    tr:nth-child(2n) {
+    tr {
+      &.selected {
+        filter: saturate(2);
+      }
+
       td {
-        background: #31355E;
+        background: #272953;
+      }
+
+      &:nth-child(2n) {
+        td {
+          background: #31355E;
+        }
       }
     }
   }

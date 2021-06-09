@@ -82,12 +82,12 @@ export default {
   },
   computed: {
     filteredForms() {
-
-      if (this.formNameQuery) {
-        return this.forms.filter(button => button.name.toLowerCase().indexOf(this.formNameQuery.trim().toLowerCase()) > -1)
-      }
-
-      return this.forms
+      return this.forms.filter(form => {
+        console.log(form.hidden)
+        if (form.hidden && form.hidden === true) return false
+        if (this.formNameQuery && form.name.toLowerCase().indexOf(this.formNameQuery.trim().toLowerCase()) === -1) return false
+        return true
+      })
     }
   },
   mounted() {
