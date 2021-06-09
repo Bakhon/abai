@@ -22,7 +22,15 @@
       <tr v-for="(item, index) in items" :class="{'selected': selectedItemIndex === index}"
           @click="selectedItemIndex = index">
         <td v-for="column in params.columns">
-          {{ item[column.code].text }}
+          <template v-if="column.type === 'date'">
+            {{ item[column.code].text | moment().format('DD.MM.YYYY') }}
+          </template>
+          <template v-else-if="column.type === 'datetime'">
+            {{ item[column.code].text | moment().format('DD.MM.YYYY HH:MM') }}
+          </template>
+          <template v-else>
+            {{ item[column.code].text }}
+          </template>
         </td>
       </tr>
       </tbody>
