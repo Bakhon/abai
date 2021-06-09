@@ -105,7 +105,8 @@ abstract class PlainForm extends BaseForm
             return response()->json(
                 [
                     'rows' => $rows,
-                    'columns' => $columns
+                    'columns' => $columns,
+                    'form' => $this->params()
                 ]
             );
         } catch (\Exception $e) {
