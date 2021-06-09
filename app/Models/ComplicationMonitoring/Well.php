@@ -3,9 +3,13 @@
 namespace App\Models\ComplicationMonitoring;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Well extends Model
 {
+    use LogsActivity, SoftDeletes;
+
     protected $guarded = ['id'];
     protected $hidden = [
         'created_at',

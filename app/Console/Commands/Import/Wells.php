@@ -6,7 +6,7 @@ use App\Imports\Ngdu4WellsImport;
 use App\Imports\TrunklineImport;
 use App\Models\ComplicationMonitoring\PipeType;
 use App\Models\ComplicationMonitoring\OilPipe;
-use App\Models\Pipes\PipeCoord;
+use App\Models\ComplicationMonitoring\PipeCoord;
 use App\Models\ComplicationMonitoring\Well;
 use App\Models\ComplicationMonitoring\Zu;
 use Illuminate\Console\Command;
@@ -48,6 +48,8 @@ class Wells extends Command
      */
     public function handle(): void
     {
+        activity()->disableLogging();
+
         DB::statement('SET FOREIGN_KEY_CHECKS=0');
 
         PipeCoord::truncate();
@@ -71,6 +73,6 @@ class Wells extends Command
 
         $this->importExcel(new TrunklineImport($this), public_path('imports/trunkline.xlsx'));
 
-        PipeType::doesntHave('oilPipes')->delete();
+        PipeType::doesntHave('oilPipes')->forceDelete();
     }
 }
