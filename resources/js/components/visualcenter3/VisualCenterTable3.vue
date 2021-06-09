@@ -330,7 +330,7 @@
                     >
                       <li
                               class="center-li row px-4"
-                              @click="switchFilterConsolidatedOilCondensate()"
+                              @click="switchFilterConsolidatedOilCondensate('oilCondensateProductionButton','withoutKmgParticipation','isWithoutKMGFilterActive')"
                       >
                         <div
                                 class="col-1 mt-2"
@@ -952,7 +952,7 @@
                       </div>
                     </th>
                     <th>
-                      {{ trans("visualcenter.plan") }}
+                      {{ trans("visualcenter.plan") }},
                       <div v-if="currentDzoList !== 'daily' || quantityRange > 1">
                         {{ getThousandMetricNameByCategorySelected() }}
                       </div>
@@ -1045,7 +1045,7 @@
                         {{ getNameDzoFull(item.dzoMonth) }}
                         <img src="/img/icons/link.svg" />
                       </span>
-                      <span v-else-if="oilCondensateProductionButton.length > 0 && !isWithoutKMGFilterActive">
+                      <span v-else-if="oilCondensateProductionButton.length > 0 && !oilCondensateFilters.isWithoutKMGFilterActive">
                         {{ getDzoName(item.dzoMonth,dzoNameMappingWithoutKMG) }}
                         <img src="/img/icons/link.svg" />
                       </span>
@@ -2489,6 +2489,8 @@
             justify-content: space-between;
             font-size: 15px;
             margin-left: 0;
+            text-align: end;
+            margin-right: 10%;
             &.dynamic {
               padding-left: 17px;
             }
