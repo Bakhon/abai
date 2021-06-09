@@ -1,4 +1,16 @@
 {
+  "oilCondensateProductionButton": {
+    "tags": [
+      "oil_plan",
+      "oil_opek_plan"
+    ],
+    "childItems": {
+      "withoutKmgParticipation": {
+        "buttonClass": "",
+        "flag": "flagOff"
+      }
+    }
+  },
   "oilProductionButton": {
     "tags": [
       "oil_plan",

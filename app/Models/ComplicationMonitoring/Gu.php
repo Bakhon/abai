@@ -5,9 +5,17 @@ namespace App\Models\ComplicationMonitoring;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Pipes\GuZuPipe;
 use App\Models\Pipes\ZuWellPipe;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Gu extends Model
 {
+    use LogsActivity, SoftDeletes;
+
+    protected static $logAttributes = ['*'];
+    protected static $logOnlyDirty = true;
+    protected static $submitEmptyLogs = false;
+
     protected $localKey = 'id';
     protected $guarded = ['id'];
     protected $hidden = [

@@ -1,13 +1,16 @@
 <?php
 
-namespace App\Models\Pipes;
+namespace App\Models\ComplicationMonitoring;
 
 
 use Illuminate\Database\Eloquent\Model;
-use App\Models\ComplicationMonitoring\OilPipe;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class PipeCoord extends Model
 {
+    use LogsActivity, SoftDeletes;
+
     protected $guarded = ['id'];
     protected $table = 'pipe_coords';
     protected $hidden = [

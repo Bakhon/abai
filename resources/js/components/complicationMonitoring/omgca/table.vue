@@ -418,7 +418,7 @@ export default {
             show: false,
             value: field.type === 'date' ? {from: null, to: null} : null
           }
-          Vue.set(this.filters, code, filter)
+          this.$set(this.filters, code, filter)
         })
       }
     }

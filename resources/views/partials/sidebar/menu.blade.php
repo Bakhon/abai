@@ -155,6 +155,13 @@
                             {{ trans('monitoring.tech_map_prototype') }}
                         </a>
                     </li>
+                    @if(auth()->user()->can('monitoring list lost_profits'))
+                    <li class="left-menu-li">
+                        <a href="{{route('lost-profits.index')}}">
+                            {{ trans('monitoring.lost_profits_title') }}
+                        </a>
+                    </li>
+                    @endif
                 </ul>
             </li>
         </div>

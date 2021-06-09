@@ -2,28 +2,84 @@ import axios from 'axios'
 
 const pgno = {
     state: {
-        wells: [],
-        wellType: '',
-        wellNumber: '',
         hPump: null,
-        buttonHpump: false,
         spmMin: null,
         spmMax: null,
         strokeLenMin: null,
         strokeLenMax: null,
-        kpod_min: null,
-        pump27: false,
-        pump32: false,
-        pump38: false,
-        pump44: false,
-        pump50: false,
-        pump57: false,
-        pump60: false,
-        pump70: false,
-        pump95: false,
+        kpodMin: null,
+        davMin: null,
+        gasMax: null,
+        dlinaPolki: null,
+        groupPosad: null,
+        h2s: false,
+        heavyDown: true,
+        koroz: "srednekor",
+        dmPumps: ["32", "38", "44", "57", "70"],
+        dmRods: ["19", "22", "25"],
+        komponovka: ["hvostovik"],
+        stupColumns: ["2"],
+        selectedMarkShtang: [],
+        markShtangs: [
+          {
+            mValue: 1,
+            tempValue: "40 (Н)",
+          },
+          {
+            mValue: 2,
+            tempValue: "40 (НсУ)",
+          },
+          {
+            mValue: 3,
+            tempValue: "14Х3ГМЮ (НВО)",
+          },
+          {
+            mValue: 4,
+            tempValue: "15НЗМА (Н)",
+          },
+          {
+            mValue: 5,
+            tempValue: "15НЗМА (НсУ)",
+          },
+          {
+            mValue: 6,
+            tempValue: "15Х2ГМФ (НВО)",
+          },
+          {
+            mValue: 7,
+            tempValue: "15Х2НМФ (НВО)",
+          },
+          {
+            mValue: 8,
+            tempValue: "20Н2М (Н)",
+          },
+          {
+            mValue: 9,
+            tempValue: "20Н2М (НсУ)",
+          },
+          {
+            mValue: 10,
+            tempValue: "30ХМ(А) (НсУ)",
+          },
+          {
+            mValue: 11,
+            tempValue: "АЦ28ХГНЗФТ (О)",
+          },
+          ],
     },
-    
     mutations: {
+      UPDATE_HEAVYDOWN(state, val) {
+        state.heavyDown = val
+      },
+      UPDATE_DMPUMPS(state, val) {
+        state.dmPumps = val
+      },
+      UPDATE_DMRODS(state, val) {
+        state.dmRods = val
+      },
+      UPDATE_MARKSHTANG(state, val) {
+        state.selectedMarkShtang = val
+      },
       UPDATE_SPM_MIN: (state, val) => {
         state.spmMin = val
       },
@@ -36,113 +92,95 @@ const pgno = {
       UPDATE_LEN_MAX: (state, val) => {
         state.strokeLenMax = val
       },
+      UPDATE_DAV_MIN: (state, val) => {
+        state.davMin = val
+      },
+      UPDATE_GAS_MAX: (state, val) => {
+        state.gasMax = val
+      },
+      UPDATE_DLINA_POLKI: (state, val) => {
+        state.dlinaPolki = val
+      },
+      UPDATE_H2S: (state, val) => {
+        state.h2s = val
+      },
+      UPDATE_STUP_COLUMNS: (state, val) => {
+        state.stupColumns = val
+      },
       UPDATE_KPOD: (state, val) => {
-        state.kpod_min = val
+        state.kpodMin = val
       },
-
-      UPDATE_PUMP_27: (state, val) => {
-        state.pump27 = val
+      UPDATE_GROUP_POSAD(state, val) {
+        state.groupPosad = val
       },
-      UPDATE_PUMP_32: (state, val) => {
-        state.pump32 = val
-      },
-      UPDATE_PUMP_38: (state, val) => {
-        state.pump38 = val
-      },
-      UPDATE_PUMP_44: (state, val) => {
-        state.pump44 = val
-      },
-      UPDATE_PUMP_50: (state, val) => {
-        state.pump50 = val
-      },
-      UPDATE_PUMP_57: (state, val) => {
-        state.pump57 = val
-      },
-      UPDATE_PUMP_60: (state, val) => {
-        state.pump60 = val
-      },
-      UPDATE_PUMP_70: (state, val) => {
-        state.pump70 = val
-      },
-      UPDATE_PUMP_95: (state, val) => {
-        state.pump95 = val
-      },
-      
-
-      UPDATE_MESSAGE(state, payload) {
-        state.wells = payload
-      },
-      SET_WELL_NUMBER(state, payload) {
-        state.wellNumber = payload
+      UPDATE_KOMPONOVKA(state, val) {
+        state.komponovka = val
       },
       UPDATE_HPUMP(state, payload) {
         state.hPump = payload
       },
-      UPDATE_HPUMP_BUTTON(state, payload) {
-        state.buttonHpump = payload
-      },
-      SET_WELLS_TYPE(state, wellType) {
-        state.wellType = wellType
-      },
-      SET_WELL_NUM(state, wellType) {
-        state.wellType = wellType
-      },
-      updateWellNumber(state, wellNumber) {
-        state.obj.wellNumber = wellNumber
-        console.log(wellNumber);
+      UPDATE_KOROZ(state, payload) {
+        state.koroz = payload
       }
     },
     
     actions: {
-        loadWells({commit}) {
-          commit('SET_WELLS_NUMBER', wellNumber)
-          if(this.wellNumber) {
-            axios
-                .get('http://172.20.103.187:7575/api/pgno/UZN/' + this.wellNumber)
-                .then(data => {
-                    console.log(data.data, 'vuex work');
-                    // let wells = data.data
-                    // commit('SET_WELLS_TYPE', wells)
-                    // commit('SET_WELLS_NUM', getWellNumber)
-                })
-                .catch(error => {
-                    console.log(error);
-                })
-          } else {
-            return console.log('no number')
-          }
-        },
-        getHpumpValue({commit}) {
-          commit = this.hPump
-        },
-        getHpumpButton({commit}) {
-          commit = this.buttonHpump
-        },
-        getWellNumber({commit}) {
-          commit = this.wellNumber
-        }
-        
+      setDefault({commit}) {
+        commit("UPDATE_SPM_MIN", 3)
+        commit("UPDATE_SPM_MAX", 8)
+        commit("UPDATE_LEN_MIN", 2)
+        commit("UPDATE_LEN_MAX", 3)
+        commit("UPDATE_KPOD", 0.6)
+        commit("UPDATE_KOMPONOVKA", ["hvostovik"])
+        commit("UPDATE_DMPUMPS", ["32", "38", "44", "57", "70"])
+        commit("UPDATE_DMRODS", ["19", "22", "25"])
+        commit("UPDATE_H2S", false)
+        commit("UPDATE_DAV_MIN", 30)
+        commit("UPDATE_GAS_MAX", 10)
+        commit("UPDATE_DLINA_POLKI", 10)
+        commit("UPDATE_KOROZ", "srednekor")
+        commit("UPDATE_GROUP_POSAD", "2")
+        commit("UPDATE_HEAVYDOWN", true)
+      },
+      setDmPumps({commit}, value) {
+        commit('UPDATE_DMPUMPS', value)
+      },
+      setDmRods({commit}, value) {
+        commit('UPDATE_DMRODS', value)
+      },
+      setKomponovka({commit}, value) {
+        commit('UPDATE_KOMPONOVKA', value)
+      },
+      setH2S({commit}, value) {
+        commit('UPDATE_H2S', value)
+      },
+      setheavyDown({commit}, value) {
+        commit('UPDATE_HEAVYDOWN', value)
+      },
+      selectedMarkShtang({commit}, value) {
+        commit('UPDATE_MARKSHTANG', value)
+      }
     },
     
     getters: {
-      pump27: (state) => state.pump27,
-      pump32: (state) => state.pump32,
-      pump38: (state) => state.pump38,
-      pump44: (state) => state.pump44,
-      pump50: (state) => state.pump50,
-      pump57: (state) => state.pump57,
-      pump60: (state) => state.pump60,
-      pump70: (state) => state.pump70,
-      pump95: (state) => state.pump95,
-      kpod_min: (state) => state.kpod_min,
+      selectedMarkShtang: (state) => state.selectedMarkShtang,
+      dmPumps: (state) => state.dmPumps,
+      dmRods: (state) => state.dmRods,
+      komponovka: (state) => state.komponovka,
+      kpodMin: (state) => state.kpodMin,
       spmMin: (state) => state.spmMin,
       spmMax: (state) => state.spmMax,
       strokeLenMin: (state) => state.strokeLenMin,
       strokeLenMax: (state) => state.strokeLenMax,
-      getWellNumber: (state) => state.wellNumber,
-      WELLDATA: (state) => state.wellData,
-      getHpump: (state) => state.hPump,
-      getHpumpButton: (state) => state.buttonHpump
+      davMin: (state) => state.davMin,
+      gasMax: (state) => state.gasMax,
+      dlinaPolki: (state) => state.dlinaPolki,
+      groupPosad: (state) => state.groupPosad,
+      hPump: (state) => state.hPump,
+      koroz: (state) => state.koroz,
+      stupColumns: (state) => state.stupColumns,
+      h2s: (state) => state.h2s,
+      heavyDown: (state) => state.heavyDown
     },
 }
 
