@@ -100,7 +100,7 @@
         betweenMonthsValue: '01',
         monthsValue: '00',
         quarterValue: '01',
-        company: '116',
+        company: '7',
           betweenMonths:[
               {title: this.trans('economy_pf.repttTable.sinceTheBeginningOfTheYear'), value: '01'},
               {title: this.trans('economy_pf.months.0')+' - '+this.trans('economy_pf.months.1'), value: '02'},
@@ -136,7 +136,8 @@
               {title: this.trans('economy_pf.months.3')+' - '+this.trans('economy_pf.months.5'), value: '06'},
               {title: this.trans('economy_pf.months.6')+' - '+this.trans('economy_pf.months.8'), value: '09'},
               {title: this.trans('economy_pf.months.9')+' - '+this.trans('economy_pf.months.11'), value: '12'},        
-          ]
+          ],
+        params: {}
       };
     },
     computed: {
@@ -179,7 +180,12 @@
         return result;
       },
       updateData(attributeName){
-          axios.get('/module_economy/company?'+attributeName+'='+this[attributeName]+'&company='+this.company).then(response => {
+        for (var param in this.params) delete this.params[param];
+        this.params[attributeName] = this[attributeName];
+        this.params['company'] = this.company;
+        this.params['reload'] = true;
+          axios.get('/ru/module_economy/company', {params: this.params})
+              .then(response => {
               this.repttData = response.data;
               this.recalculate();
           });
@@ -187,8 +193,8 @@
       recalculate(){
         let handbookKeys = ['plan_value', 'fact_value', 'intermediate_plan_value', 'intermediate_fact_value'];
         handbookKeys.forEach(key => {
-          this.distributionSumOverTree(key, this.currentYear);
-          this.distributionSumOverTree(key, this.previousYear);
+          this.distributionSumOverTree(key, this.repttData.currentYear);
+          this.distributionSumOverTree(key, this.repttData.previousYear);
         });
       }
     },

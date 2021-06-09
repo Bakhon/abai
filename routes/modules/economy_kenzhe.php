@@ -6,7 +6,7 @@ Route::group(
             ['prefix' => 'module_economy'],
             function () {
                 Route::get('/', 'EconomyKenzhe\MainController@index');
-                Route::get('/company/', 'EconomyKenzhe\MainController@company')->name('company');
+                Route::get('/company', 'EconomyKenzhe\MainController@company')->name('company');
                 Route::get('/companies', 'EconomyKenzhe\MainController@companies');
                 Route::get('/field-calculation', 'EconomyKenzhe\FieldCalcController@index');
                 Route::match(['GET', 'POST'], '/import_rep', 'EconomyKenzhe\ImportController@importRepTtValues')->name('import_rep');
