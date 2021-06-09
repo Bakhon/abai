@@ -2531,7 +2531,6 @@
         z-index: 2;
         border: 0.5px solid #272953;
         border-left: 0;
-        width: 81px;
         position: sticky;
         font-size: 12px;
         background: #353ea1;
