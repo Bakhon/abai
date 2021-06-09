@@ -2292,23 +2292,28 @@
               </div>
             </div>
 
-            <div class="first-string first-string2 cursor-pointer">
+            <div class="first-string first-string2 cursor-pointer"
+                 @click="changeTable('7')"
+                 :class="tableHover7"
+            >
               <div>
                 <table class="table">
                   <tr class="d-flex">
-                    <td class="col-6">
-                      <div class="number">0</div>    <div class="unit-vc ml-2">
-                      {{ trans('visualcenter.chemistryMetricTon') }}
-                    </div>
+                    <td>
+                      <div class="number">{{chemistryDataFactSumm}}</div>
+                      <div class="unit-vc ml-2">
+                        {{ trans('visualcenter.chemistryMetricTon') }}
+                      </div>
                       <div class="in-idle2">
-                        {{ timeSelect }}
+                        <span v-if="isOneDateSelected"> {{ previousPeriodEnd }}</span>
+                        <span v-else> {{ previousPeriodStart }} - {{ previousPeriodEnd }}</span>
                       </div>
                     </td>
                   </tr>
                   <tr class="d-flex">
                     <td class="col-12">
                       <div class="right-column_header">
-                        {{ trans('visualcenter.expectedProduction') }}
+                        {{ trans('visualcenter.chemistryCategory') }}
                       </div>
                     </td>
                   </tr>
@@ -2371,28 +2376,23 @@
             </div>
           </div>
 
-          <div class="first-string first-string2 cursor-pointer"
-               @click="changeTable('7')"
-               :class="tableHover7"
-          >
+          <div class="first-string first-string2 cursor-pointer">
             <div>
               <table class="table">
                 <tr class="d-flex">
-                  <td>
-                    <div class="number">{{chemistryDataFactSumm}}</div>
-                    <div class="unit-vc ml-2">
-                      {{ trans('visualcenter.chemistryMetricTon') }}
-                    </div>
+                  <td class="col-6">
+                    <div class="number">0</div>    <div class="unit-vc ml-2">
+                    {{ trans('visualcenter.chemistryMetricTon') }}
+                  </div>
                     <div class="in-idle2">
-                      <span v-if="isOneDateSelected"> {{ previousPeriodEnd }}</span>
-                      <span v-else> {{ previousPeriodStart }} - {{ previousPeriodEnd }}</span>
+                      {{ timeSelect }}
                     </div>
                   </td>
                 </tr>
                 <tr class="d-flex">
                   <td class="col-12">
                     <div class="right-column_header">
-                      {{ trans('visualcenter.chemistryCategory') }}
+                      {{ trans('visualcenter.expectedProduction') }}
                     </div>
                   </td>
                 </tr>
@@ -2531,7 +2531,6 @@
         z-index: 2;
         border: 0.5px solid #272953;
         border-left: 0;
-        width: 81px;
         position: sticky;
         font-size: 12px;
         background: #353ea1;

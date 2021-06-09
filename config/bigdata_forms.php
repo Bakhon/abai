@@ -10,6 +10,7 @@
   'prs' => '\\App\\Services\\BigData\\Forms\\Prs',
   'gas_well' => '\\App\\Services\\BigData\\Forms\\GasWell',
   'daily_drill' => '\\App\\Services\\BigData\\Forms\\DailyDrill',
+  'well_zone' => '\\App\\Services\\BigData\\Forms\\WellZone',
   'well_constr' => '\\App\\Services\\BigData\\Forms\\WellConstr',
   'tech_state' => '\\App\\Services\\BigData\\Forms\\TechState',
   'well_block' => '\\App\\Services\\BigData\\Forms\\WellBlock',
