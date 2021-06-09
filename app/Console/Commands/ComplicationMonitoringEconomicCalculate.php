@@ -49,7 +49,8 @@ class ComplicationMonitoringEconomicCalculate extends Command
         $this->calculateLostProfitsTotal();
     }
 
-    public function getGuData(string $guId): object{
+    public function getGuData(string $guId): object
+    {
         $post = new POSTCaller(
             WaterMeasurementController::class,
             'getGuData',
@@ -64,7 +65,8 @@ class ComplicationMonitoringEconomicCalculate extends Command
         return $guData;
     }
 
-    public function getGuDataByDay(string $date, string $guId): object{
+    public function getGuDataByDay(string $date, string $guId): object
+    {
         $post = new POSTCaller(
             OmgNGDUController::class,
             'getGuDataByDay',
@@ -80,7 +82,8 @@ class ComplicationMonitoringEconomicCalculate extends Command
         return $guDataByDay;
     }
 
-    public function calculateCorrosion(object $item, object $guData, object $guDataByDay): object {
+    public function calculateCorrosion(object $item, object $guData, object $guDataByDay): object 
+    {
         $data = [
             "gu_id" => $item->gu_id,
             "WC" => $guDataByDay->ngdu->bsw,
@@ -122,7 +125,8 @@ class ComplicationMonitoringEconomicCalculate extends Command
         return $corrosion;
     }
 
-    public function insertIntoLostProfitsTable(object $guDataByDay, object $corrosion, object $item) {
+    public function insertIntoLostProfitsTable(object $guDataByDay, object $corrosion, object $item) 
+    {
         $ecomonicalEffect = new LostProfits();
         $ecomonicalEffect->gu_id = $item->gu_id;
         $ecomonicalEffect->date = $item->date;
@@ -135,7 +139,8 @@ class ComplicationMonitoringEconomicCalculate extends Command
         $ecomonicalEffect->save();
     }
 
-    public function calculateLostProfitsTotal(){
+    public function calculateLostProfitsTotal()
+    {
         $economicalEffect = LostProfits::orderBy('date')->get()->groupBy('gu_id');
         $total = [];
         foreach($economicalEffect as $key=>$row){
