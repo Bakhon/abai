@@ -177,7 +177,6 @@ Route::group(
                     'economical_effect.list'
                 );
                 Route::resource('economical-effect', 'ComplicationMonitoring\EconomicalEffectController');
-                Route::get('testcron', 'ComplicationMonitoring\EconomicalEffectController@testCronCalc');
                 Route::get('/reverse-calc/list', 'ComplicationMonitoring\ReverseCalculationController@list')->name('reverse_calculation.list');
                 Route::get('/reverse-calc', 'ComplicationMonitoring\ReverseCalculationController@index')->name('reverse_calculation.index');
                 Route::get('lost-profits/list', 'ComplicationMonitoring\LostProfitsController@list')->name(
