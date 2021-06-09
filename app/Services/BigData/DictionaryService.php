@@ -19,6 +19,7 @@ use App\Models\BigData\Dictionaries\NoBtmReason;
 use App\Models\BigData\Dictionaries\Org;
 use App\Models\BigData\Dictionaries\RepairWorkType;
 use App\Models\BigData\Dictionaries\TechConditionOfWells;
+use App\Models\BigData\Dictionaries\Zone;
 use App\Models\BigData\Dictionaries\PumpType;
 use App\Models\BigData\Dictionaries\InjAgentType;
 use App\Models\BigData\Dictionaries\WellActivity;
@@ -103,6 +104,10 @@ class DictionaryService
         ],
         'drill_column_types' => [
             'class' => DrillColumnType::class,
+            'name_field' => 'name_ru'
+        ],
+        'zone' =>[
+            'class' => Zone::class,
             'name_field' => 'name_ru'
         ],
         'inj_agent_types' => [
