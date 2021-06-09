@@ -1,0 +1,44 @@
+{
+  "type": "plain",
+  "table": "drill.well_incl",
+  "tabs": [
+    {
+      "title": "title",
+      "blocks": [
+        [
+          {
+            "title": "main",
+            "items": [
+              {
+                "code":"device",
+                "type":"dict",
+                "title":"device",
+                "dict":"device",
+                "validation":"exists:tbd.dict.device,id"
+              },
+              {
+                "code":"tvd",
+                "type":"numeric",
+                "title":"deep",
+                "validation":"required|numeric"
+              },
+              {
+                "code":"geo_identifier",
+                "type":"dict",
+                "title":"identifier",
+                "dict":"geo_identifier",
+                "validation":"required|exists:tbd.dict.geo_identifier,id"
+              },
+              {
+                "code":"incl_date",
+                "type":"date",
+                "title":"date",
+                "validation":"required|date"
+              }
+            ]
+          }
+        ]
+      ]
+    }
+  ]
+}

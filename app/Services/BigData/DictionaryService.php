@@ -27,6 +27,8 @@ use App\Models\BigData\Dictionaries\WellCategory;
 use App\Models\BigData\Dictionaries\WellStatus;
 use App\Models\BigData\Dictionaries\WellType;
 use App\TybeNom;
+use App\Models\BigData\Dictionaries\Device;
+use App\Models\BigData\Dictionaries\GeoIdentifier;
 use Carbon\Carbon;
 use Illuminate\Cache\Repository;
 use Illuminate\Support\Facades\DB;
@@ -121,6 +123,14 @@ class DictionaryService
         ],
         'blocks' => [
             'class' => Block::class,
+            'name_field' => 'name_ru'
+        ],
+        'device' => [
+            'class' => Device::class,
+            'name_field' => 'name_ru'
+        ],
+        'geo_identifier' => [
+            'class' => GeoIdentifier::class,
             'name_field' => 'name_ru'
         ]
     ];
