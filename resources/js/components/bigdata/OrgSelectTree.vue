@@ -25,9 +25,15 @@ export default {
     BigDataTableForm
   },
   data() {
+    let activeForm = {};
+    forms.forEach((form) => {
+      if (form.code === 'fluid_production') {
+        activeForm = form;
+      }
+    });
     return {
       forms: forms,
-      activeForm: forms[1],
+      activeForm: activeForm,
       date: moment().toISOString(),
       filterTree: [],
     }
