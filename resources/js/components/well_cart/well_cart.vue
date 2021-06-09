@@ -237,60 +237,176 @@ export default {
       wellSaptialObjectBottomX: null,
       wellSaptialObjectBottomY: null,
       actualBottomHole: null,
-      tableData: [
+      forms: forms,
+    }
+  },
+  mounted() {
+  },
+  methods: {
+    onColumnFoldingEvent(method) {
+      if (method === 'left') {
+        this.isLeftColumnFolded = !this.isLeftColumnFolded;
+      } else {
+        this.isRightColumnFolded = !this.isRightColumnFolded;
+      }
+      if (this.isLeftColumnFolded === true && this.isRightColumnFolded === true) {
+        this.isBothColumnFolded = true;
+      } else {
+        this.isBothColumnFolded = false;
+      }
+    },
+    onSearch(search, loading) {
+      if (search.length) {
+        loading(true);
+        this.search(loading, search, this);
+      }
+    },
+    search: _.debounce((loading, search, vm) => {
+          axios.get(vm.localeUrl('/api/bigdata/wells/search'), {params: {query: escape(search)}}).then(({data}) => {
+            vm.options = data.items;
+            loading(false);
+          })
+        },
+        350
+    ),
+    selectWell(well) {
+      this.loading = true
+      this.axios.get(this.localeUrl(`/api/bigdata/wells/${well.id}/wellInfo`)).then(({data}) => {
+        this.wellStatus = data.status
+        this.wellCategory = data.category
+        this.wellCategory_last = data.category_last
+        this.wellExpl = data.well_expl
+        this.wellTechs = data.techs
+        this.wellType = data.well_type
+        this.wellOrg = data.org
+        this.wellGeo = data.geo
+        this.tubeNom = data.tube_nom
+        this.actualBottomHole = data.actual_bottom_hole
+        this.well = data.well
+        this.wellUwi = data.well.uwi
+        try {
+          if (data.spatial_object.coord_point != null) {
+            data = data.spatial_object.coord_point.replace('(', '').replace(')', '')
+            data = data.split(',')
+            this.wellSaptialObjectX = data[0]
+            this.wellSaptialObjectY = data[1]
+          }
+          if (data.spatial_object_bottom.coord_point != null) {
+            data = data.spatial_object_bottom.coord_point.replace('(', '').replace(')', '')
+            data = data.split(',')
+            this.wellSaptialObjectBottomX = data[0]
+            this.wellSaptialObjectBottomY = data[1]
+          }
+        } catch (e) {
+          this.loading = false
+        }
+
+        this.loading = false
+        this.setTableData()
+      })
+    },
+
+    setTableData() {
+      for (let i = 0; i < this.tableData.length; i++) {
+        if (this.tableData[i].method === 'multiplyValues') {
+          this.tableData[i].data = ''
+          try {
+            for (let k = 0; k < (eval(this.tableData[i].description)).length; k++) {
+              this.tableData[i].data = (eval(eval('this.tableData[i].description') + '[k].' + eval('this.tableData[i].multiplyValueName')))
+              this.tableData[i].data.join(' ')
+              if (k + 1 != (eval(this.tableData[i].description)).length) {
+                this.tableData[i].data.join(' / ')
+              }
+            }
+          } catch (e) {
+            this.tableData[i].data += ''
+          }
+        } else if (this.tableData[i].method === 'neighbors') {
+          try {
+            if (eval(eval('this.tableData[i].description') + '.' + eval('this.tableData[i].neigbor_1')) != null) {
+              this.tableData[i].data += (eval(eval('this.tableData[i].description') + '.' + eval('this.tableData[i].neigbor_1'))) + ' - '
+              this.tableData[i].data += (eval(eval('this.tableData[i].description') + '.' + eval('this.tableData[i].neigbor_2')))
+            }
+          } catch (e) {
+          }
+        } else if (this.tableData[i].method === 'trimToDate') {
+          try {
+            this.tableData[i].data = (eval(this.tableData[i].description)) | moment("dddd, MMMM Do YYYY")
+          } catch (e) {
+            this.tableData[i].data = ''
+          }
+        } else {
+          try {
+            this.tableData[i].data = this.tableData[i].description
+          } catch (e) {
+            this.tableData[i].data = ''
+          }
+        }
+      }
+    },
+    switchFormByCode(formCode) {
+      this.activeFormCode = formCode
+    },
+    setForm(formCode) {
+      this.activeFormCode = formCode
+    }
+  },
+  computed: {
+    tableData() {
+      return [
         {
-          'description': 'this.well.uwi',
+          'description': this.wellUwi,
           'method': null,
           'name': 'Скважина',
           'data': ''
         },
         {
-          'description': 'this.wellType.name_ru',
+          'description': this.wellType.name_ru,
           'method': null,
           'name': 'Вид скважины',
           'data': ''
         },
         {
-          'description': 'this.wellGeo.name_ru',
+          'description': this.wellGeo.name_ru,
           'method': null,
           'name': 'Месторождение',
           'data': ''
         },
         {
-          'description': 'this.wellGeo.name_ru',
+          'description': this.wellGeo.name_ru,
           'method': null,
           'name': 'Горизонт / Pнас, атм',
           'data': ''
         },
         {
-          'description': 'this.well.rte',
+          'description': this.well.rte,
           'method': null,
           'name': 'H ротора',
           'data': ''
         },
         {
-          'description': 'this.wellTechs',
+          'description': this.wellTechs,
           'method': 'multiplyValues',
           'multiplyValueName': 'name_ru',
           'name': 'Тех. структура',
           'data': ''
         },
         {
-          'description': 'this.wellTechs',
+          'description': this.wellTechs,
           'method': 'multiplyValues',
           'multiplyValueName': 'pivot.tap',
           'name': 'Отвод',
           'data': ''
         },
         {
-          'description': 'this.wellTechs',
+          'description': this.wellTechs,
           'method': 'multiplyValues',
           'multiplyValueName': 'name_ru',
           'name': 'ГУ/Ряд',
           'data': ''
         },
         {
-          'description': 'this.wellOrg',
+          'description': this.wellOrg,
           'method': 'multiplyValues',
           'multiplyValueName': 'name_ru',
           'name': 'Орг. структура',
@@ -303,37 +419,37 @@ export default {
           'data': ''
         },
         {
-          'description': 'this.wellSaptialObjectX',
+          'description': this.wellSaptialObjectX,
           'method': null,
           'name': 'Координаты X (устья)',
           'data': ''
         },
         {
-          'description': 'this.wellSaptialObjectY',
+          'description': this.wellSaptialObjectY,
           'method': null,
           'name': 'Координаты Y (устья)',
           'data': ''
         },
         {
-          'description': 'this.wellSaptialObjectBottomX',
+          'description': this.wellSaptialObjectBottomX,
           'method': null,
           'name': 'Координаты забоя X',
           'data': ''
         },
         {
-          'description': 'this.wellSaptialObjectBottomY',
+          'description': this.wellSaptialObjectBottomY,
           'method': null,
           'name': 'Координаты забоя Y',
           'data': ''
         },
         {
-          'description': 'this.wellCategory.name_ru',
+          'description': this.wellCategory.name_ru,
           'method': null,
           'name': 'Назначение скважин по проекту',
           'data': ''
         },
         {
-          'description': 'this.wellCategory_last.name_ru',
+          'description': this.wellCategory_last.name_ru,
           'method': null,
           'name': 'Категория',
           'data': ''
@@ -347,19 +463,19 @@ export default {
           'data': ''
         },
         {
-          'description': 'this.wellExpl.pivot.dbeg',
+          'description': this.wellExpl.pivot.dbeg,
           'method': 'trimToDate',
           'name': 'Дата ввода в эксплуатацию',
           'data': ''
         },
         {
-          'description': 'this.wellStatus.name_ru',
+          'description': this.wellStatus.name_ru,
           'method': null,
           'name': 'Состояние',
           'data': ''
         },
         {
-          'description': 'this.wellExpl.name_ru',
+          'description': this.wellExpl.name_ru,
           'method': null,
           'name': 'Способ эксплуатации',
           'data': ''
@@ -425,119 +541,9 @@ export default {
           'name': 'Фактический забой/(дата отбивки)',
           'data': ''
         },
-      ],
-      forms: forms,
+      ]
     }
-  },
-  mounted() {
-  },
-  methods: {
-    onColumnFoldingEvent(method) {
-      if (method === 'left') {
-        this.isLeftColumnFolded = !this.isLeftColumnFolded;
-      } else {
-        this.isRightColumnFolded = !this.isRightColumnFolded;
-      }
-      if (this.isLeftColumnFolded === true && this.isRightColumnFolded === true) {
-        this.isBothColumnFolded = true;
-      } else {
-        this.isBothColumnFolded = false;
-      }
-    },
-    onSearch(search, loading) {
-      if (search.length) {
-        loading(true);
-        this.search(loading, search, this);
-      }
-    },
-    search: _.debounce((loading, search, vm) => {
-          axios.get(vm.localeUrl('/api/bigdata/wells/search'), {params: {query: escape(search)}}).then(({data}) => {
-            vm.options = data.items;
-            loading(false);
-          })
-        },
-        350
-    ),
-    selectWell(well) {
-      this.loading = true
-      this.axios.get(this.localeUrl(`/api/bigdata/wells/${well.id}/wellInfo`)).then(({data}) => {
-        this.wellStatus = data.status
-        this.wellCategory = data.category
-        this.wellCategory_last = data.category_last
-        this.wellExpl = data.well_expl
-        this.wellTechs = data.techs
-        this.wellType = data.well_type
-        this.wellOrg = data.org
-        this.wellGeo = data.geo
-        this.tubeNom = data.tube_nom
-        this.actualBottomHole = data.actual_bottom_hole
-        this.well = data.well
-        this.wellUwi = data.well.uwi
-        try {
-          if (data.spatial_object.coord_point != null) {
-            data = data.spatial_object.coord_point.replace('(', '').replace(')', '')
-            data = data.split(',')
-            this.wellSaptialObjectX = data[0]
-            this.wellSaptialObjectY = data[1]
-          }
-          if (data.spatial_object_bottom.coord_point != null) {
-            data = data.spatial_object_bottom.coord_point.replace('(', '').replace(')', '')
-            data = data.split(',')
-            this.wellSaptialObjectBottomX = data[0]
-            this.wellSaptialObjectBottomY = data[1]
-          }
-        } catch (e) {
-          this.loading = false
-        }
-        this.setTableData()
-        this.loading = false
-      })
-    },
-    switchFormByCode(formCode) {
-      this.activeFormCode = formCode
-    },
-    setTableData() {
-      for (let i = 0; i < this.tableData.length; i++) {
-        if (this.tableData[i].method === 'multiplyValues') {
-          this.tableData[i].data = ''
-          try {
-            for (let k = 0; k < (eval(this.tableData[i].description)).length; k++) {
-              this.tableData[i].data = (eval(eval('this.tableData[i].description') + '[k].' + eval('this.tableData[i].multiplyValueName')))
-              this.tableData[i].data.join(' ')
-              if (k + 1 != (eval(this.tableData[i].description)).length) {
-                this.tableData[i].data.join(' / ')
-              }
-            }
-          } catch (e) {
-            this.tableData[i].data += '-'
-          }
-        } else if (this.tableData[i].method === 'neighbors') {
-          try {
-            if (eval(eval('this.tableData[i].description') + '.' + eval('this.tableData[i].neigbor_1')) != null) {
-              this.tableData[i].data += (eval(eval('this.tableData[i].description') + '.' + eval('this.tableData[i].neigbor_1'))) + ' - '
-              this.tableData[i].data += (eval(eval('this.tableData[i].description') + '.' + eval('this.tableData[i].neigbor_2')))
-            }
-          } catch (e) {
-          }
-        } else if (this.tableData[i].method === 'trimToDate') {
-          try {
-            this.tableData[i].data = (eval(this.tableData[i].description)) | moment("dddd, MMMM Do YYYY")
-          } catch (e) {
-            this.tableData[i].data = ''
-          }
-        } else {
-          try {
-            this.tableData[i].data = (eval(this.tableData[i].description))
-          } catch (e) {
-            this.tableData[i].data = ''
-          }
-        }
-      }
-    },
-    setForm(formCode) {
-      this.activeFormCode = formCode
-    }
-  },
+  }
 }
 </script>
 
