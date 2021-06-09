@@ -119,6 +119,19 @@
                        for="permission_{{$permissions->get('podborGno view main')->id}}">Просмотр главной
                     страницы</label>
             </div>
+            <div class="form-check">
+                <input
+                        class="form-check-input"
+                        id="permission_{{$permissions->get('podborGno edit main')->id}}"
+                        type="checkbox"
+                        name="permissions[]"
+                        value="{{$permissions->get('podborGno edit main')->id}}"
+                        {{!empty($role) && $role->permissions->where('id', $permissions->get('podborGno edit main')->id)->isNotEmpty() ? 'checked' : ''}}
+                >
+                <label class="form-check-label"
+                       for="permission_{{$permissions->get('podborGno view main')->id}}">Редактирование скважины
+                    страницы</label>
+                </div>
         </div>
 
         <div class="tabs tab-paegtm">

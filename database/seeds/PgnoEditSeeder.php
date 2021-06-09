@@ -3,7 +3,7 @@
 use Illuminate\Database\Seeder;
 use \Spatie\Permission\Models\Permission;
 
-class PodborGNOPermissionsSeeder extends Seeder
+class PGNOEditSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -11,9 +11,9 @@ class PodborGNOPermissionsSeeder extends Seeder
      * @return void
      */
     public function run()
-    {
+    {   
         $permission = new Permission();
-        $permission->name = "podborGno view main";
+        $permission->name = "podborGno edit main";
         $permission->save();
     }
 }

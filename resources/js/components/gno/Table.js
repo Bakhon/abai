@@ -1,5 +1,5 @@
 import {mapMutations, mapState} from 'vuex'
-import {pgnoMapMutations, pgnoMapActions} from '@store/helpers';
+import {pgnoMapActions} from '@store/helpers';
 import { Plotly } from "vue-plotly";
 import { eventBus } from "../../event-bus.js";
 import NotifyPlugin from "vue-easy-notify";
@@ -23,8 +23,15 @@ Vue.use(NotifyPlugin,VueMomentLib);
 
 export default {
   components: { PerfectScrollbar, FullPageLoader, Tabs, Plotly },
+  props: [
+    'params'
+  ],
   data: function () {
     return {
+      perms: this.params,
+      isPermission: false,
+      isEditing: false,
+      permissionName: 'podborGno edit main',
       url: "http://172.20.103.187:7575/api/pgno/",
       isLoading: false,
       activeRightTabName: 'technological-mode',
@@ -339,6 +346,7 @@ export default {
       podborGnoTitle: this.trans('pgno.podbor_gno'),
       serviceOffline: false,
       isIntervals: false,
+      skTypes: null,
     };
 
   },
@@ -378,7 +386,10 @@ export default {
         this.serviceOffline = true;
       } 
     })
-    
+
+    this.axios.get("http://12172.20.103.187:7575/api/pgno/sk_types").then(response => {
+      this.skTypes = response.data
+    })
   },
   mounted() {
     this.windowWidth = window.innerWidth;
@@ -388,6 +399,13 @@ export default {
     }
   },
   methods: {
+    editPage() {
+      if (!this.isEditing) {this.isEditing = true}
+      else {this.isEditing = false}
+    },
+    changeValue(key, value) {
+      this.welldata[key] = value
+    },
     ...pgnoMapActions([
       'setDefault'
     ]),
@@ -414,6 +432,8 @@ export default {
           "pgno_setings":{
             "strokelen_min": this.strokeLenMin,
             "strokelen_max": this.strokeLenMax,
+            "spm_min": this.spmMin,
+            "spm_max": this.spmMax,
             "pump_types": this.dmPumps,
             "dm_rods" : this.dmRods,
             "kpod_min": this.kpodMin,
@@ -497,7 +517,7 @@ export default {
     },
 
     closeInclModal() {
-      this.isButtonHpump = this.$store.getters.getHpumpButton
+      this.isButtonHpump = this.$store.getters['pgno/getHpumpButton']
       this.$modal.hide('modalIncl')
     },
     closeEconomicModal() {
@@ -998,7 +1018,20 @@ export default {
     },
 
     getWellNumber(wellnumber) {
-      this.setDefault()      
+      this.$store.commit("UPDATE_SPM_MIN", 3)
+      this.$store.commit("UPDATE_SPM_MAX", 8)
+      this.$store.commit("UPDATE_LEN_MIN", 2)
+      this.$store.commit("UPDATE_LEN_MAX", 3)
+      this.$store.commit("UPDATE_KPOD", 0.6)
+      this.$store.commit("UPDATE_KOMPONOVKA", ["hvostovik"])
+      this.$store.commit("UPDATE_DMPUMPS", ["32", "38", "44", "57", "70"])
+      this.$store.commit("UPDATE_DMRODS", ["19", "22", "25"])
+      this.$store.commit("UPDATE_H2S", false)
+      this.$store.commit("UPDATE_DAV_MIN", 30)
+      this.$store.commit("UPDATE_GAS_MAX", 10)
+      this.$store.commit("UPDATE_DLINA_POLKI", 10)
+      this.$store.commit("UPDATE_KOROZ", "srednekor")
+      this.$store.commit("UPDATE_GROUP_POSAD", "2")  
 
       if(this.field == "JET") {
               this.ao = 'АО "ММГ"'
@@ -1264,15 +1297,7 @@ export default {
       this.menu = "MainMenu"
       this.prepareData()
 
-      if(!this.isYoungAge &&(this.pResInput.split(' ')[0] * 1 <= this.bhpInput.split(' ')[0] * 1 || this.pResInput.split(' ')[0] * 1 <= this.bhpCelValue.split(' ')[0] * 1)) {
-        this.$notify({
-            message: this.trans('pgno.notify_p_zab_more_p_pl'),
-            type: 'error',
-            size: 'sm',
-            timeout: 8000
-          }) 
-      } else {
-        this.isLoading = true;
+      this.isLoading = true;
 
       if(this.casOD < 127) {
         this.$notify({
@@ -1282,7 +1307,6 @@ export default {
                 timeout: 8000
               }) 
       }
-
       if (this.qlCelValue.split(' ')[0] < 28 && this.expChoose == "ЭЦН") {
         this.$notify({
           message: this.trans('pgno.notify_uecn_not_recommended'),
@@ -1300,28 +1324,25 @@ export default {
           })  
       }
 
-        this.axios.post(uri, this.postdata).then((response) => {
-          let data = response.data;
-          if (data) {
-            this.welldata = data["Well Data"]
-            this.method = "CurveSetting"
-            if(data["Well Data"]["pi"][0] * 1 < 0) {
+      this.axios.post(uri, this.postdata).then((response) => {
+        let data = response.data;
+        if (data) {
+          this.welldata = data["Well Data"]
+          this.method = "CurveSetting"
+          if(data["Well Data"]["pi"][0] * 1 < 0) {
+            this.$notify({
+              message: this.trans('pgno.notify_p_zab_more_p_pl'),
+              type: 'warning',
+              size: 'sm',
+              timeout: 8000
+          })} else {
+            if(this.hPumpValue.split(' ')[0] * 1 > this.hPerf * 1){
               this.$notify({
-                message: this.trans('pgno.notify_p_zab_more_p_pl'),
-                type: 'warning',
-                size: 'sm',
-                timeout: 8000
-              })  
-              
-            } else {
-              if(this.hPumpValue.split(' ')[0] * 1 > this.hPerf * 1){
-                this.$notify({
-                  message: this.trans('pgno.notify_n_set_down_perf'),
-                  type: 'warning',
-                  size: 'sm',
-                  timeout: 8000
-                })   
-              }
+              message: this.trans('pgno.notify_n_set_down_perf'),
+              type: 'warning',
+              size: 'sm',
+              timeout: 8000
+              })}
               this.setData(data)
               this.$emit('LineData', this.curveLineData)
               this.$emit('PointsData', this.curvePointsData)
@@ -1354,7 +1375,6 @@ export default {
         }).finally(() => {
           this.isLoading = false;
         });
-      }
 
     },
 
@@ -1716,6 +1736,7 @@ export default {
     },
   },
   created() {
+    this.isPermission = this.perms.includes(this.permissionName);
     window.addEventListener("resize", () => {
       this.windowWidth = window.innerWidth;
     });
