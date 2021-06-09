@@ -5,7 +5,7 @@ namespace App\Imports;
 use App\Models\ComplicationMonitoring\Material;
 use App\Models\ComplicationMonitoring\PipeType;
 use App\Models\ComplicationMonitoring\OilPipe;
-use App\Models\Pipes\PipeCoord;
+use App\Models\ComplicationMonitoring\PipeCoord;
 use App\Models\ComplicationMonitoring\Ngdu;
 use App\Models\ComplicationMonitoring\Zu;
 use Illuminate\Support\Collection;

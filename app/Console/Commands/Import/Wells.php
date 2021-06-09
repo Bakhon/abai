@@ -6,7 +6,7 @@ use App\Imports\Ngdu4WellsImport;
 use App\Imports\TrunklineImport;
 use App\Models\ComplicationMonitoring\PipeType;
 use App\Models\ComplicationMonitoring\OilPipe;
-use App\Models\Pipes\PipeCoord;
+use App\Models\ComplicationMonitoring\PipeCoord;
 use App\Models\ComplicationMonitoring\Well;
 use App\Models\ComplicationMonitoring\Zu;
 use Illuminate\Console\Command;

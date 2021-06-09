@@ -2,13 +2,14 @@
 
 namespace App\Models\ComplicationMonitoring;
 
-use App\Models\Pipes\PipeCoord;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\ComplicationMonitoring\Zu;
-use App\Models\ComplicationMonitoring\Well;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class OilPipe extends Model
 {
+    use LogsActivity, SoftDeletes;
+
     protected $guarded = ['id'];
     protected $hidden = [
         'created_at',
