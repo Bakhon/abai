@@ -125,15 +125,6 @@ export default {
             let elementOptions = this.mainMenuButtonElementOptions[parentButton].childItems[childButton];
             this.switchButtonOptions(elementOptions);
             this.calculateDzoCompaniesSummary();
-            // this.isWithoutKMGFilterActive = !this.isWithoutKMGFilterActive;
-            // if (this.isWithoutKMGFilterActive) {
-            //     this.dzoCompanySummary = this.consolidatedData.withParticipation;
-            // } else {
-            //     this.dzoCompanySummary = this.consolidatedData.withoutParticipation;
-            // }
-            // let elementOptions = this.mainMenuButtonElementOptions['oilCondensateProductionButton'].childItems['withoutKmgParticipation'];
-            // this.switchButtonOptions(elementOptions);
-            // this.calculateDzoCompaniesSummary();
         },
         getConsolidatedOilCondensate() {
             let updatedData = _.cloneDeep(this.productionTableData);
@@ -307,9 +298,9 @@ export default {
                     opekPlan: _.round(_.sumBy(dzo, 'oil_opek_plan'), 0),
                 }))
                 .value();
-            let calculatedData = this.getUpdatedByDzoOptions(_.cloneDeep(groupedData),yesterdayFilteredData,filteredInitialData);
-            this.productionParamsWidget.yesterdayOilFact = _.sumBy(calculatedData, 'factMonth');
-            return calculatedData;
+            let updatedByDzoOptions = this.getUpdatedByDzoOptions(_.cloneDeep(groupedData),yesterdayFilteredData,filteredInitialData);
+            this.productionParamsWidget.yesterdayOilFact = _.sumBy(updatedByDzoOptions, 'factMonth');
+            return updatedByDzoOptions;
         },
         getFilteredByNotUsableDzo(data) {
             let updatedData = data;
