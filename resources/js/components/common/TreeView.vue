@@ -2,7 +2,7 @@
   <li class="text-white list-style-none mt-2 pl-3">
     <div class="d-flex flex-wrap align-items-center" v-if="node.name">
       <div v-if="node.type !== 'well'" class="cursor-pointer" @click="toggleUl(node.id)">
-        <img class="arrow-img" :class="showChildren ? 'opened-arrow' : 'closed-arrow'" width="16" height="16" :src="'/img/icons/arrow.svg'">
+        <img class="arrow-img" :class="isShowChildren ? 'opened-arrow' : 'closed-arrow'" width="16" height="16" :src="'/img/icons/arrow.svg'">
       </div>
       <div v-if="node.name"
            class="text-right text-white ml-2"
@@ -11,7 +11,7 @@
         {{ node.name }}
       </div>
     </div>
-    <ul class="treeUl" v-if="showChildren">
+    <ul class="treeUl" v-if="isShowChildren">
       <node
           v-for="child in node.children"
           :node="child"
@@ -20,7 +20,7 @@
           :get-wells="getWells"
       ></node>
     </ul>
-    <div class="centered mx-auto mt-3" v-if="showChildren && isLoading">
+    <div class="centered mx-auto mt-3" v-if="isShowChildren && isLoading">
       <div class="blob-1"></div>
       <div class="blob-2"></div>
     </div>
@@ -36,8 +36,8 @@ export default {
   },
   methods: {
     toggleUl: function () {
-      this.showChildren = !this.showChildren;
-      if (this.showChildren && this.node.type !== 'org') {
+      this.isShowChildren = !this.isShowChildren;
+      if (this.isShowChildren && this.node.type !== 'org') {
         this.isLoading = true;
         this.getWells(this);
       }
@@ -45,14 +45,14 @@ export default {
   },
   data: function () {
     return {
-      showChildren: false,
+      isShowChildren: false,
       isLoading: false,
     };
   },
 }
 </script>
 
-<style>
+<style scoped>
 .arrow-img {
   transition: 0.2s;
 }
