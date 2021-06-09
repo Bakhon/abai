@@ -83,8 +83,7 @@ export default {
   computed: {
     filteredForms() {
       return this.forms.filter(form => {
-        console.log(form.hidden)
-        if (form.hidden && form.hidden === true) return false
+        if (!form.isVisible) return false
         if (this.formNameQuery && form.name.toLowerCase().indexOf(this.formNameQuery.trim().toLowerCase()) === -1) return false
         return true
       })
