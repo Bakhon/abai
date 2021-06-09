@@ -82,8 +82,8 @@ class GuWellsImport implements ToCollection, WithEvents, WithColumnLimit, WithSt
 
                 if (strpos($this->sheetName, 'НГДУ') === 0) {
                     $this->ngdu = Ngdu::where('name', $this->sheetName)->first();
-                    Well::where('ngdu_id', $this->ngdu->id)->delete();
-                    Zu::whereNull('ngdu_id')->delete();
+                    Well::where('ngdu_id', $this->ngdu->id)->forceDelete();
+                    Zu::whereNull('ngdu_id')->forceDelete();
                 }
 
                 if (strpos($this->sheetName, 'GU-') !== 0 AND strpos($this->sheetName, 'НГДУ') !== 0) {
@@ -228,7 +228,7 @@ class GuWellsImport implements ToCollection, WithEvents, WithColumnLimit, WithSt
                 )
             ) {
                 if ($pipe) {
-                    $pipe->delete();
+                    $pipe->forceDelete();
                 }
 
                 $zu = $well = $pipe = $between_points = null;
@@ -267,8 +267,8 @@ class GuWellsImport implements ToCollection, WithEvents, WithColumnLimit, WithSt
 
                             $this->errors[] = $message;
 
-                            PipeCoord::where('oil_pipe_id', $pipe->id)->delete();
-                            $pipe->delete();
+                            PipeCoord::where('oil_pipe_id', $pipe->id)->forceDelete();
+                            $pipe->forceDelete();
 
                             $zu = $well = $pipe = $between_points = null;
                             $is_new_pipe = true;
