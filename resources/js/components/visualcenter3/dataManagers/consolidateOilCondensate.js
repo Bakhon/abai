@@ -298,9 +298,9 @@ export default {
                     opekPlan: _.round(_.sumBy(dzo, 'oil_opek_plan'), 0),
                 }))
                 .value();
-            let updatedByDzoOptions = this.getUpdatedByDzoOptions(_.cloneDeep(groupedData),yesterdayFilteredData,filteredInitialData);
-            this.productionParamsWidget.yesterdayOilFact = _.sumBy(updatedByDzoOptions, 'factMonth');
-            return updatedByDzoOptions;
+            let dataWithKMGParticipation = this.getUpdatedByDzoOptions(_.cloneDeep(groupedData),yesterdayFilteredData,filteredInitialData);
+            this.productionParamsWidget.yesterdayOilFact = _.sumBy(dataWithKMGParticipation, 'factMonth');
+            return dataWithKMGParticipation;
         },
         getFilteredByNotUsableDzo(data) {
             let updatedData = data;
