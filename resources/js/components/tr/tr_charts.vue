@@ -222,7 +222,7 @@
 import VueApexCharts from "vue-apexcharts";
 import BigNumbers from "./BigNumbers.vue";
 import TrMultiselect from "./TrMultiselect.vue";
-import { getFilterText } from "./helpers.js";
+import trHelper from '~/mixins/trHelper';
 import ClearIcon from "../ui-kit/ClearIcon.vue";
 
 export default {
@@ -231,29 +231,31 @@ export default {
     TrMultiselect,
     ClearIcon,
     BigNumbers,
+    "apexchart": VueApexCharts
   },
+  mixins: [trHelper],
   computed: {
     titleText() {
       return `${this.chartNames[this.chartShow]} ${this.dt}`;
     },
     subtitleText() {
       return [
-        getFilterText(
+        this.getFilterText(
           this.chartFilter_field,
           this.fieldFilters[0].fields,
           "fields"
         ),
-        getFilterText(
+        this.getFilterText(
           this.chartFilter_horizon,
           this.horizonFilters[0].fields,
           "horizons"
         ),
-        `${getFilterText(
+        `${this.getFilterText(
           this.chartFilter_exp_meth,
           this.exp_methFilters[0].fields,
           "expMethods"
         )} добычи`,
-        getFilterText(
+        this.getFilterText(
           this.chartFilter_object,
           this.objectFilters[0].fields,
           "objects"

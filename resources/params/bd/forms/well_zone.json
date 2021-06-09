@@ -21,7 +21,7 @@
                 "formula": "$zone$",
                 "is_editable": false,
                 "title": "ch_zone",
-                "validation": "required"
+                "validation": ""
               },
               {
                 "code": "zone",

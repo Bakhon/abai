@@ -12,10 +12,10 @@ class GNOController extends Controller
         $this->middleware('can:podborGno view main')->only('index');
     
     }
-
     public function index()
     {
-        return view('gno.gno');
+        $permissionNames = auth()->user()->getAllPermissions()->pluck('name')->toArray();
+        return view('gno.gno', compact('permissionNames'));
     }
 
 }
