@@ -347,6 +347,7 @@ export default {
       serviceOffline: false,
       isIntervals: false,
       skTypes: null,
+      horizons: null
     };
 
   },
@@ -387,8 +388,11 @@ export default {
       } 
     })
 
-    this.axios.get("http://12172.20.103.187:7575/api/pgno/sk_types").then(response => {
+    this.axios.get("http://172.20.103.187:7575/api/pgno/sk_types").then(response => {
       this.skTypes = response.data
+    })
+    this.axios.get("http://172.20.103.187:7575/api/pgno/horizons").then(response => {
+      this.horizons = response.data
     })
   },
   mounted() {
@@ -427,6 +431,8 @@ export default {
       this.dmRods = this.$store.getters.dmRods
       this.groupPosad = this.$store.getters.groupPosad
       this.komponovka = this.$store.getters.komponovka
+      this.h2s = this.$store.getters.h2s
+      this.heavyDown = this.$store.getters.heavyDown
       this.postdata = JSON.stringify(
         {
           "pgno_setings":{
@@ -441,7 +447,9 @@ export default {
             "komponovka": this.komponovka,
             "dav_min": this.davMin,
             "gas_max": this.gasMax,
-            "dlina_polki": this.dlinaPolki
+            "dlina_polki": this.dlinaPolki,
+            "h2s": this.h2s,
+            "heavy_down": this.heavyDown,
           },
           "welldata": this.welldata,
           "settings" : {
@@ -556,6 +564,7 @@ export default {
         this.qlPot = this.curvePointsData[1]["q_l"].toFixed(0)
         this.pinPot = this.curvePointsData[1]["pin"].toFixed(0)
       } else {
+        this.hPerfRangeInfo = data["Well Data"]["h_perf_range"]
         this.ngdu = data["Well Data"]["ngdu"]
         this.sk = data["Well Data"]["sk_type"]
         this.wellNumber = data["Well Data"]["well"].split("_")[1]
@@ -1018,6 +1027,7 @@ export default {
     },
 
     getWellNumber(wellnumber) {
+      this.isIntervals = true
       this.$store.commit("UPDATE_SPM_MIN", 3)
       this.$store.commit("UPDATE_SPM_MAX", 8)
       this.$store.commit("UPDATE_LEN_MIN", 2)
@@ -1031,7 +1041,8 @@ export default {
       this.$store.commit("UPDATE_GAS_MAX", 10)
       this.$store.commit("UPDATE_DLINA_POLKI", 10)
       this.$store.commit("UPDATE_KOROZ", "srednekor")
-      this.$store.commit("UPDATE_GROUP_POSAD", "2")  
+      this.$store.commit("UPDATE_GROUP_POSAD", "2")
+      this.$store.commit("UPDATE_HEAVYDOWN", true)
 
       if(this.field == "JET") {
               this.ao = 'АО "ММГ"'
@@ -1243,8 +1254,14 @@ export default {
             if (this.expMeth == "ШГН") {
               this.mech_sep = false
             } else if (this.expMeth == "ЭЦН" || this.expMeth == "УЭЦН") {
-              this.mech_sep = true,
-              this.mech_sep_value = "50 %"
+              this.mech_sep = true
+            }
+            if (this.qL * 1 < 20) {
+              this.mech_sep_value = 95
+            } else if (this.qL * 1 < 55) {
+              this.mech_sep_value = 60
+            } else {
+              this.mech_sep_value = 50
             }
           }
           this.$emit('LineData', this.curveLineData)
@@ -1501,7 +1518,6 @@ export default {
     },
 
     onPgnoClick() {
-      this.isIntervals = true;
       if(this.qlPot * 1 < this.qlCelValue.split(' ')[0] * 1 && this.CelButton == 'ql'){
         this.$notify({
           message: this.trans('pgno.notify_cel_rezhim_more_perf'),

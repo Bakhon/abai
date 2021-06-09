@@ -171,7 +171,7 @@
 				</label>
 
 				<label for="" class="block__third__block__1__radio__3">{{trans('pgno.heavy_down')}}
-					<input value="heavy_down" class="third__block__radio" type="checkbox" name="kor1" v-model="heavyDown" />
+					<input class="third__block__radio" type="checkbox" name="kor1" v-model="heavyDown"/>
 				</label>
 			</div>
 
