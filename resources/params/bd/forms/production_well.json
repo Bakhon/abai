@@ -12,13 +12,13 @@
                 "code": "dbeg",
                 "type": "date",
                 "title": "date_start",
-                "validation": "nullable|date|before_or_equal:today"
+                "validation": "nullable|date"
               },
               {
                 "code": "dend",
                 "type": "date",
                 "title": "date_end",
-                "validation": "nullable|date|before_or_equal:today|after:date_start_drilling"
+                "validation": "nullable|date|after:date_start"
               }
             ]
           },
@@ -60,21 +60,21 @@
             "title":"Planned_events_tech_modes",
             "items":[
               {
-                "code":"field4",
-                "type":"table",
-                "title":"",
-                "table":"tech_mode_event",
-                "parent_column":"",
-                "columns":[
+                "code": "field4",
+                "type": "table",
+                "title": "",
+                "table": "prod.tech_mode_event",
+                "parent_column": "well",
+                "columns": [
                   {
-                    "code":"well_activity",
-                    "type":"dict",
-                    "title":"event",
-                    "dict":"well_activity",
-                    "validation":"required|exists:tbd.dict.well_activity,id"
+                    "code": "event_type",
+                    "type": "dict",
+                    "title": "event",
+                    "dict": "well_activity",
+                    "validation": "required|exists:tbd.dict.well_activity,id"
                   },
                   {
-                    "code":"plan_month",
+                    "code": "plan_month",
                     "type":"date",
                     "title":"planned_month",
                     "validation":"required|date"
