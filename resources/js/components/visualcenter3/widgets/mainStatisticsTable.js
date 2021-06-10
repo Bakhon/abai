@@ -5,20 +5,6 @@ export default {
         return {
             displayTable: "display:  none;",
             displayHeadTables: "display: block;",
-            Table1: "display:block;",
-            Table2: "display:none;",
-            Table3: "display:none;",
-            Table4: "display:none;",
-            Table5: "display:none;",
-            Table6: "display:none;",
-            Table7: "display:none;",
-            tableHover1: "",
-            tableHover2: "",
-            tableHover3: "",
-            tableHover4: "",
-            tableHover5: "",
-            tableHover6: "",
-            tableHover7: "",
             buttonDailyTab: "button-tab-highlighted",
             buttonMonthlyTab: "",
             buttonYearlyTab: "",
@@ -45,56 +31,66 @@ export default {
             condensateProductionButton: "",
             displayChart: "display: none;",
             minimalDaysCountInPeriodForChart: 1,
-            oilCondensateProductionButton: "button-tab-highlighted"
+            oilCondensateProductionButton: "button-tab-highlighted",
+            tableMapping: {
+                'productionDetails': {
+                    'class': '',
+                    'hover': '',
+                },
+                'oilRate': {
+                    'class': 'hide-company-list',
+                    'hover': '',
+                },
+                'usdRate': {
+                    'class': 'hide-company-list',
+                    'hover': '',
+                },
+                'productionWells': {
+                    'class': 'hide-company-list',
+                    'hover': '',
+                },
+                'injectionWells': {
+                    'class': 'hide-company-list',
+                    'hover': '',
+                },
+                'otmDrilling': {
+                    'class': 'hide-company-list',
+                    'hover': '',
+                },
+                'chemistry': {
+                    'class': 'hide-company-list',
+                    'hover': '',
+                },
+                'otmWorkover': {
+                    'class': 'hide-company-list',
+                    'hover': '',
+                },
+            }
         };
     },
     methods: {
-        changeTable(change) {
+        changeTable(tableName) {
+            _.forEach(this.tableMapping, function (item) {
+                _.set(item, 'class', 'hide-company-list');
+                _.set(item, 'hover', '');
+            });
+
             this.selectedSecondaryOption = '';
             this.selectedDzo = 'all';
             this.isFilterTargetPlanActive = false;
             this.buttonTargetPlan = "";
             this.company = "all";
-            this.Table1 = "display:none";
-            this.Table2 = "display:none";
-            this.Table3 = "display:none";
-            this.Table4 = "display:none";
-            this.Table5 = "display:none";
-            this.Table6 = "display:none";
-            this.Table7 = "display:none";
 
-            this.tableHover1 = "";
-            this.tableHover2 = "";
-            this.tableHover3 = "";
-            this.tableHover4 = "";
-            this.tableHover5 = "";
-            this.tableHover6 = "";
-            this.tableHover7 = "";
-            var buttonHover2 = "button_hover";
+            this.tableMapping[tableName]['class'] = 'show-company-list';
+            this.tableMapping[tableName]['hover'] = 'button_hover';
 
-            if (change == "1") {
-                this.Table1 = "display:block";
-                this.tableHover1 = buttonHover2;
+            if (tableName == "productionDetails") {
                 this.changeMenu2('daily');
-            } else if (change == "2") {
-                this.Table2 = "display:block";
-                this.tableHover2 = buttonHover2;
-            } else if (change == "3") {
-                this.Table3 = "display:block";
-                this.tableHover3 = buttonHover2;
-            } else if (change == "4") {
-                this.Table4 = "display:block";
-                this.tableHover4 = buttonHover2;
-            } else if (change == "5") {
-                this.Table5 = "display:block";
-                this.tableHover5 = buttonHover2;
-            } else if (change == "6") {
-                this.Table6 = "display:block";
-                this.tableHover6 = buttonHover2;
-            } else if (change == "7") {
-                this.Table7 = "display:block";
-                this.tableHover7 = buttonHover2;
-
+            } else if (tableName == "otmDrilling") {
+                this.otmSelectedRow = 'otm_iz_burenia_skv_fact';
+            } else if (tableName == "otmWorkover") {
+                this.otmSelectedRow = 'otm_krs_skv_fact';
+            } else if (tableName == "chemistry") {
                 let periodStart = moment().startOf('month').format();
                 let periodEnd = moment().subtract(1, "days").endOf('day').format();
                 if (periodStart > periodEnd) {
