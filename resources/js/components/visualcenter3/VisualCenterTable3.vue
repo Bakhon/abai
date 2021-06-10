@@ -2189,21 +2189,10 @@
                   <div class="dropdown3">
                     <div
                             :class="[`${buttonPeriodTab}`,'button2 side-tables__main-menu-button']"
-                            @click="changeMenu2('period')"
                     >
-                      <span v-if="isOneDateSelected">
-                        {{ trans("visualcenter.date") }} [{{
-                          timeSelect
-                        }}]
-                      </span
-                      >
-                      <span v-else>
-                        {{ trans("visualcenter.period") }} [{{
-                          timeSelect
-                        }}
-                        - {{ timeSelectOld }}]
-                      </span
-                      >
+                      <span>
+                        {{ trans("visualcenter.date") }} [{{chemistrySelectedDate}}]
+                      </span>
                     </div>
                     <ul class="center-menu2 right-indent">
                       <li class="center-li">
