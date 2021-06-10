@@ -80,29 +80,16 @@ export default {
             this.isFilterTargetPlanActive = false;
             this.buttonTargetPlan = "";
             this.company = "all";
-
+            this.changeMenu2('daily');
             this.tableMapping[tableName]['class'] = 'show-company-list';
             this.tableMapping[tableName]['hover'] = 'button_hover';
 
-            if (tableName == "productionDetails") {
-                this.changeMenu2('daily');
-            } else if (tableName == "otmDrilling") {
+            if (tableName == "otmDrilling") {
                 this.otmSelectedRow = 'otm_iz_burenia_skv_fact';
             } else if (tableName == "otmWorkover") {
                 this.otmSelectedRow = 'otm_krs_skv_fact';
-            } else if (tableName == "chemistry") {
-                let periodStart = moment().startOf('month').format();
-                let periodEnd = moment().subtract(1, "days").endOf('day').format();
-                if (periodStart > periodEnd) {
-                    periodStart = this.getPreviousWorkday();
-                }
-
-                this.range = {
-                    start: periodStart,
-                    end: periodEnd,
-                    formatInput: true,
-                };
-                this.changeDate();
+            } else if (["chemistry","otmWorkover"].includes(tableName)) {
+                this.changeMenu2('monthly');
             }
             this.updateProductionData(this.planFieldName, this.factFieldName, this.chartHeadName, this.metricName, this.chartSecondaryName);
         },

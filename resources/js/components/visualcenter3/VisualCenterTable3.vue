@@ -1802,7 +1802,7 @@
               <div class="area-6-name row mt-3 mb-3 px-2">
                 <div class="col">
                   <div class="ml-4 bold">
-                    {{ trans("visualcenter.otm") }}
+                    {{ trans("visualcenter.drillingWells") }}
                   </div>
                 </div>
                 <div class="col px-4">
@@ -1984,7 +1984,7 @@
               <div class="area-6-name row mt-3 mb-3 px-2">
                 <div class="col">
                   <div class="ml-4 bold">
-                    {{ trans("visualcenter.otm") }}
+                    {{ trans("visualcenter.importForm.wellWorkover") }}
                   </div>
                 </div>
                 <div class="col px-4">
@@ -1994,15 +1994,7 @@
                 </div>
               </div>
               <div class="row px-4">
-                <div class="col-3 pr-2">
-                  <div
-                          :class="[`${buttonDailyTab}`,'button2 side-tables__main-menu-button']"
-                          @click="changeMenu2('daily')"
-                  >
-                    {{ trans("visualcenter.daily") }}
-                  </div>
-                </div>
-                <div class="col-3 px-2 ">
+                <div class="col-4 px-2 ">
                   <div
                           :class="[`${buttonMonthlyTab}`,'button2 side-tables__main-menu-button']"
                           @click="changeMenu2('monthly')"
@@ -2010,7 +2002,7 @@
                     {{ trans("visualcenter.monthBegin") }}
                   </div>
                 </div>
-                <div class="col-3 px-2">
+                <div class="col-4 px-2">
                   <div
                           :class="[`${buttonYearlyTab}`,'button2 side-tables__main-menu-button']"
                           @click="changeMenu2('yearly')"
@@ -2018,7 +2010,7 @@
                     {{ trans("visualcenter.yearBegin") }}
                   </div>
                 </div>
-                <div class="col-3 pl-2">
+                <div class="col-4 pl-2">
                   <div class="dropdown3">
                     <div
                             :class="[`${buttonPeriodTab}`,'button2 side-tables__main-menu-button']"
