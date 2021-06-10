@@ -1,6 +1,6 @@
 <template>
   <div class="bd-forms col-12 p-0 pl-2 h-100">
-    <div class="blueblock h-100 m-0">
+    <div class="blueblock h-100 m-0 org-select-tree-block">
       <div class="wells-select-block m-0 p-3">
         <tree-view
             v-for="treeData in filterTree"

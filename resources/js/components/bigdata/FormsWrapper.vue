@@ -295,4 +295,9 @@ export default {
     }
   }
 }
+
+.org-select-tree-block {
+  max-height: 85vh;
+  overflow-y: scroll;
+}
 </style>
