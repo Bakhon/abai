@@ -128,7 +128,7 @@ export default {
       });
     },
     formatter: (data) => {
-      data=data / 1000000000  
+      data=data / 1000
          data= data.toLocaleString();
             return  data  
   }

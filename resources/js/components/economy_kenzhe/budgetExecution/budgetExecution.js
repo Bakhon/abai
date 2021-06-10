@@ -364,15 +364,13 @@ export default {
   },
   async created () {  
     await this.getCompany(); 
-    console.log('mounted this.repttData');  
-    console.log(this.repttData);  
-    this.axios
-      .get('/ru/getdzocalcsactualmonth', {})
-      .then(response => {
-        if (response.data) {
-          this.actualMonth = response.data - 1;
-          this.actualMonthSelect = 1;
-        }
-      })
+      this.axios
+        .get('/ru/getdzocalcsactualmonth', {})
+        .then(response => {
+          if (response.data) {
+            this.actualMonth = response.data - 1;
+            this.actualMonthSelect = 1;
+          }
+       })
   },
 }
