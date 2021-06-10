@@ -105,7 +105,7 @@ class WellsController extends Controller
     {
         return $well->techs()
             ->wherePivot('dend', '>', $this->getToday())
-            ->withPivot('dend', 'dbeg', 'tap')
+            ->withPivot('dend', 'dbeg', 'tap as tap')
             ->orderBy('pivot_dbeg', 'desc')
             ->get();
     }
