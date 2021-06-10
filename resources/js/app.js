@@ -184,6 +184,8 @@ Vue.component('reptt', require('./components/economy_kenzhe/reptt.vue').default)
 Vue.component('budget-execution', require('./components/economy_kenzhe/budgetExecution/budgetExecution.vue').default);
 Vue.component('reptt-company', require('./components/economy_kenzhe/reptt_company.vue').default);
 
+Vue.component('budget-execution-wide-indicator', require('./components/economy_kenzhe/budgetExecution/budgetExecutionComponents/WideIndicator.vue').default);
+Vue.component('budget-execution-vertical-indicators', require('./components/economy_kenzhe/budgetExecution/budgetExecutionComponents/VerticalIndicators.vue').default);
 Vue.component('proactive-factors', require('./components/economy_kenzhe/proactiveFactors/proactiveFactors.vue').default);
 Vue.component('proactive-factors-select-filter', require('./components/economy_kenzhe/proactiveFactors/selectFilter.vue').default);
 Vue.component('reptt-company2', require('./components/economy_kenzhe/proactiveFactors/repttCompany/reptt_company2.vue').default);
