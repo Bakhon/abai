@@ -290,7 +290,6 @@ export default {
           this.wellGeo = data.geo
           this.tubeNom = data.tube_nom
           this.tubeNomOd = this.getMultipleValues(data.tube_nom, 'od')
-          this.actualBottomHole = data.actual_bottom_hole
           this.well = data.well
           this.wellUwi = data.well.uwi
           if (data.spatial_object.coord_point != null) {
@@ -305,6 +304,7 @@ export default {
             this.wellSaptialObjectBottomX = data[0]
             this.wellSaptialObjectBottomY = data[1]
           }
+          this.actualBottomHole = data.actual_bottom_hole.pivot.depth
         } catch (e) {
           this.loading = false
         }
@@ -535,7 +535,7 @@ export default {
           'data': ''
         },
         {
-          'description': 'this.actualBottomHole.pivot.depth',
+          'description': this.actualBottomHole,
           'method': null,
           'name': 'Фактический забой/(дата отбивки)',
           'data': ''
