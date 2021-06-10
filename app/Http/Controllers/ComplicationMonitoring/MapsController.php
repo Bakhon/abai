@@ -5,7 +5,7 @@ namespace App\Http\Controllers\ComplicationMonitoring;
 use App\Models\ComplicationMonitoring\PipeType;
 use App\Models\ComplicationMonitoring\OilPipe;
 use App\Http\Controllers\Controller;
-use App\Models\Pipes\PipeCoord;
+use App\Models\ComplicationMonitoring\PipeCoord;
 use App\Models\ComplicationMonitoring\Ngdu;
 use Illuminate\Http\Request;
 use App\Services\MapService;

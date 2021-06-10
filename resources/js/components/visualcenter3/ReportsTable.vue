@@ -25,14 +25,12 @@ import Calendar from "v-calendar/lib/components/calendar.umd";
 import DatePicker from "v-calendar/lib/components/date-picker.umd";
 import VueTableDynamic from "vue-table-dynamic";
 
-// Register components in your 'main.js'
-Vue.component("calendar", Calendar);
-Vue.component("date-picker", DatePicker);
 export default {
   components: {
     VueTableDynamic,
-    Calendar,
     DatePicker,
+    "calendar": Calendar,
+    "date-picker": DatePicker
   },
   data: function () {
     return {
