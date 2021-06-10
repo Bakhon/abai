@@ -1,5 +1,5 @@
 import {mapMutations, mapState} from 'vuex'
-import {pgnoMapMutations, pgnoMapActions} from '@store/helpers';
+import {pgnoMapActions} from '@store/helpers';
 import { Plotly } from "vue-plotly";
 import { eventBus } from "../../event-bus.js";
 import NotifyPlugin from "vue-easy-notify";
@@ -23,8 +23,15 @@ Vue.use(NotifyPlugin,VueMomentLib);
 
 export default {
   components: { PerfectScrollbar, FullPageLoader, Tabs, Plotly },
+  props: [
+    'params'
+  ],
   data: function () {
     return {
+      perms: this.params,
+      isPermission: false,
+      isEditing: false,
+      permissionName: 'podborGno edit main',
       url: "http://172.20.103.187:7575/api/pgno/",
       isLoading: false,
       activeRightTabName: 'technological-mode',
@@ -339,6 +346,8 @@ export default {
       podborGnoTitle: this.trans('pgno.podbor_gno'),
       serviceOffline: false,
       isIntervals: false,
+      skTypes: null,
+      horizons: null
     };
 
   },
@@ -378,7 +387,13 @@ export default {
         this.serviceOffline = true;
       } 
     })
-    
+
+    this.axios.get("http://172.20.103.187:7575/api/pgno/sk_types").then(response => {
+      this.skTypes = response.data
+    })
+    this.axios.get("http://172.20.103.187:7575/api/pgno/horizons").then(response => {
+      this.horizons = response.data
+    })
   },
   mounted() {
     this.windowWidth = window.innerWidth;
@@ -388,6 +403,13 @@ export default {
     }
   },
   methods: {
+    editPage() {
+      if (!this.isEditing) {this.isEditing = true}
+      else {this.isEditing = false}
+    },
+    changeValue(key, value) {
+      this.welldata[key] = value
+    },
     ...pgnoMapActions([
       'setDefault'
     ]),
@@ -409,11 +431,15 @@ export default {
       this.dmRods = this.$store.getters.dmRods
       this.groupPosad = this.$store.getters.groupPosad
       this.komponovka = this.$store.getters.komponovka
+      this.h2s = this.$store.getters.h2s
+      this.heavyDown = this.$store.getters.heavyDown
       this.postdata = JSON.stringify(
         {
           "pgno_setings":{
             "strokelen_min": this.strokeLenMin,
             "strokelen_max": this.strokeLenMax,
+            "spm_min": this.spmMin,
+            "spm_max": this.spmMax,
             "pump_types": this.dmPumps,
             "dm_rods" : this.dmRods,
             "kpod_min": this.kpodMin,
@@ -421,7 +447,9 @@ export default {
             "komponovka": this.komponovka,
             "dav_min": this.davMin,
             "gas_max": this.gasMax,
-            "dlina_polki": this.dlinaPolki
+            "dlina_polki": this.dlinaPolki,
+            "h2s": this.h2s,
+            "heavy_down": this.heavyDown,
           },
           "welldata": this.welldata,
           "settings" : {
@@ -497,7 +525,7 @@ export default {
     },
 
     closeInclModal() {
-      this.isButtonHpump = this.$store.getters.getHpumpButton
+      this.isButtonHpump = this.$store.getters['pgno/getHpumpButton']
       this.$modal.hide('modalIncl')
     },
     closeEconomicModal() {
@@ -536,6 +564,7 @@ export default {
         this.qlPot = this.curvePointsData[1]["q_l"].toFixed(0)
         this.pinPot = this.curvePointsData[1]["pin"].toFixed(0)
       } else {
+        this.hPerfRangeInfo = data["Well Data"]["h_perf_range"]
         this.ngdu = data["Well Data"]["ngdu"]
         this.sk = data["Well Data"]["sk_type"]
         this.wellNumber = data["Well Data"]["well"].split("_")[1]
@@ -998,7 +1027,22 @@ export default {
     },
 
     getWellNumber(wellnumber) {
-      this.setDefault()      
+      this.isIntervals = true
+      this.$store.commit("UPDATE_SPM_MIN", 3)
+      this.$store.commit("UPDATE_SPM_MAX", 8)
+      this.$store.commit("UPDATE_LEN_MIN", 2)
+      this.$store.commit("UPDATE_LEN_MAX", 3)
+      this.$store.commit("UPDATE_KPOD", 0.6)
+      this.$store.commit("UPDATE_KOMPONOVKA", ["hvostovik"])
+      this.$store.commit("UPDATE_DMPUMPS", ["32", "38", "44", "57", "70"])
+      this.$store.commit("UPDATE_DMRODS", ["19", "22", "25"])
+      this.$store.commit("UPDATE_H2S", false)
+      this.$store.commit("UPDATE_DAV_MIN", 30)
+      this.$store.commit("UPDATE_GAS_MAX", 10)
+      this.$store.commit("UPDATE_DLINA_POLKI", 10)
+      this.$store.commit("UPDATE_KOROZ", "srednekor")
+      this.$store.commit("UPDATE_GROUP_POSAD", "2")
+      this.$store.commit("UPDATE_HEAVYDOWN", true)
 
       if(this.field == "JET") {
               this.ao = 'АО "ММГ"'
@@ -1210,8 +1254,14 @@ export default {
             if (this.expMeth == "ШГН") {
               this.mech_sep = false
             } else if (this.expMeth == "ЭЦН" || this.expMeth == "УЭЦН") {
-              this.mech_sep = true,
-              this.mech_sep_value = "50 %"
+              this.mech_sep = true
+            }
+            if (this.qL * 1 < 20) {
+              this.mech_sep_value = 95
+            } else if (this.qL * 1 < 55) {
+              this.mech_sep_value = 60
+            } else {
+              this.mech_sep_value = 50
             }
           }
           this.$emit('LineData', this.curveLineData)
@@ -1264,15 +1314,7 @@ export default {
       this.menu = "MainMenu"
       this.prepareData()
 
-      if(!this.isYoungAge &&(this.pResInput.split(' ')[0] * 1 <= this.bhpInput.split(' ')[0] * 1 || this.pResInput.split(' ')[0] * 1 <= this.bhpCelValue.split(' ')[0] * 1)) {
-        this.$notify({
-            message: this.trans('pgno.notify_p_zab_more_p_pl'),
-            type: 'error',
-            size: 'sm',
-            timeout: 8000
-          }) 
-      } else {
-        this.isLoading = true;
+      this.isLoading = true;
 
       if(this.casOD < 127) {
         this.$notify({
@@ -1282,7 +1324,6 @@ export default {
                 timeout: 8000
               }) 
       }
-
       if (this.qlCelValue.split(' ')[0] < 28 && this.expChoose == "ЭЦН") {
         this.$notify({
           message: this.trans('pgno.notify_uecn_not_recommended'),
@@ -1300,28 +1341,25 @@ export default {
           })  
       }
 
-        this.axios.post(uri, this.postdata).then((response) => {
-          let data = response.data;
-          if (data) {
-            this.welldata = data["Well Data"]
-            this.method = "CurveSetting"
-            if(data["Well Data"]["pi"][0] * 1 < 0) {
+      this.axios.post(uri, this.postdata).then((response) => {
+        let data = response.data;
+        if (data) {
+          this.welldata = data["Well Data"]
+          this.method = "CurveSetting"
+          if(data["Well Data"]["pi"][0] * 1 < 0) {
+            this.$notify({
+              message: this.trans('pgno.notify_p_zab_more_p_pl'),
+              type: 'warning',
+              size: 'sm',
+              timeout: 8000
+          })} else {
+            if(this.hPumpValue.split(' ')[0] * 1 > this.hPerf * 1){
               this.$notify({
-                message: this.trans('pgno.notify_p_zab_more_p_pl'),
-                type: 'warning',
-                size: 'sm',
-                timeout: 8000
-              })  
-              
-            } else {
-              if(this.hPumpValue.split(' ')[0] * 1 > this.hPerf * 1){
-                this.$notify({
-                  message: this.trans('pgno.notify_n_set_down_perf'),
-                  type: 'warning',
-                  size: 'sm',
-                  timeout: 8000
-                })   
-              }
+              message: this.trans('pgno.notify_n_set_down_perf'),
+              type: 'warning',
+              size: 'sm',
+              timeout: 8000
+              })}
               this.setData(data)
               this.$emit('LineData', this.curveLineData)
               this.$emit('PointsData', this.curvePointsData)
@@ -1354,7 +1392,6 @@ export default {
         }).finally(() => {
           this.isLoading = false;
         });
-      }
 
     },
 
@@ -1481,7 +1518,6 @@ export default {
     },
 
     onPgnoClick() {
-      this.isIntervals = true;
       if(this.qlPot * 1 < this.qlCelValue.split(' ')[0] * 1 && this.CelButton == 'ql'){
         this.$notify({
           message: this.trans('pgno.notify_cel_rezhim_more_perf'),
@@ -1716,6 +1752,7 @@ export default {
     },
   },
   created() {
+    this.isPermission = this.perms.includes(this.permissionName);
     window.addEventListener("resize", () => {
       this.windowWidth = window.innerWidth;
     });

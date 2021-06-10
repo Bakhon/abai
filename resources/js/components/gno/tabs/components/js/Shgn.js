@@ -1,5 +1,4 @@
 import NotifyPlugin from "vue-easy-notify";
-import Vue from "vue";
 
 Vue.use(NotifyPlugin);
 export default {
@@ -9,7 +8,6 @@ export default {
 			svgTableN2: require('../../../images/tableN2.svg'),
 			davMin: 30,
 			groupPosad: 2,
-			heavyDown: 'heavy_down',
 			stup: '2',
 			dlinaPolki: 10,
 			gasMax: 10,
@@ -125,7 +123,15 @@ export default {
 			set(val) {
 				this.$store.dispatch('setH2S', val)
 			}
-		}
+		},
+		heavyDown: {
+			get() {
+				return this.$store.getters.heavyDown
+			},
+			set(val) {
+				this.$store.dispatch('setheavyDown', val)
+			}
+		},
 	},
 	methods: {
 		setActiveOption(val) {
@@ -134,7 +140,6 @@ export default {
 		onChangePump(event) {
 			this.$store.commit("update", event.target.value)
 		},
-		
 		onChangeSpmMin(event) {
 			this.$store.commit("UPDATE_SPM_MIN", event.target.value)
 		},
@@ -201,6 +206,7 @@ export default {
 		this.dmRods = this.$store.getters.dmRods
 		this.stupColumns = this.$store.getters.stupColumns
 		this.h2s = this.$store.getters.h2s
+		this.heavyDown = this.$store.getters.heavyDown
 		this.koroz = this.$store.getters.koroz
 		this.davMin = this.$store.getters.davMin
 		this.gasMax = this.$store.getters.gasMax

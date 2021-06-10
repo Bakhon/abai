@@ -57,19 +57,19 @@
                 <h4 class="col-12">{{trans("visualcenter.importForm.chemistry")}}</h4>
                 <div class="col-12 d-flex">
                     <span class="col-7">{{trans("visualcenter.chemProdZakackaDemulg")}}</span>
-                    <input v-model="chemistryData.demulsifier" class="col-5"></input>
+                    <input v-model="chemistryData.demulsifier" @change="formatCategoryByType($event,'chemistryData','demulsifier')" class="col-5"></input>
                 </div>
                 <div class="col-12 d-flex">
                     <span class="col-7">{{trans("visualcenter.chemProdZakackaBakteracid")}}</span>
-                    <input v-model="chemistryData.bactericide" class="col-5"></input>
+                    <input v-model="chemistryData.bactericide" @change="formatCategoryByType($event,'chemistryData','bactericide')" class="col-5"></input>
                 </div>
                 <div class="col-12 d-flex">
                     <span class="col-7">{{trans("visualcenter.chemProdZakackaIngibatorKorrozin")}}</span>
-                    <input v-model="chemistryData.corrosion_inhibitor" class="col-5"></input>
+                    <input v-model="chemistryData.corrosion_inhibitor" @change="formatCategoryByType($event,'chemistryData','corrosion_inhibitor')" class="col-5"></input>
                 </div>
                 <div class="col-12 d-flex">
                     <span class="col-7">{{trans("visualcenter.chemProdZakackaIngibatorSoleotloj")}}</span>
-                    <input v-model="chemistryData.scale_inhibitor" class="col-5"></input>
+                    <input v-model="chemistryData.scale_inhibitor" @change="formatCategoryByType($event,'chemistryData','scale_inhibitor')" class="col-5"></input>
                 </div>
                 <div v-if="chemistryErrorFields.length > 0" class="col-12 d-flex">
                     <span class="col-12 status-error">{{trans("visualcenter.errors")}}:</span>
@@ -96,11 +96,11 @@
                 <h4 class="col-12">{{trans("visualcenter.importForm.wellWorkover")}}</h4>
                 <div class="col-12 d-flex">
                     <span class="col-7">{{trans("visualcenter.undergroundRepairFond")}}</span>
-                    <input v-model="wellWorkover.otm_underground_workover" class="col-5"></input>
+                    <input v-model="wellWorkover.otm_underground_workover" @change="formatCategoryByType($event,'wellWorkover','otm_underground_workover')" class="col-5"></input>
                 </div>
                 <div class="col-12 d-flex">
                     <span class="col-7">{{trans("visualcenter.overhaulFond")}}</span>
-                    <input v-model="wellWorkover.otm_well_workover_fact" class="col-5"></input>
+                    <input v-model="wellWorkover.otm_well_workover_fact" @change="formatCategoryByType($event,'wellWorkover','otm_well_workover_fact')" class="col-5"></input>
                 </div>
                 <div class="col-6"></div>
                 <div class="col-8 mt-2"></div>
@@ -212,6 +212,7 @@
     }
     .main-layout {
         background: #272953;
+        max-width: 1826px;
     }
     .menu__button {
         background: #656A8A;

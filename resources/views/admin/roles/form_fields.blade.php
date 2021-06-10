@@ -61,6 +61,33 @@
                 <label class="form-check-label"
                        for="permission_{{$permissions->get('monitoring view pipes map')->id}}">Просмотр карты</label>
             </div>
+            <div class="section mb-4">
+                <h5>Экономика</h5>
+                <div class="form-check">
+                    <input
+                            class="form-check-input"
+                            id="permission_{{$permissions->get('monitoring list lost_profits')->id}}"
+                            type="checkbox"
+                            name="permissions[]"
+                            value="{{$permissions->get('monitoring list lost_profits')->id}}"
+                            {{!empty($role) && $role->permissions->where('id', $permissions->get('monitoring list lost_profits')->id)->isNotEmpty() ? 'checked' : ''}}
+                    >
+                    <label class="form-check-label"
+                           for="permission_{{$permissions->get('monitoring list lost_profits')->id}}">Просмотр страницы Мониторинг потерянной выгоды</label>
+                </div>
+                <div class="form-check">
+                    <input
+                            class="form-check-input"
+                            id="permission_{{$permissions->get('monitoring list economical_effect')->id}}"
+                            type="checkbox"
+                            name="permissions[]"
+                            value="{{$permissions->get('monitoring list economical_effect')->id}}"
+                            {{!empty($role) && $role->permissions->where('id', $permissions->get('monitoring list economical_effect')->id)->isNotEmpty() ? 'checked' : ''}}
+                    >
+                    <label class="form-check-label"
+                           for="permission_{{$permissions->get('monitoring list economical_effect')->id}}">Просмотр страницы Экономический эффект</label>
+                </div>
+            </div>
             @foreach($sections as $code => $name)
                 <div class="section mb-4">
                     <h5>{{$name}}</h5>
@@ -119,6 +146,19 @@
                        for="permission_{{$permissions->get('podborGno view main')->id}}">Просмотр главной
                     страницы</label>
             </div>
+            <div class="form-check">
+                <input
+                        class="form-check-input"
+                        id="permission_{{$permissions->get('podborGno edit main')->id}}"
+                        type="checkbox"
+                        name="permissions[]"
+                        value="{{$permissions->get('podborGno edit main')->id}}"
+                        {{!empty($role) && $role->permissions->where('id', $permissions->get('podborGno edit main')->id)->isNotEmpty() ? 'checked' : ''}}
+                >
+                <label class="form-check-label"
+                       for="permission_{{$permissions->get('podborGno view main')->id}}">Редактирование скважины
+                    страницы</label>
+                </div>
         </div>
 
         <div class="tabs tab-paegtm">
