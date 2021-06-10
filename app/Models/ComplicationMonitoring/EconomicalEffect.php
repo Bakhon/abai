@@ -8,6 +8,6 @@ class EconomicalEffect extends Model
 {
     public function gu()
     {
-        return $this->hasOne('App\Models\Refs\Gu','id','gu_id')->withDefault();
+        return $this->hasOne(Gu::class,'id','gu_id')->withDefault();
     }
 }

@@ -24,13 +24,7 @@ import dates from './dataManagers/dates';
 import oilProductionFilters from './dataManagers/oilProductionFilters';
 import mainTableChart from './widgets/mainTableChart.js';
 import secondaryParams from './dataManagers/secondaryParams';
-
-
-Vue.component("calendar", Calendar);
-Vue.component("date-picker", DatePicker);
-import Vue from "vue";
-
-
+import consolidateOilCondensate from './dataManagers/consolidateOilCondensate';
 
 export default {
     components: {
@@ -125,10 +119,10 @@ export default {
             await this.getYearlyPlan();
         },
 
-        getProductionOilandGas(data) {
+        updateProductionOilandGas(data) {
             let self = this;
-            data = this.getFilteredCompaniesList(data);
-            let productionDataInPeriodRange = this.getProductionDataInPeriodRange(data,this.timestampToday,this.timestampEnd);
+            let updatedData = this.getFilteredCompaniesList(data);
+            let productionDataInPeriodRange = this.getProductionDataInPeriodRange(updatedData,this.timestampToday,this.timestampEnd);
             let productionSummary = this.getProductionSummary(productionDataInPeriodRange);
             this.updateProductionSummary(productionSummary,this.productionParams);
             this.dailyProgressBars.oil = this.getProductionProgressBarData('oil_plan','oil_fact');
@@ -158,10 +152,10 @@ export default {
             });
         },
 
-        getProductionOilandGasPercent(data) {
-            data = this.getFilteredCompaniesList(data);
+        updateProductionOilandGasPercent(data) {
+            let updatedData = this.getFilteredCompaniesList(data);
             let periodStart = moment(new Date(this.timestampToday), "DD-MM-YYYY").subtract(this.quantityRange, 'days');
-            let filteredDataByPeriodRange = this.getProductionDataInPeriodRange(data,periodStart,this.timestampToday);
+            let filteredDataByPeriodRange = this.getProductionDataInPeriodRange(updatedData,periodStart,this.timestampToday);
             this.setPreviousPeriod();
             let productionSummary = this.getProductionSummary(filteredDataByPeriodRange);
             this.updateProductionSummary(productionSummary,this.productionPercentParams);
@@ -203,14 +197,16 @@ export default {
         },
 
         processProductionDataByCompanies(productionData,metricName,chartSecondaryName) {
+            let updatedData = productionData;
+            this.productionTableData = productionData;
             if (this.company === "all") {
-                productionData = this.getProcessedDataForAllCompanies(productionData);
+                updatedData = this.getProcessedDataForAllCompanies(productionData);
             } else {
                 this.processDataForSpecificCompany(productionData, metricName, chartSecondaryName);
             }
             this.setColorToMainMenuButtons();
-            this.getProductionOilandGas(productionData);
-            this.getProductionOilandGasPercent(productionData);
+            this.updateProductionOilandGas(updatedData);
+            this.updateProductionOilandGasPercent(updatedData);
         },
 
         processDataForSpecificCompany(data, metricName, chartSecondaryName) {
@@ -703,7 +699,8 @@ export default {
         dates,
         oilProductionFilters,
         mainTableChart,
-        secondaryParams
+        secondaryParams,
+        consolidateOilCondensate
     ],
     async mounted() {
         this.getOpecDataForYear();
@@ -752,6 +749,10 @@ export default {
     watch: {
         bigTable: function () {
             this.dzoCompanySummary = this.bigTable;
+            if (this.oilCondensateProductionButton.length > 0 && this.currentDzoList === 'daily') {
+                this.productionParamsWidget.yesterdayOldFact = this.productionPercentParams['oil_fact'];
+                this.dzoCompanySummary = this.getConsolidatedOilCondensate();
+            }
             this.calculateDzoCompaniesSummary();
         },
         tables: function() {

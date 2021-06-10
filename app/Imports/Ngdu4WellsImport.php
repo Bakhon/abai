@@ -4,10 +4,10 @@ namespace App\Imports;
 
 use App\Models\ComplicationMonitoring\Material;
 use App\Models\ComplicationMonitoring\PipeType;
-use App\Models\Pipes\OilPipe;
-use App\Models\Pipes\PipeCoord;
-use App\Models\Refs\Ngdu;
-use App\Models\Refs\Zu;
+use App\Models\ComplicationMonitoring\OilPipe;
+use App\Models\ComplicationMonitoring\PipeCoord;
+use App\Models\ComplicationMonitoring\Ngdu;
+use App\Models\ComplicationMonitoring\Zu;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Concerns\ToCollection;
@@ -16,8 +16,8 @@ use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\WithStartRow;
 use Maatwebsite\Excel\Concerns\WithCalculatedFormulas;
 use Maatwebsite\Excel\Events\BeforeSheet;
-use App\Models\Refs\Well;
-use App\Models\Refs\Gu;
+use App\Models\ComplicationMonitoring\Well;
+use App\Models\ComplicationMonitoring\Gu;
 use App\Console\Commands\Import\Wells;
 
 class Ngdu4WellsImport implements ToCollection, WithEvents, WithColumnLimit, WithStartRow, WithCalculatedFormulas
@@ -83,8 +83,8 @@ class Ngdu4WellsImport implements ToCollection, WithEvents, WithColumnLimit, Wit
                 }
 
                 $this->ngdu = Ngdu::where('name', 'НГДУ-4')->first();
-                OilPipe::where('ngdu_id', $this->ngdu->id)->whereIn('between_points', self::BETWEEN_POINTS_ARRAY)->delete();
-                Well::where('ngdu_id', $this->ngdu->id)->delete();
+                OilPipe::where('ngdu_id', $this->ngdu->id)->whereIn('between_points', self::BETWEEN_POINTS_ARRAY)->forceDelete();
+                Well::where('ngdu_id', $this->ngdu->id)->forceDelete();
 
                 $this->command->line(' ');
                 $this->command->line('----------------------------');
@@ -166,7 +166,7 @@ class Ngdu4WellsImport implements ToCollection, WithEvents, WithColumnLimit, Wit
                         'gu_id' => $this->gu->id
                     ]
                 );
-                PipeCoord::where('oil_pipe_id', $pipe->id)->delete();
+                PipeCoord::where('oil_pipe_id', $pipe->id)->forceDelete();
                 $pipe->type_id = $pipe_type->id;
                 $pipe->material_id = $material->id;
 
@@ -213,8 +213,8 @@ class Ngdu4WellsImport implements ToCollection, WithEvents, WithColumnLimit, Wit
 
                             $this->errors[] = $message;
 
-                            PipeCoord::where('oil_pipe_id', $pipe->id)->delete();
-                            $pipe->delete();
+                            PipeCoord::where('oil_pipe_id', $pipe->id)->forceDelete();
+                            $pipe->forceDelete();
 
                             $zu = $well = $pipe = $pipe_coords = $between_points = null;
                             continue;

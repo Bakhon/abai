@@ -3,8 +3,7 @@
 namespace App\Models\Pipes;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Refs\Gu;
-use App\Models\Refs\Well;
+use App\Models\ComplicationMonitoring\Well;
 use App\Models\ComplicationMonitoring\PipeType;
 
 class ZuWellPipe extends Model
