@@ -276,23 +276,23 @@ export default {
     selectWell(well) {
       this.loading = true
       this.axios.get(this.localeUrl(`/api/bigdata/wells/${well.id}/wellInfo`)).then(({data}) => {
-        this.wellStatus = data.status
-        this.wellCategory = data.category
-        this.wellCategory_last = data.category_last
-        this.wellExpl = data.well_expl
-        this.wellTechs = data.techs
-        this.wellTechsName = this.getMultipleValues(data.techs, 'name_ru')
-        this.wellTechsTap = this.getMultipleValues(data.techs, 'tap')
-        this.wellType = data.well_type
-        this.wellOrg = data.org
-        this.wellOrgName = this.getMultipleValues(data.org, 'name_ru')
-        this.wellGeo = data.geo
-        this.tubeNom = data.tube_nom
-        this.tubeNomOd = this.getMultipleValues(data.tube_nom, 'od')
-        this.actualBottomHole = data.actual_bottom_hole
-        this.well = data.well
-        this.wellUwi = data.well.uwi
         try {
+          this.wellStatus = data.status
+          this.wellCategory = data.category
+          this.wellCategory_last = data.category_last
+          this.wellExpl = data.well_expl
+          this.wellTechs = data.techs
+          this.wellTechsName = this.getMultipleValues(data.techs, 'name_ru')
+          this.wellTechsTap = this.getMultipleValues(data.techs, 'tap')
+          this.wellType = data.well_type
+          this.wellOrg = data.org
+          this.wellOrgName = this.getMultipleValues(data.org, 'name_ru')
+          this.wellGeo = data.geo
+          this.tubeNom = data.tube_nom
+          this.tubeNomOd = this.getMultipleValues(data.tube_nom, 'od')
+          this.actualBottomHole = data.actual_bottom_hole
+          this.well = data.well
+          this.wellUwi = data.well.uwi
           if (data.spatial_object.coord_point != null) {
             data = data.spatial_object.coord_point.replace('(', '').replace(')', '')
             data = data.split(',')
@@ -308,7 +308,6 @@ export default {
         } catch (e) {
           this.loading = false
         }
-
         this.loading = false
         this.setTableData()
       })
@@ -318,7 +317,7 @@ export default {
       for (let i = 0; i < this.tableData.length; i++) {
         if (this.tableData[i].method === 'neighbors') {
           try {
-            if (eval(eval('this.tableData[i].description') + '.' + eval('this.tableData[i].neigbor_1')) != null) {
+            if this.tableData[i].description[this.tableData[i].]{
               this.tableData[i].data += (eval(eval('this.tableData[i].description') + '.' + eval('this.tableData[i].neigbor_1'))) + ' - '
               this.tableData[i].data += (eval(eval('this.tableData[i].description') + '.' + eval('this.tableData[i].neigbor_2')))
             }
