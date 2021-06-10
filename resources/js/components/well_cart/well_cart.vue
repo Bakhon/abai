@@ -317,23 +317,22 @@ export default {
       for (let i = 0; i < this.tableData.length; i++) {
         if (this.tableData[i].method === 'neighbors') {
           try {
-            if this.tableData[i].description[this.tableData[i].]{
-              this.tableData[i].data += (eval(eval('this.tableData[i].description') + '.' + eval('this.tableData[i].neigbor_1'))) + ' - '
-              this.tableData[i].data += (eval(eval('this.tableData[i].description') + '.' + eval('this.tableData[i].neigbor_2')))
+            if (this.tableData[i].neigbor_1 != null) {
+              this.tableData[i].data += this.tableData[i].neigbor_1
+              this.tableData[i].data += ' - '
+              this.tableData[i].data += this.tableData[i].neigbor_2
             }
           } catch (e) {
           }
         } else if (this.tableData[i].method === 'trimToDate') {
           try {
-            this.tableData[i].data = (eval(this.tableData[i].description)) | moment("dddd, MMMM Do YYYY")
+            this.tableData[i].data = this.tableData[i].description | moment("dddd, MMMM Do YYYY")
           } catch (e) {
-            this.tableData[i].data = ''
           }
         } else {
           try {
             this.tableData[i].data = this.tableData[i].description
           } catch (e) {
-            this.tableData[i].data = ''
           }
         }
       }
@@ -456,10 +455,10 @@ export default {
           'data': ''
         },
         {
-          'description': 'this.well',
+          'description': '',
           'method': 'neighbors',
-          'neigbor_1': 'drill_start_date',
-          'neigbor_2': 'drill_end_date',
+          'neigbor_1': this.well.drill_start_date,
+          'neigbor_2': this.well.drill_end_date,
           'name': 'Период бурения',
           'data': ''
         },
