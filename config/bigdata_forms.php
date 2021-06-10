@@ -17,4 +17,6 @@
   'bottom_hole_artificial' => '\\App\\Services\\BigData\\Forms\\BottomHoleArtificial',
   'bottom_hole' => '\\App\\Services\\BigData\\Forms\\BottomHole',
   'well_incl' => '\\App\\Services\\BigData\\Forms\\WellIncl',
+  'well_tech' => '\\App\\Services\\BigData\\Forms\\WellTech',
+  'well_tech_connect' => '\\App\\Services\\BigData\\Forms\\WellTechConnect',
 );

@@ -10,6 +10,7 @@ return [
     'exit' => 'Выход',
     'select_dzo' => 'Выберите ДЗО из списка',
     'nothing_found' => 'Ничего не найдено',
+    'actions' => 'Действия',
     'forms' => [
         'fluid_production' => [
             'uwi_number' => 'Номер скважины',
