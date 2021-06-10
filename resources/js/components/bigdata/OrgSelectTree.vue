@@ -6,6 +6,7 @@
             v-for="treeData in filterTree"
             :ref="'child_' + treeData.id"
             :node="treeData"
+            :key="treeData.id"
             :handle-click="nodeClick"
             :get-wells="getWells"
         ></tree-view>

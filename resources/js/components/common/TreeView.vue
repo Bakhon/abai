@@ -15,7 +15,7 @@
       <node
           v-for="child in node.children"
           :node="child"
-          :key="child.name"
+          :key="child.id"
           :handle-click="handleClick"
           :get-wells="getWells"
       ></node>
