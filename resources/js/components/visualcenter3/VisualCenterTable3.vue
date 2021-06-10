@@ -154,7 +154,7 @@
                                     v-if="!buttonDailyTab && !isOneDateSelected"
                                     class="unit-vc ml-2"
                             >
-                              {{ trans("visualcenter.thousand") }}{{ trans('visualcenter.meterCubicWithSpace') }}
+                              {{ trans("visualcenter.thousand") }}{{ trans('visualcenter.meterCubic') }}
                             </div>
                             <div
                                     v-else
