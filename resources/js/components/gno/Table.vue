@@ -91,9 +91,11 @@
               <div class="choosing-well-data table-border-gno table-border-gno-top cell4-gno-second  col-5" v-if="!isEditing">
                 {{ horizon }}
               </div>
-              <input v-if="isEditing && isPermission" v-model="horizon" class="choosing-well-data table-border-gno table-border-gno-top cell4-gno-second  col-5 square_editing" 
-                type="text" @change="changeValue('horizon', horizon)"/>
-
+              <select v-if="isEditing && isPermission" class="devices-data table-border-gno cell4-gno-second no-gutter col-5 select_editing" v-model="horizon">
+                <option v-for="hor in this.horizons" :value="hor.hor_value" :key="hor.id">
+                  {{hor.hor_name}}
+                </option>
+              </select>
               <div class="choosing-well-data table-border-gno-top  col-7">
                 {{trans('pgno.method_of_operation')}}
               </div>
@@ -420,14 +422,17 @@
                   <div class="tech-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
                     {{ hDyn }} {{trans('measurements.m')}}
                   </div>
+
                   <div class="tech-data table-border-gno-top no-gutter col-7">{{trans('pgno.p_zat')}}</div>
                   <div class="tech-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
                     {{ pAnnular }} {{trans('measurements.atm')}}
                   </div>
+
                   <div class="tech-data table-border-gno-top no-gutter col-7">{{trans('pgno.p_buf')}}</div>
                   <div class="tech-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
                     {{ whp }} {{trans('measurements.atm')}}
                   </div>
+
                   <div class="tech-data table-border-gno-top no-gutter col-7">{{trans('pgno.p_lin')}}</div>
                   <div class="tech-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
                     {{ lineP }} {{trans('measurements.atm')}}

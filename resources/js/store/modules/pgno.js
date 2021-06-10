@@ -13,6 +13,7 @@ const pgno = {
         dlinaPolki: null,
         groupPosad: null,
         h2s: false,
+        heavyDown: true,
         koroz: "srednekor",
         dmPumps: ["32", "38", "44", "57", "70"],
         dmRods: ["19", "22", "25"],
@@ -67,6 +68,9 @@ const pgno = {
           ],
     },
     mutations: {
+      UPDATE_HEAVYDOWN(state, val) {
+        state.heavyDown = val
+      },
       UPDATE_DMPUMPS(state, val) {
         state.dmPumps = val
       },
@@ -136,6 +140,7 @@ const pgno = {
         commit("UPDATE_DLINA_POLKI", 10)
         commit("UPDATE_KOROZ", "srednekor")
         commit("UPDATE_GROUP_POSAD", "2")
+        commit("UPDATE_HEAVYDOWN", true)
       },
       setDmPumps({commit}, value) {
         commit('UPDATE_DMPUMPS', value)
@@ -148,6 +153,9 @@ const pgno = {
       },
       setH2S({commit}, value) {
         commit('UPDATE_H2S', value)
+      },
+      setheavyDown({commit}, value) {
+        commit('UPDATE_HEAVYDOWN', value)
       },
       selectedMarkShtang({commit}, value) {
         commit('UPDATE_MARKSHTANG', value)
@@ -171,7 +179,8 @@ const pgno = {
       hPump: (state) => state.hPump,
       koroz: (state) => state.koroz,
       stupColumns: (state) => state.stupColumns,
-      h2s: (state) => state.h2s
+      h2s: (state) => state.h2s,
+      heavyDown: (state) => state.heavyDown
     },
 }
 
