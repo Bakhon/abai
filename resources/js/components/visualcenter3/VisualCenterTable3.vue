@@ -1455,7 +1455,6 @@
                 :main-title="trans('visualcenter.oilPricedynamic')"
                 :second-title="'USD Yandex quote'"
         />
-        <!-- 'Динамика цены на нефть' -->
         <visual-center-usd-table
                 :table-class="tableMapping.usdRate.class"
                 :period.sync="period"
@@ -1470,7 +1469,6 @@
                 :main-title="trans('visualcenter.kursHeader')"
                 :second-title="'USD НБ РК'"
         />
-        <!-- 'Динамика курса доллара США к тенге (USD, НБ РК)' -->
         <div :class="[`${tableMapping.injectionWells.class}`, 'third-table big-area']">
           <div class="first-string first-string2">
             <div class="container-fluid">
