@@ -227,11 +227,15 @@ export default {
       wellExpl: null,
       tubeNom: null,
       wellType: null,
+      tubeNomOd: null,
       wellTechs: null,
+      wellTechsName: null,
+      wellTechsTap: null,
       wellUwi: null,
       wellGeo: null,
       WellTech: null,
       wellOrg: null,
+      wellOrgName: null,
       wellSaptialObjectX: null,
       wellSaptialObjectY: null,
       wellSaptialObjectBottomX: null,
@@ -277,10 +281,14 @@ export default {
         this.wellCategory_last = data.category_last
         this.wellExpl = data.well_expl
         this.wellTechs = data.techs
+        this.wellTechsName = this.getMultipleValues(data.techs, 'name_ru')
+        this.wellTechsTap = this.getMultipleValues(data.techs, 'tap')
         this.wellType = data.well_type
         this.wellOrg = data.org
+        this.wellOrgName = this.getMultipleValues(data.org, 'name_ru')
         this.wellGeo = data.geo
         this.tubeNom = data.tube_nom
+        this.tubeNomOd = this.getMultipleValues(data.tube_nom, 'od')
         this.actualBottomHole = data.actual_bottom_hole
         this.well = data.well
         this.wellUwi = data.well.uwi
@@ -308,20 +316,7 @@ export default {
 
     setTableData() {
       for (let i = 0; i < this.tableData.length; i++) {
-        if (this.tableData[i].method === 'multiplyValues') {
-          this.tableData[i].data = ''
-          try {
-            for (let k = 0; k < (eval(this.tableData[i].description)).length; k++) {
-              this.tableData[i].data = (eval(eval('this.tableData[i].description') + '[k].' + eval('this.tableData[i].multiplyValueName')))
-              this.tableData[i].data.join(' ')
-              if (k + 1 != (eval(this.tableData[i].description)).length) {
-                this.tableData[i].data.join(' / ')
-              }
-            }
-          } catch (e) {
-            this.tableData[i].data += ''
-          }
-        } else if (this.tableData[i].method === 'neighbors') {
+        if (this.tableData[i].method === 'neighbors') {
           try {
             if (eval(eval('this.tableData[i].description') + '.' + eval('this.tableData[i].neigbor_1')) != null) {
               this.tableData[i].data += (eval(eval('this.tableData[i].description') + '.' + eval('this.tableData[i].neigbor_1'))) + ' - '
@@ -343,6 +338,17 @@ export default {
           }
         }
       }
+    },
+    getMultipleValues(objectName, objectKey) {
+      let value = ''
+      for (let i = 0; i < Object.keys(objectName).length; i++) {
+        if (i + 1 < Object.keys(objectName).length) {
+          value += objectName[i].[objectKey] + ' / '
+        } else {
+          value += objectName[i].[objectKey]
+        }
+      }
+      return (value)
     },
     switchFormByCode(formCode) {
       this.activeFormCode = formCode
@@ -385,30 +391,26 @@ export default {
           'data': ''
         },
         {
-          'description': this.wellTechs,
-          'method': 'multiplyValues',
-          'multiplyValueName': 'name_ru',
+          'description': this.wellTechsName,
+          'method': null,
           'name': 'Тех. структура',
           'data': ''
         },
         {
-          'description': this.wellTechs,
-          'method': 'multiplyValues',
-          'multiplyValueName': 'pivot.tap',
+          'description': this.wellTechsTap,
+          'method': null,
           'name': 'Отвод',
           'data': ''
         },
         {
-          'description': this.wellTechs,
-          'method': 'multiplyValues',
-          'multiplyValueName': 'name_ru',
+          'description': this.wellTechsName,
+          'method': null,
           'name': 'ГУ/Ряд',
           'data': ''
         },
         {
-          'description': this.wellOrg,
-          'method': 'multiplyValues',
-          'multiplyValueName': 'name_ru',
+          'description': this.wellOrgName,
+          'method': null,
           'name': 'Орг. структура',
           'data': ''
         },
@@ -487,9 +489,8 @@ export default {
           'data': ''
         },
         {
-          'description': 'this.tubeNom',
-          'method': 'multiplyValues',
-          'multiplyValueName': 'od',
+          'description': this.tubeNomOd,
+          'method': null,
           'name': 'Диаметр экспл. колонны / доп. экспл. колонны, мм',
           'data': ''
         },
