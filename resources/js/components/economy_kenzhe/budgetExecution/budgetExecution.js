@@ -1,8 +1,9 @@
 export default {
   data: function () {
     return {
+      params:{betweenMonthsValue: "12", company: "7", reload: true},
       numbersOfMonths: [0,1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],  
-      getCompanyData: "0",
+      repttData: "0",
       dzoData: [],
       macroData: [],
       fullCompanyNames: [
@@ -44,11 +45,14 @@ export default {
   },
   methods: {
     getCompany() {
-      let uri = this.localeUrl("/module_economy/company");
-      this.axios.get(uri).then((response) => {
-        let data = response.data;
-        this.getCompanyData = data;       
-      });
+      //this.params[attributeName] = this[attributeName];
+      //this.params['company'] = this.company;
+      this.params['reload'] = true;
+      return  axios.get('/ru/module_economy/company', {params: this.params})
+      .then(response => {
+      this.repttData = response.data;    
+     });     
+        
     },
     refreshData() {
       let uri = this.localeUrl("/getdzocalcs");
@@ -358,8 +362,10 @@ export default {
     },
 
   },
-  created() {  
-    this.getCompany();
+  async created () {  
+    await this.getCompany(); 
+    console.log('mounted this.repttData');  
+    console.log(this.repttData);  
     this.axios
       .get('/ru/getdzocalcsactualmonth', {})
       .then(response => {

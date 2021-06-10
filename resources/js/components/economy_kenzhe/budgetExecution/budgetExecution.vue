@@ -227,7 +227,7 @@
             </strong>
           </h5>
           <div class="ml-0 ml-sm-3 mr-0 mr-sm-3 pb-3 table-scroll">
-            <reptt-company :data-reptt="getCompanyData"></reptt-company>
+            <reptt-company  :data-reptt="repttData"></reptt-company>
           </div>
         </div>
       </div>

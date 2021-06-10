@@ -12,7 +12,7 @@ Route::group(
                 Route::match(['GET', 'POST'], '/import_rep', 'EconomyKenzhe\ImportController@importRepTtValues')->name('import_rep');
                 Route::match(['GET', 'POST'], '/import_reptt_titles', 'EconomyKenzhe\ImportController@importRepTtTitlesTree')->name('import_reptt_titles');
                 Route::get('/proactive-factors', 'EconomyKenzhe\proactiveFactorsController@proactiveFactors')->name('proactiveFactors');
-                Route::get('/budgetexecution', 'EconomyKenzhe\BudgetExecutionController@budgetExecution')->name('budgetExecution');    
+                Route::get('/budgetexecution', 'EconomyKenzhe\BudgetExecutionController@budgetExecution')->name('budgetExecution');     
             });
     }
 );

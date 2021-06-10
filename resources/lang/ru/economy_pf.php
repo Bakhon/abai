@@ -99,6 +99,7 @@ return array (
     'unit' => 'Ед. изм.',
     'fact' => 'Факт',
     'january' => 'январь',
+    'factNa' => 'Факт на',
   ),
   'controlPanelCompanyValuation' => 'Панель управления входных параметров',
   'Capex' => 'Capex',
@@ -119,4 +120,5 @@ return array (
     11 => 'Декабрь',
     0 => 'Январь',
   ),
+  'economy' => 'Экономика',
 );
