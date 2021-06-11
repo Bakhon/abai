@@ -160,7 +160,7 @@
                                     v-else
                                     class="unit-vc ml-2"
                             >
-                              {{ trans('visualcenter.meterCubicWithSpace') }}
+                              {{ trans('visualcenter.meterCubic') }}
                             </div>
                           </div>
                           <div class="additional-header txt1 col-6 col-md-12">
