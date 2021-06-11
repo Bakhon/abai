@@ -154,13 +154,13 @@
                                     v-if="!buttonDailyTab && !isOneDateSelected"
                                     class="unit-vc ml-2"
                             >
-                              {{ trans("visualcenter.thousand") }}{{ trans('visualcenter.meterCubicWithSpace') }}
+                              {{ trans("visualcenter.thousand") }}{{ trans('visualcenter.meterCubic') }}
                             </div>
                             <div
                                     v-else
                                     class="unit-vc ml-2"
                             >
-                              {{ trans('visualcenter.meterCubicWithSpace') }}
+                              {{ trans('visualcenter.meterCubic') }}
                             </div>
                           </div>
                           <div class="additional-header txt1 col-6 col-md-12">
@@ -217,8 +217,8 @@
                     <div class="row rates-block__row">
                       <td
                               class="vc-select-table col-6 col-lg-6 rates-block"
-                              @click="changeTable('2')"
-                              :class="tableHover2"
+                              @click="changeTable('oilRate')"
+                              :class="`${tableMapping.oilRate.hover}`"
                       >
                         <div>
                           <div class="number d-flex">
@@ -256,8 +256,8 @@
                       </td>
                       <td
                               class="vc-select-table col-6 col-lg-6 rates-block"
-                              @click="changeTable('3')"
-                              :class="tableHover3"
+                              @click="changeTable('usdRate')"
+                              :class="`${tableMapping.usdRate.hover}`"
                       >
                         <div>
                           <div class="number d-flex">
@@ -300,7 +300,7 @@
             </table>
           </div>
         </div>
-        <div class="first-table big-area" :style="`${Table1}`">
+        <div :class="[`${tableMapping.productionDetails.class}`, 'first-table big-area']">
           <div class="first-string first-string2">
             <div class="row px-4 mt-3 middle-block__list-x-scroll">
               <div class="col-12 col-lg dropdown dropdown4 font-weight pr-1">
@@ -1442,7 +1442,7 @@
         </div>
 
         <visual-center-usd-table
-                :style="`${Table2}`"
+                :table-class="tableMapping.oilRate.class"
                 :period.sync="period"
                 :usd-rates-data.sync="oilRatesData"
                 :period-select-func.sync="periodSelectFunc"
@@ -1451,13 +1451,12 @@
                 @period-select-usd="
             updatePrices(periodSelect(selectedPeriod))
           "
-                @change-table="changeTable('1')"
+                @change-table="changeTable('productionDetails')"
                 :main-title="trans('visualcenter.oilPricedynamic')"
                 :second-title="'USD Yandex quote'"
         />
-        <!-- 'Динамика цены на нефть' -->
         <visual-center-usd-table
-                :style="`${Table3}`"
+                :table-class="tableMapping.usdRate.class"
                 :period.sync="period"
                 :usd-rates-data.sync="usdRatesData"
                 :period-select-func.sync="periodSelectFunc"
@@ -1466,12 +1465,11 @@
                 @period-select-usd="
             updatePrices(periodSelect(selectedPeriod))
           "
-                @change-table="changeTable('1')"
+                @change-table="changeTable('productionDetails')"
                 :main-title="trans('visualcenter.kursHeader')"
                 :second-title="'USD НБ РК'"
         />
-        <!-- 'Динамика курса доллара США к тенге (USD, НБ РК)' -->
-        <div class="third-table big-area" :style="`${Table5}`">
+        <div :class="[`${tableMapping.injectionWells.class}`, 'third-table big-area']">
           <div class="first-string first-string2">
             <div class="container-fluid">
               <div class="area-6-name row mt-3 mb-3 px-2">
@@ -1483,7 +1481,7 @@
                   </div>
                 </div>
                 <div class="col px-4">
-                  <div class="close2" @click="changeTable('1')">
+                  <div class="close2" @click="changeTable('productionDetails')">
                     <!-- Закрыть -->{{ trans("visualcenter.close") }}
                   </div>
                 </div>
@@ -1633,7 +1631,7 @@
             </div>
           </div>
         </div>
-        <div class="third-table big-area" :style="`${Table4}`">
+        <div :class="[`${tableMapping.productionWells.class}`, 'third-table big-area']">
           <div class="first-string first-string2">
             <div class="container-fluid">
               <div class="area-6-name row mt-3 mb-3 px-2">
@@ -1643,7 +1641,7 @@
                   </div>
                 </div>
                 <div class="col px-4">
-                  <div class="close2" @click="changeTable('1')">
+                  <div class="close2" @click="changeTable('productionDetails')">
                     {{ trans("visualcenter.close") }}
                   </div>
                 </div>
@@ -1796,17 +1794,17 @@
           </div>
         </div>
 
-        <div class="third-table big-area" :style="`${Table6}`">
+        <div :class="[`${tableMapping.otmDrilling.class}`, 'third-table big-area']">
           <div class="first-string first-string2">
             <div class="container-fluid">
               <div class="area-6-name row mt-3 mb-3 px-2">
                 <div class="col">
                   <div class="ml-4 bold">
-                    {{ trans("visualcenter.otm") }}
+                    {{ trans("visualcenter.drillingWells") }}
                   </div>
                 </div>
                 <div class="col px-4">
-                  <div class="close2" @click="changeTable('1')">
+                  <div class="close2" @click="changeTable('productionDetails')">
                     {{ trans("visualcenter.close") }}
                   </div>
                 </div>
@@ -1912,6 +1910,7 @@
                     <tbody>
                     <tr
                             v-for="(item, index) in otmData"
+                            v-if="index < 2"
                             @click="otmSelectedRow = item.code"
                     >
                       <td
@@ -1977,7 +1976,181 @@
           </div>
         </div>
 
-        <div class="third-table big-area" :style="`${Table7}`">
+        <div :class="[`${tableMapping.otmWorkover.class}`, 'third-table big-area']">
+          <div class="first-string first-string2">
+            <div class="container-fluid">
+              <div class="area-6-name row mt-3 mb-3 px-2">
+                <div class="col">
+                  <div class="ml-4 bold">
+                    {{ trans("visualcenter.importForm.wellWorkover") }}
+                  </div>
+                </div>
+                <div class="col px-4">
+                  <div class="close2" @click="changeTable('productionDetails')">
+                    {{ trans("visualcenter.close") }}
+                  </div>
+                </div>
+              </div>
+              <div class="row px-4">
+                <div class="col-4 px-2 ">
+                  <div
+                          :class="[`${buttonMonthlyTab}`,'button2 side-tables__main-menu-button']"
+                          @click="changeMenu2('monthly')"
+                  >
+                    {{ trans("visualcenter.monthBegin") }}
+                  </div>
+                </div>
+                <div class="col-4 px-2">
+                  <div
+                          :class="[`${buttonYearlyTab}`,'button2 side-tables__main-menu-button']"
+                          @click="changeMenu2('yearly')"
+                  >
+                    {{ trans("visualcenter.yearBegin") }}
+                  </div>
+                </div>
+                <div class="col-4 pl-2">
+                  <div class="dropdown3">
+                    <div
+                            :class="[`${buttonPeriodTab}`,'button2 side-tables__main-menu-button']"
+                            @click="changeMenu2('period')"
+                    >
+                      <span v-if="isOneDateSelected">
+                        {{ trans("visualcenter.date") }} [{{
+                          timeSelect
+                        }}]</span
+                      >
+                      <span v-else>
+                        {{ trans("visualcenter.period") }} [{{
+                          timeSelect
+                        }}
+                        - {{ timeSelectOld }}]</span
+                      >
+                    </div>
+                    <ul class="center-menu2 right-indent">
+                      <li class="center-li">
+                        <br /><br />
+
+                        <div class="month-day">
+                          <div>
+                            <date-picker
+                                    v-if="selectedDMY == 0"
+                                    mode="range"
+                                    v-model="range"
+                                    is-range
+                                    class="m-auto"
+                                    :model-config="modelConfig"
+                                    @input="changeDate"
+                                    @dayclick="dayClicked"
+                            />
+                          </div>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <br />
+              <div class="">
+                <div class="row px-4">
+                  <div class="col">
+                    <select
+                            class="side-blocks__dzo-companies-dropdown w-100"
+                            @change="innerWellsProdMetOnChange($event)"
+                            v-model="selectedDzo"
+                    >
+                      <option v-for="dzo in injectionWellsOptions" :value="dzo.ticker">
+                        {{dzo.name}}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <br />
+              <div class="row container-fluid">
+                <div class="vis-table px-4 col-sm-7">
+                  <table
+                          v-if="otmData.length"
+                          class="table4 w-100 chemistry-table"
+                  >
+                    <thead>
+                    <tr>
+                      <th>{{ trans("visualcenter.otmColumnTitle") }}</th>
+                      <th>{{ trans("visualcenter.Plan") }}</th>
+                      <th>{{ trans("visualcenter.Fact") }}</th>
+                      <th>{{ trans("visualcenter.dzoDifference") }}</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <tr
+                            v-for="(item, index) in otmData"
+                            v-if="index > 1"
+                            @click="otmSelectedRow = item.code"
+                    >
+                      <td
+                              @click="otmSelectedRow = item.code"
+                              class="row-name_width_40 cursor-pointer"
+                              :class="{
+                            tdStyle: index % 2 === 0,
+                            selected: otmSelectedRow === item.code,
+                          }"
+                      >
+                        <span>
+                          {{ item.name }}
+                        </span>
+                      </td>
+                      <td
+                              @click="otmSelectedRow = item.code"
+                              class="width-20 text-center data-pointer"
+                              :class="`${getDzoColumnsClass(index,'plan')}`"
+                      >
+                        <div class="font">
+                          {{ getFormattedNumber(item.plan) }}
+                          <span class="data-metrics">
+                              {{item.metricSystem}}
+                            </span>
+                        </div>
+                      </td>
+                      <td
+                              @click="otmSelectedRow = item.code"
+                              class="width-20 text-center data-pointer"
+                              :class="`${getDzoColumnsClass(index,'fact')}`"
+                      >
+                        <div class="font">
+                          {{getFormattedNumber(item.fact) }}
+                          <span class="data-metrics">
+                              {{item.metricSystem}}
+                            </span>
+                        </div>
+                      </td>
+                      <td
+                              class="width-20 text-center data-pointer"
+                              :class="`${getDzoColumnsClass(index,'difference')}`"
+                      >
+                        <div class="font dynamic">
+                          {{formatDigitToThousand(item.difference)}}
+                          <span class="data-metrics">
+                              {{item.metricSystem}}
+                            </span>
+                        </div>
+                      </td>
+                    </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div class="col-sm-5">
+                  <div  class="name-chart-left">{{ trans("visualcenter.wellsNumber") }}</div>
+                  <visual-center3-wells
+                          v-if="otmDataForChart"
+                          :chartData="otmDataForChart"
+                  ></visual-center3-wells>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div :class="[`${tableMapping.chemistry.class}`, 'third-table big-area']">
           <div class="first-string first-string2">
             <div class="container-fluid">
               <div class="area-6-name row mt-3 mb-3 px-2">
@@ -1987,7 +2160,7 @@
                   </div>
                 </div>
                 <div class="col px-4">
-                  <div class="close2" @click="changeTable('1')">
+                  <div class="close2" @click="changeTable('productionDetails')">
                     {{ trans("visualcenter.close") }}
                   </div>
                 </div>
@@ -2014,21 +2187,10 @@
                   <div class="dropdown3">
                     <div
                             :class="[`${buttonPeriodTab}`,'button2 side-tables__main-menu-button']"
-                            @click="changeMenu2('period')"
                     >
-                      <span v-if="isOneDateSelected">
-                        {{ trans("visualcenter.date") }} [{{
-                          timeSelect
-                        }}]
-                      </span
-                      >
-                      <span v-else>
-                        {{ trans("visualcenter.period") }} [{{
-                          timeSelect
-                        }}
-                        - {{ timeSelectOld }}]
-                      </span
-                      >
+                      <span>
+                        {{ trans("visualcenter.date") }} [{{chemistrySelectedDate}}]
+                      </span>
                     </div>
                     <ul class="center-menu2 right-indent">
                       <li class="center-li">
@@ -2139,8 +2301,8 @@
                 <tr class="cursor-pointer d-flex">
                   <td
                           class="col-6"
-                          @click="changeTable('4')"
-                          :class="tableHover4"
+                          @click="changeTable('productionWells')"
+                          :class="`${tableMapping.productionWells.hover}`"
                   >
                     <div class="txt4">
                       {{ getFormattedNumber(prod_wells_work) }}
@@ -2159,8 +2321,8 @@
 
                   <td
                           class="col-6"
-                          @click="changeTable('4')"
-                          :class="tableHover4"
+                          @click="changeTable('productionWells')"
+                          :class="`${tableMapping.productionWells.hover}`"
                   >
                     <div class="txt4 d-flex">
                       <div class="col-10 col-lg-9">
@@ -2188,8 +2350,8 @@
                 <tr class="cursor-pointer d-flex">
                   <td
                           class="col-12"
-                          @click="changeTable('4')"
-                          :class="tableHover4"
+                          @click="changeTable('productionWells')"
+                          :class="`${tableMapping.productionWells.hover}`"
                   >
                     <div class="right-column_header">
                       {{ trans("visualcenter.prodWells") }}
@@ -2204,8 +2366,8 @@
                   <tr class="cursor-pointer d-flex">
                     <td
                             class="col-6"
-                            @click="changeTable('5')"
-                            :class="tableHover5"
+                            @click="changeTable('injectionWells')"
+                            :class="`${tableMapping.injectionWells.hover}`"
                     >
                       <div class="txt4">
                         {{getFormattedNumber(inj_wells_work)}}
@@ -2224,8 +2386,8 @@
 
                     <td
                             class="col-6"
-                            @click="changeTable('5')"
-                            :class="tableHover5"
+                            @click="changeTable('injectionWells')"
+                            :class="`${tableMapping.injectionWells.hover}`"
                     >
                       <div class="txt4 d-flex">
                         <div class="col-10 col-lg-9">
@@ -2253,8 +2415,8 @@
                   <tr class="cursor-pointer d-flex">
                     <td
                             class="col-12"
-                            @click="changeTable('5')"
-                            :class="tableHover5"
+                            @click="changeTable('injectionWells')"
+                            :class="`${tableMapping.injectionWells.hover}`"
                     >
                       <div class="right-column_header">
                         {{ trans("visualcenter.idleWells") }}
@@ -2266,8 +2428,10 @@
             </div>
 
             <div class="first-string first-string2 cursor-pointer">
-              <div      @click="changeTable('6')"
-                        :class="tableHover6">
+              <div
+                      @click="changeTable('otmDrilling')"
+                      :class="`${tableMapping.otmDrilling.hover}`"
+              >
                 <table class="table">
                   <tr class="d-flex">
                     <td>
@@ -2293,8 +2457,8 @@
             </div>
 
             <div class="first-string first-string2 cursor-pointer"
-                 @click="changeTable('7')"
-                 :class="tableHover7"
+                 @click="changeTable('chemistry')"
+                 :class="`${tableMapping.chemistry.hover}`"
             >
               <div>
                 <table class="table">
@@ -2327,8 +2491,8 @@
                   <tr class="d-flex">
                     <td
                             class="col-6 cursor-pointer"
-                            @click="changeTable('6')"
-                            :class="tableHover6"
+                            @click="changeTable('otmWorkover')"
+                            :class="`${tableMapping.otmWorkover.hover}`"
                     >
                       <div class="mt-1 float-right">
 
@@ -2351,8 +2515,8 @@
 
                     <td
                             class="col-6 cursor-pointer"
-                            @click="changeTable('6')"
-                            :class="tableHover6"
+                            @click="changeTable('otmWorkover')"
+                            :class="`${tableMapping.otmWorkover.hover}`"
                     >
                       <div class="mt-1 float-right">
 
@@ -2376,7 +2540,7 @@
             </div>
           </div>
 
-          <div class="first-string first-string2 cursor-pointer">
+          <div class="first-string first-string2">
             <div>
               <table class="table">
                 <tr class="d-flex">

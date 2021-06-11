@@ -1,5 +1,5 @@
 <template>
-  <div class="third-table big-area usd-chart">
+  <div :class="[tableClass, 'third-table big-area usd-chart']">
     <div class="first-string first-string2">
       <div class="container-fluid vc-oil-usd-wrapper">
         <div class="close2"
@@ -103,7 +103,8 @@ export default {
     'isPricesChartLoading',
     'mainTitle',
     'secondTitle',
-    'tableData'
+    'tableData',
+    'tableClass'
   ],
   computed: {
     activeTitle() {

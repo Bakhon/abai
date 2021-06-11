@@ -48,7 +48,7 @@
             v-on:input="$emit('input', $event.target.checked); $emit('change', $event.target.checked)"
         >
     </template>
-    <template v-else-if="item.type === 'dict'">
+    <template v-else-if="item.type === 'dict' && dict">
       <v-select
           :value="formatedValue"
           label="name"
@@ -145,13 +145,9 @@ export default {
       dateFormat: {
         'date': {year: 'numeric', month: 'numeric', day: 'numeric'},
         'datetime': {year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric'}
-      }
+      },
+      dict: null
     }
-  },
-  computed: {
-    dict() {
-      return this.$store.getters['bdform/dict'](this.item.dict);
-    },
   },
   watch: {
     value(newValue) {
@@ -160,8 +156,10 @@ export default {
   },
   created() {
     if (['dict', 'dict_tree'].indexOf(this.item.type) > -1) {
-      if (typeof this.dict === 'undefined') {
-        this.loadDict(this.item.dict)
+      if (this.dict === null) {
+        this.loadDict(this.item.dict).then(result => {
+          this.dict = result
+        })
       }
     }
 
@@ -185,6 +183,8 @@ export default {
     },
     getFormatedValue(value) {
       if (this.item.type === 'dict') {
+        if (this.dict === null) return {}
+
         let selected = this.dict.find(item => item.id === value) || {id: null, name: null}
         return {
           id: selected.id,
