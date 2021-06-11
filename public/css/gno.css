@@ -642,6 +642,26 @@ input.checkbox3 {
     line-height: 25px !important;
 }
 
+.square_editing {
+    /* border: 1px solid #00CCFF; */
+    background: rgba(76, 190, 237, 0.278431);
+    outline: none;
+    width: 60px;
+    height: 20px;
+    position: relative;
+    color: white;
+    top: 0;
+    padding-right: 5px;
+    padding-left: 5px;
+    line-height: 25px !important;
+}
+
+.square_editing:hover{
+    background-color: #F4F3F3;
+    border: 1px solid transparent;
+    box-shadow: inset 0 0px 0px 1px #ccc; 
+  }
+
 .center {
     margin-top: 10px;
 }
@@ -676,6 +696,17 @@ input[type="text"]:enabled.square2 {
     background: #494AA5;
     outline: none;
     border: 0;
+}
+
+input[type="text"]:disabled.square_editing {
+    background:rgba(50, 51, 112, 1);
+    color: #928f8f;
+    outline: none;
+}
+
+input[type="text"]:enabled.square_editing {
+    background: #494AA5;
+    outline: none;
 }
 
 .square3 {
@@ -1140,9 +1171,20 @@ td {
 }
 
 .choosing-well-title {
+    float: left;
+    height: 24px;
     font-size: 20px;
     font-weight: bold;
     bottom: 4%;
+}
+
+.choosing-well-edit {
+    float: left;
+    height: 24px;
+    font-size: 20px;
+    font-weight: bold;
+    bottom: 4%;
+    text-align: end;
 }
 
 .choosing-well-data {

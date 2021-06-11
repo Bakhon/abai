@@ -334,7 +334,7 @@ class FluidProduction extends TableForm
         $techStructure = $this->getTechStructure();
 
         $orgTechs = DB::connection('tbd')
-            ->table('dict.org_tech')
+            ->table('prod.org_tech')
             ->select('org', 'tech')
             ->get()
             ->mapToGroups(
