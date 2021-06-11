@@ -126,7 +126,6 @@
                         <span v-if="wellSaptialObjectBottomY">
                             {{ wellSaptialObjectBottomY }}
                           </span></p>
-
                     </div>
                   </div>
                 </div>
@@ -312,7 +311,6 @@ export default {
         this.setTableData()
       })
     },
-
     setTableData() {
       for (let i = 0; i < this.tableData.length; i++) {
         if (this.tableData[i].method === 'neighbors') {
