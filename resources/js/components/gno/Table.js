@@ -405,7 +405,10 @@ export default {
   methods: {
     editPage() {
       if (!this.isEditing) {this.isEditing = true}
-      else {this.isEditing = false}
+      else {
+        this.welldata['sk_type'] = this.sk
+        this.welldata['horizon'] = this.horizon
+        this.isEditing = false}
     },
     changeValue(key, value) {
       this.welldata[key] = value
@@ -433,6 +436,7 @@ export default {
       this.komponovka = this.$store.getters.komponovka
       this.h2s = this.$store.getters.h2s
       this.heavyDown = this.$store.getters.heavyDown
+      this.stupColumns = this.$store.getters.stupColumns
       this.postdata = JSON.stringify(
         {
           "pgno_setings":{
@@ -450,6 +454,7 @@ export default {
             "dlina_polki": this.dlinaPolki,
             "h2s": this.h2s,
             "heavy_down": this.heavyDown,
+            "stups": this.stupColumns
           },
           "welldata": this.welldata,
           "settings" : {
@@ -1043,6 +1048,7 @@ export default {
       this.$store.commit("UPDATE_KOROZ", "srednekor")
       this.$store.commit("UPDATE_GROUP_POSAD", "2")
       this.$store.commit("UPDATE_HEAVYDOWN", true)
+      this.$store.commit("UPDATE_STUP_COLUMNS", 2)
 
       if(this.field == "JET") {
               this.ao = 'АО "ММГ"'
@@ -1608,9 +1614,9 @@ export default {
                           size: 'sm',
                           timeout: 8000
                         })
-                    
-                    this.shgnSPM = data["spm"].toFixed(0)
-                    this.shgnLen = data["stroke_len"]
+                    this.qoilShgnTable = this.welldata['qo_cel'].toFixed(1)
+                    this.shgnSPM = data["spm"].toFixed(1)
+                    this.shgnLen = data["stroke_len"].toFixed(1)
                     this.shgnS1D = data["s1d"].toFixed(0)
                     this.shgnS2D = data["s2d"].toFixed(0)
                     this.shgnS1L = data["s1l"].toFixed(0)

@@ -18,7 +18,7 @@ const pgno = {
         dmPumps: ["32", "38", "44", "57", "70"],
         dmRods: ["19", "22", "25"],
         komponovka: ["hvostovik"],
-        stupColumns: ["2"],
+        stupColumns: "2",
         selectedMarkShtang: [],
         markShtangs: [
           {

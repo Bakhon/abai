@@ -19,10 +19,10 @@
 
 			<div class="flex__item__block__second__block">
 				<div class="block__text__2">{{trans('pgno.minimum')}}</div>
-				<input v-model="lenMin" @change="onChangeLenMin"  class="square2 block__3__input" type="text">
+				<input v-model="strokeLenMin" @change="onChangeLenMin"  class="square2 block__3__input" type="text">
 
 				<div class="block__text__3">{{trans('pgno.maximum')}}</div>
-				<input v-model="lenMax" @change="onChangeLenMax"  class="square2 block__4__input" type="text">
+				<input v-model="strokeLenMax" @change="onChangeLenMax"  class="square2 block__4__input" type="text">
 			</div>
 
 		</div>

@@ -1268,7 +1268,7 @@
                             </tr>
                             <tr>
                               <td class="td-pgno" rowspan="1">{{trans('pgno.q_nefti')}}</td>
-                              <td class="td-pgno" rowspan="1">{{ qOil }} {{trans('measurements.t/d')}}</td>
+                              <td class="td-pgno" rowspan="1">{{ qoilShgnTable }} {{trans('measurements.t/d')}}</td>
                             </tr>
                             <tr>
                               <td class="td-pgno" rowspan="1">{{trans('pgno.obvodnenost')}}</td>
