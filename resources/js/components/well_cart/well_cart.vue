@@ -426,6 +426,18 @@ export default {
         {
           'description': null,
           'method': null,
+          'name': 'Зона скважины',
+          'data': ''
+        },
+        {
+          'description': null,
+          'method': null,
+          'name': 'Реагирующие скважины',
+          'data': ''
+        },
+        {
+          'description': null,
+          'method': null,
           'name': 'Влияющие скважины',
           'data': ''
         },
@@ -546,6 +558,12 @@ export default {
           'data': ''
         },
         {
+          'description': '',
+          'method': null,
+          'name': 'число качаний (об/мин)',
+          'data': ''
+        },
+        {
           'description': this.actualBottomHole,
           'method': null,
           'name': 'Фактический забой/(дата отбивки)',
@@ -573,6 +591,12 @@ export default {
           'description': null,
           'method': null,
           'name': 'КШД (тип/диаметр)',
+          'data': ''
+        },
+        {
+          'description': null,
+          'method': null,
+          'name': 'Дата перфорации',
           'data': ''
         },
         {
