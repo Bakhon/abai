@@ -34,4 +34,9 @@ return array (
   'select' => 'Выберите',
   'exit' => 'Выход',
   'no_permissions_rights' => 'Нет прав доступа',
+  'restored' => 'Восстановленно',
+  'are-you-sure-to-restore' => 'Вы действительно хотите восстановить запись?',
+  'are-you-sure-to-delete' => 'Вы действительно хотите удалить запись?',
+  'restore' => 'Восстановить',
+  'restore_title' => 'Восстановление',
 );

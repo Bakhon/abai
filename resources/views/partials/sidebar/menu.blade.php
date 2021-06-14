@@ -143,13 +143,15 @@
                             </ul>
                         </li>
                     @endif
-                    <li class="left-menu-li">
-                        @if(auth()->user()->can('monitoring view pipes map'))
+
+                    @if(auth()->user()->can('monitoring view pipes map'))
+                        <li class="left-menu-li">
                             <a href="{{route('maps.gu')}}">
                                 {{ trans('monitoring.tech_map') }}
                             </a>
-                        @endif
-                    </li>
+                        </li>
+                    @endif
+
                     <li class="left-menu-li">
                         <a href="{{route('facilities')}}">
                             {{ trans('monitoring.tech_map_prototype') }}

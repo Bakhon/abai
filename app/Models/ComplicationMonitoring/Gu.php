@@ -13,6 +13,7 @@ class Gu extends Model
     use LogsActivity, SoftDeletes;
 
     protected static $logAttributes = ['*'];
+    protected static $logAttributesToIgnore = ['updated_at', 'created_at'];
     protected static $logOnlyDirty = true;
     protected static $submitEmptyLogs = false;
 
