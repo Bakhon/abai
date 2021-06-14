@@ -28,6 +28,8 @@ class WellsController extends Controller
             'spatial_object_bottom' => $this->spatialObjectBottom($well),
             'actual_bottom_hole' => $this->actualBottomHole($well),
             'lab_research_value' => $this->LabResearchValue($well),
+            'artificial_bottom_hole' => $this->artificialBottomHole($well),
+            'well_perf_actual' => $this->WellPerfActual($well),
         );
     }
 
@@ -147,12 +149,26 @@ class WellsController extends Controller
             ->first();
     }
 
+    public function artificialBottomHole(Well $well)
+    {
+        return $well->bottom_hole()
+            ->where('bottom_hole_type', '=', '2')
+            ->withPivot('depth')
+            ->first();
+    }
+
     public function LabResearchValue(Well $well)
     {
-        return $well -> lab_research_value()
+        return $well->lab_research_value()
             ->withPivot('research_date as research_date')
             ->orderBy('research_date', 'desc')
             ->first(['value_double', 'research_date']);
+    }
+
+    public function WellPerfActual(Well $well)
+    {
+        return $well->well_perf_actual()
+            ->first();
     }
 
     public function search(Request $request): array

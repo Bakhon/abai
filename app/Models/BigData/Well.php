@@ -87,6 +87,11 @@ class Well extends TBDModel
         return $this->belongsToMany(LabResearchValue::class, 'prod.lab_research', 'well', 'id', 'id', 'research');
     }
 
+    public function well_perf_actual()
+    {
+        return $this->belongsToMany(WellPerfActual::class, 'prod.well_perf', 'well', 'id');
+    }
+
     public function scopeActive($query, $date)
     {
         $query->whereHas(

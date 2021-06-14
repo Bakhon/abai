@@ -240,7 +240,10 @@ export default {
       wellSaptialObjectBottomX: null,
       wellSaptialObjectBottomY: null,
       actualBottomHole: null,
+      artificialBottomHole: null,
       wellLabResearchValue: null,
+      wellPerfActualTop: null,
+      wellPerfActualBase: null,
       forms: forms,
     }
   },
@@ -306,11 +309,15 @@ export default {
             this.wellSaptialObjectBottomY = data[1]
           }
           this.actualBottomHole = data.actual_bottom_hole.pivot.depth
+          this.artificialBottomHole = data.artificial_bottom_hole.pivot.depth
+          this.wellPerfActualTop = data.well_perf_actual.top
+          this.wellPerfActualBase = data.well_perf_actual.base
         } catch (e) {
           this.loading = false
         }
         this.loading = false
         this.setTableData()
+        console.log(data)
       })
     },
     setTableData() {
@@ -542,6 +549,38 @@ export default {
           'description': this.actualBottomHole,
           'method': null,
           'name': 'Фактический забой/(дата отбивки)',
+          'data': ''
+        },
+        {
+          'description': this.actualBottomHole,
+          'method': null,
+          'name': 'Искусственный забой',
+          'data': ''
+        },
+        {
+          'description': null,
+          'method': null,
+          'name': 'Отбитый забой',
+          'data': ''
+        },
+        {
+          'description': null,
+          'method': null,
+          'name': 'Глубина спуска НКТ, м',
+          'data': ''
+        },
+        {
+          'description': null,
+          'method': null,
+          'name': 'КШД (тип/диаметр)',
+          'data': ''
+        },
+        {
+          'description': null,
+          'method': 'neighbors',
+          'neigbor_1': this.wellPerfActualTop,
+          'neigbor_2': this.wellPerfActualBase,
+          'name': 'Действующие интервалы перфорации',
           'data': ''
         },
       ]
