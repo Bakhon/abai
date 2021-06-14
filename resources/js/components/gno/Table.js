@@ -28,6 +28,7 @@ export default {
   ],
   data: function () {
     return {
+      nearDist: 1000,
       perms: this.params,
       isPermission: false,
       isEditing: false,
@@ -207,6 +208,7 @@ export default {
       isAnalysisBoxValue6: true,
       isAnalysisBoxValue7: true,
       isAnalysisBoxValue8: true,
+      isAnalysisBoxValue9: true,
       nk_fields: [
         {
           short_name: "UZN",
@@ -487,6 +489,7 @@ export default {
             "analysisBox6": this.isAnalysisBoxValue6,
             "analysisBox7": this.isAnalysisBoxValue7,
             "analysisBox8": this.isAnalysisBoxValue8,
+            "gor_asma": this.isAnalysisBoxValue9,
             "p_buff": this.pBuf,
             "sep_meth": this.sep_meth,
             "sep_value": this.sep_value,
@@ -494,6 +497,7 @@ export default {
             "mech_sep_value": this.mech_sep_value,
             "nat_sep": this.nat_sep,
             "nkt": this.nkt,
+            'near_dist': this.nearDist
           }
         })
     },

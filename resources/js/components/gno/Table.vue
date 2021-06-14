@@ -562,6 +562,11 @@
                           type="checkbox" />
                         <label for="checkbox1" class="checkbox-modal-analysis-menu-label">{{trans('pgno.obv_obv_acma')}}</label>
                       </div>
+                      <div class="form-check">
+                        <input v-model="isAnalysisBoxValue9" class="checkbox-modal-analysis-menu" @change="postAnalysisOld()"
+                          type="checkbox" />
+                        <label for="checkbox1" class="checkbox-modal-analysis-menu-label">{{trans('pgno.gor_gor_acma')}}</label>
+                      </div>
                       <button type="button" class="old_well_button" @click="setGraphOld()">
                         {{trans('pgno.primenit_korrektirovki')}}
                       </button>
@@ -631,6 +636,11 @@
                         <input v-model="hasGrp" class="new-checkbox-modal-analysis-menu" @change="postAnalysisNew()"
                           type="checkbox" />
                         <label for="checkbox1" class="new-checkbox-modal-analysis-menu-label">{{trans('pgno.s_grp')}}</label>
+                      </div>
+                      <div class="form-check-new">
+                        {{trans('pgno.near_dist')}}
+                        <input v-model="nearDist" class="new-checkbox-modal-analysis-menu square3 square-dist" @change="postAnalysisNew()"
+                          type="text" />
                       </div>
                       <div class="icon-for-table" @click="onOpenTable()">
                         <svg width="31" height="35" viewBox="0 0 31 35" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -2344,5 +2354,9 @@ background-position: right 5px top 50%;
 
 .table-pgno-one {
   height: 200px;
+}
+
+.square-dist {
+  width: 25%
 }
 </style>
