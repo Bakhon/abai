@@ -3,15 +3,15 @@ import axios from 'axios'
 const pgno = {
     state: {
         hPump: null,
-        spmMin: null,
-        spmMax: null,
-        strokeLenMin: null,
-        strokeLenMax: null,
-        kpodMin: null,
-        davMin: null,
-        gasMax: null,
-        dlinaPolki: null,
-        groupPosad: null,
+        spmMin: 3,
+        spmMax: 8,
+        strokeLenMin: 2,
+        strokeLenMax: 3,
+        kpodMin: 0.6,
+        pintakeMin: 30,
+        gasMax: 10,
+        inclStep: 10,
+        groupPosad: 2,
         h2s: false,
         heavyDown: true,
         corrosion: "mediumCorrosion",
@@ -46,14 +46,14 @@ const pgno = {
       UPDATE_LEN_MAX: (state, val) => {
         state.strokeLenMax = val
       },
-      UPDATE_DAV_MIN: (state, val) => {
-        state.davMin = val
+      UPDATE_PINTAKE_MIN: (state, val) => {
+        state.pintakeMin = val
       },
       UPDATE_GAS_MAX: (state, val) => {
         state.gasMax = val
       },
-      UPDATE_DLINA_POLKI: (state, val) => {
-        state.dlinaPolki = val
+      UPDATE_INCL_STEP: (state, val) => {
+        state.inclStep = val
       },
       UPDATE_H2S: (state, val) => {
         state.h2s = val
@@ -126,9 +126,9 @@ const pgno = {
       spmMax: (state) => state.spmMax,
       strokeLenMin: (state) => state.strokeLenMin,
       strokeLenMax: (state) => state.strokeLenMax,
-      davMin: (state) => state.davMin,
+      pintakeMin: (state) => state.pintakeMin,
       gasMax: (state) => state.gasMax,
-      dlinaPolki: (state) => state.dlinaPolki,
+      inclStep: (state) => state.inclStep,
       groupPosad: (state) => state.groupPosad,
       hPump: (state) => state.hPump,
       corrosion: (state) => state.corrosion,

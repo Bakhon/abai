@@ -214,4 +214,5 @@ return array (
   'refresh' => 'Refresh',
   'edit' => 'Edit',
   'near_dist' => 'Distance for wells',
+  'notify_error_sk' => 'Уточните тип СК',
 );

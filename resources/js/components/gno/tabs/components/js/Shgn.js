@@ -6,10 +6,10 @@ export default {
 		return {
 			svgTableN1: require('../../../images/tableN1.svg'),
 			svgTableN2: require('../../../images/tableN2.svg'),
-			davMin: 30,
+			pintakeMin: 30,
 			groupPosad: 2,
 			stup: '2',
-			dlinaPolki: 10,
+			inclStep: 10,
 			gasMax: 10,
 			hvostovik: true,
 			corrosion: 'mediumCorrosion',
@@ -154,14 +154,14 @@ export default {
 		onChangeLenMax(event) {
 			this.$store.commit("UPDATE_LEN_MAX", event.target.value)
 		},
-		onChangeDavMin(event) {
-			this.$store.commit("UPDATE_DAV_MIN", event.target.value)
+		onChangePintakeMin(event) {
+			this.$store.commit("UPDATE_PINTAKE_MIN", event.target.value)
 		},
 		onChangeGasMax(event) {
 			this.$store.commit("UPDATE_GAS_MAX", event.target.value)
 		},
-		onChangeDlinaPolki(event) {
-			this.$store.commit("UPDATE_DLINA_POLKI", event.target.value)
+		onChangeInclStep(event) {
+			this.$store.commit("UPDATE_INCL_STEP", event.target.value)
 		},
 		onChangeKpod(event) {
 			this.$store.commit("UPDATE_KPOD", event.target.value)
@@ -212,9 +212,9 @@ export default {
 		this.h2s = this.$store.getters.h2s
 		this.heavyDown = this.$store.getters.heavyDown
 		this.corrosion = this.$store.getters.corrosion
-		this.davMin = this.$store.getters.davMin
+		this.pintakeMin = this.$store.getters.pintakeMin
 		this.gasMax = this.$store.getters.gasMax
-		this.dlinaPolki = this.$store.getters.dlinaPolki
+		this.inclStep = this.$store.getters.inclStep
 		this.markShtang = this.$store.getters.markShtang
 		this.markShtangs = this.markShtangsTypes[this.corrosion]
 	}

@@ -275,10 +275,12 @@ export default {
         this.$emit('update:isLoading', true);
         if (this.expChoose == 'ШГН'){
           this.lift_method="ШГН"
-          this.step=10
+          this.stepImage = 10
+          this.stepCalc = this.$store.getters.inclStep
         } else {
           this.lift_method="ЭЦН"
           this.step=20
+          this.stepCalc = 20
         }
 
         let jsonData = JSON.stringify(
@@ -286,7 +288,8 @@ export default {
             "lift_method": this.lift_method,
             "field": wi[0],
             "glubina": this.hPumpFromIncl.substring(0,4) * 1,
-            "step": this.step,
+            "step": this.stepImage,
+            "step_calc": this.stepCalc,
           }
         )
        

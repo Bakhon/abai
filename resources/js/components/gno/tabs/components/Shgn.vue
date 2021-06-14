@@ -249,7 +249,7 @@
 
 				<div class="flex__item__block__sixth__block">
 					<div class="block__text__5">{{trans('pgno.dav_nasos_minim')}}</div>
-					<input v-model="davMin" class="square2 block__6__input" type="text" @change="onChangeDavMin">
+					<input v-model="pintakeMin" class="square2 block__6__input" type="text" @change="onChangePintakeMin">
 
 					<div class="block__text__6">{{trans('pgno.gs_nasos_maks')}}</div>
 					<input v-model="gasMax" class="square2 block__7__input" type="text" @change="onChangeGasMax">
@@ -264,7 +264,7 @@
 	
 				<div class="flex__item__block__fifth__block__1">
 					<div class="block__text__4__end">{{trans('pgno.dlina_polki')}}</div>
-					<input v-model="dlinaPolki" class="square2 block__5__input" type="text" @change="onChangeDlinaPolki">
+					<input v-model="inclStep" class="square2 block__5__input" type="text" @change="onChangeInclStep">
 				</div>
 
 				<button type="button" class="submit_button" @click="onSubmitParams()">

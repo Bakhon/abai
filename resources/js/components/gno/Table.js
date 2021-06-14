@@ -431,7 +431,7 @@ export default {
       this.kpodMin = this.$store.getters.kpodMin
       this.davMin = this.$store.getters.davMin
       this.gasMax = this.$store.getters.gasMax
-      this.dlinaPolki = this.$store.getters.dlinaPolki
+      this.pintakeMin = this.$store.getters.pintakeMin
       this.dmPumps = this.$store.getters.dmPumps
       this.dmRods = this.$store.getters.dmRods
       this.groupPosad = this.$store.getters.groupPosad
@@ -455,12 +455,12 @@ export default {
             "komponovka": this.komponovka,
             "dav_min": this.davMin,
             "gas_max": this.gasMax,
-            "dlina_polki": this.dlinaPolki,
+            "pintake_min": this.pintakeMin,
             "h2s": this.h2s,
             "heavy_down": this.heavyDown,
             "stups": this.stupColumns,
             "corrosion": this.corrosion,
-            "steel_mark": this.markShtang
+            "steel_mark": this.markShtang,
           },
           "welldata": this.welldata,
           "settings" : {
@@ -1051,9 +1051,9 @@ export default {
       this.$store.commit("UPDATE_DMPUMPS", ["32", "38", "44", "57", "70"])
       this.$store.commit("UPDATE_DMRODS", ["19", "22", "25"])
       this.$store.commit("UPDATE_H2S", false)
-      this.$store.commit("UPDATE_DAV_MIN", 30)
+      this.$store.commit("UPDATE_PINTAKE_MIN", 30)
       this.$store.commit("UPDATE_GAS_MAX", 10)
-      this.$store.commit("UPDATE_DLINA_POLKI", 10)
+      this.$store.commit("UPDATE_INCL_STEP", 10)
       this.$store.commit("UPDATE_CORROSION", "mediumCorrosion")
       this.$store.commit("UPDATE_GROUP_POSAD", "2")
       this.$store.commit("UPDATE_HEAVYDOWN", true)
@@ -1265,7 +1265,15 @@ export default {
                 size: 'sm',
                 timeout: 8000
               })           
-          }
+            }
+            if(data['check_sk'] == "error") {
+              this.$notify({
+                message: this.trans('pgno.notify_error_sk'),
+                type: 'error',
+                size: 'sm',
+                timeout: 8000
+              })   
+            }
 
             if (this.expMeth == "ШГН") {
               this.mech_sep = false
@@ -1292,7 +1300,7 @@ export default {
 
     },
 
-    fetchBlockCentrators() {
+    fetchBlockCentrators() {   
       let fieldInfo = this.wellIncl.split('_');
       let urlForIncl = "http://172.20.103.187:7575/api/pgno/incl";
       if (this.expChoose == 'ЭЦН') {
