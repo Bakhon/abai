@@ -607,6 +607,24 @@ export default {
           'name': 'Действующие интервалы перфорации',
           'data': ''
         },
+        {
+          'description': null,
+          'method': null,
+          'name': 'Приемистость, м3/сут (режим/факт)',
+          'data': ''
+        },
+        {
+          'description': null,
+          'method': null,
+          'name': 'Давление закачки, атм (режим/факт)',
+          'data': ''
+        },
+        {
+          'description': null,
+          'method': null,
+          'name': 'Дебит жидкости, м3/сут (режим/факт)',
+          'data': ''
+        },
       ]
     }
   }
