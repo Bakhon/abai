@@ -82,6 +82,11 @@ class Well extends TBDModel
         return $this->belongsToMany(BottomHoleType::class, 'prod.bottom_hole', 'well', 'bottom_hole_type');
     }
 
+    public function lab_research_value()
+    {
+        return $this->belongsToMany(LabResearchValue::class, 'prod.lab_research', 'well', 'id', 'id', 'research');
+    }
+
     public function scopeActive($query, $date)
     {
         $query->whereHas(

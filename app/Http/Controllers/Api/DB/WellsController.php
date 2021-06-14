@@ -27,6 +27,7 @@ class WellsController extends Controller
             'spatial_object' => $this->spatialObject($well),
             'spatial_object_bottom' => $this->spatialObjectBottom($well),
             'actual_bottom_hole' => $this->actualBottomHole($well),
+            'lab_research_value' => $this->LabResearchValue($well),
         );
     }
 
@@ -144,6 +145,14 @@ class WellsController extends Controller
             ->where('bottom_hole_type', '=', '1')
             ->withPivot('depth')
             ->first();
+    }
+
+    public function LabResearchValue(Well $well)
+    {
+        return $well -> lab_research_value()
+            ->withPivot('research_date as research_date')
+            ->orderBy('research_date', 'desc')
+            ->first(['value_double', 'research_date']);
     }
 
     public function search(Request $request): array

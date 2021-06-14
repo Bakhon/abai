@@ -240,6 +240,7 @@ export default {
       wellSaptialObjectBottomX: null,
       wellSaptialObjectBottomY: null,
       actualBottomHole: null,
+      wellLabResearchValue: null,
       forms: forms,
     }
   },
@@ -276,6 +277,7 @@ export default {
       this.loading = true
       this.axios.get(this.localeUrl(`/api/bigdata/wells/${well.id}/wellInfo`)).then(({data}) => {
         try {
+          this.wellLabResearchValue = data.lab_research_value
           this.wellStatus = data.status
           this.wellCategory = data.category
           this.wellCategory_last = data.category_last
@@ -317,8 +319,10 @@ export default {
           try {
             if (this.tableData[i].neigbor_1 != null) {
               this.tableData[i].data += this.tableData[i].neigbor_1
-              this.tableData[i].data += ' - '
-              this.tableData[i].data += this.tableData[i].neigbor_2
+              if (this.tableData[i].neigbor_2 != null) {
+                this.tableData[i].data += ' - '
+                this.tableData[i].data += this.tableData[i].neigbor_2
+              }
             }
           } catch (e) {
           }
@@ -375,8 +379,10 @@ export default {
           'data': ''
         },
         {
-          'description': this.wellGeo.name_ru,
-          'method': null,
+          'description': '',
+          'method': 'neighbors',
+          'neigbor_1': this.wellGeo.name_ru,
+          'neigbor_2': this.wellLabResearchValue.value_double,
           'name': 'Горизонт / Pнас, атм',
           'data': ''
         },
