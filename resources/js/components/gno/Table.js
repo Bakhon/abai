@@ -487,6 +487,7 @@ export default {
             "analysisBox6": this.isAnalysisBoxValue6,
             "analysisBox7": this.isAnalysisBoxValue7,
             "analysisBox8": this.isAnalysisBoxValue8,
+            "p_buff": this.pBuf,
             "sep_meth": this.sep_meth,
             "sep_value": this.sep_value,
             "mech_sep": this.mech_sep,

@@ -1604,7 +1604,7 @@
                               <div class="table-border-gno col-2">
                                 <label class="label-for-celevoi">{{trans('pgno.p_buf')}}</label>
                                 <input type="text" v-model="pBuf" onfocus="this.value=''" 
-                                  class="input-box-gno podbor" :disabled="expChoose != 'ФОН'"/>
+                                  class="input-box-gno podbor"/>
                               </div>
 
                               <div class="col-2">
