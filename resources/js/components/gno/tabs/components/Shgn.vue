@@ -217,22 +217,22 @@
 			
 			<div class="flex__item__block__fourth__block">
 				<select class="input-box-gno podbor long__box" v-model="markShtang">
-                  <option selected v-for="mark in markShtangs" :key="mark.tempValue" :value="markShtangs.mValue">
-                  {{mark.tempValue}}
+                  <option selected v-for="markShtang in markShtangs" :key="markShtang.tempValue" :value="markShtang.mValue">
+                  {{markShtang.tempValue}}
                   </option>
                 </select>
 
 				<div class="flex__item__block__fifth__block">
 					<label for="" class="block__fourth__block__radio">{{trans('pgno.nekorozionnaya')}}
-						<input value="nekor" class="third__block__radio" type="radio" name="korprod1" v-model="koroz" @change="onChangeKoroz"/>
+						<input value="antiCorrosion" class="third__block__radio" type="radio" name="korprod1" v-model="corrosion" @change="onChangeCorrosion"/>
 					</label>
 
 					<label for="" class="block__fourth__block__radio__1">{{trans('pgno.srenekorozionnaya')}}
-						<input value="srednekor" class="third__block__radio" type="radio" name="korprod1" checked v-model="koroz" @change="onChangeKoroz"/>
+						<input value="mediumCorrosion" class="third__block__radio" type="radio" name="korprod1" checked v-model="corrosion" @change="onChangeCorrosion"/>
 					</label>
 
 					<label for="" class="block__fourth__block__radio__2">{{trans('pgno.visokorozionnaya')}}
-						<input value="visokor" class="third__block__radio" type="radio" name="korprod1" v-model="koroz" @change="onChangeKoroz"/>
+						<input value="highCorrosion" class="third__block__radio" type="radio" name="korprod1" v-model="corrosion" @change="onChangeCorrosion"/>
 					</label>
 
 					<label for="" class="block__fourth__block__radio__3">{{trans('pgno.h2s')}}

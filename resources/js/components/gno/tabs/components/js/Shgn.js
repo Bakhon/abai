@@ -12,7 +12,7 @@ export default {
 			dlinaPolki: 10,
 			gasMax: 10,
 			hvostovik: true,
-			koroz: 'srednekor',
+			corrosion: 'mediumCorrosion',
 			strokeLenMin: 2,
 			strokeLenMax: 3,
 			spmMin: 3,
@@ -42,54 +42,56 @@ export default {
 				},
 
 				],
-			markShtang: [],
-			markShtangs: [
-        		{
-          		mValue: 1,
-          		tempValue: "40 (Н)",
-        		},
-        		{
-          		mValue: 2,
-          		tempValue: "40 (НсУ)",
-        		},
-        		{
-          		mValue: 3,
-          		tempValue: "14Х3ГМЮ (НВО)",
-        		},
-        		{
-          		mValue: 4,
-          		tempValue: "15НЗМА (Н)",
-        		},
-        		{
-          		mValue: 5,
-          		tempValue: "15НЗМА (НсУ)",
-        		},
-        		{
-          		mValue: 6,
-          		tempValue: "15Х2ГМФ (НВО)",
-        		},
-				{
-          		mValue: 7,
-          		tempValue: "15Х2НМФ (НВО)",
-        		},
-				{
-          		mValue: 8,
-          		tempValue: "20Н2М (Н)",
-        		},
-				{
-          		mValue: 9,
-          		tempValue: "20Н2М (НсУ)",
-        		},
-				{
-          		mValue: 10,
-          		tempValue: "30ХМ(А) (НсУ)",
-        		},
-				{
-          		mValue: 11,
-          		tempValue: "АЦ28ХГНЗФТ (О)",
-        		},
+			markShtang: "30ХМ(А) (НсУ)",
+			markShtangsTypes: {
+				"mediumCorrosion": [
+					{mValue: "20Н2М (Н)",
+					tempValue: "20Н2М (Н)"},
+				  	{mValue: "20Н2М (НсУ)",
+					tempValue: "20Н2М (НсУ)"},
+					{mValue: "30ХМ(А) (НсУ)",
+					tempValue: "30ХМ(А) (НсУ)"},
+					{mValue: "15НЗМА (НсУ)",
+					tempValue: "15НЗМА (НсУ)"},
+					{mValue: "15Х2НМФ (НВО)",
+					tempValue: "15Х2НМФ (НВО)"},
+					{mValue: "15Х2ГМФ (НВО)",
+					tempValue: "15Х2ГМФ (НВО)"},
+					{mValue: "14Х3ГМЮ (НВО)",
+					tempValue: "14Х3ГМЮ (НВО)"},
+					{mValue: "АЦ28ХГНЗФТ (О)",
+					tempValue: "АЦ28ХГНЗФТ (О)"}
 				],
+				"antiCorrosion": [
+					{mValue: "40 (Н)",
+					tempValue: "40 (Н)"},
+					{mValue: "40 (НсУ)",
+					tempValue: "40 (НсУ)"},
+					{mValue: "20Н2М (Н)",
+					tempValue: "20Н2М (Н)"},
+					{mValue: "20Н2М (НсУ)",
+					tempValue: "20Н2М (НсУ)"},
+					{mValue: "30ХМ(А) (НсУ)",
+					tempValue: "30ХМ(А) (НсУ)"},
+					{mValue: "15НЗМА (НсУ)",
+					tempValue: "15НЗМА (НсУ)"},
+					{mValue: "15Х2НМФ (НВО)",
+					tempValue: "15Х2НМФ (НВО)"},
+					{mValue: "15Х2ГМФ (НВО)",
+					tempValue: "15Х2ГМФ (НВО)"},
+					{mValue: "14Х3ГМЮ (НВО)",
+					tempValue: "14Х3ГМЮ (НВО)"},
+					{mValue: "АЦ28ХГНЗФТ (О)",
+					tempValue: "АЦ28ХГНЗФТ (О)"}
+				],
+				"highCorrosion": [
+					{mValue: "15НЗМА (Н)",
+					tempValue: "15НЗМА (Н)"},
+					{mValue: "АЦ28ХГНЗФТ (О)",
+					tempValue: "АЦ28ХГНЗФТ (О)"}
+				]
 				}
+		}
 	},
 	computed: {
 		dmPumps: {
@@ -167,8 +169,9 @@ export default {
 		onChangeGroupPosad(event) {
 			this.$store.commit("UPDATE_GROUP_POSAD", event.target.value)
 		},
-		onChangeKoroz(event) {
-			this.$store.commit("UPDATE_KOROZ", event.target.value)
+		onChangeCorrosion(event) {
+			this.$store.commit("UPDATE_CORROSION", event.target.value)
+			this.markShtangs = this.markShtangsTypes[this.corrosion]
 		},
 		onChangeStupColumns(event) {
 			this.$store.commit("UPDATE_STUP_COLUMNS", event.target.value)
@@ -191,6 +194,7 @@ export default {
 			this.$modal.show('modalTable3')
 		},
 		onSubmitParams() {
+			this.$store.commit('UPDATE_MARKSHTANG', this.markShtang) 
 			this.$emit('on-submit-params');
 			this.$modal.show('tabs');
 		},
@@ -207,9 +211,11 @@ export default {
 		this.stupColumns = this.$store.getters.stupColumns
 		this.h2s = this.$store.getters.h2s
 		this.heavyDown = this.$store.getters.heavyDown
-		this.koroz = this.$store.getters.koroz
+		this.corrosion = this.$store.getters.corrosion
 		this.davMin = this.$store.getters.davMin
 		this.gasMax = this.$store.getters.gasMax
 		this.dlinaPolki = this.$store.getters.dlinaPolki
+		this.markShtang = this.$store.getters.markShtang
+		this.markShtangs = this.markShtangsTypes[this.corrosion]
 	}
 }

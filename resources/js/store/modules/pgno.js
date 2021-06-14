@@ -14,58 +14,12 @@ const pgno = {
         groupPosad: null,
         h2s: false,
         heavyDown: true,
-        koroz: "srednekor",
+        corrosion: "mediumCorrosion",
         dmPumps: ["32", "38", "44", "57", "70"],
         dmRods: ["19", "22", "25"],
         komponovka: ["hvostovik"],
         stupColumns: "2",
-        selectedMarkShtang: [],
-        markShtangs: [
-          {
-            mValue: 1,
-            tempValue: "40 (Н)",
-          },
-          {
-            mValue: 2,
-            tempValue: "40 (НсУ)",
-          },
-          {
-            mValue: 3,
-            tempValue: "14Х3ГМЮ (НВО)",
-          },
-          {
-            mValue: 4,
-            tempValue: "15НЗМА (Н)",
-          },
-          {
-            mValue: 5,
-            tempValue: "15НЗМА (НсУ)",
-          },
-          {
-            mValue: 6,
-            tempValue: "15Х2ГМФ (НВО)",
-          },
-          {
-            mValue: 7,
-            tempValue: "15Х2НМФ (НВО)",
-          },
-          {
-            mValue: 8,
-            tempValue: "20Н2М (Н)",
-          },
-          {
-            mValue: 9,
-            tempValue: "20Н2М (НсУ)",
-          },
-          {
-            mValue: 10,
-            tempValue: "30ХМ(А) (НсУ)",
-          },
-          {
-            mValue: 11,
-            tempValue: "АЦ28ХГНЗФТ (О)",
-          },
-          ],
+        markShtang: "30ХМ(А) (НсУ)",
     },
     mutations: {
       UPDATE_HEAVYDOWN(state, val) {
@@ -78,7 +32,7 @@ const pgno = {
         state.dmRods = val
       },
       UPDATE_MARKSHTANG(state, val) {
-        state.selectedMarkShtang = val
+        state.markShtang = val
       },
       UPDATE_SPM_MIN: (state, val) => {
         state.spmMin = val
@@ -116,11 +70,11 @@ const pgno = {
       UPDATE_KOMPONOVKA(state, val) {
         state.komponovka = val
       },
-      UPDATE_HPUMP(state, payload) {
-        state.hPump = payload
+      UPDATE_HPUMP(state, val) {
+        state.hPump = val
       },
-      UPDATE_KOROZ(state, payload) {
-        state.koroz = payload
+      UPDATE_CORROSION(state, val) {
+        state.corrosion = val
       }
     },
     
@@ -138,7 +92,7 @@ const pgno = {
         commit("UPDATE_DAV_MIN", 30)
         commit("UPDATE_GAS_MAX", 10)
         commit("UPDATE_DLINA_POLKI", 10)
-        commit("UPDATE_KOROZ", "srednekor")
+        commit("UPDATE_CORROSION", "mediumCorrosion")
         commit("UPDATE_GROUP_POSAD", "2")
         commit("UPDATE_HEAVYDOWN", true)
       },
@@ -163,7 +117,7 @@ const pgno = {
     },
     
     getters: {
-      selectedMarkShtang: (state) => state.selectedMarkShtang,
+      markShtang: (state) => state.markShtang,
       dmPumps: (state) => state.dmPumps,
       dmRods: (state) => state.dmRods,
       komponovka: (state) => state.komponovka,
@@ -177,7 +131,7 @@ const pgno = {
       dlinaPolki: (state) => state.dlinaPolki,
       groupPosad: (state) => state.groupPosad,
       hPump: (state) => state.hPump,
-      koroz: (state) => state.koroz,
+      corrosion: (state) => state.corrosion,
       stupColumns: (state) => state.stupColumns,
       h2s: (state) => state.h2s,
       heavyDown: (state) => state.heavyDown
