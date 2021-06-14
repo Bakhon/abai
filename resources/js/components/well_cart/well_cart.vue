@@ -277,12 +277,12 @@ export default {
       this.loading = true
       this.axios.get(this.localeUrl(`/api/bigdata/wells/${well.id}/wellInfo`)).then(({data}) => {
         try {
-          this.wellLabResearchValue = data.lab_research_value
           this.wellStatus = data.status
           this.wellCategory = data.category
           this.wellCategory_last = data.category_last
           this.wellExpl = data.well_expl
           this.wellTechs = data.techs
+          this.wellLabResearchValue = data.lab_research_value
           this.wellTechsName = this.getMultipleValues(data.techs, 'name_ru')
           this.wellTechsTap = this.getMultipleValues(data.techs, 'tap')
           this.wellType = data.well_type
