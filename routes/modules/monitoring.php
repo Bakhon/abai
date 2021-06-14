@@ -190,6 +190,15 @@ Route::group(
                 Route::resource('lost_profits', 'ComplicationMonitoring\LostProfitsController');
                 Route::get('/facilities', 'DruidController@facilities')->name('facilities');
 
+
+                Route::get('oilpipes/list', 'ComplicationMonitoring\OilPipesController@list')->name('oilpipes.list');
+                Route::get('oilpipes/export', 'ComplicationMonitoring\OilPipesController@export')->name('oilpipes.export');
+                Route::get('oilpipes/history/{oilpipes}', 'ComplicationMonitoring\OilPipesController@history')->name(
+                    'oilpipes.history'
+                );
+                Route::resource('oilpipes', 'ComplicationMonitoring\OilPipesController')->parameters(
+                    ['oilpipes' => 'oilpipes']
+                );
             }
         );
     }
