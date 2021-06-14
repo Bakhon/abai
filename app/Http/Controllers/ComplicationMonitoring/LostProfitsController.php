@@ -3,15 +3,16 @@
 namespace App\Http\Controllers\ComplicationMonitoring;
 
 use App\Filters\LostProfitsFilter;
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\CrudController;
 use App\Http\Requests\IndexTableRequest;
 use App\Http\Resources\LostProfitsListResource;
 use App\Models\ComplicationMonitoring\LostProfits;
 use App\Models\ComplicationMonitoring\Gu;
 use Illuminate\Support\Facades\Session;
 
-class LostProfitsController extends Controller
-{protected $modelName = 'omguhe';
+class LostProfitsController extends CrudController
+{
+    protected $modelName = 'lost_profits';
 
     public function index(): \Illuminate\View\View
     {

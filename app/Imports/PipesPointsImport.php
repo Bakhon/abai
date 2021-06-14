@@ -4,7 +4,7 @@ namespace App\Imports;
 
 use App\Console\Commands\Import\ImportPipesPoints;
 use App\Models\ComplicationMonitoring\TrunklinePoint;
-use App\Models\Pipes\PipeCoord;
+use App\Models\ComplicationMonitoring\PipeCoord;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\ToCollection;

@@ -58,5 +58,12 @@ export default {
         refreshGridData() {
             document.querySelector('revo-grid').refresh('all');
         },
+
+        formatCategoryByType(event,category,type) {
+            if (event.target) {
+                let value = this.getFormattedNumber(event.target.value);
+                this[category][type] = value
+            }
+        },
     }
 }

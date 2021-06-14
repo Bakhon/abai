@@ -4,7 +4,27 @@
     <div v-if="rows" class="table-container scrollable">
       <div class="table-container-header">
 
-        <svg fill="none" height="16" viewBox="0 0 16 16" width="16" xmlns="http://www.w3.org/2000/svg"
+        <template v-if="form && form.actions && form.actions.length > 0">
+          <div class="dropdown">
+            <button id="dropdownMenuButton" aria-expanded="false" aria-haspopup="true" class="download-curve-button"
+                    data-toggle="dropdown" type="button">
+              {{ trans('bd.actions') }}
+              <svg fill="none" height="6" viewBox="0 0 12 6" width="12" xmlns="http://www.w3.org/2000/svg">
+                <path d="M1.5 1L5.93356 4.94095C5.97145 4.97462 6.02855 4.97462 6.06644 4.94095L10.5 1" stroke="white"
+                      stroke-linecap="round" stroke-width="1.4"/>
+              </svg>
+            </button>
+            <div aria-labelledby="dropdownMenuButton" class="dropdown-menu">
+              <template v-for="action in form.actions">
+                <a v-if="action.action === 'create'" class="dropdown-item" href="#"
+                   @click="showForm(action.form)">{{ action.title }}</a>
+                <a v-else-if="action.action === 'edit'" class="dropdown-item" href="#"
+                   @click="editRow(selectedRow, action.form)">{{ action.title }}</a>
+              </template>
+            </div>
+          </div>
+        </template>
+        <svg v-else fill="none" height="16" viewBox="0 0 16 16" width="16" xmlns="http://www.w3.org/2000/svg"
              @click="showForm()">
           <path d="M14.5 8L1.5 8" stroke="white" stroke-linecap="round" stroke-width="1.5"/>
           <path d="M8 1.5V14.5" stroke="white" stroke-linecap="round" stroke-width="1.5"/>
@@ -37,27 +57,31 @@
             <th class="table-border"><p class="title">ID</p></th>
             <th v-for="column in columns" class="table-border"><p class="title">{{ column.title }}</p>
             </th>
-            <th class="table-border"><p class="title">Управление</p></th>
+            <th v-if="!form.actions" class="table-border"><p class="title">Управление</p></th>
           </tr>
           </thead>
           <tbody class="table-container-element">
-          <tr v-for="(row, index) in rows">
+          <tr
+              v-for="(row, index) in rows"
+              :class="{'selected': selectedRow === row}"
+              @click="selectedRow = row"
+          >
             <td class="table-border element-position">
               <p class="title">{{ row.id }}</p>
             </td>
             <td v-for="column in columns" class="table-border element-position">
               <p>{{ getCellValue(row, column) }}</p>
             </td>
-            <td class="table-border element-position">
+            <td v-if="!form.actions" class="table-border element-position">
               <div class="table-container-svg">
                 <svg fill="none" height="18" viewBox="0 0 18 18" width="18" xmlns="http://www.w3.org/2000/svg"
-                     @click.prevent="editRow(row)">
+                     @click.prevent.stop="editRow(row)">
                   <path
                       d="M3 11.4998L1.55336 16.322C1.53048 16.3983 1.6016 16.4694 1.67788 16.4465L6.5 14.9998M3 11.4998C3 11.4998 11.0603 3.4393 12.7227 1.77708C12.8789 1.62091 13.1257 1.6256 13.2819 1.78177C13.8372 2.33702 15.1144 3.61422 16.2171 4.71697C16.3733 4.87322 16.3788 5.12103 16.2226 5.27726C14.5597 6.9399 6.5 14.9998 6.5 14.9998M3 11.4998L3.64727 10.8525L7.14727 14.3525L6.5 14.9998"
                       stroke="white" stroke-width="1.4"/>
                 </svg>
                 <svg fill="none" height="14" viewBox="0 0 14 14" width="14" xmlns="http://www.w3.org/2000/svg"
-                     @click.prevent="deleteRow(row, index)">
+                     @click.prevent.stop="deleteRow(row, index)">
                   <path d="M12.6574 12.6575L1.34367 1.34383" stroke="white" stroke-linecap="round"
                         stroke-width="1.4"/>
                   <path d="M12.6563 1.34383L1.34262 12.6575" stroke="white" stroke-linecap="round"
@@ -96,6 +120,7 @@ import forms from '../../../json/bd/forms.json'
 import BigDataPlainForm from './PlainForm'
 import {bdFormActions} from '@store/helpers'
 import CatLoader from '../../ui-kit/CatLoader'
+import moment from "moment";
 
 export default {
   name: "BigdataPlainFormResults",
@@ -117,9 +142,11 @@ export default {
     return {
       forms: forms,
       header: null,
-      rows: null,
       columns: null,
+      rows: null,
+      selectedRow: null,
       isFormOpened: false,
+      form: null,
       formValues: null,
       formParams: null,
       dictFields: {},
@@ -172,6 +199,8 @@ export default {
       ).then(({data}) => {
         this.rows = data.rows
         this.columns = data.columns
+        this.form = data.form
+
       }).catch(() => {
         this.rows = null
         this.columns = null
@@ -189,13 +218,14 @@ export default {
     getDict(code) {
       return this.$store.getters['bdform/dict'](code);
     },
-    showForm() {
-      this.formParams = this.forms.find(form => form.code === this.code)
+    showForm(formCode = null) {
+      this.formParams = this.forms.find(form => form.code === (formCode || this.code))
       this.formValues = null
       this.isFormOpened = true
     },
-    editRow(row) {
-      this.formParams = this.forms.find(form => form.code === this.code)
+    editRow(row, formCode = null) {
+      if (!row) return false
+      this.formParams = this.forms.find(form => form.code === (formCode || this.code))
       this.formValues = row
       this.isFormOpened = true
     },
@@ -226,6 +256,14 @@ export default {
 
       }
 
+      if (column.type === 'date') {
+        return moment(row[column.code]).format('DD.MM.YYYY')
+      }
+
+      if (column.type === 'datetime') {
+        return moment(row[column.code]).format('DD.MM.YYYY HH:MM')
+      }
+
       return row[column.code]
     }
   }
@@ -252,9 +290,19 @@ export default {
       }
     }
 
-    tr:nth-child(2n) {
+    tr {
+      &.selected {
+        filter: saturate(2);
+      }
+
       td {
-        background: #31355E;
+        background: #272953;
+      }
+
+      &:nth-child(2n) {
+        td {
+          background: #31355E;
+        }
       }
     }
   }

@@ -64,6 +64,7 @@ export default {
                 difference: 0,
                 percent: 0,
                 targetPlan: 0,
+                opekPlan: 0,
             },
             dzoCompaniesSummary: {},
             dzoType: {
@@ -134,7 +135,17 @@ export default {
                 if (self.isFilterTargetPlanActive) {
                     summary.targetPlan = parseInt(summary.targetPlan) + parseInt(company.targetPlan);
                 }
+                if (self.oilCondensateProductionButton.length > 0) {
+                    summary.opekPlan = parseInt(summary.plan) + parseInt(company.opekPlan);
+                }
             });
+            this.productionParamsWidget.oilFact = summary.fact;
+            this.productionParamsWidget.oilPlan = summary.plan;
+            if (self.oilCondensateProductionButton.length > 0) {
+                summary.opekDifference = this.getFormattedNumberToThousand(
+                    summary.opekPlan,summary.fact);
+                summary.opekPlan = this.formatDigitToThousand(summary.opekPlan);
+            }
             summary.difference = this.getFormattedNumberToThousand(
                 summary.plan,summary.fact);
             summary.percent = this.getPercentDifference(summary.plan,summary.fact);
@@ -142,6 +153,9 @@ export default {
             summary.fact = this.formatDigitToThousand(summary.fact);
             summary.periodPlan = this.formatDigitToThousand(summary.periodPlan);
             this.dzoCompaniesSummary = summary;
+            if (this.oilCondensateProductionButton.length > 0) {
+                this.updateProductionTotalFact();
+            }
         },
 
         getAllDzoCompanies() {
