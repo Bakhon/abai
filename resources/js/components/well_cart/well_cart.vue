@@ -244,6 +244,7 @@ export default {
       wellLabResearchValue: null,
       wellPerfActualTop: null,
       wellPerfActualBase: null,
+      techModeProdOil: null,
       forms: forms,
     }
   },
@@ -296,6 +297,7 @@ export default {
           this.tubeNomOd = this.getMultipleValues(data.tube_nom, 'od')
           this.well = data.well
           this.wellUwi = data.well.uwi
+          this.techModeProdOil = data.tech_mode_prod_oil.oil
           if (data.spatial_object.coord_point != null) {
             data = data.spatial_object.coord_point.replace('(', '').replace(')', '')
             data = data.split(',')
@@ -621,7 +623,9 @@ export default {
         },
         {
           'description': null,
-          'method': null,
+          'method': 'neighbors',
+          'neigbor_1': this.techModeProdOil,
+          'neigbor_2': null,
           'name': 'Дебит жидкости, м3/сут (режим/факт)',
           'data': ''
         },

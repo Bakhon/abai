@@ -92,6 +92,11 @@ class Well extends TBDModel
         return $this->belongsToMany(WellPerfActual::class, 'prod.well_perf', 'well', 'id');
     }
 
+    public function tech_mode_prod_oil()
+    {
+        return $this->hasMany(TechModeProdOil::class, 'well', 'id');
+    }
+
     public function scopeActive($query, $date)
     {
         $query->whereHas(
