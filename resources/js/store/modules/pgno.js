@@ -15,8 +15,8 @@ const pgno = {
         h2s: false,
         heavyDown: true,
         corrosion: "mediumCorrosion",
-        dmPumps: ["32", "38", "44", "57", "70"],
-        dmRods: ["19", "22", "25"],
+        dmrPumps: ["32", "38", "44", "57", "70"],
+        dmrRods: ["19", "22", "25"],
         komponovka: ["hvostovik"],
         stupColumns: "2",
         markShtang: "30ХМ(А) (НсУ)",
@@ -25,11 +25,11 @@ const pgno = {
       UPDATE_HEAVYDOWN(state, val) {
         state.heavyDown = val
       },
-      UPDATE_DMPUMPS(state, val) {
-        state.dmPumps = val
+      UPDATE_DMRPUMPS(state, val) {
+        state.dmrPumps = val
       },
-      UPDATE_DMRODS(state, val) {
-        state.dmRods = val
+      UPDATE_DMRRODS(state, val) {
+        state.dmrRods = val
       },
       UPDATE_MARKSHTANG(state, val) {
         state.markShtang = val
@@ -86,8 +86,8 @@ const pgno = {
         commit("UPDATE_LEN_MAX", 3)
         commit("UPDATE_KPOD", 0.6)
         commit("UPDATE_KOMPONOVKA", ["hvostovik"])
-        commit("UPDATE_DMPUMPS", ["32", "38", "44", "57", "70"])
-        commit("UPDATE_DMRODS", ["19", "22", "25"])
+        commit("UPDATE_DMRPUMPS", ["32", "38", "44", "57", "70"])
+        commit("UPDATE_DMRRODS", ["19", "22", "25"])
         commit("UPDATE_H2S", false)
         commit("UPDATE_DAV_MIN", 30)
         commit("UPDATE_GAS_MAX", 10)
@@ -96,11 +96,11 @@ const pgno = {
         commit("UPDATE_GROUP_POSAD", "2")
         commit("UPDATE_HEAVYDOWN", true)
       },
-      setDmPumps({commit}, value) {
-        commit('UPDATE_DMPUMPS', value)
+      setDmrPumps({commit}, value) {
+        commit('UPDATE_DMRPUMPS', value)
       },
-      setDmRods({commit}, value) {
-        commit('UPDATE_DMRODS', value)
+      setDmrRods({commit}, value) {
+        commit('UPDATE_DMRRODS', value)
       },
       setKomponovka({commit}, value) {
         commit('UPDATE_KOMPONOVKA', value)
@@ -118,8 +118,8 @@ const pgno = {
     
     getters: {
       markShtang: (state) => state.markShtang,
-      dmPumps: (state) => state.dmPumps,
-      dmRods: (state) => state.dmRods,
+      dmrPumps: (state) => state.dmrPumps,
+      dmrRods: (state) => state.dmrRods,
       komponovka: (state) => state.komponovka,
       kpodMin: (state) => state.kpodMin,
       spmMin: (state) => state.spmMin,

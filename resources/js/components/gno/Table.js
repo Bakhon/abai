@@ -28,6 +28,7 @@ export default {
   ],
   data: function () {
     return {
+      404: require('./images/404.svg'),
       nearDist: 1000,
       perms: this.params,
       isPermission: false,
