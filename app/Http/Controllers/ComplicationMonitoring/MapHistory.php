@@ -106,18 +106,117 @@ class MapHistory extends Controller
     public function show(Activity $activity)
     {
         $changes = [];
-        foreach ($activity->changes()['old'] as $key => $value) {
-            $changes[$key] = [
-                'old' => $value,
-                'current' => $activity->changes()['attributes'][$key]
-            ];
+
+        switch ($activity->description) {
+            case 'created':
+                foreach ($activity->changes()['attributes'] as $key => $value) {
+                    $changes[$key] = [
+                        'old' => null,
+                        'current' => $value
+                    ];
+                }
+                break;
+            case 'deleted':
+//                foreach ($activity->changes()['attributes'] as $key => $value) {
+//                    $changes[$key] = [
+//                        'old' => null,
+//                        'current' => $value
+//                    ];
+//                }
+                break;
+            case 'updated':
+                foreach ($activity->changes()['old'] as $key => $value) {
+                    $changes[$key] = [
+                        'old' => $value,
+                        'current' => $activity->changes()['attributes'][$key]
+                    ];
+                }
+                break;
+
         }
 
-        return view('complicationMonitoring.map-history.show', compact('changes', 'activity'));
+        $params = [
+            'subject' => $this->getSubjectTranslate($activity->subject),
+            'changes' => $changes,
+            'activity' => $activity
+        ];
+
+        return view('complicationMonitoring.map-history.show', compact('params'));
+    }
+
+    public function restore (Activity $activity) {
+        activity()->disableLogging();
+
+        switch ($activity->description) {
+            case 'created':
+                return $this->deleteCreated($activity);
+            case 'deleted':
+                return $this->restoreDeleted($activity);
+            case 'updated':
+                return $this->rollBackChanges($activity);
+
+        }
+    }
+
+    protected function getSubjectTranslate(object $subject): string
+    {
+        switch (class_basename($subject)) {
+            case 'PipeCoord':
+                return trans('monitoring.pipe.coords');
+            case 'PipeType':
+                return trans('monitoring.pipe.type');
+            case 'OilPipe':
+                return trans('monitoring.pipe.pipe');
+            case 'Gu':
+                return trans('monitoring.gu.gu');
+            case 'Zu':
+                return trans('monitoring.zu.zu');
+            case 'Well':
+                return trans('monitoring.well.well');
+        }
     }
 
     protected function getFilteredQuery($filter, $query = null)
     {
         return (new MapHistoryFilter($query, $filter))->filter();
+    }
+
+    protected function rollBackChanges (Activity $activity) {
+        $subject = $activity->subject;
+        foreach ($activity->changes()['old'] as $key => $value) {
+            $subject->$key = $value;
+        }
+
+        $result = $subject->save();
+
+        if ($result) {
+            Session::flash('success', __('app.restored'));
+            $activity->delete();
+        }
+
+        return response()->json(
+            [
+                'status' => $result ? config('response.status.success') : config('response.status.error'),
+            ]
+        );
+    }
+
+    protected function restoreDeleted (Activity $activity) {
+
+    }
+
+    protected function deleteCreated (Activity $activity) {
+        $result = $activity->subject->delete();
+
+        if ($result) {
+            Session::flash('success', __('app.deleted'));
+            $activity->delete();
+        }
+
+        return response()->json(
+            [
+                'status' => $result ? config('response.status.success') : config('response.status.error'),
+            ]
+        );
     }
 }

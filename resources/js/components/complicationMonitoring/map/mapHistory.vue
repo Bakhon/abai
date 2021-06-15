@@ -1,7 +1,8 @@
 <template>
   <div class="row history">
-    <template v-if="activity">
+    <template v-if="params.activity">
       <div class="col-12">
+        <p><b>{{ params.subject + ' ' + trans('app.' + params.activity.description)}}</b></p>
         <table class="table table-bordered history__fields" >
           <tr>
             <th><b>{{ trans('app.param_name') }}</b></th>
@@ -12,13 +13,14 @@
               <b>{{ trans('monitoring.map-history.new-value') }}</b>
             </th>
           </tr>
-          <tr v-for="(change, index) in changes" :key="index" class="changed">
+          <tr v-for="(change, index) in params.changes" :key="index" class="changed">
             <td>{{ index }}</td>
             <td>{{ change.old }}</td>
             <td>{{ change.current }}</td>
           </tr>
         </table>
       </div>
+      <b-button variant="danger" @click="restore" >{{ btnText }}</b-button>
     </template>
     <template v-else>
       <p class="w-100 text-center mb-0">{{ trans('monitoring.history.no_history') }}</p>
@@ -30,12 +32,9 @@
 export default {
   name: "mapHistory",
   props: {
-    activity: {
+    params: {
       type: Object,
     },
-    changes: {
-      type: Array,
-    }
   },
   data: function () {
     return {
@@ -45,8 +44,38 @@ export default {
   mounted() {
 
   },
+  computed: {
+    btnText () {
+      switch (this.params.activity.description) {
+        case 'created':
+          return this.trans('app.delete');
+        case 'updated':
+          return this.trans('app.rollback');
+        case 'deleted':
+          return this.trans('app.restore');
+      }
+    }
+  },
   methods: {
-
+    restore () {
+      this.$bvModal.msgBoxConfirm(this.trans('app.are-you-sure-to-restore'), {
+        title: this.trans('app.restore_title'),
+        headerBgVariant: 'danger',
+        okTitle: this.btnText,
+        cancelTitle: this.trans('app.cancel'),
+      })
+          .then(value => {
+            if (value) {
+              this.axios.get(this.localeUrl("/map-history/restore") + '/' + this.params.activity.id).then((response) => {
+                if (response.data.status == 'success') {
+                  window.location.href = this.localeUrl('/map-history');
+                } else {
+                  this.showToast(this.trans('app.error'), this.trans('app.error'), 'danger');
+                }
+              });
+            }
+          })
+    }
   }
 }
 </script>

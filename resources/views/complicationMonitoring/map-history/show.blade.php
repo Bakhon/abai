@@ -11,15 +11,9 @@
             @endif
             <div class="container  table-page">
                 <h1>{{ trans('monitoring.map-history.title') }}</h1>
-                <map-history :activity='@json($activity)' :changes='@json($changes)'></map-history>
+                <map-history :params='@json($params)' ></map-history>
                 <a class="btn btn-primary" href="{{ route('map-history.index') }}">{{__('app.back')}}</a>
             </div>
         </div>
     </div>
 @endsection
-<style>
-    body{color: white !important;}
-    .table{
-        color: white !important;
-    }
-</style>

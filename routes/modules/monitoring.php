@@ -187,7 +187,7 @@ Route::group(
 
                 Route::get('map-history/list', 'ComplicationMonitoring\MapHistory@list')->name('map-history.list');
                 Route::get('map-history/show/{activity}', 'ComplicationMonitoring\MapHistory@show')->name('map-history.show');
-                Route::get('map-history/restore/{id}', 'ComplicationMonitoring\MapHistory@restore')->name('map-history.restore');
+                Route::get('map-history/restore/{activity}', 'ComplicationMonitoring\MapHistory@restore')->name('map-history.restore');
                 Route::get('map-history', 'ComplicationMonitoring\MapHistory@index')->name('map-history.index');
 
             }

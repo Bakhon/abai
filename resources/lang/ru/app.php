@@ -17,7 +17,7 @@ return array (
   'cancel' => 'Отменить',
   'year' => 'Год',
   'save' => 'Сохранить',
-  'param_name' => 'Наименование',
+  'param_name' => 'Параметр',
   'param_value' => 'Значение',
   'date_time' => 'Дата и время',
   'lat' => 'Широта',
@@ -39,4 +39,5 @@ return array (
   'are-you-sure-to-delete' => 'Вы действительно хотите удалить запись?',
   'restore' => 'Восстановить',
   'restore_title' => 'Восстановление',
+  'rollback' => 'Откатить',
 );
