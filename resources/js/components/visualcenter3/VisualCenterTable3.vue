@@ -963,7 +963,7 @@
                         {{ trans("visualcenter.dzoOpec") }}
                       </div>
                     </th>
-                    <th v-if="!buttonYearlyTab && !buttonMonthlyTab && oilCondensateProductionButton.length > 0">
+                    <th v-if="oilCondensateProductionButton.length > 0">
                       {{ trans("visualcenter.plan") }}
                       <div>
                         {{ trans("visualcenter.dzoOpec") }},
@@ -993,10 +993,10 @@
                         {{ getMetricNameByCategorySelected() }}
                       </div>
                     </th>
-                    <th v-if="!isFilterTargetPlanActive && (oilCondensateProductionButton.length === 0 || buttonYearlyTab || buttonMonthlyTab)">
+                    <th v-if="!isFilterTargetPlanActive && oilCondensateProductionButton.length === 0">
                       {{ trans("visualcenter.dzoPercent") }}
                     </th>
-                    <th v-if="!isFilterTargetPlanActive && !buttonYearlyTab && !buttonMonthlyTab && oilCondensateProductionButton.length > 0">
+                    <th v-if="!isFilterTargetPlanActive && oilCondensateProductionButton.length > 0">
                       {{ trans("visualcenter.dzoDifference") }}
                       <div>
                         {{ trans("visualcenter.dzoOpec") }},
@@ -1041,16 +1041,12 @@
                             :class="index % 2 === 0 ? 'tdStyle' : ''"
                             style="cursor: pointer"
                     >
-                      <span v-if="oilCondensateProductionButton.length === 0 && currentDzoList === 'daily'">
+                      <span v-if="oilCondensateProductionButton.length === 0">
                         {{ getNameDzoFull(item.dzoMonth) }}
                         <img src="/img/icons/link.svg" />
                       </span>
                       <span v-else-if="oilCondensateProductionButton.length > 0 && !oilCondensateFilters.isWithoutKMGFilterActive">
                         {{ getDzoName(item.dzoMonth,dzoNameMappingWithoutKMG) }}
-                        <img src="/img/icons/link.svg" />
-                      </span>
-                      <span v-else-if="oilCondensateProductionButton.length > 0 && currentDzoList !== 'daily'">
-                        {{ getDzoName(item.dzoMonth,dzoNameMappingNormal) }}
                         <img src="/img/icons/link.svg" />
                       </span>
                       <span v-else>
@@ -1082,7 +1078,7 @@
                       </div>
                     </td>
                     <td
-                            v-if="!isFilterTargetPlanActive && !buttonYearlyTab && !buttonMonthlyTab && oilCondensateProductionButton.length > 0"
+                            v-if="!isFilterTargetPlanActive && oilCondensateProductionButton.length > 0"
                             :class="currentDzoList === 'daily' ? getDzoColumnsClass(index,'companyName') : getDzoColumnsClass(index,'plan')">
                       <div class="font">
                         {{ formatDigitToThousand(item.opekPlan) }}
@@ -1109,7 +1105,7 @@
                       </div>
                     </td>
                     <td
-                            v-if="!isFilterTargetPlanActive && (oilCondensateProductionButton.length === 0 || buttonYearlyTab || buttonMonthlyTab)"
+                            v-if="!isFilterTargetPlanActive && oilCondensateProductionButton.length === 0"
                             :class="`${getDzoColumnsClass(index,'percent')}`"
                     >
                       <div
@@ -1125,7 +1121,7 @@
                       </div>
                     </td>
                     <td
-                            v-if="!isFilterTargetPlanActive && !buttonYearlyTab && !buttonMonthlyTab && oilCondensateProductionButton.length > 0"
+                            v-if="!isFilterTargetPlanActive && oilCondensateProductionButton.length > 0"
                             :class="currentDzoList === 'daily' && oilCondensateProductionButton.length > 0 ?
                             getDzoColumnsClass(index,'difference') : getDzoColumnsClass(index,'percent')"
                     >
@@ -1246,7 +1242,7 @@
                       </div>
                     </td>
                     <td
-                            v-if="!buttonMonthlyTab && !buttonYearlyTab && oilCondensateProductionButton.length > 0"
+                            v-if="oilCondensateProductionButton.length > 0"
                             :class="index % 2 === 0 ? `${getDarkerClass(index)}` : `${getLighterClass(index)}`"
                     >
                       <div class="font">
@@ -1327,7 +1323,7 @@
                       </div>
                     </td>
                     <td
-                            v-if="!isFilterTargetPlanActive && !buttonYearlyTab && !buttonMonthlyTab && oilCondensateProductionButton.length > 0"
+                            v-if="!isFilterTargetPlanActive && oilCondensateProductionButton.length > 0"
                             :class="currentDzoList === 'daily' ?
                             getLighterClass(index) : getDarkerClass(index)"
                     >
@@ -1344,7 +1340,7 @@
                       </div>
                     </td>
                     <td
-                            v-if="!isFilterTargetPlanActive && (oilCondensateProductionButton.length === 0 || buttonYearlyTab || buttonMonthlyTab)"
+                            v-if="!isFilterTargetPlanActive && oilCondensateProductionButton.length === 0"
                             :class="`${getColorClassBySelectedPeriod(index)}`"
                     >
                       <div
