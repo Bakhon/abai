@@ -239,6 +239,8 @@ export default {
       wellSaptialObjectY: null,
       wellSaptialObjectBottomX: null,
       wellSaptialObjectBottomY: null,
+      wellInjPressure: null,
+      wellAgentVol: null,
       actualBottomHole: null,
       artificialBottomHole: null,
       wellLabResearchValue: null,
@@ -298,6 +300,8 @@ export default {
           this.well = data.well
           this.wellUwi = data.well.uwi
           this.techModeProdOil = data.tech_mode_prod_oil.oil
+          this.wellInjPressure = data.tech_mode_inj.inj_pressure
+          this.wellAgentVol = data.tech_mode_inj.agent_vol
           if (data.spatial_object.coord_point != null) {
             data = data.spatial_object.coord_point.replace('(', '').replace(')', '')
             data = data.split(',')
@@ -611,13 +615,17 @@ export default {
         },
         {
           'description': null,
-          'method': null,
+          'method': 'neighbors',
+          'neigbor_1': this.wellInjPressure,
+          'neigbor_2': null,
           'name': 'Приемистость, м3/сут (режим/факт)',
           'data': ''
         },
         {
           'description': null,
-          'method': null,
+          'method': 'neighbors',
+          'neigbor_1': this.wellAgentVol,
+          'neigbor_2': null,
           'name': 'Давление закачки, атм (режим/факт)',
           'data': ''
         },

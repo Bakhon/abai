@@ -32,6 +32,7 @@ class WellsController extends Controller
             'artificial_bottom_hole' => $this->artificialBottomHole($well),
             'well_perf_actual' => $this->WellPerfActual($well),
             'tech_mode_prod_oil' => $this->TechModeProdOil($well),
+            'tech_mode_inj' => $this->TechModeInj($well),
         );
     }
 
@@ -165,6 +166,12 @@ class WellsController extends Controller
             ->withPivot('research_date as research_date')
             ->orderBy('research_date', 'desc')
             ->first(['value_double', 'research_date']);
+    }
+
+    public function TechModeInj(Well $well)
+    {
+        return $well->tech_mode_inj()
+            ->first(['inj_pressure', 'agent_vol']);
     }
 
     public function TechModeProdOil(Well $well)
