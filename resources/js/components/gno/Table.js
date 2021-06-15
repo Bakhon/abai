@@ -406,11 +406,13 @@ export default {
   },
   methods: {
     editPage() {
-      if (!this.isEditing) {this.isEditing = true}
-      else {
+      if (this.isEditing) {
         this.welldata['sk_type'] = this.sk
         this.welldata['horizon'] = this.horizon
         this.isEditing = false
+      }
+      else {
+        this.isEditing = true
       }
     },
     changeValue(key, value) {
