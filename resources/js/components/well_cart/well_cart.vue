@@ -240,12 +240,14 @@ export default {
       wellSaptialObjectBottomX: null,
       wellSaptialObjectBottomY: null,
       wellInjPressure: null,
+      techModeProdLiquid: null,
       wellAgentVol: null,
       actualBottomHole: null,
       artificialBottomHole: null,
       wellLabResearchValue: null,
       wellPerfActualTop: null,
       wellPerfActualBase: null,
+      wellMeasLiq: null,
       techModeProdOil: null,
       forms: forms,
     }
@@ -299,7 +301,9 @@ export default {
           this.tubeNomOd = this.getMultipleValues(data.tube_nom, 'od')
           this.well = data.well
           this.wellUwi = data.well.uwi
+          this.wellMeasLiq = data.meas_liq.liquid
           this.techModeProdOil = data.tech_mode_prod_oil.oil
+          this.techModeProdLiquid = data.tech_mode_prod_oil.liquid
           this.wellInjPressure = data.tech_mode_inj.inj_pressure
           this.wellAgentVol = data.tech_mode_inj.agent_vol
           if (data.spatial_object.coord_point != null) {
@@ -332,10 +336,10 @@ export default {
           try {
             if (this.tableData[i].neigbor_1 != null) {
               this.tableData[i].data += this.tableData[i].neigbor_1
-              if (this.tableData[i].neigbor_2 != null) {
-                this.tableData[i].data += ' - '
-                this.tableData[i].data += this.tableData[i].neigbor_2
-              }
+            }
+            if (this.tableData[i].neigbor_2 != null) {
+              this.tableData[i].data += ' - '
+              this.tableData[i].data += this.tableData[i].neigbor_2
             }
           } catch (e) {
           }
@@ -632,8 +636,8 @@ export default {
         {
           'description': null,
           'method': 'neighbors',
-          'neigbor_1': this.techModeProdOil,
-          'neigbor_2': null,
+          'neigbor_1': this.techModeProdLiquid,
+          'neigbor_2': this.wellMeasLiq,
           'name': 'Дебит жидкости, м3/сут (режим/факт)',
           'data': ''
         },

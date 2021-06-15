@@ -33,6 +33,7 @@ class WellsController extends Controller
             'well_perf_actual' => $this->WellPerfActual($well),
             'tech_mode_prod_oil' => $this->TechModeProdOil($well),
             'tech_mode_inj' => $this->TechModeInj($well),
+            'meas_liq' => $this->MeasLiq($well)
         );
     }
 
@@ -178,7 +179,14 @@ class WellsController extends Controller
     {
         return $well->tech_mode_prod_oil()
             ->orderBy('dbeg', 'desc')
-            ->first('oil');
+            ->first(['oil', 'liquid']);
+    }
+
+    public function MeasLiq(Well $well)
+    {
+        return $well->meas_liq()
+            ->orderBy('dbeg', 'desc')
+            ->first('liquid');
     }
 
     public function WellPerfActual(Well $well)

@@ -102,6 +102,11 @@ class Well extends TBDModel
         return $this->hasMany(TechModeInj::class, 'well', 'id');
     }
 
+    public function meas_liq()
+    {
+        return $this->hasMany(MeasLiq::class, 'well', 'id');
+    }
+
     public function scopeActive($query, $date)
     {
         $query->whereHas(
