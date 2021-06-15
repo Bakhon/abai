@@ -11,7 +11,7 @@ class ProductionWell extends PlainForm
 {
     protected $configurationFileName = 'production_well';
 
-    public function calcFields(int $wellId, array $values): array
+    public function getCalculatedFields(int $wellId, array $values): array
     {
         $requiredFields = ['liquid', 'wcut', 'oil_density'];
         foreach ($requiredFields as $field) {

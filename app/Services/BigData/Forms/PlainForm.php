@@ -111,7 +111,7 @@ abstract class PlainForm extends BaseForm
         }
     }
 
-    public function calcFields(int $wellId, array $values): array
+    public function getCalculatedFields(int $wellId, array $values): array
     {
         return [];
     }
