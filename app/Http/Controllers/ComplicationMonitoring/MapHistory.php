@@ -226,7 +226,13 @@ class MapHistory extends Controller
 
     protected function deleteCreated (Activity $activity)
     {
-        $result = $activity->subject->delete();
+        $subject = $activity->subject;
+
+        if (basename($activity->subject_type) == 'OilPipe') {
+            PipeCoord::where('oil_pipe_id', $subject->id)->forceDelete();
+        }
+
+        $result = $subject->forceDelete();
 
         if ($result) {
             Session::flash('success', __('app.deleted'));
