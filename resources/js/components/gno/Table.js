@@ -1074,6 +1074,26 @@ export default {
       this.$store.commit("UPDATE_MARKSHTANG", "30ХМ(А) (НсУ)")
     },
 
+    setStoreValuesToZero() {
+      this.$store.commit("UPDATE_SPM_MIN", 0)
+      this.$store.commit("UPDATE_SPM_MAX", 0)
+      this.$store.commit("UPDATE_LEN_MIN", 0)
+      this.$store.commit("UPDATE_LEN_MAX", 0)
+      this.$store.commit("UPDATE_KPOD", 0)
+      this.$store.commit("UPDATE_KOMPONOVKA", [""])
+      this.$store.commit("UPDATE_DMRPUMPS", [""])
+      this.$store.commit("UPDATE_DMRRODS", [""])
+      this.$store.commit("UPDATE_H2S", false)
+      this.$store.commit("UPDATE_PINTAKE_MIN", 0)
+      this.$store.commit("UPDATE_GAS_MAX", 0)
+      this.$store.commit("UPDATE_INCL_STEP", 0)
+      this.$store.commit("UPDATE_CORROSION", "")
+      this.$store.commit("UPDATE_GROUP_POSAD", "")
+      this.$store.commit("UPDATE_HEAVYDOWN", false)
+      this.$store.commit("UPDATE_STUP_COLUMNS", 4)
+      this.$store.commit("UPDATE_MARKSHTANG", "")
+    },
+
     getWellNumber(wellnumber) {
       this.isIntervals = true
       this.setDefaultStoreValues()
@@ -1109,29 +1129,7 @@ export default {
                 })    
             }
 
-            this.setDefaultStoreValues()
-
-            this.$store.commit("UPDATE_SPM_MIN", 3)
-            this.$store.commit("UPDATE_SPM_MAX", 8)
-            this.$store.commit("UPDATE_LEN_MIN", 2)
-            this.$store.commit("UPDATE_LEN_MAX", 3)
-            this.$store.commit("UPDATE_KPOD", 0.6)
-            this.$store.commit("UPDATE_KOMPONOVKA", ["hvostovik"])
-            this.$store.commit("UPDATE_DMRPUMPS", ["32", "38", "44", "57", "70"])
-            this.$store.commit("UPDATE_DMRRODS", ["19", "22", "25"])
-            this.$store.commit("UPDATE_H2S", false)
-            this.$store.commit("UPDATE_PINTAKE_MIN", 30)
-            this.$store.commit("UPDATE_GAS_MAX", 10)
-            this.$store.commit("UPDATE_INCL_STEP", 10)
-            this.$store.commit("UPDATE_CORROSION", "mediumCorrosion")
-            this.$store.commit("UPDATE_GROUP_POSAD", "2")
-            this.$store.commit("UPDATE_HEAVYDOWN", true)
-            this.$store.commit("UPDATE_STUP_COLUMNS", 2)
-            this.$store.commit("UPDATE_MARKSHTANG", "30ХМ(А) (НсУ)")
-
-
-            
-
+            this.setStoreValuesToZero()
             this.curveLineData = JSON.parse(data.LineData)["data"]
             this.curvePointsData = JSON.parse(data.PointsData)["data"]
             this.ngdu = 0
@@ -1231,7 +1229,7 @@ export default {
                   timeout: 8000
                 }) 
             
-
+            this.setStoreValuesToZero()
             this.ngdu = 0
             this.sk = 0
 
