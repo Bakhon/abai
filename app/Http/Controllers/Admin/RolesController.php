@@ -20,11 +20,12 @@ class RolesController extends Controller
             'omgca' => 'ОМГ ДДНГ',
             'omgngdu' => 'ОМГ НГДУ',
             'omguhe' => 'ОМГ УХЭ',
-            'pipes' => 'Трубопроводы',
+            'pipe' => 'Трубопроводы',
             'inhibitors' => 'Ингибиторы',
             'gu' => 'ГУ',
             'zu' => 'ЗУ',
             'well' => 'Скважины',
+            'map-history' => 'История изменений на карте',
         ];
 
     static protected $dictCodes = [
@@ -147,6 +148,8 @@ class RolesController extends Controller
      */
     public function update(Request $request, Role $role)
     {
+//        dump($role);
+//        dd($request->permissions);
         $role->syncPermissions($request->permissions);
         return redirect()->route('admin.roles.index')->with('success', __('app.updated'));
     }

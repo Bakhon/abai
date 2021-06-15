@@ -152,6 +152,14 @@
                         </li>
                     @endif
 
+                    @if(auth()->user()->can('monitoring view pipes map'))
+                        <li class="left-menu-li">
+                            <a href="{{route('map-history.index')}}">
+                                {{ trans('monitoring.map-history.menu') }}
+                            </a>
+                        </li>
+                    @endif
+
                     <li class="left-menu-li">
                         <a href="{{route('facilities')}}">
                             {{ trans('monitoring.tech_map_prototype') }}

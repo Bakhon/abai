@@ -5,6 +5,7 @@ namespace App\Http\Controllers\ComplicationMonitoring;
 use App\Filters\MapHistoryFilter;
 use App\Http\Requests\IndexTableRequest;
 use App\Http\Resources\MapHistoryResource;
+use App\Models\ComplicationMonitoring\PipeCoord;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
@@ -117,12 +118,12 @@ class MapHistory extends Controller
                 }
                 break;
             case 'deleted':
-//                foreach ($activity->changes()['attributes'] as $key => $value) {
-//                    $changes[$key] = [
-//                        'old' => null,
-//                        'current' => $value
-//                    ];
-//                }
+                foreach ($activity->changes()['attributes'] as $key => $value) {
+                    $changes[$key] = [
+                        'old' => $value,
+                        'current' => null
+                    ];
+                }
                 break;
             case 'updated':
                 foreach ($activity->changes()['old'] as $key => $value) {
@@ -136,7 +137,7 @@ class MapHistory extends Controller
         }
 
         $params = [
-            'subject' => $this->getSubjectTranslate($activity->subject),
+            'subject' => $this->getSubjectTranslate($activity->subject_type),
             'changes' => $changes,
             'activity' => $activity
         ];
@@ -158,9 +159,9 @@ class MapHistory extends Controller
         }
     }
 
-    protected function getSubjectTranslate(object $subject): string
+    protected function getSubjectTranslate(string $subject): string
     {
-        switch (class_basename($subject)) {
+        switch (basename($subject)) {
             case 'PipeCoord':
                 return trans('monitoring.pipe.coords');
             case 'PipeType':
@@ -181,7 +182,8 @@ class MapHistory extends Controller
         return (new MapHistoryFilter($query, $filter))->filter();
     }
 
-    protected function rollBackChanges (Activity $activity) {
+    protected function rollBackChanges (Activity $activity)
+    {
         $subject = $activity->subject;
         foreach ($activity->changes()['old'] as $key => $value) {
             $subject->$key = $value;
@@ -201,11 +203,29 @@ class MapHistory extends Controller
         );
     }
 
-    protected function restoreDeleted (Activity $activity) {
+    protected function restoreDeleted (Activity $activity)
+    {
+        $subject = $activity->subject;
+        $result = $subject->restore();
 
+        if (basename($activity->subject_type) == 'OilPipe') {
+            PipeCoord::where('oil_pipe_id', $subject->id)->restore();
+        }
+
+        if ($result) {
+            Session::flash('success', __('app.restored'));
+            $activity->delete();
+        }
+
+        return response()->json(
+            [
+                'status' => $result ? config('response.status.success') : config('response.status.error'),
+            ]
+        );
     }
 
-    protected function deleteCreated (Activity $activity) {
+    protected function deleteCreated (Activity $activity)
+    {
         $result = $activity->subject->delete();
 
         if ($result) {
