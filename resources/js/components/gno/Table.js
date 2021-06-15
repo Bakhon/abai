@@ -28,6 +28,7 @@ export default {
   ],
   data: function () {
     return {
+      nearDist: 1000,
       perms: this.params,
       isPermission: false,
       isEditing: false,
@@ -207,6 +208,7 @@ export default {
       isAnalysisBoxValue6: true,
       isAnalysisBoxValue7: true,
       isAnalysisBoxValue8: true,
+      isAnalysisBoxValue9: true,
       nk_fields: [
         {
           short_name: "UZN",
@@ -404,8 +406,11 @@ export default {
   },
   methods: {
     editPage() {
-      if (!this.isEditing) {this.isEditing = true}
-      else {this.isEditing = false}
+      if (this.isEditing) {
+        this.welldata['sk_type'] = this.sk
+        this.welldata['horizon'] = this.horizon
+      }
+      this.isEditing = !this.isEditing 
     },
     changeValue(key, value) {
       this.welldata[key] = value
@@ -426,13 +431,16 @@ export default {
       this.kpodMin = this.$store.getters.kpodMin
       this.davMin = this.$store.getters.davMin
       this.gasMax = this.$store.getters.gasMax
-      this.dlinaPolki = this.$store.getters.dlinaPolki
+      this.pintakeMin = this.$store.getters.pintakeMin
       this.dmPumps = this.$store.getters.dmPumps
       this.dmRods = this.$store.getters.dmRods
       this.groupPosad = this.$store.getters.groupPosad
       this.komponovka = this.$store.getters.komponovka
       this.h2s = this.$store.getters.h2s
       this.heavyDown = this.$store.getters.heavyDown
+      this.stupColumns = this.$store.getters.stupColumns
+      this.corrosion = this.$store.getters.corrosion
+      this.markShtang = this.$store.getters.markShtang
       this.postdata = JSON.stringify(
         {
           "pgno_setings":{
@@ -447,9 +455,12 @@ export default {
             "komponovka": this.komponovka,
             "dav_min": this.davMin,
             "gas_max": this.gasMax,
-            "dlina_polki": this.dlinaPolki,
+            "pintake_min": this.pintakeMin,
             "h2s": this.h2s,
             "heavy_down": this.heavyDown,
+            "stups": this.stupColumns,
+            "corrosion": this.corrosion,
+            "steel_mark": this.markShtang,
           },
           "welldata": this.welldata,
           "settings" : {
@@ -478,12 +489,15 @@ export default {
             "analysisBox6": this.isAnalysisBoxValue6,
             "analysisBox7": this.isAnalysisBoxValue7,
             "analysisBox8": this.isAnalysisBoxValue8,
+            "gor_asma": this.isAnalysisBoxValue9,
+            "p_buff": this.pBuf,
             "sep_meth": this.sep_meth,
             "sep_value": this.sep_value,
             "mech_sep": this.mech_sep,
             "mech_sep_value": this.mech_sep_value,
             "nat_sep": this.nat_sep,
             "nkt": this.nkt,
+            'near_dist': this.nearDist
           }
         })
     },
@@ -506,6 +520,19 @@ export default {
       }).finally(() => {
         this.isLoading = false;
     });
+    },
+
+    downloadEconomicExcel() {
+        this.isLoading = true;
+        let req = [this.expAnalysisData.npvTable1, this.expAnalysisData.npvTable2]
+        let uri = "http://172.20.103.187:7575/api/pgno/economic/download";
+        this.axios.post(uri, req,{responseType: "blob"}).then((response) => {
+          fileDownload(response.data, "ЭКОНОМИКА_" + this.field + "_" + this.wellNumber + ".xlsx")
+        }).catch(function (error) {
+          console.error('oops, something went wrong!', error);
+        }).finally(() => {
+          this.isLoading = false;
+      });
     },
 
     onSubmitParams() {
@@ -1037,12 +1064,14 @@ export default {
       this.$store.commit("UPDATE_DMPUMPS", ["32", "38", "44", "57", "70"])
       this.$store.commit("UPDATE_DMRODS", ["19", "22", "25"])
       this.$store.commit("UPDATE_H2S", false)
-      this.$store.commit("UPDATE_DAV_MIN", 30)
+      this.$store.commit("UPDATE_PINTAKE_MIN", 30)
       this.$store.commit("UPDATE_GAS_MAX", 10)
-      this.$store.commit("UPDATE_DLINA_POLKI", 10)
-      this.$store.commit("UPDATE_KOROZ", "srednekor")
+      this.$store.commit("UPDATE_INCL_STEP", 10)
+      this.$store.commit("UPDATE_CORROSION", "mediumCorrosion")
       this.$store.commit("UPDATE_GROUP_POSAD", "2")
       this.$store.commit("UPDATE_HEAVYDOWN", true)
+      this.$store.commit("UPDATE_STUP_COLUMNS", 2)
+      this.$store.commit("UPDATE_MARKSHTANG", "30ХМ(А) (НсУ)")
 
       if(this.field == "JET") {
               this.ao = 'АО "ММГ"'
@@ -1249,7 +1278,15 @@ export default {
                 size: 'sm',
                 timeout: 8000
               })           
-          }
+            }
+            if(data['check_sk'] == "error") {
+              this.$notify({
+                message: this.trans('pgno.notify_error_sk'),
+                type: 'error',
+                size: 'sm',
+                timeout: 8000
+              })   
+            }
 
             if (this.expMeth == "ШГН") {
               this.mech_sep = false
@@ -1608,9 +1645,9 @@ export default {
                           size: 'sm',
                           timeout: 8000
                         })
-                    
-                    this.shgnSPM = data["spm"].toFixed(0)
-                    this.shgnLen = data["stroke_len"]
+                    this.qoilShgnTable = this.welldata['qo_cel'].toFixed(1)
+                    this.shgnSPM = data["spm"].toFixed(1)
+                    this.shgnLen = data["stroke_len"].toFixed(1)
                     this.shgnS1D = data["s1d"].toFixed(0)
                     this.shgnS2D = data["s2d"].toFixed(0)
                     this.shgnS1L = data["s1l"].toFixed(0)

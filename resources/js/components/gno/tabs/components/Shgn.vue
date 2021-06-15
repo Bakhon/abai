@@ -19,10 +19,10 @@
 
 			<div class="flex__item__block__second__block">
 				<div class="block__text__2">{{trans('pgno.minimum')}}</div>
-				<input v-model="lenMin" @change="onChangeLenMin"  class="square2 block__3__input" type="text">
+				<input v-model="strokeLenMin" @change="onChangeLenMin"  class="square2 block__3__input" type="text">
 
 				<div class="block__text__3">{{trans('pgno.maximum')}}</div>
-				<input v-model="lenMax" @change="onChangeLenMax"  class="square2 block__4__input" type="text">
+				<input v-model="strokeLenMax" @change="onChangeLenMax"  class="square2 block__4__input" type="text">
 			</div>
 
 		</div>
@@ -217,22 +217,22 @@
 			
 			<div class="flex__item__block__fourth__block">
 				<select class="input-box-gno podbor long__box" v-model="markShtang">
-                  <option selected v-for="mark in markShtangs" :key="mark.tempValue" :value="markShtangs.mValue">
-                  {{mark.tempValue}}
+                  <option selected v-for="markShtang in markShtangs" :key="markShtang.tempValue" :value="markShtang.mValue">
+                  {{markShtang.tempValue}}
                   </option>
                 </select>
 
 				<div class="flex__item__block__fifth__block">
 					<label for="" class="block__fourth__block__radio">{{trans('pgno.nekorozionnaya')}}
-						<input value="nekor" class="third__block__radio" type="radio" name="korprod1" v-model="koroz" @change="onChangeKoroz"/>
+						<input value="antiCorrosion" class="third__block__radio" type="radio" name="korprod1" v-model="corrosion" @change="onChangeCorrosion"/>
 					</label>
 
 					<label for="" class="block__fourth__block__radio__1">{{trans('pgno.srenekorozionnaya')}}
-						<input value="srednekor" class="third__block__radio" type="radio" name="korprod1" checked v-model="koroz" @change="onChangeKoroz"/>
+						<input value="mediumCorrosion" class="third__block__radio" type="radio" name="korprod1" checked v-model="corrosion" @change="onChangeCorrosion"/>
 					</label>
 
 					<label for="" class="block__fourth__block__radio__2">{{trans('pgno.visokorozionnaya')}}
-						<input value="visokor" class="third__block__radio" type="radio" name="korprod1" v-model="koroz" @change="onChangeKoroz"/>
+						<input value="highCorrosion" class="third__block__radio" type="radio" name="korprod1" v-model="corrosion" @change="onChangeCorrosion"/>
 					</label>
 
 					<label for="" class="block__fourth__block__radio__3">{{trans('pgno.h2s')}}
@@ -249,7 +249,7 @@
 
 				<div class="flex__item__block__sixth__block">
 					<div class="block__text__5">{{trans('pgno.dav_nasos_minim')}}</div>
-					<input v-model="davMin" class="square2 block__6__input" type="text" @change="onChangeDavMin">
+					<input v-model="pintakeMin" class="square2 block__6__input" type="text" @change="onChangePintakeMin">
 
 					<div class="block__text__6">{{trans('pgno.gs_nasos_maks')}}</div>
 					<input v-model="gasMax" class="square2 block__7__input" type="text" @change="onChangeGasMax">
@@ -264,7 +264,7 @@
 	
 				<div class="flex__item__block__fifth__block__1">
 					<div class="block__text__4__end">{{trans('pgno.dlina_polki')}}</div>
-					<input v-model="dlinaPolki" class="square2 block__5__input" type="text" @change="onChangeDlinaPolki">
+					<input v-model="inclStep" class="square2 block__5__input" type="text" @change="onChangeInclStep">
 				</div>
 
 				<button type="button" class="submit_button" @click="onSubmitParams()">
