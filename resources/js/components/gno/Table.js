@@ -522,6 +522,19 @@ export default {
     });
     },
 
+    downloadEconomicExcel() {
+        this.isLoading = true;
+        let req = [this.expAnalysisData.npvTable1, this.expAnalysisData.npvTable2]
+        let uri = "http://172.20.103.187:7575/api/pgno/economic/download";
+        this.axios.post(uri, req,{responseType: "blob"}).then((response) => {
+          fileDownload(response.data, "ЭКОНОМИКА_" + this.field + "_" + this.wellNumber + ".xlsx")
+        }).catch(function (error) {
+          console.error('oops, something went wrong!', error);
+        }).finally(() => {
+          this.isLoading = false;
+      });
+    },
+
     onSubmitParams() {
       this.$modal.hide('modalTabs')
     },

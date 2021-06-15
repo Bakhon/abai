@@ -792,7 +792,16 @@
                   <div class="modal-bign-header with-padding">
                     <div class="modal-bign-title">
                        {{trans('pgno.informacia')}}
+                        <button class="download-curve-button economic-table" @click="downloadEconomicExcel()" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M4.16699 11.1538V14.5C4.16699 14.7761 4.39085 15 4.66699 15H15.667C15.9431 15 16.167 14.7761 16.167 14.5V11.1538" stroke="white" stroke-linecap="round"/>
+                          <path d="M10.1667 5V11.1539" stroke="white" stroke-linecap="round"/>
+                          <path d="M7.5957 9.61572L10.1671 11.9234L12.7386 9.61572" stroke="white" stroke-linecap="round"/>
+                          </svg>
+                          {{trans('pgno.download')}}
+                        </button>
                     </div>
+                    
 
                     <button type="button" class="modal-bign-button" @click="closeEconomicModal()">
                       {{trans('pgno.zakrit')}}
@@ -2255,6 +2264,11 @@ background: #323370;
 outline: none;
 left: 20px;
 top: 8px;
+}
+
+.economic-table {
+  left: 0px;
+  top: 0px;
 }
 
 .select-gno2 {
