@@ -160,7 +160,7 @@
                                     v-else
                                     class="unit-vc ml-2"
                             >
-                              {{ trans('visualcenter.meterCubicWithSpace') }}
+                              {{ trans('visualcenter.meterCubic') }}
                             </div>
                           </div>
                           <div class="additional-header txt1 col-6 col-md-12">
@@ -303,7 +303,7 @@
         <div :class="[`${tableMapping.productionDetails.class}`, 'first-table big-area']">
           <div class="first-string first-string2">
             <div class="row px-4 mt-3 middle-block__list-x-scroll">
-              <div class="col-12 col-lg dropdown dropdown4 font-weight pr-1">
+              <div class="col-12 col-lg dropdown dropdown4 font-weight px-1">
                 <div :class="[`${oilCondensateProductionButton}`, 'button1']">
                   <div class="button1-vc-inner">
                     <div class="icon-all icons1"></div>
@@ -963,7 +963,7 @@
                         {{ trans("visualcenter.dzoOpec") }}
                       </div>
                     </th>
-                    <th v-if="!buttonYearlyTab && !buttonMonthlyTab && oilCondensateProductionButton.length > 0">
+                    <th v-if="oilCondensateProductionButton.length > 0">
                       {{ trans("visualcenter.plan") }}
                       <div>
                         {{ trans("visualcenter.dzoOpec") }},
@@ -993,10 +993,10 @@
                         {{ getMetricNameByCategorySelected() }}
                       </div>
                     </th>
-                    <th v-if="!isFilterTargetPlanActive && (oilCondensateProductionButton.length === 0 || buttonYearlyTab || buttonMonthlyTab)">
+                    <th v-if="!isFilterTargetPlanActive && oilCondensateProductionButton.length === 0">
                       {{ trans("visualcenter.dzoPercent") }}
                     </th>
-                    <th v-if="!isFilterTargetPlanActive && !buttonYearlyTab && !buttonMonthlyTab && oilCondensateProductionButton.length > 0">
+                    <th v-if="!isFilterTargetPlanActive && oilCondensateProductionButton.length > 0">
                       {{ trans("visualcenter.dzoDifference") }}
                       <div>
                         {{ trans("visualcenter.dzoOpec") }},
@@ -1041,16 +1041,12 @@
                             :class="index % 2 === 0 ? 'tdStyle' : ''"
                             style="cursor: pointer"
                     >
-                      <span v-if="oilCondensateProductionButton.length === 0 && currentDzoList === 'daily'">
+                      <span v-if="oilCondensateProductionButton.length === 0">
                         {{ getNameDzoFull(item.dzoMonth) }}
                         <img src="/img/icons/link.svg" />
                       </span>
                       <span v-else-if="oilCondensateProductionButton.length > 0 && !oilCondensateFilters.isWithoutKMGFilterActive">
                         {{ getDzoName(item.dzoMonth,dzoNameMappingWithoutKMG) }}
-                        <img src="/img/icons/link.svg" />
-                      </span>
-                      <span v-else-if="oilCondensateProductionButton.length > 0 && currentDzoList !== 'daily'">
-                        {{ getDzoName(item.dzoMonth,dzoNameMappingNormal) }}
                         <img src="/img/icons/link.svg" />
                       </span>
                       <span v-else>
@@ -1082,20 +1078,33 @@
                       </div>
                     </td>
                     <td
-                            v-if="!isFilterTargetPlanActive && !buttonYearlyTab && !buttonMonthlyTab && oilCondensateProductionButton.length > 0"
-                            :class="currentDzoList === 'daily' ? getDzoColumnsClass(index,'companyName') : getDzoColumnsClass(index,'plan')">
+                            v-if="!isFilterTargetPlanActive && oilCondensateProductionButton.length > 0"
+                            :class="currentDzoList === 'daily' ? getDzoColumnsClass(index,'companyName') : getDzoColumnsClass(index,'fact')">
                       <div class="font">
                         {{ formatDigitToThousand(item.opekPlan) }}
                       </div>
                     </td>
-                    <td :class="currentDzoList === 'daily' && oilCondensateProductionButton.length > 0 ?
-                            getDzoColumnsClass(index,'plan') : getDzoColumnsClass(index,'fact')">
+                    <td
+                            v-if="oilCondensateProductionButton.length > 0"
+                            :class="currentDzoList === 'daily' ?
+                            getDzoColumnsClass(index,'plan') : getDzoColumnsClass(index,'difference')"
+                    >
                       <div class="font">
                         {{ formatDigitToThousand(item.factMonth) }}
                       </div>
                     </td>
-                    <td :class="currentDzoList === 'daily' && oilCondensateProductionButton.length > 0 ?
-                            getDzoColumnsClass(index,'fact') : getDzoColumnsClass(index,'difference')">
+                    <td
+                            v-else
+                            :class="getDzoColumnsClass(index,'fact')"
+                    >
+                      <div class="font">
+                        {{ formatDigitToThousand(item.factMonth) }}
+                      </div>
+                    </td>
+                    <td
+                            v-if="oilCondensateProductionButton.length > 0"
+                            :class="currentDzoList === 'daily' ?
+                            getDzoColumnsClass(index,'fact') : getDzoColumnsClass(index,'percent')">
                       <div
                               v-if="item.factMonth"
                               :class="
@@ -1109,7 +1118,22 @@
                       </div>
                     </td>
                     <td
-                            v-if="!isFilterTargetPlanActive && (oilCondensateProductionButton.length === 0 || buttonYearlyTab || buttonMonthlyTab)"
+                            v-else
+                            :class="getDzoColumnsClass(index,'difference')">
+                      <div
+                              v-if="item.factMonth"
+                              :class="
+                            item.planMonth > item.factMonth ?
+                            'triangle fall-indicator-production-data' :
+                            'triangle growth-indicator-production-data'
+                          "
+                      ></div>
+                      <div class="font dynamic" >
+                        {{getFormattedNumberToThousand(item.planMonth,item.factMonth)}}
+                      </div>
+                    </td>
+                    <td
+                            v-if="!isFilterTargetPlanActive && oilCondensateProductionButton.length === 0"
                             :class="`${getDzoColumnsClass(index,'percent')}`"
                     >
                       <div
@@ -1125,9 +1149,9 @@
                       </div>
                     </td>
                     <td
-                            v-if="!isFilterTargetPlanActive && !buttonYearlyTab && !buttonMonthlyTab && oilCondensateProductionButton.length > 0"
+                            v-if="!isFilterTargetPlanActive && oilCondensateProductionButton.length > 0"
                             :class="currentDzoList === 'daily' && oilCondensateProductionButton.length > 0 ?
-                            getDzoColumnsClass(index,'difference') : getDzoColumnsClass(index,'percent')"
+                            getDzoColumnsClass(index,'difference') : getDzoColumnsClass(index,'difference')"
                     >
                       <div
                               v-if="item.factMonth"
@@ -1246,8 +1270,9 @@
                       </div>
                     </td>
                     <td
-                            v-if="!buttonMonthlyTab && !buttonYearlyTab && oilCondensateProductionButton.length > 0"
-                            :class="index % 2 === 0 ? `${getDarkerClass(index)}` : `${getLighterClass(index)}`"
+                            v-if="oilCondensateProductionButton.length > 0"
+                            :class="currentDzoList === 'daily' ?
+                            getDarkerClass(index) : getLighterClass(index)"
                     >
                       <div class="font">
                         {{dzoCompaniesSummary.opekPlan}}
@@ -1258,7 +1283,7 @@
                     </td>
                     <td
                             v-if="buttonMonthlyTab || buttonYearlyTab"
-                            :class="index % 2 === 0 ? `${getLighterClass(index)}` : `${getDarkerClass(index)}`"
+                            :class="index % 2 === 0 ? `${getDarkerClass(index)}` : `${getLighterClass(index)}`"
                     >
                       <div class="font">
                         {{dzoCompaniesSummary.fact}}
@@ -1281,7 +1306,7 @@
                     </td>
                     <td
                             v-if="buttonMonthlyTab || buttonYearlyTab"
-                            :class="index % 2 === 0 ? `${getDarkerClass(index)}` : `${getLighterClass(index)}`"
+                            :class="index % 2 === 0 ? `${getLighterClass(index)}` : `${getDarkerClass(index)}`"
                     >
                       <div
                               v-if="factMonthSumm"
@@ -1327,7 +1352,7 @@
                       </div>
                     </td>
                     <td
-                            v-if="!isFilterTargetPlanActive && !buttonYearlyTab && !buttonMonthlyTab && oilCondensateProductionButton.length > 0"
+                            v-if="!isFilterTargetPlanActive && oilCondensateProductionButton.length > 0"
                             :class="currentDzoList === 'daily' ?
                             getLighterClass(index) : getDarkerClass(index)"
                     >
@@ -1344,7 +1369,7 @@
                       </div>
                     </td>
                     <td
-                            v-if="!isFilterTargetPlanActive && (oilCondensateProductionButton.length === 0 || buttonYearlyTab || buttonMonthlyTab)"
+                            v-if="!isFilterTargetPlanActive && oilCondensateProductionButton.length === 0"
                             :class="`${getColorClassBySelectedPeriod(index)}`"
                     >
                       <div

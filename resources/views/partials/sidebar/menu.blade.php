@@ -65,6 +65,8 @@
                         auth()->user()->can('monitoring list watermeasurement')
                         || auth()->user()->can('monitoring list oilgas')
                         || auth()->user()->can('monitoring list corrosion')
+                        || auth()->user()->can('monitoring list hydro_calculation')
+                        || auth()->user()->can('monitoring list reverse_calculation')
                     )
                         <li class="left-menu-li">
                             <a>
