@@ -252,6 +252,7 @@ export default {
       techModeProdOil: null,
       krsWorkoverBeg: null,
       krsWorkoverEnd: null,
+      wellTreatmentDate: null,
       forms: forms,
     }
   },
@@ -312,6 +313,7 @@ export default {
           this.wellWaterCut = data.meas_water_cut.water_cut
           this.krsWorkoverBeg = data.krs_well_workover.dbeg
           this.krsWorkoverEnd = data.krs_well_workover.dend
+          this.wellTreatmentDate = data.well_treatment.treat_date
           if (data.spatial_object.coord_point != null) {
             data = data.spatial_object.coord_point.replace('(', '').replace(')', '')
             data = data.split(',')
@@ -333,7 +335,6 @@ export default {
         }
         this.loading = false
         this.setTableData()
-        console.log(data)
       })
     },
     setTableData() {
@@ -669,6 +670,12 @@ export default {
           'neigbor_1': this.krsWorkoverBeg,
           'neigbor_2': this.krsWorkoverEnd,
           'name': 'Дата последнего КРС',
+          'data': ''
+        },
+        {
+          'description': this.wellTreatmentDate,
+          'method': null,
+          'name': 'Дата проведения ПФП нагн. скважины',
           'data': ''
         },
       ]

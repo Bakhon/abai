@@ -36,6 +36,7 @@ class WellsController extends Controller
             'meas_liq' => $this->MeasLiq($well),
             'meas_water_cut' => $this->MeasWaterCut($well),
             'krs_well_workover' => $this->KrsWellWorkover($well),
+            'well_treatment'=>$this->WellTreatment($well),
         );
     }
 
@@ -210,6 +211,13 @@ class WellsController extends Controller
             ->where('repair_type', '=', '1')
             ->orderBy('dbeg', 'desc')
             ->first(['dbeg', 'dend']);
+    }
+
+    public function WellTreatment(Well $well)
+    {
+        return $well -> well_treatment()
+            ->where('treatment_type', '=', '21')
+            ->first(['treat_date']);
     }
 
     public function search(Request $request): array

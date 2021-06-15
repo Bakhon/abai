@@ -117,6 +117,11 @@ class Well extends TBDModel
         return $this->hasMany(WellWorkover::class, 'well', 'id');
     }
 
+    public function well_treatment()
+    {
+        return $this->hasMany(WellTreatment::class, 'well', 'id');
+    }
+
     public function scopeActive($query, $date)
     {
         $query->whereHas(
