@@ -1054,16 +1054,15 @@ export default {
       }
     },
 
-    getWellNumber(wellnumber) {
-      this.isIntervals = true
+    setDefaultStoreValues() {
       this.$store.commit("UPDATE_SPM_MIN", 3)
       this.$store.commit("UPDATE_SPM_MAX", 8)
       this.$store.commit("UPDATE_LEN_MIN", 2)
       this.$store.commit("UPDATE_LEN_MAX", 3)
       this.$store.commit("UPDATE_KPOD", 0.6)
       this.$store.commit("UPDATE_KOMPONOVKA", ["hvostovik"])
-      this.$store.commit("UPDATE_DMPUMPS", ["32", "38", "44", "57", "70"])
-      this.$store.commit("UPDATE_DMRODS", ["19", "22", "25"])
+      this.$store.commit("UPDATE_DMRPUMPS", ["32", "38", "44", "57", "70"])
+      this.$store.commit("UPDATE_DMRRODS", ["19", "22", "25"])
       this.$store.commit("UPDATE_H2S", false)
       this.$store.commit("UPDATE_PINTAKE_MIN", 30)
       this.$store.commit("UPDATE_GAS_MAX", 10)
@@ -1073,6 +1072,11 @@ export default {
       this.$store.commit("UPDATE_HEAVYDOWN", true)
       this.$store.commit("UPDATE_STUP_COLUMNS", 2)
       this.$store.commit("UPDATE_MARKSHTANG", "30ХМ(А) (НсУ)")
+    },
+
+    getWellNumber(wellnumber) {
+      this.isIntervals = true
+      this.setDefaultStoreValues()
 
       if(this.field == "JET") {
               this.ao = 'АО "ММГ"'
@@ -1104,6 +1108,26 @@ export default {
                   timeout: 8000
                 })    
             }
+
+            this.setDefaultStoreValues()
+
+            this.$store.commit("UPDATE_SPM_MIN", 3)
+            this.$store.commit("UPDATE_SPM_MAX", 8)
+            this.$store.commit("UPDATE_LEN_MIN", 2)
+            this.$store.commit("UPDATE_LEN_MAX", 3)
+            this.$store.commit("UPDATE_KPOD", 0.6)
+            this.$store.commit("UPDATE_KOMPONOVKA", ["hvostovik"])
+            this.$store.commit("UPDATE_DMRPUMPS", ["32", "38", "44", "57", "70"])
+            this.$store.commit("UPDATE_DMRRODS", ["19", "22", "25"])
+            this.$store.commit("UPDATE_H2S", false)
+            this.$store.commit("UPDATE_PINTAKE_MIN", 30)
+            this.$store.commit("UPDATE_GAS_MAX", 10)
+            this.$store.commit("UPDATE_INCL_STEP", 10)
+            this.$store.commit("UPDATE_CORROSION", "mediumCorrosion")
+            this.$store.commit("UPDATE_GROUP_POSAD", "2")
+            this.$store.commit("UPDATE_HEAVYDOWN", true)
+            this.$store.commit("UPDATE_STUP_COLUMNS", 2)
+            this.$store.commit("UPDATE_MARKSHTANG", "30ХМ(А) (НсУ)")
 
 
             
