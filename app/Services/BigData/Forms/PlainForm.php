@@ -7,13 +7,14 @@ namespace App\Services\BigData\Forms;
 use App\Exceptions\BigData\SubmitFormException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 abstract class PlainForm extends BaseForm
 {
     protected $jsonValidationSchemeFileName = 'plain_form.json';
 
-    protected function getFields(): \Illuminate\Support\Collection
+    protected function getFields(): Collection
     {
         $fields = collect();
         foreach ($this->params()['tabs'] as $tab) {
@@ -124,7 +125,7 @@ abstract class PlainForm extends BaseForm
         return response()->json([], Response::HTTP_NO_CONTENT);
     }
 
-    protected function insertInnerTable(\Illuminate\Support\Collection $tableFields, int $id)
+    protected function insertInnerTable(Collection $tableFields, int $id)
     {
         if (!empty($tableFields)) {
             foreach ($tableFields as $field) {
