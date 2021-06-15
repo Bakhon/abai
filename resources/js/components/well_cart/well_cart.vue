@@ -248,6 +248,7 @@ export default {
       wellPerfActualTop: null,
       wellPerfActualBase: null,
       wellMeasLiq: null,
+      wellWaterCut: null,
       techModeProdOil: null,
       forms: forms,
     }
@@ -306,6 +307,7 @@ export default {
           this.techModeProdLiquid = data.tech_mode_prod_oil.liquid
           this.wellInjPressure = data.tech_mode_inj.inj_pressure
           this.wellAgentVol = data.tech_mode_inj.agent_vol
+          this.wellWaterCut = data.meas_water_cut.water_cut
           if (data.spatial_object.coord_point != null) {
             data = data.spatial_object.coord_point.replace('(', '').replace(')', '')
             data = data.split(',')
@@ -639,6 +641,14 @@ export default {
           'neigbor_1': this.techModeProdLiquid,
           'neigbor_2': this.wellMeasLiq,
           'name': 'Дебит жидкости, м3/сут (режим/факт)',
+          'data': ''
+        },
+        {
+          'description': null,
+          'method': 'neighbors',
+          'neigbor_1': this.techModeProdOil,
+          'neigbor_2': this.wellWaterCut,
+          'name': 'Обводненность, % (режим/факт)',
           'data': ''
         },
       ]

@@ -107,6 +107,11 @@ class Well extends TBDModel
         return $this->hasMany(MeasLiq::class, 'well', 'id');
     }
 
+    public function meas_water_cut()
+    {
+        return $this->hasMany(MeasWaterCut::class, 'well', 'id');
+    }
+
     public function scopeActive($query, $date)
     {
         $query->whereHas(
