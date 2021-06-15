@@ -409,11 +409,8 @@ export default {
       if (this.isEditing) {
         this.welldata['sk_type'] = this.sk
         this.welldata['horizon'] = this.horizon
-        this.isEditing = false
       }
-      else {
-        this.isEditing = true
-      }
+      this.isEditing = !this.isEditing 
     },
     changeValue(key, value) {
       this.welldata[key] = value
