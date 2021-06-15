@@ -303,7 +303,7 @@
         <div :class="[`${tableMapping.productionDetails.class}`, 'first-table big-area']">
           <div class="first-string first-string2">
             <div class="row px-4 mt-3 middle-block__list-x-scroll">
-              <div class="col-12 col-lg dropdown dropdown4 font-weight pr-1">
+              <div class="col-12 col-lg dropdown dropdown4 font-weight px-1">
                 <div :class="[`${oilCondensateProductionButton}`, 'button1']">
                   <div class="button1-vc-inner">
                     <div class="icon-all icons1"></div>
