@@ -35,6 +35,7 @@ class WellsController extends Controller
             'tech_mode_inj' => $this->TechModeInj($well),
             'meas_liq' => $this->MeasLiq($well),
             'meas_water_cut' => $this->MeasWaterCut($well),
+            'krs_well_workover' => $this->KrsWellWorkover($well),
         );
     }
 
@@ -201,6 +202,14 @@ class WellsController extends Controller
         return $well->meas_water_cut()
             ->orderBy('dbeg', 'desc')
             ->first(['water_cut']);
+    }
+
+    public function KrsWellWorkover(Well $well)
+    {
+        return $well->well_workover()
+            ->where('repair_type', '=', '1')
+            ->orderBy('dbeg', 'desc')
+            ->first(['dbeg', 'dend']);
     }
 
     public function search(Request $request): array

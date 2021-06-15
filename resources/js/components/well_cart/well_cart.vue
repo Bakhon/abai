@@ -250,6 +250,8 @@ export default {
       wellMeasLiq: null,
       wellWaterCut: null,
       techModeProdOil: null,
+      krsWorkoverBeg: null,
+      krsWorkoverEnd: null,
       forms: forms,
     }
   },
@@ -308,6 +310,8 @@ export default {
           this.wellInjPressure = data.tech_mode_inj.inj_pressure
           this.wellAgentVol = data.tech_mode_inj.agent_vol
           this.wellWaterCut = data.meas_water_cut.water_cut
+          this.krsWorkoverBeg = data.krs_well_workover.dbeg
+          this.krsWorkoverEnd = data.krs_well_workover.dend
           if (data.spatial_object.coord_point != null) {
             data = data.spatial_object.coord_point.replace('(', '').replace(')', '')
             data = data.split(',')
@@ -649,6 +653,22 @@ export default {
           'neigbor_1': this.techModeProdOil,
           'neigbor_2': this.wellWaterCut,
           'name': 'Обводненность, % (режим/факт)',
+          'data': ''
+        },
+        {
+          'description': null,
+          'method': 'neighbors',
+          'neigbor_1': this.techModeProdOil,
+          'neigbor_2': null,
+          'name': 'Дебит нефти, т/сут (режим/факт)',
+          'data': ''
+        },
+        {
+          'description': null,
+          'method': 'neighbors',
+          'neigbor_1': this.krsWorkoverBeg,
+          'neigbor_2': this.krsWorkoverEnd,
+          'name': 'Дата последнего КРС',
           'data': ''
         },
       ]
