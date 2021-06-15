@@ -524,7 +524,6 @@
                     </div>
                   </div>
                 </div>
-
                     <button type="button" class="modal-bign-button" @click="closeModal('modalOldWell')">
                      {{trans('pgno.zakrit')}}
                     </button>

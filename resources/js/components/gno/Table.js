@@ -410,7 +410,8 @@ export default {
       else {
         this.welldata['sk_type'] = this.sk
         this.welldata['horizon'] = this.horizon
-        this.isEditing = false}
+        this.isEditing = false
+      }
     },
     changeValue(key, value) {
       this.welldata[key] = value
@@ -1313,7 +1314,7 @@ export default {
 
     },
 
-    fetchBlockCentrators() {   
+    fetchBlockCentrators() {
       let fieldInfo = this.wellIncl.split('_');
       let urlForIncl = "http://172.20.103.187:7575/api/pgno/incl";
       if (this.expChoose == 'ЭЦН') {
