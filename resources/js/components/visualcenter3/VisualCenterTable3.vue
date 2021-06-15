@@ -1079,19 +1079,47 @@
                     </td>
                     <td
                             v-if="!isFilterTargetPlanActive && oilCondensateProductionButton.length > 0"
-                            :class="currentDzoList === 'daily' ? getDzoColumnsClass(index,'companyName') : getDzoColumnsClass(index,'plan')">
+                            :class="currentDzoList === 'daily' ? getDzoColumnsClass(index,'companyName') : getDzoColumnsClass(index,'fact')">
                       <div class="font">
                         {{ formatDigitToThousand(item.opekPlan) }}
                       </div>
                     </td>
-                    <td :class="currentDzoList === 'daily' && oilCondensateProductionButton.length > 0 ?
-                            getDzoColumnsClass(index,'plan') : getDzoColumnsClass(index,'fact')">
+                    <td
+                            v-if="oilCondensateProductionButton.length > 0"
+                            :class="currentDzoList === 'daily' ?
+                            getDzoColumnsClass(index,'plan') : getDzoColumnsClass(index,'difference')"
+                    >
                       <div class="font">
                         {{ formatDigitToThousand(item.factMonth) }}
                       </div>
                     </td>
-                    <td :class="currentDzoList === 'daily' && oilCondensateProductionButton.length > 0 ?
-                            getDzoColumnsClass(index,'fact') : getDzoColumnsClass(index,'difference')">
+                    <td
+                            v-else
+                            :class="getDzoColumnsClass(index,'fact')"
+                    >
+                      <div class="font">
+                        {{ formatDigitToThousand(item.factMonth) }}
+                      </div>
+                    </td>
+                    <td
+                            v-if="oilCondensateProductionButton.length > 0"
+                            :class="currentDzoList === 'daily' ?
+                            getDzoColumnsClass(index,'fact') : getDzoColumnsClass(index,'percent')">
+                      <div
+                              v-if="item.factMonth"
+                              :class="
+                            item.planMonth > item.factMonth ?
+                            'triangle fall-indicator-production-data' :
+                            'triangle growth-indicator-production-data'
+                          "
+                      ></div>
+                      <div class="font dynamic" >
+                        {{getFormattedNumberToThousand(item.planMonth,item.factMonth)}}
+                      </div>
+                    </td>
+                    <td
+                            v-else
+                            :class="getDzoColumnsClass(index,'difference')">
                       <div
                               v-if="item.factMonth"
                               :class="
@@ -1123,7 +1151,7 @@
                     <td
                             v-if="!isFilterTargetPlanActive && oilCondensateProductionButton.length > 0"
                             :class="currentDzoList === 'daily' && oilCondensateProductionButton.length > 0 ?
-                            getDzoColumnsClass(index,'difference') : getDzoColumnsClass(index,'percent')"
+                            getDzoColumnsClass(index,'difference') : getDzoColumnsClass(index,'difference')"
                     >
                       <div
                               v-if="item.factMonth"
@@ -1243,7 +1271,8 @@
                     </td>
                     <td
                             v-if="oilCondensateProductionButton.length > 0"
-                            :class="index % 2 === 0 ? `${getDarkerClass(index)}` : `${getLighterClass(index)}`"
+                            :class="currentDzoList === 'daily' ?
+                            getDarkerClass(index) : getLighterClass(index)"
                     >
                       <div class="font">
                         {{dzoCompaniesSummary.opekPlan}}
@@ -1254,7 +1283,7 @@
                     </td>
                     <td
                             v-if="buttonMonthlyTab || buttonYearlyTab"
-                            :class="index % 2 === 0 ? `${getLighterClass(index)}` : `${getDarkerClass(index)}`"
+                            :class="index % 2 === 0 ? `${getDarkerClass(index)}` : `${getLighterClass(index)}`"
                     >
                       <div class="font">
                         {{dzoCompaniesSummary.fact}}
@@ -1277,7 +1306,7 @@
                     </td>
                     <td
                             v-if="buttonMonthlyTab || buttonYearlyTab"
-                            :class="index % 2 === 0 ? `${getDarkerClass(index)}` : `${getLighterClass(index)}`"
+                            :class="index % 2 === 0 ? `${getLighterClass(index)}` : `${getDarkerClass(index)}`"
                     >
                       <div
                               v-if="factMonthSumm"
