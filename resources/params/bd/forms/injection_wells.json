@@ -84,9 +84,9 @@
                   },
                   {
                     "code": "plan_month",
-                    "type": "date",
-                    "title": "planned_month",
-                    "validation": "required|date"
+                    "type":"date",
+                    "title":"planned_month",
+                    "validation":"required|date"
                   }
                 ]
               }
