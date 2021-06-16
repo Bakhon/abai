@@ -192,6 +192,8 @@
               <a v-if="row.links.history" class="links__item links__item_history" :href="row.links.history"></a>
               <a v-if="row.links.delete" href="#" class="links__item links__item_delete"
                  @click.prevent="deleteItem(row)"></a>
+              <a v-if="row.links.restore" href="#" class="links__item links__item_restore"
+                 @click.prevent="restoreItem(row)"></a>
             </div>
           </td>
         </tr>
@@ -367,12 +369,36 @@ export default {
       this.loadData()
     },
     deleteItem(item) {
-      if (window.confirm('Вы действительно хотите удалить запись?')) {
-        this.axios.delete(item.links.delete).then(response => {
-          this.loadData()
-          this.params.success = this.trans('app.deleted')
-        })
-      }
+      this.$bvModal.msgBoxConfirm(this.trans('app.are-you-sure-to-delete'), {
+        title: this.trans('app.delete_titie'),
+        headerBgVariant: 'danger',
+        okTitle: this.trans('app.delete'),
+        cancelTitle: this.trans('app.cancel'),
+      })
+          .then(value => {
+            if (value) {
+              this.axios.delete(item.links.delete).then(response => {
+                this.loadData()
+                this.params.success = this.trans('app.deleted')
+              })
+            }
+          })
+    },
+    restoreItem (item) {
+      this.$bvModal.msgBoxConfirm(this.trans('app.are-you-sure-to-restore'), {
+        title: this.trans('app.restore_title'),
+        headerBgVariant: 'danger',
+        okTitle: this.trans('app.restore'),
+        cancelTitle: this.trans('app.cancel'),
+      })
+          .then(value => {
+            if (value) {
+              this.axios.get(item.links.restore).then(response => {
+                this.loadData()
+                this.params.success = this.trans('app.restored')
+              })
+            }
+          })
     },
     runJob(url) {
       this.loading = true
@@ -459,7 +485,7 @@ table::-webkit-scrollbar-corner {
   padding: 16px 24px 20px 19px;
 
   &__wrapper {
-    min-height: 400px;
+    min-height: calc(100vh - 88px);
     overflow-x: auto;
     position: relative;
     max-width: calc(100vw - 137px);
@@ -790,6 +816,12 @@ table::-webkit-scrollbar-corner {
               }
 
               &_history {
+                background: url(/img/icons/history.svg);
+                height: 14px;
+                width: 17px;
+              }
+
+              &_restore {
                 background: url(/img/icons/history.svg);
                 height: 14px;
                 width: 17px;
