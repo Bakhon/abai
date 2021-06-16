@@ -409,11 +409,9 @@ export default {
   methods: {
     editPage() {
       if (this.isEditing) {
-        this.isSkError = false
         this.welldata['sk_type'] = this.sk
         this.welldata['horizon'] = this.horizon
-        this.postCurveData()
-      }
+        }
       this.isEditing = !this.isEditing 
     },
     changeValue(key, value) {
@@ -1284,7 +1282,7 @@ export default {
                 timeout: 8000
               })           
             }
-            if(data['check_sk'] == "error") {
+            if(data['check_sk'] === "error") {
               this.isSkError = true
               this.$notify({
                 message: this.trans('pgno.notify_error_sk'),
@@ -1406,14 +1404,6 @@ export default {
               this.setData(data)
               this.$emit('LineData', this.curveLineData)
               this.$emit('PointsData', this.curvePointsData)
-              if(data['check_sk'] == "error") {
-                this.isSkError = true
-                this.$notify({
-                  message: this.trans('pgno.notify_error_sk'),
-                  type: 'warning',
-                  size: 'sm',
-                  timeout: 8000
-                })}
               if(this.qlPot * 1 < this.qlCelValue.split(' ')[0] * 1 && this.CelButton == 'ql'){
                 this.$notify({
                   message: this.trans('pgno.notify_cel_rezhim_more_perf'),
