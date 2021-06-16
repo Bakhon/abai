@@ -30,6 +30,7 @@ export default {
                    'periodEnd': moment().format('MMMM YYYY'),
                 },
             },
+            chemistrySelectedCompany: 'all',
         };
     },
     methods: {
@@ -41,8 +42,6 @@ export default {
             let uri = this.localeUrl("/get-chemistry-details");
             const response = await axios.get(uri,{params:queryOptions});
             if (response.status === 200) {
-                console.log('chemistry');
-                console.log(response.data)
                 return response.data;
             }
             return {};
@@ -72,6 +71,9 @@ export default {
 
         updateChemistryWidget() {
             let temporaryChemistryDetails = _.cloneDeep(this.chemistryDetails);
+            if (this.chemistrySelectedCompany !== 'all') {
+                temporaryChemistryDetails = this.getChemistryFilteredByDzo(temporaryChemistryDetails,this.chemistrySelectedCompany);
+            }
             let self = this;
             _.forEach(temporaryChemistryDetails, function(item) {
                 let dateOption = [moment(item.date).month(),moment(item.date).year()];
@@ -83,6 +85,11 @@ export default {
                     item['scale_inhibitor_plan'] = self.dzoMonthlyPlans[planIndex].plan_chem_prod_zakacka_ingibator_soleotloj * moment(item.date).daysInMonth();
                 }
             });
+            this.updateChemistryWidgetTable(temporaryChemistryDetails);
+            this.chemistryChartData = this.getChemistryWidgetChartData(temporaryChemistryDetails);
+        },
+
+        getChemistryWidgetChartData(temporaryChemistryDetails) {
             let groupedForChart =  _.groupBy(temporaryChemistryDetails, item => {
                 return moment(item.date).startOf('day').format("YYYY-MM");
             });
@@ -97,8 +104,10 @@ export default {
                     }
                 }
             }
+            return chartData;
+        },
 
-            this.chemistryChartData = chartData;
+        updateChemistryWidgetTable(temporaryChemistryDetails) {
             let tableData = _(temporaryChemistryDetails)
                 .groupBy("data")
                 .map((item) => ({
@@ -111,25 +120,38 @@ export default {
                     scale_inhibitor: _.round(_.sumBy(item, 'scale_inhibitor'), 0),
                     scale_inhibitor_plan: _.round(_.sumBy(item, 'scale_inhibitor_plan'), 0),
                 })).value();
+            this.chemistryDataFactSumm = this.getChemistryFactSum(tableData);
+        },
 
+        getChemistryFactSum(tableData) {
+            let totalChemistryFact = 0;
             if (tableData.length > 0) {
                 _.forEach(this.chemistryData, function(item) {
                     item.plan = tableData[0][item.code + '_plan'];
                     item.fact = tableData[0][item.code];
                 });
-                let totalChemistryFact = 0;
                 _.forEach(Object.keys(tableData[0]), function(key) {
                     totalChemistryFact += tableData[0][key];
                 });
-
-                this.chemistryDataFactSumm = totalChemistryFact;
             }
+            return totalChemistryFact;
         },
 
         isChemistryRecordsSimple(inputDateOption,planItem,inputDzoName) {
             return inputDateOption[0] === moment(planItem.date).month() &&
                 inputDateOption[1] === moment(planItem.date).year() &&
                 planItem.dzo === inputDzoName;
+        },
+
+        changeSelectedChemistryCompanies(e) {
+            this.chemistrySelectedCompany = e.target.value;
+            this.updateChemistryWidget();
+        },
+
+        getChemistryFilteredByDzo(inputData,dzoName) {
+            return _.filter(inputData, function (item) {
+                return (item.dzo_name === dzoName);
+            })
         },
     },
 }

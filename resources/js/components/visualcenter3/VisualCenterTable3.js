@@ -208,7 +208,6 @@ export default {
         processProductionDataByCompanies(productionData,metricName,chartSecondaryName) {
             if (this.isProductionDetailsActive) {
                 productionData = this.getFormattingProductionDetails(productionData);
-                console.log(productionData);
                 this.chemistrySelectedRow = 'demulsifier';
                 this.updateChemistryWidget();
             }
