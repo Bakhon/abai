@@ -148,8 +148,6 @@ class RolesController extends Controller
      */
     public function update(Request $request, Role $role)
     {
-//        dump($role);
-//        dd($request->permissions);
         $role->syncPermissions($request->permissions);
         return redirect()->route('admin.roles.index')->with('success', __('app.updated'));
     }

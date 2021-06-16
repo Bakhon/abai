@@ -93,7 +93,7 @@ class MapHistory extends Controller
         return view('complicationMonitoring.map-history.index', compact('params'));
     }
 
-    public function list(IndexTableRequest $request)
+    public function list(IndexTableRequest $request): \Symfony\Component\HttpFoundation\Response
     {
         $query = Activity::query();
 
@@ -145,7 +145,8 @@ class MapHistory extends Controller
         return view('complicationMonitoring.map-history.show', compact('params'));
     }
 
-    public function restore (Activity $activity) {
+    public function restore (Activity $activity): \Symfony\Component\HttpFoundation\Response
+    {
         activity()->disableLogging();
 
         switch ($activity->description) {
@@ -177,12 +178,12 @@ class MapHistory extends Controller
         }
     }
 
-    protected function getFilteredQuery($filter, $query = null)
+    protected function getFilteredQuery($filter, $query = null): \Illuminate\Database\Eloquent\Builder
     {
         return (new MapHistoryFilter($query, $filter))->filter();
     }
 
-    protected function rollBackChanges (Activity $activity)
+    protected function rollBackChanges (Activity $activity): \Symfony\Component\HttpFoundation\Response
     {
         $subject = $activity->subject;
         foreach ($activity->changes()['old'] as $key => $value) {
@@ -203,7 +204,7 @@ class MapHistory extends Controller
         );
     }
 
-    protected function restoreDeleted (Activity $activity)
+    protected function restoreDeleted (Activity $activity): \Symfony\Component\HttpFoundation\Response
     {
         $subject = $activity->subject;
         $result = $subject->restore();
@@ -224,7 +225,7 @@ class MapHistory extends Controller
         );
     }
 
-    protected function deleteCreated (Activity $activity)
+    protected function deleteCreated (Activity $activity): \Symfony\Component\HttpFoundation\Response
     {
         $subject = $activity->subject;
 
