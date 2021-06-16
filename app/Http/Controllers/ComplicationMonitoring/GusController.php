@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers\ComplicationMonitoring;
 
-use App\Exports\OmgCAExport;
-use App\Exports\PipeLineCalcExport;
 use App\Filters\GuFilter;
 use App\Http\Controllers\CrudController;
 use App\Http\Controllers\Traits\WithFieldsValidation;
@@ -13,14 +11,10 @@ use App\Http\Requests\IndexTableRequest;
 use App\Http\Resources\GuListResource;
 use App\Jobs\ExportOmgCAToExcel;
 use App\Models\ComplicationMonitoring\Cdng;
-use App\Models\ComplicationMonitoring\OmgNGDU;
-use App\Models\ComplicationMonitoring\TrunklinePoint;
 use App\Models\ComplicationMonitoring\Gu;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Session;
-use Maatwebsite\Excel\Facades\Excel;
 
 class GusController extends CrudController
 {

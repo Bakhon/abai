@@ -732,7 +732,6 @@ export default {
         this.updatePrices(this.period);
         this.dzoMonthlyPlans = await this.getDzoMonthlyPlans();
 
-        this.changeAssets('isAllAssets');
         this.dzoCompaniesAssets = _.cloneDeep(this.dzoCompaniesAssetsInitial);
         this.sortDzoList();
         this.changeDate();
@@ -749,7 +748,7 @@ export default {
     watch: {
         bigTable: function () {
             this.dzoCompanySummary = this.bigTable;
-            if (this.oilCondensateProductionButton.length > 0 && this.currentDzoList === 'daily' && this.isOneDateSelected) {
+            if (this.oilCondensateProductionButton.length > 0) {
                 this.productionParamsWidget.yesterdayOldFact = this.productionPercentParams['oil_fact'];
                 this.dzoCompanySummary = this.getConsolidatedOilCondensate();
             }

@@ -107,6 +107,7 @@ return array (
   'temp_nabora_krivizni' => 'Темп набора пространственной кривизны',
   'zagruzka' => 'Загрузка',
   'no_data' => 'Нет данных',
+  'no_incl_data' => 'Нет данных инклинометрии',
   'prichini_prs_god' => 'Причины ПРС за скользящий год',
   'number_of_repair' => 'Количество ремонтов без ГТМ',
   'nno' => 'ННО',
@@ -218,4 +219,5 @@ return array (
   'gor_gor_acma' => 'ГФ = ГФ АСМА',
   'near_dist' => 'Расстояние до скважин',
   'notify_error_sk' => 'Уточните тип СК',
+  'primenit_default' => 'Применить по умолчанию',
 );

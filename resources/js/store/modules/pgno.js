@@ -3,9 +3,9 @@ import axios from 'axios'
 const pgno = {
     state: {
         hPump: null,
-        spmMin: 3,
-        spmMax: 8,
-        strokeLenMin: 2,
+        spmMin: 4,
+        spmMax: 7,
+        strokeLenMin: 2.5,
         strokeLenMax: 3,
         kpodMin: 0.6,
         pintakeMin: 30,
@@ -19,7 +19,7 @@ const pgno = {
         dmRods: ["19", "22", "25"],
         komponovka: ["hvostovik"],
         stupColumns: "2",
-        markShtang: "30ХМ(А) (НсУ)",
+        markShtang: "15Х2ГМФ (НВО)",
     },
     mutations: {
       UPDATE_HEAVYDOWN(state, val) {
@@ -79,23 +79,6 @@ const pgno = {
     },
     
     actions: {
-      setDefault({commit}) {
-        commit("UPDATE_SPM_MIN", 3)
-        commit("UPDATE_SPM_MAX", 8)
-        commit("UPDATE_LEN_MIN", 2)
-        commit("UPDATE_LEN_MAX", 3)
-        commit("UPDATE_KPOD", 0.6)
-        commit("UPDATE_KOMPONOVKA", ["hvostovik"])
-        commit("UPDATE_DMPUMPS", ["32", "38", "44", "57", "70"])
-        commit("UPDATE_DMRODS", ["19", "22", "25"])
-        commit("UPDATE_H2S", false)
-        commit("UPDATE_DAV_MIN", 30)
-        commit("UPDATE_GAS_MAX", 10)
-        commit("UPDATE_DLINA_POLKI", 10)
-        commit("UPDATE_CORROSION", "mediumCorrosion")
-        commit("UPDATE_GROUP_POSAD", "2")
-        commit("UPDATE_HEAVYDOWN", true)
-      },
       setDmPumps({commit}, value) {
         commit('UPDATE_DMPUMPS', value)
       },
