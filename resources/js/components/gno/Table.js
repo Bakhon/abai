@@ -1076,26 +1076,6 @@ export default {
       this.$store.commit("UPDATE_MARKSHTANG", "15Х2ГМФ (НВО)")
     },
 
-    setStoreValuesToZero() {
-      this.$store.commit("UPDATE_SPM_MIN", 0)
-      this.$store.commit("UPDATE_SPM_MAX", 0)
-      this.$store.commit("UPDATE_LEN_MIN", 0)
-      this.$store.commit("UPDATE_LEN_MAX", 0)
-      this.$store.commit("UPDATE_KPOD", 0)
-      this.$store.commit("UPDATE_KOMPONOVKA", [""])
-      this.$store.commit("UPDATE_DMPUMPS", [""])
-      this.$store.commit("UPDATE_DMRODS", [""])
-      this.$store.commit("UPDATE_H2S", false)
-      this.$store.commit("UPDATE_PINTAKE_MIN", 0)
-      this.$store.commit("UPDATE_GAS_MAX", 0)
-      this.$store.commit("UPDATE_INCL_STEP", 0)
-      this.$store.commit("UPDATE_CORROSION", "")
-      this.$store.commit("UPDATE_GROUP_POSAD", "")
-      this.$store.commit("UPDATE_HEAVYDOWN", false)
-      this.$store.commit("UPDATE_STUP_COLUMNS", 4)
-      this.$store.commit("UPDATE_MARKSHTANG", "")
-    },
-
     getWellNumber(wellnumber) {
       this.isIntervals = true
       this.setDefaultStoreValues()
@@ -1131,7 +1111,6 @@ export default {
                 })    
             }
 
-            this.setStoreValuesToZero()
             this.curveLineData = JSON.parse(data.LineData)["data"]
             this.curvePointsData = JSON.parse(data.PointsData)["data"]
             this.ngdu = 0
