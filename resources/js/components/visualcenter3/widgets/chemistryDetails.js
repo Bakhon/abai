@@ -3,7 +3,6 @@ import moment from "moment";
 export default {
     data: function () {
         return {
-            otmDetails: [],
             chemistryDetails: [],
             chemistryPeriodStartMonth: moment().format('MMMM YYYY'),
             chemistryPeriodEndMonth: moment().format('MMMM YYYY'),
@@ -31,6 +30,37 @@ export default {
             },
             chemistrySelectedCompany: 'all',
             chemistrySelectedRow: 'demulsifier',
+            chemistryData: [
+                {
+                    name: this.trans("visualcenter.chemProdZakackaDemulg"),
+                    code: 'demulsifier',
+                    plan: 0,
+                    fact: 0,
+                    metricSystem: this.trans("visualcenter.chemistryMetricTon"),
+                },
+                {
+                    name: this.trans("visualcenter.chemProdZakackaBakteracid"),
+                    code: 'bactericide',
+                    plan: 0,
+                    fact: 0,
+                    metricSystem: this.trans("visualcenter.chemistryMetricTon"),
+                },
+                {
+                    name: this.trans("visualcenter.chemProdZakackaIngibatorKorrozin"),
+                    code: 'corrosion_inhibitor',
+                    plan: 0,
+                    fact: 0,
+                    metricSystem: this.trans("visualcenter.chemistryMetricTon"),
+                },
+                {
+                    name: this.trans("visualcenter.chemProdZakackaIngibatorSoleotloj"),
+                    code: 'scale_inhibitor',
+                    plan: 0,
+                    fact: 0,
+                    metricSystem: this.trans("visualcenter.chemistryMetricTon"),
+                },
+            ],
+            chemistryChartData: []
         };
     },
     methods: {
@@ -87,6 +117,8 @@ export default {
                     item['scale_inhibitor_plan'] = self.dzoMonthlyPlans[planIndex].plan_chem_prod_zakacka_ingibator_soleotloj;
                 }
             });
+            console.log('-temporaryChemistryDetails')
+            console.log(temporaryChemistryDetails)
             this.updateChemistryWidgetTable(temporaryChemistryDetails);
             this.chemistryChartData = this.getChemistryWidgetChartData(temporaryChemistryDetails);
         },
@@ -126,6 +158,8 @@ export default {
         },
 
         getChemistryFactSum(tableData) {
+            console.log('-tableData')
+            console.log(tableData)
             let totalChemistryFact = 0;
             if (tableData.length > 0) {
                 _.forEach(this.chemistryData, function(item) {
@@ -138,6 +172,7 @@ export default {
                     }
                 });
             }
+            console.log(this.chemistryData)
             return totalChemistryFact;
         },
 

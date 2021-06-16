@@ -2,10 +2,7 @@ import moment from "moment";
 
 export default {
     data: function () {
-        return {
-            chemistryData: [],
-            chemistryChartData: []
-        };
+        return {};
     },
     methods: {
         getChemistryData(arr) {
