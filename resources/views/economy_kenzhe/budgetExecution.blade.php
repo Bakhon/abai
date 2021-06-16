@@ -7,7 +7,6 @@
 <style>
 .visualcenter-page-container {
     flex-wrap: wrap;
-    margin: 0 !important;
     color:#fff;
 }
 
