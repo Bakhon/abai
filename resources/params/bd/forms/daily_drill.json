@@ -120,7 +120,7 @@
                 "code":"pump_type",
                 "type":"dict",
                 "title":"pump_type",
-                "validation":"required|exists:tbd.dict.pump_type,id",
+                "validation":"required|exists:tbd.dict.drill_pump_type,id",
                 "dict":"pump_types"
               },
               {
