@@ -23,6 +23,7 @@ class TechController
                     'wells' =>
                         function ($query) {
                             $query->active(Carbon::now());
+                            $query->distinct();
                         }
                 ]
             )

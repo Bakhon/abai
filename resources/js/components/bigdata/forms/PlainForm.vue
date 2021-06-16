@@ -113,7 +113,7 @@ export default {
       let values = {}
       for (let key in this.formValues) {
         let field = this.formFields.find(field => field.code === key)
-        if (field && field.type === 'calc') continue
+        if (field && field.type === 'calc' && field.submit_value !== true) continue
         values[key] = this.formValues[key]
       }
       return values

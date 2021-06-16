@@ -1,12 +1,13 @@
 <template>
   <div class="bd-forms col-12 p-0 pl-2 h-100">
     <div class="blueblock h-100 m-0">
-      <div class="wells-select-block m-0 p-3">
+      <div class="wells-select-block m-0 p-3 scrollable blueblock">
         <tree-view
             v-for="treeData in filterTree"
             :isNodeOnBottomLevelOfHierarchy="isNodeOnBottomLevelOfHierarchy"
             :ref="'child_' + treeData.id"
             :node="treeData"
+            :key="treeData.id"
             :handle-click="nodeClick"
             :get-wells="getWells"
             :key="treeData.id"
@@ -26,6 +27,12 @@ import BigDataTableForm from "./forms/TableForm";
 export default {
   components: {
     BigDataTableForm
+  },
+  props: {
+    currentWellId: {
+      type: Number,
+      required: false
+    },
   },
   data() {
     let activeForm = {};
