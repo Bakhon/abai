@@ -59,7 +59,9 @@ export default {
      });     
         
     },
-    refreshData() {
+    refreshData(dateStart2,dateEnd2) {
+      this.dateStart = dateStart2;
+      this.dateEnd = dateEnd2;
       let uri = this.localeUrl("/getdzocalcs");
       let dateStart = (moment(this.dateStart).locale("en").format('MMM DD, YYYY'))  
       let dateEnd =(moment(this.dateEnd).locale("en").format('MMM DD, YYYY'))     
@@ -70,19 +72,17 @@ export default {
       if (this.dzoSelect !== 'ALL') {
         queryParams.params.dzo = this.dzoSelect;
       }   
-    },
+     },    
   },
   watch: {
     dzoSelect: function () {
-      this.refreshData()
-    },
+      this.refreshData(this.dateStart,this.dateEnd)
+    },   
     selectMonthFromBeginOfTheYearh: function (newValue) {
       if (newValue !== 0) {
         let dateStart = new Date(2020, 0, 1);
-        let dateEnd = new Date(2020, newValue, 1);
-        this.dateStart = dateStart;
-        this.dateEnd = dateEnd;
-        this.refreshData();
+        let dateEnd = new Date(2020, newValue, 1);    
+        this.refreshData(dateStart,dateEnd);
         this.selectMonth = this.selectQuarter = this.selectActualMonth = 0;
       }
     },
@@ -90,9 +90,7 @@ export default {
       if (newValue !== 0) {
         let dateStart = new Date(2020, newValue - 1, 1);
         let dateEnd = new Date(2020, newValue, 1);
-        this.dateStart = dateStart;
-        this.dateEnd = dateEnd;
-        this.refreshData();
+        this.refreshData(dateStart,dateEnd);
         this.selectMonthFromBeginOfTheYearh = this.selectQuarter = this.selectActualMonth = 0;
       }
     },
@@ -100,9 +98,7 @@ export default {
       if (newValue !== 0) {
         let dateStart = new Date(2020, newValue - 1, 1);
         let dateEnd = new Date(2020, newValue + 2, 1);
-        this.dateStart = dateStart;
-        this.dateEnd = dateEnd;
-        this.refreshData();
+        this.refreshData(dateStart,dateEnd);
         this.selectMonthFromBeginOfTheYearh = this.selectMonth = this.selectActualMonth = 0;
       }
     },
@@ -110,9 +106,7 @@ export default {
       if (newValue !== 0) {
         let dateStart = new Date(2020, this.actualMonth, 1);
         let dateEnd = new Date(2020, this.actualMonth + 1, 1);
-        this.dateStart = dateStart;
-        this.dateEnd = dateEnd;
-        this.refreshData();
+        this.refreshData(dateStart,dateEnd);
         this.selectMonthFromBeginOfTheYearh = this.selectMonth = this.selectQuarter = 0;
       }
     },

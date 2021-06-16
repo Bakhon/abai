@@ -1,8 +1,8 @@
 <template>
     <div class="vertical-indicators-block">
         <wide-indicator
-            v-bind:leftNumbers="[{title: trans('visualcenter.plan'), value: udIncomePlan}, {title: trans('visualcenter.fact'), value: udIncomeFact}]"
-            v-bind:rightNumbers="[{title: trans('visualcenter.plan'), value: udIncomeBblPlan}, {title: trans('visualcenter.fact'), value: udIncomeBblFact}]"
+            v-bind:leftNumbers="[{title: trans('economics.plan'), value: udIncomePlan}, {title: trans('economics.fact'), value: udIncomeFact}]"
+            v-bind:rightNumbers="[{title: trans('economics.plan'), value: udIncomeBblPlan}, {title: trans('economics.fact'), value: udIncomeBblFact}]"
             v-bind:leftUnits="leftUnits"
             v-bind:rightUnits="rightUnits"
             v-bind:title="trans('visualcenter.ecoBlock4')"
@@ -10,8 +10,8 @@
             v-bind:progressPercents="Math.abs((udIncomePlan - udIncomeFact) / udIncomePlan * 100).toFixed(0)"
         ></wide-indicator>
         <wide-indicator
-            v-bind:leftNumbers="[{title: trans('visualcenter.plan'), value: udSpendingPlan}, {title: trans('visualcenter.fact'), value: udSpendingFact}]"
-            v-bind:rightNumbers="[{title: trans('visualcenter.plan'), value: udSpendingBblPlan}, {title: trans('visualcenter.fact'), value: udSpendingBblFact}]"
+            v-bind:leftNumbers="[{title: trans('economics.plan'), value: udSpendingPlan}, {title: trans('economics.fact'), value: udSpendingFact}]"
+            v-bind:rightNumbers="[{title: trans('economics.plan'), value: udSpendingBblPlan}, {title: trans('economics.fact'), value: udSpendingBblFact}]"
             v-bind:leftUnits="leftUnits"
             v-bind:rightUnits="rightUnits"
             v-bind:title="trans('visualcenter.ecoBlock5')"
@@ -19,8 +19,8 @@
             v-bind:progressPercents="Math.abs((udSpendingPlan - udSpendingFact) / udIncomePlan * 100).toFixed(0)"
         ></wide-indicator>
         <wide-indicator
-            v-bind:leftNumbers="[{title: trans('visualcenter.plan'), value: kvlPlan}]"
-            v-bind:rightNumbers="[{title: trans('visualcenter.fact'), value: kvlFact}]"
+            v-bind:leftNumbers="[{title: trans('economics.plan'), value: kvlPlan}]"
+            v-bind:rightNumbers="[{title: trans('economics.fact'), value: kvlFact}]"
             v-bind:leftUnits="leftUnits"
             v-bind:rightUnits="'тенге/тонна'"
             v-bind:title="trans('visualcenter.ecoBlock6')"

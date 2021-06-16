@@ -229,11 +229,11 @@
     </div>
     <div class="col-12 col-lg-2 middle-block-columns" v-if="dateStart">
       <div class="second-column-container">
-        <budget-execution-vertical-indicators
+        <vertical-indicators
           :dateStart="dateStart"
           :dateEnd="dateEnd"
           :dzo="dzoSelect"
-        ></budget-execution-vertical-indicators>
+        ></vertical-indicators>
       </div>
     </div>
     <!--<cat-loader />-->
@@ -242,4 +242,5 @@
 <script src="./budgetExecution.js"></script>
 <style scoped>
 @import "./budgetExecution.css";
+@import "/public/visualcenter4.css";
 </style>
