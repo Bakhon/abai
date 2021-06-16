@@ -315,16 +315,18 @@ export default {
           this.krsWorkoverEnd = data.krs_well_workover.dend
           this.wellTreatmentDate = data.well_treatment.treat_date
           if (data.spatial_object.coord_point != null) {
-            data = data.spatial_object.coord_point.replace('(', '').replace(')', '')
-            data = data.split(',')
-            this.wellSaptialObjectX = data[0]
-            this.wellSaptialObjectY = data[1]
+            let spatialObject
+            spatialObject = data.spatial_object.coord_point.replace('(', '').replace(')', '')
+            spatialObject = spatialObject.split(',')
+            this.wellSaptialObjectX = spatialObject[0]
+            this.wellSaptialObjectY = spatialObject[1]
           }
           if (data.spatial_object_bottom.coord_point != null) {
-            data = data.spatial_object_bottom.coord_point.replace('(', '').replace(')', '')
-            data = data.split(',')
-            this.wellSaptialObjectBottomX = data[0]
-            this.wellSaptialObjectBottomY = data[1]
+            let spatialObjectBottom
+            spatialObjectBottom = data.spatial_object_bottom.coord_point.replace('(', '').replace(')', '')
+            spatialObjectBottom = spatialObjectBottom.split(',')
+            this.wellSaptialObjectBottomX = spatialObjectBottom[0]
+            this.wellSaptialObjectBottomY = spatialObjectBottom[1]
           }
           this.actualBottomHole = data.actual_bottom_hole.pivot.depth
           this.artificialBottomHole = data.artificial_bottom_hole.pivot.depth
