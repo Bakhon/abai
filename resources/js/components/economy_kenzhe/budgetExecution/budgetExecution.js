@@ -47,7 +47,7 @@ export default {
       isNeedToChangeProperty: true,
       dateStart: '',
       dateEnd: '',
-      factFromOneDay:'30.01.2019',
+      factForOneDay:'30.01.2019',
     }
   },
   methods: {   

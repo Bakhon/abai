@@ -127,7 +127,7 @@
                     <th scope="col" class="column-all-macro-table">
                       <br />
                       {{ trans("economics.factZa") }} <br />
-                      {{factFromOneDay}}
+                      {{factForOneDay}}
                     </th>
                     <th scope="col" class="column-all-macro-table">
                       {{ trans("economics.planNa") }} <br />
@@ -215,7 +215,7 @@
             </div>
           </div>
         </div>
-        <div>
+        <div v-if="dzoData.length > 0">
           <h5 class="text-center mr-2">
             <strong>
               {{ trans("economics.executionForTheReportingPeriod") }}
