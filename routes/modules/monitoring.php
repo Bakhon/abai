@@ -175,7 +175,7 @@ Route::group(
 
                 Route::get('/reverse-calc/list', 'ComplicationMonitoring\ReverseCalculationController@list')->name('reverse_calculation.list');
                 Route::get('/reverse-calc', 'ComplicationMonitoring\ReverseCalculationController@index')->name('reverse_calculation.index');
-                Route::get('/hydro-calc/calculate', 'ComplicationMonitoring\ReverseCalculationController@calculate')->name('reverse_calculation.calculate');
+                Route::get('/reverse-calc/calculate', 'ComplicationMonitoring\ReverseCalculationController@calculate')->name('reverse_calculation.calculate');
 
                 Route::get('economical-effect/list', 'ComplicationMonitoring\EconomicalEffectController@list')->name(
                     'economical_effect.list'

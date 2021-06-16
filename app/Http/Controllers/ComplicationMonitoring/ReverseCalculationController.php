@@ -6,7 +6,8 @@ use App\Filters\ReverseCalculationFilter;
 use App\Http\Requests\IndexTableRequest;
 use App\Http\Controllers\CrudController;
 use App\Http\Resources\ReverseCalculationResource;
-use App\Jobs\CalculateHydroDynamics;
+use App\Jobs\ReverseCalculateHydroDynamics;
+use App\Models\ComplicationMonitoring\OilPipe;
 use App\Models\ComplicationMonitoring\ReverseCalculation;
 use Illuminate\Support\Facades\Session;
 
@@ -138,7 +139,7 @@ class ReverseCalculationController extends CrudController
 
     public function calculate(IndexTableRequest $request)
     {
-        $job = new CalculateHydroDynamics($request->validated());
+        $job = new ReverseCalculateHydroDynamics($request->validated());
         $this->dispatch($job);
 
         return response()->json(
