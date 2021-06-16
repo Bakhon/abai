@@ -232,10 +232,10 @@ export default {
         'expl': null,
         'techs': null,
         'techsName': null,
-        'labResearchValue': null,
-        'wellType': null,
+        'labResearchValue': {'value_double': null},
+        'wellType': {'name_ru': null},
         'org': null,
-        'geo': null,
+        'geo': {'name_ru': null},
         'tubeNom': null,
         'measLiq': null,
         'techModeProdOil': null,
@@ -249,7 +249,7 @@ export default {
         'artificialBottomHole': null,
         'perfActualTop': null,
         'wellPerfActualBase': null,
-        'wellInfo': null,
+        'wellInfo': {'rte': null},
       },
       popup: false,
       tubeNomOd: null,
@@ -323,6 +323,7 @@ export default {
     selectWell(well) {
       this.loading = true
       this.axios.get(this.localeUrl(`/api/bigdata/wells/${well.id}/wellInfo`)).then(({data}) => {
+        this.loading = true
         try {
           this.wellUwi = data.wellInfo.uwi
           for (let i = 0; i < Object.keys(this.wellTransform).length; i++) {
@@ -412,56 +413,56 @@ export default {
   computed: {
     tableData() {
       return [
-        // {
-        //   'description': this.wellUwi,
-        //   'method': null,
-        //   'name': 'Скважина',
-        //   'data': ''
-        // },
-        // {
-        //   'description': this.wellType.name_ru,
-        //   'method': null,
-        //   'name': 'Вид скважины',
-        //   'data': ''
-        // },
-        // {
-        //   'description': this.wellGeo.name_ru,
-        //   'method': null,
-        //   'name': 'Месторождение',
-        //   'data': ''
-        // },
-        // {
-        //   'description': '',
-        //   'method': 'neighbors',
-        //   'neigbor_1': this.wellGeo.name_ru,
-        //   'neigbor_2': this.wellLabResearchValue.value_double,
-        //   'name': 'Горизонт / Pнас, атм',
-        //   'data': ''
-        // },
-        // {
-        //   'description': this.well.rte,
-        //   'method': null,
-        //   'name': 'H ротора',
-        //   'data': ''
-        // },
-        // {
-        //   'description': this.wellTechsName,
-        //   'method': null,
-        //   'name': 'Тех. структура',
-        //   'data': ''
-        // },
-        // {
-        //   'description': this.wellTechsTap,
-        //   'method': null,
-        //   'name': 'Отвод',
-        //   'data': ''
-        // },
-        // {
-        //   'description': this.wellTechsName,
-        //   'method': null,
-        //   'name': 'ГУ/Ряд',
-        //   'data': ''
-        // },
+        {
+          'description': this.wellUwi,
+          'method': null,
+          'name': 'Скважина',
+          'data': ''
+        },
+        {
+          'description': this.well.wellType.name_ru,
+          'method': null,
+          'name': 'Вид скважины',
+          'data': ''
+        },
+        {
+          'description': this.well.geo.name_ru,
+          'method': null,
+          'name': 'Месторождение',
+          'data': ''
+        },
+        {
+          'description': '',
+          'method': 'neighbors',
+          'neigbor_1': this.well.geo.name_ru,
+          'neigbor_2': this.well.labResearchValue.value_double,
+          'name': 'Горизонт / Pнас, атм',
+          'data': ''
+        },
+        {
+          'description': this.well.wellInfo.rte,
+          'method': null,
+          'name': 'H ротора',
+          'data': ''
+        },
+        {
+          'description': this.well.wellTechsName,
+          'method': null,
+          'name': 'Тех. структура',
+          'data': ''
+        },
+        {
+          'description': this.wellTechsTap,
+          'method': null,
+          'name': 'Отвод',
+          'data': ''
+        },
+        {
+          'description': this.wellTechsName,
+          'method': null,
+          'name': 'ГУ/Ряд',
+          'data': ''
+        },
         // {
         //   'description': this.wellOrgName,
         //   'method': null,
