@@ -21,7 +21,7 @@
 				</div>
 				<div class="title__block__max__1">
 					<span>{{trans('pgno.maximum')}}</span>
-					<input v-model="strokeLenMax" @change="onChangeLenMin"  class="square2 block__2__input" type="text">
+					<input v-model="strokeLenMax" @change="onChangeLenMax"  class="square2 block__2__input" type="text">
 				</div>
 			</div>
 
@@ -39,21 +39,17 @@
 					<div class="title__block__pump_list">
 
 						<div class="title__block__pump__1">
-							
-							<!-- <input class="checkbox__block__1" v-model="dmRods" value="13" type="checkbox"/>
-									<label class="checkbox__block__label__1">13</label> -->
-
-							<input class="checkbox__block__1" v-model="dmrPumps" value="27" type="checkbox"/>
+							<input class="checkbox__block__1" v-model="dmPumps" value="27" type="checkbox"/>
 							<label class="checkbox__block__label__1">27</label>
 						</div>
 
 						<div class="title__block__pump__1">
-							<input class="checkbox__block__1" v-model="dmrPumps" value="32" type="checkbox"/>
+							<input class="checkbox__block__1" v-model="dmPumps" value="32" type="checkbox"/>
 							<label class="checkbox__block__label__1">32</label>
 						</div>
 
 						<div class="title__block__pump__1">
-							<input class="checkbox__block__1" v-model="dmrPumps" value="38" type="checkbox"/>
+							<input class="checkbox__block__1" v-model="dmPumps" value="38" type="checkbox"/>
 							<label class="checkbox__block__label__1">38</label>
 						</div>
 
@@ -62,17 +58,17 @@
 					<div class="title__block__pump_list__2">
 
 						<div class="title__block__pump__1">
-							<input class="checkbox__block__1" v-model="dmrPumps" value="44" type="checkbox"/>
+							<input class="checkbox__block__1" v-model="dmPumps" value="44" type="checkbox"/>
 							<label class="checkbox__block__label__1">44</label>
 						</div>
 
 						<div class="title__block__pump__1">
-							<input class="checkbox__block__1" v-model="dmrPumps" value="50" type="checkbox"/>
+							<input class="checkbox__block__1" v-model="dmPumps" value="50" type="checkbox"/>
 							<label class="checkbox__block__label__1">50</label>
 						</div>
 
 						<div class="title__block__pump__1">
-							<input class="checkbox__block__1" v-model="dmrPumps" value="57" type="checkbox"/>
+							<input class="checkbox__block__1" v-model="dmPumps" value="57" type="checkbox"/>
 							<label class="checkbox__block__label__1">57</label>
 						</div>
 
@@ -81,17 +77,17 @@
 					<div class="title__block__pump_list__3">
 
 						<div class="title__block__pump__1">
-							<input class="checkbox__block__1" v-model="dmrPumps" value="60" type="checkbox"/>
+							<input class="checkbox__block__1" v-model="dmPumps" value="60" type="checkbox"/>
 							<label class="checkbox__block__label__1">60</label>
 						</div>
 
 						<div class="title__block__pump__1">
-							<input class="checkbox__block__1" v-model="dmrPumps" value="70" type="checkbox"/>
+							<input class="checkbox__block__1" v-model="dmPumps" value="70" type="checkbox"/>
 							<label class="checkbox__block__label__1">70</label>
 						</div>
 
 						<div class="title__block__pump__1">
-							<input class="checkbox__block__1" v-model="dmrPumps" value="95" type="checkbox"/>
+							<input class="checkbox__block__1" v-model="dmPumps" value="95" type="checkbox"/>
 							<label class="checkbox__block__label__1">95</label>
 						</div>
 
@@ -178,17 +174,17 @@
 						<div class="title__block__pump_list">
 
 							<div class="title__block__pump__1">
-								<input value="1" @change="onChangeStupColumns" class="checkbox__block__1" v-model="stup" name="stup" type="radio" />
+								<input value="1" @change="onChangeStupColumns" class="checkbox__block__1" v-model="stupColumns" name="stup" type="radio" />
 								<label class="checkbox__block__label__1">1 {{trans('pgno.stup')}}</label>
 							</div>
 
 							<div class="title__block__pump__1">
-								<input value="2" @change="onChangeStupColumns" class="checkbox__block__1" v-model="stup" name="stup" type="radio" />
+								<input value="2" @change="onChangeStupColumns" class="checkbox__block__1" v-model="stupColumns" name="stup" type="radio" />
 								<label class="checkbox__block__label__1">2 {{trans('pgno.stup')}}</label>
 							</div>
 
 							<div class="title__block__pump__1">
-								<input value="3" @change="onChangeStupColumns" class="checkbox__block__1" v-model="stup" name="stup" type="radio" />
+								<input value="3" @change="onChangeStupColumns" class="checkbox__block__1" v-model="stupColumns" name="stup" type="radio" />
 								<label class="checkbox__block__label__1">3 {{trans('pgno.stup')}}</label>
 							</div>
 
@@ -208,34 +204,34 @@
 						<div class="title__block__pump__list">
 							<div class="title__block__pump_list">
 								<div class="title__block__pump__1">
-									<input class="checkbox__block__1" v-model="dmrRods" value="13" type="checkbox"/>
+									<input class="checkbox__block__1" v-model="dmRods" value="13" type="checkbox"/>
 									<label class="checkbox__block__label__1">13</label>
 								</div>
 
 								<div class="title__block__pump__1">
-									<input class="checkbox__block__1" v-model="dmrRods" value="16" type="checkbox"/>
+									<input class="checkbox__block__1" v-model="dmRods" value="16" type="checkbox"/>
 									<label class="checkbox__block__label__1">16</label>
 								</div>
 
 								<div class="title__block__pump__1">
-									<input class="checkbox__block__1" v-model="dmrRods" value="19" type="checkbox"/>
+									<input class="checkbox__block__1" v-model="dmRods" value="19" type="checkbox"/>
 									<label class="checkbox__block__label__1">19</label>
 								</div>
 							</div>
 
 							<div class="title__block__pump_list__2">
 								<div class="title__block__pump__1">
-									<input class="checkbox__block__1" v-model="dmrRods" value="22" type="checkbox"/>
+									<input class="checkbox__block__1" v-model="dmRods" value="22" type="checkbox"/>
 									<label class="checkbox__block__label__1">22</label>
 								</div>
 
 								<div class="title__block__pump__1">
-									<input class="checkbox__block__1" v-model="dmrRods" value="25" type="checkbox"/>
+									<input class="checkbox__block__1" v-model="dmRods" value="25" type="checkbox"/>
 									<label class="checkbox__block__label__1">25</label>
 								</div>
 
 								<div class="title__block__pump__1">
-									<input class="checkbox__block__1" v-model="dmrRods" value="29" type="checkbox"/>
+									<input class="checkbox__block__1" v-model="dmRods" value="29" type="checkbox"/>
 									<label class="checkbox__block__label__1">29</label>
 								</div>
 							</div>

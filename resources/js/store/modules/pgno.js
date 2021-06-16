@@ -15,8 +15,8 @@ const pgno = {
         h2s: false,
         heavyDown: true,
         corrosion: "mediumCorrosion",
-        dmrPumps: ["32", "38", "44", "57", "70"],
-        dmrRods: ["19", "22", "25"],
+        dmPumps: ["32", "38", "44", "57", "70"],
+        dmRods: ["19", "22", "25"],
         komponovka: ["hvostovik"],
         stupColumns: "2",
         markShtang: "15Х2ГМФ (НВО)",
@@ -25,11 +25,11 @@ const pgno = {
       UPDATE_HEAVYDOWN(state, val) {
         state.heavyDown = val
       },
-      UPDATE_DMRPUMPS(state, val) {
-        state.dmrPumps = val
+      UPDATE_DMPUMPS(state, val) {
+        state.dmPumps = val
       },
-      UPDATE_DMRRODS(state, val) {
-        state.dmrRods = val
+      UPDATE_DMRODS(state, val) {
+        state.dmRods = val
       },
       UPDATE_MARKSHTANG(state, val) {
         state.markShtang = val
@@ -79,28 +79,11 @@ const pgno = {
     },
     
     actions: {
-      setDefault({commit}) {
-        commit("UPDATE_SPM_MIN", 3)
-        commit("UPDATE_SPM_MAX", 8)
-        commit("UPDATE_LEN_MIN", 2)
-        commit("UPDATE_LEN_MAX", 3)
-        commit("UPDATE_KPOD", 0.6)
-        commit("UPDATE_KOMPONOVKA", ["hvostovik"])
-        commit("UPDATE_DMRPUMPS", ["32", "38", "44", "57", "70"])
-        commit("UPDATE_DMRRODS", ["19", "22", "25"])
-        commit("UPDATE_H2S", false)
-        commit("UPDATE_DAV_MIN", 30)
-        commit("UPDATE_GAS_MAX", 10)
-        commit("UPDATE_DLINA_POLKI", 10)
-        commit("UPDATE_CORROSION", "mediumCorrosion")
-        commit("UPDATE_GROUP_POSAD", "2")
-        commit("UPDATE_HEAVYDOWN", true)
+      setDmPumps({commit}, value) {
+        commit('UPDATE_DMPUMPS', value)
       },
-      setDmrPumps({commit}, value) {
-        commit('UPDATE_DMRPUMPS', value)
-      },
-      setDmrRods({commit}, value) {
-        commit('UPDATE_DMRRODS', value)
+      setDmRods({commit}, value) {
+        commit('UPDATE_DMRODS', value)
       },
       setKomponovka({commit}, value) {
         commit('UPDATE_KOMPONOVKA', value)
@@ -118,8 +101,8 @@ const pgno = {
     
     getters: {
       markShtang: (state) => state.markShtang,
-      dmrPumps: (state) => state.dmrPumps,
-      dmrRods: (state) => state.dmrRods,
+      dmPumps: (state) => state.dmPumps,
+      dmRods: (state) => state.dmRods,
       komponovka: (state) => state.komponovka,
       kpodMin: (state) => state.kpodMin,
       spmMin: (state) => state.spmMin,

@@ -94,20 +94,20 @@ export default {
 		}
 	},
 	computed: {
-		dmrPumps: {
+		dmPumps: {
 			get() {
-				return this.$store.getters.dmrPumps;
+				return this.$store.getters.dmPumps;
 			},
 			set(val) {
-				this.$store.dispatch('setDmrPumps', val)
+				this.$store.dispatch('setDmPumps', val)
 			}	
 		},
-		dmrRods: {
+		dmRods: {
 			get() {
-				return this.$store.getters.dmrRods
+				return this.$store.getters.dmRods
 			},
 			set(val) {
-				this.$store.dispatch('setDmrRods', val)
+				this.$store.dispatch('setDmRods', val)
 			}
 		},
 		komponovka: {
