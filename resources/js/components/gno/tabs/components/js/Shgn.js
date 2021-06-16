@@ -17,7 +17,7 @@ export default {
 			strokeLenMax: 3,
 			spmMin: 3,
 			spmMax: 8,
-			kpodMin: 12,
+			kpodMin: 0.6,
 			isModal: false,
 			pumpCheckboxes: [
 				{

@@ -12,7 +12,7 @@ class TechState extends PlainForm
 {
     protected $configurationFileName = 'tech_state';
 
-    public function calcFields(int $wellId, array $values): array
+    public function getCalculatedFields(int $wellId, array $values): array
     {
         if (empty($values['dbeg'])) {
             return [];

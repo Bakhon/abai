@@ -406,7 +406,7 @@
         <div class="no-gutter col-lg-9 order-md-1 first-column container-fluid no-gutter">
           <div class="no-gutter col-md-12 first-column-curve-block">
             <div class="background">
-              <modal class="modal-bign-wrapper" name="modalIncl" :draggable="false" :width="1300" :height="700"
+              <modal class="modal-bign-wrapper" name="modalIncl" draggable=".modal-bign-header" :width="1300" :height="700"
                 style="background: transparent;" :adaptive="true">
                 <div class="modal-bign modal-bign-container">
                   <div class="modal-bign-header">
