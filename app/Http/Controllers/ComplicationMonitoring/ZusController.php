@@ -2,11 +2,16 @@
 
 namespace App\Http\Controllers\ComplicationMonitoring;
 
+use App\Filters\ZuFilter;
 use App\Http\Controllers\CrudController;
 use App\Http\Controllers\Traits\WithFieldsValidation;
+use App\Http\Requests\ZuCreateRequest;
 use App\Http\Requests\ZuUpdateRequest;
 use App\Http\Requests\IndexTableRequest;
-use App\Models\Refs\Zu;
+use App\Http\Resources\ZuListResource;
+use App\Jobs\ExportOmgCAToExcel;
+use App\Models\ComplicationMonitoring\Gu;
+use App\Models\ComplicationMonitoring\Zu;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Session;
@@ -34,7 +39,7 @@ class ZusController extends CrudController
                     'title' => __('monitoring.gu'),
                     'type' => 'select',
                     'filter' => [
-                        'values' => \App\Models\Refs\Gu::query()
+                        'values' => Gu::query()
                             ->orderBy('name', 'asc')
                             ->get()
                             ->map(
@@ -79,12 +84,12 @@ class ZusController extends CrudController
             ->getFilteredQuery($request->validated(), $query)
             ->paginate(25);
 
-        return response()->json(json_decode(\App\Http\Resources\ZuListResource::collection($zus)->toJson()));
+        return response()->json(json_decode(ZuListResource::collection($zus)->toJson()));
     }
 
     public function export(IndexTableRequest $request)
     {
-        $job = new \App\Jobs\ExportOmgCAToExcel($request->validated());
+        $job = new ExportOmgCAToExcel($request->validated());
         $this->dispatch($job);
 
         return response()->json(
@@ -110,7 +115,7 @@ class ZusController extends CrudController
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(\App\Http\Requests\ZuCreateRequest $request)
+    public function store(ZuCreateRequest $request)
     {
         $this->validateFields($request, 'zu');
 
@@ -178,6 +183,6 @@ class ZusController extends CrudController
 
     protected function getFilteredQuery($filter, $query = null)
     {
-        return (new \App\Filters\ZuFilter($query, $filter))->filter();
+        return (new ZuFilter($query, $filter))->filter();
     }
 }

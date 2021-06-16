@@ -2,8 +2,8 @@
 
 namespace App\Imports;
 
-use App\Models\Refs\Cdng;
-use App\Models\Refs\Gu;
+use App\Models\ComplicationMonitoring\Cdng;
+use App\Models\ComplicationMonitoring\Gu;
 use Maatwebsite\Excel\Concerns\ToModel;
 
 class GusImport implements ToModel

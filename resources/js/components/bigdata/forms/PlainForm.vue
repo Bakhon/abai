@@ -57,6 +57,7 @@
 </template>
 
 <script>
+import Vue from "vue";
 import BigdataFormField from './field'
 import BigdataPlainFormResults from './PlainFormResults'
 import {bdFormActions, bdFormState} from '@store/helpers'
@@ -93,6 +94,30 @@ export default {
     ...bdFormState([
       'formParams'
     ]),
+    formFields() {
+      if (!this.formParams || !this.formParams.tabs) return []
+
+      let fields = []
+      for (const tab of this.formParams.tabs) {
+        for (const blocks of tab.blocks) {
+          blocks.forEach(block => {
+            for (const item of block.items) {
+              fields.push(item)
+            }
+          })
+        }
+      }
+      return fields
+    },
+    formValuesToSubmit() {
+      let values = {}
+      for (let key in this.formValues) {
+        let field = this.formFields.find(field => field.code === key)
+        if (field && field.type === 'calc' && field.submit_value !== true) continue
+        values[key] = this.formValues[key]
+      }
+      return values
+    }
   },
   watch: {
     params() {
@@ -124,6 +149,12 @@ export default {
       if (this.values) {
         this.formValues = this.values
       }
+
+      let calculatedFields = this.formFields.filter(field => field.type === 'calc')
+      if (calculatedFields.length > 0) {
+        this.fillCalculatedFields()
+      }
+
     },
     submit() {
 
@@ -131,7 +162,7 @@ export default {
           .submitForm({
             code: this.params.code,
             wellId: this.wellId,
-            values: this.formValues
+            values: this.formValuesToSubmit
           })
           .then(data => {
             this.errors = []
@@ -144,17 +175,28 @@ export default {
             this.$emit('close')
           })
           .catch(error => {
-            this.errors = error.response.data.errors
 
-            Vue.prototype.$notifyWarning('Некоторые поля заполнены некорректно')
+            if (error.response.status === 500) {
+              Vue.prototype.$notifyError(error.response.data.message)
+              return false
+            }
 
-            for (const [tabIndex, tab] of Object.entries(this.formParams.tabs)) {
-              for (const block of tab.blocks) {
-                for (const item of block.items) {
-                  if (typeof this.errors[item.code] !== 'undefined') {
-                    this.activeTab = parseInt(tabIndex)
-                    return false
-                  }
+            if (error.response.status === 422) {
+
+              this.errors = error.response.data.errors
+
+              Vue.prototype.$notifyWarning('Некоторые поля заполнены некорректно')
+
+              for (const [tabIndex, tab] of Object.entries(this.formParams.tabs)) {
+                for (const blocks of tab.blocks) {
+                  blocks.forEach(block => {
+                    for (const item of block.items) {
+                      if (typeof this.errors[item.code] !== 'undefined') {
+                        this.activeTab = parseInt(tabIndex)
+                        return false
+                      }
+                    }
+                  })
                 }
               }
             }
@@ -174,7 +216,23 @@ export default {
         this[callback](formItem.code, formItem.callbacks[callback])
       }
     },
-    //callbacks
+    fillCalculatedFields() {
+      this.$store.commit('globalloading/SET_LOADING', true);
+      axios.post(
+          this.localeUrl(`/api/bigdata/forms/${this.params.code}/calc-fields`),
+          {
+            values: this.formValues,
+            well_id: this.wellId
+          }
+      ).then(({data}) => {
+        for (let key in data) {
+          this.formValues[key] = data[key]
+        }
+      }).finally(() => {
+        this.$store.commit('globalloading/SET_LOADING', false);
+      })
+
+    },
     setWellPrefix(triggerFieldCode, changeFieldCode) {
       this.getWellPrefix({code: this.params.code, geo: this.formValues[triggerFieldCode]})
           .then(({data}) => {
@@ -193,15 +251,12 @@ export default {
 
       let dictName
       this.formValues[changeFieldCode] = null
-      for (const tab of this.formParams.tabs) {
-        for (const block of tab.blocks) {
-          for (const item of block.items) {
-            if (item.code === changeFieldCode) {
-              dictName = item.dict
-            }
-          }
+
+      this.formFields.forEach(field => {
+        if (field.code === changeFieldCode) {
+          dictName = field.dict
         }
-      }
+      })
 
       this.getGeoDictByDZO({
         dzo: this.formValues[triggerFieldCode],
@@ -306,7 +361,6 @@ export default {
       }
 
       &-content {
-        overflow-y: auto;
         padding: 20px 55px 10px 43px;
         @media (max-width: 767px) {
           height: auto;

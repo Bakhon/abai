@@ -1,5 +1,5 @@
 @extends('layouts.db')
 @section('content')
-    <las></las>
+    <las :params='@json($permissionNames)'></las>
 @endsection
 <link href="{{ asset('css/bigdata.css')}}" rel="stylesheet">

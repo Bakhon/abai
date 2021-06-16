@@ -1,4 +1,4 @@
-@extends('digital_drilling.layouts.layout2')
+@extends('digital_drilling.layouts.layout')
 @section('in-content')
     <div class="digitalDrillingWindow">
         @include('digital_drilling.layouts.window-head')

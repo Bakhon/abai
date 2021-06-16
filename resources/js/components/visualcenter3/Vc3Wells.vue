@@ -17,10 +17,11 @@ var ru = require("apexcharts/dist/locales/ru.json");
 import moment from "moment";
 import VueApexCharts from "vue-apexcharts";
 
-
-Vue.component("apexchart", VueApexCharts);
 export default {
   name: "mix-chart",
+  components: {
+    "apexchart": VueApexCharts
+  },
   props: ["chartData"],
   data: function () {
     return {};
@@ -57,7 +58,7 @@ export default {
           },
         },
         tooltip: {
-          enabled: false,
+          enabled: true,
           enabledOnSeries: undefined,
           shared: true,
           followCursor: false,
@@ -178,7 +179,7 @@ export default {
         return [
           {
             type: "bar",
-           // name: "Фактическая закачка ингибитора коррозии",
+            name: this.trans("visualcenter.Fact"),
             stroke: {
               show: false,
             },

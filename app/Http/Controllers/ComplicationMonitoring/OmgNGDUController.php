@@ -9,6 +9,7 @@ use App\Http\Requests\IndexTableRequest;
 use App\Http\Requests\OmgNGDUCreateRequest;
 use App\Http\Requests\OmgNGDUUpdateRequest;
 use App\Models\ComplicationMonitoring\Corrosion;
+use App\Models\ComplicationMonitoring\Gu;
 use App\Models\ComplicationMonitoring\GuKormass;
 use App\Models\ComplicationMonitoring\Kormass;
 use App\Models\ComplicationMonitoring\OilGas;
@@ -55,7 +56,7 @@ class OmgNGDUController extends CrudController
                     'title' => trans('monitoring.gu.gu'),
                     'type' => 'select',
                     'filter' => [
-                        'values' => \App\Models\Refs\Gu::whereHas('omgngdu')
+                        'values' => Gu::whereHas('omgngdu')
                             ->orderBy('name', 'asc')
                             ->get()
                             ->map(
@@ -277,7 +278,7 @@ class OmgNGDUController extends CrudController
             ->orderByDesc('date')
             ->first();
 
-        $uhe = OmgUHE::where('date', '<=', $request->dt)
+        $uhe = OmgUHE::where('date', '<=', $request->dt." 23:59:59")
             ->where('gu_id', $request->gu_id)
             ->whereNotNull('id')
             ->orderByDesc('date')
@@ -287,31 +288,37 @@ class OmgNGDUController extends CrudController
             ->where('gu_id', $request->gu_id)
             ->first();
 
-        $wmLast = WaterMeasurement::where('gu_id', $request->gu_id)
+        $wmLast = WaterMeasurement::where('date', '<=', $request->dt)
+            ->where('gu_id', $request->gu_id)
             ->latest()
             ->first();
 
-        $wmLastCO2 = WaterMeasurement::where('gu_id', $request->gu_id)
+        $wmLastCO2 = WaterMeasurement::where('date', '<=', $request->dt)
+            ->where('gu_id', $request->gu_id)
             ->whereNotNull('carbon_dioxide')
             ->latest()
             ->first();
 
-        $wmLastH2S = WaterMeasurement::where('gu_id', $request->gu_id)
+        $wmLastH2S = WaterMeasurement::where('date', '<=', $request->dt)
+            ->where('gu_id', $request->gu_id)
             ->whereNotNull('hydrogen_sulfide')
             ->latest()
             ->first();
 
-        $wmLastHCO3 = WaterMeasurement::where('gu_id', $request->gu_id)
+        $wmLastHCO3 = WaterMeasurement::where('date', '<=', $request->dt)
+            ->where('gu_id', $request->gu_id)
             ->whereNotNull('hydrocarbonate_ion')
             ->latest()
             ->first();
 
-        $wmLastCl = WaterMeasurement::where('gu_id', $request->gu_id)
+        $wmLastCl = WaterMeasurement::where('date', '<=', $request->dt)
+            ->where('gu_id', $request->gu_id)
             ->whereNotNull('chlorum_ion')
             ->latest()
             ->first();
 
-        $wmLastSO4 = WaterMeasurement::where('gu_id', $request->gu_id)
+        $wmLastSO4 = WaterMeasurement::where('date', '<=', $request->dt)
+            ->where('gu_id', $request->gu_id)
             ->whereNotNull('sulphate_ion')
             ->latest()
             ->first();
