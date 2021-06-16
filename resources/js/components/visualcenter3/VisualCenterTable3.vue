@@ -2194,16 +2194,16 @@
               <div class="row px-4">
                 <div class="col pr-2">
                   <div
-                          :class="[`${buttonMonthlyTab}`,'button2 side-tables__main-menu-button']"
-                          @click="changeMenu2('monthly')"
+                          :class="[`${chemistryMonthlyPeriod}`,'button2 side-tables__main-menu-button']"
+                          @click="switchChemistryPeriod('chemistryMonthlyPeriod')"
                   >
                     {{ trans("visualcenter.monthBegin") }}
                   </div>
                 </div>
                 <div class="col px-2">
                   <div
-                          :class="[`${buttonYearlyTab}`,'button2 side-tables__main-menu-button']"
-                          @click="changeMenu2('yearly')"
+                          :class="[`${chemistryYearlyPeriod}`,'button2 side-tables__main-menu-button']"
+                          @click="switchChemistryPeriod('chemistryYearlyPeriod')"
                   >
                     {{ trans("visualcenter.yearBegin") }}
                   </div>
@@ -2211,11 +2211,14 @@
                 <div class="col pl-2">
                   <div class="dropdown3">
                     <div
-                            :class="[`${buttonPeriodTab}`,'button2 side-tables__main-menu-button']"
+                            :class="[`${chemistryPeriod}`,'button2 side-tables__main-menu-button']"
                     >
-                      <span>
-                        {{ trans("visualcenter.date") }} [{{chemistrySelectedDate}}]
-                      </span>
+                      <span v-if="!isChemistryPeriodSelected">
+                          {{ trans("visualcenter.date") }} [{{ chemistryPeriodStartMonth}}]
+                        </span>
+                      <span v-else>
+                          {{ trans("visualcenter.period") }} [{{ chemistryPeriodStartMonth }} - {{ chemistryPeriodEndMonth }}]
+                        </span>
                     </div>
                     <ul class="center-menu2 right-indent">
                       <li class="center-li">
@@ -2226,12 +2229,12 @@
                             <date-picker
                                     v-if="selectedDMY == 0"
                                     mode="range"
-                                    v-model="range"
+                                    v-model="chemistryRange"
                                     is-range
                                     class="m-auto"
                                     :model-config="modelConfig"
-                                    @input="changeDate"
-                                    @dayclick="dayClicked"
+                                    @input="switchChemistryPeriod"
+                                    @dayclick="switchPeriodRange"
                             />
                           </div>
                         </div>
@@ -2482,7 +2485,7 @@
             </div>
 
             <div class="first-string first-string2 cursor-pointer"
-                 @click="changeTable('chemistry')"
+                 @click="switchWidget('chemistry')"
                  :class="`${tableMapping.chemistry.hover}`"
             >
               <div>
@@ -2494,8 +2497,12 @@
                         {{ trans('visualcenter.chemistryMetricTon') }}
                       </div>
                       <div class="in-idle2">
-                        <span v-if="isOneDateSelected"> {{ currentMonthDateStart }}</span>
-                        <span v-else>{{ currentMonthDateStart }} - {{ currentMonthDateEnd }}</span>
+                        <span v-if="!isChemistryPeriodSelected">
+                          {{ chemistryPeriodStartMonth}}
+                        </span>
+                        <span v-else>
+                          {{ chemistryPeriodStartMonth }} - {{ chemistryPeriodEndMonth }}
+                        </span>
                       </div>
                     </td>
                   </tr>

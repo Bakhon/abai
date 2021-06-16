@@ -69,78 +69,13 @@ export default {
             return {};
         },
 
-        async getChemistryByMonth() {
-            let queryOptions = {'startPeriod': new Date(this.timestampToday),'endPeriod': new Date(this.timestampEnd)};
-            let uri = this.localeUrl("/get-chemistry-details");
-            const response = await axios.get(uri,{params:queryOptions});
-            if (response.status === 200) {
-                console.log('chemistry');
-                console.log(response.data)
-                return response.data;
-            }
-            return {};
-        },
-
-        updateChemistryWidget() {
-            let temporaryChemistryDetails = _.cloneDeep(this.chemistryDetails);
-            let self = this;
-            _.forEach(temporaryChemistryDetails, function(item) {
-                let dateOption = [moment(item.date).month(),moment(item.date).year()];
-                let planIndex = self.dzoMonthlyPlans.findIndex(element => self.isChemistryRecordsSimple(dateOption,element,item.dzo_name));
-                if (planIndex !== -1) {
-                    item['bactericide_plan'] = self.dzoMonthlyPlans[planIndex].plan_chem_prod_zakacka_bakteracid * moment(item.date).daysInMonth();
-                    item['corrosion_inhibitor_plan'] = self.dzoMonthlyPlans[planIndex].plan_chem_prod_zakacka_ingibator_korrozin * moment(item.date).daysInMonth();
-                    item['demulsifier_plan'] = self.dzoMonthlyPlans[planIndex].plan_chem_prod_zakacka_demulg * moment(item.date).daysInMonth();
-                    item['scale_inhibitor_plan'] = self.dzoMonthlyPlans[planIndex].plan_chem_prod_zakacka_ingibator_soleotloj * moment(item.date).daysInMonth();
-                }
+        switchWidget(widgetName) {
+            _.forEach(this.tableMapping, function (item) {
+                _.set(item, 'class', 'hide-company-list');
+                _.set(item, 'hover', '');
             });
-            let groupedForChart =  _.groupBy(temporaryChemistryDetails, item => {
-                return moment(item.date).startOf('day').format("YYYY-MM");
-            });
-            let chartData = {};
-            if (groupedForChart) {
-                for (let i in groupedForChart) {
-                    chartData[i] = {
-                        demulsifier: _.round(_.sumBy(groupedForChart[i], 'demulsifier'), 0),
-                        bactericide: _.round(_.sumBy(groupedForChart[i], 'bactericide'), 0),
-                        corrosion_inhibitor: _.round(_.sumBy(groupedForChart[i], 'corrosion_inhibitor'), 0),
-                        scale_inhibitor: _.round(_.sumBy(groupedForChart[i], 'scale_inhibitor'), 0),
-                    }
-                }
-            }
-
-            this.chemistryChartData = chartData;
-            let tableData = _(temporaryChemistryDetails)
-                .groupBy("data")
-                .map((item) => ({
-                    bactericide: _.round(_.sumBy(item, 'bactericide'), 0),
-                    bactericide_plan: _.round(_.sumBy(item, 'bactericide_plan'), 0),
-                    corrosion_inhibitor: _.round(_.sumBy(item, 'corrosion_inhibitor'), 0),
-                    corrosion_inhibitor_plan: _.round(_.sumBy(item, 'corrosion_inhibitor_plan'), 0),
-                    demulsifier: _.round(_.sumBy(item, 'demulsifier'), 0),
-                    demulsifier_plan: _.round(_.sumBy(item, 'demulsifier_plan'), 0),
-                    scale_inhibitor: _.round(_.sumBy(item, 'scale_inhibitor'), 0),
-                    scale_inhibitor_plan: _.round(_.sumBy(item, 'scale_inhibitor_plan'), 0),
-                })).value();
-
-            if (tableData.length > 0) {
-                _.forEach(this.chemistryData, function(item) {
-                    item.plan = tableData[0][item.code + '_plan'];
-                    item.fact = tableData[0][item.code];
-                });
-                let totalChemistryFact = 0;
-                _.forEach(Object.keys(tableData[0]), function(key) {
-                    totalChemistryFact += tableData[0][key];
-                });
-
-                this.chemistryDataFactSumm = totalChemistryFact;
-            }
-        },
-
-        isChemistryRecordsSimple(inputDateOption,planItem,inputDzoName) {
-            return inputDateOption[0] === moment(planItem.date).month() &&
-                inputDateOption[1] === moment(planItem.date).year() &&
-                planItem.dzo === inputDzoName;
+            this.tableMapping[widgetName]['class'] = 'show-company-list';
+            this.tableMapping[widgetName]['hover'] = 'button_hover';
         },
     }
 }

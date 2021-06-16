@@ -26,6 +26,8 @@ import mainTableChart from './widgets/mainTableChart.js';
 import secondaryParams from './dataManagers/secondaryParams';
 import consolidateOilCondensate from './dataManagers/consolidateOilCondensate';
 import productionDetails from './widgets/productionDetails';
+import chemistryDetails from './widgets/chemistryDetails';
+
 
 export default {
     components: {
@@ -717,9 +719,12 @@ export default {
         mainTableChart,
         secondaryParams,
         consolidateOilCondensate,
-        productionDetails
+        productionDetails,
+        chemistryDetails
     ],
     async mounted() {
+        this.chemistryPeriodMapping.chemistryPeriod.periodStart = moment(this.chemistryRange.start).format('MMMM YYYY');
+        this.chemistryPeriodMapping.chemistryPeriod.periodEnd = moment(this.chemistryRange.end).format('MMMM YYYY');
         this.getOpecDataForYear();
         this.chartHeadName = this.oilChartHeadName;
 
