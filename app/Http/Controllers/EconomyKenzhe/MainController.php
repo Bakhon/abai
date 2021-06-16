@@ -29,9 +29,9 @@ class MainController extends Controller
             $this->dateFrom = date('Y-m-d', mktime(0, 0, 0, $request->monthsValue, 1, $currentYear));
             $this->dateTo = date("Y-m-d", strtotime($this->dateFrom . " +1 months"));
         }
-        if($request->betweenMonthsValue) {
+        if($request->differenceBetweenMonths) {
             $this->dateFrom = date('Y-m-d', strtotime('first day of january previous year'));
-            $this->dateTo = date('Y-m-d', mktime(0, 0, 0, $request->betweenMonthsValue, 1, $currentYear));
+            $this->dateTo = date('Y-m-d', mktime(0, 0, 0, $request->differenceBetweenMonths, 1, $currentYear));
         }
         if($request->quarterValue) {
             $this->dateTo  = date('Y-m-t', mktime(0, 0, 0, $request->quarterValue, 1, $currentYear));

@@ -121,4 +121,6 @@ return array (
     0 => 'Январь',
   ),
   'economy' => 'Экономика',
+  'tengeTon' => 'тенге/тонна',
+  'specificIncomes' => 'Удельные доходы',
 );

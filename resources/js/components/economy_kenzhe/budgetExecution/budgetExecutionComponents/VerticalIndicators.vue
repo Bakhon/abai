@@ -36,7 +36,7 @@
             v-bind:leftUnits="trans('visualcenter.skvs')"
             v-bind:rightUnits="trans('visualcenter.skvs')"
             v-bind:title="trans('visualcenter.ecoBlock7')"
-            v-bind:hidePercents="true"
+            v-bind:isPercentHidden="true"
         ></budget-execution-wide-indicator>
         <!-- 'Фактическая эффективность ГТМ' -->
         <budget-execution-wide-indicator
@@ -45,7 +45,7 @@
             v-bind:leftUnits="trans('visualcenter.skvs')"
             v-bind:rightUnits="trans('visualcenter.skvs')"
             v-bind:title="trans('visualcenter.ecoBlock8')"
-            v-bind:hidePercents="true"
+            v-bind:isPercentHidden="true"
         ></budget-execution-wide-indicator>
         <!-- 'Фактическая эффективность бурения' -->
         <simple-indicator

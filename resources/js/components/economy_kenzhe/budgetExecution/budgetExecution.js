@@ -1,7 +1,8 @@
+import moment from "moment";
 export default {
   data: function () {
     return {
-      params:{betweenMonthsValue: "12", company: "7", reload: true},
+      params:{differenceBetweenMonths: "12", company: "7", reload: true},
       numbersOfMonths: [0,1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],  
       repttData: "0",
       dzoData: [],
@@ -33,20 +34,19 @@ export default {
         },
       ],
       dzoSelect: 'ALL',
-      fromBeginOfYearSelect: 0,
-      byMonthSelect: 0,
-      quarterSelect: 0,
+      selectMonthFromBeginOfTheYearh: 0,
+      selectMonth: 0,
+      selectQuarter: 0,
       actualMonth: 0,
-      actualMonthSelect: 0,
-      needToChangeProp: true,
+      selectActualMonth: 0,
+      isNeedToChangeProperty: true,
       dateStart: '',
       dateEnd: '',
+      factFromOneDay:'30.01.2019',
     }
   },
   methods: {
-    getCompany() {
-      //this.params[attributeName] = this[attributeName];
-      //this.params['company'] = this.company;
+    getCompany() {  
       this.params['reload'] = true;
       return  axios.get('/ru/module_economy/company', {params: this.params})
       .then(response => {
@@ -56,8 +56,8 @@ export default {
     },
     refreshData() {
       let uri = this.localeUrl("/getdzocalcs");
-      let dateStart = new Intl.DateTimeFormat('en', {year: 'numeric', month: 'short', day: '2-digit'}).format(this.dateStart)
-      let dateEnd = new Intl.DateTimeFormat('en', {year: 'numeric', month: 'short', day: '2-digit'}).format(this.dateEnd)
+      let dateStart = (moment(this.dateStart).locale("en").format('MMM DD, YYYY'))  
+      let dateEnd =(moment(this.dateEnd).locale("en").format('MMM DD, YYYY'))     
       let queryParams = {params: {'dateStart': dateStart, 'dateEnd': dateEnd}};
       this.$store.commit('globalloading/SET_LOADING',true);
       this.dzoData = [];
@@ -70,53 +70,53 @@ export default {
         .then(response => {
         if (response.data) {
           let
-            dataPlan = 0.00, 
-            dataFact = 0.00, 
-            dataFactPrevYear = 0.00, 
-            plan2020 = 0.00,
-            spendingPlan = 0.00, 
-            spendingFact = 0.00, 
-            spendingFactPrevYear = 0.00, 
-            spendingPlan2020 = 0.00,
-            costPlan = 0.00, 
-            costFact = 0.00, 
-            costFactPrevYear = 0.00, 
-            costPlan2020 = 0.00,
-            rlzSpendingPlan = 0.00, 
-            rlzSpendingFact = 0.00, 
-            rlzSpendingPrevYear = 0.00, 
-            rlzSpendingPlan2020 = 0.00,
-            admSpendingPlan = 0.00, 
-            admSpendingFact = 0.00, 
-            admSpendingFactPrevYear = 0.00, 
-            admSpendingPlan2020 = 0.00,
-            ebitdaMarginPlan = 0.00, 
-            ebitdaMarginFact = 0.00, 
-            ebitdaMarginFactPrevYear = 0.00, 
-            ebitdaMarginPlan2020 = 0.00,
-            ebitdaPlan = 0.00, ebitdaFact = 0.00, 
-            ebitdaFactPrevYear = 0.00, 
-            ebitdaPlan2020 = 0.00,
-            netProfitPlan = 0.00, 
-            netProfitFact = 0.00, 
-            netProfitFactPrevYear = 0.00, 
-            netProfitPlan2020 = 0.00,
-            capitalInvPlan = 0.00, 
-            capitalInvFact = 0.00, 
-            capitalInvFactPrevYear = 0.00, 
-            capitalInvPlan2020 = 0.00,
-            cashFlowPlan = 0.00, 
-            cashFlowFact = 0.00, 
-            cashFlowFactPrevYear = 0.00, 
-            cashFlowPlan2020 = 0.00,
-            kursPlan = 0.00, 
-            kursFact = 0.00, 
-            kursPrevYear = 0.00, 
-            kursPlan2020 = 0.00,
-            oilPricePlan = 0.00, 
-            oilPriceFact = 0.00, 
-            oilPricePrevYear = 0.00, 
-            oilPricePlan2020 = 0.00;
+            dataPlan = 0, 
+            dataFact = 0, 
+            dataFactPrevYear = 0, 
+            plan2020 = 0,
+            spendingPlan = 0, 
+            spendingFact = 0, 
+            spendingFactPrevYear = 0, 
+            spendingPlan2020 = 0,
+            costPlan = 0, 
+            costFact = 0, 
+            costFactPrevYear = 0, 
+            costPlan2020 = 0,
+            rlzSpendingPlan = 0, 
+            rlzSpendingFact = 0, 
+            rlzSpendingPrevYear = 0, 
+            rlzSpendingPlan2020 = 0,
+            admSpendingPlan = 0, 
+            admSpendingFact = 0, 
+            admSpendingFactPrevYear = 0, 
+            admSpendingPlan2020 = 0,
+            ebitdaMarginPlan = 0, 
+            ebitdaMarginFact = 0, 
+            ebitdaMarginFactPrevYear = 0, 
+            ebitdaMarginPlan2020 = 0,
+            ebitdaPlan = 0, ebitdaFact = 0, 
+            ebitdaFactPrevYear = 0, 
+            ebitdaPlan2020 = 0,
+            netProfitPlan = 0, 
+            netProfitFact = 0, 
+            netProfitFactPrevYear = 0, 
+            netProfitPlan2020 = 0,
+            capitalInvPlan = 0, 
+            capitalInvFact = 0, 
+            capitalInvFactPrevYear = 0, 
+            capitalInvPlan2020 = 0,
+            cashFlowPlan = 0, 
+            cashFlowFact = 0, 
+            cashFlowFactPrevYear = 0, 
+            cashFlowPlan2020 = 0,
+            kursPlan = 0, 
+            kursFact = 0, 
+            kursPrevYear = 0, 
+            kursPlan2020 = 0,
+            oilPricePlan = 0, 
+            oilPriceFact = 0, 
+            oilPricePrevYear = 0, 
+            oilPricePlan2020 = 0;
 
           _.forEach(response.data['dzoDataActual'], (item) => {
             
@@ -184,67 +184,62 @@ export default {
               kursPrevYear = item.kurs_fact;
               oilPricePrevYear = item.oil_price_fact;
           });
-          this.dzoData.push({
-            title: this.trans('economy_be.secondTable.operatingIncome'),
-            // 'Выручка от основной деятельности',
+          this.dzoData.push(
+            {
+            title: this.trans('economy_be.secondTable.operatingIncome'),       
             units: 'млрд.тг.',
             dataPlan: dataPlan,
             dataFact: dataFact,
             dataFactPrevYear: dataFactPrevYear,
             plan2020: plan2020,
             divider: 1000000,
-          });
-          this.dzoData.push({
-            title: this.trans('economy_be.secondTable.costs'), 
-            // 'Расходы',
+          },
+          {
+            title: this.trans('economy_be.secondTable.costs'),   
             units: 'млрд.тг.',
             dataPlan: spendingPlan,
             dataFact: spendingFact,
             dataFactPrevYear: spendingFactPrevYear,
             plan2020: spendingPlan2020,
             divider: 1000000,
-          });
-          this.dzoData.push({
-            title: this.trans('economy_be.secondTable.costPrice'),  
-            // 'Себестоимость',
+          },
+          {
+            title: this.trans('economy_be.secondTable.costPrice'),          
             units: 'млрд.тг.',
             dataPlan: costPlan,
             dataFact: costFact,
             dataFactPrevYear: costFactPrevYear,
             plan2020: costPlan2020,
             divider: 1000000,
-          });
-          this.dzoData.push({
-            title: this.trans('economy_be.secondTable.implementationCosts'),  
-            // 'Расходы по реализации',
+          },
+          {
+            title: this.trans('economy_be.secondTable.implementationCosts'),           
             units: 'млрд.тг.',
             dataPlan: rlzSpendingPlan,
             dataFact: rlzSpendingFact,
             dataFactPrevYear: rlzSpendingPrevYear,
             plan2020: rlzSpendingPlan2020,
             divider: 1000000,
-          });
-          this.dzoData.push({
-            title: this.trans('economy_be.secondTable.generalAdministrativeIssues'),  
-            // 'Общие административные вопросы',
+          },
+          {
+            title: this.trans('economy_be.secondTable.generalAdministrativeIssues'),           
             units: 'млрд.тг.',
             dataPlan: admSpendingPlan,
             dataFact: admSpendingFact,
             dataFactPrevYear: admSpendingFactPrevYear,
             plan2020: admSpendingPlan2020,
             divider: 1000000,
-          });
-          this.dzoData.push({
-            title: this.trans('economy_be.secondTable.ebitdaMargin'), 
-            // 'EBITDA margin (Без СП)',
+          },
+          {
+            title: this.trans('economy_be.secondTable.ebitdaMargin'),         
             units: '%',
             dataPlan: ebitdaMarginPlan,
             dataFact: ebitdaMarginFact,
             dataFactPrevYear: ebitdaMarginFactPrevYear,
             plan2020: ebitdaMarginPlan2020,
             divider: 1,
-          });
-          this.dzoData.push({
+          },
+          {
             title: 'EBITDA',
             units: 'млрд.тг.',
             dataPlan: ebitdaPlan,
@@ -252,30 +247,27 @@ export default {
             dataFactPrevYear: ebitdaFactPrevYear,
             plan2020: ebitdaPlan2020,
             divider: 1000000,
-          });
-          this.dzoData.push({
-            title: this.trans('economy_be.secondTable.netProfit'),  
-            // 'Чистая прибыль*',
+          },
+          {
+            title: this.trans('economy_be.secondTable.netProfit'),           
             units: 'млрд.тг.',
             dataPlan: netProfitPlan,
             dataFact: netProfitFact,
             dataFactPrevYear: netProfitFactPrevYear,
             plan2020: netProfitPlan2020,
             divider: 1000000,
-          });
-          this.dzoData.push({
-            title: this.trans('economy_be.secondTable.capitalInvestments'), 
-            // 'Капитальные вложения',
+          },
+          {
+            title: this.trans('economy_be.secondTable.capitalInvestments'),         
             units: 'млрд.тг.',
             dataPlan: capitalInvPlan,
             dataFact: capitalInvFact,
             dataFactPrevYear: capitalInvFactPrevYear,
             plan2020: capitalInvPlan2020,
             divider: 1000000,
-          });
-          this.dzoData.push({
-            title: this.trans('economy_be.secondTable.freeCashFlow'),  
-            // 'Свободный денежный поток',
+          },
+          {
+            title: this.trans('economy_be.secondTable.freeCashFlow'),   
             units: 'млрд.тг.',
             dataPlan: cashFlowPlan,
             dataFact: cashFlowFact,
@@ -284,8 +276,7 @@ export default {
             divider: 1000000,
           });
           this.macroData.push({
-            title: this.trans('economy_be.secondTable.exchangeRate'), 
-            // 'Обменный курс',
+            title: this.trans('economy_be.secondTable.exchangeRate'),      
             units: 'Тенге/$',
             dataPlan: kursPlan,
             dataFact: kursFact,
@@ -293,8 +284,7 @@ export default {
             plan2020: kursPlan2020,
           },
           {
-            title: this.trans('economy_be.secondTable.priceBrent'),  
-            // 'Цена Brent',
+            title: this.trans('economy_be.secondTable.priceBrent'),           
             units: '$/бар.',
             dataPlan: oilPricePlan,
             dataFact: oilPriceFact,
@@ -320,44 +310,44 @@ export default {
     dzoSelect: function () {
       this.refreshData()
     },
-    fromBeginOfYearSelect: function (newValue) {
+    selectMonthFromBeginOfTheYearh: function (newValue) {
       if (newValue !== 0) {
         let dateStart = new Date(2020, 0, 1);
         let dateEnd = new Date(2020, newValue, 1);
         this.dateStart = dateStart;
         this.dateEnd = dateEnd;
         this.refreshData();
-        this.byMonthSelect = this.quarterSelect = this.actualMonthSelect = 0;
+        this.selectMonth = this.selectQuarter = this.selectActualMonth = 0;
       }
     },
-    byMonthSelect: function (newValue) {
+    selectMonth: function (newValue) {
       if (newValue !== 0) {
         let dateStart = new Date(2020, newValue - 1, 1);
         let dateEnd = new Date(2020, newValue, 1);
         this.dateStart = dateStart;
         this.dateEnd = dateEnd;
         this.refreshData();
-        this.fromBeginOfYearSelect = this.quarterSelect = this.actualMonthSelect = 0;
+        this.selectMonthFromBeginOfTheYearh = this.selectQuarter = this.selectActualMonth = 0;
       }
     },
-    quarterSelect: function (newValue) {
+    selectQuarter: function (newValue) {
       if (newValue !== 0) {
         let dateStart = new Date(2020, newValue - 1, 1);
         let dateEnd = new Date(2020, newValue + 2, 1);
         this.dateStart = dateStart;
         this.dateEnd = dateEnd;
         this.refreshData();
-        this.fromBeginOfYearSelect = this.byMonthSelect = this.actualMonthSelect = 0;
+        this.selectMonthFromBeginOfTheYearh = this.selectMonth = this.selectActualMonth = 0;
       }
     },
-    actualMonthSelect: function (newValue) {
+    selectActualMonth: function (newValue) {
       if (newValue !== 0) {
         let dateStart = new Date(2020, this.actualMonth, 1);
         let dateEnd = new Date(2020, this.actualMonth + 1, 1);
         this.dateStart = dateStart;
         this.dateEnd = dateEnd;
         this.refreshData();
-        this.fromBeginOfYearSelect = this.byMonthSelect = this.quarterSelect = 0;
+        this.selectMonthFromBeginOfTheYearh = this.selectMonth = this.selectQuarter = 0;
       }
     },
 
@@ -369,7 +359,7 @@ export default {
         .then(response => {
           if (response.data) {
             this.actualMonth = response.data - 1;
-            this.actualMonthSelect = 1;
+            this.selectActualMonth = 1;
           }
        })
   },

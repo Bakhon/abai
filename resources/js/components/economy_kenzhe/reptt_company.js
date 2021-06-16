@@ -23,39 +23,12 @@ export default {
           prop: 'value'
         }
       ],
-      betweenMonthsValue: '01',
+      differenceBetweenMonths: '01',
       monthsValue: '00',
       quarterValue: '01',
       company: '7',
-        betweenMonths:[
-            {title: this.trans('economy_pf.repttTable.sinceTheBeginningOfTheYear'), value: '01'},
-            {title: this.trans('economy_pf.months.0')+' - '+this.trans('economy_pf.months.1'), value: '02'},
-            {title: this.trans('economy_pf.months.0')+' - '+this.trans('economy_pf.months.2'), value: '03'},
-            {title: this.trans('economy_pf.months.0')+' - '+this.trans('economy_pf.months.3'), value: '04'},
-            {title: this.trans('economy_pf.months.0')+' - '+this.trans('economy_pf.months.4'), value: '05'},
-            {title: this.trans('economy_pf.months.0')+' - '+this.trans('economy_pf.months.5'), value: '06'},
-            {title: this.trans('economy_pf.months.0')+' - '+this.trans('economy_pf.months.6'), value: '07'},
-            {title: this.trans('economy_pf.months.0')+' - '+this.trans('economy_pf.months.7'), value: '08'},
-            {title: this.trans('economy_pf.months.0')+' - '+this.trans('economy_pf.months.8'), value: '09'},
-            {title: this.trans('economy_pf.months.0')+' - '+this.trans('economy_pf.months.9'), value: '10'},
-            {title: this.trans('economy_pf.months.0')+' - '+this.trans('economy_pf.months.10'), value: '11'},
-            {title: this.trans('economy_pf.months.0')+' - '+this.trans('economy_pf.months.11'), value: '12'},
-        ],
-        months:[
-            {title: this.trans('economy_pf.perMonth'), value: '00'},
-            {title: this.trans('economy_pf.months.0'), value: '01'},
-            {title: this.trans('economy_pf.months.1'), value: '02'},
-            {title: this.trans('economy_pf.months.2'), value: '03'},
-            {title: this.trans('economy_pf.months.3'), value: '04'},
-            {title: this.trans('economy_pf.months.4'), value: '05'},
-            {title: this.trans('economy_pf.months.5'), value: '06'},
-            {title: this.trans('economy_pf.months.6'), value: '07'},
-            {title: this.trans('economy_pf.months.7'), value: '08'},
-            {title: this.trans('economy_pf.months.8'), value: '09'},
-            {title: this.trans('economy_pf.months.9'), value: '10'},
-            {title: this.trans('economy_pf.months.10'), value: '11'},
-            {title: this.trans('economy_pf.months.11'), value: '12'},
-        ],
+        betweenMonths: this.listBetweenMonths(),       
+        months: this.listMonths(),         
         quarter: [
             {title: this.trans('economy_pf.quarter'), value: '01'},
             {title: this.trans('economy_pf.months.0')+' - '+this.trans('economy_pf.months.2'), value: '03'},
@@ -75,10 +48,12 @@ export default {
     }
   },
   methods: {
-      changeColumn(obj) {
-    if (obj.columnIndex > 4) { return 'reptt-column-blue reptt-cell' } else
-      return obj.columnIndex === 0 ? 'reptt-column-zero reptt-column reptt-cell' : 'reptt-column reptt-cell';
-  },
+   changeColumn(obj) {
+    if (obj.columnIndex > 4) {
+        return 'reptt-column-blue reptt-cell'
+    } else
+        return obj.columnIndex === 0 ? 'reptt-column-zero reptt-column reptt-cell' : 'reptt-column reptt-cell';
+},
     distributionSumOverTree(attributeName, year) {
       this.repttData.reptt.reduce(function x(r, a) {
         let hasChild = a.handbook_items.length > 0;
@@ -131,9 +106,37 @@ export default {
       data=data / 1000
          data= data.toLocaleString();
             return  data  
+  },
+
+  pad(d) {
+    return (d < 10) ? '0' + d.toString() : d.toString();
+  },  
+
+  listBetweenMonths() {
+    let arr = [ {title: this.trans('economy_pf.repttTable.sinceTheBeginningOfTheYear'), value: '01'},
+                {title: this.trans('economy_pf.months.0')+' - '+ this.trans('economy_pf.months.1'), value: '02'}];
+    for (let i = 2; i < 12; i++) {
+        arr.push({
+           title: this.trans('economy_pf.months.0')+' - '+ this.trans('economy_pf.months.' + (i)),
+            value: (this.pad(i + 1))
+        });
+    } 
+    return arr;
+  },
+
+  listMonths() {
+    let arr = [{title: this.trans('economy_pf.perMonth'), value: '00'}];
+    for (let i = 0; i < 12; i++) {
+        arr.push({
+            title: this.trans('economy_pf.months.' + i),
+            value: (this.pad(i + 1))
+        });
+    } 
+    return arr;
   }
   },
   mounted() {      
+    console.log(this.listBetweenMonths());
     let yearLast = 2019;
     let day = "30.01.19";
     let yearNow = 2020;

@@ -5,7 +5,7 @@
         <select
           name="company"
           v-model="company"
-          @change="updateData('betweenMonthsValue')"
+          @change="updateData('differenceBetweenMonths')"
           class="form-control mb-3"
         >
           <option v-for="company in repttData.companies" :value="company.id">
@@ -18,8 +18,8 @@
       <div class="col-sm-4">
         <select
           name="dateTo"
-          v-model="betweenMonthsValue"
-          @change="updateData('betweenMonthsValue')"
+          v-model="differenceBetweenMonths"
+          @change="updateData('differenceBetweenMonths')"
           class="form-control mb-3"
         >
           <option v-for="month in betweenMonths" :value="month.value">
@@ -56,14 +56,13 @@
     <el-table
       header-row-class-name="reptt-header"
       :data="repttData.reptt"
-      :tree-props="defaultProps"
-      style="width: 100%"
+      :tree-props="defaultProps"    
       row-key="id"
       border
       :cell-class-name="changeColumn"
       :header-cell-class-name="changeColumn"
       :row-class-name="hideEmptyValues"
-      class="reptt table-striped"
+      class="reptt table-striped w-100"
     >
       <el-table-column
         prop="name"

@@ -7,7 +7,7 @@ export default {
       title: "",
       isUpArrow: false,
       progressPercents: 0,
-      hidePercents: false,
+      isPercentHidden: false,
     },
     data: function () {
       return {};

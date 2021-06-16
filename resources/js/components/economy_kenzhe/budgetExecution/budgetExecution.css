@@ -335,3 +335,9 @@ td:last-of-type {
   }
   
 }
+
+.select__button_color{
+  background: #2A2E5C;
+  color: #fff;
+}
+

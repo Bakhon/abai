@@ -1,10 +1,10 @@
 <template>
-  <div class="row visualcenter-page-container">
+  <div class="row visualcenter-page-container mx-0">
     <div class="col-lg-10 middle-block-columns pr-2">
       <horizontal-indicators
-        v-bind:dateStart="dateStart"
-        v-bind:dateEnd="dateEnd"
-        v-bind:dzo="dzoSelect"
+        :dateStart="dateStart"
+        :dateEnd="dateEnd"
+        :dzo="dzoSelect"
       ></horizontal-indicators>
       <div class="d-flex flex-column background-color-table flex-sm-row">
         <div class="col-sm-3 p-3 flex-column">
@@ -16,9 +16,8 @@
             </strong>
           </h5>
           <select
-            class="w-100 p-2"
-            :style="{ background: '#2A2E5C', color: 'white' }"
-            v-model="fromBeginOfYearSelect"
+            class="w-100 p-2 select__button_color"            
+            v-model="selectMonthFromBeginOfTheYearh"
           >
             <option :value="0" :selected="'selected'">
               {{ trans("visualcenter.yearBegin") }}
@@ -29,14 +28,13 @@
               :disabled="actualMonth < i"
             >
               {{ trans(`economy_be.months.0`) }} -
-              {{ trans(`economy_be.months.${i}`) }} 2020
+              {{ trans(`economy_be.months.${i}`) }} {{new Date().getFullYear() - 1}}
             </option>
           </select>
         </div>
         <div class="col-sm-6 flex-column pt-3">
           <select
-            class="w-100 p-2"
-            :style="{ background: '#2A2E5C', color: 'white' }"
+            class="w-100 p-2 select__button_color"   
             v-model="dzoSelect"
           >
             <option :value="'ALL'" :selected="'selected'">
@@ -44,16 +42,15 @@
             </option>
             <option
               v-for="company in fullCompanyNames"
-              v-bind:value="company.code"
+              :value="company.code"
             >
               {{ company.title }}
             </option>
           </select>
           <div class="w-100 d-flex" style="margin-top: 14px">
             <select
-              class="w-50 p-2 mr-3"
-              :style="{ background: '#2A2E5C', color: 'white' }"
-              v-model="byMonthSelect"
+              class="w-50 p-2 mr-3 select__button_color"          
+              v-model="selectMonth"
             >
               <option :value="0" :selected="'selected'">
                 {{ trans("visualcenter.monthZa") }}
@@ -63,13 +60,12 @@
                 :value="i + 1"
                 :disabled="actualMonth < i"
               >
-                {{ trans(`economy_be.months.${i}`) }} 2020
+                {{ trans(`economy_be.months.${i}`) }} {{new Date().getFullYear() - 1}}
               </option>
             </select>
             <select
-              class="w-50 p-2"
-              :style="{ background: '#2A2E5C', color: 'white' }"
-              v-model="quarterSelect"
+              class="w-50 p-2 select__button_color"           
+              v-model="selectQuarter"
             >
               <option :value="0" :selected="'selected'">
                 {{ trans("visualcenter.quarter") }}
@@ -96,10 +92,9 @@
             </div>
           </div>
           <button
-            class="w-100 p-2 vc-button mt-4"
-            :style="{ background: '#2A2E5C', color: 'white' }"
-            :value="actualMonthSelect"
-            @click="actualMonthSelect = (actualMonthSelect + 1) % 2"
+            class="w-100 p-2 vc-button mt-4 select__button_color"         
+            :value="selectActualMonth"
+            @click="selectActualMonth = (selectActualMonth + 1) % 2"
           >
             {{ trans("visualcenter.monthAct") }}
           </button>
@@ -127,16 +122,16 @@
                     </th>
                     <th scope="col" class="column-all-macro-table">
                       {{ trans("visualcenter.Fact") }} <br />
-                      2019 {{ trans("economy_be.year") }}
+                      {{new Date().getFullYear() - 2}} {{ trans("economy_be.year") }}
                     </th>
                     <th scope="col" class="column-all-macro-table">
                       <br />
                       {{ trans("economics.factZa") }} <br />
-                      30.01.2019
+                      {{factFromOneDay}}
                     </th>
                     <th scope="col" class="column-all-macro-table">
                       {{ trans("economics.planNa") }} <br />
-                      2020  {{ trans("economy_be.year") }}
+                      {{new Date().getFullYear() - 1}}  {{ trans("economy_be.year") }}
                     </th>
 
                     <th
@@ -235,9 +230,9 @@
     <div class="col-12 col-lg-2 middle-block-columns" v-if="dateStart">
       <div class="second-column-container">
         <budget-execution-vertical-indicators
-          v-bind:dateStart="dateStart"
-          v-bind:dateEnd="dateEnd"
-          v-bind:dzo="dzoSelect"
+          :dateStart="dateStart"
+          :dateEnd="dateEnd"
+          :dzo="dzoSelect"
         ></budget-execution-vertical-indicators>
       </div>
     </div>

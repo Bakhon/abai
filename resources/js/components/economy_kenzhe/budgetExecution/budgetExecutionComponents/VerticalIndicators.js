@@ -7,17 +7,17 @@ export default {
     data: function () {
       return {
         leftNumbers: [{
-          title: 'план',
+          title: this.trans('economy_pf.repttTable.plan'),
           value: 224543,
         }],
-        leftUnits: "тенге/тонна",
+        leftUnits: this.trans('economy_pf.tengeTon'),
         rightNumbers: [{
-          title: 'факт',
+          title: this.trans('economy_pf.repttTable.fact'),
           value: 789373,
           units: '$/bbl',
         }],
         rightUnits: "$/bbl",
-        title: "Удельные доходы",
+        title: this.trans('economy_pf.specificIncomes'),
         isUpArrow: false,
         progressPercents: 32,
         udIncomePlan: 0,
@@ -120,14 +120,7 @@ export default {
             }
           });
         queryParams = {params: {'dateStart': prevPeriodDateStart, 'dateEnd': dateStart}};
-        this.axios
-          .get(uri, queryParams)
-          .then(response => {
-            if (response.data) {
-  
-            }
-          });
-      }
+        }
     },
     watch: {
       dateStart: function () {
