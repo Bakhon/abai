@@ -77,12 +77,12 @@ export default {
             let self = this;
             _.forEach(temporaryChemistryDetails, function(item) {
                 let dateOption = [moment(item.date).month(),moment(item.date).year()];
-                let planIndex = self.dzoMonthlyPlans.findIndex(element => self.isChemistryRecordsSimple(dateOption,element,item.dzo_name));
+                let planIndex = self.dzoMonthlyPlans.findIndex(element => self.isRecordsSimple(dateOption,element,item.dzo_name));
                 if (planIndex !== -1) {
-                    item['bactericide_plan'] = self.dzoMonthlyPlans[planIndex].plan_chem_prod_zakacka_bakteracid * moment(item.date).daysInMonth();
-                    item['corrosion_inhibitor_plan'] = self.dzoMonthlyPlans[planIndex].plan_chem_prod_zakacka_ingibator_korrozin * moment(item.date).daysInMonth();
-                    item['demulsifier_plan'] = self.dzoMonthlyPlans[planIndex].plan_chem_prod_zakacka_demulg * moment(item.date).daysInMonth();
-                    item['scale_inhibitor_plan'] = self.dzoMonthlyPlans[planIndex].plan_chem_prod_zakacka_ingibator_soleotloj * moment(item.date).daysInMonth();
+                    item['bactericide_plan'] = self.dzoMonthlyPlans[planIndex].plan_chem_prod_zakacka_bakteracid;
+                    item['corrosion_inhibitor_plan'] = self.dzoMonthlyPlans[planIndex].plan_chem_prod_zakacka_ingibator_korrozin;
+                    item['demulsifier_plan'] = self.dzoMonthlyPlans[planIndex].plan_chem_prod_zakacka_demulg;
+                    item['scale_inhibitor_plan'] = self.dzoMonthlyPlans[planIndex].plan_chem_prod_zakacka_ingibator_soleotloj;
                 }
             });
             this.updateChemistryWidgetTable(temporaryChemistryDetails);
@@ -131,16 +131,12 @@ export default {
                     item.fact = tableData[0][item.code];
                 });
                 _.forEach(Object.keys(tableData[0]), function(key) {
-                    totalChemistryFact += tableData[0][key];
+                    if (!key.includes('_plan')) {
+                        totalChemistryFact += tableData[0][key];
+                    }
                 });
             }
             return totalChemistryFact;
-        },
-
-        isChemistryRecordsSimple(inputDateOption,planItem,inputDzoName) {
-            return inputDateOption[0] === moment(planItem.date).month() &&
-                inputDateOption[1] === moment(planItem.date).year() &&
-                planItem.dzo === inputDzoName;
         },
 
         changeSelectedChemistryCompanies(e) {

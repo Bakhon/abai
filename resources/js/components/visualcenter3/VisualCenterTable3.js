@@ -27,6 +27,8 @@ import secondaryParams from './dataManagers/secondaryParams';
 import consolidateOilCondensate from './dataManagers/consolidateOilCondensate';
 import productionDetails from './widgets/productionDetails';
 import chemistryDetails from './widgets/chemistryDetails';
+import wellsWorkoverDetails from './widgets/wellsWorkoverDetails';
+import managers from './widgets/managers';
 
 
 export default {
@@ -209,7 +211,9 @@ export default {
             if (this.isProductionDetailsActive) {
                 productionData = this.getFormattingProductionDetails(productionData);
                 this.chemistrySelectedRow = 'demulsifier';
+                this.otmSelectedRow = 'otm_iz_burenia_skv_fact',
                 this.updateChemistryWidget();
+                this.updateWellsWorkoverWidget();
             }
             let updatedData = productionData;
             this.productionTableData = productionData;
@@ -719,7 +723,9 @@ export default {
         secondaryParams,
         consolidateOilCondensate,
         productionDetails,
-        chemistryDetails
+        chemistryDetails,
+        wellsWorkoverDetails,
+        managers
     ],
     async mounted() {
         this.chemistryPeriodMapping.chemistryPeriod.periodStart = moment(this.chemistryRange.start).format('MMMM YYYY');

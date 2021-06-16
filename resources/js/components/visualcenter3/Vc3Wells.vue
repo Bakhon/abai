@@ -27,10 +27,10 @@ export default {
     return {};
   },
   computed: {
-    chartOptions() {  
-    let datetime;
-    if (this.chartData.labels.length > 1)
-    datetime = "datetime";  else datetime;   
+    chartOptions() {
+      let datetime;
+      if (this.chartData.labels.length > 1)
+      datetime = "datetime";  else datetime;
     
      if (typeof this.chartData === "undefined") {
         return {};
@@ -70,11 +70,7 @@ export default {
                y: {
             formatter: function (y) {
               if (typeof y !== "undefined") {
-                return (
-                  new Intl.NumberFormat("en-IN", {
-                    maximumSignificantDigits: 3,
-                  }).format(y.toFixed(0)) + ""
-                );
+                return (new Intl.NumberFormat("ru-RU").format(Math.round(y)));
               }
               return y;
             },

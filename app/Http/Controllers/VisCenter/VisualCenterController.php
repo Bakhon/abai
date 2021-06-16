@@ -371,13 +371,9 @@ class VisualCenterController extends Controller
 
     public function getOtmDetails(Request $request)
     {
-        $endPeriod = Carbon::parse($request->endPeriod)->addDays(1)->endOfDay();
-        $startPeriod = Carbon::parse($request->startPeriod)->subDays(3)->startOfDay();
-        $startPeriodMonth = $startPeriod->month - 1;
-        $endPeriodMonth = $endPeriod->month - 1;
         return DzoImportOtm::query()
-            ->whereMonth('date', '>=', $startPeriodMonth)
-            ->whereMonth('date', '<=', $endPeriodMonth)
+            ->whereMonth('date', '>=', $request->startPeriod)
+            ->whereMonth('date', '<=', $request->endPeriod)
             ->get()
             ->toArray();
     }

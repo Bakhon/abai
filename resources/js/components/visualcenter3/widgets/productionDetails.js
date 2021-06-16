@@ -57,18 +57,6 @@ export default {
             return updatedData;
         },
 
-        async getOtmByMonth() {
-            let queryOptions = {'startPeriod': new Date(this.timestampToday),'endPeriod': new Date(this.timestampEnd)};
-            let uri = this.localeUrl("/get-otm-details");
-            const response = await axios.get(uri,{params:queryOptions});
-            if (response.status === 200) {
-                console.log('otm');
-                console.log(response.data)
-                return response.data;
-            }
-            return {};
-        },
-
         switchWidget(widgetName) {
             _.forEach(this.tableMapping, function (item) {
                 _.set(item, 'class', 'hide-company-list');

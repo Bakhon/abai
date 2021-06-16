@@ -2094,7 +2094,7 @@
               <div class="row container-fluid">
                 <div class="vis-table px-4 col-sm-7">
                   <table
-                          v-if="otmData.length"
+                          v-if="wellsWorkoverData.length"
                           class="table4 w-100 chemistry-table"
                   >
                     <thead>
@@ -2108,24 +2108,23 @@
 
                     <tbody>
                     <tr
-                            v-for="(item, index) in otmData"
-                            v-if="index > 1"
-                            @click="otmSelectedRow = item.code"
+                            v-for="(item, index) in wellsWorkoverData"
+                            @click="wellsWorkoverSelectedRow = item.code"
                     >
                       <td
-                              @click="otmSelectedRow = item.code"
+                              @click="wellsWorkoverSelectedRow = item.code"
                               class="row-name_width_40 cursor-pointer"
                               :class="{
-                            tdStyle: index % 2 === 0,
-                            selected: otmSelectedRow === item.code,
-                          }"
+                                tdStyle: index % 2 === 0,
+                                selected: wellsWorkoverSelectedRow === item.code,
+                              }"
                       >
                         <span>
                           {{ item.name }}
                         </span>
                       </td>
                       <td
-                              @click="otmSelectedRow = item.code"
+                              @click="wellsWorkoverSelectedRow = item.code"
                               class="width-20 text-center data-pointer"
                               :class="`${getDzoColumnsClass(index,'plan')}`"
                       >
@@ -2137,7 +2136,7 @@
                         </div>
                       </td>
                       <td
-                              @click="otmSelectedRow = item.code"
+                              @click="wellsWorkoverSelectedRow = item.code"
                               class="width-20 text-center data-pointer"
                               :class="`${getDzoColumnsClass(index,'fact')}`"
                       >
@@ -2166,8 +2165,8 @@
                 <div class="col-sm-5">
                   <div  class="name-chart-left">{{ trans("visualcenter.wellsNumber") }}</div>
                   <visual-center3-wells
-                          v-if="otmDataForChart"
-                          :chartData="otmDataForChart"
+                          v-if="wellsWorkoverDataForChart"
+                          :chartData="wellsWorkoverDataForChart"
                   ></visual-center3-wells>
                 </div>
               </div>
