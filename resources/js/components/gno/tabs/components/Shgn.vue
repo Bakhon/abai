@@ -147,7 +147,7 @@
 			</div>
 
 			<div class="flex__item__block__1">
-				<div class="title__block">{{trans('pgno.diametr_nasosov')}}, {{trans('measurements.mm')}}</div>
+				<div class="title__block">{{trans('pgno.prim_komponovka')}}</div>
 					<div class="title__block__pump">
 						<div class="block__dm__pump__1">
 							<input type="checkbox" v-model="komponovka" value="yakor" />
