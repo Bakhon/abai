@@ -25,7 +25,7 @@ import axios from "axios";
 export default {
   data() {
     return {
-      baseUrl: 'http://127.0.0.1:8092/',
+      baseUrl: process.env.MIX_MICROSERVICE_USER_REPORTS,
       items: null,
     }
   },
@@ -34,24 +34,25 @@ export default {
     itemType: Number,
     isShowCheckboxes: Boolean,
   },
-    mounted() {
+  mounted() {
+    this.init()
+  },
+  watch: {
+    itemType(newValue) {
       this.init()
-    },
-    watch: {
-      itemType(newValue) {
-        this.init()
-      }
-    },
+    }
+  },
   methods: {
     init() {
       this.getInitialItems().then(items => this.items = items);
     },
     getInitialItems() {
-      let uri = this.baseUrl + "get_items/?"
-          + "structure_type=" + this.structureType
-          + "&item_type=" + this.itemType;
       this.isLoading = true
-      return this.axios.get(uri, {
+      return this.axios.get(this.baseUrl + "get_items", {
+        params: {
+          structure_type: this.structureType,
+          item_type: this.itemType
+        },
         responseType: 'json',
         headers: {
           'Content-Type': 'application/json'
@@ -72,11 +73,12 @@ export default {
     async nodeClick(node) {
       this.$parent.currentStructureId = node.structureId
       this.$parent.setCurrentStructureId(node.structureId)
-      let uri = this.baseUrl + "get_children_of_item/?"
-          + "structure_type=" + this.structureType
-          + "&item_id=" + node.id;
       this.isLoading = true
-      return this.axios.get(uri, {
+      return this.axios.get(this.baseUrl + "get_children_of_item", {
+        params: {
+          structure_type: this.structureType,
+          item_id: node.id
+        },
         responseType: 'json',
         headers: {
           'Content-Type': 'application/json'
@@ -96,11 +98,12 @@ export default {
       return node.children.length === 0
     },
     getWells: async function (node) {
-      let uri = this.baseUrl + "get_wells/?"
-          + "structure_type=" + this.structureType
-          + "&item_id=" + node.id;
       this.isLoading = true
-      return this.axios.get(uri, {
+      return this.axios.get(this.baseUrl + "get_wells", {
+        params: {
+          structure_type: this.structureType,
+          item_id: node.id
+        },
         responseType: 'json',
         headers: {
           'Content-Type': 'application/json'

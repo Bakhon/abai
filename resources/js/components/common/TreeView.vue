@@ -75,14 +75,11 @@ export default {
         return
       }
       this.node.children = []
-      const response = await this.handleClick(this.node)
-      this.node.children = response
+      this.node.children = await this.handleClick(this.node)
       if (this.isNodeOnBottomLevelOfHierarchy(this.node)) {
-        console.log("on bottom")
         this.isLoading = true;
         this.node.children = []
-        const response = await this.getWells(this.node);
-        this.node.children = response
+        this.node.children = await this.getWells(this.node);
       }
       this.$forceUpdate()
     },

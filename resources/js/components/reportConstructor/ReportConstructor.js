@@ -12,7 +12,7 @@ export default {
     components: {},
     data() {
         return {
-            baseUrl: 'http://127.0.0.1:8092/',
+            baseUrl: process.env.MIX_MICROSERVICE_USER_REPORTS,
             structureTypes: {
                 org: null,
                 tech: null,
@@ -39,9 +39,11 @@ export default {
     },
     methods: {
         loadStructureTypes(type) {
-            let uri = this.baseUrl + "get_structures_types/?structure_type=" + type;
             this.isLoading = true
-            this.axios.get(uri, {
+            this.axios.get(this.baseUrl + "get_structures_types", {
+                params: {
+                    structure_type: type
+                },
                 responseType: 'json',
                 headers: {
                     'Content-Type': 'application/json'
@@ -60,9 +62,8 @@ export default {
 
         },
         loadAttributeDescriptions() {
-            let uri = this.baseUrl + "get_object_attributes_descriptions/";
             this.isLoading = true
-            this.axios.get(uri, {
+            this.axios.get(this.baseUrl + "get_object_attributes_descriptions", {
                 responseType: 'json',
                 headers: {
                     'Content-Type': 'application/json'
@@ -77,10 +78,12 @@ export default {
 
         },
         loadAttributesForSelectedObject() {
-            let uri = this.baseUrl + "get_object_attributes/?structure_type="
-                + this.currentStructureType + "&structure_id=" + this.currentStructureId;
             this.isLoading = true
-            this.axios.get(uri, {
+            this.axios.get(this.baseUrl + "get_object_attributes", {
+                params: {
+                    structure_type: this.currentStructureType,
+                    structure_id: this.currentStructureId
+                },
                 responseType: 'json',
                 headers: {
                     'Content-Type': 'application/json'
@@ -94,11 +97,12 @@ export default {
             });
         },
         loadItems(itemType) {
-            let uri = this.baseUrl + "get_items/?"
-                + "structure_type=" + this.currentStructureType
-                + "&item_type=" + itemType;
             this.isLoading = true
-            this.axios.get(uri, {
+            this.axios.get(this.baseUrl + "get_items", {
+                params: {
+                    structure_type: this.currentStructureType,
+                    item_type: itemType
+                },
                 responseType: 'json',
                 headers: {
                     'Content-Type': 'application/json'

@@ -1,5 +1,4 @@
 <template>
-  <!--    {{ data }}-->
   <draggable
       :value="localValue"
       :group="group"

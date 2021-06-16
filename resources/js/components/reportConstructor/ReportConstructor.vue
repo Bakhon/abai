@@ -112,7 +112,6 @@
                       :itemType="currentItemType"
                       :isShowCheckboxes="true"
                   >
-                    <!--                      @onItemIdClick="onItemIdClick"-->
                   </report-constructor-item-select-tree>
                 </template>
               </div>
