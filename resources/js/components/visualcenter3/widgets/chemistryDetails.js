@@ -30,6 +30,7 @@ export default {
                 },
             },
             chemistrySelectedCompany: 'all',
+            chemistrySelectedRow: 'demulsifier',
         };
     },
     methods: {
@@ -47,6 +48,7 @@ export default {
         },
 
         async switchChemistryPeriod(buttonType) {
+            this.$store.commit('globalloading/SET_LOADING', true);
             this.chemistryMonthlyPeriod = "";
             this.chemistryYearlyPeriod = "";
             this.chemistryPeriod = "";
@@ -56,6 +58,7 @@ export default {
             this.isChemistryPeriodSelected = this.isChemistryFewMonthsSelected();
             this.chemistryDetails = await this.getChemistryByMonth();
             this.updateChemistryWidget();
+            this.$store.commit('globalloading/SET_LOADING', false);
         },
 
         isChemistryFewMonthsSelected() {
@@ -64,11 +67,11 @@ export default {
             return endDate.diff(startDate, 'months') > 0;
         },
 
-        switchPeriodRange() {
+        switchChemistryPeriodRange() {
             this.switchChemistryPeriod('chemistryPeriod');
         },
 
-        updateChemistryWidget() {
+        async updateChemistryWidget() {
             let temporaryChemistryDetails = _.cloneDeep(this.chemistryDetails);
             if (this.chemistrySelectedCompany !== 'all') {
                 temporaryChemistryDetails = this.getChemistryFilteredByDzo(temporaryChemistryDetails,this.chemistrySelectedCompany);
@@ -86,7 +89,6 @@ export default {
             });
             this.updateChemistryWidgetTable(temporaryChemistryDetails);
             this.chemistryChartData = this.getChemistryWidgetChartData(temporaryChemistryDetails);
-            this.$store.commit('globalloading/SET_LOADING', false);
         },
 
         getChemistryWidgetChartData(temporaryChemistryDetails) {
@@ -148,6 +150,20 @@ export default {
             return _.filter(inputData, function (item) {
                 return (item.dzo_name === dzoName);
             })
+        },
+    },
+    computed: {
+        chemistryDataForChart() {
+            let series = []
+            let labels = []
+            for (let i in this.chemistryChartData) {
+                series.push(this.chemistryChartData[i][this.chemistrySelectedRow])
+                labels.push(i)
+            }
+            return {
+                series: series,
+                labels: labels
+            }
         },
     },
 }

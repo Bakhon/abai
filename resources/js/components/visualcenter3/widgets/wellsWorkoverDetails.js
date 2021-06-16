@@ -65,6 +65,7 @@ export default {
         },
 
         async switchWellsWorkoverPeriod(buttonType) {
+            this.$store.commit('globalloading/SET_LOADING', true);
             this.wellsWorkoverMonthlyPeriod = "";
             this.wellsWorkoverYearlyPeriod = "";
             this.wellsWorkoverPeriod = "";
@@ -73,19 +74,24 @@ export default {
             this.wellsWorkoverPeriodEndMonth = this.wellsWorkoverPeriodMapping[buttonType].periodEnd;
             this.isWellsWorkoverPeriodSelected = this.isWellsWorkoverFewMonthsSelected();
             this.wellsWorkoverDetails = await this.getWellsWorkoverByMonth();
-            this.updateWellsWorkoverWidget();
+            await this.updateWellsWorkoverWidget();
+            this.$store.commit('globalloading/SET_LOADING', false);
         },
 
-        iswellsWorkoverFewMonthsSelected() {
+        isWellsWorkoverFewMonthsSelected() {
             let startDate =  moment(this.wellsWorkoverPeriodStartMonth, 'MMMM YYYY');
             let endDate = moment(this.wellsWorkoverPeriodEndMonth, 'MMMM YYYY');
             return endDate.diff(startDate, 'months') > 0;
         },
 
+        switchWellsWorkoverPeriodRange() {
+            this.switchWellsWorkoverPeriod('wellsWorkoverPeriod');
+        },
+
         updateWellsWorkoverWidget() {
             let temporaryWellsWorkoverDetails = _.cloneDeep(this.wellsWorkoverDetails);
             if (this.wellsWorkoverSelectedCompany !== 'all') {
-                temporaryWellsWorkoverDetails = this.getChemistryFilteredByDzo(temporaryWellsWorkoverDetails,this.wellsWorkoverSelectedCompany);
+                temporaryWellsWorkoverDetails = this.getWellsWorkoverFilteredByDzo(temporaryWellsWorkoverDetails,this.wellsWorkoverSelectedCompany);
             }
             let self = this;
             _.forEach(temporaryWellsWorkoverDetails, function(item) {
@@ -124,8 +130,6 @@ export default {
                 });
                 totalFact += tableData[0][workoverType];
             }
-            console.log('-this.wellsWorkoverData')
-            console.log(this.wellsWorkoverData)
             return totalFact;
         },
 
@@ -144,13 +148,24 @@ export default {
             }
             return chartData;
         },
+
+        changeSelectedWellsWorkoverCompanies(e) {
+            this.wellsWorkoverSelectedCompany = e.target.value;
+            this.updateWellsWorkoverWidget();
+        },
+
+        getWellsWorkoverFilteredByDzo(inputData,dzoName) {
+            return _.filter(inputData, function (item) {
+                return (item.dzo_name === dzoName);
+            })
+        },
     },
     computed: {
         wellsWorkoverDataForChart() {
             let series = []
             let labels = []
             for (let i in this.wellsWorkoverChartData) {
-                series.push(this.wellsWorkoverSelectedRow ? this.wellsWorkoverChartData[i][this.wellsWorkoverSelectedRow] : this.wellsWorkoverChartData[i]['underground_workover']);
+                series.push(this.wellsWorkoverChartData[i][this.wellsWorkoverSelectedRow]);
                 labels.push(i);
             }
             return {

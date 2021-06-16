@@ -210,8 +210,8 @@ export default {
         processProductionDataByCompanies(productionData,metricName,chartSecondaryName) {
             if (this.isProductionDetailsActive) {
                 productionData = this.getFormattingProductionDetails(productionData);
-                this.chemistrySelectedRow = 'demulsifier';
-                this.otmSelectedRow = 'otm_iz_burenia_skv_fact',
+                this.wellsWorkoverSelectedRow = 'underground_workover';
+                this.chemistrySelectedRow = 'demulsifier',
                 this.updateChemistryWidget();
                 this.updateWellsWorkoverWidget();
             }
@@ -331,22 +331,22 @@ export default {
             this.innerWellsChartData = this.getSummaryInjectionWellsForChart(dataWithMay);
             this.productionWells = this.getSummaryWells(dataWithMay, this.wellStockIdleButtons.isProductionIdleButtonActive,'productionFonds');
             this.innerWells2ChartData = this.getSummaryProductionWellsForChart(dataWithMay);
-
+            this.otmData = this.getOtmData(dataWithMay);
+            this.otmChartData = this.getOtmChartData(dataWithMay);
             if (!this.isProductionDetailsActive) {
-                this.otmData = this.getOtmData(dataWithMay)
-                this.otmChartData = this.getOtmChartData(dataWithMay);
                 this.chemistryData = this.getChemistryData(dataWithMay);
                 this.chemistryChartData = this.getChemistryChartData(dataWithMay);
-                if (this.otmData.length >= 4) {
-                    this.otmWidgetData.drillingWells=this.otmData[0]['fact'];
-                    this.otmWidgetData.krsWells=this.otmData[2]['fact'];
-                    this.otmWidgetData.prsWells=this.otmData[3]['fact'];
-                }
+
+            }
+            if (this.otmData.length >= 4) {
+                this.otmWidgetData.drillingWells=this.otmData[0]['fact'];
+                this.otmWidgetData.krsWells=this.otmData[2]['fact'];
+                this.otmWidgetData.prsWells=this.otmData[3]['fact'];
             }
 
-            if (!this.isProductionDetailsActive && this.chemistryData.length != 0) {
+            if (this.otmData.length != 0) {
                 this.chemistryDataFactSumm= _.reduce(
-                    this.chemistryData,
+                    this.otmData,
                     function (memo, item) {
                         return memo + item.fact;
                     },

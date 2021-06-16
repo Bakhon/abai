@@ -31,6 +31,7 @@ export default {
       let datetime;
       if (this.chartData.labels.length > 1)
       datetime = "datetime";  else datetime;
+      this.$store.commit('globalloading/SET_LOADING', false);
     
      if (typeof this.chartData === "undefined") {
         return {};
@@ -147,8 +148,7 @@ export default {
             },
           labels: {     
                 formatter: function (val) {
-                  
-              return moment(val).format("DD / MMM / YYYY")  /*+ "%"*/;
+              return moment(val).format("DD / MMM / YYYY")  /*+ "%"DD / MMM / YYYY    */;
             },  
               type: datetime,
             datetimeFormatter: {

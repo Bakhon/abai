@@ -1979,7 +1979,7 @@
                               :class="`${getDzoColumnsClass(index,'difference')}`"
                       >
                         <div class="font dynamic">
-                          {{formatDigitToThousand(item.difference)}}
+                          {{formatDigitToThousand(Math.abs(item.difference))}}
                           <span class="data-metrics">
                               {{item.metricSystem}}
                             </span>
@@ -2019,16 +2019,16 @@
               <div class="row px-4">
                 <div class="col-4 px-2 ">
                   <div
-                          :class="[`${buttonMonthlyTab}`,'button2 side-tables__main-menu-button']"
-                          @click="changeMenu2('monthly')"
+                          :class="[`${wellsWorkoverMonthlyPeriod}`,'button2 side-tables__main-menu-button']"
+                          @click="switchWellsWorkoverPeriod('wellsWorkoverMonthlyPeriod')"
                   >
                     {{ trans("visualcenter.monthBegin") }}
                   </div>
                 </div>
                 <div class="col-4 px-2">
                   <div
-                          :class="[`${buttonYearlyTab}`,'button2 side-tables__main-menu-button']"
-                          @click="changeMenu2('yearly')"
+                          :class="[`${wellsWorkoverYearlyPeriod}`,'button2 side-tables__main-menu-button']"
+                          @click="switchWellsWorkoverPeriod('wellsWorkoverYearlyPeriod')"
                   >
                     {{ trans("visualcenter.yearBegin") }}
                   </div>
@@ -2036,20 +2036,14 @@
                 <div class="col-4 pl-2">
                   <div class="dropdown3">
                     <div
-                            :class="[`${buttonPeriodTab}`,'button2 side-tables__main-menu-button']"
-                            @click="changeMenu2('period')"
+                            :class="[`${wellsWorkoverPeriod}`,'button2 side-tables__main-menu-button']"
                     >
-                      <span v-if="isOneDateSelected">
-                        {{ trans("visualcenter.date") }} [{{
-                          timeSelect
-                        }}]</span
-                      >
+                      <span v-if="!isWellsWorkoverPeriodSelected">
+                        {{ trans("visualcenter.date") }} [{{wellsWorkoverPeriodStartMonth}}]
+                      </span>
                       <span v-else>
-                        {{ trans("visualcenter.period") }} [{{
-                          timeSelect
-                        }}
-                        - {{ timeSelectOld }}]</span
-                      >
+                        {{ trans("visualcenter.period") }} [{{wellsWorkoverPeriodStartMonth}} - {{ wellsWorkoverPeriodEndMonth }}]
+                      </span>
                     </div>
                     <ul class="center-menu2 right-indent">
                       <li class="center-li">
@@ -2060,12 +2054,12 @@
                             <date-picker
                                     v-if="selectedDMY == 0"
                                     mode="range"
-                                    v-model="range"
+                                    v-model="wellsWorkoverRange"
                                     is-range
                                     class="m-auto"
                                     :model-config="modelConfig"
-                                    @input="changeDate"
-                                    @dayclick="dayClicked"
+                                    @input="switchWellsWorkoverPeriod"
+                                    @dayclick="switchWellsWorkoverPeriodRange"
                             />
                           </div>
                         </div>
@@ -2080,7 +2074,7 @@
                   <div class="col">
                     <select
                             class="side-blocks__dzo-companies-dropdown w-100"
-                            @change="innerWellsProdMetOnChange($event)"
+                            @change="changeSelectedWellsWorkoverCompanies($event)"
                             v-model="selectedDzo"
                     >
                       <option v-for="dzo in injectionWellsOptions" :value="dzo.ticker">
@@ -2233,7 +2227,7 @@
                                     class="m-auto"
                                     :model-config="modelConfig"
                                     @input="switchChemistryPeriod"
-                                    @dayclick="switchPeriodRange"
+                                    @dayclick="switchChemistryPeriodRange"
                             />
                           </div>
                         </div>
@@ -2533,8 +2527,8 @@
                       </div><br>
                       <div class="unit-vc ml-2">{{ trans("visualcenter.skv") }}</div>
                       <div class="in-idle2">
-                        <span v-if="isOneDateSelected"> {{ previousPeriodEnd }}<br><br></span>
-                        <span v-else> {{ previousPeriodStart }} - {{ previousPeriodEnd }}</span>
+                        <span v-if="!isWellsWorkoverPeriodSelected"> {{ wellsWorkoverPeriodStartMonth }}<br><br></span>
+                        <span v-else> {{ wellsWorkoverPeriodStartMonth }} - {{ wellsWorkoverPeriodEndMonth }}</span>
                       </div>
                       <br>
                       <div class="right-column_header">
@@ -2555,8 +2549,8 @@
                         {{ trans("visualcenter.skv") }}
                       </div>
                       <div class="in-idle2">
-                        <span v-if="isOneDateSelected"> {{ previousPeriodEnd }}<br><br></span>
-                        <span v-else> {{ previousPeriodStart }} - {{ previousPeriodEnd }}</span>
+                        <span v-if="!isWellsWorkoverPeriodSelected"> {{ wellsWorkoverPeriodStartMonth }}<br><br></span>
+                        <span v-else> {{ wellsWorkoverPeriodStartMonth }} - {{ wellsWorkoverPeriodEndMonth }}</span>
                       </div>
                       <br>
                       <div class="right-column_header">
