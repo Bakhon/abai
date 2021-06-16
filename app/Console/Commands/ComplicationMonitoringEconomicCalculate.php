@@ -6,11 +6,14 @@ use App\Http\Controllers\ComplicationMonitoring\OmgNGDUController;
 use App\Http\Controllers\ComplicationMonitoring\WaterMeasurementController;
 use App\Http\Controllers\DruidController;
 use App\Http\Requests\POSTCaller;
+use App\Models\ComplicationMonitoring\EconomicalEffect;
 use App\Models\ComplicationMonitoring\LostProfits;
 use App\Models\ComplicationMonitoring\OmgUHE;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use PhpParser\Node\Expr\Cast\Double;
 
 class ComplicationMonitoringEconomicCalculate extends Command
 {
@@ -28,6 +31,7 @@ class ComplicationMonitoringEconomicCalculate extends Command
     public function handle()
     {
         LostProfits::truncate();
+        EconomicalEffect::truncate();
 
         $currentDosage = OmgUHE::whereNotNull('current_dosage')->get();
 
@@ -42,11 +46,15 @@ class ComplicationMonitoringEconomicCalculate extends Command
                 $guDataByDay->ngdu->pump_discharge_pressure)
             {
                 $corrosion = $this->calculateCorrosion($item, $guData, $guDataByDay);
-                $this->insertIntoLostProfitsTable($guDataByDay, $corrosion, $item);
-            }
-        }
 
-        $this->calculateLostProfitsTotal();
+                $this->insertIntoTable($guDataByDay, $corrosion, $item, "economical_effect", "economical_effects");
+                $this->insertIntoTable($guDataByDay, $corrosion, $item, "lost_profits", "lost_profits");
+            }
+
+        echo "*";
+        }
+        $this->calculateLostProfitsTotal("lost_profits", "lost_profits", "lost_profits_sum");
+        $this->calculateLostProfitsTotal("economical_effects", "economical_effect", "economical_effect_sum");
     }
 
     public function getGuData(string $guId): object
@@ -125,33 +133,49 @@ class ComplicationMonitoringEconomicCalculate extends Command
         return $corrosion;
     }
 
-    public function insertIntoLostProfitsTable(object $guDataByDay, object $corrosion, object $item) 
+    public function insertIntoTable(object $guDataByDay, object $corrosion, object $item, string $column, string $table) 
     {
-        $ecomonicalEffect = new LostProfits();
-        $ecomonicalEffect->gu_id = $item->gu_id;
-        $ecomonicalEffect->date = $item->date;
-        $ecomonicalEffect->сorrosion = $corrosion->corrosion_rate_mm_per_y_point_A;
-        $ecomonicalEffect->actual_inhibitor_injection = $item->current_dosage;
-        $ecomonicalEffect->recommended_inhibitor_injection = $corrosion->dose_mg_per_l_point_A;
-        $ecomonicalEffect->difference = $item->current_dosage - $corrosion->dose_mg_per_l_point_A;
-        $ecomonicalEffect->inhibitor_price = $this->inhibitorPrice;
-        $ecomonicalEffect->lost_profits = ($item->current_dosage/1000 - $corrosion->dose_mg_per_l_point_A/1000) * $this->inhibitorPrice * $guDataByDay->ngdu->daily_water_production / 1000;
-        $ecomonicalEffect->save();
+        DB::table($table)->insert([
+            'gu_id' => $item->gu_id,
+            'date' => $item->date,
+            'сorrosion' => $corrosion->corrosion_rate_mm_per_y_point_A,
+            'actual_inhibitor_injection' => $column == "lost_profits" ? $item->current_dosage : $guDataByDay->ca->plan_dosage,
+            'recommended_inhibitor_injection' => $corrosion->dose_mg_per_l_point_A,
+            'difference' => $column == "lost_profits" ? $item->current_dosage - $corrosion->dose_mg_per_l_point_A : $guDataByDay->ca->plan_dosage - $corrosion->dose_mg_per_l_point_A,
+            'inhibitor_price' => $this->inhibitorPrice,
+            $column == "lost_profits" ? "lost_profits" : "economical_effect" => $column == "lost_profits" ? $this->lostProfitsCalculate($item, $corrosion, $guDataByDay) : $this->economicalEffectCalculate($item, $corrosion, $guDataByDay)
+        ]);
     }
 
-    public function calculateLostProfitsTotal()
+    public function calculateLostProfitsTotal(string $tableName, string $column, string $totalColumn)
     {
-        $economicalEffect = LostProfits::orderBy('date')->get()->groupBy('gu_id');
+        $data= DB::table($tableName)->orderBy('date')->get()->groupBy('gu_id');
         $total = [];
-        foreach($economicalEffect as $key=>$row){
+        foreach($data as $key=>$row){
             foreach($row as $item){
                 if(!empty($total[$key][Carbon::parse($item->date)->year])){
-                    $total[$key][Carbon::parse($item->date)->year] += $item->lost_profits; 
+                    $total[$key][Carbon::parse($item->date)->year] += $item->$column; 
                 }else{
-                    $total[$key][Carbon::parse($item->date)->year] = $item->lost_profits; 
+                    $total[$key][Carbon::parse($item->date)->year] = $item->$column; 
                 }
-                LostProfits::where('id',$item->id)->update(['lost_profits_sum'=>$total[$key][Carbon::parse($item->date)->year]]);
+                DB::table($tableName)->where('id',$item->id)->update([$totalColumn=>$total[$key][Carbon::parse($item->date)->year]]);
             }
         }
+    }
+
+    public function lostProfitsCalculate(object $item, object $corrosion, object $guDataByDay): float
+    {
+        $result = ($item->current_dosage/1000 - $corrosion->dose_mg_per_l_point_A/1000) * $this->inhibitorPrice * $guDataByDay->ngdu->daily_water_production / 1000;
+
+        return $result;
+    }
+
+    public function economicalEffectCalculate(object $item, object $corrosion, object $guDataByDay): float
+    {
+        // $result = (($guDataByDay->ca->plan_dosage * $guDataByDay->ca->q_v/1000) * 2.74 - $corrosion->dose_mg_per_l_point_A * $guDataByDay->ca->q_v/1000) * $this->inhibitorPrice / 1000;
+
+        $result = ($guDataByDay->ca->plan_dosage/1000 - $corrosion->dose_mg_per_l_point_A/1000) * $this->inhibitorPrice * $guDataByDay->ca->q_v * 2.74 / 1000;
+
+        return $result;
     }
 }

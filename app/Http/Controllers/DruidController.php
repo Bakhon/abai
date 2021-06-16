@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\ComplicationMonitoring\Gu;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Level23\Druid\DruidClient;
 
@@ -628,7 +629,7 @@ class DruidController extends Controller
             }
         }
 
-        if ($r_e > 0.125) {
+        if ($r_e > 0.12) {
             if ($conH2S < 17) {
                 $dose_e = 14.177 * log($r_e) + 35.222;
                 //return $dose;
@@ -905,5 +906,13 @@ class DruidController extends Controller
 
 
         return response()->json($vdata);
+    }
+
+    public function test(Model $model){
+        print_r($model);
+    }
+
+    public function test2(){
+        
     }
 }
