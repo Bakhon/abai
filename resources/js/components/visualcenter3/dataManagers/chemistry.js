@@ -3,7 +3,36 @@ import moment from "moment";
 export default {
     data: function () {
         return {
-            chemistryData: [],
+            chemistryData: [
+                {
+                    name: this.trans("visualcenter.chemProdZakackaDemulg"),
+                    code: 'demulsifier',
+                    plan: 0,
+                    fact: 0,
+                    metricSystem: this.trans("visualcenter.chemistryMetricTon"),
+                },
+                {
+                    name: this.trans("visualcenter.chemProdZakackaBakteracid"),
+                    code: 'bactericide',
+                    plan: 0,
+                    fact: 0,
+                    metricSystem: this.trans("visualcenter.chemistryMetricTon"),
+                },
+                {
+                    name: this.trans("visualcenter.chemProdZakackaIngibatorKorrozin"),
+                    code: 'corrosion_inhibitor',
+                    plan: 0,
+                    fact: 0,
+                    metricSystem: this.trans("visualcenter.chemistryMetricTon"),
+                },
+                {
+                    name: this.trans("visualcenter.chemProdZakackaIngibatorSoleotloj"),
+                    code: 'scale_inhibitor',
+                    plan: 0,
+                    fact: 0,
+                    metricSystem: this.trans("visualcenter.chemistryMetricTon"),
+                },
+            ],
             chemistrySelectedRow: 'chem_prod_zakacka_demulg_fact',
             chemistryChartData: [],
         };
@@ -87,7 +116,11 @@ export default {
             let series = []
             let labels = []
             for (let i in this.chemistryChartData) {
-                series.push(this.chemistrySelectedRow ? this.chemistryChartData[i][this.chemistrySelectedRow] : this.chemistryChartData[i]['chem_prod_zakacka_demulg_fact'])
+                if (!this.isProductionDetailsActive) {
+                    series.push(this.chemistrySelectedRow ? this.chemistryChartData[i][this.chemistrySelectedRow] : this.chemistryChartData[i]['chem_prod_zakacka_demulg_fact']);
+                } else {
+                    series.push(this.chemistrySelectedRow ? this.chemistryChartData[i][this.chemistrySelectedRow] : this.chemistryChartData[i]['demulsifier']);
+                }
                 labels.push(i)
             }
             return {

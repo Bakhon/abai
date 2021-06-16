@@ -2267,7 +2267,7 @@
                     <tr>
                       <th>{{ trans("visualcenter.productionChemicalization") }}</th>
                       <th>
-                        {{ trans("visualcenter.Plan") }}<br>
+                        {{ trans("visualcenter.Fact") }}<br>
                         {{ trans("visualcenter.chemistryMetricTon") }}
                       </th>
                     </tr>
@@ -2494,8 +2494,8 @@
                         {{ trans('visualcenter.chemistryMetricTon') }}
                       </div>
                       <div class="in-idle2">
-                        <span v-if="isOneDateSelected"> {{ previousPeriodEnd }}</span>
-                        <span v-else> {{ previousPeriodStart }} - {{ previousPeriodEnd }}</span>
+                        <span v-if="isOneDateSelected"> {{ currentMonthDateStart }}</span>
+                        <span v-else>{{ currentMonthDateStart }} - {{ currentMonthDateEnd }}</span>
                       </div>
                     </td>
                   </tr>

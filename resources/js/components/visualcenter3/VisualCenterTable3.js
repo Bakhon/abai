@@ -25,6 +25,7 @@ import oilProductionFilters from './dataManagers/oilProductionFilters';
 import mainTableChart from './widgets/mainTableChart.js';
 import secondaryParams from './dataManagers/secondaryParams';
 import consolidateOilCondensate from './dataManagers/consolidateOilCondensate';
+import productionDetails from './widgets/productionDetails';
 
 export default {
     components: {
@@ -188,8 +189,14 @@ export default {
         },
 
         async getProductionDataByPeriod() {
-            let uri = this.localeUrl("/visualcenter3GetData?timestampToday=") + this.timestampToday + "&timestampEnd=" + this.timestampEnd + " ";
-            const response = await axios.get(uri);
+            let queryOptions = {'timestampToday': this.timestampToday, 'timestampEnd': this.timestampEnd};
+            let uri = this.localeUrl("/visualcenter3GetData");
+            if (this.isProductionDetailsActive) {
+                queryOptions = {'timestampToday': new Date(this.timestampToday), 'timestampEnd': new Date(this.timestampEnd)}
+                uri = this.localeUrl("/get-production-details");
+            }
+            const response = await axios.get(uri,{params:queryOptions});
+
             if (response.status === 200) {
                 return response.data;
             }
@@ -197,6 +204,12 @@ export default {
         },
 
         processProductionDataByCompanies(productionData,metricName,chartSecondaryName) {
+            if (this.isProductionDetailsActive) {
+                productionData = this.getFormattingProductionDetails(productionData);
+                console.log(productionData);
+                this.chemistrySelectedRow = 'demulsifier';
+                this.updateChemistryWidget();
+            }
             let updatedData = productionData;
             this.productionTableData = productionData;
             if (this.company === "all") {
@@ -313,16 +326,20 @@ export default {
             this.innerWellsChartData = this.getSummaryInjectionWellsForChart(dataWithMay);
             this.productionWells = this.getSummaryWells(dataWithMay, this.wellStockIdleButtons.isProductionIdleButtonActive,'productionFonds');
             this.innerWells2ChartData = this.getSummaryProductionWellsForChart(dataWithMay);
-            this.otmData = this.getOtmData(dataWithMay)
-            if (this.otmData.length >= 4) {
-                this.otmWidgetData.drillingWells=this.otmData[0]['fact'];
-                this.otmWidgetData.krsWells=this.otmData[2]['fact'];
-                this.otmWidgetData.prsWells=this.otmData[3]['fact'];
+
+            if (!this.isProductionDetailsActive) {
+                this.otmData = this.getOtmData(dataWithMay)
+                this.otmChartData = this.getOtmChartData(dataWithMay);
+                this.chemistryData = this.getChemistryData(dataWithMay);
+                this.chemistryChartData = this.getChemistryChartData(dataWithMay);
+                if (this.otmData.length >= 4) {
+                    this.otmWidgetData.drillingWells=this.otmData[0]['fact'];
+                    this.otmWidgetData.krsWells=this.otmData[2]['fact'];
+                    this.otmWidgetData.prsWells=this.otmData[3]['fact'];
+                }
             }
 
-            this.otmChartData = this.getOtmChartData(dataWithMay)
-            this.chemistryData = this.getChemistryData(dataWithMay)
-            if (this.chemistryData.length != 0) {
+            if (!this.isProductionDetailsActive && this.chemistryData.length != 0) {
                 this.chemistryDataFactSumm= _.reduce(
                     this.chemistryData,
                     function (memo, item) {
@@ -331,7 +348,6 @@ export default {
                     0
                 );
             }
-            this.chemistryChartData = this.getChemistryChartData(dataWithMay)
 
             var dzo2 = [];
             var planMonth = [];
@@ -700,7 +716,8 @@ export default {
         oilProductionFilters,
         mainTableChart,
         secondaryParams,
-        consolidateOilCondensate
+        consolidateOilCondensate,
+        productionDetails
     ],
     async mounted() {
         this.getOpecDataForYear();
@@ -730,6 +747,8 @@ export default {
         localStorage.setItem("selectedPeriod", "undefined");
         this.getCurrencyNow(this.timeSelect);
         this.updatePrices(this.period);
+        this.chemistryDetails = await this.getChemistryByMonth();
+        this.otmDetails = await this.getOtmByMonth();
         this.dzoMonthlyPlans = await this.getDzoMonthlyPlans();
 
         this.dzoCompaniesAssets = _.cloneDeep(this.dzoCompaniesAssetsInitial);
