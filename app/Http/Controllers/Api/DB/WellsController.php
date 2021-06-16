@@ -14,7 +14,7 @@ class WellsController extends Controller
     public function wellInfo(well $well)
     {
         return array(
-            'well' => $this->get($well),
+            'wellInfo' => $this->get($well),
             'status' => $this->status($well),
             'tube_nom' => $this->tubeNom($well),
             'category' => $this->category($well),

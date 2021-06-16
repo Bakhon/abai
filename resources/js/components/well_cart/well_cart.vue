@@ -55,7 +55,7 @@
             <div class="row">
               <div class="col">
                 <button class="transparent-select">
-                  Скважина: <span v-if="well">{{ well.uwi }}</span>
+                  Скважина: <span v-if="wellUwi">{{ wellUwi }}</span>
                   <svg width="14" height="8" viewBox="0 0 14 8" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M1 1L7 7L13 1" stroke="white" stroke-width="1.6" stroke-linecap="round"
                           stroke-linejoin="round"/>
@@ -79,7 +79,7 @@
                 </form>
               </div>
             </div>
-            <div v-if="well" class="mid-col__main_row">
+            <div v-if="wellUwi" class="mid-col__main_row">
               <div v-if="activeFormCode" class="col table-wrapper">
                 <BigDataPlainFormResult :code="activeFormCode" :well-id="this.well.id"></BigDataPlainFormResult>
               </div>
@@ -102,10 +102,15 @@
                   <div class="col">
                     <div class="well-info">
                       <div class="title">Основное</div>
-                      <p>Номер скважины: <span>{{ well.uwi }}</span></p>
+                      <p>Номер скважины:
+                        <span v-if="wellUwi">
+                          {{ wellUwi }}
+                        </span>
+                      </p>
                       <p>Категория скважины:
-                        <span v-if="wellCategory.name_ru">
-                            {{ wellCategory.name_ru }}</span>
+                        <span v-if="well.category">
+                          {{ well.category.name_ru }}
+                        </span>
                       </p>
                       <div class="title">Привязка</div>
                       <div class="title">Координаты устья</div>
@@ -149,10 +154,10 @@
                             stroke-linejoin="round"/>
                     </svg>
                   </div>
-                  <p v-if="well">Паспорт скважины</p>
+                  <p v-if="wellUwi">Паспорт скважины</p>
                 </div>
                 <div class="title-container">
-                  <div class="sheare-icon" v-if="well">
+                  <div class="sheare-icon" v-if="wellUwi">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path
                           d="M17.5443 8.3734L13.9393 4.79071C13.752 4.60451 13.4986 4.5 13.2344 4.5L7.10023 4.50002C6.54794 4.50002 6.10023 4.94773 6.10023 5.50002L6.10023 18.5C6.10023 19.0523 6.54795 19.5 7.10023 19.5H16.8394C17.3916 19.5 17.8394 19.0523 17.8394 18.5L17.8394 9.0827C17.8394 8.81641 17.7331 8.56111 17.5443 8.3734Z"
@@ -164,7 +169,7 @@
                           fill="white"/>
                     </svg>
                   </div>
-                  <div class="sheare-text" v-if="well">
+                  <div class="sheare-text" v-if="wellUwi">
                     Скачать в MS-Excel
                   </div>
                 </div>
@@ -176,7 +181,7 @@
             <div class="info-element">
               <div class="row">
                 <div class="col">
-                  <table v-if="well">
+                  <table v-if="wellUwi">
                     <tr>
                       <th colspan="3">Общая информация</th>
                     </tr>
@@ -218,42 +223,72 @@ export default {
       isLeftColumnFolded: false,
       isRightColumnFolded: false,
       isBothColumnFolded: false,
-      well: null,
+      wellUwi: null,
+      well: {
+        'waterCut': null,
+        'status': null,
+        'category': null,
+        'categoryLast': null,
+        'expl': null,
+        'techs': null,
+        'techsName': null,
+        'labResearchValue': null,
+        'wellType': null,
+        'org': null,
+        'geo': null,
+        'tubeNom': null,
+        'measLiq': null,
+        'techModeProdOil': null,
+        'techModeProdLiquid': null,
+        'injPressure': null,
+        'agentVol': null,
+        'krsWorkoverBeg': null,
+        'krsWorkoverEnd': null,
+        'treatmentDate': null,
+        'actualBottomHole': null,
+        'artificialBottomHole': null,
+        'perfActualTop': null,
+        'wellPerfActualBase': null,
+        'wellInfo': null,
+      },
       popup: false,
-      wellStatus: null,
-      wellCategory: null,
-      wellCategory_last: null,
-      wellExpl: null,
-      tubeNom: null,
-      wellType: null,
       tubeNomOd: null,
       wellTechs: null,
       wellTechsName: null,
       wellTechsTap: null,
-      wellUwi: null,
-      wellGeo: null,
-      WellTech: null,
-      wellOrg: null,
       wellOrgName: null,
       wellSaptialObjectX: null,
       wellSaptialObjectY: null,
       wellSaptialObjectBottomX: null,
       wellSaptialObjectBottomY: null,
-      wellInjPressure: null,
-      techModeProdLiquid: null,
-      wellAgentVol: null,
-      actualBottomHole: null,
-      artificialBottomHole: null,
-      wellLabResearchValue: null,
-      wellPerfActualTop: null,
-      wellPerfActualBase: null,
-      wellMeasLiq: null,
-      wellWaterCut: null,
-      techModeProdOil: null,
-      krsWorkoverBeg: null,
-      krsWorkoverEnd: null,
-      wellTreatmentDate: null,
       forms: forms,
+      wellTransform: {
+        'name': 'wellInfo.uwi',
+        'wellInfo': 'wellInfo',
+        'waterCut': 'meas_water_cut.water_cut',
+        'status': 'status',
+        'category': 'category',
+        'categoryLast': 'category_last',
+        'expl': 'well_expl',
+        'techs': 'techs',
+        'labResearchValue': 'lab_research_value',
+        'wellType': 'well_type',
+        'org': 'org',
+        'geo': 'geo',
+        'tubeNom': 'tube_nom',
+        'measLiq': 'meas_liq.liquid',
+        'techModeProdOil': 'tech_mode_prod_oil.oil',
+        'techModeProdLiquid': 'tech_mode_prod_oil.liquid',
+        'injPressure': 'tech_mode_inj.inj_pressure',
+        'agentVol': 'tech_mode_inj.agent_vol',
+        'krsWorkoverBeg': 'krs_well_workover.dbeg',
+        'krsWorkoverEnd': 'krs_well_workover.dend',
+        'treatmentDate': 'well_treatment.treat_date',
+        'actualBottomHole': 'actual_bottom_hole.pivot.depth',
+        'artificialBottomHole': 'artificial_bottom_hole.pivot.depth',
+        'perfActualTop': 'well_perf_actual.top',
+        'wellPerfActualBase': 'well_perf_actual.base',
+      },
     }
   },
   mounted() {
@@ -289,31 +324,14 @@ export default {
       this.loading = true
       this.axios.get(this.localeUrl(`/api/bigdata/wells/${well.id}/wellInfo`)).then(({data}) => {
         try {
-          this.wellStatus = data.status
-          this.wellCategory = data.category
-          this.wellCategory_last = data.category_last
-          this.wellExpl = data.well_expl
-          this.wellTechs = data.techs
-          this.wellLabResearchValue = data.lab_research_value
+          this.wellUwi = data.wellInfo.uwi
+          for (let i = 0; i < Object.keys(this.wellTransform).length; i++) {
+            this.setWellObjectData(Object.keys(this.wellTransform)[i], Object.values(this.wellTransform)[i], data)
+          }
           this.wellTechsName = this.getMultipleValues(data.techs, 'name_ru')
           this.wellTechsTap = this.getMultipleValues(data.techs, 'tap')
-          this.wellType = data.well_type
-          this.wellOrg = data.org
           this.wellOrgName = this.getMultipleValues(data.org, 'name_ru')
-          this.wellGeo = data.geo
-          this.tubeNom = data.tube_nom
           this.tubeNomOd = this.getMultipleValues(data.tube_nom, 'od')
-          this.well = data.well
-          this.wellUwi = data.well.uwi
-          this.wellMeasLiq = data.meas_liq.liquid
-          this.techModeProdOil = data.tech_mode_prod_oil.oil
-          this.techModeProdLiquid = data.tech_mode_prod_oil.liquid
-          this.wellInjPressure = data.tech_mode_inj.inj_pressure
-          this.wellAgentVol = data.tech_mode_inj.agent_vol
-          this.wellWaterCut = data.meas_water_cut.water_cut
-          this.krsWorkoverBeg = data.krs_well_workover.dbeg
-          this.krsWorkoverEnd = data.krs_well_workover.dend
-          this.wellTreatmentDate = data.well_treatment.treat_date
           if (data.spatial_object.coord_point != null) {
             let spatialObject
             spatialObject = data.spatial_object.coord_point.replace('(', '').replace(')', '')
@@ -328,11 +346,8 @@ export default {
             this.wellSaptialObjectBottomX = spatialObjectBottom[0]
             this.wellSaptialObjectBottomY = spatialObjectBottom[1]
           }
-          this.actualBottomHole = data.actual_bottom_hole.pivot.depth
-          this.artificialBottomHole = data.artificial_bottom_hole.pivot.depth
-          this.wellPerfActualTop = data.well_perf_actual.top
-          this.wellPerfActualBase = data.well_perf_actual.base
         } catch (e) {
+          //console.log(e)
           this.loading = false
         }
         this.loading = false
@@ -376,6 +391,17 @@ export default {
       }
       return (value)
     },
+    setWellObjectData(key, path, source) {
+      try {
+        if (source.[path] != null) {
+          this.well.[key] = source.[path]
+        } else {
+          variable = null
+        }
+      } catch (e) {
+        this.well.[key] = null;
+      }
+    },
     switchFormByCode(formCode) {
       this.activeFormCode = formCode
     },
@@ -386,300 +412,300 @@ export default {
   computed: {
     tableData() {
       return [
-        {
-          'description': this.wellUwi,
-          'method': null,
-          'name': 'Скважина',
-          'data': ''
-        },
-        {
-          'description': this.wellType.name_ru,
-          'method': null,
-          'name': 'Вид скважины',
-          'data': ''
-        },
-        {
-          'description': this.wellGeo.name_ru,
-          'method': null,
-          'name': 'Месторождение',
-          'data': ''
-        },
-        {
-          'description': '',
-          'method': 'neighbors',
-          'neigbor_1': this.wellGeo.name_ru,
-          'neigbor_2': this.wellLabResearchValue.value_double,
-          'name': 'Горизонт / Pнас, атм',
-          'data': ''
-        },
-        {
-          'description': this.well.rte,
-          'method': null,
-          'name': 'H ротора',
-          'data': ''
-        },
-        {
-          'description': this.wellTechsName,
-          'method': null,
-          'name': 'Тех. структура',
-          'data': ''
-        },
-        {
-          'description': this.wellTechsTap,
-          'method': null,
-          'name': 'Отвод',
-          'data': ''
-        },
-        {
-          'description': this.wellTechsName,
-          'method': null,
-          'name': 'ГУ/Ряд',
-          'data': ''
-        },
-        {
-          'description': this.wellOrgName,
-          'method': null,
-          'name': 'Орг. структура',
-          'data': ''
-        },
-        {
-          'description': null,
-          'method': null,
-          'name': 'Зона скважины',
-          'data': ''
-        },
-        {
-          'description': null,
-          'method': null,
-          'name': 'Реагирующие скважины',
-          'data': ''
-        },
-        {
-          'description': null,
-          'method': null,
-          'name': 'Влияющие скважины',
-          'data': ''
-        },
-        {
-          'description': this.wellSaptialObjectX,
-          'method': null,
-          'name': 'Координаты X (устья)',
-          'data': ''
-        },
-        {
-          'description': this.wellSaptialObjectY,
-          'method': null,
-          'name': 'Координаты Y (устья)',
-          'data': ''
-        },
-        {
-          'description': this.wellSaptialObjectBottomX,
-          'method': null,
-          'name': 'Координаты забоя X',
-          'data': ''
-        },
-        {
-          'description': this.wellSaptialObjectBottomY,
-          'method': null,
-          'name': 'Координаты забоя Y',
-          'data': ''
-        },
-        {
-          'description': this.wellCategory.name_ru,
-          'method': null,
-          'name': 'Назначение скважин по проекту',
-          'data': ''
-        },
-        {
-          'description': this.wellCategory_last.name_ru,
-          'method': null,
-          'name': 'Категория',
-          'data': ''
-        },
-        {
-          'description': '',
-          'method': 'neighbors',
-          'neigbor_1': this.well.drill_start_date,
-          'neigbor_2': this.well.drill_end_date,
-          'name': 'Период бурения',
-          'data': ''
-        },
-        {
-          'description': this.wellExpl.pivot.dbeg,
-          'method': 'trimToDate',
-          'name': 'Дата ввода в эксплуатацию',
-          'data': ''
-        },
-        {
-          'description': this.wellStatus.name_ru,
-          'method': null,
-          'name': 'Состояние',
-          'data': ''
-        },
-        {
-          'description': this.wellExpl.name_ru,
-          'method': null,
-          'name': 'Способ эксплуатации',
-          'data': ''
-        },
-        {
-          'description': '',
-          'method': null,
-          'name': 'Тип УО / наличие эксц. болта',
-          'data': ''
-        },
-        {
-          'description': this.tubeNomOd,
-          'method': null,
-          'name': 'Диаметр экспл. колонны / доп. экспл. колонны, мм',
-          'data': ''
-        },
-        {
-          'description': '',
-          'method': null,
-          'name': 'Тип колонной головки / размеры',
-          'data': ''
-        },
-        {
-          'description': '',
-          'method': null,
-          'name': 'Глубина спуска насоса (м)',
-          'data': ''
-        },
-        {
-          'description': '',
-          'method': null,
-          'name': 'Код насоса',
-          'data': ''
-        },
-        {
-          'description': '',
-          'method': null,
-          'name': 'Диаметр насоса (мм)',
-          'data': ''
-        },
-        {
-          'description': '',
-          'method': null,
-          'name': 'Глубина спуска пакера',
-          'data': ''
-        },
-        {
-          'description': '',
-          'method': null,
-          'name': 'Тип СК',
-          'data': ''
-        },
-        {
-          'description': '',
-          'method': null,
-          'name': 'длина хода (м)',
-          'data': ''
-        },
-        {
-          'description': '',
-          'method': null,
-          'name': 'число качаний (об/мин)',
-          'data': ''
-        },
-        {
-          'description': this.actualBottomHole,
-          'method': null,
-          'name': 'Фактический забой/(дата отбивки)',
-          'data': ''
-        },
-        {
-          'description': this.actualBottomHole,
-          'method': null,
-          'name': 'Искусственный забой',
-          'data': ''
-        },
-        {
-          'description': null,
-          'method': null,
-          'name': 'Отбитый забой',
-          'data': ''
-        },
-        {
-          'description': null,
-          'method': null,
-          'name': 'Глубина спуска НКТ, м',
-          'data': ''
-        },
-        {
-          'description': null,
-          'method': null,
-          'name': 'КШД (тип/диаметр)',
-          'data': ''
-        },
-        {
-          'description': null,
-          'method': null,
-          'name': 'Дата перфорации',
-          'data': ''
-        },
-        {
-          'description': null,
-          'method': 'neighbors',
-          'neigbor_1': this.wellPerfActualTop,
-          'neigbor_2': this.wellPerfActualBase,
-          'name': 'Действующие интервалы перфорации',
-          'data': ''
-        },
-        {
-          'description': null,
-          'method': 'neighbors',
-          'neigbor_1': this.wellInjPressure,
-          'neigbor_2': null,
-          'name': 'Приемистость, м3/сут (режим/факт)',
-          'data': ''
-        },
-        {
-          'description': null,
-          'method': 'neighbors',
-          'neigbor_1': this.wellAgentVol,
-          'neigbor_2': null,
-          'name': 'Давление закачки, атм (режим/факт)',
-          'data': ''
-        },
-        {
-          'description': null,
-          'method': 'neighbors',
-          'neigbor_1': this.techModeProdLiquid,
-          'neigbor_2': this.wellMeasLiq,
-          'name': 'Дебит жидкости, м3/сут (режим/факт)',
-          'data': ''
-        },
-        {
-          'description': null,
-          'method': 'neighbors',
-          'neigbor_1': this.techModeProdOil,
-          'neigbor_2': this.wellWaterCut,
-          'name': 'Обводненность, % (режим/факт)',
-          'data': ''
-        },
-        {
-          'description': null,
-          'method': 'neighbors',
-          'neigbor_1': this.techModeProdOil,
-          'neigbor_2': null,
-          'name': 'Дебит нефти, т/сут (режим/факт)',
-          'data': ''
-        },
-        {
-          'description': null,
-          'method': 'neighbors',
-          'neigbor_1': this.krsWorkoverBeg,
-          'neigbor_2': this.krsWorkoverEnd,
-          'name': 'Дата последнего КРС',
-          'data': ''
-        },
-        {
-          'description': this.wellTreatmentDate,
-          'method': null,
-          'name': 'Дата проведения ПФП нагн. скважины',
-          'data': ''
-        },
+        // {
+        //   'description': this.wellUwi,
+        //   'method': null,
+        //   'name': 'Скважина',
+        //   'data': ''
+        // },
+        // {
+        //   'description': this.wellType.name_ru,
+        //   'method': null,
+        //   'name': 'Вид скважины',
+        //   'data': ''
+        // },
+        // {
+        //   'description': this.wellGeo.name_ru,
+        //   'method': null,
+        //   'name': 'Месторождение',
+        //   'data': ''
+        // },
+        // {
+        //   'description': '',
+        //   'method': 'neighbors',
+        //   'neigbor_1': this.wellGeo.name_ru,
+        //   'neigbor_2': this.wellLabResearchValue.value_double,
+        //   'name': 'Горизонт / Pнас, атм',
+        //   'data': ''
+        // },
+        // {
+        //   'description': this.well.rte,
+        //   'method': null,
+        //   'name': 'H ротора',
+        //   'data': ''
+        // },
+        // {
+        //   'description': this.wellTechsName,
+        //   'method': null,
+        //   'name': 'Тех. структура',
+        //   'data': ''
+        // },
+        // {
+        //   'description': this.wellTechsTap,
+        //   'method': null,
+        //   'name': 'Отвод',
+        //   'data': ''
+        // },
+        // {
+        //   'description': this.wellTechsName,
+        //   'method': null,
+        //   'name': 'ГУ/Ряд',
+        //   'data': ''
+        // },
+        // {
+        //   'description': this.wellOrgName,
+        //   'method': null,
+        //   'name': 'Орг. структура',
+        //   'data': ''
+        // },
+        // {
+        //   'description': null,
+        //   'method': null,
+        //   'name': 'Зона скважины',
+        //   'data': ''
+        // },
+        // {
+        //   'description': null,
+        //   'method': null,
+        //   'name': 'Реагирующие скважины',
+        //   'data': ''
+        // },
+        // {
+        //   'description': null,
+        //   'method': null,
+        //   'name': 'Влияющие скважины',
+        //   'data': ''
+        // },
+        // {
+        //   'description': this.wellSaptialObjectX,
+        //   'method': null,
+        //   'name': 'Координаты X (устья)',
+        //   'data': ''
+        // },
+        // {
+        //   'description': this.wellSaptialObjectY,
+        //   'method': null,
+        //   'name': 'Координаты Y (устья)',
+        //   'data': ''
+        // },
+        // {
+        //   'description': this.wellSaptialObjectBottomX,
+        //   'method': null,
+        //   'name': 'Координаты забоя X',
+        //   'data': ''
+        // },
+        // {
+        //   'description': this.wellSaptialObjectBottomY,
+        //   'method': null,
+        //   'name': 'Координаты забоя Y',
+        //   'data': ''
+        // },
+        // {
+        //   'description': this.wellCategory.name_ru,
+        //   'method': null,
+        //   'name': 'Назначение скважин по проекту',
+        //   'data': ''
+        // },
+        // {
+        //   'description': this.wellCategory_last.name_ru,
+        //   'method': null,
+        //   'name': 'Категория',
+        //   'data': ''
+        // },
+        // {
+        //   'description': '',
+        //   'method': 'neighbors',
+        //   'neigbor_1': this.well.drill_start_date,
+        //   'neigbor_2': this.well.drill_end_date,
+        //   'name': 'Период бурения',
+        //   'data': ''
+        // },
+        // {
+        //   'description': this.wellExpl.pivot.dbeg,
+        //   'method': 'trimToDate',
+        //   'name': 'Дата ввода в эксплуатацию',
+        //   'data': ''
+        // },
+        // {
+        //   'description': this.wellStatus.name_ru,
+        //   'method': null,
+        //   'name': 'Состояние',
+        //   'data': ''
+        // },
+        // {
+        //   'description': this.wellExpl.name_ru,
+        //   'method': null,
+        //   'name': 'Способ эксплуатации',
+        //   'data': ''
+        // },
+        // {
+        //   'description': '',
+        //   'method': null,
+        //   'name': 'Тип УО / наличие эксц. болта',
+        //   'data': ''
+        // },
+        // {
+        //   'description': this.tubeNomOd,
+        //   'method': null,
+        //   'name': 'Диаметр экспл. колонны / доп. экспл. колонны, мм',
+        //   'data': ''
+        // },
+        // {
+        //   'description': '',
+        //   'method': null,
+        //   'name': 'Тип колонной головки / размеры',
+        //   'data': ''
+        // },
+        // {
+        //   'description': '',
+        //   'method': null,
+        //   'name': 'Глубина спуска насоса (м)',
+        //   'data': ''
+        // },
+        // {
+        //   'description': '',
+        //   'method': null,
+        //   'name': 'Код насоса',
+        //   'data': ''
+        // },
+        // {
+        //   'description': '',
+        //   'method': null,
+        //   'name': 'Диаметр насоса (мм)',
+        //   'data': ''
+        // },
+        // {
+        //   'description': '',
+        //   'method': null,
+        //   'name': 'Глубина спуска пакера',
+        //   'data': ''
+        // },
+        // {
+        //   'description': '',
+        //   'method': null,
+        //   'name': 'Тип СК',
+        //   'data': ''
+        // },
+        // {
+        //   'description': '',
+        //   'method': null,
+        //   'name': 'длина хода (м)',
+        //   'data': ''
+        // },
+        // {
+        //   'description': '',
+        //   'method': null,
+        //   'name': 'число качаний (об/мин)',
+        //   'data': ''
+        // },
+        // {
+        //   'description': this.actualBottomHole,
+        //   'method': null,
+        //   'name': 'Фактический забой/(дата отбивки)',
+        //   'data': ''
+        // },
+        // {
+        //   'description': this.actualBottomHole,
+        //   'method': null,
+        //   'name': 'Искусственный забой',
+        //   'data': ''
+        // },
+        // {
+        //   'description': null,
+        //   'method': null,
+        //   'name': 'Отбитый забой',
+        //   'data': ''
+        // },
+        // {
+        //   'description': null,
+        //   'method': null,
+        //   'name': 'Глубина спуска НКТ, м',
+        //   'data': ''
+        // },
+        // {
+        //   'description': null,
+        //   'method': null,
+        //   'name': 'КШД (тип/диаметр)',
+        //   'data': ''
+        // },
+        // {
+        //   'description': null,
+        //   'method': null,
+        //   'name': 'Дата перфорации',
+        //   'data': ''
+        // },
+        // {
+        //   'description': null,
+        //   'method': 'neighbors',
+        //   'neigbor_1': this.wellPerfActualTop,
+        //   'neigbor_2': this.wellPerfActualBase,
+        //   'name': 'Действующие интервалы перфорации',
+        //   'data': ''
+        // },
+        // {
+        //   'description': null,
+        //   'method': 'neighbors',
+        //   'neigbor_1': this.wellInjPressure,
+        //   'neigbor_2': null,
+        //   'name': 'Приемистость, м3/сут (режим/факт)',
+        //   'data': ''
+        // },
+        // {
+        //   'description': null,
+        //   'method': 'neighbors',
+        //   'neigbor_1': this.wellAgentVol,
+        //   'neigbor_2': null,
+        //   'name': 'Давление закачки, атм (режим/факт)',
+        //   'data': ''
+        // },
+        // {
+        //   'description': null,
+        //   'method': 'neighbors',
+        //   'neigbor_1': this.techModeProdLiquid,
+        //   'neigbor_2': this.wellMeasLiq,
+        //   'name': 'Дебит жидкости, м3/сут (режим/факт)',
+        //   'data': ''
+        // },
+        // {
+        //   'description': null,
+        //   'method': 'neighbors',
+        //   'neigbor_1': this.techModeProdOil,
+        //   'neigbor_2': this.wellWaterCut,
+        //   'name': 'Обводненность, % (режим/факт)',
+        //   'data': ''
+        // },
+        // {
+        //   'description': null,
+        //   'method': 'neighbors',
+        //   'neigbor_1': this.techModeProdOil,
+        //   'neigbor_2': null,
+        //   'name': 'Дебит нефти, т/сут (режим/факт)',
+        //   'data': ''
+        // },
+        // {
+        //   'description': null,
+        //   'method': 'neighbors',
+        //   'neigbor_1': this.krsWorkoverBeg,
+        //   'neigbor_2': this.krsWorkoverEnd,
+        //   'name': 'Дата последнего КРС',
+        //   'data': ''
+        // },
+        // {
+        //   'description': this.wellTreatmentDate,
+        //   'method': null,
+        //   'name': 'Дата проведения ПФП нагн. скважины',
+        //   'data': ''
+        // },
       ]
     }
   }
