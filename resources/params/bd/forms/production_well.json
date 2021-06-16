@@ -1,5 +1,5 @@
 {
-  "table": "bigdata_wells",
+  "table": "prod.tech_mode_prod_oil",
   "tabs": [
     {
       "title": "Основное",
@@ -9,32 +9,19 @@
             "title": "Tech_modes_indicators",
             "items": [
               {
-                "code": "date_start",
+                "code": "dbeg",
                 "type": "date",
                 "title": "date_start",
-                "validation": "nullable|date|before_or_equal:today"
+                "validation": "nullable|date"
               },
               {
-                "code": "date_end",
+                "code": "dend",
                 "type": "date",
                 "title": "date_end",
-                "validation": "nullable|date|before_or_equal:today|after:date_start_drilling"
+                "validation": "nullable|date|after:date_start"
               }
             ]
           },
-          {
-            "title": "calculated_fields",
-            "items": [
-              {
-                "code": "oil_density",
-                "type": "numeric",
-                "title": "oil_density",
-                "validation": "numeric"
-              }
-            ]
-          }
-        ],
-        [
           {
             "title": "Intended_production_regime",
             "items": [
@@ -42,19 +29,66 @@
                 "code": "liquid",
                 "type": "numeric",
                 "title": "liquid",
-                "validation": "numeric"
+                "validation": "numeric",
+                "callbacks": {
+                  "fillCalculatedFields": ""
+                }
               },
               {
-                "code": "oil",
-                "type": "numeric",
-                "title": "oil",
-                "validation": "numeric"
-              },
-              {
-                "code": "water_cut",
+                "code": "wcut",
                 "type": "numeric",
                 "title": "water_cut",
-                "validation": "numeric|min:0|max:100"
+                "validation": "numeric|min:0|max:100",
+                "callbacks": {
+                  "fillCalculatedFields": ""
+                }
+              },
+              {
+                "code": "oil_density",
+                "type": "numeric",
+                "title": "oil_density",
+                "validation": "numeric",
+                "callbacks": {
+                  "fillCalculatedFields": ""
+                }
+              }
+            ]
+          },
+          {
+            "title": "calculated_fields",
+            "items": [
+              {
+                "code": "oil",
+                "type": "calc",
+                "submit_value": true,
+                "title": "oil"
+              }
+            ]
+          },
+          {
+            "title":"Planned_events_tech_modes",
+            "items":[
+              {
+                "code": "field4",
+                "type": "table",
+                "title": "",
+                "table": "prod.tech_mode_event",
+                "parent_column": "well",
+                "columns": [
+                  {
+                    "code": "event_type",
+                    "type": "dict",
+                    "title": "event",
+                    "dict": "well_activity",
+                    "validation": "required|exists:tbd.dict.well_activity,id"
+                  },
+                  {
+                    "code": "plan_month",
+                    "type":"date",
+                    "title":"planned_month",
+                    "validation":"required|date"
+                  }
+                ]
               }
             ]
           }

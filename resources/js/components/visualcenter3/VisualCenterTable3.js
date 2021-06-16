@@ -24,13 +24,7 @@ import dates from './dataManagers/dates';
 import oilProductionFilters from './dataManagers/oilProductionFilters';
 import mainTableChart from './widgets/mainTableChart.js';
 import secondaryParams from './dataManagers/secondaryParams';
-
-
-Vue.component("calendar", Calendar);
-Vue.component("date-picker", DatePicker);
-import Vue from "vue";
-
-
+import consolidateOilCondensate from './dataManagers/consolidateOilCondensate';
 
 export default {
     components: {
@@ -39,6 +33,11 @@ export default {
     },
     data: function () {
         return {
+            otmWidgetData: {
+                drillingWells: 0,
+                krsWells: 0,
+                prsWells: 0
+            },            
             accidentTotal: '',
             noData: '',
             personalFact: '',
@@ -107,7 +106,8 @@ export default {
                 oil_fact: 0,
                 oil_dlv_fact: 0,
                 gas_fact: 0
-            }
+            },
+            chemistryDataFactSumm: 0,
         };
     },
     methods: {
@@ -119,10 +119,10 @@ export default {
             await this.getYearlyPlan();
         },
 
-        getProductionOilandGas(data) {
+        updateProductionOilandGas(data) {
             let self = this;
-            data = this.getFilteredCompaniesList(data);
-            let productionDataInPeriodRange = this.getProductionDataInPeriodRange(data,this.timestampToday,this.timestampEnd);
+            let updatedData = this.getFilteredCompaniesList(data);
+            let productionDataInPeriodRange = this.getProductionDataInPeriodRange(updatedData,this.timestampToday,this.timestampEnd);
             let productionSummary = this.getProductionSummary(productionDataInPeriodRange);
             this.updateProductionSummary(productionSummary,this.productionParams);
             this.dailyProgressBars.oil = this.getProductionProgressBarData('oil_plan','oil_fact');
@@ -152,10 +152,10 @@ export default {
             });
         },
 
-        getProductionOilandGasPercent(data) {
-            data = this.getFilteredCompaniesList(data);
+        updateProductionOilandGasPercent(data) {
+            let updatedData = this.getFilteredCompaniesList(data);
             let periodStart = moment(new Date(this.timestampToday), "DD-MM-YYYY").subtract(this.quantityRange, 'days');
-            let filteredDataByPeriodRange = this.getProductionDataInPeriodRange(data,periodStart,this.timestampToday);
+            let filteredDataByPeriodRange = this.getProductionDataInPeriodRange(updatedData,periodStart,this.timestampToday);
             this.setPreviousPeriod();
             let productionSummary = this.getProductionSummary(filteredDataByPeriodRange);
             this.updateProductionSummary(productionSummary,this.productionPercentParams);
@@ -197,14 +197,16 @@ export default {
         },
 
         processProductionDataByCompanies(productionData,metricName,chartSecondaryName) {
+            let updatedData = productionData;
+            this.productionTableData = productionData;
             if (this.company === "all") {
-                productionData = this.getProcessedDataForAllCompanies(productionData);
+                updatedData = this.getProcessedDataForAllCompanies(productionData);
             } else {
                 this.processDataForSpecificCompany(productionData, metricName, chartSecondaryName);
             }
             this.setColorToMainMenuButtons();
-            this.getProductionOilandGas(productionData);
-            this.getProductionOilandGasPercent(productionData);
+            this.updateProductionOilandGas(updatedData);
+            this.updateProductionOilandGasPercent(updatedData);
         },
 
         processDataForSpecificCompany(data, metricName, chartSecondaryName) {
@@ -214,10 +216,10 @@ export default {
             filteredDataByPeriod = this.getDataOrderedByAsc(filteredDataByPeriod);
 
             this.getProductionPercentCovid(filteredDataByPeriod);
-            this.updateSecondaryParams(filteredDataByPeriod,filteredDataByCompanies);
+            this.updateSecondaryParams(data);
 
             if (this.isOneDateSelected) {
-                let filteredDataByOneDay = this.getFilteredDataByOneDay(filteredDataByCompanies);
+                let filteredDataByOneDay = this.getFilteredDataByOneDay(filteredDataByCompanies,'today');
                 this.dzoCompaniesSummaryForChart = this.getProductionForChart(filteredDataByOneDay);
             } else {
                 this.dzoCompaniesSummaryForChart = this.getProductionForChart(filteredDataByPeriod);
@@ -306,15 +308,29 @@ export default {
             }
 
             let productionPlanAndFactMonth = this.getProductionPlanAndFactForMonth(dataWithMay);
-
-            this.WellsDataAll = this.WellsData(dataWithMay);
+            this.updateWellsWidgetsForAllCompanies(dataWithMay);
             this.injectionWells = this.getSummaryWells(dataWithMay,this.wellStockIdleButtons.isInjectionIdleButtonActive,'injectionFonds');
             this.innerWellsChartData = this.getSummaryInjectionWellsForChart(dataWithMay);
             this.productionWells = this.getSummaryWells(dataWithMay, this.wellStockIdleButtons.isProductionIdleButtonActive,'productionFonds');
             this.innerWells2ChartData = this.getSummaryProductionWellsForChart(dataWithMay);
             this.otmData = this.getOtmData(dataWithMay)
+            if (this.otmData.length >= 4) {
+                this.otmWidgetData.drillingWells=this.otmData[0]['fact'];
+                this.otmWidgetData.krsWells=this.otmData[2]['fact'];
+                this.otmWidgetData.prsWells=this.otmData[3]['fact'];
+            }
+
             this.otmChartData = this.getOtmChartData(dataWithMay)
             this.chemistryData = this.getChemistryData(dataWithMay)
+            if (this.chemistryData.length != 0) {
+                this.chemistryDataFactSumm= _.reduce(
+                    this.chemistryData,
+                    function (memo, item) {
+                        return memo + item.fact;
+                    },
+                    0
+                );
+            }
             this.chemistryChartData = this.getChemistryChartData(dataWithMay)
 
             var dzo2 = [];
@@ -404,7 +420,7 @@ export default {
                 planDay.push(p);
             });
 
-            this.getProductionPercentWells(data);
+            this.updateWellsWidgetPercentData(data);
 
 
             var dzoMonth = [];
@@ -573,20 +589,19 @@ export default {
             let tmpArrayToSort = [
                 'АО "Озенмунайгаз"',
                 'АО "Эмбамунайгаз"',
-                'АО "Каражанбасмунай"',
-                'ТОО "Казгермунай"',
-                'АО ПетроКазахстан Инк',
-                'АО ПетроКазахстан Кумколь Ресорсиз',
-                '"ПетроКазахстан Инк."',
-                'АО "Тургай-Петролеум"',
-                '"Амангельды Газ"',
-                "ТОО «Тенгизшевройл»",
                 'АО "Мангистаумунайгаз"',
-                'ТОО "Казахойл Актобе"',
+                'АО "Каражанбасмунай"',
+                'ТОО "СП "Казгермунай"',
                 'ТОО "Казахтуркмунай"',
-                "«Карачаганак Петролеум Оперейтинг б.в.»",
-                "«Норт Каспиан Оперейтинг Компани н.в.»",
-                'Урихтау Оперейтинг',
+                'ТОО "Казахойл Актобе"',
+                'ТОО "Урихтау Оперейтинг"',
+                'ТОО "Тенгизшевройл"',
+                '"Норт Каспиан Оперейтинг Компани н.в."',
+                '"Карачаганак Петролеум Оперейтинг б.в."',
+                'АО "ПетроКазахстан Кумколь Ресорсиз"',
+                'АО "ПетроКазахстан Инк."',
+                'АО "Тургай-Петролеум"',
+                'ТОО "Амангельды Газ"',
             ]
 
             bigTable = _.orderBy(
@@ -684,7 +699,8 @@ export default {
         dates,
         oilProductionFilters,
         mainTableChart,
-        secondaryParams
+        secondaryParams,
+        consolidateOilCondensate
     ],
     async mounted() {
         this.getOpecDataForYear();
@@ -716,7 +732,6 @@ export default {
         this.updatePrices(this.period);
         this.dzoMonthlyPlans = await this.getDzoMonthlyPlans();
 
-        this.changeAssets('isAllAssets');
         this.dzoCompaniesAssets = _.cloneDeep(this.dzoCompaniesAssetsInitial);
         this.sortDzoList();
         this.changeDate();
@@ -733,6 +748,10 @@ export default {
     watch: {
         bigTable: function () {
             this.dzoCompanySummary = this.bigTable;
+            if (this.oilCondensateProductionButton.length > 0) {
+                this.productionParamsWidget.yesterdayOldFact = this.productionPercentParams['oil_fact'];
+                this.dzoCompanySummary = this.getConsolidatedOilCondensate();
+            }
             this.calculateDzoCompaniesSummary();
         },
         tables: function() {

@@ -12,6 +12,24 @@ Route::group(
                 Route::get('/report_constructor', 'bd\DBController@report_constructor')->name('report_constructor');
                 Route::get('/user_reports', 'bd\DBController@userReports')->name('userReports');
 
+                Route::get('file-status/list', 'Refs\bigdata\las\FileStatusController@list')->name('file-status.list');
+                Route::resource('/file-status', 'Refs\bigdata\las\FileStatusController');
+
+                Route::get('file-type/list', 'Refs\bigdata\las\FileTypeController@list')->name('file-type.list');
+                Route::resource('/file-type', 'Refs\bigdata\las\FileTypeController');
+
+                Route::get('recording-method/list', 'Refs\bigdata\las\RecordingMethodController@list')->name('recording-method.list');
+                Route::resource('/recording-method', 'Refs\bigdata\las\RecordingMethodController');
+
+                Route::get('recording-state/list', 'Refs\bigdata\las\RecordingStateController@list')->name('recording-state.list');
+                Route::resource('/recording-state', 'Refs\bigdata\las\RecordingStateController');
+
+                Route::get('stem-section/list', 'Refs\bigdata\las\StemSectionController@list')->name('stem-section.list');
+                Route::resource('/stem-section', 'Refs\bigdata\las\StemSectionController');
+
+                Route::get('/stem-type/list', 'Refs\bigdata\las\StemTypeController@list')->name('stem-type.list');
+                Route::resource('/stem-type', 'Refs\bigdata\las\StemTypeController');
+
                 Route::get('/geo-data-reference-book', 'bd\DBController@geoDataReferenceBook')->name('bigdata.geoDataReferenceBook');
 
                 Route::get('/reports', 'bd\DBController@reports')->name('bigdata.reports');
@@ -58,11 +76,16 @@ Route::group(
                     'bigdata.form.save.field'
                 );
 
+                Route::post('forms/{form}/calc-fields', 'Api\DB\FormsController@calcFields');
+
                 Route::get('forms/{form}/results', 'Api\DB\FormsController@getResults');
                 Route::delete('forms/{form}/{row}', 'Api\DB\FormsController@delete');
 
                 Route::get('wells/search', 'Api\DB\WellsController@search');
                 Route::get('wells/{well}', 'Api\DB\WellsController@get');
+                Route::get('wells/{well}/wellInfo', 'Api\DB\WellsController@wellInfo');
+
+                Route::get('tech/wells', 'Api\DB\TechController@getWellsById');
             }
         );
     }

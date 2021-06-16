@@ -8,7 +8,9 @@ class SubholdingCompany extends Model
 {
     protected $fillable = [
         'num',
-        'name'
+        'name',
+        'parent_id',
+        'level'
     ];
 
     protected $table = 'subholding_companies';

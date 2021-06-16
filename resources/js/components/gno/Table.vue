@@ -1,12 +1,29 @@
 <template>
   <div class="gno-page-wrapper">
-    <div>
+     <div v-if="serviceOffline">
+        <img :src="404"/>
+      </div>
+    <div v-else>
       <div class="row gno-page-container">
         <div class="second-column col-lg-3 order-md-2">
           <div class="col-md-12 second-column-container">
             <!-- Выбор скважины start -->
             <div class="tables-string-gno col-12">
-              <div class="choosing-well-title col-12">{{trans('pgno.choose_well')}}</div>
+              <div class="choosing-well-title col-9">{{trans('pgno.choose_well')}}</div>
+              <div v-bind:title="trans('pgno.refresh')" class="choosing-well-edit col-1" @click="getWellNumber(wellNumber)" style="cursor: pointer;">
+              <svg class="gear-icon-svg" width="23" height="23" viewBox="0 0 66 57" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M63 28.2631L53.5968 37.6662C53.5578 37.7053 53.4945 37.7053 53.4554 37.6662L44.0522 28.2631" stroke="white" stroke-width="3" stroke-linecap="round"/>
+                <path d="M28.2637 53.5273C14.3109 53.5273 3 42.2164 3 28.2637C3 14.3109 14.3109 3 28.2637 3C42.2164 3 53.5273 14.3109 53.5273 28.2637V34.5796" stroke="white" stroke-width="3" stroke-linecap="round"/>
+              </svg>
+              </div>
+              <div v-bind:title="trans('pgno.edit')" v-if="isPermission" class="choosing-well-edit col-1" @click="editPage" style="cursor: pointer;">
+                <svg width="23" height="23" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" >
+                  <path d="M3 11.5L1.55336 16.3221C1.53048 16.3984 1.6016 16.4695 1.67788 16.4466L6.5 15M3 11.5C3 11.5 11.0603 3.43942 12.7227 1.7772C12.8789 1.62104 13.1257 1.62572 13.2819 1.78189C13.8372 2.33714 15.1144 3.61434 16.2171 4.71709C16.3733 4.87334 16.3788 5.12115 16.2226 5.27738C14.5597 6.94002 6.5 15 6.5 15M3 11.5L3.64727 10.8527L7.14727 14.3527L6.5 15" 
+                    stroke="white"
+                    stroke-width="1.4"/>
+                </svg>
+              </div>
+              
               <div class="choosing-well-data  col-7">{{trans('pgno.mestorozhdenie')}}</div>
               <div class="choosing-well-data table-border-gno cell4-gno-second  col-5">
                 <select class="select-gno2" v-model="field">
@@ -31,18 +48,22 @@
               </div>
 
               <div class="choosing-well-data table-border-gno-top  col-7">{{trans('pgno.horizon')}}</div>
-              <div class="choosing-well-data table-border-gno table-border-gno-top cell4-gno-second  col-5">
+              <div class="choosing-well-data table-border-gno table-border-gno-top cell4-gno-second  col-5" v-if="!isEditing">
                 {{ horizon }}
               </div>
-
+              <select v-if="isEditing && isPermission" class="devices-data table-border-gno cell4-gno-second no-gutter col-5 select_editing" v-model="horizon">
+                <option v-for="hor in this.horizons" :value="hor.hor_value" :key="hor.id">
+                  {{hor.hor_name}}
+                </option>
+              </select>
               <div class="choosing-well-data table-border-gno-top  col-7">
                 {{trans('pgno.method_of_operation')}}
               </div>
-              <div class="choosing-well-data table-border-gno table-border-gno-top cell4-gno-second  col-5">
-
+              <div v-if="!isEditing" class="choosing-well-data table-border-gno table-border-gno-top cell4-gno-second  col-5">
                 {{ expMeth }}
-
               </div>
+              <input v-if="isEditing && isPermission" v-model="expMeth" class="choosing-well-data table-border-gno table-border-gno-top cell4-gno-second  col-5 square_editing" 
+                type="text" @change="changeValue('exp_meth', expMeth)"/>
 
               <div class="choosing-well-data table-border-gno-top  col-7">
                 {{ tseh }}
@@ -66,37 +87,53 @@
             <div class="tables-string-gno1-1">
               <div class="construction no-gutter col-12"><b>{{trans('pgno.construction')}}</b></div>
               <div class="construction-data no-gutter col-7">{{trans('pgno.naruznii_diametr_ex_col')}}</div>
-              <div class="construction-data table-border-gno cell4-gno-second no-gutter col-5">
+              <div v-if="!isEditing"  class="construction-data table-border-gno cell4-gno-second no-gutter col-5">
                 {{ casOD }} {{trans('measurements.mm')}}
               </div>
+              <input v-if="isEditing && isPermission" v-model="casOD" class="construction-data table-border-gno cell4-gno-second no-gutter col-5 square_editing" 
+                type="text" @change="changeValue('cas_OD', casOD)"/>
 
               <div class="construction-data table-border-gno-top no-gutter col-7">
                 {{trans('pgno.vnutrenii_diametr_ex_col')}}
               </div>
-              <div class="construction-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
+              <div v-if="!isEditing" class="construction-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
                 {{ casID }} {{trans('measurements.mm')}}
               </div>
+              <input v-if="isEditing && isPermission" v-model="casID" class="construction-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5 square_editing" 
+                type="text" @change="changeValue('cas_ID', casID)"/>
 
-              <div class="construction-data table-border-gno-top no-gutter col-7">
+              <div class="construction-data hperf table-border-gno-top no-gutter col-7">
                 {{trans('pgno.glubina_perf')}}
+                <template>
+                  <div v-if="!isIntervals"></div>
+                  <div class="descr" v-else>
+                    {{trans('pgno.interval_perf')}}: <b v-for="item in hPerfRangeInfo">{{ item }}</b>
+                  </div>
+                </template> 
               </div>
-              <div class="construction-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
+              <div v-if="!isEditing" class="construction-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
                 {{ hPerf }} {{trans('measurements.m')}}
               </div>
+              <input v-if="isEditing && isPermission" v-model="hPerf" class="construction-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5 square_editing" 
+                type="text" @change="changeValue('h_perf', hPerf)"/>
 
               <div class="construction-data table-border-gno-top no-gutter col-7">
                 {{trans('pgno.udlinenie_perf')}}
               </div>
-              <div class="construction-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
+              <div v-if="!isEditing" class="construction-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
                 {{ udl }} {{trans('measurements.m')}}
               </div>
+              <input v-if="isEditing && isPermission" v-model="udl" class="construction-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5 square_editing" 
+                type="text" @change="changeValue('udl', udl)"/>
 
               <div class="construction-data table-border-gno-top no-gutter col-7">
                 {{trans('pgno.tekushii_zaboi')}}
               </div>
-              <div class="construction-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
+              <div v-if="!isEditing" class="construction-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
                 {{ curr }} {{trans('measurements.m')}}
               </div>
+              <input v-if="isEditing && isPermission" v-model="curr" class="construction-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5 square_editing" 
+                type="text" @change="changeValue('curr_bh', curr)"/>
             </div>
             <!-- Конструкция end -->
 
@@ -134,55 +171,74 @@
                   <div class="devices-data no-gutter col-7">
                     {{trans('pgno.stanok_kachalka')}}
                   </div>
-                  <div class="devices-data table-border-gno cell4-gno-second no-gutter col-5">
+                  <div v-if="!isEditing" class="devices-data table-border-gno cell4-gno-second no-gutter col-5">
                     {{ sk }}
                   </div>
+                  <select v-if="isEditing && isPermission" class="devices-data table-border-gno cell4-gno-second no-gutter col-5 select_editing" v-model="sk" @change="isSkError = false">
+                    <option v-for="sk in this.skTypes" :value="sk.sk_value" :key="sk.id">
+                      {{sk.sk_name}}
+                    </option>
+                  </select>
 
                   <div class="hide-block"  v-show="!hasStrokeLength">
                     <div class="devices-data table-border-gno-top no-gutter col-7">
-                    {{trans('pgno.dlina_hoda')}}
-                  </div>
-                  <div class="devices-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
-                    {{strokeLenDev}} {{trans('measurements.m')}}
-                  </div>
+                      {{trans('pgno.dlina_hoda')}}
+                    </div>
+                    <div v-if="!isEditing" class="devices-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
+                      {{strokeLenDev}} {{trans('measurements.m')}}
+                    </div>
+                    <input v-if="isEditing && isPermission" v-model="strokeLenDev" class="devices-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5 square_editing" 
+                    type="text" @change="changeValue('stroke_len', strokeLenDev)"/>
                   </div>
 
                   <div v-if="expChoose">
                     <div v-if="expChoose ? 'ШГН' : 'ЭЦН' && 'УЭЦН'"></div>
-                    <div class="devices-data table-border-gno-top no-gutter col-7">
-                    {{ freq }}
-                  </div>
-                  <div class="devices-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
-                    {{spmDev}} 
-                  </div>
+                      <div class="devices-data table-border-gno-top no-gutter col-7">
+                        {{ freq }}
+                      </div>
+                      <div v-if="!isEditing" class="devices-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
+                        {{spmDev}} 
+                      </div>
+                      <input v-if="isEditing && isPermission" v-model="spmDev" class="devices-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5 square_editing" 
+                        type="text" @change="changeValue('spm', spmDev)"/>
 
-                  <div class="devices-data table-border-gno-top no-gutter col-7">
-                    {{ dNasosa }}
-                  </div>
-                  <div class="devices-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
-                    {{ pumpType }}
-                  </div>
+                      <div class="devices-data table-border-gno-top no-gutter col-7">
+                        {{ dNasosa }}
+                      </div>
+                      <div v-if="!isEditing" class="devices-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
+                        {{ pumpType }}
+                      </div>
+                      <input v-if="isEditing && isPermission" v-model="pumpType" class="devices-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5 square_editing" 
+                        type="text" @change="changeValue('pump_type', pumpType)"/>
                   </div>
                   
                   <div class="devices-data table-border-gno-top no-gutter col-7">
                     {{trans('pgno.h_spuska')}}
                   </div>
-                  <div class="devices-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
+                  <div v-if="!isEditing" class="devices-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
                     {{ hPumpSet }} {{trans('measurements.m')}}
                   </div>
+                  <input v-if="isEditing && isPermission" v-model="hPumpSet" class="devices-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5 square_editing" 
+                    type="text" @change="changeValue('h_pump_set', hPumpSet)"/>
 
                   <div class="devices-data table-border-gno-top no-gutter col-7">
                     {{trans('pgno.naruzhnii_nkt')}}
                   </div>
-                  <div class="devices-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
+                  <div v-if="!isEditing" class="devices-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
                     {{ tubOD }} {{trans('measurements.mm')}}
                   </div>
+                  <input v-if="isEditing && isPermission" v-model="tubOD" class="devices-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5 square_editing" 
+                    type="text" @change="changeValue('tub_OD', tubOD)"/>
+
                   <div class="devices-data table-border-gno-top no-gutter col-7">
                     {{trans('pgno.vnutrenii_nkt')}}
                   </div>
-                  <div class="devices-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
+                  <div v-if="!isEditing" class="devices-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
                     {{ tubID }} {{trans('measurements.mm')}}
                   </div>
+                  <input v-if="isEditing && isPermission" v-model="tubID" class="devices-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5 square_editing" 
+                    type="text" @change="changeValue('tub_ID', tubID)"/>
+
                   <div class="devices-data table-border-gno-top no-gutter col-7">
                     {{trans('pgno.data_zapuska')}}
                   </div>
@@ -223,46 +279,61 @@
 
                 <div class="right-block-details" v-show="activeRightTabName === 'pvt'">
                   <div class="pvt-data no-gutter col-7">{{trans('pgno.p_nas')}}</div>
-                  <div class="pvt-data table-border-gno cell4-gno-second no-gutter col-5">
+                  <div v-if="!isEditing" class="pvt-data table-border-gno cell4-gno-second no-gutter col-5">
                     {{ PBubblePoint }} {{trans('measurements.atm')}}
                   </div>
+                  <input v-if="isEditing && isPermission" v-model="PBubblePoint" class="pvt-data table-border-gno cell4-gno-second no-gutter col-5 square_editing" 
+                    type="text" @change="changeValue('P_bubble_point', PBubblePoint)"/>
 
                   <div class="pvt-data table-border-gno-top no-gutter col-7">{{trans('pgno.gf')}}</div>
-                  <div class="pvt-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
+                  <div v-if="!isEditing" class="pvt-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
                     {{ gor }} {{trans('measurements.m3/t')}}
                   </div>
+                  <input v-if="isEditing && isPermission" v-model="gor" class="pvt-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5 square_editing" 
+                    type="text" @change="changeValue('gor', gor)"/>
 
                   <div class="pvt-data table-border-gno-top no-gutter col-7">{{trans('pgno.t_pl')}}</div>
-                  <div class="pvt-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
+                  <div v-if="!isEditing" class="pvt-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
                     {{ tRes }} {{trans('measurements.celsius')}}
                   </div>
+                  <input v-if="isEditing && isPermission" v-model="tRes" class="pvt-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5 square_editing" 
+                    type="text" @change="changeValue('t_res', tRes)"/>
 
                   <div class="pvt-data table-border-gno-top no-gutter col-7">
                     {{trans('pgno.vyazkost_nefti')}}
                   </div>
-                  <div class="pvt-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
+                  <div v-if="!isEditing" class="pvt-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
                     {{ viscOilRc }} {{trans('measurements.spz')}}
                   </div>
+                  <input v-if="isEditing && isPermission" v-model="viscOilRc" class="pvt-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5 square_editing" 
+                    type="text" @change="changeValue('visc_oil_rc', viscOilRc)"/>
 
                   <div class="pvt-data table-border-gno-top no-gutter col-7">
                     {{trans('pgno.vyazkost_vody')}}
                   </div>
-                  <div class="pvt-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
+                  <div v-if="!isEditing" class="pvt-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
                     {{ viscWaterRc }} {{trans('measurements.spz')}}
                   </div>
+                  <input v-if="isEditing && isPermission" v-model="viscWaterRc" class="pvt-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5 square_editing" 
+                    type="text" @change="changeValue('visc_wat_rc', viscWaterRc)"/>
 
                   <div class="pvt-data table-border-gno-top no-gutter col-7">
                     {{trans('pgno.plotnost_nefti')}}
                   </div>
-                  <div class="pvt-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
+                  <div v-if="!isEditing" class="pvt-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
                     {{ densOil }} {{trans('measurements.g/sm3')}}
                   </div>
+                  <input v-if="isEditing && isPermission" v-model="densOil" class="pvt-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5 square_editing" 
+                    type="text" @change="changeValue('dens_oil', densOil)"/>
+                    
                   <div class="pvt-data table-border-gno-top no-gutter col-7">
                     {{trans('pgno.plotnost_vody')}}
                   </div>
-                  <div class="pvt-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
+                  <div v-if="!isEditing" class="pvt-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
                     {{ densWater }} {{trans('measurements.g/sm3')}}
                   </div>
+                  <input v-if="isEditing && isPermission" v-model="densWater" class="pvt-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5 square_editing" 
+                    type="text" @change="changeValue('dens_liq', densWater)"/>
                 </div>
               </div>
             </div>
@@ -311,14 +382,17 @@
                   <div class="tech-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
                     {{ hDyn }} {{trans('measurements.m')}}
                   </div>
+
                   <div class="tech-data table-border-gno-top no-gutter col-7">{{trans('pgno.p_zat')}}</div>
                   <div class="tech-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
                     {{ pAnnular }} {{trans('measurements.atm')}}
                   </div>
+
                   <div class="tech-data table-border-gno-top no-gutter col-7">{{trans('pgno.p_buf')}}</div>
                   <div class="tech-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
                     {{ whp }} {{trans('measurements.atm')}}
                   </div>
+
                   <div class="tech-data table-border-gno-top no-gutter col-7">{{trans('pgno.p_lin')}}</div>
                   <div class="tech-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
                     {{ lineP }} {{trans('measurements.atm')}}
@@ -332,7 +406,7 @@
         <div class="no-gutter col-lg-9 order-md-1 first-column container-fluid no-gutter">
           <div class="no-gutter col-md-12 first-column-curve-block">
             <div class="background">
-              <modal class="modal-bign-wrapper" name="modalIncl" :draggable="false" :width="1300" :height="700"
+              <modal class="modal-bign-wrapper" name="modalIncl" draggable=".modal-bign-header" :width="1300" :height="700"
                 style="background: transparent;" :adaptive="true">
                 <div class="modal-bign modal-bign-container">
                   <div class="modal-bign-header">
@@ -350,19 +424,19 @@
                 </div>
               </modal>
 
-               <modal class="modal-bign-wrapper" name="modalSeparation" :draggable="false" :width="1000" :height="500"
+               <modal class="modal-bign-wrapper" name="modalTabs" :draggable="true" :width="1000" :height="830"
                 style="background: transparent;" :adaptive="true">
                 <div class="modal-bign modal-bign-container">
                   <div class="modal-bign-header">
-                    <div class="modal-bign-title"></div>
+                    <div class="modal-bign-title">Настройки</div>
 
-                    <button type="button" class="modal-bign-button" @click="closeModal('modalSeparation')">
+                    <button type="button" class="modal-bign-button" @click="closeModal('modalTabs')">
                       {{trans('pgno.zakrit')}}
                     </button>
                   </div>
 
                   <div class="Table" align="center" x:publishsource="Excel">
-                    <tabs></tabs>
+                    <tabs @onPushParams="onSubmitParams()" @closeTabModal="closeTabModal"></tabs>
                   </div>
                 </div>
               </modal>
@@ -410,7 +484,6 @@
                     </div>
                   </div>
                 </div>
-
                     <button type="button" class="modal-bign-button" @click="closeModal('modalOldWell')">
                      {{trans('pgno.zakrit')}}
                     </button>
@@ -447,6 +520,11 @@
                         <input v-model="isAnalysisBoxValue5" class="checkbox-modal-analysis-menu" @change="postAnalysisOld()"
                           type="checkbox" />
                         <label for="checkbox1" class="checkbox-modal-analysis-menu-label">{{trans('pgno.obv_obv_acma')}}</label>
+                      </div>
+                      <div class="form-check">
+                        <input v-model="isAnalysisBoxValue9" class="checkbox-modal-analysis-menu" @change="postAnalysisOld()"
+                          type="checkbox" />
+                        <label for="checkbox1" class="checkbox-modal-analysis-menu-label">{{trans('pgno.gor_gor_acma')}}</label>
                       </div>
                       <button type="button" class="old_well_button" @click="setGraphOld()">
                         {{trans('pgno.primenit_korrektirovki')}}
@@ -505,7 +583,7 @@
                         <label for="checkbox1" class="new-checkbox-modal-analysis-menu-label">{{trans('pgno.k_pr_k_po_okr')}}</label>
                       </div>
                       <div class="form-check-new">
-                        <label for="checkbox1" class="new-checkbox-modal-analysis-menu-label">{{trans('obv_po_okr')}}</label>
+                        <label for="checkbox1" class="new-checkbox-modal-analysis-menu-label">{{trans('pgno.obv_po_okr')}}</label>
                         <label for="checkbox1">{{ wctOkr }}%</label>
                       </div>
                       <div class="form-check-new">
@@ -517,6 +595,11 @@
                         <input v-model="hasGrp" class="new-checkbox-modal-analysis-menu" @change="postAnalysisNew()"
                           type="checkbox" />
                         <label for="checkbox1" class="new-checkbox-modal-analysis-menu-label">{{trans('pgno.s_grp')}}</label>
+                      </div>
+                      <div class="form-check-new">
+                        {{trans('pgno.near_dist')}}
+                        <input v-model="nearDist" class="new-checkbox-modal-analysis-menu square3 square-dist" @change="postAnalysisNew()"
+                          type="text" />
                       </div>
                       <div class="icon-for-table" @click="onOpenTable()">
                         <svg width="31" height="35" viewBox="0 0 31 35" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -668,7 +751,16 @@
                   <div class="modal-bign-header with-padding">
                     <div class="modal-bign-title">
                        {{trans('pgno.informacia')}}
+                        <button class="download-curve-button economic-table" @click="downloadEconomicExcel()" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M4.16699 11.1538V14.5C4.16699 14.7761 4.39085 15 4.66699 15H15.667C15.9431 15 16.167 14.7761 16.167 14.5V11.1538" stroke="white" stroke-linecap="round"/>
+                          <path d="M10.1667 5V11.1539" stroke="white" stroke-linecap="round"/>
+                          <path d="M7.5957 9.61572L10.1671 11.9234L12.7386 9.61572" stroke="white" stroke-linecap="round"/>
+                          </svg>
+                          {{trans('pgno.download')}}
+                        </button>
                     </div>
+                    
 
                     <button type="button" class="modal-bign-button" @click="closeEconomicModal()">
                       {{trans('pgno.zakrit')}}
@@ -1033,12 +1125,12 @@
                             <td>{{trans('pgno.npv')}}</td>
                             <td>
                               {{
-                              Math.round(expAnalysisData.npvTable1.npv / 1000000)
+                              (expAnalysisData.npvTable1.npv / 1000000).toFixed(2)
                             }}
                             </td>
                             <td>
                               {{
-                              Math.round(expAnalysisData.npvTable2.npv / 1000000)
+                              (expAnalysisData.npvTable2.npv  / 1000000).toFixed(2)
                             }}
                             </td>
                           </tr>
@@ -1154,7 +1246,7 @@
                             </tr>
                             <tr>
                               <td class="td-pgno" rowspan="1">{{trans('pgno.q_nefti')}}</td>
-                              <td class="td-pgno" rowspan="1">{{ qOil }} {{trans('measurements.t/d')}}</td>
+                              <td class="td-pgno" rowspan="1">{{ qoilShgnTable }} {{trans('measurements.t/d')}}</td>
                             </tr>
                             <tr>
                               <td class="td-pgno" rowspan="1">{{trans('pgno.obvodnenost')}}</td>
@@ -1167,7 +1259,7 @@
                               </td>
                             </tr>
                             <tr>
-                              <td class="td-pgno" rowspan="1">{{trans('p_pr')}}</td>
+                              <td class="td-pgno" rowspan="1">{{trans('pgno.p_pr')}}</td>
                               <td class="td-pgno" rowspan="1">{{ piCelValue }}</td>
                             </tr>
                           </tbody>
@@ -1490,7 +1582,7 @@
                               <div class="table-border-gno col-2">
                                 <label class="label-for-celevoi">{{trans('pgno.p_buf')}}</label>
                                 <input type="text" v-model="pBuf" onfocus="this.value=''" 
-                                  class="input-box-gno podbor" :disabled="expChoose != 'ФОН'"/>
+                                  class="input-box-gno podbor"/>
                               </div>
 
                               <div class="col-2">
@@ -1509,7 +1601,7 @@
                               </div>
 
                               <div class="gear-icon" @click="onChangeParams()">
-                                <svg id="gear-icon" width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <svg class="gear-icon-svg" width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path fill-rule="evenodd" clip-rule="evenodd" d="M17.4556 7.37945L15.7922 6.82498C15.6712 6.45197 15.52 6.08401 15.3436 5.73621L16.1249 4.16858C16.1753 4.06273 16.2055 3.95183 16.2055 3.8359C16.2055 3.63932 16.1249 3.44777 15.9838 3.30664L14.6934 2.01624C14.5522 1.87511 14.3607 1.79446 14.1641 1.79446C14.0482 1.79446 13.9373 1.8247 13.8314 1.87511L12.2638 2.62111C11.916 2.43965 11.548 2.28843 11.175 2.1725L10.6206 0.509101C10.5197 0.201625 10.2375 0 9.91487 0C9.89975 0 9.88967 0 9.87455 0H8.09017C7.76757 0 7.4853 0.201624 7.37945 0.504061L6.83002 2.1725C6.45197 2.28843 6.08905 2.43965 5.73621 2.62111L4.16858 1.87511C4.06777 1.8247 3.95183 1.79446 3.84094 1.79446C3.63932 1.79446 3.45281 1.87511 3.31168 2.01624L2.01624 3.30664C1.88015 3.44777 1.7995 3.63932 1.7995 3.8359C1.7995 3.95183 1.8247 4.06273 1.87511 4.16858L2.62616 5.73621C2.44469 6.08401 2.29348 6.45197 2.17754 6.82498L0.509101 7.37945C0.206665 7.48026 0 7.76253 0 8.08513V9.90983C0 9.91991 0 9.93503 0 9.95015C0 10.2677 0.206665 10.555 0.509101 10.6558L2.17754 11.2103C2.29348 11.5833 2.44469 11.9513 2.62111 12.2991L1.87511 13.8667C1.8247 13.9726 1.7995 14.0835 1.7995 14.1994C1.7995 14.396 1.88015 14.5875 2.01624 14.7286L3.31168 16.019C3.45281 16.1602 3.63932 16.2358 3.84094 16.2358C3.95183 16.2358 4.06777 16.2106 4.16858 16.1602L5.73621 15.3738C6.08905 15.5553 6.45197 15.7065 6.83002 15.8225L7.37945 17.4909C7.4853 17.7933 7.76757 18 8.09017 18H9.91487C9.92495 18 9.94007 18 9.95015 18C10.2728 18 10.555 17.7933 10.6609 17.4909L11.2103 15.8225C11.5884 15.7065 11.9513 15.5553 12.3041 15.3789L13.8717 16.1602C13.9726 16.2106 14.0885 16.2358 14.1994 16.2358C14.401 16.2358 14.5875 16.1602 14.7286 16.019L16.0241 14.7286C16.1602 14.5875 16.2408 14.396 16.2408 14.1994C16.2408 14.0835 16.2156 13.9726 16.1652 13.8667L15.3789 12.2991C15.5603 11.9513 15.7116 11.5833 15.8275 11.2103L17.4909 10.6558C17.7984 10.555 18 10.2677 18 9.95015C18 9.93503 18 9.91991 18 9.90983V8.08513C17.995 7.75749 17.7732 7.46514 17.4556 7.37945ZM9.00252 12.7326C6.94091 12.7326 5.26743 11.0591 5.26743 8.99748C5.26743 6.93587 6.94091 5.26239 9.00252 5.26239C11.0641 5.26239 12.7376 6.93587 12.7376 8.99748C12.7376 11.0591 11.0641 12.7326 9.00252 12.7326Z" fill="white"/>
                                 </svg>
                               </div>
@@ -1545,7 +1637,7 @@
                               <div class="col-8 table-border-gno">
                                 <input checked="true" @change="postCurveData()" :disabled="sep_meth ==='input_value' || expChoose === 'ФОН'" 
                               type="checkbox" v-model="mech_sep">{{trans('pgno.separation_mech')}}
-                              <input v-model="mech_sep_value" type="text" style="margin-left: 3px; margin-bottom: 0px;" 
+                              <input v-model="mech_sep_value" @change="postCurveData()" type="text" style="margin-left: 3px; margin-bottom: 0px;" 
                               :disabled="sep_meth ==='input_value' || expChoose === 'ФОН' ||  mech_sep === false" onfocus="this.value=''" class="input-box-gno podbor" /></div>
                             </div>
                               
@@ -1569,7 +1661,7 @@
                                 <div class="table-border-gno-right pdo-bottom-cell">
                                   <label class="label-for-celevoi">
                                     <input v-model="CelButton" class="checkbox3" value="ql" type="radio"
-                                      name="gno11" />{{trans('pgno.q_nefti')}}</label>
+                                      name="gno11" />{{trans('pgno.q_liq')}}</label>
                                   <input v-model="qlCelValue" @change="postCurveData()" :disabled="CelButton != 'ql'"
                                     onfocus="this.value=''" type="text" class="square3 podbor" />
                                 </div>
@@ -1978,17 +2070,93 @@
 <script src="./Table.js"></script>
 
 <style scoped>
+.modal-bign {
+  max-height: 830px;
+}
+
+.descr{
+    font-size: 12px;
+    display: none;
+    position:absolute;
+    top: -85px;
+    left: 140px;
+    width: 190px;
+    padding-left: 3px;
+    background:#494aa5;
+    border-radius: 4px;
+    height: auto;
+    top: -85px;
+    z-index:9999;
+    box-shadow: 0 0 5px black ;
+}
+
+.hperf:hover .descr{
+    font-size: 12px;
+    display: block;
+    position:absolute;
+    top: -85px;
+    left: 140px;
+    width: 190px;
+    padding-left: 3px;
+    background:#494aa5;
+    border-radius: 4px;
+    height: auto;
+    top: -85px;
+    z-index:9999;
+    box-shadow: 0 0 5px black ;
+}
+
 .gear-icon {
   right: 12px;
   top: 35px;
   position: absolute;
 }
 
-@keyframes gear-icon {
-  50% { left: 0;}
-  90% { left: 300px;}
+.gear-icon-svg:hover {
+    content: '';
+    opacity: 100;
+    -webkit-animation: gear-icon-svg 3s infinite both;
+	        animation: gear-icon-svg 3s infinite both;
 }
-  
+
+
+.gear-icon-svg:hover {
+ 
+    content: '';
+    opacity: 100;
+    -webkit-animation: gear-icon-svg 3s infinite both;
+	        animation: gear-icon-svg 3s infinite both;
+}
+
+@-webkit-keyframes gear-icon-svg {
+  0% {
+    -webkit-transform: scale(1) rotateZ(0);
+            transform: scale(1) rotateZ(0);
+  }
+  50% {
+    -webkit-transform: scale(1) rotateZ(180deg);
+            transform: scale(1) rotateZ(180deg);
+  }
+  100% {
+    -webkit-transform: scale(1) rotateZ(360deg);
+            transform: scale(1) rotateZ(360deg);
+  }
+}
+@keyframes gear-icon-svg {
+  0% {
+    -webkit-transform: scale(1) rotateZ(0);
+            transform: scale(1) rotateZ(0);
+  }
+  50% {
+    -webkit-transform: scale(1) rotateZ(180deg);
+            transform: scale(1) rotateZ(180deg);
+  }
+  100% {
+    -webkit-transform: scale(1) rotateZ(360deg);
+            transform: scale(1) rotateZ(360deg);
+  }
+}
+
 .checkbox-devices {
   width: 845px;
   height: 45px;
@@ -2024,7 +2192,7 @@
 }
 
 .long__box {
-  width: 60px;
+  width: 80px !important;
   padding-left: 0px !important;
 }
 
@@ -2061,6 +2229,11 @@ left: 20px;
 top: 8px;
 }
 
+.economic-table {
+  left: 0px;
+  top: 0px;
+}
+
 .select-gno2 {
 outline: none;
 width: 95px;
@@ -2072,6 +2245,13 @@ box-sizing: border-box;
 -webkit-appearance: none;
 margin-top: -2px;
 margin-right: 1px;
+appearance: none;
+background: #494aa5 url("data:image/svg+xml;utf8,<svg viewBox='0 0 140 140' width='14' height='14' xmlns='http://www.w3.org/2000/svg'><g><path d='m121.3,34.6c-1.6-1.6-4.2-1.6-5.8,0l-51,51.1-51.1-51.1c-1.6-1.6-4.2-1.6-5.8,0-1.6,1.6-1.6,4.2 0,5.8l53.9,53.9c0.8,0.8 1.8,1.2 2.9,1.2 1,0 2.1-0.4 2.9-1.2l53.9-53.9c1.7-1.6 1.7-4.2 0.1-5.8z' fill='white'/></g></svg>") no-repeat;
+background-position: right 5px top 50%;
+}
+
+.select_editing {
+color: white;
 appearance: none;
 background: #494aa5 url("data:image/svg+xml;utf8,<svg viewBox='0 0 140 140' width='14' height='14' xmlns='http://www.w3.org/2000/svg'><g><path d='m121.3,34.6c-1.6-1.6-4.2-1.6-5.8,0l-51,51.1-51.1-51.1c-1.6-1.6-4.2-1.6-5.8,0-1.6,1.6-1.6,4.2 0,5.8l53.9,53.9c0.8,0.8 1.8,1.2 2.9,1.2 1,0 2.1-0.4 2.9-1.2l53.9-53.9c1.7-1.6 1.7-4.2 0.1-5.8z' fill='white'/></g></svg>") no-repeat;
 background-position: right 5px top 50%;
@@ -2151,5 +2331,9 @@ background-position: right 5px top 50%;
 
 .table-pgno-one {
   height: 200px;
+}
+
+.square-dist {
+  width: 25%
 }
 </style>

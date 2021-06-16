@@ -48,7 +48,7 @@
             v-on:input="$emit('input', $event.target.checked); $emit('change', $event.target.checked)"
         >
     </template>
-    <template v-else-if="item.type === 'dict'">
+    <template v-else-if="item.type === 'dict' && dict">
       <v-select
           :value="formatedValue"
           label="name"
@@ -108,6 +108,9 @@
     <template v-else-if="item.type === 'table'">
       <BigdataTableField :params="item" v-on:change="updateValue($event)"></BigdataTableField>
     </template>
+    <template v-else-if="item.type === 'calc'">
+      <label>{{ value }}</label>
+    </template>
     <div v-if="error" class="text-danger error" v-html="showError(error)"></div>
   </div>
 </template>
@@ -142,13 +145,9 @@ export default {
       dateFormat: {
         'date': {year: 'numeric', month: 'numeric', day: 'numeric'},
         'datetime': {year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric'}
-      }
+      },
+      dict: null
     }
-  },
-  computed: {
-    dict() {
-      return this.$store.getters['bd/dict'](this.item.dict);
-    },
   },
   watch: {
     value(newValue) {
@@ -157,8 +156,10 @@ export default {
   },
   created() {
     if (['dict', 'dict_tree'].indexOf(this.item.type) > -1) {
-      if (typeof this.dict === 'undefined') {
-        this.loadDict(this.item.dict)
+      if (this.dict === null) {
+        this.loadDict(this.item.dict).then(result => {
+          this.dict = result
+        })
       }
     }
 
@@ -182,6 +183,8 @@ export default {
     },
     getFormatedValue(value) {
       if (this.item.type === 'dict') {
+        if (this.dict === null) return {}
+
         let selected = this.dict.find(item => item.id === value) || {id: null, name: null}
         return {
           id: selected.id,
@@ -190,7 +193,7 @@ export default {
           text: selected.name
         }
       }
-      if (this.item.type === 'date') {
+      if (['date', 'datetime'].includes(this.item.type)) {
 
         return {
           text: value ? moment(value).format('YYYY-MM-DD HH:MM:SS') : null,
