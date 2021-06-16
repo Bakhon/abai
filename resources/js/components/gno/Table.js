@@ -1210,7 +1210,6 @@ export default {
                   timeout: 8000
                 }) 
             
-            this.setStoreValuesToZero()
             this.ngdu = 0
             this.sk = 0
 
