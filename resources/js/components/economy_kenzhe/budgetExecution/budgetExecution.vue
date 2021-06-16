@@ -215,7 +215,7 @@
             </div>
           </div>
         </div>
-        <div v-if="dzoData.length > 0">
+        <div v-if="dateStart">
           <h5 class="text-center mr-2">
             <strong>
               {{ trans("economics.executionForTheReportingPeriod") }}
@@ -236,7 +236,7 @@
         ></budget-execution-vertical-indicators>
       </div>
     </div>
-    <cat-loader />
+    <!--<cat-loader />-->
   </div>
 </template>
 <script src="./budgetExecution.js"></script>
