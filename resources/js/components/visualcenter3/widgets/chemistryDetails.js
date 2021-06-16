@@ -3,7 +3,6 @@ import moment from "moment";
 export default {
     data: function () {
         return {
-            isProductionDetailsActive: true,
             otmDetails: [],
             chemistryDetails: [],
             chemistryPeriodStartMonth: moment().format('MMMM YYYY'),

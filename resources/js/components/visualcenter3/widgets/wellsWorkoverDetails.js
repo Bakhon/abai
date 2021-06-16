@@ -3,9 +3,18 @@ import moment from "moment";
 export default {
     data: function () {
         return {
+            wellsWorkoverDetails: [],
             wellsWorkoverSelectedCompany: 'all',
             wellsWorkoverPeriodStartMonth: moment().format('MMMM YYYY'),
             wellsWorkoverPeriodEndMonth: moment().format('MMMM YYYY'),
+            wellsWorkoverMonthlyPeriod: 'button-tab-highlighted',
+            wellsWorkoverYearlyPeriod: '',
+            wellsWorkoverPeriod: '',
+            isWellsWorkoverPeriodSelected: false,
+            wellsWorkoverRange: {
+                'start': new Date(),
+                'end': new Date(),
+            },
             wellsWorkoverData: [
                 {
                     name: this.trans("visualcenter.otmPrsSkv"),
@@ -22,12 +31,27 @@ export default {
                     metricSystem: this.trans("visualcenter.otmMetricSystemMeter"),
                 },
             ],
+            wellsWorkoverPeriodMapping: {
+                wellsWorkoverMonthlyPeriod: {
+                    'periodStart': moment().format('MMMM YYYY'),
+                    'periodEnd': moment().format('MMMM YYYY'),
+                },
+                wellsWorkoverYearlyPeriod: {
+                    'periodStart': moment().startOf('year').format('MMMM YYYY'),
+                    'periodEnd': moment().format('MMMM YYYY'),
+                },
+                wellsWorkoverPeriod: {
+                    'periodStart': moment().format('MMMM YYYY'),
+                    'periodEnd': moment().format('MMMM YYYY'),
+                },
+            },
             wellsWorkoverSelectedRow: 'underground_workover',
             wellsWorkoverChartData: [],
+
         };
     },
     methods: {
-        async getOtmByMonth() {
+        async getWellsWorkoverByMonth() {
             let queryOptions = {
                 'startPeriod': moment(this.wellsWorkoverPeriodStartMonth,'MMMM YYYY').month(),
                 'endPeriod': moment(this.wellsWorkoverPeriodEndMonth,'MMMM YYYY').month()
@@ -35,17 +59,33 @@ export default {
             let uri = this.localeUrl("/get-otm-details");
             const response = await axios.get(uri,{params:queryOptions});
             if (response.status === 200) {
-                console.log('otm');
-                console.log(response.data)
                 return response.data;
             }
             return {};
         },
 
+        async switchWellsWorkoverPeriod(buttonType) {
+            this.wellsWorkoverMonthlyPeriod = "";
+            this.wellsWorkoverYearlyPeriod = "";
+            this.wellsWorkoverPeriod = "";
+            this[buttonType] = this.highlightedButton;
+            this.wellsWorkoverPeriodStartMonth = this.wellsWorkoverPeriodMapping[buttonType].periodStart;
+            this.wellsWorkoverPeriodEndMonth = this.wellsWorkoverPeriodMapping[buttonType].periodEnd;
+            this.isWellsWorkoverPeriodSelected = this.isWellsWorkoverFewMonthsSelected();
+            this.wellsWorkoverDetails = await this.getWellsWorkoverByMonth();
+            this.updateWellsWorkoverWidget();
+        },
+
+        iswellsWorkoverFewMonthsSelected() {
+            let startDate =  moment(this.wellsWorkoverPeriodStartMonth, 'MMMM YYYY');
+            let endDate = moment(this.wellsWorkoverPeriodEndMonth, 'MMMM YYYY');
+            return endDate.diff(startDate, 'months') > 0;
+        },
+
         updateWellsWorkoverWidget() {
-            let temporaryWellsWorkoverDetails = _.cloneDeep(this.otmDetails);
+            let temporaryWellsWorkoverDetails = _.cloneDeep(this.wellsWorkoverDetails);
             if (this.wellsWorkoverSelectedCompany !== 'all') {
-                temporaryOtmDetails = this.getChemistryFilteredByDzo(temporaryWellsWorkoverDetails,this.wellsWorkoverSelectedCompany);
+                temporaryWellsWorkoverDetails = this.getChemistryFilteredByDzo(temporaryWellsWorkoverDetails,this.wellsWorkoverSelectedCompany);
             }
             let self = this;
             _.forEach(temporaryWellsWorkoverDetails, function(item) {
@@ -56,22 +96,18 @@ export default {
                     item['undeground_workover_plan'] = self.dzoMonthlyPlans[planIndex].plan_otm_prs_skv_plan;
                 }
             });
-            console.log('36 temporaryWellsWorkoverDetails ')
-            console.log(temporaryWellsWorkoverDetails)
             this.updateWellsWorkoverWidgetTable(temporaryWellsWorkoverDetails);
             this.wellsWorkoverChartData = this.getWellsWorkoverWidgetChartData(temporaryWellsWorkoverDetails);
-            console.log('-otmChartData')
-            console.log(this.wellsWorkoverChartData)
         },
 
         updateWellsWorkoverWidgetTable(temporaryWellsWorkoverDetails) {
             let tableData = _(temporaryWellsWorkoverDetails)
                 .groupBy("data")
                 .map((item) => ({
-                    workover: _.sumBy(item, 'otm_well_workover_fact'),
-                    workover_plan: _.sumBy(item, 'workover_plan'),
-                    underground_workover: _.sumBy(item, 'otm_underground_workover'),
-                    underground_workover_plan: _.sumBy(item, 'undeground_workover_plan'),
+                    workover: _.round(_.sumBy(item, 'otm_well_workover_fact'), 0),
+                    workover_plan: _.round(_.sumBy(item, 'workover_plan'), 0),
+                    underground_workover: _.round(_.sumBy(item, 'otm_underground_workover'), 0),
+                    underground_workover_plan: _.round(_.sumBy(item, 'undeground_workover_plan'), 0),
                 })).value();
 
             this.otmWidgetData.krsWells = this.getWellsWorkoverFactSum(tableData,'workover');
@@ -88,6 +124,8 @@ export default {
                 });
                 totalFact += tableData[0][workoverType];
             }
+            console.log('-this.wellsWorkoverData')
+            console.log(this.wellsWorkoverData)
             return totalFact;
         },
 
@@ -99,8 +137,8 @@ export default {
             if (groupedForChart) {
                 for (let i in groupedForChart) {
                     chartData[i] = {
-                        workover: _.sumBy(groupedForChart[i], 'otm_well_workover_fact'),
-                        underground_workover: _.sumBy(groupedForChart[i], 'otm_underground_workover'),
+                        workover: _.round(_.sumBy(groupedForChart[i], 'otm_well_workover_fact'), 0),
+                        underground_workover: _.round(_.sumBy(groupedForChart[i], 'otm_underground_workover'), 0),
                     }
                 }
             }

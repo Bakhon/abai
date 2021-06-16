@@ -5,7 +5,6 @@ export default {
     data: function () {
         return {
             isProductionDetailsActive: true,
-            otmDetails: [],
             currentMonthDateStart: moment().subtract(2,'months').format('MMMM YYYY'),
             currentMonthDateEnd: moment().subtract(1,'months').format('MMMM YYYY'),
             selectedWidget: 'productionDetails'

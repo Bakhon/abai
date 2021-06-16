@@ -2530,10 +2530,8 @@
                       </div>
                       <div class="number">
                         {{ otmWidgetData.krsWells }}
-                      </div>
-                      <div class="unit-vc ml-2">
-                        {{ trans("visualcenter.skv") }}
-                      </div>
+                      </div><br>
+                      <div class="unit-vc ml-2">{{ trans("visualcenter.skv") }}</div>
                       <div class="in-idle2">
                         <span v-if="isOneDateSelected"> {{ previousPeriodEnd }}<br><br></span>
                         <span v-else> {{ previousPeriodStart }} - {{ previousPeriodEnd }}</span>
@@ -2552,7 +2550,7 @@
                       <div class="mt-1 float-right">
 
                       </div>
-                      <div class="number">{{ otmWidgetData.prsWells }}</div>
+                      <div class="number">{{ otmWidgetData.prsWells }}</div><br>
                       <div class="unit-vc ml-2">
                         {{ trans("visualcenter.skv") }}
                       </div>
