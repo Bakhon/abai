@@ -174,7 +174,7 @@
                   <div v-if="!isEditing" class="devices-data table-border-gno cell4-gno-second no-gutter col-5">
                     {{ sk }}
                   </div>
-                  <select v-if="isEditing && isPermission" class="devices-data table-border-gno cell4-gno-second no-gutter col-5 select_editing" v-model="sk">
+                  <select v-if="isEditing && isPermission" class="devices-data table-border-gno cell4-gno-second no-gutter col-5 select_editing" v-model="sk" @change="isSkError = false">
                     <option v-for="sk in this.skTypes" :value="sk.sk_value" :key="sk.id">
                       {{sk.sk_name}}
                     </option>
