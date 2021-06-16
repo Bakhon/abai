@@ -7,8 +7,6 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class MapHistoryResource extends JsonResource
 {
-    protected $modelName = 'omgca';
-
     /**
      * Transform the resource into an array.
      *
