@@ -33,14 +33,17 @@ class MapHistoryFilter extends BaseFilter
             case 'action':
                 $this->query->orderBy('description', $isDescending ? 'desc' : 'asc');
                 break;
+            case 'date':
+                $this->query->orderBy('created_at', $isDescending ? 'desc' : 'asc');
+                break;
             default:
                 $this->query->orderBy($field, $isDescending ? 'desc' : 'asc');
         }
     }
 
-    protected function filter_date($date)
+    protected function filter_date($dates)
     {
-        $this->query->where('created_at', 'LIKE', $date . '%');
+        $this->filterByDate($dates, 'created_at');
     }
 
     protected function filter_user($username)
