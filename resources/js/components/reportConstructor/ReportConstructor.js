@@ -1,9 +1,9 @@
-import download from "downloadjs";
-import moment from 'moment';
 import {Datetime} from 'vue-datetime';
+import {bTreeView} from "bootstrap-vue-treeview";
 import Vue from "vue";
 
 Vue.use(Datetime)
+Vue.use(bTreeView)
 
 export default {
     props: [
@@ -18,18 +18,24 @@ export default {
                 tech: null,
                 geo: null
             },
+            attributeDescriptions: null,
+            attributesForObject: null,
             currentStructureType: 'geo',
+            currentStructureId: null,
+            currentItemType: null,
             items: [],
             isLoading: false,
+            isDisplayParameterBuilder: false,
         }
     },
     mounted: function () {
         this.$nextTick(function () {
             this.$store.commit('globalloading/SET_LOADING', false);
         });
-        this.loadStructureTypes('geo');
-        this.loadStructureTypes('tech');
-        this.loadStructureTypes('org');
+        for (let structureType in this.structureTypes) {
+            this.loadStructureTypes(structureType);
+        }
+        this.loadAttributeDescriptions()
     },
     methods: {
         loadStructureTypes(type) {
@@ -53,10 +59,44 @@ export default {
             });
 
         },
-        loadItems(itemId) {
+        loadAttributeDescriptions() {
+            let uri = this.baseUrl + "get_object_attributes_descriptions/";
+            this.isLoading = true
+            this.axios.get(uri, {
+                responseType: 'json',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }).then((response) => {
+                this.attributeDescriptions = response.data
+            }).catch((error) => {
+                console.log(error)
+            }).finally(() => {
+                this.isLoading = false
+            });
+
+        },
+        loadAttributesForSelectedObject() {
+            let uri = this.baseUrl + "get_object_attributes/?structure_type="
+                + this.currentStructureType + "&structure_id=" + this.currentStructureId;
+            this.isLoading = true
+            this.axios.get(uri, {
+                responseType: 'json',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }).then((response) => {
+                this.attributesForObject = response.data
+            }).catch((error) => {
+                console.log(error)
+            }).finally(() => {
+                this.isLoading = false
+            });
+        },
+        loadItems(itemType) {
             let uri = this.baseUrl + "get_items/?"
                 + "structure_type=" + this.currentStructureType
-                + "&item_type=" + itemId;
+                + "&item_type=" + itemType;
             this.isLoading = true
             this.axios.get(uri, {
                 responseType: 'json',
@@ -69,15 +109,28 @@ export default {
                 } else {
                     console.log("No data");
                 }
-                this.isLoading = false;
             }).catch((error) => {
                 console.log(error)
+            }).finally(() => {
                 this.isLoading = false
             });
 
         },
-        debug2(msg) {
-            console.log(msg)
+        setCurrentStructureId(structureId) {
+            this.currentStructureId = structureId.toString()
+            this.loadAttributesForSelectedObject();
+        },
+        getAttributeDescription(descriptionField) {
+            let fieldParts = descriptionField.split(".")
+            if (fieldParts.length !== 3) {
+                return descriptionField
+            }
+            let table = fieldParts[0] + "." + fieldParts[1]
+            if (!(table in this.attributeDescriptions)) {
+                return descriptionField
+            }
+            let fieldName = fieldParts[2]
+            return this.attributeDescriptions[table][fieldName]
         }
     }
 }

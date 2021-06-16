@@ -3,7 +3,7 @@
     <div class="left-section bg-dark">
       <div class="col">
         <div class="row">
-          <div class="left-section-title" @click="currentStructureType='org'">
+          <div class="left-section-title" @click="currentStructureType = 'org'">
             <svg width="18" height="16" viewBox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path fill-rule="evenodd" clip-rule="evenodd" d="M6.05078 0.00301123H11.098V5.0498H6.05078V0.00301123Z"
                     fill="#868BB2"/>
@@ -18,7 +18,7 @@
             </svg>
             Оргструктура
           </div>
-          <div class="left-section-title" @click="currentStructureType='geo'">
+          <div class="left-section-title" @click="currentStructureType = 'geo'">
             <svg width="17" height="20" viewBox="0 0 17 20" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path fill-rule="evenodd" clip-rule="evenodd"
                     d="M8.26799 19.0107L0 13.1419L1.48826 12.0855L8.25891 16.8896L15.0387 12.0779L16.5361 13.1419L8.26799 19.0107ZM8.26799 15.4307L0 9.56193L1.48826 8.50553L8.25891 13.3097L15.0387 8.49723L16.5361 9.56193L8.26799 15.4307ZM8.26799 11.8508L1.49733 7.04655L0 5.98193L8.26799 0.113119L16.5361 5.98193L15.0292 7.04655L8.26799 11.8508Z"
@@ -26,8 +26,7 @@
             </svg>
             Геоструктура
           </div>
-
-          <div class="left-section-title" @click="currentStructureType='tech'">
+          <div class="left-section-title" @click="currentStructureType = 'tech'">
             <svg width="17" height="20" viewBox="0 0 17 20" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path fill-rule="evenodd" clip-rule="evenodd"
                     d="M8.26799 19.0107L0 13.1419L1.48826 12.0855L8.25891 16.8896L15.0387 12.0779L16.5361 13.1419L8.26799 19.0107ZM8.26799 15.4307L0 9.56193L1.48826 8.50553L8.25891 13.3097L15.0387 8.49723L16.5361 9.56193L8.26799 15.4307ZM8.26799 11.8508L1.49733 7.04655L0 5.98193L8.26799 0.113119L16.5361 5.98193L15.0292 7.04655L8.26799 11.8508Z"
@@ -49,8 +48,7 @@
                     d="M6.38408 10.6943H9.64355V9.06421H6.38408V10.6943ZM0.679688 0.91512V2.54525H15.3479V0.91512H0.679688ZM3.12422 6.61955H12.9034V4.98983H3.12422V6.61955Z"
                     fill="white"/>
             </svg>
-
-              <div class="dropdown">
+            <div class="dropdown">
               <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <div class="dropdown-inner-text">
@@ -60,9 +58,10 @@
               </button>
               <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 <ul>
-                  <li  @click.prevent="loadItems(structureType['id'])" v-for="structureType in structureTypes[currentStructureType]" class="dropdown-item">
+                  <li @click.prevent="currentItemType =structureType['id']"
+                      v-for="structureType in structureTypes[currentStructureType]" class="dropdown-item">
                     <div class="dropdown-item-inner">
-                      <a  href="#">
+                      <a href="#">
                         <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
                              xmlns="http://www.w3.org/2000/svg">
                           <path
@@ -76,16 +75,20 @@
                 </ul>
               </div>
             </div>
-            <svg class="last-element" width="12" height="12" viewBox="0 0 12 12" fill="none"
-                 xmlns="http://www.w3.org/2000/svg">
-              <path d="M0 0.000249982L4.66665 5.3335V10.6667L7.33335 12V5.33325L12 0H6.00012L0 0.000249982Z"
-                    fill="white" fill-opacity="0.3"/>
-            </svg>
-            <form>
-              <input type="text" placeholder="Выбор параметров" id="parametr-search">
-              </input>
-            </form>
           </div>
+        </div>
+        <div class="row">
+          <div class="left-section-select-area">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"
+               xmlns="http://www.w3.org/2000/svg">
+            <path d="M0 0.000249982L4.66665 5.3335V10.6667L7.33335 12V5.33325L12 0H6.00012L0 0.000249982Z"
+                  fill="white" fill-opacity="0.3"/>
+          </svg>
+          <form @click="isDisplayParameterBuilder = !isDisplayParameterBuilder">
+            <input type="text" placeholder="Выбор параметров" id="parametr-search">
+            </input>
+          </form>
+            </div>
         </div>
         <div class="row">
           <div class="table-wrapper col">
@@ -101,174 +104,17 @@
                 </div>
               </div>
               <div class="table-container-element">
-                <div class="row" v-for="item in items">
-                  <div class="my-table-border col-md-1">
-                    <div class="centered">
-                      <div class="custom-checkbox">
-                        <form>
-                          <label class="container" for="oil">
-                            <span class="bottom-border"></span>
-                            <input type="checkbox" name="tech_structire" value="tech_structire"
-                                   class="dropdown-item">
-                            <span class="checkmark"></span>
-                          </label>
-                        </form>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="my-table-border col-md-1">
-                    <div class="centered pointer" style="transform: scale(-1);">
-                      <svg width="11" height="6" viewBox="0 0 11 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path fill-rule="evenodd" clip-rule="evenodd"
-                              d="M0.226562 0.387777H10.2258L5.22617 5.46753L0.226562 0.387777Z" style="fill:white"/>
-                      </svg>
-                    </div>
-                  </div>
-                  <div class="my-table-border col-md-10">
-                    <div class="centered no-left-margin">{{ item["name"] }}</div>
-                  </div>
-                </div>
-<!--                <div class="row child-row">
-                  <div class="my-table-border col-md-1">
-                    <div class="centered">
-                    </div>
-                  </div>
-                  <div class="my-table-border col-md-1">
-                    <div class="centered">
-                      <div class="custom-checkbox">
-                        <form>
-                          <label class="container" for="element-child">
-                            <span class="bottom-border"></span>
-                            <input type="checkbox" id="element-child" name="tech_structire" value="tech_structire"
-                                   class="dropdown-item">
-                            <span class="checkmark"></span>
-                          </label>
-                        </form>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="my-table-border col-md-10">
-                    <div class="pointer-child">
-                      <svg width="11" height="6" viewBox="0 0 11 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path fill-rule="evenodd" clip-rule="evenodd"
-                              d="M0.226562 0.387777H10.2258L5.22617 5.46753L0.226562 0.387777Z" fill="#868BB2"/>
-                      </svg>
-                    </div>
-                    <div class="centered no-left-margin">АО ЭМБА МУНАЙ ГАЗ</div>
-                  </div>
-                </div>
-                <div class="row child-row">
-                  <div class="my-table-border col-md-1">
-                    <div class="centered">
-                    </div>
-                  </div>
-                  <div class="my-table-border col-md-1">
-                    <div class="centered">
-                      <div class="custom-checkbox">
-                        <form>
-                          <label class="container" for="element-child_1">
-                            <span class="bottom-border"></span>
-                            <input type="checkbox" id="element-child_1" name="tech_structire" value="tech_structire"
-                                   class="dropdown-item">
-                            <span class="checkmark"></span>
-                          </label>
-                        </form>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="my-table-border col-md-10">
-                    <div class="pointer-child">
-                      <svg width="11" height="6" viewBox="0 0 11 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path fill-rule="evenodd" clip-rule="evenodd"
-                              d="M0.226562 0.387777H10.2258L5.22617 5.46753L0.226562 0.387777Z" fill="#868BB2"/>
-                      </svg>
-                    </div>
-                    <div class="centered no-left-margin">АО ЭМБА МУНАЙ ГАЗ</div>
-                  </div>
-                </div>
-                <div class="row child-row">
-                  <div class="my-table-border col-md-1">
-                    <div class="centered">
-                    </div>
-                  </div>
-                  <div class="my-table-border col-md-1">
-                    <div class="centered">
-                      <div class="custom-checkbox">
-                        <form>
-                          <label class="container" for="element-child_2">
-                            <span class="bottom-border"></span>
-                            <input type="checkbox" id="element-child_2" name="tech_structire" value="tech_structire"
-                                   class="dropdown-item">
-                            <span class="checkmark"></span>
-                          </label>
-                        </form>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="my-table-border col-md-10">
-                    <div class="pointer-child">
-                      <svg width="11" height="6" viewBox="0 0 11 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path fill-rule="evenodd" clip-rule="evenodd"
-                              d="M0.226562 0.387777H10.2258L5.22617 5.46753L0.226562 0.387777Z" fill="#868BB2"/>
-                      </svg>
-                    </div>
-                    <div class="centered no-left-margin">АО ЭМБА МУНАЙ ГАЗ</div>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="my-table-border col-md-1">
-                    <div class="centered">
-                      <div class="custom-checkbox">
-                        <form>
-                          <label class="container" for="oil_1">
-                            <span class="bottom-border"></span>
-                            <input id="oil_1" type="checkbox" name="tech_structire" value="tech_structire"
-                                   class="dropdown-item">
-                            <span class="checkmark"></span>
-                          </label>
-                        </form>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="my-table-border col-md-1">
-                    <div class="centered pointer">
-                      <svg width="11" height="6" viewBox="0 0 11 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path fill-rule="evenodd" clip-rule="evenodd"
-                              d="M0.226562 0.387777H10.2258L5.22617 5.46753L0.226562 0.387777Z" fill="white"/>
-                      </svg>
-                    </div>
-                  </div>
-                  <div class="my-table-border col-md-10">
-                    <div class="centered no-left-margin">АО ЭМБА МУНАЙ ГАЗ</div>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="my-table-border col-md-1">
-                    <div class="centered">
-                      <div class="custom-checkbox">
-                        <form>
-                          <label class="container" for="oil">
-                            <span class="bottom-border"></span>
-                            <input id="oil_2" type="checkbox" name="tech_structire" value="tech_structire"
-                                   class="dropdown-item">
-                            <span class="checkmark"></span>
-                          </label>
-                        </form>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="my-table-border col-md-1">
-                    <div class="centered pointer">
-                      <svg width="11" height="6" viewBox="0 0 11 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path fill-rule="evenodd" clip-rule="evenodd"
-                              d="M0.226562 0.387777H10.2258L5.22617 5.46753L0.226562 0.387777Z" fill="white"/>
-                      </svg>
-                    </div>
-                  </div>
-                  <div class="my-table-border col-md-10">
-                    <div class="centered no-left-margin">АО ЭМБА МУНАЙ ГАЗ</div>
-                  </div>
-                </div>-->
+                <template>
+                  <report-constructor-item-select-tree
+                      @modalChangeVisible="(value) => modalChangeVisible(value)"
+                      @changeOrgSelector="changeOrgSelector()"
+                      :structureType="currentStructureType"
+                      :itemType="currentItemType"
+                      :isShowCheckboxes="true"
+                  >
+                    <!--                      @onItemIdClick="onItemIdClick"-->
+                  </report-constructor-item-select-tree>
+                </template>
               </div>
             </div>
           </div>
@@ -295,13 +141,29 @@
                     <span class="calendar">Месяц</span>
                     <span class="calendar">Год</span>
                   </div>
+
                   <div class="btn-container">
                     <button class="btn-disabled" disabled>Создать отчет</button>
                     <button class="">Выбрать шаблон</button>
                   </div>
                 </div>
+
               </div>
+
             </section>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+
+            <report-header-builder
+                v-model="attributesForObject"
+                :data="attributesForObject"
+                :translateAttribute="getAttributeDescription"
+                group="items"
+                v-if="isDisplayParameterBuilder && currentStructureId != null"
+            >
+            </report-header-builder>
           </div>
         </div>
       </div>
@@ -1770,6 +1632,10 @@ body {
       margin-right: auto;
       margin-left: 10px;
       color: white;
+    }
+
+    ul.hierarchy {
+      padding-left: 5px;
     }
 
     .btn-exit {

@@ -174,6 +174,8 @@ Vue.component('user-reports', require('./components/bigdata/UserReports.vue').de
 Vue.component('proto-form', require('./components/bigdata/Forms.vue').default);
 Vue.component('proto-form-wrapper', require('./components/bigdata/FormsWrapper.vue').default);
 Vue.component('proto-org-select-tree', require('./components/bigdata/OrgSelectTree.vue').default);
+Vue.component('report-constructor-item-select-tree', require('./components/reportConstructor/ItemSelectTree.vue').default);
+Vue.component('report-header-builder', require('./components/reportConstructor/ReportHeaderBuilder.vue').default);
 Vue.component('bigdata-form-mobile', require('./components/bigdata/FormMobile.vue').default);
 Vue.component('search-form', require('./components/ui-kit/SearchForm.vue').default);
 Vue.component('bigdata-report-button', require('./components/bigdata/BigDataReportButton.vue').default);
