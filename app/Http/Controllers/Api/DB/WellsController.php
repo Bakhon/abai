@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\BigData\WellSearchResource;
 use App\Models\BigData\Well;
-use App\Models\BigData\TechModeProdOil;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 
@@ -28,15 +27,15 @@ class WellsController extends Controller
             'spatial_object' => $this->spatialObject($well),
             'spatial_object_bottom' => $this->spatialObjectBottom($well),
             'actual_bottom_hole' => $this->actualBottomHole($well),
-            'lab_research_value' => $this->LabResearchValue($well),
+            'lab_research_value' => $this->labResearchValue($well),
             'artificial_bottom_hole' => $this->artificialBottomHole($well),
-            'well_perf_actual' => $this->WellPerfActual($well),
-            'tech_mode_prod_oil' => $this->TechModeProdOil($well),
-            'tech_mode_inj' => $this->TechModeInj($well),
-            'meas_liq' => $this->MeasLiq($well),
-            'meas_water_cut' => $this->MeasWaterCut($well),
-            'krs_well_workover' => $this->KrsWellWorkover($well),
-            'well_treatment' => $this->WellTreatment($well),
+            'well_perf_actual' => $this->wellPerfActual($well),
+            'techModeProdOil' => $this->techModeProdOil($well),
+            'tech_mode_inj' => $this->techModeInj($well),
+            'meas_liq' => $this->measLiq($well),
+            'meas_water_cut' => $this->measWaterCut($well),
+            'krs_well_workover' => $this->krsWellWorkover($well),
+            'well_treatment' => $this->wellTreatment($well),
         );
     }
 
@@ -164,7 +163,7 @@ class WellsController extends Controller
             ->first();
     }
 
-    private function LabResearchValue(Well $well)
+    private function labResearchValue(Well $well)
     {
         return $well->lab_research_value()
             ->withPivot('research_date as research_date')
@@ -172,40 +171,40 @@ class WellsController extends Controller
             ->first(['value_double', 'research_date']);
     }
 
-    private function TechModeInj(Well $well)
+    private function techModeInj(Well $well)
     {
         return $well->tech_mode_inj()
             ->first(['inj_pressure', 'agent_vol']);
     }
 
-    private function TechModeProdOil(Well $well)
+    private function techModeProdOil(Well $well)
     {
         return $well->tech_mode_prod_oil()
             ->orderBy('dbeg', 'desc')
             ->first(['oil', 'liquid']);
     }
 
-    private function MeasLiq(Well $well)
+    private function measLiq(Well $well)
     {
         return $well->meas_liq()
             ->orderBy('dbeg', 'desc')
             ->first('liquid');
     }
 
-    private function WellPerfActual(Well $well)
+    private function wellPerfActual(Well $well)
     {
         return $well->well_perf_actual()
             ->first();
     }
 
-    private function MeasWaterCut(Well $well)
+    private function measWaterCut(Well $well)
     {
         return $well->meas_water_cut()
             ->orderBy('dbeg', 'desc')
             ->first(['water_cut']);
     }
 
-    private function KrsWellWorkover(Well $well)
+    private function krsWellWorkover(Well $well)
     {
         return $well->well_workover()
             ->where('repair_type', '=', '1')
@@ -213,7 +212,7 @@ class WellsController extends Controller
             ->first(['dbeg', 'dend']);
     }
 
-    private function WellTreatment(Well $well)
+    private function wellTreatment(Well $well)
     {
         return $well->well_treatment()
             ->where('treatment_type', '=', '21')
