@@ -28,6 +28,7 @@ export default {
   ],
   data: function () {
     return {
+      404: require('./images/404.svg'),
       isSkError: false,
       nearDist: 1000,
       perms: this.params,
@@ -1055,8 +1056,7 @@ export default {
       }
     },
 
-    getWellNumber(wellnumber) {
-      this.isIntervals = true
+    setDefaultStoreValues() {
       this.$store.commit("UPDATE_SPM_MIN", 4)
       this.$store.commit("UPDATE_SPM_MAX", 7)
       this.$store.commit("UPDATE_LEN_MIN", 2.5)
@@ -1074,6 +1074,11 @@ export default {
       this.$store.commit("UPDATE_HEAVYDOWN", true)
       this.$store.commit("UPDATE_STUP_COLUMNS", 2)
       this.$store.commit("UPDATE_MARKSHTANG", "15Х2ГМФ (НВО)")
+    },
+
+    getWellNumber(wellnumber) {
+      this.isIntervals = true
+      this.setDefaultStoreValues()
 
       if(this.field == "JET") {
               this.ao = 'АО "ММГ"'
@@ -1105,9 +1110,6 @@ export default {
                   timeout: 8000
                 })    
             }
-
-
-            
 
             this.curveLineData = JSON.parse(data.LineData)["data"]
             this.curvePointsData = JSON.parse(data.PointsData)["data"]
@@ -1208,7 +1210,6 @@ export default {
                   timeout: 8000
                 }) 
             
-
             this.ngdu = 0
             this.sk = 0
 

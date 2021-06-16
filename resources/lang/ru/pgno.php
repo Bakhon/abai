@@ -219,4 +219,5 @@ return array (
   'gor_gor_acma' => 'ГФ = ГФ АСМА',
   'near_dist' => 'Расстояние до скважин',
   'notify_error_sk' => 'Уточните тип СК',
+  'primenit_default' => 'Применить по умолчанию',
 );

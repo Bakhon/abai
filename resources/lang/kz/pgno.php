@@ -216,4 +216,5 @@ return array (
   'edit' => 'Редактировать',
   'near_dist' => 'Расстояние до скважин',
   'notify_error_sk' => 'Уточните тип СК',
+  'primenit_default' => 'Применить по умолчанию',
 );

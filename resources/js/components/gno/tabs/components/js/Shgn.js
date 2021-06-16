@@ -8,7 +8,7 @@ export default {
 			svgTableN2: require('../../../images/tableN2.svg'),
 			pintakeMin: 30,
 			groupPosad: 2,
-			stup: '2',
+			stup: "2",
 			inclStep: 10,
 			gasMax: 10,
 			hvostovik: true,
