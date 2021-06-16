@@ -40,17 +40,17 @@ class WellsController extends Controller
         );
     }
 
-    public function getToday(): Carbon
+    private function getToday(): Carbon
     {
         return Carbon::today();
     }
 
-    public function get(Well $well)
+    private function get(Well $well)
     {
         return $well;
     }
 
-    public function status(Well $well)
+    private function status(Well $well)
     {
         $status = $well->status()
             ->wherePivot('dend', '<>', $this->getToday())
@@ -61,7 +61,7 @@ class WellsController extends Controller
         return ($status);
     }
 
-    public function tubeNom(Well $well)
+    private function tubeNom(Well $well)
     {
         return $well->tube_nom()
             ->wherePivot('project_drill', '=', 'false')
@@ -70,7 +70,7 @@ class WellsController extends Controller
             ->get(['od']);
     }
 
-    public function category(Well $well)
+    private function category(Well $well)
     {
         return $well->category()
             ->wherePivot('dend', '<>', $this->getToday())
@@ -80,7 +80,7 @@ class WellsController extends Controller
             ->first(['name_ru']);
     }
 
-    public function categoryLast(Well $well)
+    private function categoryLast(Well $well)
     {
         return $well->category()
             ->wherePivot('dend', '<>', $this->getToday())
@@ -90,7 +90,7 @@ class WellsController extends Controller
             ->first(['name_ru']);
     }
 
-    public function geo(Well $well)
+    private function geo(Well $well)
     {
         return $well->geo()
             ->wherePivot('dend', '<>', $this->getToday())
@@ -100,7 +100,7 @@ class WellsController extends Controller
             ->first(['name_ru']);
     }
 
-    public function wellExpl(Well $well)
+    private function wellExpl(Well $well)
     {
         return $well->well_expl()
             ->where('dend', '<>', $this->getToday())
@@ -110,7 +110,7 @@ class WellsController extends Controller
             ->first(['name_ru']);
     }
 
-    public function techs(Well $well)
+    private function techs(Well $well)
     {
         return $well->techs()
             ->wherePivot('dend', '>', $this->getToday())
@@ -119,13 +119,13 @@ class WellsController extends Controller
             ->get();
     }
 
-    public function wellType(Well $well)
+    private function wellType(Well $well)
     {
         return $well->well_type()
             ->first(['name_ru']);
     }
 
-    public function org(Well $well)
+    private function org(Well $well)
     {
         return $well->orgs()
             ->wherePivot('dend', '>', $this->getToday())
@@ -134,21 +134,21 @@ class WellsController extends Controller
             ->get();
     }
 
-    public function spatialObject(Well $well)
+    private function spatialObject(Well $well)
     {
         return $well->spatial_object()
             ->where('spatial_object_type', '=', '1')
             ->first(['coord_point']);
     }
 
-    public function spatialObjectBottom(Well $well)
+    private function spatialObjectBottom(Well $well)
     {
         return $well->spatial_object_bottom()
             ->where('spatial_object_type', '=', '1')
             ->first(['coord_point']);
     }
 
-    public function actualBottomHole(Well $well)
+    private function actualBottomHole(Well $well)
     {
         return $well->bottom_hole()
             ->where('bottom_hole_type', '=', '1')
@@ -156,7 +156,7 @@ class WellsController extends Controller
             ->first();
     }
 
-    public function artificialBottomHole(Well $well)
+    private function artificialBottomHole(Well $well)
     {
         return $well->bottom_hole()
             ->where('bottom_hole_type', '=', '2')
@@ -164,7 +164,7 @@ class WellsController extends Controller
             ->first();
     }
 
-    public function LabResearchValue(Well $well)
+    private function LabResearchValue(Well $well)
     {
         return $well->lab_research_value()
             ->withPivot('research_date as research_date')
@@ -172,40 +172,40 @@ class WellsController extends Controller
             ->first(['value_double', 'research_date']);
     }
 
-    public function TechModeInj(Well $well)
+    private function TechModeInj(Well $well)
     {
         return $well->tech_mode_inj()
             ->first(['inj_pressure', 'agent_vol']);
     }
 
-    public function TechModeProdOil(Well $well)
+    private function TechModeProdOil(Well $well)
     {
         return $well->tech_mode_prod_oil()
             ->orderBy('dbeg', 'desc')
             ->first(['oil', 'liquid']);
     }
 
-    public function MeasLiq(Well $well)
+    private function MeasLiq(Well $well)
     {
         return $well->meas_liq()
             ->orderBy('dbeg', 'desc')
             ->first('liquid');
     }
 
-    public function WellPerfActual(Well $well)
+    private function WellPerfActual(Well $well)
     {
         return $well->well_perf_actual()
             ->first();
     }
 
-    public function MeasWaterCut(Well $well)
+    private function MeasWaterCut(Well $well)
     {
         return $well->meas_water_cut()
             ->orderBy('dbeg', 'desc')
             ->first(['water_cut']);
     }
 
-    public function KrsWellWorkover(Well $well)
+    private function KrsWellWorkover(Well $well)
     {
         return $well->well_workover()
             ->where('repair_type', '=', '1')
@@ -213,7 +213,7 @@ class WellsController extends Controller
             ->first(['dbeg', 'dend']);
     }
 
-    public function WellTreatment(Well $well)
+    private function WellTreatment(Well $well)
     {
         return $well->well_treatment()
             ->where('treatment_type', '=', '21')
