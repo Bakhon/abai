@@ -133,10 +133,9 @@ export default {
         });
     } 
     return arr;
-  }
   },
-  mounted() {      
-    console.log(this.listBetweenMonths());
+  },
+  mounted() {    
     let yearLast = 2019;
     let day = "30.01.19";
     let yearNow = 2020;

@@ -215,7 +215,7 @@
             </div>
           </div>
         </div>
-        <div v-if="dzoData.length > 0">
+        <div>
           <h5 class="text-center mr-2">
             <strong>
               {{ trans("economics.executionForTheReportingPeriod") }}

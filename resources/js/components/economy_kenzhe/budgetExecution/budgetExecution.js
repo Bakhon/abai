@@ -1,7 +1,12 @@
+import { slice } from "lodash";
 import moment from "moment";
+import dzoDataActual from './dzo_data_actual.json';
+import dzoDataPrevYear from './dzo_data_prev_year.json';
 export default {
   data: function () {
     return {
+      dzoDataActual: dzoDataActual,
+      dzoDataPrevYear: dzoDataPrevYear,
       params:{differenceBetweenMonths: "12", company: "7", reload: true},
       numbersOfMonths: [0,1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],  
       repttData: "0",
@@ -45,12 +50,12 @@ export default {
       factFromOneDay:'30.01.2019',
     }
   },
-  methods: {
+  methods: {   
     getCompany() {  
       this.params['reload'] = true;
       return  axios.get('/ru/module_economy/company', {params: this.params})
       .then(response => {
-      this.repttData = response.data;    
+      this.repttData = response.data;      
      });     
         
     },
@@ -118,9 +123,13 @@ export default {
             oilPricePrevYear = 0, 
             oilPricePlan2020 = 0;
 
-          _.forEach(response.data['dzoDataActual'], (item) => {
+            let self = this;
+            let arr=[];     
+            _.forEach(Object.keys(this.dzoDataActual),  (key)=> {                
+              _.forEach(response.data['dzoDataActual'], (item) => {
+                   arr[Object.keys(self.dzoDataActual[key])['0']] = item[(self.dzoDataActual[key].item2)];               
             
-              dataPlan += item.main_prc_val_plan;
+              dataPlan += item.main_prc_val_plan;                   
               dataFact += item.main_prc_val_fact;
 
               spendingPlan += item.spending_val_plan;
@@ -168,8 +177,16 @@ export default {
               cashFlowPlan2020 = item.cash_flow_plan_2020;
               kursPlan2020 = item.kurs_plan_2020;
               oilPricePlan2020 = item.oil_price_plan_2020;
-          });
+          });        
+        });  
+        console.log(arr);
+
+   
+        let arr2=[];     
+        _.forEach(Object.keys(this.dzoDataPrevYear),  (key)=> {                
           _.forEach(response.data['dzoDataPrevYear'], (item) => {
+               arr2[Object.keys(self.dzoDataPrevYear[key])['0']] = item[(self.dzoDataPrevYear[key].item2)];       
+         
 
               dataFactPrevYear += item.main_prc_val_fact;
               spendingFactPrevYear += item.spending_val_fact;
@@ -183,7 +200,8 @@ export default {
               cashFlowFactPrevYear += item.cash_flow_val_fact;
               kursPrevYear = item.kurs_fact;
               oilPricePrevYear = item.oil_price_fact;
-          });
+          }); });
+          console.log(arr2);
           this.dzoData.push(
             {
             title: this.trans('economy_be.secondTable.operatingIncome'),       
@@ -352,7 +370,7 @@ export default {
     },
 
   },
-  async created () {  
+  async created () {    
     await this.getCompany(); 
       this.axios
         .get('/ru/getdzocalcsactualmonth', {})
@@ -361,6 +379,7 @@ export default {
             this.actualMonth = response.data - 1;
             this.selectActualMonth = 1;
           }
-       })
-  },
+       })    
+       console.log(this.getCompany());
+  },  
 }
