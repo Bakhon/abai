@@ -57,6 +57,7 @@ export default {
         },
 
         switchWidget(widgetName) {
+            this.$store.commit('globalloading/SET_LOADING', true);
             _.forEach(this.tableMapping, function (item) {
                 _.set(item, 'class', 'hide-company-list');
                 _.set(item, 'hover', '');

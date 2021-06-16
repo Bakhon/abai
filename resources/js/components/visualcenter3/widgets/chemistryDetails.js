@@ -86,6 +86,7 @@ export default {
             });
             this.updateChemistryWidgetTable(temporaryChemistryDetails);
             this.chemistryChartData = this.getChemistryWidgetChartData(temporaryChemistryDetails);
+            this.$store.commit('globalloading/SET_LOADING', false);
         },
 
         getChemistryWidgetChartData(temporaryChemistryDetails) {
