@@ -30,6 +30,7 @@ use App\Models\BigData\Dictionaries\WellType;
 use App\TybeNom;
 use App\Models\BigData\Dictionaries\Device;
 use App\Models\BigData\Dictionaries\GeoIdentifier;
+use App\Models\BigData\Dictionaries\CoordSystem;
 use Carbon\Carbon;
 use Illuminate\Cache\Repository;
 use Illuminate\Support\Facades\DB;
@@ -136,6 +137,10 @@ class DictionaryService
         ],
         'geo_identifier' => [
             'class' => GeoIdentifier::class,
+            'name_field' => 'name_ru'
+        ],
+        'coord_systems' => [
+            'class' => CoordSystem::class,
             'name_field' => 'name_ru'
         ]
     ];
