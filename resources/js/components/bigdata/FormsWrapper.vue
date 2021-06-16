@@ -3,11 +3,10 @@
     <div class="col col-9 p-0">
       <proto-form :wellId="wellId"></proto-form>
     </div>
-    <div class="col col-3 p-0">
+    <div class="col col-3 p-0 org-select-tree-block">
       <proto-org-select-tree
-          @modalChangeVisible="(value) => modalChangeVisible(value)"
-          @wellIdChange="wellIdChange"
-          @changeOrgSelector="(data) => changeOrgSelector(data)">
+          :currentWellId="wellId"
+          @wellIdChange="wellIdChange">
       </proto-org-select-tree>
     </div>
   </div>
@@ -25,10 +24,6 @@ export default {
     wellIdChange(wellId) {
       this.wellId = wellId;
     },
-    changeOrgSelector(data) {
-      if (data.length > 0) {
-      }
-    }
   }
 }
 </script>
@@ -294,5 +289,10 @@ export default {
       height: calc(100vh - 360px);
     }
   }
+}
+
+.org-select-tree-block {
+  height: 85vh;
+  overflow-y: scroll;
 }
 </style>

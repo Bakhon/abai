@@ -524,7 +524,6 @@
                     </div>
                   </div>
                 </div>
-
                     <button type="button" class="modal-bign-button" @click="closeModal('modalOldWell')">
                      {{trans('pgno.zakrit')}}
                     </button>
@@ -561,6 +560,11 @@
                         <input v-model="isAnalysisBoxValue5" class="checkbox-modal-analysis-menu" @change="postAnalysisOld()"
                           type="checkbox" />
                         <label for="checkbox1" class="checkbox-modal-analysis-menu-label">{{trans('pgno.obv_obv_acma')}}</label>
+                      </div>
+                      <div class="form-check">
+                        <input v-model="isAnalysisBoxValue9" class="checkbox-modal-analysis-menu" @change="postAnalysisOld()"
+                          type="checkbox" />
+                        <label for="checkbox1" class="checkbox-modal-analysis-menu-label">{{trans('pgno.gor_gor_acma')}}</label>
                       </div>
                       <button type="button" class="old_well_button" @click="setGraphOld()">
                         {{trans('pgno.primenit_korrektirovki')}}
@@ -631,6 +635,11 @@
                         <input v-model="hasGrp" class="new-checkbox-modal-analysis-menu" @change="postAnalysisNew()"
                           type="checkbox" />
                         <label for="checkbox1" class="new-checkbox-modal-analysis-menu-label">{{trans('pgno.s_grp')}}</label>
+                      </div>
+                      <div class="form-check-new">
+                        {{trans('pgno.near_dist')}}
+                        <input v-model="nearDist" class="new-checkbox-modal-analysis-menu square3 square-dist" @change="postAnalysisNew()"
+                          type="text" />
                       </div>
                       <div class="icon-for-table" @click="onOpenTable()">
                         <svg width="31" height="35" viewBox="0 0 31 35" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -782,7 +791,16 @@
                   <div class="modal-bign-header with-padding">
                     <div class="modal-bign-title">
                        {{trans('pgno.informacia')}}
+                        <button class="download-curve-button economic-table" @click="downloadEconomicExcel()" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M4.16699 11.1538V14.5C4.16699 14.7761 4.39085 15 4.66699 15H15.667C15.9431 15 16.167 14.7761 16.167 14.5V11.1538" stroke="white" stroke-linecap="round"/>
+                          <path d="M10.1667 5V11.1539" stroke="white" stroke-linecap="round"/>
+                          <path d="M7.5957 9.61572L10.1671 11.9234L12.7386 9.61572" stroke="white" stroke-linecap="round"/>
+                          </svg>
+                          {{trans('pgno.download')}}
+                        </button>
                     </div>
+                    
 
                     <button type="button" class="modal-bign-button" @click="closeEconomicModal()">
                       {{trans('pgno.zakrit')}}
@@ -1147,12 +1165,12 @@
                             <td>{{trans('pgno.npv')}}</td>
                             <td>
                               {{
-                              Math.round(expAnalysisData.npvTable1.npv / 1000000)
+                              (expAnalysisData.npvTable1.npv / 1000000).toFixed(2)
                             }}
                             </td>
                             <td>
                               {{
-                              Math.round(expAnalysisData.npvTable2.npv / 1000000)
+                              (expAnalysisData.npvTable2.npv  / 1000000).toFixed(2)
                             }}
                             </td>
                           </tr>
@@ -1268,7 +1286,7 @@
                             </tr>
                             <tr>
                               <td class="td-pgno" rowspan="1">{{trans('pgno.q_nefti')}}</td>
-                              <td class="td-pgno" rowspan="1">{{ qOil }} {{trans('measurements.t/d')}}</td>
+                              <td class="td-pgno" rowspan="1">{{ qoilShgnTable }} {{trans('measurements.t/d')}}</td>
                             </tr>
                             <tr>
                               <td class="td-pgno" rowspan="1">{{trans('pgno.obvodnenost')}}</td>
@@ -1604,7 +1622,7 @@
                               <div class="table-border-gno col-2">
                                 <label class="label-for-celevoi">{{trans('pgno.p_buf')}}</label>
                                 <input type="text" v-model="pBuf" onfocus="this.value=''" 
-                                  class="input-box-gno podbor" :disabled="expChoose != 'ФОН'"/>
+                                  class="input-box-gno podbor"/>
                               </div>
 
                               <div class="col-2">
@@ -2210,7 +2228,7 @@
 }
 
 .long__box {
-  width: 60px;
+  width: 80px !important;
   padding-left: 0px !important;
 }
 
@@ -2245,6 +2263,11 @@ background: #323370;
 outline: none;
 left: 20px;
 top: 8px;
+}
+
+.economic-table {
+  left: 0px;
+  top: 0px;
 }
 
 .select-gno2 {
@@ -2344,5 +2367,9 @@ background-position: right 5px top 50%;
 
 .table-pgno-one {
   height: 200px;
+}
+
+.square-dist {
+  width: 25%
 }
 </style>

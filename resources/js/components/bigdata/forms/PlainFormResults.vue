@@ -120,6 +120,7 @@ import forms from '../../../json/bd/forms.json'
 import BigDataPlainForm from './PlainForm'
 import {bdFormActions} from '@store/helpers'
 import CatLoader from '../../ui-kit/CatLoader'
+import moment from "moment";
 
 export default {
   name: "BigdataPlainFormResults",
@@ -253,6 +254,14 @@ export default {
           return value.name
         }
 
+      }
+
+      if (column.type === 'date') {
+        return moment(row[column.code]).format('DD.MM.YYYY')
+      }
+
+      if (column.type === 'datetime') {
+        return moment(row[column.code]).format('DD.MM.YYYY HH:MM')
       }
 
       return row[column.code]

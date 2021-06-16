@@ -106,6 +106,7 @@ return array (
   'temp_nabora_krivizni' => 'Dog leg severity',
   'zagruzka' => 'Loading',
   'no_data' => 'No data',
+  'no_incl_data' => 'Нет данных инклинометрии',
   'md' => 'MD',
   'tvd' => 'TVD',
   'udl' => 'Elong',
@@ -210,6 +211,9 @@ return array (
   'tablica8' => 'Таблица 8 - Группы посадок сопряжения “плунжер-цилиндр”',
   'min_zazor' => 'Минимальный зазор',
   'max_zazor' => 'Максимальный зазор с учетом допуска на изготовление цилиндра и плунжера',
+  'gor_gor_acma' => 'ГФ = ГФ АСМА',
   'refresh' => 'Refresh',
   'edit' => 'Edit',
+  'near_dist' => 'Distance for wells',
+  'notify_error_sk' => 'Уточните тип СК',
 );

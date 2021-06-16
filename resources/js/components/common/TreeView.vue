@@ -6,7 +6,7 @@
       </div>
       <div v-if="node.name"
            class="text-right text-white ml-2"
-           :class="{'cursor-pointer': node.type === 'well'}"
+           :class="{'cursor-pointer': node.type === 'well', 'h5': currentWellId === node.id}"
            @click.stop="handleClick(node)">
         {{ node.name }}
       </div>
@@ -15,9 +15,10 @@
       <node
           v-for="child in node.children"
           :node="child"
-          :key="child.name"
+          :key="child.id"
           :handle-click="handleClick"
           :get-wells="getWells"
+          :currentWellId="currentWellId"
       ></node>
     </ul>
     <div class="centered mx-auto mt-3" v-if="isShowChildren && isLoading">
@@ -33,6 +34,10 @@ export default {
     node: Object,
     handleClick: Function,
     getWells: Function,
+    currentWellId: {
+      type: Number,
+      required: false
+    },
   },
   methods: {
     toggleUl: function () {

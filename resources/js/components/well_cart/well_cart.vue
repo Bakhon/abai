@@ -55,7 +55,7 @@
             <div class="row">
               <div class="col">
                 <button class="transparent-select">
-                  Скважина: <span v-if="allData">{{ allData.uwi }}</span>
+                  Скважина: <span v-if="well">{{ well.uwi }}</span>
                   <svg width="14" height="8" viewBox="0 0 14 8" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M1 1L7 7L13 1" stroke="white" stroke-width="1.6" stroke-linecap="round"
                           stroke-linejoin="round"/>
@@ -70,7 +70,7 @@
                       placeholder="Номер скважины"
                       @input="selectWell"
                       @search="onSearch"
-                      v-model="wellName"
+                      v-model="wellUwi"
                   >
                     <template slot="option" slot-scope="option">
                       <span>{{ option.name }}</span>
@@ -79,9 +79,9 @@
                 </form>
               </div>
             </div>
-            <div v-if="allData" class="mid-col__main_row">
+            <div v-if="well" class="mid-col__main_row">
               <div v-if="activeFormCode" class="col table-wrapper">
-                <BigDataPlainFormResult :code="activeFormCode" :well-id="allData.id"></BigDataPlainFormResult>
+                <BigDataPlainFormResult :code="activeFormCode" :well-id="this.well.id"></BigDataPlainFormResult>
               </div>
               <div v-else class="col graphics">
                 <div class="row">
@@ -102,21 +102,31 @@
                   <div class="col">
                     <div class="well-info">
                       <div class="title">Основное</div>
-                      <p>Номер скважины: <span>{{ allData.uwi }}</span></p>
-                      <p>Категория скважины: <span v-if="wellCategory">{{ wellCategory.name_ru }}</span></p>
+                      <p>Номер скважины: <span>{{ well.uwi }}</span></p>
+                      <p>Категория скважины:
+                        <span v-if="wellCategory.name_ru">
+                            {{ wellCategory.name_ru }}</span>
+                      </p>
                       <div class="title">Привязка</div>
-                      <p>Оргструктура: <span>
-                          <span v-for="value in org">
-                            {{ value.name_ru + "/" }}
-                          </span>
-                        </span></p>
                       <div class="title">Координаты устья</div>
                       <p>Оргструктура: <span></span></p>
-                      <p>Координаты устья X:<span></span></p>
-                      <p>Координаты устья Y:<span></span></p>
+                      <p>Координаты устья X:
+                        <span v-if="wellSaptialObjectX">{{ wellSaptialObjectX }}</span>
+                      </p>
+                      <p>Координаты устья Y:
+                        <span v-if="wellSaptialObjectY">
+                          {{ wellSaptialObjectY }}
+                        </span></p>
                       <div class="title">Координаты забоя</div>
-                      <p>Координаты устья X:<span></span></p>
-                      <p>Координаты устья Y:<span></span></p>
+                      <p>Координаты устья X:
+                        <span v-if="wellSaptialObjectBottomX">
+                            {{ wellSaptialObjectBottomX }}
+                        </span></p>
+                      <p>Координаты устья Y:
+                        <span v-if="wellSaptialObjectBottomY">
+                            {{ wellSaptialObjectBottomY }}
+                          </span></p>
+
                     </div>
                   </div>
                 </div>
@@ -140,10 +150,10 @@
                             stroke-linejoin="round"/>
                     </svg>
                   </div>
-                  <p v-if="allData">Паспорт скважины</p>
+                  <p v-if="well">Паспорт скважины</p>
                 </div>
                 <div class="title-container">
-                  <div class="sheare-icon" v-if="allData">
+                  <div class="sheare-icon" v-if="well">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path
                           d="M17.5443 8.3734L13.9393 4.79071C13.752 4.60451 13.4986 4.5 13.2344 4.5L7.10023 4.50002C6.54794 4.50002 6.10023 4.94773 6.10023 5.50002L6.10023 18.5C6.10023 19.0523 6.54795 19.5 7.10023 19.5H16.8394C17.3916 19.5 17.8394 19.0523 17.8394 18.5L17.8394 9.0827C17.8394 8.81641 17.7331 8.56111 17.5443 8.3734Z"
@@ -155,7 +165,7 @@
                           fill="white"/>
                     </svg>
                   </div>
-                  <div class="sheare-text" v-if="allData">
+                  <div class="sheare-text" v-if="well">
                     Скачать в MS-Excel
                   </div>
                 </div>
@@ -167,323 +177,16 @@
             <div class="info-element">
               <div class="row">
                 <div class="col">
-                  <table v-if="allData">
+                  <table v-if="well">
                     <tr>
                       <th colspan="3">Общая информация</th>
                     </tr>
-                    <tr>
-                      <td>1</td>
-                      <td>Скважина</td>
+                    <tr v-for="(item, index) in this.tableData">
+                      <td>{{ index + 1 }}</td>
+                      <td>{{ item.name }}</td>
                       <td>
-                        <span v-if="allData">{{ allData.uwi }}</span>
+                        <span>{{ item.data }}</span>
                       </td>
-                    </tr>
-                    <tr>
-                      <td>2</td>
-                      <td>Вид скважины</td>
-                      <td>
-                        <span v-if="wellType">{{ wellType }}</span>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>3</td>
-                      <td>Месторождение</td>
-                      <td>
-                        <span v-if="geo">{{ geo.name_ru }}</span>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>4</td>
-                      <td> Горизонт / Pнас, атм</td>
-                      <td>
-                        <span v-if="geo">{{ geo.name_ru }}</span>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>5</td>
-                      <td> H ротора</td>
-                      <td>
-                        <span v-if="allData">{{ allData.rte }}</span>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>6</td>
-                      <td>Тех. структура</td>
-                      <td>
-                        <span v-if="tech">{{ tech.name_ru }}</span>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>7</td>
-                      <td>Отвод</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>8</td>
-                      <td>ГУ/Ряд</td>
-                      <td>
-                        <span v-if="tech">{{ tech.name_ru }}</span>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>9</td>
-                      <td>Орг. структура</td>
-                      <td v-if="org">
-                        <span v-for="value in org">
-                          {{ value.name_ru + "/" }}
-                        </span>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>10</td>
-                      <td>Зона скважины</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>11</td>
-                      <td>Влияющие скважины</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>12</td>
-                      <td>Координаты X (устья)</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>13</td>
-                      <td>Координаты X (устья)</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>14</td>
-                      <td>Координаты забоя X</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>15</td>
-                      <td>Координаты забоя Y</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>16</td>
-                      <td>Назначение скважин по проекту</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>16</td>
-                      <td>Назначение скважин по проекту</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>17</td>
-                      <td>Категория</td>
-                      <td>
-                        <span v-if="wellCategory">{{ wellCategory.name_ru }}</span>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>18</td>
-                      <td>Период бурения</td>
-                      <td>
-                        <span
-                            v-if="allData.drill_start_date">{{ allData.drill_start_date }} - {{
-                            allData.drill_end_date
-                          }}</span>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>19</td>
-                      <td>Дата ввода в эксплуатацию</td>
-                      <td>
-                        <span v-if="tech">{{ tech.dbeg }}</span>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>20</td>
-                      <td>Состояние</td>
-                      <td v-if="wellStatus">{{ wellStatus.name_ru }}</td>
-                    </tr>
-                    <tr>
-                      <td>21</td>
-                      <td>Способ эксплуатации</td>
-                      <td>
-                        <span v-if="wellExpl">{{ wellExpl.name_ru }}</span>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>22</td>
-                      <td>Тип УО / наличие эксц.болта</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>23</td>
-                      <td>Диаметр экспл.колонны/доп. экспл.колонны,мм</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>24</td>
-                      <td>Тип колонной головки / размеры</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>25</td>
-                      <td>Глубина спуска насоса (м)</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>26</td>
-                      <td>Код насоса</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>27</td>
-                      <td>Диаметр насоса (мм)</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>28</td>
-                      <td>Глубина спуска пакера</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>29</td>
-                      <td>Тип СК</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>30</td>
-                      <td>Длина хода (м)</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>31</td>
-                      <td>число качаний (об/мин)</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>32</td>
-                      <td>Фактический забой/(дата отбивки)</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>33</td>
-                      <td>Искусственный забой</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>34</td>
-                      <td>Отбитый забой</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>35</td>
-                      <td>Дата перфорации</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>36</td>
-                      <td>Действующие интервалы перфорации</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>37</td>
-                      <td>Дебит жидкости, м3/сут (режим/факт)</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>38</td>
-                      <td>Обводненность, % (режим/факт)</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>39</td>
-                      <td>Дебит нефти, т/сут (режим/факт)</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>40</td>
-                      <td>Дата последнего КРС</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>41</td>
-                      <td>Дата проведения ПФП нагн. скважины</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>42</td>
-                      <td>Дата проведения ГРП</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>43</td>
-                      <td>Дата последнего ПРС</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>44</td>
-                      <td>Дата последнего ГИС</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>45</td>
-                      <td>Дата последнего ГДИС</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>46</td>
-                      <td>Результат ГДМ</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>47</td>
-                      <td>Длина хода при проведении ГДМ</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>48</td>
-                      <td>Число качаний при проведении ГДМ</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>49</td>
-                      <td>Динамический уровень</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>50</td>
-                      <td>Статический уровень</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>51</td>
-                      <td>Рпл/(дата замера)</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>52</td>
-                      <td>Рпл (Сл. ГДИС)/(дата замера)</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>53</td>
-                      <td>Рзаб/(дата замера)</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>54</td>
-                      <td>Рзатр(дин), атм</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>55</td>
-                      <td>Рзатр(стат)</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>56</td>
-                      <td>Примечание</td>
-                      <td></td>
                     </tr>
                   </table>
                 </div>
@@ -510,28 +213,38 @@ export default {
   data() {
     return {
       options: [],
-      well: null,
-      tech: null,
-      wellName: null,
-      wellType: null,
-      wellExpl: null,
-      wellCategory: null,
-      tubeTom: null,
-      org: null,
-      geo: null,
-      wellStatus: null,
       graph: null,
       activeFormCode: null,
       loading: false,
       isLeftColumnFolded: false,
       isRightColumnFolded: false,
       isBothColumnFolded: false,
-      allData: null,
-      forms: forms
+      well: null,
+      popup: false,
+      wellStatus: null,
+      wellCategory: null,
+      wellCategory_last: null,
+      wellExpl: null,
+      tubeNom: null,
+      wellType: null,
+      tubeNomOd: null,
+      wellTechs: null,
+      wellTechsName: null,
+      wellTechsTap: null,
+      wellUwi: null,
+      wellGeo: null,
+      WellTech: null,
+      wellOrg: null,
+      wellOrgName: null,
+      wellSaptialObjectX: null,
+      wellSaptialObjectY: null,
+      wellSaptialObjectBottomX: null,
+      wellSaptialObjectBottomY: null,
+      actualBottomHole: null,
+      forms: forms,
     }
   },
   mounted() {
-
   },
   methods: {
     onColumnFoldingEvent(method) {
@@ -562,28 +275,272 @@ export default {
     ),
     selectWell(well) {
       this.loading = true
-      this.axios.get(this.localeUrl(`/api/bigdata/wells/${well.id}`)).then(({data}) => {
+      this.axios.get(this.localeUrl(`/api/bigdata/wells/${well.id}/wellInfo`)).then(({data}) => {
         try {
-          this.tech = data.techs
-          this.org = data.orgs
-          this.geo = data.geo[0]
-          this.wellName = data.uwi
-          this.allData = data
-          this.wellType = data.well_type[0].name_ru
-          this.wellStatus = data.status[data.status.length - 1] // уточнить, какой именно статус взять
-          this.wellExpl = data.well_expl[0]
-          this.tubeTom = data.tube_nom[0]
-          this.wellCategory = data.category[0]
-          this.well = data.well[0]
-
-          this.loading = false
+          this.wellStatus = data.status
+          this.wellCategory = data.category
+          this.wellCategory_last = data.category_last
+          this.wellExpl = data.well_expl
+          this.wellTechs = data.techs
+          this.wellTechsName = this.getMultipleValues(data.techs, 'name_ru')
+          this.wellTechsTap = this.getMultipleValues(data.techs, 'tap')
+          this.wellType = data.well_type
+          this.wellOrg = data.org
+          this.wellOrgName = this.getMultipleValues(data.org, 'name_ru')
+          this.wellGeo = data.geo
+          this.tubeNom = data.tube_nom
+          this.tubeNomOd = this.getMultipleValues(data.tube_nom, 'od')
+          this.well = data.well
+          this.wellUwi = data.well.uwi
+          if (data.spatial_object.coord_point != null) {
+            data = data.spatial_object.coord_point.replace('(', '').replace(')', '')
+            data = data.split(',')
+            this.wellSaptialObjectX = data[0]
+            this.wellSaptialObjectY = data[1]
+          }
+          if (data.spatial_object_bottom.coord_point != null) {
+            data = data.spatial_object_bottom.coord_point.replace('(', '').replace(')', '')
+            data = data.split(',')
+            this.wellSaptialObjectBottomX = data[0]
+            this.wellSaptialObjectBottomY = data[1]
+          }
+          this.actualBottomHole = data.actual_bottom_hole.pivot.depth
         } catch (e) {
           this.loading = false
         }
+        this.loading = false
+        this.setTableData()
       })
+    },
+
+    setTableData() {
+      for (let i = 0; i < this.tableData.length; i++) {
+        if (this.tableData[i].method === 'neighbors') {
+          try {
+            if (this.tableData[i].neigbor_1 != null) {
+              this.tableData[i].data += this.tableData[i].neigbor_1
+              this.tableData[i].data += ' - '
+              this.tableData[i].data += this.tableData[i].neigbor_2
+            }
+          } catch (e) {
+          }
+        } else if (this.tableData[i].method === 'trimToDate') {
+          try {
+            this.tableData[i].data = this.tableData[i].description | moment("dddd, MMMM Do YYYY")
+          } catch (e) {
+          }
+        } else {
+          try {
+            this.tableData[i].data = this.tableData[i].description
+          } catch (e) {
+          }
+        }
+      }
+    },
+    getMultipleValues(objectName, objectKey) {
+      let value = ''
+      for (let i = 0; i < Object.keys(objectName).length; i++) {
+        if (i + 1 < Object.keys(objectName).length) {
+          value += objectName[i].[objectKey] + ' / '
+        } else {
+          value += objectName[i].[objectKey]
+        }
+      }
+      return (value)
     },
     switchFormByCode(formCode) {
       this.activeFormCode = formCode
+    },
+    setForm(formCode) {
+      this.activeFormCode = formCode
+    }
+  },
+  computed: {
+    tableData() {
+      return [
+        {
+          'description': this.wellUwi,
+          'method': null,
+          'name': 'Скважина',
+          'data': ''
+        },
+        {
+          'description': this.wellType.name_ru,
+          'method': null,
+          'name': 'Вид скважины',
+          'data': ''
+        },
+        {
+          'description': this.wellGeo.name_ru,
+          'method': null,
+          'name': 'Месторождение',
+          'data': ''
+        },
+        {
+          'description': this.wellGeo.name_ru,
+          'method': null,
+          'name': 'Горизонт / Pнас, атм',
+          'data': ''
+        },
+        {
+          'description': this.well.rte,
+          'method': null,
+          'name': 'H ротора',
+          'data': ''
+        },
+        {
+          'description': this.wellTechsName,
+          'method': null,
+          'name': 'Тех. структура',
+          'data': ''
+        },
+        {
+          'description': this.wellTechsTap,
+          'method': null,
+          'name': 'Отвод',
+          'data': ''
+        },
+        {
+          'description': this.wellTechsName,
+          'method': null,
+          'name': 'ГУ/Ряд',
+          'data': ''
+        },
+        {
+          'description': this.wellOrgName,
+          'method': null,
+          'name': 'Орг. структура',
+          'data': ''
+        },
+        {
+          'description': null,
+          'method': null,
+          'name': 'Влияющие скважины',
+          'data': ''
+        },
+        {
+          'description': this.wellSaptialObjectX,
+          'method': null,
+          'name': 'Координаты X (устья)',
+          'data': ''
+        },
+        {
+          'description': this.wellSaptialObjectY,
+          'method': null,
+          'name': 'Координаты Y (устья)',
+          'data': ''
+        },
+        {
+          'description': this.wellSaptialObjectBottomX,
+          'method': null,
+          'name': 'Координаты забоя X',
+          'data': ''
+        },
+        {
+          'description': this.wellSaptialObjectBottomY,
+          'method': null,
+          'name': 'Координаты забоя Y',
+          'data': ''
+        },
+        {
+          'description': this.wellCategory.name_ru,
+          'method': null,
+          'name': 'Назначение скважин по проекту',
+          'data': ''
+        },
+        {
+          'description': this.wellCategory_last.name_ru,
+          'method': null,
+          'name': 'Категория',
+          'data': ''
+        },
+        {
+          'description': '',
+          'method': 'neighbors',
+          'neigbor_1': this.well.drill_start_date,
+          'neigbor_2': this.well.drill_end_date,
+          'name': 'Период бурения',
+          'data': ''
+        },
+        {
+          'description': this.wellExpl.pivot.dbeg,
+          'method': 'trimToDate',
+          'name': 'Дата ввода в эксплуатацию',
+          'data': ''
+        },
+        {
+          'description': this.wellStatus.name_ru,
+          'method': null,
+          'name': 'Состояние',
+          'data': ''
+        },
+        {
+          'description': this.wellExpl.name_ru,
+          'method': null,
+          'name': 'Способ эксплуатации',
+          'data': ''
+        },
+        {
+          'description': '',
+          'method': null,
+          'name': 'Тип УО / наличие эксц. болта',
+          'data': ''
+        },
+        {
+          'description': this.tubeNomOd,
+          'method': null,
+          'name': 'Диаметр экспл. колонны / доп. экспл. колонны, мм',
+          'data': ''
+        },
+        {
+          'description': '',
+          'method': null,
+          'name': 'Тип колонной головки / размеры',
+          'data': ''
+        },
+        {
+          'description': '',
+          'method': null,
+          'name': 'Глубина спуска насоса (м)',
+          'data': ''
+        },
+        {
+          'description': '',
+          'method': null,
+          'name': 'Код насоса',
+          'data': ''
+        },
+        {
+          'description': '',
+          'method': null,
+          'name': 'Диаметр насоса (мм)',
+          'data': ''
+        },
+        {
+          'description': '',
+          'method': null,
+          'name': 'Глубина спуска пакера',
+          'data': ''
+        },
+        {
+          'description': '',
+          'method': null,
+          'name': 'Тип СК',
+          'data': ''
+        },
+        {
+          'description': '',
+          'method': null,
+          'name': 'длина хода (м)',
+          'data': ''
+        },
+        {
+          'description': this.actualBottomHole,
+          'method': null,
+          'name': 'Фактический забой/(дата отбивки)',
+          'data': ''
+        },
+      ]
     }
   }
 }
