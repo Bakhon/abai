@@ -1125,12 +1125,12 @@
                             <td>{{trans('pgno.npv')}}</td>
                             <td>
                               {{
-                              Math.round(expAnalysisData.npvTable1.npv / 1000000)
+                              (expAnalysisData.npvTable1.npv / 1000000).toFixed(2)
                             }}
                             </td>
                             <td>
                               {{
-                              Math.round(expAnalysisData.npvTable2.npv / 1000000)
+                              (expAnalysisData.npvTable2.npv  / 1000000).toFixed(2)
                             }}
                             </td>
                           </tr>
@@ -2192,7 +2192,7 @@
 }
 
 .long__box {
-  width: 60px;
+  width: 80px !important;
   padding-left: 0px !important;
 }
 

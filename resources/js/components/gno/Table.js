@@ -29,6 +29,7 @@ export default {
   data: function () {
     return {
       404: require('./images/404.svg'),
+      isSkError: false,
       nearDist: 1000,
       perms: this.params,
       isPermission: false,
@@ -301,7 +302,7 @@ export default {
       mech_sep: null,
       sep_value: null,
       mech_sep_value: 50,
-      pBuf: null,
+      pBuf: 4,
       ao: null,
       orgs: null,
       nkt: null,
@@ -538,6 +539,7 @@ export default {
 
     onSubmitParams() {
       this.$modal.hide('modalTabs')
+      this.postCurveData()
     },
 
     updateWellNum(event) {
@@ -1055,9 +1057,9 @@ export default {
     },
 
     setDefaultStoreValues() {
-      this.$store.commit("UPDATE_SPM_MIN", 3)
-      this.$store.commit("UPDATE_SPM_MAX", 8)
-      this.$store.commit("UPDATE_LEN_MIN", 2)
+      this.$store.commit("UPDATE_SPM_MIN", 4)
+      this.$store.commit("UPDATE_SPM_MAX", 7)
+      this.$store.commit("UPDATE_LEN_MIN", 2.5)
       this.$store.commit("UPDATE_LEN_MAX", 3)
       this.$store.commit("UPDATE_KPOD", 0.6)
       this.$store.commit("UPDATE_KOMPONOVKA", ["hvostovik"])
@@ -1071,7 +1073,7 @@ export default {
       this.$store.commit("UPDATE_GROUP_POSAD", "2")
       this.$store.commit("UPDATE_HEAVYDOWN", true)
       this.$store.commit("UPDATE_STUP_COLUMNS", 2)
-      this.$store.commit("UPDATE_MARKSHTANG", "30ХМ(А) (НсУ)")
+      this.$store.commit("UPDATE_MARKSHTANG", "15Х2ГМФ (НВО)")
     },
 
     setStoreValuesToZero() {
@@ -1303,9 +1305,10 @@ export default {
               })           
             }
             if(data['check_sk'] == "error") {
+              this.isSkError = true
               this.$notify({
                 message: this.trans('pgno.notify_error_sk'),
-                type: 'error',
+                type: 'warning',
                 size: 'sm',
                 timeout: 8000
               })   
@@ -1578,7 +1581,14 @@ export default {
     },
 
     onPgnoClick() {
-      if(this.qlPot * 1 < this.qlCelValue.split(' ')[0] * 1 && this.CelButton == 'ql'){
+      if(this.isSkError){
+        this.$notify({
+          message: this.trans('pgno.notify_error_sk'),
+          type: 'error',
+          size: 'sm',
+          timeout: 8000
+        })
+      } else if(this.qlPot * 1 < this.qlCelValue.split(' ')[0] * 1 && this.CelButton == 'ql'){
         this.$notify({
           message: this.trans('pgno.notify_cel_rezhim_more_perf'),
           type: 'error',
@@ -1609,6 +1619,7 @@ export default {
             this.CelValue = this.piCelValue
           }
           if(this.isVisibleChart) {
+            this.isLoading = true;
             let uri = "http://172.20.103.187:7575/api/pgno/shgn";
             this.prepareData()
             this.axios.post(uri, this.postdata).then((response) => {

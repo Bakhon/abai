@@ -13,12 +13,14 @@
                 "code": "dbeg",
                 "type": "date",
                 "title": "date_start",
-                "validation": "required|date"
+                "validation": "required|date",
+                "callbacks": {
+                  "fillCalculatedFields": ""
+                }
               },
               {
-                "code": "zone",
+                "code": "old_zone",
                 "type": "calc",
-                "formula": "$zone$",
                 "is_editable": false,
                 "title": "ch_zone",
                 "validation": ""

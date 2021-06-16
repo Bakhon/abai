@@ -3,9 +3,9 @@ import axios from 'axios'
 const pgno = {
     state: {
         hPump: null,
-        spmMin: 3,
-        spmMax: 8,
-        strokeLenMin: 2,
+        spmMin: 4,
+        spmMax: 7,
+        strokeLenMin: 2.5,
         strokeLenMax: 3,
         kpodMin: 0.6,
         pintakeMin: 30,
@@ -19,7 +19,7 @@ const pgno = {
         dmrRods: ["19", "22", "25"],
         komponovka: ["hvostovik"],
         stupColumns: "2",
-        markShtang: "30ХМ(А) (НсУ)",
+        markShtang: "15Х2ГМФ (НВО)",
     },
     mutations: {
       UPDATE_HEAVYDOWN(state, val) {
