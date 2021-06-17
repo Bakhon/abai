@@ -340,11 +340,6 @@ class VisualCenterController extends Controller
             ->with('importDecreaseReason')
             ->get()
             ->toArray();
-        //if (empty($factDataByPeriod)) {
-            //var_dump($factDataByPeriod);
-            //var_dump($startPeriod->toDateString());
-            //var_dump($endPeriod->toDateString());
-       // }
 
         $planData = $this->getPlanDetails();
         $comparedData = $this->getComparedPlanFactData($planData,$factDataByPeriod);
