@@ -242,6 +242,11 @@ export default {
         by: null,
         desc: false
       },
+      currentFilter: null,
+      currentSort: {
+        by: null,
+        desc: false
+      },
       loading: false,
       currentPage: 1,
       filters: {},
@@ -255,8 +260,10 @@ export default {
     }
   },
   mounted() {
-    this.initFilters()
-    this.loadData()
+    this.initCurrentFilter();
+    this.initCurrentSort();
+    this.initFilters();
+    this.loadData();
   },
   computed: {
     activeFilters() {
@@ -275,7 +282,16 @@ export default {
         "table-responsive": this.isResponsive,
         'with-pagination': this.omgca && this.omgca.total > this.omgca.per_page
       }
-    }
+    },
+    isCurrentSort(){
+      if (typeof this.params.filter !== 'undefined' &&
+          this.params.filter &&
+          typeof this.params.filter.order_by !== 'undefined' &&
+          typeof this.params.filter.order_desc !== 'undefined') {
+        return true;
+      }
+      return false;
+    },
   },
   methods: {
     showFilter(code) {
@@ -293,7 +309,7 @@ export default {
       })
     },
     isFilterActive(code) {
-      if (this.params.fields[code].type === 'date') {
+      if (this.params.fields[code].type === 'date' && typeof this.filters[code].value == 'object') {
         return !!this.filters[code].value.from || !!this.filters[code].value.to
       } else {
         return !!this.filters[code].value
@@ -437,23 +453,32 @@ export default {
     },
     resetFilters() {
       this.$delete(this.params, 'filter');
-      this.sort = {
+      this.currentSort = this.sort = {
         by: null,
         desc: false
       };
+      this.currentFilter = null;
       this.initFilters()
       this.loadData()
     },
-    initFilters() {
-      if (!this.params) {
-        return false;
-      }
-
-      let currentFilter;
+    initCurrentFilter () {
       if (typeof this.params.filter !== 'undefined' &&
           this.params.filter &&
           typeof this.params.filter.filter !== 'undefined') {
-        currentFilter = this.params.filter.filter;
+        this.currentFilter = this.params.filter.filter;
+      }
+    },
+    initCurrentSort() {
+      if (this.isCurrentSort) {
+        this.currentSort = {
+          by: this.params.filter.order_by,
+          desc: Boolean(parseInt(this.params.filter.order_desc))
+        }
+      }
+    },
+    initFilters() {
+      if (!this.params) {
+        return;
       }
 
       Object.entries(this.params.fields).forEach(([code, field]) => {
@@ -462,22 +487,21 @@ export default {
           value: field.type === 'date' ? {from: null, to: null} : null
         }
 
-        if (currentFilter && currentFilter[code] !== 'undefined') {
-          filter.value = currentFilter[code];
+        if (this.currentFilter && typeof this.currentFilter[code] !== 'undefined') {
+          if (field.type === 'date') {
+            filter.value = JSON.parse(this.currentFilter[code])
+          } else {
+            filter.value = this.currentFilter[code];
+          }
+
         }
 
         this.$set(this.filters, code, filter)
       })
 
 
-      if (currentFilter) {
-        
-        if (typeof this.params.filter.order_by !== 'undefined' &&
-            typeof this.params.filter.order_desc !== 'undefined') {
-          this.sort.by = this.params.filter.order_by;
-          this.sort.desc = Boolean(parseInt(this.params.filter.order_desc));
-        }
-
+      if (this.isCurrentSort) {
+        this.sort = this.currentSort;
         this.currentPage = this.params.filter.page;
       }
     }
