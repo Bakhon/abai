@@ -70,7 +70,7 @@
                       </span>
                 </template>
               </template>
-              <template v-else-if="column.type === 'date'">
+              <template v-else-if="column.type === 'dict'">
                     <span class="value">
                       {{ row[column.code].date ? row[column.code].old_value : row[column.code].value }}
                     </span>
