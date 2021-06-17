@@ -340,14 +340,14 @@ class VisualCenterController extends Controller
         return response()->json($comparedData);
     }
 
-    public function getPlanDetails()
+    private function getPlanDetails()
     {
         $planData = DzoPlan::query()
             ->get();
         return $planData;
     }
 
-    public function getComparedPlanFactData($planData, $factData)
+    private function getComparedPlanFactData($planData, $factData)
     {
         $comparedData = [];
         foreach ($factData as $item) {
@@ -359,7 +359,7 @@ class VisualCenterController extends Controller
         return $comparedData;
     }
 
-    public function getPlanForRecord($dzoName, $date, $planData)
+    private function getPlanForRecord($dzoName, $date, $planData)
     {
         $searchedRecord = $planData->where('dzo',$dzoName)->where('date',$date);
         if ($searchedRecord->count() > 0) {
@@ -387,7 +387,7 @@ class VisualCenterController extends Controller
             ->toArray();
     }
 
-    public function deleteDuplicateFields($planRecord)
+    private function deleteDuplicateFields($planRecord)
     {
         $fields = [
             0 => "dzo",

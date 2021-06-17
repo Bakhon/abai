@@ -117,8 +117,7 @@ export default {
                     item['scale_inhibitor_plan'] = self.dzoMonthlyPlans[planIndex].plan_chem_prod_zakacka_ingibator_soleotloj;
                 }
             });
-            console.log('-temporaryChemistryDetails')
-            console.log(temporaryChemistryDetails)
+
             this.updateChemistryWidgetTable(temporaryChemistryDetails);
             this.chemistryChartData = this.getChemistryWidgetChartData(temporaryChemistryDetails);
         },
@@ -158,8 +157,6 @@ export default {
         },
 
         getChemistryFactSum(tableData) {
-            console.log('-tableData')
-            console.log(tableData)
             let totalChemistryFact = 0;
             if (tableData.length > 0) {
                 _.forEach(this.chemistryData, function(item) {
@@ -172,7 +169,7 @@ export default {
                     }
                 });
             }
-            console.log(this.chemistryData)
+
             return totalChemistryFact;
         },
 

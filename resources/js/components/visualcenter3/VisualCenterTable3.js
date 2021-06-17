@@ -200,7 +200,6 @@ export default {
                 uri = this.localeUrl("/get-production-details");
             }
             const response = await axios.get(uri,{params:queryOptions});
-
             if (response.status === 200) {
                 return response.data;
             }
@@ -336,15 +335,16 @@ export default {
             if (!this.isProductionDetailsActive) {
                 this.chemistryData = this.getChemistryData(dataWithMay);
                 this.chemistryChartData = this.getChemistryChartData(dataWithMay);
-
             }
-            if (this.otmData.length >= 4) {
-                this.otmWidgetData.drillingWells=this.otmData[0]['fact'];
+            if (!this.isProductionDetailsActive && this.otmData.length > 3) {
                 this.otmWidgetData.krsWells=this.otmData[2]['fact'];
                 this.otmWidgetData.prsWells=this.otmData[3]['fact'];
             }
+            if (this.otmData.length >= 4) {
+                this.otmWidgetData.drillingWells=this.otmData[0]['fact'];
+            }
 
-            if (this.otmData.length != 0) {
+            if (this.otmData.length !== 0) {
                 this.chemistryDataFactSumm= _.reduce(
                     this.otmData,
                     function (memo, item) {

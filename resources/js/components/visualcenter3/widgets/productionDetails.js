@@ -22,20 +22,27 @@ export default {
                 };
                 _.forEach(Object.keys(integrationFieldsMapping), function(key) {
                     let paramName = integrationFieldsMapping[key];
-                    if (['import_downtime_reason','import_decrease_reason'].includes(key) && item[key] !== null) {
-                        temporaryData = self.getUpdatedCategoryParams(item[key],paramName,temporaryData);
-                    } else if (['natural_gas_production_fact','associated_gas_production_fact'].includes(key)) {
-                        temporaryData[paramName] = self.getUpdateGasParam(temporaryData[paramName],item[key]);
-                    } else {
-                        temporaryData[paramName] = item[key];
-                    }
+                    temporaryData = self.getDataUpdatedByMapping(key,paramName,temporaryData,item);
                 });
                 updatedData.push(temporaryData);
             });
             return updatedData;
         },
 
-        getUpdateGasParam(param,inputData) {
+        getDataUpdatedByMapping(key,paramName,temporaryData,item) {
+            let categories = ['import_downtime_reason','import_decrease_reason'];
+            let gasFields = ['natural_gas_production_fact','associated_gas_production_fact'];
+            if (categories.includes(key) && item[key] !== null) {
+                temporaryData = this.getUpdatedCategoryParams(item[key],paramName,temporaryData);
+            } else if (gasFields.includes(key)) {
+                temporaryData[paramName] = this.getUpdatedGasParam(temporaryData[paramName],item[key]);
+            } else {
+                temporaryData[paramName] = item[key];
+            }
+            return temporaryData;
+        },
+
+        getUpdatedGasParam(param,inputData) {
             if (!param) {
                 return inputData;
             } else {
