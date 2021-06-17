@@ -1,6 +1,6 @@
 <template>
-  <div class="row visualcenter-page-container mx-0">
-    <div class="col-lg-10 middle-block-columns pr-2">
+  <div class="row visualcenter-page-container m-0">
+    <div class="col-lg-10 px-0">
       <horizontal-indicators
         :dateStart="dateStart"
         :dateEnd="dateEnd"
@@ -227,7 +227,7 @@
         </div>
       </div>
     </div>
-    <div class="col-12 col-lg-2 middle-block-columns" v-if="dateStart">
+    <div class="col-12 col-lg-2 px-0 pl-2" v-if="dateStart">
       <div class="second-column-container">
         <vertical-indicators
           :dateStart="dateStart"
@@ -236,7 +236,6 @@
         ></vertical-indicators>
       </div>
     </div>
-    <!--<cat-loader />-->
   </div>
 </template>
 <script src="./budgetExecution.js"></script>

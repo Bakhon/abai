@@ -76,36 +76,49 @@ export default {
       this.refreshData()
     },   
     numberOfMonthsSelectedFromYearBegginning: function (newValue) {
-      if (newValue !== 0) {
+      if (newValue === 0) {
+        return
+      }
         this.dateStart = new Date(2020, 0, 1);
         this.dateEnd = new Date(2020, newValue, 1);    
         this.refreshData();
-        this.numberOfMonthsSelected = this.numberOfQuaterSelected = this.numberOfMonths = 0;
-      }
+        this.numberOfMonthsSelected = 
+        this.numberOfQuaterSelected = 
+        this.numberOfMonths = 0;      
     },
     numberOfMonthsSelected: function (newValue) {
-      if (newValue !== 0) {
+      if (newValue === 0) {
+        return
+      }
         this.dateStart = new Date(2020, newValue - 1, 1);
         this.dateEnd = new Date(2020, newValue, 1);
         this.refreshData();
-        this.numberOfMonthsSelectedFromYearBegginning= this.numberOfQuaterSelected = this.numberOfMonths = 0;
-      }
+        this.numberOfMonthsSelectedFromYearBegginning= 
+        this.numberOfQuaterSelected = 
+        this.numberOfMonths = 0;
+      
     },
     numberOfQuaterSelected: function (newValue) {
-      if (newValue !== 0) {
+      if (newValue === 0) {
+        return
+      }
         this.dateStart = new Date(2020, newValue - 1, 1);
         this.dateEnd = new Date(2020, newValue + 2, 1);
         this.refreshData();
-        this.numberOfMonthsSelectedFromYearBegginning= this.numberOfMonthsSelected = this.numberOfMonths = 0;
-      }
+        this.numberOfMonthsSelectedFromYearBegginning= 
+        this.numberOfMonthsSelected = 
+        this.numberOfMonths = 0;      
     },
     numberOfMonths: function (newValue) {
-      if (newValue !== 0) {
+      if (newValue === 0) {
+        return
+      }
         this.dateStart = new Date(2020, this.numberOfActualMonth, 1);
         this.dateEnd = new Date(2020, this.numberOfActualMonth + 1, 1);
         this.refreshData();
-        this.numberOfMonthsSelectedFromYearBegginning= this.numberOfMonthsSelected = this.numberOfQuaterSelected = 0;
-      }
+        this.numberOfMonthsSelectedFromYearBegginning= 
+        this.numberOfMonthsSelected = 
+        this.numberOfQuaterSelected = 0;      
     },
 
   },
@@ -118,7 +131,6 @@ export default {
             this.numberOfActualMonth = response.data - 1;
             this.numberOfMonths = 1;
           }
-       })    
-       console.log(this.getCompany());
+       })       
   },  
 }

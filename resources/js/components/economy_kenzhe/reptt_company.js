@@ -51,8 +51,9 @@ export default {
    changeColumn(obj) {
     if (obj.columnIndex > 4) {
         return 'reptt-column-blue reptt-cell'
-    } else
+    } else {
         return obj.columnIndex === 0 ? 'reptt-column-zero reptt-column reptt-cell' : 'reptt-column reptt-cell';
+    }
 },
     distributionSumOverTree(attributeName, year) {
       this.repttData.reptt.reduce(function x(r, a) {
@@ -73,9 +74,8 @@ export default {
       }
       return '';
     },
-    absoluteDeviation(currentYearPlanValue, currentYearFactValue) {
-      let result = (Math.abs(currentYearPlanValue - currentYearFactValue)).toFixed(1);
-      return result;
+    absoluteDeviation(currentYearPlanValue, currentYearFactValue) {    
+      return (Math.abs(currentYearPlanValue - currentYearFactValue)).toFixed(1);
     },
     relativeDeviation(currentYearPlanValue, currentYearFactValue) {
       let result = (Math.abs(currentYearPlanValue - currentYearFactValue) / currentYearPlanValue * 100).toFixed(1);
@@ -103,38 +103,37 @@ export default {
       });
     },
     formatter: (data) => {
-      data=data / 1000
-         data= data.toLocaleString();
-            return  data  
-  },
+      data=data / 1000    
+            return  data.toLocaleString();  
+     },
 
-  pad(d) {
-    return (d < 10) ? '0' + d.toString() : d.toString();
-  },  
+    pad(d) {
+      return (d < 10) ? '0' + d.toString() : d.toString();
+    },  
 
-  listBetweenMonths() {
-    let arr = [ {title: this.trans('economy_pf.repttTable.sinceTheBeginningOfTheYear'), value: '01'},
-                {title: this.trans('economy_pf.months.0')+' - '+ this.trans('economy_pf.months.1'), value: '02'}];
-    for (let i = 2; i < 12; i++) {
-        arr.push({
-           title: this.trans('economy_pf.months.0')+' - '+ this.trans('economy_pf.months.' + (i)),
-            value: (this.pad(i + 1))
-        });
-    } 
-    return arr;
-  },
+    listBetweenMonths() {
+      let arr = [ {title: this.trans('economy_pf.repttTable.sinceTheBeginningOfTheYear'), value: '01'},
+                  {title: this.trans('economy_pf.months.0')+' - '+ this.trans('economy_pf.months.1'), value: '02'}];
+      for (let i = 2; i < 12; i++) {
+          arr.push({
+            title: this.trans('economy_pf.months.0')+' - '+ this.trans('economy_pf.months.' + (i)),
+              value: (this.pad(i + 1))
+          });
+      } 
+      return arr;
+    },
 
-  listMonths() {
-    let arr = [{title: this.trans('economy_pf.perMonth'), value: '00'}];
-    for (let i = 0; i < 12; i++) {
-        arr.push({
-            title: this.trans('economy_pf.months.' + i),
-            value: (this.pad(i + 1))
-        });
-    } 
-    return arr;
-  },
-  },
+    listMonths() {
+      let arr = [{title: this.trans('economy_pf.perMonth'), value: '00'}];
+      for (let i = 0; i < 12; i++) {
+          arr.push({
+              title: this.trans('economy_pf.months.' + i),
+              value: (this.pad(i + 1))
+          });
+      } 
+      return arr;
+    },
+},
   mounted() {    
     let yearLast = 2019;
     let day = "30.01.19";
