@@ -8,7 +8,7 @@
       <div
           v-if="hasChildren"
           class="arrow-right"
-          :class="{ active: isOpen }"
+          :class="{ 'arrow-active': isOpen }"
       ></div>
     </div>
     <ul class="hierarchy"  v-if="isOpen">
@@ -153,7 +153,7 @@ export default {
   transition: 0.3s ease-in-out;
 }
 
-.active {
+.arrow-active {
   transform: rotate(90deg);
   -webkit-transform: rotate(90deg);
   -ms-transform: rotate(90deg);
