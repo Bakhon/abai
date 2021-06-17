@@ -10,7 +10,6 @@
             :key="treeData.id"
             :handle-click="nodeClick"
             :get-wells="getWells"
-            :key="treeData.id"
             :isShowCheckboxes="false"
         ></tree-view>
       </div>
