@@ -243,10 +243,7 @@ export default {
         desc: false
       },
       currentFilter: null,
-      currentSort: {
-        by: null,
-        desc: false
-      },
+      currentSort: null,
       loading: false,
       currentPage: 1,
       filters: {},
@@ -282,16 +279,7 @@ export default {
         "table-responsive": this.isResponsive,
         'with-pagination': this.omgca && this.omgca.total > this.omgca.per_page
       }
-    },
-    isCurrentSort(){
-      if (typeof this.params.filter !== 'undefined' &&
-          this.params.filter &&
-          typeof this.params.filter.order_by !== 'undefined' &&
-          typeof this.params.filter.order_desc !== 'undefined') {
-        return true;
-      }
-      return false;
-    },
+    }
   },
   methods: {
     showFilter(code) {
@@ -453,11 +441,12 @@ export default {
     },
     resetFilters() {
       this.$delete(this.params, 'filter');
-      this.currentSort = this.sort = {
+      this.sort = {
         by: null,
         desc: false
       };
-      this.currentFilter = null;
+      this.initCurrentFilter();
+      this.initCurrentSort();
       this.initFilters()
       this.loadData()
     },
@@ -466,14 +455,21 @@ export default {
           this.params.filter &&
           typeof this.params.filter.filter !== 'undefined') {
         this.currentFilter = this.params.filter.filter;
+      } else {
+        this.currentFilter = null;
       }
     },
     initCurrentSort() {
-      if (this.isCurrentSort) {
+      if (typeof this.params.filter !== 'undefined' &&
+          this.params.filter &&
+          typeof this.params.filter.order_by !== 'undefined' &&
+          typeof this.params.filter.order_desc !== 'undefined') {
         this.currentSort = {
           by: this.params.filter.order_by,
           desc: Boolean(parseInt(this.params.filter.order_desc))
         }
+      } else {
+        this.currentSort = null;
       }
     },
     initFilters() {
@@ -500,7 +496,7 @@ export default {
       })
 
 
-      if (this.isCurrentSort) {
+      if (this.currentSort) {
         this.sort = this.currentSort;
         this.currentPage = this.params.filter.page;
       }
