@@ -225,6 +225,17 @@ export default {
     },
     editRow(row, formCode = null) {
       if (!row) return false
+      if (this.form.custom_row_edit) {
+
+        this.axios.get(this.localeUrl(`/api/bigdata/forms/${this.code}/form-by-row`), {params: {row: this.selectedRow}}).then(({data}) => {
+          this.formParams = this.forms.find(form => form.code === data.form)
+          this.formValues = row
+          this.isFormOpened = true
+        })
+
+        return
+      }
+
       this.formParams = this.forms.find(form => form.code === (formCode || this.code))
       this.formValues = row
       this.isFormOpened = true
