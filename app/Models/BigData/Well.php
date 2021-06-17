@@ -52,34 +52,74 @@ class Well extends TBDModel
         return $this->belongsToMany(WellCategory::class, 'prod.well_category', 'well', 'category');
     }
 
-    public function well_type()
+    public function wellType()
     {
         return $this->belongsToMany(WellType::class, 'dict.well', 'id', 'well_type');
     }
 
-    public function well_expl()
+    public function wellExpl()
     {
         return $this->belongsToMany(WellExplType::class, 'prod.well_expl', 'well', 'expl');
     }
 
-    public function tube_nom()
+    public function tubeNom()
     {
         return $this->belongsToMany(TubeNom::class, 'prod.well_constr', 'well', 'casing_nom');
     }
 
-    public function spatial_object()
+    public function spatialObject()
     {
         return $this->belongsToMany(SpatialObject::class, 'dict.well', 'id', 'whc');
     }
 
-    public function spatial_object_bottom()
+    public function spatialObjectBottom()
     {
         return $this->belongsToMany(SpatialObject::class, 'dict.well', 'id', 'bottom_coord');
     }
 
-    public function bottom_hole()
+    public function bottomHole()
     {
         return $this->belongsToMany(BottomHoleType::class, 'prod.bottom_hole', 'well', 'bottom_hole_type');
+    }
+
+    public function labResearchValue()
+    {
+        return $this->belongsToMany(LabResearchValue::class, 'prod.lab_research', 'well', 'id', 'id', 'research');
+    }
+
+    public function wellPerfActual()
+    {
+        return $this->belongsToMany(WellPerfActual::class, 'prod.well_perf', 'well', 'id');
+    }
+
+    public function techModeProdOil()
+    {
+        return $this->hasMany(TechModeProdOil::class, 'well', 'id');
+    }
+
+    public function techModeInj()
+    {
+        return $this->hasMany(TechModeInj::class, 'well', 'id');
+    }
+
+    public function measLiq()
+    {
+        return $this->hasMany(MeasLiq::class, 'well', 'id');
+    }
+
+    public function measWaterCut()
+    {
+        return $this->hasMany(MeasWaterCut::class, 'well', 'id');
+    }
+
+    public function wellWorkover()
+    {
+        return $this->hasMany(WellWorkover::class, 'well', 'id');
+    }
+
+    public function wellTreatment()
+    {
+        return $this->hasMany(WellTreatment::class, 'well', 'id');
     }
 
     public function scopeActive($query, $date)
