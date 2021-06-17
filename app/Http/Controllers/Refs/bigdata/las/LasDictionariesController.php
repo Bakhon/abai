@@ -52,11 +52,16 @@ class LasDictionariesController extends CrudController
             $params['links']['create'] = route($this->link.'.create');
         }
 
+        $params['model_name'] = 'las_dictionaries';
+        $params['filter'] = session('las_dictionaries_filter');
+
         return view('bigdata.las_dictionaries.index', compact('params'));
     }
 
     public function list(IndexTableRequest $request)
     {
+        parent::list($request);
+
         $query = $this->model::query();
         $data = $this
             ->getFilteredQuery($request->validated(), $query)

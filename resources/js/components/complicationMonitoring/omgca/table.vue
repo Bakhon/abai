@@ -335,6 +335,8 @@ export default {
         queryParams.calc_export = this.calcExport;
       }
 
+      queryParams.model_name = this.params.model_name;
+
       return queryParams
     },
     changePage(page = 1) {
@@ -434,6 +436,11 @@ export default {
       });
     },
     resetFilters() {
+      this.$delete(this.params, 'filter');
+      this.sort = {
+        by: null,
+        desc: false
+      };
       this.initFilters()
       this.loadData()
     },
@@ -444,8 +451,29 @@ export default {
             show: false,
             value: field.type === 'date' ? {from: null, to: null} : null
           }
+
+          if (typeof this.params.filter !== 'undefined' &&
+              this.params.filter &&
+              typeof this.params.filter.filter !== 'undefined' &&
+              typeof this.params.filter.filter[code] !== 'undefined') {
+            filter.value = this.params.filter.filter[code];
+          }
+
           this.$set(this.filters, code, filter)
         })
+
+
+        if (typeof this.params.filter !== 'undefined' &&
+            this.params.filter) {
+
+          if (typeof this.params.filter.order_by !== 'undefined' &&
+              typeof this.params.filter.order_desc !== 'undefined') {
+            this.sort.by = this.params.filter.order_by;
+            this.sort.desc = Boolean(parseInt(this.params.filter.order_desc));
+          }
+
+          this.currentPage = this.params.filter.page;
+        }
       }
     }
   },
