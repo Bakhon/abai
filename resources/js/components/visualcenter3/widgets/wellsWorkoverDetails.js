@@ -65,7 +65,6 @@ export default {
         },
 
         async switchWellsWorkoverPeriod(buttonType) {
-            this.$store.commit('globalloading/SET_LOADING', true);
             this.wellsWorkoverMonthlyPeriod = "";
             this.wellsWorkoverYearlyPeriod = "";
             this.wellsWorkoverPeriod = "";
@@ -75,7 +74,6 @@ export default {
             this.isWellsWorkoverPeriodSelected = this.isWellsWorkoverFewMonthsSelected();
             this.wellsWorkoverDetails = await this.getWellsWorkoverByMonth();
             await this.updateWellsWorkoverWidget();
-            this.$store.commit('globalloading/SET_LOADING', false);
         },
 
         isWellsWorkoverFewMonthsSelected() {

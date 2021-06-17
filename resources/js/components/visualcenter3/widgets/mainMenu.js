@@ -20,6 +20,7 @@ export default {
     },
     methods: {
         switchCategory(buttonName, planFieldName, factFieldName, metricName, categoryName, parentButton, childButton) {
+            this.$store.commit('globalloading/SET_LOADING', true);
             this.disableTargetCompanyFilter();
             if (!childButton) {
                 this.mainMenuButtonElementOptions = _.cloneDeep(mainMenuConfiguration);

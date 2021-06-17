@@ -326,15 +326,26 @@ class VisualCenterController extends Controller
 
     public function getProductionDetails(Request $request)
     {
-        $endPeriod = Carbon::parse($request->timestampToday)->addDays(1)->endOfDay();
-        $startPeriod = Carbon::parse($request->timestampEnd)->subDays(3)->startOfDay();
+        $endPeriod = Carbon::parse($request->timestampEnd)->endOfDay();
+        $startPeriod = Carbon::parse($request->timestampToday)->startOfDay();
+        $diff = $startPeriod->diffInDays($endPeriod);
+        if ($diff === 1) {
+            $startPeriod->subDays(1);
+        }
+
         $factDataByPeriod = DzoImportData::query()
-            ->whereDate('date','>=', $startPeriod)
+            ->whereDate('date','>', $startPeriod)
             ->whereDate('date','<=', $endPeriod)
             ->with('importDowntimeReason')
             ->with('importDecreaseReason')
             ->get()
             ->toArray();
+        //if (empty($factDataByPeriod)) {
+            //var_dump($factDataByPeriod);
+            //var_dump($startPeriod->toDateString());
+            //var_dump($endPeriod->toDateString());
+       // }
+
         $planData = $this->getPlanDetails();
         $comparedData = $this->getComparedPlanFactData($planData,$factDataByPeriod);
         return response()->json($comparedData);
