@@ -229,6 +229,7 @@ export default {
       forms: forms,
       wellUwi: null,
       well: {
+        id: null,
         'measWaterCut': {'water_cut': null},
         'status': {'name_ru': null},
         'category': {'name_ru': null},
@@ -323,6 +324,7 @@ export default {
       this.loading = true
       this.axios.get(this.localeUrl(`/api/bigdata/wells/${well.id}/wellInfo`)).then(({data}) => {
         try {
+          this.well.id = data.wellInfo.id
           this.wellUwi = data.wellInfo.uwi
           for (let i = 0; i < Object.keys(this.wellTransform).length; i++) {
             this.setWellObjectData(Object.keys(this.wellTransform)[i], Object.values(this.wellTransform)[i], data)
