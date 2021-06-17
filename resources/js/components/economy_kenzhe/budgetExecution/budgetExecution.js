@@ -82,8 +82,8 @@ export default {
         this.dateStart = new Date(2020, 0, 1);
         this.dateEnd = new Date(2020, newValue, 1);    
         this.refreshData();
-        this.numberOfMonthsSelected = 
-        this.numberOfQuaterSelected = 
+        this.numberOfMonthsSelected = 0;
+        this.numberOfQuaterSelected = 0;
         this.numberOfMonths = 0;      
     },
     numberOfMonthsSelected: function (newValue) {
@@ -93,8 +93,8 @@ export default {
         this.dateStart = new Date(2020, newValue - 1, 1);
         this.dateEnd = new Date(2020, newValue, 1);
         this.refreshData();
-        this.numberOfMonthsSelectedFromYearBegginning= 
-        this.numberOfQuaterSelected = 
+        this.numberOfMonthsSelectedFromYearBegginning= 0;
+        this.numberOfQuaterSelected = 0;
         this.numberOfMonths = 0;
       
     },
@@ -105,8 +105,8 @@ export default {
         this.dateStart = new Date(2020, newValue - 1, 1);
         this.dateEnd = new Date(2020, newValue + 2, 1);
         this.refreshData();
-        this.numberOfMonthsSelectedFromYearBegginning= 
-        this.numberOfMonthsSelected = 
+        this.numberOfMonthsSelectedFromYearBegginning= 0;
+        this.numberOfMonthsSelected = 0;
         this.numberOfMonths = 0;      
     },
     numberOfMonths: function (newValue) {
@@ -116,8 +116,8 @@ export default {
         this.dateStart = new Date(2020, this.numberOfActualMonth, 1);
         this.dateEnd = new Date(2020, this.numberOfActualMonth + 1, 1);
         this.refreshData();
-        this.numberOfMonthsSelectedFromYearBegginning= 
-        this.numberOfMonthsSelected = 
+        this.numberOfMonthsSelectedFromYearBegginning= 0;
+        this.numberOfMonthsSelected = 0;
         this.numberOfQuaterSelected = 0;      
     },
 
