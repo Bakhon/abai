@@ -10,7 +10,7 @@ export default {
     },
     methods: {
         getOtmData(arr) {
-            let otmData = _(arr)
+            let groupedOtm = _(arr)
                 .groupBy("data")
                 .map((__time, id) => ({
                     __time: id,
@@ -26,38 +26,38 @@ export default {
                 .value();
 
             let result = [];
-
+            let lastOtm = groupedOtm[0];
             result.push(
                 {
                     name: this.trans("visualcenter.otmIzBurenia"),
                     code: 'otm_iz_burenia_skv_fact',
-                    plan: otmData[0]['otm_iz_burenia_skv_plan'],
-                    fact: otmData[0]['otm_iz_burenia_skv_fact'],
-                    difference: otmData[0]['otm_iz_burenia_skv_fact'] - otmData[0]['otm_iz_burenia_skv_plan'],
+                    plan: lastOtm['otm_iz_burenia_skv_plan'],
+                    fact: lastOtm['otm_iz_burenia_skv_fact'],
+                    difference: lastOtm['otm_iz_burenia_skv_fact'] - lastOtm['otm_iz_burenia_skv_plan'],
                     metricSystem: this.trans("visualcenter.otmMetricSystemWells"),
                 },
                 {
                     name: this.trans("visualcenter.otmBurenieProhodka"),
                     code: 'otm_burenie_prohodka_fact',
-                    plan: otmData[0]['otm_burenie_prohodka_plan'],
-                    fact: otmData[0]['otm_burenie_prohodka_fact'],
-                    difference: otmData[0]['otm_burenie_prohodka_fact'] - otmData[0]['otm_burenie_prohodka_plan'],
+                    plan: lastOtm['otm_burenie_prohodka_plan'],
+                    fact: lastOtm['otm_burenie_prohodka_fact'],
+                    difference: lastOtm['otm_burenie_prohodka_fact'] - lastOtm['otm_burenie_prohodka_plan'],
                     metricSystem: this.trans("visualcenter.otmMetricSystemMeter"),
                 },
                 {
                     name: this.trans("visualcenter.otmKrsSkv"),
                     code: 'otm_krs_skv_fact',
-                    plan: otmData[0]['otm_krs_skv_plan'],
-                    fact: otmData[0]['otm_krs_skv_fact'],
-                    difference: otmData[0]['otm_krs_skv_fact'] - otmData[0]['otm_krs_skv_plan'],
+                    plan: lastOtm['otm_krs_skv_plan'],
+                    fact: lastOtm['otm_krs_skv_fact'],
+                    difference: lastOtm['otm_krs_skv_fact'] - lastOtm['otm_krs_skv_plan'],
                     metricSystem: this.trans("visualcenter.otmMetricSystemWells"),
                 },
                 {
                     name: this.trans("visualcenter.otmPrsSkv"),
                     code: 'otm_prs_skv_fact',
-                    plan: otmData[0]['otm_prs_skv_plan'],
-                    fact: otmData[0]['otm_prs_skv_fact'],
-                    difference: otmData[0]['otm_prs_skv_fact'] - otmData[0]['otm_prs_skv_plan'],
+                    plan: lastOtm['otm_prs_skv_plan'],
+                    fact: lastOtm['otm_prs_skv_fact'],
+                    difference: lastOtm['otm_prs_skv_fact'] - lastOtm['otm_prs_skv_plan'],
                     metricSystem: this.trans("visualcenter.otmMetricSystemWells"),
                 },
             )
