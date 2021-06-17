@@ -445,35 +445,40 @@ export default {
       this.loadData()
     },
     initFilters() {
-      if (this.params) {
-        Object.entries(this.params.fields).forEach(([code, field]) => {
-          let filter = {
-            show: false,
-            value: field.type === 'date' ? {from: null, to: null} : null
-          }
+      if (!this.params) {
+        return false;
+      }
 
-          if (typeof this.params.filter !== 'undefined' &&
-              this.params.filter &&
-              typeof this.params.filter.filter !== 'undefined' &&
-              typeof this.params.filter.filter[code] !== 'undefined') {
-            filter.value = this.params.filter.filter[code];
-          }
+      let currentFilter;
+      if (typeof this.params.filter !== 'undefined' &&
+          this.params.filter &&
+          typeof this.params.filter.filter !== 'undefined') {
+        currentFilter = this.params.filter.filter;
+      }
 
-          this.$set(this.filters, code, filter)
-        })
-
-
-        if (typeof this.params.filter !== 'undefined' &&
-            this.params.filter) {
-
-          if (typeof this.params.filter.order_by !== 'undefined' &&
-              typeof this.params.filter.order_desc !== 'undefined') {
-            this.sort.by = this.params.filter.order_by;
-            this.sort.desc = Boolean(parseInt(this.params.filter.order_desc));
-          }
-
-          this.currentPage = this.params.filter.page;
+      Object.entries(this.params.fields).forEach(([code, field]) => {
+        let filter = {
+          show: false,
+          value: field.type === 'date' ? {from: null, to: null} : null
         }
+
+        if (currentFilter && currentFilter[code] !== 'undefined') {
+          filter.value = currentFilter[code];
+        }
+
+        this.$set(this.filters, code, filter)
+      })
+
+
+      if (currentFilter) {
+        
+        if (typeof this.params.filter.order_by !== 'undefined' &&
+            typeof this.params.filter.order_desc !== 'undefined') {
+          this.sort.by = this.params.filter.order_by;
+          this.sort.desc = Boolean(parseInt(this.params.filter.order_desc));
+        }
+
+        this.currentPage = this.params.filter.page;
       }
     }
   },
