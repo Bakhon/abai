@@ -53,11 +53,16 @@ class InhibitorsController extends CrudController
             $params['links']['create'] = route($this->modelName.'.create');
         }
 
+        $params['model_name'] = $this->modelName;
+        $params['filter'] = session($this->modelName.'_filter');
+
         return view('inhibitors.index', compact('params'));
     }
 
     public function list(IndexTableRequest $request)
     {
+        parent::list($request);
+
         $query = Inhibitor::with('prices');
 
         $inhibitor = $this
