@@ -1,0 +1,109 @@
+{
+  "columns": [
+    {
+      "title": "uwi_number",
+      "code": "uwi",
+      "type": "link",
+      "is_editable": false
+    },
+    {
+      "title": "worktime",
+      "code": "worktime",
+      "type": "text",
+      "table": "prod.well_status",
+      "column": "well_status_type_id",     
+      "is_editable": false
+    },
+    {
+      "title": "water_inj_v",
+      "code": "water_inj_val",
+      "table":"prod.meas_water_inj",
+      "type": "float",
+      "column":"water_inj_val",
+      "is_editable": true
+    },
+    {
+      "title": "volume",
+      "code": "water_inj_volume",
+      "column": "water_inj_volume",
+      "table":"prod.meas_water_inj",
+      "type": "calc",
+      "formula": "$worktime$ * $water_inj_val$",
+      "is_editable": false
+    },
+    {
+      "title": "agent_type",
+      "code": "agent_type",
+      "table":"prod.meas_water_inj",
+      "column":"agent_type",
+      "type": "dict",
+      "validation": "required|exists:tbd.dict.inj_agent_type,id",
+      "dict": "inj_agent_types",
+      "is_editable": true
+    },
+    {
+      "title": "agent_temp",
+      "table":"prod.meas_water_inj",
+      "code": "agent_temperature",
+      "type": "float",
+      "column":"agent_temperature",
+      "is_editable": true
+    },
+    {
+      "title": "pressure",
+      "table":"prod.meas_water_inj",
+      "code": "pressure_inj",
+      "type": "float",
+      "column":"pressure_inj",
+      "is_editable": true
+    },
+    {
+      "title": "comment",
+      "table":"prod.meas_water_inj",
+      "code": "comment",
+      "type": "text",
+      "column":"comment",
+      "is_editable": true
+    },
+    {
+      "title": "data",
+      "table":"prod.meas_water_inj",
+      "code": "dbeg",
+      "type": "date",
+      "column":"dbeg",
+      "is_editable": true
+    },
+    {
+      "title": "water_inj",
+      "table":"prod.meas_water_inj",
+      "code": "water_inj_val",
+      "type": "float",
+      "column":"water_inj_val",
+      "is_editable": true
+    },
+    {
+      "title": "agent_temp",
+      "table":"prod.meas_water_inj",
+      "code": "agent_temperature",
+      "type": "float",
+      "column":"agent_temperature",
+      "is_editable": true
+    },
+    {
+      "title": "pressure",
+      "table":"prod.meas_water_inj",
+      "code": "pressure_inj",
+      "column":"pressure_inj",
+      "type": "float",
+      "is_editable": true
+    },
+    {
+      "title": "worktime",
+      "code": "worktime",
+      "table": "prod.well_status",
+      "column": "well_status_type_id",
+      "type": "text",
+      "is_editable": false
+    }
+  ]
+}
