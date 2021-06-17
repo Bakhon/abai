@@ -81,8 +81,11 @@ abstract class TableForm extends BaseForm
 
     public function getFormatedParams(): array
     {
+        $params = $this->params();
+        $this->mapParams($params);
+
         return [
-            'params' => $this->params(),
+            'params' => $params,
             'fields' => $this->getFields()->pluck('', 'code')->toArray(),
             'filterTree' => $this->getFilterTree()
         ];
@@ -318,5 +321,22 @@ abstract class TableForm extends BaseForm
                 return $row;
             }
         );
+    }
+
+    protected function mapParams(array &$params)
+    {
+        if (!empty($params['filter'])) {
+            $params['filter'] = array_map(
+                function ($item) {
+                    if ($item['type'] === 'date' && $item['default']) {
+                        $item['default'] = Carbon::createFromTimestamp(strtotime($item['default']))->timezone(
+                            'Asia/Almaty'
+                        );
+                    }
+                    return $item;
+                },
+                $params['filter']
+            );
+        }
     }
 }

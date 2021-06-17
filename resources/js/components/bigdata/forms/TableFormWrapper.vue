@@ -6,35 +6,45 @@
       <p class="bd-main-block__header-title">{{ params.title }}</p>
     </div>
     <div class="bd-main-block__date">
-      <span class="bd-main-block__date-title">{{ trans('bd.date') }}:</span>
-      <div class="bd-main-block__date-input">
-        <datetime
-            v-model="date"
-            :flow="['year', 'month', 'date']"
-            :format="{ year: 'numeric', month: 'numeric', day: 'numeric'}"
-            :phrases="{ok: trans('bd.select'), cancel: trans('bd.exit')}"
-            auto
-            input-class="form-control"
-            type="date"
-            value-zone="Asia/Almaty"
-            zone="Asia/Almaty"
-        >
-        </datetime>
-      </div>
+      <template v-if="formParams && formParams.filter">
+        <template v-for="filterItem in formParams.filter">
+          <span class="bd-main-block__date-title">{{ filterItem.title }}:</span>
+          <div class="bd-main-block__date-input">
+            <datetime
+                v-model="filter[filterItem.title]"
+                :flow="['year', 'month', 'date']"
+                :format="{ year: 'numeric', month: 'numeric', day: 'numeric'}"
+                :phrases="{ok: trans('bd.select'), cancel: trans('bd.exit')}"
+                auto
+                input-class="form-control"
+                type="date"
+                value-zone="Asia/Almaty"
+                zone="Asia/Almaty"
+            >
+            </datetime>
+          </div>
+        </template>
+      </template>
+      <template v-else>
+        <span class="bd-main-block__date-title">{{ trans('bd.date') }}:</span>
+        <div class="bd-main-block__date-input">
+          <datetime
+              v-model="filter[date]"
+              :flow="['year', 'month', 'date']"
+              :format="{ year: 'numeric', month: 'numeric', day: 'numeric'}"
+              :phrases="{ok: trans('bd.select'), cancel: trans('bd.exit')}"
+              auto
+              input-class="form-control"
+              type="date"
+              value-zone="Asia/Almaty"
+              zone="Asia/Almaty"
+          >
+          </datetime>
+        </div>
+      </template>
     </div>
     <div class="bd-main-block__body">
-      <div class="bd-main-block__tree scrollable">
-        <b-tree-view
-            v-if="filterTree.length"
-            :contextMenu="false"
-            :contextMenuItems="[]"
-            :data="filterTree"
-            :renameNodeOnDblClick="false"
-            nodeLabelProp="name"
-            v-on:nodeSelect="filterForm"
-        ></b-tree-view>
-      </div>
-      <BigDataTableForm :date="date" :params="params" :tech="tech"></BigDataTableForm>
+      <BigDataTableForm :id="id" :filter="filter" :params="params" :type="type"></BigDataTableForm>
     </div>
   </div>
 </template>
@@ -45,7 +55,7 @@ import moment from 'moment'
 import {Datetime} from 'vue-datetime'
 import 'vue-datetime/dist/vue-datetime.css'
 import {bTreeView} from 'bootstrap-vue-treeview'
-import {bdFormActions} from '@store/helpers'
+import {bdFormActions, bdFormState} from '@store/helpers'
 import BigDataTableForm from './TableForm'
 
 Vue.use(Datetime)
@@ -57,17 +67,30 @@ export default {
       type: Object,
       required: true
     },
+    id: {
+      type: Number,
+      required: false
+    },
+    type: {
+      type: String,
+      required: false
+    },
   },
   components: {
     bTreeView,
     BigDataTableForm
   },
+  computed: {
+    ...bdFormState([
+      'formParams'
+    ]),
+  },
   data() {
     return {
-      date: moment().toISOString(),
-      filterTree: [],
-      tech: null,
-      isloading: false
+      isloading: false,
+      filter: {
+        date: moment().toISOString()
+      }
     }
   },
   watch: {
@@ -85,14 +108,22 @@ export default {
     filterForm(item, isSelected) {
       if (isSelected) {
         if (item.data.type === 'org') return false
-        this.tech = item.data.id
+        this.id = item.data.id
+        this.type = item.data.type
       }
     },
     init() {
       this.isloading = true
       this.updateForm(this.params.code).then(data => {
-        this.filterTree = data.filterTree
         this.isloading = false
+
+        if (this.formParams.filter) {
+          this.formParams.filter.forEach(item => {
+            if (!this.filter[item.code]) {
+              this.filter[item.code] = item.default
+            }
+          })
+        }
       })
     },
   },

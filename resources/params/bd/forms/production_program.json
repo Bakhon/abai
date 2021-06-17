@@ -1,0 +1,26 @@
+{
+  "type": "table",
+  "table_type": "plan",
+  "filter": [
+    {
+      "code": "date",
+      "title": "date",
+      "type": "date",
+      "default": "first day of january this year"
+    },
+    {
+      "code": "date_to",
+      "title": "date_to",
+      "type": "date",
+      "default": "last day of december this year"
+    }
+  ],
+  "columns": [
+    {
+      "title": "hello_world",
+      "code": "uwi",
+      "type": "link",
+      "is_editable": false
+    }
+  ]
+}

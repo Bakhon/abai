@@ -20,22 +20,30 @@ class FluidProduction extends TableForm
 
     public function getRows(array $params = [])
     {
-        $tech = Tech::find($this->request->get('tech'));
+        $filter = json_decode($this->request->get('filter'));
 
         $wellsQuery = Well::query()
             ->with('techs', 'geo')
             ->select('id', 'uwi')
             ->orderBy('uwi')
-            ->active(Carbon::parse($this->request->get('date')))
-            ->whereHas(
+            ->active(Carbon::parse($filter->date));
+
+
+        if ($this->request->get('type') === 'tech') {
+            $tech = Tech::find($this->request->get('id'));
+            $wellsQuery->whereHas(
                 'techs',
-                function ($query) use ($tech) {
+                function ($query) use ($tech, $filter) {
                     return $query
                         ->where('dict.tech.id', $tech->id)
-                        ->whereDate('dict.tech.dbeg', '<=', $this->request->get('date'))
-                        ->whereDate('dict.tech.dend', '>=', $this->request->get('date'));
+                        ->whereDate('dict.tech.dbeg', '<=', $filter->date)
+                        ->whereDate('dict.tech.dend', '>=', $filter->date);
                 }
             );
+        } else {
+            $wellsQuery->where('id', $this->request->get('id'));
+        }
+
 
         if (isset($params['filter']['row_id'])) {
             $wellsQuery->where('id', $params['filter']['row_id']);
@@ -66,7 +74,9 @@ class FluidProduction extends TableForm
 
         $this->addLimits($wells);
 
-        return $wells->toArray();
+        return [
+            'rows' => $wells->toArray()
+        ];
     }
 
     public function getGeoBreadcrumbs($geo)

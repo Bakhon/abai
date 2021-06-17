@@ -59,7 +59,11 @@ export default {
       })
     },
     nodeClick(node) {
-      this.$emit('wellIdChange', node.id)
+      console.log(node)
+      this.$emit('idChange', {
+        id: node.id,
+        type: node.type
+      })
     },
     getWells: function (child) {
       let node = child.node;
