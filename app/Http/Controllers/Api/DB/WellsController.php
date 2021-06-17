@@ -36,6 +36,7 @@ class WellsController extends Controller
             'meas_water_cut' => $this->measWaterCut($well),
             'krs_well_workover' => $this->krsWellWorkover($well),
             'well_treatment' => $this->wellTreatment($well),
+            'well_treatment_sko' => $this->wellTreatmentSko($well),
         );
     }
 
@@ -213,6 +214,13 @@ class WellsController extends Controller
     }
 
     private function wellTreatment(Well $well)
+    {
+        return $well->wellTreatment()
+            ->where('treatment_type', '=', '14')
+            ->first(['treat_date']);
+    }
+
+    private function wellTreatmentSko(Well $well)
     {
         return $well->wellTreatment()
             ->where('treatment_type', '=', '21')

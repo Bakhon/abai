@@ -253,6 +253,7 @@ export default {
         'artificialBottomHole': null,
         'perfActual': {'top': null, 'base': null},
         'wellInfo': {'rte': null},
+        'treatmentSko': {'treat_date': null,}
       },
       tubeNomOd: null,
       wellTechs: null,
@@ -287,6 +288,7 @@ export default {
         'actualBottomHole': 'actual_bottom_hole.pivot.depth',
         'artificialBottomHole': 'artificial_bottom_hole.pivot.depth',
         'perfActual': 'well_perf_actual',
+        'treatmentSko': 'well_treatment_sko',
       },
       forms_structure: forms_structure,
     }
@@ -703,6 +705,18 @@ export default {
           'description': this.well.treatmentDate.treat_date,
           'method': null,
           'name': 'Дата проведения ПФП нагн. скважины',
+          'data': ''
+        },
+        {
+          'description': null,
+          'method': null,
+          'name': 'Дата проведения ГРП',
+          'data': ''
+        },
+        {
+          'description': this.well.treatmentSko.treat_date,
+          'method': 'trimToDate',
+          'name': 'Дата проведения СКО',
           'data': ''
         },
       ]
