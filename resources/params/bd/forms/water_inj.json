@@ -36,9 +36,9 @@
       "code": "agent_type",
       "table":"prod.meas_water_inj",
       "column":"agent_type",
-      "type": "dict",
+      "type": "text",
       "validation": "required|exists:tbd.dict.inj_agent_type,id",
-      "dict": "inj_agent_types",
+      
       "is_editable": true
     },
     {
@@ -69,7 +69,7 @@
       "title": "data",
       "table":"prod.meas_water_inj",
       "code": "dbeg",
-      "type": "date",
+      "type": "text",
       "column":"dbeg",
       "is_editable": true
     },
