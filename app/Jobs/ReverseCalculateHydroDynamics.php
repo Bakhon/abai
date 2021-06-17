@@ -3,9 +3,11 @@
 namespace App\Jobs;
 
 use App\Exports\PipeLineCalcExport;
-use App\Imports\HydroCalcResultImport;
+use App\Exports\PipeLineReverseCalcExport;
 use App\Models\ComplicationMonitoring\HydroCalcResult;
+use App\Models\ComplicationMonitoring\OilPipe;
 use App\Models\ComplicationMonitoring\OmgNGDU;
+use App\Models\ComplicationMonitoring\OmgNGDUWell;
 use App\Models\ComplicationMonitoring\TrunklinePoint;
 use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
@@ -16,9 +18,8 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Storage;
 use Imtigger\LaravelJobStatus\Trackable;
 use Maatwebsite\Excel\Facades\Excel;
-use Illuminate\Support\Facades\Http;
 
-class CalculateHydroDynamics implements ShouldQueue
+class ReverseCalculateHydroDynamics implements ShouldQueue
 {
     use Dispatchable;
     use InteractsWithQueue;
@@ -92,35 +93,47 @@ class CalculateHydroDynamics implements ShouldQueue
      */
     public function handle()
     {
-        $points = TrunklinePoint::with('oilPipe.pipeType', 'oilPipe.firstCoords', 'oilPipe.lastCoords', 'gu', 'trunkline_end_point')->get();
+        return false;
+
+        $guNames = [
+            'ГУ-107',
+            'ГУ-24',
+            'ГУ-22'
+        ];
+
+        $pipes = OilPipe::with('gu, pipeType', 'firstCoords', 'lastCoords', 'well.omgngdu_well')->whereHas('gu', function($q) use ($guNames){
+            $q->whereIn('name', $guNames);
+        })->get();
+
         $isErrors = false;
 
-        foreach($points as $key => $point) {
-            if (!$points[$key]->gu) {
-                continue;
+        foreach($pipes as $key => $pipe) {
+
+            if ($pipe->between_points == 'gu-gu') {
+
             }
 
-            $query = OmgNGDU::where('gu_id', $points[$key]->gu->id)
+            $query = OmgNGDUWell::where('well_id', $pipe->well->id)
                 ->orderBy('date', 'desc');
 
             if (isset($this->input['date'])) {
                 $query = $query->where('date', $this->input['date']);
             }
 
-            $points[$key]->omgngdu = $query->orderBy('date', 'desc')->first();
+            $pipes[$key]->well->omgngdu_well = $query->orderBy('date', 'desc')->first();
 
-            if (!$points[$key]->omgngdu) {
+            if (!$pipes[$key]->well->omgngdu_well) {
                 $isErrors = true;
                 break;
             }
 
-            $temperature = $points[$key]->omgngdu->heater_output_temperature;
+            $temperature = $pipes[$key]->well->omgngdu_well->heater_output_temperature;
             $temperature = $temperature ? ($temperature < 40 ? 50 : $temperature) : 50;
-            $points[$key]->omgngdu->heater_output_temperature = $temperature;
+            $pipes[$key]->well->omgngdu_well->heater_output_temperature = $temperature;
 
-            if (!$points[$key]->omgngdu->pump_discharge_pressure ||
-                !$points[$key]->omgngdu->daily_fluid_production ||
-                !$points[$key]->omgngdu->bsw) {
+            if (!$pipes[$key]->well->omgngdu_well->pump_discharge_pressure ||
+                !$pipes[$key]->well->omgngdu_well->daily_fluid_production ||
+                !$pipes[$key]->well->omgngdu_well->bsw) {
                 $isErrors = true;
                 break;
             }
@@ -136,13 +149,13 @@ class CalculateHydroDynamics implements ShouldQueue
         }
 
         $data = [
-            'points' => $points,
+            'pipes' => $pipes,
             'columnNames' => $this->columnNames
         ];
 
-        $fileName = 'pipeline_calc_input.xlsx';
+        $fileName = 'pipeline_reverse_calc_input.xlsx';
         $filePath = 'public/export/'.$fileName;
-        Excel::store(new PipeLineCalcExport($data), $filePath);
+        Excel::store(new PipeLineReverseCalcExport($data), $filePath);
 
         if (!$isErrors AND isset($this->input['date'])) {
 
@@ -220,3 +233,4 @@ class CalculateHydroDynamics implements ShouldQueue
         }
     }
 }
+
