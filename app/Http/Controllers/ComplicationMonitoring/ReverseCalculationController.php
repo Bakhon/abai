@@ -6,6 +6,8 @@ use App\Filters\ReverseCalculationFilter;
 use App\Http\Requests\IndexTableRequest;
 use App\Http\Controllers\CrudController;
 use App\Http\Resources\ReverseCalculationResource;
+use App\Jobs\ReverseCalculateHydroDynamics;
+use App\Models\ComplicationMonitoring\OilPipe;
 use App\Models\ComplicationMonitoring\ReverseCalculation;
 use Illuminate\Support\Facades\Session;
 
@@ -113,6 +115,9 @@ class ReverseCalculationController extends CrudController
             ],
         ];
 
+        $params['links']['calc']['link'] = route($this->modelName.'.calculate');
+        $params['links']['date'] = true;
+
         return view('reverse_calc.index', compact('params'));
     }
 
@@ -130,5 +135,17 @@ class ReverseCalculationController extends CrudController
     protected function getFilteredQuery($filter, $query = null)
     {
         return (new ReverseCalculationFilter($query, $filter))->filter();
+    }
+
+    public function calculate(IndexTableRequest $request)
+    {
+        $job = new ReverseCalculateHydroDynamics($request->validated());
+        $this->dispatch($job);
+
+        return response()->json(
+            [
+                'id' => $job->getJobStatusId()
+            ]
+        );
     }
 }
