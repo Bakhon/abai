@@ -14,7 +14,7 @@ abstract class BaseFilter
     protected $params;
     protected $defaultSortField;
     protected $defaultSortDesc;
-    protected $operators = ['>=', '<=', '!=', '>', '<', 'null', 'not_null'];
+    protected $operators = ['>=', '<=', '!=', '>', '<', 'not_null', 'null'];
 
     public function __construct(Builder $query, array $params)
     {
