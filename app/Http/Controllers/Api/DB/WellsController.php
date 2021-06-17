@@ -37,6 +37,7 @@ class WellsController extends Controller
             'krs_well_workover' => $this->krsWellWorkover($well),
             'well_treatment' => $this->wellTreatment($well),
             'well_treatment_sko' => $this->wellTreatmentSko($well),
+            'gdis_current' => $this->gdisCurrent($well),
         );
     }
 
@@ -218,6 +219,13 @@ class WellsController extends Controller
         return $well->wellTreatment()
             ->where('treatment_type', '=', '14')
             ->first(['treat_date']);
+    }
+
+    private function gdisCurrent(Well $well)
+    {
+        return $well->gdisCurrent()
+            ->orderBy('meas_date', 'desc')
+            ->first(['meas_date']);
     }
 
     private function wellTreatmentSko(Well $well)

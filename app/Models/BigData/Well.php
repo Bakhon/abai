@@ -122,6 +122,11 @@ class Well extends TBDModel
         return $this->hasMany(WellTreatment::class, 'well', 'id');
     }
 
+    public function gdisCurrent()
+    {
+        return $this->hasMany(GdisCurrent::class, 'well', 'id');
+    }
+
     public function scopeActive($query, $date)
     {
         $query->whereHas(
