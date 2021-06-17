@@ -4,12 +4,14 @@
       <div class="wells-select-block m-0 p-3 scrollable blueblock">
         <tree-view
             v-for="treeData in filterTree"
+            :isNodeOnBottomLevelOfHierarchy="isNodeOnBottomLevelOfHierarchy"
             :ref="'child_' + treeData.id"
             :node="treeData"
             :key="treeData.id"
             :handle-click="nodeClick"
             :get-wells="getWells"
-            :currentWellId="currentWellId"
+            :key="treeData.id"
+            :isShowCheckboxes="false"
         ></tree-view>
       </div>
     </div>
@@ -60,6 +62,9 @@ export default {
     },
     nodeClick(node) {
       this.$emit('wellIdChange', node.id)
+    },
+    isNodeOnBottomLevelOfHierarchy: function(node) {
+      return node.type !== 'org'
     },
     getWells: function (child) {
       let node = child.node;

@@ -160,7 +160,7 @@ class FormsController extends Controller
     public function calcFields(Request $request, string $form): JsonResponse
     {
         $form = $this->getForm($form);
-        return response()->json($form->calcFields($request->get('well_id'), $request->get('values')));
+        return response()->json($form->getCalculatedFields($request->get('well_id'), $request->get('values')));
     }
 
     public function delete(Request $request, string $form, int $row): JsonResponse

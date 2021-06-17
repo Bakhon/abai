@@ -100,17 +100,25 @@
                         'export' => 'Экспорт в excel',
                         'view history' => 'Просмотр истории',
                     ] as $fieldCode => $fieldName)
+
+                        @php
+                        $permission = $permissions->get('monitoring '.$fieldCode.' '.$code);
+                        @endphp
+
+                        @if (!$permission)
+                            @continue
+                        @endif
                         <div class="form-check">
                             <input
                                     class="form-check-input"
-                                    id="permission_{{$permissions->get('monitoring '.$fieldCode.' '.$code)->id}}"
+                                    id="permission_{{$permission->id}}"
                                     type="checkbox"
                                     name="permissions[]"
-                                    value="{{$permissions->get('monitoring '.$fieldCode.' '.$code)->id}}"
-                                    {{!empty($role) && $role->permissions->where('id', $permissions->get('monitoring '.$fieldCode.' '.$code)->id)->isNotEmpty() ? 'checked' : ''}}
+                                    value="{{$permission->id}}"
+                                    {{!empty($role) && $role->permissions->where('id', $permission->id)->isNotEmpty() ? 'checked' : ''}}
                             >
                             <label class="form-check-label"
-                                   for="permission_{{$permissions->get('monitoring '.$fieldCode.' '.$code)->id}}">{{$fieldName}}</label>
+                                   for="permission_{{$permission->id}}">{{$fieldName}}</label>
                         </div>
                     @endforeach
                 </div>

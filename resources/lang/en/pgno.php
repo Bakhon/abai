@@ -106,6 +106,7 @@ return array (
   'temp_nabora_krivizni' => 'Dog leg severity',
   'zagruzka' => 'Loading',
   'no_data' => 'No data',
+  'no_incl_data' => 'Нет данных инклинометрии',
   'md' => 'MD',
   'tvd' => 'TVD',
   'udl' => 'Elong',
@@ -215,4 +216,5 @@ return array (
   'edit' => 'Edit',
   'near_dist' => 'Distance for wells',
   'notify_error_sk' => 'Уточните тип СК',
+  'primenit_default' => 'Применить по умолчанию',
 );

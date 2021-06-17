@@ -107,6 +107,7 @@ return array (
   'temp_nabora_krivizni' => 'Қисықтық жиынтығының қарқыны',
   'zagruzka' => 'Жүктеу',
   'no_data' => 'Деректер жоқ',
+  'no_incl_data' => 'Нет данных инклинометрии',
   'tvd' => 'TVD',
   'md' => 'MD',
   'udl' => 'Удл',
@@ -215,4 +216,5 @@ return array (
   'edit' => 'Редактировать',
   'near_dist' => 'Расстояние до скважин',
   'notify_error_sk' => 'Уточните тип СК',
+  'primenit_default' => 'Применить по умолчанию',
 );

@@ -60,7 +60,7 @@ class GtmRegister extends PlainForm
             );
     }
 
-    public function calcFields(int $wellId, array $values): array
+    public function getCalculatedFields(int $wellId, array $values): array
     {
         if (empty($values['dend'])) {
             return [];

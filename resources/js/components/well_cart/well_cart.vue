@@ -6,7 +6,7 @@
           :class="{'left-column_folded': isLeftColumnFolded}"
           class="left-column"
       >
-        <div class="bg-dark left-column__inner">
+        <div class="bg-dark scrollable">
           <div class="row">
             <div class="col">
               <div class="well-deal">
@@ -27,17 +27,15 @@
                 </div>
               </div>
             </div>
-            <div class="directory">
-              <div class="custom-directory">
-                <ul id="myUL">
-                  <li v-for="form in forms" :class="{'selected': activeFormCode === form.code}"
-                      @click="switchFormByCode(form.code)">
-                    <p>
-                      <span class="file" v-html="form.name"></span>
-                    </p>
-                  </li>
-                </ul>
-              </div>
+            <div class="directory text-white pt-0 mt-0">
+              <ul id="myUL">
+                <well-cart-tree
+                    v-for="item in [...forms_structure, ...forms]"
+                    :data="item"
+                    :active-form-code="activeFormCode"
+                    :switch-form-by-code="switchFormByCode">
+                </well-cart-tree>
+              </ul>
             </div>
           </div>
           <div v-if="isLeftColumnFolded" class="row">
@@ -206,14 +204,17 @@
 <script>
 import BigDataPlainFormResult from '../bigdata/forms/PlainFormResults'
 import forms from '../../json/bd/forms.json'
+import forms_structure from '../../json/bd/forms_structure.json'
 import vSelect from 'vue-select'
 import axios from 'axios'
 import moment from 'moment'
+import WellCartTree from "./WellCartTree";
 
 export default {
   components: {
     BigDataPlainFormResult,
-    vSelect
+    vSelect,
+    WellCartTree,
   },
   data() {
     return {
@@ -286,6 +287,7 @@ export default {
         'artificialBottomHole': 'artificial_bottom_hole.pivot.depth',
         'perfActual': 'well_perf_actual',
       },
+      forms_structure: forms_structure,
     }
   },
   mounted() {
@@ -864,110 +866,6 @@ $rightColumnFoldedWidth: 84px;
   box-shadow: 0 0 10px #000;
 }
 
-.custom-directory {
-  img {
-    padding-bottom: 5px;
-  }
-
-  ul, li {
-    color: white;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-
-  ul .nested {
-    border-top: 1px dashed #555BA6;
-    border-left: 0;
-  }
-
-  ul {
-    padding-left: 1em;
-    border: 0;
-  }
-
-  li {
-    border: 1px dashed #555BA6;
-    padding-left: 1em;
-    border-width: 0 0 1px 1px;
-
-    &.selected {
-      font-weight: bold;
-    }
-  }
-
-  li p {
-    margin: 0;
-    background: #272953;
-    position: relative;
-    bottom: 0.6em;
-  }
-
-  li ul {
-    margin-left: -1em;
-    padding-left: 2em;
-  }
-
-  ul li:last-child ul {
-    border-bottom: 0;
-    margin-left: -17px;
-  }
-
-  li:last-child {
-    border-bottom: 0
-  }
-
-  ul, #myUL {
-    list-style-type: none;
-  }
-
-  .caret {
-    cursor: pointer;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    margin-right: auto;
-  }
-
-  .file {
-    cursor: pointer;
-    padding-left: 0;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    margin-right: auto;
-  }
-
-  .file::before {
-    content: URL(/img/bd/file.svg);
-    color: white;
-    display: inline-block;
-    padding-right: 10px;
-  }
-
-  .caret::before {
-    content: URL(/img/bd/folder.svg);
-    color: white;
-    display: inline-block;
-    padding-right: 10px;
-  }
-
-  .caret-down::before {
-    color: white;
-    background: white;
-  }
-
-  .nested {
-    display: block;
-  }
-
-  .active {
-    display: block;
-  }
-}
-
 h4 {
   text-align: left;
   font-size: 16px;
@@ -1103,6 +1001,10 @@ h4 {
   width: 100%;
   padding: 10px;
   margin: 10px 40px 10px 25px;
+
+  ul {
+    list-style: none;
+  }
 
   col {
     display: flex;
@@ -1687,29 +1589,26 @@ h4 {
   color: #82BAFF;
 }
 
-::-webkit-scrollbar {
-  width: 15px;
-  background: #272953;
+.scrollable {
+  &::-webkit-scrollbar {
+    height: 10px;
+    width: 4px;
+  }
 
-}
+  &::-webkit-scrollbar-track {
+    background: #40467E;
+  }
 
-::-webkit-scrollbar-track {
-  background: #272953;
+  &::-webkit-scrollbar-thumb {
+    background: #656A8A;
+  }
 
-}
+  &::-webkit-scrollbar-thumb:hover {
+    background: #656A8A;
+  }
 
-::-webkit-scrollbar-thumb {
-  background: URL("/img/bd/scroll-img.svg") no-repeat 50% #374178;
-  height: 10px;
-}
-
-::-webkit-scrollbar-button {
-  &:vertical {
-    background: URL("/img/bd/scroll-array.svg") no-repeat 50% #485499;
-
-    &:end {
-      background: URL("/img/bd/scroll-array-end.svg") no-repeat 50% #485499;
-    }
+  &::-webkit-scrollbar-corner {
+    background: #20274F;
   }
 }
 
@@ -1779,6 +1678,9 @@ h4 {
   width: $leftColumnWidth;
   padding: 0 15px;
   margin-bottom: 0px;
+  height: 100%;
+  overflow-y: scroll;
+  overflow-x: hidden;
 
   .rotate {
     color: white;
@@ -1948,7 +1850,7 @@ h4 {
   display: block;
 }
 
-.custom-directory {
+.directory {
   .file {
     br {
       display: none;
