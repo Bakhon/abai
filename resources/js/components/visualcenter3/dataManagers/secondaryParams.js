@@ -26,8 +26,10 @@ export default {
             } else if (this.selectedSecondaryOption === 'production') {
                 this.updateProductionWells(filteredDataByPeriod,filteredDataByCompanies);
             }
-            this.updateOtmData(filteredDataByPeriod);
-            this.updateChemistryData(filteredDataByPeriod);
+            if (!this.isProductionDetailsActive) {
+                this.updateChemistryData(filteredDataByPeriod);
+                this.updateOtmData(filteredDataByPeriod);
+            }
         },
 
         updateInjectionWells(filteredDataByPeriod,filteredDataByCompanies) {

@@ -135,9 +135,9 @@ export default {
 
         getMetricNameByCategorySelected() {
             if (this.gasProductionButton) {
-                return this.trans('visualcenter.meterCubicWithSpace');
+                return this.trans('visualcenter.meterCubic');
             } else {
-                return this.trans("visualcenter.chemistryMetricTon");
+                return this.trans("visualcenter.tonWithSpace");
             }
         },
     },

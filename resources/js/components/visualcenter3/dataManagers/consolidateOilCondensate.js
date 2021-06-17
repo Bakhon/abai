@@ -144,9 +144,17 @@ export default {
             });
             let dataWithKMGParticipation = this.getUpdatedByDzoOptions(_.cloneDeep(initialData),filteredDataByPeriod,filteredInitialData);
             let sortedWithKMGParticipation = this.getSorted(dataWithKMGParticipation,this.sortingOrder);
+            let emptyRecordIndex = sortedWithKMGParticipation.findIndex(element => !element);
+            if (emptyRecordIndex !== -1) {
+                sortedWithKMGParticipation.splice(emptyRecordIndex, 1);
+            }
             let yesterdayData = this.getYesterdayData(_.cloneDeep(this.productionTableData),filteredDataByCompanies);
             let dataWithoutKMGParticipation = this.getUpdatedByDzoOptionsWithoutKMG(_.cloneDeep(initialData),filteredDataByPeriod,filteredInitialData);
             let sortedWithoutKMGParticipation = this.getSorted(dataWithoutKMGParticipation,this.sortingOrderWithoutParticipation);
+            if (this.buttonMonthlyTab || this.buttonYearlyTab) {
+                sortedWithKMGParticipation = this.getUpdatedByPeriodPlan(sortedWithKMGParticipation);
+                sortedWithoutKMGParticipation = this.getUpdatedByPeriodPlan(sortedWithoutKMGParticipation);
+            }
             this.updateConsolidatedData(sortedWithKMGParticipation,sortedWithoutKMGParticipation);
             return sortedWithKMGParticipation;
         },
@@ -220,6 +228,7 @@ export default {
                     item.planMonth = nkoSummary.planMonth / 2;
                 }
             });
+
             return temporaryData;
         },
 
@@ -309,6 +318,16 @@ export default {
             updatedData.splice(tpIndex, 1);
             updatedData.splice(pkkIndex, 1);
             return updatedData;
-        }
+        },
+
+        getUpdatedByPeriodPlan(data) {
+            let updatedData = data;
+            let daysPassed = moment().date();
+            let daysCountInMonth = moment().daysInMonth();
+            _.forEach(updatedData, function(item) {
+                item.periodPlan = item.planMonth / daysPassed * daysCountInMonth;
+            });
+            return updatedData;
+        },
     }
 }

@@ -192,6 +192,8 @@
               <a v-if="row.links.history" class="links__item links__item_history" :href="row.links.history"></a>
               <a v-if="row.links.delete" href="#" class="links__item links__item_delete"
                  @click.prevent="deleteItem(row)"></a>
+              <a v-if="row.links.restore" href="#" class="links__item links__item_restore"
+                 @click.prevent="restoreItem(row)"></a>
             </div>
           </td>
         </tr>
@@ -240,6 +242,11 @@ export default {
         by: null,
         desc: false
       },
+      currentFilter: null,
+      currentSort: {
+        by: null,
+        desc: false
+      },
       loading: false,
       currentPage: 1,
       filters: {},
@@ -253,8 +260,10 @@ export default {
     }
   },
   mounted() {
-    this.initFilters()
-    this.loadData()
+    this.initCurrentFilter();
+    this.initCurrentSort();
+    this.initFilters();
+    this.loadData();
   },
   computed: {
     activeFilters() {
@@ -273,7 +282,16 @@ export default {
         "table-responsive": this.isResponsive,
         'with-pagination': this.omgca && this.omgca.total > this.omgca.per_page
       }
-    }
+    },
+    isCurrentSort(){
+      if (typeof this.params.filter !== 'undefined' &&
+          this.params.filter &&
+          typeof this.params.filter.order_by !== 'undefined' &&
+          typeof this.params.filter.order_desc !== 'undefined') {
+        return true;
+      }
+      return false;
+    },
   },
   methods: {
     showFilter(code) {
@@ -291,7 +309,7 @@ export default {
       })
     },
     isFilterActive(code) {
-      if (this.params.fields[code].type === 'date') {
+      if (this.params.fields[code].type === 'date' && typeof this.filters[code].value == 'object') {
         return !!this.filters[code].value.from || !!this.filters[code].value.to
       } else {
         return !!this.filters[code].value
@@ -333,6 +351,8 @@ export default {
         queryParams.calc_export = this.calcExport;
       }
 
+      queryParams.model_name = this.params.model_name;
+
       return queryParams
     },
     changePage(page = 1) {
@@ -367,12 +387,36 @@ export default {
       this.loadData()
     },
     deleteItem(item) {
-      if (window.confirm('Вы действительно хотите удалить запись?')) {
-        this.axios.delete(item.links.delete).then(response => {
-          this.loadData()
-          this.params.success = this.trans('app.deleted')
-        })
-      }
+      this.$bvModal.msgBoxConfirm(this.trans('app.are-you-sure-to-delete'), {
+        title: this.trans('app.delete_titie'),
+        headerBgVariant: 'danger',
+        okTitle: this.trans('app.delete'),
+        cancelTitle: this.trans('app.cancel'),
+      })
+          .then(value => {
+            if (value) {
+              this.axios.delete(item.links.delete).then(response => {
+                this.loadData()
+                this.params.success = this.trans('app.deleted')
+              })
+            }
+          })
+    },
+    restoreItem (item) {
+      this.$bvModal.msgBoxConfirm(this.trans('app.are-you-sure-to-restore'), {
+        title: this.trans('app.restore_title'),
+        headerBgVariant: 'danger',
+        okTitle: this.trans('app.restore'),
+        cancelTitle: this.trans('app.cancel'),
+      })
+          .then(value => {
+            if (value) {
+              this.axios.get(item.links.restore).then(response => {
+                this.loadData()
+                this.params.success = this.trans('app.restored')
+              })
+            }
+          })
     },
     runJob(url) {
       this.loading = true
@@ -408,18 +452,57 @@ export default {
       });
     },
     resetFilters() {
+      this.$delete(this.params, 'filter');
+      this.currentSort = this.sort = {
+        by: null,
+        desc: false
+      };
+      this.currentFilter = null;
       this.initFilters()
       this.loadData()
     },
+    initCurrentFilter () {
+      if (typeof this.params.filter !== 'undefined' &&
+          this.params.filter &&
+          typeof this.params.filter.filter !== 'undefined') {
+        this.currentFilter = this.params.filter.filter;
+      }
+    },
+    initCurrentSort() {
+      if (this.isCurrentSort) {
+        this.currentSort = {
+          by: this.params.filter.order_by,
+          desc: Boolean(parseInt(this.params.filter.order_desc))
+        }
+      }
+    },
     initFilters() {
-      if (this.params) {
-        Object.entries(this.params.fields).forEach(([code, field]) => {
-          let filter = {
-            show: false,
-            value: field.type === 'date' ? {from: null, to: null} : null
+      if (!this.params) {
+        return;
+      }
+
+      Object.entries(this.params.fields).forEach(([code, field]) => {
+        let filter = {
+          show: false,
+          value: field.type === 'date' ? {from: null, to: null} : null
+        }
+
+        if (this.currentFilter && typeof this.currentFilter[code] !== 'undefined') {
+          if (field.type === 'date') {
+            filter.value = JSON.parse(this.currentFilter[code])
+          } else {
+            filter.value = this.currentFilter[code];
           }
-          this.$set(this.filters, code, filter)
-        })
+
+        }
+
+        this.$set(this.filters, code, filter)
+      })
+
+
+      if (this.isCurrentSort) {
+        this.sort = this.currentSort;
+        this.currentPage = this.params.filter.page;
       }
     }
   },
@@ -459,7 +542,7 @@ table::-webkit-scrollbar-corner {
   padding: 16px 24px 20px 19px;
 
   &__wrapper {
-    min-height: 400px;
+    min-height: calc(100vh - 88px);
     overflow-x: auto;
     position: relative;
     max-width: calc(100vw - 137px);
@@ -790,6 +873,12 @@ table::-webkit-scrollbar-corner {
               }
 
               &_history {
+                background: url(/img/icons/history.svg);
+                height: 14px;
+                width: 17px;
+              }
+
+              &_restore {
                 background: url(/img/icons/history.svg);
                 height: 14px;
                 width: 17px;

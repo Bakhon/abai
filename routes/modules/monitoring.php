@@ -173,17 +173,25 @@ Route::group(
                     ]
                 ]);
 
+                Route::get('/reverse-calc/list', 'ComplicationMonitoring\ReverseCalculationController@list')->name('reverse_calculation.list');
+                Route::get('/reverse-calc', 'ComplicationMonitoring\ReverseCalculationController@index')->name('reverse_calculation.index');
+                Route::get('/reverse-calc/calculate', 'ComplicationMonitoring\ReverseCalculationController@calculate')->name('reverse_calculation.calculate');
+
                 Route::get('economical-effect/list', 'ComplicationMonitoring\EconomicalEffectController@list')->name(
                     'economical_effect.list'
                 );
                 Route::resource('economical-effect', 'ComplicationMonitoring\EconomicalEffectController');
-                Route::get('/reverse-calc/list', 'ComplicationMonitoring\ReverseCalculationController@list')->name('reverse_calculation.list');
-                Route::get('/reverse-calc', 'ComplicationMonitoring\ReverseCalculationController@index')->name('reverse_calculation.index');
+
                 Route::get('lost-profits/list', 'ComplicationMonitoring\LostProfitsController@list')->name(
                     'lost_profits.list'
                 );
                 Route::resource('lost-profits', 'ComplicationMonitoring\LostProfitsController');
                 Route::get('/facilities', 'DruidController@facilities')->name('facilities');
+
+                Route::get('map-history/list', 'ComplicationMonitoring\MapHistory@list')->name('map-history.list');
+                Route::get('map-history/show/{activity}', 'ComplicationMonitoring\MapHistory@show')->name('map-history.show');
+                Route::get('map-history/restore/{activity}', 'ComplicationMonitoring\MapHistory@restore')->name('map-history.restore');
+                Route::get('map-history', 'ComplicationMonitoring\MapHistory@index')->name('map-history.index');
 
             }
         );
