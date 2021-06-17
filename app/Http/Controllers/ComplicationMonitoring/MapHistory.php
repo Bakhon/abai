@@ -17,10 +17,6 @@ class MapHistory extends CrudController
 {
     protected $modelName = 'map-history';
 
-    /**
-     * Display a listing of the resource.
-     *
-     */
     public function index()
     {
         $params = [
