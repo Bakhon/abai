@@ -144,6 +144,10 @@ export default {
             });
             let dataWithKMGParticipation = this.getUpdatedByDzoOptions(_.cloneDeep(initialData),filteredDataByPeriod,filteredInitialData);
             let sortedWithKMGParticipation = this.getSorted(dataWithKMGParticipation,this.sortingOrder);
+            let emptyRecordIndex = sortedWithKMGParticipation.findIndex(element => !element);
+            if (emptyRecordIndex !== -1) {
+                sortedWithKMGParticipation.splice(emptyRecordIndex, 1);
+            }
             let yesterdayData = this.getYesterdayData(_.cloneDeep(this.productionTableData),filteredDataByCompanies);
             let dataWithoutKMGParticipation = this.getUpdatedByDzoOptionsWithoutKMG(_.cloneDeep(initialData),filteredDataByPeriod,filteredInitialData);
             let sortedWithoutKMGParticipation = this.getSorted(dataWithoutKMGParticipation,this.sortingOrderWithoutParticipation);
@@ -224,6 +228,7 @@ export default {
                     item.planMonth = nkoSummary.planMonth / 2;
                 }
             });
+
             return temporaryData;
         },
 
