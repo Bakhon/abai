@@ -732,7 +732,6 @@ export default {
   }
 }
 </script>
-
 <style scoped lang="scss">
 $leftColumnWidth: 398px;
 $leftColumnFoldedWidth: 84px;
