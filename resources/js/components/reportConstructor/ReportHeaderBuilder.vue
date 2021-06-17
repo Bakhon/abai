@@ -7,8 +7,8 @@
       ghost-class="ghost"
       @input="updateValue"
       v-bind="dragOptions"
-      @start="drag = true"
-      @end="drag = false"
+      @start="isDraggable = true"
+      @end="isDraggable = false"
   >
     <ReportHeaderNode
         v-for="item, index in treeData"
@@ -52,7 +52,7 @@ export default {
   },
   data() {
     return {
-      drag: false,
+      isDraggable: false,
       localValue: [...this.data]
     };
   },
@@ -99,7 +99,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 
 .cmp-node {
   display: flex;

@@ -1,6 +1,6 @@
 <template>
   <div class="cmp-tree">
-    <div class="cmp-node" @click="open = !open">
+    <div class="cmp-node" @click="isOpen = !isOpen">
       <label>
         <input name="checkbox" type="checkbox" @click.stop="handleChange"
         /></label>
@@ -8,10 +8,10 @@
       <div
           v-if="hasChildren"
           class="arrow-right"
-          :class="{ active: open }"
+          :class="{ active: isOpen }"
       ></div>
     </div>
-    <ul class="hierarchy"  v-if="open">
+    <ul class="hierarchy"  v-if="isOpen">
       <draggable
           :value="value.children"
           ghost-class="ghost"
@@ -19,8 +19,8 @@
           :group="group"
           tag="ul"
           v-bind="dragOptions"
-          @start="drag = true"
-          @end="drag = false"
+          @start="isDraggable = true"
+          @end="isDraggable = false"
       >
         <ReportHeaderNode
             v-for="(item, index) in value.children"
@@ -70,8 +70,8 @@ export default {
   },
   data() {
     return {
-      open: false,
-      drag: false,
+      isOpen: false,
+      isDraggable: false,
       localValue: Object.assign({}, this.value),
     };
   },
@@ -123,7 +123,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .cmp-node {
   display: flex;
   align-items: center;
