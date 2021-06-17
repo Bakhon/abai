@@ -1,7 +1,6 @@
 import { slice } from "lodash";
 import moment from "moment";
-import dzoDataActual from './dzo_data_actual.json';
-import dzoDataPrevYear from './dzo_data_prev_year.json';
+
 export default {
   data: function () {
     return {
