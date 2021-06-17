@@ -17,7 +17,7 @@
           </h5>
           <select
             class="w-100 p-2 select__button_color"            
-            v-model="selectMonthFromBeginOfTheYearh"
+            v-model="numberOfMonthsSelectedFromYearBegginning"
           >
             <option :value="0" :selected="'selected'">
               {{ trans("visualcenter.yearBegin") }}
@@ -25,7 +25,7 @@
             <option
               v-for="i in numbersOfMonths"
               :value="i + 1"
-              :disabled="actualMonth < i"
+              :disabled="numberOfActualMonth < i"
             >
               {{ trans(`economy_be.months.0`) }} -
               {{ trans(`economy_be.months.${i}`) }} {{new Date().getFullYear() - 1}}
@@ -50,7 +50,7 @@
           <div class="w-100 d-flex" style="margin-top: 14px">
             <select
               class="w-50 p-2 mr-3 select__button_color"          
-              v-model="selectMonth"
+              v-model="numberOfMonthsSelected"
             >
               <option :value="0" :selected="'selected'">
                 {{ trans("visualcenter.monthZa") }}
@@ -58,14 +58,14 @@
               <option
                 v-for="i in numbersOfMonths"
                 :value="i + 1"
-                :disabled="actualMonth < i"
+                :disabled="numberOfActualMonth < i"
               >
                 {{ trans(`economy_be.months.${i}`) }} {{new Date().getFullYear() - 1}}
               </option>
             </select>
             <select
               class="w-50 p-2 select__button_color"           
-              v-model="selectQuarter"
+              v-model="numberOfQuaterSelected"
             >
               <option :value="0" :selected="'selected'">
                 {{ trans("visualcenter.quarter") }}
@@ -73,13 +73,13 @@
               <option :value="1">
                 {{ trans("visualcenter.janMar2020") }}
               </option>
-              <option :value="4" :disabled="actualMonth < 3">
+              <option :value="4" :disabled="numberOfActualMonth < 3">
                 {{ trans("visualcenter.aprJune2020") }}
               </option>
-              <option :value="7" :disabled="actualMonth < 6">
+              <option :value="7" :disabled="numberOfActualMonth < 6">
                 {{ trans("visualcenter.julySept2020") }}
               </option>
-              <option :value="10" :disabled="actualMonth < 9">
+              <option :value="10" :disabled="numberOfActualMonth < 9">
                 {{ trans("visualcenter.octDec2020") }}
               </option>
             </select>
@@ -93,8 +93,8 @@
           </div>
           <button
             class="w-100 p-2 vc-button mt-4 select__button_color"         
-            :value="selectActualMonth"
-            @click="selectActualMonth = (selectActualMonth + 1) % 2"
+            :value="numberOfMonths"
+            @click="numberOfMonths = (numberOfMonths + 1) % 2"
           >
             {{ trans("visualcenter.monthAct") }}
           </button>
@@ -242,5 +242,4 @@
 <script src="./budgetExecution.js"></script>
 <style scoped>
 @import "./budgetExecution.css";
-@import "/public/visualcenter4.css";
 </style>
