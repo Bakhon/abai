@@ -104,9 +104,9 @@ class WellsController extends Controller
         return $well->wellExpl()
             ->where('dend', '<>', $this->getToday())
             ->where('dbeg', '<>', $this->getToday())
-            ->withPivot('dend', 'dbeg')
+            ->withPivot('dend as dend', 'dbeg as dbeg')
             ->orderBy('dbeg', 'desc')
-            ->first(['name_ru']);
+            ->first(['name_ru', 'dend', 'dbeg']);
     }
 
     private function techs(Well $well)
