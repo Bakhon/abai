@@ -49,12 +49,12 @@ export default {
   },
   methods: {
    changeColumn(obj) {
-    if (obj.columnIndex > 4) {
-        return 'reptt-column-blue reptt-cell'
-    } else {
-        return obj.columnIndex === 0 ? 'reptt-column-zero reptt-column reptt-cell' : 'reptt-column reptt-cell';
-    }
-},
+      if (obj.columnIndex > 4) {
+          return 'reptt-column-blue reptt-cell'
+      } else {
+          return obj.columnIndex === 0 ? 'reptt-column-zero reptt-column reptt-cell' : 'reptt-column reptt-cell';
+      }
+    },
     distributionSumOverTree(attributeName, year) {
       this.repttData.reptt.reduce(function x(r, a) {
         let hasChild = a.handbook_items.length > 0;
