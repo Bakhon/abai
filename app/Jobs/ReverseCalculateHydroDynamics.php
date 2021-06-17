@@ -32,6 +32,30 @@ class ReverseCalculateHydroDynamics implements ShouldQueue
     protected $params;
     protected $input;
 
+    protected $columnNames = [
+        '№',
+        'out_dia',
+        'wall_thick',
+        'length',
+        'qliq',
+        'wc',
+        'gazf',
+        'press_start',
+        'press_end',
+        'temp_start',
+        'temp_end',
+        'start_point',
+        'end_point',
+        'name',
+        'mix_speed_avg',
+        'fluid_speed',
+        'gaz_speed',
+        'flow_type',
+        'press_change',
+        'break_qty',
+        'height_drop'
+    ];
+
     const ID = 0;
     const LENGTH = 3;
     const QLIQ = 4;
@@ -100,7 +124,7 @@ class ReverseCalculateHydroDynamics implements ShouldQueue
 
             if (!$pipes[$key]->well->omgngdu_well) {
                 $isErrors = true;
-                continue;
+                break;
             }
 
             $temperature = $pipes[$key]->well->omgngdu_well->heater_output_temperature;
@@ -111,6 +135,7 @@ class ReverseCalculateHydroDynamics implements ShouldQueue
                 !$pipes[$key]->well->omgngdu_well->daily_fluid_production ||
                 !$pipes[$key]->well->omgngdu_well->bsw) {
                 $isErrors = true;
+                break;
             }
         }
 
@@ -123,33 +148,9 @@ class ReverseCalculateHydroDynamics implements ShouldQueue
             return;
         }
 
-        $columnNames = [
-            '№',
-            'out_dia',
-            'wall_thick',
-            'length',
-            'qliq',
-            'wc',
-            'gazf',
-            'press_start',
-            'press_end',
-            'temp_start',
-            'temp_end',
-            'start_point',
-            'end_point',
-            'name',
-            'mix_speed_avg',
-            'fluid_speed',
-            'gaz_speed',
-            'flow_type',
-            'press_change',
-            'break_qty',
-            'height_drop'
-        ];
-
         $data = [
             'pipes' => $pipes,
-            'columnNames' => $columnNames
+            'columnNames' => $this->columnNames
         ];
 
         $fileName = 'pipeline_reverse_calc_input.xlsx';
@@ -158,7 +159,7 @@ class ReverseCalculateHydroDynamics implements ShouldQueue
 
         if (!$isErrors AND isset($this->input['date'])) {
 
-            $fileurl = 'http://172.20.103.32/'.Storage::url($filePath);
+            $fileurl = env('KMG_SERVER_URL').Storage::url($filePath);
             $url = env('HYDRO_CALC_SERVICE_URL').'url_file/?url='.$fileurl;
 
             $client = new \GuzzleHttp\Client();
