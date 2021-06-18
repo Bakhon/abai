@@ -1,6 +1,9 @@
 {
   "type": "plain",
   "table": "prod.well_expl",
+  "default_values": {
+    "dend": "9999-12-31"
+  },
   "tabs": [
     {
       "title": "title",
@@ -16,21 +19,18 @@
                 "validation": ""
               },
               {
-                "code": "well_expl_type",
+                "code": "expl",
                 "type": "dict",
                 "dict": "well_expl_types",
                 "title": "expl_type",
                 "validation": "exists:tbd.dict.well_expl_type,id"
               },
               {
-                "code": "well_expl_type",
+                "code": "expl",
                 "type": "dict",
                 "dict": "well_expl_types",
                 "title": "new_expl_type",
-                "validation": "exists:tbd.dict.well_expl_type,id",
-                "default values": {
-                  "well_expl.dend" : "9999-12-31"
-                }
+                "validation": "exists:tbd.dict.well_expl_type,id"                
               }
             ]
           }
