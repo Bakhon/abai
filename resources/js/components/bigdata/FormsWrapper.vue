@@ -107,7 +107,6 @@ export default {
   .block-one-title {
     font-size: 14px;
     color: #fff;
-    white-space: nowrap;
   }
 
   .block-two-header {
