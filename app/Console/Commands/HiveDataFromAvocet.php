@@ -103,15 +103,15 @@ class HiveDataFromAvocet extends Command
         $inConservationInjectionFond = $this->quantityOfArray($fonds, 'SUSPENDED', $injectionFond, '');
 
         $dzoImportData = new DzoImportData();
-        $roundUp = 1000;
+        $multiplier  = 1000;
         $dzoImportData->date = $date;
         $dzoImportData->dzo_name = 'КГМ';
         $dzoImportData->oil_production_fact = $oilFact;
-        $dzoImportData->associated_gas_production_fact = $gasFact*$roundUp;
-        $dzoImportData->agent_upload_total_water_injection_fact = $agentUploadTotalWaterInjectionFact*$roundUp;
+        $dzoImportData->associated_gas_production_fact = $gasFact*$multiplier ;
+        $dzoImportData->agent_upload_total_water_injection_fact = $agentUploadTotalWaterInjectionFact*$multiplier ;
         $dzoImportData->oil_delivery_fact = $oilDeliveryFact;
-        $dzoImportData->associated_gas_delivery_fact = $associatedGasDeliveryFact*$roundUp;
-        $dzoImportData->associated_gas_expenses_for_own_fact = $associatedGasExpensesForOwnFact*$roundUp;
+        $dzoImportData->associated_gas_delivery_fact = $associatedGasDeliveryFact*$multiplier ;
+        $dzoImportData->associated_gas_expenses_for_own_fact = $associatedGasExpensesForOwnFact*$multiplier ;
         $dzoImportData->stock_of_goods_delivery_fact = $stockOfGoodsDeliveryFactTotal;
 
         $dzoImportData->in_work_production_fond = $inWorkProductionFond;
