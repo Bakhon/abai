@@ -72,11 +72,16 @@ class GusController extends CrudController
             $params['links']['create'] = route('gus.create');
         }
 
+        $params['model_name'] = $this->modelName;
+        $params['filter'] = session($this->modelName.'_filter');
+
         return view('gus.index', compact('params'));
     }
 
     public function list(IndexTableRequest $request)
     {
+        parent::list($request);
+
         $query = Gu::query()
             ->with('cdng');
 

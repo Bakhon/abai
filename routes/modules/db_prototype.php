@@ -69,6 +69,7 @@ Route::group(
                 Route::get('forms/{form}/row-history-graph', 'Api\DB\FormsController@getRowHistoryGraph');
                 Route::get('forms/{form}/copy', 'Api\DB\FormsController@copyFieldValue');
                 Route::get('forms/{form}/well-prefix', 'Api\DB\FormsController@getWellPrefix');
+                Route::get('forms/{form}/form-by-row', 'Api\DB\FormsController@getFormByRow');
                 Route::post('forms/{form}/validate/{field}', 'Api\DB\FormsController@validateField')->name(
                     'bigdata.form.validate.field'
                 );

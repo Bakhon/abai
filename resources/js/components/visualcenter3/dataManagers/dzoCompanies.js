@@ -155,6 +155,7 @@ export default {
             this.dzoCompaniesSummary = summary;
             if (this.oilCondensateProductionButton.length > 0) {
                 this.updateProductionTotalFact();
+                this.productionPercentParams['oil_fact'] = this.productionParamsWidget.yesterdayOilFact;
             }
         },
 
