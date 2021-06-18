@@ -134,37 +134,44 @@ export default {
             this.calculateDzoCompaniesSummary();
         },
         getConsolidatedOilCondensate() {
-            let updatedData = _.cloneDeep(this.productionTableData);
-            let filteredInitialData = this.getProductionDataInPeriodRange(updatedData,this.timestampToday,this.timestampEnd);
-            let filteredDataByCompanies = this.getFilteredCompaniesList(updatedData);
-            let filteredDataByPeriod = this.getProductionDataInPeriodRange(filteredDataByCompanies,this.timestampToday,this.timestampEnd);
-            filteredDataByPeriod = this.getDataOrderedByAsc(filteredDataByPeriod);
-            if (this.isOneDateSelected) {
-                filteredDataByPeriod = this.getFilteredDataByOneDay(_.cloneDeep(filteredDataByCompanies),'today');
-                filteredInitialData = this.getFilteredDataByOneDay(filteredInitialData,'today');
-            }
             let self = this;
-            let initialData = _.cloneDeep(this.dzoCompanySummary);
-            _.forEach(initialData, function(item) {
+            let temporary = _.cloneDeep(this.productionTableData);
+
+            let filteredByCompanies = this.getFilteredCompaniesList(temporary);
+            let filteredByPeriod = this.getFilteredByPeriod(filteredByCompanies,true);
+            let filteredInitial = this.getFilteredByPeriod(temporary,false);
+            let initialData = this.getUpdatedByOpekPlan(_.cloneDeep(this.dzoCompanySummary),filteredByPeriod);
+
+            let dataWithKMGParticipation = this.getUpdatedByDzoOptions(_.cloneDeep(initialData),filteredByPeriod,filteredInitial);
+            let dataWithoutKMGParticipation = this.getUpdatedByDzoOptionsWithoutKMG(_.cloneDeep(initialData),filteredByPeriod,filteredInitial);
+            let yesterdayData = this.getYesterdayData(_.cloneDeep(initialData),filteredByCompanies);
+
+            this.updateConsolidatedData(dataWithKMGParticipation,dataWithoutKMGParticipation);
+            if (this.oilCondensateFilters.isWithoutKMGFilterActive) {
+                return dataWithKMGParticipation;
+            }
+            return dataWithoutKMGParticipation;
+        },
+
+        getFilteredByPeriod(productionData,isNeedSort) {
+            let filtered = this.getProductionDataInPeriodRange(productionData,this.timestampToday,this.timestampEnd);
+            if (this.isOneDateSelected) {
+                filtered = this.getFilteredDataByOneDay(filtered, 'today');
+            }
+            if (isNeedSort) {
+                filtered = this.getFilteredDataByOneDay(productionData, 'today');
+                filtered = this.getDataOrderedByAsc(filtered);
+            }
+            return filtered;
+        },
+
+        getUpdatedByOpekPlan(initialData,filteredDataByPeriod) {
+            let self = this;
+            let temporary = initialData;
+            _.forEach(temporary, function(item) {
                 item.opekPlan = self.sumBy('oil_opek_plan',item.dzoMonth,filteredDataByPeriod);
             });
-            let dataWithKMGParticipation = this.getUpdatedByDzoOptions(_.cloneDeep(initialData),filteredDataByPeriod,filteredInitialData);
-            dataWithKMGParticipation = this.getUpdatedByTemplates(this.sortingOrder,dataWithKMGParticipation);
-            let sortedWithKMGParticipation = this.getSorted(dataWithKMGParticipation,this.sortingOrder);
-            let yesterdayData = this.getYesterdayData(_.cloneDeep(initialData),filteredDataByCompanies);
-            let dataWithoutKMGParticipation = this.getUpdatedByDzoOptionsWithoutKMG(_.cloneDeep(initialData),filteredDataByPeriod,filteredInitialData);
-            dataWithoutKMGParticipation = this.getUpdatedByTemplates(this.sortingOrderWithoutParticipation,dataWithoutKMGParticipation);
-            let sortedWithoutKMGParticipation = this.getSorted(dataWithoutKMGParticipation,this.sortingOrderWithoutParticipation);
-            if (this.buttonMonthlyTab || this.buttonYearlyTab) {
-                sortedWithKMGParticipation = this.getUpdatedByPeriodPlan(sortedWithKMGParticipation);
-                sortedWithoutKMGParticipation = this.getUpdatedByPeriodPlan(sortedWithoutKMGParticipation);
-            }
-            this.updateConsolidatedData(sortedWithKMGParticipation,sortedWithoutKMGParticipation);
-
-            if (this.oilCondensateFilters.isWithoutKMGFilterActive) {
-                return sortedWithKMGParticipation;
-            }
-            return sortedWithoutKMGParticipation;
+            return temporary;
         },
 
         updateConsolidatedData(sortedWithKMGParticipation,sortedWithoutKMGParticipation) {
@@ -222,6 +229,11 @@ export default {
                 }
             });
 
+            temporaryData = this.getUpdatedByTemplates(this.sortingOrder,temporaryData);
+            temporaryData = this.getSorted(temporaryData,this.sortingOrder);
+            if (this.buttonMonthlyTab || this.buttonYearlyTab) {
+                temporaryData = this.getUpdatedByPeriodPlan(temporaryData);
+            }
             return temporaryData;
         },
 
@@ -272,6 +284,13 @@ export default {
                     });
                 }
             });
+
+            temporaryData = this.getUpdatedByTemplates(this.sortingOrderWithoutParticipation,temporaryData);
+            temporaryData = this.getSorted(temporaryData,this.sortingOrderWithoutParticipation);
+            if (this.buttonMonthlyTab || this.buttonYearlyTab) {
+                temporaryData = this.getUpdatedByPeriodPlan(temporaryData);
+            }
+
             return temporaryData;
         },
 
