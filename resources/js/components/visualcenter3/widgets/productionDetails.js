@@ -71,6 +71,7 @@ export default {
             });
             this.tableMapping[widgetName]['class'] = 'show-company-list';
             this.tableMapping[widgetName]['hover'] = 'button_hover';
+            this.$store.commit('globalloading/SET_LOADING', false);
         },
     }
 }

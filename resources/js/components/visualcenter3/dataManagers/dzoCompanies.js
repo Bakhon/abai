@@ -214,7 +214,6 @@ export default {
         },
 
         exportDzoCompaniesSummaryForChart() {
-            this.$store.commit('globalloading/SET_LOADING', false);
             this.$emit("data", {
                 dzoCompaniesSummaryForChart: this.dzoCompaniesSummaryForChart,
                 isOpecFilterActive: this.isOpecFilterActive,
