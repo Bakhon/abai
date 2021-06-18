@@ -3,15 +3,15 @@
     <div class="blueblock h-100 m-0">
       <div class="wells-select-block m-0 p-3">
         <tree-view
-            v-for="treeData in items"
+            v-for="(treeData, index) in items"
             :isNodeOnBottomLevelOfHierarchy="isNodeOnBottomLevelOfHierarchy"
-            :ref="'child_' + treeData.id"
-            :key="treeData.id"
-            :nodeLocal="treeData"
+            :key="index + treeData.id"
+            :node="treeData"
             :handle-click="nodeClick"
             :get-wells="getWells"
             :get-initial-items="getInitialItems"
             :isShowCheckboxes="isShowCheckboxes"
+            :isWell="isWell"
         ></tree-view>
       </div>
     </div>
@@ -95,10 +95,13 @@ export default {
       })
     },
     isNodeOnBottomLevelOfHierarchy(node) {
-      return node.children.length === 0
+      return (!node.children || node.children.length === 0)
     },
-    getWells: async function (node) {
-      this.isLoading = true
+    isWell: function(node){
+      return (typeof node.type !== 'undefined' && node.type === 'well')
+    },
+    getWells: function (child) {
+      let node = child.node
       return this.axios.get(this.baseUrl + "get_wells", {
         params: {
           structure_type: this.structureType,
@@ -110,13 +113,18 @@ export default {
         }
       }).then((response) => {
         if (response.data) {
-          return response.data
+          let wellChildren = []
+          response.data.forEach((well) => {
+            well.type = 'well'
+            wellChildren.push(well);
+          });
+          node.children = wellChildren
         } else {
           console.log("No data");
         }
-        this.isLoading = false;
+        child.isLoading = false;
       }).finally(() => {
-        this.isLoading = false;
+        child.isLoading = false;
       })
     },
   },
