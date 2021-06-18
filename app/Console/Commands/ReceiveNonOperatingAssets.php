@@ -314,8 +314,8 @@ class receiveNonOperatingAssets extends Command
             ->where('dzo_name',$dzoName)
             ->first();
         if (!is_null($dzoYesterdayData)) {
-            $data['oilProduction'] = $dzoYesterdayData->oil_production_fact;
-            $data['oilDelivery'] = $dzoYesterdayData->oil_delivery_fact;
+            $data['oilProduction'] = $dzoYesterdayData->oil_production_fact_absolute;
+            $data['oilDelivery'] = $dzoYesterdayData->oil_delivery_fact_absolute;
         }
         return $data;
     }
