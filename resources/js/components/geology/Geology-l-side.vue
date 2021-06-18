@@ -160,12 +160,6 @@ export default {
   },
   methods:{
     selectedHandle(item){
-      /*
-      if(this.cListSelect.includes(item.value)){
-        const index = this.cListSelect.indexOf(item.value)
-        return this.listSelect.splice(index, 1);
-      }
-      */
       this.listSelect = [];
       this.listSelect.push(item.value);
     }
