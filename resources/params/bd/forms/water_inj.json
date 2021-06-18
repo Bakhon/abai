@@ -67,10 +67,10 @@
     },
     {
       "title": "data",
-      "table":"prod.meas_water_inj",
+      "table": "prod.meas_water_inj",
       "code": "dbeg",
-      "type": "text",
-      "column":"dbeg",
+      "type": "date",
+      "column": "dbeg",
       "is_editable": true
     },
     {

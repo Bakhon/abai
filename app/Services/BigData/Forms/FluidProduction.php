@@ -16,7 +16,7 @@ class FluidProduction extends TableForm
 
     protected $configurationFileName = 'fluid_production';
 
-    public function getRows(array $params = [])
+    public function getRows(array $params = []): array
     {
         $tech = Tech::find($this->request->get('tech'));
 

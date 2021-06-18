@@ -20,7 +20,7 @@ abstract class TableForm extends BaseForm
 {
     protected $jsonValidationSchemeFileName = 'table_form.json';
 
-    abstract public function getRows(array $params = []);
+    abstract public function getRows(array $params = []): array;
 
     abstract protected function saveSingleFieldInDB(string $field, int $wellId, Carbon $date, $value): void;
 

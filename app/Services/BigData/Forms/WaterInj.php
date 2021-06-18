@@ -13,7 +13,7 @@ class WaterInj extends TableForm
 {
     protected $configurationFileName = 'water_inj';
 
-    public function getRows(array $params = [])
+    public function getRows(array $params = []): array
     {
         $tech = Tech::find($this->request->get('tech'));
 
