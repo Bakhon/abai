@@ -286,11 +286,7 @@ export default {
         updateProductionTotalFact() {
             this.productionParams['oil_fact'] = this.productionParamsWidget.oilFact;
             this.productionParams['oil_plan'] = this.productionParamsWidget.oilPlan;
-            if (!this.isWithoutKMGFilterActive) {
-                this.productionPercentParams['oil_fact'] = this.productionParamsWidget.yesterdayOldFact;
-            } else {
-                this.productionPercentParams['oil_fact'] = this.productionParamsWidget.yesterdayOilFact;
-            }
+            this.productionPercentParams['oil_fact'] = this.productionParamsWidget.yesterdayOldFact;
         },
 
         getYesterdayData(productionTable,filteredDataByCompanies) {
@@ -309,6 +305,7 @@ export default {
                 .value();
             let dataWithKMGParticipation = this.getUpdatedByDzoOptions(_.cloneDeep(groupedData),yesterdayFilteredData,filteredInitialData);
             this.productionParamsWidget.yesterdayOilFact = _.sumBy(dataWithKMGParticipation, 'factMonth');
+
             return dataWithKMGParticipation;
         },
         getFilteredByNotUsableDzo(data) {

@@ -199,6 +199,7 @@ export default {
                 queryOptions = {'timestampToday': new Date(this.timestampToday), 'timestampEnd': new Date(this.timestampEnd)}
                 uri = this.localeUrl("/get-production-details");
             }
+
             const response = await axios.get(uri,{params:queryOptions});
             if (response.status === 200) {
                 return response.data;

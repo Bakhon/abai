@@ -32,7 +32,6 @@ export default {
             if (this.chartData.labels.length > 1) {
                 datetime = "datetime";
             }
-            this.$store.commit('globalloading/SET_LOADING', false);
 
             if (!this.chartData) {
                 return {};
