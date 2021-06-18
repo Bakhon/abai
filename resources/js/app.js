@@ -195,7 +195,6 @@ Vue.component('proactive-factors', require('./components/economy_kenzhe/proactiv
 Vue.component('proactive-factors-select-filter', require('./components/economy_kenzhe/proactiveFactors/selectFilter.vue').default);
 Vue.component('reptt-company2', require('./components/economy_kenzhe/proactiveFactors/repttCompany/reptt_company2.vue').default);
 
-//geology
 Vue.component('GeologyPage', require('./components/geology/page.vue').default);
 Vue.component('GeologyLSide', require('./components/geology/Geology-l-side.vue').default);
 Vue.component('GeologyRSide', require('./components/geology/Geology-r-side.vue').default);
