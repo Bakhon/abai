@@ -20,8 +20,11 @@ export default {
             consolidatedData: {
                 'withParticipation': [],
                 'withoutParticipation': [],
-                'yesterdayWithParticipation': []
+                'yesterdayWithParticipation': [],
+                'chartWithParticipation': [],
+                'chartWithoutParticipation': [],
             },
+
             productionParamsWidget: {
                 'oilFact' : 0,
                 'oilPlan' : 0,
@@ -118,12 +121,24 @@ export default {
                 periodPlan: null,
                 planMonth: 0,
                 restrictions: null
+            },
+            dzoMultiplier: {
+                'ОМГ': (item,value,fieldName) => value + item[fieldName],
+                'ПКК': (item,value,fieldName) => value * 0.33,
+                'КГМ': (item,value,fieldName) => value * 0.5 * 0.33,
+                'ТП': (item,value,fieldName) => value * 0.5 * 0.33,
+                'НКО': (item,value,fieldName) => ((value - value * 0.019) * 241 / 1428) / 2
             }
         };
     },
     methods: {
         switchFilterConsolidatedOilCondensate(parentButton,childButton,filterName) {
             this.oilCondensateFilters[filterName] = !this.oilCondensateFilters[filterName];
+            let chartOutput = this.consolidatedData.chartWithParticipation;
+            if (!this.oilCondensateFilters.isWithoutKMGFilterActive) {
+                chartOutput = this.consolidatedData.chartWithoutParticipation;
+            }
+            this.exportDzoCompaniesSummaryForChart(chartOutput);
             if (this.oilCondensateFilters[filterName]) {
                 this.dzoCompanySummary = this.consolidatedData.withParticipation;
             } else {
@@ -147,10 +162,14 @@ export default {
             let yesterdayData = this.getYesterdayData(_.cloneDeep(initialData),filteredByCompanies);
 
             this.updateConsolidatedData(dataWithKMGParticipation,dataWithoutKMGParticipation);
-            if (this.oilCondensateFilters.isWithoutKMGFilterActive) {
-                return dataWithKMGParticipation;
+            let output = dataWithKMGParticipation;
+            let chartOutput = this.consolidatedData.chartWithParticipation;
+            if (!this.oilCondensateFilters.isWithoutKMGFilterActive) {
+                output = dataWithoutKMGParticipation;
+                chartOutput = this.consolidatedData.chartWithoutParticipation;
             }
-            return dataWithoutKMGParticipation;
+            this.exportDzoCompaniesSummaryForChart(chartOutput);
+            return output;
         },
 
         getFilteredByPeriod(productionData,isNeedSort) {
@@ -177,6 +196,30 @@ export default {
         updateConsolidatedData(sortedWithKMGParticipation,sortedWithoutKMGParticipation) {
             this.consolidatedData.withParticipation = sortedWithKMGParticipation;
             this.consolidatedData.withoutParticipation = sortedWithoutKMGParticipation;
+            this.updateChart();
+        },
+
+        updateChart() {
+            let self = this;
+            let withKMG = _.cloneDeep(this.productionTableData);
+            let withoutKMG = _.cloneDeep(this.productionTableData);
+
+            _.forEach(withKMG, function (item) {
+                if (self.dzoMultiplier[item.dzo]) {
+                    item.oil_fact = self.dzoMultiplier[item.dzo](item,item.oil_fact,'oil_fact');
+                    item.oil_plan = self.dzoMultiplier[item.dzo](item,item.oil_plan,'oil_plan');
+                }
+            });
+
+            _.forEach(withoutKMG, function (item) {
+                if (item.dzo === 'ОМГ') {
+                    item.oil_fact += item.gk_fact;
+                    item.oil_plan += item.gk_plan;
+                }
+            });
+
+            this.consolidatedData.chartWithParticipation = this.getProductionForChart(withKMG);
+            this.consolidatedData.chartWithoutParticipation = this.getProductionForChart(withoutKMG);
         },
 
         getUpdatedByDzoOptions(updatedData,inputData,filteredInitialData) {
@@ -223,9 +266,9 @@ export default {
                     item.planMonth = pkiSummary.planMonth;
                 }
                 if (item.dzoMonth === 'НКО') {
-                    item.factMonth = self.nkoMapping.formula(item.factMonth);
-                    item.opekPlan = self.nkoMapping.formula(item.opekPlan);
-                    item.planMonth = self.nkoMapping.formula(item.planMonth);
+                    item.factMonth = self.dzoMultiplier['НКО'](null,item.factMonth,null);
+                    item.opekPlan = self.dzoMultiplier['НКО'](null,item.opekPlan,null);
+                    item.planMonth = self.dzoMultiplier['НКО'](null,item.planMonth,null);
                 }
             });
 

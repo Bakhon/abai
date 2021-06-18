@@ -242,7 +242,7 @@ export default {
             } else {
                 this.dzoCompaniesSummaryForChart = this.getProductionForChart(filteredDataByPeriod);
             }
-            this.exportDzoCompaniesSummaryForChart();
+            this.exportDzoCompaniesSummaryForChart(this.dzoCompaniesSummaryForChart);
 
             let summaryDataByDzo = this.getSummaryDataByDzo(filteredDataByPeriod);
 
@@ -646,7 +646,7 @@ export default {
 
             this.bigTable = bigTable;
             this.clearNullAccidentCases();
-            this.exportDzoCompaniesSummaryForChart();
+            this.exportDzoCompaniesSummaryForChart(this.dzoCompaniesSummaryForChart);
 
             return data;
         },

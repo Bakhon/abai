@@ -217,9 +217,9 @@ export default {
             return filteredPlanData;
         },
 
-        exportDzoCompaniesSummaryForChart() {
+        exportDzoCompaniesSummaryForChart(data) {
             this.$emit("data", {
-                dzoCompaniesSummaryForChart: this.dzoCompaniesSummaryForChart,
+                dzoCompaniesSummaryForChart: data,
                 isOpecFilterActive: this.isOpecFilterActive,
                 isFilterTargetPlanActive: this.isFilterTargetPlanActive
             });
