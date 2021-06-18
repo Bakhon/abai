@@ -11,6 +11,7 @@
             :get-wells="getWells"
             :isShowCheckboxes="false"
             :isWell="isWell"
+            :currentWellId="currentWellId"
         ></tree-view>
       </div>
     </div>
