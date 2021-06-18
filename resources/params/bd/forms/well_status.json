@@ -1,6 +1,9 @@
 {
   "type": "plain",
   "table": "prod.well_status",
+  "default_values": {
+    "dend": "9999-12-31"
+  },
   "tabs": [
     {
       "title": "status",
@@ -11,46 +14,31 @@
             "items": [
               {
                 "code": "dbeg",
-                "type": "date",
-                "title": "data",
-                "validation": "date"
-              },
-              {
-                "code": "well_status_type",
-                "type": "dict",
-                "dict": "well_statuses",
-                "title": "status",
-                "validation": "exists:tbd.dict.well_status_type,id"
-              },
-              {
-                "code": "dbeg",
                 "type": "datetime",
                 "title": "date",
-                "validation": "date"
+                "validation": "required|date",
+                "callbacks": {
+                  "fillCalculatedFields": ""
+                }
               },
               {
-                "code": "well_status_type",
+                "code": "old_status",
+                "type": "calc",
+                "visible": true,
+                "title": "well_st"
+              },
+              {
+                "code": "name_ru",
+                "type": "calc",
+                "visible": true,
+                "title": "well_cat"
+              },
+              {
+                "code": "status",
                 "type": "dict",
                 "dict": "well_statuses",
                 "title": "well_st",
                 "validation": "exists:tbd.dict.well_status_type,id"
-              },
-              {
-                "code": "well_category_type",
-                "type": "dict",
-                "dict": "well_categories",
-                "title": "well_cat",
-                "validation": "exists:tbd.dict.well_category_type,id"
-              },
-              {
-                "code": "well_status_type",
-                "type": "dict",
-                "dict": "well_statuses",
-                "title": "well_st",
-                "validation": "exists:tbd.dict.well_status_type,id",
-                "default values": {
-                  "well_status.dend" : "9999-12-31"
-                }
               }
             ]
           }

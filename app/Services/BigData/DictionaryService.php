@@ -41,7 +41,7 @@ class DictionaryService
     const DICTIONARIES = [
         'well_categories' => [
             'class' => WellCategory::class,
-            'name_field' => 'name'
+            'name_field' => 'name_ru'
         ],
         'well_types' => [
             'class' => WellType::class,
