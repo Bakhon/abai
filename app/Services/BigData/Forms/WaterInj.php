@@ -3,10 +3,12 @@
 declare(strict_types=1);
 
 namespace App\Services\BigData\Forms;
-use App\Models\BigData\Well;
+
 use App\Models\BigData\Dictionaries\Tech;
+use App\Models\BigData\Well;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+
 class WaterInj extends TableForm
 {
     protected $configurationFileName = 'water_inj';
@@ -95,5 +97,4 @@ class WaterInj extends TableForm
                 );
         }
     }
-
 }
