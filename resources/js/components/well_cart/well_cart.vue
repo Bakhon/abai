@@ -30,8 +30,9 @@
             <div class="directory text-white pt-0 mt-0">
               <ul id="myUL">
                 <well-cart-tree
-                    v-for="item in [...forms_structure, ...forms]"
+                    v-for="(item, index) in [...forms_structure, ...forms]"
                     :data="item"
+                    :key="index"
                     :active-form-code="activeFormCode"
                     :switch-form-by-code="switchFormByCode">
                 </well-cart-tree>
