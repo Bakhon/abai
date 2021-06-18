@@ -15,9 +15,10 @@
           </div>
         </div>
       </div>
-      <div class="cursor-pointer" @click="showChildren(node.id)">
+      <div class="cursor-pointer" @click="showChildren()" v-if="!isWell(node)">
         <img class="arrow-img" :class="isShowChildren ? 'opened-arrow' : 'closed-arrow'" width="16" height="16"
-             :src="'/img/icons/arrow.svg'">
+             :src="'/img/icons/arrow.svg'"
+        >
       </div>
       <div v-if="node.name"
            class="text-right text-white ml-2"
@@ -26,15 +27,16 @@
       </div>
     </div>
     <ul class="treeUl" v-if="isShowChildren">
-      <node v-if="node.children.length > 0"
-            v-for="child in node.children"
-            :nodeLocal="child"
-            :key="child.id"
+      <node
+            v-for="(child, index) in node.children"
+            :node="child"
+            :key="index+child.id"
             :handle-click="handleClick"
             :get-wells="getWells"
             :get-initial-items="getInitialItems"
             :isNodeOnBottomLevelOfHierarchy="isNodeOnBottomLevelOfHierarchy"
             :isShowCheckboxes="isShowCheckboxes"
+            :isWell="isWell"
       ></node>
     </ul>
     <div class="centered mx-auto mt-3" v-if="isShowChildren && isLoading">
@@ -47,39 +49,27 @@
 export default {
   name: "node",
   props: {
-    nodeLocal: Object,
+    node: Object,
     handleClick: Function,
     getWells: Function,
     getInitialItems: Function,
     isNodeOnBottomLevelOfHierarchy: Function,
     isShowCheckboxes: Boolean,
+    isWell: Function,
   },
   model: {
     prop: "node",
     event: "nodeChange"
   },
-  computed: {
-    node: {
-      get() {
-        return this.nodeLocal
-      },
-      set(value) {
-        this.$emit('nodeChange', value)
-      }
-    }
-  },
   methods: {
-    showChildren: async function () {
+    showChildren: function () {
       this.isShowChildren = !this.isShowChildren;
       if (!this.isShowChildren) {
         return
       }
-      this.node.children = []
-      this.node.children = await this.handleClick(this.node)
       if (this.isNodeOnBottomLevelOfHierarchy(this.node)) {
         this.isLoading = true;
-        this.node.children = []
-        this.node.children = await this.getWells(this.node);
+        this.getWells(this);
       }
       this.$forceUpdate()
     },
