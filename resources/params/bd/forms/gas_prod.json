@@ -1,0 +1,32 @@
+{
+  "type": "table",
+  "columns": [
+    {
+      "title": "uwi_number",
+      "code": "uwi",
+      "type": "link",
+      "is_editable": false
+    },
+    {
+      "title": "worktime",
+      "code": "worktime",
+      "table": "prod.well_status",
+      "column": "well_status_type_id",
+      "type": "text",
+      "is_editable": false
+    },
+    {
+      "title": "uwi_number",
+      "code": "gas_prod_val",
+      "type": "text",
+      "is_editable": true
+    },
+    {
+      "title": "gas_prod",
+      "code": "gas_prod",
+      "type": "calc",
+      "formula" : "",
+      "is_editable": false
+    }
+  ]
+}

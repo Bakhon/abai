@@ -21,4 +21,5 @@
   'well_tech' => '\\App\\Services\\BigData\\Forms\\WellTech',
   'well_tech_connect' => '\\App\\Services\\BigData\\Forms\\WellTechConnect',
   'well_status' => '\\App\\Services\\BigData\\Forms\\WellStatus',
+  'gas_prod' => '\\App\\Services\\BigData\\Forms\\GasProd',
 );
