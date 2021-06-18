@@ -31,7 +31,7 @@ export default {
   },
   props: {
     structureType: String,
-    itemType: Number,
+    itemType: Object,
     isShowCheckboxes: Boolean,
   },
   mounted() {
@@ -51,7 +51,7 @@ export default {
       return this.axios.get(this.baseUrl + "get_items", {
         params: {
           structure_type: this.structureType,
-          item_type: this.itemType
+          item_type: this.itemType.id
         },
         responseType: 'json',
         headers: {

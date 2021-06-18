@@ -52,14 +52,16 @@
               <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <div class="dropdown-inner-text">
-                  Выбор объекта
+                  {{ showOptions ? 'Выбор скважины' : currentItemType.name }}
                 </div>
                 <div class="icon-pointer"></div>
               </button>
               <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 <ul>
-                  <li @click.prevent="currentItemType =structureType['id']"
-                      v-for="structureType in structureTypes[currentStructureType]" class="dropdown-item">
+
+                  <li @click="onClickOption(structureType)"
+                  v-for="structureType in structureTypes[currentStructureType]" class="dropdown-item">
+
                     <div class="dropdown-item-inner">
                       <a href="#">
                         <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
@@ -109,7 +111,7 @@
                       @modalChangeVisible="(value) => modalChangeVisible(value)"
                       @changeOrgSelector="changeOrgSelector()"
                       :structureType="currentStructureType"
-                      :itemType="currentItemType"
+                      :itemType="currentItemType.id"
                       :isShowCheckboxes="true"
                   >
                   </report-constructor-item-select-tree>

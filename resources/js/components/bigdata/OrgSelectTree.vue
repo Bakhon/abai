@@ -6,7 +6,7 @@
             v-for="treeData in filterTree"
             :isNodeOnBottomLevelOfHierarchy="isNodeOnBottomLevelOfHierarchy"
             :ref="'child_' + treeData.id"
-            :node="treeData"
+            :nodeLocal="treeData"
             :key="treeData.id"
             :handle-click="nodeClick"
             :get-wells="getWells"
@@ -59,7 +59,7 @@ export default {
         this.filterTree = data.filterTree
       })
     },
-    nodeClick(node) {
+    async nodeClick(node) {
       this.$emit('wellIdChange', node.id)
     },
     isNodeOnBottomLevelOfHierarchy: function(node) {

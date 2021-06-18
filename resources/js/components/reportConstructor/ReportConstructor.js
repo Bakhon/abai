@@ -13,6 +13,7 @@ export default {
     data() {
         return {
             baseUrl: process.env.MIX_MICROSERVICE_USER_REPORTS,
+            showOptions: true,
             structureTypes: {
                 org: null,
                 tech: null,
@@ -38,6 +39,10 @@ export default {
         this.loadAttributeDescriptions()
     },
     methods: {
+        onClickOption(structureType) {
+            this.showOptions = false;
+            this.currentItemType = structureType
+        },
         loadStructureTypes(type) {
             this.isLoading = true
             this.axios.get(this.baseUrl + "get_structures_types", {
@@ -101,7 +106,7 @@ export default {
             this.axios.get(this.baseUrl + "get_items", {
                 params: {
                     structure_type: this.currentStructureType,
-                    item_type: itemType
+                    item_type: itemType.id
                 },
                 responseType: 'json',
                 headers: {
