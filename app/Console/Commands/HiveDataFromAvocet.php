@@ -150,7 +150,6 @@ class HiveDataFromAvocet extends Command
         $downtimeReason->prs_wait_downtime_injection_wells_count = $inactiveInjectionOprsFond;      
         $downtimeReason->krs_wait_downtime_injection_wells_count = $inactiveInjectionOkrsFond;           
         $downtimeReason->well_survey_downtime_injection_wells_count = $this->valueFromArrayWellSurvey($fonds, $injectionFond);
-        dd($dzoImportData);
         $downtimeReason->save();
     }
 
