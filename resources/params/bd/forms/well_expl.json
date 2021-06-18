@@ -1,0 +1,41 @@
+{
+  "type": "plain",
+  "table": "prod.well_expl",
+  "tabs": [
+    {
+      "title": "title",
+      "blocks": [
+        [
+          {
+            "title": "main",
+            "items": [
+              {
+                "code": "dbeg",
+                "type": "date",
+                "title": "data",
+                "validation": ""
+              },
+              {
+                "code": "well_expl_type",
+                "type": "dict",
+                "dict": "well_expl_types",
+                "title": "expl_type",
+                "validation": "exists:tbd.dict.well_expl_type,id"
+              },
+              {
+                "code": "well_expl_type",
+                "type": "dict",
+                "dict": "well_expl_types",
+                "title": "new_expl_type",
+                "validation": "exists:tbd.dict.well_expl_type,id",
+                "default values": {
+                  "well_expl.dend" : "9999-12-31"
+                }
+              }
+            ]
+          }
+        ]
+      ]
+    }
+  ]
+}
