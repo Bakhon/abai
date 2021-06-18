@@ -256,6 +256,9 @@ export default {
         'treatmentSko': {'treat_date': null,},
         'gdisCurrent': {'meas_date': null,},
         'gdisConclusion': {'name_ru': null,},
+        'gdisCurrentValue': {'value_double': null},
+        'gdisCurrentValuePmpr': {'gdisCurrentValuePmpr': null},
+        'gdisCurrentValueFlvl': {'gdisCurrentValuePmpr': null},
       },
       tubeNomOd: null,
       wellTechs: null,
@@ -293,6 +296,9 @@ export default {
         'treatmentSko': 'well_treatment_sko',
         'gdisCurrent': 'gdis_current',
         'gdisConclusion': 'gdis_conclusion',
+        'gdisCurrentValue': 'gdis_current_value',
+        'gdisCurrentValuePmpr': 'gdis_current_value_pmpr',
+        'gdisCurrentValueFlvl': 'gdis_current_value_flvl'
       },
       forms_structure: forms_structure,
     }
@@ -732,8 +738,26 @@ export default {
         },
         {
           'description': this.well.gdisConclusion.name_ru,
-          'method': 'trimToDate',
+          'method': null,
           'name': 'Результат ГДМ',
+          'data': ''
+        },
+        {
+          'description': this.well.gdisCurrentValue.value_double,
+          'method': null,
+          'name': 'Длина хода при проведении ГДМ',
+          'data': ''
+        },
+        {
+          'description': this.well.gdisCurrentValuePmpr.value_double,
+          'method': null,
+          'name': 'число качаний при проведении ГДМ',
+          'data': ''
+        },
+        {
+          'description': this.well.gdisCurrentValueFlvl.value_double,
+          'method': null,
+          'name': 'Динамический уровень',
           'data': ''
         },
       ]

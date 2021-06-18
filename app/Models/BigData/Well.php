@@ -133,6 +133,11 @@ class Well extends TBDModel
         return $this->belongsToMany(GdisConclusion::class, 'prod.gdis_current', 'well', 'id');
     }
 
+    public function gdisCurrentValue()
+    {
+        return $this->belongsToMany(GdisCurrentValue::class, 'prod.gdis_current', 'well', 'id', 'id', 'gdis_curr');
+    }
+
     public function scopeActive($query, $date)
     {
         $query->whereHas(
