@@ -104,6 +104,19 @@ export default {
             nkoMapping: {
                 'formula': (value) => Math.round(((value - value * 0.019) * 241 / 1428) / 2)
             },
+            emptyTemplate: {
+                accident: null,
+                dzoMonth: 'КГМ',
+                factMonth: 0,
+                impulses: null,
+                landing: null,
+                opec: null,
+                opekPlan: 0,
+                otheraccidents: null,
+                periodPlan: null,
+                planMonth: 0,
+                restrictions: null
+            }
         };
     },
     methods: {
@@ -124,7 +137,6 @@ export default {
             let filteredDataByCompanies = this.getFilteredCompaniesList(updatedData);
             let filteredDataByPeriod = this.getProductionDataInPeriodRange(filteredDataByCompanies,this.timestampToday,this.timestampEnd);
             filteredDataByPeriod = this.getDataOrderedByAsc(filteredDataByPeriod);
-
             if (this.isOneDateSelected) {
                 filteredDataByPeriod = this.getFilteredDataByOneDay(_.cloneDeep(filteredDataByCompanies),'today');
                 filteredInitialData = this.getFilteredDataByOneDay(filteredInitialData,'today');
@@ -135,13 +147,12 @@ export default {
                 item.opekPlan = self.sumBy('oil_opek_plan',item.dzoMonth,filteredDataByPeriod);
             });
             let dataWithKMGParticipation = this.getUpdatedByDzoOptions(_.cloneDeep(initialData),filteredDataByPeriod,filteredInitialData);
+            dataWithKMGParticipation = this.getUpdatedByTemplates(this.sortingOrder,dataWithKMGParticipation);
+
             let sortedWithKMGParticipation = this.getSorted(dataWithKMGParticipation,this.sortingOrder);
-            let emptyRecordIndex = sortedWithKMGParticipation.findIndex(element => !element);
-            if (emptyRecordIndex !== -1) {
-                sortedWithKMGParticipation.splice(emptyRecordIndex, 1);
-            }
             let yesterdayData = this.getYesterdayData(_.cloneDeep(this.productionTableData),filteredDataByCompanies);
             let dataWithoutKMGParticipation = this.getUpdatedByDzoOptionsWithoutKMG(_.cloneDeep(initialData),filteredDataByPeriod,filteredInitialData);
+            dataWithoutKMGParticipation = this.getUpdatedByTemplates(this.sortingOrderWithoutParticipation,dataWithoutKMGParticipation);
             let sortedWithoutKMGParticipation = this.getSorted(dataWithoutKMGParticipation,this.sortingOrderWithoutParticipation);
             if (this.buttonMonthlyTab || this.buttonYearlyTab) {
                 sortedWithKMGParticipation = this.getUpdatedByPeriodPlan(sortedWithKMGParticipation);
@@ -239,7 +250,6 @@ export default {
             let temporaryData = updatedData;
             let pkiIndex = temporaryData.findIndex(element => element.dzoMonth === 'ПКИ');
            temporaryData.splice(pkiIndex, 1);
-
             _.forEach(dzoOptions, function(item) {
                 if (item.dzoName === 'АГ') {
                     temporaryData.push({
@@ -302,6 +312,18 @@ export default {
                 item.periodPlan = item.planMonth / daysPassed * daysCountInMonth;
             });
             return updatedData;
+        },
+
+        getUpdatedByTemplates(sortingOrder,inputData) {
+            let self = this;
+            _.forEach(sortingOrder, function (dzoName) {
+                if (inputData.findIndex(element => element.dzoMonth === dzoName) === -1) {
+                    let template = self.emptyTemplate;
+                    template.dzoMonth = dzoName;
+                    inputData.push(template);
+                }
+            });
+            return inputData;
         },
     }
 }
