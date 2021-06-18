@@ -164,7 +164,7 @@ export default {
             }
 
             let summaryForChart = _(summary)
-                .groupBy("__time")
+                .groupBy("date")
                 .map((__time, id) => ({
                     time: id,
                     dzo: 'dzo',

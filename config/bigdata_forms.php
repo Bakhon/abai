@@ -10,6 +10,7 @@
   'prs' => '\\App\\Services\\BigData\\Forms\\Prs',
   'gas_well' => '\\App\\Services\\BigData\\Forms\\GasWell',
   'daily_drill' => '\\App\\Services\\BigData\\Forms\\DailyDrill',
+  'water_injection' => '\\App\\Services\\BigData\\Forms\\WaterInjection',
   'well_zone' => '\\App\\Services\\BigData\\Forms\\WellZone',
   'well_constr' => '\\App\\Services\\BigData\\Forms\\WellConstr',
   'tech_state' => '\\App\\Services\\BigData\\Forms\\TechState',
@@ -21,4 +22,5 @@
   'well_tech' => '\\App\\Services\\BigData\\Forms\\WellTech',
   'well_tech_connect' => '\\App\\Services\\BigData\\Forms\\WellTechConnect',
   'well_status' => '\\App\\Services\\BigData\\Forms\\WellStatus',
+  'water_inj' => '\\App\\Services\\BigData\\Forms\\WaterInj'
 );

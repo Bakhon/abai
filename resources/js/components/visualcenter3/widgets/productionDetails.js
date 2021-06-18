@@ -17,7 +17,7 @@ export default {
             _.forEach(data, function(item) {
                 let temporaryData = {
                     'dzo': item.dzo_name,
-                    'date': item.date,
+                    'date': moment(item.date).startOf('day').valueOf(),
                     '__time': new Date(item.date).getTime()
                 };
                 _.forEach(Object.keys(integrationFieldsMapping), function(key) {
@@ -71,6 +71,7 @@ export default {
             });
             this.tableMapping[widgetName]['class'] = 'show-company-list';
             this.tableMapping[widgetName]['hover'] = 'button_hover';
+            this.$store.commit('globalloading/SET_LOADING', false);
         },
     }
 }
