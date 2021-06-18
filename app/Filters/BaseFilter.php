@@ -50,7 +50,7 @@ abstract class BaseFilter
         if(!empty($this->params['filter'])) {
             foreach ($this->params['filter'] as $field => $value) {
                 $method = $this->getMethodName($field);
-                $operator = '';
+                $operator = null;
 
                 for ($i = 0; $i < count($this->operators); $i++) {
                     $pattern = $this->operators[$i];
@@ -87,64 +87,64 @@ abstract class BaseFilter
         $this->query->where('field_id', $operator, $guId);
     }
 
-    protected function filter_gu($guId, string $operator = '=')
+    protected function filter_gu($guId)
     {
-        $this->query->where('gu_id', $operator, $guId);
+        $this->query->where('gu_id', $guId);
     }
 
-    protected function filter_zu($guId, string $operator = '=')
+    protected function filter_zu($guId)
     {
-        $this->query->where('zu_id', $operator, $guId);
+        $this->query->where('zu_id', $guId);
     }
 
-    protected function filter_cdng($guId, string $operator = '=')
+    protected function filter_cdng($guId)
     {
-        $this->query->where('cdng_id', $operator, $guId);
+        $this->query->where('cdng_id', $guId);
     }
 
-    protected function filter_ngdu($guId, string $operator = '=')
+    protected function filter_ngdu($guId)
     {
-        $this->query->where('ngdu_id', $operator, $guId);
+        $this->query->where('ngdu_id', $guId);
     }
 
-    protected function filter_well($guId, string $operator = '=')
+    protected function filter_well($guId)
     {
-        $this->query->where('well_id', $operator, $guId);
+        $this->query->where('well_id', $guId);
     }
 
-    protected function filter_material($guId, string $operator = '=')
+    protected function filter_material($guId)
     {
-        $this->query->where('material_id', $operator, $guId);
+        $this->query->where('material_id', $guId);
     }
 
-    protected function filter_other_objects($guId, string $operator = '=')
+    protected function filter_other_objects($guId)
     {
-        $this->query->where('other_objects_id', $operator, $guId);
+        $this->query->where('other_objects_id', $guId);
     }
 
-    protected function filter_water_type_by_sulin($guId, string $operator = '=')
+    protected function filter_water_type_by_sulin($guId)
     {
-        $this->query->where('water_type_by_sulin_id', $operator, $guId);
+        $this->query->where('water_type_by_sulin_id', $guId);
     }
 
-    protected function filter_sulphate_reducing_bacteria($guId, string $operator = '=')
+    protected function filter_sulphate_reducing_bacteria($guId)
     {
-        $this->query->where('sulphate_reducing_bacteria_id', $operator, $guId);
+        $this->query->where('sulphate_reducing_bacteria_id', $guId);
     }
 
-    protected function filter_hydrocarbon_oxidizing_bacteria($guId, string $operator = '=')
+    protected function filter_hydrocarbon_oxidizing_bacteria($guId)
     {
-        $this->query->where('hydrocarbon_oxidizing_bacteria_id', $operator, $guId);
+        $this->query->where('hydrocarbon_oxidizing_bacteria_id', $guId);
     }
 
-    protected function filter_thionic_bacteria($guId, string $operator = '=')
+    protected function filter_thionic_bacteria($guId)
     {
-        $this->query->where('thionic_bacteria_id', $operator, $guId);
+        $this->query->where('thionic_bacteria_id', $guId);
     }
 
-    protected function filter_inhibitor($guId, string $operator = '=')
+    protected function filter_inhibitor($guId)
     {
-        $this->query->where('inhibitor_id', $operator, $guId);
+        $this->query->where('inhibitor_id', $guId);
     }
 
     protected function filter_date($dates)
