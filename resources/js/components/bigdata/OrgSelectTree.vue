@@ -59,7 +59,7 @@ export default {
         this.filterTree = data.filterTree
       })
     },
-    async nodeClick(node) {
+    nodeClick(node) {
       this.$emit('wellIdChange', node.id)
     },
     isNodeOnBottomLevelOfHierarchy: function(node) {
