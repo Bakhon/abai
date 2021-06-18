@@ -38,6 +38,7 @@ class WellsController extends Controller
             'well_treatment' => $this->wellTreatment($well),
             'well_treatment_sko' => $this->wellTreatmentSko($well),
             'gdis_current' => $this->gdisCurrent($well),
+            'gdis_conclusion' => $this->gdisConclusion($well),
         );
     }
 
@@ -233,6 +234,14 @@ class WellsController extends Controller
         return $well->wellTreatment()
             ->where('treatment_type', '=', '21')
             ->first(['treat_date']);
+    }
+
+    private function gdisConclusion(Well $well)
+    {
+        return $well->gdisConclusion()
+            ->withPivot('meas_date')
+            ->orderBy('pivot_meas_date', 'desc')
+            ->first(['name_ru']);
     }
 
     public function search(Request $request): array

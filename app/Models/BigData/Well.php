@@ -3,6 +3,7 @@
 namespace App\Models\BigData;
 
 use App\Models\BigData\Dictionaries\BottomHoleType;
+use App\Models\BigData\Dictionaries\GdisConclusion;
 use App\Models\BigData\Dictionaries\Geo;
 use App\Models\BigData\Dictionaries\Org;
 use App\Models\BigData\Dictionaries\Tech;
@@ -125,6 +126,11 @@ class Well extends TBDModel
     public function gdisCurrent()
     {
         return $this->hasMany(GdisCurrent::class, 'well', 'id');
+    }
+
+    public function gdisConclusion()
+    {
+        return $this->belongsToMany(GdisConclusion::class, 'prod.gdis_current', 'well', 'id');
     }
 
     public function scopeActive($query, $date)
