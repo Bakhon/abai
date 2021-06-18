@@ -24,6 +24,7 @@ export default {
             currentStructureType: 'geo',
             currentStructureId: null,
             currentItemType: null,
+            currentOption: null,
             items: [],
             isLoading: false,
             isDisplayParameterBuilder: false,
@@ -41,7 +42,8 @@ export default {
     methods: {
         onClickOption(structureType) {
             this.showOptions = false;
-            this.currentItemType = structureType
+            this.currentOption = structureType
+            this.currentItemType = structureType.id
         },
         loadStructureTypes(type) {
             this.isLoading = true
@@ -106,7 +108,7 @@ export default {
             this.axios.get(this.baseUrl + "get_items", {
                 params: {
                     structure_type: this.currentStructureType,
-                    item_type: itemType.id
+                    item_type: itemType
                 },
                 responseType: 'json',
                 headers: {

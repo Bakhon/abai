@@ -2,7 +2,7 @@
   <div class="row">
     <div class="left-section bg-dark">
       <div class="col">
-        <div class="row">
+        <div class="row menu">
           <div class="left-section-title" @click="currentStructureType = 'org'">
             <svg width="18" height="16" viewBox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path fill-rule="evenodd" clip-rule="evenodd" d="M6.05078 0.00301123H11.098V5.0498H6.05078V0.00301123Z"
@@ -52,14 +52,14 @@
               <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <div class="dropdown-inner-text">
-                  {{ showOptions ? 'Выбор скважины' : currentItemType.name }}
+                  {{ showOptions ? 'Выбор скважины' : currentOption.name }}
                 </div>
                 <div class="icon-pointer"></div>
               </button>
               <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 <ul>
 
-                  <li @click="onClickOption(structureType)"
+                  <li @click="onClickOption(structureType);"
                   v-for="structureType in structureTypes[currentStructureType]" class="dropdown-item">
 
                     <div class="dropdown-item-inner">
@@ -111,7 +111,7 @@
                       @modalChangeVisible="(value) => modalChangeVisible(value)"
                       @changeOrgSelector="changeOrgSelector()"
                       :structureType="currentStructureType"
-                      :itemType="currentItemType.id"
+                      :itemType="currentItemType"
                       :isShowCheckboxes="true"
                   >
                   </report-constructor-item-select-tree>
@@ -778,6 +778,9 @@ body {
     }
   }
 
+  .menu {
+    flex-wrap: wrap-reverse;
+  }
   .dropdown-menu.show {
     background: #1A214A;
     width: 100%;
