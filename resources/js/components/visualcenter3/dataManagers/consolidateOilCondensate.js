@@ -11,7 +11,7 @@ export default {
             sortingOrder: [
                 'ОМГ','ОМГК','ММГ','ЭМГ','КБМ',
                 'КГМ','КТМ','КОА','УО','ТШО','НКО','КПО','ПКИ',
-                'ПККР','КГМКМГ','ТП','АГ','НКОН','НКОС'
+                'ПККР','КГМКМГ','ТП','АГ'
             ],
             sortingOrderWithoutParticipation: [
                 'ОМГ','ОМГК','ЭМГ','АГ','ТШО','ММГ','КОА','КТМ',
@@ -78,17 +78,6 @@ export default {
                         'planMonth': 'gk_plan',
                         'formula': (fieldName, dzoName,filteredInitialData) => this.sumBy(fieldName,dzoName,filteredInitialData)
                     },
-                    {
-                        'dzoMonth': 'НКОН',
-                        'dzoName' : 'НКО',
-                        'factMonth': 'oil_fact',
-                        'opekMonth': 'oil_opek_plan',
-                        'planMonth': 'oil_plan',
-                        'formula': (fieldName, dzoName,inputData) => {
-                            let parameter = this.sumBy(fieldName,dzoName,inputData);
-                            return Math.round((parameter - parameter * 0.019) * 241 / 1428);
-                        }
-                    },
                 ],
                 'withoutKMGFilter': [
                     {
@@ -111,7 +100,10 @@ export default {
             },
             oilCondensateFilters: {
                 'isWithoutKMGFilterActive': true
-            }
+            },
+            nkoMapping: {
+                'formula': (value) => Math.round(((value - value * 0.019) * 241 / 1428) / 2)
+            },
         };
     },
     methods: {
@@ -172,11 +164,6 @@ export default {
                 'planMonth': 0,
                 'opekPlan': 0
             };
-            let nkoSummary = {
-                'factMonth': 0,
-                'planMonth': 0,
-                'opekPlan': 0
-            };
             let temporaryData = updatedData;
             temporaryData = this.getFilteredByNotUsableDzo(temporaryData);
 
@@ -199,16 +186,6 @@ export default {
                 if (['ПКК','КГМ','ТП'].includes(item.dzoName)) {
                     self.updateDzoCompaniesSummary(item,pkiSummary,inputData);
                 }
-                if (item.dzoName === 'НКО') {
-                    self.updateDzoCompaniesSummary(item,nkoSummary,inputData);
-                }
-            });
-
-            temporaryData.push({
-                'dzoMonth': 'НКОС',
-                'factMonth': nkoSummary.factMonth / 2,
-                'opekPlan' : nkoSummary.opekPlan / 2,
-                'planMonth': nkoSummary.planMonth / 2,
             });
 
             _.forEach(temporaryData, function(item, index) {
@@ -223,9 +200,9 @@ export default {
                     item.planMonth = pkiSummary.planMonth;
                 }
                 if (item.dzoMonth === 'НКО') {
-                    item.factMonth = nkoSummary.factMonth / 2;
-                    item.opekPlan = nkoSummary.opekPlan / 2;
-                    item.planMonth = nkoSummary.planMonth / 2;
+                    item.factMonth = self.nkoMapping.formula(item.factMonth);
+                    item.opekPlan = self.nkoMapping.formula(item.opekPlan);
+                    item.planMonth = self.nkoMapping.formula(item.planMonth);
                 }
             });
 
