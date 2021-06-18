@@ -294,7 +294,7 @@ abstract class TableForm extends BaseForm
         return $this->combineOrgWithTechData();
     }
 
-    private function saveHistory(string $field, $value)
+    private function saveHistory(string $field, $value): void
     {
         History::create(
             [
@@ -309,7 +309,7 @@ abstract class TableForm extends BaseForm
         );
     }
 
-    protected function getFieldRow(array $column, int $wellId, Carbon $date)
+    protected function getFieldRow(array $column, int $wellId, Carbon $date): \stdClass
     {
         $query = DB::connection('tbd')
             ->table($column['table'])
@@ -331,7 +331,7 @@ abstract class TableForm extends BaseForm
         return $query->first();
     }
 
-    private function getOrgStructure()
+    private function getOrgStructure(): array
     {
         $orgData = [];
         if (Cache::has('bd_org_with_wells')) {
@@ -363,7 +363,7 @@ abstract class TableForm extends BaseForm
         return $orgData;
     }
 
-    private function getTechStructure()
+    private function getTechStructure(): array
     {
         $cacheKey = 'bd_tech_with_wells_' . $this->request->get('date');
         $techData = [];
@@ -411,7 +411,7 @@ abstract class TableForm extends BaseForm
         return $result;
     }
 
-    protected function combineOrgWithTechData()
+    protected function combineOrgWithTechData(): array
     {
         $cacheKey = 'bd_org_tech_' . $this->request->get('date');
         if (Cache::has($cacheKey)) {
@@ -458,7 +458,7 @@ abstract class TableForm extends BaseForm
         return $this->createTree($new, $new[null]);
     }
 
-    private function createTree(&$list, $parent)
+    private function createTree(&$list, $parent): array
     {
         $tree = array();
         foreach ($parent as $k => $l) {
@@ -474,7 +474,7 @@ abstract class TableForm extends BaseForm
         return $tree;
     }
 
-    private function clearTechStructure(array $result)
+    private function clearTechStructure(array $result): array
     {
         foreach ($result as $key => $tech) {
             if (!empty($tech['children'])) {
