@@ -116,6 +116,11 @@ abstract class PlainForm extends BaseForm
         return [];
     }
 
+    public function getFormByRow(array $row): array
+    {
+        return [];
+    }
+
     public function delete(int $rowId)
     {
         DB::connection('tbd')

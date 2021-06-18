@@ -9,7 +9,7 @@ Route::group(
                 Route::get('/', 'bd\DBController@bigdata')->name('bigdata');
                 Route::get('/las', 'bd\DBController@las')->name('las');
                 Route::get('/well_cart', 'bd\DBController@well_cart')->name('well_cart');
-                Route::get('/report_constructor', 'bd\DBController@report_constructor')->name('report_constructor');
+                Route::get('/report-constructor', 'bd\DBController@report_constructor')->name('report_constructor');
                 Route::get('/user_reports', 'bd\DBController@userReports')->name('userReports');
 
                 Route::get('file-status/list', 'Refs\bigdata\las\FileStatusController@list')->name('file-status.list');
@@ -69,6 +69,7 @@ Route::group(
                 Route::get('forms/{form}/row-history-graph', 'Api\DB\FormsController@getRowHistoryGraph');
                 Route::get('forms/{form}/copy', 'Api\DB\FormsController@copyFieldValue');
                 Route::get('forms/{form}/well-prefix', 'Api\DB\FormsController@getWellPrefix');
+                Route::get('forms/{form}/form-by-row', 'Api\DB\FormsController@getFormByRow');
                 Route::post('forms/{form}/validate/{field}', 'Api\DB\FormsController@validateField')->name(
                     'bigdata.form.validate.field'
                 );

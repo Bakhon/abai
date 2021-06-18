@@ -144,6 +144,10 @@ export default {
             });
             let dataWithKMGParticipation = this.getUpdatedByDzoOptions(_.cloneDeep(initialData),filteredDataByPeriod,filteredInitialData);
             let sortedWithKMGParticipation = this.getSorted(dataWithKMGParticipation,this.sortingOrder);
+            let emptyRecordIndex = sortedWithKMGParticipation.findIndex(element => !element);
+            if (emptyRecordIndex !== -1) {
+                sortedWithKMGParticipation.splice(emptyRecordIndex, 1);
+            }
             let yesterdayData = this.getYesterdayData(_.cloneDeep(this.productionTableData),filteredDataByCompanies);
             let dataWithoutKMGParticipation = this.getUpdatedByDzoOptionsWithoutKMG(_.cloneDeep(initialData),filteredDataByPeriod,filteredInitialData);
             let sortedWithoutKMGParticipation = this.getSorted(dataWithoutKMGParticipation,this.sortingOrderWithoutParticipation);
@@ -224,6 +228,7 @@ export default {
                     item.planMonth = nkoSummary.planMonth / 2;
                 }
             });
+
             return temporaryData;
         },
 
@@ -281,11 +286,7 @@ export default {
         updateProductionTotalFact() {
             this.productionParams['oil_fact'] = this.productionParamsWidget.oilFact;
             this.productionParams['oil_plan'] = this.productionParamsWidget.oilPlan;
-            if (!this.isWithoutKMGFilterActive) {
-                this.productionPercentParams['oil_fact'] = this.productionParamsWidget.yesterdayOldFact;
-            } else {
-                this.productionPercentParams['oil_fact'] = this.productionParamsWidget.yesterdayOilFact;
-            }
+            this.productionPercentParams['oil_fact'] = this.productionParamsWidget.yesterdayOldFact;
         },
 
         getYesterdayData(productionTable,filteredDataByCompanies) {
@@ -304,6 +305,7 @@ export default {
                 .value();
             let dataWithKMGParticipation = this.getUpdatedByDzoOptions(_.cloneDeep(groupedData),yesterdayFilteredData,filteredInitialData);
             this.productionParamsWidget.yesterdayOilFact = _.sumBy(dataWithKMGParticipation, 'factMonth');
+
             return dataWithKMGParticipation;
         },
         getFilteredByNotUsableDzo(data) {

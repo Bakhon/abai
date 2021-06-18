@@ -117,11 +117,11 @@
                 "validation":"required|numeric" 
               },
               {
-                "code":"pump_type",
+                "code":"drill_pump_type",
                 "type":"dict",
+                "dict":"pump_types",
                 "title":"pump_type",
-                "validation":"required|exists:tbd.dict.drill_pump_type,id",
-                "dict":"pump_types"
+                "validation":"required|exists:tbd.dict.drill_pump_type,id"                
               },
               {
                 "code":"revs_per_minute",

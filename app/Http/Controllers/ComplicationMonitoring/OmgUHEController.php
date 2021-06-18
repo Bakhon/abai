@@ -121,11 +121,16 @@ class OmgUHEController extends CrudController
             $params['links']['export'] = route($this->modelName.'.export');
         }
 
+        $params['model_name'] = $this->modelName;
+        $params['filter'] = session($this->modelName.'_filter');
+
         return view('omguhe.index', compact('params'));
     }
 
     public function list(IndexTableRequest $request)
     {
+        parent::list($request);
+
         $query = OmgUHE::query()
                                 ->with('ngdu')
                                 ->with('cdng')

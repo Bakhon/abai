@@ -1,6 +1,10 @@
 {
   "type": "plain",
   "table": "prod.well_zone",
+  "table_fields": [
+    "dbeg",
+    "zone"
+  ],
   "tabs": [
     {
       "title": "w_zone",
