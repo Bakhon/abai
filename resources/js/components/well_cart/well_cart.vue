@@ -254,7 +254,8 @@ export default {
         'perfActual': {'top': null, 'base': null},
         'wellInfo': {'rte': null},
         'treatmentSko': {'treat_date': null,},
-        'gdisCurrent': {'meas_date': null,}
+        'gdisCurrent': {'meas_date': null,},
+        'gdisConclusion': {'name_ru': null,},
       },
       tubeNomOd: null,
       wellTechs: null,
@@ -290,7 +291,8 @@ export default {
         'artificialBottomHole': 'artificial_bottom_hole.pivot.depth',
         'perfActual': 'well_perf_actual',
         'treatmentSko': 'well_treatment_sko',
-        'gdisCurrent': 'gdis_current'
+        'gdisCurrent': 'gdis_current',
+        'gdisConclusion': 'gdis_conclusion',
       },
       forms_structure: forms_structure,
     }
@@ -330,6 +332,7 @@ export default {
         try {
           this.well.id = data.wellInfo.id
           this.wellUwi = data.wellInfo.uwi
+          console.log(data)
           for (let i = 0; i < Object.keys(this.wellTransform).length; i++) {
             this.setWellObjectData(Object.keys(this.wellTransform)[i], Object.values(this.wellTransform)[i], data)
           }
@@ -371,7 +374,7 @@ export default {
             }
           } catch (e) {
           }
-        } else if (this.tableData[i].method === 'trimToDate') {
+        } else if (this.tableData[i].method === 'trimToDate' && this.tableData[i].description != null) {
           try {
             this.tableData[i].data = moment(this.tableData[i].description).format('DD/MM/YYYY')
           } catch (e) {
@@ -725,6 +728,12 @@ export default {
           'description': this.well.gdisCurrent.meas_date,
           'method': 'trimToDate',
           'name': 'Дата последнего ГДИС',
+          'data': ''
+        },
+        {
+          'description': this.well.gdisConclusion.name_ru,
+          'method': 'trimToDate',
+          'name': 'Результат ГДМ',
           'data': ''
         },
       ]
