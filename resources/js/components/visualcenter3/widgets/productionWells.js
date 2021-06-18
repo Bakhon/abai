@@ -33,8 +33,7 @@ export default {
         },
 
         updateWellsWidgetPercentData(data) {
-            let periodStartTimestamp = this.timestampToday - this.quantityRange * 86400000;
-            let filteredDataByPeriod = this.getProductionDataInPeriodRange(data,periodStartTimestamp,this.timestampToday);
+            let filteredDataByPeriod = this.getProductionDataInPeriodRange(data,this.timestampToday,this.timestampEnd);
             let groupedWellsData = this.getGroupedWells(filteredDataByPeriod);
 
             this.inj_wells_idlePercent = groupedWellsData[0]['inj_wells_idle'];

@@ -31,9 +31,9 @@ class OmgCAFilter extends BaseFilter
         }
     }
 
-    protected function filter_year($year)
+    protected function filter_year($year, $condition = 'LIKE')
     {
-        $this->query->where('date', 'LIKE', $year . '%');
+        $this->query->where('date', $condition, $year . '%');
     }
 
 }
