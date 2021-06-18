@@ -15,6 +15,7 @@ use \Spatie\Permission\Models\Role;
 
 class UsersController extends Controller
 {
+    protected $modelName = 'users';
 
     const LOGS_PER_PAGE = 20;
 
@@ -50,11 +51,18 @@ class UsersController extends Controller
             ],
         ];
 
+        $params['model_name'] = $this->modelName;
+        $params['filter'] = session($this->modelName.'_filter');
+
         return view('admin.users.index', compact('params'));
     }
 
     public function list(IndexTableRequest $request)
     {
+        $input = $request->validated();
+        $model_name_filter = $input['model_name'].'_filter';
+        session([$model_name_filter => $input]);
+
         $query = \App\User::query();
 
         $users = $this

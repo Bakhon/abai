@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\ComplicationMonitoring;
 
 use App\Filters\MapHistoryFilter;
+use App\Http\Controllers\CrudController;
 use App\Http\Requests\IndexTableRequest;
 use App\Http\Resources\MapHistoryResource;
 use App\Models\ComplicationMonitoring\PipeCoord;
@@ -12,12 +13,10 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Session;
 use Spatie\Activitylog\Models\Activity;
 
-class MapHistory extends Controller
+class MapHistory extends CrudController
 {
-    /**
-     * Display a listing of the resource.
-     *
-     */
+    protected $modelName = 'map-history';
+
     public function index()
     {
         $params = [
@@ -90,11 +89,16 @@ class MapHistory extends Controller
             ]
         ];
 
+        $params['model_name'] = $this->modelName;
+        $params['filter'] = session($this->modelName.'_filter');
+
         return view('complicationMonitoring.map-history.index', compact('params'));
     }
 
     public function list(IndexTableRequest $request): \Symfony\Component\HttpFoundation\Response
     {
+        parent::list($request);
+
         $query = Activity::query();
 
         $activities = $this

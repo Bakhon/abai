@@ -11,6 +11,107 @@
         </p>
       </template>
       <p v-else-if="rows.length === 0" class="table__message">{{ trans('bd.nothing_found') }}</p>
+      <div v-else class="table-wrap scrollable">
+        <table v-if="rows.length" class="table">
+          <thead>
+          <tr>
+            <th v-for="column in visibleColumns">
+              {{ column.title }}
+            </th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr v-for="(row, rowIndex) in rows">
+            <td
+                v-for="column in visibleColumns"
+                :class="{'editable': column.is_editable}"
+                @dblclick="editCell(row, column)"
+            >
+              <template v-if="column.type === 'link'">
+                <a :href="row[column.code].href">{{ row[column.code].name }}</a>
+              </template>
+              <template v-else-if="column.type === 'calc'">
+                <span class="value">{{ row[column.code] ? row[column.code].value : '' }}</span>
+              </template>
+              <template v-else-if="column.type === 'copy'">
+                <input
+                    v-model="row[column.code].value"
+                    :disabled="row[column.code].value"
+                    type="checkbox"
+                    @change="copyValues(row, column, rowIndex)">
+              </template>
+              <template v-else-if="column.type === 'history_graph'">
+                <a href="#" @click.prevent="showHistoryGraphDataForRow(row, column)">
+                      <span class="value">{{
+                          row[column.code].date ? row[column.code].old_value : row[column.code].value
+                        }}</span>
+                  <span v-if="row[column.code] && row[column.code].date" class="date">
+                        {{ row[column.code].date | moment().format('YYYY-MM-DD') }}
+                      </span>
+                </a>
+              </template>
+              <template v-else-if="column.type === 'history'">
+                <a href="#" @click.prevent="showHistoricalDataForRow(row, column)">Посмотреть</a>
+              </template>
+              <template v-else-if="column.type === 'date'">
+                <div v-if="isCellEdited(row, column)" class="input-wrap">
+                  <datetime
+                      v-model="row[column.code].value"
+                      :disabled="isLoading"
+                      :flow="['year', 'month', 'date']"
+                      :phrases="{ok: '', cancel: ''}"
+                      auto
+                      format="dd LLLL yyyy"
+                      input-class="form-control"
+                      type="date"
+                      value-zone="Asia/Almaty"
+                      zone="Asia/Almaty"
+                  >
+                  </datetime>
+                  <button type="button" @click.prevent="saveCell(row, column)">OK</button>
+                  <span v-if="errors[column.code]" class="error">{{ showError(errors[column.code]) }}</span>
+                </div>
+                <template v-else-if="row[column.code]">
+                      <span class="value">
+                        {{ row[column.code].date ? row[column.code].old_value : row[column.code].value }}
+                      </span>
+                </template>
+              </template>
+              <template v-else-if="column.type === 'dict'">
+                    <span class="value">
+                      {{ row[column.code].date ? row[column.code].old_value : row[column.code].value }}
+                    </span>
+              </template>
+              <template v-else-if="['text', 'integer', 'float'].indexOf(column.type) > -1">
+                <div v-if="isCellEdited(row, column)" class="input-wrap">
+                  <input v-model="row[column.code].value" class="form-control" type="text">
+                  <button type="button" @click.prevent="saveCell(row, column)">OK</button>
+                  <span v-if="errors[column.code]" class="error">{{ showError(errors[column.code]) }}</span>
+                </div>
+                <template v-else-if="row[column.code]">
+                      <span class="value">{{
+                          row[column.code].date ? row[column.code].old_value : row[column.code].value
+                        }}</span>
+                  <span v-if="row[column.code] && row[column.code].date" class="date">
+                        {{ row[column.code].date | moment().format('YYYY-MM-DD') }}
+                      </span>
+                </template>
+              </template>
+              <template v-if="typeof history[row.uwi.id][column.code] !== 'undefined'">
+                <a :id="`history_${row.uwi.id}_${column.code}`" class="icon-history"></a>
+                <b-popover :target="`history_${row.uwi.id}_${column.code}`" custom-class="history-popover"
+                           placement="top" triggers="hover">
+                  <div v-for="(value, time) in history[row.uwi.id][column.code]">
+                    <em>{{ time }}</em><br>
+                    <b>{{ value.value }}</b> ({{ value.user }})
+                  </div>
+                </b-popover>
+              </template>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
     <div v-if="rowHistory" class="bd-popup">
       <div class="bd-popup__inner">

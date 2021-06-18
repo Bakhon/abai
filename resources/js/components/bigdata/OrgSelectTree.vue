@@ -3,13 +3,14 @@
     <div class="blueblock h-100 m-0">
       <div class="wells-select-block m-0 p-3 scrollable blueblock">
         <tree-view
-            v-for="treeData in filterTree"
-            :ref="'child_' + treeData.id"
+            v-for="(treeData, index) in filterTree"
+            :isNodeOnBottomLevelOfHierarchy="isNodeOnBottomLevelOfHierarchy"
             :node="treeData"
-            :key="treeData.id"
+            :key="index + treeData.id"
             :handle-click="nodeClick"
             :get-wells="getWells"
-            :currentWellId="currentWellId"
+            :isShowCheckboxes="false"
+            :isWell="isWell"
         ></tree-view>
       </div>
     </div>
@@ -65,8 +66,14 @@ export default {
         type: node.type
       })
     },
+    isNodeOnBottomLevelOfHierarchy: function(node) {
+      return node.type !== 'org'
+    },
+    isWell: function(node){
+      return (typeof node.type !== 'undefined' && node.type === 'well')
+    },
     getWells: function (child) {
-      let node = child.node;
+      let node = child.node
       this.axios.get(this.localeUrl(`/api/bigdata/tech/wells`), {
         params: {
           'techId': node.id
@@ -75,7 +82,7 @@ export default {
         if (data.data.length > 0) {
           let newChildren = [];
           if (typeof node.children === "undefined") {
-            node.children = [];
+            node.children = []
           }
           newChildren = node.children.filter((child) => {
             return child.type !== 'well';

@@ -1,6 +1,10 @@
 {
   "type": "plain",
   "table": "prod.well_block",
+  "table_fields": [
+    "dbeg",
+    "block"
+  ],
   "tabs": [
     {
       "title": "w_block",

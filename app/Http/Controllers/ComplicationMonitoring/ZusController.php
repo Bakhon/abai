@@ -72,11 +72,16 @@ class ZusController extends CrudController
             $params['links']['create'] = route('zus.create');
         }
 
+        $params['model_name'] = $this->modelName;
+        $params['filter'] = session($this->modelName.'_filter');
+
         return view('zus.index', compact('params'));
     }
 
     public function list(IndexTableRequest $request)
     {
+        parent::list($request);
+
         $query = Zu::query()
             ->with('gu');
 
