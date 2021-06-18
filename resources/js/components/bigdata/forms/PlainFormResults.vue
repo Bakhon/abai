@@ -54,7 +54,6 @@
         <table class="table-container-table">
           <thead class="table-container-column-header">
           <tr>
-            <th class="table-border"><p class="title">ID</p></th>
             <th v-for="column in columns" class="table-border"><p class="title">{{ column.title }}</p>
             </th>
             <th v-if="!form.actions" class="table-border"><p class="title">Управление</p></th>
@@ -66,9 +65,6 @@
               :class="{'selected': selectedRow === row}"
               @click="selectedRow = row"
           >
-            <td class="table-border element-position">
-              <p class="title">{{ row.id }}</p>
-            </td>
             <td v-for="column in columns" class="table-border element-position">
               <p>{{ getCellValue(row, column) }}</p>
             </td>
