@@ -159,7 +159,7 @@ export default {
 
         updateProductionOilandGasPercent(data) {
             let updatedData = this.getFilteredCompaniesList(data);
-            let periodStart = moment(new Date(this.timestampToday), "DD-MM-YYYY").subtract(this.quantityRange, 'days');
+            let periodStart = moment(new Date(this.timestampToday), "DD-MM-YYYY").subtract(this.quantityRange, 'days').valueOf();
             let filteredDataByPeriodRange = this.getProductionDataInPeriodRange(updatedData,periodStart,this.timestampToday);
             this.setPreviousPeriod();
             let productionSummary = this.getProductionSummary(filteredDataByPeriodRange);

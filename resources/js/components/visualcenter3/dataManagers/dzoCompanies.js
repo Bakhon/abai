@@ -139,6 +139,7 @@ export default {
                     summary.opekPlan = parseInt(summary.plan) + parseInt(company.opekPlan);
                 }
             });
+
             this.productionParamsWidget.oilFact = summary.fact;
             this.productionParamsWidget.oilPlan = summary.plan;
             if (self.oilCondensateProductionButton.length > 0) {
@@ -156,6 +157,9 @@ export default {
             if (this.oilCondensateProductionButton.length > 0) {
                 this.updateProductionTotalFact();
                 this.productionPercentParams['oil_fact'] = this.productionParamsWidget.yesterdayOilFact;
+                if (!this.oilCondensateFilters.isWithoutKMGFilterActive) {
+                    this.productionPercentParams['oil_fact'] = this.productionParamsWidget.yesterdayOilFactWithFilter;
+                }
             }
         },
 
