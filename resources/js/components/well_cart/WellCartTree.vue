@@ -12,8 +12,9 @@
       <div class="custom-directory">
         <ul id="myUL" v-if="isDirOpened">
           <well-cart-tree
-              v-for="child in data.children"
+              v-for="(child, index) in data.children"
               :data="child"
+              :key="index"
               :activeFormCode="activeFormCode"
               :switch-form-by-code="switchFormByCode">
           </well-cart-tree>
