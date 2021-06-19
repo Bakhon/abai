@@ -171,7 +171,7 @@ class HiveDataFromAvocet extends Command
             if ($row[3] == $column2) {
                 if ($row[5] == $column1) {
 
-                    if (($row[17])==null) {
+                    if ($row[17]==null) {
                         if ($row[17] == $column3) {
                             $summ[] = array_merge($row);}
                     } else { $summ[] = array_merge($row);}
