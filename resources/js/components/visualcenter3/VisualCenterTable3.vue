@@ -2509,7 +2509,6 @@
                 </table>
               </div>
             </div>
-            <!--todo -->
             <div class="first-string first-string2">
               <div>
                 <table class="table table1-2">
@@ -2530,7 +2529,7 @@
                       </div>
                       <div class="in-idle">
                         <span v-if="!isWellsWorkoverPeriodSelected"> {{ wellsWorkoverPeriodStartMonth }}</span>
-                        <span v-else> {{ wellsWorkoverPeriodStartMonth }} - {{ wellsWorkoverPeriodEndMonth }}</span>
+                        <span v-else> {{ wellsWorkoverPeriodStartMonth }} - <br>{{ wellsWorkoverPeriodEndMonth }}</span>
                       </div>
                     </td>
                     <td
@@ -2554,7 +2553,7 @@
                       </div>
                       <div class="in-idle">
                         <span v-if="!isWellsWorkoverPeriodSelected"> {{ wellsWorkoverPeriodStartMonth }}<br><br></span>
-                        <span v-else> {{ wellsWorkoverPeriodStartMonth }} - {{ wellsWorkoverPeriodEndMonth }}</span>
+                        <span v-else> {{ wellsWorkoverPeriodStartMonth }} - <br>{{ wellsWorkoverPeriodEndMonth }}</span>
                       </div>
                     </td>
                   </tr>
@@ -2572,7 +2571,6 @@
                 </table>
               </div>
             </div>
-            <!--todo -->
           </div>
           <div class="first-string first-string2">
             <div>
