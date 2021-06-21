@@ -129,7 +129,7 @@ return array (
     'sensitivityNPV' => 'Чувствительность NPV (Паук)',
     'priceBrent' => 'Цена на нефть Brent',
     'currency' => 'Курс $/Тенге',
-    'CashFlowDynamics' => 'Динамика денежного потока',    
+    'CashFlowDynamics' => 'Динамика денежного потока',
   ),
   'economy' => 'Экономика',
   'tengeTon' => 'тенге/тонна',
