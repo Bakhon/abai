@@ -23,7 +23,7 @@ export default {
     return {
       series: [
         {
-          name: "Выручка",
+          name: this.trans('economy_pf.companyValuationPage.revenue'),
           type: "column",
           data: [1.4, 2, 2.5, 1.5, 2.5, 2.8, 3.8, 4.6],
         },
@@ -38,7 +38,7 @@ export default {
           data: [20, 29, 37, 36, 44, 45, 50, 58],
         },
         {
-          name: "Добыча УВС",
+          name: this.trans('economy_pf.companyValuationPage.extractionOfHydrocarbons'),
           type: "line",
           data: [50, 29, 37, 36, 44, 45, 50, 58],
         },
@@ -62,7 +62,7 @@ export default {
           dashArray: [0, 0, 0, 5],
         },
         title: {
-          text: "Основные показатели",
+          text: this.trans('economy_pf.companyValuationPage.mainFactors'),
           align: "center",        
           offsetY: 15,
       style: {

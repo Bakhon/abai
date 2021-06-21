@@ -1,7 +1,8 @@
 <template>
-  <div class="row proactive-factors-page-container">
+  <div class="row proactive-factors-page-container">   
     <div class="col-10 middle-block-columns">
       <div class="col px-2 container-col_color">
+         {{trans('economy_pf.companyValuationPage.pageName')}}
         <div>
           <main-factors-chart></main-factors-chart>
         </div>
@@ -95,19 +96,7 @@ export default {
       selectFilterExportSalesPercentage: selectFilterExportSalesPercentage,
       costAllocationBase: costAllocationBase,
     };
-  },
-  methods: {
-    getCompany() {
-      let uri = this.localeUrl("/module_economy/company");
-      this.axios.get(uri).then((response) => {
-        let data = response.data;
-        this.companyData = data;
-      });
-    },
-  },
-  created() {
-    this.getCompany();
-  },
+  }, 
 };
 </script>
 

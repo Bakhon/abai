@@ -23,7 +23,7 @@ export default {
     return {
       series: [
         {
-          name: "Цена на нефть Brent",
+          name: this.trans('economy_pf.companyValuationPage.priceBrent'),
           type: "line",
           color: '#fff',
           data: [
@@ -32,7 +32,7 @@ export default {
           ],
         },
         {
-          name: "Курс $/Тенге",
+          name: this.trans('economy_pf.companyValuationPage.currency'),
           type: "line",
           data: [
             30,
@@ -65,7 +65,7 @@ export default {
           width: 2,       
         },
         title: {
-          text: "Чувствительность NPV (Паук)",
+          text: this.trans('economy_pf.companyValuationPage.sensitivityNPV'),
           align: "center",       
           offsetY: 15,
           style: {
