@@ -27,7 +27,7 @@
       "title": "gas_prod_v",
       "code": "gas_prod_v",
       "type": "calc",
-      "formula": "",
+      "formula": "$gas_prod_val$ * $worktime$",
       "column": "gas_prod_v",
       "is_editable": false    
     },
