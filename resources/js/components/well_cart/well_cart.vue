@@ -264,6 +264,7 @@ export default {
         'gdisCurrentValueStatic': {'value_double': null},
         'gdisCurrentValueRp': {'value_double': null, 'meas_date': null},
         'gdisComplex': {'value_double': null, 'research_date': null},
+        'gis': {'gis_date': null},
       },
       tubeNomOd: null,
       wellTechs: null,
@@ -308,6 +309,7 @@ export default {
         'gdisCurrentValueStatic': 'gdis_current_value_static',
         'gdisCurrentValueRp': 'gdis_current_value_rp',
         'gdisComplex': 'gdis_complex',
+        'gis': 'gis',
       },
       forms_structure: forms_structure,
     }
@@ -751,6 +753,12 @@ export default {
           'neigbor_1': moment(this.well.prsWellWorkover.dbeg).format('DD/MM/YYYY'),
           'neigbor_2': moment(this.well.prsWellWorkover.dend).format('DD/MM/YYYY'),
           'name': 'Дата последнего ПРС',
+          'data': ''
+        },
+        {
+          'description': this.well.gis.gis_date,
+          'method': 'trimToDate',
+          'name': 'Дата последнего ГИС',
           'data': ''
         },
         {

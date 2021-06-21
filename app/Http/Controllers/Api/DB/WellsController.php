@@ -46,6 +46,7 @@ class WellsController extends Controller
             'gdis_current_value_static' => $this->gdisCurrentValueStatic($well),
             'gdis_current_value_rp' => $this->gdisCurrentValueRp($well),
             'gdis_complex' => $this->gdisComplex($well),
+            'gis'=>$this->gis($well),
         );
     }
 
@@ -317,6 +318,14 @@ class WellsController extends Controller
             ->where('metric.code', '=', 'RP')
             ->orderBy('research_date', 'desc')
             ->first(['value_double', 'research_date']);
+    }
+
+    private function gis(Well $well)
+    {
+        return $well->gis()
+            ->where('gis_type', '=', '1')
+            ->orderBy('gis_date', 'desc')
+            ->first(['gis_date']);
     }
 
 
