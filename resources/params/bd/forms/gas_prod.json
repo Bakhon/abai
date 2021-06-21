@@ -16,16 +16,27 @@
       "is_editable": false
     },
     {
-      "title": "uwi_number",
+      "title": "gas_prod",
       "code": "gas_prod_val",
-      "type": "text",
-      "is_editable": true
+      "table": "prod.meas_gas_prod",
+      "type": "float",
+      "column": "gas_prod_val",
+      "is_editable": true    
     },
     {
-      "title": "gas_prod",
-      "code": "gas_prod",
-      "type": "calc",
-      "formula" : "",
+      "title": "gas_prod_v",
+      "code": "gas_prod_v",
+      "table": "prod.meas_gas_prod",
+      "type": "float",
+      "column": "gas_prod",
+      "is_editable": false    
+    },
+    {
+      "title": "data",
+      "code": "dbeg",
+      "type": "date",
+      "table": "prod.meas_gas_prod",
+      "column": "dbeg",
       "is_editable": false
     }
   ]
