@@ -249,6 +249,7 @@ export default {
         'injPressure': null,
         'agentVol': null,
         'krsWorkover': {'dbeg': null, 'dend': null},
+        'prsWellWorkover': {'dbeg': null, 'dend': null},
         'treatmentDate': {'treat_date': null},
         'actualBottomHole': null,
         'artificialBottomHole': null,
@@ -293,6 +294,7 @@ export default {
         'injPressure': 'tech_mode_inj.inj_pressure',
         'agentVol': 'tech_mode_inj.agent_vol',
         'krsWorkover': 'krs_well_workover',
+        'prsWellWorkover': 'prs_well_workover',
         'treatmentDate': 'well_treatment',
         'actualBottomHole': 'actual_bottom_hole.pivot.depth',
         'artificialBottomHole': 'artificial_bottom_hole.pivot.depth',
@@ -740,6 +742,20 @@ export default {
         {
           'description': this.well.gdisCurrent.meas_date,
           'method': 'trimToDate',
+          'name': 'Дата проведения КПД',
+          'data': ''
+        },
+        {
+          'description': null,
+          'method': 'neighbors',
+          'neigbor_1': moment(this.well.prsWellWorkover.dbeg).format('DD/MM/YYYY'),
+          'neigbor_2': moment(this.well.prsWellWorkover.dend).format('DD/MM/YYYY'),
+          'name': 'Дата последнего ПРС',
+          'data': ''
+        },
+        {
+          'description': this.well.gdisCurrent.meas_date,
+          'method': 'trimToDate',
           'name': 'Дата последнего ГДИС',
           'data': ''
         },
@@ -784,8 +800,8 @@ export default {
         {
           'description': null,
           'method': 'neighbors',
-          'neigbor_1': gdisComplex.value_double,
-          'neigbor_2': gdisComplex.research_date,
+          'neigbor_1': this.well.gdisComplex.value_double,
+          'neigbor_2': this.well.gdisComplex.research_date,
           'name': 'Рпл (Сл. ГДИС)/(дата замера)',
           'data': ''
         },

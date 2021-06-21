@@ -35,6 +35,7 @@ class WellsController extends Controller
             'meas_liq' => $this->measLiq($well),
             'meas_water_cut' => $this->measWaterCut($well),
             'krs_well_workover' => $this->krsWellWorkover($well),
+            'prs_well_workover' => $this->prsWellWorkover($well),
             'well_treatment' => $this->wellTreatment($well),
             'well_treatment_sko' => $this->wellTreatmentSko($well),
             'gdis_current' => $this->gdisCurrent($well),
@@ -211,6 +212,14 @@ class WellsController extends Controller
         return $well->measWaterCut()
             ->orderBy('dbeg', 'desc')
             ->first(['water_cut']);
+    }
+
+    private function prsWellWorkover(Well $well)
+    {
+        return $well->wellWorkover()
+            ->where('repair_type', '=', '3')
+            ->orderBy('dbeg', 'desc')
+            ->first(['dbeg', 'dend']);
     }
 
     private function krsWellWorkover(Well $well)
