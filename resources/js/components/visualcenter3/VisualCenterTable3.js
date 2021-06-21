@@ -159,7 +159,7 @@ export default {
 
         updateProductionOilandGasPercent(data) {
             let updatedData = this.getFilteredCompaniesList(data);
-            let periodStart = moment(new Date(this.timestampToday), "DD-MM-YYYY").subtract(this.quantityRange, 'days');
+            let periodStart = moment(new Date(this.timestampToday), "DD-MM-YYYY").subtract(this.quantityRange, 'days').valueOf();
             let filteredDataByPeriodRange = this.getProductionDataInPeriodRange(updatedData,periodStart,this.timestampToday);
             this.setPreviousPeriod();
             let productionSummary = this.getProductionSummary(filteredDataByPeriodRange);
@@ -242,7 +242,7 @@ export default {
             } else {
                 this.dzoCompaniesSummaryForChart = this.getProductionForChart(filteredDataByPeriod);
             }
-            this.exportDzoCompaniesSummaryForChart();
+            this.exportDzoCompaniesSummaryForChart(this.dzoCompaniesSummaryForChart);
 
             let summaryDataByDzo = this.getSummaryDataByDzo(filteredDataByPeriod);
 
@@ -646,7 +646,7 @@ export default {
 
             this.bigTable = bigTable;
             this.clearNullAccidentCases();
-            this.exportDzoCompaniesSummaryForChart();
+            this.exportDzoCompaniesSummaryForChart(this.dzoCompaniesSummaryForChart);
 
             return data;
         },
@@ -729,6 +729,7 @@ export default {
         managers
     ],
     async mounted() {
+        this.$store.commit('globalloading/SET_LOADING', true);
         this.chemistryPeriodMapping.chemistryPeriod.periodStart = moment(this.chemistryRange.start).format('MMMM YYYY');
         this.chemistryPeriodMapping.chemistryPeriod.periodEnd = moment(this.chemistryRange.end).format('MMMM YYYY');
         this.wellsWorkoverPeriodMapping.wellsWorkoverPeriod.periodStart = moment(this.wellsWorkoverRange.start).format('MMMM YYYY');

@@ -13,6 +13,7 @@ export default {
     data() {
         return {
             baseUrl: process.env.MIX_MICROSERVICE_USER_REPORTS,
+            showOptions: true,
             structureTypes: {
                 org: null,
                 tech: null,
@@ -23,6 +24,7 @@ export default {
             currentStructureType: 'geo',
             currentStructureId: null,
             currentItemType: null,
+            currentOption: null,
             items: [],
             isLoading: false,
             isDisplayParameterBuilder: false,
@@ -38,6 +40,11 @@ export default {
         this.loadAttributeDescriptions()
     },
     methods: {
+        onClickOption(structureType) {
+            this.showOptions = false;
+            this.currentOption = structureType
+            this.currentItemType = structureType.id
+        },
         loadStructureTypes(type) {
             this.isLoading = true
             this.axios.get(this.baseUrl + "get_structures_types", {

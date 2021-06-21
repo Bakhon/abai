@@ -196,7 +196,6 @@ export default {
         },
 
         getProductionDataInPeriodRange(data, periodStart, periodEnd) {
-            let self = this;
             return _.filter(data, function (item) {
                 return _.every([
                     _.inRange(
