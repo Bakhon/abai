@@ -99,4 +99,6 @@ export default {
   }, 
 };
 </script>
-
+<style scoped>
+@import "./companyValuation.css";
+</style>
