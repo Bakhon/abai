@@ -2,18 +2,16 @@
 
 namespace App\Http\Controllers\Refs;
 
-use App\Http\Controllers\Controller;
 use App\Models\Refs\TechnicalStructureField;
 use App\Models\Refs\TechnicalStructureNgdu;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 
 
 class TechnicalStructureNgduController extends TechnicalStructureController
 {
-    protected $model = "App\Models\Refs\TechnicalStructureNgdu";
+    protected $model = TechnicalStructureNgdu::class;
 
     protected $controller_name = 'ngdu';
     protected $index_route = "tech_struct_ngdu.index";

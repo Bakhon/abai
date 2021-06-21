@@ -32,38 +32,16 @@ export default {
             this.updateProductionData(this.planFieldName, this.factFieldName, this.chartHeadName, this.metricName, this.chartSecondaryName);
         },
 
-        getProductionPercentWells(data) {
-            let timestampToday = this.timestampToday;
-            let timestampEnd = this.timestampEnd;
-            let quantityRange = this.quantityRange;
+        updateWellsWidgetPercentData(data) {
+            let filteredDataByPeriod = this.getProductionDataInPeriodRange(data,this.timestampToday,this.timestampEnd);
+            let groupedWellsData = this.getGroupedWells(filteredDataByPeriod);
 
-            let dataWithMay = new Array();
-            dataWithMay = _.filter(data, function (item) {
-                return _.every([
-                    _.inRange(
-                        item.__time,
-                        timestampToday - quantityRange * 86400000,
-                        timestampToday
-                    ),
-                ]);
-            });
-
-            let productionPlanAndFactMonthWells = _(dataWithMay)
-                .groupBy("data")
-                .map((__time, id) => ({
-                    __time: id,
-                    inj_wells_idle: (_.sumBy(__time, 'inj_wells_idle')) / this.quantityRange,
-                    inj_wells_work: (_.sumBy(__time, 'inj_wells_work')) / this.quantityRange,
-                    prod_wells_work: (_.sumBy(__time, 'prod_wells_work')) / this.quantityRange,
-                    prod_wells_idle: (_.sumBy(__time, 'prod_wells_idle')) / this.quantityRange,
-                }))
-                .value();
-
-            this.inj_wells_idlePercent = productionPlanAndFactMonthWells[0]['inj_wells_idle'];
-            this.inj_wells_workPercent = productionPlanAndFactMonthWells[0]['inj_wells_work'];
-            this.prod_wells_workPercent = productionPlanAndFactMonthWells[0]['prod_wells_work'];
-            this.prod_wells_idlePercent = productionPlanAndFactMonthWells[0]['prod_wells_idle'];
+            this.inj_wells_idlePercent = groupedWellsData[0]['inj_wells_idle'];
+            this.inj_wells_workPercent = groupedWellsData[0]['inj_wells_work'];
+            this.prod_wells_workPercent = groupedWellsData[0]['prod_wells_work'];
+            this.prod_wells_idlePercent = groupedWellsData[0]['prod_wells_idle'];
         },
+
     },
     computed: {
         innerWellsProd2DataForChart() {

@@ -2,11 +2,7 @@ import moment from "moment";
 
 export default {
     data: function () {
-        return {
-            chemistryData: [],
-            chemistrySelectedRow: 'chem_prod_zakacka_demulg_fact',
-            chemistryChartData: [],
-        };
+        return {};
     },
     methods: {
         getChemistryData(arr) {
@@ -80,20 +76,6 @@ export default {
             }
 
             return result
-        },
-    },
-    computed: {
-        chemistryDataForChart() {
-            let series = []
-            let labels = []
-            for (let i in this.chemistryChartData) {
-                series.push(this.chemistrySelectedRow ? this.chemistryChartData[i][this.chemistrySelectedRow] : this.chemistryChartData[i]['chem_prod_zakacka_demulg_fact'])
-                labels.push(i)
-            }
-            return {
-                series: series,
-                labels: labels
-            }
         },
     },
 }

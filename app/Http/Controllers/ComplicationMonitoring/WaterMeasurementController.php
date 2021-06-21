@@ -16,17 +16,17 @@ use App\Models\ComplicationMonitoring\Kormass;
 use App\Models\ComplicationMonitoring\OmgUHE;
 use App\Models\ComplicationMonitoring\Pipe;
 use App\Models\ComplicationMonitoring\WaterMeasurement;
-use App\Models\Refs\Cdng;
+use App\Models\ComplicationMonitoring\Cdng;
 use App\Models\Refs\Field;
-use App\Models\Refs\Gu;
+use App\Models\ComplicationMonitoring\Gu;
 use App\Models\Refs\HydrocarbonOxidizingBacteria;
-use App\Models\Refs\Ngdu;
+use App\Models\ComplicationMonitoring\Ngdu;
 use App\Models\Refs\OtherObjects;
 use App\Models\Refs\SulphateReducingBacteria;
 use App\Models\Refs\ThionicBacteria;
 use App\Models\Refs\WaterTypeBySulin;
-use App\Models\Refs\Well;
-use App\Models\Refs\Zu;
+use App\Models\ComplicationMonitoring\Well;
+use App\Models\ComplicationMonitoring\Zu;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Session;
@@ -262,11 +262,16 @@ class WaterMeasurementController extends CrudController
             $params['links']['export'] = route($this->modelName . '.export');
         }
 
+        $params['model_name'] = $this->modelName;
+        $params['filter'] = session($this->modelName.'_filter');
+
         return view('watermeasurement.index', compact('params'));
     }
 
     public function list(IndexTableRequest $request)
     {
+        parent::list($request);
+
         $query = WaterMeasurement::query()
             ->with('other_objects')
             ->with('ngdu')

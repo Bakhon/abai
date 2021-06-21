@@ -6,7 +6,7 @@
           :class="{'left-column_folded': isLeftColumnFolded}"
           class="left-column"
       >
-        <div class="bg-dark left-column__inner">
+        <div class="bg-dark scrollable">
           <div class="row">
             <div class="col">
               <div class="well-deal">
@@ -16,7 +16,7 @@
                     <h2>Дело скважины</h2>
                   </div>
                   <div class="icon-all" style="margin-left: auto;"
-                       @click="onLeftColumnFoldingEvent(isLeftColumnFolded, isRightColumnFolded, isBothColumnFolded)">
+                       @click="onColumnFoldingEvent('left')">
                     <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M11 1L5.8053 6L11 11" stroke="white" stroke-width="1.2" stroke-linecap="round"
                             stroke-linejoin="round"/>
@@ -27,16 +27,21 @@
                 </div>
               </div>
             </div>
-            <div class="directory">
-              <div class="custom-directory">
-                <ul id="myUL">
-                  <li :class="{'selected': activeFormCode === 'well_design'}" @click="setForm('well_design')">
-                    <p>
-                      <span class="file">Конструкция скважины по проекту</span>
-                    </p>
-                  </li>
-                </ul>
-              </div>
+            <div class="directory text-white pt-0 mt-0">
+              <ul id="myUL">
+                <well-cart-tree
+                    v-for="(item, index) in [...forms_structure, ...forms]"
+                    :data="item"
+                    :key="index"
+                    :active-form-code="activeFormCode"
+                    :switch-form-by-code="switchFormByCode">
+                </well-cart-tree>
+              </ul>
+            </div>
+          </div>
+          <div v-if="isLeftColumnFolded" class="row">
+            <div style="color: white" class="rotate">
+              Дело скважины
             </div>
           </div>
         </div>
@@ -49,7 +54,7 @@
             <div class="row">
               <div class="col">
                 <button class="transparent-select">
-                  Скважина: <span v-if="allData">{{ allData.uwi }}</span>
+                  Скважина: <span v-if="wellUwi">{{ wellUwi }}</span>
                   <svg width="14" height="8" viewBox="0 0 14 8" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M1 1L7 7L13 1" stroke="white" stroke-width="1.6" stroke-linecap="round"
                           stroke-linejoin="round"/>
@@ -64,7 +69,7 @@
                       placeholder="Номер скважины"
                       @input="selectWell"
                       @search="onSearch"
-                      v-model="wellName"
+                      v-model="wellUwi"
                   >
                     <template slot="option" slot-scope="option">
                       <span>{{ option.name }}</span>
@@ -73,39 +78,58 @@
                 </form>
               </div>
             </div>
-            <div v-if="allData" class="mid-col__main row">
-              <div class="col">
-                <div class="graphics">
-                  <div class="row">
-                    <div class="col" style="max-width: 64px; display: grid; padding: 0px;">
-                      <svg width="42" height="42" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg"
-                           style="margin: 12px 0px 0px 24px;">
-                        <path
-                            d="M20.9993 0.999999C25.0498 0.999999 31.5236 0.999999 36.0037 0.999999C38.7652 0.999999 41 3.23536 41 5.99678C41 10.9694 41 18.2449 41 21C41 24.4924 41 31.3063 41 36.0027C41 38.7641 38.7632 40.9999 36.0018 40.9999C31.2512 40.9999 24.3497 41 20.9993 41C17.1648 41 10.5605 41 5.99621 41C3.23481 41 1.00023 38.763 1.00018 36.0016C1.0001 31.1169 1 23.9922 1 21C1 17.6496 1.0001 10.7485 1.00018 5.99813C1.00022 3.23674 3.23602 0.999999 5.99741 0.999999C10.6937 0.999999 17.5075 0.999999 20.9993 0.999999Z"
-                            stroke="#2E50E9" stroke-miterlimit="22.9256"/>
-                        <path
-                            d="M20.9994 2.99996C24.7981 2.99996 30.9653 2.99996 35.0024 2.99996C37.2115 2.99996 39 4.79063 39 6.99977C39 11.4726 39 18.4269 39 21C39 24.2698 39 30.7748 39 35.0039C39 37.213 37.2127 38.9999 35.0036 38.9999C30.7266 39 24.135 39 20.9994 39C17.4055 39 11.1085 39 6.99658 39C4.78747 39 3.00021 37.2109 3.00017 35.0018C3.0001 30.6063 3 23.7971 3 21C3 17.8643 3.0001 11.2731 3.00017 6.9963C3.00021 4.78719 4.78713 2.99996 6.99624 2.99996C11.2252 2.99996 17.73 2.99996 20.9994 2.99996Z"
-                            fill="#323370"/>
-                        <path
-                            d="M14.7029 25L13.5829 20.472C13.4656 19.96 13.3536 19.4053 13.2469 18.808H13.1829C13.0763 19.5333 12.9483 20.1947 12.7989 20.792L11.7749 25H10.1269L8.11094 17.336H9.39094L10.5909 22.392C10.7189 22.9573 10.8256 23.464 10.9109 23.912H10.9749C11.0283 23.624 11.1509 23.0907 11.3429 22.312L12.5429 17.336H13.9189L15.1669 22.376C15.2736 22.8133 15.3856 23.3253 15.5029 23.912H15.5509C15.6256 23.3787 15.7216 22.872 15.8389 22.392L17.0709 17.336H18.3349L16.3189 25H14.7029ZM22.9856 17.08C23.6469 17.08 24.2336 17.208 24.7456 17.464C25.2576 17.72 25.6522 18.0507 25.9296 18.456C26.2176 18.8613 26.4309 19.288 26.5696 19.736C26.7082 20.1733 26.7776 20.616 26.7776 21.064C26.7776 21.2667 26.7669 21.4213 26.7456 21.528H20.4896C20.4896 22.2213 20.7616 22.8347 21.3056 23.368C21.8496 23.8907 22.4842 24.152 23.2096 24.152C23.9989 24.152 24.6549 23.8427 25.1776 23.224H26.6336C26.3349 23.7893 25.8976 24.2747 25.3216 24.68C24.7562 25.0747 24.0629 25.272 23.2416 25.272C22.0362 25.272 21.0549 24.872 20.2976 24.072C19.5509 23.272 19.1776 22.2693 19.1776 21.064C19.1776 19.9653 19.5296 19.0267 20.2336 18.248C20.9376 17.4693 21.8549 17.08 22.9856 17.08ZM22.9856 18.184C22.2922 18.184 21.7216 18.4133 21.2736 18.872C20.8256 19.32 20.5696 19.8533 20.5056 20.472H25.4496C25.3856 19.8427 25.1242 19.304 24.6656 18.856C24.2176 18.408 23.6576 18.184 22.9856 18.184ZM28.4556 25V13.48H29.7196V25H28.4556ZM31.9243 25V13.48H33.1883V25H31.9243Z"
-                            fill="white"/>
-                      </svg>
-                    </div>
-                    <div class="col">
-                      <div class="well-info">
-                        <div class="title">Основное</div>
-                        <p>Номер скважины:<span>{{ allData.uwi }}</span></p>
-                        <p>Категория скважины: <span></span></p>
-                        <div class="title">Привязка</div>
-                        <p>Оргструктура: <span></span></p>
-                        <div class="title">Координаты устья</div>
-                        <p>Оргструктура: <span></span></p>
-                        <p>Координаты устья X:<span></span></p>
-                        <p>Координаты устья Y:<span></span></p>
-                        <div class="title">Координаты забоя</div>
-                        <p>Координаты устья X:<span></span></p>
-                        <p>Координаты устья Y:<span></span></p>
-                      </div>
+            <div v-if="wellUwi" class="mid-col__main_row">
+              <div v-if="activeFormCode" class="col table-wrapper">
+                <BigDataPlainFormResult :code="activeFormCode" :well-id="this.well.id"></BigDataPlainFormResult>
+              </div>
+              <div v-else class="col graphics">
+                <div class="row">
+                  <div class="col" style="max-width: 64px; display: grid; padding: 0px;">
+                    <svg fill="none" height="42" style="margin: 12px 0px 0px 24px;" viewBox="0 0 42 42" width="42"
+                         xmlns="http://www.w3.org/2000/svg">
+                      <path
+                          d="M20.9993 0.999999C25.0498 0.999999 31.5236 0.999999 36.0037 0.999999C38.7652 0.999999 41 3.23536 41 5.99678C41 10.9694 41 18.2449 41 21C41 24.4924 41 31.3063 41 36.0027C41 38.7641 38.7632 40.9999 36.0018 40.9999C31.2512 40.9999 24.3497 41 20.9993 41C17.1648 41 10.5605 41 5.99621 41C3.23481 41 1.00023 38.763 1.00018 36.0016C1.0001 31.1169 1 23.9922 1 21C1 17.6496 1.0001 10.7485 1.00018 5.99813C1.00022 3.23674 3.23602 0.999999 5.99741 0.999999C10.6937 0.999999 17.5075 0.999999 20.9993 0.999999Z"
+                          stroke="#2E50E9" stroke-miterlimit="22.9256"/>
+                      <path
+                          d="M20.9994 2.99996C24.7981 2.99996 30.9653 2.99996 35.0024 2.99996C37.2115 2.99996 39 4.79063 39 6.99977C39 11.4726 39 18.4269 39 21C39 24.2698 39 30.7748 39 35.0039C39 37.213 37.2127 38.9999 35.0036 38.9999C30.7266 39 24.135 39 20.9994 39C17.4055 39 11.1085 39 6.99658 39C4.78747 39 3.00021 37.2109 3.00017 35.0018C3.0001 30.6063 3 23.7971 3 21C3 17.8643 3.0001 11.2731 3.00017 6.9963C3.00021 4.78719 4.78713 2.99996 6.99624 2.99996C11.2252 2.99996 17.73 2.99996 20.9994 2.99996Z"
+                          fill="#323370"/>
+                      <path
+                          d="M14.7029 25L13.5829 20.472C13.4656 19.96 13.3536 19.4053 13.2469 18.808H13.1829C13.0763 19.5333 12.9483 20.1947 12.7989 20.792L11.7749 25H10.1269L8.11094 17.336H9.39094L10.5909 22.392C10.7189 22.9573 10.8256 23.464 10.9109 23.912H10.9749C11.0283 23.624 11.1509 23.0907 11.3429 22.312L12.5429 17.336H13.9189L15.1669 22.376C15.2736 22.8133 15.3856 23.3253 15.5029 23.912H15.5509C15.6256 23.3787 15.7216 22.872 15.8389 22.392L17.0709 17.336H18.3349L16.3189 25H14.7029ZM22.9856 17.08C23.6469 17.08 24.2336 17.208 24.7456 17.464C25.2576 17.72 25.6522 18.0507 25.9296 18.456C26.2176 18.8613 26.4309 19.288 26.5696 19.736C26.7082 20.1733 26.7776 20.616 26.7776 21.064C26.7776 21.2667 26.7669 21.4213 26.7456 21.528H20.4896C20.4896 22.2213 20.7616 22.8347 21.3056 23.368C21.8496 23.8907 22.4842 24.152 23.2096 24.152C23.9989 24.152 24.6549 23.8427 25.1776 23.224H26.6336C26.3349 23.7893 25.8976 24.2747 25.3216 24.68C24.7562 25.0747 24.0629 25.272 23.2416 25.272C22.0362 25.272 21.0549 24.872 20.2976 24.072C19.5509 23.272 19.1776 22.2693 19.1776 21.064C19.1776 19.9653 19.5296 19.0267 20.2336 18.248C20.9376 17.4693 21.8549 17.08 22.9856 17.08ZM22.9856 18.184C22.2922 18.184 21.7216 18.4133 21.2736 18.872C20.8256 19.32 20.5696 19.8533 20.5056 20.472H25.4496C25.3856 19.8427 25.1242 19.304 24.6656 18.856C24.2176 18.408 23.6576 18.184 22.9856 18.184ZM28.4556 25V13.48H29.7196V25H28.4556ZM31.9243 25V13.48H33.1883V25H31.9243Z"
+                          fill="white"/>
+                    </svg>
+                  </div>
+                  <div class="col">
+                    <div class="well-info">
+                      <div class="title">Основное</div>
+                      <p>Номер скважины:
+                        <span v-if="wellUwi">
+                          {{ wellUwi }}
+                        </span>
+                      </p>
+                      <p>Категория скважины:
+                        <span v-if="well.category">
+                          {{ well.category.name_ru }}
+                        </span>
+                      </p>
+                      <div class="title">Привязка</div>
+                      <div class="title">Координаты устья</div>
+                      <p>Оргструктура: <span></span></p>
+                      <p>Координаты устья X:
+                        <span v-if="wellSaptialObjectX">{{ wellSaptialObjectX }}</span>
+                      </p>
+                      <p>Координаты устья Y:
+                        <span v-if="wellSaptialObjectY">
+                          {{ wellSaptialObjectY }}
+                        </span></p>
+                      <div class="title">Координаты забоя</div>
+                      <p>Координаты устья X:
+                        <span v-if="wellSaptialObjectBottomX">
+                            {{ wellSaptialObjectBottomX }}
+                        </span></p>
+                      <p>Координаты устья Y:
+                        <span v-if="wellSaptialObjectBottomY">
+                            {{ wellSaptialObjectBottomY }}
+                          </span></p>
                     </div>
                   </div>
                 </div>
@@ -114,14 +138,14 @@
           </div>
         </div>
       </div>
-      <div :class="{'right-column_folded': isRightColumnFolded}" class="right-column__inner bg-dark">
+      <div :class="{'right-column_folded': isRightColumnFolded}" class="right-column__inner">
         <div class="bg-dark-transparent">
           <template>
             <div class="row">
               <div class="col">
                 <div class="heading">
                   <div class="icon-all"
-                       @click="onRightColumnFoldingEvent(isLeftColumnFolded, isRightColumnFolded, isBothColumnFolded)">
+                       @click="onColumnFoldingEvent('right')">
                     <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M1.0001 1L6.19482 6L1.0001 11" stroke="white" stroke-width="1.2" stroke-linecap="round"
                             stroke-linejoin="round"/>
@@ -129,10 +153,10 @@
                             stroke-linejoin="round"/>
                     </svg>
                   </div>
-                  <p v-if="allData">Паспорт скважины</p>
+                  <p v-if="wellUwi">Паспорт скважины</p>
                 </div>
                 <div class="title-container">
-                  <div class="sheare-icon" v-if="allData">
+                  <div class="sheare-icon" v-if="wellUwi">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path
                           d="M17.5443 8.3734L13.9393 4.79071C13.752 4.60451 13.4986 4.5 13.2344 4.5L7.10023 4.50002C6.54794 4.50002 6.10023 4.94773 6.10023 5.50002L6.10023 18.5C6.10023 19.0523 6.54795 19.5 7.10023 19.5H16.8394C17.3916 19.5 17.8394 19.0523 17.8394 18.5L17.8394 9.0827C17.8394 8.81641 17.7331 8.56111 17.5443 8.3734Z"
@@ -144,7 +168,7 @@
                           fill="white"/>
                     </svg>
                   </div>
-                  <div class="sheare-text" v-if="allData">
+                  <div class="sheare-text" v-if="wellUwi">
                     Скачать в MS-Excel
                   </div>
                 </div>
@@ -152,151 +176,20 @@
             </div>
           </template>
           <div class="info">
+            <div v-if="isRightColumnFolded" class="rotate">Паспорт скважины</div>
             <div class="info-element">
               <div class="row">
                 <div class="col">
-                  <table v-if="allData">
+                  <table v-if="wellUwi">
                     <tr>
                       <th colspan="3">Общая информация</th>
                     </tr>
-                    <tr>
-                      <td>1</td>
-                      <td>Скважина</td>
-                      <td>{{ allData.uwi }}</td>
-                    </tr>
-                    <tr>
-                      <td>2</td>
-                      <td>Вид скважины</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>3</td>
-                      <td>Месторождение</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>4</td>
-                      <td> Горизонт / Pнас, атм</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>5</td>
-                      <td> H ротора</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>6</td>
-                      <td>Тех. структура</td>
-                      <td>{{ tech[0].name_ru }}</td>
-                    </tr>
-                    <tr>
-                      <td>7</td>
-                      <td>Отвод</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>8</td>
-                      <td>ГУ/Ряд</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>9</td>
-                      <td>Орг. структура</td>
+                    <tr v-for="(item, index) in this.tableData">
+                      <td>{{ index + 1 }}</td>
+                      <td>{{ item.name }}</td>
                       <td>
-                        <span v-for="value in org">
-                          {{ value.name_ru + "/" }}
-                        </span>
+                        <span>{{ item.data }}</span>
                       </td>
-                    </tr>
-                    <tr>
-                      <td>10</td>
-                      <td>Зона скважины</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>11</td>
-                      <td>Влияющие скважины</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>12</td>
-                      <td>Категория</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>13</td>
-                      <td>Период бурения</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>14</td>
-                      <td>Дата ввода в эксплуатацию</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>15</td>
-                      <td>Дата ввода в эксплуатацию</td>
-                      <td>{{ tech[0].dbeg }}</td>
-                    </tr>
-                    <tr>
-                      <td>16</td>
-                      <td>Состояние</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>17</td>
-                      <td>Способ эксплуатации</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>18</td>
-                      <td>Тип УО / наличие эксц.болта</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>19</td>
-                      <td>Диаметр экспл.колонны/доп. экспл.колонны,мм</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>20</td>
-                      <td>Тип колонной головки / размеры</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>21</td>
-                      <td>глубина спуска насоса (м)</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>22</td>
-                      <td>Код насоса</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>23</td>
-                      <td>Диаметр насоса (мм)</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>24</td>
-                      <td>Глубина спуска пакера</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>25</td>
-                      <td>Тип СК</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>26</td>
-                      <td>длина хода (м)</td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                      <td>27</td>
-                      <td>число качаний (об/мин)</td>
-                      <td></td>
                     </tr>
                   </table>
                 </div>
@@ -311,51 +204,104 @@
 
 <script>
 import BigDataPlainFormResult from '../bigdata/forms/PlainFormResults'
-import vSelect from "vue-select"
-import axios from "axios";
+import forms from '../../json/bd/forms.json'
+import forms_structure from '../../json/bd/forms_structure.json'
+import vSelect from 'vue-select'
+import axios from 'axios'
+import moment from 'moment'
+import WellCartTree from "./WellCartTree";
 
 export default {
   components: {
     BigDataPlainFormResult,
-    vSelect
+    vSelect,
+    WellCartTree,
   },
   data() {
     return {
       options: [],
-      well: null,
-      tech: null,
-      wellName: null,
-      org: null,
-      geo: null,
       graph: null,
       activeFormCode: null,
       loading: false,
       isLeftColumnFolded: false,
       isRightColumnFolded: false,
       isBothColumnFolded: false,
-      allData: null,
-      popup: false
+      popup: false,
+      forms: forms,
+      wellUwi: null,
+      well: {
+        id: null,
+        'measWaterCut': {'water_cut': null},
+        'status': {'name_ru': null},
+        'category': {'name_ru': null},
+        'categoryLast': {'name_ru': null},
+        'expl': {'dbeg': null, 'name_ru': null},
+        'techs': null,
+        'techsName': null,
+        'labResearchValue': {'value_double': null},
+        'wellType': {'name_ru': null},
+        'org': null,
+        'geo': {'name_ru': null},
+        'tubeNom': null,
+        'measLiq': null,
+        'techModeProdOil': null,
+        'techModeProdLiquid': null,
+        'injPressure': null,
+        'agentVol': null,
+        'krsWorkover': {'dbeg': null, 'dend': null},
+        'treatmentDate': {'treat_date': null},
+        'actualBottomHole': null,
+        'artificialBottomHole': null,
+        'perfActual': {'top': null, 'base': null},
+        'wellInfo': {'rte': null},
+      },
+      tubeNomOd: null,
+      wellTechs: null,
+      wellTechsName: null,
+      wellTechsTap: null,
+      wellOrgName: null,
+      wellSaptialObjectX: null,
+      wellSaptialObjectY: null,
+      wellSaptialObjectBottomX: null,
+      wellSaptialObjectBottomY: null,
+      wellTransform: {
+        'name': 'wellInfo.uwi',
+        'wellInfo': 'wellInfo',
+        'measWaterCut': 'meas_water_cut',
+        'status': 'status',
+        'category': 'category',
+        'categoryLast': 'category_last',
+        'expl': 'well_expl',
+        'techs': 'techs',
+        'labResearchValue': 'lab_research_value',
+        'wellType': 'well_type',
+        'org': 'org',
+        'geo': 'geo',
+        'tubeNom': 'tube_nom',
+        'measLiq': 'meas_liq.liquid',
+        'techModeProdOil': 'tech_mode_prod_oil.oil',
+        'techModeProdLiquid': 'tech_mode_prod_oil.liquid',
+        'injPressure': 'tech_mode_inj.inj_pressure',
+        'agentVol': 'tech_mode_inj.agent_vol',
+        'krsWorkover': 'krs_well_workover',
+        'treatmentDate': 'well_treatment',
+        'actualBottomHole': 'actual_bottom_hole.pivot.depth',
+        'artificialBottomHole': 'artificial_bottom_hole.pivot.depth',
+        'perfActual': 'well_perf_actual',
+      },
+      forms_structure: forms_structure,
     }
   },
   mounted() {
-
   },
   methods: {
-    onLeftColumnFoldingEvent(isLeftColumnFolded, isRightColumnFolded, isBothColumnFolded) {
-      //method check the isLeftColumnFolded & isRightColumnFolded var and returns isBothColumnFolded if true
-      this.isLeftColumnFolded = !isLeftColumnFolded;
-      if (this.isLeftColumnFolded === true && this.isRightColumnFolded === true) {
-        this.isBothColumnFolded = !isBothColumnFolded;
-        this.isBothColumnFolded = true;
+    onColumnFoldingEvent(method) {
+      if (method === 'left') {
+        this.isLeftColumnFolded = !this.isLeftColumnFolded;
       } else {
-        this.isBothColumnFolded = false;
+        this.isRightColumnFolded = !this.isRightColumnFolded;
       }
-    },
-    onRightColumnFoldingEvent(isLeftColumnFolded, isRightColumnFolded, isBothColumnFolded) {
-      //method check the isLeftColumnFolded & isRightColumnFolded var and returns isBothColumnFolded if true
-      this.isRightColumnFolded = !isRightColumnFolded;
       if (this.isLeftColumnFolded === true && this.isRightColumnFolded === true) {
-        this.isBothColumnFolded = !isBothColumnFolded;
         this.isBothColumnFolded = true;
       } else {
         this.isBothColumnFolded = false;
@@ -377,18 +323,390 @@ export default {
     ),
     selectWell(well) {
       this.loading = true
-      this.axios.get(this.localeUrl(`/api/bigdata/wells/${well.id}`)).then(({data}) => {
-        this.tech = data[0].techs
-        this.org = data[0].orgs
-        this.geo = data[0].geo
-        this.wellName = data[0].uwi
-        this.allData = data[0]
-        console.log(data[0])
+      this.axios.get(this.localeUrl(`/api/bigdata/wells/${well.id}/wellInfo`)).then(({data}) => {
+        try {
+          this.well.id = data.wellInfo.id
+          this.wellUwi = data.wellInfo.uwi
+          for (let i = 0; i < Object.keys(this.wellTransform).length; i++) {
+            this.setWellObjectData(Object.keys(this.wellTransform)[i], Object.values(this.wellTransform)[i], data)
+          }
+          this.wellTechsName = this.getMultipleValues(data.techs, 'name_ru')
+          this.wellTechsTap = this.getMultipleValues(data.techs, 'tap')
+          this.wellOrgName = this.getMultipleValues(data.org, 'name_ru')
+          this.tubeNomOd = this.getMultipleValues(data.tube_nom, 'od')
+          if (data.spatial_object.coord_point != null) {
+            let spatialObject
+            spatialObject = data.spatial_object.coord_point.replace('(', '').replace(')', '')
+            spatialObject = spatialObject.split(',')
+            this.wellSaptialObjectX = spatialObject[0]
+            this.wellSaptialObjectY = spatialObject[1]
+          }
+          if (data.spatial_object_bottom.coord_point != null) {
+            let spatialObjectBottom
+            spatialObjectBottom = data.spatial_object_bottom.coord_point.replace('(', '').replace(')', '')
+            spatialObjectBottom = spatialObjectBottom.split(',')
+            this.wellSaptialObjectBottomX = spatialObjectBottom[0]
+            this.wellSaptialObjectBottomY = spatialObjectBottom[1]
+          }
+        } catch (e) {
+          this.loading = false
+        }
         this.loading = false
+        this.setTableData()
       })
+    },
+    setTableData() {
+      for (let i = 0; i < this.tableData.length; i++) {
+        if (this.tableData[i].method === 'neighbors') {
+          try {
+            if (this.tableData[i].neigbor_1 != null) {
+              this.tableData[i].data += this.tableData[i].neigbor_1
+            }
+            if (this.tableData[i].neigbor_2 != null) {
+              this.tableData[i].data += ' - '
+              this.tableData[i].data += this.tableData[i].neigbor_2
+            }
+          } catch (e) {
+          }
+        } else if (this.tableData[i].method === 'trimToDate') {
+          try {
+            this.tableData[i].data = moment(this.tableData[i].description).format('DD/MM/YYYY')
+          } catch (e) {
+          }
+        } else {
+          try {
+            this.tableData[i].data = this.tableData[i].description
+          } catch (e) {
+          }
+        }
+      }
+    },
+    getMultipleValues(objectName, objectKey) {
+      let value = ''
+      for (let i = 0; i < Object.keys(objectName).length; i++) {
+        if (i + 1 < Object.keys(objectName).length) {
+          value += objectName[i].[objectKey] + ' / '
+        } else {
+          value += objectName[i].[objectKey]
+        }
+      }
+      return (value)
+    },
+    setWellObjectData(key, path, source) {
+      try {
+        if (source.[path] != null) {
+          this.well.[key] = source.[path]
+        } else {
+          variable = null
+        }
+      } catch (e) {
+      }
+    },
+    switchFormByCode(formCode) {
+      this.activeFormCode = formCode
     },
     setForm(formCode) {
       this.activeFormCode = formCode
+    }
+  },
+  computed: {
+    tableData() {
+      return [
+        {
+          'description': this.wellUwi,
+          'method': null,
+          'name': 'Скважина',
+          'data': ''
+        },
+        {
+          'description': this.well.wellType.name_ru,
+          'method': null,
+          'name': 'Вид скважины',
+          'data': ''
+        },
+        {
+          'description': this.well.geo.name_ru,
+          'method': null,
+          'name': 'Месторождение',
+          'data': ''
+        },
+        {
+          'description': '',
+          'method': 'neighbors',
+          'neigbor_1': this.well.geo.name_ru,
+          'neigbor_2': this.well.labResearchValue.value_double,
+          'name': 'Горизонт / Pнас, атм',
+          'data': ''
+        },
+        {
+          'description': this.well.wellInfo.rte,
+          'method': null,
+          'name': 'H ротора',
+          'data': ''
+        },
+        {
+          'description': this.well.wellTechsName,
+          'method': null,
+          'name': 'Тех. структура',
+          'data': ''
+        },
+        {
+          'description': this.wellTechsTap,
+          'method': null,
+          'name': 'Отвод',
+          'data': ''
+        },
+        {
+          'description': this.wellTechsName,
+          'method': null,
+          'name': 'ГУ/Ряд',
+          'data': ''
+        },
+        {
+          'description': this.wellOrgName,
+          'method': null,
+          'name': 'Орг. структура',
+          'data': ''
+        },
+        {
+          'description': null,
+          'method': null,
+          'name': 'Зона скважины',
+          'data': ''
+        },
+        {
+          'description': null,
+          'method': null,
+          'name': 'Реагирующие скважины',
+          'data': ''
+        },
+        {
+          'description': null,
+          'method': null,
+          'name': 'Влияющие скважины',
+          'data': ''
+        },
+        {
+          'description': this.wellSaptialObjectX,
+          'method': null,
+          'name': 'Координаты X (устья)',
+          'data': ''
+        },
+        {
+          'description': this.wellSaptialObjectY,
+          'method': null,
+          'name': 'Координаты Y (устья)',
+          'data': ''
+        },
+        {
+          'description': this.wellSaptialObjectBottomX,
+          'method': null,
+          'name': 'Координаты забоя X',
+          'data': ''
+        },
+        {
+          'description': this.wellSaptialObjectBottomY,
+          'method': null,
+          'name': 'Координаты забоя Y',
+          'data': ''
+        },
+        {
+          'description': this.well.category.name_ru,
+          'method': null,
+          'name': 'Назначение скважин по проекту',
+          'data': ''
+        },
+        {
+          'description': this.well.categoryLast.name_ru,
+          'method': null,
+          'name': 'Категория',
+          'data': ''
+        },
+        {
+          'description': '',
+          'method': 'neighbors',
+          'neigbor_1': this.well.wellInfo.drill_start_date,
+          'neigbor_2': this.well.wellInfo.drill_end_date,
+          'name': 'Период бурения',
+          'data': ''
+        },
+        {
+          'description': this.well.expl.dbeg,
+          'method': 'trimToDate',
+          'name': 'Дата ввода в эксплуатацию',
+          'data': ''
+        },
+        {
+          'description': this.well.status.name_ru,
+          'method': null,
+          'name': 'Состояние',
+          'data': ''
+        },
+        {
+          'description': this.well.expl.name_ru,
+          'method': null,
+          'name': 'Способ эксплуатации',
+          'data': ''
+        },
+        {
+          'description': '',
+          'method': null,
+          'name': 'Тип УО / наличие эксц. болта',
+          'data': ''
+        },
+        {
+          'description': this.tubeNomOd,
+          'method': null,
+          'name': 'Диаметр экспл. колонны / доп. экспл. колонны, мм',
+          'data': ''
+        },
+        {
+          'description': '',
+          'method': null,
+          'name': 'Тип колонной головки / размеры',
+          'data': ''
+        },
+        {
+          'description': '',
+          'method': null,
+          'name': 'Глубина спуска насоса (м)',
+          'data': ''
+        },
+        {
+          'description': '',
+          'method': null,
+          'name': 'Код насоса',
+          'data': ''
+        },
+        {
+          'description': '',
+          'method': null,
+          'name': 'Диаметр насоса (мм)',
+          'data': ''
+        },
+        {
+          'description': '',
+          'method': null,
+          'name': 'Глубина спуска пакера',
+          'data': ''
+        },
+        {
+          'description': '',
+          'method': null,
+          'name': 'Тип СК',
+          'data': ''
+        },
+        {
+          'description': '',
+          'method': null,
+          'name': 'длина хода (м)',
+          'data': ''
+        },
+        {
+          'description': '',
+          'method': null,
+          'name': 'число качаний (об/мин)',
+          'data': ''
+        },
+        {
+          'description': this.actualBottomHole,
+          'method': null,
+          'name': 'Фактический забой/(дата отбивки)',
+          'data': ''
+        },
+        {
+          'description': this.actualBottomHole,
+          'method': null,
+          'name': 'Искусственный забой',
+          'data': ''
+        },
+        {
+          'description': null,
+          'method': null,
+          'name': 'Отбитый забой',
+          'data': ''
+        },
+        {
+          'description': null,
+          'method': null,
+          'name': 'Глубина спуска НКТ, м',
+          'data': ''
+        },
+        {
+          'description': null,
+          'method': null,
+          'name': 'КШД (тип/диаметр)',
+          'data': ''
+        },
+        {
+          'description': null,
+          'method': null,
+          'name': 'Дата перфорации',
+          'data': ''
+        },
+        {
+          'description': null,
+          'method': 'neighbors',
+          'neigbor_1': this.well.perfActual.top,
+          'neigbor_2': this.well.perfActual.base,
+          'name': 'Действующие интервалы перфорации',
+          'data': ''
+        },
+        {
+          'description': null,
+          'method': 'neighbors',
+          'neigbor_1': this.well.injPressure,
+          'neigbor_2': null,
+          'name': 'Приемистость, м3/сут (режим/факт)',
+          'data': ''
+        },
+        {
+          'description': null,
+          'method': 'neighbors',
+          'neigbor_1': this.well.agentVol,
+          'neigbor_2': null,
+          'name': 'Давление закачки, атм (режим/факт)',
+          'data': ''
+        },
+        {
+          'description': null,
+          'method': 'neighbors',
+          'neigbor_1': this.well.techModeProdLiquid,
+          'neigbor_2': this.well.measLiq,
+          'name': 'Дебит жидкости, м3/сут (режим/факт)',
+          'data': ''
+        },
+        {
+          'description': null,
+          'method': 'neighbors',
+          'neigbor_1': this.well.techModeProdOil,
+          'neigbor_2': this.well.measWaterCut.water_cut,
+          'name': 'Обводненность, % (режим/факт)',
+          'data': ''
+        },
+        {
+          'description': null,
+          'method': 'neighbors',
+          'neigbor_1': this.well.techModeProdOil,
+          'neigbor_2': null,
+          'name': 'Дебит нефти, т/сут (режим/факт)',
+          'data': ''
+        },
+        {
+          'description': null,
+          'method': 'neighbors',
+          'neigbor_1': moment(this.well.krsWorkover.dbeg).format('DD/MM/YYYY'),
+          'neigbor_2': moment(this.well.krsWorkover.dend).format('DD/MM/YYYY'),
+          'name': 'Дата последнего КРС',
+          'data': ''
+        },
+        {
+          'description': this.well.treatmentDate.treat_date,
+          'method': null,
+          'name': 'Дата проведения ПФП нагн. скважины',
+          'data': ''
+        },
+      ]
     }
   }
 }
@@ -551,110 +869,6 @@ $rightColumnFoldedWidth: 84px;
   box-shadow: 0 0 10px #000;
 }
 
-.custom-directory {
-  img {
-    padding-bottom: 5px;
-  }
-
-  ul, li {
-    color: white;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-
-  ul .nested {
-    border-top: 1px dashed #555BA6;
-    border-left: 0;
-  }
-
-  ul {
-    padding-left: 1em;
-    border: 0;
-  }
-
-  li {
-    border: 1px dashed #555BA6;
-    padding-left: 1em;
-    border-width: 0 0 1px 1px;
-
-    &.selected {
-      font-weight: bold;
-    }
-  }
-
-  li p {
-    margin: 0;
-    background: #272953;
-    position: relative;
-    bottom: 0.6em;
-  }
-
-  li ul {
-    margin-left: -1em;
-    padding-left: 2em;
-  }
-
-  ul li:last-child ul {
-    border-bottom: 0;
-    margin-left: -17px;
-  }
-
-  li:last-child {
-    border-bottom: 0
-  }
-
-  ul, #myUL {
-    list-style-type: none;
-  }
-
-  .caret {
-    cursor: pointer;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    margin-right: auto;
-  }
-
-  .file {
-    cursor: pointer;
-    padding-left: 0;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    margin-right: auto;
-  }
-
-  .file::before {
-    content: URL(/img/bd/file.svg);
-    color: white;
-    display: inline-block;
-    padding-right: 10px;
-  }
-
-  .caret::before {
-    content: URL(/img/bd/folder.svg);
-    color: white;
-    display: inline-block;
-    padding-right: 10px;
-  }
-
-  .caret-down::before {
-    color: white;
-    background: white;
-  }
-
-  .nested {
-    display: block;
-  }
-
-  .active {
-    display: block;
-  }
-}
-
 h4 {
   text-align: left;
   font-size: 16px;
@@ -790,6 +1004,10 @@ h4 {
   width: 100%;
   padding: 10px;
   margin: 10px 40px 10px 25px;
+
+  ul {
+    list-style: none;
+  }
 
   col {
     display: flex;
@@ -1079,7 +1297,7 @@ h4 {
 }
 
 .info {
-  height: calc(100vh - 100px);
+  height: calc(100vh - 160px);
   margin-bottom: 0 !important;
   overflow-y: auto;
   overflow-x: hidden;
@@ -1121,6 +1339,16 @@ h4 {
     }
   }
 
+  .rotate {
+    transform: rotate(-90deg);
+    margin-top: 100px;
+    margin-bottom: 10px;
+    display: flex;
+    white-space: nowrap;
+    font-family: 'Harmonia Sans Pro Cyr', 'Harmonia-Sans', 'Robato';
+    font-weight: 700;
+    font-size: 16px;
+  }
 }
 
 .full-size-icon {
@@ -1364,34 +1592,35 @@ h4 {
   color: #82BAFF;
 }
 
-::-webkit-scrollbar {
-  width: 15px;
-  background: #272953;
+.scrollable {
+  &::-webkit-scrollbar {
+    height: 10px;
+    width: 4px;
+  }
 
-}
+  &::-webkit-scrollbar-track {
+    background: #40467E;
+  }
 
-::-webkit-scrollbar-track {
-  background: #272953;
+  &::-webkit-scrollbar-thumb {
+    background: #656A8A;
+  }
 
-}
+  &::-webkit-scrollbar-thumb:hover {
+    background: #656A8A;
+  }
 
-::-webkit-scrollbar-thumb {
-  background: URL("/img/bd/scroll-img.svg") no-repeat 50% #374178;
-  height: 10px;
-}
-
-::-webkit-scrollbar-button {
-  background: URL("/img/bd/scroll-array.svg") no-repeat 50% #485499;
-
-  &:end {
-    background: URL("/img/bd/scroll-array-end.svg") no-repeat 50% #485499;
+  &::-webkit-scrollbar-corner {
+    background: #20274F;
   }
 }
 
 .table-wrapper {
   margin: 10px 20px;
+  max-height: calc(100vh - 175px);
+  overflow: auto;
   padding: 0;
-
+  width: auto;
 }
 
 .col-no-right-padding {
@@ -1437,7 +1666,7 @@ h4 {
     }
 
     & ~ .mid-col {
-      min-width: calc(100% - #{$leftColumnFoldedWidth} - #{$rightColumnFoldedWidth} - 11px) !important;
+      min-width: calc(100% - #{$leftColumnFoldedWidth} - #{$rightColumnFoldedWidth} - 9px) !important;
     }
 
   }
@@ -1451,7 +1680,22 @@ h4 {
   min-width: $leftColumnWidth;
   width: $leftColumnWidth;
   padding: 0 15px;
-  margin-bottom: 15px;
+  margin-bottom: 0px;
+  height: 100%;
+  overflow-y: scroll;
+  overflow-x: hidden;
+
+  .rotate {
+    color: white;
+    white-space: nowrap;
+    transform: rotate(-90deg);
+    display: flex;
+    padding-bottom: 50px;
+    padding-right: 20px;
+    font-family: "Harmonia Sans Pro Cyr", "Harmonia-Sans", "Robato";
+    font-weight: 700;
+    font-size: 16px;
+  }
 
   &_folded {
     min-width: $leftColumnFoldedWidth;
@@ -1470,7 +1714,7 @@ h4 {
     }
 
     & ~ .mid-col {
-      min-width: calc(100% - #{$leftColumnFoldedWidth} - #{$rightColumnWidth} - 11px);
+      min-width: calc(100% - #{$leftColumnFoldedWidth} - #{$rightColumnWidth} - 9px);
     }
 
   }
@@ -1501,14 +1745,16 @@ h4 {
     min-width: $leftColumnFoldedWidth;
     width: $leftColumnFoldedWidth;
     max-width: $leftColumnFoldedWidth;
-    margin-left: auto;
+    margin: 0px;
+    padding: 0px 15px;
 
     & ~ .mid-col {
-      min-width: calc(100% - #{$leftColumnWidth} - 84px - 11px);
+      min-width: calc(100% - #{$leftColumnWidth} - #{$rightColumnFoldedWidth} - 9px);
     }
 
     .icon-all {
       transform: rotate(180deg);
+      padding-bottom: 25px;
     }
 
     p {
@@ -1536,15 +1782,21 @@ h4 {
 }
 
 .mid-col {
-  min-width: calc(100% - #{$leftColumnWidth} - #{$rightColumnWidth} - 11px);
+  min-width: calc(100% - #{$leftColumnWidth} - #{$rightColumnWidth} - 9px);
   padding: 0 15px;
+  height: calc(100vh - 90px);
 
   &__main {
-    height: calc(100vh - 123px);
+    height: 100%;
+    overflow: hidden;
 
     &-inner {
       margin-bottom: 0;
     }
+  }
+
+  .col-md-12 {
+    height: 100%;
   }
 }
 
@@ -1599,5 +1851,13 @@ h4 {
 
 .block {
   display: block;
+}
+
+.directory {
+  .file {
+    br {
+      display: none;
+    }
+  }
 }
 </style>

@@ -11,14 +11,6 @@
         <span class="menu-collapsed companyName d-none"></span>
     </div>
 </a>
-
-<a href="#" class="bg-dark-new list-group-item list-group-item-action">
-    <div class="d-flex w-100 justify-content-start align-items-center">
-        <img src="/img/gno/list.png" width="25" height="25" class="companyLogo">
-        <span class="menu-collapsed companyName d-none"></span>
-    </div>
-</a>
-
 <div class="dropright">
     <div data-toggle="dropdown">
         <a href="#" class="bg-dark-new list-group-item list-group-item-action">
@@ -50,22 +42,16 @@
                                         {{ trans('monitoring.omgca.menu') }}
                                     </a>
                                 </li>
-                            @endif
-                            @if(auth()->user()->can('monitoring view main'))
                                 <li class="left-menu-li">
                                     <a href="{{route('omguhe.index')}}">
                                         {{ trans('monitoring.omguhe.menu') }}
                                     </a>
                                 </li>
-                            @endif
-                            @if(auth()->user()->can('monitoring view main'))
                                 <li class="left-menu-li">
                                     <a href="{{route('omgngdu.index')}}">
                                         {{ trans('monitoring.omgngdu.menu') }}
                                     </a>
                                 </li>
-                            @endif
-                            @if(auth()->user()->can('monitoring view main'))
                                 <li class="left-menu-li">
                                     <a href="{{route('omgngdu_well.index')}}">
                                         {{ trans('monitoring.omgngdu_well.menu') }}
@@ -79,6 +65,8 @@
                         auth()->user()->can('monitoring list watermeasurement')
                         || auth()->user()->can('monitoring list oilgas')
                         || auth()->user()->can('monitoring list corrosion')
+                        || auth()->user()->can('monitoring list hydro_calculation')
+                        || auth()->user()->can('monitoring list reverse_calculation')
                     )
                         <li class="left-menu-li">
                             <a>
@@ -106,9 +94,24 @@
                                         </a>
                                     </li>
                                 @endif
+                                @if(auth()->user()->can('monitoring list hydro_calculation'))
+                                    <li class="left-menu-li">
+                                        <a href="{{route('hydro_calculation.index')}}">
+                                            {{ trans('monitoring.hydro_calculation.menu') }}
+                                        </a>
+                                    </li>
+                                @endif
+                                @if(auth()->user()->can('monitoring list reverse_calculation'))
+                                    <li class="left-menu-li">
+                                        <a href="{{route('reverse_calculation.index')}}">
+                                            {{ trans('monitoring.reverse_calculation.menu') }}
+                                        </a>
+                                    </li>
+                                @endif
                             </ul>
                         </li>
                     @endif
+
                     @if(
                         auth()->user()->can('monitoring list pipes')
                         || auth()->user()->can('monitoring list inhibitors')
@@ -142,18 +145,35 @@
                             </ul>
                         </li>
                     @endif
-                    <li class="left-menu-li">
-                        @if(auth()->user()->can('monitoring view pipes map'))
+
+                    @if(auth()->user()->can('monitoring view pipes map'))
+                        <li class="left-menu-li">
                             <a href="{{route('maps.gu')}}">
                                 {{ trans('monitoring.tech_map') }}
                             </a>
-                        @endif
-                    </li>
+                        </li>
+                    @endif
+
+                    @if(auth()->user()->can('monitoring view pipes map'))
+                        <li class="left-menu-li">
+                            <a href="{{route('map-history.index')}}">
+                                {{ trans('monitoring.map-history.menu') }}
+                            </a>
+                        </li>
+                    @endif
+
                     <li class="left-menu-li">
                         <a href="{{route('facilities')}}">
                             {{ trans('monitoring.tech_map_prototype') }}
                         </a>
                     </li>
+                    @if(auth()->user()->can('monitoring list lost_profits'))
+                    <li class="left-menu-li">
+                        <a href="{{route('lost-profits.index')}}">
+                            {{ trans('monitoring.lost_profits_title') }}
+                        </a>
+                    </li>
+                    @endif
                 </ul>
             </li>
         </div>

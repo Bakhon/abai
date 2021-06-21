@@ -9,6 +9,7 @@ use App\Http\Requests\IndexTableRequest;
 use App\Http\Requests\OmgNGDUCreateRequest;
 use App\Http\Requests\OmgNGDUUpdateRequest;
 use App\Models\ComplicationMonitoring\Corrosion;
+use App\Models\ComplicationMonitoring\Gu;
 use App\Models\ComplicationMonitoring\GuKormass;
 use App\Models\ComplicationMonitoring\Kormass;
 use App\Models\ComplicationMonitoring\OilGas;
@@ -55,7 +56,7 @@ class OmgNGDUController extends CrudController
                     'title' => trans('monitoring.gu.gu'),
                     'type' => 'select',
                     'filter' => [
-                        'values' => \App\Models\Refs\Gu::whereHas('omgngdu')
+                        'values' => Gu::whereHas('omgngdu')
                             ->orderBy('name', 'asc')
                             ->get()
                             ->map(
@@ -121,11 +122,16 @@ class OmgNGDUController extends CrudController
             $params['links']['export'] = route($this->modelName.'.export');
         }
 
+        $params['model_name'] = $this->modelName;
+        $params['filter'] = session($this->modelName.'_filter');
+
         return view('omgngdu.index', compact('params'));
     }
 
     public function list(IndexTableRequest $request)
     {
+        parent::list($request);
+        
         $query = OmgNGDU::query()
             ->with('field', 'ngdu', 'cdng', 'gu', 'zu', 'well');
 

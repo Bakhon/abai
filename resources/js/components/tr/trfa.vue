@@ -204,36 +204,39 @@ import Vue from "vue";
 import BigNumbers from "./BigNumbers.vue";
 import ClearIcon from "../ui-kit/ClearIcon.vue";
 import TrMultiselect from "./TrMultiselect.vue";
-import { getFilterText } from "./helpers.js";
+import trHelper from '~/mixins/trHelper';
+import VueApexCharts from "vue-apexcharts";
 
 Vue.use(NotifyPlugin, VueMomentLib);
-import VueApexCharts from "vue-apexcharts";
+
 export default {
   name: "Trfa",
   components: {
     ClearIcon,
     BigNumbers,
     TrMultiselect,
+    "apexchart": VueApexCharts
   },
+  mixins: [trHelper],
   computed: {
     subtitleText() {
       return [
-        getFilterText(
+        this.getFilterText(
           this.chartFilter_field,
           this.fieldFilters[0].fields,
           "fields"
         ),
-        getFilterText(
+        this.getFilterText(
           this.chartFilter_horizon,
           this.horizonFilters[0].fields,
           "horizons"
         ),
-        `${getFilterText(
+        `${this.getFilterText(
           this.chartFilter_exp_meth,
           this.exp_methFilters[0].fields,
           "expMethods"
         )} добычи`,
-        getFilterText(
+        this.getFilterText(
           this.chartFilter_object,
           this.objectFilters[0].fields,
           "objects"

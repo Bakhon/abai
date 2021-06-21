@@ -2,19 +2,19 @@
   <div>
       <ul class="nav nav-tabs">
           <li class="nav-item">
-              <a class="nav-link" @click="selectTab(1)" href="#">{{trans('pgno.shgn')}}</a>
+              <a class="nav-link active" @click="selectTab(1)" href="#">{{trans('pgno.shgn')}}</a>
           </li>
           <li class="nav-item">
-              <a class="nav-link" @click="selectTab(2)" href="#">{{trans('pgno.ecn')}}</a>
+              <a class="nav-link disabled" @click="selectTab(2)" href="#">{{trans('pgno.ecn')}}</a>
           </li>
           <li class="nav-item">
-              <a class="nav-link" @click="selectTab(3)" href="#">{{trans('pgno.fon')}}</a>
+              <a class="nav-link disabled" @click="selectTab(3)" href="#">{{trans('pgno.fon')}}</a>
           </li>
           <li class="nav-item">
-              <a class="nav-link" @click="selectTab(4)" href="#">{{trans('pgno.develop')}}</a>
+              <a class="nav-link disabled" @click="selectTab(4)" href="#">{{trans('pgno.develop')}}</a>
           </li>
           <li class="nav-item">
-              <a class="nav-link" @click="selectTab(5)" href="#">{{trans('pgno.economic')}}</a>
+              <a class="nav-link disabled" @click="selectTab(5)" href="#">{{trans('pgno.economic')}}</a>
           </li>
       </ul>
 
@@ -54,7 +54,8 @@ export default {
     },
     data: function() {
         return {
-            currentTab: 1
+            currentTab: 1,
+            hover: false
         }
     },
     methods: {
@@ -77,4 +78,11 @@ export default {
 .tab__content {
     color: white;
 }
+
+.nav-link.active {
+    color: white;
+    background-color: transparent;
+    border-color: #dee2e6 #dee2e6 white;
+}
+
 </style>

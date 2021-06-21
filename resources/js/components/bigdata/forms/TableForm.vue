@@ -46,6 +46,35 @@
               <template v-else-if="column.type === 'history'">
                 <a href="#" @click.prevent="showHistoricalDataForRow(row, column)">Посмотреть</a>
               </template>
+              <template v-else-if="column.type === 'date'">
+                <div v-if="isCellEdited(row, column)" class="input-wrap">
+                  <datetime
+                      v-model="row[column.code].value"
+                      :disabled="isLoading"
+                      :flow="['year', 'month', 'date']"
+                      :phrases="{ok: '', cancel: ''}"
+                      auto
+                      format="dd LLLL yyyy"
+                      input-class="form-control"
+                      type="date"
+                      value-zone="Asia/Almaty"
+                      zone="Asia/Almaty"
+                  >
+                  </datetime>
+                  <button type="button" @click.prevent="saveCell(row, column)">OK</button>
+                  <span v-if="errors[column.code]" class="error">{{ showError(errors[column.code]) }}</span>
+                </div>
+                <template v-else-if="row[column.code]">
+                      <span class="value">
+                        {{ row[column.code].date ? row[column.code].old_value : row[column.code].value }}
+                      </span>
+                </template>
+              </template>
+              <template v-else-if="column.type === 'dict'">
+                    <span class="value">
+                      {{ row[column.code].date ? row[column.code].old_value : row[column.code].value }}
+                    </span>
+              </template>
               <template v-else-if="['text', 'integer', 'float'].indexOf(column.type) > -1">
                 <div v-if="isCellEdited(row, column)" class="input-wrap">
                   <input v-model="row[column.code].value" class="form-control" type="text">
@@ -113,6 +142,7 @@
 </template>
 
 <script>
+import Vue from "vue";
 import {Datetime} from 'vue-datetime'
 import 'vue-datetime/dist/vue-datetime.css'
 import {bdFormActions, bdFormState} from '@store/helpers'
