@@ -26,18 +26,24 @@
     {
       "title": "gas_prod_v",
       "code": "gas_prod_v",
-      "table": "prod.meas_gas_prod",
-      "type": "float",
-      "column": "gas_prod",
+      "type": "calc",
+      "formula": "",
+      "column": "gas_prod_v",
       "is_editable": false    
     },
     {
-      "title": "data",
-      "code": "dbeg",
-      "type": "date",
+      "title": "measure_last_month",
+      "code": "measure_last_month",
       "table": "prod.meas_gas_prod",
-      "column": "dbeg",
-      "is_editable": false
+      "type": "history",
+      "column": "gas_prod",
+      "is_editable": false,
+      "fields": [
+        {
+          "worktime": {},
+          "gas_prod_val" :{}
+        }
+      ]
     }
   ]
 }
