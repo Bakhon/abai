@@ -258,8 +258,10 @@ export default {
         'gdisCurrent': {'meas_date': null,},
         'gdisConclusion': {'name_ru': null,},
         'gdisCurrentValue': {'value_double': null},
-        'gdisCurrentValuePmpr': {'gdisCurrentValuePmpr': null},
-        'gdisCurrentValueFlvl': {'gdisCurrentValuePmpr': null},
+        'gdisCurrentValuePmpr': {'value_double': null},
+        'gdisCurrentValueFlvl': {'value_double': null},
+        'gdisCurrentValueStatic': {'value_double': null},
+        'gdisCurrentValueRp': {'value_double': null, 'meas_date': null},
       },
       tubeNomOd: null,
       wellTechs: null,
@@ -299,7 +301,9 @@ export default {
         'gdisConclusion': 'gdis_conclusion',
         'gdisCurrentValue': 'gdis_current_value',
         'gdisCurrentValuePmpr': 'gdis_current_value_pmpr',
-        'gdisCurrentValueFlvl': 'gdis_current_value_flvl'
+        'gdisCurrentValueFlvl': 'gdis_current_value_flvl',
+        'gdisCurrentValueStatic': 'gdis_current_value_static',
+        'gdisCurrentValueRp': 'gdis_current_value_rp',
       },
       forms_structure: forms_structure,
     }
@@ -458,7 +462,7 @@ export default {
           'data': ''
         },
         {
-          'description': this.well.wellTechsName,
+          'description': this.wellTechsName,
           'method': null,
           'name': 'Тех. структура',
           'data': ''
@@ -759,6 +763,28 @@ export default {
           'description': this.well.gdisCurrentValueFlvl.value_double,
           'method': null,
           'name': 'Динамический уровень',
+          'data': ''
+        },
+        {
+          'description': this.well.gdisCurrentValueStatic.value_double,
+          'method': null,
+          'name': 'Статический уровень',
+          'data': ''
+        },
+        {
+          'description': null,
+          'method': 'neighbors',
+          'neigbor_1': this.well.gdisCurrentValueRp.value_double,
+          'neigbor_2': this.well.gdisCurrentValueRp.meas_date,
+          'name': 'Рпл/(дата замера)',
+          'data': ''
+        },
+        {
+          'description': null,
+          'method': 'neighbors',
+          'neigbor_1': null,
+          'neigbor_2': null,
+          'name': 'Рпл (Сл. ГДИС)/(дата замера)',
           'data': ''
         },
       ]

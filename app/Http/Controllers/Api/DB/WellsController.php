@@ -41,7 +41,9 @@ class WellsController extends Controller
             'gdis_conclusion' => $this->gdisConclusion($well),
             'gdis_current_value' => $this->gdisCurrentValue($well),
             'gdis_current_value_pmpr' => $this->gdisCurrentValuePmpr($well),
-            'gdis_current_value_flvl' => $this->gdisCurrentValueFlvl($well)
+            'gdis_current_value_flvl' => $this->gdisCurrentValueFlvl($well),
+            'gdis_current_value_static' => $this->gdisCurrentValueStatic($well),
+            'gdis_current_value_rp' => $this->gdisCurrentValueRp($well),
         );
     }
 
@@ -276,6 +278,27 @@ class WellsController extends Controller
             ->orderBy('pivot_meas_date', 'desc')
             ->first(['value_double']);
     }
+
+    private function gdisCurrentValueStatic(Well $well)
+    {
+        return $well->gdisCurrentValue()
+            ->join('dict.metric', 'prod.gdis_current_value.metric', '=', 'dict.metric.id')
+            ->withPivot('meas_date')
+            ->where('metric.code', '=', 'STLV')
+            ->orderBy('pivot_meas_date', 'desc')
+            ->first(['value_double']);
+    }
+
+    private function gdisCurrentValueRp(Well $well)
+    {
+        return $well->gdisCurrentValue()
+            ->join('dict.metric', 'prod.gdis_current_value.metric', '=', 'dict.metric.id')
+            ->withPivot('meas_date')
+            ->where('metric.code', '=', 'RP')
+            ->orderBy('pivot_meas_date', 'desc')
+            ->first(['value_double', 'meas_date']);
+    }
+
 
     public function search(Request $request): array
     {
