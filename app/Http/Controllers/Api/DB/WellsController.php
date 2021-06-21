@@ -45,8 +45,9 @@ class WellsController extends Controller
             'gdis_current_value_flvl' => $this->gdisCurrentValueFlvl($well),
             'gdis_current_value_static' => $this->gdisCurrentValueStatic($well),
             'gdis_current_value_rp' => $this->gdisCurrentValueRp($well),
+            'gdis_current_value_bhp' => $this->gdisCurrentValueBhp($well),
             'gdis_complex' => $this->gdisComplex($well),
-            'gis'=>$this->gis($well),
+            'gis' => $this->gis($well),
         );
     }
 
@@ -306,6 +307,16 @@ class WellsController extends Controller
             ->join('dict.metric', 'prod.gdis_current_value.metric', '=', 'dict.metric.id')
             ->withPivot('meas_date')
             ->where('metric.code', '=', 'RP')
+            ->orderBy('pivot_meas_date', 'desc')
+            ->first(['value_double', 'meas_date']);
+    }
+
+    private function gdisCurrentValueBhp(Well $well)
+    {
+        return $well->gdisCurrentValue()
+            ->join('dict.metric', 'prod.gdis_current_value.metric', '=', 'dict.metric.id')
+            ->withPivot('meas_date')
+            ->where('metric.code', '=', 'BHP')
             ->orderBy('pivot_meas_date', 'desc')
             ->first(['value_double', 'meas_date']);
     }
