@@ -49,7 +49,7 @@ class HiveDataFromAvocet extends Command
     public function saveHiveDataFromAvocet()
     {
         $dzo_summary_last_record = DzoImportData::latest('id')->first();
-        $date = Carbon::yesterday();
+        $date = Carbon::yesterday();        
         $dataOilAndGas = $this->hiveDataFromAvocet('KMG_I_PRD_AREA_VIEW', $date);
         $dataWater = $this->hiveDataFromAvocet('KMG_I_MTR_INJ_VIEW', $date);
         $dataOilDelivery = $this->hiveDataFromAvocet('KMG_I_MTR_PROD_VIEW', $date);
@@ -83,7 +83,7 @@ class HiveDataFromAvocet extends Command
         $inactiveProductionFond = $this->quantityOfArray($fonds, 'IDLE', $productionFond, '');
         $developingProductionFond = $this->quantityOfArray($fonds, 'DEVELOPMENT', $productionFond, '');
         $pendingLiquidationProductionFond = $this->quantityOfArray($fonds, 'ABANDON', $productionFond, '');
-        $operatingProductionFond = $inWorkProductionFond + $inIdleProductionFond + $developingProductionFond;
+        $operatingProductionFond = $inWorkProductionFond + $inIdleProductionFond + $developingProductionFond + $inactiveProductionFond;
         $activeProductionFond = $inWorkProductionFond + $inIdleProductionFond;
         $inConservationProductionFond = $this->quantityOfArray($fonds, 'SUSPENDED', $productionFond, '');
 
@@ -98,19 +98,20 @@ class HiveDataFromAvocet extends Command
         $inactiveInjectionFond = $this->quantityOfArray($fonds, 'IDLE', $injectionFond, '');
         $developingInjectionFond = $this->quantityOfArray($fonds, 'DEVELOPMENT', $injectionFond, '');
         $pendingLiquidationInjectionFond = $this->quantityOfArray($fonds, 'ABANDON', $injectionFond, '');
-        $operatingInjectionFond = $inWorkInjectionFond + $inIdleInjectionFond + $developingInjectionFond;
+        $operatingInjectionFond = $inWorkInjectionFond + $inIdleInjectionFond + $developingInjectionFond + $inactiveInjectionFond;
         $activeInjectionFond = $inWorkInjectionFond + $inIdleInjectionFond;
         $inConservationInjectionFond = $this->quantityOfArray($fonds, 'SUSPENDED', $injectionFond, '');
 
         $dzoImportData = new DzoImportData();
+        $multiplier  = 1000;
         $dzoImportData->date = $date;
         $dzoImportData->dzo_name = 'КГМ';
         $dzoImportData->oil_production_fact = $oilFact;
-        $dzoImportData->associated_gas_production_fact = $gasFact;
-        $dzoImportData->agent_upload_total_water_injection_fact = $agentUploadTotalWaterInjectionFact;
+        $dzoImportData->associated_gas_production_fact = $gasFact*$multiplier ;
+        $dzoImportData->agent_upload_total_water_injection_fact = $agentUploadTotalWaterInjectionFact*$multiplier ;
         $dzoImportData->oil_delivery_fact = $oilDeliveryFact;
-        $dzoImportData->associated_gas_delivery_fact = $associatedGasDeliveryFact;
-        $dzoImportData->associated_gas_expenses_for_own_fact = $associatedGasExpensesForOwnFact;
+        $dzoImportData->associated_gas_delivery_fact = $associatedGasDeliveryFact*$multiplier ;
+        $dzoImportData->associated_gas_expenses_for_own_fact = $associatedGasExpensesForOwnFact*$multiplier ;
         $dzoImportData->stock_of_goods_delivery_fact = $stockOfGoodsDeliveryFactTotal;
 
         $dzoImportData->in_work_production_fond = $inWorkProductionFond;
@@ -170,7 +171,7 @@ class HiveDataFromAvocet extends Command
             if ($row[3] == $column2) {
                 if ($row[5] == $column1) {
 
-                    if (!empty($row[17])) {
+                    if ($row[17]==null) {
                         if ($row[17] == $column3) {
                             $summ[] = array_merge($row);}
                     } else { $summ[] = array_merge($row);}
