@@ -11,7 +11,7 @@
           <span class="bd-main-block__date-title">{{ filterItem.title }}:</span>
           <div class="bd-main-block__date-input">
             <datetime
-                v-model="filter[filterItem.title]"
+                v-model="filter[filterItem.code]"
                 :flow="['year', 'month', 'date']"
                 :format="{ year: 'numeric', month: 'numeric', day: 'numeric'}"
                 :phrases="{ok: trans('bd.select'), cancel: trans('bd.exit')}"
@@ -95,6 +95,9 @@ export default {
   },
   watch: {
     params() {
+      this.init()
+    },
+    filter() {
       this.init()
     }
   },

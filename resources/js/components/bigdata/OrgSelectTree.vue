@@ -56,8 +56,8 @@ export default {
       'updateForm'
     ]),
     init() {
-      this.updateForm(this.activeForm.code).then(data => {
-        this.filterTree = data.filterTree
+      this.axios.get(this.localeUrl(`/api/bigdata/wells/tree`)).then(data => {
+        this.filterTree = data.data
       })
     },
     nodeClick(node) {
@@ -67,10 +67,10 @@ export default {
         type: node.type
       })
     },
-    isNodeOnBottomLevelOfHierarchy: function(node) {
+    isNodeOnBottomLevelOfHierarchy: function (node) {
       return node.type !== 'org'
     },
-    isWell: function(node){
+    isWell: function (node) {
       return (typeof node.type !== 'undefined' && node.type === 'well')
     },
     getWells: function (child) {

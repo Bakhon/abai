@@ -378,8 +378,21 @@ return [
             'pressure' => 'Давление закачки (атм)',
             'comment' => 'Примечание',
             'data' => 'Дата',
-            'water_inj' => 'Закачка воды'            
-        ]        
+            'water_inj' => 'Закачка воды'
+        ],
+        'production_program' => [
+            'oil_production' => 'Добыча нефти (т)',
+            'water_injection' => 'Закачка воды (м3)',
+            'water_production' => 'Добыча воды (м3)',
+            'liquid_production' => 'Добыча жидкости (м3)',
+            'oil_injection' => 'Сдача нефти (т)',
+            'gas_production' => 'Добыча газа (м3)',
+            'steam_injection' => 'Закачка пара (м3)',
+            'absorption' => 'Поглощение',
+            'date' => 'Дата с',
+            'date_to' => 'Дата по',
+            'select_ngdu' => 'Выберите НГДУ'
+        ]
     ],
     'list' => 'Просмотр списка',
     'create' => 'Создание',

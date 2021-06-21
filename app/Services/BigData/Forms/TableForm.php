@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace App\Services\BigData\Forms;
 
-use App\Models\BigData\Dictionaries\Org;
-use App\Models\BigData\Dictionaries\Tech;
-use App\Models\BigData\Infrastructure\History;
 use App\Services\BigData\FieldLimitsService;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
@@ -88,8 +85,7 @@ abstract class TableForm extends BaseForm
 
         return [
             'params' => $params,
-            'fields' => $this->getFields()->pluck('', 'code')->toArray(),
-            'filterTree' => $this->getFilterTree()
+            'fields' => $this->getFields()->pluck('', 'code')->toArray()
         ];
     }
 

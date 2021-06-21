@@ -56,7 +56,7 @@ class ProductionProgram extends TableForm
 
             $row = [
                 'name' => [
-                    'name' => $fieldName
+                    'name' => trans("bd.forms.production_program.$fieldName")
                 ]
             ];
 
@@ -141,7 +141,7 @@ class ProductionProgram extends TableForm
             $columns[] = [
                 "code" => $currentDate->format('d.m.Y'),
                 "is_editable" => true,
-                "title" => $currentDate->locale('ru')->format('F Y'),
+                "title" => trans('app.months.' . $currentDate->format('n')) . ' ' . $currentDate->format('Y'),
                 "type" => "text"
             ];
 

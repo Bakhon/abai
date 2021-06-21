@@ -219,6 +219,7 @@ export default {
     }
   },
   mounted() {
+    this.updateTableData()
   },
   methods: {
     ...bdFormActions([
