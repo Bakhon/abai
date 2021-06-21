@@ -18,6 +18,12 @@ use Illuminate\Support\Facades\DB;
 use App\Models\DzoPlan;
 use App\Http\Controllers\VisCenter\ExcelForm\ExcelFormController;
 use App\Http\Controllers\VisCenter\ExcelForm\ExcelFormChemistryController;
+use App\Models\VisCenter\ExcelForm\DzoImportData;
+use App\Models\VisCenter\ExcelForm\DzoImportDowntimeReason;
+use App\Models\VisCenter\ExcelForm\DzoImportDecreaseReason;
+use Carbon\Carbon;
+use App\Models\VisCenter\ExcelForm\DzoImportOtm;
+use App\Models\VisCenter\ExcelForm\DzoImportChemistry;
 
 class VisualCenterController extends Controller
 {
@@ -316,5 +322,88 @@ class VisualCenterController extends Controller
     public function excelform()
     {
         return view('visualcenter.excelform');
+    }
+
+    public function getProductionDetails(Request $request)
+    {
+        $endPeriod = Carbon::parse($request->timestampEnd)->endOfDay();
+        $startPeriod = Carbon::parse($request->timestampToday)->startOfDay();
+        $diff = $startPeriod->diffInDays($endPeriod);
+        $startPeriod->subDays($diff);
+
+        $factDataByPeriod = DzoImportData::query()
+            ->whereDate('date','>', $startPeriod)
+            ->whereDate('date','<=', $endPeriod)
+            ->with('importDowntimeReason')
+            ->with('importDecreaseReason')
+            ->get()
+            ->toArray();
+
+        $planData = $this->getPlanDetails();
+        $comparedData = $this->getComparedPlanFactData($planData,$factDataByPeriod);
+        return response()->json($comparedData);
+    }
+
+    private function getPlanDetails()
+    {
+        $planData = DzoPlan::query()
+            ->get();
+        return $planData;
+    }
+
+    private function getComparedPlanFactData($planData, $factData)
+    {
+        $comparedData = [];
+        foreach ($factData as $item) {
+            $parsedDate = Carbon::parse($item['date'])->startOfDay()->day(01)->toDateTimeString();
+            $planRecord = $this->getPlanForRecord($item['dzo_name'],$parsedDate,$planData);
+            $planRecord = $this->deleteDuplicateFields($planRecord);
+            $comparedData[] = array_merge($item,$planRecord);
+        }
+        return $comparedData;
+    }
+
+    private function getPlanForRecord($dzoName, $date, $planData)
+    {
+        $searchedRecord = $planData->where('dzo',$dzoName)->where('date',$date);
+        if ($searchedRecord->count() > 0) {
+            return array_values($searchedRecord->toArray())[0];
+        }
+        return array();
+
+    }
+
+    public function getOtmDetails(Request $request)
+    {
+        return DzoImportOtm::query()
+            ->whereMonth('date', '>=', $request->startPeriod)
+            ->whereMonth('date', '<=', $request->endPeriod)
+            ->get()
+            ->toArray();
+    }
+
+    public function getChemistryDetails(Request $request)
+    {
+        return DzoImportChemistry::query()
+            ->whereMonth('date', '>=', $request->startPeriod)
+            ->whereMonth('date', '<=', $request->endPeriod)
+            ->get()
+            ->toArray();
+    }
+
+    private function deleteDuplicateFields($planRecord)
+    {
+        $fields = [
+            0 => "dzo",
+            1 => "date",
+            2 => "created_at",
+            3 => "updated_at",
+            4 => 'id',
+            5 => 'dzo_name'
+        ];
+        foreach($fields as $item) {
+            unset($planRecord[$item]);
+        }
+        return $planRecord;
     }
 }

@@ -22,7 +22,15 @@
       <tr v-for="(item, index) in items" :class="{'selected': selectedItemIndex === index}"
           @click="selectedItemIndex = index">
         <td v-for="column in params.columns">
-          {{ item[column.code].text }}
+          <template v-if="column.type === 'date'">
+            {{ item[column.code].text | moment().format('DD.MM.YYYY') }}
+          </template>
+          <template v-else-if="column.type === 'datetime'">
+            {{ item[column.code].text | moment().format('DD.MM.YYYY HH:MM') }}
+          </template>
+          <template v-else>
+            {{ item[column.code].text }}
+          </template>
         </td>
       </tr>
       </tbody>
@@ -115,6 +123,17 @@ export default {
         this.items.push(this.formValues)
       }
 
+      this.updateParentField()
+    },
+    deleteItem(index) {
+      if (index === null) return
+      this.items.splice(index, 1)
+      this.selectedItemIndex = null
+
+      this.updateParentField()
+    },
+    updateParentField() {
+
       let items = this.items.map(item => {
         let result = {};
         Object.keys(item).forEach(key => {
@@ -125,11 +144,6 @@ export default {
 
       this.$emit('change', items)
 
-    },
-    deleteItem(index) {
-      if (index === null) return
-      this.items.splice(index, 1)
-      this.selectedItemIndex = null
     },
     updateField(event, column) {
       this.formValues[column.code] = event

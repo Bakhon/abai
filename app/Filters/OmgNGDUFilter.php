@@ -54,10 +54,4 @@ class OmgNGDUFilter extends BaseFilter
                 $this->query->orderBy($field, $isDescending ? 'desc' : 'asc');
         }
     }
-
-//    protected function filter_date($dates)
-//    {
-//        $this->filterByDate($dates, 'date');
-//    }
-
 }

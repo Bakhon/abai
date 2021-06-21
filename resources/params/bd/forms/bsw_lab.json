@@ -13,7 +13,7 @@
                 "code": "uwi",
                 "type": "dict",
                 "dict": "wells",
-                "title": "well",
+                "title": "uwi",
                 "validation": ""
               },
               {
@@ -24,56 +24,56 @@
               },
               {
                 "code": "proba_ml",
-                "type": "float",
+                "type": "numeric",
                 "title": "proba",
                 "validation": ""
               },
               {
                 "code": "free_water_ml",
-                "type": "float",
+                "type": "numeric",
                 "title": "volume",
                 "validation": ""
               },
               {
                 "code": "emulsion_ml",
-                "type": "float",
+                "type": "numeric",
                 "title": "em_vol",
                 "validation": ""
               },             
               {
                 "code": "bsw_lab_val",
-                "type": "float",
+                "type": "numeric",
                 "title": "bsw",
                 "validation": ""
               },
               {
                 "code": "watter_constrained_5_ml",
-                "type": "float",
-                "title": "volume",
+                "type": "numeric",
+                "title": "watter_5",
                 "validation": ""
               },
               {
                 "code": "watter_constrained_perc",
-                "type": "float",
-                "title": "em_vol",
+                "type": "numeric",
+                "title": "watter_perc",
                 "validation": ""
               },
               {
                 "code": "watter_constrained_ml",
-                "type": "float",
-                "title": "volume",
+                "type": "numeric",
+                "title": "watter_ml",
                 "validation": ""
               },
               {
                 "code": "bsw_volume_ml",
-                "type": "float",
-                "title": "em_vol",
+                "type": "numeric",
+                "title": "bsw_vol",
                 "validation": ""
               },
               {
                 "code": "bsw_volume_perc",
-                "type": "float",
-                "title": "em_vol",
+                "type": "numeric",
+                "title": "bsw_perc",
                 "validation": ""
               }
             ]

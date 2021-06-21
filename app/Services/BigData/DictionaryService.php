@@ -4,26 +4,38 @@
 namespace App\Services\BigData;
 
 use App\Exceptions\DictionaryNotFound;
-use App\Models\BigData\Dictionaries\Company;
-use App\Models\BigData\Dictionaries\Org;
-use App\Models\BigData\Dictionaries\WellCategory;
-use App\Models\BigData\Dictionaries\WellType;
-use App\Models\BigData\Dictionaries\Equip;
-use App\Models\BigData\Dictionaries\CasingType;
-use App\Models\BigData\Dictionaries\Brigadier;
+use App\Models\BigData\Dictionaries\Block;
 use App\Models\BigData\Dictionaries\Brigade;
-use App\Models\BigData\Dictionaries\GtmType;
-use App\Models\BigData\Dictionaries\NoBtmReason;
-use App\Models\BigData\Dictionaries\RepairWorkType;
-use App\Models\BigData\Dictionaries\WellStatus;
-use App\Models\BigData\Dictionaries\EquipFailReasonType;
-use App\Models\BigData\Dictionaries\TechConditionOfWells;
-use App\Models\BigData\Dictionaries\PumpType;
+use App\Models\BigData\Dictionaries\Brigadier;
+use App\Models\BigData\Dictionaries\CasingType;
+use App\Models\BigData\Dictionaries\Company;
 use App\Models\BigData\Dictionaries\DrillChisel;
 use App\Models\BigData\Dictionaries\DrillColumnType;
+use App\Models\BigData\Dictionaries\Equip;
+use App\Models\BigData\Dictionaries\EquipFailReasonType;
+use App\Models\BigData\Dictionaries\EquipType;
+use App\Models\BigData\Dictionaries\GtmType;
+use App\Models\BigData\Dictionaries\NoBtmReason;
+use App\Models\BigData\Dictionaries\Org;
+use App\Models\BigData\Dictionaries\RepairWorkType;
+use App\Models\BigData\Dictionaries\TechConditionOfWells;
+use App\Models\BigData\Dictionaries\Zone;
+use App\Models\BigData\Dictionaries\PumpType;
+use App\Models\BigData\Dictionaries\InjAgentType;
+use App\Models\BigData\Dictionaries\WellActivity;
+use App\Models\BigData\Dictionaries\TechStateType;
+use App\Models\BigData\Dictionaries\WellCategory;
+use App\Models\BigData\Dictionaries\WellStatus;
+use App\Models\BigData\Dictionaries\WellType;
+use App\Models\BigData\Dictionaries\Well;
+use App\TybeNom;
+use App\Models\BigData\Dictionaries\Device;
+use App\Models\BigData\Dictionaries\GeoIdentifier;
+use App\Models\BigData\Dictionaries\CoordSystem;
 use Carbon\Carbon;
 use Illuminate\Cache\Repository;
 use Illuminate\Support\Facades\DB;
+
 
 class DictionaryService
 {
@@ -42,6 +54,10 @@ class DictionaryService
         ],
         'equips' => [
             'class' => Equip::class,
+            'name_field' => 'name_ru'
+        ],
+        'equip_type' => [
+            'class' => EquipType::class,
             'name_field' => 'name_ru'
         ],
         'casings' => [
@@ -91,7 +107,47 @@ class DictionaryService
         'drill_column_types' => [
             'class' => DrillColumnType::class,
             'name_field' => 'name_ru'
-        ]
+        ],
+        'zone' =>[
+            'class' => Zone::class,
+            'name_field' => 'name_ru'
+        ],
+        'inj_agent_types' => [
+            'class' => InjAgentType::class,
+            'name_field' => 'name_ru'
+        ],
+        'well_activity' => [
+            'class' => WellActivity::class,
+            'name_field' => 'name_ru'
+        ],
+        'tube_nom' => [
+            'class' => TybeNom::class,
+            'name_field' => 'model'
+        ],
+        'well_tech_state_type' => [
+            'class' => TechStateType::class,
+            'name_field' => 'name_ru'
+        ],
+        'blocks' => [
+            'class' => Block::class,
+            'name_field' => 'name_ru'
+        ],
+        'device' => [
+            'class' => Device::class,
+            'name_field' => 'name_ru'
+        ],
+        'geo_identifier' => [
+            'class' => GeoIdentifier::class,
+            'name_field' => 'name_ru'
+        ],
+        'coord_systems' => [
+            'class' => CoordSystem::class,
+            'name_field' => 'name_ru'
+        ],
+        'wells' => [
+            'class' => Well::class,
+            'name_field' => 'name_ru'
+        ],
     ];
 
     const TREE_DICTIONARIES = [

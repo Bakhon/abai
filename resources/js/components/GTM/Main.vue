@@ -70,7 +70,7 @@
                             <thead>
                             <tr>
                                 <th class="align-middle" rowspan="2">ДЗО</th>
-                                <th colspan="3">Дополнительная добыча ВРС, тонн</th>
+                                <th colspan="3">Дополнительная добыча ВНС, тонн</th>
                                 <th colspan="3">Дополнительная добыча ГТМ, тонн</th>
                                 <th colspan="3">Базовая добыча</th>
                             </tr>
@@ -169,6 +169,7 @@
 </template>
 
 <script>
+import Vue from "vue";
 import {paegtmMapActions, paegtmMapGetters} from '@store/helpers';
 import moment from "moment";
 Vue.component("gtm-modal", {

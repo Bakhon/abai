@@ -8,6 +8,9 @@ use App\Http\Controllers\Traits\WithFieldsValidation;
 use App\Http\Requests\IndexTableRequest;
 use App\Http\Requests\OmgCACreateRequest;
 use App\Http\Requests\OmgCAUpdateRequest;
+use App\Http\Resources\OmgCAListResource;
+use App\Jobs\ExportOmgCAToExcel;
+use App\Models\ComplicationMonitoring\Gu;
 use App\Models\ComplicationMonitoring\OmgCA;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -41,7 +44,7 @@ class OmgCAController extends CrudController
                     'title' => __('monitoring.gu.gu'),
                     'type' => 'select',
                     'filter' => [
-                        'values' => \App\Models\Refs\Gu::whereHas('omgca')
+                        'values' => Gu::whereHas('omgca')
                             ->orderBy('name', 'asc')
                             ->get()
                             ->map(
@@ -55,7 +58,7 @@ class OmgCAController extends CrudController
                             ->toArray()
                     ]
                 ],
-                'date' => [
+                'year' => [
                     'title' => __('app.year'),
                     'type' => 'number',
                 ],
@@ -77,11 +80,16 @@ class OmgCAController extends CrudController
             $params['links']['export'] = route($this->modelName.'.export');
         }
 
+        $params['model_name'] = $this->modelName;
+        $params['filter'] = session($this->modelName.'_filter');
+
         return view('omgca.index', compact('params'));
     }
 
     public function list(IndexTableRequest $request)
     {
+        parent::list($request);
+
         $query = OmgCA::query()
             ->with('gu');
 
@@ -89,12 +97,12 @@ class OmgCAController extends CrudController
             ->getFilteredQuery($request->validated(), $query)
             ->paginate(25);
 
-        return response()->json(json_decode(\App\Http\Resources\OmgCAListResource::collection($omgca)->toJson()));
+        return response()->json(json_decode(OmgCAListResource::collection($omgca)->toJson()));
     }
 
     public function export(IndexTableRequest $request)
     {
-        $job = new \App\Jobs\ExportOmgCAToExcel($request->validated());
+        $job = new ExportOmgCAToExcel($request->validated());
         $this->dispatch($job);
 
         return response()->json(
@@ -137,7 +145,7 @@ class OmgCAController extends CrudController
                 ->pluck('gu_id')
                 ->toArray();
 
-            $gus = \App\Models\Refs\Gu::query()
+            $gus = Gu::query()
                 ->whereNotIn('id', $existedGus)
                 ->get();
 

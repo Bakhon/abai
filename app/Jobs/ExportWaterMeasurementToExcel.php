@@ -4,6 +4,8 @@ namespace App\Jobs;
 
 use App\Exports\WaterMeasurementExport;
 use App\Filters\WaterMeasurementFilter;
+use App\Models\ComplicationMonitoring\WaterMeasurement;
+use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -42,7 +44,7 @@ class ExportWaterMeasurementToExcel implements ShouldQueue
      */
     public function handle()
     {
-        $query = \App\Models\ComplicationMonitoring\WaterMeasurement::query()
+        $query = WaterMeasurement::query()
             ->with('other_objects')
             ->with('ngdu')
             ->with('cdng')
@@ -58,7 +60,7 @@ class ExportWaterMeasurementToExcel implements ShouldQueue
             ->filter()
             ->get();
 
-        $fileName = '/export/watermeasurement_' . \Carbon\Carbon::now()->format('YmdHis') . '.xlsx';
+        $fileName = '/export/watermeasurement_' . Carbon::now()->format('YmdHis') . '.xlsx';
         Excel::store(new WaterMeasurementExport($watermeasurement), 'public'.$fileName);
 
         $this->setOutput(

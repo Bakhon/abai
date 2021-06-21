@@ -4,15 +4,17 @@ declare(strict_types=1);
 
 namespace App\Services\BigData\Forms;
 
+use App\Exceptions\BigData\SubmitFormException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 abstract class PlainForm extends BaseForm
 {
     protected $jsonValidationSchemeFileName = 'plain_form.json';
 
-    protected function getFields(): \Illuminate\Support\Collection
+    protected function getFields(): Collection
     {
         $fields = collect();
         foreach ($this->params()['tabs'] as $tab) {
@@ -30,37 +32,41 @@ abstract class PlainForm extends BaseForm
 
     public function submit(): array
     {
-        $tableFields = $this->getFields()
-            ->filter(
-                function ($item) {
-                    return $item['type'] === 'table';
-                }
-            );
+        DB::connection('tbd')->beginTransaction();
 
-        $tableFieldCodes = $tableFields
-            ->pluck('code')
-            ->toArray();
+        try {
+            $tableFields = $this->getFields()
+                ->filter(
+                    function ($item) {
+                        return $item['type'] === 'table';
+                    }
+                );
 
-        $data = $this->request->except($tableFieldCodes);
+            $tableFieldCodes = $tableFields
+                ->pluck('code')
+                ->toArray();
 
-        $dbQuery = DB::connection('tbd')->table($this->params()['table']);
-
-        if (!empty($data['id'])) {
-            $id = $dbQuery->where('id', $data['id'])->update($data);
-        } else {
-            $id = $dbQuery->insertGetId($data);
-        }
-
-        if (!empty($tableFields)) {
-            foreach ($tableFields as $field) {
-                foreach ($this->request->get($field['code']) as $data) {
-                    $data[$field['parent_column']] = $id;
-                    DB::connection('tbd')->table($field['table'])->insert($data);
-                }
+            $data = $this->request->except($tableFieldCodes);
+            if (!empty($this->params()['default_values'])) {
+                $data = array_merge($this->params()['default_values'], $data);
             }
-        }
 
-        return (array)DB::connection('tbd')->table($this->params()['table'])->where('id', $id)->first();
+            $dbQuery = DB::connection('tbd')->table($this->params()['table']);
+
+            if (!empty($data['id'])) {
+                $id = $dbQuery->where('id', $data['id'])->update($data);
+            } else {
+                $id = $dbQuery->insertGetId($data);
+            }
+
+            $this->insertInnerTable($tableFields, $id);
+
+            DB::connection('tbd')->commit();
+            return (array)DB::connection('tbd')->table($this->params()['table'])->where('id', $id)->first();
+        } catch (\Exception $e) {
+            DB::connection('tbd')->rollBack();
+            throw new SubmitFormException($e->getMessage());
+        }
     }
 
     public function getResults(int $wellId): JsonResponse
@@ -91,7 +97,8 @@ abstract class PlainForm extends BaseForm
             return response()->json(
                 [
                     'rows' => $rows,
-                    'columns' => $columns
+                    'columns' => $columns,
+                    'form' => $this->params()
                 ]
             );
         } catch (\Exception $e) {
@@ -104,6 +111,16 @@ abstract class PlainForm extends BaseForm
         }
     }
 
+    public function getCalculatedFields(int $wellId, array $values): array
+    {
+        return [];
+    }
+
+    public function getFormByRow(array $row): array
+    {
+        return [];
+    }
+
     public function delete(int $rowId)
     {
         DB::connection('tbd')
@@ -111,6 +128,20 @@ abstract class PlainForm extends BaseForm
             ->delete($rowId);
 
         return response()->json([], Response::HTTP_NO_CONTENT);
+    }
+
+    protected function insertInnerTable(Collection $tableFields, int $id)
+    {
+        if (!empty($tableFields)) {
+            foreach ($tableFields as $field) {
+                if (!empty($this->request->get($field['code']))) {
+                    foreach ($this->request->get($field['code']) as $data) {
+                        $data[$field['parent_column']] = $id;
+                        DB::connection('tbd')->table($field['table'])->insert($data);
+                    }
+                }
+            }
+        }
     }
 
 }

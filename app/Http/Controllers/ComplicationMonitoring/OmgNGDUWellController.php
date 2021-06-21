@@ -10,8 +10,8 @@ use App\Http\Requests\OmgNGDUWellRequest;
 use App\Http\Resources\OmgNGDUWellListResource;
 use App\Models\ComplicationMonitoring\OmgNGDU;
 use App\Models\ComplicationMonitoring\OmgNGDUWell;
-use App\Models\Refs\Well;
-use App\Models\Refs\Zu;
+use App\Models\ComplicationMonitoring\Well;
+use App\Models\ComplicationMonitoring\Zu;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -116,11 +116,16 @@ class OmgNGDUWellController extends CrudController
             $params['links']['create'] = route($this->modelName.'.create');
         }
 
+        $params['model_name'] = $this->modelName;
+        $params['filter'] = session($this->modelName.'_filter');
+
         return view('omgngdu_well.index', compact('params'));
     }
 
     public function list(IndexTableRequest $request)
     {
+        parent::list($request);
+
         $query = OmgNGDUWell::query()
             ->with('zu', 'well');
 

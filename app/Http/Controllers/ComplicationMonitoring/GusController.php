@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers\ComplicationMonitoring;
 
-use App\Exports\OmgCAExport;
-use App\Exports\PipeLineCalcExport;
 use App\Filters\GuFilter;
 use App\Http\Controllers\CrudController;
 use App\Http\Controllers\Traits\WithFieldsValidation;
@@ -12,14 +10,11 @@ use App\Http\Requests\GuUpdateRequest;
 use App\Http\Requests\IndexTableRequest;
 use App\Http\Resources\GuListResource;
 use App\Jobs\ExportOmgCAToExcel;
-use App\Models\ComplicationMonitoring\OmgNGDU;
-use App\Models\ComplicationMonitoring\TrunklinePoint;
-use App\Models\Refs\Gu;
-use Carbon\Carbon;
+use App\Models\ComplicationMonitoring\Cdng;
+use App\Models\ComplicationMonitoring\Gu;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Session;
-use Maatwebsite\Excel\Facades\Excel;
 
 class GusController extends CrudController
 {
@@ -44,7 +39,7 @@ class GusController extends CrudController
                     'title' => __('monitoring.cdng'),
                     'type' => 'select',
                     'filter' => [
-                        'values' => \App\Models\Refs\Cdng::whereHas('gu')
+                        'values' => Cdng::whereHas('gu')
                             ->orderBy('name', 'asc')
                             ->get()
                             ->map(
@@ -77,11 +72,16 @@ class GusController extends CrudController
             $params['links']['create'] = route('gus.create');
         }
 
+        $params['model_name'] = $this->modelName;
+        $params['filter'] = session($this->modelName.'_filter');
+
         return view('gus.index', compact('params'));
     }
 
     public function list(IndexTableRequest $request)
     {
+        parent::list($request);
+
         $query = Gu::query()
             ->with('cdng');
 

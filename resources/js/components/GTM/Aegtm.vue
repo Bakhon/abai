@@ -122,6 +122,7 @@
 </template>
 
 <script>
+import Vue from "vue";
 import VueChartJs from 'vue-chartjs'
 Vue.component('bar-chart', {
     extends: VueChartJs.Bar,
@@ -245,7 +246,7 @@ export default {
                 ['', '', 'Ю-6'],
                 ['', '', ''],
                 ['', '', ''],
-                ['', 'Аскар', ''],
+                ['', 'Асар', ''],
                 ['', 'Каламкас', ''],
             ],
             comparisonIndicators: [],

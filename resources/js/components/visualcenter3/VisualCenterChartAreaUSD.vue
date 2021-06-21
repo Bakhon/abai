@@ -17,10 +17,11 @@
 import VueApexCharts from "vue-apexcharts";
 import moment from "moment";
 
-Vue.component("apexchart", VueApexCharts);
-
 export default {
   name: "mix-chart",
+  components: {
+    "apexchart": VueApexCharts
+  },
   props: ['postTitles', 'chartData', 'tableData'],
   data: function () {
     return {

@@ -156,6 +156,23 @@ export default {
             },
             chemistryErrorFields: [],
             currentDateDetailed: moment().subtract(1, 'days').format("YYYY-MM-DD HH:mm:ss"),
+            factorOptions: {
+                'КТМ': {
+                    'fields': ['agent_upload_waste_water_injection_fact'],
+                    'formula': (totalWaterFact,albsenomanianWaterFact) => totalWaterFact - albsenomanianWaterFact
+                },
+                'ОМГ': {
+                    'fields': [
+                        'natural_gas_production_fact',
+                        'natural_gas_delivery_fact',
+                        'associated_gas_production_fact',
+                        'associated_gas_delivery_fact',
+                        'agent_upload_total_water_injection_fact',
+                        'agent_upload_seawater_injection_fact',
+                        'agent_upload_waste_water_injection_fact'],
+                    'formula': (value) => value * 1000
+                }
+            }
         };
     },
     props: ['userId'],
@@ -269,7 +286,7 @@ export default {
             this.chemistryData['dzo_name'] = this.selectedDzo.ticker;
             this.chemistryData['date'] = moment().format("YYYY-MM-DD HH:mm:ss");
 
-            let uri = this.localeUrl("/dzo_chemistry_excel_form");
+            let uri = this.localeUrl("/dzo-chemistry-excel-form");
 
             this.axios.post(uri, this.chemistryData).then((response) => {
                 if (response.status === 200) {
@@ -414,8 +431,12 @@ export default {
         storeData() {
             this.excelData['dzo_name'] = this.selectedDzo.ticker;
             this.excelData['date'] = this.currentDateDetailed;
+            let troubledCompanies = Object.keys(this.factorOptions);
+            if (troubledCompanies.includes(this.selectedDzo.ticker)) {
+                this.updateTroubledCompaniesByFactorOptions();
+            }
 
-            let uri = this.localeUrl("/dzo_excel_form");
+            let uri = this.localeUrl("/dzo-excel-form");
 
             this.axios.post(uri, this.excelData).then((response) => {
                 if (response.status === 200) {
@@ -424,6 +445,22 @@ export default {
                     this.status = this.trans("visualcenter.importForm.status.dataIsNotValid");
                 }
             });
+        },
+
+        updateTroubledCompaniesByFactorOptions() {
+            let self = this;
+            if (this.selectedDzo.ticker === 'ОМГ') {
+                _.forEach(this.factorOptions[this.selectedDzo.ticker].fields, function(fieldName) {
+                    self.excelData[fieldName] = self.factorOptions[self.selectedDzo.ticker].formula(self.excelData[fieldName]);
+                });
+            }
+            if (this.selectedDzo.ticker === 'КТМ') {
+                _.forEach(this.factorOptions[this.selectedDzo.ticker].fields, function(fieldName) {
+                    let totalWaterFact = self.excelData['agent_upload_total_water_injection_fact'];
+                    let albsenWaterFact = self.excelData['agent_upload_albsenomanian_water_injection_fact'];
+                    self.excelData[fieldName] = self.factorOptions[self.selectedDzo.ticker].formula(totalWaterFact,albsenWaterFact);
+                });
+            }
         },
     },
     components: {

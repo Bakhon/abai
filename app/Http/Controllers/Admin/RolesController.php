@@ -20,12 +20,30 @@ class RolesController extends Controller
             'omgca' => 'ОМГ ДДНГ',
             'omgngdu' => 'ОМГ НГДУ',
             'omguhe' => 'ОМГ УХЭ',
-            'pipes' => 'Трубопроводы',
+            'pipe' => 'Трубопроводы',
             'inhibitors' => 'Ингибиторы',
             'gu' => 'ГУ',
             'zu' => 'ЗУ',
             'well' => 'Скважины',
+            'map-history' => 'История изменений на карте',
         ];
+
+    static protected $dictCodes = [
+        'file_status',
+        'file_type',
+        'recording_method',
+        'recording_state',
+        'stem_section',
+        'stem_type',
+    ];
+
+    static protected $fieldCodes = [
+        'list',
+        'create',
+        'read',
+        'update',
+        'delete',
+    ];
 
     public function index()
     {
@@ -77,8 +95,10 @@ class RolesController extends Controller
             ->keyBy('name');
 
         $sections = self::$sections;
+        $fieldCodes = self::$fieldCodes;
+        $dictCodes = self::$dictCodes;
 
-        return view('admin.roles.create', compact('permissions', 'sections'));
+        return view('admin.roles.create', compact('permissions', 'sections', 'fieldCodes', 'dictCodes'));
     }
 
     /**
@@ -113,8 +133,10 @@ class RolesController extends Controller
             ->keyBy('name');
 
         $sections = self::$sections;
+        $fieldCodes = self::$fieldCodes;
+        $dictCodes = self::$dictCodes;
 
-        return view('admin.roles.edit', compact('role', 'permissions', 'sections'));
+        return view('admin.roles.edit', compact('role', 'permissions', 'sections', 'fieldCodes', 'dictCodes'));
     }
 
     /**

@@ -42,12 +42,13 @@ const bdform = {
                 params.values
             )
         },
-        loadDict({}, code) {
-            axios.get(this._vm.localeUrl(`/api/bigdata/dict/${code}`)).then(data => {
-                commit("bd/SAVE_DICT", {
+        async loadDict({commit}, code) {
+            return axios.get(this._vm.localeUrl(`/api/bigdata/dict/${code}`)).then(data => {
+                commit("SAVE_DICT", {
                     code: code,
                     items: data.data
                 });
+                return data.data
             })
         }
     },

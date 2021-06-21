@@ -105,31 +105,35 @@
   </div>
 </template>
 <script>
-import Vue from "vue";
 import TrMultiselect from "./TrMultiselect.vue";
-import { getFilterText } from "./helpers.js";
 import VueApexCharts from "vue-apexcharts";
+import trHelper from '~/mixins/trHelper';
+
 export default {
   name: "Trfa",
+  components: {
+    "apexchart": VueApexCharts
+  },
+  mixins: [trHelper],
   computed: {
     subtitleText() {
       return [
-        getFilterText(
+        this.getFilterText(
           this.chartFilter_field,
           this.fieldFilters[0].fields,
           "fields"
         ),
-        getFilterText(
+        this.getFilterText(
           this.chartFilter_horizon,
           this.horizonFilters[0].fields,
           "horizons"
         ),
-        `${getFilterText(
+        `${this.getFilterText(
           this.chartFilter_exp_meth,
           this.exp_methFilters[0].fields,
           "expMethods"
         )} добычи`,
-        getFilterText(
+        this.getFilterText(
           this.chartFilter_object,
           this.objectFilters[0].fields,
           "objects"

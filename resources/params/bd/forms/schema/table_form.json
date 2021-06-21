@@ -20,7 +20,9 @@
               "hidden",
               "history",
               "history_graph",
-              "copy"
+              "copy",
+              "date",
+              "dict"
             ]
           },
           "title": {
@@ -60,7 +62,9 @@
                   "hidden",
                   "history",
                   "history_graph",
-                  "copy"
+                  "copy",
+                  "date",
+                  "dict"
                 ]
               }
             }
