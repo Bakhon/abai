@@ -3,24 +3,18 @@
   "table": "prod.bsw_lab",
   "tabs": [
     {
-      "title": "",
+      "title": "bsw_l",
       "blocks": [
         [
           {
-            "title": "",
+            "title": "main",
             "items": [
-              {
-                "code": "well",
-                "type": "dict",
-                "dict": "wells",
-                "title": "uwi",
-                "validation": ""
-              },
+              
               {
                 "code": "insert_date",
                 "type": "date",
                 "title": "data",
-                "validation": ""
+                "validation": "required"
               },
               {
                 "code": "proba_ml",
