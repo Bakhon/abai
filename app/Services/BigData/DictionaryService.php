@@ -146,7 +146,7 @@ class DictionaryService
         ],
         'wells' => [
             'class' => Well::class,
-            'name_field' => 'name_ru'
+            'name_field' => 'uwi'
         ],
     ];
 

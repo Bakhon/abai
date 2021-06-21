@@ -1,6 +1,6 @@
 {
   "type": "plain",
-  "table": "prod.bws_lab",
+  "table": "prod.bsw_lab",
   "tabs": [
     {
       "title": "",
@@ -10,7 +10,7 @@
             "title": "",
             "items": [
               {
-                "code": "uwi",
+                "code": "well",
                 "type": "dict",
                 "dict": "wells",
                 "title": "uwi",
@@ -29,7 +29,7 @@
                 "validation": ""
               },
               {
-                "code": "free_water_ml",
+                "code": "free_watter_ml",
                 "type": "numeric",
                 "title": "volume",
                 "validation": ""
