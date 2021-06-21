@@ -1,19 +1,115 @@
 {
-  "type": "plain",
-  "table": "",
+  "table": "prod.well_category",
+  "table_fields": [
+    "dbeg",
+    "category"
+  ],
   "tabs": [
     {
-      "title": "hello_world",
+      "title": "well_cat",
       "blocks": [
         [
           {
-            "title": "hello_world",
+            "title": "main",
             "items": [
               {
-                "code": "hello_world",
-                "type": "text",
-                "title": "hello_world",
+                "code": "dbeg",
+                "type": "date",
+                "title": "data",
+                "validation": "required",
+                "is_editable": true
+              },
+              {
+                "code": "current_category",
+                "type": "dict",
+                "dict": "well_categories",
+                "title": "categ",
+                "validation":"",
+                "is_editable": false
+              },
+              {
+                "code": "category",
+                "type": "dict",
+                "dict": "well_categories",
+                "title": "well_cat",
+                "is_editable": true,
+                "validation":"required|exists:tbd.dict.well_category_type,id"
+              },
+              {
+                "code": "name_ru",
+                "type": "dict",
+                "dict": "orgs",
+                "title": "org",
+                "is_editable": true,
+                "validation": "required|exists:tbd.dict.org,id"
+              }
+            ]
+          }
+        ]
+      ]
+    },
+    {
+      "title": "reag_well",
+      "blocks": [
+        [
+          {
+            "title": "",
+            "items": [
+              {
+                "code": "conclusion",
+                "type": "checkbox",
+                "title":"",
+                "table": "prod.well_react_infl",
+                "validation": "",
+                "is_editable": false
+              },
+              {
+                "code": "uwi",
+                "title": "uwi_number",
+                "type": "dict",
+                "dict": "wells",
+                "is_editable": false,
                 "validation": ""
+              },
+              {
+                "code": "name_ru",
+                "type": "dict",
+                "title": "status",
+                "is_editable": false,
+                "dict": "well_statuses",
+                "validation": ""
+              },
+              {
+                "code": "liquid",
+                "type": "dict",
+                "title": "water_l",
+                "is_editable": false,
+                "table": "prod.meas_liq",
+                "validation": ""
+              },
+              {
+                "code": "liquid",
+                "title": "water_v",
+                "type": "calc",
+                "formula": "",
+                "is_editable": false,
+                "validation": ""
+              },
+              {
+                "code": "water_inj_val",
+                "title": "water_inj_v",
+                "is_editable": false,
+                "type": "dict",
+                "table": "prod.meas_water_inj",
+                "validation": ""
+              },
+              {
+                "code": "name_ru",
+                "is_editable": false,
+                "type": "dict",
+                "dict": "well_categories",
+                "title": "well_cat",
+                "validation":""
               }
             ]
           }
