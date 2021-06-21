@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Services\BigData\Forms;
 
+use App\Models\BigData\Dictionaries\Org;
+use App\Models\BigData\Dictionaries\Tech;
 use App\Models\BigData\Infrastructure\History;
 use App\Services\BigData\FieldLimitsService;
 use Carbon\Carbon;
@@ -18,7 +20,7 @@ abstract class TableForm extends BaseForm
 {
     protected $jsonValidationSchemeFileName = 'table_form.json';
 
-    abstract public function getRows(array $params = []);
+    abstract public function getRows(array $params = []): array;
 
     abstract protected function saveSingleFieldInDB(string $field, int $wellId, Carbon $date, $value): void;
 
@@ -101,11 +103,6 @@ abstract class TableForm extends BaseForm
         return $this->getFields()->where('code', $code)->first();
     }
 
-    protected function getFilterTree(): array
-    {
-        return [];
-    }
-
     protected function getFieldValue(array $field, array $rowData, Model $item): ?array
     {
         $result = $this->getCustomFieldValue($field, $rowData, $item);
@@ -158,7 +155,7 @@ abstract class TableForm extends BaseForm
         }
         $row = $row->first();
 
-        if (empty($row)) {
+        if (empty($row) || !isset($row->{$fieldParams['column']})) {
             return [
                 'value' => null
             ];
@@ -265,34 +262,6 @@ abstract class TableForm extends BaseForm
     protected function isCurrentDay(string $date)
     {
         return Carbon::parse($date)->diffInDays(Carbon::parse($this->request->get('date'))) === 0;
-    }
-
-    private function saveHistory(string $field, $value)
-    {
-        History::create(
-            [
-                'form_name' => $this->configurationFileName,
-                'payload' => [
-                    $field => $value
-                ],
-                'date' => Carbon::parse($this->request->get('date')),
-                'row_id' => $this->request->get('well_id'),
-                'user_id' => auth()->id()
-            ]
-        );
-    }
-
-    private function getFieldRow(array $column, int $wellId, string $date)
-    {
-        return DB::connection('tbd')
-            ->table($column['table'])
-            ->where('well_id', $wellId)
-            ->whereDate(
-                'dbeg',
-                '=',
-                Carbon::parse($date)->toDateTimeString()
-            )
-            ->first();
     }
 
     protected function addLimits(Collection $rows): void

@@ -78,18 +78,4 @@ export default {
             return result
         },
     },
-    computed: {
-        chemistryDataForChart() {
-            let series = []
-            let labels = []
-            for (let i in this.otmChartData) {
-                series.push(this.otmSelectedRow ? this.otmChartData[i][this.otmSelectedRow] : this.otmChartData[i]['otm_iz_burenia_skv_fact']);
-                labels.push(i)
-            }
-            return {
-                series: series,
-                labels: labels
-            }
-        },
-    },
 }

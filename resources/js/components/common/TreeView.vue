@@ -22,6 +22,7 @@
       </div>
       <div v-if="node.name"
            class="text-right text-white ml-2"
+           :class="{'cursor-pointer': isWell(node), 'h5 m-0': currentWellId === node.id}"
            @click.stop="handleClick(node)">
         {{ node.name }}
       </div>
@@ -37,6 +38,7 @@
             :isNodeOnBottomLevelOfHierarchy="isNodeOnBottomLevelOfHierarchy"
             :isShowCheckboxes="isShowCheckboxes"
             :isWell="isWell"
+            :currentWellId="currentWellId"
       ></node>
     </ul>
     <div class="centered mx-auto mt-3" v-if="isShowChildren && isLoading">
@@ -56,6 +58,10 @@ export default {
     isNodeOnBottomLevelOfHierarchy: Function,
     isShowCheckboxes: Boolean,
     isWell: Function,
+    currentWellId: {
+      type: Number,
+      required: false
+    },
   },
   model: {
     prop: "node",

@@ -344,7 +344,7 @@
                   </div>
                 </div>
               </div>
-              <div class="col-12 col-lg dropdown dropdown4 font-weight pr-1">
+              <div class="col-12 col-lg dropdown dropdown4 font-weight px-1">
                 <div :class="[`${oilProductionButton}`, 'button1']">
                   <div class="button1-vc-inner">
                     <div class="icon-all icons1"></div>
@@ -746,7 +746,7 @@
               </div>
             </div>
             <div class="row px-4 mt-3 middle-block__list-x-scroll">
-              <div class="col-8 col-lg dropdown pr-1">
+              <div class="col-8 col-lg dropdown px-1">
                 <div class="button2 dzocompanylist__button">
                   <div class="button2 dzocompanylist__button">
                     {{ trans("visualcenter.dzoAllCompany") }}
