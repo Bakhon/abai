@@ -262,6 +262,7 @@ export default {
         'gdisCurrentValueFlvl': {'value_double': null},
         'gdisCurrentValueStatic': {'value_double': null},
         'gdisCurrentValueRp': {'value_double': null, 'meas_date': null},
+        'gdisComplex': {'value_double': null, 'research_date': null},
       },
       tubeNomOd: null,
       wellTechs: null,
@@ -304,6 +305,7 @@ export default {
         'gdisCurrentValueFlvl': 'gdis_current_value_flvl',
         'gdisCurrentValueStatic': 'gdis_current_value_static',
         'gdisCurrentValueRp': 'gdis_current_value_rp',
+        'gdisComplex': 'gdis_complex',
       },
       forms_structure: forms_structure,
     }
@@ -782,8 +784,8 @@ export default {
         {
           'description': null,
           'method': 'neighbors',
-          'neigbor_1': null,
-          'neigbor_2': null,
+          'neigbor_1': gdisComplex.value_double,
+          'neigbor_2': gdisComplex.research_date,
           'name': 'Рпл (Сл. ГДИС)/(дата замера)',
           'data': ''
         },
