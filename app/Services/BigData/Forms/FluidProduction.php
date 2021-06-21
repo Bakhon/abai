@@ -68,6 +68,8 @@ class FluidProduction extends TableForm
                         $result[$field['code']] = $fieldValue;
                     }
                 }
+
+                $result['id'] = $result['uwi']['id'];
                 return $result;
             }
         );

@@ -29,7 +29,7 @@
         <span class="bd-main-block__date-title">{{ trans('bd.date') }}:</span>
         <div class="bd-main-block__date-input">
           <datetime
-              v-model="filter[date]"
+              v-model="filter['date']"
               :flow="['year', 'month', 'date']"
               :format="{ year: 'numeric', month: 'numeric', day: 'numeric'}"
               :phrases="{ok: trans('bd.select'), cancel: trans('bd.exit')}"

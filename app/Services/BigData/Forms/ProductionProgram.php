@@ -11,7 +11,18 @@ class ProductionProgram extends TableForm
 {
     protected $configurationFileName = 'production_program';
 
-    public function getRows(array $params = [])
+    const FIELDS = [
+        'oil_production',
+        'water_injection',
+        'water_production',
+        'liquid_production',
+        'oil_injection',
+        'gas_production',
+        'steam_injection',
+        'absorption'
+    ];
+
+    public function getRows(array $params = []): array
     {
         if ($this->request->get('type') !== 'org') {
             return [];
@@ -19,7 +30,7 @@ class ProductionProgram extends TableForm
 
         $filter = json_decode($this->request->get('filter'));
 
-        $result = DB::connection('tbd')
+        $plans = DB::connection('tbd')
             ->table('prod.production_plan')
             ->where('org', $this->request->get('id'))
             ->whereRaw(
@@ -36,8 +47,46 @@ class ProductionProgram extends TableForm
             ->orderBy('month')
             ->get();
 
+        $result = [];
+
+        foreach (self::FIELDS as $fieldName) {
+            $startDate = Carbon::parse($filter->date)->startOfMonth();
+            $endDate = Carbon::parse($filter->date_to)->endOfMonth();
+            $currentDate = $startDate;
+
+            $row = [
+                'name' => [
+                    'name' => $fieldName
+                ]
+            ];
+
+            while (true) {
+                $plan = $plans
+                    ->where('year', $currentDate->year)
+                    ->where('month', $currentDate->month)
+                    ->first();
+
+                $row[$currentDate->format('d.m.Y')] = [
+                    'value' => $plan ? $plan->{$fieldName} : 0,
+                    'params' => [
+                        'field' => $fieldName,
+                        'year' => $currentDate->year,
+                        'month' => $currentDate->month,
+                    ]
+                ];
+
+                $currentDate->addMonthNoOverflow();
+                if ($currentDate >= $endDate) {
+                    break;
+                }
+            }
+
+            $result[] = $row;
+        }
+
         return [
-            'rows' => $result->toArray()
+            'columns' => $this->getColumns(),
+            'rows' => $result
         ];
     }
 
@@ -71,5 +120,37 @@ class ProductionProgram extends TableForm
                     ]
                 );
         }
+    }
+
+    private function getColumns(): array
+    {
+        $filter = json_decode($this->request->get('filter'));
+        $startDate = Carbon::parse($filter->date)->startOfMonth();
+        $endDate = Carbon::parse($filter->date_to)->endOfMonth();
+        $currentDate = $startDate;
+
+        $columns = [
+            [
+                "code" => "name",
+                "is_editable" => false,
+                "title" => "Наименование",
+                "type" => "label"
+            ]
+        ];
+        while (true) {
+            $columns[] = [
+                "code" => $currentDate->format('d.m.Y'),
+                "is_editable" => true,
+                "title" => $currentDate->locale('ru')->format('F Y'),
+                "type" => "text"
+            ];
+
+            $currentDate->addMonthNoOverflow();
+            if ($currentDate >= $endDate) {
+                break;
+            }
+        }
+
+        return $columns;
     }
 }
