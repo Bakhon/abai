@@ -181,6 +181,7 @@ export default {
                 this.isOpecFilterActive = false;
                 this.isKmgParticipationFilterActive = false;
             }
+
             this.processProductionData(metricName,chartSecondaryName);
         },
 
@@ -208,6 +209,9 @@ export default {
         },
 
         processProductionDataByCompanies(productionData,metricName,chartSecondaryName) {
+            if (this.oilCondensateProductionButton.length > 0) {
+                this.isOpecFilterActive = false;
+            }
             if (this.isProductionDetailsActive) {
                 productionData = this.getFormattingProductionDetails(productionData);
                 this.wellsWorkoverSelectedRow = 'underground_workover';
@@ -215,6 +219,7 @@ export default {
                 this.updateChemistryWidget();
                 this.updateWellsWorkoverWidget();
             }
+
             let updatedData = productionData;
             this.productionTableData = productionData;
             if (this.company === "all") {
@@ -301,6 +306,7 @@ export default {
                 ["__time"],
                 ["asc"]
             );
+
             if (this.isOneDateSelected) {
                 let dataWithMay2 = new Array();
                 dataWithMay2 = _.filter(data, function (item) {
@@ -640,6 +646,7 @@ export default {
                 });
 
             bigTable = bigTable.filter(row => row.factMonth > 0 || row.planMonth > 0);
+
             if (this.isOpecFilterActive) {
                 bigTable = bigTable.filter(item => dzoListWithoutOpec.includes(item.dzoMonth));
             }

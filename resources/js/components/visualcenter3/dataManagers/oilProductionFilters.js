@@ -58,6 +58,7 @@ export default {
                 ["dzoMonth"],
                 ["asc"]
             );
+
             _.forEach(opecData, function(dzoOpec, i) {
                 let opecDzoName = dzoOpec.dzoMonth;
                 let opecDzoPeriodPlan = dzoOpec.periodPlan;
@@ -97,13 +98,13 @@ export default {
         },
 
         getOpecMonth(data) {
+            let filteredByOneDay = _.filter(data, _.iteratee({date: moment().startOf('month').valueOf()}));
 
-            let dataWithMay = _.filter(data, _.iteratee({date: (this.year + '-' + this.pad(this.month) + '-01' + ' 00:00:00')}));
-            if (dataWithMay.length === 0) {
+            if (filteredByOneDay.length === 0) {
                 let dateFormat = 'YYYY-MM-DD HH:mm:ss';
                 let lastWorkingDay = this.getPreviousWorkday();
                 let lastSynchronizeDay = moment(lastWorkingDay).startOf('day').add(1, "days").format(dateFormat);
-                dataWithMay = _.filter(data, _.iteratee({date: lastSynchronizeDay}));
+                filteredByOneDay = _.filter(data, _.iteratee({date: lastSynchronizeDay}));
             }
             let oil;
             if (this.opec === "ОПЕК+") {
@@ -112,14 +113,14 @@ export default {
                 oil = 'oil_plan';
             }
 
-            let SummFromRange = _(dataWithMay)
+            let SummFromRange = _(filteredByOneDay)
                 .groupBy("dzo")
                 .map((dzo, id) => ({
                     dzoMonth: id,
                     periodPlan: (_.sumBy(dzo, oil)) * moment().daysInMonth(),
                 }))
-
                 .value();
+
 
             let opecDataSumm = _.reduce(
                 SummFromRange,

@@ -169,8 +169,7 @@ export default {
                 chartOutput = this.consolidatedData.chartWithoutParticipation;
 
             }
-            console.log('chart')
-            console.log(chartOutput)
+
             this.exportDzoCompaniesSummaryForChart(chartOutput);
             return output;
         },
