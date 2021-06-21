@@ -209,14 +209,14 @@ td:last-of-type {
     border-right: unset!important;
 }
 
-.txt4 {
+.secondaryTitle {
     font-family: "Bold";
     font-size: 34px;
     font-weight: 550;
 }
 
 @media (max-width:814px) {
-    .txt4 {
+    .secondaryTitle {
         font-size: 18px;
     }
     .number {
@@ -1033,7 +1033,7 @@ ul.dropdown-menu-vc {
 }
 
 @media (max-width:1368px) {
-    .txt4 {
+    .secondaryTitle {
         font-size: 20px;
     }
     .number {
