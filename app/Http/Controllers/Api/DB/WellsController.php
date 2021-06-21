@@ -48,6 +48,7 @@ class WellsController extends Controller
             'gdis_current_value_bhp' => $this->gdisCurrentValueBhp($well),
             'gdis_complex' => $this->gdisComplex($well),
             'gis' => $this->gis($well),
+            'zone' => $this->zone($well),
         );
     }
 
@@ -243,7 +244,7 @@ class WellsController extends Controller
     {
         return $well->gdisCurrent()
             ->orderBy('meas_date', 'desc')
-            ->first(['meas_date']);
+            ->first(['meas_date', 'note']);
     }
 
     private function wellTreatmentSko(Well $well)
@@ -337,6 +338,15 @@ class WellsController extends Controller
             ->where('gis_type', '=', '1')
             ->orderBy('gis_date', 'desc')
             ->first(['gis_date']);
+    }
+
+    private function zone(Well $well)
+    {
+        return $well->zone()
+            ->withPivot('dend as dend')
+            ->wherePivot('dend', '>=', $this->getToday())
+            ->orderBy('dend', 'desc')
+            ->first(['name_ru', 'dend']);
     }
 
 

@@ -12,6 +12,7 @@ use App\Models\BigData\Dictionaries\WellCategory;
 use App\Models\BigData\Dictionaries\WellExplType;
 use App\Models\BigData\Dictionaries\WellStatus;
 use App\Models\BigData\Dictionaries\WellType;
+use App\Models\BigData\Dictionaries\Zone;
 use App\Models\TBDModel;
 
 class Well extends TBDModel
@@ -146,6 +147,11 @@ class Well extends TBDModel
     public function gis()
     {
         return $this->hasMany(Gis::class, 'well', 'id');
+    }
+
+    public function zone()
+    {
+        return $this->belongsToMany(Zone::class, 'prod.well_zone', 'well', 'id');
     }
 
 

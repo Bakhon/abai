@@ -256,7 +256,7 @@ export default {
         'perfActual': {'top': null, 'base': null},
         'wellInfo': {'rte': null},
         'treatmentSko': {'treat_date': null,},
-        'gdisCurrent': {'meas_date': null,},
+        'gdisCurrent': {'meas_date': null, 'note': null,},
         'gdisConclusion': {'name_ru': null,},
         'gdisCurrentValue': {'value_double': null},
         'gdisCurrentValuePmpr': {'value_double': null},
@@ -265,7 +265,8 @@ export default {
         'gdisCurrentValueRp': {'value_double': null, 'meas_date': null},
         'gdisComplex': {'value_double': null, 'research_date': null},
         'gis': {'gis_date': null},
-        'gdisCurrentValueBhp': {'value_double': null, 'meas_date': null}
+        'gdisCurrentValueBhp': {'value_double': null, 'meas_date': null},
+        'zone': {'name_ru': null},
       },
       tubeNomOd: null,
       wellTechs: null,
@@ -312,6 +313,7 @@ export default {
         'gdisComplex': 'gdis_complex',
         'gis': 'gis',
         'gdisCurrentValueBhp': 'gdis_current_value_bhp',
+        'zone': 'zone',
       },
       forms_structure: forms_structure,
     }
@@ -494,7 +496,7 @@ export default {
           'data': ''
         },
         {
-          'description': null,
+          'description': this.well.zone.name_ru,
           'method': null,
           'name': 'Зона скважины',
           'data': ''
@@ -821,6 +823,12 @@ export default {
           'neigbor_1': this.well.gdisCurrentValueBhp.value_double,
           'neigbor_2': this.well.gdisCurrentValueBhp.meas_date,
           'name': 'Рзаб/(дата замера)',
+          'data': ''
+        },
+        {
+          'description': this.well.gdisCurrent.note,
+          'method': null,
+          'name': 'Примечание',
           'data': ''
         },
       ]
