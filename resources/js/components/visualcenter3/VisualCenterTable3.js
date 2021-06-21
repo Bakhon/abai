@@ -351,7 +351,7 @@ export default {
                 this.otmWidgetData.drillingWells=this.otmData[0]['fact'];
             }
 
-            if (this.otmData.length !== 0) {
+            if (this.otmData.length !== 0 && !this.isProductionDetailsActive) {
                 this.chemistryDataFactSumm= _.reduce(
                     this.otmData,
                     function (memo, item) {
