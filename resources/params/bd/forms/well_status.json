@@ -4,6 +4,10 @@
   "default_values": {
     "dend": "9999-12-31"
   },
+  "table_fields": [
+    "dbeg",
+    "status"
+  ],
   "tabs": [
     {
       "title": "status",
