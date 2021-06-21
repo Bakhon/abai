@@ -1,0 +1,85 @@
+{
+  "type": "plain",
+  "table": "prod.bws_lab",
+  "tabs": [
+    {
+      "title": "",
+      "blocks": [
+        [
+          {
+            "title": "",
+            "items": [
+              {
+                "code": "uwi",
+                "type": "dict",
+                "dict": "wells",
+                "title": "well",
+                "validation": ""
+              },
+              {
+                "code": "insert_date",
+                "type": "date",
+                "title": "data",
+                "validation": ""
+              },
+              {
+                "code": "proba_ml",
+                "type": "float",
+                "title": "proba",
+                "validation": ""
+              },
+              {
+                "code": "free_water_ml",
+                "type": "float",
+                "title": "volume",
+                "validation": ""
+              },
+              {
+                "code": "emulsion_ml",
+                "type": "float",
+                "title": "em_vol",
+                "validation": ""
+              },             
+              {
+                "code": "bsw_lab_val",
+                "type": "float",
+                "title": "bsw",
+                "validation": ""
+              },
+              {
+                "code": "watter_constrained_5_ml",
+                "type": "float",
+                "title": "volume",
+                "validation": ""
+              },
+              {
+                "code": "watter_constrained_perc",
+                "type": "float",
+                "title": "em_vol",
+                "validation": ""
+              },
+              {
+                "code": "watter_constrained_ml",
+                "type": "float",
+                "title": "volume",
+                "validation": ""
+              },
+              {
+                "code": "bsw_volume_ml",
+                "type": "float",
+                "title": "em_vol",
+                "validation": ""
+              },
+              {
+                "code": "bsw_volume_perc",
+                "type": "float",
+                "title": "em_vol",
+                "validation": ""
+              }
+            ]
+          }
+        ]
+      ]
+    }
+  ]
+}
