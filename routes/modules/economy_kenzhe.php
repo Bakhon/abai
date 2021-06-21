@@ -13,7 +13,7 @@ Route::group(
                 Route::match(['GET', 'POST'], '/import_reptt_titles', 'EconomyKenzhe\ImportController@importRepTtTitlesTree')->name('import_reptt_titles');
                 Route::get('/proactive-factors', 'EconomyKenzhe\proactiveFactorsController@proactiveFactors')->name('proactiveFactors');
                 Route::get('/budget-execution', 'EconomyKenzhe\BudgetExecutionController@budgetExecution')->name('budgetExecution');
-                Route::get('/company-valuation', 'EconomyKenzhe\companyValuationController@companyValuation')->name('companyValuation');     
+                Route::get('/company-valuation', 'EconomyKenzhe\CompanyValuationController@companyValuation')->name('companyValuation');     
             });
     }
 );
