@@ -163,7 +163,10 @@ return array (
   'all_gus' => 'Все ГУ',
   'show_title' => 'Просмотр карточки',
   'field' => 'Месторождение',
-  'ngdu' => 'НГДУ',
+  'ngdu' => 
+  array (
+    'ngdu' => 'НГДУ',
+  ),
   'cdng' => 'ЦДНГ',
   'history' => 
   array (
@@ -474,4 +477,18 @@ return array (
   'economical_effect_title' => 'Экономический эффект',
   'economical_effect' => 'Суточный экономический эффект, тыс. тенге/сут',
   'economical_effect_sum' => 'Накопленный экономический эффект, тыс. тенге',
+  'buffer_tank' => 
+  array (
+    'title' => 'База данных по буферным емкостям',
+    'model' => 'Модель',
+    'name' => 'Наименование',
+    'type' => 'Тип',
+    'volume' => 'Объем, м3',
+    'date_of_exploitation' => 'Дата ввода в эксплуатацию',
+    'current_state' => 'Текущее состояние',
+    'external_and_internal_inspection' => 'Наружный и внутренний осмотр',
+    'hydraulic_test' => 'Гидравлическое испытание',
+    'date_of_repair' => 'Дата ремонта',
+    'type_of_repair' => 'Вид ремонта',
+  ),
 );

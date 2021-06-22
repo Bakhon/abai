@@ -132,4 +132,9 @@ class Gu extends Model
     {
         return $this->hasMany(LostProfits::class);
     }
+
+    public function buffer_tank()
+    {
+        return $this->hasMany(BufferTank::class);
+    }
 }

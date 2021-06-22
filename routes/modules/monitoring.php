@@ -198,6 +198,12 @@ Route::group(
                 Route::resource('oilpipes', 'ComplicationMonitoring\OilPipesController')->parameters(
                     ['oilpipes' => 'oilpipes']
                 );
+
+                Route::get('buffer_tank/list', 'ComplicationMonitoring\BufferTankController@list')->name('buffer_tank.list');
+                Route::get('buffer_tank/export', 'ComplicationMonitoring\BufferTankController@export')->name('buffer_tank.export');
+                Route::get('buffer_tank/create', 'ComplicationMonitoring\BufferTankController@create')->name('buffer_tank.create');
+                Route::get('buffer_tank/history/{buffer_tank}', 'ComplicationMonitoring\BufferTankController@history')->name('buffer_tank.history');
+                Route::resource('buffer_tank', 'ComplicationMonitoring\BufferTankController');
             }
         );
     }
