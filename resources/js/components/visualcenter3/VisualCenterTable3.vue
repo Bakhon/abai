@@ -1837,24 +1837,24 @@
               <div class="row px-4">
                 <div class="col-3 pr-2">
                   <div
-                          :class="[`${buttonDailyTab}`,'button2 side-tables__main-menu-button']"
-                          @click="changeMenu2('daily')"
+                          :class="[`${drillingDailyPeriod}`,'button2 side-tables__main-menu-button']"
+                          @click="switchDrillingPeriod('drillingDailyPeriod')"
                   >
                     {{ trans("visualcenter.daily") }}
                   </div>
                 </div>
                 <div class="col-3 px-2 ">
                   <div
-                          :class="[`${buttonMonthlyTab}`,'button2 side-tables__main-menu-button']"
-                          @click="changeMenu2('monthly')"
+                          :class="[`${drillingMonthlyPeriod}`,'button2 side-tables__main-menu-button']"
+                          @click="switchDrillingPeriod('drillingMonthlyPeriod')"
                   >
                     {{ trans("visualcenter.monthBegin") }}
                   </div>
                 </div>
                 <div class="col-3 px-2">
                   <div
-                          :class="[`${buttonYearlyTab}`,'button2 side-tables__main-menu-button']"
-                          @click="changeMenu2('yearly')"
+                          :class="[`${drillingYearlyPeriod}`,'button2 side-tables__main-menu-button']"
+                          @click="switchDrillingPeriod('drillingYearlyPeriod')"
                   >
                     {{ trans("visualcenter.yearBegin") }}
                   </div>
@@ -1862,19 +1862,18 @@
                 <div class="col-3 pl-2">
                   <div class="dropdown3">
                     <div
-                            :class="[`${buttonPeriodTab}`,'button2 side-tables__main-menu-button']"
-                            @click="changeMenu2('period')"
+                            :class="[`${wellsWorkoverPeriod}`,'button2 side-tables__main-menu-button']"
                     >
-                      <span v-if="isOneDateSelected">
+                      <span v-if="!isDrillingPeriodSelected">
                         {{ trans("visualcenter.date") }} [{{
-                          timeSelect
+                          drillingPeriodStart
                         }}]</span
                       >
                       <span v-else>
                         {{ trans("visualcenter.period") }} [{{
-                          timeSelect
+                          drillingPeriodStart
                         }}
-                        - {{ timeSelectOld }}]</span
+                        - {{ drillingPeriodEnd }}]</span
                       >
                     </div>
                     <ul class="center-menu2 right-indent">
@@ -1886,12 +1885,12 @@
                             <date-picker
                                     v-if="selectedDMY == 0"
                                     mode="range"
-                                    v-model="range"
+                                    v-model="drillingWidgetFactSum"
                                     is-range
                                     class="m-auto"
                                     :model-config="modelConfig"
-                                    @input="changeDate"
-                                    @dayclick="dayClicked"
+                                    @input="switchDrillingPeriodRange"
+                                    @dayclick="switchDrillingPeriodRange"
                             />
                           </div>
                         </div>
@@ -1906,7 +1905,7 @@
                   <div class="col">
                     <select
                             class="side-blocks__dzo-companies-dropdown w-100"
-                            @change="innerWellsProdMetOnChange($event)"
+                            @change="changeSelectedDrillingCompanies($event)"
                             v-model="selectedDzo"
                     >
                       <option v-for="dzo in injectionWellsOptions" :value="dzo.ticker">
@@ -1920,12 +1919,12 @@
               <div class="row container-fluid">
                 <div class="vis-table px-4 col-sm-7">
                   <table
-                          v-if="otmData.length"
+                          v-if="drillingData.length"
                           class="table4 w-100 chemistry-table"
                   >
                     <thead>
                     <tr>
-                      <th>{{ trans("visualcenter.otmColumnTitle") }}</th>
+                      <th>{{ trans("visualcenter.drillingWells") }}</th>
                       <th>{{ trans("visualcenter.Plan") }}</th>
                       <th>{{ trans("visualcenter.Fact") }}</th>
                       <th>{{ trans("visualcenter.dzoDifference") }}</th>
@@ -1934,24 +1933,19 @@
 
                     <tbody>
                     <tr
-                            v-for="(item, index) in otmData"
-                            v-if="index < 2"
-                            @click="otmSelectedRow = item.code"
+                            v-for="(item, index) in drillingData"
+                            @click="drillingSelectedRow = item.code"
                     >
                       <td
-                              @click="otmSelectedRow = item.code"
+                              @click="drillingSelectedRow = item.code"
                               class="row-name_width_40 cursor-pointer"
-                              :class="{
-                            tdStyle: index % 2 === 0,
-                            selected: otmSelectedRow === item.code,
-                          }"
+                              :class="{tdStyle: index % 2 === 0,selected: drillingSelectedRow === item.code}"
                       >
                         <span>
                           {{ item.name }}
                         </span>
                       </td>
                       <td
-                              @click="otmSelectedRow = item.code"
                               class="width-20 text-center data-pointer"
                               :class="`${getDzoColumnsClass(index,'plan')}`"
                       >
@@ -1963,7 +1957,6 @@
                         </div>
                       </td>
                       <td
-                              @click="otmSelectedRow = item.code"
                               class="width-20 text-center data-pointer"
                               :class="`${getDzoColumnsClass(index,'fact')}`"
                       >
@@ -1992,8 +1985,8 @@
                 <div class="col-sm-5">
                   <div  class="name-chart-left">{{ trans("visualcenter.wellsNumber") }}</div>
                   <visual-center3-wells
-                          v-if="otmDataForChart"
-                          :chartData="otmDataForChart"
+                          v-if="drillingDataForChart"
+                          :chartData="drillingDataForChart"
                   ></visual-center3-wells>
                 </div>
               </div>
@@ -2410,19 +2403,23 @@
 
             <div class="first-string first-string2 cursor-pointer">
               <div
-                      @click="changeTable('otmDrilling')"
+                      @click="switchWidget('otmDrilling')"
                       :class="`${tableMapping.otmDrilling.hover}`"
               >
                 <table class="table">
                   <tr class="d-flex">
                     <td class="col-10">
-                      <div class="secondaryTitle">{{otmWidgetData.drillingWells}}</div>
+                      <div class="secondaryTitle">{{drillingWidgetFactSum}}</div>
                       <div class="metric-title">
                         {{ trans('visualcenter.skv') }}
                       </div>
                       <div class="in-idle">
-                        <span v-if="isOneDateSelected"> {{ previousPeriodEnd }}</span>
-                        <span v-else> {{ previousPeriodStart }} - {{ previousPeriodEnd }}</span>
+                        <span v-if="!isDrillingPeriodSelected">
+                          {{ drillingPeriodStart}}
+                        </span>
+                        <span v-else>
+                          {{ drillingPeriodStart }} - {{ drillingPeriodEnd }}
+                        </span>
                       </div>
                     </td>
                     <td class="col-2 text-right">
@@ -2450,7 +2447,7 @@
                 <table class="table">
                   <tr class="d-flex">
                     <td class="col-10">
-                      <div class="secondaryTitle">{{chemistryDataFactSumm}}</div>
+                      <div class="secondaryTitle">{{chemistryWidgetFactSum}}</div>
                       <div class="metric-title">
                         {{ trans('visualcenter.chemistryMetricTon') }}
                       </div>
@@ -2489,7 +2486,7 @@
                             :class="`${tableMapping.otmWorkover.hover}`"
                     >
                       <div class="secondaryTitle">
-                        {{getFormattedNumber(otmWidgetData.krsWells)}}
+                        {{getFormattedNumber(wellsWorkoverSummary.krs)}}
                       </div>
                       <div class="metric-title">
                         {{ trans("visualcenter.skv") }}
@@ -2505,7 +2502,7 @@
                     >
                       <div class="secondaryTitle d-flex">
                         <div class="col-9 p-0">
-                          {{getFormattedNumber(otmWidgetData.prsWells)}}
+                          {{getFormattedNumber(wellsWorkoverSummary.prs)}}
                         </div>
                         <div class="mt-1 col-2">
                           <img src="/img/icons/link.svg" />

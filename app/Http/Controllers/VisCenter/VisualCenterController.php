@@ -406,4 +406,14 @@ class VisualCenterController extends Controller
         }
         return $planRecord;
     }
+
+    public function getDrillingDetails(Request $request)
+    {
+        return DzoImportData::query()
+            ->select('date','dzo_name','otm_drilling_fact','otm_wells_commissioning_from_drilling_fact')
+            ->whereDate('date', '>=', Carbon::parse($request->startPeriod))
+            ->whereDate('date', '<=', Carbon::parse($request->endPeriod))
+            ->get()
+            ->toArray();
+    }
 }

@@ -43,7 +43,10 @@ export default {
             },
             wellsWorkoverSelectedRow: 'underground_workover',
             wellsWorkoverChartData: [],
-
+            wellsWorkoverSummary: {
+                'krs': 0,
+                'prs': 0
+            }
         };
     },
     methods: {
@@ -111,8 +114,8 @@ export default {
                     underground_workover: _.round(_.sumBy(item, 'otm_underground_workover'), 0),
                     underground_workover_plan: _.round(_.sumBy(item, 'undeground_workover_plan'), 0),
                 })).value();
-            this.otmWidgetData.krsWells = this.getWellsWorkoverFactSum(tableData,'workover');
-            this.otmWidgetData.prsWells = this.getWellsWorkoverFactSum(tableData,'underground_workover');
+            this.wellsWorkoverSummary.krs = this.getWellsWorkoverFactSum(tableData,'workover');
+            this.wellsWorkoverSummary.prs = this.getWellsWorkoverFactSum(tableData,'underground_workover');
         },
 
         getWellsWorkoverFactSum(tableData,workoverType) {

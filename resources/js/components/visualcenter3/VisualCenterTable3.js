@@ -10,8 +10,6 @@ import {dzoMapState, dzoMapActions} from '@store/helpers';
 import mainMenu from './widgets/mainMenu';
 import сompaniesDzo from './dataManagers/dzoCompanies';
 import helpers from './dataManagers/helpers';
-import otm from './dataManagers/otm';
-import chemistry from './dataManagers/chemistry';
 import oilRates from './widgets/oilRates';
 import usdRates from './widgets/usdRates';
 import injectionWells from './widgets/injectionWells';
@@ -29,6 +27,7 @@ import productionDetails from './widgets/productionDetails';
 import chemistryDetails from './widgets/chemistryDetails';
 import wellsWorkoverDetails from './widgets/wellsWorkoverDetails';
 import managers from './widgets/managers';
+import drillingDetails from './widgets/otmDrillingDetails';
 
 
 export default {
@@ -38,11 +37,6 @@ export default {
     },
     data: function () {
         return {
-            otmWidgetData: {
-                drillingWells: 0,
-                krsWells: 0,
-                prsWells: 0
-            },            
             accidentTotal: '',
             noData: '',
             personalFact: '',
@@ -112,7 +106,6 @@ export default {
                 oil_dlv_fact: 0,
                 gas_fact: 0
             },
-            chemistryDataFactSumm: 0,
         };
     },
     methods: {
@@ -218,6 +211,7 @@ export default {
                 this.chemistrySelectedRow = 'demulsifier',
                 this.updateChemistryWidget();
                 this.updateWellsWorkoverWidget();
+                this.updateDrillingWidget();
             }
 
             let updatedData = productionData;
@@ -337,29 +331,6 @@ export default {
             this.innerWellsChartData = this.getSummaryInjectionWellsForChart(dataWithMay);
             this.productionWells = this.getSummaryWells(dataWithMay, this.wellStockIdleButtons.isProductionIdleButtonActive,'productionFonds');
             this.innerWells2ChartData = this.getSummaryProductionWellsForChart(dataWithMay);
-            this.otmData = this.getOtmData(dataWithMay);
-            this.otmChartData = this.getOtmChartData(dataWithMay);
-            if (!this.isProductionDetailsActive) {
-                this.chemistryData = this.getChemistryData(dataWithMay);
-                this.chemistryChartData = this.getChemistryChartData(dataWithMay);
-            }
-            if (!this.isProductionDetailsActive && this.otmData.length > 3) {
-                this.otmWidgetData.krsWells=this.otmData[2]['fact'];
-                this.otmWidgetData.prsWells=this.otmData[3]['fact'];
-            }
-            if (this.otmData.length >= 4) {
-                this.otmWidgetData.drillingWells=this.otmData[0]['fact'];
-            }
-
-            if (this.otmData.length !== 0 && !this.isProductionDetailsActive) {
-                this.chemistryDataFactSumm= _.reduce(
-                    this.otmData,
-                    function (memo, item) {
-                        return memo + item.fact;
-                    },
-                    0
-                );
-            }
 
             var dzo2 = [];
             var planMonth = [];
@@ -715,8 +686,6 @@ export default {
         mainMenu,
         сompaniesDzo,
         helpers,
-        otm,
-        chemistry,
         oilRates,
         usdRates,
         injectionWells,
@@ -733,7 +702,8 @@ export default {
         productionDetails,
         chemistryDetails,
         wellsWorkoverDetails,
-        managers
+        managers,
+        drillingDetails
     ],
     async mounted() {
         this.$store.commit('globalloading/SET_LOADING', true);
@@ -766,6 +736,7 @@ export default {
         this.updatePrices(this.period);
         this.chemistryDetails = await this.getChemistryByMonth();
         this.wellsWorkoverDetails = await this.getWellsWorkoverByMonth();
+        this.drillingDetails = await this.getDrillingByMonth();
         this.dzoMonthlyPlans = await this.getDzoMonthlyPlans();
 
         this.dzoCompaniesAssets = _.cloneDeep(this.dzoCompaniesAssetsInitial);

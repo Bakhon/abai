@@ -12,7 +12,7 @@ export default {
                 disabledDate (date) {
                     return moment(date).startOf('month') >= moment().startOf('month')
                 }
-            }
+            },
         };
     },
     methods: {

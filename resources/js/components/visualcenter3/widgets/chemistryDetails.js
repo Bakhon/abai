@@ -56,7 +56,8 @@ export default {
                     metricSystem: this.trans("visualcenter.chemistryMetricTon"),
                 },
             ],
-            chemistryChartData: []
+            chemistryChartData: [],
+            chemistryWidgetFactSum: 0,
         };
     },
     methods: {
@@ -149,7 +150,7 @@ export default {
                     scale_inhibitor: _.round(_.sumBy(item, 'scale_inhibitor'), 0),
                     scale_inhibitor_plan: _.round(_.sumBy(item, 'scale_inhibitor_plan'), 0),
                 })).value();
-            this.chemistryDataFactSumm = this.getChemistryFactSum(tableData);
+            this.chemistryWidgetFactSum = this.getChemistryFactSum(tableData);
         },
 
         getChemistryFactSum(tableData) {
