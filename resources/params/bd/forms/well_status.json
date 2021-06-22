@@ -1,45 +1,48 @@
 {
   "type": "plain",
-  "table": "prod.well_tech_state",
+  "table": "prod.well_status",
+  "default_values": {
+    "dend": "9999-12-31"
+  },
   "table_fields": [
     "dbeg",
-    "state"
+    "status"
   ],
   "tabs": [
     {
-      "title": "main",
+      "title": "status",
       "blocks": [
         [
           {
-            "title": "",
+            "title": "well_st",
             "items": [
               {
                 "code": "dbeg",
-                "type": "date",
-                "title": "date_start",
+                "type": "datetime",
+                "title": "date",
                 "validation": "required|date",
                 "callbacks": {
                   "fillCalculatedFields": ""
                 }
               },
               {
-                "code": "old_state",
+                "code": "old_status",
                 "type": "calc",
                 "visible": true,
-                "title": "old_state"
+                "title": "well_st"
               },
               {
-                "code": "current_category",
+                "code": "name_ru",
                 "type": "calc",
                 "visible": true,
-                "title": "current_category"
+                "title": "well_cat"
               },
               {
-                "code": "state",
+                "code": "status",
                 "type": "dict",
-                "dict": "well_tech_state_type",
-                "title": "state",
-                "validation": "required|exists:tbd.dict.well_tech_state_type,id"
+                "dict": "well_statuses",
+                "title": "well_st",
+                "validation": "exists:tbd.dict.well_status_type,id"
               }
             ]
           }

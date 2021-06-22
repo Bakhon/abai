@@ -40,6 +40,11 @@ class GtmRegister extends PlainForm
 
     private function updateWellStatus()
     {
+        if (!$this->request->get('dend') || !$this->request->get('well_status_type')) {
+            return;
+        }
+
+
         DB::connection('tbd')
             ->table('prod.well_status')
             ->where('well', $this->request->get('well'))
