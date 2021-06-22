@@ -147,7 +147,7 @@ class DictionaryService
         'wells' => [
             'class' => Well::class,
             'name_field' => 'uwi'
-        ]
+        ],
     ];
 
     const TREE_DICTIONARIES = [

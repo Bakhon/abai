@@ -1,0 +1,53 @@
+{
+  "type": "plain",
+  "table": "prod.well_status",
+  "default_values": {
+    "dend": "9999-12-31"
+  },
+  "table_fields": [
+    "dbeg",
+    "status"
+  ],
+  "tabs": [
+    {
+      "title": "status",
+      "blocks": [
+        [
+          {
+            "title": "well_st",
+            "items": [
+              {
+                "code": "dbeg",
+                "type": "datetime",
+                "title": "date",
+                "validation": "required|date",
+                "callbacks": {
+                  "fillCalculatedFields": ""
+                }
+              },
+              {
+                "code": "old_status",
+                "type": "calc",
+                "visible": true,
+                "title": "well_st"
+              },
+              {
+                "code": "name_ru",
+                "type": "calc",
+                "visible": true,
+                "title": "well_cat"
+              },
+              {
+                "code": "status",
+                "type": "dict",
+                "dict": "well_statuses",
+                "title": "well_st",
+                "validation": "exists:tbd.dict.well_status_type,id"
+              }
+            ]
+          }
+        ]
+      ]
+    }
+  ]
+}

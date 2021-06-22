@@ -163,10 +163,13 @@ export default {
             this.updateConsolidatedData(dataWithKMGParticipation,dataWithoutKMGParticipation);
             let output = dataWithKMGParticipation;
             let chartOutput = this.consolidatedData.chartWithParticipation;
+            this.isOpecFilterActive = true;
             if (!this.oilCondensateFilters.isWithoutKMGFilterActive) {
                 output = dataWithoutKMGParticipation;
                 chartOutput = this.consolidatedData.chartWithoutParticipation;
+
             }
+
             this.exportDzoCompaniesSummaryForChart(chartOutput);
             return output;
         },
@@ -200,8 +203,8 @@ export default {
 
         updateChart() {
             let self = this;
-            let withKMG = _.cloneDeep(this.productionTableData);
-            let withoutKMG = _.cloneDeep(this.productionTableData);
+            let withKMG = this.getProductionDataInPeriodRange(_.cloneDeep(this.productionTableData),this.timestampToday,this.timestampEnd);
+            let withoutKMG = this.getProductionDataInPeriodRange(_.cloneDeep(this.productionTableData),this.timestampToday,this.timestampEnd);
 
             _.forEach(withKMG, function (item) {
                 if (self.dzoMultiplier[item.dzo]) {
@@ -217,8 +220,28 @@ export default {
                 }
             });
 
-            this.consolidatedData.chartWithParticipation = this.getProductionForChart(withKMG);
-            this.consolidatedData.chartWithoutParticipation = this.getProductionForChart(withoutKMG);
+            this.consolidatedData.chartWithParticipation = this.getSumForChart(withKMG);
+            this.consolidatedData.chartWithoutParticipation = this.getSumForChart(withoutKMG);
+        },
+
+        getSumForChart(data) {
+            let summaryForChart = _(data)
+                .groupBy("date")
+                .map((item, timestamp) => ({
+                    time: timestamp,
+                    dzo: 'dzo',
+                    productionFactForChart: _.round(_.sumBy(item, 'oil_plan'), 0),
+                    productionPlanForChart: _.round(_.sumBy(item, 'oil_fact'), 0),
+                    productionPlanForChart2: _.round(_.sumBy(item, 'oil_opek_plan'), 0),
+                }))
+                .value();
+
+            if (this.isFilterTargetPlanActive) {
+                let monthlyPlansInYear = this.getMonthlyPlansInYear(summaryForChart);
+                summaryForChart = monthlyPlansInYear;
+            }
+
+            return summaryForChart;
         },
 
         getUpdatedByDzoOptions(inputActualUpdatedByOpek,inputData,filteredInitialData) {
