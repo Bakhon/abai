@@ -2325,13 +2325,14 @@
                     </div>
                     <br />
                   </td>
-                </tr><br>
+                </tr>
                 <tr class="cursor-pointer d-flex">
                   <td
                           class="col-12"
                           @click="changeTable('productionWells')"
                           :class="`${tableMapping.productionWells.hover}`"
                   >
+                    <br>
                     <div class="right-column_header">
                       {{ trans("visualcenter.prodWells") }}
                     </div>
@@ -2390,13 +2391,14 @@
                       </div>
                       <br />
                     </td>
-                  </tr><br>
+                  </tr>
                   <tr class="cursor-pointer d-flex">
                     <td
                             class="col-12"
                             @click="changeTable('injectionWells')"
                             :class="`${tableMapping.injectionWells.hover}`"
                     >
+                      <br>
                       <div class="right-column_header">
                         {{ trans("visualcenter.idleWells") }}
                       </div>
