@@ -2041,6 +2041,7 @@
                           format="MMMM yyyy"
                           popper-class="custom-date-picker"
                           value-format="MMMM yyyy"
+                          :picker-options="datePickerOptions"
                           @change="switchWellsWorkoverPeriodRange"
                   >
                   </el-date-picker>
@@ -2187,6 +2188,7 @@
                           format="MMMM yyyy"
                           popper-class="custom-date-picker"
                           value-format="MMMM yyyy"
+                          :picker-options="datePickerOptions"
                           @change="switchChemistryPeriodRange"
                   >
                   </el-date-picker>
