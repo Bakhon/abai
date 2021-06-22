@@ -153,6 +153,12 @@
                   >
                   </date-picker>
                 </div>
+                <button class="filter-data-clear ml-10px"
+                        v-show="filters[code].value.to || filters[code].value.from"
+                        @click="clearDateFilter(code)"
+                >
+                  <i class="fas fa-times"></i>
+                </button>
                 <button class="filter-apply" @click="loadData()">OK</button>
               </template>
               <template v-else>
@@ -163,6 +169,9 @@
                       v-model="filters[code].value"
                       @keyup.enter="loadData"
                   >
+                  <button class="filter-clear mr-15px" v-show="filters[code].value" @click="clearFilter(code)">
+                    <i class="fas fa-times"></i>
+                  </button>
                   <button class="filter-apply" @click="loadData()">OK</button>
                 </div>
               </template>
@@ -365,6 +374,14 @@ export default {
         });
       });
     }, 500),
+    clearFilter(code) {
+      this.filters[code].value = null;
+      this.loadData();
+    },
+    clearDateFilter (code) {
+      this.filters[code].value = {from: null, to: null};
+      this.loadData();
+    },
     sortBy(field) {
       if (this.sort.by === field) {
         this.sort.desc = !this.sort.desc
@@ -738,6 +755,25 @@ table::-webkit-scrollbar-corner {
       position: relative;
       top: 4px;
       width: 56px;
+    }
+
+    &-clear {
+      background: transparent;
+      border: none;
+      font-size: 12px;
+      height: 32px;
+      position: absolute;
+      top: 4px;
+      right: 56px;
+    }
+
+    &-data-clear {
+      background: transparent;
+      border: none;
+      font-size: 12px;
+      height: 32px;
+      position: relative;
+      top: 4px;
     }
   }
 

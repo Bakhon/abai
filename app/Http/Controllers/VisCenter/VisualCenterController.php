@@ -329,9 +329,7 @@ class VisualCenterController extends Controller
         $endPeriod = Carbon::parse($request->timestampEnd)->endOfDay();
         $startPeriod = Carbon::parse($request->timestampToday)->startOfDay();
         $diff = $startPeriod->diffInDays($endPeriod);
-        if ($diff === 1) {
-            $startPeriod->subDays(1);
-        }
+        $startPeriod->subDays($diff);
 
         $factDataByPeriod = DzoImportData::query()
             ->whereDate('date','>', $startPeriod)

@@ -5,8 +5,8 @@ namespace App\Http\Controllers\Api\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\BigData\WellSearchResource;
 use App\Models\BigData\Well;
-use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 
 
 class WellsController extends Controller
@@ -57,7 +57,7 @@ class WellsController extends Controller
         return Carbon::today();
     }
 
-    private function get(Well $well)
+    public function get(Well $well)
     {
         return $well;
     }

@@ -78,6 +78,7 @@ export default {
         },
 
         async switchChemistryPeriod(buttonType) {
+            this.$store.commit('globalloading/SET_LOADING', true);
             this.chemistryMonthlyPeriod = "";
             this.chemistryYearlyPeriod = "";
             this.chemistryPeriod = "";
@@ -87,6 +88,7 @@ export default {
             this.isChemistryPeriodSelected = this.isChemistryFewMonthsSelected();
             this.chemistryDetails = await this.getChemistryByMonth();
             this.updateChemistryWidget();
+            this.$store.commit('globalloading/SET_LOADING', false);
         },
 
         isChemistryFewMonthsSelected() {
@@ -184,7 +186,6 @@ export default {
     },
     computed: {
         chemistryDataForChart() {
-            this.$store.commit('globalloading/SET_LOADING', false);
             let series = []
             let labels = []
             for (let i in this.chemistryChartData) {

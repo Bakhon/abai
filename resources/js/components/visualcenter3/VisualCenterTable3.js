@@ -159,7 +159,7 @@ export default {
 
         updateProductionOilandGasPercent(data) {
             let updatedData = this.getFilteredCompaniesList(data);
-            let periodStart = moment(new Date(this.timestampToday), "DD-MM-YYYY").subtract(this.quantityRange, 'days');
+            let periodStart = moment(new Date(this.timestampToday), "DD-MM-YYYY").subtract(this.quantityRange, 'days').valueOf();
             let filteredDataByPeriodRange = this.getProductionDataInPeriodRange(updatedData,periodStart,this.timestampToday);
             this.setPreviousPeriod();
             let productionSummary = this.getProductionSummary(filteredDataByPeriodRange);
@@ -181,6 +181,7 @@ export default {
                 this.isOpecFilterActive = false;
                 this.isKmgParticipationFilterActive = false;
             }
+
             this.processProductionData(metricName,chartSecondaryName);
         },
 
@@ -208,6 +209,9 @@ export default {
         },
 
         processProductionDataByCompanies(productionData,metricName,chartSecondaryName) {
+            if (this.oilCondensateProductionButton.length > 0) {
+                this.isOpecFilterActive = false;
+            }
             if (this.isProductionDetailsActive) {
                 productionData = this.getFormattingProductionDetails(productionData);
                 this.wellsWorkoverSelectedRow = 'underground_workover';
@@ -215,6 +219,7 @@ export default {
                 this.updateChemistryWidget();
                 this.updateWellsWorkoverWidget();
             }
+
             let updatedData = productionData;
             this.productionTableData = productionData;
             if (this.company === "all") {
@@ -242,7 +247,7 @@ export default {
             } else {
                 this.dzoCompaniesSummaryForChart = this.getProductionForChart(filteredDataByPeriod);
             }
-            this.exportDzoCompaniesSummaryForChart();
+            this.exportDzoCompaniesSummaryForChart(this.dzoCompaniesSummaryForChart);
 
             let summaryDataByDzo = this.getSummaryDataByDzo(filteredDataByPeriod);
 
@@ -301,6 +306,7 @@ export default {
                 ["__time"],
                 ["asc"]
             );
+
             if (this.isOneDateSelected) {
                 let dataWithMay2 = new Array();
                 dataWithMay2 = _.filter(data, function (item) {
@@ -345,7 +351,7 @@ export default {
                 this.otmWidgetData.drillingWells=this.otmData[0]['fact'];
             }
 
-            if (this.otmData.length !== 0) {
+            if (this.otmData.length !== 0 && !this.isProductionDetailsActive) {
                 this.chemistryDataFactSumm= _.reduce(
                     this.otmData,
                     function (memo, item) {
@@ -640,13 +646,14 @@ export default {
                 });
 
             bigTable = bigTable.filter(row => row.factMonth > 0 || row.planMonth > 0);
+
             if (this.isOpecFilterActive) {
                 bigTable = bigTable.filter(item => dzoListWithoutOpec.includes(item.dzoMonth));
             }
 
             this.bigTable = bigTable;
             this.clearNullAccidentCases();
-            this.exportDzoCompaniesSummaryForChart();
+            this.exportDzoCompaniesSummaryForChart(this.dzoCompaniesSummaryForChart);
 
             return data;
         },
@@ -729,6 +736,7 @@ export default {
         managers
     ],
     async mounted() {
+        this.$store.commit('globalloading/SET_LOADING', true);
         this.chemistryPeriodMapping.chemistryPeriod.periodStart = moment(this.chemistryRange.start).format('MMMM YYYY');
         this.chemistryPeriodMapping.chemistryPeriod.periodEnd = moment(this.chemistryRange.end).format('MMMM YYYY');
         this.wellsWorkoverPeriodMapping.wellsWorkoverPeriod.periodStart = moment(this.wellsWorkoverRange.start).format('MMMM YYYY');
