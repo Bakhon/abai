@@ -16,11 +16,12 @@
                 "code": "dbeg",
                 "type": "date",
                 "title": "data",
+                "table": "prod.well_category",
                 "validation": "required",
                 "is_editable": true
               },
               {
-                "code": "current_category",
+                "code": "name_ru",
                 "type": "dict",
                 "dict": "well_categories",
                 "title": "categ",
@@ -30,6 +31,7 @@
               {
                 "code": "category",
                 "type": "dict",
+                "table": "prod.well_category",
                 "dict": "well_categories",
                 "title": "well_cat",
                 "is_editable": true,
@@ -81,7 +83,7 @@
               },
               {
                 "code": "liquid",
-                "type": "dict",
+                "type": "numeric",
                 "title": "water_l",
                 "is_editable": false,
                 "table": "prod.meas_liq",
@@ -99,7 +101,7 @@
                 "code": "water_inj_val",
                 "title": "water_inj_v",
                 "is_editable": false,
-                "type": "dict",
+                "type": "numeric",
                 "table": "prod.meas_water_inj",
                 "validation": ""
               },
