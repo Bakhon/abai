@@ -1,0 +1,35 @@
+.custom-date-picker .el-date-picker__header-label {
+    color: black;
+}
+.custom-date-picker .el-month-table td .cell {
+    color: black;
+    background: white;
+}
+.custom-date-picker .td.today.start-date.cell {
+    color: black;
+}
+
+.custom-date-picker {
+    width: 472px;
+}
+
+.custom-date-picker .el-picker-panel__content {
+    width: 100%;
+}
+
+.el-input__prefix, .el-input__suffix {
+    display: none;
+}
+
+.el-input__inner {
+    position: relative;
+    background: #333975;
+    height: 40px;
+    text-align: center;
+    line-height: 40px;
+    color: #9EA4C9;
+}
+
+.el-date-editor.el-input, .el-date-editor.el-input__inner {
+    width: 100%;
+}

@@ -737,10 +737,6 @@ export default {
     ],
     async mounted() {
         this.$store.commit('globalloading/SET_LOADING', true);
-        this.chemistryPeriodMapping.chemistryPeriod.periodStart = moment(this.chemistryRange.start).format('MMMM YYYY');
-        this.chemistryPeriodMapping.chemistryPeriod.periodEnd = moment(this.chemistryRange.end).format('MMMM YYYY');
-        this.wellsWorkoverPeriodMapping.wellsWorkoverPeriod.periodStart = moment(this.wellsWorkoverRange.start).format('MMMM YYYY');
-        this.wellsWorkoverPeriodMapping.wellsWorkoverPeriod.periodEnd = moment(this.wellsWorkoverRange.end).format('MMMM YYYY');
         this.getOpecDataForYear();
         this.chartHeadName = this.oilChartHeadName;
 

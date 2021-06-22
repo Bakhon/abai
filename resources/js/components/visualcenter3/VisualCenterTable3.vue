@@ -2022,7 +2022,7 @@
                           :class="[`${wellsWorkoverMonthlyPeriod}`,'button2 side-tables__main-menu-button']"
                           @click="switchWellsWorkoverPeriod('wellsWorkoverMonthlyPeriod')"
                   >
-                    {{ trans("visualcenter.monthBegin") }}
+                    {{ trans("visualcenter.forLastMonth") }}
                   </div>
                 </div>
                 <div class="col-4 px-2">
@@ -2034,38 +2034,16 @@
                   </div>
                 </div>
                 <div class="col-4 pl-2">
-                  <div class="dropdown3">
-                    <div
-                            :class="[`${wellsWorkoverPeriod}`,'button2 side-tables__main-menu-button']"
-                    >
-                      <span v-if="!isWellsWorkoverPeriodSelected">
-                        {{ trans("visualcenter.date") }} [{{wellsWorkoverPeriodStartMonth}}]
-                      </span>
-                      <span v-else>
-                        {{ trans("visualcenter.period") }} [{{wellsWorkoverPeriodStartMonth}} - {{ wellsWorkoverPeriodEndMonth }}]
-                      </span>
-                    </div>
-                    <ul class="center-menu2 right-indent">
-                      <li class="center-li">
-                        <br /><br />
-
-                        <div class="month-day">
-                          <div>
-                            <date-picker
-                                    v-if="selectedDMY == 0"
-                                    mode="range"
-                                    v-model="wellsWorkoverRange"
-                                    is-range
-                                    class="m-auto"
-                                    :model-config="modelConfig"
-                                    @input="switchWellsWorkoverPeriod"
-                                    @dayclick="switchWellsWorkoverPeriodRange"
-                            />
-                          </div>
-                        </div>
-                      </li>
-                    </ul>
-                  </div>
+                  <el-date-picker
+                          :class="[`${wellsWorkoverPeriod}`,'button2 side-tables__main-menu-button']"
+                          v-model="wellsWorkoverPeriodMapping.wellsWorkoverPeriod"
+                          type="monthrange"
+                          format="MMMM yyyy"
+                          popper-class="custom-date-picker"
+                          value-format="MMMM yyyy"
+                          @change="switchWellsWorkoverPeriodRange"
+                  >
+                  </el-date-picker>
                 </div>
               </div>
               <br />
@@ -2190,7 +2168,7 @@
                           :class="[`${chemistryMonthlyPeriod}`,'button2 side-tables__main-menu-button']"
                           @click="switchChemistryPeriod('chemistryMonthlyPeriod')"
                   >
-                    {{ trans("visualcenter.monthBegin") }}
+                    {{ trans("visualcenter.forLastMonth") }}
                   </div>
                 </div>
                 <div class="col px-2">
@@ -2202,38 +2180,16 @@
                   </div>
                 </div>
                 <div class="col pl-2">
-                  <div class="dropdown3">
-                    <div
-                            :class="[`${chemistryPeriod}`,'button2 side-tables__main-menu-button']"
-                    >
-                      <span v-if="!isChemistryPeriodSelected">
-                          {{ trans("visualcenter.date") }} [{{ chemistryPeriodStartMonth}}]
-                        </span>
-                      <span v-else>
-                          {{ trans("visualcenter.period") }} [{{ chemistryPeriodStartMonth }} - {{ chemistryPeriodEndMonth }}]
-                        </span>
-                    </div>
-                    <ul class="center-menu2 right-indent">
-                      <li class="center-li">
-                        <br /><br />
-
-                        <div class="month-day">
-                          <div>
-                            <date-picker
-                                    v-if="selectedDMY == 0"
-                                    mode="range"
-                                    v-model="chemistryRange"
-                                    is-range
-                                    class="m-auto"
-                                    :model-config="modelConfig"
-                                    @input="switchChemistryPeriod"
-                                    @dayclick="switchChemistryPeriodRange"
-                            />
-                          </div>
-                        </div>
-                      </li>
-                    </ul>
-                  </div>
+                  <el-date-picker
+                          :class="[`${chemistryPeriod}`,'button2 side-tables__main-menu-button']"
+                          v-model="chemistryPeriodMapping.chemistryPeriod"
+                          type="monthrange"
+                          format="MMMM yyyy"
+                          popper-class="custom-date-picker"
+                          value-format="MMMM yyyy"
+                          @change="switchChemistryPeriodRange"
+                  >
+                  </el-date-picker>
                 </div>
               </div>
               <br />
@@ -2455,7 +2411,7 @@
               >
                 <table class="table">
                   <tr class="d-flex">
-                    <td>
+                    <td class="col-10">
                       <div class="secondaryTitle">{{otmWidgetData.drillingWells}}</div>
                       <div class="metric-title">
                         {{ trans('visualcenter.skv') }}
@@ -2463,6 +2419,11 @@
                       <div class="in-idle">
                         <span v-if="isOneDateSelected"> {{ previousPeriodEnd }}</span>
                         <span v-else> {{ previousPeriodStart }} - {{ previousPeriodEnd }}</span>
+                      </div>
+                    </td>
+                    <td class="col-2 text-right">
+                      <div class="mt-1">
+                        <img src="/img/icons/link.svg" />
                       </div>
                     </td>
                   </tr>
@@ -2484,7 +2445,7 @@
               <div>
                 <table class="table">
                   <tr class="d-flex">
-                    <td>
+                    <td class="col-10">
                       <div class="secondaryTitle">{{chemistryDataFactSumm}}</div>
                       <div class="metric-title">
                         {{ trans('visualcenter.chemistryMetricTon') }}
@@ -2496,6 +2457,11 @@
                         <span v-else>
                           {{ chemistryPeriodStartMonth }} - {{ chemistryPeriodEndMonth }}
                         </span>
+                      </div>
+                    </td>
+                    <td class="col-2 text-right">
+                      <div class="mt-1">
+                        <img src="/img/icons/link.svg" />
                       </div>
                     </td>
                   </tr>
@@ -2521,7 +2487,7 @@
                       <div class="secondaryTitle">
                         {{getFormattedNumber(otmWidgetData.krsWells)}}
                       </div>
-                      <div class="in-idle">
+                      <div class="metric-title">
                         {{ trans("visualcenter.skv") }}
                       </div>
                       <div class="in-work">
@@ -2541,7 +2507,7 @@
                           <img src="/img/icons/link.svg" />
                         </div>
                       </div>
-                      <div class="in-idle">
+                      <div class="metric-title">
                         {{ trans("visualcenter.skv") }}
                       </div>
                       <div class="in-work">
@@ -2555,7 +2521,7 @@
                             @click="changeTable('otmWorkover')"
                             :class="`${tableMapping.otmWorkover.hover}`"
                     >
-                      <div class="in-idle text-center">
+                      <div class="in-idle">
                         <span v-if="!isWellsWorkoverPeriodSelected"> {{ wellsWorkoverPeriodStartMonth }}</span>
                         <span v-else> {{ wellsWorkoverPeriodStartMonth }} - {{ wellsWorkoverPeriodEndMonth }}</span>
                       </div>
@@ -2573,9 +2539,10 @@
               <table class="table">
                 <tr class="d-flex">
                   <td class="col-6">
-                    <div class="secondaryTitle">0</div>    <div class="unit-vc ml-2">
-                    {{ trans('visualcenter.chemistryMetricTon') }}
-                  </div>
+                    <div class="secondaryTitle">0</div>
+                    <div class="metric-title">
+                      {{ trans('visualcenter.chemistryMetricTon') }}
+                    </div>
                     <div class="in-idle">
                       {{ timeSelect }}
                     </div>
@@ -2600,6 +2567,7 @@
 
 <script src="./VisualCenterTable3.js"></script>
 <style scoped lang="scss">
+  @import './el-datepicker-custom.css';
   .dzocompanies-dropdown__divider {
     border-bottom: 2px solid #656a8a;
   }
@@ -3076,5 +3044,9 @@
   .metric-title {
     color: #82BAFF;
     display: inline-block;
+  }
+
+  .text-right {
+    text-align: right;
   }
 </style>

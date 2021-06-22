@@ -5,16 +5,12 @@ export default {
         return {
             wellsWorkoverDetails: [],
             wellsWorkoverSelectedCompany: 'all',
-            wellsWorkoverPeriodStartMonth: moment().format('MMMM YYYY'),
-            wellsWorkoverPeriodEndMonth: moment().format('MMMM YYYY'),
+            wellsWorkoverPeriodStartMonth: moment().subtract(1, 'months').format('MMMM YYYY'),
+            wellsWorkoverPeriodEndMonth: moment().subtract(1, 'months').format('MMMM YYYY'),
             wellsWorkoverMonthlyPeriod: 'button-tab-highlighted',
             wellsWorkoverYearlyPeriod: '',
             wellsWorkoverPeriod: '',
             isWellsWorkoverPeriodSelected: false,
-            wellsWorkoverRange: {
-                'start': new Date(),
-                'end': new Date(),
-            },
             wellsWorkoverData: [
                 {
                     name: this.trans("visualcenter.otmPrsSkv"),
@@ -32,18 +28,18 @@ export default {
                 },
             ],
             wellsWorkoverPeriodMapping: {
-                wellsWorkoverMonthlyPeriod: {
-                    'periodStart': moment().format('MMMM YYYY'),
-                    'periodEnd': moment().format('MMMM YYYY'),
-                },
-                wellsWorkoverYearlyPeriod: {
-                    'periodStart': moment().startOf('year').format('MMMM YYYY'),
-                    'periodEnd': moment().format('MMMM YYYY'),
-                },
-                wellsWorkoverPeriod: {
-                    'periodStart': moment().format('MMMM YYYY'),
-                    'periodEnd': moment().format('MMMM YYYY'),
-                },
+                wellsWorkoverMonthlyPeriod: [
+                    moment().subtract(1, 'months').format("MMMM yyyy"),
+                    moment().subtract(1, 'months').format("MMMM yyyy"),
+                ],
+                wellsWorkoverYearlyPeriod: [
+                    moment().startOf('year').format('MMMM YYYY'),
+                    moment().format('MMMM yyyy'),
+                ],
+                wellsWorkoverPeriod: [
+                    moment().subtract(1, 'months').format("MMMM yyyy"),
+                    moment().subtract(1, 'months').format("MMMM yyyy"),
+                ],
             },
             wellsWorkoverSelectedRow: 'underground_workover',
             wellsWorkoverChartData: [],
@@ -53,8 +49,8 @@ export default {
     methods: {
         async getWellsWorkoverByMonth() {
             let queryOptions = {
-                'startPeriod': moment(this.wellsWorkoverPeriodStartMonth,'MMMM YYYY').month(),
-                'endPeriod': moment(this.wellsWorkoverPeriodEndMonth,'MMMM YYYY').month()
+                'startPeriod': moment(this.wellsWorkoverPeriodStartMonth,'MMMM YYYY').month() + 1,
+                'endPeriod': moment(this.wellsWorkoverPeriodEndMonth,'MMMM YYYY').month() + 1
             };
             let uri = this.localeUrl("/get-otm-details");
             const response = await axios.get(uri,{params:queryOptions});
@@ -70,8 +66,8 @@ export default {
             this.wellsWorkoverYearlyPeriod = "";
             this.wellsWorkoverPeriod = "";
             this[buttonType] = this.highlightedButton;
-            this.wellsWorkoverPeriodStartMonth = this.wellsWorkoverPeriodMapping[buttonType].periodStart;
-            this.wellsWorkoverPeriodEndMonth = this.wellsWorkoverPeriodMapping[buttonType].periodEnd;
+            this.wellsWorkoverPeriodStartMonth = this.wellsWorkoverPeriodMapping[buttonType][0];
+            this.wellsWorkoverPeriodEndMonth = this.wellsWorkoverPeriodMapping[buttonType][1];
             this.isWellsWorkoverPeriodSelected = this.isWellsWorkoverFewMonthsSelected();
             this.wellsWorkoverDetails = await this.getWellsWorkoverByMonth();
             await this.updateWellsWorkoverWidget();
