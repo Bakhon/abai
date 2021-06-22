@@ -4,6 +4,10 @@
   "default_values": {
     "dend": "9999-12-31"
   },
+  "table_fields": [
+    "dbeg",
+    "expl"
+  ],
   "tabs": [
     {
       "title": "title",
@@ -23,7 +27,7 @@
                 "type": "dict",
                 "dict": "well_expl_types",
                 "title": "expl_type",
-                "validation": "exists:tbd.dict.well_expl_type,id"
+                "is_editable": false
               },
               {
                 "code": "expl",
