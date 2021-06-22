@@ -236,11 +236,11 @@
 
                       </thead>
                       <tbody>
-                      <tr v-for="row in statistics">
-                        <td class="table-body" v-for="column in statisticsColumns">
-                          <div class="centered">{{ row[column] }}</div>
-                        </td>
-                      </tr>
+                        <tr v-for="row in statistics">
+                          <td class="table-body" v-for="column in statisticsColumns">
+                            <div class="centered">{{ row[column] }}</div>
+                          </td>
+                        </tr>
                       </tbody>
                     </table>
                   </div>
