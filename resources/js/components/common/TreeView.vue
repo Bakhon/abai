@@ -68,7 +68,7 @@ export default {
     event: "nodeChange"
   },
   methods: {
-    showChildren: async function () {
+    showChildren: function () {
       this.isShowChildren = !this.isShowChildren;
       if (!this.isShowChildren) {
         return
