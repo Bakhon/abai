@@ -13,6 +13,16 @@ export default {
                     return moment(date).startOf('month') >= moment().startOf('month')
                 }
             },
+            datePickerConfig: {
+                start: {
+                    type: 'string',
+                    mask: 'DD.MM.YYYY',
+                },
+                end: {
+                    type: 'string',
+                    mask: 'DD.MM.YYYY',
+                },
+            },
         };
     },
     methods: {

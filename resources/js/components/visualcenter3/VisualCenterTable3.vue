@@ -1862,7 +1862,7 @@
                 <div class="col-3 pl-2">
                   <div class="dropdown3">
                     <div
-                            :class="[`${wellsWorkoverPeriod}`,'button2 side-tables__main-menu-button']"
+                            :class="[`${drillingPeriod}`,'button2 side-tables__main-menu-button']"
                     >
                       <span v-if="!isDrillingPeriodSelected">
                         {{ trans("visualcenter.date") }} [{{
@@ -1883,14 +1883,12 @@
                         <div class="month-day">
                           <div>
                             <date-picker
-                                    v-if="selectedDMY == 0"
                                     mode="range"
-                                    v-model="drillingWidgetFactSum"
+                                    v-model="drillingPeriodMapping.drillingPeriod"
                                     is-range
                                     class="m-auto"
-                                    :model-config="modelConfig"
+                                    :model-config="datePickerConfig"
                                     @input="switchDrillingPeriodRange"
-                                    @dayclick="switchDrillingPeriodRange"
                             />
                           </div>
                         </div>

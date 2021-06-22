@@ -12,22 +12,22 @@ export default {
             drillingPeriod: '',
             isDrillingPeriodSelected: false,
             drillingPeriodMapping: {
-                drillingDailyPeriod: [
-                    moment().subtract(1, 'days').startOf('day').format('DD.MM.YYYY'),
-                    moment().subtract(1, 'days').endOf('day').format('DD.MM.YYYY'),
-                ],
-                drillingMonthlyPeriod: [
-                    moment().startOf('month').format('DD.MM.YYYY'),
-                    moment().format('DD.MM.YYYY'),
-                ],
-                drillingYearlyPeriod: [
-                    moment().startOf('year').format('DD.MM.YYYY'),
-                    moment().format('DD.MM.YYYY'),
-                ],
-                drillingPeriod: [
-                    moment().format('DD.MM.YYYY'),
-                    moment().format('DD.MM.YYYY')
-                ],
+                drillingDailyPeriod: {
+                    'start': moment().subtract(1, 'days').startOf('day').format('DD.MM.YYYY'),
+                    'end': moment().subtract(1, 'days').endOf('day').format('DD.MM.YYYY'),
+                },
+                drillingMonthlyPeriod: {
+                    'start': moment().startOf('month').format('DD.MM.YYYY'),
+                    'end': moment().format('DD.MM.YYYY'),
+                },
+                drillingYearlyPeriod: {
+                    'start': moment().startOf('year').format('DD.MM.YYYY'),
+                    'end': moment().format('DD.MM.YYYY'),
+                },
+                drillingPeriod: {
+                    'start': moment().format('DD.MM.YYYY'),
+                    'end': moment().format('DD.MM.YYYY')
+                },
             },
             drillingSelectedCompany: 'all',
             drillingSelectedRow: 'otm_wells_commissioning_from_drilling_fact',
@@ -51,11 +51,6 @@ export default {
             ],
             drillingChartData: [],
             drillingWidgetFactSum: 0,
-            wellsWorkoverRange: {
-                'start': new Date(),
-                'end': new Date(),
-            },
-
         };
     },
     methods: {
@@ -80,8 +75,8 @@ export default {
             this.drillingYearlyPeriod = "";
             this.drillingPeriod = "";
             this[buttonType] = this.highlightedButton;
-            this.drillingPeriodStart = this.drillingPeriodMapping[buttonType][0];
-            this.drillingPeriodEnd = this.drillingPeriodMapping[buttonType][1];
+            this.drillingPeriodStart = this.drillingPeriodMapping[buttonType].start;
+            this.drillingPeriodEnd = this.drillingPeriodMapping[buttonType].end;
             this.isDrillingPeriodSelected = this.isDrillingFewDaysSelected();
             this.drillingDetails = await this.getDrillingByMonth();
             this.updateDrillingWidget();
@@ -89,8 +84,8 @@ export default {
         },
 
         isDrillingFewDaysSelected() {
-            let startDate =  moment(this.drillingPeriodStartMonth);
-            let endDate = moment(this.drillingPeriodEndMonth);
+            let startDate =  moment(this.drillingPeriodStart,'DD.MM.YYYY');
+            let endDate = moment(this.drillingPeriodEnd,'DD.MM.YYYY');
             return endDate.diff(startDate, 'days') > 0;
         },
 
