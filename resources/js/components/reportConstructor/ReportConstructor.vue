@@ -227,11 +227,11 @@
                     <table>
                       <thead>
                       <tr>
-                        <td rowspan="2" class="heading" v-for="column in statisticsColumns">
+                        <th rowspan="2" class="heading" v-for="column in statisticsColumns">
                           <div class="centered">
                             {{ getAttributeDescription(column) }}
                           </div>
-                        </td>
+                        </th>
                       </tr>
 
                       </thead>
