@@ -2,7 +2,7 @@
     <div class="col m-0 p-0">
         <div>
             <div class="row m-0 text-left">
-                <div class="col-4 p-1" v-for="(menuItem, i) in menu"
+                <div class="col-3 p-1" v-for="(menuItem, i) in menu"
                      :class="[menuItem.parentType]"
                      @mouseover.prevent.stop="menuItemMouseOver(i)"
                      @mouseout.prevent.stop="menuItemMouseLeave()">
