@@ -1,0 +1,79 @@
+{
+  "type": "plain",
+  "table": "prod.bsw_lab",
+  "tabs": [
+    {
+      "title": "bsw_l",
+      "blocks": [
+        [
+          {
+            "title": "main",
+            "items": [
+              
+              {
+                "code": "insert_date",
+                "type": "date",
+                "title": "data",
+                "validation": "required"
+              },
+              {
+                "code": "proba_ml",
+                "type": "numeric",
+                "title": "proba",
+                "validation": "required"
+              },
+              {
+                "code": "free_watter_ml",
+                "type": "numeric",
+                "title": "volume",
+                "validation": "required"
+              },
+              {
+                "code": "emulsion_ml",
+                "type": "numeric",
+                "title": "em_vol",
+                "validation": "required"
+              },             
+              {
+                "code": "bsw_lab_val",
+                "type": "numeric",
+                "title": "bsw",
+                "validation": "required"
+              },
+              {
+                "code": "watter_constrained_5_ml",
+                "type": "numeric",
+                "title": "watter_5",
+                "validation": "required"
+              },
+              {
+                "code": "watter_constrained_perc",
+                "type": "numeric",
+                "title": "watter_perc",
+                "validation": "required"
+              },
+              {
+                "code": "watter_constrained_ml",
+                "type": "numeric",
+                "title": "watter_ml",
+                "validation": "required"
+              },
+              {
+                "code": "bsw_volume_ml",
+                "type": "numeric",
+                "title": "bsw_vol",
+                "validation": "required"
+              },
+              {
+                "code": "bsw_volume_perc",
+                "type": "numeric",
+                "title": "bsw_perc",
+                "validation": "required"
+              }
+            ]
+          }
+        ]
+      ]
+    }
+  ]
+}

@@ -157,6 +157,7 @@ export default {
             if (this.oilCondensateProductionButton.length > 0) {
                 this.updateProductionTotalFact();
                 this.updateActualOilFactByFilter();
+                this.isOpecFilterActive = true;
             }
         },
 

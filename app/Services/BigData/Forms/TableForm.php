@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Services\BigData\Forms;
 
+use App\Models\BigData\Dictionaries\Org;
 use App\Models\BigData\Dictionaries\Tech;
 use App\Models\BigData\Infrastructure\History;
-use App\Models\Refs\Org;
 use App\Services\BigData\FieldLimitsService;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
