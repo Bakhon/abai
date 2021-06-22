@@ -64,7 +64,7 @@
                             {{ trans('paegtm.successfulWellsProportionTitle') }}
                         </div>
                         <div class="chart-wrapper p-3 min-h-420">
-                            <doughnut-chart @menuClick="testMenuClick" :height="180"></doughnut-chart>
+                            <doughnut-chart :height="180"></doughnut-chart>
                         </div>
                     </div>
                 </div>
@@ -370,10 +370,6 @@ export default {
             }
     },
     methods: {
-        testMenuClick(data) {
-            console.log(data);
-            this.$emit('menuClickMy', data);
-        },
         getData() {
             this.$store.commit('globalloading/SET_LOADING',true);
             this.axios.get(

@@ -267,25 +267,7 @@ Vue.component('unsuccessfful-gtm-chart', {
                     borderRadius: 100,
                     padding: 30,
                 },
-            },
-            // legendCallback: function (chart) {
-            //     console.log(chart.data.datasets);
-            //
-            //     let text = [];
-            //     text.push('<ul class="' + chart.id + '-legend">');
-            //
-            //     for (let i = 0; i < chart.data.datasets[0].data.length; i++) {
-            //         text.push('<li><span id="legend-' + i + '-item" style="background-color:' + chart.data.datasets[0].backgroundColor[i] + '"');
-            //         if (chart.data.labels[i]) {
-            //             text.push(chart.data.labels[i]);
-            //         }
-            //         text.push('</span></li>');
-            //     }
-            //
-            //     text.push('</ul>');
-            //
-            //     return text.join("");
-            // }
+            }
         })
     }
 });
