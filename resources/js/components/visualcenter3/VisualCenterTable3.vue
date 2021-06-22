@@ -2367,7 +2367,7 @@
                     </div>
                     <br />
                   </td>
-                </tr>
+                </tr><br>
                 <tr class="cursor-pointer d-flex">
                   <td
                           class="col-12"
@@ -2432,7 +2432,7 @@
                       </div>
                       <br />
                     </td>
-                  </tr>
+                  </tr><br>
                   <tr class="cursor-pointer d-flex">
                     <td
                             class="col-12"
@@ -2527,10 +2527,6 @@
                       <div class="in-work">
                         {{ trans('visualcenter.otmKrsSkv') }}
                       </div>
-                      <div class="in-idle">
-                        <span v-if="!isWellsWorkoverPeriodSelected"> {{ wellsWorkoverPeriodStartMonth }}</span>
-                        <span v-else> {{ wellsWorkoverPeriodStartMonth }} - <br>{{ wellsWorkoverPeriodEndMonth }}</span>
-                      </div>
                     </td>
                     <td
                             class="col-6"
@@ -2551,10 +2547,6 @@
                       <div class="in-work">
                         {{ trans('visualcenter.otmPrsSkv') }}
                       </div>
-                      <div class="in-idle">
-                        <span v-if="!isWellsWorkoverPeriodSelected"> {{ wellsWorkoverPeriodStartMonth }}<br><br></span>
-                        <span v-else> {{ wellsWorkoverPeriodStartMonth }} - <br>{{ wellsWorkoverPeriodEndMonth }}</span>
-                      </div>
                     </td>
                   </tr>
                   <tr class="cursor-pointer d-flex">
@@ -2563,6 +2555,10 @@
                             @click="changeTable('otmWorkover')"
                             :class="`${tableMapping.otmWorkover.hover}`"
                     >
+                      <div class="in-idle text-center">
+                        <span v-if="!isWellsWorkoverPeriodSelected"> {{ wellsWorkoverPeriodStartMonth }}</span>
+                        <span v-else> {{ wellsWorkoverPeriodStartMonth }} - {{ wellsWorkoverPeriodEndMonth }}</span>
+                      </div>
                       <div class="right-column_header">
                         {{ trans("visualcenter.importForm.wellWorkover") }}
                       </div>
