@@ -130,6 +130,8 @@ return array (
     'priceBrent' => 'Цена на нефть Brent',
     'currency' => 'Курс $/Тенге',
     'CashFlowDynamics' => 'Динамика денежного потока',
+    'mainTechnicalAndEconomicIndicators' => 'Основные технико-экономические показатели',
+    'value' => 'Значения',
   ),
   'economy' => 'Экономика',
   'tengeTon' => 'тенге/тонна',

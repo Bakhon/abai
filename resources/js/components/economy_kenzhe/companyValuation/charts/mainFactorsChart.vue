@@ -1,10 +1,10 @@
 <template>
-  <div class="row proactive-factors-page-container">
-    <div class="col-10 middle-block-columns">
+  <div>
+    <div>
       <div class="col px-2 container-col_color">
         <apexchart
           type="line"
-          height="350"
+          height="250"      
           :options="chartOptions"
           :series="series"
         ></apexchart>

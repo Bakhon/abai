@@ -1,22 +1,46 @@
 <template>
-  <div class="row proactive-factors-page-container">   
-    <div class="col-10 middle-block-columns">
-      <div class="col px-2 container-col_color">
-         {{trans('economy_pf.companyValuationPage.pageName')}}
-        <div>
+  <div class="row m-0">   
+    <div class="col-10 px-0 pl-2">
+      <div class="row col px-2 container-col_color">        
+      <div class="col charts px-0">
+            {{trans('economy_pf.companyValuationPage.pageName')}}
+        <div class="chart-one">
           <main-factors-chart></main-factors-chart>
         </div>
-        <div class="mt-2">
+        <div class="chart-two mt-2">
           <cash-flow-dynamics-chart></cash-flow-dynamics-chart>
         </div>
-        <div class="mt-2">
-          <sensitivity-npv-chart> </sensitivity-npv-chart>
-          </div>
+        <div class="chart-three mt-2">
+          <sensitivity-npv-chart> </sensitivity-npv-chart>          
+         </div> 
+          </div>                     
+           <div class='table table-striped col mt-2'>
+             <table class="economics-table-color">
+               <tr>
+                 <th>{{trans('economy_pf.companyValuationPage.mainTechnicalAndEconomicIndicators')}}
+                 </th>                          
+                 <th>{{trans('economy_pf.companyValuationPage.value')}}
+                 </th>
+                </tr>                
+                <tr>
+                 <td>{{trans('economy_pf.companyValuationPage.priceBrent')}}
+                 </td>
+                  <td>40
+                 </td>
+                </tr>
+                <tr>
+                 <td>Сценарий БП
+                 </td>
+                  <td>Корр. 6
+                 </td>
+                </tr>
+             </table>
+            </div>
         </div>
       </div>
-      <div class="col-2 px-2 middle-block-columns">
+      <div class="col-2 px-0">
         <div class="col px-2">
-          <div class="col container-col_color">
+          <div class="col container-col_color m-0">
             <div class="contro-panel-col_height">
               <div class="contro-panel-col_text">
                 {{ this.trans("economy_pf.controlPanelCompanyValuation") }}
@@ -96,7 +120,7 @@ export default {
       selectFilterExportSalesPercentage: selectFilterExportSalesPercentage,
       costAllocationBase: costAllocationBase,
     };
-  }, 
+  },
 };
 </script>
 <style scoped>
