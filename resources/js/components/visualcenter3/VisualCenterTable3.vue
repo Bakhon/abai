@@ -229,7 +229,7 @@
                               <img src="/img/icons/link.svg" />
                             </div>
                           </div>
-                          <div class="unit-vc col-12">$ / bbl</div>
+                          <div class="metric-title col-12">$ / bbl</div>
                         </div>
                         <div class="txt1 col-12">
                           {{trans("visualcenter.oilPrice")}}
@@ -268,7 +268,7 @@
                               <img src="/img/icons/link.svg" />
                             </div>
                           </div>
-                          <div class="unit-vc col-12">kzt / $</div>
+                          <div class="metric-title col-12">kzt / $</div>
                         </div>
                         <div class="txt1 col-12">
                           {{ trans("visualcenter.usdKurs") }}
@@ -2325,7 +2325,7 @@
                           @click="changeTable('productionWells')"
                           :class="`${tableMapping.productionWells.hover}`"
                   >
-                    <div class="txt4">
+                    <div class="secondaryTitle">
                       {{ getFormattedNumber(prod_wells_work) }}
                     </div>
                     <div class="in-work">
@@ -2345,7 +2345,7 @@
                           @click="changeTable('productionWells')"
                           :class="`${tableMapping.productionWells.hover}`"
                   >
-                    <div class="txt4 d-flex">
+                    <div class="secondaryTitle d-flex">
                       <div class="col-10 col-lg-9">
                         {{ getFormattedNumber(prod_wells_idle) }}
                       </div>
@@ -2390,7 +2390,7 @@
                             @click="changeTable('injectionWells')"
                             :class="`${tableMapping.injectionWells.hover}`"
                     >
-                      <div class="txt4">
+                      <div class="secondaryTitle">
                         {{getFormattedNumber(inj_wells_work)}}
                       </div>
                       <div class="in-work">
@@ -2410,7 +2410,7 @@
                             @click="changeTable('injectionWells')"
                             :class="`${tableMapping.injectionWells.hover}`"
                     >
-                      <div class="txt4 d-flex">
+                      <div class="secondaryTitle d-flex">
                         <div class="col-10 col-lg-9">
                           {{getFormattedNumber(inj_wells_idle)}}
                         </div>
@@ -2456,11 +2456,11 @@
                 <table class="table">
                   <tr class="d-flex">
                     <td>
-                      <div class="number">{{otmWidgetData.drillingWells}}</div>
-                      <div class="unit-vc ml-2">
+                      <div class="secondaryTitle">{{otmWidgetData.drillingWells}}</div>
+                      <div class="metric-title">
                         {{ trans('visualcenter.skv') }}
                       </div>
-                      <div class="in-idle2">
+                      <div class="in-idle">
                         <span v-if="isOneDateSelected"> {{ previousPeriodEnd }}</span>
                         <span v-else> {{ previousPeriodStart }} - {{ previousPeriodEnd }}</span>
                       </div>
@@ -2485,11 +2485,11 @@
                 <table class="table">
                   <tr class="d-flex">
                     <td>
-                      <div class="number">{{chemistryDataFactSumm}}</div>
-                      <div class="unit-vc ml-2">
+                      <div class="secondaryTitle">{{chemistryDataFactSumm}}</div>
+                      <div class="metric-title">
                         {{ trans('visualcenter.chemistryMetricTon') }}
                       </div>
-                      <div class="in-idle2">
+                      <div class="in-idle">
                         <span v-if="!isChemistryPeriodSelected">
                           {{ chemistryPeriodStartMonth}}
                         </span>
@@ -2509,52 +2509,62 @@
                 </table>
               </div>
             </div>
-
             <div class="first-string first-string2">
               <div>
-                <table class="table table5">
-                  <tr class="d-flex">
+                <table class="table table1-2">
+                  <tr class="cursor-pointer d-flex">
                     <td
-                            class="col-6 cursor-pointer"
+                            class="col-6"
                             @click="changeTable('otmWorkover')"
                             :class="`${tableMapping.otmWorkover.hover}`"
                     >
-                      <div class="mt-1 float-right">
-
+                      <div class="secondaryTitle">
+                        {{getFormattedNumber(otmWidgetData.krsWells)}}
                       </div>
-                      <div class="number">
-                        {{ otmWidgetData.krsWells }}
-                      </div><br>
-                      <div class="unit-vc ml-2">{{ trans("visualcenter.skv") }}</div>
-                      <div class="in-idle2">
-                        <span v-if="!isWellsWorkoverPeriodSelected"> {{ wellsWorkoverPeriodStartMonth }}<br><br></span>
-                        <span v-else> {{ wellsWorkoverPeriodStartMonth }} - {{ wellsWorkoverPeriodEndMonth }}</span>
-                      </div>
-                      <br>
-                      <div class="right-column_header">
-                        {{ trans('visualcenter.otmKrsSkv') }}
-                      </div>
-                    </td>
-
-                    <td
-                            class="col-6 cursor-pointer"
-                            @click="changeTable('otmWorkover')"
-                            :class="`${tableMapping.otmWorkover.hover}`"
-                    >
-                      <div class="mt-1 float-right">
-
-                      </div>
-                      <div class="number">{{ otmWidgetData.prsWells }}</div><br>
-                      <div class="unit-vc ml-2">
+                      <div class="in-idle">
                         {{ trans("visualcenter.skv") }}
                       </div>
-                      <div class="in-idle2">
-                        <span v-if="!isWellsWorkoverPeriodSelected"> {{ wellsWorkoverPeriodStartMonth }}<br><br></span>
-                        <span v-else> {{ wellsWorkoverPeriodStartMonth }} - {{ wellsWorkoverPeriodEndMonth }}</span>
+                      <div class="in-work">
+                        {{ trans('visualcenter.otmKrsSkv') }}
                       </div>
-                      <br>
-                      <div class="right-column_header">
+                      <div class="in-idle">
+                        <span v-if="!isWellsWorkoverPeriodSelected"> {{ wellsWorkoverPeriodStartMonth }}</span>
+                        <span v-else> {{ wellsWorkoverPeriodStartMonth }} - <br>{{ wellsWorkoverPeriodEndMonth }}</span>
+                      </div>
+                    </td>
+                    <td
+                            class="col-6"
+                            @click="changeTable('otmWorkover')"
+                            :class="`${tableMapping.otmWorkover.hover}`"
+                    >
+                      <div class="secondaryTitle d-flex">
+                        <div class="col-9 p-0">
+                          {{getFormattedNumber(otmWidgetData.prsWells)}}
+                        </div>
+                        <div class="mt-1 col-2">
+                          <img src="/img/icons/link.svg" />
+                        </div>
+                      </div>
+                      <div class="in-idle">
+                        {{ trans("visualcenter.skv") }}
+                      </div>
+                      <div class="in-work">
                         {{ trans('visualcenter.otmPrsSkv') }}
+                      </div>
+                      <div class="in-idle">
+                        <span v-if="!isWellsWorkoverPeriodSelected"> {{ wellsWorkoverPeriodStartMonth }}<br><br></span>
+                        <span v-else> {{ wellsWorkoverPeriodStartMonth }} - <br>{{ wellsWorkoverPeriodEndMonth }}</span>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr class="cursor-pointer d-flex">
+                    <td
+                            class="col-12"
+                            @click="changeTable('otmWorkover')"
+                            :class="`${tableMapping.otmWorkover.hover}`"
+                    >
+                      <div class="right-column_header">
+                        {{ trans("visualcenter.importForm.wellWorkover") }}
                       </div>
                     </td>
                   </tr>
@@ -2562,16 +2572,15 @@
               </div>
             </div>
           </div>
-
           <div class="first-string first-string2">
             <div>
               <table class="table">
                 <tr class="d-flex">
                   <td class="col-6">
-                    <div class="number">0</div>    <div class="unit-vc ml-2">
+                    <div class="secondaryTitle">0</div>    <div class="unit-vc ml-2">
                     {{ trans('visualcenter.chemistryMetricTon') }}
                   </div>
-                    <div class="in-idle2">
+                    <div class="in-idle">
                       {{ timeSelect }}
                     </div>
                   </td>
@@ -3066,5 +3075,10 @@
     margin-top: 5px;
     margin-right: 5px;
     overflow: hidden;
+  }
+
+  .metric-title {
+    color: #82BAFF;
+    display: inline-block;
   }
 </style>
