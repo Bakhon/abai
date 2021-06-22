@@ -73,9 +73,6 @@ export default {
       if (!this.isShowChildren) {
         return
       }
-      this.node.children = []
-      this.node.children = await this.handleClick(this.node)
-
       if (this.isNodeOnBottomLevelOfHierarchy(this.node)) {
         this.isLoading = true;
         this.getWells(this);
