@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\DB;
 class GasProduction extends TableForm
 {
     protected $configurationFileName = 'gas_production';
+    
     public function getRows(array $params = []): array
     {
         $tech = Tech::find($this->request->get('tech'));
@@ -61,6 +62,8 @@ class GasProduction extends TableForm
 
         return $wells->toArray();
     }
+
+
     protected function saveSingleFieldInDB(string $field, int $wellId, Carbon $date, $value): void
     {
         $column = $this->getFieldByCode($field);
