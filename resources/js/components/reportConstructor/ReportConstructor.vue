@@ -577,6 +577,14 @@ body {
     }
   }
 
+  .left-section-title:hover {
+    background-color: #323370;
+  }
+
+  .left-section-title:active {
+    background-color: #323370;
+  }
+
   .dropdown-item {
     color: white;
     font-family: $HarmoniaSansProCyr;
