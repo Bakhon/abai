@@ -8,9 +8,9 @@ use App\Models\BigData\Well;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
-class GasProd extends TableForm
+class GasProduction extends TableForm
 {
-    protected $configurationFileName = 'gas_prod';
+    protected $configurationFileName = 'gas_production';
     public function getRows(array $params = []): array
     {
         $tech = Tech::find($this->request->get('tech'));
