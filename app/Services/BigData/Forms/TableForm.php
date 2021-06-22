@@ -81,7 +81,7 @@ abstract class TableForm extends BaseForm
     public function getFormatedParams(): array
     {
         $params = $this->params();
-        $this->mapParams($params);
+        $params = $this->mapParams($params);
 
         return [
             'params' => $params,
@@ -288,7 +288,7 @@ abstract class TableForm extends BaseForm
         );
     }
 
-    protected function mapParams(array &$params)
+    protected function mapParams(array $params)
     {
         if (!empty($params['filter'])) {
             $params['filter'] = array_map(
@@ -303,5 +303,6 @@ abstract class TableForm extends BaseForm
                 $params['filter']
             );
         }
+        return $params;
     }
 }
