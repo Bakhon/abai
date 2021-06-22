@@ -68,17 +68,15 @@ class WaterProduction extends TableForm
 
     public function getFormatedFieldValue(array $field, array $rawValue): ?array
     {
-        switch ($field['code']) {
-            case 'worktime':
+        if ($field['code'] === 'worktime') {
+            $value = 0;
+            if (isset($rawValue['value']) && $rawValue['value'] !== null) {
+                $value = in_array($rawValue['value'], Well::WELL_ACTIVE_STATUSES) ? 1 : 0;
+            }
 
-                $value = 0;
-                if (isset($rawValue['value']) && $rawValue['value'] !== null) {
-                    $value = in_array($rawValue['value'], Well::WELL_ACTIVE_STATUSES) ? 1 : 0;
-                }
-
-                return [
-                    'value' => $value
-                ];
+            return [
+                'value' => $value
+            ];
         }
 
         return $rawValue;
@@ -107,7 +105,7 @@ class WaterProduction extends TableForm
         return null;
     }
 
-    private function getOtherUwis($item)
+    private function getOtherUwis($item): array
     {
         $uwi = DB::connection('tbd')
             ->table('dict.well')
@@ -123,7 +121,7 @@ class WaterProduction extends TableForm
         ];
     }
 
-    public function getGeoBreadcrumbs($geo)
+    public function getGeoBreadcrumbs($geo): string
     {
         if (Cache::has('bd_geo_breadcrumb_' . $geo->id)) {
             return Cache::get('bd_geo_breadcrumb_' . $geo->id);
