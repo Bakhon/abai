@@ -56,17 +56,21 @@ export default {
       'updateForm'
     ]),
     init() {
-      this.updateForm(this.activeForm.code).then(data => {
-        this.filterTree = data.filterTree
+      this.axios.get(this.localeUrl(`/api/bigdata/wells/tree`)).then(data => {
+        this.filterTree = data.data
       })
     },
     nodeClick(node) {
-      this.$emit('wellIdChange', node.id)
+      console.log(node)
+      this.$emit('idChange', {
+        id: node.id,
+        type: node.type
+      })
     },
-    isNodeOnBottomLevelOfHierarchy: function(node) {
+    isNodeOnBottomLevelOfHierarchy: function (node) {
       return node.type !== 'org'
     },
-    isWell: function(node){
+    isWell: function (node) {
       return (typeof node.type !== 'undefined' && node.type === 'well')
     },
     getWells: function (child) {

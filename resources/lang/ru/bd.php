@@ -9,6 +9,7 @@ return [
     'select' => 'Выбрать',
     'exit' => 'Выход',
     'select_dzo' => 'Выберите ДЗО из списка',
+    'select_ngdu' => 'Выберите НГДУ из списка',
     'nothing_found' => 'Ничего не найдено',
     'actions' => 'Действия',
     'forms' => [
@@ -401,6 +402,19 @@ return [
             'water_debit' => 'Дебит воды, м3/сут',
             'water_val' => 'Добыча воды, м3',
             'measure_last_month' => 'Замеры по скважине за последний месяц'
+        ],
+        'production_program' => [
+            'oil_production' => 'Добыча нефти (т)',
+            'water_injection' => 'Закачка воды (м3)',
+            'water_production' => 'Добыча воды (м3)',
+            'liquid_production' => 'Добыча жидкости (м3)',
+            'oil_injection' => 'Сдача нефти (т)',
+            'gas_production' => 'Добыча газа (м3)',
+            'steam_injection' => 'Закачка пара (м3)',
+            'absorption' => 'Поглощение',
+            'date' => 'Дата с',
+            'date_to' => 'Дата по',
+            'select_ngdu' => 'Выберите НГДУ'
         ],
         'bsw_lab' => [
             'main' => 'Основное',
