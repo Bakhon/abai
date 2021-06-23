@@ -111,19 +111,6 @@ export default {
             nkoMapping: {
                 'formula': (value) => Math.round(((value - value * 0.019) * 241 / 1428) / 2)
             },
-            emptyTemplate: {
-                accident: null,
-                dzoMonth: 'КГМ',
-                factMonth: 0,
-                impulses: null,
-                landing: null,
-                opec: null,
-                opekPlan: 0,
-                otheraccidents: null,
-                periodPlan: null,
-                planMonth: 0,
-                restrictions: null
-            },
             dzoMultiplier: {
                 'ОМГ': (item,value,fieldName) => value + item[fieldName],
                 'ПКК': (item,value,fieldName) => value * 0.33,
@@ -302,7 +289,6 @@ export default {
                 }
             });
 
-            //actualUpdatedByOpek = this.getUpdatedByTemplates(this.sortingOrder,actualUpdatedByOpek);
             actualUpdatedByOpek = this.getSorted(actualUpdatedByOpek,this.sortingOrder);
 
             if (this.buttonMonthlyTab || this.buttonYearlyTab) {
@@ -361,7 +347,6 @@ export default {
                 }
             });
 
-            //actualUpdatedByOpek = this.getUpdatedByTemplates(this.sortingOrderWithoutParticipation,actualUpdatedByOpek);
             actualUpdatedByOpek = this.getSorted(actualUpdatedByOpek,this.sortingOrderWithoutParticipation);
             if (this.buttonMonthlyTab || this.buttonYearlyTab) {
                 actualUpdatedByOpek = this.getUpdatedByPeriodPlan(actualUpdatedByOpek);
@@ -419,18 +404,6 @@ export default {
                 item.periodPlan = item.planMonth / daysPassed * daysCountInMonth;
             });
             return updatedData;
-        },
-
-        getUpdatedByTemplates(sortingOrder,inputData) {
-            let self = this;
-            _.forEach(sortingOrder, function (dzoName) {
-                if (inputData.findIndex(element => element.dzoMonth === dzoName) === -1) {
-                    let template = self.emptyTemplate;
-                    template.dzoMonth = dzoName;
-                    inputData.push(template);
-                }
-            });
-            return inputData;
         },
     }
 }
