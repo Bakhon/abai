@@ -18,15 +18,16 @@
                 "title": "data",
                 "table": "prod.well_category",
                 "validation": "required",
-                "is_editable": true
+                "is_editable": true,
+                "callbacks": {
+                  "fillCalculatedFields": "",
+                  "updateFields": ""
+                }
               },
               {
-                "code": "name_ru",
-                "type": "dict",
-                "dict": "well_categories",
-                "title": "categ",
-                "validation":"",
-                "is_editable": false
+                "code": "old_category",
+                "type": "calc",
+                "title": "categ"
               },
               {
                 "code": "category",
@@ -35,11 +36,14 @@
                 "dict": "well_categories",
                 "title": "well_cat",
                 "is_editable": true,
-                "validation":"required|exists:tbd.dict.well_category_type,id"
+                "validation": "required|exists:tbd.dict.well_category_type,id",
+                "callbacks": {
+                  "updateFields": ""
+                }
               },
               {
-                "code": "name_ru",
-                "type": "dict",
+                "code": "org",
+                "type": "dict_tree",
                 "dict": "orgs",
                 "title": "org",
                 "is_editable": true,
@@ -58,60 +62,33 @@
             "title": "",
             "items": [
               {
-                "code": "conclusion",
-                "type": "checkbox",
-                "title":"",
-                "table": "prod.well_react_infl",
-                "validation": "",
-                "is_editable": false
-              },
-              {
-                "code": "uwi",
-                "title": "uwi_number",
-                "type": "dict",
-                "dict": "wells",
-                "is_editable": false,
-                "validation": ""
-              },
-              {
-                "code": "name_ru",
-                "type": "dict",
-                "title": "status",
-                "is_editable": false,
-                "dict": "well_statuses",
-                "validation": ""
-              },
-              {
-                "code": "liquid",
-                "type": "numeric",
-                "title": "water_l",
-                "is_editable": false,
-                "table": "prod.meas_liq",
-                "validation": ""
-              },
-              {
-                "code": "liquid",
-                "title": "water_v",
-                "type": "calc",
-                "formula": "",
-                "is_editable": false,
-                "validation": ""
-              },
-              {
-                "code": "water_inj_val",
-                "title": "water_inj_v",
-                "is_editable": false,
-                "type": "numeric",
-                "table": "prod.meas_water_inj",
-                "validation": ""
-              },
-              {
-                "code": "name_ru",
-                "is_editable": false,
-                "type": "dict",
-                "dict": "well_categories",
-                "title": "well_cat",
-                "validation":""
+                "code": "connected_wells",
+                "type": "checkbox_table",
+                "title": "",
+                "columns": [
+                  {
+                    "code": "well",
+                    "title": "uwi_number"
+                  },
+                  {
+                    "code": "status",
+                    "title": "status"
+                  },
+                  {
+                    "code": "liquid_debit",
+                    "title": "water_l"
+                  },
+                  {
+                    "code": "oil_debit",
+                    "title": "water_v"
+                  },
+                  {
+                    "code": "category",
+                    "title": "well_cat"
+                  }
+                ],
+                "rows": [
+                ]
               }
             ]
           }
