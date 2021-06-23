@@ -7,7 +7,22 @@ export default {
             isProductionDetailsActive: true,
             currentMonthDateStart: moment().subtract(2,'months').format('MMMM YYYY'),
             currentMonthDateEnd: moment().subtract(1,'months').format('MMMM YYYY'),
-            selectedWidget: 'productionDetails'
+            selectedWidget: 'productionDetails',
+            datePickerOptions: {
+                disabledDate (date) {
+                    return moment(date).startOf('month') >= moment().startOf('month')
+                }
+            },
+            datePickerConfig: {
+                start: {
+                    type: 'string',
+                    mask: 'DD.MM.YYYY',
+                },
+                end: {
+                    type: 'string',
+                    mask: 'DD.MM.YYYY',
+                },
+            },
         };
     },
     methods: {
