@@ -143,12 +143,10 @@ export default {
             this.exportDzoCompaniesSummaryForChart(chartOutput);
             if (this.oilCondensateFilters[filterName]) {
                 this.dzoCompanySummary = this.consolidatedData.withParticipation;
-                this.dzoCompanies = _.cloneDeep(companiesListWithKMG);
-                this.dzoCompaniesTemplate = _.cloneDeep(companiesListWithKMG);
+                this.changeDzoCompaniesList(companiesListWithKMG);
             } else {
                 this.dzoCompanySummary = this.consolidatedData.withoutParticipation;
-                this.dzoCompanies = _.cloneDeep(companiesListWithoutKMG);
-                this.dzoCompaniesTemplate = _.cloneDeep(companiesListWithoutKMG);
+                this.changeDzoCompaniesList(companiesListWithoutKMG);
             }
             this.selectAllDzoCompanies();
             let elementOptions = this.mainMenuButtonElementOptions[parentButton].childItems[childButton];
