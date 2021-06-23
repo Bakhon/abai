@@ -1,12 +1,12 @@
 <template>
   <div class="row m-0 p-0">
     <div class="col col-9 p-0">
-      <proto-form :wellId="wellId"></proto-form>
+      <proto-form :id="id" :type="type"></proto-form>
     </div>
     <div class="col col-3 p-0 org-select-tree-block">
       <proto-org-select-tree
-          :currentWellId="wellId"
-          @wellIdChange="wellIdChange">
+          :currentWellId="id"
+          @idChange="idChange">
       </proto-org-select-tree>
     </div>
   </div>
@@ -17,12 +17,14 @@
 export default {
   data() {
     return {
-      wellId: 0,
+      id: 0,
+      type: ''
     }
   },
   methods: {
-    wellIdChange(wellId) {
-      this.wellId = wellId;
+    idChange(node) {
+      this.id = node.id
+      this.type = node.type
     },
   }
 }
