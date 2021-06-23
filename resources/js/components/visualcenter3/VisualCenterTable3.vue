@@ -47,9 +47,9 @@
                                     :style="{
                                 width: dailyProgressBars.oil + '%',
                               }"
-                                    :aria-valuenow="productionParams.oil_plan"
+                                    :aria-valuenow="productionParams.oil_fact"
                                     aria-valuemin="0"
-                                    :aria-valuemax="productionParams.oil_fact"
+                                    :aria-valuemax="productionParams.oil_plan"
                             ></div>
                           </div>
                           <div class="row">
