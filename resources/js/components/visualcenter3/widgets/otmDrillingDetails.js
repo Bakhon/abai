@@ -95,8 +95,6 @@ export default {
 
         async updateDrillingWidget() {
             let temporaryDrillingDetails = _.cloneDeep(this.drillingDetails);
-            console.log('this.drillingSelectedCompany')
-            console.log(this.drillingSelectedCompany)
             if (this.drillingSelectedCompany !== 'all') {
                 temporaryDrillingDetails = this.getDrillingFilteredByDzo(temporaryDrillingDetails,this.drillingSelectedCompany);
             }

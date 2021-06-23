@@ -207,11 +207,6 @@ export default {
             }
             if (this.isProductionDetailsActive) {
                 productionData = this.getFormattingProductionDetails(productionData);
-                this.wellsWorkoverSelectedRow = 'underground_workover';
-                this.chemistrySelectedRow = 'demulsifier',
-                this.updateChemistryWidget();
-                this.updateWellsWorkoverWidget();
-                this.updateDrillingWidget();
             }
 
             let updatedData = productionData;

@@ -86,6 +86,9 @@ export default {
             });
             this.tableMapping[widgetName]['class'] = 'show-company-list';
             this.tableMapping[widgetName]['hover'] = 'button_hover';
+            this.updateChemistryWidget();
+            this.updateWellsWorkoverWidget();
+            this.updateDrillingWidget();
             this.$store.commit('globalloading/SET_LOADING', false);
         },
 
