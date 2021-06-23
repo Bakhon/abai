@@ -25,6 +25,8 @@ export default {
         switchCategory(buttonName, planFieldName, factFieldName, metricName, categoryName, parentButton, childButton) {
             this.$store.commit('globalloading/SET_LOADING', true);
             this.isOpecFilterActive = false;
+            this.oilCondensateFilters.isWithoutKMGFilterActive = true;
+
             if (buttonName !== 'oilCondensateProductionButton') {
                 this.changeDzoCompaniesList(dzoCompaniesInitial);
             } else {
@@ -57,13 +59,6 @@ export default {
         },
 
         switchMainMenu(parentButton, childButton) {
-            if (parentButton !== 'oilCondensateProductionButton') {
-                this.changeDzoCompaniesList(dzoCompaniesInitial);
-            } else if (parentButton === 'oilCondensateProductionButton' && this.oilCondensateFilters.oilCondensateFilters) {
-                this.changeDzoCompaniesList(companiesListWithoutKMG);
-            } else {
-                this.changeDzoCompaniesList(companiesListWithKMG);
-            }
             this.selectAllDzoCompanies();
             this.disableTargetCompanyFilter();
             let self = this;
