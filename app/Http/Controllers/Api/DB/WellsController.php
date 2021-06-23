@@ -121,10 +121,8 @@ class WellsController extends Controller
     private function wellExpl(Well $well)
     {
         return $well->wellExpl()
-            ->where('dend', '<>', $this->getToday())
-            ->where('dbeg', '<>', $this->getToday())
             ->withPivot('dend as dend', 'dbeg as dbeg')
-            ->orderBy('dbeg', 'desc')
+            ->orderBy('dbeg')
             ->first(['name_ru', 'dend', 'dbeg']);
     }
 
