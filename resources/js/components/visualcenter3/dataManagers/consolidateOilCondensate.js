@@ -117,7 +117,8 @@ export default {
                 'КГМ': (item,value,fieldName) => value * 0.5 * 0.33,
                 'ТП': (item,value,fieldName) => value * 0.5 * 0.33,
                 'НКО': (item,value,fieldName) => ((value - value * 0.019) * 241 / 1428) / 2
-            }
+            },
+            companiesForNominalInput: ['АГ','ПКК']
         };
     },
     methods: {
@@ -251,7 +252,7 @@ export default {
             actualUpdatedByOpek = this.getFilteredByNotUsableDzo(actualUpdatedByOpek);
 
             _.forEach(dzoOptions, function(item) {
-                if (['АГ','ПКК'].includes(item.dzoName)) {
+                if (self.companiesForNominalInput.includes(item.dzoName)) {
                     actualUpdatedByOpek.push({
                         'dzoMonth' : item.dzoMonth,
                         'factMonth' : item.formula(item.factMonth,item.dzoName,filteredInitialData),
@@ -328,9 +329,10 @@ export default {
             let dzoOptions = _.cloneDeep(this.dzoOptions.withoutKMGFilter);
             let actualUpdatedByOpek = inputActualUpdatedByOpek;
             let pkiIndex = actualUpdatedByOpek.findIndex(element => element.dzoMonth === 'ПКИ');
+            let self = this;
             actualUpdatedByOpek.splice(pkiIndex, 1);
             _.forEach(dzoOptions, function(item) {
-                if (['АГ','ПКК'].includes(item.dzoName)) {
+                if (self.companiesForNominalInput.includes(item.dzoName)) {
                     actualUpdatedByOpek.push({
                         'dzoMonth' : item.dzoMonth,
                         'factMonth' : item.formula(item.factMonth,item.dzoName,filteredInitialData),

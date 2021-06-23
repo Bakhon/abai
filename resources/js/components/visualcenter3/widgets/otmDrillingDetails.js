@@ -152,12 +152,13 @@ export default {
         getDrillingFactSum(tableData,workoverType) {
             let totalDrillingFact = 0;
             if (tableData.length > 0) {
+                let groupedDrilling = tableData[0];
                 _.forEach(this.drillingData, function(item) {
-                    item.plan = tableData[0][item.code + '_plan'];
-                    item.fact = tableData[0][item.code];
+                    item.plan = groupedDrilling[item.code + '_plan'];
+                    item.fact = groupedDrilling[item.code];
                     item.difference = item.plan - item.fact;
                 });
-                totalDrillingFact += tableData[0][workoverType];
+                totalDrillingFact += groupedDrilling[workoverType];
             }
 
             return totalDrillingFact;
