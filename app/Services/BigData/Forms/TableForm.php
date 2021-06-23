@@ -309,7 +309,7 @@ abstract class TableForm extends BaseForm
         );
     }
 
-    protected function getFieldRow(array $column, int $wellId, Carbon $date): \stdClass
+    protected function getFieldRow(array $column, int $wellId, Carbon $date): ?\stdClass
     {
         $query = DB::connection('tbd')
             ->table($column['table'])
