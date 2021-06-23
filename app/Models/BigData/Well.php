@@ -19,6 +19,8 @@ class Well extends TBDModel
 {
     const WELL_STATUS_ACTIVE = 3;
     const WELL_STATUS_PERIODIC_EXPLOITATION = 7;
+    const WELL_STATUS_INACTIVE = 8;
+
     const WELL_ACTIVE_STATUSES = [
         self::WELL_STATUS_ACTIVE,
         self::WELL_STATUS_PERIODIC_EXPLOITATION

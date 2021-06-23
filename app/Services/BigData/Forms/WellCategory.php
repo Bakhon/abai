@@ -24,6 +24,12 @@ class WellCategory extends PlainForm
         self::STEAM_INJECTION_WELL
     ];
 
+    const WELL_ACTIVE_STATUSES = [
+        Well::WELL_STATUS_ACTIVE,
+        Well::WELL_STATUS_PERIODIC_EXPLOITATION,
+        Well::WELL_STATUS_INACTIVE,
+    ];
+
     protected $configurationFileName = 'well_category';
 
     public function getCalculatedFields(int $wellId, array $values): array
@@ -118,6 +124,7 @@ class WellCategory extends PlainForm
             ->where('wc.dend', '>=', $date)
             ->leftJoin('dict.well_category_type as wct', 'wct.id', 'wc.category')
             ->leftJoin('prod.well_status as ws', 'ws.well', 'w.id')
+            ->whereIn('ws.status', self::WELL_ACTIVE_STATUSES)
             ->where('ws.dbeg', '<=', $date)
             ->where('ws.dend', '>=', $date)
             ->leftJoin('dict.well_status_type as wst', 'wst.id', 'ws.status');
