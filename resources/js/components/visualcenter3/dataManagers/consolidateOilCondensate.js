@@ -233,7 +233,8 @@ export default {
         },
 
         getSumForChart(data) {
-            let summaryForChart = _(data)
+            let sorted = this.getOrderedByAsc(data);
+            let summaryForChart = _(sorted)
                 .groupBy("date")
                 .map((item, timestamp) => ({
                     time: timestamp,

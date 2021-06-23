@@ -95,16 +95,21 @@ export default {
 
         async updateDrillingWidget() {
             let temporaryDrillingDetails = _.cloneDeep(this.drillingDetails);
+            console.log('this.drillingSelectedCompany')
+            console.log(this.drillingSelectedCompany)
             if (this.drillingSelectedCompany !== 'all') {
                 temporaryDrillingDetails = this.getDrillingFilteredByDzo(temporaryDrillingDetails,this.drillingSelectedCompany);
             }
 
             let self = this;
+
             _.forEach(temporaryDrillingDetails, function(item) {
                 let dateOption = [moment(item.date).month(),moment(item.date).year()];
                 let planIndex = self.dzoMonthlyPlans.findIndex(element => self.isRecordsSimple(dateOption,element,item.dzo_name));
                 if (planIndex !== -1) {
-                    item['otm_wells_commissioning_from_drilling_plan'] = self.dzoMonthlyPlans[planIndex].plan_otm_iz_burenia_skv;
+                    let plan = self.dzoMonthlyPlans[planIndex].plan_otm_iz_burenia_skv;
+                    let planByDay = plan / moment().daysInMonth();
+                    item['otm_wells_commissioning_from_drilling_plan'] = planByDay;
                     item['otm_drilling_plan'] = self.dzoMonthlyPlans[planIndex].plan_otm_burenie_prohodka;
                 }
             });
