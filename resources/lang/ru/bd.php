@@ -368,6 +368,14 @@ return [
             'gas_f' => 'Средний газовый фактор',
             'title2' => 'Проект бурения'
         ],
+        'gas_production' => [
+            'measure_last_month' => 'Замеры по скважине за последний месяц',
+            'uwi_number' => 'Скважина',
+            'worktime' => 'Отработанное время',
+            'gas_prod' => 'Дебит газа, м3/сут',
+            'gas_prod_v' => 'Добыча газа, м3',
+            'data' => 'Дата'
+        ],
         'well_status' => [
             'status' => 'Состояние',
             'well_st' => 'Состояние скважины',
@@ -387,6 +395,13 @@ return [
             'comment' => 'Примечание',
             'data' => 'Дата',
             'water_inj' => 'Закачка воды'
+        ],
+        'water_production' => [
+            'uwi_number' => 'Номер скважины',
+            'worktime' => 'Отработанное время',
+            'water_debit' => 'Дебит воды, м3/сут',
+            'water_val' => 'Добыча воды, м3',
+            'measure_last_month' => 'Замеры по скважине за последний месяц'
         ],
         'production_program' => [
             'oil_production' => 'Добыча нефти (т)',

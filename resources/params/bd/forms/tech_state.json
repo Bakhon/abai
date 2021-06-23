@@ -1,6 +1,10 @@
 {
   "type": "plain",
   "table": "prod.well_tech_state",
+  "table_fields": [
+    "dbeg",
+    "state"
+  ],
   "tabs": [
     {
       "title": "main",

@@ -22,7 +22,9 @@
   'well_incl' => '\\App\\Services\\BigData\\Forms\\WellIncl',
   'well_tech' => '\\App\\Services\\BigData\\Forms\\WellTech',
   'well_tech_connect' => '\\App\\Services\\BigData\\Forms\\WellTechConnect',
+  'gas_production' => '\\App\\Services\\BigData\\Forms\\GasProduction',
   'well_status' => '\\App\\Services\\BigData\\Forms\\WellStatus',
   'water_inj' => '\\App\\Services\\BigData\\Forms\\WaterInj',
+  'water_production' => '\\App\\Services\\BigData\\Forms\\WaterProduction',
   'production_program' => '\\App\\Services\\BigData\\Forms\\ProductionProgram'
 );
