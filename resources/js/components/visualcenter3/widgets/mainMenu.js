@@ -25,7 +25,7 @@ export default {
         switchCategory(buttonName, planFieldName, factFieldName, metricName, categoryName, parentButton, childButton) {
             this.$store.commit('globalloading/SET_LOADING', true);
             this.isOpecFilterActive = false;
-            if (parentButton !== 'oilCondensateProductionButton') {
+            if (buttonName !== 'oilCondensateProductionButton') {
                 this.changeDzoCompaniesList(dzoCompaniesInitial);
             } else {
                 this.changeDzoCompaniesList(companiesListWithKMG);
