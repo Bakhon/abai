@@ -1,0 +1,45 @@
+{
+  "type": "plain",
+  "table": "prod.well_zone",
+  "table_fields": [
+    "dbeg",
+    "zone"
+  ],
+  "tabs": [
+    {
+      "title": "w_zone",
+      "blocks": [
+        [
+          {
+            "title": "main",
+            "items": [
+              {
+                "code": "dbeg",
+                "type": "date",
+                "title": "date_start",
+                "validation": "required|date",
+                "callbacks": {
+                  "fillCalculatedFields": ""
+                }
+              },
+              {
+                "code": "old_zone",
+                "type": "calc",
+                "is_editable": false,
+                "title": "ch_zone",
+                "validation": ""
+              },
+              {
+                "code": "zone",
+                "type": "dict",
+                "dict": "zone",
+                "title": "new_zone",
+                "validation": "required|exists:tbd.dict.zone,id"
+              }              
+            ]
+          }
+        ]
+      ]
+    }
+  ]
+}

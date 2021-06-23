@@ -70,7 +70,11 @@ Route::group(
                     Artisan::call('hive-data-from-avocet:cron');
                 });
                 Route::post('dzo-excel-form', 'VisCenter\ExcelForm\ExcelFormController@store');
-                Route::post('dzo-chemistry-excel-form', 'VisCenter\ExcelForm\ExcelFormChemistryController@store');  
+                Route::post('dzo-chemistry-excel-form', 'VisCenter\ExcelForm\ExcelFormChemistryController@store');
+                Route::get('/get-production-details', 'VisCenter\VisualCenterController@getProductionDetails');
+                Route::get('/get-otm-details', 'VisCenter\VisualCenterController@getOtmDetails');
+                Route::get('/get-chemistry-details', 'VisCenter\VisualCenterController@getChemistryDetails');
+                Route::get('/get-drilling-details', 'VisCenter\VisualCenterController@getDrillingDetails');
             }
         );
     }

@@ -2,28 +2,38 @@ import axios from 'axios'
 
 const pgno = {
     state: {
-        wells: [],
-        wellType: '',
-        wellNumber: '',
         hPump: null,
-        buttonHpump: false,
-        spmMin: null,
-        spmMax: null,
-        strokeLenMin: null,
-        strokeLenMax: null,
-        kpod_min: null,
-        pump27: false,
-        pump32: false,
-        pump38: false,
-        pump44: false,
-        pump50: false,
-        pump57: false,
-        pump60: false,
-        pump70: false,
-        pump95: false,
+        spmMin: 4,
+        spmMax: 7,
+        strokeLenMin: 2.5,
+        strokeLenMax: 3,
+        kpodMin: 0.6,
+        pintakeMin: 30,
+        gasMax: 10,
+        inclStep: 10,
+        groupPosad: 2,
+        h2s: false,
+        heavyDown: true,
+        corrosion: "mediumCorrosion",
+        dmPumps: ["32", "38", "44", "57", "70"],
+        dmRods: ["19", "22", "25"],
+        komponovka: ["hvostovik"],
+        stupColumns: "2",
+        markShtang: "15Х2ГМФ (НВО)",
     },
-    
     mutations: {
+      UPDATE_HEAVYDOWN(state, val) {
+        state.heavyDown = val
+      },
+      UPDATE_DMPUMPS(state, val) {
+        state.dmPumps = val
+      },
+      UPDATE_DMRODS(state, val) {
+        state.dmRods = val
+      },
+      UPDATE_MARKSHTANG(state, val) {
+        state.markShtang = val
+      },
       UPDATE_SPM_MIN: (state, val) => {
         state.spmMin = val
       },
@@ -36,113 +46,78 @@ const pgno = {
       UPDATE_LEN_MAX: (state, val) => {
         state.strokeLenMax = val
       },
+      UPDATE_PINTAKE_MIN: (state, val) => {
+        state.pintakeMin = val
+      },
+      UPDATE_GAS_MAX: (state, val) => {
+        state.gasMax = val
+      },
+      UPDATE_INCL_STEP: (state, val) => {
+        state.inclStep = val
+      },
+      UPDATE_H2S: (state, val) => {
+        state.h2s = val
+      },
+      UPDATE_STUP_COLUMNS: (state, val) => {
+        state.stupColumns = val
+      },
       UPDATE_KPOD: (state, val) => {
-        state.kpod_min = val
+        state.kpodMin = val
       },
-
-      UPDATE_PUMP_27: (state, val) => {
-        state.pump27 = val
+      UPDATE_GROUP_POSAD(state, val) {
+        state.groupPosad = val
       },
-      UPDATE_PUMP_32: (state, val) => {
-        state.pump32 = val
+      UPDATE_KOMPONOVKA(state, val) {
+        state.komponovka = val
       },
-      UPDATE_PUMP_38: (state, val) => {
-        state.pump38 = val
+      UPDATE_HPUMP(state, val) {
+        state.hPump = val
       },
-      UPDATE_PUMP_44: (state, val) => {
-        state.pump44 = val
-      },
-      UPDATE_PUMP_50: (state, val) => {
-        state.pump50 = val
-      },
-      UPDATE_PUMP_57: (state, val) => {
-        state.pump57 = val
-      },
-      UPDATE_PUMP_60: (state, val) => {
-        state.pump60 = val
-      },
-      UPDATE_PUMP_70: (state, val) => {
-        state.pump70 = val
-      },
-      UPDATE_PUMP_95: (state, val) => {
-        state.pump95 = val
-      },
-      
-
-      UPDATE_MESSAGE(state, payload) {
-        state.wells = payload
-      },
-      SET_WELL_NUMBER(state, payload) {
-        state.wellNumber = payload
-      },
-      UPDATE_HPUMP(state, payload) {
-        state.hPump = payload
-      },
-      UPDATE_HPUMP_BUTTON(state, payload) {
-        state.buttonHpump = payload
-      },
-      SET_WELLS_TYPE(state, wellType) {
-        state.wellType = wellType
-      },
-      SET_WELL_NUM(state, wellType) {
-        state.wellType = wellType
-      },
-      updateWellNumber(state, wellNumber) {
-        state.obj.wellNumber = wellNumber
-        console.log(wellNumber);
+      UPDATE_CORROSION(state, val) {
+        state.corrosion = val
       }
     },
     
     actions: {
-        loadWells({commit}) {
-          commit('SET_WELLS_NUMBER', wellNumber)
-          if(this.wellNumber) {
-            axios
-                .get('http://172.20.103.187:7575/api/pgno/UZN/' + this.wellNumber)
-                .then(data => {
-                    console.log(data.data, 'vuex work');
-                    // let wells = data.data
-                    // commit('SET_WELLS_TYPE', wells)
-                    // commit('SET_WELLS_NUM', getWellNumber)
-                })
-                .catch(error => {
-                    console.log(error);
-                })
-          } else {
-            return console.log('no number')
-          }
-        },
-        getHpumpValue({commit}) {
-          commit = this.hPump
-        },
-        getHpumpButton({commit}) {
-          commit = this.buttonHpump
-        },
-        getWellNumber({commit}) {
-          commit = this.wellNumber
-        }
-        
+      setDmPumps({commit}, value) {
+        commit('UPDATE_DMPUMPS', value)
+      },
+      setDmRods({commit}, value) {
+        commit('UPDATE_DMRODS', value)
+      },
+      setKomponovka({commit}, value) {
+        commit('UPDATE_KOMPONOVKA', value)
+      },
+      setH2S({commit}, value) {
+        commit('UPDATE_H2S', value)
+      },
+      setheavyDown({commit}, value) {
+        commit('UPDATE_HEAVYDOWN', value)
+      },
+      selectedMarkShtang({commit}, value) {
+        commit('UPDATE_MARKSHTANG', value)
+      }
     },
     
     getters: {
-      pump27: (state) => state.pump27,
-      pump32: (state) => state.pump32,
-      pump38: (state) => state.pump38,
-      pump44: (state) => state.pump44,
-      pump50: (state) => state.pump50,
-      pump57: (state) => state.pump57,
-      pump60: (state) => state.pump60,
-      pump70: (state) => state.pump70,
-      pump95: (state) => state.pump95,
-      kpod_min: (state) => state.kpod_min,
+      markShtang: (state) => state.markShtang,
+      dmPumps: (state) => state.dmPumps,
+      dmRods: (state) => state.dmRods,
+      komponovka: (state) => state.komponovka,
+      kpodMin: (state) => state.kpodMin,
       spmMin: (state) => state.spmMin,
       spmMax: (state) => state.spmMax,
       strokeLenMin: (state) => state.strokeLenMin,
       strokeLenMax: (state) => state.strokeLenMax,
-      getWellNumber: (state) => state.wellNumber,
-      WELLDATA: (state) => state.wellData,
-      getHpump: (state) => state.hPump,
-      getHpumpButton: (state) => state.buttonHpump
+      pintakeMin: (state) => state.pintakeMin,
+      gasMax: (state) => state.gasMax,
+      inclStep: (state) => state.inclStep,
+      groupPosad: (state) => state.groupPosad,
+      hPump: (state) => state.hPump,
+      corrosion: (state) => state.corrosion,
+      stupColumns: (state) => state.stupColumns,
+      h2s: (state) => state.h2s,
+      heavyDown: (state) => state.heavyDown
     },
 }
 

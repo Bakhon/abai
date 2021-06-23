@@ -1,6 +1,10 @@
 {
   "type": "plain",
   "table": "prod.well_block",
+  "table_fields": [
+    "dbeg",
+    "block"
+  ],
   "tabs": [
     {
       "title": "w_block",
@@ -13,10 +17,13 @@
                 "code": "dbeg",
                 "type": "date",
                 "title": "date",
-                "validation": "required|date"
+                "validation": "required|date",
+                "callbacks": {
+                  "fillCalculatedFields": ""
+                }
               },
               {
-                "code": "block",
+                "code": "current_block",
                 "type": "calc",
                 "title": "ch_block",
                 "is_editable": false,

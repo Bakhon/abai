@@ -24,7 +24,11 @@
       },
       {
         "name": "Смежные графики",
-        "component": null,
+        "component": {
+          "name": "child-component",
+          "template": "<div><gtm-aegtm-unsuccessful-distribution></gtm-aegtm-unsuccessful-distribution></div>",
+          "parentType": "aegtm"
+        },
         "icon": "/img/GTM/icon_menu_aegtm_graphs.svg"
       },
       {
@@ -110,5 +114,38 @@
         "icon": "/img/GTM/icon_menu_export.svg"
       }
     ]
+  },
+  {
+    "name": "Планирование добычи и мониторинг",
+    "icon": "/img/GTM/production_planning.svg",
+    "parentType": "productionPlanningAndMonitoring",
+    "children": [
+      {
+        "name": "Критерии подбора",
+        "component": null,
+        "icon": "/img/GTM/icon_menu_criteria.svg"
+      },
+      {
+        "name": "Прогноз эффективности (методика)",
+        "component": null,
+        "icon": "/img/GTM/icon_menu_forecast.svg"
+      },
+      {
+        "name": "Ранжирование кандидатов",
+        "component": null,
+        "icon": "/img/GTM/icon_menu_raging.svg"
+      },
+      {
+        "name": "Программа бурения",
+        "component": null,
+        "icon": "/img/GTM/icon_menu_programm.svg"
+      },
+      {
+        "name": "Выгрузка отчетности",
+        "component": null,
+        "icon": "/img/GTM/icon_menu_export.svg"
+      }
+    ]
   }
+
 ]

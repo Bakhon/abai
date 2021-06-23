@@ -16,9 +16,11 @@
 <script>
 import VueApexCharts from "vue-apexcharts";
 
-Vue.component("apexchart", VueApexCharts);
 export default {
   name: "mix-chart",
+  components: {
+    "apexchart": VueApexCharts
+  },
   props: ["postTitle"],
   data: function () {
     return {

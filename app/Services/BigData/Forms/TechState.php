@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services\BigData\Forms;
 
+use App\Exceptions\BigData\SubmitFormException;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
@@ -11,7 +12,7 @@ class TechState extends PlainForm
 {
     protected $configurationFileName = 'tech_state';
 
-    public function calcFields(int $wellId, array $values): array
+    public function getCalculatedFields(int $wellId, array $values): array
     {
         if (empty($values['dbeg'])) {
             return [];
@@ -65,12 +66,14 @@ class TechState extends PlainForm
                     ->update(['dend' => Carbon::parse($this->request->get('dbeg'))->timezone('Asia/Almaty')]);
             }
 
-            parent::submit();
+            $result = parent::submit();
 
             DB::commit();
+
+            return $result;
         } catch (\Exception $e) {
             DB::rollBack();
-            throw new \Exception('Ошибка отправки формы');
+            throw new SubmitFormException($e->getMessage());
         }
     }
 }

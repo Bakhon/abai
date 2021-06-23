@@ -12,13 +12,13 @@
                 "code": "dbeg",
                 "type": "date",
                 "title": "date_start",
-                "validation": "nullable|date|before_or_equal:today"
+                "validation": "nullable|date"
               },
               {
                 "code": "dend",
                 "type": "date",
                 "title": "date_end",
-                "validation": "nullable|date|before_or_equal:today|after:date_start_drilling"
+                "validation": "nullable|date|after:date_start"
               }
             ]
           },
@@ -29,19 +29,28 @@
                 "code": "liquid",
                 "type": "numeric",
                 "title": "liquid",
-                "validation": "numeric"
-              },
-              {
-                "code": "oil",
-                "type": "numeric",
-                "title": "oil",
-                "validation": "numeric"
+                "validation": "numeric",
+                "callbacks": {
+                  "fillCalculatedFields": ""
+                }
               },
               {
                 "code": "wcut",
                 "type": "numeric",
                 "title": "water_cut",
-                "validation": "numeric|min:0|max:100"
+                "validation": "numeric|min:0|max:100",
+                "callbacks": {
+                  "fillCalculatedFields": ""
+                }
+              },
+              {
+                "code": "oil_density",
+                "type": "numeric",
+                "title": "oil_density",
+                "validation": "numeric",
+                "callbacks": {
+                  "fillCalculatedFields": ""
+                }
               }
             ]
           },
@@ -49,10 +58,10 @@
             "title": "calculated_fields",
             "items": [
               {
-                "code": "oil_density",
-                "type": "numeric",
-                "title": "oil_density",
-                "validation": "numeric"
+                "code": "oil",
+                "type": "calc",
+                "submit_value": true,
+                "title": "oil"
               }
             ]
           },
@@ -60,21 +69,21 @@
             "title":"Planned_events_tech_modes",
             "items":[
               {
-                "code":"field4",
-                "type":"table",
-                "title":"",
-                "table":"tech_mode_event",
-                "parent_column":"",
-                "columns":[
+                "code": "field4",
+                "type": "table",
+                "title": "",
+                "table": "prod.tech_mode_event",
+                "parent_column": "well",
+                "columns": [
                   {
-                    "code":"well_activity",
-                    "type":"dict",
-                    "title":"event",
-                    "dict":"well_activity",
-                    "validation":"required|exists:tbd.dict.well_activity,id"
+                    "code": "event_type",
+                    "type": "dict",
+                    "title": "event",
+                    "dict": "well_activity",
+                    "validation": "required|exists:tbd.dict.well_activity,id"
                   },
                   {
-                    "code":"plan_month",
+                    "code": "plan_month",
                     "type":"date",
                     "title":"planned_month",
                     "validation":"required|date"

@@ -196,7 +196,6 @@ export default {
         },
 
         getProductionDataInPeriodRange(data, periodStart, periodEnd) {
-            let self = this;
             return _.filter(data, function (item) {
                 return _.every([
                     _.inRange(
@@ -208,10 +207,18 @@ export default {
             });
         },
 
-        getFilteredDataByOneDay(filteredDataByCompanies) {
-            let temporaryPeriodStart = moment(new Date(this.timestampToday)).subtract(2, 'days');
-            let temporaryPeriodEnd = moment(new Date(this.timestampToday)).add(1, 'days');
-            let filteredDataByOneDay = this.getProductionDataInPeriodRange(filteredDataByCompanies,this.timestampToday,this.timestampEnd);
+        getFilteredDataByOneDay(filteredDataByCompanies,dayType) {
+            let dayTypeMapping = {
+                'today': {
+                    'start': this.timestampToday,
+                    'end': this.timestampEnd
+                },
+                'yesterday': {
+                    'start': moment(new Date(this.timestampToday)).subtract(1, 'days').valueOf(),
+                    'end': this.timestampToday
+                }
+            };
+            let filteredDataByOneDay = this.getProductionDataInPeriodRange(filteredDataByCompanies,dayTypeMapping[dayType].start,dayTypeMapping[dayType].end);
             return this.getDataOrderedByAsc(filteredDataByOneDay);
         },
 
@@ -255,6 +262,10 @@ export default {
             return _.filter(data, function (item) {
                 return self.company == item.dzo;
             });
+        },
+
+        getDzoName(acronym,mapping) {
+            return this.trans(mapping[acronym]);
         },
     },
     computed: {

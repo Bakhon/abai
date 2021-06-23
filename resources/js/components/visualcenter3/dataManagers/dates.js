@@ -23,6 +23,7 @@ export default {
             selectedDate: "",
             selectedDMY: 0,
             timeSelect: "",
+            chemistrySelectedDate: moment().format("MMMM-yyyy"),
             DMY: this.trans("visualcenter.day"),
             month: new Date().getMonth() + 1,
             year: new Date().getFullYear(),
@@ -88,6 +89,8 @@ export default {
         setPreviousPeriod() {
             this.previousPeriodStart = moment(new Date(this.timestampToday)).subtract(this.quantityRange, 'days').format('DD.MM.YYYY');
             this.previousPeriodEnd = moment(new Date(this.timestampToday)).subtract(1, 'days').format('DD.MM.YYYY');
+            this.currentMonthDateStart = moment(new Date(this.timestampToday)).subtract(1, 'months').format('MMMM YYYY');
+            this.currentMonthDateEnd = moment(new Date(this.timestampEnd)).subtract(1, 'months').format('MMMM YYYY');
         },
 
         isOneDatePeriodSelected() {
@@ -127,8 +130,8 @@ export default {
             let nowDate = new Date(this.range.start).toLocaleDateString();
             let oldDate = new Date(this.range.end).toLocaleDateString();
             this.timeSelect = nowDate;
+            this.chemistrySelectedDate = moment(new Date(this.range.start).toString()).format("MMM yyyy");
             this.timeSelectOld = oldDate;
-
             this.updateProductionData(this.planFieldName, this.factFieldName, this.chartHeadName, this.metricName, this.chartSecondaryName);
             this.getCurrencyNow(new Date().toLocaleDateString());
             this.getAccidentTotal();

@@ -141,7 +141,7 @@
 </template>
 
 <script>
-
+import Vue from 'vue';
 import {Plotly} from "vue-plotly";
 import {PerfectScrollbar} from "vue2-perfect-scrollbar";
 import "vue2-perfect-scrollbar/dist/vue2-perfect-scrollbar.css";
@@ -242,17 +242,6 @@ export default {
   },
 
   methods: {
-    noDataNotify() {
-      setTimeout(this.noDataNotifyMethod, 2000)
-    },
-    noDataNotifyMethod() {
-        this.$notify({
-          message: this.trans('pgno.no_data'),
-          type: 'error',
-          size: 'sm',
-          timeout: 8000
-        })
-      },
     closestVal(num, arr) {
         var curr = arr[0],
         diff = Math.abs(num * -1 - curr),
@@ -269,18 +258,18 @@ export default {
         },
 
       buildModel(){
-        this.hPumpFromIncl = this.$store.getters.getHpump
+        this.hPumpFromIncl = this.$store.getters.hPump
         var wi = this.wellIncl.split('_');
         let uri = "http://172.20.103.187:7575/api/pgno/incl";
         this.$emit('update:isLoading', true);
-        this.hPumpFromIncl = this.$store.getters.getHpump
-
         if (this.expChoose == 'ШГН'){
           this.lift_method="ШГН"
-          this.step=10
+          this.stepImage = 10
+          this.stepCalc = this.$store.getters.inclStep
         } else {
           this.lift_method="ЭЦН"
           this.step=20
+          this.stepCalc = 20
         }
 
         let jsonData = JSON.stringify(
@@ -288,13 +277,23 @@ export default {
             "lift_method": this.lift_method,
             "field": wi[0],
             "glubina": this.hPumpFromIncl.substring(0,4) * 1,
-            "step": this.step,
+            "step": this.stepImage,
+            "step_calc": this.stepCalc,
           }
         )
        
         this.axios.post(uri,jsonData).then((response) => {
-          var data = JSON.parse(response.data.InclData)
-          if (data.data) {
+          if (response.data.InclData == "NoIncl") {
+            this.$modal.hide('modalIncl') 
+            this.$notify({
+              message: this.trans('pgno.no_incl_data'),
+              type: 'error',
+              size: 'sm',
+              timeout: 8000
+            })
+            this.$emit('update:isLoading', false)
+          } else {
+            var data = JSON.parse(response.data.InclData)
             this.data = data.data
             this.dxArray = this.data.map((r) => Math.abs(r.dx * 1))
             this.dyArray = this.data.map((r) => Math.abs(r.dy * 1))
@@ -364,7 +363,7 @@ export default {
             ],
             this.point = []
 
-          } else this.data = [];
+          }
         }).finally(() => {
           this.$emit('update:isLoading', false);
         })

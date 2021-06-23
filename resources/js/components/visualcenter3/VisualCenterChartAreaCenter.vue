@@ -14,11 +14,12 @@
 import VueApexCharts from "vue-apexcharts";
 import { EventBus } from "../../event-bus.js";
 
-Vue.component("apexchart", VueApexCharts);
 export default {
   name: "mix-chart",
   props: ["postTitle"],
-
+  components: {
+    "apexchart": VueApexCharts
+  },
   data: function () {
     return {
       bigTable:'',

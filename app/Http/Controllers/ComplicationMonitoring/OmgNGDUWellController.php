@@ -116,11 +116,16 @@ class OmgNGDUWellController extends CrudController
             $params['links']['create'] = route($this->modelName.'.create');
         }
 
+        $params['model_name'] = $this->modelName;
+        $params['filter'] = session($this->modelName.'_filter');
+
         return view('omgngdu_well.index', compact('params'));
     }
 
     public function list(IndexTableRequest $request)
     {
+        parent::list($request);
+
         $query = OmgNGDUWell::query()
             ->with('zu', 'well');
 

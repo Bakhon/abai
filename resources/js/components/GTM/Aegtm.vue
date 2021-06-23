@@ -2,10 +2,10 @@
     <div>
         <div class="row mx-0 mt-lg-2 gtm">
             <div class="gtm-dark col-lg-10 p-0">
-                <div class="row col-12 p-0 m-0">
+                <div class="row col-12 p-0 m-0 mb-4">
                     <div class="col-6 d-none d-lg-block p-0 pl-1">
                         <div class="h-100">
-                            <div class="block-header pb-0 pl-2 pt-1">
+                            <div class="block-header pb-0 pl-2 pt-2 pb-2">
                                 {{ trans('paegtm.accumulatedOilProdTitle') }}
                             </div>
                             <div class="p-1 pl-2 mh-370">
@@ -21,7 +21,7 @@
                     </div>
                     <div class="col-6 d-none d-lg-block p-0">
                         <div class="h-100">
-                            <div class="block-header pb-0 pl-2 pt-1">
+                            <div class="block-header pb-0 pl-2 pt-2 pb-2">
                                 {{ trans('paegtm.comparisonIndicatorsTitle') }}
                             </div>
                             <div class="p-1 pl-2 h-75">
@@ -51,57 +51,75 @@
                     </div>
                 </div>
                 <div class="row col-12 p-0 m-0">
-                    <div class="col-6 d-none d-lg-block p-0 pl-1">
-                        <div class="h-100">
-                            <div class="block-header pb-0 pl-2">
-                                {{ trans('paegtm.profitabilityIndexTitle') }}
-                            </div>
-                            <div class="p-1 pl-2">
-                                <bar-chart :height="360"></bar-chart>
-                            </div>
+                    <div class="col-6 d-none d-lg-block p-2 pl-1">
+                        <div class="block-header pb-2">
+                            {{ trans('paegtm.profitabilityIndexTitle') }}
+                        </div>
+                        <div class="chart-wrapper p-3 min-h-420">
+                            <bar-chart :height="360"></bar-chart>
                         </div>
                     </div>
-                    <div class="col-6 d-none d-lg-block p-0">
-                        <div class="h-100 pb-2">
-                            <div class="block-header pb-0 pl-2">
-                                {{ trans('paegtm.plannedGrowthReasonsTitle') }}
-                            </div>
-                            <div class="p-1 pl-2">
-                                <doughnut-chart :height="180"></doughnut-chart>
-                            </div>
+                    <div class="col-6 d-none d-lg-block p-2">
+                        <div class="block-header pb-0 pl-2 pb-2">
+                            {{ trans('paegtm.successfulWellsProportionTitle') }}
+                        </div>
+                        <div class="chart-wrapper p-3 min-h-420">
+                            <doughnut-chart :height="180"></doughnut-chart>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="col-lg-2 p-0 pl-2 pr-1">
-                <div class="gtm-dark">
-                    <div class="block-header text-center p-2">
-                        НДО
-                    </div>
-                    <div class="gtm-dark table-responsive table-scroll m-0">
-                        <table class="table table-striped table-borderless text-center text-white near-wells-big">
-                            <tbody>
-                            <tr class="near-wells-table-item" v-for="ndoItem in ndo">
-                                <td v-for="item in ndoItem">{{ item }}</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                <div class="gtm-dark p-2">
+                    <v-select
+                        :options="dzosForFilter"
+                        label="name"
+                        :placeholder="this.trans('paegtm.select_dzo')"
+                    >
+                    </v-select>
+                    <v-select
+                        :options="oilFieldsForFilter"
+                        label="name"
+                        :placeholder="this.trans('paegtm.select_oil_field')"
+                    >
+                    </v-select>
+
+                    <v-select
+                        :options="objectsForFilter"
+                        label="name"
+                        :placeholder="this.trans('paegtm.select_object')"
+                    >
+                    </v-select>
+
+                    <v-select
+                        :options="structuresForFilter"
+                        label="name"
+                        :placeholder="this.trans('paegtm.select_structure')"
+                    >
+                    </v-select>
+
+                    <v-select
+                        :options="gusForFilter"
+                        label="name"
+                        :placeholder="this.trans('paegtm.select_gu')"
+                    >
+                    </v-select>
+
                 </div>
                 <div class="mt-2">
                     <gtm-date-picker @dateChanged="getData"></gtm-date-picker>
                 </div>
                 <div class="gtm-dark mt-2">
                     <div class="block-header text-center p-2">
-                        Вид ГТМ
+                        {{ trans('paegtm.gtmType') }}
                     </div>
                     <div class="gtm-dark text-white pl-2">
-                        1) Все ГТМ <br />
-                        2) ВНС <br />
-                        3) ГРП <br />
-                        4) ПВЛГ <br />
-                        5) ПВР <br />
-                        6) РИР <br />
+                        {{ trans('paegtm.all_gtm') }}<br>
+                        {{ trans('paegtm.gtm_vns') }}<br>
+                        {{ trans('paegtm.gtm_grp') }}<br>
+                        {{ trans('paegtm.gtm_pvlg') }}<br>
+                        {{ trans('paegtm.gtm_pvr') }}<br>
+                        {{ trans('paegtm.gtm_rir') }}<br>
                     </div>
                 </div>
                 <div class="gtm-dark mt-2 row m-0">
@@ -109,11 +127,29 @@
                         <img src="/img/GTM/lens.svg">
                     </div>
                     <div class="col-11 m-0 mt-1 mb-1 row p-0">
-                        <input class="search-input w-75" type="text" placeholder="Поиск по скважине">
-                        <button class="search-button pl-2 pr-2">Поиск</button>
+                        <input class="search-input w-75" type="text" :placeholder="this.trans('paegtm.search_by_well')">
+                        <button class="search-button pl-2 pr-2">{{ trans('paegtm.search') }}</button>
                     </div>
                     <div class="gtm-dark text-white pl-2" style="min-height: 156px;">
-                        Все скважины
+                        {{ trans('paegtm.all_wells') }}
+                    </div>
+                </div>
+                <div class="gtm-dark mt-2 row m-0 mb-2">
+                    <div class="gtm-indicator-item flex-fill d-inline-block p-2">
+                        <div class="bigNumber">356 <span class="units">{{ trans('paegtm.successful_events_count') }}</span></div>
+                        <div class="title">{{ trans('paegtm.gtm_and_vns_count') }}</div>
+                        <div class="progress gtm-progress mb-0">
+                            <div
+                                class="progress-bar"
+                                role="progressbar"
+                                style="width: 89%"
+                            >
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-between m-0 mt-1">
+                            <div class="d-inline-block m-0 text-white dr-fw-700">89,25%</div>
+                            <div class="progressMax d-inline-block m-0">291 167</div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -122,7 +158,12 @@
 </template>
 
 <script>
+import {paegtmMapActions} from '@store/helpers';
+import Vue from "vue";
 import VueChartJs from 'vue-chartjs'
+import vSelect from 'vue-select'
+import 'vue-select/dist/vue-select.css'
+
 Vue.component('bar-chart', {
     extends: VueChartJs.Bar,
     mounted () {
@@ -197,23 +238,19 @@ Vue.component('bar-chart', {
 Vue.component('doughnut-chart', {
     extends: VueChartJs.Doughnut,
     mounted () {
+        let that = this
         this.renderChart({
             labels: [
-                'Обводненность',
-                'Выработка запасов',
-                'Низкое РПЛ',
-                'Технологическая',
-                'Ухудшение ФЕС',
-                'ГНО',
-                'Выход на режим'
+                this.trans('paegtm.successful'),
+                this.trans('paegtm.unsuccessful')
             ],
             datasets: [
                 {
                     hoverBackgroundColor: '#ccc',
                     borderColor: '#272953',
                     borderWidth: 2,
-                    data: [35, 55, 17, 16, 12, 15, 5],
-                    backgroundColor: ["#EF5350", "#4CAF50", "#F0AD81", "#2196F3", "#F27E31", "#3F51B5", "#3951CE"],
+                    data: [27, 73],
+                    backgroundColor: ["#4CAF50", "#EF5350"],
                 }
             ],
         }, {
@@ -230,24 +267,22 @@ Vue.component('doughnut-chart', {
             },
             onClick: function (event, legendItem) {
                 let legendItemIndex = legendItem[0]['_index'];
+
+                that.$emit('menuClick', {
+                    name: "child-component",
+                    template: "<div><gtm-aegtm-unsuccessful-distribution></gtm-aegtm-unsuccessful-distribution></div>",
+                    parentType: "aegtm"
+                });
             }
         })
     }
 });
 export default {
+    components: {
+        vSelect
+    },
     data: function () {
         return {
-            ndo: [
-                ['ОМГ', '', ''],
-                ['ЭМГ', 'Жетыбай', 'Ю-2+3'],
-                ['', '', 'Ю-4'],
-                ['', '', 'Ю-5'],
-                ['', '', 'Ю-6'],
-                ['', '', ''],
-                ['', '', ''],
-                ['', 'Асар', ''],
-                ['', 'Каламкас', ''],
-            ],
             comparisonIndicators: [],
             accumOilProdLabels: [],
             accumOilProdFactData: [],
@@ -283,6 +318,28 @@ export default {
                     }],
                 }
             },
+            dzosForFilter: [
+                { name: 'АО "Озенмунайгаз"', code: 'omg'},
+                { name: 'АО "ЭмбаМунайГаз"',code: 'emba'},
+                { name: 'АО "Мангистаумунайгаз"',code: 'mmg'},
+                { name: 'АО "Каражанбасмунай"',code: 'krm'},
+                { name: 'ТОО "СП "Казгермунай"',code: 'kazger'},
+                { name: 'ТОО "Казтуркмунай"',code: 'ktm'},
+                { name: 'ТОО "Казахойл Актобе"',code: 'koa'},
+            ],
+            oilFieldsForFilter: [
+                { name: 'Акшабулак', code: 'oil_1'},
+                { name: 'Актобе', code: 'oil_2'},
+                { name: 'Алтыколь', code: 'oil_3'},
+                { name: 'Жетыбай', code: 'oil_4'},
+                { name: 'Жыланды', code: 'oil_5'},
+                { name: 'Жыланды', code: 'oil_6'},
+                { name: 'Каламкас', code: 'oil_7'},
+                { name: 'Каражанбас', code: 'oil_8'},
+            ],
+            objectsForFilter: [{ name: 'Вариант 1'}],
+            structuresForFilter: [{ name: 'Вариант 1'}],
+            gusForFilter: [{ name: 'Вариант 1'}],
             loaded: false,
         };
     },

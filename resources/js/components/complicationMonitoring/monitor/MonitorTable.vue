@@ -527,6 +527,7 @@
 </template>
 
 <script>
+import Vue from "vue";
 import Calendar from "v-calendar/lib/components/calendar.umd"
 import DatePicker from "v-calendar/lib/components/date-picker.umd"
 import VueTableDynamic from 'vue-table-dynamic'
@@ -839,7 +840,7 @@ export default {
               this.corA = data.corrosion_rate_mm_per_y_point_A
               this.corE = data.corrosion_rate_mm_per_y_point_E
               this.corF = data.corrosion_rate_mm_per_y_point_F
-              this.dose = this.corA < 0.15 ? 0 : data.max_dose;
+              this.dose = data.max_dose;
               this.result = data
               this.t_final_celsius_point_F = data.t_final_celsius_point_F.toFixed(1)
               this.final_pressure = data.final_pressure_bar_point_F.toFixed(2)

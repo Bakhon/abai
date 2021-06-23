@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use \Spatie\Permission\Models\Permission;
 
 class PodborGNOPermissionsSeeder extends Seeder
 {
@@ -11,11 +12,8 @@ class PodborGNOPermissionsSeeder extends Seeder
      */
     public function run()
     {
-        \Spatie\Permission\Models\Permission::create(
-            [
-                'name' => 'podborGno view main',
-      //          'guard' => 'web'
-            ]
-        );
+        $permission = new Permission();
+        $permission->name = "podborGno view main";
+        $permission->save();
     }
 }

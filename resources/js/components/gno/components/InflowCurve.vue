@@ -13,13 +13,16 @@
 </template>
 
 <script>
+import Vue from 'vue';
 import { Plotly } from "vue-plotly";
 
 Vue.prototype.$eventBus = new Vue();
-Vue.component("Plotly", Plotly);
 export default {
 
   name: "mix-chart",
+  components: {
+    Plotly
+  },
   props: ["postTitle"],
   data: function () {
     return {

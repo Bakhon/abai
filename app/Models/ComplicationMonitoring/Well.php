@@ -3,14 +3,23 @@
 namespace App\Models\ComplicationMonitoring;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Well extends Model
 {
+    use LogsActivity, SoftDeletes;
+
     protected $guarded = ['id'];
     protected $hidden = [
         'created_at',
         'updated_at'
     ];
+
+    protected static $logAttributes = ['*'];
+    protected static $logAttributesToIgnore = ['updated_at', 'created_at', 'deleted_at'];
+    protected static $logOnlyDirty = true;
+    protected static $submitEmptyLogs = false;
 
     public function zu()
     {

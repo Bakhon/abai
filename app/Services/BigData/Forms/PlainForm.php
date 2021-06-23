@@ -7,13 +7,14 @@ namespace App\Services\BigData\Forms;
 use App\Exceptions\BigData\SubmitFormException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 abstract class PlainForm extends BaseForm
 {
     protected $jsonValidationSchemeFileName = 'plain_form.json';
 
-    protected function getFields(): \Illuminate\Support\Collection
+    protected function getFields(): Collection
     {
         $fields = collect();
         foreach ($this->params()['tabs'] as $tab) {
@@ -31,7 +32,7 @@ abstract class PlainForm extends BaseForm
 
     public function submit(): array
     {
-        DB::beginTransaction();
+        DB::connection('tbd')->beginTransaction();
 
         try {
             $tableFields = $this->getFields()
@@ -58,21 +59,12 @@ abstract class PlainForm extends BaseForm
                 $id = $dbQuery->insertGetId($data);
             }
 
-            if (!empty($tableFields)) {
-                foreach ($tableFields as $field) {
-                    if (!empty($this->request->get($field['code']))) {
-                        foreach ($this->request->get($field['code']) as $data) {
-                            $data[$field['parent_column']] = $id;
-                            DB::connection('tbd')->table($field['table'])->insert($data);
-                        }
-                    }
-                }
-            }
+            $this->insertInnerTable($tableFields, $id);
 
-            DB::commit();
+            DB::connection('tbd')->commit();
             return (array)DB::connection('tbd')->table($this->params()['table'])->where('id', $id)->first();
         } catch (\Exception $e) {
-            DB::rollBack();
+            DB::connection('tbd')->rollBack();
             throw new SubmitFormException($e->getMessage());
         }
     }
@@ -105,7 +97,8 @@ abstract class PlainForm extends BaseForm
             return response()->json(
                 [
                     'rows' => $rows,
-                    'columns' => $columns
+                    'columns' => $columns,
+                    'form' => $this->params()
                 ]
             );
         } catch (\Exception $e) {
@@ -118,7 +111,12 @@ abstract class PlainForm extends BaseForm
         }
     }
 
-    public function calcFields(int $wellId, array $values): array
+    public function getCalculatedFields(int $wellId, array $values): array
+    {
+        return [];
+    }
+
+    public function getFormByRow(array $row): array
     {
         return [];
     }
@@ -130,6 +128,20 @@ abstract class PlainForm extends BaseForm
             ->delete($rowId);
 
         return response()->json([], Response::HTTP_NO_CONTENT);
+    }
+
+    protected function insertInnerTable(Collection $tableFields, int $id)
+    {
+        if (!empty($tableFields)) {
+            foreach ($tableFields as $field) {
+                if (!empty($this->request->get($field['code']))) {
+                    foreach ($this->request->get($field['code']) as $data) {
+                        $data[$field['parent_column']] = $id;
+                        DB::connection('tbd')->table($field['table'])->insert($data);
+                    }
+                }
+            }
+        }
     }
 
 }
