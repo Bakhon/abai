@@ -1,6 +1,6 @@
 {
   "type": "plain",
-  "table": "prod.well_geo",
+  "table": "prod.well_org",
   "tabs": [
     {
       "title": "title",
@@ -10,12 +10,11 @@
             "title": "",
             "items": [
               {
-                "code": "geo",
+                "code": "org",
                 "type": "dict",
-                "dict": "geos",
-                "title": "geo",
-                "validation": "",
-                "is_editable": "false"
+                "dict": "orgs",
+                "title": "org",
+                "validation": "exists:tbd.dict.org,id"
               },
               {
               "code": "dbeg",

@@ -25,8 +25,7 @@
   'well_expl' => '\\App\\Services\\BigData\\Forms\\WellExpl',
   'well_status' => '\\App\\Services\\BigData\\Forms\\WellStatus',
   'water_inj' => '\\App\\Services\\BigData\\Forms\\WaterInj',
-  'well_perf' => '\\App\\Services\\BigData\\Forms\\WellPerf',
   'gas_production' => '\\App\\Services\\BigData\\Forms\\GasProduction',
   'production_program' => '\\App\\Services\\BigData\\Forms\\ProductionProgram',
-  'geo_structure' => '\\App\\Services\\BigData\\Forms\\GeoStructure',
+  'org_structure' => '\\App\\Services\\BigData\\Forms\\OrgStructure',
 );

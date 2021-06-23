@@ -183,7 +183,7 @@ class DictionaryService
     const TREE_DICTIONARIES = [
         'orgs' => [
             'class' => Org::class,
-            'name_field' => 'name'
+            'name_field' => 'name_ru'
         ]
     ];
 
@@ -241,9 +241,9 @@ class DictionaryService
         $nameField = self::TREE_DICTIONARIES[$dict]['name_field'] ?? 'name';
 
         $items = $dictClass::query()
-            ->select('id', 'parent_id')
+            ->select('id', 'parent')
             ->selectRaw("$nameField as label")
-            ->orderBy('parent_id', 'asc')
+            ->orderBy('parent', 'asc')
             ->orderBy($nameField, 'asc')
             ->get()
             ->toArray();
@@ -255,7 +255,7 @@ class DictionaryService
     {
         $new = [];
         foreach ($items as $item) {
-            $new[$item['parent_id']][] = $item;
+            $new[$item['parent']][] = $item;
         }
         return $this->createTree($new, $new[null]);
     }
