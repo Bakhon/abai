@@ -41,7 +41,20 @@ class WellsController extends Controller
             'meas_liq' => $this->measLiq($well),
             'meas_water_cut' => $this->measWaterCut($well),
             'krs_well_workover' => $this->krsWellWorkover($well),
+            'prs_well_workover' => $this->prsWellWorkover($well),
             'well_treatment' => $this->wellTreatment($well),
+            'well_treatment_sko' => $this->wellTreatmentSko($well),
+            'gdis_current' => $this->gdisCurrent($well),
+            'gdis_conclusion' => $this->gdisConclusion($well),
+            'gdis_current_value' => $this->gdisCurrentValue($well),
+            'gdis_current_value_pmpr' => $this->gdisCurrentValuePmpr($well),
+            'gdis_current_value_flvl' => $this->gdisCurrentValueFlvl($well),
+            'gdis_current_value_static' => $this->gdisCurrentValueStatic($well),
+            'gdis_current_value_rp' => $this->gdisCurrentValueRp($well),
+            'gdis_current_value_bhp' => $this->gdisCurrentValueBhp($well),
+            'gdis_complex' => $this->gdisComplex($well),
+            'gis' => $this->gis($well),
+            'zone' => $this->zone($well),
         );
     }
 
@@ -98,8 +111,8 @@ class WellsController extends Controller
     private function geo(Well $well)
     {
         return $well->geo()
-            ->wherePivot('dend', '<>', $this->getToday())
-            ->wherePivot('dbeg', '<>', $this->getToday())
+            ->wherePivot('dend', '>', $this->getToday())
+            ->wherePivot('dbeg', '<=', $this->getToday())
             ->withPivot('dend', 'dbeg')
             ->orderBy('pivot_dbeg')
             ->first(['name_ru']);
@@ -210,6 +223,14 @@ class WellsController extends Controller
             ->first(['water_cut']);
     }
 
+    private function prsWellWorkover(Well $well)
+    {
+        return $well->wellWorkover()
+            ->where('repair_type', '=', '3')
+            ->orderBy('dbeg', 'desc')
+            ->first(['dbeg', 'dend']);
+    }
+
     private function krsWellWorkover(Well $well)
     {
         return $well->wellWorkover()
@@ -221,9 +242,119 @@ class WellsController extends Controller
     private function wellTreatment(Well $well)
     {
         return $well->wellTreatment()
+            ->where('treatment_type', '=', '14')
+            ->first(['treat_date']);
+    }
+
+    private function gdisCurrent(Well $well)
+    {
+        return $well->gdisCurrent()
+            ->orderBy('meas_date', 'desc')
+            ->first(['meas_date', 'note']);
+    }
+
+    private function wellTreatmentSko(Well $well)
+    {
+        return $well->wellTreatment()
             ->where('treatment_type', '=', '21')
             ->first(['treat_date']);
     }
+
+    private function gdisConclusion(Well $well)
+    {
+        return $well->gdisConclusion()
+            ->withPivot('meas_date')
+            ->orderBy('pivot_meas_date', 'desc')
+            ->first(['name_ru']);
+    }
+
+    private function gdisCurrentValue(Well $well)
+    {
+        return $well->gdisCurrentValue()
+            ->join('dict.metric', 'prod.gdis_current_value.metric', '=', 'dict.metric.id')
+            ->withPivot('meas_date')
+            ->where('metric.code', '=', 'PLST')
+            ->orderBy('pivot_meas_date', 'desc')
+            ->first(['value_double']);
+    }
+
+    private function gdisCurrentValuePmpr(Well $well)
+    {
+        return $well->gdisCurrentValue()
+            ->join('dict.metric', 'prod.gdis_current_value.metric', '=', 'dict.metric.id')
+            ->withPivot('meas_date')
+            ->where('metric.code', '=', 'PMPR')
+            ->orderBy('pivot_meas_date', 'desc')
+            ->first(['value_double']);
+    }
+
+    private function gdisCurrentValueFlvl(Well $well)
+    {
+        return $well->gdisCurrentValue()
+            ->join('dict.metric', 'prod.gdis_current_value.metric', '=', 'dict.metric.id')
+            ->withPivot('meas_date')
+            ->where('metric.code', '=', 'FLVL')
+            ->orderBy('pivot_meas_date', 'desc')
+            ->first(['value_double']);
+    }
+
+    private function gdisCurrentValueStatic(Well $well)
+    {
+        return $well->gdisCurrentValue()
+            ->join('dict.metric', 'prod.gdis_current_value.metric', '=', 'dict.metric.id')
+            ->withPivot('meas_date')
+            ->where('metric.code', '=', 'STLV')
+            ->orderBy('pivot_meas_date', 'desc')
+            ->first(['value_double']);
+    }
+
+    private function gdisCurrentValueRp(Well $well)
+    {
+        return $well->gdisCurrentValue()
+            ->join('dict.metric', 'prod.gdis_current_value.metric', '=', 'dict.metric.id')
+            ->withPivot('meas_date')
+            ->where('metric.code', '=', 'RP')
+            ->orderBy('pivot_meas_date', 'desc')
+            ->first(['value_double', 'meas_date']);
+    }
+
+    private function gdisCurrentValueBhp(Well $well)
+    {
+        return $well->gdisCurrentValue()
+            ->join('dict.metric', 'prod.gdis_current_value.metric', '=', 'dict.metric.id')
+            ->withPivot('meas_date')
+            ->where('metric.code', '=', 'BHP')
+            ->orderBy('pivot_meas_date', 'desc')
+            ->first(['value_double', 'meas_date']);
+    }
+
+    private function gdisComplex(Well $well)
+    {
+        return $well->gdisComplex()
+            ->join('dict.metric', 'prod.gdis_complex_value.metric', '=', 'dict.metric.id')
+            ->withPivot('research_date as research_date')
+            ->where('metric.code', '=', 'RP')
+            ->orderBy('research_date', 'desc')
+            ->first(['value_double', 'research_date']);
+    }
+
+    private function gis(Well $well)
+    {
+        return $well->gis()
+            ->where('gis_type', '=', '1')
+            ->orderBy('gis_date', 'desc')
+            ->first(['gis_date']);
+    }
+
+    private function zone(Well $well)
+    {
+        return $well->zone()
+            ->withPivot('dend as dend')
+            ->wherePivot('dend', '>=', $this->getToday())
+            ->orderBy('dend', 'desc')
+            ->first(['name_ru', 'dend']);
+    }
+
 
     public function search(Request $request): array
     {
