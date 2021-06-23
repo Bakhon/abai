@@ -87,6 +87,8 @@ Route::group(
                 Route::get('wells/{well}', 'Api\DB\WellsController@get');
                 Route::get('wells/{well}/wellInfo', 'Api\DB\WellsController@wellInfo');
 
+                Route::get('wells/{wellParent}/wellParents', 'Api\DB\WellsController@wellParents');
+
                 Route::get('tech/wells', 'Api\DB\TechController@getWellsById');
             }
         );

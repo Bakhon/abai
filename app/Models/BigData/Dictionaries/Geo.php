@@ -22,6 +22,12 @@ class Geo extends TBDModel
         return $result ? Geo::find($result->parent) : null;
     }
 
+    public function firstParent()
+    {
+        return $this->belongsToMany($this, 'dict.geo_parent', 'geo_id', 'parent')
+            ->select('parent', 'name_ru');
+    }
+
     public function children()
     {
         return $this->hasMany(Geo::class, 'parent_id', 'id');

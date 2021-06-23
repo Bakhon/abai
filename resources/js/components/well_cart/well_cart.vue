@@ -268,6 +268,7 @@ export default {
         'gdisCurrentValueBhp': {'value_double': null, 'meas_date': null},
         'zone': {'name_ru': null},
       },
+      wellParent: null,
       tubeNomOd: null,
       wellTechs: null,
       wellTechsName: null,
@@ -379,7 +380,11 @@ export default {
         }
         this.loading = false
         this.setTableData()
-      })
+      }),
+          this.axios.get(this.localeUrl(`/api/bigdata/wells/${731}/wellParents`)).then(({data}) => {
+
+              },
+          )
     },
     setTableData() {
       for (let i = 0; i < this.tableData.length; i++) {
@@ -1839,7 +1844,8 @@ h4 {
     & ~ .mid-col {
       min-width: calc(100% - #{$leftColumnFoldedWidth} - #{$rightColumnWidth} - 9px);
     }
-    .scrollable{
+
+    .scrollable {
       height: 100%;
     }
 

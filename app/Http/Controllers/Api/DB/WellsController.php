@@ -63,6 +63,11 @@ class WellsController extends Controller
         return Carbon::today();
     }
 
+    public function wellParents($wellParent)
+    {
+        return $wellParent;
+    }
+
     public function get(Well $well)
     {
         return $well;
