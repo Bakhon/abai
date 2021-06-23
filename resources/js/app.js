@@ -112,6 +112,7 @@ Vue.component('gtm-main-page', require('./components/GTM/Main.vue').default);
 Vue.component('gtm-main-indicator', require('./components/GTM/MainIndicator.vue').default);
 Vue.component('gtm-aegtm', require('./components/GTM/Aegtm.vue').default);
 Vue.component('gtm-aegtm-eco', require('./components/GTM/AegtmEco.vue').default);
+Vue.component('gtm-aegtm-unsuccessful-distribution', require('./components/GTM/AegtmUnsuccessfulDistribution.vue').default);
 Vue.component('gtm-podbor-gtm', require('./components/GTM/PodborGTM.vue').default);
 Vue.component('gtm-digital-rating-gtm', require('./components/GTM/DigitalRating.vue').default);
 Vue.component('gtm-etu', require('./components/GTM/Etu.vue').default);
