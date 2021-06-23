@@ -1,0 +1,71 @@
+.custom-date-picker .el-date-picker__header-label {
+    color: black;
+}
+.custom-date-picker .el-month-table td .cell {
+    color: black;
+    background: white;
+}
+.custom-date-picker .td.today.start-date.cell {
+    color: black;
+}
+
+.custom-date-picker {
+    width: 472px;
+}
+
+.custom-date-picker .el-picker-panel__body {
+    min-width: 472px;
+}
+
+.el-picker-panel__body {
+    min-width: 472px;
+}
+
+
+.custom-date-picker .el-picker-panel__content {
+    width: 100%;
+}
+
+.el-date-editor .el-range__icon, .el-date-editor .el-range__close-icon {
+    display: none;
+}
+
+.el-range-input {
+    position: relative;
+    background: #333975;
+    color: #9EA4C9 !important;
+}
+
+.el-month-table td.today.end-date .cell, .el-month-table td.today.start-date .cell {
+    color: black;
+}
+
+.el-range-editor.el-input__inner {
+    display: block;
+}
+
+.button2:hover .el-range-input {
+    color:white !important;
+    background:#2e50e9;
+}
+
+.el-range-separator {
+    color: #9EA4C9 !important;
+}
+
+.el-input__inner {
+    position: relative;
+    background: #333975;
+    height: 40px;
+    text-align: center;
+    line-height: 40px;
+    color: #9EA4C9;
+}
+
+.el-date-editor.el-input, .el-date-editor.el-input__inner {
+    width: 100%;
+}
+
+.el-range-editor {
+    border: none;
+}
