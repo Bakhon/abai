@@ -60,7 +60,7 @@
                 <ul>
 
                   <li @click="onClickOption(structureType);"
-                  v-for="structureType in structureTypes[currentStructureType]" class="dropdown-item">
+                      v-for="structureType in structureTypes[currentStructureType]" class="dropdown-item">
 
                     <div class="dropdown-item-inner">
                       <a href="#">
@@ -81,16 +81,16 @@
         </div>
         <div class="row">
           <div class="left-section-select-area">
-          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"
-               xmlns="http://www.w3.org/2000/svg">
-            <path d="M0 0.000249982L4.66665 5.3335V10.6667L7.33335 12V5.33325L12 0H6.00012L0 0.000249982Z"
-                  fill="white" fill-opacity="0.3"/>
-          </svg>
-          <form @click="isDisplayParameterBuilder = !isDisplayParameterBuilder">
-            <input type="text" placeholder="Выбор параметров" id="parametr-search">
-            </input>
-          </form>
-            </div>
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none"
+                 xmlns="http://www.w3.org/2000/svg">
+              <path d="M0 0.000249982L4.66665 5.3335V10.6667L7.33335 12V5.33325L12 0H6.00012L0 0.000249982Z"
+                    fill="white" fill-opacity="0.3"/>
+            </svg>
+            <form @click="isDisplayParameterBuilder = !isDisplayParameterBuilder">
+              <input type="text" placeholder="Выбор параметров" id="parametr-search">
+              </input>
+            </form>
+          </div>
         </div>
         <div class="row">
           <div class="table-wrapper col">
@@ -144,7 +144,7 @@
                   </div>
 
                   <div class="btn-container">
-                    <button class="btn-disabled" disabled>Создать отчет</button>
+                    <button class="btn-disabled" @click="updateStatistics()">Создать отчет</button>
                     <button class="">Выбрать шаблон</button>
                   </div>
                 </div>
@@ -223,198 +223,24 @@
               </div>
               <div class="row">
                 <div class="table-wrapper col">
-                  <div class="table-container">
+                  <div class="table-container" v-if="statistics">
                     <table>
+                      <thead>
+                      <tr>
+                        <th rowspan="2" class="heading" v-for="column in statisticsColumns">
+                          <div class="centered">
+                            {{ getAttributeDescription(column) }}
+                          </div>
+                        </th>
+                      </tr>
+
+                      </thead>
                       <tbody>
-                      <tr>
-                        <td rowspan="2" class="cell-num heading">
-                          <div class="centered">
-                            №
-                          </div>
-                        </td>
-                        <td rowspan="2" class="heading">
-                          <div class="centered">
-                            Объект оргструктуры
-                          </div>
-                        </td>
-                        <td rowspan="2" class="heading">
-                          <div class="centered">
-                            Объект геоструктуры
-                          </div>
-                        </td>
-                        <td colspan="3" class="heading">
-                          <div class="centered">
-                            Параметры объекта
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td class="heading-child">
-                          <div class="centered ">Параметры скважин</div>
-                        </td>
-                        <td class="heading-child">
-                          <div class="centered">Параметры по добыче</div>
-                        </td>
-                        <td class="heading-child">
-                          <div class="centered">Параметры фонда</div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td class="table-body">
-                          <div class="centered">1</div>
-                        </td>
-                        <td class="table-body">
-                          <div class="centered">ГУ-16</div>
-                        </td>
-                        <td class="table-body ">
-                          <div class="centered">Макат Восточный</div>
-                        </td>
-                        <td class="table-body">
-                          <div class="centered">
-                            <button>Действующие скважины</button>
-                          </div>
-                        </td>
-                        <td class="table-body">
-                          <div class="centered">
-                            <button>МРП < 100</button>
-                          </div>
-                        </td>
-                        <td class="table-body">
-                          <div class="centered">
-                            <button>Действующий фонд</button>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td class="table-body">
-                          <div class="centered"></div>
-                        </td>
-                        <td class="table-body selected">
-                          <div class="centered">АКШ-16</div>
-                        </td>
-                        <td class="table-body selected">
-                          <div class="centered">Макат Восточный</div>
-                        </td>
-                        <td class="table-body">
-                          <div class="centered">
-                            Действующие скважины
-                          </div>
-                        </td>
-                        <td class="table-body">
-                          <div class="centered">
-                            100
-                          </div>
-                        </td>
-                        <td class="table-body">
-                          <div class="centered">
-                            Действующий фонд
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td class="table-body">
-                          <div class="centered"></div>
-                        </td>
-                        <td class="table-body selected">
-                          <div class="centered">АКШ-16</div>
-                        </td>
-                        <td class="table-body selected">
-                          <div class="centered">Макат Восточный</div>
-                        </td>
-                        <td class="table-body">
-                          <div class="centered">
-                            Действующие скважины
-                          </div>
-                        </td>
-                        <td class="table-body">
-                          <div class="centered">
-                            100
-                          </div>
-                        </td>
-                        <td class="table-body">
-                          <div class="centered">
-                            Действующий фонд
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td class="table-body">
-                          <div class="centered"></div>
-                        </td>
-                        <td class="table-body selected">
-                          <div class="centered">АКШ-16</div>
-                        </td>
-                        <td class="table-body selected">
-                          <div class="centered">Макат Восточный</div>
-                        </td>
-                        <td class="table-body">
-                          <div class="centered">
-                            Действующие скважины
-                          </div>
-                        </td>
-                        <td class="table-body">
-                          <div class="centered">
-                            100
-                          </div>
-                        </td>
-                        <td class="table-body">
-                          <div class="centered">
-                            Действующий фонд
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td class="table-body">
-                          <div class="centered"></div>
-                        </td>
-                        <td class="table-body selected">
-                          <div class="centered">АКШ-16</div>
-                        </td>
-                        <td class="table-body selected">
-                          <div class="centered">Макат Восточный</div>
-                        </td>
-                        <td class="table-body">
-                          <div class="centered">
-                            Действующие скважины
-                          </div>
-                        </td>
-                        <td class="table-body">
-                          <div class="centered">
-                            100
-                          </div>
-                        </td>
-                        <td class="table-body">
-                          <div class="centered">
-                            Действующий фонд
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td class="table-body">
-                          <div class="centered"></div>
-                        </td>
-                        <td class="table-body selected">
-                          <div class="centered">АКШ-16</div>
-                        </td>
-                        <td class="table-body selected">
-                          <div class="centered">Макат Восточный</div>
-                        </td>
-                        <td class="table-body">
-                          <div class="centered">
-                            Действующие скважины
-                          </div>
-                        </td>
-                        <td class="table-body">
-                          <div class="centered">
-                            100
-                          </div>
-                        </td>
-                        <td class="table-body">
-                          <div class="centered">
-                            Действующий фонд
-                          </div>
-                        </td>
-                      </tr>
+                        <tr v-for="row in statistics">
+                          <td class="table-body" v-for="column in statisticsColumns">
+                            <div class="centered">{{ row[column] }}</div>
+                          </td>
+                        </tr>
                       </tbody>
                     </table>
                   </div>
@@ -789,6 +615,7 @@ body {
   .menu {
     flex-wrap: wrap-reverse;
   }
+
   .dropdown-menu.show {
     background: #1A214A;
     width: 100%;
