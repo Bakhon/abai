@@ -1,9 +1,9 @@
 <template>
-  <div>
+  <div class="chart-border_color mt-3">
     <div>
       <div class="col px-2 container-col_color">
         <apexchart
-          height="250"
+          height="260"
           :options="chartOptions"
           :series="series"
         ></apexchart>
@@ -18,7 +18,7 @@ export default {
   components: {
     apexchart: VueApexCharts,
   },
-
+  props: ["chartSettings"],
   data: function () {
     return {
       series: [
@@ -122,7 +122,14 @@ export default {
         },
       },
     };
-  },
+  }, 
+    mounted(){    
+        this.chartSettings.xaxis.categories=[
+            "2011-01-01",
+            "2011-02-01",            
+          ];    
+        this.chartOptions = this.chartSettings;
+    }  
 };
 </script>
 

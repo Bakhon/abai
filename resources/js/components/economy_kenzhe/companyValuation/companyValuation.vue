@@ -1,21 +1,22 @@
 <template>
   <div class="row m-0">   
-    <div class="col-10 px-0 pl-2">
-      <div class="row col px-2 container-col_color">        
-      <div class="col charts px-0">
-            {{trans('economy_pf.companyValuationPage.pageName')}}
+    <div class="col-10 px-0">
+      <div class="row col px-2 container-col_color m-0">        
+      <div class="col charts px-0 mb-3">
+            <div style="position:absolute;">
+            {{trans('economy_pf.companyValuationPage.pageName')}}</div>
         <div class="chart-one">
-          <main-factors-chart></main-factors-chart>
+          <main-factors-chart :chartSettings="chartSettings"></main-factors-chart>
         </div>
         <div class="chart-two mt-2">
-          <cash-flow-dynamics-chart></cash-flow-dynamics-chart>
+          <cash-flow-dynamics-chart :chartSettings="chartSettings"></cash-flow-dynamics-chart>
         </div>
         <div class="chart-three mt-2">
-          <sensitivity-npv-chart> </sensitivity-npv-chart>          
-         </div> 
+          <sensitivity-npv-chart :chartSettings="chartSettings"> </sensitivity-npv-chart>          
+         </div > 
           </div>                     
-           <div class='table table-striped col mt-2'>
-             <table class="economics-table-color">
+           <div class='table table-striped col mt-3'>
+             <table class="table table-striped economics-table-color w-100 table-dark">
                <tr>
                  <th>{{trans('economy_pf.companyValuationPage.mainTechnicalAndEconomicIndicators')}}
                  </th>                          
@@ -29,9 +30,9 @@
                  </td>
                 </tr>
                 <tr>
-                 <td>Сценарий БП
+                 <td style="background-color:#454d7d">Сценарий БП
                  </td>
-                  <td>Корр. 6
+                  <td style="background-color:#454d7d">Корр. 6
                  </td>
                 </tr>
              </table>
@@ -92,6 +93,7 @@
   </div>
 </template>
 <script>
+import chartSettings from './charts/chart_settings.json';
 import selectFilterCompany from "../proactiveFactors/selectFilterData/company.json";
 import selectFilterVersionBp from "../proactiveFactors/selectFilterData/versionBp.json";
 import selectFilterPriceBrent from "../proactiveFactors/selectFilterData/priceBrent.json";
@@ -109,6 +111,7 @@ export default {
   },
   data: function () {
     return {
+      chartSettings: chartSettings,
       companyData: "",
       selectFilterCompany: selectFilterCompany,
       selectFilterVersionBp: selectFilterVersionBp,
@@ -121,6 +124,10 @@ export default {
       costAllocationBase: costAllocationBase,
     };
   },
+      mounted(){    
+        chartSettings.xaxis.categories=[2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016];  
+        this.chartOptionsMainFactors = chartSettings;
+    }  
 };
 </script>
 <style scoped>

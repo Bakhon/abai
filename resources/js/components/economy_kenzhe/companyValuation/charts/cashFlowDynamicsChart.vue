@@ -1,8 +1,8 @@
 <template>
-  <div>
+  <div class="chart-border_color mt-3">
     <div>
       <div class="col px-2 container-col_color">
-     <apexchart  height="250" :options="chartOptions" :series="series"></apexchart>
+     <apexchart  height="260" :options="chartOptions" :series="series"></apexchart>
       </div>
     </div>
   </div>
@@ -14,7 +14,7 @@ export default {
   components: {
     apexchart: VueApexCharts,
   },
-
+  props: ["chartSettings"],
   data: function () {
     return {
     series: [
@@ -90,8 +90,16 @@ export default {
         },
       },
       xaxis: {
-        type: "datetime",
-        categories: [
+        type: "datetime",        
+        labels: {
+          rotate: -90,
+        },
+      },
+    },
+   };    
+  }, 
+    mounted(){    
+        this.chartSettings.xaxis.categories= [
           "2011-01-01",
           "2011-02-01",
           "2011-03-01",
@@ -125,14 +133,9 @@ export default {
           "2013-07-01",
           "2013-08-01",
           "2013-09-01",
-        ],
-        labels: {
-          rotate: -90,
-        },
-      },
-    },
-   };    
-  },
+        ],  
+        this.chartOptions = this.chartSettings;
+    }  
 };
 </script>
 

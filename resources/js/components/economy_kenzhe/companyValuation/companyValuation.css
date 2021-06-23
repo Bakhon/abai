@@ -39,7 +39,27 @@
 {
 }
 
+.economics-table-color, .economics-table-color td, .economics-table-color th  {
+border: 1px solid #33396f!important;
+color: #fff; }
+
+
 .economics-table-color {
-  background: #323370;
+  background: #323370; 
 }
 
+.economics-table-color td {
+  background: #272953;
+}
+
+.economics-table-color th {
+  background: #323370!important;
+}
+
+.apexcharts-tooltip{
+  color:#000;
+}
+
+.chart-border_color {
+  border: 1px solid #33396f;
+}

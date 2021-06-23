@@ -1,11 +1,11 @@
 <template>
-  <div>
+  <div class="chart-border_color mt-3">
     <div>
       <div class="col px-2 container-col_color">
         <apexchart
           type="line"
-          height="250"      
-          :options="chartOptions"
+          height="260"      
+          :options="chartOptionsMainFactors"
           :series="series"
         ></apexchart>
       </div>
@@ -19,6 +19,7 @@ export default {
   components: {
     apexchart: VueApexCharts,
   },
+  props: ["chartSettings"],
   data: function () {
     return {
       series: [
@@ -43,15 +44,12 @@ export default {
           data: [50, 29, 37, 36, 44, 45, 50, 58],
         },
       ],
-      chartOptions: {
-        chart: {
+      chartOptionsMainFactors: {                
+       chart: {         
           height: 350,
           type: "line",
           stacked: false,
-        },
-        dataLabels: {
-          enabled: false,
-        },
+        },       
         stroke: {
           width: [1, 1, 4],
           show: true,
@@ -65,16 +63,13 @@ export default {
           text: this.trans('economy_pf.companyValuationPage.mainFactors'),
           align: "center",        
           offsetY: 15,
-      style: {
-      fontSize:  '18px',
-      fontWeight:  'bold',
-      fontFamily:  undefined,
-      color:  '#fff'
-    },
+          style: {
+          fontSize:  '18px',
+          fontWeight:  'bold',
+          fontFamily:  undefined,
+          color:  '#fff'
         },
-        xaxis: {
-          categories: [2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016],
-        },
+        },       
         yaxis: [
           {
             axisTicks: {
@@ -158,7 +153,12 @@ export default {
         },
       },
     };
-  },
+  }, 
+    mounted(){    
+      console.log(this.chartSettings);
+      this.chartSettings.xaxis.categories=[2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016];  
+      this.chartOptionsMainFactors = this.chartSettings;
+    }  
 };
 </script>
 

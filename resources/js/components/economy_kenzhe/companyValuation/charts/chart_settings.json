@@ -1,0 +1,17 @@
+{
+    "chart": {
+        "foreColor": "#fff"
+    },    
+    "xaxis": {
+        "title": {
+            "style": {
+                "color": "#000"
+            }
+        },
+        "labels": {
+            "style": {
+                "colors": "#fff"
+            }
+        }
+    }
+}
