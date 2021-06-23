@@ -1839,6 +1839,9 @@ h4 {
     & ~ .mid-col {
       min-width: calc(100% - #{$leftColumnFoldedWidth} - #{$rightColumnWidth} - 9px);
     }
+    .scrollable{
+      height: 100%;
+    }
 
   }
 
