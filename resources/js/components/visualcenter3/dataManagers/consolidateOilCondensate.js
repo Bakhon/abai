@@ -238,8 +238,8 @@ export default {
                 .map((item, timestamp) => ({
                     time: timestamp,
                     dzo: 'dzo',
-                    productionFactForChart: _.round(_.sumBy(item, 'oil_plan'), 0),
-                    productionPlanForChart: _.round(_.sumBy(item, 'oil_fact'), 0),
+                    productionFactForChart: _.round(_.sumBy(item, 'oil_fact'), 0),
+                    productionPlanForChart: _.round(_.sumBy(item, 'oil_plan'), 0),
                     productionPlanForChart2: _.round(_.sumBy(item, 'oil_opek_plan'), 0),
                 }))
                 .value();
