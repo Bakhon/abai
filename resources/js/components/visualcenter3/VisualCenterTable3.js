@@ -738,7 +738,7 @@ export default {
         this.wellsWorkoverDetails = await this.getWellsWorkoverByMonth();
         this.drillingDetails = await this.getDrillingByMonth();
         this.dzoMonthlyPlans = await this.getDzoMonthlyPlans();
-
+        this.dzoCompanies = _.cloneDeep(this.dzoCompaniesTemplate);
         this.dzoCompaniesAssets = _.cloneDeep(this.dzoCompaniesAssetsInitial);
         this.sortDzoList();
         this.changeDate();
