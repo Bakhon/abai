@@ -30,6 +30,9 @@ Route::group(
                 Route::get('/stem-type/list', 'Refs\bigdata\las\StemTypeController@list')->name('stem-type.list');
                 Route::resource('/stem-type', 'Refs\bigdata\las\StemTypeController');
 
+                Route::get('/well-mapping/list', 'Refs\bigdata\mapping\WellMappingController@list')->name('well-mapping.list');
+                Route::resource('/well-mapping', 'Refs\bigdata\mapping\WellMappingController');
+
                 Route::get('/geo-data-reference-book', 'bd\DBController@geoDataReferenceBook')->name('bigdata.geoDataReferenceBook');
 
                 Route::get('/reports', 'bd\DBController@reports')->name('bigdata.reports');

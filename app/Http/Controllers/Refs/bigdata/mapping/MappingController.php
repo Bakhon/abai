@@ -1,17 +1,19 @@
 <?php
 
-namespace App\Http\Controllers\Refs\bigdata\las;
+namespace App\Http\Controllers\Refs\bigdata\mapping;
 
 use App\Filters\LasDictionariesFilter;
 use App\Http\Controllers\Traits\WithFieldsValidation;
 use App\Http\Requests\IndexTableRequest;
-use App\Http\Requests\FileStatusRequest;
+use App\Http\Requests\WellMappingRequest;
 use Illuminate\Http\Request;
 use App\Http\Controllers\CrudController;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Session;
+use App\Models\BigData\Well;
+use App\Models\BigData\Dictionaries\Geo;
 
-class LasDictionariesController extends CrudController
+class MappingController extends CrudController
 {
     use WithFieldsValidation;
 
@@ -36,7 +38,6 @@ class LasDictionariesController extends CrudController
     {
         $modelName = $this->modelName;
         $view = $this->view;
-
         $params = [
             'success' => Session::get('success'),
             'links' => [
@@ -46,6 +47,10 @@ class LasDictionariesController extends CrudController
             'fields' => [
                 'name' => [
                     'title' => trans('bd.forms.'.$modelName.'.fields.name'),
+                    'type' => 'string',
+                ],
+                'well_name' => [
+                    'title' => trans('bd.well'),
                     'type' => 'string',
                 ]
             ]
@@ -60,7 +65,7 @@ class LasDictionariesController extends CrudController
 
     public function list(IndexTableRequest $request)
     {
-        $query = $this->model::query();
+        $query = $this->model::with('geo');
         $data = $this
             ->getFilteredQuery($request->validated(), $query)
             ->paginate(25);
@@ -73,17 +78,18 @@ class LasDictionariesController extends CrudController
      */
     public function create(): \Illuminate\View\View
     {
-        $link = $this->link;
-        $view = $this->view;
         $modelName = $this->modelName;
+        $link = $this -> link;
         $validationParams = $this->getValidationParams('data');
-        return view($view.'.create', compact('link', 'modelName', 'validationParams'));
+        $view = $this->view;
+        $geoList = Geo::where('geo_type', 1)->orderBy('name_ru')->get();
+        return view($view.'.create', compact('link', 'modelName', 'validationParams', 'geoList'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(FileStatusRequest $request): \Symfony\Component\HttpFoundation\Response
+    public function store(WellMappingRequest $request): \Symfony\Component\HttpFoundation\Response
     {
         $this->validateFields($request, 'data');
 
@@ -103,10 +109,10 @@ class LasDictionariesController extends CrudController
      */
     public function show(int $id): \Illuminate\View\View
     {
-        $link = $this->link;
-        $view = $this->view;
         $modelName = $this->modelName;
         $data = $this->model::find($id);
+        $link = $this -> link;
+        $view = $this->view;
         return view($view.'.show', compact('link', 'modelName', 'data'));
     }
 
@@ -115,11 +121,11 @@ class LasDictionariesController extends CrudController
      */
     public function edit(int $id): \Illuminate\View\View
     {
-        $link = $this->link;
-        $view = $this->view;
-        $modelName = $this->modelName;
         $data = $this->model::find($id);
         $validationParams = $this->getValidationParams('data');
+        $modelName = $this->modelName;
+        $link = $this -> link;
+        $view = $this->view;
         return view($view.'.edit', compact('link', 'modelName', 'data', 'validationParams'));
     }
 
@@ -127,7 +133,7 @@ class LasDictionariesController extends CrudController
      * Update the specified resource in storage.
      *
      */
-    public function update(FileStatusRequest $request, int $id): \Symfony\Component\HttpFoundation\Response
+    public function update(WellMappingRequest $request, int $id): \Symfony\Component\HttpFoundation\Response
     {
         $this->validateFields($request, 'data');
 

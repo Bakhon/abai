@@ -8,4 +8,5 @@ class RecordingStateController extends LasDictionariesController
     protected $model = 'App\Models\BigData\Dictionaries\RecordingState';
     protected $resource = 'App\Http\Resources\RecordingStateResource';
     protected $link = 'recording-state';
+    protected $view = 'bigdata.las_dictionaries';
 }
