@@ -16,6 +16,13 @@ const tr = {
     day_dyn_start: false,
     day_dyn_end: false,
     is_dynamic: "false",
+    field: [],
+    horizon: [],
+    wellType: [],
+    object: [],
+    block: [],
+    expMeth: [],
+    pageNumber: false,
   },
 
   mutations: {
@@ -61,6 +68,27 @@ const tr = {
     SET_IS_DYNAMIC: (state, val) => {
       state.is_dynamic = val;
     },
+    SET_FIELD: (state, val) => {
+      state.field = val;
+    },   
+    SET_HORIZON: (state, val) => {
+      state.horizon = val;
+    },  
+    SET_WELLTYPE: (state, val) => {
+      state.wellType = val;
+    },  
+    SET_OBJECT: (state, val) => {
+      state.object = val;
+    },
+    SET_BLOCK: (state, val) => {
+      state.block = val;
+    },
+    SET_EXPMETH: (state, val) => {
+      state.expMeth = val;
+    },
+    SET_PAGENUMBER: (state, val) => {
+      state.pageNumber = val;
+    }, 
   },
 
   actions: {
@@ -81,6 +109,13 @@ const tr = {
     day_dyn_start: (state) => state.day_dyn_start,
     day_dyn_end: (state) => state.day_dyn_end,
     is_dynamic: (state) => state.is_dynamic,
+    field: (state) => state.field,
+    horizon: (state) => state.horizon,
+    wellType: (state) => state.wellType,
+    object: (state) => state.object,
+    block: (state) => state.block,
+    expMeth: (state) => state.expMeth,
+    pageNumber: (state) => state.pageNumber,
   },
 };
 

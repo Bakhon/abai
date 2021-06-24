@@ -29,7 +29,7 @@ export default {
     downloadLink() {
       return this.ifFaTr(
         `${basePath}techregime/factor/download/`,
-        `${basePath}techregime/download/`
+        `${basePath}techregime/download_tr/`
       );
       // return this.ifFaTr(
       //   `${basePath}techregime/factor/download/${this.$store.getters["fa/year"]}/${this.$store.getters["fa/month"]}/${this.$store.getters["fa/pryear"]}/${this.$store.getters["fa/prmonth"]}/`,
@@ -52,19 +52,25 @@ export default {
           isDynamic:  this.$store.getters["fa/isDynamic"],
         },
         {
-          year: this.$store.getters["tr/year"],
+          field: this.$store.getters["tr/field"],
+          horizon: this.$store.getters["tr/horizon"],
+          is_dynamic:  this.$store.getters["tr/is_dynamic"],
           month: this.$store.getters["tr/month"],
+          object: this.$store.getters["tr/object"],
           searchString: this.$store.getters["tr/searchString"],
-          filter: this.$store.getters["tr/filter"],
           sortType: this.$store.getters["tr/sortType"],
           sortParam: this.$store.getters["tr/sortParam"],
-          year_dyn_start: this.$store.getters["tr/year_dyn_start"],
-          year_dyn_end:  this.$store.getters["tr/year_dyn_end"],
-          month_dyn_start: this.$store.getters["tr/month_dyn_start"],
-          month_dyn_end:  this.$store.getters["tr/month_dyn_end"],
-          day_dyn_start: this.$store.getters["tr/day_dyn_start"],
-          day_dyn_end:  this.$store.getters["tr/day_dyn_end"],
-          is_dynamic:  this.$store.getters["tr/is_dynamic"],
+          wellType: this.$store.getters["tr/wellType"],
+          pageNum: this.$store.getters["tr/pageNumber"],
+          year: this.$store.getters["tr/year_dyn_start"],
+          block: this.$store.getters["tr/block"],
+          expMeth: this.$store.getters["tr/expMeth"],
+          year_1: this.$store.getters["tr/year_dyn_start"],
+          month_1: this.$store.getters["tr/month_dyn_start"],
+          day_1: this.$store.getters["tr/day_dyn_start"],
+          year_2:  this.$store.getters["tr/year_dyn_end"],
+          month_2:  this.$store.getters["tr/month_dyn_end"],
+          day_2:  this.$store.getters["tr/day_dyn_end"],
         }
       );
     },

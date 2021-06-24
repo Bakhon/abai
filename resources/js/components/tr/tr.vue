@@ -192,16 +192,7 @@
           <div class="tech" style="margin-left: 14px; color: white">
             <h5>{{trans('tr.tr_to')}} {{ dt }}</h5>
             
-          </div>
-
-          <tr-multiselect
-            :filter="filter"
-            :selectedAllTag="true"
-            :fieldFilterOptions="fieldFilterOptions"
-            @change-filter="handlerFilter"
-            filterName="месторождения"
-          />
-          
+          </div>          
           <a v-show="false" v-if="edit"></a>
 
 
@@ -531,7 +522,7 @@
           </a>
 
           <a
-            v-if="!edit && isPermission"
+            v-if="!edit && isPermission && isDateCheck"
             v-bind:title="trans('tr.edit')"
             style="cursor: pointer;"
             data-toggle="tooltip"
@@ -608,7 +599,23 @@
 
         <div class="table-outer">
           <div class="table-inner">
-            <TrTable :wells="wells" @onSort="sortBy" v-if="show_first" />
+            <TrTable v-if="show_first"
+            :wells="wells" 
+            :blockFilterData="blockFilterData" 
+            :horizonFilterData="horizonFilterData" 
+            :objectFilterData="objectFilterData" 
+            :fieldFilterData="fieldFilterData" 
+            :wellTypeFilterData="wellTypeFilterData" 
+            :expMethFilterData="expMethFilterData"
+            @onSort="sortBy" 
+            @filter="chooseChildFilter" 
+            @dropExpMeth="dropExpMethFilter"
+            @dropHorizon="dropHorizonFilter"
+            @dropObject="dropObjectFilter"
+            @dropBlock="dropBlockFilter"
+            @dropField="dropFieldFilter"
+            @dropWellType="dropWellTypeFilter"
+            />
             <table
               v-if="show_second"
               class="table table-bordered table-dark table-responsive trtable"
@@ -834,24 +841,180 @@
                   <td @click="sortBy('rus_wellname')" class="th">
                     <i class="fa fa-fw fa-sort"></i>
                   </td>
-                  <td @click="sortBy('field')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>
-                  </td>
+
+                  <td class="th">
+                    <div class="icons_filt_sort" ><i class="fa fa-fw fa-sort icon_sort" @click="sortBy('field')"></i>
+                      <div>
+                        <b-dropdown no-caret  toggle-class="drop-filter-custom" >
+                          <template #button-content class="outer_button_filter">        
+                            <i class="fas fa-filter icon_filter" ></i>
+                          </template>
+                            <b-dropdown-form class="external_field_filter">
+                              <b-form-group
+                                label=""
+                                v-slot="{ ariaDescribedby }"
+                                @submit.stop.prevent
+                                class="field_form_fil"
+                              >
+                                <b-form-checkbox-group
+                                  v-model="selectedField"
+                                  :options="fieldFilterData"
+                                  :aria-describedby="ariaDescribedby"                                  
+                                >
+                                </b-form-checkbox-group>
+                              </b-form-group>
+                              <div class="field_filter_text">
+                                <a href="#" class="form_text"  @click.prevent="chooseFilter"
+                                  >{{trans('tr.form')}}
+                                  </a>
+                                  <a href="#" class="discard_text" @click.prevent="dropFieldFilter"
+                                  >Сбросить
+                                  </a>
+                              </div>
+                            </b-dropdown-form>
+                          </b-dropdown>
+                        </div>
+                      </div>
+                    </td>
                   <td @click="sortBy('well')" class="th">
                     <i class="fa fa-fw fa-sort"></i>
                   </td>
-                  <td @click="sortBy('well_type')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>
-                  </td>
-                  <td @click="sortBy('horizon')" class="th" >
-                    <i class="fa fa-fw fa-sort"></i>
-                  </td>
-                  <td @click="sortBy('object')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>
-                  </td>
-                  <td @click="sortBy('block')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>
-                  </td>
+                  <td class="th">
+                    <div class="icons_filt_sort" ><i class="fa fa-fw fa-sort icon_sort" @click="sortBy('well_type')"></i>
+                      <div>
+                        <b-dropdown no-caret  toggle-class="drop-filter-custom" >
+                          <template #button-content class="outer_button_filter">        
+                            <i class="fas fa-filter icon_filter" ></i>
+                          </template>
+                            <b-dropdown-form class="external_field_filter">
+                              <b-form-group
+                                label=""
+                                v-slot="{ ariaDescribedby }"
+                                @submit.stop.prevent
+                                class="field_form_fil"
+                              >
+                                <b-form-checkbox-group
+                                v-model="selectedWellType"
+                                :options="wellTypeFilterData"
+                                :aria-describedby="ariaDescribedby"                                  
+                              >
+                              </b-form-checkbox-group>
+                              </b-form-group>
+                              <div class="field_filter_text">
+                                <a href="#" class="form_text"  @click.prevent="chooseFilter"
+                                  >{{trans('tr.form')}}
+                                  </a>
+                                  <a href="#" class="discard_text" @click.prevent="dropWellTypeFilter"
+                                  >Сбросить
+                                  </a>
+                              </div>
+                            </b-dropdown-form>
+                          </b-dropdown>
+                        </div>
+                      </div>
+                    </td>                  
+                  <td class="th">
+                    <div class="icons_filt_sort" ><i class="fa fa-fw fa-sort icon_sort" @click="sortBy('horizon')"></i>
+                      <div>
+                        <b-dropdown no-caret  toggle-class="drop-filter-custom" >
+                          <template #button-content class="outer_button_filter">        
+                            <i class="fas fa-filter icon_filter" ></i>
+                          </template>
+                            <b-dropdown-form class="external_field_filter">
+                              <b-form-group
+                                label=""
+                                v-slot="{ ariaDescribedby }"
+                                @submit.stop.prevent
+                                class="horizon_form_fil"
+                              >
+                                <b-form-checkbox-group
+                                v-model="selectedHorizon"
+                                :options="horizonFilterData"
+                                :aria-describedby="ariaDescribedby"                                  
+                              >
+                              </b-form-checkbox-group>
+                              </b-form-group>
+                              <div class="field_filter_text">
+                                <a href="#" class="form_text"  @click.prevent="chooseFilter"
+                                  >{{trans('tr.form')}}
+                                  </a>
+                                  <a href="#" class="discard_text" @click.prevent="dropHorizonFilter"
+                                  >Сбросить
+                                  </a>
+                              </div>
+                            </b-dropdown-form>
+                          </b-dropdown>
+                        </div>
+                      </div>
+                    </td>   
+                  <td class="th">
+                    <div class="icons_filt_sort" ><i class="fa fa-fw fa-sort icon_sort" @click="sortBy('object')"></i>
+                      <div>
+                        <b-dropdown no-caret  toggle-class="drop-filter-custom" >
+                          <template #button-content class="outer_button_filter">        
+                            <i class="fas fa-filter icon_filter" ></i>
+                          </template>
+                            <b-dropdown-form class="external_field_filter">
+                              <b-form-group
+                                label=""
+                                v-slot="{ ariaDescribedby }"
+                                @submit.stop.prevent
+                                class="obj_form_fil"
+                              >
+                              <b-form-checkbox-group
+                                v-model="selectedObject"
+                                :options="objectFilterData"
+                                :aria-describedby="ariaDescribedby"                                  
+                              >
+                              </b-form-checkbox-group>
+                              </b-form-group>
+                              <div class="field_filter_text">
+                                <a href="#" class="form_text"  @click.prevent="chooseFilter"
+                                  >{{trans('tr.form')}}
+                                  </a>
+                                  <a href="#" class="discard_text" @click.prevent="dropObjectFilter"
+                                  >Сбросить
+                                  </a>
+                              </div>
+                            </b-dropdown-form>
+                          </b-dropdown>
+                        </div>
+                      </div>
+                    </td>  
+                  <td class="th">
+                    <div class="icons_filt_sort" ><i class="fa fa-fw fa-sort icon_sort" @click="sortBy('block')"></i>
+                      <div>
+                        <b-dropdown no-caret  toggle-class="drop-filter-custom" >
+                          <template #button-content class="outer_button_filter">        
+                            <i class="fas fa-filter icon_filter" ></i>
+                          </template>
+                            <b-dropdown-form class="external_field_filter">
+                              <b-form-group
+                                label=""
+                                v-slot="{ ariaDescribedby }"
+                                @submit.stop.prevent
+                                class="block_form_fil"
+                              >
+                              <b-form-checkbox-group
+                                v-model="selectedBlock"
+                                :options="blockFilterData"
+                                :aria-describedby="ariaDescribedby"                                  
+                              >
+                              </b-form-checkbox-group>
+                              </b-form-group>
+                              <div class="field_filter_text">
+                                <a href="#" class="form_text"  @click.prevent="chooseFilter"
+                                  >{{trans('tr.form')}}
+                                  </a>
+                                  <a href="#" class="discard_text" @click.prevent="dropBlockFilter"
+                                  >Сбросить
+                                  </a>
+                              </div>
+                            </b-dropdown-form>
+                          </b-dropdown>
+                        </div>
+                      </div>
+                    </td>  
                   <td @click="sortBy('r_con')" class="th">
                     <i class="fa fa-fw fa-sort"></i>{{trans('tr.m')}}
                   </td>
@@ -876,9 +1039,40 @@
                   <td @click="sortBy('h_up_perf_ext')" class="th">
                     <i class="fa fa-fw fa-sort"></i>
                   </td>
-                  <td @click="sortBy('exp_meth')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>
-                  </td>
+                  <td class="th">
+                    <div class="icons_filt_sort" ><i class="fa fa-fw fa-sort icon_sort" @click="sortBy('exp_meth')"></i>
+                      <div>
+                        <b-dropdown no-caret  toggle-class="drop-filter-custom" >
+                          <template #button-content class="outer_button_filter">        
+                            <i class="fas fa-filter icon_filter" ></i>
+                          </template>
+                            <b-dropdown-form class="external_field_filter">
+                              <b-form-group
+                                label=""
+                                v-slot="{ ariaDescribedby }"
+                                @submit.stop.prevent
+                                class="exp_meth_form_fil"
+                              >
+                              <b-form-checkbox-group
+                                v-model="selectedExpMeth"
+                                :options="expMethFilterData"
+                                :aria-describedby="ariaDescribedby"                                  
+                              >
+                              </b-form-checkbox-group>
+                              </b-form-group>
+                              <div class="field_filter_text">
+                                <a href="#" class="form_text"  @click.prevent="chooseFilter"
+                                  >{{trans('tr.form')}}
+                                  </a>
+                                  <a href="#" class="discard_text" @click.prevent="dropExpMethFilter"
+                                  >Сбросить
+                                  </a>
+                              </div>
+                            </b-dropdown-form>
+                          </b-dropdown>
+                        </div>
+                      </div>
+                    </td>                    
                   <td @click="sortBy('pump_type')" class="th">
                     <i class="fa fa-fw fa-sort"></i>
                   </td>
@@ -1238,8 +1432,6 @@
 
                   <td v-if="!edit">{{ row.rus_wellname }}</td>
                   <td v-if="edit">{{ row.rus_wellname }}</td>
-                  <!-- <td>{{row.well_type}}</td> -->
-
                   <td
                     v-if="!edit"
                     :class="{
@@ -6666,716 +6858,28 @@
               </tbody>
             </table>
           </div>
+          <div class="overflow-auto">
+            <paginate
+                v-model="pageNumber"
+                :page-count="this.pageCount"
+                :page-range="3"
+                :margin-pages="2"
+                :click-handler="clickCallback"
+                :prev-text="'«'"
+                :next-text="'»'"
+                :container-class="'pagination'"
+                :page-class="'page-item'">
+            </paginate>
+          </div>
         </div>
       </div>
     </div>
     <notifications position="top"></notifications>
   </div>
 </template>
-<script>
-import Vue from 'vue';
-import NotifyPlugin from "vue-easy-notify";
-import "vue-easy-notify/dist/vue-easy-notify.css";
-import TrTable from "./table";
-import TrFullTable from "./tablefull";
-import SearchFormRefresh from "../ui-kit/SearchFormRefresh.vue";
-// import FadeLoader from "vue-spinner/src/FadeLoader.vue";
-import { fields } from "./constants.js";
-import TrMultiselect from "./TrMultiselect.vue";
+<script src="./tr.js"></script>
 
-Vue.use(NotifyPlugin);
-export default {
-  name: "TrPage",
-  props: [
-    'params'
-  ],
-  components: {
-    TrTable,
-    TrFullTable,
-    SearchFormRefresh,
-    TrMultiselect,
-    // FadeLoader,
-  },
-  computed: {
-    // Добавление выбранных данных в таблицу
-    addWellData() {
-      if (this.allWells && this.allWells.length > 0) {
-        let is_saved = this.Filter_status;
-        let field = this.Filter_field;
-        let rus_wellname = this.Filter_well;
-        let type_text = this.Filter_well_type;
-        let well_status_last_day = this.Filter_well_status;
-        try {
-          let filteredResult = this.allWells.filter(
-            (row) =>
-              (!is_saved || row.is_saved === is_saved) &&
-              (!field || row.field === field) &&
-              (!rus_wellname || row.rus_wellname === rus_wellname) &&
-              (!type_text || row.type_text === type_text) &&
-              (!well_status_last_day || row.well_status_last_day === well_status_last_day)
-          );
-          this.filteredWellData = filteredResult;
-          console.log("filteredResult bat = ", filteredResult);
-        } catch (err) {
-          console.error(err);
-          return false;
-        }
-        if(this.filteredWellData.length === 1){
-          this.lonelywell = this.filteredWellData;
-        }
-        else return false;
-      } else return false;
-      this.render++;
-    },
-    // фильтр месторожд.
-    fieldFilters() {
-      if (this.allWells && this.allWells.length > 0) {
-        let filters = [];
-        this.allWells.forEach((el) => {
-          if (
-            filters.indexOf(el.field) === -1 &&
-            (!this.Filter_well || el.rus_wellname === this.Filter_well) &&
-            (!this.Filter_well_status || el.well_status_last_day === this.Filter_well_status) &&
-            (!this.Filter_status || el.is_saved === this.Filter_status) &&
-            (!this.Filter_well_type || el.type_text === this.Filter_well_type)
-          ) {
-            filters = [...filters, el.field];
-          }
-        });
-        return [undefined, ...filters];
-      } else return [];
-    },
-    // фильтр по скважинам
-    wellFilters() {
-      if (this.allWells && this.allWells.length > 0) {
-        let filters = [];
-        this.allWells.forEach((el) => {
-          if (
-            filters.indexOf(el.rus_wellname) === -1 &&
-            (!this.Filter_field || el.field === this.Filter_field) &&
-            (!this.Filter_well_status || el.well_status_last_day === this.Filter_well_status) &&
-            (!this.Filter_status || el.is_saved === this.Filter_status) &&
-            (!this.Filter_well_type || el.type_text === this.Filter_well_type)
-          ) {
-            filters = [...filters, el.rus_wellname];
-          }
-        });
-        return [undefined, ...filters];
-      } else return [];
-    },
-    // фильтр по сост.скв
-    wellStatusFilters() {
-      if (this.allWells && this.allWells.length > 0) {
-        let filters = [];
-        this.allWells.forEach((el) => {
-          if (
-            filters.indexOf(el.well_status_last_day) === -1 &&
-            (!this.Filter_field || el.field === this.Filter_field) &&
-            (!this.Filter_well || el.rus_wellname === this.Filter_well) &&
-            (!this.Filter_status || el.is_saved === this.Filter_status) &&
-            (!this.Filter_well_type || el.type_text === this.Filter_well_type)
-          ) {
-            filters = [...filters, el.well_status_last_day];
-          }
-        });
-        return [undefined, ...filters];
-      } else return [];
-    },
-    // фильтр по статусам (сохраненные или не сохраненные)
-    statusFilters() {
-      if (this.allWells && this.allWells.length > 0) {
-        let filters = [];
-        this.allWells.forEach((el) => {
-          if (
-            filters.indexOf(el.is_saved) === -1 &&
-            (!this.Filter_field || el.field === this.Filter_field) &&
-            (!this.Filter_well || el.rus_wellname === this.Filter_well)  &&
-            (!this.Filter_well_status || el.well_status_last_day === this.Filter_well_status) &&
-            (!this.Filter_well_type || el.type_text === this.Filter_well_type)
-          ) {
-            filters = [...filters, el.is_saved];
-          }
-        });
-        return [undefined, ...filters];
-      } else return [];
-    },
-    typeWellFilters() {
-      if (this.allWells && this.allWells.length > 0) {
-        let filters = [];
-        this.allWells.forEach((el) => {
-          if (
-            filters.indexOf(el.type_text) === -1 &&
-            (!this.Filter_field || el.field === this.Filter_field) &&
-            (!this.Filter_well || el.rus_wellname === this.Filter_well)  &&
-            (!this.Filter_well_status || el.well_status_last_day === this.Filter_well_status) &&
-            (!this.Filter_status || el.is_saved === this.Filter_status)
-          ) {
-            filters = [...filters, el.type_text];
-          }
-        });
-        return [undefined, ...filters];
-      } else return [];
-    },          
-  },
-  beforeCreate: function () {},
-  created() {
-    this.$store.commit("globalloading/SET_LOADING", true);
-    this.$store.commit("tr/SET_SORTPARAM", this.sortParam);
-    this.$store.commit("tr/SET_SEARCH", this.searchString);
-    this.$store.commit("tr/SET_FILTER", this.filter);
-    var today = new Date();
-    var mm = today.getMonth() + 1;
-    var yyyy = today.getFullYear();
-    var day = today.getDate();
-    if(day > 25 && mm < 12) {
-      var mm1 = today.getMonth() + 2;
-      var yyyy1 = today.getFullYear();
-    }
-    else if(day > 25 && mm === 12){
-      var mm1 = 1;
-      var yyyy1 = today.getFullYear() + 1;
-    }
-    else{
-      var mm1 = today.getMonth() + 1;
-      var yyyy1 = today.getFullYear();
-    }
-    this.$store.commit("tr/SET_MONTH", mm);
-    this.$store.commit("tr/SET_YEAR", yyyy);
-    this.is_dynamic = false;
-    this.$store.commit("tr/SET_IS_DYNAMIC", "false");
-    this.axios
-      .get("http://172.20.103.187:7576/api/techregime/" + yyyy + "/" + mm + "/")
-      .then((response) => {
-        let data = response.data;
-        this.year = yyyy;
-        this.selectYear = yyyy;
-        this.month = mm;
-        this.$store.commit("globalloading/SET_LOADING", false);
-        if (data) {
-          console.log(data);
-          this.wells = data.data;
-          this.fullWells = data.data;
-        } else {
-          console.log("No data");
-          
-        }
-        if (mm1 < 10) {
-          this.dt = "01" + ".0" + mm1 + "." + yyyy1;
-        } else {
-          this.dt = "01" + "." + mm1 + "." + yyyy1;
-        }
-        this.isPermission = this.params.includes(this.permissionName);
-      });
-  },
-  data: function () {
-    return {
-      wells: [],
-      searchString: "",
-      searched: false,
-      sortParam: "",
-      sortType: "asc",
-      filter: [...fields],
-      fieldFilterOptions: [
-        {
-          group: this.trans('tr.all_wells'),
-          fields: [...fields],
-        },
-      ],
-      dt: null,
-      fullWells: [],
-      editedWells: [],
-      show_first: true,
-      show_second: false,
-      show_add: false,
-      edit: false,
-      editdtm: null,
-      editdty: null,
-      year: null,
-      selectYear: null,
-      month: null,
-      isfulltable: false,
-      Filter_field: undefined,
-      allWells: [],
-      awells: [],
-      Filter_well_status: undefined,
-      Filter_status: undefined,
-      Filter_well_type: undefined,
-      filteredWellData: [],
-      lonelywell: [],
-      render: 0,
-      searchStringModel: "",
-      Filter_well: undefined,
-      checkers: false,
-      checkersec: false,
-      datepicker1: true,
-      datepicker2: false,
-      date_fix: true,
-      is_dynamic: false,
-      permissionName: 'tr edit',
-      isPermission: false,
-    };
-  },
-  watch: {
-    fullWells() {
-      this.chooseField();
-    },
-    filter() {
-      this.chooseField();
-    },
-  },
-  methods: {
-    editrow(row, rowId) {
-      this.$store.commit("globalloading/SET_LOADING", false);
-      console.log("row = ", row);
-      console.log("rowId = ", rowId);
-      row["index"] = 0;
-      this.axios
-        .post(
-          "http://172.20.103.187:7576/api/techregime/edit/" +
-            this.year +
-            "/" +
-            this.month +
-            "/",
-          {
-            row: row,
-          }
-        )
-        .then((response) => {
-          if (response.data) {
-            this.wells = [
-              ...this.wells.slice(0, rowId),
-              response.data.data[0],
-              ...this.wells.slice(rowId + 1),
-            ];
-            this.editedWells = this.editedWells.filter(
-              (item) => item.well !== response.data.data[0].well
-            );
-            this.editedWells = [...this.editedWells, response.data.data[0]];
-          } else {
-            console.log("No data");
-          }
-        });
-    },
-    savetable() {
-      this.edit = false;
-      this.$store.commit("globalloading/SET_LOADING", true);
-      const searchParam = this.searchString ? `${this.searchString}/` : "";
-      this.axios
-        .post(
-          "http://172.20.103.187:7576/api/techregime/save/" +
-            this.year +
-            "/" +
-            this.month +
-            "/" +
-            searchParam,
-          {
-            well: this.editedWells,
-          }
-        )
-        .then((response) => {
-          console.log(response.data);
-          this.fullWells = response.data;
-          this.editedWells = [];
-          this.$store.commit("globalloading/SET_LOADING", false);
-          this.searched = searchParam ? true : false;
-        })
-        .catch((error) => {
-          console.log(error.data);
-          this.editedWells = [];
-          this.searchWell();
-          this.searched = searchParam ? true : false;
-        });
-    },
-    cancelEdit() {
-      this.edit = false;
-      this.editedWells = [];
-      this.searchWell();
-    },
-    cancelPP() {
-      this.edit = false;
 
-    },
-    reRender() {
-      this.filteredWellData = [];
-      this.Filter_well_status = undefined;
-      this.Filter_status = undefined;
-      this.Filter_well_type = undefined;
-      this.Filter_well = undefined;
-      this.Filter_field = undefined;
-      
-    },
-    reRenderAll() {
-      this.$store.commit("globalloading/SET_LOADING", true);
-      var today = new Date();
-      var mm = today.getMonth() + 1;
-      var yyyy = today.getFullYear();
-      var day = today.getDate();
-      if(day > 25 && mm < 12) {
-        var mm1 = today.getMonth() + 2;
-        var yyyy1 = today.getFullYear();
-      }
-      else if(day > 25 && mm === 12){
-        var mm1 = 1;
-        var yyyy1 = today.getFullYear() + 1;
-      }
-      else{
-        var mm1 = today.getMonth() + 1;
-        var yyyy1 = today.getFullYear();
-      }
-
-      this.axios
-        .get("http://172.20.103.187:7576/api/techregime/" + yyyy + "/" + mm + "/")
-        .then((response) => {
-          let data = response.data;
-
-          this.$store.commit("globalloading/SET_LOADING", false);
-          if (data) {
-            console.log(data);
-            this.wells = data.data;
-            this.fullWells = data.data;
-          } else {
-            console.log("No data");
-            
-          }
-
-        });
-    },
-    showWells() {
-      if(this.lonelywell.length === 1){
-        this.show_add = !this.show_add;
-        if(this.lonelywell[0].is_saved === "Сохранено"){
-          this.checkers = false;
-          this.checkersec = true;
-        }
-        else{
-          this.checkers = true;
-          this.checkersec = false;
-        }
-      }
-      else{
-        this.show_add = this.show_add;
-      }
-    },
-    editable() {
-      this.edit = true;
-      this.show_second = true;
-      this.show_first = false;
-    },
-    searchadd() {
-      this.$emit();
-    },
-    clearClickadd() {
-      this.searchStringModel= "";
-      this.$emit();
-      this.searchadd();
-    },
-    closeModal(modalName) {
-      this.$modal.hide(modalName)
-    },
-    sortBy(type) {
-      this.sortParam = type;
-      this.$store.commit("tr/SET_SORTTYPE", this.sortType);
-      this.$store.commit("tr/SET_SORTPARAM", type);
-      let { wells, sortType } = this;
-      console.log(type, sortType);
-      if (sortType === "asc") {
-        this.wells = wells.sort((a, b) => {
-          let aVal = a[type];
-          let bVal = b[type];
-          if (Array.isArray(aVal)) {
-            if (typeof aVal[0] === "string") {
-              return aVal[0].localeCompare(bVal[0]);
-            } else {
-              if (Number(aVal[0]) > Number(bVal[0])) return 1;
-              else if (Number(aVal[0]) < Number(bVal[0])) return -1;
-              else return 0;
-            }
-          } else {
-            if (typeof aVal === "string") {
-              return aVal.localeCompare(bVal);
-            } else {
-              if (Number(aVal) > Number(bVal)) return 1;
-              else if (Number(aVal) < Number(bVal)) return -1;
-              else return 0;
-            }
-          }
-        });
-        this.sortType = "desc";
-      } else {
-        this.wells = wells.sort((a, b) => {
-          let aVal = a[type];
-          let bVal = b[type];
-          if (Array.isArray(aVal)) {
-            if (typeof aVal[0] === "string" && isNaN(Number(aVal[0]))) {
-              return bVal[0].localeCompare(aVal[0]);
-            } else {
-              if (Number(aVal[0]) > Number(bVal[0])) return -1;
-              else if (Number(aVal[0]) < Number(bVal[0])) return 1;
-              else return 0;
-            }
-          } else {
-            if (typeof aVal === "string" && isNaN(Number(aVal))) {
-              return aVal.localeCompare(bVal);
-            } else {
-              if (Number(aVal) > Number(bVal)) return -1;
-              else if (Number(aVal) < Number(bVal)) return 1;
-              else return 0;
-            }
-          }
-        });
-        this.sortType = "asc";
-      }
-    },
-    onChangeMonth(event) {
-      this.$store.commit("tr/SET_MONTH", event.target.value);
-    },
-    onChangeYear(event) {
-      this.year = event.target.value;
-      this.$store.commit("tr/SET_YEAR", event.target.value);
-    },
-    chooseDt1() {
-      const { date1, date2 } = this;
-      console.log("dt1-", date1, " dt2-", date2);
-      var choosenDt = date1.split("-");
-      var choosenSecDt = date2.split("-");
-      const dd = choosenDt[2];
-      const prdd = choosenSecDt[2];
-      const mm = choosenDt[1];
-      const prMm = choosenSecDt[1];
-      const yyyy = choosenDt[0];
-      const pryyyy = choosenSecDt[0];
-      if (choosenSecDt[2] >= choosenDt[2] && choosenSecDt[1] >= choosenDt[1] && choosenSecDt[0] >= choosenDt[0] || choosenSecDt[0] > choosenDt[0]) {
-        Vue.prototype.$notifyError("Дата 2 должна быть меньше чем Дата 1");
-      } else {
-        this.$store.commit("globalloading/SET_LOADING", true);
-        this.$store.commit("tr/SET_DYN_MONTH_END", mm);
-        this.$store.commit("tr/SET_DYN_YEAR_END", yyyy);
-        this.$store.commit("tr/SET_DYN_DAY_END", dd);
-        this.$store.commit("tr/SET_DYN_MONTH_START", prMm);
-        this.$store.commit("tr/SET_DYN_YEAR_START", pryyyy);
-        this.$store.commit("tr/SET_DYN_MONTH_START", prMm);
-        this.$store.commit("tr/SET_DYN_DAY_START", prdd);
-        this.axios
-          .get(
-            "http://172.20.103.187:7576/api/techregime/dynamic/" +
-              pryyyy + "/" + prMm + "/" + prdd + "/" + yyyy + "/" + mm + "/" + dd + "/"
-          )
-          .then((response) => {
-            this.$store.commit("globalloading/SET_LOADING", false);
-            let data = response.data;
-            if (data) {
-              this.searched = false;
-              this.date_fix = false;
-              this.is_dynamic = true;
-              this.$store.commit("tr/SET_IS_DYNAMIC", "true");
-              this.$store.commit("tr/SET_SORTPARAM", "");
-              this.$store.commit("tr/SET_SEARCH", "");
-              this.sortParam = "";
-              this.searchString = "";
-              console.log(data);
-              this.fullWells = data.data;
-            } else {
-              console.log("No data");
-            }
-            if (this.month < 10) {
-              this.dt = '(' + prdd + "." + prMm+ "." + pryyyy + ' - ' + dd+ "." + mm+ "." + yyyy + ')';
-            } else {
-              this.dt = '(' + prdd + "." + prMm+ "." + pryyyy + ' - ' + dd+ "." + mm+ "." + yyyy + ')';
-            }
-          });
-        }
-    },
-
-    chooseDt() {
-      this.$store.commit("globalloading/SET_LOADING", true);
-      this.axios
-        .get(
-          "http://172.20.103.187:7576/api/techregime/" +
-            this.selectYear +
-            "/" +
-            this.month +
-            "/"
-        )
-        .then((response) => {
-          this.$store.commit("globalloading/SET_LOADING", false);
-          let data = response.data;
-          if (data) {
-            this.searched = false;
-            this.is_dynamic = false;
-            this.$store.commit("tr/SET_IS_DYNAMIC", "false");
-            this.$store.commit("tr/SET_SORTPARAM", "");
-            this.$store.commit("tr/SET_SEARCH", "");
-            this.sortParam = "";
-            this.searchString = "";
-            console.log(data);
-            this.fullWells = data.data;
-          } else {
-            console.log("No data");
-          }
-          if (this.month < 10) {
-            this.dt = "01" + ".0" + this.month + "." + this.selectYear;
-          } else {
-            this.dt = "01" + "." + this.month + "." + this.selectYear;
-          }
-        });
-    },
-
-    wellAdd() {
-      this.$store.commit("globalloading/SET_LOADING", true);
-      this.axios
-        .get(
-          "http://172.20.103.187:7576/api/techregime/new_wells/" 
-        )
-        .then((response) => {
-          this.$store.commit("globalloading/SET_LOADING", false);
-          let data = response.data;
-          if (data) {
-            this.searched = false;
-            this.$store.commit("tr/SET_SORTPARAM", "");
-            this.$store.commit("tr/SET_SEARCH", "");
-            this.sortParam = "";
-            this.searchString = "";
-            console.log(data);
-            this.allWells = data.data;
-            
-          } else {
-            console.log("No data");
-          }
-          
-        });
-    },
-    chooseField() {
-      const { filter, fullWells } = this;
-      console.log("filter = ", filter);
-      console.log(fullWells);
-
-      this.$store.commit("tr/SET_FILTER", filter);
-      if (!filter) {
-        this.wells = fullWells;
-      } else {
-        this.wells = fullWells.filter((e) => filter.indexOf(e.field) !== -1);
-      }
-    },
-    swap() {
-      this.show_first = !this.show_first;
-      this.show_second = !this.show_second;
-      this.isfulltable = !this.isfulltable;
-
-    },
-    calendarDynamic() {
-      this.is_dynamic_calendar = !this.is_dynamic_calendar
-      this.datepicker1 = !this.datepicker1
-      this.datepicker2 = !this.datepicker2
-    },
-
-    getColor(status) {
-      if (status === "1") return "#ffff00";
-      return "#ff0000";
-    },
-    closeModal(modalName) {
-      this.$modal.hide(modalName)
-      this.show_add=false;
-      this.checkers=false;
-      this.checkersec=false;
-      this.reRender();
-    },
-    addpush(){     
-        this.$modal.show('add_well')
-    },
-
-    handlerSearch(search) {
-      this.searchString = search;
-    },
-    handlerFilter(filter) {
-      this.filter = filter;
-    },
-
-    saveadd() {
-      console.log(this.$refs.editTable);
-      Vue.prototype.$notifySuccess (`Скважина ${this.lonelywell[0].rus_wellname} сохранена`);
-      let output = {}
-      console.log(this.$refs.editTable[0].children);
-      console.log(this.$refs.editTable[0].children[0].children[0].dataset.key);
-      console.log(this.$refs.editTable[0].children[0].children[0].value);
-      this.$refs.editTable[0].children.forEach((el) => {
-        output[el.children[0].dataset.key] = el.children[0].value;
-      });
-      console.log(output)
-      this.axios
-        .post(
-          "http://172.20.103.187:7576/api/techregime/new_wells/add_well/", 
-          output).then((res) => {
-            console.log(res.data)
-            this.wellAdd();
-            this.reRenderAll();
-            this.show_add=false;
-            this.checkers=false;
-            
-          })
-    },
-    // Удаление с модалки
-    deleteWell() {
-      Vue.prototype.$notifyError (`Скважина ${this.lonelywell[0].rus_wellname} удалена`);
-      this.$store.commit("globalloading/SET_LOADING", true);
-      if(this.lonelywell.length === 1 && this.lonelywell[0].is_saved === "Сохранено"){
-        this.axios
-          .get(
-            "http://172.20.103.187:7576/api/techregime/new_wells/delete_well/" + 
-            this.lonelywell[0].well).then((res) => {
-              console.log(res.data)
-              this.wellAdd();
-              this.reRenderAll();
-              this.show_add=false;
-              this.checkersec=false;
-              
-            })
-      }
-      else{
-        return console.log("error")
-      }
-    },
-
-    searchWell() {
-      console.log("search = ", this.searchString);
-      this.$store.commit("tr/SET_SORTPARAM", "");
-      this.sortParam = "";
-      this.$store.commit("globalloading/SET_LOADING", true);
-      const searchParam = this.searchString
-        ? `search/${this.searchString}/`
-        : "";
-      this.axios
-        .get(
-          "http://172.20.103.187:7576/api/techregime/" +
-            this.selectYear +
-            "/" +
-            this.month +
-            "/" +
-            searchParam
-        )
-        .then((response) => {
-          this.$store.commit("globalloading/SET_LOADING", false);
-
-          this.searched = searchParam ? true : false;
-          this.$store.commit("tr/SET_SEARCH", this.searchString);
-          let data = response.data;
-          if (data) {
-            console.log(data);
-            this.fullWells = data.data;
-          } else {
-            this.fullWells = [];
-            console.log("No data");
-          }
-        })
-        .catch((error) => {
-          this.searched = searchParam ? true : false;
-          this.$store.commit("globalloading/SET_LOADING", false);
-          this.fullWells = [];
-          console.log("search error = ", error);
-        });
-    },
-  },
-};
-</script>
 <style scoped>
 
 body {
@@ -7404,7 +6908,6 @@ body {
 }
 .input-group-prepend {
   padding-top: 3px !important;
-
 }
 a:hover {
   color: white !important;
@@ -7487,14 +6990,14 @@ tr:nth-child(even) {
 }
 
 .sticky {
-  position: sticky;
+  /* position: sticky; */
   top: 0;
   min-height: 2em;
   background: lightpink;
 }
 .table {
   overflow: scroll;
-  height: calc(100vh - 205px);
+  height: calc(100vh - 245px);
 }
 .trkrtableborderedtabledarktableresponsive {
   font-size: 9px;
@@ -7511,27 +7014,27 @@ tr:nth-child(even) {
 }
 .table tr:first-child .th {
   top: -1px;
-  z-index: 3000;
+  z-index: 4000;
 }
 .table tr:nth-child(2) .th {
   top: 24px;
-  z-index: 3000;
+  z-index: 4000;
 }
 .table tr:nth-child(3) .th {
   top: 49px;
-  z-index: 3000;
+  z-index: 4000;
 }
 .table tr:nth-child(4) .th {
   top: 80px;
-  z-index: 3000;
+  z-index: 4000;
 }
 .table tr:nth-child(5) .th {
   top: 97px;
-  z-index: 3000;
+  z-index: 4000;
 }
 tr td:first-child {
   color: #fff;
-  position: sticky;
+  /* position: sticky!important; */
   left: 0;
   width: 100px;
 }
@@ -7542,18 +7045,20 @@ tr td:first-child {
   overflow-y: visible;
 }
 tr:not(.notsticky) td:nth-child(-n + 3) {
-  position: sticky;
   left: -1px;
   width: 27px;
-  z-index: 3009;
+  z-index: 3000;
+  position: sticky;
 }
 tr:not(.notsticky) td:nth-child(2) {
   left: 23px;
   width: 100px;
+  z-index: 3000;
 }
 tr:not(.notsticky) td:nth-child(3) {
   left: 121px;
   width: 55;
+  z-index: 3000;
 }
 
 tr:nth-child(odd) td {
@@ -7564,9 +7069,8 @@ tr:nth-child(even) td {
 }
 
 .table.table tr:not(.notsticky) .th:nth-child(-n + 3) {
-  z-index: 3010;
+  z-index: 4010;
 }
-
 .input_edit {
   background: #7879a6;
 }
@@ -7584,13 +7088,11 @@ table::-webkit-scrollbar-track {
 /* Handle */
 table::-webkit-scrollbar-thumb {
   background: #656A8A;
-  
 }
 
 /* Handle on hover */
 table::-webkit-scrollbar-thumb:hover {
-  background: #656A8A;
-  
+  background: #656A8A;  
 }
 
 table::-webkit-scrollbar-corner {
@@ -7658,4 +7160,147 @@ table::-webkit-scrollbar-corner {
 .select_mod.select_mod.select_mod.select_mod {
      background: #334296; 
 }
+.drop-filter-custom {
+  background: #333975!important;
+  border-color: #333975 !important;
+}
+.b-dropdown-form {
+  background: #333975!important;
+  width: 135px;
+}
+.dropdown-menu.show {
+    display: flex;
+    flex-direction: column;
+    background: #333975!important;
+}
+.icons_filt_sort{
+  display: flex;
+  justify-content: center;
+}
+.field_filter_text {
+  display: flex;
+  justify-content: center;
+  margin-left: 90px;
+}
+.well_type_filter_text {
+  display: flex;
+  justify-content: center;
+  margin-left: 90px;
+}
+.field_form_fil.field_form_fil {
+  background: #333975!important;
+  width: 213px!important;
+}
+.horizon_form_fil.horizon_form_fil {
+  background: #333975!important;
+  width: 123px!important;
+}
+.obj_form_fil {
+  background: #333975!important;
+  width: 90px!important;
+}
+.block_form_fil {
+  background: #333975!important;
+  width: 168px!important;
+}
+.exp_meth_form_fil {
+  background: #333975!important;
+  width: 130px!important;
+} 
+
+.well_type_form_fil.well_type_form_fil {
+  background: #333975!important;
+  width: 213px!important;
+}
+.external_field_filter {
+  width: 251px;
+}
+.external_well_type_filter  {
+  width: 251px;
+}
+.icon_filter {
+  font-size: 7px;
+}
+.icon_sort {
+  margin-top: 6px;
+}
+.form_text {
+  color:white; 
+  font-size:13px; 
+  margin-left: 12px;
+}
+.discard_text {
+ color:white; 
+ font-size:13px; 
+ margin-left: 9px;
+}
+.cell-comment{
+    display: none;
+    width: auto;
+    position:absolute;
+    z-index:3060;
+    text-align: Left;
+    opacity: 0.4;
+    transition: opacity 2s;
+    border-radius: 6px;
+    background-color: #555;
+    padding:3px;
+    bottom: 31px;
+    /* top:-80px; */
+}
 </style>
+
+<style lang="scss" scoped>
+    .table-outer{
+      &::v-deep{
+        .pagination {
+        display: flex;
+        color: #636A99;
+        margin-top: 8px;
+        justify-content: center;
+        background: #272953 !important;
+        > li > a {
+            --md-theme-default-primary-on-background: #005db8;
+            min-height: 40px;
+            min-width: 40px;
+            background: #272953;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            border: 1px solid #ccc;
+            color: #636A99;
+            margin-left: -1px;
+            font-size: 14px;
+            &:hover {
+                color: #ffffff;
+                --md-theme-default-primary-on-background: #fff;
+            }
+            &:first-of-type {
+                border-radius: 2px 0 0 2px;
+            }
+            &:last-of-type {
+                border-radius: 0 2px 2px 0;
+            }
+
+        }
+        > li {
+            &.active {
+                a {
+                    background: #3366FF;
+                    --md-theme-default-primary-on-background: #272953;
+                    color: #FFFFFF;
+                }
+            }
+            &.disabled {
+                a {
+                    background: #272953;
+                }
+            }
+        }
+    }
+      }
+    }
+
+    
+</style>  
