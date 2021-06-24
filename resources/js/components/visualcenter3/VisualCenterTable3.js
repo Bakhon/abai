@@ -83,8 +83,8 @@ export default {
             timestampToday: "",
             timestampEnd: "",
             isPricesChartLoading: false,
-            chartHeadName: this.trans("visualcenter.getoil"),
-            chartSecondaryName: this.trans('visualcenter.getoil'),
+            chartHeadName: this.trans("visualcenter.oilCondensateProductionChartName"),
+            chartSecondaryName: this.trans('visualcenter.oilCondensateProduction'),
             planFieldName: "oil_plan",
             factFieldName: "oil_fact",
             metricName: this.trans("visualcenter.chemistryMetricTon"),
@@ -205,6 +205,7 @@ export default {
             if (this.oilCondensateProductionButton.length > 0) {
                 this.isOpecFilterActive = false;
                 this.planFieldName = 'oil_plan';
+                //chartSecondaryName = this.trans("visualcenter.oilCondensateProduction")
             }
             if (this.isProductionDetailsActive) {
                 productionData = this.getFormattingProductionDetails(productionData);
@@ -705,7 +706,6 @@ export default {
     async mounted() {
         this.$store.commit('globalloading/SET_LOADING', true);
         this.getOpecDataForYear();
-        this.chartHeadName = this.oilChartHeadName;
 
         if (window.location.host === 'dashboard') {
             this.range = {

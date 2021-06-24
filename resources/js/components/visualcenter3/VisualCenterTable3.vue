@@ -314,7 +314,7 @@
                                     'oil_plan',
                                     'oil_fact',
                                     trans('visualcenter.tonWithSpace'),
-                                    trans('visualcenter.oilCondensateProduction'))"
+                                    trans('visualcenter.oilCondensateProductionChartName'))"
                     >
                       {{ trans("visualcenter.oilCondensateProduction") }}
                     </div>
@@ -1456,7 +1456,16 @@
                   !isOneDateSelected) && !buttonDailyTab
                 "
               >
-                <div class="name-chart-left">
+                <div
+                        v-if="oilCondensateProductionButton.length > 0"
+                        class="oil-condensate-chart-secondary-name"
+                >
+                  {{ chartSecondaryName }}, {{ trans("visualcenter.thousand") }} {{ metricName }}
+                </div>
+                <div
+                        v-else
+                        class="name-chart-left"
+                >
                   {{ chartSecondaryName }}, {{ trans("visualcenter.thousand") }} {{ metricName }}
                 </div>
                 <div class="name-chart-head">{{ chartHeadName }}</div>
@@ -3047,5 +3056,14 @@
 
   .text-right {
     text-align: right;
+  }
+
+  .oil-condensate-chart-secondary-name {
+    color: #8489af;
+    margin-top: 15%;
+    text-align: center;
+    position: absolute;
+    writing-mode: tb-rl;
+    transform: rotate(180deg);
   }
 </style>

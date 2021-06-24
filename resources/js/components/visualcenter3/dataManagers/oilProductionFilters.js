@@ -24,7 +24,7 @@ export default {
     },
     methods: {
         changeOilProductionFilters() {
-            if (this.isOpecFilterActive) {
+            if (this.isOpecFilterActive && this.oilCondensateProductionButton.length === 0) {
                 this.planFieldName = 'oil_opek_plan';
                 this.opec = this.trans("visualcenter.dzoOpec");
                 this.opecFieldNameForChart = 'oil_plan';
