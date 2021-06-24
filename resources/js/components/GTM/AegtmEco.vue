@@ -48,7 +48,7 @@
                 </div>
             </div>
             <div class="col-lg-2 p-0 pl-2 pr-1">
-                <div class="gtm-dark p-2">
+                <div class="gtm-dark gtm-filter p-2">
                     <v-select
                         :options="dzosForFilter"
                         label="name"
