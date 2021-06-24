@@ -27,5 +27,5 @@
   'water_inj' => '\\App\\Services\\BigData\\Forms\\WaterInj',
   'gas_production' => '\\App\\Services\\BigData\\Forms\\GasProduction',
   'production_program' => '\\App\\Services\\BigData\\Forms\\ProductionProgram',
-  'geo_structure' => '\\App\\Services\\BigData\\Forms\\GeoStructure',
+  'geo_structure' => '\\App\\Services\\BigData\\Forms\\GeoStructure'
 );

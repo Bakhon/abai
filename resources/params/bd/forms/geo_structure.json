@@ -11,7 +11,7 @@
             "items": [
               {
                 "code": "geo",
-                "type": "dict",
+                "type": "dict_tree",
                 "dict": "geos",
                 "title": "geo",
                 "validation": "",

@@ -33,11 +33,6 @@ use App\TybeNom;
 use App\Models\BigData\Dictionaries\Device;
 use App\Models\BigData\Dictionaries\GeoIdentifier;
 use App\Models\BigData\Dictionaries\CoordSystem;
-use App\Models\BigData\Dictionaries\PerfType;
-use App\Models\BigData\Dictionaries\PerforatorType;
-use App\Models\BigData\Dictionaries\IsoMaterialType;
-use App\Models\BigData\Dictionaries\PackerType;
-use App\Models\BigData\Dictionaries\PatronType;
 use Carbon\Carbon;
 use Illuminate\Cache\Repository;
 use Illuminate\Support\Facades\DB;
@@ -157,27 +152,7 @@ class DictionaryService
         'wells' => [
             'class' => Well::class,
             'name_field' => 'uwi'
-        ],
-        'iso_material_types' => [
-            'class' => IsoMaterialType::class,
-            'name_field' => 'name_ru'
-        ],
-        'patron_types' => [
-            'class' => PatronType::class,
-            'name_field' => 'name_ru'
-        ],
-        'packer_types' => [
-            'class' => PackerType::class,
-            'name_field' => 'name_ru'
-        ],
-        'perforator_types' => [
-            'class' => PerforatorType::class,
-            'name_field' => 'name_ru'
-        ],
-        'perf_types' => [
-            'class' => PerfType::class,
-            'name_field' => 'name_ru'
-        ]
+        ]        
     ];
 
     const TREE_DICTIONARIES = [
