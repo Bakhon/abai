@@ -1,10 +1,11 @@
 <template>
   <div class="row m-0">   
     <div class="col-10 px-0">
-      <div class="row col px-2 container-col_color m-0">        
-      <div class="col charts px-0 mb-3">
-            <div style="position:absolute;">
-            {{trans('economy_pf.companyValuationPage.pageName')}}</div>
+      <div class="row col px-2 container-col_color m-0">  
+          <div class="text-center w-100 mt-2">
+            {{trans('economy_pf.companyValuationPage.pageName')}}
+          </div>      
+      <div class="col charts px-0 mb-3">         
         <div class="chart-one">
           <main-factors-chart :chartSettings="chartSettings"></main-factors-chart>
         </div>

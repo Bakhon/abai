@@ -3,7 +3,7 @@
     <div>
       <div class="col px-2 container-col_color">
         <apexchart
-          height="260"
+          height="255"
           :options="chartOptions"
           :series="series"
         ></apexchart>

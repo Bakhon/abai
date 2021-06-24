@@ -2,7 +2,7 @@
   <div class="chart-border_color mt-3">
     <div>
       <div class="col px-2 container-col_color">
-     <apexchart  height="260" :options="chartOptions" :series="series"></apexchart>
+     <apexchart  height="255" :options="chartOptionsCashFlow" :series="series"></apexchart>
       </div>
     </div>
   </div>
@@ -34,7 +34,7 @@ export default {
           data: [29, 37, 36, 44, 45, 50, 58, -50,30,20, 29, 37, 36, 44, 45, 50, 58, 50,30,20, 29, 37, 36, 44, 45, 50, 58, 50,30,50,53,55],
         },
     ],
-    chartOptions: {
+    chartOptionsCashFlow: {
         stroke: {
           width: [1, 1, 4],
           show: true,
@@ -98,7 +98,7 @@ export default {
     },
    };    
   }, 
-    mounted(){    
+    mounted(){   
         this.chartSettings.xaxis.categories= [
           "2011-01-01",
           "2011-02-01",
@@ -134,7 +134,8 @@ export default {
           "2013-08-01",
           "2013-09-01",
         ],  
-        this.chartOptions = this.chartSettings;
+        console.log(this.chartSettings.xaxis.categories);
+        this.chartOptionsCashFlow = this.chartSettings;
     }  
 };
 </script>
