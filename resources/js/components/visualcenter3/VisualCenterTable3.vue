@@ -1043,6 +1043,9 @@
                     >
                       <span v-if="oilCondensateProductionButton.length === 0">
                         {{ getNameDzoFull(item.dzoMonth) }}
+                        <span v-if="isKmgParticipationFilterActive">
+                          {{getOilProductionKmgParticipationDzoTitle(kmgParticipationPercent[getNameDzoFull(item.dzoMonth)])}}
+                        </span>
                         <img src="/img/icons/link.svg" />
                       </span>
                       <span v-else-if="oilCondensateProductionButton.length > 0 && !oilCondensateFilters.isWithoutKMGFilterActive">
@@ -1990,7 +1993,14 @@
                   </table>
                 </div>
                 <div class="col-sm-5">
-                  <div  class="name-chart-left">{{ trans("visualcenter.wellsNumber") }}</div>
+                  <div
+                          v-if="drillingSelectedRow === 'otm_wells_commissioning_from_drilling_fact'"
+                          class="name-chart-left">{{ trans("visualcenter.wellsNumber") }}
+                  </div>
+                  <div
+                          v-else
+                          class="name-chart-left">{{ trans("visualcenter.otmDrillingComission") }}, {{ trans("visualcenter.otmMetricSystemMeter") }}
+                  </div>
                   <visual-center3-wells
                           v-if="drillingDataForChart"
                           :chartData="drillingDataForChart"

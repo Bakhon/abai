@@ -267,6 +267,14 @@ export default {
         getDzoName(acronym,mapping) {
             return this.trans(mapping[acronym]);
         },
+
+        getOilProductionKmgParticipationDzoTitle(percentParticipation){
+            if (percentParticipation) {
+                return " (" + percentParticipation * 100 + "%)";
+            }
+            return "";
+
+        },
     },
     computed: {
         periodSelectFunc() {

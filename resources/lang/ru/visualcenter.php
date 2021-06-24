@@ -368,5 +368,6 @@ return array (
       ),
   'meterCubic' => 'м³',
   'forLastMonth' => 'За предыдущий месяц',
-  'oilCondensateProductionChartName' => 'Динамика добычи нефти и конденсата'
+  'oilCondensateProductionChartName' => 'Динамика добычи нефти и конденсата',
+  'otmDrillingComission' => 'Проходка'
 );
