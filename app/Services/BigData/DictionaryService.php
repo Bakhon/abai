@@ -27,6 +27,7 @@ use App\Models\BigData\Dictionaries\TechStateType;
 use App\Models\BigData\Dictionaries\WellCategory;
 use App\Models\BigData\Dictionaries\WellStatus;
 use App\Models\BigData\Dictionaries\WellType;
+use App\Models\BigData\Dictionaries\WellExplType;
 use App\Models\BigData\Dictionaries\Well;
 use App\TybeNom;
 use App\Models\BigData\Dictionaries\Device;
@@ -144,10 +145,14 @@ class DictionaryService
             'class' => CoordSystem::class,
             'name_field' => 'name_ru'
         ],
+        'well_expl_types' => [
+            'class' => WellExplType::class,
+            'name_field' => 'name_ru'
+        ],
         'wells' => [
             'class' => Well::class,
             'name_field' => 'uwi'
-        ],
+        ]        
     ];
 
     const TREE_DICTIONARIES = [
