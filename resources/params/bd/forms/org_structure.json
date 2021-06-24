@@ -11,7 +11,7 @@
             "items": [
               {
                 "code": "org",
-                "type": "dict",
+                "type": "dict_tree",
                 "dict": "orgs",
                 "title": "org",
                 "validation": "exists:tbd.dict.org,id"
