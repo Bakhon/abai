@@ -17,14 +17,14 @@ export default {
                     code: 'underground_workover',
                     plan: 0,
                     fact: 0,
-                    metricSystem: this.trans("visualcenter.otmMetricSystemWells"),
+                    metricSystem: this.trans("visualcenter.skv"),
                 },
                 {
                     name: this.trans("visualcenter.otmKrsSkv"),
                     code: 'workover',
                     plan: 0,
                     fact: 0,
-                    metricSystem: this.trans("visualcenter.otmMetricSystemMeter"),
+                    metricSystem: this.trans("visualcenter.skv"),
                 },
             ],
             wellsWorkoverPeriodMapping: {

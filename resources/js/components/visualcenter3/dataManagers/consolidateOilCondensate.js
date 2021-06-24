@@ -1,5 +1,7 @@
 import moment from "moment";
-import dzoCompaniesNameMapping from "../dzo_companies_consolidated_name_mapping.json";
+import dzoCompaniesNameMapping from "../dzo_companies_consolidated_name_mapping.json"
+import companiesListWithKMG from "../dzo_companies_initial_consolidated_withkmg.json";
+import companiesListWithoutKMG from "../dzo_companies_initial_consolidated_withoutkmg.json";
 
 export default {
     data: function () {
@@ -109,26 +111,14 @@ export default {
             nkoMapping: {
                 'formula': (value) => Math.round(((value - value * 0.019) * 241 / 1428) / 2)
             },
-            emptyTemplate: {
-                accident: null,
-                dzoMonth: 'КГМ',
-                factMonth: 0,
-                impulses: null,
-                landing: null,
-                opec: null,
-                opekPlan: 0,
-                otheraccidents: null,
-                periodPlan: null,
-                planMonth: 0,
-                restrictions: null
-            },
             dzoMultiplier: {
                 'ОМГ': (item,value,fieldName) => value + item[fieldName],
                 'ПКК': (item,value,fieldName) => value * 0.33,
                 'КГМ': (item,value,fieldName) => value * 0.5 * 0.33,
                 'ТП': (item,value,fieldName) => value * 0.5 * 0.33,
                 'НКО': (item,value,fieldName) => ((value - value * 0.019) * 241 / 1428) / 2
-            }
+            },
+            companiesForNominalInput: ['АГ','ПКК']
         };
     },
     methods: {
@@ -141,31 +131,32 @@ export default {
             this.exportDzoCompaniesSummaryForChart(chartOutput);
             if (this.oilCondensateFilters[filterName]) {
                 this.dzoCompanySummary = this.consolidatedData.withParticipation;
+                this.changeDzoCompaniesList(companiesListWithKMG);
             } else {
                 this.dzoCompanySummary = this.consolidatedData.withoutParticipation;
+                this.changeDzoCompaniesList(companiesListWithoutKMG);
             }
+            this.selectAllDzoCompanies();
             let elementOptions = this.mainMenuButtonElementOptions[parentButton].childItems[childButton];
             this.switchButtonOptions(elementOptions);
             this.calculateDzoCompaniesSummary();
         },
         getConsolidatedOilCondensate() {
             let self = this;
-
             let filteredByCompanies = this.getFilteredCompaniesList(_.cloneDeep(this.productionTableData));
             let filteredByPeriod = this.getFilteredByPeriod(filteredByCompanies,true);
             let filteredInitial = this.getFilteredByPeriod(_.cloneDeep(this.productionTableData),false);
             let actualUpdatedByOpek = this.getUpdatedByOpekPlan(_.cloneDeep(this.dzoCompanySummary),filteredByPeriod);
-
             let dataWithKMGParticipation = this.getUpdatedByDzoOptions(_.cloneDeep(actualUpdatedByOpek),filteredByPeriod,filteredInitial);
             let dataWithoutKMGParticipation = this.getUpdatedByDzoOptionsWithoutKMG(_.cloneDeep(actualUpdatedByOpek),filteredByPeriod,filteredInitial);
             let yesterdayData = this.getYesterdayData(_.cloneDeep(actualUpdatedByOpek),filteredByCompanies);
 
             this.updateConsolidatedData(dataWithKMGParticipation,dataWithoutKMGParticipation);
-            let output = dataWithKMGParticipation;
+            let output = this.consolidatedData.withParticipation;
             let chartOutput = this.consolidatedData.chartWithParticipation;
             this.isOpecFilterActive = true;
             if (!this.oilCondensateFilters.isWithoutKMGFilterActive) {
-                output = dataWithoutKMGParticipation;
+                output = this.consolidatedData.withoutParticipation;
                 chartOutput = this.consolidatedData.chartWithoutParticipation;
 
             }
@@ -196,6 +187,9 @@ export default {
         },
 
         updateConsolidatedData(sortedWithKMGParticipation,sortedWithoutKMGParticipation) {
+            let selectedCompanies = this.dzoCompanies.filter(row => row.selected === true).map(row => row.ticker);
+            sortedWithKMGParticipation = sortedWithKMGParticipation.filter(row => selectedCompanies.includes(row.dzoMonth));
+            sortedWithoutKMGParticipation = sortedWithoutKMGParticipation.filter(row => selectedCompanies.includes(row.dzoMonth));
             this.consolidatedData.withParticipation = sortedWithKMGParticipation;
             this.consolidatedData.withoutParticipation = sortedWithoutKMGParticipation;
             this.updateChart();
@@ -225,13 +219,14 @@ export default {
         },
 
         getSumForChart(data) {
-            let summaryForChart = _(data)
+            let sorted = this.getOrderedByAsc(data);
+            let summaryForChart = _(sorted)
                 .groupBy("date")
                 .map((item, timestamp) => ({
                     time: timestamp,
                     dzo: 'dzo',
-                    productionFactForChart: _.round(_.sumBy(item, 'oil_plan'), 0),
-                    productionPlanForChart: _.round(_.sumBy(item, 'oil_fact'), 0),
+                    productionFactForChart: _.round(_.sumBy(item, 'oil_fact'), 0),
+                    productionPlanForChart: _.round(_.sumBy(item, 'oil_plan'), 0),
                     productionPlanForChart2: _.round(_.sumBy(item, 'oil_opek_plan'), 0),
                 }))
                 .value();
@@ -257,7 +252,7 @@ export default {
             actualUpdatedByOpek = this.getFilteredByNotUsableDzo(actualUpdatedByOpek);
 
             _.forEach(dzoOptions, function(item) {
-                if (item.dzoName === 'АГ') {
+                if (self.companiesForNominalInput.includes(item.dzoName)) {
                     actualUpdatedByOpek.push({
                         'dzoMonth' : item.dzoMonth,
                         'factMonth' : item.formula(item.factMonth,item.dzoName,filteredInitialData),
@@ -295,8 +290,8 @@ export default {
                 }
             });
 
-            actualUpdatedByOpek = this.getUpdatedByTemplates(this.sortingOrder,actualUpdatedByOpek);
             actualUpdatedByOpek = this.getSorted(actualUpdatedByOpek,this.sortingOrder);
+
             if (this.buttonMonthlyTab || this.buttonYearlyTab) {
                 actualUpdatedByOpek = this.getUpdatedByPeriodPlan(actualUpdatedByOpek);
             }
@@ -323,7 +318,9 @@ export default {
             let sorted = [];
             _.forEach(sortingOrder, function (key) {
                 let itemIndex = inputData.findIndex(element => element.dzoMonth === key);
-                sorted.push(inputData[itemIndex]);
+                if (itemIndex > -1) {
+                    sorted.push(inputData[itemIndex]);
+                }
             });
             return sorted;
         },
@@ -332,9 +329,10 @@ export default {
             let dzoOptions = _.cloneDeep(this.dzoOptions.withoutKMGFilter);
             let actualUpdatedByOpek = inputActualUpdatedByOpek;
             let pkiIndex = actualUpdatedByOpek.findIndex(element => element.dzoMonth === 'ПКИ');
+            let self = this;
             actualUpdatedByOpek.splice(pkiIndex, 1);
             _.forEach(dzoOptions, function(item) {
-                if (item.dzoName === 'АГ') {
+                if (self.companiesForNominalInput.includes(item.dzoName)) {
                     actualUpdatedByOpek.push({
                         'dzoMonth' : item.dzoMonth,
                         'factMonth' : item.formula(item.factMonth,item.dzoName,filteredInitialData),
@@ -351,7 +349,6 @@ export default {
                 }
             });
 
-            actualUpdatedByOpek = this.getUpdatedByTemplates(this.sortingOrderWithoutParticipation,actualUpdatedByOpek);
             actualUpdatedByOpek = this.getSorted(actualUpdatedByOpek,this.sortingOrderWithoutParticipation);
             if (this.buttonMonthlyTab || this.buttonYearlyTab) {
                 actualUpdatedByOpek = this.getUpdatedByPeriodPlan(actualUpdatedByOpek);
@@ -409,18 +406,6 @@ export default {
                 item.periodPlan = item.planMonth / daysPassed * daysCountInMonth;
             });
             return updatedData;
-        },
-
-        getUpdatedByTemplates(sortingOrder,inputData) {
-            let self = this;
-            _.forEach(sortingOrder, function (dzoName) {
-                if (inputData.findIndex(element => element.dzoMonth === dzoName) === -1) {
-                    let template = self.emptyTemplate;
-                    template.dzoMonth = dzoName;
-                    inputData.push(template);
-                }
-            });
-            return inputData;
         },
     }
 }

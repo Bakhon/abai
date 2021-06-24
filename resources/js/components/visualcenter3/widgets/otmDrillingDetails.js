@@ -100,12 +100,15 @@ export default {
             }
 
             let self = this;
+
             _.forEach(temporaryDrillingDetails, function(item) {
                 let dateOption = [moment(item.date).month(),moment(item.date).year()];
                 let planIndex = self.dzoMonthlyPlans.findIndex(element => self.isRecordsSimple(dateOption,element,item.dzo_name));
                 if (planIndex !== -1) {
-                    item['otm_wells_commissioning_from_drilling_plan'] = self.dzoMonthlyPlans[planIndex].plan_otm_burenie_prohodka;
-                    item['otm_drilling_plan'] = self.dzoMonthlyPlans[planIndex].plan_otm_iz_burenia_skv;
+                    let plan = self.dzoMonthlyPlans[planIndex].plan_otm_iz_burenia_skv;
+                    let planByDay = plan / moment().daysInMonth();
+                    item['otm_wells_commissioning_from_drilling_plan'] = planByDay;
+                    item['otm_drilling_plan'] = self.dzoMonthlyPlans[planIndex].plan_otm_burenie_prohodka;
                 }
             });
 
@@ -143,22 +146,19 @@ export default {
                     otm_drilling_fact_plan: _.round(_.sumBy(item, 'otm_drilling_plan'), 0),
                 })).value();
 
-            this.drillingWidgetFactSum = this.getDrillingFactSum(tableData);
+            this.drillingWidgetFactSum = this.getDrillingFactSum(tableData,'otm_wells_commissioning_from_drilling_fact');
         },
 
-        getDrillingFactSum(tableData) {
+        getDrillingFactSum(tableData,workoverType) {
             let totalDrillingFact = 0;
             if (tableData.length > 0) {
+                let groupedDrilling = tableData[0];
                 _.forEach(this.drillingData, function(item) {
-                    item.plan = tableData[0][item.code + '_plan'];
-                    item.fact = tableData[0][item.code];
+                    item.plan = groupedDrilling[item.code + '_plan'];
+                    item.fact = groupedDrilling[item.code];
                     item.difference = item.plan - item.fact;
                 });
-                _.forEach(Object.keys(tableData[0]), function(key) {
-                    if (!key.includes('_plan')) {
-                        totalDrillingFact += tableData[0][key];
-                    }
-                });
+                totalDrillingFact += groupedDrilling[workoverType];
             }
 
             return totalDrillingFact;
