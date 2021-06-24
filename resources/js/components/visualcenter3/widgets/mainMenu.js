@@ -25,7 +25,9 @@ export default {
                 'gasProductionButton': this.trans('visualcenter.getgasdynamic'),
                 'oilCondensate':this.trans('visualcenter.liqDynamic'),
                 'oilCondensate':this.trans('visualcenter.liqDynamic'),
-            }
+            },
+            //todo
+           // isOilResidueActive: false
         };
     },
     methods: {
@@ -67,6 +69,11 @@ export default {
         },
 
         switchMainMenu(parentButton, childButton) {
+            //todo
+            // this.isOilResidueActive = false;
+            // if (childButton === 'oilResidue') {
+            //     this.isOilResidueActive = true;
+            // }
             this.selectAllDzoCompanies();
             this.disableTargetCompanyFilter();
             let self = this;

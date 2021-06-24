@@ -436,7 +436,14 @@
                   <ul class="dropdown-menu-vc dropdown-menu dropdown-menu-right">
                     <li
                             class="center-li row px-4"
-                            @click="switchMainMenu('oilDeliveryButton','kmgParticipation')"
+                            @click="switchCategory(
+                                      'oilDeliveryButton',
+                                      'oil_dlv_plan',
+                                      'oil_dlv_fact',
+                                      trans('visualcenter.tonWithSpace'),
+                                      trans('visualcenter.oildlv'),
+                                      'oilDeliveryButton',
+                                      'kmgParticipation')"
                     >
                       <div
                               class="col-1 mt-2"
@@ -935,7 +942,7 @@
                       <div v-if="currentDzoList === 'daily'">
                         {{ getMetricNameByCategorySelected() }}
                       </div>
-                      <div v-if="isOpecFilterActive">
+                      <div v-if="isOpecFilterActive && oilCondensateProductionButton.length === 0">
                         {{ trans("visualcenter.dzoOpec") }}
                       </div>
                     </th>
@@ -947,7 +954,7 @@
                       <div v-if="currentDzoList === 'daily'">
                         {{ getMetricNameByCategorySelected() }}
                       </div>
-                      <div v-if="isOpecFilterActive">
+                      <div v-if="isOpecFilterActive && oilCondensateProductionButton.length === 0">
                         {{ trans("visualcenter.dzoOpec") }}
                       </div>
                     </th>
@@ -959,7 +966,7 @@
                       <div v-else>
                         {{ getMetricNameByCategorySelected() }}
                       </div>
-                      <div v-if="isOpecFilterActive">
+                      <div v-if="isOpecFilterActive && oilCondensateProductionButton.length === 0">
                         {{ trans("visualcenter.dzoOpec") }}
                       </div>
                     </th>

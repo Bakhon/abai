@@ -192,7 +192,6 @@ export default {
             this.disableDzoRegions();
             this.selectedDzoCompanies = this.getAllDzoCompanies();
             this.buttonDzoDropdown = "";
-            this.dzoCompanySummary = this.bigTable;
             this.calculateDzoCompaniesSummary();
         },
 

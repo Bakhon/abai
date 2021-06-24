@@ -205,7 +205,13 @@ export default {
             if (this.oilCondensateProductionButton.length > 0) {
                 this.isOpecFilterActive = false;
                 this.planFieldName = 'oil_plan';
-                //chartSecondaryName = this.trans("visualcenter.oilCondensateProduction")
+            }
+            if (this.selectedButtonName !== 'oilCondensateProductionButton') {
+                console.log(productionData.length)
+                let indexes = productionData.map((elm, idx) => elm.dzo_name === 'ПКИ' ? idx : '').filter(String);
+                for (var i in indexes.reverse()) {
+                    productionData.splice(indexes[i], 1);
+                }
             }
             if (this.isProductionDetailsActive) {
                 productionData = this.getFormattingProductionDetails(productionData);
