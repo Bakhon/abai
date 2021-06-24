@@ -419,13 +419,15 @@
     font-weight: 700;
 }
 
-.v-select {
-    width: 100%;
-    min-width: 100%;
-    margin-bottom: 8px;
+.gtm-filter {
+    .v-select {
+        width: 100%;
+        min-width: 100%;
+        margin-bottom: 8px;
 
-    .vs__search, .vs__selected {
-        font-size: 14px;
+        .vs__search, .vs__selected {
+            font-size: 14px;
+        }
     }
 }
 

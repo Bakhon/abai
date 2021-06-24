@@ -1,4 +1,7 @@
 import mainMenuConfiguration from "../main_menu_configuration.json";
+import companiesListWithKMG from "../dzo_companies_initial_consolidated_withkmg.json";
+import dzoCompaniesInitial from "../dzo_companies_initial.json";
+import companiesListWithoutKMG from "../dzo_companies_initial_consolidated_withoutkmg.json";
 
 export default {
     data: function () {
@@ -22,7 +25,14 @@ export default {
         switchCategory(buttonName, planFieldName, factFieldName, metricName, categoryName, parentButton, childButton) {
             this.$store.commit('globalloading/SET_LOADING', true);
             this.isOpecFilterActive = false;
+            this.oilCondensateFilters.isWithoutKMGFilterActive = true;
 
+            if (buttonName !== 'oilCondensateProductionButton') {
+                this.changeDzoCompaniesList(dzoCompaniesInitial);
+            } else {
+                this.changeDzoCompaniesList(companiesListWithKMG);
+            }
+            this.selectAllDzoCompanies();
             this.disableTargetCompanyFilter();
             if (!childButton) {
                 this.mainMenuButtonElementOptions = _.cloneDeep(mainMenuConfiguration);
@@ -43,7 +53,13 @@ export default {
             this.changeDate();
         },
 
+        changeDzoCompaniesList(companyList) {
+            this.dzoCompanies = _.cloneDeep(companyList);
+            this.dzoCompaniesTemplate = _.cloneDeep(companyList);
+        },
+
         switchMainMenu(parentButton, childButton) {
+            this.selectAllDzoCompanies();
             this.disableTargetCompanyFilter();
             let self = this;
             this.isMainMenuItemChanged = false;
@@ -89,7 +105,9 @@ export default {
 
         changeAssets(type,category,regionName) {
             this.dzoCompaniesAssets[type] = true;
-            this.dzoCompaniesAssets['isAllAssets'] = false;
+            if (!this.dzoCompaniesAssets[type]) {
+                this.dzoCompaniesAssets['isAllAssets'] = true;
+            }
             this.dzoCompaniesAssets['assetTitle'] = this.assetTitleMapping[type];
 
             if (type === "opecRestriction") {

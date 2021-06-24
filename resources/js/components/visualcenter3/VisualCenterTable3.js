@@ -207,11 +207,6 @@ export default {
             }
             if (this.isProductionDetailsActive) {
                 productionData = this.getFormattingProductionDetails(productionData);
-                this.wellsWorkoverSelectedRow = 'underground_workover';
-                this.chemistrySelectedRow = 'demulsifier',
-                this.updateChemistryWidget();
-                this.updateWellsWorkoverWidget();
-                this.updateDrillingWidget();
             }
 
             let updatedData = productionData;
@@ -738,7 +733,7 @@ export default {
         this.wellsWorkoverDetails = await this.getWellsWorkoverByMonth();
         this.drillingDetails = await this.getDrillingByMonth();
         this.dzoMonthlyPlans = await this.getDzoMonthlyPlans();
-
+        this.dzoCompanies = _.cloneDeep(this.dzoCompaniesTemplate);
         this.dzoCompaniesAssets = _.cloneDeep(this.dzoCompaniesAssetsInitial);
         this.sortDzoList();
         this.changeDate();
@@ -751,6 +746,9 @@ export default {
         this.getDzoYearlyPlan();
         this.selectedDzoCompanies = this.getAllDzoCompanies();
         this.dailyCurrencyChangeUsd = Math.abs(parseFloat(this.usdRatesData.for_table[1].change));
+        this.updateChemistryWidget();
+        this.updateWellsWorkoverWidget();
+        this.updateDrillingWidget();
     },
     watch: {
         bigTable: function () {
