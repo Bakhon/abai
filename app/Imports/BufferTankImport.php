@@ -39,8 +39,8 @@ class BufferTankImport implements ToModel
 
     public function model(array $row)
     {
-        $ngdu = Ngdu::where('name', '=',(int) $row[self::NGDU])->first();
-        $gu = Gu::where('name', '=',(int) $row[self::GU])->first();
+        $ngdu = Ngdu::where('name', '=',$row[self::NGDU])->first();
+        $gu = Gu::where('name', '=',$row[self::GU])->first();
         return new BufferTank([
             'ngdu_id' => empty($ngdu) ? null : $ngdu->id,
             'gu_id' => empty($gu) ? null : $gu->id,
