@@ -204,6 +204,7 @@ export default {
         processProductionDataByCompanies(productionData,metricName,chartSecondaryName) {
             if (this.oilCondensateProductionButton.length > 0) {
                 this.isOpecFilterActive = false;
+                this.planFieldName = 'oil_plan';
             }
             if (this.isProductionDetailsActive) {
                 productionData = this.getFormattingProductionDetails(productionData);
@@ -295,6 +296,7 @@ export default {
                 ["__time"],
                 ["asc"]
             );
+
 
             if (this.isOneDateSelected) {
                 let dataWithMay2 = new Array();
