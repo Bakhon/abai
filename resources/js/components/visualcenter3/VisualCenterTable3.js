@@ -221,8 +221,8 @@ export default {
             this.productionTableData = productionData;
             let yesterdayPeriodStart = moment(new Date(this.timestampToday)).subtract(1,'days').valueOf();
             let yesterdayPeriodEnd = moment(new Date(this.timestampEnd)).subtract(1,'days').valueOf();
-            let processedByAllCompaniesForActual = this.getProcessedDataForAllCompanies(productionData,this.timestampToday,this.timestampEnd);
-            let processedByAllCompaniesForYesterday = this.getProcessedDataForAllCompanies(productionData,yesterdayPeriodStart,yesterdayPeriodEnd);
+            let processedByAllCompaniesForYesterday = this.getProcessedDataForAllCompanies(productionData,yesterdayPeriodStart,yesterdayPeriodEnd,'old');
+            let processedByAllCompaniesForActual = this.getProcessedDataForAllCompanies(productionData,this.timestampToday,this.timestampEnd,'actual');
             updatedData = processedByAllCompaniesForActual.filteredData;
             this.yesterdayProductionDetails = processedByAllCompaniesForYesterday.summary;
             this.bigTable = processedByAllCompaniesForActual.summary;
@@ -292,7 +292,7 @@ export default {
             return (summaryDataByDzo['0']['factMonth'] + summaryDataByDzo['0']['planMonth']) === 0;
         },
 
-        getProcessedDataForAllCompanies(data,periodStart,periodEnd) {
+        getProcessedDataForAllCompanies(data,periodStart,periodEnd,periodType) {
             let self = this;
             var dzo = [];
             var factYear = [];
@@ -342,7 +342,9 @@ export default {
             }
 
             let productionPlanAndFactMonth = this.getProductionPlanAndFactForMonth(dataWithMay);
-            this.updateWellsWidgetsForAllCompanies(dataWithMay);
+            if (periodType === 'actual') {
+                this.updateWellsWidgetsForAllCompanies(dataWithMay);
+            }
             this.injectionWells = this.getSummaryWells(dataWithMay,this.wellStockIdleButtons.isInjectionIdleButtonActive,'injectionFonds');
             this.innerWellsChartData = this.getSummaryInjectionWellsForChart(dataWithMay);
             this.productionWells = this.getSummaryWells(dataWithMay, this.wellStockIdleButtons.isProductionIdleButtonActive,'productionFonds');
@@ -435,7 +437,9 @@ export default {
                 planDay.push(p);
             });
 
-            this.updateWellsWidgetPercentData(data);
+            if (periodType !== 'actual') {
+                this.updateWellsWidgetPercentData(data,periodStart,periodEnd);
+            }
 
 
             var dzoMonth = [];
