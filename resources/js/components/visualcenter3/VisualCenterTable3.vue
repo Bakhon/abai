@@ -819,7 +819,7 @@
                                     type="checkbox"
                                     :disabled="isGrouppingFilterActive()"
                                     :checked="company.selected"
-                                    @change="`${selectDzoCompany(company.ticker)}`"
+                                    @change="`${selectOneDzoCompany(company.ticker)}`"
                             ></input>
                             {{trans(company.companyName)}}
                           </div>
@@ -1035,9 +1035,9 @@
                   </tr>
                   </thead>
                   <tbody>
-                  <tr v-for="(item, index) in dzoCompanySummary">
+                  <tr v-for="(item, index) in dzoSummaryForTable">
                     <td
-                            @click="isMultipleDzoCompaniesSelected ? `${selectOneDzoCompany(item.dzoMonth)}` : `${selectAllDzoCompanies()}`"
+                            @click="isMultipleDzoCompaniesSelected ? `${switchOneCompanyView(item.dzoMonth)}` : `${selectAllDzoCompanies()}`"
                             :class="index % 2 === 0 ? 'tdStyle' : ''"
                             style="cursor: pointer"
                     >
@@ -1422,7 +1422,7 @@
 
                 <div
                         v-if="!isMultipleDzoCompaniesSelected && buttonDailyTab"
-                        v-for="(item) in dzoCompanySummary"
+                        v-for="(item) in dzoSummaryForTable"
                         colspan="5"
                         class="dzo-company-reason"
                 >
