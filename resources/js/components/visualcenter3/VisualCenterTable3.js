@@ -106,6 +106,7 @@ export default {
                 oil_dlv_fact: 0,
                 gas_fact: 0
             },
+            millisecondsInOneDay: 1000*60*60*24
         };
     },
     methods: {
@@ -207,8 +208,7 @@ export default {
                 this.planFieldName = 'oil_plan';
             }
             if (this.selectedButtonName !== 'oilCondensateProductionButton') {
-                console.log(productionData.length)
-                let indexes = productionData.map((elm, idx) => elm.dzo_name === 'ПКИ' ? idx : '').filter(String);
+                let indexes = this.getElementIndexesByCompany(productionData,'ПКИ');
                 for (var i in indexes.reverse()) {
                     productionData.splice(indexes[i], 1);
                 }
@@ -229,6 +229,17 @@ export default {
             this.setColorToMainMenuButtons();
             this.updateProductionOilandGas(updatedData);
             this.updateProductionOilandGasPercent(updatedData);
+        },
+
+        getElementIndexesByCompany(productionData,companyName) {
+            return productionData.map((elm, index) => this.getElementIndexByCompany(elm,index,companyName)).filter(String);
+        },
+
+        getElementIndexByCompany(element,index,companyName) {
+            if (element.dzo_name === companyName) {
+                return index;
+            }
+            return '';
         },
 
         processDataForSpecificCompany(data, metricName, chartSecondaryName,periodStart,periodEnd) {
@@ -312,8 +323,8 @@ export default {
                     return _.every([
                         _.inRange(
                             item.__time,
-                            periodStart - 2 * 86400000,
-                            periodStart + 86400000
+                            periodStart - 2 * self.millisecondsInOneDay,
+                            periodStart + self.millisecondsInOneDay
                         ),
                     ]);
                 });
@@ -385,7 +396,7 @@ export default {
                 return _.every([
                     _.inRange(
                         item.__time,
-                        periodEnd - 86400000,
+                        periodEnd - self.millisecondsInOneDay,
                         periodEnd
                     ),
                 ]);
