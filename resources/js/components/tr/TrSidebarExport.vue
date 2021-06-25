@@ -71,6 +71,10 @@ export default {
           year_2:  this.$store.getters["tr/year_dyn_end"],
           month_2:  this.$store.getters["tr/month_dyn_end"],
           day_2:  this.$store.getters["tr/day_dyn_end"],
+
+          month: this.$store.getters["tr/month"],
+          year: this.$store.getters["tr/year"],
+
         }
       );
     },
