@@ -359,11 +359,13 @@ export default {
         },
 
         updateProductionTotalFact(filteredByCompaniesYesterday,summary) {
+            let oldFactFormatted = parseFloat(summary.fact.replace(/\s/g, ''));
+            let oldPlanFormatted = parseFloat(summary.plan.replace(/\s/g, ''));
             this.productionParams['oil_fact'] = _.sumBy(this.dzoSummaryForTable,'factMonth');
             this.productionParams['oil_plan'] = _.sumBy(this.dzoSummaryForTable,'planMonth');
             this.productionPercentParams['oil_fact'] = _.sumBy(filteredByCompaniesYesterday,'factMonth');
-            this.productionParamsWidget.oilFact = summary.fact;
-            this.productionParamsWidget.oilPlan = summary.plan;
+            this.productionParamsWidget.oilFact = oldFactFormatted;
+            this.productionParamsWidget.oilPlan = oldPlanFormatted;
         },
 
         getFilteredByNotUsableDzo(data) {

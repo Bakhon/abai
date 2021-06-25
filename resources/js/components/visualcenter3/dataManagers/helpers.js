@@ -67,7 +67,7 @@ export default {
             }
         },
 
-        getDifferencePercentBetweenLastValues(previous,current) {
+        getDifferencePercentBetweenLastValues(current,previous) {
             if (previous != '' && previous !== 0) {
                 return ((current / previous - 1) * 100).toFixed(2);
             }
