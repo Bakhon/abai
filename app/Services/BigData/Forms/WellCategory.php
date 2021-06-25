@@ -7,6 +7,7 @@ namespace App\Services\BigData\Forms;
 use App\Models\BigData\Dictionaries\Geo;
 use App\Models\BigData\Well;
 use Carbon\Carbon;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Facades\DB;
 
 class WellCategory extends PlainForm
@@ -14,14 +15,14 @@ class WellCategory extends PlainForm
 
     const GEO_HORIZON_TYPE = 4;
 
-    const OIL_WELL = 1;
+    const OIL_WELL = 13;
     const INJECTION_WELL = 2;
     const STEAM_INJECTION_WELL = 11;
 
     const WELL_CATEGORIES = [
-        self::OIL_WELL,
-        self::INJECTION_WELL,
-        self::STEAM_INJECTION_WELL
+        Well::WELL_CATEGORY_OIL,
+        Well::WELL_CATEGORY_INJECTION,
+        Well::WELL_CATEGORY_STEAM_INJECTION
     ];
 
     const WELL_ACTIVE_STATUSES = [
@@ -84,14 +85,16 @@ class WellCategory extends PlainForm
     {
         $horizon = $well->geo->where('geo_type', self::GEO_HORIZON_TYPE)->first();
 
-        if (empty($horizon)) {
-            foreach ($well->geo as $geo) {
-                $parents = $geo->ancestors();
-                foreach ($parents as $parent) {
-                    if ($parent->geo_type === self::GEO_HORIZON_TYPE) {
-                        $horizon = $parent;
-                        break;
-                    }
+        if (!empty($horizon)) {
+            return $horizon;
+        }
+
+        foreach ($well->geo as $geo) {
+            $parents = $geo->ancestors();
+            foreach ($parents as $parent) {
+                if ($parent->geo_type === self::GEO_HORIZON_TYPE) {
+                    $horizon = $parent;
+                    break;
                 }
             }
         }
@@ -129,36 +132,10 @@ class WellCategory extends PlainForm
             ->where('ws.dend', '>=', $date)
             ->leftJoin('dict.well_status_type as wst', 'wst.id', 'ws.status');
 
-        if ($category === self::OIL_WELL) {
-            $otherWellsQuery->select(
-                'w.id as id',
-                'w.uwi as uwi',
-                'wst.name_ru as status',
-                'wct.name_ru as category',
-                'wri.id as checked',
-                DB::raw(
-                    '(select water_inj_val from prod.meas_water_inj as mwi where mwi.well = w.id and mwi.dbeg <= \'' . $date->format(
-                        'Y-m-d'
-                    ) . '\' order by mwi.dbeg desc limit 1) as water_inj'
-                )
-            )
-                ->whereIn('wc.category', [self::STEAM_INJECTION_WELL, self::INJECTION_WELL])
-                ->leftJoin('prod.well_react_infl as wri', 'wri.well_influencing', 'w.id');
+        if ($category === Well::WELL_CATEGORY_OIL) {
+            $otherWellsQuery = $this->selectInjectionWellsFields($otherWellsQuery, $date);
         } else {
-            $otherWellsQuery->select(
-                'wg.id as well_id',
-                'w.uwi as well',
-                'wst.name_ru as status',
-                'wct.name_ru as category',
-                'wri.id as checked',
-                DB::raw(
-                    '(select liquid from prod.meas_liq as ml where ml.well = w.id and ml.dbeg <= \'' . $date->format(
-                        'Y-m-d'
-                    ) . '\' order by ml.dbeg desc limit 1) as liquid_debit'
-                )
-            )
-                ->where('wc.category', self::OIL_WELL)
-                ->leftJoin('prod.well_react_infl as wri', 'wri.well_reacting', 'w.id');
+            $otherWellsQuery = $this->selectOilWellsFields($otherWellsQuery, $date);
         }
 
         $result = collect($otherWellsQuery->get())->map(
@@ -184,7 +161,7 @@ class WellCategory extends PlainForm
             ]
         ];
 
-        if ($category === self::OIL_WELL) {
+        if ($category === Well::WELL_CATEGORY_OIL) {
             $columns[] = [
                 "code" => "water_inj",
                 "title" => trans("bd.forms.well_category.water_inj_v")
@@ -206,6 +183,42 @@ class WellCategory extends PlainForm
         ];
 
         return $columns;
+    }
+
+    private function selectInjectionWellsFields(Builder $query, Carbon $date)
+    {
+        return $query->select(
+            'w.id as well_id',
+            'w.uwi as well',
+            'wst.name_ru as status',
+            'wct.name_ru as category',
+            'wri.id as checked',
+            DB::raw(
+                '(select water_inj_val from prod.meas_water_inj as mwi where mwi.well = w.id and mwi.dbeg <= \'' . $date->format(
+                    'Y-m-d'
+                ) . '\' order by mwi.dbeg desc limit 1) as water_inj'
+            )
+        )
+            ->whereIn('wc.category', [Well::WELL_CATEGORY_INJECTION, Well::WELL_CATEGORY_STEAM_INJECTION])
+            ->leftJoin('prod.well_react_infl as wri', 'wri.well_influencing', 'w.id');
+    }
+
+    private function selectOilWellsFields(Builder $query, Carbon $date)
+    {
+        return $query->select(
+            'wg.id as well_id',
+            'w.uwi as well',
+            'wst.name_ru as status',
+            'wct.name_ru as category',
+            'wri.id as checked',
+            DB::raw(
+                '(select liquid from prod.meas_liq as ml where ml.well = w.id and ml.dbeg <= \'' . $date->format(
+                    'Y-m-d'
+                ) . '\' order by ml.dbeg desc limit 1) as liquid_debit'
+            )
+        )
+            ->where('wc.category', Well::WELL_CATEGORY_OIL)
+            ->leftJoin('prod.well_react_infl as wri', 'wri.well_reacting', 'w.id');
     }
 
 }

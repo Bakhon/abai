@@ -26,6 +26,8 @@ class Well extends TBDModel
         self::WELL_STATUS_PERIODIC_EXPLOITATION
     ];
 
+    const WELL_CATEGORY_STEAM_INJECTION = 1;
+    const WELL_CATEGORY_INJECTION = 5;
     const WELL_CATEGORY_OIL = 13;
 
     protected $table = 'dict.well';
