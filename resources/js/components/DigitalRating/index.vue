@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import Settings from 'components/Settings';
+import Settings from './components/Settings';
 
 export default {
   name: 'DigitalRating',
