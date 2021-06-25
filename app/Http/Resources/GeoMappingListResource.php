@@ -2,10 +2,10 @@
 
 namespace App\Http\Resources;
 
-class WellMappingListResource extends LasDictionariesResource
+class GeoMappingListResource extends LasDictionariesResource
 {
     protected $modelName = 'file_status';
-    protected $link = 'well-mapping';
+    protected $link = 'geo-mapping';
 
     /**
      * Transform the resource into an array.

@@ -5,7 +5,7 @@ namespace App\Models\BigData\Dictionaries;
 use App\Models\TBDModel;
 use App\Models\BigData\Well;
 
-class WellMapping extends TBDModel
+class GeoMapping extends TBDModel
 {
     protected $table = 'dict.well_mapping';
     protected $guarded = ['id'];

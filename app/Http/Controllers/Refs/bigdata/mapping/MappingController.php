@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Refs\bigdata\mapping;
 use App\Filters\LasDictionariesFilter;
 use App\Http\Controllers\Traits\WithFieldsValidation;
 use App\Http\Requests\IndexTableRequest;
-use App\Http\Requests\WellMappingRequest;
+use App\Http\Requests\GeoMappingRequest;
 use Illuminate\Http\Request;
 use App\Http\Controllers\CrudController;
 use Illuminate\Http\Response;
@@ -89,7 +89,7 @@ class MappingController extends CrudController
     /**
      * Store a newly created resource in storage.
      */
-    public function store(WellMappingRequest $request): \Symfony\Component\HttpFoundation\Response
+    public function store(GeoMappingRequest $request): \Symfony\Component\HttpFoundation\Response
     {
         $this->validateFields($request, 'data');
 
@@ -133,7 +133,7 @@ class MappingController extends CrudController
      * Update the specified resource in storage.
      *
      */
-    public function update(WellMappingRequest $request, int $id): \Symfony\Component\HttpFoundation\Response
+    public function update(GeoMappingRequest $request, int $id): \Symfony\Component\HttpFoundation\Response
     {
         $this->validateFields($request, 'data');
 
