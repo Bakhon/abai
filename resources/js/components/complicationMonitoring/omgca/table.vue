@@ -153,6 +153,12 @@
                   >
                   </date-picker>
                 </div>
+                <button class="filter-data-clear ml-10px"
+                        v-show="filters[code].value.to || filters[code].value.from"
+                        @click="clearDateFilter(code)"
+                >
+                  <i class="fas fa-times"></i>
+                </button>
                 <button class="filter-apply" @click="loadData()">OK</button>
               </template>
               <template v-else>
@@ -163,6 +169,9 @@
                       v-model="filters[code].value"
                       @keyup.enter="loadData"
                   >
+                  <button class="filter-clear mr-15px" v-show="filters[code].value" @click="clearFilter(code)">
+                    <i class="fas fa-times"></i>
+                  </button>
                   <button class="filter-apply" @click="loadData()">OK</button>
                 </div>
               </template>
@@ -242,6 +251,8 @@ export default {
         by: null,
         desc: false
       },
+      currentFilter: null,
+      currentSort: null,
       loading: false,
       currentPage: 1,
       filters: {},
@@ -255,8 +266,10 @@ export default {
     }
   },
   mounted() {
-    this.initFilters()
-    this.loadData()
+    this.initCurrentFilter();
+    this.initCurrentSort();
+    this.initFilters();
+    this.loadData();
   },
   computed: {
     activeFilters() {
@@ -293,7 +306,7 @@ export default {
       })
     },
     isFilterActive(code) {
-      if (this.params.fields[code].type === 'date') {
+      if (this.params.fields[code].type === 'date' && typeof this.filters[code].value == 'object') {
         return !!this.filters[code].value.from || !!this.filters[code].value.to
       } else {
         return !!this.filters[code].value
@@ -335,6 +348,8 @@ export default {
         queryParams.calc_export = this.calcExport;
       }
 
+      queryParams.model_name = this.params.model_name;
+
       return queryParams
     },
     changePage(page = 1) {
@@ -359,6 +374,14 @@ export default {
         });
       });
     }, 500),
+    clearFilter(code) {
+      this.filters[code].value = null;
+      this.loadData();
+    },
+    clearDateFilter (code) {
+      this.filters[code].value = {from: null, to: null};
+      this.loadData();
+    },
     sortBy(field) {
       if (this.sort.by === field) {
         this.sort.desc = !this.sort.desc
@@ -434,18 +457,65 @@ export default {
       });
     },
     resetFilters() {
+      this.$delete(this.params, 'filter');
+      this.sort = {
+        by: null,
+        desc: false
+      };
+      this.initCurrentFilter();
+      this.initCurrentSort();
       this.initFilters()
       this.loadData()
     },
+    initCurrentFilter () {
+      if (typeof this.params.filter !== 'undefined' &&
+          this.params.filter &&
+          typeof this.params.filter.filter !== 'undefined') {
+        this.currentFilter = this.params.filter.filter;
+      } else {
+        this.currentFilter = null;
+      }
+    },
+    initCurrentSort() {
+      if (typeof this.params.filter !== 'undefined' &&
+          this.params.filter &&
+          typeof this.params.filter.order_by !== 'undefined' &&
+          typeof this.params.filter.order_desc !== 'undefined') {
+        this.currentSort = {
+          by: this.params.filter.order_by,
+          desc: Boolean(parseInt(this.params.filter.order_desc))
+        }
+      } else {
+        this.currentSort = null;
+      }
+    },
     initFilters() {
-      if (this.params) {
-        Object.entries(this.params.fields).forEach(([code, field]) => {
-          let filter = {
-            show: false,
-            value: field.type === 'date' ? {from: null, to: null} : null
+      if (!this.params) {
+        return;
+      }
+
+      Object.entries(this.params.fields).forEach(([code, field]) => {
+        let filter = {
+          show: false,
+          value: field.type === 'date' ? {from: null, to: null} : null
+        }
+
+        if (this.currentFilter && typeof this.currentFilter[code] !== 'undefined') {
+          if (field.type === 'date') {
+            filter.value = JSON.parse(this.currentFilter[code])
+          } else {
+            filter.value = this.currentFilter[code];
           }
-          this.$set(this.filters, code, filter)
-        })
+
+        }
+
+        this.$set(this.filters, code, filter)
+      })
+
+
+      if (this.currentSort) {
+        this.sort = this.currentSort;
+        this.currentPage = this.params.filter.page;
       }
     }
   },
@@ -685,6 +755,25 @@ table::-webkit-scrollbar-corner {
       position: relative;
       top: 4px;
       width: 56px;
+    }
+
+    &-clear {
+      background: transparent;
+      border: none;
+      font-size: 12px;
+      height: 32px;
+      position: absolute;
+      top: 4px;
+      right: 56px;
+    }
+
+    &-data-clear {
+      background: transparent;
+      border: none;
+      font-size: 12px;
+      height: 32px;
+      position: relative;
+      top: 4px;
     }
   }
 

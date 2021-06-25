@@ -296,10 +296,12 @@ class receiveNonOperatingAssets extends Command
         return array (
             'oil_production_fact' => $this->getUpdatedFactForRecord($dzoName,$row[$columnMapping['KPOoilProduction']],$yesterdayFact,'oilProduction'),
             'oil_delivery_fact' => $this->getUpdatedFactForRecord($dzoName,$row[$columnMapping['KPOoilDelivery']],$yesterdayFact,'oilDelivery'),
-            'condensate_production_fact' => $sheet->rows()[$rowIndex + 1][$columnMapping['condensateProduction']],
+            'condensate_production_fact' => $sheet->rows()[$rowIndex + 2][$columnMapping['condensateProduction']],
             'condensate_delivery_fact' => $sheet->rows()[$rowIndex + 2][$columnMapping['condensateDelivery']],
             'dzo_name' => $dzoName,
-            'date' => Carbon::yesterday('Asia/Almaty')
+            'date' => Carbon::yesterday('Asia/Almaty'),
+            'oil_production_fact_absolute' => $row[$columnMapping['KPOoilProduction']],
+            'oil_delivery_fact_absolute' => $row[$columnMapping['KPOoilDelivery']]
         );
     }
 
@@ -314,19 +316,19 @@ class receiveNonOperatingAssets extends Command
             ->where('dzo_name',$dzoName)
             ->first();
         if (!is_null($dzoYesterdayData)) {
-            $data['oilProduction'] = $dzoYesterdayData->oil_production_fact;
-            $data['oilDelivery'] = $dzoYesterdayData->oil_delivery_fact;
+            $data['oilProduction'] = $dzoYesterdayData->oil_production_fact_absolute;
+            $data['oilDelivery'] = $dzoYesterdayData->oil_delivery_fact_absolute;
         }
         return $data;
     }
 
     public function getUpdatedFactForRecord($dzoName,$currentFact,$yesterdayFact,$fieldName) {
-        return ($currentFact - $yesterdayFact[$fieldName]) * 0.9;
+        return ((float) $currentFact - $yesterdayFact[$fieldName]) * 0.9;
     }
 
     public function insertDataToDB ($data)
     {
-      DzoImportData::create($data);
+        DzoImportData::create($data);
     }
 
     /**

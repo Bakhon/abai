@@ -9,49 +9,43 @@ use Illuminate\Http\Request;
 
 class MainController extends Controller
 {
-    public $companyId = 0;
+    public $companyId = 7;
     public $dateTo = null;
     public $dateFrom = null;
-    public $defaultCompanyId = 7;
+
 
     public function company(Request $request)
     {
-        $this->dateTo = date('Y-m-d', strtotime(' -1 year'));
-        $this->dateFrom = date("Y-m-d", strtotime($this->dateTo . " -3 months"));
-
-        if ($request->company) {
-            $this->companyId = $request->company;
-        }else{
-            $this->companyId = $this->defaultCompanyId;
-        }
-        if ($request->betweenMonthsValue) {
-            $this->dateFrom = date('Y-m-d', strtotime(date('Y', strtotime($this->dateTo)) . '-01-01'));
-            $this->dateTo = date('Y-m-d', strtotime(date('Y', strtotime($this->dateTo)) . '-' . $request->betweenMonthsValue));
-        }
-        if ($request->monthsValue) {
-            $this->dateFrom = date("Y-m-d", strtotime(date('Y', strtotime($this->dateTo)) . '-' . $request->monthsValue . '-01'));
-            $this->dateTo = date("Y-m-d", strtotime(date('Y', strtotime($this->dateTo)) . '-' . $request->monthsValue . '-31'));
-        }
-        if ($request->quarterValue) {
-            $this->dateTo = date("Y-m-d", strtotime(date('Y', strtotime($this->dateTo)) . '-' . $request->quarterValue . '-01'));
-            $this->dateFrom = date("Y-m-d", strtotime($this->dateTo . " -3 months"));
-        }
-        $currentYear = date('Y', strtotime($this->dateTo));
+        $currentYear = date('Y', strtotime('-1 year'));
         $previousYear = (string) $currentYear - 1;
+        $this->dateFrom = date('Y-m-d', strtotime('first day of january previous year'));
+        $this->dateTo = date('Y-m-d', strtotime('last day of december previous year'));
+        if($request->company) {
+            $this->companyId = $request->company;
+        }
+        if($request->monthsValue && $request->monthsValue != '01' ) {
+            $this->dateFrom = date('Y-m-d', mktime(0, 0, 0, $request->monthsValue, 1, $currentYear));
+            $this->dateTo = date("Y-m-d", strtotime($this->dateFrom . " +1 months"));
+        }
+        if($request->differenceBetweenMonths && $request->differenceBetweenMonths != '01') {
+            $this->dateFrom = date('Y-m-d', strtotime('first day of january previous year'));
+            $this->dateTo = date('Y-m-d', mktime(0, 0, 0, $request->differenceBetweenMonths, 1, $currentYear));
+        }
+        if($request->quarterValue && $request->quarterValue != '01') {
+            $this->dateTo  = date('Y-m-t', mktime(0, 0, 0, $request->quarterValue, 1, $currentYear));
+            $this->dateFrom = date('Y-m-01', strtotime($this->dateTo . '-2 months'));
+        }
         $handbook = HandbookRepTt::where('parent_id', 0)->with('childHandbookItems')->get()->toArray();
         $companies = EcoRefsCompaniesId::all();
         $companyRepTtValues = EcoRefsCompaniesId::find($this->companyId)->statsByDate($currentYear)->get()->toArray();
         $repTtReportValues = $this->recursiveSetValueToHandbookByType($handbook, $companyRepTtValues, $currentYear, $previousYear, $this->dateFrom, $this->dateTo);
-
         $data = [
             'reptt' => $repTtReportValues,
             'currentYear' => $currentYear,
             'previousYear' => $previousYear,
             'companies' => $companies,
         ];
-        $data = json_encode($data);
-
-        return view('economy_kenzhe.company')->with(compact('data'));
+        return json_encode($data);
     }
 
     public function recursiveSetValueToHandbookByType(&$items, $companyRepTtValues, $currentYear, $previousYear, $dateFrom, $dateTo)

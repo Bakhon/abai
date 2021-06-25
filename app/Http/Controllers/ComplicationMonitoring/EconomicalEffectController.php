@@ -79,11 +79,16 @@ class EconomicalEffectController extends CrudController
             ]
         ];
 
+        $params['model_name'] = $this->modelName;
+        $params['filter'] = session($this->modelName.'_filter');
+
         return view('complicationMonitoring.economical_effect.index', compact('params'));
     }
 
     public function list(IndexTableRequest $request)
     {
+        parent::list($request);
+
         $query = EconomicalEffect::query()
             ->with('gu');
 

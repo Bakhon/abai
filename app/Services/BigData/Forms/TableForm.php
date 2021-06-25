@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Services\BigData\Forms;
 
-use App\Models\BigData\Infrastructure\History;
 use App\Services\BigData\FieldLimitsService;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
@@ -18,7 +17,7 @@ abstract class TableForm extends BaseForm
 {
     protected $jsonValidationSchemeFileName = 'table_form.json';
 
-    abstract public function getRows(array $params = []);
+    abstract public function getRows(array $params = []): array;
 
     abstract protected function saveSingleFieldInDB(string $field, int $wellId, Carbon $date, $value): void;
 
@@ -81,10 +80,12 @@ abstract class TableForm extends BaseForm
 
     public function getFormatedParams(): array
     {
+        $params = $this->params();
+        $params = $this->mapParams($params);
+
         return [
-            'params' => $this->params(),
-            'fields' => $this->getFields()->pluck('', 'code')->toArray(),
-            'filterTree' => $this->getFilterTree()
+            'params' => $params,
+            'fields' => $this->getFields()->pluck('', 'code')->toArray()
         ];
     }
 
@@ -96,11 +97,6 @@ abstract class TableForm extends BaseForm
     public function getFieldByCode(string $code)
     {
         return $this->getFields()->where('code', $code)->first();
-    }
-
-    protected function getFilterTree(): array
-    {
-        return [];
     }
 
     protected function getFieldValue(array $field, array $rowData, Model $item): ?array
@@ -155,7 +151,7 @@ abstract class TableForm extends BaseForm
         }
         $row = $row->first();
 
-        if (empty($row)) {
+        if (empty($row) || !isset($row->{$fieldParams['column']})) {
             return [
                 'value' => null
             ];
@@ -264,34 +260,6 @@ abstract class TableForm extends BaseForm
         return Carbon::parse($date)->diffInDays(Carbon::parse($this->request->get('date'))) === 0;
     }
 
-    private function saveHistory(string $field, $value)
-    {
-        History::create(
-            [
-                'form_name' => $this->configurationFileName,
-                'payload' => [
-                    $field => $value
-                ],
-                'date' => Carbon::parse($this->request->get('date')),
-                'row_id' => $this->request->get('well_id'),
-                'user_id' => auth()->id()
-            ]
-        );
-    }
-
-    private function getFieldRow(array $column, int $wellId, string $date)
-    {
-        return DB::connection('tbd')
-            ->table($column['table'])
-            ->where('well_id', $wellId)
-            ->whereDate(
-                'dbeg',
-                '=',
-                Carbon::parse($date)->toDateTimeString()
-            )
-            ->first();
-    }
-
     protected function addLimits(Collection $rows): void
     {
         $rows->transform(
@@ -313,10 +281,28 @@ abstract class TableForm extends BaseForm
                             $field
                         );
                     }
-                    $row[$field['code']]['limits'] = $fieldLimits[$row['uwi']['id']] ?? null;
+                    $row[$field['code']]['limits'] = $fieldLimits[$row['id']] ?? null;
                 }
                 return $row;
             }
         );
+    }
+
+    protected function mapParams(array $params)
+    {
+        if (!empty($params['filter'])) {
+            $params['filter'] = array_map(
+                function ($item) {
+                    if ($item['type'] === 'date' && $item['default']) {
+                        $item['default'] = Carbon::createFromTimestamp(strtotime($item['default']))->timezone(
+                            'Asia/Almaty'
+                        );
+                    }
+                    return $item;
+                },
+                $params['filter']
+            );
+        }
+        return $params;
     }
 }

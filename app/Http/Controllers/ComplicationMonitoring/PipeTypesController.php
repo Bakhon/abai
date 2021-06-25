@@ -54,11 +54,16 @@ class PipeTypesController extends CrudController
             $params['links']['create'] = route($this->modelName.'.create');
         }
 
+        $params['model_name'] = $this->modelName;
+        $params['filter'] = session($this->modelName.'_filter');
+
         return view('pipe_types.index', compact('params'));
     }
 
     public function list(IndexTableRequest $request)
     {
+        parent::list($request);
+
         $query = PipeType::with('material');
 
         $pipe_type = $this
