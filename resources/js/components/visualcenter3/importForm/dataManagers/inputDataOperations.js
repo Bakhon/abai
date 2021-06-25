@@ -4,6 +4,35 @@ export default {
             currentCellOptions: {
                 rowIndex: 0,
                 columnIndex: 0
+            },
+            dzoFieldsMapping: {
+                'ЭМГ': [
+                    'oil_production_fact',
+                    'oil_delivery_fact',
+                    'condensate_production_fact',
+                    'condensate_delivery_fact',
+                    'stock_of_goods_delivery_fact',
+                    'natural_gas_production_fact',
+                    'natural_gas_delivery_fact',
+                    'natural_gas_expenses_for_own_fact',
+                    'natural_gas_processing_fact',
+                    'natural_gas_flaring_fact',
+                    'associated_gas_production_fact',
+                    'associated_gas_delivery_fact',
+                    'associated_gas_expenses_for_own_fact',
+                    'associated_gas_processing_fact',
+                    'associated_gas_flaring_fact',
+                    'agent_upload_total_water_injection_fact',
+                    'agent_upload_seawater_injection_fact',
+                    'agent_upload_waste_water_injection_fact',
+                    'agent_upload_albsenomanian_water_injection_fact',
+                    'agent_upload_stream_injection_fact',
+                    'otm_wells_commissioning_from_drilling_fact',
+                    'otm_drilling_fact'
+                ],
+            },
+            errors: {
+                'sumByDzo': false
             }
         };
     },
@@ -65,5 +94,25 @@ export default {
                 this[category][type] = value
             }
         },
+
+        validateSummaryByOptions(options) {
+            for (let i in options) {
+                let fieldName = options[i];
+                if (this.excelData[fieldName] === null) {
+                    let factByFields = this.getSumByFields(fieldName);
+                    if (factByFields > 0) {
+                        this.errors.sumByDzo = true;
+                    }
+                }
+            }
+        },
+
+        getSumByFields(fieldName) {
+            let totalFact = 0;
+            _.forEach(this.excelData.fields, function(field) {
+                totalFact += field[fieldName];
+            });
+            return totalFact;
+        }
     }
 }
