@@ -13,7 +13,6 @@ use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use PhpParser\Node\Expr\Cast\Double;
 
 class ComplicationMonitoringEconomicCalculate extends Command
 {
@@ -50,11 +49,10 @@ class ComplicationMonitoringEconomicCalculate extends Command
                 $this->insertIntoTable($guDataByDay, $corrosion, $item, "economical_effect", "economical_effects");
                 $this->insertIntoTable($guDataByDay, $corrosion, $item, "lost_profits", "lost_profits");
             }
-
-        echo "*";
         }
-        $this->calculateLostProfitsTotal("lost_profits", "lost_profits", "lost_profits_sum");
-        $this->calculateLostProfitsTotal("economical_effects", "economical_effect", "economical_effect_sum");
+        
+        $this->calculateTotal("lost_profits", "lost_profits", "lost_profits_sum");
+        $this->calculateTotal("economical_effects", "economical_effect", "economical_effect_sum");
     }
 
     public function getGuData(string $guId): object
@@ -143,11 +141,11 @@ class ComplicationMonitoringEconomicCalculate extends Command
             'recommended_inhibitor_injection' => $corrosion->dose_mg_per_l_point_A,
             'difference' => $column == "lost_profits" ? $item->current_dosage - $corrosion->dose_mg_per_l_point_A : $guDataByDay->ca->plan_dosage - $corrosion->dose_mg_per_l_point_A,
             'inhibitor_price' => $this->inhibitorPrice,
-            $column == "lost_profits" ? "lost_profits" : "economical_effect" => $column == "lost_profits" ? $this->lostProfitsCalculate($item, $corrosion, $guDataByDay) : $this->economicalEffectCalculate($item, $corrosion, $guDataByDay)
+            $column == "lost_profits" ? "lost_profits" : "economical_effect" => $column == "lost_profits" ? $this->lostProfitsCalculate($item, $corrosion, $guDataByDay) : $this->economicalEffectCalculate($corrosion, $guDataByDay)
         ]);
     }
 
-    public function calculateLostProfitsTotal(string $tableName, string $column, string $totalColumn)
+    public function calculateTotal(string $tableName, string $column, string $totalColumn)
     {
         $data= DB::table($tableName)->orderBy('date')->get()->groupBy('gu_id');
         $total = [];
@@ -170,10 +168,8 @@ class ComplicationMonitoringEconomicCalculate extends Command
         return $result;
     }
 
-    public function economicalEffectCalculate(object $item, object $corrosion, object $guDataByDay): float
+    public function economicalEffectCalculate(object $corrosion, object $guDataByDay): float
     {
-        // $result = (($guDataByDay->ca->plan_dosage * $guDataByDay->ca->q_v/1000) * 2.74 - $corrosion->dose_mg_per_l_point_A * $guDataByDay->ca->q_v/1000) * $this->inhibitorPrice / 1000;
-
         $result = ($guDataByDay->ca->plan_dosage/1000 - $corrosion->dose_mg_per_l_point_A/1000) * $this->inhibitorPrice * $guDataByDay->ca->q_v * 2.74 / 1000;
 
         return $result;
