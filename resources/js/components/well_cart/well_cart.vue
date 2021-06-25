@@ -249,11 +249,24 @@ export default {
         'injPressure': null,
         'agentVol': null,
         'krsWorkover': {'dbeg': null, 'dend': null},
+        'prsWellWorkover': {'dbeg': null, 'dend': null},
         'treatmentDate': {'treat_date': null},
         'actualBottomHole': null,
         'artificialBottomHole': null,
         'perfActual': {'top': null, 'base': null},
         'wellInfo': {'rte': null},
+        'treatmentSko': {'treat_date': null,},
+        'gdisCurrent': {'meas_date': null, 'note': null,},
+        'gdisConclusion': {'name_ru': null,},
+        'gdisCurrentValue': {'value_double': null},
+        'gdisCurrentValuePmpr': {'value_double': null},
+        'gdisCurrentValueFlvl': {'value_double': null},
+        'gdisCurrentValueStatic': {'value_double': null},
+        'gdisCurrentValueRp': {'value_double': null, 'meas_date': null},
+        'gdisComplex': {'value_double': null, 'research_date': null},
+        'gis': {'gis_date': null},
+        'gdisCurrentValueBhp': {'value_double': null, 'meas_date': null},
+        'zone': {'name_ru': null},
       },
       tubeNomOd: null,
       wellTechs: null,
@@ -284,10 +297,23 @@ export default {
         'injPressure': 'tech_mode_inj.inj_pressure',
         'agentVol': 'tech_mode_inj.agent_vol',
         'krsWorkover': 'krs_well_workover',
+        'prsWellWorkover': 'prs_well_workover',
         'treatmentDate': 'well_treatment',
         'actualBottomHole': 'actual_bottom_hole.pivot.depth',
         'artificialBottomHole': 'artificial_bottom_hole.pivot.depth',
         'perfActual': 'well_perf_actual',
+        'treatmentSko': 'well_treatment_sko',
+        'gdisCurrent': 'gdis_current',
+        'gdisConclusion': 'gdis_conclusion',
+        'gdisCurrentValue': 'gdis_current_value',
+        'gdisCurrentValuePmpr': 'gdis_current_value_pmpr',
+        'gdisCurrentValueFlvl': 'gdis_current_value_flvl',
+        'gdisCurrentValueStatic': 'gdis_current_value_static',
+        'gdisCurrentValueRp': 'gdis_current_value_rp',
+        'gdisComplex': 'gdis_complex',
+        'gis': 'gis',
+        'gdisCurrentValueBhp': 'gdis_current_value_bhp',
+        'zone': 'zone',
       },
       forms_structure: forms_structure,
     }
@@ -368,7 +394,7 @@ export default {
             }
           } catch (e) {
           }
-        } else if (this.tableData[i].method === 'trimToDate') {
+        } else if (this.tableData[i].method === 'trimToDate' && this.tableData[i].description != null) {
           try {
             this.tableData[i].data = moment(this.tableData[i].description).format('DD/MM/YYYY')
           } catch (e) {
@@ -445,7 +471,7 @@ export default {
           'data': ''
         },
         {
-          'description': this.well.wellTechsName,
+          'description': this.wellTechsName,
           'method': null,
           'name': 'Тех. структура',
           'data': ''
@@ -469,7 +495,7 @@ export default {
           'data': ''
         },
         {
-          'description': null,
+          'description': this.well.zone.name_ru,
           'method': null,
           'name': 'Зона скважины',
           'data': ''
@@ -706,12 +732,109 @@ export default {
           'name': 'Дата проведения ПФП нагн. скважины',
           'data': ''
         },
+        {
+          'description': null,
+          'method': null,
+          'name': 'Дата проведения ГРП',
+          'data': ''
+        },
+        {
+          'description': this.well.treatmentSko.treat_date,
+          'method': 'trimToDate',
+          'name': 'Дата проведения СКО',
+          'data': ''
+        },
+        {
+          'description': this.well.gdisCurrent.meas_date,
+          'method': 'trimToDate',
+          'name': 'Дата проведения КПД',
+          'data': ''
+        },
+        {
+          'description': null,
+          'method': 'neighbors',
+          'neigbor_1': moment(this.well.prsWellWorkover.dbeg).format('DD/MM/YYYY'),
+          'neigbor_2': moment(this.well.prsWellWorkover.dend).format('DD/MM/YYYY'),
+          'name': 'Дата последнего ПРС',
+          'data': ''
+        },
+        {
+          'description': this.well.gis.gis_date,
+          'method': 'trimToDate',
+          'name': 'Дата последнего ГИС',
+          'data': ''
+        },
+        {
+          'description': this.well.gdisCurrent.meas_date,
+          'method': 'trimToDate',
+          'name': 'Дата последнего ГДИС',
+          'data': ''
+        },
+        {
+          'description': this.well.gdisConclusion.name_ru,
+          'method': null,
+          'name': 'Результат ГДМ',
+          'data': ''
+        },
+        {
+          'description': this.well.gdisCurrentValue.value_double,
+          'method': null,
+          'name': 'Длина хода при проведении ГДМ',
+          'data': ''
+        },
+        {
+          'description': this.well.gdisCurrentValuePmpr.value_double,
+          'method': null,
+          'name': 'число качаний при проведении ГДМ',
+          'data': ''
+        },
+        {
+          'description': this.well.gdisCurrentValueFlvl.value_double,
+          'method': null,
+          'name': 'Динамический уровень',
+          'data': ''
+        },
+        {
+          'description': this.well.gdisCurrentValueStatic.value_double,
+          'method': null,
+          'name': 'Статический уровень',
+          'data': ''
+        },
+        {
+          'description': null,
+          'method': 'neighbors',
+          'neigbor_1': this.well.gdisCurrentValueRp.value_double,
+          'neigbor_2': this.well.gdisCurrentValueRp.meas_date,
+          'name': 'Рпл/(дата замера)',
+          'data': ''
+        },
+        {
+          'description': null,
+          'method': 'neighbors',
+          'neigbor_1': this.well.gdisComplex.value_double,
+          'neigbor_2': this.well.gdisComplex.research_date,
+          'name': 'Рпл (Сл. ГДИС)/(дата замера)',
+          'data': ''
+        },
+        {
+          'description': null,
+          'method': 'neighbors',
+          'neigbor_1': this.well.gdisCurrentValueBhp.value_double,
+          'neigbor_2': this.well.gdisCurrentValueBhp.meas_date,
+          'name': 'Рзаб/(дата замера)',
+          'data': ''
+        },
+        {
+          'description': this.well.gdisCurrent.note,
+          'method': null,
+          'name': 'Примечание',
+          'data': ''
+        },
       ]
     }
   }
 }
 </script>
-
 <style scoped lang="scss">
 $leftColumnWidth: 398px;
 $leftColumnFoldedWidth: 84px;
@@ -1715,6 +1838,9 @@ h4 {
 
     & ~ .mid-col {
       min-width: calc(100% - #{$leftColumnFoldedWidth} - #{$rightColumnWidth} - 9px);
+    }
+    .scrollable{
+      height: 100%;
     }
 
   }

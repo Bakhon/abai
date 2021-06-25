@@ -39,7 +39,7 @@
               },
               {
                 "code": "name_ru",
-                "type": "dict",
+                "type": "dict_tree",
                 "dict": "orgs",
                 "title": "org",
                 "is_editable": true,

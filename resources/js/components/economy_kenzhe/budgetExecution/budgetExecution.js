@@ -5,7 +5,7 @@ export default {
   data: function () {
     return {   
       currentYearForCalculation: 2020,
-      params:{differenceBetweenMonths: "12", company: "7", reload: true},
+      params:{},
       numbersOfMonths: [0,1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],  
       repttData: "0",
       dzoData: [],
@@ -50,8 +50,7 @@ export default {
   },
   methods: {   
    
-    getCompany() {  
-      this.params['reload'] = true;
+    getCompany() {
       return  axios.get('/ru/module_economy/company', {params: this.params})
       .then(response => {
       this.repttData = response.data;      

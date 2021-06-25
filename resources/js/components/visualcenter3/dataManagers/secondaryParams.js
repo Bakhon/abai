@@ -26,10 +26,6 @@ export default {
             } else if (this.selectedSecondaryOption === 'production') {
                 this.updateProductionWells(filteredDataByPeriod,filteredDataByCompanies);
             }
-            if (!this.isProductionDetailsActive) {
-                this.updateChemistryData(filteredDataByPeriod);
-                this.updateOtmData(filteredDataByPeriod);
-            }
         },
 
         updateInjectionWells(filteredDataByPeriod,filteredDataByCompanies) {
@@ -44,16 +40,6 @@ export default {
             this.updateWellsPercentWidgetData(filteredDataByCompanies,'prod_wells_work','prod_wells_idle','prod_wells_workPercent','prod_wells_idlePercent');
             this.productionWells = this.getSummaryWells(filteredDataByPeriod, this.wellStockIdleButtons.isProductionIdleButtonActive,'productionFonds');
             this.innerWells2ChartData = this.getSummaryProductionWellsForChart(filteredDataByPeriod);
-        },
-
-        updateOtmData(data) {
-            this.otmData = this.getOtmData(data);
-            this.otmChartData = this.getOtmChartData(data);
-        },
-
-        updateChemistryData(data) {
-            this.chemistryData = this.getChemistryData(data);
-            this.chemistryChartData = this.getChemistryChartData(data);
         },
 
         clearNullAccidentCases() {

@@ -25,6 +25,8 @@ export default {
             currentStructureId: null,
             currentItemType: null,
             currentOption: null,
+            statistics: null,
+            statisticsColumns: null,
             items: [],
             isLoading: false,
             isDisplayParameterBuilder: false,
@@ -142,6 +144,43 @@ export default {
             }
             let fieldName = fieldParts[2]
             return this.attributeDescriptions[table][fieldName]
-        }
+        },
+        updateStatistics() {
+            this.loadStatistics()
+            this.statisticsColumns = this.getStatisticsColumnNames(this.attributesForObject)
+        },
+        loadStatistics() {
+            this.statistics = null;
+            let jsonData = JSON.stringify({
+                "fields": this.attributesForObject,
+                "joins": [["dict.well_type.id", "dict.well.well_type"]],
+                // TODO when dates will work:
+                //  "dates" : [""]
+            })
+            this.axios.post(this.baseUrl + "get_statistics", jsonData, {
+                responseType: 'json',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }).then((response) => {
+                this.statistics = response.data
+            }).catch((error) => {
+                console.log(error)
+            }).finally(() => {
+                this.isLoading = false
+            });
+
+        },
+        getStatisticsColumnNames(attributes){
+            let columns = []
+            for ( let attribute of attributes){
+                if ('children' in attribute) {
+                    columns = columns.concat(this.getStatisticsColumnNames(attribute['children']))
+                } else {
+                    columns.push(attribute['label'])
+                }
+            }
+            return columns
+        },
     }
 }

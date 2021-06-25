@@ -24,5 +24,9 @@
   'well_tech_connect' => '\\App\\Services\\BigData\\Forms\\WellTechConnect',
   'water_inj' => '\\App\\Services\\BigData\\Forms\\WaterInj',
   'well_category' => '\\App\\Services\\BigData\\Forms\\WellCategory',
-  'well_status' => '\\App\\Services\\BigData\\Forms\\WellStatus'
+  'well_status' => '\\App\\Services\\BigData\\Forms\\WellStatus',
+  'well_expl' => '\\App\\Services\\BigData\\Forms\\WellExpl',
+  'gas_production' => '\\App\\Services\\BigData\\Forms\\GasProduction',
+  'production_program' => '\\App\\Services\\BigData\\Forms\\ProductionProgram',
+  'geo_structure' => '\\App\\Services\\BigData\\Forms\\GeoStructure'
 );

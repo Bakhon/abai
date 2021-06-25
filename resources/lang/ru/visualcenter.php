@@ -123,7 +123,7 @@ return array (
   'getgasdynamic' => 'Динамика добычи газа',
   'dlvoildynamic' => 'Динамика сдачи нефти',
   'dlvPrirodGasldynamic' => 'Динамика сдачи природного газа',
-  'raskhodprirodGazDynamic' => 'Динамика расхода природного газа2',
+  'raskhodprirodGazDynamic' => 'Динамика расхода природного газа',
   'poputGazdlvDynamic' => 'Динамика сдачи попутного газа',
   'raskhodpoputGazDynamic' => 'Динамика расхода попутного газа на собственные нужды',
   'pererabotkapoputGazDynamic' => 'Динамика переработки попутного газа',
@@ -367,4 +367,7 @@ return array (
         'YO' => 'ТОО "Урихтау Оперейтинг"',
       ),
   'meterCubic' => 'м³',
+  'forLastMonth' => 'За предыдущий месяц',
+  'oilCondensateProductionChartName' => 'Динамика добычи нефти и конденсата',
+  'otmDrillingComission' => 'Проходка'
 );

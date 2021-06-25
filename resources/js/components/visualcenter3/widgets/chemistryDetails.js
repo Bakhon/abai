@@ -4,29 +4,25 @@ export default {
     data: function () {
         return {
             chemistryDetails: [],
-            chemistryPeriodStartMonth: moment().format('MMMM YYYY'),
-            chemistryPeriodEndMonth: moment().format('MMMM YYYY'),
+            chemistryPeriodStartMonth: moment().subtract(1, 'months').format('MMMM YYYY'),
+            chemistryPeriodEndMonth: moment().subtract(1, 'months').format('MMMM YYYY'),
             chemistryMonthlyPeriod: 'button-tab-highlighted',
             chemistryYearlyPeriod: '',
             chemistryPeriod: '',
             isChemistryPeriodSelected: false,
-            chemistryRange: {
-                'start': new Date(),
-                'end': new Date(),
-            },
             chemistryPeriodMapping: {
-                chemistryMonthlyPeriod: {
-                    'periodStart': moment().format('MMMM YYYY'),
-                    'periodEnd': moment().format('MMMM YYYY'),
-                },
-                chemistryYearlyPeriod: {
-                    'periodStart': moment().startOf('year').format('MMMM YYYY'),
-                    'periodEnd': moment().format('MMMM YYYY'),
-                },
-                chemistryPeriod: {
-                   'periodStart': moment().format('MMMM YYYY'),
-                   'periodEnd': moment().format('MMMM YYYY'),
-                },
+                chemistryMonthlyPeriod: [
+                    moment().subtract(1, 'months').format("MMMM yyyy"),
+                    moment().subtract(1, 'months').format("MMMM yyyy"),
+                ],
+                chemistryYearlyPeriod: [
+                    moment().startOf('year').format("MMMM yyyy"),
+                    moment().format('MMMM yyyy'),
+                ],
+                chemistryPeriod: [
+                    moment().subtract(1, 'months').format("MMMM yyyy"),
+                    moment().subtract(1, 'months').format("MMMM yyyy")
+                ],
             },
             chemistrySelectedCompany: 'all',
             chemistrySelectedRow: 'demulsifier',
@@ -60,14 +56,15 @@ export default {
                     metricSystem: this.trans("visualcenter.chemistryMetricTon"),
                 },
             ],
-            chemistryChartData: []
+            chemistryChartData: [],
+            chemistryWidgetFactSum: 0,
         };
     },
     methods: {
         async getChemistryByMonth() {
             let queryOptions = {
-                'startPeriod': moment(this.chemistryPeriodStartMonth,'MMMM YYYY').month(),
-                'endPeriod': moment(this.chemistryPeriodEndMonth,'MMMM YYYY').month()
+                'startPeriod': moment(this.chemistryPeriodStartMonth,'MMMM YYYY').month() + 1,
+                'endPeriod': moment(this.chemistryPeriodEndMonth,'MMMM YYYY').month() + 1
             };
             let uri = this.localeUrl("/get-chemistry-details");
             const response = await axios.get(uri,{params:queryOptions});
@@ -83,8 +80,8 @@ export default {
             this.chemistryYearlyPeriod = "";
             this.chemistryPeriod = "";
             this[buttonType] = this.highlightedButton;
-            this.chemistryPeriodStartMonth = this.chemistryPeriodMapping[buttonType].periodStart;
-            this.chemistryPeriodEndMonth = this.chemistryPeriodMapping[buttonType].periodEnd;
+            this.chemistryPeriodStartMonth = this.chemistryPeriodMapping[buttonType][0];
+            this.chemistryPeriodEndMonth = this.chemistryPeriodMapping[buttonType][1];
             this.isChemistryPeriodSelected = this.isChemistryFewMonthsSelected();
             this.chemistryDetails = await this.getChemistryByMonth();
             this.updateChemistryWidget();
@@ -153,7 +150,7 @@ export default {
                     scale_inhibitor: _.round(_.sumBy(item, 'scale_inhibitor'), 0),
                     scale_inhibitor_plan: _.round(_.sumBy(item, 'scale_inhibitor_plan'), 0),
                 })).value();
-            this.chemistryDataFactSumm = this.getChemistryFactSum(tableData);
+            this.chemistryWidgetFactSum = this.getChemistryFactSum(tableData);
         },
 
         getChemistryFactSum(tableData) {
