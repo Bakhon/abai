@@ -71,7 +71,8 @@ export default {
             dzoType: {
                 isOperating: [],
                 isNonOperating: []
-            }
+            },
+            dzoSummaryForTable: []
         };
     },
     methods: {
@@ -122,20 +123,24 @@ export default {
                     company.selected = !company.selected;
                 }
             });
-            let selectedCompanies = this.dzoCompanies.filter(row => row.selected === true).map(row => row.ticker);
-            this.dzoCompanySummary = this.bigTable.filter(row => selectedCompanies.includes(row.dzoMonth));
         },
 
         calculateDzoCompaniesSummary() {
+            this.dzoSummaryForTable = this.dzoCompanySummary.filter(item => this.selectedDzoCompanies.includes(item.dzoMonth));
+            let filteredByCompaniesYesterday = this.yesterdaySummary.filter(item => this.selectedDzoCompanies.includes(item.dzoMonth));
+            if (this.oilCondensateProductionButton.length === 0) {
+                filteredByCompaniesYesterday = this.yesterdayProductionDetails.filter(item => this.selectedDzoCompanies.includes(item.dzoMonth));
+            }
+            this.isMultipleDzoCompaniesSelected = this.dzoSummaryForTable.length > 1;
             let summary = _.cloneDeep(this.dzoCompaniesSummaryInitial);
             let self = this;
 
-            _.forEach(this.dzoCompanySummary, function (company) {
+            _.forEach(this.dzoSummaryForTable, function (company) {
                 if(!company) {
                     return;
                 }
                 summary.plan = parseInt(summary.plan) + parseInt(company.planMonth);
-                summary.fact = parseInt(summary.fact) + parseInt(company.factMonth);
+                summary.fact = parseFloat(summary.fact) + parseFloat(company.factMonth);
                 summary.periodPlan = parseInt(summary.periodPlan) + parseInt(company.periodPlan);
                 if (self.isFilterTargetPlanActive) {
                     summary.targetPlan = parseInt(summary.targetPlan) + parseInt(company.targetPlan);
@@ -145,8 +150,6 @@ export default {
                 }
             });
 
-            this.productionParamsWidget.oilFact = summary.fact;
-            this.productionParamsWidget.oilPlan = summary.plan;
             if (self.oilCondensateProductionButton.length > 0) {
                 summary.opekDifference = this.getFormattedNumberToThousand(
                     summary.opekPlan,summary.fact);
@@ -158,10 +161,10 @@ export default {
             summary.plan = this.formatDigitToThousand(summary.plan);
             summary.fact = this.formatDigitToThousand(summary.fact);
             summary.periodPlan = this.formatDigitToThousand(summary.periodPlan);
+
+            this.updateProductionTotalFact(filteredByCompaniesYesterday,summary);
             this.dzoCompaniesSummary = summary;
             if (this.oilCondensateProductionButton.length > 0) {
-                this.updateProductionTotalFact();
-                this.updateActualOilFactByFilter();
                 this.isOpecFilterActive = true;
             }
         },
@@ -192,28 +195,35 @@ export default {
             this.disableDzoRegions();
             this.selectedDzoCompanies = this.getAllDzoCompanies();
             this.buttonDzoDropdown = "";
-            this.dzoCompanySummary = this.bigTable;
             this.calculateDzoCompaniesSummary();
         },
 
         selectOneDzoCompany(companyTicker) {
-            this.disableDzoCompaniesVisibility();
-            this.selectDzoCompany(companyTicker);
-        },
-
-        selectDzoCompany(companyTicker) {
-            this.disableDzoRegions();
-            this.selectCompany(companyTicker);
-
-            this.dzoCompaniesAssets['isAllAssets'] = false;
-            this.buttonDzoDropdown = this.highlightedButton;
-            this.switchDzoCompaniesVisibility(companyTicker,'ticker');
-            this.isMultipleDzoCompaniesSelected = this.dzoCompanySummary.length > 1;
-            if (this.isMultipleDzoCompaniesSelected) {
-                this.selectedDzoCompanies.push(companyTicker);
+            if (this.selectedDzoCompanies.includes(companyTicker)) {
+                let index = this.selectedDzoCompanies.findIndex(element => element === companyTicker);
+                if (index > -1) {
+                    this.selectedDzoCompanies.splice(index, 1);
+                }
+                this.switchDzoCompaniesVisibility(companyTicker,'ticker');
             } else {
                 this.selectedDzoCompanies = [companyTicker];
+                this.switchDzoCompaniesVisibility(companyTicker,'ticker');
             }
+            this.selectDzoCompany();
+        },
+
+        switchOneCompanyView(companyTicker) {
+            this.isMultipleDzoCompaniesSelected = false;
+            this.disableDzoCompaniesVisibility();
+            this.selectedDzoCompanies = [companyTicker];
+            this.switchDzoCompaniesVisibility(companyTicker,'ticker');
+            this.selectDzoCompany();
+        },
+
+        selectDzoCompany() {
+            this.disableDzoRegions();
+            this.dzoCompaniesAssets['isAllAssets'] = false;
+            this.buttonDzoDropdown = this.highlightedButton;
             this.calculateDzoCompaniesSummary();
         },
 
