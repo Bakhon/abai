@@ -201,6 +201,8 @@ Vue.component('GeologyLSide', require('./components/geology/Geology-l-side.vue')
 Vue.component('GeologyRSide', require('./components/geology/Geology-r-side.vue').default);
 Vue.component('GeologyTSide', require('./components/geology/Geology-t-side.vue').default);
 
+Vue.component('digital-rating', require('./components/DigitalRating/index.vue').default);
+
 Vue.prototype.trans = string => _.get(window.i18n, string) || string;
 Vue.prototype.localeUrl = string => `/${window.current_lang}/${string[0] === '/' ? string.substr(1) : string}`;
 Vue.prototype.currentLang = window.current_lang;
