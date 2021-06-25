@@ -7,9 +7,9 @@ use App\Models\BigData\Well;
 
 class GeoMapping extends TBDModel
 {
-    protected $table = 'dict.well_mapping';
+    protected $table = 'dict.geo_mapping';
     protected $guarded = ['id'];
-    protected $fillable = ['name_ru', 'well_id'];
+    protected $fillable = ['name_ru', 'geo_id'];
     protected $hidden = [
         'created_at',
         'updated_at'
@@ -17,6 +17,6 @@ class GeoMapping extends TBDModel
 
     public function geo()
     {
-        return $this->belongsTo(Geo::class, 'well_id', 'id');
+        return $this->belongsTo(Geo::class, 'geo_id', 'id');
     }
 }

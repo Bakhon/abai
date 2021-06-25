@@ -49,8 +49,8 @@ class MappingController extends CrudController
                     'title' => trans('bd.forms.'.$modelName.'.fields.name'),
                     'type' => 'string',
                 ],
-                'well_name' => [
-                    'title' => trans('bd.well'),
+                'geo_name' => [
+                    'title' => trans('bd.forms.'.$modelName.'.fields.geo_name'),
                     'type' => 'string',
                 ]
             ]
@@ -126,7 +126,8 @@ class MappingController extends CrudController
         $modelName = $this->modelName;
         $link = $this -> link;
         $view = $this->view;
-        return view($view.'.edit', compact('link', 'modelName', 'data', 'validationParams'));
+        $geoList = Geo::where('geo_type', 1)->orderBy('name_ru')->get();
+        return view($view.'.edit', compact('link', 'modelName', 'data', 'validationParams', 'geoList'));
     }
 
     /**

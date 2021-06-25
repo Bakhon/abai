@@ -34,6 +34,7 @@ class RolesController extends Controller
         'recording_state',
         'stem_section',
         'stem_type',
+        'geo_mapping'
     ];
 
     static protected $fieldCodes = [

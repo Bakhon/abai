@@ -13,7 +13,7 @@
       </div>
       <label>{{ trans("bd.well") }}</label>
       <div class="form-label-group">
-        <select class="form-control" name="gu_id" v-model="formFields.well_id">
+        <select class="form-control" name="geo_id" v-model="formFields.geo_id">
             <option v-for="row in geoList" v-bind:value="row.id">{{ row.name_ru }}</option>
         </select>
       </div>
@@ -32,11 +32,11 @@ Settings.defaultLocale = 'ru'
 
 const defaultFormFields = {
   name_ru: null,
-  well_id:null
+  geo_id:null
 };
 
 export default {
-  name: "well-mapping-form",
+  name: "geo-mapping-form",
   props: {
     link: {
       type: String,
@@ -68,6 +68,7 @@ export default {
       formFields: defaultFormFields,
       requiredFields: [
         'name_ru',
+        'well_id'
       ]
     }
   },

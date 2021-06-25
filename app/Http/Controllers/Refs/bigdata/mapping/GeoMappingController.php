@@ -8,9 +8,9 @@ use App\Http\Controllers\Refs\bigdata\las\LasDictionariesController;
 
 class GeoMappingController extends MappingController
 {
-    protected $modelName = 'file_status';
+    protected $modelName = 'geo_mapping';
     protected $model = 'App\Models\BigData\Dictionaries\GeoMapping';
     protected $resource = 'App\Http\Resources\GeoMappingListResource';
     protected $link = 'geo-mapping';
-    protected $view = 'bigdata.well_mapping';
+    protected $view = 'bigdata.geo_mapping';
 }

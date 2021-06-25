@@ -10,12 +10,13 @@
                 </div>
             @endif
             <div class="x_panel">
-            <h1>{{ trans('bd.forms.'.$modelName.'.create_title') }}</h1>
+            <h1>{{ trans('bd.forms.'.$modelName.'.edit_title') }}</h1>
             <a class="btn btn-primary float-left" href="{{ url()->previous() }}"><i class="fas fa-arrow-left"></i></a>
-                <form action="{{ route($link.'.store') }}" method="POST">
+                <form action="{{ route($link.'.update', [$data->id]) }}" method="PUT">
+                    @method('patch')
                     @csrf
                     <div class="row">
-                        <well-mapping-form :link = '@json($link)' :model-name='@json($modelName)' :validation-params='@json($validationParams)' :geo-list='@json($geoList)'></well-mapping-form>
+                        <geo-mapping-form :link = '@json($link)' :model-name='@json($modelName)' :is-editing="true" :dict-data='@json($data)' :validation-params='@json($validationParams)' :geo-list='@json($geoList)'></geo-mapping-form>
                     </div>
                 </form>
             </div>

@@ -140,7 +140,7 @@ Vue.component('oilgas-form', require('./components/complicationMonitoring/oilGas
 Vue.component('pipe-form', require('./components/complicationMonitoring/pipes/form.vue').default);
 Vue.component('pipe-type-form', require('./components/complicationMonitoring/pipeTypes/form.vue').default);
 Vue.component('las-dictionaries-form', require('./components/bigdata/las/refs/lasDictionaries/form.vue').default);
-Vue.component('well-mapping-form', require('./components/bigdata/mapping/form.vue').default);
+Vue.component('geo-mapping-form', require('./components/bigdata/mapping/form.vue').default);
 Vue.component('inhibitor-create', require('./components/inhibitor/create.vue').default);
 Vue.component('inhibitor-edit', require('./components/inhibitor/edit.vue').default);
 Vue.component('corrosion-form', require('./components/complicationMonitoring/corrosion/form.vue').default);

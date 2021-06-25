@@ -19,7 +19,7 @@ class GeoMappingListResource extends LasDictionariesResource
             'id' => $this->id,
             'fields' => [
                 'name' => $this->name_ru,
-                'well_name' => $this->geo->name_ru
+                'geo_name' => $this->geo->name_ru
             ]
         ];
 

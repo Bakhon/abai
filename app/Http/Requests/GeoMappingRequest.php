@@ -15,7 +15,7 @@ class GeoMappingRequest extends FormRequest
     {
         return [
             'name_ru' => 'required|string',
-            'well_id' => 'required|numeric',
+            'geo_id' => 'required|numeric',
         ];
     }
 }
