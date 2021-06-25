@@ -139,7 +139,11 @@
                     pointRadius: 0,
                 };
 
-                let datasets = [planChartOptions, factChartOptions];
+                let datasets = [factChartOptions];
+                if (!chartSummary.isOilResidueActive) {
+                    datasets.push(planChartOptions);
+                }
+
                 if (chartSummary.isOpecFilterActive) {
                     datasets.push(planOpecChartOptions);
                 }
@@ -170,11 +174,12 @@
                                                 fillStyle: style.borderColor,
                                             };
                                         });
-                                        returnData.push({
-                                            text: this.trans("visualcenter.deviation"),
-                                            fillStyle: fillPattern,
-                                        });
-
+                                        if (!chartSummary.isOilResidueActive) {
+                                            returnData.push({
+                                                text: this.trans("visualcenter.deviation"),
+                                                fillStyle: fillPattern,
+                                            });
+                                        }
                                         return returnData;
                                     }
                                     return [];

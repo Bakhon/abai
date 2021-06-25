@@ -249,7 +249,8 @@ export default {
             this.$emit("data", {
                 dzoCompaniesSummaryForChart: data,
                 isOpecFilterActive: this.isOpecFilterActive,
-                isFilterTargetPlanActive: this.isFilterTargetPlanActive
+                isFilterTargetPlanActive: this.isFilterTargetPlanActive,
+                isOilResidueActive: this.isOilResidueActive
             });
         },
         sortDzoList() {

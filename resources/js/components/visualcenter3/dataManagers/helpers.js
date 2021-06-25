@@ -273,7 +273,17 @@ export default {
                 return " (" + percentParticipation * 100 + "%)";
             }
             return "";
+        },
 
+        getProductionTableClass() {
+            let classList = 'table4';
+            if (!this.isOilResidueActive) {
+                classList += ' w-100';
+            }
+            if (!this.buttonDailyTab) {
+                classList += ' mh-30';
+            }
+            return classList;
         },
     },
     computed: {
