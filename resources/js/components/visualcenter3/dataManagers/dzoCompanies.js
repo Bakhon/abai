@@ -128,6 +128,9 @@ export default {
         calculateDzoCompaniesSummary() {
             this.dzoSummaryForTable = this.dzoCompanySummary.filter(item => this.selectedDzoCompanies.includes(item.dzoMonth));
             let filteredByCompaniesYesterday = this.yesterdaySummary.filter(item => this.selectedDzoCompanies.includes(item.dzoMonth));
+            if (this.oilCondensateProductionButton.length === 0) {
+                filteredByCompaniesYesterday = this.yesterdayProductionDetails.filter(item => this.selectedDzoCompanies.includes(item.dzoMonth));
+            }
             this.isMultipleDzoCompaniesSelected = this.dzoSummaryForTable.length > 1;
             let summary = _.cloneDeep(this.dzoCompaniesSummaryInitial);
             let self = this;
