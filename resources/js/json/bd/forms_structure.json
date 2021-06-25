@@ -35,7 +35,7 @@
             "isVisible": true
           },
           {
-            "code": "operation_method",
+            "code": "well_expl",
             "name": "Способ эксплуатации",
             "icon_name": "page.svg",
             "type": "plain",
