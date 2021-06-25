@@ -47,9 +47,9 @@
                                     :style="{
                                 width: dailyProgressBars.oil + '%',
                               }"
-                                    :aria-valuenow="productionParams.oil_plan"
+                                    :aria-valuenow="productionParams.oil_fact"
                                     aria-valuemin="0"
-                                    :aria-valuemax="productionParams.oil_fact"
+                                    :aria-valuemax="productionParams.oil_plan"
                             ></div>
                           </div>
                           <div class="row">
@@ -314,7 +314,7 @@
                                     'oil_plan',
                                     'oil_fact',
                                     trans('visualcenter.tonWithSpace'),
-                                    trans('visualcenter.oilCondensateProduction'))"
+                                    trans('visualcenter.oilCondensateProductionChartName'))"
                     >
                       {{ trans("visualcenter.oilCondensateProduction") }}
                     </div>
@@ -436,7 +436,14 @@
                   <ul class="dropdown-menu-vc dropdown-menu dropdown-menu-right">
                     <li
                             class="center-li row px-4"
-                            @click="switchMainMenu('oilDeliveryButton','kmgParticipation')"
+                            @click="switchCategory(
+                                      'oilDeliveryButton',
+                                      'oil_dlv_plan',
+                                      'oil_dlv_fact',
+                                      trans('visualcenter.tonWithSpace'),
+                                      trans('visualcenter.oildlv'),
+                                      'oilDeliveryButton',
+                                      'kmgParticipation')"
                     >
                       <div
                               class="col-1 mt-2"
@@ -819,7 +826,7 @@
                                     type="checkbox"
                                     :disabled="isGrouppingFilterActive()"
                                     :checked="company.selected"
-                                    @change="`${selectDzoCompany(company.ticker)}`"
+                                    @change="`${selectOneDzoCompany(company.ticker)}`"
                             ></input>
                             {{trans(company.companyName)}}
                           </div>
@@ -935,7 +942,7 @@
                       <div v-if="currentDzoList === 'daily'">
                         {{ getMetricNameByCategorySelected() }}
                       </div>
-                      <div v-if="isOpecFilterActive">
+                      <div v-if="isOpecFilterActive && oilCondensateProductionButton.length === 0">
                         {{ trans("visualcenter.dzoOpec") }}
                       </div>
                     </th>
@@ -947,7 +954,7 @@
                       <div v-if="currentDzoList === 'daily'">
                         {{ getMetricNameByCategorySelected() }}
                       </div>
-                      <div v-if="isOpecFilterActive">
+                      <div v-if="isOpecFilterActive && oilCondensateProductionButton.length === 0">
                         {{ trans("visualcenter.dzoOpec") }}
                       </div>
                     </th>
@@ -959,7 +966,7 @@
                       <div v-else>
                         {{ getMetricNameByCategorySelected() }}
                       </div>
-                      <div v-if="isOpecFilterActive">
+                      <div v-if="isOpecFilterActive && oilCondensateProductionButton.length === 0">
                         {{ trans("visualcenter.dzoOpec") }}
                       </div>
                     </th>
@@ -1035,14 +1042,17 @@
                   </tr>
                   </thead>
                   <tbody>
-                  <tr v-for="(item, index) in dzoCompanySummary">
+                  <tr v-for="(item, index) in dzoSummaryForTable">
                     <td
-                            @click="isMultipleDzoCompaniesSelected ? `${selectOneDzoCompany(item.dzoMonth)}` : `${selectAllDzoCompanies()}`"
+                            @click="isMultipleDzoCompaniesSelected ? `${switchOneCompanyView(item.dzoMonth)}` : `${selectAllDzoCompanies()}`"
                             :class="index % 2 === 0 ? 'tdStyle' : ''"
                             style="cursor: pointer"
                     >
                       <span v-if="oilCondensateProductionButton.length === 0">
                         {{ getNameDzoFull(item.dzoMonth) }}
+                        <span v-if="isKmgParticipationFilterActive">
+                          {{getOilProductionKmgParticipationDzoTitle(kmgParticipationPercent[getNameDzoFull(item.dzoMonth)])}}
+                        </span>
                         <img src="/img/icons/link.svg" />
                       </span>
                       <span v-else-if="oilCondensateProductionButton.length > 0 && !oilCondensateFilters.isWithoutKMGFilterActive">
@@ -1422,7 +1432,7 @@
 
                 <div
                         v-if="!isMultipleDzoCompaniesSelected && buttonDailyTab"
-                        v-for="(item) in dzoCompanySummary"
+                        v-for="(item) in dzoSummaryForTable"
                         colspan="5"
                         class="dzo-company-reason"
                 >
@@ -1456,7 +1466,16 @@
                   !isOneDateSelected) && !buttonDailyTab
                 "
               >
-                <div class="name-chart-left">
+                <div
+                        v-if="oilCondensateProductionButton.length > 0"
+                        class="oil-condensate-chart-secondary-name"
+                >
+                  {{ chartSecondaryName }}, {{ trans("visualcenter.thousand") }} {{ metricName }}
+                </div>
+                <div
+                        v-else
+                        class="name-chart-left"
+                >
                   {{ chartSecondaryName }}, {{ trans("visualcenter.thousand") }} {{ metricName }}
                 </div>
                 <div class="name-chart-head">{{ chartHeadName }}</div>
@@ -1981,7 +2000,14 @@
                   </table>
                 </div>
                 <div class="col-sm-5">
-                  <div  class="name-chart-left">{{ trans("visualcenter.wellsNumber") }}</div>
+                  <div
+                          v-if="drillingSelectedRow === 'otm_wells_commissioning_from_drilling_fact'"
+                          class="name-chart-left">{{ trans("visualcenter.wellsNumber") }}
+                  </div>
+                  <div
+                          v-else
+                          class="name-chart-left">{{ trans("visualcenter.otmDrillingComission") }}, {{ trans("visualcenter.otmMetricSystemMeter") }}
+                  </div>
                   <visual-center3-wells
                           v-if="drillingDataForChart"
                           :chartData="drillingDataForChart"
@@ -2063,7 +2089,7 @@
                   >
                     <thead>
                     <tr>
-                      <th>{{ trans("visualcenter.otmColumnTitle") }}</th>
+                      <th>{{ trans("visualcenter.importForm.wellWorkover") }}</th>
                       <th>{{ trans("visualcenter.Plan") }}</th>
                       <th>{{ trans("visualcenter.Fact") }}</th>
                       <th>{{ trans("visualcenter.dzoDifference") }}</th>
@@ -2480,7 +2506,7 @@
                   <tr class="cursor-pointer d-flex">
                     <td
                             class="col-6"
-                            @click="changeTable('otmWorkover')"
+                            @click="switchWidget('otmWorkover')"
                             :class="`${tableMapping.otmWorkover.hover}`"
                     >
                       <div class="secondaryTitle">
@@ -2495,7 +2521,7 @@
                     </td>
                     <td
                             class="col-6"
-                            @click="changeTable('otmWorkover')"
+                            @click="switchWidget('otmWorkover')"
                             :class="`${tableMapping.otmWorkover.hover}`"
                     >
                       <div class="secondaryTitle d-flex">
@@ -2517,7 +2543,7 @@
                   <tr class="cursor-pointer d-flex">
                     <td
                             class="col-12"
-                            @click="changeTable('otmWorkover')"
+                            @click="switchWidget('otmWorkover')"
                             :class="`${tableMapping.otmWorkover.hover}`"
                     >
                       <div class="in-idle">
@@ -3047,5 +3073,14 @@
 
   .text-right {
     text-align: right;
+  }
+
+  .oil-condensate-chart-secondary-name {
+    color: #8489af;
+    margin-top: 15%;
+    text-align: center;
+    position: absolute;
+    writing-mode: tb-rl;
+    transform: rotate(180deg);
   }
 </style>
