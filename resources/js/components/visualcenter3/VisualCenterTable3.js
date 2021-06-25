@@ -208,7 +208,7 @@ export default {
                 this.planFieldName = 'oil_plan';
             }
             if (this.selectedButtonName !== 'oilCondensateProductionButton') {
-                let indexes = this.getElementIndexesByCompany(productionData,'ПКИ');
+                let indexes = this.getElementIndexesByCompany(productionData,'ПКИ','dzo_name');
                 for (var i in indexes.reverse()) {
                     productionData.splice(indexes[i], 1);
                 }
@@ -231,12 +231,12 @@ export default {
             this.updateProductionOilandGasPercent(updatedData);
         },
 
-        getElementIndexesByCompany(productionData,companyName) {
-            return productionData.map((elm, index) => this.getElementIndexByCompany(elm,index,companyName)).filter(String);
+        getElementIndexesByCompany(productionData,companyName,fieldName) {
+            return productionData.map((elm, index) => this.getElementIndexByCompany(elm,index,companyName,fieldName)).filter(String);
         },
 
-        getElementIndexByCompany(element,index,companyName) {
-            if (element.dzo_name === companyName) {
+        getElementIndexByCompany(element,index,companyName,fieldName) {
+            if (element[fieldName] === companyName) {
                 return index;
             }
             return '';

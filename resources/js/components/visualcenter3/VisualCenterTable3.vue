@@ -656,7 +656,7 @@
                   <div
                           class="button1-vc-inner"
                           @click="switchCategory(
-                            'oilCondensate',
+                            'waterInjectionButton',
                             'liq_plan',
                             'liq_fact',
                             trans('visualcenter.meterCubicWithSpace'),
