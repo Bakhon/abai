@@ -1,0 +1,10 @@
+.rating-dropdown__body {
+  border: 15px solid $main1;
+  border-top: none;
+  padding: 10px;
+  transition: 150ms ease-out;
+
+  .list {
+    list-style: none;
+  }
+}

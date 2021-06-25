@@ -16,19 +16,25 @@
       </template>
     </div>
     <keep-alive>
-      <component :is="currentTabComponent"></component>
+      <component v-bind:is="currentTabComponent"></component>
     </keep-alive>
   </div>
 </template>
 
 <script>
 import Settings from './components/Settings';
+import Sections from './components/Sections';
+import Atlas from './components/Atlas';
+import Reports from './components/Reports';
 
 export default {
   name: 'DigitalRating',
 
   components: {
     Settings,
+    Sections,
+    Atlas,
+    Reports,
   },
 
   data() {
@@ -67,7 +73,6 @@ export default {
 
   methods: {
     handleSelectTab(tab) {
-      console.log('tab', tab);
       this.currentTab = tab;
     }
   }
@@ -78,6 +83,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-evenly;
+  margin-bottom: 10px;
 }
 
 .rating-tabs__item {
