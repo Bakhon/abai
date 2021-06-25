@@ -20,11 +20,12 @@ class RolesController extends Controller
             'omgca' => 'ОМГ ДДНГ',
             'omgngdu' => 'ОМГ НГДУ',
             'omguhe' => 'ОМГ УХЭ',
-            'pipes' => 'Трубопроводы',
+            'pipe' => 'Трубопроводы',
             'inhibitors' => 'Ингибиторы',
             'gu' => 'ГУ',
             'zu' => 'ЗУ',
             'well' => 'Скважины',
+            'map-history' => 'История изменений на карте',
         ];
 
     static protected $dictCodes = [

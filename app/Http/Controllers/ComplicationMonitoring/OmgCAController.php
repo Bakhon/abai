@@ -58,7 +58,7 @@ class OmgCAController extends CrudController
                             ->toArray()
                     ]
                 ],
-                'date' => [
+                'year' => [
                     'title' => __('app.year'),
                     'type' => 'number',
                 ],
@@ -80,11 +80,16 @@ class OmgCAController extends CrudController
             $params['links']['export'] = route($this->modelName.'.export');
         }
 
+        $params['model_name'] = $this->modelName;
+        $params['filter'] = session($this->modelName.'_filter');
+
         return view('omgca.index', compact('params'));
     }
 
     public function list(IndexTableRequest $request)
     {
+        parent::list($request);
+
         $query = OmgCA::query()
             ->with('gu');
 

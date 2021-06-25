@@ -70,6 +70,10 @@
     max-height: 370px;
 }
 
+.min-h-420 {
+    min-height: 420px;
+}
+
 .calendar-filter-block {
     height: 2.2rem;
     min-width: 2.4rem;
@@ -124,7 +128,7 @@
 
 .block-header {
     color: white;
-    font-size: 1rem;
+    font-size: 1.1rem;
     font-weight: 700;
     line-height: 1.8rem;
 }
@@ -195,7 +199,7 @@
     }
 }
 
-.podbor-middle-table {
+.podbor-middle-table, .distribution-table {
     border: 1px solid rgba(69,77,125,1);
 
     th {
@@ -214,6 +218,7 @@
     td:not(last-child) {
         border-right: 1px solid rgba(69,77,125,1);
     }
+
 }
 
 .dr-border-light {
@@ -329,6 +334,7 @@
     .units {
         color: rgba(130, 186, 255, 1);
         font-size: 1rem;
+        font-weight: normal;
     }
 
     .title {
@@ -406,12 +412,30 @@
 }
 
 .gtm-main-table th {
-    padding: 1.3rem !important;
+    padding: 1.2rem !important;
 }
 
 .gtm-main-table td {
     font-weight: 700;
 }
+
+.gtm-filter {
+    .v-select {
+        width: 100%;
+        min-width: 100%;
+        margin-bottom: 8px;
+
+        .vs__search, .vs__selected {
+            font-size: 14px;
+        }
+    }
+}
+
+.chart-wrapper {
+    background: #2B2E5E;
+    border: 1px solid #454D7D;
+}
+
 
 /*mobile*/
 @media screen and (max-width : 1900px) {
@@ -525,7 +549,7 @@
         font-size: 0.9rem;
     }
 
-    .near-wells-table-item, .podbor-middle-table th {
+    .near-wells-table-item, .podbor-middle-table th, .distribution-table th {
         font-size: 0.8rem;
     }
 
@@ -585,7 +609,7 @@
         font-size: 0.7rem;
     }
 
-    .podbor-middle-table {
+    .podbor-middle-table, .distribution-table {
         th {
             font-size: 0.8rem;
         }

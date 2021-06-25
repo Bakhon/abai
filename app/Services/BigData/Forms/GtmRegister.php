@@ -40,6 +40,11 @@ class GtmRegister extends PlainForm
 
     private function updateWellStatus()
     {
+        if (!$this->request->get('dend') || !$this->request->get('well_status_type')) {
+            return;
+        }
+
+
         DB::connection('tbd')
             ->table('prod.well_status')
             ->where('well', $this->request->get('well'))
@@ -60,7 +65,7 @@ class GtmRegister extends PlainForm
             );
     }
 
-    public function calcFields(int $wellId, array $values): array
+    public function getCalculatedFields(int $wellId, array $values): array
     {
         if (empty($values['dend'])) {
             return [];

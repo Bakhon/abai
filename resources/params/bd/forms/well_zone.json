@@ -1,6 +1,10 @@
 {
   "type": "plain",
   "table": "prod.well_zone",
+  "table_fields": [
+    "dbeg",
+    "zone"
+  ],
   "tabs": [
     {
       "title": "w_zone",
@@ -13,12 +17,14 @@
                 "code": "dbeg",
                 "type": "date",
                 "title": "date_start",
-                "validation": "required|date"
+                "validation": "required|date",
+                "callbacks": {
+                  "fillCalculatedFields": ""
+                }
               },
               {
-                "code": "zone",
+                "code": "old_zone",
                 "type": "calc",
-                "formula": "$zone$",
                 "is_editable": false,
                 "title": "ch_zone",
                 "validation": ""

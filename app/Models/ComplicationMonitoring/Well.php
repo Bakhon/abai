@@ -16,6 +16,11 @@ class Well extends Model
         'updated_at'
     ];
 
+    protected static $logAttributes = ['*'];
+    protected static $logAttributesToIgnore = ['updated_at', 'created_at', 'deleted_at'];
+    protected static $logOnlyDirty = true;
+    protected static $submitEmptyLogs = false;
+
     public function zu()
     {
         return $this->belongsTo(Zu::class);

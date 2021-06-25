@@ -1,5 +1,7 @@
 import moment from "moment";
-import dzoCompaniesNameMapping from "../dzo_companies_consolidated_name_mapping.json";
+import dzoCompaniesNameMapping from "../dzo_companies_consolidated_name_mapping.json"
+import companiesListWithKMG from "../dzo_companies_initial_consolidated_withkmg.json";
+import companiesListWithoutKMG from "../dzo_companies_initial_consolidated_withoutkmg.json";
 
 export default {
     data: function () {
@@ -11,7 +13,7 @@ export default {
             sortingOrder: [
                 'ОМГ','ОМГК','ММГ','ЭМГ','КБМ',
                 'КГМ','КТМ','КОА','УО','ТШО','НКО','КПО','ПКИ',
-                'ПККР','КГМКМГ','ТП','АГ','НКОН','НКОС'
+                'ПККР','КГМКМГ','ТП','АГ'
             ],
             sortingOrderWithoutParticipation: [
                 'ОМГ','ОМГК','ЭМГ','АГ','ТШО','ММГ','КОА','КТМ',
@@ -20,13 +22,18 @@ export default {
             consolidatedData: {
                 'withParticipation': [],
                 'withoutParticipation': [],
-                'yesterdayWithParticipation': []
+                'yesterdayWithParticipation': [],
+                'chartWithParticipation': [],
+                'chartWithoutParticipation': [],
             },
+
             productionParamsWidget: {
                 'oilFact' : 0,
                 'oilPlan' : 0,
                 'yesterdayOilFact': 0,
-                'yesterdayOldFact': 0
+                'yesterdayOldFact': 0,
+                'yesterdayOilFactWithFilter': 0,
+
             },
             factorOptions: {
                 'ММГ': 0.5,
@@ -78,17 +85,6 @@ export default {
                         'planMonth': 'gk_plan',
                         'formula': (fieldName, dzoName,filteredInitialData) => this.sumBy(fieldName,dzoName,filteredInitialData)
                     },
-                    {
-                        'dzoMonth': 'НКОН',
-                        'dzoName' : 'НКО',
-                        'factMonth': 'oil_fact',
-                        'opekMonth': 'oil_opek_plan',
-                        'planMonth': 'oil_plan',
-                        'formula': (fieldName, dzoName,inputData) => {
-                            let parameter = this.sumBy(fieldName,dzoName,inputData);
-                            return Math.round((parameter - parameter * 0.019) * 241 / 1428);
-                        }
-                    },
                 ],
                 'withoutKMGFilter': [
                     {
@@ -111,52 +107,140 @@ export default {
             },
             oilCondensateFilters: {
                 'isWithoutKMGFilterActive': true
-            }
+            },
+            nkoMapping: {
+                'formula': (value) => Math.round(((value - value * 0.019) * 241 / 1428) / 2)
+            },
+            dzoMultiplier: {
+                'ОМГ': (item,value,fieldName) => value + item[fieldName],
+                'ПКК': (item,value,fieldName) => value * 0.33,
+                'КГМ': (item,value,fieldName) => value * 0.5 * 0.33,
+                'ТП': (item,value,fieldName) => value * 0.5 * 0.33,
+                'НКО': (item,value,fieldName) => ((value - value * 0.019) * 241 / 1428) / 2
+            },
+            companiesForNominalInput: ['АГ','ПКК'],
+            yesterdaySummary: [],
+            yesterdayProductionDetails: []
         };
     },
     methods: {
         switchFilterConsolidatedOilCondensate(parentButton,childButton,filterName) {
             this.oilCondensateFilters[filterName] = !this.oilCondensateFilters[filterName];
+            let chartOutput = this.consolidatedData.chartWithParticipation;
+            if (!this.oilCondensateFilters.isWithoutKMGFilterActive) {
+                chartOutput = this.consolidatedData.chartWithoutParticipation;
+            }
+            this.exportDzoCompaniesSummaryForChart(chartOutput);
             if (this.oilCondensateFilters[filterName]) {
                 this.dzoCompanySummary = this.consolidatedData.withParticipation;
+                this.changeDzoCompaniesList(companiesListWithKMG);
             } else {
                 this.dzoCompanySummary = this.consolidatedData.withoutParticipation;
+                this.changeDzoCompaniesList(companiesListWithoutKMG);
             }
+            this.selectAllDzoCompanies();
             let elementOptions = this.mainMenuButtonElementOptions[parentButton].childItems[childButton];
             this.switchButtonOptions(elementOptions);
             this.calculateDzoCompaniesSummary();
         },
-        getConsolidatedOilCondensate() {
-            let updatedData = _.cloneDeep(this.productionTableData);
-            let filteredInitialData = this.getProductionDataInPeriodRange(updatedData,this.timestampToday,this.timestampEnd);
-            let filteredDataByCompanies = this.getFilteredCompaniesList(updatedData);
-            let filteredDataByPeriod = this.getProductionDataInPeriodRange(filteredDataByCompanies,this.timestampToday,this.timestampEnd);
-            filteredDataByPeriod = this.getDataOrderedByAsc(filteredDataByPeriod);
-
-            if (this.isOneDateSelected) {
-                filteredDataByPeriod = this.getFilteredDataByOneDay(_.cloneDeep(filteredDataByCompanies),'today');
-                filteredInitialData = this.getFilteredDataByOneDay(filteredInitialData,'today');
-            }
+        getConsolidatedOilCondensate(periodStart,periodEnd,periodName,summary) {
             let self = this;
-            let initialData = _.cloneDeep(this.dzoCompanySummary);
-            _.forEach(initialData, function(item) {
+            let filteredByCompanies = this.getFilteredCompaniesList(_.cloneDeep(this.productionTableData));
+            let filteredByPeriod = this.getFilteredByPeriod(filteredByCompanies,true,periodStart,periodEnd);
+            let filteredInitial = this.getFilteredByPeriod(_.cloneDeep(this.productionTableData),false,periodStart,periodEnd);
+
+            let actualUpdatedByOpek = this.getUpdatedByOpekPlan(summary,filteredByPeriod);
+            let dataWithKMGParticipation = this.getUpdatedByDzoOptions(_.cloneDeep(actualUpdatedByOpek),filteredByPeriod,filteredInitial);
+            let dataWithoutKMGParticipation = this.getUpdatedByDzoOptionsWithoutKMG(_.cloneDeep(actualUpdatedByOpek),filteredByPeriod,filteredInitial);
+
+            this.updateConsolidatedData(dataWithKMGParticipation,dataWithoutKMGParticipation,periodStart,periodEnd,periodName);
+            let output = this.consolidatedData.withParticipation;
+            let chartOutput = this.consolidatedData.chartWithParticipation;
+            this.isOpecFilterActive = true;
+            if (!this.oilCondensateFilters.isWithoutKMGFilterActive) {
+                output = this.consolidatedData.withoutParticipation;
+                chartOutput = this.consolidatedData.chartWithoutParticipation;
+            }
+
+            this.exportDzoCompaniesSummaryForChart(chartOutput);
+            return output;
+        },
+
+        getFilteredByPeriod(productionData,isNeedSort,periodStart,periodEnd) {
+            let filtered = this.getProductionDataInPeriodRange(productionData,periodStart,periodEnd);
+            if (this.isOneDateSelected) {
+                filtered = this.getFilteredDataByOneDay(filtered, 'today',periodStart,periodEnd);
+            }
+            if (isNeedSort) {
+                filtered = this.getFilteredDataByOneDay(productionData, 'today',periodStart,periodEnd);
+                filtered = this.getDataOrderedByAsc(filtered);
+            }
+            return filtered;
+        },
+
+        getUpdatedByOpekPlan(dzoSummary,filteredDataByPeriod) {
+            let self = this;
+            let updatedByOpek = dzoSummary;
+            _.forEach(updatedByOpek, function(item) {
                 item.opekPlan = self.sumBy('oil_opek_plan',item.dzoMonth,filteredDataByPeriod);
             });
-            let dataWithKMGParticipation = this.getUpdatedByDzoOptions(_.cloneDeep(initialData),filteredDataByPeriod,filteredInitialData);
-            let sortedWithKMGParticipation = this.getSorted(dataWithKMGParticipation,this.sortingOrder);
-            let yesterdayData = this.getYesterdayData(_.cloneDeep(this.productionTableData),filteredDataByCompanies);
-            let dataWithoutKMGParticipation = this.getUpdatedByDzoOptionsWithoutKMG(_.cloneDeep(initialData),filteredDataByPeriod,filteredInitialData);
-            let sortedWithoutKMGParticipation = this.getSorted(dataWithoutKMGParticipation,this.sortingOrderWithoutParticipation);
-            this.updateConsolidatedData(sortedWithKMGParticipation,sortedWithoutKMGParticipation);
-            return sortedWithKMGParticipation;
+            return updatedByOpek;
         },
 
-        updateConsolidatedData(sortedWithKMGParticipation,sortedWithoutKMGParticipation) {
+        updateConsolidatedData(sortedWithKMGParticipation,sortedWithoutKMGParticipation,periodStart,periodEnd,periodName) {
+            let selectedCompanies = this.dzoCompanies.filter(row => row.selected === true).map(row => row.ticker);
+            sortedWithKMGParticipation = sortedWithKMGParticipation.filter(row => selectedCompanies.includes(row.dzoMonth));
+            sortedWithoutKMGParticipation = sortedWithoutKMGParticipation.filter(row => selectedCompanies.includes(row.dzoMonth));
             this.consolidatedData.withParticipation = sortedWithKMGParticipation;
             this.consolidatedData.withoutParticipation = sortedWithoutKMGParticipation;
+            this.updateChart(periodStart,periodEnd);
         },
 
-        getUpdatedByDzoOptions(updatedData,inputData,filteredInitialData) {
+        updateChart(periodStart,periodEnd) {
+            let self = this;
+            let withKMG = this.getProductionDataInPeriodRange(_.cloneDeep(this.productionTableData),periodStart,periodEnd);
+            let withoutKMG = this.getProductionDataInPeriodRange(_.cloneDeep(this.productionTableData),periodStart,periodEnd);
+
+            _.forEach(withKMG, function (item) {
+                if (self.dzoMultiplier[item.dzo]) {
+                    item.oil_fact = self.dzoMultiplier[item.dzo](item,item.oil_fact,'oil_fact');
+                    item.oil_plan = self.dzoMultiplier[item.dzo](item,item.oil_plan,'oil_plan');
+                }
+            });
+
+            _.forEach(withoutKMG, function (item) {
+                if (item.dzo === 'ОМГ') {
+                    item.oil_fact += item.gk_fact;
+                    item.oil_plan += item.gk_plan;
+                }
+            });
+
+            this.consolidatedData.chartWithParticipation = this.getSumForChart(withKMG);
+            this.consolidatedData.chartWithoutParticipation = this.getSumForChart(withoutKMG);
+        },
+
+        getSumForChart(data) {
+            let sorted = this.getOrderedByAsc(data);
+            let summaryForChart = _(sorted)
+                .groupBy("date")
+                .map((item, timestamp) => ({
+                    time: timestamp,
+                    dzo: 'dzo',
+                    productionFactForChart: _.round(_.sumBy(item, 'oil_fact'), 0),
+                    productionPlanForChart: _.round(_.sumBy(item, 'oil_plan'), 0),
+                    productionPlanForChart2: _.round(_.sumBy(item, 'oil_opek_plan'), 0),
+                }))
+                .value();
+
+            if (this.isFilterTargetPlanActive) {
+                let monthlyPlansInYear = this.getMonthlyPlansInYear(summaryForChart);
+                summaryForChart = monthlyPlansInYear;
+            }
+
+            return summaryForChart;
+        },
+
+        getUpdatedByDzoOptions(inputActualUpdatedByOpek,inputData,filteredInitialData) {
             let self = this;
             let dzoOptions = _.cloneDeep(this.dzoOptions.default);
             let pkiSummary = {
@@ -164,24 +248,20 @@ export default {
                 'planMonth': 0,
                 'opekPlan': 0
             };
-            let nkoSummary = {
-                'factMonth': 0,
-                'planMonth': 0,
-                'opekPlan': 0
-            };
-            let temporaryData = updatedData;
-            temporaryData = this.getFilteredByNotUsableDzo(temporaryData);
+
+            let actualUpdatedByOpek = inputActualUpdatedByOpek;
+            actualUpdatedByOpek = this.getFilteredByNotUsableDzo(actualUpdatedByOpek);
 
             _.forEach(dzoOptions, function(item) {
-                if (item.dzoName === 'АГ') {
-                    temporaryData.push({
+                if (self.companiesForNominalInput.includes(item.dzoName)) {
+                    actualUpdatedByOpek.push({
                         'dzoMonth' : item.dzoMonth,
                         'factMonth' : item.formula(item.factMonth,item.dzoName,filteredInitialData),
                         'opekPlan' : item.formula(item.opekMonth,item.dzoName,filteredInitialData),
                         'planMonth' : item.formula(item.planMonth,item.dzoName,filteredInitialData),
                     });
                 } else {
-                    temporaryData.push({
+                    actualUpdatedByOpek.push({
                         'dzoMonth' : item.dzoMonth,
                         'factMonth' : item.formula(item.factMonth,item.dzoName,inputData),
                         'opekPlan' : item.formula(item.opekMonth,item.dzoName,inputData),
@@ -191,19 +271,9 @@ export default {
                 if (['ПКК','КГМ','ТП'].includes(item.dzoName)) {
                     self.updateDzoCompaniesSummary(item,pkiSummary,inputData);
                 }
-                if (item.dzoName === 'НКО') {
-                    self.updateDzoCompaniesSummary(item,nkoSummary,inputData);
-                }
             });
 
-            temporaryData.push({
-                'dzoMonth': 'НКОС',
-                'factMonth': nkoSummary.factMonth / 2,
-                'opekPlan' : nkoSummary.opekPlan / 2,
-                'planMonth': nkoSummary.planMonth / 2,
-            });
-
-            _.forEach(temporaryData, function(item, index) {
+            _.forEach(actualUpdatedByOpek, function(item, index) {
                 if (self.factorOptions[item.dzoMonth]) {
                     item.factMonth *= self.factorOptions[item.dzoMonth];
                     item.opekPlan *= self.factorOptions[item.dzoMonth];
@@ -215,12 +285,18 @@ export default {
                     item.planMonth = pkiSummary.planMonth;
                 }
                 if (item.dzoMonth === 'НКО') {
-                    item.factMonth = nkoSummary.factMonth / 2;
-                    item.opekPlan = nkoSummary.opekPlan / 2;
-                    item.planMonth = nkoSummary.planMonth / 2;
+                    item.factMonth = self.dzoMultiplier['НКО'](null,item.factMonth,null);
+                    item.opekPlan = self.dzoMultiplier['НКО'](null,item.opekPlan,null);
+                    item.planMonth = self.dzoMultiplier['НКО'](null,item.planMonth,null);
                 }
             });
-            return temporaryData;
+
+            actualUpdatedByOpek = this.getSorted(actualUpdatedByOpek,this.sortingOrder);
+
+            if (this.buttonMonthlyTab || this.buttonYearlyTab) {
+                actualUpdatedByOpek = this.getUpdatedByPeriodPlan(actualUpdatedByOpek);
+            }
+            return actualUpdatedByOpek;
         },
 
         sumBy(fieldName, dzoName, data) {
@@ -243,27 +319,29 @@ export default {
             let sorted = [];
             _.forEach(sortingOrder, function (key) {
                 let itemIndex = inputData.findIndex(element => element.dzoMonth === key);
-                sorted.push(inputData[itemIndex]);
+                if (itemIndex > -1) {
+                    sorted.push(inputData[itemIndex]);
+                }
             });
             return sorted;
         },
 
-        getUpdatedByDzoOptionsWithoutKMG(updatedData,inputData,filteredInitialData) {
+        getUpdatedByDzoOptionsWithoutKMG(inputActualUpdatedByOpek,inputData,filteredInitialData) {
             let dzoOptions = _.cloneDeep(this.dzoOptions.withoutKMGFilter);
-            let temporaryData = updatedData;
-            let pkiIndex = temporaryData.findIndex(element => element.dzoMonth === 'ПКИ');
-           temporaryData.splice(pkiIndex, 1);
-
+            let actualUpdatedByOpek = inputActualUpdatedByOpek;
+            let pkiIndex = actualUpdatedByOpek.findIndex(element => element.dzoMonth === 'ПКИ');
+            let self = this;
+            actualUpdatedByOpek.splice(pkiIndex, 1);
             _.forEach(dzoOptions, function(item) {
-                if (item.dzoName === 'АГ') {
-                    temporaryData.push({
+                if (self.companiesForNominalInput.includes(item.dzoName)) {
+                    actualUpdatedByOpek.push({
                         'dzoMonth' : item.dzoMonth,
                         'factMonth' : item.formula(item.factMonth,item.dzoName,filteredInitialData),
                         'opekPlan' : item.formula(item.opekMonth,item.dzoName,filteredInitialData),
                         'planMonth' : item.formula(item.planMonth,item.dzoName,filteredInitialData),
                     });
                 } else {
-                    temporaryData.push({
+                    actualUpdatedByOpek.push({
                         'dzoMonth' : item.dzoMonth,
                         'factMonth' : item.formula(item.factMonth,item.dzoName,inputData),
                         'opekPlan' : item.formula(item.opekMonth,item.dzoName,inputData),
@@ -271,37 +349,23 @@ export default {
                     });
                 }
             });
-            return temporaryData;
-        },
 
-        updateProductionTotalFact() {
-            this.productionParams['oil_fact'] = this.productionParamsWidget.oilFact;
-            this.productionParams['oil_plan'] = this.productionParamsWidget.oilPlan;
-            if (!this.isWithoutKMGFilterActive) {
-                this.productionPercentParams['oil_fact'] = this.productionParamsWidget.yesterdayOldFact;
-            } else {
-                this.productionPercentParams['oil_fact'] = this.productionParamsWidget.yesterdayOilFact;
+            actualUpdatedByOpek = this.getSorted(actualUpdatedByOpek,this.sortingOrderWithoutParticipation);
+            if (this.buttonMonthlyTab || this.buttonYearlyTab) {
+                actualUpdatedByOpek = this.getUpdatedByPeriodPlan(actualUpdatedByOpek);
             }
+
+            return actualUpdatedByOpek;
         },
 
-        getYesterdayData(productionTable,filteredDataByCompanies) {
-            let yesterdayFilteredData = this.getFilteredDataByOneDay(_.cloneDeep(filteredDataByCompanies),'yesterday');
-            let periodStart = moment(new Date(this.timestampToday)).subtract(1, 'days').valueOf();
-            let filteredInitialData = this.getProductionDataInPeriodRange(productionTable,periodStart,this.timestampToday);
-            filteredInitialData = this.getFilteredDataByOneDay(filteredInitialData,'yesterday');
-            let groupedData = _(yesterdayFilteredData)
-                .groupBy("dzo")
-                .map((dzo, id) => ({
-                    dzoMonth: id,
-                    factMonth: _.round(_.sumBy(dzo, 'oil_fact'), 0),
-                    planMonth: _.round(_.sumBy(dzo, 'oil_plan'), 0),
-                    opekPlan: _.round(_.sumBy(dzo, 'oil_opek_plan'), 0),
-                }))
-                .value();
-            let dataWithKMGParticipation = this.getUpdatedByDzoOptions(_.cloneDeep(groupedData),yesterdayFilteredData,filteredInitialData);
-            this.productionParamsWidget.yesterdayOilFact = _.sumBy(dataWithKMGParticipation, 'factMonth');
-            return dataWithKMGParticipation;
+        updateProductionTotalFact(filteredByCompaniesYesterday,summary) {
+            this.productionParams['oil_fact'] = _.sumBy(this.dzoSummaryForTable,'factMonth');
+            this.productionParams['oil_plan'] = _.sumBy(this.dzoSummaryForTable,'planMonth');
+            this.productionPercentParams['oil_fact'] = _.sumBy(filteredByCompaniesYesterday,'factMonth');
+            this.productionParamsWidget.oilFact = summary.fact;
+            this.productionParamsWidget.oilPlan = summary.plan;
         },
+
         getFilteredByNotUsableDzo(data) {
             let updatedData = data;
             let tpIndex = updatedData.findIndex(element => element.dzoMonth === 'ТП');
@@ -309,6 +373,16 @@ export default {
             updatedData.splice(tpIndex, 1);
             updatedData.splice(pkkIndex, 1);
             return updatedData;
-        }
+        },
+
+        getUpdatedByPeriodPlan(data) {
+            let updatedData = data;
+            let daysPassed = moment().date();
+            let daysCountInMonth = moment().daysInMonth();
+            _.forEach(updatedData, function(item) {
+                item.periodPlan = item.planMonth / daysPassed * daysCountInMonth;
+            });
+            return updatedData;
+        },
     }
 }

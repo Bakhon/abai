@@ -2,7 +2,6 @@
 
 namespace App\Models\BigData\Dictionaries;
 
-
 use App\Models\TBDModel;
 
 class Zone extends TBDModel

@@ -21,7 +21,7 @@ class OmgCAListResource extends CrudListResource
             'id' => $this->id,
             'fields' => [
                 'gu' => $this->gu ? $this->gu->name : null,
-                'date' => Carbon::parse($this->date)->format('Y'),
+                'year' => Carbon::parse($this->date)->format('Y'),
                 'plan_dosage' => $this->plan_dosage,
                 'q_v' => $this->q_v,
             ]

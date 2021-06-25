@@ -10,6 +10,6 @@
 @section('module_title', 'Конструктор отчетов')
 @section('content')
     <div id="app">
-        <report_constructor></report_constructor>
+        <report-constructor></report-constructor>
     </div>
 @endsection

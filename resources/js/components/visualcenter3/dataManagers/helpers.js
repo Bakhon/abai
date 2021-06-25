@@ -196,7 +196,6 @@ export default {
         },
 
         getProductionDataInPeriodRange(data, periodStart, periodEnd) {
-            let self = this;
             return _.filter(data, function (item) {
                 return _.every([
                     _.inRange(
@@ -208,15 +207,15 @@ export default {
             });
         },
 
-        getFilteredDataByOneDay(filteredDataByCompanies,dayType) {
+        getFilteredDataByOneDay(filteredDataByCompanies,dayType,periodStart,periodEnd) {
             let dayTypeMapping = {
                 'today': {
-                    'start': this.timestampToday,
-                    'end': this.timestampEnd
+                    'start': periodStart,
+                    'end': periodEnd
                 },
                 'yesterday': {
-                    'start': moment(new Date(this.timestampToday)).subtract(1, 'days').valueOf(),
-                    'end': this.timestampToday
+                    'start': moment(new Date(periodStart)).subtract(1, 'days').valueOf(),
+                    'end': periodStart
                 }
             };
             let filteredDataByOneDay = this.getProductionDataInPeriodRange(filteredDataByCompanies,dayTypeMapping[dayType].start,dayTypeMapping[dayType].end);
@@ -267,6 +266,14 @@ export default {
 
         getDzoName(acronym,mapping) {
             return this.trans(mapping[acronym]);
+        },
+
+        getOilProductionKmgParticipationDzoTitle(percentParticipation){
+            if (percentParticipation) {
+                return " (" + percentParticipation * 100 + "%)";
+            }
+            return "";
+
         },
     },
     computed: {

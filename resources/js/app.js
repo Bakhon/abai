@@ -3,6 +3,7 @@
  * includes Vue and other libraries. It is a great starting point when
  * building robust, powerful web applications using Vue and Laravel.
  */
+import "./directives/outsideClickDetect.js";
 
 import VueAxios from 'vue-axios';
 import axios from 'axios';
@@ -111,6 +112,7 @@ Vue.component('gtm-main-page', require('./components/GTM/Main.vue').default);
 Vue.component('gtm-main-indicator', require('./components/GTM/MainIndicator.vue').default);
 Vue.component('gtm-aegtm', require('./components/GTM/Aegtm.vue').default);
 Vue.component('gtm-aegtm-eco', require('./components/GTM/AegtmEco.vue').default);
+Vue.component('gtm-aegtm-unsuccessful-distribution', require('./components/GTM/AegtmUnsuccessfulDistribution.vue').default);
 Vue.component('gtm-podbor-gtm', require('./components/GTM/PodborGTM.vue').default);
 Vue.component('gtm-digital-rating-gtm', require('./components/GTM/DigitalRating.vue').default);
 Vue.component('gtm-etu', require('./components/GTM/Etu.vue').default);
@@ -144,6 +146,7 @@ Vue.component('geo-mapping-form', require('./components/bigdata/mapping/form.vue
 Vue.component('inhibitor-create', require('./components/inhibitor/create.vue').default);
 Vue.component('inhibitor-edit', require('./components/inhibitor/edit.vue').default);
 Vue.component('corrosion-form', require('./components/complicationMonitoring/corrosion/form.vue').default);
+Vue.component('map-history', require('./components/complicationMonitoring/map/mapHistory.vue').default);
 Vue.component('gu-map', require('./components/complicationMonitoring/map/map.vue').default);
 Vue.component('field-settings', require('./components/settings/fields.vue').default);
 
@@ -160,7 +163,7 @@ Vue.component('tr_mode-table', require('./components/tr/TechMode.vue').default);
 Vue.component('tr_mode-table-small', require('./components/tr/TechModeSmall.vue').default);
 Vue.component('fa_weekly_chart', require('./components/tr/FaWeeklyChart.vue').default);
 Vue.component('well_cart', require('./components/well_cart/well_cart.vue').default);
-Vue.component('report_constructor', require('./components/report_constructor/report_constructor.vue').default);
+Vue.component('report-constructor', require('./components/reportConstructor/ReportConstructor.vue').default);
 
 Vue.component('pf-main', require('./components/PlastFluids/views/MainPage.vue').default);
 Vue.component('pf-template_pvt_plast_oil', require('./components/PlastFluids/views/SuperTemplatePvtPlastOil.vue').default);
@@ -175,6 +178,8 @@ Vue.component('user-reports', require('./components/bigdata/UserReports.vue').de
 Vue.component('proto-form', require('./components/bigdata/Forms.vue').default);
 Vue.component('proto-form-wrapper', require('./components/bigdata/FormsWrapper.vue').default);
 Vue.component('proto-org-select-tree', require('./components/bigdata/OrgSelectTree.vue').default);
+Vue.component('report-constructor-item-select-tree', require('./components/reportConstructor/ItemSelectTree.vue').default);
+Vue.component('report-header-builder', require('./components/reportConstructor/ReportHeaderBuilder.vue').default);
 Vue.component('bigdata-form-mobile', require('./components/bigdata/FormMobile.vue').default);
 Vue.component('search-form', require('./components/ui-kit/SearchForm.vue').default);
 Vue.component('bigdata-report-button', require('./components/bigdata/BigDataReportButton.vue').default);
@@ -185,10 +190,17 @@ Vue.component('main-page', require('./components/mainpage.vue').default);
 Vue.component('profile', require('./components/profile/Profile.vue').default);
 
 Vue.component('reptt', require('./components/economy_kenzhe/reptt.vue').default);
+Vue.component('budget-execution', require('./components/economy_kenzhe/budgetExecution/budgetExecution.vue').default);
 Vue.component('reptt-company', require('./components/economy_kenzhe/reptt_company.vue').default);
+
 Vue.component('proactive-factors', require('./components/economy_kenzhe/proactiveFactors/proactiveFactors.vue').default);
 Vue.component('proactive-factors-select-filter', require('./components/economy_kenzhe/proactiveFactors/selectFilter.vue').default);
 Vue.component('reptt-company2', require('./components/economy_kenzhe/proactiveFactors/repttCompany/reptt_company2.vue').default);
+
+Vue.component('GeologyPage', require('./components/geology/page.vue').default);
+Vue.component('GeologyLSide', require('./components/geology/Geology-l-side.vue').default);
+Vue.component('GeologyRSide', require('./components/geology/Geology-r-side.vue').default);
+Vue.component('GeologyTSide', require('./components/geology/Geology-t-side.vue').default);
 
 Vue.prototype.trans = string => _.get(window.i18n, string) || string;
 Vue.prototype.localeUrl = string => `/${window.current_lang}/${string[0] === '/' ? string.substr(1) : string}`;

@@ -1,4 +1,6 @@
 {
+  "type": "table",
+  "table_type": "wells",
   "columns": [
     {
       "title": "uwi_number",

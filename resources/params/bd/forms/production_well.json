@@ -29,19 +29,28 @@
                 "code": "liquid",
                 "type": "numeric",
                 "title": "liquid",
-                "validation": "numeric"
-              },
-              {
-                "code": "oil",
-                "type": "numeric",
-                "title": "oil",
-                "validation": "numeric"
+                "validation": "numeric",
+                "callbacks": {
+                  "fillCalculatedFields": ""
+                }
               },
               {
                 "code": "wcut",
                 "type": "numeric",
                 "title": "water_cut",
-                "validation": "numeric|min:0|max:100"
+                "validation": "numeric|min:0|max:100",
+                "callbacks": {
+                  "fillCalculatedFields": ""
+                }
+              },
+              {
+                "code": "oil_density",
+                "type": "numeric",
+                "title": "oil_density",
+                "validation": "numeric",
+                "callbacks": {
+                  "fillCalculatedFields": ""
+                }
               }
             ]
           },
@@ -49,10 +58,10 @@
             "title": "calculated_fields",
             "items": [
               {
-                "code": "oil_density",
-                "type": "numeric",
-                "title": "oil_density",
-                "validation": "numeric"
+                "code": "oil",
+                "type": "calc",
+                "submit_value": true,
+                "title": "oil"
               }
             ]
           },

@@ -1,0 +1,121 @@
+[
+  {
+    "companyName": "visualcenter.consolidatedDzoNameMapping.EMG",
+    "selected": true,
+    "ticker":"ЭМГ",
+    "type": "isOperating",
+    "region": "aturay"
+  },
+  {
+    "companyName": "visualcenter.consolidatedDzoNameMapping.PKI",
+    "selected": true,
+    "ticker":"ПКИ",
+    "type": "isNonOperating",
+    "region": "kuzulord"
+  },
+  {
+    "companyName": "visualcenter.consolidatedDzoNameMapping.OMG",
+    "selected": true,
+    "ticker":"ОМГ",
+    "type": "isOperating",
+    "region": "mangistau"
+  },
+  {
+    "companyName": "visualcenter.consolidatedDzoNameMapping.OMGK",
+    "selected": true,
+    "ticker":"ОМГК",
+    "type": "isOperating",
+    "region": "mangistau"
+  },
+  {
+    "companyName": "visualcenter.consolidatedDzoNameMapping.AG",
+    "selected": true,
+    "ticker":"АГ",
+    "type": "isNonOperating",
+    "region": "zhambul"
+  },
+  {
+    "companyName": "visualcenter.consolidatedDzoNameMapping.KBM",
+    "selected": true,
+    "ticker":"КБМ",
+    "type": "isOperating",
+    "region": "mangistau"
+  },
+  {
+    "companyName": "visualcenter.consolidatedDzoNameMapping.KGM",
+    "selected": true,
+    "ticker":"КГМ",
+    "type": "isOperating",
+    "region": "kuzulord"
+  },
+  {
+    "companyName": "visualcenter.consolidatedDzoNameMapping.KGMKMG",
+    "selected": true,
+    "ticker":"КГМКМГ",
+    "type": "isOperating",
+    "region": "kuzulord"
+  },
+  {
+    "companyName": "visualcenter.consolidatedDzoNameMapping.PKKR",
+    "selected": true,
+    "ticker":"ПККР",
+    "type": "isNonOperating",
+    "region": "kuzulord"
+  },
+  {
+    "companyName": "visualcenter.consolidatedDzoNameMapping.TP",
+    "selected": true,
+    "ticker":"ТП",
+    "type": "isNonOperating",
+    "region": "kuzulord"
+  },
+  {
+    "companyName": "visualcenter.consolidatedDzoNameMapping.TSH",
+    "selected": true,
+    "ticker":"ТШО",
+    "type": "isNonOperating",
+    "region": "aturay"
+  },
+  {
+    "companyName": "visualcenter.consolidatedDzoNameMapping.MMG",
+    "selected": true,
+    "ticker":"ММГ",
+    "type": "isOperating",
+    "region": "mangistau"
+  },
+  {
+    "companyName": "visualcenter.consolidatedDzoNameMapping.KOA",
+    "selected": true,
+    "ticker":"КОА",
+    "type": "isOperating",
+    "region": "actubinsk"
+  },
+  {
+    "companyName": "visualcenter.consolidatedDzoNameMapping.KTM",
+    "selected": true,
+    "ticker":"КТМ",
+    "type": "isOperating",
+    "region": "actubinsk"
+  },
+  {
+    "companyName": "visualcenter.consolidatedDzoNameMapping.KPO",
+    "selected": true,
+    "ticker":"КПО",
+    "type": "isNonOperating",
+    "region": "west"
+  },
+  {
+    "companyName": "visualcenter.consolidatedDzoNameMapping.NKO",
+    "selected": true,
+    "ticker":"НКО",
+    "type": "isNonOperating",
+    "region": "aturay"
+  },
+  {
+    "companyName": "visualcenter.consolidatedDzoNameMapping.YO",
+    "selected": true,
+    "ticker":"УО",
+    "type": "isOperating",
+    "region": "actubinsk"
+  }
+]

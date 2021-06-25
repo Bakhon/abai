@@ -3,276 +3,315 @@
 	<div class="flex-container">
 		<div class="flex__item__block__1">
 			<div class="title__block">{{trans('pgno.chislo_kachanii')}}</div>
-
-			<div class="flex__item__block__first__block">
-				<div class="block__text">{{trans('pgno.minimum')}}</div>
-				<input v-model="spmMin" @change="onChangeSpmMin"  class="square2 block__1__input" type="text">
-
-				<div class="block__text__1">{{trans('pgno.maximum')}}</div>
-				<input v-model="spmMax" @change="onChangeSpmMax"  class="square2 block__2__input" type="text">
-			</div>
-
+				<div class="title__block__min__1">
+					<span>{{trans('pgno.minimum')}}</span>
+					<input v-model="spmMin" @change="onChangeSpmMin"  class="square2 block__1__input" type="text">
+				</div>
+				<div class="title__block__max__1">
+					<span>{{trans('pgno.maximum')}}</span>
+					<input v-model="spmMax" @change="onChangeSpmMax"  class="square2 block__2__input" type="text">
+				</div>
 		</div>
 
 		<div class="flex__item__block__1">
-			<div class="title__block__2">{{trans('pgno.dlina_hoda')}}</div>
-
-			<div class="flex__item__block__second__block">
-				<div class="block__text__2">{{trans('pgno.minimum')}}</div>
-				<input v-model="lenMin" @change="onChangeLenMin"  class="square2 block__3__input" type="text">
-
-				<div class="block__text__3">{{trans('pgno.maximum')}}</div>
-				<input v-model="lenMax" @change="onChangeLenMax"  class="square2 block__4__input" type="text">
+			<div class="title__block">{{trans('pgno.dlina_hoda')}}</div>
+				<div class="title__block__min__1">
+					<span>{{trans('pgno.minimum')}}</span>
+					<input v-model="strokeLenMin" @change="onChangeLenMin"  class="square2 block__1__input" type="text">
+				</div>
+				<div class="title__block__max__1">
+					<span>{{trans('pgno.maximum')}}</span>
+					<input v-model="strokeLenMax" @change="onChangeLenMax"  class="square2 block__2__input" type="text">
+				</div>
 			</div>
 
-		</div>
+		<div class="flex__item__block__1">
+			<div class="title__block">{{trans('pgno.kpod')}}</div>
+				<div class="title__block__min__1">
+					<span>{{trans('pgno.minimum')}}</span>
+					<input v-model="kpodMin" @change="onChangeKpod"  class="square2 block__1__input" type="text">
+				</div>
+			</div>
 
-		<div class="flex__item__block__2">
-			<div class="title__block__1">{{trans('pgno.kpod')}}</div>
-			<div class="flex__item__block__first__block__1">
+		<div class="flex__item__block__1">
+			<div class="title__block"><span>{{trans('pgno.diametr_nasosov')}}, {{trans('measurements.mm')}}</span></div>
+				<div class="title__block__pump">
+					<div class="title__block__pump_list">
+
+						<div class="title__block__pump__1">
+							<input class="checkbox__block__1" v-model="dmPumps" value="27" type="checkbox"/>
+							<label class="checkbox__block__label__1">27</label>
+						</div>
+
+						<div class="title__block__pump__1">
+							<input class="checkbox__block__1" v-model="dmPumps" value="32" type="checkbox"/>
+							<label class="checkbox__block__label__1">32</label>
+						</div>
+
+						<div class="title__block__pump__1">
+							<input class="checkbox__block__1" v-model="dmPumps" value="38" type="checkbox"/>
+							<label class="checkbox__block__label__1">38</label>
+						</div>
+
+					</div>
+
+					<div class="title__block__pump_list__2">
+
+						<div class="title__block__pump__1">
+							<input class="checkbox__block__1" v-model="dmPumps" value="44" type="checkbox"/>
+							<label class="checkbox__block__label__1">44</label>
+						</div>
+
+						<div class="title__block__pump__1">
+							<input class="checkbox__block__1" v-model="dmPumps" value="50" type="checkbox"/>
+							<label class="checkbox__block__label__1">50</label>
+						</div>
+
+						<div class="title__block__pump__1">
+							<input class="checkbox__block__1" v-model="dmPumps" value="57" type="checkbox"/>
+							<label class="checkbox__block__label__1">57</label>
+						</div>
+
+					</div>
+
+					<div class="title__block__pump_list__3">
+
+						<div class="title__block__pump__1">
+							<input class="checkbox__block__1" v-model="dmPumps" value="60" type="checkbox"/>
+							<label class="checkbox__block__label__1">60</label>
+						</div>
+
+						<div class="title__block__pump__1">
+							<input class="checkbox__block__1" v-model="dmPumps" value="70" type="checkbox"/>
+							<label class="checkbox__block__label__1">70</label>
+						</div>
+
+						<div class="title__block__pump__1">
+							<input class="checkbox__block__1" v-model="dmPumps" value="95" type="checkbox"/>
+							<label class="checkbox__block__label__1">95</label>
+						</div>
+
+						</div>
+					</div>
+
 				
-				<div class="block__text__4">{{trans('pgno.minimum')}}</div>
-				<input v-model="kpodMin" @change="onChangeKpod"  class="square2 block__1__input__1" type="text">
-
-			</div>
 		</div>
 
-		<div class="flex__item__block__1__2">
-			<div class="title__block__4">{{trans('pgno.diametr_nasosov')}}, {{trans('measurements.mm')}}</div>
-				<div class="flex__item__block__second__block__4">
+		<div class="flex__item__block__1">
 
-					<div class="form__checkbox block__checkbox__1 table-border-gno-right">
-						<label class="checkbox__block__label__1">27</label>
-						<input class="checkbox__block__1" v-model="dmPumps" type="checkbox" value="27"/>
-					</div>			
+			<div class="title__block"><u>{{trans('pgno.group_posadka')}}</u><svg style="padding-left: 4px;" @click="onClick()" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+				<path fill-rule="evenodd" clip-rule="evenodd" d="M12 15.9998C14.2092 15.9998 16 14.209 16 11.9998V4C16 1.79086 14.2092 -7.25981e-06 12 0L4.00035 2.62892e-05C1.79129 3.35488e-05 0.000467376 1.79078 0.000366244 3.99984L4.28319e-09 11.9997C-0.00010113 14.2089 1.79079 15.9998 4 15.9998H12ZM9.96388 4.21331C9.96388 4.83186 9.41469 5.3333 8.73722 5.3333C8.05976 5.3333 7.51057 4.83186 7.51057 4.21331C7.51057 3.59476 8.05976 3.09332 8.73722 3.09332C9.41469 3.09332 9.96388 3.59476 9.96388 4.21331ZM5.60064 7.36004L5.72864 6.8214L6.60376 6.50669L6.9106 6.42998C7.06133 6.3923 7.21494 6.3673 7.36984 6.35523L7.41538 6.35168C7.54958 6.34122 7.68445 6.34271 7.81839 6.35613L7.85353 6.35965C7.94465 6.36878 8.03495 6.38481 8.12364 6.40762L8.18305 6.4229C8.30295 6.45373 8.41808 6.50078 8.52526 6.56274L8.55485 6.57985C8.65442 6.63741 8.74468 6.70975 8.82254 6.79439L8.8313 6.80391C8.91016 6.88963 8.97434 6.98778 9.02125 7.0944C9.05215 7.16462 9.07532 7.23799 9.09037 7.31322L9.09378 7.33027C9.11191 7.42093 9.11967 7.51336 9.11689 7.60578L9.11251 7.75195C9.10756 7.91693 9.08628 8.08102 9.04897 8.24181L8.9504 8.66669L8.75307 9.33335L8.44907 10.4L8.33707 10.9333L8.31512 11.2011C8.31199 11.2394 8.31319 11.2778 8.31869 11.3158L8.32229 11.3407C8.3477 11.516 8.46981 11.662 8.63788 11.718C8.66837 11.7282 8.69982 11.7352 8.73174 11.7389L8.82514 11.7498C8.9437 11.7637 9.06356 11.7621 9.18171 11.7451L9.25563 11.7344C9.35953 11.7195 9.46205 11.6962 9.5622 11.6648L9.81973 11.584L9.67039 12.1333L8.73707 12.4693L8.46883 12.5326C8.30138 12.5721 8.13053 12.5955 7.95863 12.6026L7.93826 12.6034C7.77785 12.61 7.61717 12.6011 7.45847 12.5768L7.36839 12.563C7.28545 12.5503 7.20378 12.5305 7.12429 12.5037L7.08161 12.4893C6.90742 12.4305 6.74837 12.3339 6.61586 12.2065L6.60737 12.1983C6.56238 12.1551 6.52112 12.1081 6.48404 12.0578C6.35347 11.881 6.27843 11.6694 6.26845 11.4499L6.26357 11.3423C6.25926 11.2477 6.26417 11.1528 6.27823 11.0591L6.33709 10.6667L6.87042 8.80003L7.02509 8.13737L7.056 7.87718C7.06732 7.7819 7.0635 7.68544 7.04469 7.59136L7.02946 7.51521C7.02302 7.48303 7.01214 7.4519 6.99713 7.42271C6.95049 7.33203 6.86703 7.26586 6.76811 7.24113L6.66762 7.21601C6.62518 7.2054 6.58168 7.1996 6.53794 7.19872L6.33709 7.19471C6.15985 7.20887 5.98467 7.24231 5.81466 7.29443L5.60064 7.36004Z" fill="white"/>
+				</svg>
+			</div>
 
-					<div class="form__checkbox block__checkbox__2 table-border-gno-right">
-						<label class="checkbox__block__label__1">32</label>
-						<input class="checkbox__block__1" v-model="dmPumps"  type="checkbox" value="32" />
+				<div class="title__block__pump">
+					<div class="title__block__pump_list">
+
+						<div class="title__block__pump__1">
+							<input value="1" @change="onChangeGroupPosad" class="checkbox__block__1" v-model="groupPosad" name="posad1" type="radio" />
+							<label class="checkbox__block__label__1">1</label>
+						</div>
+
+						<div class="title__block__pump__1">
+							<input value="2" @change="onChangeGroupPosad" class="checkbox__block__1" v-model="groupPosad" name="posad1" type="radio" />
+							<label class="checkbox__block__label__1">2</label>
+						</div>
+
+						<div class="title__block__pump__1">
+							<input value="3" @change="onChangeGroupPosad" class="checkbox__block__1" v-model="groupPosad" name="posad1" type="radio" />
+							<label class="checkbox__block__label__1">3</label>
+						</div>
+
 					</div>
 
-					<div class="form__checkbox block__checkbox__3 table-border-gno-right">
-						<label class="checkbox__block__label__1">38</label>
-						<input class="checkbox__block__1" v-model="dmPumps" type="checkbox" value="38" />
+					<div class="title__block__pump_list__2">
+
+					<div class="title__block__pump__1">
+						<input value="4" @change="onChangeGroupPosad" class="checkbox__block__1" v-model="groupPosad" name="posad1" type="radio" />
+						<label class="checkbox__block__label__1">4</label>
 					</div>
 
-					<div class="form__checkbox block__checkbox__4 table-border-gno-right">
-						<label class="checkbox__block__label__1">44</label>
-						<input class="checkbox__block__1" v-model="dmPumps" type="checkbox" value="44" />
+					<div class="title__block__pump__1">
+						<input value="5" @change="onChangeGroupPosad" class="checkbox__block__1" v-model="groupPosad" name="posad1" type="radio" />
+						<label class="checkbox__block__label__1">5</label>
 					</div>
 
-					<div class="form__checkbox block__checkbox__5 table-border-gno-right">
-						<label class="checkbox__block__label__1">50</label>
-						<input class="checkbox__block__1" v-model="dmPumps" type="checkbox" value="50" />
+					<div class="title__block__pump__1__text">
+						<input value="podbor" @change="onChangeGroupPosad" class="checkbox__block__1" v-model="groupPosad" name="posad1" type="radio" />
+						<label class="checkbox__block__label__1">{{trans('pgno.podbor')}}</label>
 					</div>
 
-					<div class="form__checkbox block__checkbox__6 table-border-gno-right">
-						<label class="checkbox__block__label__1">57</label>
-						<input class="checkbox__block__1" v-model="dmPumps" type="checkbox" value="57" />
 					</div>
+				</div>
 
-					<div class="form__checkbox block__checkbox__7 table-border-gno-right">
-						<label class="checkbox__block__label__1">60</label>
-						<input class="checkbox__block__1" v-model="dmPumps" type="checkbox" value="60" />
-					</div>
+			</div>
 
-					<div class="form__checkbox block__checkbox__8 table-border-gno-right">
-						<label class="checkbox__block__label__1">70</label>
-						<input class="checkbox__block__1" v-model="dmPumps" type="checkbox" value="70" />
-					</div>
-
-					<div class="form__checkbox block__checkbox__9">
-						<label class="checkbox__block__label__1">95 </label>
-						<input class="checkbox__block__1" v-model="dmPumps" type="checkbox" value="95" />
-					</div>
+			<div class="flex__item__block__1">
+				<div class="title__block">{{trans('pgno.prim_komponovka')}}</div>
+					<div class="title__block__pump">
+						<div class="block__dm__pump__1">
+							<input type="checkbox" v-model="komponovka" value="yakor" />
+							<label for="checkbox1">{{trans('pgno.yakor_truboderzhatel')}}</label>	
+						</div>
+						
 					
+						<div class="block__dm__pump__2">
+							<input type="checkbox" v-model="komponovka" value="paker" />
+							<label for="checkbox1">{{trans('pgno.paker')}}</label>
+						</div>
+
+						<div class="block__dm__pump__3">
+							<input type="checkbox" v-model="komponovka" value="hvostovik" />
+							<label for="checkbox1">{{trans('pgno.hvostovik')}}</label>
+						</div>
+
 				</div>
-		</div>
-
-		<div class="flex__item__block__1__1">
-			<div class="title__block__3__1__1">{{trans('pgno.group_posadka')}}<svg style="padding-left: 4px;" @click="onClick()" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-			<path fill-rule="evenodd" clip-rule="evenodd" d="M12 15.9998C14.2092 15.9998 16 14.209 16 11.9998V4C16 1.79086 14.2092 -7.25981e-06 12 0L4.00035 2.62892e-05C1.79129 3.35488e-05 0.000467376 1.79078 0.000366244 3.99984L4.28319e-09 11.9997C-0.00010113 14.2089 1.79079 15.9998 4 15.9998H12ZM9.96388 4.21331C9.96388 4.83186 9.41469 5.3333 8.73722 5.3333C8.05976 5.3333 7.51057 4.83186 7.51057 4.21331C7.51057 3.59476 8.05976 3.09332 8.73722 3.09332C9.41469 3.09332 9.96388 3.59476 9.96388 4.21331ZM5.60064 7.36004L5.72864 6.8214L6.60376 6.50669L6.9106 6.42998C7.06133 6.3923 7.21494 6.3673 7.36984 6.35523L7.41538 6.35168C7.54958 6.34122 7.68445 6.34271 7.81839 6.35613L7.85353 6.35965C7.94465 6.36878 8.03495 6.38481 8.12364 6.40762L8.18305 6.4229C8.30295 6.45373 8.41808 6.50078 8.52526 6.56274L8.55485 6.57985C8.65442 6.63741 8.74468 6.70975 8.82254 6.79439L8.8313 6.80391C8.91016 6.88963 8.97434 6.98778 9.02125 7.0944C9.05215 7.16462 9.07532 7.23799 9.09037 7.31322L9.09378 7.33027C9.11191 7.42093 9.11967 7.51336 9.11689 7.60578L9.11251 7.75195C9.10756 7.91693 9.08628 8.08102 9.04897 8.24181L8.9504 8.66669L8.75307 9.33335L8.44907 10.4L8.33707 10.9333L8.31512 11.2011C8.31199 11.2394 8.31319 11.2778 8.31869 11.3158L8.32229 11.3407C8.3477 11.516 8.46981 11.662 8.63788 11.718C8.66837 11.7282 8.69982 11.7352 8.73174 11.7389L8.82514 11.7498C8.9437 11.7637 9.06356 11.7621 9.18171 11.7451L9.25563 11.7344C9.35953 11.7195 9.46205 11.6962 9.5622 11.6648L9.81973 11.584L9.67039 12.1333L8.73707 12.4693L8.46883 12.5326C8.30138 12.5721 8.13053 12.5955 7.95863 12.6026L7.93826 12.6034C7.77785 12.61 7.61717 12.6011 7.45847 12.5768L7.36839 12.563C7.28545 12.5503 7.20378 12.5305 7.12429 12.5037L7.08161 12.4893C6.90742 12.4305 6.74837 12.3339 6.61586 12.2065L6.60737 12.1983C6.56238 12.1551 6.52112 12.1081 6.48404 12.0578C6.35347 11.881 6.27843 11.6694 6.26845 11.4499L6.26357 11.3423C6.25926 11.2477 6.26417 11.1528 6.27823 11.0591L6.33709 10.6667L6.87042 8.80003L7.02509 8.13737L7.056 7.87718C7.06732 7.7819 7.0635 7.68544 7.04469 7.59136L7.02946 7.51521C7.02302 7.48303 7.01214 7.4519 6.99713 7.42271C6.95049 7.33203 6.86703 7.26586 6.76811 7.24113L6.66762 7.21601C6.62518 7.2054 6.58168 7.1996 6.53794 7.19872L6.33709 7.19471C6.15985 7.20887 5.98467 7.24231 5.81466 7.29443L5.60064 7.36004Z" fill="white"/>
-			</svg></div>
-
-			<div class="flex__item__block__third__block">
-				<label for="" class="block__third__block__radio">1
-					<input value="1" @change="onChangeGroupPosad" class="third__block__radio" type="radio" name="posad1" v-model="groupPosad"/>
-				</label>
-
-				<label for="" class="block__third__block__radio__1">2
-					<input value="2" @change="onChangeGroupPosad" class="third__block__radio" type="radio" name="posad1" v-model="groupPosad"/>
-				</label>
-
-				<label for="" class="block__third__block__radio__2">3
-					<input value="3" @change="onChangeGroupPosad" class="third__block__radio" type="radio" name="posad1" v-model="groupPosad"/>
-				</label>
-
-				<label for="" class="block__third__block__radio__3">4
-					<input value="4" @change="onChangeGroupPosad" class="third__block__radio" type="radio" name="posad1" v-model="groupPosad"/>
-				</label>
-
-				<label for="" class="block__third__block__radio__4">5
-					<input value="5" @change="onChangeGroupPosad" class="third__block__radio" type="radio" name="posad1" v-model="groupPosad"/>
-				</label>
-
-				<label for="" class="block__third__block__radio__5">{{trans('pgno.podbor')}}
-					<input value="podbor" @change="onChangeGroupPosad" class="third__block__radio" type="radio" name="posad1" />
-				</label>
 			</div>
-		</div>
 
-		<div class="flex__item__block__1__2">
-			<div class="title__block__4">{{trans('pgno.prim_komponovka')}}</div>
-			<div class="flex__item__block__second__block__4__1">
-				<div class="form__checkbox block__checkbox__1">
-					<div class="block__checkbox__text">
-						<input type="checkbox" v-model="komponovka" value="yakor" />
-						<label for="checkbox1">{{trans('pgno.yakor_truboderzhatel')}}</label>
+			<div class="flex__item__block__1">
+					<div class="title__block">{{trans('pgno.kon_kolony_shtang')}}</div>
+					<div class="title__block__pump">
+						<div class="title__block__pump_list">
+
+							<div class="title__block__pump__1">
+								<input value="1" @change="onChangeStupColumns" class="checkbox__block__1" v-model="stupColumns" name="stup" type="radio" />
+								<label class="checkbox__block__label__1">1 {{trans('pgno.stup')}}</label>
+							</div>
+
+							<div class="title__block__pump__1">
+								<input value="2" @change="onChangeStupColumns" class="checkbox__block__1" v-model="stupColumns" name="stup" type="radio" />
+								<label class="checkbox__block__label__1">2 {{trans('pgno.stup')}}</label>
+							</div>
+
+							<div class="title__block__pump__1">
+								<input value="3" @change="onChangeStupColumns" class="checkbox__block__1" v-model="stupColumns" name="stup" type="radio" />
+								<label class="checkbox__block__label__1">3 {{trans('pgno.stup')}}</label>
+							</div>
+
+						</div>
+						<div class="title__block__pump_list__2">
+							<div class="title__block__pump__1__heavy__down">
+								<input class="checkbox__block__1" v-model="heavyDown" name="stup" type="checkbox" />
+								<label class="checkbox__block__label__1">{{trans('pgno.heavy_down')}}</label>
+							</div>
+						</div>
 					</div>
-						
-					<div class="block__checkbox__1__text">
-						<input type="checkbox" v-model="komponovka" value="paker" />
-						<label for="checkbox1">{{trans('pgno.paker')}}</label>
+			</div>
+
+			<div class="flex__item__block__1">
+				<div class="title__block">{{trans('pgno.dm_shtang')}}, {{trans('measurements.mm')}}</div>
+					<div class="title__block__pump">
+						<div class="title__block__pump__list">
+							<div class="title__block__pump_list">
+								<div class="title__block__pump__1">
+									<input class="checkbox__block__1" v-model="dmRods" value="13" type="checkbox"/>
+									<label class="checkbox__block__label__1">13</label>
+								</div>
+
+								<div class="title__block__pump__1">
+									<input class="checkbox__block__1" v-model="dmRods" value="16" type="checkbox"/>
+									<label class="checkbox__block__label__1">16</label>
+								</div>
+
+								<div class="title__block__pump__1">
+									<input class="checkbox__block__1" v-model="dmRods" value="19" type="checkbox"/>
+									<label class="checkbox__block__label__1">19</label>
+								</div>
+							</div>
+
+							<div class="title__block__pump_list__2">
+								<div class="title__block__pump__1">
+									<input class="checkbox__block__1" v-model="dmRods" value="22" type="checkbox"/>
+									<label class="checkbox__block__label__1">22</label>
+								</div>
+
+								<div class="title__block__pump__1">
+									<input class="checkbox__block__1" v-model="dmRods" value="25" type="checkbox"/>
+									<label class="checkbox__block__label__1">25</label>
+								</div>
+
+								<div class="title__block__pump__1">
+									<input class="checkbox__block__1" v-model="dmRods" value="29" type="checkbox"/>
+									<label class="checkbox__block__label__1">29</label>
+								</div>
+							</div>
+						</div>
 					</div>
-						
-					<div class="block__checkbox__2__text">
-						<input type="checkbox" v-model="komponovka" value="hvostovik" />
-						<label for="checkbox1">{{trans('pgno.hvostovik')}}</label>
-					</div>
-							
-					</div>
-
-			</div>
-		</div>
-
-		
-
-		<div class="flex__item__block__3">
-			<div class="title__block__3__1">{{trans('pgno.kon_kolony_shtang')}}
-			</div>
-			<div class="title__block__3__2">{{trans('pgno.dm_shtang')}}, {{trans('measurements.mm')}}</div>
-			<div class="title__block__3__3">{{trans('pgno.marki_stali_shtang')}}
-			<svg style="padding-left: 4px;" @click="onClickI1()" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-			<path fill-rule="evenodd" clip-rule="evenod" d="M12 15.9998C14.2092 15.9998 16 14.209 16 11.9998V4C16 1.79086 14.2092 -7.25981e-06 12 0L4.00035 2.62892e-05C1.79129 3.35488e-05 0.000467376 1.79078 0.000366244 3.99984L4.28319e-09 11.9997C-0.00010113 14.2089 1.79079 15.9998 4 15.9998H12ZM9.96388 4.21331C9.96388 4.83186 9.41469 5.3333 8.73722 5.3333C8.05976 5.3333 7.51057 4.83186 7.51057 4.21331C7.51057 3.59476 8.05976 3.09332 8.73722 3.09332C9.41469 3.09332 9.96388 3.59476 9.96388 4.21331ZM5.60064 7.36004L5.72864 6.8214L6.60376 6.50669L6.9106 6.42998C7.06133 6.3923 7.21494 6.3673 7.36984 6.35523L7.41538 6.35168C7.54958 6.34122 7.68445 6.34271 7.81839 6.35613L7.85353 6.35965C7.94465 6.36878 8.03495 6.38481 8.12364 6.40762L8.18305 6.4229C8.30295 6.45373 8.41808 6.50078 8.52526 6.56274L8.55485 6.57985C8.65442 6.63741 8.74468 6.70975 8.82254 6.79439L8.8313 6.80391C8.91016 6.88963 8.97434 6.98778 9.02125 7.0944C9.05215 7.16462 9.07532 7.23799 9.09037 7.31322L9.09378 7.33027C9.11191 7.42093 9.11967 7.51336 9.11689 7.60578L9.11251 7.75195C9.10756 7.91693 9.08628 8.08102 9.04897 8.24181L8.9504 8.66669L8.75307 9.33335L8.44907 10.4L8.33707 10.9333L8.31512 11.2011C8.31199 11.2394 8.31319 11.2778 8.31869 11.3158L8.32229 11.3407C8.3477 11.516 8.46981 11.662 8.63788 11.718C8.66837 11.7282 8.69982 11.7352 8.73174 11.7389L8.82514 11.7498C8.9437 11.7637 9.06356 11.7621 9.18171 11.7451L9.25563 11.7344C9.35953 11.7195 9.46205 11.6962 9.5622 11.6648L9.81973 11.584L9.67039 12.1333L8.73707 12.4693L8.46883 12.5326C8.30138 12.5721 8.13053 12.5955 7.95863 12.6026L7.93826 12.6034C7.77785 12.61 7.61717 12.6011 7.45847 12.5768L7.36839 12.563C7.28545 12.5503 7.20378 12.5305 7.12429 12.5037L7.08161 12.4893C6.90742 12.4305 6.74837 12.3339 6.61586 12.2065L6.60737 12.1983C6.56238 12.1551 6.52112 12.1081 6.48404 12.0578C6.35347 11.881 6.27843 11.6694 6.26845 11.4499L6.26357 11.3423C6.25926 11.2477 6.26417 11.1528 6.27823 11.0591L6.33709 10.6667L6.87042 8.80003L7.02509 8.13737L7.056 7.87718C7.06732 7.7819 7.0635 7.68544 7.04469 7.59136L7.02946 7.51521C7.02302 7.48303 7.01214 7.4519 6.99713 7.42271C6.95049 7.33203 6.86703 7.26586 6.76811 7.24113L6.66762 7.21601C6.62518 7.2054 6.58168 7.1996 6.53794 7.19872L6.33709 7.19471C6.15985 7.20887 5.98467 7.24231 5.81466 7.29443L5.60064 7.36004Z" fill="white"/>
-			</svg>
 			</div>
 
-			<div class="flex__item__block__third__block__1">
-				<label for="" class="block__third__block__1__radio">1 {{trans('pgno.stup')}}
-					<input value="1" class="third__block__radio" type="radio" name="kor1" v-model="stup" @change="onChangeStupColumns"/>
-				</label>
-
-				<label for="" class="block__third__block__1__radio__1">2 {{trans('pgno.stup')}}
-					<input value="2" class="third__block__radio" type="radio" name="kor1" v-model="stup" @change="onChangeStupColumns"/>
-				</label>
-
-				<label for="" class="block__third__block__1__radio__2">3 {{trans('pgno.stup')}}
-					<input value="3" class="third__block__radio" type="radio" name="kor1" v-model="stup" @change="onChangeStupColumns"/>
-				</label>
-
-				<label for="" class="block__third__block__1__radio__3">{{trans('pgno.heavy_down')}}
-					<input class="third__block__radio" type="checkbox" name="kor1" v-model="heavyDown"/>
-				</label>
-			</div>
-
-			<div class="flex__item__block__third__block__2">
-				<div class="form__checkbox block__checkbox__1 table-border-gno-right">
-					<label for="checkbox1" class="checkbox__block__label__1">13</label>
-					<input class="checkbox__block__1" type="checkbox" v-model="dmRods" value="13"/>
+			<div class="flex__item__block__1">
+				<div class="title__block"><u>{{trans('pgno.marki_stali_shtang')}}</u>
+					<svg style="padding-left: 4px;" @click="onClickI1()" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<path fill-rule="evenodd" clip-rule="evenod" d="M12 15.9998C14.2092 15.9998 16 14.209 16 11.9998V4C16 1.79086 14.2092 -7.25981e-06 12 0L4.00035 2.62892e-05C1.79129 3.35488e-05 0.000467376 1.79078 0.000366244 3.99984L4.28319e-09 11.9997C-0.00010113 14.2089 1.79079 15.9998 4 15.9998H12ZM9.96388 4.21331C9.96388 4.83186 9.41469 5.3333 8.73722 5.3333C8.05976 5.3333 7.51057 4.83186 7.51057 4.21331C7.51057 3.59476 8.05976 3.09332 8.73722 3.09332C9.41469 3.09332 9.96388 3.59476 9.96388 4.21331ZM5.60064 7.36004L5.72864 6.8214L6.60376 6.50669L6.9106 6.42998C7.06133 6.3923 7.21494 6.3673 7.36984 6.35523L7.41538 6.35168C7.54958 6.34122 7.68445 6.34271 7.81839 6.35613L7.85353 6.35965C7.94465 6.36878 8.03495 6.38481 8.12364 6.40762L8.18305 6.4229C8.30295 6.45373 8.41808 6.50078 8.52526 6.56274L8.55485 6.57985C8.65442 6.63741 8.74468 6.70975 8.82254 6.79439L8.8313 6.80391C8.91016 6.88963 8.97434 6.98778 9.02125 7.0944C9.05215 7.16462 9.07532 7.23799 9.09037 7.31322L9.09378 7.33027C9.11191 7.42093 9.11967 7.51336 9.11689 7.60578L9.11251 7.75195C9.10756 7.91693 9.08628 8.08102 9.04897 8.24181L8.9504 8.66669L8.75307 9.33335L8.44907 10.4L8.33707 10.9333L8.31512 11.2011C8.31199 11.2394 8.31319 11.2778 8.31869 11.3158L8.32229 11.3407C8.3477 11.516 8.46981 11.662 8.63788 11.718C8.66837 11.7282 8.69982 11.7352 8.73174 11.7389L8.82514 11.7498C8.9437 11.7637 9.06356 11.7621 9.18171 11.7451L9.25563 11.7344C9.35953 11.7195 9.46205 11.6962 9.5622 11.6648L9.81973 11.584L9.67039 12.1333L8.73707 12.4693L8.46883 12.5326C8.30138 12.5721 8.13053 12.5955 7.95863 12.6026L7.93826 12.6034C7.77785 12.61 7.61717 12.6011 7.45847 12.5768L7.36839 12.563C7.28545 12.5503 7.20378 12.5305 7.12429 12.5037L7.08161 12.4893C6.90742 12.4305 6.74837 12.3339 6.61586 12.2065L6.60737 12.1983C6.56238 12.1551 6.52112 12.1081 6.48404 12.0578C6.35347 11.881 6.27843 11.6694 6.26845 11.4499L6.26357 11.3423C6.25926 11.2477 6.26417 11.1528 6.27823 11.0591L6.33709 10.6667L6.87042 8.80003L7.02509 8.13737L7.056 7.87718C7.06732 7.7819 7.0635 7.68544 7.04469 7.59136L7.02946 7.51521C7.02302 7.48303 7.01214 7.4519 6.99713 7.42271C6.95049 7.33203 6.86703 7.26586 6.76811 7.24113L6.66762 7.21601C6.62518 7.2054 6.58168 7.1996 6.53794 7.19872L6.33709 7.19471C6.15985 7.20887 5.98467 7.24231 5.81466 7.29443L5.60064 7.36004Z" fill="white"/>
+					</svg>
 				</div>
-
-				<div class="form__checkbox block__checkbox__2 table-border-gno-right">
-					<label for="checkbox1" class="checkbox__block__label__1">16</label>
-					<input class="checkbox__block__1" type="checkbox" v-model="dmRods" value="16"/>
-				</div>
-
-				<div class="form__checkbox block__checkbox__3 table-border-gno-right">
-					<label for="checkbox1" class="checkbox__block__label__1">19</label>
-					<input class="checkbox__block__1" type="checkbox" v-model="dmRods" value="19" />
-				</div>
-
-				<div class="form__checkbox block__checkbox__4 table-border-gno-right">
-					<label for="checkbox1" class="checkbox__block__label__1">22</label>
-					<input class="checkbox__block__1" type="checkbox" v-model="dmRods" value="22"/>
-				</div>
-
-				<div class="form__checkbox block__checkbox__5 table-border-gno-right">
-					<label for="checkbox1" class="checkbox__block__label__1">25</label>
-					<input class="checkbox__block__1" type="checkbox" v-model="dmRods" value="25"/>
-				</div>
-
-				<div class="form__checkbox block__checkbox__6__spec">
-					<label for="checkbox1" class="checkbox__block__label__1">29</label>
-					<input class="checkbox__block__1" type="checkbox" v-model="dmRods" value="29"/>
-				</div>
-			</div>
-		</div>
-
-		<div class="flex__item__block__4">
-			<div class="title__block__4__1">{{trans('pgno.korozinost_dob_prod')}}
-			<svg style="padding-left: 4px;" @click="onClickI2()" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-			<path fill-rule="evenodd" clip-rule="evenod" d="M12 15.9998C14.2092 15.9998 16 14.209 16 11.9998V4C16 1.79086 14.2092 -7.25981e-06 12 0L4.00035 2.62892e-05C1.79129 3.35488e-05 0.000467376 1.79078 0.000366244 3.99984L4.28319e-09 11.9997C-0.00010113 14.2089 1.79079 15.9998 4 15.9998H12ZM9.96388 4.21331C9.96388 4.83186 9.41469 5.3333 8.73722 5.3333C8.05976 5.3333 7.51057 4.83186 7.51057 4.21331C7.51057 3.59476 8.05976 3.09332 8.73722 3.09332C9.41469 3.09332 9.96388 3.59476 9.96388 4.21331ZM5.60064 7.36004L5.72864 6.8214L6.60376 6.50669L6.9106 6.42998C7.06133 6.3923 7.21494 6.3673 7.36984 6.35523L7.41538 6.35168C7.54958 6.34122 7.68445 6.34271 7.81839 6.35613L7.85353 6.35965C7.94465 6.36878 8.03495 6.38481 8.12364 6.40762L8.18305 6.4229C8.30295 6.45373 8.41808 6.50078 8.52526 6.56274L8.55485 6.57985C8.65442 6.63741 8.74468 6.70975 8.82254 6.79439L8.8313 6.80391C8.91016 6.88963 8.97434 6.98778 9.02125 7.0944C9.05215 7.16462 9.07532 7.23799 9.09037 7.31322L9.09378 7.33027C9.11191 7.42093 9.11967 7.51336 9.11689 7.60578L9.11251 7.75195C9.10756 7.91693 9.08628 8.08102 9.04897 8.24181L8.9504 8.66669L8.75307 9.33335L8.44907 10.4L8.33707 10.9333L8.31512 11.2011C8.31199 11.2394 8.31319 11.2778 8.31869 11.3158L8.32229 11.3407C8.3477 11.516 8.46981 11.662 8.63788 11.718C8.66837 11.7282 8.69982 11.7352 8.73174 11.7389L8.82514 11.7498C8.9437 11.7637 9.06356 11.7621 9.18171 11.7451L9.25563 11.7344C9.35953 11.7195 9.46205 11.6962 9.5622 11.6648L9.81973 11.584L9.67039 12.1333L8.73707 12.4693L8.46883 12.5326C8.30138 12.5721 8.13053 12.5955 7.95863 12.6026L7.93826 12.6034C7.77785 12.61 7.61717 12.6011 7.45847 12.5768L7.36839 12.563C7.28545 12.5503 7.20378 12.5305 7.12429 12.5037L7.08161 12.4893C6.90742 12.4305 6.74837 12.3339 6.61586 12.2065L6.60737 12.1983C6.56238 12.1551 6.52112 12.1081 6.48404 12.0578C6.35347 11.881 6.27843 11.6694 6.26845 11.4499L6.26357 11.3423C6.25926 11.2477 6.26417 11.1528 6.27823 11.0591L6.33709 10.6667L6.87042 8.80003L7.02509 8.13737L7.056 7.87718C7.06732 7.7819 7.0635 7.68544 7.04469 7.59136L7.02946 7.51521C7.02302 7.48303 7.01214 7.4519 6.99713 7.42271C6.95049 7.33203 6.86703 7.26586 6.76811 7.24113L6.66762 7.21601C6.62518 7.2054 6.58168 7.1996 6.53794 7.19872L6.33709 7.19471C6.15985 7.20887 5.98467 7.24231 5.81466 7.29443L5.60064 7.36004Z" fill="white"/>
-			</svg>
-			</div>
-			
-			<div class="flex__item__block__fourth__block">
-				<select class="input-box-gno podbor long__box" v-model="markShtang">
-                  <option selected v-for="mark in markShtangs" :key="mark.tempValue" :value="markShtangs.mValue">
-                  {{mark.tempValue}}
+				<div class="title__block__pump">
+					<select class="input-box-gno podbor long__box" v-model="markShtang">
+                  <option selected v-for="markShtang in markShtangs" :key="markShtang.tempValue" :value="markShtang.mValue">
+                  {{markShtang.tempValue}}
                   </option>
                 </select>
-
-				<div class="flex__item__block__fifth__block">
-					<label for="" class="block__fourth__block__radio">{{trans('pgno.nekorozionnaya')}}
-						<input value="nekor" class="third__block__radio" type="radio" name="korprod1" v-model="koroz" @change="onChangeKoroz"/>
-					</label>
-
-					<label for="" class="block__fourth__block__radio__1">{{trans('pgno.srenekorozionnaya')}}
-						<input value="srednekor" class="third__block__radio" type="radio" name="korprod1" checked v-model="koroz" @change="onChangeKoroz"/>
-					</label>
-
-					<label for="" class="block__fourth__block__radio__2">{{trans('pgno.visokorozionnaya')}}
-						<input value="visokor" class="third__block__radio" type="radio" name="korprod1" v-model="koroz" @change="onChangeKoroz"/>
-					</label>
-
-					<label for="" class="block__fourth__block__radio__3">{{trans('pgno.h2s')}}
-						<input v-model="h2s" class="third__block__radio" type="checkbox" name="korprod1" />
-					</label>
 				</div>
-			
-			</div> 
+			</div>
 
-		</div>
+			<div class="flex__item__block__1__koroz">
+				<div class="title__block__koroz">
+					<u>{{trans('pgno.korozinost_dob_prod')}}</u>
+					<svg style="padding-left: 4px;" @click="onClickI2()" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<path fill-rule="evenodd" clip-rule="evenod" d="M12 15.9998C14.2092 15.9998 16 14.209 16 11.9998V4C16 1.79086 14.2092 -7.25981e-06 12 0L4.00035 2.62892e-05C1.79129 3.35488e-05 0.000467376 1.79078 0.000366244 3.99984L4.28319e-09 11.9997C-0.00010113 14.2089 1.79079 15.9998 4 15.9998H12ZM9.96388 4.21331C9.96388 4.83186 9.41469 5.3333 8.73722 5.3333C8.05976 5.3333 7.51057 4.83186 7.51057 4.21331C7.51057 3.59476 8.05976 3.09332 8.73722 3.09332C9.41469 3.09332 9.96388 3.59476 9.96388 4.21331ZM5.60064 7.36004L5.72864 6.8214L6.60376 6.50669L6.9106 6.42998C7.06133 6.3923 7.21494 6.3673 7.36984 6.35523L7.41538 6.35168C7.54958 6.34122 7.68445 6.34271 7.81839 6.35613L7.85353 6.35965C7.94465 6.36878 8.03495 6.38481 8.12364 6.40762L8.18305 6.4229C8.30295 6.45373 8.41808 6.50078 8.52526 6.56274L8.55485 6.57985C8.65442 6.63741 8.74468 6.70975 8.82254 6.79439L8.8313 6.80391C8.91016 6.88963 8.97434 6.98778 9.02125 7.0944C9.05215 7.16462 9.07532 7.23799 9.09037 7.31322L9.09378 7.33027C9.11191 7.42093 9.11967 7.51336 9.11689 7.60578L9.11251 7.75195C9.10756 7.91693 9.08628 8.08102 9.04897 8.24181L8.9504 8.66669L8.75307 9.33335L8.44907 10.4L8.33707 10.9333L8.31512 11.2011C8.31199 11.2394 8.31319 11.2778 8.31869 11.3158L8.32229 11.3407C8.3477 11.516 8.46981 11.662 8.63788 11.718C8.66837 11.7282 8.69982 11.7352 8.73174 11.7389L8.82514 11.7498C8.9437 11.7637 9.06356 11.7621 9.18171 11.7451L9.25563 11.7344C9.35953 11.7195 9.46205 11.6962 9.5622 11.6648L9.81973 11.584L9.67039 12.1333L8.73707 12.4693L8.46883 12.5326C8.30138 12.5721 8.13053 12.5955 7.95863 12.6026L7.93826 12.6034C7.77785 12.61 7.61717 12.6011 7.45847 12.5768L7.36839 12.563C7.28545 12.5503 7.20378 12.5305 7.12429 12.5037L7.08161 12.4893C6.90742 12.4305 6.74837 12.3339 6.61586 12.2065L6.60737 12.1983C6.56238 12.1551 6.52112 12.1081 6.48404 12.0578C6.35347 11.881 6.27843 11.6694 6.26845 11.4499L6.26357 11.3423C6.25926 11.2477 6.26417 11.1528 6.27823 11.0591L6.33709 10.6667L6.87042 8.80003L7.02509 8.13737L7.056 7.87718C7.06732 7.7819 7.0635 7.68544 7.04469 7.59136L7.02946 7.51521C7.02302 7.48303 7.01214 7.4519 6.99713 7.42271C6.95049 7.33203 6.86703 7.26586 6.76811 7.24113L6.66762 7.21601C6.62518 7.2054 6.58168 7.1996 6.53794 7.19872L6.33709 7.19471C6.15985 7.20887 5.98467 7.24231 5.81466 7.29443L5.60064 7.36004Z" fill="white"/>
+					</svg>
 
-		<div class="flex__item__block__5">
-			<div class="title__block__5__1">{{trans('pgno.pot_rezhim')}}</div>
+				</div>
+				<div class="title__block__koroz__checkbox">
+					<input class="checkbox__block__1" value="antiCorrosion" type="radio" name="korprod1" v-model="corrosion" @change="onChangeCorrosion"/>
+					<label class="checkbox__block__label__1">{{trans('pgno.nekorozionnaya')}}</label>
+				</div>
 
+				<div class="title__block__koroz__checkbox__2">
+					<input class="checkbox__block__1" value="mediumCorrosion"  type="radio" name="korprod1" v-model="corrosion" @change="onChangeCorrosion"/>
+					<label for="" class="checkbox__block__label__1">{{trans('pgno.srenekorozionnaya')}}</label>
+				</div>
+
+				<div class="title__block__koroz__checkbox__3">
+					<input class="checkbox__block__1" value="highCorrosion"  type="radio" name="korprod1" v-model="corrosion" @change="onChangeCorrosion"/>
+					<label for="" class="checkbox__block__label__1">{{trans('pgno.visokorozionnaya')}}</label>
+				</div>
+
+				<div class="title__block__koroz__checkbox__4">
+					<input v-model="h2s" class="checkbox__block__1" type="checkbox" name="korprod1" />
+					<label for="" class="checkbox__block__label__1">{{trans('pgno.h2s')}}</label>
+				</div>
+
+
+			</div>
+
+			<div class="flex__item__block__1__koroz">
+				<div class="title__block__koroz">{{trans('pgno.pot_rezhim')}}</div>
 				<div class="flex__item__block__sixth__block">
 					<div class="block__text__5">{{trans('pgno.dav_nasos_minim')}}</div>
-					<input v-model="davMin" class="square2 block__6__input" type="text" @change="onChangeDavMin">
+					<input v-model="pintakeMin" class="square2 block__6__input" type="text" @change="onChangePintakeMin">
 
 					<div class="block__text__6">{{trans('pgno.gs_nasos_maks')}}</div>
 					<input v-model="gasMax" class="square2 block__7__input" type="text" @change="onChangeGasMax">
 				</div>
+				
+			</div>
 
-			
+		<div class="flex__item__block__1_incl" >
+			<div class="title__block">{{trans('pgno.podbor_glubiny_spuska')}}</div>
+			<div class="title__block__min__1"><span>{{trans('pgno.dlina_polki')}}</span>
+			<input v-model="inclStep" @change="onChangeInclStep"  class="square2 block__1__input" type="text"></div>
 		</div>
 
-		<div class="flex__item__block__6">
-			<div class="title__block__6__1">{{trans('pgno.podbor_glubiny_spuska')}}</div>
 
-	
-				<div class="flex__item__block__fifth__block__1">
-					<div class="block__text__4__end">{{trans('pgno.dlina_polki')}}</div>
-					<input v-model="dlinaPolki" class="square2 block__5__input" type="text" @change="onChangeDlinaPolki">
-				</div>
+				<button type="button" class="submit_button" @click="onSubmitParams()">
+                        {{trans('pgno.primenit_default')}}
+                </button>
 
 				<button type="button" class="submit_button" @click="onSubmitParams()">
                         {{trans('pgno.primenit_korrektirovki')}}
                 </button>
-				
-			
-		</div>
+
 		<notifications position="top"></notifications>
 
 		<modal name="modalTable" :draggable="true" :width="1000" :height="550"
@@ -377,6 +416,47 @@
 <script src="./js/Shgn"></script>
 
 <style scoped>
+.multiselect__tags {
+	background-color: #293688;
+	min-width: 300px;
+}
+
+.multiselect__tag {
+	background: #494AA5;
+}
+
+.multiselect__option__item {
+    display: flex;
+}
+
+.multiselect__option__checkbox {
+    width: 14px;
+    height: 14px;
+    border-radius: 4px;
+    border: 1px solid #237DEB;
+    background: #FFFFFF;
+    box-sizing: border-box;
+    margin-right: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.multiselect__option--selected .multiselect__option__checkbox,
+.multiselect__option--group-selected .multiselect__option__checkbox {
+    background: #237DEB;
+}
+
+.multiselect__option__checkbox__check {
+    display: none;
+}
+
+.multiselect__option--selected .multiselect__option__checkbox__check,
+.multiselect__option--group-selected .multiselect__option__checkbox__check {
+    display: block;
+}
+
+
 .nno-modal-buttons-container {
 	margin-left: 35px;
 	width: 100%;
@@ -405,17 +485,48 @@
 .flex__item__block__1 {
   background-color: #272953;
   padding: 5px;
-  width: 360px;
-  height: 80px;
+  width: 302px;
+  height: 130px;
   margin-top: 10px;
   position: relative;
   left: 0px;
-  line-height: 10px;
   color: white;
   font-weight: bold;
   font-size: 1em;
   text-align: center;
 }
+
+.flex__item__block__1_incl {
+  background-color: #272953;
+  padding: 5px;
+  width: 342px;
+  height: 130px;
+  margin-top: 10px;
+  position: relative;
+  left: 0px;
+  color: white;
+  font-weight: bold;
+  font-size: 1em;
+  text-align: center;
+}
+
+.flex__item__block__1__koroz {
+  background-color: #272953;
+  padding: 5px;
+  width: 896px;
+  height: 80px;
+  margin-top: 10px;
+  position: relative;
+  left: 0px;
+  color: white;
+  font-weight: bold;
+  font-size: 1em;
+  text-align: center;
+}
+/*  */
+
+
+/*  */
 
 .flex__item__block__1__1 {
   background-color: #272953;
@@ -524,8 +635,131 @@
 }
 
 .title__block {
-	height: 20px;
+	height: 32px;
 	text-align: left;
+	background: #323370;
+	padding-left: 5px;
+	padding-top: 5px;
+}
+
+.title__block__koroz {
+	height: 32px;
+	width: 896px;
+	text-align: left;
+	background: #323370;
+	padding-left: 5px;
+	padding-top: 5px;
+}
+
+.title__block__koroz__checkbox {
+	height: 32px;
+	width: 896px;
+	text-align: left;
+	background: #2b2e5e;
+	padding-left: 5px;
+	padding-top: 5px;
+}
+
+.title__block__koroz__checkbox__2 {
+	width: 250px;
+	position: relative;
+	left: 150px;
+	bottom: 25px;
+}
+
+.title__block__koroz__checkbox__3 {
+	width: 250px;
+	position: relative;
+	left: 370px;
+	bottom: 55px;
+}
+
+.title__block__koroz__checkbox__4 {
+	width: 250px;
+	position: relative;
+	left: 600px;
+	bottom: 85px;
+}
+
+.title__block__min__1 {
+	height: 45px;
+	text-align: left;
+	background: #2b2e5e;
+	padding-top: 10px;
+	padding-left: 5px;
+}
+
+.title__block__pump {
+	height: 90px;
+	text-align: left;
+	background: #2b2e5e;
+	padding-left: 20px;
+}
+
+.title__block__pump__1 {
+	height: 29px;
+	width: 65px;
+	text-align: left;
+	background: #2b2e5e;
+	padding-right: 5px;
+}
+
+.title__block__pump__1__heavy__down {
+	height: 29px;
+	width: 85px;
+	text-align: left;
+	background: #2b2e5e;
+	padding-right: 5px;
+}
+
+.title__block__pump__1__text {
+	height: 20px;
+	width: 85px;
+	text-align: left;
+	background: #2b2e5e;
+	padding-right: 5px;
+}
+
+.title__block__max__1 {
+	height: 45px;
+	text-align: left;
+	background: #2b2e5e;
+	padding-top: 10px;
+	padding-left: 5px;
+}
+
+.title__block__pump_list {
+	height: 60px;
+	width: 30px;
+	padding-top: 2px;
+}
+
+.title__block__pump_list__2 {
+	height: 60px;
+	width: 30px;
+	position: absolute;
+	left: 120px;
+	bottom: 30px;
+}
+
+.title__block__pump_list__3 {
+	height: 60px;
+	width: 30px;
+	position: absolute;
+	left: 220px;
+	bottom: 30px;
+}
+
+.block__dm__pump__1 {
+	height: 30px;
+}
+
+.block__dm__pump__2 {
+	height: 30px;
+}
+
+.block__dm__pump__3{
+	height: 18px;
 }
 
 .title__block__1 {
@@ -673,7 +907,7 @@
 	width: 680px;
 	background-color: #2b2e5e;
 	position: relative;
-	top: 85px;
+	top: 45px;
 	left: -660px;
 }
 
@@ -687,8 +921,8 @@
 }
 
 .flex__item__block__sixth__block {
-	height: 42px;
-	width: 940px;
+	height: 32px;
+	width: 896px;
 	background-color: #2b2e5e;
 	position: relative;
 	top: 0px;
@@ -859,7 +1093,7 @@
 }
 
 
-.block__1__input {
+/* .block__1__input {
 	width: 80px;
 	height: 22px;
 	position: relative;
@@ -867,6 +1101,15 @@
 	top: -10px;
 	border: 1px solid rgba(34, 36, 82, 1);
 	background-color: #323370;
+} */
+
+.block__1__input {
+	width: 180px;
+	height: 22px;
+	border: 1px solid rgba(34, 36, 82, 1);
+	background-color: #323370;
+	position: relative;
+	left: 30px;
 }
 
 .block__1__input__1 {
@@ -880,6 +1123,15 @@
 }
 
 .block__2__input {
+	width: 180px;
+	height: 22px;
+	border: 1px solid rgba(34, 36, 82, 1);
+	background-color: #323370;
+	position: relative;
+	left: 22px;
+}
+
+/* .block__2__input {
 	width: 80px;
 	height: 22px;
 	position: relative;
@@ -887,7 +1139,7 @@
 	top: -52px;
 	border: 1px solid rgba(34, 36, 82, 1);
 	background-color: #323370;
-}
+} */
 
 .block__3__input {
 	width: 80px;
@@ -923,18 +1175,18 @@
 	width: 130px;
 	height: 22px;
 	position: relative;
-	right: 85px;
-	top: -10px;
+	right: 55px;
+	top: -14px;
 	border: 1px solid rgba(34, 36, 82, 1);
 	background-color: #323370;
 }
 
 .block__7__input {
-	width: 130px;
+	width: 110px;
 	height: 22px;
 	position: relative;
-	right: -400px;
-	top: -52px;
+	right: -380px;
+	top: -55px;
 	border: 1px solid rgba(34, 36, 82, 1);
 	background-color: #323370;
 }
@@ -976,15 +1228,15 @@
 	height: 20px;
 	position: relative;
 	left: 5px;
-	top: 15px;
+	top: 5px;
 }
 
 .block__text__6 {
 	width: 300px;
 	height: 20px;
 	position: relative;
-	left: 495px;
-	top: -27px;
+	left: 475px;
+	top: -37px;
 }
 
 .form__checkbox {
@@ -1130,7 +1382,7 @@
 
 
 .checkbox__block__1 {
-	margin-left: -5px;
+	margin-left: 0;
 }
 
 .table-border-gno-right {
@@ -1141,9 +1393,6 @@
 }
 
 .checkbox__block__label__1 {
-	position: relative;
-	top: -2px;
-	margin-right: 5px;
 }
 
 
@@ -1200,14 +1449,12 @@
 
 .input-box-gno.podbor {
     width: 150px;
-    margin-bottom: 10px;
-	position: absolute;
-	left: 10px;
-	bottom: -1px;
+	margin-inline: 50px;
+	margin-top: 30px;
 }
 
 .submit_button {
-    width: 350px;
+    width: 250px;
     height: 50px;
     background: #293688;
     border-radius: 8px;
@@ -1219,12 +1466,9 @@
     outline: none !important;
     box-shadow: none;
     border: none;
-    margin-left: 10px;
-    line-height: 14px;
+    margin-left: 30px;
+	margin-top: 30px;
     vertical-align: middle;
-	position: absolute;
-	right: 150px;
-	top: 15px;
 }
 
 .submit_button:hover {
@@ -1271,6 +1515,8 @@
 	margin-bottom: 20px;
 	margin-top: -10px;
 }
+
+
 
 
 
