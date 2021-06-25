@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\ComplicationMonitoring\Gu;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Level23\Druid\DruidClient;
 
