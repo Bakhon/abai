@@ -1467,7 +1467,7 @@
                 "
               >
                 <div
-                        v-if="oilCondensateProductionButton.length > 0"
+                        v-if="oilCondensateProductionButton.length > 0 || isOilResidueActive"
                         class="oil-condensate-chart-secondary-name"
                 >
                   {{ chartSecondaryName }}, {{ trans("visualcenter.thousand") }} {{ metricName }}
