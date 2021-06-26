@@ -2,6 +2,7 @@
 
 namespace App\Models\BigData\Dictionaries;
 
+
 use App\Models\BigData\Well;
 use App\Models\TBDModel;
 use Illuminate\Support\Facades\Cache;
@@ -24,8 +25,7 @@ class Geo extends TBDModel
 
     public function firstParent()
     {
-        return $this->belongsToMany($this, 'dict.geo_parent', 'geo_id', 'parent')
-            ->select('parent', 'name_ru');
+        return $this->hasMany(GeoParent::class, 'geo_id', 'id');
     }
 
     public function children()

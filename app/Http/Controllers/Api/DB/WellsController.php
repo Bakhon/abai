@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\DB;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\BigData\WellSearchResource;
+use App\Models\BigData\Dictionaries\Geo;
 use App\Models\BigData\Well;
 use App\Services\BigData\StructureService;
 use Carbon\Carbon;
@@ -63,9 +64,23 @@ class WellsController extends Controller
         return Carbon::today();
     }
 
-    public function wellParents($wellParent)
+    public function geoParents(Geo $geoParent)
     {
-        return $wellParent;
+        $allParents = [];
+        $parent = $geoParent->firstParent()
+            ->where('dend', '>', $this->getToday())
+            ->where('dbeg', '<=', $this->getToday())
+            ->first()->geo_id;
+        while ($parent != null) {
+            array_push($allParents, Geo::all()->find($parent));
+            $parent = Geo::with('firstParent')
+                ->findOrFail($parent)
+                ->firstParent
+                ->where('dend', '>', $this->getToday())
+                ->where('dbeg', '<=', $this->getToday())
+                ->first()->parent;
+        }
+        return $allParents;
     }
 
     public function get(Well $well)
@@ -110,7 +125,7 @@ class WellsController extends Controller
             ->wherePivot('dbeg', '<>', $this->getToday())
             ->withPivot('dend', 'dbeg')
             ->orderBy('pivot_dbeg', 'desc')
-            ->first(['name_ru']);
+            ->first(['name_ru',]);
     }
 
     private function geo(Well $well)
@@ -120,7 +135,7 @@ class WellsController extends Controller
             ->wherePivot('dbeg', '<=', $this->getToday())
             ->withPivot('dend', 'dbeg')
             ->orderBy('pivot_dbeg')
-            ->first(['name_ru']);
+            ->first(['name_ru', 'dict.geo.id']);
     }
 
     private function wellExpl(Well $well)

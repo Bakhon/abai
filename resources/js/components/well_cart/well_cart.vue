@@ -228,6 +228,7 @@ export default {
       isBothColumnFolded: false,
       popup: false,
       forms: forms,
+      wellGeoId: null,
       wellUwi: null,
       well: {
         id: null,
@@ -352,6 +353,7 @@ export default {
       this.loading = true
       this.axios.get(this.localeUrl(`/api/bigdata/wells/${well.id}/wellInfo`)).then(({data}) => {
         try {
+          this.wellGeoId = data.geo.id
           this.well.id = data.wellInfo.id
           this.wellUwi = data.wellInfo.uwi
           for (let i = 0; i < Object.keys(this.wellTransform).length; i++) {
@@ -380,11 +382,12 @@ export default {
         }
         this.loading = false
         this.setTableData()
-      }),
-          this.axios.get(this.localeUrl(`/api/bigdata/wells/${731}/wellParents`)).then(({data}) => {
-
-              },
-          )
+          this.SelectGeo(this.wellGeoId)
+      })
+    },
+    SelectGeo(wellGeoId) {
+      this.axios.get(this.localeUrl(`/api/bigdata/wells/${wellGeoId}/geoParents`)).then(({data}) => {
+      })
     },
     setTableData() {
       for (let i = 0; i < this.tableData.length; i++) {
