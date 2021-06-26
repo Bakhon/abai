@@ -276,14 +276,14 @@ export default {
         },
 
         getProductionTableClass() {
-            let classList = 'table4';
+            let classes = 'table4';
             if (!this.isOilResidueActive) {
-                classList += ' w-100';
+                classes += ' w-100';
             }
             if (!this.buttonDailyTab) {
-                classList += ' mh-30';
+                classes += ' mh-30';
             }
-            return classList;
+            return classes;
         },
     },
     computed: {

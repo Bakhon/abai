@@ -164,26 +164,8 @@
                             labels: {
                                 fontColor: "#fff",
                                 generateLabels: (chart) => {
-                                    let data = chart.data;
-                                    if (data.labels.length && data.datasets.length) {
-                                        let returnData = data.datasets.map(function (item, i) {
-                                            let meta = chart.getDatasetMeta(i);
-                                            let style = meta.controller.getStyle(i);
-                                            return {
-                                                text: item.label,
-                                                fillStyle: style.borderColor,
-                                            };
-                                        });
-                                        if (!chartSummary.isOilResidueActive) {
-                                            returnData.push({
-                                                text: this.trans("visualcenter.deviation"),
-                                                fillStyle: fillPattern,
-                                            });
-                                        }
-                                        return returnData;
-                                    }
-                                    return [];
-                                },
+                                    return this.getLabelsByDatasets(chart,chartSummary, fillPattern)
+                                }
                             },
                         },
                         scales: {
@@ -222,6 +204,29 @@
                     }
                 );
             },
+
+            getLabelsByDatasets(chart,chartSummary,fillPattern) {
+                let chartOptions = chart.data;
+                if (chartOptions.labels.length && chartOptions.datasets.length) {
+                    let labels = chartOptions.datasets.map(function (dataset, index) {
+                        let meta = chart.getDatasetMeta(index);
+                        let style = meta.controller.getStyle(index);
+                        return {
+                            text: dataset.label,
+                            fillStyle: style.borderColor,
+                        };
+                    });
+                    if (!chartSummary.isOilResidueActive) {
+                        labels.push({
+                            text: this.trans("visualcenter.deviation"),
+                            fillStyle: fillPattern,
+                        });
+                    }
+                    return labels;
+                }
+                return [];
+            },
+
             getFormattedDate(timestamp) {
                 let date = new Date(Number(timestamp));
                 return date.getDate() + " / " + this.monthMapping[date.getMonth()] + " / " + date.getFullYear();
