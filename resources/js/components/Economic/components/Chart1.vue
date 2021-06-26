@@ -9,10 +9,12 @@
 <script>
 const ru = require("apexcharts/dist/locales/ru.json");
 
+import chart from "vue-apexcharts";
 import {chartInitMixin} from "../mixins/chartMixin";
 
 export default {
   name: 'Chart1',
+  components: {apexchart:chart},
   mixins: [chartInitMixin],
   props: {
     title: {

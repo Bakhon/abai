@@ -7,11 +7,13 @@
 </template>
 
 <script>
+import chart from "vue-apexcharts";
 import {chartInitMixin} from "../mixins/chartMixin";
 
 export default {
   name: 'Chart3',
   mixins: [chartInitMixin],
+  components: {apexchart:chart},
   computed: {
     chartSeries() {
       return [

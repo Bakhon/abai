@@ -1,0 +1,37 @@
+{
+  "type": "plain",
+  "table": "prod.well_org",
+  "tabs": [
+    {
+      "title": "title",
+      "blocks": [
+        [
+          {
+            "title": "",
+            "items": [
+              {
+                "code": "org",
+                "type": "dict_tree",
+                "dict": "orgs",
+                "title": "org",
+                "validation": "exists:tbd.dict.org,id"
+              },
+              {
+              "code": "dbeg",
+              "type": "date",
+              "title": "dbeg",
+              "validation": "required|date"
+              },
+              {
+              "code": "dend",
+              "type": "date",
+              "title": "dend",
+              "validation": "required|date"
+              }
+            ]
+          }
+        ]
+      ]
+    }
+  ]
+}
