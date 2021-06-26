@@ -29,10 +29,10 @@
                 "validation":"boolean"
               },
               {
-                "code":"field4",
-                "type":"checkbox",
-                "title":"own_forces",
-                "validation":""
+                "code": "own_forces",
+                "type": "checkbox",
+                "title": "own_forces",
+                "validation": ""
               },
               {
                 "code":"company",
