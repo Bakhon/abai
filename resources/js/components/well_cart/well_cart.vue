@@ -229,6 +229,8 @@ export default {
       popup: false,
       forms: forms,
       wellGeoId: null,
+      wellGeo: {name_ru: null},
+      wellGeoFields: {name_ru: null},
       wellUwi: null,
       well: {
         id: null,
@@ -380,13 +382,14 @@ export default {
         } catch (e) {
           this.loading = false
         }
+        this.SelectGeo(this.wellGeoId)
         this.loading = false
-        this.setTableData()
-          this.SelectGeo(this.wellGeoId)
       })
     },
     SelectGeo(wellGeoId) {
       this.axios.get(this.localeUrl(`/api/bigdata/wells/${wellGeoId}/geoParents`)).then(({data}) => {
+        this.wellGeoFields = data[Object.keys(data).length - 1]
+        this.setTableData()
       })
     },
     setTableData() {
@@ -459,7 +462,7 @@ export default {
           'data': ''
         },
         {
-          'description': this.well.geo.name_ru,
+          'description': this.wellGeoFields.name_ru,
           'method': null,
           'name': 'Месторождение',
           'data': ''
