@@ -7,11 +7,13 @@
 </template>
 
 <script>
+import chart from "vue-apexcharts";
 import {chartInitMixin} from "../mixins/chartMixin";
 
 export default {
   name: 'Chart4',
   mixins: [chartInitMixin],
+  components: {apexchart:chart},
   created() {
     window.economic_reference_thousand_tons = this.trans('economic_reference.thousand_tons')
     window.economic_reference_liquid = this.trans('economic_reference.liquid')

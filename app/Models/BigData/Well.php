@@ -3,6 +3,7 @@
 namespace App\Models\BigData;
 
 use App\Models\BigData\Dictionaries\BottomHoleType;
+use App\Models\BigData\Dictionaries\GdisConclusion;
 use App\Models\BigData\Dictionaries\Geo;
 use App\Models\BigData\Dictionaries\Org;
 use App\Models\BigData\Dictionaries\Tech;
@@ -11,6 +12,7 @@ use App\Models\BigData\Dictionaries\WellCategory;
 use App\Models\BigData\Dictionaries\WellExplType;
 use App\Models\BigData\Dictionaries\WellStatus;
 use App\Models\BigData\Dictionaries\WellType;
+use App\Models\BigData\Dictionaries\Zone;
 use App\Models\TBDModel;
 
 class Well extends TBDModel
@@ -22,7 +24,7 @@ class Well extends TBDModel
         self::WELL_STATUS_PERIODIC_EXPLOITATION
     ];
 
-    const WELL_CATEGORY_OIL = 1;
+    const WELL_CATEGORY_OIL = 13;
 
     protected $table = 'dict.well';
     protected $guarded = ['id'];
@@ -121,6 +123,37 @@ class Well extends TBDModel
     {
         return $this->hasMany(WellTreatment::class, 'well', 'id');
     }
+
+    public function gdisCurrent()
+    {
+        return $this->hasMany(GdisCurrent::class, 'well', 'id');
+    }
+
+    public function gdisConclusion()
+    {
+        return $this->belongsToMany(GdisConclusion::class, 'prod.gdis_current', 'well', 'id');
+    }
+
+    public function gdisCurrentValue()
+    {
+        return $this->belongsToMany(GdisCurrentValue::class, 'prod.gdis_current', 'well', 'id', 'id', 'gdis_curr');
+    }
+
+    public function gdisComplex()
+    {
+        return $this->belongsToMany(GdisComplexValue::class, 'prod.gdis_complex', 'well', 'id', 'id', 'gdis_complex');
+    }
+
+    public function gis()
+    {
+        return $this->hasMany(Gis::class, 'well', 'id');
+    }
+
+    public function zone()
+    {
+        return $this->belongsToMany(Zone::class, 'prod.well_zone', 'well', 'id');
+    }
+
 
     public function scopeActive($query, $date)
     {
