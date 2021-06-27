@@ -491,4 +491,32 @@ return array (
     'date_of_repair' => 'Дата ремонта',
     'type_of_repair' => 'Вид ремонта',
   ),
+  'pumps' => 
+  array (
+    'number' => 'Номер',
+    'perfomance' => 'Производительность, м3/час',
+    'power' => 'Мощность насоса, кВт',
+    'title' => 'База данных по насосам',
+  ),
+  'ovens' => 
+  array (
+    'title' => 'База данных по печам',
+    'cipher' => 'Шифр',
+    'rated_heat_output' => 'Номинальная тепловая мощность, МВт (Гкал/ч)',
+  ),
+  'agzu' => 
+  array (
+    'title' => 'База данных по АГЗУ',
+    'method_of_measurement' => 'Метод измерения',
+    'number_of_connected_wells' => 'Количество подключаемых скважин',
+  ),
+  'sib' => 
+  array (
+    'title' => 'База данных по СИБ',
+  ),
+  'meteringunits' => 
+  array (
+    'title' => 'База данных по узлам учета',
+    'diameter' => 'Диаметр',
+  ),
 );

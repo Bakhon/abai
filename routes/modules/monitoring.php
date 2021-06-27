@@ -204,6 +204,41 @@ Route::group(
                 Route::get('buffer_tank/create', 'ComplicationMonitoring\BufferTankController@create')->name('buffer_tank.create');
                 Route::get('buffer_tank/history/{buffer_tank}', 'ComplicationMonitoring\BufferTankController@history')->name('buffer_tank.history');
                 Route::resource('buffer_tank', 'ComplicationMonitoring\BufferTankController');
+
+                Route::get('pumps/list', 'ComplicationMonitoring\PumpsController@list')->name('pumps.list');
+                Route::get('pumps/export', 'ComplicationMonitoring\PumpsController@export')->name('pumps.export');
+                // Route::get('pumps/create', 'ComplicationMonitoring\PumpsController@create')->name('pumps.create');
+                Route::post('pumps/store', 'ComplicationMonitoring\PumpsController@store')->name('pumps.store');
+                Route::get('pumps/history/{pumps}', 'ComplicationMonitoring\PumpsController@history')->name('pumps.history');
+                Route::resource('pumps', 'ComplicationMonitoring\PumpsController');
+
+                Route::get('ovens/list', 'ComplicationMonitoring\OvensController@list')->name('ovens.list');
+                Route::get('ovens/export', 'ComplicationMonitoring\OvensController@export')->name('ovens.export');
+                Route::get('ovens/create', 'ComplicationMonitoring\OvensController@create')->name('ovens.create');
+                Route::post('ovens/store', 'ComplicationMonitoring\OvensController@store')->name('ovens.store');
+                Route::get('ovens/history/{pumps}', 'ComplicationMonitoring\OvensController@history')->name('ovens.history');
+                Route::resource('ovens', 'ComplicationMonitoring\OvensController');
+
+                Route::get('agzu/list', 'ComplicationMonitoring\AgzuController@list')->name('agzu.list');
+                Route::get('agzu/export', 'ComplicationMonitoring\AgzuController@export')->name('agzu.export');
+                Route::get('agzu/create', 'ComplicationMonitoring\AgzuController@create')->name('agzu.create');
+                Route::post('agzu/store', 'ComplicationMonitoring\AgzuController@store')->name('agzu.store');
+                Route::get('agzu/history/{pumps}', 'ComplicationMonitoring\AgzuController@history')->name('agzu.history');
+                Route::resource('agzu', 'ComplicationMonitoring\AgzuController');
+
+                Route::get('sib/list', 'ComplicationMonitoring\SibController@list')->name('sib.list');
+                Route::get('sib/export', 'ComplicationMonitoring\SibController@export')->name('sib.export');
+                Route::get('sib/create', 'ComplicationMonitoring\SibController@create')->name('sib.create');
+                Route::post('sib/store', 'ComplicationMonitoring\SibController@store')->name('sib.store');
+                Route::get('sib/history/{pumps}', 'ComplicationMonitoring\SibController@history')->name('sib.history');
+                Route::resource('sib', 'ComplicationMonitoring\SibController');
+
+                Route::get('metering_units/list', 'ComplicationMonitoring\MeteringUnitsController@list')->name('metering_units.list');
+                Route::get('metering_units/export', 'ComplicationMonitoring\MeteringUnitsController@export')->name('metering_units.export');
+                Route::get('metering_units/create', 'ComplicationMonitoring\MeteringUnitsController@create')->name('metering_units.create');
+                Route::post('metering_units/store', 'ComplicationMonitoring\MeteringUnitsController@store')->name('metering_units.store');
+                Route::get('metering_units/history/{pumps}', 'ComplicationMonitoring\MeteringUnitsController@history')->name('metering_units.history');
+                Route::resource('metering_units', 'ComplicationMonitoring\MeteringUnitsController');
             }
         );
     }

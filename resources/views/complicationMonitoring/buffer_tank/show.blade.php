@@ -11,80 +11,58 @@
             @endif
             <div class="container">
                 <h1>{{ trans('monitoring.show_title') }}</h1>
-                <h2>{{ trans('app.date') }}: {{ \Carbon\Carbon::parse($corrosion->date)->format('d.m.Y H:i:s')}}</h2>
+                <h2>{{ trans('app.date') }}: {{ \Carbon\Carbon::parse($buffer_tank->date)->format('d.m.Y H:i:s')}}</h2>
                 <table class="table table-bordered">
                     <tr>
                         <th><b>{{ trans('app.param_name') }}</b></th>
                         <th><b>{{ trans('app.param_value') }}</b></th>
                     </tr>
                     <tr>
-                        <td>{{ trans('monitoring.field') }}</td>
-                        <td>
-                            @if ($corrosion->field === 1)
-                                Узень
-                            @else
-                                Карамандыбас
-                            @endif
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>{{ trans('monitoring.ngdu') }}</td>
-                        <td>{{$corrosion->ngdu->name}}</td>
-                    </tr>
-                    <tr>
-                        <td>{{ trans('monitoring.cdng') }}</td>
-                        <td>{{$corrosion->cdng->name}}</td>
-                    </tr>
-                    <tr>
                         <td>{{ trans('monitoring.gu.gu') }}</td>
-                        <td>{{$corrosion->gu->name}}</td>
+                        <td>{{$buffer_tank->gu->name}}</td>
                     </tr>
                     <tr>
-                        <td>{{ trans('monitoring.corrosion.fields.start_date_of_background_corrosion') }}</td>
-                        <td>{{$corrosion->start_date_of_background_corrosion}}</td>
+                        <td>{{ trans('monitoring.buffer_tank.model') }}</td>
+                        <td>{{$buffer_tank->start_date_of_background_corrosion}}</td>
                     </tr>
                     <tr>
-                        <td>{{ trans('monitoring.corrosion.fields.final_date_of_background_corrosion') }}</td>
-                        <td>{{$corrosion->final_date_of_background_corrosion}}</td>
+                        <td>{{ trans('monitoring.buffer_tank.name') }}</td>
+                        <td>{{$buffer_tank->name}}</td>
                     </tr>
                     <tr>
-                        <td>{{ trans('monitoring.corrosion.fields.background_corrosion_velocity') }}</td>
-                        <td>{{ $corrosion->background_corrosion_velocity }}</td>
+                        <td>{{ trans('monitoring.buffer_tank.type') }}</td>
+                        <td>{{ $buffer_tank->background_corrosion_velocity }}</td>
                     </tr>
                     <tr>
-                        <td>{{ trans('monitoring.corrosion.fields.start_date_of_corrosion_velocity_with_inhibitor_measure') }}</td>
-                        <td>{{ $corrosion->start_date_of_corrosion_velocity_with_inhibitor_measure }}</td>
+                        <td>{{ trans('monitoring.volume') }}</td>
+                        <td>{{ $buffer_tank->volume }}</td>
                     </tr>
                     <tr>
-                        <td>{{ trans('monitoring.corrosion.fields.final_date_of_corrosion_velocity_with_inhibitor_measure') }}</td>
-                        <td>{{ $corrosion->final_date_of_corrosion_velocity_with_inhibitor_measure }}</td>
+                        <td>{{ trans('monitoring.buffer_tank.date_of_exploitation') }}</td>
+                        <td>{{ $buffer_tank->date_of_exploitation }}</td>
                     </tr>
                     <tr>
-                        <td>{{ trans('monitoring.corrosion.fields.corrosion_velocity_with_inhibitor') }}</td>
-                        <td>{{ $corrosion->corrosion_velocity_with_inhibitor }}</td>
+                        <td>{{ trans('monitoring.buffer_tank.current_state') }}</td>
+                        <td>{{ $buffer_tank->current_state }}</td>
                     </tr>
                     <tr>
-                        <td>{{ trans('monitoring.corrosion.fields.sample_number') }}</td>
-                        <td>{{ $corrosion->sample_number }}</td>
+                        <td>{{ trans('monitoring.buffer_tank.external_and_interlan_inspection') }}</td>
+                        <td>{{ $buffer_tank->external_and_interlan_inspectio }}</td>
                     </tr>
                     <tr>
-                        <td>{{ trans('monitoring.corrosion.fields.weight_before') }}</td>
-                        <td>{{ $corrosion->weight_before }}</td>
+                        <td>{{ trans('monitoring.buffer_tank.hydraulic_test') }}</td>
+                        <td>{{ $buffer_tank->hydraulic_test }}</td>
                     </tr>
                     <tr>
-                        <td>{{ trans('monitoring.corrosion.fields.days') }}</td>
-                        <td>{{ $corrosion->days }}</td>
+                        <td>{{ trans('monitoring.buffer_tank.date_of_repair') }}</td>
+                        <td>{{ $buffer_tank->date_of_repair }}</td>
                     </tr>
                     <tr>
-                        <td>{{ trans('monitoring.corrosion.fields.weight_after') }}</td>
-                        <td>{{ $corrosion->weight_after }}</td>
-                    </tr>
-                    <tr>
-                        <td>{{ trans('monitoring.corrosion.fields.avg_speed') }}</td>
-                        <td>{{ $corrosion->avg_speed }}</td>
+                        <td>{{ trans('monitoring.buffer_tank.type_of_repair') }}</td>
+                        <td>{{ $buffer_tank->type_of_repair }}</td>
                     </tr>
                 </table>
-                <a class="btn btn-primary" href="{{ route('corrosioncrud.index') }}">{{__('app.back')}}</a>
+                <a class="btn btn-primary" href="{{ route('buffer_tank.index') }}">{{__('app.back')}}</a>
             </div>
         </div>
     </div>

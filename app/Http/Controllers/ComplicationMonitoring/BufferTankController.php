@@ -21,7 +21,7 @@ class BufferTankController extends CrudController
 {
     use WithFieldsValidation;
 
-    protected $modelName = 'corrosion';
+    protected $modelName = 'buffer_tank';
 
     public function index()
     {
@@ -33,26 +33,8 @@ class BufferTankController extends CrudController
             'title' => trans('monitoring.buffer_tank.title'),
             'fields' => [
                 
-                'ngdu' => [
-                    'title' => trans('monitoring.ndgu.ngdu'),
-                    'type' => 'select',
-                    'filter' => [
-                        'values' => Ngdu::whereHas('buffer_tank')
-                            ->orderBy('name', 'asc')
-                            ->get()
-                            ->map(
-                                function ($item) {
-                                    return [
-                                        'id' => $item->id,
-                                        'name' => $item->name,
-                                    ];
-                                }
-                            )
-                            ->toArray()
-                    ]
-                ],
                 
-                'gu' => [
+                'gu_id' => [
                     'title' => trans('monitoring.gu.gu'),
                     'type' => 'select',
                     'filter' => [

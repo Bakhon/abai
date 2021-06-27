@@ -47,12 +47,12 @@ class ExportBufferTankToExcel implements ShouldQueue
             ->with('cdng')
             ->with('gu');
 
-        $corrosion = (new \App\Filters\CorrosionFilter($query, $this->params))
+        $bufferTank = (new \App\Filters\BufferTankFilter($query, $this->params))
             ->filter()
             ->get();
 
         $fileName = '/export/corrosion_' . \Carbon\Carbon::now()->format('YmdHis') . '.xlsx';
-        Excel::store(new \App\Exports\CorrosionExport($corrosion), 'public'.$fileName);
+        Excel::store(new \App\Exports\BufferTankExport($bufferTank), 'public'.$fileName);
 
         $this->setOutput(
             [

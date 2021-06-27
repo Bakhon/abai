@@ -11,8 +11,8 @@
             @endif
             <div class="container">
                 <h1>{{ trans('monitoring.history.title') }}</h1>
-                <edit-history :history='@json($corrosion->history)'></edit-history>
-                <a class="btn btn-primary" href="{{ route('buffer_tankcrud.index') }}">{{__('app.back')}}</a>
+                <edit-history :history='@json($buffer_tank->history)'></edit-history>
+                <a class="btn btn-primary" href="{{ route('buffer_tank.index') }}">{{__('app.back')}}</a>
             </div>
         </div>
     </div>

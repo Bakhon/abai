@@ -10,10 +10,10 @@
                 </div>
             @endif
             <div class="x_panel">
-                <h1>{{ trans('monitoring.corrosion.create_title') }}</h1>
+                <h1>{{ trans('monitoring.buffer_tank.create_title') }}</h1>
                 <a class="btn btn-primary float-left" href="{{ url()->previous() }}"><i
                         class="fas fa-arrow-left"></i></a>
-                <form action="{{ route('buffer_tankcrud.store') }}" method="POST">
+                <form action="{{ route('buffer_tank.store') }}" method="POST">
                     @csrf
                     <div class="row">
                         <buffer-tank-form :validation-params='@json($validationParams)'></buffer-tank-form>

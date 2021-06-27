@@ -55,4 +55,9 @@ class Ngdu extends Model
     {
         return $this->hasMany(BufferTank::class);
     }
+
+    public function pumps()
+    {
+        return $this->hasMany(Pump::class);
+    }
 }

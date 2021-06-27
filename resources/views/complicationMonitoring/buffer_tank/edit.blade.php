@@ -10,14 +10,14 @@
                 </div>
             @endif
             <div class="x_panel">
-                <h1>{{ trans('monitoring.corrosion.edit_title') }}</h1>
+                <h1>{{ trans('monitoring.buffer_tank.edit_title') }}</h1>
                 <a class="btn btn-primary float-left" href="{{ url()->previous() }}"><i
                         class="fas fa-arrow-left"></i></a>
-                <form action="{{ route('buffer_tankcrud.update', $corrosion->id) }}" method="POST">
+                <form action="{{ route('buffer_tank.update', $buffer_tank->id) }}" method="POST">
                     @method('patch')
                     @csrf
                     <div class="row">
-                        <buffer-tank-form :corrosion='@json($corrosion)' :validation-params='@json($validationParams)'></buffer-tank-form>
+                        <buffer-tank-form :buffer_tank='@json($buffer_tank)' :validation-params='@json($validationParams)'></buffer-tank-form>
                     </div>
                 </form>
             </div>

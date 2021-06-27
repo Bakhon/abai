@@ -27,5 +27,8 @@ class DatabaseSeeder extends Seeder
         $this->call(KormassGuTableSeeder::class);
         $this->call(CorrosionTableSeeder::class);
         $this->call(BactericideTableSeeder::class);
+        $this->call(BufferTankTableSeeder::class);
+        $this->call(PumpsTableSeeder::class);
+
     }
 }
