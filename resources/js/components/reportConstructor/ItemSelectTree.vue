@@ -70,7 +70,8 @@ export default {
       });
 
     },
-    async nodeClick(node) {
+    async nodeClick(child) {
+      let node = child.node
       this.$parent.currentStructureId = node.structureId
       this.$parent.setCurrentStructureId(node.structureId)
       this.isLoading = true
@@ -85,7 +86,7 @@ export default {
         }
       }).then((response) => {
         if (response.data) {
-          return response.data
+          node.children = response.data
         } else {
           console.log("No data");
         }
@@ -95,6 +96,10 @@ export default {
       })
     },
     isNodeOnBottomLevelOfHierarchy(node) {
+      console.log(node)
+      console.log((!node.children || node.children.length === 0))
+      console.log(node.children )
+      //console.log(node.children.length )
       return (!node.children || node.children.length === 0)
     },
     isWell: function(node){

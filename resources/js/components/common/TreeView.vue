@@ -23,7 +23,7 @@
       <div v-if="node.name"
            class="text-right text-white ml-2"
            :class="{'cursor-pointer': isWell(node), 'h5 m-0': currentWellId === node.id}"
-           @click.stop="handleClick(node)">
+           @click.stop="handleClick(this)">
         {{ node.name }}
       </div>
     </div>
@@ -68,11 +68,13 @@ export default {
     event: "nodeChange"
   },
   methods: {
-    showChildren: function () {
+    showChildren: async function() {
       this.isShowChildren = !this.isShowChildren;
       if (!this.isShowChildren) {
         return
       }
+      await this.handleClick(this)
+      console.log(this.node)
       if (this.isNodeOnBottomLevelOfHierarchy(this.node)) {
         this.isLoading = true;
         this.getWells(this);
