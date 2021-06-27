@@ -228,7 +228,6 @@ export default {
       isBothColumnFolded: false,
       popup: false,
       forms: forms,
-      wellGeoId: null,
       wellGeo: {name_ru: null},
       wellGeoFields: {name_ru: null},
       wellUwi: null,
@@ -355,9 +354,10 @@ export default {
       this.loading = true
       this.axios.get(this.localeUrl(`/api/bigdata/wells/${well.id}/wellInfo`)).then(({data}) => {
         try {
-          this.wellGeoId = data.geo.id
           this.well.id = data.wellInfo.id
           this.wellUwi = data.wellInfo.uwi
+          this.wellGeoFields = data.geo[Object.keys(data.geo).length - 1]
+          this.wellGeo = data.geo[0]
           for (let i = 0; i < Object.keys(this.wellTransform).length; i++) {
             this.setWellObjectData(Object.keys(this.wellTransform)[i], Object.values(this.wellTransform)[i], data)
           }
@@ -382,14 +382,8 @@ export default {
         } catch (e) {
           this.loading = false
         }
-        this.SelectGeo(this.wellGeoId)
-        this.loading = false
-      })
-    },
-    SelectGeo(wellGeoId) {
-      this.axios.get(this.localeUrl(`/api/bigdata/wells/${wellGeoId}/geoParents`)).then(({data}) => {
-        this.wellGeoFields = data[Object.keys(data).length - 1]
         this.setTableData()
+        this.loading = false
       })
     },
     setTableData() {
@@ -470,7 +464,7 @@ export default {
         {
           'description': '',
           'method': 'neighbors',
-          'neigbor_1': this.well.geo.name_ru,
+          'neigbor_1': this.wellGeo.name_ru,
           'neigbor_2': this.well.labResearchValue.value_double,
           'name': 'Горизонт / Pнас, атм',
           'data': ''

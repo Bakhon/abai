@@ -64,13 +64,15 @@ class WellsController extends Controller
         return Carbon::today();
     }
 
-    public function geoParents(Geo $geoParent)
+    private function geo(Well $well)
     {
         $allParents = [];
-        $parent = $geoParent->firstParent()
-            ->where('dend', '>', $this->getToday())
-            ->where('dbeg', '<=', $this->getToday())
-            ->first()->geo_id;
+        $parent = $well->geo()
+            ->wherePivot('dend', '>', $this->getToday())
+            ->wherePivot('dbeg', '<=', $this->getToday())
+            ->withPivot('dend', 'dbeg')
+            ->orderBy('pivot_dbeg')
+            ->first()->id;
         while ($parent != null) {
             array_push($allParents, Geo::all()->find($parent));
             $parent = Geo::with('firstParent')
@@ -82,6 +84,7 @@ class WellsController extends Controller
         }
         return $allParents;
     }
+
 
     public function get(Well $well)
     {
@@ -126,16 +129,6 @@ class WellsController extends Controller
             ->withPivot('dend', 'dbeg')
             ->orderBy('pivot_dbeg', 'desc')
             ->first(['name_ru',]);
-    }
-
-    private function geo(Well $well)
-    {
-        return $well->geo()
-            ->wherePivot('dend', '>', $this->getToday())
-            ->wherePivot('dbeg', '<=', $this->getToday())
-            ->withPivot('dend', 'dbeg')
-            ->orderBy('pivot_dbeg')
-            ->first(['name_ru', 'dict.geo.id']);
     }
 
     private function wellExpl(Well $well)
