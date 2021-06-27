@@ -74,7 +74,6 @@ export default {
         return
       }
       await this.handleClick(this)
-      console.log(this.node)
       if (this.isNodeOnBottomLevelOfHierarchy(this.node)) {
         this.isLoading = true;
         this.getWells(this);
