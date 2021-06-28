@@ -96,10 +96,6 @@ export default {
       })
     },
     isNodeOnBottomLevelOfHierarchy(node) {
-      console.log(node)
-      console.log((!node.children || node.children.length === 0))
-      console.log(node.children )
-      //console.log(node.children.length )
       return (!node.children || node.children.length === 0)
     },
     isWell: function(node){
