@@ -129,40 +129,39 @@
             <section class="section-top  bg-dark">
               <div class="vertical-centered">
                 <div class="row">
-                  <div class="inline-flex date-container">
-                    <div class="col">
-                      <label>Выберите начальную дату</label>
-                      <datetime
-                          type="date"
-                          v-model="startDate"
-                          input-class="date"
-                          value-zone="Asia/Almaty"
-                          zone="Asia/Almaty"
-                          :format="{ year: 'numeric', month: 'numeric', day: 'numeric' }"
-                          :phrases="{ok: trans('app.choose'), cancel: trans('app.cancel')}"
-                          :max-datetime="endDate"
-                          :week-start="1"
-                          use24-hour
-                          auto
-                      >
-                      </datetime>
-                      <label>Выберите конечную дату</label>
-                      <datetime
-                          type="date"
-                          v-model="endDate"
-                          input-class="date"
-                          value-zone="Asia/Almaty"
-                          zone="Asia/Almaty"
-                          :format="{ year: 'numeric', month: 'numeric', day: 'numeric' }"
-                          :phrases="{ok: trans('app.choose'), cancel: trans('app.cancel')}"
-                          :min-datetime="startDate"
-                          :max-datetime="today"
-                          :week-start="1"
-                          use24-hour
-                          auto
-                      >
-                      </datetime>
-                    </div>
+                  <div class="col date-container">
+                    <label>Выберите начальную дату</label>
+                    <datetime
+                        type="date"
+                        v-model="startDate"
+                        value-zone="Asia/Almaty"
+                        zone="Asia/Almaty"
+                        :format="{ year: 'numeric', month: 'numeric', day: 'numeric' }"
+                        :phrases="{ok: trans('app.choose'), cancel: trans('app.cancel')}"
+                        :max-datetime="endDate"
+                        :week-start="1"
+                        use24-hour
+                        placeholder="дд.мм.гггг"
+                        auto
+                    >
+                    </datetime>
+                  </div>
+                  <div class="col date-container">
+                    <label>Выберите конечную дату</label>
+                    <datetime
+                        type="date"
+                        v-model="endDate"
+                        value-zone="Asia/Almaty"
+                        zone="Asia/Almaty"
+                        :format="{ year: 'numeric', month: 'numeric', day: 'numeric' }"
+                        :phrases="{ok: trans('app.choose'), cancel: trans('app.cancel')}"
+                        :min-datetime="startDate"
+                        :week-start="1"
+                        use24-hour
+                        placeholder="дд.мм.гггг"
+                        auto
+                    >
+                    </datetime>
                   </div>
                   <div class="inline-flex">
                     <span class="calendar">Сегодня</span>
@@ -800,6 +799,11 @@ body {
     margin-bottom: 10px;
     padding: 11px 0px 11px 14px;
 
+    .col {
+        margin: 0px;
+        padding: 0px;
+    }
+
     span, label {
       font-family: $HarmoniaSansProCyr;
       font-weight: 700;
@@ -829,13 +833,10 @@ body {
     }
 
     .date-container {
-      .col {
-        margin: 0px;
-        padding: 0px;
-      }
+      margin-bottom: 10px;
 
-      label, :nth-child(2) {
-        margin-right: 17px;
+      label {
+        margin-right: 10px;
       }
     }
   }
@@ -1539,3 +1540,22 @@ body {
 
 </style>
 
+<style lang="scss">
+
+$dark-font: #1F2142;
+$HarmoniaSansProCyr: "Harmonia Sans Pro Cyr", "Harmonia-sans";
+
+.vdatetime input {
+  width: 142px;
+  margin-right: 35px;
+  background: #1F2142;
+  color: #B6BAD9;
+  border-radius: 4px;
+  border: 0.5px solid #454FA1;
+  font-size: 16px;
+  font-weight: 400;
+  font-family: $HarmoniaSansProCyr;
+  text-align: center;
+} 
+
+</style>
