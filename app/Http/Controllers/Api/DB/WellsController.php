@@ -30,6 +30,7 @@ class WellsController extends Controller
             'geo' => $this->geo($well),
             'well_expl' => $this->wellExpl($well),
             'techs' => $this->techs($well),
+            'tap' => $this->tap($well),
             'well_type' => $this->wellType($well),
             'org' => $this->org($well),
             'spatial_object' => $this->spatialObject($well),
@@ -156,6 +157,15 @@ class WellsController extends Controller
             $parent = Tech::all()->where('dend', '>', $this->getToday())->find($parent)->parent;
         }
         return $allParents;
+    }
+
+    private function tap(Well $well)
+    {
+        return $well->techs()
+            ->wherePivot('dend', '>', $this->getToday())
+            ->withPivot('dend', 'dbeg', 'tap as tap')
+            ->orderBy('pivot_dbeg', 'desc')
+            ->get();
     }
 
 
