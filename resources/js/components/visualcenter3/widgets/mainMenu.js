@@ -24,10 +24,12 @@ export default {
                 'oilDeliveryButton': this.trans('visualcenter.dlvoildynamic'),
                 'gasProductionButton': this.trans('visualcenter.getgasdynamic'),
                 'oilCondensate':this.trans('visualcenter.liqDynamic'),
-                'oilCondensate':this.trans('visualcenter.liqDynamic'),
+                'oilDeliveryButton': this.trans('visualcenter.dlvoildynamic'),
             },
-            //todo
-           // isOilResidueActive: false
+            isOilResidueActive: false,
+            oilDeliveryFilters: {
+                'oilResidue': 'isOilResidueActive'
+            }
         };
     },
     methods: {
@@ -35,7 +37,7 @@ export default {
             this.$store.commit('globalloading/SET_LOADING', true);
             this.isOpecFilterActive = false;
             this.oilCondensateFilters.isWithoutKMGFilterActive = true;
-
+            this.isOilResidueActive = false;
             if (buttonName !== 'oilCondensateProductionButton') {
                 this.changeDzoCompaniesList(dzoCompaniesInitial);
             } else {
@@ -69,11 +71,11 @@ export default {
         },
 
         switchMainMenu(parentButton, childButton) {
-            //todo
-            // this.isOilResidueActive = false;
-            // if (childButton === 'oilResidue') {
-            //     this.isOilResidueActive = true;
-            // }
+            this.chartHeadName = this.chartTranslateMapping[parentButton];
+            this.isOilResidueActive = false;
+            if (this.oilDeliveryFilters[childButton]) {
+                this[this.oilDeliveryFilters[childButton]] = true;
+            }
             this.selectAllDzoCompanies();
             this.disableTargetCompanyFilter();
             let self = this;

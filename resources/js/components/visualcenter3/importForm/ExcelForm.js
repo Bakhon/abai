@@ -28,7 +28,7 @@ import Visual from "./dataManagers/visual";
 import TodayDzoData from "./dataManagers/todayDzoData";
 import InputDataOperations from "./dataManagers/inputDataOperations";
 
-const defaultDzoTicker = "КТМ";
+const defaultDzoTicker = "ЭМГ";
 
 export default {
     data: function () {
@@ -326,6 +326,9 @@ export default {
                 this.status = this.trans("visualcenter.importForm.status.dataValid");
             } else {
                 this.status = this.trans("visualcenter.importForm.status.dataIsNotValid");
+            }
+            if (this.dzoFieldsMapping[this.selectedDzo.ticker] && !this.isValidSummary(this.dzoFieldsMapping[this.selectedDzo.ticker])) {
+                this.status = this.trans("visualcenter.importForm.status.verifySumByDzo");
             }
         },
         processTableData() {
