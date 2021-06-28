@@ -1,0 +1,14 @@
+[
+  {
+    "name": "Выбор объекта и участка",
+    "icon": "/img/waterfloodingManagement/water-flooding-management-group_1.svg"
+  },
+  {
+    "name": "Прогнозирование и оптимизация",
+    "icon": "/img/waterfloodingManagement/water-flooding-management-group_2.svg"
+  },
+  {
+    "name": "Оценка и мониторинг",
+    "icon": "/img/waterfloodingManagement/water-flooding-management-group_3.svg"
+  }
+]
