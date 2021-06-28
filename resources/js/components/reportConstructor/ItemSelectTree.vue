@@ -70,7 +70,7 @@ export default {
       });
 
     },
-    async nodeClick(child) {
+    nodeClick(child) {
       let node = child.node
       this.$parent.currentStructureId = node.structureId
       this.$parent.setCurrentStructureId(node.structureId)
@@ -90,7 +90,6 @@ export default {
         } else {
           console.log("No data");
         }
-        this.isLoading = false;
       }).finally(() => {
         this.isLoading = false;
       })
@@ -123,7 +122,6 @@ export default {
         } else {
           console.log("No data");
         }
-        child.isLoading = false;
       }).finally(() => {
         child.isLoading = false;
       })
