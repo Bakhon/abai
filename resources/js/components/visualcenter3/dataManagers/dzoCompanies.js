@@ -128,17 +128,17 @@ export default {
         calculateDzoCompaniesSummary() {
             this.dzoSummaryForTable = this.dzoCompanySummary.filter(item => this.selectedDzoCompanies.includes(item.dzoMonth));
             let filteredByCompaniesYesterday = this.yesterdaySummary.filter(item => this.selectedDzoCompanies.includes(item.dzoMonth));
-            let todayDzoSummaryWithoutTroubledCompanies = _.cloneDeep(this.dzoSummaryForTable);
+            let actualFilteredSummary = _.cloneDeep(this.dzoSummaryForTable);
             if (this.oilCondensateProductionButton.length === 0) {
                 filteredByCompaniesYesterday = this.yesterdayProductionDetails.filter(item => this.selectedDzoCompanies.includes(item.dzoMonth));
             } else {
-                todayDzoSummaryWithoutTroubledCompanies = this.deleteTroubleCompanies(_.cloneDeep(this.dzoSummaryForTable));
+                actualFilteredSummary = this.deleteTroubleCompanies(_.cloneDeep(this.dzoSummaryForTable));
             }
             this.isMultipleDzoCompaniesSelected = this.dzoSummaryForTable.length > 1;
             let summary = _.cloneDeep(this.dzoCompaniesSummaryInitial);
             let self = this;
 
-            _.forEach(todayDzoSummaryWithoutTroubledCompanies, function (company) {
+            _.forEach(actualFilteredSummary, function (company) {
                 if(!company) {
                     return;
                 }
@@ -165,8 +165,8 @@ export default {
             summary.fact = this.formatDigitToThousand(summary.fact);
             summary.periodPlan = this.formatDigitToThousand(summary.periodPlan);
 
-            let yesterdayProductionWithoutTroubledCompanies = this.deleteTroubleCompanies(filteredByCompaniesYesterday);
-            this.updateProductionTotalFact(yesterdayProductionWithoutTroubledCompanies,summary,todayDzoSummaryWithoutTroubledCompanies);
+            let yesterdayFilteredSummary = this.deleteTroubleCompanies(filteredByCompaniesYesterday);
+            this.updateProductionTotalFact(yesterdayFilteredSummary,summary,actualFilteredSummary);
 
             this.dzoCompaniesSummary = summary;
             if (this.oilCondensateProductionButton.length > 0) {

@@ -207,24 +207,24 @@
 
             getLabelsByDatasets(chart,chartSummary,fillPattern) {
                 let chartOptions = chart.data;
-                if (chartOptions.labels.length && chartOptions.datasets.length) {
-                    let labels = chartOptions.datasets.map(function (dataset, index) {
-                        let meta = chart.getDatasetMeta(index);
-                        let style = meta.controller.getStyle(index);
-                        return {
-                            text: dataset.label,
-                            fillStyle: style.borderColor,
-                        };
-                    });
-                    if (!chartSummary.isOilResidueActive) {
-                        labels.push({
-                            text: this.trans("visualcenter.deviation"),
-                            fillStyle: fillPattern,
-                        });
-                    }
-                    return labels;
+                if (!chartOptions.labels.length && !chartOptions.datasets.length) {
+                    return [];
                 }
-                return [];
+                let labels = chartOptions.datasets.map(function (dataset, index) {
+                    let meta = chart.getDatasetMeta(index);
+                    let style = meta.controller.getStyle(index);
+                    return {
+                        text: dataset.label,
+                        fillStyle: style.borderColor,
+                    };
+                });
+                if (!chartSummary.isOilResidueActive) {
+                    labels.push({
+                        text: this.trans("visualcenter.deviation"),
+                        fillStyle: fillPattern,
+                    });
+                }
+                return labels;
             },
 
             getFormattedDate(timestamp) {

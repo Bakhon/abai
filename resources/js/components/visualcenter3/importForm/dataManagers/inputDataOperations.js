@@ -32,7 +32,7 @@ export default {
                 ],
             },
             errors: {
-                'sumByDzo': false
+                'isSumByDzoEmpty': false
             }
         };
     },
@@ -99,12 +99,18 @@ export default {
             for (let i in options) {
                 let fieldName = options[i];
                 if (this.excelData[fieldName] === null) {
-                    let factByFields = this.getSumByFields(fieldName);
-                    if (factByFields > 0) {
-                        this.errors.sumByDzo = true;
-                    }
+                   this.isFactSumValid(fieldName);
+                }
+                if (this.errors.isSumByDzoEmpty) {
+                    return;
                 }
             }
+        },
+
+        isFactSumValid(fieldName) {
+            let factByFields = this.getSumByFields(fieldName);
+            this.errors.isSumByDzoEmpty = factByFields > 0;
+            return factByFields;
         },
 
         getSumByFields(fieldName) {

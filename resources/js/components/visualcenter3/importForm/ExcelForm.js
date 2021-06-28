@@ -330,7 +330,7 @@ export default {
             if (this.dzoFieldsMapping[this.selectedDzo.ticker]) {
                 this.validateSummaryByOptions(this.dzoFieldsMapping[this.selectedDzo.ticker]);
             }
-            if (this.errors.sumByDzo) {
+            if (this.errors.isSumByDzoEmpty) {
                 this.status = this.trans("visualcenter.importForm.status.verifySumByDzo");
             }
         },
