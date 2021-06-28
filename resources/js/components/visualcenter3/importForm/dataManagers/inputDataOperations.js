@@ -31,9 +31,6 @@ export default {
                     'otm_drilling_fact'
                 ],
             },
-            errors: {
-                'sumByDzo': false
-            }
         };
     },
     methods: {
