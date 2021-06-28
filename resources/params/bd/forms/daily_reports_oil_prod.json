@@ -1,0 +1,86 @@
+{
+  "type": "table",
+  "table_type": "wells",
+  "columns": [
+    {
+      "title": "id",
+      "code": "id",
+      "type": "integer",
+      "is_editable": false
+    },
+    {
+      "title": "org_name",
+      "code": "org_name",
+      "type": "float",
+      "is_editable": false
+    },
+    {
+      "title": "plan",
+      "code": "plan",
+      "type": "float",
+      "is_editable": false
+    },
+    {
+      "title": "fact",
+      "code": "fact",
+      "type": "float",
+      "is_editable": true,
+      "table": "prod.report_org_daily_cits",
+      "validation": "numeric|gt:0",
+      "validate_deviation": true
+    },
+    {
+      "title": "daily_deviation",
+      "code": "daily_deviation",
+      "type": "float",
+      "is_editable": false
+    },
+    {
+      "title": "month_plan",
+      "code": "month_plan",
+      "type": "float",
+      "is_editable": false
+    },
+    {
+      "title": "month_fact",
+      "code": "month_fact",
+      "type": "float",
+      "is_editable": false
+    },
+    {
+      "title": "month_deviation",
+      "code": "month_deviation",
+      "type": "float",
+      "is_editable": false
+    },
+    {
+      "title": "year_plan",
+      "code": "year_plan",
+      "type": "float",
+      "is_editable": false
+    },
+    {
+      "title": "year_fact",
+      "code": "year_fact",
+      "type": "float",
+      "is_editable": false
+    },
+    {
+      "title": "year_deviation",
+      "code": "year_deviation",
+      "type": "float",
+      "is_editable": false
+    }
+  ],
+  "custom_columns": [
+    {
+      "type": "select",
+      "values": [
+        "ЦИТС",
+        "ГС",
+        "ЦИТС/ГС"
+      ],
+      "component_name": "DailyReportsSelect"
+    }
+  ]
+}

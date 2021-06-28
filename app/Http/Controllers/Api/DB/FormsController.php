@@ -175,6 +175,13 @@ class FormsController extends Controller
         return $form->delete($row);
     }
 
+    public function getFormColumnTemplate(Request $request)
+    {
+        $templateName = $request->get('template');
+        $values = $request->get('additionalData');
+        return view('protodb.form_columns.' . $templateName, ['values' => $values]);
+    }
+
     private function getForm(string $formName): BaseForm
     {
         $formName = strtolower($formName);

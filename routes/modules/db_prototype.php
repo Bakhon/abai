@@ -81,6 +81,7 @@ Route::group(
 
                 Route::get('forms/{form}/results', 'Api\DB\FormsController@getResults');
                 Route::delete('forms/{form}/{row}', 'Api\DB\FormsController@delete');
+                Route::get('form_column_template', 'Api\DB\FormsController@getFormColumnTemplate');
 
                 Route::get('wells/search', 'Api\DB\WellsController@search');
                 Route::get('wells/tree', 'Api\DB\WellsController@getStructureTree');
