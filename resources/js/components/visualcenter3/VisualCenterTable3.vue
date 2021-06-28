@@ -1783,7 +1783,7 @@
                   <table v-if="productionFondData.length" class="table4 w-100 chemistry-table">
                     <thead>
                     <tr>
-                      <th v-if="productionFondDaysCount >= 1">{{ trans("visualcenter.prodWells") }} ({{ trans("visualcenter.Fact") }})</th>
+                      <th v-if="productionFondDaysCount < 2">{{ trans("visualcenter.prodWells") }} ({{ trans("visualcenter.Fact") }})</th>
                       <th v-else>{{ trans("visualcenter.prodWells") }} ({{ trans("visualcenter.fondMiddleInMonth") }})</th>
                       <th>{{ trans("visualcenter.otmMetricSystemWells") }}</th>
                     </tr>

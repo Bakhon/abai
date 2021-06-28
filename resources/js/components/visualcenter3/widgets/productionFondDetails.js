@@ -175,15 +175,17 @@ export default {
         },
 
         async updateProductionFondWidget() {
-            let temporaryProductionFondDetails = _.cloneDeep(this.productionFondDetails);
+            let productionFondDetails = _.cloneDeep(this.productionFondDetails);
+            let productionFondDetailsHistory = _.cloneDeep(this.productionFondHistory);
             if (this.productionFondSelectedCompany !== 'all') {
-                temporaryProductionFondDetails = this.getProductionFondFilteredByDzo(temporaryProductionFondDetails,this.productionFondSelectedCompany);
+                productionFondDetails = this.getProductionFondFilteredByDzo(productionFondDetails,this.productionFondSelectedCompany);
+                productionFondDetailsHistory = this.getProductionFondFilteredByDzo(productionFondDetailsHistory,this.productionFondSelectedCompany);
             }
-            let compared = this.getMergedByChild(temporaryProductionFondDetails,'import_downtime_reason');
+            let compared = this.getMergedByChild(productionFondDetails,'import_downtime_reason');
             this.updateProductionFondWidgetTable(compared);
             this.productionFondChartData = this.getProductionFondWidgetChartData(compared);
-            this.updateProductionFondSum('actual',this.productionFondDetails);
-            this.updateProductionFondSum('history',this.productionFondHistory);
+            this.updateProductionFondSum('actual',productionFondDetails);
+            this.updateProductionFondSum('history',productionFondDetailsHistory);
         },
 
         updateProductionFondSum(type,inputData) {
