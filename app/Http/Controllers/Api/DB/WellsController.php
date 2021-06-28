@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\BigData\WellSearchResource;
 use App\Models\BigData\Dictionaries\Geo;
+use App\Models\BigData\Dictionaries\Org;
 use App\Models\BigData\Dictionaries\Tech;
 use App\Models\BigData\Well;
 use App\Services\BigData\StructureService;
@@ -176,11 +177,17 @@ class WellsController extends Controller
 
     private function org(Well $well)
     {
-        return $well->orgs()
+        $allParents = [];
+        $parent = $well->orgs()
             ->wherePivot('dend', '>', $this->getToday())
             ->withPivot('dend', 'dbeg')
             ->orderBy('pivot_dbeg', 'desc')
-            ->get();
+            ->first()->id;
+        while ($parent != null) {
+            array_push($allParents, Org::all()->find($parent));
+            $parent = Org::all()->where('dend', '>', $this->getToday())->find($parent)->parent;
+        }
+        return $allParents;
     }
 
     private function spatialObject(Well $well)
