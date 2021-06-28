@@ -81,27 +81,6 @@ class WellCategory extends PlainForm
         ];
     }
 
-    private function getWellHorizon(Well $well): ?Geo
-    {
-        $horizon = $well->geo->where('geo_type', self::GEO_HORIZON_TYPE)->first();
-
-        if (!empty($horizon)) {
-            return $horizon;
-        }
-
-        foreach ($well->geo as $geo) {
-            $parents = $geo->ancestors();
-            foreach ($parents as $parent) {
-                if ($parent->geo_type === self::GEO_HORIZON_TYPE) {
-                    $horizon = $parent;
-                    break;
-                }
-            }
-        }
-
-        return $horizon;
-    }
-
     private function getOtherWells(Well $well, int $category, Carbon $date): ?array
     {
         $horizon = $this->getWellHorizon($well);
@@ -183,6 +162,27 @@ class WellCategory extends PlainForm
         ];
 
         return $columns;
+    }
+
+    private function getWellHorizon(Well $well): ?Geo
+    {
+        $horizon = $well->geo->where('geo_type', self::GEO_HORIZON_TYPE)->first();
+
+        if (!empty($horizon)) {
+            return $horizon;
+        }
+
+        foreach ($well->geo as $geo) {
+            $parents = $geo->ancestors();
+            foreach ($parents as $parent) {
+                if ($parent->geo_type === self::GEO_HORIZON_TYPE) {
+                    $horizon = $parent;
+                    break;
+                }
+            }
+        }
+
+        return $horizon;
     }
 
     private function selectInjectionWellsFields(Builder $query, Carbon $date)
