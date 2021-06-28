@@ -1923,9 +1923,8 @@
                     <select
                             class="side-blocks__dzo-companies-dropdown w-100"
                             @change="changeSelectedDrillingCompanies($event)"
-                            v-model="selectedDzo"
                     >
-                      <option v-for="dzo in injectionWellsOptions" :value="dzo.ticker">
+                      <option v-for="dzo in dzoMenu.drilling" :value="dzo.ticker">
                         {{dzo.name}}
                       </option>
                     </select>
@@ -2071,9 +2070,8 @@
                     <select
                             class="side-blocks__dzo-companies-dropdown w-100"
                             @change="changeSelectedWellsWorkoverCompanies($event)"
-                            v-model="selectedDzo"
                     >
-                      <option v-for="dzo in injectionWellsOptions" :value="dzo.ticker">
+                      <option v-for="dzo in dzoMenu.wellsWorkover" :value="dzo.ticker">
                         {{dzo.name}}
                       </option>
                     </select>
@@ -2218,9 +2216,8 @@
                     <select
                             class="side-blocks__dzo-companies-dropdown w-100"
                             @change="changeSelectedChemistryCompanies($event)"
-                            v-model="selectedDzo"
                     >
-                      <option v-for="dzo in injectionWellsOptions" :value="dzo.ticker">
+                      <option v-for="dzo in dzoMenu.chemistry" :value="dzo.ticker">
                         {{dzo.name}}
                       </option>
                     </select>

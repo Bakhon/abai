@@ -23,6 +23,11 @@ export default {
                     mask: 'DD.MM.YYYY',
                 },
             },
+            dzoMenu: {
+                'chemistry': [],
+                'wellsWorkover': [],
+                'drilling': []
+            }
         };
     },
     methods: {
@@ -97,6 +102,10 @@ export default {
                 ["date"],
                 ["asc"]
             );
+        },
+
+        updateDzoMenu() {
+            this.dzoMenu = _.mapValues(this.dzoMenu, () => _.cloneDeep(this.injectionWellsOptions));
         },
     }
 }

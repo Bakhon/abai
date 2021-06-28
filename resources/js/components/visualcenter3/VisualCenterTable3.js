@@ -748,7 +748,7 @@ export default {
         this.timestampEnd = new Date(this.range.end).getTime();
 
         this.selectedYear = this.year;
-
+        this.updateDzoMenu();
         localStorage.setItem("selectedPeriod", "undefined");
         this.getCurrencyNow(this.timeSelect);
         this.updatePrices(this.period);
