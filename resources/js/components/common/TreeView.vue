@@ -23,7 +23,7 @@
       <div v-if="node.name"
            class="text-right text-white ml-2"
            :class="{'cursor-pointer': isWell(node), 'h5 m-0': currentWellId === node.id}"
-           @click.stop="handleClick(this)">
+           @click.stop="handleClick(node)">
         {{ node.name }}
       </div>
     </div>
