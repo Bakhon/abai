@@ -1693,24 +1693,24 @@
               <div class="row px-4">
                 <div class="col-3 pr-2">
                   <div
-                          :class="[`${buttonDailyTab}`,'button2 side-tables__main-menu-button']"
-                          @click="changeMenu2('daily')"
+                          :class="[`${productionFondDailyPeriod}`,'button2 side-tables__main-menu-button']"
+                          @click="switchProductionFondPeriod('productionFondDailyPeriod')"
                   >
                     {{ trans("visualcenter.daily") }}
                   </div>
                 </div>
                 <div class="col-3 px-2">
                   <div
-                          :class="[`${buttonMonthlyTab}`,'button2 side-tables__main-menu-button']"
-                          @click="changeMenu2('monthly')"
+                          :class="[`${productionFondMonthlyPeriod}`,'button2 side-tables__main-menu-button']"
+                          @click="switchProductionFondPeriod('productionFondMonthlyPeriod')"
                   >
                     {{ trans("visualcenter.monthBegin") }}
                   </div>
                 </div>
                 <div class="col-3 px-2">
                   <div
-                          :class="[`${buttonYearlyTab}`,'button2 side-tables__main-menu-button']"
-                          @click="changeMenu2('yearly')"
+                          :class="[`${productionFondYearlyPeriod}`,'button2 side-tables__main-menu-button']"
+                          @click="switchProductionFondPeriod('productionFondYearlyPeriod')"
                   >
                     {{ trans("visualcenter.yearBegin") }}
                   </div>
@@ -1718,21 +1718,18 @@
                 <div class="col-3 pl-2">
                   <div class="dropdown3">
                     <div
-                            :class="[`${buttonPeriodTab}`,'button2 side-tables__main-menu-button']"
-                            @click="changeMenu2('period')"
+                            :class="[`${productionFondPeriod}`,'button2 side-tables__main-menu-button']"
                     >
-                      <span v-if="isOneDateSelected">
+                      <span v-if="!isProductionFondPeriodSelected">
                         {{ trans("visualcenter.date") }} [{{
-                          timeSelect
-                        }}]
-                      </span
+                          productionFondPeriodStart
+                        }}]</span
                       >
                       <span v-else>
                         {{ trans("visualcenter.period") }} [{{
-                          timeSelect
+                          productionFondPeriodStart
                         }}
-                        - {{ timeSelectOld }}]
-                      </span
+                        - {{ productionFondPeriodEnd }}]</span
                       >
                     </div>
                     <ul class="center-menu2 right-indent">
@@ -1742,14 +1739,12 @@
                         <div class="month-day">
                           <div>
                             <date-picker
-                                    v-if="selectedDMY == 0"
                                     mode="range"
-                                    v-model="range"
+                                    v-model="productionFondPeriodMapping.productionFondPeriod"
                                     is-range
                                     class="m-auto"
-                                    :model-config="modelConfig"
-                                    @input="changeDate"
-                                    @dayclick="dayClicked"
+                                    :model-config="datePickerConfig"
+                                    @input="switchProductionFondPeriodRange"
                             />
                           </div>
                         </div>
@@ -1764,10 +1759,9 @@
                   <div class="col pr-2">
                     <select
                             class="side-blocks__dzo-companies-dropdown w-100"
-                            @change="innerWellsProdMetOnChange($event, 'production')"
-                            v-model="selectedDzo"
+                            @change="changeSelectedProductionFondCompanies($event)"
                     >
-                      <option v-for="dzo in injectionWellsOptions" :value="dzo.ticker">
+                      <option v-for="dzo in dzoMenu.productionFond" :value="dzo.ticker">
                         {{dzo.name}}
                       </option>
                     </select>
@@ -1775,8 +1769,8 @@
 
                   <div class="col pl-2">
                     <div
-                            :class="wellStockIdleButtons.isProductionIdleButtonActive ? 'button2 button-tab-highlighted' : 'button2'"
-                            @click="calculateProductionWellsData()"
+                            :class="fondsFilter.isProductionIdleActive ? 'button2 button-tab-highlighted' : 'button2'"
+                            @click="switchProductionFondFilter('isProductionIdleActive')"
                     >
                       {{ trans("visualcenter.inIdle") }}
                     </div>
@@ -1786,39 +1780,39 @@
               <br />
               <div class="row container-fluid">
                 <div class="vis-table px-4 col-sm-7">
-                  <table v-if="productionWells.length" class="table4 w-100 chemistry-table">
+                  <table v-if="productionFondData.length" class="table4 w-100 chemistry-table">
                     <thead>
                     <tr>
-                      <th>{{ trans("visualcenter.prodWells") }}</th>
+                      <th v-if="productionFondDaysCount >= 1">{{ trans("visualcenter.prodWells") }} ({{ trans("visualcenter.Fact") }})</th>
+                      <th v-else>{{ trans("visualcenter.prodWells") }} ({{ trans("visualcenter.fondMiddleInMonth") }})</th>
                       <th>{{ trans("visualcenter.otmMetricSystemWells") }}</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr
-                            v-for="(item, index) in productionWells"
-                            @click="innerWells2SelectedRow = item.code"
+                            v-for="(item, index) in productionFondData"
+                            v-if="item.isVisible"
+                            @click="productionFondSelectedRow = item.code"
                     >
                       <td
-                              @click="innerWells2SelectedRow = item.code"
+                              @click="productionFondSelectedRow = item.code"
                               class="row-name_width_40 cursor-pointer"
                               :class="{
-                            tdStyle: index % 2 === 0,
-                            selected: innerWells2SelectedRow === item.code,
-                          }"
+                                tdStyle: index % 2 === 0,
+                                selected: productionFondSelectedRow === item.code,
+                              }"
                       >
                         <span>
                           {{ item.name }}
                         </span>
                       </td>
                       <td
-                              @click="innerWells2SelectedRow = item.code"
+                              @click="productionFondSelectedRow = item.code"
                               class="w-25 text-center cursor-pointer"
-                              :class="
-                            index % 2 === 0 ? 'tdStyleLight' : 'tdStyleLight2'
-                          "
+                              :class="index % 2 === 0 ? 'tdStyleLight' : 'tdStyleLight2'"
                       >
                         <div class="font">
-                          {{ getFormattedNumber(item.value) }}
+                          {{ getFormattedNumber(item.fact) }}
                         </div>
                       </td>
                     </tr>
@@ -1828,8 +1822,8 @@
                 <div class="col-sm-5">
                   <div  class="name-chart-left">{{ trans('visualcenter.wellsNumber') }}</div>
                   <visual-center3-wells
-                          v-if="innerWellsProd2DataForChart"
-                          :chartData="innerWellsProd2DataForChart"
+                          v-if="productionFondDataForChart"
+                          :chartData="productionFondDataForChart"
                   >
                   </visual-center3-wells>
                 </div>
@@ -2294,32 +2288,32 @@
                 <tr class="cursor-pointer d-flex">
                   <td
                           class="col-6"
-                          @click="changeTable('productionWells')"
+                          @click="switchWidget('productionWells')"
                           :class="`${tableMapping.productionWells.hover}`"
                   >
                     <div class="secondaryTitle">
-                      {{ getFormattedNumber(prod_wells_work) }}
+                      {{ getFormattedNumber(productionFondSum.actual.work) }}
                     </div>
                     <div class="in-work">
                       {{ trans("visualcenter.inWork") }}
                     </div>
                     <div
-                            :class="`${getGrowthIndicatorByDifference(prod_wells_work, prod_wells_workPercent)}`"
+                            :class="`${getGrowthIndicatorByDifference(productionFondSum.actual.work, productionFondSum.history.work)}`"
                     ></div>
 
                     <div class="txt2-2">
-                      {{Math.abs(getDifferencePercentBetweenLastValues(prod_wells_work,prod_wells_workPercent))}}%
+                      {{Math.abs(getDifferencePercentBetweenLastValues(productionFondSum.actual.work,productionFondSum.history.work))}}%
                     </div>
                   </td>
 
                   <td
                           class="col-6"
-                          @click="changeTable('productionWells')"
+                          @click="switchWidget('productionWells')"
                           :class="`${tableMapping.productionWells.hover}`"
                   >
                     <div class="secondaryTitle d-flex">
                       <div class="col-10 col-lg-9">
-                        {{ getFormattedNumber(prod_wells_idle) }}
+                        {{ getFormattedNumber(productionFondSum.actual.idle) }}
                       </div>
                       <div class="mt-1 col-2">
                         <img src="/img/icons/link.svg" />
@@ -2330,12 +2324,12 @@
                     </div>
                     <div
                             :class="`${getIndicatorClassForReverseParams(
-                        getDifferencePercentBetweenLastValues(prod_wells_idle, prod_wells_idlePercent)
+                        getDifferencePercentBetweenLastValues(productionFondSum.actual.idle, productionFondSum.history.idle)
                       )}`"
                     ></div>
 
                     <div class="txt2-2">
-                      {{Math.abs(getDifferencePercentBetweenLastValues(prod_wells_idle,prod_wells_idlePercent))}}%
+                      {{Math.abs(getDifferencePercentBetweenLastValues(productionFondSum.actual.idle,productionFondSum.history.idle))}}%
                     </div>
                     <br />
                   </td>
@@ -2343,7 +2337,7 @@
                 <tr class="cursor-pointer d-flex">
                   <td
                           class="col-12"
-                          @click="changeTable('productionWells')"
+                          @click="switchWidget('productionWells')"
                           :class="`${tableMapping.productionWells.hover}`"
                   >
                     <br>

@@ -103,7 +103,7 @@ class VisualCenterController extends Controller
               ->toArray();
           return response()->json($dzoMonthlyPlans);
         }
-        
+
     public function getDzoYearlyPlan() {
         $dzoYearlyPlan = DZOyear::query()
             ->where('date',date("Y"))
@@ -413,6 +413,27 @@ class VisualCenterController extends Controller
             ->select('date','dzo_name','otm_drilling_fact','otm_wells_commissioning_from_drilling_fact')
             ->whereDate('date', '>=', Carbon::parse($request->startPeriod))
             ->whereDate('date', '<=', Carbon::parse($request->endPeriod))
+            ->get()
+            ->toArray();
+    }
+
+    public function getProductionFondDetails(Request $request)
+    {
+        return DzoImportData::query()
+            ->select(
+                'id',
+                'date',
+                'dzo_name',
+                'operating_production_fond',
+                'active_production_fond',
+                'inactive_production_fond',
+                'developing_production_fond',
+                'pending_liquidation_production_fond',
+                'in_work_production_fond',
+                'in_idle_production_fond')
+            ->whereDate('date', '>=', Carbon::parse($request->startPeriod))
+            ->whereDate('date', '<=', Carbon::parse($request->endPeriod))
+            ->with('importDowntimeReason')
             ->get()
             ->toArray();
     }

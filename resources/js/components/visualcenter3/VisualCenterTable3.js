@@ -28,6 +28,7 @@ import chemistryDetails from './widgets/chemistryDetails';
 import wellsWorkoverDetails from './widgets/wellsWorkoverDetails';
 import managers from './widgets/managers';
 import drillingDetails from './widgets/otmDrillingDetails';
+import productionFondDetails from './widgets/productionFondDetails';
 
 
 export default {
@@ -722,7 +723,8 @@ export default {
         chemistryDetails,
         wellsWorkoverDetails,
         managers,
-        drillingDetails
+        drillingDetails,
+        productionFondDetails
     ],
     async mounted() {
         this.$store.commit('globalloading/SET_LOADING', true);
@@ -752,6 +754,8 @@ export default {
         localStorage.setItem("selectedPeriod", "undefined");
         this.getCurrencyNow(this.timeSelect);
         this.updatePrices(this.period);
+        this.productionFondDetails = await this.getProductionFondByMonth(this.productionFondPeriodStart,this.productionFondPeriodEnd);
+        this.productionFondHistory = await this.getProductionFondByMonth(this.productionFondHistoryPeriodStart,this.productionFondHistoryPeriodEnd);
         this.chemistryDetails = await this.getChemistryByMonth();
         this.wellsWorkoverDetails = await this.getWellsWorkoverByMonth();
         this.drillingDetails = await this.getDrillingByMonth();
@@ -771,6 +775,7 @@ export default {
         this.updateChemistryWidget();
         this.updateWellsWorkoverWidget();
         this.updateDrillingWidget();
+        this.updateProductionFondWidget();
     },
     watch: {
         bigTable: function () {
