@@ -15,12 +15,24 @@ class MainController extends Controller
     public $companyId = 7;
     public $dateTo = null;
     public $dateFrom = null;
-    public $i = 0;
+    public $sum = [
+        'B71000000000' => 0,
+        'B60102990097' => 0,
+        'B70101990097' => 0,
+        'B72000000000' => 0,
+        'B73000000000' => 0,
+        'B74000000000' => 0,
+        'B91110301000' => 0,
+        'B77000000000' => 0,
+        'BZF402010000' => 0,
+
+    ];
+
 
     public function company(Request $request)
     {
         $currentYear = date('Y', strtotime('-1 year'));
-        $previousYear = (string)$currentYear - 1;
+        $previousYear = (float)$currentYear - 1;
         if ($request->company) {
             $this->companyId = $request->company;
         }
@@ -44,6 +56,7 @@ class MainController extends Controller
         $companies = EcoRefsCompaniesId::all();
         $companyRepTtValues = EcoRefsCompaniesId::find($this->companyId)->statsByDate($currentYear)->get()->toArray();
         $repTtReportValues = $this->recursiveSetValueToHandbookByType($handbook, $companyRepTtValues, $currentYear, $previousYear, $this->dateFrom, $this->dateTo);
+        $repTtReportValues = $this->setNetProfitValues($repTtReportValues, $currentYear, $previousYear);
         $data = [
             'reptt' => $repTtReportValues,
             'currentYear' => $currentYear,
@@ -56,6 +69,7 @@ class MainController extends Controller
         }
         return view('economy_kenzhe.company')->with(compact('data'));
     }
+
 
     public function recursiveSetValueToHandbookByType(&$items, $companyRepTtValues, $currentYear, $previousYear, $dateFrom, $dateTo)
     {
@@ -71,9 +85,7 @@ class MainController extends Controller
                 $this->setValueForEqualIdsToitem($companyValuesRepTtIds, $reptt, $companyRepTtValues, $currentYear, $previousYear, $dateFrom, $dateTo, $items, $repttIndex);
             }
         }
-        $items = $this->setNetProfitValues($items, $currentYear, $previousYear);
         return $items;
-
     }
 
 
@@ -127,93 +139,86 @@ class MainController extends Controller
 
     public function setNetProfitValues(&$items, $currentYear, $previousYear)
     {
-//        $id = HandbookRepTt::where('', );
-        $id = HandbookRepTt::where('num', 'B70101990097')->with('childHandbookItems')->get()->toArray();
-
-
         $handbookKeys = ['plan_value', 'fact_value', 'intermediate_plan_value', 'intermediate_fact_value'];
-//        foreach ([$currentYear, $previousYear] as $year) {
-//            foreach ($handbookKeys as $handbookKey) {
-//                foreach ($items as $key => $item) {
-//                    if ($item['num'] == 'B91000000000') {
-////                        $items[$key][$handbookKey][$year] =
-        $ids = $this->getSumValuesByNum($items, $handbookKeys, 2020, 'B70101990097');
-        return $this->test($ids);
-//                        [
-//                            $this->getSumValuesByNum($items, $handbookKey, $year, 'B60102990097'),
-//                            $this->getSumValuesByNum($items, $handbookKey, $year, 'B70101990097'),
-//                            $this->getSumValuesByNum($items, $handbookKey, $year, 'B71000000000'),
-//                            $this->getSumValuesByNum($items, $handbookKey, $year, 'B72000000000'),
-//                            $this->getSumValuesByNum($items, $handbookKey, $year, 'B73000000000'),
-//                            $this->getSumValuesByNum($items, $handbookKey, $year, 'B74000000000'),
-//                            $this->getSumValuesByNum($items, $handbookKey, $year, 'B91110301000'),
-//                            $this->getSumValuesByNum($items, $handbookKey, $year, 'B77000000000'),
-//                            $this->getSumValuesByNum($items, $handbookKey, $year, 'BZF402010000')
-//                        ];
-//                            $this->getSumValuesByNum($items, $handbookKey, $year, 'B60102990097') -
-//                            $this->getSumValuesByNum($items, $handbookKey, $year, 'B70101990097') -
-//                            $this->getSumValuesByNum($items, $handbookKey, $year, 'B71000000000') -
-//                            $this->getSumValuesByNum($items, $handbookKey, $year, 'B72000000000') -
-//                            $this->getSumValuesByNum($items, $handbookKey, $year, 'B73000000000') -
-//                            $this->getSumValuesByNum($items, $handbookKey, $year, 'B74000000000') +
-//                            $this->getSumValuesByNum($items, $handbookKey, $year, 'B91110301000') -
-//                            $this->getSumValuesByNum($items, $handbookKey, $year, 'B77000000000') -
-//                            $this->getSumValuesByNum($items, $handbookKey, $year, 'BZF402010000');
-//                    }
-//                    if ($item['num'] == 'B91110101000') {
-//                        $items[$key][$handbookKey][$year] =
-//                            $this->getSumValuesByNum($items, $handbookKey, $year, 'B60102990097') -
-//                            $this->getSumValuesByNum($items, $handbookKey, $year, 'B70101990097');
-//                    }
-//                    if ($item['num'] == 'B91110100000') {
-//                        $items[$key][$handbookKey][$year] =
-//                            $this->getSumValuesByNum($items, $handbookKey, $year, 'B60102990097') -
-//                            $this->getSumValuesByNum($items, $handbookKey, $year, 'B70101990097') -
-//                            $this->getSumValuesByNum($items, $handbookKey, $year, 'B71000000000') -
-//                            $this->getSumValuesByNum($items, $handbookKey, $year, 'B72000000000') -
-//                            $this->getSumValuesByNum($items, $handbookKey, $year, 'B73000000000');
-//                    }
-//                    if ($item['num'] == 'B91110000000') {
-//                        $items[$key][$handbookKey][$year] =
-//                            $this->getSumValuesByNum($items, $handbookKey, $year, 'B60102990097') -
-//                            $this->getSumValuesByNum($items, $handbookKey, $year, 'B70101990097') -
-//                            $this->getSumValuesByNum($items, $handbookKey, $year, 'B71000000000') -
-//                            $this->getSumValuesByNum($items, $handbookKey, $year, 'B72000000000') -
-//                            $this->getSumValuesByNum($items, $handbookKey, $year, 'B73000000000') -
-//                            $this->getSumValuesByNum($items, $handbookKey, $year, 'B74000000000') +
-//                            $this->getSumValuesByNum($items, $handbookKey, $year, 'B91110301000');
-//                    }
-//                    if ($item['num'] == 'B91100000000') {
-//                        $items[$key][$handbookKey][$year] =
-//                            $this->getSumValuesByNum($items, $handbookKey, $year, 'B60102990097') -
-//                            $this->getSumValuesByNum($items, $handbookKey, $year, 'B70101990097') -
-//                            $this->getSumValuesByNum($items, $handbookKey, $year, 'B71000000000') -
-//                            $this->getSumValuesByNum($items, $handbookKey, $year, 'B72000000000') -
-//                            $this->getSumValuesByNum($items, $handbookKey, $year, 'B73000000000') -
-//                            $this->getSumValuesByNum($items, $handbookKey, $year, 'B74000000000') +
-//                            $this->getSumValuesByNum($items, $handbookKey, $year, 'B91110301000') -
-//                            $this->getSumValuesByNum($items, $handbookKey, $year, 'B77000000000');
-//                    }
-//                }
-//            }
-//        }
-        return $test;
+        foreach ($items as &$item) {
+            foreach ($handbookKeys as $handbookKey) {
+                foreach ([$currentYear, $previousYear] as $year) {
+                    if ($item['num'] == 'B91000000000') {
+                        $item[$handbookKey][$year] =
+                            $this->getSumValuesByNum($items, $handbookKey, $year, 'B60102990097') -
+                            $this->getSumValuesByNum($items, $handbookKey, $year, 'B70101990097') -
+                            $this->getSumValuesByParentId($items, $handbookKey, $year, 'B71000000000') -
+                            $this->getSumValuesByParentId($items, $handbookKey, $year, 'B72000000000') -
+                            $this->getSumValuesByParentId($items, $handbookKey, $year, 'B73000000000') -
+                            $this->getSumValuesByParentId($items, $handbookKey, $year, 'B74000000000') +
+                            $this->getSumValuesByParentId($items, $handbookKey, $year, 'B91110301000') -
+                            $this->getSumValuesByParentId($items, $handbookKey, $year, 'B77000000000') -
+                            $this->getSumValuesByParentId($items, $handbookKey, $year, 'BZF402010000');
+                    }
+                    if ($item['num'] == 'B91110101000') {
+                        $item[$handbookKey][$year] =
+                            $this->getSumValuesByNum($items, $handbookKey, $year, 'B60102990097') -
+                            $this->getSumValuesByNum($items, $handbookKey, $year, 'B70101990097');
+                    }
+                    if ($item['num'] == 'B91110100000') {
+                        $item[$handbookKey][$year] =
+                            $this->getSumValuesByNum($items, $handbookKey, $year, 'B60102990097') -
+                            $this->getSumValuesByNum($items, $handbookKey, $year, 'B70101990097') -
+                            $this->getSumValuesByParentId($items, $handbookKey, $year, 'B71000000000') -
+                            $this->getSumValuesByParentId($items, $handbookKey, $year, 'B72000000000') -
+                            $this->getSumValuesByParentId($items, $handbookKey, $year, 'B73000000000');
+                    }
+                    if ($item['num'] == 'B91110000000') {
+                        $item[$handbookKey][$year] =
+                            $this->getSumValuesByNum($items, $handbookKey, $year, 'B60102990097') -
+                            $this->getSumValuesByNum($items, $handbookKey, $year, 'B70101990097') -
+                            $this->getSumValuesByParentId($items, $handbookKey, $year, 'B71000000000') -
+                            $this->getSumValuesByParentId($items, $handbookKey, $year, 'B72000000000') -
+                            $this->getSumValuesByParentId($items, $handbookKey, $year, 'B73000000000') -
+                            $this->getSumValuesByParentId($items, $handbookKey, $year, 'B74000000000') +
+                            $this->getSumValuesByNum($items, $handbookKey, $year, 'B91110301000');
+                    }
+                    if ($item['num'] == 'B91100000000') {
+                        $item[$handbookKey][$year] =
+                            $this->getSumValuesByNum($items, $handbookKey, $year, 'B60102990097') -
+                            $this->getSumValuesByNum($items, $handbookKey, $year, 'B70101990097') -
+                            $this->getSumValuesByParentId($items, $handbookKey, $year, 'B71000000000') -
+                            $this->getSumValuesByParentId($items, $handbookKey, $year, 'B72000000000') -
+                            $this->getSumValuesByParentId($items, $handbookKey, $year, 'B73000000000') -
+                            $this->getSumValuesByParentId($items, $handbookKey, $year, 'B74000000000') +
+                            $this->getSumValuesByNum($items, $handbookKey, $year, 'B91110301000') -
+                            $this->getSumValuesByParentId($items, $handbookKey, $year, 'B77000000000');
+                    }
+                }
+            }
+        }
+        return $items;
     }
-    public function test($ids) {
-        $res = [];
-        foreach($ids as $id) {
 
+    public function getSumValuesByNum($items, $type, $year, $num)
+    {
+        foreach ($items as $item) {
+            if ($item['handbook_items']) {
+                return $this->getSumValuesByNum($item['handbook_items'], $type, $year, $num);
+            }
+            if ($item['num'] == $num) {
+                return $item[$type][$year];
+            }
         }
     }
-    public function getSumValuesByNum($items, $handbookKey, $year, $num)
+
+    public function getSumValuesByParentId($items, $type, $year, $num)
     {
-        $arr = [];
-        $handbookItems = HandbookRepTt::where('num', $num)->with('childHandbookItems')->get()->toArray();
-        foreach ($handbookItems as $handbookItem) {
-            foreach($handbookItem['handbook_items'] as $item)
-            $arr[] = $item['id'];
+        $id = HandbookRepTt::select('id')->where('num', $num)->first()['id'];
+        foreach ($items as $item) {
+            if ($item['handbook_items']) {
+                $this->getSumValuesByParentId($item['handbook_items'], $type, $year, $num);
+            }
+            if ($item['parent_id'] == $id) {
+                $this->sum[$num] -= (float)$item[$type][$year];
+            }
         }
-        return $arr;
+        return $this->sum[$num];
     }
 }
 
