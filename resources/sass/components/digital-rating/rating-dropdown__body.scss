@@ -1,10 +1,21 @@
 .rating-dropdown__body {
-  border: 15px solid $main1;
+  background: $dropdownBg;
+  border: 12px solid $main1;
   border-top: none;
-  padding: 10px;
-  transition: 150ms ease-out;
+  padding: 8px;
+  height: auto;
+  overflow: auto;
 
   .list {
     list-style: none;
+    margin-bottom: 0;
+
+    li {
+      padding: 4px 6px;
+      &:hover {
+        background: #2E50E9;
+        cursor: pointer;
+      }
+    }
   }
 }
