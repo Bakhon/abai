@@ -25,7 +25,6 @@
       "code": "fact",
       "type": "float",
       "is_editable": true,
-      "table": "prod.report_org_daily_cits",
       "validation": "numeric|gt:0",
       "validate_deviation": true
     },
