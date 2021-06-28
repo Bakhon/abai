@@ -174,6 +174,13 @@
                         </a>
                     </li>
                     @endif
+                    @if(auth()->user()->can('monitoring list economical_effect'))
+                    <li class="left-menu-li">
+                        <a href="{{route('economical-effect.index')}}">
+                            {{ trans('monitoring.economical_effect_title') }}
+                        </a>
+                    </li>
+                    @endif
                 </ul>
             </li>
         </div>

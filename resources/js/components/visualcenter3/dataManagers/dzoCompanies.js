@@ -128,14 +128,17 @@ export default {
         calculateDzoCompaniesSummary() {
             this.dzoSummaryForTable = this.dzoCompanySummary.filter(item => this.selectedDzoCompanies.includes(item.dzoMonth));
             let filteredByCompaniesYesterday = this.yesterdaySummary.filter(item => this.selectedDzoCompanies.includes(item.dzoMonth));
+            let actualFilteredSummary = _.cloneDeep(this.dzoSummaryForTable);
             if (this.oilCondensateProductionButton.length === 0) {
                 filteredByCompaniesYesterday = this.yesterdayProductionDetails.filter(item => this.selectedDzoCompanies.includes(item.dzoMonth));
+            } else {
+                actualFilteredSummary = this.deleteTroubleCompanies(_.cloneDeep(this.dzoSummaryForTable));
             }
             this.isMultipleDzoCompaniesSelected = this.dzoSummaryForTable.length > 1;
             let summary = _.cloneDeep(this.dzoCompaniesSummaryInitial);
             let self = this;
 
-            _.forEach(this.dzoSummaryForTable, function (company) {
+            _.forEach(actualFilteredSummary, function (company) {
                 if(!company) {
                     return;
                 }
@@ -149,8 +152,18 @@ export default {
                     summary.opekPlan = parseInt(summary.plan) + parseInt(company.opekPlan);
                 }
             });
+            summary = this.getFormatted(summary);
+            let yesterdayFilteredSummary = this.deleteTroubleCompanies(filteredByCompaniesYesterday);
+            this.updateProductionTotalFact(yesterdayFilteredSummary,summary,actualFilteredSummary);
 
-            if (self.oilCondensateProductionButton.length > 0) {
+            this.dzoCompaniesSummary = summary;
+            if (this.oilCondensateProductionButton.length > 0) {
+                this.isOpecFilterActive = true;
+            }
+        },
+
+        getFormatted(summary) {
+            if (this.oilCondensateProductionButton.length > 0) {
                 summary.opekDifference = this.getFormattedNumberToThousand(
                     summary.opekPlan,summary.fact);
                 summary.opekPlan = this.formatDigitToThousand(summary.opekPlan);
@@ -161,12 +174,7 @@ export default {
             summary.plan = this.formatDigitToThousand(summary.plan);
             summary.fact = this.formatDigitToThousand(summary.fact);
             summary.periodPlan = this.formatDigitToThousand(summary.periodPlan);
-
-            this.updateProductionTotalFact(filteredByCompaniesYesterday,summary);
-            this.dzoCompaniesSummary = summary;
-            if (this.oilCondensateProductionButton.length > 0) {
-                this.isOpecFilterActive = true;
-            }
+            return summary;
         },
 
         updateActualOilFactByFilter() {
@@ -244,7 +252,8 @@ export default {
             this.$emit("data", {
                 dzoCompaniesSummaryForChart: data,
                 isOpecFilterActive: this.isOpecFilterActive,
-                isFilterTargetPlanActive: this.isFilterTargetPlanActive
+                isFilterTargetPlanActive: this.isFilterTargetPlanActive,
+                isOilResidueActive: this.isOilResidueActive
             });
         },
         sortDzoList() {
