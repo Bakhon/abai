@@ -152,8 +152,18 @@ export default {
                     summary.opekPlan = parseInt(summary.plan) + parseInt(company.opekPlan);
                 }
             });
+            summary = this.getFormatted(summary);
+            let yesterdayFilteredSummary = this.deleteTroubleCompanies(filteredByCompaniesYesterday);
+            this.updateProductionTotalFact(yesterdayFilteredSummary,summary,actualFilteredSummary);
 
-            if (self.oilCondensateProductionButton.length > 0) {
+            this.dzoCompaniesSummary = summary;
+            if (this.oilCondensateProductionButton.length > 0) {
+                this.isOpecFilterActive = true;
+            }
+        },
+
+        getFormatted(summary) {
+            if (this.oilCondensateProductionButton.length > 0) {
                 summary.opekDifference = this.getFormattedNumberToThousand(
                     summary.opekPlan,summary.fact);
                 summary.opekPlan = this.formatDigitToThousand(summary.opekPlan);
@@ -164,14 +174,7 @@ export default {
             summary.plan = this.formatDigitToThousand(summary.plan);
             summary.fact = this.formatDigitToThousand(summary.fact);
             summary.periodPlan = this.formatDigitToThousand(summary.periodPlan);
-
-            let yesterdayFilteredSummary = this.deleteTroubleCompanies(filteredByCompaniesYesterday);
-            this.updateProductionTotalFact(yesterdayFilteredSummary,summary,actualFilteredSummary);
-
-            this.dzoCompaniesSummary = summary;
-            if (this.oilCondensateProductionButton.length > 0) {
-                this.isOpecFilterActive = true;
-            }
+            return summary;
         },
 
         updateActualOilFactByFilter() {
