@@ -11,7 +11,7 @@
           @click="handleSelectTab(tab.name)"
         >
           <img :src="tab.icon" alt="">
-          <span>{{ tab.title }}</span>
+          <span>{{ trans(tab.title) }}</span>
         </div>
       </template>
     </div>
@@ -41,22 +41,22 @@ export default {
     return {
       tabs: [
         {
-          title: 'Настройка карты',
+          title: 'digital_rating.mapSetup',
           name: 'settings',
           icon: '/img/digital-rating/settings.svg',
         },
         {
-          title: 'Карта секторов',
+          title: 'digital_rating.sectorMap',
           name: 'sections',
           icon: '/img/digital-rating/sections.svg',
         },
         {
-          title: 'Атлас скважины',
+          title: 'digital_rating.wellAtlas',
           name: 'atlas',
           icon: '/img/digital-rating/atlas.svg',
         },
         {
-          title: 'Отчет по скважинам',
+          title: 'digital_rating.wellsReport',
           name: 'reports',
           icon: '/img/digital-rating/reports.svg',
         }
