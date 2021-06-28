@@ -79,7 +79,7 @@
                                   >{{trans('tr.form')}}
                                   </a>
                                   <a href="#" class="discard_text" @click.prevent="dropFieldFilter"
-                                  >Сбросить
+                                  >{{trans('tr.reset')}}
                                   </a>
                               </div>
                             </b-dropdown-form>
@@ -114,7 +114,7 @@
                                   >{{trans('tr.form')}}
                                   </a>
                                   <a href="#" class="discard_text" @click.prevent="dropWellTypeFilter"
-                                  >Сбросить
+                                  >{{trans('tr.reset')}}
                                   </a>
                               </div>
                             </b-dropdown-form>
@@ -148,7 +148,7 @@
                                   >{{trans('tr.form')}}
                                   </a>
                                   <a href="#" class="discard_text" @click.prevent="dropHorizonFilter"
-                                  >Сбросить
+                                  >{{trans('tr.reset')}}
                                   </a>
                               </div>
                             </b-dropdown-form>
@@ -182,7 +182,7 @@
                                   >{{trans('tr.form')}}
                                   </a>
                                   <a href="#" class="discard_text" @click.prevent="dropObjectFilter"
-                                  >Сбросить
+                                  >{{trans('tr.reset')}}
                                   </a>
                               </div>
                             </b-dropdown-form>
@@ -216,7 +216,7 @@
                                   >{{trans('tr.form')}}
                                   </a>
                                   <a href="#" class="discard_text" @click.prevent="dropBlockFilter"
-                                  >Сбросить
+                                  >{{trans('tr.reset')}}
                                   </a>
                               </div>
                             </b-dropdown-form>
@@ -254,7 +254,7 @@
                                   >{{trans('tr.form')}}
                                   </a>
                                   <a href="#" class="discard_text" @click.prevent="dropExpMethFilter"
-                                  >Сбросить
+                                  >{{trans('tr.reset')}}
                                   </a>
                               </div>
                             </b-dropdown-form>

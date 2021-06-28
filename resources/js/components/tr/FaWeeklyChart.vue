@@ -271,7 +271,7 @@ export default {
                 show: true,
               },
               title: {
-                text: "Qн - т/сут|Qж - м3/сут",
+                text: this.trans('tr.qn_ql'),
                 style: {
                   color: "#06AED5"
                 }
@@ -299,7 +299,7 @@ export default {
                 show: true,
               },
               title: {
-                text: 'Обводненность',
+                text: this.trans('tr.water_cut'),
                 style: {
                   color: "#33CC99"
                 }

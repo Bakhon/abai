@@ -195,406 +195,407 @@
           </div>          
           <a v-show="false" v-if="edit"></a>
 
+            <div class="tr_icons_block">
+              <modal name="add_well" :width="1600" :height="220"  :adaptive="true" style="z-index:9900000; ">
+                <div class="main_modals" style="background: #272953; width=900; height=400; border: 3px solid #656A8A;">
+                  <notifications position="top"></notifications>
+                  <div>
+                        <div class="header_mod" style="color:white; display:flex; margin-left: 14px; padding-top: 8px; ">
+                            <h5>{{trans('tr.well_add')}}</h5>
+                            <button type="button" class="modal-bign-button" @click="closeModal('add_well')">{{trans('tr.close')}}</button>
+                        </div>
+                        
+                        <div class="body" style="background: #272953; display:flex; justify-content: center; padding-top: 6px; padding-bottom: 7px;">
+                                <div style="margin-left: 7px;">
+                                  <select
+                                    class="form-control select_mod"
+                                    style="background: #334296 !important"
+                                    v-model="Filter_status"
+                                    value="Статус"
+                                  >
+                                    <option v-for="(f, k) in statusFilters" :key="k" :value="f">
+                                      {{ f === undefined ? trans('tr.choose_status') : f }}
+                                    </option>
+                                  </select>
+                                </div>
+                                <div style="margin-left: 7px; cursor: pointer;">
+                                  <select
+                                    class="select_mod form-control"
+                                    style="background: #334296 !important"
+                                    v-model="Filter_field"
+                                    value="Месторождение"
+                                  >
+                                    <option v-for="(f, k) in fieldFilters" :key="k" :value="f">
+                                      {{ f === undefined ? trans('tr.choose_field') : f }}
+                                    </option>
+                                  </select>
+                                </div>
 
-          <modal name="add_well" :width="1600" :height="220"  :adaptive="true" style="z-index:9900000; ">
-            <div class="main_modals" style="background: #272953; width=900; height=400; border: 3px solid #656A8A;">
-              <notifications position="top"></notifications>
-              <div>
-                    <div class="header_mod" style="color:white; display:flex; margin-left: 14px; padding-top: 8px; ">
-                        <h5>{{trans('tr.well_add')}}</h5>
-                        <button type="button" class="modal-bign-button" @click="closeModal('add_well')">{{trans('tr.close')}}</button>
+                                <div style="margin-left: 7px; cursor: pointer;">
+                                  <select
+                                    class="form-control select_mod"
+                                    style="background: #334296 !important"
+                                    v-model="Filter_well_type"
+                                    value="Тип скв"
+                                  >
+                                    <option v-for="(f, k) in typeWellFilters" :key="k" :value="f">
+                                      {{ f === undefined ? trans('tr.choose_well_type') : f }}
+                                    </option>
+                                  </select>
+                                </div>
+
+                                <div style="margin-left: 7px; cursor: pointer;">
+                                  <select
+                                    class="form-control select_mod"
+                                    style="background: #334296 !important"
+                                    v-model="Filter_well_status"
+                                    value="Состояние"
+                                  >
+                                    <option v-for="(f, k) in wellStatusFilters" :key="k" :value="f">
+                                      {{ f === undefined ? trans('tr.choose_state') : f }}
+                                    </option>
+                                  </select>
+                                </div>
+
+                                <div style="margin-left: 7px; cursor: pointer;">
+                                  <select
+                                    class="select_mod form-control"
+                                    style="background: #334296 !important"
+                                    v-model="Filter_well"
+                                    value="Скважина"
+                                  >
+                                    <option v-for="(f, k) in wellFilters" :key="k" :value="f">
+                                      {{ f === undefined ? trans('tr.choose_well') : f }}
+                                    </option>
+                                  </select>
+                                </div>
+                                
+                                  <a
+                                    
+                                    style="margin-left: 50px;; cursor: pointer; color:white; margin-top: 5px;"
+                                    v-if="!show_add"
+                                    @click="addWellData"
+                                    @click.prevent="showWells"
+                                    ><svg 
+                                    width="16" 
+                                    height="16" 
+                                    viewBox="0 0 16 16" 
+                                    fill="none" 
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M14.5 8L1.5 8" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                                    <path d="M8 1.5V14.5" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                                    </svg>
+                                  {{trans('tr.add')}}</a>
+
+                                  <a
+                                    
+                                    style="margin-left: 50px;; cursor: pointer; color:white; margin-top: 5px;"
+                                    v-if="show_add"
+                                    @click="showWells"
+                                    ><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                      <path d="M17.6567 17.6575L6.34294 6.34383" 
+                                        stroke="white" stroke-width="1.4" stroke-linecap="round"/>
+                                      <path d="M17.6556 6.34383L6.34188 17.6575" 
+                                        stroke="white" stroke-width="1.4" stroke-linecap="round"/>
+                                      </svg>
+                                  {{trans('tr.cancel')}}</a> 
+
+                                <a
+                                  style="margin-left: 10px; cursor: pointer; color:white; margin-top: 5px;"
+                                  @click="saveadd()"
+                                  @click.prevent="reRender"
+                                  v-show = checkers
+                                  ><svg width="24" 
+                                  height="24" 
+                                  viewBox="0 0 24 24" 
+                                  fill="none" 
+                                  xmlns="http://www.w3.org/2000/svg">
+                                  <path d="M4 12.5L8.85858 17.3586C8.93668 17.4367 9.06332 17.4367 9.14142 17.3586L20 6.5" stroke="white" 
+                                  stroke-width="1.5" stroke-linecap="round"/>
+                                  </svg> {{trans('tr.save')}}</a>
+
+                                <a
+                                  style="margin-left: 10px; cursor: pointer; color:white; margin-top: 5px;"
+                                  @click="deleteWell"
+                                  @click.prevent="reRender"
+                                  v-show = checkersec
+
+                                  ><svg width="24"
+                                  height="24" 
+                                  viewBox="0 0 24 24" 
+                                  fill="none" 
+                                  xmlns="http://www.w3.org/2000/svg">
+                                  <path d="M17.6567 17.6575L6.34294 6.34383" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
+                                  <path d="M17.6556 6.34383L6.34188 17.6575" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
+                                  </svg> {{trans('tr.delete')}}</a>
+                                
                     </div>
-                    
-                    <div class="body" style="background: #272953; display:flex; justify-content: center; padding-top: 6px; padding-bottom: 7px;">
-                            <div style="margin-left: 7px;">
-                              <select
-                                class="form-control select_mod"
-                                style="background: #334296 !important"
-                                v-model="Filter_status"
-                                value="Статус"
-                              >
-                                <option v-for="(f, k) in statusFilters" :key="k" :value="f">
-                                  {{ f === undefined ? trans('tr.choose_status') : f }}
-                                </option>
-                              </select>
-                            </div>
-                            <div style="margin-left: 7px; cursor: pointer;">
-                              <select
-                                class="select_mod form-control"
-                                style="background: #334296 !important"
-                                v-model="Filter_field"
-                                value="Месторождение"
-                              >
-                                <option v-for="(f, k) in fieldFilters" :key="k" :value="f">
-                                  {{ f === undefined ? trans('tr.choose_field') : f }}
-                                </option>
-                              </select>
-                            </div>
+                  </div>
+                  <div class="table" style="padding-top: 21px;  background: #454D7D; overflow: hidden !important;">
 
-                            <div style="margin-left: 7px; cursor: pointer;">
-                              <select
-                                class="form-control select_mod"
-                                style="background: #334296 !important"
-                                v-model="Filter_well_type"
-                                value="Тип скв"
-                              >
-                                <option v-for="(f, k) in typeWellFilters" :key="k" :value="f">
-                                  {{ f === undefined ? trans('tr.choose_well_type') : f }}
-                                </option>
-                              </select>
-                            </div>
+                        <table class="table table-bordered table-dark table-responsive trtable" style="font-size: 12px; background: #454D7D; color: #fff; height: 100px;" v-if="show_add" :key="render">
+                        <thead>
+                          <tr >
+                            <td scope="col">{{trans('tr.field')}}</td>
+                            <td scope="col">{{trans('tr.well_state')}}</td>
+                            <td scope="col">{{trans('tr.well_number_short')}}</td>
+                            <td scope="col">{{trans('tr.u_horizon')}}</td>
+                            <td scope="col">{{trans('tr.u_object')}}</td>
+                            <td scope="col">{{trans('tr.operation_method_short')}}</td>
+                            <td scope="col">{{trans('tr.well_type_short')}}</td>
+                            <td scope="col">{{trans('tr.u_block')}}</td>
+                            <td scope="col">{{trans('tr.outer_diameter_producing_casing')}}</td>
+                            <td scope="col">{{trans('tr.inner_diameter_producing_casing_short')}}</td>
+                            <td scope="col">{{trans('tr.h_water_permeability_short')}}</td>
+                            <td scope="col">{{trans('tr.pump_type')}}</td>
+                            <td scope="col">{{trans('tr.sk_type')}}</td>
+                            <td scope="col">{{trans('tr.p_buffer')}}</td>
+                            <td scope="col">{{trans('tr.p_linear')}}</td>
+                            <td scope="col">{{trans('tr.p_layer')}}</td>
+                            <td scope="col">{{trans('tr.h_dynamic')}}</td>
+                            <td scope="col">{{trans('tr.p_annular')}}</td>
+                            <td scope="col">{{trans('tr.oil_density_short')}}</td>
+                            <td scope="col">{{trans('tr.water_density_short')}}</td>
+                            <td scope="col">{{trans('tr.h_up_perf_md')}}</td>
+                            <td scope="col">{{trans('tr.bhp_meter')}}</td>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr v-for="(row, row_index) in lonelywell" 
+                            :key="row_index"
+                            ref="editTable">
+                            <td><input data-key="field" :value="row.field" class="input_edit"></td>
+                            <td><input data-key="well_status_last_day" :value="row.well_status_last_day" class="input_edit"></td>
+                            <td><input data-key="rus_wellname" :value="row.rus_wellname" class="input_edit"></td>
+                            <td><input data-key="horizon" :value="row.horizon" class="input_edit"></td>
+                            <td><input data-key="object" :value="row.object" class="input_edit"></td>
+                            <td><input data-key="exp_meth" :value="row.exp_meth" class="input_edit"></td>
+                            <td><input data-key="type_text" :value="row.type_text" class="input_edit"></td>
+                            <td><input data-key="block" :value="row.block" class="input_edit"></td>
+                            <td><input data-key="cas_OD" :value="row.cas_OD" class="input_edit"></td>
+                            <td><input data-key="cas_ID" :value="row.cas_ID" class="input_edit"></td>
+                            <td><input data-key="h_up_perf_md" :value="row.h_up_perf_md" class="input_edit"></td>
+                            <td><input data-key="pump_type" :value="row.pump_type" class="input_edit"></td>
+                            <td><input data-key="type_sr" :value="row.type_sr" class="input_edit"></td>
+                            <td><input data-key="whp" :value="row.whp" class="input_edit"></td>
+                            <td><input data-key="line_p" :value="row.line_p" class="input_edit"></td>
+                            <td><input data-key="p_res" :value="row.p_res" class="input_edit"></td>
+                            <td><input data-key="h_dyn" :value="row.h_dyn" class="input_edit"></td>
+                            <td><input data-key="p_annular" :value="row.p_annular" class="input_edit"></td>
+                            <td><input data-key="dens_oil" :value="row.dens_oil" class="input_edit"></td>
+                            <td><input data-key="dens_liq" :value="row.dens_liq" class="input_edit"></td>
+                            <td><input data-key="h_perf" :value="row.h_perf" class="input_edit"></td>
+                            <td><input data-key="bhp_meter" :value="row.bhp_meter" class="input_edit"></td>
+                            <td v-show="false"><input data-key="well" :value="row.well" class="input_edit"></td>
 
-                            <div style="margin-left: 7px; cursor: pointer;">
-                              <select
-                                class="form-control select_mod"
-                                style="background: #334296 !important"
-                                v-model="Filter_well_status"
-                                value="Состояние"
-                              >
-                                <option v-for="(f, k) in wellStatusFilters" :key="k" :value="f">
-                                  {{ f === undefined ? trans('tr.choose_state') : f }}
-                                </option>
-                              </select>
-                            </div>
-
-                            <div style="margin-left: 7px; cursor: pointer;">
-                              <select
-                                class="select_mod form-control"
-                                style="background: #334296 !important"
-                                v-model="Filter_well"
-                                value="Скважина"
-                              >
-                                <option v-for="(f, k) in wellFilters" :key="k" :value="f">
-                                  {{ f === undefined ? trans('tr.choose_well') : f }}
-                                </option>
-                              </select>
-                            </div>
-                            
-                              <a
-                                
-                                style="margin-left: 50px;; cursor: pointer; color:white; margin-top: 5px;"
-                                v-if="!show_add"
-                                @click="addWellData"
-                                @click.prevent="showWells"
-                                ><svg 
-                                width="16" 
-                                height="16" 
-                                viewBox="0 0 16 16" 
-                                fill="none" 
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path d="M14.5 8L1.5 8" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
-                                <path d="M8 1.5V14.5" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
-                                </svg>
-                              {{trans('tr.add')}}</a>
-
-                              <a
-                                
-                                style="margin-left: 50px;; cursor: pointer; color:white; margin-top: 5px;"
-                                v-if="show_add"
-                                @click="showWells"
-                                ><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                  <path d="M17.6567 17.6575L6.34294 6.34383" 
-                                    stroke="white" stroke-width="1.4" stroke-linecap="round"/>
-                                  <path d="M17.6556 6.34383L6.34188 17.6575" 
-                                    stroke="white" stroke-width="1.4" stroke-linecap="round"/>
-                                  </svg>
-                              {{trans('tr.cancel')}}</a> 
-
-                            <a
-                              style="margin-left: 10px; cursor: pointer; color:white; margin-top: 5px;"
-                              @click="saveadd()"
-                              @click.prevent="reRender"
-                              v-show = checkers
-                              ><svg width="24" 
-                              height="24" 
-                              viewBox="0 0 24 24" 
-                              fill="none" 
-                              xmlns="http://www.w3.org/2000/svg">
-                              <path d="M4 12.5L8.85858 17.3586C8.93668 17.4367 9.06332 17.4367 9.14142 17.3586L20 6.5" stroke="white" 
-                              stroke-width="1.5" stroke-linecap="round"/>
-                              </svg> {{trans('tr.save')}}</a>
-
-                             <a
-                              style="margin-left: 10px; cursor: pointer; color:white; margin-top: 5px;"
-                              @click="deleteWell"
-                              @click.prevent="reRender"
-                              v-show = checkersec
-
-                              ><svg width="24"
-                               height="24" 
-                               viewBox="0 0 24 24" 
-                               fill="none" 
-                               xmlns="http://www.w3.org/2000/svg">
-                              <path d="M17.6567 17.6575L6.34294 6.34383" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
-                              <path d="M17.6556 6.34383L6.34188 17.6575" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
-                              </svg> {{trans('tr.delete')}}</a>
-                            
+                          </tr>
+                        </tbody>
+                      </table>
+                  </div>
                 </div>
-              </div>
-              <div class="table" style="padding-top: 21px;  background: #454D7D; overflow: hidden !important;">
+              </modal>
 
-                    <table class="table table-bordered table-dark table-responsive trtable" style="font-size: 12px; background: #454D7D; color: #fff; height: 100px;" v-if="show_add" :key="render">
-                    <thead>
-                      <tr >
-                        <td scope="col">{{trans('tr.field')}}</td>
-                        <td scope="col">{{trans('tr.well_state')}}</td>
-                        <td scope="col">{{trans('tr.well_number_short')}}</td>
-                        <td scope="col">{{trans('tr.u_horizon')}}</td>
-                        <td scope="col">{{trans('tr.u_object')}}</td>
-                        <td scope="col">{{trans('tr.operation_method_short')}}</td>
-                        <td scope="col">{{trans('tr.well_type_short')}}</td>
-                        <td scope="col">{{trans('tr.u_block')}}</td>
-                        <td scope="col">{{trans('tr.outer_diameter_producing_casing')}}</td>
-                        <td scope="col">{{trans('tr.inner_diameter_producing_casing_short')}}</td>
-                        <td scope="col">{{trans('tr.h_water_permeability_short')}}</td>
-                        <td scope="col">{{trans('tr.pump_type')}}</td>
-                        <td scope="col">{{trans('tr.sk_type')}}</td>
-                        <td scope="col">{{trans('tr.p_buffer')}}</td>
-                        <td scope="col">{{trans('tr.p_linear')}}</td>
-                        <td scope="col">{{trans('tr.p_layer')}}</td>
-                        <td scope="col">{{trans('tr.h_dynamic')}}</td>
-                        <td scope="col">{{trans('tr.p_annular')}}</td>
-                        <td scope="col">{{trans('tr.oil_density_short')}}</td>
-                        <td scope="col">{{trans('tr.water_density_short')}}</td>
-                        <td scope="col">{{trans('tr.h_up_perf_md')}}</td>
-                        <td scope="col">{{trans('tr.bhp_meter')}}</td>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr v-for="(row, row_index) in lonelywell" 
-                        :key="row_index"
-                        ref="editTable">
-                        <td><input data-key="field" :value="row.field" class="input_edit"></td>
-                        <td><input data-key="well_status_last_day" :value="row.well_status_last_day" class="input_edit"></td>
-                        <td><input data-key="rus_wellname" :value="row.rus_wellname" class="input_edit"></td>
-                        <td><input data-key="horizon" :value="row.horizon" class="input_edit"></td>
-                        <td><input data-key="object" :value="row.object" class="input_edit"></td>
-                        <td><input data-key="exp_meth" :value="row.exp_meth" class="input_edit"></td>
-                        <td><input data-key="type_text" :value="row.type_text" class="input_edit"></td>
-                        <td><input data-key="block" :value="row.block" class="input_edit"></td>
-                        <td><input data-key="cas_OD" :value="row.cas_OD" class="input_edit"></td>
-                        <td><input data-key="cas_ID" :value="row.cas_ID" class="input_edit"></td>
-                        <td><input data-key="h_up_perf_md" :value="row.h_up_perf_md" class="input_edit"></td>
-                        <td><input data-key="pump_type" :value="row.pump_type" class="input_edit"></td>
-                        <td><input data-key="type_sr" :value="row.type_sr" class="input_edit"></td>
-                        <td><input data-key="whp" :value="row.whp" class="input_edit"></td>
-                        <td><input data-key="line_p" :value="row.line_p" class="input_edit"></td>
-                        <td><input data-key="p_res" :value="row.p_res" class="input_edit"></td>
-                        <td><input data-key="h_dyn" :value="row.h_dyn" class="input_edit"></td>
-                        <td><input data-key="p_annular" :value="row.p_annular" class="input_edit"></td>
-                        <td><input data-key="dens_oil" :value="row.dens_oil" class="input_edit"></td>
-                        <td><input data-key="dens_liq" :value="row.dens_liq" class="input_edit"></td>
-                        <td><input data-key="h_perf" :value="row.h_perf" class="input_edit"></td>
-                        <td><input data-key="bhp_meter" :value="row.bhp_meter" class="input_edit"></td>
-                        <td v-show="false"><input data-key="well" :value="row.well" class="input_edit"></td>
+              <button
+                v-if="isPermission"
+                type="button" 
+                data-toggle="modal" 
+                data-target="#exampleModalCenter" 
+                @click="addpush()"
+                @click.prevent="wellAdd"
+                style="background: #272953; border: none; margin-left: 10px;"
+                v-bind:title="trans('tr.add_well')"
+                >
+                <svg 
+                    width="24" 
+                    height="24" 
+                    viewBox="0 0 24 24"
+                    fill="none" 
+                    xmlns="http://www.w3.org/2000/svg">
+                  <path 
+                    d="M18.5 12L5.5 12" 
+                    stroke="white" 
+                    stroke-width="1.5" 
+                    stroke-linecap="round"/>
+                  <path 
+                    d="M12 5.5V18.5" 
+                    stroke="white" 
+                    stroke-width="1.5" 
+                    stroke-linecap="round"/>
+                </svg>
+              </button>
+                
 
-                      </tr>
-                    </tbody>
-                  </table>
-              </div>
+              <a
+                v-if="edit"
+                v-bind:title="trans('tr.save')"
+                style="margin-left: 10px; cursor: pointer;"
+                @click="savetable()"
+                ><svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    clip-rule="evenodd"
+                    d="M15.4735 5C15.7387 5 15.9931 5.10536 16.1806 5.29289L18.9985 8.11077L18.9985 17.9985C18.9985 18.5508 18.5508 18.9985 17.9985 18.9985L6 18.9985C5.44772 18.9985 5 18.5508 5 17.9985L5 6C5 5.44772 5.44771 5 6 5L15.4735 5Z"
+                    stroke="white"
+                    stroke-width="1.2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <rect
+                    x="8.109"
+                    y="12.778"
+                    width="7.77693"
+                    height="6.22155"
+                    stroke="white"
+                    stroke-width="1.2"
+                    stroke-linejoin="round"
+                  />
+                  <rect
+                    x="8.88917"
+                    y="5"
+                    width="6.22155"
+                    height="3.88847"
+                    stroke="white"
+                    stroke-width="1.2"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </a>
+
+              <a
+                v-if="edit"
+                class="trgraph"
+                v-bind:title="trans('tr.cancel')"
+                style="cursor: pointer;"
+                data-toggle="tooltip"
+                data-placement="top"
+                @click="cancelEdit"
+                ><svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M17.6574 17.6575L6.34367 6.34383"
+                    stroke="white"
+                    stroke-width="1.4"
+                    stroke-linecap="round"
+                  />
+                  <path
+                    d="M17.6563 6.34383L6.34262 17.6575"
+                    stroke="white"
+                    stroke-width="1.4"
+                    stroke-linecap="round"
+                  />
+                </svg>
+              </a>
+
+              <a
+                v-if="!edit"
+                class="trgraph"
+                v-bind:title="trans('tr.show_graph')"
+                data-toggle="tooltip"
+                data-placement="top"
+                href="tr_charts"
+              
+                ><svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M15 5H5C4.44771 5 4 5.44772 4 6V18C4 18.5523 4.44772 19 5 19H17C17.5523 19 18 18.5523 18 18V11.6923M18 5V7M18 7H20M18 7V9M18 7H16M7.5 16V12.7692M11 16V8.46154M14.5 16V11.6923"
+                    stroke="white"
+                    stroke-width="1.4"
+                    stroke-linecap="round"
+                  />
+                </svg>
+              </a>
+
+              <a
+                v-if="!edit && isPermission && isDateCheck"
+                v-bind:title="trans('tr.edit')"
+                style="cursor: pointer;"
+                data-toggle="tooltip"
+                data-placement="top"
+                @click="editable()"
+                ><svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 18 18"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M3 11.5L1.55336 16.3221C1.53048 16.3984 1.6016 16.4695 1.67788 16.4466L6.5 15M3 11.5C3 11.5 11.0603 3.43942 12.7227 1.7772C12.8789 1.62104 13.1257 1.62572 13.2819 1.78189C13.8372 2.33714 15.1144 3.61434 16.2171 4.71709C16.3733 4.87334 16.3788 5.12115 16.2226 5.27738C14.5597 6.94002 6.5 15 6.5 15M3 11.5L3.64727 10.8527L7.14727 14.3527L6.5 15"
+                    stroke="white"
+                    stroke-width="1.4"
+                  />
+                </svg>
+              </a>
+
+              <button
+                v-if="!edit"
+                class="trgraph"
+                id="bt1"
+                @click="swap"
+                style="
+                  background: #272953;
+                  color: white;
+                  border: none;
+                "
+                :title="isfulltable ? trans('tr.short_version') : trans('tr.full_version')"
+                data-toggle="tooltip"
+                data-placement="top"
+              >
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  v-if="isfulltable"
+                >
+                  <path
+                    d="M9.23235 6H6.18359C5.63131 6 5.18359 6.44772 5.18359 7V18C5.18359 18.5523 5.63131 19 6.18359 19H17.342C17.8943 19 18.342 18.5523 18.342 18V15"
+                    stroke="white"
+                    stroke-width="1.4"
+                    stroke-linecap="round"
+                  />
+                  <path
+                    d="M18 6L12 12M12 12V7.6M12 12H16.4"
+                    stroke="white"
+                    stroke-width="1.4"
+                    stroke-linecap="round"
+                  />
+                </svg>
+
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  v-if="!isfulltable"
+                >
+                  <path
+                    d="M9 6H6C5.44772 6 5 6.44772 5 7V18C5 18.5523 5.44772 19 6 19H17C17.5523 19 18 18.5523 18 18V15M11.5 12.5L19 5M19 5V10.5M19 5H13.5"
+                    stroke="white"
+                    stroke-width="1.4"
+                    stroke-linecap="round"
+                  />
+                </svg>
+              </button>
             </div>
-          </modal>
-
-          <button
-            v-if="isPermission"
-            type="button" 
-            data-toggle="modal" 
-            data-target="#exampleModalCenter" 
-            @click="addpush()"
-            @click.prevent="wellAdd"
-            style="background: #272953; border: none; margin-left: 10px;"
-            v-bind:title="trans('tr.add_well')"
-            >
-            <svg 
-                width="24" 
-                height="24" 
-                viewBox="0 0 24 24"
-                fill="none" 
-                xmlns="http://www.w3.org/2000/svg">
-              <path 
-                d="M18.5 12L5.5 12" 
-                stroke="white" 
-                stroke-width="1.5" 
-                stroke-linecap="round"/>
-              <path 
-                d="M12 5.5V18.5" 
-                stroke="white" 
-                stroke-width="1.5" 
-                stroke-linecap="round"/>
-            </svg>
-          </button>
-            
-
-          <a
-            v-if="edit"
-            v-bind:title="trans('tr.save')"
-            style="margin-left: 10px; cursor: pointer;"
-            @click="savetable()"
-            ><svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                fill-rule="evenodd"
-                clip-rule="evenodd"
-                d="M15.4735 5C15.7387 5 15.9931 5.10536 16.1806 5.29289L18.9985 8.11077L18.9985 17.9985C18.9985 18.5508 18.5508 18.9985 17.9985 18.9985L6 18.9985C5.44772 18.9985 5 18.5508 5 17.9985L5 6C5 5.44772 5.44771 5 6 5L15.4735 5Z"
-                stroke="white"
-                stroke-width="1.2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-              <rect
-                x="8.109"
-                y="12.778"
-                width="7.77693"
-                height="6.22155"
-                stroke="white"
-                stroke-width="1.2"
-                stroke-linejoin="round"
-              />
-              <rect
-                x="8.88917"
-                y="5"
-                width="6.22155"
-                height="3.88847"
-                stroke="white"
-                stroke-width="1.2"
-                stroke-linejoin="round"
-              />
-            </svg>
-          </a>
-
-          <a
-            v-if="edit"
-            class="trgraph"
-            v-bind:title="trans('tr.cancel')"
-            style="cursor: pointer;"
-            data-toggle="tooltip"
-            data-placement="top"
-            @click="cancelEdit"
-            ><svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M17.6574 17.6575L6.34367 6.34383"
-                stroke="white"
-                stroke-width="1.4"
-                stroke-linecap="round"
-              />
-              <path
-                d="M17.6563 6.34383L6.34262 17.6575"
-                stroke="white"
-                stroke-width="1.4"
-                stroke-linecap="round"
-              />
-            </svg>
-          </a>
-
-          <a
-            v-if="!edit"
-            class="trgraph"
-            v-bind:title="trans('tr.show_graph')"
-            data-toggle="tooltip"
-            data-placement="top"
-            href="tr_charts"
-           
-            ><svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M15 5H5C4.44771 5 4 5.44772 4 6V18C4 18.5523 4.44772 19 5 19H17C17.5523 19 18 18.5523 18 18V11.6923M18 5V7M18 7H20M18 7V9M18 7H16M7.5 16V12.7692M11 16V8.46154M14.5 16V11.6923"
-                stroke="white"
-                stroke-width="1.4"
-                stroke-linecap="round"
-              />
-            </svg>
-          </a>
-
-          <a
-            v-if="!edit && isPermission && isDateCheck"
-            v-bind:title="trans('tr.edit')"
-            style="cursor: pointer;"
-            data-toggle="tooltip"
-            data-placement="top"
-            @click="editable()"
-            ><svg
-              width="18"
-              height="18"
-              viewBox="0 0 18 18"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M3 11.5L1.55336 16.3221C1.53048 16.3984 1.6016 16.4695 1.67788 16.4466L6.5 15M3 11.5C3 11.5 11.0603 3.43942 12.7227 1.7772C12.8789 1.62104 13.1257 1.62572 13.2819 1.78189C13.8372 2.33714 15.1144 3.61434 16.2171 4.71709C16.3733 4.87334 16.3788 5.12115 16.2226 5.27738C14.5597 6.94002 6.5 15 6.5 15M3 11.5L3.64727 10.8527L7.14727 14.3527L6.5 15"
-                stroke="white"
-                stroke-width="1.4"
-              />
-            </svg>
-          </a>
-
-          <button
-            v-if="!edit"
-            class="trgraph"
-            id="bt1"
-            @click="swap"
-            style="
-              background: #272953;
-              color: white;
-              border: none;
-            "
-            :title="isfulltable ? trans('tr.short_version') : trans('tr.full_version')"
-            data-toggle="tooltip"
-            data-placement="top"
-          >
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              v-if="isfulltable"
-            >
-              <path
-                d="M9.23235 6H6.18359C5.63131 6 5.18359 6.44772 5.18359 7V18C5.18359 18.5523 5.63131 19 6.18359 19H17.342C17.8943 19 18.342 18.5523 18.342 18V15"
-                stroke="white"
-                stroke-width="1.4"
-                stroke-linecap="round"
-              />
-              <path
-                d="M18 6L12 12M12 12V7.6M12 12H16.4"
-                stroke="white"
-                stroke-width="1.4"
-                stroke-linecap="round"
-              />
-            </svg>
-
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              v-if="!isfulltable"
-            >
-              <path
-                d="M9 6H6C5.44772 6 5 6.44772 5 7V18C5 18.5523 5.44772 19 6 19H17C17.5523 19 18 18.5523 18 18V15M11.5 12.5L19 5M19 5V10.5M19 5H13.5"
-                stroke="white"
-                stroke-width="1.4"
-                stroke-linecap="round"
-              />
-            </svg>
-          </button>
         </div>
 
         <div class="table-outer">
@@ -865,7 +866,7 @@
                               </b-form-group>
                               <div class="field_filter_text">
                                 <a href="#" class="form_text"  @click.prevent="chooseFilter"
-                                  >{{trans('tr.form')}}
+                                  >{{trans('tr.choose_t')}}
                                   </a>
                                   <a href="#" class="discard_text" @click.prevent="dropFieldFilter"
                                   >Сбросить
@@ -902,7 +903,7 @@
                               </b-form-group>
                               <div class="field_filter_text">
                                 <a href="#" class="form_text"  @click.prevent="chooseFilter"
-                                  >{{trans('tr.form')}}
+                                  >{{trans('tr.choose_t')}}
                                   </a>
                                   <a href="#" class="discard_text" @click.prevent="dropWellTypeFilter"
                                   >Сбросить
@@ -936,7 +937,7 @@
                               </b-form-group>
                               <div class="field_filter_text">
                                 <a href="#" class="form_text"  @click.prevent="chooseFilter"
-                                  >{{trans('tr.form')}}
+                                  >{{trans('tr.choose_t')}}
                                   </a>
                                   <a href="#" class="discard_text" @click.prevent="dropHorizonFilter"
                                   >Сбросить
@@ -970,7 +971,7 @@
                               </b-form-group>
                               <div class="field_filter_text">
                                 <a href="#" class="form_text"  @click.prevent="chooseFilter"
-                                  >{{trans('tr.form')}}
+                                  >{{trans('tr.choose_t')}}
                                   </a>
                                   <a href="#" class="discard_text" @click.prevent="dropObjectFilter"
                                   >Сбросить
@@ -1004,7 +1005,7 @@
                               </b-form-group>
                               <div class="field_filter_text">
                                 <a href="#" class="form_text"  @click.prevent="chooseFilter"
-                                  >{{trans('tr.form')}}
+                                  >{{trans('tr.choose_t')}}
                                   </a>
                                   <a href="#" class="discard_text" @click.prevent="dropBlockFilter"
                                   >Сбросить
@@ -1062,7 +1063,7 @@
                               </b-form-group>
                               <div class="field_filter_text">
                                 <a href="#" class="form_text"  @click.prevent="chooseFilter"
-                                  >{{trans('tr.form')}}
+                                  >{{trans('tr.choose_t')}}
                                   </a>
                                   <a href="#" class="discard_text" @click.prevent="dropExpMethFilter"
                                   >Сбросить
@@ -7234,19 +7235,9 @@ table::-webkit-scrollbar-corner {
  font-size:13px; 
  margin-left: 9px;
 }
-.cell-comment{
-    display: none;
-    width: auto;
-    position:absolute;
-    z-index:3060;
-    text-align: Left;
-    opacity: 0.4;
-    transition: opacity 2s;
-    border-radius: 6px;
-    background-color: #555;
-    padding:3px;
-    bottom: 31px;
-    /* top:-80px; */
+
+.tr_icons_block {
+    justify-content: right;
 }
 </style>
 

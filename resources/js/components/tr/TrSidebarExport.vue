@@ -31,10 +31,6 @@ export default {
         `${basePath}techregime/factor/download/`,
         `${basePath}techregime/download_tr/`
       );
-      // return this.ifFaTr(
-      //   `${basePath}techregime/factor/download/${this.$store.getters["fa/year"]}/${this.$store.getters["fa/month"]}/${this.$store.getters["fa/pryear"]}/${this.$store.getters["fa/prmonth"]}/`,
-      //   `${basePath}techregime/download/${this.$store.getters["tr/year"]}/${this.$store.getters["tr/month"]}/`
-      // );
     },
     postData() {
       return this.ifFaTr(
@@ -92,10 +88,8 @@ export default {
         window.location.pathname === this.localeUrl("/fa") ||
         window.location.pathname === this.localeUrl("/trfa")
       ) {
-        // FA
         return fa;
       } else {
-        // TR
         return tr;
       }
     },
