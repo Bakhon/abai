@@ -165,9 +165,8 @@ class WellsController extends Controller
             ->wherePivot('dend', '>', $this->getToday())
             ->withPivot('dend', 'dbeg', 'tap as tap')
             ->orderBy('pivot_dbeg', 'desc')
-            ->get();
+            ->first(['tap']);
     }
-
 
     private function wellType(Well $well)
     {

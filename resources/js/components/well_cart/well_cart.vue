@@ -239,6 +239,7 @@ export default {
         'categoryLast': {'name_ru': null},
         'expl': {'dbeg': null, 'name_ru': null},
         'techs': null,
+        'tap': {'tap': null},
         'techsName': null,
         'labResearchValue': {'value_double': null},
         'wellType': {'name_ru': null},
@@ -289,6 +290,7 @@ export default {
         'categoryLast': 'category_last',
         'expl': 'well_expl',
         'techs': 'techs',
+        'tap': 'tap',
         'labResearchValue': 'lab_research_value',
         'wellType': 'well_type',
         'org': 'org',
@@ -482,7 +484,7 @@ export default {
           'data': ''
         },
         {
-          'description': this.wellTechsTap,
+          'description': this.well.tap.tap,
           'method': null,
           'name': 'Отвод',
           'data': ''
