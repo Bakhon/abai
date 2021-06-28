@@ -268,9 +268,6 @@ export default {
                         'planMonth' : item.formula(item.planMonth,item.dzoName,inputData),
                     });
                 }
-                if (['ПКК','КГМ','ТП'].includes(item.dzoName)) {
-                    self.updateDzoCompaniesSummary(item,pkiSummary,inputData);
-                }
             });
 
             _.forEach(actualUpdatedByOpek, function(item, index) {
@@ -279,10 +276,10 @@ export default {
                     item.opekPlan *= self.factorOptions[item.dzoMonth];
                     item.planMonth *= self.factorOptions[item.dzoMonth];
                 }
-                if (item.dzoMonth === 'ПКИ') {
-                    item.factMonth = pkiSummary.factMonth;
-                    item.opekPlan = pkiSummary.opekPlan;
-                    item.planMonth = pkiSummary.planMonth;
+                if (['ПККР','КГМКМГ','ТП'].includes(item.dzoMonth)) {
+                    pkiSummary.factMonth +=item.factMonth;
+                    pkiSummary.planMonth +=item.planMonth;
+                    pkiSummary.opekPlan +=item.opekPlan;
                 }
                 if (item.dzoMonth === 'НКО') {
                     item.factMonth = self.dzoMultiplier['НКО'](null,item.factMonth,null);
@@ -290,6 +287,12 @@ export default {
                     item.planMonth = self.dzoMultiplier['НКО'](null,item.planMonth,null);
                 }
             });
+            let pkiIndex = actualUpdatedByOpek.findIndex(element => element.dzoMonth === 'ПКИ');
+            if (pkiIndex > -1) {
+                actualUpdatedByOpek[pkiIndex].factMonth = pkiSummary.factMonth;
+                actualUpdatedByOpek[pkiIndex].planMonth = pkiSummary.planMonth;
+                actualUpdatedByOpek[pkiIndex].opekPlan = pkiSummary.opekPlan;
+            }
 
             actualUpdatedByOpek = this.getSorted(actualUpdatedByOpek,this.sortingOrder);
 
@@ -358,14 +361,22 @@ export default {
             return actualUpdatedByOpek;
         },
 
-        updateProductionTotalFact(filteredByCompaniesYesterday,summary) {
+        updateProductionTotalFact(filteredByCompaniesYesterday,summary,todayDzoSummaryWithoutTroubledCompanies) {
             let oldFactFormatted = parseFloat(summary.fact.replace(/\s/g, ''));
             let oldPlanFormatted = parseFloat(summary.plan.replace(/\s/g, ''));
-            this.productionParams['oil_fact'] = _.sumBy(this.dzoSummaryForTable,'factMonth');
-            this.productionParams['oil_plan'] = _.sumBy(this.dzoSummaryForTable,'planMonth');
+            this.productionParams['oil_fact'] = _.sumBy(todayDzoSummaryWithoutTroubledCompanies,'factMonth');
+            this.productionParams['oil_plan'] = _.sumBy(todayDzoSummaryWithoutTroubledCompanies,'planMonth');
             this.productionPercentParams['oil_fact'] = _.sumBy(filteredByCompaniesYesterday,'factMonth');
             this.productionParamsWidget.oilFact = oldFactFormatted;
             this.productionParamsWidget.oilPlan = oldPlanFormatted;
+        },
+
+        deleteTroubleCompanies(yesterdayProductionDetails) {
+            let indexes = this.getElementIndexesByCompany(yesterdayProductionDetails,'ПКИ','dzoMonth');
+            for (var i in indexes.reverse()) {
+                yesterdayProductionDetails.splice(indexes[i], 1);
+            }
+            return yesterdayProductionDetails;
         },
 
         getFilteredByNotUsableDzo(data) {

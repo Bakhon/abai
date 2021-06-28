@@ -64,7 +64,6 @@
 
 <script>
 import ChartButton from "./ChartButton";
-
 import Chart1 from "./Chart1";
 import Chart3 from "./Chart3";
 import Chart4 from "./Chart4";
