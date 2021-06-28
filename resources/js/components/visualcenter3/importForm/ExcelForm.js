@@ -327,10 +327,7 @@ export default {
             } else {
                 this.status = this.trans("visualcenter.importForm.status.dataIsNotValid");
             }
-            if (this.dzoFieldsMapping[this.selectedDzo.ticker]) {
-                this.validateSummaryByOptions(this.dzoFieldsMapping[this.selectedDzo.ticker]);
-            }
-            if (this.errors.isSumByDzoEmpty) {
+            if (this.dzoFieldsMapping[this.selectedDzo.ticker] && !this.isValidSummary(this.dzoFieldsMapping[this.selectedDzo.ticker])) {
                 this.status = this.trans("visualcenter.importForm.status.verifySumByDzo");
             }
         },
