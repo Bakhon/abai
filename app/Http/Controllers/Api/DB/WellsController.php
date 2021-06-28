@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\BigData\WellSearchResource;
 use App\Models\BigData\Dictionaries\Geo;
+use App\Models\BigData\Dictionaries\Tech;
 use App\Models\BigData\Well;
 use App\Services\BigData\StructureService;
 use Carbon\Carbon;
@@ -143,12 +144,20 @@ class WellsController extends Controller
 
     private function techs(Well $well)
     {
-        return $well->techs()
+        $allParents = [];
+        $parent = $well->techs()
             ->wherePivot('dend', '>', $this->getToday())
             ->withPivot('dend', 'dbeg', 'tap as tap')
             ->orderBy('pivot_dbeg', 'desc')
-            ->get();
+            ->first()->id;
+        while ($parent != null) {
+            array_push($allParents, Tech::all()
+                ->find($parent));
+            $parent = Tech::all()->where('dend', '>', $this->getToday())->find($parent)->parent;
+        }
+        return $allParents;
     }
+
 
     private function wellType(Well $well)
     {
