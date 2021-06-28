@@ -130,10 +130,39 @@
               <div class="vertical-centered">
                 <div class="row">
                   <div class="inline-flex date-container">
-                    <span class="">Дата</span>
-                    <form class="">
-                      <input type="date">
-                    </form>
+                    <div class="col">
+                      <label>Выберите начальную дату</label>
+                      <datetime
+                          type="date"
+                          v-model="startDate"
+                          input-class="date"
+                          value-zone="Asia/Almaty"
+                          zone="Asia/Almaty"
+                          :format="{ year: 'numeric', month: 'numeric', day: 'numeric' }"
+                          :phrases="{ok: trans('app.choose'), cancel: trans('app.cancel')}"
+                          :max-datetime="endDate"
+                          :week-start="1"
+                          use24-hour
+                          auto
+                      >
+                      </datetime>
+                      <label>Выберите конечную дату</label>
+                      <datetime
+                          type="date"
+                          v-model="endDate"
+                          input-class="date"
+                          value-zone="Asia/Almaty"
+                          zone="Asia/Almaty"
+                          :format="{ year: 'numeric', month: 'numeric', day: 'numeric' }"
+                          :phrases="{ok: trans('app.choose'), cancel: trans('app.cancel')}"
+                          :min-datetime="startDate"
+                          :max-datetime="today"
+                          :week-start="1"
+                          use24-hour
+                          auto
+                      >
+                      </datetime>
+                    </div>
                   </div>
                   <div class="inline-flex">
                     <span class="calendar">Сегодня</span>
@@ -142,7 +171,6 @@
                     <span class="calendar">Месяц</span>
                     <span class="calendar">Год</span>
                   </div>
-
                   <div class="btn-container">
                     <button class="btn-disabled" @click="updateStatistics()">Создать отчет</button>
                     <button class="">Выбрать шаблон</button>
@@ -772,7 +800,7 @@ body {
     margin-bottom: 10px;
     padding: 11px 0px 11px 14px;
 
-    span {
+    span, label {
       font-family: $HarmoniaSansProCyr;
       font-weight: 700;
       font-size: 14px;
@@ -801,7 +829,12 @@ body {
     }
 
     .date-container {
-      &:first-child span {
+      .col {
+        margin: 0px;
+        padding: 0px;
+      }
+
+      label, :nth-child(2) {
         margin-right: 17px;
       }
     }
