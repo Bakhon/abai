@@ -417,20 +417,12 @@ class VisualCenterController extends Controller
             ->toArray();
     }
 
-    public function getProductionFondDetails(Request $request)
+    public function getFondDetails(Request $request)
     {
+        $fields = $request->fields;
+        array_push($fields, "date", "dzo_name", "id");
         return DzoImportData::query()
-            ->select(
-                'id',
-                'date',
-                'dzo_name',
-                'operating_production_fond',
-                'active_production_fond',
-                'inactive_production_fond',
-                'developing_production_fond',
-                'pending_liquidation_production_fond',
-                'in_work_production_fond',
-                'in_idle_production_fond')
+            ->select($fields)
             ->whereDate('date', '>=', Carbon::parse($request->startPeriod))
             ->whereDate('date', '<=', Carbon::parse($request->endPeriod))
             ->with('importDowntimeReason')

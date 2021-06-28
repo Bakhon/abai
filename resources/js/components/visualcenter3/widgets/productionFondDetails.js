@@ -123,20 +123,6 @@ export default {
         };
     },
     methods: {
-        async getProductionFondByMonth(periodStart,periodEnd) {
-            let queryOptions = {
-                'startPeriod': periodStart,
-                'endPeriod': periodEnd
-            };
-
-            let uri = this.localeUrl("/get-production-fond-details");
-            const response = await axios.get(uri,{params:queryOptions});
-            if (response.status === 200) {
-                return response.data;
-            }
-            return {};
-        },
-
         async switchProductionFondPeriod(buttonType) {
             this.$store.commit('globalloading/SET_LOADING', true);
             this.productionFondDailyPeriod = "";
@@ -148,24 +134,23 @@ export default {
             this.productionFondPeriodEnd = this.productionFondPeriodMapping[buttonType].end;
             this.isProductionFondPeriodSelected = this.isProductionFondFewMonthsSelected();
             this.updateProductionFondHistory();
-            this.productionFondDetails = await this.getProductionFondByMonth(this.productionFondPeriodStart,this.productionFondPeriodEnd);
-            this.productionFondHistory = await this.getProductionFondByMonth(this.productionFondHistoryPeriodStart,this.productionFondHistoryPeriodEnd);
+            this.productionFondDetails = await this.getFondByMonth(this.productionFondPeriodStart,this.productionFondPeriodEnd,'production');
+            this.productionFondHistory = await this.getFondByMonth(this.productionFondHistoryPeriodStart,this.productionFondHistoryPeriodEnd,'production');
             this.updateProductionFondWidget();
             this.$store.commit('globalloading/SET_LOADING', false);
         },
 
         async updateProductionFondHistory() {
             this.productionFondHistoryPeriodEnd = moment(this.productionFondPeriodStart,'DD.MM.YYYY').subtract(1,'days').format('DD.MM.YYYY');
-            this.productionFondHistoryPeriodStart =  moment(this.productionFondPeriodStart,'DD.MM.YYYY').subtract(this.productionFondDaysCount, 'days').startOf('day').format('DD.MM.YYYY');
+            this.productionFondHistoryPeriodStart =  moment(this.productionFondPeriodStart,'DD.MM.YYYY').subtract(this.fondDaysCountSelected.production, 'days').startOf('day').format('DD.MM.YYYY');
         },
 
         isProductionFondFewMonthsSelected() {
             let startDate =  moment(this.productionFondPeriodStart,'DD.MM.YYYY');
             let endDate = moment(this.productionFondPeriodEnd,'DD.MM.YYYY');
-            this.productionFondDaysCount = endDate.diff(startDate, 'days');
-
-            if (this.productionFondDaysCount === 0) {
-                this.productionFondDaysCount = 1;
+            this.fondDaysCountSelected.production = endDate.diff(startDate, 'days');
+            if (this.fondDaysCountSelected.production === 0) {
+                this.fondDaysCountSelected.production = 1;
             }
             return endDate.diff(startDate, 'days') > 0;
         },
@@ -178,8 +163,8 @@ export default {
             let productionFondDetails = _.cloneDeep(this.productionFondDetails);
             let productionFondDetailsHistory = _.cloneDeep(this.productionFondHistory);
             if (this.productionFondSelectedCompany !== 'all') {
-                productionFondDetails = this.getProductionFondFilteredByDzo(productionFondDetails,this.productionFondSelectedCompany);
-                productionFondDetailsHistory = this.getProductionFondFilteredByDzo(productionFondDetailsHistory,this.productionFondSelectedCompany);
+                productionFondDetails = this.getFoundsFilteredByDzo(productionFondDetails,this.productionFondSelectedCompany);
+                productionFondDetailsHistory = this.getFoundsFilteredByDzo(productionFondDetailsHistory,this.productionFondSelectedCompany);
             }
             let compared = this.getMergedByChild(productionFondDetails,'import_downtime_reason');
             this.updateProductionFondWidgetTable(compared);
@@ -190,8 +175,8 @@ export default {
 
         updateProductionFondSum(type,inputData) {
             let summary = this.getProductionWidgetSum(inputData);
-            this.productionFondSum[type].work = summary.in_work_production_fond / this.productionFondDaysCount;
-            this.productionFondSum[type].idle = summary.in_idle_production_fond / this.productionFondDaysCount;
+            this.productionFondSum[type].work = summary.in_work_production_fond / this.fondDaysCountSelected.production;
+            this.productionFondSum[type].idle = summary.in_idle_production_fond / this.fondDaysCountSelected.production;
         },
 
         getProductionFondWidgetChartData(compared) {
@@ -201,46 +186,17 @@ export default {
             let chartData = {};
             if (groupedForChart) {
                 for (let i in groupedForChart) {
-                    chartData[i] = this.getSumByFond(groupedForChart[i],'production');
+                    chartData[i] = this.getSumByFond(groupedForChart[i],'production','other_downtime_production_wells_count','isProductionIdleActive');
                 }
             }
-            console.log('-chartData')
-            console.log(chartData)
             return chartData;
         },
 
         updateProductionFondWidgetTable(input) {
             let tableData = _(input)
                 .groupBy("data")
-                .map((item) => (this.getSumByFond(item,'production'))).value();
-            this.updateProductionTable(tableData);
-        },
-
-        getSumByFond(inputData,fondName) {
-            let summaryWells = {};
-            let self = this;
-            if (this.fondsFilter.isProductionIdleActive) {
-                _.forEach(this.fondList[fondName].idle, function(fond) {
-                    summaryWells[fond] = _.round((_.sumBy(inputData, fond) / self.productionFondDaysCount), 0);
-                });
-                _.forEach(this.fondList.other, function(fond) {
-                    summaryWells['other_downtime_production_wells_count'] += _.sumBy(inputData, fond) / self.productionFondDaysCount;
-                });
-            } else {
-                _.forEach(this.fondList[fondName].work, function(fond) {
-                    summaryWells[fond] = _.round((_.sumBy(inputData, fond) / self.productionFondDaysCount), 0);
-                });
-            }
-            return summaryWells;
-        },
-
-        updateProductionTable(tableData) {
-            if (tableData.length > 0) {
-                _.forEach(this.productionFondData, function(item) {
-                    item.fact = tableData[0][item.code];
-                    item.isVisible = item.fact > 0;
-                });
-            }
+                .map((item) => (this.getSumByFond(item,'production','other_downtime_production_wells_count','isProductionIdleActive'))).value();
+            this.updateFoundsTable(tableData,this.productionFondData);
         },
 
         changeSelectedProductionFondCompanies(e) {
