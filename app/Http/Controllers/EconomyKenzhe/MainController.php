@@ -16,6 +16,16 @@ class MainController extends Controller
     public $companyId = 7;
     public $dateTo = null;
     public $dateFrom = null;
+    public $parentId = ['B71000000000' => 0,
+        'B60102990097' => 0,
+        'B70101990097' => 0,
+        'B72000000000' => 0,
+        'B73000000000' => 0,
+        'B74000000000' => 0,
+        'B91110301000' => 0,
+        'B77000000000' => 0,
+        'BZF402010000' => 0,
+    ];
     public $sum = [
         'B71000000000' => 0,
         'B60102990097' => 0,
@@ -211,6 +221,7 @@ class MainController extends Controller
 
     public function getSumValuesByNum($items, $type, $year, $num)
     {
+
         foreach ($items as $item) {
             if ($item['handbook_items']) {
                 return $this->getSumValuesByNum($item['handbook_items'], $type, $year, $num);
@@ -219,18 +230,21 @@ class MainController extends Controller
                 return $item[$type][$year];
             }
         }
+
     }
 
     public function getSumValuesByParentId($items, $type, $year, $num)
     {
 //        $this->sum[$num][$type][$year] = 0;
-        $id = HandbookRepTt::select('id')->where('num', $num)->first()['id'];
-        if($this->sum[$num] == 0) {
+        if (!$this->parentId[$num]) {
+            $this->parentId[$num] = HandbookRepTt::select('id')->where('num', $num)->first()['id'];
+        }
+        if ($this->sum[$num] == 0) {
             foreach ($items as $item) {
                 if ($item['handbook_items']) {
                     $this->getSumValuesByParentId($item['handbook_items'], $type, $year, $num);
                 }
-                if ($item['parent_id'] == $id) {
+                if ($item['parent_id'] == $this->parentId[$num]) {
                     $this->sum[$num] -= (float)$item[$type][$year];
                 }
             }
