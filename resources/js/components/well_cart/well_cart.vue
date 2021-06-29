@@ -270,6 +270,7 @@ export default {
         'gis': {'gis_date': null},
         'gdisCurrentValueBhp': {'value_double': null, 'meas_date': null},
         'zone': {'name_ru': null},
+        'wellReactInfl': {'well_reacting': null, 'well_influencing': null},
       },
       wellParent: null,
       tubeNomOd: null,
@@ -319,6 +320,7 @@ export default {
         'gis': 'gis',
         'gdisCurrentValueBhp': 'gdis_current_value_bhp',
         'zone': 'zone',
+        'wellReactInfl': 'well_react_infl',
       },
       forms_structure: forms_structure,
     }
@@ -361,7 +363,7 @@ export default {
           if (data.geo[Object.keys(data.geo).length - 1] != null) {
             this.wellGeoFields = data.geo[Object.keys(data.geo).length - 1]
           }
-          if(data.geo[0] != null){
+          if (data.geo[0] != null) {
             this.wellGeo = data.geo[0]
           }
           for (let i = 0; i < Object.keys(this.wellTransform).length; i++) {
@@ -512,13 +514,13 @@ export default {
           'data': ''
         },
         {
-          'description': null,
+          'description': this.well.wellReactInfl.well_reacting,
           'method': null,
           'name': 'Реагирующие скважины',
           'data': ''
         },
         {
-          'description': null,
+          'description': this.well.wellReactInfl.well_influencing,
           'method': null,
           'name': 'Влияющие скважины',
           'data': ''
