@@ -5,9 +5,6 @@ namespace App\Http\Controllers\EconomyKenzhe;
 use App\Models\EconomyKenzhe\HandbookRepTt;
 use App\Models\EconomyKenzhe\HandbookRepTtValue;
 use App\Http\Controllers\Controller;
-use DB;
-
-//use App\Models\EconomyKenzhe\HandbookRepTtValue;
 use App\Models\EcoRefsCompaniesId;
 use Illuminate\Http\Request;
 
@@ -39,9 +36,6 @@ class MainController extends Controller
         'B61099990097' => 0,
         'B61099480000' => 0,
         'B61099490000' => 0,
-//        'B61099990000' => 0,
-//        'B61099990000' => 0,
-
         'B77002000000' => 0,
         'B77001000000' => 0,
     ];
@@ -68,15 +62,9 @@ class MainController extends Controller
         'B61099990097' => 0,
         'B61099480000' => 0,
         'B61099490000' => 0,
-//        'B61099990000' => 0,
-//        'B61099990000' => 0,
-
         'B77002000000' => 0,
         'B77001000000' => 0,
     ];
-    public $parentNum;
-    public $save = [];
-
 
     public function company(Request $request)
     {
@@ -106,7 +94,6 @@ class MainController extends Controller
         $companyRepTtValues = EcoRefsCompaniesId::find($this->companyId)->statsByDate($currentYear)->get()->toArray();
         $repTtReportValues = $this->recursiveSetValueToHandbookByType($handbook, $companyRepTtValues, $currentYear, $previousYear, $this->dateFrom, $this->dateTo);
         $repTtReportValues = $this->setNetProfitValues($repTtReportValues, $currentYear, $previousYear);
-//        return $this->parentId;
         $data = [
             'reptt' => $repTtReportValues,
             'currentYear' => $currentYear,
@@ -187,7 +174,7 @@ class MainController extends Controller
         }
     }
 
-    public function setNetProfitValues(&$items, $currentYear, $previousYear)
+    public function setNetProfitValues(array &$items, int $currentYear, int $previousYear): array
     {
         $handbookKeys = ['plan_value', 'fact_value', 'intermediate_plan_value', 'intermediate_fact_value'];
         foreach ($items as &$item) {
@@ -207,7 +194,6 @@ class MainController extends Controller
                             $this->getSumValuesByParentId($items, $handbookKey, $year, 'BZF402010000');
                     }
                     if ($item['num'] == 'B91110101000') {
-
                         $item[$handbookKey][$year] =
                             $this->getSumValuesByNum($items, $handbookKey, $year, 'B60102990097') -
                             $this->getSumValuesByNum($items, $handbookKey, $year, 'B70101990097');
@@ -241,8 +227,6 @@ class MainController extends Controller
                             $this->getSumValuesByNum($items, $handbookKey, $year, 'B91110301000') -
                             $this->getSumValuesByParentId($items, $handbookKey, $year, 'B77001000000') -
                             $this->getSumValuesByParentId($items, $handbookKey, $year, 'B77002000000');
-
-                        ;
                     }
                 }
             }
@@ -250,7 +234,7 @@ class MainController extends Controller
         return $items;
     }
 
-    public function getSumValuesByNum($items, $type, $year, $num)
+    public function getSumValuesByNum(array $items, string $type, int $year, string $num)
     {
         foreach ($items as $item) {
             if ($item['handbook_items']) {
@@ -263,12 +247,12 @@ class MainController extends Controller
 
     }
 
-    public function getSumValuesByParentId($items, $type, $year, $num)
+    public function getSumValuesByParentId(array $items,string $type, int $year, string $num)
     {
         if (!$this->parentId[$num]) {
             $this->parentId[$num] = HandbookRepTt::select('id')->where('num', $num)->first()['id'];
         }
-        if ($this->sum[$num] == 0) {
+        if (!$this->sum[$num]) {
             foreach ($items as $item) {
                 if ($item['handbook_items']) {
                     $this->getSumValuesByParentId($item['handbook_items'], $type, $year, $num);
@@ -276,7 +260,6 @@ class MainController extends Controller
                 if ($item['parent_id'] == $this->parentId[$num]) {
                     $this->sum[$num] -= (float)$item[$type][$year];
                 }
-
             }
         }
         return $this->sum[$num];
