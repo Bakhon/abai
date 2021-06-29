@@ -11,6 +11,7 @@ use App\Models\BigData\Well;
 use App\Services\BigData\StructureService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Exception;
 
 
 class WellsController extends Controller
@@ -78,12 +79,17 @@ class WellsController extends Controller
             ->first()->id;
         while ($parent != null) {
             array_push($allParents, Geo::all()->find($parent));
-            $parent = Geo::with('firstParent')
-                ->findOrFail($parent)
-                ->firstParent
-                ->where('dend', '>', $this->getToday())
-                ->where('dbeg', '<=', $this->getToday())
-                ->first()->parent;
+            if (isset(Geo::with('firstParent')->find($parent)->firstParent->where('dend', '>', $this->getToday())
+                    ->where('dbeg', '<=', $this->getToday())->first()->parent)) {
+                $parent = Geo::with('firstParent')
+                    ->find($parent)
+                    ->firstParent
+                    ->where('dend', '>', $this->getToday())
+                    ->where('dbeg', '<=', $this->getToday())
+                    ->first()->parent;
+            } else {
+                return $allParents;
+            }
         }
         return $allParents;
     }
@@ -151,13 +157,17 @@ class WellsController extends Controller
             ->wherePivot('dend', '>', $this->getToday())
             ->withPivot('dend', 'dbeg', 'tap as tap')
             ->orderBy('pivot_dbeg', 'desc')
-            ->first()->id;
+            ->first();
         while ($parent != null) {
-            array_push($allParents, Tech::all()
-                ->find($parent));
-            $parent = Tech::all()->where('dend', '>', $this->getToday())->find($parent)->parent;
+            array_push($allParents, Tech::all()->find($parent));
+            if (isset(Tech::all()->where('dend', '>', $this->getToday())->find($parent)->parent)) {
+                $parent = Tech::all()->where('dend', '>', $this->getToday())->find($parent)->parent;
+            } else {
+                return $allParents;
+            }
         }
         return $allParents;
+//        return $parent;
     }
 
     private function tap(Well $well)
@@ -185,7 +195,11 @@ class WellsController extends Controller
             ->first()->id;
         while ($parent != null) {
             array_push($allParents, Org::all()->find($parent));
-            $parent = Org::all()->where('dend', '>', $this->getToday())->find($parent)->parent;
+            if (isset(Org::all()->where('dend', '>', $this->getToday())->find($parent)->parent)) {
+                $parent = Org::all()->where('dend', '>', $this->getToday())->find($parent)->parent;
+            } else {
+                return $allParents;
+            }
         }
         return $allParents;
     }
