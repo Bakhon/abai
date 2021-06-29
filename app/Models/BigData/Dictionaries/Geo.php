@@ -25,7 +25,7 @@ class Geo extends TBDModel
 
     public function firstParent()
     {
-        return $this->hasMany(GeoParent::class, 'geo_id', 'id');
+        return $this->hasMany(GeoParent::class, 'geo', 'id');
     }
 
     public function children()

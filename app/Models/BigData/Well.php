@@ -154,6 +154,11 @@ class Well extends TBDModel
         return $this->belongsToMany(Zone::class, 'prod.well_zone', 'well', 'id');
     }
 
+    public function wellReact()
+    {
+        return $this->hasMany(WellReactInfl::class, 'well_reacting', 'id');
+    }
+
 
     public function scopeActive($query, $date)
     {

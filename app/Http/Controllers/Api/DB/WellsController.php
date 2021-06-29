@@ -59,6 +59,7 @@ class WellsController extends Controller
             'gdis_complex' => $this->gdisComplex($well),
             'gis' => $this->gis($well),
             'zone' => $this->zone($well),
+            'well_react_infl' => $this->wellReact($well),
         );
     }
 
@@ -382,6 +383,11 @@ class WellsController extends Controller
             ->where('gis_type', '=', '1')
             ->orderBy('gis_date', 'desc')
             ->first(['gis_date']);
+    }
+
+    private function wellReact(Well $well)
+    {
+        return $well->wellReact()->first();
     }
 
     private function zone(Well $well)
