@@ -9,30 +9,30 @@ use App\Models\BigData\Dictionaries\Brigade;
 use App\Models\BigData\Dictionaries\Brigadier;
 use App\Models\BigData\Dictionaries\CasingType;
 use App\Models\BigData\Dictionaries\Company;
+use App\Models\BigData\Dictionaries\CoordSystem;
+use App\Models\BigData\Dictionaries\Device;
 use App\Models\BigData\Dictionaries\DrillChisel;
 use App\Models\BigData\Dictionaries\DrillColumnType;
 use App\Models\BigData\Dictionaries\Equip;
 use App\Models\BigData\Dictionaries\EquipFailReasonType;
 use App\Models\BigData\Dictionaries\EquipType;
+use App\Models\BigData\Dictionaries\GeoIdentifier;
 use App\Models\BigData\Dictionaries\GtmType;
+use App\Models\BigData\Dictionaries\InjAgentType;
 use App\Models\BigData\Dictionaries\NoBtmReason;
 use App\Models\BigData\Dictionaries\Org;
+use App\Models\BigData\Dictionaries\PumpType;
 use App\Models\BigData\Dictionaries\RepairWorkType;
 use App\Models\BigData\Dictionaries\TechConditionOfWells;
-use App\Models\BigData\Dictionaries\Zone;
-use App\Models\BigData\Dictionaries\PumpType;
-use App\Models\BigData\Dictionaries\InjAgentType;
-use App\Models\BigData\Dictionaries\WellActivity;
 use App\Models\BigData\Dictionaries\TechStateType;
+use App\Models\BigData\Dictionaries\Well;
+use App\Models\BigData\Dictionaries\WellActivity;
 use App\Models\BigData\Dictionaries\WellCategory;
+use App\Models\BigData\Dictionaries\WellExplType;
 use App\Models\BigData\Dictionaries\WellStatus;
 use App\Models\BigData\Dictionaries\WellType;
-use App\Models\BigData\Dictionaries\WellExplType;
-use App\Models\BigData\Dictionaries\Well;
+use App\Models\BigData\Dictionaries\Zone;
 use App\TybeNom;
-use App\Models\BigData\Dictionaries\Device;
-use App\Models\BigData\Dictionaries\GeoIdentifier;
-use App\Models\BigData\Dictionaries\CoordSystem;
 use Carbon\Carbon;
 use Illuminate\Cache\Repository;
 use Illuminate\Support\Facades\DB;
@@ -152,13 +152,13 @@ class DictionaryService
         'wells' => [
             'class' => Well::class,
             'name_field' => 'uwi'
-        ]        
+        ]
     ];
 
     const TREE_DICTIONARIES = [
         'orgs' => [
             'class' => Org::class,
-            'name_field' => 'name'
+            'name_field' => 'name_ru'
         ]
     ];
 
@@ -216,9 +216,9 @@ class DictionaryService
         $nameField = self::TREE_DICTIONARIES[$dict]['name_field'] ?? 'name';
 
         $items = $dictClass::query()
-            ->select('id', 'parent_id')
+            ->select('id', 'parent')
             ->selectRaw("$nameField as label")
-            ->orderBy('parent_id', 'asc')
+            ->orderBy('parent', 'asc')
             ->orderBy($nameField, 'asc')
             ->get()
             ->toArray();
@@ -230,7 +230,7 @@ class DictionaryService
     {
         $new = [];
         foreach ($items as $item) {
-            $new[$item['parent_id']][] = $item;
+            $new[$item['parent']][] = $item;
         }
         return $this->createTree($new, $new[null]);
     }

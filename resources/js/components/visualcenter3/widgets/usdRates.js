@@ -12,7 +12,6 @@ export default {
             currencyNowUsd: "",
             selectedUsdPeriod: 0,
             usdPeriod: 7,
-            dailyCurrencyChangeUsd: 0,
             dailyCurrencyChangeIndexUsd: '',
         };
     },

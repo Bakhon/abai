@@ -18,7 +18,18 @@ export default {
             flagOff: '<svg width="15" height="19" viewBox="0 0 15 19" fill="none" xmlns="http://www.w3.org/2000/svg"> \n' +
                 '<path fill-rule="evenodd" clip-rule="evenodd" d="M12.8448 0.286987H2.68496C1.56713 0.286987 0.663191 1.20167 0.663191 2.31911L0.652832 18.5754L7.76489 15.5272L14.877 18.5754V2.31911C14.877 1.20167 13.9627 0.286987 12.8448 0.286987Z" fill="#656A8A"/>' +
                 '</svg>',
-            selectedButtonName: 'oilCondensateProductionButton'
+            selectedButtonName: 'oilCondensateProductionButton',
+            chartTranslateMapping: {
+                'oilProductionButton': this.trans('visualcenter.getoildynamic'),
+                'oilDeliveryButton': this.trans('visualcenter.dlvoildynamic'),
+                'gasProductionButton': this.trans('visualcenter.getgasdynamic'),
+                'oilCondensate':this.trans('visualcenter.liqDynamic'),
+                'oilDeliveryButton': this.trans('visualcenter.dlvoildynamic'),
+            },
+            isOilResidueActive: false,
+            oilDeliveryFilters: {
+                'oilResidue': 'isOilResidueActive'
+            }
         };
     },
     methods: {
@@ -26,7 +37,7 @@ export default {
             this.$store.commit('globalloading/SET_LOADING', true);
             this.isOpecFilterActive = false;
             this.oilCondensateFilters.isWithoutKMGFilterActive = true;
-
+            this.isOilResidueActive = false;
             if (buttonName !== 'oilCondensateProductionButton') {
                 this.changeDzoCompaniesList(dzoCompaniesInitial);
             } else {
@@ -38,6 +49,7 @@ export default {
                 this.mainMenuButtonElementOptions = _.cloneDeep(mainMenuConfiguration);
                 this.disableOilFilters();
             }
+            this.chartHeadName = this.chartTranslateMapping[buttonName];
             this.chartSecondaryName = categoryName;
             this.selectedButtonName = buttonName;
             this.dzoCompaniesAssets['assetTitle'] = this.trans("visualcenter.summaryAssets");
@@ -59,6 +71,11 @@ export default {
         },
 
         switchMainMenu(parentButton, childButton) {
+            this.chartHeadName = this.chartTranslateMapping[parentButton];
+            this.isOilResidueActive = false;
+            if (this.oilDeliveryFilters[childButton]) {
+                this[this.oilDeliveryFilters[childButton]] = true;
+            }
             this.selectAllDzoCompanies();
             this.disableTargetCompanyFilter();
             let self = this;

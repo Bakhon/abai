@@ -47,6 +47,7 @@ Vue.component('paginate', Paginate);
 
 //Mixins
 import showToast from '~/mixins/showToast';
+import {currentUrlPage, urlLink} from "./components/geology/js/utils";
 Vue.mixin(showToast);
 
 
@@ -196,14 +197,22 @@ Vue.component('proactive-factors', require('./components/economy_kenzhe/proactiv
 Vue.component('proactive-factors-select-filter', require('./components/economy_kenzhe/proactiveFactors/selectFilter.vue').default);
 Vue.component('reptt-company2', require('./components/economy_kenzhe/proactiveFactors/repttCompany/reptt_company2.vue').default);
 
-Vue.component('GeologyPage', require('./components/geology/page.vue').default);
-Vue.component('GeologyLSide', require('./components/geology/Geology-l-side.vue').default);
-Vue.component('GeologyRSide', require('./components/geology/Geology-r-side.vue').default);
+Vue.component('GeologyPage', require('./components/geology/gis/page.vue').default);
+Vue.component('GeologyLSide', require('./components/geology/gis/Geology-l-side.vue').default);
+Vue.component('GeologyRSide', require('./components/geology/gis/Geology-r-side.vue').default);
 Vue.component('GeologyTSide', require('./components/geology/Geology-t-side.vue').default);
+
+Vue.component('GeologyCore', require('./components/geology/core/GeologyCore.vue').default);
+Vue.component('GeologyCoreLeftSide', require('./components/geology/core/GeologyCoreLeftSide.vue').default);
+Vue.component('GeologyCoreRightSide', require('./components/geology/core/GeologyCoreRightSide.vue').default);
+
+Vue.component('digital-rating', require('./components/DigitalRating/index.vue').default);
 
 Vue.prototype.trans = string => _.get(window.i18n, string) || string;
 Vue.prototype.localeUrl = string => `/${window.current_lang}/${string[0] === '/' ? string.substr(1) : string}`;
 Vue.prototype.currentLang = window.current_lang;
+Vue.prototype.$urlLink = url => urlLink(url);
+Vue.prototype.$currentPageUrl = currentUrlPage;
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
