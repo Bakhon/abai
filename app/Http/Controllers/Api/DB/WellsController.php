@@ -11,8 +11,6 @@ use App\Models\BigData\Well;
 use App\Services\BigData\StructureService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Exception;
-
 
 class WellsController extends Controller
 {
