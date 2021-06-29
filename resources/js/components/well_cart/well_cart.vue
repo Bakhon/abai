@@ -358,8 +358,12 @@ export default {
         try {
           this.well.id = data.wellInfo.id
           this.wellUwi = data.wellInfo.uwi
-          this.wellGeoFields = data.geo[Object.keys(data.geo).length - 1]
-          this.wellGeo = data.geo[0]
+          if (data.geo[Object.keys(data.geo).length - 1] != null) {
+            this.wellGeoFields = data.geo[Object.keys(data.geo).length - 1]
+          }
+          if(data.geo[0] != null){
+            this.wellGeo = data.geo[0]
+          }
           for (let i = 0; i < Object.keys(this.wellTransform).length; i++) {
             this.setWellObjectData(Object.keys(this.wellTransform)[i], Object.values(this.wellTransform)[i], data)
           }
