@@ -283,7 +283,7 @@ abstract class TableForm extends BaseForm
                             $field
                         );
                     }
-                    $row[$field['code']]['limits'] = $fieldLimits[$row['id']] ?? null;
+                    $row[$field['code']]['limits'] = isset($row['id']) ? ($fieldLimits[$row['id']] ?? null) : null;
                 }
                 return $row;
             }
