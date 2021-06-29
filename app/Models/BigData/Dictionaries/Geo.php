@@ -17,7 +17,7 @@ class Geo extends TBDModel
         $result = DB::connection($this->connection)
             ->table('dict.geo_parent')
             ->select('parent')
-            ->where('geo_id', $this->id)
+            ->where('geo', $this->id)
             ->first();
 
         return $result ? Geo::find($result->parent) : null;
@@ -35,7 +35,7 @@ class Geo extends TBDModel
 
     public function wells()
     {
-        return $this->belongsToMany(Well::class, 'prod.well_geo', 'geo_id', 'well_id');
+        return $this->belongsToMany(Well::class, 'prod.well_geo', 'geo', 'well_id');
     }
 
 
