@@ -206,7 +206,7 @@ export default {
         },
 
         processProductionDataByCompanies(productionData,metricName,chartSecondaryName) {
-            if (this.oilCondensateProductionButton.length > 0 || this.oilCondensateDeliveryButton.length > 0) {
+            if (this.isConsolidatedCategoryActive()) {
                 this.isOpecFilterActive = false;
                 this.planFieldName = 'oil_plan';
             }
@@ -790,9 +790,10 @@ export default {
             if (this.oilCondensateProductionButton.length > 0 || this.oilCondensateDeliveryButton.length > 0) {
                 let yesterdayPeriodStart = moment(new Date(this.timestampToday)).subtract(this.quantityRange, 'days').valueOf();
                 let yesterdayPeriodEnd = moment(new Date(this.timestampEnd)).subtract(this.quantityRange, 'days').valueOf();
-                this.productionParamsWidget.yesterdayOldFact = this.productionPercentParams['oil_fact'];
-                this.yesterdaySummary = this.getConsolidatedOilCondensate(yesterdayPeriodStart,yesterdayPeriodEnd,'yesterday',this.yesterdayProductionDetails);
-                this.dzoCompanySummary = this.getConsolidatedOilCondensate(this.timestampToday,this.timestampEnd,'current',this.dzoCompanySummary);
+                this.updateConsolidatedOilCondensate(yesterdayPeriodStart,yesterdayPeriodEnd,'yesterday',this.yesterdayProductionDetails);
+                this.updateConsolidatedOilCondensate(this.timestampToday,this.timestampEnd,'current',this.dzoCompanySummary);
+                this.dzoCompanySummary = this.getConsolidatedBy('current');
+                this.yesterdaySummary = this.getConsolidatedBy('yesterday');
             }
             this.calculateDzoCompaniesSummary();
         },

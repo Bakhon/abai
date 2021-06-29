@@ -23,6 +23,7 @@ export default {
                 'withParticipation': [],
                 'withoutParticipation': [],
                 'yesterdayWithParticipation': [],
+                'yesterdayWithoutParticipation': [],
                 'chartWithParticipation': [],
                 'chartWithoutParticipation': [],
             },
@@ -31,9 +32,7 @@ export default {
                 'oilFact' : 0,
                 'oilPlan' : 0,
                 'yesterdayOilFact': 0,
-                'yesterdayOldFact': 0,
                 'yesterdayOilFactWithFilter': 0,
-
             },
             factorOptions: {
                 'ММГ': 0.5,
@@ -136,6 +135,15 @@ export default {
         };
     },
     methods: {
+        getConsolidatedBy(periodType) {
+            if (periodType === 'current') {
+                return this.consolidatedData.withParticipation;
+            } else if (periodType === 'yesterday') {
+                return this.consolidatedData.yesterdayWithParticipation;
+            }
+            return [];
+        },
+
         switchFilterConsolidatedOilCondensate(parentButton,childButton,filterName) {
             this.oilCondensateFilters[filterName] = !this.oilCondensateFilters[filterName];
             let chartOutput = this.consolidatedData.chartWithParticipation;
@@ -145,9 +153,11 @@ export default {
             this.exportDzoCompaniesSummaryForChart(chartOutput);
             if (this.oilCondensateFilters[filterName]) {
                 this.dzoCompanySummary = this.consolidatedData.withParticipation;
+                this.yesterdaySummary = this.consolidatedData.yesterdayWithParticipation;
                 this.changeDzoCompaniesList(companiesListWithKMG);
             } else {
                 this.dzoCompanySummary = this.consolidatedData.withoutParticipation;
+                this.yesterdaySummary = this.consolidatedData.yesterdayWithoutParticipation;
                 this.changeDzoCompaniesList(companiesListWithoutKMG);
             }
             this.selectAllDzoCompanies();
@@ -155,12 +165,8 @@ export default {
             this.switchButtonOptions(elementOptions);
             this.calculateDzoCompaniesSummary();
         },
-        getConsolidatedOilCondensate(periodStart,periodEnd,periodName,summary) {
-            // console.log(this.oilCondensateDeliveryButton)
-            // console.log('-summary')
-            // console.log(summary)
-            // console.log('-this.productionTableData')
-            // console.log(this.productionTableData)
+
+        updateConsolidatedOilCondensate(periodStart,periodEnd,periodName,summary) {
             let self = this;
             let filteredByCompanies = this.getFilteredCompaniesList(_.cloneDeep(this.productionTableData));
             let filteredByPeriod = this.getFilteredByPeriod(filteredByCompanies,true,periodStart,periodEnd);
@@ -208,8 +214,13 @@ export default {
             let selectedCompanies = this.dzoCompanies.filter(row => row.selected === true).map(row => row.ticker);
             sortedWithKMGParticipation = sortedWithKMGParticipation.filter(row => selectedCompanies.includes(row.dzoMonth));
             sortedWithoutKMGParticipation = sortedWithoutKMGParticipation.filter(row => selectedCompanies.includes(row.dzoMonth));
-            this.consolidatedData.withParticipation = sortedWithKMGParticipation;
-            this.consolidatedData.withoutParticipation = sortedWithoutKMGParticipation;
+            if (periodName === 'current') {
+                this.consolidatedData.withParticipation = sortedWithKMGParticipation;
+                this.consolidatedData.withoutParticipation = sortedWithoutKMGParticipation;
+            } else {
+                this.consolidatedData.yesterdayWithParticipation = sortedWithKMGParticipation;
+                this.consolidatedData.yesterdayWithoutParticipation = sortedWithoutKMGParticipation;
+            }
             this.updateChart(periodStart,periodEnd);
         },
 

@@ -126,7 +126,6 @@ export default {
         },
 
         calculateDzoCompaniesSummary() {
-            console.log(this.dzoSummaryForTable);
             let emptyDzo = [];
             this.dzoSummaryForTable = this.dzoCompanySummary.filter(item => this.selectedDzoCompanies.includes(item.dzoMonth));
             let filteredByCompaniesYesterday = this.yesterdaySummary.filter(item => this.selectedDzoCompanies.includes(item.dzoMonth));
@@ -139,7 +138,6 @@ export default {
             this.isMultipleDzoCompaniesSelected = this.dzoSummaryForTable.length > 1;
             let summary = _.cloneDeep(this.dzoCompaniesSummaryInitial);
             let self = this;
-
             _.forEach(actualFilteredSummary, function (company) {
                 if(!company) {
                     return;
@@ -150,24 +148,23 @@ export default {
                 if (self.isFilterTargetPlanActive) {
                     summary.targetPlan = parseInt(summary.targetPlan) + parseInt(company.targetPlan);
                 }
-                if (self.oilCondensateProductionButton.length > 0) {
-                    summary.opekPlan = parseInt(summary.plan) + parseInt(company.opekPlan);
+                if (self.isConsolidatedCategoryActive()) {
+                    summary.opekPlan = parseInt(summary.opekPlan) + parseInt(company.opekPlan);
                 }
-                console.log(company.planMonth + company.factMonth + company.opekPlan);
+                //console.log(company.planMonth + company.factMonth + company.opekPlan);
             });
             summary = this.getFormatted(summary);
-            console.log(summary);
             let yesterdayFilteredSummary = this.deleteTroubleCompanies(filteredByCompaniesYesterday);
             this.updateProductionTotalFact(yesterdayFilteredSummary,summary,actualFilteredSummary);
 
             this.dzoCompaniesSummary = summary;
-            if (this.oilCondensateProductionButton.length > 0) {
+            if (this.isConsolidatedCategoryActive()) {
                 this.isOpecFilterActive = true;
             }
         },
 
         getFormatted(summary) {
-            if (this.oilCondensateProductionButton.length > 0) {
+            if (this.isConsolidatedCategoryActive()) {
                 summary.opekDifference = this.getFormattedNumberToThousand(
                     summary.opekPlan,summary.fact);
                 summary.opekPlan = this.formatDigitToThousand(summary.opekPlan);
@@ -201,7 +198,6 @@ export default {
         },
 
         selectDzoCompanies() {
-            this.selectCompany('all');
             this.isMultipleDzoCompaniesSelected = true;
             this.dzoCompaniesAssets = _.cloneDeep(this.dzoCompaniesAssetsInitial);
             this.disableDzoRegions();
