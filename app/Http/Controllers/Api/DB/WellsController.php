@@ -69,12 +69,15 @@ class WellsController extends Controller
     private function geo(Well $well)
     {
         $allParents = [];
-        $parent = $well->geo()
-            ->wherePivot('dend', '>', $this->getToday())
-            ->wherePivot('dbeg', '<=', $this->getToday())
-            ->withPivot('dend', 'dbeg')
-            ->orderBy('pivot_dbeg')
-            ->first()->id;
+        $parent = null;
+        if (isset($well->geo()->id)) {
+            $parent = $well->geo()
+                ->wherePivot('dend', '>', $this->getToday())
+                ->wherePivot('dbeg', '<=', $this->getToday())
+                ->withPivot('dend', 'dbeg')
+                ->orderBy('pivot_dbeg')
+                ->first()->id;
+        }
         while ($parent != null) {
             array_push($allParents, Geo::all()->find($parent));
             if (isset(Geo::with('firstParent')->find($parent)->firstParent->where('dend', '>', $this->getToday())
@@ -165,7 +168,6 @@ class WellsController extends Controller
             }
         }
         return $allParents;
-//        return $parent;
     }
 
     private function tap(Well $well)
