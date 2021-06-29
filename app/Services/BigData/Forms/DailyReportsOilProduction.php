@@ -22,10 +22,7 @@ class DailyReportsOilProduction extends TableForm
         ];
         $filter = json_decode($this->request->get('filter'));
         if ($this->request->get('id')) {
-            $org = Org::query()
-                ->select('*')
-                ->where('id', '=', $this->request->get('id'))
-                ->first();
+            $org = Org::find($this->request->get('id'));
             if (!$org) {
                 return ['rows' => []];
             }
@@ -59,7 +56,12 @@ class DailyReportsOilProduction extends TableForm
 
     protected function saveSingleFieldInDB(string $field, int $wellId, Carbon $date, $value): void
     {
+        /** TODO метод для сохранения значения поля */
+    }
 
+    protected function saveHistory(string $field, $value): void
+    {
+        /** TODO метод для сохранения истории изменений */
     }
 
     private function getData($startDate, $endDate, $optionId) {
@@ -74,18 +76,9 @@ class DailyReportsOilProduction extends TableForm
             'id' => 0,
             'plan' => $data->sum('plan'),
         ];
-        switch ($optionId) {
-            case self::CITS:
-                $result['fact'] = $data->sum('plan');
-                break;
-            case self::GS:
-                $result['fact'] = 0;
-                break;
-            case self::ALL:
-                $result['fact'] = 0;
-                break;
-            default:
-                $result['fact'] = $data->sum('plan');
+        $result['fact'] = $data->sum('plan');
+        if ($optionId == self::ALL || $optionId == self::GS) {
+            $result['fact'] = 0;
         }
 
         return $result;

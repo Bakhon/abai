@@ -346,7 +346,6 @@ export default {
       return true
     },
     async saveCell(row, column) {
-      console.log(row);
       this.checkLimits(row, column).then(result => {
         if (result === true) {
 
