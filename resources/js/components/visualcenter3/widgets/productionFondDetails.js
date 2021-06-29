@@ -28,8 +28,8 @@ export default {
                     'end': moment().format('DD.MM.YYYY'),
                 },
                 productionFondPeriod: {
-                    'start': moment().format('DD.MM.YYYY'),
-                    'end': moment().format('DD.MM.YYYY')
+                    'start': moment().subtract(1, 'days').format('DD.MM.YYYY'),
+                    'end': moment().subtract(1, 'days').format('DD.MM.YYYY')
                 },
             },
             productionFondSelectedCompany: 'all',
