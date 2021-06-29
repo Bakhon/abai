@@ -5,6 +5,7 @@ namespace App\Models\BigData;
 use App\Models\BigData\Dictionaries\BottomHoleType;
 use App\Models\BigData\Dictionaries\GdisConclusion;
 use App\Models\BigData\Dictionaries\Geo;
+use App\Models\BigData\Dictionaries\GtmType;
 use App\Models\BigData\Dictionaries\Org;
 use App\Models\BigData\Dictionaries\Tech;
 use App\Models\BigData\Dictionaries\TubeNom;
@@ -157,6 +158,11 @@ class Well extends TBDModel
     public function wellReact()
     {
         return $this->hasMany(WellReactInfl::class, 'well_reacting', 'id');
+    }
+
+    public function gtm()
+    {
+        return $this->hasMany(Gtm::class, 'well', 'id');
     }
 
 

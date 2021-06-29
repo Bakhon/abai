@@ -59,6 +59,7 @@ class WellsController extends Controller
             'gis' => $this->gis($well),
             'zone' => $this->zone($well),
             'well_react_infl' => $this->wellReact($well),
+            'gtm' => $this->gtm($well),
         );
     }
 
@@ -428,6 +429,13 @@ class WellsController extends Controller
             ->wherePivot('dend', '>=', $this->getToday())
             ->orderBy('dend', 'desc')
             ->first(['name_ru', 'dend']);
+    }
+
+    private function gtm(Well $well)
+    {
+        return $well->gtm()->join('dict.gtm_type', 'prod.gtm.gtm_type', '=', 'dict.gtm_type.id')
+            ->where('dict.gtm_type.gtm_kind', '=', '10')
+            ->first(['dbeg']);
     }
 
 

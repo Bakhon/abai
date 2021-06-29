@@ -271,6 +271,7 @@ export default {
         'gdisCurrentValueBhp': {'value_double': null, 'meas_date': null},
         'zone': {'name_ru': null},
         'wellReactInfl': {'well_reacting': null, 'well_influencing': null},
+        'gtm': {'dbeg': null},
       },
       wellParent: null,
       tubeNomOd: null,
@@ -321,6 +322,7 @@ export default {
         'gdisCurrentValueBhp': 'gdis_current_value_bhp',
         'zone': 'zone',
         'wellReactInfl': 'well_react_infl',
+        'gtm': 'gtm',
       },
       forms_structure: forms_structure,
     }
@@ -746,7 +748,7 @@ export default {
           'data': ''
         },
         {
-          'description': null,
+          'description': this.well.gtm.dbeg,
           'method': null,
           'name': 'Дата проведения ГРП',
           'data': ''
