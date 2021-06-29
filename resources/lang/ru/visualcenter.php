@@ -371,4 +371,5 @@ return array (
   'forLastMonth' => 'За предыдущий месяц',
   'oilCondensateProductionChartName' => 'Динамика добычи нефти и конденсата',
   'otmDrillingComission' => 'Проходка',
+  'fondMiddleInMonth' => 'ср. взвешенное'
 );

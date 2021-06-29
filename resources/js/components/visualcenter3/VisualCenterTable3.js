@@ -28,6 +28,9 @@ import chemistryDetails from './widgets/chemistryDetails';
 import wellsWorkoverDetails from './widgets/wellsWorkoverDetails';
 import managers from './widgets/managers';
 import drillingDetails from './widgets/otmDrillingDetails';
+import productionFondDetails from './widgets/productionFondDetails';
+import wellsDetails from './dataManagers/wellsDetails';
+import injectionFondDetails from './widgets/injectionFondDetails';
 
 
 export default {
@@ -722,7 +725,10 @@ export default {
         chemistryDetails,
         wellsWorkoverDetails,
         managers,
-        drillingDetails
+        drillingDetails,
+        wellsDetails,
+        productionFondDetails,
+        injectionFondDetails
     ],
     async mounted() {
         this.$store.commit('globalloading/SET_LOADING', true);
@@ -748,10 +754,14 @@ export default {
         this.timestampEnd = new Date(this.range.end).getTime();
 
         this.selectedYear = this.year;
-
+        this.updateDzoMenu();
         localStorage.setItem("selectedPeriod", "undefined");
         this.getCurrencyNow(this.timeSelect);
         this.updatePrices(this.period);
+        this.productionFondDetails = await this.getFondByMonth(this.productionFondPeriodStart,this.productionFondPeriodEnd,'production');
+        this.productionFondHistory = await this.getFondByMonth(this.productionFondHistoryPeriodStart,this.productionFondHistoryPeriodEnd,'production');
+        this.injectionFondDetails = await this.getFondByMonth(this.injectionFondPeriodStart,this.injectionFondPeriodEnd,'injection');
+        this.injectionFondHistory = await this.getFondByMonth(this.injectionFondHistoryPeriodStart,this.injectionFondHistoryPeriodEnd,'injection');
         this.chemistryDetails = await this.getChemistryByMonth();
         this.wellsWorkoverDetails = await this.getWellsWorkoverByMonth();
         this.drillingDetails = await this.getDrillingByMonth();
@@ -771,6 +781,8 @@ export default {
         this.updateChemistryWidget();
         this.updateWellsWorkoverWidget();
         this.updateDrillingWidget();
+        this.updateProductionFondWidget();
+        this.updateInjectionFondWidget();
     },
     watch: {
         bigTable: function () {
