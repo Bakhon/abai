@@ -2,16 +2,9 @@
 
 namespace App\Console\Commands\Import;
 
-use App\Imports\Ngdu4WellsImport;
-use App\Imports\TrunklineImport;
-use App\Models\ComplicationMonitoring\PipeType;
-use App\Models\ComplicationMonitoring\OilPipe;
-use App\Models\ComplicationMonitoring\PipeCoord;
-use App\Models\ComplicationMonitoring\Well;
-use App\Models\ComplicationMonitoring\Zu;
+use App\Imports\PipePassportsImport;
+use App\Models\ComplicationMonitoring\PipePassport;
 use Illuminate\Console\Command;
-use App\Imports\GuWellsImport;
-use Illuminate\Support\Facades\DB;
 
 class PipePassports extends Command
 {
@@ -49,6 +42,7 @@ class PipePassports extends Command
     public function handle(): void
     {
         activity()->disableLogging();
+        PipePassport::truncate();
 
         $this->importExcel(new PipePassportsImport($this), public_path('imports/pipe_passports.xlsx'));
     }
