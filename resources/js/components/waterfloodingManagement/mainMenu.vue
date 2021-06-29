@@ -2,7 +2,8 @@
   <div class="col m-0 p-0">
       <div class="row m-0 text-left">
         <div class="col-4 col-md-12 col-lg-4 p-1" v-for="(menuItem, i) in menu">
-          <div class="w-100">
+          <div class="w-100"
+               @click="menuClick(menuItem.component)">
             <div class="menu-item-bg rounded p-1 pl-2 d-flex" >
               <div class="menu-title mr-auto">
                 <img class="my-auto" :src="menuItem.icon" width="24" height="24">
@@ -24,5 +25,11 @@ export default {
       menu: mainMenu,
     };
   },
+  methods: {
+    menuClick (childComponent) {
+      this.$emit('menuClick', childComponent);
+      // this.menuItemMouseLeave();
+    }
+  }
 }
 </script>

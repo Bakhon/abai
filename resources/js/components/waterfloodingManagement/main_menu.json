@@ -1,11 +1,21 @@
 [
   {
     "name": "Выбор объекта и участка",
-    "icon": "/img/waterfloodingManagement/water-flooding-management-group_1.svg"
+    "icon": "/img/waterfloodingManagement/water-flooding-management-group_1.svg",
+    "component": {
+      "name": "child-component",
+      "template": "<div><water-flooding-management-map></water-flooding-management-map></div>",
+      "parentType": "aegtm"
+    }
   },
   {
     "name": "Прогнозирование и оптимизация",
-    "icon": "/img/waterfloodingManagement/water-flooding-management-group_2.svg"
+    "icon": "/img/waterfloodingManagement/water-flooding-management-group_2.svg",
+    "component": {
+      "name": "child-component",
+      "template": "<div><water-flooding-management-forecasting></water-flooding-management-forecasting></div>",
+      "parentType": "aegtm"
+    }
   },
   {
     "name": "Оценка и мониторинг",

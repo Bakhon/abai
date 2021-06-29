@@ -432,17 +432,7 @@ export default {
   width: 50%;
   z-index: -1;
 }
-.prediction-btn{
-  height: 40px;
-  border-radius: 4px;
-  border:none;
-  background: #3366FF;
-  color: #fff;
-  font-weight: bold;
-  font-size: 17px;
-  line-height: 20px;
-  text-align: center;
-}
+
 .info-for-object{
   height: 120px;
   background: #2B2E5E;
