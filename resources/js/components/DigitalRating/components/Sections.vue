@@ -1,7 +1,4 @@
 <template>
-  <div>
-    SECTIOOns
-  </div>
 </template>
 
 <script>
