@@ -5,6 +5,7 @@ namespace App\Http\Controllers\EconomyKenzhe;
 use App\Models\EconomyKenzhe\HandbookRepTt;
 use App\Models\EconomyKenzhe\HandbookRepTtValue;
 use App\Http\Controllers\Controller;
+use DB;
 
 //use App\Models\EconomyKenzhe\HandbookRepTtValue;
 use App\Models\EcoRefsCompaniesId;
@@ -25,8 +26,8 @@ class MainController extends Controller
         'B91110301000' => 0,
         'B77000000000' => 0,
         'BZF402010000' => 0,
-
     ];
+    public $save = [];
 
 
     public function company(Request $request)
@@ -53,10 +54,13 @@ class MainController extends Controller
             $this->dateFrom = date('Y-m-01', strtotime($this->dateTo . '-2 months'));
         }
         $handbook = HandbookRepTt::where('parent_id', 0)->with('childHandbookItems')->get()->toArray();
+//        return $handbook;
         $companies = EcoRefsCompaniesId::all();
         $companyRepTtValues = EcoRefsCompaniesId::find($this->companyId)->statsByDate($currentYear)->get()->toArray();
+//        return $companyRepTtValues;
         $repTtReportValues = $this->recursiveSetValueToHandbookByType($handbook, $companyRepTtValues, $currentYear, $previousYear, $this->dateFrom, $this->dateTo);
         $repTtReportValues = $this->setNetProfitValues($repTtReportValues, $currentYear, $previousYear);
+
         $data = [
             'reptt' => $repTtReportValues,
             'currentYear' => $currentYear,
@@ -154,11 +158,15 @@ class MainController extends Controller
                             $this->getSumValuesByParentId($items, $handbookKey, $year, 'B91110301000') -
                             $this->getSumValuesByParentId($items, $handbookKey, $year, 'B77000000000') -
                             $this->getSumValuesByParentId($items, $handbookKey, $year, 'BZF402010000');
+                        $this->save['B91000000000'][$handbookKey][$year] = $item[$handbookKey][$year];
                     }
                     if ($item['num'] == 'B91110101000') {
+
                         $item[$handbookKey][$year] =
                             $this->getSumValuesByNum($items, $handbookKey, $year, 'B60102990097') -
                             $this->getSumValuesByNum($items, $handbookKey, $year, 'B70101990097');
+                        $this->save['B91110101000'][$handbookKey][$year] = $item[$handbookKey][$year];
+
                     }
                     if ($item['num'] == 'B91110100000') {
                         $item[$handbookKey][$year] =
@@ -167,6 +175,8 @@ class MainController extends Controller
                             $this->getSumValuesByParentId($items, $handbookKey, $year, 'B71000000000') -
                             $this->getSumValuesByParentId($items, $handbookKey, $year, 'B72000000000') -
                             $this->getSumValuesByParentId($items, $handbookKey, $year, 'B73000000000');
+                        $this->save['B91110100000'][$handbookKey][$year] = $item[$handbookKey][$year];
+
                     }
                     if ($item['num'] == 'B91110000000') {
                         $item[$handbookKey][$year] =
@@ -177,6 +187,8 @@ class MainController extends Controller
                             $this->getSumValuesByParentId($items, $handbookKey, $year, 'B73000000000') -
                             $this->getSumValuesByParentId($items, $handbookKey, $year, 'B74000000000') +
                             $this->getSumValuesByNum($items, $handbookKey, $year, 'B91110301000');
+                        $this->save['B91110000000'][$handbookKey][$year] = $item[$handbookKey][$year];
+
                     }
                     if ($item['num'] == 'B91100000000') {
                         $item[$handbookKey][$year] =
@@ -188,6 +200,8 @@ class MainController extends Controller
                             $this->getSumValuesByParentId($items, $handbookKey, $year, 'B74000000000') +
                             $this->getSumValuesByNum($items, $handbookKey, $year, 'B91110301000') -
                             $this->getSumValuesByParentId($items, $handbookKey, $year, 'B77000000000');
+                        $this->save['B91100000000'][$handbookKey][$year] = $item[$handbookKey][$year];
+
                     }
                 }
             }
@@ -209,13 +223,16 @@ class MainController extends Controller
 
     public function getSumValuesByParentId($items, $type, $year, $num)
     {
+//        $this->sum[$num][$type][$year] = 0;
         $id = HandbookRepTt::select('id')->where('num', $num)->first()['id'];
-        foreach ($items as $item) {
-            if ($item['handbook_items']) {
-                $this->getSumValuesByParentId($item['handbook_items'], $type, $year, $num);
-            }
-            if ($item['parent_id'] == $id) {
-                $this->sum[$num] -= (float)$item[$type][$year];
+        if($this->sum[$num] == 0) {
+            foreach ($items as $item) {
+                if ($item['handbook_items']) {
+                    $this->getSumValuesByParentId($item['handbook_items'], $type, $year, $num);
+                }
+                if ($item['parent_id'] == $id) {
+                    $this->sum[$num] -= (float)$item[$type][$year];
+                }
             }
         }
         return $this->sum[$num];
