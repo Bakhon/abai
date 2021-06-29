@@ -130,7 +130,7 @@
               <div class="vertical-centered">
                 <div class="row">
                   <div class="col date-container">
-                    <label>Выберите начальную дату</label>
+                    <label>{{ trans('bd.choose_start_date') }}</label>
                     <datetime
                       type="datetime"
                       v-model="startDate"
@@ -147,7 +147,7 @@
                     </datetime>
                   </div>
                   <div class="col date-container">
-                    <label>Выберите конечную дату</label>
+                    <label>{{ trans('bd.choose_end_date') }}</label>
                     <datetime
                       type="datetime"
                       v-model="endDate"
