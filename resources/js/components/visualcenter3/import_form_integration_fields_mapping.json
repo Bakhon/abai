@@ -74,5 +74,6 @@
   "oil_production_fact":"oil_fact",
   "plan_oil_opek":"oil_opek_plan",
   "plan_oil":"oil_plan",
-  "stock_of_goods_delivery_fact":"tovarnyi_ostatok_nefti_today"
+  "stock_of_goods_delivery_fact":"tovarnyi_ostatok_nefti_today",
+  "plan_oil_delivery_opek":"plan_oil_dlv_opek"
 }

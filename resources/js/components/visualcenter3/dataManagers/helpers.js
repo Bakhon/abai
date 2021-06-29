@@ -285,6 +285,10 @@ export default {
             }
             return classes;
         },
+
+        isConsolidatedCategoryActive() {
+            return this.oilCondensateProductionButton.length > 0 || this.oilCondensateDeliveryButton.length > 0;
+        }
     },
     computed: {
         periodSelectFunc() {

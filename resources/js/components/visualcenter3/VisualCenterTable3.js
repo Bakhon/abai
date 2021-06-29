@@ -206,11 +206,11 @@ export default {
         },
 
         processProductionDataByCompanies(productionData,metricName,chartSecondaryName) {
-            if (this.oilCondensateProductionButton.length > 0) {
+            if (this.oilCondensateProductionButton.length > 0 || this.oilCondensateDeliveryButton.length > 0) {
                 this.isOpecFilterActive = false;
                 this.planFieldName = 'oil_plan';
             }
-            if (this.selectedButtonName !== 'oilCondensateProductionButton') {
+            if (!this.condolidatedButtons.includes(this.selectedButtonName)) {
                 let indexes = this.getElementIndexesByCompany(productionData,'ПКИ','dzo_name');
                 for (var i in indexes.reverse()) {
                     productionData.splice(indexes[i], 1);
@@ -787,7 +787,7 @@ export default {
     watch: {
         bigTable: function () {
             this.dzoCompanySummary = this.bigTable;
-            if (this.oilCondensateProductionButton.length > 0) {
+            if (this.oilCondensateProductionButton.length > 0 || this.oilCondensateDeliveryButton.length > 0) {
                 let yesterdayPeriodStart = moment(new Date(this.timestampToday)).subtract(this.quantityRange, 'days').valueOf();
                 let yesterdayPeriodEnd = moment(new Date(this.timestampEnd)).subtract(this.quantityRange, 'days').valueOf();
                 this.productionParamsWidget.yesterdayOldFact = this.productionPercentParams['oil_fact'];

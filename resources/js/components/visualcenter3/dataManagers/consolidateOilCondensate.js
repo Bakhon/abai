@@ -120,7 +120,19 @@ export default {
             },
             companiesForNominalInput: ['АГ','ПКК'],
             yesterdaySummary: [],
-            yesterdayProductionDetails: []
+            yesterdayProductionDetails: [],
+            consolidatedMenuMapping: {
+                oilDelivery: {
+                    'plan_oil': 'plan_oil_dlv',
+                    'plan_oil_opek': 'plan_oil_dlv_opek',
+                    'oil_production_fact': 'oil_delivery_fact',
+                    'condensate_production_fact': 'condensate_delivery_fact',
+                    'plan_kondensat': 'plan_kondensat_dlv'
+                },
+                oilResidue: {
+                    'oil_production_fact': 'stock_of_goods_delivery_fact'
+                }
+            }
         };
     },
     methods: {
@@ -144,6 +156,11 @@ export default {
             this.calculateDzoCompaniesSummary();
         },
         getConsolidatedOilCondensate(periodStart,periodEnd,periodName,summary) {
+            // console.log(this.oilCondensateDeliveryButton)
+            // console.log('-summary')
+            // console.log(summary)
+            // console.log('-this.productionTableData')
+            // console.log(this.productionTableData)
             let self = this;
             let filteredByCompanies = this.getFilteredCompaniesList(_.cloneDeep(this.productionTableData));
             let filteredByPeriod = this.getFilteredByPeriod(filteredByCompanies,true,periodStart,periodEnd);

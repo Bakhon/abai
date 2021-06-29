@@ -32,6 +32,7 @@ export default {
             displayChart: "display: none;",
             minimalDaysCountInPeriodForChart: 1,
             oilCondensateProductionButton: "button-tab-highlighted",
+            oilCondensateDeliveryButton: '',
             tableMapping: {
                 'productionDetails': {
                     'class': '',

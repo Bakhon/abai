@@ -126,6 +126,8 @@ export default {
         },
 
         calculateDzoCompaniesSummary() {
+            console.log(this.dzoSummaryForTable);
+            let emptyDzo = [];
             this.dzoSummaryForTable = this.dzoCompanySummary.filter(item => this.selectedDzoCompanies.includes(item.dzoMonth));
             let filteredByCompaniesYesterday = this.yesterdaySummary.filter(item => this.selectedDzoCompanies.includes(item.dzoMonth));
             let actualFilteredSummary = _.cloneDeep(this.dzoSummaryForTable);
@@ -151,8 +153,10 @@ export default {
                 if (self.oilCondensateProductionButton.length > 0) {
                     summary.opekPlan = parseInt(summary.plan) + parseInt(company.opekPlan);
                 }
+                console.log(company.planMonth + company.factMonth + company.opekPlan);
             });
             summary = this.getFormatted(summary);
+            console.log(summary);
             let yesterdayFilteredSummary = this.deleteTroubleCompanies(filteredByCompaniesYesterday);
             this.updateProductionTotalFact(yesterdayFilteredSummary,summary,actualFilteredSummary);
 
