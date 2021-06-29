@@ -140,8 +140,8 @@
                       :phrases="{ok: trans('app.choose'), cancel: trans('app.cancel')}"
                       :max-datetime="endDate"
                       :week-start="1"
+                      :placeholder= "[[ trans('bd.date_format') ]]"
                       use24-hour
-                      placeholder="дд.мм.гггг"
                       auto
                     >
                     </datetime>
@@ -157,8 +157,8 @@
                       :phrases="{ok: trans('app.choose'), cancel: trans('app.cancel')}"
                       :min-datetime="startDate"
                       :week-start="1"
+                      :placeholder= "[[ trans('bd.date_format') ]]"
                       use24-hour
-                      placeholder="дд.мм.гггг"
                       auto
                     >
                     </datetime>
