@@ -2,6 +2,7 @@
 
 namespace App\Models\BigData\Dictionaries;
 
+
 use App\Models\BigData\Well;
 use App\Models\TBDModel;
 use Illuminate\Database\Eloquent\Collection;
@@ -28,7 +29,12 @@ class Geo extends TBDModel
         return $result ? Geo::find($result->parent) : null;
     }
 
-    public function children(): ?Collection
+    public function firstParent()
+    {
+        return $this->hasMany(GeoParent::class, 'geo_id', 'id');
+    }
+
+    public function children()
     {
         $ids = DB::connection($this->connection)
             ->table('dict.geo_parent')
