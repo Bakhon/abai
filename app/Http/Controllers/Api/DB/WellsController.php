@@ -419,7 +419,7 @@ class WellsController extends Controller
             ->join('prod.gdis_current as gdis_otp', 'prod.gdis_current.id', 'gdis_current_value.gdis_curr')
             ->join('dict.metric as metric_otp', 'gdis_current_value.metric', '=', 'dict.metric.id')
             ->where('metric_otp.code', '=', 'OTP')
-            ->where('metric_otp.code', '=', 'FLVL')
+            ->where('metric_otp.code', '=', 'STLV')
             ->first();
     }
 
