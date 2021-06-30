@@ -107,6 +107,7 @@ Vue.component('omgngdu-form', require('./components/complicationMonitoring/omgng
 Vue.component('omgngdu-well-form', require('./components/complicationMonitoring/omgngdu_well/form.vue').default);
 Vue.component('gu-form', require('./components/complicationMonitoring/gu/form.vue').default);
 Vue.component('zu-form', require('./components/complicationMonitoring/zu/form.vue').default);
+Vue.component('pipe-passport-form', require('./components/complicationMonitoring/pipePassport/form.vue').default);
 
 Vue.component('gtm-main', require('./components/GTM/GTMLayout.vue').default);
 Vue.component('gtm-main-page', require('./components/GTM/Main.vue').default);

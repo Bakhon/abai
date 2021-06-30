@@ -116,6 +116,11 @@ abstract class PlainForm extends BaseForm
         return [];
     }
 
+    public function getUpdatedFields(int $wellId, array $values): array
+    {
+        return [];
+    }
+
     public function getFormByRow(array $row): array
     {
         return [];
