@@ -862,6 +862,27 @@ $rightColumnFoldedWidth: 84px;
   }
 }
 
+::-webkit-scrollbar {
+  height: 10px;
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #40467E;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #656A8A;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #656A8A;
+}
+
+::-webkit-scrollbar-corner {
+  background: #20274F;
+}
+
 .flex {
   display: flex;
 }
