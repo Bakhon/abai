@@ -96,10 +96,11 @@ export default {
         },
 
         selectMultipleDzoCompanies(type,category,regionName) {
-            this.selectCompany('all');
+            //this.selectCompany('all');
             this.dzoCompaniesAssets['isAllAssets'] = false;
             this.disableDzoCompaniesVisibility();
             this.switchDzoCompaniesVisibility(type,category,regionName);
+            this.calculateSecondaryCategories();
             this.calculateDzoCompaniesSummary();
         },
 
@@ -123,6 +124,28 @@ export default {
                     company.selected = !company.selected;
                 }
             });
+        },
+
+        calculateSecondaryCategories() {
+            let categories = ['oilCondensateProductionButton','oilCondensateDeliveryButton'];
+            let index = categories.findIndex(categoryName => categoryName === this.selectedButtonName);
+            categories.splice(index, 1);
+            for (let i in categories) {
+                if (this.oilCondensateFilters['isWithoutKMGFilterActive']) {
+                    this.consolidatedData[categories[i]].current = this.consolidatedData[categories[i]].currentWithKMG;
+                    this.consolidatedData[categories[i]].yesterday = this.consolidatedData[categories[i]].yesterdayWithKMG;
+                } else {
+                    this.consolidatedData[categories[i]].current = this.consolidatedData[categories[i]].currentWithoutKMG;
+                    this.consolidatedData[categories[i]].yesterday = this.consolidatedData[categories[i]].yesterdayWithoutKMG;
+                }
+                let actual = this.consolidatedData[categories[i]].current.filter(item => this.selectedDzoCompanies.includes(item.dzoMonth));
+                let yesterday = this.consolidatedData[categories[i]].yesterday.filter(item => this.selectedDzoCompanies.includes(item.dzoMonth));
+                if (this.isConsolidatedCategoryActive()) {
+                    actual = this.deleteTroubleCompanies(actual);
+                    yesterday = this.deleteTroubleCompanies(yesterday);
+                }
+                this.updateProductionTotalFact(yesterday,actual,categories[i]);
+            }
         },
 
         calculateDzoCompaniesSummary() {
@@ -154,7 +177,7 @@ export default {
             });
             summary = this.getFormatted(summary);
             let yesterdayFilteredSummary = this.deleteTroubleCompanies(filteredByCompaniesYesterday);
-            this.updateProductionTotalFact(yesterdayFilteredSummary,actualFilteredSummary);
+            this.updateProductionTotalFact(yesterdayFilteredSummary,actualFilteredSummary,this.selectedView);
 
             this.dzoCompaniesSummary = summary;
             if (this.isConsolidatedCategoryActive()) {
@@ -194,6 +217,7 @@ export default {
             this.dzoCompaniesAssets = _.cloneDeep(this.dzoCompaniesAssetsInitial);
             this.disableDzoRegions();
             this.selectedDzoCompanies = this.getAllDzoCompanies();
+            this.calculateSecondaryCategories();
             this.buttonDzoDropdown = "";
             this.calculateDzoCompaniesSummary();
         },
@@ -206,7 +230,7 @@ export default {
                 }
                 this.switchDzoCompaniesVisibility(companyTicker,'ticker');
             } else {
-                this.selectedDzoCompanies = [companyTicker];
+                this.selectedDzoCompanies.push(companyTicker);
                 this.switchDzoCompaniesVisibility(companyTicker,'ticker');
             }
             this.selectDzoCompany();
@@ -216,6 +240,7 @@ export default {
             this.isMultipleDzoCompaniesSelected = false;
             this.disableDzoCompaniesVisibility();
             this.selectedDzoCompanies = [companyTicker];
+            this.calculateSecondaryCategories();
             this.switchDzoCompaniesVisibility(companyTicker,'ticker');
             this.selectDzoCompany();
         },
@@ -224,6 +249,7 @@ export default {
             this.disableDzoRegions();
             this.dzoCompaniesAssets['isAllAssets'] = false;
             this.buttonDzoDropdown = this.highlightedButton;
+            this.calculateSecondaryCategories();
             this.calculateDzoCompaniesSummary();
         },
 

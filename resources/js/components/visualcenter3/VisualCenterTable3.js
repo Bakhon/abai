@@ -184,8 +184,6 @@ export default {
             this.$store.commit('globalloading/SET_LOADING', true);
             let productionData = await this.getProductionDataByPeriod();
             if (productionData && Object.keys(productionData).length > 0) {
-                console.log('-this.lastSelectedCategory')
-                console.log(this.lastSelectedCategory)
                 if (this.isFirstLoading) {
                     await this.calculateInitialCategories(productionData,metricName,chartSecondaryName);
                     this.isFirstLoading = false;
@@ -847,6 +845,8 @@ export default {
                 this.updateConsolidatedOilCondensate(this.timestampToday,this.timestampEnd,'current',this.dzoCompanySummary);
                 this.dzoCompanySummary = this.getConsolidatedBy('current');
                 this.yesterdaySummary = this.getConsolidatedBy('yesterday');
+                this.consolidatedData[this.selectedButtonName].current = this.getConsolidatedBy('current');
+                this.consolidatedData[this.selectedButtonName].yesterday = this.getConsolidatedBy('yesterday');
             }
             this.calculateDzoCompaniesSummary();
         },

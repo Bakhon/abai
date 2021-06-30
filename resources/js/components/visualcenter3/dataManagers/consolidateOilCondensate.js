@@ -26,6 +26,22 @@ export default {
                 'yesterdayWithoutParticipation': [],
                 'chartWithParticipation': [],
                 'chartWithoutParticipation': [],
+                'oilCondensateProductionButton': {
+                    'current': [],
+                    'yesterday': [],
+                    'currentWithoutKMG': [],
+                    'yesterdayWithoutKMG': [],
+                    'currentWithKMG': [],
+                    'yesterdayWithKMGKMG': []
+                },
+                'oilCondensateDeliveryButton': {
+                    'current': [],
+                    'yesterday': [],
+                    'currentWithoutKMG': [],
+                    'yesterdayWithoutKMG': [],
+                    'currentWithKMG': [],
+                    'yesterdayWithKMGKMG': []
+                }
             },
             factorOptions: {
                 'ММГ': 0.5,
@@ -230,10 +246,15 @@ export default {
             let selectedCompanies = this.dzoCompanies.filter(row => row.selected === true).map(row => row.ticker);
             sortedWithKMGParticipation = sortedWithKMGParticipation.filter(row => selectedCompanies.includes(row.dzoMonth));
             sortedWithoutKMGParticipation = sortedWithoutKMGParticipation.filter(row => selectedCompanies.includes(row.dzoMonth));
+
             if (periodName === 'current') {
+                this.consolidatedData[this.selectedButtonName].currentWithoutKMG = sortedWithoutKMGParticipation;
+                this.consolidatedData[this.selectedButtonName].currentWithKMG = sortedWithKMGParticipation;
                 this.consolidatedData.withParticipation = sortedWithKMGParticipation;
                 this.consolidatedData.withoutParticipation = sortedWithoutKMGParticipation;
             } else {
+                this.consolidatedData[this.selectedButtonName].yesterdayWithoutKMG = sortedWithoutKMGParticipation;
+                this.consolidatedData[this.selectedButtonName].yesterdayWithKMG = sortedWithKMGParticipation;
                 this.consolidatedData.yesterdayWithParticipation = sortedWithKMGParticipation;
                 this.consolidatedData.yesterdayWithoutParticipation = sortedWithoutKMGParticipation;
             }
@@ -406,11 +427,11 @@ export default {
             return actualUpdatedByOpek;
         },
 
-        updateProductionTotalFact(yesterdaySummary,actualSummary) {
-            this.productionSummary[this.selectedView].actual.oilFact = _.sumBy(actualSummary,'factMonth');
-            this.productionSummary[this.selectedView].actual.oilPlan = _.sumBy(actualSummary,'planMonth');
-            this.productionSummary[this.selectedView].actual.progress = this.getProductionProgressBar();
-            this.productionSummary[this.selectedView].yesterday.oilFact = _.sumBy(yesterdaySummary,'factMonth');
+        updateProductionTotalFact(yesterdaySummary,actualSummary,viewName) {
+            this.productionSummary[viewName].actual.oilFact = _.sumBy(actualSummary,'factMonth');
+            this.productionSummary[viewName].actual.oilPlan = _.sumBy(actualSummary,'planMonth');
+            this.productionSummary[viewName].actual.progress = this.getProductionProgress(viewName);
+            this.productionSummary[viewName].yesterday.oilFact = _.sumBy(yesterdaySummary,'factMonth');
         },
 
         deleteTroubleCompanies(yesterdayProductionDetails) {
@@ -440,8 +461,8 @@ export default {
             return updatedData;
         },
 
-        getProductionProgressBar() {
-            return (this.productionSummary[this.selectedView].actual.oilFact / this.productionSummary[this.selectedView].actual.oilPlan) * 100;
+        getProductionProgress(viewName) {
+            return (this.productionSummary[viewName].actual.oilFact / this.productionSummary[viewName].actual.oilPlan) * 100;
         },
     }
 }
