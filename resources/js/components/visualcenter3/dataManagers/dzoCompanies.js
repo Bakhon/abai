@@ -96,17 +96,11 @@ export default {
         },
 
         selectMultipleDzoCompanies(type,category,regionName) {
-            //this.selectCompany('all');
             this.dzoCompaniesAssets['isAllAssets'] = false;
             this.disableDzoCompaniesVisibility();
             this.switchDzoCompaniesVisibility(type,category,regionName);
             this.calculateSecondaryCategories();
             this.calculateDzoCompaniesSummary();
-        },
-
-        selectCompany(com) {
-            this.company = com;
-            this.updateProductionData(this.planFieldName, this.factFieldName, this.chartHeadName, this.metricName, this.chartSecondaryName);
         },
 
         disableDzoCompaniesVisibility() {
