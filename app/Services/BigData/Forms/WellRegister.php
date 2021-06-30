@@ -4,11 +4,82 @@ declare(strict_types=1);
 
 namespace App\Services\BigData\Forms;
 
+use App\Exceptions\BigData\SubmitFormException;
+use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\DB;
 
 class WellRegister extends PlainForm
 {
     protected $configurationFileName = 'well_register';
+
+    public function submit(): array
+    {
+        DB::connection('tbd')->beginTransaction();
+
+        try {
+            $data = $this->request->except(
+                [
+                    'well',
+                    'org',
+                    'geo',
+                    'category',
+                    'coord_system',
+                    'whc.coord_point.x',
+                    'whc.coord_point.y',
+                    'bottom_coord.coord_point.x',
+                    'bottom_coord.coord_point.y',
+                ]
+            );
+            if (!empty($this->params()['default_values'])) {
+                $data = array_merge($this->params()['default_values'], $data);
+            }
+
+            $dbQuery = DB::connection('tbd')->table($this->params()['table']);
+            $wellId = $dbQuery->insertGetId($data);
+
+            DB::connection('tbd')
+                ->table('prod.well_org')
+                ->insert(
+                    [
+                        'well' => $wellId,
+                        'org' => $this->request->get('org'),
+                        'dbeg' => $this->request->get('project_date') ?: Carbon::now(),
+                        'dend' => '3333-12-31 00:00:00+06'
+                    ]
+                );
+
+            DB::connection('tbd')
+                ->table('prod.well_geo')
+                ->insert(
+                    [
+                        'well' => $wellId,
+                        'geo' => $this->request->get('geo'),
+                        'dbeg' => $this->request->get('project_date') ?: Carbon::now(),
+                        'dend' => '3333-12-31 00:00:00+06'
+                    ]
+                );
+
+            DB::connection('tbd')
+                ->table('prod.well_category')
+                ->insert(
+                    [
+                        'well' => $wellId,
+                        'category' => $this->request->get('category'),
+                        'dbeg' => $this->request->get('project_date') ?: Carbon::now(),
+                        'dend' => '3333-12-31 00:00:00+06'
+                    ]
+                );
+
+            $this->insertGeoFields($wellId);
+
+            DB::connection('tbd')->commit();
+            return (array)DB::connection('tbd')->table($this->params()['table'])->where('id', $wellId)->first();
+        } catch (\Exception $e) {
+            DB::connection('tbd')->rollBack();
+            throw new SubmitFormException($e->getMessage());
+        }
+    }
 
     public function getResults(int $wellId): JsonResponse
     {
@@ -47,6 +118,56 @@ class WellRegister extends PlainForm
         $coord = "({$this->request->get($coordXField)},{$this->request->get($coordYField)})";
 
         return $this->validator->isValidCoordinates($coord, $this->request->get('geo'));
+    }
+
+    private function insertGeoFields($wellId)
+    {
+        $spatialObjectType = DB::connection('tbd')
+            ->table('dict.spatial_object_type')
+            ->where('code', 'PNT')
+            ->first();
+
+        $whcId = DB::connection('tbd')
+            ->table('geo.spatial_object')
+            ->insertGetId(
+                [
+                    'coord_system' => $this->request->get('coord_system'),
+                    'coord_point' => '(' . implode(
+                            ',',
+                            [
+                                $this->request->get('whc.coord_point.x'),
+                                $this->request->get('whc.coord_point.y')
+                            ]
+                        ) . ')',
+                    'spatial_object_type' => $spatialObjectType->id,
+                ]
+            );
+
+        $bottomCoordId = DB::connection('tbd')
+            ->table('geo.spatial_object')
+            ->insertGetId(
+                [
+                    'coord_system' => $this->request->get('coord_system'),
+                    'coord_point' => '(' . implode(
+                            ',',
+                            [
+                                $this->request->get('bottom_coord.coord_point.x'),
+                                $this->request->get('bottom_coord.coord_point.y')
+                            ]
+                        ) . ')',
+                    'spatial_object_type' => $spatialObjectType->id,
+                ]
+            );
+
+        DB::connection('tbd')
+            ->table('dict.well')
+            ->where('id', $wellId)
+            ->update(
+                [
+                    'whc' => $whcId,
+                    'bottom_coord' => $bottomCoordId,
+                ]
+            );
     }
 
 }
