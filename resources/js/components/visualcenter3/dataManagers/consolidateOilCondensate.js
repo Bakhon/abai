@@ -406,15 +406,11 @@ export default {
             return actualUpdatedByOpek;
         },
 
-        updateProductionTotalFact(filteredByCompaniesYesterday,summary) {
-            console.log(this.selectedView)
-            console.log(this.selectedButtonName)
-            let oldFactFormatted = parseFloat(summary.fact.replace(/\s/g, ''));
-            let oldPlanFormatted = parseFloat(summary.plan.replace(/\s/g, ''));
-            this.productionSummary[this.selectedView].actual.oilFact = oldFactFormatted;
-            this.productionSummary[this.selectedView].actual.oilPlan = oldPlanFormatted;
+        updateProductionTotalFact(yesterdaySummary,actualSummary) {
+            this.productionSummary[this.selectedView].actual.oilFact = _.sumBy(actualSummary,'factMonth');
+            this.productionSummary[this.selectedView].actual.oilPlan = _.sumBy(actualSummary,'planMonth');
             this.productionSummary[this.selectedView].actual.progress = this.getProductionProgressBar();
-            this.productionSummary[this.selectedView].yesterday.oilFact = _.sumBy(filteredByCompaniesYesterday,'factMonth');
+            this.productionSummary[this.selectedView].yesterday.oilFact = _.sumBy(yesterdaySummary,'factMonth');
         },
 
         deleteTroubleCompanies(yesterdayProductionDetails) {

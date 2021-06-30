@@ -154,7 +154,7 @@ export default {
             });
             summary = this.getFormatted(summary);
             let yesterdayFilteredSummary = this.deleteTroubleCompanies(filteredByCompaniesYesterday);
-            this.updateProductionTotalFact(yesterdayFilteredSummary,summary);
+            this.updateProductionTotalFact(yesterdayFilteredSummary,actualFilteredSummary);
 
             this.dzoCompaniesSummary = summary;
             if (this.isConsolidatedCategoryActive()) {
@@ -259,6 +259,18 @@ export default {
             return _.filter(data, function (item) {
                 return self.selectedDzoCompanies.includes(item.dzo);
             });
+        },
+
+        setDzoCompaniesToInitial() {
+            this.dzoCompanies = _.cloneDeep(this.dzoCompaniesTemplate);
+            _.forEach(this.dzoCompanies, function (dzo) {
+                _.set(dzo, 'selected', true);
+            });
+            this.isMultipleDzoCompaniesSelected = true;
+            this.dzoCompaniesAssets = _.cloneDeep(this.dzoCompaniesAssetsInitial);
+            this.disableDzoRegions();
+            this.selectedDzoCompanies = this.getAllDzoCompanies();
+            this.buttonDzoDropdown = "";
         },
     },
 }

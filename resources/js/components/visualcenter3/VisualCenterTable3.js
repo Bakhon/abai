@@ -163,8 +163,7 @@ export default {
             this.updateProductionSummary(productionSummary,this.productionPercentParams);
         },
 
-        async updateProductionData(planFieldName, factFieldName, chartHeadName, metricName, chartSecondaryName) {
-            this.$store.commit('globalloading/SET_LOADING', true);
+        updateProductionData(planFieldName, factFieldName, chartHeadName, metricName, chartSecondaryName) {
             if (this.isMainMenuItemChanged) {
                 this.mainMenuButtonElementOptions = _.cloneDeep(mainMenuConfiguration);
             }
@@ -178,21 +177,39 @@ export default {
                 this.isOpecFilterActive = false;
                 this.isKmgParticipationFilterActive = false;
             }
-            if (this.isFirstLoading) {
-                await this.processProductionData(metricName,chartSecondaryName);
-                this.isFirstLoading = false;
-                this.selectedView = 'oilCondensateProductionButton';
-                this.selectedButtonName = 'oilCondensateProductionButton';
-            }
-            await this.processProductionData(metricName,chartSecondaryName);
-            this.$store.commit('globalloading/SET_LOADING', false);
+            this.processProductionData(metricName,chartSecondaryName);
         },
 
         async processProductionData(metricName,chartSecondaryName) {
+            this.$store.commit('globalloading/SET_LOADING', true);
             let productionData = await this.getProductionDataByPeriod();
             if (productionData && Object.keys(productionData).length > 0) {
-                this.processProductionDataByCompanies(productionData,metricName,chartSecondaryName);
+                console.log('-this.lastSelectedCategory')
+                console.log(this.lastSelectedCategory)
+                if (this.isFirstLoading) {
+                    await this.calculateInitialCategories(productionData,metricName,chartSecondaryName);
+                    this.isFirstLoading = false;
+                    this.lastSelectedCategory = '';
+                }
+                if (this.lastSelectedCategory.length > 0) {
+                   await this.calculateInitialCategories(productionData,metricName,chartSecondaryName);
+                }
+                await this.processProductionDataByCompanies(productionData,metricName,chartSecondaryName);
             }
+            this.$store.commit('globalloading/SET_LOADING', false);
+        },
+
+        async calculateInitialCategories(productionData,metricName,chartSecondaryName) {
+            let categories = ['oilCondensateProductionButton','oilCondensateDeliveryButton'];
+            let index = categories.findIndex(categoryName => categoryName === this.lastSelectedCategory);
+            categories.splice(index, 1);
+            for (let i in categories) {
+                this.selectedView = categories[i];
+                this.selectedButtonName = categories[i];
+                await this.processProductionDataByCompanies(productionData,metricName,chartSecondaryName);
+            }
+            this.selectedView = this.lastSelectedCategory;
+            this.selectedButtonName = this.lastSelectedCategory;
         },
 
         async getProductionDataByPeriod() {

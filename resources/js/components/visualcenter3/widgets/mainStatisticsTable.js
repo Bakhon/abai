@@ -100,6 +100,9 @@ export default {
             this.buttonMonthlyTab = "";
             this.buttonYearlyTab = "";
             this.buttonPeriodTab = "";
+            if (!this.isFirstLoading) {
+                this.lastSelectedCategory = this.selectedButtonName;
+            }
             if (change !== 'yearly') {
                 this.isFilterTargetPlanActive = false;
             }

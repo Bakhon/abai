@@ -23,18 +23,22 @@ export default {
                 'oilProductionButton': this.trans('visualcenter.getoildynamic'),
                 'oilDeliveryButton': this.trans('visualcenter.dlvoildynamic'),
                 'gasProductionButton': this.trans('visualcenter.getgasdynamic'),
-                'oilCondensate':this.trans('visualcenter.liqDynamic'),
+                'oilCondensate': this.trans('visualcenter.liqDynamic'),
+                'oilCondensateProductionButton': this.trans('visualcenter.oilCondensateProductionChartName'),
+                'oilCondensateDeliveryButton': this.trans('visualcenter.oilCondensateDeliveryChartName'),
             },
             isOilResidueActive: false,
             oilDeliveryFilters: {
                 'oilResidue': 'isOilResidueActive'
             },
             condolidatedButtons: ['oilCondensateProductionButton','oilCondensateDeliveryButton'],
-            isFirstLoading: true
+            isFirstLoading: true,
+            lastSelectedCategory: 'oilCondensateProductionButton'
         };
     },
     methods: {
         switchCategory(buttonName, planFieldName, factFieldName, metricName, categoryName, parentButton, childButton) {
+            this.lastSelectedCategory = '';
             this.$store.commit('globalloading/SET_LOADING', true);
             this.isOpecFilterActive = false;
             this.oilCondensateFilters.isWithoutKMGFilterActive = true;
@@ -44,7 +48,7 @@ export default {
             } else {
                 this.changeDzoCompaniesList(companiesListWithKMG);
             }
-            this.selectAllDzoCompanies();
+            this.setDzoCompaniesToInitial();
             this.disableTargetCompanyFilter();
             if (!childButton) {
                 this.mainMenuButtonElementOptions = _.cloneDeep(mainMenuConfiguration);

@@ -324,7 +324,7 @@
                                     'oil_plan',
                                     'oil_fact',
                                     trans('visualcenter.tonWithSpace'),
-                                    trans('visualcenter.oilCondensateProductionChartName'))"
+                                    trans('visualcenter.oilCondensateProduction'))"
                     >
                       {{ trans("visualcenter.oilCondensateProduction") }}
                     </div>
@@ -365,7 +365,7 @@
                                     'oil_dlv_plan',
                                     'oil_dlv_fact',
                                     trans('visualcenter.tonWithSpace'),
-                                    trans('visualcenter.oilCondensateDeliveryChartName'))"
+                                    trans('visualcenter.oilCondensateDelivery'))"
                     >
                       {{ trans("visualcenter.oilCondensateDelivery") }}
                     </div>
