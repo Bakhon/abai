@@ -428,7 +428,7 @@ class WellsController extends Controller
         return $well->gdisComplex()
             ->join('dict.metric', 'prod.gdis_complex_value.metric', '=', 'dict.metric.id')
             ->withPivot('research_date as research_date')
-            ->where('metric.code', 'isNotNull')
+            ->where('metric.code', '=', 'RP')
             ->orderBy('research_date', 'desc')
             ->first(['value_double', 'research_date']);
     }
