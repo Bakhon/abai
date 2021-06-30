@@ -22,9 +22,14 @@
   'well_incl' => '\\App\\Services\\BigData\\Forms\\WellIncl',
   'well_tech' => '\\App\\Services\\BigData\\Forms\\WellTech',
   'well_tech_connect' => '\\App\\Services\\BigData\\Forms\\WellTechConnect',
-  'well_status' => '\\App\\Services\\BigData\\Forms\\WellStatus',
   'water_inj' => '\\App\\Services\\BigData\\Forms\\WaterInj',
-  'well_perf' => '\\App\\Services\\BigData\\Forms\\WellPerf',
+  'well_category' => '\\App\\Services\\BigData\\Forms\\WellCategory',
+  'well_status' => '\\App\\Services\\BigData\\Forms\\WellStatus',
+  'well_expl' => '\\App\\Services\\BigData\\Forms\\WellExpl',
+  'water_production' => '\\App\\Services\\BigData\\Forms\\WaterProduction',
   'gas_production' => '\\App\\Services\\BigData\\Forms\\GasProduction',
-  'production_program' => '\\App\\Services\\BigData\\Forms\\ProductionProgram'
+  'production_program' => '\\App\\Services\\BigData\\Forms\\ProductionProgram',
+  'org_structure' => '\\App\\Services\\BigData\\Forms\\OrgStructure',
+  'geo_structure' => '\\App\\Services\\BigData\\Forms\\GeoStructure',
+  'daily_reports_oil_prod' => '\\App\\Services\\BigData\\Forms\\DailyReportsOilProduction',
 );

@@ -23,9 +23,9 @@
                 "validation": ""
               },
               {
-                "code": "expl",
-                "type": "dict",
-                "dict": "well_expl_types",
+                "code": "name_ru",
+                "type": "calc",
+                "visible": true,
                 "title": "expl_type",
                 "is_editable": false
               },

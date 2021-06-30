@@ -1,0 +1,107 @@
+[
+  {
+    "companyName": "visualcenter.consolidatedDzoNameMappingWithoutKMG.EMG",
+    "selected": false,
+    "ticker":"ЭМГ",
+    "type": "isOperating",
+    "region": "aturay"
+  },
+  {
+    "companyName": "visualcenter.consolidatedDzoNameMappingWithoutKMG.OMG",
+    "selected": false,
+    "ticker":"ОМГ",
+    "type": "isOperating",
+    "region": "mangistau"
+  },
+  {
+    "companyName": "visualcenter.consolidatedDzoNameMappingWithoutKMG.OMGK",
+    "selected": false,
+    "ticker":"ОМГК",
+    "type": "isOperating",
+    "region": "mangistau"
+  },
+  {
+    "companyName": "visualcenter.consolidatedDzoNameMappingWithoutKMG.AG",
+    "selected": false,
+    "ticker":"АГ",
+    "type": "isNonOperating",
+    "region": "zhambul"
+  },
+  {
+    "companyName": "visualcenter.consolidatedDzoNameMappingWithoutKMG.KBM",
+    "selected": false,
+    "ticker":"КБМ",
+    "type": "isOperating",
+    "region": "mangistau"
+  },
+  {
+    "companyName": "visualcenter.consolidatedDzoNameMappingWithoutKMG.KGM",
+    "selected": false,
+    "ticker":"КГМ",
+    "type": "isOperating",
+    "region": "kuzulord"
+  },
+  {
+    "companyName": "visualcenter.consolidatedDzoNameMappingWithoutKMG.PKK",
+    "selected": false,
+    "ticker":"ПКК",
+    "type": "isNonOperating",
+    "region": "kuzulord"
+  },
+  {
+    "companyName": "visualcenter.consolidatedDzoNameMappingWithoutKMG.TP",
+    "selected": false,
+    "ticker":"ТП",
+    "type": "isNonOperating",
+    "region": "kuzulord"
+  },
+  {
+    "companyName": "visualcenter.consolidatedDzoNameMappingWithoutKMG.TSH",
+    "selected": false,
+    "ticker":"ТШО",
+    "type": "isNonOperating",
+    "region": "aturay"
+  },
+  {
+    "companyName": "visualcenter.consolidatedDzoNameMappingWithoutKMG.MMG",
+    "selected": false,
+    "ticker":"ММГ",
+    "type": "isOperating",
+    "region": "mangistau"
+  },
+  {
+    "companyName": "visualcenter.consolidatedDzoNameMappingWithoutKMG.KOA",
+    "selected": false,
+    "ticker":"КОА",
+    "type": "isOperating",
+    "region": "actubinsk"
+  },
+  {
+    "companyName": "visualcenter.consolidatedDzoNameMappingWithoutKMG.KTM",
+    "selected": false,
+    "ticker":"КТМ",
+    "type": "isOperating",
+    "region": "actubinsk"
+  },
+  {
+    "companyName": "visualcenter.consolidatedDzoNameMappingWithoutKMG.KPO",
+    "selected": false,
+    "ticker":"КПО",
+    "type": "isNonOperating",
+    "region": "west"
+  },
+  {
+    "companyName": "visualcenter.consolidatedDzoNameMappingWithoutKMG.NKO",
+    "selected": false,
+    "ticker":"НКО",
+    "type": "isNonOperating",
+    "region": "aturay"
+  },
+  {
+    "companyName": "visualcenter.consolidatedDzoNameMappingWithoutKMG.YO",
+    "selected": false,
+    "ticker":"УО",
+    "type": "isOperating",
+    "region": "actubinsk"
+  }
+]

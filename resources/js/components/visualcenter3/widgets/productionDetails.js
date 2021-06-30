@@ -23,6 +23,13 @@ export default {
                     mask: 'DD.MM.YYYY',
                 },
             },
+            dzoMenu: {
+                'chemistry': [],
+                'wellsWorkover': [],
+                'drilling': [],
+                'productionFond': [],
+                'injectionFond': [],
+            },
         };
     },
     methods: {
@@ -86,7 +93,22 @@ export default {
             });
             this.tableMapping[widgetName]['class'] = 'show-company-list';
             this.tableMapping[widgetName]['hover'] = 'button_hover';
+            this.updateChemistryWidget();
+            this.updateWellsWorkoverWidget();
+            this.updateDrillingWidget();
+            this.updateProductionFondWidget();
             this.$store.commit('globalloading/SET_LOADING', false);
+        },
+
+        getOrderedByAsc(data) {
+            return _.orderBy(data,
+                ["date"],
+                ["asc"]
+            );
+        },
+
+        updateDzoMenu() {
+            this.dzoMenu = _.mapValues(this.dzoMenu, () => _.cloneDeep(this.injectionWellsOptions));
         },
     }
 }

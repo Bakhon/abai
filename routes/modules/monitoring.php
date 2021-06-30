@@ -193,6 +193,9 @@ Route::group(
                 Route::get('map-history/restore/{activity}', 'ComplicationMonitoring\MapHistory@restore')->name('map-history.restore');
                 Route::get('map-history', 'ComplicationMonitoring\MapHistory@index')->name('map-history.index');
 
+                Route::get('pipe-passport/list', 'ComplicationMonitoring\PipePassportController@list')->name('pipe-passport.list');
+                Route::get('pipe-passport/history/{pipe}', 'ComplicationMonitoring\PipePassportController@history')->name('pipe-passport.history');
+                Route::resource('pipe-passport', 'ComplicationMonitoring\PipePassportController');
             }
         );
     }
