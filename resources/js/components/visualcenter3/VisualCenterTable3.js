@@ -38,8 +38,35 @@ export default {
         Calendar,
         DatePicker
     },
+    props: ['userId'],
     data: function () {
-        return {
+        return {            
+            dzoMapping : {
+                "КОА" : {                 
+                   id: 110                   
+                },
+                "КТМ" : {                    
+                    id: 107
+                },
+                "КБМ" : {                    
+                    id: 106
+                },
+                "КГМ" : {
+                    id: 108
+                },
+                "ММГ" : {
+                    id: 109
+                },
+                "ОМГ" : {
+                    id: 112
+                },
+                "УО" : {
+                    id: 111
+                },
+                "ЭМГ" : {
+                    id: 113
+                },
+            },
             isOneDzoCompanyEnter:'',
             accidentTotal: '',
             noData: '',
@@ -704,6 +731,16 @@ export default {
             });
             return dzoList;
         },
+        getDzoTicker() {
+            let dzoTicker = '';
+            let self = this;
+            _.forEach(Object.keys(this.dzoMapping), function(key) {
+               if (parseInt(self.dzoMapping[key].id) === parseInt(self.userId)) {                
+                   dzoTicker = key;
+               }
+            });
+            return dzoTicker;
+        },
     },
     mixins: [
         mainMenu,
@@ -779,8 +816,8 @@ export default {
         this.mainMenuButtonElementOptions = _.cloneDeep(mainMenuConfiguration);
         this.getDzoYearlyPlan();
         this.selectedDzoCompanies = this.getAllDzoCompanies();
-        
-        let oneDzoNameSelected='ОМГ';
+        let oneDzoNameSelected=this.getDzoTicker(); 
+        if   (oneDzoNameSelected!=''){
         this.isOneDzoCompanyEnter=true;
         this.productionFondSelectedCompany = oneDzoNameSelected;
         this.chemistrySelectedCompany = oneDzoNameSelected;
@@ -789,6 +826,7 @@ export default {
         this.productionFondSelectedCompany = oneDzoNameSelected;
         this.injectionFondSelectedCompany = oneDzoNameSelected;
         this.selectedDzoCompanies = [oneDzoNameSelected];
+        }
         this.updateChemistryWidget();
         this.updateWellsWorkoverWidget();
         this.updateDrillingWidget();
