@@ -9,22 +9,22 @@ export default {
             opec: 'утв.',
             kmgParticipationPercent: {
                 'АО "Каражанбасмунай"': 0.5,
-                'ТОО "Казгермунай"': 0.5,
-                'АО ПетроКазахстан Кумколь Ресорсиз': 0.33,
-                'ПетроКазахстан Инк.': 0.33,
+                'ТОО "СП "Казгермунай"': 0.5,
+                'АО "ПетроКазахстан Кумколь Ресорсиз"': 0.33,
+                'АО "ПетроКазахстан Инк."': 0.33,
                 'АО "Тургай-Петролеум"': 0.5 * 0.33,
-                "ТОО «Тенгизшевройл»": 0.2,
+                'ТОО "Тенгизшевройл"': 0.2,
                 'АО "Мангистаумунайгаз"': 0.5,
                 'ТОО "Казахойл Актобе"': 0.5,
-                "«Карачаганак Петролеум Оперейтинг б.в.»": 0.1,
-                "«Норт Каспиан Оперейтинг Компани н.в.»": 0.1688
+                '"Карачаганак Петролеум Оперейтинг б.в."': 0.1,
+                '"Норт Каспиан Оперейтинг Компани н.в."': 0.1688
             },
             opecFieldNameForChart: '',
         };
     },
     methods: {
         changeOilProductionFilters() {
-            if (this.isOpecFilterActive) {
+            if (this.isOpecFilterActive && this.oilCondensateProductionButton.length === 0) {
                 this.planFieldName = 'oil_opek_plan';
                 this.opec = this.trans("visualcenter.dzoOpec");
                 this.opecFieldNameForChart = 'oil_plan';

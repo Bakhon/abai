@@ -7,7 +7,29 @@ export default {
             isProductionDetailsActive: true,
             currentMonthDateStart: moment().subtract(2,'months').format('MMMM YYYY'),
             currentMonthDateEnd: moment().subtract(1,'months').format('MMMM YYYY'),
-            selectedWidget: 'productionDetails'
+            selectedWidget: 'productionDetails',
+            datePickerOptions: {
+                disabledDate (date) {
+                    return moment(date).startOf('month') >= moment().startOf('month')
+                }
+            },
+            datePickerConfig: {
+                start: {
+                    type: 'string',
+                    mask: 'DD.MM.YYYY',
+                },
+                end: {
+                    type: 'string',
+                    mask: 'DD.MM.YYYY',
+                },
+            },
+            dzoMenu: {
+                'chemistry': [],
+                'wellsWorkover': [],
+                'drilling': [],
+                'productionFond': [],
+                'injectionFond': [],
+            },
         };
     },
     methods: {
@@ -71,7 +93,22 @@ export default {
             });
             this.tableMapping[widgetName]['class'] = 'show-company-list';
             this.tableMapping[widgetName]['hover'] = 'button_hover';
+            this.updateChemistryWidget();
+            this.updateWellsWorkoverWidget();
+            this.updateDrillingWidget();
+            this.updateProductionFondWidget();
             this.$store.commit('globalloading/SET_LOADING', false);
+        },
+
+        getOrderedByAsc(data) {
+            return _.orderBy(data,
+                ["date"],
+                ["asc"]
+            );
+        },
+
+        updateDzoMenu() {
+            this.dzoMenu = _.mapValues(this.dzoMenu, () => _.cloneDeep(this.injectionWellsOptions));
         },
     }
 }

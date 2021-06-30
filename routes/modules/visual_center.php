@@ -74,6 +74,9 @@ Route::group(
                 Route::get('/get-production-details', 'VisCenter\VisualCenterController@getProductionDetails');
                 Route::get('/get-otm-details', 'VisCenter\VisualCenterController@getOtmDetails');
                 Route::get('/get-chemistry-details', 'VisCenter\VisualCenterController@getChemistryDetails');
+                Route::get('/get-drilling-details', 'VisCenter\VisualCenterController@getDrillingDetails');
+                Route::get('/get-fond-details', 'VisCenter\VisualCenterController@getFondDetails');
+
             }
         );
     }

@@ -17,7 +17,7 @@ class GtmRegister extends PlainForm
         DB::beginTransaction();
 
         try {
-            $formFields = $this->request->except('well_status_type');
+            $formFields = $this->request->except('well_status_type', 'own_forces');
 
             $dbQuery = DB::connection('tbd')->table($this->params()['table']);
 
