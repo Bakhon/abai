@@ -68,16 +68,18 @@ class DailyReportsFluidProd extends TableForm
     private function getData($startDate, $endDate, $optionId) {
         $data = ReportOrgDailyCits::query()
             ->select(['plan', 'fact'])
+            ->leftJoin('dict.metric', 'prod.report_org_daily_cits.metric', '=', 'dict.metric.id')
             ->where('org', '=', $this->request->get('id'))
+            ->and('dict.metric.code','=', 'FLR')
             ->whereDate('report_date', '>=', $startDate)
             ->whereDate('report_date', '<=', $endDate)
             ->distinct()
             ->get();
         $result = [
             'id' => 0,
-            'plan' => $data->sum('plan'),
+            'plan' => $data->sum('fact'),
         ];
-        $result['fact'] = $data->sum('plan');
+        $result['fact'] = $data->sum('fact');
         if ($optionId == self::ALL || $optionId == self::GS) {
             $result['fact'] = 0;
         }
