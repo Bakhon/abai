@@ -32,4 +32,9 @@
   'org_structure' => '\\App\\Services\\BigData\\Forms\\OrgStructure',
   'geo_structure' => '\\App\\Services\\BigData\\Forms\\GeoStructure',
   'daily_reports_oil_prod' => '\\App\\Services\\BigData\\Forms\\DailyReportsOilProduction',
+  'well_perf' => '\\App\\Services\\BigData\\Forms\\WellPerf',
+  'well_perf_shot' => '\\App\\Services\\BigData\\Forms\\WellPerfShot',
+  'well_perf_drill_packer' => '\\App\\Services\\BigData\\Forms\\WellPerfDrillPacker',
+  'well_perf_bridge_plug' => '\\App\\Services\\BigData\\Forms\\WellPerfBridgePlug',
+  'well_perf_other' => '\\App\\Services\\BigData\\Forms\\WellPerfOther',
 );
