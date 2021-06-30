@@ -127,8 +127,8 @@ class WellsController extends Controller
     private function category(Well $well)
     {
         return $well->category()
-            ->wherePivot('dend', '<>', $this->getToday())
-            ->wherePivot('dbeg', '<>', $this->getToday())
+            ->wherePivot('dend', '>', $this->getToday())
+            ->wherePivot('dbeg', '<=', $this->getToday())
             ->withPivot('dend', 'dbeg')
             ->orderBy('pivot_dbeg')
             ->first(['name_ru']);
@@ -137,8 +137,8 @@ class WellsController extends Controller
     private function categoryLast(Well $well)
     {
         return $well->category()
-            ->wherePivot('dend', '<>', $this->getToday())
-            ->wherePivot('dbeg', '<>', $this->getToday())
+            ->wherePivot('dend', '>', $this->getToday())
+            ->wherePivot('dbeg', '<=', $this->getToday())
             ->withPivot('dend', 'dbeg')
             ->orderBy('pivot_dbeg', 'desc')
             ->first(['name_ru',]);
