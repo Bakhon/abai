@@ -60,6 +60,8 @@ class WellsController extends Controller
             'zone' => $this->zone($well),
             'well_react_infl' => $this->wellReact($well),
             'gtm' => $this->gtm($well),
+            'rzatr_atm' => $this->gdisCurrentValueRzatrAtm($well),
+            'rzatr_stat' => $this->gdisCurrentValueRzatrStat($well),
         );
     }
 
@@ -397,6 +399,44 @@ class WellsController extends Controller
             ->where('metric.code', '=', 'BHP')
             ->orderBy('pivot_meas_date', 'desc')
             ->first(['value_double', 'meas_date']);
+    }
+
+    private function gdisCurrentValueRzatrAtm(Well $well)
+    {
+        return $well->gdisCurrentValue()
+            ->join('prod.gdis_current', 'prod.gdis_current.id', 'gdis_current_value.gdis_curr')
+            ->join('dict.metric', 'gdis_current_value.metric', '=', 'dict.metric.id')
+            ->whereIn('gdis_current.meas_date', $this->getDdin($well))
+            ->first('value_double');
+    }
+
+    private function getDdin(Well $well)
+    {
+        return $well->gdisCurrentValue()
+            ->join('dict.metric', 'gdis_current_value.metric', '=', 'dict.metric.id')
+            ->where('gdis_current_value.value_double', '<>', 'null')
+            ->where('metic.code', '=', 'FLVL')
+            ->orderBy('gdis_current.meas_date', 'desc')
+            ->first(['gdis_current.meas_date']);
+    }
+
+    private function gdisCurrentValueRzatrStat(Well $well)
+    {
+        return $well->gdisCurrentValue()
+            ->join('prod.gdis_current', 'prod.gdis_current.id', 'gdis_current_value.gdis_curr')
+            ->join('dict.metric', 'gdis_current_value.metric', '=', 'dict.metric.id')
+            ->whereIn('gdis_current.meas_date', $this->getDstat($well))
+            ->first('value_double');
+    }
+
+    private function getDstat(Well $well)
+    {
+        return $well->gdisCurrentValue()
+            ->join('dict.metric', 'gdis_current_value.metric', '=', 'dict.metric.id')
+            ->where('gdis_current_value.value_double', '<>', 'null')
+            ->where('metic.code', '=', 'STLV')
+            ->orderBy('gdis_current.meas_date', 'desc')
+            ->first(['gdis_current.meas_date']);
     }
 
     private function gdisComplex(Well $well)
