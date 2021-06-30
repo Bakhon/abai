@@ -43,7 +43,9 @@ export default {
             } else {
                 this.changeDzoCompaniesList(companiesListWithKMG);
             }
+            if (this.isOneDzoCompanyEnter!=true){
             this.selectAllDzoCompanies();
+            }
             this.disableTargetCompanyFilter();
             if (!childButton) {
                 this.mainMenuButtonElementOptions = _.cloneDeep(mainMenuConfiguration);

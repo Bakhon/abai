@@ -40,6 +40,7 @@ export default {
     },
     data: function () {
         return {
+            isOneDzoCompanyEnter:'',
             accidentTotal: '',
             noData: '',
             personalFact: '',
@@ -778,14 +779,25 @@ export default {
         this.mainMenuButtonElementOptions = _.cloneDeep(mainMenuConfiguration);
         this.getDzoYearlyPlan();
         this.selectedDzoCompanies = this.getAllDzoCompanies();
+        
+        let oneDzoNameSelected='ОМГ';
+        this.isOneDzoCompanyEnter=true;
+        this.productionFondSelectedCompany = oneDzoNameSelected;
+        this.chemistrySelectedCompany = oneDzoNameSelected;
+        this.wellsWorkoverSelectedCompany = oneDzoNameSelected;
+        this.drillingSelectedCompany = oneDzoNameSelected;
+        this.productionFondSelectedCompany = oneDzoNameSelected;
+        this.injectionFondSelectedCompany = oneDzoNameSelected;
+        this.selectedDzoCompanies = [oneDzoNameSelected];
         this.updateChemistryWidget();
         this.updateWellsWorkoverWidget();
         this.updateDrillingWidget();
         this.updateProductionFondWidget();
         this.updateInjectionFondWidget();
+     
     },
     watch: {
-        bigTable: function () {
+        bigTable: function () {           
             this.dzoCompanySummary = this.bigTable;
             if (this.oilCondensateProductionButton.length > 0) {
                 let yesterdayPeriodStart = moment(new Date(this.timestampToday)).subtract(this.quantityRange, 'days').valueOf();

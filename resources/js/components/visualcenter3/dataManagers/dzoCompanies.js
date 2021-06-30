@@ -189,11 +189,13 @@ export default {
         },
 
         selectAllDzoCompanies() {
+            if (this.isOneDzoCompanyEnter!=true){
             this.dzoCompanies = _.cloneDeep(this.dzoCompaniesTemplate);
             _.forEach(this.dzoCompanies, function (dzo) {
                 _.set(dzo, 'selected', true);
             });
             this.selectDzoCompanies();
+            }
         },
 
         selectDzoCompanies() {

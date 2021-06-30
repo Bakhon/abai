@@ -754,8 +754,11 @@
             </div>
             <div class="row px-4 mt-3 middle-block__list-x-scroll">
               <div class="col-8 col-lg dropdown px-1">
-                <div class="button2 dzocompanylist__button">
-                  <div class="button2 dzocompanylist__button">
+                <div  class="button2 no-hover dzocompanylist__button" v-if="isOneDzoCompanyEnter">                  
+                    {{ trans("visualcenter.dzoAllCompany") }}
+                  </div>    
+                <div class="button2 dzocompanylist__button" v-else>                               
+                  <div class="button2 dzocompanylist__button" >                  
                     {{ trans("visualcenter.dzoAllCompany") }}
                     <button
                             type="button"
@@ -833,7 +836,7 @@
                         </li>
                       </ul>
                     </div>
-                  </div>
+                  </div>                  
                 </div>
               </div>
               <div class="col-8 col-lg px-1">
@@ -1043,11 +1046,11 @@
                   </thead>
                   <tbody>
                   <tr v-for="(item, index) in dzoSummaryForTable">
-                    <td
+                    <td                            
                             @click="isMultipleDzoCompaniesSelected ? `${switchOneCompanyView(item.dzoMonth)}` : `${selectAllDzoCompanies()}`"
                             :class="index % 2 === 0 ? 'tdStyle' : ''"
-                            style="cursor: pointer"
-                    >
+                            style="cursor: pointer"                           
+                    >                   
                       <span v-if="oilCondensateProductionButton.length === 0">
                         {{ getNameDzoFull(item.dzoMonth) }}
                         <span v-if="isKmgParticipationFilterActive">
@@ -1598,7 +1601,10 @@
                             class="side-blocks__dzo-companies-dropdown w-100"
                             @change="changeSelectedInjectionFondCompanies($event)"
                     >
-                      <option v-for="dzo in dzoMenu.injectionFond" :value="dzo.ticker">
+                      <option v-if="isOneDzoCompanyEnter">                      
+                        {{ getNameDzoFull(selectedDzoCompanies[0]) }}                     
+                      </option>
+                      <option v-else v-for="dzo in dzoMenu.injectionFond" :value="dzo.ticker">
                         {{dzo.name}}
                       </option>
                     </select>
@@ -1753,7 +1759,10 @@
                             class="side-blocks__dzo-companies-dropdown w-100"
                             @change="changeSelectedProductionFondCompanies($event)"
                     >
-                      <option v-for="dzo in dzoMenu.productionFond" :value="dzo.ticker">
+                      <option v-if="isOneDzoCompanyEnter">                      
+                        {{ getNameDzoFull(selectedDzoCompanies[0]) }}                     
+                      </option>
+                      <option v-else v-for="dzo in dzoMenu.productionFond" :value="dzo.ticker">
                         {{dzo.name}}
                       </option>
                     </select>
@@ -1910,7 +1919,10 @@
                             class="side-blocks__dzo-companies-dropdown w-100"
                             @change="changeSelectedDrillingCompanies($event)"
                     >
-                      <option v-for="dzo in dzoMenu.drilling" :value="dzo.ticker">
+                      <option v-if="isOneDzoCompanyEnter">                      
+                        {{ getNameDzoFull(selectedDzoCompanies[0]) }}                     
+                      </option>
+                      <option v-else v-for="dzo in dzoMenu.drilling" :value="dzo.ticker">
                         {{dzo.name}}
                       </option>
                     </select>
@@ -2057,7 +2069,10 @@
                             class="side-blocks__dzo-companies-dropdown w-100"
                             @change="changeSelectedWellsWorkoverCompanies($event)"
                     >
-                      <option v-for="dzo in dzoMenu.wellsWorkover" :value="dzo.ticker">
+                      <option v-if="isOneDzoCompanyEnter">                      
+                        {{ getNameDzoFull(selectedDzoCompanies[0]) }}                     
+                      </option>
+                      <option v-else v-for="dzo in dzoMenu.wellsWorkover" :value="dzo.ticker">
                         {{dzo.name}}
                       </option>
                     </select>
@@ -2203,7 +2218,10 @@
                             class="side-blocks__dzo-companies-dropdown w-100"
                             @change="changeSelectedChemistryCompanies($event)"
                     >
-                      <option v-for="dzo in dzoMenu.chemistry" :value="dzo.ticker">
+                      <option v-if="isOneDzoCompanyEnter">                      
+                        {{ getNameDzoFull(selectedDzoCompanies[0]) }}                     
+                      </option>
+                      <option v-else v-for="dzo in dzoMenu.chemistry" :value="dzo.ticker">
                         {{dzo.name}}
                       </option>
                     </select>
