@@ -840,6 +840,18 @@ export default {
           'data': ''
         },
         {
+          'description': null,
+          'method': null,
+          'name': 'Рзатр(дин), атм',
+          'data': ''
+        },
+        {
+          'description': null,
+          'method': null,
+          'name': 'Рзатр(стат)',
+          'data': ''
+        },
+        {
           'description': this.well.gdisCurrent.note,
           'method': null,
           'name': 'Примечание',
