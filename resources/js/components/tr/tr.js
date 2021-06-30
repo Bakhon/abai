@@ -23,123 +23,101 @@ export default {
     TrMultiselect,
   },
   computed: {
-    // Добавление выбранных данных в таблицу
     addWellData() {
-      if (this.allWells && this.allWells.length > 0) {
-        let is_saved = this.Filter_status;
-        let field = this.Filter_field;
-        let rus_wellname = this.Filter_well;
-        let type_text = this.Filter_well_type;
-        let well_status_last_day = this.Filter_well_status;
-        try {
-          let filteredResult = this.allWells.filter(
-            (row) =>
-              (!is_saved || row.is_saved === is_saved) &&
-              (!field || row.field === field) &&
-              (!rus_wellname || row.rus_wellname === rus_wellname) &&
-              (!type_text || row.type_text === type_text) &&
-              (!well_status_last_day || row.well_status_last_day === well_status_last_day)
-          );
-          this.filteredWellData = filteredResult;
-        } catch (err) {
-          console.error(err);
-          return false;
-        }
-        if(this.filteredWellData.length === 1){
-          this.lonelywell = this.filteredWellData;
-        }
-        else return false;
-      } else return false;
+      try {
+        let filteredResult = this.allWells.filter(
+          (row) =>
+            (!this.statusFilter || row.is_saved === this.statusFilter) &&
+            (!this.fieldFilter || row.field === this.fieldFilter) &&
+            (!this.wellFilter || row.rus_wellname === this.wellFilter) &&
+            (!this.typeWellFilter || row.type_text === this.typeWellFilter) &&
+            (!this.wellStatusFilter || row.well_status_last_day === this.wellStatusFilter)
+        );
+        this.filteredWellData = filteredResult;
+      } catch (err) {
+        console.error(err);
+        return false;
+      }
+      if(this.filteredWellData.length === 1){
+        this.lonelywell = this.filteredWellData;
+      }
+      else return false;
       this.render++;
     },
-    // фильтр месторожд.
     fieldFilters() {
-      if (this.allWells && this.allWells.length > 0) {
         let filters = [];
         this.allWells.forEach((el) => {
           if (
             filters.indexOf(el.field) === -1 &&
-            (!this.Filter_well || el.rus_wellname === this.Filter_well) &&
-            (!this.Filter_well_status || el.well_status_last_day === this.Filter_well_status) &&
-            (!this.Filter_status || el.is_saved === this.Filter_status) &&
-            (!this.Filter_well_type || el.type_text === this.Filter_well_type)
+            (!this.wellFilter || el.rus_wellname === this.wellFilter) &&
+            (!this.wellStatusFilter || el.well_status_last_day === this.wellStatusFilter) &&
+            (!this.statusFilter || el.is_saved === this.statusFilter) &&
+            (!this.typeWellFilter || el.type_text === this.typeWellFilter)
           ) {
             filters = [...filters, el.field];
           }
         });
         return [undefined, ...filters];
-      } else return [];
     },
-    // фильтр по скважинам
     wellFilters() {
-      if (this.allWells && this.allWells.length > 0) {
         let filters = [];
         this.allWells.forEach((el) => {
           if (
             filters.indexOf(el.rus_wellname) === -1 &&
-            (!this.Filter_field || el.field === this.Filter_field) &&
-            (!this.Filter_well_status || el.well_status_last_day === this.Filter_well_status) &&
-            (!this.Filter_status || el.is_saved === this.Filter_status) &&
-            (!this.Filter_well_type || el.type_text === this.Filter_well_type)
+            (!this.fieldFilter || el.field === this.fieldFilter) &&
+            (!this.wellStatusFilter || el.well_status_last_day === this.wellStatusFilter) &&
+            (!this.statusFilter || el.is_saved === this.statusFilter) &&
+            (!this.typeWellFilter || el.type_text === this.typeWellFilter)
           ) {
             filters = [...filters, el.rus_wellname];
           }
         });
         return [undefined, ...filters];
-      } else return [];
     },
-    // фильтр по сост.скв
     wellStatusFilters() {
-      if (this.allWells && this.allWells.length > 0) {
         let filters = [];
         this.allWells.forEach((el) => {
           if (
             filters.indexOf(el.well_status_last_day) === -1 &&
-            (!this.Filter_field || el.field === this.Filter_field) &&
-            (!this.Filter_well || el.rus_wellname === this.Filter_well) &&
-            (!this.Filter_status || el.is_saved === this.Filter_status) &&
-            (!this.Filter_well_type || el.type_text === this.Filter_well_type)
+            (!this.fieldFilter || el.field === this.fieldFilter) &&
+            (!this.wellFilter || el.rus_wellname === this.wellFilter) &&
+            (!this.statusFilter || el.is_saved === this.statusFilter) &&
+            (!this.typeWellFilter || el.type_text === this.typeWellFilter)
           ) {
             filters = [...filters, el.well_status_last_day];
           }
         });
         return [undefined, ...filters];
-      } else return [];
     },
-    // фильтр по статусам (сохраненные или не сохраненные)
     statusFilters() {
-      if (this.allWells && this.allWells.length > 0) {
         let filters = [];
         this.allWells.forEach((el) => {
           if (
             filters.indexOf(el.is_saved) === -1 &&
-            (!this.Filter_field || el.field === this.Filter_field) &&
-            (!this.Filter_well || el.rus_wellname === this.Filter_well)  &&
-            (!this.Filter_well_status || el.well_status_last_day === this.Filter_well_status) &&
-            (!this.Filter_well_type || el.type_text === this.Filter_well_type)
+            (!this.fieldFilter || el.field === this.fieldFilter) &&
+            (!this.wellFilter || el.rus_wellname === this.wellFilter)  &&
+            (!this.wellStatusFilter || el.well_status_last_day === this.wellStatusFilter) &&
+            (!this.typeWellFilter || el.type_text === this.typeWellFilter)
           ) {
             filters = [...filters, el.is_saved];
           }
         });
         return [undefined, ...filters];
-      } else return [];
     },
     typeWellFilters() {
-      if (this.allWells && this.allWells.length > 0) {
         let filters = [];
         this.allWells.forEach((el) => {
           if (
             filters.indexOf(el.type_text) === -1 &&
-            (!this.Filter_field || el.field === this.Filter_field) &&
-            (!this.Filter_well || el.rus_wellname === this.Filter_well)  &&
-            (!this.Filter_well_status || el.well_status_last_day === this.Filter_well_status) &&
-            (!this.Filter_status || el.is_saved === this.Filter_status)
+            (!this.fieldFilter || el.field === this.fieldFilter) &&
+            (!this.wellFilter || el.rus_wellname === this.wellFilter)  &&
+            (!this.wellStatusFilter || el.well_status_last_day === this.wellStatusFilter) &&
+            (!this.statusFilter || el.is_saved === this.statusFilter)
           ) {
             filters = [...filters, el.type_text];
           }
         });
         return [undefined, ...filters];
-      } else return [];
     },          
   },
   beforeCreate: function () {},
@@ -176,16 +154,17 @@ export default {
     this.$store.commit("tr/SET_EXPMETH", this.selectedExpMeth);
     this.axios
       .post(
-        "http://172.20.103.187:7576/api/techregime_totals_test_3/",
+        this.postApiUrl + "techregime_totals_test_3/",
         this.getPageData(),
       )
       .then((response) => {
+        console.log(this.postApiUrl)
         let data = response.data;
         this.year = yyyy;
         this.selectYear = yyyy;
         this.month = mm;
-        this.checkMonth = mm;
-        this.checkYear = yyyy;
+        this.currentMonth = mm;
+        this.currentYear = yyyy;
         this.$store.commit("globalloading/SET_LOADING", false);
         if (response.data) {
           this.wells = data.data;
@@ -203,7 +182,7 @@ export default {
       });
     this.axios
       .get(
-        "http://172.20.103.187:7576/api/techregime/tr_parameter_filters/"
+        this.postApiUrl + "techregime/tr_parameter_filters/"
       )
       .then((response) => {
         let data = response.data;
@@ -222,7 +201,7 @@ export default {
       });
     this.axios
       .post(
-        "http://172.20.103.187:7576/api/techregime_page_numbers/",
+        this.postApiUrl + "techregime_page_numbers/",
         this.getPageData(),
       )
       .then((response) => {
@@ -262,18 +241,18 @@ export default {
       selectYear: null,
       month: null,
       isfulltable: false,
-      Filter_field: undefined,
+      fieldFilter: undefined,
       allWells: [],
-      Filter_well_status: undefined,
-      Filter_status: undefined,
-      Filter_well_type: undefined,
+      wellStatusFilter: undefined,
+      statusFilter: undefined,
+      typeWellFilter: undefined,
       filteredWellData: [],
       lonelywell: [],
       render: 0,
       searchStringModel: "",
-      Filter_well: undefined,
-      checkers: false,
-      checkersec: false,
+      wellFilter: undefined,
+      isDeleted: false,
+      isSaved: false,
       datepicker1: true,
       datepicker2: false,
       date_fix: true,
@@ -299,57 +278,56 @@ export default {
       pageCount: 0,
       pageNumber: 1,
       isEdit: false,
-      checkMonth: null,
-      checkYear: null,
-      isDateCheck: true,
+      currentMonth: null,
+      currentYear: null,
       searchParam: null,
+      postApiUrl: process.env.POST_API_URL,
     };
   },
   methods: {
     getPageData() {
       if (this.is_dynamic) {
         return {
-          field: this.$store.getters["tr/field"],
-          is_dynamic:  this.$store.getters["tr/is_dynamic"],
-          object: this.$store.getters["tr/object"],
-          searchString: this.$store.getters["tr/searchString"],
-          sortType: this.$store.getters["tr/sortType"],
-          sortParam: this.$store.getters["tr/sortParam"],
-          wellType: this.$store.getters["tr/wellType"],
-          pageNum: this.$store.getters["tr/pageNumber"],
-          block: this.$store.getters["tr/block"],
-          expMeth: this.$store.getters["tr/expMeth"],
-          horizon: this.$store.getters["tr/horizon"],
-          year_1: this.$store.getters["tr/year_dyn_start"],
-          month_1: this.$store.getters["tr/month_dyn_start"],
-          day_1: this.$store.getters["tr/day_dyn_start"],
-          year_2:  this.$store.getters["tr/year_dyn_end"],
-          month_2:  this.$store.getters["tr/month_dyn_end"],
-          day_2:  this.$store.getters["tr/day_dyn_end"],
+          field: this.$store.state.tr.field,
+          is_dynamic:  this.$store.state.tr.is_dynamic,
+          object: this.$store.state.tr.object,
+          searchString: this.$store.state.tr.searchString,
+          sortType: this.$store.state.tr.sortType,
+          sortParam: this.$store.state.tr.sortParam,
+          wellType: this.$store.state.tr.wellType,
+          pageNum: this.$store.state.tr.pageNumber,
+          block: this.$store.state.tr.block,
+          expMeth: this.$store.state.tr.expMeth,
+          horizon: this.$store.state.tr.horizon,
+          year_1: this.$store.state.tr.year_1,
+          month_1: this.$store.state.tr.month_1,
+          day_1: this.$store.state.tr.day_1,
+          year_2:  this.$store.state.tr.year_2,
+          month_2:  this.$store.state.tr.month_2,
+          day_2:  this.$store.state.tr.day_2,
           };
       }
       else {
         return {
-          month: this.$store.getters["tr/month"],
-          year: this.$store.getters["tr/year"],
-          sortType: this.$store.getters["tr/sortType"],
-          sortParam: this.$store.getters["tr/sortParam"],
-          field: this.$store.getters["tr/field"],
-          horizon: this.$store.getters["tr/horizon"],
-          wellType: this.$store.getters["tr/wellType"],
-          object: this.$store.getters["tr/object"],
-          block: this.$store.getters["tr/block"],
-          expMeth: this.$store.getters["tr/expMeth"],
-          searchString: this.$store.getters["tr/searchString"],
-          is_dynamic:  this.$store.getters["tr/is_dynamic"],
-          pageNum: this.$store.getters["tr/pageNumber"]
+          month: this.$store.state.tr.month,
+          year: this.$store.state.tr.year,
+          sortType: this.$store.state.tr.sortType,
+          sortParam: this.$store.state.tr.sortParam,
+          field: this.$store.state.tr.field,
+          horizon: this.$store.state.tr.horizon,
+          wellType: this.$store.state.tr.wellType,
+          object: this.$store.state.tr.object,
+          block: this.$store.state.tr.block,
+          expMeth: this.$store.state.tr.expMeth,
+          searchString: this.$store.state.tr.searchString,
+          is_dynamic:  this.$store.state.tr.is_dynamic,
+          pageNum: this.$store.state.tr.pageNumber
         }
       };
     },
     clickCallback(pageNum)  {
       this.$store.commit("globalloading/SET_LOADING", true);
       this.$store.commit("tr/SET_PAGENUMBER", pageNum);
-      this.pageNumber = pageNum;
       this.chooseAxios();
     },
     dropWellTypeFilter() {
@@ -357,7 +335,6 @@ export default {
       this.selectedWellType = [];
       this.$store.commit("tr/SET_WELLTYPE", this.selectedWellType);
       this.$store.commit("tr/SET_PAGENUMBER", 1);
-      this.pageNumber = 1;
       this.chooseAxios();
     },
     dropFieldFilter() {
@@ -365,7 +342,6 @@ export default {
       this.selectedField = [];
       this.$store.commit("tr/SET_FIELD", this.selectedField);
       this.$store.commit("tr/SET_PAGENUMBER", 1);
-      this.pageNumber=1;
       this.chooseAxios();
     },
     dropHorizonFilter() {
@@ -373,7 +349,6 @@ export default {
       this.selectedHorizon = [];
       this.$store.commit("tr/SET_HORIZON", this.selectedHorizon);
       this.$store.commit("tr/SET_PAGENUMBER", 1);
-      this.pageNumber=1;
       this.chooseAxios();
     },
     dropObjectFilter() {
@@ -381,7 +356,6 @@ export default {
       this.selectedObject = [];
       this.$store.commit("tr/SET_OBJECT", this.selectedObject);
       this.$store.commit("tr/SET_PAGENUMBER", 1);
-      this.pageNumber=1;
       this.chooseAxios();
     },
     dropBlockFilter() {
@@ -389,7 +363,6 @@ export default {
       this.selectedBlock = [];
       this.$store.commit("tr/SET_BLOCK", this.selectedBlock);
       this.$store.commit("tr/SET_PAGENUMBER", 1);
-      this.pageNumber=1;
       this.chooseAxios();
     },
     dropExpMethFilter() {
@@ -397,7 +370,6 @@ export default {
       this.selectedExpMeth = [];
       this.$store.commit("tr/SET_EXPMETH", this.selectedExpMeth);
       this.$store.commit("tr/SET_PAGENUMBER", 1);
-      this.pageNumber=1;
       this.chooseAxios();
     },
     chooseFilter() {
@@ -410,20 +382,19 @@ export default {
       this.$store.commit("tr/SET_WELLTYPE", this.selectedWellType);
       this.$store.commit("tr/SET_BLOCK", this.selectedBlock);
       this.$store.commit("tr/SET_EXPMETH", this.selectedExpMeth);
+      this.$store.commit("tr/SET_SORTPARAM", "rus_wellname");
       this.$store.commit("tr/SET_PAGENUMBER", 1);
-      this.pageNumber=1;
       this.chooseAxios();
     },
     chooseChildFilter(){
-      this.selectedField = this.$store.getters["tr/field"];
-      this.selectedHorizon = this.$store.getters["tr/horizon"];
-      this.selectedWellType = this.$store.getters["tr/wellType"];
-      this.selectedObject = this.$store.getters["tr/object"];
-      this.selectedBlock = this.$store.getters["tr/block"];
-      this.selectedExpMeth = this.$store.getters["tr/expMeth"];
+      this.selectedField = this.$store.state.tr.field;
+      this.selectedHorizon = this.$store.state.tr.horizon;
+      this.selectedWellType = this.$store.state.tr.wellType;
+      this.selectedObject = this.$store.state.tr.object;
+      this.selectedBlock = this.$store.state.tr.block;
+      this.selectedExpMeth = this.$store.state.tr.expMeth;
       this.$store.commit("globalloading/SET_LOADING", true);
       this.$store.commit("tr/SET_PAGENUMBER", 1);
-      this.pageNumber=1;
       if (this.is_dynamic) {
         this.axiosDynamicFilterRequest();
       }
@@ -446,7 +417,7 @@ export default {
     axiosEdit() {
       this.axios
         .post(
-          "http://172.20.103.187:7576/api/techregime_edit_page/",
+          this.postApiUrl + "techregime_edit_page/",
           this.getPageData(),
         )
         .then((response) => {
@@ -467,7 +438,7 @@ export default {
     axiosDynamicFilterRequest() {
       this.axios
         .post(
-          "http://172.20.103.187:7576/api/techregime_dynamic_totals/",
+          this.postApiUrl + "techregime_dynamic_totals/",
           this.getPageData(),
         )
         .then((response) => {
@@ -488,7 +459,7 @@ export default {
     axiosPage() {
       this.axios
       .post(
-        "http://172.20.103.187:7576/api/techregime_page_numbers/",
+        this.postApiUrl + "techregime_page_numbers/",
         this.getPageData(),
       )
       .then((response) => {
@@ -505,7 +476,7 @@ export default {
     axiosEditPage() {
       this.axios
       .post(
-        "http://172.20.103.187:7576/api/techregime_edit_page_numbers/",
+        this.postApiUrl + "techregime_edit_page_numbers/",
         this.getPageData(),
       )
       .then((response) => {
@@ -522,7 +493,7 @@ export default {
     axiosFilterRequest() {
       this.axios
         .post(
-          "http://172.20.103.187:7576/api/techregime_totals_test_3/",
+          this.postApiUrl + "techregime_totals_test_3/",
           this.getPageData(),
         )
         .then((response) => {
@@ -545,7 +516,7 @@ export default {
       row["index"] = 0;
       this.axios
         .post(
-          "http://172.20.103.187:7576/api/techregime/edit/" +
+          this.postApiUrl + "techregime/edit/" +
             this.year +
             "/" +
             this.month +
@@ -576,7 +547,7 @@ export default {
       const searchParam = this.searchString ? `${this.searchString}/` : "";
       this.axios
         .post(
-          "http://172.20.103.187:7576/api/techregime_save_page/",
+          this.postApiUrl + "techregime_save_page/",
           {
             well: this.editedWells,
           }
@@ -586,12 +557,12 @@ export default {
           this.editedWells = [];
           this.$store.commit("globalloading/SET_LOADING", false);
           this.searched = searchParam ? true : false;
-          this.month = this.checkMonth;
-          this.selectYear = this.checkYear;
+          this.month = this.currentMonth;
+          this.selectYear = this.currentYear;
           this.show_first = true;
           this.show_second = false;
-          this.$store.commit("tr/SET_MONTH", this.checkMonth);
-          this.$store.commit("tr/SET_YEAR", this.checkYear);
+          this.$store.commit("tr/SET_MONTH", this.currentMonth);
+          this.$store.commit("tr/SET_YEAR", this.currentYear);
           this.chooseDt();
         })
         .catch((error) => {
@@ -601,45 +572,37 @@ export default {
           this.searched = searchParam ? true : false;
         });
     },
-    dateCheck() {
-      if (this.year === this.checkYear && int(this.month) === this.checkMonth) {
-        return this.isDateCheck = true;
-      }
-      else {
-        return this.isDateCheck = false;
-      }
-    },
     cancelEdit() {
       this.$store.commit("globalloading/SET_LOADING", true);
       this.isEdit = false;
       this.edit = false;
       this.editedWells = [];
-      this.month = this.checkMonth;
-      this.selectYear = this.checkYear;
+      this.month = this.currentMonth;
+      this.selectYear = this.currentYear;
       this.show_first = true;
       this.show_second = false;
-      this.$store.commit("tr/SET_MONTH", this.checkMonth);
-      this.$store.commit("tr/SET_YEAR", this.checkYear);
+      this.$store.commit("tr/SET_MONTH", this.currentMonth);
+      this.$store.commit("tr/SET_YEAR", this.currentYear);
       this.chooseDt();
     },
     reRender() {
       this.filteredWellData = [];
-      this.Filter_well_status = undefined;
-      this.Filter_status = undefined;
-      this.Filter_well_type = undefined;
-      this.Filter_well = undefined;
-      this.Filter_field = undefined;
+      this.wellStatusFilter = undefined;
+      this.statusFilter = undefined;
+      this.typeWellFilter = undefined;
+      this.wellFilter = undefined;
+      this.fieldFilter = undefined;
     },
     showWells() {
       if(this.lonelywell.length === 1){
         this.show_add = !this.show_add;
         if(this.lonelywell[0].is_saved === "Сохранено"){
-          this.checkers = false;
-          this.checkersec = true;
+          this.isDeleted = false;
+          this.isSaved = true;
         }
         else{
-          this.checkers = true;
-          this.checkersec = false;
+          this.isDeleted = true;
+          this.isSaved = false;
         }
       }
       else{
@@ -757,7 +720,7 @@ export default {
       this.$store.commit("globalloading/SET_LOADING", true);
       this.axios
         .get(
-          "http://172.20.103.187:7576/api/techregime/new_wells/" 
+          this.postApiUrl + "techregime/new_wells/" 
         )
         .then((response) => {
           this.$store.commit("globalloading/SET_LOADING", false);
@@ -795,8 +758,8 @@ export default {
     closeModal(modalName) {
       this.$modal.hide(modalName)
       this.show_add=false;
-      this.checkers=false;
-      this.checkersec=false;
+      this.isDeleted=false;
+      this.isSaved=false;
       this.reRender();
     },
     addpush(){     
@@ -818,12 +781,12 @@ export default {
       });
       this.axios
         .post(
-          "http://172.20.103.187:7576/api/techregime/new_wells/add_well/", 
+          this.postApiUrl + "techregime/new_wells/add_well/", 
           output).then((res) => {
             this.wellAdd();
             this.created();
             this.show_add=false;
-            this.checkers=false;           
+            this.isDeleted=false;           
           })
     },
     // Удаление с модалки
@@ -833,13 +796,13 @@ export default {
       if(this.lonelywell.length === 1 && this.lonelywell[0].is_saved === "Сохранено"){
         this.axios
           .get(
-            "http://172.20.103.187:7576/api/techregime/new_wells/delete_well/" + 
+            this.postApiUrl + "techregime/new_wells/delete_well/" + 
             this.lonelywell[0].well).then((res) => {
               console.log(res.data)
               this.wellAdd();
               this.created();
               this.show_add=false;
-              this.checkersec=false;
+              this.isSaved=false;
               
             })
       }
@@ -852,7 +815,6 @@ export default {
       this.$store.commit("tr/SET_SORTPARAM", "rus_wellname");
       this.$store.commit("globalloading/SET_LOADING", true);
       this.$store.commit("tr/SET_PAGENUMBER", 1);
-      this.pageNumber=1;
       this.searchParam = this.searchString
         ? `search/${this.searchString}/`
         : "";
@@ -870,7 +832,7 @@ export default {
     axiosSearch() {
       this.axios
         .post(
-          "http://172.20.103.187:7576/api/techregime_totals_test_3/",
+          this.postApiUrl + "techregime_totals_test_3/",
             this.getPageData(),
         )
         .then((response) => {
@@ -899,7 +861,7 @@ export default {
     axiosEditSearch() {
       this.axios
         .post(
-          "http://172.20.103.187:7576/api/techregime_edit_page/",
+          this.postApiUrl + "techregime_edit_page/",
             this.getPageData(),
         )
         .then((response) => {

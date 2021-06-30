@@ -22,7 +22,7 @@ const tr = {
     object: [],
     block: [],
     expMeth: [],
-    pageNumber: false,
+    pageNumber: 1,
   },
 
   mutations: {

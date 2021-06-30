@@ -210,7 +210,7 @@
                                   <select
                                     class="form-control select_mod"
                                     style="background: #334296 !important"
-                                    v-model="Filter_status"
+                                    v-model="statusFilter"
                                     value="Статус"
                                   >
                                     <option v-for="(f, k) in statusFilters" :key="k" :value="f">
@@ -222,7 +222,7 @@
                                   <select
                                     class="select_mod form-control"
                                     style="background: #334296 !important"
-                                    v-model="Filter_field"
+                                    v-model="fieldFilter"
                                     value="Месторождение"
                                   >
                                     <option v-for="(f, k) in fieldFilters" :key="k" :value="f">
@@ -235,7 +235,7 @@
                                   <select
                                     class="form-control select_mod"
                                     style="background: #334296 !important"
-                                    v-model="Filter_well_type"
+                                    v-model="typeWellFilter"
                                     value="Тип скв"
                                   >
                                     <option v-for="(f, k) in typeWellFilters" :key="k" :value="f">
@@ -248,7 +248,7 @@
                                   <select
                                     class="form-control select_mod"
                                     style="background: #334296 !important"
-                                    v-model="Filter_well_status"
+                                    v-model="wellStatusFilter"
                                     value="Состояние"
                                   >
                                     <option v-for="(f, k) in wellStatusFilters" :key="k" :value="f">
@@ -261,7 +261,7 @@
                                   <select
                                     class="select_mod form-control"
                                     style="background: #334296 !important"
-                                    v-model="Filter_well"
+                                    v-model="wellFilter"
                                     value="Скважина"
                                   >
                                     <option v-for="(f, k) in wellFilters" :key="k" :value="f">
@@ -304,7 +304,7 @@
                                   style="margin-left: 10px; cursor: pointer; color:white; margin-top: 5px;"
                                   @click="saveadd()"
                                   @click.prevent="reRender"
-                                  v-show = checkers
+                                  v-show = isDeleted
                                   ><svg width="24" 
                                   height="24" 
                                   viewBox="0 0 24 24" 
@@ -318,7 +318,7 @@
                                   style="margin-left: 10px; cursor: pointer; color:white; margin-top: 5px;"
                                   @click="deleteWell"
                                   @click.prevent="reRender"
-                                  v-show = checkersec
+                                  v-show = isSaved
 
                                   ><svg width="24"
                                   height="24" 
@@ -522,7 +522,7 @@
               </a>
 
               <a
-                v-if="!edit && isPermission && isDateCheck"
+                v-if="!edit && isPermission"
                 v-bind:title="trans('tr.edit')"
                 style="cursor: pointer;"
                 data-toggle="tooltip"
@@ -869,7 +869,7 @@
                                   >{{trans('tr.choose_t')}}
                                   </a>
                                   <a href="#" class="discard_text" @click.prevent="dropFieldFilter"
-                                  >Сбросить
+                                  >{{trans('tr.reset')}}
                                   </a>
                               </div>
                             </b-dropdown-form>
@@ -906,7 +906,7 @@
                                   >{{trans('tr.choose_t')}}
                                   </a>
                                   <a href="#" class="discard_text" @click.prevent="dropWellTypeFilter"
-                                  >Сбросить
+                                  >{{trans('tr.reset')}}
                                   </a>
                               </div>
                             </b-dropdown-form>
@@ -940,7 +940,7 @@
                                   >{{trans('tr.choose_t')}}
                                   </a>
                                   <a href="#" class="discard_text" @click.prevent="dropHorizonFilter"
-                                  >Сбросить
+                                  >{{trans('tr.reset')}}
                                   </a>
                               </div>
                             </b-dropdown-form>
@@ -974,7 +974,7 @@
                                   >{{trans('tr.choose_t')}}
                                   </a>
                                   <a href="#" class="discard_text" @click.prevent="dropObjectFilter"
-                                  >Сбросить
+                                  >{{trans('tr.reset')}}
                                   </a>
                               </div>
                             </b-dropdown-form>
@@ -1008,7 +1008,7 @@
                                   >{{trans('tr.choose_t')}}
                                   </a>
                                   <a href="#" class="discard_text" @click.prevent="dropBlockFilter"
-                                  >Сбросить
+                                  >{{trans('tr.reset')}}
                                   </a>
                               </div>
                             </b-dropdown-form>
@@ -1066,7 +1066,7 @@
                                   >{{trans('tr.choose_t')}}
                                   </a>
                                   <a href="#" class="discard_text" @click.prevent="dropExpMethFilter"
-                                  >Сбросить
+                                  >{{trans('tr.reset')}}
                                   </a>
                               </div>
                             </b-dropdown-form>
@@ -6861,7 +6861,7 @@
           </div>
           <div class="overflow-auto">
             <paginate
-                v-model="pageNumber"
+                v-model="this.$store.state.tr.pageNumber"
                 :page-count="this.pageCount"
                 :page-range="3"
                 :margin-pages="2"

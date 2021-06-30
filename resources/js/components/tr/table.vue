@@ -665,12 +665,12 @@ export default {
     data: function () {
         return {
             edit: false,
-            selectedBlock: this.$store.getters["tr/block"],
-            selectedExpMeth: this.$store.getters["tr/expMeth"],
-            selectedHorizon: this.$store.getters["tr/horizon"],
-            selectedField: this.$store.getters["tr/field"],
-            selectedObject: this.$store.getters["tr/object"],
-            selectedWellType: this.$store.getters["tr/wellType"],
+            selectedBlock: this.$store.state.tr.block,
+            selectedExpMeth: this.$store.state.tr.expMeth,
+            selectedHorizon: this.$store.state.tr.horizon,
+            selectedField: this.$store.state.tr.field,
+            selectedObject: this.$store.state.tr.object,
+            selectedWellType: this.$store.state.tr.wellType,
         }
     },
     methods: {
@@ -717,7 +717,6 @@ export default {
             this.selectedWellType = [];
             this.$emit('dropWellType')
         },
-
     }
 }
 </script>
