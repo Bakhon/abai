@@ -27,13 +27,6 @@ export default {
                 'chartWithParticipation': [],
                 'chartWithoutParticipation': [],
             },
-
-            productionParamsWidget: {
-                'oilFact' : 0,
-                'oilPlan' : 0,
-                'yesterdayOilFact': 0,
-                'yesterdayOilFactWithFilter': 0,
-            },
             factorOptions: {
                 'ММГ': 0.5,
                 'КБМ': 0.5,
@@ -130,6 +123,29 @@ export default {
                 },
                 oilResidue: {
                     'oil_production_fact': 'stock_of_goods_delivery_fact'
+                }
+            },
+            selectedView: 'oilCondensateDeliveryButton',
+            productionSummary: {
+                'oilCondensateProductionButton': {
+                    'actual': {
+                        'oilFact': 0,
+                        'oilPlan': 0,
+                        'progress': 0
+                    },
+                    'yesterday': {
+                        'oilFact': 0
+                    }
+                },
+                'oilCondensateDeliveryButton': {
+                    'actual': {
+                        'oilFact': 0,
+                        'oilPlan': 0,
+                        'progress': 0
+                    },
+                    'yesterday': {
+                        'oilFact': 0
+                    }
                 }
             }
         };
@@ -315,6 +331,7 @@ export default {
                     item.planMonth = self.dzoMultiplier['НКО'](null,item.planMonth,null);
                 }
             });
+
             let pkiIndex = actualUpdatedByOpek.findIndex(element => element.dzoMonth === 'ПКИ');
             if (pkiIndex > -1) {
                 actualUpdatedByOpek[pkiIndex].factMonth = pkiSummary.factMonth;
@@ -389,14 +406,15 @@ export default {
             return actualUpdatedByOpek;
         },
 
-        updateProductionTotalFact(filteredByCompaniesYesterday,summary,todayDzoSummaryWithoutTroubledCompanies) {
+        updateProductionTotalFact(filteredByCompaniesYesterday,summary) {
+            console.log(this.selectedView)
+            console.log(this.selectedButtonName)
             let oldFactFormatted = parseFloat(summary.fact.replace(/\s/g, ''));
             let oldPlanFormatted = parseFloat(summary.plan.replace(/\s/g, ''));
-            this.productionParams['oil_fact'] = _.sumBy(todayDzoSummaryWithoutTroubledCompanies,'factMonth');
-            this.productionParams['oil_plan'] = _.sumBy(todayDzoSummaryWithoutTroubledCompanies,'planMonth');
-            this.productionPercentParams['oil_fact'] = _.sumBy(filteredByCompaniesYesterday,'factMonth');
-            this.productionParamsWidget.oilFact = oldFactFormatted;
-            this.productionParamsWidget.oilPlan = oldPlanFormatted;
+            this.productionSummary[this.selectedView].actual.oilFact = oldFactFormatted;
+            this.productionSummary[this.selectedView].actual.oilPlan = oldPlanFormatted;
+            this.productionSummary[this.selectedView].actual.progress = this.getProductionProgressBar();
+            this.productionSummary[this.selectedView].yesterday.oilFact = _.sumBy(filteredByCompaniesYesterday,'factMonth');
         },
 
         deleteTroubleCompanies(yesterdayProductionDetails) {
@@ -424,6 +442,10 @@ export default {
                 item.periodPlan = item.planMonth / daysPassed * daysCountInMonth;
             });
             return updatedData;
+        },
+
+        getProductionProgressBar() {
+            return (this.productionSummary[this.selectedView].actual.oilFact / this.productionSummary[this.selectedView].actual.oilPlan) * 100;
         },
     }
 }

@@ -13,7 +13,7 @@
                         <div class="first-td-header">
                           <div class="row oil-block col-6 col-md-12">
                             <div class="number">
-                              {{ formatDigitToThousand(productionParams.oil_fact) }}
+                              {{ formatDigitToThousand(productionSummary.oilCondensateProductionButton.actual.oilFact) }}
                             </div>
                             <div
                                     v-if="!buttonDailyTab && !isOneDateSelected"
@@ -28,20 +28,8 @@
                               {{ trans('visualcenter.tonWithSpace') }}
                             </div>
                           </div>
-                          <div
-                                  v-if="oilCondensateProductionButton.length > 0"
-                                  class="additional-header txt1 col-6 col-md-12">
+                          <div class="additional-header txt1 col-6 col-md-12">
                             {{ trans("visualcenter.oilCondensateProduction") }}
-                          </div>
-                          <div
-                                  v-else-if="oilCondensateDeliveryButton.length > 0"
-                                  class="additional-header txt1 col-6 col-md-12">
-                            {{ trans("visualcenter.oilCondensateDelivery") }}
-                          </div>
-                          <div
-                                  v-else
-                                  class="additional-header txt1 col-6 col-md-12">
-                            {{ trans("visualcenter.getoil") }}
                           </div>
                           <br />
                           <div class="progress">
@@ -49,30 +37,40 @@
                             <div
                                     class="progress-bar"
                                     role="progressbar"
-                                    :style="{
-                                width: dailyProgressBars.oil + '%',
-                              }"
-                                    :aria-valuenow="productionParams.oil_fact"
+                                    :style="{width: productionSummary.oilCondensateProductionButton.actual.progress + '%',}"
+                                    :aria-valuenow="productionSummary.oilCondensateProductionButton.actual.oilFact"
                                     aria-valuemin="0"
-                                    :aria-valuemax="productionParams.oil_plan"
+                                    :aria-valuemax="productionSummary.oilCondensateProductionButton.actual.oilPlan"
                             ></div>
                           </div>
                           <div class="row">
-                            <div class="percent-header col-5 col-md-6" v-if="productionParams.oil_fact">
-                              {{ getDiffProcentLastBigN(productionParams.oil_fact, productionParams.oil_plan) }}%
+                            <div
+                                    class="percent-header col-5 col-md-6"
+                                    v-if="productionSummary.oilCondensateProductionButton.actual.oilFact"
+                            >
+                              {{ getDiffProcentLastBigN(
+                                productionSummary.oilCondensateProductionButton.actual.oilFact,
+                                productionSummary.oilCondensateProductionButton.actual.oilPlan)
+                              }}%
                             </div>
-                            <div class="plan-header col-6" v-if="productionParams.oil_plan">
-                              {{ formatDigitToThousand(productionParams.oil_plan) }}
+                            <div class="plan-header col-6" v-if="productionSummary.oilCondensateProductionButton.actual.oilPlan">
+                              {{ formatDigitToThousand(productionSummary.oilCondensateProductionButton.actual.oilPlan) }}
                             </div>
                             <br />
                           </div>
                           <div class="col-12 mt-4">
                             <div
-                                    :class="`${getGrowthIndicatorByDifference(productionParams.oil_fact, productionPercentParams.oil_fact)}`"
+                                    :class="`${getGrowthIndicatorByDifference(
+                                              productionSummary.oilCondensateProductionButton.actual.oilFact,
+                                              productionSummary.oilCondensateProductionButton.yesterday.oilFact)
+                                            }`"
                             ></div>
 
                             <div class="txt2-2">
-                              {{Math.abs(getDifferencePercentBetweenLastValues(productionPercentParams.oil_fact, productionParams.oil_fact))}}%
+                              {{ Math.abs(getDifferencePercentBetweenLastValues(
+                                productionSummary.oilCondensateProductionButton.yesterday.oilFact,
+                                productionSummary.oilCondensateProductionButton.actual.oilFact))
+                              }}%
                             </div>
                             <div class="txt3">
                               vs
@@ -89,7 +87,7 @@
                         <div class="first-td-header">
                           <div class="row oil-block col-6 col-md-12">
                             <div class="number">
-                              {{ formatDigitToThousand(productionParams.oil_dlv_fact) }}
+                              {{ formatDigitToThousand(productionSummary.oilCondensateDeliveryButton.actual.oilFact) }}
                             </div>
                             <div
                                     v-if="!buttonDailyTab && !isOneDateSelected"
@@ -105,7 +103,7 @@
                             </div>
                           </div>
                           <div class="additional-header txt1 col-6 col-md-12">
-                            {{ trans("visualcenter.oildlv") }}
+                            {{ trans("visualcenter.oilCondensateDelivery") }}
                           </div>
                           <br />
                           <div class="progress">
@@ -113,30 +111,37 @@
                             <div
                                     class="progress-bar"
                                     role="progressbar"
-                                    :style="{
-                                width: dailyProgressBars.oilDelivery + '%',
-                              }"
-                                    :aria-valuenow="productionParams.oil_dlv_fact"
+                                    :style="{width: productionSummary.oilCondensateDeliveryButton.actual.progress + '%'}"
+                                    :aria-valuenow="productionSummary.oilCondensateDeliveryButton.actual.oilFact"
                                     aria-valuemin="0"
-                                    :aria-valuemax="productionParams.oil_dlv_plan"
+                                    :aria-valuemax="productionSummary.oilCondensateDeliveryButton.actual.oilPlan"
                             ></div>
                           </div>
                           <div class="row">
-                            <div class="percent-header col-5 col-md-6" v-if="productionParams.oil_dlv_fact">
-                              {{getDiffProcentLastBigN(productionParams.oil_dlv_fact, productionParams.oil_dlv_plan)}}%
+                            <div class="percent-header col-5 col-md-6" v-if="productionSummary.oilCondensateDeliveryButton.actual.oilFact">
+                              {{getDiffProcentLastBigN(
+                                productionSummary.oilCondensateDeliveryButton.actual.oilFact,
+                                productionSummary.oilCondensateDeliveryButton.actual.oilPlan)
+                              }}%
                             </div>
-                            <div class="plan-header col-6" v-if="productionParams.oil_dlv_plan">
-                              {{ formatDigitToThousand(productionParams.oil_dlv_plan) }}
+                            <div class="plan-header col-6" v-if="productionSummary.oilCondensateDeliveryButton.actual.oilPlan">
+                              {{ formatDigitToThousand(productionSummary.oilCondensateDeliveryButton.actual.oilPlan) }}
                             </div>
                           </div>
                           <br />
                           <div class="col-12 mt-2">
                             <div
-                                    :class="`${getGrowthIndicatorByDifference(productionParams.oil_dlv_fact,productionPercentParams.oil_dlv_fact)}`"
+                                    :class="`${getGrowthIndicatorByDifference(
+                                              productionSummary.oilCondensateDeliveryButton.actual.oilFact,
+                                              productionSummary.oilCondensateDeliveryButton.yesterday.oilFact)
+                                            }`"
                             ></div>
 
                             <div class="txt2-2">
-                              {{Math.abs(getDifferencePercentBetweenLastValues(productionPercentParams.oil_dlv_fact,productionParams.oil_dlv_fact))}}%
+                              {{Math.abs(getDifferencePercentBetweenLastValues(
+                                productionSummary.oilCondensateDeliveryButton.yesterday.oilFact,
+                                productionSummary.oilCondensateDeliveryButton.actual.oilFact))
+                              }}%
                             </div>
                             <div class="txt3">
                               vs

@@ -130,7 +130,7 @@ export default {
             this.dzoSummaryForTable = this.dzoCompanySummary.filter(item => this.selectedDzoCompanies.includes(item.dzoMonth));
             let filteredByCompaniesYesterday = this.yesterdaySummary.filter(item => this.selectedDzoCompanies.includes(item.dzoMonth));
             let actualFilteredSummary = _.cloneDeep(this.dzoSummaryForTable);
-            if (this.oilCondensateProductionButton.length === 0) {
+            if (!this.isConsolidatedCategoryActive()) {
                 filteredByCompaniesYesterday = this.yesterdayProductionDetails.filter(item => this.selectedDzoCompanies.includes(item.dzoMonth));
             } else {
                 actualFilteredSummary = this.deleteTroubleCompanies(_.cloneDeep(this.dzoSummaryForTable));
@@ -151,11 +151,10 @@ export default {
                 if (self.isConsolidatedCategoryActive()) {
                     summary.opekPlan = parseInt(summary.opekPlan) + parseInt(company.opekPlan);
                 }
-                //console.log(company.planMonth + company.factMonth + company.opekPlan);
             });
             summary = this.getFormatted(summary);
             let yesterdayFilteredSummary = this.deleteTroubleCompanies(filteredByCompaniesYesterday);
-            this.updateProductionTotalFact(yesterdayFilteredSummary,summary,actualFilteredSummary);
+            this.updateProductionTotalFact(yesterdayFilteredSummary,summary);
 
             this.dzoCompaniesSummary = summary;
             if (this.isConsolidatedCategoryActive()) {
@@ -176,13 +175,6 @@ export default {
             summary.fact = this.formatDigitToThousand(summary.fact);
             summary.periodPlan = this.formatDigitToThousand(summary.periodPlan);
             return summary;
-        },
-
-        updateActualOilFactByFilter() {
-            this.productionPercentParams['oil_fact'] = this.productionParamsWidget.yesterdayOilFact;
-            if (!this.oilCondensateFilters.isWithoutKMGFilterActive) {
-                this.productionPercentParams['oil_fact'] = this.productionParamsWidget.yesterdayOilFactWithFilter;
-            }
         },
 
         getAllDzoCompanies() {

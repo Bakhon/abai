@@ -163,7 +163,7 @@ export default {
             this.updateProductionSummary(productionSummary,this.productionPercentParams);
         },
 
-        updateProductionData(planFieldName, factFieldName, chartHeadName, metricName, chartSecondaryName) {
+        async updateProductionData(planFieldName, factFieldName, chartHeadName, metricName, chartSecondaryName) {
             this.$store.commit('globalloading/SET_LOADING', true);
             if (this.isMainMenuItemChanged) {
                 this.mainMenuButtonElementOptions = _.cloneDeep(mainMenuConfiguration);
@@ -178,8 +178,14 @@ export default {
                 this.isOpecFilterActive = false;
                 this.isKmgParticipationFilterActive = false;
             }
-
-            this.processProductionData(metricName,chartSecondaryName);
+            if (this.isFirstLoading) {
+                await this.processProductionData(metricName,chartSecondaryName);
+                this.isFirstLoading = false;
+                this.selectedView = 'oilCondensateProductionButton';
+                this.selectedButtonName = 'oilCondensateProductionButton';
+            }
+            await this.processProductionData(metricName,chartSecondaryName);
+            this.$store.commit('globalloading/SET_LOADING', false);
         },
 
         async processProductionData(metricName,chartSecondaryName) {
@@ -187,7 +193,6 @@ export default {
             if (productionData && Object.keys(productionData).length > 0) {
                 this.processProductionDataByCompanies(productionData,metricName,chartSecondaryName);
             }
-            this.$store.commit('globalloading/SET_LOADING', false);
         },
 
         async getProductionDataByPeriod() {
@@ -227,11 +232,42 @@ export default {
             let processedByAllCompaniesForYesterday = this.getProcessedDataForAllCompanies(productionData,yesterdayPeriodStart,yesterdayPeriodEnd,'old');
             let processedByAllCompaniesForActual = this.getProcessedDataForAllCompanies(productionData,this.timestampToday,this.timestampEnd,'actual');
             updatedData = processedByAllCompaniesForActual.filteredData;
+            if (processedByAllCompaniesForYesterday.summary.length !== 15 && this.isConsolidatedCategoryActive()) {
+                processedByAllCompaniesForYesterday.summary = this.getFilledByAllCompanies(processedByAllCompaniesForYesterday.summary);
+                processedByAllCompaniesForActual.summary = this.getFilledByAllCompanies(processedByAllCompaniesForActual.summary);
+            }
             this.yesterdayProductionDetails = processedByAllCompaniesForYesterday.summary;
             this.bigTable = processedByAllCompaniesForActual.summary;
             this.setColorToMainMenuButtons();
             this.updateProductionOilandGas(updatedData);
             this.updateProductionOilandGasPercent(updatedData);
+        },
+
+        getFilledByAllCompanies(input) {
+            let companyTemplate = {
+                "opec": null,
+                "impulses": null,
+                "landing": null,
+                "restrictions": null,
+                "otheraccidents": null,
+                "dzoMonth": null,
+                "planMonth": 0,
+                "factMonth": 0,
+                "periodPlan": 0,
+                "opekPlan": 0
+            };
+            let actualCompanies = _.map(input, 'dzoMonth');
+            let expectedCompanies = ['ОМГ','ММГ','ЭМГ','КБМ',
+                'КГМ','КТМ','КОА','УО','ТШО','НКО','КПО','ПКИ',
+                'ПКК','ТП','АГ'];
+            let difference = _.differenceWith(expectedCompanies, actualCompanies, _.isEqual);
+            for (let i in difference) {
+                if (difference[i] !== 'АГ') {
+                    companyTemplate.dzoMonth = difference[i];
+                    input.push(companyTemplate);
+                }
+            }
+            return input;
         },
 
         getElementIndexesByCompany(productionData,companyName,fieldName) {
