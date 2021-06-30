@@ -176,12 +176,6 @@ export default {
             );
         },
 
-        getCovidData(data) {
-            return _.reduce(data, function (memo, item) {
-                return memo + item['tb_covid_total'];
-            }, 0);
-        },
-
         getFilteredData(data, type) {
             _.forEach(this.dzoType[type], function (dzoName) {
                 data = _.reject(data, _.iteratee({dzo: dzoName}));
@@ -248,13 +242,6 @@ export default {
                 arrowClass = "fond-indicator-fall";
             }
             return arrowClass;
-        },
-        getIndicatorForStaffCovidParams(previosValue,currentValue) {
-            if (previosValue > currentValue) {
-                return this.trans("visualcenter.indicatorFall");
-            } else if (previosValue < currentValue) {
-                return this.trans("visualcenter.indicatorGrow");
-            }
         },
 
         getFilteredDataByOneCompany(data) {

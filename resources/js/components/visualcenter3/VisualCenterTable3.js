@@ -14,7 +14,6 @@ import oilRates from './widgets/oilRates';
 import usdRates from './widgets/usdRates';
 import injectionWells from './widgets/injectionWells';
 import productionWells from './widgets/productionWells';
-import companyStaff from './widgets/companyStaff';
 import mainStatisticsTable from './widgets/mainStatisticsTable';
 import wells from './dataManagers/wells';
 import rates from './dataManagers/rates';
@@ -40,22 +39,10 @@ export default {
     },
     data: function () {
         return {
-            accidentTotal: '',
-            noData: '',
-            personalFact: '',
             oilChartHeadName: this.trans('visualcenter.getoildynamic'),
-            productionFactPercentOneDzo: '',
-            productionFactPercentSumm: '',
             quantityRange: '',
-            productionFactPersent: '',
-            productionPlanPersent: '',
             index: "",
-            widthProgress: "90",
             NameDzoFull: {
-                0: "Всего добыча нефти с учётом доли участия АО НК КазМунайГаз",
-                1: "(конденсат)(100%)",
-                2: "в т.ч.:газовый конденсат",
-                3: 'АО ПетроКазахстан Инк',
                 'ОМГ': this.trans("visualcenter.omg"),
                 'ЭМГ': this.trans("visualcenter.emg"),
                 'КБМ': this.trans("visualcenter.kbm"),
@@ -77,12 +64,8 @@ export default {
             bigTable: [],
             starts: [""],
             series: ["", ""],
-            factYearSumm: "",
-            planYearSumm: "",
             planMonthSumm: "",
             factMonthSumm: "",
-            factDaySumm: "",
-            planDaySumm: "",
             timestampToday: "",
             timestampEnd: "",
             isPricesChartLoading: false,
@@ -92,10 +75,6 @@ export default {
             factFieldName: "oil_fact",
             metricName: this.trans("visualcenter.chemistryMetricTon"),
             productionParams : {
-                oil_plan: 0,
-                oil_fact: 0,
-                oil_dlv_plan: 0,
-                oil_dlv_fact: 0,
                 gas_plan: 0,
                 gas_fact: 0,
             },
@@ -105,8 +84,6 @@ export default {
                 gas: 0,
             },
             productionPercentParams: {
-                oil_fact: 0,
-                oil_dlv_fact: 0,
                 gas_fact: 0
             },
             millisecondsInOneDay: 1000*60*60*24
@@ -127,8 +104,6 @@ export default {
             let productionDataInPeriodRange = this.getProductionDataInPeriodRange(updatedData,this.timestampToday,this.timestampEnd);
             let productionSummary = this.getProductionSummary(productionDataInPeriodRange);
             this.updateProductionSummary(productionSummary,this.productionParams);
-            this.dailyProgressBars.oil = this.getProductionProgressBarData('oil_plan','oil_fact');
-            this.dailyProgressBars.oilDelivery = this.getProductionProgressBarData('oil_dlv_plan','oil_dlv_fact');
             this.dailyProgressBars.gas = this.getProductionProgressBarData('gas_plan','gas_fact');
         },
         
@@ -137,10 +112,6 @@ export default {
                 .groupBy("dzo")
                 .map((dzo, id) => ({
                     dzo: id,
-                    oil_plan: _.round(_.sumBy(dzo, 'oil_plan'), 0),
-                    oil_fact: _.round(_.sumBy(dzo, 'oil_fact'), 0),
-                    oil_dlv_plan: _.round(_.sumBy(dzo, 'oil_dlv_plan'), 0),
-                    oil_dlv_fact: _.round(_.sumBy(dzo, 'oil_dlv_fact'), 0),
                     gas_plan: _.round(_.sumBy(dzo, 'gas_plan'), 0),
                     gas_fact: _.round(_.sumBy(dzo, 'gas_fact'), 0),
                 }))
@@ -175,7 +146,6 @@ export default {
                 this.changeOilProductionFilters();
             } else {
                 this.isOpecFilterActive = false;
-                this.isKmgParticipationFilterActive = false;
             }
             this.processProductionData(metricName,chartSecondaryName);
         },
@@ -302,7 +272,6 @@ export default {
             let filteredDataByCompanies = this.getFilteredCompaniesList(data);
             let filteredDataByPeriod = this.getProductionDataInPeriodRange(filteredDataByCompanies,periodStart,periodEnd);
             filteredDataByPeriod = this.getDataOrderedByAsc(filteredDataByPeriod);
-            this.getProductionPercentCovid(filteredDataByPeriod);
             this.updateSecondaryParams(data);
 
             if (this.isOneDateSelected) {
@@ -515,12 +484,6 @@ export default {
                 data = this.getFilteredCompaniesList(data);
             }
 
-            if (this.isKmgParticipationFilterActive) {
-                productionPlanAndFactMonth = this.calculateKmgParticipationFilter(productionPlanAndFactMonth,
-                    'dzo','productionFactForChart',
-                    'productionPlanForChart');
-            }
-
             let opec = [];
             let impulses = [];
             let landing = [];
@@ -540,22 +503,6 @@ export default {
                 otheraccidents.push({otheraccidents: item.otheraccidents});
             });
 
-            var factYearSumm = _.reduce(
-                factYear,
-                function (memo, item) {
-                    return memo + item.factYear;
-                },
-                0
-            );
-
-            var planYearSumm = _.reduce(
-                planYear,
-                function (memo, item) {
-                    return memo + item.planYear;
-                },
-                0
-            );
-
             var planMonthSumm = _.reduce(
                 planMonth,
                 function (memo, item) {
@@ -572,46 +519,8 @@ export default {
                 0
             );
 
-            var factDaySumm = _.reduce(
-                factDay,
-                function (memo, item) {
-                    return memo + item.factDay;
-                },
-                0
-            );
-
-            var planDaySumm = _.reduce(
-                planDay,
-                function (memo, item) {
-                    return memo + item.planDay;
-                },
-                0
-            );
-
-            this.factYearSumm = factYearSumm;
-            this.planYearSumm = planYearSumm;
             this.planMonthSumm = planMonthSumm;
             this.factMonthSumm = factMonthSumm;
-            this.factDaySumm = factDaySumm;
-            this.planDaySumm = planDaySumm;
-
-
-            this.personalFact = _.reduce(
-                dataDay,
-                function (memo, item) {
-                    return memo + item['tb_personal_fact'];
-                },
-                0
-            );
-
-            this.getProductionPercentCovid(data);
-            this.covid = _.reduce(
-                dataDay,
-                function (memo, item) {
-                    return memo + item['tb_covid_total'];
-                },
-                0
-            );
 
             var bigTable = _.zipWith(
                 opec,
@@ -763,7 +672,6 @@ export default {
         usdRates,
         injectionWells,
         productionWells,
-        companyStaff,
         mainStatisticsTable,
         wells,
         rates,
@@ -822,10 +730,8 @@ export default {
         this.sortDzoList();
         this.changeDate();
         this.changeMenu2();
-        this.getStaff();
 
         this.buttonDailyTab = "button-tab-highlighted";
-        this.getAccidentTotal();
         this.mainMenuButtonElementOptions = _.cloneDeep(mainMenuConfiguration);
         this.getDzoYearlyPlan();
         this.selectedDzoCompanies = this.getAllDzoCompanies();

@@ -785,7 +785,7 @@
                     {{ trans("visualcenter.yearBegin") }}
                   </div>
                   <button
-                          v-if="buttonYearlyTab && oilProductionButton"
+                          v-if="buttonYearlyTab && isConsolidatedCategoryActive()"
                           type="button"
                           class="btn btn-primary dropdown-toggle position-button-vc dzocompanies__button_position"
                           data-toggle="dropdown"
@@ -972,9 +972,6 @@
                     >
                       <span v-if="!isConsolidatedCategoryActive">
                         {{ getNameDzoFull(item.dzoMonth) }}
-                        <span v-if="isKmgParticipationFilterActive">
-                          {{getOilProductionKmgParticipationDzoTitle(kmgParticipationPercent[getNameDzoFull(item.dzoMonth)])}}
-                        </span>
                         <img src="/img/icons/link.svg" />
                       </span>
                       <span v-else-if="isConsolidatedCategoryActive && !oilCondensateFilters.isWithoutKMGFilterActive">

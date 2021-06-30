@@ -11,7 +11,6 @@ export default {
             categoryMenuPreviousParent: '',
             mainMenuButtonHighlighted: "color: #fff;background: #237deb;font-weight:bold;",
             isOpecFilterActive: false,
-            isKmgParticipationFilterActive: false,
             flagOn: '<svg width="15" height="19" viewBox="0 0 15 19" fill="none" xmlns="http://www.w3.org/2000/svg">\n' +
                 '<path fill-rule="evenodd" clip-rule="evenodd" d="M12.4791 0.469238H2.31923C1.20141 0.469238 0.297516 1.38392 0.297516 2.50136L0.287109 18.7576L7.39917 15.7094L14.5112 18.7576V2.50136C14.5112 1.38392 13.5969 0.469238 12.4791 0.469238Z" fill="#2E50E9"/>' +
                 '</svg>',
@@ -135,10 +134,7 @@ export default {
 
             if (type === "opecRestriction") {
                 this.isOpecFilterActive = !this.isOpecFilterActive;
-            } else if (type === 'kmgParticipation') {
-                this.chartSecondaryName = this.trans("visualcenter.dolyaUchast");
-                this.isKmgParticipationFilterActive = !this.isKmgParticipationFilterActive;
-            } else {
+            }  else {
                 this.dzoCompaniesAssets = _.cloneDeep(this.dzoCompaniesAssetsInitial);
                 this.dzoCompaniesAssets[type] = !this.dzoCompaniesAssets[type];
                 this.selectedDzoCompanies = this.getSelectedDzoCompanies(type,category,regionName);
