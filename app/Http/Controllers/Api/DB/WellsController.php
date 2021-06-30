@@ -404,39 +404,23 @@ class WellsController extends Controller
     private function gdisCurrentValueRzatrAtm(Well $well)
     {
         return $well->gdisCurrentValue()
-            ->join('prod.gdis_current', 'prod.gdis_current.id', 'gdis_current_value.gdis_curr')
             ->join('dict.metric', 'gdis_current_value.metric', '=', 'dict.metric.id')
-            ->whereIn('gdis_current.meas_date', $this->getDdin($well))
-            ->first('value_double');
-    }
-
-    private function getDdin(Well $well)
-    {
-        return $well->gdisCurrentValue()
-            ->join('dict.metric', 'gdis_current_value.metric', '=', 'dict.metric.id')
-            ->where('gdis_current_value.value_double', '<>', 'null')
-            ->where('metic.code', '=', 'FLVL')
-            ->orderBy('gdis_current.meas_date', 'desc')
-            ->first(['gdis_current.meas_date']);
+            ->join('prod.gdis_current as gdis_otp', 'prod.gdis_current.id', 'gdis_current_value.gdis_curr')
+            ->join('dict.metric as metric_otp', 'gdis_current_value.metric', '=', 'dict.metric.id')
+            ->where('metric_otp.code', '=', 'OTP')
+            ->where('metric_otp.code', '=', 'FLVL')
+            ->first();
     }
 
     private function gdisCurrentValueRzatrStat(Well $well)
     {
         return $well->gdisCurrentValue()
-            ->join('prod.gdis_current', 'prod.gdis_current.id', 'gdis_current_value.gdis_curr')
             ->join('dict.metric', 'gdis_current_value.metric', '=', 'dict.metric.id')
-            ->whereIn('gdis_current.meas_date', $this->getDstat($well))
-            ->first('value_double');
-    }
-
-    private function getDstat(Well $well)
-    {
-        return $well->gdisCurrentValue()
-            ->join('dict.metric', 'gdis_current_value.metric', '=', 'dict.metric.id')
-            ->where('gdis_current_value.value_double', '<>', 'null')
-            ->where('metic.code', '=', 'STLV')
-            ->orderBy('gdis_current.meas_date', 'desc')
-            ->first(['gdis_current.meas_date']);
+            ->join('prod.gdis_current as gdis_otp', 'prod.gdis_current.id', 'gdis_current_value.gdis_curr')
+            ->join('dict.metric as metric_otp', 'gdis_current_value.metric', '=', 'dict.metric.id')
+            ->where('metric_otp.code', '=', 'OTP')
+            ->where('metric_otp.code', '=', 'FLVL')
+            ->first();
     }
 
     private function gdisComplex(Well $well)
@@ -444,7 +428,7 @@ class WellsController extends Controller
         return $well->gdisComplex()
             ->join('dict.metric', 'prod.gdis_complex_value.metric', '=', 'dict.metric.id')
             ->withPivot('research_date as research_date')
-            ->where('metric.code', '=', 'RP')
+            ->where('metric.code', 'isNotNull')
             ->orderBy('research_date', 'desc')
             ->first(['value_double', 'research_date']);
     }
