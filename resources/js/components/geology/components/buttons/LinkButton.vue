@@ -1,0 +1,44 @@
+<template>
+  <a :class="getClasses" :href="$urlLink(href)">
+    <Icon :width="iWidth" :height="iHeight" v-if="icon" :style="{marginRight: (icon&&$slots.default&&$slots.default.length)&&'10px'}" :name="icon" />
+    <slot />
+  </a>
+</template>
+
+<script>
+import Icon from "../icons/Icon.vue";
+import props from "./props";
+import computed from "./computed";
+
+export default {
+  name: "LinkButton",
+  mixins: [props, computed],
+  props: {
+    hasCheckActive: Boolean,
+    activeColor: {
+      type: String,
+      default: 'primary'
+    },
+  },
+  components: {
+    Icon
+  },
+  computed: {
+    isActive(){
+      if(this.hasCheckActive){
+        return this.$urlLink(this.href) === this.$currentPageUrl;
+      }
+    },
+    getClasses(){
+      let color = (this.isActive&&this.activeColor);
+      return {
+        ...this.classes,
+        'current-page': this.isActive,
+        [this.color]: !color,
+        [`active-btn__${this.activeColor}`]: color,
+        [`icon-color__${this.activeColor || this.color}`]: this.activeColor || this.color
+      }
+    }
+  }
+}
+</script>

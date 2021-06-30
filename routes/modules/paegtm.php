@@ -6,7 +6,7 @@ Route::group(
         Route::group(
             ['middleware' => 'auth'],
             function () {
-                Route::get('/paegtm', 'GTM\GTMController@index')->name('gtm');
+                Route::get('/paegtm', 'GTM\GTMController@index')->name('gtm_index');
             }
         );
     }
