@@ -82,7 +82,7 @@ class MappingController extends CrudController
         $link = $this -> link;
         $validationParams = $this->getValidationParams('data');
         $view = $this->view;
-        $geoList = Geo::where('geo_type', 1)->orderBy('name_ru')->get();
+        $geoList = Geo::where('geo_type', 3)->orderBy('name_ru')->get();
         return view($view.'.create', compact('link', 'modelName', 'validationParams', 'geoList'));
     }
 
