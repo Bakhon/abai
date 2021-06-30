@@ -37,4 +37,5 @@
   'well_perf_drill_packer' => '\\App\\Services\\BigData\\Forms\\WellPerfDrillPacker',
   'well_perf_bridge_plug' => '\\App\\Services\\BigData\\Forms\\WellPerfBridgePlug',
   'well_perf_other' => '\\App\\Services\\BigData\\Forms\\WellPerfOther',
+  'daily_reports_fluid_prod' => '\\App\\Services\\BigData\\Forms\\DailyReportsFluidProd'
 );
