@@ -292,9 +292,9 @@
         </thead>
         <tbody class="table_tbody">
             <tr v-for="(row, row_index) in wells" :key="row_index" class="trtablerow">
-                <td class="fixcol" :class="{'activ': getClassTotal(row)}">{{row.field}} </td>
-                <td class="fixcol" :class="{'activ': getClassTotal(row)}">{{row.rus_wellname}} </td>
-                <td :class="{'cell-with-comment': getClassWithComment(row_index,`well_type`), 'activ': getClassTotal(row)}" td class="fixcol">
+                <td class="fixcol" :class="{'activ': isActiveClass(row)}">{{row.field}} </td>
+                <td class="fixcol" :class="{'activ': isActiveClass(row)}">{{row.rus_wellname}} </td>
+                <td :class="{'cell-with-comment': isCommentClass(row_index,`well_type`), 'activ': isActiveClass(row)}" td class="fixcol">
                     <span :class="{'circle-err': wells && wells[row_index] &&
                 wells[row_index].well_type[1][0] !== '0'}" :style="`background :${getColor(
                 wells[row_index].well_type[1][0])}`"> </span>
@@ -304,7 +304,7 @@
                     </span>
                 </td>
 
-                <td :class="{'cell-with-comment': getClassWithComment(row_index,`horizon`), 'activ': getClassTotal(row)}" class="tb">
+                <td :class="{'cell-with-comment': isCommentClass(row_index,`horizon`), 'activ': isActiveClass(row)}" class="tb">
                     <span :class="{'circle-err': wells && wells[row_index] &&
                 wells[row_index].horizon[1][0] !== '0'}" :style="`background :${getColor(
                 wells[row_index].horizon[1][0])}`"> </span>
@@ -315,10 +315,10 @@
                 </td>
 
 
-                <td class="fixcol" :class="{'activ': getClassTotal(row)}">{{row.object}} </td>
+                <td class="fixcol" :class="{'activ': isActiveClass(row)}">{{row.object}} </td>
 
 
-                <td :class="{'cell-with-comment': getClassWithComment(row_index,`block`), 'activ': getClassTotal(row)}">
+                <td :class="{'cell-with-comment': isCommentClass(row_index,`block`), 'activ': isActiveClass(row)}">
                     <span :class="{'circle-err': wells && wells[row_index] &&
                 wells[row_index].block[1][0] !== '0'}" :style="`background :${getColor(
                 wells[row_index].block[1][0])}`"> </span>
@@ -328,7 +328,7 @@
                     </span>
                 </td>
 
-                <td :class="{'cell-with-comment': getClassWithComment(row_index,`cas_OD`), 'activ': getClassTotal(row)}">
+                <td :class="{'cell-with-comment': isCommentClass(row_index,`cas_OD`), 'activ': isActiveClass(row)}">
                     <span :class="{'circle-err': wells && wells[row_index] &&
                 wells[row_index].cas_OD[1][0] !== '0'}" :style="`background :${getColor(
                 wells[row_index].cas_OD[1][0])}`"> </span>
@@ -338,7 +338,7 @@
                     </span>
                 </td>
 
-                <td :class="{'cell-with-comment': getClassWithComment(row_index,`tub_OD`), 'activ': getClassTotal(row)}">
+                <td :class="{'cell-with-comment': isCommentClass(row_index,`tub_OD`), 'activ': isActiveClass(row)}">
                     <span :class="{'circle-err': wells && wells[row_index] &&
                 wells[row_index].tub_OD[1][0] !== '0'}" :style="`background :${getColor(
                 wells[row_index].tub_OD[1][0])}`"> </span>
@@ -348,7 +348,7 @@
                     </span>
                 </td>
 
-                <td :class="{'cell-with-comment': getClassWithComment(row_index,`choke_d`), 'activ': getClassTotal(row)}">
+                <td :class="{'cell-with-comment': isCommentClass(row_index,`choke_d`), 'activ': isActiveClass(row)}">
                     <span :class="{'circle-err': wells && wells[row_index] &&
                 wells[row_index].choke_d[1][0] !== '0'}" :style="`background :${getColor(
                 wells[row_index].choke_d[1][0])}`"> </span>
@@ -358,7 +358,7 @@
                     </span>
                 </td>
 
-                <td :class="{'cell-with-comment': getClassWithComment(row_index,`h_up_perf_md`), 'activ': getClassTotal(row)}">
+                <td :class="{'cell-with-comment': isCommentClass(row_index,`h_up_perf_md`), 'activ': isActiveClass(row)}">
                     <span :class="{'circle-err': wells && wells[row_index] &&
                 wells[row_index].h_up_perf_md[1][0] !== '0'}" :style="`background :${getColor(
                 wells[row_index].h_up_perf_md[1][0])}`"> </span>
@@ -367,7 +367,7 @@
                         {{ wells[row_index].h_up_perf_md[1][1]}}
                     </span>
                 </td>
-                <td :class="{'cell-with-comment': getClassWithComment(row_index,`exp_meth`), 'activ': getClassTotal(row)}">
+                <td :class="{'cell-with-comment': isCommentClass(row_index,`exp_meth`), 'activ': isActiveClass(row)}">
                     <span :class="{'circle-err': wells && wells[row_index] &&
                 wells[row_index].exp_meth[1][0] !== '0'}" :style="`background :${getColor(
                 wells[row_index].exp_meth[1][0])}`"> </span>
@@ -377,7 +377,7 @@
                     </span>
                 </td>
 
-                <td :class="{'cell-with-comment': getClassWithComment(row_index,`pump_type`), 'activ': getClassTotal(row)}">
+                <td :class="{'cell-with-comment': isCommentClass(row_index,`pump_type`), 'activ': isActiveClass(row)}">
                     <span :class="{'circle-err': wells && wells[row_index] &&
                 wells[row_index].pump_type[1][0] !== '0'}" :style="`background :${getColor(
                 wells[row_index].pump_type[1][0])}`"> </span>
@@ -387,7 +387,7 @@
                     </span>
                 </td>
 
-                <td :class="{'cell-with-comment': getClassWithComment(row_index,`pump_type`), 'activ': getClassTotal(row)}">
+                <td :class="{'cell-with-comment': isCommentClass(row_index,`pump_type`), 'activ': isActiveClass(row)}">
                     <span :class="{'circle-err': wells && wells[row_index] &&
                 wells[row_index].freq[1][0] !== '0'}" :style="`background :${getColor(
                 wells[row_index].freq[1][0])}`"> </span>
@@ -397,7 +397,7 @@
                     </span>
                 </td>
 
-                <td :class="{'cell-with-comment': getClassWithComment(row_index,`h_pump_set`), 'activ': getClassTotal(row)}">
+                <td :class="{'cell-with-comment': isCommentClass(row_index,`h_pump_set`), 'activ': isActiveClass(row)}">
                     <span :class="{'circle-err': wells && wells[row_index] &&
                 wells[row_index].h_pump_set[1][0] !== '0'}" :style="`background :${getColor(
                 wells[row_index].h_pump_set[1][0])}`"> </span>
@@ -407,7 +407,7 @@
                     </span>
                 </td>
 
-                <td :class="{'cell-with-comment': getClassWithComment(row_index,`p_res`), 'activ': getClassTotal(row)}">
+                <td :class="{'cell-with-comment': isCommentClass(row_index,`p_res`), 'activ': isActiveClass(row)}">
                     <span :class="{'circle-err': wells && wells[row_index] &&
                 wells[row_index].p_res[1][0] !== '0'}" :style="`background :${getColor(
                 wells[row_index].p_res[1][0])}`"> </span>
@@ -417,7 +417,7 @@
                     </span>
                 </td>
 
-                <td :class="{'cell-with-comment': getClassWithComment(row_index,`h_dyn`), 'activ': getClassTotal(row)}">
+                <td :class="{'cell-with-comment': isCommentClass(row_index,`h_dyn`), 'activ': isActiveClass(row)}">
                     <span :class="{'circle-err': wells && wells[row_index] &&
                 wells[row_index].h_dyn[1][0] !== '0'}" :style="`background :${getColor(
                 wells[row_index].h_dyn[1][0])}`"> </span>
@@ -427,7 +427,7 @@
                     </span>
                 </td>
 
-                <td :class="{'cell-with-comment': getClassWithComment(row_index,`p_annular`), 'activ': getClassTotal(row)}">
+                <td :class="{'cell-with-comment': isCommentClass(row_index,`p_annular`), 'activ': isActiveClass(row)}">
                     <span :class="{'circle-err': wells && wells[row_index] &&
                 wells[row_index].p_annular[1][0] !== '0'}" :style="`background :${getColor(
                 wells[row_index].p_annular[1][0])}`"> </span>
@@ -437,7 +437,7 @@
                     </span>
                 </td>
 
-                <td :class="{'cell-with-comment': getClassWithComment(row_index,`bhp`), 'activ': getClassTotal(row)}">
+                <td :class="{'cell-with-comment': isCommentClass(row_index,`bhp`), 'activ': isActiveClass(row)}">
                     <span :class="{'circle-err': wells && wells[row_index] &&
                 wells[row_index].bhp[1][0] !== '0'}" :style="`background :${getColor(
                 wells[row_index].bhp[1][0])}`"> </span>
@@ -447,7 +447,7 @@
                     </span>
                 </td>
 
-                <td :class="{'cell-with-comment': getClassWithComment(row_index,`bhp`), 'activ': getClassTotal(row)}">
+                <td :class="{'cell-with-comment': isCommentClass(row_index,`bhp`), 'activ': isActiveClass(row)}">
                     <span :class="{'circle-err': wells && wells[row_index] &&
                 wells[row_index].q_o[1][0] !== '0'}" :style="`background :${getColor(
                 wells[row_index].q_o[1][0])}`"> </span>
@@ -457,7 +457,7 @@
                     </span>
                 </td>
 
-                <td :class="{'cell-with-comment': getClassWithComment(row_index,`q_l`), 'activ': getClassTotal(row)}">
+                <td :class="{'cell-with-comment': isCommentClass(row_index,`q_l`), 'activ': isActiveClass(row)}">
                     <span :class="{'circle-err': wells && wells[row_index] &&
                 wells[row_index].q_l[1][0] !== '0'}" :style="`background :${getColor(
                 wells[row_index].q_l[1][0])}`"> </span>
@@ -467,7 +467,7 @@
                     </span>
                 </td>
 
-                <td :class="{'cell-with-comment': getClassWithComment(row_index,`wct`), 'activ': getClassTotal(row)}">
+                <td :class="{'cell-with-comment': isCommentClass(row_index,`wct`), 'activ': isActiveClass(row)}">
                     <span :class="{'circle-err': wells && wells[row_index] &&
                 wells[row_index].wct[1][0] !== '0'}" :style="`background :${getColor(
                 wells[row_index].wct[1][0])}`"> </span>
@@ -477,7 +477,7 @@
                     </span>
                 </td>
 
-                <td :class="{'cell-with-comment': getClassWithComment(row_index,`gor`), 'activ': getClassTotal(row)}">
+                <td :class="{'cell-with-comment': isCommentClass(row_index,`gor`), 'activ': isActiveClass(row)}">
                     <span :class="{'circle-err': wells && wells[row_index] &&
                 wells[row_index].gor[1][0] !== '0'}" :style="`background :${getColor(
                 wells[row_index].gor[1][0])}`"> </span>
@@ -487,7 +487,7 @@
                     </span>
                 </td>
 
-                <td :class="{'cell-with-comment': getClassWithComment(row_index,`well_status_last_day`), 'activ': getClassTotal(row)}">
+                <td :class="{'cell-with-comment': isCommentClass(row_index,`well_status_last_day`), 'activ': isActiveClass(row)}">
                     <span :class="{'circle-err': wells && wells[row_index] &&
                 wells[row_index].well_status_last_day[1][0] !== '0'}" :style="`background :${getColor(
                 wells[row_index].well_status_last_day[1][0])}`"> </span>
@@ -498,7 +498,7 @@
                 </td>
 
 
-                <td :class="{'cell-with-comment': getClassWithComment(row_index,`pi`), 'activ': getClassTotal(row)}">
+                <td :class="{'cell-with-comment': isCommentClass(row_index,`pi`), 'activ': isActiveClass(row)}">
                     <span :class="{'circle-err': wells && wells[row_index] &&
                 wells[row_index].pi[1][0] !== '0'}" :style="`background :${getColor(
                 wells[row_index].pi[1][0])}`"> </span>
@@ -508,7 +508,7 @@
                     </span>
                 </td>
 
-                <td :class="{'cell-with-comment': getClassWithComment(row_index,`tp_idn_bhp`), 'activ': getClassTotal(row)}">
+                <td :class="{'cell-with-comment': isCommentClass(row_index,`tp_idn_bhp`), 'activ': isActiveClass(row)}">
                     <span :class="{'circle-err': wells && wells[row_index] &&
                 wells[row_index].tp_idn_bhp[1][0] !== '0'}" :style="`background :${getColor(
                 wells[row_index].tp_idn_bhp[1][0])}`"> </span>
@@ -518,7 +518,7 @@
                     </span>
                 </td>
 
-                <td :class="{'cell-with-comment': getClassWithComment(row_index,`tp_idn_liq`), 'activ': getClassTotal(row)}">
+                <td :class="{'cell-with-comment': isCommentClass(row_index,`tp_idn_liq`), 'activ': isActiveClass(row)}">
                     <span :class="{'circle-err': wells && wells[row_index] &&
                 wells[row_index].tp_idn_liq[1][0] !== '0'}" :style="`background :${getColor(
                 wells[row_index].tp_idn_liq[1][0])}`"> </span>
@@ -528,7 +528,7 @@
                     </span>
                 </td>
 
-                <td :class="{'cell-with-comment': getClassWithComment(row_index,`tp_idn_oil_inc`), 'activ': getClassTotal(row)}">
+                <td :class="{'cell-with-comment': isCommentClass(row_index,`tp_idn_oil_inc`), 'activ': isActiveClass(row)}">
                     <span :class="{'circle-err': wells && wells[row_index] &&
                 wells[row_index].tp_idn_oil_inc[1][0] !== '0'}" :style="`background :${getColor(
                 wells[row_index].tp_idn_oil_inc[1][0])}`"> </span>
@@ -538,7 +538,7 @@
                     </span>
                 </td>
 
-                <td :class="{'cell-with-comment': getClassWithComment(row_index,`tp_idn_pi_after`), 'activ': getClassTotal(row)}">
+                <td :class="{'cell-with-comment': isCommentClass(row_index,`tp_idn_pi_after`), 'activ': isActiveClass(row)}">
                     <span :class="{'circle-err': wells && wells[row_index] &&
                 wells[row_index].tp_idn_pi_after[1][0] !== '0'}" :style="`background :${getColor(
                 wells[row_index].tp_idn_pi_after[1][0])}`"> </span>
@@ -548,7 +548,7 @@
                     </span>
                 </td>
 
-                <td :class="{'cell-with-comment': getClassWithComment(row_index,`tp_idn_grp_q_liq`), 'activ': getClassTotal(row)}">
+                <td :class="{'cell-with-comment': isCommentClass(row_index,`tp_idn_grp_q_liq`), 'activ': isActiveClass(row)}">
                     <span :class="{'circle-err': wells && wells[row_index] &&
                 wells[row_index].tp_idn_grp_q_liq[1][0] !== '0'}" :style="`background :${getColor(
                 wells[row_index].tp_idn_grp_q_liq[1][0])}`"> </span>
@@ -558,7 +558,7 @@
                     </span>
                 </td>
 
-                <td :class="{'cell-with-comment': getClassWithComment(row_index,`tp_idn_grp_q_oil_inc`), 'activ': getClassTotal(row)}">
+                <td :class="{'cell-with-comment': isCommentClass(row_index,`tp_idn_grp_q_oil_inc`), 'activ': isActiveClass(row)}">
                     <span :class="{'circle-err': wells && wells[row_index] &&
                 wells[row_index].tp_idn_grp_q_oil_inc[1][0] !== '0'}" :style="`background :${getColor(
                 wells[row_index].tp_idn_grp_q_oil_inc[1][0])}`"> </span>
@@ -568,9 +568,9 @@
                     </span>
                 </td>
 
-                <td :class="{'activ': getClassTotal(row)}"><span v-if="row.gt_total_inc!=null">{{Math.round(row.gt_total_inc*10)/10}}</span></td>
+                <td :class="{'activ': isActiveClass(row)}"><span v-if="row.gt_total_inc!=null">{{Math.round(row.gt_total_inc*10)/10}}</span></td>
 
-                <td :class="{'cell-with-comment': getClassWithComment(row_index,`planned_choke`), 'activ': getClassTotal(row)}">
+                <td :class="{'cell-with-comment': isCommentClass(row_index,`planned_choke`), 'activ': isActiveClass(row)}">
                     <span :class="{'circle-err': wells && wells[row_index] &&
                 wells[row_index].planned_choke[1][0] !== '0'}" :style="`background :${getColor(
                 wells[row_index].planned_choke[1][0])}`"> </span>
@@ -580,7 +580,7 @@
                     </span>
                 </td>
 
-                <td :class="{'cell-with-comment': getClassWithComment(row_index,`planned_oil`), 'activ': getClassTotal(row)}">
+                <td :class="{'cell-with-comment': isCommentClass(row_index,`planned_oil`), 'activ': isActiveClass(row)}">
                     <span :class="{'circle-err': wells && wells[row_index] &&
                 wells[row_index].planned_oil[1][0] !== '0'}" :style="`background :${getColor(
                 wells[row_index].planned_oil[1][0])}`"> </span>
@@ -590,7 +590,7 @@
                     </span>
                 </td>
 
-                <td :class="{'cell-with-comment': getClassWithComment(row_index,`planned_liq`), 'activ': getClassTotal(row)}">
+                <td :class="{'cell-with-comment': isCommentClass(row_index,`planned_liq`), 'activ': isActiveClass(row)}">
                     <span :class="{'circle-err': wells && wells[row_index] &&
                 wells[row_index].planned_liq[1][0] !== '0'}" :style="`background :${getColor(
                 wells[row_index].planned_liq[1][0])}`"> </span>
@@ -600,10 +600,10 @@
                     </span>
                 </td>
 
-                <td class="fixcol" :class="{'activ': getClassTotal(row)}">{{Math.round(row.planned_gas*10)/10}} </td>
+                <td class="fixcol" :class="{'activ': isActiveClass(row)}">{{Math.round(row.planned_gas*10)/10}} </td>
 
 
-                <td :class="{'cell-with-comment': getClassWithComment(row_index,`planned_wct`), 'activ': getClassTotal(row)}">
+                <td :class="{'cell-with-comment': isCommentClass(row_index,`planned_wct`), 'activ': isActiveClass(row)}">
                     <span :class="{'circle-err': wells && wells[row_index] &&
                 wells[row_index].planned_wct[1][0] !== '0'}" :style="`background :${getColor(
                 wells[row_index].planned_wct[1][0])}`"> </span>
@@ -613,7 +613,7 @@
                     </span>
                 </td>
 
-                <td class="fixcol" :class="{'activ': getClassTotal(row)}">{{Math.round(row.planned_gor*10)/10}} </td>
+                <td class="fixcol" :class="{'activ': isActiveClass(row)}">{{Math.round(row.planned_gor*10)/10}} </td>
 
             </tr>
         </tbody>
@@ -686,12 +686,12 @@ export default {
             this.selectedWellType = [];
             this.$emit('dropWellType')
         },
-        getClassWithComment (row_index, value) {
+        isCommentClass (row_index, value) {
         return this.wells &&
             this.wells[row_index] &&
             this.wells[row_index][value][1][0] !== '0';
         },
-        getClassTotal (row) {
+        isActiveClass (row) {
             if (row.rus_wellname) {
                 return false
             } else {
@@ -796,9 +796,9 @@ position: static;
 ::-webkit-scrollbar-thumb:hover {
   background: #272953;
 }
-.activ {
-  border-bottom: 2px solid rgb(145, 145, 145) !important;
-  border-top: 2px solid rgb(145, 145, 145) !important;
-  font-size: 11px !important;
+.activ.activ {
+  border-bottom: 2px solid rgb(145, 145, 145) ;
+  border-top: 2px solid rgb(145, 145, 145);
+  font-size: 11px;
 }
 </style>
