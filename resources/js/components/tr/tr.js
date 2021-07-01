@@ -281,7 +281,7 @@ export default {
       currentMonth: null,
       currentYear: null,
       searchParam: null,
-      postApiUrl: process.env.POST_API_URL,
+      postApiUrl: process.env.MIX_POST_API_URL,
     };
   },
   methods: {
