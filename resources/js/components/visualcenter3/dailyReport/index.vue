@@ -7,27 +7,25 @@
             <div class="col-10 mt-2 p-0">
                 <table>
                     <tr>
-                        <th class="background-dark"></th> <!-- ># пп <-->
-                        <th class="background-dark"></th> <!-- ># Предприятия <-->
-                        <th colspan="3" class="background-dark"></th> <!-- >пусто <-->
+                        <th rowspan="2">№ п/п</th>
+                        <th rowspan="2">Предприятия</th>
+                        <th rowspan="2">
+                            План<br>
+                            на {{currentYear}} г.
+                        </th>
+                        <th rowspan="2">
+                            План<br>
+                            на {{currentMonthName}} месяц
+                        </th>
+                        <th rowspan="2">
+                            План на {{currentMonthName}} месяц <br>
+                            с учетом ОПЕК+
+                        </th>
                         <th colspan="5" class="background-delimeters">СУТОЧНАЯ</th> <!-- >суточная <-->
                         <th colspan="5" class="background-delimeters">С НАЧАЛА МЕСЯЦА</th> <!-- >с начала месяца <-->
                     </tr>
                     <tr>
-                        <th>№ п/п</th>
-                        <th>Предприятия</th>
-                        <th>
-                            План<br>
-                            на {{currentYear}} г.
-                        </th>
-                        <th>
-                            План<br>
-                            на {{currentMonthName}} месяц
-                        </th>
-                        <th>
-                            План на {{currentMonthName}} месяц <br>
-                            с учетом ОПЕК+
-                        </th>
+
                         <!-- >суточная <-->
                         <th>План</th>
                         <th>
@@ -55,19 +53,36 @@
                         </th>
                         <!-- >с начала месяца <-->
                     </tr>
-                <tr
-                        v-for="(item, index) in production"
-                        :class="getRowClass(index)"
-                >
-                    <td>{{item.number}}</td>
-                    <td>{{item.dzo}}</td>
-                    <td
-                        v-for="(key, keyIndex) in Object.keys(item)"
-                        v-if="keyIndex > 1"
+                    <!-- >саммари <-->
+                    <tr
+                            v-for="item in summary"
+                            class="background-dark"
                     >
-                        {{getFormattedNumber(item[key])}}
-                    </td>
-               </tr>
+                        <td>{{item.number}}</td>
+                        <td>{{item.dzo}}</td>
+                        <td
+                                v-for="(key, keyIndex) in Object.keys(item)"
+                                v-if="keyIndex > 1"
+                        >
+                            {{getFormattedNumber(item[key])}}
+                        </td>
+                    </tr>
+                    <!-- >саммари <-->
+                    <!-- >дзо <-->
+                    <tr
+                            v-for="(item, index) in production"
+                            :class="getRowClass(index)"
+                    >
+                        <td>{{item.number}}</td>
+                        <td>{{item.dzo}}</td>
+                        <td
+                            v-for="(key, keyIndex) in Object.keys(item)"
+                            v-if="keyIndex > 1"
+                        >
+                            {{getFormattedNumber(item[key])}}
+                        </td>
+                    </tr>
+                    <!-- >дзо <-->
                </table>
            </div>
            <div class="col-2 mt-2">
@@ -96,7 +111,7 @@ export default {
            currentMonthName: moment().format('MMMM'),
            template: {
                'number': 1,
-               'dzo': 'АО “Ознемунайгаз” \n (нефть) (100%)',
+               'dzo': 'АО “Ознемунайгаз” (нефть) (100%)',
                'yearlyPlan': 1200300,
                'monthlyPlan': 200000,
                'monthlyPlanOpec': 210000,
@@ -111,15 +126,51 @@ export default {
                'differenceByMonth': 1000,
                'differenceOpecByMonth': 3000,
            },
-           production: []
+           production: [],
+           summary: [
+               {
+                   'number': 1,
+                   'dzo': 'Всего добыча нефти и конденсата с учетом доли участия АО НК "КазМунайГаз"',
+                   'yearlyPlan': 1200300,
+                   'monthlyPlan': 200000,
+                   'monthlyPlanOpec': 210000,
+                   'planByDay': 20000,
+                   'planOpecByDay': 18000,
+                   'factByDay': 21000,
+                   'differenceByDay': 1000,
+                   'differenceOpecByDay': 3000,
+                   'planByMonth': 20000,
+                   'planOpecByMonth': 18000,
+                   'factByMonth': 21000,
+                   'differenceByMonth': 1000,
+                   'differenceOpecByMonth': 3000,
+               },
+               {
+                   'number': '',
+                   'dzo': 'в т.ч.: газовый конденсат',
+                   'yearlyPlan': 1200300,
+                   'monthlyPlan': 200000,
+                   'monthlyPlanOpec': 210000,
+                   'planByDay': 20000,
+                   'planOpecByDay': 18000,
+                   'factByDay': 21000,
+                   'differenceByDay': 1000,
+                   'differenceOpecByDay': 3000,
+                   'planByMonth': 20000,
+                   'planOpecByMonth': 18000,
+                   'factByMonth': 21000,
+                   'differenceByMonth': 1000,
+                   'differenceOpecByMonth': 3000,
+               }
+           ]
        }
    },
    methods: {
        getRowClass(index) {
            if (index % 2 === 0) {
-               return 'background-dark';
-           } else {
                return 'background-light';
+           } else {
+               return 'background-dark';
            }
        },
        getFormattedNumber(num) {
@@ -127,17 +178,9 @@ export default {
        },
    },
    mounted() {
-       for (let i=1; i<20; i++) {
+       for (let i=2; i<21; i++) {
            let emptyCompany = _.cloneDeep(this.template);
-           if (i === 1) {
-               emptyCompany.dzo = 'Всего добыча нефти и конденсата с учетом доли участия АО НК "КазМунайГаз"';
-           } else if (i === 2) {
-               emptyCompany.dzo = 'в т.ч.: газовый конденсат';
-               emptyCompany.number = '';
-           } else {
-               emptyCompany.number = i;
-           }
-
+           emptyCompany.number = i;
            this.production.push(emptyCompany);
        }
    }
@@ -146,6 +189,7 @@ export default {
 
 <style scoped lang="scss">
    .visualization-header {
+       border: 2px solid #272953;
        background: #3D4473;
        min-height: 52px;
        font-style: normal;
@@ -153,7 +197,8 @@ export default {
        font-size: 14px;
    }
    .visualization-percent {
-       min-height: 31px;
+       border: 2px solid #272953;
+       min-height: 37px;
        background: #4C537E;
        span {
            padding-top: 6px;
@@ -167,7 +212,6 @@ export default {
    }
    .background-delimeters {
        background: #4C537E;
-       border-right: 2px solid #3D4473;
    }
    .page-container {
        flex-wrap: wrap;
@@ -189,14 +233,22 @@ export default {
    }
    table {
        min-width: 1530px;
+       tr {
+           &:nth-child(3), &:nth-child(4) {
+               background: #575975;
+               border-bottom: 2px solid #272953;
+           }
+       }
        th {
            font-style: normal;
            font-weight: bold;
            font-size: 14px;
            background: #3D4473;
            padding: 5px;
+           border: 2px solid #272953;
        }
        td {
+           border-right: 2px solid #3D4473;
            font-size: 15px;
            font-family: Bold;
            min-width: 70px;
