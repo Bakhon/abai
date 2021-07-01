@@ -6777,11 +6777,8 @@ table::-webkit-scrollbar-corner {
     justify-content: right;
 }
 .activ {
-  /* border: dashed;
-  border-width: 2px 2px 2px 2px; */
-  /* border-style: solid solid solid solid; */
-  border-bottom: 2px solid rgb(211, 208, 208) !important;
-  border-top: 2px solid rgb(211, 208, 208) !important;
+  border-bottom: 2px solid rgb(145, 145, 145) !important;
+  border-top: 2px solid rgb(145, 145, 145) !important;
   font-size: 11px !important;
 }
 </style>
