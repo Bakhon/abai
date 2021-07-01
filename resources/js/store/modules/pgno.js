@@ -4,7 +4,7 @@ const pgno = {
     state: {
         hPump: null,
         spmMin: 4,
-        spmMax: 7,
+        spmMax: 8,
         strokeLenMin: 2.5,
         strokeLenMax: 3,
         kpodMin: 0.6,

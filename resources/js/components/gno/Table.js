@@ -351,7 +351,8 @@ export default {
       serviceOffline: false,
       isIntervals: false,
       skTypes: null,
-      horizons: null
+      horizons: null,
+      isNktError: null,
     };
 
   },
@@ -1078,10 +1079,28 @@ export default {
       this.$store.commit("UPDATE_MARKSHTANG", "15Х2ГМФ (НВО)")
     },
 
+    nktExist(val) {
+      const found = this.nkt_choose.some(el => el.for_calc_value === this.nkt);
+      if(!found) {
+        let type = "get"
+        this.isNktError = true
+        if (val === "get"){
+          type = 'warning'
+        }  else if (val === "pgno") {
+          type = 'error'
+        }
+        this.$notify({
+            message: 'true',
+            type: type,
+            size: 'sm',
+            timeout: 8000
+          })
+      }
+    },
+
     getWellNumber(wellnumber) {
       this.isIntervals = true
       this.setDefaultStoreValues()
-
       if (this.field == "JET") {
         this.ao = 'АО "ММГ"'
       } else {
@@ -1090,6 +1109,8 @@ export default {
       this.isVisibleChart = true;
       let uri = this.url + this.field + "/" + wellnumber + "/";
       this.isLoading = true;
+      console.log(this.mech_sep)
+      this.sep_meth = 'input_value';
 
       this.axios.get(uri).then((response) => {
         let data = response.data;
@@ -1268,6 +1289,9 @@ export default {
           this.sep_value = 60
         } else if (data["Age"] === false) {
           this.setData(data)
+          this.nktExist("get")
+          
+          
           if (data["error_len"] == "error_len") {
             this.$notify({
               message: this.trans('pgno.notify_no_sk_for_length'),
@@ -1563,6 +1587,7 @@ export default {
     },
 
     onPgnoClick() {
+      this.nktExist("pgno")
       if (this.isSkError) {
         this.$notify({
           message: this.trans('pgno.notify_error_sk'),
