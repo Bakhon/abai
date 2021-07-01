@@ -38,8 +38,8 @@ class WellRegister extends PlainForm
             $dbQuery = DB::connection('tbd')->table($this->params()['table']);
             $wellId = $dbQuery->insertGetId($data);
 
-            $this->insertWellOrg($wellId);
-            $this->insertWellCategory($wellId);
+            $this->insertWellRelation($wellId, 'org');
+            $this->insertWellRelation($wellId, 'category');
             $this->insertGeoFields($wellId);
 
             DB::connection('tbd')->commit();
@@ -121,28 +121,14 @@ class WellRegister extends PlainForm
             );
     }
 
-    private function insertWellCategory(int $wellId)
+    private function insertWellRelation(int $wellId, string $type)
     {
         DB::connection('tbd')
-            ->table('prod.well_category')
+            ->table('prod.well_' . $type)
             ->insert(
                 [
                     'well' => $wellId,
-                    'category' => $this->request->get('category'),
-                    'dbeg' => $this->request->get('project_date') ?: Carbon::now(),
-                    'dend' => '3333-12-31 00:00:00+06'
-                ]
-            );
-    }
-
-    private function insertWellOrg(int $wellId): void
-    {
-        DB::connection('tbd')
-            ->table('prod.well_org')
-            ->insert(
-                [
-                    'well' => $wellId,
-                    'org' => $this->request->get('org'),
+                    'category' => $this->request->get($type),
                     'dbeg' => $this->request->get('project_date') ?: Carbon::now(),
                     'dend' => '3333-12-31 00:00:00+06'
                 ]
