@@ -1386,10 +1386,16 @@
                 "
               >
                 <div
-                        v-if="isConsolidatedCategoryActive || isOilResidueActive"
+                        v-if="isConsolidatedCategoryActive && !isOilResidueActive"
                         class="oil-condensate-chart-secondary-name"
                 >
                   {{ chartSecondaryName }}, {{ trans("visualcenter.thousand") }} {{ metricName }}
+                </div>
+                <div
+                        v-else-if="isOilResidueActive"
+                        class="oil-condensate-chart-secondary-name"
+                >
+                  {{ oilResidueChartName }}, {{ trans("visualcenter.thousand") }} {{ metricName }}
                 </div>
                 <div
                         v-else

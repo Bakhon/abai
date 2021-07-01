@@ -374,4 +374,5 @@ return array (
   'fondMiddleInMonth' => 'ср. взвешенное',
   'oilCondensateDeliveryChartName' => 'Динамика сдачи нефти и конденсата',
   'oilCondensateDelivery' => 'Сдача нефти и конденсата',
+  'stockOfGoodsDynamic'=> 'Динамика товарного остатка'
 );

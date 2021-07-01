@@ -25,6 +25,7 @@ export default {
                 'oilCondensate': this.trans('visualcenter.liqDynamic'),
                 'oilCondensateProductionButton': this.trans('visualcenter.oilCondensateProductionChartName'),
                 'oilCondensateDeliveryButton': this.trans('visualcenter.oilCondensateDeliveryChartName'),
+                'oilResidue': this.trans('visualcenter.stockOfGoodsDynamic')
             },
             isOilResidueActive: false,
             oilDeliveryFilters: {
@@ -32,7 +33,8 @@ export default {
             },
             condolidatedButtons: ['oilCondensateProductionButton','oilCondensateDeliveryButton'],
             isFirstLoading: true,
-            lastSelectedCategory: 'oilCondensateProductionButton'
+            lastSelectedCategory: 'oilCondensateProductionButton',
+            oilResidueChartName: this.trans('visualcenter.ostatokNefti')
         };
     },
     methods: {
@@ -75,11 +77,12 @@ export default {
             this.dzoCompaniesTemplate = _.cloneDeep(companyList);
         },
 
-        switchMainMenu(parentButton, childButton) {
+        switchMainMenu(parentButton, childButton,chartName) {
             this.chartHeadName = this.chartTranslateMapping[parentButton];
             this.isOilResidueActive = false;
             if (this.oilDeliveryFilters[childButton]) {
                 this[this.oilDeliveryFilters[childButton]] = true;
+                this.chartHeadName = this.chartTranslateMapping[childButton];
             }
             this.selectAllDzoCompanies();
             this.disableTargetCompanyFilter();

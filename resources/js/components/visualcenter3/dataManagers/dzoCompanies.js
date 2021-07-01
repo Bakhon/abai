@@ -145,6 +145,9 @@ export default {
         calculateDzoCompaniesSummary() {
             let emptyDzo = [];
             this.dzoSummaryForTable = this.dzoCompanySummary.filter(item => this.selectedDzoCompanies.includes(item.dzoMonth));
+            if (this.isOilResidueActive) {
+                this.dzoSummaryForTable = this.dzoSummaryForTable.filter(item => item.factMonth > 0);
+            }
             let filteredByCompaniesYesterday = this.yesterdaySummary.filter(item => this.selectedDzoCompanies.includes(item.dzoMonth));
             let actualFilteredSummary = _.cloneDeep(this.dzoSummaryForTable);
             if (!this.isConsolidatedCategoryActive()) {
