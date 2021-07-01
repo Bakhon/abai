@@ -6706,11 +6706,11 @@ table::-webkit-scrollbar-corner {
   background: #333975!important;
   width: 135px;
 }
-/* .dropdown-menu.show {
+.dropdown-menu.show {
     display: flex;
     flex-direction: column;
     background: #333975!important;
-} */
+}
 .icons_filt_sort{
   display: flex;
   justify-content: center;
