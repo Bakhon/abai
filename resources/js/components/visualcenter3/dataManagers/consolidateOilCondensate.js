@@ -23,17 +23,25 @@ export default {
                 'withParticipation': [],
                 'withoutParticipation': [],
                 'yesterdayWithParticipation': [],
+                'yesterdayWithoutParticipation': [],
                 'chartWithParticipation': [],
                 'chartWithoutParticipation': [],
-            },
-
-            productionParamsWidget: {
-                'oilFact' : 0,
-                'oilPlan' : 0,
-                'yesterdayOilFact': 0,
-                'yesterdayOldFact': 0,
-                'yesterdayOilFactWithFilter': 0,
-
+                'oilCondensateProductionButton': {
+                    'current': [],
+                    'yesterday': [],
+                    'currentWithoutKMG': [],
+                    'yesterdayWithoutKMG': [],
+                    'currentWithKMG': [],
+                    'yesterdayWithKMGKMG': []
+                },
+                'oilCondensateDeliveryButton': {
+                    'current': [],
+                    'yesterday': [],
+                    'currentWithoutKMG': [],
+                    'yesterdayWithoutKMG': [],
+                    'currentWithKMG': [],
+                    'yesterdayWithKMGKMG': []
+                }
             },
             factorOptions: {
                 'ММГ': 0.5,
@@ -120,10 +128,54 @@ export default {
             },
             companiesForNominalInput: ['АГ','ПКК'],
             yesterdaySummary: [],
-            yesterdayProductionDetails: []
+            yesterdayProductionDetails: [],
+            consolidatedMenuMapping: {
+                oilDelivery: {
+                    'plan_oil': 'plan_oil_dlv',
+                    'plan_oil_opek': 'plan_oil_dlv_opek',
+                    'oil_production_fact': 'oil_delivery_fact',
+                    'condensate_production_fact': 'condensate_delivery_fact',
+                    'plan_kondensat': 'plan_kondensat_dlv'
+                },
+                oilResidue: {
+                    'oil_production_fact': 'stock_of_goods_delivery_fact'
+                }
+            },
+            selectedView: 'oilCondensateDeliveryButton',
+            productionSummary: {
+                'oilCondensateProductionButton': {
+                    'actual': {
+                        'oilFact': 0,
+                        'oilPlan': 0,
+                        'progress': 0
+                    },
+                    'yesterday': {
+                        'oilFact': 0
+                    }
+                },
+                'oilCondensateDeliveryButton': {
+                    'actual': {
+                        'oilFact': 0,
+                        'oilPlan': 0,
+                        'progress': 0
+                    },
+                    'yesterday': {
+                        'oilFact': 0
+                    }
+                }
+            }
         };
     },
     methods: {
+        getConsolidatedBy(periodType) {
+            if (periodType === 'current') {
+                return this.consolidatedData.withParticipation;
+            } else if (periodType === 'yesterday') {
+                return this.consolidatedData.yesterdayWithParticipation;
+            }
+            return [];
+        },
+
         switchFilterConsolidatedOilCondensate(parentButton,childButton,filterName) {
             this.oilCondensateFilters[filterName] = !this.oilCondensateFilters[filterName];
             let chartOutput = this.consolidatedData.chartWithParticipation;
@@ -133,9 +185,11 @@ export default {
             this.exportDzoCompaniesSummaryForChart(chartOutput);
             if (this.oilCondensateFilters[filterName]) {
                 this.dzoCompanySummary = this.consolidatedData.withParticipation;
+                this.yesterdaySummary = this.consolidatedData.yesterdayWithParticipation;
                 this.changeDzoCompaniesList(companiesListWithKMG);
             } else {
                 this.dzoCompanySummary = this.consolidatedData.withoutParticipation;
+                this.yesterdaySummary = this.consolidatedData.yesterdayWithoutParticipation;
                 this.changeDzoCompaniesList(companiesListWithoutKMG);
             }
             this.selectAllDzoCompanies();
@@ -143,7 +197,8 @@ export default {
             this.switchButtonOptions(elementOptions);
             this.calculateDzoCompaniesSummary();
         },
-        getConsolidatedOilCondensate(periodStart,periodEnd,periodName,summary) {
+
+        updateConsolidatedOilCondensate(periodStart,periodEnd,periodName,summary) {
             let self = this;
             let filteredByCompanies = this.getFilteredCompaniesList(_.cloneDeep(this.productionTableData));
             let filteredByPeriod = this.getFilteredByPeriod(filteredByCompanies,true,periodStart,periodEnd);
@@ -191,8 +246,18 @@ export default {
             let selectedCompanies = this.dzoCompanies.filter(row => row.selected === true).map(row => row.ticker);
             sortedWithKMGParticipation = sortedWithKMGParticipation.filter(row => selectedCompanies.includes(row.dzoMonth));
             sortedWithoutKMGParticipation = sortedWithoutKMGParticipation.filter(row => selectedCompanies.includes(row.dzoMonth));
-            this.consolidatedData.withParticipation = sortedWithKMGParticipation;
-            this.consolidatedData.withoutParticipation = sortedWithoutKMGParticipation;
+
+            if (periodName === 'current') {
+                this.consolidatedData[this.selectedButtonName].currentWithoutKMG = sortedWithoutKMGParticipation;
+                this.consolidatedData[this.selectedButtonName].currentWithKMG = sortedWithKMGParticipation;
+                this.consolidatedData.withParticipation = sortedWithKMGParticipation;
+                this.consolidatedData.withoutParticipation = sortedWithoutKMGParticipation;
+            } else {
+                this.consolidatedData[this.selectedButtonName].yesterdayWithoutKMG = sortedWithoutKMGParticipation;
+                this.consolidatedData[this.selectedButtonName].yesterdayWithKMG = sortedWithKMGParticipation;
+                this.consolidatedData.yesterdayWithParticipation = sortedWithKMGParticipation;
+                this.consolidatedData.yesterdayWithoutParticipation = sortedWithoutKMGParticipation;
+            }
             this.updateChart(periodStart,periodEnd);
         },
 
@@ -287,6 +352,7 @@ export default {
                     item.planMonth = self.dzoMultiplier['НКО'](null,item.planMonth,null);
                 }
             });
+
             let pkiIndex = actualUpdatedByOpek.findIndex(element => element.dzoMonth === 'ПКИ');
             if (pkiIndex > -1) {
                 actualUpdatedByOpek[pkiIndex].factMonth = pkiSummary.factMonth;
@@ -361,14 +427,11 @@ export default {
             return actualUpdatedByOpek;
         },
 
-        updateProductionTotalFact(filteredByCompaniesYesterday,summary,todayDzoSummaryWithoutTroubledCompanies) {
-            let oldFactFormatted = parseFloat(summary.fact.replace(/\s/g, ''));
-            let oldPlanFormatted = parseFloat(summary.plan.replace(/\s/g, ''));
-            this.productionParams['oil_fact'] = _.sumBy(todayDzoSummaryWithoutTroubledCompanies,'factMonth');
-            this.productionParams['oil_plan'] = _.sumBy(todayDzoSummaryWithoutTroubledCompanies,'planMonth');
-            this.productionPercentParams['oil_fact'] = _.sumBy(filteredByCompaniesYesterday,'factMonth');
-            this.productionParamsWidget.oilFact = oldFactFormatted;
-            this.productionParamsWidget.oilPlan = oldPlanFormatted;
+        updateProductionTotalFact(yesterdaySummary,actualSummary,viewName) {
+            this.productionSummary[viewName].actual.oilFact = _.sumBy(actualSummary,'factMonth');
+            this.productionSummary[viewName].actual.oilPlan = _.sumBy(actualSummary,'planMonth');
+            this.productionSummary[viewName].actual.progress = this.getProductionProgress(viewName);
+            this.productionSummary[viewName].yesterday.oilFact = _.sumBy(yesterdaySummary,'factMonth');
         },
 
         deleteTroubleCompanies(yesterdayProductionDetails) {
@@ -396,6 +459,10 @@ export default {
                 item.periodPlan = item.planMonth / daysPassed * daysCountInMonth;
             });
             return updatedData;
+        },
+
+        getProductionProgress(viewName) {
+            return (this.productionSummary[viewName].actual.oilFact / this.productionSummary[viewName].actual.oilPlan) * 100;
         },
     }
 }
