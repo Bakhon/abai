@@ -38,39 +38,8 @@ class WellRegister extends PlainForm
             $dbQuery = DB::connection('tbd')->table($this->params()['table']);
             $wellId = $dbQuery->insertGetId($data);
 
-            DB::connection('tbd')
-                ->table('prod.well_org')
-                ->insert(
-                    [
-                        'well' => $wellId,
-                        'org' => $this->request->get('org'),
-                        'dbeg' => $this->request->get('project_date') ?: Carbon::now(),
-                        'dend' => '3333-12-31 00:00:00+06'
-                    ]
-                );
-
-            DB::connection('tbd')
-                ->table('prod.well_geo')
-                ->insert(
-                    [
-                        'well' => $wellId,
-                        'geo' => $this->request->get('geo'),
-                        'dbeg' => $this->request->get('project_date') ?: Carbon::now(),
-                        'dend' => '3333-12-31 00:00:00+06'
-                    ]
-                );
-
-            DB::connection('tbd')
-                ->table('prod.well_category')
-                ->insert(
-                    [
-                        'well' => $wellId,
-                        'category' => $this->request->get('category'),
-                        'dbeg' => $this->request->get('project_date') ?: Carbon::now(),
-                        'dend' => '3333-12-31 00:00:00+06'
-                    ]
-                );
-
+            $this->insertWellOrg($wellId);
+            $this->insertWellCategory($wellId);
             $this->insertGeoFields($wellId);
 
             DB::connection('tbd')->commit();
@@ -122,12 +91,67 @@ class WellRegister extends PlainForm
 
     private function insertGeoFields($wellId)
     {
+        DB::connection('tbd')
+            ->table('prod.well_geo')
+            ->insert(
+                [
+                    'well' => $wellId,
+                    'geo' => $this->request->get('geo'),
+                    'dbeg' => $this->request->get('project_date') ?: Carbon::now(),
+                    'dend' => '3333-12-31 00:00:00+06'
+                ]
+            );
+
         $spatialObjectType = DB::connection('tbd')
             ->table('dict.spatial_object_type')
             ->where('code', 'PNT')
             ->first();
 
-        $whcId = DB::connection('tbd')
+        $topCoordId = $this->insertTopWellCoord($spatialObjectType);
+        $bottomCoordId = $this->insertBottomWellCoord($spatialObjectType);
+
+        DB::connection('tbd')
+            ->table('dict.well')
+            ->where('id', $wellId)
+            ->update(
+                [
+                    'whc' => $topCoordId,
+                    'bottom_coord' => $bottomCoordId,
+                ]
+            );
+    }
+
+    private function insertWellCategory(int $wellId)
+    {
+        DB::connection('tbd')
+            ->table('prod.well_category')
+            ->insert(
+                [
+                    'well' => $wellId,
+                    'category' => $this->request->get('category'),
+                    'dbeg' => $this->request->get('project_date') ?: Carbon::now(),
+                    'dend' => '3333-12-31 00:00:00+06'
+                ]
+            );
+    }
+
+    private function insertWellOrg(int $wellId): void
+    {
+        DB::connection('tbd')
+            ->table('prod.well_org')
+            ->insert(
+                [
+                    'well' => $wellId,
+                    'org' => $this->request->get('org'),
+                    'dbeg' => $this->request->get('project_date') ?: Carbon::now(),
+                    'dend' => '3333-12-31 00:00:00+06'
+                ]
+            );
+    }
+
+    private function insertTopWellCoord($spatialObjectType): int
+    {
+        $topCoordId = DB::connection('tbd')
             ->table('geo.spatial_object')
             ->insertGetId(
                 [
@@ -142,7 +166,11 @@ class WellRegister extends PlainForm
                     'spatial_object_type' => $spatialObjectType->id,
                 ]
             );
+        return $topCoordId;
+    }
 
+    private function insertBottomWellCoord($spatialObjectType): int
+    {
         $bottomCoordId = DB::connection('tbd')
             ->table('geo.spatial_object')
             ->insertGetId(
@@ -158,16 +186,7 @@ class WellRegister extends PlainForm
                     'spatial_object_type' => $spatialObjectType->id,
                 ]
             );
-
-        DB::connection('tbd')
-            ->table('dict.well')
-            ->where('id', $wellId)
-            ->update(
-                [
-                    'whc' => $whcId,
-                    'bottom_coord' => $bottomCoordId,
-                ]
-            );
+        return $bottomCoordId;
     }
 
 }
