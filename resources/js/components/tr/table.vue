@@ -2,7 +2,8 @@
     <table class="table table-bordered table-dark table-responsive trkrtableborderedtabledarktableresponsive" style="background: #0D1E63; margin-bottom: 0;">
         <thead>
             <tr class="headerColumn trkrheadercolumn" style="background: #333975;">
-                <td rowspan="4" class="th" style="background: #333975;">{{trans('tr.well_number')}}</td>
+                <td rowspan="4" class="th" style="background: #333975;">{{trans('tr.ngdu_field')}}</td>
+                <td rowspan="4" class="th">{{trans('tr.well_number')}}</td>
                 <td rowspan="4" class="th">{{trans('tr.well_type')}}</td>
                 <td rowspan="4" class="th">{{trans('tr.u_horizon')}}</td>
                 <td rowspan="4" class="th">{{trans('tr.u_object')}}</td>
@@ -52,16 +53,215 @@
             </tr>
             <tr></tr>
             <tr class="subHeaderColumn" style="background: #333975; cursor: pointer;">
-                <td @click="sortBy('well')" class="th" style="background: #333975;"><i class="fa fa-fw fa-sort"></i></td>
-                <td @click="sortBy('well_type')" class="th"><i class="fa fa-fw fa-sort"></i></td>
-                <td @click="sortBy('horizon')" class="th"><i class="fa fa-fw fa-sort"></i></td>
-                <td @click="sortBy('object')" class="th"><i class="fa fa-fw fa-sort"></i></td>
-                <td @click="sortBy('block')" class="th"><i class="fa fa-fw fa-sort"></i></td>
+                <td class="th">
+                    <div class="icons_filt_sort" ><i class="fa fa-fw fa-sort icon_sort" @click="sortBy('field')"></i>
+                      <div>
+                        <b-dropdown no-caret  toggle-class="drop-filter-custom" >
+                          <template #button-content class="outer_button_filter">        
+                            <i class="fas fa-filter icon_filter" ></i>
+                          </template>
+                            <b-dropdown-form class="external_field_filter">
+                              <b-form-group
+                                label=""
+                                v-slot="{ ariaDescribedby }"
+                                @submit.stop.prevent
+                                class="field_form_fil"
+                              >
+                                <b-form-checkbox-group
+                                  v-model="selectedField"
+                                  :options="fieldFilterData"
+                                  :aria-describedby="ariaDescribedby"                                  
+                                >
+                                </b-form-checkbox-group>
+                              </b-form-group>
+                              <div class="field_filter_text">
+                                <a href="#" class="form_text"  @click.prevent="chooseChildFilter"
+                                  >{{trans('tr.form')}}
+                                  </a>
+                                  <a href="#" class="discard_text" @click.prevent="dropFieldFilter"
+                                  >{{trans('tr.reset')}}
+                                  </a>
+                              </div>
+                            </b-dropdown-form>
+                          </b-dropdown>
+                        </div>
+                      </div>
+                    </td>
+                <td @click="sortBy('well')" class="th"><i class="fa fa-fw fa-sort"></i></td>
+                <td class="th">
+                    <div class="icons_filt_sort" ><i class="fa fa-fw fa-sort icon_sort" @click="sortBy('well_type')"></i>
+                      <div>
+                        <b-dropdown no-caret  toggle-class="drop-filter-custom" >
+                          <template #button-content class="outer_button_filter">        
+                            <i class="fas fa-filter icon_filter" ></i>
+                          </template>
+                            <b-dropdown-form class="external_field_filter">
+                              <b-form-group
+                                label=""
+                                v-slot="{ ariaDescribedby }"
+                                @submit.stop.prevent
+                                class="field_form_fil"
+                              >
+                                <b-form-checkbox-group
+                                v-model="selectedWellType"
+                                :options="wellTypeFilterData"
+                                :aria-describedby="ariaDescribedby"                                  
+                              >
+                              </b-form-checkbox-group>
+                              </b-form-group>
+                              <div class="field_filter_text">
+                                <a href="#" class="form_text"  @click.prevent="chooseChildFilter"
+                                  >{{trans('tr.form')}}
+                                  </a>
+                                  <a href="#" class="discard_text" @click.prevent="dropWellTypeFilter"
+                                  >{{trans('tr.reset')}}
+                                  </a>
+                              </div>
+                            </b-dropdown-form>
+                          </b-dropdown>
+                        </div>
+                      </div>
+                    </td>
+                <td class="th">
+                    <div class="icons_filt_sort" ><i class="fa fa-fw fa-sort icon_sort" @click="sortBy('horizon')"></i>
+                      <div>
+                        <b-dropdown no-caret  toggle-class="drop-filter-custom" >
+                          <template #button-content class="outer_button_filter">        
+                            <i class="fas fa-filter icon_filter" ></i>
+                          </template>
+                            <b-dropdown-form class="external_field_filter">
+                              <b-form-group
+                                label=""
+                                v-slot="{ ariaDescribedby }"
+                                @submit.stop.prevent
+                                class="horizon_form_fil"
+                              >
+                                <b-form-checkbox-group
+                                v-model="selectedHorizon"
+                                :options="horizonFilterData"
+                                :aria-describedby="ariaDescribedby"                                  
+                              >
+                              </b-form-checkbox-group>
+                              </b-form-group>
+                              <div class="field_filter_text">
+                                <a href="#" class="form_text"  @click.prevent="chooseChildFilter"
+                                  >{{trans('tr.form')}}
+                                  </a>
+                                  <a href="#" class="discard_text" @click.prevent="dropHorizonFilter"
+                                  >{{trans('tr.reset')}}
+                                  </a>
+                              </div>
+                            </b-dropdown-form>
+                          </b-dropdown>
+                        </div>
+                      </div>
+                    </td>
+                <td class="th">
+                    <div class="icons_filt_sort" ><i class="fa fa-fw fa-sort icon_sort" @click="sortBy('object')"></i>
+                      <div>
+                        <b-dropdown no-caret  toggle-class="drop-filter-custom" >
+                          <template #button-content class="outer_button_filter">        
+                            <i class="fas fa-filter icon_filter" ></i>
+                          </template>
+                            <b-dropdown-form class="external_field_filter">
+                              <b-form-group
+                                label=""
+                                v-slot="{ ariaDescribedby }"
+                                @submit.stop.prevent
+                                class="obj_form_fil"
+                              >
+                              <b-form-checkbox-group
+                                v-model="selectedObject"
+                                :options="objectFilterData"
+                                :aria-describedby="ariaDescribedby"                                  
+                              >
+                              </b-form-checkbox-group>
+                              </b-form-group>
+                              <div class="field_filter_text">
+                                <a href="#" class="form_text"  @click.prevent="chooseChildFilter"
+                                  >{{trans('tr.form')}}
+                                  </a>
+                                  <a href="#" class="discard_text" @click.prevent="dropObjectFilter"
+                                  >{{trans('tr.reset')}}
+                                  </a>
+                              </div>
+                            </b-dropdown-form>
+                          </b-dropdown>
+                        </div>
+                      </div>
+                    </td> 
+                <td class="th">
+                    <div class="icons_filt_sort" ><i class="fa fa-fw fa-sort icon_sort" @click="sortBy('block')"></i>
+                      <div>
+                        <b-dropdown no-caret  toggle-class="drop-filter-custom" >
+                          <template #button-content class="outer_button_filter">        
+                            <i class="fas fa-filter icon_filter" ></i>
+                          </template>
+                            <b-dropdown-form class="external_field_filter">
+                              <b-form-group
+                                label=""
+                                v-slot="{ ariaDescribedby }"
+                                @submit.stop.prevent
+                                class="block_form_fil"
+                              >
+                              <b-form-checkbox-group
+                                v-model="selectedBlock"
+                                :options="blockFilterData"
+                                :aria-describedby="ariaDescribedby"                                  
+                              >
+                              </b-form-checkbox-group>
+                              </b-form-group>
+                              <div class="field_filter_text">
+                                <a href="#" class="form_text"  @click.prevent="chooseChildFilter"
+                                  >{{trans('tr.form')}}
+                                  </a>
+                                  <a href="#" class="discard_text" @click.prevent="dropBlockFilter"
+                                  >{{trans('tr.reset')}}
+                                  </a>
+                              </div>
+                            </b-dropdown-form>
+                          </b-dropdown>
+                        </div>
+                      </div>
+                    </td>
                 <td @click="sortBy('cas_OD')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.mm')}}</td>
                 <td @click="sortBy('tub_OD')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.mm')}}</td>
                 <td @click="sortBy('choke_d')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.mm')}}</td>
                 <td @click="sortBy('h_up_perf_md')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.m')}}</td>
-                <td @click="sortBy('exp_meth')" class="th"><i class="fa fa-fw fa-sort"></i></td>
+                <td class="th">
+                    <div class="icons_filt_sort" ><i class="fa fa-fw fa-sort icon_sort" @click="sortBy('exp_meth')"></i>
+                      <div>
+                        <b-dropdown no-caret  toggle-class="drop-filter-custom" >
+                          <template #button-content class="outer_button_filter">        
+                            <i class="fas fa-filter icon_filter" ></i>
+                          </template>
+                            <b-dropdown-form class="external_field_filter">
+                              <b-form-group
+                                label=""
+                                v-slot="{ ariaDescribedby }"
+                                @submit.stop.prevent
+                                class="exp_meth_form_fil"
+                              >
+                              <b-form-checkbox-group
+                                v-model="selectedExpMeth"
+                                :options="expMethFilterData"
+                                :aria-describedby="ariaDescribedby"                                  
+                              >
+                              </b-form-checkbox-group>
+                              </b-form-group>
+                              <div class="field_filter_text">
+                                <a href="#" class="form_text"  @click.prevent="chooseChildFilter"
+                                  >{{trans('tr.form')}}
+                                  </a>
+                                  <a href="#" class="discard_text" @click.prevent="dropExpMethFilter"
+                                  >{{trans('tr.reset')}}
+                                  </a>
+                              </div>
+                            </b-dropdown-form>
+                          </b-dropdown>
+                        </div>
+                      </div>
+                    </td>
                 <td @click="sortBy('pump_type')" class="th"><i class="fa fa-fw fa-sort"></i></td>
                 <td @click="sortBy('freq')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.gc_ob/min')}}</td>
                 <td @click="sortBy('h_pump_set')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.m')}}</td>
@@ -92,6 +292,7 @@
         </thead>
         <tbody class="table_tbody">
             <tr v-for="(row, row_index) in wells" :key="row_index" class="trtablerow">
+                <td class="fixcol">{{row.field}} </td>
                 <td class="fixcol">{{row.rus_wellname}} </td>
                 <td :class="{'cell-with-comment': wells && wells[row_index] &&
                 wells[row_index].well_type[1][0] !== '0'}" td class="fixcol">
@@ -453,11 +654,23 @@
 export default {
     name: "TrTable",
     props: {
-        wells: Array
+        wells: Array,
+        blockFilterData: Array,
+        horizonFilterData: Array,
+        objectFilterData: Array,
+        fieldFilterData: Array,
+        wellTypeFilterData: Array,
+        expMethFilterData: Array,
     },
     data: function () {
         return {
             edit: false,
+            selectedBlock: this.$store.state.tr.block,
+            selectedExpMeth: this.$store.state.tr.expMeth,
+            selectedHorizon: this.$store.state.tr.horizon,
+            selectedField: this.$store.state.tr.field,
+            selectedObject: this.$store.state.tr.object,
+            selectedWellType: this.$store.state.tr.wellType,
         }
     },
     methods: {
@@ -470,7 +683,40 @@ export default {
         },
         editable(row) {
             console.log(row)
-        }
+        },
+        chooseChildFilter() {
+            this.$store.commit("tr/SET_FIELD", this.selectedField);
+            this.$store.commit("tr/SET_OBJECT", this.selectedObject);
+            this.$store.commit("tr/SET_HORIZON", this.selectedHorizon);
+            this.$store.commit("tr/SET_WELLTYPE", this.selectedWellType);
+            this.$store.commit("tr/SET_BLOCK", this.selectedBlock);
+            this.$store.commit("tr/SET_EXPMETH", this.selectedExpMeth);
+            this.$emit('filter');
+        },
+        dropExpMethFilter() {
+            this.selectedExpMeth = [];
+            this.$emit('dropExpMeth')
+        },
+        dropBlockFilter() {
+            this.selectedBlock = [];
+            this.$emit('dropBlock')
+        },
+        dropObjectFilter() {
+            this.selectedObject = [];
+            this.$emit('dropObject')
+        },
+        dropHorizonFilter() {
+            this.selectedHorizon = [];
+            this.$emit('dropHorizon')
+        },
+        dropFieldFilter() {
+            this.selectedField = [];
+            this.$emit('dropField')
+        },    
+        dropWellTypeFilter() {
+            this.selectedWellType = [];
+            this.$emit('dropWellType')
+        },
     }
 }
 </script>
