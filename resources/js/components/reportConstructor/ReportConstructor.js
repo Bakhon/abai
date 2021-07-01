@@ -1,4 +1,5 @@
 import {Datetime} from 'vue-datetime';
+import 'vue-datetime/dist/vue-datetime.css';
 import {bTreeView} from "bootstrap-vue-treeview";
 import Vue from "vue";
 
@@ -30,6 +31,8 @@ export default {
             items: [],
             isLoading: false,
             isDisplayParameterBuilder: false,
+            startDate: null,
+            endDate: null,
         }
     },
     mounted: function () {
