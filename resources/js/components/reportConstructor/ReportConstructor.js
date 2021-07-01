@@ -1,6 +1,8 @@
 import {Datetime} from 'vue-datetime';
 import {bTreeView} from "bootstrap-vue-treeview";
 import Vue from "vue";
+import 'vue-datetime/dist/vue-datetime.css';
+import {formatDate} from "../common/FormatDate";
 
 Vue.use(Datetime)
 Vue.use(bTreeView)
@@ -30,6 +32,9 @@ export default {
             items: [],
             isLoading: false,
             isDisplayParameterBuilder: false,
+            selectedObjects: [],
+            startDate: null,
+            endDate: null,
         }
     },
     mounted: function () {
@@ -90,8 +95,7 @@ export default {
             this.isLoading = true
             this.axios.get(this.baseUrl + "get_object_attributes", {
                 params: {
-                    structure_type: this.currentStructureType,
-                    structure_id: this.currentStructureId
+                    structure_subtype: this.currentStructureSubType
                 },
                 responseType: 'json',
                 headers: {
@@ -129,21 +133,29 @@ export default {
             });
 
         },
-        setCurrentStructureId(structureId) {
+        setCurrentStructure(structureId, structureSubType) {
             this.currentStructureId = structureId.toString()
+            this.currentStructureSubType = structureSubType
             this.loadAttributesForSelectedObject();
         },
         getAttributeDescription(descriptionField) {
-            let fieldParts = descriptionField.split(".")
-            if (fieldParts.length !== 3) {
+            if (!(this.isActualAttribute(descriptionField))) {
                 return descriptionField
             }
+            let fieldParts = descriptionField.split(".")
             let table = fieldParts[0] + "." + fieldParts[1]
             if (!(table in this.attributeDescriptions)) {
                 return descriptionField
             }
             let fieldName = fieldParts[2]
+            if (!(fieldName in this.attributeDescriptions[table])) {
+                return fieldName
+            }
             return this.attributeDescriptions[table][fieldName]
+        },
+        isActualAttribute(field) {
+            let fieldParts = field.split(".")
+            return fieldParts.length === 3
         },
         updateStatistics() {
             this.loadStatistics()
@@ -151,11 +163,16 @@ export default {
         },
         loadStatistics() {
             this.statistics = null;
+            try {
+                this.validateStatisticsParams()
+            } catch (e) {
+                this.showToast(e.name, e.message, 'danger', 10000)
+                return
+            }
             let jsonData = JSON.stringify({
-                "fields": this.attributesForObject,
-                "joins": [["dict.well_type.id", "dict.well.well_type"]],
-                // TODO when dates will work:
-                //  "dates" : [""]
+                "fields": this.getSelectedAttributes(),
+                "selectedObjects": this.selectedObjects,
+                "dates": this.getDates()
             })
             this.axios.post(this.baseUrl + "get_statistics", jsonData, {
                 responseType: 'json',
@@ -171,9 +188,67 @@ export default {
             });
 
         },
-        getStatisticsColumnNames(attributes){
+        validateStatisticsParams() {
+            if (this.selectedObjects.length === 0) {
+                throw new Error("Не выбраны объекты для отображения")
+            }
+            if (this.getSelectedAttributes().length === 0) {
+                throw new Error("Не выбраны поля для отображения")
+            }
+            if (this.startDate == null) {
+                throw new Error("Не выбрана начальная дата")
+            }
+            if (this.endDate == null) {
+                throw new Error("Не выбрана конечная дата")
+            }
+        },
+        getSelectedAttributes() {
+            let allSelectedAttributes = this._getAllSelectedAttributes(this.attributesForObject)
+            allSelectedAttributes = this._cleanEmptyHeadersOfAttributes(allSelectedAttributes)
+            console.log(allSelectedAttributes)
+            return allSelectedAttributes
+        },
+        _getAllSelectedAttributes(attributes) {
+            let selectedAttributes = []
+            for (let attribute of attributes) {
+                if ('isChecked' in attribute && attribute.isChecked) {
+                    let newAttribute = {
+                        label: attribute['label']
+                    }
+                    if ('children' in attribute && attribute.children.length > 0) {
+                        newAttribute.children = this._getAllSelectedAttributes(attribute.children)
+                    }
+                    selectedAttributes.push(newAttribute)
+                }
+            }
+            return selectedAttributes
+        },
+        _cleanEmptyHeadersOfAttributes(attributes) {
+            let cleanAttributes = []
+            for (let attribute of attributes) {
+                if (this.isActualAttribute(attribute.label)) {
+                    cleanAttributes.push({'label': attribute.label})
+                }
+                if (!('children' in attribute) || attribute.children.length === 0) {
+                    continue
+                }
+                let cleanChildren = this._cleanEmptyHeadersOfAttributes(attribute.children)
+                if (cleanChildren.length > 0) {
+                    attribute.children = cleanChildren
+                    cleanAttributes.push(attribute)
+                }
+            }
+            return cleanAttributes
+        },
+        getDates() {
+            return [
+                formatDate.getMinOfDayFormatted(this.startDate),
+                formatDate.getMaxOfDayFormatted(this.endDate)
+            ]
+        },
+        getStatisticsColumnNames(attributes) {
             let columns = []
-            for ( let attribute of attributes){
+            for (let attribute of attributes) {
                 if ('children' in attribute) {
                     columns = columns.concat(this.getStatisticsColumnNames(attribute['children']))
                 } else {
@@ -182,5 +257,22 @@ export default {
             }
             return columns
         },
+        updateSelectedNodes(node) {
+            let index = this._findNodeInSelectedNodes(node)
+            if (typeof index === 'undefined') {
+                this.selectedObjects.push(node)
+            } else {
+                this.selectedObjects.splice(index)
+            }
+        },
+        _findNodeInSelectedNodes(node) {
+            for (let i = 0; i < this.selectedObjects.length; i++) {
+                let n = this.selectedObjects[i]
+                if (n['id'] === node['id'] && n['structureId'] === node['structureId']) {
+                    return i
+                }
+            }
+            return undefined;
+        }
     }
 }

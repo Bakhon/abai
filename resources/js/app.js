@@ -173,7 +173,6 @@ Vue.component('visualcenter3-excelform', require('./components/visualcenter3/imp
 Vue.component('big-data', require('./components/bigdata/BigData.vue').default);
 Vue.component('las', require('./components/bigdata/Las.vue').default);
 Vue.component('geo-data-reference-book', require('./components/bigdata/GeoDataReferenceBook.vue').default);
-Vue.component('user-reports', require('./components/bigdata/UserReports.vue').default);
 Vue.component('proto-form', require('./components/bigdata/Forms.vue').default);
 Vue.component('proto-form-wrapper', require('./components/bigdata/FormsWrapper.vue').default);
 Vue.component('proto-org-select-tree', require('./components/bigdata/OrgSelectTree.vue').default);

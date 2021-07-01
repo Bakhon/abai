@@ -8,7 +8,7 @@
               <label class="container">
                 <span class="bottom-border"></span>
                 <input type="checkbox" :id="node.id" name="tech_structure" value="tech_structure"
-                       class="dropdown-item">
+                       class="dropdown-item" v-on:change="onCheckboxClick(node)">
                 <span class="checkmark"></span>
               </label>
             </form>
@@ -23,7 +23,7 @@
       <div v-if="node.name"
            class="text-right text-white ml-2"
            :class="{'cursor-pointer': isWell(node), 'h5 m-0': currentWellId === node.id}"
-           @click.stop="handleClick(this)">
+           @click.stop="handleClick(node)">
         {{ node.name }}
       </div>
     </div>
@@ -37,6 +37,7 @@
             :get-initial-items="getInitialItems"
             :isNodeOnBottomLevelOfHierarchy="isNodeOnBottomLevelOfHierarchy"
             :isShowCheckboxes="isShowCheckboxes"
+            :onCheckboxClick="onCheckboxClick"
             :isWell="isWell"
             :currentWellId="currentWellId"
       ></node>
@@ -58,6 +59,10 @@ export default {
     isNodeOnBottomLevelOfHierarchy: Function,
     isShowCheckboxes: Boolean,
     isWell: Function,
+    onCheckboxClick: {
+      type: Function,
+      required: false
+    },
     currentWellId: {
       type: Number,
       required: false
@@ -73,7 +78,7 @@ export default {
       if (!this.isShowChildren) {
         return
       }
-      await this.handleClick(this)
+      await this.handleClick(this.node)
       if (this.isNodeOnBottomLevelOfHierarchy(this.node)) {
         this.isLoading = true;
         this.getWells(this);

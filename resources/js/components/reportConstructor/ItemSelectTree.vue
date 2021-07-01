@@ -12,6 +12,7 @@
             :get-initial-items="getInitialItems"
             :isShowCheckboxes="isShowCheckboxes"
             :isWell="isWell"
+            :onCheckboxClick="onCheckboxClick"
         ></tree-view>
       </div>
     </div>
@@ -33,6 +34,7 @@ export default {
     structureType: String,
     itemType: Number,
     isShowCheckboxes: Boolean,
+    onCheckboxClick: Function,
   },
   mounted() {
     this.init()
@@ -70,10 +72,8 @@ export default {
       });
 
     },
-    nodeClick(child) {
-      let node = child.node
-      this.$parent.currentStructureId = node.structureId
-      this.$parent.setCurrentStructureId(node.structureId)
+    nodeClick(node) {
+      this.$parent.setCurrentStructure(node.structureId, node.type)
       this.isLoading = true
       return this.axios.get(this.baseUrl + "get_children_of_item", {
         params: {
@@ -113,12 +113,7 @@ export default {
         }
       }).then((response) => {
         if (response.data) {
-          let wellChildren = []
-          response.data.forEach((well) => {
-            well.type = 'well'
-            wellChildren.push(well);
-          });
-          node.children = wellChildren
+          node.children = response.data
         } else {
           console.log("No data");
         }
