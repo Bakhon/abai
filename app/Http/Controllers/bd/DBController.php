@@ -4,6 +4,7 @@ namespace App\Http\Controllers\bd;
 
 use App\Http\Controllers\Controller;
 use App\Models\DZO\DZOdaily;
+use App\Models\BigData\Dictionaries\Geo;
 
 class DBController extends Controller
 {
@@ -33,6 +34,11 @@ class DBController extends Controller
     public function well_cart()
     {
         return view('reports.well_cart');
+    }
+
+    public function field_list() {
+        $geoList = Geo::where('geo_type', 3)->orderBy('name_ru')->get();
+        return $geoList;
     }
 
     public function report_constructor()

@@ -126,7 +126,7 @@ class MappingController extends CrudController
         $modelName = $this->modelName;
         $link = $this -> link;
         $view = $this->view;
-        $geoList = Geo::where('geo_type', 1)->orderBy('name_ru')->get();
+        $geoList = Geo::where('geo_type', 3)->orderBy('name_ru')->get();
         return view($view.'.edit', compact('link', 'modelName', 'data', 'validationParams', 'geoList'));
     }
 

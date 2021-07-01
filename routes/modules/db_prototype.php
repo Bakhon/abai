@@ -11,6 +11,7 @@ Route::group(
                 Route::get('/well_cart', 'bd\DBController@well_cart')->name('well_cart');
                 Route::get('/report-constructor', 'bd\DBController@report_constructor')->name('report_constructor');
                 Route::get('/user_reports', 'bd\DBController@userReports')->name('userReports');
+                Route::get('/field-list', 'bd\DBController@field_list')->name('field_list');
 
                 Route::get('file-status/list', 'Refs\bigdata\las\FileStatusController@list')->name('file-status.list');
                 Route::resource('/file-status', 'Refs\bigdata\las\FileStatusController');
