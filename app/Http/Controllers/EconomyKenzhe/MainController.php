@@ -75,7 +75,7 @@ class MainController extends Controller
         if($request->company) {
             $this->companyId = $request->company;
         }
-        if($request->monthsValue && $request->monthsValue != '01' ) {
+        if($request->monthsValue && $request->monthsValue != '00' ) {
             $this->dateFrom = date('Y-m-d', mktime(0, 0, 0, $request->monthsValue, 1, $currentYear));
             $this->dateTo = date("Y-m-d", strtotime($this->dateFrom . " +1 months"));
         }
