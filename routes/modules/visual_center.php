@@ -12,10 +12,6 @@ Route::group(
                 Route::get('/visualcenter3GetData', 'VisCenter\VisualCenterController@visualcenter3GetData');
                 Route::get('/visualcenter3GetDataOpec', 'VisCenter\VisualCenterController@visualcenter3GetDataOpec');
                 Route::get('/visualcenter3GetDataStaff', 'VisCenter\VisualCenterController@visualcenter3GetDataStaff');
-                Route::get(
-                    '/visualcenter3GetDataAccident',
-                    'VisCenter\VisualCenterController@visualcenter3GetDataAccident'
-                );
                 Route::get('/visualcenter4', 'VisCenter\VisualCenterController@visualcenter4')->name('visualcenter4');
                 Route::get('/visualcenter5', 'VisCenter\VisualCenterController@visualcenter5')->name('visualcenter5');
                 Route::get('/visualcenter6', 'VisCenter\VisualCenterController@visualcenter6')->name('visualcenter6');
@@ -75,6 +71,8 @@ Route::group(
                 Route::get('/get-otm-details', 'VisCenter\VisualCenterController@getOtmDetails');
                 Route::get('/get-chemistry-details', 'VisCenter\VisualCenterController@getChemistryDetails');
                 Route::get('/get-drilling-details', 'VisCenter\VisualCenterController@getDrillingDetails');
+                Route::get('/get-fond-details', 'VisCenter\VisualCenterController@getFondDetails');
+
             }
         );
     }
