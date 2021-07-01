@@ -65,6 +65,8 @@
                         auth()->user()->can('monitoring list watermeasurement')
                         || auth()->user()->can('monitoring list oilgas')
                         || auth()->user()->can('monitoring list corrosion')
+                        || auth()->user()->can('monitoring list hydro_calculation')
+                        || auth()->user()->can('monitoring list reverse_calculation')
                     )
                         <li class="left-menu-li">
                             <a>
@@ -143,13 +145,23 @@
                             </ul>
                         </li>
                     @endif
-                    <li class="left-menu-li">
-                        @if(auth()->user()->can('monitoring view pipes map'))
+
+                    @if(auth()->user()->can('monitoring view pipes map'))
+                        <li class="left-menu-li">
                             <a href="{{route('maps.gu')}}">
                                 {{ trans('monitoring.tech_map') }}
                             </a>
-                        @endif
-                    </li>
+                        </li>
+                    @endif
+
+                    @if(auth()->user()->can('monitoring view pipes map'))
+                        <li class="left-menu-li">
+                            <a href="{{route('map-history.index')}}">
+                                {{ trans('monitoring.map-history.menu') }}
+                            </a>
+                        </li>
+                    @endif
+
                     <li class="left-menu-li">
                         <a href="{{route('facilities')}}">
                             {{ trans('monitoring.tech_map_prototype') }}
@@ -159,6 +171,13 @@
                     <li class="left-menu-li">
                         <a href="{{route('lost-profits.index')}}">
                             {{ trans('monitoring.lost_profits_title') }}
+                        </a>
+                    </li>
+                    @endif
+                    @if(auth()->user()->can('monitoring list economical_effect'))
+                    <li class="left-menu-li">
+                        <a href="{{route('economical-effect.index')}}">
+                            {{ trans('monitoring.economical_effect_title') }}
                         </a>
                     </li>
                     @endif

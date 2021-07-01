@@ -2,14 +2,21 @@
 
 namespace App\Models\BigData\Dictionaries;
 
+
 use App\Models\BigData\Well;
 use App\Models\TBDModel;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
 class Geo extends TBDModel
 {
     protected $table = 'dict.geo';
+
+    public function type()
+    {
+        return $this->belongsTo(GeoType::class, 'geo_type', 'id');
+    }
 
     public function parent()
     {
@@ -22,9 +29,22 @@ class Geo extends TBDModel
         return $result ? Geo::find($result->parent) : null;
     }
 
+    public function firstParent()
+    {
+        return $this->hasMany(GeoParent::class, 'geo_id', 'id');
+    }
+
     public function children()
     {
-        return $this->hasMany(Geo::class, 'parent_id', 'id');
+        $ids = DB::connection($this->connection)
+            ->table('dict.geo_parent')
+            ->select('geo_id')
+            ->where('parent', $this->id)
+            ->get()
+            ->pluck('geo_id')
+            ->toArray();
+
+        return !empty($ids) ? Geo::whereIn('id', $ids)->get() : null;
     }
 
     public function wells()
@@ -58,13 +78,15 @@ class Geo extends TBDModel
         if (Cache::has('bd_geo_children_' . $this->id)) {
             return Cache::get('bd_geo_children_' . $this->id);
         }
-        $result = $this->children;
-        $this->children->each(
-            function ($child) use (&$result) {
-                $result->merge($child->descendants());
-                $result->merge($child->descendants());
-            }
-        );
+        $result = $this->children();
+        if (!empty($result)) {
+            $result->each(
+                function ($child) use (&$result) {
+                    $result->merge($child->descendants());
+                }
+            );
+        }
+
         Cache::put('bd_geo_children_' . $this->id, $result);
         return $result;
     }

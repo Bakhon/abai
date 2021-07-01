@@ -1,13 +1,12 @@
 <template>
   <div class="row m-0 p-0">
     <div class="col col-9 p-0">
-      <proto-form :wellId="wellId"></proto-form>
+      <proto-form :id="id" :type="type"></proto-form>
     </div>
-    <div class="col col-3 p-0">
+    <div class="col col-3 p-0 org-select-tree-block">
       <proto-org-select-tree
-          @modalChangeVisible="(value) => modalChangeVisible(value)"
-          @wellIdChange="wellIdChange"
-          @changeOrgSelector="(data) => changeOrgSelector(data)">
+          :currentWellId="id"
+          @idChange="idChange">
       </proto-org-select-tree>
     </div>
   </div>
@@ -18,17 +17,15 @@
 export default {
   data() {
     return {
-      wellId: 0,
+      id: 0,
+      type: ''
     }
   },
   methods: {
-    wellIdChange(wellId) {
-      this.wellId = wellId;
+    idChange(node) {
+      this.id = node.id
+      this.type = node.type
     },
-    changeOrgSelector(data) {
-      if (data.length > 0) {
-      }
-    }
   }
 }
 </script>
@@ -112,7 +109,6 @@ export default {
   .block-one-title {
     font-size: 14px;
     color: #fff;
-    white-space: nowrap;
   }
 
   .block-two-header {
@@ -297,7 +293,7 @@ export default {
 }
 
 .org-select-tree-block {
-  max-height: 85vh;
+  height: 85vh;
   overflow-y: scroll;
 }
 </style>

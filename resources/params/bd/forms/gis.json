@@ -1,0 +1,72 @@
+{
+  "table": "prod.gis",
+  "tabs": [
+    {
+      "title": "title",
+      "blocks": [
+        [
+          {
+            "title": "main",
+            "items": [
+              {
+                "code": "gis_date",
+                "type": "datetime",
+                "title": "data",
+                "validation": "required"
+              },
+              {
+                "code": "contractor",
+                "type": "dict",
+                "dict": "companies",
+                "title": "podr",
+                "validation":"required|exists:tbd.dict.company,id"
+              },
+              {
+                "code": "matering_from",
+                "type": "numeric",
+                "title": "intr_ot",
+                "validation": "required"
+              },
+              {
+                "code": "matering_to",
+                "type": "numeric",
+                "title": "intr_do",
+                "validation": "required"
+              },
+              {
+                "code": "process_from",
+                "type": "numeric",
+                "title": "intr_obr_ot",
+                "validation": "required"
+              },
+              {
+                "code": "process_to",
+                "type": "numeric",
+                "title": "intr_obr_do",
+                "validation": "required"
+              }
+            ]
+          }
+        ]
+      ]
+    },
+    {
+      "title": "zakl",
+      "blocks": [
+        [
+          {
+            "title": "",
+            "items": [
+              {
+                "code": "conclusion",
+                "type": "text",
+                "title": "zakl",
+                "validation": "required"
+              }
+            ]
+          }
+        ]
+      ]
+    }
+  ]
+}

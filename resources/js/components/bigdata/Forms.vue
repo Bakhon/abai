@@ -47,10 +47,10 @@
     </div>
     <div class="row">
       <div v-if="activeForm" class="col-12 blueblock three m-0">
-        <BigDataPlainFormWrapper v-if="activeForm.type === 'plain' && wellId" :params="activeForm"
-                                 :well-id="wellId"></BigDataPlainFormWrapper>
+        <BigDataPlainFormWrapper v-if="activeForm.type === 'plain' && type === 'well' && id" :params="activeForm"
+                                 :well-id="id"></BigDataPlainFormWrapper>
         <BigDataTableFormWrapper v-else-if="activeForm.type === 'table'"
-                                 :params="activeForm"></BigDataTableFormWrapper>
+                                 :id="id" :params="activeForm" :type="type"></BigDataTableFormWrapper>
       </div>
     </div>
   </div>
@@ -63,8 +63,12 @@ import BigDataTableFormWrapper from './forms/TableFormWrapper'
 
 export default {
   props: {
-    wellId: {
+    id: {
       type: Number,
+      required: true
+    },
+    type: {
+      type: String,
       required: true
     },
   },

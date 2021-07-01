@@ -54,7 +54,6 @@
         <table class="table-container-table">
           <thead class="table-container-column-header">
           <tr>
-            <th class="table-border"><p class="title">ID</p></th>
             <th v-for="column in columns" class="table-border"><p class="title">{{ column.title }}</p>
             </th>
             <th v-if="!form.actions" class="table-border"><p class="title">Управление</p></th>
@@ -66,9 +65,6 @@
               :class="{'selected': selectedRow === row}"
               @click="selectedRow = row"
           >
-            <td class="table-border element-position">
-              <p class="title">{{ row.id }}</p>
-            </td>
             <td v-for="column in columns" class="table-border element-position">
               <p>{{ getCellValue(row, column) }}</p>
             </td>
@@ -225,6 +221,17 @@ export default {
     },
     editRow(row, formCode = null) {
       if (!row) return false
+      if (this.form.custom_row_edit) {
+
+        this.axios.get(this.localeUrl(`/api/bigdata/forms/${this.code}/form-by-row`), {params: {row: this.selectedRow}}).then(({data}) => {
+          this.formParams = this.forms.find(form => form.code === data.form)
+          this.formValues = row
+          this.isFormOpened = true
+        })
+
+        return
+      }
+
       this.formParams = this.forms.find(form => form.code === (formCode || this.code))
       this.formValues = row
       this.isFormOpened = true

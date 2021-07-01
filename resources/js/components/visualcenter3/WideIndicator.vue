@@ -7,7 +7,7 @@
                         <div class="txt3 font-weight-bold">
                             {{ item.title }}
                         </div>
-                        <div class="txt4 text-nowrap font-weight-bold mb-0">{{ new Intl.NumberFormat("ru-RU").format(item.value) }}</div>
+                        <div class="secondaryTitle text-nowrap font-weight-bold mb-0">{{ new Intl.NumberFormat("ru-RU").format(item.value) }}</div>
                     </div>
                     <div class="vc-wide-indicator-tooltip-text text-nowrap">{{ leftUnits }}</div>
                 </div>
@@ -17,7 +17,7 @@
                             <div class="txt3 font-weight-bold">
                                 {{ item.title }}
                             </div>
-                            <div class="txt4 text-nowrap font-weight-bold mb-0">{{ new Intl.NumberFormat("ru-RU").format(item.value) }}</div>
+                            <div class="secondaryTitle text-nowrap font-weight-bold mb-0">{{ new Intl.NumberFormat("ru-RU").format(item.value) }}</div>
                         </div>
                     </div>
                     <div class="vc-wide-indicator-tooltip-text text-nowrap">{{ rightUnits }}</div>

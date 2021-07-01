@@ -9,22 +9,22 @@ export default {
             opec: 'утв.',
             kmgParticipationPercent: {
                 'АО "Каражанбасмунай"': 0.5,
-                'ТОО "Казгермунай"': 0.5,
-                'АО ПетроКазахстан Кумколь Ресорсиз': 0.33,
-                'ПетроКазахстан Инк.': 0.33,
+                'ТОО "СП "Казгермунай"': 0.5,
+                'АО "ПетроКазахстан Кумколь Ресорсиз"': 0.33,
+                'АО "ПетроКазахстан Инк."': 0.33,
                 'АО "Тургай-Петролеум"': 0.5 * 0.33,
-                "ТОО «Тенгизшевройл»": 0.2,
+                'ТОО "Тенгизшевройл"': 0.2,
                 'АО "Мангистаумунайгаз"': 0.5,
                 'ТОО "Казахойл Актобе"': 0.5,
-                "«Карачаганак Петролеум Оперейтинг б.в.»": 0.1,
-                "«Норт Каспиан Оперейтинг Компани н.в.»": 0.1688
+                '"Карачаганак Петролеум Оперейтинг б.в."': 0.1,
+                '"Норт Каспиан Оперейтинг Компани н.в."': 0.1688
             },
             opecFieldNameForChart: '',
         };
     },
     methods: {
         changeOilProductionFilters() {
-            if (this.isOpecFilterActive) {
+            if (this.isOpecFilterActive && this.oilCondensateProductionButton.length === 0) {
                 this.planFieldName = 'oil_opek_plan';
                 this.opec = this.trans("visualcenter.dzoOpec");
                 this.opecFieldNameForChart = 'oil_plan';
@@ -58,6 +58,7 @@ export default {
                 ["dzoMonth"],
                 ["asc"]
             );
+
             _.forEach(opecData, function(dzoOpec, i) {
                 let opecDzoName = dzoOpec.dzoMonth;
                 let opecDzoPeriodPlan = dzoOpec.periodPlan;
@@ -97,13 +98,13 @@ export default {
         },
 
         getOpecMonth(data) {
+            let filteredByOneDay = _.filter(data, _.iteratee({date: moment().startOf('month').valueOf()}));
 
-            let dataWithMay = _.filter(data, _.iteratee({date: (this.year + '-' + this.pad(this.month) + '-01' + ' 00:00:00')}));
-            if (dataWithMay.length === 0) {
+            if (filteredByOneDay.length === 0) {
                 let dateFormat = 'YYYY-MM-DD HH:mm:ss';
                 let lastWorkingDay = this.getPreviousWorkday();
                 let lastSynchronizeDay = moment(lastWorkingDay).startOf('day').add(1, "days").format(dateFormat);
-                dataWithMay = _.filter(data, _.iteratee({date: lastSynchronizeDay}));
+                filteredByOneDay = _.filter(data, _.iteratee({date: lastSynchronizeDay}));
             }
             let oil;
             if (this.opec === "ОПЕК+") {
@@ -112,14 +113,14 @@ export default {
                 oil = 'oil_plan';
             }
 
-            let SummFromRange = _(dataWithMay)
+            let SummFromRange = _(filteredByOneDay)
                 .groupBy("dzo")
                 .map((dzo, id) => ({
                     dzoMonth: id,
                     periodPlan: (_.sumBy(dzo, oil)) * moment().daysInMonth(),
                 }))
-
                 .value();
+
 
             let opecDataSumm = _.reduce(
                 SummFromRange,

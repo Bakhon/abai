@@ -69,24 +69,22 @@ class MainController extends Controller
     public function company(Request $request)
     {
         $currentYear = date('Y', strtotime('-1 year'));
-        $previousYear = (float)$currentYear - 1;
-        if ($request->company) {
+        $previousYear = (float) $currentYear - 1;
+        $this->dateFrom = date('Y-m-d', strtotime('first day of january previous year'));
+        $this->dateTo = date('Y-m-d', strtotime('last day of december previous year'));
+        if($request->company) {
             $this->companyId = $request->company;
         }
-        if (!$request->reload) {
-            $this->dateFrom = date('Y-m-d', strtotime('first day of january previous year'));
-            $this->dateTo = date('Y-m-d', strtotime('last day of december previous year'));
-        }
-        if ($request->monthsValue) {
+        if($request->monthsValue && $request->monthsValue != '01' ) {
             $this->dateFrom = date('Y-m-d', mktime(0, 0, 0, $request->monthsValue, 1, $currentYear));
             $this->dateTo = date("Y-m-d", strtotime($this->dateFrom . " +1 months"));
         }
-        if ($request->differenceBetweenMonths) {
+        if($request->differenceBetweenMonths && $request->differenceBetweenMonths != '01') {
             $this->dateFrom = date('Y-m-d', strtotime('first day of january previous year'));
             $this->dateTo = date('Y-m-d', mktime(0, 0, 0, $request->differenceBetweenMonths, 1, $currentYear));
         }
-        if ($request->quarterValue) {
-            $this->dateTo = date('Y-m-t', mktime(0, 0, 0, $request->quarterValue, 1, $currentYear));
+        if($request->quarterValue && $request->quarterValue != '01') {
+            $this->dateTo  = date('Y-m-t', mktime(0, 0, 0, $request->quarterValue, 1, $currentYear));
             $this->dateFrom = date('Y-m-01', strtotime($this->dateTo . '-2 months'));
         }
         $handbook = HandbookRepTt::where('parent_id', 0)->with('childHandbookItems')->get()->toArray();
@@ -100,11 +98,8 @@ class MainController extends Controller
             'previousYear' => $previousYear,
             'companies' => $companies,
         ];
-        $data = json_encode($data);
-        if ($request->reload) {
-            return $data;
-        }
-        return view('economy_kenzhe.company')->with(compact('data'));
+
+        return json_encode($data);
     }
 
 
