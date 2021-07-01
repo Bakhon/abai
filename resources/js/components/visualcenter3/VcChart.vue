@@ -144,10 +144,10 @@
                     datasets.push(planChartOptions);
                 }
 
-                if (chartSummary.isOpecFilterActive) {
+                if (chartSummary.isOpecFilterActive && !chartSummary.isOilResidueActive) {
                     datasets.push(planOpecChartOptions);
                 }
-                if (chartSummary.isFilterTargetPlanActive) {
+                if (chartSummary.isFilterTargetPlanActive && !chartSummary.isOilResidueActive) {
                     datasets.push(monthlyPlan);
                 }
 
