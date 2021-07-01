@@ -60,8 +60,8 @@ class WellsController extends Controller
             'zone' => $this->zone($well),
             'well_react_infl' => $this->wellReact($well),
             'gtm' => $this->gtm($well),
-            'rzatr_atm' => $this->gdisCurrentValueRzatrAtm($well),
-            'rzatr_stat' => $this->gdisCurrentValueRzatrStat($well),
+            'rzatr_atm' => $this->gdisCurrentValueRzatr($well, 'FLVL'),
+            'rzatr_stat' => $this->gdisCurrentValueRzatr($well, 'STLV'),
         );
     }
 
@@ -401,25 +401,14 @@ class WellsController extends Controller
             ->first(['value_double', 'meas_date']);
     }
 
-    private function gdisCurrentValueRzatrAtm(Well $well)
+    private function gdisCurrentValueRzatr(Well $well, $method)
     {
         return $well->gdisCurrentValue()
             ->join('dict.metric', 'gdis_current_value.metric', '=', 'dict.metric.id')
             ->join('prod.gdis_current as gdis_otp', 'prod.gdis_current.id', 'gdis_current_value.gdis_curr')
             ->join('dict.metric as metric_otp', 'gdis_current_value.metric', '=', 'dict.metric.id')
             ->where('metric_otp.code', '=', 'OTP')
-            ->where('metric_otp.code', '=', 'FLVL')
-            ->first();
-    }
-
-    private function gdisCurrentValueRzatrStat(Well $well)
-    {
-        return $well->gdisCurrentValue()
-            ->join('dict.metric', 'gdis_current_value.metric', '=', 'dict.metric.id')
-            ->join('prod.gdis_current as gdis_otp', 'prod.gdis_current.id', 'gdis_current_value.gdis_curr')
-            ->join('dict.metric as metric_otp', 'gdis_current_value.metric', '=', 'dict.metric.id')
-            ->where('metric_otp.code', '=', 'OTP')
-            ->where('metric_otp.code', '=', 'STLV')
+            ->where('metric_otp.code', '=', $method)
             ->first();
     }
 
