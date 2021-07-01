@@ -5,7 +5,6 @@ namespace App\Models\BigData;
 use App\Models\BigData\Dictionaries\BottomHoleType;
 use App\Models\BigData\Dictionaries\GdisConclusion;
 use App\Models\BigData\Dictionaries\Geo;
-use App\Models\BigData\Dictionaries\GtmType;
 use App\Models\BigData\Dictionaries\Org;
 use App\Models\BigData\Dictionaries\Tech;
 use App\Models\BigData\Dictionaries\TubeNom;

@@ -17,11 +17,11 @@
                   </div>
                   <div class="icon-all" style="margin-left: auto;"
                        @click="onColumnFoldingEvent('left')">
-                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M11 1L5.8053 6L11 11" stroke="white" stroke-width="1.2" stroke-linecap="round"
-                            stroke-linejoin="round"/>
-                      <path d="M6.19472 1L1 6L6.19472 11" stroke="white" stroke-width="1.2" stroke-linecap="round"
-                            stroke-linejoin="round"/>
+                    <svg fill="none" height="12" viewBox="0 0 12 12" width="12" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M11 1L5.8053 6L11 11" stroke="white" stroke-linecap="round" stroke-linejoin="round"
+                            stroke-width="1.2"/>
+                      <path d="M6.19472 1L1 6L6.19472 11" stroke="white" stroke-linecap="round" stroke-linejoin="round"
+                            stroke-width="1.2"/>
                     </svg>
                   </div>
                 </div>
@@ -31,16 +31,16 @@
               <ul id="myUL">
                 <well-cart-tree
                     v-for="(item, index) in [...forms_structure, ...forms]"
-                    :data="item"
                     :key="index"
                     :active-form-code="activeFormCode"
+                    :data="item"
                     :switch-form-by-code="switchFormByCode">
                 </well-cart-tree>
               </ul>
             </div>
           </div>
           <div v-if="isLeftColumnFolded" class="row">
-            <div style="color: white" class="rotate">
+            <div class="rotate" style="color: white">
               Дело скважины
             </div>
           </div>
@@ -55,21 +55,21 @@
               <div class="col">
                 <button class="transparent-select">
                   Скважина: <span v-if="wellUwi">{{ wellUwi }}</span>
-                  <svg width="14" height="8" viewBox="0 0 14 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M1 1L7 7L13 1" stroke="white" stroke-width="1.6" stroke-linecap="round"
-                          stroke-linejoin="round"/>
+                  <svg fill="none" height="8" viewBox="0 0 14 8" width="14" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M1 1L7 7L13 1" stroke="white" stroke-linecap="round" stroke-linejoin="round"
+                          stroke-width="1.6"/>
                   </svg>
                 </button>
               </div>
               <div class="col">
                 <form class="search-form">
                   <v-select
+                      v-model="wellUwi"
                       :filterable="false"
                       :options="options"
                       placeholder="Номер скважины"
                       @input="selectWell"
                       @search="onSearch"
-                      v-model="wellUwi"
                   >
                     <template slot="option" slot-scope="option">
                       <span>{{ option.name }}</span>
@@ -146,29 +146,29 @@
                 <div class="heading">
                   <div class="icon-all"
                        @click="onColumnFoldingEvent('right')">
-                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M1.0001 1L6.19482 6L1.0001 11" stroke="white" stroke-width="1.2" stroke-linecap="round"
-                            stroke-linejoin="round"/>
-                      <path d="M5.80528 1L11 6L5.80528 11" stroke="white" stroke-width="1.2" stroke-linecap="round"
-                            stroke-linejoin="round"/>
+                    <svg fill="none" height="12" viewBox="0 0 12 12" width="12" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M1.0001 1L6.19482 6L1.0001 11" stroke="white" stroke-linecap="round" stroke-linejoin="round"
+                            stroke-width="1.2"/>
+                      <path d="M5.80528 1L11 6L5.80528 11" stroke="white" stroke-linecap="round" stroke-linejoin="round"
+                            stroke-width="1.2"/>
                     </svg>
                   </div>
                   <p v-if="wellUwi">Паспорт скважины</p>
                 </div>
                 <div class="title-container">
-                  <div class="sheare-icon" v-if="wellUwi">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <div v-if="wellUwi" class="sheare-icon">
+                    <svg fill="none" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
                       <path
                           d="M17.5443 8.3734L13.9393 4.79071C13.752 4.60451 13.4986 4.5 13.2344 4.5L7.10023 4.50002C6.54794 4.50002 6.10023 4.94773 6.10023 5.50002L6.10023 18.5C6.10023 19.0523 6.54795 19.5 7.10023 19.5H16.8394C17.3916 19.5 17.8394 19.0523 17.8394 18.5L17.8394 9.0827C17.8394 8.81641 17.7331 8.56111 17.5443 8.3734Z"
-                          stroke="white" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+                          stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.4"/>
                       <path d="M12.9067 4.5V8.51961C12.9067 9.07189 13.3545 9.51961 13.9067 9.51961H17.8391"
-                            stroke="white" stroke-width="1.4" stroke-linejoin="round"/>
+                            stroke="white" stroke-linejoin="round" stroke-width="1.4"/>
                       <path
                           d="M8.23505 15.02C8.52838 15.02 8.76705 15.1147 8.95105 15.304C9.13505 15.4907 9.22705 15.7347 9.22705 16.036C9.22705 16.0947 9.22438 16.148 9.21905 16.196H7.87505C7.87505 16.3053 7.91238 16.3987 7.98705 16.476C8.06171 16.5507 8.15371 16.588 8.26305 16.588C8.41238 16.588 8.51771 16.528 8.57905 16.408H9.20305C9.13638 16.608 9.02438 16.768 8.86705 16.888C8.70971 17.008 8.50438 17.068 8.25105 17.068C7.96571 17.068 7.72305 16.9733 7.52305 16.784C7.32571 16.5947 7.22705 16.3453 7.22705 16.036C7.22705 15.7427 7.31505 15.5 7.49105 15.308C7.66971 15.116 7.91771 15.02 8.23505 15.02ZM8.22705 15.456C8.12838 15.456 8.04838 15.4867 7.98705 15.548C7.92571 15.6067 7.88971 15.68 7.87905 15.768H8.57505C8.56438 15.6773 8.52705 15.6027 8.46305 15.544C8.40171 15.4853 8.32305 15.456 8.22705 15.456ZM9.29055 17L9.97855 16.044L9.32655 15.084H10.0705L10.2585 15.424C10.2905 15.4827 10.3199 15.552 10.3465 15.632H10.3625C10.3999 15.52 10.4239 15.4533 10.4345 15.432L10.6065 15.084H11.3465L10.6985 16.032L11.3665 17H10.5945L10.4105 16.66C10.3652 16.572 10.3399 16.5 10.3345 16.444H10.3185C10.3025 16.5027 10.2732 16.576 10.2305 16.664L10.0465 17H9.29055ZM12.4348 15.02C12.6908 15.02 12.9015 15.0987 13.0668 15.256C13.2322 15.4107 13.3308 15.5933 13.3628 15.804H12.7108C12.6975 15.7373 12.6642 15.684 12.6108 15.644C12.5602 15.604 12.4988 15.584 12.4268 15.584C12.3095 15.584 12.2228 15.6267 12.1668 15.712C12.1135 15.7973 12.0868 15.9067 12.0868 16.04C12.0868 16.1733 12.1162 16.284 12.1748 16.372C12.2335 16.4573 12.3215 16.5 12.4388 16.5C12.5135 16.5 12.5762 16.4787 12.6268 16.436C12.6802 16.3907 12.7162 16.3333 12.7348 16.264H13.3988C13.3402 16.5067 13.2282 16.7013 13.0628 16.848C12.9002 16.9947 12.6882 17.068 12.4268 17.068C12.1415 17.068 11.8988 16.9733 11.6988 16.784C11.5015 16.5947 11.4028 16.3453 11.4028 16.036C11.4028 15.748 11.4962 15.5067 11.6828 15.312C11.8695 15.1173 12.1202 15.02 12.4348 15.02ZM14.6218 15.02C14.9151 15.02 15.1538 15.1147 15.3378 15.304C15.5218 15.4907 15.6138 15.7347 15.6138 16.036C15.6138 16.0947 15.6111 16.148 15.6058 16.196H14.2618C14.2618 16.3053 14.2991 16.3987 14.3738 16.476C14.4484 16.5507 14.5404 16.588 14.6498 16.588C14.7991 16.588 14.9044 16.528 14.9658 16.408H15.5898C15.5231 16.608 15.4111 16.768 15.2538 16.888C15.0964 17.008 14.8911 17.068 14.6378 17.068C14.3524 17.068 14.1098 16.9733 13.9098 16.784C13.7124 16.5947 13.6138 16.3453 13.6138 16.036C13.6138 15.7427 13.7018 15.5 13.8778 15.308C14.0564 15.116 14.3044 15.02 14.6218 15.02ZM14.6138 15.456C14.5151 15.456 14.4351 15.4867 14.3738 15.548C14.3124 15.6067 14.2764 15.68 14.2658 15.768H14.9618C14.9511 15.6773 14.9138 15.6027 14.8498 15.544C14.7884 15.4853 14.7098 15.456 14.6138 15.456ZM15.9683 17V14.12H16.6443V17H15.9683Z"
                           fill="white"/>
                     </svg>
                   </div>
-                  <div class="sheare-text" v-if="wellUwi">
+                  <div v-if="wellUwi" class="sheare-text">
                     Скачать в MS-Excel
                   </div>
                 </div>
@@ -866,7 +866,7 @@ export default {
   }
 }
 </script>
-<style scoped lang="scss">
+<style lang="scss" scoped>
 $leftColumnWidth: 398px;
 $leftColumnFoldedWidth: 84px;
 $rightColumnWidth: 348px;
