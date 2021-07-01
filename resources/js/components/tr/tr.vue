@@ -6572,7 +6572,6 @@ tr:nth-child(even) {
 }
 tr td:first-child {
   color: #fff;
-  /* position: sticky!important; */
   left: 0;
   width: 100px;
 }
