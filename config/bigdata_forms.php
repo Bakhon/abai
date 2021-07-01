@@ -32,6 +32,8 @@
   'org_structure' => '\\App\\Services\\BigData\\Forms\\OrgStructure',
   'geo_structure' => '\\App\\Services\\BigData\\Forms\\GeoStructure',
   'daily_reports_oil_prod' => '\\App\\Services\\BigData\\Forms\\DailyReportsOilProduction',
+  'daily_reports_water_prod' => '\\App\\Services\\BigData\\Forms\\DailyReportsWaterProduction',
+  'daily_reports_oil_sale' => '\\App\\Services\\BigData\\Forms\\DailyReportsOilSale',
   'well_perf' => '\\App\\Services\\BigData\\Forms\\WellPerf',
   'well_perf_shot' => '\\App\\Services\\BigData\\Forms\\WellPerfShot',
   'well_perf_drill_packer' => '\\App\\Services\\BigData\\Forms\\WellPerfDrillPacker',
