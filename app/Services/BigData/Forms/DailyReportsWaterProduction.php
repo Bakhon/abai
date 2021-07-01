@@ -29,7 +29,7 @@ class DailyReportsWaterProduction extends DailyReports
             'plan' => $data->sum('plan'),
         ];
         $result['fact'] = $data->sum('fact');
-        if ($filter->optionId == self::ALL || $filter->optionId == self::GS) {
+        if (in_array($filter->optionId, [self::ALL, self::GS])) {
             $result['fact'] = 0;
         }
 
