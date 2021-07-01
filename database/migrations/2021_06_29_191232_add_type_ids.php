@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateEcoRefsExcsTable extends Migration
+class AddTypeIds extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,8 @@ class CreateEcoRefsExcsTable extends Migration
      */
     public function up()
     {
-        Schema::create('eco_refs_excs', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->text('name');
-            $table->text('description');
-            $table->timestamps();
+        Schema::table('rep_tt', function (Blueprint $table) {
+            $table->bigInteger('type_id')->nullable();
         });
     }
 
@@ -28,6 +25,8 @@ class CreateEcoRefsExcsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('eco_refs_excs');
+        Schema::table('rep_tt', function (Blueprint $table) {
+            $table->dropColumn('type_id');
+        });
     }
 }
