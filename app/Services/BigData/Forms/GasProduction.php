@@ -8,10 +8,10 @@ use App\Models\BigData\Well;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
-class GasProduction extends TableForm
+class GasProduction extends MeasurementLogForm
 {
     protected $configurationFileName = 'gas_production';
-    
+
     public function getRows(array $params = []): array
     {
         $filter = json_decode($this->request->get('filter'));
