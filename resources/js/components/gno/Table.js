@@ -1061,7 +1061,7 @@ export default {
 
     setDefaultStoreValues() {
       this.$store.commit("UPDATE_SPM_MIN", 4)
-      this.$store.commit("UPDATE_SPM_MAX", 7)
+      this.$store.commit("UPDATE_SPM_MAX", 8)
       this.$store.commit("UPDATE_LEN_MIN", 2.5)
       this.$store.commit("UPDATE_LEN_MAX", 3)
       this.$store.commit("UPDATE_KPOD", 0.6)
