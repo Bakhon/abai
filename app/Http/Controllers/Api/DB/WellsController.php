@@ -12,7 +12,6 @@ use App\Services\BigData\StructureService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
-
 class WellsController extends Controller
 {
     public function getStructureTree(StructureService $service, Request $request)
@@ -59,6 +58,10 @@ class WellsController extends Controller
             'gdis_complex' => $this->gdisComplex($well),
             'gis' => $this->gis($well),
             'zone' => $this->zone($well),
+            'well_react_infl' => $this->wellReact($well),
+            'gtm' => $this->gtm($well),
+            'rzatr_atm' => $this->gdisCurrentValueRzatr($well, 'FLVL'),
+            'rzatr_stat' => $this->gdisCurrentValueRzatr($well, 'STLV'),
         );
     }
 
@@ -70,20 +73,31 @@ class WellsController extends Controller
     private function geo(Well $well)
     {
         $allParents = [];
-        $parent = $well->geo()
-            ->wherePivot('dend', '>', $this->getToday())
-            ->wherePivot('dbeg', '<=', $this->getToday())
-            ->withPivot('dend', 'dbeg')
-            ->orderBy('pivot_dbeg')
-            ->first()->id;
+        $parent = null;
+        if (isset($well->geo()->wherePivot('dend', '>', $this->getToday())
+                ->wherePivot('dbeg', '<=', $this->getToday())
+                ->withPivot('dend', 'dbeg')
+                ->first()->id)) {
+            $parent = $well->geo()
+                ->wherePivot('dend', '>', $this->getToday())
+                ->wherePivot('dbeg', '<=', $this->getToday())
+                ->withPivot('dend', 'dbeg')
+                ->orderBy('pivot_dbeg')
+                ->first()->id;
+        }
         while ($parent != null) {
             array_push($allParents, Geo::all()->find($parent));
-            $parent = Geo::with('firstParent')
-                ->findOrFail($parent)
-                ->firstParent
-                ->where('dend', '>', $this->getToday())
-                ->where('dbeg', '<=', $this->getToday())
-                ->first()->parent;
+            if (isset(Geo::with('firstParent')->find($parent)->firstParent->where('dend', '>', $this->getToday())
+                    ->where('dbeg', '<=', $this->getToday())->first()->parent)) {
+                $parent = Geo::with('firstParent')
+                    ->find($parent)
+                    ->firstParent
+                    ->where('dend', '>', $this->getToday())
+                    ->where('dbeg', '<=', $this->getToday())
+                    ->first()->parent;
+            } else {
+                return $allParents;
+            }
         }
         return $allParents;
     }
@@ -97,8 +111,8 @@ class WellsController extends Controller
     private function status(Well $well)
     {
         $status = $well->status()
-            ->wherePivot('dend', '<>', $this->getToday())
-            ->wherePivot('dbeg', '<>', $this->getToday())
+            ->wherePivot('dend', '>', $this->getToday())
+            ->wherePivot('dbeg', '<=', $this->getToday())
             ->withPivot('dend', 'dbeg')
             ->orderBy('pivot_dbeg', 'desc')
             ->first(['name_ru']);
@@ -117,8 +131,8 @@ class WellsController extends Controller
     private function category(Well $well)
     {
         return $well->category()
-            ->wherePivot('dend', '<>', $this->getToday())
-            ->wherePivot('dbeg', '<>', $this->getToday())
+            ->wherePivot('dend', '>', $this->getToday())
+            ->wherePivot('dbeg', '<=', $this->getToday())
             ->withPivot('dend', 'dbeg')
             ->orderBy('pivot_dbeg')
             ->first(['name_ru']);
@@ -127,8 +141,8 @@ class WellsController extends Controller
     private function categoryLast(Well $well)
     {
         return $well->category()
-            ->wherePivot('dend', '<>', $this->getToday())
-            ->wherePivot('dbeg', '<>', $this->getToday())
+            ->wherePivot('dend', '>', $this->getToday())
+            ->wherePivot('dbeg', '<=', $this->getToday())
             ->withPivot('dend', 'dbeg')
             ->orderBy('pivot_dbeg', 'desc')
             ->first(['name_ru',]);
@@ -137,25 +151,33 @@ class WellsController extends Controller
     private function wellExpl(Well $well)
     {
         return $well->wellExpl()
-            ->where('dend', '<>', $this->getToday())
-            ->where('dbeg', '<>', $this->getToday())
             ->withPivot('dend as dend', 'dbeg as dbeg')
-            ->orderBy('dbeg', 'desc')
+            ->orderBy('dbeg')
             ->first(['name_ru', 'dend', 'dbeg']);
     }
 
     private function techs(Well $well)
     {
         $allParents = [];
-        $parent = $well->techs()
-            ->wherePivot('dend', '>', $this->getToday())
-            ->withPivot('dend', 'dbeg', 'tap as tap')
-            ->orderBy('pivot_dbeg', 'desc')
-            ->first()->id;
+        $parent = null;
+        if (isset($well->techs()
+                ->wherePivot('dend', '>', $this->getToday())
+                ->withPivot('dend', 'dbeg', 'tap as tap')
+                ->orderBy('pivot_dbeg', 'desc')
+                ->first()->id)) {
+            $parent = $well->techs()
+                ->wherePivot('dend', '>', $this->getToday())
+                ->withPivot('dend', 'dbeg', 'tap as tap')
+                ->orderBy('pivot_dbeg', 'desc')
+                ->first()->id;
+        }
         while ($parent != null) {
-            array_push($allParents, Tech::all()
-                ->find($parent));
-            $parent = Tech::all()->where('dend', '>', $this->getToday())->find($parent)->parent;
+            array_push($allParents, Tech::all()->find($parent));
+            if (isset(Tech::all()->where('dend', '>', $this->getToday())->find($parent)->parent)) {
+                $parent = Tech::all()->where('dend', '>', $this->getToday())->find($parent)->parent;
+            } else {
+                return $allParents;
+            }
         }
         return $allParents;
     }
@@ -178,14 +200,25 @@ class WellsController extends Controller
     private function org(Well $well)
     {
         $allParents = [];
-        $parent = $well->orgs()
-            ->wherePivot('dend', '>', $this->getToday())
-            ->withPivot('dend', 'dbeg')
-            ->orderBy('pivot_dbeg', 'desc')
-            ->first()->id;
+        $parent = null;
+        if (isset($well->orgs()
+                ->wherePivot('dend', '>', $this->getToday())
+                ->withPivot('dend', 'dbeg')
+                ->orderBy('pivot_dbeg', 'desc')
+                ->first()->id)) {
+            $parent = $well->orgs()
+                ->wherePivot('dend', '>', $this->getToday())
+                ->withPivot('dend', 'dbeg')
+                ->orderBy('pivot_dbeg', 'desc')
+                ->first()->id;
+        }
         while ($parent != null) {
             array_push($allParents, Org::all()->find($parent));
-            $parent = Org::all()->where('dend', '>', $this->getToday())->find($parent)->parent;
+            if (isset(Org::all()->where('dend', '>', $this->getToday())->find($parent)->parent)) {
+                $parent = Org::all()->where('dend', '>', $this->getToday())->find($parent)->parent;
+            } else {
+                return $allParents;
+            }
         }
         return $allParents;
     }
@@ -366,6 +399,17 @@ class WellsController extends Controller
             ->first(['value_double', 'meas_date']);
     }
 
+    private function gdisCurrentValueRzatr(Well $well, $method)
+    {
+        return $well->gdisCurrentValue()
+            ->join('dict.metric', 'gdis_current_value.metric', '=', 'dict.metric.id')
+            ->join('prod.gdis_current as gdis_otp', 'prod.gdis_current.id', 'gdis_current_value.gdis_curr')
+            ->join('dict.metric as metric_otp', 'gdis_current_value.metric', '=', 'dict.metric.id')
+            ->where('metric_otp.code', '=', 'OTP')
+            ->where('metric_otp.code', '=', $method)
+            ->first();
+    }
+
     private function gdisComplex(Well $well)
     {
         return $well->gdisComplex()
@@ -384,6 +428,11 @@ class WellsController extends Controller
             ->first(['gis_date']);
     }
 
+    private function wellReact(Well $well)
+    {
+        return $well->wellReact()->first();
+    }
+
     private function zone(Well $well)
     {
         return $well->zone()
@@ -391,6 +440,13 @@ class WellsController extends Controller
             ->wherePivot('dend', '>=', $this->getToday())
             ->orderBy('dend', 'desc')
             ->first(['name_ru', 'dend']);
+    }
+
+    private function gtm(Well $well)
+    {
+        return $well->gtm()->join('dict.gtm_type', 'prod.gtm.gtm_type', '=', 'dict.gtm_type.id')
+            ->where('dict.gtm_type.gtm_kind', '=', '10')
+            ->first(['dbeg']);
     }
 
 

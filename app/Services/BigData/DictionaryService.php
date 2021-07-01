@@ -9,30 +9,35 @@ use App\Models\BigData\Dictionaries\Brigade;
 use App\Models\BigData\Dictionaries\Brigadier;
 use App\Models\BigData\Dictionaries\CasingType;
 use App\Models\BigData\Dictionaries\Company;
+use App\Models\BigData\Dictionaries\CoordSystem;
+use App\Models\BigData\Dictionaries\Device;
 use App\Models\BigData\Dictionaries\DrillChisel;
 use App\Models\BigData\Dictionaries\DrillColumnType;
 use App\Models\BigData\Dictionaries\Equip;
 use App\Models\BigData\Dictionaries\EquipFailReasonType;
 use App\Models\BigData\Dictionaries\EquipType;
+use App\Models\BigData\Dictionaries\GeoIdentifier;
 use App\Models\BigData\Dictionaries\GtmType;
+use App\Models\BigData\Dictionaries\InjAgentType;
+use App\Models\BigData\Dictionaries\IsoMaterialType;
 use App\Models\BigData\Dictionaries\NoBtmReason;
 use App\Models\BigData\Dictionaries\Org;
+use App\Models\BigData\Dictionaries\PackerType;
+use App\Models\BigData\Dictionaries\PatronType;
+use App\Models\BigData\Dictionaries\PerforatorType;
+use App\Models\BigData\Dictionaries\PerfType;
+use App\Models\BigData\Dictionaries\PumpType;
 use App\Models\BigData\Dictionaries\RepairWorkType;
 use App\Models\BigData\Dictionaries\TechConditionOfWells;
-use App\Models\BigData\Dictionaries\Zone;
-use App\Models\BigData\Dictionaries\PumpType;
-use App\Models\BigData\Dictionaries\InjAgentType;
-use App\Models\BigData\Dictionaries\WellActivity;
 use App\Models\BigData\Dictionaries\TechStateType;
+use App\Models\BigData\Dictionaries\Well;
+use App\Models\BigData\Dictionaries\WellActivity;
 use App\Models\BigData\Dictionaries\WellCategory;
+use App\Models\BigData\Dictionaries\WellExplType;
 use App\Models\BigData\Dictionaries\WellStatus;
 use App\Models\BigData\Dictionaries\WellType;
-use App\Models\BigData\Dictionaries\WellExplType;
-use App\Models\BigData\Dictionaries\Well;
+use App\Models\BigData\Dictionaries\Zone;
 use App\TybeNom;
-use App\Models\BigData\Dictionaries\Device;
-use App\Models\BigData\Dictionaries\GeoIdentifier;
-use App\Models\BigData\Dictionaries\CoordSystem;
 use Carbon\Carbon;
 use Illuminate\Cache\Repository;
 use Illuminate\Support\Facades\DB;
@@ -149,10 +154,30 @@ class DictionaryService
             'class' => WellExplType::class,
             'name_field' => 'name_ru'
         ],
+        'perf_types' => [
+            'class' => PerfType::class,
+            'name_field' => 'name_ru'
+        ],
+        'perforator_types' => [
+            'class' => PerforatorType::class,
+            'name_field' => 'name_ru'
+        ],
+        'patron_types' => [
+            'class' => PatronType::class,
+            'name_field' => 'name_ru'
+        ],
+        'packer_types' => [
+            'class' => PackerType::class,
+            'name_field' => 'name_ru'
+        ],
+        'iso_material_types' => [
+            'class' => IsoMaterialType::class,
+            'name_field' => 'name_ru'
+        ],
         'wells' => [
             'class' => Well::class,
             'name_field' => 'uwi'
-        ]        
+        ]
     ];
 
     const TREE_DICTIONARIES = [
@@ -222,7 +247,6 @@ class DictionaryService
             ->orderBy($nameField, 'asc')
             ->get()
             ->toArray();
-
         return $this->generateTree($items);
     }
 
@@ -251,9 +275,9 @@ class DictionaryService
     {
         $items = DB::connection('tbd')
             ->table('tbdi.geo as g')
-            ->select('g.id', 'g.name as label', 'gp.id as parent_id')
+            ->select('g.id', 'g.name as label', 'gp.id as parent')
             ->distinct()
-            ->orderBy('parent_id', 'asc')
+            ->orderBy('parent', 'asc')
             ->orderBy('label', 'asc')
             ->leftJoin(
                 'tbdi.geo as gp',
