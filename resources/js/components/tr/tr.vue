@@ -1425,17 +1425,17 @@
               </thead>
               <tbody>
                 <tr v-for="(row, row_index) in wells" :key="row_index">
-                  <td v-if="!edit">{{ row_index + 1 }}</td>
+                  <td v-if="!edit" :class="{'activ': getClassTotal(row)}">{{ row_index + 1 }}</td>
                   <td v-if="edit">{{ row_index + 1 }}</td>
 
-                  <td v-if="!edit" >{{ row.field }}</td>
+                  <td v-if="!edit" :class="{'activ': getClassTotal(row)}">{{ row.field }}</td>
                   <td v-if="edit">{{ row.field }}</td>
 
-                  <td v-if="!edit" :class="{ active: isActive, no_active: !isActive }">{{ row.rus_wellname }}</td>
+                  <td v-if="!edit" :class="{'activ': getClassTotal(row)}">{{ row.rus_wellname }}</td>
                   <td v-if="edit">{{ row.rus_wellname }}</td>
                   <td
                     v-if="!edit"
-                    :class="{ active: isActive, no_active: !isActive }"
+                    :class="{'cell-with-comment': getClassWithComment(row_index,`well_type`), 'activ': getClassTotal(row)}"
                   >
                     <span
                       :class="{
@@ -1483,12 +1483,7 @@
 
                   <td
                     v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].horizon[1][0] !== '0',
-                    }"
+                    :class="{'cell-with-comment': getClassWithComment(row_index,`horizon`), 'activ': getClassTotal(row)}"
                   >
                     <span
                       :class="{
@@ -1534,17 +1529,12 @@
                     </span>
                   </td>
 
-                  <td v-if="!edit">{{ row.object }}</td>
+                  <td v-if="!edit" :class="{'activ': getClassTotal(row)}">{{ row.object }}</td>
                   <td v-if="edit">{{ row.object }}</td>
 
                   <td
                     v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].block[1][0] !== '0',
-                    }"
+                    :class="{'cell-with-comment': getClassWithComment(row_index,`block`), 'activ': getClassTotal(row)}"
                   >
                     <span
                       :class="{
@@ -1592,12 +1582,7 @@
 
                   <td
                     v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].r_con[1][0] !== '0',
-                    }"
+                    :class="{'cell-with-comment': getClassWithComment(row_index,`r_con`), 'activ': getClassTotal(row)}"
                   >
                     <span
                       :class="{
@@ -1653,12 +1638,7 @@
 
                   <td
                     v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].cas_OD[1][0] !== '0',
-                    }"
+                    :class="{'cell-with-comment': getClassWithComment(row_index,`cas_OD`), 'activ': getClassTotal(row)}"
                   >
                     <span
                       :class="{
@@ -1706,7 +1686,7 @@
                     </span>
                   </td>
 
-                  <td v-if="!edit">
+                  <td v-if="!edit" :class="{'activ': getClassTotal(row)}">
                     <span v-if="row.cas_ID != null">{{
                       Math.round(row.cas_ID * 10) / 10
                     }}</span>
@@ -1715,12 +1695,7 @@
 
                   <td
                     v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].tub_OD[1][0] !== '0',
-                    }"
+                    :class="{'cell-with-comment': getClassWithComment(row_index,`tub_OD`), 'activ': getClassTotal(row)}"
                   >
                     <span
                       :class="{
@@ -1768,7 +1743,7 @@
                     </span>
                   </td>
 
-                  <td v-if="!edit">
+                  <td v-if="!edit" :class="{'activ': getClassTotal(row)}">
                     <span v-if="row.tub_ID != null">{{
                       Math.round(row.tub_ID * 10) / 10
                     }}</span>
@@ -1777,12 +1752,7 @@
 
                   <td
                     v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].choke_d[1][0] !== '0',
-                    }"
+                    :class="{'cell-with-comment': getClassWithComment(row_index,`choke_d`), 'activ': getClassTotal(row)}"
                   >
                     <span
                       :class="{
@@ -1830,7 +1800,7 @@
                     </span>
                   </td>
 
-                  <td v-if="!edit">
+                  <td v-if="!edit" :class="{'activ': getClassTotal(row)}">
                     <span v-if="row.h_up_perf_md[0] != null">
                       {{ Math.round(row.h_up_perf_md[0] * 10) / 10 }}
                     </span>
@@ -1841,12 +1811,7 @@
 
                   <td
                     v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].h_up_perf_ext[1][0] !== '0',
-                    }"
+                    :class="{'cell-with-comment': getClassWithComment(row_index,`h_up_perf_ext`), 'activ': getClassTotal(row)}"
                   >
                     <span
                       :class="{
@@ -1898,12 +1863,7 @@
 
                   <td
                     v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].exp_meth[1][0] !== '0',
-                    }"
+                    :class="{'cell-with-comment': getClassWithComment(row_index,`exp_meth`), 'activ': getClassTotal(row)}"
                   >
                     <span
                       :class="{
@@ -1951,12 +1911,7 @@
 
                   <td
                     v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].pump_type[1][0] !== '0',
-                    }"
+                    :class="{'cell-with-comment': getClassWithComment(row_index,`pump_type`), 'activ': getClassTotal(row)}"
                   >
                     <span
                       :class="{
@@ -2002,17 +1957,12 @@
                     </span>
                   </td>
 
-                  <td v-if="!edit">{{ row.type_sr }}</td>
+                  <td v-if="!edit" :class="{'activ': getClassTotal(row)}">{{ row.type_sr }}</td>
                   <td v-if="edit">{{ row.type_sr }}</td>
 
                   <td
                     v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].spm[1][0] !== '0',
-                    }"
+                    :class="{'cell-with-comment': getClassWithComment(row_index,`spm`), 'activ': getClassTotal(row)}"
                   >
                     <span
                       :class="{
@@ -2062,12 +2012,7 @@
 
                   <td
                     v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].stroke_len[1][0] !== '0',
-                    }"
+                    :class="{'cell-with-comment': getClassWithComment(row_index,`stroke_len`), 'activ': getClassTotal(row)}"
                   >
                     <span
                       :class="{
@@ -2117,12 +2062,7 @@
 
                   <td
                     v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].q_theor[1][0] !== '0',
-                    }"
+                    :class="{'cell-with-comment': getClassWithComment(row_index,`q_theor`), 'activ': getClassTotal(row)}"
                   >
                     <span
                       :class="{
@@ -2174,12 +2114,7 @@
 
                   <td
                     v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].freq[1][0] !== '0',
-                    }"
+                    :class="{'cell-with-comment': getClassWithComment(row_index,`freq`), 'activ': getClassTotal(row)}"
                   >
                     <span
                       :class="{
@@ -2230,12 +2165,7 @@
 
                   <td
                     v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].h_pump_set[1][0] !== '0',
-                    }"
+                    :class="{'cell-with-comment': getClassWithComment(row_index,`h_pump_set`), 'activ': getClassTotal(row)}"
                   >
                     <span
                       :class="{
@@ -2290,12 +2220,7 @@
 
                   <td
                     v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].whp[1][0] !== '0',
-                    }"
+                    :class="{'cell-with-comment': getClassWithComment(row_index,`whp`), 'activ': getClassTotal(row)}"
                   >
                     <span
                       :class="{
@@ -2350,12 +2275,7 @@
 
                   <td
                     v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].line_p[1][0] !== '0',
-                    }"
+                    :class="{'cell-with-comment': getClassWithComment(row_index,`line_p`), 'activ': getClassTotal(row)}"
                   >
                     <span
                       :class="{
@@ -2410,12 +2330,7 @@
 
                   <td
                     v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].p_res[1][0] !== '0',
-                    }"
+                    :class="{'cell-with-comment': getClassWithComment(row_index,`p_res`), 'activ': getClassTotal(row)}"
                   >
                     <span
                       :class="{
@@ -2470,12 +2385,7 @@
 
                   <td
                     v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].h_dyn[1][0] !== '0',
-                    }"
+                    :class="{'cell-with-comment': getClassWithComment(row_index,`h_dyn`), 'activ': getClassTotal(row)}"
                   >
                     <span
                       :class="{
@@ -2530,12 +2440,7 @@
 
                   <td
                     v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].p_annular[1][0] !== '0',
-                    }"
+                    :class="{'cell-with-comment': getClassWithComment(row_index,`p_annular`), 'activ': getClassTotal(row)}"
                   >
                     <span
                       :class="{
@@ -2589,13 +2494,7 @@
                   </td>
 
                   <td
-                    v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].p_intake[1][0] !== '0',
-                    }"
+                    :class="{'cell-with-comment': getClassWithComment(row_index,`p_intake`), 'activ': getClassTotal(row)}"
                   >
                     <span
                       :class="{
@@ -2648,7 +2547,7 @@
                     </span>
                   </td>
 
-                  <td v-if="!edit">
+                  <td v-if="!edit" :class="{'activ': getClassTotal(row)}">
                     <span v-if="row.bhp_prev_m != null">{{
                       Math.round(row.bhp_prev_m * 10) / 10
                     }}</span>
@@ -2657,7 +2556,7 @@
                     {{ Math.round(row.bhp_prev_m * 10) / 10 }}
                   </td>
 
-                  <td v-if="!edit">
+                  <td v-if="!edit" :class="{'activ': getClassTotal(row)}">
                     <span v-if="row.q_l_prev_m != null">{{
                       Math.round(row.q_l_prev_m * 10) / 10
                     }}</span>
@@ -2666,7 +2565,7 @@
                     {{ Math.round(row.q_l_prev_m * 10) / 10 }}
                   </td>
 
-                  <td v-if="!edit">
+                  <td v-if="!edit" :class="{'activ': getClassTotal(row)}">
                     <span v-if="row.wct_prev_m != null">{{
                       Math.round(row.wct_prev_m * 10) / 10
                     }}</span>
@@ -2675,7 +2574,7 @@
                     {{ Math.round(row.wct_prev_m * 10) / 10 }}
                   </td>
 
-                  <td v-if="!edit">
+                  <td v-if="!edit" :class="{'activ': getClassTotal(row)}">
                     <span v-if="row.h_dyn_prev_m != null">{{
                       Math.round(row.h_dyn_prev_m * 10) / 10
                     }}</span>
@@ -2684,7 +2583,7 @@
                     {{ Math.round(row.h_dyn_prev_m * 10) / 10 }}
                   </td>
 
-                  <td v-if="!edit">
+                  <td v-if="!edit" :class="{'activ': getClassTotal(row)}">
                     <span v-if="row.pi_prev_m != null">{{
                       Math.round(row.pi_prev_m * 10) / 10
                     }}</span>
@@ -2693,12 +2592,7 @@
 
                   <td
                     v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].bhp[1][0] !== '0',
-                    }"
+                    :class="{'cell-with-comment': getClassWithComment(row_index,`bhp`), 'activ': getClassTotal(row)}"
                   >
                     <span
                       :class="{
@@ -2748,12 +2642,7 @@
 
                   <td
                     v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].q_o[1][0] !== '0',
-                    }"
+                    :class="{'cell-with-comment': getClassWithComment(row_index,`q_o`), 'activ': getClassTotal(row)}"
                   >
                     <span
                       :class="{
@@ -2803,12 +2692,7 @@
 
                   <td
                     v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].q_l[1][0] !== '0',
-                    }"
+                    :class="{'cell-with-comment': getClassWithComment(row_index,`q_l`), 'activ': getClassTotal(row)}"
                   >
                     <span
                       :class="{
@@ -2863,12 +2747,7 @@
 
                   <td
                     v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].wct[1][0] !== '0',
-                    }"
+                   :class="{'cell-with-comment': getClassWithComment(row_index,`wct`), 'activ': getClassTotal(row)}"
                   >
                     <span
                       :class="{
@@ -2923,12 +2802,7 @@
 
                   <td
                     v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].gor[1][0] !== '0',
-                    }"
+                    :class="{'cell-with-comment': getClassWithComment(row_index,`gor`), 'activ': getClassTotal(row)}"
                   >
                     <span
                       :class="{
@@ -7233,6 +7107,14 @@ table::-webkit-scrollbar-corner {
 
 .tr_icons_block {
     justify-content: right;
+}
+.activ {
+  /* border: dashed;
+  border-width: 2px 2px 2px 2px; */
+  /* border-style: solid solid solid solid; */
+  border-bottom: 2px solid rgb(211, 208, 208) !important;
+  border-top: 2px solid rgb(211, 208, 208) !important;
+  font-size: 11px !important;
 }
 </style>
 

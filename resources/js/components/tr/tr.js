@@ -751,6 +751,19 @@ export default {
       this.datepicker1 = !this.datepicker1
       this.datepicker2 = !this.datepicker2
     },
+    getClassWithComment (row_index, value) {
+      return this.wells &&
+          this.wells[row_index] &&
+          this.wells[row_index][value][1][0] !== '0';
+    },
+    getClassTotal (row) {
+      if (row.rus_wellname) {
+          return false
+      } else {
+          return true
+      }
+
+    },
 
     getColor(status) {
       if (status === "1") return "#ffff00";
