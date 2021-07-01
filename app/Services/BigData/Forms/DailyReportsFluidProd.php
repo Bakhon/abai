@@ -3,7 +3,7 @@
 namespace App\Services\BigData\Forms;
 use Carbon\Carbon;
 
-class DailyReportsOilSale extends DailyReports
+class DailyReportsFluidProd extends DailyReports
 {
 
     const CITS = 0;
