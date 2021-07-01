@@ -1109,7 +1109,6 @@ export default {
       this.isVisibleChart = true;
       let uri = this.url + this.field + "/" + wellnumber + "/";
       this.isLoading = true;
-      console.log(this.mech_sep)
       this.sep_meth = 'input_value';
 
       this.axios.get(uri).then((response) => {
