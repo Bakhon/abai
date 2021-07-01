@@ -304,10 +304,14 @@ class WellsController extends Controller
 
     private function krsWellWorkover(Well $well)
     {
-        return $well->wellWorkover()
-            ->where('repair_type', '=', '1')
-            ->orderBy('dbeg', 'desc')
-            ->first(['dbeg', 'dend']);
+        if (isset($well->wellWorkover()->where('repair_type', '=', '1')->first()->dend)) {
+            return $well->wellWorkover()
+                ->where('repair_type', '=', '1')
+                ->orderBy('dbeg', 'desc')
+                ->first(['dbeg', 'dend']);
+        } else {
+            return ['dend' => '', 'dbeg' => ''];
+        }
     }
 
     private function wellTreatment(Well $well)
