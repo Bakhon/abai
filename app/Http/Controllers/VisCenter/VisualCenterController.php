@@ -429,4 +429,9 @@ class VisualCenterController extends Controller
             ->get()
             ->toArray();
     }
+
+    public function dailyReport()
+    {
+        return view('visualcenter.dailyreport');
+    }
 }
