@@ -1233,21 +1233,16 @@
                   <td v-if="!edit">{{ row_index + 1 }}</td>
                   <td v-if="edit">{{ row_index + 1 }}</td>
 
-                  <td v-if="!edit">{{ row.field }}</td>
+                  <td v-if="!edit" >{{ row.field }}</td>
                   <td v-if="edit">{{ row.field }}</td>
 
-                  <td v-if="!edit">{{ row.rus_wellname }}</td>
+                  <td v-if="!edit" :class="{ active: isActive, no_active: !isActive }">{{ row.rus_wellname }}</td>
                   <td v-if="edit">{{ row.rus_wellname }}</td>
                   <!-- <td>{{row.well_type}}</td> -->
 
                   <td
                     v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].well_type[1][0] !== '0',
-                    }"
+                    :class="{ active: isActive, no_active: !isActive }"
                   >
                     <span
                       :class="{
@@ -6913,6 +6908,8 @@ export default {
       is_dynamic: false,
       permissionName: 'tr edit',
       isPermission: false,
+      isActive: true,
+      noActive: false,
     };
   },
   watch: {
@@ -7334,6 +7331,19 @@ export default {
         return console.log("error")
       }
     },
+    getStatusActiv (row_index, value) {
+      return this.wells &&
+          this.wells[row_index] &&
+          this.wells[row_index][value][1][0] !== '0';
+    },
+    getStatusNoActiv (row) {
+      if (row.rus_wellname) {
+        return false
+      } else {
+        return true
+      }
+      
+    },
 
     searchWell() {
       console.log("search = ", this.searchString);
@@ -7657,5 +7667,10 @@ table::-webkit-scrollbar-corner {
 }
 .select_mod.select_mod.select_mod.select_mod {
      background: #334296; 
+}
+.activ {
+  border-style: solid !important;
+  border-color: red;
+  background: white !important;
 }
 </style>
