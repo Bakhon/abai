@@ -1290,7 +1290,6 @@ export default {
           this.setData(data)
           this.nktExist("get")
           
-          
           if (data["error_len"] == "error_len") {
             this.$notify({
               message: this.trans('pgno.notify_no_sk_for_length'),
