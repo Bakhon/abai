@@ -1,9 +1,6 @@
 {
   "type": "table",
   "table_type": "wells",
-  "default_values": {
-    "metric.code": "FLR"
-  },
   "columns": [
     {
       "title": "id",
