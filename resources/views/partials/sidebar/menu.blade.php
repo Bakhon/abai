@@ -57,6 +57,13 @@
                                         {{ trans('monitoring.omgngdu_well.menu') }}
                                     </a>
                                 </li>
+                                @if(auth()->user()->can('monitoring list pipe-passport'))
+                                    <li class="left-menu-li">
+                                        <a href="{{route('pipe-passport.index')}}">
+                                            {{ trans('monitoring.pipe_passport.title') }}
+                                        </a>
+                                    </li>
+                                @endif
                             @endif
 
                         </ul>

@@ -107,8 +107,8 @@ class WellsController extends Controller
     private function status(Well $well)
     {
         $status = $well->status()
-            ->wherePivot('dend', '<>', $this->getToday())
-            ->wherePivot('dbeg', '<>', $this->getToday())
+            ->wherePivot('dend', '>', $this->getToday())
+            ->wherePivot('dbeg', '<=', $this->getToday())
             ->withPivot('dend', 'dbeg')
             ->orderBy('pivot_dbeg', 'desc')
             ->first(['name_ru']);
@@ -127,8 +127,8 @@ class WellsController extends Controller
     private function category(Well $well)
     {
         return $well->category()
-            ->wherePivot('dend', '<>', $this->getToday())
-            ->wherePivot('dbeg', '<>', $this->getToday())
+            ->wherePivot('dend', '>', $this->getToday())
+            ->wherePivot('dbeg', '<=', $this->getToday())
             ->withPivot('dend', 'dbeg')
             ->orderBy('pivot_dbeg')
             ->first(['name_ru']);
@@ -137,8 +137,8 @@ class WellsController extends Controller
     private function categoryLast(Well $well)
     {
         return $well->category()
-            ->wherePivot('dend', '<>', $this->getToday())
-            ->wherePivot('dbeg', '<>', $this->getToday())
+            ->wherePivot('dend', '>', $this->getToday())
+            ->wherePivot('dbeg', '<=', $this->getToday())
             ->withPivot('dend', 'dbeg')
             ->orderBy('pivot_dbeg', 'desc')
             ->first(['name_ru',]);
@@ -147,10 +147,8 @@ class WellsController extends Controller
     private function wellExpl(Well $well)
     {
         return $well->wellExpl()
-            ->where('dend', '<>', $this->getToday())
-            ->where('dbeg', '<>', $this->getToday())
             ->withPivot('dend as dend', 'dbeg as dbeg')
-            ->orderBy('dbeg', 'desc')
+            ->orderBy('dbeg')
             ->first(['name_ru', 'dend', 'dbeg']);
     }
 
