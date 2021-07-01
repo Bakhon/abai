@@ -1,0 +1,239 @@
+{
+  "type": "plain",
+  "table": "prod.well_perf",
+  "actions": [
+    {
+      "action": "create",
+      "title": "add_shot",
+      "form": "well_perf_shot",
+      "default_values": {
+        "perf_type": 1
+      }
+    },
+    {
+      "action": "create",
+      "title": "add_reperforation",
+      "form": "well_perf_shot",
+      "default_values": {
+        "perf_type": 3
+      }
+    },
+    {
+      "action": "create",
+      "title": "add_additional_reperforation",
+      "form": "well_perf_shot",
+      "default_values": {
+        "perf_type": 4
+      }
+    },
+    {
+      "action": "create",
+      "title": "add_openhole",
+      "form": "well_perf_shot",
+      "default_values": {
+        "perf_type": 5
+      }
+    },
+    {
+      "action": "create",
+      "title": "add_openhole",
+      "form": "well_perf_shot",
+      "default_values": {
+        "perf_type": 5
+      }
+    },
+    {
+      "action": "create",
+      "title": "add_slotted_reperforation",
+      "form": "well_perf_shot",
+      "default_values": {
+        "perf_type": 6
+      }
+    },
+    {
+      "action": "create",
+      "title": "add_drilling_out_packer",
+      "form": "well_perf_drill_packer",
+      "default_values": {
+        "perf_type": 13
+      }
+    },
+    {
+      "action": "create",
+      "title": "add_stab_reperforation",
+      "form": "well_perf_stab",
+      "default_values": {
+        "perf_type": 12
+      }
+    },
+    {
+      "action": "create",
+      "title": "add_bridge_plug",
+      "form": "well_perf_bridge_plug",
+      "default_values": {
+        "perf_type": 7
+      }
+    },
+    {
+      "action": "create",
+      "title": "add_cement_plug",
+      "form": "well_perf_other"
+    },
+    {
+      "action": "create",
+      "title": "add_mechanical_packer",
+      "form": "well_perf_other"
+    },
+    {
+      "action": "create",
+      "title": "add_pilot_packer",
+      "form": "well_perf_other"
+    },
+    {
+      "action": "create",
+      "title": "add_4_landing",
+      "form": "well_perf_other"
+    },
+    {
+      "action": "create",
+      "title": "add_lagging",
+      "form": "well_perf_other"
+    },
+    {
+      "action": "edit",
+      "title": "Отменить подключение к узлу",
+      "form": "well_tech_connect"
+    },
+    {
+      "action": "edit",
+      "title": "Отменить подключение к узлу",
+      "form": "well_tech_connect"
+    }
+  ],
+  "tabs": [
+    {
+      "title": "main",
+      "blocks": [
+        [
+          {
+            "title": "",
+            "items": [
+              {
+                "code": "perf_date",
+                "type": "date",
+                "title": "data",
+                "validation": ""
+              },
+              {
+                "code": "perf_type",
+                "type": "dict",
+                "dict": "perf_types",
+                "title": "perf_t",
+                "validation": "required|exists:tbd.dict.perf_type,id"
+              },
+              {
+                "code": "company",
+                "type": "dict",
+                "dict": "companies",
+                "title": "podr",
+                "validation": "required|exists:tbd.dict.company,id"
+              },
+              {
+                "code": "perforator_type",
+                "type": "dict",
+                "dict": "perforator_types",
+                "title": "perf_y",
+                "validation": "required|exists:tbd.dict.perforator_type,id"
+              },
+              {
+                "code": "patron_type",
+                "type": "dict",
+                "dict": "patron_types",
+                "title": "marka",
+                "validation": "required|exists:tbd.dict.patron_type,id"
+              },
+              {
+                "code": "hole_count",
+                "type": "numeric",
+                "title": "count",
+                "validation": "required|numeric"
+              },
+              {
+                "code": "hole_diameter",
+                "type": "numeric",
+                "title": "diame_c",
+                "validation": "required|numeric"
+              },
+              {
+                "code": "liquid",
+                "type": "numeric",
+                "title": "liquid",
+                "validation": "required|numeric"
+              },
+              {
+                "code": "bsw",
+                "type": "numeric",
+                "title": "bsw_p",
+                "validation": "required|numeric"
+              },
+              {
+                "code": "reservoir_count",
+                "type": "numeric",
+                "title": "reserv_c",
+                "validation": "required|numeric"
+              },
+              {
+                "code": "packer_type",
+                "type": "dict",
+                "dict": "packer_types",
+                "title": "packer_t",
+                "validation": "required|exists:tbd.dict.packer_type,id"
+              },
+              {
+                "code": "depth",
+                "type": "numeric",
+                "title": "depth",
+                "validation": "required|numeric"
+              },
+              {
+                "code": "iso_material_type",
+                "type": "dict",
+                "dict": "iso_material_types",
+                "title": "iso_mat_type",
+                "validation": "required|exists:tbd.dict.iso_material_type,id"
+              },
+              {
+                "code": "intervals",
+                "type": "numeric",
+                "title": "intervals",
+                "validation": "numeric"
+              },
+              {
+                "code": "top",
+                "table": "prod.well_perf_actual",
+                "type": "numeric",
+                "title": "interv_actual",
+                "validation": "numeric"
+              },
+              {
+                "code": "base",
+                "table": "prod.well_perf_actual",
+                "type": "numeric",
+                "title": "interv_actual",
+                "validation": "numeric"
+              },
+              {
+                "code": "well",
+                "table": "prod.well_status",
+                "type": "calc",
+                "formula": "$base$ - $top$",
+                "title": "well_e",
+                "validation": "required|numeric"
+              }
+            ]
+          }
+        ]
+      ]
+    }
+  ]
+}

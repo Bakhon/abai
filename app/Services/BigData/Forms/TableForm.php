@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Services\BigData\Forms;
 
+use App\Models\BigData\Dictionaries\Tech;
+use App\Models\BigData\Well;
 use App\Services\BigData\FieldLimitsService;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
@@ -304,5 +306,36 @@ abstract class TableForm extends BaseForm
             );
         }
         return $params;
+    }
+
+    protected function getWells(int $id, string $type, \stdClass $filter, array $params): Collection
+    {
+        $wellsQuery = Well::query()
+            ->with('techs', 'geo')
+            ->select('id', 'uwi')
+            ->orderBy('uwi')
+            ->active(Carbon::parse($filter->date));
+
+
+        if ($type === 'tech') {
+            $tech = Tech::find($id);
+            $wellsQuery->whereHas(
+                'techs',
+                function ($query) use ($tech, $filter) {
+                    return $query
+                        ->where('dict.tech.id', $tech->id)
+                        ->whereDate('dict.tech.dbeg', '<=', $filter->date)
+                        ->whereDate('dict.tech.dend', '>=', $filter->date);
+                }
+            );
+        } else {
+            $wellsQuery->where('id', $id);
+        }
+
+        if (isset($params['filter']['row_id'])) {
+            $wellsQuery->where('id', $params['filter']['row_id']);
+        }
+
+        return $wellsQuery->get();
     }
 }

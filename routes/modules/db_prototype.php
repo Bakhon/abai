@@ -78,6 +78,7 @@ Route::group(
                 );
 
                 Route::post('forms/{form}/calc-fields', 'Api\DB\FormsController@calcFields');
+                Route::post('forms/{form}/update-fields', 'Api\DB\FormsController@updateFields');
 
                 Route::get('forms/{form}/results', 'Api\DB\FormsController@getResults');
                 Route::delete('forms/{form}/{row}', 'Api\DB\FormsController@delete');
@@ -86,6 +87,7 @@ Route::group(
                 Route::get('wells/tree', 'Api\DB\WellsController@getStructureTree');
                 Route::get('wells/{well}', 'Api\DB\WellsController@get');
                 Route::get('wells/{well}/wellInfo', 'Api\DB\WellsController@wellInfo');
+
 
                 Route::get('tech/wells', 'Api\DB\TechController@getWellsById');
             }

@@ -1,26 +1,26 @@
 <template>
   <div class="d-flex align-items-center">
-    <Button color="primary" icon="moleqq" class="flex-grow-1 mr-3" align="center">
+    <LinkButton hasCheckActive href="/geology/gis" color="accent" icon="moleqq" class="flex-grow-1 mr-3" align="center">
       Корреляция ГИС
-    </Button>
-    <Button color="accent" icon="kern" class="flex-grow-1 mr-3" align="center">
+    </LinkButton>
+    <LinkButton hasCheckActive href="/geology/core" color="accent" icon="kern" class="flex-grow-1 mr-3" align="center">
       Керн
-    </Button>
-    <Button color="accent" icon="d3" class="flex-grow-1 mr-3" align="center">
+    </LinkButton>
+    <LinkButton color="accent" icon="d3" class="flex-grow-1 mr-3" align="center">
       2D - 3D
-    </Button>
-    <Button color="accent" icon="geoPh" class="flex-grow-1" align="center">
+    </LinkButton>
+    <LinkButton color="accent" icon="geoPh" class="flex-grow-1" align="center">
       Геофизика
-    </Button>
+    </LinkButton>
   </div>
 </template>
 
 <script>
-import Button from "./components/buttons/Button";
+import LinkButton from "./components/buttons/LinkButton";
 export default {
   name: "Geology-TSide",
   components: {
-    Button
+    LinkButton
   }
 }
 </script>

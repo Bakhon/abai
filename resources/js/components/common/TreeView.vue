@@ -68,11 +68,12 @@ export default {
     event: "nodeChange"
   },
   methods: {
-    showChildren: function () {
+    showChildren: async function() {
       this.isShowChildren = !this.isShowChildren;
       if (!this.isShowChildren) {
         return
       }
+      await this.handleClick(this)
       if (this.isNodeOnBottomLevelOfHierarchy(this.node)) {
         this.isLoading = true;
         this.getWells(this);

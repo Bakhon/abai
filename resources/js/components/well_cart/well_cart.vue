@@ -228,6 +228,8 @@ export default {
       isBothColumnFolded: false,
       popup: false,
       forms: forms,
+      wellGeo: {name_ru: null},
+      wellGeoFields: {name_ru: null},
       wellUwi: null,
       well: {
         id: null,
@@ -237,6 +239,7 @@ export default {
         'categoryLast': {'name_ru': null},
         'expl': {'dbeg': null, 'name_ru': null},
         'techs': null,
+        'tap': {'tap': null},
         'techsName': null,
         'labResearchValue': {'value_double': null},
         'wellType': {'name_ru': null},
@@ -268,6 +271,7 @@ export default {
         'gdisCurrentValueBhp': {'value_double': null, 'meas_date': null},
         'zone': {'name_ru': null},
       },
+      wellParent: null,
       tubeNomOd: null,
       wellTechs: null,
       wellTechsName: null,
@@ -286,6 +290,7 @@ export default {
         'categoryLast': 'category_last',
         'expl': 'well_expl',
         'techs': 'techs',
+        'tap': 'tap',
         'labResearchValue': 'lab_research_value',
         'wellType': 'well_type',
         'org': 'org',
@@ -353,6 +358,12 @@ export default {
         try {
           this.well.id = data.wellInfo.id
           this.wellUwi = data.wellInfo.uwi
+          if (data.geo[Object.keys(data.geo).length - 1] != null) {
+            this.wellGeoFields = data.geo[Object.keys(data.geo).length - 1]
+          }
+          if(data.geo[0] != null){
+            this.wellGeo = data.geo[0]
+          }
           for (let i = 0; i < Object.keys(this.wellTransform).length; i++) {
             this.setWellObjectData(Object.keys(this.wellTransform)[i], Object.values(this.wellTransform)[i], data)
           }
@@ -377,8 +388,8 @@ export default {
         } catch (e) {
           this.loading = false
         }
-        this.loading = false
         this.setTableData()
+        this.loading = false
       })
     },
     setTableData() {
@@ -451,7 +462,7 @@ export default {
           'data': ''
         },
         {
-          'description': this.well.geo.name_ru,
+          'description': this.wellGeoFields.name_ru,
           'method': null,
           'name': 'Месторождение',
           'data': ''
@@ -459,7 +470,7 @@ export default {
         {
           'description': '',
           'method': 'neighbors',
-          'neigbor_1': this.well.geo.name_ru,
+          'neigbor_1': this.wellGeo.name_ru,
           'neigbor_2': this.well.labResearchValue.value_double,
           'name': 'Горизонт / Pнас, атм',
           'data': ''
@@ -477,7 +488,7 @@ export default {
           'data': ''
         },
         {
-          'description': this.wellTechsTap,
+          'description': this.well.tap.tap,
           'method': null,
           'name': 'Отвод',
           'data': ''
@@ -1839,7 +1850,8 @@ h4 {
     & ~ .mid-col {
       min-width: calc(100% - #{$leftColumnFoldedWidth} - #{$rightColumnWidth} - 9px);
     }
-    .scrollable{
+
+    .scrollable {
       height: 100%;
     }
 

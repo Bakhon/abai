@@ -7,9 +7,9 @@
     @include('partials.sidebar.gno_menu')
 @endsection
 @section('content')
-    <div class="geology">
+    <div class="geology ">
         <div class="preloader" v-cloak></div>
-        <div class="layout" v-cloak>
+        <div class="layout gis" v-cloak>
             <div class="layout__t-side">
                 <Geology-T-Side />
             </div>

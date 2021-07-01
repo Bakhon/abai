@@ -70,7 +70,8 @@ export default {
       });
 
     },
-    async nodeClick(node) {
+    nodeClick(child) {
+      let node = child.node
       this.$parent.currentStructureId = node.structureId
       this.$parent.setCurrentStructureId(node.structureId)
       this.isLoading = true
@@ -85,11 +86,10 @@ export default {
         }
       }).then((response) => {
         if (response.data) {
-          return response.data
+          node.children = response.data
         } else {
           console.log("No data");
         }
-        this.isLoading = false;
       }).finally(() => {
         this.isLoading = false;
       })
@@ -122,7 +122,6 @@ export default {
         } else {
           console.log("No data");
         }
-        child.isLoading = false;
       }).finally(() => {
         child.isLoading = false;
       })
