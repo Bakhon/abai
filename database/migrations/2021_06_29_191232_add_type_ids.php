@@ -26,7 +26,7 @@ class AddTypeIds extends Migration
     public function down()
     {
         Schema::table('rep_tt', function (Blueprint $table) {
-            //
+            $table->dropColumn('type_id');
         });
     }
 }
