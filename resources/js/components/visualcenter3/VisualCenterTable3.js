@@ -86,7 +86,23 @@ export default {
             productionPercentParams: {
                 gas_fact: 0
             },
-            millisecondsInOneDay: 1000*60*60*24
+            millisecondsInOneDay: 1000*60*60*24,
+            companyTemplate: {
+                "opec": null,
+                "impulses": null,
+                "landing": null,
+                "restrictions": null,
+                "otheraccidents": null,
+                "dzoMonth": null,
+                "planMonth": 0,
+                "factMonth": 0,
+                "periodPlan": 0,
+                "opekPlan": 0
+            },
+            companies: ['ОМГ','ММГ','ЭМГ','КБМ',
+                'КГМ','КТМ','КОА','УО','ТШО','НКО',
+                'КПО','ПКИ','ПКК','ТП','АГ'
+            ]
         };
     },
     methods: {
@@ -229,30 +245,25 @@ export default {
         },
 
         getFilledByAllCompanies(input) {
-            let companyTemplate = {
-                "opec": null,
-                "impulses": null,
-                "landing": null,
-                "restrictions": null,
-                "otheraccidents": null,
-                "dzoMonth": null,
-                "planMonth": 0,
-                "factMonth": 0,
-                "periodPlan": 0,
-                "opekPlan": 0
-            };
-            let actualCompanies = _.map(input, 'dzoMonth');
-            let expectedCompanies = ['ОМГ','ММГ','ЭМГ','КБМ',
-                'КГМ','КТМ','КОА','УО','ТШО','НКО','КПО','ПКИ',
-                'ПКК','ТП','АГ'];
-            let difference = _.differenceWith(expectedCompanies, actualCompanies, _.isEqual);
-            for (let i in difference) {
-                if (difference[i] !== 'АГ') {
-                    companyTemplate.dzoMonth = difference[i];
-                    input.push(companyTemplate);
-                }
+            let missingCompanies = this.getMissingCompanies(input);
+            if (missingCompanies.length > 0) {
+                input.concat(missingCompanies);
             }
             return input;
+        },
+
+        getMissingCompanies(input) {
+            let template = _.cloneDeep(this.companyTemplate);
+            let actualCompanies = _.map(input, 'dzoMonth');
+            let missingCompanies = [];
+            let difference = _.differenceWith(this.companies, actualCompanies, _.isEqual);
+            for (let i in difference) {
+                if (difference[i] !== 'АГ') {
+                    template.dzoMonth = difference[i];
+                    missingCompanies.push(template);
+                }
+            }
+            return missingCompanies;
         },
 
         getElementIndexesByCompany(productionData,companyName,fieldName) {
