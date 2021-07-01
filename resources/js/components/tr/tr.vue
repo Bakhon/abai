@@ -425,10 +425,10 @@
               </button>
                 
 
-              <a
+              <button
                 v-if="edit"
                 v-bind:title="trans('tr.save')"
-                style="margin-left: 10px; cursor: pointer;"
+                class="icon_save"
                 @click="savetable()"
                 ><svg
                   width="24"
@@ -465,7 +465,7 @@
                     stroke-linejoin="round"
                   />
                 </svg>
-              </a>
+              </button>
 
               <a
                 v-if="edit"
@@ -7238,6 +7238,12 @@ table::-webkit-scrollbar-corner {
 
 .tr_icons_block {
     justify-content: right;
+}
+.icon_save {
+  margin-left: 10px; 
+  cursor: pointer;
+  background: #272953;
+  border: none;
 }
 </style>
 
