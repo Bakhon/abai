@@ -78,42 +78,18 @@ export default {
   }
 }
 </script>
-<style scoped lang="scss">
-.rating-tabs {
-  display: flex;
-  align-items: center;
-  justify-content: space-evenly;
-  margin-bottom: 10px;
+<style lang="scss">
+.expand-enter-active, .expand-leave-active {
+  -webkit-transition: height 0.3s ease-in-out, margin 0.3s ease-in-out, padding 0.3s ease-in-out;
+  transition: height 0.3s ease-in-out, margin 0.3s ease-in-out, padding 0.3s ease-in-out;
+  overflow: hidden;
 }
 
-.rating-tabs__item {
-  background-color: #333975;
-  color: #fff;
-  padding: 13px 20px;
-  width: 100%;
-  margin-right: 10px;
-  border-radius: 4px;
-  display: flex;
-  align-items: center;
-
-  &:last-child {
-    margin-right: 0;
-  }
-
-  &:hover, &:focus {
-    cursor: pointer;
-  }
-
-  &.is-active {
-    background-color: #2E50E9;
-  }
-
-  img {
-    margin-right: 10px;
-  }
-
-  span {
-    font-size: 16px;
-  }
+.expand-enter, .expand-leave-to {
+  height: 0;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important
 }
 </style>
