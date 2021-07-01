@@ -3,13 +3,13 @@
 namespace App\Services\BigData\Forms;
 use Carbon\Carbon;
 
-class DailyReportsOilProduction extends DailyReports
+class DailyReportsOilSale extends DailyReports
 {
 
     const CITS = 0;
     const GS = 1;
     const ALL = 2;
-    protected $metricCode = 'OIL';
+    protected $metricCode = 'OILSL';
     protected $configurationFileName = 'daily_reports_oil_prod';
 
     protected function saveSingleFieldInDB(string $field, int $wellId, Carbon $date, $value): void
