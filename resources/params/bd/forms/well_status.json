@@ -20,7 +20,7 @@
                 "code": "dbeg",
                 "type": "datetime",
                 "title": "date",
-                "validation": "required|date",
+                "validation": "required|date|after:dend",
                 "callbacks": {
                   "fillCalculatedFields": ""
                 }
