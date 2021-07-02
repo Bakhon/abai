@@ -307,9 +307,8 @@ class WellsController extends Controller
         $wellWorkover = $well->wellWorkover()->where('repair_type', '=', '1')->orderBy('dbeg', 'desc')->first(['dbeg', 'dend']);
         if (isset($wellWorkover)) {
             return $wellWorkover;
-        } else {
-            return ['dend' => '', 'dbeg' => ''];
         }
+        return ['dend' => '', 'dbeg' => ''];
     }
 
     private function wellTreatment(Well $well)
