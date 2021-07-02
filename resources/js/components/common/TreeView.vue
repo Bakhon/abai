@@ -8,7 +8,7 @@
               <label class="container">
                 <span class="bottom-border"></span>
                 <input type="checkbox" :id="node.id" name="tech_structure" value="tech_structure"
-                       class="dropdown-item" v-on:change="onCheckboxClick(node, level)">
+                       class="dropdown-item" @change="onCheckboxClick(node, level)">
                 <span class="checkmark"></span>
               </label>
             </form>

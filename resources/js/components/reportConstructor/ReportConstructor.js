@@ -141,7 +141,7 @@ export default {
             this.loadAttributesForSelectedObject();
         },
         getAttributeDescription(descriptionField) {
-            if (!(this.isActualAttribute(descriptionField))) {
+            if (!this.isActualAttribute(descriptionField)) {
                 return descriptionField
             }
             let fieldParts = descriptionField.split(".")
@@ -304,9 +304,7 @@ export default {
                 }
             ).then((response) => {
                 if (response.data) {
-                    let content = response.headers['content-type']
-                    console.log(response)
-                    download(response.data, "Отчет.xlsx", content)
+                    download(response.data, "Отчет.xlsx", response.headers['content-type'])
                 }
             }).catch((error) => console.log(error)
             ).finally(() => this.$store.commit('globalloading/SET_LOADING', false));
