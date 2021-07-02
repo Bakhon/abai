@@ -78,18 +78,6 @@ export default {
   }
 }
 </script>
-<style lang="scss">
-.expand-enter-active, .expand-leave-active {
-  -webkit-transition: height 0.3s ease-in-out, margin 0.3s ease-in-out, padding 0.3s ease-in-out;
-  transition: height 0.3s ease-in-out, margin 0.3s ease-in-out, padding 0.3s ease-in-out;
-  overflow: hidden;
-}
+<style lang="scss" scoped>
 
-.expand-enter, .expand-leave-to {
-  height: 0;
-  margin-top: 0 !important;
-  margin-bottom: 0 !important;
-  padding-top: 0 !important;
-  padding-bottom: 0 !important
-}
 </style>
