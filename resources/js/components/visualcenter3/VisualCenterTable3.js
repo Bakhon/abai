@@ -66,8 +66,11 @@ export default {
                 "ЭМГ" : {
                     id: 113
                 },
+                "АГ" : {
+                    id: 113
+                },
             },
-            isOneDzoCompanyEnter:'',
+            isOneDzoSelected:'',
             accidentTotal: '',
             noData: '',
             personalFact: '',
@@ -815,27 +818,14 @@ export default {
         this.getAccidentTotal();
         this.mainMenuButtonElementOptions = _.cloneDeep(mainMenuConfiguration);
         this.getDzoYearlyPlan();
-        this.selectedDzoCompanies = this.getAllDzoCompanies();
-        let oneDzoNameSelected=this.getDzoTicker(); 
+        this.selectedDzoCompanies = this.getAllDzoCompanies();   
+        let oneDzoNameSelected = this.getDzoTicker();      
         if   (oneDzoNameSelected!=''){
-        this.isOneDzoCompanyEnter=true;
-        this.productionFondSelectedCompany = oneDzoNameSelected;
-        this.chemistrySelectedCompany = oneDzoNameSelected;
-        this.wellsWorkoverSelectedCompany = oneDzoNameSelected;
-        this.drillingSelectedCompany = oneDzoNameSelected;
-        this.productionFondSelectedCompany = oneDzoNameSelected;
-        this.injectionFondSelectedCompany = oneDzoNameSelected;
-        this.selectedDzoCompanies = [oneDzoNameSelected];
-        }
-        this.updateChemistryWidget();
-        this.updateWellsWorkoverWidget();
-        this.updateDrillingWidget();
-        this.updateProductionFondWidget();
-        this.updateInjectionFondWidget();
-     
-    },
+        this.assignOneCompanyToSelectedDzo(oneDzoNameSelected);
+        };        
+    },   
     watch: {
-        bigTable: function () {           
+        bigTable: function () {         
             this.dzoCompanySummary = this.bigTable;
             if (this.oilCondensateProductionButton.length > 0) {
                 let yesterdayPeriodStart = moment(new Date(this.timestampToday)).subtract(this.quantityRange, 'days').valueOf();
@@ -849,7 +839,7 @@ export default {
         tables: function() {
             this.dzoCompanySummary = this.tables;
             this.calculateDzoCompaniesSummary();
-        },
+        },     
         dzoCompaniesSummaryForChart: function () {
             if (this.isFilterTargetPlanActive) {
                 let self = this;

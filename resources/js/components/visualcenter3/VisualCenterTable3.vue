@@ -1599,12 +1599,8 @@
                   <div class="col">
                     <select
                             class="side-blocks__dzo-companies-dropdown w-100"
-                            @change="changeSelectedInjectionFondCompanies($event)"
-                    >
-                      <option v-if="isOneDzoCompanyEnter">                      
-                        {{ getNameDzoFull(selectedDzoCompanies[0]) }}                     
-                      </option>
-                      <option v-else v-for="dzo in dzoMenu.injectionFond" :value="dzo.ticker">
+                            @change="changeSelectedInjectionFondCompanies($event)">                     
+                      <option v-for="dzo in dzoMenu.injectionFond" :value="dzo.ticker">
                         {{dzo.name}}
                       </option>
                     </select>
@@ -1757,12 +1753,8 @@
                   <div class="col pr-2">
                     <select
                             class="side-blocks__dzo-companies-dropdown w-100"
-                            @change="changeSelectedProductionFondCompanies($event)"
-                    >
-                      <option v-if="isOneDzoCompanyEnter">                      
-                        {{ getNameDzoFull(selectedDzoCompanies[0]) }}                     
-                      </option>
-                      <option v-else v-for="dzo in dzoMenu.productionFond" :value="dzo.ticker">
+                            @change="changeSelectedProductionFondCompanies($event)"> 
+                      <option v-for="dzo in dzoMenu.productionFond" :value="dzo.ticker">
                         {{dzo.name}}
                       </option>
                     </select>
@@ -1917,12 +1909,8 @@
                   <div class="col">
                     <select
                             class="side-blocks__dzo-companies-dropdown w-100"
-                            @change="changeSelectedDrillingCompanies($event)"
-                    >
-                      <option v-if="isOneDzoCompanyEnter">                      
-                        {{ getNameDzoFull(selectedDzoCompanies[0]) }}                     
-                      </option>
-                      <option v-else v-for="dzo in dzoMenu.drilling" :value="dzo.ticker">
+                            @change="changeSelectedDrillingCompanies($event)"> 
+                      <option v-for="dzo in dzoMenu.drilling" :value="dzo.ticker">
                         {{dzo.name}}
                       </option>
                     </select>
@@ -2067,12 +2055,8 @@
                   <div class="col">
                     <select
                             class="side-blocks__dzo-companies-dropdown w-100"
-                            @change="changeSelectedWellsWorkoverCompanies($event)"
-                    >
-                      <option v-if="isOneDzoCompanyEnter">                      
-                        {{ getNameDzoFull(selectedDzoCompanies[0]) }}                     
-                      </option>
-                      <option v-else v-for="dzo in dzoMenu.wellsWorkover" :value="dzo.ticker">
+                            @change="changeSelectedWellsWorkoverCompanies($event)">
+                      <option v-for="dzo in dzoMenu.wellsWorkover" :value="dzo.ticker">
                         {{dzo.name}}
                       </option>
                     </select>
@@ -2216,12 +2200,8 @@
                   <div class="col pr-2">
                     <select
                             class="side-blocks__dzo-companies-dropdown w-100"
-                            @change="changeSelectedChemistryCompanies($event)"
-                    >
-                      <option v-if="isOneDzoCompanyEnter">                      
-                        {{ getNameDzoFull(selectedDzoCompanies[0]) }}                     
-                      </option>
-                      <option v-else v-for="dzo in dzoMenu.chemistry" :value="dzo.ticker">
+                            @change="changeSelectedChemistryCompanies($event)">
+                      <option v-for="dzo in dzoMenu.chemistry" :value="dzo.ticker">
                         {{dzo.name}}
                       </option>
                     </select>
