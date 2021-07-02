@@ -825,7 +825,7 @@ export default {
         };        
     },   
     watch: {
-        bigTable: function () {         
+        bigTable: function () {
             this.dzoCompanySummary = this.bigTable;
             if (this.oilCondensateProductionButton.length > 0) {
                 let yesterdayPeriodStart = moment(new Date(this.timestampToday)).subtract(this.quantityRange, 'days').valueOf();
@@ -839,7 +839,7 @@ export default {
         tables: function() {
             this.dzoCompanySummary = this.tables;
             this.calculateDzoCompaniesSummary();
-        },     
+        },
         dzoCompaniesSummaryForChart: function () {
             if (this.isFilterTargetPlanActive) {
                 let self = this;
