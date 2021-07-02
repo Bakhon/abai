@@ -12,7 +12,13 @@
                         @yield('module_icon')
                     </div>
                     <div class="module-block__title">
-                        Модуль "@yield('module_title')"
+                        @hasSection('module_home_url')
+                            <a href="@yield('module_home_url')" class="text-white">
+                                {{ trans('app.module_title') }} "@yield('module_title')"
+                            </a>
+                        @else
+                            {{ trans('app.module_title') }} "@yield('module_title')"
+                        @endif
                     </div>
                 @endif
             @endif
@@ -31,7 +37,13 @@
                         @yield('module_icon')
                     </div>
                     <div class="module-block__title">
-                        Модуль "@yield('module_title')"
+                        @hasSection('module_home_url')
+                            <a href="@yield('module_home_url')" class="text-white">
+                                {{ trans('app.module_title') }} "@yield('module_title')"
+                            </a>
+                        @else
+                            {{ trans('app.module_title') }} "@yield('module_title')"
+                        @endif
                     </div>
                 @endif
             @endif

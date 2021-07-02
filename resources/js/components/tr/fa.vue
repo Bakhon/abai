@@ -1565,7 +1565,7 @@ body {
 .table tr:nth-child(-n + 4) td {
   position: sticky;
   background: rgb(51, 57, 117);
-  top: 75px;
+  top: 62px;
   z-index: 3000;
 }
 .table tr:first-child td {

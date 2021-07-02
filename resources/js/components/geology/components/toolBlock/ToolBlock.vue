@@ -27,13 +27,15 @@ export default {
   name: "ToolBlock",
   props: {
     title: [String, Number]
-  },
+  }
 }
 </script>
 
 <style scoped lang="scss">
 .tool-block {
   border: 1px solid var(--a-accent-300);
+  background: var(--a-accent-darken-200);
+
   &__header {
     border-bottom: 1px solid var(--a-accent-300);
     background: var(--a-accent-darken-100);
@@ -56,9 +58,7 @@ export default {
   &__body {
     display: flex;
     width: 100%;
-
     &__content {
-      background: var(--a-accent-darken-200);
       overflow-y: auto;
       width: 100%;
     }
