@@ -13,78 +13,63 @@ class MainController extends Controller
     public $companyId = 7;
     public $dateTo = null;
     public $dateFrom = null;
-    public $parentId = [
-        'B71000000000' => 0,
-        'B60102990097' => 0,
-        'B70101990097' => 0,
-        'B72000000000' => 0,
-        'B73000000000' => 0,
-        'B74000000000' => 0,
-        'B91110301000' => 0,
-        'B77000000000' => 0,
-        'BZF402010000' => 0,
-        'B77001010000' => 0,
-        'B77001020000' => 0,
-        'B77001030000' => 0,
-        'B77001040000' => 0,
-        'B61001000000' => 0,
-        'B61012000000' => 0,
-        'B61099450000' => 0,
-        'B61099460000' => 0,
-        'B61099470000' => 0,
-        'B61099990000' => 0,
-        'B61099990097' => 0,
-        'B61099480000' => 0,
-        'B61099490000' => 0,
-        'B77002000000' => 0,
-        'B77001000000' => 0,
+    public $opiuIds = [
+        'B71000000000',
+        'B60102990097',
+        'B70101990097',
+        'B72000000000',
+        'B73000000000',
+        'B74000000000',
+        'B91110301000',
+        'B77000000000',
+        'BZF402010000',
+        'B77001010000',
+        'B77001020000',
+        'B77001030000',
+        'B77001040000',
+        'B61001000000',
+        'B61012000000',
+        'B61099450000',
+        'B61099460000',
+        'B61099470000',
+        'B61099990000',
+        'B61099990097',
+        'B61099480000',
+        'B61099490000',
+        'B77002000000',
+        'B77001000000'
     ];
-    public $sum = [
-        'B71000000000' => 0,
-        'B60102990097' => 0,
-        'B70101990097' => 0,
-        'B72000000000' => 0,
-        'B73000000000' => 0,
-        'B74000000000' => 0,
-        'B91110301000' => 0,
-        'B77000000000' => 0,
-        'BZF402010000' => 0,
-        'B77001010000' => 0,
-        'B77001020000' => 0,
-        'B77001030000' => 0,
-        'B77001040000' => 0,
-        'B61001000000' => 0,
-        'B61012000000' => 0,
-        'B61099450000' => 0,
-        'B61099460000' => 0,
-        'B61099470000' => 0,
-        'B61099990000' => 0,
-        'B61099990097' => 0,
-        'B61099480000' => 0,
-        'B61099490000' => 0,
-        'B77002000000' => 0,
-        'B77001000000' => 0,
-    ];
+    public $parentId = [];
+    public $sum = [];
+    public $handbookKeys = ['plan_value', 'fact_value', 'intermediate_plan_value', 'intermediate_fact_value'];
+    public $sumByNum;
+
+    public function __construct()
+    {
+
+    }
 
     public function company(Request $request)
     {
         $currentYear = date('Y', strtotime('-1 year'));
-        $previousYear = (float) $currentYear - 1;
+        $previousYear = (float)$currentYear - 1;
+        $this->sum = array_fill_keys($this->opiuIds, 0);
+        $this->parentId = array_fill_keys($this->opiuIds, []);
         $this->dateFrom = date('Y-m-d', strtotime('first day of january previous year'));
         $this->dateTo = date('Y-m-d', strtotime('last day of december previous year'));
-        if($request->company) {
+        if ($request->company) {
             $this->companyId = $request->company;
         }
-        if($request->monthsValue && $request->monthsValue != '00' ) {
+        if ($request->monthsValue && $request->monthsValue != '00') {
             $this->dateFrom = date('Y-m-d', mktime(0, 0, 0, $request->monthsValue, 1, $currentYear));
             $this->dateTo = date("Y-m-d", strtotime($this->dateFrom . " +1 months"));
         }
-        if($request->differenceBetweenMonths && $request->differenceBetweenMonths != '01') {
+        if ($request->differenceBetweenMonths && $request->differenceBetweenMonths != '01') {
             $this->dateFrom = date('Y-m-d', strtotime('first day of january previous year'));
             $this->dateTo = date('Y-m-d', mktime(0, 0, 0, $request->differenceBetweenMonths, 1, $currentYear));
         }
-        if($request->quarterValue && $request->quarterValue != '01') {
-            $this->dateTo  = date('Y-m-t', mktime(0, 0, 0, $request->quarterValue, 1, $currentYear));
+        if ($request->quarterValue && $request->quarterValue != '01') {
+            $this->dateTo = date('Y-m-t', mktime(0, 0, 0, $request->quarterValue, 1, $currentYear));
             $this->dateFrom = date('Y-m-01', strtotime($this->dateTo . '-2 months'));
         }
         $handbook = HandbookRepTt::where('parent_id', 0)->with('childHandbookItems')->get()->toArray();
@@ -107,8 +92,8 @@ class MainController extends Controller
     {
         $companyValuesRepTtIds = array_column($companyRepTtValues, 'rep_id');
         foreach ($items as $repttIndex => $reptt) {
-            $handbookKeys = ['plan_value', 'fact_value', 'intermediate_plan_value', 'intermediate_fact_value'];
-            foreach ($handbookKeys as $key) {
+            $this->handbookKeys = ['plan_value', 'fact_value', 'intermediate_plan_value', 'intermediate_fact_value'];
+            foreach ($this->handbookKeys as $key) {
                 $this->setItemsDefaultValue($key, $items[$repttIndex], $currentYear, $previousYear);
             }
             if (count($reptt['handbook_items']) > 0) {
@@ -171,9 +156,8 @@ class MainController extends Controller
 
     public function setNetProfitValues(array &$items, int $currentYear, int $previousYear): array
     {
-        $handbookKeys = ['plan_value', 'fact_value', 'intermediate_plan_value', 'intermediate_fact_value'];
         foreach ($items as &$item) {
-            foreach ($handbookKeys as $handbookKey) {
+            foreach ($this->handbookKeys as $handbookKey) {
                 foreach ([$currentYear, $previousYear] as $year) {
                     if ($item['num'] == 'B91000000000') {
                         $item[$handbookKey][$year] =
@@ -229,20 +213,20 @@ class MainController extends Controller
         return $items;
     }
 
-    public function getSumValuesByNum(array $items, string $type, int $year, string $num)
+    public function getSumValuesByNum(array $items, string $type, int $year, string $num): int
     {
         foreach ($items as $item) {
             if ($item['handbook_items']) {
-                return $this->getSumValuesByNum($item['handbook_items'], $type, $year, $num);
+                $this->getSumValuesByNum($item['handbook_items'], $type, $year, $num);
             }
             if ($item['num'] == $num) {
-                return $item[$type][$year];
+                $this->sumByNum = (int)$item[$type][$year];
             }
         }
-
+        return $this->sumByNum;
     }
 
-    public function getSumValuesByParentId(array $items,string $type, int $year, string $num)
+    public function getSumValuesByParentId(array $items, string $type, int $year, string $num): int
     {
         if (!$this->parentId[$num]) {
             $this->parentId[$num] = HandbookRepTt::select('id')->where('num', $num)->first()['id'];
@@ -253,7 +237,7 @@ class MainController extends Controller
                     $this->getSumValuesByParentId($item['handbook_items'], $type, $year, $num);
                 }
                 if ($item['parent_id'] == $this->parentId[$num]) {
-                    $this->sum[$num] -= (float)$item[$type][$year];
+                    $this->sum[$num] -= (int)$item[$type][$year];
                 }
             }
         }
