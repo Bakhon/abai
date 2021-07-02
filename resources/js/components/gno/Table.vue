@@ -424,7 +424,7 @@
                 </div>
               </modal>
 
-               <modal class="modal-bign-wrapper" name="modalTabs" :draggable="true" :width="1000" :height="830"
+               <modal class="modal-bign-wrapper" name="modalTabs" :draggable="true" :width="925" :height="830"
                 style="background: transparent;" :adaptive="true">
                 <div class="modal-bign modal-bign-container">
                   <div class="modal-bign-header">

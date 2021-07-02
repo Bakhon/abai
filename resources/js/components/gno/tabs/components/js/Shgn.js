@@ -19,6 +19,46 @@ export default {
 			spmMax: 8,
 			kpodMin: 0.6,
 			isModal: false,
+			diameterShgn: 1,
+			diametersShgn: [
+				{
+					id: 1,
+					value: 27
+				},
+				{
+					id: 2,
+					value: 32
+				},
+				{
+					id: 3,
+					value: 38
+				},
+				{
+					id: 4,
+					value: 44
+				},
+				{
+					id: 5,
+					value: 50
+				},
+				{
+					id: 6,
+					value: 57
+				},
+				{
+					id: 7,
+					value: 60
+				},
+				{
+					id: 6,
+					value: 70
+				},
+				{
+					id: 6,
+					value: 95
+				},
+
+			],
 			pumpCheckboxes: [
 				{
 					id: 1,

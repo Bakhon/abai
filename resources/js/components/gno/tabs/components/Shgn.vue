@@ -27,10 +27,65 @@
 
 		<div class="flex__item__block__1">
 			<div class="title__block">{{trans('pgno.kpod')}}</div>
-				<div class="title__block__min__1">
-					<span>{{trans('pgno.minimum')}}</span>
-					<input v-model="kpodMin" @change="onChangeKpod"  class="square2 block__1__input" type="text">
+			<div class="title__block__max">
+
+						<div class="title__block__pump__1">
+							<input class="checkbox__block__1" v-model="dmPumps" value="27" type="checkbox"/>
+							<label class="checkbox__block__label__1">27</label>
+						</div>
+
+						<div style="display: flex; width: 300px; height: 30px;">
+							
+							<div class="title__block__pump__1">
+								<div>
+									<input class="checkbox__block__1" v-model="dmPumps" value="32" type="checkbox"/>
+									<label class="checkbox__block__label__1">32</label>
+								</div>
+							</div>
+							<div style="display: flex; font-size: 11px;">
+								<div class="kpod-input-text">
+									Длина хода
+								</div>
+								<div class="kpod-input-text">
+									Число качаний
+								</div>
+								<div class="kpod-input-text">
+									Qж
+								</div>
+									
+							</div>
+								
+						</div>
+
+
+						<div class="title__block__pump__1__flex">
+					
+								
+						
+							<select class="input-box-gno podbor-kpod-select-block" v-model="diameterShgn">
+                 				<option selected v-for="dm in diametersShgn" :key="dm.value" :value="dm.id">
+                  				{{dm.value}}
+                  				</option>
+                			</select>
+							<input type="text" class="input-box-gno podbor-kpod-block">
+							<input type="text" class="input-box-gno podbor-kpod-block">
+							<input type="text" class="input-box-gno podbor-kpod-block">
+							
+						</div>
+
+						
+
+					</div>
+				<!-- <div class="title__block__min__1">
+					<input value="1" @change="onChangeStupColumns" class="checkbox__block__1" v-model="stupColumns" name="stup" type="radio" />
+					<span>Расчет мин. значения</span>
+					<input v-model="kpodMin" @change="onChangeKpod"  class="square2 block__1__input small-input-box" type="text">
 				</div>
+				<div class="title__block__max__1">
+					<input value="1" @change="onChangeStupColumns" class="checkbox__block__1" v-model="stupColumns" name="stup" type="radio" />
+					<span>Использовать значение</span>
+					<input v-model="strokeLenMax" @change="onChangeLenMax"  class="square2 block__2__input small-input-box" type="text">
+				</div> -->
 			</div>
 
 		<div class="flex__item__block__1">
@@ -95,7 +150,7 @@
 					</div>
 
 				
-		</div>
+				</div>
 
 		<div class="flex__item__block__1">
 
@@ -246,7 +301,7 @@
 					</svg>
 				</div>
 				<div class="title__block__pump">
-					<select class="input-box-gno podbor long__box" v-model="markShtang">
+				<select class="input-box-gno podbor long__box" v-model="markShtang">
                   <option selected v-for="markShtang in markShtangs" :key="markShtang.tempValue" :value="markShtang.mValue">
                   {{markShtang.tempValue}}
                   </option>
@@ -689,6 +744,20 @@
 	padding-left: 5px;
 }
 
+.kpod-input-text {
+	width: 80px;
+	text-align: center;
+	margin-top: 10px;
+}
+
+.title__block__max {
+	height: 90px;
+	text-align: left;
+	background: #2b2e5e;
+	padding-top: 3px;
+	padding-left: 5px;
+}
+
 .title__block__pump {
 	height: 90px;
 	text-align: left;
@@ -697,6 +766,15 @@
 }
 
 .title__block__pump__1 {
+	height: 29px;
+	width: 65px;
+	text-align: left;
+	background: #2b2e5e;
+	padding-right: 5px;
+}
+
+.title__block__pump__1__flex {
+	display: flex;
 	height: 29px;
 	width: 65px;
 	text-align: left;
@@ -1392,9 +1470,9 @@
     padding-top: 2px;
 }
 
-.checkbox__block__label__1 {
+.small-input-box {
+	width: 60px;
 }
-
 
 .checkbox__block__label__text__1 {
 	position: relative;
@@ -1424,6 +1502,20 @@
 	border: 1px solid rgba(34, 36, 82, 1);
 }
 
+.input-box-gno-block-3 {
+    background: #494AA5;
+    border: 1px solid #272953;
+    outline: none;
+    width: 100%;
+    height: 22px;
+    color: white;
+    box-sizing: border-box;
+    border-radius: 2px;
+    line-height: 25px !important;
+    padding-right: 5px;
+    padding-left: 5px;
+}
+
 .input-box-gno {
     background: #494AA5;
     border: 1px solid #272953;
@@ -1451,6 +1543,18 @@
     width: 150px;
 	margin-inline: 50px;
 	margin-top: 30px;
+}
+
+.input-box-gno.podbor-kpod-block {
+    width: 50px;
+	margin-inline: 0px;
+	margin-top: 0px;
+}
+
+.input-box-gno.podbor-kpod-select-block {
+	width: 100px;
+	margin-inline: 0px;
+	margin-top: 0px;
 }
 
 .submit_button {
