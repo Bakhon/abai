@@ -836,7 +836,7 @@
                         </li>
                       </ul>
                     </div>
-                  </div>                  
+                  </div>
                 </div>
               </div>
               <div class="col-8 col-lg px-1">

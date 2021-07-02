@@ -40,7 +40,7 @@ export default {
     },
     props: ['userId'],
     data: function () {
-        return {            
+        return {
             dzoMapping : {
                 "КОА" : {                 
                    id: 110                   
