@@ -819,9 +819,9 @@ export default {
         this.mainMenuButtonElementOptions = _.cloneDeep(mainMenuConfiguration);
         this.getDzoYearlyPlan();
         this.selectedDzoCompanies = this.getAllDzoCompanies();   
-        let oneDzoNameSelected = this.getDzoTicker();      
-        if   (oneDzoNameSelected!=''){
-        this.assignOneCompanyToSelectedDzo(oneDzoNameSelected);
+        let isOneDzoSelected = this.getDzoTicker();     
+        if (isOneDzoSelected) {
+        this.assignOneCompanyToSelectedDzo(isOneDzoSelected);
         };        
     },   
     watch: {

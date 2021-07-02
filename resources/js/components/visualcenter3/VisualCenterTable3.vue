@@ -754,7 +754,7 @@
             </div>
             <div class="row px-4 mt-3 middle-block__list-x-scroll">
               <div class="col-8 col-lg dropdown px-1">
-                <div  class="button2 no-hover dzocompanylist__button" v-if="isOneDzoCompanyEnter">                  
+                <div  class="button2 no-hover dzocompanylist__button" v-if="isOneDzoSelected">                  
                     {{ trans("visualcenter.dzoAllCompany") }}
                   </div>    
                 <div class="button2 dzocompanylist__button" v-else>                               
@@ -1046,11 +1046,11 @@
                   </thead>
                   <tbody>
                   <tr v-for="(item, index) in dzoSummaryForTable">
-                    <td                            
+                    <td
                             @click="isMultipleDzoCompaniesSelected ? `${switchOneCompanyView(item.dzoMonth)}` : `${selectAllDzoCompanies()}`"
                             :class="index % 2 === 0 ? 'tdStyle' : ''"
-                            style="cursor: pointer"                           
-                    >                   
+                            style="cursor: pointer"
+                    >
                       <span v-if="oilCondensateProductionButton.length === 0">
                         {{ getNameDzoFull(item.dzoMonth) }}
                         <span v-if="isKmgParticipationFilterActive">
