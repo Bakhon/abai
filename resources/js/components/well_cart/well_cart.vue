@@ -415,7 +415,7 @@ export default {
           }
         } else if (this.tableData[i].method === 'trimToDate' && this.tableData[i].description != null) {
           try {
-            this.tableData[i].data = this.setFormat(this.tableData[i].description)
+            this.tableData[i].data = this.getFormatedDate(this.tableData[i].description)
           } catch (e) {
           }
         } else {
@@ -453,7 +453,7 @@ export default {
     setForm(formCode) {
       this.activeFormCode = formCode
     },
-    setFormat(data){
+    getFormatedDate(data){
       if(data != null && data != ''){
         return moment(data).format('DD/MM/YYYY')
       }
@@ -745,8 +745,8 @@ export default {
         {
           'description': null,
           'method': 'neighbors',
-          'neigbor_1': this.setFormat(this.well.krsWorkover.dbeg),
-          'neigbor_2': this.setFormat(this.well.krsWorkover.dend),
+          'neigbor_1': this.getFormatedDate(this.well.krsWorkover.dbeg),
+          'neigbor_2': this.getFormatedDate(this.well.krsWorkover.dend),
           'name': 'Дата последнего КРС',
           'data': ''
         },
@@ -777,8 +777,8 @@ export default {
         {
           'description': null,
           'method': 'neighbors',
-          'neigbor_1': this.setFormat(this.well.prsWellWorkover.dbeg),
-          'neigbor_2': this.setFormat(this.well.prsWellWorkover.dend),
+          'neigbor_1': this.getFormatedDate(this.well.prsWellWorkover.dbeg),
+          'neigbor_2': this.getFormatedDate(this.well.prsWellWorkover.dend),
           'name': 'Дата последнего ПРС',
           'data': ''
         },
