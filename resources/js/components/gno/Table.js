@@ -1090,7 +1090,7 @@ export default {
           type = 'error'
         }
         this.$notify({
-            message: 'true',
+            message: trans('pgno.check_nkt_notify'),
             type: type,
             size: 'sm',
             timeout: 8000
