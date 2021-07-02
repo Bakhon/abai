@@ -7,8 +7,8 @@
             <form>
               <label class="container">
                 <span class="bottom-border"></span>
-                <input type="checkbox" :id="node.id" name="tech_structure" value="tech_structure"
-                       class="dropdown-item">
+                <input type="checkbox" :id="node.id" name="tech_structure" value="isParentChecked"
+                       v-model="isParentChecked" class="dropdown-item">
                 <span class="checkmark"></span>
               </label>
             </form>
@@ -39,6 +39,7 @@
             :isShowCheckboxes="isShowCheckboxes"
             :isWell="isWell"
             :currentWellId="currentWellId"
+            :isParentChecked = "isParentChecked"
       ></node>
     </ul>
     <div class="centered mx-auto mt-3" v-if="isShowChildren && isLoading">
@@ -58,6 +59,7 @@ export default {
     isNodeOnBottomLevelOfHierarchy: Function,
     isShowCheckboxes: Boolean,
     isWell: Function,
+    isParentChecked: Boolean,
     currentWellId: {
       type: Number,
       required: false
@@ -68,12 +70,11 @@ export default {
     event: "nodeChange"
   },
   methods: {
-    showChildren: async function() {
+    showChildren: function () {
       this.isShowChildren = !this.isShowChildren;
       if (!this.isShowChildren) {
         return
       }
-      await this.handleClick(this)
       if (this.isNodeOnBottomLevelOfHierarchy(this.node)) {
         this.isLoading = true;
         this.getWells(this);
