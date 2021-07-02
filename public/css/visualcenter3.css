@@ -1026,6 +1026,8 @@ a.dropdown-link-vc3 {
 
 .button1-vc-inner {
     display: inline-block;
+    width: 90%;
+    text-align: center;
 }
 
 ul.dropdown-menu-vc {

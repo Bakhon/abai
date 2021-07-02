@@ -11,6 +11,22 @@
       }
     }
   },
+  "oilCondensateDeliveryButton": {
+    "tags": [
+      "oil_dlv_plan",
+      "tovarnyi_ostatok_nefti_prev_day"
+    ],
+    "childItems": {
+      "withoutKmgParticipation": {
+        "buttonClass": "",
+        "flag": "flagOff"
+      },
+      "oilResidue": {
+        "buttonClass": "",
+        "flag": "flagOff"
+      }
+    }
+  },
   "oilProductionButton": {
     "tags": [
       "oil_plan",

@@ -20,7 +20,6 @@ export default {
         updateSecondaryParams(inputData) {
             let filteredDataByCompanies = this.getFilteredDataByOneCompany(inputData);
             let filteredDataByPeriod = this.getProductionDataInPeriodRange(filteredDataByCompanies,this.timestampToday,this.timestampEnd);
-            this.covid = this.getCovidData(filteredDataByPeriod);
             if (this.selectedSecondaryOption === 'injection') {
                 this.updateInjectionWells(filteredDataByPeriod,filteredDataByCompanies);
             } else if (this.selectedSecondaryOption === 'production') {
@@ -51,24 +50,6 @@ export default {
                     item.restrictions = item.restrictions.toString().replace(/null/g, '');
                 }
             })
-        },
-
-        getAccidentTotal() {
-            let year = new Date(this.range.end).getFullYear();
-            let uri = this.localeUrl("/visualcenter3GetDataAccident?") + "year=" + year + " ";
-            this.axios.get(uri).then((response) => {
-                let data = Array();
-                data = response.data;
-                let accidentTotal = [];
-                if (data) {
-                    _.forEach(data, function (item) {
-                        accidentTotal.push(item.tb_accident_total);
-                    });
-                    this.accidentTotal = accidentTotal[0];
-                } else {
-                    console.log('No data Accident')
-                }
-            });
         },
     }
 }
