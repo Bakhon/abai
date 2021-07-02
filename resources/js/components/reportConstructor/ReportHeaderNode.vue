@@ -2,20 +2,20 @@
   <div class="cmp-tree">
     <div class="cmp-node" @click="isOpen = !isOpen">
       <label>
-        <input name="checkbox" type="checkbox" @click.stop="handleChange"
+        <input name="checkbox" type="checkbox" @click.stop="handleChange" :checked="headerNode.isChecked"
         /></label>
-      {{ translateAttribute(value.label) }}
+      {{ translateAttribute(headerNode.label) }}
       <div
           v-if="hasChildren"
           class="arrow-right"
           :class="{ 'arrow-active': isOpen }"
       ></div>
     </div>
-    <ul class="hierarchy"  v-if="isOpen">
+    <ul class="hierarchy" v-if="isOpen">
       <draggable
-          :value="value.children"
+          :headerNode="headerNode.children"
           ghost-class="ghost"
-          @input="updateValue"
+          @input="updateNode"
           :group="group"
           tag="ul"
           v-bind="dragOptions"
@@ -23,11 +23,11 @@
           @end="isDraggable = false"
       >
         <ReportHeaderNode
-            v-for="(item, index) in value.children"
+            v-for="(item, index) in headerNode.children"
             :key="index"
-            :value="item"
+            :headerNode="item"
             :translateAttribute="translateAttribute"
-            @input="updateChildValue"
+            @input="updateChildNode"
             :group="group"
             :rowKey="rowKey"
         >
@@ -40,18 +40,20 @@
 
 <script>
 import Draggable from "vuedraggable";
+
 export default {
   name: "ReportHeaderNode",
   components: {
     Draggable,
   },
   props: {
-    value: {
+    headerNode: {
       type: Object,
       default: () => ({
         id: 0,
         name: "",
         children: [],
+        isChecked: false
       }),
     },
     root: {
@@ -72,12 +74,12 @@ export default {
     return {
       isOpen: false,
       isDraggable: false,
-      localValue: Object.assign({}, this.value),
+      localValue: Object.assign({}, this.headerNode),
     };
   },
   computed: {
     hasChildren() {
-      return this.value.children != null && this.value.children.length > 0;
+      return this.headerNode.children != null && this.headerNode.children.length > 0;
     },
     isDark() {
       return "";
@@ -95,29 +97,30 @@ export default {
     },
   },
   watch: {
-    value(value) {
-      this.localValue = Object.assign({}, value);
+    headerNode(headerNode) {
+      this.localValue = Object.assign({}, headerNode);
     },
   },
   methods: {
-    updateValue(value) {
-      if (value.constructor == Array) {
-        this.localValue.children = [...value];
+    updateNode(headerNode) {
+      if (headerNode.constructor == Array) {
+        this.localValue.children = [...headerNode];
         this.$emit("input", this.localValue);
       }
     },
-    updateChildValue(value) {
+    updateChildNode(headerNode) {
       const index = this.localValue.children.findIndex(
-          (c) => c[this.rowKey] === value[this.rowKey]
+          (c) => c[this.rowKey] === headerNode[this.rowKey]
       );
-      this.$set(this.localValue.children, index, value);
+      this.$set(this.localValue.children, index, headerNode);
       this.$emit("input", this.localValue);
     },
     handleChange() {
-      if (this.isFolder) {
-        //TODO wip
+      if (!('isChecked' in this.headerNode)) {
+        this.headerNode.isChecked = true
+      } else {
+        this.headerNode.isChecked = !this.headerNode.isChecked
       }
-      return;
     },
   },
 };
@@ -132,6 +135,7 @@ export default {
 .cmp-node:hover {
   background-color: #5d7980;
 }
+
 .cmp-drag-node {
   background-color: #768487;
   opacity: 0.7;
