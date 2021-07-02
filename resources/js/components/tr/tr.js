@@ -59,6 +59,7 @@ export default {
         });
         return [undefined, ...filters];
     },
+
     wellFilters() {
         let filters = [];
         this.allWells.forEach((el) => {
@@ -749,6 +750,19 @@ export default {
       this.is_dynamic_calendar = !this.is_dynamic_calendar
       this.datepicker1 = !this.datepicker1
       this.datepicker2 = !this.datepicker2
+    },
+    isCommentClass (row_index, value) {
+      return this.wells &&
+          this.wells[row_index] &&
+          this.wells[row_index][value][1][0] !== '0';
+    },
+    isActiveClass (row) {
+      if (row.rus_wellname) {
+          return false
+      } else {
+          return true
+      }
+
     },
 
     getColor(status) {
