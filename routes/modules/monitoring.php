@@ -130,7 +130,9 @@ Route::group(
 
                 Route::get('/gu-map', 'ComplicationMonitoring\MapsController@guMap')->name('maps.gu');
                 Route::get('/gu-map/mapdata', 'ComplicationMonitoring\MapsController@mapData')->name('maps.gu_pipes');
-                Route::get('/gu-map/speed-flow', 'ComplicationMonitoring\MapsController@getSpeedFlow')->name('maps.speed_flow');
+                Route::get('/gu-map/hydro-reverse-calc', 'ComplicationMonitoring\MapsController@getHydroReverseCalc')->name('maps.hydro-reverse-calc');
+                Route::get('/gu-map/pressure', 'ComplicationMonitoring\MapsController@getPressure')->name('maps.pressure');
+                Route::get('/gu-map/temperature', 'ComplicationMonitoring\MapsController@getTemperature')->name('maps.temperature');
 
                 Route::post('/gu-map/gu', 'ComplicationMonitoring\MapsController@storeGu')->name('maps.store_gu');
                 Route::post('/gu-map/zu', 'ComplicationMonitoring\MapsController@storeZu')->name('maps.store_zu');
