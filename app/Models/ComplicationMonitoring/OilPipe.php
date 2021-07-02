@@ -56,12 +56,12 @@ class OilPipe extends Model
         return $this->hasOne(PipeCoord::class)->orderByDesc('m_distance');
     }
 
-    public function speedFlowGuUpsv()
+    public function hydroCalc()
     {
         return $this->hasOne(HydroCalcResult::class);
     }
 
-    public function speedFlowWellGu()
+    public function reverseCalc()
     {
         return $this->hasOne(ReverseCalculation::class);
     }

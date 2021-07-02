@@ -210,11 +210,11 @@ const guMap = {
             });
         },
 
-        async getSpeedFlow ({commit}, date) {
-            return await axios.get(this._vm.localeUrl("/gu-map/speed-flow"), {params: {date: date}}).then((response) => {
+        async getHydroReverseCalc ({commit}, date) {
+            return await axios.get(this._vm.localeUrl("/gu-map/hydro-reverse-calc"), {params: {date: date}}).then((response) => {
                 return response.data.pipes;
             })
-        }
+        },
     },
 
     getters: {},

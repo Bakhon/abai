@@ -42,9 +42,17 @@
         >
         </datetime>
       </div>
+
+      <div class="gu-map__filter_input mt-15px" v-if="activeFilter == 'pressure' || activeFilter == 'temperature'">
+        <b-form-input
+            v-model="referentValue"
+            @input="mapRedraw"
+            type="number"
+            :placeholder="trans('monitoring.map.referent_value')"></b-form-input>
+      </div>
     </div>
 
-    <map-legend :variant="mapColorsMode" />
+    <map-legend :variant="mapColorsMode"/>
 
     <div id="map"></div>
 
@@ -163,9 +171,18 @@ export default {
         {
           name: this.trans('monitoring.map.filters.speed-flow-filter'),
           key: 'speedFlow'
-        }
+        },
+        {
+          name: this.trans('monitoring.map.filters.pressure'),
+          key: 'pressure'
+        },
+        {
+          name: this.trans('monitoring.map.filters.temperature'),
+          key: 'temperature'
+        },
       ],
       loading: false,
+      referentValue: 10
     };
   },
   created() {
@@ -203,7 +220,7 @@ export default {
       'deleteZu',
       'deleteWell',
       'getElevationByCoords',
-      'getSpeedFlow'
+      'getHydroReverseCalc'
     ]),
     async initMap() {
       this.loading = true;
@@ -419,15 +436,20 @@ export default {
     },
     getPipeColor(pipe) {
       if (this.activeFilter) {
-        if (this.activeFilter === 'speedFlow') {
-          return this.getColorByFlowSpeed(pipe);
+        switch (this.activeFilter) {
+          case "speedFlow":
+            return this.getColorByFlowSpeed(pipe);
+          case "pressure":
+            return this.getColorByPressure(pipe);
+          case "temperature":
+            return this.getColorByTemperature(pipe);
         }
       }
 
       return pipeColors[this.mapColorsMode][pipe.between_points]
     },
-    getColorByFlowSpeed (pipe) {
-      let speed_flow = pipe.speed_flow_well_gu ? pipe.speed_flow_well_gu : (pipe.speed_flow_gu_upsv ? pipe.speed_flow_gu_upsv : null);
+    getColorByFlowSpeed(pipe) {
+      let speed_flow = pipe.reverse_calc ? pipe.reverse_calc : (pipe.hydro_calc ? pipe.hydro_calc : null);
       switch (true) {
         case speed_flow == null:
           return pipeColors[this.mapColorsMode].no_data;
@@ -444,6 +466,32 @@ export default {
         case speed_flow.fluid_speed > 0.9:
           return pipeColors[this.mapColorsMode].good;
           break;
+      }
+    },
+    getColorByPressure(pipe) {
+      let pressure = pipe.hydro_calc ? pipe.hydro_calc : null;
+      switch (true) {
+        case pressure == null:
+          return pipeColors[this.mapColorsMode].no_data;
+
+        case pressure.press_start >= this.referentValue || pressure.press_end >= this.referentValue:
+          return pipeColors[this.mapColorsMode].danger;
+
+        default:
+          return pipeColors[this.mapColorsMode].good;
+      }
+    },
+    getColorByTemperature(pipe) {
+      let temperature = pipe.hydro_calc ? pipe.hydro_calc.temperature_end : null;
+      switch (true) {
+        case temperature == null:
+          return pipeColors[this.mapColorsMode].no_data;
+
+        case temperature <= this.referentValue:
+          return pipeColors[this.mapColorsMode].danger;
+
+        default:
+          return pipeColors[this.mapColorsMode].good;
       }
     },
     addMapLayer(layerId) {
@@ -476,7 +524,7 @@ export default {
       this.objectData.index = option.mapObject.index;
       this.$bvModal.show('object-modal');
     },
-    onRedirect(option){
+    onRedirect(option) {
       let url = this.localeUrl("/monitor/" + option.mapObject.object.id);
       window.location.href = url;
     },
@@ -654,7 +702,7 @@ export default {
       });
     },
     async editGu() {
-      let result  = await this.updateGu(this.objectData);
+      let result = await this.updateGu(this.objectData);
       let message = '';
 
       if (result.status == 'success') {
@@ -675,7 +723,7 @@ export default {
       this.showToast(message, this.trans('app.' + result.status), variant);
     },
     async editZu() {
-      let result  = await this.updateZu(this.objectData);
+      let result = await this.updateZu(this.objectData);
       let message = '';
 
       if (result.status == 'success') {
@@ -998,28 +1046,43 @@ export default {
       if (!date) return null
       return moment.parseZone(date).format('YYYY-MM-DD')
     },
-    async applyFilter () {
+    async applyFilter() {
       this.mapColorsMode = this.activeFilter;
       switch (this.activeFilter) {
         case 'speedFlow':
+        case 'pressure':
+        case 'temperature':
           this.loading = true;
-          this.pipes = await this.getSpeedFlow(this.formatDate(this.selectedDate));
+          this.pipes = await this.getHydroReverseCalc(this.formatDate(this.selectedDate));
           this.mapRedraw();
           this.loading = false;
           break;
 
         default:
           this.mapColorsMode = 'default';
-          return false
+          return false;
+      }
+    },
+    filterChanged() {
+      this.selectedDate = null;
+
+      switch (this.activeFilter) {
+        case 'pressure':
+          this.referentValue = 10;
+          break;
+
+        case 'temperature':
+          this.referentValue = 30;
+          break;
+
+        case null:
+          this.mapColorsMode = 'default';
+          this.mapRedraw();
           break;
       }
     },
-    filterChanged () {
-      if (!this.activeFilter) {
-        this.mapColorsMode = 'default';
-        this.selectedDate = null;
-        this.mapRedraw();
-      }
+    referentValChanged () {
+
     },
     mapRedraw() {
       this.layerRedraw('path-layer', 'pipe', this.pipes);
@@ -1061,7 +1124,7 @@ h1 {
     }
   }
 
-  &__datetime-picker {
+  &__datetime-picker, &__filter_input {
     min-width: 260px;
   }
 
