@@ -864,7 +864,7 @@ export default {
       ]
     },
     visibleForms() {
-      return this.forms.filter(form => form.isVisible === true)
+      return this.forms.filter(form => form.isVisible)
     }
   }
 }
