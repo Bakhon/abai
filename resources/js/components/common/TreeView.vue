@@ -8,7 +8,7 @@
               <label class="container">
                 <span class="bottom-border"></span>
                 <input type="checkbox" :id="node.id" name="tech_structure" value="tech_structure"
-                       class="dropdown-item" v-on:change="onCheckboxClick(node)">
+                       class="dropdown-item" v-on:change="onCheckboxClick(node, level)">
                 <span class="checkmark"></span>
               </label>
             </form>
@@ -40,6 +40,7 @@
             :onCheckboxClick="onCheckboxClick"
             :isWell="isWell"
             :currentWellId="currentWellId"
+            :level="level+1"
       ></node>
     </ul>
     <div class="centered mx-auto mt-3" v-if="isShowChildren && isLoading">
@@ -53,6 +54,7 @@ export default {
   name: "node",
   props: {
     node: Object,
+    level: Number,
     handleClick: Function,
     getWells: Function,
     getInitialItems: Function,

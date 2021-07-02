@@ -3,6 +3,7 @@ import {bTreeView} from "bootstrap-vue-treeview";
 import Vue from "vue";
 import 'vue-datetime/dist/vue-datetime.css';
 import {formatDate} from "../common/FormatDate";
+import download from "downloadjs";
 
 Vue.use(Datetime)
 Vue.use(bTreeView)
@@ -136,6 +137,7 @@ export default {
         setCurrentStructure(structureId, structureSubType) {
             this.currentStructureId = structureId.toString()
             this.currentStructureSubType = structureSubType
+            this.isDisplayParameterBuilder = false
             this.loadAttributesForSelectedObject();
         },
         getAttributeDescription(descriptionField) {
@@ -159,21 +161,19 @@ export default {
         },
         updateStatistics() {
             this.loadStatistics()
-            this.statisticsColumns = this.getStatisticsColumnNames(this.attributesForObject)
+            let selectedAttributes = this.getSelectedAttributes()
+            this.statisticsColumns = this.getStatisticsColumnNames(selectedAttributes)
         },
         loadStatistics() {
             this.statistics = null;
+
             try {
                 this.validateStatisticsParams()
             } catch (e) {
                 this.showToast(e.name, e.message, 'danger', 10000)
                 return
             }
-            let jsonData = JSON.stringify({
-                "fields": this.getSelectedAttributes(),
-                "selectedObjects": this.selectedObjects,
-                "dates": this.getDates()
-            })
+            let jsonData = this._getStatisticsRequestParams()
             this.axios.post(this.baseUrl + "get_statistics", jsonData, {
                 responseType: 'json',
                 headers: {
@@ -195,17 +195,10 @@ export default {
             if (this.getSelectedAttributes().length === 0) {
                 throw new Error("Не выбраны поля для отображения")
             }
-            if (this.startDate == null) {
-                throw new Error("Не выбрана начальная дата")
-            }
-            if (this.endDate == null) {
-                throw new Error("Не выбрана конечная дата")
-            }
         },
         getSelectedAttributes() {
             let allSelectedAttributes = this._getAllSelectedAttributes(this.attributesForObject)
             allSelectedAttributes = this._cleanEmptyHeadersOfAttributes(allSelectedAttributes)
-            console.log(allSelectedAttributes)
             return allSelectedAttributes
         },
         _getAllSelectedAttributes(attributes) {
@@ -240,11 +233,27 @@ export default {
             }
             return cleanAttributes
         },
+        _getStatisticsRequestParams() {
+            return JSON.stringify({
+                "fields": this.getSelectedAttributes(),
+                "selectedObjects": this.selectedObjects,
+                "structureType": this.currentStructureType,
+                "dates": this.getDates()
+            })
+        },
         getDates() {
-            return [
-                formatDate.getMinOfDayFormatted(this.startDate),
-                formatDate.getMaxOfDayFormatted(this.endDate)
-            ]
+            let dates = []
+            if (this.startDate) {
+                dates.push(formatDate.getMinOfDayFormatted(this.startDate))
+            } else {
+                dates.push(null)
+            }
+            if (this.endDate) {
+                dates.push(formatDate.getMaxOfDayFormatted(this.endDate))
+            } else {
+                dates.push(null)
+            }
+            return dates
         },
         getStatisticsColumnNames(attributes) {
             let columns = []
@@ -257,9 +266,10 @@ export default {
             }
             return columns
         },
-        updateSelectedNodes(node) {
+        updateSelectedNodes(node, level) {
             let index = this._findNodeInSelectedNodes(node)
             if (typeof index === 'undefined') {
+                node.level = level
                 this.selectedObjects.push(node)
             } else {
                 this.selectedObjects.splice(index)
@@ -273,6 +283,33 @@ export default {
                 }
             }
             return undefined;
-        }
+        },
+
+        getStatisticsFile() {
+            try {
+                this.validateStatisticsParams()
+            } catch (e) {
+                this.showToast(e.name, e.message, 'danger', 10000)
+                return
+            }
+            let jsonData = this._getStatisticsRequestParams()
+            this.axios.post(
+                this.baseUrl + 'get_excel/',
+                jsonData,
+                {
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    responseType: 'arraybuffer',
+                }
+            ).then((response) => {
+                if (response.data) {
+                    let content = response.headers['content-type']
+                    console.log(response)
+                    download(response.data, "Отчет.xlsx", content)
+                }
+            }).catch((error) => console.log(error)
+            ).finally(() => this.$store.commit('globalloading/SET_LOADING', false));
+        },
     }
 }

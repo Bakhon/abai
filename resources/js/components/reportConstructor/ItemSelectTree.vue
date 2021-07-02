@@ -13,6 +13,7 @@
             :isShowCheckboxes="isShowCheckboxes"
             :isWell="isWell"
             :onCheckboxClick="onCheckboxClick"
+            :level="level+1"
         ></tree-view>
       </div>
     </div>
@@ -28,6 +29,7 @@ export default {
     return {
       baseUrl: process.env.MIX_MICROSERVICE_USER_REPORTS,
       items: null,
+      level: 0
     }
   },
   props: {

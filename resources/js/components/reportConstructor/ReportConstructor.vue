@@ -279,7 +279,7 @@
               </div>
               <div class="row">
                 <div class="btn-container">
-                  <button disabled>Скачать отчет</button>
+                  <button @click="getStatisticsFile()">Скачать отчет</button>
                   <button>Сохранить как шаблон</button>
                 </div>
               </div>
