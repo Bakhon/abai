@@ -105,6 +105,7 @@ abstract class TableForm extends BaseForm
     protected function getFieldValue(array $field, array $rowData, Model $item): ?array
     {
         $result = $this->getCustomFieldValue($field, $rowData, $item);
+
         if (is_null($result)) {
             if ($field['type'] === 'link') {
                 $result = [
