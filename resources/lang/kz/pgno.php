@@ -217,4 +217,5 @@ return array (
   'near_dist' => 'Расстояние до скважин',
   'notify_error_sk' => 'Уточните тип СК',
   'primenit_default' => 'Применить по умолчанию',
+  'check_nkt_notify' => 'Уточнить параметры НКТ',
 );

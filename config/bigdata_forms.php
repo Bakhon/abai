@@ -34,6 +34,8 @@
   'daily_reports_oil_prod' => '\\App\\Services\\BigData\\Forms\\DailyReportsOilProduction',
   'daily_reports_water_prod' => '\\App\\Services\\BigData\\Forms\\DailyReportsWaterProduction',
   'daily_reports_oil_sale' => '\\App\\Services\\BigData\\Forms\\DailyReportsOilSale',
+  'daily_reports_gas_prod' => '\\App\\Services\\BigData\\Forms\\DailyReportsGasProduction',
+  'daily_reports_water_upload' => '\\App\\Services\\BigData\\Forms\\DailyReportsWaterUpload',
   'well_perf' => '\\App\\Services\\BigData\\Forms\\WellPerf',
   'well_perf_shot' => '\\App\\Services\\BigData\\Forms\\WellPerfShot',
   'well_perf_drill_packer' => '\\App\\Services\\BigData\\Forms\\WellPerfDrillPacker',
