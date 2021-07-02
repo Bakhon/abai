@@ -2494,6 +2494,7 @@
                   </td>
 
                   <td
+                    v-if="!edit"
                     :class="{'cell-with-comment': isCommentClass(row_index,`p_intake`), 'activ': isActiveClass(row)}"
                   >
                     <span
