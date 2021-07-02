@@ -44,7 +44,11 @@ export default {
           data: [50, 29, 37, 36, 44, 45, 50, 58],
         },
       ],
-      chartOptionsMainFactors: {                
+      chartOptionsMainFactors: {
+         grid: {
+        show: true,
+        borderColor: '#33396f'             
+        },                
        chart: {         
           height: 350,
           type: "line",
@@ -85,7 +89,7 @@ export default {
               },
             },
             title: {
-              text: "Income (thousand crores)",
+              text: "Operating Cashflow (thousand crores)",
               style: {
                 color: "#008FFB",
               },
@@ -109,8 +113,8 @@ export default {
                 colors: "#00E396",
               },
             },
-            title: {
-              text: "Operating Cashflow (thousand crores)",
+            title: {             
+              text: "Income (thousand crores)",
               style: {
                 color: "#00E396",
               },

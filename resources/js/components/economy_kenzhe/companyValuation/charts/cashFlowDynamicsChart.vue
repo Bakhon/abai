@@ -21,20 +21,24 @@ export default {
       {
         name: "Cash Flow",
         type: "bar",
-        data: [1.45, 5.42, 5.9, -0.42, -12.6, -18.1, -18.2, -14.16,-11.1,-6.09, 0.34, 3.88, 13.07, 5.8, 2, 7.37, 8.1, 13.57, 15.75, 17.1, 19.8, -27.03, -54.4, -47.2, -43.3, -18.6, -48.6, -41.1, -39.6, -37.6, -29.4, -21.4, -2.4,
+        data: [1.45, 5.42, 5.9, -0.42, -12.6, -18.1, -20
         ]      
       },  {
           name: "Opex",
           type: "line",
-          data: [20, 29, 37, 36, 44, 45, 50, 58, -50,30,20, 29, 37, 36, 44, 45, 50, 58, 50,30,20, 29, 37, 36, 44, 45, 50, 58, 50,30,50,53],
+          data: [20, 29, 37, 36, 44, 45,47],
         },
      {
           name: "Opex",
           type: "line",
-          data: [29, 37, 36, 44, 45, 50, 58, -50,30,20, 29, 37, 36, 44, 45, 50, 58, 50,30,20, 29, 37, 36, 44, 45, 50, 58, 50,30,50,53,55],
+          data: [29, 37, 36, 44, 45, 50,55],
         },
     ],
     chartOptionsCashFlow: {
+        grid: {
+        show: true,
+        borderColor: '#33396f'             
+        },
         stroke: {
           width: [1, 1, 4],
           show: true,
@@ -85,7 +89,7 @@ export default {
         },
         labels: {
           formatter: function (y) {
-            return y.toFixed(0) + "%";
+            return y.toFixed(0);
           },
         },
       },
@@ -99,7 +103,7 @@ export default {
    };    
   }, 
     mounted(){   
-        this.chartSettings.xaxis.categories= [
+        /*this.chartSettings.xaxis.categories= [
           "2011-01-01",
           "2011-02-01",
           "2011-03-01",
@@ -133,7 +137,7 @@ export default {
           "2013-07-01",
           "2013-08-01",
           "2013-09-01",
-        ],  
+        ], */ 
         console.log(this.chartSettings.xaxis.categories);
         this.chartOptionsCashFlow = this.chartSettings;
     }  

@@ -57,6 +57,10 @@ export default {
         },
       ],
       chartOptions: {
+        grid: {
+        show: true,
+        borderColor: '#33396f'             
+        },
         stroke: {
           width: [1, 1, 4],
           show: true,
