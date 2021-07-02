@@ -2,7 +2,7 @@
   <div class="cmp-tree">
     <div class="cmp-node" @click="isOpen = !isOpen">
       <label>
-        <input name="checkbox" type="checkbox" @click.stop="handleChange" v-bind:value="headerNode.isChecked"
+        <input name="checkbox" type="checkbox" @click.stop="handleChange" :value="headerNode.isChecked"
         /></label>
       {{ translateAttribute(headerNode.label) }}
       <div
