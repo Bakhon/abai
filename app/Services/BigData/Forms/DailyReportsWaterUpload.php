@@ -3,14 +3,14 @@
 namespace App\Services\BigData\Forms;
 use Carbon\Carbon;
 
-class DailyReportsOilSale extends DailyReports
+class DailyReportsWaterUpload extends DailyReports
 {
 
     const CITS = 0;
     const GS = 1;
     const ALL = 2;
-    protected $metricCode = 'OILSL';
-    protected $configurationFileName = 'daily_reports_oil_sale';
+    protected $metricCode = 'WINJ';
+    protected $configurationFileName = 'daily_reports_water_upload';
 
     protected function saveSingleFieldInDB(string $field, int $wellId, Carbon $date, $value): void
     {
