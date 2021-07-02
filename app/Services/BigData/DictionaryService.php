@@ -28,6 +28,7 @@ use App\Models\BigData\Dictionaries\PerforatorType;
 use App\Models\BigData\Dictionaries\PerfType;
 use App\Models\BigData\Dictionaries\PumpType;
 use App\Models\BigData\Dictionaries\RepairWorkType;
+use App\Models\BigData\Dictionaries\Tech;
 use App\Models\BigData\Dictionaries\TechConditionOfWells;
 use App\Models\BigData\Dictionaries\TechStateType;
 use App\Models\BigData\Dictionaries\Well;
@@ -183,6 +184,10 @@ class DictionaryService
     const TREE_DICTIONARIES = [
         'orgs' => [
             'class' => Org::class,
+            'name_field' => 'name_ru'
+        ],
+        'techs' => [
+            'class' => Tech::class,
             'name_field' => 'name_ru'
         ]
     ];

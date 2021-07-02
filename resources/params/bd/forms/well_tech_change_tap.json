@@ -15,13 +15,6 @@
                 "title": "date_start"
               },
               {
-                "code": "tech",
-                "type": "dict_tree",
-                "dict": "techs",
-                "title": "tech",
-                "validation": "required"
-              },
-              {
                 "code": "tap",
                 "type": "text",
                 "title": "tap"

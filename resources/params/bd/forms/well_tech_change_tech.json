@@ -20,11 +20,6 @@
                 "dict": "techs",
                 "title": "tech",
                 "validation": "required"
-              },
-              {
-                "code": "tap",
-                "type": "text",
-                "title": "tap"
               }
             ]
           }
