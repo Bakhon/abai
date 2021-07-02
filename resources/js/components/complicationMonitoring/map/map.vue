@@ -1081,9 +1081,6 @@ export default {
           break;
       }
     },
-    referentValChanged () {
-
-    },
     mapRedraw() {
       this.layerRedraw('path-layer', 'pipe', this.pipes);
       this.layerRedraw('icon-layer-well', 'well', this.wellPoints);
