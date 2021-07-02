@@ -4,12 +4,12 @@
             <div class="col-12 mt-2 d-flex">
                 <div class="header-title col-9">
                     <transition name="fade">
-                        <div v-if="buttonName === viewType.production">
+                        <div v-if="buttonName === viewType.delivery">
                             Оперативная суточная информация по добыче нефти и конденсата АО НК "КазМунайГаз", тонн
                         </div>
                     </transition>
                     <transition name="fade">
-                        <div v-if="buttonName !== viewType.production">
+                        <div v-if="buttonName === viewType.production">
                             Оперативная суточная информация по сдачи нефти и конденсата АО НК "КазМунайГаз", тонн
                         </div>
                     </transition>
@@ -210,10 +210,40 @@ export default {
            viewType: {
                'production': 'Добыча',
                'delivery': 'Сдача'
-           }
+           },
+           productionSummary: [],
+           planSummary: [],
+           productionByYear: [],
+           period: {
+               'todayStart': moment().subtract(1,'days').startOf('day'),
+               'todayEnd': moment().subtract(1,'days').endOf('day'),
+               'monthStart': moment().startOf('month'),
+               'monthEnd': moment().subtract(1,'days').endOf('day'),
+               'yearStart': moment().startOf('year'),
+               'yearEnd': moment().subtract(1,'days').endOf('day'),
+           },
+           productionByMonth: [],
+           productionByDay: [],
+           comparedSummary: []
        }
    },
    methods: {
+       async getProduction() {
+           let uri = this.localeUrl("/get-production-for-year");
+           const response = await axios.get(uri);
+           if (response.status === 200) {
+               return response.data;
+           }
+           return {};
+       },
+       async getPlans() {
+           let uri = this.localeUrl("/get-dzo-monthly-plans");
+           const response = await axios.get(uri);
+           if (response.status === 200) {
+               return response.data;
+           }
+           return [];
+       },
        getRowClass(index) {
            if (index % 2 === 0) {
                return 'background-light';
@@ -237,8 +267,74 @@ export default {
                 this.buttonName = this.viewType.production;
             }
        },
+       getSortedBy(type,input){
+           return _.orderBy(input,
+               ["date"],
+               [type]
+           );
+       },
+       getFilteredBy(data, periodStart, periodEnd) {
+           return _.filter(data, function (item) {
+               return _.every([
+                   _.inRange(
+                       moment(item.date),
+                       periodStart,
+                       periodEnd
+                   ),
+               ]);
+           });
+       },
+       updateProductionByPeriod() {
+           this.productionSummary = this.getSortedBy('asc',this.productionSummary);
+           this.comparedSummary = this.getComparedWithPlan();
+           console.log('plan comapred')
+           console.log(this.comparedSummary);
+           console.log('summary')
+           console.log(this.productionSummary);
+           this.productionByMonth = this.getFilteredBy(this.comparedSummary,this.period.monthStart,this.period.monthEnd);
+           this.productionByYear = this.getFilteredBy(this.comparedSummary,this.period.yearStart,this.period.yearEnd);
+           this.productionByDay = this.getFilteredBy(this.comparedSummary,this.period.todayStart,this.period.todayEnd);
+           console.log('day')
+           console.log(this.productionByDay);
+       },
+       getComparedWithPlan() {
+           let compared = [];
+           let self = this;
+           _.forEach(this.productionSummary, function(item) {
+               let planRecord = self.getPlanBy(item.dzo_name,moment(item.date).startOf('month'));
+               let dzoItem = Object.assign({},item,planRecord);
+               compared.push(dzoItem);
+           });
+           return compared;
+       },
+       getPlanBy(dzoName,date) {
+           let notUsableFields = [
+               'created_at',
+               'date',
+               'dzo',
+               'updated_at',
+               'id'
+           ];
+           let planRecord = {};
+           this.planSummary.find(function(item) {
+               let planDate = moment(item.date).startOf('day');
+               if (item.dzo === dzoName && planDate.valueOf() === date.valueOf()) {
+                   planRecord = item;
+                   for (let i in notUsableFields) {
+                       delete planRecord[notUsableFields[i]];
+                   }
+                   return planRecord;
+               }
+           });
+           return planRecord;
+       },
+
+       updatePlanByPeriod() {
+           this.planSummary = this.getFilteredBy(this.planSummary,this.period.yearStart,this.period.todayEnd);
+           this.planSummary = this.getSortedBy('asc',this.planSummary);
+       },
    },
-   mounted() {
+   async mounted() {
        for (let i=2; i<19; i++) {
            let emptyCompany = _.cloneDeep(this.template);
            emptyCompany.number = i;
@@ -250,6 +346,10 @@ export default {
            }
            this.production.push(emptyCompany);
        }
+       this.productionSummary = await this.getProduction();
+       this.planSummary = await this.getPlans();
+       this.updatePlanByPeriod();
+       this.updateProductionByPeriod();
    }
 }
 </script>

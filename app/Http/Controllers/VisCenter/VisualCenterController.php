@@ -434,4 +434,16 @@ class VisualCenterController extends Controller
     {
         return view('visualcenter.dailyreport');
     }
+
+    public function getProductionDetailsForYear()
+    {
+        $startPeriod = Carbon::now()->startOfYear();
+        $endPeriod = Carbon::now()->endOfDay();
+        return DzoImportData::query()
+            ->select()
+            ->whereDate('date', '>=', $startPeriod)
+            ->whereDate('date', '<=', $endPeriod)
+            ->get()
+            ->toArray();
+    }
 }
