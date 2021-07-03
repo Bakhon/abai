@@ -74,4 +74,38 @@ class OilPipe extends Model
             });
         });
     }
+
+    public function lastHydroCalc()
+    {
+        return $this->belongsTo(OmgNGDU::class);
+    }
+
+    public function scopeWithLastHydroCalc($query)
+    {
+        $query->addSelect(
+            [
+                'last_hydro_calc_id' => HydroCalcResult::select('id')
+                    ->whereColumn('oil_pipe_id', 'oil_pipes.id')
+                    ->orderBy('date', 'desc')
+                    ->take(1)
+            ]
+        )->with('lastHydroCalc');
+    }
+
+    public function lastReverseCalc()
+    {
+        return $this->belongsTo(OmgNGDU::class);
+    }
+
+    public function scopeWithLastReverseCalc($query)
+    {
+        $query->addSelect(
+            [
+                'last_reverse_calc_id' => ReverseCalculation::select('id')
+                    ->whereColumn('oil_pipe_id', 'oil_pipes.id')
+                    ->orderBy('date', 'desc')
+                    ->take(1)
+            ]
+        )->with('lastReverseCalc');
+    }
 }
