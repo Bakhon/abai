@@ -1,6 +1,6 @@
 <template>
   <draggable
-      :value="localValue"
+      :headerNode="localValue"
       :group="group"
       v-model="treeData"
       class="cmp-tree"
@@ -13,7 +13,7 @@
     <ReportHeaderNode
         v-for="item, index in treeData"
         :key="index"
-        :value="item"
+        :headerNode="item"
         :translateAttribute="translateAttribute"
         :group="group"
         @input="updateItem"
@@ -81,8 +81,8 @@ export default {
     }
   },
   watch: {
-    value(value) {
-      this.localValue = [...value];
+    headerNode(headerNode) {
+      this.localValue = [...headerNode];
     }
   },
   methods: {
