@@ -19,6 +19,11 @@
   },
   {
     "name": "Оценка и мониторинг",
-    "icon": "/img/waterfloodingManagement/water-flooding-management-group_3.svg"
+    "icon": "/img/waterfloodingManagement/water-flooding-management-group_3.svg",
+    "component": {
+      "name": "child-component",
+      "template": "<div><water-flooding-management-assessment></water-flooding-management-assessment></div>",
+      "parentType": "aegtm"
+    }
   }
 ]
