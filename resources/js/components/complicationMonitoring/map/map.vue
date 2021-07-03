@@ -1047,7 +1047,6 @@ export default {
       return moment.parseZone(date).format('YYYY-MM-DD')
     },
     async applyFilter() {
-      this.mapColorsMode = this.activeFilter;
       switch (this.activeFilter) {
         case 'speedFlow':
         case 'pressure':
@@ -1065,6 +1064,7 @@ export default {
     },
     filterChanged() {
       this.selectedDate = null;
+      this.mapColorsMode = this.activeFilter;
 
       switch (this.activeFilter) {
         case 'pressure':
