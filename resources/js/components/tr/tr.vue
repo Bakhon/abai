@@ -6401,7 +6401,6 @@
 </template>
 <script src="./tr.js"></script>
 
-
 <style lang="scss" scoped>
 .form-controll-from {
   background-color: #333975;
@@ -6710,21 +6709,6 @@ table::-webkit-scrollbar-corner {
   background: #272953;
   border: none;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     .table-outer{
       &::v-deep{
         .pagination {
