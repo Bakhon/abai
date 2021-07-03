@@ -1,33 +1,30 @@
 <template>
     <div class="page-wrapper">
         <div class="page-container row">
-            <div class="col-12 mt-2 d-flex">
-                <div class="header-title col-9">
-                    <transition name="fade">
-                        <div v-if="buttonName === viewType.delivery">
-                            Оперативная суточная информация по добыче нефти и конденсата АО НК "КазМунайГаз", тонн
-                        </div>
-                    </transition>
-                    <transition name="fade">
-                        <div v-if="buttonName === viewType.production">
-                            Оперативная суточная информация по сдачи нефти и конденсата АО НК "КазМунайГаз", тонн
-                        </div>
-                    </transition>
+            <div class="col-12 mt-3 d-flex">
+                <div class="header-title col-7">
+                    Оперативная суточная информация по добыче нефти и конденсата АО НК "КазМунайГаз", тонн
                 </div>
                 <div
-                        class="opec-filter-disabled col-1 mt-2"
+                        :class="[!isWithKMG ? 'opec-filter-active' : 'opec-filter-disabled','col-2']"
+                        @click="isWithKMG = !isWithKMG"
+                >
+                    Без доли участия КМГ
+                </div>
+                <div
+                        class="opec-filter-disabled col-1"
                         @click="switchView()"
                 >
                     {{buttonName}}
                 </div>
                 <div
-                        :class="[isOpecActive ? 'opec-filter-active' : 'opec-filter-disabled','col-1 mt-2']"
+                        :class="[isOpecActive ? 'opec-filter-active' : 'opec-filter-disabled','col-1']"
                         @click="isOpecActive = !isOpecActive"
                 >
                     С учетом ОПЕК+
                 </div>
             </div>
-            <div class="col-12 mt-2">
+            <div class="col-12 mt-3">
                 <table class="col-12">
                     <tr>
                         <th rowspan="2">№ п/п</th>
@@ -35,7 +32,7 @@
                         <th rowspan="2">
                             План на {{currentYear}} г.
                         </th>
-                        <th :class="!isOpecActive ? '' : 'hide-block'"rowspan="2">
+                        <th :class="!isOpecActive ? '' : 'hide-block'" rowspan="2">
                             План на {{currentMonthName}} месяц
                         </th>
                         <th :class="isOpecActive ? '' : 'hide-block'" rowspan="2">
@@ -47,7 +44,6 @@
                         <th colspan="3" class="background-delimeters">С НАЧАЛА ГОДА</th> <!-- >с начала года <-->
                     </tr>
                     <tr>
-
                         <!-- >суточная <-->
                         <th :class="!isOpecActive ? '' : 'hide-block'">План</th>
                         <th :class="isOpecActive ? '' : 'hide-block'">
@@ -90,34 +86,132 @@
                     </tr>
                     <!-- >саммари <-->
                     <tr
-                            v-for="item in summary"
-                            class="background-dark"
+                            v-for="(item,index) in tableOutput.summaryByKMG"
+                            :class="!isWithKMG && index > 0 ? 'background-dark hide-block' :'background-dark'"
                     >
                         <td>{{item.number}}</td>
                         <td>{{item.dzo}}</td>
+                        <td >{{getFormattedNumber(item.yearlyPlan)}}</td>
+
+                        <td v-if="!isOpecActive">{{getFormattedNumber(item.monthlyPlan)}}</td>
+                        <td v-else>{{getFormattedNumber(item.monthlyPlanOpec)}}</td>
+
+                        <td v-if="!isOpecActive">{{getFormattedNumber(item.planByDay)}}</td>
+                        <td v-else>{{getFormattedNumber(item.planOpecByDay)}}</td>
+                        <td>{{getFormattedNumber(item.factByDay)}}</td>
                         <td
-                                v-for="(key, keyIndex) in Object.keys(item)"
-                                v-if="keyIndex > 1"
-                                :class="isColumnHidden(keyIndex) ? 'hide-block' : ''"
+                                v-if="!isOpecActive"
+                                :class="getColorBy(item.differenceByDay)"
                         >
-                            {{getFormattedNumber(item[key])}}
+                            {{getFormattedNumber(item.differenceByDay)}}
+                        </td>
+                        <td
+                                v-else
+                                :class="getColorBy(item.differenceOpecByDay)"
+                        >
+                            {{getFormattedNumber(item.differenceOpecByDay)}}
+                        </td>
+
+                        <td v-if="!isOpecActive">{{getFormattedNumber(item.planByMonth)}}</td>
+                        <td v-else>{{getFormattedNumber(item.planOpecByMonth)}}</td>
+                        <td>{{getFormattedNumber(item.factByMonth)}}</td>
+                        <td
+                                v-if="!isOpecActive"
+                                :class="getColorBy(item.differenceByMonth)"
+                        >
+                            {{getFormattedNumber(item.differenceByMonth)}}
+                        </td>
+                        <td
+                                v-else
+                                :class="getColorBy(item.differenceOpecByMonth)"
+                        >
+                            {{getFormattedNumber(item.differenceOpecByMonth)}}
+                        </td>
+
+                        <td v-if="!isOpecActive">{{getFormattedNumber(item.planByYear)}}</td>
+                        <td v-else>{{getFormattedNumber(item.planOpecByYear)}}</td>
+                        <td>{{getFormattedNumber(item.factByYear)}}</td>
+                        <td
+                                v-if="!isOpecActive"
+                                :class="getColorBy(item.differenceByYear)"
+                        >
+                            {{getFormattedNumber(item.differenceByYear)}}
+                        </td>
+                        <td
+                                v-else
+                                :class="getColorBy(item.differenceOpecByYear)"
+                        >
+                            {{getFormattedNumber(item.differenceOpecByYear)}}
                         </td>
                     </tr>
                     <!-- >саммари <-->
                     <!-- >дзо <-->
                     <tr
-                            v-for="(item, index) in production"
+                            v-for="(item, index) in tableOutput.summaryByDzo"
                             :class="getRowClass(index)"
                     >
-                        <td>{{item.number}}</td>
-                        <td>{{item.dzo}}</td>
+                        <td v-if="index !== 1">{{item.number}}</td>
+                        <td v-else></td>
+                        <td :class="index === 1 ? 'text-center' : ''">{{companiesNameMapping.summaryByDzo[item.dzo]}}</td>
+                        <td >{{getFormattedNumber(item.yearlyPlan)}}</td>
+
+                        <td v-if="!isOpecActive">{{getFormattedNumber(item.monthlyPlan)}}</td>
+                        <td v-else>{{getFormattedNumber(item.monthlyPlanOpec)}}</td>
+
+                        <td v-if="!isOpecActive">{{getFormattedNumber(item.planByDay)}}</td>
+                        <td v-else>{{getFormattedNumber(item.planOpecByDay)}}</td>
+                        <td>{{getFormattedNumber(item.factByDay)}}</td>
                         <td
-                            v-for="(key, keyIndex) in Object.keys(item)"
-                            v-if="keyIndex > 1"
-                            :class="isColumnHidden(keyIndex) ? 'hide-block' : ''"
+                                v-if="!isOpecActive"
+                                :class="getColorBy(item.differenceByDay)"
                         >
-                            {{getFormattedNumber(item[key])}}
+                            {{getFormattedNumber(item.differenceByDay)}}
                         </td>
+                        <td
+                                v-else
+                                :class="getColorBy(item.differenceOpecByDay)"
+                        >
+                            {{getFormattedNumber(item.differenceOpecByDay)}}
+                        </td>
+
+                        <td v-if="!isOpecActive">{{getFormattedNumber(item.planByMonth)}}</td>
+                        <td v-else>{{getFormattedNumber(item.planOpecByMonth)}}</td>
+                        <td>{{getFormattedNumber(item.factByMonth)}}</td>
+                        <td
+                                v-if="!isOpecActive"
+                                :class="getColorBy(item.differenceByMonth)"
+                        >
+                            {{getFormattedNumber(item.differenceByMonth)}}
+                        </td>
+                        <td
+                                v-else
+                                :class="getColorBy(item.differenceOpecByMonth)"
+                        >
+                            {{getFormattedNumber(item.differenceOpecByMonth)}}
+                        </td>
+
+                        <td v-if="!isOpecActive">{{getFormattedNumber(item.planByYear)}}</td>
+                        <td v-else>{{getFormattedNumber(item.planOpecByYear)}}</td>
+                        <td>{{getFormattedNumber(item.factByYear)}}</td>
+                        <td
+                                v-if="!isOpecActive"
+                                :class="getColorBy(item.differenceByYear)"
+                        >
+                            {{getFormattedNumber(item.differenceByYear)}}
+                        </td>
+                        <td
+                                v-else
+                                :class="getColorBy(item.differenceOpecByYear)"
+                        >
+                            {{getFormattedNumber(item.differenceOpecByYear)}}
+                        </td>
+<!--                        <td-->
+<!--                            v-for="(key, keyIndex) in Object.keys(item)"-->
+<!--                            v-if="keyIndex > 1"-->
+<!--                            :class="[isColumnHidden(keyIndex) ? 'hide-block' : '',getColorBy(item[key],key)]"-->
+<!--                        >-->
+<!--                            {{getFormattedNumber(item[key])}}-->
+<!--                        </td>-->
                     </tr>
                     <!-- >дзо <-->
                </table>
@@ -126,233 +220,7 @@
 
    </div>
 </template>
-
-<script>
-import moment from "moment";
-
-export default {
-   data: function () {
-       return {
-           currentYear: moment().year(),
-           currentMonthName: moment().format('MMMM'),
-           template: {
-               'number': 1,
-               'dzo': 'АО “Ознемунайгаз” (нефть) (100%)',
-               'yearlyPlan': 1200300,
-               'monthlyPlan': 200000,
-               'monthlyPlanOpec': 210000,
-               'planByDay': 20000,
-               'planOpecByDay': 18000,
-               'factByDay': 21000,
-               'differenceByDay': 1000,
-               'differenceOpecByDay': 3000,
-               'planByMonth': 20000,
-               'planOpecByMonth': 18000,
-               'factByMonth': 21000,
-               'differenceByMonth': 1000,
-               'differenceOpecByMonth': 3000,
-               'planByYear': 200000,
-               'planOpecByYear': 180000,
-               'factByYear': 210000,
-               'differenceByYear': 10000,
-               'differenceOpecByYear': 30000,
-           },
-           production: [],
-           summary: [
-               {
-                   'number': 1,
-                   'dzo': 'Всего добыча нефти и конденсата с учетом доли участия АО НК "КазМунайГаз"',
-                   'yearlyPlan': 1200300,
-                   'monthlyPlan': 200000,
-                   'monthlyPlanOpec': 210000,
-                   'planByDay': 20000,
-                   'planOpecByDay': 18000,
-                   'factByDay': 21000,
-                   'differenceByDay': 1000,
-                   'differenceOpecByDay': 3000,
-                   'planByMonth': 20000,
-                   'planOpecByMonth': 18000,
-                   'factByMonth': 21000,
-                   'differenceByMonth': 1000,
-                   'differenceOpecByMonth': 3000,
-                   'planByYear': 200000,
-                   'planOpecByYear': 180000,
-                   'factByYear': 210000,
-                   'differenceByYear': 10000,
-                   'differenceOpecByYear': 30000,
-               },
-               {
-                   'number': '',
-                   'dzo': 'в т.ч.: газовый конденсат',
-                   'yearlyPlan': 1200300,
-                   'monthlyPlan': 200000,
-                   'monthlyPlanOpec': 210000,
-                   'planByDay': 20000,
-                   'planOpecByDay': 18000,
-                   'factByDay': 21000,
-                   'differenceByDay': 1000,
-                   'differenceOpecByDay': 3000,
-                   'planByMonth': 20000,
-                   'planOpecByMonth': 18000,
-                   'factByMonth': 21000,
-                   'differenceByMonth': 1000,
-                   'differenceOpecByMonth': 3000,
-                   'planByYear': 200000,
-                   'planOpecByYear': 180000,
-                   'factByYear': 210000,
-                   'differenceByYear': 10000,
-                   'differenceOpecByYear': 30000,
-               }
-           ],
-           opecColumns: [4,6,9,11,14,16,19],
-           isOpecActive: false,
-           buttonName: 'Добыча',
-           viewType: {
-               'production': 'Добыча',
-               'delivery': 'Сдача'
-           },
-           productionSummary: [],
-           planSummary: [],
-           productionByYear: [],
-           period: {
-               'todayStart': moment().subtract(1,'days').startOf('day'),
-               'todayEnd': moment().subtract(1,'days').endOf('day'),
-               'monthStart': moment().startOf('month'),
-               'monthEnd': moment().subtract(1,'days').endOf('day'),
-               'yearStart': moment().startOf('year'),
-               'yearEnd': moment().subtract(1,'days').endOf('day'),
-           },
-           productionByMonth: [],
-           productionByDay: [],
-           comparedSummary: []
-       }
-   },
-   methods: {
-       async getProduction() {
-           let uri = this.localeUrl("/get-production-for-year");
-           const response = await axios.get(uri);
-           if (response.status === 200) {
-               return response.data;
-           }
-           return {};
-       },
-       async getPlans() {
-           let uri = this.localeUrl("/get-dzo-monthly-plans");
-           const response = await axios.get(uri);
-           if (response.status === 200) {
-               return response.data;
-           }
-           return [];
-       },
-       getRowClass(index) {
-           if (index % 2 === 0) {
-               return 'background-light';
-           } else {
-               return 'background-dark';
-           }
-       },
-       getFormattedNumber(num) {
-           return (new Intl.NumberFormat("ru-RU").format(Math.round(num)))
-       },
-       isColumnHidden(index) {
-           return this.opecColumns.includes(index);
-       },
-       switchOpecFilter() {
-            this.isOpecActive = !this.isOpecActive;
-       },
-       switchView() {
-            if (this.buttonName === this.viewType.production) {
-                this.buttonName = this.viewType.delivery;
-            } else {
-                this.buttonName = this.viewType.production;
-            }
-       },
-       getSortedBy(type,input){
-           return _.orderBy(input,
-               ["date"],
-               [type]
-           );
-       },
-       getFilteredBy(data, periodStart, periodEnd) {
-           return _.filter(data, function (item) {
-               return _.every([
-                   _.inRange(
-                       moment(item.date),
-                       periodStart,
-                       periodEnd
-                   ),
-               ]);
-           });
-       },
-       updateProductionByPeriod() {
-           this.productionSummary = this.getSortedBy('asc',this.productionSummary);
-           this.comparedSummary = this.getComparedWithPlan();
-           console.log('plan comapred')
-           console.log(this.comparedSummary);
-           console.log('summary')
-           console.log(this.productionSummary);
-           this.productionByMonth = this.getFilteredBy(this.comparedSummary,this.period.monthStart,this.period.monthEnd);
-           this.productionByYear = this.getFilteredBy(this.comparedSummary,this.period.yearStart,this.period.yearEnd);
-           this.productionByDay = this.getFilteredBy(this.comparedSummary,this.period.todayStart,this.period.todayEnd);
-           console.log('day')
-           console.log(this.productionByDay);
-       },
-       getComparedWithPlan() {
-           let compared = [];
-           let self = this;
-           _.forEach(this.productionSummary, function(item) {
-               let planRecord = self.getPlanBy(item.dzo_name,moment(item.date).startOf('month'));
-               let dzoItem = Object.assign({},item,planRecord);
-               compared.push(dzoItem);
-           });
-           return compared;
-       },
-       getPlanBy(dzoName,date) {
-           let notUsableFields = [
-               'created_at',
-               'date',
-               'dzo',
-               'updated_at',
-               'id'
-           ];
-           let planRecord = {};
-           this.planSummary.find(function(item) {
-               let planDate = moment(item.date).startOf('day');
-               if (item.dzo === dzoName && planDate.valueOf() === date.valueOf()) {
-                   planRecord = item;
-                   for (let i in notUsableFields) {
-                       delete planRecord[notUsableFields[i]];
-                   }
-                   return planRecord;
-               }
-           });
-           return planRecord;
-       },
-
-       updatePlanByPeriod() {
-           this.planSummary = this.getFilteredBy(this.planSummary,this.period.yearStart,this.period.todayEnd);
-           this.planSummary = this.getSortedBy('asc',this.planSummary);
-       },
-   },
-   async mounted() {
-       for (let i=2; i<19; i++) {
-           let emptyCompany = _.cloneDeep(this.template);
-           emptyCompany.number = i;
-           if (i === 9) {
-               emptyCompany.differenceByDay = -1000;
-           }
-           if (i === 12) {
-               emptyCompany.differenceByDay = 3000;
-           }
-           this.production.push(emptyCompany);
-       }
-       this.productionSummary = await this.getProduction();
-       this.planSummary = await this.getPlans();
-       this.updatePlanByPeriod();
-       this.updateProductionByPeriod();
-   }
-}
-</script>
+<script src="./index.js"></script>
 
 <style scoped lang="scss">
     .header-title {
@@ -387,6 +255,12 @@ export default {
    .background-light {
        background: #4C537E;
    }
+   .color_green {
+       color: #009846;
+   }
+   .color_red {
+       color: #E31E24;
+   }
    .background-dark {
        background: #272953;
    }
@@ -405,29 +279,26 @@ export default {
        color: white;
        text-align: center;
    }
-   .fade-enter-active, .fade-leave-active {
-       transition: opacity .5s;
-   }
-   .fade-enter, .fade-leave-to {
-       opacity: 0;
+   .text-center {
+       text-align: center;
    }
    table {
        table-layout: fixed;
        border-collapse: collapse;
+
        tr {
            &:nth-child(2) {
-               th  {
+               th {
                    height: 50px;
                }
            }
+
            &:nth-child(3), &:nth-child(4) {
-               background: #3D4473;
+               background: #333975;
                border-bottom: 2px solid #272953;
-               td {
-                   border-right: 2px solid #272953;
-               }
            }
        }
+
        th {
            font-style: normal;
            font-weight: bold;
@@ -436,13 +307,16 @@ export default {
            padding: 5px;
            border: 2px solid #272953;
            width: 10%;
+
            &:first-child {
                width: 2%;
            }
-           &:nth-child(3),&:nth-child(4),&:nth-child(5) {
+
+           &:nth-child(3), &:nth-child(4), &:nth-child(5) {
                width: 5%;
            }
        }
+
        td {
            font-size: 14px;
            font-family: Bold;
@@ -451,10 +325,13 @@ export default {
            &:first-child {
                width: 2%;
            }
+
            &:nth-child(2) {
                font-family: HarmoniaSansProCyr-Regular, Harmonia-sans;
+               text-align: left;
            }
-           &:nth-child(3),&:nth-child(4),&:nth-child(5) {
+
+           &:nth-child(3), &:nth-child(4), &:nth-child(5) {
                width: 5%;
            }
        }
