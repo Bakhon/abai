@@ -50,7 +50,7 @@ class MainController extends Controller
         $this->previousYear = (int)$this->currentYear - 1;
     }
 
-    public function company(Request $request)
+    public function company(Request $request): string
     {
         $this->dateFilter($request);
         $handbook = HandbookRepTt::where('parent_id', 0)->with('childHandbookItems')->get()->toArray();
