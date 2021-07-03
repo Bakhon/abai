@@ -271,16 +271,16 @@ export default {
         getCursor: ({isDragging}) => (isDragging ? 'grabbing' : (this.isHovering ? 'pointer' : 'grab')),
         getTooltip: ({object}) => {
           if (object) {
-            console.log('object', object);
             if (object.cdng_id && object.last_omgngdu) {
               return {
                 html: this.getGuTooltipHtml(object)
               }
             }
 
-            if (object.last_hydro_calc || object.last_reverse_calc) {
+            let key = this.getPipeCalcKey(object);
+            if (key) {
               return {
-                html: this.getPipeTooltipHtml(object)
+                html: this.getPipeTooltipHtml(object, key)
               }
             }
 
@@ -306,6 +306,22 @@ export default {
         this.loading = false;
       });
     },
+    getPipeCalcKey (pipe) {
+      let keys = [
+          'last_hydro_calc',
+          'last_reverse_calc',
+          'hydro_calc',
+          'reverse_calc'
+      ];
+
+      for (let key of keys) {
+        if (pipe[key]) {
+          return key;
+        }
+      }
+
+      return null;
+    },
     getGuTooltipHtml(gu) {
       return '<div class="params_block">' +
           '<p>' + gu.name + '</p>' +
@@ -320,25 +336,24 @@ export default {
           '<p>' + this.trans('monitoring.gu.fields.surge_tank_pressure') + ': ' + this.getValOrNoData(gu.last_omgngdu.surge_tank_pressure) + ' ' + this.trans('measurements.pressure_bar') + '</p>' +
           '</div>';
     },
-    getPipeTooltipHtml(pipe) {
-      let params = pipe.last_hydro_calc ? pipe.last_hydro_calc : pipe.last_reverse_calc;
-
+    getPipeTooltipHtml(pipe, key) {
       return '<div class="params_block">' +
           '<p>' + pipe.name + '</p>' +
-          '<p>' + this.trans('monitoring.hydro_calculation.fields.length') + ': ' + this.getValOrNoData(params.length) + '</p>' +
-          '<p>' + this.trans('monitoring.units.q_zh') + ', ' + this.trans('measurements.m3/day') + ': ' + this.getValOrNoData(params.qliq) + '</p>' +
-          '<p>' + this.trans('monitoring.gu.fields.bsw') + ', ' + this.trans('measurements.percent') + ': ' + this.getValOrNoData(params.wc) + '</p>' +
-          '<p>' + this.trans('monitoring.omgngdu.fields.gas_factor') + ': ' + this.getValOrNoData(params.gazf) + '</p>' +
-          '<p>' + this.trans('monitoring.hydro_calculation.fields.pressure_start') + ': ' + this.getValOrNoData(params.press_start) + '</p>' +
-          '<p>' + this.trans('monitoring.hydro_calculation.fields.pressure_end') + ': ' + this.getValOrNoData(params.press_end) + '</p>' +
-          '<p>' + this.trans('monitoring.hydro_calculation.fields.temperature_start') + ': ' + this.getValOrNoData(params.temp_start) + '</p>' +
-          '<p>' + this.trans('monitoring.hydro_calculation.fields.temperature_end') + ': ' + this.getValOrNoData(params.temp_end) + '</p>' +
-          '<p>' + this.trans('monitoring.hydro_calculation.fields.mix_speed_avg') + ': ' + this.getValOrNoData(params.mix_speed_avg) + '</p>' +
-          '<p>' + this.trans('monitoring.hydro_calculation.fields.fluid_speed') + ': ' + this.getValOrNoData(params.fluid_speed) + '</p>' +
-          '<p>' + this.trans('monitoring.hydro_calculation.fields.gaz_speed') + ': ' + this.getValOrNoData(params.gaz_speed) + '</p>' +
-          '<p>' + this.trans('monitoring.hydro_calculation.fields.flow_type') + ': ' + this.getValOrNoData(params.flow_type) + '</p>' +
-          '<p>' + this.trans('monitoring.hydro_calculation.fields.press_change') + ': ' + this.getValOrNoData(params.press_change) + '</p>' +
-          '<p>' + this.trans('monitoring.hydro_calculation.fields.height_drop') + ': ' + this.getValOrNoData(params.height_drop) + '</p>' +
+          '<p>' + this.trans('app.date') + ': ' + this.getValOrNoData(pipe[key].date) + '</p>' +
+          '<p>' + this.trans('monitoring.hydro_calculation.fields.length') + ': ' + this.getValOrNoData(pipe[key].length) + '</p>' +
+          '<p>' + this.trans('monitoring.units.q_zh') + ', ' + this.trans('measurements.m3/day') + ': ' + this.getValOrNoData(pipe[key].qliq) + '</p>' +
+          '<p>' + this.trans('monitoring.gu.fields.bsw') + ', ' + this.trans('measurements.percent') + ': ' + this.getValOrNoData(pipe[key].wc) + '</p>' +
+          '<p>' + this.trans('monitoring.omgngdu.fields.gas_factor') + ': ' + this.getValOrNoData(pipe[key].gazf) + '</p>' +
+          '<p>' + this.trans('monitoring.hydro_calculation.fields.pressure_start') + ': ' + this.getValOrNoData(pipe[key].press_start) + '</p>' +
+          '<p>' + this.trans('monitoring.hydro_calculation.fields.pressure_end') + ': ' + this.getValOrNoData(pipe[key].press_end) + '</p>' +
+          '<p>' + this.trans('monitoring.hydro_calculation.fields.temperature_start') + ': ' + this.getValOrNoData(pipe[key].temp_start) + '</p>' +
+          '<p>' + this.trans('monitoring.hydro_calculation.fields.temperature_end') + ': ' + this.getValOrNoData(pipe[key].temp_end) + '</p>' +
+          '<p>' + this.trans('monitoring.hydro_calculation.fields.mix_speed_avg') + ': ' + this.getValOrNoData(pipe[key].mix_speed_avg) + '</p>' +
+          '<p>' + this.trans('monitoring.hydro_calculation.fields.fluid_speed') + ': ' + this.getValOrNoData(pipe[key].fluid_speed) + '</p>' +
+          '<p>' + this.trans('monitoring.hydro_calculation.fields.gaz_speed') + ': ' + this.getValOrNoData(pipe[key].gaz_speed) + '</p>' +
+          '<p>' + this.trans('monitoring.hydro_calculation.fields.flow_type') + ': ' + this.getValOrNoData(pipe[key].flow_type) + '</p>' +
+          '<p>' + this.trans('monitoring.hydro_calculation.fields.press_change') + ': ' + this.getValOrNoData(pipe[key].press_change) + '</p>' +
+          '<p>' + this.trans('monitoring.hydro_calculation.fields.height_drop') + ': ' + this.getValOrNoData(pipe[key].height_drop) + '</p>' +
           '</div>';
     },
     getValOrNoData (param) {
@@ -1090,7 +1105,7 @@ export default {
           return false;
       }
     },
-    filterChanged() {
+    async filterChanged() {
       this.selectedDate = null;
 
       switch (this.activeFilter) {
@@ -1104,6 +1119,9 @@ export default {
 
         case null:
           this.mapColorsMode = 'default';
+          this.loading = true;
+          this.pipes = await this.getMapData(this.gu);
+          this.loading = false;
           this.mapRedraw();
           break;
       }
