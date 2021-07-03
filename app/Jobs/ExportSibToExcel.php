@@ -10,6 +10,9 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Imtigger\LaravelJobStatus\Trackable;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Filters\SibFilter;
+use App\Exports\SibExport;
+use Carbon\Carbon;
 
 class ExportAgzuToExcel implements ShouldQueue
 {
@@ -44,12 +47,12 @@ class ExportAgzuToExcel implements ShouldQueue
         $query = Sib::query()
             ->with('gu');
 
-        $sib = (new \App\Filters\SibFilter($query, $this->params))
+        $sib = (new SibFilter($query, $this->params))
             ->filter()
             ->get();
 
-        $fileName = '/export/sib_' . \Carbon\Carbon::now()->format('YmdHis') . '.xlsx';
-        Excel::store(new \App\Exports\SibExport($sib), 'public'.$fileName);
+        $fileName = '/export/sib_' . Carbon::now()->format('YmdHis') . '.xlsx';
+        Excel::store(new SibExport($sib), 'public'.$fileName);
 
         $this->setOutput(
             [

@@ -93,7 +93,6 @@ class SibController extends CrudController
 
     public function list(IndexTableRequest $request)
     {
-        // $query = BufferTank::with('gu');
         $query = Sib::query()
             ->with('gu');
 

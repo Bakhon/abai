@@ -11,6 +11,16 @@ use PhpOffice\PhpSpreadsheet\Shared\Date;
 
 class PumpsImport implements ToModel
 {
+    const GU = 0;
+    const NUMBER = 1;
+    const MODEL = 2;
+    const TYPE = 3;
+    const PERFOMANCE = 4;
+    const POWER = 5;
+    const DATE_OF_EXPLOITATION = 6;
+    const CURRENT_STATE = 7;
+    const DATE_OF_REPAIR = 8;
+    const TYPE_OF_REPAIR = 9;
     /**
     * @param array $row
     *
@@ -23,27 +33,27 @@ class PumpsImport implements ToModel
     }
     
     try {
-        return \Carbon\Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($value));
+        return Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($value));
     } catch (\ErrorException $e) {
-        return \Carbon\Carbon::createFromFormat($format, $value);
+        return Carbon::createFromFormat($format, $value);
     }
 }
 
 
     public function model(array $row)
     {
-        $gu = Gu::where('name', '=', $row[0])->first();
+        $gu = Gu::where('name', $row[self::GU])->first();
         return new Pump([
             'gu_id' => empty($gu) ? null : $gu->id,
-            'number' => $row[1],
-            'model' => $row[2],
-            'type' => $row[3],
-            'perfomance' => $row[4],
-            'power' => $row[5],
-            'date_of_exploitation' => $this->transformDate($row[6]),
-            'current_state' => $row[7],
-            'date_of_repair' => $this->transformDate($row[8]),
-            'type_of_repair' => $row[9],
+            'number' => $row[self::NUMBER],
+            'model' => $row[self::MODEL],
+            'type' => $row[self::TYPE],
+            'perfomance' => $row[self::PERFOMANCE],
+            'power' => $row[self::POWER],
+            'date_of_exploitation' => $this->transformDate($row[self::DATE_OF_EXPLOITATION]),
+            'current_state' => $row[self::CURRENT_STATE],
+            'date_of_repair' => $this->transformDate($row[self::DATE_OF_REPAIR]),
+            'type_of_repair' => $row[self::TYPE_OF_REPAIR],
         ]);
 
     }

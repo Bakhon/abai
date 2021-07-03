@@ -13,6 +13,6 @@ class OvensTableSeeder extends Seeder
      */
     public function run()
     {
-        Excel::import(new OvensImport, public_path('ovens.xlsx'));
+        Excel::import(new OvensImport, public_path('imports/ovens.xlsx'));
     }
 }

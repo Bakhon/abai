@@ -13,6 +13,6 @@ class MeteringUnitsTableSeeder extends Seeder
      */
     public function run()
     {
-        Excel::import(new MeteringUnitsImport, public_path('meteringunits.xlsx'));
+        Excel::import(new MeteringUnitsImport, public_path('imports/meteringunits.xlsx'));
     }
 }

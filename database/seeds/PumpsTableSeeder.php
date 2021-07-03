@@ -13,6 +13,6 @@ class PumpsTableSeeder extends Seeder
      */
     public function run()
     {
-        Excel::import(new PumpsImport, public_path('pumps.xlsx'));
+        Excel::import(new PumpsImport, public_path('imports/pumps.xlsx'));
     }
 }

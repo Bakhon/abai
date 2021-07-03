@@ -10,6 +10,9 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Imtigger\LaravelJobStatus\Trackable;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Filters\PumpsFilter;
+use App\Exports\PumpsExport;
+use Carbon\Carbon;
 
 class ExportPumpsToExcel implements ShouldQueue
 {
@@ -47,12 +50,12 @@ class ExportPumpsToExcel implements ShouldQueue
             ->with('cdng')
             ->with('gu');
 
-        $pump = (new \App\Filters\PumpFilter($query, $this->params))
+        $pump = (new PumpFilter($query, $this->params))
             ->filter()
             ->get();
 
-        $fileName = '/export/corrosion_' . \Carbon\Carbon::now()->format('YmdHis') . '.xlsx';
-        Excel::store(new \App\Exports\PumpsExport($pump), 'public'.$fileName);
+        $fileName = '/export/corrosion_' . Carbon::now()->format('YmdHis') . '.xlsx';
+        Excel::store(new PumpsExport($pump), 'public'.$fileName);
 
         $this->setOutput(
             [

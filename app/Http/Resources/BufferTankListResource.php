@@ -33,9 +33,7 @@ class BufferTankListResource extends CrudListResource
                 'hydraulic_test' => $this->hydraulic_test,
                 'date_of_repair' => $this->date_of_repair,
                 'type_of_repair' => $this->type_of_repair,
-                ]
-            
-            
+                ]  
         ];
 
         $result['links'] = $this->getLinks();

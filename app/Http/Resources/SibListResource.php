@@ -28,9 +28,7 @@ class SibListResource extends CrudListResource
                 'date_of_repair' => $this->date_of_repair,
                 'type_of_repair' => $this->type_of_repair,
                 ]
-            
-            
-        ];
+            ];
 
         $result['links'] = $this->getLinks();
 

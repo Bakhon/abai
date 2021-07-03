@@ -10,6 +10,9 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Imtigger\LaravelJobStatus\Trackable;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Filters\BufferTankFilter;
+use App\Exports\BufferTankExport;
+use Carbon\Carbon;
 
 class ExportBufferTankToExcel implements ShouldQueue
 {
@@ -47,12 +50,12 @@ class ExportBufferTankToExcel implements ShouldQueue
             ->with('cdng')
             ->with('gu');
 
-        $bufferTank = (new \App\Filters\BufferTankFilter($query, $this->params))
+        $bufferTank = (new BufferTankFilter($query, $this->params))
             ->filter()
             ->get();
 
-        $fileName = '/export/corrosion_' . \Carbon\Carbon::now()->format('YmdHis') . '.xlsx';
-        Excel::store(new \App\Exports\BufferTankExport($bufferTank), 'public'.$fileName);
+        $fileName = '/export/corrosion_' . Carbon::now()->format('YmdHis') . '.xlsx';
+        Excel::store(new BufferTankExport($bufferTank), 'public'.$fileName);
 
         $this->setOutput(
             [

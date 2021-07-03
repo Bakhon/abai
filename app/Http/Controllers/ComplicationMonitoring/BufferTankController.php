@@ -32,8 +32,6 @@ class BufferTankController extends CrudController
             ],
             'title' => trans('monitoring.buffer_tank.title'),
             'fields' => [
-                
-                
                 'gu_id' => [
                     'title' => trans('monitoring.gu.gu'),
                     'type' => 'select',
@@ -108,8 +106,7 @@ class BufferTankController extends CrudController
 
     public function list(IndexTableRequest $request)
     {
-        // $query = BufferTank::with('gu');
-        $query = BufferTank::query()
+            $query = BufferTank::query()
             ->with('field')
             ->with('other_objects')
             ->with('ngdu')

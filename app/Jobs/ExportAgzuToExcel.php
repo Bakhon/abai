@@ -10,6 +10,9 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Imtigger\LaravelJobStatus\Trackable;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Filters\AgzuFilter;
+use App\Exports\AgzuExport;
+use Carbon\Carbon;
 
 class ExportAgzuToExcel implements ShouldQueue
 {
@@ -44,12 +47,12 @@ class ExportAgzuToExcel implements ShouldQueue
         $query = Agzu::query()
             ->with('gu');
 
-        $agzu = (new \App\Filters\AgzuFilter($query, $this->params))
+        $agzu = (new AgzuFilter($query, $this->params))
             ->filter()
             ->get();
 
-        $fileName = '/export/agzu_' . \Carbon\Carbon::now()->format('YmdHis') . '.xlsx';
-        Excel::store(new \App\Exports\AgzuExport($agzu), 'public'.$fileName);
+        $fileName = '/export/agzu_' . Carbon::now()->format('YmdHis') . '.xlsx';
+        Excel::store(new AgzuExport($agzu), 'public'.$fileName);
 
         $this->setOutput(
             [

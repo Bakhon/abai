@@ -93,7 +93,6 @@ class MeteringUnitsController extends CrudController
 
     public function list(IndexTableRequest $request)
     {
-        // $query = BufferTank::with('gu');
         $query = MeteringUnits::query()
             ->with('gu');
 

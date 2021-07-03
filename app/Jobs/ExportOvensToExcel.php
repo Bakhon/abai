@@ -10,6 +10,9 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Imtigger\LaravelJobStatus\Trackable;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Filters\OvenFilter;
+use App\Exports\OvensExport;
+use Carbon\Carbon;
 
 class ExportOvensToExcel implements ShouldQueue
 {
@@ -44,12 +47,12 @@ class ExportOvensToExcel implements ShouldQueue
         $query = Oven::query()
             ->with('gu');
 
-        $oven = (new \App\Filters\OvenFilter($query, $this->params))
+        $oven = (new OvenFilter($query, $this->params))
             ->filter()
             ->get();
 
-        $fileName = '/export/ovens_' . \Carbon\Carbon::now()->format('YmdHis') . '.xlsx';
-        Excel::store(new \App\Exports\PumpsExport($oven), 'public'.$fileName);
+        $fileName = '/export/ovens_' . Carbon::now()->format('YmdHis') . '.xlsx';
+        Excel::store(new OvensExport($oven), 'public'.$fileName);
 
         $this->setOutput(
             [

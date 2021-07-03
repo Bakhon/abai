@@ -13,6 +13,6 @@ class SibTableSeeder extends Seeder
      */
     public function run()
     {
-        Excel::import(new SibImport, public_path('sib.xlsx'));
+        Excel::import(new SibImport, public_path('imports/sib.xlsx'));
     }
 }

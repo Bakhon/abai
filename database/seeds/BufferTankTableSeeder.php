@@ -13,6 +13,6 @@ class BufferTankTableSeeder extends Seeder
      */
     public function run()
     {
-        Excel::import(new BufferTankImport, public_path('buffertank.xlsx'));
+        Excel::import(new BufferTankImport, public_path('imports/buffertank.xlsx'));
     }
 }

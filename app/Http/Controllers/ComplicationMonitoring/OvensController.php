@@ -93,7 +93,6 @@ class OvensController extends CrudController
 
     public function list(IndexTableRequest $request)
     {
-        // $query = BufferTank::with('gu');
         $query = Oven::query()
             ->with('gu');
 

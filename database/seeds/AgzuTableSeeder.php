@@ -14,6 +14,6 @@ class AgzuTableSeeder extends Seeder
      */
     public function run()
     {
-        Excel::import(new AgzuImport, public_path('agzu.xlsx'));
+        Excel::import(new AgzuImport, public_path('imports/agzu.xlsx'));
     }
 }

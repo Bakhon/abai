@@ -10,6 +10,9 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Imtigger\LaravelJobStatus\Trackable;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Filters\MeteringUnitsFilter;
+use App\Exports\MeteringUnitsExport;
+use Carbon\Carbon;
 
 class ExportMeteringUnitsToExcel implements ShouldQueue
 {
@@ -44,12 +47,12 @@ class ExportMeteringUnitsToExcel implements ShouldQueue
         $query = MeteringUnits::query()
             ->with('gu');
 
-        $meteringunits = (new \App\Filters\MeteringFilter($query, $this->params))
+        $meteringunits = (new MeteringFilter($query, $this->params))
             ->filter()
             ->get();
 
-        $fileName = '/export/metering_units_' . \Carbon\Carbon::now()->format('YmdHis') . '.xlsx';
-        Excel::store(new \App\Exports\MeteringUnitsExport($meteringunits), 'public'.$fileName);
+        $fileName = '/export/metering_units_' . Carbon::now()->format('YmdHis') . '.xlsx';
+        Excel::store(new MeteringUnitsExport($meteringunits), 'public'.$fileName);
 
         $this->setOutput(
             [

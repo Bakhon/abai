@@ -19,9 +19,7 @@ class PumpsListResource extends CrudListResource
         $result = [
             'id' => $this->id,
             'fields' => [
-                // 'field' => $this->field->name,
                 'ngdu_id' => $this->ngdu->name,
-                // 'cdng_id' => $this->cdng->name,
                 'gu_id' => $this->gu->name,
                 'number' => $this->number,
                 'model' => $this->model,
@@ -33,8 +31,6 @@ class PumpsListResource extends CrudListResource
                 'date_of_repair' => $this->date_of_repair,
                 'type_of_repair' => $this->type_of_repair,
                 ]
-            
-            
         ];
 
         $result['links'] = $this->getLinks();

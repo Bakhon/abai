@@ -11,6 +11,14 @@ use PhpOffice\PhpSpreadsheet\Shared\Date;
 
 class MeteringUnitsImport implements ToModel
 {
+    const GU = 0;
+    const MODEL = 1;
+    const TYPE = 2;
+    const DIAMETER = 3;
+    const DATE_OF_EXPLOITATION = 4;
+    const CURRENT_STATE = 5;
+    const DATE_OF_REPAIR = 6;
+    const TYPE_OF_REPAIR = 7;
     /**
     * @param array $row
     *
@@ -22,9 +30,9 @@ class MeteringUnitsImport implements ToModel
         return null;
     }
     try {
-        return \Carbon\Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($value));
+        return Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($value));
     } catch (\ErrorException $e) {
-        return \Carbon\Carbon::createFromFormat($format, $value);
+        return Carbon::createFromFormat($format, $value);
     }
     
 }
@@ -33,16 +41,16 @@ class MeteringUnitsImport implements ToModel
 
     public function model(array $row)
     {
-        $gu = Gu::where('name', '=', $row[0])->first();
+        $gu = Gu::where('name', $row[self::GU])->first();
         return new MeteringUnits([
             'gu_id' => empty($gu) ? null : $gu->id,
-            'model' => $row[1],
-            'type' => $row[2],
-            'diameter' => $row[3],
-            'date_of_exploitation' => $this->transformDate($row[4]),
-            'current_state' => $row[5],
-            'date_of_repair' => $this->transformDate($row[6]),
-            'type_of_repair' => $row[7],
+            'model' => $row[self::MODEL],
+            'type' => $row[self::TYPE],
+            'diameter' => $row[self::DIAMETER],
+            'date_of_exploitation' => $this->transformDate($row[self::DATE_OF_EXPLOITATION]),
+            'current_state' => $row[self::CURRENT_STATE],
+            'date_of_repair' => $this->transformDate($row[self::DATE_OF_REPAIR]),
+            'type_of_repair' => $row[self::TYPE_OF_REPAIR],
         ]);
 
     }

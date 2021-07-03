@@ -14,9 +14,6 @@ class PumpsUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            // 'field' => 'nullable|string',
-            // 'ngdu_id' => 'nullable|numeric',
-            // 'cdng_id' => 'nullable|numeric',
             'gu_id' => 'nullable|numeric',
             'number' => 'nullable|string',
             'model' => 'nullable|string',

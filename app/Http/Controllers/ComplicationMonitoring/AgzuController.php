@@ -93,7 +93,6 @@ class AgzuController extends CrudController
 
     public function list(IndexTableRequest $request)
     {
-        // $query = BufferTank::with('gu');
         $query = Agzu::query()
             ->with('gu');
 

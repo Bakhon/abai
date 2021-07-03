@@ -101,7 +101,6 @@ class PumpsController extends CrudController
 
     public function list(IndexTableRequest $request)
     {
-        // $query = BufferTank::with('gu');
         $query = Pump::query()
             ->with('field')
             ->with('other_objects')
