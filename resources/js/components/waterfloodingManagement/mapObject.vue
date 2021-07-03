@@ -12,19 +12,19 @@
                 {{ trans('waterflooding_management.toolbar') }}
               </div>
               <button class="btn">
-                <img src="/img/waterfloodingManagement/map-tools-button-1.svg" alt="">
+                <img src="/img/waterfloodingManagement/map-tools-choose-map-button.svg" alt="">
               </button>
               <button class="btn">
-                <img src="/img/waterfloodingManagement/map-tools-button-2.svg" alt="">
+                <img src="/img/waterfloodingManagement/map-tools-present-map-button.svg" alt="">
               </button>
               <button class="btn">
-                <img src="/img/waterfloodingManagement/map-tools-button-3.svg" alt="">
+                <img src="/img/waterfloodingManagement/map-tools-accumulated-map-button.svg" alt="">
               </button>
               <button class="btn">
-                <img src="/img/waterfloodingManagement/map-tools-button-4.svg" alt="">
+                <img src="/img/waterfloodingManagement/map-tools-highlight-map-button.svg" alt="">
               </button>
               <button class="btn">
-                <img src="/img/waterfloodingManagement/map-tools-button-5.svg" alt="">
+                <img src="/img/waterfloodingManagement/map-tools-close-map-button.svg" alt="">
               </button>
               <button class="btn">Выбрать</button>
               <a href="" class="transition"><img src="/img/waterfloodingManagement/transition.svg" alt=""></a>

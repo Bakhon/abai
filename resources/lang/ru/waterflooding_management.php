@@ -39,15 +39,14 @@ return array (
     'edit' => 'Редактировать',
     'save' => 'Сохранить',
     'monitoring' => 'Мониторинг',
-    '' => '',
-    '' => '',
-//    third page
+    'choose_object_area' => 'Выбор объекта и участка',
+    'forecasting_optimization' => 'Прогнозирование и оптимизация',
+    'assessment_monitoring' => 'Оценка и мониторинг',
     'map_selection_object' => 'Карта текущих отборов объекта',
     'production_forecast' => 'Прогноз добычи',
     'daily_oil_production_t' => 'Суточная добыча нефти, т/сут',
     'daily_oil_production' => 'суточной добычи нефти',
     'optimization_evolution' => 'Эволюция оптимизации, %',
-
     'selected_forecast_model'=>'Выбранная модель прогноза',
     'hybrid'=>'Гибридная',
     'optimization_task'=>'Оптимизационная задача',
@@ -59,8 +58,6 @@ return array (
     'option_name'=>'Название варианта + статус',
     'motiring_period'=>'Период мониторинга',
     'plan_fact'=>'План-факт',
-
-//    wft modal
     'recommendation' => 'Рекомендации',
     'modal_number_recommendation' => '№ рекомендации',
     'modal_cluster' => 'Кластер',
