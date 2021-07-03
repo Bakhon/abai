@@ -846,7 +846,7 @@
                   <td class="th">
                     <div class="icons_filt_sort" ><i class="fa fa-fw fa-sort icon_sort" @click="sortBy('field')"></i>
                       <div>
-                        <b-dropdown no-caret  toggle-class="drop-filter-custom" >
+                        <b-dropdown id="dropdownFilterCustom" no-caret  toggle-class="drop-filter2-custom" >
                           <template #button-content class="outer_button_filter">        
                             <i class="fas fa-filter icon_filter" ></i>
                           </template>
@@ -882,9 +882,9 @@
                   </td>
                   <td class="th">
                     <div class="icons_filt_sort" ><i class="fa fa-fw fa-sort icon_sort" @click="sortBy('well_type')"></i>
-                      <div>
+                      <div class="outer_button_filter" >
                         <b-dropdown no-caret  toggle-class="drop-filter-custom" >
-                          <template #button-content class="outer_button_filter">        
+                          <template #button-content >        
                             <i class="fas fa-filter icon_filter" ></i>
                           </template>
                             <b-dropdown-form class="external_field_filter">
@@ -6419,8 +6419,149 @@
 <script src="./tr.js"></script>
 
 
-<style scoped>
 
+<style scoped>
+.tr-field-filter.tr-field-filter {
+  margin: 0 0 0 auto;
+  flex-grow: 0;
+  width: 230px;
+}
+.tr-table-header {
+  justify-content: space-between;
+  height: 48px;
+  align-items: center;
+}
+.trheadhight {
+  height: 40px;
+}
+.fadropmenu.fadropmenu {
+  background: #333975;
+  z-index: 4001 !important;
+}
+.faheadhight {
+  height: 40px;
+}
+
+.button_form.button_form {
+  background: #333975;
+  border: 0px;
+  color: #fff;
+  align-self: center;
+  width: 150px;
+  margin-top: 5px;
+}
+.dropdown-menu.show {
+  display: flex;
+  flex-direction: column;
+}
+
+.header_mod {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: justify;
+    -webkit-justify-content: space-between;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    padding: 15px;
+}
+.select_mod.select_mod.select_mod.select_mod {
+     background: #334296; 
+}
+
+</style>
+
+
+
+
+
+<style>
+
+.b-dropdown-form {
+  background: #333975!important;
+  width: 135px;
+}
+.dropdown-menu.show {
+    display: flex;
+    flex-direction: column;
+    background: #333975!important;
+}
+.icons_filt_sort{
+  display: flex;
+  justify-content: center;
+}
+.field_filter_text {
+  display: flex;
+  justify-content: center;
+  margin-left: 90px;
+}
+.well_type_filter_text {
+  display: flex;
+  justify-content: center;
+  margin-left: 90px;
+}
+.field_form_fil.field_form_fil {
+  background: #333975!important;
+  width: 213px!important;
+}
+.horizon_form_fil.horizon_form_fil {
+  background: #333975!important;
+  width: 123px!important;
+}
+.obj_form_fil {
+  background: #333975!important;
+  width: 90px!important;
+}
+.block_form_fil {
+  background: #333975!important;
+  width: 168px!important;
+}
+.exp_meth_form_fil {
+  background: #333975!important;
+  width: 130px!important;
+} 
+
+.well_type_form_fil.well_type_form_fil {
+  background: #333975!important;
+  width: 213px!important;
+}
+.external_field_filter {
+  width: 251px;
+}
+.external_well_type_filter  {
+  width: 251px;
+}
+.icon_filter {
+  font-size: 7px;
+}
+.icon_sort {
+  margin-top: 6px;
+}
+.form_text {
+  color:white; 
+  font-size:13px; 
+  margin-left: 12px;
+}
+.discard_text {
+ color:white; 
+ font-size:13px; 
+ margin-left: 9px;
+}
+</style>
+
+
+
+
+<style lang="scss" scoped>
+.drop-filter2-custom{
+  background: #333975 !important;
+  border-color: #333975 !important;
+}
 body {
   color: white !important;
 }
@@ -6644,135 +6785,6 @@ table::-webkit-scrollbar-corner {
   color: #fff;
 }
 
-</style>
-<style>
-.tr-field-filter.tr-field-filter {
-  margin: 0 0 0 auto;
-  flex-grow: 0;
-  width: 230px;
-}
-.tr-table-header {
-  justify-content: space-between;
-  height: 48px;
-  align-items: center;
-}
-.trheadhight {
-  height: 40px;
-}
-.fadropmenu.fadropmenu {
-  background: #333975;
-  z-index: 4001 !important;
-}
-.faheadhight {
-  height: 40px;
-}
-
-.button_form.button_form {
-  background: #333975;
-  border: 0px;
-  color: #fff;
-  align-self: center;
-  width: 150px;
-  margin-top: 5px;
-}
-.dropdown-menu.show {
-  display: flex;
-  flex-direction: column;
-}
-
-.header_mod {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-align: center;
-    -webkit-align-items: center;
-    -ms-flex-align: center;
-    align-items: center;
-    -webkit-box-pack: justify;
-    -webkit-justify-content: space-between;
-    -ms-flex-pack: justify;
-    justify-content: space-between;
-    padding: 15px;
-}
-.select_mod.select_mod.select_mod.select_mod {
-     background: #334296; 
-}
-.drop-filter-custom {
-  background: #333975!important;
-  border-color: #333975 !important;
-}
-.b-dropdown-form {
-  background: #333975!important;
-  width: 135px;
-}
-.dropdown-menu.show {
-    display: flex;
-    flex-direction: column;
-    background: #333975!important;
-}
-.icons_filt_sort{
-  display: flex;
-  justify-content: center;
-}
-.field_filter_text {
-  display: flex;
-  justify-content: center;
-  margin-left: 90px;
-}
-.well_type_filter_text {
-  display: flex;
-  justify-content: center;
-  margin-left: 90px;
-}
-.field_form_fil.field_form_fil {
-  background: #333975!important;
-  width: 213px!important;
-}
-.horizon_form_fil.horizon_form_fil {
-  background: #333975!important;
-  width: 123px!important;
-}
-.obj_form_fil {
-  background: #333975!important;
-  width: 90px!important;
-}
-.block_form_fil {
-  background: #333975!important;
-  width: 168px!important;
-}
-.exp_meth_form_fil {
-  background: #333975!important;
-  width: 130px!important;
-} 
-
-.well_type_form_fil.well_type_form_fil {
-  background: #333975!important;
-  width: 213px!important;
-}
-.external_field_filter {
-  width: 251px;
-}
-.external_well_type_filter  {
-  width: 251px;
-}
-.icon_filter {
-  font-size: 7px;
-}
-.icon_sort {
-  margin-top: 6px;
-}
-.form_text {
-  color:white; 
-  font-size:13px; 
-  margin-left: 12px;
-}
-.discard_text {
- color:white; 
- font-size:13px; 
- margin-left: 9px;
-}
-
 .tr_icons_block {
     justify-content: right;
 }
@@ -6787,9 +6799,21 @@ table::-webkit-scrollbar-corner {
   background: #272953;
   border: none;
 }
-</style>
 
-<style lang="scss" scoped>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     .table-outer{
       &::v-deep{
         .pagination {
