@@ -278,7 +278,6 @@ export default {
       isAscSort: "",
       pageCount: 0,
       pageNumber: 1,
-      isEdit: false,
       currentMonth: null,
       currentYear: null,
       searchParam: null,
@@ -407,7 +406,7 @@ export default {
       if (this.is_dynamic) {
         this.axiosDynamicFilterRequest();
       }
-      else if (this.isEdit) {
+      else if (this.edit) {
         this.axiosEdit();
       }
       else{
@@ -575,7 +574,6 @@ export default {
     },
     cancelEdit() {
       this.$store.commit("globalloading/SET_LOADING", true);
-      this.isEdit = false;
       this.edit = false;
       this.editedWells = [];
       this.month = this.currentMonth;
@@ -613,7 +611,6 @@ export default {
     editable() {
       this.$store.commit("globalloading/SET_LOADING", true);
       this.is_dynamic = false;
-      this.isEdit = true;
       this.edit = true;
       this.show_second = true;
       this.show_first = false;
@@ -634,7 +631,7 @@ export default {
       if (this.is_dynamic) {
         this.axiosDynamicFilterRequest();
       }
-      else if (this.isEdit) {
+      else if (this.edit) {
         this.axiosEdit();
       }
       else{
@@ -704,7 +701,6 @@ export default {
       this.$store.commit("tr/SET_BLOCK", []);
       this.$store.commit("tr/SET_EXPMETH", []);
       this.$store.commit("tr/SET_PAGENUMBER", 1);
-      this.$store.commit("tr/SET_SEARCH", "");
       this.$store.commit("tr/SET_SORTTYPE", true);
       this.$store.commit("tr/SET_SORTPARAM", "rus_wellname");
       this.$store.commit("tr/SET_IS_DYNAMIC", "false");
@@ -833,7 +829,7 @@ export default {
         ? `search/${this.searchString}/`
         : "";
       this.$store.commit("tr/SET_SEARCH", this.searchString);
-      if (this.isEdit) {
+      if (this.edit) {
         this.axiosEditSearch();
         this.axiosEditPage();
       }
