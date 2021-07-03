@@ -299,12 +299,12 @@ export default {
           block: this.$store.state.tr.block,
           expMeth: this.$store.state.tr.expMeth,
           horizon: this.$store.state.tr.horizon,
-          year_1: this.$store.state.tr.year_1,
-          month_1: this.$store.state.tr.month_1,
-          day_1: this.$store.state.tr.day_1,
-          year_2:  this.$store.state.tr.year_2,
-          month_2:  this.$store.state.tr.month_2,
-          day_2:  this.$store.state.tr.day_2,
+          year_1: this.$store.state.tr.year_dyn_start,
+          month_1: this.$store.state.tr.month_dyn_start,
+          day_1: this.$store.state.tr.day_dyn_start,
+          year_2:  this.$store.state.tr.year_dyn_end,
+          month_2:  this.$store.state.tr.month_dyn_end,
+          day_2:  this.$store.state.tr.day_dyn_end,
           };
       }
       else {
