@@ -72,6 +72,7 @@ Route::group(
                 Route::get('/get-chemistry-details', 'VisCenter\VisualCenterController@getChemistryDetails');
                 Route::get('/get-drilling-details', 'VisCenter\VisualCenterController@getDrillingDetails');
                 Route::get('/get-fond-details', 'VisCenter\VisualCenterController@getFondDetails');
+                Route::get('/import-chemistry-from-avocet', 'VisCenter\VisualCenterController@saveAvocetChemistryValue');
 
             }
         );

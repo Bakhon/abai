@@ -24,6 +24,7 @@ use App\Models\VisCenter\ExcelForm\DzoImportDecreaseReason;
 use Carbon\Carbon;
 use App\Models\VisCenter\ExcelForm\DzoImportOtm;
 use App\Models\VisCenter\ExcelForm\DzoImportChemistry;
+use App\Models\BigData\AvocetChemistryValue;
 
 class VisualCenterController extends Controller
 {
@@ -423,5 +424,26 @@ class VisualCenterController extends Controller
             ->with('importDowntimeReason')
             ->get()
             ->toArray();
+    }
+
+    public function saveAvocetChemistryValue(Request $request)    {      
+        $date = $request->date;
+        $DzoImportChemistry = new DzoImportChemistry();
+        $DzoImportChemistry->dzo_name = 'КГМ';
+        $DzoImportChemistry->date = $date;
+        $DzoImportChemistry->demulsifier = $this->getAvocetChemistryArray('DEMULSIFICATOR', $date);
+        $DzoImportChemistry->bactericide = $this->getAvocetChemistryArray('BACTERICIDE', $date);
+        $DzoImportChemistry->corrosion_inhibitor = $this->getAvocetChemistryArray('COR_ING', $date);
+        $DzoImportChemistry->scale_inhibitor = $this->getAvocetChemistryArray('SALT_INHIB', $date);
+        $DzoImportChemistry->save(); 
+        dd('Сохранено');
+    }
+
+    public function getAvocetChemistryArray($nameOfChemistryValue, $date)
+    {
+        return AvocetChemistryValue::query()->select('*')
+            ->where('start_datetime', $date)
+            ->where('legacy_id', $nameOfChemistryValue)
+            ->get()->toArray()['0']['inj_fact_mass'];
     }
 }
