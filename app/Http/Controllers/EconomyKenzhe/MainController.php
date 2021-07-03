@@ -88,7 +88,7 @@ class MainController extends Controller
     }
 
 
-    public function recursiveSetValueToHandbookByType(&$items, $companyRepTtValues, $currentYear, $previousYear, $dateFrom, $dateTo)
+    public function recursiveSetValueToHandbookByType(array &$items, array $companyRepTtValues, int $currentYear, int $previousYear, string $dateFrom, string $dateTo): array
     {
         $companyValuesRepTtIds = array_column($companyRepTtValues, 'rep_id');
         foreach ($items as $repttIndex => $reptt) {
@@ -106,7 +106,7 @@ class MainController extends Controller
     }
 
 
-    public function getValuesIdsByRepTtId($companyValuesRepTtIds, $repTt)
+    public function getValuesIdsByRepTtId(array $companyValuesRepTtIds, array $repTt): array
     {
         $id = $repTt['id'];
         $ids = array_filter($companyValuesRepTtIds, function ($v) use ($id) {
@@ -115,7 +115,7 @@ class MainController extends Controller
         return $ids;
     }
 
-    public function setItemsDefaultValue($key, &$item, $currentYear, $previousYear)
+    public function setItemsDefaultValue(string $key, array &$item, int $currentYear, int $previousYear): void
     {
         if (!array_key_exists($key, $item)) {
             $item[$key][$currentYear] = 0;
@@ -123,7 +123,7 @@ class MainController extends Controller
         }
     }
 
-    private function setValueForEqualIdsToitem($companyValuesRepTtIds, $reptt, $companyRepTtValues, $currentYear, $previousYear, $dateFrom, $dateTo, &$items, $repttIndex)
+    private function setValueForEqualIdsToitem(array $companyValuesRepTtIds, array $reptt, array $companyRepTtValues, int $currentYear, int $previousYear, string $dateFrom, string $dateTo, array &$items, string $repttIndex): void
     {
         $equalIds = $this->getValuesIdsByRepTtId($companyValuesRepTtIds, $reptt);
         if (count($equalIds) == 0) {
