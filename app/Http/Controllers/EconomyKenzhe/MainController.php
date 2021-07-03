@@ -143,7 +143,7 @@ class MainController extends Controller
         }
     }
 
-    public function sumValuesByItemType(array &$item, string $attribute, string $value, string $dateFrom, string $dateTo, int $year, string $currentItemDate)
+    public function sumValuesByItemType(array &$item, string $attribute, string $value, string $dateFrom, string $dateTo, int $year, string $currentItemDate): void
     {
         $item[$attribute][$year] += (int)$value;
         if (strtotime($dateFrom) <= $currentItemDate && strtotime($dateTo) >= $currentItemDate) {
