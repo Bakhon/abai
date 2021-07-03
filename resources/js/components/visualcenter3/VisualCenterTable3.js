@@ -789,14 +789,14 @@ export default {
         this.buttonDailyTab = "button-tab-highlighted";
         this.mainMenuButtonElementOptions = _.cloneDeep(mainMenuConfiguration);
         this.getDzoYearlyPlan();
-        this.selectedDzoCompanies = this.getAllDzoCompanies();   
-        let isOneDzoSelected = this.getDzoTicker();     
-        if (isOneDzoSelected) {
-        this.assignOneCompanyToSelectedDzo(isOneDzoSelected);
-        };        
+        this.selectedDzoCompanies = this.getAllDzoCompanies();
     },   
     watch: {
         bigTable: function () {
+            let isOneDzoSelected = this.getDzoTicker(); 
+            if (isOneDzoSelected) {
+            this.assignOneCompanyToSelectedDzo(isOneDzoSelected);
+            };
             this.dzoCompanySummary = this.bigTable;
             if (this.oilCondensateProductionButton.length > 0 || this.oilCondensateDeliveryButton.length > 0) {
                 let yesterdayPeriodStart = moment(new Date(this.timestampToday)).subtract(this.quantityRange, 'days').valueOf();
