@@ -309,38 +309,40 @@ export default {
     getGuTooltipHtml(gu) {
       return '<div class="params_block">' +
           '<p>' + gu.name + '</p>' +
-          '<p>' + this.trans('monitoring.gu.fields.date') + ': ' + gu.last_omgngdu.date + '</p>' +
-          '<p>' + this.trans('monitoring.gu.fields.daily_fluid_production') + ': ' + gu.last_omgngdu.daily_fluid_production + ' ' + this.trans('measurements.m3/day') + '</p>' +
-          '<p>' + this.trans('monitoring.gu.fields.daily_oil_production') + ': ' + gu.last_omgngdu.daily_oil_production + ' ' + this.trans('measurements.m3/day') + '</p>' +
-          '<p>' + this.trans('monitoring.gu.fields.daily_water_production') + ': ' + gu.last_omgngdu.daily_water_production + ' ' + this.trans('measurements.m3/day') + '</p>' +
-          '<p>' + this.trans('monitoring.gu.fields.bsw') + ': ' + gu.last_omgngdu.bsw + this.trans('measurements.percent') + '</p>' +
-          '<p>' + this.trans('monitoring.gu.fields.pump_discharge_pressure') + ': ' + gu.last_omgngdu.pump_discharge_pressure + ' ' + this.trans('measurements.pressure_bar') + '</p>' +
-          '<p>' + this.trans('monitoring.gu.fields.heater_output_temperature') + ': ' + gu.last_omgngdu.heater_output_temperature + ' ' + this.trans('measurements.celsius') + '</p>' +
-          '<p>' + this.trans('monitoring.gu.fields.daily_gas_production_in_sib') + ': ' + gu.last_omgngdu.daily_gas_production_in_sib + ' ' + this.trans('measurements.st.m3/day') + '</p>' +
-          '<p>' + this.trans('monitoring.gu.fields.surge_tank_pressure') + ': ' + gu.last_omgngdu.surge_tank_pressure + ' ' + this.trans('measurements.pressure_bar') + '</p>' +
-
+          '<p>' + this.trans('monitoring.gu.fields.date') + ': ' + this.getValOrNoData(gu.last_omgngdu.date) + '</p>' +
+          '<p>' + this.trans('monitoring.gu.fields.daily_fluid_production') + ': ' + this.getValOrNoData(gu.last_omgngdu.daily_fluid_production) + ' ' + this.trans('measurements.m3/day') + '</p>' +
+          '<p>' + this.trans('monitoring.gu.fields.daily_oil_production') + ': ' + this.getValOrNoData(gu.last_omgngdu.daily_oil_production) + ' ' + this.trans('measurements.m3/day') + '</p>' +
+          '<p>' + this.trans('monitoring.gu.fields.daily_water_production') + ': ' + this.getValOrNoData(gu.last_omgngdu.daily_water_production) + ' ' + this.trans('measurements.m3/day') + '</p>' +
+          '<p>' + this.trans('monitoring.gu.fields.bsw') + ': ' + this.getValOrNoData(gu.last_omgngdu.bsw) + this.trans('measurements.percent') + '</p>' +
+          '<p>' + this.trans('monitoring.gu.fields.pump_discharge_pressure') + ': ' + this.getValOrNoData(gu.last_omgngdu.pump_discharge_pressure) + ' ' + this.trans('measurements.pressure_bar') + '</p>' +
+          '<p>' + this.trans('monitoring.gu.fields.heater_output_temperature') + ': ' + this.getValOrNoData(gu.last_omgngdu.heater_output_temperature) + ' ' + this.trans('measurements.celsius') + '</p>' +
+          '<p>' + this.trans('monitoring.gu.fields.daily_gas_production_in_sib') + ': ' + this.getValOrNoData(gu.last_omgngdu.daily_gas_production_in_sib) + ' ' + this.trans('measurements.st.m3/day') + '</p>' +
+          '<p>' + this.trans('monitoring.gu.fields.surge_tank_pressure') + ': ' + this.getValOrNoData(gu.last_omgngdu.surge_tank_pressure) + ' ' + this.trans('measurements.pressure_bar') + '</p>' +
           '</div>';
     },
-    getPipeTooltipHtml (pipe) {
-    let params = pipe.last_hydro_calc ? pipe.last_hydro_calc : pipe.last_reverse_calc
-    return '<div class="params_block">' +
-        '<p>' + pipe.name + '</p>' +
-        '<p>' + this.trans('monitoring.hydro_calculation.fields.length') + ': ' + params.length + '</p>' +
-        '<p>' + this.trans('monitoring.units.q_zh') + ', ' + this.trans('measurements.m3/day') + ': ' + params.qliq + '</p>' +
-        '<p>' + this.trans('monitoring.gu.fields.bsw') + ', ' + this.trans('measurements.percent') + ': ' + params.wc + '</p>' +
-        '<p>' + this.trans('monitoring.omgngdu.fields.gas_factor') + ': ' + params.gazf + '</p>' +
-        '<p>' + this.trans('monitoring.hydro_calculation.fields.pressure_start') + ': ' + params.press_start + '</p>' +
-        '<p>' + this.trans('monitoring.hydro_calculation.fields.pressure_end') + ': ' + params.press_end + '</p>' +
-        '<p>' + this.trans('monitoring.hydro_calculation.fields.temperature_start') + ': ' + params.temp_start + '</p>' +
-        '<p>' + this.trans('monitoring.hydro_calculation.fields.temperature_end') + ': ' + params.temp_end + '</p>' +
-        '<p>' + this.trans('monitoring.hydro_calculation.fields.mix_speed_avg') + ': ' + params.mix_speed_avg + '</p>' +
-        '<p>' + this.trans('monitoring.hydro_calculation.fields.fluid_speed') + ': ' + params.fluid_speed + '</p>' +
-        '<p>' + this.trans('monitoring.hydro_calculation.fields.gaz_speed') + ': ' + params.gaz_speed + '</p>' +
-        '<p>' + this.trans('monitoring.hydro_calculation.fields.flow_type') + ': ' + params.flow_type + '</p>' +
-        '<p>' + this.trans('monitoring.hydro_calculation.fields.press_change') + ': ' + params.press_change + '</p>' +
-        '<p>' + this.trans('monitoring.hydro_calculation.fields.height_drop') + ': ' + params.height_drop + '</p>' +
+    getPipeTooltipHtml(pipe) {
+      let params = pipe.last_hydro_calc ? pipe.last_hydro_calc : pipe.last_reverse_calc;
 
-        '</div>';
+      return '<div class="params_block">' +
+          '<p>' + pipe.name + '</p>' +
+          '<p>' + this.trans('monitoring.hydro_calculation.fields.length') + ': ' + this.getValOrNoData(params.length) + '</p>' +
+          '<p>' + this.trans('monitoring.units.q_zh') + ', ' + this.trans('measurements.m3/day') + ': ' + this.getValOrNoData(params.qliq) + '</p>' +
+          '<p>' + this.trans('monitoring.gu.fields.bsw') + ', ' + this.trans('measurements.percent') + ': ' + this.getValOrNoData(params.wc) + '</p>' +
+          '<p>' + this.trans('monitoring.omgngdu.fields.gas_factor') + ': ' + this.getValOrNoData(params.gazf) + '</p>' +
+          '<p>' + this.trans('monitoring.hydro_calculation.fields.pressure_start') + ': ' + this.getValOrNoData(params.press_start) + '</p>' +
+          '<p>' + this.trans('monitoring.hydro_calculation.fields.pressure_end') + ': ' + this.getValOrNoData(params.press_end) + '</p>' +
+          '<p>' + this.trans('monitoring.hydro_calculation.fields.temperature_start') + ': ' + this.getValOrNoData(params.temp_start) + '</p>' +
+          '<p>' + this.trans('monitoring.hydro_calculation.fields.temperature_end') + ': ' + this.getValOrNoData(params.temp_end) + '</p>' +
+          '<p>' + this.trans('monitoring.hydro_calculation.fields.mix_speed_avg') + ': ' + this.getValOrNoData(params.mix_speed_avg) + '</p>' +
+          '<p>' + this.trans('monitoring.hydro_calculation.fields.fluid_speed') + ': ' + this.getValOrNoData(params.fluid_speed) + '</p>' +
+          '<p>' + this.trans('monitoring.hydro_calculation.fields.gaz_speed') + ': ' + this.getValOrNoData(params.gaz_speed) + '</p>' +
+          '<p>' + this.trans('monitoring.hydro_calculation.fields.flow_type') + ': ' + this.getValOrNoData(params.flow_type) + '</p>' +
+          '<p>' + this.trans('monitoring.hydro_calculation.fields.press_change') + ': ' + this.getValOrNoData(params.press_change) + '</p>' +
+          '<p>' + this.trans('monitoring.hydro_calculation.fields.height_drop') + ': ' + this.getValOrNoData(params.height_drop) + '</p>' +
+          '</div>';
+    },
+    getValOrNoData (param) {
+      return (typeof param == 'undefined' || !param) ? this.trans('monitoring.no_data') : param;
     },
     prepareLayers() {
       let pipesLayer = this.createPipeLayer('path-layer', this.pipes);

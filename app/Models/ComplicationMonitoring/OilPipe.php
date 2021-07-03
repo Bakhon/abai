@@ -77,7 +77,7 @@ class OilPipe extends Model
 
     public function lastHydroCalc()
     {
-        return $this->belongsTo(OmgNGDU::class);
+        return $this->belongsTo(HydroCalcResult::class);
     }
 
     public function scopeWithLastHydroCalc($query)
@@ -94,7 +94,7 @@ class OilPipe extends Model
 
     public function lastReverseCalc()
     {
-        return $this->belongsTo(OmgNGDU::class);
+        return $this->belongsTo(ReverseCalculation::class);
     }
 
     public function scopeWithLastReverseCalc($query)
