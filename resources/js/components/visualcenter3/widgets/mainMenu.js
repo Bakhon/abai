@@ -186,28 +186,14 @@ export default {
                 return this.trans("visualcenter.tonWithSpace");
             }
         },
-        
-        assignOneCompanyToSelectedDzo(oneDzoNameSelected){              
-            this.isOneDzoSelected = true;
-            this.productionFondSelectedCompany = oneDzoNameSelected;
-            this.chemistrySelectedCompany = oneDzoNameSelected;
-            this.wellsWorkoverSelectedCompany = oneDzoNameSelected;
-            this.drillingSelectedCompany = oneDzoNameSelected;
-            this.productionFondSelectedCompany = oneDzoNameSelected;
-            this.injectionFondSelectedCompany = oneDzoNameSelected;            
-              
-            if (oneDzoNameSelected=='ОМГ'){
-            oneDzoNameSelected=[oneDzoNameSelected,'ОМГК'];
-            }
-            
-            this.selectedDzoCompanies = oneDzoNameSelected;
 
-            this.updateDzoMenu(); 
-            this.updateChemistryWidget();
-            this.updateWellsWorkoverWidget();
-            this.updateDrillingWidget();
-            this.updateProductionFondWidget();
-            this.updateInjectionFondWidget();
-        },     
+        assignOneCompanyToSelectedDzo(oneDzoNameSelected) {
+            this.isOneDzoSelected = true;
+            if (oneDzoNameSelected == 'ОМГ') {
+                oneDzoNameSelected = [oneDzoNameSelected, 'ОМГК'];
+            }
+            this.selectedDzoCompanies = oneDzoNameSelected;
+            this.updateDzoMenu();
+        },
     },
 }

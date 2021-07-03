@@ -69,10 +69,7 @@ export default {
                     id: 113
                 },
             },
-            isOneDzoSelected:'',
-            accidentTotal: '',
-            noData: '',
-            personalFact: '',
+            isOneDzoSelected: '',
             oilChartHeadName: this.trans('visualcenter.getoildynamic'),
             quantityRange: '',
             index: "",
@@ -790,12 +787,17 @@ export default {
         this.mainMenuButtonElementOptions = _.cloneDeep(mainMenuConfiguration);
         this.getDzoYearlyPlan();
         this.selectedDzoCompanies = this.getAllDzoCompanies();
+        this.updateChemistryWidget();
+        this.updateWellsWorkoverWidget();
+        this.updateDrillingWidget();
+        this.updateProductionFondWidget();
+        this.updateInjectionFondWidget();
     },   
     watch: {
         bigTable: function () {
-            let isOneDzoSelected = this.getDzoTicker(); 
+            let isOneDzoSelected = this.getDzoTicker();
             if (isOneDzoSelected) {
-            this.assignOneCompanyToSelectedDzo(isOneDzoSelected);
+                this.assignOneCompanyToSelectedDzo(isOneDzoSelected);
             };
             this.dzoCompanySummary = this.bigTable;
             if (this.oilCondensateProductionButton.length > 0 || this.oilCondensateDeliveryButton.length > 0) {

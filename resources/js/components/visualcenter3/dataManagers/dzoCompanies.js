@@ -202,12 +202,12 @@ export default {
         },
 
         selectAllDzoCompanies() {
-        if (!isOneDzoSelected){
+            if (!isOneDzoSelected) {
                 this.dzoCompanies = _.cloneDeep(this.dzoCompaniesTemplate);
                 _.forEach(this.dzoCompanies, function (dzo) {
                     _.set(dzo, 'selected', true);
                 });
-            this.selectDzoCompanies();
+                this.selectDzoCompanies();
             }
         },
 

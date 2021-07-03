@@ -79,9 +79,9 @@ export default {
         },
 
         getNameDzoFull: function (dzo) {
-            if (Array.isArray(dzo)==true) {
-                dzo=dzo['0']
-                }
+            if (Array.isArray(dzo)) {
+                dzo = dzo['0']
+            }
             if (typeof this.NameDzoFull[dzo] !== 'undefined') {
                 return this.NameDzoFull[dzo]
             }
