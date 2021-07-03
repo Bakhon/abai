@@ -72,14 +72,7 @@
             <div>
               <select
                 v-model="month"
-                style="
-                  background-color: #40467e;
-                  border-color: #40467e;
-                  color: white;
-                  width: 100%;
-                  padding: 8px;
-                "
-                class="form-controll"
+                class="form-controll-from"
                 id="companySelect"
                 @change="onChangeMonth($event)"
               >
@@ -100,17 +93,7 @@
             <div>
               <select
                 v-model="selectYear"
-                style="
-                  background-color: #40467E ;
-                  border-color: #40467E;
-                  color: white;
-                  width: 100%;
-                  padding: 8px;
-                  border: none
-                  height: 35px !important;
-                  color: white !important;
-                "
-                class="form-controll"
+                class="form-controll-to"
                 id="companySelect"
                 @change="onChangeYear($event)"
               >
@@ -846,7 +829,7 @@
                   <td class="th">
                     <div class="icons_filt_sort" ><i class="fa fa-fw fa-sort icon_sort" @click="sortBy('field')"></i>
                       <div>
-                        <b-dropdown id="dropdownFilterCustom" no-caret  toggle-class="drop-filter2-custom" >
+                        <b-dropdown id="dropdownFilterCustom" no-caret  toggle-class="drop-filter-custom" >
                           <template #button-content class="outer_button_filter">        
                             <i class="fas fa-filter icon_filter" ></i>
                           </template>
@@ -6419,8 +6402,24 @@
 <script src="./tr.js"></script>
 
 
-
-<style scoped>
+<style lang="scss" scoped>
+.form-controll-from {
+  background-color: #333975;
+  border-color: #333975;
+  color: white;
+  width: 100%;
+  padding: 8px;
+}
+.form-controll-to {
+  background-color: #333975 ;
+  border-color: #333975;
+  color: white;
+  width: 100%;
+  padding: 8px;
+  border: none;
+  height: 35px !important;
+  color: white !important;
+}
 .tr-field-filter.tr-field-filter {
   margin: 0 0 0 auto;
   flex-grow: 0;
@@ -6474,94 +6473,6 @@
      background: #334296; 
 }
 
-</style>
-
-
-
-
-
-<style>
-
-.b-dropdown-form {
-  background: #333975!important;
-  width: 135px;
-}
-.dropdown-menu.show {
-    display: flex;
-    flex-direction: column;
-    background: #333975!important;
-}
-.icons_filt_sort{
-  display: flex;
-  justify-content: center;
-}
-.field_filter_text {
-  display: flex;
-  justify-content: center;
-  margin-left: 90px;
-}
-.well_type_filter_text {
-  display: flex;
-  justify-content: center;
-  margin-left: 90px;
-}
-.field_form_fil.field_form_fil {
-  background: #333975!important;
-  width: 213px!important;
-}
-.horizon_form_fil.horizon_form_fil {
-  background: #333975!important;
-  width: 123px!important;
-}
-.obj_form_fil {
-  background: #333975!important;
-  width: 90px!important;
-}
-.block_form_fil {
-  background: #333975!important;
-  width: 168px!important;
-}
-.exp_meth_form_fil {
-  background: #333975!important;
-  width: 130px!important;
-} 
-
-.well_type_form_fil.well_type_form_fil {
-  background: #333975!important;
-  width: 213px!important;
-}
-.external_field_filter {
-  width: 251px;
-}
-.external_well_type_filter  {
-  width: 251px;
-}
-.icon_filter {
-  font-size: 7px;
-}
-.icon_sort {
-  margin-top: 6px;
-}
-.form_text {
-  color:white; 
-  font-size:13px; 
-  margin-left: 12px;
-}
-.discard_text {
- color:white; 
- font-size:13px; 
- margin-left: 9px;
-}
-</style>
-
-
-
-
-<style lang="scss" scoped>
-.drop-filter2-custom{
-  background: #333975 !important;
-  border-color: #333975 !important;
-}
 body {
   color: white !important;
 }
