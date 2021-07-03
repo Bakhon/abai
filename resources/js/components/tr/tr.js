@@ -235,7 +235,7 @@ export default {
       show_first: true,
       show_second: false,
       show_add: false,
-      edit: false,
+      isEdit: false,
       editdtm: null,
       editdty: null,
       year: null,
@@ -406,7 +406,7 @@ export default {
       if (this.is_dynamic) {
         this.axiosDynamicFilterRequest();
       }
-      else if (this.edit) {
+      else if (this.isEdit) {
         this.axiosEdit();
       }
       else{
@@ -542,7 +542,7 @@ export default {
         });
     },
     savetable() {
-      this.edit = false;
+      this.isEdit = false;
       this.$store.commit("globalloading/SET_LOADING", true);
       const searchParam = this.searchString ? `${this.searchString}/` : "";
       this.axios
@@ -574,7 +574,7 @@ export default {
     },
     cancelEdit() {
       this.$store.commit("globalloading/SET_LOADING", true);
-      this.edit = false;
+      this.isEdit = false;
       this.editedWells = [];
       this.month = this.currentMonth;
       this.selectYear = this.currentYear;
@@ -611,7 +611,7 @@ export default {
     editable() {
       this.$store.commit("globalloading/SET_LOADING", true);
       this.is_dynamic = false;
-      this.edit = true;
+      this.isEdit = true;
       this.show_second = true;
       this.show_first = false;
       this.axiosEdit();
@@ -631,7 +631,7 @@ export default {
       if (this.is_dynamic) {
         this.axiosDynamicFilterRequest();
       }
-      else if (this.edit) {
+      else if (this.isEdit) {
         this.axiosEdit();
       }
       else{
@@ -829,7 +829,7 @@ export default {
         ? `search/${this.searchString}/`
         : "";
       this.$store.commit("tr/SET_SEARCH", this.searchString);
-      if (this.edit) {
+      if (this.isEdit) {
         this.axiosEditSearch();
         this.axiosEditPage();
       }

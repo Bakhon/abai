@@ -3357,7 +3357,7 @@
                   </td>
 
                   <td
-                    v-if="!edit"
+                    v-if="!isEdit"
                     :class="{'cell-with-comment': isCommentClass(row_index,`dens_oil`), 'activ': isActiveClass(row)}"
                   >
                     <span
@@ -3380,7 +3380,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -3407,7 +3407,7 @@
                   </td>
 
                   <td
-                    v-if="!edit"
+                    v-if="!isEdit"
                     :class="{'cell-with-comment': isCommentClass(row_index,`dens_liq`), 'activ': isActiveClass(row)}"
                   >
                     <span
@@ -3430,7 +3430,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -3457,7 +3457,7 @@
                   </td>
 
                   <td
-                    v-if="!edit"
+                    v-if="!isEdit"
                     :class="{'cell-with-comment': isCommentClass(row_index,`h_perf`), 'activ': isActiveClass(row)}"
                   >
                     <span
@@ -3480,7 +3480,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -3507,7 +3507,7 @@
                   </td>
 
                   <td
-                    v-if="!edit"
+                    v-if="!isEdit"
                     :class="{'cell-with-comment': isCommentClass(row_index,`k`), 'activ': isActiveClass(row)}"
                   >
                     <span
@@ -3530,7 +3530,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -3557,7 +3557,7 @@
                   </td>
 
                   <td
-                    v-if="!edit"
+                    v-if="!isEdit"
                     :class="{'cell-with-comment': isCommentClass(row_index,`kh`), 'activ': isActiveClass(row)}"
                   >
                     <span
@@ -3580,7 +3580,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -3607,7 +3607,7 @@
                   </td>
 
                   <td
-                    v-if="!edit"
+                    v-if="!isEdit"
                     :class="{'cell-with-comment': isCommentClass(row_index,`pi`), 'activ': isActiveClass(row)}"
                   >
                     <span
@@ -3630,7 +3630,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -3657,7 +3657,7 @@
                   </td>
 
                   <td
-                    v-if="!edit"
+                    v-if="!isEdit"
                     :class="{'cell-with-comment': isCommentClass(row_index,`tp_idn_bhp`), 'activ': isActiveClass(row)}"
                   >
                     <span
@@ -3680,7 +3680,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -3707,7 +3707,7 @@
                   </td>
 
                   <td
-                    v-if="!edit"
+                    v-if="!isEdit"
                     :class="{'cell-with-comment': isCommentClass(row_index,`tp_idn_liq`), 'activ': isActiveClass(row)}"
                   >
                     <span
@@ -3730,7 +3730,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -3757,7 +3757,7 @@
                   </td>
 
                   <td
-                    v-if="!edit"
+                    v-if="!isEdit"
                     :class="{'cell-with-comment': isCommentClass(row_index,`tp_idn_liq_cas_d_corr`), 'activ': isActiveClass(row)}"
                   >
                     <span
@@ -3780,7 +3780,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -3809,7 +3809,7 @@
                   </td>
 
                   <td
-                    v-if="!edit"
+                    v-if="!isEdit"
                     :class="{'cell-with-comment': isCommentClass(row_index,`tp_idn_oil`), 'activ': isActiveClass(row)}"
                   >
                     <span
@@ -3832,7 +3832,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -3859,7 +3859,7 @@
                   </td>
 
                   <td
-                    v-if="!edit"
+                    v-if="!isEdit"
                     :class="{'cell-with-comment': isCommentClass(row_index,`tp_idn_oil_inc`), 'activ': isActiveClass(row)}"
                   >
                     <span
@@ -3882,7 +3882,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -3911,7 +3911,7 @@
                   </td>
 
                   <td
-                    v-if="!edit"
+                    v-if="!isEdit"
                     :class="{'cell-with-comment': isCommentClass(row_index,`tp_idn_jd`), 'activ': isActiveClass(row)}"
                   >
                     <span
@@ -3934,7 +3934,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -3961,7 +3961,7 @@
                   </td>
 
                   <td
-                    v-if="!edit"
+                    v-if="!isEdit"
                     :class="{'cell-with-comment': isCommentClass(row_index,`tp_idn_skin`), 'activ': isActiveClass(row)}"
                   >
                     <span
@@ -3984,7 +3984,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -4011,7 +4011,7 @@
                   </td>
 
                   <td
-                    v-if="!edit"
+                    v-if="!isEdit"
                     :class="{'cell-with-comment': isCommentClass(row_index,`tp_idn_pi_after`), 'activ': isActiveClass(row)}"
                   >
                     <span
@@ -4034,7 +4034,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -4063,7 +4063,7 @@
                   </td>
 
                   <td
-                    v-if="!edit"
+                    v-if="!isEdit"
                     :class="{'cell-with-comment': isCommentClass(row_index,`tp_idn_grp_q_liq`), 'activ': isActiveClass(row)}"
                   >
                     <span
@@ -4086,7 +4086,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -4115,7 +4115,7 @@
                   </td>
 
                   <td
-                    v-if="!edit"
+                    v-if="!isEdit"
                     :class="{'cell-with-comment': isCommentClass(row_index,`tp_idn_grp_q_liq_cas_d_corr`), 'activ': isActiveClass(row)}"
                   >
                     <span
@@ -4139,7 +4139,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -4170,7 +4170,7 @@
                   </td>
 
                   <td
-                    v-if="!edit"
+                    v-if="!isEdit"
                     :class="{'cell-with-comment': isCommentClass(row_index,`tp_idn_grp_q_oil`), 'activ': isActiveClass(row)}"
                   >
                     <span
@@ -4193,7 +4193,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -4222,7 +4222,7 @@
                   </td>
 
                   <td
-                    v-if="!edit"
+                    v-if="!isEdit"
                     :class="{'cell-with-comment': isCommentClass(row_index,`tp_idn_grp_q_oil_inc`), 'activ': isActiveClass(row)}"
                   >
                     <span
@@ -4245,7 +4245,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -4273,26 +4273,26 @@
                     </span>
                   </td>
 
-                  <td v-if="!edit" :class="{'activ': isActiveClass(row)}">
+                  <td v-if="!isEdit" :class="{'activ': isActiveClass(row)}">
                     <span v-if="row.tp_idn_q_oil_inc_perc != null">
                       {{ Math.round(row.tp_idn_q_oil_inc_perc * 10) / 10 }}
                     </span>
                   </td>
-                  <td v-if="edit">
+                  <td v-if="isEdit">
                     {{ Math.round(row.tp_idn_q_oil_inc_perc * 10) / 10 }}
                   </td>
 
-                  <td v-if="!edit" :class="{'activ': isActiveClass(row)}">
+                  <td v-if="!isEdit" :class="{'activ': isActiveClass(row)}">
                     <span v-if="row.gt_total_inc != null">{{
                       Math.round(row.gt_total_inc * 10) / 10
                     }}</span>
                   </td>
-                  <td v-if="edit">
+                  <td v-if="isEdit">
                     {{ Math.round(row.gt_total_inc * 10) / 10 }}
                   </td>
 
                   <td
-                    v-if="!edit"
+                    v-if="!isEdit"
                     :class="{'cell-with-comment': isCommentClass(row_index,`gp_idn_bhp`), 'activ': isActiveClass(row)}"
                   >
                     <span
@@ -4315,7 +4315,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -4342,7 +4342,7 @@
                   </td>
 
                   <td
-                    v-if="!edit"
+                    v-if="!isEdit"
                     :class="{'cell-with-comment': isCommentClass(row_index,`gp_idn_q_liq`), 'activ': isActiveClass(row)}"
                   >
                     <span
@@ -4365,7 +4365,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -4392,7 +4392,7 @@
                   </td>
 
                   <td
-                    v-if="!edit"
+                    v-if="!isEdit"
                     :class="{'cell-with-comment': isCommentClass(row_index,`gp_idn_q_liq_cas_d_corr`), 'activ': isActiveClass(row)}"
                   >
                     <span
@@ -4416,7 +4416,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -4446,7 +4446,7 @@
                   </td>
 
                   <td
-                    v-if="!edit"
+                    v-if="!isEdit"
                     :class="{'cell-with-comment': isCommentClass(row_index,`gp_idn_q_oil`), 'activ': isActiveClass(row)}"
                   >
                     <span
@@ -4469,7 +4469,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -4496,7 +4496,7 @@
                   </td>
 
                   <td
-                    v-if="!edit"
+                    v-if="!isEdit"
                     :class="{'cell-with-comment': isCommentClass(row_index,`gp_idn_q_oil_inc`), 'activ': isActiveClass(row)}"
                   >
                     <span
@@ -4519,7 +4519,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -4548,7 +4548,7 @@
                   </td>
 
                   <td
-                    v-if="!edit"
+                    v-if="!isEdit"
                     :class="{'cell-with-comment': isCommentClass(row_index,`gp_grp_q_liq`), 'activ': isActiveClass(row)}"
                   >
                     <span
@@ -4571,7 +4571,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -4598,7 +4598,7 @@
                   </td>
 
                   <td
-                    v-if="!edit"
+                    v-if="!isEdit"
                     :class="{'cell-with-comment': isCommentClass(row_index,`gp_grp_q_liq_cas_d_corr`), 'activ': isActiveClass(row)}"
                   >
                     <span
@@ -4622,7 +4622,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -4652,7 +4652,7 @@
                   </td>
 
                   <td
-                    v-if="!edit"
+                    v-if="!isEdit"
                     :class="{'cell-with-comment': isCommentClass(row_index,`gp_grp_q_oil`), 'activ': isActiveClass(row)}"
                   >
                     <span
@@ -4675,7 +4675,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -4702,7 +4702,7 @@
                   </td>
 
                   <td
-                    v-if="!edit"
+                    v-if="!isEdit"
                     :class="{'cell-with-comment': isCommentClass(row_index,`gp_grp_q_oil_inc`), 'activ': isActiveClass(row)}"
                   >
                     <span
@@ -4725,7 +4725,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -4753,46 +4753,46 @@
                     </span>
                   </td>
 
-                  <td v-if="!edit" :class="{'activ': isActiveClass(row)}">
+                  <td v-if="!isEdit" :class="{'activ': isActiveClass(row)}">
                     <span v-if="row.gp_total_inc_perc != null">{{
                       Math.round(row.gp_total_inc_perc * 10) / 10
                     }}</span>
                   </td>
-                  <td v-if="edit">
+                  <td v-if="isEdit">
                     {{ Math.round(row.gp_total_inc_perc * 10) / 10 }}
                   </td>
 
-                  <td v-if="!edit" :class="{'activ': isActiveClass(row)}">
+                  <td v-if="!isEdit" :class="{'activ': isActiveClass(row)}">
                     <span v-if="row.gp_total_inc != null">{{
                       Math.round(row.gp_total_inc * 10) / 10
                     }}</span>
                   </td>
-                  <td v-if="edit">
+                  <td v-if="isEdit">
                     {{ Math.round(row.gp_total_inc * 10) / 10 }}
                   </td>
 
-                  <td v-if="!edit" :class="{'activ': isActiveClass(row)}">
+                  <td v-if="!isEdit" :class="{'activ': isActiveClass(row)}">
                     <span v-if="row.error_count != null">{{
                       row.error_count
                     }}</span>
                   </td>
-                  <td v-if="edit">{{ row.error_count }}</td>
+                  <td v-if="isEdit">{{ row.error_count }}</td>
 
-                  <td v-if="!edit" :class="{'activ': isActiveClass(row)}">{{ row.error_first }}</td>
-                  <td v-if="edit">{{ row.error_first }}</td>
+                  <td v-if="!isEdit" :class="{'activ': isActiveClass(row)}">{{ row.error_first }}</td>
+                  <td v-if="isEdit">{{ row.error_first }}</td>
 
-                  <td v-if="!edit" :class="{'activ': isActiveClass(row)}">
+                  <td v-if="!isEdit" :class="{'activ': isActiveClass(row)}">
                     <span v-if="row.error_warning != null">{{
                       row.error_warning
                     }}</span>
                   </td>
-                  <td v-if="edit">{{ row.error_warning }}</td>
+                  <td v-if="isEdit">{{ row.error_warning }}</td>
 
-                  <td v-if="!edit" :class="{'activ': isActiveClass(row)}">{{ row.error_first_warning }}</td>
-                  <td v-if="edit">{{ row.error_first_warning }}</td>
+                  <td v-if="!isEdit" :class="{'activ': isActiveClass(row)}">{{ row.error_first_warning }}</td>
+                  <td v-if="isEdit">{{ row.error_first_warning }}</td>
 
                   <td
-                    v-if="!edit"
+                    v-if="!isEdit"
                     :class="{'cell-with-comment': isCommentClass(row_index,`idn_pump_depth_max`), 'activ': isActiveClass(row)}"
                   >
                     <span
@@ -4815,7 +4815,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -4839,7 +4839,7 @@
                       class="input_edit"
                       @change="editrow(row, row_index)"
                       v-model="row.idn_pump_depth_max[0]"
-                      :disabled="!edit"
+                      :disabled="!isEdit"
                     />
                     <span v-if="wells && wells[row_index]" class="cell-comment">
                       {{ wells[row_index].idn_pump_depth_max[1][1] }}
@@ -4847,7 +4847,7 @@
                   </td>
 
                   <td
-                    v-if="!edit"
+                    v-if="!isEdit"
                    :class="{'cell-with-comment': isCommentClass(row_index,`stop_date`), 'activ': isActiveClass(row)}"
                   >
                     <span
@@ -4870,7 +4870,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -4897,7 +4897,7 @@
                   </td>
 
                   <td
-                    v-if="!edit"
+                    v-if="!isEdit"
                     :class="{'cell-with-comment': isCommentClass(row_index,`layers_count`), 'activ': isActiveClass(row)}"
                   >
                     <span
@@ -4920,7 +4920,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -4947,7 +4947,7 @@
                   </td>
 
                   <td
-                    v-if="!edit"
+                    v-if="!isEdit"
                     :class="{'cell-with-comment': isCommentClass(row_index,`zone`), 'activ': isActiveClass(row)}"
                   >
                     <span
@@ -4968,7 +4968,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -4995,7 +4995,7 @@
                   </td>
 
                   <td
-                    v-if="!edit"
+                    v-if="!isEdit"
                     :class="{'cell-with-comment': isCommentClass(row_index,`tseh`), 'activ': isActiveClass(row)}"
                   >
                     <span
@@ -5016,7 +5016,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -5042,15 +5042,15 @@
                     </span>
                   </td>
 
-                  <td v-if="!edit" :class="{'activ': isActiveClass(row)}">
+                  <td v-if="!isEdit" :class="{'activ': isActiveClass(row)}">
                     <span v-if="row.semi_free_flow[0] != null">{{
                       row.semi_free_flow[0]
                     }}</span>
                   </td>
-                  <td v-if="edit">{{ row.semi_free_flow[0] }}</td>
+                  <td v-if="isEdit">{{ row.semi_free_flow[0] }}</td>
 
                   <td
-                    v-if="!edit"
+                    v-if="!isEdit"
                     :class="{'cell-with-comment': isCommentClass(row_index,`non_profit`), 'activ': isActiveClass(row)}"
                   >
                     <span
@@ -5073,7 +5073,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -5100,7 +5100,7 @@
                   </td>
 
                   <td
-                    v-if="!edit"
+                    v-if="!isEdit"
                     :class="{'cell-with-comment': isCommentClass(row_index,`unsteady_state`), 'activ': isActiveClass(row)}"
                   >
                     <span
@@ -5123,7 +5123,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -5150,7 +5150,7 @@
                   </td>
 
                   <td
-                    v-if="!edit"
+                    v-if="!isEdit"
                     :class="{'cell-with-comment': isCommentClass(row_index,`start_up_date`), 'activ': isActiveClass(row)}"
                   >
                     <span
@@ -5173,7 +5173,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -5200,7 +5200,7 @@
                   </td>
 
                   <td
-                    v-if="!edit"
+                    v-if="!isEdit"
                     :class="{'cell-with-comment': isCommentClass(row_index,`well_project_purpose`), 'activ': isActiveClass(row)}"
                   >
                     <span
@@ -5223,7 +5223,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -5250,7 +5250,7 @@
                   </td>
 
                   <td
-                    v-if="!edit"
+                    v-if="!isEdit"
                     :class="{'cell-with-comment': isCommentClass(row_index,`bhp_meter`), 'activ': isActiveClass(row)}"
                   >
                     <span
@@ -5273,7 +5273,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -5297,7 +5297,7 @@
                       class="input_edit"
                       @change="editrow(row, row_index)"
                       v-model="row.bhp_meter[0]"
-                      :disabled="!edit"
+                      :disabled="!isEdit"
                     />
 
                     <span v-if="wells && wells[row_index]" class="cell-comment">
@@ -5306,7 +5306,7 @@
                   </td>
 
                   <td
-                    v-if="!edit"
+                    v-if="!isEdit"
                     :class="{'cell-with-comment': isCommentClass(row_index,`oil_net_pay`), 'activ': isActiveClass(row)}"
                   >
                     <span
@@ -5329,7 +5329,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -5356,7 +5356,7 @@
                   </td>
 
                   <td
-                    v-if="!edit"
+                    v-if="!isEdit"
                     :class="{'cell-with-comment': isCommentClass(row_index,`oil_cumulative`), 'activ': isActiveClass(row)}"
                   >
                     <span
@@ -5379,7 +5379,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -5399,7 +5399,7 @@
                       )}`"
                     >
                     </span>
-                    <!-- <input @change="editrow(row, row_index)" v-model="row.oil_cumulative[0]" :disabled="!edit"> -->
+
                     <span>{{
                       Math.round(row.oil_cumulative[0] * 10) / 10
                     }}</span>
@@ -5409,7 +5409,7 @@
                   </td>
 
                   <td
-                    v-if="!edit"
+                    v-if="!isEdit"
                     :class="{'cell-with-comment': isCommentClass(row_index,`max_q_liq_hist`), 'activ': isActiveClass(row)}"
                   >
                     <span
@@ -5432,7 +5432,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -5460,24 +5460,24 @@
                     </span>
                   </td>
 
-                  <td v-if="!edit" :class="{'activ': isActiveClass(row)}">
+                  <td v-if="!isEdit" :class="{'activ': isActiveClass(row)}">
                     {{ Math.round(row.dist_to_inj_well * 10) / 10 }}
                   </td>
-                  <td v-if="edit">
+                  <td v-if="isEdit">
                     {{ Math.round(row.dist_to_inj_well * 10) / 10 }}
                   </td>
 
-                  <td v-if="!edit" :class="{'activ': isActiveClass(row)}">
+                  <td v-if="!isEdit" :class="{'activ': isActiveClass(row)}">
                     <span v-if="row.dist_to_woc != null">{{
                       Math.round(row.dist_to_woc * 10) / 10
                     }}</span>
                   </td>
-                  <td v-if="edit">
+                  <td v-if="isEdit">
                     {{ Math.round(row.dist_to_woc * 10) / 10 }}
                   </td>
 
                   <td
-                    v-if="!edit"
+                    v-if="!isEdit"
                     :class="{'cell-with-comment': isCommentClass(row_index,`curr_bh`), 'activ': isActiveClass(row)}"
                   >
                     <span
@@ -5500,7 +5500,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -5527,7 +5527,7 @@
                   </td>
 
                   <td
-                    v-if="!edit"
+                    v-if="!isEdit"
                     :class="{'cell-with-comment': isCommentClass(row_index,`pump_fillage`), 'activ': isActiveClass(row)}"
                   >
                     <span
@@ -5550,7 +5550,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -5576,28 +5576,28 @@
                     </span>
                   </td>
 
-                  <td v-if="!edit" :class="{'activ': isActiveClass(row)}">{{ row.gzu_type }}</td>
-                  <td v-if="edit">{{ row.gzu_type }}</td>
+                  <td v-if="!isEdit" :class="{'activ': isActiveClass(row)}">{{ row.gzu_type }}</td>
+                  <td v-if="isEdit">{{ row.gzu_type }}</td>
 
-                  <td v-if="!edit" :class="{'activ': isActiveClass(row)}">
+                  <td v-if="!isEdit" :class="{'activ': isActiveClass(row)}">
                     <span v-if="row.p_res_init != null">{{
                       Math.round(row.p_res_init * 10) / 10
                     }}</span>
                   </td>
-                  <td v-if="edit">
+                  <td v-if="isEdit">
                     {{ Math.round(row.p_res_init * 10) / 10 }}
                   </td>
 
-                  <td v-if="!edit" :class="{'activ': isActiveClass(row)}">
+                  <td v-if="!isEdit" :class="{'activ': isActiveClass(row)}">
                     <span v-if="row.q_liq_charac != null">{{
                       Math.round(row.q_liq_charac * 10) / 10
                     }}</span>
                   </td>
-                  <td v-if="edit">
+                  <td v-if="isEdit">
                     {{ Math.round(row.q_liq_charac * 10) / 10 }}
                   </td>
                   <td
-                    v-if="!edit"
+                    v-if="!isEdit"
                     :class="{'cell-with-comment': isCommentClass(row_index,`APV_t_rab`), 'activ': isActiveClass(row)}"
                   >
                     <span
@@ -5620,7 +5620,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -5647,7 +5647,7 @@
                   </td>
 
                   <td
-                    v-if="!edit"
+                    v-if="!isEdit"
                     :class="{'cell-with-comment': isCommentClass(row_index,`APV_t_nak`), 'activ': isActiveClass(row)}"
                   >
                     <span
@@ -5670,7 +5670,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -5696,48 +5696,48 @@
                     </span>
                   </td>
 
-                  <td v-if="!edit" :class="{'activ': isActiveClass(row)}">
+                  <td v-if="!isEdit" :class="{'activ': isActiveClass(row)}">
                     <span v-if="row.plan_izo_work != null">{{
                       row.plan_izo_work
                     }}</span>
                   </td>
-                  <td v-if="edit">{{ row.plan_izo_work }}</td>
+                  <td v-if="isEdit">{{ row.plan_izo_work }}</td>
 
-                  <td v-if="!edit" :class="{'activ': isActiveClass(row)}">
+                  <td v-if="!isEdit" :class="{'activ': isActiveClass(row)}">
                     <span v-if="row.plan_act_q_l != null">{{
                       Math.round(row.plan_act_q_l * 10) / 10
                     }}</span>
                   </td>
-                  <td v-if="edit">
+                  <td v-if="isEdit">
                     {{ Math.round(row.plan_act_q_l * 10) / 10 }}
                   </td>
 
-                  <td v-if="!edit" :class="{'activ': isActiveClass(row)}">
+                  <td v-if="!isEdit" :class="{'activ': isActiveClass(row)}">
                     <span v-if="row.plan_act_wct != null">{{
                       Math.round(row.plan_act_wct * 10) / 10
                     }}</span>
                   </td>
-                  <td v-if="edit">
+                  <td v-if="isEdit">
                     {{ Math.round(row.plan_act_wct * 10) / 10 }}
                   </td>
 
-                  <td v-if="!edit" :class="{'activ': isActiveClass(row)}">{{ row.plan_activities }}</td>
-                  <td v-if="edit">{{ row.plan_activities }}</td>
+                  <td v-if="!isEdit" :class="{'activ': isActiveClass(row)}">{{ row.plan_activities }}</td>
+                  <td v-if="isEdit">{{ row.plan_activities }}</td>
 
-                  <td v-if="!edit" :class="{'activ': isActiveClass(row)}">{{ row.plan_casing_info }}</td>
-                  <td v-if="edit">{{ row.plan_casing_info }}</td>
+                  <td v-if="!isEdit" :class="{'activ': isActiveClass(row)}">{{ row.plan_casing_info }}</td>
+                  <td v-if="isEdit">{{ row.plan_casing_info }}</td>
 
-                  <td v-if="!edit" :class="{'activ': isActiveClass(row)}">{{ row.plan_comment }}</td>
-                  <td v-if="edit">{{ row.plan_comment }}</td>
+                  <td v-if="!isEdit" :class="{'activ': isActiveClass(row)}">{{ row.plan_comment }}</td>
+                  <td v-if="isEdit">{{ row.plan_comment }}</td>
 
-                  <td v-if="!edit" :class="{'activ': isActiveClass(row)}">{{ row.last_gtm_date }}</td>
-                  <td v-if="edit">{{ row.last_gtm_date }}</td>
+                  <td v-if="!isEdit" :class="{'activ': isActiveClass(row)}">{{ row.last_gtm_date }}</td>
+                  <td v-if="isEdit">{{ row.last_gtm_date }}</td>
 
-                  <td v-if="!edit" :class="{'activ': isActiveClass(row)}">{{ row.last_gtm_type }}</td>
-                  <td v-if="edit" :class="{'activ': isActiveClass(row)}">{{ row.last_gtm_type }}</td>
+                  <td v-if="!isEdit" :class="{'activ': isActiveClass(row)}">{{ row.last_gtm_type }}</td>
+                  <td v-if="isEdit" :class="{'activ': isActiveClass(row)}">{{ row.last_gtm_type }}</td>
 
                   <td
-                    v-if="!edit"
+                    v-if="!isEdit"
                     :class="{'cell-with-comment': isCommentClass(row_index,`planned_choke`), 'activ': isActiveClass(row)}"
                   >
                     <span
@@ -5760,7 +5760,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -5784,7 +5784,7 @@
                       class="input_edit"
                       @change="editrow(row, row_index)"
                       v-model="row.planned_choke[0]"
-                      :disabled="!edit"
+                      :disabled="!isEdit"
                     />
                     <span v-if="wells && wells[row_index]" class="cell-comment">
                       {{ wells[row_index].planned_choke[1][1] }}
@@ -5792,7 +5792,7 @@
                   </td>
 
                   <td
-                    v-if="!edit"
+                    v-if="!isEdit"
                     :class="{'cell-with-comment': isCommentClass(row_index,`planned_oil`), 'activ': isActiveClass(row)}"
                   >
                     <span
@@ -5815,7 +5815,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -5842,7 +5842,7 @@
                   </td>
 
                   <td
-                    v-if="!edit"
+                    v-if="!isEdit"
                     :class="{'cell-with-comment': isCommentClass(row_index,`planned_liq`), 'activ': isActiveClass(row)}"
                   >
                     <span
@@ -5865,7 +5865,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -5889,18 +5889,18 @@
                       class="input_edit"
                       @change="editrow(row, row_index)"
                       v-model="row.planned_liq[0]"
-                      :disabled="!edit"
+                      :disabled="!isEdit"
                     />
                     <span v-if="wells && wells[row_index]" class="cell-comment">
                       {{ wells[row_index].planned_liq[1][1] }}
                     </span>
                   </td>
 
-                  <td v-if="!edit" :class="{'activ': isActiveClass(row)}">{{ Math.round(row.planned_gas*10)/10 }}</td>
-                  <td v-if="edit">{{ Math.round(row.planned_gas*10)/10 }}</td>
+                  <td v-if="!isEdit" :class="{'activ': isActiveClass(row)}">{{ Math.round(row.planned_gas*10)/10 }}</td>
+                  <td v-if="isEdit">{{ Math.round(row.planned_gas*10)/10 }}</td>
 
                   <td
-                    v-if="!edit"
+                    v-if="!isEdit"
                     :class="{'cell-with-comment': isCommentClass(row_index,`planned_wct`), 'activ': isActiveClass(row)}"
                   >
                     <span
@@ -5923,7 +5923,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -5947,18 +5947,18 @@
                       class="input_edit"
                       @change="editrow(row, row_index)"
                       v-model="row.planned_wct[0]"
-                      :disabled="!edit"
+                      :disabled="!isEdit"
                     />
                     <span v-if="wells && wells[row_index]" class="cell-comment">
                       {{ wells[row_index].planned_wct[1][1] }}
                     </span>
                   </td>
 
-                  <td v-if="!edit" :class="{'activ': isActiveClass(row)}">{{Math.round(row.planned_gor*10)/10}}</td>
-                  <td v-if="edit"><input v-model="row.planned_gor" @change="editrow(row, row_index)" :disabled="!edit" class="input_edit"></td>
+                  <td v-if="!isEdit" :class="{'activ': isActiveClass(row)}">{{Math.round(row.planned_gor*10)/10}}</td>
+                  <td v-if="isEdit"><input v-model="row.planned_gor" @change="editrow(row, row_index)" :disabled="!isEdit" class="input_edit"></td>
 
                   <td
-                    v-if="!edit"
+                    v-if="!isEdit"
                     :class="{'cell-with-comment': isCommentClass(row_index,`planned_month_days`), 'activ': isActiveClass(row)}"
                   >
                     <span
@@ -5979,7 +5979,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -6003,7 +6003,7 @@
                       class="input_edit"
                       @change="editrow(row, row_index)"
                       v-model="row.planned_month_days[0]"
-                      :disabled="!edit"
+                      :disabled="!isEdit"
                     />
                     <span v-if="wells && wells[row_index]" class="cell-comment">
                       {{ wells[row_index].planned_month_days[1][1] }}
@@ -6011,7 +6011,7 @@
                   </td>
 
                   <td
-                    v-if="!edit"
+                    v-if="!isEdit"
                     :class="{'cell-with-comment': isCommentClass(row_index,`planned_monthly_oil`), 'activ': isActiveClass(row)}"
                   >
                     <span
@@ -6034,7 +6034,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -6063,7 +6063,7 @@
                   </td>
 
                   <td
-                    v-if="!edit"
+                    v-if="!isEdit"
                     :class="{'cell-with-comment': isCommentClass(row_index,`planned_monthly_gas`), 'activ': isActiveClass(row)}"
                   >
                     <span
@@ -6086,7 +6086,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -6115,7 +6115,7 @@
                   </td>
 
                   <td
-                    v-if="!edit"
+                    v-if="!isEdit"
                     :class="{'cell-with-comment': isCommentClass(row_index,`planned_monthly_liq`), 'activ': isActiveClass(row)}"
                   >
                     <span
@@ -6138,7 +6138,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -6167,7 +6167,7 @@
                   </td>
 
                   <td
-                    v-if="!edit"
+                    v-if="!isEdit"
                     :class="{'cell-with-comment': isCommentClass(row_index,`planned_monthly_water`), 'activ': isActiveClass(row)}"
                   >
                     <span
@@ -6190,7 +6190,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -6219,7 +6219,7 @@
                   </td>
 
                   <td
-                    v-if="!edit"
+                    v-if="!isEdit"
                     :class="{'cell-with-comment': isCommentClass(row_index,`planned_diff_oil`), 'activ': isActiveClass(row)}"
                   >
                     <span
@@ -6242,7 +6242,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -6271,7 +6271,7 @@
                   </td>
 
                   <td
-                    v-if="!edit"
+                    v-if="!isEdit"
                     :class="{'cell-with-comment': isCommentClass(row_index,`planned_diff_liq`), 'activ': isActiveClass(row)}"
                   >
                     <span
@@ -6294,7 +6294,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -6323,7 +6323,7 @@
                   </td>
 
                   <td
-                    v-if="!edit"
+                    v-if="!isEdit"
                     :class="{'cell-with-comment': isCommentClass(row_index,`planned_events`), 'activ': isActiveClass(row)}"
                   >
                     <span
@@ -6346,7 +6346,7 @@
                     </span>
                   </td>
                   <td
-                    v-if="edit"
+                    v-if="isEdit"
                     :class="{
                       'cell-with-comment':
                         wells &&
@@ -6370,7 +6370,7 @@
                       class="input_edit"
                       @change="editrow(row, row_index)"
                       v-model="row.planned_events[0]"
-                      :disabled="!edit"
+                      :disabled="!isEdit"
                     />
                     <span v-if="wells && wells[row_index]" class="cell-comment">
                       {{ wells[row_index].planned_events[1][1] }}
