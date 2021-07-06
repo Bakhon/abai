@@ -5,9 +5,6 @@ namespace App\Services\BigData\Forms;
 use App\Models\BigData\Dictionaries\Metric;
 use App\Models\BigData\Dictionaries\Org;
 use App\Models\BigData\ReportOrgDailyCits;
-use Carbon\Carbon;
-use Illuminate\Http\Response;
-use Illuminate\Support\Facades\DB;
 
 abstract class DailyReports extends TableForm
 {

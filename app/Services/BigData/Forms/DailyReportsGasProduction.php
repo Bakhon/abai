@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Services\BigData\Forms;
-use Carbon\Carbon;
 
 class DailyReportsGasProduction extends DailyReports
 {
@@ -11,11 +10,6 @@ class DailyReportsGasProduction extends DailyReports
     const ALL = 2;
     protected $metricCode = 'GASPR';
     protected $configurationFileName = 'daily_reports_gas_prod';
-
-    protected function saveHistory(string $field, $value): void
-    {
-        /** TODO метод для сохранения истории изменений */
-    }
 
     protected function getData($filter) {
         $data = parent::getData($filter);

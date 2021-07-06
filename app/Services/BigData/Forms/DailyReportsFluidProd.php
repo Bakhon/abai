@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Services\BigData\Forms;
-use Carbon\Carbon;
 
 class DailyReportsFluidProd extends DailyReports
 {
@@ -11,11 +10,6 @@ class DailyReportsFluidProd extends DailyReports
     const ALL = 2;
     protected $metricCode = 'FLR';
     protected $configurationFileName = 'daily_reports_fluid_prod';
-
-    protected function saveHistory(string $field, $value): void
-    {
-        /** TODO метод для сохранения истории изменений */
-    }
 
     protected function getData($filter) {
         $data = parent::getData($filter);
