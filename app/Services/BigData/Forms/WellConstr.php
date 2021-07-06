@@ -15,7 +15,7 @@ class WellConstr extends PlainForm
             ->where('id', $wellId)
             ->get('drill_start_date');
 
-        ($landingDate >= $startDate) ? true : false;     
+        return $landingDate >= $startDate;    
     }
 
     protected function isValidDepth($depth):bool
@@ -25,7 +25,23 @@ class WellConstr extends PlainForm
             ->where('id', $wellId)
             ->get('daily_drill_progress');
         $data = sum($dailyDrill);
-        ($depth <= $data) ? true : false;  
+
+        return $depth <= $data;
+    }
+
+    protected function getCustomValidationErrors(): array
+    {
+        $errors = [];
+
+        if (!$this->isValidDepth('depth')) {
+            $errors['depth'] = trans('bd.validation.depth');
+        }
+
+        if (!$this->isValidLandingDate('well', 'landing_date')) {
+            $errors['landing_date'] = trans('bd.validation.landing_date');
+        }
+
+        return $errors;
     }
 
     
