@@ -12,11 +12,6 @@ class DailyReportsWaterUpload extends DailyReports
     protected $metricCode = 'WINJ';
     protected $configurationFileName = 'daily_reports_water_upload';
 
-    protected function saveSingleFieldInDB(string $field, int $wellId, Carbon $date, $value): void
-    {
-        /** TODO метод для сохранения значения поля */
-    }
-
     protected function saveHistory(string $field, $value): void
     {
         /** TODO метод для сохранения истории изменений */

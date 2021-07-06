@@ -12,11 +12,6 @@ class DailyReportsWaterProduction extends DailyReports
     protected $metricCode = 'WPRD';
     protected $configurationFileName = 'daily_reports_water_prod';
 
-    protected function saveSingleFieldInDB(string $field, int $wellId, Carbon $date, $value): void
-    {
-        /** TODO метод для сохранения значения поля */
-    }
-
     protected function saveHistory(string $field, $value): void
     {
         /** TODO метод для сохранения истории изменений */

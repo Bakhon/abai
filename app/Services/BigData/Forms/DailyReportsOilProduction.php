@@ -12,11 +12,6 @@ class DailyReportsOilProduction extends DailyReports
     protected $metricCode = 'OIL';
     protected $configurationFileName = 'daily_reports_oil_prod';
 
-    protected function saveSingleFieldInDB(string $field, int $wellId, Carbon $date, $value): void
-    {
-        /** TODO метод для сохранения значения поля */
-    }
-
     protected function saveHistory(string $field, $value): void
     {
         /** TODO метод для сохранения истории изменений */
