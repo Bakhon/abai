@@ -5,6 +5,7 @@ namespace App\Console\Commands\BigData;
 use App\Rules\ClassName;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
@@ -38,6 +39,7 @@ class GenerateForm extends Command
         $this->generateFormConfig();
         $this->generateFormClass();
         $this->addFormToFormsList();
+        $this->addFormPermissions();
         Artisan::call('config:clear');
     }
 
@@ -136,5 +138,30 @@ class GenerateForm extends Command
             config_path() . '/bigdata_forms.php',
             '<?php return ' . var_export($formsList, true) . ';'
         );
+    }
+
+    private function addFormPermissions()
+    {
+        $actions = [
+            'list',
+            'create',
+            'edit',
+            'history',
+            'delete',
+        ];
+        $permissions = [];
+
+        foreach ($actions as $action) {
+            $permissions[] = 'bd forms ' . $this->configFileName . ' ' . $action;
+        }
+
+        foreach ($permissions as $permission) {
+            DB::table('permissions')->insert(
+                [
+                    'name' => $permission,
+                    'guard_name' => 'web'
+                ]
+            );
+        }
     }
 }

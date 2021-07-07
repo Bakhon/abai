@@ -30,7 +30,7 @@
             <div class="directory text-white pt-0 mt-0">
               <ul id="myUL">
                 <well-cart-tree
-                    v-for="(item, index) in [...forms_structure, ...forms]"
+                    v-for="(item, index) in [...forms_structure, ...visibleForms]"
                     :key="index"
                     :active-form-code="activeFormCode"
                     :data="item"
@@ -415,7 +415,7 @@ export default {
           }
         } else if (this.tableData[i].method === 'trimToDate' && this.tableData[i].description != null) {
           try {
-            this.tableData[i].data = moment(this.tableData[i].description).format('DD/MM/YYYY')
+            this.tableData[i].data = this.getFormatedDate(this.tableData[i].description)
           } catch (e) {
           }
         } else {
@@ -452,6 +452,11 @@ export default {
     },
     setForm(formCode) {
       this.activeFormCode = formCode
+    },
+    getFormatedDate(data){
+      if(data != null && data != ''){
+        return moment(data).format('DD/MM/YYYY')
+      }
     }
   },
   computed: {
@@ -740,8 +745,8 @@ export default {
         {
           'description': null,
           'method': 'neighbors',
-          'neigbor_1': moment(this.well.krsWorkover.dbeg).format('DD/MM/YYYY'),
-          'neigbor_2': moment(this.well.krsWorkover.dend).format('DD/MM/YYYY'),
+          'neigbor_1': this.getFormatedDate(this.well.krsWorkover.dbeg),
+          'neigbor_2': this.getFormatedDate(this.well.krsWorkover.dend),
           'name': 'Дата последнего КРС',
           'data': ''
         },
@@ -772,8 +777,8 @@ export default {
         {
           'description': null,
           'method': 'neighbors',
-          'neigbor_1': moment(this.well.prsWellWorkover.dbeg).format('DD/MM/YYYY'),
-          'neigbor_2': moment(this.well.prsWellWorkover.dend).format('DD/MM/YYYY'),
+          'neigbor_1': this.getFormatedDate(this.well.prsWellWorkover.dbeg),
+          'neigbor_2': this.getFormatedDate(this.well.prsWellWorkover.dend),
           'name': 'Дата последнего ПРС',
           'data': ''
         },
@@ -862,6 +867,9 @@ export default {
           'data': ''
         },
       ]
+    },
+    visibleForms() {
+      return this.forms.filter(form => form.isVisible)
     }
   }
 }
