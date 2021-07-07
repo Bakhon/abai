@@ -23,12 +23,13 @@
       <chart1
           v-if="index === 0"
           :data="charts.chart1"
+          :data-in-pause="charts.chart5"
           :granularity="granularity"
           :profitability="profitability"
           :title="trans('economic_reference.count_well')"
           class="bg-economic-chart"/>
 
-      <chart1
+      <chart2
           v-if="index === 1"
           :data="charts.chart2"
           :granularity="granularity"
@@ -50,14 +51,6 @@
           :granularity="granularity"
           :profitability="profitability"
           class="bg-economic-chart"/>
-
-      <chart1
-          v-else-if="index === 4"
-          :data="charts.chart5"
-          :granularity="granularity"
-          :profitability="profitability"
-          :title="trans('economic_reference.count_well')"
-          class="bg-economic-chart"/>
     </div>
   </div>
 </template>
@@ -65,6 +58,7 @@
 <script>
 import ChartButton from "./ChartButton";
 import Chart1 from "./Chart1";
+import Chart2 from "./Chart2";
 import Chart3 from "./Chart3";
 import Chart4 from "./Chart4";
 
@@ -73,6 +67,7 @@ export default {
   components: {
     ChartButton,
     Chart1,
+    Chart2,
     Chart3,
     Chart4,
   },
@@ -104,7 +99,6 @@ export default {
         this.trans('economic_reference.distribution_oil_production_by_profitability'),
         this.trans('economic_reference.rating_top_10_wells_by_profitability'),
         this.trans('economic_reference.distribution_liquid_production_by_profitability'),
-        this.trans('economic_reference.distribution_pause_wells_by_profitability'),
       ]
     },
   }
