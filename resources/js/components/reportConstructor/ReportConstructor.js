@@ -13,7 +13,7 @@ export default {
     components: {},
     data() {
         return {
-            baseUrl: 'http://localhost:8092/',
+            baseUrl: 'http://172.20.103.187:8084/',
             showOptions: true,
             structureTypes: {
                 org: null,
