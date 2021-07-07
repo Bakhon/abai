@@ -81,7 +81,7 @@
 
         <charts
             v-if="!loading"
-            :charts="res"
+            :charts="res.charts"
             :granularity="form.granularity"
             :profitability="form.profitability"/>
       </div>
@@ -276,11 +276,13 @@ const economicRes = {
       },
     },
   },
-  chart1: null,
-  chart2: null,
-  chart3: null,
-  chart4: null,
-  chart5: null,
+  charts: {
+    profitability: null,
+    pausedProfitability: null,
+    oilProduction: null,
+    liquidProduction: null,
+    operatingProfitTop: null,
+  },
 }
 
 export default {

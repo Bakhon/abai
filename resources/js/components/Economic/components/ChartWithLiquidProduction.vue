@@ -11,7 +11,7 @@ import chart from "vue-apexcharts";
 import {chartInitMixin} from "../mixins/chartMixin";
 
 export default {
-  name: 'Chart4',
+  name: 'ChartWithLiquidProduction',
   mixins: [chartInitMixin],
   components: {apexchart:chart},
   created() {

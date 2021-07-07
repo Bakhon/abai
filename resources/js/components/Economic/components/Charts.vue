@@ -20,34 +20,34 @@
         {{ tab }}
       </h5>
 
-      <chart1
+      <chart-with-profitability
           v-if="index === 0"
-          :data="charts.chart1"
-          :data-in-pause="charts.chart5"
+          :data="charts.profitability"
+          :paused-data="charts.pausedProfitability"
           :granularity="granularity"
           :profitability="profitability"
           :title="trans('economic_reference.count_well')"
           class="bg-economic-chart"/>
 
-      <chart2
+      <chart-with-oil-production
           v-if="index === 1"
-          :data="charts.chart2"
+          :data="charts.oilProduction"
           :granularity="granularity"
           :profitability="profitability"
           :title="trans('economic_reference.oil_production')"
           :tooltip-text="trans('economic_reference.thousand_tons')"
           class="bg-economic-chart"/>
 
-      <chart3
+      <chart-with-operating-profit-top
           v-else-if="index === 2"
-          :data="charts.chart3"
+          :data="charts.operatingProfitTop"
           :granularity="granularity"
           :profitability="profitability"
           class="bg-economic-chart"/>
 
-      <chart4
+      <chart-with-liquid-production
           v-else-if="index === 3"
-          :data="charts.chart4"
+          :data="charts.liquidProduction"
           :granularity="granularity"
           :profitability="profitability"
           class="bg-economic-chart"/>
@@ -57,19 +57,19 @@
 
 <script>
 import ChartButton from "./ChartButton";
-import Chart1 from "./Chart1";
-import Chart2 from "./Chart2";
-import Chart3 from "./Chart3";
-import Chart4 from "./Chart4";
+import ChartWithProfitability from "./ChartWithProfitability";
+import ChartWithOilProduction from "./ChartWithOilProduction";
+import ChartWithOperatingProfitTop from "./ChartWithOperatingProfitTop";
+import ChartWithLiquidProduction from "./ChartWithLiquidProduction";
 
 export default {
   name: "Charts",
   components: {
     ChartButton,
-    Chart1,
-    Chart2,
-    Chart3,
-    Chart4,
+    ChartWithProfitability,
+    ChartWithOilProduction,
+    ChartWithOperatingProfitTop,
+    ChartWithLiquidProduction,
   },
   props: {
     charts: {
