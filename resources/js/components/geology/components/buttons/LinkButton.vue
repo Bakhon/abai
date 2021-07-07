@@ -13,22 +13,10 @@ import computed from "./computed";
 export default {
   name: "LinkButton",
   mixins: [props, computed],
-  props: {
-    hasCheckActive: Boolean,
-    activeColor: {
-      type: String,
-      default: 'primary'
-    },
-  },
   components: {
     Icon
   },
   computed: {
-    isActive(){
-      if(this.hasCheckActive){
-        return this.$urlLink(this.href) === this.$currentPageUrl;
-      }
-    },
     getClasses(){
       let color = (this.isActive&&this.activeColor);
       return {
