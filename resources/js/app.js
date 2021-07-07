@@ -167,6 +167,7 @@ Vue.component('report-constructor', require('./components/reportConstructor/Repo
 Vue.component('pf-main', require('./components/PlastFluids/views/MainPage.vue').default);
 Vue.component('pf-upload_monitoring', require('./components/PlastFluids/views/UploadMonitoring.vue').default);
 Vue.component('pf-template_pvt_plast_oil', require('./components/PlastFluids/views/SuperTemplatePvtPlastOil.vue').default);
+Vue.component('pf-oil-map', require('./components/PlastFluids/components/OilMapKz.vue').default);
 
 Vue.component('viscenter2-create', require('./components/visualcenter/viscenter2/create.vue').default);
 Vue.component('visualcenter3-excelform', require('./components/visualcenter3/importForm/ExcelForm.vue').default);
@@ -205,6 +206,7 @@ Vue.component('GeologyTSide', require('./components/geology/Geology-t-side.vue')
 Vue.prototype.trans = string => _.get(window.i18n, string) || string;
 Vue.prototype.localeUrl = string => `/${window.current_lang}/${string[0] === '/' ? string.substr(1) : string}`;
 Vue.prototype.currentLang = window.current_lang;
+
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

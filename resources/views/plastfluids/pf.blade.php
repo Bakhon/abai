@@ -2,7 +2,9 @@
 @section('content')
    <div class="pf-index-wrapper">
    
-       <div class="pf-index-main"><div id="map"></div></div>
+       <div class="pf-index-main">
+           <pf-oil-map />
+       </div>
        <div class="pf-index-menu"><pf-main></pf-main></div>
        
    </div>
