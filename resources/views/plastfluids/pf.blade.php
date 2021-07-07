@@ -7,8 +7,11 @@
        
    </div>
 @endsection
-<script src="/js/plastFluids/mapdata.js"></script>
-<script src="/js/plastFluids/countrymap.js"></script>
+
+
+
+{{--<script src="/js/plastFluids/mapdata.js"></script>--}}
+{{--<script src="/js/plastFluids/countrymap.js"></script>--}}
 
 <style>
     .pf-index-wrapper {
@@ -35,4 +38,6 @@
    
 </style>
 
+<script>
 
+</script>

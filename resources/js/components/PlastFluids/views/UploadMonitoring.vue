@@ -28,6 +28,28 @@
     </div>
     <div class="central_wrapper">
       <div class="menu_wrapper">
+        <div class="sidebar-top d-flex align-items-start w-100">
+          <button class="collapse-left__sidebar">
+            <Icon name="arrowLeft"/>
+          </button>
+          <div class="dropdown__sidebar w-100">
+            <dropdown block class="w-100 mb-2"  button-text="Недропользователь" :options="[
+              {label: 'option 1', value: 1},
+              {label: 'option 2', value: 2},
+              {label: 'option 3', value: 3}
+            ]" />
+            <dropdown block class="w-100 mb-2"  button-text="Месторождения" :options="[
+              {label: 'option 1', value: 1},
+              {label: 'option 2', value: 2},
+              {label: 'option 3', value: 3}
+            ]" />
+            <dropdown block class="w-100 mb-2"  button-text="Горизонт" :options="[
+              {label: 'option 1', value: 1},
+              {label: 'option 2', value: 2},
+              {label: 'option 3', value: 3}
+            ]" />
+          </div>
+        </div>
         <div class="sectors">
           <div>
             <svg width="17" height="18" viewBox="0 0 17 18" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -36,6 +58,7 @@
 
             {{ trans("plast_fluids.sections") }}
           </div>
+          <b-tree-view :data="treeData"></b-tree-view>
         </div>
         <div class="menu"></div>
       </div>
@@ -51,258 +74,40 @@
         </div>
         <div class="service_wrapper">
           <div class="table_div">
-            <table>
-              <tr class="table_header">
-                <th>{{ trans("plast_fluids.upload_date") }}</th>
-                <th>{{ trans("plast_fluids.download_author") }}</th>
-                <th>{{ trans("plast_fluids.subsurface_user") }}</th>
-                <th>{{ trans("plast_fluids.field") }}</th>
-                <th>{{ trans("plast_fluids.selection_date_start") }}</th>
-                <th>{{ trans("plast_fluids.selection_date_end") }}</th>
-                <th>{{ trans("plast_fluids.data_type") }}</th>
-                <th>{{ trans("plast_fluids.number_uploaded_samples") }}</th>
-              </tr>
-              <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-            </table>
+            <b-table bordered striped :items="items" :fields="fields" :current-page="currentPage" :per-page="perPage" style="color: #fff"></b-table>
+            <b-row>
+
+              <b-col sm="5" md="6" class="my-1">
+                <b-form-group
+                    label="Показать первые"
+                    label-for="per-page-select"
+                    label-cols-sm="6"
+                    label-cols-md="4"
+                    label-cols-lg="3"
+                    label-align-sm="right"
+                    label-size="sm"
+                    class="mb-0"
+                >
+                  <b-form-select
+                      id="per-page-select"
+                      v-model="perPage"
+                      :options="pageOptions"
+                      size="sm"
+                  ></b-form-select>
+                </b-form-group>
+              </b-col>
+
+              <b-col sm="7" md="6" class="my-1">
+                <b-pagination
+                    v-model="currentPage"
+                    :total-rows="totalRows"
+                    :per-page="perPage"
+                    align="fill"
+                    size="sm"
+                    class="my-0"
+                ></b-pagination>
+              </b-col>
+            </b-row>
           </div>
           <div class="upload_wrapper">
             <div class="file_upload">
@@ -333,7 +138,90 @@
 </template>
 
 <script>
-export default {};
+import dropdown from "../../geology/components/dropdowns/dropdown";
+import Button from "../../geology/components/buttons/Button";
+import Icon from "../../geology/components/icons/Icon";
+import {bTreeView} from "bootstrap-vue-treeview";
+
+export default {
+  name: "UploadMonitoring",
+  components: {
+    dropdown,
+    Button,
+    Icon,
+    bTreeView
+  },
+  data() {
+    return {
+      treeData: [{"id": 2, "name": "PVT пластовой нефти" , "children": [{"id": 3, "name": "Стандартная сепарация Flash"}, {"id": 4, "name": "Диф.разгазирование DLE"} ] }, {"id": 3, "name": "PVT пластового газа (ГК)" , "children": [{"id": 3, "name": "Стандартная сепарация Flash"}, {"id": 4, "name": "Диф.разгазирование DLE"} ] }, {"id": 4, "name": "Свойства устьевых проб" , "children": [{"id": 3, "name": "Стандартная сепарация Flash"}, {"id": 4, "name": "Диф.разгазирование DLE"} ] }, {"id": 5, "name": "Свойства флюидов по горизонтам" , "children": [{"id": 3, "name": "Стандартная сепарация Flash"}, {"id": 4, "name": "Диф.разгазирование DLE"} ] } ],
+      fields: [
+        {
+          key: 'Дата загрузки',
+          sortable: true
+        },
+        {
+          key: 'Автор загрузки',
+          sortable: true
+        },
+        {
+          key: 'Недропользователь',
+          sortable: true
+        },
+        {
+          key: 'Месторождение',
+          sortable: true
+        },
+        {
+          key: 'Дата отбора начало',
+          sortable: true
+        },
+        {
+          key: 'Дата отбора конец',
+          sortable: true
+        },
+        {
+          key: 'Тип данных',
+          sortable: true
+        }
+      ],
+      items: [
+        { "Дата загрузки": '', "Автор загрузки": '', "Недропользователь": '', "Месторождение": '', "Дата отбора начало": '', "Дата отбора конец": '', "Тип данных": '', },
+        { "Дата загрузки": '', "Автор загрузки": '', "Недропользователь": '', "Месторождение": '', "Дата отбора начало": '', "Дата отбора конец": '', "Тип данных": '', },
+        { "Дата загрузки": '', "Автор загрузки": '', "Недропользователь": '', "Месторождение": '', "Дата отбора начало": '', "Дата отбора конец": '', "Тип данных": '', },
+        { "Дата загрузки": '', "Автор загрузки": '', "Недропользователь": '', "Месторождение": '', "Дата отбора начало": '', "Дата отбора конец": '', "Тип данных": '', },
+        { "Дата загрузки": '', "Автор загрузки": '', "Недропользователь": '', "Месторождение": '', "Дата отбора начало": '', "Дата отбора конец": '', "Тип данных": '', },
+        { "Дата загрузки": '', "Автор загрузки": '', "Недропользователь": '', "Месторождение": '', "Дата отбора начало": '', "Дата отбора конец": '', "Тип данных": '', },
+        { "Дата загрузки": '', "Автор загрузки": '', "Недропользователь": '', "Месторождение": '', "Дата отбора начало": '', "Дата отбора конец": '', "Тип данных": '', },
+        { "Дата загрузки": '', "Автор загрузки": '', "Недропользователь": '', "Месторождение": '', "Дата отбора начало": '', "Дата отбора конец": '', "Тип данных": '', },
+        { "Дата загрузки": '', "Автор загрузки": '', "Недропользователь": '', "Месторождение": '', "Дата отбора начало": '', "Дата отбора конец": '', "Тип данных": '', },
+        { "Дата загрузки": '', "Автор загрузки": '', "Недропользователь": '', "Месторождение": '', "Дата отбора начало": '', "Дата отбора конец": '', "Тип данных": '', },
+        { "Дата загрузки": '', "Автор загрузки": '', "Недропользователь": '', "Месторождение": '', "Дата отбора начало": '', "Дата отбора конец": '', "Тип данных": '', },
+        { "Дата загрузки": '', "Автор загрузки": '', "Недропользователь": '', "Месторождение": '', "Дата отбора начало": '', "Дата отбора конец": '', "Тип данных": '', },
+        { "Дата загрузки": '', "Автор загрузки": '', "Недропользователь": '', "Месторождение": '', "Дата отбора начало": '', "Дата отбора конец": '', "Тип данных": '', },
+        { "Дата загрузки": '', "Автор загрузки": '', "Недропользователь": '', "Месторождение": '', "Дата отбора начало": '', "Дата отбора конец": '', "Тип данных": '', },
+        { "Дата загрузки": '', "Автор загрузки": '', "Недропользователь": '', "Месторождение": '', "Дата отбора начало": '', "Дата отбора конец": '', "Тип данных": '', },
+        { "Дата загрузки": '', "Автор загрузки": '', "Недропользователь": '', "Месторождение": '', "Дата отбора начало": '', "Дата отбора конец": '', "Тип данных": '', },
+        { "Дата загрузки": '', "Автор загрузки": '', "Недропользователь": '', "Месторождение": '', "Дата отбора начало": '', "Дата отбора конец": '', "Тип данных": '', },
+        { "Дата загрузки": '', "Автор загрузки": '', "Недропользователь": '', "Месторождение": '', "Дата отбора начало": '', "Дата отбора конец": '', "Тип данных": '', },
+        { "Дата загрузки": '', "Автор загрузки": '', "Недропользователь": '', "Месторождение": '', "Дата отбора начало": '', "Дата отбора конец": '', "Тип данных": '', },
+        { "Дата загрузки": '', "Автор загрузки": '', "Недропользователь": '', "Месторождение": '', "Дата отбора начало": '', "Дата отбора конец": '', "Тип данных": '', },
+        { "Дата загрузки": '', "Автор загрузки": '', "Недропользователь": '', "Месторождение": '', "Дата отбора начало": '', "Дата отбора конец": '', "Тип данных": '', },
+        { "Дата загрузки": '', "Автор загрузки": '', "Недропользователь": '', "Месторождение": '', "Дата отбора начало": '', "Дата отбора конец": '', "Тип данных": '', },
+        { "Дата загрузки": '', "Автор загрузки": '', "Недропользователь": '', "Месторождение": '', "Дата отбора начало": '', "Дата отбора конец": '', "Тип данных": '', },
+        { "Дата загрузки": '', "Автор загрузки": '', "Недропользователь": '', "Месторождение": '', "Дата отбора начало": '', "Дата отбора конец": '', "Тип данных": '', },
+        { "Дата загрузки": '', "Автор загрузки": '', "Недропользователь": '', "Месторождение": '', "Дата отбора начало": '', "Дата отбора конец": '', "Тип данных": '', },
+        { "Дата загрузки": '', "Автор загрузки": '', "Недропользователь": '', "Месторождение": '', "Дата отбора начало": '', "Дата отбора конец": '', "Тип данных": '', },
+        { "Дата загрузки": '', "Автор загрузки": '', "Недропользователь": '', "Месторождение": '', "Дата отбора начало": '', "Дата отбора конец": '', "Тип данных": '', },
+        { "Дата загрузки": '', "Автор загрузки": '', "Недропользователь": '', "Месторождение": '', "Дата отбора начало": '', "Дата отбора конец": '', "Тип данных": '', },
+      ],
+      currentPage: 1,
+      perPage: 15,
+      pageOptions: [15, 20, 25, { value: 100, text: "Показать больше" }],
+    }
+  }
+};
+
+
 </script>
 
 <style scoped>
@@ -432,6 +320,17 @@ export default {};
   margin-right: 15px;
 }
 
+.collapse-left__sidebar{
+  border: none;
+  background: var(--a-accent);
+  padding: 14px 6px;
+  border-radius: 0 10px 10px 0;
+}
+
+.dropdown__sidebar{
+  margin: 10px;
+}
+
 .sectors > div {
   height: 50px;
   /* font-family: "Harmonia Sans Pro Cyr"; */
@@ -444,7 +343,6 @@ export default {};
   color: white;
   padding-top: 15px;
   padding-left: 15px;
-  border-bottom: 1px solid #555BA6;
 }
 .monitoring_wrapper {
   width: calc((1457 / (1457+15+350) * 100%));
