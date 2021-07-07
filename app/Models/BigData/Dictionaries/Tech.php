@@ -27,6 +27,6 @@ class Tech extends TBDModel
 
     public function type()
     {
-        return $this->hasOne(TechType::class, 'tech_type');
+        return $this->belongsTo(TechType::class, 'tech_type');
     }
 }
