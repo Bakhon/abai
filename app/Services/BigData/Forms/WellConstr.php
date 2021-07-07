@@ -8,6 +8,7 @@ class WellConstr extends PlainForm
 {
     protected $configurationFileName = 'well_constr';
 
+
     protected function isValidLandingDate($wellId, $landingDate): bool
     {
         $startDate =  DB::connection('tbd')
@@ -18,7 +19,7 @@ class WellConstr extends PlainForm
         return $landingDate >= $startDate;    
     }
 
-    protected function isValidDepth($depth):bool
+    protected function isValidDepth($wellId, $depth):bool
     {
         $dailyDrill =  DB::connection('tbd')
             ->table('prod.daily_drill')
@@ -33,11 +34,11 @@ class WellConstr extends PlainForm
     {
         $errors = [];
 
-        if (!$this->isValidDepth('depth')) {
+        if (!$this->isValidDepth($this->request->get('well'),$this->request->get('depth'))) {
             $errors['depth'] = trans('bd.validation.depth');
         }
 
-        if (!$this->isValidLandingDate('well', 'landing_date')) {
+        if (!$this->isValidLandingDate($this->request->get('well'), $this->request->get('landing_date'))) {
             $errors['landing_date'] = trans('bd.validation.landing_date');
         }
 
