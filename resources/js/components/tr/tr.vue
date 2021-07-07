@@ -6645,7 +6645,7 @@ table::-webkit-scrollbar-corner {
 }
 
 </style>
-<style>
+<style scoped>
 .tr-field-filter.tr-field-filter {
   margin: 0 0 0 auto;
   flex-grow: 0;

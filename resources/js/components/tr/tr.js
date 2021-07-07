@@ -299,12 +299,12 @@ export default {
           block: this.$store.state.tr.block,
           expMeth: this.$store.state.tr.expMeth,
           horizon: this.$store.state.tr.horizon,
-          year_1: this.$store.state.tr.year_1,
-          month_1: this.$store.state.tr.month_1,
-          day_1: this.$store.state.tr.day_1,
-          year_2:  this.$store.state.tr.year_2,
-          month_2:  this.$store.state.tr.month_2,
-          day_2:  this.$store.state.tr.day_2,
+          year_1: this.$store.state.tr.year_dyn_start,
+          month_1: this.$store.state.tr.month_dyn_start,
+          day_1: this.$store.state.tr.day_dyn_start,
+          year_2:  this.$store.state.tr.year_dyn_end,
+          month_2:  this.$store.state.tr.month_dyn_end,
+          day_2:  this.$store.state.tr.day_dyn_end,
           };
       }
       else {
@@ -655,6 +655,7 @@ export default {
       const prMm = choosenSecDt[1];
       const yyyy = choosenDt[0];
       const pryyyy = choosenSecDt[0];
+      this.is_dynamic = true;
       if (choosenSecDt[2] >= choosenDt[2] && choosenSecDt[1] >= choosenDt[1] && choosenSecDt[0] >= choosenDt[0] || choosenSecDt[0] > choosenDt[0]) {
         Vue.prototype.$notifyError("Дата 2 должна быть меньше чем Дата 1");
       } else {
@@ -677,11 +678,9 @@ export default {
         this.$store.commit("tr/SET_SORTTYPE", true);
         this.$store.commit("tr/SET_SORTPARAM", "");
         this.$store.commit("tr/SET_IS_DYNAMIC", true);
-        this.is_dynamic = true;
         this.axiosDynamicFilterRequest();
         this.searched = false;
         this.date_fix = false;
-        this.$store.commit("tr/SET_IS_DYNAMIC", "true");
         this.$store.commit("tr/SET_SORTPARAM", "");
         this.$store.commit("tr/SET_SEARCH", "");
         this.sortParam = "";
