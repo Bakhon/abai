@@ -205,13 +205,6 @@
                         >
                             {{getFormattedNumber(item.differenceOpecByYear)}}
                         </td>
-<!--                        <td-->
-<!--                            v-for="(key, keyIndex) in Object.keys(item)"-->
-<!--                            v-if="keyIndex > 1"-->
-<!--                            :class="[isColumnHidden(keyIndex) ? 'hide-block' : '',getColorBy(item[key],key)]"-->
-<!--                        >-->
-<!--                            {{getFormattedNumber(item[key])}}-->
-<!--                        </td>-->
                     </tr>
                     <!-- >дзо <-->
                </table>
@@ -295,7 +288,6 @@
 
            &:nth-child(3), &:nth-child(4) {
                background: #333975;
-               border-bottom: 2px solid #272953;
            }
        }
 
@@ -305,7 +297,6 @@
            font-size: 13px;
            background: #353EA1;
            padding: 5px;
-           border: 2px solid #272953;
            width: 10%;
 
            &:first-child {
