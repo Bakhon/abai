@@ -13,7 +13,7 @@ import chart from "vue-apexcharts";
 import {chartInitMixin} from "../mixins/chartMixin";
 
 export default {
-  name: 'Chart1',
+  name: 'ChartWithOilProduction',
   components: {apexchart:chart},
   mixins: [chartInitMixin],
   props: {
