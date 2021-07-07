@@ -1,4 +1,6 @@
 import moment from "moment";
+import companyTemplate from './company_template.json';
+import yearlyPlanMapping from './yearly_plan_mapping.json';
 
 export default {
     data: function () {
@@ -15,29 +17,6 @@ export default {
             headerTitle: 'Оперативная суточная информация по добыче нефти и конденсата АО НК "КазМунайГаз", тонн',
             currentYear: moment().year(),
             currentMonthName: moment().format('MMMM'),
-            template: {
-                'number': 0,
-                'dzo': '',
-                'yearlyPlan': 0,
-                'monthlyPlan': 0,
-                'monthlyPlanOpec': 0,
-                'planByDay': 0,
-                'planOpecByDay': 0,
-                'factByDay': 0,
-                'differenceByDay': 0,
-                'differenceOpecByDay': 0,
-                'planByMonth': 0,
-                'planOpecByMonth': 0,
-                'factByMonth': 0,
-                'differenceByMonth': 0,
-                'differenceOpecByMonth': 0,
-                'planByYear': 0,
-                'planOpecByYear': 0,
-                'factByYear': 0,
-                'differenceByYear': 0,
-                'differenceOpecByYear': 0,
-            },
-            production: [],
             totalNames: {
                 'KMGParticipation': 'Всего добыча нефти и конденсата с учетом доли участия АО НК "КазМунайГаз"',
                 'summary': 'Всего добыча нефти и конденсата с участием АО НК "КазМунайГаз"',
@@ -74,26 +53,13 @@ export default {
                 'deliveryByDzoWithParticipation': [],
                 'deliveryByKMGWithParticipation': []
             },
+            summaryForExport: {
+                'byDzo': [],
+                'byKMG': []
+            },
             withKMGCompanies: ['ОМГ','ОМГК','ЭМГ','АГК','ТШО','ММГ','КОА','КТМ','КГМ','ПКК','ТП','КБМ','КПО','НКО','УО'],
             oilCompanies: ['ОМГ','ЭМГ','ТШО','ММГ','КОА','КТМ','КГМ','ПКК','ТП','КБМ','КПО','НКО','УО'],
             condensateCompanies: ['ОМГК','АГК'],
-            yearlyPlanMapping: {
-                'ОМГ': 5564864,
-                'ОМГК': 4623,
-                'ЭМГ': 2695000,
-                'АГК': 15062,
-                'ТШО': 28287408,
-                'ММГ': 6050452,
-                'КОА': 603255,
-                'КТМ': 429477,
-                'КГМ': 1452906,
-                'ПКК': 868017,
-                'ТП': 320722,
-                'КБМ': 2139093,
-                'КПО': 10704916,
-                'НКО': 16777633,
-                'УО': 71539
-            },
             companiesNameMapping: {
                 'summaryByDzo': {
                     'ОМГ': this.trans("visualcenter.omg") + ' (нефть)',
@@ -307,6 +273,7 @@ export default {
         fillTable() {
             this.updateProduction();
             this.updateDelivery();
+            this.updateSummaryForExcel();
             this.tableOutput.byKMG = this.summary.productionByKMG;
             this.tableOutput.byDzo = this.summary.productionByDzo;
         },
@@ -347,7 +314,7 @@ export default {
             return [oilSummary,condensateSummary];
         },
         getSummaryByType(type,companies,productionByDzo) {
-            let template = _.cloneDeep(this.template);
+            let template = _.cloneDeep(companyTemplate);
             let filtered = this.getFilteredByType(_.cloneDeep(productionByDzo),companies);
             template.dzo = this.totalNames[type];
             if (this.isWithKMG) {
@@ -406,7 +373,7 @@ export default {
             return dzoSummary;
         },
         getByDay(dzoName,typeMapping) {
-            let template = _.cloneDeep(this.template);
+            let template = _.cloneDeep(companyTemplate);
             let mapping = {
                 'ОМГК': 'ОМГ',
                 'АГК': 'АГ'
@@ -420,7 +387,7 @@ export default {
                 template.planByDay = dzoRecord[typeMapping.oil.planByDay];
                 template.factByDay = dzoRecord[typeMapping.oil.factByDay];
                 template.planOpecByDay = dzoRecord[typeMapping.oil.planOpecByDay];
-                template.yearlyPlan = this.yearlyPlanMapping[dzoName];
+                template.yearlyPlan = yearlyPlanMapping[dzoName];
                 template.monthlyPlan = dzoRecord[typeMapping.oil.planByDay] * moment().daysInMonth();
                 template.monthlyPlanOpec = dzoRecord[typeMapping.oil.planOpecByDay] * moment().daysInMonth();
             } else {
@@ -428,7 +395,7 @@ export default {
                 template.planByDay = dzoRecord[typeMapping.condensate.planByDay];
                 template.factByDay = dzoRecord[typeMapping.condensate.factByDay];
                 template.planOpecByDay = dzoRecord[typeMapping.condensate.planOpecByDay];
-                template.yearlyPlan = this.yearlyPlanMapping[dzoName];
+                template.yearlyPlan = yearlyPlanMapping[dzoName];
                 template.monthlyPlan = dzoRecord[typeMapping.condensate.planByDay] * moment().daysInMonth();
                 template.monthlyPlanOpec = dzoRecord[typeMapping.condensate.planByDay] * moment().daysInMonth();
             }
@@ -482,7 +449,7 @@ export default {
         getSummaryWithParticipationByDzo() {
             let self = this;
             let result = [];
-            let pkiSummary = _.cloneDeep(this.template);
+            let pkiSummary = _.cloneDeep(companyTemplate);
             _.forEach(_.cloneDeep(this.summary.productionByDzo), function(item,index) {
                  let updatedByMultiplier = self.getCalculatedByMultiplier(item,self.participationMultiplier[item.dzo],item.dzo,index);
                  updatedByMultiplier.number = '1.' + index + '.';
@@ -546,20 +513,103 @@ export default {
             sorted[0].number = '1.1.';
             return sorted;
         },
+        tableToExcel(table, name, filename) {
+            let uri = 'data:application/vnd.ms-excel;base64,',
+                template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><title></title><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--><meta http-equiv="content-type" content="text/plain; charset=UTF-8"/></head><body><table>{table}</table></body></html>',
+                base64 = function(s) {
+                    return window.btoa(unescape(encodeURIComponent(s)))
+                },
+                format = function(s, c) {
+                    return s.replace(/{(\w+)}/g,
+                        function(m, p) {
+                        return c[p];
+                    })
+                }
+            let clonedTable = '';
+            if (!table.nodeType) {
+                table = document.getElementById(table);
+                clonedTable = table.cloneNode(true);
+                clonedTable = this.removeElementsByClass(clonedTable,'hide-block');
+            }
+            let ctx = {
+                worksheet: name || 'Worksheet',
+                table: clonedTable.innerHTML
+            };
+            console.log(clonedTable.innerHTML)
+
+            let link = document.createElement('a');
+            link.download = filename;
+            link.href = uri + base64(format(template, ctx));
+            link.click();
+        },
+        removeElementsByClass(element,className){
+            const elements = element.getElementsByClassName(className);
+            while(elements.length > 0){
+                elements[0].parentNode.removeChild(elements[0]);
+            }
+            return element;
+        },
+        exportToExcel() {
+            this.tableToExcel('dailyReport','name','myfile.xls');
+        },
+        updateSummaryForExcel() {
+            let summaryByDzo = [];
+            let self = this;
+            _.forEach(this.summary.productionByDzo, function(item) {
+                let production = item;
+                let delivery = self.getDeliveryForMerge(production.dzo);
+                let dzoMerged = Object.assign({},production,delivery);
+                summaryByDzo.push(dzoMerged);
+            });
+            console.log(summaryByDzo);
+            // summary: {
+            //         'productionByDzo': [],
+            //         'productionByKMG': [],
+            //         'productionByDzoWithParticipation': [],
+            //         'productionByKMGWithParticipation': [],
+            //         'deliveryByDzo': [],
+            //         'deliveryByKMG': [],
+            //         'deliveryByDzoWithParticipation': [],
+            //         'deliveryByKMGWithParticipation': []
+            // },
+            // summaryForExport: {
+            //     'byDzo': [],
+            //         'byKMG': []
+            // },
+        },
+        getDeliveryForMerge(dzoName) {
+            let itemIndex = this.summary.deliveryByDzo.findIndex(element => element.dzo === dzoName);
+            let mapping = {
+                'deliveryDifferenceByDay':  'differenceByDay',
+                'deliveryDifferenceByMonth': 'differenceByMonth',
+                'deliveryDifferenceByYear': 'differenceByYear',
+                'deliveryDifferenceOpecByDay': 'differenceOpecByDay',
+                'deliveryDifferenceOpecByMonth': 'differenceOpecByMonth',
+                'deliveryDifferenceOpecByYear': 'differenceOpecByYear',
+                'deliveryFactByDay': 'factByDay',
+                'deliveryFactByMonth': 'factByMonth',
+                'deliveryFactByYear': 'factByYear',
+                'deliveryMonthlyPlan': 'monthlyPlan',
+                'deliveryMonthlyPlanOpec': 'monthlyPlanOpec',
+                'deliveryPlanByDay': 'planByDay',
+                'deliveryPlanByMonth': 'planByMonth',
+                'deliveryPlanByYear': 'planByYear',
+                'deliveryPlanOpecByDay': 'planOpecByDay',
+                'deliveryPlanOpecByMonth': 'planOpecByMonth',
+                'deliveryPlanOpecByYear': 'planOpecByYear',
+                'deliveryYearlyPlan': 'yearlyPlan',
+            };
+            if (itemIndex > -1) {
+                let mapped = {};
+                for (let field in mapping) {
+                    mapped[field] = this.summary.deliveryByDzo[itemIndex][mapping[field]]
+                }
+                return mapped;
+            }
+        },
     },
     async mounted() {
         this.$store.commit('globalloading/SET_LOADING', true);
-        for (let i=2; i<19; i++) {
-            let emptyCompany = _.cloneDeep(this.template);
-            emptyCompany.number = i;
-            if (i === 9) {
-                emptyCompany.differenceByDay = -1000;
-            }
-            if (i === 12) {
-                emptyCompany.differenceByDay = 3000;
-            }
-            this.production.push(emptyCompany);
-        }
         this.productionSummary = await this.getProduction();
         this.planSummary = await this.getPlans();
         this.updatePlanByPeriod();

@@ -7,8 +7,10 @@
                 </div>
                 <div
                         :class="[!isWithKMG ? 'opec-filter-active' : 'opec-filter-disabled','col-2']"
-                        @click="isWithKMG = !isWithKMG"
+                        @click="exportToExcel()"
                 >
+<!--                        @click="isWithKMG = !isWithKMG"-->
+
                     Без доли участия КМГ
                 </div>
                 <div
@@ -25,7 +27,7 @@
                 </div>
             </div>
             <div class="col-12 mt-3">
-                <table class="col-12">
+                <table class="main-table col-12" id="dailyReport" style="display:none">
                     <tr>
                         <th rowspan="2">№ п/п</th>
                         <th rowspan="2">Предприятия</th>
@@ -219,9 +221,127 @@
                     </tr>
                     <!-- >дзо <-->
                </table>
+
+<!--                todo-->
+                <table class="col-12" id="dailyReport">
+                    <tr>
+                        <th rowspan="3">№ п/п</th>
+                        <th rowspan="3">Предприятия</th>
+                        <th colspan="18" class="background-delimeters">ДОБЫЧА, тонн</th>
+                        <th colspan="18" class="background-delimeters">СДАЧА, тонн</th>
+                    </tr>
+                    <tr>
+                        <th rowspan="2">
+                            План на {{currentYear}} г.
+                        </th>
+                        <th rowspan="2">
+                            План на {{currentMonthName}} месяц
+                        </th>
+                        <th rowspan="2">
+                            План на {{currentMonthName}} месяц <br>
+                            с учетом ОПЕК+
+                        </th>
+                        <th colspan="5" class="background-delimeters">СУТОЧНАЯ</th> <!-- >суточная <-->
+                        <th colspan="5" class="background-delimeters">С НАЧАЛА МЕСЯЦА</th> <!-- >с начала месяца <-->
+                        <th colspan="5" class="background-delimeters">С НАЧАЛА ГОДА</th> <!-- >с начала года <-->
+                        <th rowspan="2">
+                            План на {{currentYear}} г.
+                        </th>
+                        <th rowspan="2">
+                            План на {{currentMonthName}} месяц
+                        </th>
+                        <th rowspan="2">
+                            План на {{currentMonthName}} месяц <br>
+                            с учетом ОПЕК+
+                        </th>
+                        <th colspan="5" class="background-delimeters">СУТОЧНАЯ</th> <!-- >суточная <-->
+                        <th colspan="5" class="background-delimeters">С НАЧАЛА МЕСЯЦА</th> <!-- >с начала месяца <-->
+                        <th colspan="5" class="background-delimeters">С НАЧАЛА ГОДА</th> <!-- >с начала года <-->
+                    </tr>
+                    <tr>
+                        <!-- >суточная <-->
+                        <th>План</th>
+                        <th>
+                            План<br>
+                            с учетом ОПЕК+
+                        </th>
+                        <th>Факт</th>
+                        <th>(+,-)</th>
+                        <th>
+                            (+,-)<br>
+                            с учетом ОПЕК+
+                        </th>
+                        <!-- >суточная <-->
+                        <!-- >с начала месяца <-->
+                        <th>План</th>
+                        <th>
+                            План<br>
+                            с учетом ОПЕК+
+                        </th>
+                        <th>Факт</th>
+                        <th>(+,-)</th>
+                        <th>
+                            (+,-)<br>
+                            с учетом ОПЕК+
+                        </th>
+                        <!-- >с начала месяца <-->
+                        <!-- >с начала года <-->
+                        <th>План</th>
+                        <th>
+                            План<br>
+                            с учетом ОПЕК+
+                        </th>
+                        <th>Факт</th>
+                        <th>(+,-)</th>
+                        <th>
+                            (+,-)<br>
+                            с учетом ОПЕК+
+                        </th>
+                        <!-- >с начала года <-->
+                        <!-- >суточная <-->
+                        <th>План</th>
+                        <th>
+                            План<br>
+                            с учетом ОПЕК+
+                        </th>
+                        <th>Факт</th>
+                        <th>(+,-)</th>
+                        <th>
+                            (+,-)<br>
+                            с учетом ОПЕК+
+                        </th>
+                        <!-- >суточная <-->
+                        <!-- >с начала месяца <-->
+                        <th>План</th>
+                        <th>
+                            План<br>
+                            с учетом ОПЕК+
+                        </th>
+                        <th>Факт</th>
+                        <th>(+,-)</th>
+                        <th>
+                            (+,-)<br>
+                            с учетом ОПЕК+
+                        </th>
+                        <!-- >с начала месяца <-->
+                        <!-- >с начала года <-->
+                        <th>План</th>
+                        <th>
+                            План<br>
+                            с учетом ОПЕК+
+                        </th>
+                        <th>Факт</th>
+                        <th>(+,-)</th>
+                        <th>
+                            (+,-)<br>
+                            с учетом ОПЕК+
+                        </th>
+                        <!-- >с начала года <-->
+                    </tr>
+                    <!-- >дзо <-->
+                </table>
            </div>
        </div>
-
    </div>
 </template>
 <script src="./index.js"></script>
@@ -289,22 +409,19 @@
    .text-center {
        text-align: center;
    }
-   table {
+   table .main-table {
        table-layout: fixed;
        border-collapse: collapse;
-
        tr {
            &:nth-child(2) {
                th {
                    height: 50px;
                }
            }
-
            &:nth-child(3), &:nth-child(4) {
                background: #333975;
            }
        }
-
        th {
            font-style: normal;
            font-weight: bold;
@@ -312,16 +429,13 @@
            background: #353EA1;
            padding: 5px;
            width: 10%;
-
            &:first-child {
                width: 2%;
            }
-
            &:nth-child(3), &:nth-child(4), &:nth-child(5) {
                width: 5%;
            }
        }
-
        td {
            font-size: 14px;
            font-family: Bold;
@@ -330,12 +444,10 @@
            &:first-child {
                width: 2%;
            }
-
            &:nth-child(2) {
                font-family: HarmoniaSansProCyr-Regular, Harmonia-sans;
                text-align: left;
            }
-
            &:nth-child(3), &:nth-child(4), &:nth-child(5) {
                width: 5%;
            }
