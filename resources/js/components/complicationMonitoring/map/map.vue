@@ -96,6 +96,9 @@
         </div>
       </template>
     </b-modal>
+
+    <gu-tool-tip ref="guToolTip" v-show="false" :gu="guHovered" />
+    <pipe-tool-tip ref="pipeToolTip" v-show="false" :pipe="pipeHovered" :paramKey="pipeHoveredParamKey" />
   </div>
 </template>
 
@@ -115,8 +118,9 @@ import mapContextMenu from "./mapContextMenu";
 import pipeColors from '~/json/pipe_colors.json'
 import axios from "axios";
 import moment from "moment";
-import CatLoader from '../../ui-kit/CatLoader'
-
+import CatLoader from '../../ui-kit/CatLoader';
+import guToolTip from "./guToolTip";
+import pipeToolTip from "./pipeToolTip";
 
 export default {
   name: "gu-map",
@@ -127,6 +131,8 @@ export default {
     'map-well-form': mapWellForm,
     'map-pipe-form': mapPipeForm,
     'map-context-menu': mapContextMenu,
+    guToolTip,
+    pipeToolTip,
     CatLoader,
     mapLegend
   },
@@ -182,7 +188,10 @@ export default {
         },
       ],
       loading: false,
-      referentValue: 10
+      referentValue: 10,
+      guHovered: null,
+      pipeHovered: null,
+      pipeHoveredParamKey: null,
     };
   },
   created() {
@@ -269,7 +278,7 @@ export default {
         },
         onHover: ({object}) => (this.isHovering = Boolean(object)),
         getCursor: ({isDragging}) => (isDragging ? 'grabbing' : (this.isHovering ? 'pointer' : 'grab')),
-        getTooltip: ({object}) => {
+        getTooltip:  ({object}) => {
           if (object) {
             if (object.cdng_id && object.last_omgngdu) {
               return {
@@ -277,10 +286,10 @@ export default {
               }
             }
 
-            let key = this.getPipeCalcKey(object);
-            if (key) {
+            let paramKey = this.getPipeCalcKey(object);
+            if (paramKey) {
               return {
-                html: this.getPipeTooltipHtml(object, key)
+                html: this.getPipeTooltipHtml(object, paramKey)
               }
             }
 
@@ -323,40 +332,21 @@ export default {
       return null;
     },
     getGuTooltipHtml(gu) {
-      return '<div class="params_block">' +
-          '<p>' + gu.name + '</p>' +
-          '<p>' + this.trans('monitoring.gu.fields.date') + ': ' + this.getValOrNoData(gu.last_omgngdu.date) + '</p>' +
-          '<p>' + this.trans('monitoring.gu.fields.daily_fluid_production') + ': ' + this.getValOrNoData(gu.last_omgngdu.daily_fluid_production) + ' ' + this.trans('measurements.m3/day') + '</p>' +
-          '<p>' + this.trans('monitoring.gu.fields.daily_oil_production') + ': ' + this.getValOrNoData(gu.last_omgngdu.daily_oil_production) + ' ' + this.trans('measurements.m3/day') + '</p>' +
-          '<p>' + this.trans('monitoring.gu.fields.daily_water_production') + ': ' + this.getValOrNoData(gu.last_omgngdu.daily_water_production) + ' ' + this.trans('measurements.m3/day') + '</p>' +
-          '<p>' + this.trans('monitoring.gu.fields.bsw') + ': ' + this.getValOrNoData(gu.last_omgngdu.bsw) + this.trans('measurements.percent') + '</p>' +
-          '<p>' + this.trans('monitoring.gu.fields.pump_discharge_pressure') + ': ' + this.getValOrNoData(gu.last_omgngdu.pump_discharge_pressure) + ' ' + this.trans('measurements.pressure_bar') + '</p>' +
-          '<p>' + this.trans('monitoring.gu.fields.heater_output_temperature') + ': ' + this.getValOrNoData(gu.last_omgngdu.heater_output_temperature) + ' ' + this.trans('measurements.celsius') + '</p>' +
-          '<p>' + this.trans('monitoring.gu.fields.daily_gas_production_in_sib') + ': ' + this.getValOrNoData(gu.last_omgngdu.daily_gas_production_in_sib) + ' ' + this.trans('measurements.st.m3/day') + '</p>' +
-          '<p>' + this.trans('monitoring.gu.fields.surge_tank_pressure') + ': ' + this.getValOrNoData(gu.last_omgngdu.surge_tank_pressure) + ' ' + this.trans('measurements.pressure_bar') + '</p>' +
-          '</div>';
+      this.guHovered = gu;
+      let html = this.$refs.guToolTip.$el.outerHTML;
+      html = (typeof html != 'undefined') ? html.replace('style="display: none;"', '') : '';
+
+      return html;
     },
-    getPipeTooltipHtml(pipe, key) {
-      return '<div class="params_block">' +
-          '<p>' + pipe.name + '</p>' +
-          '<p>' + this.trans('app.date') + ': ' + this.getValOrNoData(pipe[key].date) + '</p>' +
-          '<p>' + this.trans('monitoring.hydro_calculation.fields.length') + ': ' + this.getValOrNoData(pipe[key].length) + '</p>' +
-          '<p>' + this.trans('monitoring.units.q_zh') + ', ' + this.trans('measurements.m3/day') + ': ' + this.getValOrNoData(pipe[key].qliq) + '</p>' +
-          '<p>' + this.trans('monitoring.gu.fields.bsw') + ', ' + this.trans('measurements.percent') + ': ' + this.getValOrNoData(pipe[key].wc) + '</p>' +
-          '<p>' + this.trans('monitoring.omgngdu.fields.gas_factor') + ': ' + this.getValOrNoData(pipe[key].gazf) + '</p>' +
-          '<p>' + this.trans('monitoring.hydro_calculation.fields.pressure_start') + ': ' + this.getValOrNoData(pipe[key].press_start) + '</p>' +
-          '<p>' + this.trans('monitoring.hydro_calculation.fields.pressure_end') + ': ' + this.getValOrNoData(pipe[key].press_end) + '</p>' +
-          '<p>' + this.trans('monitoring.hydro_calculation.fields.temperature_start') + ': ' + this.getValOrNoData(pipe[key].temp_start) + '</p>' +
-          '<p>' + this.trans('monitoring.hydro_calculation.fields.temperature_end') + ': ' + this.getValOrNoData(pipe[key].temp_end) + '</p>' +
-          '<p>' + this.trans('monitoring.hydro_calculation.fields.mix_speed_avg') + ': ' + this.getValOrNoData(pipe[key].mix_speed_avg) + '</p>' +
-          '<p>' + this.trans('monitoring.hydro_calculation.fields.fluid_speed') + ': ' + this.getValOrNoData(pipe[key].fluid_speed) + '</p>' +
-          '<p>' + this.trans('monitoring.hydro_calculation.fields.gaz_speed') + ': ' + this.getValOrNoData(pipe[key].gaz_speed) + '</p>' +
-          '<p>' + this.trans('monitoring.hydro_calculation.fields.flow_type') + ': ' + this.getValOrNoData(pipe[key].flow_type) + '</p>' +
-          '<p>' + this.trans('monitoring.hydro_calculation.fields.press_change') + ': ' + this.getValOrNoData(pipe[key].press_change) + '</p>' +
-          '<p>' + this.trans('monitoring.hydro_calculation.fields.height_drop') + ': ' + this.getValOrNoData(pipe[key].height_drop) + '</p>' +
-          '</div>';
+    getPipeTooltipHtml(pipe, paramKey) {
+      this.pipeHovered = pipe;
+      this.pipeHoveredParamKey = paramKey;
+      let html = this.$refs.pipeToolTip.$el.outerHTML;
+      html = (typeof html != 'undefined') ? html.replace('style="display: none;"', '') : '';
+
+      return html;
     },
-    getValOrNoData (param) {
+    getValOrNoData(param) {
       return (typeof param == 'undefined' || !param) ? this.trans('monitoring.no_data') : param;
     },
     prepareLayers() {
