@@ -142,18 +142,6 @@ export default {
           foreColor: '#FFFFFF',
           locales: [ru],
           defaultLocale: 'ru',
-          events: {
-            beforeZoom: function (chartContext, {xaxis}) {
-              console.log('zoom')
-
-              return {
-                xaxis: {
-                  min: timestamp,
-                  max: timestamp
-                }
-              }
-            }
-          }
         },
         markers: {
           size: 0
