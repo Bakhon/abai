@@ -3,7 +3,7 @@
         <div class="page-container row">
             <div class="col-12 mt-3 d-flex">
                 <div class="header-title col-7">
-                    Оперативная суточная информация по добыче нефти и конденсата АО НК "КазМунайГаз", тонн
+                    {{headerTitle}}
                 </div>
                 <div
                         :class="[!isWithKMG ? 'opec-filter-active' : 'opec-filter-disabled','col-2']"
@@ -12,8 +12,8 @@
                     Без доли участия КМГ
                 </div>
                 <div
-                        class="opec-filter-disabled col-1"
-                        @click="switchView()"
+                        :class="[isProduction ? 'opec-filter-active' : 'opec-filter-disabled','col-1']"
+                        @click="[isProduction = !isProduction,isWithKMG = false]"
                 >
                     {{buttonName}}
                 </div>
@@ -86,7 +86,7 @@
                     </tr>
                     <!-- >саммари <-->
                     <tr
-                            v-for="(item,index) in tableOutput.productionByKMG"
+                            v-for="(item,index) in tableOutput.byKMG"
                             :class="!isWithKMG && index > 0 ? 'background-dark hide-block' :'background-dark'"
                     >
                         <td>{{item.number}}</td>
@@ -147,7 +147,7 @@
                     <!-- >саммари <-->
                     <!-- >дзо <-->
                     <tr
-                            v-for="(item, index) in tableOutput.productionByDzo"
+                            v-for="(item, index) in tableOutput.byDzo"
                             :class="getRowClass(index)"
                     >
                         <td v-if="index !== 1">{{item.number}}</td>

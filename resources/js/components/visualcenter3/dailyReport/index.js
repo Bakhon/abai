@@ -3,6 +3,16 @@ import moment from "moment";
 export default {
     data: function () {
         return {
+            allDzoCompanies: [
+                'ОМГ','ЭМГ','КБМ','КГМ','ТШО',
+                'ММГ','КТМ','КОА','ПКИ','АГ',
+                'КПО','НКО','ТП','УО','ПКК'
+            ],
+            headerOptions: {
+                'production': 'Оперативная суточная информация по добыче нефти и конденсата АО НК "КазМунайГаз", тонн',
+                'delivery': 'Оперативная суточная информация по сдаче нефти и конденсата АО НК "КазМунайГаз", тонн'
+            },
+            headerTitle: 'Оперативная суточная информация по добыче нефти и конденсата АО НК "КазМунайГаз", тонн',
             currentYear: moment().year(),
             currentMonthName: moment().format('MMMM'),
             template: {
@@ -36,10 +46,6 @@ export default {
             opecColumns: [4,6,9,11,14,16,19],
             isOpecActive: false,
             buttonName: 'Добыча',
-            viewType: {
-                'production': 'Добыча',
-                'delivery': 'Сдача'
-            },
             productionSummary: [],
             planSummary: [],
             productionByYear: [],
@@ -57,11 +63,16 @@ export default {
             productionByDay: [],
             comparedSummary: [],
             isWithKMG: false,
+            isProduction: true,
             summary: {
                 'productionByDzo': [],
                 'productionByKMG': [],
                 'productionByDzoWithParticipation': [],
-                'productionByKMGWithParticipation': []
+                'productionByKMGWithParticipation': [],
+                'deliveryByDzo': [],
+                'deliveryByKMG': [],
+                'deliveryByDzoWithParticipation': [],
+                'deliveryByKMGWithParticipation': []
             },
             withKMGCompanies: ['ОМГ','ОМГК','ЭМГ','АГК','ТШО','ММГ','КОА','КТМ','КГМ','ПКК','ТП','КБМ','КПО','НКО','УО'],
             oilCompanies: ['ОМГ','ЭМГ','ТШО','ММГ','КОА','КТМ','КГМ','ПКК','ТП','КБМ','КПО','НКО','УО'],
@@ -152,14 +163,40 @@ export default {
                 'УО': (val) => val,
             },
             tableOutput: {
-                productionByKMG: [],
-                productionByDzo: []
+                byKMG: [],
+                byDzo: []
             },
             participationOrder: [
                 'ОМГ','ОМГК','ЭМГ','КБМ','КГМ','ПКИ','КГМД',
                 'ПКК','ТП','АГК','ТШО','ММГ','КОА','КТМ',
                 'КПО','НКО','УО'
             ],
+            typeMapping: {
+                'production': {
+                    'oil': {
+                        'planByDay': 'plan_oil',
+                        'factByDay': 'oil_production_fact',
+                        'planOpecByDay': 'plan_oil_opek',
+                    },
+                    'condensate': {
+                        'planByDay': 'plan_kondensat',
+                        'factByDay': 'condensate_production_fact',
+                        'planOpecByDay': 'plan_kondensat',
+                    }
+                },
+                'delivery': {
+                    'oil': {
+                        'planByDay': 'plan_oil_dlv',
+                        'factByDay': 'oil_delivery_fact',
+                        'planOpecByDay': 'plan_oil_dlv_opek',
+                    },
+                    'condensate': {
+                        'planByDay': 'plan_kondensat_dlv',
+                        'factByDay': 'condensate_delivery_fact',
+                        'planOpecByDay': 'plan_kondensat_dlv',
+                    }
+                },
+            }
         }
     },
     methods: {
@@ -189,16 +226,6 @@ export default {
         getFormattedNumber(num) {
             return (new Intl.NumberFormat("ru-RU").format(Math.abs(Math.round(num))))
         },
-        switchOpecFilter() {
-            this.isOpecActive = !this.isOpecActive;
-        },
-        switchView() {
-            if (this.buttonName === this.viewType.production) {
-                this.buttonName = this.viewType.delivery;
-            } else {
-                this.buttonName = this.viewType.production;
-            }
-        },
         getSortedBy(type,input){
             return _.orderBy(input,
                 ["date"],
@@ -222,8 +249,28 @@ export default {
             this.productionByMonth = this.getFilteredBy(this.comparedSummary,this.period.monthStart,this.period.monthEnd);
             this.productionByYear = this.getFilteredBy(this.comparedSummary,this.period.yearStart,this.period.yearEnd);
             this.productionByDay = this.getFilteredBy(this.comparedSummary,this.period.todayStart,this.period.todayEnd);
-            if (this.productionByDay.length !== 15) {
-                this.productionByDay = this.getFilteredBy(this.comparedSummary,this.period.yesterdayStart,this.period.yesterdayEnd);
+            let missingCompanies = this.getMissingCompanies();
+            if (missingCompanies.length > 0) {
+                let previousPlanFact = this.getFilteredBy(this.comparedSummary,this.period.yesterdayStart,this.period.yesterdayEnd);
+                for (let i in missingCompanies) {
+                    this.productionByDay.push(this.getPreviousDzo(previousPlanFact,missingCompanies[i]));
+                }
+            }
+        },
+        getMissingCompanies() {
+            let missingDzo = [];
+            for (let i in this.allDzoCompanies) {
+                let itemIndex = this.productionByDay.findIndex(element => element.dzo_name === this.allDzoCompanies[i]);
+                if (itemIndex === -1) {
+                    missingDzo.push(this.allDzoCompanies[i]);
+                }
+            }
+            return missingDzo;
+        },
+        getPreviousDzo(compared,dzoName) {
+            let itemIndex = compared.findIndex(element => element.dzo_name === dzoName);
+            if (itemIndex > -1) {
+                return compared[itemIndex];
             }
         },
         getComparedWithPlan() {
@@ -258,7 +305,13 @@ export default {
             this.planSummary = this.getSortedBy('asc',this.planSummary);
         },
         fillTable() {
-            this.summary.productionByDzo = this.getSummaryByDzo();
+            this.updateProduction();
+            this.updateDelivery();
+            this.tableOutput.byKMG = this.summary.productionByKMG;
+            this.tableOutput.byDzo = this.summary.productionByDzo;
+        },
+        updateProduction() {
+            this.summary.productionByDzo = this.getSummaryByDzo(this.typeMapping.production);
             this.summary.productionByKMG = this.getSummaryByKMG(this.summary.productionByDzo);
             if (!this.isWithKMG) {
                 let oilSummary = this.summary.productionByKMG[0];
@@ -271,10 +324,21 @@ export default {
             this.summary.productionByDzoWithParticipation = this.getSummaryWithParticipationByDzo();
             this.summary.productionByKMGWithParticipation = this.getSummaryByKMG(this.summary.productionByDzoWithParticipation);
             this.summary.productionByKMGWithParticipation[0].number = 1;
-            this.tableOutput.productionByKMG = this.summary.productionByKMG;
-            this.tableOutput.productionByDzo = this.summary.productionByDzo;
-            console.log('this.summary')
-            console.log(this.summary)
+        },
+        updateDelivery() {
+            this.summary.deliveryByDzo = this.getSummaryByDzo(this.typeMapping.delivery);
+            this.summary.deliveryByKMG = this.getSummaryByKMG(this.summary.deliveryByDzo);
+            if (!this.isWithKMG) {
+                let oilSummary = this.summary.deliveryByKMG[0];
+                let condensateSummary = this.summary.deliveryByKMG[1];
+                oilSummary.number = 2;
+                oilSummary.yearlyPlan += condensateSummary.yearlyPlan;
+                oilSummary.monthlyPlan += condensateSummary.monthlyPlan;
+                oilSummary.monthlyPlanOpec += condensateSummary.monthlyPlanOpec;
+            }
+            this.summary.deliveryByDzoWithParticipation = this.getSummaryWithParticipationByDzo();
+            this.summary.deliveryByKMGWithParticipation = this.getSummaryByKMG(this.summary.deliveryByDzoWithParticipation);
+            this.summary.deliveryByKMGWithParticipation[0].number = 1;
         },
         getSummaryByKMG(productionByDzo) {
             let summary = [];
@@ -314,20 +378,20 @@ export default {
             template[fields.planOpec] = _.sumBy(input, fields.planOpec);
             return template;
         },
-        getSummaryByDzo() {
+        getSummaryByDzo(typeMapping) {
             let summary = [];
             let self = this;
             _.forEach(this.withKMGCompanies, function(acronym,index) {
-                summary.push(self.getSummary(acronym,index));
+                summary.push(self.getSummary(acronym,index,typeMapping));
             });
             summary[0].number = '2.1.';
             return summary;
         },
-        getSummary(acronym,index) {
+        getSummary(acronym,index,typeMapping) {
             let dzoSummary = {};
-            dzoSummary = this.getByDay(acronym);
-            dzoSummary = this.getByPeriod(acronym,dzoSummary,this.productionByMonth,'Month');
-            dzoSummary = this.getByPeriod(acronym,dzoSummary,this.productionByYear,'Year');
+            dzoSummary = this.getByDay(acronym,typeMapping);
+            dzoSummary = this.getByPeriod(acronym,dzoSummary,this.productionByMonth,'Month',typeMapping);
+            dzoSummary = this.getByPeriod(acronym,dzoSummary,this.productionByYear,'Year',typeMapping);
             dzoSummary.number = '2.' + index + '.';
             dzoSummary = this.getByDifference(dzoSummary);
             return dzoSummary;
@@ -341,7 +405,7 @@ export default {
             dzoSummary.differenceOpecByYear = dzoSummary.factByYear - dzoSummary.planOpecByYear;
             return dzoSummary;
         },
-        getByDay(dzoName) {
+        getByDay(dzoName,typeMapping) {
             let template = _.cloneDeep(this.template);
             let mapping = {
                 'ОМГК': 'ОМГ',
@@ -353,24 +417,24 @@ export default {
                 if (!dzoRecord) {
                     return template;
                 }
-                template.planByDay = dzoRecord.plan_oil;
-                template.factByDay = dzoRecord.oil_production_fact;
-                template.planOpecByDay = dzoRecord.plan_oil_opek;
+                template.planByDay = dzoRecord[typeMapping.oil.planByDay];
+                template.factByDay = dzoRecord[typeMapping.oil.factByDay];
+                template.planOpecByDay = dzoRecord[typeMapping.oil.planOpecByDay];
                 template.yearlyPlan = this.yearlyPlanMapping[dzoName];
-                template.monthlyPlan = dzoRecord.plan_oil * moment().daysInMonth();
-                template.monthlyPlanOpec = dzoRecord.plan_oil_opek * moment().daysInMonth();
+                template.monthlyPlan = dzoRecord[typeMapping.oil.planByDay] * moment().daysInMonth();
+                template.monthlyPlanOpec = dzoRecord[typeMapping.oil.planOpecByDay] * moment().daysInMonth();
             } else {
                 let dzoRecord = this.getDzoRecord(this.productionByDay,mapping[dzoName]);
-                template.planByDay = dzoRecord.plan_kondensat;
-                template.factByDay = dzoRecord.condensate_production_fact;
-                template.planOpecByDay = dzoRecord.plan_kondensat;
+                template.planByDay = dzoRecord[typeMapping.condensate.planByDay];
+                template.factByDay = dzoRecord[typeMapping.condensate.factByDay];
+                template.planOpecByDay = dzoRecord[typeMapping.condensate.planOpecByDay];
                 template.yearlyPlan = this.yearlyPlanMapping[dzoName];
-                template.monthlyPlan = dzoRecord.plan_kondensat * moment().daysInMonth();
-                template.monthlyPlanOpec = dzoRecord.plan_kondensat * moment().daysInMonth();
+                template.monthlyPlan = dzoRecord[typeMapping.condensate.planByDay] * moment().daysInMonth();
+                template.monthlyPlanOpec = dzoRecord[typeMapping.condensate.planByDay] * moment().daysInMonth();
             }
             return template;
         },
-        getByPeriod(dzoName,template,input,periodName) {
+        getByPeriod(dzoName,template,input,periodName,typeMapping) {
             let mapping = {
                 'ОМГК': 'ОМГ',
                 'АГК': 'АГ'
@@ -383,14 +447,14 @@ export default {
             template.dzo = dzoName;
             if (!['ОМГК','АГК'].includes(dzoName)) {
                 let filtered = this.getFilteredByCompany(input,dzoName,'dzo_name');
-                template[fields.plan] = _.sumBy(filtered, 'plan_oil');
-                template[fields.fact] = _.sumBy(filtered, 'oil_production_fact');
-                template[fields.planOpec] = _.sumBy(filtered, 'plan_oil_opek');
+                template[fields.plan] = _.sumBy(filtered, typeMapping.oil.planByDay);
+                template[fields.fact] = _.sumBy(filtered, typeMapping.oil.factByDay);
+                template[fields.planOpec] = _.sumBy(filtered, typeMapping.oil.planOpecByDay);
             } else {
                 let filtered = this.getFilteredByCompany(input,mapping[dzoName],'dzo_name');
-                template[fields.plan] = _.sumBy(filtered, 'plan_kondensat');
-                template[fields.fact] = _.sumBy(filtered, 'condensate_production_fact');
-                template[fields.planOpec] = _.sumBy(filtered, 'plan_kondensat');
+                template[fields.plan] = _.sumBy(filtered, typeMapping.condensate.planByDay);
+                template[fields.fact] = _.sumBy(filtered, typeMapping.condensate.factByDay);
+                template[fields.planOpec] = _.sumBy(filtered, typeMapping.condensate.planOpecByDay);
             }
             return template;
         },
@@ -505,12 +569,39 @@ export default {
     },
     watch: {
         isWithKMG: function () {
+            let byKMG = [];
+            let byDzo = [];
             if (this.isWithKMG) {
-                this.tableOutput.productionByKMG = this.summary.productionByKMGWithParticipation;
-                this.tableOutput.productionByDzo = this.summary.productionByDzoWithParticipation;
+                if (this.isProduction) {
+                    byKMG = this.summary.productionByKMGWithParticipation;
+                    byDzo = this.summary.productionByDzoWithParticipation;
+                } else {
+                    byKMG = this.summary.deliveryByKMGWithParticipation;
+                    byDzo = this.summary.deliveryByDzoWithParticipation;
+                }
             } else {
-                this.tableOutput.productionByKMG = this.summary.productionByKMG;
-                this.tableOutput.productionByDzo = this.summary.productionByDzo;
+                if (this.isProduction) {
+                    byKMG = this.summary.productionByKMG;
+                    byDzo = this.summary.productionByDzo;
+                } else {
+                    byKMG = this.summary.deliveryByKMG;
+                    byDzo = this.summary.deliveryByDzo;
+                }
+            }
+            this.tableOutput.byKMG = byKMG;
+            this.tableOutput.byDzo = byDzo;
+        },
+        isProduction: function() {
+            this.isWithKMG = false;
+            this.isOpecActive = false;
+            if (this.isProduction) {
+                this.headerTitle = this.headerOptions.production;
+                this.tableOutput.byKMG = this.summary.productionByKMG;
+                this.tableOutput.byDzo = this.summary.productionByDzo;
+            } else {
+                this.headerTitle = this.headerOptions.delivery;
+                this.tableOutput.byKMG = this.summary.deliveryByKMG;
+                this.tableOutput.byDzo = this.summary.deliveryByDzo;
             }
         }
     },
