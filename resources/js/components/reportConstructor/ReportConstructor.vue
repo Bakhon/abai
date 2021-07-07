@@ -3,34 +3,34 @@
     <div class="left-section bg-dark">
       <div class="col">
         <div class="row menu">
-          <div class="left-section-title" @click="currentStructureType = 'org'">
-            <svg width="18" height="16" viewBox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path fill-rule="evenodd" clip-rule="evenodd" d="M6.05078 0.00301123H11.098V5.0498H6.05078V0.00301123Z"
-                    fill="#868BB2"/>
-              <path fill-rule="evenodd" clip-rule="evenodd" d="M0 10.0743H5.0472V15.1211H0V10.0743Z" fill="#868BB2"/>
-              <path fill-rule="evenodd" clip-rule="evenodd" d="M6.05078 10.0743H11.098V15.1211H6.05078V10.0743Z"
-                    fill="#868BB2"/>
-              <path fill-rule="evenodd" clip-rule="evenodd"
-                    d="M3.02602 8.06429H8.07322V9.06934H9.07775V8.06429H14.1249V9.06934H15.1296V7.05973H9.07775V6.05469H8.07322V7.05973H2.02148V9.06934H3.02602V8.06429Z"
-                    fill="#868BB2"/>
-              <path fill-rule="evenodd" clip-rule="evenodd" d="M12.1035 10.0743H17.1506V15.1211H12.1035V10.0743Z"
-                    fill="#868BB2"/>
-            </svg>
-            Оргструктура
-          </div>
-          <div class="left-section-title" @click="currentStructureType = 'geo'">
+          <div class="left-section-title btn1 active" @click="handleMenuClick('geo', '.btn1')">
             <svg width="17" height="20" viewBox="0 0 17 20" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path fill-rule="evenodd" clip-rule="evenodd"
                     d="M8.26799 19.0107L0 13.1419L1.48826 12.0855L8.25891 16.8896L15.0387 12.0779L16.5361 13.1419L8.26799 19.0107ZM8.26799 15.4307L0 9.56193L1.48826 8.50553L8.25891 13.3097L15.0387 8.49723L16.5361 9.56193L8.26799 15.4307ZM8.26799 11.8508L1.49733 7.04655L0 5.98193L8.26799 0.113119L16.5361 5.98193L15.0292 7.04655L8.26799 11.8508Z"
-                    fill="#868BB2"/>
+                    fill="#fff"/>
             </svg>
             Геоструктура
           </div>
-          <div class="left-section-title" @click="currentStructureType = 'tech'">
+          <div class="left-section-title btn2" @click="handleMenuClick('org', '.btn2')">
+            <svg width="18" height="16" viewBox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M6.05078 0.00301123H11.098V5.0498H6.05078V0.00301123Z"
+                    fill="#fff"/>
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M0 10.0743H5.0472V15.1211H0V10.0743Z" fill="#fff"/>
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M6.05078 10.0743H11.098V15.1211H6.05078V10.0743Z"
+                    fill="#fff"/>
+              <path fill-rule="evenodd" clip-rule="evenodd"
+                    d="M3.02602 8.06429H8.07322V9.06934H9.07775V8.06429H14.1249V9.06934H15.1296V7.05973H9.07775V6.05469H8.07322V7.05973H2.02148V9.06934H3.02602V8.06429Z"
+                    fill="#fff"/>
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M12.1035 10.0743H17.1506V15.1211H12.1035V10.0743Z"
+                    fill="#fff"/>
+            </svg>
+            Оргструктура
+          </div>
+          <div class="left-section-title btn3" @click="handleMenuClick('tech', '.btn3')">
             <svg width="17" height="20" viewBox="0 0 17 20" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path fill-rule="evenodd" clip-rule="evenodd"
                     d="M8.26799 19.0107L0 13.1419L1.48826 12.0855L8.25891 16.8896L15.0387 12.0779L16.5361 13.1419L8.26799 19.0107ZM8.26799 15.4307L0 9.56193L1.48826 8.50553L8.25891 13.3097L15.0387 8.49723L16.5361 9.56193L8.26799 15.4307ZM8.26799 11.8508L1.49733 7.04655L0 5.98193L8.26799 0.113119L16.5361 5.98193L15.0292 7.04655L8.26799 11.8508Z"
-                    fill="#868BB2"/>
+                    fill="#fff"/>
             </svg>
             Техструктура
           </div>
@@ -597,23 +597,34 @@ body {
   }
 
   .left-section-title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
     font-family: $HarmoniaSansProCyr;
     font-weight: 700;
-    font-size: 16px;
+    font-size: 13px;
+    width: 140px;
+    height: 35px;
     line-height: 19px;
-    padding: 17px 45px 15px 45px;
+    border-radius: 2px;
+    cursor: pointer;
 
     svg {
       margin-right: 10px;
     }
   }
 
-  .left-section-title:hover {
+  .active {
+    background-color: #3366FF;
+  }
+
+  .left-section-title:not(.active):hover {
     background-color: #323370;
   }
 
   .left-section-title:active {
-    background-color: #323370;
+    background-color: #3366FF;
   }
 
   .dropdown-item {
@@ -645,6 +656,9 @@ body {
 
   .menu {
     flex-wrap: wrap-reverse;
+    justify-content: space-evenly;
+    align-items: center;
+    height: 50px;
   }
 
   .dropdown-menu.show {

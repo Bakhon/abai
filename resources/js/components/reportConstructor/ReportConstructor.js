@@ -45,6 +45,11 @@ export default {
         this.loadAttributeDescriptions()
     },
     methods: {
+        handleMenuClick(currentStructureType, btnClass) {
+            this.currentStructureType = currentStructureType;
+            $('.left-section-title').removeClass('active');
+            $(btnClass).addClass('active');
+        },
         onClickOption(structureType) {
             this.showOptions = false;
             this.currentOption = structureType
