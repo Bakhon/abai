@@ -74,13 +74,13 @@ export default {
           'en-IN',
           {maximumSignificantDigits: 3}
       ).format(y.toFixed(0)) + ` ${this.tooltipText || ''}`;
-    }
+    },
   },
   computed: {
     chartSeries() {
       const keys = this.isProfitabilityFull
           ? ['profitable', 'profitless_cat_2', 'profitless_cat_1']
-          : ['profitable', 'profitless_cat_1']
+          : ['profitable', 'profitless']
 
       let data = []
 

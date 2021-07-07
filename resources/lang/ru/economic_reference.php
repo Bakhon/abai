@@ -102,4 +102,5 @@ return array (
   'download_example' => 'Скачать пример',
   'in_pause' => 'В простое',
   'in_work' => 'В работе',
+  'wells_profitless' => 'Нерентабельные скважины',
 );
