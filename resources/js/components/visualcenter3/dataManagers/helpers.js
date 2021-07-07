@@ -67,7 +67,7 @@ export default {
             }
         },
 
-        getDifferencePercentBetweenLastValues(previous,current) {
+        getDifferencePercentBetweenLastValues(current,previous) {
             if (previous != '' && previous !== 0) {
                 return ((current / previous - 1) * 100).toFixed(2);
             }
@@ -176,12 +176,6 @@ export default {
             );
         },
 
-        getCovidData(data) {
-            return _.reduce(data, function (memo, item) {
-                return memo + item['tb_covid_total'];
-            }, 0);
-        },
-
         getFilteredData(data, type) {
             _.forEach(this.dzoType[type], function (dzoName) {
                 data = _.reject(data, _.iteratee({dzo: dzoName}));
@@ -207,15 +201,15 @@ export default {
             });
         },
 
-        getFilteredDataByOneDay(filteredDataByCompanies,dayType) {
+        getFilteredDataByOneDay(filteredDataByCompanies,dayType,periodStart,periodEnd) {
             let dayTypeMapping = {
                 'today': {
-                    'start': this.timestampToday,
-                    'end': this.timestampEnd
+                    'start': periodStart,
+                    'end': periodEnd
                 },
                 'yesterday': {
-                    'start': moment(new Date(this.timestampToday)).subtract(1, 'days').valueOf(),
-                    'end': this.timestampToday
+                    'start': moment(new Date(periodStart)).subtract(1, 'days').valueOf(),
+                    'end': periodStart
                 }
             };
             let filteredDataByOneDay = this.getProductionDataInPeriodRange(filteredDataByCompanies,dayTypeMapping[dayType].start,dayTypeMapping[dayType].end);
@@ -249,13 +243,6 @@ export default {
             }
             return arrowClass;
         },
-        getIndicatorForStaffCovidParams(previosValue,currentValue) {
-            if (previosValue > currentValue) {
-                return this.trans("visualcenter.indicatorFall");
-            } else if (previosValue < currentValue) {
-                return this.trans("visualcenter.indicatorGrow");
-            }
-        },
 
         getFilteredDataByOneCompany(data) {
             let self = this;
@@ -267,6 +254,28 @@ export default {
         getDzoName(acronym,mapping) {
             return this.trans(mapping[acronym]);
         },
+
+        getOilProductionKmgParticipationDzoTitle(percentParticipation){
+            if (percentParticipation) {
+                return " (" + percentParticipation * 100 + "%)";
+            }
+            return "";
+        },
+
+        getProductionTableClass() {
+            let classes = 'table4';
+            if (!this.isOilResidueActive) {
+                classes += ' w-100';
+            }
+            if (!this.buttonDailyTab) {
+                classes += ' mh-30';
+            }
+            return classes;
+        },
+
+        isConsolidatedCategoryActive() {
+            return this.oilCondensateProductionButton.length > 0 || this.oilCondensateDeliveryButton.length > 0;
+        }
     },
     computed: {
         periodSelectFunc() {

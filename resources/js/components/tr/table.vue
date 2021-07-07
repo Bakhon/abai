@@ -2,7 +2,8 @@
     <table class="table table-bordered table-dark table-responsive trkrtableborderedtabledarktableresponsive" style="background: #0D1E63; margin-bottom: 0;">
         <thead>
             <tr class="headerColumn trkrheadercolumn" style="background: #333975;">
-                <td rowspan="4" class="th" style="background: #333975;">{{trans('tr.well_number')}}</td>
+                <td rowspan="4" class="th" style="background: #333975;">{{trans('tr.ngdu_field')}}</td>
+                <td rowspan="4" class="th">{{trans('tr.well_number')}}</td>
                 <td rowspan="4" class="th">{{trans('tr.well_type')}}</td>
                 <td rowspan="4" class="th">{{trans('tr.u_horizon')}}</td>
                 <td rowspan="4" class="th">{{trans('tr.u_object')}}</td>
@@ -52,16 +53,215 @@
             </tr>
             <tr></tr>
             <tr class="subHeaderColumn" style="background: #333975; cursor: pointer;">
-                <td @click="sortBy('well')" class="th" style="background: #333975;"><i class="fa fa-fw fa-sort"></i></td>
-                <td @click="sortBy('well_type')" class="th"><i class="fa fa-fw fa-sort"></i></td>
-                <td @click="sortBy('horizon')" class="th"><i class="fa fa-fw fa-sort"></i></td>
-                <td @click="sortBy('object')" class="th"><i class="fa fa-fw fa-sort"></i></td>
-                <td @click="sortBy('block')" class="th"><i class="fa fa-fw fa-sort"></i></td>
+                <td class="th">
+                    <div class="icons_filt_sort" ><i class="fa fa-fw fa-sort icon_sort" @click="sortBy('field')"></i>
+                      <div>
+                        <b-dropdown no-caret  toggle-class="drop-filter-custom" >
+                          <template #button-content class="outer_button_filter">        
+                            <i class="fas fa-filter icon_filter" ></i>
+                          </template>
+                            <b-dropdown-form class="external_field_filter">
+                              <b-form-group
+                                label=""
+                                v-slot="{ ariaDescribedby }"
+                                @submit.stop.prevent
+                                class="field_form_fil"
+                              >
+                                <b-form-checkbox-group
+                                  v-model="selectedField"
+                                  :options="fieldFilterData"
+                                  :aria-describedby="ariaDescribedby"                                  
+                                >
+                                </b-form-checkbox-group>
+                              </b-form-group>
+                              <div class="field_filter_text">
+                                <a href="#" class="form_text"  @click.prevent="chooseChildFilter"
+                                  >{{trans('tr.form')}}
+                                  </a>
+                                  <a href="#" class="discard_text" @click.prevent="dropFieldFilter"
+                                  >{{trans('tr.reset')}}
+                                  </a>
+                              </div>
+                            </b-dropdown-form>
+                          </b-dropdown>
+                        </div>
+                      </div>
+                    </td>
+                <td @click="sortBy('well')" class="th"><i class="fa fa-fw fa-sort"></i></td>
+                <td class="th">
+                    <div class="icons_filt_sort" ><i class="fa fa-fw fa-sort icon_sort" @click="sortBy('well_type')"></i>
+                      <div>
+                        <b-dropdown no-caret  toggle-class="drop-filter-custom" >
+                          <template #button-content class="outer_button_filter">        
+                            <i class="fas fa-filter icon_filter" ></i>
+                          </template>
+                            <b-dropdown-form class="external_field_filter">
+                              <b-form-group
+                                label=""
+                                v-slot="{ ariaDescribedby }"
+                                @submit.stop.prevent
+                                class="field_form_fil"
+                              >
+                                <b-form-checkbox-group
+                                v-model="selectedWellType"
+                                :options="wellTypeFilterData"
+                                :aria-describedby="ariaDescribedby"                                  
+                              >
+                              </b-form-checkbox-group>
+                              </b-form-group>
+                              <div class="field_filter_text">
+                                <a href="#" class="form_text"  @click.prevent="chooseChildFilter"
+                                  >{{trans('tr.form')}}
+                                  </a>
+                                  <a href="#" class="discard_text" @click.prevent="dropWellTypeFilter"
+                                  >{{trans('tr.reset')}}
+                                  </a>
+                              </div>
+                            </b-dropdown-form>
+                          </b-dropdown>
+                        </div>
+                      </div>
+                    </td>
+                <td class="th">
+                    <div class="icons_filt_sort" ><i class="fa fa-fw fa-sort icon_sort" @click="sortBy('horizon')"></i>
+                      <div>
+                        <b-dropdown no-caret  toggle-class="drop-filter-custom" >
+                          <template #button-content class="outer_button_filter">        
+                            <i class="fas fa-filter icon_filter" ></i>
+                          </template>
+                            <b-dropdown-form class="external_field_filter">
+                              <b-form-group
+                                label=""
+                                v-slot="{ ariaDescribedby }"
+                                @submit.stop.prevent
+                                class="horizon_form_fil"
+                              >
+                                <b-form-checkbox-group
+                                v-model="selectedHorizon"
+                                :options="horizonFilterData"
+                                :aria-describedby="ariaDescribedby"                                  
+                              >
+                              </b-form-checkbox-group>
+                              </b-form-group>
+                              <div class="field_filter_text">
+                                <a href="#" class="form_text"  @click.prevent="chooseChildFilter"
+                                  >{{trans('tr.form')}}
+                                  </a>
+                                  <a href="#" class="discard_text" @click.prevent="dropHorizonFilter"
+                                  >{{trans('tr.reset')}}
+                                  </a>
+                              </div>
+                            </b-dropdown-form>
+                          </b-dropdown>
+                        </div>
+                      </div>
+                    </td>
+                <td class="th">
+                    <div class="icons_filt_sort" ><i class="fa fa-fw fa-sort icon_sort" @click="sortBy('object')"></i>
+                      <div>
+                        <b-dropdown no-caret  toggle-class="drop-filter-custom" >
+                          <template #button-content class="outer_button_filter">        
+                            <i class="fas fa-filter icon_filter" ></i>
+                          </template>
+                            <b-dropdown-form class="external_field_filter">
+                              <b-form-group
+                                label=""
+                                v-slot="{ ariaDescribedby }"
+                                @submit.stop.prevent
+                                class="obj_form_fil"
+                              >
+                              <b-form-checkbox-group
+                                v-model="selectedObject"
+                                :options="objectFilterData"
+                                :aria-describedby="ariaDescribedby"                                  
+                              >
+                              </b-form-checkbox-group>
+                              </b-form-group>
+                              <div class="field_filter_text">
+                                <a href="#" class="form_text"  @click.prevent="chooseChildFilter"
+                                  >{{trans('tr.form')}}
+                                  </a>
+                                  <a href="#" class="discard_text" @click.prevent="dropObjectFilter"
+                                  >{{trans('tr.reset')}}
+                                  </a>
+                              </div>
+                            </b-dropdown-form>
+                          </b-dropdown>
+                        </div>
+                      </div>
+                    </td> 
+                <td class="th">
+                    <div class="icons_filt_sort" ><i class="fa fa-fw fa-sort icon_sort" @click="sortBy('block')"></i>
+                      <div>
+                        <b-dropdown no-caret  toggle-class="drop-filter-custom" >
+                          <template #button-content class="outer_button_filter">        
+                            <i class="fas fa-filter icon_filter" ></i>
+                          </template>
+                            <b-dropdown-form class="external_field_filter">
+                              <b-form-group
+                                label=""
+                                v-slot="{ ariaDescribedby }"
+                                @submit.stop.prevent
+                                class="block_form_fil"
+                              >
+                              <b-form-checkbox-group
+                                v-model="selectedBlock"
+                                :options="blockFilterData"
+                                :aria-describedby="ariaDescribedby"                                  
+                              >
+                              </b-form-checkbox-group>
+                              </b-form-group>
+                              <div class="field_filter_text">
+                                <a href="#" class="form_text"  @click.prevent="chooseChildFilter"
+                                  >{{trans('tr.form')}}
+                                  </a>
+                                  <a href="#" class="discard_text" @click.prevent="dropBlockFilter"
+                                  >{{trans('tr.reset')}}
+                                  </a>
+                              </div>
+                            </b-dropdown-form>
+                          </b-dropdown>
+                        </div>
+                      </div>
+                    </td>
                 <td @click="sortBy('cas_OD')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.mm')}}</td>
                 <td @click="sortBy('tub_OD')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.mm')}}</td>
                 <td @click="sortBy('choke_d')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.mm')}}</td>
                 <td @click="sortBy('h_up_perf_md')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.m')}}</td>
-                <td @click="sortBy('exp_meth')" class="th"><i class="fa fa-fw fa-sort"></i></td>
+                <td class="th">
+                    <div class="icons_filt_sort" ><i class="fa fa-fw fa-sort icon_sort" @click="sortBy('exp_meth')"></i>
+                      <div>
+                        <b-dropdown no-caret  toggle-class="drop-filter-custom" >
+                          <template #button-content class="outer_button_filter">        
+                            <i class="fas fa-filter icon_filter" ></i>
+                          </template>
+                            <b-dropdown-form class="external_field_filter">
+                              <b-form-group
+                                label=""
+                                v-slot="{ ariaDescribedby }"
+                                @submit.stop.prevent
+                                class="exp_meth_form_fil"
+                              >
+                              <b-form-checkbox-group
+                                v-model="selectedExpMeth"
+                                :options="expMethFilterData"
+                                :aria-describedby="ariaDescribedby"                                  
+                              >
+                              </b-form-checkbox-group>
+                              </b-form-group>
+                              <div class="field_filter_text">
+                                <a href="#" class="form_text"  @click.prevent="chooseChildFilter"
+                                  >{{trans('tr.form')}}
+                                  </a>
+                                  <a href="#" class="discard_text" @click.prevent="dropExpMethFilter"
+                                  >{{trans('tr.reset')}}
+                                  </a>
+                              </div>
+                            </b-dropdown-form>
+                          </b-dropdown>
+                        </div>
+                      </div>
+                    </td>
                 <td @click="sortBy('pump_type')" class="th"><i class="fa fa-fw fa-sort"></i></td>
                 <td @click="sortBy('freq')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.gc_ob/min')}}</td>
                 <td @click="sortBy('h_pump_set')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.m')}}</td>
@@ -92,9 +292,9 @@
         </thead>
         <tbody class="table_tbody">
             <tr v-for="(row, row_index) in wells" :key="row_index" class="trtablerow">
-                <td class="fixcol">{{row.rus_wellname}} </td>
-                <td :class="{'cell-with-comment': wells && wells[row_index] &&
-                wells[row_index].well_type[1][0] !== '0'}" td class="fixcol">
+                <td class="fixcol" :class="{'activ': isActiveClass(row)}">{{row.field}} </td>
+                <td class="fixcol" :class="{'activ': isActiveClass(row)}">{{row.rus_wellname}} </td>
+                <td :class="{'cell-with-comment': isCommentClass(row_index,`well_type`), 'activ': isActiveClass(row)}" td class="fixcol">
                     <span :class="{'circle-err': wells && wells[row_index] &&
                 wells[row_index].well_type[1][0] !== '0'}" :style="`background :${getColor(
                 wells[row_index].well_type[1][0])}`"> </span>
@@ -104,8 +304,7 @@
                     </span>
                 </td>
 
-                <td :class="{'cell-with-comment': wells && wells[row_index] &&
-                wells[row_index].horizon[1][0] !== '0'}" class="tb">
+                <td :class="{'cell-with-comment': isCommentClass(row_index,`horizon`), 'activ': isActiveClass(row)}" class="tb">
                     <span :class="{'circle-err': wells && wells[row_index] &&
                 wells[row_index].horizon[1][0] !== '0'}" :style="`background :${getColor(
                 wells[row_index].horizon[1][0])}`"> </span>
@@ -116,11 +315,10 @@
                 </td>
 
 
-                <td class="fixcol">{{row.object}} </td>
+                <td class="fixcol" :class="{'activ': isActiveClass(row)}">{{row.object}} </td>
 
 
-                <td :class="{'cell-with-comment': wells && wells[row_index] &&
-                wells[row_index].block[1][0] !== '0'}">
+                <td :class="{'cell-with-comment': isCommentClass(row_index,`block`), 'activ': isActiveClass(row)}">
                     <span :class="{'circle-err': wells && wells[row_index] &&
                 wells[row_index].block[1][0] !== '0'}" :style="`background :${getColor(
                 wells[row_index].block[1][0])}`"> </span>
@@ -130,8 +328,7 @@
                     </span>
                 </td>
 
-                <td :class="{'cell-with-comment': wells && wells[row_index] &&
-                wells[row_index].cas_OD[1][0] !== '0'}">
+                <td :class="{'cell-with-comment': isCommentClass(row_index,`cas_OD`), 'activ': isActiveClass(row)}">
                     <span :class="{'circle-err': wells && wells[row_index] &&
                 wells[row_index].cas_OD[1][0] !== '0'}" :style="`background :${getColor(
                 wells[row_index].cas_OD[1][0])}`"> </span>
@@ -141,8 +338,7 @@
                     </span>
                 </td>
 
-                <td :class="{'cell-with-comment': wells && wells[row_index] &&
-                wells[row_index].tub_OD[1][0] !== '0'}">
+                <td :class="{'cell-with-comment': isCommentClass(row_index,`tub_OD`), 'activ': isActiveClass(row)}">
                     <span :class="{'circle-err': wells && wells[row_index] &&
                 wells[row_index].tub_OD[1][0] !== '0'}" :style="`background :${getColor(
                 wells[row_index].tub_OD[1][0])}`"> </span>
@@ -152,8 +348,7 @@
                     </span>
                 </td>
 
-                <td :class="{'cell-with-comment': wells && wells[row_index] &&
-                wells[row_index].choke_d[1][0] !== '0'}">
+                <td :class="{'cell-with-comment': isCommentClass(row_index,`choke_d`), 'activ': isActiveClass(row)}">
                     <span :class="{'circle-err': wells && wells[row_index] &&
                 wells[row_index].choke_d[1][0] !== '0'}" :style="`background :${getColor(
                 wells[row_index].choke_d[1][0])}`"> </span>
@@ -163,8 +358,7 @@
                     </span>
                 </td>
 
-                <td :class="{'cell-with-comment': wells && wells[row_index] &&
-                wells[row_index].h_up_perf_md[1][0] !== '0'}">
+                <td :class="{'cell-with-comment': isCommentClass(row_index,`h_up_perf_md`), 'activ': isActiveClass(row)}">
                     <span :class="{'circle-err': wells && wells[row_index] &&
                 wells[row_index].h_up_perf_md[1][0] !== '0'}" :style="`background :${getColor(
                 wells[row_index].h_up_perf_md[1][0])}`"> </span>
@@ -173,8 +367,7 @@
                         {{ wells[row_index].h_up_perf_md[1][1]}}
                     </span>
                 </td>
-                <td :class="{'cell-with-comment': wells && wells[row_index] &&
-                wells[row_index].exp_meth[1][0] !== '0'}">
+                <td :class="{'cell-with-comment': isCommentClass(row_index,`exp_meth`), 'activ': isActiveClass(row)}">
                     <span :class="{'circle-err': wells && wells[row_index] &&
                 wells[row_index].exp_meth[1][0] !== '0'}" :style="`background :${getColor(
                 wells[row_index].exp_meth[1][0])}`"> </span>
@@ -184,8 +377,7 @@
                     </span>
                 </td>
 
-                <td :class="{'cell-with-comment': wells && wells[row_index] &&
-                wells[row_index].pump_type[1][0] !== '0'}">
+                <td :class="{'cell-with-comment': isCommentClass(row_index,`pump_type`), 'activ': isActiveClass(row)}">
                     <span :class="{'circle-err': wells && wells[row_index] &&
                 wells[row_index].pump_type[1][0] !== '0'}" :style="`background :${getColor(
                 wells[row_index].pump_type[1][0])}`"> </span>
@@ -195,8 +387,7 @@
                     </span>
                 </td>
 
-                <td :class="{'cell-with-comment': wells && wells[row_index] &&
-                wells[row_index].freq[1][0] !== '0'}">
+                <td :class="{'cell-with-comment': isCommentClass(row_index,`pump_type`), 'activ': isActiveClass(row)}">
                     <span :class="{'circle-err': wells && wells[row_index] &&
                 wells[row_index].freq[1][0] !== '0'}" :style="`background :${getColor(
                 wells[row_index].freq[1][0])}`"> </span>
@@ -206,8 +397,7 @@
                     </span>
                 </td>
 
-                <td :class="{'cell-with-comment': wells && wells[row_index] &&
-                wells[row_index].h_pump_set[1][0] !== '0'}">
+                <td :class="{'cell-with-comment': isCommentClass(row_index,`h_pump_set`), 'activ': isActiveClass(row)}">
                     <span :class="{'circle-err': wells && wells[row_index] &&
                 wells[row_index].h_pump_set[1][0] !== '0'}" :style="`background :${getColor(
                 wells[row_index].h_pump_set[1][0])}`"> </span>
@@ -217,8 +407,7 @@
                     </span>
                 </td>
 
-                <td :class="{'cell-with-comment': wells && wells[row_index] &&
-                wells[row_index].p_res[1][0] !== '0'}">
+                <td :class="{'cell-with-comment': isCommentClass(row_index,`p_res`), 'activ': isActiveClass(row)}">
                     <span :class="{'circle-err': wells && wells[row_index] &&
                 wells[row_index].p_res[1][0] !== '0'}" :style="`background :${getColor(
                 wells[row_index].p_res[1][0])}`"> </span>
@@ -228,8 +417,7 @@
                     </span>
                 </td>
 
-                <td :class="{'cell-with-comment': wells && wells[row_index] &&
-                wells[row_index].h_dyn[1][0] !== '0'}">
+                <td :class="{'cell-with-comment': isCommentClass(row_index,`h_dyn`), 'activ': isActiveClass(row)}">
                     <span :class="{'circle-err': wells && wells[row_index] &&
                 wells[row_index].h_dyn[1][0] !== '0'}" :style="`background :${getColor(
                 wells[row_index].h_dyn[1][0])}`"> </span>
@@ -239,8 +427,7 @@
                     </span>
                 </td>
 
-                <td :class="{'cell-with-comment': wells && wells[row_index] &&
-                wells[row_index].p_annular[1][0] !== '0'}">
+                <td :class="{'cell-with-comment': isCommentClass(row_index,`p_annular`), 'activ': isActiveClass(row)}">
                     <span :class="{'circle-err': wells && wells[row_index] &&
                 wells[row_index].p_annular[1][0] !== '0'}" :style="`background :${getColor(
                 wells[row_index].p_annular[1][0])}`"> </span>
@@ -250,8 +437,7 @@
                     </span>
                 </td>
 
-                <td :class="{'cell-with-comment': wells && wells[row_index] &&
-                wells[row_index].bhp[1][0] !== '0'}">
+                <td :class="{'cell-with-comment': isCommentClass(row_index,`bhp`), 'activ': isActiveClass(row)}">
                     <span :class="{'circle-err': wells && wells[row_index] &&
                 wells[row_index].bhp[1][0] !== '0'}" :style="`background :${getColor(
                 wells[row_index].bhp[1][0])}`"> </span>
@@ -261,8 +447,7 @@
                     </span>
                 </td>
 
-                <td :class="{'cell-with-comment': wells && wells[row_index] &&
-                wells[row_index].q_o[1][0] !== '0'}">
+                <td :class="{'cell-with-comment': isCommentClass(row_index,`bhp`), 'activ': isActiveClass(row)}">
                     <span :class="{'circle-err': wells && wells[row_index] &&
                 wells[row_index].q_o[1][0] !== '0'}" :style="`background :${getColor(
                 wells[row_index].q_o[1][0])}`"> </span>
@@ -272,8 +457,7 @@
                     </span>
                 </td>
 
-                <td :class="{'cell-with-comment': wells && wells[row_index] &&
-                wells[row_index].q_l[1][0] !== '0'}">
+                <td :class="{'cell-with-comment': isCommentClass(row_index,`q_l`), 'activ': isActiveClass(row)}">
                     <span :class="{'circle-err': wells && wells[row_index] &&
                 wells[row_index].q_l[1][0] !== '0'}" :style="`background :${getColor(
                 wells[row_index].q_l[1][0])}`"> </span>
@@ -283,8 +467,7 @@
                     </span>
                 </td>
 
-                <td :class="{'cell-with-comment': wells && wells[row_index] &&
-                wells[row_index].wct[1][0] !== '0'}">
+                <td :class="{'cell-with-comment': isCommentClass(row_index,`wct`), 'activ': isActiveClass(row)}">
                     <span :class="{'circle-err': wells && wells[row_index] &&
                 wells[row_index].wct[1][0] !== '0'}" :style="`background :${getColor(
                 wells[row_index].wct[1][0])}`"> </span>
@@ -294,8 +477,7 @@
                     </span>
                 </td>
 
-                <td :class="{'cell-with-comment': wells && wells[row_index] &&
-                wells[row_index].gor[1][0] !== '0'}">
+                <td :class="{'cell-with-comment': isCommentClass(row_index,`gor`), 'activ': isActiveClass(row)}">
                     <span :class="{'circle-err': wells && wells[row_index] &&
                 wells[row_index].gor[1][0] !== '0'}" :style="`background :${getColor(
                 wells[row_index].gor[1][0])}`"> </span>
@@ -305,8 +487,7 @@
                     </span>
                 </td>
 
-                <td :class="{'cell-with-comment': wells && wells[row_index] &&
-                wells[row_index].well_status_last_day[1][0] !== '0'}">
+                <td :class="{'cell-with-comment': isCommentClass(row_index,`well_status_last_day`), 'activ': isActiveClass(row)}">
                     <span :class="{'circle-err': wells && wells[row_index] &&
                 wells[row_index].well_status_last_day[1][0] !== '0'}" :style="`background :${getColor(
                 wells[row_index].well_status_last_day[1][0])}`"> </span>
@@ -317,8 +498,7 @@
                 </td>
 
 
-                <td :class="{'cell-with-comment': wells && wells[row_index] &&
-                wells[row_index].pi[1][0] !== '0'}">
+                <td :class="{'cell-with-comment': isCommentClass(row_index,`pi`), 'activ': isActiveClass(row)}">
                     <span :class="{'circle-err': wells && wells[row_index] &&
                 wells[row_index].pi[1][0] !== '0'}" :style="`background :${getColor(
                 wells[row_index].pi[1][0])}`"> </span>
@@ -328,8 +508,7 @@
                     </span>
                 </td>
 
-                <td :class="{'cell-with-comment': wells && wells[row_index] &&
-                wells[row_index].tp_idn_bhp[1][0] !== '0'}">
+                <td :class="{'cell-with-comment': isCommentClass(row_index,`tp_idn_bhp`), 'activ': isActiveClass(row)}">
                     <span :class="{'circle-err': wells && wells[row_index] &&
                 wells[row_index].tp_idn_bhp[1][0] !== '0'}" :style="`background :${getColor(
                 wells[row_index].tp_idn_bhp[1][0])}`"> </span>
@@ -339,8 +518,7 @@
                     </span>
                 </td>
 
-                <td :class="{'cell-with-comment': wells && wells[row_index] &&
-                wells[row_index].tp_idn_liq[1][0] !== '0'}">
+                <td :class="{'cell-with-comment': isCommentClass(row_index,`tp_idn_liq`), 'activ': isActiveClass(row)}">
                     <span :class="{'circle-err': wells && wells[row_index] &&
                 wells[row_index].tp_idn_liq[1][0] !== '0'}" :style="`background :${getColor(
                 wells[row_index].tp_idn_liq[1][0])}`"> </span>
@@ -350,8 +528,7 @@
                     </span>
                 </td>
 
-                <td :class="{'cell-with-comment': wells && wells[row_index] &&
-                wells[row_index].tp_idn_oil_inc[1][0] !== '0'}">
+                <td :class="{'cell-with-comment': isCommentClass(row_index,`tp_idn_oil_inc`), 'activ': isActiveClass(row)}">
                     <span :class="{'circle-err': wells && wells[row_index] &&
                 wells[row_index].tp_idn_oil_inc[1][0] !== '0'}" :style="`background :${getColor(
                 wells[row_index].tp_idn_oil_inc[1][0])}`"> </span>
@@ -361,8 +538,7 @@
                     </span>
                 </td>
 
-                <td :class="{'cell-with-comment': wells && wells[row_index] &&
-                wells[row_index].tp_idn_pi_after[1][0] !== '0'}">
+                <td :class="{'cell-with-comment': isCommentClass(row_index,`tp_idn_pi_after`), 'activ': isActiveClass(row)}">
                     <span :class="{'circle-err': wells && wells[row_index] &&
                 wells[row_index].tp_idn_pi_after[1][0] !== '0'}" :style="`background :${getColor(
                 wells[row_index].tp_idn_pi_after[1][0])}`"> </span>
@@ -372,8 +548,7 @@
                     </span>
                 </td>
 
-                <td :class="{'cell-with-comment': wells && wells[row_index] &&
-                wells[row_index].tp_idn_grp_q_liq[1][0] !== '0'}">
+                <td :class="{'cell-with-comment': isCommentClass(row_index,`tp_idn_grp_q_liq`), 'activ': isActiveClass(row)}">
                     <span :class="{'circle-err': wells && wells[row_index] &&
                 wells[row_index].tp_idn_grp_q_liq[1][0] !== '0'}" :style="`background :${getColor(
                 wells[row_index].tp_idn_grp_q_liq[1][0])}`"> </span>
@@ -383,8 +558,7 @@
                     </span>
                 </td>
 
-                <td :class="{'cell-with-comment': wells && wells[row_index] &&
-                wells[row_index].tp_idn_grp_q_oil_inc[1][0] !== '0'}">
+                <td :class="{'cell-with-comment': isCommentClass(row_index,`tp_idn_grp_q_oil_inc`), 'activ': isActiveClass(row)}">
                     <span :class="{'circle-err': wells && wells[row_index] &&
                 wells[row_index].tp_idn_grp_q_oil_inc[1][0] !== '0'}" :style="`background :${getColor(
                 wells[row_index].tp_idn_grp_q_oil_inc[1][0])}`"> </span>
@@ -394,10 +568,9 @@
                     </span>
                 </td>
 
-                <td><span v-if="row.gt_total_inc!=null">{{Math.round(row.gt_total_inc*10)/10}}</span></td>
+                <td :class="{'activ': isActiveClass(row)}"><span v-if="row.gt_total_inc!=null">{{Math.round(row.gt_total_inc*10)/10}}</span></td>
 
-                <td :class="{'cell-with-comment': wells && wells[row_index] &&
-                wells[row_index].planned_choke[1][0] !== '0'}">
+                <td :class="{'cell-with-comment': isCommentClass(row_index,`planned_choke`), 'activ': isActiveClass(row)}">
                     <span :class="{'circle-err': wells && wells[row_index] &&
                 wells[row_index].planned_choke[1][0] !== '0'}" :style="`background :${getColor(
                 wells[row_index].planned_choke[1][0])}`"> </span>
@@ -407,8 +580,7 @@
                     </span>
                 </td>
 
-                <td :class="{'cell-with-comment': wells && wells[row_index] &&
-                wells[row_index].planned_oil[1][0] !== '0'}">
+                <td :class="{'cell-with-comment': isCommentClass(row_index,`planned_oil`), 'activ': isActiveClass(row)}">
                     <span :class="{'circle-err': wells && wells[row_index] &&
                 wells[row_index].planned_oil[1][0] !== '0'}" :style="`background :${getColor(
                 wells[row_index].planned_oil[1][0])}`"> </span>
@@ -418,8 +590,7 @@
                     </span>
                 </td>
 
-                <td :class="{'cell-with-comment': wells && wells[row_index] &&
-                wells[row_index].planned_liq[1][0] !== '0'}">
+                <td :class="{'cell-with-comment': isCommentClass(row_index,`planned_liq`), 'activ': isActiveClass(row)}">
                     <span :class="{'circle-err': wells && wells[row_index] &&
                 wells[row_index].planned_liq[1][0] !== '0'}" :style="`background :${getColor(
                 wells[row_index].planned_liq[1][0])}`"> </span>
@@ -429,11 +600,10 @@
                     </span>
                 </td>
 
-                <td class="fixcol">{{Math.round(row.planned_gas*10)/10}} </td>
+                <td class="fixcol" :class="{'activ': isActiveClass(row)}">{{Math.round(row.planned_gas*10)/10}} </td>
 
 
-                <td :class="{'cell-with-comment': wells && wells[row_index] &&
-                wells[row_index].planned_wct[1][0] !== '0'}">
+                <td :class="{'cell-with-comment': isCommentClass(row_index,`planned_wct`), 'activ': isActiveClass(row)}">
                     <span :class="{'circle-err': wells && wells[row_index] &&
                 wells[row_index].planned_wct[1][0] !== '0'}" :style="`background :${getColor(
                 wells[row_index].planned_wct[1][0])}`"> </span>
@@ -443,7 +613,7 @@
                     </span>
                 </td>
 
-                <td class="fixcol">{{Math.round(row.planned_gor*10)/10}} </td>
+                <td class="fixcol" :class="{'activ': isActiveClass(row)}">{{Math.round(row.planned_gor*10)/10}} </td>
 
             </tr>
         </tbody>
@@ -453,11 +623,23 @@
 export default {
     name: "TrTable",
     props: {
-        wells: Array
+        wells: Array,
+        blockFilterData: Array,
+        horizonFilterData: Array,
+        objectFilterData: Array,
+        fieldFilterData: Array,
+        wellTypeFilterData: Array,
+        expMethFilterData: Array,
     },
     data: function () {
         return {
             edit: false,
+            selectedBlock: this.$store.state.tr.block,
+            selectedExpMeth: this.$store.state.tr.expMeth,
+            selectedHorizon: this.$store.state.tr.horizon,
+            selectedField: this.$store.state.tr.field,
+            selectedObject: this.$store.state.tr.object,
+            selectedWellType: this.$store.state.tr.wellType,
         }
     },
     methods: {
@@ -470,7 +652,53 @@ export default {
         },
         editable(row) {
             console.log(row)
-        }
+        },
+        chooseChildFilter() {
+            this.$store.commit("tr/SET_FIELD", this.selectedField);
+            this.$store.commit("tr/SET_OBJECT", this.selectedObject);
+            this.$store.commit("tr/SET_HORIZON", this.selectedHorizon);
+            this.$store.commit("tr/SET_WELLTYPE", this.selectedWellType);
+            this.$store.commit("tr/SET_BLOCK", this.selectedBlock);
+            this.$store.commit("tr/SET_EXPMETH", this.selectedExpMeth);
+            this.$emit('filter');
+        },
+        dropExpMethFilter() {
+            this.selectedExpMeth = [];
+            this.$emit('dropExpMeth')
+        },
+        dropBlockFilter() {
+            this.selectedBlock = [];
+            this.$emit('dropBlock')
+        },
+        dropObjectFilter() {
+            this.selectedObject = [];
+            this.$emit('dropObject')
+        },
+        dropHorizonFilter() {
+            this.selectedHorizon = [];
+            this.$emit('dropHorizon')
+        },
+        dropFieldFilter() {
+            this.selectedField = [];
+            this.$emit('dropField')
+        },    
+        dropWellTypeFilter() {
+            this.selectedWellType = [];
+            this.$emit('dropWellType')
+        },
+        isCommentClass (row_index, value) {
+        return this.wells &&
+            this.wells[row_index] &&
+            this.wells[row_index][value][1][0] !== '0';
+        },
+        isActiveClass (row) {
+            if (row.rus_wellname) {
+                return false
+            } else {
+                return true
+            }
+
+        },
     }
 }
 </script>
@@ -568,5 +796,9 @@ position: static;
 ::-webkit-scrollbar-thumb:hover {
   background: #272953;
 }
-
+.activ.activ {
+  border-bottom: 2px solid rgb(145, 145, 145) ;
+  border-top: 2px solid rgb(145, 145, 145);
+  font-size: 11px;
+}
 </style>

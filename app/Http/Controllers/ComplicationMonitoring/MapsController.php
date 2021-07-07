@@ -457,17 +457,17 @@ class MapsController extends Controller
         );
     }
 
-    public function getSpeedFlow(Request $request)
+    public function getHydroReverseCalc(Request $request)
     {
         $date = $request->input('date');
         $pipes = OilPipe::with(
             [
                 'coords',
                 'pipeType',
-                'speedFlowGuUpsv' => function ($query) use ($date) {
+                'hydroCalc' => function ($query) use ($date) {
                     $query->where('date', $date);
                 },
-                'speedFlowWellGu' => function ($query) use ($date) {
+                'reverseCalc' => function ($query) use ($date) {
                     $query->where('date', $date);
                 }
             ]

@@ -57,6 +57,13 @@
                                         {{ trans('monitoring.omgngdu_well.menu') }}
                                     </a>
                                 </li>
+                                @if(auth()->user()->can('monitoring list pipe-passport'))
+                                    <li class="left-menu-li">
+                                        <a href="{{route('pipe-passport.index')}}">
+                                            {{ trans('monitoring.pipe_passport.title') }}
+                                        </a>
+                                    </li>
+                                @endif
                             @endif
 
                         </ul>
@@ -171,6 +178,13 @@
                     <li class="left-menu-li">
                         <a href="{{route('lost-profits.index')}}">
                             {{ trans('monitoring.lost_profits_title') }}
+                        </a>
+                    </li>
+                    @endif
+                    @if(auth()->user()->can('monitoring list economical_effect'))
+                    <li class="left-menu-li">
+                        <a href="{{route('economical-effect.index')}}">
+                            {{ trans('monitoring.economical_effect_title') }}
                         </a>
                     </li>
                     @endif

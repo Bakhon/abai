@@ -3,39 +3,18 @@
 declare(strict_types=1);
 
 namespace App\Services\BigData\Forms;
-use App\Models\BigData\Dictionaries\Tech;
-use App\Models\BigData\Well;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
-class GasProduction extends TableForm
+class GasProduction extends MeasurementLogForm
 {
     protected $configurationFileName = 'gas_production';
-    
+
     public function getRows(array $params = []): array
     {
-        $tech = Tech::find($this->request->get('tech'));
 
-        $wellsQuery = Well::query()
-            ->with('techs', 'geo')
-            ->select('id', 'uwi')
-            ->orderBy('uwi')
-            ->active(Carbon::parse($this->request->get('date')))
-            ->whereHas(
-                'techs',
-                function ($query) use ($tech) {
-                    return $query
-                        ->where('dict.tech.id', $tech->id)
-                        ->whereDate('dict.tech.dbeg', '<=', $this->request->get('date'))
-                        ->whereDate('dict.tech.dend', '>=', $this->request->get('date'));
-                }
-            );
-
-        if (isset($params['filter']['row_id'])) {
-            $wellsQuery->where('id', $params['filter']['row_id']);
-        }
-
-        $wells = $wellsQuery->get();
+        $filter = json_decode($this->request->get('filter'));
+        $wells = $this->getWells((int)$this->request->get('id'), $this->request->get('type'), $filter, $params);
 
         $tables = $this->getFields()->pluck('table')->filter()->unique();
         $rowData = $this->fetchRowData(
@@ -60,7 +39,9 @@ class GasProduction extends TableForm
 
         $this->addLimits($wells);
 
-        return $wells->toArray();
+        return [
+            'rows' => $wells->toArray()
+        ];
     }
 
 

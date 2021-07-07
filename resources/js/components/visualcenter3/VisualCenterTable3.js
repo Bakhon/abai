@@ -14,7 +14,6 @@ import oilRates from './widgets/oilRates';
 import usdRates from './widgets/usdRates';
 import injectionWells from './widgets/injectionWells';
 import productionWells from './widgets/productionWells';
-import companyStaff from './widgets/companyStaff';
 import mainStatisticsTable from './widgets/mainStatisticsTable';
 import wells from './dataManagers/wells';
 import rates from './dataManagers/rates';
@@ -28,6 +27,9 @@ import chemistryDetails from './widgets/chemistryDetails';
 import wellsWorkoverDetails from './widgets/wellsWorkoverDetails';
 import managers from './widgets/managers';
 import drillingDetails from './widgets/otmDrillingDetails';
+import productionFondDetails from './widgets/productionFondDetails';
+import wellsDetails from './dataManagers/wellsDetails';
+import injectionFondDetails from './widgets/injectionFondDetails';
 
 
 export default {
@@ -37,22 +39,10 @@ export default {
     },
     data: function () {
         return {
-            accidentTotal: '',
-            noData: '',
-            personalFact: '',
             oilChartHeadName: this.trans('visualcenter.getoildynamic'),
-            productionFactPercentOneDzo: '',
-            productionFactPercentSumm: '',
             quantityRange: '',
-            productionFactPersent: '',
-            productionPlanPersent: '',
             index: "",
-            widthProgress: "90",
             NameDzoFull: {
-                0: "Всего добыча нефти с учётом доли участия АО НК КазМунайГаз",
-                1: "(конденсат)(100%)",
-                2: "в т.ч.:газовый конденсат",
-                3: 'АО ПетроКазахстан Инк',
                 'ОМГ': this.trans("visualcenter.omg"),
                 'ЭМГ': this.trans("visualcenter.emg"),
                 'КБМ': this.trans("visualcenter.kbm"),
@@ -74,25 +64,17 @@ export default {
             bigTable: [],
             starts: [""],
             series: ["", ""],
-            factYearSumm: "",
-            planYearSumm: "",
             planMonthSumm: "",
             factMonthSumm: "",
-            factDaySumm: "",
-            planDaySumm: "",
             timestampToday: "",
             timestampEnd: "",
             isPricesChartLoading: false,
-            chartHeadName: this.trans("visualcenter.getoil"),
-            chartSecondaryName: this.trans('visualcenter.getoil'),
+            chartHeadName: this.trans("visualcenter.oilCondensateProductionChartName"),
+            chartSecondaryName: this.trans('visualcenter.oilCondensateProduction'),
             planFieldName: "oil_plan",
             factFieldName: "oil_fact",
             metricName: this.trans("visualcenter.chemistryMetricTon"),
             productionParams : {
-                oil_plan: 0,
-                oil_fact: 0,
-                oil_dlv_plan: 0,
-                oil_dlv_fact: 0,
                 gas_plan: 0,
                 gas_fact: 0,
             },
@@ -102,10 +84,25 @@ export default {
                 gas: 0,
             },
             productionPercentParams: {
-                oil_fact: 0,
-                oil_dlv_fact: 0,
                 gas_fact: 0
             },
+            millisecondsInOneDay: 1000*60*60*24,
+            companyTemplate: {
+                "opec": null,
+                "impulses": null,
+                "landing": null,
+                "restrictions": null,
+                "otheraccidents": null,
+                "dzoMonth": null,
+                "planMonth": 0,
+                "factMonth": 0,
+                "periodPlan": 0,
+                "opekPlan": 0
+            },
+            companies: ['ОМГ','ММГ','ЭМГ','КБМ',
+                'КГМ','КТМ','КОА','УО','ТШО','НКО',
+                'КПО','ПКИ','ПКК','ТП','АГ'
+            ]
         };
     },
     methods: {
@@ -123,8 +120,6 @@ export default {
             let productionDataInPeriodRange = this.getProductionDataInPeriodRange(updatedData,this.timestampToday,this.timestampEnd);
             let productionSummary = this.getProductionSummary(productionDataInPeriodRange);
             this.updateProductionSummary(productionSummary,this.productionParams);
-            this.dailyProgressBars.oil = this.getProductionProgressBarData('oil_plan','oil_fact');
-            this.dailyProgressBars.oilDelivery = this.getProductionProgressBarData('oil_dlv_plan','oil_dlv_fact');
             this.dailyProgressBars.gas = this.getProductionProgressBarData('gas_plan','gas_fact');
         },
         
@@ -133,10 +128,6 @@ export default {
                 .groupBy("dzo")
                 .map((dzo, id) => ({
                     dzo: id,
-                    oil_plan: _.round(_.sumBy(dzo, 'oil_plan'), 0),
-                    oil_fact: _.round(_.sumBy(dzo, 'oil_fact'), 0),
-                    oil_dlv_plan: _.round(_.sumBy(dzo, 'oil_dlv_plan'), 0),
-                    oil_dlv_fact: _.round(_.sumBy(dzo, 'oil_dlv_fact'), 0),
                     gas_plan: _.round(_.sumBy(dzo, 'gas_plan'), 0),
                     gas_fact: _.round(_.sumBy(dzo, 'gas_fact'), 0),
                 }))
@@ -160,7 +151,6 @@ export default {
         },
 
         updateProductionData(planFieldName, factFieldName, chartHeadName, metricName, chartSecondaryName) {
-            this.$store.commit('globalloading/SET_LOADING', true);
             if (this.isMainMenuItemChanged) {
                 this.mainMenuButtonElementOptions = _.cloneDeep(mainMenuConfiguration);
             }
@@ -172,18 +162,38 @@ export default {
                 this.changeOilProductionFilters();
             } else {
                 this.isOpecFilterActive = false;
-                this.isKmgParticipationFilterActive = false;
             }
-
             this.processProductionData(metricName,chartSecondaryName);
         },
 
         async processProductionData(metricName,chartSecondaryName) {
+            this.$store.commit('globalloading/SET_LOADING', true);
             let productionData = await this.getProductionDataByPeriod();
             if (productionData && Object.keys(productionData).length > 0) {
-                this.processProductionDataByCompanies(productionData,metricName,chartSecondaryName);
+                if (this.isFirstLoading) {
+                    await this.calculateInitialCategories(productionData,metricName,chartSecondaryName);
+                    this.isFirstLoading = false;
+                    this.lastSelectedCategory = '';
+                }
+                if (this.lastSelectedCategory.length > 0) {
+                   await this.calculateInitialCategories(productionData,metricName,chartSecondaryName);
+                }
+                await this.processProductionDataByCompanies(productionData,metricName,chartSecondaryName);
             }
             this.$store.commit('globalloading/SET_LOADING', false);
+        },
+
+        async calculateInitialCategories(productionData,metricName,chartSecondaryName) {
+            let categories = ['oilCondensateProductionButton','oilCondensateDeliveryButton'];
+            let index = categories.findIndex(categoryName => categoryName === this.lastSelectedCategory);
+            categories.splice(index, 1);
+            for (let i in categories) {
+                this.selectedView = categories[i];
+                this.selectedButtonName = categories[i];
+                await this.processProductionDataByCompanies(productionData,metricName,chartSecondaryName);
+            }
+            this.selectedView = this.lastSelectedCategory;
+            this.selectedButtonName = this.lastSelectedCategory;
         },
 
         async getProductionDataByPeriod() {
@@ -202,41 +212,81 @@ export default {
         },
 
         processProductionDataByCompanies(productionData,metricName,chartSecondaryName) {
-            if (this.oilCondensateProductionButton.length > 0) {
+            if (this.isConsolidatedCategoryActive()) {
                 this.isOpecFilterActive = false;
+                this.planFieldName = 'oil_plan';
+            }
+            if (!this.condolidatedButtons.includes(this.selectedButtonName)) {
+                let indexes = this.getElementIndexesByCompany(productionData,'ПКИ','dzo_name');
+                for (var i in indexes.reverse()) {
+                    productionData.splice(indexes[i], 1);
+                }
             }
             if (this.isProductionDetailsActive) {
                 productionData = this.getFormattingProductionDetails(productionData);
-                this.wellsWorkoverSelectedRow = 'underground_workover';
-                this.chemistrySelectedRow = 'demulsifier',
-                this.updateChemistryWidget();
-                this.updateWellsWorkoverWidget();
-                this.updateDrillingWidget();
             }
 
             let updatedData = productionData;
             this.productionTableData = productionData;
-            if (this.company === "all") {
-                updatedData = this.getProcessedDataForAllCompanies(productionData);
-            } else {
-                this.processDataForSpecificCompany(productionData, metricName, chartSecondaryName);
+            let yesterdayPeriodStart = moment(new Date(this.timestampToday)).subtract(1,'days').valueOf();
+            let yesterdayPeriodEnd = moment(new Date(this.timestampEnd)).subtract(1,'days').valueOf();
+            let processedByAllCompaniesForYesterday = this.getProcessedDataForAllCompanies(productionData,yesterdayPeriodStart,yesterdayPeriodEnd,'old');
+            let processedByAllCompaniesForActual = this.getProcessedDataForAllCompanies(productionData,this.timestampToday,this.timestampEnd,'actual');
+            updatedData = processedByAllCompaniesForActual.filteredData;
+            if (processedByAllCompaniesForYesterday.summary.length !== 15 && this.isConsolidatedCategoryActive()) {
+                processedByAllCompaniesForYesterday.summary = this.getFilledByAllCompanies(processedByAllCompaniesForYesterday.summary);
+                processedByAllCompaniesForActual.summary = this.getFilledByAllCompanies(processedByAllCompaniesForActual.summary);
             }
+            this.yesterdayProductionDetails = processedByAllCompaniesForYesterday.summary;
+            this.bigTable = processedByAllCompaniesForActual.summary;
             this.setColorToMainMenuButtons();
             this.updateProductionOilandGas(updatedData);
             this.updateProductionOilandGasPercent(updatedData);
         },
 
-        processDataForSpecificCompany(data, metricName, chartSecondaryName) {
+        getFilledByAllCompanies(input) {
+            let missingCompanies = this.getMissingCompanies(input);
+            if (missingCompanies.length > 0) {
+                input.concat(missingCompanies);
+            }
+            return input;
+        },
+
+        getMissingCompanies(input) {
+            let template = _.cloneDeep(this.companyTemplate);
+            let actualCompanies = _.map(input, 'dzoMonth');
+            let missingCompanies = [];
+            let difference = _.differenceWith(this.companies, actualCompanies, _.isEqual);
+            for (let i in difference) {
+                if (difference[i] !== 'АГ') {
+                    template.dzoMonth = difference[i];
+                    missingCompanies.push(template);
+                }
+            }
+            return missingCompanies;
+        },
+
+        getElementIndexesByCompany(productionData,companyName,fieldName) {
+            return productionData.map((elm, index) => this.getElementIndexByCompany(elm,index,companyName,fieldName)).filter(String);
+        },
+
+        getElementIndexByCompany(element,index,companyName,fieldName) {
+            if (element[fieldName] === companyName) {
+                return index;
+            }
+            return '';
+        },
+
+        processDataForSpecificCompany(data, metricName, chartSecondaryName,periodStart,periodEnd) {
+            //todo почистить и удалить все, что с ним было связано и более не нужно
             let self = this;
             let filteredDataByCompanies = this.getFilteredCompaniesList(data);
-            let filteredDataByPeriod = this.getProductionDataInPeriodRange(filteredDataByCompanies,this.timestampToday,this.timestampEnd);
+            let filteredDataByPeriod = this.getProductionDataInPeriodRange(filteredDataByCompanies,periodStart,periodEnd);
             filteredDataByPeriod = this.getDataOrderedByAsc(filteredDataByPeriod);
-
-            this.getProductionPercentCovid(filteredDataByPeriod);
             this.updateSecondaryParams(data);
 
             if (this.isOneDateSelected) {
-                let filteredDataByOneDay = this.getFilteredDataByOneDay(filteredDataByCompanies,'today');
+                let filteredDataByOneDay = this.getFilteredDataByOneDay(filteredDataByCompanies,'today', periodStart,periodEnd);
                 this.dzoCompaniesSummaryForChart = this.getProductionForChart(filteredDataByOneDay);
             } else {
                 this.dzoCompaniesSummaryForChart = this.getProductionForChart(filteredDataByPeriod);
@@ -244,14 +294,13 @@ export default {
             this.exportDzoCompaniesSummaryForChart(this.dzoCompaniesSummaryForChart);
 
             let summaryDataByDzo = this.getSummaryDataByDzo(filteredDataByPeriod);
-
             if (this.isProductionDataNull(summaryDataByDzo)) {
                 this.company = "all";
                 this.updateProductionData(this.planFieldName, this.factFieldName, this.chartHeadName, metricName, chartSecondaryName);
             }
 
             this.addOpecToDzoSummary(filteredDataByPeriod, summaryDataByDzo);
-            this.tables = summaryDataByDzo;
+            return summaryDataByDzo;
         },
 
         getSummaryDataByDzo(data) {
@@ -277,7 +326,7 @@ export default {
             return (summaryDataByDzo['0']['factMonth'] + summaryDataByDzo['0']['planMonth']) === 0;
         },
 
-        getProcessedDataForAllCompanies(data) {
+        getProcessedDataForAllCompanies(data,periodStart,periodEnd,periodType) {
             let self = this;
             var dzo = [];
             var factYear = [];
@@ -289,8 +338,8 @@ export default {
                 return _.every([
                     _.inRange(
                         item.__time,
-                        self.timestampToday,
-                        self.timestampEnd
+                        periodStart,
+                        periodEnd
                     ),
                 ]);
             });
@@ -301,14 +350,15 @@ export default {
                 ["asc"]
             );
 
+
             if (this.isOneDateSelected) {
                 let dataWithMay2 = new Array();
                 dataWithMay2 = _.filter(data, function (item) {
                     return _.every([
                         _.inRange(
                             item.__time,
-                            self.timestampToday - 2 * 86400000,
-                            self.timestampToday + 86400000
+                            periodStart - 2 * self.millisecondsInOneDay,
+                            periodStart + self.millisecondsInOneDay
                         ),
                     ]);
                 });
@@ -326,7 +376,9 @@ export default {
             }
 
             let productionPlanAndFactMonth = this.getProductionPlanAndFactForMonth(dataWithMay);
-            this.updateWellsWidgetsForAllCompanies(dataWithMay);
+            if (periodType === 'actual') {
+                this.updateWellsWidgetsForAllCompanies(dataWithMay);
+            }
             this.injectionWells = this.getSummaryWells(dataWithMay,this.wellStockIdleButtons.isInjectionIdleButtonActive,'injectionFonds');
             this.innerWellsChartData = this.getSummaryInjectionWellsForChart(dataWithMay);
             this.productionWells = this.getSummaryWells(dataWithMay, this.wellStockIdleButtons.isProductionIdleButtonActive,'productionFonds');
@@ -380,8 +432,8 @@ export default {
                 return _.every([
                     _.inRange(
                         item.__time,
-                        self.timestampEnd - 86400000,
-                        self.timestampEnd
+                        periodEnd - self.millisecondsInOneDay,
+                        periodEnd
                     ),
                 ]);
             });
@@ -419,7 +471,9 @@ export default {
                 planDay.push(p);
             });
 
-            this.updateWellsWidgetPercentData(data);
+            if (periodType !== 'actual') {
+                this.updateWellsWidgetPercentData(data,periodStart,periodEnd);
+            }
 
 
             var dzoMonth = [];
@@ -441,12 +495,6 @@ export default {
                 data = this.getFilteredCompaniesList(data);
             }
 
-            if (this.isKmgParticipationFilterActive) {
-                productionPlanAndFactMonth = this.calculateKmgParticipationFilter(productionPlanAndFactMonth,
-                    'dzo','productionFactForChart',
-                    'productionPlanForChart');
-            }
-
             let opec = [];
             let impulses = [];
             let landing = [];
@@ -466,22 +514,6 @@ export default {
                 otheraccidents.push({otheraccidents: item.otheraccidents});
             });
 
-            var factYearSumm = _.reduce(
-                factYear,
-                function (memo, item) {
-                    return memo + item.factYear;
-                },
-                0
-            );
-
-            var planYearSumm = _.reduce(
-                planYear,
-                function (memo, item) {
-                    return memo + item.planYear;
-                },
-                0
-            );
-
             var planMonthSumm = _.reduce(
                 planMonth,
                 function (memo, item) {
@@ -498,46 +530,8 @@ export default {
                 0
             );
 
-            var factDaySumm = _.reduce(
-                factDay,
-                function (memo, item) {
-                    return memo + item.factDay;
-                },
-                0
-            );
-
-            var planDaySumm = _.reduce(
-                planDay,
-                function (memo, item) {
-                    return memo + item.planDay;
-                },
-                0
-            );
-
-            this.factYearSumm = factYearSumm;
-            this.planYearSumm = planYearSumm;
             this.planMonthSumm = planMonthSumm;
             this.factMonthSumm = factMonthSumm;
-            this.factDaySumm = factDaySumm;
-            this.planDaySumm = planDaySumm;
-
-
-            this.personalFact = _.reduce(
-                dataDay,
-                function (memo, item) {
-                    return memo + item['tb_personal_fact'];
-                },
-                0
-            );
-
-            this.getProductionPercentCovid(data);
-            this.covid = _.reduce(
-                dataDay,
-                function (memo, item) {
-                    return memo + item['tb_covid_total'];
-                },
-                0
-            );
 
             var bigTable = _.zipWith(
                 opec,
@@ -622,11 +616,10 @@ export default {
                 bigTable = bigTable.filter(item => dzoListWithoutOpec.includes(item.dzoMonth));
             }
 
-            this.bigTable = bigTable;
             this.clearNullAccidentCases();
             this.exportDzoCompaniesSummaryForChart(this.dzoCompaniesSummaryForChart);
 
-            return data;
+            return {filteredData: data, summary: bigTable};
         },
 
         addPeriodPlanData(mainTableData, opecDzoName, opecDzoPeriodPlan) {
@@ -690,7 +683,6 @@ export default {
         usdRates,
         injectionWells,
         productionWells,
-        companyStaff,
         mainStatisticsTable,
         wells,
         rates,
@@ -703,12 +695,14 @@ export default {
         chemistryDetails,
         wellsWorkoverDetails,
         managers,
-        drillingDetails
+        drillingDetails,
+        wellsDetails,
+        productionFondDetails,
+        injectionFondDetails
     ],
     async mounted() {
         this.$store.commit('globalloading/SET_LOADING', true);
         this.getOpecDataForYear();
-        this.chartHeadName = this.oilChartHeadName;
 
         if (window.location.host === 'dashboard') {
             this.range = {
@@ -730,34 +724,46 @@ export default {
         this.timestampEnd = new Date(this.range.end).getTime();
 
         this.selectedYear = this.year;
-
+        this.updateDzoMenu();
         localStorage.setItem("selectedPeriod", "undefined");
         this.getCurrencyNow(this.timeSelect);
         this.updatePrices(this.period);
+        this.productionFondDetails = await this.getFondByMonth(this.productionFondPeriodStart,this.productionFondPeriodEnd,'production');
+        this.productionFondHistory = await this.getFondByMonth(this.productionFondHistoryPeriodStart,this.productionFondHistoryPeriodEnd,'production');
+        this.injectionFondDetails = await this.getFondByMonth(this.injectionFondPeriodStart,this.injectionFondPeriodEnd,'injection');
+        this.injectionFondHistory = await this.getFondByMonth(this.injectionFondHistoryPeriodStart,this.injectionFondHistoryPeriodEnd,'injection');
         this.chemistryDetails = await this.getChemistryByMonth();
         this.wellsWorkoverDetails = await this.getWellsWorkoverByMonth();
         this.drillingDetails = await this.getDrillingByMonth();
         this.dzoMonthlyPlans = await this.getDzoMonthlyPlans();
-
+        this.dzoCompanies = _.cloneDeep(this.dzoCompaniesTemplate);
         this.dzoCompaniesAssets = _.cloneDeep(this.dzoCompaniesAssetsInitial);
         this.sortDzoList();
         this.changeDate();
         this.changeMenu2();
-        this.getStaff();
 
         this.buttonDailyTab = "button-tab-highlighted";
-        this.getAccidentTotal();
         this.mainMenuButtonElementOptions = _.cloneDeep(mainMenuConfiguration);
         this.getDzoYearlyPlan();
         this.selectedDzoCompanies = this.getAllDzoCompanies();
-        this.dailyCurrencyChangeUsd = Math.abs(parseFloat(this.usdRatesData.for_table[1].change));
+        this.updateChemistryWidget();
+        this.updateWellsWorkoverWidget();
+        this.updateDrillingWidget();
+        this.updateProductionFondWidget();
+        this.updateInjectionFondWidget();
     },
     watch: {
         bigTable: function () {
             this.dzoCompanySummary = this.bigTable;
-            if (this.oilCondensateProductionButton.length > 0) {
-                this.productionParamsWidget.yesterdayOldFact = this.productionPercentParams['oil_fact'];
-                this.dzoCompanySummary = this.getConsolidatedOilCondensate();
+            if (this.oilCondensateProductionButton.length > 0 || this.oilCondensateDeliveryButton.length > 0) {
+                let yesterdayPeriodStart = moment(new Date(this.timestampToday)).subtract(this.quantityRange, 'days').valueOf();
+                let yesterdayPeriodEnd = moment(new Date(this.timestampEnd)).subtract(this.quantityRange, 'days').valueOf();
+                this.updateConsolidatedOilCondensate(yesterdayPeriodStart,yesterdayPeriodEnd,'yesterday',this.yesterdayProductionDetails);
+                this.updateConsolidatedOilCondensate(this.timestampToday,this.timestampEnd,'current',this.dzoCompanySummary);
+                this.dzoCompanySummary = this.getConsolidatedBy('current');
+                this.yesterdaySummary = this.getConsolidatedBy('yesterday');
+                this.consolidatedData[this.selectedButtonName].current = this.getConsolidatedBy('current');
+                this.consolidatedData[this.selectedButtonName].yesterday = this.getConsolidatedBy('yesterday');
             }
             this.calculateDzoCompaniesSummary();
         },

@@ -11,6 +11,13 @@
         </p>
         <p v-else-if="rows.length === 0" class="table__message">{{ trans('bd.nothing_found') }}</p>
         <div v-else class="table-wrap scrollable">
+          <div v-for="custom_column in formParams.custom_columns">
+            <div :is="custom_column.component_name"
+                 :column="custom_column"
+                 :updateTableData="updateTableData"
+                 :filter="filter">
+            </div>
+          </div>
           <table v-if="rows.length" class="table">
             <thead>
             <tr>
@@ -159,8 +166,23 @@ import 'vue-datetime/dist/vue-datetime.css'
 import {bdFormActions, bdFormState} from '@store/helpers'
 import BigDataHistory from './history'
 import RowHistoryGraph from './RowHistoryGraph'
+import upperFirst from 'lodash/upperFirst'
+import camelCase from 'lodash/camelCase'
 
-Vue.use(Datetime)
+const requireComponent = require.context('./customColumns', true, /\.vue$/i);
+requireComponent.keys().forEach(fileName => {
+  const componentConfig = requireComponent(fileName)
+  const componentName = upperFirst(
+      camelCase(
+          fileName
+              .split('/')
+              .pop()
+              .replace(/\.\w+$/, '')
+      )
+  );
+  Vue.component(componentName, componentConfig.default || componentConfig);
+});
+Vue.use(Datetime);
 
 export default {
   name: "BigDataTableForm",
@@ -460,7 +482,6 @@ export default {
               })
             }
           })
-
     }
   },
 };

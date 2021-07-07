@@ -261,17 +261,60 @@ export default {
                 colors: "#5FA7FF",
               },
           },},
-          yaxis: {
-            labels: {
-              formatter: function (val) {
-                return val.toFixed(1);
+          yaxis: [
+            {
+              seriesName: this.trans('tr.q_oil'),
+              axisTicks: {
+                show: true
               },
-              hideOverlappingLabels: true,
-              style: {
-                colors: "#5FA7FF",
+              axisBorder: {
+                show: true,
               },
-          },},
-
+              title: {
+                text: this.trans('tr.qn_ql'),
+                style: {
+                  color: "#06AED5"
+                }
+              },
+              labels: {
+                formatter: function (val) {
+                  return val.toFixed(1);
+                },
+                hideOverlappingLabels: true,
+                style: {
+                  colors: "#06AED5",
+                },
+              },
+            },
+            {
+              seriesName: this.trans('tr.q_oil'),
+              show: false
+            }, {
+              opposite: true,
+              seriesName: this.trans('tr.water_cut'),
+              axisTicks: {
+                show: true
+              },
+              axisBorder: {
+                show: true,
+              },
+              title: {
+                text: this.trans('tr.water_cut'),
+                style: {
+                  color: "#33CC99"
+                }
+              },
+              labels: {
+                formatter: function (val) {
+                  return val.toFixed(1);
+                },
+                hideOverlappingLabels: true,
+                style: {
+                  colors: "#33CC99",
+                },
+              },
+            }
+          ],
         },
     };
   },
@@ -292,7 +335,6 @@ export default {
   methods: {
     chooseDt() {
       const { date1 } = this;
-      console.log("dt1-", date1);
       var choosenDt = date1.split("-");
       const mm = choosenDt[1];
       const yyyy = choosenDt[0];
@@ -311,7 +353,6 @@ export default {
           this.$store.commit("globalloading/SET_LOADING", false);
           let data = response.data;
           if (data) {
-            console.log(data);
             this.fullWells = data.data;
             this.chartWells = data.data;
             this.allWells = data.data;
@@ -358,7 +399,6 @@ export default {
         this.$store.commit("globalloading/SET_LOADING", false);
         let data = response.data;
         if (data) {
-          console.log(data);
           this.fullWells = data.data;
           this.chartWells = data.data;
           this.allWells = data.data;

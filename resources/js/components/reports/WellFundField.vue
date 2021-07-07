@@ -82,7 +82,7 @@
 import Vue from "vue";
 import {Datetime} from 'vue-datetime';
 import 'vue-datetime/dist/vue-datetime.css';
-import {formatDate} from './FormatDate.js'
+import {formatDate} from '../common/FormatDate.js'
 
 Vue.use(Datetime)
 

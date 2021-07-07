@@ -14,279 +14,80 @@
     <div class="col-12 permissions">
         <h2>Список разрешений</h2>
         <nav class="navbar navbar-light justify-content-start mb-3">
-            <button class="btn btn-outline-secondary active" type="button" data-tab="monitoring">Модуль мониторинг</button>
-            <button class="btn btn-outline-secondary ml-3" type="button" data-tab="economic">Модуль экономика</button>
-            <button class="btn btn-outline-secondary ml-3" type="button" data-tab="bigdata">Модуль Прототип БД</button>
-            <button class="btn btn-outline-secondary ml-3" type="button" data-tab="tr">Модуль ТР</button>
-            <button class="btn btn-outline-secondary ml-3" type="button" data-tab="viscenter">Модуль центр визуализации</button>
-            <button class="btn btn-outline-secondary ml-3" type="button" data-tab="podborGno">Модуль Подбор ГНО</button>
-            <button class="btn btn-outline-secondary ml-3" type="button" data-tab="paegtm">Модуль Подбор ГТМ</button>
+            @foreach($modules as $module)
+                <button class="btn btn-outline-secondary @if($module['name'] == 'monitoring') active @endif"
+                        type="button" data-tab="{{$module['name']}}">{{$module['title']}}</button>
+            @endforeach
         </nav>
-        <div class="tabs tab-monitoring active">
-            <div class="form-check">
-                <input
-                        class="form-check-input"
-                        id="permission_{{$permissions->get('monitoring view main')->id}}"
-                        type="checkbox"
-                        name="permissions[]"
-                        value="{{$permissions->get('monitoring view main')->id}}"
-                        {{!empty($role) && $role->permissions->where('id', $permissions->get('monitoring view main')->id)->isNotEmpty() ? 'checked' : ''}}
-                >
-                <label class="form-check-label"
-                       for="permission_{{$permissions->get('monitoring view main')->id}}">Просмотр главной
-                    страницы</label>
-            </div>
-            <div class="form-check">
-                <input
-                        class="form-check-input"
-                        id="permission_{{$permissions->get('monitoring make report')->id}}"
-                        type="checkbox"
-                        name="permissions[]"
-                        value="{{$permissions->get('monitoring make report')->id}}"
-                        {{!empty($role) && $role->permissions->where('id', $permissions->get('monitoring make report')->id)->isNotEmpty() ? 'checked' : ''}}
-                >
-                <label class="form-check-label"
-                       for="permission_{{$permissions->get('monitoring make report')->id}}">Создание сводного
-                    отчета</label>
-            </div>
-            <div class="form-check mb-4">
-                <input
-                        class="form-check-input"
-                        id="permission_{{$permissions->get('monitoring view pipes map')->id}}"
-                        type="checkbox"
-                        name="permissions[]"
-                        value="{{$permissions->get('monitoring view pipes map')->id}}"
-                        {{!empty($role) && $role->permissions->where('id', $permissions->get('monitoring view pipes map')->id)->isNotEmpty() ? 'checked' : ''}}
-                >
-                <label class="form-check-label"
-                       for="permission_{{$permissions->get('monitoring view pipes map')->id}}">Просмотр карты</label>
-            </div>
-            <div class="section mb-4">
-                <h5>Экономика</h5>
-                <div class="form-check">
-                    <input
-                            class="form-check-input"
-                            id="permission_{{$permissions->get('monitoring list lost_profits')->id}}"
-                            type="checkbox"
-                            name="permissions[]"
-                            value="{{$permissions->get('monitoring list lost_profits')->id}}"
-                            {{!empty($role) && $role->permissions->where('id', $permissions->get('monitoring list lost_profits')->id)->isNotEmpty() ? 'checked' : ''}}
-                    >
-                    <label class="form-check-label"
-                           for="permission_{{$permissions->get('monitoring list lost_profits')->id}}">Просмотр страницы Мониторинг потерянной выгоды</label>
-                </div>
-                <div class="form-check">
-                    <input
-                            class="form-check-input"
-                            id="permission_{{$permissions->get('monitoring list economical_effect')->id}}"
-                            type="checkbox"
-                            name="permissions[]"
-                            value="{{$permissions->get('monitoring list economical_effect')->id}}"
-                            {{!empty($role) && $role->permissions->where('id', $permissions->get('monitoring list economical_effect')->id)->isNotEmpty() ? 'checked' : ''}}
-                    >
-                    <label class="form-check-label"
-                           for="permission_{{$permissions->get('monitoring list economical_effect')->id}}">Просмотр страницы Экономический эффект</label>
-                </div>
-            </div>
-            @foreach($sections as $code => $name)
-                <div class="section mb-4">
-                    <h5>{{$name}}</h5>
-                    @foreach([
-                        'list' => 'Просмотр списка',
-                        'create' => 'Создание',
-                        'read' => 'Просмотр',
-                        'update' => 'Изменение',
-                        'delete' => 'Удаление',
-                        'export' => 'Экспорт в excel',
-                        'view history' => 'Просмотр истории',
-                    ] as $fieldCode => $fieldName)
 
-                        @php
-                        $permission = $permissions->get('monitoring '.$fieldCode.' '.$code);
-                        @endphp
+        @foreach($modules as $index => $module)
+            <div class="tabs tab-{{$module['name']}}
+            @if($module['name'] == 'monitoring') active @endif">
 
-                        @if (!$permission)
-                            @continue
+                @foreach($sections as $section)
+                    @if ($section->module != $module['name'])
+                        @continue
+                    @endif
+
+                    <div class="section mb-4">
+                        @if($section->title_trans)
+                            <h5>{{trans($section->title_trans)}}</h5>
                         @endif
-                        <div class="form-check">
-                            <input
-                                    class="form-check-input"
-                                    id="permission_{{$permission->id}}"
-                                    type="checkbox"
-                                    name="permissions[]"
-                                    value="{{$permission->id}}"
-                                    {{!empty($role) && $role->permissions->where('id', $permission->id)->isNotEmpty() ? 'checked' : ''}}
-                            >
-                            <label class="form-check-label"
-                                   for="permission_{{$permission->id}}">{{$fieldName}}</label>
-                        </div>
-                    @endforeach
-                </div>
-            @endforeach
-        </div>
-        <div class="tabs tab-economic">
-            <div class="form-check">
-                <input
-                        class="form-check-input"
-                        id="permission_{{$permissions->get('economic view main')->id}}"
-                        type="checkbox"
-                        name="permissions[]"
-                        value="{{$permissions->get('economic view main')->id}}"
-                        {{!empty($role) && $role->permissions->where('id', $permissions->get('economic view main')->id)->isNotEmpty() ? 'checked' : ''}}
-                >
-                <label class="form-check-label"
-                       for="permission_{{$permissions->get('economic view main')->id}}">Просмотр главной
-                    страницы</label>
-            </div>
-        </div>
-        
-        <div class="tabs tab-podborGno">
-            <div class="form-check">
-                <input
-                        class="form-check-input"
-                        id="permission_{{$permissions->get('podborGno view main')->id}}"
-                        type="checkbox"
-                        name="permissions[]"
-                        value="{{$permissions->get('podborGno view main')->id}}"
-                        {{!empty($role) && $role->permissions->where('id', $permissions->get('podborGno view main')->id)->isNotEmpty() ? 'checked' : ''}}
-                >
-                <label class="form-check-label"
-                       for="permission_{{$permissions->get('podborGno view main')->id}}">Просмотр главной
-                    страницы</label>
-            </div>
-            <div class="form-check">
-                <input
-                        class="form-check-input"
-                        id="permission_{{$permissions->get('podborGno edit main')->id}}"
-                        type="checkbox"
-                        name="permissions[]"
-                        value="{{$permissions->get('podborGno edit main')->id}}"
-                        {{!empty($role) && $role->permissions->where('id', $permissions->get('podborGno edit main')->id)->isNotEmpty() ? 'checked' : ''}}
-                >
-                <label class="form-check-label"
-                       for="permission_{{$permissions->get('podborGno view main')->id}}">Редактирование скважины
-                    страницы</label>
-                </div>
-        </div>
 
-        <div class="tabs tab-paegtm">
-            <div class="form-check">
-                <input
-                        class="form-check-input"
-                        id="permission_{{$permissions->get('paegtm view main')->id}}"
-                        type="checkbox"
-                        name="permissions[]"
-                        value="{{$permissions->get('paegtm view main')->id}}"
-                        {{!empty($role) && $role->permissions->where('id', $permissions->get('paegtm view main')->id)->isNotEmpty() ? 'checked' : ''}}
-                >
-                <label class="form-check-label"
-                       for="permission_{{$permissions->get('paegtm view main')->id}}">Просмотр главной
-                    страницы</label>
-            </div>
-        </div>
-        <div class="tabs tab-bigdata">
-            <div class="form-check">
-                <input
-                        class="form-check-input"
-                        id="permission_{{$permissions->get('bigdata view main')->id}}"
-                        type="checkbox"
-                        name="permissions[]"
-                        value="{{$permissions->get('bigdata view main')->id}}"
-                        {{!empty($role) && $role->permissions->where('id', $permissions->get('bigdata view main')->id)->isNotEmpty() ? 'checked' : ''}}>
-                <label class="form-check-label" for="permission_{{$permissions->get('bigdata view main')->id}}">Просмотр главной</label>
-            </div>
-            <div class="form-check mb-4">
-                <input
-                        class="form-check-input"
-                        id="permission_{{$permissions->get('bigdata load_las')->id}}"
-                        type="checkbox"
-                        name="permissions[]"
-                        value="{{$permissions->get('bigdata load_las')->id}}"
-                        {{!empty($role) && $role->permissions->where('id', $permissions->get('bigdata load_las')->id)->isNotEmpty() ? 'checked' : ''}}>
-                <label class="form-check-label" for="permission_{{$permissions->get('bigdata load_las')->id}}">Загрузка las</label>
-            </div>
-            @foreach($dictCodes as $dictCode)
-                <div class="section mb-4">
-                    <h5>{{ trans('bd.forms.'.$dictCode.'.title') }}</h5>
-                    @foreach($fieldCodes as $fieldCode)
-                        <div class="form-check">
-                            <input
-                                    class="form-check-input"
-                                    id="permission_{{$permissions->get('bigdata '.$fieldCode.' '.$dictCode)->id}}"
-                                    type="checkbox"
-                                    name="permissions[]"
-                                    value="{{$permissions->get('bigdata '.$fieldCode.' '.$dictCode)->id}}"
-                                    {{!empty($role) && $role->permissions->where('id', $permissions->get('bigdata '.$fieldCode.' '.$dictCode)->id)->isNotEmpty() ? 'checked' : ''}}
-                            >
-                            <label class="form-check-label"
-                                   for="permission_{{$permissions->get('bigdata '.$fieldCode.' '.$dictCode)->id}}">{{trans('bd.'.$fieldCode)}}</label>
-                        </div>
-                    @endforeach
-                </div>
-            @endforeach
-        </div>
-        <div class="tabs tab-tr">
-            <div class="form-check">
-                <input
-                        class="form-check-input"
-                        id="permission_{{$permissions->get('tr view main')->id}}"
-                        type="checkbox"
-                        name="permissions[]"
-                        value="{{$permissions->get('tr view main')->id}}"
-                        {{!empty($role) && $role->permissions->where('id', $permissions->get('tr view main')->id)->isNotEmpty() ? 'checked' : ''}}
-                >
-                <label class="form-check-label"
-                       for="permission_{{$permissions->get('tr view main')->id}}">Просмотр главной
-                    страницы</label>
-                    
-                <input
-                        class="form-check-input"
-                        id="permission_{{$permissions->get('tr edit')->id}}"
-                        type="checkbox"
-                        name="permissions[]"
-                        value="{{$permissions->get('tr edit')->id}}"
-                        {{!empty($role) && $role->permissions->where('id', $permissions->get('tr edit')->id)->isNotEmpty() ? 'checked' : ''}}
-                >
-                <label class="form-check-label"
-                       for="permission_{{$permissions->get('tr edit')->id}}">Редактирование
-                    </label>
-            </div>
-        </div>
-        <div class="tabs tab-viscenter">
-            <div class="form-check">
-                <input
-                        class="form-check-input"
-                        id="permission_{{$permissions->get('visualcenter view main')->id}}"
-                        type="checkbox"
-                        name="permissions[]"
-                        value="{{$permissions->get('visualcenter view main')->id}}"
-                        {{!empty($role) && $role->permissions->where('id', $permissions->get('visualcenter view main')->id)->isNotEmpty() ? 'checked' : ''}}
-                >
-                <label class="form-check-label"
-                       for="permission_{{$permissions->get('visualcenter view main')->id}}">Просмотр главной
-                    страницы</label>
-            </div>
-        </div>
+                        @foreach($fieldCodes as $fieldCode => $fieldName)
+                            @php
+                                if ($fieldCode == 'load_las') {
+                                    $permission_name = $module['name'].' '.$section->code;
+                                } else {
+                                    $permission_name = $module['name'].' '.$fieldCode.' '.$section->code;
+                                }
 
+                                $permission = $permissions->get($permission_name);
+                            @endphp
+
+                            @if (!$permission)
+                                @continue
+                            @endif
+
+                            <div class="form-check">
+                                <input
+                                        class="form-check-input"
+                                        id="permission_{{$permission->id}}"
+                                        type="checkbox"
+                                        name="permissions[]"
+                                        value="{{$permission->id}}"
+                                        {{!empty($role) && $role->permissions->where('id', $permission->id)->isNotEmpty() ? 'checked' : ''}}
+                                >
+                                <label class="form-check-label" for="permission_{{$permission->id}}">
+                                    {{$module['name'] == 'bigdata' ? trans('bd.'.$fieldCode) : $fieldName}}
+                                </label>
+                            </div>
+                        @endforeach
+                    </div>
+                @endforeach
+            </div>
+        @endforeach
     </div>
+
     <div class="col-12 mt-3 text-center">
-        <button type="submit" class="btn btn-success">Сохранить</button>
+        <button type="submit" class="btn btn-success">{{trans('app.save')}}</button>
     </div>
 </div>
 @section('custom_js')
     <script>
-        $(function(){
-            $('.permissions .navbar button').click(function(){
-                $('.tab-'+$(this).data('tab')).addClass('active').siblings().removeClass('active')
+        $(function () {
+            $('.permissions .navbar button').click(function () {
+                $('.tab-' + $(this).data('tab')).addClass('active').siblings().removeClass('active')
                 $(this).addClass('active').siblings().removeClass('active')
             })
         })
     </script>
     <style>
-        .tabs{
+        .tabs {
             display: none;
         }
-        .tabs.active{
+
+        .tabs.active {
             display: block;
         }
     </style>

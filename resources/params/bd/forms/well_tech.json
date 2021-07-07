@@ -4,23 +4,28 @@
   "actions": [
     {
       "action": "create",
-      "title": "Подключить к узлу",
+      "title": "connect",
       "form": "well_tech_connect"
     },
     {
       "action": "edit",
-      "title": "Сменить отвод",
+      "title": "change_tap",
       "form": "well_tech_change_tap"
     },
     {
       "action": "edit",
-      "title": "Изменить данные подключения к узлу",
+      "title": "change_connection",
       "form": "well_tech_change_tech"
     },
     {
-      "action": "edit",
-      "title": "Отменить подключение к узлу",
+      "action": "delete",
+      "title": "cancel_connection",
       "form": "well_tech_connect"
+    },
+    {
+      "action": "edit",
+      "title": "disconnect",
+      "form": "well_tech_disconnect"
     }
   ],
   "tabs": [
@@ -34,7 +39,7 @@
               {
                 "code": "tech",
                 "type": "dict",
-                "title": "tech",
+                "title": "",
                 "validation": "required"
               },
               {

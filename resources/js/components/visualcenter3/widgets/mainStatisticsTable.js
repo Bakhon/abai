@@ -3,19 +3,14 @@ import moment from "moment";
 export default {
     data: function () {
         return {
-            displayTable: "display:  none;",
-            displayHeadTables: "display: block;",
             buttonDailyTab: "button-tab-highlighted",
             buttonMonthlyTab: "",
             buttonYearlyTab: "",
             buttonPeriodTab: "",
             scroll: '',
             tables: "",
-            showTable2: "Yes",
-            showTableOn: "",
             buttonNormalTab: "",
             highlightedButton: "button-tab-highlighted",
-            ChartTable: "График",
             display: "none",
             assetTitleMapping: {
                 isOperating: this.trans("visualcenter.summaryOperatingAssets"),
@@ -29,9 +24,9 @@ export default {
             oilDeliveryButton: "",
             gasProductionButton: "",
             condensateProductionButton: "",
-            displayChart: "display: none;",
             minimalDaysCountInPeriodForChart: 1,
             oilCondensateProductionButton: "button-tab-highlighted",
+            oilCondensateDeliveryButton: '',
             tableMapping: {
                 'productionDetails': {
                     'class': '',
@@ -99,6 +94,9 @@ export default {
             this.buttonMonthlyTab = "";
             this.buttonYearlyTab = "";
             this.buttonPeriodTab = "";
+            if (!this.isFirstLoading) {
+                this.lastSelectedCategory = this.selectedButtonName;
+            }
             if (change !== 'yearly') {
                 this.isFilterTargetPlanActive = false;
             }
@@ -148,48 +146,6 @@ export default {
             if (change === 'period') {
                 this.buttonPeriodTab = this.highlightedButton;
                 this.currentDzoList = 'daily';
-            }
-        },
-
-        changeButton(showTableItem, changeButton) {
-            var a;
-            if (changeButton == "Yes") {
-                if (showTableItem == "Yes") {
-                    a = "No";
-                } else {
-                    a = "Yes";
-                }
-                this.showTable2 = a;
-                localStorage.setItem("changeButton", a);
-            }
-            this.showTable(localStorage.getItem("changeButton"));
-        },
-
-        showTable(showTableItem, changeButton) {
-            var showTableOn =
-                " border: none;" +
-                "color: white;" +
-                "background: url(../img/level1/button-on.png) no-repeat;" +
-                "background-size: 16% auto;" +
-                "background-position: 80% 50%;" +
-                "outline: none;";
-
-            if (showTableItem == "Yes") {
-                this.ChartTable = "График";
-                this.displayChart = "display:none;";
-
-                if (this.company == "all") {
-                    this.displayTable = "display:none;";
-                } else {
-                    this.displayTable = "d-flex;";
-                    this.displayHeadTables = "display: none";
-                }
-                this.showTableOn = "";
-            } else if (showTableItem == "No") {
-                this.displayTable = "display:none;";
-                this.displayChart = "display:block;";
-                this.ChartTable = "Таблица";
-                this.showTableOn = showTableOn;
             }
         },
     }

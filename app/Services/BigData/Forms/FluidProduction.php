@@ -4,14 +4,11 @@ declare(strict_types=1);
 
 namespace App\Services\BigData\Forms;
 
-use App\Models\BigData\Dictionaries\Tech;
 use App\Models\BigData\Well;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
-class FluidProduction extends TableForm
+class FluidProduction extends MeasurementLogForm
 {
 
     protected $configurationFileName = 'fluid_production';
@@ -19,35 +16,7 @@ class FluidProduction extends TableForm
     public function getRows(array $params = []): array
     {
         $filter = json_decode($this->request->get('filter'));
-
-        $wellsQuery = Well::query()
-            ->with('techs', 'geo')
-            ->select('id', 'uwi')
-            ->orderBy('uwi')
-            ->active(Carbon::parse($filter->date));
-
-
-        if ($this->request->get('type') === 'tech') {
-            $tech = Tech::find($this->request->get('id'));
-            $wellsQuery->whereHas(
-                'techs',
-                function ($query) use ($tech, $filter) {
-                    return $query
-                        ->where('dict.tech.id', $tech->id)
-                        ->whereDate('dict.tech.dbeg', '<=', $filter->date)
-                        ->whereDate('dict.tech.dend', '>=', $filter->date);
-                }
-            );
-        } else {
-            $wellsQuery->where('id', $this->request->get('id'));
-        }
-
-
-        if (isset($params['filter']['row_id'])) {
-            $wellsQuery->where('id', $params['filter']['row_id']);
-        }
-
-        $wells = $wellsQuery->get();
+        $wells = $this->getWells((int)$this->request->get('id'), $this->request->get('type'), $filter, $params);
 
         $tables = $this->getFields()->pluck('table')->filter()->unique();
         $rowData = $this->fetchRowData(
@@ -77,65 +46,6 @@ class FluidProduction extends TableForm
         return [
             'rows' => $wells->toArray()
         ];
-    }
-
-    public function getGeoBreadcrumbs($geo)
-    {
-        if (Cache::has('bd_geo_breadcrumb_' . $geo->id)) {
-            return Cache::get('bd_geo_breadcrumb_' . $geo->id);
-        }
-
-        $ancestors = $geo->ancestors()
-            ->reverse()
-            ->pluck('name_ru')
-            ->toArray();
-
-        $ancestors[] = $geo->name;
-        $breadcrumbs = implode(' / ', $ancestors);
-        Cache::put('bd_geo_breadcrumb_' . $geo->id, $breadcrumbs, now()->addMonth());
-
-        return $breadcrumbs;
-    }
-
-    public function getFormatedFieldValue(array $field, array $rawValue): ?array
-    {
-        switch ($field['code']) {
-            case 'worktime':
-
-                $value = 0;
-                if (isset($rawValue['value']) && $rawValue['value'] !== null) {
-                    $value = in_array($rawValue['value'], Well::WELL_ACTIVE_STATUSES) ? 1 : 0;
-                }
-
-                return [
-                    'value' => $value
-                ];
-        }
-
-        return $rawValue;
-    }
-
-    protected function getCustomFieldValue(array $field, array $rowData, Model $item): ?array
-    {
-        switch ($field['code']) {
-            case 'density_oil':
-
-                return [
-                    'value' => floatval($item->geo->first()->density_oil)
-                ];
-
-            case 'other_uwi':
-
-                return $this->getOtherUwis($item);
-
-            case 'geo':
-
-                return [
-                    'value' => $this->getGeoBreadcrumbs($item->geo->first())
-                ];
-        }
-
-        return null;
     }
 
     protected function saveSingleFieldInDB(string $field, int $wellId, Carbon $date, $value): void
@@ -170,21 +80,5 @@ class FluidProduction extends TableForm
                     ]
                 );
         }
-    }
-
-    private function getOtherUwis($item)
-    {
-        $uwi = DB::connection('tbd')
-            ->table('dict.well')
-            ->selectRaw('well.id,well.uwi as other_uwi')
-            ->leftJoin('prod.joint_wells as j', 'well.id', DB::raw("any(j.well_id_arr)"))
-            ->leftJoin('dict.well as b', 'b.id', DB::raw('any(array_remove(j.well_id_arr, well.id))'))
-            ->where('well.id', $item->id)
-            ->groupBy('well.id', 'well.uwi')
-            ->first();
-
-        return [
-            'value' => $uwi->other_uwi === '{NULL}' ? null : str_replace(['{', '}'], '', $uwi->other_uwi),
-        ];
     }
 }

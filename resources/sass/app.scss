@@ -10,6 +10,7 @@
 }
 
 @import "variables";
+@import 'common';
 
 // Bootstrap
 @import "~bootstrap/scss/bootstrap";
@@ -27,10 +28,12 @@
 @import 'includes/mainpage';
 @import 'components/vSelect';
 @import 'components/modal';
+@import 'components/digital-rating';
+@import 'components/btn-button';
 
 @import 'modules/bigdata';
 @import 'modules/gtm';
-@import 'modules/gis';
+@import 'modules/geology';
 @import '~handsontable/dist/handsontable.full.css';
 
 

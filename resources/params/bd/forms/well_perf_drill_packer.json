@@ -1,0 +1,49 @@
+{
+  "type": "plain",
+  "table": "",
+  "tabs": [
+    {
+      "title": "main",
+      "blocks": [
+        [
+          {
+            "title": "",
+            "items": [
+              {
+                "code": "company",
+                "type": "dict",
+                "dict": "companies",
+                "title": "podr",
+                "validation": "required|exists:tbd.dict.company,id"
+              },
+              {
+                "code": "reservoir_count",
+                "type": "numeric",
+                "title": "reserv_c",
+                "validation": "required|numeric"
+              },
+              {
+                "code": "perf_date",
+                "type": "date",
+                "title": "data",
+                "validation": ""
+              },
+              {
+                "code": "packer_type",
+                "type": "dict",
+                "dict": "packer_types",
+                "title": "packer_t",
+                "validation": "required|exists:tbd.dict.packer_type,id"
+              },
+              {
+                "code": "new_intervals",
+                "type": "calc",
+                "title": "packer_new_intervals"
+              }
+            ]
+          }
+        ]
+      ]
+    }
+  ]
+}

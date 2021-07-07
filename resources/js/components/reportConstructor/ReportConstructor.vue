@@ -87,7 +87,7 @@
                     fill="white" fill-opacity="0.3"/>
             </svg>
             <form @click="isDisplayParameterBuilder = !isDisplayParameterBuilder">
-              <input type="text" placeholder="Выбор параметров" id="parametr-search">
+              <input type="text" placeholder="Выбор параметров" id="parameter-search">
               </input>
             </form>
           </div>
@@ -113,6 +113,7 @@
                       :structureType="currentStructureType"
                       :itemType="currentItemType"
                       :isShowCheckboxes="true"
+                      :onCheckboxClick="updateSelectedNodes"
                   >
                   </report-constructor-item-select-tree>
                 </template>
@@ -129,11 +130,41 @@
             <section class="section-top  bg-dark">
               <div class="vertical-centered">
                 <div class="row">
-                  <div class="inline-flex date-container">
-                    <span class="">Дата</span>
-                    <form class="">
-                      <input type="date">
-                    </form>
+                  <div class="col date-container">
+                    <label>{{ trans('bd.choose_start_date') }}</label>
+                    <template>
+                      <datetime
+                          type="date"
+                          v-model="startDate"
+                          value-zone="Asia/Almaty"
+                          zone="Asia/Almaty"
+                          :format="{ year: 'numeric', month: 'numeric', day: 'numeric'}"
+                          :phrases="{ok: trans('app.choose'), cancel: trans('app.cancel')}"
+                          :max-datetime="endDate"
+                          :week-start="1"
+                          :placeholder= "[[ trans('bd.dd_mm_yyyy') ]]"
+                          auto
+                      >
+                      </datetime>
+                    </template>
+                  </div>
+                  <div class="col date-container">
+                    <label>{{ trans('bd.choose_end_date') }}</label>
+                    <template>
+                      <datetime
+                          type="date"
+                          v-model="endDate"
+                          value-zone="Asia/Almaty"
+                          zone="Asia/Almaty"
+                          :format="{ year: 'numeric', month: 'numeric', day: 'numeric'}"
+                          :phrases="{ok: trans('app.choose'), cancel: trans('app.cancel')}"
+                          :min-datetime="startDate"
+                          :week-start="1"
+                          :placeholder= "[[ trans('bd.dd_mm_yyyy') ]]"
+                          auto
+                      >
+                      </datetime>
+                    </template>
                   </div>
                   <div class="inline-flex">
                     <span class="calendar">Сегодня</span>
@@ -248,7 +279,7 @@
               </div>
               <div class="row">
                 <div class="btn-container">
-                  <button disabled>Скачать отчет</button>
+                  <button @click="getStatisticsFile()">Скачать отчет</button>
                   <button>Сохранить как шаблон</button>
                 </div>
               </div>
@@ -772,7 +803,12 @@ body {
     margin-bottom: 10px;
     padding: 11px 0px 11px 14px;
 
-    span {
+    .col {
+      margin: 0px;
+      padding: 0px;
+    }
+
+    span, label {
       font-family: $HarmoniaSansProCyr;
       font-weight: 700;
       font-size: 14px;
@@ -801,8 +837,23 @@ body {
     }
 
     .date-container {
-      &:first-child span {
-        margin-right: 17px;
+      margin-bottom: 10px;
+
+      label {
+        margin-right: 10px;
+      }
+
+      .vdatetime::v-deep .vdatetime-input {
+        width: 142px;
+        margin-right: 35px;
+        background: #1F2142;
+        color: #B6BAD9;
+        border-radius: 4px;
+        border: 0.5px solid #454FA1;
+        font-size: 16px;
+        font-weight: 400;
+        font-family: $HarmoniaSansProCyr;
+        text-align: center;
       }
     }
   }
