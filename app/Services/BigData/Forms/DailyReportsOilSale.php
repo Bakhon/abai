@@ -10,7 +10,7 @@ class DailyReportsOilSale extends DailyReports
     const GS = 1;
     const ALL = 2;
     protected $metricCode = 'OILSL';
-    protected $configurationFileName = 'daily_reports_oil_prod';
+    protected $configurationFileName = 'daily_reports_oil_sale';
 
     protected function saveSingleFieldInDB(string $field, int $wellId, Carbon $date, $value): void
     {

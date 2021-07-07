@@ -6,10 +6,10 @@ namespace App\Services\BigData\Forms;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
-class GasProduction extends TableForm
+class GasProduction extends MeasurementLogForm
 {
     protected $configurationFileName = 'gas_production';
-    
+
     public function getRows(array $params = []): array
     {
 

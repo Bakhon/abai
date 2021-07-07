@@ -59,6 +59,7 @@ export default {
         });
         return [undefined, ...filters];
     },
+
     wellFilters() {
         let filters = [];
         this.allWells.forEach((el) => {
@@ -277,7 +278,6 @@ export default {
       isAscSort: "",
       pageCount: 0,
       pageNumber: 1,
-      isEdit: false,
       currentMonth: null,
       currentYear: null,
       searchParam: null,
@@ -299,12 +299,12 @@ export default {
           block: this.$store.state.tr.block,
           expMeth: this.$store.state.tr.expMeth,
           horizon: this.$store.state.tr.horizon,
-          year_1: this.$store.state.tr.year_1,
-          month_1: this.$store.state.tr.month_1,
-          day_1: this.$store.state.tr.day_1,
-          year_2:  this.$store.state.tr.year_2,
-          month_2:  this.$store.state.tr.month_2,
-          day_2:  this.$store.state.tr.day_2,
+          year_1: this.$store.state.tr.year_dyn_start,
+          month_1: this.$store.state.tr.month_dyn_start,
+          day_1: this.$store.state.tr.day_dyn_start,
+          year_2:  this.$store.state.tr.year_dyn_end,
+          month_2:  this.$store.state.tr.month_dyn_end,
+          day_2:  this.$store.state.tr.day_dyn_end,
           };
       }
       else {
@@ -406,7 +406,7 @@ export default {
       if (this.is_dynamic) {
         this.axiosDynamicFilterRequest();
       }
-      else if (this.isEdit) {
+      else if (this.edit) {
         this.axiosEdit();
       }
       else{
@@ -574,7 +574,6 @@ export default {
     },
     cancelEdit() {
       this.$store.commit("globalloading/SET_LOADING", true);
-      this.isEdit = false;
       this.edit = false;
       this.editedWells = [];
       this.month = this.currentMonth;
@@ -612,7 +611,6 @@ export default {
     editable() {
       this.$store.commit("globalloading/SET_LOADING", true);
       this.is_dynamic = false;
-      this.isEdit = true;
       this.edit = true;
       this.show_second = true;
       this.show_first = false;
@@ -633,7 +631,7 @@ export default {
       if (this.is_dynamic) {
         this.axiosDynamicFilterRequest();
       }
-      else if (this.isEdit) {
+      else if (this.edit) {
         this.axiosEdit();
       }
       else{
@@ -703,7 +701,6 @@ export default {
       this.$store.commit("tr/SET_BLOCK", []);
       this.$store.commit("tr/SET_EXPMETH", []);
       this.$store.commit("tr/SET_PAGENUMBER", 1);
-      this.$store.commit("tr/SET_SEARCH", "");
       this.$store.commit("tr/SET_SORTTYPE", true);
       this.$store.commit("tr/SET_SORTPARAM", "rus_wellname");
       this.$store.commit("tr/SET_IS_DYNAMIC", "false");
@@ -749,6 +746,19 @@ export default {
       this.is_dynamic_calendar = !this.is_dynamic_calendar
       this.datepicker1 = !this.datepicker1
       this.datepicker2 = !this.datepicker2
+    },
+    isCommentClass (row_index, value) {
+      return this.wells &&
+          this.wells[row_index] &&
+          this.wells[row_index][value][1][0] !== '0';
+    },
+    isActiveClass (row) {
+      if (row.rus_wellname) {
+          return false
+      } else {
+          return true
+      }
+
     },
 
     getColor(status) {
@@ -819,7 +829,7 @@ export default {
         ? `search/${this.searchString}/`
         : "";
       this.$store.commit("tr/SET_SEARCH", this.searchString);
-      if (this.isEdit) {
+      if (this.edit) {
         this.axiosEditSearch();
         this.axiosEditPage();
       }
