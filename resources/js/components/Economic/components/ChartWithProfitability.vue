@@ -2,7 +2,7 @@
   <div>
     <div class="d-flex">
       <div class="form-check">
-        <input v-model="showInWork"
+        <input v-model="isVisibleInWork"
                id="in-work"
                type="checkbox"
                class="form-check-input cursor-pointer">
@@ -14,7 +14,7 @@
       </div>
 
       <div class="form-check ml-2">
-        <input v-model="showInPause"
+        <input v-model="isVisibleInPause"
                id="in-pause"
                type="checkbox"
                class="form-check-input cursor-pointer">
@@ -27,6 +27,7 @@
     </div>
 
     <apexchart
+        ref="chart"
         :options="chartOptions"
         :series="chartSeries"
         :height="745"
@@ -43,7 +44,7 @@ import chart from "vue-apexcharts";
 import {chartInitMixin} from "../mixins/chartMixin";
 
 export default {
-  name: 'Chart1',
+  name: 'ChartWithProfitability',
   components: {apexchart: chart},
   mixins: [chartInitMixin],
   props: {
@@ -55,14 +56,14 @@ export default {
       required: false,
       type: String,
     },
-    dataInPause: {
+    pausedData: {
       required: true,
       type: Object
     }
   },
   data: () => ({
-    showInWork: true,
-    showInPause: false
+    isVisibleInWork: true,
+    isVisibleInPause: false
   }),
   methods: {
     tooltipFormatter(y) {
@@ -85,7 +86,7 @@ export default {
       let data = []
 
       keys.forEach(key => {
-        if (this.showInWork) {
+        if (this.isVisibleInWork) {
           data.push({
             name: this.trans(`economic_reference.wells_${key}`),
             type: 'area',
@@ -93,11 +94,11 @@ export default {
           })
         }
 
-        if (this.showInPause) {
+        if (this.isVisibleInPause) {
           data.push({
             name: `${this.trans(`economic_reference.wells_${key}`)} ${this.trans(`economic_reference.in_pause`).toLowerCase()}`,
             type: 'area',
-            data: this.dataInPause[key]
+            data: this.pausedData[key]
           })
         }
       })
@@ -117,11 +118,11 @@ export default {
       let colors = []
 
       colorsInWork.forEach((color, index) => {
-        if (this.showInWork) {
+        if (this.isVisibleInWork) {
           colors.push(color)
         }
 
-        if (this.showInPause) {
+        if (this.isVisibleInPause) {
           colors.push(colorsInPause[index])
         }
       })
