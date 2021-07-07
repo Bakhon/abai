@@ -1,7 +1,11 @@
 import NotifyPlugin from "vue-easy-notify";
+import Multiselect from "vue-multiselect";
 
 Vue.use(NotifyPlugin);
 export default {
+	components: {
+		Multiselect,
+	  },
 	data: function()  {
 		return {
 			svgTableN1: require('../../../images/tableN1.svg'),
@@ -20,6 +24,7 @@ export default {
 			kpodMin: 0.6,
 			isModal: false,
 			diameterShgn: 1,
+			value: [],
 			diametersShgn: [
 				{
 					id: 1,
@@ -82,7 +87,17 @@ export default {
 				},
 
 				],
-			markShtang: "30ХМ(А) (НсУ)",
+			markShtang: ["30ХМ(А) (НсУ)"],
+			testWatch: 3,
+			selected: ['Orange'], // Must be an array reference!
+			options: [ 'Orange', 'Apple', 'Pineapple', 'Grape'],
+			// { text: 'Orange', value: 'orange' },
+			// { text: 'Apple', value: 'apple' },
+			// { text: 'Pineapple', value: 'pineapple' },
+			// { text: 'Grape', value: 'grape' }
+			// ],
+			selectedOptionLength: null,
+			markSh: ["20Н2М (Н)", "30ХМ(А) (НсУ)"],
 			markShtangsTypes: {
 				"mediumCorrosion": [
 					{mValue: "20Н2М (Н)",
