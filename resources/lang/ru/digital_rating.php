@@ -23,4 +23,7 @@ return array (
   'import' => 'Импорт',
   'export' => 'Экспорт',
   'save' => 'Сохранить',
+  'developmentMaps' => 'Карты разработки',
+  'correlationScheme' => 'Корреляционная схема',
+  'environmentIndicators' => 'Показатели по окружению',
 );
