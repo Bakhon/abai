@@ -26,8 +26,8 @@ class WellStatus extends PlainForm
     {
         $errors = [];
 
-        if (!$this->isValidDate('dbeg')) {
-            $errors['dbeg'][] = trans('bd.validation.dbeg');
+        if (!$this->isValidDate($this->request->get('well'),$this->request->get('dbeg'))){
+            $errors['dbeg'] = trans('bd.validation.dbeg');
         }
 
         return $errors;
