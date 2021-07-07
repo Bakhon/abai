@@ -57,9 +57,11 @@ export default {
             productionByDay: [],
             comparedSummary: [],
             isWithKMG: false,
-            tableOutput: {
-                'summaryByDzo': [],
-                'summaryByKMG': []
+            summary: {
+                'productionByDzo': [],
+                'productionByKMG': [],
+                'productionByDzoWithParticipation': [],
+                'productionByKMGWithParticipation': []
             },
             withKMGCompanies: ['ОМГ','ОМГК','ЭМГ','АГК','ТШО','ММГ','КОА','КТМ','КГМ','ПКК','ТП','КБМ','КПО','НКО','УО'],
             oilCompanies: ['ОМГ','ЭМГ','ТШО','ММГ','КОА','КТМ','КГМ','ПКК','ТП','КБМ','КПО','НКО','УО'],
@@ -101,6 +103,26 @@ export default {
                     'ТП': this.trans("visualcenter.tp"),
                     'УО': this.trans("visualcenter.uo"),
                     'ПКК': this.trans("visualcenter.pkk"),
+                },
+                'withParticipation': {
+                    'ОМГ': this.trans("visualcenter.consolidatedDzoNameMapping.OMG"),
+                    'ОМГК': '(конденсат) (100%)',
+                    'ЭМГ': this.trans("visualcenter.consolidatedDzoNameMapping.EMG"),
+                    'КБМ': this.trans("visualcenter.consolidatedDzoNameMapping.KBM"),
+                    'КГМ': this.trans("visualcenter.consolidatedDzoNameMapping.KGM"),
+                    'КГМД': this.trans("visualcenter.kgm") + '(50%*33)',
+                    'ПКИ': this.trans("visualcenter.consolidatedDzoNameMapping.PKI"),
+                    'ТШО': this.trans("visualcenter.consolidatedDzoNameMapping.TSH"),
+                    'ММГ': this.trans("visualcenter.consolidatedDzoNameMapping.MMG"),
+                    'КТМ': this.trans("visualcenter.consolidatedDzoNameMapping.KTM"),
+                    'КОА': this.trans("visualcenter.consolidatedDzoNameMapping.KOA"),
+                    'АМГ': this.trans("visualcenter.consolidatedDzoNameMapping.AG"),
+                    'АГК': this.trans("visualcenter.consolidatedDzoNameMapping.AG"),
+                    'КПО': this.trans("visualcenter.consolidatedDzoNameMapping.KPO"),
+                    'НКО': this.trans("visualcenter.consolidatedDzoNameMapping.NKO"),
+                    'ТП': this.trans("visualcenter.consolidatedDzoNameMapping.TP"),
+                    'УО': this.trans("visualcenter.consolidatedDzoNameMapping.YO"),
+                    'ПКК': this.trans("visualcenter.consolidatedDzoNameMapping.PKK"),
                 }
             },
             differenceKeys: [
@@ -110,7 +132,34 @@ export default {
                 'differenceOpecByDay',
                 'differenceOpecByMonth',
                 'differenceOpecByYear',
-            ]
+            ],
+            participationMultiplier: {
+                'ОМГ': (val) => val,
+                'ОМГК': (val) => val,
+                'ЭМГ': (val) => val,
+                'КБМ': (val) => val * 0.5,
+                'КГМ': (val) => val * 0.5,
+                'КГМД': (val) => val * 0.5 * 0.33,
+                'ПКК': (val) => val * 0.33,
+                'ТП': (val) => val * 0.5 * 0.33,
+                'АГК': (val) => val,
+                'ТШО': (val) => val * 0.2,
+                'ММГ': (val) => val * 0.5,
+                'КОА': (val) => val * 0.5,
+                'КТМ': (val) => val,
+                'КПО': (val) => val * 0.1,
+                'НКО': (val) => (val - val * 0.019) * 241 / 1428,
+                'УО': (val) => val,
+            },
+            tableOutput: {
+                productionByKMG: [],
+                productionByDzo: []
+            },
+            participationOrder: [
+                'ОМГ','ОМГК','ЭМГ','КБМ','КГМ','ПКИ','КГМД',
+                'ПКК','ТП','АГК','ТШО','ММГ','КОА','КТМ',
+                'КПО','НКО','УО'
+            ],
         }
     },
     methods: {
@@ -176,7 +225,6 @@ export default {
             if (this.productionByDay.length !== 15) {
                 this.productionByDay = this.getFilteredBy(this.comparedSummary,this.period.yesterdayStart,this.period.yesterdayEnd);
             }
-            console.log(this.productionByDay.length);
         },
         getComparedWithPlan() {
             let compared = [];
@@ -210,26 +258,33 @@ export default {
             this.planSummary = this.getSortedBy('asc',this.planSummary);
         },
         fillTable() {
-            this.tableOutput.summaryByDzo = this.getSummaryByDzo();
-            this.tableOutput.summaryByKMG = this.getSummaryByKMG();
-            console.log('this.tableOutput')
-            console.log(this.tableOutput)
-        },
-        getSummaryByKMG() {
-            let summary = [];
-            let oilSummary = this.getSummaryByType('summary','oilCompanies');
-            let condensateSummary = this.getSummaryByType('condensate','condensateCompanies');
+            this.summary.productionByDzo = this.getSummaryByDzo();
+            this.summary.productionByKMG = this.getSummaryByKMG(this.summary.productionByDzo);
             if (!this.isWithKMG) {
+                let oilSummary = this.summary.productionByKMG[0];
+                let condensateSummary = this.summary.productionByKMG[1];
                 oilSummary.number = 2;
                 oilSummary.yearlyPlan += condensateSummary.yearlyPlan;
                 oilSummary.monthlyPlan += condensateSummary.monthlyPlan;
                 oilSummary.monthlyPlanOpec += condensateSummary.monthlyPlanOpec;
             }
+            this.summary.productionByDzoWithParticipation = this.getSummaryWithParticipationByDzo();
+            this.summary.productionByKMGWithParticipation = this.getSummaryByKMG(this.summary.productionByDzoWithParticipation);
+            this.summary.productionByKMGWithParticipation[0].number = 1;
+            this.tableOutput.productionByKMG = this.summary.productionByKMG;
+            this.tableOutput.productionByDzo = this.summary.productionByDzo;
+            console.log('this.summary')
+            console.log(this.summary)
+        },
+        getSummaryByKMG(productionByDzo) {
+            let summary = [];
+            let oilSummary = this.getSummaryByType('summary','oilCompanies',productionByDzo);
+            let condensateSummary = this.getSummaryByType('condensate','condensateCompanies',productionByDzo);
             return [oilSummary,condensateSummary];
         },
-        getSummaryByType(type,companies) {
+        getSummaryByType(type,companies,productionByDzo) {
             let template = _.cloneDeep(this.template);
-            let filtered = this.getFilteredByType(_.cloneDeep(this.tableOutput.summaryByDzo),companies);
+            let filtered = this.getFilteredByType(_.cloneDeep(productionByDzo),companies);
             template.dzo = this.totalNames[type];
             if (this.isWithKMG) {
                 template.number = 1;
@@ -360,6 +415,73 @@ export default {
                 return 'color_red';
             }
         },
+        getSummaryWithParticipationByDzo() {
+            let self = this;
+            let result = [];
+            let pkiSummary = _.cloneDeep(this.template);
+            _.forEach(_.cloneDeep(this.summary.productionByDzo), function(item,index) {
+                 let updatedByMultiplier = self.getCalculatedByMultiplier(item,self.participationMultiplier[item.dzo],item.dzo,index);
+                 updatedByMultiplier.number = '1.' + index + '.';
+                 result.push(updatedByMultiplier);
+                 if (item.dzo === 'КГМ') {
+                     let updatedBranch = self.getCalculatedByMultiplier(item,self.participationMultiplier['КГМД'],'КГМД',index);
+                     pkiSummary = self.getUpdatedPKI(pkiSummary,updatedBranch);
+                     result.push(updatedBranch);
+                 }
+                 if (['ПКК','ТП'].includes(item.dzo)) {
+                     updatedByMultiplier.number = '';
+                     pkiSummary = self.getUpdatedPKI(pkiSummary,updatedByMultiplier);
+                 }
+            });
+            pkiSummary = this.getByDifference(pkiSummary);
+            pkiSummary.number = '1.5.';
+            pkiSummary.dzo = 'ПКИ';
+            result.push(pkiSummary);
+            result = this.getSorted(result,this.participationOrder);
+            return result;
+        },
+        getUpdatedPKI(pkiSummary,item) {
+            let self = this;
+            _.forEach(Object.keys(pkiSummary), function(key) {
+                if (['dzo','number'].includes(key) || self.differenceKeys.includes(key))  {
+                    return;
+                }
+                pkiSummary[key] += item[key];
+            });
+            return pkiSummary;
+        },
+        getCalculatedByMultiplier(item,formula,dzoName,index) {
+            let calculated = {};
+            let self = this;
+            _.forEach(Object.keys(item), function(key) {
+                if (['dzo','number'].includes(key)) {
+                    calculated['dzo'] = dzoName;
+                    calculated['number'] = index;
+                } else {
+                    calculated[key] = formula(item[key]);
+                }
+            });
+            calculated = this.getByDifference(calculated);
+            return calculated;
+        },
+        getSorted(inputData,sortingOrder) {
+            let sorted = [];
+            let counter = 0;
+            _.forEach(sortingOrder, function (key) {
+                let itemIndex = inputData.findIndex(element => element.dzo === key);
+                if (itemIndex > -1) {
+                    if (!['КГМД','ПКК','ТП'].includes(key)) {
+                        inputData[itemIndex].number = '1.' + counter + '.';
+                        counter++;
+                    } else {
+                        inputData[itemIndex].number = '';
+                    }
+                    sorted.push(inputData[itemIndex]);
+                }
+            });
+            sorted[0].number = '1.1.';
+            return sorted;
+        },
     },
     async mounted() {
         this.$store.commit('globalloading/SET_LOADING', true);
@@ -380,5 +502,16 @@ export default {
         this.updateProductionByPeriod();
         this.fillTable();
         this.$store.commit('globalloading/SET_LOADING', false);
-    }
+    },
+    watch: {
+        isWithKMG: function () {
+            if (this.isWithKMG) {
+                this.tableOutput.productionByKMG = this.summary.productionByKMGWithParticipation;
+                this.tableOutput.productionByDzo = this.summary.productionByDzoWithParticipation;
+            } else {
+                this.tableOutput.productionByKMG = this.summary.productionByKMG;
+                this.tableOutput.productionByDzo = this.summary.productionByDzo;
+            }
+        }
+    },
 }

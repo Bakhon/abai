@@ -86,7 +86,7 @@
                     </tr>
                     <!-- >саммари <-->
                     <tr
-                            v-for="(item,index) in tableOutput.summaryByKMG"
+                            v-for="(item,index) in tableOutput.productionByKMG"
                             :class="!isWithKMG && index > 0 ? 'background-dark hide-block' :'background-dark'"
                     >
                         <td>{{item.number}}</td>
@@ -147,12 +147,23 @@
                     <!-- >саммари <-->
                     <!-- >дзо <-->
                     <tr
-                            v-for="(item, index) in tableOutput.summaryByDzo"
+                            v-for="(item, index) in tableOutput.productionByDzo"
                             :class="getRowClass(index)"
                     >
                         <td v-if="index !== 1">{{item.number}}</td>
                         <td v-else></td>
-                        <td :class="index === 1 ? 'text-center' : ''">{{companiesNameMapping.summaryByDzo[item.dzo]}}</td>
+                        <td
+                                v-if="!isWithKMG"
+                                :class="index === 1 ? 'text-center' : ''"
+                        >
+                            {{companiesNameMapping.summaryByDzo[item.dzo]}}
+                        </td>
+                        <td
+                                v-else
+                                :class="[index === 1 ? 'text-center' : '',[6,7,8].includes(index) ? 'padding_left' : '']"
+                        >
+                            {{companiesNameMapping.withParticipation[item.dzo]}}
+                        </td>
                         <td >{{getFormattedNumber(item.yearlyPlan)}}</td>
 
                         <td v-if="!isOpecActive">{{getFormattedNumber(item.monthlyPlan)}}</td>
@@ -216,6 +227,9 @@
 <script src="./index.js"></script>
 
 <style scoped lang="scss">
+    .padding_left {
+        padding-left: 50px;
+    }
     .header-title {
         font-style: normal;
         font-weight: bold;
