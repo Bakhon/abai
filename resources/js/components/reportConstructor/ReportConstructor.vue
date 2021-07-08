@@ -167,13 +167,6 @@
                       </datetime>
                     </template>
                   </div>
-                  <div class="inline-flex">
-                    <span class="calendar">Сегодня</span>
-                    <span class="calendar">Сутки</span>
-                    <span class="calendar">Неделя</span>
-                    <span class="calendar">Месяц</span>
-                    <span class="calendar">Год</span>
-                  </div>
                   <div class="btn-container">
                     <button class="btn-disabled" @click="updateStatistics()">Создать отчет</button>
                     <button class="">Выбрать шаблон</button>
@@ -603,10 +596,11 @@ body {
     text-align: center;
     font-family: $HarmoniaSansProCyr;
     font-weight: 700;
-    font-size: 13px;
+    font-size: 13.5px;
     width: 140px;
     height: 35px;
     line-height: 19px;
+    letter-spacing: 1px;
     border-radius: 2px;
     cursor: pointer;
 
@@ -694,7 +688,7 @@ body {
   }
 
   .btn-secondary {
-    border: 1px solid #454FA1;
+    border: 1.3px solid #3366FF;
     border-radius: 5px;
     width: 350px;
     height: 30px;
