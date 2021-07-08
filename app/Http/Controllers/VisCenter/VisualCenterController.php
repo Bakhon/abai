@@ -24,7 +24,7 @@ use App\Models\VisCenter\ExcelForm\DzoImportDecreaseReason;
 use Carbon\Carbon;
 use App\Models\VisCenter\ExcelForm\DzoImportOtm;
 use App\Models\VisCenter\ExcelForm\DzoImportChemistry;
-use App\Models\BigData\AvocetChemistryValue;
+use App\Models\BigData\ChemistryForKGM;
 
 class VisualCenterController extends Controller
 {
@@ -426,22 +426,22 @@ class VisualCenterController extends Controller
             ->toArray();
     }
 
-    public function saveAvocetChemistryValue(Request $request)    {      
+    public function storeKGMChemistryByMonth(Request $request)    {      
         $date = $request->date;
         $DzoImportChemistry = new DzoImportChemistry();
         $DzoImportChemistry->dzo_name = 'КГМ';
         $DzoImportChemistry->date = $date;
-        $DzoImportChemistry->demulsifier = $this->getAvocetChemistryArray('DEMULSIFICATOR', $date);
-        $DzoImportChemistry->bactericide = $this->getAvocetChemistryArray('BACTERICIDE', $date);
-        $DzoImportChemistry->corrosion_inhibitor = $this->getAvocetChemistryArray('COR_ING', $date);
-        $DzoImportChemistry->scale_inhibitor = $this->getAvocetChemistryArray('SALT_INHIB', $date);
+        $DzoImportChemistry->demulsifier = $this->getKGMChemistry('DEMULSIFICATOR', $date);
+        $DzoImportChemistry->bactericide = $this->getKGMChemistry('BACTERICIDE', $date);
+        $DzoImportChemistry->corrosion_inhibitor = $this->getKGMChemistry('COR_ING', $date);
+        $DzoImportChemistry->scale_inhibitor = $this->getKGMChemistry('SALT_INHIB', $date);
         $DzoImportChemistry->save(); 
-        dd('Сохранено');
+        return 'Сохранено';
     }
 
-    public function getAvocetChemistryArray($nameOfChemistryValue, $date)
+    public function getKGMChemistry($nameOfChemistryValue, $date)
     {
-        return AvocetChemistryValue::query()->select('*')
+        return ChemistryForKGM::query()->select('*')
             ->where('start_datetime', $date)
             ->where('legacy_id', $nameOfChemistryValue)
             ->get()->toArray()['0']['inj_fact_mass'];
