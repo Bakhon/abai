@@ -76,6 +76,16 @@ export default {
           {maximumSignificantDigits: 3}
       ).format(y.toFixed(0)) + ` ${this.tooltipText || ''}`;
     },
+
+    chartSelection({data}, {xaxis}) {
+      let min = Math.ceil(xaxis.min)
+
+      let max = Math.floor(xaxis.max)
+
+      console.log(min)
+
+      console.log(max)
+    }
   },
   computed: {
     chartSeries() {
@@ -143,6 +153,13 @@ export default {
           foreColor: '#FFFFFF',
           locales: [ru],
           defaultLocale: 'ru',
+          events: {
+            selection: (chartContext, params) => this.chartSelection(chartContext, params)
+          },
+          selection: {
+            enabled: true,
+            type: 'x'
+          }
         },
         markers: {
           size: 0
