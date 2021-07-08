@@ -35,7 +35,6 @@ export default class MapTool {
             .translate([this.svgParams.width ? 0 : this.svgParams.width / 2, this.svgParams.height ? 0 : this.svgParams.height / 2])
             .scale(this.svgParams.scale)
             .center(this.svgParams.center)
-            // .on("click", this.clicked);
         return this.path = d3.geoPath().projection(pr);
     }
 
@@ -55,7 +54,6 @@ export default class MapTool {
         await this.json(url).then((values) => {
             let topoJson;
             if (obj) {
-                console.log(attrs)
                 topoJson = topo ? topojson.feature(values, values.objects[obj]) : values.features;
                 this.drawTopo(obj, topoJson, attrs[obj])
             } else {
@@ -94,11 +92,4 @@ export default class MapTool {
              centered = null;
          }
      }
-    // svg.selectAll("path")
-    //     .classed("active", centered && function(d) { return d === centered; });
-    //
-    // svg.transition()
-    //     .duration(750)
-    //     .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")")
-    //     .style("stroke-width", 1.5 / k + "px");
 }

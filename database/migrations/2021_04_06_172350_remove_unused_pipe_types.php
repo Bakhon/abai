@@ -12,7 +12,7 @@ class RemoveUnusedPipeTypes extends Migration
      */
     public function up()
     {
-        //PipeType::doesntHave('map_pipe')->where('id', '>', 8)->delete();
+        PipeType::doesntHave('map_pipe')->where('id', '>', 8)->delete();
     }
 
     /**

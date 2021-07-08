@@ -246,23 +246,6 @@ export default {
   justify-content: space-between;
   width: 100%;
 }
-/* img {
-  margin-right: 1em;
-}
-.pc_img {
-  width: 28px;
-  height: 28px;
-  margin-top: 10px;
-  margin-left: 25px;
-  margin-right: 0px;
-}
-.template_img {
-  width: 18px;
-  height: 18px;
-  margin-top: 11px;
-  margin-left: 30px;
-  margin-right: 0px;
-} */
 
 .select_wrapper_left {
   width: 100%;
@@ -289,7 +272,6 @@ export default {
   background-color: #333975;
 }
 .top_wrapper select {
-  /* font-family: "Harmonia Sans Pro Cyr"; */
   font-size: 16px;
   font-style: normal;
   font-weight: 700;
@@ -300,7 +282,6 @@ export default {
   height: 100%;
   color: aliceblue;
   border: none;
-  /* padding-left: 25px; */
 }
 .select_left {
   background-color: #2e50e9;
@@ -333,7 +314,6 @@ export default {
 
 .sectors > div {
   height: 50px;
-  /* font-family: "Harmonia Sans Pro Cyr"; */
   font-size: 16px;
   font-style: normal;
   font-weight: 400;
@@ -364,10 +344,8 @@ export default {
 }
 
 .monitoring_select > div {
-  /* height: 67px; */
   padding-top: 20px;
   padding-left: 25px;
-  /* font-family: "Harmonia Sans Pro Cyr"; */
   font-size: 22px;
   font-style: normal;
   font-weight: 700;
@@ -397,7 +375,6 @@ tr:nth-child(even) {
 }
 .table_header {
   background-color: #333975;
-  /* font-family: "Harmonia Sans Pro Cyr"; */
   font-size: 12px;
   font-style: normal;
   font-weight: 700;
@@ -421,7 +398,6 @@ tr:nth-child(even) {
 }
 
 .file_upload_title {
-  /* font-family: "Harmonia Sans Pro Cyr"; */
   font-size: 20px;
   font-style: normal;
   font-weight: 700;
@@ -434,7 +410,6 @@ tr:nth-child(even) {
 }
 
 .upload_status_title {
-  /* font-family: "Harmonia Sans Pro Cyr"; */
   font-size: 20px;
   font-style: normal;
   font-weight: 700;
@@ -464,7 +439,6 @@ tr:nth-child(even) {
 .btn-common {
   height: 32px;
   background-color: #3366ff;
-  /* font-family: "Harmonia Sans Pro Cyr"; */
   font-size: 14px;
   font-style: normal;
   font-weight: 600;

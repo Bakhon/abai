@@ -24,109 +24,98 @@ export default {
     map.createMap('/kz.json', "kz", true, {
       kz: [
         ['fill', 'none'],
-        ['stroke', 'white']
+        ['stroke', 'white'],
+        ['stroke-width','3px']
       ]
     });
     map.createMap('/balkhash.json', false, true, {
       balkhash: [
         ['fill', 'none'],
-        ['stroke', 'white']
+        ['stroke', 'yellow']
       ]
     });
     map.createMap('/torgai.json', false, true, {
       torgai: [
         ['fill', 'none'],
-        ['stroke', 'white']
+        ['stroke', 'yellow']
       ]
     });
     map.createMap('/ustyrt.json', false, true, {
       ustyrt: [
         ['fill', 'none'],
-        ['stroke', 'white']
+        ['stroke', 'yellow']
       ]
     });
     map.createMap('/alakol.json', false, true, {
       alakol: [
         ['fill', 'none'],
-        ['stroke', 'white']
+        ['stroke', 'yellow']
       ]
     });
     map.createMap('/aral.json', false, true, {
       aral: [
         ['fill', 'none'],
-        ['stroke', 'white']
+        ['stroke', 'yellow']
       ]
     });
     map.createMap('/mangyshlak.json', false, true, {
       mangyshlak: [
         ['fill', 'none'],
-        ['stroke', 'white']
+        ['stroke', 'yellow']
       ]
     });
     map.createMap('/precaspian.json', false, true, {
       precaspian: [
         ['fill', 'none'],
-        ['stroke', 'white']
+        ['stroke', 'yellow']
       ]
     });
     map.createMap('/preertis.json', false, true, {
       preertis: [
         ['fill', 'none'],
-        ['stroke', 'white']
+        ['stroke', 'yellow']
       ]
     });
     map.createMap('/storgay.json', false, true, {
       storgay: [
         ['fill', 'none'],
-        ['stroke', 'white']
+        ['stroke', 'yellow']
       ]
     });
     map.createMap('/zaisan.json', false, true, {
       zaisan: [
         ['fill', 'none'],
-        ['stroke', 'white']
+        ['stroke', 'yellow']
       ]
     });
     map.createMap('/Ili.json', false, true, {
       Ili: [
         ['fill', 'none'],
-        ['stroke', 'white']
+        ['stroke', 'yellow']
       ]
     });
     map.createMap('/norkz.json', false, true, {
       norkz: [
         ['fill', 'none'],
-        ['stroke', 'white']
+        ['stroke', 'yellow']
       ]
     });
     map.createMap('/syrdaria.json', false, true, {
       syrdaria: [
         ['fill', 'none'],
-        ['stroke', 'white']
+        ['stroke', 'yellow']
       ]
     });
     map.createMap('/teniz.json', false, true, {
       teniz: [
         ['fill', 'none'],
-        ['stroke', 'white']
+        ['stroke', 'yellow']
       ]
     });
     map.createMap('/borderbasin.json', false, true, {
       borderbasin: [
         ['fill', 'none'],
-        ['stroke', 'white']
-      ]
-    });
-    map.createMap('/kozhasai_fault2_1.json', false, true, {
-      kozhasai_fault2_1: [
-        ['fill', 'none'],
-        ['stroke', 'white']
-      ]
-    });
-    map.createMap('/kozhasai_fault2_2.json', false, true, {
-      kozhasai_fault2_2: [
-        ['fill', 'none'],
-        ['stroke', 'white']
+        ['stroke', 'yellow']
       ]
     });
   },
