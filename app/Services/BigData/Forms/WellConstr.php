@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 namespace App\Services\BigData\Forms;
+use Illuminate\Support\Facades\DB;
 
 class WellConstr extends PlainForm
 {
@@ -15,19 +16,25 @@ class WellConstr extends PlainForm
             ->table('dict.well')
             ->where('id', $wellId)
             ->get('drill_start_date');
-
+            echo '<script>';
+            echo 'console.log('. json_encode($startDate) .')';
+            echo '</script>';
         return $landingDate >= $startDate;    
     }
 
     protected function isValidDepth($wellId, $depth):bool
     {
         $dailyDrill =  DB::connection('tbd')
-            ->table('prod.daily_drill')
-            ->where('id', $wellId)
+            ->table('drill.well_daily_drill')
+            ->where('well', $wellId)
             ->get('daily_drill_progress');
-        $data = sum($dailyDrill);
-
-        return $depth <= $data;
+        
+        $sum = [];
+        $sum[] = $dailyDrill;
+        echo '<script>';
+        echo 'console.log('. json_encode($dailyDrill) .')';
+        echo '</script>';
+        return $depth <= array_sum($sum);
     }
 
     protected function getCustomValidationErrors(): array
@@ -35,11 +42,11 @@ class WellConstr extends PlainForm
         $errors = [];
 
         if (!$this->isValidDepth($this->request->get('well'),$this->request->get('depth'))) {
-            $errors['depth'] = trans('bd.validation.depth');
+            $errors['depth'][] = trans('bd.validation.depth');
         }
 
         if (!$this->isValidLandingDate($this->request->get('well'), $this->request->get('landing_date'))) {
-            $errors['landing_date'] = trans('bd.validation.landing_date');
+            $errors['landing_date'][] = trans('bd.validation.landing_date');
         }
 
         return $errors;
