@@ -99,7 +99,7 @@
 
     <div v-show="false">
       <gu-tool-tip ref="guToolTip" :gu="guHovered" />
-      <pipe-tool-tip ref="pipeToolTip"  :pipe="pipeHovered" :paramKey="pipeHoveredParamKey" />
+      <pipe-tool-tip ref="pipeToolTip"  :pipe="pipeHovered" :paramKey="pipeHoveredParameter" />
     </div>
   </div>
 </template>
@@ -193,7 +193,7 @@ export default {
       referentValue: 10,
       guHovered: null,
       pipeHovered: null,
-      pipeHoveredParamKey: null,
+      pipeHoveredParameter: null,
     };
   },
   created() {
@@ -340,7 +340,7 @@ export default {
     },
     getPipeTooltipHtml(pipe, paramKey) {
       this.pipeHovered = pipe;
-      this.pipeHoveredParamKey = paramKey;
+      this.pipeHoveredParameter = paramKey;
 
       return this.$refs.pipeToolTip.$el.outerHTML;
     },
