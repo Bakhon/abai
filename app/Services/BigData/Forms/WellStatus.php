@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 namespace App\Services\BigData\Forms;
+use Illuminate\Support\Facades\DB;
 
 class WellStatus extends PlainForm
 {
@@ -17,9 +18,7 @@ class WellStatus extends PlainForm
                         ->orderBy('dend', 'desc')
                         ->get('dend')
                         ->first();
-                        
-
-            return $dbeg >= $dend;
+            return $dbeg < $dend;
     }
 
     protected function getCustomValidationErrors(): array
@@ -27,7 +26,7 @@ class WellStatus extends PlainForm
         $errors = [];
 
         if (!$this->isValidDate($this->request->get('well'),$this->request->get('dbeg'))){
-            $errors['dbeg'] = trans('bd.validation.dbeg');
+            $errors[$this->request->get('dbeg')][] = trans('bd.validation.dbeg');
         }
 
         return $errors;
