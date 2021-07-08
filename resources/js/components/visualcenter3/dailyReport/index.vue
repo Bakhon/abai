@@ -7,14 +7,8 @@
                 </div>
                 <div class="img-download" @click="exportToExcel()"></div>
                 <div
-                        :class="[!isWithKMG ? 'opec-filter-active' : 'opec-filter-disabled','col-2']"
-                        @click="isWithKMG = !isWithKMG"
-                >
-                    Без доли участия КМГ
-                </div>
-                <div
                         :class="[isProduction ? 'opec-filter-active' : 'opec-filter-disabled','col-1']"
-                        @click="[isProduction = !isProduction,isWithKMG = false]"
+                        @click="isProduction = !isProduction"
                 >
                     {{buttonName}}
                 </div>
@@ -87,8 +81,132 @@
                     </tr>
                     <!-- >саммари <-->
                     <tr
+                            v-for="(item,index) in tableOutput.participationByKMG"
+                            class="background-dark"
+                    >
+                        <td>{{item.number}}</td>
+                        <td :class="index === 1 ? 'summary-header_text-align' : ''">{{item.dzo}}</td>
+                        <td >{{getFormattedNumber(item.yearlyPlan)}}</td>
+                        <td v-if="!isOpecActive">{{getFormattedNumber(item.monthlyPlan)}}</td>
+                        <td v-else>{{getFormattedNumber(item.monthlyPlanOpec)}}</td>
+                        <td v-if="!isOpecActive">{{getFormattedNumber(item.planByDay)}}</td>
+                        <td v-else>{{getFormattedNumber(item.planOpecByDay)}}</td>
+                        <td>{{getFormattedNumber(item.factByDay)}}</td>
+                        <td
+                                v-if="!isOpecActive"
+                                :class="getColorBy(item.differenceByDay)"
+                        >
+                            {{getFormattedNumber(item.differenceByDay)}}
+                        </td>
+                        <td
+                                v-else
+                                :class="getColorBy(item.differenceOpecByDay)"
+                        >
+                            {{getFormattedNumber(item.differenceOpecByDay)}}
+                        </td>
+
+                        <td v-if="!isOpecActive">{{getFormattedNumber(item.planByMonth)}}</td>
+                        <td v-else>{{getFormattedNumber(item.planOpecByMonth)}}</td>
+                        <td>{{getFormattedNumber(item.factByMonth)}}</td>
+                        <td
+                                v-if="!isOpecActive"
+                                :class="getColorBy(item.differenceByMonth)"
+                        >
+                            {{getFormattedNumber(item.differenceByMonth)}}
+                        </td>
+                        <td
+                                v-else
+                                :class="getColorBy(item.differenceOpecByMonth)"
+                        >
+                            {{getFormattedNumber(item.differenceOpecByMonth)}}
+                        </td>
+
+                        <td v-if="!isOpecActive">{{getFormattedNumber(item.planByYear)}}</td>
+                        <td v-else>{{getFormattedNumber(item.planOpecByYear)}}</td>
+                        <td>{{getFormattedNumber(item.factByYear)}}</td>
+                        <td
+                                v-if="!isOpecActive"
+                                :class="getColorBy(item.differenceByYear)"
+                        >
+                            {{getFormattedNumber(item.differenceByYear)}}
+                        </td>
+                        <td
+                                v-else
+                                :class="getColorBy(item.differenceOpecByYear)"
+                        >
+                            {{getFormattedNumber(item.differenceOpecByYear)}}
+                        </td>
+                    </tr>
+                    <!-- >саммари <-->
+                    <!-- >дзо <-->
+                    <tr
+                            v-for="(item, index) in tableOutput.participationByDzo"
+                            :class="getRowClass(index)"
+                    >
+                        <td v-if="index !== 1">{{item.number}}</td>
+                        <td v-else></td>
+                        <td :class="[1,13,14,15].includes(index) ? 'troubled-companies-padding' : ''">
+                            {{companiesNameMapping.withParticipation[item.dzo]}}
+                        </td>
+                        <td >{{getFormattedNumber(item.yearlyPlan)}}</td>
+
+                        <td v-if="!isOpecActive">{{getFormattedNumber(item.monthlyPlan)}}</td>
+                        <td v-else>{{getFormattedNumber(item.monthlyPlanOpec)}}</td>
+
+                        <td v-if="!isOpecActive">{{getFormattedNumber(item.planByDay)}}</td>
+                        <td v-else>{{getFormattedNumber(item.planOpecByDay)}}</td>
+                        <td>{{getFormattedNumber(item.factByDay)}}</td>
+                        <td
+                                v-if="!isOpecActive"
+                                :class="getColorBy(item.differenceByDay)"
+                        >
+                            {{getFormattedNumber(item.differenceByDay)}}
+                        </td>
+                        <td
+                                v-else
+                                :class="getColorBy(item.differenceOpecByDay)"
+                        >
+                            {{getFormattedNumber(item.differenceOpecByDay)}}
+                        </td>
+
+                        <td v-if="!isOpecActive">{{getFormattedNumber(item.planByMonth)}}</td>
+                        <td v-else>{{getFormattedNumber(item.planOpecByMonth)}}</td>
+                        <td>{{getFormattedNumber(item.factByMonth)}}</td>
+                        <td
+                                v-if="!isOpecActive"
+                                :class="getColorBy(item.differenceByMonth)"
+                        >
+                            {{getFormattedNumber(item.differenceByMonth)}}
+                        </td>
+                        <td
+                                v-else
+                                :class="getColorBy(item.differenceOpecByMonth)"
+                        >
+                            {{getFormattedNumber(item.differenceOpecByMonth)}}
+                        </td>
+
+                        <td v-if="!isOpecActive">{{getFormattedNumber(item.planByYear)}}</td>
+                        <td v-else>{{getFormattedNumber(item.planOpecByYear)}}</td>
+                        <td>{{getFormattedNumber(item.factByYear)}}</td>
+                        <td
+                                v-if="!isOpecActive"
+                                :class="getColorBy(item.differenceByYear)"
+                        >
+                            {{getFormattedNumber(item.differenceByYear)}}
+                        </td>
+                        <td
+                                v-else
+                                :class="getColorBy(item.differenceOpecByYear)"
+                        >
+                            {{getFormattedNumber(item.differenceOpecByYear)}}
+                        </td>
+                    </tr>
+                    <tr class="empty-row">
+                        <td></td>
+                    </tr>
+                    <tr
                             v-for="(item,index) in tableOutput.byKMG"
-                            :class="!isWithKMG && index > 0 ? 'background-dark hide-block' :'background-dark'"
+                            :class="index > 0 ? 'background-dark hide-block' :'background-dark'"
                     >
                         <td>{{item.number}}</td>
                         <td>{{item.dzo}}</td>
@@ -145,8 +263,6 @@
                             {{getFormattedNumber(item.differenceOpecByYear)}}
                         </td>
                     </tr>
-                    <!-- >саммари <-->
-                    <!-- >дзо <-->
                     <tr
                             v-for="(item, index) in tableOutput.byDzo"
                             :class="getRowClass(index)"
@@ -154,16 +270,9 @@
                         <td v-if="index !== 1">{{item.number}}</td>
                         <td v-else></td>
                         <td
-                                v-if="!isWithKMG"
-                                :class="index === 1 ? 'text-center' : ''"
+                                :class="index === 1 ? 'troubled-companies-padding' : ''"
                         >
                             {{companiesNameMapping.summaryByDzo[item.dzo]}}
-                        </td>
-                        <td
-                                v-else
-                                :class="[index === 1 ? 'text-center' : '',[6,7,8].includes(index) ? 'padding_left' : '']"
-                        >
-                            {{companiesNameMapping.withParticipation[item.dzo]}}
                         </td>
                         <td >{{getFormattedNumber(item.yearlyPlan)}}</td>
 
@@ -221,7 +330,7 @@
                     <!-- >дзо <-->
                </table>
 
-<!--                todo-->
+                <!--                todo-->
                 <table class="col-12" id="exportReport" style="display:none">
                     <tr>
                         <th colspan="20" style="font-family: arial; font-size: 16px; font-weight: bold; text-align: center">Оперативная суточная информация по добыче, сдаче нефти и газового конденсата АО НК "КазМунайГаз"</th>
@@ -352,7 +461,7 @@
                     >
                         <td v-if="index !== 1">{{item.number}}</td>
                         <td v-else></td>
-                        <td :class="index === 1 ? 'text-center' : ''">
+                        <td :class="index === 1 ? 'troubled-companies-padding' : ''">
                             {{companiesNameMapping.withParticipation[item.dzo]}}
                         </td>
                         <td>{{getFormattedNumber(item.yearlyPlan)}}</td>
@@ -427,7 +536,7 @@
                     >
                         <td v-if="index !== 1">{{item.number}}</td>
                         <td v-else></td>
-                        <td :class="index === 1 ? 'text-center' : ''">
+                        <td :class="index === 1 ? 'troubled-companies-padding' : ''">
                             {{companiesNameMapping.withParticipation[item.dzo]}}
                         </td>
                         <td>{{getFormattedNumber(item.yearlyPlan)}}</td>
@@ -501,6 +610,15 @@
 <script src="./index.js"></script>
 
 <style scoped lang="scss">
+    .summary-header_text-align {
+        text-align: right !important;
+    }
+    .troubled-companies-padding {
+        padding-left: 2%;
+    }
+    .empty-row {
+        border-bottom: 21px solid #272953;
+    }
     .row-divider {
         border-bottom: 20px solid white;
     }
@@ -508,9 +626,6 @@
         background: url(/img/visualcenter3/download.png) no-repeat;
         height: 25px;
         width: 25px;
-    }
-    .padding_left {
-        padding-left: 50px;
     }
     .header-title {
         font-style: normal;
@@ -568,19 +683,16 @@
        color: white;
        text-align: center;
    }
-   .text-center {
-       text-align: center;
-   }
    .main-table {
        table-layout: fixed;
        border-collapse: collapse;
        tr {
            &:nth-child(2) {
                th {
-                   height: 50px;
+                   height: 40px;
                }
            }
-           &:nth-child(3), &:nth-child(4) {
+           &:nth-child(3), &:nth-child(4), &:nth-child(23) {
                background: #333975;
            }
        }
@@ -589,7 +701,6 @@
            font-weight: bold;
            font-size: 13px;
            background: #353EA1;
-           padding: 5px;
            width: 10%;
            &:first-child {
                width: 2%;
@@ -599,12 +710,13 @@
            }
        }
        td {
+           text-align: right;
            font-size: 14px;
            font-family: Bold;
-           padding: 7px;
            width: 10%;
            &:first-child {
                width: 2%;
+               text-align: center;
            }
            &:nth-child(2) {
                font-family: HarmoniaSansProCyr-Regular, Harmonia-sans;

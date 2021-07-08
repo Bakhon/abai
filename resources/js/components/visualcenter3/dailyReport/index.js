@@ -18,10 +18,12 @@ export default {
             currentDate: moment().subtract(1,'days').format('DD.MM.YYYY'),
             currentYear: moment().year(),
             currentMonthName: moment().format('MMMM'),
-            totalNames: {
-                'KMGParticipation': 'Всего добыча нефти и конденсата с учетом доли участия АО НК "КазМунайГаз"',
-                'summary': 'Всего добыча нефти и конденсата с участием АО НК "КазМунайГаз"',
-                'condensate': 'в т.ч.: газовый конденсат'
+            names: {
+                'condensate': 'в т.ч.: газовый конденсат',
+                'productionByKMG': 'Всего добыча нефти и конденсата с учетом доли участия АО НК "КазМунайГаз"',
+                'deliveryByKMG': 'Всего сдача нефти и конденсата с учетом доли участия АО НК "КазМунайГаз"',
+                'productionByDzo': 'Всего добыча нефти и конденсата с участием АО НК "КазМунайГаз"',
+                'deliveryByDzo': 'Всего сдача нефти и конденсата с участием АО НК "КазМунайГаз"'
             },
             opecColumns: [4,6,9,11,14,16,19],
             isOpecActive: false,
@@ -64,7 +66,7 @@ export default {
             companiesNameMapping: {
                 'summaryByDzo': {
                     'ОМГ': this.trans("visualcenter.omg") + ' (нефть)',
-                    'ОМГК': '(конденсат)',
+                    'ОМГК': this.trans("visualcenter.omg") + ' (конденсат)',
                     'ЭМГ': this.trans("visualcenter.emg"),
                     'КБМ': this.trans("visualcenter.kbm"),
                     'КГМ': this.trans("visualcenter.kgm"),
@@ -84,11 +86,11 @@ export default {
                 },
                 'withParticipation': {
                     'ОМГ': this.trans("visualcenter.consolidatedDzoNameMapping.OMG"),
-                    'ОМГК': '(конденсат) (100%)',
+                    'ОМГК': this.trans("visualcenter.omg") + ' (конденсат) (100%)',
                     'ЭМГ': this.trans("visualcenter.consolidatedDzoNameMapping.EMG"),
                     'КБМ': this.trans("visualcenter.consolidatedDzoNameMapping.KBM"),
                     'КГМ': this.trans("visualcenter.consolidatedDzoNameMapping.KGM"),
-                    'КГМД': this.trans("visualcenter.kgm") + '(50%*33)',
+                    'КГМД': this.trans("visualcenter.kgm") + '(50%*33%)',
                     'ПКИ': this.trans("visualcenter.consolidatedDzoNameMapping.PKI"),
                     'ТШО': this.trans("visualcenter.consolidatedDzoNameMapping.TSH"),
                     'ММГ': this.trans("visualcenter.consolidatedDzoNameMapping.MMG"),
@@ -97,10 +99,10 @@ export default {
                     'АМГ': this.trans("visualcenter.consolidatedDzoNameMapping.AG"),
                     'АГК': this.trans("visualcenter.consolidatedDzoNameMapping.AG"),
                     'КПО': this.trans("visualcenter.consolidatedDzoNameMapping.KPO"),
-                    'НКО': this.trans("visualcenter.consolidatedDzoNameMapping.NKO"),
-                    'ТП': this.trans("visualcenter.consolidatedDzoNameMapping.TP"),
-                    'УО': this.trans("visualcenter.consolidatedDzoNameMapping.YO"),
-                    'ПКК': this.trans("visualcenter.consolidatedDzoNameMapping.PKK"),
+                    'НКО': this.trans("visualcenter.nko") + ' (8.44%)',
+                    'ТП': this.trans("visualcenter.tp") + ' (50%*33%)',
+                    'УО': this.trans("visualcenter.consolidatedDzoNameMapping.YO") + ' (100%)',
+                    'ПКК': 'АО "ПККР" (100%*33%)',
                     'oilByKMG': 'Всего добыча нефти и конденсата с учетом доли участия АО НК "КазМунайГаз"',
                     'condensateByKMG': 'в т.ч.: газовый конденсат',
                     'oilByDzo': 'Всего добыча нефти и конденсата с участием АО НК "КазМунайГаз"',
@@ -134,12 +136,17 @@ export default {
             },
             tableOutput: {
                 byKMG: [],
-                byDzo: []
+                byDzo: [],
+                participationByKMG: [],
+                participationByDzo: []
             },
             participationOrder: [
-                'ОМГ','ОМГК','ЭМГ','КБМ','КГМ','ПКИ','КГМД',
-                'ПКК','ТП','АГК','ТШО','ММГ','КОА','КТМ',
-                'КПО','НКО','УО'
+                'ОМГ','ОМГК','ММГ','ЭМГ','КБМ','КГМ','КТМ','КОА','УО','ТШО','НКО','КПО','ПКИ','КГМД',
+                'ПКК','ТП','АГК'
+            ],
+            summaryOrder: [
+                'ОМГ','ОМГК','ММГ','ЭМГ','КБМ','КГМ','КТМ','КОА','УО','ТШО','НКО','КПО',
+                'ПКК','ТП','АГК'
             ],
             typeMapping: {
                 'production': {
@@ -278,54 +285,53 @@ export default {
             this.updateProduction();
             this.updateDelivery();
             this.updateSummaryForExcel();
+            this.tableOutput.participationByKMG = this.summary.productionByKMGWithParticipation;
+            this.tableOutput.participationByDzo = this.summary.productionByDzoWithParticipation;
             this.tableOutput.byKMG = this.summary.productionByKMG;
             this.tableOutput.byDzo = this.summary.productionByDzo;
         },
         updateProduction() {
             this.summary.productionByDzo = this.getSummaryByDzo(this.typeMapping.production);
-            this.summary.productionByKMG = this.getSummaryByKMG(this.summary.productionByDzo);
-            if (!this.isWithKMG) {
-                let oilSummary = this.summary.productionByKMG[0];
-                let condensateSummary = this.summary.productionByKMG[1];
-                oilSummary.number = 2;
-                oilSummary.yearlyPlan += condensateSummary.yearlyPlan;
-                oilSummary.monthlyPlan += condensateSummary.monthlyPlan;
-                oilSummary.monthlyPlanOpec += condensateSummary.monthlyPlanOpec;
-            }
-            this.summary.productionByDzoWithParticipation = this.getSummaryWithParticipationByDzo();
-            this.summary.productionByKMGWithParticipation = this.getSummaryByKMG(this.summary.productionByDzoWithParticipation);
+            this.summary.productionByKMG = this.getSummaryByKMG(this.summary.productionByDzo,'production');
+            let oilSummary = this.summary.productionByKMG[0];
+            let condensateSummary = this.summary.productionByKMG[1];
+            oilSummary.number = 2;
+            oilSummary.yearlyPlan += condensateSummary.yearlyPlan;
+            oilSummary.monthlyPlan += condensateSummary.monthlyPlan;
+            oilSummary.monthlyPlanOpec += condensateSummary.monthlyPlanOpec;
+            this.summary.productionByDzoWithParticipation = this.getSummaryWithParticipationByDzo(this.summary.productionByDzo);
+            console.log(this.summary.productionByDzoWithParticipation)
+            this.summary.productionByKMGWithParticipation = this.getSummaryByKMG(this.summary.productionByDzoWithParticipation,'production');
             this.summary.productionByKMGWithParticipation[0].number = 1;
         },
         updateDelivery() {
             this.summary.deliveryByDzo = this.getSummaryByDzo(this.typeMapping.delivery);
-            this.summary.deliveryByKMG = this.getSummaryByKMG(this.summary.deliveryByDzo);
-            if (!this.isWithKMG) {
-                let oilSummary = this.summary.deliveryByKMG[0];
-                let condensateSummary = this.summary.deliveryByKMG[1];
-                oilSummary.number = 2;
-                oilSummary.yearlyPlan += condensateSummary.yearlyPlan;
-                oilSummary.monthlyPlan += condensateSummary.monthlyPlan;
-                oilSummary.monthlyPlanOpec += condensateSummary.monthlyPlanOpec;
-            }
-            this.summary.deliveryByDzoWithParticipation = this.getSummaryWithParticipationByDzo();
-            this.summary.deliveryByKMGWithParticipation = this.getSummaryByKMG(this.summary.deliveryByDzoWithParticipation);
+            this.summary.deliveryByKMG = this.getSummaryByKMG(this.summary.deliveryByDzo,'delivery');
+            let oilSummary = this.summary.deliveryByKMG[0];
+            let condensateSummary = this.summary.deliveryByKMG[1];
+            oilSummary.number = 2;
+            oilSummary.yearlyPlan += condensateSummary.yearlyPlan;
+            oilSummary.monthlyPlan += condensateSummary.monthlyPlan;
+            oilSummary.monthlyPlanOpec += condensateSummary.monthlyPlanOpec;
+            this.summary.deliveryByDzoWithParticipation = this.getSummaryWithParticipationByDzo(this.summary.deliveryByDzo);
+            this.summary.deliveryByKMGWithParticipation = this.getSummaryByKMG(this.summary.deliveryByDzoWithParticipation,'delivery');
             this.summary.deliveryByKMGWithParticipation[0].number = 1;
         },
-        getSummaryByKMG(productionByDzo) {
+        getSummaryByKMG(productionByDzo,type) {
             let summary = [];
-            let oilSummary = this.getSummaryByType('summary','oilCompanies',productionByDzo);
+            let oilName = 'productionByKMG';
+            if (type === 'delivery') {
+                oilName = 'deliveryByKMG';
+            }
+            let oilSummary = this.getSummaryByType(oilName,'oilCompanies',productionByDzo,);
             let condensateSummary = this.getSummaryByType('condensate','condensateCompanies',productionByDzo);
             return [oilSummary,condensateSummary];
         },
         getSummaryByType(type,companies,productionByDzo) {
             let template = _.cloneDeep(companyTemplate);
             let filtered = this.getFilteredByType(_.cloneDeep(productionByDzo),companies);
-            template.dzo = this.totalNames[type];
-            if (this.isWithKMG) {
-                template.number = 1;
-            } else {
-                template.number = '';
-            }
+            template.dzo = this.names[type];
+            template.number = 1;
             if (type === 'condensate') {
                 template.number = '';
             }
@@ -355,6 +361,9 @@ export default {
             _.forEach(this.withKMGCompanies, function(acronym,index) {
                 summary.push(self.getSummary(acronym,index,typeMapping));
             });
+            console.log('summary')
+            console.log(summary)
+            summary = this.getSorted(summary,this.summaryOrder,'2.',[]);
             summary[0].number = '2.1.';
             return summary;
         },
@@ -450,11 +459,11 @@ export default {
                 return 'color_red';
             }
         },
-        getSummaryWithParticipationByDzo() {
+        getSummaryWithParticipationByDzo(summary) {
             let self = this;
             let result = [];
             let pkiSummary = _.cloneDeep(companyTemplate);
-            _.forEach(_.cloneDeep(this.summary.productionByDzo), function(item,index) {
+            _.forEach(_.cloneDeep(summary), function(item,index) {
                  let updatedByMultiplier = self.getCalculatedByMultiplier(item,self.participationMultiplier[item.dzo],item.dzo,index);
                  updatedByMultiplier.number = '1.' + index + '.';
                  result.push(updatedByMultiplier);
@@ -472,7 +481,7 @@ export default {
             pkiSummary.number = '1.5.';
             pkiSummary.dzo = 'ПКИ';
             result.push(pkiSummary);
-            result = this.getSorted(result,this.participationOrder);
+            result = this.getSorted(result,this.participationOrder,'1.',['КГМД','ПКК','ТП']);
             return result;
         },
         getUpdatedPKI(pkiSummary,item) {
@@ -499,14 +508,14 @@ export default {
             calculated = this.getByDifference(calculated);
             return calculated;
         },
-        getSorted(inputData,sortingOrder) {
+        getSorted(inputData,sortingOrder,category,troubledCompanies) {
             let sorted = [];
             let counter = 0;
             _.forEach(sortingOrder, function (key) {
                 let itemIndex = inputData.findIndex(element => element.dzo === key);
                 if (itemIndex > -1) {
-                    if (!['КГМД','ПКК','ТП'].includes(key)) {
-                        inputData[itemIndex].number = '1.' + counter + '.';
+                    if (!troubledCompanies.includes(key)) {
+                        inputData[itemIndex].number = category + counter + '.';
                         counter++;
                     } else {
                         inputData[itemIndex].number = '';
@@ -557,7 +566,6 @@ export default {
                 worksheet: name || 'Worksheet',
                 table: clonedTable.innerHTML
             };
-            console.log(clonedTable.innerHTML)
 
             let link = document.createElement('a');
             link.download = filename;
@@ -654,38 +662,18 @@ export default {
         this.$store.commit('globalloading/SET_LOADING', false);
     },
     watch: {
-        isWithKMG: function () {
-            let byKMG = [];
-            let byDzo = [];
-            if (this.isWithKMG) {
-                if (this.isProduction) {
-                    byKMG = this.summary.productionByKMGWithParticipation;
-                    byDzo = this.summary.productionByDzoWithParticipation;
-                } else {
-                    byKMG = this.summary.deliveryByKMGWithParticipation;
-                    byDzo = this.summary.deliveryByDzoWithParticipation;
-                }
-            } else {
-                if (this.isProduction) {
-                    byKMG = this.summary.productionByKMG;
-                    byDzo = this.summary.productionByDzo;
-                } else {
-                    byKMG = this.summary.deliveryByKMG;
-                    byDzo = this.summary.deliveryByDzo;
-                }
-            }
-            this.tableOutput.byKMG = byKMG;
-            this.tableOutput.byDzo = byDzo;
-        },
         isProduction: function() {
-            this.isWithKMG = false;
             this.isOpecActive = false;
             if (this.isProduction) {
                 this.headerTitle = this.headerOptions.production;
+                this.tableOutput.participationByKMG = this.summary.productionByKMGWithParticipation;
+                this.tableOutput.participationByDzo = this.summary.productionByDzoWithParticipation;
                 this.tableOutput.byKMG = this.summary.productionByKMG;
                 this.tableOutput.byDzo = this.summary.productionByDzo;
             } else {
                 this.headerTitle = this.headerOptions.delivery;
+                this.tableOutput.participationByKMG = this.summary.deliveryByKMGWithParticipation;
+                this.tableOutput.participationByDzo = this.summary.deliveryByDzoWithParticipation;
                 this.tableOutput.byKMG = this.summary.deliveryByKMG;
                 this.tableOutput.byDzo = this.summary.deliveryByDzo;
             }
