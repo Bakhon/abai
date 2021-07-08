@@ -344,9 +344,6 @@ export default {
 
       return this.$refs.pipeToolTip.$el.outerHTML;
     },
-    getValOrNoData(param) {
-      return (typeof param == 'undefined' || !param) ? this.trans('monitoring.no_data') : param;
-    },
     prepareLayers() {
       let pipesLayer = this.createPipeLayer('path-layer', this.pipes);
       let guPointsLayer = this.createIconLayer('icon-layer-gu', this.guPoints, 'gu');
