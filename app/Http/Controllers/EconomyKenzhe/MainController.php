@@ -46,8 +46,8 @@ class MainController extends Controller
         $this->parentId = array_fill_keys($this->opiuIds, []);
         $this->dateFrom = date('Y-m-d', strtotime('first day of january previous year'));
         $this->dateTo = date('Y-m-d', strtotime('last day of december previous year'));
-        $this->currentYear = date('Y', strtotime('-1 year'));
-        $this->previousYear = (int)$this->currentYear - 1;
+        $this->previousYear = date('Y', strtotime('-1 year'));
+        $this->beforePreviousYear = (int)$this->previousYear - 1;
     }
 
     public function company(Request $request): string
@@ -56,11 +56,11 @@ class MainController extends Controller
         $handbook = HandbookRepTt::where('parent_id', 0)->with('childHandbookItems')->get()->toArray();
         $companies = EcoRefsCompaniesId::all();
         $companyRepTtValues = EcoRefsCompaniesId::find($this->companyId)->statsByDate($this->currentYear)->get()->toArray();
-        $repTtReportValues = $this->recursiveSetValueToHandbookByType($handbook, $companyRepTtValues, $this->currentYear, $this->previousYear, $this->dateFrom, $this->dateTo);
+        $repTtReportValues = $this->recursiveSetValueToHandbookByType($handbook, $companyRepTtValues, $this->previousYear, $this->beforePreviousYear, $this->dateFrom, $this->dateTo);
         $data = [
-            'reptt' => $this->setNetProfitValues($repTtReportValues, $this->currentYear, $this->previousYear),
-            'currentYear' => $this->currentYear,
-            'previousYear' => $this->previousYear,
+            'reptt' => $this->setNetProfitValues($repTtReportValues, $this->previousYear, $this->beforePreviousYear),
+            'currentYear' => $this->previousYear,
+            'previousYear' => $this->beforePreviousYear,
             'companies' => $companies,
         ];
 
