@@ -6662,6 +6662,8 @@ tr:nth-child(even) td {
 }
 .input_edit {
   background: #7879a6;
+  color: white;
+  font-size: 12px;
 }
 
 /* width */
