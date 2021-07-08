@@ -69,7 +69,7 @@ export default {
                     id: 113
                 },
             },
-            isOneDzoSelected: '',
+            isOneDzoSelected: false,
             oilChartHeadName: this.trans('visualcenter.getoildynamic'),
             quantityRange: '',
             index: "",

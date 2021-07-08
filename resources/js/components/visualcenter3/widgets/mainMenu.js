@@ -194,6 +194,10 @@ export default {
             }
             this.selectedDzoCompanies = oneDzoNameSelected;
             this.updateDzoMenu();
+            this.productionFondSelectedCompany = oneDzoNameSelected;
+            this.injectionFondSelectedCompany = oneDzoNameSelected;
+            this.updateProductionFondWidget();
+            this.updateInjectionFondWidget();          
         },
     },
 }

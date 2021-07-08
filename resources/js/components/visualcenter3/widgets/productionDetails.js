@@ -123,10 +123,10 @@ export default {
             if (this.isOneDzoSelected) {
                 self.injectionWellsOptions = _.filter(self.injectionWellsOptions, function (item) {
                     let selectedDzoCompanies = self.selectedDzoCompanies;
-                    if (Array.isArray(selectedDzoCompanies) == true) {
+                    if (Array.isArray(selectedDzoCompanies)) {
                         selectedDzoCompanies = selectedDzoCompanies['0']
                     }
-                    if (item.ticker == selectedDzoCompanies) {
+                    if (item.ticker === selectedDzoCompanies) {
                         return item
                     }
                 })
