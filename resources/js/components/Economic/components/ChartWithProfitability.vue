@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="d-flex">
+    <div class="d-flex justify-content-center pt-2">
       <div class="form-check">
         <input v-model="isVisibleInWork"
                id="in-work"
@@ -63,7 +63,8 @@ export default {
   },
   data: () => ({
     isVisibleInWork: true,
-    isVisibleInPause: false
+    isVisibleInPause: false,
+    selectionPoints: []
   }),
   methods: {
     tooltipFormatter(y) {
@@ -77,40 +78,117 @@ export default {
       ).format(y.toFixed(0)) + ` ${this.tooltipText || ''}`;
     },
 
-    chartSelection({data}, {xaxis}) {
-      let min = Math.ceil(xaxis.min)
+    chartClearAnnotations() {
+      this.selectionPoints = []
 
+      if (this.$refs['chart']) {
+        this.$refs['chart'].clearAnnotations()
+      }
+    },
+
+    chartSelection({data}, {xaxis}) {
+      this.chartClearAnnotations()
+
+      let min = Math.ceil(xaxis.min)
       let max = Math.floor(xaxis.max)
 
-      console.log(min)
+      let minIndex = data.twoDSeriesX.findIndex(x => x >= min)
+      let maxIndex = data.twoDSeriesX.map(x => x <= max).lastIndexOf(true);
 
-      console.log(max)
-    }
+      let currentMinY = 0
+      let currentMaxY = 0
+
+      this.chartKeys.forEach(key => {
+        currentMinY += this.data[key][minIndex]
+        currentMaxY += this.data[key][maxIndex]
+
+        this.$refs.chart.addPointAnnotation({
+          x: data.twoDSeriesX[minIndex],
+          y: currentMinY,
+        })
+
+        let pointData = []
+
+        let pointStep = Math.floor((this.data[key][maxIndex] - this.data[key][minIndex]) / (maxIndex - minIndex))
+
+        this.data[key].forEach((value, index) => {
+          if (index === minIndex) {
+            return pointData.push(this.data[key][minIndex])
+          }
+
+          if (index === maxIndex) {
+            return pointData.push(this.data[key][maxIndex])
+          }
+
+          if (index < minIndex || index > maxIndex) {
+            return pointData.push(0)
+          }
+
+          pointData.push(this.data[key][minIndex] + pointStep * (index - minIndex))
+        })
+
+        this.selectionPoints.push(pointData)
+
+        let diff = this.data[key][maxIndex] - this.data[key][minIndex]
+        let diffPercent = +(Math.round(10000 * diff / this.data[key][minIndex]) / 100).toFixed(2)
+
+        this.$refs.chart.addPointAnnotation({
+          x: data.twoDSeriesX[maxIndex],
+          y: currentMaxY,
+          label: {
+            text: `${diff < 0 ? '' : '+'}${diff} (${diffPercent} %)`,
+            style: {
+              background: '#fff',
+              color: diff < 0 ? '#AB130E' : '#13B062',
+              fontSize: '14px',
+              fontWeight: 600,
+              padding: {
+                left: 10,
+                right: 10,
+                top: 10,
+                bottom: 10,
+              }
+            }
+          },
+        })
+      })
+    },
   },
   computed: {
-    chartSeries() {
-      const keys = this.isProfitabilityFull
+    chartKeys() {
+      return this.isProfitabilityFull
           ? ['profitable', 'profitless_cat_2', 'profitless_cat_1']
           : ['profitable', 'profitless']
+    },
 
+    chartSeries() {
       let data = []
 
-      keys.forEach(key => {
-        if (this.isVisibleInWork) {
+      if (this.isVisibleInWork) {
+        this.chartKeys.forEach(key => {
           data.push({
             name: this.trans(`economic_reference.wells_${key}`),
             type: 'area',
             data: this.data[key]
           })
-        }
+        })
+      }
 
-        if (this.isVisibleInPause) {
+      if (this.isVisibleInPause) {
+        this.chartKeys.forEach(key => {
           data.push({
             name: `${this.trans(`economic_reference.wells_${key}`)} ${this.trans(`economic_reference.in_pause`).toLowerCase()}`,
             type: 'area',
             data: this.pausedData[key]
           })
-        }
+        })
+      }
+
+      this.selectionPoints.forEach(pointData=>{
+        data.push({
+          type: 'line',
+          data: pointData
+        })
       })
 
       return data
@@ -118,7 +196,7 @@ export default {
 
     chartColors() {
       const colorsInWork = this.isProfitabilityFull
-          ? ['#13B062', '#F7BB2E', '#AB130E']
+          ? ['#13B062', '#F7BB2E', '#AB130E', '#DC7DE8']
           : ['#13B062', '#AB130E']
 
       const colorsInPause = this.isProfitabilityFull
@@ -127,15 +205,13 @@ export default {
 
       let colors = []
 
-      colorsInWork.forEach((color, index) => {
-        if (this.isVisibleInWork) {
-          colors.push(color)
-        }
+      if (this.isVisibleInWork) {
+        colors = [...colors, ...colorsInWork]
+      }
 
-        if (this.isVisibleInPause) {
-          colors.push(colorsInPause[index])
-        }
-      })
+      if (this.isVisibleInPause) {
+        colors = [...colors, ...colorsInPause]
+      }
 
       return colors
     },
@@ -154,12 +230,13 @@ export default {
           locales: [ru],
           defaultLocale: 'ru',
           events: {
-            selection: (chartContext, params) => this.chartSelection(chartContext, params)
+            selection: (chartContext, params) => this.chartSelection(chartContext, params),
+            zoomed: () => this.chartClearAnnotations()
           },
           selection: {
             enabled: true,
-            type: 'x'
-          }
+            type: 'x',
+          },
         },
         markers: {
           size: 0
