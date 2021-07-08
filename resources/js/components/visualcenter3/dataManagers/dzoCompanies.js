@@ -236,13 +236,13 @@ export default {
         },
 
         switchOneCompanyView(companyTicker) {
-            if (!this.isOneDzoSelected){
-            this.isMultipleDzoCompaniesSelected = false;
-            this.disableDzoCompaniesVisibility();
-            this.selectedDzoCompanies = [companyTicker];
-            this.calculateSecondaryCategories();
-            this.switchDzoCompaniesVisibility(companyTicker,'ticker');
-            this.selectDzoCompany();
+            if (!this.isOneDzoSelected) {
+                this.isMultipleDzoCompaniesSelected = false;
+                this.disableDzoCompaniesVisibility();
+                this.selectedDzoCompanies = [companyTicker];
+                this.calculateSecondaryCategories();
+                this.switchDzoCompaniesVisibility(companyTicker, 'ticker');
+                this.selectDzoCompany();
             }
         },
 
