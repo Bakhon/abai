@@ -15,6 +15,7 @@ export default {
                 'delivery': 'Оперативная суточная информация по сдаче нефти и конденсата АО НК "КазМунайГаз", тонн'
             },
             headerTitle: 'Оперативная суточная информация по добыче нефти и конденсата АО НК "КазМунайГаз", тонн',
+            currentDate: moment().subtract(1,'days').format('DD.MM.YYYY'),
             currentYear: moment().year(),
             currentMonthName: moment().format('MMMM'),
             totalNames: {
@@ -100,6 +101,9 @@ export default {
                     'ТП': this.trans("visualcenter.consolidatedDzoNameMapping.TP"),
                     'УО': this.trans("visualcenter.consolidatedDzoNameMapping.YO"),
                     'ПКК': this.trans("visualcenter.consolidatedDzoNameMapping.PKK"),
+                    'oilByKMG': 'Всего добыча нефти и конденсата с учетом доли участия АО НК "КазМунайГаз"',
+                    'condensateByKMG': 'в т.ч.: газовый конденсат',
+                    'oilByDzo': 'Всего добыча нефти и конденсата с участием АО НК "КазМунайГаз"',
                 }
             },
             differenceKeys: [
@@ -513,6 +517,24 @@ export default {
             sorted[0].number = '1.1.';
             return sorted;
         },
+        getStyleByDifference(num) {
+            if (num < 0) {
+                return 'color: red';
+            } else {
+                return 'color: green';
+            }
+        },
+        getStyleForSummary(index,isSecondParameterAvailable) {
+            if (index === 0) {
+                return 'background: rgb(252,213,180); font-weight: bold; font-family: Arial; font-size: 13px;';
+            } else if (index === 1 && isSecondParameterAvailable) {
+                return 'background: rgb(253,233,217); font-weight: bold; font-family: Arial; font-size: 13px;';
+            } else if (index === 1 && !isSecondParameterAvailable) {
+                return 'display: none';
+            } else {
+                return 'font-family: Arial; font-size: 13px;';
+            }
+        },
         tableToExcel(table, name, filename) {
             let uri = 'data:application/vnd.ms-excel;base64,',
                 template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><title></title><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--><meta http-equiv="content-type" content="text/plain; charset=UTF-8"/></head><body><table>{table}</table></body></html>',
@@ -550,35 +572,49 @@ export default {
             return element;
         },
         exportToExcel() {
-            this.tableToExcel('dailyReport','name','myfile.xls');
+            let fileName = 'Суточная информация по добыче нефти и конденсата НК КМГ_' + moment().subtract(1, 'days').format('D M YY') + ' г. .xls';
+            this.tableToExcel('exportReport','name',fileName);
         },
         updateSummaryForExcel() {
             let summaryByDzo = [];
             let self = this;
             _.forEach(this.summary.productionByDzo, function(item) {
                 let production = item;
-                let delivery = self.getDeliveryForMerge(production.dzo);
+                let delivery = self.getDeliveryForMerge(production.dzo,self.summary.deliveryByDzo);
                 let dzoMerged = Object.assign({},production,delivery);
                 summaryByDzo.push(dzoMerged);
             });
-            console.log(summaryByDzo);
-            // summary: {
-            //         'productionByDzo': [],
-            //         'productionByKMG': [],
-            //         'productionByDzoWithParticipation': [],
-            //         'productionByKMGWithParticipation': [],
-            //         'deliveryByDzo': [],
-            //         'deliveryByKMG': [],
-            //         'deliveryByDzoWithParticipation': [],
-            //         'deliveryByKMGWithParticipation': []
-            // },
-            // summaryForExport: {
-            //     'byDzo': [],
-            //         'byKMG': []
-            // },
+            let productionByDzoWithParticipation = [];
+            _.forEach(this.summary.productionByDzoWithParticipation, function(item) {
+                let production = item;
+                let delivery = self.getDeliveryForMerge(production.dzo,self.summary.deliveryByDzoWithParticipation);
+                let dzoMerged = Object.assign({},production,delivery);
+                productionByDzoWithParticipation.push(dzoMerged);
+            });
+            let productionByKMG = [];
+            _.forEach(this.summary.productionByKMG, function(item) {
+                let production = item;
+                let delivery = self.getDeliveryForMerge(production.dzo,self.summary.deliveryByKMG);
+                let dzoMerged = Object.assign({},production,delivery);
+                productionByKMG.push(dzoMerged);
+            });
+            let productionByKMGWithParticipation = [];
+            _.forEach(this.summary.productionByKMGWithParticipation, function(item) {
+                let production = item;
+                let delivery = self.getDeliveryForMerge(production.dzo,self.summary.deliveryByKMGWithParticipation);
+                let dzoMerged = Object.assign({},production,delivery);
+                productionByKMGWithParticipation.push(dzoMerged);
+            });
+
+            this.summaryForExport.byKMG = productionByKMGWithParticipation.concat(productionByDzoWithParticipation);
+            this.summaryForExport.byDzo  = productionByKMG.concat(summaryByDzo);
+            this.summaryForExport.byKMG[0].dzo = 'oilByKMG';
+            this.summaryForExport.byKMG[1].dzo = 'condensateByKMG';
+            this.summaryForExport.byDzo[0].dzo = 'oilByDzo';
+            console.log(this.summaryForExport);
         },
-        getDeliveryForMerge(dzoName) {
-            let itemIndex = this.summary.deliveryByDzo.findIndex(element => element.dzo === dzoName);
+        getDeliveryForMerge(dzoName,delivery) {
+            let itemIndex = delivery.findIndex(element => element.dzo === dzoName);
             let mapping = {
                 'deliveryDifferenceByDay':  'differenceByDay',
                 'deliveryDifferenceByMonth': 'differenceByMonth',
@@ -602,7 +638,7 @@ export default {
             if (itemIndex > -1) {
                 let mapped = {};
                 for (let field in mapping) {
-                    mapped[field] = this.summary.deliveryByDzo[itemIndex][mapping[field]]
+                    mapped[field] = delivery[itemIndex][mapping[field]]
                 }
                 return mapped;
             }
