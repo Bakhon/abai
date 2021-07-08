@@ -56,7 +56,7 @@
             </i>
             {{trans('tr.choose_month')}}
           </button>
-          <div v-if="datepicker1"
+          <div v-if="isDateNormal"
             class="dropdown-menu fadropmenu"
             style="
               background: #40467e;
@@ -120,7 +120,7 @@
               </a>
             </div>
         </div>
-          <div v-if="datepicker2"
+          <div v-if="isDateDynamic"
             class="dropdown-menu fadropmenu"
             style="
               background: #40467e;
@@ -161,7 +161,7 @@
           <search-form-refresh
             @input="handlerSearch"
             @start-search="searchWell()"
-            :clear="searched"
+            :clear="isSearched"
           />
         </div>
       </div>
@@ -256,7 +256,7 @@
                                   <a
                                     
                                     style="margin-left: 50px;; cursor: pointer; color:white; margin-top: 5px;"
-                                    v-if="!show_add"
+                                    v-if="!isShowAdd"
                                     @click="addWellData"
                                     @click.prevent="showWells"
                                     ><svg 
@@ -273,7 +273,7 @@
                                   <a
                                     
                                     style="margin-left: 50px;; cursor: pointer; color:white; margin-top: 5px;"
-                                    v-if="show_add"
+                                    v-if="isShowAdd"
                                     @click="showWells"
                                     ><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                       <path d="M17.6567 17.6575L6.34294 6.34383" 
@@ -316,7 +316,7 @@
                   </div>
                   <div class="table" style="padding-top: 21px;  background: #454D7D; overflow: hidden !important;">
 
-                        <table class="table table-bordered table-dark table-responsive trtable" style="font-size: 12px; background: #454D7D; color: #fff; height: 100px;" v-if="show_add" :key="render">
+                        <table class="table table-bordered table-dark table-responsive trtable" style="font-size: 12px; background: #454D7D; color: #fff; height: 100px;" v-if="isShowAdd" :key="render">
                         <thead>
                           <tr >
                             <td scope="col">{{trans('tr.field')}}</td>
@@ -536,7 +536,7 @@
                   color: white;
                   border: none;
                 "
-                :title="isfulltable ? trans('tr.short_version') : trans('tr.full_version')"
+                :title="isFullTable ? trans('tr.short_version') : trans('tr.full_version')"
                 data-toggle="tooltip"
                 data-placement="top"
               >
@@ -546,7 +546,7 @@
                   viewBox="0 0 24 24"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
-                  v-if="isfulltable"
+                  v-if="isFullTable"
                 >
                   <path
                     d="M9.23235 6H6.18359C5.63131 6 5.18359 6.44772 5.18359 7V18C5.18359 18.5523 5.63131 19 6.18359 19H17.342C17.8943 19 18.342 18.5523 18.342 18V15"
@@ -568,7 +568,7 @@
                   viewBox="0 0 24 24"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
-                  v-if="!isfulltable"
+                  v-if="!isFullTable"
                 >
                   <path
                     d="M9 6H6C5.44772 6 5 6.44772 5 7V18C5 18.5523 5.44772 19 6 19H17C17.5523 19 18 18.5523 18 18V15M11.5 12.5L19 5M19 5V10.5M19 5H13.5"
@@ -583,7 +583,7 @@
 
         <div class="table-outer">
           <div class="table-inner">
-            <TrTable v-if="show_first"
+            <TrTable v-if="isShowFirst"
             :wells="wells" 
             :blockFilterData="blockFilterData" 
             :horizonFilterData="horizonFilterData" 
@@ -601,7 +601,7 @@
             @dropWellType="dropWellTypeFilter"
             />
             <table
-              v-if="show_second"
+              v-if="isShowSecond"
               class="table table-bordered table-dark table-responsive trtable"
               style="margin-bottom: 0; background: #0d1e63"
 

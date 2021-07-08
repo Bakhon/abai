@@ -145,7 +145,7 @@ export default {
     }
     this.$store.commit("tr/SET_MONTH", mm);
     this.$store.commit("tr/SET_YEAR", yyyy);
-    this.is_dynamic = false;
+    this.isDynamic = false;
     this.$store.commit("tr/SET_IS_DYNAMIC", "false");
     this.$store.commit("tr/SET_FIELD", this.selectedField);
     this.$store.commit("tr/SET_OBJECT", this.selectedObject);
@@ -219,9 +219,9 @@ export default {
     return {
       wells: [],
       searchString: "",
-      searched: false,
+      isSearched: false,
       sortParam: "",
-      sortType: true,
+      isSortType: true,
       filter: [...fields],
       fieldFilterOptions: [
         {
@@ -232,16 +232,16 @@ export default {
       dt: null,
       fullWells: [],
       editedWells: [],
-      show_first: true,
-      show_second: false,
-      show_add: false,
+      isShowFirst: true,
+      isShowSecond: false,
+      isShowAdd: false,
       isEdit: false,
       editdtm: null,
       editdty: null,
       year: null,
       selectYear: null,
       month: null,
-      isfulltable: false,
+      isFullTable: false,
       fieldFilter: undefined,
       allWells: [],
       wellStatusFilter: undefined,
@@ -254,10 +254,10 @@ export default {
       wellFilter: undefined,
       isDeleted: false,
       isSaved: false,
-      datepicker1: true,
-      datepicker2: false,
-      date_fix: true,
-      is_dynamic: false,
+      isDateNormal: true,
+      isDateDynamic: false,
+      isDateFix: true,
+      isDynamic: false,
       permissionName: 'tr edit',
       isPermission: false,
       filter_column: [],
@@ -286,13 +286,13 @@ export default {
   },
   methods: {
     getPageData() {
-      if (this.is_dynamic) {
+      if (this.isDynamic) {
         return {
           field: this.$store.state.tr.field,
-          is_dynamic:  this.$store.state.tr.is_dynamic,
+          is_dynamic:  this.$store.state.tr.isDynamic,
           object: this.$store.state.tr.object,
           searchString: this.$store.state.tr.searchString,
-          sortType: this.$store.state.tr.sortType,
+          sortType: this.$store.state.tr.isSortType,
           sortParam: this.$store.state.tr.sortParam,
           wellType: this.$store.state.tr.wellType,
           pageNum: this.$store.state.tr.pageNumber,
@@ -311,7 +311,7 @@ export default {
         return {
           month: this.$store.state.tr.month,
           year: this.$store.state.tr.year,
-          sortType: this.$store.state.tr.sortType,
+          sortType: this.$store.state.tr.isSortType,
           sortParam: this.$store.state.tr.sortParam,
           field: this.$store.state.tr.field,
           horizon: this.$store.state.tr.horizon,
@@ -320,7 +320,7 @@ export default {
           block: this.$store.state.tr.block,
           expMeth: this.$store.state.tr.expMeth,
           searchString: this.$store.state.tr.searchString,
-          is_dynamic:  this.$store.state.tr.is_dynamic,
+          is_dynamic:  this.$store.state.tr.isDynamic,
           pageNum: this.$store.state.tr.pageNumber
         }
       };
@@ -395,7 +395,7 @@ export default {
       this.selectedExpMeth = this.$store.state.tr.expMeth;
       this.$store.commit("globalloading/SET_LOADING", true);
       this.$store.commit("tr/SET_PAGENUMBER", 1);
-      if (this.is_dynamic) {
+      if (this.isDynamic) {
         this.axiosDynamicFilterRequest();
       }
       else{
@@ -403,7 +403,7 @@ export default {
       }
     },
     chooseAxios() {
-      if (this.is_dynamic) {
+      if (this.isDynamic) {
         this.axiosDynamicFilterRequest();
       }
       else if (this.isEdit) {
@@ -556,11 +556,11 @@ export default {
           this.fullWells = response.data;
           this.editedWells = [];
           this.$store.commit("globalloading/SET_LOADING", false);
-          this.searched = searchParam ? true : false;
+          this.isSearched = searchParam ? true : false;
           this.month = this.currentMonth;
           this.selectYear = this.currentYear;
-          this.show_first = true;
-          this.show_second = false;
+          this.isShowFirst = true;
+          this.isShowSecond = false;
           this.$store.commit("tr/SET_MONTH", this.currentMonth);
           this.$store.commit("tr/SET_YEAR", this.currentYear);
           this.chooseDt();
@@ -569,7 +569,7 @@ export default {
           console.log(error.data);
           this.editedWells = [];
           this.searchWell();
-          this.searched = searchParam ? true : false;
+          this.isSearched = searchParam ? true : false;
         });
     },
     cancelEdit() {
@@ -578,8 +578,8 @@ export default {
       this.editedWells = [];
       this.month = this.currentMonth;
       this.selectYear = this.currentYear;
-      this.show_first = true;
-      this.show_second = false;
+      this.isShowFirst = true;
+      this.isShowSecond = false;
       this.$store.commit("tr/SET_MONTH", this.currentMonth);
       this.$store.commit("tr/SET_YEAR", this.currentYear);
       this.chooseDt();
@@ -594,7 +594,7 @@ export default {
     },
     showWells() {
       if(this.lonelywell.length === 1){
-        this.show_add = !this.show_add;
+        this.isShowAdd = !this.isShowAdd;
         if(this.lonelywell[0].is_saved === "Сохранено"){
           this.isDeleted = false;
           this.isSaved = true;
@@ -605,30 +605,30 @@ export default {
         }
       }
       else{
-        this.show_add = this.show_add;
+        this.isShowAdd = this.isShowAdd;
       }
     },
     editable() {
       this.$store.commit("globalloading/SET_LOADING", true);
-      this.is_dynamic = false;
+      this.isDynamic = false;
       this.isEdit = true;
-      this.show_second = true;
-      this.show_first = false;
+      this.isShowSecond = true;
+      this.isShowFirst = false;
       this.axiosEdit();
     },
     closeModal(modalName) {
       this.$modal.hide(modalName)
     },
     sortBy(type) {
-      this.$store.commit("tr/SET_SORTTYPE", this.sortType);
+      this.$store.commit("tr/SET_SORTTYPE", this.isSortType);
       this.$store.commit("tr/SET_SORTPARAM", type);
-      let { sortType } = this;
-      if (this.sortType === true) {
-        this.sortType = false;
+      let { isSortType } = this;
+      if (this.isSortType === true) {
+        this.isSortType = false;
       } else {
-        this.sortType = true;
+        this.isSortType = true;
       }
-      if (this.is_dynamic) {
+      if (this.isDynamic) {
         this.axiosDynamicFilterRequest();
       }
       else if (this.isEdit) {
@@ -677,10 +677,10 @@ export default {
         this.$store.commit("tr/SET_SORTTYPE", true);
         this.$store.commit("tr/SET_SORTPARAM", "");
         this.$store.commit("tr/SET_IS_DYNAMIC", true);
-        this.is_dynamic = true;
+        this.isDynamic = true;
         this.axiosDynamicFilterRequest();
-        this.searched = false;
-        this.date_fix = false;
+        this.isSearched = false;
+        this.isDateFix = false;
         this.$store.commit("tr/SET_IS_DYNAMIC", "true");
         this.$store.commit("tr/SET_SORTPARAM", "");
         this.$store.commit("tr/SET_SEARCH", "");
@@ -704,7 +704,7 @@ export default {
       this.$store.commit("tr/SET_SORTTYPE", true);
       this.$store.commit("tr/SET_SORTPARAM", "rus_wellname");
       this.$store.commit("tr/SET_IS_DYNAMIC", "false");
-      this.is_dynamic = false;
+      this.isDynamic = false;
       this.$store.commit("globalloading/SET_LOADING", true);
       this.axiosFilterRequest();
       if (this.month < 10) {
@@ -723,7 +723,7 @@ export default {
           this.$store.commit("globalloading/SET_LOADING", false);
           let data = response.data;
           if (data) {
-            this.searched = false;
+            this.isSearched = false;
             this.$store.commit("tr/SET_SORTPARAM", "");
             this.$store.commit("tr/SET_SEARCH", "");
             this.sortParam = "";
@@ -737,15 +737,15 @@ export default {
         });
     },
     swap() {
-      this.show_first = !this.show_first;
-      this.show_second = !this.show_second;
-      this.isfulltable = !this.isfulltable;
+      this.isShowFirst = !this.isShowFirst;
+      this.isShowSecond = !this.isShowSecond;
+      this.isFullTable = !this.isFullTable;
 
     },
     calendarDynamic() {
       this.is_dynamic_calendar = !this.is_dynamic_calendar
-      this.datepicker1 = !this.datepicker1
-      this.datepicker2 = !this.datepicker2
+      this.isDateNormal = !this.isDateNormal
+      this.isDateDynamic = !this.isDateDynamic
     },
     isCommentClass (row_index, value) {
       return this.wells &&
@@ -767,7 +767,7 @@ export default {
     },
     closeModal(modalName) {
       this.$modal.hide(modalName)
-      this.show_add=false;
+      this.isShowAdd=false;
       this.isDeleted=false;
       this.isSaved=false;
       this.reRender();
@@ -795,7 +795,7 @@ export default {
           output).then((res) => {
             this.wellAdd();
             this.created();
-            this.show_add=false;
+            this.isShowAdd=false;
             this.isDeleted=false;           
           })
     },
@@ -811,7 +811,7 @@ export default {
               console.log(res.data)
               this.wellAdd();
               this.created();
-              this.show_add=false;
+              this.isShowAdd=false;
               this.isSaved=false;
               
             })
@@ -847,7 +847,7 @@ export default {
         )
         .then((response) => {
           this.$store.commit("globalloading/SET_LOADING", false);
-          this.searched = this.searchParam ? true : false;
+          this.isSearched = this.searchParam ? true : false;
           this.$store.commit("tr/SET_SEARCH", this.searchString);
           let data = response.data;
           if (data) {
@@ -860,7 +860,7 @@ export default {
           }
         })
         .catch((error) => {
-          this.searched = searchParam ? true : false;
+          this.isSearched = searchParam ? true : false;
           this.$store.commit("globalloading/SET_LOADING", false);
           this.wells = [];
           this.fullWells = [];
@@ -876,7 +876,7 @@ export default {
         )
         .then((response) => {
           this.$store.commit("globalloading/SET_LOADING", false);
-          this.searched = searchParam ? true : false;
+          this.isSearched = searchParam ? true : false;
           this.$store.commit("tr/SET_SEARCH", this.searchString);
           let data = response.data;
           if (data) {
@@ -889,7 +889,7 @@ export default {
           }
         })
         .catch((error) => {
-          this.searched = searchParam ? true : false;
+          this.isSearched = searchParam ? true : false;
           this.$store.commit("globalloading/SET_LOADING", false);
           this.wells = [];
           this.fullWells = [];
