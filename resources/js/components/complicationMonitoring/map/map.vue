@@ -97,8 +97,10 @@
       </template>
     </b-modal>
 
-    <gu-tool-tip ref="guToolTip" v-show="false" :gu="guHovered" />
-    <pipe-tool-tip ref="pipeToolTip" v-show="false" :pipe="pipeHovered" :paramKey="pipeHoveredParamKey" />
+    <div v-show="false">
+      <gu-tool-tip ref="guToolTip" :gu="guHovered" />
+      <pipe-tool-tip ref="pipeToolTip"  :pipe="pipeHovered" :paramKey="pipeHoveredParamKey" />
+    </div>
   </div>
 </template>
 
@@ -333,18 +335,14 @@ export default {
     },
     getGuTooltipHtml(gu) {
       this.guHovered = gu;
-      let html = this.$refs.guToolTip.$el.outerHTML;
-      html = (typeof html != 'undefined') ? html.replace('style="display: none;"', '') : '';
 
-      return html;
+      return this.$refs.guToolTip.$el.outerHTML;
     },
     getPipeTooltipHtml(pipe, paramKey) {
       this.pipeHovered = pipe;
       this.pipeHoveredParamKey = paramKey;
-      let html = this.$refs.pipeToolTip.$el.outerHTML;
-      html = (typeof html != 'undefined') ? html.replace('style="display: none;"', '') : '';
 
-      return html;
+      return this.$refs.pipeToolTip.$el.outerHTML;
     },
     getValOrNoData(param) {
       return (typeof param == 'undefined' || !param) ? this.trans('monitoring.no_data') : param;
