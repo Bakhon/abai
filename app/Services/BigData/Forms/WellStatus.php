@@ -12,16 +12,16 @@ class WellStatus extends PlainForm
 
     private function isValidDate($wellId, $dbeg):bool
     {
-            
-            $dend = DB::connection('tbd')
-                        ->table('prod.well_status')
-                        ->where('well', $wellId)
-                        ->orderBy('dend', 'desc')
-                        ->get('dend');
-            $dend = $dend->skip(1);
-            $data = $dend->get(1);
            
-            return $dbeg >= $data->dend;
+        $dend = DB::connection('tbd')
+                    ->table('prod.well_status')
+                    ->where('well', $wellId)
+                    ->where('dend' ,'<' , '3333-12-31 00:00:00+06')
+                    ->orderBy('dend', 'desc')
+                    ->get('dend')
+                    ->first();
+        
+        return $dbeg >= $dend->dend;
     }
 
     protected function getCustomValidationErrors(): array
