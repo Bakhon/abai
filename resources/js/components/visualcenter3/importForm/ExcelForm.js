@@ -28,7 +28,7 @@ import Visual from "./dataManagers/visual";
 import TodayDzoData from "./dataManagers/todayDzoData";
 import InputDataOperations from "./dataManagers/inputDataOperations";
 
-const defaultDzoTicker = "ММГ";
+const defaultDzoTicker = "ЭМГ";
 
 export default {
     data: function () {
@@ -433,13 +433,11 @@ export default {
         },
         storeData() {
             this.excelData['dzo_name'] = this.selectedDzo.ticker;
-            //this.excelData['date'] = this.currentDateDetailed;
+            this.excelData['date'] = this.currentDateDetailed;
             let troubledCompanies = Object.keys(this.factorOptions);
             if (troubledCompanies.includes(this.selectedDzo.ticker)) {
                 this.updateTroubledCompaniesByFactorOptions();
             }
-            this.excelData['date'] = moment().subtract(1, 'days').format("YYYY-MM-DD HH:mm:ss");
-
 
             let uri = this.localeUrl("/dzo-excel-form");
 
