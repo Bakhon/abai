@@ -38,7 +38,8 @@ Route::group(
                         return view('welcome');
                     }
                 )->name('mainpage');                           
-                Route::get('/economic/nrs', 'EconomicController@index')->name('economic');
+                Route::get('/economic/nrs', 'EconomicController@viewNrs')->name('economic_nrs');
+                Route::get('/economic/optimization', 'EconomicController@viewOptimization')->name('economic_optimization');
                 Route::get('/economicpivot', 'EconomicController@economicPivot')->name('economicpivot');
                 Route::get('/oilpivot', 'EconomicController@oilPivot')->name('oilpivot');
                 Route::get('/geteconomicpivotdata', 'EconomicController@getEconomicPivotData')->name(

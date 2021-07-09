@@ -53,9 +53,14 @@ class EconomicController extends Controller
         $this->druidClient = $druidClient;
     }
 
-    public function index()
+    public function viewNrs()
     {
-        return view('economic.main');
+        return view('economic.nrs');
+    }
+
+    public function viewOptimization()
+    {
+        return view('economic.optimization');
     }
 
     public function getEconomicData(EconomicDataRequest $request): array

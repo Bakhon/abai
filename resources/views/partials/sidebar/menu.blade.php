@@ -206,7 +206,14 @@
     <div class="dropdown-menu">
         <div class="move-menu">
             <li class="left-menu-li">
-                <a href="{{route('economic')}}">HPC</a>
+                <a href="{{route('economic_nrs')}}">
+                    {{ trans('economic_reference.nrs') }}
+                </a>
+            </li>
+            <li class="left-menu-li">
+                <a href="{{route('economic_optimization')}}">
+                    {{ trans('economic_reference.optimization_of_development') }}
+                </a>
             </li>
         </div>
     </div>

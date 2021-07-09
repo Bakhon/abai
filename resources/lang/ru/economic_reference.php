@@ -103,4 +103,6 @@ return array (
   'in_pause' => 'В простое',
   'in_work' => 'В работе',
   'wells_profitless' => 'Нерентабельные скважины',
+  'nrs' => 'НРС',
+  'optimization_of_development' => 'Оптимизация разработки',
 );

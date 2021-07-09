@@ -1,21 +1,27 @@
 <template>
-  <div class="flex-grow-1 font-size-68px line-height-82px font-weight-bold">
+  <div :style="`font-size: ${fontSize}px; line-height:${lineHeight}px`"
+       class="flex-grow-1 font-weight-bold">
     <slot></slot>
   </div>
 </template>
 
 <script>
 export default {
-  name: "EconomicTitle"
+  name: "EconomicTitle",
+  props: {
+    fontSize: {
+      required: false,
+      type: Number,
+      default: 68
+    },
+    lineHeight: {
+      required: false,
+      type: Number,
+      default: 82
+    }
+  }
 }
 </script>
 
 <style scoped>
-.font-size-68px{
-  font-size: 68px;
-}
-
-.line-height-82px{
-  line-height: 82px;
-}
 </style>

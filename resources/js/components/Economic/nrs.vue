@@ -286,7 +286,7 @@ const economicRes = {
 }
 
 export default {
-  name: "economic-component",
+  name: "economic-nrs",
   components: {
     CatLoader,
     Divider,
