@@ -56,12 +56,12 @@ class OilPipe extends Model
         return $this->hasOne(PipeCoord::class)->orderByDesc('m_distance');
     }
 
-    public function speedFlowGuUpsv()
+    public function hydroCalc()
     {
         return $this->hasOne(HydroCalcResult::class);
     }
 
-    public function speedFlowWellGu()
+    public function reverseCalc()
     {
         return $this->hasOne(ReverseCalculation::class);
     }
@@ -73,5 +73,39 @@ class OilPipe extends Model
                 $coord->delete();
             });
         });
+    }
+
+    public function lastHydroCalc()
+    {
+        return $this->belongsTo(HydroCalcResult::class);
+    }
+
+    public function scopeWithLastHydroCalc($query)
+    {
+        $query->addSelect(
+            [
+                'last_hydro_calc_id' => HydroCalcResult::select('id')
+                    ->whereColumn('oil_pipe_id', 'oil_pipes.id')
+                    ->orderBy('date', 'desc')
+                    ->take(1)
+            ]
+        )->with('lastHydroCalc');
+    }
+
+    public function lastReverseCalc()
+    {
+        return $this->belongsTo(ReverseCalculation::class);
+    }
+
+    public function scopeWithLastReverseCalc($query)
+    {
+        $query->addSelect(
+            [
+                'last_reverse_calc_id' => ReverseCalculation::select('id')
+                    ->whereColumn('oil_pipe_id', 'oil_pipes.id')
+                    ->orderBy('date', 'desc')
+                    ->take(1)
+            ]
+        )->with('lastReverseCalc');
     }
 }

@@ -21,6 +21,8 @@
       "table": "prod.meas_gas_prod",
       "type": "float",
       "column": "gas_prod_val",
+      "validation": "numeric|gte:0",
+      "validate_deviation": true,
       "is_editable": true    
     },
     {
