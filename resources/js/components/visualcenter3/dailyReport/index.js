@@ -646,13 +646,16 @@ export default {
         this.updateProductionByPeriod();
         this.fillTable();
         this.$store.commit('globalloading/SET_LOADING', false);
-        setInterval(() => {
-            //this.isOpecActive = !this.isOpecActive;
-        }, 10000);
+        setTimeout(() => {
+            this.isOpecActive = !this.isOpecActive;
+        }, 5000);
         setInterval(() => {
             //this.isOpecActive = false;
-           //this.isProduction = !this.isProduction;
-        }, 21000);
+           this.isProduction = !this.isProduction;
+            setTimeout(() => {
+                this.isOpecActive = !this.isOpecActive;
+            }, 5000);
+        }, 10000);
     },
     watch: {
         isProduction: function() {
