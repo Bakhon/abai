@@ -316,7 +316,7 @@ export default {
         getHeaders() {
             let attributes = this.getSelectedAttributes()
             this.maxDepthOfSelectedAttributes = this._getMaxDepthOfTree(attributes)
-            return this._treeToLayersOfAttributes(attributes, this.maxDepthOfSelectedAttributes)
+            return this._convertTreeToLayersOfAttributes(attributes, this.maxDepthOfSelectedAttributes)
 
         },
         _getMaxDepthOfTree(attributes) {
@@ -332,7 +332,7 @@ export default {
             }
             return maxChildrenDepth + 1
         },
-        _treeToLayersOfAttributes(attributes, layerDepth)
+        _convertTreeToLayersOfAttributes(attributes, layerDepth)
         {
             let layers = []
             for (let i = 0; i < layerDepth; i++) {
