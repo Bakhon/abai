@@ -1,4 +1,5 @@
 @import "geologyImports/colors";
+@import "geologyImports/AwMain";
 
 .rect {
   background: var(--a-accent-darken-100);
@@ -88,6 +89,22 @@
             "top-side top-side top-side"
             "left-side center right-side";
 
+    &.page-2d3d{
+      grid-template-columns: minmax(200px, 300px) minmax(750px, 1fr);
+      grid-template-areas:
+            "top-side top-side"
+            "left-side center";
+
+    }
+
+    &.geophysics{
+      grid-template-columns: minmax(200px, 300px) minmax(750px, 1fr);
+      grid-template-areas:
+            "top-side top-side"
+            "left-side center";
+
+    }
+
     &__t-side {
       grid-area: top-side;
     }
@@ -160,6 +177,38 @@
     100% {
       -webkit-transform: rotate(360deg);
       transform: rotate(360deg);
+    }
+  }
+}
+
+.aw-table{
+  border-collapse: collapse;
+  &:not(.no-padding){
+    th, td {
+      padding: 11px 12px;
+    }
+  }
+  th, td {
+    border: 1px solid #545580;
+    color: #fff;
+    padding: 2px 3px;
+  }
+  thead{
+    tr{
+      td, th{
+        background-color: #334295;
+        &:nth-child(even) {
+          background-color: #313973;
+        }
+      }
+    }
+  }
+  tbody{
+    tr{
+      background-color: #454D7D;
+      &:nth-child(even) {
+        background-color: #363B68;
+      }
     }
   }
 }

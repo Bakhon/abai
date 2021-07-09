@@ -16,6 +16,7 @@ class HydroCalcPrepareListResource extends CrudListResource
             'id' => $this->id,
             'fields' => [
                 'id' => $this->id,
+                'date' => $this->omgngdu ? $this->omgngdu->date : '',
                 'start_point' => $this->name,
                 'out_dia' => $this->oilPipe->pipeType->outside_diameter,
                 'wall_thick' => $this->oilPipe->pipeType->thickness,

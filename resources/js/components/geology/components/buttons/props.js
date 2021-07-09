@@ -19,6 +19,11 @@ export default {
         },
         size: {
             type: String
-        }
+        },
+        hasCheckActive: Boolean,
+        activeColor: {
+            type: String,
+            default: 'primary'
+        },
     }
 }

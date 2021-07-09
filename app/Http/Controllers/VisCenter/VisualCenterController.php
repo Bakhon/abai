@@ -177,11 +177,6 @@ class VisualCenterController extends Controller
         return response()->json(DZOstaff::all());
     }
 
-    public function visualcenter3GetDataAccident(Request $request)
-    {
-        return response()->json(ImportFormsDZOyear::all('date','tb_accident_total')->where('date', '=', $request->year)->where('tb_accident_total', '>', '0'));
-    }
-
     public function visualcenter3GetData(Request $request)
     {
         $today = $request->timestampToday;

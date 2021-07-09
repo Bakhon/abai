@@ -7,7 +7,7 @@ namespace App\Services\BigData\Forms;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
-class WaterInj extends TableForm
+class WaterInj extends MeasurementLogForm
 {
     protected $configurationFileName = 'water_inj';
 

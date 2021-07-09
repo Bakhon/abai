@@ -30,7 +30,7 @@
             <div class="directory text-white pt-0 mt-0">
               <ul id="myUL">
                 <well-cart-tree
-                    v-for="(item, index) in [...forms_structure, ...forms]"
+                    v-for="(item, index) in [...forms_structure, ...visibleForms]"
                     :key="index"
                     :active-form-code="activeFormCode"
                     :data="item"
@@ -147,7 +147,8 @@
                   <div class="icon-all"
                        @click="onColumnFoldingEvent('right')">
                     <svg fill="none" height="12" viewBox="0 0 12 12" width="12" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M1.0001 1L6.19482 6L1.0001 11" stroke="white" stroke-linecap="round" stroke-linejoin="round"
+                      <path d="M1.0001 1L6.19482 6L1.0001 11" stroke="white" stroke-linecap="round"
+                            stroke-linejoin="round"
                             stroke-width="1.2"/>
                       <path d="M5.80528 1L11 6L5.80528 11" stroke="white" stroke-linecap="round" stroke-linejoin="round"
                             stroke-width="1.2"/>
@@ -274,6 +275,8 @@ export default {
         'gtm': {'dbeg': null},
         'rzatrStat': {'value_double': null},
         'rzatrAtm': {'value_double': null},
+        'gu': {'name_ru': null},
+        'agms': {'name_ru': null},
       },
       wellParent: null,
       tubeNomOd: null,
@@ -327,6 +330,8 @@ export default {
         'gtm': 'gtm',
         'rzatrAtm': 'rzatr_atm',
         'rzatrStat': 'rzatr_stat',
+        'gu': 'gu',
+        'agms': 'agms',
       },
       forms_structure: forms_structure,
     }
@@ -415,7 +420,7 @@ export default {
           }
         } else if (this.tableData[i].method === 'trimToDate' && this.tableData[i].description != null) {
           try {
-            this.tableData[i].data = moment(this.tableData[i].description).format('DD/MM/YYYY')
+            this.tableData[i].data = this.getFormatedDate(this.tableData[i].description)
           } catch (e) {
           }
         } else {
@@ -452,6 +457,11 @@ export default {
     },
     setForm(formCode) {
       this.activeFormCode = formCode
+    },
+    getFormatedDate(data) {
+      if (data != null && data != '') {
+        return moment(data).format('DD/MM/YYYY')
+      }
     }
   },
   computed: {
@@ -503,8 +513,10 @@ export default {
         },
         {
           'description': this.wellTechsName,
-          'method': null,
-          'name': 'ГУ/Ряд',
+          'method': 'neighbors',
+          'neigbor_1': this.well.gu.name_ru,
+          'neigbor_2': this.well.agms.name_ru,
+          'name': 'ГУ/АГЗУ',
           'data': ''
         },
         {
@@ -740,8 +752,8 @@ export default {
         {
           'description': null,
           'method': 'neighbors',
-          'neigbor_1': moment(this.well.krsWorkover.dbeg).format('DD/MM/YYYY'),
-          'neigbor_2': moment(this.well.krsWorkover.dend).format('DD/MM/YYYY'),
+          'neigbor_1': this.getFormatedDate(this.well.krsWorkover.dbeg),
+          'neigbor_2': this.getFormatedDate(this.well.krsWorkover.dend),
           'name': 'Дата последнего КРС',
           'data': ''
         },
@@ -772,8 +784,8 @@ export default {
         {
           'description': null,
           'method': 'neighbors',
-          'neigbor_1': moment(this.well.prsWellWorkover.dbeg).format('DD/MM/YYYY'),
-          'neigbor_2': moment(this.well.prsWellWorkover.dend).format('DD/MM/YYYY'),
+          'neigbor_1': this.getFormatedDate(this.well.prsWellWorkover.dbeg),
+          'neigbor_2': this.getFormatedDate(this.well.prsWellWorkover.dend),
           'name': 'Дата последнего ПРС',
           'data': ''
         },
@@ -862,6 +874,9 @@ export default {
           'data': ''
         },
       ]
+    },
+    visibleForms() {
+      return this.forms.filter(form => form.isVisible)
     }
   }
 }
