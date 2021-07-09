@@ -28,6 +28,9 @@ import PerfectScrollbar from "vue2-perfect-scrollbar";
 import "vue2-perfect-scrollbar/dist/vue2-perfect-scrollbar.css";
 import columnSortable from 'vue-column-sortable';
 import Paginate from 'vuejs-paginate';
+//Mixins
+import showToast from '~/mixins/showToast';
+import {currentUrlPage, urlLink} from "./components/geology/js/utils";
 
 require('./bootstrap');
 window.Vue = require('vue');
@@ -45,9 +48,6 @@ Vue.use(VueSimpleAlert);
 Vue.use(BootstrapVue);
 Vue.component('paginate', Paginate);
 
-//Mixins
-import showToast from '~/mixins/showToast';
-import {currentUrlPage, urlLink} from "./components/geology/js/utils";
 Vue.mixin(showToast);
 
 
@@ -214,6 +214,8 @@ Vue.component('BaseGeophysics', require('./components/geology/geophysics/BaseGeo
 Vue.component('GeophysicsLeftSide', require('./components/geology/geophysics/LeftSide.vue').default);
 
 Vue.component('digital-rating', require('./components/DigitalRating/index.vue').default);
+
+Vue.component('admin-user-settings', require('./components/admin/user/Settings.vue').default);
 
 Vue.prototype.trans = string => _.get(window.i18n, string) || string;
 Vue.prototype.localeUrl = string => `/${window.current_lang}/${string[0] === '/' ? string.substr(1) : string}`;
