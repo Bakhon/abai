@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 namespace App\Services\BigData\Forms;
+use Illuminate\Support\Facades\DB;
 
 class WellExpl extends PlainForm
 {
@@ -15,11 +16,11 @@ class WellExpl extends PlainForm
                         ->table('prod.well_expl')
                         ->where('well', $wellId)
                         ->orderBy('dend', 'desc')
-                        ->get('dend')
-                        ->first();
+                        ->get('dend');
                         
-
-            return $dbeg >= $dend;
+            $dend = $dend->skip(1);
+            $data = $dend->get(1);
+            return $dbeg >= $data->dend;
     }
 
     protected function getCustomValidationErrors(): array
