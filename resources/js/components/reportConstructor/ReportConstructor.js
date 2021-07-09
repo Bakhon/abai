@@ -218,7 +218,7 @@ export default {
             return selectedAttributes
         },
         _hasChildren(node) {
-            return 'children' in attribute && attribute.children.length > 0
+            return 'children' in node && node.children.length > 0
         },
         _cleanEmptyHeadersOfAttributes(attributes) {
             let cleanAttributes = []
