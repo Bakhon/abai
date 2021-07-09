@@ -94,23 +94,19 @@ export default {
       let minIndex = data.twoDSeriesX.findIndex(x => x >= min)
       let maxIndex = data.twoDSeriesX.map(x => x <= max).lastIndexOf(true);
 
-      this.addAnnotations(minIndex, maxIndex, data)
-    },
-
-    addAnnotations(minIndex, maxIndex, {twoDSeriesX}) {
       this.currentAnnotation.minY = 0
       this.currentAnnotation.maxY = 0
 
       if (this.isVisibleInWork) {
-        this.addAnnotation(this.data, minIndex, maxIndex, twoDSeriesX)
+        this.addAnnotations(this.data, minIndex, maxIndex, data.twoDSeriesX)
       }
 
       if (this.isVisibleInPause) {
-        this.addAnnotation(this.pausedData, minIndex, maxIndex, twoDSeriesX)
+        this.addAnnotations(this.pausedData, minIndex, maxIndex, data.twoDSeriesX)
       }
     },
 
-    addAnnotation(data, minIndex, maxIndex, twoDSeriesX) {
+    addAnnotations(data, minIndex, maxIndex, twoDSeriesX) {
       this.chartKeys.forEach(key => {
         this.currentAnnotation.minY += data[key][minIndex]
         this.currentAnnotation.maxY += data[key][maxIndex]
