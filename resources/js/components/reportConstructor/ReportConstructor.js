@@ -209,7 +209,7 @@ export default {
                     let newAttribute = {
                         label: attribute['label']
                     }
-                    if ('children' in attribute && attribute.children.length > 0) {
+                    if (this._hasChildren(attribute)) {
                         newAttribute.children = this._getAllSelectedAttributes(attribute.children)
                     }
                     selectedAttributes.push(newAttribute)
@@ -217,13 +217,16 @@ export default {
             }
             return selectedAttributes
         },
+        _hasChildren(node) {
+            return 'children' in attribute && attribute.children.length > 0
+        },
         _cleanEmptyHeadersOfAttributes(attributes) {
             let cleanAttributes = []
             for (let attribute of attributes) {
                 if (this.isActualAttribute(attribute.label)) {
                     cleanAttributes.push({'label': attribute.label})
                 }
-                if (!('children' in attribute) || attribute.children.length === 0) {
+                if (!this._hasChildren(attribute)) {
                     continue
                 }
                 let cleanChildren = this._cleanEmptyHeadersOfAttributes(attribute.children)
@@ -319,7 +322,7 @@ export default {
         _getMaxDepthOfTree(attributes) {
             let maxChildrenDepth = 0
             for (let attribute of attributes) {
-                if (!('children' in attribute) || attribute.children.length === 0) {
+                if (!this._hasChildren(attribute)) {
                     continue
                 }
                 let childrenDepth = this._getMaxDepthOfTree(attribute.children)
@@ -347,7 +350,7 @@ export default {
                     })
                     continue
                 }
-                if (!('children' in attribute) || attribute.children.length === 0) {
+                if (!this._hasChildren(attribute)) {
                     continue
                 }
                 let attributesOnDepth = this._getAttributesOnDepth(
@@ -359,11 +362,11 @@ export default {
         },
         _getMaxChildrenNumber(originalAttribute) {
             let maxChildrenNumber = 0;
-            if (!('children' in originalAttribute) || originalAttribute.children.length === 0) {
+            if (!this._hasChildren(originalAttribute)) {
                 return maxChildrenNumber
             }
             for (let attribute of originalAttribute.children) {
-                if (!('children' in attribute) || attribute.children.length === 0) {
+                if (!this._hasChildren(attribute)) {
                     maxChildrenNumber += 1
                 }
                 maxChildrenNumber += this._getMaxChildrenNumber(attribute)
