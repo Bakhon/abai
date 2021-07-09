@@ -61,6 +61,7 @@ Route::group(
                 Route::get('dict/geos/{org}', 'bd\DictionariesController@getGeoByOrg');
                 Route::get('dict/{dict}', 'bd\DictionariesController@get')->name('bigdata.dictionary');
 
+                Route::get('forms', 'Api\DB\FormsController@getForms')->name('bigdata.form.list');
                 Route::get('forms/{form}', 'Api\DB\FormsController@getParams')->name('bigdata.form.params');
                 Route::post('forms/{form}', 'Api\DB\FormsController@submit')->name('bigdata.form.send');
                 Route::get('forms/{form}/history', 'Api\DB\FormsController@getHistory');
