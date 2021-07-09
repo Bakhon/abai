@@ -36,6 +36,7 @@ export default {
             selectedObjects: [],
             startDate: null,
             endDate: null,
+            maxDepthOfSelectedAttributes: null,
         }
     },
     mounted: function () {
@@ -309,5 +310,79 @@ export default {
             }).catch((error) => console.log(error)
             ).finally(() => this.$store.commit('globalloading/SET_LOADING', false));
         },
+        getHeaders() {
+            let attributes = this.getSelectedAttributes()
+            this.maxDepthOfSelectedAttributes = this._getMaxDepthOfTree(attributes)
+            return this._treeToLayersOfAttributes(attributes, this.maxDepthOfSelectedAttributes)
+
+        },
+        _getMaxDepthOfTree(attributes) {
+            let maxChildrenDepth = 0
+            for (let attribute of attributes) {
+                if (!('children' in attribute) || attribute.children.length === 0) {
+                    continue
+                }
+                let childrenDepth = this._getMaxDepthOfTree(attribute.children)
+                if (maxChildrenDepth < childrenDepth) {
+                    maxChildrenDepth = childrenDepth
+                }
+            }
+            return maxChildrenDepth + 1
+        },
+        _treeToLayersOfAttributes(attributes, layerDepth)
+        {
+            let layers = []
+            for (let i = 0; i < layerDepth; i++) {
+                layers.push(this._getAttributesOnDepth(attributes, i))
+            }
+            return layers
+        },
+        _getAttributesOnDepth(attributes, targetDepth, startDepth = 0) {
+            let attributesOnTargetDepth = []
+            for (let attribute of attributes) {
+                if (startDepth === targetDepth) {
+                    attributesOnTargetDepth.push({
+                        'label': attribute.label,
+                        'maxChildrenNumber': this._getMaxChildrenNumber(attribute)
+                    })
+                    continue
+                }
+                if (!('children' in attribute) || attribute.children.length === 0) {
+                    continue
+                }
+                let attributesOnDepth = this._getAttributesOnDepth(
+                    attribute.children, targetDepth, startDepth + 1
+                )
+                attributesOnTargetDepth = attributesOnTargetDepth.concat(attributesOnDepth)
+
+
+            }
+            return attributesOnTargetDepth
+        },
+        _getMaxChildrenNumber(originalAttribute) {
+            let maxChildrenNumber = 0;
+            if (!('children' in originalAttribute) || originalAttribute.children.length === 0) {
+                return maxChildrenNumber
+            }
+            for (let attribute of originalAttribute.children) {
+                if (!('children' in attribute) || attribute.children.length === 0) {
+                    maxChildrenNumber += 1
+                }
+                maxChildrenNumber += this._getMaxChildrenNumber(attribute)
+            }
+            return maxChildrenNumber
+        },
+        getRowHeightSpan(attribute, currentDepth){
+            if (currentDepth !== this.maxDepthOfSelectedAttributes) {
+                return 1
+            }
+            return this.maxDepthOfSelectedAttributes - currentDepth
+        },
+        getRowWidthSpan(attribute) {
+            if (attribute.maxChildrenNumber === 0) {
+                return 1
+            }
+            return attribute.maxChildrenNumber
+        }
     }
 }
