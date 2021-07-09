@@ -183,7 +183,7 @@ class Well extends TBDModel
             function ($query) use ($date) {
                 $query->where('dbeg', '<=', $date)
                     ->where('dend', '>=', $date)
-                    ->where('prod.well_category.category', self::WELL_CATEGORY_OIL);
+                    ->where('dict.well_category_type.code', self::WELL_CATEGORY_OIL);
             }
         );
 
