@@ -633,7 +633,7 @@ export default {
     },
     data: function () {
         return {
-            edit: false,
+            isEdit: false,
             selectedBlock: this.$store.state.tr.block,
             selectedExpMeth: this.$store.state.tr.expMeth,
             selectedHorizon: this.$store.state.tr.horizon,
