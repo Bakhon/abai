@@ -650,7 +650,6 @@ export default {
             this.isOpecActive = !this.isOpecActive;
         }, 5000);
         setInterval(() => {
-            //this.isOpecActive = false;
            this.isProduction = !this.isProduction;
             setTimeout(() => {
                 this.isOpecActive = !this.isOpecActive;
