@@ -18,19 +18,10 @@ class WellStatus extends PlainForm
                         ->where('well', $wellId)
                         ->orderBy('dend', 'desc')
                         ->get('dend');
-            $collection = collect($dend);
-
-            $collection = $collection->skip(1);
-            // echo(json_encode($collection));
-            // $str = $collection->get('1') . "";
-            // echo date_format($dend[1], 'Y-m-d H:i:s');           
-            // $array = json_decode(str, true);
-            // echo(json_encode($array));
-            // $collection = $collection->get(1);             
-            echo(json_encode($collection->get(1)) . "\n");        
-            echo(json_encode($collection->get('dend')));
-            // echo substr($str, 0, 6), "\n";
-            return $dbeg >= $dend;
+            $dend = $dend->skip(1);
+            $data = $dend->get(1);
+           
+            return $dbeg >= $data->dend;
     }
 
     protected function getCustomValidationErrors(): array
