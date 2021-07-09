@@ -337,10 +337,10 @@ export default {
             }
             return layers
         },
-        _getAttributesOnDepth(attributes, targetDepth, startDepth = 0) {
+        _getAttributesOnDepth(attributes, targetDepth, startingDepth = 0) {
             let attributesOnTargetDepth = []
             for (let attribute of attributes) {
-                if (startDepth === targetDepth) {
+                if (startingDepth === targetDepth) {
                     attributesOnTargetDepth.push({
                         'label': attribute.label,
                         'maxChildrenNumber': this._getMaxChildrenNumber(attribute)
@@ -351,11 +351,9 @@ export default {
                     continue
                 }
                 let attributesOnDepth = this._getAttributesOnDepth(
-                    attribute.children, targetDepth, startDepth + 1
+                    attribute.children, targetDepth, startingDepth + 1
                 )
                 attributesOnTargetDepth = attributesOnTargetDepth.concat(attributesOnDepth)
-
-
             }
             return attributesOnTargetDepth
         },
