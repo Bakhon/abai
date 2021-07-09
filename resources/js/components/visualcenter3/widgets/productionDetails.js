@@ -119,6 +119,18 @@ export default {
         },
 
         updateDzoMenu() {
+            let self = this;
+            if (this.isOneDzoSelected) {
+                self.injectionWellsOptions = _.filter(self.injectionWellsOptions, function (item) {
+                    let selectedDzoCompanies = self.selectedDzoCompanies;
+                    if (Array.isArray(selectedDzoCompanies)) {
+                        selectedDzoCompanies = selectedDzoCompanies['0']
+                    }
+                    if (item.ticker === selectedDzoCompanies) {
+                        return item
+                    }
+                })
+            }
             this.dzoMenu = _.mapValues(this.dzoMenu, () => _.cloneDeep(this.injectionWellsOptions));
         },
     }

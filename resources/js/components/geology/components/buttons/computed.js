@@ -1,5 +1,10 @@
 export default {
     computed: {
+        isActive(){
+            if(this.hasCheckActive){
+                return this.$urlLink(this.href) === this.$currentPageUrl;
+            }
+        },
         classes() {
             return {
                 'a-btn': true,

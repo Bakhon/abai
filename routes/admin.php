@@ -21,10 +21,24 @@ Route::group(['namespace' => 'Admin'], function () {
         Route::get('/accesses-list', 'AccessesController@index')->name('accesses-list');
         Route::get('/accesses-list/{id?}/edit', 'AccessesController@edit');
         Route::post('accesses-update', 'AccessesController@update')->name('accesses-update');
-
     });
-
 });
 
 
+Route::group(
+    [
+        'namespace' => 'Api\Admin'
+    ],
+    function () {
+        Route::group(
+            ['middleware' => 'auth', 'prefix' => 'api'],
+            function () {
+                Route::get('roles', 'RolesController@index');
+                Route::get('orgs', 'OrgsController@index');
+                Route::get('modules', 'ModulesController@index');
 
+                Route::patch('users/{user}', 'UsersController@update');
+            }
+        );
+    }
+);
