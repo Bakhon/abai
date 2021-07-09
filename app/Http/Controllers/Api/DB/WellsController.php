@@ -43,8 +43,8 @@ class WellsController extends Controller
             'tech_mode_inj' => $this->techModeInj($well),
             'meas_liq' => $this->measLiq($well),
             'meas_water_cut' => $this->measWaterCut($well),
-            'krs_well_workover' => $this->krsWellWorkover($well),
-            'prs_well_workover' => $this->prsWellWorkover($well),
+            'krs_well_workover' => $this->getKrsPrs($well, 1),
+            'prs_well_workover' => $this->getKrsPrs($well, 3),
             'well_treatment' => $this->wellTreatment($well),
             'well_treatment_sko' => $this->wellTreatmentSko($well),
             'gdis_current' => $this->gdisCurrent($well),
@@ -296,17 +296,9 @@ class WellsController extends Controller
             ->first(['water_cut']);
     }
 
-    private function prsWellWorkover(Well $well)
+    private function getKrsPrs(Well $well, $code)
     {
-        return $well->wellWorkover()
-            ->where('repair_type', '=', '3')
-            ->orderBy('dbeg', 'desc')
-            ->first(['dbeg', 'dend']);
-    }
-
-    private function krsWellWorkover(Well $well)
-    {
-        $wellWorkover = $well->wellWorkover()->where('repair_type', '=', '1')->orderBy('dbeg', 'desc')->first(['dbeg', 'dend']);
+        $wellWorkover = $well->wellWorkover()->where('repair_type', $code)->orderBy('dbeg', 'desc')->first(['dbeg', 'dend']);
         if (isset($wellWorkover)) {
             return $wellWorkover;
         }
