@@ -35,6 +35,10 @@ class HydroCalculation extends Controller
                     'title' => '№',
                     'type' => 'numeric',
                 ],
+                'date' => [
+                    'title' => trans('app.date'),
+                    'type' => 'date',
+                ],
                 'out_dia' => [
                     'title' => trans('monitoring.pipe_types.fields.outside_diameter'),
                     'type' => 'numeric',

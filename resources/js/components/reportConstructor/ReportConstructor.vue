@@ -257,12 +257,16 @@
                   <div class="table-container" v-if="statistics">
                     <table>
                       <thead>
-                      <tr>
-                        <th rowspan="2" class="heading" v-for="column in statisticsColumns">
-                          <div class="centered">
-                            {{ getAttributeDescription(column) }}
-                          </div>
-                        </th>
+                      <tr v-for="(attributesOnDepth, index) in getHeaders()">
+                            <th
+                                v-for="attribute in attributesOnDepth"
+                                :rowspan="getRowHeightSpan(attribute, index)"
+                                :colspan="getRowWidthSpan(attribute)"
+                            >
+                              <div class="centered">
+                                {{ getAttributeDescription(attribute.label) }}
+                              </div>
+                            </th>
                       </tr>
 
                       </thead>
