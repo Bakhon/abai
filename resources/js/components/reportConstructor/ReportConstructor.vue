@@ -87,7 +87,7 @@
                     fill="white" fill-opacity="0.3"/>
             </svg>
             <form @click="isDisplayParameterBuilder = !isDisplayParameterBuilder">
-              <input type="text" placeholder="Выбор параметров" id="parametr-search">
+              <input type="text" placeholder="Выбор параметров" id="parameter-search">
               </input>
             </form>
           </div>
@@ -113,6 +113,7 @@
                       :structureType="currentStructureType"
                       :itemType="currentItemType"
                       :isShowCheckboxes="true"
+                      :onCheckboxClick="updateSelectedNodes"
                   >
                   </report-constructor-item-select-tree>
                 </template>
@@ -133,18 +134,17 @@
                     <label>{{ trans('bd.choose_start_date') }}</label>
                     <template>
                       <datetime
-                        type="date"
-                        v-model="startDate"
-                        value-zone="Asia/Almaty"
-                        zone="Asia/Almaty"
-                        :format="{ year: 'numeric', month: 'numeric', day: 'numeric'}"
-                        :phrases="{ok: trans('app.choose'), cancel: trans('app.cancel')}"
-                        :max-datetime="endDate"
-                        :week-start="1"
-                        :placeholder= "[[ trans('bd.dd_mm_yyyy') ]]"
-                        use24-hour
-                        auto
-                        :flow="['year', 'month', 'date']"
+                          type="date"
+                          v-model="startDate"
+                          value-zone="Asia/Almaty"
+                          zone="Asia/Almaty"
+                          :format="{ year: 'numeric', month: 'numeric', day: 'numeric'}"
+                          :phrases="{ok: trans('app.choose'), cancel: trans('app.cancel')}"
+                          :max-datetime="endDate"
+                          :week-start="1"
+                          :placeholder= "[[ trans('bd.dd_mm_yyyy') ]]"
+                          auto
+                          :flow="['year', 'month', 'date']"
                       >
                       </datetime>
                     </template>
@@ -173,6 +173,7 @@
                     <span class="calendar">Месяц</span>
                     <span class="calendar">Год</span>
                   </div>
+
                   <div class="btn-container">
                     <button class="btn-disabled" @click="updateStatistics()">Создать отчет</button>
                     <button class="">Выбрать шаблон</button>
@@ -256,12 +257,16 @@
                   <div class="table-container" v-if="statistics">
                     <table>
                       <thead>
-                      <tr>
-                        <th rowspan="2" class="heading" v-for="column in statisticsColumns">
-                          <div class="centered">
-                            {{ getAttributeDescription(column) }}
-                          </div>
-                        </th>
+                      <tr v-for="(attributesOnDepth, index) in getHeaders()">
+                            <th
+                                v-for="attribute in attributesOnDepth"
+                                :rowspan="getRowHeightSpan(attribute, index)"
+                                :colspan="getRowWidthSpan(attribute)"
+                            >
+                              <div class="centered">
+                                {{ getAttributeDescription(attribute.label) }}
+                              </div>
+                            </th>
                       </tr>
 
                       </thead>
@@ -278,7 +283,7 @@
               </div>
               <div class="row">
                 <div class="btn-container">
-                  <button disabled>Скачать отчет</button>
+                  <button @click="getStatisticsFile()">Скачать отчет</button>
                   <button>Сохранить как шаблон</button>
                 </div>
               </div>
@@ -818,8 +823,8 @@ body {
     padding: 11px 0px 11px 14px;
 
     .col {
-        margin: 0px;
-        padding: 0px;
+      margin: 0px;
+      padding: 0px;
     }
 
     span, label {
@@ -1573,3 +1578,4 @@ body {
 
 
 </style>
+

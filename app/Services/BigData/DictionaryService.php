@@ -28,6 +28,7 @@ use App\Models\BigData\Dictionaries\PerforatorType;
 use App\Models\BigData\Dictionaries\PerfType;
 use App\Models\BigData\Dictionaries\PumpType;
 use App\Models\BigData\Dictionaries\RepairWorkType;
+use App\Models\BigData\Dictionaries\Tech;
 use App\Models\BigData\Dictionaries\TechConditionOfWells;
 use App\Models\BigData\Dictionaries\TechStateType;
 use App\Models\BigData\Dictionaries\Well;
@@ -52,7 +53,7 @@ class DictionaryService
         ],
         'well_types' => [
             'class' => WellType::class,
-            'name_field' => 'name'
+            'name_field' => 'name_ru'
         ],
         'companies' => [
             'class' => Company::class,
@@ -184,6 +185,10 @@ class DictionaryService
         'orgs' => [
             'class' => Org::class,
             'name_field' => 'name_ru'
+        ],
+        'techs' => [
+            'class' => Tech::class,
+            'name_field' => 'name_ru'
         ]
     ];
 
@@ -274,15 +279,15 @@ class DictionaryService
     private function getGeoDict(): array
     {
         $items = DB::connection('tbd')
-            ->table('tbdi.geo as g')
-            ->select('g.id', 'g.name as label', 'gp.id as parent')
+            ->table('dict.geo as g')
+            ->select('g.id', 'g.name_ru as label', 'gp.parent as parent')
             ->distinct()
             ->orderBy('parent', 'asc')
             ->orderBy('label', 'asc')
             ->leftJoin(
-                'tbdi.geo as gp',
+                'dict.geo_parent as gp',
                 function ($join) {
-                    $join->on('gp.id', '=', 'g.parent_id');
+                    $join->on('gp.geo', '=', 'g.id');
                     $join->on('gp.dbeg', '<=', DB::raw("NOW()"));
                     $join->on('gp.dend', '>=', DB::raw("NOW()"));
                 }

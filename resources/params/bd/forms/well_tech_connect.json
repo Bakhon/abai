@@ -16,7 +16,8 @@
               },
               {
                 "code": "tech",
-                "type": "dict",
+                "type": "dict_tree",
+                "dict": "techs",
                 "title": "tech",
                 "validation": "required"
               },
