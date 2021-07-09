@@ -15,11 +15,14 @@ class WellConstr extends PlainForm
         $startDate =  DB::connection('tbd')
             ->table('dict.well')
             ->where('id', $wellId)
-            ->get('drill_start_date');
-            echo '<script>';
-            echo 'console.log('. json_encode($startDate) .')';
-            echo '</script>';
-        return $landingDate >= $startDate;    
+            ->get('drill_start_date')
+            ->first();
+            
+            
+        if(empty($startDate->drill_start_date)){
+            return true;
+        }
+        else return $landingDate >= $startDate;    
     }
 
     protected function isValidDepth($wellId, $depth):bool
@@ -27,14 +30,10 @@ class WellConstr extends PlainForm
         $dailyDrill =  DB::connection('tbd')
             ->table('drill.well_daily_drill')
             ->where('well', $wellId)
-            ->get('daily_drill_progress');
-        
-        $sum = [];
-        $sum[] = $dailyDrill;
-        echo '<script>';
-        echo 'console.log('. json_encode($dailyDrill) .')';
-        echo '</script>';
-        return $depth <= array_sum($sum);
+            ->get('daily_drill_progress')
+            ->first();
+
+        return (empty($dailyDrill)) ? true : $data = $dailyDrill->sum() && ($depth<=$data) ? true:false ;
     }
 
     protected function getCustomValidationErrors(): array
