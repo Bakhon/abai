@@ -169,7 +169,7 @@
                       </datetime>
                     </template>
                   </div>
-                  <div class="row inline-flex">
+                  <div class="row inline-flex justify-content-center mb-1">
                     <span class="calendar">Месяц</span>
                     <span class="calendar">Год</span>
                   </div>
@@ -867,7 +867,10 @@ body {
         font-size: 16px;
         font-weight: 400;
         font-family: $HarmoniaSansProCyr;
-        text-align: center;
+        padding: 0 0 0 19px;
+        background-image: url(/img/bd/webkit-calendar.svg);
+        background-Position : 102% center;
+        background-Repeat :no-repeat;
       } 
     }
   }
