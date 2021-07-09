@@ -52,7 +52,7 @@
               <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <div class="dropdown-inner-text">
-                  {{ showOptions ? 'Выбор скважины' : currentOption.name }}
+                  {{ showOptions ? 'Выбор объекта' : currentOption.name }}
                 </div>
                 <div class="icon-pointer"></div>
               </button>
@@ -168,6 +168,10 @@
                       >
                       </datetime>
                     </template>
+                  </div>
+                  <div class="row inline-flex">
+                    <span class="calendar">Месяц</span>
+                    <span class="calendar">Год</span>
                   </div>
                   <div class="btn-container">
                     <button class="btn-disabled" @click="updateStatistics()">Создать отчет</button>
