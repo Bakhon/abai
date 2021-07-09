@@ -64,11 +64,14 @@ export default {
   data: () => ({
     isVisibleInWork: true,
     isVisibleInPause: false,
-    selectionPoints: []
+    currentAnnotation: {
+      minY: 0,
+      maxY: 0
+    },
   }),
   methods: {
     tooltipFormatter(y) {
-      if (y === undefined) {
+      if (y === undefined || y === null) {
         return y
       }
 
@@ -79,11 +82,7 @@ export default {
     },
 
     chartClearAnnotations() {
-      this.selectionPoints = []
-
-      if (this.$refs['chart']) {
-        this.$refs['chart'].clearAnnotations()
-      }
+      this.$refs.chart.clearAnnotations()
     },
 
     chartSelection({data}, {xaxis}) {
@@ -95,46 +94,40 @@ export default {
       let minIndex = data.twoDSeriesX.findIndex(x => x >= min)
       let maxIndex = data.twoDSeriesX.map(x => x <= max).lastIndexOf(true);
 
-      let currentMinY = 0
-      let currentMaxY = 0
+      this.addAnnotations(minIndex, maxIndex, data)
+    },
 
+    addAnnotations(minIndex, maxIndex, {twoDSeriesX}) {
+      this.currentAnnotation.minY = 0
+      this.currentAnnotation.maxY = 0
+
+      if (this.isVisibleInWork) {
+        this.addAnnotation(this.data, minIndex, maxIndex, twoDSeriesX)
+      }
+
+      if (this.isVisibleInPause) {
+        this.addAnnotation(this.pausedData, minIndex, maxIndex, twoDSeriesX)
+      }
+    },
+
+    addAnnotation(data, minIndex, maxIndex, twoDSeriesX) {
       this.chartKeys.forEach(key => {
-        currentMinY += this.data[key][minIndex]
-        currentMaxY += this.data[key][maxIndex]
+        this.currentAnnotation.minY += data[key][minIndex]
+        this.currentAnnotation.maxY += data[key][maxIndex]
 
         this.$refs.chart.addPointAnnotation({
-          x: data.twoDSeriesX[minIndex],
-          y: currentMinY,
-        })
+          x: twoDSeriesX[minIndex],
+          y: this.currentAnnotation.minY,
+          marker: {size: 8},
+        }, false)
 
-        let pointData = []
-
-        let pointStep = Math.floor((this.data[key][maxIndex] - this.data[key][minIndex]) / (maxIndex - minIndex))
-
-        this.data[key].forEach((value, index) => {
-          if (index === minIndex) {
-            return pointData.push(this.data[key][minIndex])
-          }
-
-          if (index === maxIndex) {
-            return pointData.push(this.data[key][maxIndex])
-          }
-
-          if (index < minIndex || index > maxIndex) {
-            return pointData.push(0)
-          }
-
-          pointData.push(this.data[key][minIndex] + pointStep * (index - minIndex))
-        })
-
-        this.selectionPoints.push(pointData)
-
-        let diff = this.data[key][maxIndex] - this.data[key][minIndex]
-        let diffPercent = +(Math.round(10000 * diff / this.data[key][minIndex]) / 100).toFixed(2)
+        let diff = data[key][maxIndex] - data[key][minIndex]
+        let diffPercent = +(Math.round(10000 * diff / data[key][minIndex]) / 100).toFixed(2)
 
         this.$refs.chart.addPointAnnotation({
-          x: data.twoDSeriesX[maxIndex],
-          y: currentMaxY,
+          x: twoDSeriesX[maxIndex],
+          y: this.currentAnnotation.maxY,
+          marker: {size: 8},
           label: {
             text: `${diff < 0 ? '' : '+'}${diff} (${diffPercent} %)`,
             style: {
@@ -145,14 +138,14 @@ export default {
               padding: {
                 left: 10,
                 right: 10,
-                top: 10,
-                bottom: 10,
+                top: 5,
+                bottom: 5,
               }
             }
           },
-        })
+        }, false)
       })
-    },
+    }
   },
   computed: {
     chartKeys() {
@@ -184,19 +177,12 @@ export default {
         })
       }
 
-      this.selectionPoints.forEach(pointData=>{
-        data.push({
-          type: 'line',
-          data: pointData
-        })
-      })
-
       return data
     },
 
     chartColors() {
       const colorsInWork = this.isProfitabilityFull
-          ? ['#13B062', '#F7BB2E', '#AB130E', '#DC7DE8']
+          ? ['#13B062', '#F7BB2E', '#AB130E']
           : ['#13B062', '#AB130E']
 
       const colorsInPause = this.isProfitabilityFull
