@@ -246,7 +246,7 @@
             v-for="(block, index) in blocks"
             :key="index"
             class="d-flex bg-main1 text-white text-wrap p-3 mb-3"
-            style="min-height: 220px">
+            style="min-height: 175px">
           <div
               v-for="(subBlock, subBlockIndex) in block"
               :key="subBlock.title"
@@ -266,6 +266,10 @@
                   {{ subBlock.valueWord }}
                 </span>
               </div>
+            </div>
+
+            <div class="text-grey font-size-14px line-height-14px font-weight-bold mb-3">
+              Оптимизированный
             </div>
 
             <div class="font-size-12px line-height-14px text-nowrap">
@@ -295,38 +299,58 @@
 
         <div class="bg-main1 p-3 mt-3 text-white text-wrap">
           <div class="font-size-16px line-height-22px font-weight-bold mb-3">
-            {{ trans('economic_reference.select_data_display_options') }}
+            Выберите сценарии оптимизации
           </div>
-
-          <select-interval
-              :form="form"
-              class="mb-3"
-              @change="getEconomicData"/>
-
-          <select-granularity
-              :form="form"
-              class="mb-3"
-              @change="getEconomicData"/>
-
-          <select-profitability
-              :form="form"
-              class="mb-3"
-              @change="getEconomicData"/>
 
           <select-organization
               :form="form"
-              class="mb-3"
-              @change="getEconomicData"/>
+              class="mb-3"/>
 
-          <select-field
-              v-if="form.org_id"
-              :org_id="form.org_id"
-              :form="form"
-              @change="getEconomicData"/>
+          <select
+              class="mb-3 form-control text-white border-0"
+              style="background-color: #333975;">
+            <option
+                v-for="price in oilPrices"
+                :key="price.id"
+                :value="price.id">
+              {{ price.name }}
+            </option>
+          </select>
 
-          <button
-              class="btn btn-primary mt-4 py-2 w-100 border-0 bg-export"
-              @click="exportEconomicData">
+          <select
+              class="mb-3 form-control text-white border-0"
+              style="background-color: #333975;">
+            <option
+                v-for="rate in dollarRates"
+                :key="rate.id"
+                :value="rate.id">
+              {{ rate.name }}
+            </option>
+          </select>
+
+          <select
+              class="mb-3 form-control text-white border-0"
+              style="background-color: #333975;">
+            <option
+                v-for="salaryPercent in salaryPercents"
+                :key="salaryPercent.id"
+                :value="salaryPercent.id">
+              {{ salaryPercent.name }}
+            </option>
+          </select>
+
+          <select
+              class="mb-3 form-control text-white border-0"
+              style="background-color: #333975;">
+            <option
+                v-for="optimizationPercent in optimizationPercents"
+                :key="optimizationPercent.id"
+                :value="optimizationPercent.id">
+              {{ optimizationPercent.name }}
+            </option>
+          </select>
+
+          <button class="btn btn-primary mt-4 py-2 w-100 border-0 bg-export">
             {{ trans('economic_reference.export_excel') }}
           </button>
         </div>
@@ -479,7 +503,7 @@ export default {
       pageSizes: [10, 20, 50],
       height: 300
     },
-    loading: true
+    loading: false
   }),
   computed: {
     blocks() {
@@ -493,7 +517,7 @@ export default {
             percent: 527,
             percentWord: 'тыс. тонн',
             reverse: true,
-            reversePercent:  true
+            reversePercent: true
           },
           {
             title: 'Обводненность',
@@ -599,7 +623,75 @@ export default {
           val2: 53
         }
       ]
-    }
+    },
+
+    oilPrices() {
+      return [
+        {
+          id: null,
+          name: 'Цена на нефть'
+        },
+        {
+          id: 1,
+          name: 50
+        },
+        {
+          id: 2,
+          name: 60
+        }
+      ]
+    },
+
+    dollarRates() {
+      return [
+        {
+          id: null,
+          name: 'Курс доллара'
+        },
+        {
+          id: 1,
+          name: 30
+        },
+        {
+          id: 2,
+          name: 40
+        }
+      ]
+    },
+
+    salaryPercents() {
+      return [
+        {
+          id: null,
+          name: 'Процент оптимизации заработной платы'
+        },
+        {
+          id: 1,
+          name: 50
+        },
+        {
+          id: 2,
+          name: 70
+        }
+      ]
+    },
+
+    optimizationPercents() {
+      return [
+        {
+          id: null,
+          name: 'Процент остановки нерентабельного фонда'
+        },
+        {
+          id: 1,
+          name: 10
+        },
+        {
+          id: 2,
+          name: 20
+        }
+      ]
+    },
   },
   methods: {
     calcSubBlockBg(percent, reversePercent) {
@@ -615,8 +707,7 @@ export default {
     },
 
     async getEconomicData() {
-      return this.loading = false
-      return this.loading = false
+      return
 
       this.loading = true
 
