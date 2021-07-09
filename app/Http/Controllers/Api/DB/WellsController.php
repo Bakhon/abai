@@ -62,6 +62,8 @@ class WellsController extends Controller
             'gtm' => $this->gtm($well),
             'rzatr_atm' => $this->gdisCurrentValueRzatr($well, 'FLVL'),
             'rzatr_stat' => $this->gdisCurrentValueRzatr($well, 'STLV'),
+            'gu' => $this->getTechsByCode($well, 'GU'),
+            'agms' => $this->getTechsByCode($well, 'AGMS'),
         );
     }
 
@@ -304,10 +306,11 @@ class WellsController extends Controller
 
     private function krsWellWorkover(Well $well)
     {
-        return $well->wellWorkover()
-            ->where('repair_type', '=', '1')
-            ->orderBy('dbeg', 'desc')
-            ->first(['dbeg', 'dend']);
+        $wellWorkover = $well->wellWorkover()->where('repair_type', '=', '1')->orderBy('dbeg', 'desc')->first(['dbeg', 'dend']);
+        if (isset($wellWorkover)) {
+            return $wellWorkover;
+        }
+        return ['dend' => '', 'dbeg' => ''];
     }
 
     private function wellTreatment(Well $well)
@@ -449,6 +452,14 @@ class WellsController extends Controller
             ->first(['dbeg']);
     }
 
+    private function getTechsByCode(Well $well, $code)
+    {
+        return $well->techs()
+            ->join('dict.tech_type', 'dict.tech_type.id', '=', 'dict.tech.tech_type')
+            ->where('dict.tech_type.code', '=', $code)
+            ->where('dict.tech.dend', '>=', $this->getToday())
+            ->first(['dict.tech.name_ru']);
+    }
 
     public function search(Request $request): array
     {

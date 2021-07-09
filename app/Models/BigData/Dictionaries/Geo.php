@@ -5,7 +5,6 @@ namespace App\Models\BigData\Dictionaries;
 
 use App\Models\BigData\Well;
 use App\Models\TBDModel;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
@@ -38,10 +37,10 @@ class Geo extends TBDModel
     {
         $ids = DB::connection($this->connection)
             ->table('dict.geo_parent')
-            ->select('geo_id')
+            ->select('geo')
             ->where('parent', $this->id)
             ->get()
-            ->pluck('geo_id')
+            ->pluck('geo')
             ->toArray();
 
         return !empty($ids) ? Geo::whereIn('id', $ids)->get() : null;

@@ -161,7 +161,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .rating-settings {
   color: #fff;
   display: flex;
@@ -171,7 +171,6 @@ export default {
   width: 100%;
   max-width: 24.4%;
 }
-
 .expand-enter-active, .expand-leave-active {
   -webkit-transition: height 0.3s ease-in-out, margin 0.3s ease-in-out, padding 0.3s ease-in-out;
   transition: height 0.3s ease-in-out, margin 0.3s ease-in-out, padding 0.3s ease-in-out;

@@ -216,17 +216,17 @@ class EconomicController extends Controller
                 : $builder->groupBy()->data();
         }
 
-        $dataChart1 = ['dt' => []];
+        $dataWithProfitability = ['dt' => []];
 
         foreach ($profitabilities as $profitability) {
-            $dataChart1[$profitability] = [];
+            $dataWithProfitability[$profitability] = [];
         }
 
-        $dataChart2 = $dataChart1;
-        $dataChart4 = $dataChart1;
-        $dataChart5 = $dataChart1;
+        $dataWithOilProduction = $dataWithProfitability;
+        $dataWithLiquidProduction = $dataWithProfitability;
+        $dataWithPausedProfitability = $dataWithProfitability;
 
-        $dataChart3 = [
+        $dataWithOperatingProfitTop = [
             'uwi' => [],
             'Operating_profit' => []
         ];
@@ -249,26 +249,26 @@ class EconomicController extends Controller
         );
 
         foreach ($result[self::BUILDER_SUM_OPERATING_PROFIT_TOP_LAST_YEAR] as &$item) {
-            $dataChart3['uwi'][] = $item['uwi'];
+            $dataWithOperatingProfitTop['uwi'][] = $item['uwi'];
 
-            $dataChart3['Operating_profit'][] = $item['Operating_profit'] / 1000;
+            $dataWithOperatingProfitTop['Operating_profit'][] = $item['Operating_profit'] / 1000;
         }
 
         foreach ($result[self::BUILDER_OIL_PRODUCTION] as &$item) {
-            $dataChart2['dt'][$item['dt']] = 1;
+            $dataWithOilProduction['dt'][$item['dt']] = 1;
 
-            $dataChart2[$item[$profitabilityType]][] = $item['oil'] / 1000;
+            $dataWithOilProduction[$item[$profitabilityType]][] = $item['oil'] / 1000;
 
-            $dataChart4[$item[$profitabilityType]][] = self::profitabilityFormat($item);
+            $dataWithLiquidProduction[$item[$profitabilityType]][] = self::profitabilityFormat($item);
         }
 
-        $dataChart2['dt'] = array_keys($dataChart2['dt']);
-        $dataChart4['dt'] = $dataChart2['dt'];
+        $dataWithOilProduction['dt'] = array_keys($dataWithOilProduction['dt']);
+        $dataWithLiquidProduction['dt'] = $dataWithOilProduction['dt'];
 
         foreach ($result[self::STATUS_ACTIVE] as &$item) {
-            $dataChart1['dt'][$item['dt']] = 1;
+            $dataWithProfitability['dt'][$item['dt']] = 1;
 
-            $dataChart1[$item[$profitabilityType]][] = self::calcProfitabilityCount(
+            $dataWithProfitability[$item[$profitabilityType]][] = self::calcProfitabilityCount(
                 $item,
                 $granularity,
                 $intervalMonthsStart,
@@ -276,12 +276,12 @@ class EconomicController extends Controller
             );
         }
 
-        $dataChart1['dt'] = array_keys($dataChart1['dt']);
+        $dataWithProfitability['dt'] = array_keys($dataWithProfitability['dt']);
 
         foreach ($result[self::STATUS_PAUSE] as &$item) {
-            $dataChart5['dt'][$item['dt']] = 1;
+            $dataWithPausedProfitability['dt'][$item['dt']] = 1;
 
-            $dataChart5[$item[$profitabilityType . '_v_prostoe']][] = self::calcProfitabilityCount(
+            $dataWithPausedProfitability[$item[$profitabilityType . '_v_prostoe']][] = self::calcProfitabilityCount(
                 $item,
                 $granularity,
                 $intervalMonthsStart,
@@ -289,7 +289,7 @@ class EconomicController extends Controller
             );
         }
 
-        $dataChart5['dt'] = array_keys($dataChart5['dt']);
+        $dataWithPausedProfitability['dt'] = array_keys($dataWithPausedProfitability['dt']);
 
         $monthsCount = count($result[self::BUILDER_SUM_OPERATING_PROFIT_AND_COUNT_UWI_LAST_2_MONTHS]);
 
@@ -343,11 +343,13 @@ class EconomicController extends Controller
                 ]
             ],
             'lastMonth' => $resLastMonth,
-            'chart1' => $dataChart1,
-            'chart2' => $dataChart2,
-            'chart3' => $dataChart3,
-            'chart4' => $dataChart4,
-            'chart5' => $dataChart5,
+            'charts' => [
+                'profitability' => $dataWithProfitability,
+                'oilProduction' => $dataWithOilProduction,
+                'operatingProfitTop' => $dataWithOperatingProfitTop,
+                'liquidProduction' => $dataWithLiquidProduction,
+                'pausedProfitability' => $dataWithPausedProfitability,
+            ]
         ];
     }
 

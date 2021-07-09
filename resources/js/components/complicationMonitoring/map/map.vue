@@ -42,9 +42,17 @@
         >
         </datetime>
       </div>
+
+      <div class="gu-map__filter_input mt-15px" v-if="activeFilter == 'pressure' || activeFilter == 'temperature'">
+        <b-form-input
+            v-model="referentValue"
+            @input="mapRedraw"
+            type="number"
+            :placeholder="trans('monitoring.map.referent_value')"></b-form-input>
+      </div>
     </div>
 
-    <map-legend :variant="mapColorsMode" />
+    <map-legend :variant="mapColorsMode"/>
 
     <div id="map"></div>
 
@@ -88,6 +96,11 @@
         </div>
       </template>
     </b-modal>
+
+    <div v-show="false">
+      <gu-tool-tip ref="guToolTip" :gu="guHovered" />
+      <pipe-tool-tip ref="pipeToolTip"  :pipe="pipeHovered" :paramKey="pipeHoveredParameter" />
+    </div>
   </div>
 </template>
 
@@ -107,8 +120,9 @@ import mapContextMenu from "./mapContextMenu";
 import pipeColors from '~/json/pipe_colors.json'
 import axios from "axios";
 import moment from "moment";
-import CatLoader from '../../ui-kit/CatLoader'
-
+import CatLoader from '../../ui-kit/CatLoader';
+import guToolTip from "./guToolTip";
+import pipeToolTip from "./pipeToolTip";
 
 export default {
   name: "gu-map",
@@ -119,6 +133,8 @@ export default {
     'map-well-form': mapWellForm,
     'map-pipe-form': mapPipeForm,
     'map-context-menu': mapContextMenu,
+    guToolTip,
+    pipeToolTip,
     CatLoader,
     mapLegend
   },
@@ -163,9 +179,21 @@ export default {
         {
           name: this.trans('monitoring.map.filters.speed-flow-filter'),
           key: 'speedFlow'
-        }
+        },
+        {
+          name: this.trans('monitoring.map.filters.pressure'),
+          key: 'pressure'
+        },
+        {
+          name: this.trans('monitoring.map.filters.temperature'),
+          key: 'temperature'
+        },
       ],
       loading: false,
+      referentValue: 10,
+      guHovered: null,
+      pipeHovered: null,
+      pipeHoveredParameter: null,
     };
   },
   created() {
@@ -203,7 +231,7 @@ export default {
       'deleteZu',
       'deleteWell',
       'getElevationByCoords',
-      'getSpeedFlow'
+      'getHydroReverseCalc'
     ]),
     async initMap() {
       this.loading = true;
@@ -252,14 +280,18 @@ export default {
         },
         onHover: ({object}) => (this.isHovering = Boolean(object)),
         getCursor: ({isDragging}) => (isDragging ? 'grabbing' : (this.isHovering ? 'pointer' : 'grab')),
-        getTooltip: ({object}) => {
+        getTooltip:  ({object}) => {
           if (object) {
             if (object.cdng_id && object.last_omgngdu) {
-              let guParams = object.last_omgngdu;
-              guParams.name = object.name;
-
               return {
-                html: this.getGuTooltipHtml(guParams)
+                html: this.getGuTooltipHtml(object)
+              }
+            }
+
+            let paramKey = this.getPipeCalcKey(object);
+            if (paramKey) {
+              return {
+                html: this.getPipeTooltipHtml(object, paramKey)
               }
             }
 
@@ -285,20 +317,32 @@ export default {
         this.loading = false;
       });
     },
-    getGuTooltipHtml(guParams) {
-      return '<div class="params_block">' +
-          '<p>' + guParams.name + '</p>' +
-          '<p>' + this.trans('monitoring.gu.fields.date') + ': ' + guParams.date + '</p>' +
-          '<p>' + this.trans('monitoring.gu.fields.daily_fluid_production') + ': ' + guParams.daily_fluid_production + ' ' + this.trans('measurements.m3/day') + '</p>' +
-          '<p>' + this.trans('monitoring.gu.fields.daily_oil_production') + ': ' + guParams.daily_oil_production + ' ' + this.trans('measurements.m3/day') + '</p>' +
-          '<p>' + this.trans('monitoring.gu.fields.daily_water_production') + ': ' + guParams.daily_water_production + ' ' + this.trans('measurements.m3/day') + '</p>' +
-          '<p>' + this.trans('monitoring.gu.fields.bsw') + ': ' + guParams.bsw + this.trans('measurements.percent') + '</p>' +
-          '<p>' + this.trans('monitoring.gu.fields.pump_discharge_pressure') + ': ' + guParams.pump_discharge_pressure + ' ' + this.trans('measurements.pressure_bar') + '</p>' +
-          '<p>' + this.trans('monitoring.gu.fields.heater_output_temperature') + ': ' + guParams.heater_output_temperature + ' ' + this.trans('measurements.celsius') + '</p>' +
-          '<p>' + this.trans('monitoring.gu.fields.daily_gas_production_in_sib') + ': ' + guParams.daily_gas_production_in_sib + ' ' + this.trans('measurements.st.m3/day') + '</p>' +
-          '<p>' + this.trans('monitoring.gu.fields.surge_tank_pressure') + ': ' + guParams.surge_tank_pressure + ' ' + this.trans('measurements.pressure_bar') + '</p>' +
+    getPipeCalcKey (pipe) {
+      let keys = [
+          'last_hydro_calc',
+          'last_reverse_calc',
+          'hydro_calc',
+          'reverse_calc'
+      ];
 
-          '</div>';
+      for (let key of keys) {
+        if (pipe[key]) {
+          return key;
+        }
+      }
+
+      return null;
+    },
+    getGuTooltipHtml(gu) {
+      this.guHovered = gu;
+
+      return this.$refs.guToolTip.$el.outerHTML;
+    },
+    getPipeTooltipHtml(pipe, paramKey) {
+      this.pipeHovered = pipe;
+      this.pipeHoveredParameter = paramKey;
+
+      return this.$refs.pipeToolTip.$el.outerHTML;
     },
     prepareLayers() {
       let pipesLayer = this.createPipeLayer('path-layer', this.pipes);
@@ -419,15 +463,20 @@ export default {
     },
     getPipeColor(pipe) {
       if (this.activeFilter) {
-        if (this.activeFilter === 'speedFlow') {
-          return this.getColorByFlowSpeed(pipe);
+        switch (this.activeFilter) {
+          case "speedFlow":
+            return this.getColorByFlowSpeed(pipe);
+          case "pressure":
+            return this.getColorByPressure(pipe);
+          case "temperature":
+            return this.getColorByTemperature(pipe);
         }
       }
 
       return pipeColors[this.mapColorsMode][pipe.between_points]
     },
-    getColorByFlowSpeed (pipe) {
-      let speed_flow = pipe.speed_flow_well_gu ? pipe.speed_flow_well_gu : (pipe.speed_flow_gu_upsv ? pipe.speed_flow_gu_upsv : null);
+    getColorByFlowSpeed(pipe) {
+      let speed_flow = pipe.reverse_calc ? pipe.reverse_calc : (pipe.hydro_calc ? pipe.hydro_calc : null);
       switch (true) {
         case speed_flow == null:
           return pipeColors[this.mapColorsMode].no_data;
@@ -444,6 +493,32 @@ export default {
         case speed_flow.fluid_speed > 0.9:
           return pipeColors[this.mapColorsMode].good;
           break;
+      }
+    },
+    getColorByPressure(pipe) {
+      let pressure = pipe.hydro_calc ? pipe.hydro_calc : null;
+      switch (true) {
+        case pressure == null:
+          return pipeColors[this.mapColorsMode].no_data;
+
+        case pressure.press_start >= this.referentValue || pressure.press_end >= this.referentValue:
+          return pipeColors[this.mapColorsMode].danger;
+
+        default:
+          return pipeColors[this.mapColorsMode].good;
+      }
+    },
+    getColorByTemperature(pipe) {
+      let temperature = pipe.hydro_calc ? pipe.hydro_calc.temperature_end : null;
+      switch (true) {
+        case temperature == null:
+          return pipeColors[this.mapColorsMode].no_data;
+
+        case temperature <= this.referentValue:
+          return pipeColors[this.mapColorsMode].danger;
+
+        default:
+          return pipeColors[this.mapColorsMode].good;
       }
     },
     addMapLayer(layerId) {
@@ -476,7 +551,7 @@ export default {
       this.objectData.index = option.mapObject.index;
       this.$bvModal.show('object-modal');
     },
-    onRedirect(option){
+    onRedirect(option) {
       let url = this.localeUrl("/monitor/" + option.mapObject.object.id);
       window.location.href = url;
     },
@@ -654,7 +729,7 @@ export default {
       });
     },
     async editGu() {
-      let result  = await this.updateGu(this.objectData);
+      let result = await this.updateGu(this.objectData);
       let message = '';
 
       if (result.status == 'success') {
@@ -675,7 +750,7 @@ export default {
       this.showToast(message, this.trans('app.' + result.status), variant);
     },
     async editZu() {
-      let result  = await this.updateZu(this.objectData);
+      let result = await this.updateZu(this.objectData);
       let message = '';
 
       if (result.status == 'success') {
@@ -998,27 +1073,42 @@ export default {
       if (!date) return null
       return moment.parseZone(date).format('YYYY-MM-DD')
     },
-    async applyFilter () {
-      this.mapColorsMode = this.activeFilter;
+    async applyFilter() {
       switch (this.activeFilter) {
         case 'speedFlow':
+        case 'pressure':
+        case 'temperature':
           this.loading = true;
-          this.pipes = await this.getSpeedFlow(this.formatDate(this.selectedDate));
+          this.pipes = await this.getHydroReverseCalc(this.formatDate(this.selectedDate));
           this.mapRedraw();
           this.loading = false;
           break;
 
         default:
           this.mapColorsMode = 'default';
-          return false
-          break;
+          return false;
       }
     },
-    filterChanged () {
-      if (!this.activeFilter) {
-        this.mapColorsMode = 'default';
-        this.selectedDate = null;
-        this.mapRedraw();
+    async filterChanged() {
+      this.selectedDate = null;
+      this.mapColorsMode = this.activeFilter;
+
+      switch (this.activeFilter) {
+        case 'pressure':
+          this.referentValue = 10;
+          break;
+
+        case 'temperature':
+          this.referentValue = 30;
+          break;
+
+        case null:
+          this.mapColorsMode = 'default';
+          this.loading = true;
+          this.pipes = await this.getMapData(this.gu);
+          this.loading = false;
+          this.mapRedraw();
+          break;
       }
     },
     mapRedraw() {
@@ -1061,7 +1151,7 @@ h1 {
     }
   }
 
-  &__datetime-picker {
+  &__datetime-picker, &__filter_input {
     min-width: 260px;
   }
 

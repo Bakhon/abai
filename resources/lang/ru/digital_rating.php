@@ -14,4 +14,13 @@ return array (
   'sectorMap' => 'Карта секторов',
   'wellAtlas' => 'Атлас скважины',
   'wellsReport' => 'Отчет по скважинам',
+  'map' => 'Карта',
+  'object' => 'Объект',
+  'mapsGeologyDevelopment' => 'Карты геологии и разработки',
+  'sectorCode' => 'Код сектора',
+  'property' => 'Свойство',
+  'file' => 'Файл',
+  'import' => 'Импорт',
+  'export' => 'Экспорт',
+  'save' => 'Сохранить',
 );
