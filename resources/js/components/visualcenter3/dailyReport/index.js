@@ -293,7 +293,7 @@ export default {
         },
         updateProduction() {
             this.summary.productionByDzo = this.getSummaryByDzo(this.typeMapping.production);
-            this.summary.productionByKMG = this.getSummaryByKMG(this.summary.productionByDzo,'production');
+            this.summary.productionByKMG = this.getSummaryByKMG(this.summary.productionByDzo,'production',false);
             let oilSummary = this.summary.productionByKMG[0];
             let condensateSummary = this.summary.productionByKMG[1];
             oilSummary.number = 2;
@@ -301,12 +301,12 @@ export default {
             oilSummary.monthlyPlan += condensateSummary.monthlyPlan;
             oilSummary.monthlyPlanOpec += condensateSummary.monthlyPlanOpec;
             this.summary.productionByDzoWithParticipation = this.getSummaryWithParticipationByDzo(this.summary.productionByDzo);
-            this.summary.productionByKMGWithParticipation = this.getSummaryByKMG(this.summary.productionByDzoWithParticipation,'production');
+            this.summary.productionByKMGWithParticipation = this.getSummaryByKMG(this.summary.productionByDzoWithParticipation,'production',true);
             this.summary.productionByKMGWithParticipation[0].number = 1;
         },
         updateDelivery() {
             this.summary.deliveryByDzo = this.getSummaryByDzo(this.typeMapping.delivery);
-            this.summary.deliveryByKMG = this.getSummaryByKMG(this.summary.deliveryByDzo,'delivery');
+            this.summary.deliveryByKMG = this.getSummaryByKMG(this.summary.deliveryByDzo,'delivery',false);
             let oilSummary = this.summary.deliveryByKMG[0];
             let condensateSummary = this.summary.deliveryByKMG[1];
             oilSummary.number = 2;
@@ -314,16 +314,19 @@ export default {
             oilSummary.monthlyPlan += condensateSummary.monthlyPlan;
             oilSummary.monthlyPlanOpec += condensateSummary.monthlyPlanOpec;
             this.summary.deliveryByDzoWithParticipation = this.getSummaryWithParticipationByDzo(this.summary.deliveryByDzo);
-            this.summary.deliveryByKMGWithParticipation = this.getSummaryByKMG(this.summary.deliveryByDzoWithParticipation,'delivery');
+            this.summary.deliveryByKMGWithParticipation = this.getSummaryByKMG(this.summary.deliveryByDzoWithParticipation,'delivery',true);
             this.summary.deliveryByKMGWithParticipation[0].number = 1;
         },
-        getSummaryByKMG(productionByDzo,type) {
+        getSummaryByKMG(productionByDzo,type,isKMGParticipation) {
             let summary = [];
             let oilName = 'productionByKMG';
             if (type === 'delivery') {
                 oilName = 'deliveryByKMG';
             }
-            let oilSummary = this.getSummaryByType(oilName,'oilCompanies',productionByDzo,);
+            let oilSummary = this.getSummaryByType(oilName,'oilCompanies',productionByDzo);
+            if (!isKMGParticipation) {
+                oilSummary.dzo = this.names.productionByDzo;
+            }
             let condensateSummary = this.getSummaryByType('condensate','condensateCompanies',productionByDzo);
             return [oilSummary,condensateSummary];
         },
