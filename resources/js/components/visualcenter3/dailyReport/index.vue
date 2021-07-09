@@ -1,23 +1,16 @@
 <template>
     <div class="page-wrapper">
         <div class="page-container row">
-            <div class="col-12 mt-3 d-flex">
-                <div class="header-title col-7">
+            <div class="col-12 mt-3 header">
+                <div class="header-title">
                     {{headerTitle}}
                 </div>
+                <transition name="slide-fade" mode="out-in">
+                    <div v-if="isOpecActive" class="title-opec ml-2">
+                        ОПЕК+
+                    </div>
+                </transition>
                 <div class="img-download" @click="exportToExcel()"></div>
-                <div
-                        :class="[isProduction ? 'opec-filter-active' : 'opec-filter-disabled','col-1']"
-                        @click="isProduction = !isProduction"
-                >
-                    {{buttonName}}
-                </div>
-                <div
-                        :class="[isOpecActive ? 'opec-filter-active' : 'opec-filter-disabled','col-1']"
-                        @click="isOpecActive = !isOpecActive"
-                >
-                    С учетом ОПЕК+
-                </div>
             </div>
             <div class="col-12 mt-3">
                 <table class="main-table col-12">
@@ -39,7 +32,6 @@
                         <th colspan="3" class="background-delimeters">С НАЧАЛА ГОДА</th> <!-- >с начала года <-->
                     </tr>
                     <tr>
-                        <!-- >суточная <-->
                         <th :class="!isOpecActive ? '' : 'hide-block'">План</th>
                         <th :class="isOpecActive ? '' : 'hide-block'">
                             План<br>
@@ -51,8 +43,6 @@
                             (+,-)<br>
                             с учетом ОПЕК+
                         </th>
-                        <!-- >суточная <-->
-                        <!-- >с начала месяца <-->
                         <th :class="!isOpecActive ? '' : 'hide-block'">План</th>
                         <th :class="isOpecActive ? '' : 'hide-block'">
                             План<br>
@@ -64,8 +54,6 @@
                             (+,-)<br>
                             с учетом ОПЕК+
                         </th>
-                        <!-- >с начала месяца <-->
-                        <!-- >с начала года <-->
                         <th :class="!isOpecActive ? '' : 'hide-block'">План</th>
                         <th :class="isOpecActive ? '' : 'hide-block'">
                             План<br>
@@ -77,9 +65,7 @@
                             (+,-)<br>
                             с учетом ОПЕК+
                         </th>
-                        <!-- >с начала года <-->
                     </tr>
-                    <!-- >саммари <-->
                     <tr
                             v-for="(item,index) in tableOutput.participationByKMG"
                             class="background-dark"
@@ -137,8 +123,6 @@
                             {{getFormattedNumber(item.differenceOpecByYear)}}
                         </td>
                     </tr>
-                    <!-- >саммари <-->
-                    <!-- >дзо <-->
                     <tr
                             v-for="(item, index) in tableOutput.participationByDzo"
                             :class="getRowClass(index)"
@@ -327,10 +311,7 @@
                             {{getFormattedNumber(item.differenceOpecByYear)}}
                         </td>
                     </tr>
-                    <!-- >дзо <-->
-               </table>
-
-                <!--                todo-->
+                </table>
                 <table class="col-12" id="exportReport" style="display:none">
                     <tr>
                         <th colspan="20" style="font-family: arial; font-size: 16px; font-weight: bold; text-align: center">Оперативная суточная информация по добыче, сдаче нефти и газового конденсата АО НК "КазМунайГаз"</th>
@@ -342,7 +323,7 @@
                     </tr>
                     <tr style="font-family: Arial; font-size: 13px;">
                         <th style="border: 1px solid black" rowspan="3">№ п/п</th>
-                        <th style="border: 1px solid black" rowspan="3">Предприятия</th>
+                        <th style="border: 1px solid black; width: 300px" rowspan="3">Предприятия</th>
                         <th style="border: 1px solid black" colspan="18" class="background-delimeters">ДОБЫЧА, тонн</th>
                         <th style="border: 1px solid black" colspan="18" class="background-delimeters">СДАЧА, тонн</th>
                     </tr>
@@ -375,7 +356,6 @@
                         <th style="border: 1px solid black" colspan="5" class="background-delimeters">С НАЧАЛА ГОДА</th> <!-- >с начала года <-->
                     </tr>
                     <tr style="font-family: Arial; font-size: 13px;">
-                        <!-- >суточная <-->
                         <th style="border: 1px solid black" >План</th>
                         <th style="border: 1px solid black" >
                             План<br>
@@ -387,8 +367,6 @@
                             (+,-)<br>
                             с учетом ОПЕК+
                         </th>
-                        <!-- >суточная <-->
-                        <!-- >с начала месяца <-->
                         <th style="border: 1px solid black" >План</th>
                         <th style="border: 1px solid black" >
                             План<br>
@@ -400,8 +378,6 @@
                             (+,-)<br>
                             с учетом ОПЕК+
                         </th>
-                        <!-- >с начала месяца <-->
-                        <!-- >с начала года <-->
                         <th style="border: 1px solid black" >План</th>
                         <th style="border: 1px solid black" >
                             План<br>
@@ -413,8 +389,6 @@
                             (+,-)<br>
                             с учетом ОПЕК+
                         </th>
-                        <!-- >с начала года <-->
-                        <!-- >суточная <-->
                         <th style="border: 1px solid black" >План</th>
                         <th style="border: 1px solid black" >
                             План<br>
@@ -426,8 +400,6 @@
                             (+,-)<br>
                             с учетом ОПЕК+
                         </th>
-                        <!-- >суточная <-->
-                        <!-- >с начала месяца <-->
                         <th style="border: 1px solid black" >План</th>
                         <th style="border: 1px solid black" >
                             План<br>
@@ -439,8 +411,6 @@
                             (+,-)<br>
                             с учетом ОПЕК+
                         </th>
-                        <!-- >с начала месяца <-->
-                        <!-- >с начала года <-->
                         <th style="border: 1px solid black" >План</th>
                         <th style="border: 1px solid black" >
                             План<br>
@@ -452,16 +422,17 @@
                             (+,-)<br>
                             с учетом ОПЕК+
                         </th>
-                        <!-- >с начала года <-->
                     </tr>
-                    <!-- >дзо <-->
                     <tr
                             v-for="(item, index) in summaryForExport.byKMG"
                             :style="getStyleForSummary(index,true)"
                     >
-                        <td v-if="index !== 1">{{item.number}}</td>
+                        <td v-if="index !== 3" style="text-align: center">{{item.number}}</td>
                         <td v-else></td>
-                        <td :class="index === 1 ? 'troubled-companies-padding' : ''">
+                        <td v-if="[3,15,16,17].includes(index)" style="text-align: left">
+                            &emsp;&emsp;{{companiesNameMapping.withParticipation[item.dzo]}}
+                        </td>
+                        <td v-else style="text-align: left">
                             {{companiesNameMapping.withParticipation[item.dzo]}}
                         </td>
                         <td>{{getFormattedNumber(item.yearlyPlan)}}</td>
@@ -494,8 +465,6 @@
                         <td :style="getStyleByDifference(item.differenceOpecByYear)">
                             {{getFormattedNumber(item.differenceOpecByYear)}}
                         </td>
-
-                        <!--                        delivery-->
                         <td>{{getFormattedNumber(item.deliveryYearlyPlan)}}</td>
                         <td>{{getFormattedNumber(item.deliveryMonthlyPlan)}}</td>
                         <td>{{getFormattedNumber(item.deliveryMonthlyPlanOpec)}}</td>
@@ -529,15 +498,17 @@
                     </tr>
                     <tr class="row-divider">
                     </tr>
-                    <!--  byDZO                  -->
                     <tr
                             v-for="(item, index) in summaryForExport.byDzo"
                             :style="getStyleForSummary(index, false)"
                     >
-                        <td v-if="index !== 1">{{item.number}}</td>
+                        <td v-if="index !== 3" style="text-align: center">{{item.number}}</td>
                         <td v-else></td>
-                        <td :class="index === 1 ? 'troubled-companies-padding' : ''">
-                            {{companiesNameMapping.withParticipation[item.dzo]}}
+                        <td v-if="index === 3" style="text-align: left">
+                            &emsp;&emsp;{{companiesNameMapping.summaryByDzo[item.dzo]}}
+                        </td>
+                        <td v-else style="text-align: left">
+                            {{companiesNameMapping.summaryByDzo[item.dzo]}}
                         </td>
                         <td>{{getFormattedNumber(item.yearlyPlan)}}</td>
                         <td>{{getFormattedNumber(item.monthlyPlan)}}</td>
@@ -569,8 +540,6 @@
                         <td :style="getStyleByDifference(item.differenceOpecByYear)">
                             {{getFormattedNumber(item.differenceOpecByYear)}}
                         </td>
-
-                        <!--                        delivery-->
                         <td>{{getFormattedNumber(item.deliveryYearlyPlan)}}</td>
                         <td>{{getFormattedNumber(item.deliveryMonthlyPlan)}}</td>
                         <td>{{getFormattedNumber(item.deliveryMonthlyPlanOpec)}}</td>
@@ -610,6 +579,27 @@
 <script src="./index.js"></script>
 
 <style scoped lang="scss">
+    .slide-fade-enter-active {
+        transition: all .5s ease;
+    }
+    .slide-fade-leave-active {
+        transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+    }
+    .slide-fade-enter, .slide-fade-leave-to {
+        transform: translateX(10px);
+        opacity: 0;
+    }
+    .title-opec {
+        background: #3366FF;
+        border-radius: 10px;
+        line-height: 24px;
+        font-weight: 700;
+        padding: 2px 5px;
+    }
+    .header {
+        justify-content: center;
+        display: flex;
+    }
     .summary-header_text-align {
         text-align: right !important;
     }
@@ -626,32 +616,14 @@
         background: url(/img/visualcenter3/download.png) no-repeat;
         height: 25px;
         width: 25px;
+        position: absolute;
+        right: 15px;
     }
     .header-title {
         font-style: normal;
         font-weight: bold;
         font-size: 20px;
         line-height: 24px;
-    }
-    .opec-filter-active {
-        line-height: 24px;
-        margin-left: auto;
-        border-radius: 10px;
-        background: #3366FF;
-    }
-    .opec-filter-disabled {
-        line-height: 24px;
-        margin-left: auto;
-        border-radius: 10px;
-        background: #4C537E;
-    }
-    div.opec-filter-disabled:hover {
-        -webkit-box-shadow: 2px 1px 33px 4px rgba(28,37,247,0.78);
-        box-shadow: 2px 1px 33px 4px rgba(28,37,247,0.78);
-    }
-    div.opec-filter-active:hover {
-        -webkit-box-shadow: 2px 1px 33px 4px rgba(28,37,247,0.78);
-        box-shadow: 2px 1px 33px 4px rgba(28,37,247,0.78);
     }
     .hide-block {
         display:none;
@@ -711,7 +683,7 @@
        }
        td {
            text-align: right;
-           font-size: 14px;
+           font-size: 13px;
            font-family: Bold;
            width: 10%;
            &:first-child {

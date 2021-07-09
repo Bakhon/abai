@@ -15,7 +15,7 @@ export default {
                 'delivery': 'Оперативная суточная информация по сдаче нефти и конденсата АО НК "КазМунайГаз", тонн'
             },
             headerTitle: 'Оперативная суточная информация по добыче нефти и конденсата АО НК "КазМунайГаз", тонн',
-            currentDate: moment().subtract(1,'days').format('DD.MM.YYYY'),
+            currentDate: moment().format('DD.MM.YYYY'),
             currentYear: moment().year(),
             currentMonthName: moment().format('MMMM'),
             names: {
@@ -61,7 +61,7 @@ export default {
                 'byKMG': []
             },
             withKMGCompanies: ['ОМГ','ОМГК','ЭМГ','АГК','ТШО','ММГ','КОА','КТМ','КГМ','ПКК','ТП','КБМ','КПО','НКО','УО'],
-            oilCompanies: ['ОМГ','ЭМГ','ТШО','ММГ','КОА','КТМ','КГМ','ПКК','ТП','КБМ','КПО','НКО','УО'],
+            oilCompanies: ['ОМГ','ОМГК','ЭМГ','КБМ','КГМ','ПКИ','ТШО','ММГ','КТМ','КОА','АГК','КПО','НКО','УО',],
             condensateCompanies: ['ОМГК','АГК'],
             companiesNameMapping: {
                 'summaryByDzo': {
@@ -83,6 +83,7 @@ export default {
                     'ТП': this.trans("visualcenter.tp"),
                     'УО': this.trans("visualcenter.uo"),
                     'ПКК': this.trans("visualcenter.pkk"),
+                    'oilByDzo': 'Всего добыча нефти и конденсата с участием АО НК "КазМунайГаз"',
                 },
                 'withParticipation': {
                     'ОМГ': this.trans("visualcenter.consolidatedDzoNameMapping.OMG"),
@@ -131,7 +132,7 @@ export default {
                 'КОА': (val) => val * 0.5,
                 'КТМ': (val) => val,
                 'КПО': (val) => val * 0.1,
-                'НКО': (val) => (val - val * 0.019) * 241 / 1428,
+                'НКО': (val) => ((val - val * 0.019) * 241 / 1428) / 2,
                 'УО': (val) => val,
             },
             tableOutput: {
@@ -300,7 +301,6 @@ export default {
             oilSummary.monthlyPlan += condensateSummary.monthlyPlan;
             oilSummary.monthlyPlanOpec += condensateSummary.monthlyPlanOpec;
             this.summary.productionByDzoWithParticipation = this.getSummaryWithParticipationByDzo(this.summary.productionByDzo);
-            console.log(this.summary.productionByDzoWithParticipation)
             this.summary.productionByKMGWithParticipation = this.getSummaryByKMG(this.summary.productionByDzoWithParticipation,'production');
             this.summary.productionByKMGWithParticipation[0].number = 1;
         },
@@ -361,8 +361,6 @@ export default {
             _.forEach(this.withKMGCompanies, function(acronym,index) {
                 summary.push(self.getSummary(acronym,index,typeMapping));
             });
-            console.log('summary')
-            console.log(summary)
             summary = this.getSorted(summary,this.summaryOrder,'2.',[]);
             summary[0].number = '2.1.';
             return summary;
@@ -535,13 +533,13 @@ export default {
         },
         getStyleForSummary(index,isSecondParameterAvailable) {
             if (index === 0) {
-                return 'background: rgb(252,213,180); font-weight: bold; font-family: Arial; font-size: 13px;';
+                return 'background: rgb(252,213,180); font-weight: bold; font-family: Arial; font-size: 13px; text-align:right; border: 1px solid black';
             } else if (index === 1 && isSecondParameterAvailable) {
-                return 'background: rgb(253,233,217); font-weight: bold; font-family: Arial; font-size: 13px;';
+                return 'background: rgb(253,233,217); font-weight: bold; font-family: Arial; font-size: 13px; text-align:right; border: 1px solid black';
             } else if (index === 1 && !isSecondParameterAvailable) {
                 return 'display: none';
             } else {
-                return 'font-family: Arial; font-size: 13px;';
+                return 'font-family: Arial; font-size: 13px; text-align:right; border: 1px solid black';
             }
         },
         tableToExcel(table, name, filename) {
@@ -556,28 +554,18 @@ export default {
                         return c[p];
                     })
                 }
-            let clonedTable = '';
             if (!table.nodeType) {
                 table = document.getElementById(table);
-                clonedTable = table.cloneNode(true);
-                clonedTable = this.removeElementsByClass(clonedTable,'hide-block');
             }
             let ctx = {
                 worksheet: name || 'Worksheet',
-                table: clonedTable.innerHTML
+                table: table.innerHTML
             };
 
             let link = document.createElement('a');
             link.download = filename;
             link.href = uri + base64(format(template, ctx));
             link.click();
-        },
-        removeElementsByClass(element,className){
-            const elements = element.getElementsByClassName(className);
-            while(elements.length > 0){
-                elements[0].parentNode.removeChild(elements[0]);
-            }
-            return element;
         },
         exportToExcel() {
             let fileName = 'Суточная информация по добыче нефти и конденсата НК КМГ_' + moment().subtract(1, 'days').format('D M YY') + ' г. .xls';
@@ -602,24 +590,22 @@ export default {
             let productionByKMG = [];
             _.forEach(this.summary.productionByKMG, function(item) {
                 let production = item;
-                let delivery = self.getDeliveryForMerge(production.dzo,self.summary.deliveryByKMG);
+                let delivery = self.getDeliveryForMerge(self.names.deliveryByKMG,self.summary.deliveryByKMG);
                 let dzoMerged = Object.assign({},production,delivery);
                 productionByKMG.push(dzoMerged);
             });
             let productionByKMGWithParticipation = [];
             _.forEach(this.summary.productionByKMGWithParticipation, function(item) {
                 let production = item;
-                let delivery = self.getDeliveryForMerge(production.dzo,self.summary.deliveryByKMGWithParticipation);
+                let delivery = self.getDeliveryForMerge(self.names.deliveryByKMG,self.summary.deliveryByKMGWithParticipation);
                 let dzoMerged = Object.assign({},production,delivery);
                 productionByKMGWithParticipation.push(dzoMerged);
             });
-
             this.summaryForExport.byKMG = productionByKMGWithParticipation.concat(productionByDzoWithParticipation);
             this.summaryForExport.byDzo  = productionByKMG.concat(summaryByDzo);
             this.summaryForExport.byKMG[0].dzo = 'oilByKMG';
             this.summaryForExport.byKMG[1].dzo = 'condensateByKMG';
             this.summaryForExport.byDzo[0].dzo = 'oilByDzo';
-            console.log(this.summaryForExport);
         },
         getDeliveryForMerge(dzoName,delivery) {
             let itemIndex = delivery.findIndex(element => element.dzo === dzoName);
@@ -660,6 +646,13 @@ export default {
         this.updateProductionByPeriod();
         this.fillTable();
         this.$store.commit('globalloading/SET_LOADING', false);
+        setInterval(() => {
+            //this.isOpecActive = !this.isOpecActive;
+        }, 10000);
+        setInterval(() => {
+            //this.isOpecActive = false;
+           //this.isProduction = !this.isProduction;
+        }, 21000);
     },
     watch: {
         isProduction: function() {
