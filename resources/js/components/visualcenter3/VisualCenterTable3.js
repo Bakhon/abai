@@ -66,7 +66,7 @@ export default {
                     id: 113
                 },
                 "АГ" : {
-                    id: 113
+                    id: 0
                 },
             },
             isOneDzoSelected: false,
