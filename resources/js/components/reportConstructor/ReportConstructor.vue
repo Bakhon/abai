@@ -133,17 +133,18 @@
                     <label>{{ trans('bd.choose_start_date') }}</label>
                     <template>
                       <datetime
-                        type="datetime"
+                        type="date"
                         v-model="startDate"
                         value-zone="Asia/Almaty"
                         zone="Asia/Almaty"
-                        :format="{ year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: '2-digit'}"
+                        :format="{ year: 'numeric', month: 'numeric', day: 'numeric'}"
                         :phrases="{ok: trans('app.choose'), cancel: trans('app.cancel')}"
                         :max-datetime="endDate"
                         :week-start="1"
                         :placeholder= "[[ trans('bd.dd_mm_yyyy') ]]"
                         use24-hour
                         auto
+                        :flow="['year', 'month', 'date']"
                       >
                       </datetime>
                     </template>
@@ -152,17 +153,18 @@
                     <label>{{ trans('bd.choose_end_date') }}</label>
                     <template>
                       <datetime
-                        type="datetime"
+                        type="date"
                         v-model="endDate"
                         value-zone="Asia/Almaty"
                         zone="Asia/Almaty"
-                        :format="{ year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: '2-digit'}"
+                        :format="{ year: 'numeric', month: 'numeric', day: 'numeric'}"
                         :phrases="{ok: trans('app.choose'), cancel: trans('app.cancel')}"
                         :min-datetime="startDate"
                         :week-start="1"
                         :placeholder= "[[ trans('bd.dd_mm_yyyy') ]]"
                         use24-hour
                         auto
+                        :flow="['year', 'month', 'date']"
                       >
                       </datetime>
                     </template>
