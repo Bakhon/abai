@@ -94,7 +94,7 @@ const tr = {
   actions: {
   },
 
-  getters: {
+  state: {
     month: (state) => state.month,
     year: (state) => state.year,
     chart: (state) => state.chart,
