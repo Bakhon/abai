@@ -1,5 +1,67 @@
 [
   {
+    "code": "project",
+    "name": "Проект (план)",
+    "icon_name": "dir.svg",
+    "type": "dir",
+    "isVisible": true,
+    "children": [
+      {
+        "code": "well_design",
+        "name": "Конструкция скважины по проекту",
+        "icon_name": "page.svg",
+        "type": "plain",
+        "isVisible": true
+      }
+    ]
+  },
+  {
+    "code": "drilling",
+    "name": "Бурение",
+    "icon_name": "dir.svg",
+    "type": "dir",
+    "isVisible": true,
+    "children": [
+      {
+        "code": "well_incl",
+        "name": "Инклинометрия",
+        "icon_name": "page.svg",
+        "type": "plain",
+        "isVisible": true
+      },
+      {
+        "code": "daily_drill",
+        "name": "Суточная проходка",
+        "icon_name": "page.svg",
+        "type": "plain",
+        "isVisible": true
+      },
+      {
+        "code": "well_constr",
+        "name": "Конструкция скважины",
+        "icon_name": "page.svg",
+        "type": "plain",
+        "isVisible": true
+      }
+    ]
+  },
+  {
+    "code": "well_exploitation",
+    "name": "Освоение, обустройство",
+    "icon_name": "dir.svg",
+    "type": "dir",
+    "isVisible": true,
+    "children": [
+      {
+        "code": "well_exploitation",
+        "name": "Освоение, обустройство",
+        "icon_name": "page.svg",
+        "type": "plain",
+        "isVisible": true
+      }
+    ]
+  },
+  {
     "code": "well_file",
     "name": "Дело скважины",
     "icon_name": "dir.svg",
@@ -14,14 +76,14 @@
         "isVisible": true,
         "children": [
           {
-            "code": "geo_struct",
+            "code": "geo_structure",
             "name": "Геологическая структура",
             "icon_name": "page.svg",
             "type": "plain",
             "isVisible": true
           },
           {
-            "code": "org_struct",
+            "code": "org_structure",
             "name": "Организационная структура",
             "icon_name": "page.svg",
             "type": "plain",
@@ -77,7 +139,244 @@
             "isVisible": true
           }
         ]
+      },{
+        "code": "measurement_schedule",
+        "name": "График замеров",
+        "icon_name": "dir.svg",
+        "type": "dir",
+        "isVisible": true,
+        "children": [
+          {
+            "code": "production_wells_schedule",
+            "name": "Добывающие скважины",
+            "icon_name": "page.svg",
+            "type": "plain",
+            "component_name": "ProductionWellsScheduleMain",
+            "isVisible": true
+          },
+          {
+            "code": "injection_wells_schedule",
+            "name": "Нагнетательные скважины",
+            "icon_name": "page.svg",
+            "type": "plain",
+            "component_name": "ProductionWellsScheduleMain",
+            "isVisible": true
+          }
+        ]
+      },
+      {
+        "code": "performance_indicators",
+        "name": "Эксплуатационные показатели",
+        "icon_name": "dir.svg",
+        "type": "dir",
+        "isVisible": true,
+        "children": [
+          {
+            "code": "bsw_lab",
+            "name": "Обводненность лаборатории",
+            "icon_name": "page.svg",
+            "type": "plain",
+            "isVisible": true
+          }
+        ]
+      },
+      {
+        "code": "tech_mode",
+        "name": "Технологический режим",
+        "icon_name": "dir.svg",
+        "type": "dir",
+        "isVisible": true,
+        "children": [
+          {
+            "code": "production_well",
+            "name": "Добывающие скважины",
+            "icon_name": "page.svg",
+            "type": "plain",
+            "isVisible": true
+          },
+          {
+            "code": "injection_wells",
+            "name": "Нагнетательные скважины",
+            "icon_name": "page.svg",
+            "type": "plain",
+            "isVisible": true
+          },
+          {
+            "code": "gas_well",
+            "name": "Газовые скважины",
+            "icon_name": "page.svg",
+            "type": "plain",
+            "isVisible": true
+          }
+        ]
+      },
+      {
+        "code": "research",
+        "name": "Исследования",
+        "icon_name": "dir.svg",
+        "type": "dir",
+        "isVisible": true,
+        "children": [
+          {
+            "code": "gis",
+            "name": "ГИС в открытом стволе",
+            "icon_name": "page.svg",
+            "type": "plain",
+            "isVisible": true
+          },
+          {
+            "code": "bottom_hole",
+            "name": "Фактический забой",
+            "icon_name": "page.svg",
+            "type": "plain",
+            "isVisible": true
+          },
+          {
+            "code": "bottom_hole_artificial",
+            "name": "Искусственный забой",
+            "icon_name": "page.svg",
+            "type": "plain",
+            "isVisible": true
+          }
+        ]
+      },
+      {
+        "code": "repair",
+        "name": "Ремонт",
+        "icon_name": "dir.svg",
+        "type": "dir",
+        "isVisible": true,
+        "children": [
+          {
+            "code": "kpc",
+            "name": "КРС",
+            "icon_name": "page.svg",
+            "type": "plain",
+            "isVisible": true
+          },
+          {
+            "code": "prs",
+            "name": "ПРС",
+            "icon_name": "page.svg",
+            "type": "plain",
+            "isVisible": true
+          }
+        ]
+      },
+      {
+        "code": "well_perf",
+        "name": "Интервалы перфорации",
+        "icon_name": "page.svg",
+        "type": "plain",
+        "isVisible": true
+      },
+      {
+        "code": "gtm_register",
+        "name": "ГТМ",
+        "icon_name": "page.svg",
+        "type": "plain",
+        "isVisible": true
+      },
+      {
+        "code": "well_block",
+        "name": "Блок скважины",
+        "icon_name": "page.svg",
+        "type": "plain",
+        "isVisible": true
       }
     ]
+  },
+  {
+    "code": "daily_reports",
+    "name": "Суточные сводки",
+    "icon_name": "dir.svg",
+    "type": "dir",
+    "isVisible": true,
+    "children": [
+      {
+        "code": "daily_reports_oil_prod",
+        "name": "Добыча нефти",
+        "icon_name": "page.svg",
+        "type": "table",
+        "isVisible": true
+      },
+      {
+        "code": "daily_reports_fluid_prod",
+        "name": "Добыча жидкости",
+        "icon_name": "page.svg",
+        "type": "table",
+        "isVisible": true
+      },
+      {
+        "code": "daily_reports_water_prod",
+        "name": "Добыча воды",
+        "icon_name": "page.svg",
+        "type": "table",
+        "isVisible": true
+      },
+      {
+        "code": "daily_reports_oil_sale",
+        "name": "Сдача нефти",
+        "icon_name": "page.svg",
+        "type": "table",
+        "isVisible": true
+      },
+      {
+        "code": "daily_reports_gas_prod",
+        "name": "Добыча газа",
+        "icon_name": "page.svg",
+        "type": "table",
+        "isVisible": true
+      },
+      {
+        "code": "daily_reports_water_upload",
+        "name": "Закачка воды",
+        "icon_name": "page.svg",
+        "type": "table",
+        "isVisible": true
+      }
+    ]
+  },
+  {
+    "code": "fluid_production",
+    "name": "Добыча жидкости",
+    "icon_name": "page.svg",
+    "type": "table",
+    "isVisible": true
+  },
+  {
+    "code": "gas_production",
+    "name": "Добыча газа",
+    "icon_name": "page.svg",
+    "type": "table",
+    "isVisible": true
+  },
+  {
+    "code": "water_production",
+    "name": "Добыча воды",
+    "icon_name": "page.svg",
+    "type": "table",
+    "isVisible": true
+  },
+  {
+    "code": "tech_state",
+    "name": "Техническое состояние скважин",
+    "icon_name": "page.svg",
+    "type": "plain",
+    "isVisible": true
+  },
+  {
+    "code": "production_program",
+    "name": "План добычи\/сдачи",
+    "icon_name": "page.svg",
+    "type": "table",
+    "isVisible": true
+  },
+  {
+    "code": "water_inj",
+    "name": "Закачка воды",
+    "icon_name": "page.svg",
+    "type": "table",
+    "isVisible": true
   }
 ]

@@ -1,6 +1,6 @@
 <template>
   <li :class="{'selected': activeFormCode === data.code}">
-    <p @click.stop="isDirOpened = !isDirOpened; switchFormByCode(data.code)">
+    <p @click.stop="isDirOpened = !isDirOpened; switchFormByCode(data)">
       <img
           src="/img/bd/arrow.svg"
           v-if="data.type === 'dir'"
