@@ -26,4 +26,11 @@ return array (
   'developmentMaps' => 'Карты разработки',
   'correlationScheme' => 'Корреляционная схема',
   'environmentIndicators' => 'Показатели по окружению',
+  'wellNumber' => 'Номер скважины',
+  'liquidFlowRate' => 'Дебит жидкости',
+  'waterCut' => 'Обводненность',
+  'oilFlowRate' => 'Дебит нефти',
+  'dynamicLevel' => 'Динамический уровень',
+  'number' => '№ п/п',
+  'horizon' => 'Горизонт',
 );
