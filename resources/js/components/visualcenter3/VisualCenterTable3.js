@@ -37,8 +37,39 @@ export default {
         Calendar,
         DatePicker
     },
+    props: ['userId'],
     data: function () {
         return {
+            dzoMapping : {
+                "КОА" : {                 
+                   id: 110                   
+                },
+                "КТМ" : {                    
+                    id: 107
+                },
+                "КБМ" : {                    
+                    id: 106
+                },
+                "КГМ" : {
+                    id: 108
+                },
+                "ММГ" : {
+                    id: 109
+                },
+                "ОМГ" : {
+                    id: 112
+                },
+                "УО" : {
+                    id: 111
+                },
+                "ЭМГ" : {
+                    id: 113
+                },
+                "АГ" : {
+                    id: 0
+                },
+            },
+            isOneDzoSelected: false,
             oilChartHeadName: this.trans('visualcenter.getoildynamic'),
             quantityRange: '',
             index: "",
@@ -674,6 +705,16 @@ export default {
             });
             return dzoList;
         },
+        getDzoTicker() {
+            let dzoTicker = '';
+            let self = this;
+            _.forEach(Object.keys(this.dzoMapping), function(key) {
+               if (parseInt(self.dzoMapping[key].id) === parseInt(self.userId)) {                
+                   dzoTicker = key;
+               }
+            });
+            return dzoTicker;
+        },
     },
     mixins: [
         mainMenu,
@@ -751,9 +792,13 @@ export default {
         this.updateDrillingWidget();
         this.updateProductionFondWidget();
         this.updateInjectionFondWidget();
-    },
+    },   
     watch: {
         bigTable: function () {
+            let isOneDzoSelected = this.getDzoTicker();
+            if (isOneDzoSelected) {
+                this.assignOneCompanyToSelectedDzo(isOneDzoSelected);
+            };
             this.dzoCompanySummary = this.bigTable;
             if (this.oilCondensateProductionButton.length > 0 || this.oilCondensateDeliveryButton.length > 0) {
                 let yesterdayPeriodStart = moment(new Date(this.timestampToday)).subtract(this.quantityRange, 'days').valueOf();
