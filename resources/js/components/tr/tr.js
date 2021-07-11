@@ -170,6 +170,7 @@ export default {
         if (response.data) {
           this.wells = data.data;
           this.fullWells = data.data;
+          
         }
         else {
           console.log("No data");
@@ -195,6 +196,7 @@ export default {
           this.wellTypeFilterData = data.well_type;
           this.blockFilterData = data.block;
           this.expMethFilterData = data.exp_meth;
+          
         }
         else {
           console.log("No data");
@@ -592,6 +594,11 @@ export default {
       this.wellFilter = undefined;
       this.fieldFilter = undefined;
     },
+    onChangePage(value) {
+      this.$store.commit("globalloading/SET_LOADING", true);
+      this.$store.commit("tr/SET_PAGENUMBER", parseInt(value));
+      this.chooseAxios();
+    },
     showWells() {
       if(this.lonelywell.length === 1){
         this.isShowAdd = !this.isShowAdd;
@@ -838,6 +845,9 @@ export default {
         this.axiosPage();        
       }
     },
+
+    // this.wells = [];
+    //         this.fullWells = [];
     // API поиска простого ТР
     axiosSearch() {
       this.axios
@@ -856,6 +866,13 @@ export default {
           } else {
             this.wells = [];
             this.fullWells = [];
+            this.$bvToast.toast(this.trans('tr.no_well_toaster'), {
+              title: this.trans('app.error'),
+              toaster: "b-toaster-top-center",
+              solid: true,
+              appendToast: false,
+              variant: 'danger',
+            });
             console.log("No data");
           }
         })
@@ -864,6 +881,12 @@ export default {
           this.$store.commit("globalloading/SET_LOADING", false);
           this.wells = [];
           this.fullWells = [];
+          this.$bvToast.toast(`Toast body content`, {
+            title: `Toaster `,
+            toaster: "b-toaster-top-center",
+            solid: true,
+            appendToast: false
+          });
           console.log("search error = ", error);
         });
     },
