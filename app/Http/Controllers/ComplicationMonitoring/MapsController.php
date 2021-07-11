@@ -47,7 +47,10 @@ class MapsController extends Controller
 
     public function mapData(Request $request, DruidService $druidService): array
     {
-        $pipes = OilPipe::with('coords', 'pipeType')->get();
+        $pipes = OilPipe::with('coords', 'pipeType')
+            ->WithLastHydroCalc()
+            ->WithLastReverseCalc()
+            ->get();
 
         $center = [52.854602599069, 43.426262258809];
 
