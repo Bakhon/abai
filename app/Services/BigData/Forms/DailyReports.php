@@ -59,22 +59,19 @@ abstract class DailyReports extends TableForm
         $column = $this->getFieldByCode($params['field']);
         $metric = Metric::query()
             ->select('id')
-            ->where('code', '=', $this->metricCode)
+            ->where('code', $this->metricCode)
             ->first();
         if (!$metric) {
             return;
         }
-        $item = ReportOrgDailyCits::query()
-            ->select('*')
-            ->where('org', '=', $params['wellId'])
-            ->where('metric', '=', $metric->id)
+        $item = ReportOrgDailyCits::where('org', $params['wellId'])
+            ->where('metric', $metric->id)
             ->whereDate('report_date', '>=', $params['date']->toDateTimeString())
             ->whereDate('report_date', '<=', $params['date']->toDateTimeString())
             ->distinct()
             ->first();
         if (!$item) {
-            ReportOrgDailyCits::query()
-                ->insert([
+            ReportOrgDailyCits::insert([
                     'org' => $params['wellId'],
                     'metric' => $metric->id,
                     'report_date' => $params['date']->toDateTimeString(),
@@ -98,14 +95,12 @@ abstract class DailyReports extends TableForm
         $startDate = $dateTimeObj->format('Y-m-d\TH:i:s');
         $endDate = $filter->date;
 
-        return ReportOrgDailyCits::query()
-            ->select('*')
-            ->where('org', '=', $this->request->get('id'))
+        return ReportOrgDailyCits::where('org', $this->request->get('id'))
             ->whereDate('report_date', '>=', $startDate)
             ->whereDate('report_date', '<=', $endDate)
             ->distinct()
             ->whereHas('metric', function ($query) {
-                return $query->where('code', '=', $this->metricCode);
+                return $query->where('code', $this->metricCode);
             })
             ->get();
     }
