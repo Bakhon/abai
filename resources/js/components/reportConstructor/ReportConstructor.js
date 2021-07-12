@@ -15,7 +15,7 @@ export default {
     components: {},
     data() {
         return {
-            baseUrl: 'http://172.20.103.187:8084/',
+            baseUrl: 'process.env.MIX_MICROSERVICE_USER_REPORTS',
             showOptions: true,
             structureTypes: {
                 org: null,
