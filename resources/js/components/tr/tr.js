@@ -847,8 +847,7 @@ export default {
       }
     },
 
-    // this.wells = [];
-    //         this.fullWells = [];
+
     // API поиска простого ТР
     axiosSearch() {
       this.axios

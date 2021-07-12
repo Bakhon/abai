@@ -6727,7 +6727,6 @@ table::-webkit-scrollbar-corner {
 .pgn_input {
   height: 40px;
   margin-top: 8px;
-  /* size: 162px; */
   margin-left: 30px;
   width: 39px;
   background: #272953;
