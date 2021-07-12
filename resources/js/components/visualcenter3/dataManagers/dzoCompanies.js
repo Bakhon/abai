@@ -202,11 +202,13 @@ export default {
         },
 
         selectAllDzoCompanies() {
-            this.dzoCompanies = _.cloneDeep(this.dzoCompaniesTemplate);
-            _.forEach(this.dzoCompanies, function (dzo) {
-                _.set(dzo, 'selected', true);
-            });
-            this.selectDzoCompanies();
+            if (!this.isOneDzoSelected) {
+                this.dzoCompanies = _.cloneDeep(this.dzoCompaniesTemplate);
+                _.forEach(this.dzoCompanies, function (dzo) {
+                    _.set(dzo, 'selected', true);
+                });
+                this.selectDzoCompanies();
+            }
         },
 
         selectDzoCompanies() {
@@ -234,12 +236,14 @@ export default {
         },
 
         switchOneCompanyView(companyTicker) {
-            this.isMultipleDzoCompaniesSelected = false;
-            this.disableDzoCompaniesVisibility();
-            this.selectedDzoCompanies = [companyTicker];
-            this.calculateSecondaryCategories();
-            this.switchDzoCompaniesVisibility(companyTicker,'ticker');
-            this.selectDzoCompany();
+            if (!this.isOneDzoSelected) {
+                this.isMultipleDzoCompaniesSelected = false;
+                this.disableDzoCompaniesVisibility();
+                this.selectedDzoCompanies = [companyTicker];
+                this.calculateSecondaryCategories();
+                this.switchDzoCompaniesVisibility(companyTicker, 'ticker');
+                this.selectDzoCompany();
+            }
         },
 
         selectDzoCompany() {

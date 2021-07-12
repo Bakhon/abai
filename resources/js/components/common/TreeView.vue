@@ -8,7 +8,7 @@
               <label class="container">
                 <span class="bottom-border"></span>
                 <input type="checkbox" :id="node.id" name="tech_structure" value="tech_structure"
-                       class="dropdown-item">
+                       class="dropdown-item" @change="onCheckboxClick(node, level)">
                 <span class="checkmark"></span>
               </label>
             </form>
@@ -37,8 +37,10 @@
             :get-initial-items="getInitialItems"
             :isNodeOnBottomLevelOfHierarchy="isNodeOnBottomLevelOfHierarchy"
             :isShowCheckboxes="isShowCheckboxes"
+            :onCheckboxClick="onCheckboxClick"
             :isWell="isWell"
             :currentWellId="currentWellId"
+            :level="level+1"
       ></node>
     </ul>
     <div class="centered mx-auto mt-3" v-if="isShowChildren && isLoading">
@@ -52,12 +54,17 @@ export default {
   name: "node",
   props: {
     node: Object,
+    level: Number,
     handleClick: Function,
     getWells: Function,
     getInitialItems: Function,
     isNodeOnBottomLevelOfHierarchy: Function,
     isShowCheckboxes: Boolean,
     isWell: Function,
+    onCheckboxClick: {
+      type: Function,
+      required: false
+    },
     currentWellId: {
       type: Number,
       required: false
@@ -73,7 +80,7 @@ export default {
       if (!this.isShowChildren) {
         return
       }
-      await this.handleClick(this)
+      await this.handleClick(this.node)
       if (this.isNodeOnBottomLevelOfHierarchy(this.node)) {
         this.isLoading = true;
         this.getWells(this);

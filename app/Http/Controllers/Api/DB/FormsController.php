@@ -49,6 +49,23 @@ class FormsController extends Controller
         File::put($this->file, json_encode($values));
     }
 
+    public function getForms(): JsonResponse
+    {
+        $forms = json_decode(File::get(resource_path('js/json/bd/forms.json')));
+        $forms = array_filter(
+            $forms,
+            function ($form) {
+                return auth()->user()->can('bigdata list ' . $form->code);
+            }
+        );
+
+        return response()->json(
+            [
+                'forms' => $forms
+            ]
+        );
+    }
+
     public function getParams(string $formName): JsonResponse
     {
         $form = $this->getForm($formName);
