@@ -10,7 +10,7 @@
         <el-divider direction="vertical"></el-divider>
         <el-divider direction="vertical"></el-divider>
       </div>
-      <button type="button" class="btn-button btn-button--thm-green ol-w-100 mb-10px">
+      <button type="button" class="btn-button btn-button--thm-green w-100 mb-10px">
         {{ trans('digital_rating.buildMap') }}
       </button>
     </div>
@@ -105,10 +105,10 @@
           </div>
         </transition-expand>
       </div>
-      <button type="button" class="btn-button btn-button--thm-blue ol-w-100 mb-10px">
+      <button type="button" class="btn-button btn-button--thm-blue w-100 mb-10px">
         {{ trans('digital_rating.acceptSettings') }}
       </button>
-      <button type="button" class="btn-button btn-button--thm-blue ol-w-100 mb-10px">
+      <button type="button" class="btn-button btn-button--thm-blue w-100 mb-10px">
         {{ trans('digital_rating.saveSettings') }}
       </button>
     </div>
