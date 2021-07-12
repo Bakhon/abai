@@ -454,10 +454,12 @@ export default {
             });
         },
         getColorBy(number) {
-            if (number > 0) {
+            if (Math.round(number) > 0) {
                 return 'color_green';
-            } else {
+            } else if (Math.round(number) < 0) {
                 return 'color_red';
+            } else {
+                return '';
             }
         },
         getSummaryWithParticipationByDzo(summary) {

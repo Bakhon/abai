@@ -632,7 +632,7 @@
        background: #4C537E;
    }
    .color_green {
-       color: #009846;
+       color: #00b353;
    }
    .color_red {
        color: #E31E24;
