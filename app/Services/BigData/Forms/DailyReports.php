@@ -2,9 +2,9 @@
 
 namespace App\Services\BigData\Forms;
 
+use App\Models\BigData\Dictionaries\Metric;
 use App\Models\BigData\Dictionaries\Org;
 use App\Models\BigData\ReportOrgDailyCits;
-use Carbon\Carbon;
 
 abstract class DailyReports extends TableForm
 {
@@ -17,7 +17,7 @@ abstract class DailyReports extends TableForm
     public function getRows(array $params = []): array
     {
         $result = [
-            'id' => 0
+            'id' => $this->request->get('id')
         ];
         $filter = json_decode($this->request->get('filter'));
         if ($this->request->get('id')) {
@@ -54,16 +54,36 @@ abstract class DailyReports extends TableForm
         return ['rows' => [$result]];
     }
 
-    protected function saveSingleFieldInDB(string $field, int $wellId, Carbon $date, $value): void
+    protected function saveSingleFieldInDB(array $params): void
     {
-        // TODO: Implement saveSingleFieldInDB() method.
+        $column = $this->getFieldByCode($params['field']);
+        $metric = Metric::query()
+            ->select('id')
+            ->where('code', $this->metricCode)
+            ->first();
+        if (!$metric) {
+            return;
+        }
+        $item = ReportOrgDailyCits::where('org', $params['wellId'])
+            ->where('metric', $metric->id)
+            ->whereDate('report_date', '>=', $params['date']->toDateTimeString())
+            ->whereDate('report_date', '<=', $params['date']->toDateTimeString())
+            ->distinct()
+            ->first();
+        if (!$item) {
+            ReportOrgDailyCits::insert([
+                    'org' => $params['wellId'],
+                    'metric' => $metric->id,
+                    'report_date' => $params['date']->toDateTimeString(),
+                    'plan' => 0,
+                    $column['code'] => $params['value'],
+                ]);
+        } else {
+            $field = $column['code'];
+            $item->$field = $params['value'];
+            $item->save();
+        }
     }
-
-    protected function saveHistory(string $field, $value): void
-    {
-        // TODO: Implement saveHistory() method.
-    }
-
 
     protected function getData($filter) {
         $dateTimeObj = new \DateTime($filter->date);
@@ -75,14 +95,12 @@ abstract class DailyReports extends TableForm
         $startDate = $dateTimeObj->format('Y-m-d\TH:i:s');
         $endDate = $filter->date;
 
-        return ReportOrgDailyCits::query()
-            ->select('*')
-            ->where('org', '=', $this->request->get('id'))
+        return ReportOrgDailyCits::where('org', $this->request->get('id'))
             ->whereDate('report_date', '>=', $startDate)
             ->whereDate('report_date', '<=', $endDate)
             ->distinct()
             ->whereHas('metric', function ($query) {
-                return $query->where('code', '=', $this->metricCode);
+                return $query->where('code', $this->metricCode);
             })
             ->get();
     }
