@@ -49,6 +49,9 @@ export default {
             } else {
                 this.changeDzoCompaniesList(companiesListWithKMG);
             }
+            if (!this.isOneDzoSelected){
+                this.selectAllDzoCompanies();
+            }
             this.setDzoCompaniesToInitial();
             this.disableTargetCompanyFilter();
             if (!childButton) {
@@ -182,6 +185,17 @@ export default {
             } else {
                 return this.trans("visualcenter.tonWithSpace");
             }
+        },
+
+        assignOneCompanyToSelectedDzo(oneDzoNameSelected) {
+            this.isOneDzoSelected = true;
+            if (oneDzoNameSelected == 'ОМГ') {
+                oneDzoNameSelected = [oneDzoNameSelected, 'ОМГК'];
+            }
+            this.selectedDzoCompanies = oneDzoNameSelected;
+            this.updateDzoMenu();         
+            this.updateProductionFondWidget();
+            this.updateInjectionFondWidget();          
         },
     },
 }

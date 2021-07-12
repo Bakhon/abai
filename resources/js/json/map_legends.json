@@ -107,5 +107,39 @@
             "color": "no_data",
             "name": "Нет данных"
         }
+    ],
+    "pressure": [
+        {
+            "type": "color-box",
+            "color": "danger",
+            "name": "Давление > значения"
+        },
+        {
+            "type": "color-box",
+            "color": "good",
+            "name": "Давление < значения"
+        },
+        {
+            "type": "color-box",
+            "color": "no_data",
+            "name": "Нет данных"
+        }
+    ],
+    "temperature": [
+        {
+            "type": "color-box",
+            "color": "danger",
+            "name": "Температура < значения"
+        },
+        {
+            "type": "color-box",
+            "color": "good",
+            "name": "Температура > значения"
+        },
+        {
+            "type": "color-box",
+            "color": "no_data",
+            "name": "Нет данных"
+        }
     ]
 }

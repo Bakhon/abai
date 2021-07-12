@@ -1075,3 +1075,7 @@ ul.dropdown-menu-vc {
     }
 
 }
+
+.button2.no-hover:hover {
+    background: #333975;
+}

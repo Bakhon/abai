@@ -10,6 +10,7 @@ $black: #000;
 $transparent: transparent;
 
 $accent-darken: #1F2142;
+$accent-darken-400: #0F1430;
 $accent-darken-300: #272953;
 $accent-darken-200: #1A214A;
 $accent-darken-150: #242953;
@@ -37,6 +38,7 @@ $colorsArray: (
         transparent: ($transparent, black, rgba(white, 19%)),
         gray: ($gray, white),
         accent-darken: ($accent-darken, white),
+        accent-darken-400: ($accent-darken-400, white),
         accent-darken-300: ($accent-darken-300, white),
         accent-darken-200: ($accent-darken-200, white),
         accent-darken-100: ($accent-darken-100, white),
@@ -53,10 +55,47 @@ $colorsArray: (
   }
 }
 
+.tool-block {
+  border: 1px solid var(--a-accent-300);
+  background: var(--a-accent-darken-200);
+  &-bg {
+    &__content {
+      @each $key, $btnColor in $colorsArray {
+        &--#{"" + $key} {
+          background: nth($btnColor, 1) !important;
+        }
+      }
+    }
+  }
+}
+
 .a-btn {
   @each $key, $btnColor in $colorsArray {
     --#{""+$key}: nth($btnColor, 1);
-      &.#{"" + $key},&.#{'active-btn__' + $key} {
+
+    &.#{'icon-color__' + $key} {
+      svg {
+        fill: rgba(nth($btnColor, 2), 0.5);
+      }
+
+      &:hover {
+        svg {
+          fill: darken(nth($btnColor, 2), $darkenPercent);
+        }
+      }
+    }
+    &.#{'active-btn__' + $key} {
+      svg {
+        fill: nth($btnColor, 2);
+      }
+
+      &:hover {
+        svg {
+          fill: darken(nth($btnColor, 2), $darkenPercent);
+        }
+      }
+    }
+    &.#{"" + $key}, &.#{'active-btn__' + $key} {
       background: nth($btnColor, 1);
       color: nth($btnColor, 2);
 
@@ -65,15 +104,6 @@ $colorsArray: (
         color: if((length($btnColor)==4 and nth($btnColor, 4)), nth($btnColor, 4), nth($btnColor, 2));
       }
     }
-    &.#{'icon-color__' + $key}{
-      svg{
-        fill: nth($btnColor, 2);
-      }
-      &:hover {
-        svg {
-          fill: darken(nth($btnColor, 2), $darkenPercent);
-        }
-      }
-    }
+
   }
 }

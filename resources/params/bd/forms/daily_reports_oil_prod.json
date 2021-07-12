@@ -25,7 +25,7 @@
       "code": "fact",
       "type": "float",
       "is_editable": true,
-      "validation": "numeric|gt:0",
+      "validation": "numeric",
       "validate_deviation": true
     },
     {

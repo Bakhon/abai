@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Admin;
 use Closure;
 use Illuminate\Http\Request;
 use Jenssegers\Agent\Agent;
@@ -17,14 +18,17 @@ class LogPageView
      */
     public function handle(Request $request, Closure $next)
     {
+        if (auth()->user() instanceof Admin) {
+            return $next($request);
+        }
 
         $excludedUrls = [
             '(.*)/js/lang.js',
             '/'
         ];
 
-        foreach($excludedUrls as $url) {
-            if(preg_match("#^{$url}$#", $request->path())) {
+        foreach ($excludedUrls as $url) {
+            if (preg_match("#^{$url}$#", $request->path())) {
                 return $next($request);
             }
         }
@@ -44,12 +48,12 @@ class LogPageView
                 $oslogo = 'android';
             }else{}
             \App\Models\LogPageView::create([
-                'user_id' => auth()->id(),
-                'url' => $request->path(),
-                'ip_address' => \Request::ip(),
-                'user_os' => $agent->platform(),
-                'os_logo' => $oslogo,
-                ]);
+                                                'user_id' => auth()->id(),
+                                                'url' => $request->path(),
+                                                'ip_address' => \Request::ip(),
+                                                'user_os' => $agent->platform(),
+                                                'os_logo' => $oslogo,
+                                            ]);
         }
 
         return $next($request);
