@@ -154,7 +154,7 @@ class WellsController extends Controller
     {
         return $well->wellExpl()
             ->withPivot('dend as dend', 'dbeg as dbeg')
-            ->orderBy('dbeg')
+            ->orderBy('dbeg', 'desc')
             ->first(['name_ru', 'dend', 'dbeg']);
     }
 
