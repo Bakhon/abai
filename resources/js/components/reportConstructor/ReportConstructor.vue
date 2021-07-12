@@ -3,15 +3,7 @@
     <div class="left-section bg-dark">
       <div class="col">
         <div class="row menu">
-          <div class="left-section-title btn1 active" @click="handleMenuClick('geo', '.btn1')">
-            <svg width="17" height="20" viewBox="0 0 17 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path fill-rule="evenodd" clip-rule="evenodd"
-                    d="M8.26799 19.0107L0 13.1419L1.48826 12.0855L8.25891 16.8896L15.0387 12.0779L16.5361 13.1419L8.26799 19.0107ZM8.26799 15.4307L0 9.56193L1.48826 8.50553L8.25891 13.3097L15.0387 8.49723L16.5361 9.56193L8.26799 15.4307ZM8.26799 11.8508L1.49733 7.04655L0 5.98193L8.26799 0.113119L16.5361 5.98193L15.0292 7.04655L8.26799 11.8508Z"
-                    fill="#fff"/>
-            </svg>
-            Геоструктура
-          </div>
-          <div class="left-section-title btn2" @click="handleMenuClick('org', '.btn2')">
+          <div class="left-section-title btn2 active" @click="handleMenuClick('org', '.btn2')">
             <svg width="18" height="16" viewBox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path fill-rule="evenodd" clip-rule="evenodd" d="M6.05078 0.00301123H11.098V5.0498H6.05078V0.00301123Z"
                     fill="#fff"/>
@@ -25,6 +17,14 @@
                     fill="#fff"/>
             </svg>
             Оргструктура
+          </div>
+          <div class="left-section-title btn1" @click="handleMenuClick('geo', '.btn1')">
+            <svg width="17" height="20" viewBox="0 0 17 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path fill-rule="evenodd" clip-rule="evenodd"
+                    d="M8.26799 19.0107L0 13.1419L1.48826 12.0855L8.25891 16.8896L15.0387 12.0779L16.5361 13.1419L8.26799 19.0107ZM8.26799 15.4307L0 9.56193L1.48826 8.50553L8.25891 13.3097L15.0387 8.49723L16.5361 9.56193L8.26799 15.4307ZM8.26799 11.8508L1.49733 7.04655L0 5.98193L8.26799 0.113119L16.5361 5.98193L15.0292 7.04655L8.26799 11.8508Z"
+                    fill="#fff"/>
+            </svg>
+            Геоструктура
           </div>
           <div class="left-section-title btn3" @click="handleMenuClick('tech', '.btn3')">
             <svg width="17" height="20" viewBox="0 0 17 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -136,6 +136,7 @@
                       <datetime
                           type="date"
                           v-model="startDate"
+                          class="start-date"
                           value-zone="Asia/Almaty"
                           zone="Asia/Almaty"
                           :format="{ year: 'numeric', month: 'numeric', day: 'numeric'}"
@@ -155,6 +156,7 @@
                       <datetime
                         type="date"
                         v-model="endDate"
+                        class="end-date"
                         value-zone="Asia/Almaty"
                         zone="Asia/Almaty"
                         :format="{ year: 'numeric', month: 'numeric', day: 'numeric'}"
@@ -169,9 +171,79 @@
                       </datetime>
                     </template>
                   </div>
-                  <div class="row inline-flex justify-content-center mb-1">
-                    <span class="calendar">Месяц</span>
-                    <span class="calendar">Год</span>
+                  <div class="row date-picker inline-flex mb-1">
+                    <span @click="handleMonthClick()" class="calendar">Месяц</span>
+                      <template>
+                      <datetime
+                        type="date"
+                        v-model="endMonthDate"
+                        class="end-month-date"
+                        value-zone="Asia/Almaty"
+                        zone="Asia/Almaty"
+                        :format="{ year: 'numeric', month: 'numeric', day: 'numeric'}"
+                        :phrases="{ok: trans('app.choose'), cancel: trans('app.cancel')}"
+                        :min-datetime="startDate"
+                        :week-start="1"
+                        :placeholder= "[[ trans('bd.dd_mm_yyyy') ]]"
+                        use24-hour
+                        auto
+                        :flow="['month']"
+                        :change="formatEndMonth()"
+                      >
+                      </datetime>
+                      <datetime
+                          type="date"
+                          v-model="startMonthDate"
+                          class="start-month-date"
+                          value-zone="Asia/Almaty"
+                          zone="Asia/Almaty"
+                          :format="{ year: 'numeric', month: 'numeric', day: 'numeric'}"
+                          :phrases="{ok: trans('app.choose'), cancel: trans('app.cancel')}"
+                          :max-datetime="endDate"
+                          :week-start="1"
+                          :placeholder= "[[ trans('bd.dd_mm_yyyy') ]]"
+                          auto
+                          :flow="['month']"
+                          :change="formatStartMonth()"
+                      >
+                      </datetime>
+                    </template>
+                    <span @click="handleYearClick()" class="calendar">Год</span>
+                    <template>
+                      <datetime
+                        type="date"
+                        v-model="endMonthDate"
+                        class="end-year-date"
+                        value-zone="Asia/Almaty"
+                        zone="Asia/Almaty"
+                        :format="{ year: 'numeric', month: 'numeric', day: 'numeric'}"
+                        :phrases="{ok: trans('app.choose'), cancel: trans('app.cancel')}"
+                        :min-datetime="startDate"
+                        :week-start="1"
+                        :placeholder= "[[ trans('bd.dd_mm_yyyy') ]]"
+                        use24-hour
+                        auto
+                        :flow="['year']"
+                        :change="formatEndMonth()"
+                      >
+                      </datetime>
+                      <datetime
+                          type="date"
+                          v-model="startMonthDate"
+                          class="start-year-date"
+                          value-zone="Asia/Almaty"
+                          zone="Asia/Almaty"
+                          :format="{ year: 'numeric', month: 'numeric', day: 'numeric'}"
+                          :phrases="{ok: trans('app.choose'), cancel: trans('app.cancel')}"
+                          :max-datetime="endDate"
+                          :week-start="1"
+                          :placeholder= "[[ trans('bd.dd_mm_yyyy') ]]"
+                          auto
+                          :flow="['year']"
+                          :change="formatStartMonth()"
+                      >
+                      </datetime>
+                    </template>
                   </div>
 
                   <div class="btn-container">
@@ -864,7 +936,6 @@ body {
 
       .vdatetime::v-deep .vdatetime-input {
         width: 142px;
-        margin-right: 35px;
         background: #1F2142;
         color: #B6BAD9;
         border-radius: 4px;
@@ -876,6 +947,18 @@ body {
         background-image: url(/img/bd/webkit-calendar.svg);
         background-Position : 102% center;
         background-Repeat :no-repeat;
+      } 
+
+      .start-date {
+        margin-right: 35px;
+      }
+    }
+
+    .date-picker {
+      justify-content: center;
+
+      .vdatetime::v-deep .vdatetime-input {
+        display: none;
       } 
     }
   }
@@ -1128,6 +1211,7 @@ body {
 .calendar {
   background: url(/img/bd/date-time.svg) 1% no-repeat;
   padding: 0px 35px;
+  width: 110px;
 }
 
 .vertical-centered {

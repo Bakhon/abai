@@ -24,7 +24,7 @@ export default {
             },
             attributeDescriptions: null,
             attributesForObject: null,
-            currentStructureType: 'geo',
+            currentStructureType: 'org',
             currentStructureId: null,
             currentItemType: null,
             currentOption: null,
@@ -36,6 +36,8 @@ export default {
             selectedObjects: [],
             startDate: null,
             endDate: null,
+            startMonthDate: null,
+            endMonthDate: null,
             maxDepthOfSelectedAttributes: null,
         }
     },
@@ -49,6 +51,20 @@ export default {
         this.loadAttributeDescriptions()
     },
     methods: {
+        handleYearClick() {
+            $('.start-year-date .vdatetime-input').click();
+            $('.end-year-date .vdatetime-input').click();
+        },
+        handleMonthClick() {
+            $('.start-month-date .vdatetime-input').click();
+            $('.end-month-date .vdatetime-input').click();
+        },
+        formatStartMonth() {
+            this.startDate = formatDate.getFirstDayOfMonth(this.startMonthDate);
+        },
+        formatEndMonth() {
+            this.endDate = formatDate.getLastDayOfMonth(this.endMonthDate);
+        },
         handleMenuClick(currentStructureType, btnClass) {
             this.showOptions = true;
             this.currentStructureType = currentStructureType;
