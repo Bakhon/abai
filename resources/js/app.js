@@ -167,7 +167,9 @@ Vue.component('well_cart', require('./components/well_cart/well_cart.vue').defau
 Vue.component('report-constructor', require('./components/reportConstructor/ReportConstructor.vue').default);
 
 Vue.component('pf-main', require('./components/PlastFluids/views/MainPage.vue').default);
+Vue.component('pf-upload_monitoring', require('./components/PlastFluids/views/UploadMonitoring.vue').default);
 Vue.component('pf-template_pvt_plast_oil', require('./components/PlastFluids/views/SuperTemplatePvtPlastOil.vue').default);
+Vue.component('pf-oil-map', require('./components/PlastFluids/components/OilMapKz.vue').default);
 
 Vue.component('viscenter2-create', require('./components/visualcenter/viscenter2/create.vue').default);
 Vue.component('visualcenter3-excelform', require('./components/visualcenter3/importForm/ExcelForm.vue').default);
@@ -224,6 +226,7 @@ Vue.prototype.localeUrl = string => `/${window.current_lang}/${string[0] === '/'
 Vue.prototype.currentLang = window.current_lang;
 Vue.prototype.$urlLink = url => urlLink(url);
 Vue.prototype.$currentPageUrl = currentUrlPage;
+
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
