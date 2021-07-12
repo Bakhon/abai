@@ -867,7 +867,7 @@
                       <div v-if="currentDzoList === 'daily'">
                         {{ getMetricNameByCategorySelected() }}
                       </div>
-                      <div v-if="isOpecFilterActive && !isConsolidatedCategoryActive">
+                      <div v-if="isOpecFilterActive && !isConsolidatedCategoryActive()">
                         {{ trans("visualcenter.dzoOpec") }}
                       </div>
                     </th>
@@ -879,7 +879,7 @@
                       <div v-if="currentDzoList === 'daily'">
                         {{ getMetricNameByCategorySelected() }}
                       </div>
-                      <div v-if="isOpecFilterActive && !isConsolidatedCategoryActive">
+                      <div v-if="isOpecFilterActive && !isConsolidatedCategoryActive()">
                         {{ trans("visualcenter.dzoOpec") }}
                       </div>
                     </th>
@@ -891,11 +891,11 @@
                       <div v-else>
                         {{ getMetricNameByCategorySelected() }}
                       </div>
-                      <div v-if="isOpecFilterActive && !isConsolidatedCategoryActive">
+                      <div v-if="isOpecFilterActive && !isConsolidatedCategoryActive()">
                         {{ trans("visualcenter.dzoOpec") }}
                       </div>
                     </th>
-                    <th v-if="isConsolidatedCategoryActive && !isOilResidueActive">
+                    <th v-if="isConsolidatedCategoryActive() && !isOilResidueActive">
                       {{ trans("visualcenter.plan") }}
                       <div>
                         {{ trans("visualcenter.dzoOpec") }},
@@ -925,10 +925,10 @@
                         {{ getMetricNameByCategorySelected() }}
                       </div>
                     </th>
-                    <th v-if="!isFilterTargetPlanActive && !isConsolidatedCategoryActive && !isOilResidueActive">
+                    <th v-if="!isFilterTargetPlanActive && !isConsolidatedCategoryActive() && !isOilResidueActive">
                       {{ trans("visualcenter.dzoPercent") }}
                     </th>
-                    <th v-if="!isFilterTargetPlanActive && isConsolidatedCategoryActive && !isOilResidueActive">
+                    <th v-if="!isFilterTargetPlanActive && isConsolidatedCategoryActive() && !isOilResidueActive">
                       {{ trans("visualcenter.dzoDifference") }}
                       <div>
                         {{ trans("visualcenter.dzoOpec") }},
@@ -973,11 +973,11 @@
                             :class="index % 2 === 0 ? 'tdStyle' : ''"
                             style="cursor: pointer"
                     >
-                      <span v-if="!isConsolidatedCategoryActive || isOilResidueActive">
+                      <span v-if="!isConsolidatedCategoryActive() || isOilResidueActive">
                         {{ getNameDzoFull(item.dzoMonth) }}
                         <img src="/img/icons/link.svg" />
                       </span>
-                      <span v-else-if="isConsolidatedCategoryActive && !oilCondensateFilters.isWithoutKMGFilterActive">
+                      <span v-else-if="isConsolidatedCategoryActive() && !oilCondensateFilters.isWithoutKMGFilterActive">
                         {{ getDzoName(item.dzoMonth,dzoNameMappingWithoutKMG) }}
                         <img src="/img/icons/link.svg" />
                       </span>
@@ -1010,14 +1010,14 @@
                       </div>
                     </td>
                     <td
-                            v-if="!isFilterTargetPlanActive && isConsolidatedCategoryActive && !isOilResidueActive"
+                            v-if="!isFilterTargetPlanActive && isConsolidatedCategoryActive() && !isOilResidueActive"
                             :class="currentDzoList === 'daily' ? getDzoColumnsClass(index,'companyName') : getDzoColumnsClass(index,'fact')">
                       <div class="font">
                         {{ formatDigitToThousand(item.opekPlan) }}
                       </div>
                     </td>
                     <td
-                            v-if="isConsolidatedCategoryActive && !isOilResidueActive"
+                            v-if="isConsolidatedCategoryActive() && !isOilResidueActive"
                             :class="currentDzoList === 'daily' ?
                             getDzoColumnsClass(index,'plan') : getDzoColumnsClass(index,'difference')"
                     >
@@ -1034,7 +1034,7 @@
                       </div>
                     </td>
                     <td
-                            v-if="isConsolidatedCategoryActive && !isOilResidueActive"
+                            v-if="isConsolidatedCategoryActive() && !isOilResidueActive"
                             :class="currentDzoList === 'daily' ?
                             getDzoColumnsClass(index,'fact') : getDzoColumnsClass(index,'percent')">
                       <div
@@ -1065,7 +1065,7 @@
                       </div>
                     </td>
                     <td
-                            v-if="!isFilterTargetPlanActive && !isConsolidatedCategoryActive && !isOilResidueActive"
+                            v-if="!isFilterTargetPlanActive && !isConsolidatedCategoryActive() && !isOilResidueActive"
                             :class="`${getDzoColumnsClass(index,'percent')}`"
                     >
                       <div
@@ -1081,8 +1081,8 @@
                       </div>
                     </td>
                     <td
-                            v-if="!isFilterTargetPlanActive && isConsolidatedCategoryActive && !isOilResidueActive"
-                            :class="currentDzoList === 'daily' && isConsolidatedCategoryActive ?
+                            v-if="!isFilterTargetPlanActive && isConsolidatedCategoryActive() && !isOilResidueActive"
+                            :class="currentDzoList === 'daily' && isConsolidatedCategoryActive() ?
                             getDzoColumnsClass(index,'difference') : getDzoColumnsClass(index,'difference')"
                     >
                       <div
@@ -1107,7 +1107,7 @@
                     </td>
                     <td
                             v-if="exactDateSelected"
-                            :class="currentDzoList === 'daily' && isConsolidatedCategoryActive ?
+                            :class="currentDzoList === 'daily' && isConsolidatedCategoryActive() ?
                             getDarkColorClass(index) : getLightColorClass(index)"
                     >
                       <div :class="item.opec ? 'accident-triangle triangle' : 'no-accident-triangle triangle'">
@@ -1115,7 +1115,7 @@
                     </td>
                     <td
                             v-if="exactDateSelected"
-                            :class="currentDzoList === 'daily' && isConsolidatedCategoryActive ?
+                            :class="currentDzoList === 'daily' && isConsolidatedCategoryActive() ?
                             getLightColorClass(index) : getDarkColorClass(index)"
                     >
                       <div :class="item.impulses ? 'accident-triangle triangle' : 'no-accident-triangle triangle'">
@@ -1123,7 +1123,7 @@
                     </td>
                     <td
                             v-if="exactDateSelected"
-                            :class="currentDzoList === 'daily' && isConsolidatedCategoryActive ?
+                            :class="currentDzoList === 'daily' && isConsolidatedCategoryActive() ?
                             getDarkColorClass(index) : getLightColorClass(index)"
                     >
                       <div :class="item.landing ? 'accident-triangle triangle' : 'no-accident-triangle triangle'">
@@ -1131,7 +1131,7 @@
                     </td>
                     <td
                             v-if="exactDateSelected"
-                            :class="currentDzoList === 'daily' && isConsolidatedCategoryActive ?
+                            :class="currentDzoList === 'daily' && isConsolidatedCategoryActive() ?
                             getLightColorClass(index) : getDarkColorClass(index)"
                     >
                       <div :class="item.accident ? 'accident-triangle triangle' : 'no-accident-triangle triangle'">
@@ -1139,7 +1139,7 @@
                     </td>
                     <td
                             v-if="exactDateSelected"
-                            :class="currentDzoList === 'daily' && isConsolidatedCategoryActive ?
+                            :class="currentDzoList === 'daily' && isConsolidatedCategoryActive() ?
                             getDarkColorClass(index) : getLightColorClass(index)"
                     >
                       <div :class="item.restrictions ? 'accident-triangle triangle' : 'no-accident-triangle triangle'">
@@ -1147,7 +1147,7 @@
                     </td>
                     <td
                             v-if="exactDateSelected"
-                            :class="currentDzoList === 'daily' && isConsolidatedCategoryActive ?
+                            :class="currentDzoList === 'daily' && isConsolidatedCategoryActive() ?
                             getLightColorClass(index) : getDarkColorClass(index)"
                     >
                       <div :class="item.otheraccidents ? 'accident-triangle triangle' : 'no-accident-triangle triangle'">
@@ -1202,7 +1202,7 @@
                       </div>
                     </td>
                     <td
-                            v-if="isConsolidatedCategoryActive && !isOilResidueActive"
+                            v-if="isConsolidatedCategoryActive() && !isOilResidueActive"
                             :class="currentDzoList === 'daily' ?
                             getDarkerClass(index) : getLighterClass(index)"
                     >
@@ -1226,7 +1226,7 @@
                     </td>
                     <td
                             v-else
-                            :class="(currentDzoList === 'daily' && isConsolidatedCategoryActive) || isOilResidueActive ?
+                            :class="(currentDzoList === 'daily' && isConsolidatedCategoryActive()) || isOilResidueActive ?
                             getLighterClass(index) : getDarkerClass(index)"
                     >
                       <div class="font">
@@ -1257,7 +1257,7 @@
                     </td>
                     <td
                             v-else-if="!isOilResidueActive"
-                            :class="currentDzoList === 'daily' && isConsolidatedCategoryActive ?
+                            :class="currentDzoList === 'daily' && isConsolidatedCategoryActive() ?
                             getDarkerClass(index) : getLighterClass(index)"
                     >
                       <div
@@ -1284,7 +1284,7 @@
                       </div>
                     </td>
                     <td
-                            v-if="!isFilterTargetPlanActive && isConsolidatedCategoryActive && !isOilResidueActive"
+                            v-if="!isFilterTargetPlanActive && isConsolidatedCategoryActive() && !isOilResidueActive"
                             :class="currentDzoList === 'daily' ?
                             getLighterClass(index) : getDarkerClass(index)"
                     >
@@ -1301,7 +1301,7 @@
                       </div>
                     </td>
                     <td
-                            v-if="!isFilterTargetPlanActive && !isConsolidatedCategoryActive && !isOilResidueActive"
+                            v-if="!isFilterTargetPlanActive && !isConsolidatedCategoryActive() && !isOilResidueActive"
                             :class="`${getColorClassBySelectedPeriod(index)}`"
                     >
                       <div
@@ -1318,33 +1318,33 @@
                     </td>
 
                     <td
-                            :class="currentDzoList === 'daily' && isConsolidatedCategoryActive ?
+                            :class="currentDzoList === 'daily' && isConsolidatedCategoryActive() ?
                             getDarkerClass(index) : getLighterClass(index)"
                             v-if="exactDateSelected"
                     >
                     </td>
                     <td
-                            :class="currentDzoList === 'daily' && isConsolidatedCategoryActive ?
+                            :class="currentDzoList === 'daily' && isConsolidatedCategoryActive() ?
                             getLighterClass(index) : getDarkerClass(index)"
                             v-if="exactDateSelected"
                     ></td>
                     <td
-                            :class="currentDzoList === 'daily' && isConsolidatedCategoryActive ?
+                            :class="currentDzoList === 'daily' && isConsolidatedCategoryActive() ?
                             getDarkerClass(index) : getLighterClass(index)"
                             v-if="exactDateSelected"
                     ></td>
                     <td
-                            :class="currentDzoList === 'daily' && isConsolidatedCategoryActive ?
+                            :class="currentDzoList === 'daily' && isConsolidatedCategoryActive() ?
                             getLighterClass(index) : getDarkerClass(index)"
                             v-if="exactDateSelected"
                     ></td>
                     <td
-                            :class="currentDzoList === 'daily' && isConsolidatedCategoryActive ?
+                            :class="currentDzoList === 'daily' && isConsolidatedCategoryActive() ?
                             getDarkerClass(index) : getLighterClass(index)"
                             v-if="exactDateSelected"
                     ></td>
                     <td
-                            :class="currentDzoList === 'daily' && isConsolidatedCategoryActive ?
+                            :class="currentDzoList === 'daily' && isConsolidatedCategoryActive() ?
                             getLighterClass(index) : getDarkerClass(index)"
                             v-if="exactDateSelected"
                     ></td>
@@ -1389,7 +1389,7 @@
                 "
               >
                 <div
-                        v-if="isConsolidatedCategoryActive && !isOilResidueActive"
+                        v-if="isConsolidatedCategoryActive() && !isOilResidueActive"
                         class="oil-condensate-chart-secondary-name"
                 >
                   {{ chartSecondaryName }}, {{ trans("visualcenter.thousand") }} {{ metricName }}

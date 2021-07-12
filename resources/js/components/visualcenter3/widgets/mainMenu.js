@@ -40,6 +40,8 @@ export default {
     methods: {
         switchCategory(buttonName, planFieldName, factFieldName, metricName, categoryName, parentButton, childButton) {
             this.lastSelectedCategory = '';
+            this.oilCondensateProductionButton = '';
+            this.oilCondensateDeliveryButton = '';
             this.$store.commit('globalloading/SET_LOADING', true);
             this.isOpecFilterActive = false;
             this.oilCondensateFilters.isWithoutKMGFilterActive = true;

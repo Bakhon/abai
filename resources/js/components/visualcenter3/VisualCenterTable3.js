@@ -12,10 +12,7 @@ import сompaniesDzo from './dataManagers/dzoCompanies';
 import helpers from './dataManagers/helpers';
 import oilRates from './widgets/oilRates';
 import usdRates from './widgets/usdRates';
-import injectionWells from './widgets/injectionWells';
-import productionWells from './widgets/productionWells';
 import mainStatisticsTable from './widgets/mainStatisticsTable';
-import wells from './dataManagers/wells';
 import rates from './dataManagers/rates';
 import dates from './dataManagers/dates';
 import oilProductionFilters from './dataManagers/oilProductionFilters';
@@ -133,7 +130,18 @@ export default {
             companies: ['ОМГ','ММГ','ЭМГ','КБМ',
                 'КГМ','КТМ','КОА','УО','ТШО','НКО',
                 'КПО','ПКИ','ПКК','ТП','АГ'
-            ]
+            ],
+            waterInjectionButton: "",
+            injectionWellsOptions: [
+                {ticker: 'all', name: this.trans("visualcenter.allCompany")},
+                {ticker: 'ОМГ', name: this.trans("visualcenter.omg")},
+                {ticker: 'ММГ', name: this.trans("visualcenter.mmg")},
+                {ticker: 'КГМ', name: this.trans("visualcenter.kgm")},
+                {ticker: 'КОА', name: this.trans("visualcenter.koa")},
+                {ticker: 'КТМ', name: this.trans("visualcenter.ktm")},
+                {ticker: 'КБМ', name: this.trans("visualcenter.kbm")},
+                {ticker: 'ЭМГ', name: this.trans("visualcenter.emg")},
+            ],
         };
     },
     methods: {
@@ -261,8 +269,8 @@ export default {
             this.productionTableData = productionData;
             let yesterdayPeriodStart = moment(new Date(this.timestampToday)).subtract(1,'days').valueOf();
             let yesterdayPeriodEnd = moment(new Date(this.timestampEnd)).subtract(1,'days').valueOf();
-            let processedByAllCompaniesForYesterday = this.getProcessedDataForAllCompanies(productionData,yesterdayPeriodStart,yesterdayPeriodEnd,'old');
-            let processedByAllCompaniesForActual = this.getProcessedDataForAllCompanies(productionData,this.timestampToday,this.timestampEnd,'actual');
+            let processedByAllCompaniesForYesterday = this.getProcessedDataForAllCompanies(productionData,yesterdayPeriodStart,yesterdayPeriodEnd);
+            let processedByAllCompaniesForActual = this.getProcessedDataForAllCompanies(productionData,this.timestampToday,this.timestampEnd);
             updatedData = processedByAllCompaniesForActual.filteredData;
             if (processedByAllCompaniesForYesterday.summary.length !== 15 && this.isConsolidatedCategoryActive()) {
                 processedByAllCompaniesForYesterday.summary = this.getFilledByAllCompanies(processedByAllCompaniesForYesterday.summary);
@@ -331,12 +339,8 @@ export default {
             return (summaryDataByDzo['0']['factMonth'] + summaryDataByDzo['0']['planMonth']) === 0;
         },
 
-        getProcessedDataForAllCompanies(data,periodStart,periodEnd,periodType) {
+        getProcessedDataForAllCompanies(data,periodStart,periodEnd) {
             let self = this;
-            var dzo = [];
-            var factYear = [];
-            var planYear = [];
-
             var dataWithMay = new Array();
 
             dataWithMay = _.filter(data, function (item) {
@@ -381,13 +385,6 @@ export default {
             }
 
             let productionPlanAndFactMonth = this.getProductionPlanAndFactForMonth(dataWithMay);
-            if (periodType === 'actual') {
-                this.updateWellsWidgetsForAllCompanies(dataWithMay);
-            }
-            this.injectionWells = this.getSummaryWells(dataWithMay,this.wellStockIdleButtons.isInjectionIdleButtonActive,'injectionFonds');
-            this.innerWellsChartData = this.getSummaryInjectionWellsForChart(dataWithMay);
-            this.productionWells = this.getSummaryWells(dataWithMay, this.wellStockIdleButtons.isProductionIdleButtonActive,'productionFonds');
-            this.innerWells2ChartData = this.getSummaryProductionWellsForChart(dataWithMay);
 
             var dzo2 = [];
             var planMonth = [];
@@ -430,55 +427,9 @@ export default {
                 0
             );
 
-            var dataDay = [];
-
-
-            dataDay = _.filter(data, function (item) {
-                return _.every([
-                    _.inRange(
-                        item.__time,
-                        periodEnd - self.millisecondsInOneDay,
-                        periodEnd
-                    ),
-                ]);
-            });
-
-            dataDay = _.orderBy(dataDay, ["dzo"], ["desc"]);
-
-
-            var dzoDay = [];
-            var factDay = [];
-            var planDay = [];
-            var inj_wells_idle = [];
-            var inj_wells_work = [];
-            var prod_wells_work = [];
-            var prod_wells_idle = [];
-            var starts_krs = [];
-            var starts_prs = [];
-            var starts_drl = [];
-            var NameDzoFull = this.NameDzoFull;
-            var dzoBriefly = [];
             var dzoPercent = [];
             var productionFactPercent = [];
-            var dataDayLast = [];
 
-
-            _.forEach(dataDay, function (item) {
-
-
-                dzoBriefly.push({dzoBriefly: item.dzo});
-                e = {dzoDay: name};
-                f = {factDay: Math.ceil(item[self.factFieldName])};
-                p = {planDay: Math.ceil(item[self.planFieldName])};
-
-                dzoDay.push(e);
-                factDay.push(f);
-                planDay.push(p);
-            });
-
-            if (periodType !== 'actual') {
-                this.updateWellsWidgetPercentData(data,periodStart,periodEnd);
-            }
 
 
             var dzoMonth = [];
@@ -501,6 +452,7 @@ export default {
             }
 
             let opec = [];
+            let dzo = [];
             let impulses = [];
             let landing = [];
             let accident = [];
@@ -615,7 +567,7 @@ export default {
                     return tmpArrayToSort.indexOf(this.getNameDzoFull(a.dzoMonth)) > tmpArrayToSort.indexOf(this.getNameDzoFull(b.dzoMonth)) ? 1 : -1
                 });
 
-            bigTable = bigTable.filter(row => row.factMonth > 0 || row.planMonth > 0);
+            bigTable = bigTable.filter(row => row.factMonth > 0 && row.planMonth > 0);
 
             if (this.isOpecFilterActive) {
                 bigTable = bigTable.filter(item => dzoListWithoutOpec.includes(item.dzoMonth));
@@ -696,10 +648,7 @@ export default {
         helpers,
         oilRates,
         usdRates,
-        injectionWells,
-        productionWells,
         mainStatisticsTable,
-        wells,
         rates,
         dates,
         oilProductionFilters,
