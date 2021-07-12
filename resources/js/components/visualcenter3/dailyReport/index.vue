@@ -674,6 +674,7 @@
            font-size: 13px;
            background: #353EA1;
            width: 10%;
+           border: 1px solid #272953;
            &:first-child {
                width: 2%;
            }
@@ -686,6 +687,8 @@
            font-size: 13px;
            font-family: Bold;
            width: 10%;
+           border-right: 1px solid #454D7D;
+           padding-right: 5px;
            &:first-child {
                width: 2%;
                text-align: center;
@@ -693,6 +696,7 @@
            &:nth-child(2) {
                font-family: HarmoniaSansProCyr-Regular, Harmonia-sans;
                text-align: left;
+               padding-left: 5px;
            }
            &:nth-child(3), &:nth-child(4), &:nth-child(5) {
                width: 5%;

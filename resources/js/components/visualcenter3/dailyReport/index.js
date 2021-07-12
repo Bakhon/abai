@@ -571,7 +571,7 @@ export default {
             link.click();
         },
         exportToExcel() {
-            let fileName = 'Суточная информация по добыче нефти и конденсата НК КМГ_' + moment().subtract(1, 'days').format('D M YY') + ' г. .xls';
+            let fileName = 'Суточная информация по добыче нефти и конденсата НК КМГ_' + moment().subtract(1, 'days').format('DD.MM.YYYY') + ' г. .xls';
             this.tableToExcel('exportReport','name',fileName);
         },
         updateSummaryForExcel() {
@@ -651,13 +651,13 @@ export default {
         this.$store.commit('globalloading/SET_LOADING', false);
         setTimeout(() => {
             this.isOpecActive = !this.isOpecActive;
-        }, 5000);
+        }, 15000);
         setInterval(() => {
            this.isProduction = !this.isProduction;
             setTimeout(() => {
                 this.isOpecActive = !this.isOpecActive;
-            }, 5000);
-        }, 10000);
+            }, 15000);
+        }, 30000);
     },
     watch: {
         isProduction: function() {
