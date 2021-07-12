@@ -193,9 +193,7 @@ export default {
                 oneDzoNameSelected = [oneDzoNameSelected, 'ОМГК'];
             }
             this.selectedDzoCompanies = oneDzoNameSelected;
-            this.updateDzoMenu();
-            this.productionFondSelectedCompany = oneDzoNameSelected;
-            this.injectionFondSelectedCompany = oneDzoNameSelected;
+            this.updateDzoMenu();         
             this.updateProductionFondWidget();
             this.updateInjectionFondWidget();          
         },
