@@ -24,12 +24,10 @@ class WellConstr extends PlainForm
     }
 
     
-    function summDrill($dailyDrill, $depth) : bool {
-        $summ = $dailyDrill->sum('daily_drill_progress');
-        
-        $float = (float)$depth;
-        if($summ != 0){
-            return $float < $summ;
+    function isCorrectDepth($dailyDrill, $depth) : bool {
+                
+        if($dailyDrill != 0){
+            return $depth < $dailyDrill;
         }
         return true;
     }
@@ -39,10 +37,10 @@ class WellConstr extends PlainForm
         $dailyDrill =  DB::connection('tbd')
             ->table('drill.well_daily_drill')
             ->where('well', $wellId)
-            ->get('daily_drill_progress');
-        
-            echo json_encode(empty($dailyDrill));
-        return (empty($dailyDrill) || $this->summDrill($dailyDrill, $depth)) ? true : false ;
+            ->get('daily_drill_progress')
+            ->sum('daily_drill_progress');
+            
+        return (empty($dailyDrill) || $this->isCorrectDepth($dailyDrill, $depth)) ? true : false ;
     }
 
         
