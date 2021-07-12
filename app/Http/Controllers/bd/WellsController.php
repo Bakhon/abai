@@ -23,15 +23,9 @@ class WellsController extends Controller
 
     public function create()
     {
-        $params = [];
+        $forms = collect(json_decode(File::get(resource_path("/js/json/bd/forms.json"))));
+        $params = $forms->where('code', 'well_register')->first();
 
-        $forms = json_decode(File::get(resource_path("/js/json/bd/forms.json")));
-        foreach ($forms as $form) {
-            if ($form->code === 'well_register') {
-                $params = $form;
-                break;
-            }
-        }
         return view('bigdata.wells.create', compact('params'));
     }
 
