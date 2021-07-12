@@ -284,6 +284,7 @@ export default {
       currentYear: null,
       searchParam: null,
       postApiUrl: process.env.MIX_POST_API_URL,
+  
     };
   },
   methods: {
@@ -873,7 +874,7 @@ export default {
               appendToast: false,
               variant: 'danger',
             });
-            console.log("No data");
+            
           }
         })
         .catch((error) => {
@@ -881,13 +882,13 @@ export default {
           this.$store.commit("globalloading/SET_LOADING", false);
           this.wells = [];
           this.fullWells = [];
-          this.$bvToast.toast(`Toast body content`, {
-            title: `Toaster `,
+          this.$bvToast.toast(this.trans('tr.no_well_toaster'), {
+            title: this.trans('app.error'),
             toaster: "b-toaster-top-center",
             solid: true,
-            appendToast: false
+            appendToast: false,
+            variant: 'danger',
           });
-          console.log("search error = ", error);
         });
     },
     // API поиска редактирования ТР
@@ -908,7 +909,13 @@ export default {
           } else {
             this.wells = [];
             this.fullWells = [];
-            console.log("No data");
+            this.$bvToast.toast(this.trans('tr.no_well_toaster'), {
+              title: this.trans('app.error'),
+              toaster: "b-toaster-top-center",
+              solid: true,
+              appendToast: false,
+              variant: 'danger',
+            });
           }
         })
         .catch((error) => {
@@ -916,7 +923,13 @@ export default {
           this.$store.commit("globalloading/SET_LOADING", false);
           this.wells = [];
           this.fullWells = [];
-          console.log("search error = ", error);
+          this.$bvToast.toast(this.trans('tr.no_well_toaster'), {
+            title: this.trans('app.error'),
+            toaster: "b-toaster-top-center",
+            solid: true,
+            appendToast: false,
+            variant: 'danger',
+          });
         });
     },
   },
