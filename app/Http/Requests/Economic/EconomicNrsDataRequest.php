@@ -2,18 +2,13 @@
 
 namespace App\Http\Requests\Economic;
 
-use App\Http\Controllers\EconomicController;
+use App\Http\Controllers\Economic\EconomicNrsController;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Level23\Druid\Types\Granularity;
 
-class EconomicDataRequest extends FormRequest
+class EconomicNrsDataRequest extends FormRequest
 {
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
-     */
     public function rules()
     {
         return [
@@ -33,12 +28,11 @@ class EconomicDataRequest extends FormRequest
                 'required',
                 'string',
                 Rule::in([
-                    EconomicController::PROFITABILITY_FULL,
-                    EconomicController::PROFITABILITY_DIRECT,
-                    EconomicController::PROFITABILITY_DIRECT_FROM_DATE,
+                    EconomicNrsController::PROFITABILITY_FULL,
+                    EconomicNrsController::PROFITABILITY_DIRECT,
+                    EconomicNrsController::PROFITABILITY_DIRECT_FROM_DATE,
                 ])
             ],
-
         ];
     }
 }

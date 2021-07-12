@@ -7,9 +7,9 @@
         <div class="row text-white text-wrap flex-nowrap">
           <div class="p-3 bg-blue-dark">
             <economic-title font-size="58" line-height="72" class="text-nowrap">
-              <span>259 846</span>
+              <span>{{ res.Revenue_total.sum.value_optimized[0] }}</span>
               <span class="font-size-16px line-height-20px text-blue">
-                млн. тенге
+               {{ res.Revenue_total.sum.value_optimized[1] }}
               </span>
             </economic-title>
 
@@ -17,28 +17,20 @@
               Выручка
             </subtitle>
 
-            <div class="progress my-2 bg-progress"
-                 style="height: 5px">
-              <div
-                  :style="{width: 50 + '%'}"
-                  :aria-valuenow="50"
-                  :aria-valuemin="0"
-                  :aria-valuemax="100"
-                  class="progress-bar"
-                  role="progressbar"
-              ></div>
-            </div>
+            <percent-progress :percent="res.Revenue_total.sum.percent"/>
 
             <div class="d-flex font-size-12px line-height-14px mb-2">
               <div class="flex-grow-1 text-blue">
-                89.25%
+                {{ 100 + res.Revenue_total.sum.percent }} %
               </div>
 
-              <div>291 167</div>
+              <div>{{ res.Revenue_total.sum.value[0] }}</div>
             </div>
 
             <div class="d-flex align-items-center">
-              <percent-badge :percent="-10.7" class="text-nowrap mr-2"/>
+              <percent-badge
+                  :percent="res.Revenue_total.sum.percent"
+                  class="text-nowrap mr-2"/>
 
               <div class="flex-grow-1 text-blue font-size-12px line-height-16px text-right">
                 vs Базовый вариант
@@ -50,9 +42,9 @@
             <divider/>
 
             <economic-title font-size="58" line-height="72" class="text-nowrap">
-              <span>175 083</span>
+              <span>{{ res.Overall_expenditures.sum.value[0] }}</span>
               <span class="font-size-16px line-height-20px text-blue">
-                млн. тенге
+                {{ res.Overall_expenditures.sum.value[1] }}
               </span>
             </economic-title>
 
@@ -60,28 +52,20 @@
               Расходы
             </subtitle>
 
-            <div class="progress my-2 bg-progress"
-                 style="height: 5px">
-              <div
-                  :style="{width: 50 + '%'}"
-                  :aria-valuenow="50"
-                  :aria-valuemin="0"
-                  :aria-valuemax="100"
-                  class="progress-bar"
-                  role="progressbar"
-              ></div>
-            </div>
+            <percent-progress :percent="res.Overall_expenditures.sum.percent"/>
 
             <div class="d-flex font-size-12px line-height-14px mb-2">
               <div class="flex-grow-1 text-blue">
-                28.9%
+                {{ 100 + res.Overall_expenditures.sum.percent }} %
               </div>
 
-              <div>246 236</div>
+              <div>{{ res.Overall_expenditures.sum.value[0] }}</div>
             </div>
 
             <div class="d-flex align-items-center">
-              <percent-badge :percent="28.9" class="text-nowrap mr-2"/>
+              <percent-badge
+                  :percent="res.Overall_expenditures.sum.percent"
+                  class="text-nowrap mr-2"/>
 
               <div class="flex-grow-1 text-blue font-size-12px line-height-16px text-right">
                 vs Базовый вариант
@@ -93,9 +77,9 @@
             <divider/>
 
             <economic-title font-size="58" line-height="72" class="text-nowrap">
-              <span>1 608</span>
+              <span>{{ res.Operating_profit.sum.value[0] }}</span>
               <span class="font-size-16px line-height-20px text-blue">
-                млн. тенге
+                {{ res.Operating_profit.sum.value[1] }}
               </span>
             </economic-title>
 
@@ -103,35 +87,23 @@
               Операционная прибыль
             </subtitle>
 
-            <div class="progress my-2 bg-progress"
-                 style="height: 5px">
-              <div
-                  :style="{width: 50 + '%'}"
-                  :aria-valuenow="50"
-                  :aria-valuemin="0"
-                  :aria-valuemax="100"
-                  class="progress-bar"
-                  role="progressbar"
-              ></div>
-            </div>
+            <percent-progress :percent="res.Operating_profit.sum.percent"/>
 
             <div class="d-flex font-size-12px line-height-14px mb-2">
               <div class="flex-grow-1 text-blue">
-                -40.438%
+                {{ 100 + res.Operating_profit.sum.percent }} %
               </div>
 
-              <div>34 880</div>
+              <div>{{ res.Operating_profit.sum.value[0] }}</div>
             </div>
 
             <div class="d-flex align-items-center">
-              <div class="font-size-24px line-height-28px font-weight-bold text-nowrap mr-2">
-                <percent-badge-icon :percent="5" reverse/>
-
-                <span>49 856</span>
-              </div>
+              <percent-badge
+                  :percent="res.Operating_profit.sum.percent"
+                  class="text-nowrap mr-2"/>
 
               <div class="flex-grow-1 text-blue font-size-12px line-height-14px text-right">
-                млн. тенге vs Базовый вариант
+                vs Базовый вариант
               </div>
             </div>
           </div>
@@ -304,7 +276,8 @@
 
           <select-organization
               :form="form"
-              class="mb-3"/>
+              class="mb-3"
+              @change="getData"/>
 
           <select
               class="mb-3 form-control text-white border-0"
@@ -369,99 +342,37 @@ import EconomicTitle from "./components/EconomicTitle";
 import Subtitle from "./components/Subtitle";
 import PercentBadge from "./components/PercentBadge";
 import PercentBadgeIcon from "./components/PercentBadgeIcon";
+import PercentProgress from "./components/PercentProgress";
 import ChartButton from "./components/ChartButton";
-import SelectInterval from "./components/SelectInterval";
-import SelectGranularity, {GRANULARITY_DAY} from "./components/SelectGranularity";
 import SelectOrganization from "./components/SelectOrganization";
-import SelectField from "./components/SelectField";
-import SelectProfitability, {PROFITABILITY_FULL} from "./components/SelectProfitability";
 
 const economicRes = {
-  lastYear: {
-    Operating_profit: {
-      data: [],
-      sum: {
-        value: [0, '']
-      },
-    },
-    prs1: {
-      data: [],
-      count: {
-        value: 0
-      },
-    },
+  Revenue_total: {
+    sum: {
+      value: [0, ''],
+      value_optimized: [0, ''],
+      percent: 0
+    }
   },
-  lastMonth: {
-    Operating_profit: {
-      data: [],
-      sum: {
-        value: [0, ''],
-        percent: 0
-      },
-    },
-    Fixed_expenditures: {
-      data: [],
-      sum: {
-        value: [0, ''],
-        value_prev: [0, ''],
-        percent: 0
-      },
-    },
-    MET_payments: {
-      data: [],
-      sum: {
-        value: [0, ''],
-        value_prev: [0, ''],
-        percent: 0
-      },
-    },
-    Production_expenditures: {
-      data: [],
-      sum: {
-        value: [0, ''],
-        value_prev: [0, ''],
-        percent: 0
-      },
-    },
-    Revenue_export: {
-      data: [],
-      sum: {
-        value: [0, ''],
-        value_prev: [0, ''],
-        percent: 0
-      },
-    },
-    Revenue_local: {
-      data: [],
-      sum: {
-        value: [0, ''],
-        value_prev: [0, ''],
-        percent: 0
-      },
-    },
-    Variable_expenditures: {
-      data: [],
-      sum: {
-        value: [0, ''],
-        value_prev: [0, ''],
-        percent: 0
-      },
-    },
-    cat1: {
-      data: [],
-      count: {
-        value: 0,
-        percent: 0
-      },
-    },
+  Overall_expenditures: {
+    sum: {
+      value: [0, ''],
+      value_optimized: [0, ''],
+      percent: 0
+    }
   },
-  charts: {
-    profitability: null,
-    pausedProfitability: null,
-    oilProduction: null,
-    liquidProduction: null,
-    operatingProfitTop: null,
+  Operating_profit: {
+    sum: {
+      value: [0, ''],
+      value_optimized: [0, ''],
+      percent: 0
+    }
   },
+  oil:{
+    sum:{
+      value: [0, ''],
+    }
+  }
 }
 
 export default {
@@ -474,36 +385,17 @@ export default {
     Subtitle,
     PercentBadge,
     PercentBadgeIcon,
-    SelectInterval,
-    SelectGranularity,
+    PercentProgress,
     SelectOrganization,
-    SelectField,
-    SelectProfitability,
     ChartButton,
   },
   data: () => ({
     activeTab: 0,
     form: {
       org_id: null,
-      field_id: null,
-      interval_start: '2020-06-01T00:00:00.000Z',
-      interval_end: '2020-09-01T00:00:00.000Z',
-      granularity: GRANULARITY_DAY,
-      profitability: PROFITABILITY_FULL,
     },
     res: economicRes,
-    params: {
-      data: [],
-      enableSearch: true,
-      header: 'row',
-      border: true,
-      stripe: true,
-      pagination: true,
-      pageSize: 10,
-      pageSizes: [10, 20, 50],
-      height: 300
-    },
-    loading: false
+    loading: true
   }),
   computed: {
     blocks() {
@@ -511,6 +403,7 @@ export default {
         [
           {
             title: 'Добыча нефти',
+            // sum "oil"
             icon: 'oil_production.svg',
             value: 4908,
             valueWord: 'тыс. тонн',
@@ -521,6 +414,8 @@ export default {
           },
           {
             title: 'Обводненность',
+            // высчитывается по ф-ле
+            // (liquid - oil) /  liquid
             icon: 'liquid.svg',
             value: 93,
             valueWord: '%',
@@ -531,6 +426,7 @@ export default {
         [
           {
             title: 'Общее количество ПРС',
+            // sum "prs"
             icon: 'total_prs.svg',
             value: 6130,
             valueWord: 'ед',
@@ -539,6 +435,7 @@ export default {
           },
           {
             title: 'Удельный ПРС на скв',
+            // sum prs / well count
             icon: 'specific_prs.svg',
             value: 3.5,
             valueWord: 'ед/скв',
@@ -549,6 +446,7 @@ export default {
         [
           {
             title: 'Средний дебит нефти',
+            // sum "oil" / (365 * well count)
             icon: 'total_prs.svg',
             value: 7.2,
             valueWord: 'тонн/сут',
@@ -558,6 +456,7 @@ export default {
           },
           {
             title: 'Средний дебит Жидкости',
+            // sum "liquid" / (365 * well count)
             icon: 'specific_prs.svg',
             value: 35.1,
             valueWord: 'м³/сут',
@@ -590,17 +489,12 @@ export default {
         {
           name: '',
           val1: 'Базовый',
-          val2: 'Выбранный'
+          val2: 'Оптимизированный'
         },
         {
-          name: 'Нерентабельные',
+          name: 'Рентабельные',
           val1: 1024,
           val2: 1024
-        },
-        {
-          name: 'Условно-рентабельные',
-          val1: 709,
-          val2: 709
         },
         {
           name: 'Нерентабельные, в т.ч.',
@@ -694,25 +588,17 @@ export default {
     },
   },
   methods: {
-    calcSubBlockBg(percent, reversePercent) {
-      return (percent > 0 && !reversePercent) || (percent < 0 && reversePercent)
-          ? 'bg-green'
-          : 'bg-red'
-    },
-
     calcSubBlockWidth(percent) {
       return percent <= 0
           ? percent + 100
           : +Math.floor(100 * percent / (100 + percent))
     },
 
-    async getEconomicData() {
-      return
-
+    async getData() {
       this.loading = true
 
       try {
-        const {data} = await this.axios.get(this.localeUrl('/geteconimicdata'), {params: this.form})
+        const {data} = await this.axios.get(this.localeUrl('/economic/optimization/get_data'), {params: this.form})
 
         this.res = data
       } catch (e) {
@@ -722,41 +608,6 @@ export default {
       }
 
       this.loading = false
-    },
-
-    async exportEconomicData() {
-      try {
-        this.loading = true
-
-        const {data} = await this.axios.post(this.localeUrl('/export-economic-data'), this.form)
-
-        this.exportFromExcelJob(data)
-      } catch (e) {
-        this.loading = false
-
-        console.log(e)
-      }
-    },
-
-    exportFromExcelJob({id}) {
-      let interval = setInterval(async () => {
-        const {data} = await this.axios.get(this.localeUrl('/jobs/status'), {params: {id: id}})
-
-        switch (data.job.status) {
-          case 'finished':
-            clearInterval(interval)
-
-            this.loading = false
-
-            return window.open(data.job.output.filename, '_blank')
-          case 'failed':
-            clearInterval(interval)
-
-            this.loading = false
-
-            return alert('Export error')
-        }
-      }, 2000)
     },
   }
 };
@@ -832,10 +683,6 @@ export default {
 
 .bg-green {
   background: rgb(19, 176, 98);
-}
-
-.bg-progress {
-  background: #323370;
 }
 
 .text-blue {

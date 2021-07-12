@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Economic;
 
-use App\Http\Requests\Economic\EconomicDataRequest;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Economic\EconomicNrsDataRequest;
 use App\Jobs\ExportEconomicDataToExcel;
 use App\Models\Refs\Org;
 use Carbon\Carbon;
@@ -11,7 +12,7 @@ use Level23\Druid\Extractions\ExtractionBuilder;
 use Level23\Druid\Queries\QueryBuilder;
 use Level23\Druid\Types\Granularity;
 
-class EconomicController extends Controller
+class EconomicNrsController extends Controller
 {
     protected $druidClient;
 
@@ -48,26 +49,19 @@ class EconomicController extends Controller
     {
         $this
             ->middleware('can:economic view main')
-            ->only('index', 'getEconomicData');
+            ->only('index', 'getData', 'exportData');
 
         $this->druidClient = $druidClient;
     }
 
-    public function viewNrs()
+    public function index()
     {
         return view('economic.nrs');
     }
 
-    public function viewOptimization()
+    public function getData(EconomicNrsDataRequest $request): array
     {
-        return view('economic.optimization');
-    }
-
-    public function getEconomicData(EconomicDataRequest $request): array
-    {
-        if (!in_array($request->org_id, auth()->user()->getOrganizationIds())) {
-            abort(403);
-        }
+        self::validateAccess($request->org_id);
 
         /** @var Org $org */
         $org = Org::findOrFail($request->org_id);
@@ -358,11 +352,9 @@ class EconomicController extends Controller
         ];
     }
 
-    public function exportEconomicData(EconomicDataRequest $request)
+    public function exportData(EconomicNrsDataRequest $request)
     {
-        if (!in_array($request->org_id, auth()->user()->getOrganizationIds())) {
-            abort(403);
-        }
+        self::validateAccess($request->org_id);
 
         /** @var Org $org */
         $org = Org::findOrFail($request->org_id);
@@ -388,6 +380,13 @@ class EconomicController extends Controller
         return response()->json([
             'id' => $job->getJobStatusId()
         ]);
+    }
+
+    static function validateAccess(int $orgId)
+    {
+        if (!in_array($orgId, auth()->user()->getOrganizationIds())) {
+            abort(403);
+        }
     }
 
     static function percentFormat(?float $last, ?float $prev): float
@@ -533,51 +532,5 @@ class EconomicController extends Controller
             number_format($digit / 1000000000, 2),
             trans('economic_reference.billion')
         ];
-    }
-
-    public function economicPivot()
-    {
-        return view('economic.pivot');
-    }
-
-    public function oilPivot()
-    {
-        return view('economic.oilpivot');
-    }
-
-    public function getEconomicPivotData()
-    {
-        $builder = $this
-            ->druidClient
-            ->query(self::DATA_SOURCE, Granularity::DAY);
-
-        // Операционные убытки по НРС за последний месяц
-        $builder
-            ->interval(self::INTERVAL_LAST_MONTH)
-            ->select('__time', 'dt', function (ExtractionBuilder $extractionBuilder) {
-                $extractionBuilder->timeFormat(self::GRANULARITY_DAILY_FORMAT);
-            })
-            ->select(['profitability', 'expl_type'])
-            ->select(['org', 'status'])
-            ->select('uwi')
-            ->sum('liquid')
-            ->sum('bsw')
-            ->sum('Operating_profit')
-            ->sum('oil');
-
-        $result = $builder->groupBy()->data();
-
-        return response()->json($result);
-    }
-
-    public function getOilPivotData()
-    {
-        $response = $this
-            ->druidClient
-            ->query(self::DATA_SOURCE, Granularity::ALL)
-            ->interval('2020-07-30T18:00:00+00:00/2020-07-31T18:00:00+00:00')
-            ->execute();
-
-        return response()->json($response->data());
     }
 }
