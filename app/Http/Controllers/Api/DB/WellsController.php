@@ -439,9 +439,13 @@ class WellsController extends Controller
 
     private function gtm(Well $well)
     {
-        return $well->gtm()->join('dict.gtm_type', 'prod.gtm.gtm_type', '=', 'dict.gtm_type.id')
+        $gtm = $well->gtm()->join('dict.gtm_type', 'prod.gtm.gtm_type', '=', 'dict.gtm_type.id')
             ->where('dict.gtm_type.gtm_kind', '=', '10')
             ->first(['dbeg']);
+        if (isset($gtm)) {
+            return $gtm;
+        }
+        return ['dend' => ''];
     }
 
     private function getTechsByCode(Well $well, $code)
