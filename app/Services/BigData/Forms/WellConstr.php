@@ -40,7 +40,7 @@ class WellConstr extends PlainForm
             ->get('daily_drill_progress')
             ->sum('daily_drill_progress');
             
-        return (empty($dailyDrill) || $this->isCorrectDepth($dailyDrill, $depth)) ? true : false ;
+        return ($this->isCorrectDepth($dailyDrill, $depth)) ? true : false ;
     }
 
         
