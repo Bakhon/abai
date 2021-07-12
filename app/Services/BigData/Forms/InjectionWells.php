@@ -25,21 +25,4 @@ class InjectionWells extends PlainForm
         }
     }
 
-    protected function isValidQmax($volume, $qmax): bool
-    {
-        return $qmax >= $volume;    
-    }
-
-
-    protected function getCustomValidationErrors(): array
-    {
-        $errors = [];
-
-        if (!$this->isValidQmax($this->request->get('agent_vol'), $this->request->get('q_max_intake'))) {
-            $errors['qmax'] = trans('bd.validation.qmax');
-        }
-
-        return $errors;
-    }
-
 }

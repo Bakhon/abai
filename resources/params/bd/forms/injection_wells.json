@@ -63,7 +63,7 @@
                 "code": "q_max_intake",
                 "type": "numeric",
                 "title": "qmax_reception",
-                "validation": "required|numeric|gt:0",
+                "validation": "required|numeric|gt:0|gte:agent_vol",
                 "prefix": ""
               }
             ]
