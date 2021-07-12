@@ -85,13 +85,11 @@ export default {
 
         innerWellsNagMetOnChange($event, currentOption) {
             this.selectedSecondaryOption = currentOption;
-            this.company = $event.target.value;
             this.updateProductionData(this.planFieldName, this.factFieldName, this.chartHeadName, this.metricName, this.chartSecondaryName);
         },
 
         innerWellsProdMetOnChange($event, currentOption) {
             this.selectedSecondaryOption = currentOption;
-            this.company = $event.target.value;
             this.updateProductionData(this.planFieldName, this.factFieldName, this.chartHeadName, this.metricName, this.chartSecondaryName);
         },
     },

@@ -74,7 +74,6 @@ export default {
             this.selectedDzo = 'all';
             this.isFilterTargetPlanActive = false;
             this.buttonTargetPlan = "";
-            this.company = "all";
             this.changeMenu2('daily');
             this.tableMapping[tableName]['class'] = 'show-company-list';
             this.tableMapping[tableName]['hover'] = 'button_hover';

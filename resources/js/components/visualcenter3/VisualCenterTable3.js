@@ -308,32 +308,6 @@ export default {
             return '';
         },
 
-        processDataForSpecificCompany(data, metricName, chartSecondaryName,periodStart,periodEnd) {
-            //todo почистить и удалить все, что с ним было связано и более не нужно
-            let self = this;
-            let filteredDataByCompanies = this.getFilteredCompaniesList(data);
-            let filteredDataByPeriod = this.getProductionDataInPeriodRange(filteredDataByCompanies,periodStart,periodEnd);
-            filteredDataByPeriod = this.getDataOrderedByAsc(filteredDataByPeriod);
-            this.updateSecondaryParams(data);
-
-            if (this.isOneDateSelected) {
-                let filteredDataByOneDay = this.getFilteredDataByOneDay(filteredDataByCompanies,'today', periodStart,periodEnd);
-                this.dzoCompaniesSummaryForChart = this.getProductionForChart(filteredDataByOneDay);
-            } else {
-                this.dzoCompaniesSummaryForChart = this.getProductionForChart(filteredDataByPeriod);
-            }
-            this.exportDzoCompaniesSummaryForChart(this.dzoCompaniesSummaryForChart);
-
-            let summaryDataByDzo = this.getSummaryDataByDzo(filteredDataByPeriod);
-            if (this.isProductionDataNull(summaryDataByDzo)) {
-                this.company = "all";
-                this.updateProductionData(this.planFieldName, this.factFieldName, this.chartHeadName, metricName, chartSecondaryName);
-            }
-
-            this.addOpecToDzoSummary(filteredDataByPeriod, summaryDataByDzo);
-            return summaryDataByDzo;
-        },
-
         getSummaryDataByDzo(data) {
             let self = this;
             return _(data)
