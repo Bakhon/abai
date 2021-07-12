@@ -15,7 +15,7 @@ export default {
     components: {},
     data() {
         return {
-            baseUrl: 'process.env.MIX_MICROSERVICE_USER_REPORTS',
+            baseUrl: process.env.MIX_MICROSERVICE_USER_REPORTS,
             showOptions: true,
             structureTypes: {
                 org: null,

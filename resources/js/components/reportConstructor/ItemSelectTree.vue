@@ -27,7 +27,7 @@ import axios from "axios";
 export default {
   data() {
     return {
-      baseUrl: 'process.env.MIX_MICROSERVICE_USER_REPORTS/',
+      baseUrl: process.env.MIX_MICROSERVICE_USER_REPORTS,
       items: null,
       level: 0
     }
