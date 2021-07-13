@@ -7,9 +7,9 @@
         <div class="row text-white text-wrap flex-nowrap">
           <div class="p-3 bg-blue-dark">
             <economic-title font-size="58" line-height="72" class="text-nowrap">
-              <span>{{ res.Revenue_total.sum.value_optimized[0] }}</span>
+              <span>{{ res.Revenue_total.value_optimized[0] }}</span>
               <span class="font-size-16px line-height-20px text-blue">
-               {{ res.Revenue_total.sum.value_optimized[1] }}
+               {{ res.Revenue_total.value_optimized[1] }}
               </span>
             </economic-title>
 
@@ -17,19 +17,19 @@
               Выручка
             </subtitle>
 
-            <percent-progress :percent="res.Revenue_total.sum.percent"/>
+            <percent-progress :percent="res.Revenue_total.percent"/>
 
             <div class="d-flex font-size-12px line-height-14px mb-2">
               <div class="flex-grow-1 text-blue">
-                {{ 100 + res.Revenue_total.sum.percent }} %
+                {{ 100 + res.Revenue_total.percent }} %
               </div>
 
-              <div>{{ res.Revenue_total.sum.value[0] }}</div>
+              <div>{{ res.Revenue_total.value[0] }}</div>
             </div>
 
             <div class="d-flex align-items-center">
               <percent-badge
-                  :percent="res.Revenue_total.sum.percent"
+                  :percent="res.Revenue_total.percent"
                   class="text-nowrap mr-2"/>
 
               <div class="flex-grow-1 text-blue font-size-12px line-height-16px text-right">
@@ -42,9 +42,9 @@
             <divider/>
 
             <economic-title font-size="58" line-height="72" class="text-nowrap">
-              <span>{{ res.Overall_expenditures.sum.value[0] }}</span>
+              <span>{{ res.Overall_expenditures.value[0] }}</span>
               <span class="font-size-16px line-height-20px text-blue">
-                {{ res.Overall_expenditures.sum.value[1] }}
+                {{ res.Overall_expenditures.value[1] }}
               </span>
             </economic-title>
 
@@ -52,19 +52,19 @@
               Расходы
             </subtitle>
 
-            <percent-progress :percent="res.Overall_expenditures.sum.percent"/>
+            <percent-progress :percent="res.Overall_expenditures.percent"/>
 
             <div class="d-flex font-size-12px line-height-14px mb-2">
               <div class="flex-grow-1 text-blue">
-                {{ 100 + res.Overall_expenditures.sum.percent }} %
+                {{ 100 + res.Overall_expenditures.percent }} %
               </div>
 
-              <div>{{ res.Overall_expenditures.sum.value[0] }}</div>
+              <div>{{ res.Overall_expenditures.value[0] }}</div>
             </div>
 
             <div class="d-flex align-items-center">
               <percent-badge
-                  :percent="res.Overall_expenditures.sum.percent"
+                  :percent="res.Overall_expenditures.percent"
                   class="text-nowrap mr-2"/>
 
               <div class="flex-grow-1 text-blue font-size-12px line-height-16px text-right">
@@ -77,9 +77,9 @@
             <divider/>
 
             <economic-title font-size="58" line-height="72" class="text-nowrap">
-              <span>{{ res.Operating_profit.sum.value[0] }}</span>
+              <span>{{ res.operating_profit_12m.value[0] }}</span>
               <span class="font-size-16px line-height-20px text-blue">
-                {{ res.Operating_profit.sum.value[1] }}
+                {{ res.operating_profit_12m.value[1] }}
               </span>
             </economic-title>
 
@@ -87,19 +87,19 @@
               Операционная прибыль
             </subtitle>
 
-            <percent-progress :percent="res.Operating_profit.sum.percent"/>
+            <percent-progress :percent="res.operating_profit_12m.percent"/>
 
             <div class="d-flex font-size-12px line-height-14px mb-2">
               <div class="flex-grow-1 text-blue">
-                {{ 100 + res.Operating_profit.sum.percent }} %
+                {{ 100 + res.operating_profit_12m.percent }} %
               </div>
 
-              <div>{{ res.Operating_profit.sum.value[0] }}</div>
+              <div>{{ res.operating_profit_12m.value[0] }}</div>
             </div>
 
             <div class="d-flex align-items-center">
               <percent-badge
-                  :percent="res.Operating_profit.sum.percent"
+                  :percent="res.operating_profit_12m.percent"
                   class="text-nowrap mr-2"/>
 
               <div class="flex-grow-1 text-blue font-size-12px line-height-14px text-right">
@@ -193,6 +193,7 @@
 
           <div class="mt-4 position-relative">
             <divider style="left: 150px; height: 100%; top: 0;"/>
+
             <divider style="left: 230px; height: 100%; top: 0;"/>
 
             <div v-for="(fond, index) in fonds"
@@ -346,34 +347,38 @@ import PercentProgress from "./components/PercentProgress";
 import ChartButton from "./components/ChartButton";
 import SelectOrganization from "./components/SelectOrganization";
 
-const economicRes = {
-  Revenue_total: {
-    sum: {
-      value: [0, ''],
-      value_optimized: [0, ''],
-      percent: 0
-    }
-  },
-  Overall_expenditures: {
-    sum: {
-      value: [0, ''],
-      value_optimized: [0, ''],
-      percent: 0
-    }
-  },
-  Operating_profit: {
-    sum: {
-      value: [0, ''],
-      value_optimized: [0, ''],
-      percent: 0
-    }
-  },
-  oil:{
-    sum:{
-      value: [0, ''],
-    }
-  }
+const optimizedColumns = [
+  "Revenue_total",
+  "Overall_expenditures",
+  "operating_profit_12m",
+  "oil",
+  "liquid",
+  "prs",
+  "well_count",
+  "well_count_profitable",
+  "well_count_profitless_cat_1",
+  "well_count_profitless_cat2",
+];
+
+let economicRes = {
+  scenario_id: null,
+  percent_stop_cat1: 0,
+  percent_stop_cat2: 0,
+  coef_Fixed_nopayroll: 0,
+  coef_cost_WR_payroll: 0,
+  dollar_rate: 0,
+  oil_price: 0,
 }
+
+optimizedColumns.forEach(column => {
+  economicRes[column] = {
+    value: [0, ''],
+    value_optimized: [0, ''],
+    percent: 0,
+    original_value: 0,
+    original_value_optimized: 0,
+  }
+})
 
 export default {
   name: "economic-nrs",
@@ -405,19 +410,18 @@ export default {
             title: 'Добыча нефти',
             // sum "oil"
             icon: 'oil_production.svg',
-            value: 4908,
-            valueWord: 'тыс. тонн',
-            percent: 527,
+            value: res.oil.value_optimized[0],
+            valueWord: res.oil.value_optimized[1],
+            percent: res.oil.percent,
             percentWord: 'тыс. тонн',
             reverse: true,
             reversePercent: true
           },
           {
             title: 'Обводненность',
-            // высчитывается по ф-ле
             // (liquid - oil) /  liquid
             icon: 'liquid.svg',
-            value: 93,
+            value: (res.liquid.original_value - res.oil.original_value) / res.liquid.original_value,
             valueWord: '%',
             percent: 5.1,
             percentWord: 'тыс. тонн',
@@ -428,16 +432,16 @@ export default {
             title: 'Общее количество ПРС',
             // sum "prs"
             icon: 'total_prs.svg',
-            value: 6130,
+            value: res.prs.value[0],
             valueWord: 'ед',
-            percent: 527,
+            percent: res.prs.percent,
             percentWord: 'ед',
           },
           {
             title: 'Удельный ПРС на скв',
             // sum prs / well count
             icon: 'specific_prs.svg',
-            value: 3.5,
+            value: Math.floor(res.prs.original_value / res.well_count),
             valueWord: 'ед/скв',
             percent: 1.2,
             percentWord: 'ед/скв',
@@ -448,7 +452,7 @@ export default {
             title: 'Средний дебит нефти',
             // sum "oil" / (365 * well count)
             icon: 'total_prs.svg',
-            value: 7.2,
+            value: Math.floor(res.oil.original_value / (365 * res.well_count)),
             valueWord: 'тонн/сут',
             percent: 3.2,
             percentWord: 'тонн/сут',
@@ -458,7 +462,7 @@ export default {
             title: 'Средний дебит Жидкости',
             // sum "liquid" / (365 * well count)
             icon: 'specific_prs.svg',
-            value: 35.1,
+            value: Math.floor(res.liquid.original_value / (365 * res.well_count)),
             valueWord: 'м³/сут',
             percent: 3.9,
             percentWord: 'м³/сут',
@@ -661,28 +665,12 @@ export default {
   line-height: 26px;
 }
 
-.progress-reverse {
-  transform: rotateY(180deg);
-}
-
 .bg-blue-dark {
   background: #2B2E5E;
 }
 
-.bg-light-blue-dark {
-  background: #323370;
-}
-
 .bg-export {
   background: #213181;
-}
-
-.bg-red {
-  background: rgb(171, 19, 14);
-}
-
-.bg-green {
-  background: rgb(19, 176, 98);
 }
 
 .text-blue {
@@ -691,22 +679,5 @@ export default {
 
 .text-grey {
   color: #656A8A
-}
-
-.loader {
-  flex: 0 1 auto;
-  flex-flow: row wrap;
-  width: 100%;
-  align-items: flex-start;
-  position: absolute;
-  height: 100%;
-  justify-content: center;
-  display: flex;
-  z-index: 5000;
-  background: rgba(0, 0, 0, 0.4);
-  left: 0;
-  top: 0;
-  right: 0;
-  bottom: 0;
 }
 </style>

@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Economic;
 
 use App\Http\Controllers\Controller;
-use App\Models\Refs\Org;
 use Illuminate\Http\Request;
 use Level23\Druid\DruidClient;
 
@@ -11,7 +10,22 @@ class EconomicOptimizationController extends Controller
 {
     protected $druidClient;
 
-    const DATA_SOURCE = 'economic_2020v18_test';
+    const DATA_SOURCE = 'economic_scenario_test_v1';
+
+    const OPTIMIZED_COLUMNS = [
+        "Revenue_total",
+        "Overall_expenditures",
+        "operating_profit_12m",
+        "oil",
+        "liquid",
+        "prs",
+        "well_count",
+        "well_count_profitable",
+        "well_count_profitless_cat_1",
+        "well_count_profitless_cat2",
+    ];
+
+    const OPTIMIZED_COLUMN_SUFFIX = '_optimize';
 
     public function __construct(DruidClient $druidClient)
     {
@@ -31,67 +45,48 @@ class EconomicOptimizationController extends Controller
     {
         EconomicNrsController::validateAccess($request->org_id);
 
-        /** @var Org $org */
-        $org = Org::findOrFail($request->org_id);
-
         $builder = $this
             ->druidClient
             ->query(self::DATA_SOURCE)
             ->interval(EconomicNrsController::calcIntervalYears());
 
-        if ($org->druid_id) {
-            $builder->where('org_id2', '=', $org->druid_id);
+        $columns = [
+            "scenario_id",
+            "percent_stop_cat1",
+            "percent_stop_cat2",
+            "coef_Fixed_nopayroll",
+            "coef_cost_WR_payroll",
+            "dollar_rate",
+            "oil_price",
+        ];
+
+        foreach (self::OPTIMIZED_COLUMNS as $column) {
+            $columns[] = $column;
+
+            $columns[] = $column . self::OPTIMIZED_COLUMN_SUFFIX;
         }
 
         $data = $builder
-            ->sum("Revenue_total")
-            ->sum("Overall_expenditures")
-            ->sum("Operating_profit")
-            ->longSum("oil")
-            ->longSum("liquid")
-            ->longSum("prs")
-            ->count('uwi')
+            ->select($columns)
             ->groupBy()
             ->data()[0];
 
-        $uwiCat1Count = $builder
-            ->where('profitability', '=', EconomicNrsController::PROFITABILITY_CAT_1)
-            ->count('uwi')
-            ->groupBy()
-            ->data()[0];
+        $result = [];
 
-        $uwiCat2Count = $builder
-            ->where('profitability', '=', EconomicNrsController::PROFITABILITY_CAT_2)
-            ->count('uwi')
-            ->groupBy()
-            ->data()[0];
+        foreach (self::OPTIMIZED_COLUMNS as $column) {
+            $columnOptimized = $column . self::OPTIMIZED_COLUMN_SUFFIX;
 
-        return [
-            'Revenue_total' => [
-                'sum' => [
-                    'value' => EconomicNrsController::moneyFormat($data["Revenue_total"]),
-                    'value_optimized' => EconomicNrsController::moneyFormat($data["Revenue_total"]),
-                    'percent' => EconomicNrsController::percentFormat($data["Revenue_total"], $data["Revenue_total"]),
-                ],
-            ],
-            'Overall_expenditures' => [
-                'sum' => [
-                    'value' => EconomicNrsController::moneyFormat($data["Overall_expenditures"]),
-                    'value_optimized' => EconomicNrsController::moneyFormat($data["Overall_expenditures"]),
-                    'percent' => EconomicNrsController::percentFormat($data["Overall_expenditures"], $data["Overall_expenditures"]),
-                ],
-            ],
-            'Operating_profit' => [
-                'sum' => [
-                    'value' => EconomicNrsController::moneyFormat($data["Operating_profit"]),
-                    'value_optimized' => EconomicNrsController::moneyFormat($data["Operating_profit"]),
-                    'percent' => EconomicNrsController::percentFormat($data["Operating_profit"], $data["Operating_profit"]),
-                ],
-            ],
-            'uwi' => [
-                'cat1' => $uwiCat1Count,
-                'cat2' => $uwiCat2Count
-            ]
-        ];
+            $result[] = [
+                $column => [
+                    'value' => EconomicNrsController::moneyFormat($data[$column]),
+                    'value_optimized' => EconomicNrsController::moneyFormat($data[$columnOptimized]),
+                    'percent' => EconomicNrsController::percentFormat($data[$column], $data[$columnOptimized]),
+                    'original_value' => $data[$column],
+                    'original_value_optimized' => $data[$columnOptimized],
+                ]
+            ];
+        }
+
+        return $result;
     }
 }
