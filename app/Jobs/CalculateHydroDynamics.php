@@ -273,7 +273,7 @@ class CalculateHydroDynamics implements ShouldQueue
                 ]
             );
 
-            foreach ($this->hydroCalcShortSchema as  $param => $index) {
+            foreach ($this->hydroCalcLongSchema as  $param => $index) {
                 $hydroCalcLong->$param = $row[$index];
             }
 
