@@ -20,6 +20,6 @@ class HydroCalcResult extends Model
 
     public function oilPipe()
     {
-        return $this->setConnection('mysql')->belongsTo(OilPipe::class);
+        return $this->belongsTo(OilPipe::class);
     }
 }
