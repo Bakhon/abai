@@ -9,12 +9,10 @@ class BottomHole extends PlainForm
 {
     protected $configurationFileName = 'bottom_hole';
 
-    function summDrill($dailyDrill, $depth) : bool {
-        $summ = $dailyDrill->sum('daily_drill_progress');
+    function isCorrectDailyDrill($dailyDrill, $depth) : bool {        
         
-        $float = (float)$depth;
-        if($summ != 0){
-            return $float < $summ;
+        if($dailyDrill != 0){
+            return $depth < $summ;
         }
         return true;
     }
@@ -24,9 +22,10 @@ class BottomHole extends PlainForm
         $dailyDrill =  DB::connection('tbd')
             ->table('drill.well_daily_drill')
             ->where('well', $wellId)
-            ->get('daily_drill_progress');
+            ->get('daily_drill_progress')
+            ->sum('daily_drill_progress');
 
-        return (empty($dailyDrill) || $this->summDrill($dailyDrill, $depth)) ? true : false ;
+        return ($this->isCorrectDailyDrill($dailyDrill, $depth)) ? true : false ;
     }
 
     protected function isValidDate($wellId, $date): bool
@@ -40,7 +39,7 @@ class BottomHole extends PlainForm
         if(empty($startDate->drill_start_date)){
             return true;
         }
-        else return $date >= $startDate;    
+        return $date >= $startDate;    
     }
 
 
