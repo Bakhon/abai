@@ -3,14 +3,18 @@
 namespace App\Http\Controllers\Economic;
 
 use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Level23\Druid\DruidClient;
+use Level23\Druid\Types\Granularity;
 
 class EconomicOptimizationController extends Controller
 {
     protected $druidClient;
 
     const DATA_SOURCE = 'economic_scenario_test_v1';
+
+    const DATA_SOURCE_DATE = '2021/07/13';
 
     const OPTIMIZED_COLUMNS = [
         "Revenue_total",
@@ -47,8 +51,11 @@ class EconomicOptimizationController extends Controller
 
         $builder = $this
             ->druidClient
-            ->query(self::DATA_SOURCE)
-            ->interval(EconomicNrsController::calcIntervalYears());
+            ->query(self::DATA_SOURCE, Granularity::YEAR)
+            ->interval(EconomicNrsController::intervalFormat(
+                Carbon::parse(self::DATA_SOURCE_DATE),
+                Carbon::parse(self::DATA_SOURCE_DATE)->addDay(),
+            ));
 
         $columns = [
             "scenario_id",
@@ -69,22 +76,27 @@ class EconomicOptimizationController extends Controller
         $data = $builder
             ->select($columns)
             ->groupBy()
-            ->data()[0];
+            ->data();
 
         $result = [];
 
-        foreach (self::OPTIMIZED_COLUMNS as $column) {
-            $columnOptimized = $column . self::OPTIMIZED_COLUMN_SUFFIX;
+        foreach ($data as $index => $item) {
+            foreach ($columns as $column) {
+                $result[$index][$column] = $item[$column];
+            }
 
-            $result[] = [
-                $column => [
-                    'value' => EconomicNrsController::moneyFormat($data[$column]),
-                    'value_optimized' => EconomicNrsController::moneyFormat($data[$columnOptimized]),
-                    'percent' => EconomicNrsController::percentFormat($data[$column], $data[$columnOptimized]),
-                    'original_value' => $data[$column],
-                    'original_value_optimized' => $data[$columnOptimized],
-                ]
-            ];
+            foreach (self::OPTIMIZED_COLUMNS as $column) {
+                $columnOptimized = $column . self::OPTIMIZED_COLUMN_SUFFIX;
+
+                $result[$index][$column] = [
+                    'value' => EconomicNrsController::moneyFormat($item[$column]),
+                    'value_optimized' => EconomicNrsController::moneyFormat($item[$columnOptimized]),
+                    'percent' => EconomicNrsController::percentFormat($item[$column], $item[$columnOptimized]),
+                    'original_value' => $item[$column],
+                    'original_value_optimized' => $item[$columnOptimized],
+                ];
+            }
+
         }
 
         return $result;

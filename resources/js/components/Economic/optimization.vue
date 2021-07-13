@@ -7,9 +7,9 @@
         <div class="row text-white text-wrap flex-nowrap">
           <div class="p-3 bg-blue-dark">
             <economic-title font-size="58" line-height="72" class="text-nowrap">
-              <span>{{ res.Revenue_total.value_optimized[0] }}</span>
+              <span>{{ scenario.Revenue_total.value_optimized[0] }}</span>
               <span class="font-size-16px line-height-20px text-blue">
-               {{ res.Revenue_total.value_optimized[1] }}
+               {{ scenario.Revenue_total.value_optimized[1] }}
               </span>
             </economic-title>
 
@@ -17,19 +17,19 @@
               Выручка
             </subtitle>
 
-            <percent-progress :percent="res.Revenue_total.percent"/>
+            <percent-progress :percent="scenario.Revenue_total.percent"/>
 
             <div class="d-flex font-size-12px line-height-14px mb-2">
               <div class="flex-grow-1 text-blue">
-                {{ 100 + res.Revenue_total.percent }} %
+                {{ 100 + scenario.Revenue_total.percent }} %
               </div>
 
-              <div>{{ res.Revenue_total.value[0] }}</div>
+              <div>{{ scenario.Revenue_total.value[0] }}</div>
             </div>
 
             <div class="d-flex align-items-center">
               <percent-badge
-                  :percent="res.Revenue_total.percent"
+                  :percent="scenario.Revenue_total.percent"
                   class="text-nowrap mr-2"/>
 
               <div class="flex-grow-1 text-blue font-size-12px line-height-16px text-right">
@@ -42,9 +42,9 @@
             <divider/>
 
             <economic-title font-size="58" line-height="72" class="text-nowrap">
-              <span>{{ res.Overall_expenditures.value[0] }}</span>
+              <span>{{ scenario.Overall_expenditures.value[0] }}</span>
               <span class="font-size-16px line-height-20px text-blue">
-                {{ res.Overall_expenditures.value[1] }}
+                {{ scenario.Overall_expenditures.value[1] }}
               </span>
             </economic-title>
 
@@ -52,19 +52,19 @@
               Расходы
             </subtitle>
 
-            <percent-progress :percent="res.Overall_expenditures.percent"/>
+            <percent-progress :percent="scenario.Overall_expenditures.percent"/>
 
             <div class="d-flex font-size-12px line-height-14px mb-2">
               <div class="flex-grow-1 text-blue">
-                {{ 100 + res.Overall_expenditures.percent }} %
+                {{ 100 + scenario.Overall_expenditures.percent }} %
               </div>
 
-              <div>{{ res.Overall_expenditures.value[0] }}</div>
+              <div>{{ scenario.Overall_expenditures.value[0] }}</div>
             </div>
 
             <div class="d-flex align-items-center">
               <percent-badge
-                  :percent="res.Overall_expenditures.percent"
+                  :percent="scenario.Overall_expenditures.percent"
                   class="text-nowrap mr-2"/>
 
               <div class="flex-grow-1 text-blue font-size-12px line-height-16px text-right">
@@ -77,9 +77,9 @@
             <divider/>
 
             <economic-title font-size="58" line-height="72" class="text-nowrap">
-              <span>{{ res.operating_profit_12m.value[0] }}</span>
+              <span>{{ scenario.operating_profit_12m.value[0] }}</span>
               <span class="font-size-16px line-height-20px text-blue">
-                {{ res.operating_profit_12m.value[1] }}
+                {{ scenario.operating_profit_12m.value[1] }}
               </span>
             </economic-title>
 
@@ -87,19 +87,19 @@
               Операционная прибыль
             </subtitle>
 
-            <percent-progress :percent="res.operating_profit_12m.percent"/>
+            <percent-progress :percent="scenario.operating_profit_12m.percent"/>
 
             <div class="d-flex font-size-12px line-height-14px mb-2">
               <div class="flex-grow-1 text-blue">
-                {{ 100 + res.operating_profit_12m.percent }} %
+                {{ 100 + scenario.operating_profit_12m.percent }} %
               </div>
 
-              <div>{{ res.operating_profit_12m.value[0] }}</div>
+              <div>{{ scenario.operating_profit_12m.value[0] }}</div>
             </div>
 
             <div class="d-flex align-items-center">
               <percent-badge
-                  :percent="res.operating_profit_12m.percent"
+                  :percent="scenario.operating_profit_12m.percent"
                   class="text-nowrap mr-2"/>
 
               <div class="flex-grow-1 text-blue font-size-12px line-height-14px text-right">
@@ -111,7 +111,7 @@
           <div class="p-3 bg-blue-dark flex-grow-1 ml-2 d-flex flex-column">
             <div class="text-nowrap font-weight-bold"
                  style="font-size: 52px; line-height: 64px;">
-              <span>55</span>
+              <span>{{ oilPrices[1].label }}</span>
               <span class="font-size-16px line-height-20px text-blue">
                   $ / bbl
               </span>
@@ -143,7 +143,7 @@
           <div class="p-3 bg-blue-dark flex-grow-1 ml-2 d-flex flex-column">
             <div class="text-nowrap font-weight-bold"
                  style="font-size: 52px; line-height: 64px;">
-              <span>421</span>
+              <span>{{ dollarRates[1].label }}</span>
               <span class="font-size-16px line-height-20px text-blue">
                    kzt / $
               </span>
@@ -205,11 +205,11 @@
               </div>
 
               <div class="ml-2" style="width: 80px">
-                <span> {{ fond.val1 }}</span>
+                <span> {{ fond.value }}</span>
               </div>
 
               <div>
-                <span> {{ fond.val2 }}</span>
+                <span> {{ fond.value_optimized }}</span>
               </div>
             </div>
           </div>
@@ -252,7 +252,7 @@
                   class="font-size-22px line-height-26px mr-1"/>
 
               <span class="font-size-24px line-height-28px font-weight-bold">
-                {{ subBlock.percent }}
+                {{ Math.abs(subBlock.percent) }}
               </span>
 
               <span class="font-size-12px line-height-14px">
@@ -285,9 +285,9 @@
               style="background-color: #333975;">
             <option
                 v-for="price in oilPrices"
-                :key="price.id"
-                :value="price.id">
-              {{ price.name }}
+                :key="price.value"
+                :value="price.value">
+              {{ price.label }}
             </option>
           </select>
 
@@ -296,9 +296,9 @@
               style="background-color: #333975;">
             <option
                 v-for="rate in dollarRates"
-                :key="rate.id"
-                :value="rate.id">
-              {{ rate.name }}
+                :key="rate.value"
+                :value="rate.value">
+              {{ rate.label }}
             </option>
           </select>
 
@@ -307,9 +307,9 @@
               style="background-color: #333975;">
             <option
                 v-for="salaryPercent in salaryPercents"
-                :key="salaryPercent.id"
-                :value="salaryPercent.id">
-              {{ salaryPercent.name }}
+                :key="salaryPercent.value"
+                :value="salaryPercent.value">
+              {{ salaryPercent.label }}
             </option>
           </select>
 
@@ -318,9 +318,9 @@
               style="background-color: #333975;">
             <option
                 v-for="optimizationPercent in optimizationPercents"
-                :key="optimizationPercent.id"
-                :value="optimizationPercent.id">
-              {{ optimizationPercent.name }}
+                :key="optimizationPercent.value"
+                :value="optimizationPercent.value">
+              {{ optimizationPercent.label }}
             </option>
           </select>
 
@@ -360,7 +360,7 @@ const optimizedColumns = [
   "well_count_profitless_cat2",
 ];
 
-let economicRes = {
+let economicRes = [{
   scenario_id: null,
   percent_stop_cat1: 0,
   percent_stop_cat2: 0,
@@ -368,10 +368,10 @@ let economicRes = {
   coef_cost_WR_payroll: 0,
   dollar_rate: 0,
   oil_price: 0,
-}
+}]
 
 optimizedColumns.forEach(column => {
-  economicRes[column] = {
+  economicRes[0][column] = {
     value: [0, ''],
     value_optimized: [0, ''],
     percent: 0,
@@ -400,7 +400,8 @@ export default {
       org_id: null,
     },
     res: economicRes,
-    loading: true
+    loading: true,
+    scenarioIndex: 0
   }),
   computed: {
     blocks() {
@@ -410,9 +411,9 @@ export default {
             title: 'Добыча нефти',
             // sum "oil"
             icon: 'oil_production.svg',
-            value: res.oil.value_optimized[0],
-            valueWord: res.oil.value_optimized[1],
-            percent: res.oil.percent,
+            value: this.scenario.oil.value_optimized[0],
+            valueWord: this.scenario.oil.value_optimized[1],
+            percent: this.oilPercent,
             percentWord: 'тыс. тонн',
             reverse: true,
             reversePercent: true
@@ -421,9 +422,9 @@ export default {
             title: 'Обводненность',
             // (liquid - oil) /  liquid
             icon: 'liquid.svg',
-            value: (res.liquid.original_value - res.oil.original_value) / res.liquid.original_value,
+            value: this.liquidValue(),
             valueWord: '%',
-            percent: 5.1,
+            percent: this.liquidPercent,
             percentWord: 'тыс. тонн',
           }
         ],
@@ -432,18 +433,18 @@ export default {
             title: 'Общее количество ПРС',
             // sum "prs"
             icon: 'total_prs.svg',
-            value: res.prs.value[0],
+            value: this.scenario.prs.value_optimized[0],
             valueWord: 'ед',
-            percent: res.prs.percent,
+            percent: this.prsPercent,
             percentWord: 'ед',
           },
           {
             title: 'Удельный ПРС на скв',
             // sum prs / well count
             icon: 'specific_prs.svg',
-            value: Math.floor(res.prs.original_value / res.well_count),
+            value: this.avgPrsValue(),
             valueWord: 'ед/скв',
-            percent: 1.2,
+            percent: this.avgPrsPercent,
             percentWord: 'ед/скв',
           }
         ],
@@ -452,19 +453,19 @@ export default {
             title: 'Средний дебит нефти',
             // sum "oil" / (365 * well count)
             icon: 'total_prs.svg',
-            value: Math.floor(res.oil.original_value / (365 * res.well_count)),
+            value: this.avgOilValue(),
             valueWord: 'тонн/сут',
-            percent: 3.2,
+            percent: this.avgOilPercent,
             percentWord: 'тонн/сут',
             reverse: true,
           },
           {
-            title: 'Средний дебит Жидкости',
+            title: 'Средний дебит жидкости',
             // sum "liquid" / (365 * well count)
             icon: 'specific_prs.svg',
-            value: Math.floor(res.liquid.original_value / (365 * res.well_count)),
+            value: this.avgLiquidValue(),
             valueWord: 'м³/сут',
-            percent: 3.9,
+            percent: this.avgLiquidPercent,
             percentWord: 'м³/сут',
             reverse: true,
             reversePercent: true
@@ -492,33 +493,33 @@ export default {
       return [
         {
           name: '',
-          val1: 'Базовый',
-          val2: 'Оптимизированный'
+          value: 'Базовый',
+          value_optimized: 'Оптимизированный'
         },
         {
           name: 'Рентабельные',
-          val1: 1024,
-          val2: 1024
+          value: this.scenario.well_count_profitable.original_value,
+          value_optimized: this.scenario.well_count_profitable.original_value_optimized,
         },
         {
           name: 'Нерентабельные, в т.ч.',
-          val1: 1830,
-          val2: 709
+          value: (+this.scenario.well_count_profitless_cat_1.original_value) + (+this.scenario.well_count_profitless_cat2.original_value),
+          value_optimized: (+this.scenario.well_count_profitless_cat_1.original_value_optimized) + (+this.scenario.well_count_profitless_cat2.original_value_optimized)
         },
         {
           name: 'Категория 1',
-          val1: 1120,
-          val2: 0
+          value: this.scenario.well_count_profitless_cat_1.original_value,
+          value_optimized: this.scenario.well_count_profitless_cat_1.original_value_optimized
         },
         {
           name: 'Категория 2',
-          val1: 710,
-          val2: 0
+          value: this.scenario.well_count_profitless_cat2.original_value,
+          value_optimized: this.scenario.well_count_profitless_cat2.original_value_optimized,
         },
         {
           name: 'Новые скважины',
-          val1: 0,
-          val2: 53
+          value: 0,
+          value_optimized: 0
         }
       ]
     },
@@ -526,16 +527,12 @@ export default {
     oilPrices() {
       return [
         {
-          id: null,
-          name: 'Цена на нефть'
+          label: 'Цена на нефть',
+          value: null,
         },
         {
-          id: 1,
-          name: 50
-        },
-        {
-          id: 2,
-          name: 60
+          label: this.scenario.oil_price,
+          value: this.scenario.oil_price,
         }
       ]
     },
@@ -543,16 +540,12 @@ export default {
     dollarRates() {
       return [
         {
-          id: null,
-          name: 'Курс доллара'
+          label: 'Курс доллара',
+          value: null,
         },
         {
-          id: 1,
-          name: 30
-        },
-        {
-          id: 2,
-          name: 40
+          label: this.scenario.dollar_rate,
+          value: this.scenario.dollar_rate,
         }
       ]
     },
@@ -560,44 +553,61 @@ export default {
     salaryPercents() {
       return [
         {
-          id: null,
-          name: 'Процент оптимизации заработной платы'
+          label: 'Процент оптимизации заработной платы',
+          value: null,
         },
         {
-          id: 1,
-          name: 50
+          label: `${this.scenario.coef_cost_WR_payroll}, ${this.scenario.coef_Fixed_nopayroll}`,
+          value: `${this.scenario.coef_cost_WR_payroll}, ${this.scenario.coef_Fixed_nopayroll}`,
         },
-        {
-          id: 2,
-          name: 70
-        }
       ]
     },
 
     optimizationPercents() {
-      return [
-        {
-          id: null,
-          name: 'Процент остановки нерентабельного фонда'
-        },
-        {
-          id: 1,
-          name: 10
-        },
-        {
-          id: 2,
-          name: 20
-        }
-      ]
-    },
-  },
-  methods: {
-    calcSubBlockWidth(percent) {
-      return percent <= 0
-          ? percent + 100
-          : +Math.floor(100 * percent / (100 + percent))
+      let items = [{
+        label: 'Процент остановки нерентабельного фонда',
+        value: null,
+      }]
+
+      this.res.forEach(item => {
+        items.push({
+          label: `cat1: ${item.percent_stop_cat1}, cat2: ${item.percent_stop_cat2}`,
+          value: `cat1: ${item.percent_stop_cat1}, cat2: ${item.percent_stop_cat2}`,
+        })
+      })
+
+      return items
     },
 
+    scenario() {
+      return this.res[this.scenarioIndex]
+    },
+
+    oilPercent() {
+      return Math.floor(this.scenario.oil.original_value_optimized - this.scenario.oil.original_value)
+    },
+
+    prsPercent() {
+      return this.scenario.prs.original_value_optimized - this.scenario.prs.original_value
+    },
+
+    liquidPercent() {
+      return (this.avgLiquidValue() - this.avgLiquidValue(false)).toFixed(2)
+    },
+
+    avgOilPercent() {
+      return (this.avgOilValue() - this.avgOilValue(false)).toFixed(2)
+    },
+
+    avgLiquidPercent() {
+      return (this.avgLiquidValue() - this.avgLiquidValue(false)).toFixed(2)
+    },
+
+    avgPrsPercent() {
+      return (this.avgPrsValue() - this.avgPrsValue(false)).toFixed(2)
+    }
+  },
+  methods: {
     async getData() {
       this.loading = true
 
@@ -613,6 +623,68 @@ export default {
 
       this.loading = false
     },
+
+    calcSubBlockWidth(percent) {
+      return percent <= 0
+          ? percent + 100
+          : +Math.floor(100 * percent / (100 + percent))
+    },
+
+    liquidValue(optimized = true) {
+      let liquid = optimized
+          ? this.scenario.liquid.original_value_optimized
+          : this.scenario.liquid.original_value
+
+      let oil = optimized
+          ? this.scenario.oil.original_value_optimized
+          : this.scenario.oil.original_value
+
+      return liquid
+          ? (liquid - oil) / liquid
+          : 0
+    },
+
+    avgOilValue(optimized = true) {
+      let well_count = optimized
+          ? this.scenario.well_count.original_value_optimized
+          : this.scenario.well_count.original_value
+
+      let oil = optimized
+          ? this.scenario.oil.original_value_optimized
+          : this.scenario.oil.original_value
+
+      return well_count
+          ? oil / (365 * well_count)
+          : 0
+    },
+
+    avgLiquidValue(optimized = true) {
+      let well_count = optimized
+          ? this.scenario.well_count.original_value_optimized
+          : this.scenario.well_count.original_value
+
+      let liquid = optimized
+          ? this.scenario.liquid.original_value_optimized
+          : this.scenario.liquid.original_value
+
+      return well_count
+          ? liquid / (365 * well_count)
+          : 0
+    },
+
+    avgPrsValue(optimized = true) {
+      let well_count = optimized
+          ? this.scenario.well_count.original_value_optimized
+          : this.scenario.well_count.original_value
+
+      let prs = optimized
+          ? this.scenario.prs.original_value_optimized
+          : this.scenario.prs.original_value
+
+      return well_count
+          ? prs / well_count
+          : 0
+    }
   }
 };
 </script>
