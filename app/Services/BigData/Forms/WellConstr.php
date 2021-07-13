@@ -24,7 +24,7 @@ class WellConstr extends PlainForm
     }
 
     
-    function isCorrectDepth($dailyDrill, $depth) : bool {
+    function isCorrectSumOfDailyDrill($dailyDrill, $depth) : bool {
                 
         if($dailyDrill != 0){
             return $depth < $dailyDrill;
@@ -40,7 +40,7 @@ class WellConstr extends PlainForm
             ->get('daily_drill_progress')
             ->sum('daily_drill_progress');
             
-        return ($this->isCorrectDepth($dailyDrill, $depth)) ? true : false ;
+        return ($this->isCorrectSumOfDailyDrill($dailyDrill, $depth)) ? true : false ;
     }
 
         
