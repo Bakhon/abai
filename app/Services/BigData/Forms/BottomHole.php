@@ -25,7 +25,7 @@ class BottomHole extends PlainForm
             ->get('daily_drill_progress')
             ->sum('daily_drill_progress');
 
-        return ($this->isCorrectSumOfDailyDrill($dailyDrill, $depth)) ? true : false ;
+        return $this->isCorrectSumOfDailyDrill($dailyDrill, $depth);
     }
 
     protected function isValidDate($wellId, $date): bool
