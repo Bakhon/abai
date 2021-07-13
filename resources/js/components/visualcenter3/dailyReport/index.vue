@@ -132,7 +132,7 @@
                         <td :class="[1,13,14,15].includes(index) ? 'troubled-companies-padding' : ''">
                             {{companiesNameMapping.withParticipation[item.dzo]}}
                         </td>
-                        <td >{{getFormattedNumber(item.yearlyPlan)}}</td>
+                        <td>{{getFormattedNumber(item.yearlyPlan)}}</td>
 
                         <td v-if="!isOpecActive">{{getFormattedNumber(item.monthlyPlan)}}</td>
                         <td v-else>{{getFormattedNumber(item.monthlyPlanOpec)}}</td>
@@ -668,6 +668,12 @@
                background: #333975;
            }
        }
+       tr:hover {
+           background: #2d3486;
+           td:not(:nth-child(2)) {
+               font-size: 20px;
+           }
+       }
        th {
            font-style: normal;
            font-weight: bold;
@@ -687,7 +693,7 @@
            font-size: 13px;
            font-family: Bold;
            width: 10%;
-           border-right: 1px solid #454D7D;
+           border-right: 1px solid #696e96;
            padding-right: 5px;
            &:first-child {
                width: 2%;

@@ -642,6 +642,21 @@ export default {
                 return mapped;
             }
         },
+        getDarkColorClass(rowIndex) {
+            if (rowIndex % 2 === 0) {
+                return 'tdStyle'
+            } else {
+                return 'tdNone'
+            }
+        },
+
+        getLightColorClass(rowIndex) {
+            if (rowIndex % 2 === 0) {
+                return 'tdStyleLight'
+            } else {
+                return 'tdStyleLight2'
+            }
+        },
     },
     async mounted() {
         this.$store.commit('globalloading/SET_LOADING', true);
