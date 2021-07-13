@@ -297,6 +297,7 @@ return array (
   'buy' => 'Покупка',
   'chemVolume' => 'Объём хим. реагента, тонны',
   'nrs' => 'Нерентабельные скважины',
+  'visualcenter_module' => 'Модуль "Центр визуализации"',
   'chartOptions' => 
   array (
     'monthNames' => 
