@@ -196,20 +196,20 @@
 
             <divider style="left: 230px; height: 100%; top: 0;"/>
 
-            <div v-for="(fond, index) in fonds"
+            <div v-for="(wellCount, index) in wellsCount"
                  :key="index"
-                 :class="fond.name ? '' : 'font-weight-bold text-grey'"
+                 :class="wellCount.name ? '' : 'font-weight-bold text-grey'"
                  class="d-flex">
               <div class="font-size-12px" style="width: 150px;">
-                {{ fond.name }}
+                {{ wellCount.name }}
               </div>
 
               <div class="ml-2" style="width: 80px">
-                <span> {{ fond.value }}</span>
+                <span> {{ wellCount.value }}</span>
               </div>
 
               <div>
-                <span> {{ fond.value_optimized }}</span>
+                <span> {{ wellCount.value_optimized }}</span>
               </div>
             </div>
           </div>
@@ -284,10 +284,10 @@
               class="mb-3 form-control text-white border-0"
               style="background-color: #333975;">
             <option
-                v-for="price in oilPrices"
-                :key="price.value"
-                :value="price.value">
-              {{ price.label }}
+                v-for="item in oilPrices"
+                :key="item.value"
+                :value="item.value">
+              {{ item.label }}
             </option>
           </select>
 
@@ -295,10 +295,10 @@
               class="mb-3 form-control text-white border-0"
               style="background-color: #333975;">
             <option
-                v-for="rate in dollarRates"
-                :key="rate.value"
-                :value="rate.value">
-              {{ rate.label }}
+                v-for="item in dollarRates"
+                :key="item.value"
+                :value="item.value">
+              {{ item.label }}
             </option>
           </select>
 
@@ -306,21 +306,22 @@
               class="mb-3 form-control text-white border-0"
               style="background-color: #333975;">
             <option
-                v-for="salaryPercent in salaryPercents"
-                :key="salaryPercent.value"
-                :value="salaryPercent.value">
-              {{ salaryPercent.label }}
+                v-for="item in salaryPercents"
+                :key="item.value"
+                :value="item.value">
+              {{ item.label }}
             </option>
           </select>
 
           <select
+              v-model="scenarioIndex"
               class="mb-3 form-control text-white border-0"
               style="background-color: #333975;">
             <option
-                v-for="optimizationPercent in optimizationPercents"
-                :key="optimizationPercent.value"
-                :value="optimizationPercent.value">
-              {{ optimizationPercent.label }}
+                v-for="item in optimizationPercents"
+                :key="item.value"
+                :value="item.value">
+              {{ item.label }}
             </option>
           </select>
 
@@ -489,7 +490,7 @@ export default {
       ]
     },
 
-    fonds() {
+    wellsCount() {
       return [
         {
           name: '',
@@ -569,10 +570,10 @@ export default {
         value: null,
       }]
 
-      this.res.forEach(item => {
+      this.res.forEach((item, index) => {
         items.push({
           label: `cat1: ${item.percent_stop_cat1}, cat2: ${item.percent_stop_cat2}`,
-          value: `cat1: ${item.percent_stop_cat1}, cat2: ${item.percent_stop_cat2}`,
+          value: index,
         })
       })
 
