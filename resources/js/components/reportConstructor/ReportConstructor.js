@@ -24,6 +24,7 @@ export default {
             },
             attributeDescriptions: null,
             attributesForObject: null,
+            activeButtonId: 1,
             currentStructureType: 'org',
             currentStructureId: null,
             currentItemType: null,
@@ -38,6 +39,8 @@ export default {
             endDate: null,
             startMonthDate: null,
             endMonthDate: null,
+            startYearDate: null,
+            endYearDate: null,
             maxDepthOfSelectedAttributes: null,
         }
     },
@@ -51,25 +54,30 @@ export default {
         this.loadAttributeDescriptions()
     },
     methods: {
-        handleYearClick() {
-            $('.start-year-date .vdatetime-input').click();
-            $('.end-year-date .vdatetime-input').click();
+        onYearClick() {
+            document.querySelector('.start-year-date .vdatetime-input').click();
+            document.querySelector('.end-year-date .vdatetime-input').click();
         },
-        handleMonthClick() {
-            $('.start-month-date .vdatetime-input').click();
-            $('.end-month-date .vdatetime-input').click();
+        onMonthClick() {
+            document.querySelector('.start-month-date .vdatetime-input').click();
+            document.querySelector('.end-month-date .vdatetime-input').click();
         },
-        formatStartMonth() {
+        setStartMonth() {
             this.startDate = formatDate.getFirstDayOfMonth(this.startMonthDate);
         },
-        formatEndMonth() {
+        setEndMonth() {
             this.endDate = formatDate.getLastDayOfMonth(this.endMonthDate);
         },
-        handleMenuClick(currentStructureType, btnClass) {
+        setStartYear() {
+            this.startDate = formatDate.getStartOfYear(this.startYearDate);
+        },
+        setEndYear() {
+            this.endDate = formatDate.getEndOfYear(this.endYearDate);
+        },
+        onMenuClick(currentStructureType, btnId) {
             this.showOptions = true;
             this.currentStructureType = currentStructureType;
-            $('.left-section-title').removeClass('active');
-            $(btnClass).addClass('active');
+            this.activeButtonId = btnId;
         },
         onClickOption(structureType) {
             this.showOptions = false;
