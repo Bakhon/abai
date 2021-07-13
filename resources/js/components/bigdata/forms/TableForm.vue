@@ -1,5 +1,5 @@
 <template>
-  <form ref="form" class="bd-main-block__form scrollable" style="width: 100%">
+  <form @submit.prevent="" ref="form" class="bd-main-block__form scrollable" style="width: 100%">
     <cat-loader v-show="isloading"/>
     <div class="table-page">
       <template v-if="formParams">
@@ -14,6 +14,7 @@
           <div v-for="custom_column in formParams.custom_columns">
             <div :is="custom_column.component_name"
                  :column="custom_column"
+                 :allColumns="formParams.columns"
                  :updateTableData="updateTableData"
                  :filter="filter">
             </div>
@@ -94,7 +95,11 @@
                 </template>
                 <template v-else-if="['text', 'integer', 'float'].indexOf(column.type) > -1">
                   <div v-if="isCellEdited(row, column)" class="input-wrap">
-                    <input v-model="row[column.code].value" class="form-control" type="text">
+                    <input
+                        v-model="row[column.code].value"
+                        class="form-control"
+                        type="text"
+                        @keyup.enter.stop.prevent="saveCell(row, column)">
                     <button type="button" @click.prevent="saveCell(row, column)">OK</button>
                     <span v-if="errors[column.code]" class="error">{{ showError(errors[column.code]) }}</span>
                   </div>
@@ -237,7 +242,7 @@ export default {
       'formParams'
     ]),
     visibleColumns() {
-      return this.formParams.columns.filter(column => column.type !== 'hidden')
+      return this.formParams.columns.filter(column => column.type !== 'hidden' && column.visible !== false)
     }
   },
   mounted() {
@@ -359,7 +364,6 @@ export default {
             data['params'] = row[column.code].params
           }
           this.isloading = true
-
           this.axios
               .patch(this.localeUrl(`/api/bigdata/forms/${this.params.code}/save/${column.code}`), data)
               .then(({data}) => {
@@ -368,15 +372,11 @@ export default {
                   row: null,
                   cell: null
                 }
-                this.recalculateCells()
+                this.updateTableData()
               })
               .catch(error => {
                 Vue.set(this.errors, column.code, error.response.data.errors)
               })
-              .finally(() => {
-                this.isloading = false
-              })
-
         } else {
           this.editableCell = {
             row: null,

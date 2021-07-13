@@ -61,7 +61,7 @@ class FormsController extends Controller
 
         return response()->json(
             [
-                'forms' => $forms
+                'forms' => array_values($forms)
             ]
         );
     }

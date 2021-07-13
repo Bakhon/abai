@@ -21,7 +21,7 @@
         >
       </div>
       <div v-if="node.name"
-           class="text-right text-white ml-2"
+           class="text-right text-white ml-2 cursor-pointer"
            :class="{'cursor-pointer': isWell(node), 'h5 m-0': currentWellId === node.id}"
            @click.stop="handleClick(node)">
         {{ node.name }}
@@ -41,6 +41,7 @@
             :isWell="isWell"
             :currentWellId="currentWellId"
             :level="level+1"
+            :nodeClickOnArrow="nodeClickOnArrow"
       ></node>
     </ul>
     <div class="centered mx-auto mt-3" v-if="isShowChildren && isLoading">
@@ -69,6 +70,7 @@ export default {
       type: Number,
       required: false
     },
+    nodeClickOnArrow: false
   },
   model: {
     prop: "node",
@@ -80,7 +82,9 @@ export default {
       if (!this.isShowChildren) {
         return
       }
-      await this.handleClick(this.node)
+      if (this.nodeClickOnArrow) {
+          await this.handleClick(this.node);
+      }
       if (this.isNodeOnBottomLevelOfHierarchy(this.node)) {
         this.isLoading = true;
         this.getWells(this);
