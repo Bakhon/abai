@@ -376,4 +376,5 @@ return array (
   'oilCondensateDelivery' => 'Сдача нефти и конденсата',
   'stockOfGoodsDynamic' => 'Динамика товарного остатка',
   'emergencyHistory' => 'История инцидентов',
+  'gasRestriction' => 'Ограничение по газу',
 );

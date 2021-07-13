@@ -459,6 +459,7 @@ export default {
             let accident = [];
             let restrictions = [];
             let otheraccidents = [];
+            let gasRestriction = [];
 
             _.forEach(productionPlanAndFactMonth, function (item) {
                 factMonth.push({factMonth: item.productionFactForChart});
@@ -470,6 +471,7 @@ export default {
                 accident.push({accident: item.accident});
                 restrictions.push({restrictions: item.restrictions});
                 otheraccidents.push({otheraccidents: item.otheraccidents});
+                gasRestriction.push({gasRestriction: item.gasRestriction});
             });
 
             var planMonthSumm = _.reduce(
@@ -498,6 +500,7 @@ export default {
                 accident,
                 restrictions,
                 otheraccidents,
+                gasRestriction,
                 productionFactPercent,
                 dzoPercent,
                 dzoMonth,
@@ -511,6 +514,7 @@ export default {
                  accident,
                  restrictions,
                  otheraccidents,
+                 gasRestriction,
                  productionFactPercent,
                  dzoPercent,
                  dzoMonth,
@@ -526,6 +530,7 @@ export default {
                         accident,
                         restrictions,
                         otheraccidents,
+                        gasRestriction,
                         productionFactPercent,
                         dzoPercent,
                         dzoMonth,
@@ -600,6 +605,7 @@ export default {
                     accident: _.sumBy(dzo, 'accident'),
                     restrictions: _.sumBy(dzo, 'restrictions'),
                     otheraccidents: _.sumBy(dzo, 'otheraccidents'),
+                    gasRestriction: _.sumBy(dzo, 'gasRestriction'),
                     productionFactForChart: _.round(_.sumBy(dzo, self.factFieldName), 0),
                     productionPlanForChart: _.round(_.sumBy(dzo, self.planFieldName), 0),
                 }))
@@ -702,7 +708,7 @@ export default {
         this.wellsWorkoverDetails = await this.getWellsWorkoverByMonth();
         this.drillingDetails = await this.getDrillingByMonth();
         this.emergencyHistory = await this.getEmergencyByMonth();
-        console.log(this.emergencyHistory)
+
         this.dzoMonthlyPlans = await this.getDzoMonthlyPlans();
         this.dzoCompanies = _.cloneDeep(this.dzoCompaniesTemplate);
         this.dzoCompaniesAssets = _.cloneDeep(this.dzoCompaniesAssetsInitial);

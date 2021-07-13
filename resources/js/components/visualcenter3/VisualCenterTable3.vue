@@ -964,6 +964,9 @@
                     <th v-if="exactDateSelected">
                       {{ trans("visualcenter.dzoOthers") }}
                     </th>
+                    <th v-if="exactDateSelected">
+                      {{ trans("visualcenter.gasRestriction") }}
+                    </th>
                   </tr>
                   </thead>
                   <tbody>
@@ -1151,6 +1154,14 @@
                             getLightColorClass(index) : getDarkColorClass(index)"
                     >
                       <div :class="item.otheraccidents ? 'accident-triangle triangle' : 'no-accident-triangle triangle'">
+                      </div>
+                    </td>
+                    <td
+                            v-if="exactDateSelected"
+                            :class="currentDzoList === 'daily' && isConsolidatedCategoryActive() ?
+                            getDarkColorClass(index) : getLightColorClass(index)"
+                    >
+                      <div :class="item.gasRestriction ? 'accident-triangle triangle' : 'no-accident-triangle triangle'">
                       </div>
                     </td>
                   </tr>
@@ -1348,6 +1359,11 @@
                             getLighterClass(index) : getDarkerClass(index)"
                             v-if="exactDateSelected"
                     ></td>
+                    <td
+                            :class="currentDzoList === 'daily' && isConsolidatedCategoryActive() ?
+                            getLighterClass(index) : getDarkerClass(index)"
+                            v-if="exactDateSelected"
+                    ></td>
                   </tr>
                   </tbody>
                 </table>
@@ -1373,6 +1389,9 @@
                     </div>
                     <div class="mt-2" v-if="item.otheraccidents">
                       {{ item.otheraccidents }}
+                    </div>
+                    <div class="mt-2" v-if="item.gasRestriction">
+                      {{ item.gasRestriction }}
                     </div>
                   </div>
                 </div>
