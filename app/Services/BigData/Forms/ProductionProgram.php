@@ -90,15 +90,17 @@ class ProductionProgram extends TableForm
         ];
     }
 
-    protected function saveSingleFieldInDB(string $field, int $wellId, Carbon $date, $value): void
+    protected function saveSingleFieldInDB(array $params): void
     {
-        $column = $this->getFieldByCode($field);
+        $column = $this->getFieldByCode($params['field']);
+
+        $item = $this->getFieldRow($column, $params['wellId'], $params['date']);
 
         if (empty($item)) {
             $data = [
-                'well' => $wellId,
-                $column['column'] => $value,
-                'dbeg' => $date->toDateTimeString()
+                'well' => $params['wellId'],
+                $column['column'] => $params['value'],
+                'dbeg' => $params['date']->toDateTimeString()
             ];
 
             if (!empty($column['additional_filter'])) {
@@ -116,7 +118,7 @@ class ProductionProgram extends TableForm
                 ->where('id', $item->id)
                 ->update(
                     [
-                        $column['column'] => $value
+                        $column['column'] => $params['value']
                     ]
                 );
         }

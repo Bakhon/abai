@@ -1,0 +1,22 @@
+{
+  "number": 0,
+  "dzo": "",
+  "yearlyPlan": 0,
+  "monthlyPlan": 0,
+  "monthlyPlanOpec": 0,
+  "planByDay": 0,
+  "planOpecByDay": 0,
+  "factByDay": 0,
+  "differenceByDay": 0,
+  "differenceOpecByDay": 0,
+  "planByMonth": 0,
+  "planOpecByMonth": 0,
+  "factByMonth": 0,
+  "differenceByMonth": 0,
+  "differenceOpecByMonth": 0,
+  "planByYear": 0,
+  "planOpecByYear": 0,
+  "factByYear": 0,
+  "differenceByYear": 0,
+  "differenceOpecByYear": 0
+}

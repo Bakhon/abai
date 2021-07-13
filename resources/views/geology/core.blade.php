@@ -11,16 +11,16 @@
         <div class="preloader" v-cloak></div>
         <div class="layout core" v-cloak>
             <div class="layout__t-side">
-                <Geology-T-Side />
+                <Geology-Top-Side/>
             </div>
             <div class="layout__content layout__content--background layout__l-side">
-                <Geology-Core-Left-Side />
+                <Core-Left-Side />
             </div>
             <div class="layout__content layout__center">
-                <Geology-Core />
+                <Base-Core />
             </div>
             <div class="layout__content layout__content--background layout__r-side">
-                <Geology-Core-Right-Side />
+                <Core-Right-Side />
             </div>
         </div>
     </div>

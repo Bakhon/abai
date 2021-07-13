@@ -18,4 +18,5 @@ return array (
   'show' => 'Show',
   'yes' => 'Yes',
   'no' => 'No',
+  'download' => 'Скачать',
 );

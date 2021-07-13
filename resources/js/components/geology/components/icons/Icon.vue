@@ -1,7 +1,7 @@
 <template>
   <div class="a-svg-icons">
-    <svg :width="width" :height="height" :viewBox="icons[0]" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <g v-html="icons[1]" />
+    <svg :width="width" :height="height" :viewBox="icons[0]" :fill="fill" xmlns="http://www.w3.org/2000/svg">
+      <g :icon-name="name" v-html="icons[1]" />
     </svg>
   </div>
 </template>
@@ -23,6 +23,10 @@ export default {
     name: {
       type: [String, null],
       default: null
+    },
+    fill: {
+      type: String,
+      default: "none"
     }
   },
   computed: {
@@ -35,9 +39,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-.a-svg-icons {
-
-}
-</style>
