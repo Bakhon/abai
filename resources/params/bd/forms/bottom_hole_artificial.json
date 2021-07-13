@@ -22,7 +22,7 @@
                 "code": "depth",
                 "type": "numeric",
                 "title": "b_hole_m",
-                "validation": "required|numeric"
+                "validation": "required|numeric|gt:0"
               }
             ]
           }
