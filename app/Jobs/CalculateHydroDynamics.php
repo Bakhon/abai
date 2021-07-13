@@ -57,53 +57,59 @@ class CalculateHydroDynamics implements ShouldQueue
     ];
 
     const ID = 0;
-    const LENGTH = 3;
-    const QLIQ = 4;
-    const BSW = 5;
-    const GAZF = 6;
-    const PRESS_START = 7;
-    const PRESS_END = 8;
-    const TEMPERATURE_START = 9;
-    const TEMPERATURE_END = 10;
-    const START_POINT = 11;
-    const END_POINT = 12;
-    const MIX_SPEED_AVERAGE = 14;
-    const FLUID_SPEED = 15;
-    const GAS_SPEED = 16;
-    const FLOW_TYPE = 17;
-    const PRESS_CHANGE = 18;
-    const BREAK_QTY = 19;
-    const HEIGHT_DROP = 20;
-
     const POINTS_OR_SEGMENT = 0;
-    const DISTANCE = 1;
-    const DOUT = 2;
-    const WT = 3;
-    const LIQ_RATE = 4;
-    const GOR = 5;
-    const WC = 6;
-    const PIN = 7;
-    const POUT = 8;
-    const TIN = 9;
-    const TOUT = 10;
-    const FLOW_PATTERNT = 11;
-    const VLIQ = 12;
-    const VGAS = 13;
-    const VM = 14;
-    const PRESSURE_GRDIENT = 15;
-    const OHTC = 16;
-    const NRE = 17;
-    const HOLDUP = 18;
-    const LAMBDA = 19;
-    const H_SOIL = 20;
-    const H_F = 21;
-    const NPR = 22;
-    const NNU = 23;
-    const F_F_RATIO = 24;
-    const RS = 25;
-    const RSW = 26;
-    const EV = 27;
-    const COMMENT = 28;
+
+    protected $hydroCalcLongSchema = [
+        'distance' => 1,
+        'dout' => 2,
+        'wt' => 3,
+        'liq_rate' => 4,
+        'gor' => 5,
+        'wc' => 6,
+        'pin' => 7,
+        'pout' => 8,
+        'tin' => 9,
+        'tout' => 10,
+        'flow_pattern' => 11,
+        'vliq' => 12,
+        'vgas' => 13,
+        'vm' => 14,
+        'pressure_gradient' => 15,
+        'ohtc' => 16,
+        'nre' => 17,
+        'holdup' => 18,
+        'lambda' => 19,
+        'h_soil' => 20,
+        'h_f' => 21,
+        'npr' => 22,
+        'nnu' => 23,
+        'f_f_ratio' => 24,
+        'rs' => 25,
+        'rsw' => 26,
+        'ev' => 27,
+        'comment' => 28
+    ];
+
+    protected $hydroCalcShortSchema = [
+        'length' => 3,
+        'qliq' => 4,
+        'bsw' => 5,
+        'gazf' => 6,
+        'press_start' => 7,
+        'press_end' => 8,
+        'temperature_start' => 9,
+        'temperature_end' => 10,
+        'start_point' => 11,
+        'end_point' => 12,
+        'mix_speed_avg' => 14,
+        'fluid_speed' => 15,
+        'gaz_speed' => 16,
+        'flow_type' => 17,
+        'press_change' => 18,
+        'break_qty' => 19,
+        'height_drop' => 20
+    ];
+
 
 
     /**
@@ -206,7 +212,9 @@ class CalculateHydroDynamics implements ShouldQueue
             $short = $data->short->data;
             $long = $data->long;
 
-            $this->storeShortResult($short);
+            if ($short) {
+                $this->storeShortResult($short);
+            }
 
             if ($long) {
                 array_unshift($long->data, $long->columns);
@@ -235,24 +243,10 @@ class CalculateHydroDynamics implements ShouldQueue
                 ]
             );
 
-            $hydroCalcResult->length = $row[self::LENGTH];
-            $hydroCalcResult->qliq = $row[self::QLIQ];
-            $hydroCalcResult->bsw = $row[self::BSW];
-            $hydroCalcResult->gazf = $row[self::GAZF];
-            $hydroCalcResult->press_start = $row[self::PRESS_START];
-            $hydroCalcResult->press_end = $row[self::PRESS_END];
-            $hydroCalcResult->temperature_start = $row[self::TEMPERATURE_START];
-            $hydroCalcResult->temperature_end = $row[self::TEMPERATURE_END];
-            $hydroCalcResult->start_point = $row[self::START_POINT];
-            $hydroCalcResult->end_point = $row[self::END_POINT];
-            $hydroCalcResult->oil_pipe_id = $trunkline_point->oil_pipe_id;
-            $hydroCalcResult->mix_speed_avg = $row[self::MIX_SPEED_AVERAGE];
-            $hydroCalcResult->fluid_speed = $row[self::FLUID_SPEED];
-            $hydroCalcResult->gaz_speed = $row[self::GAS_SPEED];
-            $hydroCalcResult->flow_type = $row[self::FLOW_TYPE];
-            $hydroCalcResult->press_change = $row[self::PRESS_CHANGE];
-            $hydroCalcResult->break_qty = $row[self::BREAK_QTY];
-            $hydroCalcResult->height_drop = $row[self::HEIGHT_DROP];
+            foreach ($this->hydroCalcShortSchema as  $param => $index) {
+                $hydroCalcResult->$param = $row[$index];
+            }
+
             $hydroCalcResult->save();
         }
     }
@@ -279,33 +273,10 @@ class CalculateHydroDynamics implements ShouldQueue
                 ]
             );
 
-            $hydroCalcLong->distance = $row[self::DISTANCE];
-            $hydroCalcLong->dout = $row[self::DOUT];
-            $hydroCalcLong->wt = $row[self::WT];
-            $hydroCalcLong->liq_rate = $row[self::LIQ_RATE];
-            $hydroCalcLong->gor = $row[self::GOR];
-            $hydroCalcLong->wc = $row[self::WC];
-            $hydroCalcLong->pin = $row[self::PIN];
-            $hydroCalcLong->pout = $row[self::POUT];
-            $hydroCalcLong->tin = $row[self::TIN];
-            $hydroCalcLong->tout = $row[self::TOUT];
-            $hydroCalcLong->flow_pattern = $row[self::FLOW_PATTERNT];
-            $hydroCalcLong->vliq = $row[self::VLIQ];
-            $hydroCalcLong->vgas = $row[self::VGAS];
-            $hydroCalcLong->vm = $row[self::VM];
-            $hydroCalcLong->pressure_gradient = $row[self::PRESSURE_GRDIENT];
-            $hydroCalcLong->ohtc = $row[self::OHTC];
-            $hydroCalcLong->nre = $row[self::NRE];
-            $hydroCalcLong->holdup = $row[self::HOLDUP];
-            $hydroCalcLong->lambda = $row[self::LAMBDA];
-            $hydroCalcLong->h_soil = $row[self::H_SOIL];
-            $hydroCalcLong->h_f = $row[self::H_F];
-            $hydroCalcLong->npr = $row[self::NPR];
-            $hydroCalcLong->nnu = $row[self::NNU];
-            $hydroCalcLong->f_f_ratio = $row[self::F_F_RATIO];
-            $hydroCalcLong->rs = $row[self::RS];
-            $hydroCalcLong->rsw = $row[self::RSW];
-            $hydroCalcLong->comment = $row[self::COMMENT];
+            foreach ($this->hydroCalcShortSchema as  $param => $index) {
+                $hydroCalcLong->$param = $row[$index];
+            }
+
             $hydroCalcLong->save();
         }
     }
