@@ -22,7 +22,7 @@ abstract class TableForm extends BaseForm
 
     abstract public function getRows(array $params = []): array;
 
-    abstract protected function saveSingleFieldInDB(string $field, int $wellId, Carbon $date, $value): void;
+    abstract protected function saveSingleFieldInDB(array $params): void;
 
     public static function getLimitsCacheKey(array $field, CarbonImmutable $yesterday)
     {
@@ -50,18 +50,20 @@ abstract class TableForm extends BaseForm
 
         $copyRow = $rowData[$columnFrom['table']]->get($wellId)->first();
         $copyValue = $copyRow->{$columnFrom['column']};
-        $this->saveSingleFieldInDB(
-            $column['code'],
-            $wellId,
-            Carbon::parse($copyRow->dbeg ?? $date)->timezone('Asia/Almaty'),
-            1
-        );
-        $this->saveSingleFieldInDB(
-            $columnTo['code'],
-            $wellId,
-            Carbon::parse($date)->timezone('Asia/Almaty'),
-            $copyValue
-        );
+        $saveParams = [
+            'field' => $column['code'],
+            'wellId' => $wellId,
+            'date' => Carbon::parse($copyRow->dbeg ?? $date)->timezone('Asia/Almaty'),
+            'value' => 1,
+        ];
+        $this->saveSingleFieldInDB($saveParams);
+        $saveParams = [
+            'field' => $columnTo['code'],
+            'wellId' => $wellId,
+            'date' => Carbon::parse($date)->timezone('Asia/Almaty'),
+            'value' => $copyValue,
+        ];
+        $this->saveSingleFieldInDB($saveParams);
 
 
         return [];
@@ -70,12 +72,13 @@ abstract class TableForm extends BaseForm
     public function saveSingleField(string $field)
     {
         $this->validateSingleField($field);
-        $this->saveSingleFieldInDB(
-            $field,
-            $this->request->get('well_id'),
-            Carbon::parse($this->request->get('date')),
-            $this->request->get($field)
-        );
+        $saveParams = [
+            'field' => $field,
+            'wellId' => $this->request->get('well_id'),
+            'date' => Carbon::parse($this->request->get('date')),
+            'value' => $this->request->get($field),
+        ];
+        $this->saveSingleFieldInDB($saveParams);
         $this->saveHistory($field, $this->request->get($field));
 
         return response()->json([], Response::HTTP_NO_CONTENT);

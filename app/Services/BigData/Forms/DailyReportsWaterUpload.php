@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Services\BigData\Forms;
-use Carbon\Carbon;
 
 class DailyReportsWaterUpload extends DailyReports
 {
@@ -11,16 +10,6 @@ class DailyReportsWaterUpload extends DailyReports
     const ALL = 2;
     protected $metricCode = 'WINJ';
     protected $configurationFileName = 'daily_reports_water_upload';
-
-    protected function saveSingleFieldInDB(string $field, int $wellId, Carbon $date, $value): void
-    {
-        /** TODO метод для сохранения значения поля */
-    }
-
-    protected function saveHistory(string $field, $value): void
-    {
-        /** TODO метод для сохранения истории изменений */
-    }
 
     protected function getData($filter) {
         $data = parent::getData($filter);
