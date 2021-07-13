@@ -27,6 +27,7 @@ import drillingDetails from './widgets/otmDrillingDetails';
 import productionFondDetails from './widgets/productionFondDetails';
 import wellsDetails from './dataManagers/wellsDetails';
 import injectionFondDetails from './widgets/injectionFondDetails';
+import emergency from './widgets/emergency';
 
 
 export default {
@@ -662,7 +663,8 @@ export default {
         drillingDetails,
         wellsDetails,
         productionFondDetails,
-        injectionFondDetails
+        injectionFondDetails,
+        emergency
     ],
     async mounted() {
         this.$store.commit('globalloading/SET_LOADING', true);
@@ -699,6 +701,8 @@ export default {
         this.chemistryDetails = await this.getChemistryByMonth();
         this.wellsWorkoverDetails = await this.getWellsWorkoverByMonth();
         this.drillingDetails = await this.getDrillingByMonth();
+        this.emergencyHistory = await this.getEmergencyByMonth();
+        console.log(this.emergencyHistory)
         this.dzoMonthlyPlans = await this.getDzoMonthlyPlans();
         this.dzoCompanies = _.cloneDeep(this.dzoCompaniesTemplate);
         this.dzoCompaniesAssets = _.cloneDeep(this.dzoCompaniesAssetsInitial);

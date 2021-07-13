@@ -60,6 +60,10 @@ export default {
                     'class': 'hide-company-list',
                     'hover': '',
                 },
+                'emergencyInfo': {
+                    'class': 'hide-company-list',
+                    'hover': '',
+                },
             }
         };
     },

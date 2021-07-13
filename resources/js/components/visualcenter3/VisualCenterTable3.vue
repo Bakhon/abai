@@ -1927,7 +1927,39 @@
             </div>
           </div>
         </div>
-
+        <div :class="[`${tableMapping.emergencyInfo.class}`, 'third-table big-area']">
+          <div class="first-string first-string2">
+            <div class="container-fluid">
+              <div class="area-6-name row mt-3 mb-3 px-2">
+                <div class="col">
+                  <div class="ml-4 bold">
+                    {{ trans("visualcenter.emergencyHistory") }}
+                  </div>
+                </div>
+                <div class="col px-4">
+                  <div class="close2" @click="changeTable('productionDetails')">
+                    {{ trans("visualcenter.close") }}
+                  </div>
+                </div>
+              </div>
+              <div class="container-fluid">
+                <div
+                        class="row emergency-view"
+                        v-for="(item, index) in emergencyHistory"
+                >
+                  <div class="col-12 d-flex emergency-title p-0">
+                    <span class="col-1">{{item.date}}</span>
+                    <span class="col-11">{{item.title}}</span>
+                  </div>
+                  <div class="col-12 d-flex emergency-description p-2">
+                    <span class="col-1"></span>
+                    <span class="col-11">{{item.description}}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
         <div :class="[`${tableMapping.otmWorkover.class}`, 'third-table big-area']">
           <div class="first-string first-string2">
             <div class="container-fluid">
@@ -2050,7 +2082,7 @@
                               :class="`${getDzoColumnsClass(index,'difference')}`"
                       >
                         <div class="font dynamic">
-                          {{formatDigitToThousand(item.difference)}}
+                          {{Math.abs(formatDigitToThousand(item.difference))}}
                           <span class="data-metrics">
                               {{item.metricSystem}}
                             </span>
@@ -2464,32 +2496,52 @@
                 </table>
               </div>
             </div>
-          </div>
-          <div class="first-string first-string2">
-            <div>
-              <table class="table">
-                <tr class="d-flex">
-                  <td class="col-6">
-                    <div class="secondaryTitle">0</div>
-                    <div class="metric-title">
-                      {{ trans('visualcenter.chemistryMetricTon') }}
-                    </div>
-                    <div class="in-idle">
-                      {{ timeSelect }}
-                    </div>
-                  </td>
-                </tr>
-                <tr class="d-flex">
-                  <td class="col-12">
-                    <div class="right-column_header">
-                      {{ trans('visualcenter.expectedProduction') }}
-                    </div>
-                  </td>
-                </tr>
-              </table>
+
+            <div class="first-string first-string2">
+              <div>
+                <table class="table emergency-table">
+                  <tr class="d-flex">
+                    <td class="col-6">
+                      <div class="secondaryTitle">0</div>
+                      <div class="metric-title">
+                        {{ trans('visualcenter.chemistryMetricTon') }}
+                      </div>
+                      <div class="in-idle">
+                        {{ timeSelect }}
+                      </div>
+                    </td>
+                    <td
+                            class="col-6 cursor-pointer emergency-block"
+                            @click="switchWidget('emergencyInfo')"
+                            :class="`${tableMapping.emergencyInfo.hover}`"
+                    >
+                      <div class="secondaryTitle d-flex">
+                        <div class="col-9 p-0 emergency-icon"></div>
+                        <div class="mt-1 col-2">
+                          <img src="/img/icons/link.svg" />
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr class="d-flex">
+                    <td class="col-6">
+                      <div class="right-column_header">
+                        {{ trans('visualcenter.expectedProduction') }}
+                      </div>
+                    </td>
+                    <td
+                            class="col-6 cursor-pointer emergency-block"
+                            :class="`${tableMapping.emergencyInfo.hover}`"
+                    >
+                      <div class="right-column_header">
+                        {{ trans('visualcenter.emergencyHistory') }}
+                      </div>
+                    </td>
+                  </tr>
+                </table>
+              </div>
             </div>
           </div>
-
         </div>
       </div>
     </div>
@@ -2874,9 +2926,6 @@
   .rates-block__row {
     height: 100%;
   }
-  .button_hover {
-    background: #0d2792;
-  }
   @media (max-width: 1400px) {
     .rates-block__row {
       height: auto;
@@ -2988,5 +3037,46 @@
     position: absolute;
     writing-mode: tb-rl;
     transform: rotate(180deg);
+  }
+  .emergency-situations {
+    background: #333975 60%;
+  }
+  .emergency-table {
+    height: 145px;
+    td {
+      word-break: break-word;
+    }
+    tr {
+      max-height: 100px;
+    }
+    tr:last-child {
+      max-height: 56px;
+    }
+  }
+  .emergency-block {
+    background: #333975 60%;
+  }
+  .emergency-icon {
+    width: 70px;
+    height: 70px;
+    background: url(/img/visualcenter3/emergency.png) 3% no-repeat;
+    background-size: 50%;
+  }
+  .button_hover {
+    background: #0d2792;
+  }
+  .emergency-view {
+    .emergency-title {
+      font-size: 16px;
+      span:first-child {
+        background: #353EA1;
+      }
+      span:last-child {
+        background: #4C537E;
+      }
+    }
+    .emergency-description {
+      background: #313561;
+    }
   }
 </style>
